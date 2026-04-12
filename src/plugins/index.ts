@@ -10,9 +10,9 @@ export type PluginInstallContext = {
   pinia?: Pinia;
 };
 
-export default async function installPlugins(app: App, context: PluginInstallContext = {}): Promise<void> {
+export default function installPlugins(app: App, context: PluginInstallContext = {}): void {
   installDayjsDuration();
   installCountryFlagEmoji();
   installSoramitsuUI(app);
-  await installWallet(app, context);
+  installWallet(app, context);
 }

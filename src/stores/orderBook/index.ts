@@ -24,6 +24,8 @@ import type { Subscription } from 'rxjs';
 
 const ORDER_BOOK_BASE_BALANCE_SUBSCRIPTION_KEY = 'order-book-base-balance';
 const ORDER_BOOK_SNAPSHOT_TIMEOUT_MS = 4_000;
+const ORDER_BOOK_API_READY_TIMEOUT_MS = 12_000;
+const ORDER_BOOK_API_READY_POLL_MS = 100;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -59,6 +61,19 @@ type AddressWhitelistEntry = {
   address?: Nullable<string>;
 };
 
+type ChainApiLike = {
+  isReady?: unknown;
+  query?: {
+    orderBook?: {
+      orderBooks?: {
+        entries?: unknown;
+      };
+      aggregatedAsks?: unknown;
+      aggregatedBids?: unknown;
+    };
+  };
+};
+
 const clearSubscription = <T extends { unsubscribe?: () => void }>(subscription: Nullable<T>): null => {
   subscription?.unsubscribe?.();
   return null;
@@ -68,6 +83,8 @@ const clearCallback = (callback: Nullable<VoidFunction>): null => {
   callback?.();
   return null;
 };
+
+const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 const withTimeout = <T>(promise: Promise<T>, fallback: T): Promise<TimedResult<T>> => {
   return new Promise((resolve, reject) => {
@@ -133,6 +150,48 @@ const loadSnapshotFromConnection = async (
 
   const snapshot = await queryFn({ dexId: dexId ?? 0, base, quote });
   return mapAggregatedSnapshot(snapshot);
+};
+
+const getConnectedChainApi = (): ChainApiLike | null => {
+  const settingsStore = useSettingsStore();
+  const settingsConnectionApi = settingsStore.appConnection?.connection?.api as ChainApiLike | undefined;
+
+  if (settingsConnectionApi) return settingsConnectionApi;
+
+  const connectionApi = (api as { connection?: { api?: ChainApiLike | null } }).connection?.api;
+
+  if (connectionApi) return connectionApi;
+
+  const directApi = (api as { api?: ChainApiLike | null }).api;
+
+  if (directApi) return directApi;
+
+  return null;
+};
+
+const hasOrderBookEntriesQuery = (chainApi: Nullable<ChainApiLike>): boolean => {
+  return typeof chainApi?.query?.orderBook?.orderBooks?.entries === 'function';
+};
+
+const waitForOrderBookApiReady = async (): Promise<boolean> => {
+  const timeoutAt = Date.now() + ORDER_BOOK_API_READY_TIMEOUT_MS;
+
+  while (Date.now() < timeoutAt) {
+    const chainApi = getConnectedChainApi();
+    const isReady = chainApi?.isReady as PromiseLike<unknown> | undefined;
+
+    if (typeof isReady?.then === 'function') {
+      await Promise.race([Promise.resolve(isReady), sleep(ORDER_BOOK_API_READY_POLL_MS)]).catch(() => undefined);
+    }
+
+    if (hasOrderBookEntriesQuery(chainApi)) {
+      return true;
+    }
+
+    await sleep(ORDER_BOOK_API_READY_POLL_MS);
+  }
+
+  return hasOrderBookEntriesQuery(getConnectedChainApi());
 };
 
 const hasWhitelistEntries = (whitelist: unknown): boolean => {
@@ -289,6 +348,8 @@ export const useOrderBookStore = defineStore('orderBook', {
       this.baseAssetBalance = balance;
     },
     async getOrderBooksInfo(): Promise<void> {
+      if (!(await waitForOrderBookApiReady())) return;
+
       const walletStore = useWalletStore();
       const whitelist = walletStore.whitelist ?? {};
       const orderBooks = await api.orderBook.getOrderBooks();

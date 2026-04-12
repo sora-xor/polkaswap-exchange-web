@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import viteConfig from '@/../vite.config.mjs';
 
 describe('vite.config', () => {
-  it('does not force a custom manual chunk topology', () => {
+  it('keeps Rollup on default chunking for the browser bundle', () => {
     expect(viteConfig.build?.rollupOptions?.output?.manualChunks).toBeUndefined();
   });
 

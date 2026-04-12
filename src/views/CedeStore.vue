@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { renderSendWidget } from '@cedelabs/widgets-universal';
 import { computed, nextTick, onMounted, toRef } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -51,6 +50,7 @@ const rootSelector = '#cede-widget';
 const loadCedeWidget = async () => {
   try {
     await nextTick();
+    const { renderSendWidget } = await import('@cedelabs/widgets-universal');
     renderSendWidget(rootSelector, {
       config: {
         tokenSymbol: 'XOR',

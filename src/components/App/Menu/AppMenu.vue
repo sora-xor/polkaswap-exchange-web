@@ -399,6 +399,12 @@ onBeforeUnmount(() => {
   }
 }
 
+@media (min-width: $breakpoint_tablet) and (max-width: #{$breakpoint_desktop - 1}) {
+  .collapse-button {
+    left: calc(100% - var(--s-size-small));
+  }
+}
+
 .app-menu.collapsed {
   .collapse-button {
     box-shadow: var(--s-shadow-element) !important;

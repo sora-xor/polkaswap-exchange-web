@@ -68,7 +68,10 @@ export class NodesConnection {
   }
 
   get nodeIsConnected(): boolean {
-    return !!this.node?.address && !this.nodeAddressConnecting;
+    const activeEndpoint = this.connection?.endpoint ?? '';
+    const hasLiveApi = Boolean(this.connection?.api);
+
+    return Boolean(this.node?.address && hasLiveApi && activeEndpoint === this.node.address && !this.nodeAddressConnecting);
   }
 
   get connectionAllowance(): boolean {

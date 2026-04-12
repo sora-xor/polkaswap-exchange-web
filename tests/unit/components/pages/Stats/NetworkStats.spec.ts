@@ -3,6 +3,7 @@ import { defineComponent, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import NetworkStats from '@/components/pages/Stats/NetworkStats.vue';
+import networkStatsSource from '@/components/pages/Stats/NetworkStats.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
 const nodeIsConnectedState = vi.hoisted(() => ({ value: false }));
@@ -36,8 +37,9 @@ vi.mock('@wallet', async (importOriginal) => {
     components: {
       ...actual.components,
       FormattedAmount: defineComponent({
-        template: '<div class="formatted-amount-stub">{{ value }}</div>',
-        props: ['value'],
+        template:
+          '<div class="formatted-amount-stub" :data-value="value" :data-integer-only="String(integerOnly)">{{ value }}</div>',
+        props: ['value', 'integerOnly'],
       }),
     },
   };
@@ -117,5 +119,9 @@ describe('NetworkStats', () => {
     expect(filter.attributes('data-disabled')).toBe('true');
     expect(wrapper.find('.app-loading-overlay').exists()).toBe(true);
     expect(wrapper.find('.app-loading-overlay__spinner').exists()).toBe(true);
+  });
+
+  it('binds integer-only rendering for whole-number counters', () => {
+    expect(networkStatsSource).toContain(':integer-only="!value.amount.includes(FPNumber.DELIMITERS_CONFIG.decimal)"');
   });
 });

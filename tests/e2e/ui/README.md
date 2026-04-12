@@ -12,11 +12,19 @@
 - Additional smoke runners (CLI-first Playwright scripts):
   - Swap interaction regression smoke: `yarn test:e2e:swap:smoke`
     - Validates repeated token selection changes, modal outside-click close, and customize-widget switch/label toggles on `#/swap`.
+    - Auto-starts the local IPFS preview server when the default local base URL is not already running.
+    - Defaults to the local IPFS preview prefix (`/ipfs/polkaswap-e2e/`); override with `SWAP_SMOKE_PREFIX=''` for root-prefix checks.
   - Safari/WebKit UI smoke: `yarn test:e2e:safari:smoke`
     - Runs cross-route shell checks under Playwright WebKit (`#/swap`, `#/trade/DAI/KUSD`, `#/wallet`, `#/burn`, `#/stats`) with screenshots in `output/playwright/safari-smoke/`.
+    - Auto-starts the local IPFS preview server when the default local base URL is not already running.
+    - Defaults to the local IPFS preview prefix (`/ipfs/polkaswap-e2e/`); override with `SAFARI_SMOKE_PREFIX=''` for root-prefix checks.
   - Wallet matrix (multi-route + signing readiness): `yarn test:e2e:wallet:matrix`
     - Verifies `polkadot-js`, `fearless-wallet`, `subwallet-js`, and `talisman` across `#/swap`, `#/bridge`, `#/burn`, `#/trade/DAI/KUSD`, `#/wallet`, `#/stats`.
     - Includes provider-account checks plus signature-readiness (`signRaw`) checks after connection.
+    - Auto-starts the local IPFS preview server when the default local base URL is not already running.
+    - Defaults to the local IPFS preview prefix (`/ipfs/polkaswap-e2e/`); override with `WALLET_MATRIX_PREFIX=''` for root-prefix checks.
+    - Uses isolated runtime copies of the extension profiles by default; set `WALLET_MATRIX_RUNTIME_COPIES=0` to reuse the source profiles directly.
+    - Prefers the installed Chrome channel for persistent extension automation; override with `WALLET_MATRIX_CHANNEL=chromium` if needed.
   - Fresh-profile wallet matrix: `yarn test:e2e:wallet:matrix:fresh`
     - Runs the same wallet matrix using fresh copied extension profiles for deterministic reruns.
 

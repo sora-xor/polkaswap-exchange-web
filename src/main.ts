@@ -17,7 +17,7 @@ import './styles';
 registerW3mMessageGuard();
 installConsoleWarningFilter();
 
-async function bootstrapApp(): Promise<VueApp> {
+function bootstrapApp(): VueApp {
   const app = createApp(App);
 
   installVueErrorHandler(app);
@@ -25,7 +25,7 @@ async function bootstrapApp(): Promise<VueApp> {
   app.use(router);
   app.use(i18n);
 
-  await installPlugins(app, { pinia });
+  installPlugins(app, { pinia });
 
   return app;
 }
@@ -56,12 +56,13 @@ if (shouldRenderOfflineShell()) {
     console.warn('[OfflineShell] skipped: #app container missing');
   }
 } else {
-  bootstrapApp()
-    .then(async (app) => {
-      await router.isReady();
-      app.mount('#app');
-    })
-    .catch((error) => {
-      console.error('[bootstrap] Failed to mount application', error);
+  try {
+    const app = bootstrapApp();
+    app.mount('#app');
+    void router.isReady().catch((error) => {
+      console.error('[bootstrap] Failed during router readiness', error);
     });
+  } catch (error) {
+    console.error('[bootstrap] Failed to mount application', error);
+  }
 }

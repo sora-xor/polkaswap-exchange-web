@@ -1,4 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPinia } from 'pinia';
 
 vi.mock(
   'base-64',
@@ -26,14 +27,18 @@ const { localStorageMock } = vi.hoisted(() => {
 });
 
 const dialogBaseComponent = { name: 'DialogBaseMock' };
-const walletPlugin = vi.fn();
+const installWalletPlugins = vi.fn();
 
-vi.mock('@/shims/wallet', () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/registry', () => ({
   __esModule: true,
-  default: walletPlugin,
   components: {
     DialogBase: dialogBaseComponent,
   },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/plugins', () => ({
+  __esModule: true,
+  default: installWalletPlugins,
 }));
 
 vi.mock('@wallet', async () => {
@@ -67,18 +72,18 @@ describe('wallet plugin', () => {
 
     const { install } = await import('@/plugins/wallet');
 
-    await install(app, { pinia: {} as any });
+    install(app, { pinia: createPinia() });
 
-    expect(app.use).toHaveBeenCalledWith(walletPlugin, expect.any(Object));
-    expect(app.use.mock.calls[0]?.[1]?.store).toBeUndefined();
+    expect(installWalletPlugins).toHaveBeenCalledWith(app);
+    expect(app.use).not.toHaveBeenCalled();
     expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
     expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseComponent);
   });
 
-  it('does not forward legacy store options into the wallet plugin', async () => {
+  it('ignores legacy store options and still registers wallet components', async () => {
     const app: any = {
       use: vi.fn(),
-      component: vi.fn(),
+      component: vi.fn(() => undefined),
     };
     const compatStore = {
       state: { wallet: {} },
@@ -89,7 +94,10 @@ describe('wallet plugin', () => {
 
     const { install } = await import('@/plugins/wallet');
 
-    await install(app, { store: compatStore, pinia: {} as any } as any);
-    expect(app.use.mock.calls[0]?.[1]?.store).toBeUndefined();
+    install(app, { store: compatStore, pinia: createPinia() } as any);
+
+    expect(installWalletPlugins).toHaveBeenCalledWith(app);
+    expect(app.use).not.toHaveBeenCalled();
+    expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
   });
 });

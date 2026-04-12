@@ -216,6 +216,12 @@ describe('ReferralBonding view', () => {
 
     expect(reserveXorMock).toHaveBeenCalledWith('100000000000');
     expect(storeMocks.referralsStore.resetAmount).toHaveBeenCalled();
+    expect(pushMock).toHaveBeenCalledWith({
+      name: 'ReferralProgram',
+      params: {
+        referrerAddress: 'bond',
+      },
+    });
     expect(wrapper.findComponent({ name: 'referrals-confirm-bonding' })).toBeTruthy();
   });
 });

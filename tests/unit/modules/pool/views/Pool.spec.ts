@@ -264,7 +264,7 @@ describe('Pool.vue', () => {
     expect(setAddressesToRemove).toHaveBeenCalledWith({ firstAddress: 'addr-1', secondAddress: 'addr-2' });
 
     vm.handleAddLiquidity();
-    expect(setDataFromLiquidity).toHaveBeenCalledWith({ firstAddress: XOR.address, secondAddress: '' });
+    expect(setDataFromLiquidity).toHaveBeenCalledWith({ firstAddress: '', secondAddress: '' });
   });
 
   it('renders liquidity rows even when a pool asset is missing from the asset registry', async () => {

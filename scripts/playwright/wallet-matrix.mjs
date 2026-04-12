@@ -1,17 +1,30 @@
 import { chromium } from 'playwright';
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import { ensurePreviewServer } from './preview-server-helper.mjs';
+import { resolveAppBaseUrl, resolveRouteUrl } from './url-helpers.mjs';
 
 const base = process.cwd();
-const BASE_URL = process.env.WALLET_MATRIX_BASE_URL || 'http://127.0.0.1:8896';
+const RAW_BASE_URL = process.env.WALLET_MATRIX_BASE_URL || 'http://127.0.0.1:8896';
+const BASE_URL = resolveAppBaseUrl(RAW_BASE_URL, process.env.WALLET_MATRIX_PREFIX);
 const PASSWORD = process.env.WALLET_PASSWORD || 'Password123!';
 const FRESH_MODE = process.env.WALLET_MATRIX_FRESH === '1';
 const KEEP_FRESH_PROFILES = process.env.WALLET_MATRIX_KEEP_PROFILES === '1';
+const USE_RUNTIME_PROFILE_COPIES = process.env.WALLET_MATRIX_RUNTIME_COPIES !== '0';
+const PERSISTENT_CONTEXT_CHANNEL = process.env.WALLET_MATRIX_CHANNEL || 'chrome';
 const LOCK_FILES = ['SingletonLock', 'SingletonCookie', 'SingletonSocket', 'lockfile'];
+const PERSISTENT_CONTEXT_IGNORE_DEFAULT_ARGS = ['--disable-extensions', '--disable-component-extensions-with-background-pages'];
 const ROUTES = (process.env.WALLET_MATRIX_ROUTES || '#/swap,#/bridge,#/burn,#/trade/DAI/KUSD,#/wallet,#/stats')
   .split(',')
   .map((item) => item.trim())
   .filter(Boolean);
+const PERSISTENT_CONTEXT_ARGS = [
+  '--disable-crashpad',
+  '--disable-extensions-except=%EXTENSION_PATH%',
+  '--load-extension=%EXTENSION_PATH%',
+  '--no-first-run',
+  '--no-default-browser-check',
+];
 
 /**
  * Wallet matrix for local Playwright verification.
@@ -382,6 +395,7 @@ const runTaskWithWalletAutomation = async ({
   wallet,
   context,
   extensionOrigin,
+  resolveExtensionOrigin,
   task,
   onExtensionState,
   onTick,
@@ -408,7 +422,12 @@ const runTaskWithWalletAutomation = async ({
 
   const deadline = Date.now() + maxDurationMs;
   while (!settled && Date.now() < deadline) {
-    const extensionState = await handleWalletPages(wallet, context, extensionOrigin);
+    let activeExtensionOrigin = extensionOrigin;
+    if (!activeExtensionOrigin && resolveExtensionOrigin) {
+      activeExtensionOrigin = await resolveExtensionOrigin();
+    }
+
+    const extensionState = await handleWalletPages(wallet, context, activeExtensionOrigin);
     onExtensionState?.(extensionState);
 
     if (onTick) {
@@ -516,7 +535,7 @@ const seedTalismanAuthForAppOrigin = async (context, extensionOrigin, routeUrl) 
 const ensureProfilePath = async (wallet, freshProfilesRoot) => {
   const templatePath = path.join(base, wallet.profile);
 
-  if (!FRESH_MODE) {
+  if (!USE_RUNTIME_PROFILE_COPIES && !FRESH_MODE) {
     return templatePath;
   }
 
@@ -528,7 +547,7 @@ const ensureProfilePath = async (wallet, freshProfilesRoot) => {
 };
 
 const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
-  const routeUrl = `${BASE_URL}${routeHash}`;
+  const routeUrl = resolveRouteUrl(RAW_BASE_URL, routeHash, process.env.WALLET_MATRIX_PREFIX);
   const extensionPath = path.join(base, wallet.extensionPath);
 
   await cleanProfileLocks(profilePath);
@@ -553,14 +572,16 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
   try {
     context = await chromium.launchPersistentContext(profilePath, {
       headless: false,
-      args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`, '--no-first-run', '--no-default-browser-check'],
+      channel: PERSISTENT_CONTEXT_CHANNEL,
+      ignoreDefaultArgs: PERSISTENT_CONTEXT_IGNORE_DEFAULT_ARGS,
+      args: PERSISTENT_CONTEXT_ARGS.map((arg) => arg.replaceAll('%EXTENSION_PATH%', extensionPath)),
       viewport: { width: 1366, height: 900 },
     });
     await context.addInitScript(() => {
       localStorage.setItem('dexSettings.disclaimerApprove', 'true');
     });
 
-    const extensionOrigin = await getExtensionOrigin(context);
+    let extensionOrigin = await getExtensionOrigin(context);
     if (wallet.key === 'polkadot-js') {
       await seedPolkadotAuthForAppOrigin(context, extensionOrigin, routeUrl);
     }
@@ -576,9 +597,11 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
     if (!(currentState.source === wallet.providerKey && currentState.address)) {
       result.modalOpened = await openWalletModal(app);
       result.walletCardFound = await selectWalletCard(app, wallet.cardName);
+      extensionOrigin ||= await getExtensionOrigin(context);
 
       const deadline = Date.now() + 35_000;
       while (Date.now() < deadline) {
+        extensionOrigin ||= await getExtensionOrigin(context);
         const extensionState = await handleWalletPages(wallet, context, extensionOrigin);
         if (extensionState.talismanNeedsAccountSetup) {
           result.talismanNeedsAccountSetup = true;
@@ -614,6 +637,10 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
       wallet,
       context,
       extensionOrigin,
+      resolveExtensionOrigin: async () => {
+        extensionOrigin ||= await getExtensionOrigin(context);
+        return extensionOrigin;
+      },
       task: () => getDirectProviderState(app, wallet.providerKey, 10_000),
       maxDurationMs: 16_000,
       onExtensionState: applyExtensionFlags,
@@ -631,6 +658,10 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
         wallet,
         context,
         extensionOrigin,
+        resolveExtensionOrigin: async () => {
+          extensionOrigin ||= await getExtensionOrigin(context);
+          return extensionOrigin;
+        },
         task: () => getDirectProviderState(app, wallet.providerKey, 12_000),
         maxDurationMs: 20_000,
         onExtensionState: applyExtensionFlags,
@@ -647,6 +678,10 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
       wallet,
       context,
       extensionOrigin,
+      resolveExtensionOrigin: async () => {
+        extensionOrigin ||= await getExtensionOrigin(context);
+        return extensionOrigin;
+      },
       task: () => getSignatureState(app, wallet.providerKey, 20_000),
       maxDurationMs: 30_000,
       onExtensionState: applyExtensionFlags,
@@ -664,6 +699,10 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
         wallet,
         context,
         extensionOrigin,
+        resolveExtensionOrigin: async () => {
+          extensionOrigin ||= await getExtensionOrigin(context);
+          return extensionOrigin;
+        },
         task: () => getSignatureState(app, wallet.providerKey, 28_000),
         maxDurationMs: 40_000,
         onExtensionState: applyExtensionFlags,
@@ -694,53 +733,57 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
 };
 
 const run = async () => {
+  const stopPreviewServer = await ensurePreviewServer(RAW_BASE_URL, BASE_URL);
   const freshProfilesRoot = path.join(base, '.playwright-cli/extensions/profiles-matrix', String(Date.now()));
-  if (FRESH_MODE) {
-    await fs.mkdir(freshProfilesRoot, { recursive: true });
-  }
-
-  const profilePaths = {};
-  for (const wallet of WALLETS) {
-    profilePaths[wallet.key] = await ensureProfilePath(wallet, freshProfilesRoot);
-  }
-
-  const matrix = [];
-  for (const routeHash of ROUTES) {
-    for (const wallet of WALLETS) {
-      const result = await runRouteWalletCheck(wallet, routeHash, profilePaths[wallet.key]);
-      matrix.push(result);
-      console.log(JSON.stringify(result));
+  try {
+    if (FRESH_MODE || USE_RUNTIME_PROFILE_COPIES) {
+      await fs.mkdir(freshProfilesRoot, { recursive: true });
     }
-  }
 
-  const byRoute = ROUTES.map((routeHash) => {
-    const rows = matrix.filter((item) => item.route === routeHash);
-    return {
-      route: routeHash,
-      passCount: rows.filter((item) => item.pass).length,
-      failCount: rows.filter((item) => !item.pass).length,
-      wallets: rows,
+    const profilePaths = {};
+    for (const wallet of WALLETS) {
+      profilePaths[wallet.key] = await ensureProfilePath(wallet, freshProfilesRoot);
+    }
+
+    const matrix = [];
+    for (const routeHash of ROUTES) {
+      for (const wallet of WALLETS) {
+        const result = await runRouteWalletCheck(wallet, routeHash, profilePaths[wallet.key]);
+        matrix.push(result);
+        console.log(JSON.stringify(result));
+      }
+    }
+
+    const byRoute = ROUTES.map((routeHash) => {
+      const rows = matrix.filter((item) => item.route === routeHash);
+      return {
+        route: routeHash,
+        passCount: rows.filter((item) => item.pass).length,
+        failCount: rows.filter((item) => !item.pass).length,
+        wallets: rows,
+      };
+    });
+
+    const summary = {
+      baseUrl: BASE_URL,
+      routes: ROUTES,
+      freshMode: FRESH_MODE,
+      timestamp: new Date().toISOString(),
+      passCount: matrix.filter((item) => item.pass).length,
+      failCount: matrix.filter((item) => !item.pass).length,
+      byRoute,
     };
-  });
 
-  const summary = {
-    baseUrl: BASE_URL,
-    routes: ROUTES,
-    freshMode: FRESH_MODE,
-    timestamp: new Date().toISOString(),
-    passCount: matrix.filter((item) => item.pass).length,
-    failCount: matrix.filter((item) => !item.pass).length,
-    byRoute,
-  };
+    console.log(JSON.stringify({ summary }, null, 2));
 
-  console.log(JSON.stringify({ summary }, null, 2));
-
-  if (FRESH_MODE && !KEEP_FRESH_PROFILES) {
-    await fs.rm(freshProfilesRoot, { recursive: true, force: true }).catch(() => {});
-  }
-
-  if (summary.failCount > 0) {
-    process.exitCode = 1;
+    if (summary.failCount > 0) {
+      process.exitCode = 1;
+    }
+  } finally {
+    if ((FRESH_MODE || USE_RUNTIME_PROFILE_COPIES) && !KEEP_FRESH_PROFILES) {
+      await fs.rm(freshProfilesRoot, { recursive: true, force: true }).catch(() => {});
+    }
+    await stopPreviewServer();
   }
 };
 

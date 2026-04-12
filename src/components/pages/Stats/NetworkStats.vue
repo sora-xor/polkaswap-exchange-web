@@ -32,6 +32,7 @@
               :font-size-rate="FontSizeRate.MEDIUM"
               :value="value.amount"
               :asset-symbol="value.suffix"
+              :integer-only="!value.amount.includes(FPNumber.DELIMITERS_CONFIG.decimal)"
               symbol-as-decimal
             ></formatted-amount>
             <price-change :value="change"></price-change>

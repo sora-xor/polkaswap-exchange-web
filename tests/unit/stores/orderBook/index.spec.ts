@@ -27,8 +27,12 @@ const shared = vi.hoisted(() => {
     appConnection: {
       connection: {
         api: {
+          isReady: Promise.resolve(),
           query: {
             orderBook: {
+              orderBooks: {
+                entries: vi.fn(async () => []),
+              },
               aggregatedAsks: vi.fn(async () => new Map()),
               aggregatedBids: vi.fn(async () => new Map()),
             },
@@ -184,6 +188,9 @@ describe('useOrderBookStore', () => {
     });
     shared.settingsStore.appConnection.connection.api.query.orderBook.aggregatedAsks.mockReset();
     shared.settingsStore.appConnection.connection.api.query.orderBook.aggregatedBids.mockReset();
+    shared.settingsStore.appConnection.connection.api.query.orderBook.orderBooks.entries.mockReset();
+    shared.settingsStore.appConnection.connection.api.isReady = Promise.resolve();
+    shared.settingsStore.appConnection.connection.api.query.orderBook.orderBooks.entries.mockResolvedValue([]);
     shared.settingsStore.appConnection.connection.api.query.orderBook.aggregatedAsks.mockResolvedValue(new Map());
     shared.settingsStore.appConnection.connection.api.query.orderBook.aggregatedBids.mockResolvedValue(new Map());
     shared.asksUnsubscribe.mockClear();
@@ -269,6 +276,41 @@ describe('useOrderBookStore', () => {
     );
     expect(shared.balanceRemove).toHaveBeenCalledWith('order-book-base-balance');
     expect(shared.balanceReset).toHaveBeenCalledTimes(1);
+  });
+
+  it('waits for the order-book query to be ready before loading books on first route load', async () => {
+    vi.useFakeTimers();
+
+    try {
+      const store = useOrderBookStore();
+      const api = shared.settingsStore.appConnection.connection.api;
+
+      shared.getOrderBooks.mockResolvedValue({
+        accepted: { orderBookId: { base: 'base-1', quote: 'quote-1', dexId: 0 }, status: 'Trade' },
+      });
+
+      api.query.orderBook.orderBooks.entries = undefined as unknown as typeof api.query.orderBook.orderBooks.entries;
+      api.isReady = Promise.resolve();
+
+      const pending = store.getOrderBooksInfo();
+
+      await Promise.resolve();
+      expect(shared.getOrderBooks).not.toHaveBeenCalled();
+
+      setTimeout(() => {
+        api.query.orderBook.orderBooks.entries = vi.fn(async () => []);
+      }, 50);
+
+      await vi.advanceTimersByTimeAsync(200);
+      await pending;
+
+      expect(shared.getOrderBooks).toHaveBeenCalledTimes(1);
+      expect(store.orderBooks).toEqual({
+        accepted: { orderBookId: { base: 'base-1', quote: 'quote-1', dexId: 0 }, status: 'Trade' },
+      });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('syncs order-book subscriptions and user orders through the native store actions', async () => {

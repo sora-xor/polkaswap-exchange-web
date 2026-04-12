@@ -11,6 +11,10 @@ const capturedRouteCallbacks: Array<(params: { firstAddress: string; secondAddre
 
 const tokenFromRef = ref<{ symbol: string; address: string } | null>({ symbol: 'XOR', address: 'xor-address' });
 const tokenToRef = ref<{ symbol: string; address: string } | null>(null);
+const firstRouteAddressRef = ref('');
+const secondRouteAddressRef = ref('');
+const isValidRouteRef = ref(false);
+const routeAssetLookupRef = ref<Record<string, { symbol: string; address: string }>>({});
 
 const setTokenFromAddressMock = vi.fn(async () => undefined);
 const setTokenToAddressMock = vi.fn(async () => undefined);
@@ -142,6 +146,12 @@ vi.mock('@/stores/swap', () => ({
   }),
 }));
 
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => ({
+    assetDataByAddress: (address?: string) => (address ? (routeAssetLookupRef.value[address] ?? null) : null),
+  }),
+}));
+
 vi.mock('@/composables/useSwapAmounts', () => ({
   useSwapAmounts: () => ({
     tokenFrom: computed(() => tokenFromRef.value),
@@ -157,9 +167,9 @@ vi.mock('@/composables/useSelectedTokensRoute', () => ({
   ) => {
     capturedRouteCallbacks.push(callback);
     return {
-      firstRouteAddress: ref(''),
-      secondRouteAddress: ref(''),
-      isValidRoute: ref(false),
+      firstRouteAddress: firstRouteAddressRef,
+      secondRouteAddress: secondRouteAddressRef,
+      isValidRoute: isValidRouteRef,
       parseCurrentRoute: (...args: unknown[]) => parseCurrentRouteMock(...args),
       updateRouteAfterSelectTokens: (...args: unknown[]) => updateRouteAfterSelectTokensMock(...args),
     };
@@ -192,6 +202,10 @@ beforeEach(() => {
 
   tokenFromRef.value = { symbol: 'XOR', address: 'xor-address' };
   tokenToRef.value = null;
+  firstRouteAddressRef.value = '';
+  secondRouteAddressRef.value = '';
+  isValidRouteRef.value = false;
+  routeAssetLookupRef.value = {};
 });
 
 describe('Swap view widget model binding', () => {
@@ -240,5 +254,77 @@ describe('Swap view widget model binding', () => {
     expect(xsCustomise?.h).toBe(3);
     expect(xsCustomise?.maxH).toBe(3);
     expect(xsForm?.y).toBe(4);
+  });
+
+  it('defaults the swap route to XOR when no pair is selected', async () => {
+    tokenFromRef.value = null;
+    tokenToRef.value = null;
+
+    mount(SwapView);
+    await flushPromises();
+
+    expect(parseCurrentRouteMock).toHaveBeenCalledTimes(1);
+    expect(setTokenFromAddressMock).toHaveBeenCalledWith('xor');
+    expect(setTokenToAddressMock).toHaveBeenCalledWith('');
+  });
+
+  it('hydrates both tokens from a valid route pair', async () => {
+    tokenFromRef.value = null;
+    tokenToRef.value = null;
+    firstRouteAddressRef.value = '0xFrom';
+    secondRouteAddressRef.value = '0xTo';
+    isValidRouteRef.value = true;
+    routeAssetLookupRef.value = {
+      '0xFrom': { symbol: 'FROM', address: '0xFrom' },
+      '0xTo': { symbol: 'TO', address: '0xTo' },
+    };
+
+    mount(SwapView);
+    await flushPromises();
+
+    expect(setTokenFromAddressMock).toHaveBeenCalledWith('0xFrom');
+    expect(setTokenToAddressMock).toHaveBeenCalledWith('0xTo');
+  });
+
+  it('hydrates both tokens when a valid route pair resolves after mount', async () => {
+    mount(SwapView);
+    await flushPromises();
+
+    firstRouteAddressRef.value = '0xFrom';
+    secondRouteAddressRef.value = '0xTo';
+    isValidRouteRef.value = true;
+    routeAssetLookupRef.value = {
+      '0xFrom': { symbol: 'FROM', address: '0xFrom' },
+      '0xTo': { symbol: 'TO', address: '0xTo' },
+    };
+
+    await flushPromises();
+
+    expect(setTokenFromAddressMock).toHaveBeenCalledWith('0xFrom');
+    expect(setTokenToAddressMock).toHaveBeenCalledWith('0xTo');
+  });
+
+  it('rehydrates a valid route pair when asset metadata arrives after the first parse', async () => {
+    tokenFromRef.value = null;
+    tokenToRef.value = null;
+    firstRouteAddressRef.value = '0xFrom';
+    secondRouteAddressRef.value = '0xTo';
+    isValidRouteRef.value = true;
+
+    mount(SwapView);
+    await flushPromises();
+
+    setTokenFromAddressMock.mockClear();
+    setTokenToAddressMock.mockClear();
+
+    routeAssetLookupRef.value = {
+      '0xFrom': { symbol: 'FROM', address: '0xFrom' },
+      '0xTo': { symbol: 'TO', address: '0xTo' },
+    };
+
+    await flushPromises();
+
+    expect(setTokenFromAddressMock).toHaveBeenCalledWith('0xFrom');
+    expect(setTokenToAddressMock).toHaveBeenCalledWith('0xTo');
   });
 });

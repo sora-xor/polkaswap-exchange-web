@@ -25,18 +25,37 @@ vi.mock('@/composables/useTranslation', () => ({
 }));
 
 vi.mock('@/utils/connection/evm/providers', () => {
-  const provider = {
+  const walletConnectProvider = {
     uuid: 'WalletConnect',
     name: 'WalletConnect',
     icon: 'wallet-connect.svg',
     installed: false,
+    getProvider: vi.fn(),
+  };
+  const metamaskProvider = {
+    uuid: 'MetaMask',
+    name: 'MetaMask',
+    icon: 'metamask.svg',
+    installed: false,
+    getProvider: vi.fn(),
+  };
+  const fearlessProvider = {
+    uuid: 'Fearless Wallet',
+    name: 'Fearless Wallet',
+    icon: 'fearless.svg',
+    installed: false,
+    getProvider: vi.fn(),
   };
 
   return {
     PredefinedProvider: {
+      Fearless: 'Fearless Wallet',
+      MetaMask: 'MetaMask',
       WalletConnect: 'WalletConnect',
     },
-    WalletConnectProvider: provider,
+    WalletConnectProvider: walletConnectProvider,
+    MetamaskProvider: metamaskProvider,
+    FearlessWalletProvider: fearlessProvider,
   };
 });
 
@@ -75,6 +94,26 @@ const provider = vi.hoisted(
       uuid: 'WalletConnect',
       name: 'WalletConnect',
       icon: 'icon.svg',
+      getProvider: vi.fn(),
+    }) as unknown as AppEIPProvider
+);
+const metamaskProvider = vi.hoisted(
+  () =>
+    ({
+      uuid: 'MetaMask',
+      name: 'MetaMask',
+      icon: 'metamask.svg',
+      installed: false,
+      getProvider: vi.fn(),
+    }) as unknown as AppEIPProvider
+);
+const fearlessProvider = vi.hoisted(
+  () =>
+    ({
+      uuid: 'Fearless Wallet',
+      name: 'Fearless Wallet',
+      icon: 'fearless.svg',
+      installed: false,
       getProvider: vi.fn(),
     }) as unknown as AppEIPProvider
 );
@@ -147,6 +186,8 @@ beforeEach(() => {
   web3StorePiniaMock.setSubAccountDialogVisibility.mockReset();
   web3StorePiniaMock.setSelectSubNodeDialogVisibility.mockReset();
   provider.getProvider.mockReset();
+  metamaskProvider.getProvider.mockReset();
+  fearlessProvider.getProvider.mockReset();
   localStorageMock.getItem.mockClear();
   localStorageMock.setItem.mockClear();
   localStorageMock.removeItem.mockClear();
@@ -228,6 +269,24 @@ describe('useWalletConnect', () => {
     selectProviderMock.mockResolvedValueOnce(undefined);
     await wallet.connectEvmProvider(provider);
     expect(selectProviderMock).toHaveBeenCalledWith(provider);
+
+    wrapper.unmount();
+  });
+
+  it('prefers an injected MetaMask provider before falling back to WalletConnect', async () => {
+    web3StorePiniaMock.evmProvider = null;
+    web3StorePiniaMock.appEvmProviders = [fearlessProvider, metamaskProvider, provider];
+    fearlessProvider.getProvider.mockResolvedValue(undefined);
+    metamaskProvider.getProvider.mockResolvedValue({ request: vi.fn() });
+
+    const wrapper = createHarness();
+    const { wallet } = wrapper.vm as { wallet: ReturnType<typeof useWalletConnect> };
+
+    await wallet.connectEvmWallet();
+
+    expect(fearlessProvider.getProvider).toHaveBeenCalledTimes(1);
+    expect(metamaskProvider.getProvider).toHaveBeenCalledTimes(1);
+    expect(selectProviderMock).toHaveBeenCalledWith(metamaskProvider);
 
     wrapper.unmount();
   });

@@ -18,9 +18,9 @@ const mountComponent = (value?: FPNumber) =>
       stubs: {
         's-icon': iconStub,
         FormattedAmount: {
-          props: ['value', 'fontWeightRate'],
+          props: ['value', 'fontWeightRate', 'integerOnly'],
           template:
-            '<span class="formatted-amount-stub" :data-value="value" :data-weight="fontWeightRate"><slot /></span>',
+            '<span class="formatted-amount-stub" :data-value="value" :data-weight="fontWeightRate" :data-integer-only="String(integerOnly)"><slot /></span>',
         },
       },
     },
@@ -33,6 +33,7 @@ describe('PriceChange', () => {
     expect(wrapper.classes()).toContain('price-change--increased');
     expect(wrapper.find('.price-change-arrow').attributes('data-name')).toBe('arrows-arrow-bold-top-24');
     expect(wrapper.find('.formatted-amount-stub').attributes('data-value')).toBe('1.23');
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-integer-only')).toBe('false');
     expect(wrapper.find('.formatted-amount-stub').attributes('data-weight')).toBe(FontWeightRate.MEDIUM);
   });
 
@@ -42,6 +43,7 @@ describe('PriceChange', () => {
     expect(wrapper.classes()).not.toContain('price-change--increased');
     expect(wrapper.find('.price-change-arrow').attributes('data-name')).toBe('arrows-arrow-bold-bottom-24');
     expect(wrapper.find('.formatted-amount-stub').attributes('data-value')).toBe('0.98');
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-integer-only')).toBe('false');
   });
 
   it('defaults to zero change when value is not provided', () => {
@@ -49,5 +51,20 @@ describe('PriceChange', () => {
 
     expect(wrapper.classes()).toContain('price-change--increased');
     expect(wrapper.find('.formatted-amount-stub').attributes('data-value')).toBe('0');
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-integer-only')).toBe('true');
+  });
+
+  it('trims trailing zero decimals from rounded values', () => {
+    const wrapper = mountComponent(new FPNumber('1.2000'));
+
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-value')).toBe('1.2');
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-integer-only')).toBe('false');
+  });
+
+  it('marks whole-number percentage values as integer-only', () => {
+    const wrapper = mountComponent(new FPNumber('1.0000'));
+
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-value')).toBe('1');
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-integer-only')).toBe('true');
   });
 });

@@ -365,6 +365,6 @@ describe('useBridgeCore', () => {
     expect(routerPush).toHaveBeenCalledWith({ name: PageNames.BridgeTransactionsHistory });
 
     core.navigateToBridge();
-    expect(routerPush).toHaveBeenCalledWith({ name: PageNames.Bridge });
+    expect(routerPush).toHaveBeenCalledWith({ path: '/bridge/' });
   });
 });

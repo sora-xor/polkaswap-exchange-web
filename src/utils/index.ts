@@ -23,6 +23,7 @@ import {
   getAssetDecimals,
   formatAssetBalance as formatAssetBalanceInternal,
   formatAmountWithSuffix as formatAmountWithSuffixInternal,
+  isAmountValueIntegerOnly as isAmountValueIntegerOnlyInternal,
 } from './asset-formatting';
 import { sortAssets as sortAssetsInternal, sortPools as sortPoolsInternal } from './asset-sort';
 import { toPrecision as toPrecisionInternal } from './fp';
@@ -30,6 +31,7 @@ import { toPrecision as toPrecisionInternal } from './fp';
 export { asZeroValue, getAssetBalance, getAssetDecimals };
 export const formatAssetBalance = formatAssetBalanceInternal;
 export const formatAmountWithSuffix = formatAmountWithSuffixInternal;
+export const isAmountValueIntegerOnly = isAmountValueIntegerOnlyInternal;
 export const sortAssets = sortAssetsInternal;
 export const sortPools = sortPoolsInternal;
 export const toPrecision = toPrecisionInternal;

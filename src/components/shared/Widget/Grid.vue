@@ -447,15 +447,15 @@ $line: var(--s-color-base-border-secondary);
   }
 
   // animation
-  .list-enter,
+  .list-enter-from,
   .list-leave-to {
     opacity: 0;
-    scale: 0.8;
+    transform: scale(0.8);
   }
 
   &.widgets-grid--auto-resize:not(.widgets-grid--editing) {
     .vue-grid-item {
-      transition-property: opacity, scale, height;
+      transition-property: opacity, transform, height;
       will-change: height;
     }
   }

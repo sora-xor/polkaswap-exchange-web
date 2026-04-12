@@ -321,7 +321,7 @@ describe('createIrohaClientConfig', () => {
         'password = "ilovetea"',
         '',
         '[account]',
-        'domain = "wonderland"',
+        'domain = "wonderland.universal"',
         'public_key = "ED0120ABCDEF"',
         'private_key = "802620ABCDEF"',
         '',
@@ -554,6 +554,30 @@ describe('resolveBuildToolCommand', () => {
     }
   });
 
+  it('accepts the current iroha3 binary name when resolving the route-plan helper', () => {
+    const previous = process.env.CARGO_TARGET_DIR;
+    const targetDir = mkdtempSync(join(tmpdir(), 'polkaswap-sorafs-iroha-target-'));
+    const binaryDir = join(targetDir, 'debug');
+    const binaryPath = join(binaryDir, 'iroha3');
+    mkdirSync(binaryDir, { recursive: true });
+    writeFileSync(binaryPath, '');
+    process.env.CARGO_TARGET_DIR = targetDir;
+
+    try {
+      expect(resolveBuildToolCommand('/repo/iroha', 'iroha')).toEqual({
+        command: binaryPath,
+        args: [],
+        cwd: '/repo/iroha',
+      });
+    } finally {
+      if (previous === undefined) {
+        delete process.env.CARGO_TARGET_DIR;
+      } else {
+        process.env.CARGO_TARGET_DIR = previous;
+      }
+    }
+  });
+
   it('falls back to cargo when CARGO_TARGET_DIR is set but no binary exists yet', () => {
     const previous = process.env.CARGO_TARGET_DIR;
     process.env.CARGO_TARGET_DIR = mkdtempSync(join(tmpdir(), 'polkaswap-sorafs-target-empty-'));
@@ -562,6 +586,11 @@ describe('resolveBuildToolCommand', () => {
       expect(resolveBuildToolCommand('/repo/iroha', 'sorafs_cli')).toEqual({
         command: 'cargo',
         args: ['run', '-p', 'sorafs_orchestrator', '--bin', 'sorafs_cli', '--'],
+        cwd: '/repo/iroha',
+      });
+      expect(resolveBuildToolCommand('/repo/iroha', 'iroha')).toEqual({
+        command: 'cargo',
+        args: ['run', '-p', 'iroha_cli', '--bin', 'iroha3', '--'],
         cwd: '/repo/iroha',
       });
     } finally {

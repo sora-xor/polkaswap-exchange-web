@@ -94,6 +94,7 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.totalLocked)"
                 :value="row.totalLocked"
               ></formatted-amount>
               <token-logo
@@ -126,6 +127,7 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.totalDebt)"
                 :value="row.totalDebt"
               ></formatted-amount>
               <token-logo
@@ -158,6 +160,7 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.availableToBorrow)"
                 :value="row.availableToBorrow"
               ></formatted-amount>
               <token-logo
@@ -205,6 +208,7 @@ import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useVaultStore } from '@/stores/vault';
 import { useWalletStore } from '@/stores/wallet';
+import { isAmountValueIntegerOnly } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';

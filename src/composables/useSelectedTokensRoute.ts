@@ -2,6 +2,7 @@ import { DAI, KUSD, XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts'
 import { api } from '@/shims/wallet-api';
 import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
+import routeWhitelistBySymbol from '@/consts/routeWhitelistBySymbol.json';
 
 import type { AssetsTable, WhitelistIdsBySymbol } from '@/shims/wallet-common-types';
 import { PageNames } from '@/consts';
@@ -12,13 +13,18 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router';
 
 const MAX_SYMBOL_LENGTH = 7;
 const CORE_ROUTE_SYMBOLS: Record<string, string> = {
+  [XOR.address]: XOR.symbol,
   [DAI.address]: DAI.symbol,
   [KUSD.address]: KUSD.symbol,
+  [XSTUSD.address]: XSTUSD.symbol,
 };
 const CORE_ROUTE_ADDRESSES_BY_SYMBOL: Record<string, string> = {
+  [XOR.symbol]: XOR.address,
   [DAI.symbol]: DAI.address,
   [KUSD.symbol]: KUSD.address,
+  [XSTUSD.symbol]: XSTUSD.address,
 };
+const BUNDLED_ROUTE_ADDRESSES_BY_SYMBOL = Object.freeze(routeWhitelistBySymbol as Record<string, string>);
 
 type TokensChangeHandler = (params: { firstAddress: string; secondAddress: string }) => Promise<void> | void;
 
@@ -69,6 +75,10 @@ export const resolveRouteAddress = (
 
   if (coreMatch) return coreMatch;
 
+  const bundledMatch = BUNDLED_ROUTE_ADDRESSES_BY_SYMBOL[normalized];
+
+  if (bundledMatch) return bundledMatch;
+
   return resolveAddressBySymbolFromAssetsTable(normalized, assetsDataTable) || '';
 };
 
@@ -110,7 +120,7 @@ export const buildRouteTokens = (
 
   const symbol = token.symbol?.trim() ?? '';
   const normalizedSymbol = symbol.toUpperCase();
-  const symbolAddress = whitelistIdsBySymbol?.[normalizedSymbol];
+  const symbolAddress = whitelistIdsBySymbol?.[normalizedSymbol] || BUNDLED_ROUTE_ADDRESSES_BY_SYMBOL[normalizedSymbol];
   const canUseSymbol = Boolean(symbol && symbolAddress && symbolAddress === token.address);
 
   if (CORE_ROUTE_SYMBOLS[token.address]) {

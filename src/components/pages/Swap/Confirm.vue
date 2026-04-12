@@ -132,6 +132,105 @@ const handleConfirm = () => {
     word-break: break-all;
   }
 }
+
+.dialog-card.dialog--confirm-swap {
+  max-width: min(496px, calc(100vw - (#{$basic-spacing-big} * 2)));
+  border-radius: 24px;
+}
+
+.dialog--confirm-swap .dialog-card__header {
+  padding: 24px 24px 8px;
+  box-shadow: none;
+}
+
+.dialog--confirm-swap .dialog-card__title-text {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 31.2px;
+  letter-spacing: normal;
+}
+
+.dialog--confirm-swap .dialog-card__content {
+  padding: 8px 24px 24px;
+}
+
+.dialog--confirm-swap .dialog-card__footer {
+  padding: 8px 24px 24px;
+  display: block;
+}
+
+.dialog--confirm-swap .dialog-card__close.el-button {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 24px;
+}
+
+.dialog--confirm-swap .dialog-card__close i {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+:root[data-theme='light'] .dialog-card.dialog--confirm-swap,
+:root[design-system-theme='light'] .dialog-card.dialog--confirm-swap,
+.sora-theme-provider[data-theme='light'] .dialog-card.dialog--confirm-swap,
+.sora-theme-provider[design-system-theme='light'] .dialog-card.dialog--confirm-swap {
+  background-color: rgb(253, 247, 251);
+  box-shadow:
+    rgb(255, 255, 255) -5px -5px 10px 0px,
+    rgba(0, 0, 0, 0.1) 1px 1px 10px 0px,
+    rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset;
+}
+
+:root[data-theme='light'] .dialog--confirm-swap .dialog-card__title-text,
+:root[design-system-theme='light'] .dialog--confirm-swap .dialog-card__title-text,
+.sora-theme-provider[data-theme='light'] .dialog--confirm-swap .dialog-card__title-text,
+.sora-theme-provider[design-system-theme='light'] .dialog--confirm-swap .dialog-card__title-text {
+  color: rgb(42, 23, 31);
+}
+
+:root[data-theme='light'] .dialog--confirm-swap .dialog-card__close.el-button,
+:root[design-system-theme='light'] .dialog--confirm-swap .dialog-card__close.el-button,
+.sora-theme-provider[data-theme='light'] .dialog--confirm-swap .dialog-card__close.el-button,
+.sora-theme-provider[design-system-theme='light'] .dialog--confirm-swap .dialog-card__close.el-button {
+  background-color: rgb(247, 243, 244);
+  color: rgb(213, 205, 208);
+  box-shadow:
+    rgb(255, 255, 255) -5px -5px 10px 0px,
+    rgba(0, 0, 0, 0.1) 1px 1px 10px 0px,
+    rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset;
+}
+
+:root[data-theme='dark'] .dialog-card.dialog--confirm-swap,
+:root[design-system-theme='dark'] .dialog-card.dialog--confirm-swap,
+.sora-theme-provider[data-theme='dark'] .dialog-card.dialog--confirm-swap,
+.sora-theme-provider[design-system-theme='dark'] .dialog-card.dialog--confirm-swap {
+  background-color: rgb(89, 45, 113);
+  box-shadow:
+    rgba(155, 111, 165, 0.25) -5px -5px 10px 0px,
+    rgb(73, 32, 103) 2px 2px 15px 0px,
+    rgba(155, 111, 165, 0.25) 1px 1px 2px 0px inset;
+}
+
+:root[data-theme='dark'] .dialog--confirm-swap .dialog-card__title-text,
+:root[design-system-theme='dark'] .dialog--confirm-swap .dialog-card__title-text,
+.sora-theme-provider[data-theme='dark'] .dialog--confirm-swap .dialog-card__title-text,
+.sora-theme-provider[design-system-theme='dark'] .dialog--confirm-swap .dialog-card__title-text {
+  color: rgb(240, 215, 220);
+}
+
+:root[data-theme='dark'] .dialog--confirm-swap .dialog-card__close.el-button,
+:root[design-system-theme='dark'] .dialog--confirm-swap .dialog-card__close.el-button,
+.sora-theme-provider[data-theme='dark'] .dialog--confirm-swap .dialog-card__close.el-button,
+.sora-theme-provider[design-system-theme='dark'] .dialog--confirm-swap .dialog-card__close.el-button {
+  background-color: rgb(93, 47, 115);
+  color: rgb(155, 111, 165);
+  box-shadow:
+    rgba(155, 111, 165, 0.25) -5px -5px 10px 0px,
+    rgb(73, 32, 103) 2px 2px 15px 0px,
+    rgba(155, 111, 165, 0.25) 1px 1px 2px 0px inset;
+}
 </style>
 
 <style lang="scss" scoped>

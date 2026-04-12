@@ -32,7 +32,7 @@ describe('Explore view store migration', () => {
     expect(source).toContain("from '@/stores/wallet'");
     expect(source).toContain("from '@/stores/pool'");
     expect(source).not.toContain("from '@/utils/app-store'");
-    expect(source).toContain('walletStore.fiatPriceObject');
+    expect(source).not.toContain('walletStore.fiatPriceObject');
     expect(source).toContain('walletStore.isLoggedIn');
     expect(source).toContain('poolStore.accountLiquidity');
   });

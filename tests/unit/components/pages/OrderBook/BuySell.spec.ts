@@ -562,6 +562,24 @@ describe('BuySell.vue', () => {
     expect((walletModuleDisabled.api.orderBook.placeLimitOrder as any).mock.calls).toHaveLength(0);
   });
 
+  it('renders a disabled stopped-book button when trading is unavailable', async () => {
+    internalConnect.isLoggedIn.value = true;
+    const { wrapper } = await mountComponent({
+      currentOrderBook: {
+        status: OrderBookStatus.Stop,
+      },
+      orderBook: {
+        baseValue: '1',
+        quoteValue: '1',
+      },
+    });
+
+    const disabledButton = wrapper.find('button[disabled]');
+    expect(disabledButton.exists()).toBe(true);
+    expect(disabledButton.text()).toBe('orderBook.stop');
+    expect(confirmDialog.confirmOrExecute).not.toHaveBeenCalled();
+  });
+
   it('executes place limit order when inputs are valid and confirmation is accepted', async () => {
     internalConnect.isLoggedIn.value = true;
     const { wrapper, orderBookState } = await mountComponent();

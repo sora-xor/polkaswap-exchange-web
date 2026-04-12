@@ -25,7 +25,7 @@ export const useSwapBalanceSubscriptions = () => {
 
     const accountAssets = walletStore.accountAssetsAddressTable ?? {};
     if (token.address in accountAssets) {
-      return;
+      updateBalance(accountAssets[token.address]?.balance ?? null);
     }
 
     manager.add(key, { token, updateBalance });

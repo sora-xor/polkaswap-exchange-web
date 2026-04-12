@@ -216,7 +216,7 @@ const accountLiquidityData = computed<LiquidityItem[]>(() => {
 });
 
 const handleAddLiquidity = (item?: LiquidityItem) => {
-  const firstAddress = item?.firstAsset.address ?? XOR.address;
+  const firstAddress = item?.firstAsset.address ?? '';
   const secondAddress = item?.secondAsset.address ?? '';
 
   void poolStore.setAddLiquidityDataFromLiquidity({ firstAddress, secondAddress } as LiquidityParams);

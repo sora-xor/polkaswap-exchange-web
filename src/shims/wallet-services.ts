@@ -7,4 +7,5 @@ export { CeresApiService } from '@/lib/soraneo-wallet/src/services/ceres';
 export { CurrencyExchangeRateService } from '@/lib/soraneo-wallet/src/services/currency';
 export { GDriveStorage } from '@/lib/soraneo-wallet/src/services/google';
 export { checkWallet, getAppWallets } from '@/lib/soraneo-wallet/src/services/wallet';
+export { setWalletConnectProjectId } from '@/lib/soraneo-wallet/src/services/walletconnect/config';
 export { WcProvider } from '@/lib/soraneo-wallet/src/services/walletconnect';

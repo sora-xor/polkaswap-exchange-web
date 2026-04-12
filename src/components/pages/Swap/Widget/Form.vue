@@ -59,6 +59,15 @@
 
       <slippage-tolerance class="slippage-tolerance-settings"></slippage-tolerance>
 
+      <div
+        v-if="isPairNotCreated"
+        class="swap-form-status swap-form-status--error"
+        data-test-name="swapPairStatus"
+      >
+        <s-icon name="notifications-alert-triangle-24" size="14"></s-icon>
+        <span>{{ t('pairIsNotCreated') }}</span>
+      </div>
+
       <s-button
         v-if="!isLoggedIn"
         type="primary"
@@ -73,14 +82,11 @@
         data-test-name="confirmSwap"
         type="primary"
         :disabled="isConfirmSwapDisabled"
-        :loading="loading || quoteLoading || isSelectAssetLoading"
+        :loading="loading || quoteLoading || pathAvailabilityLoading || isSelectAssetLoading"
         @click="handleSwapClick"
       >
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
-        </template>
-        <template v-else-if="!isAvailable">
-          {{ t('pairIsNotCreated') }}
         </template>
         <template v-else-if="areZeroAmounts">
           {{ t('buttons.enterAmount') }}
@@ -155,6 +161,7 @@ import { useTokenSelect } from '@/composables/useTokenSelect';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, MarketAlgorithms } from '@/consts';
+import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import { useSwapStore } from '@/stores/swap';
 import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
@@ -174,7 +181,6 @@ import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import type { SwapQuoteData } from '@sora-substrate/sdk/build/swap/types';
 import type { Subscription } from 'rxjs';
 
@@ -228,7 +234,7 @@ const {
 const { isLoggedIn, connectSoraWallet } = useInternalConnect();
 const { confirmDialogVisible, confirmOrExecute } = useConfirmDialog();
 const { isSelectAssetLoading, withSelectAssetLoading } = useTokenSelect();
-const { loading, withApi, withNotifications } = useTransaction({
+const { loading, withApi, withChainApi, withNotifications } = useTransaction({
   parentLoading: computed(() => props.parentLoading),
 });
 const {
@@ -244,12 +250,13 @@ const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObjec
 const networkFee = computed(() => networkFees.value[Operation.Swap]);
 // Avoid name collision with the <slippage-tolerance> component tag in the template.
 const slippageToleranceValue = computed(() => settingsStore.slippageTolerance);
+const appConnection = computed(() => settingsStore.appConnection);
 const xor = computed(() => assetsStore.assetDataByAddress(XOR.address) as AccountAsset);
 const liquiditySource = computed(() => swapStore.swapLiquiditySource);
 const debugEnabled = computed(() => Boolean(settingsStore.debugEnabled));
 const nodeIsConnected = computed(() => Boolean(settingsStore.nodeIsConnected));
 const swapMarketAlgorithm = computed(() => swapStore.swapMarketAlgorithm);
-const isAvailable = computed(() => swapStore.isAvailable);
+const isPathAvailable = computed(() => swapStore.isPathAvailable);
 const allowLossPopup = computed(() => swapStore.allowLossPopup);
 const isExchangeB = computed(() => swapStore.isExchangeB);
 const selectedDexId = computed(() => swapStore.selectedDexId);
@@ -260,9 +267,12 @@ const lossWarningVisibility = ref(false);
 const isTokenFromSelected = ref(false);
 const quoteSubscription = ref<Subscription | null>(null);
 const quoteLoading = ref(false);
+const pathAvailabilityLoading = ref(false);
+const pathAvailabilityRequestId = ref(0);
 
 const delimiters = FPNumber.DELIMITERS_CONFIG;
 const xorSymbol = ` ${XOR.symbol}`;
+const swapPathDexIds = [DexId.XOR, DexId.XSTUSD, DexId.KUSD, DexId.VXOR] as const;
 
 const fiatDifference = computed(() => calcFiatDifference(fromFiatAmount.value, toFiatAmount.value).toFixed(2));
 
@@ -291,7 +301,10 @@ const isMaxSwapAvailable = computed(() => {
 });
 
 const isInsufficientLiquidity = computed(
-  () => isAvailable.value && preparedForSwap.value && !areZeroAmounts.value && hasZeroAmount.value
+  () => isPathAvailable.value && preparedForSwap.value && !areZeroAmounts.value && hasZeroAmount.value
+);
+const isPairNotCreated = computed(
+  () => nodeIsConnected.value && areTokensSelected.value && !pathAvailabilityLoading.value && !isPathAvailable.value
 );
 const isInsufficientBalance = computed(() => {
   if (!tokenFrom.value) return false;
@@ -313,7 +326,7 @@ const isInsufficientXorForFee = computed(() => {
 const isConfirmSwapDisabled = computed(
   () =>
     !areTokensSelected.value ||
-    !swapStore.isAvailable ||
+    !isPathAvailable.value ||
     areZeroAmounts.value ||
     isInsufficientLiquidity.value ||
     isInsufficientBalance.value ||
@@ -427,6 +440,51 @@ function resetQuoteSubscription() {
   quoteSubscription.value = null;
 }
 
+function getSwapPathDexIds(): DexId[] {
+  const publicDexIds = api.dex?.publicDexes?.map(({ dexId }) => dexId as DexId) ?? [];
+  return [...new Set([...publicDexIds, ...swapPathDexIds])];
+}
+
+async function updateSwapPathAvailability() {
+  const requestId = ++pathAvailabilityRequestId.value;
+
+  if (!areTokensSelected.value || !nodeIsConnected.value) {
+    pathAvailabilityLoading.value = false;
+    swapStore.setPathAvailability(false);
+    return;
+  }
+
+  const fromAddress = (tokenFrom.value as AccountAsset).address;
+  const toAddress = (tokenTo.value as AccountAsset).address;
+
+  pathAvailabilityLoading.value = true;
+
+  try {
+    const availability = await Promise.all(
+      getSwapPathDexIds().map((dexId) =>
+        api.swap.checkSwap(fromAddress, toAddress, dexId).catch((error) => {
+          console.warn('[swap] path availability check failed for dex', dexId, error);
+          return false;
+        })
+      )
+    );
+
+    if (
+      requestId !== pathAvailabilityRequestId.value ||
+      tokenFrom.value?.address !== fromAddress ||
+      tokenTo.value?.address !== toAddress
+    ) {
+      return;
+    }
+
+    swapStore.setPathAvailability(availability.some(Boolean));
+  } finally {
+    if (requestId === pathAvailabilityRequestId.value) {
+      pathAvailabilityLoading.value = false;
+    }
+  }
+}
+
 async function refreshSwapQuotesConfiguration() {
   try {
     await api.swap.update();
@@ -446,6 +504,8 @@ async function subscribeOnQuote() {
   }
 
   quoteLoading.value = true;
+  swapStore.setPathAvailability(false);
+  void updateSwapPathAvailability();
 
   const observableQuote = api.swap.getDexesSwapQuoteObservable(
     (tokenFrom.value as AccountAsset).address,
@@ -462,7 +522,9 @@ async function subscribeOnQuote() {
       },
       error: (error) => {
         console.error('[swap] quote subscription failed', error);
+        const currentPathAvailability = swapStore.isPathAvailable;
         swapStore.setSubscriptionPayload();
+        swapStore.setPathAvailability(currentPathAvailability);
         quoteLoading.value = false;
         void runRecountSwapValues();
       },
@@ -486,6 +548,8 @@ async function enableSwapSubscriptions(withApiRefresh = false) {
 }
 
 function resetSwapSubscriptions() {
+  pathAvailabilityRequestId.value += 1;
+  pathAvailabilityLoading.value = false;
   swapStore.resetSubscriptions();
   resetQuoteSubscription();
   quoteLoading.value = false;
@@ -600,9 +664,23 @@ watch(nodeIsConnected, async (connected) => {
   }
 });
 
+watch(isLoggedIn, (loggedIn, previous) => {
+  if (loggedIn === previous || !nodeIsConnected.value) return;
+
+  if (loggedIn) {
+    swapStore.updateSubscriptions();
+  } else {
+    swapStore.resetSubscriptions();
+  }
+});
+
 onMounted(async () => {
+  if (!nodeIsConnected.value) return;
+
   await withApi(async () => {
-    await enableSwapSubscriptions(true);
+    await withChainApi(appConnection.value.connection, async () => {
+      await enableSwapSubscriptions(true);
+    });
   });
 });
 
@@ -705,6 +783,20 @@ onBeforeUnmount(() => {
   }
 }
 
+.swap-form-status {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: $inner-spacing-mini;
+  margin: $inner-spacing-small 0 0;
+  font-size: var(--s-font-size-mini);
+  line-height: var(--s-line-height-big);
+
+  &--error {
+    color: var(--s-color-status-error);
+  }
+}
+
 .price-difference {
   &__value {
     font-weight: 600;
@@ -731,6 +823,47 @@ onBeforeUnmount(() => {
   text-overflow: clip !important;
   text-align: center;
   text-transform: uppercase;
+}
+
+:global(.swap-form button.el-button.neumorphic.action-button.s-primary) {
+  border-color: #ede4e7 !important;
+  box-shadow:
+    1px 1px 5px #fff,
+    -1px -1px 5px #fff !important;
+  color: var(--s-color-base-on-accent) !important;
+}
+
+:global(.swap-form button.el-button.neumorphic.action-button.s-primary:not(.is-disabled):not(:disabled):focus),
+:global(.swap-form button.el-button.neumorphic.action-button.s-primary:not(.is-disabled):not(:disabled):hover) {
+  background-color: #f82088 !important;
+  border-color: #f2eaed !important;
+  box-shadow:
+    1px 1px 5px rgba(255, 255, 255, 0.9),
+    -1px -1px 5px #fff,
+    0 0 6.42111px rgba(247, 84, 163, 0.16) !important;
+  color: var(--s-color-base-on-accent) !important;
+}
+
+:global([design-system-theme='dark'] .swap-form button.el-button.neumorphic.action-button.s-primary) {
+  border-color: #693d81 !important;
+  box-shadow:
+    1px 1px 5px #391057,
+    -1px -1px 5px #9b6fa5 !important;
+  color: #391057 !important;
+}
+
+:global([design-system-theme='dark'] .swap-form button.el-button.neumorphic.action-button.s-primary:not(.is-disabled):not(
+    :disabled
+  ):focus),
+:global([design-system-theme='dark'] .swap-form button.el-button.neumorphic.action-button.s-primary:not(.is-disabled):not(
+    :disabled
+  ):hover) {
+  background-color: #f754a3 !important;
+  border-color: #592d71 !important;
+  box-shadow:
+    1px 1px 5px #391057,
+    -1px -1px 5px #9b6fa5 !important;
+  color: #391057 !important;
 }
 
 .swap-details-info-line {

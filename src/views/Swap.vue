@@ -72,6 +72,7 @@ import { useSelectedTokensRoute } from '@/composables/useSelectedTokensRoute';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
+import { useAssetsStore } from '@/stores/assets';
 import { useRouterStore } from '@/stores/router';
 import { useSwapStore } from '@/stores/swap';
 import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
@@ -94,6 +95,7 @@ defineOptions({ name: 'SwapPage' });
 
 const { t, tc } = useTranslation();
 const { loading, withApi } = useLoading();
+const assetsStore = useAssetsStore();
 const routerStore = useRouterStore();
 const swapStore = useSwapStore();
 const { tokenFrom, tokenTo, setTokenFromAddress, setTokenToAddress } = useSwapAmounts();
@@ -170,22 +172,47 @@ const DefaultLayouts: ResponsiveLayouts = {
   ],
 };
 
-const isAvailable = computed(() => swapStore.isAvailable);
+const isAvailable = computed(() => swapStore.isPathAvailable || swapStore.isAvailable);
 const prevRoute = computed(() => routerStore.prev as Nullable<PageNames>);
+
+const syncSwapRoutePair = async (firstAddress = '', secondAddress = ''): Promise<void> => {
+  const normalizedPair = normalizeSwapRouteTokens(firstAddress, secondAddress);
+  const hasResolvedRoutePair =
+    tokenFrom.value?.address === normalizedPair.firstAddress && tokenTo.value?.address === normalizedPair.secondAddress;
+  const hasResolvedDefaultPair =
+    !normalizedPair.secondAddress && tokenFrom.value?.address === normalizedPair.firstAddress && !tokenTo.value;
+
+  if (hasResolvedRoutePair || hasResolvedDefaultPair) return;
+
+  await setTokenFromAddress(normalizedPair.firstAddress);
+  await setTokenToAddress(normalizedPair.secondAddress);
+};
 
 const { firstRouteAddress, secondRouteAddress, isValidRoute, parseCurrentRoute, updateRouteAfterSelectTokens } =
   useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {
-    const normalizedPair = normalizeSwapRouteTokens(firstAddress, secondAddress);
-
-    await setTokenFromAddress(normalizedPair.firstAddress);
-    await setTokenToAddress(normalizedPair.secondAddress);
+    await syncSwapRoutePair(firstAddress, secondAddress);
   });
+const routeTokenFrom = computed(() =>
+  firstRouteAddress.value ? (assetsStore.assetDataByAddress(firstRouteAddress.value) as Nullable<AccountAsset>) : null
+);
+const routeTokenTo = computed(() =>
+  secondRouteAddress.value ? (assetsStore.assetDataByAddress(secondRouteAddress.value) as Nullable<AccountAsset>) : null
+);
 
 watch([tokenFrom, tokenTo], ([from, to]) => {
   if (from && to) {
     updateRouteAfterSelectTokens(from as AccountAsset, to as AccountAsset);
   }
 });
+
+watch(
+  [isValidRoute, firstRouteAddress, secondRouteAddress, routeTokenFrom, routeTokenTo],
+  async ([valid, first, second, from, to]) => {
+    if (!valid || !(first && second) || !(from && to)) return;
+
+    await syncSwapRoutePair(first, second);
+  }
+);
 
 const labels = computed(() => {
   const priceText = t('priceChartText');
@@ -215,8 +242,7 @@ const initializeSwapPage = async (): Promise<void> => {
     if (tokenFrom.value && tokenTo.value && prevRoute.value !== PageNames.OrderBook) {
       updateRouteAfterSelectTokens(tokenFrom.value as AccountAsset, tokenTo.value as AccountAsset);
     } else if (isValidRoute.value && firstRouteAddress.value && secondRouteAddress.value) {
-      await setTokenFromAddress(firstRouteAddress.value);
-      await setTokenToAddress(secondRouteAddress.value);
+      await syncSwapRoutePair(firstRouteAddress.value, secondRouteAddress.value);
     } else if (!tokenFrom.value) {
       await setTokenFromAddress(XOR.address);
       await setTokenToAddress('');

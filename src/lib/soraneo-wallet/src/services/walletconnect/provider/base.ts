@@ -1,8 +1,9 @@
-import UniversalProvider from '@walletconnect/universal-provider';
-
-import { ensureWalletConnectModal, type WalletConnectModal } from '../appkit';
+import type UniversalProvider from '@walletconnect/universal-provider';
 import type { ChainNamespace } from '@reown/appkit-common';
 import type { EngineTypes, SessionTypes, PairingTypes } from '@walletconnect/types';
+
+import { ensureWalletConnectModal, type WalletConnectModal } from '../appkit';
+import { getWalletConnectProjectId, setWalletConnectProjectId } from '../config';
 
 export type ChainId = string | number;
 export const WC_MODAL_OPEN_TIMEOUT_MS = 10_000;
@@ -11,6 +12,18 @@ const WC_MODAL_OPEN_ERROR_MESSAGE =
   'WalletConnect modal failed to open. Please check the WalletConnect allow-list for this domain.';
 const WC_SIGN_CONNECT_ERROR_MESSAGE = 'WalletConnect request timed out before the QR flow started. Please retry.';
 
+let universalProviderModulePromise: Promise<typeof import('@walletconnect/universal-provider')> | null = null;
+
+const loadUniversalProvider = async (): Promise<typeof import('@walletconnect/universal-provider').default> => {
+  if (!universalProviderModulePromise) {
+    universalProviderModulePromise = import('@walletconnect/universal-provider');
+  }
+
+  const module = await universalProviderModulePromise;
+
+  return module.default;
+};
+
 export type RequestArguments = {
   method: string;
   params: any;
@@ -18,7 +31,13 @@ export type RequestArguments = {
 
 export class WcProvider {
   /** WalletConnect app projectId */
-  public static projectId = '';
+  public static get projectId(): string {
+    return getWalletConnectProjectId();
+  }
+
+  public static set projectId(value: string) {
+    setWalletConnectProjectId(value);
+  }
   /** Chains genesis hashes: `api.genesisHash.toString()` */
   protected chains!: ChainId[];
   protected optionalChains!: ChainId[];
@@ -63,12 +82,14 @@ export class WcProvider {
   public async init(): Promise<void> {
     if (this.ready) return;
 
-    const projectId = WcProvider.projectId;
+    const projectId = getWalletConnectProjectId();
 
     if (!projectId) throw new Error(`[${this.constructor.name}]: projectId is required`);
 
+    const UniversalProviderCtor = await loadUniversalProvider();
+
     // Instantiate a universal provider using the projectId created for your app.
-    this.provider = await UniversalProvider.init({
+    this.provider = await UniversalProviderCtor.init({
       projectId,
       relayUrl: 'wss://relay.walletconnect.com',
     });

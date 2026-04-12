@@ -114,4 +114,30 @@ describe('TokenLogo', () => {
     expect(logo.classes()).not.toContain('s-icon-notifications-info-24');
     expect(logo.attributes('style') ?? '').toContain('background-image');
   });
+
+  it('falls back to token.symbol when token.address is empty', () => {
+    walletStoreMock.whitelist = {
+      '0x-ss': {
+        icon: 'https://assets.example.com/ss.png',
+        symbol: 'SS',
+      },
+    };
+    walletStoreMock.whitelistIdsBySymbol = {
+      SS: '0x-ss',
+    };
+
+    const wrapper = mount(TokenLogo, {
+      props: {
+        token: {
+          address: '',
+          symbol: 'SS',
+        },
+        size: 'small',
+      },
+    });
+
+    const logo = wrapper.find('.asset-logo');
+    expect(logo.classes()).not.toContain('s-icon-notifications-info-24');
+    expect(logo.attributes('style') ?? '').toContain('background-image');
+  });
 });

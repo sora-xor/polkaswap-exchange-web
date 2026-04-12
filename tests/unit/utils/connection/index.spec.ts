@@ -308,4 +308,31 @@ describe('NodesConnection reconnect behavior', () => {
     const second = new CapTrackingNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
     expect(() => second.assertCapAllowed()).not.toThrow();
   });
+
+  it('treats persisted nodes without a live api as disconnected', () => {
+    const storage = createStorage();
+    storage.set('node', JSON.stringify(nodeA));
+
+    const nodesConnection = new RetryNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    expect(nodesConnection.nodeIsConnected).toBe(false);
+  });
+
+  it('reports connected only when api and active endpoint match the selected node', () => {
+    const storage = createStorage();
+    storage.set('node', JSON.stringify(nodeA));
+
+    const nodesConnection = new RetryNodesConnection(
+      toStorage(storage),
+      toConnection(createConnection(), {
+        endpoint: nodeA.address,
+        api: {} as Connection['api'],
+      })
+    );
+
+    expect(nodesConnection.nodeIsConnected).toBe(true);
+
+    nodesConnection.nodeAddressConnecting = nodeA.address;
+    expect(nodesConnection.nodeIsConnected).toBe(false);
+  });
 });

@@ -15,4 +15,10 @@ describe('ExploreCollaterals source', () => {
     expect(exploreCollateralsSource).toContain('border-color: var(--s-color-base-border-primary);');
     expect(exploreCollateralsSource).toContain('box-shadow: var(--s-shadow-element);');
   });
+
+  it('hides insignificant decimals in collateral table token amounts', () => {
+    expect(exploreCollateralsSource).toContain(':integer-only="isAmountValueIntegerOnly(row.totalLocked)"');
+    expect(exploreCollateralsSource).toContain(':integer-only="isAmountValueIntegerOnly(row.totalDebt)"');
+    expect(exploreCollateralsSource).toContain(':integer-only="isAmountValueIntegerOnly(row.availableToBorrow)"');
+  });
 });

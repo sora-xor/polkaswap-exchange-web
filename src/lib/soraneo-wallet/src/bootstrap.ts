@@ -65,6 +65,22 @@ const waitForStore = async (): Promise<void> => {
 
 let walletCoreLoaded = false;
 let walletInitPromise: Promise<void> | null = null;
+let walletAssetFiltersPromise: Promise<void> | null = null;
+
+const primeWalletAssetFilters = (walletStore: ReturnType<typeof resolveWalletStore>): Promise<void> => {
+  if (!walletStore) {
+    return Promise.resolve();
+  }
+
+  if (!walletAssetFiltersPromise) {
+    walletAssetFiltersPromise = Promise.allSettled([
+      Promise.resolve().then(() => walletStore.getWhitelist()),
+      Promise.resolve().then(() => walletStore.getNftBlacklist()),
+    ]).then(() => undefined);
+  }
+
+  return walletAssetFiltersPromise;
+};
 
 /**
  * Lazily bootstraps the wallet core by waiting for the store and keyring to
@@ -83,8 +99,7 @@ const waitForCore = async ({ permissions }: WALLET_CONSTS.WalletInitOptions = {}
       walletStore.setPermissions(permissions);
     }
 
-    void walletStore.getWhitelist();
-    void walletStore.getNftBlacklist();
+    primeWalletAssetFilters(walletStore);
 
     walletCoreLoaded = true;
   }
@@ -178,7 +193,7 @@ async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promis
       await Promise.all(
         [
           typeof api.initialize === 'function' ? api.initialize(false) : undefined,
-          walletStore.activateNetworkSubscriptions(),
+          primeWalletAssetFilters(walletStore).then(() => walletStore.activateNetworkSubscriptions()),
         ].filter(Boolean) as Array<Promise<unknown>>
       );
     } catch (error) {

@@ -1,5 +1,6 @@
-import { loadWalletModule } from '@/utils/walletModule';
-import { resolveGlobalPinia } from './pinia';
+import { components } from '@/lib/soraneo-wallet/src/components/registry';
+import installWalletPlugins from '@/lib/soraneo-wallet/src/plugins';
+import { registerGlobalPinia, resolveGlobalPinia } from './pinia';
 import type { Pinia } from 'pinia';
 import type { App, Component } from 'vue';
 
@@ -33,12 +34,10 @@ const registerWalletComponents = (app: App, components?: Record<string, Componen
   });
 };
 
-export async function install(app: App, context: WalletInstallContext = {}): Promise<void> {
-  const walletModule = await loadWalletModule();
+export function install(app: App, context: WalletInstallContext = {}): void {
   const pinia = isPiniaInstance(context.pinia) ? context.pinia : resolveGlobalPinia();
-  const { store: _legacyStore, ...restContext } = context as WalletInstallContext & { store?: unknown };
-  const pluginOptions = { ...restContext, pinia };
+  registerGlobalPinia(pinia);
 
-  app.use(walletModule.default, pluginOptions);
-  registerWalletComponents(app, walletModule.components);
+  installWalletPlugins(app);
+  registerWalletComponents(app, components);
 }

@@ -64,6 +64,7 @@ import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
+import { getReferralActionParam } from '@/router/guards/referralAction';
 import { useAssetsStore } from '@/stores/assets';
 import { useReferralsStore } from '@/stores/referrals';
 import { useSettingsStore } from '@/stores/settings';
@@ -202,7 +203,14 @@ const handleConfirmBond = () => {
 };
 
 const handleBack = () => {
-  router.push({ name: PageNames.ReferralProgram });
+  const currentAction = isBond.value ? PageNames.ReferralBonding : PageNames.ReferralUnbonding;
+
+  router.push({
+    name: PageNames.ReferralProgram,
+    params: {
+      referrerAddress: getReferralActionParam(currentAction),
+    },
+  });
 };
 
 onBeforeUnmount(() => {

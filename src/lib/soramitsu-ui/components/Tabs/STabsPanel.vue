@@ -19,6 +19,7 @@ type TabItem = {
   key: string;
   name: string;
   label: string;
+  labelNodes: Array<VNode>;
   disabled: boolean;
 };
 
@@ -89,6 +90,7 @@ const parseTabs = (defaultNodes: Array<VNode>): Array<TabItem> => {
         key: String(node.key ?? name),
         name,
         label,
+        labelNodes: hasLabelProp ? [] : slotNodes,
         disabled,
       };
     });
@@ -364,7 +366,11 @@ export default {
                           onClick: () => emitSelection(tab.name, tab.disabled),
                           onKeydown: (event: KeyboardEvent) => activateByKeyboard(event, tab.name, tab.disabled),
                         },
-                        tab.label
+                        tab.labelNodes.length
+                          ? tab.labelNodes.map((node, index) =>
+                              cloneVNode(node, { key: node.key ?? `${tab.key}-label-${index}` })
+                            )
+                          : tab.label
                       )
                     ),
                   ]

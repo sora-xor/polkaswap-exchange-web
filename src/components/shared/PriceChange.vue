@@ -1,7 +1,9 @@
 <template>
   <div :class="classes">
     <s-icon class="price-change-arrow" :name="icon" size="14px" />
-    <formatted-amount :value="formatted" :font-weight-rate="FontWeightRate.MEDIUM">%</formatted-amount>
+    <formatted-amount :value="formatted" :font-weight-rate="FontWeightRate.MEDIUM" :integer-only="integerOnly">
+      %
+    </formatted-amount>
   </div>
 </template>
 
@@ -34,9 +36,13 @@ const classes = computed(() => {
   const baseClass = 'price-change';
   return increased.value ? [baseClass, `${baseClass}--increased`] : [baseClass];
 });
+const rounded = computed(() => Number(toPrecision(increased.value ? price.value : price.value.mul(new FPNumber(-1)), 2).toFixed(2)));
+const integerOnly = computed(() => Number.isInteger(rounded.value));
 const formatted = computed(() => {
-  const normalized = increased.value ? price.value : price.value.mul(new FPNumber(-1));
-  return toPrecision(normalized, 2).toLocaleString();
+  return new Intl.NumberFormat(undefined, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+  }).format(rounded.value);
 });
 </script>
 

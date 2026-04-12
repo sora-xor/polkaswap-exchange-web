@@ -50,6 +50,26 @@ describe('STab compatibility', () => {
     expect(labels).toContain('Two Label');
   });
 
+  it('preserves vnode label content when tab labels are provided through the default slot', () => {
+    const wrapper = mount(STabs, {
+      props: {
+        value: 'one',
+      },
+      slots: {
+        default: () => [
+          h(STab, { name: 'one' }, () => [h('span', { class: 'slot-label' }, 'One'), h('i', { class: 'slot-icon' })]),
+          h(STab, { name: 'two' }, () => 'Two'),
+        ],
+      },
+    });
+
+    const firstTab = wrapper.findAll('[role="tab"]')[0];
+
+    expect(firstTab?.text()).toContain('One');
+    expect(firstTab?.find('.slot-label').exists()).toBe(true);
+    expect(firstTab?.find('.slot-icon').exists()).toBe(true);
+  });
+
   it('does not emit selection when disabled tab is clicked or keyboard-activated', async () => {
     const onInput = vi.fn();
     const wrapper = mount(STabs, {

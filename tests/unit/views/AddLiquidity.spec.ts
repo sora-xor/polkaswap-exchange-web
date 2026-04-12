@@ -2,8 +2,6 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick, reactive, ref } from 'vue';
 
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-
 import { PoolPageNames } from '@/modules/pool/consts';
 
 const poolStoreMock = reactive({
@@ -101,13 +99,13 @@ describe('AddLiquidity view', () => {
     walletStoreMock.isLoggedIn = true;
   });
 
-  it('falls back to XOR when the current route is not valid', async () => {
+  it('starts with an empty token pair when the current route is not valid', async () => {
     mountView();
     await nextTick();
 
     expect(parseCurrentRouteMock).toHaveBeenCalledTimes(1);
     expect(poolStoreMock.setAddLiquidityDataFromLiquidity).toHaveBeenCalledWith({
-      firstAddress: XOR.address,
+      firstAddress: '',
       secondAddress: '',
     });
   });

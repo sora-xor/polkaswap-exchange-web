@@ -23,7 +23,7 @@ import {
   checkWallet,
   getAppWallets,
   GDriveStorage,
-  WcProvider,
+  setWalletConnectProjectId,
 } from '@/shims/wallet-services';
 import { getCurrentIndexer } from '@/shims/wallet-indexer';
 import { beforeTransactionSign, NFT_BLACK_LIST_URL, WHITE_LIST_URL, formatAccountAddress } from '@/shims/wallet-util';
@@ -45,6 +45,7 @@ import type { Nullable } from '@/types/common';
 import type { AppWallet } from '@/shims/wallet-consts';
 import type { TransactionSignVisibilityController } from '@/shims/wallet-util';
 import { waitForAccountPair } from '@/utils';
+import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 import type {
   Alert,
@@ -980,7 +981,7 @@ export const useWalletStore = defineStore('wallet', () => {
     }
 
     if (walletconnect) {
-      WcProvider.projectId = walletconnect;
+      setWalletConnectProjectId(walletconnect);
     }
   };
 
@@ -1295,7 +1296,7 @@ export const useWalletStore = defineStore('wallet', () => {
     clearWhitelist();
 
     try {
-      const response = await fetch(WHITE_LIST_URL, { cache: 'no-cache' });
+      const response = await fetch(resolveStaticAssetUrl(WHITE_LIST_URL), { cache: 'no-cache' });
 
       if (!response.ok) {
         throw new Error(`Whitelist request failed with status ${response.status}`);
@@ -1313,7 +1314,7 @@ export const useWalletStore = defineStore('wallet', () => {
     clearBlacklist();
 
     try {
-      const response = await fetch(NFT_BLACK_LIST_URL, { cache: 'no-cache' });
+      const response = await fetch(resolveStaticAssetUrl(NFT_BLACK_LIST_URL), { cache: 'no-cache' });
 
       if (!response.ok) {
         throw new Error(`NFT blacklist request failed with status ${response.status}`);

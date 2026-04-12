@@ -29,6 +29,7 @@ export const TokenLogo = lazyComponent(() => import('./TokenLogo.vue'));
 export const NftDetails = lazyComponent(() => import('./NftDetails.vue'));
 export const HistoryPagination = lazyComponent(() => import('./HistoryPagination.vue'));
 export const DialogBase = lazyComponent(() => import('./DialogBase.vue'));
+export const NotificationProvider = lazyComponent(() => import('./NotificationProvider.vue'));
 export const NotificationEnablingPage = lazyComponent(() => import('./NotificationEnablingPage.vue'));
 export const SimpleNotification = lazyComponent(() => import('./SimpleNotification.vue'));
 export const ConnectionItems = lazyComponent(() => import('./Connection/List/ConnectionItems.vue'));
@@ -70,6 +71,7 @@ export const components = {
   NftDetails,
   HistoryPagination,
   DialogBase,
+  NotificationProvider,
   NotificationEnablingPage,
   SimpleNotification,
   ConnectionItems,

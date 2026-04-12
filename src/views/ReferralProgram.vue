@@ -9,6 +9,7 @@
           value-can-be-hidden
           :font-size-rate="FontSizeRate.SMALL"
           symbol-as-decimal
+          :integer-only="isAmountValueIntegerOnly(formattedRewards)"
           :value="formattedRewards"
           :asset-symbol="xorSymbol"
         ></formatted-amount>
@@ -57,6 +58,7 @@
             is-formatted
             value-can-be-hidden
             :label="t('referralProgram.bondedXOR')"
+            :integer-only="isAmountValueIntegerOnly(formattedBondedXorBalance)"
             :value="formattedBondedXorBalance"
             :fiat-value="formattedBondedXorFiatValue"
           ></info-line>
@@ -87,6 +89,7 @@
                 v-for="invitedUser in filteredInvitedUsers"
                 value-can-be-hidden
                 :key="invitedUser"
+                :integer-only="isAmountValueIntegerOnly(getInvitedUserReward(invitedUser))"
                 :value="getInvitedUserReward(invitedUser)"
                 :asset-symbol="xorSymbol"
                 is-formatted
@@ -183,13 +186,14 @@ import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router from '@/router';
+import { clearPendingReferralActionNavigation, markPendingReferralActionNavigation } from '@/router/guards/referralAction';
 import { createAsyncComponent } from '@/router/lazy';
 import { useAssetsStore } from '@/stores/assets';
 import { useReferralsStore } from '@/stores/referrals';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
-import { formatAddress } from '@/utils';
+import { formatAddress, isAmountValueIntegerOnly } from '@/utils';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
 import { tmaSdkService } from '@/utils/telegram';
 
@@ -437,8 +441,16 @@ const getInvitedUserReward = (invitedUser: string): string => {
   return ZeroStringValue;
 };
 
-const handleBonding = (isBond = false) => {
-  router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
+const handleBonding = async (isBond = false) => {
+  const target = isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding;
+
+  markPendingReferralActionNavigation(target);
+
+  try {
+    await router.push({ name: target });
+  } catch {
+    clearPendingReferralActionNavigation();
+  }
 };
 
 const handleSetReferrer = () => {

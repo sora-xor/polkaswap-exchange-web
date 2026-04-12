@@ -5,66 +5,70 @@
     :class="dsProviderClasses"
     :data-theme="libraryTheme"
   >
-    <app-header :loading="loading" @toggle-menu="toggleMenu"></app-header>
-    <div :class="appClasses">
-      <app-menu
-        :visible="menuVisibility"
-        :on-select="goTo"
-        @open-product-dialog="openProductDialog"
-        @click="handleAppMenuClick"
-      >
-        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap"></app-logo-button>
-      </app-menu>
-      <div class="app-body">
-        <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
-          <div class="app-content">
-            <app-disclaimer v-if="effectiveDisclaimerVisibility"></app-disclaimer>
-            <router-view :parent-loading="routeParentLoading"></router-view>
-          </div>
-        </s-scrollbar>
+    <notification-provider>
+      <app-header :loading="loading" @toggle-menu="toggleMenu"></app-header>
+      <div :class="appClasses">
+        <app-menu
+          :visible="menuVisibility"
+          :on-select="goTo"
+          @open-product-dialog="openProductDialog"
+          @click="handleAppMenuClick"
+        >
+          <template #head>
+            <app-logo-button class="app-logo--menu" :theme="libraryTheme" @click="goToSwap"></app-logo-button>
+          </template>
+        </app-menu>
+        <div class="app-body">
+          <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
+            <div class="app-content">
+              <app-disclaimer v-if="effectiveDisclaimerVisibility"></app-disclaimer>
+              <router-view :parent-loading="routeParentLoading"></router-view>
+            </div>
+          </s-scrollbar>
+        </div>
       </div>
-    </div>
-    <app-footer></app-footer>
-    <referrals-confirm-invite-user
-      v-if="showWalletOverlays"
-      v-model:visible="showConfirmInviteUser"
-    ></referrals-confirm-invite-user>
-    <bridge-transfer-notification v-if="showWalletOverlays"></bridge-transfer-notification>
-    <app-mobile-popup v-model:visible="showSoraMobilePopup"></app-mobile-popup>
-    <app-browser-notifs-enable-dialog
-      v-if="showWalletOverlays"
-      v-model:visible="showBrowserNotifPopup"
-      @set-dark-page="setDarkPage"
-    ></app-browser-notifs-enable-dialog>
-    <app-browser-notifs-blocked-dialog
-      v-if="showWalletOverlays"
-      v-model:visible="showBrowserNotifBlockedPopup"
-    ></app-browser-notifs-blocked-dialog>
-    <app-browser-notifs-blocked-rotate-phone
-      v-if="showWalletOverlays"
-      v-model:visible="orientationWarningVisible"
-    ></app-browser-notifs-blocked-rotate-phone>
-    <app-browser-mst-notification-trxs
-      v-if="showWalletOverlays"
-      v-model:visible="showNotificationMST"
-    ></app-browser-mst-notification-trxs>
-    <notification-enabling-page v-if="showNotifsDarkPage">
-      {{ t('browserNotificationDialog.pointer') }}
-    </notification-enabling-page>
-    <alerts></alerts>
-    <confirm-dialog
-      :chain-api="chainApi"
-      :account="account"
-      :visibility="isSignTxDialogVisible"
-      :set-visibility="setSignTxDialogVisibility"
-    ></confirm-dialog>
-    <select-sora-account-dialog></select-sora-account-dialog>
-    <app-browser-notifs-local-storage-override
-      v-if="showWalletOverlays"
-      v-model:visible="showErrorLocalStorageExceed"
-      @delete-data-local-storage="clearLocalStorage"
-    >
-    </app-browser-notifs-local-storage-override>
+      <app-footer></app-footer>
+      <referrals-confirm-invite-user
+        v-if="showWalletOverlays"
+        v-model:visible="showConfirmInviteUser"
+      ></referrals-confirm-invite-user>
+      <bridge-transfer-notification v-if="showWalletOverlays"></bridge-transfer-notification>
+      <app-mobile-popup v-model:visible="showSoraMobilePopup"></app-mobile-popup>
+      <app-browser-notifs-enable-dialog
+        v-if="showWalletOverlays"
+        v-model:visible="showBrowserNotifPopup"
+        @set-dark-page="setDarkPage"
+      ></app-browser-notifs-enable-dialog>
+      <app-browser-notifs-blocked-dialog
+        v-if="showWalletOverlays"
+        v-model:visible="showBrowserNotifBlockedPopup"
+      ></app-browser-notifs-blocked-dialog>
+      <app-browser-notifs-blocked-rotate-phone
+        v-if="showWalletOverlays"
+        v-model:visible="orientationWarningVisible"
+      ></app-browser-notifs-blocked-rotate-phone>
+      <app-browser-mst-notification-trxs
+        v-if="showWalletOverlays"
+        v-model:visible="showNotificationMST"
+      ></app-browser-mst-notification-trxs>
+      <notification-enabling-page v-if="showNotifsDarkPage">
+        {{ t('browserNotificationDialog.pointer') }}
+      </notification-enabling-page>
+      <alerts></alerts>
+      <confirm-dialog
+        :chain-api="chainApi"
+        :account="account"
+        :visibility="isSignTxDialogVisible"
+        :set-visibility="setSignTxDialogVisibility"
+      ></confirm-dialog>
+      <select-sora-account-dialog></select-sora-account-dialog>
+      <app-browser-notifs-local-storage-override
+        v-if="showWalletOverlays"
+        v-model:visible="showErrorLocalStorageExceed"
+        @delete-data-local-storage="clearLocalStorage"
+      >
+      </app-browser-notifs-local-storage-override>
+    </notification-provider>
   </s-design-system-provider>
 </template>
 
@@ -154,6 +158,7 @@ defineOptions({
     AppBrowserMstNotificationTrxs,
     ReferralsConfirmInviteUser,
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
+    NotificationProvider: components.NotificationProvider,
     SelectSoraAccountDialog,
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,

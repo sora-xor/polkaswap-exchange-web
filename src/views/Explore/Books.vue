@@ -60,6 +60,7 @@
           <formatted-amount
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
+            :integer-only="isAmountValueIntegerOnly(row.priceFormatted)"
             :value="row.priceFormatted"
             class="explore-table-item-price"
           ></formatted-amount>
@@ -141,7 +142,7 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
 import { components } from '@/shims/wallet-components';
 import { SortDirection } from '@soramitsu-ui/ui/types';
-import { computed, onMounted, ref, toRef } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 
 import { useExploreTable } from '@/composables/useExploreTable';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -154,7 +155,7 @@ import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
-import { formatAmountWithSuffix, sortPools, showMostFittingValue } from '@/utils';
+import { formatAmountWithSuffix, isAmountValueIntegerOnly, sortPools, showMostFittingValue } from '@/utils';
 
 import type { Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -211,6 +212,7 @@ const whitelistAssets = computed(() => assetsStore.whitelistAssets as Array<Asse
 const allowedAssets = computed<Array<Asset>>(() =>
   whitelistAssets.value.length ? whitelistAssets.value : [...KnownAssets]
 );
+const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => asset.address).join(';'));
 
 const prefilteredItems = computed<TableItem[]>(() => {
   const items = orderBooks.value.reduce<TableItem[]>((buffer, item) => {
@@ -289,6 +291,8 @@ const {
 });
 
 const updateExploreData = async (): Promise<void> => {
+  if (loading.value) return;
+
   await withLoading(async () => {
     await withParentLoading(async () => {
       orderBooks.value = Object.freeze((await fetchOrderBooks(allowedAssets.value)) ?? []);
@@ -296,9 +300,13 @@ const updateExploreData = async (): Promise<void> => {
   });
 };
 
-onMounted(() => {
-  void updateExploreData();
-});
+watch(
+  () => whitelistSignature.value,
+  () => {
+    void updateExploreData();
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">

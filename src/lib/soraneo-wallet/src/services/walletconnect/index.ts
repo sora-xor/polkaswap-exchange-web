@@ -7,6 +7,7 @@ import { api } from '../../api';
 import { AppWallet, TranslationConsts } from '../../consts';
 import { addWalletLocally, checkWallet } from '../../services/wallet';
 
+import { getWalletConnectProjectId } from './config';
 import { WcProvider } from './provider/base';
 import { WcSubProvider } from './provider/substrate';
 import { WcWallet } from './wallet';
@@ -54,7 +55,7 @@ const addWcWalletLocally = (
  * registers a disconnect handler that can clean up Vuex state.
  */
 export const addWcSubWalletLocally = (chainApi: WithKeyring, onDisconnect: (source: string) => void): string => {
-  if (!WcProvider.projectId) return '';
+  if (!getWalletConnectProjectId()) return '';
 
   const isSingletone = api === chainApi; // SORA wc wallet
   const chainGenesisHash = chainApi.api?.genesisHash?.toString?.();

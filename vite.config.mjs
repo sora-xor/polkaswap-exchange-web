@@ -376,8 +376,12 @@ export default defineConfig({
         defaultHandler(warning);
       },
       output: {
-        // Rollup's default chunk graph avoids the circular startup imports that
-        // were produced by the custom manual chunk topology.
+        /**
+         * Keep Rollup on its default chunking heuristics here. The lazy-loaded
+         * WalletConnect and Cede entry points remove the biggest startup cost,
+         * and explicit manual chunks were introducing circular startup graphs
+         * that blanked the app before Vue could mount.
+         */
       },
     },
   },

@@ -1,12 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
 
 import { buildRouteTokens, routeIsValid, resolveRouteAddress } from '@/composables/useSelectedTokensRoute';
 import { PageNames } from '@/consts';
 
+const PSWAP_ADDRESS = '0x0200050000000000000000000000000000000000000000000000000000000000';
+
 describe('resolveRouteAddress', () => {
-  it('returns empty string when lookup tables are unavailable', () => {
-    expect(resolveRouteAddress('XOR', undefined, undefined)).toBe('');
+  it('resolves bundled whitelist symbols even when lookup tables are unavailable', () => {
+    expect(resolveRouteAddress('XOR', undefined, undefined)).toBe(XOR.address);
+    expect(resolveRouteAddress('XSTUSD', undefined, undefined)).toBe(XSTUSD.address);
+    expect(resolveRouteAddress('DAI', undefined, undefined)).toBe(DAI.address);
+    expect(resolveRouteAddress('PSWAP', undefined, undefined)).toBe(PSWAP_ADDRESS);
+  });
+
+  it('returns empty string for unknown values when lookup tables are unavailable', () => {
+    expect(resolveRouteAddress('UNKNOWN', undefined, undefined)).toBe('');
     expect(
       resolveRouteAddress('0x0200000000000000000000000000000000000000000000000000000000000000', undefined, undefined)
     ).toBe('');
@@ -71,6 +80,12 @@ describe('buildRouteTokens', () => {
 
   it('uses stable symbol shortcuts for core route assets', () => {
     expect(buildRouteTokens({ address: DAI.address, symbol: '' } as any, {} as any)).toBe('DAI');
+    expect(buildRouteTokens({ address: XOR.address, symbol: '' } as any, {} as any)).toBe('XOR');
+    expect(buildRouteTokens({ address: XSTUSD.address, symbol: '' } as any, {} as any)).toBe('XSTUSD');
+  });
+
+  it('uses bundled whitelist symbols when runtime whitelist lookup is unavailable', () => {
+    expect(buildRouteTokens({ address: PSWAP_ADDRESS, symbol: 'PSWAP' } as any, {} as any)).toBe('PSWAP');
   });
 
   it('keeps address fallback on order-book routes when symbol resolution is unsafe', () => {

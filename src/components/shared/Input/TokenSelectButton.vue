@@ -1,6 +1,6 @@
 <template>
   <button type="button" :class="computedClasses" :tabindex="buttonTabindex" :disabled="disabled">
-    <span class="token-select-button__content">
+    <span>
       <component
         v-if="hasToken"
         :is="tokenLogoComponent"
@@ -90,6 +90,8 @@ defineExpose({
 $baseClass: '.token-select-button';
 
 button.el-button.neumorphic#{$baseClass} {
+  font-size: 12px;
+  height: 32px;
   border-radius: var(--s-border-radius-mini);
   padding-top: 4px !important;
   padding-bottom: 4px !important;
@@ -150,15 +152,13 @@ button.el-button.neumorphic#{$baseClass} {
 $baseClass: '.token-select-button';
 
 #{$baseClass} {
-  display: block;
-
-  &__content {
-    display: inline-flex;
+  > span {
+    display: flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
     flex-wrap: nowrap;
-    line-height: 1;
+    line-height: 12px;
   }
 
   &__logo {

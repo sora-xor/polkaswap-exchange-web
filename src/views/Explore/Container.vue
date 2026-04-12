@@ -189,7 +189,7 @@ $container-max-width--collapsed: calc($container-max - $container-shadow-padding
 
 :deep(.explore-search.s-input) {
   display: flex;
-  width: auto;
+  width: $explore-search-input-max-width;
   min-height: var(--s-size-big);
   padding: 8px 16px;
   border: 1px solid rgba(163, 164, 168, 0.6);

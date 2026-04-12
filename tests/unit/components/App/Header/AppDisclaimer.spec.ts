@@ -209,8 +209,9 @@ describe('AppDisclaimer', () => {
     expect(modalProps?.closeOnEsc).toBe(false);
   });
 
-  it('keeps the disclaimer non-blocking off the swap route', async () => {
+  it('keeps a manually opened disclaimer non-blocking off the swap route after approval', async () => {
     routeNameRef.value = 'VaultsContainer';
+    settingsStoreMock.userDisclaimerApprove = true;
 
     const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
     const wrapper = mount(component, {
@@ -227,7 +228,7 @@ describe('AppDisclaimer', () => {
 
     const modalProps = modalPropsSnapshots.at(-1);
 
-    expect(wrapper.find('.s-modal-stub').attributes('data-show')).toBe('false');
+    expect(wrapper.find('.s-modal-stub').attributes('data-show')).toBe('true');
     expect(modalProps?.showOverlay).toBe(false);
     expect(modalProps?.focusTrap).toBe(false);
     expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': true }]);
@@ -235,9 +236,9 @@ describe('AppDisclaimer', () => {
   });
 
   it('keeps nonblocking disclaimer hit testing global for modal roots outside the component scope', () => {
-    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal--nonblocking)');
-    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal--nonblocking .s-modal__modal)');
-    expect(appDisclaimerSource).toContain(':global(.disclaimer-modal--nonblocking .disclaimer)');
+    expect(appDisclaimerSource).toContain(':global(.s-modal__root.disclaimer-modal--nonblocking)');
+    expect(appDisclaimerSource).toContain(':global(.s-modal__root.disclaimer-modal--nonblocking .s-modal__modal)');
+    expect(appDisclaimerSource).toContain(':global(.s-modal__root.disclaimer-modal--nonblocking .disclaimer)');
   });
 
   it('centers the disclaimer modal through global modal root styles', () => {
@@ -245,6 +246,15 @@ describe('AppDisclaimer', () => {
       /:global\(\.disclaimer-modal\)\s*\{[\s\S]*?justify-content: center;[\s\S]*?align-items: center;/
     );
     expect(appDisclaimerSource).toMatch(/:global\(\.disclaimer-modal__dialog\)\s*\{[\s\S]*?justify-content: center;/);
+  });
+
+  it('docks the non-blocking disclaimer to the right side', () => {
+    expect(appDisclaimerSource).toMatch(
+      /:global\(\.s-modal__root\.disclaimer-modal--nonblocking\)\s*\{[\s\S]*?justify-content: flex-end !important;[\s\S]*?align-items: flex-start !important;/
+    );
+    expect(appDisclaimerSource).toMatch(
+      /:global\(\.s-modal__root\.disclaimer-modal--nonblocking \.disclaimer\)\s*\{[\s\S]*?width: 280px;/
+    );
   });
 
   it('activates accept state and handles accept action', async () => {

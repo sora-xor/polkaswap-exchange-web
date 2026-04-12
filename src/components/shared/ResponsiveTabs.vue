@@ -149,7 +149,10 @@ $icon-size: 22px;
 .responsive-tabs {
   &__dropdown {
     &-selected {
+      margin: 0;
+      font-size: var(--s-font-size-large);
       font-weight: 300;
+      line-height: 1.3;
       letter-spacing: var(--s-letter-spacing-mini);
     }
     &-item {

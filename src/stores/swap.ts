@@ -73,6 +73,7 @@ const buildInitialState = (): SwapState => {
     rewards: [],
     route: [],
     distribution: [],
+    isPathAvailable: false,
     isAvailable: false,
     liquiditySources: [],
     swapQuote: null,
@@ -216,12 +217,28 @@ export const useSwapStore = defineStore('swap', {
     setSubscriptionPayload(payload?: {
       quote?: SwapQuote | null;
       isAvailable?: boolean;
+      isPathAvailable?: boolean;
       liquiditySources?: LiquiditySourceTypes[];
     }) {
-      const { quote = null, isAvailable = false, liquiditySources = [] } = payload ?? {};
+      if (!payload) {
+        this.swapQuote = null;
+        this.isAvailable = false;
+        this.isPathAvailable = false;
+        this.liquiditySources = [];
+        return;
+      }
+
+      const { quote = null, isAvailable = false, liquiditySources = [] } = payload;
+
       this.swapQuote = quote;
       this.isAvailable = isAvailable;
+      if ('isPathAvailable' in payload) {
+        this.isPathAvailable = payload.isPathAvailable ?? false;
+      }
       this.liquiditySources = liquiditySources;
+    },
+    setPathAvailability(flag = false) {
+      this.isPathAvailable = flag;
     },
     setLiquiditySource(liquiditySource: LiquiditySourceTypes) {
       this.liquiditySources = [liquiditySource];

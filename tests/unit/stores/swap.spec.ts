@@ -157,6 +157,7 @@ describe('swap store', () => {
 
     expect(store.tokenFromAddress).toBe(XOR.address);
     expect(store.tokenToAddress).toBe('');
+    expect(store.isPathAvailable).toBe(false);
     expect(store.fromValue).toBe('');
     expect(store.toValue).toBe('');
     expect(store.isExchangeB).toBe(false);
@@ -191,6 +192,23 @@ describe('swap store', () => {
     expect(store.fromValue).toBe('');
     expect(store.toValue).toBe('');
     expect(store.isExchangeB).toBe(false);
+  });
+
+  it('preserves path availability when quote payload updates omit it', () => {
+    const store = useSwapStore();
+
+    store.setPathAvailability(true);
+    store.setSubscriptionPayload({
+      isAvailable: false,
+      liquiditySources: [],
+      quote: null,
+    });
+
+    expect(store.isPathAvailable).toBe(true);
+
+    store.setSubscriptionPayload();
+
+    expect(store.isPathAvailable).toBe(false);
   });
 
   it('persists the loss warning flag', () => {
@@ -305,4 +323,5 @@ describe('swap store', () => {
     walletStore.accountState.address = '';
     walletStore.accountState.source = '';
   });
+
 });

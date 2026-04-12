@@ -349,6 +349,18 @@ $el-input-class: '.el-input';
   // Keep it gapless so top/content/bottom stack matches live proportions.
   row-gap: 0;
 
+  // New soramitsu-ui wraps the header content with `.s-input__top`, which can
+  // shrink the `From/Balance` row to its intrinsic width. Force the wrapper and
+  // row to span the full token input width like live polkaswap.io.
+  & > .s-input__top {
+    display: block;
+    width: 100%;
+  }
+
+  .input-line {
+    width: 100%;
+  }
+
   // Keep swap token input compact even with the newer soramitsu-ui DOM that wraps
   // footer content into `.s-input__bottom` and adds extra vertical space by default.
   & > .s-input__bottom {
@@ -397,6 +409,7 @@ $el-input-class: '.el-input';
 
     & > .s-input__content {
       color: var(--s-color-fiat-value);
+      gap: 0;
       line-height: var(--s-line-height-medium);
       letter-spacing: var(--s-letter-spacing-small);
       font-size: var(--s-font-size-small);

@@ -43,38 +43,32 @@
     </s-popover-panel>
 
     <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
-      <s-tab label="limit" name="limit">
-        <span slot="label">
-          <span>{{ t('orderBook.limit') }}</span>
-          <s-tooltip
-            slot="suffix"
-            border-radius="mini"
-            :content="t('orderBook.tooltip.limitOrder')"
-            placement="top"
-            tabindex="-1"
-          >
-            <s-icon name="info-16" size="14px" />
-          </s-tooltip>
-        </span>
+      <s-tab name="limit">
+        <span>{{ t('orderBook.limit') }}</span>
+        <s-tooltip
+          border-radius="mini"
+          :content="t('orderBook.tooltip.limitOrder')"
+          placement="top"
+          tabindex="-1"
+        >
+          <s-icon name="info-16" size="14px" />
+        </s-tooltip>
       </s-tab>
-      <s-tab label="market" name="market" :disabled="marketOptionDisabled">
-        <span slot="label">
-          <span>{{ t('orderBook.market') }}</span>
-          <s-tooltip
-            slot="suffix"
-            border-radius="mini"
-            :content="t('orderBook.tooltip.marketOrder')"
-            placement="top"
-            tabindex="-1"
-          >
-            <s-icon name="info-16" size="14px" />
-          </s-tooltip>
-        </span>
+      <s-tab name="market" :disabled="marketOptionDisabled">
+        <span>{{ t('orderBook.market') }}</span>
+        <s-tooltip
+          border-radius="mini"
+          :content="t('orderBook.tooltip.marketOrder')"
+          placement="top"
+          tabindex="-1"
+        >
+          <s-icon name="info-16" size="14px" />
+        </s-tooltip>
       </s-tab>
     </s-tabs>
 
     <token-input
-      :balance="getTokenBalance(quoteAsset)"
+      :balance="isLoggedIn ? getTokenBalance(quoteAsset) : null"
       :is-max-available="false"
       :title="t('priceText')"
       :token="quoteAsset"
@@ -85,7 +79,7 @@
     />
 
     <token-input
-      :balance="getTokenBalance(baseAsset)"
+      :balance="isLoggedIn ? getTokenBalance(baseAsset) : null"
       :is-max-available="isMaxAmountAvailable"
       :with-slider="isSliderAvailable"
       :title="t('orderBook.amount')"
@@ -992,6 +986,8 @@ const isMaxAmountAvailable = computed(() => {
     &.is-disabled {
       cursor: not-allowed;
     }
+
+    text-transform: uppercase;
   }
 
   &-input {
@@ -1014,6 +1010,15 @@ const isMaxAmountAvailable = computed(() => {
 
   .btn {
     width: 100%;
+
+    &.is-disabled,
+    &:disabled {
+      background-color: var(--s-color-utility-body) !important;
+      color: var(--s-color-base-content-tertiary) !important;
+      border-color: var(--s-color-base-background) !important;
+      box-shadow: var(--s-shadow-element-pressed) !important;
+      opacity: 1;
+    }
   }
 
   .buy-btn {
@@ -1021,8 +1026,9 @@ const isMaxAmountAvailable = computed(() => {
     background-color: #34ad87 !important;
   }
 
-  .buy-btn.is-disabled {
-    background-color: unset !important;
+  .buy-btn.is-disabled,
+  .buy-btn:disabled {
+    background-color: var(--s-color-utility-body) !important;
   }
 }
 

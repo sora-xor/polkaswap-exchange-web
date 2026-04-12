@@ -107,5 +107,6 @@ describe('app-level store migration', () => {
     expect(mainSource).not.toContain('app.use(store.original)');
     expect(mainSource).not.toContain('store: store.original');
     expect(mainSource).toContain('installPlugins(app, { pinia })');
+    expect(mainSource).not.toContain('await router.isReady()');
   });
 });

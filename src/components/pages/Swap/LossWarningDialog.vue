@@ -1,5 +1,10 @@
 <template>
-  <dialog-base v-model:visible="isVisible" :append-to-body="appendToBody" :modal-append-to-body="appendToBody">
+  <dialog-base
+    v-model:visible="isVisible"
+    custom-class="loss-warning-dialog"
+    :append-to-body="appendToBody"
+    :modal-append-to-body="appendToBody"
+  >
     <simple-notification
       optional
       modal-content
@@ -54,3 +59,27 @@ const handleConfirm = async () => {
   emit('confirm');
 };
 </script>
+
+<style lang="scss" scoped>
+:deep(.dialog-card.loss-warning-dialog) {
+  overflow: visible;
+}
+
+:deep(.dialog-card.loss-warning-dialog .dialog-card__header) {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+}
+
+:deep(.dialog-card.loss-warning-dialog .dialog-card__content) {
+  position: relative;
+  z-index: 1;
+  padding-top: calc(var(--s-size-big) + #{$basic-spacing});
+  max-height: none;
+  overflow: visible;
+}
+
+:deep(.dialog-card.loss-warning-dialog .simple-notification.modal-content) {
+  margin-top: calc(var(--s-size-big) * -1);
+}
+</style>

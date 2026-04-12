@@ -133,16 +133,14 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <data-row-skeleton :loading="!pricesAvailable" rect>
-            <formatted-amount
-              is-fiat-value
-              :font-weight-rate="FontWeightRate.MEDIUM"
-              :value="row.tvlFormatted.amount"
-              class="explore-table-item-price explore-table-item-amount"
-            >
-              {{ row.tvlFormatted.suffix }}
-            </formatted-amount>
-          </data-row-skeleton>
+          <formatted-amount
+            is-fiat-value
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.tvlFormatted.amount"
+            class="explore-table-item-price explore-table-item-amount"
+          >
+            {{ row.tvlFormatted.suffix }}
+          </formatted-amount>
         </template>
       </s-table-column>
     </s-table>
@@ -183,7 +181,6 @@ defineOptions({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
-    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
@@ -248,11 +245,6 @@ const {
   startIndex,
   tableRef,
 } = table;
-
-const pricesAvailable = computed(() => {
-  const fiatPriceObject = walletStore.fiatPriceObject ?? {};
-  return Object.keys(fiatPriceObject).length > 0;
-});
 
 const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => asset.address).join(';'));

@@ -9,28 +9,28 @@
     <s-table class="market-trades-table" :data="completedOrders">
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">{{ t('orderBook.time') }}</span>
-        </template>
-        <template #default="scope">
-          <span class="order-info time">{{ scope?.row?.time }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span class="market-trades__header">{{ t('orderBook.amount') }}</span>
-        </template>
-        <template #default="scope">
-          <span class="order-info">{{ scope?.row?.amount }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column header-align="right" align="right">
-        <template #header>
           <span class="market-trades__header">{{ t('priceText') }}</span>
         </template>
         <template #default="scope">
           <span class="order-info price" :class="{ buy: scope?.row?.isBuy }">
             {{ scope?.row?.price }}
           </span>
+        </template>
+      </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span class="market-trades__header">{{ t('orderBook.time') }}</span>
+        </template>
+        <template #default="scope">
+          <span class="order-info time">{{ scope?.row?.time }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column header-align="right" align="right">
+        <template #header>
+          <span class="market-trades__header">{{ t('orderBook.amount') }}</span>
+        </template>
+        <template #default="scope">
+          <span class="order-info">{{ scope?.row?.amount }}</span>
         </template>
       </s-table-column>
     </s-table>

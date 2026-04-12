@@ -301,6 +301,10 @@ vi.mock('@/utils', async () => {
   };
 });
 
+vi.mock('@/utils/staticAssets', () => ({
+  resolveStaticAssetUrl: (value: string) => `https://app.test/${value}`,
+}));
+
 vi.mock('nft.storage', async () => {
   return await import('@tests/stubs/nft-storage');
 });
@@ -1289,7 +1293,7 @@ describe('wallet store actions', () => {
 
     await walletStore.getWhitelist();
 
-    expect(fetchMock).toHaveBeenCalledWith(WHITE_LIST_URL, { cache: 'no-cache' });
+    expect(fetchMock).toHaveBeenCalledWith(`https://app.test/${WHITE_LIST_URL}`, { cache: 'no-cache' });
     expect(walletStore.accountState.whitelistArray).toEqual([
       {
         address: 'xor',
@@ -1311,7 +1315,7 @@ describe('wallet store actions', () => {
 
     await walletStore.getNftBlacklist();
 
-    expect(fetchMock).toHaveBeenCalledWith(NFT_BLACK_LIST_URL, { cache: 'no-cache' });
+    expect(fetchMock).toHaveBeenCalledWith(`https://app.test/${NFT_BLACK_LIST_URL}`, { cache: 'no-cache' });
     expect(walletStore.accountState.blacklistArray).toEqual(['nft-1', 'nft-2']);
   });
 

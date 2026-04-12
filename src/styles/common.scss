@@ -34,14 +34,10 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    animation: pswap-loader-spin 1s linear infinite;
     height: var(--s-size-medium);
     width: var(--s-size-medium);
     margin-left: calc(50% - (var(--s-size-medium) / 2));
-    > svg,
-    > i,
-    .circular,
-    .path {
+    > svg {
       display: none;
     }
   }
@@ -62,50 +58,22 @@ body {
 }
 
 .app-loading-overlay__spinner {
+  display: block;
   width: var(--s-size-medium);
   height: var(--s-size-medium);
   background-image: url('@/assets/img/pswap-loader.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  animation: pswap-loader-spin 1s linear infinite;
 
-  > * {
-    display: none !important;
+  > svg {
+    display: none;
   }
 }
 
 .app-loading-overlay > .app-loading-overlay__spinner.el-loading-spinner {
   margin-left: 0;
   margin-top: 0;
-}
-
-@keyframes pswap-loader-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-i.el-icon-loading {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1em;
-  height: 1em;
-  background-image: url('@/assets/img/pswap-loader.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  animation: pswap-loader-spin 1s linear infinite;
-  color: transparent !important;
-
-  .s-icon__svg {
-    display: none !important;
-  }
-
-  &::before {
-    opacity: 0 !important;
-  }
 }
 
 .flag-emodji {
@@ -468,30 +436,6 @@ button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary) {
 [design-system-theme='dark'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):hover,
 [design-system-theme='dark'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):focus {
   color: var(--s-color-base-content-tertiary);
-}
-
-/* Keep primary CTA styling aligned with production in both light and noir themes. */
-button.el-button.neumorphic.s-primary {
-  box-shadow:
-    1px 1px 5px 0px #ffffff,
-    -1px -1px 5px 0px #ffffff;
-  border-color: var(--s-color-base-border-secondary);
-  color: var(--s-color-base-on-accent);
-}
-
-[design-system-theme='light'] button.el-button.neumorphic.s-primary:hover,
-[design-system-theme='light'] button.el-button.neumorphic.s-primary:focus,
-[design-system-theme='light'] button.el-button.neumorphic.s-primary:active,
-[design-system-theme='dark'] button.el-button.neumorphic.s-primary:hover,
-[design-system-theme='dark'] button.el-button.neumorphic.s-primary:focus,
-[design-system-theme='dark'] button.el-button.neumorphic.s-primary:active {
-  background-color: var(--s-color-theme-accent);
-}
-
-[design-system-theme='dark'] button.el-button.neumorphic.s-primary {
-  box-shadow:
-    1px 1px 5px 0px #391057,
-    -1px -1px 5px 0px #9b6fa5;
 }
 
 .order-book-connect-btn {

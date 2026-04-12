@@ -74,12 +74,13 @@ const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
     };
 
     if (bridgeStore?.connector) {
-      bridgeStore.connector.standalone = {
+      bridgeStore.connector.relaychain = {
         subNetwork: 'Kusama',
         subNetworkConnection: subConnection,
         formatAddress: (value: string) => value,
         stop: async () => undefined,
       };
+      bridgeStore.connector.standalone = undefined;
     }
 
     web3Store?.$patch?.({

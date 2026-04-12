@@ -14,7 +14,7 @@
       @click="goTo(PageNames.Swap)"
     ></app-logo-button>
     <div class="app-controls app-controls--middle s-flex">
-      <app-marketing v-show="!isMobile"></app-marketing>
+      <app-marketing v-show="showMarketing"></app-marketing>
       <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.DepositOptions)">
         <pair-token-logo
           class="payment-icon"
@@ -88,6 +88,11 @@ const isAnyMobile = computed(
   () =>
     screenBreakpointClass.value === BreakpointClass.Mobile ||
     screenBreakpointClass.value === BreakpointClass.LargeMobile
+);
+const showMarketing = computed(() =>
+  [BreakpointClass.Desktop, BreakpointClass.LargeDesktop, BreakpointClass.HugeDesktop].includes(
+    screenBreakpointClass.value
+  )
 );
 
 const fiatBtnClass = computed(() => {

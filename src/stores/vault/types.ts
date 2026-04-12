@@ -10,7 +10,9 @@ export type VaultState = {
   collateralsSubscription: Nullable<Subscription>;
   accountVaultIdsSubscription: Nullable<Subscription>;
   accountVaults: Vault[];
+  accountVaultsLoaded: boolean;
   closedAccountVaults: ClosedVault[];
+  closedAccountVaultsLoaded: boolean;
   accountVaultsSubscription: Nullable<Subscription>;
   debtAddress: string;
   collateralAddress: string;

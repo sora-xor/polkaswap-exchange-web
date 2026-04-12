@@ -91,6 +91,7 @@
                   <template v-if="vault.lockedAsset">
                     <formatted-amount
                       value-can-be-hidden
+                      :integer-only="isIntegerAmount(vault.lockedAmount)"
                       :value="format(vault.lockedAmount)"
                       :asset-symbol="getLockedSymbol(vault.lockedAsset)"
                     ></formatted-amount>
@@ -117,6 +118,7 @@
                   <template v-if="vault.debtAsset">
                     <formatted-amount
                       value-can-be-hidden
+                      :integer-only="isIntegerAmount(vault.debt)"
                       :value="format(vault.debt)"
                       :asset-symbol="getDebtSymbol(vault.debtAsset)"
                     ></formatted-amount>
@@ -143,6 +145,7 @@
                   <template v-if="vault.debtAsset">
                     <formatted-amount
                       value-can-be-hidden
+                      :integer-only="isIntegerAmount(vault.available)"
                       :value="format(vault.available)"
                       :asset-symbol="getDebtSymbol(vault.debtAsset)"
                     ></formatted-amount>
@@ -201,6 +204,7 @@
                 <template v-if="vault.lockedAsset && vault.debtAsset">
                   <formatted-amount
                     value-can-be-hidden
+                    :integer-only="isIntegerAmount(vault.returned)"
                     :value="format(vault.returned)"
                     :asset-symbol="getLockedSymbol(vault.lockedAsset)"
                   ></formatted-amount>
@@ -274,6 +278,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useVaultStore } from '@/stores/vault';
+import { isAmountValueIntegerOnly } from '@/utils';
 
 import type { Nullable } from '@/types/common';
 import type { ResponsiveTab } from '@/types/tabs';
@@ -523,6 +528,7 @@ const getLockedSymbol = (lockedAsset?: RegisteredAccountAsset): string => locked
 const getDebtSymbol = (debtAsset?: RegisteredAccountAsset): string => debtAsset?.symbol ?? '';
 
 const format = (value?: FPNumber): string => value?.toLocaleString(2) ?? ZeroStringValue;
+const isIntegerAmount = (value?: FPNumber): boolean => isAmountValueIntegerOnly(format(value));
 
 const formatFiat = (amount: Nullable<FPNumber>, asset: Nullable<RegisteredAccountAsset>): string => {
   if (!(amount && asset)) return ZeroStringValue;
@@ -628,6 +634,12 @@ defineExpose({
       &__title {
         align-items: center;
         margin-bottom: $inner-spacing-medium;
+
+        h4 {
+          margin: 0;
+          font-size: var(--s-heading4-font-size);
+          line-height: 27px;
+        }
       }
       &__icon {
         color: white;
@@ -640,10 +652,13 @@ defineExpose({
         margin-right: $inner-spacing-mini;
       }
       &__description {
+        font-size: var(--s-font-size-mini);
+        line-height: 1.8;
         text-align: center;
       }
       &__link {
         font-size: var(--s-heading6-font-size);
+        line-height: 25.2px;
         margin-top: $inner-spacing-mini;
         color: var(--s-color-status-info);
         @include focus-outline;

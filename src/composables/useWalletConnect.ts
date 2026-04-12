@@ -53,7 +53,7 @@ export function useWalletConnect() {
    * Reuses the previously connected provider if available, falls back to any
    * installed extension, and finally to WalletConnect/AppKit.
    */
-  const resolveTargetProvider = (requested?: AppEIPProvider | null): AppEIPProvider => {
+  const resolveTargetProvider = async (requested?: AppEIPProvider | null): Promise<AppEIPProvider> => {
     if (requested) return requested;
     if (evmProvider.value) return evmProvider.value;
 
@@ -64,13 +64,30 @@ export function useWalletConnect() {
       return preferredInstalled;
     }
 
+    // Fall back to probing predefined injected wallets directly so bridge/account
+    // connect buttons can still pick MetaMask/Fearless even before EIP-6963
+    // announcements populate the provider list.
+    for (const provider of appEvmProviders.value) {
+      if (provider.uuid === PredefinedProvider.WalletConnect || typeof provider.getProvider !== 'function') {
+        continue;
+      }
+
+      try {
+        if (await provider.getProvider()) {
+          return provider;
+        }
+      } catch {
+        // Ignore provider-probing errors and keep searching for another wallet.
+      }
+    }
+
     const walletConnect = appEvmProviders.value.find((provider) => provider.uuid === PredefinedProvider.WalletConnect);
 
     return walletConnect ?? WalletConnectProvider;
   };
 
   const connectEvmWallet = async (provider?: AppEIPProvider): Promise<void> => {
-    const target = resolveTargetProvider(provider ?? null);
+    const target = await resolveTargetProvider(provider ?? null);
     await connectEvmProvider(target);
   };
 

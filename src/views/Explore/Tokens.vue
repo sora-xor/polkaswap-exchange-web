@@ -154,6 +154,7 @@
           <formatted-amount
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.velocityFormatted"
+            :integer-only="!row.velocityFormatted.includes(FPNumber.DELIMITERS_CONFIG.decimal)"
             class="explore-table-item-price explore-table-item-amount"
           ></formatted-amount>
         </template>
@@ -177,7 +178,7 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { KnownAssets } from '@sora-substrate/sdk/build/assets/consts';
 import { components } from '@/shims/wallet-components';
 import { SortDirection } from '@soramitsu-ui/ui/types';
-import { computed, onMounted, ref, toRef, watch } from 'vue';
+import { computed, ref, toRef, watch } from 'vue';
 
 import { useExploreTable } from '@/composables/useExploreTable';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -248,13 +249,20 @@ const settingsStore = useSettingsStore();
 
 const loadingState = computed(() => parentLoading.value || loading.value);
 const tokensData = ref<Record<string, TokenData>>({});
+const velocityFormatter = new Intl.NumberFormat(undefined, {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+});
+
+const formatVelocity = (value: FPNumber): string => velocityFormatter.format(Number(value.toFixed(2)));
 
 const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<Asset>;
 const whitelistAssets = computed(() => assetsStore.whitelistAssets as Array<Asset>);
 const allowedAssets = computed<Array<Asset>>(() =>
   whitelistAssets.value.length ? whitelistAssets.value : [...KnownAssets]
 );
-const assetsFilter = computed(() => settingsStore.assetsFilter as FilterOptions);
+const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => asset.address).join(';'));
+const currentAssetsFilter = computed(() => settingsStore.assetsFilter as FilterOptions);
 
 const items = computed<TableItem[]>(() => {
   if (!Object.keys(tokensData.value).length) {
@@ -275,7 +283,7 @@ const items = computed<TableItem[]>(() => {
         tvl: zero.toNumber(),
         tvlFormatted: formatAmountWithSuffix(zero),
         velocity: zero.toNumber(),
-        velocityFormatted: String(zero.toNumber(2)),
+        velocityFormatted: formatVelocity(zero),
       };
     });
   }
@@ -297,7 +305,7 @@ const items = computed<TableItem[]>(() => {
       tvl: tokenData.tvlUSD.toNumber(),
       tvlFormatted: formatAmountWithSuffix(tokenData.tvlUSD),
       velocity: tokenData.velocity.toNumber(),
-      velocityFormatted: String(tokenData.velocity.toNumber(2)),
+      velocityFormatted: formatVelocity(tokenData.velocity),
     });
 
     return buffer;
@@ -307,7 +315,7 @@ const items = computed<TableItem[]>(() => {
 const prefilteredItems = computed<TableItem[]>(() => {
   return getAssetsSubset(
     [...items.value].sort((a, b) => sortAssets(a, b)),
-    assetsFilter.value
+    currentAssetsFilter.value
   );
 });
 
@@ -339,11 +347,13 @@ const {
   defaultProperty: 'tvl',
 });
 
-watch(assetsFilter, () => {
+watch(currentAssetsFilter, () => {
   currentPage.value = 1;
 });
 
 const updateExploreData = async (): Promise<void> => {
+  if (loading.value) return;
+
   await withLoading(async () => {
     await withParentLoading(async () => {
       tokensData.value = Object.freeze(await fetchTokensData(allowedAssets.value));
@@ -351,9 +361,13 @@ const updateExploreData = async (): Promise<void> => {
   });
 };
 
-onMounted(() => {
-  void updateExploreData();
-});
+watch(
+  () => whitelistSignature.value,
+  () => {
+    void updateExploreData();
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">

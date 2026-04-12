@@ -69,8 +69,11 @@ function handleClick(): void {
 <style lang="scss">
 .sort-button {
   cursor: pointer;
+  white-space: nowrap;
 
   & > * {
+    display: inline-flex;
+    align-items: center;
     vertical-align: middle;
 
     &:not(:last-child) {

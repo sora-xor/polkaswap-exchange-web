@@ -45,6 +45,7 @@
                   </p>
                   <formatted-amount
                     value-can-be-hidden
+                    :integer-only="isAmountValueIntegerOnly(formattedLockedAmount)"
                     :value="formattedLockedAmount"
                     :asset-symbol="lockedSymbol"
                   ></formatted-amount>
@@ -81,6 +82,7 @@
                   </p>
                   <formatted-amount
                     value-can-be-hidden
+                    :integer-only="isAmountValueIntegerOnly(formattedDebtAmount)"
                     :value="formattedDebtAmount"
                     :asset-symbol="debtSymbol"
                   ></formatted-amount>
@@ -101,6 +103,7 @@
                   </p>
                   <formatted-amount
                     value-can-be-hidden
+                    :integer-only="isAmountValueIntegerOnly(formattedAvailableToBorrow)"
                     :value="formattedAvailableToBorrow"
                     :asset-symbol="debtSymbol"
                   ></formatted-amount>
@@ -143,6 +146,7 @@
             </p>
             <formatted-amount
               value-can-be-hidden
+              :integer-only="isAmountValueIntegerOnly(formattedReturnedAmount)"
               :value="formattedReturnedAmount"
               :asset-symbol="lockedSymbol"
             ></formatted-amount>
@@ -323,7 +327,7 @@ import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useVaultStore } from '@/stores/vault';
 import { useWalletStore } from '@/stores/wallet';
-import { asZeroValue, getAssetBalance } from '@/utils';
+import { asZeroValue, getAssetBalance, isAmountValueIntegerOnly } from '@/utils';
 
 import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
@@ -375,7 +379,9 @@ const borrowTaxResolver = computed(
   () => vaultStore.getBorrowTax as (debtAsset: Asset | AccountAsset | string) => number
 );
 const accountVaults = computed(() => vaultStore.accountVaults);
+const accountVaultsLoaded = computed(() => vaultStore.accountVaultsLoaded);
 const closedAccountVaults = computed(() => vaultStore.closedAccountVaults);
+const closedAccountVaultsLoaded = computed(() => vaultStore.closedAccountVaultsLoaded);
 const collaterals = computed(() => vaultStore.collaterals);
 const averageCollateralPrices = computed(() => vaultStore.averageCollateralPrices);
 const liquidationPenalty = computed(() => vaultStore.liquidationPenalty);
@@ -397,6 +403,7 @@ const foundVault = computed<Nullable<AnyVault>>(() => {
 
   return closedAccountVaults.value.find(({ id }) => id === vaultId) ?? null;
 });
+const hasVaultLookupSettled = computed(() => accountVaultsLoaded.value && closedAccountVaultsLoaded.value);
 
 const vault = computed<Nullable<AnyVault>>(() => foundVault.value ?? vaultSkeleton);
 
@@ -581,7 +588,7 @@ const fiatReturnedAmount = computed(() => {
 });
 
 const goToVaults = () => {
-  routerInstance.push({ name: VaultPageNames.Vaults });
+  routerInstance.push({ path: '/kensetsu/' });
 };
 
 const handleBack = () => {
@@ -614,13 +621,18 @@ const updateVaultSkeleton = (value: AnyVault) => {
 };
 
 watch(
-  foundVault,
-  (value) => {
+  [foundVault, hasVaultLookupSettled],
+  ([value, settled]) => {
     if (value) {
       updateVaultSkeleton(value);
+      return;
+    }
+
+    if (settled && routeVaultId.value !== null) {
+      goToVaults();
     }
   },
-  { immediate: false }
+  { immediate: true }
 );
 
 onMounted(async () => {
@@ -629,13 +641,6 @@ onMounted(async () => {
       goToVaults();
       return;
     }
-
-    if (!foundVault.value) {
-      goToVaults();
-      return;
-    }
-
-    updateVaultSkeleton(foundVault.value);
   });
 });
 </script>

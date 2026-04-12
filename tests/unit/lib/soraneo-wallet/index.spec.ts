@@ -231,6 +231,57 @@ describe('wallet entry bootstrap', () => {
     expect(addWcSubWalletLocallyMock).toHaveBeenCalledTimes(1);
   });
 
+  it('waits for whitelist bootstrap before activating network subscriptions', async () => {
+    let releaseWhitelist: (() => void) | null = null;
+    let releaseBlacklist: (() => void) | null = null;
+
+    const walletStore = {
+      getWhitelist: vi.fn(
+        () =>
+          new Promise<void>((resolve) => {
+            releaseWhitelist = resolve;
+          })
+      ),
+      getNftBlacklist: vi.fn(
+        () =>
+          new Promise<void>((resolve) => {
+            releaseBlacklist = resolve;
+          })
+      ),
+      checkWalletAvailability: vi.fn(),
+      updateAvailableWallets: vi.fn(),
+      activateInternalSubscriptions: vi.fn(),
+      selectIndexer: vi.fn(),
+      setIsMstAvailable: vi.fn(),
+      activateNetworkSubscriptions: vi.fn(async () => undefined),
+      initMultisigAddress: vi.fn(),
+      setWalletLoaded: vi.fn(),
+      isDesktop: false,
+      accountSource: '',
+    };
+    getWalletPiniaStoreMock.mockReturnValue(walletStore as any);
+
+    const { initWallet } = await loadWalletBootstrap();
+    const pending = initWallet();
+
+    for (let attempt = 0; attempt < 20; attempt++) {
+      if (walletStore.setWalletLoaded.mock.calls.length) break;
+      await Promise.resolve();
+    }
+
+    expect(walletStore.setWalletLoaded).toHaveBeenCalledWith(true);
+    expect(walletStore.activateNetworkSubscriptions).not.toHaveBeenCalled();
+
+    releaseWhitelist?.();
+    await Promise.resolve();
+    expect(walletStore.activateNetworkSubscriptions).not.toHaveBeenCalled();
+
+    releaseBlacklist?.();
+    await pending;
+
+    expect(walletStore.activateNetworkSubscriptions).toHaveBeenCalledTimes(1);
+  });
+
   it('registers the wallet root component during plugin install', async () => {
     const app = {
       use: vi.fn(),

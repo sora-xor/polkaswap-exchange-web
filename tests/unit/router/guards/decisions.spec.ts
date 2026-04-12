@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { PageNames } from '@/consts';
-import { resolveAuthRedirect, resolveInvitationDecision, shouldResetBridgeHistory } from '@/router/guards/decisions';
+import {
+  resolveAuthRedirect,
+  resolveInvitationDecision,
+  resolveReferralActionRedirect,
+  shouldResetBridgeHistory,
+} from '@/router/guards/decisions';
 
 describe('router guard decisions', () => {
   it('detects when bridge history should reset', () => {
@@ -42,6 +47,7 @@ describe('router guard decisions', () => {
     });
 
     expect(redirect?.name).toBe(PageNames.Bridge);
+    expect(redirect?.path).toBe('/bridge/');
   });
 
   it('allows access when user already authenticated', () => {
@@ -52,5 +58,20 @@ describe('router guard decisions', () => {
     });
 
     expect(redirect).toBeUndefined();
+  });
+
+  it('redirects direct referral action entries back to the referral dashboard path-preserving route', () => {
+    const redirect = resolveReferralActionRedirect({
+      current: PageNames.ReferralBonding,
+      allowNavigation: false,
+    });
+
+    expect(redirect).toEqual({
+      name: PageNames.ReferralProgram,
+      callNext: true,
+      params: {
+        referrerAddress: 'bond',
+      },
+    });
   });
 });

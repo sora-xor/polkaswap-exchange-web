@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { PageNames } from '@/consts';
+import {
+  clearPendingReferralActionNavigation,
+  markPendingReferralActionNavigation,
+} from '@/router/guards/referralAction';
 import { createBeforeEachGuard } from '@/router/guards/navigation';
 
 import type { NavigationGuardServices } from '@/router/guards/navigation';
@@ -46,6 +50,55 @@ const createServices = (overrides: Partial<NavigationGuardServices> = {}): Navig
 });
 
 describe('router navigation guard', () => {
+  it('redirects direct referral bonding entries to the referral dashboard while keeping the route hash segment', () => {
+    clearPendingReferralActionNavigation();
+
+    const services = createServices({
+      walletStore: { isLoggedIn: true },
+    });
+    const guard = createBeforeEachGuard(services);
+    const next = vi.fn();
+
+    guard(
+      createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
+      createRoute({ name: PageNames.ReferralProgram }),
+      next
+    );
+
+    expect(services.routerStore.setRoute).toHaveBeenCalledWith({
+      prev: PageNames.ReferralProgram,
+      current: PageNames.ReferralProgram,
+    });
+    expect(next).toHaveBeenCalledWith({
+      name: PageNames.ReferralProgram,
+      params: {
+        referrerAddress: 'bond',
+      },
+    });
+  });
+
+  it('allows explicit referral bonding navigation triggered from inside the app', () => {
+    markPendingReferralActionNavigation(PageNames.ReferralBonding);
+
+    const services = createServices({
+      walletStore: { isLoggedIn: true },
+    });
+    const guard = createBeforeEachGuard(services);
+    const next = vi.fn();
+
+    guard(
+      createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
+      createRoute({ name: PageNames.ReferralProgram }),
+      next
+    );
+
+    expect(services.routerStore.setRoute).toHaveBeenCalledWith({
+      prev: PageNames.ReferralProgram,
+      current: PageNames.ReferralBonding,
+    });
+    expect(next).toHaveBeenCalledWith();
+  });
+
   it('redirects unnamed routes to swap', () => {
     const services = createServices();
     const guard = createBeforeEachGuard(services);
@@ -80,7 +133,7 @@ describe('router navigation guard', () => {
       prev: PageNames.Swap,
       current: PageNames.Bridge,
     });
-    expect(next).toHaveBeenCalledWith({ name: PageNames.Bridge });
+    expect(next).toHaveBeenCalledWith({ path: '/bridge/' });
   });
 
   it('persists referrals and stays on invitation route when already authenticated', () => {

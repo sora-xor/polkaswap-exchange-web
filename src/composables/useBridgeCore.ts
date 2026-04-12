@@ -99,7 +99,7 @@ export function useBridgeCore() {
   };
 
   const navigateToBridge = () => {
-    router.push({ name: PageNames.Bridge });
+    router.push({ path: '/bridge/' });
   };
 
   return {

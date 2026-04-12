@@ -46,8 +46,12 @@ export class AppError extends Error {
 
 export const APP_NAME = 'Sora2 Wallet';
 
-export const WHITE_LIST_URL = 'https://whitelist.polkaswap2.io/whitelist.json';
-export const NFT_BLACK_LIST_URL = 'https://whitelist.polkaswap2.io/blacklist.json';
+/**
+ * Bundle the verified asset lists with the app so token metadata remains
+ * self-contained on static hosts such as IPFS and SoraFS.
+ */
+export const WHITE_LIST_URL = 'whitelist.json';
+export const NFT_BLACK_LIST_URL = 'blacklist.json';
 export const SORAMETRICS_EXPLORER_URL = 'https://sorametrics.org';
 
 const getSorametricsLink = (fragment: string): string => `${SORAMETRICS_EXPLORER_URL.replace(/\/+$/, '')}/${fragment}`;

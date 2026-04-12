@@ -1,7 +1,7 @@
 import { PageNames } from '@/consts';
 
 /**
- * Keeps the app disclaimer auto-visible only on the swap route until the user accepts it.
+ * Keeps the first-launch app disclaimer scoped to the swap route until the user accepts it.
  * After acceptance, the current visibility is preserved so manual open/close still works.
  */
 export function resolveDisclaimerVisibilityOnRouteChange(

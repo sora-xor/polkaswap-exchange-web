@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
 import { Subject } from 'rxjs';
-import { computed, defineComponent, h, nextTick, ref } from 'vue';
+import { computed, defineComponent, h, nextTick, reactive, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -30,12 +30,17 @@ const setToValueMock = vi.fn((value: string) => {
   toValueRef.value = value;
 });
 
+const isLoggedInRef = ref(false);
+const nodeIsConnectedRef = ref(true);
+const connectSoraWalletMock = vi.fn();
 const quoteSubscribeMock = vi.fn(() => ({ unsubscribe: vi.fn() }));
 const getDexesSwapQuoteObservableMock = vi.fn(() => ({ subscribe: quoteSubscribeMock }));
+const checkSwapMock = vi.fn(async () => false);
 const swapUpdateMock = vi.fn(async () => undefined);
 
-const swapStoreMock = {
+const swapStoreMock = reactive({
   swapQuote: null as null,
+  isPathAvailable: false,
   isAvailable: false,
   isExchangeB: false,
   selectedDexId: 0,
@@ -55,14 +60,29 @@ const swapStoreMock = {
     (payload?: {
       quote?: SwapQuoteData['quote'] | null;
       isAvailable?: boolean;
+      isPathAvailable?: boolean;
       liquiditySources?: LiquiditySourceTypes[];
     }) => {
-      const { quote = null, isAvailable = false, liquiditySources = [] } = payload ?? {};
+      if (!payload) {
+        swapStoreMock.swapQuote = null;
+        swapStoreMock.isAvailable = false;
+        swapStoreMock.isPathAvailable = false;
+        swapStoreMock.liquiditySources = [];
+        return;
+      }
+
+      const { quote = null, isAvailable = false, liquiditySources = [] } = payload;
       swapStoreMock.swapQuote = quote as any;
       swapStoreMock.isAvailable = isAvailable;
+      if ('isPathAvailable' in payload) {
+        swapStoreMock.isPathAvailable = payload.isPathAvailable ?? false;
+      }
       swapStoreMock.liquiditySources = liquiditySources;
     }
   ),
+  setPathAvailability: vi.fn((flag = false) => {
+    swapStoreMock.isPathAvailable = flag;
+  }),
   setExchangeB: vi.fn((flag: boolean) => {
     swapStoreMock.isExchangeB = flag;
   }),
@@ -73,7 +93,7 @@ const swapStoreMock = {
     tokenToRef.value = from;
   }),
   reset: vi.fn(),
-};
+});
 
 vi.mock('@wallet', () => ({
   api: {
@@ -81,7 +101,11 @@ vi.mock('@wallet', () => ({
       update: swapUpdateMock,
       execute: vi.fn(),
       getDexesSwapQuoteObservable: getDexesSwapQuoteObservableMock,
+      checkSwap: checkSwapMock,
       getResultRpc: vi.fn(),
+    },
+    dex: {
+      publicDexes: [],
     },
   },
   WALLET_CONSTS: {},
@@ -145,8 +169,8 @@ vi.mock('@/stores/assets', () => ({
 
 vi.mock('@/composables/useInternalConnect', () => ({
   useInternalConnect: () => ({
-    isLoggedIn: computed(() => false),
-    connectSoraWallet: vi.fn(),
+    isLoggedIn: computed(() => isLoggedInRef.value),
+    connectSoraWallet: connectSoraWalletMock,
   }),
 }));
 
@@ -170,6 +194,9 @@ vi.mock('@/composables/useTransaction', () => ({
   useTransaction: () => ({
     loading: ref(false),
     withApi: async (handler: () => Promise<void>) => {
+      await handler();
+    },
+    withChainApi: async (_apiRef: unknown, handler: () => Promise<void>) => {
       await handler();
     },
     withNotifications: async (handler: () => Promise<void>) => {
@@ -202,7 +229,12 @@ vi.mock('@/stores/settings', () => ({
     },
     slippageTolerance: '0.1',
     debugEnabled: false,
-    nodeIsConnected: true,
+    get nodeIsConnected() {
+      return nodeIsConnectedRef.value;
+    },
+    appConnection: {
+      connection: {},
+    },
   }),
 }));
 
@@ -227,7 +259,7 @@ const mountWidget = async () => {
   return mount(module.default, {
     global: {
       stubs: {
-        's-button': { template: '<button><slot /></button>' },
+        's-button': { template: '<button v-bind="$attrs"><slot /></button>' },
         's-icon': { template: '<i></i>' },
       },
       directives: {
@@ -274,15 +306,21 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     setToValueMock.mockClear();
     getDexesSwapQuoteObservableMock.mockClear();
     quoteSubscribeMock.mockClear();
+    checkSwapMock.mockClear();
     swapUpdateMock.mockClear();
     swapStoreMock.setSubscriptionPayload.mockClear();
+    swapStoreMock.setPathAvailability.mockClear();
     swapStoreMock.updateSubscriptions.mockClear();
     swapStoreMock.resetSubscriptions.mockClear();
     swapStoreMock.reset.mockClear();
     swapStoreMock.swapQuote = null;
+    swapStoreMock.isPathAvailable = false;
     swapStoreMock.isAvailable = false;
     swapStoreMock.isExchangeB = false;
     swapStoreMock.liquiditySources = [];
+    isLoggedInRef.value = false;
+    nodeIsConnectedRef.value = true;
+    connectSoraWalletMock.mockClear();
   });
 
   it('refreshes swap configuration on mount and subscribes when token pair becomes selected', async () => {
@@ -424,6 +462,102 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     expect(feeInfoLine.exists()).toBe(true);
     expect(feeInfoLine.attributes('data-label')).toBe('networkFeeText');
     expect(feeInfoLine.attributes('data-label-tooltip')).toBe('networkFeeTooltipText');
+
+    wrapper.unmount();
+  });
+
+  it('renders pair creation errors outside the confirm button', async () => {
+    isLoggedInRef.value = true;
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+    checkSwapMock.mockResolvedValue(false);
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const confirmButton = wrapper.get('[data-test-name="confirmSwap"]');
+    const pairStatus = wrapper.get('[data-test-name="swapPairStatus"]');
+
+    expect(confirmButton.text()).toBe('buttons.enterAmount');
+    expect(pairStatus.text()).toContain('pairIsNotCreated');
+    expect(confirmButton.text()).not.toContain('pairIsNotCreated');
+
+    wrapper.unmount();
+  });
+
+  it('does not render pair creation errors for existing swap paths', async () => {
+    isLoggedInRef.value = true;
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+    fromValueRef.value = '1';
+    checkSwapMock.mockResolvedValue(true);
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const confirmButton = wrapper.get('[data-test-name="confirmSwap"]');
+
+    expect(confirmButton.text()).not.toContain('pairIsNotCreated');
+    expect(wrapper.find('[data-test-name="swapPairStatus"]').exists()).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it('refreshes swap balance subscriptions after login on the open swap page', async () => {
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    swapStoreMock.updateSubscriptions.mockClear();
+    swapStoreMock.resetSubscriptions.mockClear();
+
+    isLoggedInRef.value = true;
+    await nextTick();
+    await flushPromises();
+
+    expect(swapStoreMock.updateSubscriptions).toHaveBeenCalledTimes(1);
+    expect(swapStoreMock.resetSubscriptions).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('waits for a live node connection before subscribing or showing pair errors', async () => {
+    isLoggedInRef.value = true;
+    nodeIsConnectedRef.value = false;
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    expect(getDexesSwapQuoteObservableMock).not.toHaveBeenCalled();
+    expect(checkSwapMock).not.toHaveBeenCalled();
+    expect(wrapper.find('[data-test-name="swapPairStatus"]').exists()).toBe(false);
+
+    nodeIsConnectedRef.value = true;
+    await nextTick();
+    await flushPromises();
+
+    expect(getDexesSwapQuoteObservableMock).toHaveBeenCalledWith('0xfrom', '0xto');
+    expect(checkSwapMock).toHaveBeenCalled();
 
     wrapper.unmount();
   });

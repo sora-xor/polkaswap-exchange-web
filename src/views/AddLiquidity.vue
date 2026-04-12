@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 
 import { Components } from '@/consts';
@@ -76,7 +75,7 @@ onMounted(async () => {
   await withParentLoading(async () => {
     parseCurrentRoute();
 
-    const firstAddress = isValidRoute.value && firstRouteAddress.value ? firstRouteAddress.value : XOR.address;
+    const firstAddress = isValidRoute.value && firstRouteAddress.value ? firstRouteAddress.value : '';
     const secondAddress = isValidRoute.value && secondRouteAddress.value ? secondRouteAddress.value : '';
 
     await setDataFromLiquidity({ firstAddress, secondAddress });

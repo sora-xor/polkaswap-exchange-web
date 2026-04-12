@@ -72,7 +72,7 @@
       </template>
     </s-form>
 
-    <select-token
+    <SelectToken
       is-add-liquidity
       append-to-body
       v-model:visible="showSelectTokenDialog"
@@ -80,8 +80,8 @@
       :asset="isFirstTokenSelected ? secondToken : firstToken"
       :is-first-token-selected="isFirstTokenSelected"
       :disabled-custom="isFirstTokenSelected"
-      @select="selectToken"
-    ></select-token>
+      @select="handleSelectToken"
+    ></SelectToken>
 
     <add-liquidity-confirm
       v-model:visible="confirmDialogVisible"
@@ -314,7 +314,7 @@ const openSelectTokenDialog = (isFirst: boolean) => {
   showSelectTokenDialog.value = true;
 };
 
-const selectToken = async (token: AccountAsset) => {
+const handleSelectToken = async (token: AccountAsset) => {
   const address = token?.address;
   if (!address) return;
 

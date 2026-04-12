@@ -34,7 +34,9 @@ const buildInitialState = (): VaultState => ({
   collateralsSubscription: null,
   accountVaultIdsSubscription: null,
   accountVaults: [],
+  accountVaultsLoaded: false,
   closedAccountVaults: [],
+  closedAccountVaultsLoaded: false,
   accountVaultsSubscription: null,
   collateralAddress: XOR.address,
   debtAddress: KUSD.address,
@@ -179,16 +181,20 @@ export const useVaultStore = defineStore('vault-legacy', {
     },
     async fetchClosedVaults(): Promise<void> {
       const walletStore = useWalletStore();
+      this.closedAccountVaultsLoaded = false;
 
       try {
         this.closedAccountVaults = [...(await fetchClosedVaults(walletStore.address))];
       } catch {
         this.closedAccountVaults = [];
+      } finally {
+        this.closedAccountVaultsLoaded = true;
       }
     },
     async subscribeOnAccountVaults(): Promise<void> {
       this.accountVaultIdsSubscription = unsubscribe(this.accountVaultIdsSubscription);
       this.accountVaultsSubscription = unsubscribe(this.accountVaultsSubscription);
+      this.accountVaultsLoaded = false;
 
       await this.fetchClosedVaults();
 
@@ -198,20 +204,27 @@ export const useVaultStore = defineStore('vault-legacy', {
         this.accountVaultIdsSubscription = api.kensetsu.subscribeOnAccountVaultIds().subscribe((ids) => {
           this.accountVaultsSubscription = unsubscribe(this.accountVaultsSubscription);
 
-          this.accountVaultsSubscription = api.kensetsu.subscribeOnVaults(ids).subscribe((vaults) => {
-            const prevVaultsLength = this.accountVaults.length;
-            this.accountVaults = [...vaults];
+          try {
+            this.accountVaultsSubscription = api.kensetsu.subscribeOnVaults(ids).subscribe((vaults) => {
+              const prevVaultsLength = this.accountVaults.length;
+              this.accountVaults = [...vaults];
+              this.accountVaultsLoaded = true;
 
-            if (firstExecution) {
-              firstExecution = false;
-            } else if (prevVaultsLength !== vaults.length) {
-              delay(INDEXER_DELAY_MS).then(() => this.fetchClosedVaults());
-            }
-          });
+              if (firstExecution) {
+                firstExecution = false;
+              } else if (prevVaultsLength !== vaults.length) {
+                delay(INDEXER_DELAY_MS).then(() => this.fetchClosedVaults());
+              }
+            });
+          } catch {
+            this.accountVaultsLoaded = true;
+            this.accountVaults = [];
+          }
         });
       } catch {
         this.accountVaultIdsSubscription = unsubscribe(this.accountVaultIdsSubscription);
         this.accountVaultsSubscription = unsubscribe(this.accountVaultsSubscription);
+        this.accountVaultsLoaded = true;
         this.accountVaults = [];
       }
     },
@@ -330,6 +343,9 @@ export const useVaultStore = defineStore('vault-legacy', {
       this.averageCollateralPriceSubscriptions = {};
       this.collaterals = {};
       this.accountVaults = [];
+      this.accountVaultsLoaded = false;
+      this.closedAccountVaults = [];
+      this.closedAccountVaultsLoaded = false;
       this.averageCollateralPrices = { ...defaultAverageCollateralPrices };
       this.stablecoinInfosSubscription = unsubscribe(this.stablecoinInfosSubscription);
     },

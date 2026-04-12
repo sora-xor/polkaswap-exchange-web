@@ -1,10 +1,13 @@
 import { BridgeChildPages, PageNames } from '@/consts';
+import { getReferralActionParam } from '@/router/guards/referralAction';
 
 import type { Nullable } from '@/types/common';
 
 type RedirectDecision = {
   name: PageNames;
   callNext: boolean;
+  path?: string;
+  params?: Record<string, string>;
 };
 
 type InvitationDecision = {
@@ -74,5 +77,30 @@ export const resolveAuthRedirect = ({
   return {
     name: target,
     callNext: true,
+    path: target === PageNames.Bridge ? '/bridge/' : undefined,
+  };
+};
+
+export const resolveReferralActionRedirect = ({
+  current,
+  allowNavigation,
+}: {
+  current: PageNames;
+  allowNavigation: boolean;
+}): RedirectDecision | undefined => {
+  if (allowNavigation) {
+    return undefined;
+  }
+
+  if (current !== PageNames.ReferralBonding && current !== PageNames.ReferralUnbonding) {
+    return undefined;
+  }
+
+  return {
+    name: PageNames.ReferralProgram,
+    callNext: true,
+    params: {
+      referrerAddress: getReferralActionParam(current),
+    },
   };
 };

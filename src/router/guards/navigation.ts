@@ -1,5 +1,11 @@
 import { PageNames } from '@/consts';
-import { resolveAuthRedirect, resolveInvitationDecision, shouldResetBridgeHistory } from '@/router/guards/decisions';
+import {
+  resolveAuthRedirect,
+  resolveInvitationDecision,
+  resolveReferralActionRedirect,
+  shouldResetBridgeHistory,
+} from '@/router/guards/decisions';
+import { consumePendingReferralActionNavigation, isReferralActionPage } from '@/router/guards/referralAction';
 
 import type { Nullable } from '@/types/common';
 import type { NavigationGuardWithThis, RouteLocationNormalized } from 'vue-router';
@@ -43,12 +49,16 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
     const isInvitationRoute = hasMetaFlag(to, 'isInvitationRoute');
     const requiresAuth = hasMetaFlag(to, 'requiresAuth');
 
-    const setRoute = (name: PageNames, shouldNavigate = true) => {
-      const params = { prev, current: name };
-      services.routerStore.setRoute(params);
-      services.syncRoute(params);
+    const setRoute = (name: PageNames, shouldNavigate = true, routeParams?: Record<string, string>, routePath?: string) => {
+      const routeState = { prev, current: name };
+      services.routerStore.setRoute(routeState);
+      services.syncRoute(routeState);
       if (shouldNavigate) {
-        next({ name });
+        if (routePath) {
+          next({ path: routePath });
+        } else {
+          next(routeParams ? { name, params: routeParams } : { name });
+        }
       } else {
         next();
       }
@@ -76,7 +86,27 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
     }
 
     if (invitationDecision.redirect) {
-      setRoute(invitationDecision.redirect.name, invitationDecision.redirect.callNext);
+      setRoute(
+        invitationDecision.redirect.name,
+        invitationDecision.redirect.callNext,
+        invitationDecision.redirect.params,
+        invitationDecision.redirect.path
+      );
+      return;
+    }
+
+    const referralActionRedirect = resolveReferralActionRedirect({
+      current,
+      allowNavigation: isReferralActionPage(current) ? consumePendingReferralActionNavigation(current) : false,
+    });
+
+    if (referralActionRedirect) {
+      setRoute(
+        referralActionRedirect.name,
+        referralActionRedirect.callNext,
+        referralActionRedirect.params,
+        referralActionRedirect.path
+      );
       return;
     }
 
@@ -87,7 +117,7 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
     });
 
     if (authRedirect) {
-      setRoute(authRedirect.name, authRedirect.callNext);
+      setRoute(authRedirect.name, authRedirect.callNext, authRedirect.params, authRedirect.path);
       return;
     }
 
