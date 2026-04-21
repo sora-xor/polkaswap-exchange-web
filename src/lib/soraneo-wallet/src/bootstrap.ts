@@ -1,5 +1,5 @@
 import { resolveGlobalPinia } from '@/plugins/pinia';
-import { useRouterStore } from '@/stores/router';
+import { syncWalletCurrentRoute } from '@/platform/wallet/navigation';
 import { useWalletStore } from '@/stores/wallet';
 
 import { addGDriveWalletLocally } from './services/google/wallet';
@@ -138,9 +138,7 @@ const checkActiveAccount = async (): Promise<void> => {
   if (!walletStore) return;
 
   await walletStore.checkWalletAvailability();
-
-  const routerStore = useRouterStore(resolveGlobalPinia());
-  routerStore.checkCurrentRoute();
+  syncWalletCurrentRoute();
 };
 
 /**

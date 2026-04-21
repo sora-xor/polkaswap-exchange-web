@@ -1,66 +1,8 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { computed, defineComponent, h, ref, type Component } from 'vue';
+import { ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ValidatorsListMode } from '@/modules/staking/sora/consts';
-
-const StakingHeaderStub = defineComponent({
-  name: 'StakingHeaderStub',
-  props: {
-    previousPage: { type: String, default: '' },
-  },
-  setup(_, { slots }) {
-    return () => h('header', { class: 'staking-header-stub' }, slots.default?.());
-  },
-});
-
-const SelectValidatorsModeStub = defineComponent({
-  name: 'SelectValidatorsModeStub',
-  emits: ['recommended', 'selected'],
-  setup(_, { emit }) {
-    return () =>
-      h('div', { class: 'validators-mode-stub' }, [
-        h(
-          'button',
-          {
-            class: 'recommended-button',
-            onClick: () => emit('recommended'),
-          },
-          'recommended'
-        ),
-        h(
-          'button',
-          {
-            class: 'selected-button',
-            onClick: () => emit('selected'),
-          },
-          'selected'
-        ),
-      ]);
-  },
-});
-
-const ValidatorsAttentionDialogStub = defineComponent({
-  name: 'ValidatorsAttentionDialogStub',
-  props: {
-    visible: { type: Boolean, default: false },
-    parentLoading: { type: Boolean, default: false },
-  },
-  emits: ['update:visible', 'proceed'],
-  setup(props, { emit }) {
-    return () =>
-      h(
-        'div',
-        {
-          class: 'validators-dialog-stub',
-          'data-visible': String(props.visible),
-          'data-parent-loading': String(props.parentLoading),
-          onClick: () => emit('proceed'),
-        },
-        'dialog'
-      );
-  },
-});
 
 let setValidatorsTypeMock: ReturnType<typeof vi.fn>;
 let routerPushMock: ReturnType<typeof vi.fn>;
@@ -88,18 +30,42 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
-vi.mock('@/modules/staking/router', () => ({
+vi.mock('@/modules/staking/sora/components/StakingHeader.vue', () => ({
   __esModule: true,
-  soraStakingLazyComponent: (name: string): Component => {
-    switch (name) {
-      case 'StakingHeader':
-        return StakingHeaderStub;
-      case 'ValidatorsAttentionDialog':
-        return ValidatorsAttentionDialogStub;
-      case 'SelectValidatorsMode':
-      default:
-        return SelectValidatorsModeStub;
-    }
+  default: {
+    name: 'StakingHeaderStub',
+    props: {
+      previousPage: { type: String, default: '' },
+    },
+    template: '<header class="staking-header-stub"><slot /></header>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/ValidatorsAttentionDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'ValidatorsAttentionDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'proceed'],
+    template:
+      '<div class="validators-dialog-stub" :data-visible="String(visible)" :data-parent-loading="String(parentLoading)" @click="$emit(\'proceed\')">dialog</div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/SelectValidatorsMode.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'SelectValidatorsModeStub',
+    emits: ['recommended', 'selected'],
+    template: `
+      <div class="validators-mode-stub">
+        <button class="recommended-button" @click="$emit('recommended')">recommended</button>
+        <button class="selected-button" @click="$emit('selected')">selected</button>
+      </div>
+    `,
   },
 }));
 
@@ -117,18 +83,11 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-import ValidatorsType from '@/modules/staking/sora/views/ValidatorsType.vue';
+import ValidatorsType from '@/features/staking/pages/SoraValidatorsTypePage.vue';
 
 const mountComponent = (props: Record<string, unknown> = {}) =>
   mount(ValidatorsType, {
     props,
-    global: {
-      components: {
-        StakingHeader: StakingHeaderStub,
-        SelectValidatorsMode: SelectValidatorsModeStub,
-        ValidatorsAttentionDialog: ValidatorsAttentionDialogStub,
-      },
-    },
   });
 
 describe('ValidatorsType.vue', () => {
@@ -142,7 +101,7 @@ describe('ValidatorsType.vue', () => {
     const wrapper = mountComponent();
     await flushPromises();
 
-    await wrapper.findComponent(SelectValidatorsModeStub).vm.$emit('recommended');
+    await wrapper.findComponent({ name: 'SelectValidatorsModeStub' }).vm.$emit('recommended');
     await flushPromises();
 
     expect(setValidatorsTypeMock).toHaveBeenCalledWith(ValidatorsListMode.RECOMMENDED);
@@ -155,7 +114,7 @@ describe('ValidatorsType.vue', () => {
     const wrapper = mountComponent();
     await flushPromises();
 
-    await wrapper.findComponent(SelectValidatorsModeStub).vm.$emit('selected');
+    await wrapper.findComponent({ name: 'SelectValidatorsModeStub' }).vm.$emit('selected');
     await flushPromises();
 
     expect(setValidatorsTypeMock).toHaveBeenCalledWith(ValidatorsListMode.SELECT);
@@ -168,13 +127,13 @@ describe('ValidatorsType.vue', () => {
     const wrapper = mountComponent({ parentLoading: true });
     await flushPromises();
 
-    await wrapper.findComponent(SelectValidatorsModeStub).vm.$emit('recommended');
+    await wrapper.findComponent({ name: 'SelectValidatorsModeStub' }).vm.$emit('recommended');
     await flushPromises();
 
     const dialog = wrapper.find('.validators-dialog-stub');
     expect(dialog.attributes('data-parent-loading')).toBe('true');
 
-    await wrapper.findComponent(ValidatorsAttentionDialogStub).vm.$emit('proceed');
+    await wrapper.findComponent({ name: 'ValidatorsAttentionDialogStub' }).vm.$emit('proceed');
     await flushPromises();
 
     expect(routerPushMock).toHaveBeenCalledWith({ name: 'SelectValidators' });

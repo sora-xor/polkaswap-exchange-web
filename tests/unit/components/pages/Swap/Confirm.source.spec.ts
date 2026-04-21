@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import confirmSource from '@/components/pages/Swap/Confirm.vue?raw';
+import confirmSource from '@/features/swap/components/Confirm.vue?raw';
 
 describe('SwapConfirm source', () => {
   it('keeps the swap confirmation dialog aligned with the production modal shell in light and noir modes', () => {

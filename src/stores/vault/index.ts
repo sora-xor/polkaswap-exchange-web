@@ -1,7 +1,7 @@
 import { FPNumber } from '@sora-substrate/math';
 import { defineStore } from 'pinia';
 import { XOR, DAI, KUSD } from '@sora-substrate/sdk/build/assets/consts';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { useAssetsStore } from '@/stores/assets';
 import { useWalletStore } from '@/stores/wallet';

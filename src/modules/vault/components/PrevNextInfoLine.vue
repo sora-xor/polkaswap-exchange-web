@@ -22,11 +22,12 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { components } from '@/shims/wallet-components';
 
 import { FontSizeRate, FontWeightRate } from '@/consts';
-const FormattedAmount = components.FormattedAmount;
-const InfoLine = components.InfoLine;
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+const FormattedAmount = WalletComponentFormattedAmount;
+const InfoLine = WalletComponentInfoLine;
 
 const props = withDefaults(
   defineProps<{

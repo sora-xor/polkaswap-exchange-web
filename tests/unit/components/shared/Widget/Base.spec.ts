@@ -56,7 +56,7 @@ const InfoLineStub = vi.hoisted(() => ({
   template: '<div class="info-line-stub"><slot /></div>',
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {

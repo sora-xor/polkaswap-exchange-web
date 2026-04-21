@@ -36,19 +36,20 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { useSearchInput } from '@/composables/useSearchInput';
 import { useTranslation } from '@/composables/useTranslation';
 import { Language, Languages } from '@/consts';
 import { useSettingsStore } from '@/stores/settings';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 defineOptions({
   name: 'SelectLanguageDialog',
   components: {
-    DialogBase: components.DialogBase,
-    SearchInput: components.SearchInput,
+    DialogBase: WalletComponentDialogBase,
+    SearchInput: WalletComponentSearchInput,
   },
 });
 

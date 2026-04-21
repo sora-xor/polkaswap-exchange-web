@@ -1,8 +1,8 @@
 import { computed } from 'vue';
 
+import { goTo } from '@/app/router';
 import { PageNames } from '@/consts';
 import pinia from '@/plugins/pinia';
-import { goTo } from '@/router';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
 import { formatAddress } from '@/utils/formatAddress';

@@ -11,20 +11,14 @@
 <script lang="ts" setup>
 import { computed, toRefs, type PropType } from 'vue';
 
-import { Components, ZeroStringValue } from '@/consts';
-import { lazyComponent } from '@/router';
+import StatusBadgeShared from '@/components/shared/StatusBadge.vue';
+import { ZeroStringValue } from '@/consts';
 
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Nullable } from '@/types/common';
-
-defineOptions({
-  components: {
-    StatusBadgeShared: lazyComponent(Components.StatusBadge),
-  },
-});
 
 const props = defineProps({
   liquidity: { type: Object as PropType<Nullable<AccountLiquidity>>, default: null },

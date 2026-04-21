@@ -1,4 +1,4 @@
-import type { SnapshotTypes } from '@/shims/wallet-indexer-types';
+import type { SnapshotTypes } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 export enum Timeframes {
   FIVE_MINUTES = 'FIVE_MINUTES',

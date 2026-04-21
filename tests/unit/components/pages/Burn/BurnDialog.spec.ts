@@ -55,41 +55,42 @@ const formattedAmountMocks = vi.hoisted(() => {
   };
 });
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBaseStub',
-        props: {
-          visible: {
-            type: Boolean,
-            default: false,
-          },
-        },
-        emits: ['update:visible'],
-        template: '<div><slot /><slot name="footer" /></div>',
-      },
-      InfoLine: {
-        name: 'InfoLineStub',
-        template: '<div class="info-line"><slot /></div>',
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBaseStub',
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
       },
     },
-    api: {
-      assets: {
-        burn: walletMocks.burn,
-      },
-    },
-  });
-});
+    emits: ['update:visible'],
+    template: '<div><slot /><slot name="footer" /></div>',
+  },
+}));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: {
+    name: 'InfoLineStub',
+    template: '<div class="info-line"><slot /></div>',
+  },
+}));
+
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
+  default: {
     name: 'TokenInputStub',
     props: ['modelValue'],
     emits: ['update:modelValue'],
     template: '<div class="token-input-stub"><slot /></div>',
-  }),
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    assets: {
+      burn: walletMocks.burn,
+    },
+  },
 }));
 
 vi.mock('@/stores/settings', () => ({

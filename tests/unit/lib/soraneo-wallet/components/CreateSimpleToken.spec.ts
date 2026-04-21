@@ -6,16 +6,12 @@ import { describe, expect, it, vi } from 'vitest';
 const navigate = vi.hoisted(() => vi.fn());
 const getCorrectSupply = vi.hoisted(() => vi.fn(() => '100'));
 const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
-
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    navigate,
-  }),
-}));
+const registerAssetMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     isConfirmTxDialogDisabled: false,
+    navigate,
   }),
 }));
 
@@ -53,13 +49,13 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
           decimals: 18,
         },
       ],
-      register: vi.fn(),
+      register: registerAssetMock,
     },
   },
 }));
 
 import CreateSimpleToken from '@/lib/soraneo-wallet/src/components/CreateSimpleToken.vue';
-import { Step } from '@/lib/soraneo-wallet/src/consts';
+import { RouteNames, Step } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet CreateSimpleToken', () => {
   it('routes through the fee warning step when the next transaction would fail the fee check', async () => {
@@ -96,5 +92,22 @@ describe('Wallet CreateSimpleToken', () => {
     expect(state.showFee.value).toBe(true);
     expect(emit).toHaveBeenNthCalledWith(1, 'showHeader');
     expect(emit).toHaveBeenNthCalledWith(2, 'stepChange', Step.ConfirmSimpleToken);
+  });
+
+  it('navigates back to wallet after confirming token creation through the wallet store boundary', async () => {
+    const emit = vi.fn();
+    const state = (CreateSimpleToken as any).setup(
+      { step: Step.ConfirmSimpleToken },
+      { attrs: {}, emit, expose: vi.fn(), slots: {} }
+    );
+
+    state.tokenSymbol.value = 'TKN';
+    state.tokenSupply.value = '100';
+    state.tokenName.value = 'Token';
+
+    await state.onConfirm();
+
+    expect(registerAssetMock).toHaveBeenCalledWith('TKN', 'Token', '100', false);
+    expect(navigate).toHaveBeenCalledWith({ name: RouteNames.Wallet });
   });
 });

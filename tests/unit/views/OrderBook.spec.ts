@@ -5,7 +5,7 @@ import { BreakpointClass } from '@/consts/layout';
 import { computed, defineComponent, h, reactive, ref } from 'vue';
 
 const usePiniaTelemetryMock = vi.fn();
-const goToMock = vi.fn();
+const pushMock = vi.fn();
 const orderBookStoreStub = { $id: 'order-book-store-stub' };
 
 const settingsStoreStub = reactive({
@@ -84,7 +84,7 @@ vi.mock('@/composables/useOrderBookManagement', () => ({
   }),
 }));
 
-vi.mock('@/composables/useSelectedTokensRoute', () => ({
+vi.mock('@/shared/navigation/useSelectedTokensRoute', () => ({
   useSelectedTokensRoute: (handler: TokensChangeHandler) => {
     tokensChangeHandler = handler;
     return {
@@ -97,6 +97,16 @@ vi.mock('@/composables/useSelectedTokensRoute', () => ({
   },
 }));
 
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual<typeof import('vue-router')>('vue-router');
+  return {
+    ...actual,
+    useRouter: () => ({
+      push: (...args: unknown[]) => pushMock(...args),
+    }),
+  };
+});
+
 vi.mock('@/composables/useLoading', () => ({
   useLoading: () => ({
     withApi: async (cb: () => Promise<void> | void) => {
@@ -105,26 +115,69 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  goTo: (...args: unknown[]) => goToMock(...args),
-  lazyComponent: () =>
-    defineComponent({
-      name: 'LazyOrderBookStub',
-      setup(_props, { slots }) {
-        return () => h('div', { class: 'lazy-order-book-stub' }, slots.default?.());
-      },
-    }),
+vi.mock('@/components/pages/OrderBook/BookWidget.vue', () => ({
+  default: defineComponent({
+    name: 'BookWidget',
+    setup(_props, { slots }) {
+      return () => h('div', { class: 'book-widget-stub' }, slots.default?.());
+    },
+  }),
+}));
+
+vi.mock('@/components/pages/OrderBook/SetLimitOrderWidget.vue', () => ({
+  default: defineComponent({
+    name: 'SetLimitOrderWidget',
+    setup(_props, { slots }) {
+      return () => h('div', { class: 'set-limit-order-widget-stub' }, slots.default?.());
+    },
+  }),
+}));
+
+vi.mock('@/components/pages/OrderBook/HistoryOrderWidget.vue', () => ({
+  default: defineComponent({
+    name: 'HistoryOrderWidget',
+    setup(_props, { slots }) {
+      return () => h('div', { class: 'history-order-widget-stub' }, slots.default?.());
+    },
+  }),
+}));
+
+vi.mock('@/components/pages/OrderBook/BookChartsWidget.vue', () => ({
+  default: defineComponent({
+    name: 'BookChartsWidget',
+    setup(_props, { slots }) {
+      return () => h('div', { class: 'book-charts-widget-stub' }, slots.default?.());
+    },
+  }),
+}));
+
+vi.mock('@/components/pages/OrderBook/MarketTradesWidget.vue', () => ({
+  default: defineComponent({
+    name: 'MarketTradesWidget',
+    setup(_props, { slots }) {
+      return () => h('div', { class: 'market-trades-widget-stub' }, slots.default?.());
+    },
+  }),
+}));
+
+vi.mock('@/components/pages/OrderBook/Dialogs/CustomisePage.vue', () => ({
+  default: defineComponent({
+    name: 'CustomisePageWidget',
+    setup(_props, { slots }) {
+      return () => h('div', { class: 'customise-page-widget-stub' }, slots.default?.());
+    },
+  }),
 }));
 
 let OrderBookView: any;
 
 beforeAll(async () => {
-  OrderBookView = (await import('@/views/OrderBook.vue')).default;
+  OrderBookView = (await import('@/features/misc/pages/OrderBookPage.vue')).default;
 });
 
 beforeEach(() => {
   usePiniaTelemetryMock.mockClear();
-  goToMock.mockClear();
+  pushMock.mockClear();
   setCurrentOrderBookMock.mockReset();
   getOrderBooksInfoMock.mockClear();
   subscribeToOrderBookStatsMock.mockClear();
@@ -143,6 +196,7 @@ beforeEach(() => {
   walletStoreStub.assetsDataTable = {
     'addr-1': { address: 'addr-1', symbol: 'AAA' },
   };
+  settingsStoreStub.orderBookEnabled = true;
 });
 
 describe('OrderBookView telemetry', () => {
@@ -248,6 +302,17 @@ describe('OrderBookView telemetry', () => {
     await flushPromises();
 
     expect(parseCurrentRouteMock).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
+  it('redirects to swap when the order-book feature is disabled', async () => {
+    settingsStoreStub.orderBookEnabled = false;
+
+    const wrapper = mount(OrderBookView);
+    await flushPromises();
+
+    expect(pushMock).toHaveBeenCalledWith({ name: PageNames.Swap });
 
     wrapper.unmount();
   });

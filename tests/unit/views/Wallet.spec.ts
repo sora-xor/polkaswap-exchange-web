@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick, reactive } from 'vue';
 import { PageNames } from '@/consts';
 
-const checkCurrentRouteMock = vi.fn();
+const syncWalletRouteMock = vi.fn();
 const navigateMock = vi.fn();
 const pushMock = vi.fn(async () => undefined);
 const backMock = vi.fn();
@@ -16,26 +16,15 @@ const walletStoreMock = reactive<{
   isLoggedIn: boolean;
   whitelist: Record<string, unknown>;
   whitelistIdsBySymbol: Record<string, string>;
+  syncWalletRoute: () => void;
+  navigate: (payload: { name: string; params?: Record<string, unknown> }) => void;
 }>({
   isLoggedIn: false,
   whitelist: {},
   whitelistIdsBySymbol: {},
+  syncWalletRoute: syncWalletRouteMock,
+  navigate: navigateMock,
 });
-
-vi.mock('@/composables/useTranslation', () => ({
-  __esModule: true,
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
-}));
-
-vi.mock('@/stores/router', () => ({
-  __esModule: true,
-  useRouterStore: () => ({
-    checkCurrentRoute: checkCurrentRouteMock,
-    navigate: navigateMock,
-  }),
-}));
 
 vi.mock('@/stores/wallet', () => ({
   __esModule: true,
@@ -74,7 +63,7 @@ vi.mock('vue-router', () => ({
   onBeforeRouteUpdate: vi.fn(),
 }));
 
-const WalletView = (await import('@/views/Wallet.vue')).default;
+const WalletView = (await import('@/features/wallet/pages/WalletPage.vue')).default;
 
 describe('Wallet view route syncing', () => {
   const mountWalletView = () =>
@@ -93,7 +82,7 @@ describe('Wallet view route syncing', () => {
     });
 
   beforeEach(() => {
-    checkCurrentRouteMock.mockClear();
+    syncWalletRouteMock.mockClear();
     navigateMock.mockClear();
     pushMock.mockClear();
     backMock.mockClear();
@@ -112,7 +101,7 @@ describe('Wallet view route syncing', () => {
   it('forces wallet connection route check on mount', () => {
     mountWalletView();
 
-    expect(checkCurrentRouteMock).toHaveBeenCalledTimes(1);
+    expect(syncWalletRouteMock).toHaveBeenCalledTimes(1);
   });
 
   it('prepares swap store state and navigates to swap when wallet emits swap', async () => {

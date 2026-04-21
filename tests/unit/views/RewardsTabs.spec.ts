@@ -8,14 +8,11 @@ const settingsStoreMock = {
 };
 
 vi.mock('vue-router', () => ({
-  useRoute: () => routeMock,
-}));
-
-vi.mock('@/router', () => ({
   __esModule: true,
-  default: {
+  useRoute: () => routeMock,
+  useRouter: () => ({
     push: pushMock,
-  },
+  }),
 }));
 
 vi.mock('@/stores/settings', () => ({
@@ -30,7 +27,7 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-const RewardsTabsView = (await import('@/views/RewardsTabs.vue')).default;
+const RewardsTabsView = (await import('@/features/rewards/pages/RewardsTabsPage.vue')).default;
 
 const mountView = (props: Record<string, unknown> = {}, attrs: Record<string, unknown> = {}) =>
   mount(RewardsTabsView, {

@@ -2,7 +2,7 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { gql } from '@urql/core';
 
 import { IndexerType } from '@/consts';
-import { getCurrentIndexer, type SubqueryIndexer, type SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, type SubqueryIndexer, type SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { AccountPointSystems, AccountPointsVersioned, AccountPointsCalculation } from '@/types/pointSystem';
 
 import type {
@@ -11,7 +11,7 @@ import type {
   HistoryElement,
   HistoryElementEthBridgeIncoming,
   HistoryElementEthBridgeOutgoing,
-} from '@/shims/wallet-indexer-types';
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type BridgeHistoryElement = HistoryElementEthBridgeIncoming | HistoryElementEthBridgeOutgoing;
 type CountResponse = {

@@ -18,8 +18,8 @@
 <script setup lang="ts">
 import { computed, ref, type Component } from 'vue';
 
+import { navigateWallet, type WalletNavigationTarget } from '@/platform/wallet/navigation';
 import { useWalletTranslation } from '../../composables/useWalletTranslation';
-import { useRouterStore } from '@/stores/router';
 
 import { RouteNames, AddAssetTabs } from '../../consts';
 import WalletBase from '../WalletBase.vue';
@@ -27,10 +27,7 @@ import WalletBase from '../WalletBase.vue';
 import AddAssetNFT from './AddAssetNftTab.vue';
 import AddAssetToken from './AddAssetTokenTab.vue';
 
-import type { Route } from '@/stores/router/types';
-
 const { t, TranslationConsts } = useWalletTranslation();
-const routerStore = useRouterStore();
 const currentTab = ref<AddAssetTabs>(AddAssetTabs.Token);
 const showTabs = ref(true);
 const tokenDetailsPageOpened = ref(false);
@@ -54,8 +51,8 @@ function changeVisibility(): void {
   tokenDetailsPageOpened.value = true;
 }
 
-function navigate(options: Route): void {
-  routerStore.navigate(options);
+function navigate(options: WalletNavigationTarget): void {
+  navigateWallet(options);
 }
 
 function handleBack(): void {

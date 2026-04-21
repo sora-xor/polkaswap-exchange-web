@@ -1,3 +1,4 @@
+import { setAppRouterLoading } from '@/app/navigation/loading';
 import { useRouterStore } from '@/stores/router';
 
 import type { RouterParams } from '@/stores/router/types';
@@ -9,7 +10,7 @@ const warn = (message: string): void => {
   console.warn(`[router-adapter] ${message}`);
 };
 
-export const syncLegacyRoute = (params: RouterParams): void => {
+export const syncRoute = (params: RouterParams): void => {
   const routerStore = useRouterStore();
 
   if (typeof routerStore.setRoute === 'function') {
@@ -25,7 +26,9 @@ export const syncLegacyRoute = (params: RouterParams): void => {
   warn('router.setRoute missing');
 };
 
-export const setLegacyRouterLoading = (loading: boolean): void => {
+export const setRouterLoading = (loading: boolean): void => {
+  setAppRouterLoading(loading);
+
   const routerStore = useRouterStore();
 
   if (typeof routerStore.setLoading === 'function') {

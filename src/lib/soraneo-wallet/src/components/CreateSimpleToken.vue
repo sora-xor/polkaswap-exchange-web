@@ -79,7 +79,7 @@ import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, ref } from 'vue';
 
-import { useRouterStore } from '@/stores/router';
+import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
 import { useWalletStore } from '@/stores/wallet';
 
 import { useNetworkFeeWarning } from '../composables/useNetworkFeeWarning';
@@ -92,8 +92,6 @@ import AccountConfirmationOption from './Account/Settings/ConfirmationOption.vue
 import InfoLine from './InfoLine.vue';
 import NetworkFeeWarningDialog from './NetworkFeeWarning.vue';
 import WalletFee from './WalletFee.vue';
-
-import type { Route } from '@/stores/router/types';
 
 const props = withDefaults(
   defineProps<{
@@ -110,7 +108,6 @@ const emit = defineEmits<{
   stepChange: [step: Step];
 }>();
 
-const routerStore = useRouterStore();
 const walletStore = useWalletStore();
 const { t, withNotifications, loading } = useTransaction();
 const { formatStringValue, getCorrectSupply, getFPNumberFromCodec } = useNumberFormatter();
@@ -141,8 +138,8 @@ const hasEnoughXor = computed(() => {
   return FPNumber.gte(fpAccountXor, fee.value);
 });
 
-function navigate(options: Route): void {
-  routerStore.navigate(options);
+function navigate(options: WalletNavigationTarget): void {
+  walletStore.navigate(options);
 }
 
 async function registerAsset(): Promise<void> {

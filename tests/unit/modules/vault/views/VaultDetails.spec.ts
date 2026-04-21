@@ -3,7 +3,6 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, h, nextTick, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { VaultPageNames } from '@/modules/vault/consts';
 import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
 
 const routerPushSpy = vi.fn();
@@ -87,7 +86,7 @@ const storeStub = {
 
 const slotStub = createSlotPassthroughStub();
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -101,15 +100,6 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/router', () => ({
-  __esModule: true,
-  default: {
-    push: routerPushSpy,
-    back: routerBackSpy,
-  },
-  lazyComponent: () => createSlotPassthroughStub(),
-}));
-
 vi.mock('vue-router', () => ({
   __esModule: true,
   useRoute: () => ({
@@ -119,11 +109,6 @@ vi.mock('vue-router', () => ({
     push: routerPushSpy,
     back: routerBackSpy,
   }),
-}));
-
-vi.mock('@/modules/vault/router', () => ({
-  __esModule: true,
-  vaultLazyComponent: () => createSlotPassthroughStub(),
 }));
 
 vi.mock('@/stores/wallet', () => ({
@@ -204,7 +189,17 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-const VaultDetails = (await import('@/modules/vault/views/VaultDetails.vue')).default;
+vi.mock('@/modules/vault/components/AddCollateralDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/BorrowMoreDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/CloseVaultDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/LtvProgressBar.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/PositionStatus.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/RepayDebtDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/components/shared/ValueStatusWrapper.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/VaultDetailsHistory.vue', () => ({ __esModule: true, default: slotStub }));
+
+const VaultDetails = (await import('@/features/vault/pages/VaultDetailsPage.vue')).default;
 
 const mountVaultDetails = () =>
   mount(VaultDetails, {

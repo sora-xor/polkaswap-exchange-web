@@ -24,8 +24,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
+import { navigateWallet, type WalletNavigationTarget } from '@/platform/wallet/navigation';
 import { useWalletTranslation } from '../composables/useWalletTranslation';
-import { useRouterStore } from '@/stores/router';
 
 import { TokenTabs, Step, RouteNames } from '../consts';
 
@@ -33,10 +33,7 @@ import CreateNftToken from './CreateNftToken.vue';
 import CreateSimpleToken from './CreateSimpleToken.vue';
 import WalletBase from './WalletBase.vue';
 
-import type { Route } from '@/stores/router/types';
-
 const { t, TranslationConsts } = useWalletTranslation();
-const routerStore = useRouterStore();
 
 const step = ref<Step>(Step.CreateSimpleToken);
 const currentTab = ref<Step>(Step.CreateSimpleToken);
@@ -46,8 +43,8 @@ const createTokenTitle = ref(t('createToken.titleCommon'));
 
 const currentStep = computed(() => step.value);
 
-function navigate(options: Route): void {
-  routerStore.navigate(options);
+function navigate(options: WalletNavigationTarget): void {
+  navigateWallet(options);
 }
 
 function getTabName(tab: TokenTabs): string {

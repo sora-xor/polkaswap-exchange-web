@@ -3,15 +3,15 @@ import { createPinia, setActivePinia } from 'pinia';
 import { defineComponent, h, ref, watch } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AssetOwner from '@/modules/dashboard/views/AssetOwner.vue';
-import type { OwnedAsset } from '@/modules/dashboard/types';
+import AssetOwner from '@/features/dashboard/pages/AssetOwnerPage.vue';
+import type { OwnedAsset } from '@/features/dashboard/types';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 const connectWalletMock = vi.fn();
 const isLoggedInRef = ref(false);
 const assetsStoreRef = ref<OwnedAsset[]>([]);
 const libraryThemeRef = ref<unknown>('light');
-var routerPushMock: ReturnType<typeof vi.fn> | undefined;
+const routerPushMock = vi.fn();
 
 vi.mock('@/composables/useInternalConnect', () => ({
   useInternalConnect: () => ({
@@ -26,7 +26,7 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -38,38 +38,34 @@ vi.mock('@wallet', async () => {
 
 const dialogVisibleRef = ref(false);
 
-vi.mock('@/modules/dashboard/router', () => ({
-  dashboardLazyComponent: () =>
-    defineComponent({
-      name: 'CreateTokenDialogStub',
-      props: {
-        visible: {
-          type: Boolean,
-          default: false,
+vi.mock('@/modules/dashboard/components/CreateTokenDialog.vue', () => ({
+  default: defineComponent({
+    name: 'CreateTokenDialogStub',
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    emits: ['update:visible'],
+    setup(props) {
+      watch(
+        () => props.visible,
+        (value) => {
+          dialogVisibleRef.value = value;
         },
-      },
-      emits: ['update:visible'],
-      setup(props) {
-        watch(
-          () => props.visible,
-          (value) => {
-            dialogVisibleRef.value = value;
-          },
-          { immediate: true }
-        );
-        return () => h('div');
-      },
-    }),
+        { immediate: true }
+      );
+      return () => h('div');
+    },
+  }),
 }));
 
-vi.mock('@/router', () => {
-  routerPushMock = vi.fn();
+vi.mock('vue-router', () => {
   return {
-    __esModule: true,
-    default: {
+    useRouter: () => ({
       push: routerPushMock,
-    },
-    lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
+    }),
   };
 });
 
@@ -119,7 +115,7 @@ describe('AssetOwner.vue', () => {
     assetsStoreRef.value = [];
     libraryThemeRef.value = 'light';
     connectWalletMock.mockClear();
-    routerPushMock?.mockClear();
+    routerPushMock.mockClear();
     dialogVisibleRef.value = false;
   });
 
@@ -167,8 +163,7 @@ describe('AssetOwner.vue', () => {
     exposed.handleOpenAssetDetails(assetsStoreRef.value[0]);
     await wrapper.vm.$nextTick();
 
-    expect(routerPushMock).toBeDefined();
-    expect(routerPushMock!).toHaveBeenCalledWith({
+    expect(routerPushMock).toHaveBeenCalledWith({
       name: 'AssetOwnerDetails',
       params: { asset: '0x01' },
     });

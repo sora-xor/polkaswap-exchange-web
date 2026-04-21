@@ -19,15 +19,15 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import WalletComponentAddressBookInput from '@/lib/soraneo-wallet/src/components/AddressBook/Input.vue';
 
 defineOptions({
   components: {
-    AddressBookInput: components.AddressBookInput,
+    AddressBookInput: WalletComponentAddressBookInput,
   },
 });
 

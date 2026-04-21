@@ -20,7 +20,7 @@ const accountConfirmationOptionStub = vi.hoisted(() => ({
   template: '<div class="account-confirmation-option-stub"></div>',
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {

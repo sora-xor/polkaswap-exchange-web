@@ -1,27 +1,20 @@
 import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      TokenLogo: {
-        name: 'TokenLogoStub',
-        template: '<div class="token-logo-stub" />',
-      },
-      PairTokenLogo: {
-        name: 'PairTokenLogoStub',
-        template: '<div class="pair-token-logo-stub" />',
-      },
-    },
-  });
-});
+const TokenLogoStub = vi.hoisted(() => ({
+  name: 'TokenLogoStub',
+  template: '<div class="token-logo-stub" />',
+}));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  default: TokenLogoStub,
+}));
+
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
+  default: {
     name: 'PairTokenLogoStub',
     template: '<div class="pair-token-logo-stub" />',
-  }),
+  },
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -108,6 +101,14 @@ describe('TokenSelectButton', () => {
     });
 
     expect(wrapper.find('.token-logo-stub').exists()).toBe(true);
+  });
+
+  it('renders the pair logo when two assets are selected', () => {
+    const wrapper = mountComponent({
+      tokens: [{ symbol: 'XOR' }, { symbol: 'VAL' }],
+    });
+
+    expect(wrapper.find('.pair-token-logo-stub').exists()).toBe(true);
   });
 
   it('hides the icon when button is disabled even if icon prop is passed', () => {

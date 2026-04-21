@@ -1,4 +1,4 @@
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 import pinia from '@/plugins/pinia';
 import { useReferralsStore } from '@/stores/referrals';

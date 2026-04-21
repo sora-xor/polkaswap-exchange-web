@@ -12,4 +12,14 @@ describe('TokenSelectButton source', () => {
     expect(tokenSelectButtonSource).not.toContain('token-select-button__content');
     expect(tokenSelectButtonSource).toContain('&--token {');
   });
+
+  it('uses direct component imports instead of the central lazy registry', () => {
+    expect(tokenSelectButtonSource).not.toContain('lazyComponent(');
+    expect(tokenSelectButtonSource).not.toContain('walletComponents.');
+    expect(tokenSelectButtonSource).not.toContain("from '@/router'");
+    expect(tokenSelectButtonSource).toContain("import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';");
+    expect(tokenSelectButtonSource).toContain(
+      "import WalletTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';"
+    );
+  });
 });

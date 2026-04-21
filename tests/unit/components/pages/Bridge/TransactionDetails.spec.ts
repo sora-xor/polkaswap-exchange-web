@@ -32,24 +32,19 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      InfoLine: {
-        name: 'InfoLine',
-        props: ['label', 'labelTooltip', 'value'],
-        template: '<div><slot /></div>',
-      },
-    },
-  });
-});
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: {
+    name: 'InfoLine',
+    props: ['label', 'labelTooltip', 'value'],
+    template: '<div><slot /></div>',
+  },
+}));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/components/shared/TransactionDetails.vue', () => ({
+  default: {
     name: 'TransactionDetails',
     template: '<div><slot /></div>',
-  }),
+  },
 }));
 
 let TransactionDetails: typeof import('@/components/pages/Bridge/TransactionDetails.vue').default;

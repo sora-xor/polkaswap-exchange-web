@@ -1,10 +1,22 @@
 import { describe, expect, it } from 'vitest';
 import { DAI, XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
 
-import { buildRouteTokens, routeIsValid, resolveRouteAddress } from '@/composables/useSelectedTokensRoute';
+import {
+  buildRouteTokens,
+  routeIsValid,
+  resolveRouteAddress,
+  useSelectedTokensRoute as legacyUseSelectedTokensRoute,
+} from '@/composables/useSelectedTokensRoute';
 import { PageNames } from '@/consts';
+import { useSelectedTokensRoute } from '@/shared/navigation/useSelectedTokensRoute';
 
 const PSWAP_ADDRESS = '0x0200050000000000000000000000000000000000000000000000000000000000';
+
+describe('useSelectedTokensRoute compatibility', () => {
+  it('keeps the legacy composable entrypoint aligned with the shared implementation', () => {
+    expect(legacyUseSelectedTokensRoute).toBe(useSelectedTokensRoute);
+  });
+});
 
 describe('resolveRouteAddress', () => {
   it('resolves bundled whitelist symbols even when lookup tables are unavailable', () => {

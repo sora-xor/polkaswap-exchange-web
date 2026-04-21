@@ -152,13 +152,11 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('vue-router', () => ({
   __esModule: true,
-  default: {
-    get push() {
-      return routerPushMock;
-    },
-  },
+  useRouter: () => ({
+    push: routerPushMock,
+  }),
 }));
 
 vi.mock('@/composables/useLoading', () => ({
@@ -176,50 +174,53 @@ vi.mock('@/composables/useInternalConnect', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  const TokenLogoStub = {
+const TokenLogoStub = defineComponent({
+  name: 'TokenLogoStub',
+  props: ['token', 'size', 'class'],
+  template: '<div class="token-logo-stub"></div>',
+});
+
+const InfoLineStub = defineComponent({
+  name: 'InfoLineStub',
+  props: ['label', 'value'],
+  template: '<div class="info-line-stub"></div>',
+});
+
+const FormattedAmountWithFiatValueStub = defineComponent({
+  name: 'FormattedAmountWithFiatValueStub',
+  props: ['value', 'fiatValue'],
+  template: '<div class="formatted-amount-fiat-stub"></div>',
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  __esModule: true,
+  default: {
     name: 'TokenLogoStub',
     props: ['token', 'size', 'class'],
     template: '<div class="token-logo-stub"></div>',
-  };
-  const InfoLineStub = {
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  __esModule: true,
+  default: {
     name: 'InfoLineStub',
     props: ['label', 'value'],
     template: '<div class="info-line-stub"></div>',
-  };
-  const FormattedAmountWithFiatValueStub = {
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue', () => ({
+  __esModule: true,
+  default: {
     name: 'FormattedAmountWithFiatValueStub',
     props: ['value', 'fiatValue'],
     template: '<div class="formatted-amount-fiat-stub"></div>',
-  };
-
-  return await createWalletMock({
-    components: {
-      TokenLogo: TokenLogoStub,
-      InfoLine: InfoLineStub,
-      FormattedAmountWithFiatValue: FormattedAmountWithFiatValueStub,
-    },
-  });
-});
-
-vi.mock('@/modules/staking/router', () => ({
-  __esModule: true,
-  soraStakingLazyComponent: (name: string) => lazyComponentStub(name),
+  },
 }));
 
 vi.mock('@/modules/staking/sora/consts', () => ({
   __esModule: true,
-  SoraStakingComponents: {
-    BackButton: 'BackButton',
-    StakeDialog: 'StakeDialog',
-    ClaimRewardsDialog: 'ClaimRewardsDialog',
-    PendingRewardsDialog: 'PendingRewardsDialog',
-    ValidatorsDialog: 'ValidatorsDialog',
-    WithdrawDialog: 'WithdrawDialog',
-    AllWithdrawsDialog: 'AllWithdrawsDialog',
-    EraCountdown: 'EraCountdown',
-  },
   SoraStakingPageNames: {
     ValidatorsType: 'validators-type',
     Staking: 'staking',
@@ -230,22 +231,106 @@ vi.mock('@/modules/staking/sora/consts', () => ({
   },
 }));
 
-vi.mock('@/consts', async () => {
-  const actual = await vi.importActual<typeof import('@/consts')>('@/consts');
-
-  return {
-    __esModule: true,
-    ...actual,
-    TranslationConsts: {
-      ...(actual.TranslationConsts ?? {}),
-      APY: 'APY',
-    },
-  };
-});
-
-vi.mock('@/indexer/queries/staking/nominators', () => ({
+vi.mock('@/modules/staking/sora/components/BackButton.vue', () => ({
   __esModule: true,
-  fetchData: (...args: unknown[]) => fetchDataMock(...args),
+  default: {
+    name: 'BackButtonStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    template: '<div v-if="visible"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/StakeDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'StakeDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'confirm', 'show-rewards', 'show-all-withdraws'],
+    template: '<div v-if="visible"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/ClaimRewardsDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'ClaimRewardsDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'confirm', 'show-rewards', 'show-all-withdraws'],
+    template: '<div v-if="visible"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/PendingRewardsDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'PendingRewardsDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'confirm', 'show-rewards', 'show-all-withdraws'],
+    template: '<div v-if="visible"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/ValidatorsDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'ValidatorsDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'confirm', 'show-rewards', 'show-all-withdraws'],
+    template: '<div v-if="visible"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/WithdrawDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'WithdrawDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'confirm', 'show-rewards', 'show-all-withdraws'],
+    template: '<div v-if="visible"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/AllWithdrawsDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'AllWithdrawsDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'confirm', 'show-rewards', 'show-all-withdraws'],
+    template: '<div v-if="visible"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/EraCountdown.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'EraCountdownStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    template: '<div><slot /></div>',
+  },
 }));
 
 vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
@@ -278,7 +363,25 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
   }),
 }));
 
-import Overview from '@/modules/staking/sora/views/Overview.vue';
+vi.mock('@/consts', async () => {
+  const actual = await vi.importActual<typeof import('@/consts')>('@/consts');
+
+  return {
+    __esModule: true,
+    ...actual,
+    TranslationConsts: {
+      ...(actual.TranslationConsts ?? {}),
+      APY: 'APY',
+    },
+  };
+});
+
+vi.mock('@/indexer/queries/staking/nominators', () => ({
+  __esModule: true,
+  fetchData: (...args: unknown[]) => fetchDataMock(...args),
+}));
+
+import Overview from '@/features/staking/pages/SoraOverviewPage.vue';
 
 const mountOverview = async () => {
   const wrapper = mount(Overview, {

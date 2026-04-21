@@ -84,4 +84,42 @@ describe('subquery createExplorerClient', () => {
 
     expect(subscriptionHandle).toEqual({ unsubscribe: mocks.disposeMock });
   });
+
+  it('converts plain http endpoints to ws subscriptions', () => {
+    createExplorerClient('http://indexer.example.com/graphql');
+
+    expect(mocks.createWsClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'ws://indexer.example.com/graphql',
+      })
+    );
+  });
+
+  it('preserves websocket endpoints without rewriting them', () => {
+    createExplorerClient('ws://indexer.example.com/graphql');
+
+    expect(mocks.createWsClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'ws://indexer.example.com/graphql',
+      })
+    );
+  });
+
+  it('skips subscriptions for unsupported protocols', () => {
+    const client = createExplorerClient('ftp://indexer.example.com/graphql');
+
+    expect(mocks.createWsClientMock).not.toHaveBeenCalled();
+    expect(mocks.subscriptionExchangeMock).not.toHaveBeenCalled();
+    expect(client.supportsSubscriptions).toBe(false);
+  });
+
+  it('falls back to simple string replacement when URL parsing fails', () => {
+    createExplorerClient('http//broken-endpoint');
+
+    expect(mocks.createWsClientMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'ws//broken-endpoint',
+      })
+    );
+  });
 });

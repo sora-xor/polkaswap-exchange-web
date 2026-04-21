@@ -1,10 +1,10 @@
 import { computed } from 'vue';
 
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { usePoolStore } from '@/stores/pool';
 
-import type { PoolApyObject } from '@/shims/wallet-indexer-types';
+import type { PoolApyObject } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const { getFPNumberFromCodec, Hundred } = useNumberFormatter();
 

@@ -7,7 +7,7 @@ import { PageNames } from '@/consts';
 const {
   routeMock,
   settingsStore,
-  routerStore,
+  routerLoading,
   setMenuCollapsedMock,
   resizeObserverObserveMock,
   resizeObserverDisconnectMock,
@@ -25,9 +25,7 @@ const {
     assetOwnerEnabled: true,
     setMenuCollapsed: vi.fn(),
   },
-  routerStore: {
-    loading: false,
-  },
+  routerLoading: { value: false },
   setMenuCollapsedMock: vi.fn(),
   resizeObserverObserveMock: vi.fn(),
   resizeObserverDisconnectMock: vi.fn(),
@@ -47,8 +45,8 @@ vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => settingsStore,
 }));
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => routerStore,
+vi.mock('@/app/navigation/loading', () => ({
+  appRouterLoading: routerLoading,
 }));
 
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
@@ -102,7 +100,7 @@ class ResizeObserverMock {
 
 describe('AppMenu', () => {
   beforeEach(() => {
-    routerStore.loading = false;
+    routerLoading.value = false;
     settingsStore.menuCollapsed = false;
     settingsStore.faucetUrl = '';
     routeMock.name = PageNames.Swap;
@@ -217,6 +215,14 @@ describe('AppMenu', () => {
     await wrapper.setProps({ visible: false });
 
     expect(wrapper.classes()).not.toContain('visible');
+  });
+
+  it('applies the loading class from the app-owned router loading state', () => {
+    routerLoading.value = true;
+
+    const wrapper = mountComponent();
+
+    expect(wrapper.classes()).toContain('app-menu__loading');
   });
 
   it('tracks sidebar width and clears observer-driven sidebar styles on unmount', () => {

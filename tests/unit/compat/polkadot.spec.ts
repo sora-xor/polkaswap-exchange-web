@@ -20,13 +20,11 @@ describe('compat/polkadot', () => {
   beforeEach(() => {
     walletOverride = createWalletOverride();
     overrideFn = async () => walletOverride!;
-    (globalThis as Record<string, unknown>).__WALLET_MODULE_OVERRIDE = overrideFn;
-    (globalThis as Record<string, unknown>).__WALLET_CORE_OVERRIDE = overrideFn;
+    (globalThis as Record<string, unknown>).__WALLET_RUNTIME_OVERRIDE = overrideFn;
   });
 
   afterEach(() => {
-    delete (globalThis as Record<string, unknown>).__WALLET_MODULE_OVERRIDE;
-    delete (globalThis as Record<string, unknown>).__WALLET_CORE_OVERRIDE;
+    delete (globalThis as Record<string, unknown>).__WALLET_RUNTIME_OVERRIDE;
     walletOverride = undefined;
     overrideFn = undefined;
     vi.resetModules();
@@ -36,16 +34,23 @@ describe('compat/polkadot', () => {
     const compatModule = await import('@/compat/polkadot');
     await compatModule.polkadotReady;
 
-    const { loadWalletCore } = await import('@/utils/walletCore');
-    const walletModule = await loadWalletCore();
-
-    expect(compatModule.ApiPromise).toBe(walletModule.connection?.ApiPromise);
-    expect(compatModule.WsProvider).toBe(walletModule.connection?.WsProvider);
+    expect(compatModule.ApiPromise).toBe(walletOverride?.connection.ApiPromise);
+    expect(compatModule.WsProvider).toBe(walletOverride?.connection.WsProvider);
   });
 
   it('re-exports the decodeAddress helper from the ESM bundle', async () => {
     const compatModule = await import('@/compat/polkadot');
 
     expect(compatModule.decodeAddress).toBe(decodeAddressEsm);
+  });
+
+  it('exposes compatibility getters and the CommonJS alias through the same live object', async () => {
+    const compatModule = await import('@/compat/polkadot');
+    await compatModule.polkadotReady;
+
+    expect(compatModule.polkadotCompat.ApiPromise).toBe(compatModule.ApiPromise);
+    expect(compatModule.polkadotCompat.WsProvider).toBe(compatModule.WsProvider);
+    expect(compatModule.polkadotCompat.decodeAddress).toBe(decodeAddressEsm);
+    expect(compatModule.polkadotCjs).toBe(compatModule.polkadotCompat);
   });
 });

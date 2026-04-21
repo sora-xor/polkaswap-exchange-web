@@ -1,13 +1,13 @@
 import { FPNumber } from '@sora-substrate/math';
 import { VAL, PSWAP } from '@sora-substrate/sdk/build/assets/consts';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { getCurrentIndexer, type SubqueryIndexer, type SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, type SubqueryIndexer, type SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import { useSettingsStore } from '@/stores/settings';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import type { SnapshotTypes, AssetSnapshotEntity, ConnectionQueryResponse } from '@/shims/wallet-indexer-types';
+import type { SnapshotTypes, AssetSnapshotEntity, ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const CIRCULATING_DIFF = {
   [VAL.address]: 33449609.3779,

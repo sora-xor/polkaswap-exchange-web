@@ -39,22 +39,19 @@
 
 <script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
+import TransactionDetails from '@/components/shared/TransactionDetails.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, ZeroStringValue } from '@/consts';
-import { lazyComponent } from '@/router';
+import { ZeroStringValue } from '@/consts';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 defineOptions({
-  components: {
-    TransactionDetails: lazyComponent(Components.TransactionDetails),
-    InfoLine: components.InfoLine,
-  },
+  name: 'BridgeTransactionDetails',
 });
 
 const props = withDefaults(

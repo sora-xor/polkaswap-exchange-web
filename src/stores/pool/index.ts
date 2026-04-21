@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { firstValueFrom } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { getPoolsApyObject, createPoolsApySubscription } from '@/indexer/queries/pool/apy';
 import { useAssetsStore } from '@/stores/assets';
 import { useDemeterFarmingStore } from '@/stores/demeterFarming';
@@ -22,7 +22,7 @@ import type { Nullable } from '@/types/common';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { waitForAccountPair, waitUntil } from '@/utils';
 
-import type { PoolApyObject } from '@/shims/wallet-indexer-types';
+import type { PoolApyObject } from '@/lib/soraneo-wallet/src/services/indexer/types';
 import type { AccountBalance, Asset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLockedPool } from '@sora-substrate/sdk/build/ceresLiquidityLocker/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';

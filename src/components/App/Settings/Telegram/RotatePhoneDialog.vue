@@ -28,15 +28,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
 import { tmaSdkService } from '@/utils/telegram';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 defineOptions({ name: 'RotatePhoneDialog' });
 
-const DialogBase = components.DialogBase;
+const DialogBase = WalletComponentDialogBase;
 
 const { t } = useTranslation();
 const settingsStore = useSettingsStore();

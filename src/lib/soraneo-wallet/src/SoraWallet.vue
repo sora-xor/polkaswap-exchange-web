@@ -16,8 +16,8 @@
 <script setup lang="ts">
 import { computed, type Component } from 'vue';
 
+import { getWalletCurrentRoute } from '@/platform/wallet/navigation';
 import { useLoading } from './composables/useLoading';
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import AddAsset from './components/AddAsset/AddAsset.vue';
@@ -47,7 +47,6 @@ const emit = defineEmits<{
 }>();
 
 const walletStore = useWalletStore();
-const routerStore = useRouterStore();
 const { loading, withApi } = useLoading({
   isWalletLoaded: () => walletStore.isWalletLoaded,
 });
@@ -64,7 +63,7 @@ const routeComponents = {
 } as const satisfies Record<RouteNames, Component>;
 
 const currentRoute = computed<Component>(() => {
-  const routeName = (routerStore.current as RouteNames | null) ?? RouteNames.WalletConnection;
+  const routeName = (getWalletCurrentRoute() as RouteNames | null) ?? RouteNames.WalletConnection;
   return routeComponents[routeName];
 });
 

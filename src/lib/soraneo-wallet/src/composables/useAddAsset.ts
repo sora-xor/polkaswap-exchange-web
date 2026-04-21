@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue';
 
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames } from '../consts';
@@ -8,12 +7,11 @@ import { RouteNames } from '../consts';
 import { useLoading } from './useLoading';
 import { useNotification } from './useNotification';
 
-import type { Route } from '@/stores/router/types';
+import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 
 export function useAddAsset() {
   const walletStore = useWalletStore();
-  const routerStore = useRouterStore();
   const loadingApi = useLoading();
   const notification = useNotification();
   const { withLoading } = loadingApi;
@@ -31,8 +29,8 @@ export function useAddAsset() {
 
   const addAsset = (address: string) => walletStore.addAsset(address);
 
-  const navigate = (options: Route): void => {
-    routerStore.navigate(options);
+  const navigate = (options: WalletNavigationTarget): void => {
+    walletStore.navigate(options);
   };
 
   const getSoughtAssets = (items: Asset[]): Asset[] => {

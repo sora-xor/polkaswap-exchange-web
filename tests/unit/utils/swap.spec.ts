@@ -27,13 +27,13 @@ describe('swap utils', () => {
     expect(getVisibleSwapTokenBalance(token, true)).toBe('1230000000000000000');
   });
 
-  it('hides swap balance when the connected token balance is zero', () => {
+  it('shows swap balance when the connected token balance is zero', () => {
     const token = {
       balance: {
         transferable: '0',
       },
     } as any;
 
-    expect(getVisibleSwapTokenBalance(token, true)).toBeNull();
+    expect(getVisibleSwapTokenBalance(token, true)).toBe('0');
   });
 });

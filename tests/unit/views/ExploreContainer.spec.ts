@@ -67,7 +67,7 @@ const storageMock = vi.hoisted(() => {
   };
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     storage: storageMock.wallet,
@@ -122,13 +122,13 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStoreMock,
 }));
 
-let ExploreContainer: typeof import('@/views/Explore/Container.vue').default;
+let ExploreContainer: typeof import('@/features/explore/pages/ExploreContainerPage.vue').default;
 
 const mountComponent = async (routeName = PageNames.ExploreTokens, attrs: Record<string, unknown> = {}) => {
   routeMock.name = routeName;
 
   if (!ExploreContainer) {
-    ({ default: ExploreContainer } = await import('@/views/Explore/Container.vue'));
+    ({ default: ExploreContainer } = await import('@/features/explore/pages/ExploreContainerPage.vue'));
   }
 
   const wrapper = mount(ExploreContainer, {

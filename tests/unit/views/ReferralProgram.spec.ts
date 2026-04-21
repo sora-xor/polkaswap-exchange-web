@@ -9,6 +9,7 @@ const loginState = ref(false);
 const connectSpy = vi.fn();
 const shareLinkSpy = vi.fn();
 const markPendingReferralActionNavigationSpy = vi.fn();
+const routerPushMock = vi.fn();
 
 const subscribeOnInvitedUsers = vi.fn().mockResolvedValue(undefined);
 const getAccountReferralRewards = vi.fn().mockResolvedValue(undefined);
@@ -82,7 +83,7 @@ vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => assetsStoreMock,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -144,6 +145,31 @@ vi.mock('@wallet', async () => {
   });
 });
 
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.FormattedAmount };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.FormattedAddress };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.InfoLine };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.WalletAvatar };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.TokenLogo };
+});
+
 vi.mock('@/utils/telegram', () => ({
   __esModule: true,
   tmaSdkService: {
@@ -157,19 +183,14 @@ vi.mock('@/api', () => ({
   getRouterMode: () => '',
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('vue-router', () => ({
   __esModule: true,
-  default: {
-    push: vi.fn(),
-  },
-  lazyView: () => ({
-    name: 'LazyViewStub',
-    template: '<div class="lazy-view-stub" />',
+  useRouter: () => ({
+    push: routerPushMock,
   }),
-  lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
 }));
 
-vi.mock('@/router/guards/referralAction', () => ({
+vi.mock('@/shared/navigation/referralAction', () => ({
   __esModule: true,
   markPendingReferralActionNavigation: markPendingReferralActionNavigationSpy,
   clearPendingReferralActionNavigation: vi.fn(),
@@ -222,7 +243,7 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-const ReferralProgram = (await import('@/views/ReferralProgram.vue')).default;
+const ReferralProgram = (await import('@/features/rewards/pages/ReferralProgramPage.vue')).default;
 
 const buildWrapper = () =>
   mount(ReferralProgram, {
@@ -274,6 +295,7 @@ describe('ReferralProgram.vue', () => {
     connectSpy.mockClear();
     copySpy.mockClear();
     shareLinkSpy.mockClear();
+    routerPushMock.mockClear();
     markPendingReferralActionNavigationSpy.mockClear();
     subscribeOnInvitedUsers.mockClear();
     getAccountReferralRewards.mockClear();

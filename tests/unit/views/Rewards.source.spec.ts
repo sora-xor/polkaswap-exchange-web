@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const viewPath = path.resolve(__dirname, '../../../src/views/Rewards.vue');
+const viewPath = path.resolve(__dirname, '../../../src/features/rewards/pages/RewardsPage.vue');
 
 describe('Rewards source', () => {
   it('keeps the public rewards hint on the live inline text treatment', async () => {

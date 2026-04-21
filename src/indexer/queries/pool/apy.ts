@@ -1,16 +1,16 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { gql } from '@urql/core';
 
-import type { SubqueryPoolXYKEntity, SubquerySubscriptionPayload } from '@/shims/wallet-indexer-subquery-types';
-import type { SubsquidPoolXYKEntity } from '@/shims/wallet-indexer-subsquid-types';
+import type { SubqueryPoolXYKEntity, SubquerySubscriptionPayload } from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
+import type { SubsquidPoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
 import type {
   ConnectionQueryResponse,
   PoolApyObject,
   SubscriptionPayload,
   UpdatesStream,
-} from '@/shims/wallet-indexer-types';
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const SubqueryApyQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
   query SubqueryApyQuery($after: Cursor = "", $first: Int = 100) {

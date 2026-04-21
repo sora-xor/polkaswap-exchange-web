@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { ZeroStringValue } from '@/consts';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { emptyValidatorsFilter, ValidatorsListMode } from '@/modules/staking/sora/consts';
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 import type { StakingState } from '@/stores/staking/types';

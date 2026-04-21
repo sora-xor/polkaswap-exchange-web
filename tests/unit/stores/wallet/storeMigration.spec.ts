@@ -56,6 +56,13 @@ describe('wallet Pinia store migration', () => {
     expect(source).not.toContain("dispatchWalletRuntime('wallet/transactions/trackPendingMstTxs'");
   });
 
+  it('routes wallet navigation through the platform adapter instead of importing the router store directly', async () => {
+    const source = await readFile(walletStoreFile, 'utf8');
+
+    expect(source).toContain("from '@/platform/wallet/navigation'");
+    expect(source).not.toContain("from '@/stores/router'");
+  });
+
   it('removes the dead wallet compat adapter file from src/', async () => {
     await expect(stat(walletCompatFile)).rejects.toBeDefined();
   });

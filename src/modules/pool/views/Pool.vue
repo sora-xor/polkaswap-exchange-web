@@ -99,20 +99,19 @@
 </template>
 
 <script lang="ts" setup>
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
+import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
+import PoolInfo from '@/components/shared/PoolInfo.vue';
 import { computed, ref } from 'vue';
 
-import { Components } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
-import { PoolComponents } from '@/modules/pool/consts';
 import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
-import { poolLazyComponent } from '@/modules/pool/router';
-import { lazyComponent } from '@/router';
+import AddLiquidityDialog from '@/modules/pool/components/AddLiquidity/Dialog.vue';
+import RemoveLiquidityDialog from '@/modules/pool/components/RemoveLiquidity/Dialog.vue';
+import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import { useAssetsStore } from '@/stores/assets';
 import { usePoolStore } from '@/stores/pool';
 import type { LiquidityParams } from '@/stores/pool/types';
@@ -134,18 +133,6 @@ type LiquidityItem = AccountLiquidity & {
   apyFormatted?: string;
   title?: string;
 };
-
-defineOptions({
-  components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    PoolInfo: lazyComponent(Components.PoolInfo),
-    AddLiquidityDialog: poolLazyComponent(PoolComponents.AddLiquidityDialog),
-    RemoveLiquidityDialog: poolLazyComponent(PoolComponents.RemoveLiquidityDialog),
-    FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine,
-  },
-});
 
 const { t } = useTranslation();
 const { loading } = useLoading();

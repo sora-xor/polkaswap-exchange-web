@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
-import formSource from '@/components/pages/Swap/Widget/Form.vue?raw';
+import formSource from '@/features/swap/components/widgets/Form.vue?raw';
 
 describe('SwapForm source', () => {
   it('keeps the noir swap CTA depth and text color aligned with production', () => {
+    expect(formSource).toContain("import('@/features/swap/components/Confirm.vue')");
+    expect(formSource).toContain("import('@/shared/ui/StatusActionBadge.vue')");
+    expect(formSource).toContain("import('@/features/swap/components/TransactionDetails.vue')");
+    expect(formSource).toContain("import('@/features/swap/components/LossWarningDialog.vue')");
+    expect(formSource).toContain("import('@/features/swap/components/settings/Settings.vue')");
     expect(formSource).toContain(':global(.swap-form button.el-button.neumorphic.action-button.s-primary)');
     expect(formSource).toContain('border-color: #ede4e7 !important;');
     expect(formSource).toContain('background-color: #f82088 !important;');

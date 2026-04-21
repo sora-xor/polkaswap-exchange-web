@@ -92,7 +92,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { applyTheme } from '@/utils/switchTheme';
 import { tmaSdkService } from '@/utils/telegram';
 
-import type { Currency } from '@/shims/wallet-currency-types';
+import type { Currency } from '@/lib/soraneo-wallet/src/types/currency';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',

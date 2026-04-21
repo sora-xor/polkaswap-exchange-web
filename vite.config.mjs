@@ -38,7 +38,6 @@ const soraneoWalletCssFallbackPath = fileURLToPath(
   new URL('./src/styles/soraneo-wallet-web-fallback.css', import.meta.url)
 );
 const soraneoWalletCssEntry = existsSync(soraneoWalletCssPath) ? soraneoWalletCssPath : soraneoWalletCssFallbackPath;
-const walletShimPath = fileURLToPath(new URL('./src/shims/wallet.ts', import.meta.url));
 const bufferShimPath = fileURLToPath(new URL('./src/shims/buffer.ts', import.meta.url));
 const safeBufferShimPath = fileURLToPath(new URL('./src/shims/safe-buffer.ts', import.meta.url));
 const polkadotUiSharedPath = fileURLToPath(new URL('./vendor/@polkadot/ui-shared', import.meta.url));
@@ -234,13 +233,8 @@ const alias = [
   { find: '@sora-substrate/types', replacement: `${soraTypesSrcPath}/index.ts` },
   { find: '@sora-substrate/type-definitions/build', replacement: soraTypeDefsSrcPath },
   { find: '@sora-substrate/type-definitions', replacement: `${soraTypeDefsSrcPath}/index.ts` },
-  { find: '@wallet/lib/soraneo-wallet-web.css', replacement: soraneoWalletCssEntry },
-  { find: '@wallet/lib/', replacement: `${soraneoWalletSrcPath}/` },
-  { find: '@wallet/lib', replacement: `${soraneoWalletSrcPath}/index.ts` },
-  { find: '@wallet/core', replacement: `${soraneoWalletSrcPath}/core.ts` },
-  { find: '@wallet/internal/', replacement: `${soraneoWalletSrcPath}/` },
-  { find: '@wallet/internal', replacement: `${soraneoWalletSrcPath}/index.ts` },
-  { find: '@wallet', replacement: walletShimPath },
+  { find: '@/lib/soraneo-wallet/lib/soraneo-wallet-web.css', replacement: soraneoWalletCssEntry },
+  { find: '@/lib/soraneo-wallet/src/core', replacement: `${soraneoWalletSrcPath}/core.ts` },
   { find: /^safe-buffer(?:\/index(?:\.js)?)?$/, replacement: safeBufferShimPath },
   {
     find: '@vueuse/core',
@@ -301,13 +295,10 @@ const alias = [
 ];
 
 if (isTest) {
-  const walletStubRoot = fileURLToPath(new URL('./tests/stubs/@wallet', import.meta.url));
   const emptyCssPath = fileURLToPath(new URL('./tests/stubs/empty.css', import.meta.url));
   const soramitsuUiStubPath = fileURLToPath(new URL('./tests/stubs/soramitsu-ui/index.ts', import.meta.url));
   alias.unshift(
-    { find: /^@wallet\/lib\/soraneo-wallet-web\.css$/, replacement: emptyCssPath },
-    { find: /^@wallet\/(.*)$/, replacement: `${walletStubRoot}/$1` },
-    { find: '@wallet', replacement: walletStubRoot },
+    { find: /^@\/lib\/soraneo-wallet\/lib\/soraneo-wallet-web\.css$/, replacement: emptyCssPath },
     { find: /^@soramitsu-ui\/ui(\/.*)?$/, replacement: soramitsuUiStubPath }
   );
 }
@@ -356,7 +347,7 @@ export default defineConfig({
     strictPort: false,
   },
   ssr: {
-    noExternal: isTest ? ['@soramitsu-ui/ui', '@wallet'] : undefined,
+    noExternal: isTest ? ['@soramitsu-ui/ui'] : undefined,
   },
   build: {
     chunkSizeWarningLimit: 6000,

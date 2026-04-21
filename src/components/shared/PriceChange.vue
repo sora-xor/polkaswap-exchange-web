@@ -11,9 +11,9 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { computed } from 'vue';
 
-import { components } from '@/shims/wallet-components';
-import { FontWeightRate } from '@/shims/wallet-consts';
+import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import { toPrecision } from '@/utils/fp';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
 /**
  * Renders percentage change with an arrow indicator and wallet-styled formatting.
@@ -21,7 +21,7 @@ import { toPrecision } from '@/utils/fp';
 defineOptions({
   name: 'PriceChange',
   components: {
-    FormattedAmount: components.FormattedAmount,
+    FormattedAmount: WalletComponentFormattedAmount,
   },
 });
 

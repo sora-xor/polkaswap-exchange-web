@@ -9,17 +9,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import StatusBadgeShared from '@/components/shared/StatusBadge.vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { Components } from '@/consts';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
-import { lazyComponent } from '@/router';
 import { asZeroValue, formatDecimalPlaces } from '@/utils';
 
 const { t } = useTranslation();
 const { stakingInitialized, maxApy, rewardAsset } = useSoraStaking();
-
-const StatusBadgeShared = lazyComponent(Components.StatusBadge);
 
 const soraStakingApyFormatted = computed(() =>
   asZeroValue(maxApy.value) ? t('calculatingText') : formatDecimalPlaces(maxApy.value, true)

@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
+import BackButton from '@/modules/staking/sora/components/BackButton.vue';
+
 import { StakingPageNames } from '../../consts';
-import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents } from '../consts';
 
 const props = withDefaults(
   defineProps<{
@@ -28,8 +28,6 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: 'back'): void;
 }>();
-
-const BackButton = soraStakingLazyComponent(SoraStakingComponents.BackButton);
 </script>
 
 <style lang="scss" scoped>

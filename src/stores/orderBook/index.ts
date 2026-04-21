@@ -5,7 +5,7 @@ import { defineStore } from 'pinia';
 import { combineLatest } from 'rxjs';
 
 import { LimitOrderType } from '@/consts';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { useAssetsStore } from '@/stores/assets';

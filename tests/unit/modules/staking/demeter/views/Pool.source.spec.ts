@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import demeterPoolSource from '@/modules/staking/demeter/views/Pool.vue?raw';
+import demeterPoolSource from '@/features/pool/pages/DemeterPoolPage.vue?raw';
 
 describe('Demeter Pool.vue source', () => {
   it('uses the page collapse helper for the farming badge visibility guard', () => {

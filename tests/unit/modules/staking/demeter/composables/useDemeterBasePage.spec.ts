@@ -30,7 +30,7 @@ vi.mock('@/stores/pool', () => ({
   usePoolStore: () => poolStoreMock,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });

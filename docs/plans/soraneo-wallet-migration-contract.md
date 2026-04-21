@@ -1,8 +1,10 @@
-# Soraneo Wallet Vue 3 Migration Contract
+# Soraneo Wallet Vue 3 Migration Contract (Historical)
 
 **Owners:** Wallet squad lead (delivery), Frontend migration lead (integration)  
 **Last updated:** 2025-10-26  
 **Related docs:** `docs/plans/wallet-sync-agenda.md`, `docs/plans/vue3-migration.md`, `roadmap.md`
+
+> Historical record: this contract describes the pre-inline migration window before the exchange repo cut over to direct vendored imports under `src/lib/soraneo-wallet/src/**`.
 
 ## Objectives
 

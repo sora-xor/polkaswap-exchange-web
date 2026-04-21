@@ -65,7 +65,7 @@ const paginationButtonsStub = {
   Last: 'last',
 };
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -127,18 +127,23 @@ vi.mock('@/stores/vault', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  __esModule: true,
-  default: {
-    push: routerPushSpy,
-  },
-  lazyComponent: () => SlotPassthroughStub,
-}));
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual<typeof import('vue-router')>('vue-router');
+  return {
+    ...actual,
+    useRouter: () => ({
+      push: (...args: unknown[]) => routerPushSpy(...args),
+    }),
+  };
+});
 
-vi.mock('@/modules/vault/router', () => ({
-  __esModule: true,
-  vaultLazyComponent: () => SlotPassthroughStub,
-}));
+vi.mock('@/modules/vault/components/CreateVaultDialog.vue', () => ({ default: SlotPassthroughStub }));
+vi.mock('@/modules/vault/components/ExploreOverallStats.vue', () => ({ default: SlotPassthroughStub }));
+vi.mock('@/modules/vault/components/ExploreCollaterals.vue', () => ({ default: SlotPassthroughStub }));
+vi.mock('@/modules/vault/components/PositionStatus.vue', () => ({ default: SlotPassthroughStub }));
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({ default: SlotPassthroughStub }));
+vi.mock('@/components/shared/ResponsiveTabs.vue', () => ({ default: SlotPassthroughStub }));
+vi.mock('@/components/shared/ValueStatusWrapper.vue', () => ({ default: SlotPassthroughStub }));
 
 vi.mock('@/composables/useTranslation', () => ({
   __esModule: true,
@@ -195,7 +200,7 @@ const SButtonStub = defineComponent({
   },
 });
 
-const VaultsView = (await import('@/modules/vault/views/Vaults.vue')).default;
+const VaultsView = (await import('@/features/vault/pages/VaultsPage.vue')).default;
 
 const mountVaults = () =>
   mount(VaultsView, {

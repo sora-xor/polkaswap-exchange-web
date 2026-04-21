@@ -103,7 +103,7 @@ vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
     Locked: 'Locked',
   },
 }));
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const walletStub = await createWalletMock({
     storage: {

@@ -142,7 +142,7 @@ vi.mock('@/indexer/queries/orderBook/orderBook', () => ({
   subscribeOnOrderBookUpdates: shared.subscribeOnOrderBookUpdates,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({

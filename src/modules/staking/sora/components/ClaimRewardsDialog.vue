@@ -64,13 +64,16 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 
 const props = defineProps<{
   parentLoading?: boolean;
@@ -103,10 +106,10 @@ const {
 
 const { loading, withNotifications } = useTransaction({ parentLoading: () => Boolean(props.parentLoading) });
 
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
-const TokenLogo = components.TokenLogo;
-const FormattedAmountWithFiatValue = components.FormattedAmountWithFiatValue;
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
+const TokenLogo = WalletComponentTokenLogo;
+const FormattedAmountWithFiatValue = WalletComponentFormattedAmountWithFiatValue;
 
 const rewardsDestination = ref('');
 const payoutNetworkFee = ref<string | null>(null);

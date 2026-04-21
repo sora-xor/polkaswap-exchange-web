@@ -1,4 +1,4 @@
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 
 type TranslateFn = (key: string) => string;
 

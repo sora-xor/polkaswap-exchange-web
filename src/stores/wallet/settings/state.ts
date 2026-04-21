@@ -1,8 +1,8 @@
 import { Currency } from '@/types/currency';
 
-import { Theme, WalletAssetFilters, WalletFilteringOptions, IndexerType } from '@/shims/wallet-consts';
-import { Alert, ConnectionStatus, FilterOptions } from '@/shims/wallet-common-types';
-import { storage, runtimeStorage, settingsStorage } from '@/shims/wallet-storage';
+import { Theme, WalletAssetFilters, WalletFilteringOptions, IndexerType } from '@/lib/soraneo-wallet/src/consts';
+import { Alert, ConnectionStatus, FilterOptions } from '@/lib/soraneo-wallet/src/types/common';
+import { storage, runtimeStorage, settingsStorage } from '@/lib/soraneo-wallet/src/util/storage';
 import { normalizeTheme } from './theme';
 
 import type { SettingsState } from './types';

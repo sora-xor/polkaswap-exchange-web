@@ -119,26 +119,28 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 
+import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, ZeroStringValue } from '@/consts';
-import { lazyComponent } from '@/router';
+import { ZeroStringValue } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
+import WalletFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
+import WalletTokenAddress from '@/lib/soraneo-wallet/src/components/TokenAddress.vue';
 
 defineOptions({
   name: 'TokenInput',
   components: {
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    TokenAddress: components.TokenAddress,
+    TokenSelectButton,
+    FormattedAmount: WalletFormattedAmount,
+    FormattedAmountWithFiatValue: WalletFormattedAmountWithFiatValue,
+    TokenAddress: WalletTokenAddress,
   },
 });
 

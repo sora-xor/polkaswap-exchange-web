@@ -52,7 +52,7 @@ vi.mock('@/stores/settings', () => ({
 }));
 
 const mountComponent = async () => {
-  const module = await import('@/components/pages/Referrals/ConfirmBonding.vue');
+  const module = await import('@/features/referrals/components/ConfirmBonding.vue');
   return mount(module.default, {
     props: { visible: true },
     global: {

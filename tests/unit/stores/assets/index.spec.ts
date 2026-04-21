@@ -73,7 +73,7 @@ type WalletStoreStub = {
   assets: Array<Record<string, unknown>>;
   whitelist: Array<string> | Record<string, unknown>;
   assetsDataTable: Record<string, Record<string, unknown>>;
-  accountAssetsAddressTable: Record<string, { balance: string }>;
+  accountAssetsAddressTable: Record<string, Record<string, unknown>>;
 };
 
 const walletStoreStub: WalletStoreStub = vi.hoisted(() => ({
@@ -272,6 +272,34 @@ describe('useAssetsStore getters', () => {
       symbol: 'XOR',
       decimals: 18,
       balance: '42',
+      externalBalance: ZeroStringValue,
+    });
+  });
+
+  it('resolves account asset metadata when global asset lists are not ready', () => {
+    const store = useAssetsStore();
+    walletStoreStub.accountAssetsAddressTable = {
+      '0xOwned': {
+        address: '0xOwned',
+        symbol: 'OWN',
+        name: 'Owned token',
+        decimals: 18,
+        balance: {
+          transferable: '7000000000000000000',
+        },
+      },
+    };
+
+    const asset = store.assetDataByAddress('0xOwned');
+
+    expect(asset).toMatchObject({
+      address: '0xOwned',
+      symbol: 'OWN',
+      name: 'Owned token',
+      decimals: 18,
+      balance: {
+        transferable: '7000000000000000000',
+      },
       externalBalance: ZeroStringValue,
     });
   });

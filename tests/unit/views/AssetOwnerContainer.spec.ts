@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import type { Ref } from 'vue';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 
-import AssetOwnerContainer from '@/views/AssetOwnerContainer.vue';
+import AssetOwnerContainer from '@/features/dashboard/pages/AssetOwnerContainerPage.vue';
 import { PageNames } from '@/consts';
 import type { Nullable } from '@/types/common';
 
@@ -33,14 +33,15 @@ vi.mock('@/stores/dashboard', () => {
   };
 });
 
-vi.mock('@/router', () => {
-  const goTo = vi.fn();
+vi.mock('vue-router', () => {
+  const push = vi.fn(async () => undefined);
   return {
     __esModule: true,
-    goTo,
-    lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
+    useRouter: () => ({
+      push,
+    }),
     __mocks: {
-      goTo,
+      push,
     },
   };
 });
@@ -101,19 +102,19 @@ type SubscriptionsMocks = {
 };
 
 let storeMocks: StoreMocks;
-let routerMocks: { goTo: ReturnType<typeof vi.fn> };
+let routerMocks: { push: ReturnType<typeof vi.fn> };
 let subscriptionsMocks: SubscriptionsMocks;
 let settingsMocks: { assetOwnerEnabledRef: Ref<Nullable<boolean>> };
 
 beforeEach(async () => {
   storeMocks = (await import('@/stores/dashboard')).__mocks;
-  routerMocks = (await import('@/router')).__mocks;
+  routerMocks = (await import('vue-router')).__mocks;
   subscriptionsMocks = (await import('@/composables/useSubscriptions')).__mocks;
   settingsMocks = (await import('@/stores/settings')).__mocks;
 
   storeMocks.subscribeOnOwnedAssets.mockClear();
   storeMocks.reset.mockClear();
-  routerMocks.goTo.mockClear();
+  routerMocks.push.mockClear();
   subscriptionsMocks.subscriptionsDataLoading.value = false;
   subscriptionsMocks.startHandlers.splice(0, subscriptionsMocks.startHandlers.length);
   subscriptionsMocks.resetHandlers.splice(0, subscriptionsMocks.resetHandlers.length);
@@ -180,6 +181,6 @@ describe('AssetOwnerContainer.vue', () => {
       },
     });
 
-    expect(routerMocks.goTo).toHaveBeenCalledWith(PageNames.Swap);
+    expect(routerMocks.push).toHaveBeenCalledWith({ name: PageNames.Swap });
   });
 });

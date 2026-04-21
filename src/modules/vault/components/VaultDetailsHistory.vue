@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';
@@ -39,8 +38,9 @@ import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 
-const HistoryPagination = components.HistoryPagination;
+const HistoryPagination = WalletComponentHistoryPagination;
 
 const props = withDefaults(
   defineProps<{

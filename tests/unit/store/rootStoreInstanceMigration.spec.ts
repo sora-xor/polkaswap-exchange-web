@@ -49,6 +49,7 @@ const settingsStoreFile = path.join(repoRoot, 'src', 'stores', 'settings', 'inde
 const bridgeHistoryStoreFile = path.join(repoRoot, 'src', 'stores', 'bridge', 'history.ts');
 const bridgeFormStoreFile = path.join(repoRoot, 'src', 'stores', 'bridge', 'form.ts');
 const bridgeTransactionsStoreFile = path.join(repoRoot, 'src', 'stores', 'bridge', 'transactions.ts');
+const bridgeSyncCompatFile = path.join(repoRoot, 'src', 'stores', 'bridge', 'sync.ts');
 const subBridgeReducersFile = path.join(repoRoot, 'src', 'utils', 'bridge', 'sub', 'classes', 'reducers.ts');
 const web3TypesFile = path.join(repoRoot, 'src', 'stores', 'web3', 'types.ts');
 const bridgeAssetsFile = path.join(repoRoot, 'src', 'stores', 'bridge', 'assets.ts');
@@ -175,7 +176,7 @@ const runtimeStoreTypeFiles = [
   path.join(repoRoot, 'src', 'stores', 'staking', 'index.ts'),
   path.join(repoRoot, 'src', 'stores', 'vault', 'index.ts'),
   path.join(repoRoot, 'src', 'stores', 'web3', 'mutations.ts'),
-  path.join(repoRoot, 'src', 'views', 'Rewards.vue'),
+  path.join(repoRoot, 'src', 'features', 'rewards', 'pages', 'RewardsPage.vue'),
   path.join(repoRoot, 'src', 'composables', 'useMoonpayBridge.ts'),
   path.join(repoRoot, 'src', 'utils', 'bridge', 'eth', 'classes', 'history.ts'),
   path.join(repoRoot, 'src', 'utils', 'bridge', 'sub', 'classes', 'history.ts'),
@@ -459,27 +460,11 @@ describe('root store instance migration', () => {
     expect(source).not.toContain('getRootStore(');
   });
 
-  it('keeps the bridge history Pinia facade on the bridge Pinia store instead of the root-store helper', async () => {
-    const source = await readFile(bridgeHistoryStoreFile, 'utf8');
-
-    expect(source).toContain("from '@/stores/bridge'");
-    expect(source).not.toContain("from '@/store/instance'");
-    expect(source).not.toContain('getRootStore(');
-  });
-
-  it('keeps the bridge form Pinia facade off the legacy bridge dispatch global', async () => {
-    const source = await readFile(bridgeFormStoreFile, 'utf8');
-
-    expect(source).toContain("from '@/stores/bridge'");
-    expect(source).not.toContain('getLegacyBridgeDispatch(');
-  });
-
-  it('keeps the bridge transactions Pinia facade on the bridge Pinia store for writable UI state', async () => {
-    const source = await readFile(bridgeTransactionsStoreFile, 'utf8');
-
-    expect(source).toContain("from '@/stores/bridge'");
-    expect(source).not.toContain("from '@/store/instance'");
-    expect(source).not.toContain('getRootStore(');
+  it('removes the bridge facade sub-stores and sync helper in favor of the canonical bridge Pinia store', async () => {
+    await expect(stat(bridgeHistoryStoreFile)).rejects.toBeDefined();
+    await expect(stat(bridgeFormStoreFile)).rejects.toBeDefined();
+    await expect(stat(bridgeTransactionsStoreFile)).rejects.toBeDefined();
+    await expect(stat(bridgeSyncCompatFile)).rejects.toBeDefined();
   });
 
   it('keeps sub-bridge signing hooks off the legacy bridge mutation type string', async () => {

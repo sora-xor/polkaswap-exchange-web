@@ -1,5 +1,5 @@
 // @vitest-environment node
-import tokensSource from '@/views/Explore/Tokens.vue?raw';
+import tokensSource from '@/features/explore/pages/ExploreTokensPage.vue?raw';
 import { describe, expect, it } from 'vitest';
 
 describe('Explore Tokens source', () => {

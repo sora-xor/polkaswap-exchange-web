@@ -28,12 +28,22 @@ const ButtonStub = {
   template: '<button class="s-button" @click="$emit(\'click\')"><slot /></button>',
 };
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: walletComponents,
-  });
+  return createWalletMock();
 });
+
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: walletComponents.DialogBase,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  default: walletComponents.TokenLogo,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue', () => ({
+  default: walletComponents.AccountConfirmationOption,
+}));
 
 vi.mock('@/stores/pool', () => ({
   __esModule: true,
@@ -60,9 +70,9 @@ vi.mock('@/composables/useNumberFormatter', () => ({
   }),
 }));
 
-vi.mock('@/modules/pool/router', () => ({
+vi.mock('@/modules/pool/components/RemoveLiquidity/TransactionDetails.vue', () => ({
   __esModule: true,
-  poolLazyComponent: () => ({ name: 'RemoveLiquidityTransactionDetails' }),
+  default: { name: 'RemoveLiquidityTransactionDetails', template: '<div class="transaction-details-stub" />' },
 }));
 
 vi.mock('vue-i18n', async () => {

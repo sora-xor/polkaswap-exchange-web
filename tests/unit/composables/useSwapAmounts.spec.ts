@@ -12,15 +12,15 @@ const walletApiMock = {
   },
 };
 
-const walletModuleMock = {
+const walletRuntimeMock = {
   api: walletApiMock,
   storage: new Storage('wallet-mock'),
   settingsStorage: new Storage('settings-mock'),
 };
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock(walletModuleMock);
+  return createWalletMock(walletRuntimeMock);
 });
 
 const assetDataByAddress = vi.hoisted(() =>
@@ -68,10 +68,12 @@ const { localStorageMock } = vi.hoisted(() => {
 
 describe('useSwapAmounts', () => {
   let useSwapAmounts: (typeof import('@/composables/useSwapAmounts'))['useSwapAmounts'];
+  let useFeatureSwapAmounts: (typeof import('@/features/swap/composables/useSwapAmounts'))['useSwapAmounts'];
   let useSwapStore: typeof import('@/stores/swap').useSwapStore;
 
   beforeAll(async () => {
     ({ useSwapAmounts } = await import('@/composables/useSwapAmounts'));
+    ({ useSwapAmounts: useFeatureSwapAmounts } = await import('@/features/swap/composables/useSwapAmounts'));
     ({ useSwapStore } = await import('@/stores/swap'));
   });
 
@@ -99,6 +101,10 @@ describe('useSwapAmounts', () => {
 
   afterAll(() => {
     vi.unstubAllGlobals();
+  });
+
+  it('keeps the app-level swap amounts entrypoint aligned with the feature-local implementation', () => {
+    expect(useSwapAmounts).toBe(useFeatureSwapAmounts);
   });
 
   it('exposes swap store values as computeds', async () => {

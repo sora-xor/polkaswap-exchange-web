@@ -2,12 +2,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { Observable } from 'rxjs';
 
+import { RouteNames } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { NFTStorage } from 'nft.storage';
 import { SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { NFT_BLACK_LIST_URL, WHITE_LIST_URL } from '@/lib/soraneo-wallet/src/util';
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import type { WALLET_TYPES } from '@wallet';
+import type { WALLET_TYPES } from '@tests/stubs/walletRuntime';
 
 const loginAccountMock = vi.hoisted(() => vi.fn());
 const afterLoginMock = vi.hoisted(() => vi.fn());
@@ -252,7 +253,7 @@ const walletRuntimeBridge = vi.hoisted(() => {
 
 vi.stubGlobal('fetch', fetchMock);
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({});
 });
@@ -1012,6 +1013,10 @@ describe('wallet store actions', () => {
     expect(walletStore.apiKeys).toEqual({ moonpay: 'moonpay-key' });
     expect(walletStore.moonpayApiKey).toBe('moonpay-key');
     expect(walletStore.currencySymbol).toBe('€');
+    expect(walletStore.fiatExchangeRateObject).toEqual({
+      dai: 1,
+      eur: 1.25,
+    });
     expect(walletStore.exchangeRate).toBe(1.25);
     expect(walletStore.blockNumber).toBe(42);
     expect(walletStore.isWalletLoaded).toBe(true);
@@ -1214,6 +1219,41 @@ describe('wallet store actions', () => {
     expect(getVestedTransferFeeMock).toHaveBeenCalledWith(asset, '12', 120, 40, 30);
     expect(result).toBe(fee);
     expect(vestedTransferMock).toHaveBeenCalledWith(asset, 'cnRecipient', '12', 136, 40, 30);
+  });
+
+  it('forwards wallet route synchronization through the router store', () => {
+    const walletStore = useWalletStore();
+    const routerStore = useRouterStore();
+    const checkCurrentRouteSpy = vi.spyOn(routerStore, 'checkCurrentRoute');
+
+    walletStore.syncWalletRoute();
+
+    expect(checkCurrentRouteSpy).toHaveBeenCalledTimes(1);
+
+    walletStore.navigate({ name: RouteNames.WalletSend, params: { address: 'cnRecipient' } });
+
+    expect(routerStore.current).toBe(RouteNames.WalletSend);
+    expect(routerStore.currentParams).toEqual({ address: 'cnRecipient' });
+  });
+
+  it('prepares the wallet runtime entry route through the wallet boundary', () => {
+    const walletStore = useWalletStore();
+    const routerStore = useRouterStore();
+    const navigateSpy = vi.spyOn(routerStore, 'navigate');
+
+    walletStore.accountState.address = '';
+    walletStore.accountState.source = '' as never;
+    walletStore.prepareWalletEntryNavigation();
+    expect(navigateSpy).toHaveBeenCalledWith({ name: RouteNames.WalletConnection });
+
+    navigateSpy.mockClear();
+    walletStore.accountState.address = 'cnUser';
+    walletStore.accountState.source = 'sora' as never;
+    routerStore.navigate({ name: RouteNames.WalletSend });
+
+    walletStore.prepareWalletEntryNavigation();
+
+    expect(navigateSpy).toHaveBeenCalledWith({ name: RouteNames.Wallet });
   });
 
   it('owns external history and NFT storage actions locally while mirroring compat commits', async () => {

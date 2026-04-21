@@ -128,44 +128,30 @@ vi.mock('@/stores/wallet', async () => {
   };
 });
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBaseStub',
-        props: {
-          visible: {
-            type: Boolean,
-            default: false,
-          },
-        },
-        emits: ['update:visible'],
-        template: '<div class="dialog-base-stub"><slot name="title" /><slot /></div>',
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBaseStub',
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
       },
     },
-  });
-});
+    emits: ['update:visible'],
+    template: '<div class="dialog-base-stub"><slot name="title" /><slot /></div>',
+  },
+}));
 
-vi.mock('@/router', () => ({
-  lazyComponent: (name: string) => {
-    if (name === 'shared/Widget/IFrame') {
-      return {
-        name: 'IFrameWidgetStub',
-        props: {
-          src: {
-            type: String,
-            default: '',
-          },
-        },
-        template: '<div class="iframe-widget" :data-src="src" />',
-      };
-    }
-
-    return {
-      name: 'LazyComponentStub',
-      template: '<div class="lazy-component-stub"><slot /></div>',
-    };
+vi.mock('@/components/shared/Widget/IFrame.vue', () => ({
+  default: {
+    name: 'IFrameWidgetStub',
+    props: {
+      src: {
+        type: String,
+        default: '',
+      },
+    },
+    template: '<div class="iframe-widget" :data-src="src" />',
   },
 }));
 
@@ -218,14 +204,16 @@ const mountComponent = () => mount(Moonpay);
 
 beforeEach(async () => {
   vi.useFakeTimers();
-  consoleInfoSpy = vi.spyOn(console, 'info').mockImplementation(() => undefined);
+
   const ctx = await getContext();
   ctx.reset();
+
+  consoleInfoSpy = vi.spyOn(console, 'info').mockImplementation(() => undefined);
 });
 
 afterEach(() => {
-  vi.useRealTimers();
   consoleInfoSpy.mockRestore();
+  vi.useRealTimers();
 });
 
 describe('Moonpay.vue', () => {
@@ -233,63 +221,48 @@ describe('Moonpay.vue', () => {
     const ctx = await getContext();
     const wrapper = mountComponent();
 
-    await (await import('vue')).nextTick();
-    vi.runAllTimers();
-    await (await import('vue')).nextTick();
+    await vi.runAllTimersAsync();
+    await wrapper.vm.$nextTick();
 
-    expect(ctx.withApiMock).toHaveBeenCalled();
+    expect(ctx.withApiMock).toHaveBeenCalledTimes(1);
     expect(ctx.initMoonpayApiMock).toHaveBeenCalled();
     expect(ctx.moonpayApiMock.createWidgetUrl).toHaveBeenCalledWith({
       colorCode: '#112233',
-      externalTransactionId: ctx.walletStore.account.address,
+      externalTransactionId: '5FAKEADDRESS',
       language: 'en',
     });
     expect((wrapper.vm as unknown as { widgetUrl: string }).widgetUrl).toBe('https://widget.example');
+    expect(wrapper.find('.iframe-widget').attributes('data-src')).toBe('https://widget.example');
   });
 
-  it('starts polling when dialog becomes visible without timestamp', async () => {
+  it('stops polling when the wallet disconnects', async () => {
     const ctx = await getContext();
-    ctx.state.moonpay.pollingTimestamp = 0;
-    ctx.state.moonpay.dialogVisibility = true;
-
     mountComponent();
-    await (await import('vue')).nextTick();
-
-    expect(ctx.createTransactionsPollingMock).toHaveBeenCalledTimes(1);
-  });
-
-  it('handles completed transactions by preparing bridge transfer', async () => {
-    const ctx = await getContext();
-    ctx.state.moonpay.pollingTimestamp = 0;
-    ctx.state.moonpay.dialogVisibility = true;
-
-    mountComponent();
-    await (await import('vue')).nextTick();
 
     expect(ctx.createTransactionsPollingMock).toHaveBeenCalledTimes(1);
 
-    ctx.state.moonpay.pollingTimestamp = Date.now();
+    ctx.isLoggedInRef.value = false;
+    await vi.runAllTimersAsync();
+
+    expect(ctx.stopPollingMock).toHaveBeenCalled();
+  });
+
+  it('prepares bridge transfer when a new completed transaction appears', async () => {
+    const ctx = await getContext();
+    mountComponent();
+
+    ctx.state.moonpay.pollingTimestamp = Date.parse('2025-01-01T00:00:00.000Z');
     ctx.state.moonpay.transactions = [
       {
         id: 'tx-1',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: '2025-01-01T00:00:01.000Z',
         status: 'completed',
-        walletAddress: '0x123',
-        baseCurrencyId: 'usd',
-        baseCurrencyAmount: 100,
-        currencyId: 'xor',
-        quoteCurrencyAmount: 1,
-        returnUrl: 'https://return.example',
       } as MoonpayTransaction,
     ];
 
-    const { nextTick } = await import('vue');
-    await nextTick();
-    await nextTick();
+    await vi.runAllTimersAsync();
 
     expect(ctx.setDialogVisibilityMock).toHaveBeenCalledWith(false);
-    expect(ctx.stopPollingMock).toHaveBeenCalled();
     expect(ctx.showNotificationMock).toHaveBeenCalledWith(MoonpayNotifications.Success);
     expect(ctx.prepareMoonpayTxForBridgeTransferMock).toHaveBeenCalledWith(ctx.state.moonpay.transactions[0], true);
   });

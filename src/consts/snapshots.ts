@@ -1,4 +1,4 @@
-import * as SUBQUERY_TYPES from '@/shims/wallet-indexer-subquery-types';
+import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
 
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';

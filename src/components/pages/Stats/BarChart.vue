@@ -28,20 +28,22 @@
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
-import { Components } from '@/consts';
+import ChartSkeleton from '@/components/shared/Chart/ChartSkeleton.vue';
+import PriceChange from '@/components/shared/PriceChange.vue';
+import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { fetchData } from '@/indexer/queries/network/volume';
 import VChart from '@/lib/echarts/component';
-import { lazyComponent } from '@/router';
+import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
@@ -99,12 +101,6 @@ const props = withDefaults(
     parentLoading: false,
   }
 );
-
-const BaseWidget = lazyComponent(Components.BaseWidget);
-const ChartSkeleton = lazyComponent(Components.ChartSkeleton);
-const PriceChange = lazyComponent(Components.PriceChange);
-const StatsFilter = lazyComponent(Components.StatsFilter);
-const { FormattedAmount } = components;
 
 const chart = ref<Nullable<unknown>>(null);
 

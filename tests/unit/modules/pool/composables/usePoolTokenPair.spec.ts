@@ -4,11 +4,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
-vi.mock('@wallet/core', () => createWalletMock());
+vi.mock('@/lib/soraneo-wallet/src/core', () => createWalletMock());
 
 const formatCodecNumber = vi.hoisted(() => vi.fn((value: string) => `formatted:${value}`));
 const formatStringValue = vi.hoisted(() => vi.fn((value: string) => `string:${value}`));

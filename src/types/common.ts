@@ -1,4 +1,4 @@
-export { FilterOptions } from '@/shims/wallet-common-types';
+export { FilterOptions } from '@/lib/soraneo-wallet/src/types/common';
 
 /**
  * Shared utility types that need both module exports and global availability.

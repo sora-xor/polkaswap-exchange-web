@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { getCurrentIndexer, SubqueryIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { gql } from '@urql/core';
 
@@ -7,7 +7,7 @@ import type {
   AccountLiquiditySnapshotEntity,
   ConnectionQueryResponse,
   ConnectionQueryResponseData,
-} from '@/shims/wallet-indexer-types';
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type LiquidityItem = {
   timestamp: number;

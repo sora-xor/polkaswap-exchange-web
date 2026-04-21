@@ -21,7 +21,7 @@ const fromValueRef = ref('');
 const toValueRef = ref('');
 const assetsByAddressRef = ref<Record<string, AccountAsset>>({});
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({
@@ -44,16 +44,6 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/router', () => ({
-  lazyComponent: () =>
-    defineComponent({
-      name: 'LazyStub',
-      setup(_, { attrs, slots }) {
-        return () => h('div', { class: 'lazy-stub', ...attrs }, slots.default?.());
-      },
-    }),
-}));
-
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
@@ -67,7 +57,7 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-vi.mock('@/composables/useSwapAmounts', () => ({
+vi.mock('@/features/swap/composables/useSwapAmounts', () => ({
   useSwapAmounts: () => ({
     tokenFrom: computed(() => tokenFromRef.value),
     tokenTo: computed(() => tokenToRef.value),
@@ -76,7 +66,7 @@ vi.mock('@/composables/useSwapAmounts', () => ({
   }),
 }));
 
-vi.mock('@/stores/swap', () => ({
+vi.mock('@/features/swap/stores/useSwapStore', () => ({
   useSwapStore: () => ({
     distribution: distributionRef.value,
   }),
@@ -94,10 +84,31 @@ vi.mock('@/utils/swap', () => ({
   }),
 }));
 
-const mountWidget = async () => {
-  const module = await import('@/components/pages/Swap/Widget/Distribution.vue');
+const BaseWidgetStub = defineComponent({
+  name: 'BaseWidgetStub',
+  setup(_, { attrs, slots }) {
+    return () => h('div', { class: 'base-widget-stub', ...attrs }, slots.default?.());
+  },
+});
 
-  return mount(module.default);
+const ValueStatusWrapperStub = defineComponent({
+  name: 'ValueStatusWrapperStub',
+  setup(_, { attrs, slots }) {
+    return () => h('div', { class: 'value-status-wrapper-stub', ...attrs }, slots.default?.());
+  },
+});
+
+const mountWidget = async () => {
+  const module = await import('@/features/swap/components/widgets/Distribution.vue');
+
+  return mount(module.default, {
+    global: {
+      stubs: {
+        BaseWidget: BaseWidgetStub,
+        ValueStatusWrapper: ValueStatusWrapperStub,
+      },
+    },
+  });
 };
 
 describe('SwapDistributionWidget', () => {

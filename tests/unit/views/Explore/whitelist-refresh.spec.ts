@@ -5,8 +5,8 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const repoRoot = path.resolve(__dirname, '../../../..');
-const booksViewPath = path.join(repoRoot, 'src', 'views', 'Explore', 'Books.vue');
-const tokensViewPath = path.join(repoRoot, 'src', 'views', 'Explore', 'Tokens.vue');
+const booksViewPath = path.join(repoRoot, 'src', 'features', 'explore', 'pages', 'ExploreBooksPage.vue');
+const tokensViewPath = path.join(repoRoot, 'src', 'features', 'explore', 'pages', 'ExploreTokensPage.vue');
 
 const readSource = (filePath: string) => readFile(filePath, 'utf8');
 

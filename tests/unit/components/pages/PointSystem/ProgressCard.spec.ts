@@ -11,12 +11,12 @@ vi.mock('@/consts/pointSystem', () => ({
   isTokenImage: (name: string) => isTokenImageMock(name),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
 
-import ProgressCard from '@/components/pages/PointSystem/ProgressCard.vue';
+import ProgressCard from '@/features/rewards/components/point-system/ProgressCard.vue';
 
 describe('ProgressCard.vue', () => {
   beforeEach(() => {
@@ -55,6 +55,11 @@ describe('ProgressCard.vue', () => {
         imageName: 'badge',
         progressPercentage: 25,
       },
+      global: {
+        stubs: {
+          TokenLogo: tokenLogoStub,
+        },
+      },
     });
 
     const image = wrapper.find('img.progress-circle__image');
@@ -69,6 +74,11 @@ describe('ProgressCard.vue', () => {
       props: {
         imageName: 'badge',
         progressPercentage: 75,
+      },
+      global: {
+        stubs: {
+          TokenLogo: tokenLogoStub,
+        },
       },
     });
 

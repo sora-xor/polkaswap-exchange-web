@@ -5,7 +5,7 @@ import path from 'node:path';
 import { compileScript, compileTemplate, parse } from '@vue/compiler-sfc';
 import { describe, expect, it } from 'vitest';
 
-const tokensViewPath = path.resolve(process.cwd(), 'src/views/Explore/Tokens.vue');
+const tokensViewPath = path.resolve(process.cwd(), 'src/features/explore/pages/ExploreTokensPage.vue');
 
 const compileTokensTemplate = async (): Promise<string> => {
   const source = await readFile(tokensViewPath, 'utf8');

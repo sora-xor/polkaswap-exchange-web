@@ -20,20 +20,21 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
-import type { AppWallet } from '@/shims/wallet-consts';
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWeb3Store } from '@/stores/web3';
 
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentConnectionView from '@/lib/soraneo-wallet/src/components/Connection/ConnectionView.vue';
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    ConnectionView: components.ConnectionView,
+    DialogBase: WalletComponentDialogBase,
+    ConnectionView: WalletComponentConnectionView,
   },
 });
 

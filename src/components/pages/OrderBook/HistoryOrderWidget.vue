@@ -63,10 +63,13 @@
 </template>
 <script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import CancelConfirm from '@/components/pages/OrderBook/Dialogs/CancelOrders.vue';
+import AllOrders from '@/components/pages/OrderBook/Tables/AllOrders.vue';
+import OpenOrders from '@/components/pages/OrderBook/Tables/OpenOrders.vue';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 
-import { Components } from '@/consts';
 import { useConfirmDialog } from '@/composables/useConfirmDialog';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useTransaction } from '@/composables/useTransaction';
@@ -74,21 +77,11 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
-import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
 import { Filter, Cancel } from '@/types/orderBook';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
-
-defineOptions({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    AllOrders: lazyComponent(Components.AllOrders),
-    OpenOrders: lazyComponent(Components.OpenOrders),
-    CancelConfirm: lazyComponent(Components.CancelOrders),
-  },
-});
 
 const FilterEnum = Filter;
 const CancelEnum = Cancel;

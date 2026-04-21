@@ -48,34 +48,32 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBase',
+    props: ['visible'],
+    emits: ['update:visible'],
+    template: '<div><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/Input/SearchInput.vue', () => ({
+  default: {
+    name: 'SearchInput',
+    props: ['modelValue', 'placeholder'],
+    emits: ['update:modelValue', 'clear'],
+    template: '<input />',
+  },
+}));
+
+vi.mock('@/components/shared/SelectAsset/List.vue', () => ({
+  default: {
     name: 'SelectAssetList',
     props: ['assets', 'shouldBalanceBeHidden', 'isSoraToEvm'],
     emits: ['click'],
     template: '<div></div>',
-  }),
+  },
 }));
-
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBase',
-        props: ['visible'],
-        emits: ['update:visible'],
-        template: '<div><slot /></div>',
-      },
-      SearchInput: {
-        name: 'SearchInput',
-        props: ['modelValue', 'placeholder'],
-        emits: ['update:modelValue', 'clear'],
-        template: '<input />',
-      },
-    },
-  });
-});
 
 vi.mock('@/composables/useSelectAssetTools', () => ({
   useSelectAssetTools: () => ({

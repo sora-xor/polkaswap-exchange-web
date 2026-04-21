@@ -70,8 +70,8 @@ vi.mock('@/consts/evm', () => ({
   SmartContractType: { EthBridge: 'ETH_BRIDGE', ERC20: 'ERC20' },
   SmartContracts: { ETH_BRIDGE: {}, ERC20: [] },
 }));
-vi.mock('@wallet', async () => {
-  const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
+vi.mock('@tests/stubs/walletRuntime', async () => {
+  const walletStub = await vi.importActual<typeof import('@tests/stubs/walletRuntime')>('@tests/stubs/walletRuntime');
   return {
     ...walletStub,
     ...walletOverrides,

@@ -1,11 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock();
-});
-vi.mock('@wallet/core', () => createWalletMock());
-
 const mockAppKit = vi.hoisted(() => ({
   setRequestedCaipNetworks: vi.fn(),
   getCaipNetwork: vi.fn(() => ({ id: 1 })),

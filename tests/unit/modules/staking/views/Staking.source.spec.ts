@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import stakingSource from '@/modules/staking/views/Staking.vue?raw';
+import stakingSource from '@/features/staking/pages/StakingPage.vue?raw';
 
 describe('Staking.vue source', () => {
   it('wires calculator actions through the Demeter page helper', () => {
@@ -17,5 +17,12 @@ describe('Staking.vue source', () => {
     expect(stakingSource).not.toContain('v-model:visible="page.showClaimDialog"');
     expect(stakingSource).not.toContain('v-model:visible="base.showCalculatorDialog"');
     expect(stakingSource).not.toContain('v-bind="page.selectedDerivedPool"');
+  });
+
+  it('uses explicit feature-local async component exports instead of legacy lazy-component registries', () => {
+    expect(stakingSource).not.toContain('demeterStakingLazyComponent(');
+    expect(stakingSource).not.toContain('soraStakingLazyComponent(');
+    expect(stakingSource).not.toContain('DemeterStakingComponents.');
+    expect(stakingSource).not.toContain('SoraStakingComponents.');
   });
 });

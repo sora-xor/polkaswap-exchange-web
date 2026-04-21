@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import vaultsSource from '@/modules/vault/views/Vaults.vue?raw';
+import vaultsSource from '@/features/vault/pages/VaultsPage.vue?raw';
 
 describe('Vaults source', () => {
   it('renders integer-only amounts for Kensetsu card totals with zero-only fractions', () => {

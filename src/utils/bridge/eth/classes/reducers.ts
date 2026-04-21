@@ -1,6 +1,6 @@
 import first from 'lodash/fp/first';
 
-import * as SUBQUERY_TYPES from '@/shims/wallet-indexer-subquery-types';
+import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
 import { getTransactionEvents, getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { WALLET_CONSTS } from '@wallet';
+import { WALLET_CONSTS } from '@tests/stubs/walletRuntime';
 import { reactive } from 'vue';
 
 const walletStoreMock = reactive({

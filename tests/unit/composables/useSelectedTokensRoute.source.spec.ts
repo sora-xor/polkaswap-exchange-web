@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import routeSource from '@/composables/useSelectedTokensRoute.ts?raw';
+import routeSource from '@/shared/navigation/useSelectedTokensRoute.ts?raw';
 
 describe('useSelectedTokensRoute source', () => {
   it('uses the slim bundled route whitelist map instead of the full whitelist payload', () => {

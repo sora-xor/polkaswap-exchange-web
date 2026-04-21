@@ -124,7 +124,7 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => shared.walletStore,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({
@@ -160,7 +160,7 @@ vi.mock('@wallet', async () => {
 });
 
 import { useStakingStore } from '@/stores/staking';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 describe('staking store', () => {
   beforeEach(() => {

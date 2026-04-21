@@ -19,7 +19,7 @@ vi.mock('@/utils/ethers-util', () => ({
 }));
 
 // Minimal mocks for heavy deps that are not used in these tests
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const wallet = createWalletMock();
 

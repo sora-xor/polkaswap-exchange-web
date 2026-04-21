@@ -1,7 +1,7 @@
 import { config } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 import { vi } from 'vitest';
-import { mockWalletModule } from '@tests/stubs/mockWalletModule';
+import { mockWalletRuntime } from '@tests/stubs/mockWalletRuntime';
 
 const fallbackWalletConsts = {
   TranslationConsts: {},
@@ -11,38 +11,38 @@ const fallbackWalletConsts = {
   },
 } as const;
 
-const ensureWalletModule = (module: Record<string, unknown>) => {
-  const walletModule = mockWalletModule(module as Parameters<typeof mockWalletModule>[0]);
+const ensureWalletRuntime = (module: Record<string, unknown>) => {
+  const walletRuntime = mockWalletRuntime(module as Parameters<typeof mockWalletRuntime>[0]);
 
-  if (walletModule.en == null) {
-    walletModule.en = {};
+  if (walletRuntime.en == null) {
+    walletRuntime.en = {};
   }
 
-  if (walletModule.WALLET_CONSTS == null) {
-    walletModule.WALLET_CONSTS = fallbackWalletConsts;
+  if (walletRuntime.WALLET_CONSTS == null) {
+    walletRuntime.WALLET_CONSTS = fallbackWalletConsts;
   }
 
-  return walletModule;
+  return walletRuntime;
 };
 
 const walletOverrideCache = new WeakMap<Function, Promise<Record<string, unknown>>>();
 
-async function resolveWalletModule() {
-  const override = (globalThis as Record<string, any>).__WALLET_MODULE_OVERRIDE;
+async function resolveWalletRuntime() {
+  const override = (globalThis as Record<string, any>).__WALLET_RUNTIME_OVERRIDE;
 
   if (typeof override === 'function') {
     let cached = walletOverrideCache.get(override);
 
     if (!cached) {
-      cached = Promise.resolve(override()).then((module) => ensureWalletModule(module));
+      cached = Promise.resolve(override()).then((module) => ensureWalletRuntime(module));
       walletOverrideCache.set(override, cached);
     }
 
     return cached;
   }
 
-  const module = await import('@wallet');
-  return ensureWalletModule(module);
+  const module = await import('@tests/stubs/walletRuntime');
+  return ensureWalletRuntime(module);
 }
 
 if (typeof process.setMaxListeners === 'function') {
@@ -69,7 +69,7 @@ vi.mock('@vue/devtools-kit', () => ({
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/api', async () => {
-  const wallet = await resolveWalletModule();
+  const wallet = await resolveWalletRuntime();
 
   return {
     api: wallet.api,
@@ -85,7 +85,7 @@ vi.mock('@/lib/soraneo-wallet/src/api', async () => {
 });
 
 vi.mock('@/lib/soraneo-wallet/src/util/account', async () => {
-  const wallet = await resolveWalletModule();
+  const wallet = await resolveWalletRuntime();
   const accountUtils = wallet.accountUtils ?? {};
 
   return {
@@ -107,26 +107,8 @@ vi.mock('@/lib/soraneo-wallet/src/util/account', async () => {
   };
 });
 
-vi.mock('@/lib/soraneo-wallet/src/components/registry', async () => {
-  const wallet = await resolveWalletModule();
-  const walletComponents = wallet.components as Record<string, unknown>;
-  const SoraWallet =
-    walletComponents.SoraWallet ??
-    defineComponent({
-      name: 'SoraWalletStub',
-      setup(_, { slots }) {
-        return () => h('div', { class: 'sora-wallet-stub' }, slots.default?.());
-      },
-    });
-
-  return {
-    SoraWallet,
-    components: walletComponents,
-  };
-});
-
 vi.mock('@/lib/soraneo-wallet/src/bootstrap', async () => {
-  const wallet = await resolveWalletModule();
+  const wallet = await resolveWalletRuntime();
 
   return {
     initWallet: wallet.initWallet,
@@ -492,9 +474,6 @@ vi.mock('@/router', () => ({
   },
   lazyComponent: () => ({ template: '<div><slot /></div>' }),
 }));
-const resolveWalletModuleFactory = vi.hoisted(() => () => resolveWalletModule());
-
-vi.mock('@/shims/wallet', resolveWalletModuleFactory);
 vi.mock('@polkadot/api', () => ({
   ApiPromise: class {},
   WsProvider: class {},
@@ -527,31 +506,6 @@ vi.mock('@/stores/assets', () => ({
       (globalThis as Record<string, any>).__ASSETS_STORE_OVERRIDE?.registeredAssetsFetching ?? false,
   }),
 }));
-vi.mock('@/utils/walletCore', () => {
-  let cachedModule: Record<string, unknown> | null = null;
-
-  const loadWalletCore = async () => {
-    if (cachedModule) return cachedModule;
-
-    const override = (globalThis as Record<string, any>).__WALLET_CORE_OVERRIDE;
-    const module = typeof override === 'function' ? await override() : await resolveWalletModule();
-    cachedModule = module;
-    return module;
-  };
-
-  const getWalletCore = () => {
-    if (!cachedModule) {
-      throw new Error('Wallet core not loaded yet. Call loadWalletCore() before accessing it.');
-    }
-
-    return cachedModule;
-  };
-
-  return {
-    loadWalletCore,
-    getWalletCore,
-  };
-});
 vi.mock('tabbable', () => ({
   __esModule: true,
   default: () => [],

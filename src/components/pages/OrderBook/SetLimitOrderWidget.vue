@@ -19,20 +19,13 @@
 <script setup lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { computed, ref, watch } from 'vue';
+import BuySell from '@/components/pages/OrderBook/BuySell.vue';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 
-import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
-
-defineOptions({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    BuySell: lazyComponent(Components.BuySell),
-  },
-});
 
 const { t } = useTranslation();
 const { PriceVariant: orderBookPriceVariant, side, setSide, orderBookId, baseAsset, quoteAsset } = useOrderBook();

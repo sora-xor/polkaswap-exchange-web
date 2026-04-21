@@ -3,36 +3,42 @@ import { defineComponent, nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 import BarChart from '@/components/pages/Stats/BarChart.vue';
+import barChartSource from '@/components/pages/Stats/BarChart.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
 const nodeIsConnectedState = vi.hoisted(() => ({ value: false }));
 
-const passthroughComponent = defineComponent({
-  template: '<div><slot name="filters"></slot><slot /></div>',
-});
-const chartSkeletonStub = defineComponent({
-  props: ['loading', 'isEmpty', 'isError'],
-  template:
-    '<div class="chart-skeleton-stub" :data-loading="String(loading)" :data-empty="String(isEmpty)" :data-error="String(isError)"><slot /></div>',
-});
-
-vi.mock('@/router', () => ({
-  lazyComponent: (name: string) => (name.includes('ChartSkeleton') ? chartSkeletonStub : passthroughComponent),
+vi.mock('@/components/shared/Widget/Base.vue', () => ({
+  default: {
+    template: '<div><slot name="filters"></slot><slot /></div>',
+  },
 }));
 
-vi.mock('@wallet', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@wallet')>();
+vi.mock('@/components/shared/Chart/ChartSkeleton.vue', () => ({
+  default: {
+    props: ['loading', 'isEmpty', 'isError'],
+    template:
+      '<div class="chart-skeleton-stub" :data-loading="String(loading)" :data-empty="String(isEmpty)" :data-error="String(isError)"><slot /></div>',
+  },
+}));
 
-  return {
-    ...actual,
-    components: {
-      ...actual.components,
-      FormattedAmount: defineComponent({
-        template: '<div><slot name="prefix"></slot><slot /></div>',
-      }),
-    },
-  };
-});
+vi.mock('@/components/shared/PriceChange.vue', () => ({
+  default: {
+    template: '<div><slot /></div>',
+  },
+}));
+
+vi.mock('@/components/shared/Stats/StatsFilter.vue', () => ({
+  default: {
+    template: '<div><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', () => ({
+  default: defineComponent({
+    template: '<div><slot name="prefix"></slot><slot /></div>',
+  }),
+}));
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -123,5 +129,16 @@ describe('BarChart', () => {
     const skeleton = wrapper.find('.chart-skeleton-stub');
     expect(skeleton.exists()).toBe(true);
     expect(skeleton.attributes('data-loading')).toBe('true');
+  });
+
+  it('uses direct shared imports instead of the central lazy registry', () => {
+    expect(barChartSource).not.toContain('lazyComponent(');
+    expect(barChartSource).not.toContain('Components.');
+    expect(barChartSource).not.toContain("from '@/router'");
+    expect(barChartSource).toContain("from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue'");
+    expect(barChartSource).toContain("import BaseWidget from '@/components/shared/Widget/Base.vue';");
+    expect(barChartSource).toContain("import ChartSkeleton from '@/components/shared/Chart/ChartSkeleton.vue';");
+    expect(barChartSource).toContain("import PriceChange from '@/components/shared/PriceChange.vue';");
+    expect(barChartSource).toContain("import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';");
   });
 });

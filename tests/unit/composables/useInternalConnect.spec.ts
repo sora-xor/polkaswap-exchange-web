@@ -27,10 +27,9 @@ vi.mock('@/stores/web3', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('@/app/router', () => ({
   __esModule: true,
   goTo: goToMock,
-  lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
 }));
 
 describe('useInternalConnect', () => {

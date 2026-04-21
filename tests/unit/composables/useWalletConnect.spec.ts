@@ -5,16 +5,15 @@ import { createPinia, setActivePinia } from 'pinia';
 
 import { useWalletConnect } from '@/composables/useWalletConnect';
 import type { AppEIPProvider } from '@/types/evm/provider';
+import useWalletConnectSource from '@/composables/useWalletConnect.ts?raw';
 
 const alertMock = vi.fn();
 const routerGo = vi.hoisted(() => vi.fn());
 
-vi.mock('@/router', () => ({
-  __esModule: true,
-  default: {
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
     go: routerGo,
-  },
-  lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
+  }),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -72,7 +71,7 @@ const { walletStorageMock } = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     storage: walletStorageMock,
@@ -325,5 +324,28 @@ describe('useWalletConnect', () => {
     expect(alertMock).toHaveBeenCalled();
 
     wrapper.unmount();
+  });
+
+  it('reloads through vue-router when extension installation is cancelled', async () => {
+    const error = new Error('install-extension');
+    selectProviderMock.mockRejectedValueOnce(error);
+
+    const wrapper = createHarness();
+    const { wallet } = wrapper.vm as { wallet: ReturnType<typeof useWalletConnect> };
+
+    await wallet.connectEvmProvider({ icon: 'icon', name: 'MM' } as AppEIPProvider);
+    await nextTick();
+
+    const [, options] = alertMock.mock.calls.at(-1) ?? [];
+    options?.callback?.('cancel');
+
+    expect(routerGo).toHaveBeenCalledWith(0);
+
+    wrapper.unmount();
+  });
+
+  it('uses vue-router instead of the legacy router singleton', () => {
+    expect(useWalletConnectSource).toContain("import { useRouter } from 'vue-router';");
+    expect(useWalletConnectSource).not.toContain("from '@/router'");
   });
 });

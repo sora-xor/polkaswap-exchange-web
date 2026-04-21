@@ -38,18 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import { Components } from '@/consts';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
-
-defineOptions({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-  },
-});
 
 const { t } = useTranslation();
 const { completedOrders, orderBookId, baseAsset, quoteAsset } = useOrderBook();

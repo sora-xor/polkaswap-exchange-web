@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -25,6 +24,7 @@ import i18n from '@/lang';
 import router from '@/router';
 
 import { SoraStakingPageNames } from '../consts';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 const props = defineProps<{
   parentLoading?: boolean;
@@ -39,7 +39,7 @@ const emit = defineEmits<{
 const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
 
-const DialogBase = components.DialogBase;
+const DialogBase = WalletComponentDialogBase;
 
 const closeDialog = (): void => {
   emit('close');

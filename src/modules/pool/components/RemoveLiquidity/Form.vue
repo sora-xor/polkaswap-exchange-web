@@ -121,15 +121,17 @@ import { FPNumber, type CodecString, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
+import NetworkFeeWarningDialog from '@/components/shared/Dialog/NetworkFeeWarning.vue';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import SlippageTolerance from '@/components/shared/Settings/SlippageTolerance.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useNetworkFeeWarning } from '@/composables/useNetworkFeeWarning';
 import { useNetworkFeeDialog } from '@/composables/useNetworkFeeDialog';
-import { Components, type NetworkFeeWarningOptions } from '@/consts';
-import { PoolComponents } from '@/modules/pool/consts';
-import { poolLazyComponent } from '@/modules/pool/router';
-import { lazyComponent } from '@/router';
+import type { NetworkFeeWarningOptions } from '@/consts';
+import RemoveLiquidityConfirm from '@/modules/pool/components/RemoveLiquidity/Confirm.vue';
+import RemoveLiquidityTransactionDetails from '@/modules/pool/components/RemoveLiquidity/TransactionDetails.vue';
 import { useAssetsStore } from '@/stores/assets';
 import { usePoolStore } from '@/stores/pool';
 import { RemoveLiquidityFocusedField as FocusedField } from '@/stores/pool/types';
@@ -195,12 +197,6 @@ const shouldBalanceBeHidden = computed(() => Boolean(walletStore.shouldBalanceBe
 const combinedParentLoading = computed(() => Boolean(props.parentLoading) || loading.value);
 
 const confirmDialogVisible = ref(false);
-
-const RemoveLiquidityConfirm = poolLazyComponent(PoolComponents.RemoveLiquidityConfirm);
-const RemoveLiquidityTransactionDetails = poolLazyComponent(PoolComponents.RemoveLiquidityTransactionDetails);
-const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
-const NetworkFeeWarningDialog = lazyComponent(Components.NetworkFeeWarningDialog);
-const TokenInput = lazyComponent(Components.TokenInput);
 
 const XOR_SYMBOL = XOR.symbol;
 const MAX_PART = 100;

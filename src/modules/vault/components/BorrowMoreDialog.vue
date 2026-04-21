@@ -67,18 +67,19 @@
 <script lang="ts" setup>
 import { Operation, FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
-import { Components, HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import SlippageTolerance from '@/components/shared/Settings/SlippageTolerance.vue';
+import ValueStatus from '@/components/shared/ValueStatusWrapper.vue';
+import { HundredNumber, ObjectInit, ZeroStringValue } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
-import { LtvTranslations, VaultComponents } from '@/modules/vault/consts';
-import { vaultLazyComponent } from '@/modules/vault/router';
+import { LtvTranslations } from '@/modules/vault/consts';
+import PrevNextInfoLine from '@/modules/vault/components/PrevNextInfoLine.vue';
 import { getLtvStatus as resolveLtvStatus } from '@/modules/vault/util';
-import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
@@ -88,13 +89,11 @@ import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/sdk/build/kensetsu/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
-const TokenInput = lazyComponent(Components.TokenInput);
-const ValueStatus = lazyComponent(Components.ValueStatusWrapper);
-const PrevNextInfoLine = vaultLazyComponent(VaultComponents.PrevNextInfoLine);
-const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
 
 const props = withDefaults(
   defineProps<{

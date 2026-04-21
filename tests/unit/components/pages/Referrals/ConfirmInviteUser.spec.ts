@@ -9,7 +9,7 @@ const withNotifications = vi.fn(async (handler: () => Promise<void>) => {
   await handler();
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     api: {
@@ -51,7 +51,7 @@ vi.mock('@/composables/useTranslation', () => ({
 }));
 
 const mountComponent = (visible = true) =>
-  import('@/components/pages/Referrals/ConfirmInviteUser.vue').then(({ default: component }) =>
+  import('@/features/referrals/components/ConfirmInviteUser.vue').then(({ default: component }) =>
     mount(component, {
       props: { visible },
       global: {

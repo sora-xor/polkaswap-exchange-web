@@ -41,30 +41,27 @@ import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
+import { goTo } from '@/app/router';
+import {
+  AccelerationAccessDialog,
+  AppLogoButton,
+  AppMarketing,
+  PairTokenLogo,
+  RotatePhoneDialog,
+  SelectCurrencyDialog,
+  SelectLanguageDialog,
+} from '@/app/shell/components';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, PageNames } from '@/consts';
+import { PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
-import { goTo, lazyComponent } from '@/router';
 import { useSettingsStore } from '@/stores/settings';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 
-defineOptions({
-  components: {
-    AppAccountButton,
-    AppHeaderMenu,
-    AppMarketing: lazyComponent(Components.AppMarketing),
-    AppLogoButton: lazyComponent(Components.AppLogoButton),
-    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    SelectCurrencyDialog: lazyComponent(Components.SelectCurrencyDialog),
-    RotatePhoneDialog: lazyComponent(Components.RotatePhoneDialog),
-    AccelerationAccessDialog: lazyComponent(Components.AccelerationAccessDialog),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-  },
-});
+defineOptions({ name: 'AppHeader' });
 
 defineProps<{ loading?: boolean }>();
 

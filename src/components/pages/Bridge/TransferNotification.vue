@@ -19,7 +19,6 @@
 
 <script setup lang="ts">
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import type { ExplorerLink } from '@/consts';
@@ -27,7 +26,6 @@ import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { useAssetsStore } from '@/stores/assets';
 import { useBridgeStore } from '@/stores/bridge';
-import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 import { useWalletStore } from '@/stores/wallet';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -38,17 +36,20 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import WalletComponentSimpleNotification from '@/lib/soraneo-wallet/src/components/SimpleNotification.vue';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
 
 defineOptions({
   components: {
-    SimpleNotification: components.SimpleNotification,
-    DialogBase: components.DialogBase,
-    TokenLogo: components.TokenLogo,
-    ExternalLink: components.ExternalLink,
+    SimpleNotification: WalletComponentSimpleNotification,
+    DialogBase: WalletComponentDialogBase,
+    TokenLogo: WalletComponentTokenLogo,
+    ExternalLink: WalletComponentExternalLink,
   },
 });
 
-const bridgeTransactionsStore = useBridgeTransactionsStore();
 const bridgeStore = useBridgeStore();
 const walletStore = useWalletStore();
 
@@ -56,7 +57,7 @@ const visible = defineModel<boolean>('visible', {
   default: false,
   set(value) {
     if (!value) {
-      bridgeTransactionsStore.setNotificationData();
+      bridgeStore.setNotificationData(null);
     }
     return value;
   },
@@ -64,7 +65,7 @@ const visible = defineModel<boolean>('visible', {
 
 const { t, tc } = useTranslation();
 
-const notificationData = computed(() => bridgeTransactionsStore.notificationData as Nullable<IBridgeTransaction>);
+const notificationData = computed(() => bridgeStore.notificationData as Nullable<IBridgeTransaction>);
 const subBridgeConnector = computed<SubNetworksConnector>(() => bridgeStore.connector);
 const whitelist = computed(() => walletStore.whitelist as Whitelist);
 
@@ -133,7 +134,7 @@ const txAccountLink = computed(() =>
 
 function close(): void {
   visible.value = false;
-  bridgeTransactionsStore.setNotificationData();
+  bridgeStore.setNotificationData(null);
 }
 
 async function addToken(): Promise<void> {

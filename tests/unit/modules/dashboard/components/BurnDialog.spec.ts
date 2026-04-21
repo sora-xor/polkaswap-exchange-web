@@ -62,7 +62,7 @@ const formattedAmountMocks = vi.hoisted(() => {
 
 const isMaxButtonAvailableMock = vi.hoisted(() => vi.fn(() => true));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -104,8 +104,8 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
+  default: {
     name: 'TokenInputStub',
     props: {
       modelValue: {
@@ -115,7 +115,7 @@ vi.mock('@/router', () => ({
     },
     emits: ['update:modelValue', 'max', 'slide'],
     setup: () => () => null,
-  }),
+  },
 }));
 
 vi.mock('@/stores/settings', () => ({

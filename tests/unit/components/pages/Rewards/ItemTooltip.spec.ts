@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 const tMock = vi.fn();
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -21,13 +21,21 @@ vi.mock('@wallet', async () => {
   });
 });
 
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return {
+    __esModule: true,
+    default: wallet.components.FormattedAmount,
+  };
+});
+
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string, params?: Record<string, unknown>) => tMock(key, params) ?? key,
   }),
 }));
 
-const ItemTooltip = (await import('@/components/pages/Rewards/ItemTooltip.vue')).default;
+const ItemTooltip = (await import('@/features/rewards/components/rewards/ItemTooltip.vue')).default;
 
 describe('RewardsItemTooltip.vue', () => {
   it('renders total vested text and passes props to formatted amount', () => {

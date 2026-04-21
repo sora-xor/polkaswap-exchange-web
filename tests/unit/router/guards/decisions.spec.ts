@@ -6,7 +6,7 @@ import {
   resolveInvitationDecision,
   resolveReferralActionRedirect,
   shouldResetBridgeHistory,
-} from '@/router/guards/decisions';
+} from '@/app/router/guards/decisions';
 
 describe('router guard decisions', () => {
   it('detects when bridge history should reset', () => {

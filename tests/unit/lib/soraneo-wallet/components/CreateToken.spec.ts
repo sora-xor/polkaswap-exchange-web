@@ -2,10 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 
 const navigate = vi.hoisted(() => vi.fn());
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    navigate,
-  }),
+vi.mock('@/platform/wallet/navigation', () => ({
+  navigateWallet: navigate,
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
@@ -42,5 +40,13 @@ describe('Wallet CreateToken', () => {
     expect(state.showHeader.value).toBe(true);
     expect(state.createTokenTitle.value).toBe('createToken.titleCommon');
     expect(navigate).toHaveBeenCalledWith({ name: RouteNames.CreateToken });
+  });
+
+  it('routes the initial back action through the wallet navigation boundary', () => {
+    const state = (CreateToken as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    state.handleBack();
+
+    expect(navigate).toHaveBeenCalledWith({ name: RouteNames.Wallet });
   });
 });

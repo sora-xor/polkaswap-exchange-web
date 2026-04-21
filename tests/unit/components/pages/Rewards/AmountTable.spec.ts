@@ -27,7 +27,7 @@ const FormattedAmountWithFiatValueStub = defineComponent({
   },
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -117,8 +117,14 @@ const RewardsItemTooltipStub = defineComponent({
   },
 });
 
-let AmountTable: (typeof import('@/components/pages/Rewards/AmountTable.vue'))['default'];
-let MountTarget: (typeof import('@/components/pages/Rewards/AmountTable.vue'))['default'];
+vi.mock('@/features/rewards/components/rewards/ItemTooltip.vue', () => ({
+  __esModule: true,
+  __isTeleport: false,
+  default: RewardsItemTooltipStub,
+}));
+
+let AmountTable: (typeof import('@/features/rewards/components/rewards/AmountTable.vue'))['default'];
+let MountTarget: (typeof import('@/features/rewards/components/rewards/AmountTable.vue'))['default'];
 
 beforeEach(async () => {
   Object.values(formattedAmountMocks).forEach((mock) => {
@@ -127,7 +133,7 @@ beforeEach(async () => {
   translationMock.t.mockClear();
   translationMock.te.mockClear();
 
-  const module = await import('@/components/pages/Rewards/AmountTable.vue');
+  const module = await import('@/features/rewards/components/rewards/AmountTable.vue');
   AmountTable = module.default;
   MountTarget = { ...module.default, render: () => h('div') } as typeof module.default;
 });

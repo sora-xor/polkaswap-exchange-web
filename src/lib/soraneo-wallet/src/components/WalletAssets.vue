@@ -103,10 +103,10 @@ import isEmpty from 'lodash/fp/isEmpty';
 import { computed } from 'vue';
 import draggable from 'vuedraggable';
 
+import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
 import { useFormattedAmount } from '../composables/useFormattedAmount';
 import { useLoading } from '../composables/useLoading';
 import { useWalletTranslation } from '../composables/useWalletTranslation';
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames, HiddenValue, WalletFilteringOptions } from '../consts';
@@ -116,7 +116,6 @@ import FormattedAmountWithFiatValue from './FormattedAmountWithFiatValue.vue';
 import WalletAssetsHeadline from './WalletAssetsHeadline.vue';
 
 import type { WalletAssetFilters, WalletPermissions } from '../consts';
-import type { Route } from '@/stores/router/types';
 import type { AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 type DraggableMoveEvent<T> = {
   draggedContext: { element: T };
@@ -133,7 +132,6 @@ export default {
   emits: ['swap'],
   setup(_props, { emit }) {
     const walletStore = useWalletStore();
-    const routerStore = useRouterStore();
     const { loading } = useLoading();
     const {
       getAssetFiatPrice,
@@ -225,8 +223,8 @@ export default {
       walletStore.setMultiplePinnedAssets(assetAddresses);
     }
 
-    function navigate(options: Route): void {
-      routerStore.navigate(options);
+    function navigate(options: WalletNavigationTarget): void {
+      walletStore.navigate(options);
     }
 
     function onMove(event: DraggableMoveEvent<AccountAsset>): boolean {

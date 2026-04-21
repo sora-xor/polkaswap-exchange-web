@@ -1,13 +1,13 @@
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { ethers, EtherscanProvider } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
-import { getCurrentIndexer } from '@/shims/wallet-indexer';
-import * as SUBQUERY_TYPES from '@/shims/wallet-indexer-subquery-types';
+import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
+import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
 import type { EthBridgeContractsAddresses } from '@/stores/web3';
 import { getEvmTransactionReceiptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';

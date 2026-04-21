@@ -70,12 +70,11 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed, onMounted, ref } from 'vue';
 
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import { Components, FontSizeRate, PaginationButton } from '@/consts';
-import { lazyComponent } from '@/router';
+import IFrameWidget from '@/components/shared/Widget/IFrame.vue';
+import { FontSizeRate, PaginationButton } from '@/consts';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
 import { useMoonpayStore } from '@/stores/moonpay';
@@ -87,6 +86,8 @@ import { MoonpayTransactionStatus, MOONPAY_WIDGET_ORIGINS, buildMoonpayTransacti
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { Nullable } from '@/types/common';
+import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import HistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 
 const HistoryView = 'history';
 const DetailsView = 'details';
@@ -94,13 +95,7 @@ const pageAmount = 5;
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object';
 
 defineOptions({
-  components: {
-    MoonpayLogo,
-    FormattedAmount: components.FormattedAmount,
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    IFrameWidget: lazyComponent(Components.IFrameWidget),
-    HistoryPagination: components.HistoryPagination,
-  },
+  name: 'MoonpayHistory',
 });
 
 const { t, language, formatDate } = useTranslation();

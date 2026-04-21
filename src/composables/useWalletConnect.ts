@@ -1,8 +1,8 @@
 import { computed, getCurrentInstance } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
 import pinia from '@/plugins/pinia';
-import router from '@/router';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
@@ -16,6 +16,7 @@ import { handleRpcProviderError, installExtensionKey } from '@/utils/ethers-util
 export function useWalletConnect() {
   const { t, te } = useTranslation();
   const instance = getCurrentInstance();
+  const router = useRouter();
   const alert = instance?.proxy?.$alert as
     | ((
         message: string,

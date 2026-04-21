@@ -8,13 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
+import IFrameWidget from '@/components/shared/Widget/IFrame.vue';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
 import { useMoonpayStore } from '@/stores/moonpay';
@@ -23,16 +21,13 @@ import { useWalletStore } from '@/stores/wallet';
 import { getCssVariableValue } from '@/utils';
 import { MOONPAY_WIDGET_ORIGINS } from '@/utils/moonpay';
 
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 import type { FnWithoutArgs } from '@/types/common';
+import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 defineOptions({
-  components: {
-    DialogBase: components.DialogBase,
-    MoonpayLogo,
-    IFrameWidget: lazyComponent(Components.IFrameWidget),
-  },
+  name: 'MoonpayDialog',
 });
 
 const widgetUrl = ref('');

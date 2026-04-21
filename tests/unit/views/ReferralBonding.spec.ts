@@ -1,6 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import type { Component } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Operation } from '@sora-substrate/sdk';
 
@@ -37,6 +36,7 @@ vi.mock('@/lib/soraneo-wallet/src/util/storage', () => ({
 
 const reserveXorMock = vi.fn();
 const unreserveXorMock = vi.fn();
+const pushMock = vi.fn();
 
 const infoLineStub = {
   name: 'InfoLine',
@@ -62,7 +62,7 @@ const referralsConfirmBondingStub = {
     '<div v-if="visible" class="confirm-dialog"><slot /><button class="confirm-btn" @click="$emit(\'confirm\')"></button></div>',
 };
 
-vi.mock('@wallet', () => ({
+vi.mock('@tests/stubs/walletRuntime', () => ({
   __esModule: true,
   components: {
     InfoLine: infoLineStub,
@@ -81,7 +81,7 @@ vi.mock('@wallet', () => ({
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({ name: 'ReferralBonding' }),
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: pushMock }),
 }));
 
 const storeMocks = (() => {
@@ -142,32 +142,11 @@ vi.mock('@/composables/useTransaction', () => ({
   }),
 }));
 
-const pushMock = vi.fn();
-
-const lazyComponentStubs: Record<string, Component> = {
-  'shared/GenericPageHeader': genericPageHeaderStub,
-  'shared/Input/TokenInput': tokenInputStub,
-  'pages/Referrals/ConfirmBonding': referralsConfirmBondingStub,
-};
-
-const fallbackLazyComponent = {
-  template: '<div />',
-};
-
-vi.mock('@/router', () => ({
-  __esModule: true,
-  default: {
-    push: pushMock,
-    currentRoute: { value: { name: 'ReferralBonding' } },
-  },
-  lazyComponent: (component: string) => lazyComponentStubs[component] ?? fallbackLazyComponent,
-}));
-
-let ReferralBondingView: typeof import('@/views/ReferralBonding.vue').default;
+let ReferralBondingView: typeof import('@/features/referrals/pages/ReferralBondingPage.vue').default;
 
 const mountView = async () => {
   if (!ReferralBondingView) {
-    ({ default: ReferralBondingView } = await import('@/views/ReferralBonding.vue'));
+    ({ default: ReferralBondingView } = await import('@/features/referrals/pages/ReferralBondingPage.vue'));
   }
 
   return mount(ReferralBondingView, {
@@ -196,6 +175,15 @@ const mountView = async () => {
 };
 
 describe('ReferralBonding view', () => {
+  beforeEach(() => {
+    pushMock.mockClear();
+    reserveXorMock.mockClear();
+    unreserveXorMock.mockClear();
+    storeMocks.referralsStore.setAmount.mockClear();
+    storeMocks.referralsStore.resetAmount.mockClear();
+    storeMocks.referralsStore.amount = '0';
+  });
+
   it('disables action button when amount is zero', async () => {
     const wrapper = await mountView();
 

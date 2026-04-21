@@ -37,7 +37,7 @@ const shared = vi.hoisted(() => ({
   watchEthereumMock: vi.fn(),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const wallet = await createWalletMock();
 

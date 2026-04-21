@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
-import FirstTxCard from '@/components/pages/PointSystem/FirstTxCard.vue';
+import FirstTxCard from '@/features/rewards/components/point-system/FirstTxCard.vue';
 
 const formatDateMock = vi.fn();
 

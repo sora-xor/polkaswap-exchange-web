@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
-import { components } from '@/shims/wallet-components';
 import pick from 'lodash/fp/pick';
 import { computed, ref } from 'vue';
 
@@ -44,6 +43,7 @@ import type { NodesConnection } from '@/utils/connection';
 import { AppHandledError } from '@/utils/error';
 
 import { NodeModel } from './consts';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -60,7 +60,7 @@ const props = withDefaults(
 defineOptions({
   name: 'SelectNodeDialog',
   components: {
-    DialogBase: components.DialogBase,
+    DialogBase: WalletComponentDialogBase,
   },
 });
 

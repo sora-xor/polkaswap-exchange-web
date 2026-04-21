@@ -1,6 +1,6 @@
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 
-import { en as walletEn } from '@/shims/wallet';
+import walletEn from '@/lib/soraneo-wallet/src/lang/en';
 import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';

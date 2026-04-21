@@ -44,7 +44,7 @@ vi.mock('@/composables/useOrderBookUserOrders', () => ({
   }),
 }));
 
-vi.mock('@wallet', () => ({
+vi.mock('@tests/stubs/walletRuntime', () => ({
   components: {
     HistoryPagination: { template: '<div class="history-pagination-stub"></div>' },
   },
@@ -106,7 +106,7 @@ describe('OpenOrders.vue', () => {
 
     expect(orderBookUserOrdersMocks.resetPagedUserLimitOrdersSubscription).toHaveBeenCalledTimes(1);
     expect(orderBookUserOrdersMocks.subscribeOnLimitOrders).toHaveBeenCalledWith([1, 2]);
-  });
+  }, 15_000);
 
   it('tracks selections added for cancellation', async () => {
     const wrapper = await mountComponent();

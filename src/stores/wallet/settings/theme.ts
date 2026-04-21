@@ -1,4 +1,4 @@
-import { Theme } from '@/shims/wallet-consts';
+import { Theme } from '@/lib/soraneo-wallet/src/consts';
 
 /**
  * Coerces arbitrary persisted values to a supported wallet theme.

@@ -33,7 +33,7 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-vi.mock('@/composables/useSelectedTokensRoute', () => ({
+vi.mock('@/shared/navigation/useSelectedTokensRoute', () => ({
   useSelectedTokensRoute: () => ({
     firstRouteAddress,
     secondRouteAddress,
@@ -51,34 +51,23 @@ vi.mock('@/stores/pool', () => ({
   usePoolStore: () => poolStoreMock,
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('vue-router', () => ({
   __esModule: true,
-  default: {
+  useRouter: () => ({
     push: pushMock,
-  },
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
-    template: '<div class="lazy-component-stub"><slot /></div>',
   }),
 }));
 
-vi.mock('@/modules/pool/router', () => ({
-  poolLazyComponent: () => ({
-    name: 'PoolLazyComponentStub',
-    template: '<div class="pool-lazy-component-stub"><slot /></div>',
-  }),
-}));
-
-const AddLiquidityView = (await import('@/views/AddLiquidity.vue')).default;
+const AddLiquidityView = (await import('@/features/pool/pages/AddLiquidityPage.vue')).default;
 
 const mountView = () =>
   mount(AddLiquidityView, {
     global: {
       stubs: {
-        'generic-page-header': {
+        GenericPageHeader: {
           template: '<div class="generic-page-header-stub"><slot /></div>',
         },
-        'add-liquidity-form': {
+        AddLiquidityForm: {
           template: '<div class="add-liquidity-form-stub"></div>',
         },
       },

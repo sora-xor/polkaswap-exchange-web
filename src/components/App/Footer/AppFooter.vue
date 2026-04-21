@@ -93,14 +93,14 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { computed, markRaw, onBeforeUnmount, onMounted } from 'vue';
 
 import { Status } from '@soramitsu-ui/ui/types';
+import { SelectNodeDialog } from '@/app/shell/components';
 import { useTranslation } from '@/composables/useTranslation';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { Components, IndexerType, type SoraNetwork } from '@/consts';
+import { IndexerType, type SoraNetwork } from '@/consts';
 import { Theme } from '@/consts/theme';
-import { connection } from '@/shims/wallet-api';
-import { getExplorerLinks } from '@/shims/wallet-util';
-import { ConnectionStatus, type IndexerState } from '@/shims/wallet-common-types';
-import { lazyComponent } from '@/router';
+import { connection } from '@/lib/soraneo-wallet/src/api';
+import { getExplorerLinks } from '@/lib/soraneo-wallet/src/util';
+import { ConnectionStatus, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
 import { useSettingsStore } from '@/stores/settings';
 import type { Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
@@ -111,19 +111,12 @@ import { resolveIndexerStatus } from '@/components/App/Footer/utils/resolveIndex
 
 import FooterPopper from './FooterPopper.vue';
 import NoInternetDialog from './NoInternetDialog.vue';
+import StatisticsDialog from './StatisticsDialog.vue';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
 
-defineOptions({
-  components: {
-    SoraLogo,
-    FooterPopper,
-    NoInternetDialog,
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
-  },
-});
+defineOptions({ name: 'AppFooter' });
 
 const { t, TranslationConsts } = useTranslation();
 const settingsStore = useSettingsStore();

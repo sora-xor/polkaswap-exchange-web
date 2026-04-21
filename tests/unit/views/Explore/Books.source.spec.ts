@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import booksSource from '@/views/Explore/Books.vue?raw';
+import booksSource from '@/features/explore/pages/ExploreBooksPage.vue?raw';
 
 describe('Books source', () => {
   it('renders whole-number book prices without a trailing decimal', () => {

@@ -20,25 +20,26 @@ vi.mock('@/stores/wallet', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      FormattedAmount: {
-        name: 'FormattedAmountStub',
-        template: '<span class="formatted-amount-stub"><slot /></span>',
-      },
-      FormattedAmountWithFiatValue: {
-        name: 'FormattedAmountWithFiatValueStub',
-        template: '<span class="formatted-amount-fiat-stub"><slot /></span>',
-      },
-      TokenAddress: {
-        name: 'TokenAddressStub',
-        template: '<span class="token-address-stub"><slot /></span>',
-      },
-    },
-  });
-});
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', () => ({
+  default: {
+    name: 'FormattedAmountStub',
+    template: '<span class="formatted-amount-stub"><slot /></span>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue', () => ({
+  default: {
+    name: 'FormattedAmountWithFiatValueStub',
+    template: '<span class="formatted-amount-fiat-stub"><slot /></span>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenAddress.vue', () => ({
+  default: {
+    name: 'TokenAddressStub',
+    template: '<span class="token-address-stub"><slot /></span>',
+  },
+}));
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -176,5 +177,17 @@ describe('TokenInput', () => {
     expect(updateModelValue).toBeTruthy();
     const lastUpdate = updateModelValue?.[updateModelValue.length - 1];
     expect(lastUpdate?.[0]).toBe('1.25');
+  });
+
+  it('emits select when the token chooser is clicked', async () => {
+    const wrapper = createWrapper({
+      token,
+      isSelectAvailable: true,
+    });
+
+    wrapper.findComponent(TokenSelectButtonStub).vm.$emit('click', { stopPropagation: () => undefined });
+    await nextTick();
+
+    expect(wrapper.emitted('select')).toHaveLength(1);
   });
 });

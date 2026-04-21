@@ -8,6 +8,7 @@ const repoRoot = path.resolve(__dirname, '../../..');
 
 const files = {
   app: path.join(repoRoot, 'src', 'App.vue'),
+  bootstrap: path.join(repoRoot, 'src', 'app', 'bootstrap', 'index.ts'),
   currencyService: path.join(repoRoot, 'src', 'services', 'currency', 'index.ts'),
   referralsAdapter: path.join(repoRoot, 'src', 'adapters', 'wallet', 'referrals.ts'),
   supplyQuery: path.join(repoRoot, 'src', 'indexer', 'queries', 'asset', 'supply.ts'),
@@ -39,6 +40,7 @@ describe('app-level store migration', () => {
   it('routes active runtime access through Pinia facades instead of app-store helpers', async () => {
     const [
       appSource,
+      bootstrapSource,
       currencyServiceSource,
       referralsAdapterSource,
       supplyQuerySource,
@@ -54,21 +56,24 @@ describe('app-level store migration', () => {
     ] = await Promise.all(Object.values(files).map(readSource));
 
     expect(appSource).not.toContain("from '@/utils/app-store'");
-    expect(appSource).toContain("from '@/stores/settings'");
-    expect(appSource).toContain("from '@/stores/web3'");
-    expect(appSource).toContain("from '@/stores/router'");
-    expect(appSource).toContain("from '@/stores/wallet'");
-    expect(appSource).toContain("from '@/shims/wallet-components'");
-    expect(appSource).toContain("from '@/shims/wallet-api'");
-    expect(appSource).toContain("from '@/shims/wallet-bootstrap'");
-    expect(appSource).toContain("from '@/shims/wallet-alerts'");
-    expect(appSource).not.toContain("from '@/lib/soraneo-wallet/src/components/registry'");
+    expect(appSource).toContain("from '@/app/shell/AppShell.vue'");
+    expect(appSource).not.toContain("from '@/stores/");
+    expect(appSource).not.toContain("from '@/shims/");
     expect(appSource).not.toContain("from '@/lib/soraneo-wallet/src/api'");
     expect(appSource).not.toContain("from '@/lib/soraneo-wallet/src/bootstrap'");
     expect(appSource).not.toContain("from '@/lib/soraneo-wallet/src/services/alerts'");
-    expect(appSource).not.toContain("from '@wallet'");
+    expect(appSource).not.toContain("from '@tests/stubs/walletRuntime'");
     expect(appSource).not.toContain('./store/settings/types');
     expect(appSource).not.toContain('./store/web3/types');
+    expect(bootstrapSource).toContain("from '@/plugins/pinia'");
+    expect(bootstrapSource).toContain("from '@/plugins'");
+    expect(bootstrapSource).toContain("from '@/lang'");
+    expect(bootstrapSource).toContain("from '@/app/router'");
+    expect(bootstrapSource).not.toContain("from '@/utils/app-store'");
+    expect(bootstrapSource).not.toContain("from '@/lib/soraneo-wallet/src/api'");
+    expect(bootstrapSource).not.toContain("from '@/lib/soraneo-wallet/src/bootstrap'");
+    expect(bootstrapSource).not.toContain("from '@/lib/soraneo-wallet/src/services/alerts'");
+    expect(bootstrapSource).not.toContain("from '@tests/stubs/walletRuntime'");
     expect(currencyServiceSource).toContain("from '@/stores/settings'");
     expect(currencyServiceSource).not.toContain("from '@/utils/app-store'");
     expect(referralsAdapterSource).toContain("from '@/stores/referrals'");
@@ -100,13 +105,16 @@ describe('app-level store migration', () => {
     expect(subBridgeSource).not.toContain("from '@/utils/app-store'");
   });
 
-  it('keeps the app bootstrap on the compat store wrapper', async () => {
-    const mainSource = await readSource(mainFile);
+  it('keeps the app bootstrap routed through the app-owned bootstrap module', async () => {
+    const [mainSource, bootstrapSource] = await Promise.all([readSource(mainFile), readSource(files.bootstrap)]);
 
     expect(mainSource).not.toContain("import store from './store'");
     expect(mainSource).not.toContain('app.use(store.original)');
     expect(mainSource).not.toContain('store: store.original');
-    expect(mainSource).toContain('installPlugins(app, { pinia })');
+    expect(mainSource).toContain("from '@/app/bootstrap'");
+    expect(mainSource).toContain('mountApp()');
     expect(mainSource).not.toContain('await router.isReady()');
+    expect(bootstrapSource).toContain('installPlugins(app, { pinia })');
+    expect(bootstrapSource).toContain('void router.isReady().catch(');
   });
 });

@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/components/pages/PointSystem/ProgressCard.vue', () => ({
+vi.mock('@/features/rewards/components/point-system/ProgressCard.vue', () => ({
   __esModule: true,
   __isTeleport: false,
   default: {
@@ -11,7 +11,7 @@ vi.mock('@/components/pages/PointSystem/ProgressCard.vue', () => ({
   },
 }));
 
-vi.mock('@/components/pages/PointSystem/TaskDialog.vue', () => ({
+vi.mock('@/features/rewards/components/point-system/TaskDialog.vue', () => ({
   __esModule: true,
   __isTeleport: false,
   default: {
@@ -27,7 +27,7 @@ vi.mock('@/components/pages/PointSystem/TaskDialog.vue', () => ({
   },
 }));
 
-import PointCard from '@/components/pages/PointSystem/PointCard.vue';
+import PointCard from '@/features/rewards/components/point-system/PointCard.vue';
 import type { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -40,13 +40,6 @@ vi.mock('@/consts/pointSystem', () => ({
   MAX_LEVEL: 6,
   getImageSrc: (name: string) => name,
   isTokenImage: () => false,
-}));
-
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
-    template: '<div />',
-  }),
 }));
 
 function buildCategory(overrides: Partial<CalculateCategoryPointResult> = {}): CalculateCategoryPointResult {

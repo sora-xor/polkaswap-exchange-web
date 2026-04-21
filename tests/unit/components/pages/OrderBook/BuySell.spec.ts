@@ -113,12 +113,12 @@ vi.mock('@/composables/useConfirmDialog', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
 
-const walletModulePromise = import('@wallet');
+const walletRuntimePromise = import('@tests/stubs/walletRuntime');
 
 const resetConfirmDialog = () => {
   confirmDialog.state = { handler: undefined as undefined | (() => Promise<void> | void) };
@@ -158,6 +158,58 @@ vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
   }),
+}));
+
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
+  default: {
+    name: 'TokenInputStub',
+    template: '<div class="token-input-stub" />',
+  },
+}));
+
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
+  default: {
+    name: 'PairTokenLogoStub',
+    template: '<div class="pair-token-logo-stub" />',
+  },
+}));
+
+vi.mock('@/components/pages/OrderBook/Popovers/PairListPopover.vue', () => ({
+  default: {
+    name: 'PairListPopoverStub',
+    emits: ['close'],
+    template: '<div class="pair-list-popover-stub" />',
+  },
+}));
+
+vi.mock('@/components/pages/OrderBook/Dialogs/PlaceOrder.vue', () => ({
+  default: {
+    name: 'PlaceOrderDialogStub',
+    props: ['visible'],
+    emits: ['update:visible', 'confirm'],
+    template: '<div class="place-order-dialog-stub" />',
+  },
+}));
+
+vi.mock('@/components/pages/OrderBook/TransactionDetails.vue', () => ({
+  default: {
+    name: 'PlaceTransactionDetailsStub',
+    template: '<div class="place-transaction-details-stub" />',
+  },
+}));
+
+vi.mock('@/components/shared/PriceChange.vue', () => ({
+  default: {
+    name: 'PriceChangeStub',
+    template: '<div class="price-change-stub" />',
+  },
+}));
+
+vi.mock('@/components/pages/OrderBook/common/ErrorButton.vue', () => ({
+  default: {
+    name: 'OrderBookErrorButtonStub',
+    template: '<div class="error-button-stub" />',
+  },
 }));
 
 vi.mock('@/composables/useOrderBook', () => ({
@@ -442,18 +494,18 @@ const createStoreMock = (overrides: StoreOverrides = {}) => {
   return { store, orderBookState };
 };
 
-const patchWalletModule = async () => {
-  const walletModule = await walletModulePromise;
+const patchWalletRuntime = async () => {
+  const walletRuntime = await walletRuntimePromise;
 
   const original = {
-    placeLimitOrder: walletModule.api?.orderBook?.placeLimitOrder,
-    isOrderPlaceable: walletModule.api?.orderBook?.isOrderPlaceable,
-    execute: walletModule.api?.swap?.execute,
-    getSwapQuoteObservable: walletModule.api?.swap?.getSwapQuoteObservable,
+    placeLimitOrder: walletRuntime.api?.orderBook?.placeLimitOrder,
+    isOrderPlaceable: walletRuntime.api?.orderBook?.isOrderPlaceable,
+    execute: walletRuntime.api?.swap?.execute,
+    getSwapQuoteObservable: walletRuntime.api?.swap?.getSwapQuoteObservable,
   };
 
-  if (!walletModule.api.orderBook) {
-    walletModule.api.orderBook = {} as any;
+  if (!walletRuntime.api.orderBook) {
+    walletRuntime.api.orderBook = {} as any;
   }
 
   const unsubscribe = vi.fn();
@@ -473,23 +525,23 @@ const patchWalletModule = async () => {
     })),
   };
 
-  walletModule.api.orderBook.placeLimitOrder = walletMocks.placeLimitOrder;
-  walletModule.api.orderBook.isOrderPlaceable = walletMocks.isOrderPlaceable;
-  walletModule.api.swap.execute = walletMocks.execute;
-  walletModule.api.swap.getSwapQuoteObservable = walletMocks.getSwapQuoteObservable;
+  walletRuntime.api.orderBook.placeLimitOrder = walletMocks.placeLimitOrder;
+  walletRuntime.api.orderBook.isOrderPlaceable = walletMocks.isOrderPlaceable;
+  walletRuntime.api.swap.execute = walletMocks.execute;
+  walletRuntime.api.swap.getSwapQuoteObservable = walletMocks.getSwapQuoteObservable;
 
   const restore = () => {
     if (original.placeLimitOrder) {
-      walletModule.api.orderBook.placeLimitOrder = original.placeLimitOrder;
+      walletRuntime.api.orderBook.placeLimitOrder = original.placeLimitOrder;
     }
     if (original.isOrderPlaceable) {
-      walletModule.api.orderBook.isOrderPlaceable = original.isOrderPlaceable;
+      walletRuntime.api.orderBook.isOrderPlaceable = original.isOrderPlaceable;
     }
     if (original.execute) {
-      walletModule.api.swap.execute = original.execute;
+      walletRuntime.api.swap.execute = original.execute;
     }
     if (original.getSwapQuoteObservable) {
-      walletModule.api.swap.getSwapQuoteObservable = original.getSwapQuoteObservable;
+      walletRuntime.api.swap.getSwapQuoteObservable = original.getSwapQuoteObservable;
     }
   };
 
@@ -508,7 +560,7 @@ const loadBuySellModule = async () => {
 const mountComponent = async (overrides: StoreOverrides = {}) => {
   const { store, orderBookState } = createStoreMock(overrides);
   storeRef.value = store;
-  const { walletMocks, restore } = await patchWalletModule();
+  const { walletMocks, restore } = await patchWalletRuntime();
   const module = await loadBuySellModule();
   walletRestore = restore;
   const wrapper = mount(module.default, {
@@ -558,8 +610,8 @@ describe('BuySell.vue', () => {
     expect(disabledButton.exists()).toBe(true);
     expect(disabledButton.text()).toBe('orderBook.setPrice');
     expect(confirmDialog.confirmOrExecute).not.toHaveBeenCalled();
-    const walletModuleDisabled = await import('@wallet');
-    expect((walletModuleDisabled.api.orderBook.placeLimitOrder as any).mock.calls).toHaveLength(0);
+    const walletRuntimeDisabled = await import('@tests/stubs/walletRuntime');
+    expect((walletRuntimeDisabled.api.orderBook.placeLimitOrder as any).mock.calls).toHaveLength(0);
   });
 
   it('renders a disabled stopped-book button when trading is unavailable', async () => {
@@ -591,9 +643,9 @@ describe('BuySell.vue', () => {
     expect(orderBookState.baseValue).toBe('1');
     expect(orderBookState.quoteValue).toBe('1');
 
-    const walletModule = await import('@wallet');
-    expect(typeof walletModule.api.orderBook.placeLimitOrder).toBe('function');
-    expect(typeof walletModule.api.orderBook.isOrderPlaceable).toBe('function');
+    const walletRuntime = await import('@tests/stubs/walletRuntime');
+    expect(typeof walletRuntime.api.orderBook.placeLimitOrder).toBe('function');
+    expect(typeof walletRuntime.api.orderBook.isOrderPlaceable).toBe('function');
 
     expect(orderBookState.limitOrderType).toBe(LimitOrderType.limit);
 

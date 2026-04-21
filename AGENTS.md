@@ -25,7 +25,7 @@ This repository is a Node.js + Vue (Vite) project that compiles into a static si
   - `yarn test:all` — convenience alias for unit tests
 - Guidelines:
   - Do not perform network calls or require external services. Mock SDKs, wallet APIs, and providers.
-  - Prefer lightweight mocking for `@wallet` and `@/utils/ethers-util` when testing bridge flows.
+  - Prefer lightweight mocking for the concrete wallet modules a suite imports (for example `@/lib/soraneo-wallet/src/api`) and `@/utils/ethers-util` when testing bridge flows.
   - Follow the wallet mock pattern in `tests/README.md` (`createWalletMock` + shared stubs) so every suite sees the same baseline exports.
   - Cover redenomination math and token amount handling with precise expectations.
 

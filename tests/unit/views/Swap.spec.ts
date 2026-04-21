@@ -1,6 +1,8 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { computed, defineComponent, h, ref, watch } from 'vue';
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import type { VueWrapper } from '@vue/test-utils';
 
 const capturedGridValues: Array<Record<string, boolean> | undefined> = [];
 const capturedGridIds: Array<string | undefined> = [];
@@ -87,7 +89,7 @@ vi.mock('@/components/shared/Widget/Grid.vue', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/Swap/Widget/Form.vue', () => ({
+vi.mock('@/features/swap/components/widgets/Form.vue', () => ({
   __esModule: true,
   default: createStub('SwapFormWidgetStub'),
 }));
@@ -95,15 +97,15 @@ vi.mock('@/components/shared/Widget/PriceChart.vue', () => ({
   __esModule: true,
   default: createStub('PriceChartWidgetStub'),
 }));
-vi.mock('@/components/pages/Swap/Widget/Distribution.vue', () => ({
+vi.mock('@/features/swap/components/widgets/Distribution.vue', () => ({
   __esModule: true,
   default: createStub('SwapDistributionWidgetStub'),
 }));
-vi.mock('@/components/pages/Swap/Widget/TransactionDetails.vue', () => ({
+vi.mock('@/features/swap/components/widgets/TransactionDetails.vue', () => ({
   __esModule: true,
   default: createStub('SwapTransactionDetailsWidgetStub'),
 }));
-vi.mock('@/components/pages/Swap/Widget/Transactions.vue', () => ({
+vi.mock('@/features/swap/components/widgets/Transactions.vue', () => ({
   __esModule: true,
   default: createStub('SwapTransactionsWidgetStub'),
 }));
@@ -140,7 +142,7 @@ vi.mock('@/composables/usePiniaTelemetry', () => ({
   usePiniaTelemetry: () => undefined,
 }));
 
-vi.mock('@/stores/swap', () => ({
+vi.mock('@/features/swap/stores/useSwapStore', () => ({
   useSwapStore: () => ({
     isAvailable: true,
   }),
@@ -152,7 +154,7 @@ vi.mock('@/stores/assets', () => ({
   }),
 }));
 
-vi.mock('@/composables/useSwapAmounts', () => ({
+vi.mock('@/features/swap/composables/useSwapAmounts', () => ({
   useSwapAmounts: () => ({
     tokenFrom: computed(() => tokenFromRef.value),
     tokenTo: computed(() => tokenToRef.value),
@@ -161,7 +163,7 @@ vi.mock('@/composables/useSwapAmounts', () => ({
   }),
 }));
 
-vi.mock('@/composables/useSelectedTokensRoute', () => ({
+vi.mock('@/shared/navigation/useSelectedTokensRoute', () => ({
   useSelectedTokensRoute: (
     callback: (params: { firstAddress: string; secondAddress: string }) => Promise<void> | void
   ) => {
@@ -176,17 +178,18 @@ vi.mock('@/composables/useSelectedTokensRoute', () => ({
   },
 }));
 
-vi.mock('@/stores/router', () => ({
-  __esModule: true,
-  useRouterStore: () => ({
-    prev: null,
-  }),
-}));
+let SwapView: typeof import('@/features/swap/pages/SwapPage.vue').default;
+const mountedWrappers: VueWrapper[] = [];
 
-let SwapView: typeof import('@/views/Swap.vue').default;
+const mountSwapView = async () => {
+  const wrapper = mount(SwapView);
+  mountedWrappers.push(wrapper);
+  await flushPromises();
+  return wrapper;
+};
 
 beforeAll(async () => {
-  SwapView = (await import('@/views/Swap.vue')).default;
+  SwapView = (await import('@/features/swap/pages/SwapPage.vue')).default;
 });
 
 beforeEach(() => {
@@ -206,20 +209,23 @@ beforeEach(() => {
   secondRouteAddressRef.value = '';
   isValidRouteRef.value = false;
   routeAssetLookupRef.value = {};
+  window.history.replaceState({}, '', window.location.href);
+});
+
+afterEach(() => {
+  mountedWrappers.splice(0).forEach((wrapper) => wrapper.unmount());
 });
 
 describe('Swap view widget model binding', () => {
   it('uses the versioned swap grid storage key', async () => {
-    mount(SwapView);
-    await flushPromises();
+    await mountSwapView();
 
     expect(capturedGridIds.filter(Boolean).at(-1)).toBe('swapGrid:v2');
     expect(capturedGridAutoResize.at(-1)).toBe(true);
   });
 
   it('passes the default widget visibility model to WidgetsGrid', async () => {
-    mount(SwapView);
-    await flushPromises();
+    await mountSwapView();
 
     const firstModel = capturedGridValues.find(Boolean);
     expect(firstModel).toMatchObject({
@@ -233,8 +239,7 @@ describe('Swap view widget model binding', () => {
   });
 
   it('keeps default widget order and customise constraints for desktop and tablet breakpoints', async () => {
-    mount(SwapView);
-    await flushPromises();
+    await mountSwapView();
 
     const layouts = capturedDefaultLayouts.filter(Boolean).at(-1);
     expect(layouts).toBeTruthy();
@@ -260,8 +265,7 @@ describe('Swap view widget model binding', () => {
     tokenFromRef.value = null;
     tokenToRef.value = null;
 
-    mount(SwapView);
-    await flushPromises();
+    await mountSwapView();
 
     expect(parseCurrentRouteMock).toHaveBeenCalledTimes(1);
     expect(setTokenFromAddressMock).toHaveBeenCalledWith('xor');
@@ -279,16 +283,14 @@ describe('Swap view widget model binding', () => {
       '0xTo': { symbol: 'TO', address: '0xTo' },
     };
 
-    mount(SwapView);
-    await flushPromises();
+    await mountSwapView();
 
     expect(setTokenFromAddressMock).toHaveBeenCalledWith('0xFrom');
     expect(setTokenToAddressMock).toHaveBeenCalledWith('0xTo');
   });
 
   it('hydrates both tokens when a valid route pair resolves after mount', async () => {
-    mount(SwapView);
-    await flushPromises();
+    await mountSwapView();
 
     firstRouteAddressRef.value = '0xFrom';
     secondRouteAddressRef.value = '0xTo';
@@ -311,8 +313,7 @@ describe('Swap view widget model binding', () => {
     secondRouteAddressRef.value = '0xTo';
     isValidRouteRef.value = true;
 
-    mount(SwapView);
-    await flushPromises();
+    await mountSwapView();
 
     setTokenFromAddressMock.mockClear();
     setTokenToAddressMock.mockClear();
@@ -326,5 +327,24 @@ describe('Swap view widget model binding', () => {
 
     expect(setTokenFromAddressMock).toHaveBeenCalledWith('0xFrom');
     expect(setTokenToAddressMock).toHaveBeenCalledWith('0xTo');
+  });
+
+  it('writes the selected swap pair back to the route when the page owns the navigation context', async () => {
+    tokenFromRef.value = { symbol: 'XOR', address: 'xor-address' };
+    tokenToRef.value = { symbol: 'VAL', address: 'val-address' };
+
+    await mountSwapView();
+
+    expect(updateRouteAfterSelectTokensMock).toHaveBeenCalledWith(tokenFromRef.value, tokenToRef.value);
+  });
+
+  it('keeps the order book handoff route untouched when history indicates a trade page origin', async () => {
+    tokenFromRef.value = { symbol: 'XOR', address: 'xor-address' };
+    tokenToRef.value = { symbol: 'VAL', address: 'val-address' };
+    window.history.replaceState({ back: '/trade/XOR/VAL' }, '', window.location.href);
+
+    await mountSwapView();
+
+    expect(updateRouteAfterSelectTokensMock).not.toHaveBeenCalled();
   });
 });

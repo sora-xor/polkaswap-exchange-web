@@ -3,8 +3,6 @@ import { createAsyncComponent } from '@/router/lazy';
 
 import { VaultComponents, VaultPageNames } from './consts';
 
-export const vaultLazyView = (name: VaultPageNames) => () => import(`@/modules/vault/views/${name}.vue`);
-
 export const vaultLazyComponent = (name: VaultComponents) =>
   createAsyncComponent(() => import(`@/modules/vault/components/${name}.vue`));
 

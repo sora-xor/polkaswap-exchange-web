@@ -196,14 +196,15 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { SortDirection } from '@soramitsu-ui/ui/types';
+import SortButton from '@/components/shared/Button/SortButton.vue';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
+import DataRowSkeleton from '@/components/shared/Skeleton/DataRow.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, FontSizeRate, FontWeightRate, HundredNumber, PaginationButton } from '@/consts';
-import { lazyComponent } from '@/router';
+import { FontSizeRate, FontWeightRate, HundredNumber, PaginationButton } from '@/consts';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useVaultStore } from '@/stores/vault';
@@ -212,6 +213,10 @@ import { isAmountValueIntegerOnly } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
+import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 type TableItem = {
   name: string;
@@ -233,13 +238,10 @@ type TableItem = {
   maxLtvValue: number;
 };
 
-const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
-const SortButton = lazyComponent(Components.SortButton);
-const DataRowSkeleton = lazyComponent(Components.DataRowSkeleton);
-const TokenLogo = components.TokenLogo;
-const FormattedAmount = components.FormattedAmount;
-const HistoryPagination = components.HistoryPagination;
-const SearchInput = components.SearchInput;
+const TokenLogo = WalletComponentTokenLogo;
+const FormattedAmount = WalletComponentFormattedAmount;
+const HistoryPagination = WalletComponentHistoryPagination;
+const SearchInput = WalletComponentSearchInput;
 
 const ZERO = FPNumber.ZERO;
 

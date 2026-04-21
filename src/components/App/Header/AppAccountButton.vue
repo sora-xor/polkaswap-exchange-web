@@ -16,17 +16,17 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed, useAttrs } from 'vue';
 
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 import { useTranslation } from '@/composables/useTranslation';
 import { useWalletStore } from '@/stores/wallet';
 import { formatAddress } from '@/utils';
+import WalletComponentWalletAvatar from '@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue';
 
 defineOptions({
   components: {
-    WalletAvatar: components.WalletAvatar,
+    WalletAvatar: WalletComponentWalletAvatar,
   },
 });
 

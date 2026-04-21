@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
-import RewardsGradientBox from '@/components/pages/Rewards/GradientBox.vue';
+import RewardsGradientBox from '@/features/rewards/components/rewards/GradientBox.vue';
 
 const resolveComponentOptions = (component: unknown) =>
   (component as { __vccOpts?: Record<string, unknown> }).__vccOpts ?? component;

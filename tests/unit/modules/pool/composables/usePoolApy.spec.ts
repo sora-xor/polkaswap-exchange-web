@@ -3,23 +3,13 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const getInfo = vi.hoisted(() => vi.fn(() => ({ address: '0xpool' })));
 
-vi.mock('@/shims/wallet-api', () => ({
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
     poolXyk: {
       getInfo,
     },
   },
   connection: {},
-}));
-
-vi.mock('@/utils/walletCore', () => ({
-  loadWalletCore: vi.fn(async () => ({
-    api: {
-      poolXyk: {
-        getInfo,
-      },
-    },
-  })),
 }));
 
 vi.mock('@/stores/pool', () => ({

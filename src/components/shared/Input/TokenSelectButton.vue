@@ -17,14 +17,14 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, ObjectInit } from '@/consts';
-import { lazyComponent } from '@/router';
+import { ObjectInit } from '@/consts';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 /**
  * Token selector button that adapts its visuals based on the provided assets.
@@ -33,8 +33,7 @@ defineOptions({
   name: 'TokenSelectButton',
 });
 
-const TokenLogo = components.TokenLogo;
-const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
+const TokenLogo = WalletTokenLogo;
 
 const props = withDefaults(
   defineProps<{

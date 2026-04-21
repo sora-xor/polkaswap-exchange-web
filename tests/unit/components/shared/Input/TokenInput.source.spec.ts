@@ -16,4 +16,18 @@ describe('TokenInput source', () => {
     expect(tokenInputSource).toContain('gap: 0;');
     expect(tokenInputSource).toContain('.input-prefix {');
   });
+
+  it('uses app-owned wallet UI exports instead of router lazy registration', () => {
+    expect(tokenInputSource).not.toContain('lazyComponent(');
+    expect(tokenInputSource).not.toContain("from '@/router'");
+    expect(tokenInputSource).toContain(
+      "import WalletFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';"
+    );
+    expect(tokenInputSource).toContain(
+      "import WalletFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';"
+    );
+    expect(tokenInputSource).toContain(
+      "import WalletTokenAddress from '@/lib/soraneo-wallet/src/components/TokenAddress.vue';"
+    );
+  });
 });

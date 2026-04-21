@@ -13,17 +13,17 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 defineOptions({
   name: 'StatusBadge',
   components: {
-    TokenLogo: components.TokenLogo,
+    TokenLogo: WalletComponentTokenLogo,
   },
 });
 

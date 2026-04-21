@@ -3,18 +3,15 @@ import { describe, expect, it, vi } from 'vitest';
 
 const navigate = vi.hoisted(() => vi.fn());
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    currentParams: {
-      asset: {
-        address: 'asset-address',
-        symbol: 'XOR',
-        name: 'XOR',
-        balance: { transferable: '1' },
-        decimals: 18,
-      },
+vi.mock('@/platform/wallet/navigation', () => ({
+  getWalletCurrentParams: () => ({
+    asset: {
+      address: 'asset-address',
+      symbol: 'XOR',
+      name: 'XOR',
+      balance: { transferable: '1' },
+      decimals: 18,
     },
-    navigate,
   }),
 }));
 
@@ -24,6 +21,7 @@ vi.mock('@/stores/wallet', () => ({
     accountAssets: [],
     history: {},
     selectedTransaction: null,
+    navigate,
   }),
 }));
 

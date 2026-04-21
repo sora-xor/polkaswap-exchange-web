@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import vaultDetailsSource from '@/modules/vault/views/VaultDetails.vue?raw';
+import vaultDetailsSource from '@/features/vault/pages/VaultDetailsPage.vue?raw';
 
 describe('VaultDetails source', () => {
   it('renders integer-only amounts for zero-fraction vault balances', () => {

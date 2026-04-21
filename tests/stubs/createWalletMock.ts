@@ -1,14 +1,14 @@
-import { mockWalletModule, withWalletModule } from './mockWalletModule';
+import { mockWalletRuntime, withWalletRuntime } from './mockWalletRuntime';
 
-export type WalletMockOverrides = Parameters<typeof mockWalletModule>[0];
+export type WalletMockOverrides = Parameters<typeof mockWalletRuntime>[0];
 
 export function createWalletMock(overrides: WalletMockOverrides = {}) {
-  return mockWalletModule(overrides);
+  return mockWalletRuntime(overrides);
 }
 
-export const withWalletMock = withWalletModule;
+export const withWalletMock = withWalletRuntime;
 
-export const walletModuleFactory =
+export const walletRuntimeFactory =
   (overrides: WalletMockOverrides = {}) =>
   () =>
-    mockWalletModule(overrides);
+    mockWalletRuntime(overrides);

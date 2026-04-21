@@ -1,7 +1,7 @@
-import type { AppWallet } from '@/shims/wallet-consts';
-import type { FiatPriceObject } from '@/shims/wallet-indexer-subsquid-types';
-import type { Wallet } from '@/shims/wallet-service-types';
-import type { Book, AddressKeyMapping, KeyringPair$Json } from '@/shims/wallet-common-types';
+import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
+import type { FiatPriceObject } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
+import type { Wallet } from '@/lib/soraneo-wallet/src/services/wallet/types';
+import type { Book, AddressKeyMapping, KeyringPair$Json } from '@/lib/soraneo-wallet/src/types/common';
 import type {
   AccountAsset,
   Asset,

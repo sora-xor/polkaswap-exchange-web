@@ -20,16 +20,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { Components } from '@/consts';
+import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';
 import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
-import { lazyComponent } from '@/router';
+import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
+import PriceChartWidget from '@/components/shared/Widget/PriceChart.vue';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
-
-const PriceChartWidget = lazyComponent(Components.PriceChartWidget);
-const TokenSelectButton = lazyComponent(Components.TokenSelectButton);
-const SelectToken = lazyComponent(Components.SelectToken);
 
 const props = withDefaults(
   defineProps<{

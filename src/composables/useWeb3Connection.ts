@@ -6,7 +6,7 @@ import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 
 /**
  * Aggregates web3 connection helpers (EVM + Substrate) and exposes a single

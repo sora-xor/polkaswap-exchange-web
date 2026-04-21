@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
+import bookChartsWidgetSource from '@/components/pages/OrderBook/BookChartsWidget.vue?raw';
 
 const usePiniaTelemetryMock = vi.fn();
 const orderBookStoreStub = { $id: 'order-book-store' };
@@ -29,10 +30,10 @@ vi.mock('@/indexer/queries/orderBook/price', () => ({
   fetchOrderBookPriceData: vi.fn(),
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/components/shared/Widget/PriceChart.vue', () => ({
+  default: {
     template: '<div class="price-chart-stub"><slot /></div>',
-  }),
+  },
 }));
 
 describe('BookChartsWidget.vue', () => {
@@ -57,5 +58,12 @@ describe('BookChartsWidget.vue', () => {
       baseAsset: 'AAA',
       quoteAsset: 'BBB',
     });
+  });
+
+  it('uses the shared price chart widget directly', () => {
+    expect(bookChartsWidgetSource).not.toContain('lazyComponent(');
+    expect(bookChartsWidgetSource).not.toContain('Components.');
+    expect(bookChartsWidgetSource).not.toContain("from '@/router'");
+    expect(bookChartsWidgetSource).toContain("import PriceChartWidget from '@/components/shared/Widget/PriceChart.vue';");
   });
 });

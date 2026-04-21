@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import lossWarningDialogSource from '@/components/pages/Swap/LossWarningDialog.vue?raw';
+import lossWarningDialogSource from '@/features/swap/components/LossWarningDialog.vue?raw';
 
 describe('LossWarningDialog source', () => {
   it('keeps the floating warning icon unclipped like live polkaswap', () => {

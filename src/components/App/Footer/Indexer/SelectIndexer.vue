@@ -35,7 +35,7 @@ import { computed, toRef } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import type { Indexer } from '@/types/indexers';
 
-import type { IndexerType } from '@/shims/wallet-consts';
+import type { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 
 defineOptions({ name: 'SelectIndexer' });
 

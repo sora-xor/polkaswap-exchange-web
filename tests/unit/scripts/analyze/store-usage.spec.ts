@@ -35,7 +35,7 @@ describe('store usage analyzer', () => {
   it('inferStoreUsageDomain normalizes src subdirectories', () => {
     expect(inferStoreUsageDomain('src/components/pages/OrderBook/BookWidget.vue')).toBe('pages/OrderBook');
     expect(inferStoreUsageDomain('src/modules/pool/components/AddLiquidity/Form.vue')).toBe('modules/pool');
-    expect(inferStoreUsageDomain('src/views/Bridge.vue')).toBe('views/Bridge');
+    expect(inferStoreUsageDomain('src/features/bridge/pages/BridgePage.vue')).toBe('features');
     expect(inferStoreUsageDomain('src/lib/soraneo-wallet/src/index.ts')).toBe('lib/soraneo-wallet');
     expect(inferStoreUsageDomain('scripts/analyze/store-usage.ts')).toBe('scripts');
   });
@@ -43,16 +43,16 @@ describe('store usage analyzer', () => {
   it('summarizeStoreAccesses aggregates totals by file and domain', () => {
     const accesses: StoreAccess[] = [
       {
-        file: 'src/views/Bridge.vue',
-        domain: 'views/Bridge',
+        file: 'src/features/bridge/pages/BridgePage.vue',
+        domain: 'features',
         line: 1,
         column: 5,
         type: 'state',
         lineText: 'store.state',
       },
       {
-        file: 'src/views/Bridge.vue',
-        domain: 'views/Bridge',
+        file: 'src/features/bridge/pages/BridgePage.vue',
+        domain: 'features',
         line: 2,
         column: 5,
         type: 'getters',
@@ -98,7 +98,7 @@ describe('store usage analyzer', () => {
     expect(firstDomain.total).toBe(3);
     expect(firstDomain.files).toBe(1);
 
-    const bridgeFile = report.files.find((file) => file.domain === 'views/Bridge');
+    const bridgeFile = report.files.find((file) => file.domain === 'features');
     expect(bridgeFile?.counts.state).toBe(1);
     expect(bridgeFile?.counts.getters).toBe(1);
     expect(bridgeFile?.counts.commit).toBe(0);
@@ -107,8 +107,8 @@ describe('store usage analyzer', () => {
   it('formatMarkdownReport prints summary tables', () => {
     const report = summarizeStoreAccesses([
       {
-        file: 'src/views/Bridge.vue',
-        domain: 'views/Bridge',
+        file: 'src/features/bridge/pages/BridgePage.vue',
+        domain: 'features',
         line: 1,
         column: 1,
         type: 'state',
@@ -118,7 +118,7 @@ describe('store usage analyzer', () => {
     const markdown = formatMarkdownReport({ ...report, generatedAt: '2025-01-01T00:00:00.000Z' });
 
     expect(markdown).toContain('Legacy Store Usage Audit');
-    expect(markdown).toContain('views/Bridge');
+    expect(markdown).toContain('features');
     expect(markdown).toContain('state 1');
   });
 

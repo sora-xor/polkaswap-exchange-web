@@ -13,8 +13,8 @@ import {
 } from '@/consts';
 import { Breakpoint, BreakpointClass } from '@/consts/layout';
 import { Theme, type DesignSystem } from '@/consts/theme';
-import { api, connection } from '@/shims/wallet-api';
-import type { IndexerType, SoraNetwork } from '@/shims/wallet-consts';
+import { api, connection } from '@/lib/soraneo-wallet/src/api';
+import type { IndexerType, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { getLocale, getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
@@ -27,8 +27,8 @@ import storage, { settingsStorage } from '@/utils/storage';
 import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
-import { FilterOptions, type Alert, type IndexerState } from '@/shims/wallet-common-types';
-import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/shims/wallet-currency-types';
+import { FilterOptions, type Alert, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
+import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/lib/soraneo-wallet/src/types/currency';
 
 const detectNotificationApiAvailability = (): boolean => typeof Notification !== 'undefined';
 

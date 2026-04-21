@@ -173,15 +173,17 @@ export const useAssetsStore = defineStore('assets', {
         if (!address) return undefined;
 
         const walletStore = useWalletStore();
+        const accountAsset = walletStore.accountAssetsAddressTable?.[address] as Nullable<RegisteredAccountAsset>;
         const asset =
           walletStore.assetsDataTable?.[address] ??
           (walletStore.assets?.find((item) => item.address === address) as Nullable<Asset>) ??
+          accountAsset ??
           (KnownAssets.get(address) as Nullable<Asset>);
 
         if (!asset) return null;
 
         const registered = state.registeredAssets?.[asset.address] || {};
-        const { balance } = walletStore.accountAssetsAddressTable?.[asset.address] || {};
+        const { balance } = accountAsset || {};
 
         return {
           ...asset,

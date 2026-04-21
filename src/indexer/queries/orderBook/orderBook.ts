@@ -1,17 +1,17 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import type { OrderBookDealData, OrderBookUpdateData } from '@/types/orderBook';
 
-import type { SubquerySubscriptionPayload } from '@/shims/wallet-indexer-subquery-types';
+import type { SubquerySubscriptionPayload } from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
 import type {
   OrderBookEntity,
   OrderBookDealEntity,
   QueryData,
   SubscriptionPayload,
-} from '@/shims/wallet-indexer-types';
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type OrderBookEntityMutation = {
   price: string;

@@ -54,7 +54,6 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 import { useNotification } from '@/composables/useNotification';
@@ -67,12 +66,14 @@ import type { Nullable } from '@/types/common';
 import { calcPriceChange, showMostFittingValue, toPrecision } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { Alert, WhitelistIdsBySymbol } from '@/shims/wallet-common-types';
+import type { Alert, WhitelistIdsBySymbol } from '@/lib/soraneo-wallet/src/types/common';
+import WalletComponentAccountCard from '@/lib/soraneo-wallet/src/components/Account/AccountCard.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 defineOptions({
   components: {
-    AccountCard: components.AccountCard,
-    TokenLogo: components.TokenLogo,
+    AccountCard: WalletComponentAccountCard,
+    TokenLogo: WalletComponentTokenLogo,
   },
 });
 

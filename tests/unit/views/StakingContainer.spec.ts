@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
-import StakingContainer from '@/views/StakingContainer.vue';
+import StakingContainer from '@/features/staking/pages/StakingContainerPage.vue';
 
 describe('StakingContainer.vue', () => {
   it('forwards attrs and listeners to nested route view', async () => {

@@ -46,18 +46,20 @@
 import assert from 'assert';
 
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import EraCountdown from '@/modules/staking/sora/components/EraCountdown.vue';
 import { formatDecimalPlaces } from '@/utils';
 
-import { soraStakingLazyComponent } from '../../router';
-import { ERA_HOURS, SoraStakingComponents } from '../consts';
+import { ERA_HOURS } from '../consts';
 import { useSoraStaking } from '../composables/useSoraStaking';
 
 import type { Nullable } from '@/types/common';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 
 type Withdraw = {
   id: number;
@@ -76,10 +78,9 @@ const { getFiatAmountByFPNumber } = useFormattedAmount();
 
 const { accountLedger, stakingAsset, withdrawableFunds, withdrawableFundsFiat, currentEra } = useSoraStaking();
 
-const DialogBase = components.DialogBase;
-const TokenLogo = components.TokenLogo;
-const FormattedAmountWithFiatValue = components.FormattedAmountWithFiatValue;
-const EraCountdown = soraStakingLazyComponent(SoraStakingComponents.EraCountdown);
+const DialogBase = WalletComponentDialogBase;
+const TokenLogo = WalletComponentTokenLogo;
+const FormattedAmountWithFiatValue = WalletComponentFormattedAmountWithFiatValue;
 
 const title = computed(() => t('soraStaking.allWithdrawsDialog.title'));
 

@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const {
-  useRouterStoreMock,
   useWalletStoreMock,
   installWalletPluginsMock,
   addGDriveWalletLocallyMock,
@@ -15,11 +14,8 @@ const {
   apiMock,
   connectionMock,
   delayMock,
+  syncWalletCurrentRouteMock,
 } = vi.hoisted(() => ({
-  useRouterStoreMock: vi.fn(() => ({
-    checkCurrentRoute: vi.fn(),
-    navigate: vi.fn(),
-  })),
   useWalletStoreMock: vi.fn(),
   installWalletPluginsMock: vi.fn(),
   addGDriveWalletLocallyMock: vi.fn(),
@@ -42,14 +38,15 @@ const {
     open: vi.fn(async () => undefined),
   },
   delayMock: vi.fn(async () => undefined),
-}));
-
-vi.mock('@/stores/router', () => ({
-  useRouterStore: useRouterStoreMock,
+  syncWalletCurrentRouteMock: vi.fn(),
 }));
 
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: useWalletStoreMock,
+}));
+
+vi.mock('@/platform/wallet/navigation', () => ({
+  syncWalletCurrentRoute: syncWalletCurrentRouteMock,
 }));
 
 vi.mock('@/plugins/pinia', () => ({
@@ -105,6 +102,13 @@ vi.mock('@/lib/soraneo-wallet/src/services/sorawallet', () => ({
   addSoraWalletLocally: addSoraWalletLocallyMock,
 }));
 
+vi.mock('@/lib/soraneo-wallet/src/SoraWallet.vue', () => ({
+  default: {
+    name: 'SoraWalletStub',
+    template: '<div class="sora-wallet-stub" />',
+  },
+}));
+
 vi.mock('@/lib/soraneo-wallet/src/util/scriptLoader', () => ({
   ScriptLoader: class ScriptLoaderMock {},
 }));
@@ -124,10 +128,6 @@ const loadWalletBootstrap = async () => {
 describe('wallet entry bootstrap', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    useRouterStoreMock.mockReturnValue({
-      checkCurrentRoute: vi.fn(),
-      navigate: vi.fn(),
-    });
     getWalletPiniaStoreMock.mockReturnValue(null);
     useWalletStoreMock.mockImplementation(() => getWalletPiniaStoreMock());
     resolveGlobalPiniaMock.mockReturnValue(sharedPinia);
@@ -291,27 +291,26 @@ describe('wallet entry bootstrap', () => {
       },
     } as any;
 
-    const walletModule = await loadWalletIndex();
+    const walletRuntime = await loadWalletIndex();
 
-    walletModule.default.install(app, {} as never);
+    walletRuntime.default.install(app, {} as never);
 
     expect(installWalletPluginsMock).toHaveBeenCalledWith(app);
     expect(app.component).toHaveBeenCalledWith('SoraWallet', expect.any(Object));
   });
 
-  it('re-exports the shared wallet component registry', async () => {
-    const walletModule = await loadWalletIndex();
-    const registryModule = await import('@/lib/soraneo-wallet/src/components/registry');
+  it('does not expose the deleted shared wallet component registry', async () => {
+    const walletRuntime = await loadWalletIndex();
 
-    expect(walletModule.components).toBe(registryModule.components);
+    expect('components' in walletRuntime).toBe(false);
   });
 
   it('re-exports the wallet composable registry', async () => {
-    const walletModule = await loadWalletIndex();
+    const walletRuntime = await loadWalletIndex();
 
-    expect(walletModule.composables.useLoading).toBeTypeOf('function');
-    expect(walletModule.composables.useTransaction).toBeTypeOf('function');
-    expect(walletModule.composables.useWalletTranslation).toBeTypeOf('function');
+    expect(walletRuntime.composables.useLoading).toBeTypeOf('function');
+    expect(walletRuntime.composables.useTransaction).toBeTypeOf('function');
+    expect(walletRuntime.composables.useWalletTranslation).toBeTypeOf('function');
   });
 
   it('allows plugin install when Pinia wallet state is available', async () => {
@@ -329,10 +328,10 @@ describe('wallet entry bootstrap', () => {
     } as any;
     getWalletPiniaStoreMock.mockReturnValue(walletStore as any);
 
-    const walletModule = await loadWalletIndex();
+    const walletRuntime = await loadWalletIndex();
 
-    walletModule.default.install(app, {} as never);
-    await walletModule.waitForCore({ permissions: { camera: true } } as never);
+    walletRuntime.default.install(app, {} as never);
+    await walletRuntime.waitForCore({ permissions: { camera: true } } as never);
 
     expect(walletStore.setPermissions).toHaveBeenCalledWith({ camera: true });
     expect(walletStore.getWhitelist).toHaveBeenCalledTimes(1);

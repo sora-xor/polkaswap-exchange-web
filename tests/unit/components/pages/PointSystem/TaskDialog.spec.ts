@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@wallet', () => ({
+vi.mock('@tests/stubs/walletRuntime', () => ({
   components: {
     DialogBase: {
       name: 'DialogBaseStub',
@@ -19,7 +19,23 @@ vi.mock('@wallet', () => ({
   WALLET_CONSTS: {},
 }));
 
-import TaskDialog from '@/components/pages/PointSystem/TaskDialog.vue';
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return {
+    __esModule: true,
+    default: wallet.components.DialogBase,
+  };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return {
+    __esModule: true,
+    default: wallet.components.TokenLogo,
+  };
+});
+
+import TaskDialog from '@/features/rewards/components/point-system/TaskDialog.vue';
 import type { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 vi.mock('@/composables/useTranslation', () => ({

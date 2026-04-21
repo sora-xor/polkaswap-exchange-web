@@ -434,13 +434,25 @@ export class AssetsModule<T> {
   public async updateAccountAssets(): Promise<void> {
     assert(this.root.account, Messages.connectWallet);
 
-    if (!this.accountAssetsAddresses.length) {
+    let currentAddresses = this.accountAssetsAddresses;
+    if (!currentAddresses.length) {
       const defaultList = this.accountDefaultAssetsAddresses;
       const accountList = await this.getAccountTokensAddressesList();
-      this.accountAssetsAddresses = [...new Set([...defaultList, ...accountList])];
+      currentAddresses = [...new Set([...defaultList, ...accountList])];
+      this.accountAssetsAddresses = currentAddresses;
+    } else {
+      const currentAddressesWithDefaults = [...new Set([...currentAddresses, ...this.accountDefaultAssetsAddresses])];
+
+      const shouldPersistAddresses = currentAddressesWithDefaults.some(
+        (address, index) => address !== currentAddresses[index]
+      );
+
+      if (shouldPersistAddresses) {
+        currentAddresses = currentAddressesWithDefaults;
+        this.accountAssetsAddresses = currentAddresses;
+      }
     }
 
-    const currentAddresses = this.accountAssetsAddresses;
     const excludedAddresses = this.accountAssets.reduce<string[]>(
       (result, { address }) => (currentAddresses.includes(address) ? result : [...result, address]),
       []

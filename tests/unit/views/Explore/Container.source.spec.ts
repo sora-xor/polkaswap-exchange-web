@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const viewPath = path.resolve(__dirname, '../../../../src/views/Explore/Container.vue');
+const viewPath = path.resolve(__dirname, '../../../../src/features/explore/pages/ExploreContainerPage.vue');
 
 describe('Explore container source', () => {
   it('keeps the desktop search field at the live fixed width', async () => {

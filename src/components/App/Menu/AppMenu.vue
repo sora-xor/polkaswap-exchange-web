@@ -99,9 +99,9 @@
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
+import { appRouterLoading } from '@/app/navigation/loading';
 import { useTranslation } from '@/composables/useTranslation';
 import {
-  Components,
   PageNames,
   PoolChildPages,
   BridgeChildPages,
@@ -119,8 +119,6 @@ import { isStakingPage } from '@/modules/staking/router';
 import { VaultPageNames } from '@/modules/vault/consts';
 import { isVaultPage } from '@/modules/vault/router';
 import { Theme } from '@/consts/theme';
-import { lazyComponent } from '@/router';
-import { useRouterStore } from '@/stores/router';
 import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
 
@@ -139,10 +137,9 @@ const emit = defineEmits<{
 
 const route = useRoute();
 const { t } = useTranslation();
-const routerStore = useRouterStore();
 const settingsStore = useSettingsStore();
 
-const pageLoading = computed(() => Boolean(routerStore.loading));
+const pageLoading = computed(() => Boolean(appRouterLoading.value));
 const collapsed = computed(() => Boolean(settingsStore.menuCollapsed));
 const faucetUrl = computed(() => settingsStore.faucetUrl ?? '');
 const libraryTheme = computed(() => settingsStore.libraryTheme as Theme);

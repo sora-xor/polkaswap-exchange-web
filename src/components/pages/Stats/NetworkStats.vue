@@ -45,16 +45,17 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 
-import { Components } from '@/consts';
+import PriceChange from '@/components/shared/PriceChange.vue';
+import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { fetchData } from '@/indexer/queries/network/stats';
-import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
-import { lazyComponent } from '@/router';
+import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
+import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
@@ -78,11 +79,6 @@ type NetworkStatsColumn = {
   title: string;
   tooltip: string;
 };
-
-const BaseWidget = lazyComponent(Components.BaseWidget);
-const StatsFilter = lazyComponent(Components.StatsFilter);
-const PriceChange = lazyComponent(Components.PriceChange);
-const { FormattedAmount } = components;
 
 const props = withDefaults(
   defineProps<{

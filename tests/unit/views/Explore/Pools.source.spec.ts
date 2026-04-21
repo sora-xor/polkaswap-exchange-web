@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const viewPath = path.resolve(__dirname, '../../../../src/views/Explore/Pools.vue');
+const viewPath = path.resolve(__dirname, '../../../../src/features/explore/pages/ExplorePoolsPage.vue');
 
 describe('Explore pools source', () => {
   it('renders TVL values directly instead of hiding them behind wallet fiat-price state', async () => {

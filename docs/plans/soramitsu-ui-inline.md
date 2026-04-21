@@ -34,7 +34,7 @@
 - The UI kit depends on several supporting packages (`@soramitsu-ui/theme`, `@soramitsu-ui/icons`, `@soramitsu-ui/vite-plugin-svg`, etc.). When vendoring, confirm which parts are required in the application bundle versus build-time tooling.
 - Some assets (icons, fonts) are currently pulled from the sibling repo; plan to copy them or reference them through a stable vendored path in `src/assets`.
 - Watch for duplicated dependencies (e.g., `lodash-es`, `focus-trap`, `@vueuse/core`) already bundled in the application to avoid shipping duplicate code once the sources live side-by-side.
-- Latest verification (2025-10-27): `yarn build`, `yarn build:vue3`, and `yarn test:translation` pass. `yarn test:unit` still fails on pre-existing staking/Burn specs (missing DOM timers, partial `@wallet` mocks) and needs follow-up before closing the checklist item. Playwright wallet smokes were not run in this pass.
+- Latest verification (2026-04-21): `yarn build`, `yarn build:vue3`, `yarn test:translation`, and `yarn test:unit` all pass after the direct-import wallet cutover. Playwright wallet smokes were not run in this pass.
 - `src/compat/soramitsu-ui.ts` has been removed; consumers now import `Status`, `SortDirection`, and `SSkeleton` components directly from the vendored UI kit (`@soramitsu-ui/ui`).
 
 ## 5. Vendored UI Maintenance
@@ -45,6 +45,6 @@
 1. **Monitor upstream releases.** Track the private `soramitsu-ui` repository for new tags or hotfix branches. Release announcements in `#ui-kit` should include changelog links and checksum artefacts.
 2. **Create a sync branch.** Start from `develop`, branch as `chore/ui-kit-sync/<date>-<tag>`, and pull the upstream source archive. Use `rsync --delete --exclude "dist/"` to copy `src/**`, `icons/**`, `theme/**`, and helper utilities into `src/lib/soramitsu-ui`. Regenerate `lib.ts` exports if the upstream surface changes.
 3. **Update generated assets.** Run the upstream icon/token generators if required (`pnpm generate:icons`, etc.) and ensure the outputs land under `src/lib/soramitsu-ui/icons` and `src/lib/soramitsu-ui/theme`. Keep fonts under `src/lib/soramitsu-ui/theme/fonts`.
-4. **Run the verification matrix.** Execute `yarn build`, `yarn build:vue3`, `yarn test:translation`, and `yarn test:unit`. If Playwright wallet smokes are tagged, run `yarn test:e2e --project chromium --grep @wallet` (or the scoped tag documented in the roadmap). Record pass/fail status in the pull request description.
+4. **Run the verification matrix.** Execute `yarn build`, `yarn build:vue3`, `yarn test:translation`, and `yarn test:unit`. If Playwright wallet smokes are tagged, run the scoped wallet smoke selection documented in the roadmap. Record pass/fail status in the pull request description.
 5. **Review & sign-off.** Request reviews from the design systems squad and the frontend migration pod tech lead. Include a diff summary against the upstream tag, highlighting any local patches.
 6. **Log parity.** Update this document and the roadmap checklist with the synced tag hash and notable changes. Mention outstanding follow-ups (e.g., tests still failing upstream or pending design QA) so the next sync can prioritise them.

@@ -200,22 +200,29 @@ import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
-import { components } from '@/shims/wallet-components';
-import { api } from '@/shims/wallet-api';
+import PlaceConfirm from '@/components/pages/OrderBook/Dialogs/PlaceOrder.vue';
+import PairListPopover from '@/components/pages/OrderBook/Popovers/PairListPopover.vue';
+import PlaceTransactionDetails from '@/components/pages/OrderBook/TransactionDetails.vue';
+import Error from '@/components/pages/OrderBook/common/ErrorButton.vue';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
+import PriceChange from '@/components/shared/PriceChange.vue';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import { api } from '@/lib/soraneo-wallet/src/api';
+import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { Components, LimitOrderType, PageNames } from '@/consts';
+import { LimitOrderType, PageNames } from '@/consts';
 import { useConfirmDialog } from '@/composables/useConfirmDialog';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { useOrderBookUserOrders } from '@/composables/useOrderBookUserOrders';
 import { useOrderBookManagement } from '@/composables/useOrderBookManagement';
+import { hasHistoryBackPrefix } from '@/shared/navigation/history';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
-import { useRouterStore } from '@/stores/router';
 import { useSettingsStore } from '@/stores/settings';
 import { useSwapStore } from '@/stores/swap';
 import { useAssetsStore } from '@/stores/assets';
@@ -237,20 +244,6 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
-defineOptions({
-  components: {
-    FormattedAmount: components.FormattedAmount,
-    InfoLine: components.InfoLine,
-    TokenInput: lazyComponent(Components.TokenInput),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    PairListPopover: lazyComponent(Components.PairListPopover),
-    PlaceConfirm: lazyComponent(Components.PlaceOrder),
-    PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
-    PriceChange: lazyComponent(Components.PriceChange),
-    Error: lazyComponent(Components.ErrorButton),
-  },
-});
-
 const {
   tokenFrom,
   tokenTo,
@@ -264,7 +257,6 @@ const {
 } = useSwapAmounts();
 
 const swapStore = useSwapStore();
-const routerStore = useRouterStore();
 const assetsStore = useAssetsStore();
 const { t } = useTranslation();
 const { confirmDialogVisible, confirmOrExecute } = useConfirmDialog();
@@ -291,7 +283,7 @@ const { userLimitOrders } = useOrderBookUserOrders();
 const { updateBalanceSubscription, updateOrderBooksStats } = useOrderBookManagement();
 
 const vm = getCurrentInstance();
-const prevRoute = computed(() => routerStore.prev as Nullable<PageNames>);
+const isSwapBackNavigation = computed(() => hasHistoryBackPrefix('/swap'));
 const settingsStore = useSettingsStore();
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 const slippageTolerance = computed(() => settingsStore.slippageTolerance);
@@ -861,7 +853,7 @@ watch(
 onMounted(() => {
   updateBalanceSubscription();
 
-  if (prevRoute.value === PageNames.Swap && tokenFrom.value?.address && tokenTo.value?.address) {
+  if (isSwapBackNavigation.value && tokenFrom.value?.address && tokenTo.value?.address) {
     prevSwapFromAddress.value = tokenFrom.value.address;
     prevSwapToAddress.value = tokenTo.value.address;
   }

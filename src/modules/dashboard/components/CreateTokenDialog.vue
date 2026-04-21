@@ -31,25 +31,24 @@
 <script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
 import { computed, ref } from 'vue';
 
-import { Components, TokenTabs, ZeroStringValue } from '@/consts';
+import CreateNftToken from '@/modules/dashboard/components/CreateNftToken.vue';
+import CreateSimpleToken from '@/modules/dashboard/components/CreateSimpleToken.vue';
+import { TokenTabs, ZeroStringValue } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
-import { DashboardComponents } from '@/modules/dashboard/consts';
-import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
-const CreateSimpleToken = dashboardLazyComponent(DashboardComponents.CreateSimpleToken);
-const CreateNftToken = dashboardLazyComponent(DashboardComponents.CreateNftToken);
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
 
 const { t, TranslationConsts } = useTranslation();
 const { loading } = useTransaction();

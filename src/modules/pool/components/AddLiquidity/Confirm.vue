@@ -63,15 +63,17 @@
 
 <script setup lang="ts">
 import { computed, toRef } from 'vue';
-import { components } from '@/shims/wallet-components';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
 import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
-import { lazyComponent } from '@/router';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentAccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
 
 type Props = {
   shareOfPool?: string;
@@ -154,11 +156,10 @@ const handleConfirm = () => {
   closeDialog();
 };
 
-const DialogBase = components.DialogBase;
-const TokenLogo = components.TokenLogo;
-const InfoLine = components.InfoLine;
-const AccountConfirmationOption = components.AccountConfirmationOption;
-const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
+const DialogBase = WalletComponentDialogBase;
+const TokenLogo = WalletComponentTokenLogo;
+const InfoLine = WalletComponentInfoLine;
+const AccountConfirmationOption = WalletComponentAccountConfirmationOption;
 </script>
 
 <style lang="scss" scoped>

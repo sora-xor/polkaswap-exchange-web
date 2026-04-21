@@ -35,7 +35,6 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { FontSizeRate, FontWeightRate } from '@/consts';
@@ -48,8 +47,9 @@ import { formatAmountWithSuffix } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
-const FormattedAmount = components.FormattedAmount;
+const FormattedAmount = WalletComponentFormattedAmount;
 
 const { t } = useTranslation();
 const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();

@@ -4,7 +4,7 @@ Purpose: migrate the Order Book module (widgets, dialogs, tables) from class-bas
 
 ## Scope
 
-Components under `src/components/pages/OrderBook/**` and `src/views/OrderBook.vue`, including:
+Components under `src/components/pages/OrderBook/**` and the feature-owned Order Book page, including:
 
 - Core widgets: `BookWidget.vue`, `BookChartsWidget.vue`, `HistoryOrderWidget.vue`, `MarketTradesWidget.vue`, `SetLimitOrderWidget.vue`.
 - Dialogs: `Dialogs/CancelOrders.vue`, `Dialogs/CustomisePage.vue`, `Dialogs/PlaceOrder.vue`.

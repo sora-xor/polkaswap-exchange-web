@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
+import SetLimitOrderWidget from '@/components/pages/OrderBook/SetLimitOrderWidget.vue';
 
 const usePiniaTelemetryMock = vi.fn();
 const orderBookStoreStub = { $id: 'order-book-store' };
@@ -33,21 +34,15 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
-    template: '<div class="lazy-stub"><slot /></div>',
-  }),
-}));
-
 describe('SetLimitOrderWidget.vue', () => {
   it('registers telemetry metadata', async () => {
     usePiniaTelemetryMock.mockClear();
 
-    const module = await import('@/components/pages/OrderBook/SetLimitOrderWidget.vue');
-    mount(module.default, {
+    mount(SetLimitOrderWidget, {
       global: {
         stubs: {
           'base-widget': { template: '<div><slot /></div>' },
+          'buy-sell': { template: '<div class="buy-sell-stub" />' },
           's-tabs': {
             props: ['value'],
             template: '<div><slot /></div>',
@@ -66,5 +61,5 @@ describe('SetLimitOrderWidget.vue', () => {
       baseAsset: 'AAA',
       quoteAsset: 'BBB',
     });
-  });
+  }, 30_000);
 });

@@ -1,5 +1,5 @@
-import { ConnectionStatus, type IndexerState } from '@/shims/wallet-common-types';
-import { IndexerType } from '@/shims/wallet-consts';
+import { ConnectionStatus, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
+import { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 import type { Nullable } from '@/types/common';
 
 type IndexerTable = Partial<Record<string, Partial<Pick<IndexerState, 'endpoint' | 'status'>>>>;

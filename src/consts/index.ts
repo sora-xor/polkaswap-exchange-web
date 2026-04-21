@@ -6,7 +6,7 @@ import {
   IndexerType as WalletIndexerEnum,
   LogoSize as WalletLogoSizeEnum,
   TranslationConsts as WalletTranslationConsts,
-} from '@/shims/wallet-consts';
+} from '@/lib/soraneo-wallet/src/consts';
 import invert from 'lodash/fp/invert';
 
 import { DashboardPageNames } from '@/modules/dashboard/consts';
@@ -36,9 +36,9 @@ export {
   MAX_ALERTS_NUMBER,
   syntheticAssetRegexp,
   kensetsuAssetRegexp,
-} from '@/shims/wallet-consts';
+} from '@/lib/soraneo-wallet/src/consts';
 
-import type { Alert } from '@/shims/wallet-common-types';
+import type { Alert } from '@/lib/soraneo-wallet/src/types/common';
 
 export const app = {
   version: pkg.version,
@@ -245,7 +245,6 @@ export enum Components {
   AppBrowserNotifsLocalStorageOverride = 'App/BrowserNotification/LocalStorageOverride',
   AppBrowserNotifsBlockedRotatePhone = 'App/BrowserNotification/BlockedRotatePhone',
   AppBrowserMstNotificationTrxs = 'App/BrowserNotification/MstNotificationTrxs',
-  AppBrowserMSTWarningBridge = 'App/BrowserNotification/MSTWarningBridge',
   Alerts = 'App/Alerts/Alerts',
   AlertList = 'App/Alerts/AlertList',
   CreateAlert = 'App/Alerts/CreateAlert',
@@ -278,16 +277,6 @@ export enum Components {
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
-  // Swap Page
-  SwapFormWidget = 'pages/Swap/Widget/Form',
-  SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
-  SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
-  SwapTransactionDetailsWidget = 'pages/Swap/Widget/TransactionDetails',
-  SwapConfirm = 'pages/Swap/Confirm',
-  SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
-  SwapTransactionDetails = 'pages/Swap/TransactionDetails',
-  SwapSettings = 'pages/Swap/Settings/Settings',
-  SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
   // Order Book
   BookWidget = 'pages/OrderBook/BookWidget',
   SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
@@ -306,15 +295,6 @@ export enum Components {
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
-  // Rewards Page
-  RewardsAmountHeader = 'pages/Rewards/AmountHeader',
-  RewardsAmountTable = 'pages/Rewards/AmountTable',
-  RewardsGradientBox = 'pages/Rewards/GradientBox',
-  // Point System Page
-  PointCard = 'pages/PointSystem/PointCard',
-  TaskCard = 'pages/PointSystem/TaskCard',
-  FirstTxCard = 'pages/PointSystem/FirstTxCard',
-  TaskDialog = 'pages/PointSystem/TaskDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
   LinksDropdown = 'shared/LinksDropdown',

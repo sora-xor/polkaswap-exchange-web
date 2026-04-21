@@ -6,7 +6,7 @@
 - The app ships a single native Vue 3 runtime; the historical `build:vue3` entrypoint remains only as a CI alias to `yarn build`.
 - App-owned and vendored wallet source files now run on native Vue 3 Options API / Composition API patterns. The repo no longer depends on `vue-class-component` or `vue-property-decorator`.
 - Store access in the remaining Vuex facades still goes through the repo-local compatibility layer at `src/store/direct-vuex.ts`, surfaced via `src/store/app-store-bridge.ts` and `src/utils/app-store.ts`; the external `direct-vuex` package and app-owned decorator glue are gone.
-- `@wallet/lib` now resolves through `src/lib/soraneo-wallet/src` in both the main Vite build and the Electron renderer. `src/lib/soraneo-wallet/lib` remains only for the prebuilt CSS bundle.
+- Wallet runtime imports now point directly at `src/lib/soraneo-wallet/src/**` in both the main Vite build and the Electron renderer. `src/lib/soraneo-wallet/lib` remains only for the prebuilt CSS bundle.
 - Tests already run on Vue 3 tooling (Vitest + `@vue/test-utils@2`), and the migration guard now blocks decorator packages, legacy wallet decorator helpers, and stray vendored build output from re-entering the active app path.
 - Wallet bundle delivery expectations and integration cadence are codified in `docs/plans/soraneo-wallet-migration-contract.md`; treat that document as the working agreement with the wallet squad.
 

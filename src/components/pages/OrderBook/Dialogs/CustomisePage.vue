@@ -1,3 +1,4 @@
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 <template>
   <dialog-base v-model:visible="visible">
     <slot></slot>
@@ -5,13 +6,12 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 
 const visible = defineModel<boolean>('visible', { default: false });
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
+    DialogBase: WalletComponentDialogBase,
   },
 });
 </script>

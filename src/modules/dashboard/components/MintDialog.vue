@@ -57,16 +57,15 @@
 <script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, nextTick, ref, watch } from 'vue';
 
-import { Components, ObjectInit, ZeroStringValue } from '@/consts';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import { ObjectInit, ZeroStringValue } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import type { OwnedAsset } from '@/modules/dashboard/types';
-import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
@@ -74,11 +73,13 @@ import type { Nullable } from '@/types/common';
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentAddressBookInput from '@/lib/soraneo-wallet/src/components/AddressBook/Input.vue';
 
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
-const AddressBookInput = components.AddressBookInput;
-const TokenInput = lazyComponent(Components.TokenInput);
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
+const AddressBookInput = WalletComponentAddressBookInput;
 
 const props = withDefaults(
   defineProps<{

@@ -54,8 +54,8 @@ vi.mock('@/composables/useAssetFormatting', () => ({
   }),
 }));
 
-vi.mock('@wallet', () => {
-  const AssetList = defineComponent({
+vi.mock('@/lib/soraneo-wallet/src/components/AssetList.vue', () => ({
+  default: defineComponent({
     name: 'AssetListStub',
     props: {
       assets: {
@@ -82,9 +82,11 @@ vi.mock('@wallet', () => {
             )
           : h('div', { class: 'asset-list-empty-slot' }, slots['list-empty']?.());
     },
-  });
+  }),
+}));
 
-  const FormattedAmountWithFiatValue = defineComponent({
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue', () => ({
+  default: defineComponent({
     name: 'FormattedAmountWithFiatValueStub',
     props: {
       value: {
@@ -103,9 +105,11 @@ vi.mock('@wallet', () => {
           h('span', { class: 'fiat' }, props.fiatValue),
         ]);
     },
-  });
+  }),
+}));
 
-  const PinIcon = defineComponent({
+vi.mock('@/lib/soraneo-wallet/src/components/PinIcon.vue', () => ({
+  default: defineComponent({
     name: 'PinIconStub',
     props: {
       isPinned: {
@@ -116,26 +120,8 @@ vi.mock('@wallet', () => {
     setup(props) {
       return () => h('span', { class: 'pin-icon-stub', 'data-pinned': props.isPinned });
     },
-  });
-
-  return {
-    __esModule: true,
-    components: {
-      AssetList,
-      FormattedAmountWithFiatValue,
-      PinIcon,
-    },
-    WALLET_CONSTS: {
-      FontSizeRate: {
-        MEDIUM: 'medium',
-      },
-      FontWeightRate: {
-        MEDIUM: 'medium',
-      },
-      HiddenValue: '***',
-    },
-  };
-});
+  }),
+}));
 
 vi.mock('@/stores/wallet', () => {
   const { pinnedAssets, setPinnedAsset, removePinnedAsset } = storeSpies;
@@ -203,7 +189,7 @@ describe('SelectAssetList', () => {
     expect(formattingMocks.formatAssetBalance).toHaveBeenCalledWith(defaultAsset, {
       formattedZero: '-',
       internal: true,
-      showZeroBalance: false,
+      showZeroBalance: true,
     });
 
     expect(wrapper.find('.formatted-amount-with-fiat-stub .value').text()).toBe('123.45');

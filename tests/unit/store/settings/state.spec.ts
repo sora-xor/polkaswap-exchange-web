@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 
-vi.doMock('@wallet', async () => {
+vi.doMock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     storage: {
@@ -50,7 +50,7 @@ const walletMocks = vi.hoisted(() => {
 
 const { apiStub, connectionStub } = walletMocks;
 
-vi.doMock('@/shims/wallet-api', () => ({
+vi.doMock('@/lib/soraneo-wallet/src/api', () => ({
   api: apiStub,
   connection: connectionStub,
 }));

@@ -73,14 +73,14 @@
 <script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
+import PriceChange from '@/components/shared/PriceChange.vue';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { Components } from '@/consts';
 import { useOrderBookPairList } from '@/composables/useOrderBookPairList';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
+import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useAssetsStore } from '@/stores/assets';
 import { getBookDecimals } from '@/utils/orderBook';
 
@@ -99,14 +99,6 @@ interface BookFields {
   volume: string;
   status: string;
 }
-
-defineOptions({
-  components: {
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    PriceChange: lazyComponent(Components.PriceChange),
-    FormattedAmount: components.FormattedAmount,
-  },
-});
 
 const emit = defineEmits<{ (event: 'close'): void }>();
 

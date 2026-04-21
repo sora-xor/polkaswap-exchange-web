@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
-import { WALLET_CONSTS } from '@wallet';
+import { WALLET_CONSTS } from '@tests/stubs/walletRuntime';
 
 const TokenLogoStub = {
   name: 'TokenLogoStub',

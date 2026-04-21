@@ -1,7 +1,7 @@
 import { ApiPromise as ApiPromiseEsm, WsProvider as WsProviderEsm } from '@polkadot/api';
 import { decodeAddress as decodeAddressEsm } from '@polkadot/util-crypto';
 
-import { getWalletCore, loadWalletCore } from '@/utils/walletCore';
+import { connection } from '@/lib/soraneo-wallet/src/api';
 
 type ApiPromiseCtor = typeof ApiPromiseEsm;
 type WsProviderCtor = typeof WsProviderEsm;
@@ -28,18 +28,9 @@ let ApiPromise: ApiPromiseCtor = ApiPromiseEsm;
 let WsProvider: WsProviderCtor = WsProviderEsm;
 export const decodeAddress: DecodeAddressFn = decodeAddressEsm;
 
-try {
-  const wallet = getWalletCore() as { connection?: WalletConnectionExports } | undefined;
-  applyConnection(wallet?.connection);
-} catch {
-  // Wallet core not yet available; will be resolved asynchronously below.
-}
+applyConnection(connection as WalletConnectionExports | undefined);
 
-export const polkadotReady: Promise<void> = loadWalletCore()
-  .then((wallet) => {
-    applyConnection((wallet as { connection?: WalletConnectionExports } | undefined)?.connection);
-  })
-  .catch(() => undefined);
+export const polkadotReady: Promise<void> = Promise.resolve();
 
 export { ApiPromise, WsProvider };
 

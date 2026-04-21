@@ -63,8 +63,8 @@ const { walletApiMock, walletSettingsStorageMock, walletStorageMock } = vi.hoist
   };
 });
 
-vi.mock('@wallet', async () => {
-  const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
+vi.mock('@tests/stubs/walletRuntime', async () => {
+  const walletStub = await vi.importActual<typeof import('@tests/stubs/walletRuntime')>('@tests/stubs/walletRuntime');
   return {
     ...walletStub,
     api: walletApiMock,
@@ -104,7 +104,7 @@ describe('swap store', () => {
   const setupSwapMath = async (): Promise<SwapMathDeps> => {
     const store = useSwapStore();
     const settingsStore = useSettingsStore();
-    const wallet = await import('@wallet');
+    const wallet = await import('@tests/stubs/walletRuntime');
     const divideAssets = vi.mocked(wallet.api.divideAssets);
     const priceImpactMock = vi.mocked(wallet.api.swap.getPriceImpact);
     const minMaxMock = vi.mocked(wallet.api.swap.getMinMaxValue);
@@ -192,6 +192,31 @@ describe('swap store', () => {
     expect(store.fromValue).toBe('');
     expect(store.toValue).toBe('');
     expect(store.isExchangeB).toBe(false);
+  });
+
+  it('realigns selected token caches with preserved addresses on reset', () => {
+    const walletStore = useWalletStore();
+    walletStore.accountState.assets = [
+      { address: 'foo', symbol: 'FOO', name: 'Foo Token', decimals: 18 },
+      { address: 'bar', symbol: 'BAR', name: 'Bar Token', decimals: 18 },
+    ] as never;
+
+    const store = useSwapStore();
+    store.updateTokenSubscription = vi.fn();
+
+    store.setTokenFromAddress('foo');
+    store.setTokenToAddress('bar');
+    store.setFromValue('10');
+    store.setToValue('20');
+
+    store.reset();
+
+    expect(store.tokenFromAddress).toBe('foo');
+    expect(store.tokenToAddress).toBe('bar');
+    expect(store.tokenFrom?.address).toBe('foo');
+    expect(store.tokenTo?.address).toBe('bar');
+    expect(store.fromValue).toBe('');
+    expect(store.toValue).toBe('');
   });
 
   it('preserves path availability when quote payload updates omit it', () => {
@@ -298,7 +323,7 @@ describe('swap store', () => {
 
   it('skips balance subscriptions when wallet API is unavailable', async () => {
     const { store } = await setupSwapMath();
-    const wallet = await import('@wallet');
+    const wallet = await import('@tests/stubs/walletRuntime');
     const walletStore = useWalletStore();
 
     walletStore.accountState.address = '5Fswap';

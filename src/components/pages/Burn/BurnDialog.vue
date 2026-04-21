@@ -63,15 +63,14 @@
 <script lang="ts" setup>
 import { Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, getCurrentInstance, nextTick, ref, toRefs, watch } from 'vue';
 
-import { Components, ZeroStringValue } from '@/consts';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import { ZeroStringValue } from '@/consts';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
@@ -79,13 +78,11 @@ import { asZeroValue } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 defineOptions({
-  components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenInput: lazyComponent(Components.TokenInput),
-  },
+  name: 'BurnDialog',
 });
 
 const props = withDefaults(

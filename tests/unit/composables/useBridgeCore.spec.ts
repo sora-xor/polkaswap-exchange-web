@@ -8,10 +8,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PageNames } from '@/consts';
 import pinia from '@/plugins/pinia';
-import router from '@/router';
 import { useBridgeStore } from '@/stores/bridge';
+import useBridgeCoreSource from '@/composables/useBridgeCore.ts?raw';
 
 vi.mock('pinia', async (importOriginal) => await importOriginal<typeof import('pinia')>());
+
+const routerPush = vi.hoisted(() => vi.fn());
+
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: routerPush,
+  }),
+}));
 
 const walletStoreMock = {
   assetsDataTable: {} as Record<string, RegisteredAssetMock>,
@@ -161,7 +169,6 @@ const createStoreStub = (): StoreStub => {
 
 let storeStub: StoreStub;
 let useBridgeCore: () => ReturnType<(typeof import('@/composables/useBridgeCore'))['useBridgeCore']>;
-let routerPush: ReturnType<typeof vi.spyOn>;
 let bridgeStore: ReturnType<typeof useBridgeStore>;
 
 const syncBridgeStore = () => {
@@ -247,7 +254,8 @@ beforeEach(async () => {
   bridgeStore = useBridgeStore(pinia);
   const module = await import('@/composables/useBridgeCore');
   useBridgeCore = module.useBridgeCore;
-  routerPush = vi.spyOn(router, 'push').mockResolvedValue();
+  routerPush.mockReset();
+  routerPush.mockResolvedValue(undefined);
   web3StoreMock.networkType = BridgeNetworkType.Eth;
   web3StoreMock.networkSelected = EvmNetworkId.EthereumSepolia;
   web3StoreMock.selectedNetworkData = {
@@ -262,7 +270,6 @@ beforeEach(async () => {
 
 afterEach(() => {
   vi.resetModules();
-  routerPush.mockRestore();
   bridgeStore.$reset();
 });
 
@@ -366,5 +373,10 @@ describe('useBridgeCore', () => {
 
     core.navigateToBridge();
     expect(routerPush).toHaveBeenCalledWith({ path: '/bridge/' });
+  });
+
+  it('uses vue-router instead of the legacy router singleton', () => {
+    expect(useBridgeCoreSource).toContain("import { useRouter } from 'vue-router';");
+    expect(useBridgeCoreSource).not.toContain("from '@/router'");
   });
 });

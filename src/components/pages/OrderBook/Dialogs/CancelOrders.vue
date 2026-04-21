@@ -12,15 +12,16 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { Cancel } from '@/types/orderBook';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentAccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    AccountConfirmationOption: components.AccountConfirmationOption,
+    DialogBase: WalletComponentDialogBase,
+    AccountConfirmationOption: WalletComponentAccountConfirmationOption,
   },
 });
 

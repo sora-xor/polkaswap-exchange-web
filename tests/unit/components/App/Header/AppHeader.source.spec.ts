@@ -10,4 +10,12 @@ describe('AppHeader source', () => {
     expect(appHeaderSource).toContain('BreakpointClass.LargeDesktop');
     expect(appHeaderSource).toContain('BreakpointClass.HugeDesktop');
   });
+
+  it('uses the app router entrypoint for header navigation actions', () => {
+    expect(appHeaderSource).toContain("import { goTo } from '@/app/router';");
+    expect(appHeaderSource).toContain("from '@/app/shell/components'");
+    expect(appHeaderSource).not.toContain("import { goTo, lazyComponent } from '@/router';");
+    expect(appHeaderSource).not.toContain("import { lazyComponent } from '@/router';");
+    expect(appHeaderSource).not.toContain('Components.AppMarketing');
+  });
 });

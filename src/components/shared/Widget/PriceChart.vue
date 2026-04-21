@@ -73,7 +73,6 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
@@ -81,18 +80,23 @@ import pick from 'lodash/fp/pick';
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
 import VChart from '@/lib/echarts/component';
+import SvgIconButton from '@/components/shared/Button/SvgIconButton/SvgIconButton.vue';
+import ChartSkeleton from '@/components/shared/Chart/ChartSkeleton.vue';
+import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';
+import TokensRow from '@/components/shared/TokensRow.vue';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import PriceChange from '@/components/shared/PriceChange.vue';
 import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
 import { createThemePalette, useThemePalette } from '@/composables/useThemePalette';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, FontWeightRate, IndexerType } from '@/consts';
+import { FontWeightRate, IndexerType } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { fetchAssetPriceData } from '@/indexer/queries/asset/price';
-import { getCurrentIndexer } from '@/shims/wallet-indexer';
-import * as SUBQUERY_TYPES from '@/shims/wallet-indexer-subquery-types';
-import { lazyComponent } from '@/router';
+import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
+import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
 import { useSettingsStore } from '@/stores/settings';
 import {
   calcPriceChange,
@@ -104,8 +108,8 @@ import {
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { PageInfo } from '@/shims/wallet-indexer-types';
-import type { Currency, CurrencyFields } from '@/shims/wallet-currency-types';
+import type { PageInfo } from '@/lib/soraneo-wallet/src/services/indexer/types';
+import type { Currency, CurrencyFields } from '@/lib/soraneo-wallet/src/types/currency';
 import type { OCLH, RequestMethod, RequestSubscription, SnapshotItem } from '@/types/chart';
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
@@ -243,15 +247,6 @@ const getPrecision = (value: number): number => {
 
 defineOptions({
   name: 'PriceChartWidget',
-  components: {
-    TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    SvgIconButton: lazyComponent(Components.SvgIconButton),
-    TokensRow: lazyComponent(Components.TokensRow),
-    StatsFilter: lazyComponent(Components.StatsFilter),
-    ChartSkeleton: lazyComponent(Components.ChartSkeleton),
-  },
 });
 
 const props = defineProps<{

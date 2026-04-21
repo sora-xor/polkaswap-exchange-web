@@ -3,8 +3,8 @@ import { createPinia, setActivePinia } from 'pinia';
 import { ref } from 'vue';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 
-import AssetOwnerDetails from '@/modules/dashboard/views/AssetOwnerDetails.vue';
-import type { OwnedAsset } from '@/modules/dashboard/types';
+import AssetOwnerDetails from '@/features/dashboard/pages/AssetOwnerDetailsPage.vue';
+import type { OwnedAsset } from '@/features/dashboard/types';
 
 vi.mock('@/components/shared/Widget/SupplyChart.vue', () => ({
   __esModule: true,
@@ -29,6 +29,8 @@ const supplySubscribe = vi.fn((callback: (value: { toString: () => string }) => 
 const assetsRef = ref<OwnedAsset[]>([]);
 const loggedInRef = ref(true);
 const screenBreakpointClassRef = ref('desktop');
+const routerPushMock = vi.fn();
+const routerBackMock = vi.fn();
 const startSubscriptionHandlers: Array<(() => Promise<void> | void) | undefined> = [];
 const resetSubscriptionHandlers: Array<(() => Promise<void> | void) | undefined> = [];
 const updateSubscriptionsMock = vi.fn(async () => {
@@ -42,7 +44,7 @@ const resetSubscriptionsMock = vi.fn(async () => {
   }
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -103,8 +105,20 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-vi.mock('@/modules/dashboard/router', () => ({
-  dashboardLazyComponent: () => ({
+vi.mock('@/modules/dashboard/components/BurnDialog.vue', () => ({
+  default: { template: '<div />' },
+}));
+
+vi.mock('@/modules/dashboard/components/MintDialog.vue', () => ({
+  default: { template: '<div />' },
+}));
+
+vi.mock('@/modules/dashboard/components/SendTokenDialog.vue', () => ({
+  default: { template: '<div />' },
+}));
+
+vi.mock('@/shared/ui/async', () => ({
+  createAsyncComponent: () => ({
     template: '<div />',
   }),
 }));
@@ -151,20 +165,12 @@ vi.mock('@/composables/useSubscriptions', () => ({
   },
 }));
 
-vi.mock('@/router', () => {
-  const push = vi.fn();
-  const back = vi.fn();
-  return {
-    default: {
-      push,
-      back,
-    },
-    lazyComponent: () => ({ template: '<div />' }),
-  };
-});
-
 vi.mock('vue-router', () => ({
   useRoute: () => ({ params: { asset: '0x01' } }),
+  useRouter: () => ({
+    push: routerPushMock,
+    back: routerBackMock,
+  }),
 }));
 
 vi.mock('@/utils', () => ({
@@ -196,9 +202,8 @@ const globalStubs = {
 describe('AssetOwnerDetails.vue', () => {
   beforeEach(async () => {
     setActivePinia(createPinia());
-    const routerModule = await import('@/router');
-    routerModule.default.push.mockClear();
-    routerModule.default.back.mockClear();
+    routerPushMock.mockClear();
+    routerBackMock.mockClear();
     balanceSubscribe.mockClear();
     supplySubscribe.mockClear();
     assetsRef.value = [
@@ -227,8 +232,7 @@ describe('AssetOwnerDetails.vue', () => {
       global: { stubs: globalStubs },
     });
 
-    const routerModule = await import('@/router');
-    expect(routerModule.default.push).toHaveBeenCalledWith({ name: 'AssetOwner' });
+    expect(routerPushMock).toHaveBeenCalledWith({ name: 'AssetOwner' });
   });
 
   it('opens send dialog via handler', async () => {
@@ -253,8 +257,7 @@ describe('AssetOwnerDetails.vue', () => {
 
     const exposed = (wrapper.vm as any).$?.exposed!;
     exposed.handleBack();
-    const routerModule = await import('@/router');
-    expect(routerModule.default.back).toHaveBeenCalled();
+    expect(routerBackMock).toHaveBeenCalled();
   });
 
   it('navigates to add liquidity', async () => {
@@ -265,8 +268,7 @@ describe('AssetOwnerDetails.vue', () => {
 
     const exposed = (wrapper.vm as any).$?.exposed!;
     exposed.goToAddLiquidity();
-    const routerModule = await import('@/router');
-    expect(routerModule.default.push).toHaveBeenCalledWith({
+    expect(routerPushMock).toHaveBeenCalledWith({
       name: 'AddLiquidity',
       params: { first: 'XOR', second: '0x01' },
     });

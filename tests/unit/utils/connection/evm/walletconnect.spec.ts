@@ -1,21 +1,5 @@
 import { beforeEach, afterEach, afterAll, describe, expect, it, vi } from 'vitest';
 
-import { resetWalletConnectProjectIdCache } from '@/utils/connection/evm/walletconnectProject';
-
-const walletModuleLoadCount = vi.hoisted(() => ({ value: 0 }));
-
-const buildWalletModule = async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-
-  return createWalletMock({
-    WC: {
-      WcProvider: {
-        projectId: 'mock-project-id',
-      },
-    },
-  });
-};
-
 const mockAppKit = {
   open: vi.fn(),
   close: vi.fn(),
@@ -25,17 +9,6 @@ const mockAppKit = {
 };
 
 const ensureAppKitMock = vi.fn(async () => mockAppKit);
-const loadWalletCoreMock = vi.hoisted(() =>
-  vi.fn(async () => {
-    walletModuleLoadCount.value += 1;
-    return await buildWalletModule();
-  })
-);
-
-vi.mock('@/utils/walletCore', () => ({
-  loadWalletCore: loadWalletCoreMock,
-  getWalletCore: vi.fn(),
-}));
 
 vi.mock('@walletconnect/ethereum-provider', () => {
   class MockEthereumProvider {
@@ -54,17 +27,21 @@ vi.mock('@/utils/connection/evm/appkit', () => ({
 const originalFetch = global.fetch;
 
 describe('walletconnect utils', () => {
-  beforeEach(() => {
+  let setWalletConnectProjectId: typeof import('@/lib/soraneo-wallet/src/services/walletconnect/config').setWalletConnectProjectId;
+  let resetWalletConnectProjectIdCache: typeof import('@/utils/connection/evm/walletconnectProject').resetWalletConnectProjectIdCache;
+
+  beforeEach(async () => {
     vi.resetModules();
     vi.clearAllMocks();
-    walletModuleLoadCount.value = 0;
-    loadWalletCoreMock.mockClear();
+    ({ setWalletConnectProjectId } = await import('@/lib/soraneo-wallet/src/services/walletconnect/config'));
+    ({ resetWalletConnectProjectIdCache } = await import('@/utils/connection/evm/walletconnectProject'));
     mockAppKit.open.mockReset();
     mockAppKit.close.mockReset();
     mockAppKit.subscribeState.mockImplementation(() => () => undefined);
     mockAppKit.setRequestedCaipNetworks.mockReset();
     mockAppKit.getCaipNetwork.mockReset();
     ensureAppKitMock.mockClear();
+    setWalletConnectProjectId('mock-project-id');
     resetWalletConnectProjectIdCache();
   });
 
@@ -77,14 +54,23 @@ describe('walletconnect utils', () => {
     global.fetch = originalFetch;
   });
 
-  it('resolves WalletConnect project id once per module evaluation', async () => {
+  it('reads WalletConnect project id from the wallet config owner', async () => {
     const { getWalletConnectProjectId } = await import('@/utils/connection/evm/walletconnect');
 
     const first = await getWalletConnectProjectId();
     const second = await getWalletConnectProjectId();
 
     expect(first).toBe(second);
-    expect(walletModuleLoadCount.value).toBeLessThanOrEqual(1);
+    expect(first).toBe('mock-project-id');
+  });
+
+  it('throws when WalletConnect project id is not configured', async () => {
+    setWalletConnectProjectId('');
+    resetWalletConnectProjectIdCache();
+
+    const { getWalletConnectProjectId } = await import('@/utils/connection/evm/walletconnect');
+
+    await expect(getWalletConnectProjectId()).rejects.toThrow('WalletConnect projectId is not configured');
   });
 
   it('checks WalletConnect availability using resolved project id', async () => {

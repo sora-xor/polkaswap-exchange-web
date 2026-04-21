@@ -33,7 +33,7 @@ vi.mock('@/stores/staking', () => ({
   useStakingStore: () => shared.stakingStore,
 }));
 
-import DataContainer from '@/modules/staking/demeter/views/DataContainer.vue';
+import DataContainer from '@/features/explore/pages/DemeterDataContainerPage.vue';
 
 const RouterViewStub = defineComponent({
   name: 'RouterViewStub',

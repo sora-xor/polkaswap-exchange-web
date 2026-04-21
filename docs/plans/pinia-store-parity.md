@@ -1,21 +1,19 @@
 # Pinia Store Parity Checklist
 
-This checklist tracks the Pinia facade coverage for every store under `src/stores/**`. The goal is to ensure each Pinia module mirrors the remaining Vuex-backed facade state, getters, and actions so we can delete the repo-local compatibility layer safely.
+This checklist tracks the final Pinia ownership model for every store under `src/stores/**`. The goal is to keep each Pinia module as the direct runtime owner after the repo-local compatibility layer has been removed.
 
 ## Audit Summary (2025-11-18)
 
 - Reviewed each Pinia store and matched its exported state/actions/getters against the legacy Vuex modules in `src/store/**`.
-- Verified that each store either proxies Vuex facade access via `requireAppStore`/`withAppStore` or maintains its own source of truth (`router`, `notification`).
-- Confirmed Vitest coverage exists for every store to guard parity regressions; added missing suites where necessary (assets store parity + bridge/sub enrichment cases).
+- Verified that the remaining runtime stores now own their state directly, with only documented legacy references left in archival planning docs.
+- Confirmed Vitest coverage exists for every store to guard regressions; added missing suites where necessary (assets store parity + bridge/sub enrichment cases).
 
 ## Store Matrix
 
 | Pinia store (path)                     | Legacy module (path)                      | Parity verification & tests                                                                                                   | Status |
 | -------------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------ |
 | `src/stores/assets`                    | `src/store/assets`                        | Mirrors `registeredAssets`/fetch/update flow, proxies legacy bridge lookups; tested in `tests/unit/stores/assets/index.spec.ts`. | ✅     |
-| `src/stores/bridge/form.ts`            | `src/store/bridge/form`                   | Keeps Vuex-backed form state/actions in sync via `withAppStore`; covered by `tests/unit/stores/bridge/form.spec.ts`.          | ✅     |
-| `src/stores/bridge/history.ts`         | `src/store/bridge/history`                | Tracks `historyPage`/`historyId`, syncs mutations both ways; covered by `tests/unit/stores/bridge/history.spec.ts`.            | ✅     |
-| `src/stores/bridge/transactions.ts`    | `src/store/bridge/transactions`           | Wraps legacy transaction watcher state; covered by `tests/unit/stores/bridge/transactions.spec.ts`.                           | ✅     |
+| `src/stores/bridge`                    | `src/store/bridge/*`                      | Canonical owner for bridge form/history/notification/sign-dialog state plus bridge actions; covered by `tests/unit/stores/bridge/index.spec.ts`. | ✅     |
 | `src/stores/notification`              | `src/store/notification`                  | Provides notification queue helpers with parity tests in `tests/unit/stores/notification.spec.ts`.                            | ✅     |
 | `src/stores/router`                    | `src/store/router`                        | Exposes loading state & navigation helpers; validated by `tests/unit/stores/router.spec.ts`.                                   | ✅     |
 | `src/stores/settings`                  | `src/store/settings`                      | Keeps wallet/settings state mirrored via Pinia actions that dispatch legacy store mutations; covered in `tests/unit/stores/settings/actions.spec.ts`. | ✅     |

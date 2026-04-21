@@ -81,7 +81,7 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
@@ -91,12 +91,28 @@ vi.mock('@/lib/soraneo-wallet/src/util', () => ({
   delay: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('@/features/rewards/components/point-system/PointCard.vue', () => ({
   __esModule: true,
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
-    template: '<div class="lazy-component-stub"><slot /></div>',
-  }),
+  default: {
+    name: 'PointCardStub',
+    template: '<div class="point-card-stub"><slot /></div>',
+  },
+}));
+
+vi.mock('@/features/rewards/components/point-system/TaskCard.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'TaskCardStub',
+    template: '<div class="task-card-stub"><slot /></div>',
+  },
+}));
+
+vi.mock('@/features/rewards/components/point-system/FirstTxCard.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'FirstTxCardStub',
+    template: '<div class="first-tx-card-stub"><slot /></div>',
+  },
 }));
 
 vi.mock('@/indexer/queries/pointSystem', () => ({
@@ -104,7 +120,7 @@ vi.mock('@/indexer/queries/pointSystem', () => ({
   fetchAccountMeta: fetchAccountMetaMock,
 }));
 
-const PointSystemV2 = (await import('@/views/PointSystemV2.vue')).default;
+const PointSystemV2 = (await import('@/features/rewards/pages/PointSystemV2Page.vue')).default;
 
 const buildWrapper = () =>
   mount(PointSystemV2, {

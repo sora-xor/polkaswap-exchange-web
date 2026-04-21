@@ -51,7 +51,7 @@ const walletStoreState = vi.hoisted(() => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     api: walletApiStub,
@@ -62,16 +62,8 @@ vi.mock('@wallet', async () => {
     connection: connectionStub,
   });
 });
-vi.mock('@wallet/core', () => ({
+vi.mock('@/lib/soraneo-wallet/src/core', () => ({
   api: walletApiStub,
-}));
-vi.mock('@/utils/walletCore', () => ({
-  loadWalletCore: vi.fn(async () => ({
-    api: walletApiStub,
-    connection: connectionStub,
-    WALLET_CONSTS: walletConstsStub,
-    WALLET_TYPES: walletTypesStub,
-  })),
 }));
 vi.mock('@/lang', () => {
   const getLocale = () => 'en';

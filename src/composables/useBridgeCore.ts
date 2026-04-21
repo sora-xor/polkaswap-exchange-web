@@ -1,9 +1,9 @@
 import { FPNumber, type CodecString } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { PageNames } from '@/consts';
-import router from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useBridgeStore } from '@/stores/bridge';
 
@@ -14,6 +14,7 @@ import type { Nullable } from '@/types/common';
  * Provides bridge-specific helpers that historically lived inside `BridgeMixin`.
  */
 export function useBridgeCore() {
+  const router = useRouter();
   const assetsStore = useAssetsStore();
   const bridgeStore = useBridgeStore();
   const isSoraToEvm = computed(() => bridgeStore.isSoraToEvm);

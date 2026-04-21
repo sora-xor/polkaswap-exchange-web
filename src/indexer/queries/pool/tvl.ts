@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { getCurrentIndexer, SubqueryIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { gql } from '@urql/core';
 
@@ -8,7 +8,7 @@ import type {
   ConnectionQueryResponse,
   ConnectionQueryResponseData,
   SnapshotTypes,
-} from '@/shims/wallet-indexer-types';
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 export type PoolTvlData = {
   timestamp: number;

@@ -3,6 +3,15 @@ import { describe, expect, it } from 'vitest';
 import exploreCollateralsSource from '@/modules/vault/components/ExploreCollaterals.vue?raw';
 
 describe('ExploreCollaterals source', () => {
+  it('uses direct shared imports instead of the vault lazy registry', () => {
+    expect(exploreCollateralsSource).not.toContain('lazyComponent(');
+    expect(exploreCollateralsSource).not.toContain('Components.');
+    expect(exploreCollateralsSource).not.toContain("from '@/router'");
+    expect(exploreCollateralsSource).toContain("import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';");
+    expect(exploreCollateralsSource).toContain("import SortButton from '@/components/shared/Button/SortButton.vue';");
+    expect(exploreCollateralsSource).toContain("import DataRowSkeleton from '@/components/shared/Skeleton/DataRow.vue';");
+  });
+
   it('keeps the Kensetsu noir search field aligned with production surface tokens', () => {
     expect(exploreCollateralsSource).toContain('padding: 8px 16px;');
     expect(exploreCollateralsSource).toContain(

@@ -191,23 +191,38 @@ vi.mock('@/router', () => {
   };
 });
 
-vi.mock('@wallet', () => {
-  const { defineComponent, h } = require('vue') as typeof import('vue');
-  const WalletStub = defineComponent({
-    name: 'WalletComponentStub',
-    setup(_, { slots }) {
-      return () => h('div', { class: 'wallet-component-stub' }, slots.default?.());
-    },
-  });
+vi.mock('@/app/shell/AppShellLayout.vue', () => ({
+  default: {
+    name: 'AppShellLayoutStub',
+    template: '<div class="app-shell-layout-stub"></div>',
+  },
+}));
 
-  return {
-    api: {},
-    components: {
-      NotificationEnablingPage: WalletStub,
-      ConfirmDialog: WalletStub,
+vi.mock('@/app/shell/AppShellOverlays.vue', () => ({
+  default: {
+    name: 'AppShellOverlaysStub',
+    template: '<div class="app-shell-overlays-stub"></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/NotificationProvider.vue', () => ({
+  default: {
+    name: 'NotificationProviderStub',
+    template: '<div class="notification-provider-stub"><slot /></div>',
+  },
+}));
+
+vi.mock('@/app/router', () => ({
+  __esModule: true,
+  default: {
+    options: {
+      history: {
+        type: 'hash',
+      },
     },
-  };
-});
+  },
+  goTo: vi.fn(),
+}));
 
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {},
@@ -516,10 +531,10 @@ vi.mock('@/utils/telegram', () => ({
   },
 }));
 
-import App from '@/App.vue';
+import AppShell from '@/app/shell/AppShell.vue';
 
 const mountApp = async () => {
-  const wrapper = shallowMount(App, {
+  const wrapper = shallowMount(AppShell, {
     global: {
       stubs: {
         's-design-system-provider': {

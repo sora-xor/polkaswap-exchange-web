@@ -33,9 +33,9 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('@/components/shared/TransactionDetails.vue', () => ({
   __esModule: true,
-  lazyComponent: () => ({ template: '<div class="transaction-details-stub"><slot /></div>' }),
+  default: { template: '<div class="transaction-details-stub"><slot /></div>' },
 }));
 
 vi.mock('vue-i18n', async () => {
@@ -49,18 +49,18 @@ vi.mock('vue-i18n', async () => {
   };
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      InfoLine: {
-        name: 'InfoLineStub',
-        props: ['label', 'value', 'assetSymbol', 'fiatValue', 'labelTooltip'],
-        template: '<div class="info-line-stub"><span>{{ label }}</span><span>{{ value }}</span><slot /></div>',
-      },
-    },
-  });
+  return createWalletMock();
 });
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: {
+    name: 'InfoLineStub',
+    props: ['label', 'value', 'assetSymbol', 'fiatValue', 'labelTooltip'],
+    template: '<div class="info-line-stub"><span>{{ label }}</span><span>{{ value }}</span><slot /></div>',
+  },
+}));
 
 import RemoveLiquidityTransactionDetails from '@/modules/pool/components/RemoveLiquidity/TransactionDetails.vue';
 

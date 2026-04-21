@@ -81,27 +81,26 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
+import ValidatorAvatar from '@/modules/staking/sora/components/ValidatorAvatar.vue';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { useValidatorsFormatting } from '@/modules/staking/sora/composables/useValidatorsFormatting';
 import {
   emptyValidatorsFilter,
   recommendedValidatorsFilter,
-  SoraStakingComponents,
   ValidatorsListMode,
 } from '@/modules/staking/sora/consts';
-import { soraStakingLazyComponent } from '@/modules/staking/router';
 
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import WalletComponentFormattedAddress from '@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue';
 
 defineOptions({
   inheritAttrs: false,
   components: {
-    FormattedAddress: components.FormattedAddress,
+    FormattedAddress: WalletComponentFormattedAddress,
   },
 });
 
@@ -131,8 +130,6 @@ const {
   stakingInfo,
 } = useSoraStaking();
 const { formatName, decodeName, formatCommission, formatReturn } = useValidatorsFormatting();
-
-const ValidatorAvatar = soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar);
 
 const search = ref('');
 const sort = ref<Sort>(Sort.RETURN_DESC);

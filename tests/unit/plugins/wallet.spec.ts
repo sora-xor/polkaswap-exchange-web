@@ -29,11 +29,9 @@ const { localStorageMock } = vi.hoisted(() => {
 const dialogBaseComponent = { name: 'DialogBaseMock' };
 const installWalletPlugins = vi.fn();
 
-vi.mock('@/lib/soraneo-wallet/src/components/registry', () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
   __esModule: true,
-  components: {
-    DialogBase: dialogBaseComponent,
-  },
+  default: dialogBaseComponent,
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/plugins', () => ({
@@ -41,7 +39,7 @@ vi.mock('@/lib/soraneo-wallet/src/plugins', () => ({
   default: installWalletPlugins,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });

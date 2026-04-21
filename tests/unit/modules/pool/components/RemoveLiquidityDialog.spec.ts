@@ -17,13 +17,13 @@ vi.mock('@/stores/pool', () => ({
   }),
 }));
 
-vi.mock('@/modules/pool/router', () => ({
+vi.mock('@/modules/pool/components/RemoveLiquidity/Form.vue', () => ({
   __esModule: true,
-  poolLazyComponent: () => ({
+  default: {
     name: 'RemoveLiquidityForm',
     emits: ['back'],
     template: '<div class="remove-form-stub" @click="$emit(\'back\')"></div>',
-  }),
+  },
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -33,19 +33,19 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBase',
-        emits: ['update:visible'],
-        props: ['visible', 'title', 'tooltip'],
-        template: '<div class="dialog-base"><slot /></div>',
-      },
-    },
-  });
+  return createWalletMock();
 });
+
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBase',
+    emits: ['update:visible'],
+    props: ['visible', 'title', 'tooltip'],
+    template: '<div class="dialog-base"><slot /></div>',
+  },
+}));
 
 import RemoveLiquidityDialog from '@/modules/pool/components/RemoveLiquidity/Dialog.vue';
 

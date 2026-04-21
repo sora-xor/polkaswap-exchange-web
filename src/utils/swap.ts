@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { asZeroValue, getAssetBalance } from '@/utils/asset-formatting';
+import { getAssetBalance } from '@/utils/asset-formatting';
 
 import type { Nullable } from '@/types/common';
 import type { CodecString } from '@sora-substrate/sdk';
@@ -27,14 +27,14 @@ export const getDifferenceStatus = (value: number): string => {
 };
 
 /**
- * Returns swap input balance only for authenticated users with a meaningful balance.
- * Logged-out or zero-balance state should not render stale or synthetic balance rows.
+ * Returns the selected swap token balance for authenticated users.
+ * Logged-out state should not render stale or synthetic balance rows, but
+ * connected zero balances are still useful account state and should remain visible.
  */
 export const getVisibleSwapTokenBalance = (
   token: Nullable<AccountAsset>,
   isLoggedIn: boolean
 ): Nullable<CodecString> => {
   if (!isLoggedIn || !token) return null;
-  const balance = getAssetBalance(token);
-  return asZeroValue(balance) ? null : balance;
+  return getAssetBalance(token);
 };

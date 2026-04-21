@@ -75,19 +75,19 @@
 
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
-import { Components } from '@/consts';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { StakeDialogMode } from '@/modules/staking/sora/consts';
 import { useSettingsStore } from '@/stores/settings';
 import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
-import { lazyComponent } from '@/router';
 import { hasInsufficientXorForFee } from '@/utils';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 const props = defineProps<{
   mode: StakeDialogMode;
@@ -126,9 +126,8 @@ const { loading, withNotifications, withApi } = useTransaction({
 
 const settingsStore = useSettingsStore();
 
-const TokenInput = lazyComponent(Components.TokenInput);
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
 
 const value = ref('');
 const bondAndNominateNetworkFee = ref<string | null>(null);

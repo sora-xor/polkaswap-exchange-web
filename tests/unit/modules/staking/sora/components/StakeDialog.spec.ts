@@ -62,6 +62,16 @@ vi.mock('@/stores/settings', () => ({
   }),
 }));
 
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'TokenInputStub',
+    template: '<div class="token-input-stub"><slot /></div>',
+    props: ['value', 'balance', 'isMaxAvailable', 'title', 'token', 'modelValue'],
+    emits: ['update:modelValue', 'max'],
+  },
+}));
+
 vi.mock('@/composables/useTransaction', () => ({
   __esModule: true,
   useTransaction: () => ({
@@ -102,7 +112,7 @@ vi.mock('vue-i18n', async () => {
   };
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -143,10 +153,6 @@ const mountComponent = (mode: StakeDialogMode) =>
           },
           emits: ['update:visible'],
           template: '<div class="dialog-base-stub"><slot /></div>',
-        },
-        TokenInput: {
-          template: '<div class="token-input-stub"><slot /></div>',
-          props: ['value'],
         },
         's-card': { template: '<div class="s-card-stub"><slot /></div>' },
         's-button': { template: '<button class="s-button-stub"><slot /></button>' },

@@ -208,7 +208,7 @@ vi.mock('@/indexer/queries/pool/apy', () => ({
   createPoolsApySubscription: shared.createPoolsApySubscription,
 }));
 
-vi.mock('@/shims/wallet-api', () => ({
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
     divideAssets: shared.divideAssets,
     dex: {
@@ -242,7 +242,7 @@ vi.mock('@/shims/wallet-api', () => ({
   },
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({

@@ -121,7 +121,7 @@ This track hardens the application architecture beyond the Vue 3 migration so IP
 
 - Eliminate the global direct-vuex dependency by moving durable state into Pinia stores and exposing the minimum interop surface necessary for legacy components.
 - Break the router monolith into feature-owned route modules with testable guards while keeping wallet-specific navigation logic isolated.
-- Treat the vendored wallet and utility stacks as true external dependencies by wrapping them in typed adapters so app code never imports `@wallet` internals directly.
+- Treat the vendored wallet and utility stacks as first-class repo sources, using typed adapters only where cross-domain boundaries still need them and avoiding deleted wrapper seams.
 - Untangle shared utilities from singleton side effects, allowing vitest suites to exercise them without spinning up the full app.
 
 ### Milestones & Tasks
@@ -130,7 +130,7 @@ This track hardens the application architecture beyond the Vue 3 migration so IP
 | --------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | Pinia ownership & legacy shutdown | Completed (Sprints 2–4)   | Inventoried Vuex-only modules, moved `wallet`, `assets`, `bridge` read models into Pinia with explicit state/actions, and deleted `requireLegacyStore` usage outside the adapter boundary.                                                                                                     | Exit criteria met: all production code reads state via Pinia; `legacy-store` token removed with adapter retirement.        |
 | Router modularisation             | Completed (Sprints 2–3)   | Route trees now live in `src/router/modules/**`; guards wrapped via `createBeforeEachGuard` with injected adapters; auth/referral invitation edge cases covered in `tests/unit/router/guards/navigation.spec.ts`.                   | Exit criteria met: `src/router/index.ts` only bootstraps the router; guard/unit suites green.            |
-| Wallet adapter boundary           | Completed (Sprints 2–4)   | Created `src/adapters/wallet/**` modules for address validation, referrals, navigation, storage; updated router/referrals/bridge consumers; defined contract with wallet squad and documented fallback behaviour.                                                                             | Exit criteria met: no direct `@wallet` imports from feature code; adapters ship with tests and typed interfaces.           |
+| Wallet adapter boundary           | Completed (Sprints 2–4)   | Created `src/adapters/wallet/**` modules for address validation, referrals, navigation, storage; updated router/referrals/bridge consumers; defined contract with wallet squad and documented fallback behaviour.                                                                             | Exit criteria met: no direct imports from the former external wallet package remain in feature code; adapters ship with tests and typed interfaces. |
 | Utility isolation & testability   | Completed (Sprints 3–4)   | Refactored `src/utils/index.ts` into dependency-injected modules, added targeted Vitest coverage for math/format helpers, and gated clipboard/navigator usage behind capability checks for SSR/IPFS tests.                                            | Exit criteria met: utility modules are side-effect free, and tests run in isolation without Vue app bootstrap.             |
 | Bridge form fetch migration       | Completed (Sprints 3–4)   | Implemented Pinia actions for balance/fee fetchers, updated bridge components to call them, and removed legacy Vuex helpers after telemetry burn-in.                                                                                                  | Exit criteria met: Pinia store owns balance/fee logic; Vuex bridge module removed.                                         |
 
@@ -221,26 +221,26 @@ Compat-era decorator shims were removed (`src/compat/vue-property-decorator.ts` 
 
 Demeter status badges now consume `useDemeterPoolStatus` directly; dialog flows were refactored in tandem. StakeDialog, ClaimDialog, and CalculatorDialog were migrated to `<script setup>` with `useDemeterPoolStatus`/`useDemeterPoolCard`, eliminating `PoolCardMixin` from those surfaces and adding unit coverage for their workflows.
 
-The Demeter staking overview view (`src/modules/staking/views/Staking.vue`) now relies on `useDemeterBasePage`/`useDemeterPage`, replacing `PageMixin`/`BasePageMixin` usage and wiring dialog events through the composables. The `DemeterDataContainer` now uses `useSubscriptions` instead of the legacy `SubscriptionsMixin`, so route-level subscriptions no longer require class mixins.
+The Demeter staking feature pages now rely on `useDemeterBasePage`/`useDemeterPage`, replacing `PageMixin`/`BasePageMixin` usage and wiring dialog events through the composables. The feature-owned data container now uses `useSubscriptions` instead of the legacy `SubscriptionsMixin`, so route-level subscriptions no longer require class mixins.
 
 ### 3. State & Services
 
 - Pinia adoption now covers notifications/router/assets/web3/swap flows with `direct-vuex` decorators retired.
 - `src/lib/soraneo-wallet` bundles run on native Vue 3 semantics with compat removed and typings aligned.
-- Low-level helpers (`src/utils/asyncComponent.ts`, `src/utils/walletModule.ts`, bridge services) validated against the compat-free runtime.
+- Low-level helpers (`src/utils/asyncComponent.ts`, bridge services, direct vendored wallet integrations) validated against the compat-free runtime.
 
 **Action items**
 
 - [x] Bring the Pinia asset store (`src/stores/assets`) to parity with Vuex getters/actions and flip bridge/Swap consumers to the new helpers. The store now exposes registered-asset getters and bridge stores resolve lookups via `src/store/bridge/utils.ts`, so Composition API flows no longer touch the legacy module directly.
 - [x] Automated the repo-wide `store.(state|getters|commit|dispatch)` audit via `yarn analyze:store`. The new analyzer (`scripts/analyze/store-usage.ts`) produces JSON + Markdown trackers in `docs/reports/store-access-audit.{json,md}`, giving each domain/file/type count for Pinia migration planning.
 - [x] Migrate wallet connection flows to consume `src/stores/wallet` directly, reducing reliance on `src/store/wallet` decorators. Connection dialogs, Sora Card, App shell helpers, and bridge utilities now call the Pinia wallet store wrappers (login/rename/addAsset/theme/API key/subscription actions), so we no longer import the Vuex decorators in those flows.
-- [x] Define a migration contract with the wallet team for `@wallet` (Vue 3 bundle, typings, release cadence) and schedule integration tests. Contract + integration runbook captured in `docs/plans/soraneo-wallet-migration-contract.md` (updated 2025-10-26) and wired to Jenkins job `wallet-migration-integration`.
+- [x] Define a migration contract with the wallet team for the former external wallet package (Vue 3 bundle, typings, release cadence) and schedule integration tests. Contract + integration runbook captured in `docs/plans/soraneo-wallet-migration-contract.md` (updated 2025-10-26) and wired to Jenkins job `wallet-migration-integration`.
 - [x] Bootstrap consolidated Pinia bridge store (`src/stores/bridge/index.ts`) covering form/balance/fee/history state with baseline getters/actions plus unit tests; legacy `src/store/bridge/**` logic now has a migration target (see `docs/plans/bridge-pinia-migration.md`).
 - [x] **Inline Soraneo wallet library**
-  - [x] Snapshot the current `@wallet` repository (components, composables, styles, store) and plan target directories under `src/lib/soraneo-wallet`. Summary and sync notes live in `docs/plans/soraneo-wallet-inline.md`.
+  - [x] Snapshot the former external wallet repository (components, composables, styles, store) and plan target directories under `src/lib/soraneo-wallet`. Summary and sync notes live in `docs/plans/soraneo-wallet-inline.md`.
   - [x] Copy sources + assets into the repo, add TypeScript aliases/paths, and expose entry points that mirror the existing package exports. Verified aliases in `tsconfig.json`/`vite.config.mjs`; see `docs/plans/soraneo-wallet-inline.md` for current layout.
   - [x] Integrate the wallet build step into local tooling (`tsconfig`, lint, Vite/electron configs) and ensure jest/vitest stubs resolve. Aliases already point at `src/lib/soraneo-wallet`, publish scripts no longer build the external package, and stubs under `tests/stubs/**` mirror the local exports.
-  - [x] Replace all imports of `@wallet` with the new local aliases; update shared stubs under `tests/stubs/**`. Imports now target the `@wallet` alias and stubs mirror the local modules.
+  - [x] Replace all imports of the external wallet package with direct vendored source imports; update shared stubs under `tests/stubs/**`. Runtime imports now target `src/lib/soraneo-wallet/src/**` directly and stubs mirror the local modules.
   - [x] Remove the package from `package.json`/`yarn.lock`, regenerate lockfiles, and confirm `yarn build`, `yarn build:vue3`, and electron builds succeed. External references now point to the vendored sources only; CI build/test suites are green.
   - [x] Validated the vendored bundle locally on 2025-11-11 by running `yarn build:vue3`, `yarn test:unit`, `yarn test:translation`, and the Playwright bridge/MoonPay smoke (`yarn test:e2e`); all commands passed.
 - [x] **Inline Soramitsu UI kit**
@@ -296,7 +296,7 @@ The Demeter staking overview view (`src/modules/staking/views/Staking.vue`) now 
 
 | Risk / Dependency                                                 | Impact                                                         | Mitigation & Owner                                                                                 | Status                |
 | ----------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------- |
-| Wallet library still on Vue 2 (`@wallet`)                         | Blocks compat removal; keeps bundle size high                  | Inline sources under `src/lib/soraneo-wallet` (see roadmap vendor tasks) and drop external package | Resolved              |
+| Wallet library still on Vue 2 via the former external package     | Blocks compat removal; keeps bundle size high                  | Inline sources under `src/lib/soraneo-wallet` (see roadmap vendor tasks) and drop external package | Resolved              |
 | Pinia/Vuex divergence during migration                            | Inconsistent behaviour between converted and legacy components | Platform team maintains parity checklist and mirrored tests; migration pod reviews deltas weekly   | Resolved              |
 | Legacy UI shims (`src/compat/soramitsu-ui.ts`) tied to old UI kit | Residual compat code in final build                            | Vendor the Soramitsu UI kit locally and remove compat helpers alongside bundle removal             | Resolved              |
 | Translation churn for refactored dialogs                          | Fails `yarn test:translation`, delays releases                 | Localization lead embedded in Sprint 2–4; enforce translation PR checklist                         | Resolved              |
@@ -316,7 +316,7 @@ All blockers in this log were closed after mitigation was confirmed and communic
 
 | Dependency                       | Trigger/Deliverable                     | Watch window                   | Owner             | Notes                                                         |
 | -------------------------------- | --------------------------------------- | ------------------------------ | ----------------- | ------------------------------------------------------------- |
-| `@wallet` Vue 3 bundle           | Upstream release or fork decision       | Closed after Sprint 3 review   | Wallet squad lead | Delivered via inline fork; compat shim removal unblocked.     |
+| External wallet Vue 3 bundle     | Upstream release or fork decision       | Closed after Sprint 3 review   | Wallet squad lead | Delivered via inline fork; compat shim removal unblocked.     |
 | `@soramitsu-ui/ui` Vue 3 release | Align UI kit with Composition API       | Completed Sprint 4 integration | UI library owners | Inlined UI kit replaced compat shim.                          |
 | Internal APR/metrics composables | Provide staking/pools data for refactor | Delivered Sprint 3 week 1      | DeFi squad        | Unblocked Pools/Staking migration to Composition API.         |
 | DevOps nightly build pipeline    | Stable `yarn build:vue3` + tests        | Green since Sprint 1 exit      | DevOps rep        | Slack alerts running; streak confirmed.                       |
@@ -502,7 +502,7 @@ Retrospective held in Week 9; notes and action items are published in Confluence
 - [x] Kick off pilot cohort planning meeting and populate Pilot Rollout Tracker with scope details and success metrics (`docs/plans/pilot-cohort-planning.md`).
 - [x] Schedule internal training sessions and publish agenda/materials per Change Management Activities (`docs/plans/vue3-internal-training.md`).
 - [x] Review stakeholder engagement effectiveness at next program manager sync and adjust strategies if needed (see Stakeholder Engagement Notes).
-- [x] Remove legacy `$listeners` forwarding from remaining container views (`src/views/Explore/Container.vue`, `src/views/StakingContainer.vue`, `src/modules/staking/demeter/views/DataContainer.vue`) to align with Vue 3 event forwarding semantics.
+- [x] Remove legacy `$listeners` forwarding from the remaining feature-owned container pages to align with Vue 3 event forwarding semantics.
 - [x] Update compat smoke tooling for Vitest 4 CLI compatibility in `scripts/analyze/compat-smoke.ts` and add coverage for argument construction (`tests/unit/scripts/analyze/compat-smoke.spec.ts`).
 - [x] Tighten compat alias analysis in `scripts/analyze/compat-alias.ts` to suppress bootstrap false positives while still flagging migration regressions; covered by `tests/unit/scripts/analyze/compat-alias.spec.ts`.
 - [x] Expand regression coverage for migrated containers and dialog rendering (`tests/unit/views/StakingContainer.spec.ts`, `tests/unit/modules/staking/demeter/views/DataContainer.spec.ts`, `tests/unit/views/ExploreContainer.spec.ts`, `tests/unit/components/pages/PointSystem/TaskDialog.spec.ts`).

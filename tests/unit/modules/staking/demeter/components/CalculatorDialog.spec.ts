@@ -34,7 +34,7 @@ const InfoLineStub = defineComponent({
   template: `<div class="info-line-stub"></div>`,
 });
 
-vi.mock('@/router', () => {
+vi.mock('@/components/shared/Input/TokenInput.vue', () => {
   tokenInputStubHolder.value = defineComponent({
     name: 'TokenInputStub',
     props: ['balance', 'isMaxAvailable', 'title', 'token', 'modelValue'],
@@ -42,12 +42,12 @@ vi.mock('@/router', () => {
     template: `<div class="token-input-stub"></div>`,
   });
   return {
-    lazyComponent: () => tokenInputStubHolder.value,
+    default: tokenInputStubHolder.value,
   };
 });
 
-vi.mock('@/modules/staking/demeter/router', () => ({
-  demeterStakingLazyComponent: () =>
+vi.mock('@/modules/staking/demeter/components/DialogTitle.vue', () => ({
+  default:
     defineComponent({
       name: 'DialogTitleStub',
       props: ['baseAsset', 'poolAsset', 'isFarm'],

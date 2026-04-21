@@ -29,7 +29,11 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { computed, ref } from 'vue';
 
-import { useRouterStore } from '@/stores/router';
+import {
+  getWalletCurrentParams,
+  getWalletPreviousParams,
+  getWalletPreviousRoute,
+} from '@/platform/wallet/navigation';
 import { useWalletStore } from '@/stores/wallet';
 
 import { useNotification } from '../composables/useNotification';
@@ -42,21 +46,19 @@ import TokenLogo from './TokenLogo.vue';
 import WalletBase from './WalletBase.vue';
 
 import type { RouteNames } from '../consts';
-import type { Route } from '@/stores/router/types';
 import type { PolkadotJsAccount } from '../types/common';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const { t, withAppNotification } = useNotification();
-const routerStore = useRouterStore();
 const walletStore = useWalletStore();
 
 const qrcode = ref<{ element?: SVGSVGElement }>();
 const delimiters = FPNumber.DELIMITERS_CONFIG;
 const amount = ref('');
 
-const currentRouteParams = computed(() => routerStore.currentParams as Record<string, AccountAsset>);
-const previousRoute = computed(() => ((routerStore.prev as RouteNames) ?? RouteNames.Wallet) as RouteNames);
-const previousRouteParams = computed(() => routerStore.prevParams as Record<string, unknown>);
+const currentRouteParams = computed(() => getWalletCurrentParams<Record<string, AccountAsset>>());
+const previousRoute = computed(() => ((getWalletPreviousRoute() as RouteNames) ?? RouteNames.Wallet) as RouteNames);
+const previousRouteParams = computed(() => getWalletPreviousParams<Record<string, unknown>>());
 const account = computed(() => walletStore.account as PolkadotJsAccount);
 const asset = computed(() => currentRouteParams.value.asset);
 const title = computed(() => t('asset.receive', { symbol: asset.value.symbol }));
@@ -83,7 +85,7 @@ function downloadCode(): void {
 }
 
 function handleBack(): void {
-  routerStore.navigate({
+  walletStore.navigate({
     name: previousRoute.value,
     params: previousRouteParams.value,
   });

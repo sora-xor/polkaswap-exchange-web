@@ -49,8 +49,8 @@ vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => hoisted.settingsStore,
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/components/shared/Dialog/ConfirmBridgeTransaction.vue', () => ({
+  default: {
     name: 'ConfirmBridgeTransactionDialogStub',
     props: {
       visible: {
@@ -83,7 +83,7 @@ vi.mock('@/router', () => ({
         <slot name="content-title" />
       </div>
     `,
-  }),
+  },
 }));
 
 vi.mock('@/composables/useMoonpayBridge', () => ({

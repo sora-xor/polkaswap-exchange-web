@@ -9,18 +9,18 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { resolveValidatorAvatarUrl } from '@/modules/staking/sora/utils/validatorAvatar';
 
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import WalletComponentWalletAvatar from '@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue';
 
 const props = defineProps<{
   validator: ValidatorInfoFull;
 }>();
 
-const WalletAvatar = components.WalletAvatar;
+const WalletAvatar = WalletComponentWalletAvatar;
 
 const avatar = computed(() => resolveValidatorAvatarUrl(props.validator));
 

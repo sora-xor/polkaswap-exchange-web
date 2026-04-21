@@ -3,6 +3,7 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { mount } from '@vue/test-utils';
 import { computed } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import pairListPopoverSource from '@/components/pages/OrderBook/Popovers/PairListPopover.vue?raw';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { OrderBookStats } from '@/types/orderBook';
@@ -23,7 +24,7 @@ vi.doMock('@/composables/useOrderBookPairList', () => ({
   }),
 }));
 
-vi.doMock('@wallet', () => ({
+vi.doMock('@tests/stubs/walletRuntime', () => ({
   components: {
     FormattedAmount: { template: '<span class="formatted-amount"><slot /></span>' },
   },
@@ -42,8 +43,12 @@ vi.doMock('vue-router', () => ({
   useRouter: () => ({ replace: routerReplaceMock }),
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({ template: '<div><slot /></div>' }),
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
+  default: { template: '<div class="pair-token-logo" />' },
+}));
+
+vi.mock('@/components/shared/PriceChange.vue', () => ({
+  default: { template: '<span class="price-change">{{ $attrs.value }}</span>' },
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -121,8 +126,6 @@ describe('PairListPopover.vue', () => {
     return mount(module.default, {
       global: {
         stubs: {
-          PairTokenLogo: { template: '<div class="pair-token-logo" />' },
-          PriceChange: { template: '<span class="price-change">{{ $attrs.value }}</span>' },
           'formatted-amount': { props: ['value'], template: '<span class="formatted-amount">{{ value }}</span>' },
           's-table': { template: '<div class="table-stub" />' },
           's-table-column': { template: '<div class="table-column-stub" />' },
@@ -197,5 +200,13 @@ describe('PairListPopover.vue', () => {
 
     expect(exposed.getTooltipText(OrderBookStatus.Trade)).toBe('orderBook.tooltip.bookStatus.active');
     expect(exposed.mapBookStatus(OrderBookStatus.Stop)).toBe('orderBook.bookStatus.inactive');
+  });
+
+  it('uses direct shared imports instead of the central lazy registry', () => {
+    expect(pairListPopoverSource).not.toContain('lazyComponent(');
+    expect(pairListPopoverSource).not.toContain('Components.');
+    expect(pairListPopoverSource).not.toContain("from '@/router'");
+    expect(pairListPopoverSource).toContain("import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';");
+    expect(pairListPopoverSource).toContain("import PriceChange from '@/components/shared/PriceChange.vue';");
   });
 });

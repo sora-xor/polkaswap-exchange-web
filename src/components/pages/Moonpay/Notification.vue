@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
@@ -23,12 +22,14 @@ import { useSettingsStore } from '@/stores/settings';
 import { sanitizeHtml } from '@/utils/sanitize';
 
 import { MoonpayNotifications } from './consts';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentSimpleNotification from '@/lib/soraneo-wallet/src/components/SimpleNotification.vue';
 
 defineOptions({
   components: {
     MoonpayLogo,
-    DialogBase: components.DialogBase,
-    SimpleNotification: components.SimpleNotification,
+    DialogBase: WalletComponentDialogBase,
+    SimpleNotification: WalletComponentSimpleNotification,
   },
 });
 

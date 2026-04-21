@@ -2,10 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 
 const navigate = vi.hoisted(() => vi.fn());
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    navigate,
-  }),
+vi.mock('@/platform/wallet/navigation', () => ({
+  navigateWallet: navigate,
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({

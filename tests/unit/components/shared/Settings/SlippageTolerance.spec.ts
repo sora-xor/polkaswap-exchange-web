@@ -25,23 +25,8 @@ const infoLineComponentStub = vi.hoisted(() => ({
   template: '<div class="info-line-stub"><slot /></div>',
 }));
 
-const lazyComponentStub = vi.hoisted(() => ({
-  name: 'RouterLazyComponentStub',
-  template: '<div class="router-lazy-component-stub"><slot /></div>',
-}));
-
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      InfoLine: infoLineComponentStub,
-    },
-  });
-});
-
-vi.mock('@/router', () => ({
-  __esModule: true,
-  lazyComponent: () => lazyComponentStub,
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: infoLineComponentStub,
 }));
 
 vi.mock('@/stores/settings', () => ({
@@ -184,5 +169,14 @@ describe('SlippageTolerance', () => {
     expect(slippageToleranceSource).toContain('height: var(--s-size-small);');
     expect(slippageToleranceSource).toContain('padding: $basic-spacing #{$inner-spacing-medium};');
     expect(slippageToleranceSource).toContain('min-height: calc(var(--s-size-small) - (#{$basic-spacing} * 2));');
+  });
+
+  it('uses direct settings and wallet UI imports instead of the router lazy registry', () => {
+    expect(slippageToleranceSource).not.toContain('lazyComponent(');
+    expect(slippageToleranceSource).not.toContain("from '@/router'");
+    expect(slippageToleranceSource).toContain("import SettingsTabs from '@/components/shared/Settings/Tabs.vue';");
+    expect(slippageToleranceSource).toContain(
+      "import WalletInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';"
+    );
   });
 });

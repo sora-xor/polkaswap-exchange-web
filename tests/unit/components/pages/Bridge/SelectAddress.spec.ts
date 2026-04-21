@@ -5,10 +5,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createWalletMock } from '@tests/stubs/createWalletMock';
 
 let SelectAddress: typeof import('@/components/pages/Bridge/SelectAddress.vue').default;
-let walletModule: typeof import('@wallet');
+let walletRuntime: typeof import('@tests/stubs/walletRuntime');
 let originalValidate: (value: string) => boolean;
-let originalAddressBookInput: unknown;
-
 const addressBookInputStub = {
   name: 'AddressBookInputStub',
   props: ['modelValue', 'isValid'],
@@ -16,16 +14,17 @@ const addressBookInputStub = {
   template: '<div><slot /></div>',
 };
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   return await createWalletMock({
-    components: {
-      AddressBookInput: addressBookInputStub,
-    },
     api: {
       validateAddress: (value: string) => value.startsWith('5'),
     },
   });
 });
+
+vi.mock('@/lib/soraneo-wallet/src/components/AddressBook/Input.vue', () => ({
+  default: addressBookInputStub,
+}));
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -37,16 +36,13 @@ describe('BridgeSelectAddress', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     ({ default: SelectAddress } = await import('@/components/pages/Bridge/SelectAddress.vue'));
-    walletModule = await import('@wallet');
-    originalValidate = walletModule.api.validateAddress;
-    originalAddressBookInput = walletModule.components.AddressBookInput;
-    walletModule.api.validateAddress = (value: string) => value.startsWith('5');
-    walletModule.components.AddressBookInput = addressBookInputStub as unknown;
+    walletRuntime = await import('@tests/stubs/walletRuntime');
+    originalValidate = walletRuntime.api.validateAddress;
+    walletRuntime.api.validateAddress = (value: string) => value.startsWith('5');
   });
 
   afterEach(() => {
-    walletModule.api.validateAddress = originalValidate;
-    walletModule.components.AddressBookInput = originalAddressBookInput;
+    walletRuntime.api.validateAddress = originalValidate;
   });
 
   it('validates substrate addresses', async () => {

@@ -95,7 +95,29 @@ const swapStoreMock = reactive({
   reset: vi.fn(),
 });
 
-vi.mock('@wallet', () => ({
+const createPassthroughStub = (name: string) =>
+  defineComponent({
+    name,
+    setup(_, { slots }) {
+      return () => h('div', [slots.reference?.(), slots.default?.()]);
+    },
+  });
+
+const FormattedAmountStub = defineComponent({
+  name: 'FormattedAmountStub',
+  template: '<span><slot /></span>',
+});
+
+const InfoLineStub = defineComponent({
+  name: 'InfoLineStub',
+  props: {
+    label: { type: String, default: '' },
+    labelTooltip: { type: String, default: '' },
+  },
+  template: '<div class="info-line-stub" :data-label="label" :data-label-tooltip="labelTooltip"><slot /></div>',
+});
+
+vi.mock('@tests/stubs/walletRuntime', () => ({
   api: {
     swap: {
       update: swapUpdateMock,
@@ -112,29 +134,22 @@ vi.mock('@wallet', () => ({
   WALLET_TYPES: {},
   INDEXER_TYPES: {},
   components: {
-    FormattedAmount: defineComponent({ name: 'FormattedAmountStub', template: '<span><slot /></span>' }),
-    InfoLine: defineComponent({
-      name: 'InfoLineStub',
-      props: {
-        label: { type: String, default: '' },
-        labelTooltip: { type: String, default: '' },
-      },
-      template: '<div class="info-line-stub" :data-label="label" :data-label-tooltip="labelTooltip"><slot /></div>',
-    }),
+    FormattedAmount: FormattedAmountStub,
+    InfoLine: InfoLineStub,
   },
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () =>
-    defineComponent({
-      name: 'LazyStub',
-      setup(_, { slots }) {
-        return () => h('div', [slots.reference?.(), slots.default?.()]);
-      },
-    }),
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', () => ({
+  __esModule: true,
+  default: FormattedAmountStub,
 }));
 
-vi.mock('@/composables/useSwapAmounts', () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  __esModule: true,
+  default: InfoLineStub,
+}));
+
+vi.mock('@/features/swap/composables/useSwapAmounts', () => ({
   useSwapAmounts: () => ({
     tokenFrom: tokenFromRef,
     tokenTo: tokenToRef,
@@ -152,7 +167,7 @@ vi.mock('@/composables/useSwapAmounts', () => ({
   }),
 }));
 
-vi.mock('@/stores/swap', () => ({
+vi.mock('@/features/swap/stores/useSwapStore', () => ({
   useSwapStore: () => swapStoreMock,
 }));
 
@@ -255,10 +270,20 @@ vi.mock('@/utils/swap', () => ({
 }));
 
 const mountWidget = async () => {
-  const module = await import('@/components/pages/Swap/Widget/Form.vue');
+  const module = await import('@/features/swap/components/widgets/Form.vue');
   return mount(module.default, {
     global: {
       stubs: {
+        BaseWidget: createPassthroughStub('BaseWidgetStub'),
+        SwapSettings: createPassthroughStub('SwapSettingsStub'),
+        SwapConfirm: createPassthroughStub('SwapConfirmStub'),
+        SwapStatusActionBadge: createPassthroughStub('SwapStatusActionBadgeStub'),
+        SwapTransactionDetails: createPassthroughStub('SwapTransactionDetailsStub'),
+        SwapLossWarningDialog: createPassthroughStub('SwapLossWarningDialogStub'),
+        SlippageTolerance: createPassthroughStub('SlippageToleranceStub'),
+        SelectToken: createPassthroughStub('SelectTokenStub'),
+        TokenInput: createPassthroughStub('TokenInputStub'),
+        ValueStatusWrapper: createPassthroughStub('ValueStatusWrapperStub'),
         's-button': { template: '<button v-bind="$attrs"><slot /></button>' },
         's-icon': { template: '<i></i>' },
       },

@@ -2,7 +2,7 @@ import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLockedPool } from '@sora-substrate/sdk/build/ceresLiquidityLocker/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { PoolApyObject } from '@/shims/wallet-indexer-types';
+import type { PoolApyObject } from '@/lib/soraneo-wallet/src/services/indexer/types';
 import type { Subscription } from 'rxjs';
 
 export type PoolState = {

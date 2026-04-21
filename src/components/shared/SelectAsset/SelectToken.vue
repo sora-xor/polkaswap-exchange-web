@@ -64,17 +64,16 @@
 
 <script setup lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, nextTick, ref, watch } from 'vue';
 
+import SelectAssetList from '@/components/shared/SelectAsset/List.vue';
 import { useTranslation } from '@/composables/useTranslation';
 import { useLoading } from '@/composables/useLoading';
-import { Components, ObjectInit } from '@/consts';
-import { getAssetsSubset } from '@/shims/wallet-util';
-import { FilterOptions } from '@/shims/wallet-common-types';
+import { ObjectInit } from '@/consts';
+import { getAssetsSubset } from '@/lib/soraneo-wallet/src/util';
+import { FilterOptions } from '@/lib/soraneo-wallet/src/types/common';
 import { Theme } from '@/consts/theme';
-import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
@@ -83,6 +82,10 @@ import { sortAssets } from '@/utils';
 
 import type { Nullable } from '@/types/common';
 import type { Asset, AccountAsset, RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import WalletAddAssetDetailsCard from '@/lib/soraneo-wallet/src/components/AddAsset/AddAssetDetailsCard.vue';
+import WalletAssetsFilter from '@/lib/soraneo-wallet/src/components/shared/AssetsFilter.vue';
+import WalletDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 enum Tabs {
   Assets = 'assets',
@@ -94,12 +97,10 @@ type SelectTokenEvents = {
   (event: 'close'): void;
 };
 
-const DialogBase = components.DialogBase;
-const SelectAssetList = lazyComponent(Components.SelectAssetList);
-const TokenAddress = components.TokenAddress;
-const SearchInput = components.SearchInput;
-const AssetsFilter = components.AssetsFilter;
-const AddAssetDetailsCard = components.AddAssetDetailsCard;
+const DialogBase = WalletDialogBase;
+const SearchInput = WalletSearchInput;
+const AssetsFilter = WalletAssetsFilter;
+const AddAssetDetailsCard = WalletAddAssetDetailsCard;
 
 const isNonEmptyBalance = (asset: AccountAsset | RegisteredAccountAsset): boolean =>
   Boolean(asset.balance) && Boolean(+asset.balance.transferable);

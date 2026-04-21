@@ -1,5 +1,5 @@
 <template>
-  <swap-status-action-badge>
+  <status-action-badge>
     <template #value>
       {{ selectedNetworkShortName }}
     </template>
@@ -13,21 +13,17 @@
         @click="handleChangeNetwork"
       ></s-button>
     </template>
-  </swap-status-action-badge>
+  </status-action-badge>
 </template>
 
 <script lang="ts" setup>
 import { useTranslation } from '@/composables/useTranslation';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
+import StatusActionBadge from '@/shared/ui/StatusActionBadge.vue';
 import { useWeb3Store } from '@/stores/web3';
 
 defineOptions({
   name: 'BridgeNetworkSelector',
-  components: {
-    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
-  },
 });
 
 const { t } = useTranslation();

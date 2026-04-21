@@ -1,2 +1,2 @@
-export * from './@wallet/index';
-export { default } from './@wallet/index';
+export * from './walletRuntime/index';
+export { default } from './walletRuntime/index';

@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 const resetTxDetailsId = vi.hoisted(() => vi.fn());
 const handleAccountAction = vi.hoisted(() => vi.fn());
+const navigate = vi.hoisted(() => vi.fn());
 const walletStore = vi.hoisted(() => ({
   permissions: {},
   isMSTAvailable: false,
@@ -11,6 +12,7 @@ const walletStore = vi.hoisted(() => ({
   isMstAddressExist: false,
   selectedTransaction: null as null | { id: string },
   account: { address: 'sender' },
+  navigate,
   resetTxDetailsId,
 }));
 
@@ -18,11 +20,8 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStore,
 }));
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    currentParams: {},
-    navigate: vi.fn(),
-  }),
+vi.mock('@/platform/wallet/navigation', () => ({
+  getWalletCurrentParams: () => ({}),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useAccountActions', () => ({
@@ -95,6 +94,16 @@ describe('Wallet Wallet', () => {
     state.handleBack();
 
     expect(resetTxDetailsId).toHaveBeenCalledTimes(1);
+  });
+
+  it('routes account switching through the wallet store navigation boundary', () => {
+    navigate.mockClear();
+    walletStore.selectedTransaction = null;
+    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    state.handleSwitchAccount();
+
+    expect(navigate).toHaveBeenCalledWith({ name: 'WalletConnection' });
   });
 
   it('routes wallet account actions through the connected wallet account', () => {

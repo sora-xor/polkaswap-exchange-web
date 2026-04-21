@@ -15,7 +15,7 @@ const subscribeOnBorrowTaxesMock = vi.fn().mockResolvedValue(undefined);
 const subscribeOnDebtCalculationMock = vi.fn().mockResolvedValue(undefined);
 const resetMock = vi.fn().mockResolvedValue(undefined);
 
-const goToMock = vi.fn();
+const pushMock = vi.fn();
 
 const appStoreStub = {
   dispatch: {
@@ -71,11 +71,15 @@ vi.mock('@/composables/useSubscriptions', () => ({
   },
 }));
 
-vi.mock('@/router', () => ({
-  __esModule: true,
-  goTo: goToMock,
-  lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
-}));
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual<typeof import('vue-router')>('vue-router');
+  return {
+    ...actual,
+    useRouter: () => ({
+      push: (...args: unknown[]) => pushMock(...args),
+    }),
+  };
+});
 
 vi.mock('@/stores/settings', () => ({
   __esModule: true,
@@ -99,7 +103,7 @@ vi.mock('@/stores/vault', () => ({
   }),
 }));
 
-const VaultsContainer = (await import('@/modules/vault/views/VaultsContainer.vue')).default;
+const VaultsContainer = (await import('@/features/vault/pages/VaultsContainerPage.vue')).default;
 
 const mountContainer = () =>
   mount(VaultsContainer, {
@@ -137,7 +141,7 @@ describe('VaultsContainer.vue', () => {
     expect(getLiquidationPenaltyMock).toHaveBeenCalledTimes(1);
     expect(subscribeOnBorrowTaxesMock).toHaveBeenCalledTimes(1);
     expect(subscribeOnDebtCalculationMock).toHaveBeenCalledTimes(1);
-    expect(goToMock).not.toHaveBeenCalled();
+    expect(pushMock).not.toHaveBeenCalled();
 
     wrapper.unmount();
   });
@@ -148,7 +152,7 @@ describe('VaultsContainer.vue', () => {
     const wrapper = mountContainer();
     await flushPromises();
 
-    expect(goToMock).toHaveBeenCalledWith(PageNames.Swap);
+    expect(pushMock).toHaveBeenCalledWith({ name: PageNames.Swap });
 
     wrapper.unmount();
   });

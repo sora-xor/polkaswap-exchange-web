@@ -150,7 +150,7 @@ import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { File as ImageNFT } from 'nft.storage';
 import { computed, ref, type PropType } from 'vue';
 
-import { useRouterStore } from '@/stores/router';
+import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
 import { useWalletStore } from '@/stores/wallet';
 
 import { useNetworkFeeWarning } from '../composables/useNetworkFeeWarning';
@@ -168,7 +168,6 @@ import NetworkFeeWarningDialog from './NetworkFeeWarning.vue';
 import NftDetails from './NftDetails.vue';
 import WalletFee from './WalletFee.vue';
 
-import type { Route } from '@/stores/router/types';
 import type { NFTStorage } from 'nft.storage';
 
 export default {
@@ -188,7 +187,6 @@ export default {
   },
   emits: ['showTabs', 'showHeader', 'stepChange'],
   setup(props, { emit }) {
-    const routerStore = useRouterStore();
     const walletStore = useWalletStore();
     const { t, withNotifications, loading } = useTransaction();
     const { getCorrectSupply, getFPNumberFromCodec } = useNumberFormatter();
@@ -236,8 +234,8 @@ export default {
 
     const createNftStorageInstance = () => walletStore.createNftStorageInstance();
 
-    const navigate = (options: Route): void => {
-      routerStore.navigate(options);
+    const navigate = (options: WalletNavigationTarget): void => {
+      walletStore.navigate(options);
     };
 
     function calcDecimals(isDivisible: boolean): number {

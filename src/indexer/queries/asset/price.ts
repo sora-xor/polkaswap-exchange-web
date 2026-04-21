@@ -1,4 +1,4 @@
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { gql } from '@urql/core';
@@ -10,7 +10,7 @@ import type {
   ConnectionQueryResponse,
   ConnectionQueryResponseData,
   SnapshotTypes,
-} from '@/shims/wallet-indexer-types';
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
   const { open, close, low, high } = item.priceUSD;

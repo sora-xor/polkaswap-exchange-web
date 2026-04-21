@@ -71,7 +71,7 @@ vi.mock('@/utils', async () => {
   };
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -95,19 +95,33 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/modules/staking/router', () => ({
+vi.mock('@/modules/staking/sora/components/StakingHeader.vue', () => ({
   __esModule: true,
-  soraStakingLazyComponent: (name: string) =>
-    defineComponent({
-      name: `${name}Stub`,
-      props: {
-        mode: { type: String, default: '' },
-      },
-      emits: ['back', 'update:selected', 'recommended', 'selected'],
-      setup(props, { slots }) {
-        return () => h('div', { class: `${name.toLowerCase()}-stub`, 'data-mode': props.mode }, slots.default?.());
-      },
-    }),
+  default: {
+    name: 'StakingHeaderStub',
+    props: ['mode'],
+    emits: ['back'],
+    template: '<div class="stakingheader-stub" :data-mode="mode"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/ValidatorsList.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'ValidatorsListStub',
+    props: ['mode'],
+    emits: ['update:selected'],
+    template: '<div class="validatorslist-stub" :data-mode="mode"><slot /></div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/SelectValidatorsMode.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'SelectValidatorsModeStub',
+    emits: ['recommended', 'selected'],
+    template: '<div class="selectvalidatorsmode-stub"><slot /></div>',
+  },
 }));
 
 const mountComponent = () =>

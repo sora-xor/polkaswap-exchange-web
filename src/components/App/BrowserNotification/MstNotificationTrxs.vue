@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

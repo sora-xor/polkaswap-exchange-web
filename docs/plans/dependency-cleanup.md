@@ -55,7 +55,7 @@ This document flags the remaining Vue 2 era dependencies that must be removed be
 **Actions**
 
 1. For each shim file under `src/compat`, open a tracking issue noting the remaining import sites (`rg -n "compat/..."`).
-2. As part of each component conversion, replace shim imports with native equivalents (`mitt`, `@wallet`, Pinia stores, etc.).
+2. As part of each component conversion, replace shim imports with native equivalents (`mitt`, direct vendored wallet sources, Pinia stores, etc.).
 3. Once the shim has zero imports, delete the file and remove any related alias from Vite/TS configs to ensure future imports fail loudly.
 
 ---

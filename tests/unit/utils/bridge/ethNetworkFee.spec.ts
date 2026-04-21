@@ -84,7 +84,7 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({
   EthAssetKind: { SidechainOwned: 'SidechainOwned', Thischain: 'Thischain', Sidechain: 'Sidechain' },
 }));
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/evm/consts', () => ({ EvmNetworkId: { EthereumMainnet: 1 } }));
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const wallet = createWalletMock();
 

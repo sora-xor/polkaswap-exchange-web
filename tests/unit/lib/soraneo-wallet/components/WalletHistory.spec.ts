@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 const currentPage = ref(1);
 const isLtrDirection = ref(true);
+const navigate = vi.hoisted(() => vi.fn());
 const getExternalHistory = vi.hoisted(() => vi.fn(async () => undefined));
 const getHistory = vi.hoisted(() => vi.fn());
 
@@ -39,12 +40,6 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useEthBridgeTransaction', () => ({
   }),
 }));
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    navigate: vi.fn(),
-  }),
-}));
-
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     assets: [],
@@ -58,6 +53,7 @@ vi.mock('@/stores/wallet', () => ({
     getHistory,
     setTxDetailsId: vi.fn(),
     getExternalHistory,
+    navigate,
   }),
 }));
 
@@ -85,5 +81,13 @@ describe('Wallet WalletHistory', () => {
     expect(getExternalHistory).toHaveBeenCalledWith(expect.objectContaining({ page: 4 }));
     expect(currentPage.value).toBe(4);
     expect(isLtrDirection.value).toBe(false);
+  });
+
+  it('routes empty transaction detail requests back through the wallet store boundary', () => {
+    const state = (WalletHistory as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    state.handleOpenTransactionDetails();
+
+    expect(navigate).toHaveBeenCalledWith({ name: 'Wallet' });
   });
 });

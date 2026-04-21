@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const loginState = ref(false);
 const connectSpy = vi.fn();
-const goToMock = vi.fn();
+const pushMock = vi.fn(async () => undefined);
 
 vi.mock('@/composables/useTranslation', () => ({
   __esModule: true,
@@ -31,21 +31,31 @@ vi.mock('@/composables/useInternalConnect', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('vue-router', () => ({
   __esModule: true,
-  goTo: goToMock,
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
-    template: '<div class="lazy-component-stub" />',
+  useRouter: () => ({
+    push: pushMock,
   }),
 }));
 
-const DepositTxHistory = (await import('@/views/DepositTxHistory.vue')).default;
+vi.mock('@/shared/ui/async', () => ({
+  __esModule: true,
+  createAsyncComponent: () => ({
+    name: 'AsyncComponentStub',
+    template: '<div class="async-component-stub"><slot /><slot name="title" /></div>',
+  }),
+}));
+
+const DepositTxHistoryPage = (await import('@/features/deposit/pages/DepositTxHistoryPage.vue')).default;
 
 const buildWrapper = () =>
-  mount(DepositTxHistory, {
+  mount(DepositTxHistoryPage, {
     global: {
       stubs: {
+        MoonpayHistory: {
+          name: 'MoonpayHistoryStub',
+          template: '<div class="moonpay-history-stub" />',
+        },
         's-button': {
           name: 'SButtonStub',
           template: '<button class="s-button" @click="$emit(\'click\')"><slot /></button>',
@@ -75,7 +85,7 @@ describe('DepositTxHistory.vue', () => {
   beforeEach(() => {
     loginState.value = false;
     connectSpy.mockClear();
-    goToMock.mockClear();
+    pushMock.mockClear();
   });
 
   it('offers wallet connection when the user is logged out', async () => {
@@ -96,7 +106,7 @@ describe('DepositTxHistory.vue', () => {
     await flushPromises();
 
     await (wrapper.vm as any).navigateToDepositOptions();
-    expect(goToMock).toHaveBeenCalledWith('DepositOptions');
+    expect(pushMock).toHaveBeenCalledWith({ name: 'DepositOptions' });
   });
 
   it('renders the moonpay history tab by default', () => {

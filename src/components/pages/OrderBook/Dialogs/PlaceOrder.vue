@@ -27,21 +27,21 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
+import PlaceTransactionDetails from '@/components/pages/OrderBook/TransactionDetails.vue';
 import { computed } from 'vue';
 
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
 import { useOrderBook } from '@/composables/useOrderBook';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentAccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
 
-const DialogBase = components.DialogBase;
-const TokenLogo = components.TokenLogo;
-const AccountConfirmationOption = components.AccountConfirmationOption;
-const PlaceTransactionDetails = lazyComponent(Components.PlaceTransactionDetails);
+const DialogBase = WalletComponentDialogBase;
+const TokenLogo = WalletComponentTokenLogo;
+const AccountConfirmationOption = WalletComponentAccountConfirmationOption;
 
 const props = withDefaults(
   defineProps<{

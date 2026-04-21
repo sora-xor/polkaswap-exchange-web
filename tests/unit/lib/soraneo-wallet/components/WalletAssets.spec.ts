@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { api } from '@sora-substrate/sdk';
 import { ref } from 'vue';
 
+const navigate = vi.hoisted(() => vi.fn());
 const setMultiplePinnedAssets = vi.hoisted(() => vi.fn());
 const setAccountAssets = vi.hoisted(() => vi.fn());
 
@@ -31,12 +32,6 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
   }),
 }));
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    navigate: vi.fn(),
-  }),
-}));
-
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     accountAssets: [],
@@ -49,6 +44,7 @@ vi.mock('@/stores/wallet', () => ({
     removePinnedAsset: vi.fn(),
     setMultiplePinnedAssets,
     setAccountAssets,
+    navigate,
   }),
 }));
 
@@ -89,5 +85,13 @@ describe('Wallet WalletAssets', () => {
     expect(fakeAssets.updateAccountAssets).toHaveBeenCalledTimes(1);
 
     (api as any).assets = originalAssets;
+  });
+
+  it('routes add-asset navigation through the wallet store boundary', () => {
+    const state = (WalletAssets as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    state.handleOpenAddAsset();
+
+    expect(navigate).toHaveBeenCalledWith({ name: 'AddAsset' });
   });
 });
