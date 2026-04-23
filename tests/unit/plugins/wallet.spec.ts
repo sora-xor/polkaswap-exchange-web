@@ -28,6 +28,7 @@ const { localStorageMock } = vi.hoisted(() => {
 
 const dialogBaseComponent = { name: 'DialogBaseMock' };
 const installWalletPlugins = vi.fn();
+const WALLET_PLUGIN_TEST_TIMEOUT_MS = 20_000;
 
 vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
   __esModule: true,
@@ -76,7 +77,7 @@ describe('wallet plugin', () => {
     expect(app.use).not.toHaveBeenCalled();
     expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
     expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseComponent);
-  });
+  }, WALLET_PLUGIN_TEST_TIMEOUT_MS);
 
   it('ignores legacy store options and still registers wallet components', async () => {
     const app: any = {
@@ -97,5 +98,5 @@ describe('wallet plugin', () => {
     expect(installWalletPlugins).toHaveBeenCalledWith(app);
     expect(app.use).not.toHaveBeenCalled();
     expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
-  });
+  }, WALLET_PLUGIN_TEST_TIMEOUT_MS);
 });

@@ -132,6 +132,23 @@ describe('storage utilities', () => {
     expect(calculateStorageUsagePercentage()).toBeCloseTo(expectedPercentage, 10);
   });
 
+  it('calculateStorageUsagePercentage ignores enumerable inherited storage-like values', () => {
+    const prototype = Object.create(Object.getPrototypeOf(localStorage));
+    Object.defineProperty(prototype, 'wallet.history.inherited', {
+      value: 'ignored',
+      enumerable: true,
+      configurable: true,
+    });
+    Object.setPrototypeOf(localStorage, prototype);
+
+    localStorage.setItem('wallet.history', 'own');
+
+    const expectedBytes = ('wallet.history'.length + 'own'.length) * 2;
+    const expectedPercentage = (expectedBytes / LOCAL_STORAGE_MAX_SIZE) * 100;
+
+    expect(calculateStorageUsagePercentage()).toBeCloseTo(expectedPercentage, 10);
+  });
+
   it('clearLocalStorage removes only matching keys', () => {
     const removableKey = `state${listOfRemoveForLocalStorage[0]}`;
     const preservedKey = 'ui.theme';

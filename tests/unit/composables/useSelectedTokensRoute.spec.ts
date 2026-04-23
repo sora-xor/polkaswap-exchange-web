@@ -66,6 +66,17 @@ describe('resolveRouteAddress', () => {
 
     expect(resolveRouteAddress('PSWAP', assetsTable, whitelistBySymbol)).toBe(pswapAddress);
   });
+
+  it('does not guess when multiple assets share the same route symbol', () => {
+    const firstAddress = '0x0200110000000000000000000000000000000000000000000000000000000000';
+    const secondAddress = '0x0200120000000000000000000000000000000000000000000000000000000000';
+    const assetsTable = {
+      [firstAddress]: { address: firstAddress, symbol: 'GOLD' },
+      [secondAddress]: { address: secondAddress, symbol: 'gold' },
+    } as unknown as Parameters<typeof resolveRouteAddress>[1];
+
+    expect(resolveRouteAddress('GOLD', assetsTable, {})).toBe('');
+  });
 });
 
 describe('routeIsValid', () => {
@@ -73,10 +84,31 @@ describe('routeIsValid', () => {
     const isValid = routeIsValid({ first: 'DAI', second: 'KUSD' }, PageNames.OrderBook, '0x01', '0x02');
     expect(isValid).toBe(true);
   });
+
+  it('rejects order-book routes when either side cannot be resolved', () => {
+    expect(routeIsValid({ first: 'DAI', second: 'KUSD' }, PageNames.OrderBook, DAI.address, '')).toBe(false);
+  });
+
+  it('rejects add-liquidity routes when the first token is not a configured base asset', () => {
+    expect(routeIsValid({ first: 'DAI', second: 'XOR' }, PageNames.AddLiquidity, DAI.address, XOR.address)).toBe(false);
+    expect(routeIsValid({ first: 'XSTUSD', second: 'XOR' }, PageNames.AddLiquidity, XSTUSD.address, XOR.address)).toBe(
+      false
+    );
+  });
+
+  it('accepts an empty token route and rejects duplicate symbols or addresses', () => {
+    expect(routeIsValid({}, PageNames.Swap, '', '')).toBe(true);
+    expect(routeIsValid({ first: 'XOR', second: 'XOR' }, PageNames.Swap, XOR.address, XOR.address)).toBe(false);
+    expect(routeIsValid({ first: 'XOR', second: 'XSTUSD' }, PageNames.Swap, XOR.address, XOR.address)).toBe(false);
+  });
 });
 
 describe('buildRouteTokens', () => {
   const token = { symbol: 'DAI', address: '0xdai' } as const;
+
+  it('returns empty route token for missing selected assets', () => {
+    expect(buildRouteTokens(null, {} as any)).toBe('');
+  });
 
   it('falls back to address when symbol mapping is unavailable', () => {
     expect(buildRouteTokens(token as any, {} as any)).toBe('0xdai');
@@ -84,6 +116,10 @@ describe('buildRouteTokens', () => {
 
   it('uses symbol when symbol lookup resolves to the token address', () => {
     expect(buildRouteTokens(token as any, { DAI: '0xdai' } as any)).toBe('DAI');
+  });
+
+  it('trims symbols before building compact route params', () => {
+    expect(buildRouteTokens({ address: '0xgold', symbol: ' gold ' } as any, { GOLD: '0xgold' } as any)).toBe('gold');
   });
 
   it('falls back to address when token symbol cannot be safely resolved', () => {

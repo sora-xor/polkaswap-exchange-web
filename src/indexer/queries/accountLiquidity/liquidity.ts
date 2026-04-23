@@ -32,7 +32,7 @@ const subqueryAccountLiquiditySnapshotFilter = (accountLiquidityId: string) => {
 };
 
 const SubqueryAccountLiquiditySnapshotsQuery = gql<ConnectionQueryResponse<AccountLiquiditySnapshotEntity>>`
-  query SubqueryAccountLiquiditySnapshotsQuery($after: Cursor = "", $first: Int = null, filter: AccountLiquiditySnapshotFilter) {
+  query SubqueryAccountLiquiditySnapshotsQuery($after: Cursor = "", $first: Int = null, $filter: AccountLiquiditySnapshotFilter) {
     data: accountLiquiditySnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
       pageInfo {
         hasNextPage

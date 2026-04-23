@@ -4,6 +4,10 @@ import { isInternalHashHref, normalizeHashHref } from '@/utils/hashHref';
 
 describe('utils/hashHref', () => {
   describe('normalizeHashHref', () => {
+    it('keeps empty href values unchanged', () => {
+      expect(normalizeHashHref('')).toBe('');
+    });
+
     it('strips leading slashes from origin-root hash links', () => {
       expect(normalizeHashHref('/#/swap')).toBe('#/swap');
       expect(normalizeHashHref('/#/' as string)).toBe('#/');
@@ -34,6 +38,10 @@ describe('utils/hashHref', () => {
   });
 
   describe('isInternalHashHref', () => {
+    it('returns false for empty href values', () => {
+      expect(isInternalHashHref('')).toBe(false);
+    });
+
     it('returns true for relative hash-router links', () => {
       expect(isInternalHashHref('#/swap')).toBe(true);
     });

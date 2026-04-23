@@ -1,4 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { mount } from '@vue/test-utils';
+import { defineComponent } from 'vue';
 
 const translationMocks = vi.hoisted(() => ({
   t: vi.fn((key: string, params?: { value?: string }) => (params?.value ? `${key}:${params.value}` : key)),
@@ -25,6 +27,7 @@ import { useCopyAddress } from '@/lib/soraneo-wallet/src/composables/useCopyAddr
 describe('wallet useCopyAddress', () => {
   afterEach(() => {
     vi.clearAllMocks();
+    document.body.innerHTML = '';
   });
 
   it('returns translated tooltip text before and after a successful copy interaction', async () => {
@@ -78,4 +81,53 @@ describe('wallet useCopyAddress', () => {
     expect(utilsMocks.copyToClipboard).toHaveBeenCalledWith('val-address');
     expect(copyTooltip('VAL')).toBe('copiedWithValue:VAL');
   });
+
+  it('copies without an event object', async () => {
+    const { copyTooltip, handleCopyAddress } = useCopyAddress();
+
+    await handleCopyAddress('no-event-address');
+
+    expect(utilsMocks.copyToClipboard).toHaveBeenCalledWith('no-event-address');
+    expect(copyTooltip()).toBe('assets.copied');
+  });
+
+  it('removes the tracked mouseleave listener when the host component unmounts', async () => {
+    const wrapper = mountCopyAddressHarness();
+    const target = wrapper.element as HTMLButtonElement;
+    const addEventListenerSpy = vi.spyOn(target, 'addEventListener');
+    const removeEventListenerSpy = vi.spyOn(target, 'removeEventListener');
+    const event = {
+      stopImmediatePropagation: vi.fn(),
+      target,
+    } as unknown as PointerEvent;
+
+    await (wrapper.vm as CopyAddressHarness).handleCopyAddress('component-address', event);
+
+    const mouseleaveListener = addEventListenerSpy.mock.calls.find(([type]) => type === 'mouseleave')?.[1];
+
+    expect(mouseleaveListener).toEqual(expect.any(Function));
+
+    wrapper.unmount();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('mouseleave', mouseleaveListener);
+  });
+
+  it('unmounts cleanly when no mouseleave target was registered', () => {
+    const wrapper = mountCopyAddressHarness();
+
+    expect(() => wrapper.unmount()).not.toThrow();
+  });
 });
+
+const mountCopyAddressHarness = () =>
+  mount(
+    defineComponent({
+      setup: () => useCopyAddress(),
+      template: '<button type="button">Copy</button>',
+    }),
+    { attachTo: document.body }
+  );
+
+interface CopyAddressHarness {
+  handleCopyAddress: (address: string, event?: MouseEvent | PointerEvent) => Promise<void>;
+}
