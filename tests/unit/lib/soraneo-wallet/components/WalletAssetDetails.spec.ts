@@ -1,5 +1,6 @@
-import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
+
+import { mountSetup } from '@stubs/mountSetup';
 
 const navigate = vi.hoisted(() => vi.fn());
 
@@ -64,7 +65,7 @@ import { Operations } from '@/lib/soraneo-wallet/src/types/common';
 describe('Wallet WalletAssetDetails', () => {
   it('navigates to send for the send action and emits the rest', () => {
     const emit = vi.fn();
-    const state = (WalletAssetDetails as any).setup({}, { attrs: {}, emit, expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletAssetDetails as any, {}, { emit });
 
     state.handleOperation(Operations.Send);
     state.handleOperation(Operations.Swap);

@@ -1,6 +1,8 @@
 import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const currentPage = ref(1);
 const isLtrDirection = ref(true);
 const navigate = vi.hoisted(() => vi.fn());
@@ -74,7 +76,7 @@ describe('Wallet WalletHistory', () => {
   it('switches to reverse pagination when jumping to the last page', async () => {
     currentPage.value = 1;
     isLtrDirection.value = true;
-    const state = (WalletHistory as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletHistory as any, {}, { emit: vi.fn() });
 
     await state.handlePaginationClick(PaginationButton.Last);
 
@@ -84,7 +86,7 @@ describe('Wallet WalletHistory', () => {
   });
 
   it('routes empty transaction detail requests back through the wallet store boundary', () => {
-    const state = (WalletHistory as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletHistory as any, {}, { emit: vi.fn() });
 
     state.handleOpenTransactionDetails();
 

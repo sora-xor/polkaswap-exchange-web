@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const writeMock = vi.hoisted(() =>
   vi.fn((value: string) => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -20,17 +22,13 @@ describe('Wallet QrCode', () => {
   it('renders a fresh svg element into the container', () => {
     const container = document.createElement('div');
     container.appendChild(document.createElement('span'));
-    const state = (QrCode as any).setup(
+    const { state } = mountSetup(
+      QrCode as any,
       {
         value: 'payload',
         size: 128,
       },
-      {
-        attrs: {},
-        emit: vi.fn(),
-        expose: vi.fn(),
-        slots: {},
-      }
+      { emit: vi.fn() }
     );
 
     state.container.value = container;

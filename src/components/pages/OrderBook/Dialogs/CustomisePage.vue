@@ -1,4 +1,3 @@
-import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 <template>
   <dialog-base v-model:visible="visible">
     <slot></slot>
@@ -6,6 +5,7 @@ import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/Dialo
 </template>
 
 <script setup lang="ts">
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 const visible = defineModel<boolean>('visible', { default: false });
 

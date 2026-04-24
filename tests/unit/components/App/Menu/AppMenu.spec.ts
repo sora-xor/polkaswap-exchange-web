@@ -170,7 +170,6 @@ describe('AppMenu', () => {
       { href: '#/pool', icon: 'basic-drop-24' },
       { href: '#/staking', icon: 'basic-layers-24' },
       { href: '#/bridge', icon: 'grid-block-distribute-vertically-24' },
-      { href: '#/burn', icon: 'basic-flame-24' },
       { href: '#/wallet', icon: 'finance-wallet-24' },
       { href: '#/kensetsu', icon: 'call-phone-16' },
       { href: '#/explore', icon: 'various-items-24' },
@@ -179,6 +178,21 @@ describe('AppMenu', () => {
     ];
 
     expect(renderedRouteItems).toEqual(expectedRouteItems);
+  });
+
+  it('shows the local-only Burn item only while the Burn route is active', () => {
+    routeMock.name = PageNames.Burn;
+    const wrapper = mountComponent();
+
+    const renderedRouteItems = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .map((item) => ({
+        href: item.attributes('data-href'),
+        icon: item.attributes('data-icon'),
+      }))
+      .filter((item) => item.href?.startsWith('#/'));
+
+    expect(renderedRouteItems).toContainEqual({ href: '#/burn', icon: 'basic-flame-24' });
   });
 
   it('keeps SCCP hidden from the sidebar even when debug flag is enabled', () => {

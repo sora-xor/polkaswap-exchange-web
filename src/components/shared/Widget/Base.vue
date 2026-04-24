@@ -328,6 +328,7 @@ defineExpose({
 .base-widget {
   &.s-card.neumorphic.s-size-big {
     padding: 0;
+    transition: all 0.3s ease;
 
     &.delimeter .el-card__header {
       border-bottom-color: var(--s-color-base-border-secondary);

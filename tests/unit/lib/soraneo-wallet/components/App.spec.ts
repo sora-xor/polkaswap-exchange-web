@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const selectIndexer = vi.hoisted(() => vi.fn());
 const setFiatCurrency = vi.hoisted(() => vi.fn());
 
@@ -49,13 +51,16 @@ vi.mock('@/lib/soraneo-wallet/src/components/ConfirmDialog.vue', () => ({
 vi.mock('@/lib/soraneo-wallet/src/components/WalletProviders.vue', () => ({
   default: { name: 'WalletProvidersStub' },
 }));
+vi.mock('@/lib/soraneo-wallet/src/bootstrap', () => ({
+  initWallet: vi.fn(async () => undefined),
+}));
 
 import App from '@/lib/soraneo-wallet/src/App.vue';
 import { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet App', () => {
   it('toggles the selected indexer between subsquid and subquery', () => {
-    const state = (App as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(App as any, {}, { emit: vi.fn() });
 
     state.changeIndexer();
 
@@ -63,7 +68,7 @@ describe('Wallet App', () => {
   });
 
   it('delegates fiat currency changes through the computed setter', () => {
-    const state = (App as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(App as any, {}, { emit: vi.fn() });
 
     state.appCurrency.value = 'USD';
 

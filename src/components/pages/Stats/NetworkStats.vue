@@ -15,8 +15,8 @@
         :key="title"
         class="stats-column app-loading-overlay__host"
       >
-        <div v-if="loadingState" class="app-loading-overlay">
-          <div class="app-loading-overlay__spinner"></div>
+        <div v-if="loadingState" class="app-loading-overlay el-loading-mask">
+          <div class="app-loading-overlay__spinner el-loading-spinner"></div>
         </div>
         <s-card size="small" border-radius="mini">
           <div slot="header" class="stats-card-title">

@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
   useWalletTranslation: () => ({
     t: (key: string) => key,
@@ -11,7 +13,7 @@ import NftDetails from '@/lib/soraneo-wallet/src/components/NftDetails.vue';
 describe('Wallet NftDetails', () => {
   it('toggles the expandable header state and re-emits the click event', () => {
     const emit = vi.fn();
-    const state = (NftDetails as any).setup({ isAssetDetails: true }, { attrs: {}, emit, expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(NftDetails as any, { isAssetDetails: true }, { emit });
 
     state.handleDetailsClick();
 
@@ -20,9 +22,10 @@ describe('Wallet NftDetails', () => {
   });
 
   it('resets the preview state before retrying the image fetch', () => {
-    const state = (NftDetails as any).setup(
+    const { state } = mountSetup(
+      NftDetails as any,
       { isAssetDetails: true, contentLink: '' },
-      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+      { emit: vi.fn() }
     );
 
     state.badLink.value = true;

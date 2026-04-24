@@ -339,17 +339,71 @@ config.global.directives = {
 };
 
 const originalConsoleWarn = console.warn;
-vi.spyOn(console, 'warn').mockImplementation((...args: unknown[]) => {
+console.warn = (...args: unknown[]) => {
   const message = args[0];
   if (
     typeof message === 'string' &&
-    (message.includes('[@vue/compiler-sfc] `withDefaults`') || message.includes('Lit is in dev mode'))
+    (message.includes('[@vue/compiler-sfc] `withDefaults`') ||
+      message.includes('Lit is in dev mode') ||
+      message.includes('Failed to resolve component: s-modal') ||
+      message.includes('Failed to resolve component: s-form') ||
+      message.includes('Failed to resolve component: s-pagination') ||
+      message.startsWith('[Exchange rate API] Error while fetching rates') ||
+      message.startsWith('[Exchange rate API] not available. Now using default option.') ||
+      message.startsWith('[bridge] worker data-plane block subscription fallback'))
   ) {
     return;
   }
 
   originalConsoleWarn.apply(console, args as Parameters<typeof console.warn>);
-});
+};
+
+const originalConsoleError = console.error;
+console.error = (...args: unknown[]) => {
+  const message = args[0];
+  const errorMessage = message instanceof Error ? message.message : '';
+
+  if (
+    (typeof message === 'string' && message.startsWith('[Exchange rate API] Error while fetching rates.')) ||
+    errorMessage.startsWith('Unable to parse transaction data:') ||
+    errorMessage === '[Swap]: Cannot find camera device' ||
+    errorMessage === '[QRcode]: Check camera browser permissions'
+  ) {
+    return;
+  }
+
+  originalConsoleError.apply(console, args as Parameters<typeof console.error>);
+};
+
+const originalConsoleInfo = console.info;
+console.info = (...args: unknown[]) => {
+  const message = args[0];
+  if (
+    typeof message === 'string' &&
+    (message.startsWith('[TMA]: Mini app was initialized') ||
+      message.startsWith('[TMA]: Haptic listener was added') ||
+      message.startsWith('[TMA]: Referrer was set') ||
+      message.startsWith('[TMA]: Theme changed to:') ||
+      message.startsWith('Moonpay:') ||
+      message.startsWith('[Exchange rate API] Currency rates unsubscribe.') ||
+      message === 'Evm history not implemented' ||
+      /^\[[^\]]+\] (Reconnect scheduled|Connection request|Disconnected|Connected)/.test(message))
+  ) {
+    return;
+  }
+
+  originalConsoleInfo.apply(console, args as Parameters<typeof console.info>);
+};
+
+const originalConsoleDebug = console.debug;
+console.debug = (...args: unknown[]) => {
+  const message = args[0];
+  if (typeof message === 'string' && message.startsWith('[telemetry] ')) {
+    return;
+  }
+
+  originalConsoleDebug.apply(console, args as Parameters<typeof console.debug>);
+};
 
 function createStorage(): Storage {
   const store = new Map<string, string>();

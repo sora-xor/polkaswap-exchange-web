@@ -184,6 +184,9 @@ const currentPath = computed(() => {
 
 const sidebarMenuItems = computed(() => {
   let menuItems: SidebarMenuItemLink[] = SidebarMenuGroups.slice();
+  if (route.name !== PageNames.Burn) {
+    menuItems = menuItems.filter(({ title }) => title !== PageNames.Burn);
+  }
   if (!orderBookEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
   }
@@ -368,10 +371,11 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .collapse-button {
   position: absolute;
-  top: 50%;
+  top: 100%;
+  bottom: 0;
   left: calc(100% - var(--s-size-small) / 2);
-  transform: translateY(-50%);
-  transition-duration: 0.2s;
+  margin: auto;
+  transition-duration: 0.25s;
   z-index: #{$app-sidebar-layer} + 1;
   background: var(--s-color-utility-body) !important;
   border-color: transparent !important;
@@ -393,12 +397,6 @@ onBeforeUnmount(() => {
     border-color: var(--s-color-utility-surface) !important;
     box-shadow: var(--s-shadow-element-pressed) !important;
     color: var(--s-color-base-on-accent) !important;
-  }
-}
-
-@media (min-width: $breakpoint_tablet) and (max-width: #{$breakpoint_desktop - 1}) {
-  .collapse-button {
-    left: calc(100% - var(--s-size-small));
   }
 }
 

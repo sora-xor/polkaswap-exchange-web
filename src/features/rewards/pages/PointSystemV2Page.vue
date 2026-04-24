@@ -305,11 +305,11 @@ $card-height: calc($sidebar-max-width - $inner-spacing-mini);
 $scrollbar-loader-height: calc($card-height * 2.6);
 $max-asset-size: calc($select-asset-item-height * 2);
 
-.s-card {
-  box-shadow: unset !important;
+.points.s-card {
   padding: $inner-spacing-small !important;
   padding-bottom: unset !important;
 }
+
 .points {
   &.points-loading {
     background-color: unset;
@@ -317,7 +317,7 @@ $max-asset-size: calc($select-asset-item-height * 2);
   background-image: url('@/assets/img/points/header.png');
   background-repeat: no-repeat;
   background-position: top;
-  background-color: var(--s-color-base-disabled);
+  background-color: var(--s-color-base-background);
   width: 100%;
   &__cards-scrollbar {
     max-height: $scrollbar-loader-height;

@@ -4,6 +4,7 @@ import {
   Fragment,
   Text,
   cloneVNode,
+  createTextVNode,
   h,
   nextTick,
   onBeforeUnmount,
@@ -23,10 +24,10 @@ type TabItem = {
   disabled: boolean;
 };
 
-const toNodeArray = (nodes: unknown): Array<VNode | null | undefined> => {
-  if (Array.isArray(nodes)) return nodes as Array<VNode | null | undefined>;
+const toNodeArray = (nodes: unknown): Array<unknown> => {
+  if (Array.isArray(nodes)) return nodes;
   if (!nodes) return [];
-  return [nodes as VNode];
+  return [nodes];
 };
 
 const flattenVNodes = (nodes: unknown): Array<VNode> => {
@@ -34,15 +35,26 @@ const flattenVNodes = (nodes: unknown): Array<VNode> => {
 
   toNodeArray(nodes).forEach((node) => {
     if (!node) return;
-    if (node.type === Comment) return;
-    if (node.type === Text && typeof node.children === 'string' && !node.children.trim()) return;
+    if (typeof node === 'string' || typeof node === 'number') {
+      const text = String(node);
+      if (text.trim()) {
+        result.push(createTextVNode(text));
+      }
+      return;
+    }
+    if (typeof node !== 'object') return;
 
-    if (node.type === Fragment) {
-      result.push(...flattenVNodes(node.children));
+    const vnode = node as VNode;
+
+    if (vnode.type === Comment) return;
+    if (vnode.type === Text && typeof vnode.children === 'string' && !vnode.children.trim()) return;
+
+    if (vnode.type === Fragment) {
+      result.push(...flattenVNodes(vnode.children));
       return;
     }
 
-    result.push(node);
+    result.push(vnode);
   });
 
   return result;

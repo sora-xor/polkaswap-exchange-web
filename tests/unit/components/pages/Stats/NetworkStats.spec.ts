@@ -109,7 +109,9 @@ describe('NetworkStats', () => {
     expect(filter.exists()).toBe(true);
     expect(filter.attributes('data-disabled')).toBe('true');
     expect(wrapper.find('.app-loading-overlay').exists()).toBe(true);
+    expect(wrapper.find('.app-loading-overlay').classes()).toContain('el-loading-mask');
     expect(wrapper.find('.app-loading-overlay__spinner').exists()).toBe(true);
+    expect(wrapper.find('.app-loading-overlay__spinner').classes()).toContain('el-loading-spinner');
   });
 
   it('binds integer-only rendering for whole-number counters', () => {

@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
   useWalletTranslation: () => ({
     t: (key: string) => key,
@@ -16,23 +18,23 @@ vi.mock('@/stores/wallet', () => ({
   }),
 }));
 
+vi.mock('@/lib/soraneo-wallet/src/util/account', () => ({
+  subscribeToWalletAccounts: vi.fn(async () => vi.fn()),
+}));
+
 import AddressBookInput from '@/lib/soraneo-wallet/src/components/AddressBook/Input.vue';
 
 describe('Wallet AddressBookInput', () => {
   it('trims the emitted address from the computed proxy setter', () => {
     const emit = vi.fn();
-    const state = (AddressBookInput as any).setup(
+    const { state } = mountSetup(
+      AddressBookInput as any,
       {
         modelValue: '',
         value: '',
         isValid: false,
       },
-      {
-        attrs: {},
-        emit,
-        expose: vi.fn(),
-        slots: {},
-      }
+      { emit }
     );
 
     state.address.value = '  address  ';
@@ -42,18 +44,14 @@ describe('Wallet AddressBookInput', () => {
 
   it('selects a record and propagates the resolved contact name', () => {
     const emit = vi.fn();
-    const state = (AddressBookInput as any).setup(
+    const { state } = mountSetup(
+      AddressBookInput as any,
       {
         modelValue: '',
         value: '',
         isValid: true,
       },
-      {
-        attrs: {},
-        emit,
-        expose: vi.fn(),
-        slots: {},
-      }
+      { emit }
     );
 
     state.chooseRecord({

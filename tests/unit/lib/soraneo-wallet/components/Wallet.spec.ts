@@ -1,6 +1,8 @@
 import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const resetTxDetailsId = vi.hoisted(() => vi.fn());
 const handleAccountAction = vi.hoisted(() => vi.fn());
 const navigate = vi.hoisted(() => vi.fn());
@@ -65,7 +67,7 @@ import walletSource from '@/lib/soraneo-wallet/src/components/Wallet.vue?raw';
 
 describe('Wallet Wallet', () => {
   it('resolves the selected wallet tab to a Vue component instead of a raw string tag', () => {
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     expect(state.currentTabComponent.value).toMatchObject({ name: 'WalletAssetsStub' });
 
@@ -79,7 +81,7 @@ describe('Wallet Wallet', () => {
     walletStore.isMstAddressExist = false;
     walletStore.isMSTAvailable = false;
     walletStore.selectedTransaction = null;
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     state.handleMST();
 
@@ -89,7 +91,7 @@ describe('Wallet Wallet', () => {
 
   it('resets selected transaction details when navigating back from the details view', () => {
     walletStore.selectedTransaction = { id: 'tx-1' };
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     state.handleBack();
 
@@ -99,7 +101,7 @@ describe('Wallet Wallet', () => {
   it('routes account switching through the wallet store navigation boundary', () => {
     navigate.mockClear();
     walletStore.selectedTransaction = null;
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     state.handleSwitchAccount();
 
@@ -109,7 +111,7 @@ describe('Wallet Wallet', () => {
   it('routes wallet account actions through the connected wallet account', () => {
     handleAccountAction.mockClear();
     walletStore.account = { address: 'sender' };
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     state.handleAccountActionType(AccountActionTypes.Rename);
 

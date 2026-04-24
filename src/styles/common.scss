@@ -27,13 +27,11 @@ body {
 
 .el-loading-mask {
   background-color: var(--s-color-utility-body);
+  transition: opacity 0.3s;
   z-index: $app-loader-layer;
 
   .el-loading-spinner {
     background-image: url('@/assets/img/pswap-loader.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
     height: var(--s-size-medium);
     width: var(--s-size-medium);
     margin-left: calc(50% - (var(--s-size-medium) / 2));
@@ -54,6 +52,8 @@ body {
   align-items: center;
   justify-content: center;
   background-color: var(--s-color-utility-body);
+  border-radius: inherit;
+  transition: opacity 0.3s;
   z-index: $app-loader-layer;
 }
 
@@ -62,9 +62,6 @@ body {
   width: var(--s-size-medium);
   height: var(--s-size-medium);
   background-image: url('@/assets/img/pswap-loader.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
 
   > svg {
     display: none;
@@ -192,26 +189,199 @@ div.el-tabs__item {
   user-select: none;
 }
 
-.ps-skeleton {
+.ps-skeleton:not(.s-skeleton) {
   display: inline-flex;
   flex-direction: column;
   gap: $inner-spacing-mini;
 }
 
-.ps-skeleton__item {
-  border-radius: var(--s-border-radius-mini);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 37%, rgba(0, 0, 0, 0.06) 63%);
+.el-skeleton {
+  width: 100%;
+}
+
+.el-skeleton__first-line,
+.el-skeleton__paragraph {
+  background: #f2f2f2;
+  height: 16px;
+  margin-top: 16px;
+}
+
+.el-skeleton.is-animated .el-skeleton__item {
+  animation: el-skeleton-loading 1.4s ease infinite;
+  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
   background-size: 400% 100%;
+}
+
+.el-skeleton__item {
+  background: #f2f2f2;
+  border-radius: 4px;
+  display: inline-block;
+  height: 16px;
+  width: 100%;
+}
+
+.el-skeleton__circle {
+  border-radius: 50%;
+  height: 36px;
+  line-height: 36px;
+  width: 36px;
+}
+
+.el-skeleton__circle--lg {
+  height: 40px;
+  line-height: 40px;
+  width: 40px;
+}
+
+.el-skeleton__circle--md {
+  height: 28px;
+  line-height: 28px;
+  width: 28px;
+}
+
+.el-skeleton__button {
+  border-radius: 4px;
+  height: 40px;
+  width: 64px;
+}
+
+.el-skeleton__p {
+  width: 100%;
+}
+
+.el-skeleton__p.is-last {
+  width: 61%;
+}
+
+.el-skeleton__p.is-first {
+  width: 33%;
+}
+
+.el-skeleton__text {
+  height: 13px;
+  width: 100%;
+}
+
+.el-skeleton__caption {
+  height: 12px;
+}
+
+.el-skeleton__h1 {
+  height: 20px;
+}
+
+.el-skeleton__h3 {
+  height: 18px;
+}
+
+.el-skeleton__h5 {
+  height: 16px;
+}
+
+.el-skeleton__image {
+  align-items: center;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  width: unset;
+
+  svg {
+    fill: #dcdde0;
+    height: 22%;
+    width: 22%;
+  }
+}
+
+.s-skeleton {
+  height: 100%;
+
+  .el-skeleton {
+    font-size: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .el-skeleton__item {
+    background-color: var(--s-color-base-content-tertiary);
+
+    &:not(:last-child) {
+      margin-bottom: calc(var(--s-basic-spacing) / 2);
+    }
+
+    &:not(.el-skeleton__circle) {
+      border-radius: var(--s-border-radius-mini);
+    }
+  }
+
+  .el-skeleton__circle {
+    border-radius: 50%;
+    height: var(--s-size-medium);
+    line-height: var(--s-size-medium);
+    width: var(--s-size-medium);
+  }
+
+  .el-skeleton__button {
+    height: var(--s-size-medium);
+  }
+
+  .el-skeleton__image {
+    height: 100%;
+
+    svg {
+      height: var(--s-heading2-font-size);
+      fill: var(--s-color-base-on-accent);
+    }
+  }
+
+  .el-skeleton__caption,
+  .el-skeleton__rect,
+  .el-skeleton__text {
+    height: var(--s-font-size-small);
+  }
+
+  .el-skeleton__p {
+    height: var(--s-size-mini);
+  }
+
+  .el-skeleton__h1 {
+    height: var(--s-heading1-font-size);
+  }
+
+  .el-skeleton__h2 {
+    height: var(--s-heading2-font-size);
+  }
+
+  .el-skeleton__h3 {
+    height: var(--s-heading3-font-size);
+  }
+
+  .el-skeleton.is-animated .el-skeleton__item {
+    animation: el-skeleton-loading 1.4s ease infinite;
+    background: linear-gradient(
+      90deg,
+      var(--s-color-base-content-tertiary) 25%,
+      var(--s-color-base-background-hover) 37%,
+      var(--s-color-base-content-tertiary) 63%
+    );
+    background-size: 400% 100%;
+  }
+}
+
+.ps-skeleton__item {
   min-height: 12px;
-  animation: ps-skeleton-loading 1.4s ease infinite;
 }
 
 .ps-skeleton__item--circle {
   border-radius: 50%;
 }
 
-.ps-skeleton--animated .ps-skeleton__item {
-  animation-duration: 1.4s;
+@keyframes el-skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
 }
 
 @keyframes ps-skeleton-loading {
@@ -233,6 +403,11 @@ div.el-tabs__item {
 }
 
 /* Preserve legacy CTA typography/metrics used by production large action buttons. */
+button.el-button.neumorphic {
+  text-transform: uppercase;
+  transition: all 0.25s ease-in-out;
+}
+
 button.el-button.s-typography-button--large {
   height: 42px !important;
   padding: 5px 13px !important;
@@ -500,7 +675,12 @@ i.marketing-suffix.s-icon-arrows-arrow-top-right-24 {
   max-width: $inner-window-width;
 }
 
-/* Restore legacy tabs look-and-feel used by production pages. */
+/* Restore legacy card and tabs look-and-feel used by production pages. */
+.s-card,
+.el-card.s-card {
+  transition: all 0.3s ease;
+}
+
 .s-tabs.s-border-radius-big.s-accent-rounded .el-tabs__nav-wrap,
 .s-tabs.s-border-radius-big.s-accent-rounded .el-tabs__nav-wrap .el-tabs__item,
 .s-tabs.s-border-radius-big.s-rounded .el-tabs__nav-wrap,
@@ -542,6 +722,7 @@ i.marketing-suffix.s-icon-arrows-arrow-top-right-24 {
   position: relative;
   white-space: nowrap;
   text-align: center;
+  text-transform: uppercase;
   padding: 0 12px;
 }
 
@@ -643,7 +824,7 @@ i.marketing-suffix.s-icon-arrows-arrow-top-right-24 {
 .s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active,
 .s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap .el-tabs__item.is-active:focus.is-focus {
   background-color: var(--s-color-utility-surface);
-  box-shadow: var(--neu-tab-shadow);
+  box-shadow: var(--neu-tab-shadow, var(--s-shadow-element-pressed));
   color: var(--s-color-theme-accent);
 }
 

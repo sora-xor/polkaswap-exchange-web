@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { defineComponent } from 'vue';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const translationMocks = vi.hoisted(() => ({
   t: vi.fn((key: string, params?: { value?: string }) => (params?.value ? `${key}:${params.value}` : key)),
 }));
@@ -45,7 +47,7 @@ describe('wallet useCopyAddress', () => {
       target,
     } as unknown as PointerEvent;
 
-    const { copyTooltip, handleCopyAddress } = useCopyAddress();
+    const { copyTooltip, handleCopyAddress } = setupCopyAddress();
 
     expect(copyTooltip()).toBe('assets.receive');
     expect(copyTooltip('XOR')).toBe('copyWithValue:XOR');
@@ -73,7 +75,7 @@ describe('wallet useCopyAddress', () => {
       target: null,
     } as unknown as MouseEvent;
 
-    const { copyTooltip, handleCopyAddress } = useCopyAddress();
+    const { copyTooltip, handleCopyAddress } = setupCopyAddress();
 
     await handleCopyAddress('val-address', event);
 
@@ -83,7 +85,7 @@ describe('wallet useCopyAddress', () => {
   });
 
   it('copies without an event object', async () => {
-    const { copyTooltip, handleCopyAddress } = useCopyAddress();
+    const { copyTooltip, handleCopyAddress } = setupCopyAddress();
 
     await handleCopyAddress('no-event-address');
 
@@ -127,6 +129,8 @@ const mountCopyAddressHarness = () =>
     }),
     { attachTo: document.body }
   );
+
+const setupCopyAddress = () => mountSetup({ setup: () => useCopyAddress() }, {}).state;
 
 interface CopyAddressHarness {
   handleCopyAddress: (address: string, event?: MouseEvent | PointerEvent) => Promise<void>;

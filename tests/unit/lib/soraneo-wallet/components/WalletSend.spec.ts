@@ -3,6 +3,8 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
 const navigate = vi.hoisted(() => vi.fn());
 
@@ -84,7 +86,7 @@ import { RouteNames } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet WalletSend', () => {
   it('routes through the fee warning step when the next transaction would fail the XOR fee check', async () => {
-    const state = (WalletSend as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
 
     state.amount.value = '1';
     await state.handleSend();
@@ -99,7 +101,7 @@ describe('Wallet WalletSend', () => {
   });
 
   it('routes back through the wallet store navigation boundary from the first step', () => {
-    const state = (WalletSend as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
 
     state.handleBack();
 
