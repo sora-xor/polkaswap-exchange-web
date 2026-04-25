@@ -43,6 +43,14 @@ const {
 } = useAppShellContext();
 </script>
 
+<style lang="scss">
+@include large-mobile {
+  .app-logo--menu.app-logo.el-button {
+    display: none !important;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .app {
   &-main {
@@ -66,6 +74,8 @@ const {
     flex: 1;
     padding: $inner-spacing-medium;
     min-width: 0;
+    border-color: var(--s-color-base-content-primary);
+    border-style: none;
   }
 
   &-footer {

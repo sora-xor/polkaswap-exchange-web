@@ -844,6 +844,43 @@ export class AssetsModule<T> {
   }
 
   /**
+   * Burn tokens you own and atomically attach a public on-chain remark.
+   *
+   * Empty remarks are submitted as a plain burn to preserve the existing flow and fee shape.
+   *
+   * @param asset Asset object
+   * @param amount Amount value
+   * @param remark Public remark stored in the same signed transaction
+   */
+  public burnWithRemark(asset: Asset | AccountAsset, amount: NumberLike, remark?: string): Promise<T> {
+    const trimmedRemark = remark?.trim() ?? '';
+
+    if (!trimmedRemark) {
+      return this.burn(asset, amount);
+    }
+
+    assert(this.root.account, Messages.connectWallet);
+    const assetAddress = asset.address;
+    const codecAmount = new FPNumber(amount, asset.decimals).toCodecString();
+    const historyItem: History = {
+      type: Operation.Burn,
+      amount: `${amount}`,
+      assetAddress,
+      symbol: asset.symbol,
+      comment: trimmedRemark,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.utility.batchAll([
+        this.root.api.tx.assets.burn(assetAddress, codecAmount),
+        this.root.api.tx.system.remark(stringToU8a(trimmedRemark)),
+      ]),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
    * Get vesting schedule for VestedTransfer feature
    * @param asset Asset object
    * @param amount Amount value

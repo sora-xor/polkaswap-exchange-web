@@ -130,6 +130,10 @@ $skeleton-label-width: 34px;
   }
   .el-skeleton__item {
     background: var(--s-color-base-border-secondary);
+    min-height: unset;
+  }
+  .el-skeleton__circle {
+    line-height: 36px;
   }
 
   &-container {
@@ -145,6 +149,7 @@ $skeleton-label-width: 34px;
     &.el-skeleton__item.el-skeleton__rect {
       height: 24px;
       margin: 3px 0;
+      min-height: 0;
     }
 
     &-impact {

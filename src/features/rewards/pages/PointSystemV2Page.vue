@@ -290,7 +290,7 @@ watch(isLoggedIn, async (value) => {
     }
   }
 }
-.s-tabs .el-tabs__header .el-tabs__item {
+.points__tabs.s-tabs .el-tabs__header .el-tabs__item {
   font-weight: 400 !important;
 }
 

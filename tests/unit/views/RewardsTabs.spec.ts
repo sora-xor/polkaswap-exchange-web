@@ -1,6 +1,8 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import rewardsTabsSource from '@/features/rewards/pages/RewardsTabsPage.vue?raw';
+
 const pushMock = vi.fn();
 const routeMock = { name: 'Rewards' };
 const settingsStoreMock = {
@@ -76,5 +78,10 @@ describe('RewardsTabs.vue', () => {
     await wrapper.get('.tabs-stub').trigger('click');
 
     expect(pushMock).toHaveBeenCalledWith({ name: 'ReferralProgram' });
+  });
+
+  it('keeps the rewards tab strip at the live-site height', () => {
+    expect(rewardsTabsSource).toContain('$rewards-tabs-height: 72px;');
+    expect(rewardsTabsSource).toContain('height: 71px;');
   });
 });

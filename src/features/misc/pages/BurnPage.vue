@@ -30,6 +30,12 @@
             :fiat-value="getFormattedXorFiat(rate)"
           ></info-line>
           <info-line
+            v-if="id === 'solswap'"
+            label="1 XOR burned"
+            value="1"
+            asset-symbol="SORA Nexus XOR"
+          ></info-line>
+          <info-line
             :label="`Your reserved ${receivedAsset.symbol} tokens`"
             :value="getFormattedAccountReserved(id, rate)"
             :asset-symbol="receivedAsset.symbol"
@@ -98,6 +104,7 @@
       :rate="selectedRate"
       :max="selectedMax"
       :min="selectedMin"
+      :requires-nexus-recipient="selectedRequiresNexusRecipient"
       @confirm="handleBurnConfirm"
     ></burn-dialog>
   </div>
@@ -140,6 +147,7 @@ type Campaign = {
   rate: string;
   max: number;
   min: number;
+  requiresNexusRecipient: boolean;
   from: number;
   fromTimestamp: number;
   to: number;
@@ -183,14 +191,15 @@ const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNet
 const campaignsObj = reactive<Record<CampaignKey, Campaign>>({
   solswap: {
     id: 'solswap',
-    title: 'Burn XOR for SOLSWAP (SS)',
+    title: 'Burn XOR for SOLSWAP + SORA Nexus XOR',
     description:
-      'Starting at block 25,043,003 on the SORA 2 network, burn XOR to reserve SOLSWAP (SS). 100% of supply (100,000,000 SS) is distributed via fair launch at 100 SOLSWAP per 1 XOR burned.',
+      'Starting at block 25,043,003 on the SORA 2 network, burn XOR to reserve SOLSWAP (SS) at 100 SOLSWAP per 1 XOR burned and register a SORA Nexus account for 1:1 Nexus XOR distribution.',
     link: 'https://t.me/solswap_io',
     receivedAsset: { symbol: 'SS', address: '', name: 'SOLSWAP', decimals: 18 } as Asset,
     rate: '0.01',
     max: 100_000_000,
     min: 1,
+    requiresNexusRecipient: true,
     from: 25_043_003,
     fromTimestamp: 1717693074001,
     to: 60_000_000,
@@ -221,6 +230,7 @@ const selectedReceivedAsset = ref<Asset>(campaignsObj.solswap.receivedAsset);
 const selectedRate = ref<string>(campaignsObj.solswap.rate);
 const selectedMax = ref<number>(campaignsObj.solswap.max);
 const selectedMin = ref<number>(campaignsObj.solswap.min);
+const selectedRequiresNexusRecipient = ref<boolean>(campaignsObj.solswap.requiresNexusRecipient);
 
 const intervalId = ref<Nullable<number>>(null);
 const decimalDelimiter = FPNumber.DELIMITERS_CONFIG.decimal;
@@ -334,6 +344,7 @@ function handleBurnClick(id: CampaignKey): void {
   selectedRate.value = campaign.rate;
   selectedMax.value = campaign.max;
   selectedMin.value = campaign.min;
+  selectedRequiresNexusRecipient.value = campaign.requiresNexusRecipient;
   burnDialogVisible.value = true;
 }
 
@@ -351,6 +362,7 @@ defineExpose({
   selectedRate,
   selectedMax,
   selectedMin,
+  selectedRequiresNexusRecipient,
   handleBurnConfirm,
   loading,
   timeLeftFormatted,

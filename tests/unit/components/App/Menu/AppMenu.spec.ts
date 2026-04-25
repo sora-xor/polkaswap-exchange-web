@@ -130,8 +130,14 @@ describe('AppMenu', () => {
       },
       global: {
         stubs: {
-          's-button': { template: '<button class="s-button-stub"><slot name="icon" /><slot /></button>' },
-          SButton: { template: '<button class="s-button-stub"><slot name="icon" /><slot /></button>' },
+          's-button': {
+            emits: ['click'],
+            template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+          },
+          SButton: {
+            emits: ['click'],
+            template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+          },
           's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
           SScrollbar: { template: '<div class="s-scrollbar-stub"><slot /></div>' },
           's-menu': { template: '<div class="s-menu-stub"><slot /></div>' },
@@ -237,6 +243,15 @@ describe('AppMenu', () => {
     const wrapper = mountComponent();
 
     expect(wrapper.classes()).toContain('app-menu__loading');
+  });
+
+  it('toggles the collapsed state from the sidebar collapse button', async () => {
+    settingsStore.menuCollapsed = false;
+    const wrapper = mountComponent();
+
+    await wrapper.get('.collapse-button').trigger('click');
+
+    expect(setMenuCollapsedMock).toHaveBeenCalledWith(true);
   });
 
   it('tracks sidebar width and clears observer-driven sidebar styles on unmount', () => {

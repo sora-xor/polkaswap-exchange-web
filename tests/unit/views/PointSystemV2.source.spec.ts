@@ -14,4 +14,11 @@ describe('PointSystemV2 page styles', () => {
     expect(source).toContain('.points.s-card {');
     expect(source).toContain('background-color: var(--s-color-base-background);');
   });
+
+  it('keeps points tab overrides scoped to the points tabs instance', async () => {
+    const source = await readFile(pointSystemV2Path, 'utf8');
+
+    expect(source).not.toMatch(/^\s*\.s-tabs \.el-tabs__header \.el-tabs__item \{\n\s*font-weight: 400 !important;/m);
+    expect(source).toContain('.points__tabs.s-tabs .el-tabs__header .el-tabs__item {');
+  });
 });

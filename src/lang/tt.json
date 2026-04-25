@@ -260,6 +260,13 @@
         "disclaimer": "Акылсыз документлар өчен камера керүе кирәк.",
         "title": "Браузер көйләүләрендә камера рөхсәтенә рөхсәт итегез"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Токенны сайлагыз",
         "chooseToken": "Токенны сайлагыз",

@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 
 import SettingsTabs from '@/components/shared/Settings/Tabs.vue';
+import settingsTabsSource from '@/components/shared/Settings/Tabs.vue?raw';
 
 const STabsStub = {
   name: 'STabsStub',
@@ -52,5 +53,11 @@ describe('SettingsTabs', () => {
     });
 
     expect(wrapper.findComponent(STabsStub).props('value')).toBe('settings');
+  });
+
+  it('keeps settings tab container metrics aligned with the live site', () => {
+    expect(settingsTabsSource).toContain('font-size: var(--s-font-size-extra-small);');
+    expect(settingsTabsSource).toContain('line-height: 1.15;');
+    expect(settingsTabsSource).toContain('width: 100%;');
   });
 });

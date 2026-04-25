@@ -3,16 +3,40 @@ import { describe, expect, it } from 'vitest';
 import appHeaderMenuSource from '@/components/App/Header/AppHeaderMenu.vue?raw';
 
 describe('AppHeaderMenu source', () => {
-  it('hard-centers the desktop settings close button icon', () => {
+  it('keeps the settings close button geometry aligned with the live site', () => {
     expect(appHeaderMenuSource).toContain('class="header-menu__settings-close s-pressed"');
     expect(appHeaderMenuSource).toMatch(
-      /&__settings-close\.el-button\.s-action\s*\{\s*display:\s*inline-flex;\s*align-items:\s*center;\s*justify-content:\s*center;\s*width:\s*42px;\s*min-width:\s*42px;\s*height:\s*42px;\s*min-height:\s*42px;\s*padding:\s*0;\s*\}/s
+      /&__settings-close\.el-button\.s-action\s*\{\s*display:\s*block;\s*width:\s*42px;\s*min-width:\s*auto;\s*height:\s*42px;\s*min-height:\s*42px;\s*padding:\s*0;\s*color:\s*var\(--s-color-base-content-tertiary\) !important;\s*font-weight:\s*500;\s*line-height:\s*14px;\s*\}/s
     );
     expect(appHeaderMenuSource).toMatch(
-      /&__settings-close \.s-button__icon\s*\{\s*display:\s*inline-flex;\s*align-items:\s*center;\s*justify-content:\s*center;\s*width:\s*100%;\s*height:\s*100%;\s*\}/s
+      /&__settings-close \.s-button__icon\s*\{\s*display:\s*inline;\s*width:\s*auto;\s*height:\s*auto;\s*\}/s
     );
     expect(appHeaderMenuSource).toMatch(
-      /&__settings-close \.s-button__icon > i\s*\{\s*font-size:\s*24px !important;\s*line-height:\s*24px !important;\s*\}/s
+      /&__settings-close \.s-button__icon > i\s*\{\s*display:\s*inline-block;\s*color:\s*var\(--s-color-base-content-tertiary\) !important;\s*font-size:\s*24px !important;\s*line-height:\s*24px !important;\s*\}/s
+    );
+  });
+
+  it('keeps the mobile settings drawer geometry aligned with the live site', () => {
+    expect(appHeaderMenuSource).toContain('@include large-mobile(true) {');
+    expect(appHeaderMenuSource).toContain('transition: transform 0.2s cubic-bezier(0.22, 0.77, 0.81, 0.61);');
+    expect(appHeaderMenuSource).toContain('right: -272px !important;');
+    expect(appHeaderMenuSource).toContain('margin-top: 12px !important;');
+    expect(appHeaderMenuSource).toContain('width: 264px;');
+    expect(appHeaderMenuSource).toContain('transform: translateX(-264px) !important;');
+    expect(appHeaderMenuSource).toContain('padding: 6px 0 !important;');
+    expect(appHeaderMenuSource).toContain('color: #000;');
+    expect(appHeaderMenuSource).toMatch(/\.s-dropdown-menu\s*\{\s*margin:\s*0;\s*padding:\s*0;\s*\}/s);
+  });
+
+  it('keeps local dropdown item wrappers visually equivalent to live icons and dividers', () => {
+    expect(appHeaderMenuSource).toMatch(
+      /&\.s-dropdown-menu__item\s*\{\s*gap:\s*0;\s*\}/s
+    );
+    expect(appHeaderMenuSource).toMatch(
+      /\.el-dropdown-menu__icon\s*\{\s*width:\s*auto !important;\s*height:\s*auto !important;\s*margin-right:\s*5px;\s*font-size:\s*\$icon-size !important;\s*line-height:\s*\$icon-size !important;\s*\}/s
+    );
+    expect(appHeaderMenuSource).toMatch(
+      /\.el-divider--horizontal\s*\{\s*margin:\s*unset;\s*height:\s*1px;\s*background-color:\s*var\(--s-color-base-border-secondary\);\s*\}/s
     );
   });
 });

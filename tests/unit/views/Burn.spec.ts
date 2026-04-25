@@ -129,6 +129,7 @@ describe('Burn.vue', () => {
     expect(vm.selectedRate).toBe('0.01');
     expect(vm.selectedMax).toBe(100_000_000);
     expect(vm.selectedMin).toBe(1);
+    expect(vm.selectedRequiresNexusRecipient).toBe(true);
   });
 
   it('marks campaigns as ended when block height exceeds range', async () => {
@@ -217,7 +218,8 @@ describe('Burn.vue', () => {
 
     expect(text).toContain('0.01');
     expect(text).toContain('100 SOLSWAP per 1 XOR burned');
-    expect(text).toContain('burn XOR to reserve SOLSWAP (SS)');
+    expect(text).toContain('SORA Nexus account for 1:1 Nexus XOR distribution');
+    expect(text).toContain('SORA Nexus XOR');
     expect(text).not.toContain('Time left');
     expect(text).not.toContain('Reserve KARMA');
     expect(text).not.toContain('Reserve KEN');

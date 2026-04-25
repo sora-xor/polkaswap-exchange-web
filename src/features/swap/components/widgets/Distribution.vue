@@ -253,8 +253,11 @@ $path-color: var(--s-color-base-content-tertiary);
 }
 
 .distribution .el-skeleton__item {
+  background-color: var(--s-color-base-content-tertiary);
   display: inline-flex;
   flex-shrink: 0;
+  font-size: 0;
+  line-height: 0;
   width: auto;
 
   &:not(:last-child) {
@@ -264,11 +267,17 @@ $path-color: var(--s-color-base-content-tertiary);
   &.el-skeleton__circle {
     width: 16px;
     height: 16px;
+    line-height: 36px;
   }
 
   &.el-skeleton__rect {
+    border-radius: var(--s-border-radius-mini);
     min-width: 48px;
     min-height: 16px;
   }
+}
+
+.distribution .distribution-path-source-name.el-skeleton__item {
+  width: 64px;
 }
 </style>

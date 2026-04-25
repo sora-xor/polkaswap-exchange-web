@@ -260,6 +260,13 @@
         "disclaimer": "ត្រូវការចូលប្រើកាមេរ៉ា ដើម្បីថតឯកសារបានទាន់ពេលវេលា និងទប់ស្កាត់ការក្លែងបន្លំ។",
         "title": "អនុញ្ញាតចូលប្រើកាមេរ៉ាក្នុងការកំណត់កម្មវិធីរុករក"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "ជ្រើសរើស Token មួយ",
         "chooseToken": "ជ្រើសរើស Token",

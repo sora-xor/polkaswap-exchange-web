@@ -260,6 +260,13 @@
         "disclaimer": "دھوکہ دہی سے بچنے کے لئے ریئل ٹائم دستاویز کی گرفتاری کے لئے کیمرہ تک رسائی ضروری ہے۔",
         "title": "براؤزر کی ترتیبات میں کیمرے تک رسائی کی اجازت دیں"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "ایک ٹوکن منتخب کریں",
         "chooseToken": "ٹوکن منتخب کریں",

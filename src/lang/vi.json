@@ -260,6 +260,13 @@
         "disclaimer": "Cần có quyền truy cập máy ảnh để chụp tài liệu theo thời gian thực nhằm ngăn chặn gian lận.",
         "title": "Cho phép truy cập máy ảnh trong cài đặt trình duyệt"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Chọn 1 token",
         "chooseToken": "Chọn token",

@@ -18,6 +18,13 @@ describe('App shell source', () => {
     expect(appShellLayoutSource).toContain(
       '<app-logo-button class="app-logo--menu" :theme="libraryTheme" @click="goToSwap"></app-logo-button>'
     );
+    expect(appShellLayoutSource).toContain('.app-logo--menu.app-logo.el-button');
+    expect(appShellLayoutSource).toContain('display: none !important;');
     expect(appShellLayoutSource).not.toContain('slot="head"');
+  });
+
+  it('keeps the shell content border color tied to the Polkaswap theme token', () => {
+    expect(appShellLayoutSource).toContain('border-color: var(--s-color-base-content-primary);');
+    expect(appShellLayoutSource).toContain('border-style: none;');
   });
 });

@@ -79,6 +79,11 @@ export const HistoryElementsConnectionQuery = gql<ConnectionQueryResponse<Histor
           data
           dataFrom
           dataTo
+          calls {
+            module
+            method
+            data
+          }
         }
       }
     }
@@ -156,8 +161,17 @@ const OperationFilterMap = {
     method_eq: ModuleMethods.AssetsRegister,
   },
   [Operation.Burn]: {
-    module_eq: ModuleNames.Assets,
-    method_eq: ModuleMethods.AssetsBurn,
+    OR: [
+      {
+        module_eq: ModuleNames.Assets,
+        method_eq: ModuleMethods.AssetsBurn,
+      },
+      {
+        module_eq: ModuleNames.Utility,
+        method_eq: ModuleMethods.UtilityBatchAll,
+        callNames_containsAny: [ModuleNames.Assets + '.' + ModuleMethods.AssetsBurn],
+      },
+    ],
   },
   [Operation.Mint]: {
     module_eq: ModuleNames.Assets,
@@ -329,6 +343,13 @@ const createAssetCriteria = (assetAddress: string): Array<DataCriteria | CallsDa
     result.push({
       data_jsonContains: {
         [attr]: assetAddress,
+      },
+    });
+    result.push({
+      calls_some: {
+        data_jsonContains: {
+          [attr]: assetAddress,
+        },
       },
     });
 

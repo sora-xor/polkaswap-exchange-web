@@ -260,6 +260,13 @@
         "disclaimer": "Доступ до камери потрібен для зйомки документів у реальному часі, щоб запобігати шахрайству.",
         "title": "Дозвольте доступ до камери в налаштуваннях браузера"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Виберіть токен",
         "chooseToken": "Виберіть токен",

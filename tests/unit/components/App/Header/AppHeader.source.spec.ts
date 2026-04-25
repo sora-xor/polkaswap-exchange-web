@@ -18,4 +18,32 @@ describe('AppHeader source', () => {
     expect(appHeaderSource).not.toContain("import { lazyComponent } from '@/router';");
     expect(appHeaderSource).not.toContain('Components.AppMarketing');
   });
+
+  it('keeps mobile header icon controls aligned with the live site', () => {
+    expect(appHeaderSource).toContain('.header > &:not(.app-controls--middle) {');
+    expect(appHeaderSource).toContain('.app-controls .settings-control.el-button {');
+    expect(appHeaderSource).toContain('color: var(--s-color-base-content-tertiary) !important;');
+    expect(appHeaderSource).toContain('.app-controls .settings-control.settings-control--open,');
+    expect(appHeaderSource).toContain('color: var(--s-color-base-content-secondary) !important;');
+    expect(appHeaderSource).toContain('width: 42px !important;');
+    expect(appHeaderSource).toContain('height: 42px !important;');
+    expect(appHeaderSource).toContain('min-height: 42px !important;');
+    expect(appHeaderSource).toContain('line-height: 14px !important;');
+    expect(appHeaderSource).toContain('font-weight: 500 !important;');
+    expect(appHeaderSource).toContain('padding: 5px !important;');
+    expect(appHeaderSource).toContain('.app-logo--header.app-logo.el-button {');
+    expect(appHeaderSource).toContain('display: none !important;');
+    expect(appHeaderSource).toContain('position: static !important;');
+  });
+
+  it('keeps the mobile menu button hover treatment aligned with production', () => {
+    expect(appHeaderSource).toContain('.app-menu-button.el-button.neumorphic.s-action.s-primary {');
+    expect(appHeaderSource).toContain('line-height: 14px !important;');
+    expect(appHeaderSource).toContain('position: static !important;');
+    expect(appHeaderSource).toContain(
+      '.app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):hover'
+    );
+    expect(appHeaderSource).toContain('background-color: var(--s-color-theme-accent-hover) !important;');
+    expect(appHeaderSource).toContain('0 0 20px rgba(247, 84, 163, 0.5) !important;');
+  });
 });

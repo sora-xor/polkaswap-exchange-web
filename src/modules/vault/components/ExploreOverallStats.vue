@@ -9,13 +9,15 @@
       :md="4"
       :lg="3"
     >
-      <s-card class="stats-card" size="small" border-radius="mini" primary>
-        <div slot="header" class="stats-card-title">
-          <span>{{ title }}</span>
-          <s-tooltip border-radius="mini" :content="tooltip">
-            <s-icon name="info-16" size="14px"></s-icon>
-          </s-tooltip>
-        </div>
+      <s-card class="stats-card" size="small" border-radius="mini" shadow="never" primary>
+        <template #header>
+          <div class="stats-card-title">
+            <span>{{ title }}</span>
+            <s-tooltip border-radius="mini" :content="tooltip">
+              <s-icon name="info-16" size="14px"></s-icon>
+            </s-tooltip>
+          </div>
+        </template>
         <div class="stats-card-data">
           <formatted-amount
             class="stats-card-value"
@@ -138,9 +140,29 @@ const statsColumns = computed(() =>
 </script>
 
 <style lang="scss" scoped>
+.stats-column {
+  border-style: none;
+
+  @include desktop {
+    flex-basis: calc(var(--s-col-span-width-current) + 6px);
+    max-width: calc(var(--s-col-span-width-current) + 6px);
+  }
+}
+
 .stats-card {
+  padding: $inner-spacing-mini $inner-spacing-small;
   margin-bottom: $inner-spacing-big;
   box-shadow: var(--s-shadow-element-pressed);
+
+  :deep(.el-card__header) {
+    border-bottom: 1px solid transparent;
+    padding: 0;
+  }
+
+  :deep(.el-card__body) {
+    border-style: none;
+    padding: 0;
+  }
 
   &-title {
     display: flex;

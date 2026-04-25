@@ -4,6 +4,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
+import distributionSource from '@/features/swap/components/widgets/Distribution.vue?raw';
+
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type DistributionEntry = {
@@ -184,5 +186,20 @@ describe('SwapDistributionWidget', () => {
     expect(wrapper.findAll('.distribution-path-source').length).toBe(1);
     expect(wrapper.find('.el-skeleton__item').exists()).toBe(true);
     expect(wrapper.text()).not.toContain('XYK Pool');
+  });
+
+  it('keeps the fallback route skeleton styling aligned with production', () => {
+    expect(distributionSource).toMatch(
+      /\.distribution \.el-skeleton__item\s*\{\s*background-color:\s*var\(--s-color-base-content-tertiary\);\s*display:\s*inline-flex;\s*flex-shrink:\s*0;\s*font-size:\s*0;\s*line-height:\s*0;/s
+    );
+    expect(distributionSource).toMatch(
+      /&\.el-skeleton__rect\s*\{\s*border-radius:\s*var\(--s-border-radius-mini\);\s*min-width:\s*48px;\s*min-height:\s*16px;\s*\}/s
+    );
+    expect(distributionSource).toMatch(
+      /&\.el-skeleton__circle\s*\{\s*width:\s*16px;\s*height:\s*16px;\s*line-height:\s*36px;\s*\}/s
+    );
+    expect(distributionSource).toMatch(
+      /\.distribution \.distribution-path-source-name\.el-skeleton__item\s*\{\s*width:\s*64px;\s*\}/s
+    );
   });
 });

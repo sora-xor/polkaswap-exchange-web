@@ -188,34 +188,46 @@ $container-max-width--collapsed: calc($container-max - $container-shadow-padding
 
 :deep(.explore-search.s-input) {
   display: flex;
+  position: relative;
   width: $explore-search-input-max-width;
   min-height: var(--s-size-big);
   padding: 8px 16px;
-  border: 1px solid rgba(163, 164, 168, 0.6);
-  background-color: var(--s-color-base-border-primary);
-  box-shadow:
-    1px 1px 5px rgb(255, 255, 255),
-    -5px -5px 5px rgba(255, 255, 255, 0.5) inset,
-    1px 1px 10px rgba(0, 0, 0, 0.1) inset;
+  border: 0 solid var(--s-color-base-border-primary);
+  background-color: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
   border-radius: 24px;
 }
 
 :deep(.explore-search.s-input .s-input__content) {
+  height: 21px;
   width: 100%;
   min-height: 0;
   padding: 0;
   gap: 0;
+  border: 0 none var(--s-color-base-content-primary);
+}
+
+:deep(.explore-search.s-input .s-input__prefix) {
+  position: absolute;
+  left: 16px;
+  top: 8px;
+  display: block;
+  height: 21px;
+  line-height: 21px;
 }
 
 :deep(.explore-search.s-input .s-input__input) {
-  display: flex;
-  align-items: center;
+  display: block;
+  position: relative;
+  width: 100%;
+  border: 0 none var(--s-color-base-content-primary);
 }
 
 :deep(.explore-search.s-input .el-input__inner) {
   height: 21px;
   padding: 0 26px;
   line-height: 21px;
+  width: 100%;
 }
 
 :deep(.container--explore .explore-table.s-table) {

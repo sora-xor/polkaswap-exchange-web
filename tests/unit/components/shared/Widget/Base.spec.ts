@@ -66,6 +66,7 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
 });
 
 import BaseWidget from '@/components/shared/Widget/Base.vue';
+import baseWidgetSource from '@/components/shared/Widget/Base.vue?raw';
 
 function flushAnimationFrame(timestamp = 0): void {
   const callbacks = Array.from(animationFrameCallbacks.values());
@@ -155,6 +156,14 @@ describe('BaseWidget', () => {
 
     const container = wrapper.find('.base-widget');
     expect(container.classes()).toEqual(expect.arrayContaining(['full', 'flat', 'delimeter']));
+  });
+
+  it('keeps full widgets at live-site min-height', () => {
+    expect(baseWidgetSource).toMatch(/&\.full \{[\s\S]*min-height: 100%;/);
+  });
+
+  it('keeps widget PiP icon buttons on the live-site small button metrics', () => {
+    expect(baseWidgetSource).toMatch(/&-pip \{[\s\S]*display: block;[\s\S]*font-size: 12px;[\s\S]*line-height: 12px;/);
   });
 
   it('hides pip control when disabled', () => {

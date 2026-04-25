@@ -67,6 +67,7 @@ $tab-margin: 22px;
 .rewards-tabs.container {
   .rewards-tabs__tabs {
     background-color: inherit;
+    height: 71px;
     margin-left: -$tab-margin;
     margin-top: -$tab-margin;
     width: calc(100% + $tab-margin * 2);

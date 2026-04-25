@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { fetchData } from '@/indexer/queries/burnXor';
 
@@ -75,6 +76,21 @@ describe('xor burn query', () => {
     expect(result[0]?.blockHeight).toBe(456);
   });
 
+  it('parses batched XOR burn calls from utility.batchAll transactions', async () => {
+    indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
+      parse(createBatchBurnHistoryElement('account-batch', '42', 789)),
+      parse(createBatchBurnHistoryElement('account-other', '99', 790, '0xother')),
+    ]);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+
+    const result = await fetchData(700, 800, 'account-batch');
+
+    expect(result[0]?.address).toBe('account-batch');
+    expect(result[0]?.amount.toString()).toBe('42');
+    expect(result[0]?.blockHeight).toBe(789);
+    expect(result.some((item) => item.address === 'account-other')).toBe(false);
+  });
+
   it('returns an empty array when Subsquid returns null data', async () => {
     indexerMocks.fetchAllEntitiesConnection.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
@@ -103,8 +119,48 @@ const createIndexer = (type: unknown) => ({
 
 const createBurnHistoryElement = (address: string, amount: string, blockHeight: string | number) => ({
   address,
+  module: 'assets',
+  method: 'burn',
   data: {
     amount,
+    assetId: XOR.address,
   },
   blockHeight,
+  calls: [],
+});
+
+const createBatchBurnHistoryElement = (
+  address: string,
+  amount: string,
+  blockHeight: string | number,
+  assetId = XOR.address
+) => ({
+  address,
+  module: 'utility',
+  method: 'batchAll',
+  data: {},
+  blockHeight,
+  calls: {
+    nodes: [
+      {
+        module: 'assets',
+        method: 'burn',
+        data: {
+          args: {
+            amount,
+            assetId,
+          },
+        },
+      },
+      {
+        module: 'system',
+        method: 'remark',
+        data: {
+          args: {
+            remark: '0x68656c6c6f',
+          },
+        },
+      },
+    ],
+  },
 });

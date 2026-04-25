@@ -26,6 +26,19 @@
       is-formatted
       value-can-be-hidden
     ></info-line>
+    <div v-if="requiresNexusRecipient" class="nexus-recipient">
+      <p class="nexus-recipient__label p3">{{ t('burnPage.nexusRecipientLabel') }}</p>
+      <s-input
+        v-model="nexusRecipient"
+        class="nexus-recipient__input"
+        :placeholder="t('burnPage.nexusRecipientPlaceholder')"
+        :maxlength="128"
+        :disabled="loading"
+      ></s-input>
+      <p class="nexus-recipient__message p4" :class="{ 'nexus-recipient__message--error': isNexusRecipientInvalid }">
+        {{ nexusRecipientMessage }}
+      </p>
+    </div>
     <info-line
       v-if="isLoggedIn"
       :label="t('networkFeeText')"
@@ -54,6 +67,12 @@
         <template v-else-if="isInsufficientBalance">
           {{ t('insufficientBalanceText', { tokenSymbol: burnedAsset.symbol }) }}
         </template>
+        <template v-else-if="isNexusRecipientMissing">
+          {{ t('burnPage.enterNexusRecipient') }}
+        </template>
+        <template v-else-if="isNexusRecipientInvalid">
+          {{ t('burnPage.invalidNexusRecipient') }}
+        </template>
         <template v-else>RESERVE</template>
       </s-button>
     </template>
@@ -75,6 +94,7 @@ import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { asZeroValue } from '@/utils';
+import { createSoraNexusXorBurnRemark, normalizeSoraNexusAccountId } from '@/utils/soraNexusAccount';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -92,11 +112,13 @@ const props = withDefaults(
     rate?: string;
     max?: number;
     min?: number;
+    requiresNexusRecipient?: boolean;
   }>(),
   {
     rate: '0.01',
     max: 100_000_000,
     min: 1,
+    requiresNexusRecipient: false,
   }
 );
 
@@ -117,19 +139,23 @@ const {
   getFiatAmountByCodecString,
 } = useFormattedAmount();
 
-const { max, min, receivedAsset, burnedAsset, rate } = toRefs(props);
+const { max, min, receivedAsset, burnedAsset, rate, requiresNexusRecipient } = toRefs(props);
 const assetsStore = useAssetsStore();
 const settingsStore = useSettingsStore();
 const walletStore = useWalletStore();
 
 const value = ref('');
+const nexusRecipient = ref('');
 const xor = XOR;
 
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
 const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 const isLoggedIn = computed(() => walletStore.isLoggedIn);
 
-const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.Burn] ?? ZeroStringValue);
+const networkFeeOperation = computed(() => (requiresNexusRecipient.value ? Operation.BurnWithRemark : Operation.Burn));
+const networkFee = computed<CodecString>(
+  () => networkFees.value?.[networkFeeOperation.value] ?? networkFees.value?.[Operation.Burn] ?? ZeroStringValue
+);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value, burnedAsset.value.decimals));
 const xorBalance = computed(() =>
   getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue, burnedAsset.value.decimals)
@@ -159,13 +185,29 @@ const formattedFiatTokensLeft = computed(() => getFiatAmountByFPNumber(tokensLef
 
 const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value, burnedAsset.value.decimals));
 
+const trimmedNexusRecipient = computed(() => nexusRecipient.value.trim());
+const normalizedNexusRecipient = computed(() => normalizeSoraNexusAccountId(trimmedNexusRecipient.value));
+const isNexusRecipientMissing = computed(() => requiresNexusRecipient.value && !trimmedNexusRecipient.value);
+const isNexusRecipientInvalid = computed(
+  () => requiresNexusRecipient.value && !!trimmedNexusRecipient.value && !normalizedNexusRecipient.value
+);
+const nexusRecipientMessage = computed(() =>
+  isNexusRecipientInvalid.value ? t('burnPage.invalidNexusRecipient') : t('burnPage.nexusRecipientWarning')
+);
+
 const isZeroAmount = computed(() => asZeroValue(value.value));
 const isAmountLessThanMin = computed(() => Number(value.value || ZeroStringValue) < min.value);
 const isInsufficientBalance = computed(() =>
   xorBalance.value.sub(willBeBurned.value).sub(fpNetworkFee.value).isLtZero()
 );
 const isBurnDisabled = computed(
-  () => loading.value || isZeroAmount.value || isAmountLessThanMin.value || isInsufficientBalance.value
+  () =>
+    loading.value ||
+    isZeroAmount.value ||
+    isAmountLessThanMin.value ||
+    isInsufficientBalance.value ||
+    isNexusRecipientMissing.value ||
+    isNexusRecipientInvalid.value
 );
 
 const instance = getCurrentInstance();
@@ -181,10 +223,25 @@ async function handleConfirmBurn(): Promise<void> {
       title: t('errorText'),
     });
     emit('confirm');
+  } else if (isNexusRecipientMissing.value || isNexusRecipientInvalid.value) {
+    instance?.proxy?.$alert?.(t('burnPage.invalidNexusRecipient'), {
+      title: t('errorText'),
+    });
+    return;
+  } else if (isBurnDisabled.value) {
+    return;
   } else {
     try {
       await withNotifications(async () => {
-        await api.assets.burn(burnedAsset.value, willBeBurned.value.toString());
+        const remark = requiresNexusRecipient.value
+          ? createSoraNexusXorBurnRemark(normalizedNexusRecipient.value ?? '')
+          : '';
+
+        if (remark) {
+          await api.assets.burnWithRemark(burnedAsset.value, willBeBurned.value.toString(), remark);
+        } else {
+          await api.assets.burn(burnedAsset.value, willBeBurned.value.toString());
+        }
       });
       emit('confirm', true);
     } catch (error) {
@@ -200,6 +257,7 @@ watch(isVisible, async (dialogVisible) => {
   await nextTick();
   if (dialogVisible) {
     value.value = '';
+    nexusRecipient.value = '';
   }
 });
 </script>
@@ -207,6 +265,29 @@ watch(isVisible, async (dialogVisible) => {
 <style lang="scss" scoped>
 .token-input {
   margin-bottom: $basic-spacing;
+}
+.nexus-recipient {
+  margin-bottom: $basic-spacing;
+
+  &__label {
+    color: var(--s-color-base-content-secondary);
+    font-weight: 700;
+    margin-bottom: $inner-spacing-tiny;
+    text-transform: uppercase;
+  }
+
+  &__input {
+    width: 100%;
+  }
+
+  &__message {
+    color: var(--s-color-base-content-secondary);
+    margin-top: $inner-spacing-tiny;
+
+    &--error {
+      color: var(--s-color-status-error);
+    }
+  }
 }
 .disclaimer {
   align-items: flex-start;

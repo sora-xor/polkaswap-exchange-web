@@ -72,6 +72,9 @@ $book-tabs-height: 64px;
   padding-left: 0;
   .s-tabs {
     background-color: inherit;
+    height: calc(#{$book-tabs-height} + #{$inner-spacing-mini} - 1px);
+    border-radius: var(--s-border-radius-small) var(--s-border-radius-small) 0 0;
+    transition: all;
     &,
     .el-tabs__header,
     .el-tabs__nav-wrap,
@@ -99,6 +102,9 @@ $book-tabs-height: 64px;
         }
       }
       &__nav-wrap {
+        margin-bottom: -1px;
+        box-shadow: var(--s-shadow-element) !important;
+
         .el-tabs__item {
           &,
           &.is-active {

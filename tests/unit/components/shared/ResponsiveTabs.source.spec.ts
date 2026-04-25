@@ -14,4 +14,12 @@ describe('ResponsiveTabs source', () => {
     expect(source).toContain('font-size: var(--s-font-size-large);');
     expect(source).toContain('line-height: 1.3;');
   });
+
+  it('keeps desktop rounded tabs aligned with live tab weight and border states', async () => {
+    const source = await readFile(componentPath, 'utf8');
+
+    expect(source).toContain('border-color: var(--s-color-base-content-primary);');
+    expect(source).toContain('font-weight: 600;');
+    expect(source).toContain('&.is-active {\n        border-color: var(--s-color-theme-accent);');
+  });
 });

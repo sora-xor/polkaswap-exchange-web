@@ -175,12 +175,27 @@ const OperationFilterMap = {
     },
   },
   [Operation.Burn]: {
-    module: {
-      equalTo: ModuleNames.Assets,
-    },
-    method: {
-      equalTo: ModuleMethods.AssetsBurn,
-    },
+    or: [
+      {
+        module: {
+          equalTo: ModuleNames.Assets,
+        },
+        method: {
+          equalTo: ModuleMethods.AssetsBurn,
+        },
+      },
+      {
+        module: {
+          equalTo: ModuleNames.Utility,
+        },
+        method: {
+          equalTo: ModuleMethods.UtilityBatchAll,
+        },
+        callNames: {
+          contains: [ModuleNames.Assets + '.' + ModuleMethods.AssetsBurn],
+        },
+      },
+    ],
   },
   [Operation.Mint]: {
     or: [

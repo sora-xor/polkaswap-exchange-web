@@ -260,6 +260,13 @@
         "disclaimer": "Залилан мэхлэхээс урьдчилан сэргийлэхийн тулд бодит цагийн баримт бичигт камерын хандалт шаардлагатай.",
         "title": "Хөтөчийн тохиргоонд камерт хандахыг зөвшөөрнө үү"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Токен сонгоно уу",
         "chooseToken": "Токен сонгоно уу",

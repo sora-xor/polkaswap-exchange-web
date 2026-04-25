@@ -1,6 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
+
+import setLimitOrderWidgetSource from '@/components/pages/OrderBook/SetLimitOrderWidget.vue?raw';
 import SetLimitOrderWidget from '@/components/pages/OrderBook/SetLimitOrderWidget.vue';
 
 const usePiniaTelemetryMock = vi.fn();
@@ -62,4 +64,13 @@ describe('SetLimitOrderWidget.vue', () => {
       quoteAsset: 'BBB',
     });
   }, 30_000);
+
+  it('keeps the buy/sell tab chrome aligned with the live trade widget', () => {
+    expect(setLimitOrderWidgetSource).toContain('height: calc(#{$book-tabs-height} + #{$inner-spacing-mini} - 1px);');
+    expect(setLimitOrderWidgetSource).toContain(
+      'border-radius: var(--s-border-radius-small) var(--s-border-radius-small) 0 0;'
+    );
+    expect(setLimitOrderWidgetSource).toContain('box-shadow: var(--s-shadow-element) !important;');
+    expect(setLimitOrderWidgetSource).toContain('margin-bottom: -1px;');
+  });
 });
