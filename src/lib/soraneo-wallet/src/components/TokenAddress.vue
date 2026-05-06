@@ -55,7 +55,6 @@ defineExpose({
 <style lang="scss" scoped>
 .token-address {
   @include hint-text;
-  word-break: break-word;
 
   &__name {
     margin-right: $basic-spacing-mini;

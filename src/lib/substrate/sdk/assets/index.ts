@@ -873,7 +873,7 @@ export class AssetsModule<T> {
     return this.root.submitExtrinsic(
       this.root.api.tx.utility.batchAll([
         this.root.api.tx.assets.burn(assetAddress, codecAmount),
-        this.root.api.tx.system.remark(stringToU8a(trimmedRemark)),
+        this.root.api.tx.system.remark(u8aToHex(stringToU8a(trimmedRemark))),
       ]),
       this.root.account.pair,
       historyItem

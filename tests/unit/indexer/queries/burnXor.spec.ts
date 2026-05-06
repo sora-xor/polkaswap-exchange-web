@@ -1,13 +1,19 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
-import { fetchData } from '@/indexer/queries/burnXor';
+import { clearBurnXorQueryCaches, fetchData, isExcludedXorBurnAddress } from '@/indexer/queries/burnXor';
+import { createSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
+
+const validSoraNexusAccount = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃaﾘﾒﾓQﾗrﾒoﾘﾅnｳﾘbQｳQJﾆLJ5HSE';
 
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   fetchAllEntities: vi.fn(),
   fetchAllEntitiesConnection: vi.fn(),
+  getBlockHash: vi.fn(),
+  getBlock: vi.fn(),
+  getEventsAt: vi.fn(),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
@@ -16,10 +22,53 @@ vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   SubsquidIndexer: class SubsquidIndexer {},
 }));
 
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    connection: {
+      api: {
+        rpc: {
+          chain: {
+            getBlockHash: indexerMocks.getBlockHash,
+            getBlock: indexerMocks.getBlock,
+          },
+        },
+        query: {
+          system: {
+            events: {
+              at: indexerMocks.getEventsAt,
+            },
+          },
+        },
+      },
+    },
+  },
+}));
+
 describe('xor burn query', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    clearBurnXorQueryCaches();
     indexerMocks.currentIndexer = undefined;
+    indexerMocks.getBlockHash.mockImplementation(async (blockHeight: number) => `hash-${blockHeight}`);
+    indexerMocks.getBlock.mockImplementation(async (blockHash: string) => ({
+      block: {
+        extrinsics: [
+          { hash: { toString: () => `0x${blockHash}-0` } },
+          { hash: { toString: () => `0x${blockHash}-1` } },
+        ],
+      },
+    }));
+    indexerMocks.getEventsAt.mockResolvedValue([]);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it('only excludes the configured ineligible burn address', () => {
+    expect(isExcludedXorBurnAddress('cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo')).toBe(true);
+    expect(isExcludedXorBurnAddress('cnV5d93J89p5kC4dRqF5WWtDNCk1XZ3HQo9dEhGUxBQnohxEB')).toBe(false);
   });
 
   it('fetches SubQuery burn events and appends pre-indexing burn data', async () => {
@@ -38,6 +87,7 @@ describe('xor burn query', () => {
     expect(result[0]?.address).toBe('account-live');
     expect(result[0]?.amount.toString()).toBe('12.5');
     expect(result[0]?.blockHeight).toBe(123);
+    expect(result[0]?.txHash).toBe('0xtx-account-live-123');
     expect(result.length).toBeGreaterThan(1);
     expect(result.some((item) => item.address === 'cnV21a8zn14wUTuxUK6wy5Fmus8PXaGrsBUchz33MqavYqxHE')).toBe(true);
   });
@@ -74,21 +124,282 @@ describe('xor burn query', () => {
     expect(result[0]?.address).toBe('account-subsquid');
     expect(result[0]?.amount.toString()).toBe('99');
     expect(result[0]?.blockHeight).toBe(456);
+    expect(result[0]?.txHash).toBe('0xtx-account-subsquid-456');
   });
 
-  it('parses batched XOR burn calls from utility.batchAll transactions', async () => {
+  it('excludes explicitly ineligible burn addresses from rewards', async () => {
+    indexerMocks.fetchAllEntitiesConnection.mockImplementation(async (_query, _variables, parse) => [
+      parse(createBurnHistoryElement('account-eligible', '3', 456)),
+      parse(createBurnHistoryElement('cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo', '99', 457)),
+    ]);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
+
+    const result = await fetchData(300, 500);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]?.address).toBe('account-eligible');
+  });
+
+  it('returns no burns for explicitly ineligible account lookups', async () => {
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+
+    const result = await fetchData(300, 500, 'cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo');
+
+    expect(result).toEqual([]);
+    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
+  });
+
+  it('parses batched XOR burn calls from utility batch transactions', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
-      parse(createBatchBurnHistoryElement('account-batch', '42', 789)),
-      parse(createBatchBurnHistoryElement('account-other', '99', 790, '0xother')),
+      parse(createBatchBurnHistoryElement('account-batch', '42000000000000000000', 789)),
+      parse(createBatchBurnHistoryElement('account-batch-legacy', '7000000000000000000', 790, XOR.address, 'batch')),
+      parse(createBatchBurnHistoryElement('account-other', '99000000000000000000', 791, '0xother')),
     ]);
     indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
 
-    const result = await fetchData(700, 800, 'account-batch');
+    const result = await fetchData(700, 800);
 
-    expect(result[0]?.address).toBe('account-batch');
-    expect(result[0]?.amount.toString()).toBe('42');
-    expect(result[0]?.blockHeight).toBe(789);
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          address: 'account-batch',
+          amount: expect.objectContaining({}),
+          blockHeight: 789,
+          txHash: '0xtx-account-batch-789',
+        }),
+        expect.objectContaining({
+          address: 'account-batch-legacy',
+          blockHeight: 790,
+          txHash: '0xtx-account-batch-legacy-790',
+        }),
+      ])
+    );
+    expect(result.find((item) => item.address === 'account-batch')?.amount.toString()).toBe('42');
+    expect(result.find((item) => item.address === 'account-batch-legacy')?.amount.toString()).toBe('7');
+    expect(result.find((item) => item.address === 'account-batch')?.nexusRecipient).toBe(validSoraNexusAccount);
+    expect(result.find((item) => item.address === 'account-batch-legacy')?.nexusRecipient).toBeUndefined();
     expect(result.some((item) => item.address === 'account-other')).toBe(false);
+  });
+
+  it('falls back to chain events from the SOLSWAP burn start block when the indexer is missing data', async () => {
+    indexerMocks.fetchAllEntities.mockResolvedValue(null);
+    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
+      if (blockHash !== 'hash-25043004') return [];
+
+      return [
+        createAssetBurnEvent('account-chain', createAssetIdCodec(XOR.address), '10000000000000000000'),
+        createAssetBurnEventWithAssetFirst(XOR.address, 'account-chain-alt', '20000000000000000000'),
+        createAssetBurnEvent('account-other-asset', '0xother', '99000000000000000000'),
+      ];
+    });
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+
+    const result = await fetchData(25_043_003, 25_043_005);
+
+    expect(indexerMocks.getBlockHash).toHaveBeenCalledWith(25_043_003);
+    expect(indexerMocks.getBlockHash).toHaveBeenCalledWith(25_043_004);
+    expect(indexerMocks.getBlockHash).toHaveBeenCalledWith(25_043_005);
+    expect(result.some((item) => item.address === 'account-other-asset')).toBe(false);
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          address: 'account-chain',
+          blockHeight: 25_043_004,
+        }),
+        expect.objectContaining({
+          address: 'account-chain-alt',
+          blockHeight: 25_043_004,
+        }),
+      ])
+    );
+    expect(result.find((item) => item.address === 'account-chain')?.amount.toString()).toBe('10');
+    expect(result.find((item) => item.address === 'account-chain-alt')?.amount.toString()).toBe('20');
+    expect(result.find((item) => item.address === 'account-chain')?.txHash).toBe('0xhash-25043004-1');
+  });
+
+  it('uses SoraMetrics batchAll extrinsics as account-specific hints for recent burns', async () => {
+    const txHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+
+    indexerMocks.fetchAllEntities.mockResolvedValue(null);
+    indexerMocks.getBlock.mockResolvedValue(createSignedBlock(txHash, createNexusBatchAllMethod('10000000000000000000')));
+    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
+      if (blockHash !== 'hash-25868450') return [];
+      return [createAssetBurnEvent('account-chain', createAssetIdCodec(XOR.address), '10000000000000000000')];
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => ({
+        ok: true,
+        json: async () =>
+          url.includes('section=utility')
+            ? {
+                data: [
+                  {
+                    block: 25_868_450,
+                    extrinsic_index: 1,
+                    hash: txHash,
+                    signer: 'account-chain',
+                    success: 1,
+                  },
+                ],
+              }
+            : { data: [] },
+      }))
+    );
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+
+    const result = await fetchData(25_868_440, 25_868_450, 'account-chain');
+
+    expect(result).toEqual([
+      expect.objectContaining({
+        address: 'account-chain',
+        blockHeight: 25_868_450,
+        nexusRecipient: validSoraNexusAccount,
+        txHash,
+      }),
+    ]);
+    expect(result[0]?.amount.toString()).toBe('10');
+  });
+
+  it('uses SoraMetrics batch extrinsics as logged-out global burn hints', async () => {
+    const txHash = '0xbatch60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+
+    vi.useFakeTimers();
+    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue(null);
+    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
+      if (blockHash !== 'hash-25870000') return [];
+      return [createAssetBurnEvent('account-batch-chain', createAssetIdCodec(XOR.address), '5000000000000000000')];
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => ({
+        ok: true,
+        json: async () =>
+          url.includes('section=utility') && /[?&]method=batch(?:&|$)/.test(url) && url.includes('page=1')
+            ? {
+                data: [
+                  {
+                    block: 25_870_000,
+                    extrinsic_index: 1,
+                    hash: txHash,
+                    signer: 'account-batch-chain',
+                    success: 1,
+                  },
+                ],
+              }
+            : { data: [] },
+      }))
+    );
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
+
+    const result = await fetchData(25_867_650, 25_900_000);
+    const metricsBurn = result.find((item) => item.txHash === txHash);
+
+    expect(metricsBurn).toEqual(
+      expect.objectContaining({
+        address: 'account-batch-chain',
+        blockHeight: 25_870_000,
+        txHash,
+      })
+    );
+    expect(metricsBurn?.amount.toString()).toBe('5');
+  });
+
+  it('does not wait for broad account RPC scans when SoraMetrics has a matching burn', async () => {
+    const txHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+
+    vi.useFakeTimers();
+    indexerMocks.fetchAllEntities.mockResolvedValue(null);
+    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
+      if (blockHash !== 'hash-25868450') return [];
+      return [createAssetBurnEvent('account-chain', createAssetIdCodec(XOR.address), '10000000000000000000')];
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => ({
+        ok: true,
+        json: async () =>
+          url.includes('section=utility') && url.includes('page=1')
+            ? {
+                data: [
+                  {
+                    block: 25_868_450,
+                    extrinsic_index: 1,
+                    hash: txHash,
+                    signer: 'account-chain',
+                    success: 1,
+                  },
+                ],
+              }
+            : { data: [] },
+      }))
+    );
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+
+    const result = await fetchData(25_043_003, 25_900_000, 'account-chain');
+
+    expect(result).toEqual([
+      expect.objectContaining({
+        address: 'account-chain',
+        blockHeight: 25_868_450,
+        txHash,
+      }),
+    ]);
+    expect(indexerMocks.getBlockHash).toHaveBeenCalledTimes(1);
+    expect(indexerMocks.getBlockHash).toHaveBeenCalledWith(25_868_450);
+  });
+
+  it('uses SoraMetrics hints for logged-out global burn totals before broad RPC scans finish', async () => {
+    const txHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+
+    vi.useFakeTimers();
+    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue(null);
+    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
+      if (blockHash !== 'hash-25868450') return [];
+      return [createAssetBurnEvent('account-chain', createAssetIdCodec(XOR.address), '10000000000000000000')];
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => ({
+        ok: true,
+        json: async () =>
+          url.includes('section=utility') && url.includes('page=1')
+            ? {
+                data: [
+                  {
+                    block: 25_868_450,
+                    extrinsic_index: 1,
+                    hash: txHash,
+                    signer: 'account-chain',
+                    success: 1,
+                  },
+                ],
+              }
+            : { data: [] },
+      }))
+    );
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
+
+    const result = await fetchData(25_043_003, 25_900_000);
+    const metricsBurn = result.find((item) => item.txHash === txHash);
+
+    expect(metricsBurn).toEqual(
+      expect.objectContaining({
+        address: 'account-chain',
+        blockHeight: 25_868_450,
+        txHash,
+      })
+    );
+    expect(metricsBurn?.amount.toString()).toBe('10');
+    expect(indexerMocks.getBlockHash).toHaveBeenCalledWith(25_868_450);
+  });
+
+  it('does not reject when the chain fallback runs before the websocket is connected', async () => {
+    indexerMocks.fetchAllEntities.mockResolvedValue(null);
+    indexerMocks.getBlockHash.mockRejectedValue(new Error('WebSocket is not connected'));
+    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+
+    await expect(fetchData(25_043_003, 25_043_003)).resolves.toEqual(expect.any(Array));
   });
 
   it('returns an empty array when Subsquid returns null data', async () => {
@@ -118,6 +429,7 @@ const createIndexer = (type: unknown) => ({
 });
 
 const createBurnHistoryElement = (address: string, amount: string, blockHeight: string | number) => ({
+  id: `0xtx-${address}-${blockHeight}`,
   address,
   module: 'assets',
   method: 'burn',
@@ -133,11 +445,14 @@ const createBatchBurnHistoryElement = (
   address: string,
   amount: string,
   blockHeight: string | number,
-  assetId = XOR.address
+  assetId = XOR.address,
+  method = 'batchAll',
+  remark = createSoraNexusXorBurnRemark(validSoraNexusAccount)
 ) => ({
+  id: `0xtx-${address}-${blockHeight}`,
   address,
   module: 'utility',
-  method: 'batchAll',
+  method,
   data: {},
   blockHeight,
   calls: {
@@ -157,10 +472,84 @@ const createBatchBurnHistoryElement = (
         method: 'remark',
         data: {
           args: {
-            remark: '0x68656c6c6f',
+            remark: toHex(remark),
           },
         },
       },
     ],
+  },
+});
+
+const toHex = (value: string) => `0x${Buffer.from(value, 'utf8').toString('hex')}`;
+
+const createSignedBlock = (txHash: string, method?: unknown) => ({
+  block: {
+    extrinsics: [
+      { hash: { toString: () => '0xother' } },
+      {
+        hash: { toString: () => txHash },
+        method,
+      },
+    ],
+  },
+});
+
+const createNexusBatchAllMethod = (amount: string) => ({
+  section: 'utility',
+  method: 'batchAll',
+  args: [
+    [
+      {
+        section: 'assets',
+        method: 'burn',
+        args: [createAssetIdCodec(XOR.address), { toString: () => amount }],
+      },
+      {
+        section: 'system',
+        method: 'remark',
+        args: [{ toString: () => toHex(createSoraNexusXorBurnRemark(validSoraNexusAccount)) }],
+      },
+    ],
+  ],
+});
+
+const createAssetBurnEvent = (
+  address: string,
+  assetId: string | { toString: () => string; toJSON: () => unknown; code: { toString: () => string } },
+  amount: string,
+  extrinsicIndex = 1
+) => ({
+  phase: {
+    isApplyExtrinsic: true,
+    asApplyExtrinsic: {
+      toNumber: () => extrinsicIndex,
+      toString: () => `${extrinsicIndex}`,
+    },
+  },
+  event: {
+    section: 'assets',
+    method: 'Burn',
+    data: [{ toString: () => address }, typeof assetId === 'string' ? { toString: () => assetId } : assetId, { toString: () => amount }],
+  },
+});
+
+const createAssetIdCodec = (assetId: string) => ({
+  code: { toString: () => assetId },
+  toJSON: () => ({ code: assetId }),
+  toString: () => JSON.stringify({ code: assetId }),
+});
+
+const createAssetBurnEventWithAssetFirst = (assetId: string, address: string, amount: string, extrinsicIndex = 1) => ({
+  phase: {
+    isApplyExtrinsic: true,
+    asApplyExtrinsic: {
+      toNumber: () => extrinsicIndex,
+      toString: () => `${extrinsicIndex}`,
+    },
+  },
+  event: {
+    section: 'assets',
+    method: 'Burn',
+    data: [{ toString: () => assetId }, { toString: () => address }, { toString: () => amount }],
   },
 });

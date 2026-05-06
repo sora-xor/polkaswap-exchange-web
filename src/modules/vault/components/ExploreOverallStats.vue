@@ -142,11 +142,6 @@ const statsColumns = computed(() =>
 <style lang="scss" scoped>
 .stats-column {
   border-style: none;
-
-  @include desktop {
-    flex-basis: calc(var(--s-col-span-width-current) + 6px);
-    max-width: calc(var(--s-col-span-width-current) + 6px);
-  }
 }
 
 .stats-card {

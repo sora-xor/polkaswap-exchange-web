@@ -1,5 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 
@@ -97,6 +98,7 @@ vi.mock('@/stores/wallet', () => ({
 const web3StoreMock = vi.hoisted(() => ({
   networkType: null as Nullable<BridgeNetworkType>,
   networkSelected: null as Nullable<string | number>,
+  ethBridgeEvmNetwork: null as Nullable<number>,
   isValidNetwork: true,
   getEvmTokenAddressByAssetId: vi.fn(),
 }));
@@ -155,6 +157,7 @@ vi.mock('@/utils/ethers-util', () => ({
 const resetLegacyStoreStub = () => {
   web3StoreMock.networkType = BridgeNetworkType.Eth;
   web3StoreMock.networkSelected = null;
+  web3StoreMock.ethBridgeEvmNetwork = null;
   web3StoreMock.isValidNetwork = true;
   web3StoreMock.getEvmTokenAddressByAssetId.mockReset();
   bridgeStoreMock.subBridgeConnector = {
@@ -343,6 +346,63 @@ describe('useAssetsStore bridge fetchers', () => {
       },
     ]);
     expect(ethRegisteredAssetsMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('filters XOR from Hashi assets on Ethereum Mainnet', async () => {
+    const ethPayload = {
+      [XOR.address]: {
+        address: '0xXorContract',
+        decimals: 18,
+        assetKind: 'xor',
+      },
+      '0x01': {
+        address: '0xExternal',
+        decimals: 18,
+        assetKind: 'evm',
+      },
+    };
+    web3StoreMock.networkType = BridgeNetworkType.Eth;
+    web3StoreMock.networkSelected = EvmNetworkId.EthereumMainnet;
+    ethRegisteredAssetsMock.mockResolvedValue(ethPayload);
+
+    const store = useAssetsStore();
+    const result = await store.fetchRegisteredAssetsFromNetwork();
+
+    expect(result).toEqual([
+      {
+        '0x01': {
+          address: '0xExternal',
+          decimals: 18,
+          kind: 'evm',
+        },
+      },
+    ]);
+  });
+
+  it('keeps XOR selectable for Hashi assets on other networks', async () => {
+    const ethPayload = {
+      [XOR.address]: {
+        address: '0xXorContract',
+        decimals: 18,
+        assetKind: 'xor',
+      },
+    };
+    web3StoreMock.networkType = BridgeNetworkType.Eth;
+    web3StoreMock.networkSelected = EvmNetworkId.BinanceSmartChainMainnet;
+    ethRegisteredAssetsMock.mockResolvedValue(ethPayload);
+
+    const store = useAssetsStore();
+    const result = await store.fetchRegisteredAssetsFromNetwork();
+
+    expect(result).toEqual([
+      {
+        [XOR.address]: {
+          address: '0xXorContract',
+          decimals: 18,
+          kind: 'xor',
+        },
+      },
+    ]);
   });
 
   it('fetches EVM registered assets when network type is Evm', async () => {

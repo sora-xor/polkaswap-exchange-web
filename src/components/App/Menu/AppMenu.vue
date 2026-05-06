@@ -184,9 +184,6 @@ const currentPath = computed(() => {
 
 const sidebarMenuItems = computed(() => {
   let menuItems: SidebarMenuItemLink[] = SidebarMenuGroups.slice();
-  if (route.name !== PageNames.Burn) {
-    menuItems = menuItems.filter(({ title }) => title !== PageNames.Burn);
-  }
   if (!orderBookEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
   }

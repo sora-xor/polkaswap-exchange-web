@@ -3,11 +3,37 @@ import { ref } from 'vue';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import BurnPage from '@/features/misc/pages/BurnPage.vue';
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { createSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
+
+const validSoraNexusAccount = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃaﾘﾒﾓQﾗrﾒoﾘﾅnｳﾘbQｳQJﾆLJ5HSE';
 
 const connectWalletMock = vi.fn();
 const waitForNetworkMock = vi.fn().mockResolvedValue('prod');
 const fetchBurnDataMock = vi.fn().mockResolvedValue([]);
+const walletApiMock = vi.hoisted(() => ({
+  historyList: [] as Array<{
+    id?: string;
+    txId?: string;
+    type?: Operation;
+    amount?: string;
+    assetAddress?: string;
+    from?: string;
+    blockId?: string;
+    comment?: string;
+    blockHeight?: number;
+  }>,
+  connection: {
+    api: {
+      rpc: {
+        chain: {
+          getHeader: vi.fn(),
+        },
+      },
+    },
+  },
+}));
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
@@ -50,6 +76,11 @@ vi.mock('@/composables/useFormattedAmount', () => ({
 
 vi.mock('@/indexer/queries/burnXor', () => ({
   fetchData: (...args: unknown[]) => fetchBurnDataMock(...(args as Parameters<typeof fetchBurnDataMock>)),
+  isExcludedXorBurnAddress: (address: string) => address === 'cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo',
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: walletApiMock,
 }));
 
 vi.mock('@/utils', () => ({
@@ -57,7 +88,7 @@ vi.mock('@/utils', () => ({
 }));
 
 const settingsStoreMock = vi.hoisted(() => ({
-  blockNumber: 25_100_000,
+  blockNumber: 25_900_000,
   soraNetwork: 'Prod',
 }));
 
@@ -80,7 +111,10 @@ describe('Burn.vue', () => {
       template:
         '<div class="info-line-stub"><span class="label">{{ label }}</span><span class="value">{{ value }}</span><span class="asset">{{ assetSymbol }}</span></div>',
     },
-    's-button': { template: '<button><slot /></button>' },
+    's-button': {
+      props: ['icon', 'tooltip'],
+      template: '<button :data-icon="icon" :title="tooltip"><slot /></button>',
+    },
     's-form': { template: '<form><slot /></form>' },
     's-row': { template: '<div><slot /></div>' },
     's-col': { template: '<div><slot /></div>' },
@@ -88,11 +122,13 @@ describe('Burn.vue', () => {
   };
 
   beforeEach(async () => {
-    settingsStoreMock.blockNumber = 25_100_000;
+    settingsStoreMock.blockNumber = 25_900_000;
     settingsStoreMock.soraNetwork = 'Prod';
     loadingRef.value = false;
     fetchBurnDataMock.mockResolvedValue([]);
     waitForNetworkMock.mockResolvedValue('prod');
+    walletApiMock.historyList.length = 0;
+    walletApiMock.connection.api.rpc.chain.getHeader.mockReset();
   });
 
   afterEach(() => {
@@ -126,7 +162,7 @@ describe('Burn.vue', () => {
 
     expect(vm.burnDialogVisible).toBe(true);
     expect(vm.selectedReceivedAsset.symbol).toBe('SS');
-    expect(vm.selectedRate).toBe('0.01');
+    expect(vm.selectedRate).toBe('0.02');
     expect(vm.selectedMax).toBe(100_000_000);
     expect(vm.selectedMin).toBe(1);
     expect(vm.selectedRequiresNexusRecipient).toBe(true);
@@ -172,14 +208,23 @@ describe('Burn.vue', () => {
     expect(loadingRef.value).toBe(false);
     vm.handleBurnConfirm(true);
     expect(loadingRef.value).toBe(true);
+
+    wrapper.unmount();
   });
 
   it('aggregates burned amounts for qualifying accounts', async () => {
     const amount = new FPNumber(2);
 
     fetchBurnDataMock.mockResolvedValue([
-      { blockHeight: 25_100_000, amount, address: 'alice' },
-      { blockHeight: 25_100_000, amount, address: 'bob' },
+      { blockHeight: 25_100_000, amount, address: 'alice', txHash: '0xlegacyalice' },
+      {
+        blockHeight: 25_900_000,
+        amount,
+        address: 'alice',
+        nexusRecipient: validSoraNexusAccount,
+        txHash: '0xnexusalice',
+      },
+      { blockHeight: 25_900_000, amount, address: 'bob', txHash: '0xnexusbob' },
     ]);
 
     const wrapper = mount(BurnPage, {
@@ -194,8 +239,195 @@ describe('Burn.vue', () => {
 
     const vm = wrapper.vm as unknown as Record<string, any>;
 
-    expect(vm.totalXorBurned.solswap.gte(amount.add(amount))).toBe(true);
-    expect(vm.accountXorBurned.solswap.gte(amount)).toBe(true);
+    expect(vm.totalXorBurned.solswap.toString()).toBe('6');
+    expect(vm.accountXorBurned.solswap.toString()).toBe('4');
+    expect(vm.totalReserved.solswap.toString()).toBe('400');
+    expect(vm.accountReserved.solswap.toString()).toBe('300');
+    expect(vm.totalNexusReserved.solswap.toString()).toBe('2');
+    expect(vm.accountNexusReserved.solswap.toString()).toBe('2');
+    expect(vm.accountClaimRows.solswap).toEqual([
+      expect.objectContaining({
+        blockHeight: 25_900_000,
+        burned: '2',
+        ssReserved: '100',
+        nexusReserved: '2',
+        txHash: '0xnexusalice',
+      }),
+      expect.objectContaining({
+        blockHeight: 25_100_000,
+        burned: '2',
+        ssReserved: '200',
+        nexusReserved: '0',
+        txHash: '0xlegacyalice',
+      }),
+    ]);
+  });
+
+  it('keeps account-specific burn totals separate when the global burn fetch is not ready yet', async () => {
+    const exampleHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+
+    fetchBurnDataMock.mockImplementation((_start: number, _end: number, account?: string) => {
+      if (account) {
+        return Promise.resolve([
+          {
+            blockHeight: 25_868_450,
+            amount: new FPNumber(10),
+            address: 'alice',
+            nexusRecipient: validSoraNexusAccount,
+            txHash: exampleHash,
+          },
+        ]);
+      }
+
+      return Promise.reject(new Error('WebSocket is not connected'));
+    });
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+
+    expect(vm.totalXorBurned.solswap.toString()).toBe('0');
+    expect(vm.accountXorBurned.solswap.toString()).toBe('10');
+    expect(vm.totalReserved.solswap.toString()).toBe('0');
+    expect(vm.accountReserved.solswap.toString()).toBe('500');
+    expect(vm.totalNexusReserved.solswap.toString()).toBe('0');
+    expect(vm.accountNexusReserved.solswap.toString()).toBe('10');
+    expect(vm.accountClaimRows.solswap).toEqual([
+      expect.objectContaining({
+        blockHeight: 25_868_450,
+        burned: '10',
+        ssReserved: '500',
+        nexusReserved: '10',
+        txHash: exampleHash,
+      }),
+    ]);
+  });
+
+  it('renders Minamoto claim rows with SORA tx hashes and copy icons', async () => {
+    const exampleHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+
+    fetchBurnDataMock.mockResolvedValue([
+      {
+        blockHeight: 25_900_000,
+        amount: new FPNumber(10),
+        address: 'alice',
+        nexusRecipient: validSoraNexusAccount,
+        txHash: exampleHash,
+      },
+    ]);
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    const text = wrapper.text();
+    const copyButton = wrapper.find('.claim-row__copy');
+
+    expect(text).toContain('Your Minamoto claim details');
+    expect(text).toContain('Use the SORA Network tx hash for your claim on SORA Minamoto');
+    expect(text).toContain('10 XOR burned');
+    expect(text).toContain('500');
+    expect(text).toContain('SS tokens');
+    expect(text).toContain('SORA Nexus XOR');
+    expect(text).toContain(exampleHash);
+    expect(copyButton.exists()).toBe(true);
+    expect(copyButton.attributes('data-icon')).toBe('basic-copy-24');
+  });
+
+  it('shows a freshly submitted local burn before the indexer returns it', async () => {
+    const exampleHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+
+    fetchBurnDataMock.mockResolvedValue([]);
+    walletApiMock.historyList.push({
+      id: exampleHash,
+      txId: exampleHash,
+      type: Operation.Burn,
+      amount: '10',
+      assetAddress: XOR.address,
+      comment: createSoraNexusXorBurnRemark(validSoraNexusAccount),
+      from: 'alice',
+    });
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+    const text = wrapper.text();
+
+    expect(vm.totalXorBurned.solswap.toString()).toBe('0');
+    expect(vm.accountXorBurned.solswap.toString()).toBe('10');
+    expect(vm.totalReserved.solswap.toString()).toBe('0');
+    expect(vm.accountReserved.solswap.toString()).toBe('500');
+    expect(vm.totalNexusReserved.solswap.toString()).toBe('0');
+    expect(vm.accountNexusReserved.solswap.toString()).toBe('10');
+    expect(vm.accountClaimRows.solswap).toEqual([
+      expect.objectContaining({
+        blockHeight: null,
+        burned: '10',
+        ssReserved: '500',
+        nexusReserved: '10',
+        txHash: exampleHash,
+      }),
+    ]);
+    expect(text).toContain('Transaction was submitted');
+    expect(text).toContain(exampleHash);
+  });
+
+  it('does not reserve SORA Nexus XOR for plain burns without a Nexus recipient remark', async () => {
+    fetchBurnDataMock.mockResolvedValue([
+      {
+        blockHeight: 25_900_000,
+        amount: new FPNumber(10),
+        address: 'alice',
+        txHash: '0xplainburn',
+      },
+    ]);
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+
+    expect(vm.totalXorBurned.solswap.toString()).toBe('10');
+    expect(vm.totalReserved.solswap.toString()).toBe('500');
+    expect(vm.totalNexusReserved.solswap.toString()).toBe('0');
+    expect(vm.accountNexusReserved.solswap.toString()).toBe('0');
+    expect(vm.accountClaimRows.solswap).toEqual([
+      expect.objectContaining({
+        burned: '10',
+        ssReserved: '500',
+        nexusReserved: '0',
+        txHash: '0xplainburn',
+      }),
+    ]);
   });
 
   it('renders burn amounts without trailing decimal zeros', async () => {
@@ -216,9 +448,12 @@ describe('Burn.vue', () => {
 
     const text = wrapper.text();
 
-    expect(text).toContain('0.01');
-    expect(text).toContain('100 SOLSWAP per 1 XOR burned');
-    expect(text).toContain('SORA Nexus account for 1:1 Nexus XOR distribution');
+    expect(text).toContain('0.02');
+    expect(text).toContain('From block 25,867,650');
+    expect(text).toContain('1 SORA Nexus XOR and 50 SS tokens per 1 XOR burned');
+    expect(text).toContain('Blocks 25,043,003-25,867,649');
+    expect(text).toContain('0 SORA Nexus XOR and 100 SS tokens per 1 XOR burned');
+    expect(text).toContain('TOTAL SORA NEXUS XOR RESERVED');
     expect(text).toContain('SORA Nexus XOR');
     expect(text).not.toContain('Time left');
     expect(text).not.toContain('Reserve KARMA');

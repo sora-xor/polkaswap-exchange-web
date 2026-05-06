@@ -265,7 +265,14 @@
         "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
         "nexusRecipientLabel": "SORA Nexus account",
         "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
+        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
+        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
+        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
+        "minamotoClaimTitle": "Your Minamoto claim details",
+        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "soraNexusXorLabel": "SORA Nexus XOR",
+        "ssTokensLabel": "SS tokens"
     },
     "buttons": {
         "chooseAToken": "Wähle einen Token",

@@ -63,7 +63,7 @@ describe('AssetsModule.burnWithRemark', () => {
     await assets.burnWithRemark(asset as any, '2', ' public recipient ');
 
     expect(root.api.tx.assets.burn).toHaveBeenCalledWith('0xasset', '2');
-    expect(Array.from(root.api.tx.system.remark.mock.calls[0][0])).toEqual(Array.from(Buffer.from('public recipient')));
+    expect(root.api.tx.system.remark).toHaveBeenCalledWith('0x7075626c696320726563697069656e74');
     expect(root.api.tx.utility.batchAll).toHaveBeenCalledWith([burnTx, remarkTx]);
     expect(root.submitExtrinsic).toHaveBeenCalledWith(batchTx, root.account.pair, {
       type: Operation.Burn,
@@ -72,5 +72,19 @@ describe('AssetsModule.burnWithRemark', () => {
       symbol: 'TOK',
       comment: 'public recipient',
     });
+  });
+
+  it('hex-encodes JSON remarks so polkadot-js does not decode raw UTF-8 as SCALE Bytes', async () => {
+    const { root } = createRoot();
+    const assets = new AssetsModule(root as any);
+    const recipient = 'sorauﾛ1PﾇyﾗKﾜazﾃｴ1GｦｲｿQﾓtｵﾆPvﾌqRﾆRﾛﾋﾜtﾇs5ｺｷﾚﾆﾇD1UYJ6';
+    const remark = JSON.stringify({ type: 'soraNexusXorClaim', version: 1, recipient });
+
+    await assets.burnWithRemark(asset as any, '10', remark);
+
+    const [remarkArg] = root.api.tx.system.remark.mock.calls[0] ?? [];
+    expect(remarkArg).toBe(`0x${Buffer.from(remark).toString('hex')}`);
+    expect(remarkArg).not.toBeInstanceOf(Uint8Array);
+    expect(Buffer.from(remarkArg.slice(2), 'hex').toString('utf8')).toBe(remark);
   });
 });
