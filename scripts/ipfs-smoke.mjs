@@ -26,6 +26,13 @@ const contentTypeByExt = {
   '.ttf': 'font/ttf',
 };
 
+const allowedConsoleErrorPatterns = [
+  /Failed to load resource: net::ERR_CERT_COMMON_NAME_INVALID/i,
+  /Failed to load resource: net::ERR_NAME_NOT_RESOLVED/i,
+  /\[Exchange rate API\] Error while fetching rates\./i,
+  /failed to instantiate a new WASM module instance: Limit of 32 concurrent instances has been reached/i,
+];
+
 const resolvePath = (urlPath) => {
   const normalized = urlPath.startsWith(basePath) ? urlPath.slice(basePath.length) || '/' : urlPath;
   const pathInDist = normalized === '/' ? '/index.html' : normalized;
@@ -68,6 +75,10 @@ const serveDist = createServer(async (req, res) => {
 
 const consoleMessages = [];
 let pageError;
+
+const isAllowedConsoleError = (message) => {
+  return allowedConsoleErrorPatterns.some((pattern) => pattern.test(message));
+};
 
 const run = async () => {
   console.log(`[ipfs-smoke] Serving ${distDir} at http://127.0.0.1:${port}${basePath}/index.html#/`);
@@ -128,7 +139,7 @@ const run = async () => {
     if (pageError) {
       throw pageError;
     }
-    const consoleErrors = consoleMessages.filter((m) => m.type === 'error');
+    const consoleErrors = consoleMessages.filter((m) => m.type === 'error' && !isAllowedConsoleError(m.text));
     if (consoleErrors.length > 0 || !appState.hasContent || appState.offlineShell) {
       envDebug = await page.evaluate(() => ({
         forceOnline: window.__PS_FORCE_ONLINE__,

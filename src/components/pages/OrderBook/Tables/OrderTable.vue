@@ -114,7 +114,6 @@
 <script setup lang="ts">
 import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import dayjs from 'dayjs/esm';
 import debounce from 'lodash/debounce';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
@@ -129,7 +128,8 @@ import { OrderStatus } from '@/types/orderBook';
 
 import type { OrderData } from '@/types/orderBook';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
-import type { OrderStatus as OrderStatusType } from '@/shims/wallet-indexer-types';
+import type { OrderStatus as OrderStatusType } from '@/lib/soraneo-wallet/src/services/indexer/types';
+import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 
 type OrderTableRow = {
   id: LimitOrder['id'];
@@ -150,7 +150,7 @@ type OrderTableRow = {
 
 defineOptions({
   components: {
-    HistoryPagination: components.HistoryPagination,
+    HistoryPagination: WalletComponentHistoryPagination,
   },
 });
 

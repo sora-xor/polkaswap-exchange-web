@@ -48,26 +48,23 @@
 
 <script setup lang="ts">
 import { CodecString } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
+import BridgeTransactionDetails from '@/components/pages/Bridge/TransactionDetails.vue';
 import { useLoading } from '@/composables/useLoading';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
-import { Components as LazyComponents, ZeroStringValue } from '@/consts';
-import { lazyComponent } from '@/router';
+import { ZeroStringValue } from '@/consts';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import AccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
+import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 defineOptions({
-  components: {
-    DialogBase: components.DialogBase,
-    AccountConfirmationOption: components.AccountConfirmationOption,
-    BridgeTransactionDetails: lazyComponent(LazyComponents.BridgeTransactionDetails),
-  },
+  name: 'ConfirmBridgeTransactionDialog',
 });
 
 const props = withDefaults(

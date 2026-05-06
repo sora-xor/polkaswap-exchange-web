@@ -33,20 +33,21 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed, nextTick, ref, watch } from 'vue';
 
 import { useSearchInput } from '@/composables/useSearchInput';
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
 
-import type { CurrencyFields, Currency } from '@/shims/wallet-currency-types';
+import type { CurrencyFields, Currency } from '@/lib/soraneo-wallet/src/types/currency';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 defineOptions({
   name: 'SelectCurrencyDialog',
   components: {
-    DialogBase: components.DialogBase,
-    SearchInput: components.SearchInput,
+    DialogBase: WalletComponentDialogBase,
+    SearchInput: WalletComponentSearchInput,
   },
 });
 
@@ -79,12 +80,13 @@ const filteredCurrencies = computed(() => {
   const rawQuery = query.value.toLowerCase().trim();
   if (!rawQuery) return currencies.value;
 
-  return currencies.value.filter(
-    (item) =>
-      item.name.toLowerCase().includes(rawQuery) ||
-      item.symbol.toLowerCase().includes(rawQuery) ||
-      item.key.toLowerCase().includes(rawQuery)
-  );
+  return currencies.value.filter((item) => {
+    const name = String(item?.name ?? '').toLowerCase();
+    const symbol = String(item?.symbol ?? '').toLowerCase();
+    const key = String(item?.key ?? '').toLowerCase();
+
+    return name.includes(rawQuery) || symbol.includes(rawQuery) || key.includes(rawQuery);
+  });
 });
 
 function setSelectedEl(element: HTMLDivElement | null, isSelected: boolean): void {

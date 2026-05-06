@@ -10,15 +10,12 @@ import { defineStore } from 'pinia';
 import { combineLatest } from 'rxjs';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
-import { api } from '@/shims/wallet-api';
-import { beforeTransactionSign } from '@/shims/wallet-util';
+import { api } from '@/lib/soraneo-wallet/src/api';
+import { beforeTransactionSign } from '@/lib/soraneo-wallet/src/util';
 import { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { getDataPlaneClient, normalizeRealtimeProfile, parseSubstrateHeaderNumber } from '@/services/realtime';
 import { resolveRegisteredAssets } from '@/stores/bridge/assets';
-import { useBridgeFormStore } from '@/stores/bridge/form';
-import { useBridgeHistoryStore } from '@/stores/bridge/history';
-import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 import { useAssetsStore } from '@/stores/assets';
 import { BridgeFocusedField, type BridgeFormPatch, type BridgeState } from '@/stores/bridge/types';
 import { useMoonpayStore } from '@/stores/moonpay';
@@ -26,7 +23,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
 import type { Nullable } from '@/types/common';
-import type { TransactionSignVisibilityController } from '@/shims/wallet-util';
+import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
 import { BridgeTransactionSignDialogMode } from '@/utils/bridge/common/types';
 import { isDenominatedAsset, isWaitingForAction, waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
@@ -49,6 +46,7 @@ import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
+import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -113,11 +111,12 @@ const buildInitialState = (): BridgeState => ({
   connector: new SubNetworksConnector(),
 });
 
-type BridgeCompatStoreLike = {
+type BridgeStateStoreLike = {
   $patch: (state: Partial<BridgeState> | ((state: BridgeState) => void)) => void;
 } & Pick<BridgeState, 'history' | 'flags' | 'balances' | 'fees' | 'subscriptions' | 'form'>;
-type BridgeRealtimeStoreLike = BridgeCompatStoreLike &
+type BridgeRealtimeStoreLike = BridgeStateStoreLike &
   Pick<BridgeState, 'connector'> & {
+    $subscribe: (...args: any[]) => () => void;
     updateExternalBalance: () => Promise<void>;
     updateExternalMinBalance: () => Promise<void>;
     updateFeesAndLockedFunds: () => Promise<void>;
@@ -158,19 +157,17 @@ const isRecord = (value: unknown): value is Record<string, any> => Boolean(value
 
 // Bridge signing still relies on wallet-level password checks, but the dialog
 // itself is owned by the bridge Pinia UI state instead of a root-store mutation.
-const createBridgeSignDialogController = (): TransactionSignVisibilityController => {
-  const transactionsStore = useBridgeTransactionsStore();
-
+const createBridgeSignDialogController = (store: BridgeRealtimeStoreLike): TransactionSignVisibilityController => {
   return {
     setVisibility: (visible: boolean) => {
-      transactionsStore.setSignTxDialogVisibility(visible);
+      store.setSignTxDialogVisibility(visible);
     },
     subscribe: (handler: (visible: boolean) => void) => {
-      let previous = Boolean(transactionsStore.isSignTxDialogVisible);
+      let previous = Boolean(store.flags.isSignTxDialogVisible);
 
-      return transactionsStore.$subscribe(
+      return store.$subscribe(
         (_mutation, state) => {
-          const next = Boolean(state.isSignTxDialogVisible);
+          const next = Boolean(state.flags?.isSignTxDialogVisible);
 
           if (next === previous) {
             return;
@@ -443,31 +440,28 @@ const resolveBridgeApi = (): BridgeApiLike => {
 };
 
 const syncInternalHistoryCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   history: Record<string, IBridgeTransaction> = {}
 ): Record<string, IBridgeTransaction> => {
   const nextHistory = Object.freeze({ ...history }) as Record<string, IBridgeTransaction>;
 
   store.history.internal = nextHistory;
-  useBridgeTransactionsStore().syncHistoryInternalFromLegacy(nextHistory);
 
   return nextHistory;
 };
 
-const syncHistoryPageCompat = (store: BridgeCompatStoreLike, page?: number): number => {
+const syncHistoryPageCompat = (store: BridgeStateStoreLike, page?: number): number => {
   const nextPage = normalizeHistoryPage(page);
 
   store.history.page = nextPage;
-  useBridgeHistoryStore().syncHistoryPageFromLegacy(nextPage);
 
   return nextPage;
 };
 
-const syncHistoryIdCompat = (store: BridgeCompatStoreLike, id?: string): string => {
+const syncHistoryIdCompat = (store: BridgeStateStoreLike, id?: string): string => {
   const nextId = id ?? '';
 
   store.history.id = nextId;
-  useBridgeHistoryStore().syncHistoryIdFromLegacy(nextId);
 
   return nextId;
 };
@@ -488,7 +482,7 @@ const resolveWalletApiKey = (key: string): string => {
 };
 
 const syncHistoryLoadingCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   networkId: BridgeNetworkId,
   loading: boolean
 ): Record<string, boolean> => {
@@ -501,19 +495,18 @@ const syncHistoryLoadingCompat = (
   }
 
   store.history.loading = nextLoading;
-  useBridgeTransactionsStore().syncHistoryLoadingFromLegacy(nextLoading);
 
   return nextLoading;
 };
 
-const syncBalancesFetchingCompat = (store: BridgeCompatStoreLike, flag: boolean): boolean => {
+const syncBalancesFetchingCompat = (store: BridgeStateStoreLike, flag: boolean): boolean => {
   store.flags.balancesFetching = flag;
 
   return flag;
 };
 
 const syncBalancesBatchCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   data: { sender?: Nullable<CodecString>; recipient?: Nullable<CodecString>; native?: CodecString }
 ): void => {
   if (data.sender !== undefined) {
@@ -525,16 +518,9 @@ const syncBalancesBatchCompat = (
   if (data.native !== undefined) {
     store.fees.externalNativeBalance = data.native ?? ZeroStringValue;
   }
-
-  const formStore = useBridgeFormStore();
-  formStore.syncAssetSenderBalance(store.balances.assetSenderBalance);
-  formStore.syncAssetRecipientBalance(store.balances.assetRecipientBalance);
-  if (data.native !== undefined) {
-    formStore.syncExternalNativeBalance(store.fees.externalNativeBalance);
-  }
 };
 
-const syncExternalBlockNumberCompat = (store: BridgeCompatStoreLike, value?: number): number => {
+const syncExternalBlockNumberCompat = (store: BridgeStateStoreLike, value?: number): number => {
   const blockNumber = Number.isFinite(Number(value)) ? Number(value) : 0;
 
   store.fees.externalBlockNumber = blockNumber;
@@ -542,70 +528,62 @@ const syncExternalBlockNumberCompat = (store: BridgeCompatStoreLike, value?: num
   return store.fees.externalBlockNumber;
 };
 
-const syncAssetLockedBalanceCompat = (store: BridgeCompatStoreLike, value: Nullable<FPNumber>): Nullable<FPNumber> => {
+const syncAssetLockedBalanceCompat = (store: BridgeStateStoreLike, value: Nullable<FPNumber>): Nullable<FPNumber> => {
   store.balances.assetLockedBalance = value ?? null;
-  useBridgeFormStore().syncAssetLockedBalance(store.balances.assetLockedBalance);
 
   return store.balances.assetLockedBalance;
 };
 
-const syncSoraNetworkFeeCompat = (store: BridgeCompatStoreLike, fee?: Nullable<CodecString>): CodecString => {
+const syncSoraNetworkFeeCompat = (store: BridgeStateStoreLike, fee?: Nullable<CodecString>): CodecString => {
   store.fees.soraNetworkFee = fee ?? ZeroStringValue;
-  useBridgeFormStore().syncSoraNetworkFee(store.fees.soraNetworkFee);
 
   return store.fees.soraNetworkFee;
 };
 
-const syncExternalTransferFeeCompat = (store: BridgeCompatStoreLike, fee?: Nullable<CodecString>): CodecString => {
+const syncExternalTransferFeeCompat = (store: BridgeStateStoreLike, fee?: Nullable<CodecString>): CodecString => {
   store.fees.externalTransferFee = fee ?? ZeroStringValue;
-  useBridgeFormStore().syncExternalTransferFee(store.fees.externalTransferFee);
 
   return store.fees.externalTransferFee;
 };
 
-const syncExternalNetworkFeeCompat = (store: BridgeCompatStoreLike, fee?: Nullable<CodecString>): CodecString => {
+const syncExternalNetworkFeeCompat = (store: BridgeStateStoreLike, fee?: Nullable<CodecString>): CodecString => {
   store.fees.externalNetworkFee = fee ?? ZeroStringValue;
-  useBridgeFormStore().syncExternalNetworkFee(store.fees.externalNetworkFee);
 
   return store.fees.externalNetworkFee;
 };
 
-const syncFeesAndLockedFundsFetchingCompat = (store: BridgeCompatStoreLike, flag: boolean): boolean => {
+const syncFeesAndLockedFundsFetchingCompat = (store: BridgeStateStoreLike, flag: boolean): boolean => {
   store.flags.feesAndLockedFundsFetching = flag;
 
   return store.flags.feesAndLockedFundsFetching;
 };
 
-const syncExternalMinBalanceCompat = (store: BridgeCompatStoreLike, balance?: Nullable<CodecString>): CodecString => {
+const syncExternalMinBalanceCompat = (store: BridgeStateStoreLike, balance?: Nullable<CodecString>): CodecString => {
   store.balances.assetExternalMinBalance = balance ?? ZeroStringValue;
-  useBridgeFormStore().syncAssetExternalMinBalance(store.balances.assetExternalMinBalance);
 
   return store.balances.assetExternalMinBalance;
 };
 
-const syncIncomingMinLimitCompat = (store: BridgeCompatStoreLike, amount: FPNumber): FPNumber => {
+const syncIncomingMinLimitCompat = (store: BridgeStateStoreLike, amount: FPNumber): FPNumber => {
   store.balances.incomingMinLimit = amount ?? FPNumber.ZERO;
-  useBridgeFormStore().syncIncomingMinLimit(store.balances.incomingMinLimit);
 
   return store.balances.incomingMinLimit;
 };
 
-const syncOutgoingMinLimitCompat = (store: BridgeCompatStoreLike, amount: Nullable<FPNumber>): Nullable<FPNumber> => {
+const syncOutgoingMinLimitCompat = (store: BridgeStateStoreLike, amount: Nullable<FPNumber>): Nullable<FPNumber> => {
   store.balances.outgoingMinLimit = amount ?? null;
-  useBridgeFormStore().syncOutgoingMinLimit(store.balances.outgoingMinLimit);
 
   return store.balances.outgoingMinLimit;
 };
 
-const syncOutgoingMaxLimitCompat = (store: BridgeCompatStoreLike, amount: Nullable<FPNumber>): Nullable<FPNumber> => {
+const syncOutgoingMaxLimitCompat = (store: BridgeStateStoreLike, amount: Nullable<FPNumber>): Nullable<FPNumber> => {
   store.balances.outgoingMaxLimit = amount ?? null;
-  useBridgeFormStore().syncOutgoingMaxLimit(store.balances.outgoingMaxLimit);
 
   return store.balances.outgoingMaxLimit;
 };
 
 const syncOutgoingMaxLimitSubscriptionCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   subscription: Nullable<Subscription>
 ): Nullable<Subscription> => {
   store.subscriptions.outgoingMaxLimit?.unsubscribe?.();
@@ -613,14 +591,13 @@ const syncOutgoingMaxLimitSubscriptionCompat = (
 
   if (!subscription) {
     store.balances.outgoingMaxLimit = null;
-    useBridgeFormStore().syncOutgoingMaxLimit(store.balances.outgoingMaxLimit);
   }
 
   return store.subscriptions.outgoingMaxLimit;
 };
 
 const syncBlockUpdatesSubscriptionCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   subscription: Nullable<Subscription>
 ): Nullable<Subscription> => {
   store.subscriptions.blockUpdates?.unsubscribe?.();
@@ -629,20 +606,20 @@ const syncBlockUpdatesSubscriptionCompat = (
   return store.subscriptions.blockUpdates;
 };
 
-const syncDirectionCompat = (store: BridgeCompatStoreLike, isSoraToEvm: boolean): boolean => {
+const syncDirectionCompat = (store: BridgeStateStoreLike, isSoraToEvm: boolean): boolean => {
   store.form.isSoraToEvm = isSoraToEvm;
 
   return store.form.isSoraToEvm;
 };
 
-const syncAssetAddressValueCompat = (store: BridgeCompatStoreLike, address?: Nullable<string>): string => {
+const syncAssetAddressValueCompat = (store: BridgeStateStoreLike, address?: Nullable<string>): string => {
   store.form.assetAddress = address ?? '';
 
   return store.form.assetAddress;
 };
 
 const syncFocusedFieldCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   field: Nullable<BridgeFocusedField>
 ): Nullable<BridgeFocusedField> => {
   store.form.focusedField = field ?? null;
@@ -650,20 +627,20 @@ const syncFocusedFieldCompat = (
   return store.form.focusedField;
 };
 
-const syncAmountSendCompat = (store: BridgeCompatStoreLike, value?: Nullable<string>): string => {
+const syncAmountSendCompat = (store: BridgeStateStoreLike, value?: Nullable<string>): string => {
   store.form.amountSend = value ?? '';
 
   return store.form.amountSend;
 };
 
-const syncAmountReceivedCompat = (store: BridgeCompatStoreLike, value?: Nullable<string>): string => {
+const syncAmountReceivedCompat = (store: BridgeStateStoreLike, value?: Nullable<string>): string => {
   store.form.amountReceived = value ?? '';
 
   return store.form.amountReceived;
 };
 
 const syncWaitingForApproveCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   id: string,
   pending: boolean
 ): Record<string, boolean> => {
@@ -676,12 +653,11 @@ const syncWaitingForApproveCompat = (
   }
 
   store.history.waitingForApprove = nextWaitingForApprove;
-  useBridgeTransactionsStore().syncWaitingForApproveFromLegacy(nextWaitingForApprove);
 
   return nextWaitingForApprove;
 };
 
-const syncInProgressCompat = (store: BridgeCompatStoreLike, id: string, pending: boolean): Record<string, boolean> => {
+const syncInProgressCompat = (store: BridgeStateStoreLike, id: string, pending: boolean): Record<string, boolean> => {
   const nextInProgress = { ...store.history.inProgressIds } as Record<string, boolean>;
 
   if (pending) {
@@ -691,57 +667,26 @@ const syncInProgressCompat = (store: BridgeCompatStoreLike, id: string, pending:
   }
 
   store.history.inProgressIds = nextInProgress;
-  useBridgeTransactionsStore().syncInProgressIdsFromLegacy(nextInProgress);
 
   return nextInProgress;
 };
 
 const syncNotificationCompat = (
-  store: BridgeCompatStoreLike,
+  store: BridgeStateStoreLike,
   data: Nullable<IBridgeTransaction>
 ): Nullable<IBridgeTransaction> => {
   store.history.notificationData = data ?? null;
-  useBridgeTransactionsStore().syncNotificationDataFromLegacy(store.history.notificationData);
 
   return store.history.notificationData;
 };
 
-const syncSignDialogVisibilityCompat = (store: BridgeCompatStoreLike, flag: boolean): boolean => {
+const syncSignDialogVisibilityCompat = (store: BridgeStateStoreLike, flag: boolean): boolean => {
   store.flags.isSignTxDialogVisible = flag;
-  useBridgeTransactionsStore().syncSignDialogVisibilityFromLegacy(store.flags.isSignTxDialogVisible);
 
   return store.flags.isSignTxDialogVisible;
 };
 
-const syncCompatSubStoresFromBridgeState = (store: BridgeCompatStoreLike): void => {
-  const formStore = useBridgeFormStore();
-  const historyStore = useBridgeHistoryStore();
-  const transactionsStore = useBridgeTransactionsStore();
-
-  formStore.syncAssetSenderBalance(store.balances.assetSenderBalance);
-  formStore.syncAssetRecipientBalance(store.balances.assetRecipientBalance);
-  formStore.syncAssetLockedBalance(store.balances.assetLockedBalance);
-  formStore.syncAssetExternalMinBalance(store.balances.assetExternalMinBalance);
-  formStore.syncIncomingMinLimit(store.balances.incomingMinLimit);
-  formStore.syncOutgoingMinLimit(store.balances.outgoingMinLimit);
-  formStore.syncOutgoingMaxLimit(store.balances.outgoingMaxLimit);
-  formStore.syncSoraNetworkFee(store.fees.soraNetworkFee);
-  formStore.syncExternalTransferFee(store.fees.externalTransferFee);
-  formStore.syncExternalNetworkFee(store.fees.externalNetworkFee);
-  formStore.syncExternalNativeBalance(store.fees.externalNativeBalance);
-
-  historyStore.syncHistoryPageFromLegacy(store.history.page);
-  historyStore.syncHistoryIdFromLegacy(store.history.id);
-
-  transactionsStore.syncHistoryInternalFromLegacy(store.history.internal);
-  transactionsStore.syncHistoryLoadingFromLegacy(store.history.loading);
-  transactionsStore.syncWaitingForApproveFromLegacy(store.history.waitingForApprove);
-  transactionsStore.syncInProgressIdsFromLegacy(store.history.inProgressIds);
-  transactionsStore.syncNotificationDataFromLegacy(store.history.notificationData);
-  transactionsStore.syncSignDialogVisibilityFromLegacy(store.flags.isSignTxDialogVisible);
-};
-
-const createExternalHistoryContext = (store: BridgeCompatStoreLike) => {
+const createExternalHistoryContext = (store: BridgeStateStoreLike) => {
   const walletStore = useWalletStore();
   const web3Store = useWeb3Store();
   const assetsStore = useAssetsStore();
@@ -753,6 +698,7 @@ const createExternalHistoryContext = (store: BridgeCompatStoreLike) => {
           address: walletStore.address,
         },
         settings: {
+          apiKeys: walletStore.apiKeys,
           networkFees: walletStore.networkFees,
         },
       },
@@ -828,6 +774,27 @@ const useBridgeStoreBase = defineStore('bridge', {
     },
     historyPage(state): number {
       return state.history.page;
+    },
+    historyId(state): string {
+      return state.history.id;
+    },
+    historyInternal(state): Record<string, IBridgeTransaction> {
+      return state.history.internal;
+    },
+    historyLoading(state): Record<string, boolean> {
+      return state.history.loading;
+    },
+    waitingForApprove(state): Record<string, boolean> {
+      return state.history.waitingForApprove;
+    },
+    inProgressIds(state): Record<string, boolean> {
+      return state.history.inProgressIds;
+    },
+    notificationData(state): Nullable<IBridgeTransaction> {
+      return state.history.notificationData;
+    },
+    isSignTxDialogVisible(state): boolean {
+      return state.flags.isSignTxDialogVisible;
     },
     networkHistoryId(): Nullable<BridgeNetworkId> {
       const web3Store = useWeb3Store();
@@ -1017,6 +984,9 @@ const useBridgeStoreBase = defineStore('bridge', {
     setHistoryPage(page?: number): void {
       syncHistoryPageCompat(this, page);
     },
+    resetHistoryPage(): void {
+      syncHistoryPageCompat(this, 1);
+    },
     setHistoryId(id?: string): void {
       syncHistoryIdCompat(this, id);
     },
@@ -1048,6 +1018,17 @@ const useBridgeStoreBase = defineStore('bridge', {
     },
     setNotificationData(data: Nullable<IBridgeTransaction>): void {
       syncNotificationCompat(this, data);
+    },
+    trackTransferSubmitted(payload: {
+      direction: 'soraToExternal' | 'externalToSora';
+      asset?: Nullable<string>;
+      amount?: Nullable<string>;
+      network?: Nullable<string>;
+    }): void {
+      trackEvent('bridge.pinia.transfer.submitted', {
+        ...payload,
+        buildVariant: getBuildVariant(),
+      });
     },
     addTransactionToProgress(id: string): void {
       if (!id) return;
@@ -1783,7 +1764,7 @@ const useBridgeStoreBase = defineStore('bridge', {
       const walletStore = useWalletStore();
 
       const visibilityTarget =
-        dialogMode === BridgeTransactionSignDialogMode.Bridge ? createBridgeSignDialogController() : undefined;
+        dialogMode === BridgeTransactionSignDialogMode.Bridge ? createBridgeSignDialogController(this) : undefined;
 
       await beforeTransactionSign(null, signerApi as never, visibilityTarget, {
         getPassword: walletStore.getPassword,
@@ -1794,7 +1775,6 @@ const useBridgeStoreBase = defineStore('bridge', {
       const initialState = buildInitialState();
 
       this.$patch(initialState);
-      syncCompatSubStoresFromBridgeState(this);
     },
   },
 });

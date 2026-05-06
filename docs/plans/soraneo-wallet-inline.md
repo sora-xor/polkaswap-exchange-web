@@ -1,25 +1,26 @@
 # Soraneo Wallet Inline Plan
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-04-21  
 **Owner:** Frontend migration pod  
 **Source reference:** `src/lib/soraneo-wallet/**`
 
 ## 1. Current State Snapshot
 
-The repository carries the Soraneo wallet source inline under `src/lib/soraneo-wallet`. The active host-app integration now uses the source tree directly:
+The repository carries the Soraneo wallet source inline under `src/lib/soraneo-wallet`. The host app now imports the vendored sources directly:
 
 - `src/lib/soraneo-wallet/src` – Vue components (`SoraWallet.vue`, `components/**`), composables, mixins, store modules, services, and plugin entry points.
-- `src/lib/soraneo-wallet/lib` – Prebuilt static residue. The host app only imports `soraneo-wallet-web.css` from this directory; runtime modules, types, and store helpers resolve through `src`.
+- `src/lib/soraneo-wallet/lib` – Prebuilt static residue. The host app only imports `soraneo-wallet-web.css` from this directory; runtime modules, types, and store helpers import straight from `src`.
 - `src/lib/soraneo-wallet/src/styles` – Theme variables that reference the Soramitsu UI tokens.
 
-Tooling already aliases the local copy:
+Legacy wallet-package aliases were removed during the final cutover. Current import expectations are:
 
-| Tool                                          | Mapping                                     |
-| --------------------------------------------- | ------------------------------------------- |
-| `tsconfig.json`                               | `@wallet/lib` / `@wallet/lib/*` → `src/lib/soraneo-wallet/src/**` |
-| `vite.config.mjs` / `electron.vite.config.ts` | Resolves the same source paths plus the CSS bundle |
+| Surface                                       | Current expectation                                                |
+| --------------------------------------------- | ------------------------------------------------------------------ |
+| App and tests                                 | Import runtime symbols directly from `@/lib/soraneo-wallet/src/**` |
+| CSS                                           | Import `@/lib/soraneo-wallet/lib/soraneo-wallet-web.css` directly  |
+| Tooling                                       | No legacy wallet aliases remain in TypeScript, Vite, or test config                |
 
-`package.json` no longer depends on an external `@wallet` workspace. The repo builds from the vendored source copy alone.
+`package.json` no longer depends on the former external wallet workspace. The repo builds from the vendored source copy alone.
 
 ## 2. Gaps & Required Follow-up
 
@@ -29,7 +30,7 @@ Tooling already aliases the local copy:
 
 2. **Sync documentation & scripts**
    - Keep docs aligned with the vendored-only setup; no sibling `wallet-web` checkout is required for local work.
-   - Confirm tooling continues to resolve `@wallet/lib` through `src/lib/soraneo-wallet/src`.
+   - Keep scripts/tests/configs on direct vendored imports instead of reintroducing alias wrappers.
 
 3. **Ongoing maintenance**
    - Define an upstream sync process (branch names, diff workflow, code-owner sign-off).

@@ -369,6 +369,10 @@ export default {
       await nextTick();
       eventBus.$emit('updateWidth', width.value);
 
+      if (props.responsive) {
+        responsiveGridLayout();
+      }
+
       if (oldValue === null) {
         await nextTick();
         emit('layout-ready', props.layout);

@@ -13,16 +13,13 @@ const tokenLogoStub = vi.hoisted(() => ({
   template: '<div class="token-logo-stub"></div>',
 }));
 
-vi.mock('@wallet', () => ({
-  components: {
-    TokenLogo: tokenLogoStub,
-  },
-  WALLET_CONSTS: {},
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  default: tokenLogoStub,
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
   __esModule: true,
-  lazyComponent: () => pairTokenLogoStub,
+  default: pairTokenLogoStub,
 }));
 
 import DialogTitle from '@/modules/staking/demeter/components/DialogTitle.vue';

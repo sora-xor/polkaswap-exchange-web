@@ -44,19 +44,18 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
+import TransactionDetails from '@/components/shared/TransactionDetails.vue';
 import { computed, toRef } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
 import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
 import { usePoolApy } from '@/modules/pool/composables/usePoolApy';
-import { lazyComponent } from '@/router';
 import { usePoolStore } from '@/stores/pool';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 type Props = {
   infoOnly?: boolean;
@@ -124,8 +123,7 @@ const fiatSecondTokenPosition = computed(() =>
 const firstTokenSymbol = computed(() => poolTokenPair.firstToken.value?.symbol ?? '');
 const secondTokenSymbol = computed(() => poolTokenPair.secondToken.value?.symbol ?? '');
 
-const TransactionDetails = lazyComponent(Components.TransactionDetails);
-const InfoLine = components.InfoLine;
+const InfoLine = WalletComponentInfoLine;
 
 const {
   XOR_SYMBOL,

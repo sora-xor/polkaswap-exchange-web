@@ -4,7 +4,7 @@ import { MarketAlgorithms } from '@/consts';
 import {
   resolveCurrentMarketAlgorithm,
   resolveMarketAlgorithms,
-} from '@/components/pages/Swap/Settings/MarketAlgorithm/utils';
+} from '@/features/swap/components/settings/MarketAlgorithm/utils';
 
 describe('swap market algorithm helpers', () => {
   it('falls back to SMART when no algorithms are available', () => {

@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 
-import { delay } from '@/shims/wallet-util';
+import { delay } from '@/lib/soraneo-wallet/src/util';
 import pinia from '@/plugins/pinia';
 import { useSettingsStore } from '@/stores/settings';
 

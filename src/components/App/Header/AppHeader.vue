@@ -14,7 +14,7 @@
       @click="goTo(PageNames.Swap)"
     ></app-logo-button>
     <div class="app-controls app-controls--middle s-flex">
-      <app-marketing v-show="!isMobile"></app-marketing>
+      <app-marketing v-show="showMarketing"></app-marketing>
       <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.DepositOptions)">
         <pair-token-logo
           class="payment-icon"
@@ -26,7 +26,7 @@
       </s-button>
     </div>
     <div class="app-controls s-flex">
-      <app-account-button :disabled="loading" @click="navigateToWallet"></app-account-button>
+      <app-account-button @click="navigateToWallet"></app-account-button>
       <app-header-menu></app-header-menu>
     </div>
     <rotate-phone-dialog></rotate-phone-dialog>
@@ -41,33 +41,29 @@ import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
+import { goTo } from '@/app/router';
+import {
+  AccelerationAccessDialog,
+  AppLogoButton,
+  AppMarketing,
+  PairTokenLogo,
+  RotatePhoneDialog,
+  SelectCurrencyDialog,
+  SelectLanguageDialog,
+} from '@/app/shell/components';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, PageNames } from '@/consts';
+import { PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
-import { goTo, lazyComponent } from '@/router';
 import { useSettingsStore } from '@/stores/settings';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 
-defineOptions({
-  components: {
-    AppAccountButton,
-    AppHeaderMenu,
-    AppMarketing: lazyComponent(Components.AppMarketing),
-    AppLogoButton: lazyComponent(Components.AppLogoButton),
-    SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    SelectCurrencyDialog: lazyComponent(Components.SelectCurrencyDialog),
-    RotatePhoneDialog: lazyComponent(Components.RotatePhoneDialog),
-    AccelerationAccessDialog: lazyComponent(Components.AccelerationAccessDialog),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-  },
-});
+defineOptions({ name: 'AppHeader' });
 
-const props = defineProps<{ loading?: boolean }>();
-const loading = computed(() => props.loading ?? false);
+defineProps<{ loading?: boolean }>();
 
 const emit = defineEmits<{
   (e: 'toggle-menu'): void;
@@ -89,6 +85,11 @@ const isAnyMobile = computed(
   () =>
     screenBreakpointClass.value === BreakpointClass.Mobile ||
     screenBreakpointClass.value === BreakpointClass.LargeMobile
+);
+const showMarketing = computed(() =>
+  [BreakpointClass.Desktop, BreakpointClass.LargeDesktop, BreakpointClass.HugeDesktop].includes(
+    screenBreakpointClass.value
+  )
 );
 
 const fiatBtnClass = computed(() => {
@@ -115,11 +116,17 @@ function toggleMenu(): void {
   }
 }
 
-.app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active),
+.app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active) {
+  background-color: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
 .app-controls .settings-control {
   background-color: var(--s-color-utility-body) !important;
   border-color: transparent !important;
   color: var(--s-color-base-content-tertiary) !important;
+  font-weight: 500 !important;
 }
 
 .app-controls .app-controls-fiat-btn {
@@ -127,6 +134,21 @@ function toggleMenu(): void {
   height: 42px !important;
   min-height: 42px !important;
   padding: 5px 13px !important;
+  line-height: 14px !important;
+  font-weight: 500 !important;
+}
+
+.app-controls .account-control.el-button,
+.app-controls .settings-control.el-button {
+  display: block !important;
+}
+
+.app-controls .settings-control.el-button {
+  width: 42px !important;
+  height: 42px !important;
+  line-height: 14px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .app-controls .app-controls-fiat-btn .s-button__text {
@@ -169,6 +191,12 @@ function toggleMenu(): void {
   color: var(--s-color-base-content-tertiary) !important;
 }
 
+.app-controls .settings-control.settings-control--open,
+.app-controls .settings-control.settings-control--open i,
+.app-controls .settings-control.settings-control--open .header-menu__button i {
+  color: var(--s-color-base-content-secondary) !important;
+}
+
 .app-controls .settings-control i,
 .app-controls .settings-control .header-menu__button i,
 .app-controls .account-control i[class*='s-icon-'] {
@@ -182,21 +210,49 @@ function toggleMenu(): void {
   background-color: var(--s-color-theme-accent) !important;
   border-color: var(--s-color-base-border-secondary) !important;
   color: #fff !important;
+  font-weight: 500 !important;
+  line-height: 14px !important;
+  position: static !important;
   box-shadow:
     1px 1px 5px #fff,
     -1px -1px 5px #fff !important;
+}
+
+.app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):hover,
+.app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):focus {
+  background-color: var(--s-color-theme-accent-hover) !important;
+  box-shadow:
+    1px 1px 5px rgba(255, 255, 255, 0.7),
+    -1px -1px 5px #fff,
+    0 0 20px rgba(247, 84, 163, 0.5) !important;
 }
 
 .app-menu-button.el-button.neumorphic.s-action.s-primary i {
   color: #fff !important;
 }
 
-[design-system-theme='dark'] .app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active),
-[design-system-theme='dark'] .app-controls .account-control,
+[design-system-theme='dark'] .app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active) {
+  background-color: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
+[design-system-theme='dark'] .app-controls .account-control {
+  background-color: var(--s-color-utility-body) !important;
+  border-color: transparent !important;
+  color: var(--s-color-base-content-tertiary) !important;
+}
+
 [design-system-theme='dark'] .app-controls .settings-control {
   background-color: var(--s-color-utility-body) !important;
   border-color: transparent !important;
   color: var(--s-color-base-content-tertiary) !important;
+}
+
+[design-system-theme='dark'] .app-controls .settings-control.settings-control--open,
+[design-system-theme='dark'] .app-controls .settings-control.settings-control--open i,
+[design-system-theme='dark'] .app-controls .settings-control.settings-control--open .header-menu__button i {
+  color: var(--s-color-base-content-secondary) !important;
 }
 
 [design-system-theme='dark'] .app-controls .app-controls-fiat-btn,
@@ -221,12 +277,36 @@ function toggleMenu(): void {
     -1px -1px 5px #9b6fa5 !important;
 }
 
+[design-system-theme='dark'] .app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):hover,
+[design-system-theme='dark'] .app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):focus {
+  background-color: var(--s-color-theme-accent-hover) !important;
+  box-shadow:
+    1px 1px 5px #391057,
+    -1px -1px 5px #9b6fa5 !important;
+}
+
 [design-system-theme='dark'] .app-menu-button.el-button.neumorphic.s-action.s-primary i {
   color: #592d71 !important;
 }
 
 .settings-control:hover > span > .header-menu__button i {
   color: var(--s-color-base-content-secondary);
+}
+
+@include large-mobile(true) {
+  .app-logo--header.app-logo.el-button {
+    display: none !important;
+    position: static !important;
+  }
+
+  .app-controls .settings-control.el-button {
+    display: block !important;
+    width: 42px !important;
+    height: 42px !important;
+    line-height: 14px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 }
 </style>
 
@@ -262,6 +342,10 @@ function toggleMenu(): void {
     margin-right: $inner-spacing-mini;
   }
 
+  .header > &:not(.app-controls--middle) {
+    margin-right: $inner-spacing-mini;
+  }
+
   & > *:not(:last-child) {
     margin-right: $inner-spacing-mini;
   }
@@ -283,6 +367,27 @@ function toggleMenu(): void {
   .el-button {
     + .el-button {
       margin-left: 0;
+    }
+  }
+
+  @include large-mobile(true) {
+    .app-controls-fiat-btn.el-button,
+    .account-control.el-button,
+    .settings-control.el-button {
+      display: block !important;
+      width: 42px !important;
+      height: 42px !important;
+      line-height: 14px !important;
+    }
+
+    .app-controls-fiat-btn.el-button,
+    .settings-control.el-button {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .account-control.el-button {
+      padding: 5px !important;
     }
   }
 
@@ -313,6 +418,14 @@ function toggleMenu(): void {
 
 .app-menu-button {
   flex-shrink: 0;
+  width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+
+  @include large-mobile(true) {
+    display: block !important;
+    line-height: 14px !important;
+  }
 
   @include large-mobile {
     display: none;

@@ -99,12 +99,12 @@
 import { api } from '@sora-substrate/sdk';
 import { computed, onMounted, ref, type Component } from 'vue';
 
+import { getWalletCurrentParams } from '@/platform/wallet/navigation';
 import { useAccountActions } from '../composables/useAccountActions';
 import { useOperations } from '../composables/useOperations';
 import { useQrCodeParser } from '../composables/useQrCodeParser';
 import { PolkadotJsAccount } from '@/types/common';
 
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames, WalletTabs, AccountActionTypes } from '../consts';
@@ -123,7 +123,6 @@ import WalletBase from './WalletBase.vue';
 import WalletHistory from './WalletHistory.vue';
 import WalletTransactionDetails from './WalletTransactionDetails.vue';
 
-import type { Route } from '@/stores/router/types';
 import type { WalletPermissions } from '../consts';
 import type { HistoryItem } from '@sora-substrate/sdk';
 
@@ -132,10 +131,8 @@ const emit = defineEmits<{
 }>();
 
 const walletStore = useWalletStore();
-const routerStore = useRouterStore();
 const {
   loading,
-  account,
   accountRenameVisibility,
   accountExportVisibility,
   accountDeleteVisibility,
@@ -172,7 +169,7 @@ const isMstAddressExist = computed(() => walletStore.isMstAddressExist);
 const selectedTransaction = computed(() => walletStore.selectedTransaction);
 const accountOwn = computed(() => walletStore.account);
 const currentRouteParams = computed<Record<string, Nullable<WalletTabs>>>(() => {
-  return routerStore.currentParams as Record<string, Nullable<WalletTabs>>;
+  return getWalletCurrentParams<Record<string, Nullable<WalletTabs>>>();
 });
 const currentTabComponent = computed<Component>(() => walletTabComponents[currentTab.value]);
 const headerTitle = computed(() => {
@@ -188,8 +185,8 @@ function resetTxDetailsId(): void {
   walletStore.resetTxDetailsId();
 }
 
-function navigate(options: Route): void {
-  routerStore.navigate(options);
+function navigate(options: { name: string; params?: Record<string, unknown> }): void {
+  walletStore.navigate(options);
 }
 
 function handleSwap(asset: unknown): void {
@@ -247,7 +244,9 @@ function handleMST(): void {
 }
 
 function handleAccountActionType(actionType: string): void {
-  handleAccountAction(actionType, account.value);
+  if (!accountOwn.value) return;
+
+  handleAccountAction(actionType, accountOwn.value);
 }
 
 function handleAccountSettings(): void {

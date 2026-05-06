@@ -19,14 +19,14 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
+    DialogBase: WalletComponentDialogBase,
   },
 });
 

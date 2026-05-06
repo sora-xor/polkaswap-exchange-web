@@ -31,7 +31,6 @@
 
 <script lang="ts" setup>
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -42,6 +41,12 @@ import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
 import type { AvailableNetwork } from '@/stores/web3';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentSRadioGroup from '@/lib/soramitsu-ui/components/Radio/SRadioGroup.vue';
+import WalletComponentSRadio from '@/lib/soramitsu-ui/components/Radio/SRadio.vue';
+import WalletComponentSScrollbar from '@/lib/soramitsu-ui/components/Scrollbar/SScrollbar.vue';
 
 type NetworkItem = {
   id: BridgeNetworkId;
@@ -58,12 +63,12 @@ const DELIMITER = '-';
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    ExternalLink: components.ExternalLink,
-    TokenLogo: components.TokenLogo,
-    SRadioGroup: components.SRadioGroup,
-    SRadio: components.SRadio,
-    SScrollbar: components.SScrollbar,
+    DialogBase: WalletComponentDialogBase,
+    ExternalLink: WalletComponentExternalLink,
+    TokenLogo: WalletComponentTokenLogo,
+    SRadioGroup: WalletComponentSRadioGroup,
+    SRadio: WalletComponentSRadio,
+    SScrollbar: WalletComponentSScrollbar,
   },
 });
 

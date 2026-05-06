@@ -9,22 +9,6 @@
     <s-table class="market-trades-table" :data="completedOrders">
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">{{ t('orderBook.time') }}</span>
-        </template>
-        <template #default="scope">
-          <span class="order-info time">{{ scope?.row?.time }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span class="market-trades__header">{{ t('orderBook.amount') }}</span>
-        </template>
-        <template #default="scope">
-          <span class="order-info">{{ scope?.row?.amount }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column header-align="right" align="right">
-        <template #header>
           <span class="market-trades__header">{{ t('priceText') }}</span>
         </template>
         <template #default="scope">
@@ -33,23 +17,32 @@
           </span>
         </template>
       </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span class="market-trades__header">{{ t('orderBook.time') }}</span>
+        </template>
+        <template #default="scope">
+          <span class="order-info time">{{ scope?.row?.time }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column header-align="right" align="right">
+        <template #header>
+          <span class="market-trades__header">{{ t('orderBook.amount') }}</span>
+        </template>
+        <template #default="scope">
+          <span class="order-info">{{ scope?.row?.amount }}</span>
+        </template>
+      </s-table-column>
     </s-table>
   </base-widget>
 </template>
 
 <script setup lang="ts">
-import { Components } from '@/consts';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
-
-defineOptions({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-  },
-});
 
 const { t } = useTranslation();
 const { completedOrders, orderBookId, baseAsset, quoteAsset } = useOrderBook();

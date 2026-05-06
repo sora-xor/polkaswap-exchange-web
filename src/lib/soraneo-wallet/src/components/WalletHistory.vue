@@ -46,10 +46,10 @@ import debounce from 'lodash/fp/debounce';
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed, onBeforeUnmount, onMounted, watch, type PropType } from 'vue';
 
+import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
 import { useEthBridgeTransaction } from '../composables/useEthBridgeTransaction';
 import { usePaginationSearch } from '../composables/usePaginationSearch';
 import { useTransaction } from '../composables/useTransaction';
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames, PaginationButton } from '../consts';
@@ -59,7 +59,6 @@ import { getStatusIcon, getStatusClass } from '../util';
 import HistoryPagination from './HistoryPagination.vue';
 import SearchInput from './Input/SearchInput.vue';
 
-import type { Route } from '@/stores/router/types';
 import type { ExternalHistoryParams, HistoryQuery } from '../types/history';
 import type { History, AccountHistory, HistoryItem } from '@sora-substrate/sdk';
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -81,7 +80,6 @@ export default {
   },
   setup(props) {
     const walletStore = useWalletStore();
-    const routerStore = useRouterStore();
     const { t, formatDate, getTitle, loading, withLoading } = useTransaction();
     const { isEthBridgeTx, isEthBridgeTxToCompleted, isEthBridgeTxFromFailed, isEthBridgeTxToFailed } =
       useEthBridgeTransaction();
@@ -218,8 +216,8 @@ export default {
     const getHistory = () => walletStore.getHistory();
     const setTxDetailsId = (id: string) => walletStore.setTxDetailsId(id);
     const getExternalHistory = (params: ExternalHistoryParams) => walletStore.getExternalHistory(params);
-    const navigate = (options: Route): void => {
-      routerStore.navigate(options);
+    const navigate = (options: WalletNavigationTarget): void => {
+      walletStore.navigate(options);
     };
     const reset = (): void => {
       resetPage();

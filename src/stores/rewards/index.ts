@@ -4,8 +4,8 @@ import { KnownAssets, KnownSymbols } from '@sora-substrate/sdk/build/assets/cons
 import { ethers } from 'ethers';
 
 import type { RewardsAmountHeaderItem, SelectedRewards } from '@/types/rewards';
-import { api } from '@/shims/wallet-api';
-import { groupRewardsByAssetsList } from '@/shims/wallet-util';
+import { api } from '@/lib/soraneo-wallet/src/api';
+import { groupRewardsByAssetsList } from '@/lib/soraneo-wallet/src/util';
 import { asZeroValue, waitForAccountPair } from '@/utils';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';

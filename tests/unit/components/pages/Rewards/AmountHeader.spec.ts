@@ -8,7 +8,7 @@ const storageMock = {
   remove: vi.fn(),
 };
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -36,6 +36,14 @@ vi.mock('@wallet', async () => {
       },
     },
   });
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return {
+    __esModule: true,
+    default: wallet.components.FormattedAmount,
+  };
 });
 
 const formatStringValueMock = vi.fn((value: string) => `formatted:${value}`);
@@ -71,11 +79,11 @@ function createFpNumber(initial: number) {
   };
 }
 
-let AmountHeader: (typeof import('@/components/pages/Rewards/AmountHeader.vue'))['default'];
+let AmountHeader: (typeof import('@/features/rewards/components/rewards/AmountHeader.vue'))['default'];
 
 beforeEach(async () => {
   formatStringValueMock.mockClear();
-  const module = await import('@/components/pages/Rewards/AmountHeader.vue');
+  const module = await import('@/features/rewards/components/rewards/AmountHeader.vue');
   AmountHeader = module.default;
 });
 

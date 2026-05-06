@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { expect, type Page } from '@playwright/test';
 
 const STUBBED_ALLOWED_CONSOLE_PATTERNS = [
@@ -13,6 +15,9 @@ const STUBBED_ALLOWED_CONSOLE_PATTERNS = [
 const LIVE_ALLOWED_CONSOLE_PATTERNS = [
   /Failed to load resource: net::ERR_CERT_COMMON_NAME_INVALID/i,
   /Failed to load resource: net::ERR_CONNECTION_RESET/i,
+  /Failed to load resource: net::ERR_NAME_NOT_RESOLVED/i,
+  /bridgeProxy_listApps/i,
+  /ethBridge_getRegisteredAssets/i,
   /\[Exchange rate API\] Error while fetching rates\./i,
   /failed to instantiate a new WASM module instance: Limit of 32 concurrent instances has been reached/i,
 ];
@@ -20,12 +25,36 @@ const LIVE_ALLOWED_CONSOLE_PATTERNS = [
 const KNOWN_WALLET_NOISE_PATTERNS = [/Unable to retrieve keypair/i, /You should connect wallet/i];
 
 const emptyJson = JSON.stringify({ data: null });
+const runtimeEnvRoutePattern = /\/env(?:\.dev)?\.json(?:\?.*)?$/i;
+
+const stubbedRuntimeEnvJson = (() => {
+  try {
+    const source = JSON.parse(readFileSync(path.resolve(process.cwd(), 'public/env.json'), 'utf8'));
+    return JSON.stringify({
+      ...source,
+      DEFAULT_NETWORKS: [],
+      SUBQUERY_ENDPOINT: '',
+      SUBSQUID_ENDPOINT: '',
+    });
+  } catch {
+    return JSON.stringify({
+      DEFAULT_NETWORKS: [],
+      SUBQUERY_ENDPOINT: '',
+      SUBSQUID_ENDPOINT: '',
+      FEATURE_FLAGS: {},
+    });
+  }
+})();
 
 export type ConsoleTrackMode = 'stubbed' | 'live';
 
 export type TrackConsoleOptions = {
   mode?: ConsoleTrackMode;
   extraAllowedPatterns?: RegExp[];
+};
+
+export type PreparePageOptions = {
+  stubRuntimeEnv?: boolean;
 };
 
 export const ipfsBasePath = (() => {
@@ -37,16 +66,16 @@ export const ipfsBasePath = (() => {
 
 export const ipfsEntryUrl = `${ipfsBasePath}/?ipfs-check=1`;
 
-export async function preparePage(page: Page): Promise<void> {
+export async function preparePage(page: Page, options: PreparePageOptions = {}): Promise<void> {
   await page.addInitScript(() => {
     // Keep E2E viewport/layout checks deterministic by starting with disclaimer accepted.
     localStorage.setItem('dexSettings.disclaimerApprove', 'true');
   });
   await stubWebSocket(page);
-  await stubNetwork(page);
+  await stubNetwork(page, options);
 }
 
-async function stubNetwork(page: Page): Promise<void> {
+async function stubNetwork(page: Page, options: PreparePageOptions = {}): Promise<void> {
   await page.route('https://telegram.org/js/telegram-web-app.js', (route) => {
     route.fulfill({
       status: 200,
@@ -86,6 +115,16 @@ async function stubNetwork(page: Page): Promise<void> {
       })();`,
     });
   });
+
+  if (options.stubRuntimeEnv) {
+    await page.route(runtimeEnvRoutePattern, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: stubbedRuntimeEnvJson,
+      });
+    });
+  }
 
   const remoteRequestMatcher = (url: string): boolean => {
     try {

@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { computed, defineComponent, h, ref, type Component } from 'vue';
+import { computed, defineComponent, h, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
@@ -118,18 +118,55 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
-vi.mock('@/modules/staking/router', () => ({
+vi.mock('@/modules/staking/sora/consts', () => ({
   __esModule: true,
-  soraStakingLazyComponent: (_name: string): Component => {
-    switch (_name) {
-      case 'StakingHeader':
-        return StakingHeaderStub;
-      case 'ValidatorsList':
-        return ValidatorsListStub;
-      case 'StakeDialog':
-      default:
-        return StakeDialogStub;
-    }
+  SoraStakingPageNames: {
+    Overview: 'Overview',
+    ValidatorsType: 'ValidatorsType',
+  },
+  StakeDialogMode: {
+    NEW: 'new',
+  },
+  ValidatorsListMode: {
+    RECOMMENDED: 'recommended',
+    SELECT: 'select',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/StakingHeader.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'StakingHeaderStub',
+    props: {
+      previousPage: { type: String, default: '' },
+    },
+    template: '<header class="staking-header-stub"><slot /></header>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/ValidatorsList.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'ValidatorsListStub',
+    props: {
+      selectedValidators: { type: Array, default: () => [] },
+    },
+    emits: ['update:selected'],
+    template: '<div class="validators-list-stub">validators-list</div>',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/StakeDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'StakeDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+    },
+    emits: ['update:visible', 'confirm'],
+    template:
+      '<div class="stake-dialog-stub" :data-visible="String(visible)" :data-parent-loading="String(parentLoading)">stake-dialog</div>',
   },
 }));
 
@@ -153,17 +190,12 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-import SelectValidators from '@/modules/staking/sora/views/SelectValidators.vue';
+import SelectValidators from '@/features/staking/pages/SoraSelectValidatorsPage.vue';
 
 const mountComponent = (props: Record<string, unknown> = {}) =>
   mount(SelectValidators, {
     props,
     global: {
-      components: {
-        StakingHeader: StakingHeaderStub,
-        ValidatorsList: ValidatorsListStub,
-        StakeDialog: StakeDialogStub,
-      },
       stubs: {
         's-button': SButtonStub,
         SButton: SButtonStub,
@@ -212,7 +244,7 @@ describe('SelectValidators.vue', () => {
     expect(vm.confirmText).toBe('soraStaking.validators.selected:{"selected":0,"total":2}');
     expect(vm.confirmDisabled).toBe(true);
 
-    const validatorsList = wrapper.findComponent(ValidatorsListStub);
+    const validatorsList = wrapper.findComponent({ name: 'ValidatorsListStub' });
     await validatorsList.vm.$emit('update:selected', [makeValidator('manual')]);
     await flushPromises();
 
@@ -234,7 +266,7 @@ describe('SelectValidators.vue', () => {
     expect(vm.showStakeDialog).toBe(true);
     expect(wrapper.find('.stake-dialog-stub').attributes('data-parent-loading')).toBe('true');
 
-    await wrapper.findComponent(StakeDialogStub).vm.$emit('confirm');
+    await wrapper.findComponent({ name: 'StakeDialogStub' }).vm.$emit('confirm');
     await flushPromises();
     await wrapper.vm.$nextTick();
 

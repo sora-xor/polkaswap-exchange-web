@@ -19,20 +19,13 @@
 <script setup lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { computed, ref, watch } from 'vue';
+import BuySell from '@/components/pages/OrderBook/BuySell.vue';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 
-import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
-
-defineOptions({
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-    BuySell: lazyComponent(Components.BuySell),
-  },
-});
 
 const { t } = useTranslation();
 const { PriceVariant: orderBookPriceVariant, side, setSide, orderBookId, baseAsset, quoteAsset } = useOrderBook();
@@ -79,6 +72,9 @@ $book-tabs-height: 64px;
   padding-left: 0;
   .s-tabs {
     background-color: inherit;
+    height: calc(#{$book-tabs-height} + #{$inner-spacing-mini} - 1px);
+    border-radius: var(--s-border-radius-small) var(--s-border-radius-small) 0 0;
+    transition: all;
     &,
     .el-tabs__header,
     .el-tabs__nav-wrap,
@@ -106,6 +102,9 @@ $book-tabs-height: 64px;
         }
       }
       &__nav-wrap {
+        margin-bottom: -1px;
+        box-shadow: var(--s-shadow-element) !important;
+
         .el-tabs__item {
           &,
           &.is-active {

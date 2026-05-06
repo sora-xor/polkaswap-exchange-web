@@ -1,9 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { PageNames } from '@/consts';
-import { createBeforeEachGuard } from '@/router/guards/navigation';
+import {
+  clearPendingReferralActionNavigation,
+  markPendingReferralActionNavigation,
+} from '@/shared/navigation/referralAction';
+import { createBeforeEachGuard } from '@/app/router/guards/navigation';
 
-import type { NavigationGuardServices } from '@/router/guards/navigation';
+import type { NavigationGuardServices } from '@/app/router/guards/navigation';
 import type { RouteLocationNormalized } from 'vue-router';
 
 const createRoute = ({
@@ -29,16 +33,13 @@ const createRoute = ({
   }) as RouteLocationNormalized;
 
 const createServices = (overrides: Partial<NavigationGuardServices> = {}): NavigationGuardServices => ({
-  routerStore: {
-    setRoute: vi.fn(),
-  },
+  setRoute: vi.fn(),
   walletStore: {
     isLoggedIn: false,
   },
-  bridgeHistoryStore: {
+  bridgeStore: {
     resetHistoryPage: vi.fn(),
   },
-  syncRoute: vi.fn(),
   persistReferral: vi.fn(),
   validateAddress: vi.fn(),
   updateDocumentTitle: vi.fn(),
@@ -46,6 +47,55 @@ const createServices = (overrides: Partial<NavigationGuardServices> = {}): Navig
 });
 
 describe('router navigation guard', () => {
+  it('redirects direct referral bonding entries to the referral dashboard while keeping the route hash segment', () => {
+    clearPendingReferralActionNavigation();
+
+    const services = createServices({
+      walletStore: { isLoggedIn: true },
+    });
+    const guard = createBeforeEachGuard(services);
+    const next = vi.fn();
+
+    guard(
+      createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
+      createRoute({ name: PageNames.ReferralProgram }),
+      next
+    );
+
+    expect(services.setRoute).toHaveBeenCalledWith({
+      prev: PageNames.ReferralProgram,
+      current: PageNames.ReferralProgram,
+    });
+    expect(next).toHaveBeenCalledWith({
+      name: PageNames.ReferralProgram,
+      params: {
+        referrerAddress: 'bond',
+      },
+    });
+  });
+
+  it('allows explicit referral bonding navigation triggered from inside the app', () => {
+    markPendingReferralActionNavigation(PageNames.ReferralBonding);
+
+    const services = createServices({
+      walletStore: { isLoggedIn: true },
+    });
+    const guard = createBeforeEachGuard(services);
+    const next = vi.fn();
+
+    guard(
+      createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
+      createRoute({ name: PageNames.ReferralProgram }),
+      next
+    );
+
+    expect(services.setRoute).toHaveBeenCalledWith({
+      prev: PageNames.ReferralProgram,
+      current: PageNames.ReferralBonding,
+    });
+    expect(next).toHaveBeenCalledWith();
+  });
+
   it('redirects unnamed routes to swap', () => {
     const services = createServices();
     const guard = createBeforeEachGuard(services);
@@ -53,11 +103,7 @@ describe('router navigation guard', () => {
 
     guard(createRoute({ name: undefined }), createRoute({ name: PageNames.Wallet }), next);
 
-    expect(services.routerStore.setRoute).toHaveBeenCalledWith({
-      prev: PageNames.Wallet,
-      current: PageNames.Swap,
-    });
-    expect(services.syncRoute).toHaveBeenCalledWith({
+    expect(services.setRoute).toHaveBeenCalledWith({
       prev: PageNames.Wallet,
       current: PageNames.Swap,
     });
@@ -75,12 +121,12 @@ describe('router navigation guard', () => {
       next
     );
 
-    expect(services.bridgeHistoryStore.resetHistoryPage).toHaveBeenCalled();
-    expect(services.routerStore.setRoute).toHaveBeenCalledWith({
+    expect(services.bridgeStore.resetHistoryPage).toHaveBeenCalled();
+    expect(services.setRoute).toHaveBeenCalledWith({
       prev: PageNames.Swap,
       current: PageNames.Bridge,
     });
-    expect(next).toHaveBeenCalledWith({ name: PageNames.Bridge });
+    expect(next).toHaveBeenCalledWith({ path: '/bridge/' });
   });
 
   it('persists referrals and stays on invitation route when already authenticated', () => {
@@ -102,7 +148,7 @@ describe('router navigation guard', () => {
     );
 
     expect(services.persistReferral).toHaveBeenCalledWith('addr');
-    expect(services.routerStore.setRoute).toHaveBeenCalledWith({
+    expect(services.setRoute).toHaveBeenCalledWith({
       prev: PageNames.Swap,
       current: PageNames.ReferralProgram,
     });
@@ -119,11 +165,7 @@ describe('router navigation guard', () => {
 
     guard(createRoute({ name: PageNames.Stats }), createRoute({ name: PageNames.Wallet }), next);
 
-    expect(services.routerStore.setRoute).toHaveBeenCalledWith({
-      prev: PageNames.Wallet,
-      current: PageNames.Stats,
-    });
-    expect(services.syncRoute).toHaveBeenCalledWith({
+    expect(services.setRoute).toHaveBeenCalledWith({
       prev: PageNames.Wallet,
       current: PageNames.Stats,
     });

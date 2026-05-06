@@ -18,18 +18,19 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed } from 'vue';
 
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentConnectionView from '@/lib/soraneo-wallet/src/components/Connection/ConnectionView.vue';
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    ConnectionView: components.ConnectionView,
+    DialogBase: WalletComponentDialogBase,
+    ConnectionView: WalletComponentConnectionView,
   },
 });
 

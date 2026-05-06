@@ -1,14 +1,14 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { gql } from '@urql/core';
 
 import type { ClosedVault } from '@/modules/vault/types';
 
-import type { SubqueryVaultEntity } from '@/shims/wallet-indexer-subquery-types';
-import type { SubsquidVaultEntity } from '@/shims/wallet-indexer-subsquid-types';
-import type { ConnectionQueryResponse } from '@/shims/wallet-indexer-types';
+import type { SubqueryVaultEntity } from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
+import type { SubsquidVaultEntity } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
+import type { ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const SubqueryClosedVaultsQuery = gql<ConnectionQueryResponse<SubqueryVaultEntity>>`
   query ClosedVaultsQuery($account: String, $after: Cursor = "", $first: Int = 100) {

@@ -1,20 +1,18 @@
-import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
+
+import { mountSetup } from '@stubs/mountSetup';
 
 const navigate = vi.hoisted(() => vi.fn());
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    currentParams: {
-      asset: {
-        address: 'asset-address',
-        symbol: 'XOR',
-        name: 'XOR',
-        balance: { transferable: '1' },
-        decimals: 18,
-      },
+vi.mock('@/platform/wallet/navigation', () => ({
+  getWalletCurrentParams: () => ({
+    asset: {
+      address: 'asset-address',
+      symbol: 'XOR',
+      name: 'XOR',
+      balance: { transferable: '1' },
+      decimals: 18,
     },
-    navigate,
   }),
 }));
 
@@ -24,6 +22,7 @@ vi.mock('@/stores/wallet', () => ({
     accountAssets: [],
     history: {},
     selectedTransaction: null,
+    navigate,
   }),
 }));
 
@@ -66,7 +65,7 @@ import { Operations } from '@/lib/soraneo-wallet/src/types/common';
 describe('Wallet WalletAssetDetails', () => {
   it('navigates to send for the send action and emits the rest', () => {
     const emit = vi.fn();
-    const state = (WalletAssetDetails as any).setup({}, { attrs: {}, emit, expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletAssetDetails as any, {}, { emit });
 
     state.handleOperation(Operations.Send);
     state.handleOperation(Operations.Swap);

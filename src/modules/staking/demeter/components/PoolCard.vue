@@ -98,15 +98,13 @@
 
 <script lang="ts" setup>
 import { computed, toRefs, type PropType } from 'vue';
-import { components } from '@/shims/wallet-components';
 
-import { Components, Links, ZeroStringValue } from '@/consts';
+import PoolInfo from '@/components/shared/PoolInfo.vue';
+import { Links, ZeroStringValue } from '@/consts';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
+import CalculatorButton from '@/modules/staking/demeter/components/CalculatorButton.vue';
 
-import { demeterStakingLazyComponent } from '../../router';
-import { DemeterStakingComponents } from '../consts';
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 
@@ -114,13 +112,12 @@ import type { DemeterPoolStatusComposable } from '../composables/useDemeterPoolS
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Nullable } from '@/types/common';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 defineOptions({
   inheritAttrs: false,
   components: {
-    CalculatorButton: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorButton),
-    PoolInfo: lazyComponent(Components.PoolInfo),
-    InfoLine: components.InfoLine,
+    InfoLine: WalletComponentInfoLine,
   },
 });
 

@@ -7,7 +7,7 @@ import { PageNames } from '@/consts';
 const {
   routeMock,
   settingsStore,
-  routerStore,
+  routerLoading,
   setMenuCollapsedMock,
   resizeObserverObserveMock,
   resizeObserverDisconnectMock,
@@ -25,9 +25,7 @@ const {
     assetOwnerEnabled: true,
     setMenuCollapsed: vi.fn(),
   },
-  routerStore: {
-    loading: false,
-  },
+  routerLoading: { value: false },
   setMenuCollapsedMock: vi.fn(),
   resizeObserverObserveMock: vi.fn(),
   resizeObserverDisconnectMock: vi.fn(),
@@ -47,8 +45,8 @@ vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => settingsStore,
 }));
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => routerStore,
+vi.mock('@/app/navigation/loading', () => ({
+  appRouterLoading: routerLoading,
 }));
 
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
@@ -102,7 +100,7 @@ class ResizeObserverMock {
 
 describe('AppMenu', () => {
   beforeEach(() => {
-    routerStore.loading = false;
+    routerLoading.value = false;
     settingsStore.menuCollapsed = false;
     settingsStore.faucetUrl = '';
     routeMock.name = PageNames.Swap;
@@ -132,8 +130,14 @@ describe('AppMenu', () => {
       },
       global: {
         stubs: {
-          's-button': { template: '<button class="s-button-stub"><slot name="icon" /><slot /></button>' },
-          SButton: { template: '<button class="s-button-stub"><slot name="icon" /><slot /></button>' },
+          's-button': {
+            emits: ['click'],
+            template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+          },
+          SButton: {
+            emits: ['click'],
+            template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+          },
           's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
           SScrollbar: { template: '<div class="s-scrollbar-stub"><slot /></div>' },
           's-menu': { template: '<div class="s-menu-stub"><slot /></div>' },
@@ -172,7 +176,6 @@ describe('AppMenu', () => {
       { href: '#/pool', icon: 'basic-drop-24' },
       { href: '#/staking', icon: 'basic-layers-24' },
       { href: '#/bridge', icon: 'grid-block-distribute-vertically-24' },
-      { href: '#/burn', icon: 'basic-flame-24' },
       { href: '#/wallet', icon: 'finance-wallet-24' },
       { href: '#/kensetsu', icon: 'call-phone-16' },
       { href: '#/explore', icon: 'various-items-24' },
@@ -181,6 +184,21 @@ describe('AppMenu', () => {
     ];
 
     expect(renderedRouteItems).toEqual(expectedRouteItems);
+  });
+
+  it('shows the local-only Burn item only while the Burn route is active', () => {
+    routeMock.name = PageNames.Burn;
+    const wrapper = mountComponent();
+
+    const renderedRouteItems = wrapper
+      .findAll('.sidebar-item-content-stub')
+      .map((item) => ({
+        href: item.attributes('data-href'),
+        icon: item.attributes('data-icon'),
+      }))
+      .filter((item) => item.href?.startsWith('#/'));
+
+    expect(renderedRouteItems).toContainEqual({ href: '#/burn', icon: 'basic-flame-24' });
   });
 
   it('keeps SCCP hidden from the sidebar even when debug flag is enabled', () => {
@@ -217,6 +235,23 @@ describe('AppMenu', () => {
     await wrapper.setProps({ visible: false });
 
     expect(wrapper.classes()).not.toContain('visible');
+  });
+
+  it('applies the loading class from the app-owned router loading state', () => {
+    routerLoading.value = true;
+
+    const wrapper = mountComponent();
+
+    expect(wrapper.classes()).toContain('app-menu__loading');
+  });
+
+  it('toggles the collapsed state from the sidebar collapse button', async () => {
+    settingsStore.menuCollapsed = false;
+    const wrapper = mountComponent();
+
+    await wrapper.get('.collapse-button').trigger('click');
+
+    expect(setMenuCollapsedMock).toHaveBeenCalledWith(true);
   });
 
   it('tracks sidebar width and clears observer-driven sidebar styles on unmount', () => {

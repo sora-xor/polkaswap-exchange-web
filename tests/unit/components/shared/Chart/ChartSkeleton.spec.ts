@@ -81,14 +81,15 @@ describe('ChartSkeleton', () => {
     expect(wrapper.find('.s-button-stub').exists()).toBe(false);
   });
 
-  it('does not render issue overlay while loading', () => {
+  it('renders the skeleton without issue or spinner overlays while loading', () => {
     const wrapper = mountComponent({
       loading: true,
       isError: true,
     });
 
     expect(wrapper.find('.charts-skeleton-error').exists()).toBe(false);
-    expect(wrapper.find('.app-loading-overlay').exists()).toBe(true);
-    expect(wrapper.find('.app-loading-overlay__spinner').exists()).toBe(true);
+    expect(wrapper.find('.charts-skeleton').exists()).toBe(true);
+    expect(wrapper.find('.app-loading-overlay').exists()).toBe(false);
+    expect(wrapper.find('.app-loading-overlay__spinner').exists()).toBe(false);
   });
 });

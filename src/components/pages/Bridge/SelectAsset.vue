@@ -26,15 +26,14 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed, watch } from 'vue';
 
+import SelectAssetList from '@/components/shared/SelectAsset/List.vue';
 import { useSearchInput } from '@/composables/useSearchInput';
 import { filterAssetsByQuery } from '@/composables/useAssetSearch';
 import { useSelectAssetTools } from '@/composables/useSelectAssetTools';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, ObjectInit } from '@/consts';
-import { lazyComponent } from '@/router';
+import { ObjectInit } from '@/consts';
 import { useAssetsStore } from '@/stores/assets';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
@@ -44,13 +43,11 @@ import type { BridgeRegisteredAsset } from '@/stores/assets/types';
 import type { NetworkData } from '@/types/bridge';
 import type { Nullable } from '@/types/common';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import SearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 defineOptions({
-  components: {
-    DialogBase: components.DialogBase,
-    SelectAssetList: lazyComponent(Components.SelectAssetList),
-    SearchInput: components.SearchInput,
-  },
+  name: 'BridgeSelectAsset',
 });
 
 const props = withDefaults(

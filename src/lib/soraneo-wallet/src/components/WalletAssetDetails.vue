@@ -120,12 +120,12 @@
 import { XOR, BalanceType } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, onMounted, ref } from 'vue';
 
+import { getWalletCurrentParams, type WalletNavigationTarget } from '@/platform/wallet/navigation';
 import { useCopyAddress } from '../composables/useCopyAddress';
 import { useFormattedAmount } from '../composables/useFormattedAmount';
 import { useOperations } from '../composables/useOperations';
 import { useQrCodeParser } from '../composables/useQrCodeParser';
 import { api } from '../api';
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames } from '../consts';
@@ -167,7 +167,6 @@ export default {
   emits: Object.values(Operations),
   setup(_props, { emit }) {
     const walletStore = useWalletStore();
-    const routerStore = useRouterStore();
     const { t, getTitle } = useOperations();
     const { getAssetFiatPrice, formatCodecNumber, isCodecZero, getFiatBalance, FontSizeRate, FontWeightRate } =
       useFormattedAmount();
@@ -189,7 +188,7 @@ export default {
     const history = computed(() => walletStore.history);
     const selectedTransaction = computed(() => walletStore.selectedTransaction);
     const currentRouteParams = computed<Record<string, AccountAsset>>(() => {
-      return routerStore.currentParams as Record<string, AccountAsset>;
+      return getWalletCurrentParams<Record<string, AccountAsset>>();
     });
     const asset = computed<AccountAsset>(() => {
       return (
@@ -266,8 +265,8 @@ export default {
       walletStore.resetTxDetailsId();
     };
 
-    const navigate = (options: Route): void => {
-      routerStore.navigate(options);
+    const navigate = (options: WalletNavigationTarget): void => {
+      walletStore.navigate(options);
     };
 
     const setNftMeta = async (): Promise<void> => {

@@ -127,11 +127,17 @@ $icon-size: 22px;
 
   &.s-tabs.s-rounded {
     .el-tabs__nav-wrap .el-tabs__item {
+      border-color: var(--s-color-base-content-primary);
+      font-weight: 600;
+
       &:not(.is-active).is-disabled {
         color: var(--s-color-base-content-primary);
       }
       &.is-disabled {
         cursor: not-allowed;
+      }
+      &.is-active {
+        border-color: var(--s-color-theme-accent);
       }
     }
 
@@ -149,7 +155,10 @@ $icon-size: 22px;
 .responsive-tabs {
   &__dropdown {
     &-selected {
+      margin: 0;
+      font-size: var(--s-font-size-large);
       font-weight: 300;
+      line-height: 1.3;
       letter-spacing: var(--s-letter-spacing-mini);
     }
     &-item {

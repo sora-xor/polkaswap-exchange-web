@@ -5,7 +5,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useSwapStore } from '@/stores/swap';
 
-let walletModule: Awaited<ReturnType<typeof import('@wallet')>>;
+let walletRuntime: Awaited<ReturnType<typeof import('@tests/stubs/walletRuntime')>>;
 
 const { localStorageMock } = vi.hoisted(() => {
   const storage = {
@@ -35,7 +35,7 @@ vi.mock('@sora-substrate/sdk/build/dex/consts', () => ({
   DexId: { XOR: 0 },
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const wallet = await createWalletMock();
 
@@ -84,8 +84,8 @@ describe('swap workflow', () => {
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
-    walletModule = await import('@wallet');
-    const walletApi = vi.mocked(walletModule.api);
+    walletRuntime = await import('@tests/stubs/walletRuntime');
+    const walletApi = vi.mocked(walletRuntime.api);
     walletApi.divideAssets.mockReturnValue('0');
     walletApi.swap.getDexesSwapQuoteObservable.mockReturnValue(undefined as any);
     walletApi.swap.getPriceImpact.mockReturnValue('0');

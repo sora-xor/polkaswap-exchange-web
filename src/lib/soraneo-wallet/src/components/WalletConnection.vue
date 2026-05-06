@@ -13,15 +13,19 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
+import {
+  getWalletCurrentRoute,
+  getWalletPreviousParams,
+  getWalletPreviousRoute,
+  navigateWallet,
+} from '@/platform/wallet/navigation';
 import { api } from '../api';
 import { RouteNames } from '@/consts';
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 import type { PolkadotJsAccount } from '@/types/common';
 
 import ConnectionView from './Connection/ConnectionView.vue';
 
-const routerStore = useRouterStore();
 const walletStore = useWalletStore();
 
 const chainApi = api;
@@ -34,19 +38,19 @@ const renameAccount = (data: { address: string; name: string }) => walletStore.r
 const checkConnectedAccountSource = (source: string) => walletStore.checkConnectedAccountSource(source);
 
 const navigateToAccount = () => {
-  const currentRoute = routerStore.current as string | null;
-  const previousRoute = routerStore.prev as string | null;
+  const currentRoute = getWalletCurrentRoute();
+  const previousRoute = getWalletPreviousRoute();
 
   if (currentRoute && currentRoute !== RouteNames.WalletConnection) {
     return;
   }
 
   if (previousRoute && previousRoute !== RouteNames.WalletConnection) {
-    routerStore.navigate({ name: previousRoute, params: routerStore.prevParams });
+    navigateWallet({ name: previousRoute, params: getWalletPreviousParams() });
     return;
   }
 
-  routerStore.navigate({ name: RouteNames.Wallet });
+  navigateWallet({ name: RouteNames.Wallet });
 };
 
 defineExpose({

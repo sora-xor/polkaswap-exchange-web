@@ -200,11 +200,16 @@ import dayjs from 'dayjs';
 import debounce from 'lodash/fp/debounce';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
+import {
+  getWalletCurrentParams,
+  getWalletPreviousParams,
+  getWalletPreviousRoute,
+  type WalletNavigationTarget,
+} from '@/platform/wallet/navigation';
 import { useCopyAddress } from '../composables/useCopyAddress';
 import { useFormattedAmount } from '../composables/useFormattedAmount';
 import { useNetworkFeeWarning } from '../composables/useNetworkFeeWarning';
 import { useTransaction } from '../composables/useTransaction';
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../api';
@@ -223,7 +228,6 @@ import WalletBase from './WalletBase.vue';
 import WalletFee from './WalletFee.vue';
 
 import type { VestedTransferFeeParams, VestedTransferParams } from '@/stores/wallet/account/types';
-import type { Route } from '@/stores/router/types';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset, AccountBalance, UnlockPeriodDays } from '@sora-substrate/sdk/build/assets/types';
 import type { Subscription } from 'rxjs';
@@ -244,7 +248,6 @@ export default {
     InfoLine,
   },
   setup() {
-    const routerStore = useRouterStore();
     const walletStore = useWalletStore();
     const {
       t,
@@ -286,10 +289,12 @@ export default {
     const assetBalance = ref<Nullable<AccountBalance>>(null);
     const assetBalanceSubscription = ref<Nullable<Subscription>>(null);
 
-    const previousRoute = computed<RouteNames>(() => (routerStore.prev as RouteNames) ?? RouteNames.Wallet);
-    const previousRouteParams = computed<Record<string, unknown>>(() => routerStore.prevParams);
-    const currentRouteParams = computed<Record<string, AccountAsset | string>>(
-      () => routerStore.currentParams as Record<string, AccountAsset | string>
+    const previousRoute = computed<RouteNames>(() => (getWalletPreviousRoute() as RouteNames) ?? RouteNames.Wallet);
+    const previousRouteParams = computed<Record<string, unknown>>(() =>
+      getWalletPreviousParams<Record<string, unknown>>()
+    );
+    const currentRouteParams = computed<Record<string, AccountAsset | string>>(() =>
+      getWalletCurrentParams<Record<string, AccountAsset | string>>()
     );
     const accountAssets = computed<Array<AccountAsset>>(() => walletStore.accountAssets as Array<AccountAsset>);
     const isConfirmTxDisabled = computed<boolean>(() => walletStore.isConfirmTxDialogDisabled);
@@ -392,8 +397,8 @@ export default {
     const vestedTransfer = (payload: VestedTransferParams) => walletStore.vestedTransfer(payload);
     const getVestedTransferFee = (payload: VestedTransferFeeParams) => walletStore.getVestedTransferFee(payload);
 
-    const navigate = (options: Route): void => {
-      routerStore.navigate(options);
+    const navigate = (options: WalletNavigationTarget): void => {
+      walletStore.navigate(options);
     };
 
     const updateName = (value: string): void => {

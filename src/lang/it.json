@@ -260,6 +260,13 @@
         "disclaimer": "L'accesso alla fotocamera è necessario per l'acquisizione di documenti in tempo reale per prevenire le frodi.",
         "title": "Consenti l'accesso alla fotocamera nelle impostazioni del browser"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Seleziona un token",
         "chooseToken": "Seleziona un token",

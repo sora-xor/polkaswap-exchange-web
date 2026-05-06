@@ -5,13 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 const visible = defineModel<boolean>('visible', { default: false });
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
+    DialogBase: WalletComponentDialogBase,
   },
 });
 </script>

@@ -260,6 +260,13 @@
         "disclaimer": "𒁾 𒋼",
         "title": "𒁾 𒋼"
     },
+    "burnPage": {
+        "enterNexusRecipient": "𒅗𒁕 𒀭𒆠 𒌷𒊭",
+        "invalidNexusRecipient": "𒄿𒉌 𒀭𒆠 𒌷𒊭",
+        "nexusRecipientLabel": "𒀭𒆠 𒌷𒊭",
+        "nexusRecipientPlaceholder": "𒅗𒁕 𒀭𒆠 𒌷𒊭",
+        "nexusRecipientWarning": "𒀭𒆠 𒌷𒊭 𒊹𒌷 𒁕𒀭 𒉌𒁺 𒆠𒁲 𒊹𒌷."
+    },
     "buttons": {
         "chooseAToken": "𒉌𒁺 𒊹𒌷 𒉌",
         "chooseToken": "𒉌𒁺 𒉌",

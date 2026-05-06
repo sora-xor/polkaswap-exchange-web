@@ -4,24 +4,6 @@ import { computed, nextTick, reactive, ref } from 'vue';
 
 import { useSettingsStore } from '@/stores/settings';
 
-const walletCoreStub = {
-  api: {},
-  connection: {},
-  WALLET_CONSTS: {
-    TranslationConsts: {},
-    IndexerType: {},
-    SoraNetwork: {},
-  },
-  WALLET_TYPES: {
-    IndexerState: {},
-    FilterOptions: {},
-  },
-} as const;
-
-vi.mock('@/utils/walletCore', () => ({
-  loadWalletCore: async () => walletCoreStub,
-}));
-
 const i18nStub = {
   global: {
     locale: ref('en'),

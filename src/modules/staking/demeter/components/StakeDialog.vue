@@ -114,33 +114,31 @@
 <script lang="ts" setup>
 import { FPNumber, Operation, type CodecString } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
 import { computed, ref, toRefs, watch, type PropType } from 'vue';
 
-import { Components, ZeroStringValue } from '@/consts';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import { ZeroStringValue } from '@/consts';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
+import DialogTitle from '@/modules/staking/demeter/components/DialogTitle.vue';
 import { useAssetsStore } from '@/stores/assets';
 import type { DemeterLiquidityParams } from '@/stores/demeterFarming/types';
 import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
 import { getMaxValue, hasInsufficientXorForFee, isXorAccountAsset } from '@/utils';
 
-import { demeterStakingLazyComponent } from '../../router';
-import { DemeterStakingComponents } from '../consts';
 import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 defineOptions({
   components: {
-    DialogTitle: demeterStakingLazyComponent(DemeterStakingComponents.DialogTitle),
-    TokenInput: lazyComponent(Components.TokenInput),
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
+    DialogBase: WalletComponentDialogBase,
+    InfoLine: WalletComponentInfoLine,
   },
 });
 

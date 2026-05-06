@@ -28,7 +28,8 @@ const localhostHostnames = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1'])
 export const isLocalWsUrl = (value: string): boolean => {
   try {
     const url = new URL(value);
-    return url.protocol === 'ws:' && localhostHostnames.has(url.hostname.toLowerCase());
+    const hostname = url.hostname.toLowerCase().replace(/^\[(.*)\]$/, '$1');
+    return url.protocol === 'ws:' && localhostHostnames.has(hostname);
   } catch {
     return false;
   }

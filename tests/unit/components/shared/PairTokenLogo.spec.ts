@@ -13,23 +13,13 @@ const LogoSize = vi.hoisted(
     }) as const
 );
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  const TokenLogoStub = {
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  default: {
     name: 'TokenLogoStub',
     props: ['token', 'size'],
     template: '<div class="token-logo-stub" :data-size="size"></div>',
-  };
-
-  return await createWalletMock({
-    components: {
-      TokenLogo: TokenLogoStub,
-    },
-    WALLET_CONSTS: {
-      LogoSize,
-    },
-  });
-});
+  },
+}));
 
 // Import component after mocking dependencies
 import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';

@@ -64,7 +64,7 @@ const SlippageToleranceStub = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   const actual = createWalletMock();
 

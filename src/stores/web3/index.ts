@@ -4,8 +4,8 @@ import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts'
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 import type { AppWallet } from '@/consts';
-import { api as soraApi } from '@/shims/wallet-api';
-import * as accountUtils from '@/shims/wallet-account';
+import { api as soraApi } from '@/lib/soraneo-wallet/src/api';
+import * as accountUtils from '@/lib/soraneo-wallet/src/util/account';
 import { EVM_NETWORKS, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { useAssetsStore } from '@/stores/assets';
@@ -13,7 +13,7 @@ import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
 import web3Mutations from '@/stores/web3/mutations';
 import { initialState as createInitialWeb3State } from '@/stores/web3/state';
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 import type { AvailableNetwork, EthBridgeSettings, SubNetworkApps, Web3State } from '@/stores/web3/types';
 import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';

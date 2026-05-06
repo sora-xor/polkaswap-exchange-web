@@ -45,8 +45,8 @@ const {
   };
 });
 
-vi.mock('@wallet', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@wallet')>();
+vi.mock('@tests/stubs/walletRuntime', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@tests/stubs/walletRuntime')>();
 
   return {
     ...actual,

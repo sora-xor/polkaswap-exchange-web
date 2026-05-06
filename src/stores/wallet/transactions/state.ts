@@ -1,4 +1,4 @@
-import { settingsStorage } from '@/shims/wallet-storage';
+import { settingsStorage } from '@/lib/soraneo-wallet/src/util/storage';
 
 import type { TransactionsState } from './types';
 

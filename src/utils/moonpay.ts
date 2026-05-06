@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { SoraNetwork } from '@/consts';
 import axios from '@/api';

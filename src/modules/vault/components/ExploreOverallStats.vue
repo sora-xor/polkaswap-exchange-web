@@ -9,13 +9,15 @@
       :md="4"
       :lg="3"
     >
-      <s-card class="stats-card" size="small" border-radius="mini" primary>
-        <div slot="header" class="stats-card-title">
-          <span>{{ title }}</span>
-          <s-tooltip border-radius="mini" :content="tooltip">
-            <s-icon name="info-16" size="14px"></s-icon>
-          </s-tooltip>
-        </div>
+      <s-card class="stats-card" size="small" border-radius="mini" shadow="never" primary>
+        <template #header>
+          <div class="stats-card-title">
+            <span>{{ title }}</span>
+            <s-tooltip border-radius="mini" :content="tooltip">
+              <s-icon name="info-16" size="14px"></s-icon>
+            </s-tooltip>
+          </div>
+        </template>
         <div class="stats-card-data">
           <formatted-amount
             class="stats-card-value"
@@ -35,7 +37,6 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { FontSizeRate, FontWeightRate } from '@/consts';
@@ -48,8 +49,9 @@ import { formatAmountWithSuffix } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
-const FormattedAmount = components.FormattedAmount;
+const FormattedAmount = WalletComponentFormattedAmount;
 
 const { t } = useTranslation();
 const { getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
@@ -138,9 +140,29 @@ const statsColumns = computed(() =>
 </script>
 
 <style lang="scss" scoped>
+.stats-column {
+  border-style: none;
+
+  @include desktop {
+    flex-basis: calc(var(--s-col-span-width-current) + 6px);
+    max-width: calc(var(--s-col-span-width-current) + 6px);
+  }
+}
+
 .stats-card {
+  padding: $inner-spacing-mini $inner-spacing-small;
   margin-bottom: $inner-spacing-big;
   box-shadow: var(--s-shadow-element-pressed);
+
+  :deep(.el-card__header) {
+    border-bottom: 1px solid transparent;
+    padding: 0;
+  }
+
+  :deep(.el-card__body) {
+    border-style: none;
+    padding: 0;
+  }
 
   &-title {
     display: flex;

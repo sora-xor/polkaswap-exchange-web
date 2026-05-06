@@ -23,12 +23,11 @@ vi.mock('@/composables/useNetworkFormatter', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => () =>
-    Promise.resolve({
-      name: 'SwapStatusActionBadge',
-      template: '<div class="swap-status-action-badge"><slot name="value" /><slot name="action" /></div>',
-    }),
+vi.mock('@/shared/ui/StatusActionBadge.vue', () => ({
+  default: {
+    name: 'StatusActionBadge',
+    template: '<div class="status-action-badge"><slot name="value" /><slot name="action" /></div>',
+  },
 }));
 
 const SButtonStub = {

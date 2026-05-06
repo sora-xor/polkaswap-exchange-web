@@ -5,6 +5,7 @@ import { Operation } from '@sora-substrate/sdk';
 
 const walletMocks = vi.hoisted(() => ({
   burn: vi.fn(),
+  burnWithRemark: vi.fn(),
 }));
 
 const storeMocks = vi.hoisted(() => ({
@@ -55,41 +56,43 @@ const formattedAmountMocks = vi.hoisted(() => {
   };
 });
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBaseStub',
-        props: {
-          visible: {
-            type: Boolean,
-            default: false,
-          },
-        },
-        emits: ['update:visible'],
-        template: '<div><slot /><slot name="footer" /></div>',
-      },
-      InfoLine: {
-        name: 'InfoLineStub',
-        template: '<div class="info-line"><slot /></div>',
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBaseStub',
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
       },
     },
-    api: {
-      assets: {
-        burn: walletMocks.burn,
-      },
-    },
-  });
-});
+    emits: ['update:visible'],
+    template: '<div><slot /><slot name="footer" /></div>',
+  },
+}));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: {
+    name: 'InfoLineStub',
+    template: '<div class="info-line"><slot /></div>',
+  },
+}));
+
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
+  default: {
     name: 'TokenInputStub',
     props: ['modelValue'],
     emits: ['update:modelValue'],
     template: '<div class="token-input-stub"><slot /></div>',
-  }),
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    assets: {
+      burn: walletMocks.burn,
+      burnWithRemark: walletMocks.burnWithRemark,
+    },
+  },
 }));
 
 vi.mock('@/stores/settings', () => ({
@@ -175,13 +178,19 @@ const mountComponent = (props: Record<string, unknown> = {}) =>
           template: '<button class="confirm-button" :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
         },
         's-icon': { template: '<i />' },
+        's-input': {
+          props: ['modelValue'],
+          emits: ['update:modelValue'],
+          template:
+            '<input class="nexus-input" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
+        },
       },
     },
   });
 
 beforeEach(async () => {
   vi.clearAllMocks();
-  storeMocks.networkFees = { [Operation.Burn]: '0' };
+  storeMocks.networkFees = { [Operation.Burn]: '0', [Operation.BurnWithRemark]: '0' };
   storeMocks.accountXor = { balance: { transferable: '0' } };
   storeMocks.isLoggedIn = true;
   alertMock = vi.fn();
@@ -190,6 +199,8 @@ beforeEach(async () => {
 });
 
 describe('BurnDialog (pages)', () => {
+  const validNexusRecipient = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃaﾘﾒﾓQﾗrﾒoﾘﾅnｳﾘbQｳQJﾆLJ5HSE';
+
   it('alerts and emits confirm without burning when balance is insufficient', async () => {
     storeMocks.networkFees[Operation.Burn] = '5';
     storeMocks.accountXor = { balance: { transferable: '10' } };
@@ -227,11 +238,59 @@ describe('BurnDialog (pages)', () => {
 
     expect(transactionMocks.withNotifications).toHaveBeenCalledTimes(1);
     expect(walletMocks.burn).toHaveBeenCalledWith(expect.objectContaining({ symbol: 'BRN' }), '2');
+    expect(walletMocks.burnWithRemark).not.toHaveBeenCalled();
 
     const confirmEvents = wrapper.emitted('confirm');
     expect(confirmEvents?.[0]).toEqual([true]);
 
     const visibilityEvents = wrapper.emitted('update:visible');
     expect(visibilityEvents).toContainEqual([false]);
+  });
+
+  it('burns with a SORA Nexus recipient remark when required', async () => {
+    storeMocks.networkFees[Operation.BurnWithRemark] = '2';
+    storeMocks.accountXor = { balance: { transferable: '100' } };
+
+    const wrapper = mountComponent({ requiresNexusRecipient: true });
+
+    (wrapper.vm as unknown as { handleInputField: (value: string) => void }).handleInputField('2');
+    (wrapper.vm as unknown as { nexusRecipient: string }).nexusRecipient = validNexusRecipient;
+    await wrapper.vm.$nextTick();
+
+    await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
+    await wrapper.vm.$nextTick();
+
+    expect(transactionMocks.withNotifications).toHaveBeenCalledTimes(1);
+    expect(walletMocks.burn).not.toHaveBeenCalled();
+    expect(walletMocks.burnWithRemark).toHaveBeenCalledWith(
+      expect.objectContaining({ symbol: 'BRN' }),
+      '2',
+      expect.any(String)
+    );
+
+    const remark = JSON.parse(walletMocks.burnWithRemark.mock.calls[0][2]);
+    expect(remark).toEqual({
+      type: 'soraNexusXorClaim',
+      version: 1,
+      recipient: validNexusRecipient,
+    });
+  });
+
+  it('does not burn when the required SORA Nexus recipient is invalid', async () => {
+    storeMocks.accountXor = { balance: { transferable: '100' } };
+
+    const wrapper = mountComponent({ requiresNexusRecipient: true });
+
+    (wrapper.vm as unknown as { handleInputField: (value: string) => void }).handleInputField('2');
+    await wrapper.find('.nexus-input').setValue('not-a-nexus-account');
+    await wrapper.vm.$nextTick();
+
+    await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
+    await wrapper.vm.$nextTick();
+
+    expect(alertMock).toHaveBeenCalledWith('burnPage.invalidNexusRecipient', { title: 'errorText' });
+    expect(transactionMocks.withNotifications).not.toHaveBeenCalled();
+    expect(walletMocks.burn).not.toHaveBeenCalled();
+    expect(walletMocks.burnWithRemark).not.toHaveBeenCalled();
   });
 });

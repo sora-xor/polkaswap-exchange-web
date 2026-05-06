@@ -1,4 +1,4 @@
-import { BN } from '@polkadot/util';
+import { BN, hexToString, isHex } from '@polkadot/util';
 import { FPNumber, Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { RewardType, RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
@@ -140,6 +140,10 @@ const OperationsMap = {
         return Operation.StakingBondAndNominate;
       }
 
+      if (getBatchCall(data, { module: ModuleNames.Assets, method: ModuleMethods.AssetsBurn })) {
+        return Operation.Burn;
+      }
+
       return null;
     },
   },
@@ -213,6 +217,10 @@ const getBatchCall = (calls: HistoryElementBatchCall[], { module, method }): Nul
 const getCallDataArgs = (call: HistoryElementBatchCall): CallArgs => {
   const data = call.data;
 
+  if (!data || typeof data !== 'object') {
+    return {};
+  }
+
   if (!('args' in data)) {
     return data;
   }
@@ -224,8 +232,15 @@ const getTransactionOperationType = (tx: HistoryElement): Nullable<Operation> =>
   const { module, method, data, calls } = tx;
 
   const operationGetter = getOr(ObjectInit, [insensitive(module), insensitive(method)], OperationsMap);
+  const operationData = isModuleMethod(
+    tx as HistoryElementBatchCall,
+    ModuleNames.Utility,
+    ModuleMethods.UtilityBatchAll
+  )
+    ? calls
+    : (data as any) || calls;
 
-  return operationGetter((data as any) || calls);
+  return operationGetter(operationData);
 };
 
 const getTransactionTimestamp = (tx: HistoryElement): number => {
@@ -311,18 +326,55 @@ const formatRewards = async (rewards: ClaimedRewardItem[]): Promise<RewardInfo[]
 
 const formatAmount = (amount: string): string => (amount ? new FPNumber(amount).toString() : '0');
 
+const getBatchMintOrBurnData = (transaction: HistoryElement, method: string): Nullable<HistoryElementAssetBurn> => {
+  if (!isModuleMethod(transaction as HistoryElementBatchCall, ModuleNames.Utility, ModuleMethods.UtilityBatchAll)) {
+    return null;
+  }
+
+  const call = getBatchCall(transaction.calls, { module: ModuleNames.Assets, method });
+  return call ? (getCallDataArgs(call) as HistoryElementAssetBurn) : null;
+};
+
+const decodeRemark = (value: unknown): Nullable<string> => {
+  if (typeof value !== 'string' || !value) return null;
+
+  if (!isHex(value)) return value;
+
+  try {
+    return hexToString(value);
+  } catch {
+    return value;
+  }
+};
+
+const getSystemRemark = (transaction: HistoryElement): Nullable<string> => {
+  const call = getBatchCall(transaction.calls, { module: ModuleNames.System, method: ModuleMethods.SystemRemark });
+  if (!call) return null;
+
+  const args = getCallDataArgs(call);
+  return decodeRemark(args.remark ?? args.bytes ?? args[0]);
+};
+
 const parseMintOrBurn = async (transaction: HistoryElement, payload: HistoryItem) => {
-  const data = transaction.data as HistoryElementAssetBurn;
+  const method = payload.type === Operation.Mint ? ModuleMethods.AssetsMint : ModuleMethods.AssetsBurn;
+  const data = getBatchMintOrBurnData(transaction, method) ?? (transaction.data as HistoryElementAssetBurn);
 
-  const assetAddress = data.assetId;
+  const assetAddress = (data as HistoryElementAssetBurn & { asset_id?: string }).assetId ?? (data as any).asset_id;
+  const amount = data?.amount;
+
+  if (!assetAddress || !amount) return null;
+
   const asset = await getAssetByAddress(assetAddress);
+  const comment = payload.type === Operation.Burn ? getSystemRemark(transaction) : null;
 
-  payload.amount = formatAmount(data.amount);
+  payload.amount = formatAmount(amount);
   payload.assetAddress = assetAddress;
   payload.symbol = getAssetSymbol(asset);
+  payload.comment = comment ?? undefined;
 
   payload.payload = {
     amountUSD: formatAmount(data.amountUSD),
+    comment: comment ?? undefined,
   };
 
   return payload;

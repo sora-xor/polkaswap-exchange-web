@@ -41,4 +41,15 @@ describe('useConfirmDialog', () => {
     expect(handler).toHaveBeenCalledTimes(1);
     expect(dialog.confirmDialogVisible.value).toBe(false);
   });
+
+  it('exposes imperative open and close helpers for the confirm dialog', async () => {
+    const { useConfirmDialog } = await import('@/composables/useConfirmDialog');
+    const dialog = useConfirmDialog();
+
+    dialog.openConfirmDialog();
+    expect(dialog.confirmDialogVisible.value).toBe(true);
+
+    dialog.closeConfirmDialog();
+    expect(dialog.confirmDialogVisible.value).toBe(false);
+  });
 });

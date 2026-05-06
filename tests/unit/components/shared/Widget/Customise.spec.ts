@@ -22,7 +22,7 @@ vi.mock('@/utils', () => ({
   capitalize: (value: string) => (value ? value[0].toUpperCase() + value.slice(1) : value),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });

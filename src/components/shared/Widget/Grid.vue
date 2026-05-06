@@ -409,7 +409,7 @@ $line: var(--s-color-base-border-secondary);
   .vue-grid-item {
     transition-property: opacity, scale;
     transition-duration: 0.3s;
-    touch-action: auto;
+    touch-action: none;
 
     &.vue-grid-placeholder {
       background: var(--s-color-theme-accent-hover);
@@ -447,17 +447,10 @@ $line: var(--s-color-base-border-secondary);
   }
 
   // animation
-  .list-enter,
+  .list-enter-from,
   .list-leave-to {
     opacity: 0;
-    scale: 0.8;
-  }
-
-  &.widgets-grid--auto-resize:not(.widgets-grid--editing) {
-    .vue-grid-item {
-      transition-property: opacity, scale, left, top, right, height;
-      will-change: height;
-    }
+    transform: scale(0.8);
   }
 
   &.widgets-grid--editing {

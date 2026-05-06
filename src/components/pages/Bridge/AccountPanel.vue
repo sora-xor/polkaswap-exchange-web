@@ -35,14 +35,14 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
-
 import { useTranslation } from '@/composables/useTranslation';
+import WalletComponentWalletAvatar from '@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue';
+import WalletComponentFormattedAddress from '@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue';
 
 defineOptions({
   components: {
-    WalletAvatar: components.WalletAvatar,
-    FormattedAddress: components.FormattedAddress,
+    WalletAvatar: WalletComponentWalletAvatar,
+    FormattedAddress: WalletComponentFormattedAddress,
   },
 });
 

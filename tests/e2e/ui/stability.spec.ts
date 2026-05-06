@@ -80,7 +80,7 @@ const runRouteCycles = async (page: Page, routes: RouteTarget[], rounds: number)
 };
 
 test.beforeEach(async ({ page }) => {
-  await preparePage(page);
+  await preparePage(page, { stubRuntimeEnv: true });
 });
 
 test('keeps full route churn stable on desktop', async ({ page }) => {

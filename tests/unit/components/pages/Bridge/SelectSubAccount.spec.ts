@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { WALLET_TYPES } from '@wallet';
+import type { WALLET_TYPES } from '@tests/stubs/walletRuntime';
 
 const logoutSpy = vi.fn();
 const selectSpy = vi.fn();
@@ -35,33 +35,36 @@ vi.mock('@/stores/web3', () => ({
   useWeb3Store: () => web3StorePiniaMock,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBase',
-        props: ['visible'],
-        emits: ['update:visible'],
-        template: '<div><slot /></div>',
-      },
-      ConnectionView: {
-        name: 'ConnectionView',
-        props: [
-          'chainApi',
-          'account',
-          'loginAccount',
-          'logoutAccount',
-          'renameAccount',
-          'closeView',
-          'checkConnectedAccountSource',
-          'showClose',
-        ],
-        template: '<div><slot /></div>',
-      },
-    },
-  });
+  return createWalletMock();
 });
+
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBase',
+    props: ['visible'],
+    emits: ['update:visible'],
+    template: '<div><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/Connection/ConnectionView.vue', () => ({
+  default: {
+    name: 'ConnectionView',
+    props: [
+      'chainApi',
+      'account',
+      'loginAccount',
+      'logoutAccount',
+      'renameAccount',
+      'closeView',
+      'checkConnectedAccountSource',
+      'showClose',
+    ],
+    template: '<div><slot /></div>',
+  },
+}));
 
 let SelectSubAccount: typeof import('@/components/pages/Bridge/SelectSubAccount.vue').default;
 

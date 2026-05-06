@@ -1,9 +1,8 @@
 import { FPNumber } from '@sora-substrate/math';
 import { flushPromises, mount } from '@vue/test-utils';
-import { defineComponent, h, ref } from 'vue';
+import { defineComponent, h, nextTick, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { VaultPageNames } from '@/modules/vault/consts';
 import { VaultTypes } from '@sora-substrate/sdk/build/kensetsu/consts';
 
 const routerPushSpy = vi.fn();
@@ -47,7 +46,9 @@ const storeStub = {
   state: {
     vault: {
       accountVaults: [] as Array<any>,
+      accountVaultsLoaded: false,
       closedAccountVaults: [] as Array<any>,
+      closedAccountVaultsLoaded: false,
       collaterals: {} as Record<string, any>,
       averageCollateralPrices: {} as Record<string, any>,
       liquidationPenalty: 10,
@@ -85,7 +86,7 @@ const storeStub = {
 
 const slotStub = createSlotPassthroughStub();
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -99,15 +100,6 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/router', () => ({
-  __esModule: true,
-  default: {
-    push: routerPushSpy,
-    back: routerBackSpy,
-  },
-  lazyComponent: () => createSlotPassthroughStub(),
-}));
-
 vi.mock('vue-router', () => ({
   __esModule: true,
   useRoute: () => ({
@@ -117,11 +109,6 @@ vi.mock('vue-router', () => ({
     push: routerPushSpy,
     back: routerBackSpy,
   }),
-}));
-
-vi.mock('@/modules/vault/router', () => ({
-  __esModule: true,
-  vaultLazyComponent: () => createSlotPassthroughStub(),
 }));
 
 vi.mock('@/stores/wallet', () => ({
@@ -155,8 +142,14 @@ vi.mock('@/stores/vault', () => ({
     get accountVaults() {
       return storeStub.state.vault.accountVaults;
     },
+    get accountVaultsLoaded() {
+      return storeStub.state.vault.accountVaultsLoaded;
+    },
     get closedAccountVaults() {
       return storeStub.state.vault.closedAccountVaults;
+    },
+    get closedAccountVaultsLoaded() {
+      return storeStub.state.vault.closedAccountVaultsLoaded;
     },
     get collaterals() {
       return storeStub.state.vault.collaterals;
@@ -196,7 +189,17 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-const VaultDetails = (await import('@/modules/vault/views/VaultDetails.vue')).default;
+vi.mock('@/modules/vault/components/AddCollateralDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/BorrowMoreDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/CloseVaultDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/LtvProgressBar.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/PositionStatus.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/RepayDebtDialog.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/components/shared/ValueStatusWrapper.vue', () => ({ __esModule: true, default: slotStub }));
+vi.mock('@/modules/vault/components/VaultDetailsHistory.vue', () => ({ __esModule: true, default: slotStub }));
+
+const VaultDetails = (await import('@/features/vault/pages/VaultDetailsPage.vue')).default;
 
 const mountVaultDetails = () =>
   mount(VaultDetails, {
@@ -233,7 +236,9 @@ describe('VaultDetails.vue', () => {
     isLoggedInRef.value = false;
     routeParams.value = { vault: '1' };
     storeStub.state.vault.accountVaults = [];
+    storeStub.state.vault.accountVaultsLoaded = false;
     storeStub.state.vault.closedAccountVaults = [];
+    storeStub.state.vault.closedAccountVaultsLoaded = false;
     storeStub.state.vault.collaterals = {};
     storeStub.state.vault.averageCollateralPrices = {};
   });
@@ -242,7 +247,7 @@ describe('VaultDetails.vue', () => {
     const wrapper = mountVaultDetails();
     await flushPromises();
 
-    expect(routerPushSpy).toHaveBeenCalledWith({ name: VaultPageNames.Vaults });
+    expect(routerPushSpy).toHaveBeenCalledWith({ path: '/kensetsu/' });
     wrapper.unmount();
   });
 
@@ -277,6 +282,8 @@ describe('VaultDetails.vue', () => {
     storeStub.state.vault.averageCollateralPrices = {
       [key]: FPNumber.fromNatural(2),
     };
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
 
     const wrapper = mountVaultDetails();
     await flushPromises();
@@ -286,6 +293,66 @@ describe('VaultDetails.vue', () => {
     const title = wrapper.find('.vault-title__container h3');
     expect(title.exists()).toBe(true);
     expect(title.text()).toBe('KUSD / XOR');
+
+    wrapper.unmount();
+  });
+
+  it('waits for vault subscriptions before resolving a deep-linked vault', async () => {
+    isLoggedInRef.value = true;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).not.toHaveBeenCalled();
+
+    const lockedAssetId = 'xor';
+    const debtAssetId = 'kusd';
+    const key = `${lockedAssetId}-${debtAssetId}`;
+
+    storeStub.state.vault.accountVaults = [
+      {
+        id: 1,
+        lockedAssetId,
+        debtAssetId,
+        lockedAmount: FPNumber.fromNatural(10),
+        debt: FPNumber.fromNatural(5),
+        vaultType: VaultTypes.V2,
+      },
+    ];
+    storeStub.state.vault.collaterals = {
+      [key]: {
+        debtSupply: FPNumber.fromNatural(100),
+        riskParams: {
+          liquidationRatioReversed: 150,
+          hardCap: FPNumber.fromNatural(1000),
+          stabilityFeeAnnual: FPNumber.fromNatural(12),
+        },
+      },
+    };
+    storeStub.state.vault.averageCollateralPrices = {
+      [key]: FPNumber.fromNatural(2),
+    };
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+
+    await nextTick();
+    await flushPromises();
+
+    expect(routerPushSpy).not.toHaveBeenCalled();
+    expect(wrapper.find('.vault-title__container h3').text()).toBe('KUSD / XOR');
+
+    wrapper.unmount();
+  });
+
+  it('redirects to vaults when the deep-linked vault lookup resolves without a matching vault', async () => {
+    isLoggedInRef.value = true;
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).toHaveBeenCalledWith({ path: '/kensetsu/' });
 
     wrapper.unmount();
   });

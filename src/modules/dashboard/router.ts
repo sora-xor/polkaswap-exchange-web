@@ -3,8 +3,6 @@ import { createAsyncComponent } from '@/router/lazy';
 
 import { DashboardComponents, DashboardPageNames } from './consts';
 
-export const dashboardLazyView = (name: DashboardPageNames) => () => import(`@/modules/dashboard/views/${name}.vue`);
-
 export const dashboardLazyComponent = (name: DashboardComponents) =>
   createAsyncComponent(() => import(`@/modules/dashboard/components/${name}.vue`));
 

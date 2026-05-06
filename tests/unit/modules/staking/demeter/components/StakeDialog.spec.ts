@@ -10,7 +10,7 @@ import StakeDialog from '@/modules/staking/demeter/components/StakeDialog.vue';
 
 const tokenInputStubRef = vi.hoisted(() => ({ component: null as Component | null }));
 
-vi.mock('@/router', () => {
+vi.mock('@/components/shared/Input/TokenInput.vue', () => {
   tokenInputStubRef.component = defineComponent({
     name: 'TokenInputStub',
     props: ['modelValue', 'balance', 'isMaxAvailable', 'title', 'token'],
@@ -19,18 +19,17 @@ vi.mock('@/router', () => {
   });
 
   return {
-    lazyComponent: () => tokenInputStubRef.component,
+    default: tokenInputStubRef.component,
   };
 });
 
-vi.mock('@/modules/staking/demeter/router', () => ({
+vi.mock('@/modules/staking/demeter/components/DialogTitle.vue', () => ({
   __esModule: true,
-  demeterStakingLazyComponent: () =>
-    defineComponent({
-      name: 'DialogTitleStub',
-      props: ['baseAsset', 'poolAsset', 'isFarm'],
-      template: `<div class="dialog-title-stub"></div>`,
-    }),
+  default: defineComponent({
+    name: 'DialogTitleStub',
+    props: ['baseAsset', 'poolAsset', 'isFarm'],
+    template: `<div class="dialog-title-stub"></div>`,
+  }),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({

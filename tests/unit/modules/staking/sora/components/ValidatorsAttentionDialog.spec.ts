@@ -2,12 +2,17 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ValidatorsAttentionDialog from '@/modules/staking/sora/components/ValidatorsAttentionDialog.vue';
+
+const { descriptionMessagesRef } = vi.hoisted(() => ({
+  descriptionMessagesRef: {
+    value: ['line-1', 'line-2'] as unknown,
+  },
+}));
+
 const tMock = vi.fn((key: string) => {
   switch (key) {
     case 'soraStaking.validatorsAttentionDialog.title':
       return 'Attention Title';
-    case 'soraStaking.validatorsAttentionDialog.description':
-      return ['line-1', 'line-2'];
     case 'soraStaking.validatorsAttentionDialog.confirm':
       return 'Confirm';
     default:
@@ -17,7 +22,7 @@ const tMock = vi.fn((key: string) => {
 
 let routerPushMock: ReturnType<typeof vi.fn>;
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -57,6 +62,24 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
+vi.mock('@/lang', () => ({
+  __esModule: true,
+  default: {
+    global: {
+      locale: {
+        value: 'en',
+      },
+      getLocaleMessage: () => ({
+        soraStaking: {
+          validatorsAttentionDialog: {
+            description: descriptionMessagesRef.value,
+          },
+        },
+      }),
+    },
+  },
+}));
+
 vi.mock('@/router', () => ({
   __esModule: true,
   default: {
@@ -88,6 +111,7 @@ describe('ValidatorsAttentionDialog.vue', () => {
   beforeEach(() => {
     routerPushMock = vi.fn();
     tMock.mockClear();
+    descriptionMessagesRef.value = ['line-1', 'line-2'];
   });
 
   it('renders description lines and confirm button', () => {
@@ -98,6 +122,19 @@ describe('ValidatorsAttentionDialog.vue', () => {
     expect(lines.at(0)?.text()).toBe('line-1');
     expect(lines.at(1)?.text()).toBe('line-2');
     expect(wrapper.text()).toContain('Confirm');
+  });
+
+  it('renders object-based translation payloads in numeric order', () => {
+    descriptionMessagesRef.value = {
+      1: 'line-2',
+      0: 'line-1',
+      2: 'line-3',
+    };
+
+    const wrapper = mountComponent();
+    const lines = wrapper.findAll('.description p');
+
+    expect(lines.map((line) => line.text())).toEqual(['line-1', 'line-2', 'line-3']);
   });
 
   it('emits proceed and navigates when recommended', async () => {

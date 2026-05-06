@@ -76,10 +76,27 @@ export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWi
     }
   }
 
+  const formatter = new Intl.NumberFormat(undefined, {
+    maximumFractionDigits: precision,
+    minimumFractionDigits: 0,
+  });
+
   return {
-    amount: new FPNumber(result.toFixed(precision)).toLocaleString(),
+    amount: formatter.format(Number(result.toFixed(precision))),
     suffix,
   };
+};
+
+export const isAmountValueIntegerOnly = (value: Nullable<string | number>): boolean => {
+  if (value === null || value === undefined) return false;
+
+  const normalized = String(value).trim();
+
+  if (!normalized) return false;
+
+  const [, decimal = ''] = normalized.split(FPNumber.DELIMITERS_CONFIG.decimal);
+
+  return !decimal || /^0+$/.test(decimal);
 };
 
 export type AssetFormattingUtils = {
@@ -88,4 +105,5 @@ export type AssetFormattingUtils = {
   getAssetDecimals: typeof getAssetDecimals;
   formatAssetBalance: typeof formatAssetBalance;
   formatAmountWithSuffix: typeof formatAmountWithSuffix;
+  isAmountValueIntegerOnly: typeof isAmountValueIntegerOnly;
 };

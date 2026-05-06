@@ -9,7 +9,7 @@ import {
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });

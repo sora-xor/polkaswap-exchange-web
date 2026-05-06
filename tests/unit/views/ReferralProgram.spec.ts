@@ -3,10 +3,13 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { PageNames } from '@/consts';
 
 const loginState = ref(false);
 const connectSpy = vi.fn();
 const shareLinkSpy = vi.fn();
+const markPendingReferralActionNavigationSpy = vi.fn();
+const routerPushMock = vi.fn();
 
 const subscribeOnInvitedUsers = vi.fn().mockResolvedValue(undefined);
 const getAccountReferralRewards = vi.fn().mockResolvedValue(undefined);
@@ -80,13 +83,15 @@ vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => assetsStoreMock,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
       FormattedAmount: {
         name: 'FormattedAmountStub',
-        template: '<div class="formatted-amount-stub"><slot /><slot name="prefix" /></div>',
+        props: ['integerOnly', 'value', 'assetSymbol'],
+        template:
+          '<div class="formatted-amount-stub" :data-integer-only="String(Boolean(integerOnly))">{{ value }}{{ assetSymbol }}<slot /><slot name="prefix" /></div>',
       },
       FormattedAddress: {
         name: 'FormattedAddressStub',
@@ -95,8 +100,9 @@ vi.mock('@wallet', async () => {
       },
       InfoLine: {
         name: 'InfoLineStub',
-        props: ['label', 'value'],
-        template: '<div class="info-line-stub"><slot name="info-line-prefix" />{{ label }}{{ value }}</div>',
+        props: ['label', 'value', 'integerOnly'],
+        template:
+          '<div class="info-line-stub" :data-integer-only="String(Boolean(integerOnly))"><slot name="info-line-prefix" />{{ label }}{{ value }}</div>',
       },
       WalletAvatar: {
         name: 'WalletAvatarStub',
@@ -139,6 +145,31 @@ vi.mock('@wallet', async () => {
   });
 });
 
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.FormattedAmount };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.FormattedAddress };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.InfoLine };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.WalletAvatar };
+});
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', async () => {
+  const wallet = await import('@tests/stubs/walletRuntime');
+  return { __esModule: true, default: wallet.components.TokenLogo };
+});
+
 vi.mock('@/utils/telegram', () => ({
   __esModule: true,
   tmaSdkService: {
@@ -152,16 +183,17 @@ vi.mock('@/api', () => ({
   getRouterMode: () => '',
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('vue-router', () => ({
   __esModule: true,
-  default: {
-    push: vi.fn(),
-  },
-  lazyView: () => ({
-    name: 'LazyViewStub',
-    template: '<div class="lazy-view-stub" />',
+  useRouter: () => ({
+    push: routerPushMock,
   }),
-  lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
+}));
+
+vi.mock('@/shared/navigation/referralAction', () => ({
+  __esModule: true,
+  markPendingReferralActionNavigation: markPendingReferralActionNavigationSpy,
+  clearPendingReferralActionNavigation: vi.fn(),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -211,7 +243,7 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-const ReferralProgram = (await import('@/views/ReferralProgram.vue')).default;
+const ReferralProgram = (await import('@/features/rewards/pages/ReferralProgramPage.vue')).default;
 
 const buildWrapper = () =>
   mount(ReferralProgram, {
@@ -263,6 +295,8 @@ describe('ReferralProgram.vue', () => {
     connectSpy.mockClear();
     copySpy.mockClear();
     shareLinkSpy.mockClear();
+    routerPushMock.mockClear();
+    markPendingReferralActionNavigationSpy.mockClear();
     subscribeOnInvitedUsers.mockClear();
     getAccountReferralRewards.mockClear();
     getReferrer.mockClear();
@@ -339,5 +373,42 @@ describe('ReferralProgram.vue', () => {
 
     await wrapper.vm.handleSetReferrer();
     expect(setStorageReferrer).toHaveBeenCalledWith('5referrer');
+  });
+
+  it('marks an explicit referral action before opening the bonding screen', async () => {
+    loginState.value = true;
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    const bondButton = wrapper
+      .findAllComponents({ name: 'SButtonStub' })
+      .find((component) => component.text().includes('referralProgram.action.bondMore'));
+
+    expect(bondButton).toBeTruthy();
+    bondButton!.vm.$emit('click');
+    await flushPromises();
+
+    expect(markPendingReferralActionNavigationSpy).toHaveBeenCalledWith(PageNames.ReferralBonding);
+  });
+
+  it('uses integer-only rendering for zero-value referral amounts', async () => {
+    loginState.value = true;
+    referralsStoreMock.referralRewards = {
+      rewards: FPNumber.ZERO,
+      invitedUserRewards: {
+        'addr-1': FPNumber.ZERO,
+      },
+    };
+    assetsStoreMock.xor.balance.bonded = '0';
+
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    const formattedAmounts = wrapper.findAll('.formatted-amount-stub');
+    expect(formattedAmounts[0]?.attributes('data-integer-only')).toBe('true');
+
+    const infoLines = wrapper.findAll('.info-line-stub');
+    expect(infoLines[0]?.attributes('data-integer-only')).toBe('true');
+    expect(infoLines[1]?.attributes('data-integer-only')).toBe('true');
   });
 });

@@ -131,7 +131,7 @@ vi.mock('@/utils/subscriptions', () => ({
   },
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({
@@ -259,6 +259,7 @@ describe('vault store', () => {
     );
     expect(shared.fetchClosedVaults).toHaveBeenCalledWith('account-1');
     expect(store.closedAccountVaults).toEqual([{ id: 'closed-1' }]);
+    expect(store.closedAccountVaultsLoaded).toBe(true);
     expect(store.collaterals).toEqual({ 'collateral,debt': { liquidationRatio: 150 } });
     expect(store.averageCollateralPrices['collateral,debt']?.toNumber()).toBe(2);
     expect(store.accountVaults).toEqual([
@@ -269,6 +270,7 @@ describe('vault store', () => {
         debt: FPNumber.fromNatural(5),
       },
     ]);
+    expect(store.accountVaultsLoaded).toBe(true);
     expect(store.stablecoinInfos).toEqual({ debt: { pegAsset: 'peg' } });
     expect(store.borrowTax).toBe(0.05);
     expect(store.tbcdBorrowTax).toBe(0.1);
@@ -310,6 +312,9 @@ describe('vault store', () => {
     expect(store.debtAddress).toBe(KUSD.address);
     expect(store.collaterals).toEqual({});
     expect(store.accountVaults).toEqual([]);
+    expect(store.accountVaultsLoaded).toBe(false);
+    expect(store.closedAccountVaults).toEqual([]);
+    expect(store.closedAccountVaultsLoaded).toBe(false);
     expect(store.averageCollateralPrices[`${DAI.address},${KUSD.address}`]?.toNumber()).toBe(1);
   });
 });

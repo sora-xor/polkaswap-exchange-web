@@ -2,7 +2,7 @@ import type { VirtualElement, Instance, Options } from '@popperjs/core';
 import { createPopper } from '@popperjs/core';
 import type { MaybeRef } from '@vueuse/core';
 import type { Ref } from 'vue';
-import { computed, watch, unref, shallowRef, onScopeDispose, isReactive } from 'vue';
+import { computed, watch, unref, shallowRef, onScopeDispose, isReactive, isRef, markRaw } from 'vue';
 
 type ElementReference = Element | VirtualElement;
 type ElementPopper = HTMLElement;
@@ -31,7 +31,14 @@ export function usePopper(params: UsePopperParams): UsePopperReturn {
   }
 
   function destroy() {
-    instance.value && (params.callbackDestroy ? params.callbackDestroy(instance.value) : instance.value.destroy());
+    const currentInstance = instance.value;
+    if (!currentInstance) return;
+
+    try {
+      params.callbackDestroy ? params.callbackDestroy(currentInstance) : currentInstance.destroy();
+    } finally {
+      instance.value = null;
+    }
   }
 
   watch(
@@ -44,7 +51,7 @@ export function usePopper(params: UsePopperParams): UsePopperReturn {
   );
   onScopeDispose(destroy);
 
-  if (isReactive(opts)) {
+  if (isReactive(opts) || isRef(opts)) {
     watch(
       opts,
       (updated) => {

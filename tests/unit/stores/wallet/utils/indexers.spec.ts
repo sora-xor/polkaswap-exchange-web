@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { ConnectionStatus } from '@/shims/wallet-common-types';
-import { IndexerType } from '@/shims/wallet-consts';
+import { ConnectionStatus } from '@/lib/soraneo-wallet/src/types/common';
+import { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 import {
   hasConfiguredIndexerEndpoint,
   resolveFallbackIndexer,

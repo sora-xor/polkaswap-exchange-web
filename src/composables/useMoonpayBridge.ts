@@ -30,7 +30,7 @@ import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/sdk
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
-import type { SoraNetwork } from '@/shims/wallet-consts';
+import type { SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 
 type ParentLoadingSource = Ref<boolean> | (() => boolean);
 

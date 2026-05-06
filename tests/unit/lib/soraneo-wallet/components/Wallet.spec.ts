@@ -1,7 +1,11 @@
 import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const resetTxDetailsId = vi.hoisted(() => vi.fn());
+const handleAccountAction = vi.hoisted(() => vi.fn());
+const navigate = vi.hoisted(() => vi.fn());
 const walletStore = vi.hoisted(() => ({
   permissions: {},
   isMSTAvailable: false,
@@ -10,6 +14,7 @@ const walletStore = vi.hoisted(() => ({
   isMstAddressExist: false,
   selectedTransaction: null as null | { id: string },
   account: { address: 'sender' },
+  navigate,
   resetTxDetailsId,
 }));
 
@@ -17,21 +22,17 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStore,
 }));
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    currentParams: {},
-    navigate: vi.fn(),
-  }),
+vi.mock('@/platform/wallet/navigation', () => ({
+  getWalletCurrentParams: () => ({}),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useAccountActions', () => ({
   useAccountActions: () => ({
     loading: ref(false),
-    account: ref({ address: 'sender' }),
     accountRenameVisibility: ref(false),
     accountExportVisibility: ref(false),
     accountDeleteVisibility: ref(false),
-    handleAccountAction: vi.fn(),
+    handleAccountAction,
     handleAccountRename: vi.fn(),
     handleAccountExport: vi.fn(),
     handleAccountDelete: vi.fn(),
@@ -61,12 +62,12 @@ vi.mock('@/lib/soraneo-wallet/src/components/WalletHistory.vue', () => ({
 }));
 
 import Wallet from '@/lib/soraneo-wallet/src/components/Wallet.vue';
-import { WalletTabs } from '@/lib/soraneo-wallet/src/consts';
+import { AccountActionTypes, WalletTabs } from '@/lib/soraneo-wallet/src/consts';
 import walletSource from '@/lib/soraneo-wallet/src/components/Wallet.vue?raw';
 
 describe('Wallet Wallet', () => {
   it('resolves the selected wallet tab to a Vue component instead of a raw string tag', () => {
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     expect(state.currentTabComponent.value).toMatchObject({ name: 'WalletAssetsStub' });
 
@@ -80,7 +81,7 @@ describe('Wallet Wallet', () => {
     walletStore.isMstAddressExist = false;
     walletStore.isMSTAvailable = false;
     walletStore.selectedTransaction = null;
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     state.handleMST();
 
@@ -90,7 +91,7 @@ describe('Wallet Wallet', () => {
 
   it('resets selected transaction details when navigating back from the details view', () => {
     walletStore.selectedTransaction = { id: 'tx-1' };
-    const state = (Wallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
 
     state.handleBack();
 
@@ -99,9 +100,30 @@ describe('Wallet Wallet', () => {
 
   it('uses the connected-wallet dashboard layout without local icon dimming overrides', () => {
     expect(walletSource).toContain(':class="{ \'wallet-dashboard\': !selectedTransaction }"');
+    expect(walletSource).toContain('class="wallet-account-panel"');
     expect(walletSource).toContain('class="wallet-account-actions"');
     expect(walletSource).toContain('class="wallet-tabs"');
     expect(walletSource).not.toContain('opacity: 0.7');
+  });
+
+  it('routes account switching through the wallet store navigation boundary', () => {
+    navigate.mockClear();
+    walletStore.selectedTransaction = null;
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
+
+    state.handleSwitchAccount();
+
+    expect(navigate).toHaveBeenCalledWith({ name: 'WalletConnection' });
+  });
+
+  it('routes wallet account actions through the connected wallet account', () => {
+    handleAccountAction.mockClear();
+    walletStore.account = { address: 'sender' };
+    const { state } = mountSetup(Wallet as any, {}, { emit: vi.fn() });
+
+    state.handleAccountActionType(AccountActionTypes.Rename);
+
+    expect(handleAccountAction).toHaveBeenCalledWith(AccountActionTypes.Rename, walletStore.account);
   });
 
   it('renders the active wallet tab panel outside the tab header container', () => {

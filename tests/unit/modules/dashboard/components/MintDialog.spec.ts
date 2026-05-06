@@ -41,59 +41,63 @@ const formattedAmountMocks = vi.hoisted(() => {
   };
 });
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBaseStub',
-        props: {
-          visible: {
-            type: Boolean,
-            default: false,
-          },
-          title: {
-            type: String,
-            default: '',
-          },
-          tooltip: {
-            type: String,
-            default: '',
-          },
-        },
-        emits: ['update:visible'],
-        setup:
-          (_props, { slots }) =>
-          () =>
-            slots.default?.(),
-      },
-      AddressBookInput: {
-        name: 'AddressBookInputStub',
-        props: {
-          modelValue: {
-            type: String,
-            default: '',
-          },
-        },
-        emits: ['update:modelValue'],
-        setup: () => () => null,
-      },
-      InfoLine: {
-        name: 'InfoLineStub',
-        setup: () => () => null,
-      },
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    assets: {
+      mint: walletMocks.mintMock,
     },
-    api: {
-      assets: {
-        mint: walletMocks.mintMock,
-      },
-      validateAddress: walletMocks.validateAddressMock,
-    },
-  });
-});
+    validateAddress: walletMocks.validateAddressMock,
+  },
+}));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBaseStub',
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
+      },
+      title: {
+        type: String,
+        default: '',
+      },
+      tooltip: {
+        type: String,
+        default: '',
+      },
+    },
+    emits: ['update:visible'],
+    setup:
+      (_props, { slots }) =>
+      () =>
+        slots.default?.(),
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/AddressBook/Input.vue', () => ({
+  default: {
+    name: 'AddressBookInputStub',
+    props: {
+      modelValue: {
+        type: String,
+        default: '',
+      },
+    },
+    emits: ['update:modelValue'],
+    setup: () => () => null,
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: {
+    name: 'InfoLineStub',
+    setup: () => () => null,
+  },
+}));
+
+vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
+  default: {
     name: 'TokenInputStub',
     props: {
       modelValue: {
@@ -103,7 +107,7 @@ vi.mock('@/router', () => ({
     },
     emits: ['update:modelValue'],
     setup: () => () => null,
-  }),
+  },
 }));
 
 vi.mock('@/stores/settings', () => ({

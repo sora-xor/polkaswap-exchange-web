@@ -12,14 +12,15 @@
 
 <script setup lang="ts">
 import { KnownSymbols } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
 
 import { useTranslation } from '@/composables/useTranslation';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentNetworkFeeWarning from '@/lib/soraneo-wallet/src/components/NetworkFeeWarning.vue';
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    NetworkFeeWarning: components.NetworkFeeWarning,
+    DialogBase: WalletComponentDialogBase,
+    NetworkFeeWarning: WalletComponentNetworkFeeWarning,
   },
 });
 

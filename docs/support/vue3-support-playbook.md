@@ -54,7 +54,7 @@ Log findings in the shared Zendesk/Jira template and tag the relevant squad.
 
 1. Verify wallet store telemetry (Pinia `wallet` vs legacy). If `isLegacyFallback=true`, instruct user to refresh; capture logs.
 2. Ask user to clear cached `public/env.json` (Ctrl+F5) to ensure updated network list.
-3. Check `@wallet` vendored bundle status (see `docs/plans/soraneo-wallet-inline.md`). If regression confirmed, hand off to wallet squad and prepare either a targeted wallet hotfix or a rollback to the last verified release artifact.
+3. Check the vendored Soraneo wallet source status (see `docs/plans/soraneo-wallet-inline.md`). If regression confirmed, hand off to wallet squad and prepare either a targeted wallet hotfix or a rollback to the last verified release artifact.
 4. Escalate Sev1 connection outages to migration lead + DevOps immediately.
 
 ### 4.2 Bridge Flow Failures

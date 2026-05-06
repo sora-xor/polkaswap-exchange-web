@@ -96,21 +96,23 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
+import ValidatorAvatar from '@/modules/staking/sora/components/ValidatorAvatar.vue';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import { useValidatorsFormatting } from '@/modules/staking/sora/composables/useValidatorsFormatting';
-import { soraStakingLazyComponent } from '@/modules/staking/router';
-import { ERA_HOURS, SoraStakingComponents } from '@/modules/staking/sora/consts';
+import { ERA_HOURS } from '@/modules/staking/sora/consts';
 import { formatDecimalPlaces, hasInsufficientXorForFee } from '@/utils';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
 import type { Nullable } from '@/types/common';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
 type Reward = {
   id: string;
@@ -160,10 +162,9 @@ const { loading, withNotifications, withApi } = useTransaction({
 });
 const historyDepth = validatorsFormatting.historyDepth;
 
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
-const FormattedAmount = components.FormattedAmount;
-const ValidatorAvatar = soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar);
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
+const FormattedAmount = WalletComponentFormattedAmount;
 
 const selectedRewards = ref<Reward[]>([]);
 const payoutNetworkFee = ref<string | null>(null);

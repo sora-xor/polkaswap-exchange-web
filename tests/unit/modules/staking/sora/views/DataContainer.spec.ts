@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { computed, defineComponent, h, ref, type Component } from 'vue';
+import { computed, defineComponent, h, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
@@ -83,9 +83,26 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
-vi.mock('@/modules/staking/router', () => ({
+vi.mock('@/modules/staking/sora/consts', () => ({
   __esModule: true,
-  soraStakingLazyComponent: (_name: string): Component => ValidatorsFilterDialogStub,
+  SoraStakingPageNames: {
+    Overview: 'Overview',
+  },
+}));
+
+vi.mock('@/modules/staking/sora/components/ValidatorsFilterDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'ValidatorsFilterDialogStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      parentLoading: { type: Boolean, default: false },
+      filter: { type: Object, default: () => ({}) },
+    },
+    emits: ['update:visible', 'save'],
+    template:
+      '<div class="validators-filter-dialog-stub" :data-visible="String(visible)" :data-parent-loading="String(parentLoading)">{{ JSON.stringify(filter) }}</div>',
+  },
 }));
 
 vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
@@ -160,7 +177,7 @@ vi.mock('@/composables/useSubscriptions', () => ({
   },
 }));
 
-import DataContainer from '@/modules/staking/sora/views/DataContainer.vue';
+import DataContainer from '@/features/staking/pages/SoraDataContainerPage.vue';
 
 const mountComponent = async (options?: { parentLoading?: boolean; attrs?: Record<string, string> }) => {
   const wrapper = mount(DataContainer, {
@@ -244,7 +261,7 @@ describe('DataContainer.vue', () => {
     showFilterDialogRef.value = true;
     const wrapper = await mountComponent();
 
-    const dialog = wrapper.findComponent(ValidatorsFilterDialogStub);
+    const dialog = wrapper.findComponent({ name: 'ValidatorsFilterDialogStub' });
     expect(dialog.exists()).toBe(true);
     expect(dialog.props('visible')).toBe(true);
 
@@ -276,7 +293,7 @@ describe('DataContainer.vue', () => {
   it('applies parent loading state to the validators dialog', async () => {
     showFilterDialogRef.value = true;
     const wrapper = await mountComponent({ parentLoading: true });
-    const dialog = wrapper.findComponent(ValidatorsFilterDialogStub);
+    const dialog = wrapper.findComponent({ name: 'ValidatorsFilterDialogStub' });
 
     expect(dialog.exists()).toBe(true);
     expect(dialog.props('parentLoading')).toBe(true);

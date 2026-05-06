@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { getReferralRewards, type ReferrerRewards } from '@/indexer/queries/referrals';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { useWalletStore } from '@/stores/wallet';
 import storage from '@/utils/storage';
 

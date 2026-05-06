@@ -70,7 +70,7 @@ vi.mock('@/utils', async () => {
   };
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     api: {

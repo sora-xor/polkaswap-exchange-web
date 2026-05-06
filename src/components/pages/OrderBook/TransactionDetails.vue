@@ -49,7 +49,7 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { Operation, type CodecString, type FPNumber, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
+import TransactionDetails from '@/components/shared/TransactionDetails.vue';
 import dayjs from 'dayjs/esm';
 import { computed } from 'vue';
 
@@ -57,14 +57,13 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useSwapAmounts } from '@/composables/useSwapAmounts';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, ZeroStringValue } from '@/consts';
-import { lazyComponent } from '@/router';
+import { ZeroStringValue } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
-const TransactionDetails = lazyComponent(Components.TransactionDetails);
-const InfoLine = components.InfoLine;
+const InfoLine = WalletComponentInfoLine;
 
 const props = withDefaults(
   defineProps<{

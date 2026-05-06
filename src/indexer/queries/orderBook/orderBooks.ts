@@ -1,12 +1,12 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { gql } from '@urql/core';
 
 import type { OrderBookWithStats } from '@/types/orderBook';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { OrderBookEntity, ConnectionQueryResponse } from '@/shims/wallet-indexer-types';
+import type { OrderBookEntity, ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const IndexerType = {
   SUBQUERY: 'subquery',

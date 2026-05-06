@@ -34,18 +34,17 @@
 <script setup lang="ts">
 import { Operation, type CodecString, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
+import TransactionDetails from '@/components/shared/TransactionDetails.vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
 import { usePoolStore } from '@/stores/pool';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -82,6 +81,5 @@ const formattedFeeFiatValue = computed(() => getFiatAmountByCodecString(networkF
 
 const XOR_SYMBOL = XOR.symbol;
 
-const InfoLine = components.InfoLine;
-const TransactionDetails = lazyComponent(Components.TransactionDetails);
+const InfoLine = WalletComponentInfoLine;
 </script>

@@ -1,6 +1,8 @@
 import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     blockNumber: 0,
@@ -43,11 +45,20 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useEthBridgeTransaction', () => ({
   }),
 }));
 
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    mst: {
+      isMST: vi.fn(() => false),
+      getPrevoiusAccount: vi.fn(() => null),
+    },
+  },
+}));
+
 import WalletTransactionDetails from '@/lib/soraneo-wallet/src/components/WalletTransactionDetails.vue';
 
 describe('Wallet WalletTransactionDetails', () => {
   it('falls back to the general localized error when a specific translation is missing', () => {
-    const state = (WalletTransactionDetails as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletTransactionDetails as any, {}, { emit: vi.fn() });
 
     expect(state.errorMessage.value).toBe('General error');
   });

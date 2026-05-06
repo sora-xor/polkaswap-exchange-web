@@ -43,6 +43,54 @@ test('renders the swap page shell', async ({ page }) => {
   expect(consoleErrors).toEqual([]);
 });
 
+test('redirects the root hash route to the swap page shell', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.goto(`${ipfsEntryUrl}#/`);
+
+  await expect.poll(async () => page.evaluate(() => window.location.pathname)).resolves.toBe(`${ipfsBasePath}/`);
+  await ensureAppLoaded(page);
+  await page.waitForFunction(
+    () => window.location.hash === '#/swap' || window.location.hash.startsWith('#/swap/'),
+    undefined,
+    { timeout: 15_000 }
+  );
+
+  await expect(page.locator('.header')).toBeVisible();
+  await expect(page.locator('.app-main')).toHaveClass(/app-main--swap/, { timeout: 15_000 });
+  await expectNoCorruptedUiText(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('mounts the app shell before a delayed initial swap route chunk resolves', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.route(/\/assets\/Swap-[^/]+\.js(?:\?.*)?$/, async (route) => {
+    await page.waitForTimeout(8_000);
+    await route.continue();
+  });
+
+  await page.goto(`${ipfsEntryUrl}#/`, { waitUntil: 'commit' });
+
+  await expect(page.locator('.header')).toBeVisible({ timeout: 3_000 });
+  await expect(page.locator('.app-menu')).toBeVisible({ timeout: 3_000 });
+  await expect
+    .poll(async () => page.evaluate(() => document.querySelector('#app')?.childElementCount ?? 0))
+    .toBeGreaterThan(0);
+
+  await ensureAppLoaded(page);
+  await page.waitForFunction(
+    () => window.location.hash === '#/swap' || window.location.hash.startsWith('#/swap/'),
+    undefined,
+    { timeout: 20_000 }
+  );
+  await expect(page.locator('.app-main')).toHaveClass(/app-main--swap/, { timeout: 20_000 });
+  await expectNoCorruptedUiText(page);
+
+  expect(consoleErrors).toEqual([]);
+});
+
 test('loads the full app from a direct ipfs index file URL', async ({ page }) => {
   const consoleErrors = trackConsole(page);
 

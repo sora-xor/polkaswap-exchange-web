@@ -46,43 +46,53 @@ vi.mock('@/composables/useNetworkFormatter', () => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      DialogBase: {
-        name: 'DialogBase',
-        props: ['visible'],
-        emits: ['update:visible'],
-        template: '<div><slot /></div>',
-      },
-      ExternalLink: {
-        name: 'ExternalLink',
-        props: ['href', 'title'],
-        template: '<a :href="href">{{ title }}</a>',
-      },
-      SRadioGroup: {
-        name: 'SRadioGroup',
-        props: ['modelValue'],
-        emits: ['update:modelValue'],
-        template: '<div><slot /></div>',
-      },
-      SRadio: {
-        name: 'SRadio',
-        props: ['label', 'disabled'],
-        template: '<label><slot /></label>',
-      },
-      SScrollbar: {
-        name: 'SScrollbar',
-        template: '<div><slot /></div>',
-      },
-      TokenLogo: {
-        name: 'TokenLogo',
-        template: '<div />',
-      },
-    },
-  });
-});
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBase',
+    props: ['visible'],
+    emits: ['update:visible'],
+    template: '<div><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue', () => ({
+  default: {
+    name: 'ExternalLink',
+    props: ['href', 'title'],
+    template: '<a :href="href">{{ title }}</a>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  default: {
+    name: 'TokenLogo',
+    template: '<div />',
+  },
+}));
+
+vi.mock('@/lib/soramitsu-ui/components/Radio/SRadioGroup.vue', () => ({
+  default: {
+    name: 'SRadioGroup',
+    props: ['modelValue'],
+    emits: ['update:modelValue'],
+    template: '<div class="s-radio-group-stub"><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soramitsu-ui/components/Radio/SRadio.vue', () => ({
+  default: {
+    name: 'SRadio',
+    props: ['label', 'value', 'disabled'],
+    template: '<div class="s-radio-stub"><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soramitsu-ui/components/Scrollbar/SScrollbar.vue', () => ({
+  default: {
+    name: 'SScrollbar',
+    template: '<div class="s-scrollbar-stub"><slot /></div>',
+  },
+}));
 
 let SelectNetwork: typeof import('@/components/pages/Bridge/SelectNetwork.vue').default;
 

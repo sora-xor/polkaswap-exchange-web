@@ -1,8 +1,8 @@
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { gql } from '@urql/core';
 
-import type { ConnectionQueryResponse } from '@/shims/wallet-indexer-types';
+import type { ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const SubqueryNominatorsCountQuery = gql<ConnectionQueryResponse<number>>`
   query NominatorsCountQuery {

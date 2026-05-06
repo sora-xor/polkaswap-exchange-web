@@ -1,27 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { computed, defineComponent, h, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-const StatusBadgeSharedStub = defineComponent({
-  name: 'StatusBadgeSharedStub',
-  props: ['active', 'stopped', 'apr', 'rewardAsset'],
-  setup(props) {
-    return () => h('div', { class: 'status-badge-shared-stub', 'data-apr': props.apr, 'data-active': props.active });
-  },
-});
-
-vi.mock('@/consts', async () => {
-  const actual = await vi.importActual<typeof import('@/consts')>('@/consts');
-
-  return {
-    __esModule: true,
-    ...actual,
-    Components: {
-      ...(actual.Components ?? {}),
-      StatusBadge: 'StatusBadgeShared',
-    },
-  };
-});
 
 vi.mock('@/utils', () => ({
   __esModule: true,
@@ -42,9 +21,13 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('@/components/shared/StatusBadge.vue', () => ({
   __esModule: true,
-  lazyComponent: () => StatusBadgeSharedStub,
+  default: {
+    name: 'StatusBadgeSharedStub',
+    props: ['active', 'stopped', 'apr', 'rewardAsset'],
+    template: '<div class="status-badge-shared-stub"></div>',
+  },
 }));
 
 vi.mock('vue-i18n', async () => {
@@ -76,7 +59,7 @@ describe('StatusBadge.vue', () => {
 
   it('renders calculating text when APY is zero', () => {
     const wrapper = mount(StatusBadge);
-    const stub = wrapper.findComponent(StatusBadgeSharedStub);
+    const stub = wrapper.findComponent({ name: 'StatusBadgeSharedStub' });
 
     expect(stub.exists()).toBe(true);
     expect(stub.props('apr')).toBe('calculatingText');
@@ -85,7 +68,7 @@ describe('StatusBadge.vue', () => {
   it('formats APY when value available', () => {
     maxApyRef.value = 12.3456;
     const wrapper = mount(StatusBadge);
-    const stub = wrapper.findComponent(StatusBadgeSharedStub);
+    const stub = wrapper.findComponent({ name: 'StatusBadgeSharedStub' });
 
     expect(stub.props('apr')).toBe('12.35');
   });

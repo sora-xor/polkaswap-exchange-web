@@ -45,8 +45,8 @@ const walletOverrides = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('@wallet', async () => {
-  const walletStub = await vi.importActual<typeof import('@tests/stubs/@wallet')>('@tests/stubs/@wallet');
+vi.mock('@tests/stubs/walletRuntime', async () => {
+  const walletStub = await vi.importActual<typeof import('@tests/stubs/walletRuntime')>('@tests/stubs/walletRuntime');
   return {
     ...walletStub,
     ...walletOverrides,
@@ -127,6 +127,23 @@ describe('storage utilities', () => {
   it('calculateStorageUsagePercentage accounts for key and value byte size', () => {
     localStorage.setItem('wallet.history', 'a'.repeat(4));
     const expectedBytes = ('wallet.history'.length + 4) * 2;
+    const expectedPercentage = (expectedBytes / LOCAL_STORAGE_MAX_SIZE) * 100;
+
+    expect(calculateStorageUsagePercentage()).toBeCloseTo(expectedPercentage, 10);
+  });
+
+  it('calculateStorageUsagePercentage ignores enumerable inherited storage-like values', () => {
+    const prototype = Object.create(Object.getPrototypeOf(localStorage));
+    Object.defineProperty(prototype, 'wallet.history.inherited', {
+      value: 'ignored',
+      enumerable: true,
+      configurable: true,
+    });
+    Object.setPrototypeOf(localStorage, prototype);
+
+    localStorage.setItem('wallet.history', 'own');
+
+    const expectedBytes = ('wallet.history'.length + 'own'.length) * 2;
     const expectedPercentage = (expectedBytes / LOCAL_STORAGE_MAX_SIZE) * 100;
 
     expect(calculateStorageUsagePercentage()).toBeCloseTo(expectedPercentage, 10);

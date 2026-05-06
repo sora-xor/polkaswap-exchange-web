@@ -48,7 +48,7 @@ const callWeb3Store = async (page: Page, action: string, payload?: unknown): Pro
   await page.evaluate(
     ({ action, payload }) => {
       const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
-      const web3Store = pinia?._s?.get('web3');
+      const web3Store = pinia?._s?.get('web3-legacy') ?? pinia?._s?.get('web3');
 
       return web3Store?.[action]?.(payload);
     },
@@ -66,11 +66,13 @@ const injectLiberlandSubBridgeContext = async (
     hasApi?: boolean;
   } = {}
 ): Promise<void> => {
+  await page.waitForTimeout(2_000);
+
   await page.evaluate(
     ({ nodeIsConnected, hasApi }) => {
       const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
       const bridgeStore = pinia?._s?.get('bridge');
-      const web3Store = pinia?._s?.get('web3');
+      const web3Store = pinia?._s?.get('web3-legacy') ?? pinia?._s?.get('web3');
 
       const node = {
         chain: 'Liberland',
@@ -100,6 +102,7 @@ const injectLiberlandSubBridgeContext = async (
           subNetworkConnection: subConnection,
           formatAddress: (value: string) => value,
           getBlockNumber: async () => 0,
+          stop: async () => undefined,
         };
         connector.accountApi = {
           connection: { api: hasApi ? {} : undefined },
@@ -109,8 +112,16 @@ const injectLiberlandSubBridgeContext = async (
 
       applyConnectorState(bridgeStore?.connector);
 
-      web3Store?.setNetworkType?.('Sub');
-      web3Store?.setSelectedNetwork?.('Liberland');
+      if (web3Store) {
+        web3Store.networkType = 'Sub';
+        web3Store.networkSelected = 'Liberland';
+        web3Store.subNetworkApps = { Liberland: true };
+        web3Store.supportedApps = {
+          EVMLegacy: {},
+          EVM: {},
+          Sub: ['Liberland'],
+        };
+      }
       web3Store?.setSubAccountDialogVisibility?.(false);
       web3Store?.setSelectSubNodeDialogVisibility?.(false);
     },
@@ -254,8 +265,9 @@ test('opens the Liberland node selector instead of the sub-account dialog when t
 
   await openBridge(page);
   await injectLiberlandSubBridgeContext(page);
+  await expect(page.locator('.input-title--network').nth(1)).toHaveText(/Liberland/i);
 
-  const connectTrigger = page.locator('[data-test-name="useMetamaskProvider"]').first();
+  const connectTrigger = page.locator('.bridge .account-panel-button').nth(1);
   const nodeDialog = page
     .getByRole('dialog')
     .filter({ hasText: /network node selection/i })

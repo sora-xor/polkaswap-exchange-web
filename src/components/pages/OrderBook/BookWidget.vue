@@ -66,20 +66,16 @@
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue';
 import { PriceVariant as LiquidityPriceVariant } from '@sora-substrate/liquidity-proxy';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 
-import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { useLoading } from '@/composables/useLoading';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
-import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
 
 defineOptions({
   inheritAttrs: false,
-  components: {
-    BaseWidget: lazyComponent(Components.BaseWidget),
-  },
 });
 
 const { t } = useTranslation();

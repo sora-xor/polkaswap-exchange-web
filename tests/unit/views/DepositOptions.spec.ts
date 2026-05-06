@@ -4,7 +4,7 @@ const mocks = vi.hoisted(() => ({
   connectSoraWallet: vi.fn(),
   connectEvmWallet: vi.fn(async () => undefined),
   disconnectExternalNetwork: vi.fn(),
-  goTo: vi.fn(),
+  routerPush: vi.fn(async () => undefined),
   setMoonpayVisibility: vi.fn(),
   isLoggedIn: { value: false },
   evmAddress: { value: '' },
@@ -40,9 +40,17 @@ vi.mock('@/composables/useWeb3Connection', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  goTo: mocks.goTo,
-  lazyComponent: () => ({ template: '<div />' }),
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mocks.routerPush,
+  }),
+}));
+
+vi.mock('@/shared/ui/async', () => ({
+  createAsyncComponent: () => ({
+    name: 'AsyncComponentStub',
+    template: '<div class="async-component-stub"><slot /><slot name="title" /></div>',
+  }),
 }));
 
 vi.mock('@/stores/settings', () => ({
@@ -57,9 +65,9 @@ vi.mock('@/stores/moonpay', () => ({
 }));
 
 import { shallowMount } from '@vue/test-utils';
-import DepositOptions from '@/views/DepositOptions.vue';
+import DepositOptionsPage from '@/features/deposit/pages/DepositOptionsPage.vue';
 
-describe('DepositOptions view', () => {
+describe('DepositOptionsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.isLoggedIn.value = false;
@@ -67,7 +75,7 @@ describe('DepositOptions view', () => {
   });
 
   it('requests wallet connection when moonpay dialog opened while logged out', async () => {
-    const wrapper = shallowMount(DepositOptions);
+    const wrapper = shallowMount(DepositOptionsPage);
 
     await wrapper.vm.openMoonpayDialog();
 
@@ -77,7 +85,7 @@ describe('DepositOptions view', () => {
 
   it('prompts for evm wallet connection when required', async () => {
     mocks.isLoggedIn.value = true;
-    const wrapper = shallowMount(DepositOptions);
+    const wrapper = shallowMount(DepositOptionsPage);
 
     await wrapper.vm.openMoonpayDialog();
 
@@ -89,7 +97,7 @@ describe('DepositOptions view', () => {
     mocks.isLoggedIn.value = true;
     mocks.evmAddress.value = '0xabc';
 
-    const wrapper = shallowMount(DepositOptions);
+    const wrapper = shallowMount(DepositOptionsPage);
 
     await wrapper.vm.openMoonpayDialog();
 
@@ -98,18 +106,27 @@ describe('DepositOptions view', () => {
 
   it('navigates to history page when clicking history button', async () => {
     mocks.isLoggedIn.value = true;
-    const wrapper = shallowMount(DepositOptions);
+    const wrapper = shallowMount(DepositOptionsPage);
 
     await wrapper.vm.openDepositTxHistory();
 
-    expect(mocks.goTo).toHaveBeenCalled();
+    expect(mocks.routerPush).toHaveBeenCalledWith({ name: 'DepositTxHistory' });
   });
 
   it('connects sora wallet when opening cede widget logged out', async () => {
-    const wrapper = shallowMount(DepositOptions);
+    const wrapper = shallowMount(DepositOptionsPage);
 
     await wrapper.vm.openCedeWidget();
 
     expect(mocks.connectSoraWallet).toHaveBeenCalled();
+  });
+
+  it('navigates to Cede Store when the wallet is already connected', async () => {
+    mocks.isLoggedIn.value = true;
+    const wrapper = shallowMount(DepositOptionsPage);
+
+    await wrapper.vm.openCedeWidget();
+
+    expect(mocks.routerPush).toHaveBeenCalledWith({ name: 'CedeStore' });
   });
 });

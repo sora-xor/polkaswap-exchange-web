@@ -1,1 +1,1 @@
-export * from '@/shims/wallet-util';
+export * from '@/lib/soraneo-wallet/src/util';

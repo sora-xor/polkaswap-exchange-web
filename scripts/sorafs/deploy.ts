@@ -12,7 +12,7 @@ const DEFAULT_IROHA_DIR = '../iroha';
 const DEFAULT_CLIENT_CHAIN_ID = '00000000-0000-0000-0000-000000000000';
 const DEFAULT_TAIRA_CHAIN_ID = '809574f5-fee7-5e69-bfcf-52451e42d50f';
 const DEFAULT_TAIRA_NETWORK_PREFIX = '369';
-const DEFAULT_ACCOUNT_DOMAIN = 'wonderland';
+const DEFAULT_ACCOUNT_DOMAIN = 'wonderland.universal';
 const DEFAULT_BASIC_AUTH_LOGIN = 'mad_hatter';
 const DEFAULT_BASIC_AUTH_PASSWORD = 'ilovetea';
 const DIST_DIR = join(process.cwd(), 'dist');
@@ -508,16 +508,21 @@ function resolveCompiledBinaryPath(irohaDir: string, binaryName: 'sorafs_cli' | 
   const candidates: string[] = [];
   const cargoTargetDir = process.env.CARGO_TARGET_DIR?.trim();
   const resolvedIrohaDir = resolve(irohaDir);
+  const binaryAliases = binaryName === 'iroha' ? ['iroha', 'iroha3', 'iroha_cli'] : [binaryName];
 
   if (cargoTargetDir) {
     const resolvedTargetDir = resolve(cargoTargetDir);
-    candidates.push(join(resolvedTargetDir, 'debug', binaryName), join(resolvedTargetDir, 'release', binaryName));
+    for (const alias of binaryAliases) {
+      candidates.push(join(resolvedTargetDir, 'debug', alias), join(resolvedTargetDir, 'release', alias));
+    }
   }
 
-  candidates.push(
-    join(resolvedIrohaDir, 'target', 'debug', binaryName),
-    join(resolvedIrohaDir, 'target', 'release', binaryName)
-  );
+  for (const alias of binaryAliases) {
+    candidates.push(
+      join(resolvedIrohaDir, 'target', 'debug', alias),
+      join(resolvedIrohaDir, 'target', 'release', alias)
+    );
+  }
 
   return candidates.find((candidate) => existsSync(candidate));
 }
@@ -540,7 +545,7 @@ export function resolveBuildToolCommand(irohaDir: string, binaryName: 'sorafs_cl
 
   return {
     command: 'cargo',
-    args: ['run', '-p', 'iroha_cli', '--bin', 'iroha', '--'],
+    args: ['run', '-p', 'iroha_cli', '--bin', 'iroha3', '--'],
     cwd: resolvedIrohaDir,
   };
 }

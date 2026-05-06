@@ -41,24 +41,23 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed, ref } from 'vue';
 
-import { Components } from '@/consts';
+import SettingsTabs from '@/components/shared/Settings/Tabs.vue';
 import { UiSize } from '@/consts/theme';
-import { lazyComponent } from '@/router';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
 import type { TabItem } from '@/types/tabs';
 
 import { DEFAULT_SLIPPAGE_TABS_LIST, getTabName } from './useSlippageToleranceModel';
+import WalletInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 defineOptions({
   name: 'SlippageTolerance',
   components: {
-    SettingsTabs: lazyComponent(Components.SettingsTabs),
-    InfoLine: components.InfoLine,
+    SettingsTabs,
+    InfoLine: WalletInfoLine,
   },
 });
 

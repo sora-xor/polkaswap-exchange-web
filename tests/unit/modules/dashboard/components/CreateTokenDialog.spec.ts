@@ -81,7 +81,7 @@ const tabComponentStub = vi.hoisted(() => ({
   template: '<div />',
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -92,8 +92,12 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/modules/dashboard/router', () => ({
-  dashboardLazyComponent: () => tabComponentStub,
+vi.mock('@/modules/dashboard/components/CreateSimpleToken.vue', () => ({
+  default: tabComponentStub,
+}));
+
+vi.mock('@/modules/dashboard/components/CreateNftToken.vue', () => ({
+  default: tabComponentStub,
 }));
 
 vi.mock('@/stores/settings', () => ({

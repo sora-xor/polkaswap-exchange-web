@@ -1,7 +1,7 @@
 import {
   useTranslation as useWalletTranslation,
   translationUtils as walletTranslationUtils,
-} from '@/shims/wallet-translation';
+} from '@/lib/soraneo-wallet/src/composables/useTranslation';
 import { computed } from 'vue';
 
 import { TranslationConsts } from '@/consts';

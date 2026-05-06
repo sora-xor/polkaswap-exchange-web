@@ -11,22 +11,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { components } from '@/shims/wallet-components';
-
+import { SelectIndexer } from '@/app/shell/components';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
-import { ConnectionStatus, type IndexerState } from '@/shims/wallet-common-types';
-import { IndexerType, type SoraNetwork } from '@/shims/wallet-consts';
-import { lazyComponent } from '@/router';
+import { ConnectionStatus, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
+import { IndexerType, type SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { useSettingsStore } from '@/stores/settings';
 import type { Indexer } from '@/types/indexers';
 import type { Nullable } from '@/types/common';
 import { capitalize } from '@/utils';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 defineOptions({ name: 'SelectIndexerDialog' });
 
-const DialogBase = components.DialogBase;
-const SelectIndexer = lazyComponent(Components.SelectIndexer);
+const DialogBase = WalletComponentDialogBase;
 
 const { t } = useTranslation();
 const settingsStore = useSettingsStore();

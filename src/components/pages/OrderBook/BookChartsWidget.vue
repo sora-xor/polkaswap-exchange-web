@@ -12,23 +12,16 @@
 </template>
 
 <script setup lang="ts">
+import PriceChartWidget from '@/components/shared/Widget/PriceChart.vue';
 import { computed } from 'vue';
 
-import { Components } from '@/consts';
 import { useOrderBook } from '@/composables/useOrderBook';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook/orderBook';
 import { fetchOrderBookPriceData } from '@/indexer/queries/orderBook/price';
-import { lazyComponent } from '@/router';
 import { useOrderBookStore } from '@/stores/orderBook';
 
 import type { RequestMethod, RequestSubscription, RequestSubscriptionCallback } from '@/types/chart';
-
-defineOptions({
-  components: {
-    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
-  },
-});
 
 const { baseAsset, quoteAsset, dexId, orderBookId: storeOrderBookId } = useOrderBook();
 const orderBookStore = useOrderBookStore();

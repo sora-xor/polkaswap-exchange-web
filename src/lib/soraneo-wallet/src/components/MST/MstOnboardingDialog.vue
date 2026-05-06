@@ -61,7 +61,7 @@ import MSTWallet from '@/assets/img/MSTWallet.svg?url';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { useRouterStore } from '@/stores/router';
+import { navigateWallet } from '@/platform/wallet/navigation';
 import { useSettingsStore } from '@/stores/settings';
 
 import DialogBase from '../DialogBase.vue';
@@ -77,7 +77,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const routerStore = useRouterStore();
 const settingsStore = useSettingsStore();
 const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {
@@ -132,7 +131,7 @@ const connectFearlessOrCreateMST = () => {
   }
 
   closeDialog();
-  routerStore.navigate({ name: RouteNames.WalletConnection });
+  navigateWallet({ name: RouteNames.WalletConnection });
 };
 </script>
 

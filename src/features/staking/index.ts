@@ -1,0 +1,1 @@
+export { stakingRoutes } from './routes';

@@ -46,7 +46,7 @@ const callWeb3Store = async (page: Page, action: string, payload?: unknown): Pro
   await page.evaluate(
     ({ action, payload }) => {
       const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
-      const web3Store = pinia?._s?.get('web3');
+      const web3Store = pinia?._s?.get('web3-legacy') ?? pinia?._s?.get('web3');
 
       web3Store?.[action]?.(payload);
     },
@@ -58,7 +58,7 @@ const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
   await page.evaluate(() => {
     const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
     const bridgeStore = pinia?._s?.get('bridge');
-    const web3Store = pinia?._s?.get('web3');
+    const web3Store = pinia?._s?.get('web3-legacy') ?? pinia?._s?.get('web3');
 
     const subConnection = {
       nodeIsConnected: true,
@@ -74,15 +74,19 @@ const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
     };
 
     if (bridgeStore?.connector) {
-      bridgeStore.connector.standalone = {
+      bridgeStore.connector.relaychain = {
         subNetwork: 'Kusama',
         subNetworkConnection: subConnection,
         formatAddress: (value: string) => value,
+        stop: async () => undefined,
       };
+      bridgeStore.connector.standalone = undefined;
     }
 
-    web3Store?.setNetworkType?.('Sub');
-    web3Store?.setSelectedNetwork?.('Kusama');
+    web3Store?.$patch?.({
+      networkType: 'Sub',
+      networkSelected: 'Kusama',
+    });
     web3Store?.setSelectSubNodeDialogVisibility?.(true);
   });
 };

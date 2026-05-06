@@ -1,7 +1,7 @@
 <template>
   <s-skeleton class="charts-container" :loading="loading || hasIssue" :throttle="0">
     <template #template>
-      <div v-loading="loading" class="charts-skeleton">
+      <div class="charts-skeleton">
         <div class="charts-skeleton-header">
           <s-skeleton-item element="rect" class="charts-skeleton-price"></s-skeleton-item>
           <div class="charts-skeleton-price-impact">
@@ -10,9 +10,6 @@
           </div>
         </div>
         <div class="charts-skeleton-container chart">
-          <div v-if="loading" class="app-loading-overlay">
-            <div class="app-loading-overlay__spinner"></div>
-          </div>
           <div v-for="i in yTick" :key="i" class="charts-skeleton-line">
             <s-skeleton-item v-if="yLabel" element="rect" class="charts-skeleton-label"></s-skeleton-item>
             <s-skeleton-item element="rect" class="charts-skeleton-border"></s-skeleton-item>
@@ -133,6 +130,10 @@ $skeleton-label-width: 34px;
   }
   .el-skeleton__item {
     background: var(--s-color-base-border-secondary);
+    min-height: unset;
+  }
+  .el-skeleton__circle {
+    line-height: 36px;
   }
 
   &-container {
@@ -148,6 +149,7 @@ $skeleton-label-width: 34px;
     &.el-skeleton__item.el-skeleton__rect {
       height: 24px;
       margin: 3px 0;
+      min-height: 0;
     }
 
     &-impact {

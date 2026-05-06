@@ -88,6 +88,8 @@ export enum Operation {
   XorlessTransfer = 'XorlessTransfer',
   Mint = 'Mint',
   Burn = 'Burn',
+  /** it's used for calc network fee */
+  BurnWithRemark = 'BurnWithRemark',
   /** Kensetsu */
   CreateVault = 'CreateVault',
   CloseVault = 'CloseVault',
@@ -144,6 +146,7 @@ export interface History {
   amount?: string;
   symbol?: string;
   assetAddress?: string;
+  comment?: string;
   blockId?: string;
   blockHeight?: number;
   to?: string;

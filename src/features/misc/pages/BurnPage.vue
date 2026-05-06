@@ -1,0 +1,504 @@
+<template>
+  <div class="burn-container s-flex-column">
+    <s-row class="burn-row" :gutter="16" justify="center">
+      <s-col
+        v-for="{ id, title, description, link, receivedAsset, rate, disabledText } in campaigns"
+        :key="id"
+        class="burn-column s-flex"
+        :xs="12"
+        :sm="12"
+        :md="12"
+        :lg="6"
+        :xl="6"
+      >
+        <s-form
+          v-loading="parentLoading"
+          class="container container--burn el-form--actions"
+          :class="{ disabled: ended[id] }"
+          :show-message="false"
+        >
+          <img v-if="id === 'solswap'" class="campaign-logo" :src="solswapMarkUrl" alt="SOLSWAP logo" />
+          <generic-page-header class="page-header--burn" :title="title"></generic-page-header>
+          <p class="description centered p4">
+            {{ description }}
+          </p>
+          <external-link class="p4 link" title="Read more" :href="link"></external-link>
+          <info-line
+            :label="`1\u00A0${receivedAsset.symbol}`"
+            :value="getFormattedXor(rate)"
+            :asset-symbol="xor.symbol"
+            :fiat-value="getFormattedXorFiat(rate)"
+          ></info-line>
+          <info-line v-if="id === 'solswap'" label="1 XOR burned" value="1" asset-symbol="SORA Nexus XOR"></info-line>
+          <info-line
+            :label="`Your reserved ${receivedAsset.symbol} tokens`"
+            :value="getFormattedAccountReserved(id, rate)"
+            :asset-symbol="receivedAsset.symbol"
+            value-can-be-hidden
+          ></info-line>
+          <info-line
+            label="Your burned XOR tokens"
+            :value="getFormattedAccountXorBurned(id)"
+            :asset-symbol="xor.symbol"
+            value-can-be-hidden
+          ></info-line>
+          <div class="info-card-container s-flex">
+            <div class="info-card-item s-flex-column">
+              <span class="info-card-title">TOTAL XOR BURNED</span>
+              <span class="info-card-value">
+                {{ getFormattedTotalXorBurned(id) }}
+              </span>
+            </div>
+            <div class="info-card-item s-flex-column">
+              <span class="info-card-title">TOTAL {{ receivedAsset.symbol }} RESERVED</span>
+              <span class="info-card-value">
+                {{ getFormattedTotalReserved(id, rate) }}
+              </span>
+            </div>
+          </div>
+          <s-button
+            v-if="!isLoggedIn"
+            type="primary"
+            class="action-button s-typography-button--large"
+            @click="connectSoraWallet"
+          >
+            {{ t('connectWalletText') }}
+          </s-button>
+          <s-button
+            v-else
+            class="action-button s-typography-button--large"
+            type="primary"
+            :disabled="ended[id]"
+            :loading="parentLoading || (!ended[id] && loading)"
+            @click="handleBurnClick(id)"
+          >
+            <template v-if="ended[id]">{{ disabledText ?? 'TIME IS OVER' }}</template>
+            <template v-else>BURN MY XOR</template>
+          </s-button>
+        </s-form>
+      </s-col>
+    </s-row>
+    <s-card class="burn-info" border-radius="small" shadow="always" size="medium" pressed>
+      <div class="burn-info__content s-flex-column">
+        <div class="burn-info__desc s-flex">
+          <p class="description p4">
+            The 'Burn XOR' is a community-proposed initiative. It’s not officially endorsed by any centralized authority
+            or organization. Participation and interaction with the 'Burn XOR' should be considered with understanding
+            of its community-driven nature.
+          </p>
+          <div class="burn-info__badge">
+            <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="24"></s-icon>
+          </div>
+        </div>
+      </div>
+    </s-card>
+    <burn-dialog
+      v-model:visible="burnDialogVisible"
+      :received-asset="selectedReceivedAsset"
+      :burned-asset="xor"
+      :rate="selectedRate"
+      :max="selectedMax"
+      :min="selectedMin"
+      :requires-nexus-recipient="selectedRequiresNexusRecipient"
+      @confirm="handleBurnConfirm"
+    ></burn-dialog>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { FPNumber } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import dayjs from 'dayjs/esm';
+import durationPlugin from 'dayjs/plugin/duration';
+import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef } from 'vue';
+
+import solswapMarkUrl from '@/assets/img/solswap-mark.svg?url';
+import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useLoading } from '@/composables/useLoading';
+import { useTranslation } from '@/composables/useTranslation';
+import { SoraNetwork } from '@/consts';
+import { fetchData as fetchBurnData } from '@/indexer/queries/burnXor';
+import { useSettingsStore } from '@/stores/settings';
+import { waitForSoraNetworkFromEnv } from '@/utils';
+
+import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
+import BurnDialog from '@/components/pages/Burn/BurnDialog.vue';
+import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
+
+dayjs.extend(durationPlugin);
+
+type CampaignKey = 'solswap';
+
+type Campaign = {
+  id: CampaignKey;
+  title: string;
+  description: string;
+  disabledText?: string;
+  link: string;
+  receivedAsset: Asset;
+  rate: string;
+  max: number;
+  min: number;
+  requiresNexusRecipient: boolean;
+  from: number;
+  fromTimestamp: number;
+  to: number;
+  toTimestamp: number;
+};
+
+defineOptions({
+  name: 'BurnPage',
+  components: {
+    GenericPageHeader,
+    InfoLine: WalletComponentInfoLine,
+    ExternalLink: WalletComponentExternalLink,
+    BurnDialog,
+  },
+});
+
+const props = withDefaults(
+  defineProps<{
+    parentLoading?: boolean;
+  }>(),
+  {
+    parentLoading: false,
+  }
+);
+
+const parentLoadingRef = toRef(props, 'parentLoading');
+
+const { loading, withLoading, withApi } = useLoading({ parentLoading: parentLoadingRef });
+const { t } = useTranslation();
+const { getFPNumber, getFiatAmountByString } = useFormattedAmount();
+const { isLoggedIn, connectSoraWallet, soraAddress } = useInternalConnect();
+const settingsStore = useSettingsStore();
+
+const xor = XOR;
+const zeroString = '0';
+const blockDuration = 6_000; // 6 seconds
+
+const blockNumber = computed(() => settingsStore.blockNumber);
+const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
+
+const campaignsObj = reactive<Record<CampaignKey, Campaign>>({
+  solswap: {
+    id: 'solswap',
+    title: 'Burn XOR for SOLSWAP + SORA Nexus XOR',
+    description:
+      'Starting at block 25,043,003 on the SORA 2 network, burn XOR to reserve SOLSWAP (SS) at 100 SOLSWAP per 1 XOR burned and register a SORA Nexus account for 1:1 Nexus XOR distribution.',
+    link: 'https://t.me/solswap_io',
+    receivedAsset: { symbol: 'SS', address: '', name: 'SOLSWAP', decimals: 18 } as Asset,
+    rate: '0.01',
+    max: 100_000_000,
+    min: 1,
+    requiresNexusRecipient: true,
+    from: 25_043_003,
+    fromTimestamp: 1717693074001,
+    to: 60_000_000,
+    toTimestamp: 1893456000000,
+  },
+});
+
+const campaignOrder: CampaignKey[] = ['solswap'];
+const campaigns = computed(() => campaignOrder.map((key) => campaignsObj[key]));
+
+const createDefaultBurned = () => ({
+  solswap: new FPNumber(0),
+});
+
+const totalXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
+const accountXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
+
+const timeLeftFormatted = reactive<Record<CampaignKey, string>>({
+  solswap: '30D',
+});
+
+const ended = reactive<Record<CampaignKey, boolean>>({
+  solswap: false,
+});
+
+const burnDialogVisible = ref(false);
+const selectedReceivedAsset = ref<Asset>(campaignsObj.solswap.receivedAsset);
+const selectedRate = ref<string>(campaignsObj.solswap.rate);
+const selectedMax = ref<number>(campaignsObj.solswap.max);
+const selectedMin = ref<number>(campaignsObj.solswap.min);
+const selectedRequiresNexusRecipient = ref<boolean>(campaignsObj.solswap.requiresNexusRecipient);
+
+const intervalId = ref<Nullable<number>>(null);
+const decimalDelimiter = FPNumber.DELIMITERS_CONFIG.decimal;
+const escapedDecimalDelimiter = decimalDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const decimalOnlyZerosRegExp = new RegExp(`${escapedDecimalDelimiter}0+$`);
+const trailingZerosRegExp = new RegExp(`(${escapedDecimalDelimiter}\\d*?[1-9])0+$`);
+const danglingDecimalRegExp = new RegExp(`${escapedDecimalDelimiter}$`);
+
+const minBlock = computed(() => Math.min(...campaignOrder.map((key) => campaignsObj[key].from)));
+const maxBlock = computed(() => Math.max(...campaignOrder.map((key) => campaignsObj[key].to)));
+
+function trimTrailingZeros(value: string): string {
+  return value
+    .replace(decimalOnlyZerosRegExp, '')
+    .replace(trailingZerosRegExp, '$1')
+    .replace(danglingDecimalRegExp, '');
+}
+
+function formatAmount(value: FPNumber, precision?: number): string {
+  const formatted = precision === undefined ? value.toLocaleString() : value.toLocaleString(precision);
+  return trimTrailingZeros(formatted);
+}
+
+function getFormattedXor(rate: string): string {
+  return formatAmount(getFPNumber(rate));
+}
+
+function getFormattedXorFiat(rate: string): Nullable<string> {
+  return getFiatAmountByString(rate, xor);
+}
+
+function getFormattedTotalXorBurned(id: CampaignKey): string {
+  return totalXorBurned[id] ? formatAmount(totalXorBurned[id]) : zeroString;
+}
+
+function getFormattedTotalReserved(id: CampaignKey, rate: string): string {
+  return totalXorBurned[id] ? formatAmount(totalXorBurned[id].div(rate), 3) : zeroString;
+}
+
+function getFormattedAccountXorBurned(id: CampaignKey): string {
+  return accountXorBurned[id] ? formatAmount(accountXorBurned[id]) : zeroString;
+}
+
+function getFormattedAccountReserved(id: CampaignKey, rate: string): string {
+  return accountXorBurned[id] ? formatAmount(accountXorBurned[id].div(rate), 3) : zeroString;
+}
+
+function calcCountdown(): void {
+  const currentBlock = blockNumber.value;
+
+  for (const campaign of campaigns.value) {
+    const msLeft = (campaign.to - currentBlock) * blockDuration;
+
+    if (msLeft <= 0) {
+      timeLeftFormatted[campaign.id] = '0D 0H 0M';
+      ended[campaign.id] = true;
+      continue;
+    }
+
+    ended[campaign.id] = false;
+    const expires = dayjs.duration(msLeft);
+    timeLeftFormatted[campaign.id] = expires.format('D[D] HH[H] mm[M]');
+  }
+}
+
+async function fetchStatistics(): Promise<void> {
+  const burns = await fetchBurnData(minBlock.value, maxBlock.value);
+  const address = soraAddress.value;
+
+  const accountTotals = createDefaultBurned();
+  const overallTotals = createDefaultBurned();
+
+  for (const campaign of campaigns.value) {
+    const campaignBurns = burns.filter(({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to);
+
+    const accountsBurned = campaignBurns.reduce<Record<string, FPNumber>>((acc, { address: burnAddress, amount }) => {
+      const current = acc[burnAddress] ?? new FPNumber(0);
+      acc[burnAddress] = current.add(amount);
+      return acc;
+    }, {});
+
+    const minBurned = new FPNumber(campaign.rate).mul(campaign.min);
+
+    Object.entries(accountsBurned).forEach(([burnAddress, amount]) => {
+      if (!amount.gte(minBurned)) return;
+
+      overallTotals[campaign.id] = overallTotals[campaign.id].add(amount);
+      if (address && burnAddress === address) {
+        accountTotals[campaign.id] = accountTotals[campaign.id].add(amount);
+      }
+    });
+  }
+
+  for (const key of campaignOrder) {
+    accountXorBurned[key] = accountTotals[key];
+    totalXorBurned[key] = overallTotals[key];
+  }
+}
+
+async function fetchDataAndCalcCountdown(): Promise<void> {
+  await withLoading(async () => {
+    calcCountdown();
+    await fetchStatistics();
+  });
+}
+
+function handleBurnClick(id: CampaignKey): void {
+  const campaign = campaignsObj[id];
+
+  selectedReceivedAsset.value = campaign.receivedAsset;
+  selectedRate.value = campaign.rate;
+  selectedMax.value = campaign.max;
+  selectedMin.value = campaign.min;
+  selectedRequiresNexusRecipient.value = campaign.requiresNexusRecipient;
+  burnDialogVisible.value = true;
+}
+
+function handleBurnConfirm(done?: boolean): void {
+  if (done) {
+    loading.value = true;
+  }
+}
+
+defineExpose({
+  campaigns,
+  handleBurnClick,
+  burnDialogVisible,
+  selectedReceivedAsset,
+  selectedRate,
+  selectedMax,
+  selectedMin,
+  selectedRequiresNexusRecipient,
+  handleBurnConfirm,
+  loading,
+  timeLeftFormatted,
+  ended,
+  totalXorBurned,
+  accountXorBurned,
+});
+
+onMounted(async () => {
+  await withApi(async () => {
+    const network = soraNetwork.value ?? (await waitForSoraNetworkFromEnv());
+
+    if (network !== SoraNetwork.Prod) {
+      campaignsObj.solswap.from = 0;
+      campaignsObj.solswap.to = 10_000;
+    }
+
+    await fetchDataAndCalcCountdown();
+
+    intervalId.value = window.setInterval(() => {
+      void fetchDataAndCalcCountdown();
+    }, 60_000);
+  });
+});
+
+onBeforeUnmount(() => {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
+  }
+});
+</script>
+
+<style lang="scss" scoped>
+.el-form--actions {
+  @include buttons;
+  @include full-width-button('action-button');
+}
+.container {
+  margin: 0;
+  &--burn {
+    margin-bottom: $basic-spacing;
+    box-shadow: var(--s-shadow-element-pressed);
+    &.disabled {
+      box-shadow: var(--s-shadow-element);
+    }
+  }
+}
+
+.burn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-header--burn {
+  justify-content: center;
+}
+
+.campaign-logo {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto $inner-spacing-mini;
+}
+
+.description {
+  margin-bottom: $inner-spacing-mini;
+  font-size: var(--s-font-size-extra-small);
+  &.centered {
+    text-align: center;
+  }
+}
+.info-card {
+  &-container {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: $inner-spacing-mini;
+  }
+  &-item {
+    flex: 1;
+    box-shadow: var(--s-shadow-dialog);
+    background-color: var(--s-color-base-border-primary);
+    padding: $inner-spacing-medium;
+    margin-top: var(--s-basic-spacing);
+    border-radius: calc(var(--s-border-radius-mini) / 2);
+    & + & {
+      margin-left: $inner-spacing-mini;
+    }
+  }
+  &-title {
+    color: var(--s-color-base-content-secondary);
+    font-weight: 800;
+    font-size: var(--s-font-size-extra-small);
+    margin-bottom: $inner-spacing-mini;
+  }
+  &-value {
+    font-weight: 800;
+    font-size: 16px;
+  }
+}
+.burn {
+  &-column {
+    align-items: center;
+    justify-content: center;
+  }
+  &-container {
+    align-items: center;
+
+    .link {
+      font-size: var(--s-heading6-font-size);
+      margin-bottom: 12px;
+      color: var(--s-color-status-info);
+      @include focus-outline;
+    }
+  }
+  &-info {
+    max-width: $inner-window-width;
+    width: 100%;
+    flex: 1;
+    &__content {
+      .link {
+        margin-bottom: 0;
+      }
+    }
+    &__desc {
+      align-items: flex-start;
+      .description {
+        flex: 1;
+      }
+    }
+    &__badge {
+      border-radius: 50%;
+      background-color: var(--s-color-status-info);
+      padding: $inner-spacing-mini;
+      box-shadow: var(--s-shadow-element-pressed);
+      margin-left: $inner-spacing-mini;
+    }
+    &__icon {
+      color: white;
+    }
+  }
+}
+</style>

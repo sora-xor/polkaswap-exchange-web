@@ -260,6 +260,13 @@
         "disclaimer": "လိမ်လည်မှုကို တားဆီးရန် အချိန်နှင့်တပြေးညီ စာရွက်စာတမ်းကို ရိုက်ကူးရန် ကင်မရာ ခွင့်ပြုချက် လိုအပ်သည်",
         "title": "ဘရောက်ဇာ ဆက်တင်များတွင် ကင်မရာ ခွင့်ပြုပါ"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "တိုကင်ရွေးပါ",
         "chooseToken": "တိုကင်ရွေးပါ",

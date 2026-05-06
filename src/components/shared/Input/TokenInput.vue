@@ -119,26 +119,28 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 
+import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, ZeroStringValue } from '@/consts';
-import { lazyComponent } from '@/router';
+import { ZeroStringValue } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
+import WalletFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
+import WalletTokenAddress from '@/lib/soraneo-wallet/src/components/TokenAddress.vue';
 
 defineOptions({
   name: 'TokenInput',
   components: {
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    TokenAddress: components.TokenAddress,
+    TokenSelectButton,
+    FormattedAmount: WalletFormattedAmount,
+    FormattedAmountWithFiatValue: WalletFormattedAmountWithFiatValue,
+    TokenAddress: WalletTokenAddress,
   },
 });
 
@@ -349,6 +351,18 @@ $el-input-class: '.el-input';
   // Keep it gapless so top/content/bottom stack matches live proportions.
   row-gap: 0;
 
+  // New soramitsu-ui wraps the header content with `.s-input__top`, which can
+  // shrink the `From/Balance` row to its intrinsic width. Force the wrapper and
+  // row to span the full token input width like live polkaswap.io.
+  & > .s-input__top {
+    display: block;
+    width: 100%;
+  }
+
+  .input-line {
+    width: 100%;
+  }
+
   // Keep swap token input compact even with the newer soramitsu-ui DOM that wraps
   // footer content into `.s-input__bottom` and adds extra vertical space by default.
   & > .s-input__bottom {
@@ -397,6 +411,7 @@ $el-input-class: '.el-input';
 
     & > .s-input__content {
       color: var(--s-color-fiat-value);
+      gap: 0;
       line-height: var(--s-line-height-medium);
       letter-spacing: var(--s-letter-spacing-small);
       font-size: var(--s-font-size-small);

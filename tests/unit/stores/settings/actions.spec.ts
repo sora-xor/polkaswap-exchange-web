@@ -1,7 +1,7 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import axiosInstance from '@/api';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 const walletApiStub = vi.hoisted(() => ({
@@ -72,7 +72,7 @@ const walletStoreState = vi.hoisted(() => ({
   }),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   const walletMock = await createWalletMock({
     api: walletApiStub,
@@ -83,7 +83,7 @@ vi.mock('@wallet', async () => {
   });
   return walletMock;
 });
-vi.mock('@wallet/core', async () => {
+vi.mock('@/lib/soraneo-wallet/src/core', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     api: walletApiStub,
@@ -91,7 +91,7 @@ vi.mock('@wallet/core', async () => {
     WALLET_TYPES: walletTypesStub,
   });
 });
-vi.mock('@/shims/wallet-api', () => ({
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: walletApiStub,
   connection: connectionStub,
 }));

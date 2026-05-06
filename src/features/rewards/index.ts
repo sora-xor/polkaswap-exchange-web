@@ -1,0 +1,1 @@
+export { rewardsRoutes } from './routes';

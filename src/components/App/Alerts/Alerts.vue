@@ -25,25 +25,22 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed, ref } from 'vue';
 
+import { AlertList, AlertsSelectToken, CreateAlert } from '@/app/shell/components';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, type NumberedAlert } from '@/consts';
-import { lazyComponent } from '@/router';
+import type { NumberedAlert } from '@/consts';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 enum AlertPages {
   AlertList,
   CreateAlert,
 }
 
-const DialogBase = components.DialogBase;
-const AlertList = lazyComponent(Components.AlertList);
-const CreateAlert = lazyComponent(Components.CreateAlert);
-const AlertsSelectAsset = lazyComponent(Components.SelectToken);
+const DialogBase = WalletComponentDialogBase;
 
 const settingsStore = useSettingsStore();
 

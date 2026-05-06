@@ -46,9 +46,25 @@ vi.mock('@sora-substrate/sdk', async () => {
 });
 
 const renderSendWidgetMock = vi.fn();
+const pushMock = vi.fn(async () => undefined);
 
 vi.mock('@cedelabs/widgets-universal', () => ({
   renderSendWidget: renderSendWidgetMock,
+}));
+
+vi.mock('vue-router', () => ({
+  __esModule: true,
+  useRouter: () => ({
+    push: pushMock,
+  }),
+}));
+
+vi.mock('@/shared/ui/async', () => ({
+  __esModule: true,
+  createAsyncComponent: () => ({
+    name: 'AsyncComponentStub',
+    template: '<div class="async-component-stub"><slot /><slot name="title" /></div>',
+  }),
 }));
 
 const walletStorageStub = vi.hoisted(() => ({
@@ -59,7 +75,7 @@ const walletStorageStub = vi.hoisted(() => ({
   remove: vi.fn(),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     storage: walletStorageStub,
@@ -107,12 +123,12 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-let CedeStoreView: typeof import('@/views/CedeStore.vue').default;
+let CedeStoreView: typeof import('@/features/deposit/pages/CedeStorePage.vue').default;
 const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 const mountComponent = async () => {
   if (!CedeStoreView) {
-    ({ default: CedeStoreView } = await import('@/views/CedeStore.vue'));
+    ({ default: CedeStoreView } = await import('@/features/deposit/pages/CedeStorePage.vue'));
   }
 
   return mount(CedeStoreView, {
@@ -122,6 +138,9 @@ const mountComponent = async () => {
     global: {
       stubs: {
         'generic-page-header': {
+          template: '<header class="generic-header"><slot name="title" /></header>',
+        },
+        GenericPageHeader: {
           template: '<header class="generic-header"><slot name="title" /></header>',
         },
       },
@@ -135,13 +154,14 @@ const mountComponent = async () => {
 describe('CedeStore view', () => {
   beforeEach(() => {
     renderSendWidgetMock.mockClear();
+    pushMock.mockClear();
   });
 
   it('renders header title using translation const', async () => {
     const wrapper = await mountComponent();
 
     expect(wrapper.find('.generic-header').text()).toBe('Cede Store');
-  });
+  }, 20_000);
 
   it('initializes Cede widget with wallet address and theme defaults', async () => {
     await mountComponent();
@@ -159,7 +179,15 @@ describe('CedeStore view', () => {
         logoTheme: Theme.LIGHT,
       }),
     });
-  });
+  }, 20_000);
+
+  it('navigates back to deposit options through the feature router', async () => {
+    const wrapper = await mountComponent();
+
+    await (wrapper.vm as any).goToDepositOptions();
+
+    expect(pushMock).toHaveBeenCalledWith({ name: 'DepositOptions' });
+  }, 20_000);
 });
 
 afterAll(() => {

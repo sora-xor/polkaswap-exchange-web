@@ -73,7 +73,7 @@ vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => assetsStoreMock,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     WALLET_CONSTS: {
@@ -120,7 +120,7 @@ vi.mock('@/indexer/queries/pointSystem', () => ({
   },
 }));
 
-const PointSystem = (await import('@/views/PointSystem.vue')).default;
+const PointSystem = (await import('@/features/rewards/pages/PointSystemPage.vue')).default;
 
 const buildWrapper = () =>
   mount(PointSystem, {
@@ -135,6 +135,12 @@ const buildWrapper = () =>
           template: '<button class="s-button" @click="$emit(\'click\')"><slot /></button>',
         },
         's-divider': true,
+        'formatted-amount': {
+          template: '<div class="formatted-amount-stub"><slot /><slot name="prefix" /></div>',
+        },
+        'token-logo': {
+          template: '<div class="token-logo-stub" />',
+        },
       },
       directives: {
         loading: () => undefined,

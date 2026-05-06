@@ -49,7 +49,7 @@ const toScreenshotName = (viewportId: string, route: RouteAuditCase): string => 
 };
 
 test.beforeEach(async ({ page }) => {
-  await preparePage(page);
+  await preparePage(page, { stubRuntimeEnv: true });
 });
 
 test.describe('route rendering matrix', () => {

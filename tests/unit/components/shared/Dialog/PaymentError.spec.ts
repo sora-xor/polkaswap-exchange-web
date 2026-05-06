@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import PaymentError from '@/components/shared/Dialog/PaymentError.vue';
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {

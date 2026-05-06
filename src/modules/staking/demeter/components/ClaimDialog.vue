@@ -52,24 +52,27 @@
 
 <script lang="ts" setup>
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
 import { computed, toRefs, type PropType } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import { FontSizeRate } from '@/shims/wallet-consts';
+import { FontSizeRate } from '@/lib/soraneo-wallet/src/consts';
 import { useDemeterPoolCard } from '../composables/useDemeterPoolCard';
 import { useDemeterPoolStatus } from '../composables/useDemeterPoolStatus';
 
 import type { DemeterAsset, DemeterPool, DemeterAccountPool } from '../types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Nullable } from '@/types/common';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    InfoLine: components.InfoLine,
-    TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
+    DialogBase: WalletComponentDialogBase,
+    InfoLine: WalletComponentInfoLine,
+    TokenLogo: WalletComponentTokenLogo,
+    FormattedAmount: WalletComponentFormattedAmount,
   },
 });
 

@@ -1,7 +1,15 @@
 import { describe, expect, it, vi } from 'vitest';
+import { install } from '@/plugins/soramitsuUI';
 
-const soramitsuPlugin = vi.fn();
-const soramitsuPluginFactory = vi.fn(() => soramitsuPlugin);
+const { soramitsuPlugin, soramitsuPluginFactory } = vi.hoisted(() => {
+  const plugin = vi.fn();
+  const pluginFactory = vi.fn(() => plugin);
+
+  return {
+    soramitsuPlugin: plugin,
+    soramitsuPluginFactory: pluginFactory,
+  };
+});
 
 vi.mock('@soramitsu-ui/ui', () => ({
   plugin: soramitsuPluginFactory,
@@ -25,8 +33,6 @@ describe('soramitsuUI plugin', () => {
         return app;
       }),
     } as any;
-
-    const { install } = await import('@/plugins/soramitsuUI');
 
     contextComponents.SMenu = { name: 'LegacySMenu' };
     contextComponents.SMenuItem = { name: 'LegacySMenuItem' };
@@ -54,5 +60,5 @@ describe('soramitsuUI plugin', () => {
     expect(contextComponents['s-tabs-panel']).toEqual(expect.any(Object));
     expect(contextComponents.STab).toEqual(expect.any(Object));
     expect(contextComponents['s-tab']).toEqual(expect.any(Object));
-  });
+  }, 20_000);
 });

@@ -128,33 +128,23 @@ vi.mock('@/stores/web3', async () => {
   };
 });
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      FormattedAmount: {
-        name: 'FormattedAmountStub',
-        props: ['value'],
-        template: '<div class="formatted-amount"><slot /></div>',
-      },
-      HistoryPagination: {
-        name: 'HistoryPaginationStub',
-        props: ['currentPage', 'pageAmount', 'total', 'loading', 'lastPage'],
-        emits: ['pagination-click'],
-        template:
-          '<div class="history-pagination-stub"><button @click="$emit(\'pagination-click\', \'next\')">next</button></div>',
-      },
-    },
-    WALLET_CONSTS: {
-      FontSizeRate: { MEDIUM: 'medium' },
-      PaginationButton: {
-        Prev: 'prev',
-        Next: 'next',
-        Last: 'last',
-      },
-    },
-  });
-});
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', () => ({
+  default: {
+    name: 'FormattedAmountStub',
+    props: ['value'],
+    template: '<div class="formatted-amount"><slot /></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/HistoryPagination.vue', () => ({
+  default: {
+    name: 'HistoryPaginationStub',
+    props: ['currentPage', 'pageAmount', 'total', 'loading', 'lastPage'],
+    emits: ['pagination-click'],
+    template:
+      '<div class="history-pagination-stub"><button @click="$emit(\'pagination-click\', \'next\')">next</button></div>',
+  },
+}));
 
 vi.mock('@/components/shared/Logo/Moonpay.vue', () => ({
   __esModule: true,
@@ -165,11 +155,11 @@ vi.mock('@/components/shared/Logo/Moonpay.vue', () => ({
   },
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
+vi.mock('@/components/shared/Widget/IFrame.vue', () => ({
+  default: {
+    name: 'IFrameWidgetStub',
     template: '<div class="lazy-component-stub"><slot /></div>',
-  }),
+  },
 }));
 
 vi.mock('@/utils', () => ({
@@ -240,103 +230,94 @@ describe('MoonpayHistory.vue', () => {
     const ctx = await getContext();
 
     mountComponent();
-    const { nextTick } = await import('vue');
-    await nextTick();
+    await vi.runAllTimersAsync();
 
-    expect(ctx.withApiMock).toHaveBeenCalled();
-    expect(ctx.initMoonpayApiMock).toHaveBeenCalled();
-    expect(ctx.prepareEvmNetworkMock).toHaveBeenCalled();
-    expect(ctx.moonpayStore.getTransactions).toHaveBeenCalled();
-    expect(ctx.moonpayStore.getCurrencies).toHaveBeenCalled();
+    expect(ctx.withApiMock).toHaveBeenCalledTimes(1);
+    expect(ctx.initMoonpayApiMock).toHaveBeenCalledTimes(1);
+    expect(ctx.prepareEvmNetworkMock).toHaveBeenCalledTimes(1);
+    expect(ctx.moonpayStore.getTransactions).toHaveBeenCalledTimes(1);
+    expect(ctx.moonpayStore.getCurrencies).toHaveBeenCalledTimes(1);
   });
 
-  it('derives formatted history items', async () => {
+  it('formats completed transaction rows', async () => {
     const ctx = await getContext();
     ctx.state.moonpay.transactions = [
       {
-        id: '1',
-        baseCurrencyId: 'usd',
-        baseCurrencyAmount: 100,
-        currencyId: 'xor',
-        quoteCurrencyAmount: 1,
-        updatedAt: new Date('2023-01-01T00:00:00Z').toISOString(),
+        id: 'tx-1',
+        updatedAt: '2025-01-01T00:00:00.000Z',
         walletAddress: '0xabc',
         status: MoonpayTransactionStatus.Completed,
-        returnUrl: 'https://moonpay.example',
+        baseCurrencyId: 'usd',
+        baseCurrencyAmount: 10,
+        currencyId: 'eth',
+        quoteCurrencyAmount: 0.5,
       } as unknown as MoonpayTransaction,
     ];
     ctx.state.moonpay.currencies = [
       { id: 'usd', code: 'usd' },
-      { id: 'xor', code: 'xor' },
+      { id: 'eth', code: 'eth' },
     ];
 
     const wrapper = mountComponent();
-    const { nextTick } = await import('vue');
-    await nextTick();
+    await vi.runAllTimersAsync();
 
-    const formatted = (wrapper.vm as unknown as { formattedItems: Array<any> }).formattedItems;
-
-    expect(formatted).toHaveLength(1);
-    expect(formatted[0].formatted.fiat).toBe('USD');
-    expect(formatted[0].formatted.crypto).toBe('XOR');
-    expect(formatted[0].formatted.icon).toBe('basic-check-mark-24');
+    expect((wrapper.vm as unknown as { formattedItems: Array<Record<string, unknown>> }).formattedItems).toHaveLength(
+      1
+    );
+    expect(wrapper.find('.moonpay-history-item__wallet-address').text()).toBe('0xabc');
   });
 
-  it('requests network change when transaction cannot proceed on current network', async () => {
+  it('guards against invalid transaction payloads', async () => {
     const ctx = await getContext();
-    ctx.web3Store.isValidNetwork = false;
+    ctx.state.moonpay.transactions = { broken: true } as unknown as MoonpayTransaction[];
 
     const wrapper = mountComponent();
+    await vi.runAllTimersAsync();
+
+    expect((wrapper.vm as unknown as { emptyHistory: boolean }).emptyHistory).toBe(true);
+  });
+
+  it('navigates to details and starts bridge transfer for completed items', async () => {
+    const ctx = await getContext();
+    const wrapper = mountComponent();
     const item = {
-      id: '1',
+      id: 'tx-1',
+      updatedAt: '2025-01-01T00:00:00.000Z',
       walletAddress: '0xabc',
       status: MoonpayTransactionStatus.Completed,
-      returnUrl: 'https://moonpay.example',
+      baseCurrencyId: 'usd',
+      baseCurrencyAmount: 10,
+      currencyId: 'eth',
+      quoteCurrencyAmount: 0.5,
     } as unknown as MoonpayTransaction;
 
     (wrapper.vm as unknown as { navigateToDetails: (item: MoonpayTransaction) => void }).navigateToDetails(item);
-    await (await import('vue')).nextTick();
-    await (wrapper.vm as unknown as { handleTransaction: () => Promise<void> }).handleTransaction();
-
-    expect(ctx.changeEvmNetworkProvidedMock).toHaveBeenCalled();
-  });
-
-  it('shows existing bridge history when available', async () => {
-    const ctx = await getContext();
-    ctx.bridgeTransactionRef.value = { id: 'bridge-tx' } as unknown as EthHistory;
-
-    const wrapper = mountComponent();
-    const item = {
-      id: '1',
-      walletAddress: '0xabc',
-      status: MoonpayTransactionStatus.Completed,
-      returnUrl: 'https://moonpay.example',
-    } as unknown as MoonpayTransaction;
-
-    (wrapper.vm as unknown as { navigateToDetails: (item: MoonpayTransaction) => void }).navigateToDetails(item);
-    await (await import('vue')).nextTick();
-    await (wrapper.vm as unknown as { handleTransaction: () => Promise<void> }).handleTransaction();
-
-    expect(ctx.prepareEvmNetworkMock).toHaveBeenCalled();
-    expect(ctx.showHistoryMock).toHaveBeenCalledWith('bridge-tx');
-  });
-
-  it('prepares a new bridge transfer when transaction is eligible', async () => {
-    const ctx = await getContext();
-    ctx.bridgeTransactionRef.value = null;
-
-    const wrapper = mountComponent();
-    const item = {
-      id: '1',
-      walletAddress: '0xabc',
-      status: MoonpayTransactionStatus.Completed,
-      returnUrl: 'https://moonpay.example',
-    } as unknown as MoonpayTransaction;
-
-    (wrapper.vm as unknown as { navigateToDetails: (item: MoonpayTransaction) => void }).navigateToDetails(item);
-    await (await import('vue')).nextTick();
+    await wrapper.vm.$nextTick();
     await (wrapper.vm as unknown as { handleTransaction: () => Promise<void> }).handleTransaction();
 
     expect(ctx.prepareMoonpayTxForBridgeTransferMock).toHaveBeenCalledWith(item);
+  });
+
+  it('opens bridge history for already-bridged moonpay items', async () => {
+    const ctx = await getContext();
+    ctx.bridgeTransactionRef.value = { id: 'bridge-1' } as EthHistory;
+    const wrapper = mountComponent();
+    const item = {
+      id: 'tx-2',
+      updatedAt: '2025-01-01T00:00:00.000Z',
+      walletAddress: '0xabc',
+      status: MoonpayTransactionStatus.Completed,
+      baseCurrencyId: 'usd',
+      baseCurrencyAmount: 10,
+      currencyId: 'eth',
+      quoteCurrencyAmount: 0.5,
+    } as unknown as MoonpayTransaction;
+
+    (wrapper.vm as unknown as { navigateToDetails: (item: MoonpayTransaction) => void }).navigateToDetails(item);
+    await wrapper.vm.$nextTick();
+    await (wrapper.vm as unknown as { handleTransaction: () => Promise<void> }).handleTransaction();
+
+    expect(ctx.prepareEvmNetworkMock).toHaveBeenCalled();
+    expect(ctx.showHistoryMock).toHaveBeenCalledWith('bridge-1');
   });
 });

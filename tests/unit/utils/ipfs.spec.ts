@@ -19,6 +19,7 @@ test('toDwebLink: subdomain gateway', () => {
   expect(toDwebLink('https://bafybeigdyrzt.ipfs.dweb.link/dir/file')).toBe(
     'https://dweb.link/ipfs/bafybeigdyrzt/dir/file'
   );
+  expect(toDwebLink('https://bafybeigdyrzt.ipfs.dweb.link')).toBe('https://dweb.link/ipfs/bafybeigdyrzt');
 });
 
 test('toDwebLink: passthrough', () => {
@@ -26,4 +27,10 @@ test('toDwebLink: passthrough', () => {
   expect(toDwebLink(http)).toBe(http);
   expect(toDwebLink(undefined)).toBeUndefined();
   expect(toDwebLink(null as any)).toBeNull();
+});
+
+test('toDwebLink: passthrough when URL-like input cannot be trimmed', () => {
+  const value = { trim: null };
+
+  expect(toDwebLink(value as any)).toBe(value);
 });

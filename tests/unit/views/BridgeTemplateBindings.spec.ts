@@ -5,7 +5,7 @@ import path from 'node:path';
 import { parse } from '@vue/compiler-sfc';
 import { describe, expect, it } from 'vitest';
 
-const bridgeViewPath = path.resolve(process.cwd(), 'src/views/Bridge.vue');
+const bridgeViewPath = path.resolve(process.cwd(), 'src/features/bridge/pages/BridgePage.vue');
 
 const readBridgeTemplate = async (): Promise<string> => {
   const source = await readFile(bridgeViewPath, 'utf8');

@@ -17,6 +17,8 @@ const createStoreMocks = () => {
         setDefaultNodes: vi.fn(),
         setNetworkChainGenesisHash: vi.fn(),
       },
+      userDisclaimerApprove: false,
+      disclaimerVisibility: true,
       browserNotifPopupVisibility: false,
       browserNotifPopupBlockedVisibility: false,
       isThemePreference: false,
@@ -70,6 +72,9 @@ const createStoreMocks = () => {
       setFaucetUrl: vi.fn(),
       setFeatureFlags: vi.fn(),
       setScreenBreakpointClass: vi.fn(),
+      setDisclaimerDialogVisibility: vi.fn((flag: boolean) => {
+        state.settings.disclaimerVisibility = flag;
+      }),
       setSelectNodeDialogVisibility: vi.fn((flag: boolean) => {
         state.settings.selectNodeDialogVisibility = flag;
       }),
@@ -191,23 +196,38 @@ vi.mock('@/router', () => {
   };
 });
 
-vi.mock('@wallet', () => {
-  const { defineComponent, h } = require('vue') as typeof import('vue');
-  const WalletStub = defineComponent({
-    name: 'WalletComponentStub',
-    setup(_, { slots }) {
-      return () => h('div', { class: 'wallet-component-stub' }, slots.default?.());
-    },
-  });
+vi.mock('@/app/shell/AppShellLayout.vue', () => ({
+  default: {
+    name: 'AppShellLayoutStub',
+    template: '<div class="app-shell-layout-stub"></div>',
+  },
+}));
 
-  return {
-    api: {},
-    components: {
-      NotificationEnablingPage: WalletStub,
-      ConfirmDialog: WalletStub,
+vi.mock('@/app/shell/AppShellOverlays.vue', () => ({
+  default: {
+    name: 'AppShellOverlaysStub',
+    template: '<div class="app-shell-overlays-stub"></div>',
+  },
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/NotificationProvider.vue', () => ({
+  default: {
+    name: 'NotificationProviderStub',
+    template: '<div class="notification-provider-stub"><slot /></div>',
+  },
+}));
+
+vi.mock('@/app/router', () => ({
+  __esModule: true,
+  default: {
+    options: {
+      history: {
+        type: 'hash',
+      },
     },
-  };
-});
+  },
+  goTo: vi.fn(),
+}));
 
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {},
@@ -305,6 +325,7 @@ vi.mock('@/stores/settings', () => ({
       setFaucetUrl: root.commit.settings.setFaucetUrl,
       setFeatureFlags: root.commit.settings.setFeatureFlags,
       setScreenBreakpointClass: root.commit.settings.setScreenBreakpointClass,
+      setDisclaimerDialogVisibility: root.commit.settings.setDisclaimerDialogVisibility,
       showOrientationWarning: root.commit.settings.showOrientationWarning,
       hideOrientationWarning: root.commit.settings.hideOrientationWarning,
       setSelectNodeDialogVisibility: root.commit.settings.setSelectNodeDialogVisibility,
@@ -516,10 +537,10 @@ vi.mock('@/utils/telegram', () => ({
   },
 }));
 
-import App from '@/App.vue';
+import AppShell from '@/app/shell/AppShell.vue';
 
 const mountApp = async () => {
-  const wrapper = shallowMount(App, {
+  const wrapper = shallowMount(AppShell, {
     global: {
       stubs: {
         's-design-system-provider': {
@@ -550,6 +571,8 @@ type StoreMocks = {
       userDisclaimerApprove: boolean;
       browserNotifPopupVisibility: boolean;
       browserNotifPopupBlockedVisibility: boolean;
+      disclaimerVisibility: boolean;
+      userDisclaimerApprove: boolean;
     };
     web3: {
       soraAccountDialogVisibility: boolean;
@@ -561,6 +584,7 @@ type StoreMocks = {
   };
   commit: {
     settings: {
+      setDisclaimerDialogVisibility: ReturnType<typeof vi.fn> | undefined;
       setSelectNodeDialogVisibility: ReturnType<typeof vi.fn> | undefined;
       setSelectIndexerDialogVisibility: ReturnType<typeof vi.fn> | undefined;
       setDisclaimerDialogVisibility: ReturnType<typeof vi.fn> | undefined;
@@ -632,6 +656,8 @@ beforeEach(async () => {
   storeMocks.state.settings.userDisclaimerApprove = true;
   storeMocks.state.settings.browserNotifPopupVisibility = false;
   storeMocks.state.settings.browserNotifPopupBlockedVisibility = false;
+  storeMocks.state.settings.disclaimerVisibility = true;
+  storeMocks.state.settings.userDisclaimerApprove = false;
   storeMocks.state.web3.soraAccountDialogVisibility = false;
   storeMocks.state.web3.selectProviderDialogVisibility = false;
   storeMocks.state.web3.selectNetworkDialogVisibility = false;
@@ -644,6 +670,7 @@ beforeEach(async () => {
   storeMocks.commit.web3.setSelectNetworkDialogVisibility?.mockReset();
   storeMocks.commit.web3.setSelectSubNodeDialogVisibility?.mockReset();
   storeMocks.commit.web3.setSubAccountDialogVisibility?.mockReset();
+  storeMocks.commit.settings.setDisclaimerDialogVisibility?.mockReset();
   (storeMocks.commit.settings.setSelectNodeDialogVisibility as ReturnType<typeof vi.fn>).mockReset();
   (storeMocks.commit.settings.setSelectIndexerDialogVisibility as ReturnType<typeof vi.fn>).mockReset();
   (storeMocks.commit.settings.setDisclaimerDialogVisibility as ReturnType<typeof vi.fn>).mockReset();

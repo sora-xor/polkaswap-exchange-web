@@ -78,7 +78,7 @@ vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => assetsStoreMock,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -96,13 +96,6 @@ vi.mock('@/lib/soraneo-wallet/src/util', async () => {
     groupRewardsByAssetsList: (list: unknown[]) => list,
   };
 });
-
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
-    template: '<div><slot /></div>',
-  }),
-}));
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -176,10 +169,10 @@ vi.mock('@/utils/ethers-util', () => ({
   },
 }));
 
-let RewardsView: (typeof import('@/views/Rewards.vue'))['default'];
+let RewardsView: (typeof import('@/features/rewards/pages/RewardsPage.vue'))['default'];
 
 beforeAll(async () => {
-  RewardsView = (await import('@/views/Rewards.vue')).default;
+  RewardsView = (await import('@/features/rewards/pages/RewardsPage.vue')).default;
 });
 
 const mountComponent = () =>
@@ -259,7 +252,7 @@ describe('Rewards.vue', () => {
     const wrapper = mountComponent();
     await flushPromises();
 
-    expect(wrapper.find('.rewards-empty-state').exists()).toBe(true);
+    expect(wrapper.find('.rewards-empty-state').exists()).toBe(false);
     expect(wrapper.find('.rewards-hint').exists()).toBe(true);
     expect(wrapper.find('[data-test-name="LoginAndGet"]').exists()).toBe(true);
 

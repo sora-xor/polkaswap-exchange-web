@@ -1,6 +1,5 @@
 import { computed } from 'vue';
 
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 
 import { api } from '../api';
@@ -9,7 +8,7 @@ import { formatAccountAddress } from '../util';
 
 import { useNotification } from './useNotification';
 
-import type { Route } from '@/stores/router/types';
+import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
 import type { AssetsTable } from '../types/common';
 import type { Asset, AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -19,13 +18,12 @@ const reject = (message: string) => {
 
 export function useQrCodeParser() {
   const walletStore = useWalletStore();
-  const routerStore = useRouterStore();
   const { showAppNotification, t } = useNotification();
 
   const assetsDataTable = computed(() => walletStore.assetsDataTable);
 
-  const navigate = (options: Route): Promise<void> => {
-    routerStore.navigate(options);
+  const navigate = (options: WalletNavigationTarget): Promise<void> => {
+    walletStore.navigate(options);
     return Promise.resolve();
   };
 

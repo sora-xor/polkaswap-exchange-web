@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -8,7 +8,7 @@ const repoRoot = path.resolve(__dirname, '../../..');
 
 const files = {
   store: path.join(repoRoot, 'src', 'stores', 'orderBook', 'index.ts'),
-  view: path.join(repoRoot, 'src', 'views', 'OrderBook.vue'),
+  view: path.join(repoRoot, 'src', 'features', 'misc', 'pages', 'OrderBookPage.vue'),
   composable: path.join(repoRoot, 'src', 'composables', 'useOrderBookManagement.ts'),
   userOrdersComposable: path.join(repoRoot, 'src', 'composables', 'useOrderBookUserOrders.ts'),
 } as const;
@@ -32,7 +32,14 @@ describe('order-book store migration', () => {
     ]);
 
     expect(viewSource).toContain("from '@/stores/orderBook'");
+    expect(viewSource).toContain("from '@/shared/navigation/useSelectedTokensRoute'");
+    expect(viewSource).not.toContain('lazyComponent(');
+    expect(viewSource).not.toContain('Components.');
     expect(composableSource).toContain("from '@/stores/orderBook'");
     expect(userOrdersSource).toContain("from '@/stores/orderBook'");
+  });
+
+  it('removes the deleted order-book view wrapper', async () => {
+    await expect(stat(path.join(repoRoot, 'src', 'views', 'OrderBook.vue'))).rejects.toBeDefined();
   });
 });

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { DashboardComponents } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
-import { PoolComponents, PoolPageNames } from '@/modules/pool/consts';
+import { PoolComponents } from '@/modules/pool/consts';
 import { poolLazyComponent, poolLazyViewComponent } from '@/modules/pool/router';
 import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';
 import { SoraStakingComponents } from '@/modules/staking/sora/consts';
@@ -17,7 +17,7 @@ describe('module lazy component helpers', () => {
   it('wraps module components with Vue async loaders', () => {
     const candidates = [
       poolLazyComponent(PoolComponents.AddLiquidityDialog),
-      poolLazyViewComponent(PoolPageNames.Pool),
+      poolLazyViewComponent(),
       vaultLazyComponent(VaultComponents.CreateVaultDialog),
       dashboardLazyComponent(DashboardComponents.CreateTokenDialog),
       demeterStakingLazyComponent(DemeterStakingComponents.StatusBadge),

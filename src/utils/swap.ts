@@ -27,8 +27,9 @@ export const getDifferenceStatus = (value: number): string => {
 };
 
 /**
- * Returns swap input balance only for authenticated users.
- * Logged-out state should not render stale or synthetic balance rows.
+ * Returns the selected swap token balance for authenticated users.
+ * Logged-out state should not render stale or synthetic balance rows, but
+ * connected zero balances are still useful account state and should remain visible.
  */
 export const getVisibleSwapTokenBalance = (
   token: Nullable<AccountAsset>,

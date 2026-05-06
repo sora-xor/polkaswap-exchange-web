@@ -260,6 +260,13 @@
         "disclaimer": "Cameratoegang is vereist voor real-time documentregistratie om fraude te voorkomen.",
         "title": "Cameratoegang toestaan in browserinstellingen"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Kies een token",
         "chooseToken": "Kies token",

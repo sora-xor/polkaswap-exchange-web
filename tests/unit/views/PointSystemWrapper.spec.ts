@@ -12,7 +12,7 @@ vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => featureFlagsState,
 }));
 
-vi.mock('@/views/PointSystem.vue', () => ({
+vi.mock('@/features/rewards/pages/PointSystemPage.vue', () => ({
   __esModule: true,
   __isTeleport: false,
   default: defineComponent({
@@ -21,7 +21,7 @@ vi.mock('@/views/PointSystem.vue', () => ({
   }),
 }));
 
-vi.mock('@/views/PointSystemV2.vue', () => ({
+vi.mock('@/features/rewards/pages/PointSystemV2Page.vue', () => ({
   __esModule: true,
   __isTeleport: false,
   default: defineComponent({
@@ -33,7 +33,7 @@ vi.mock('@/views/PointSystemV2.vue', () => ({
 describe('PointSystemWrapper', () => {
   beforeEach(async () => {
     if (!PointSystemWrapper) {
-      const module = await import('@/views/PointSystemWrapper.vue');
+      const module = await import('@/features/rewards/pages/PointSystemWrapperPage.vue');
       PointSystemWrapper = module.default;
     }
 

@@ -43,6 +43,7 @@ describe('ensureRelativeAssetPath', () => {
   it('keeps absolute URLs unchanged', () => {
     expect(ensureRelativeAssetPath('https://cdn.example.com/env.json')).toBe('https://cdn.example.com/env.json');
     expect(ensureRelativeAssetPath('//cdn.example.com/env.json')).toBe('//cdn.example.com/env.json');
+    expect(ensureRelativeAssetPath('ipfs://bafy-test/env.json')).toBe('ipfs://bafy-test/env.json');
   });
 
   it('throws when an empty asset path is provided', () => {
@@ -66,6 +67,18 @@ describe('resolveStaticAssetUrl', () => {
 
   it('falls back to the relative path when window.location is unavailable', () => {
     (global as any).window = {};
+    expect(resolveStaticAssetUrl('env.json')).toBe('env.json');
+  });
+
+  it('falls back to the relative path when location href is missing or malformed', () => {
+    (global as any).window = {
+      location: { href: '' },
+    } as Window;
+    expect(resolveStaticAssetUrl('env.json')).toBe('env.json');
+
+    (global as any).window = {
+      location: { href: 'not a valid absolute URL' },
+    } as Window;
     expect(resolveStaticAssetUrl('env.json')).toBe('env.json');
   });
 
@@ -103,6 +116,22 @@ describe('resolveStaticAssetUrl', () => {
     } as Window;
 
     expect(resolveStaticAssetUrl('env.json')).toBe('https://example.org/ipfs/QmHash/env.json');
+  });
+
+  it('keeps static assets rooted at the IPNS scope for deep links', () => {
+    (global as any).window = {
+      location: { href: 'https://example.org/ipns/polkaswap.example/wallet' },
+    } as Window;
+
+    expect(resolveStaticAssetUrl('env.json')).toBe('https://example.org/ipns/polkaswap.example/env.json');
+  });
+
+  it('keeps static assets beside index.htm documents', () => {
+    (global as any).window = {
+      location: { href: 'https://example.org/app/index.htm#/wallet' },
+    } as Window;
+
+    expect(resolveStaticAssetUrl('env.json')).toBe('https://example.org/app/env.json');
   });
 
   it('keeps static assets rooted at the SoraFS CID scope for deep links', () => {

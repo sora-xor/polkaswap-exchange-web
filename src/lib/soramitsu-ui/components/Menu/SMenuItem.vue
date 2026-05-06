@@ -56,8 +56,9 @@ function handleClick(event: MouseEvent): void {
   color: var(--s-menu-text-color);
   cursor: pointer;
   transition:
-    background-color 150ms ease,
-    color 150ms ease;
+    border-color 300ms ease,
+    background-color 300ms ease,
+    color 300ms ease;
 
   &.is-active {
     color: var(--s-menu-active-text-color);

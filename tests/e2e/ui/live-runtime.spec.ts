@@ -27,7 +27,7 @@ const callWeb3Store = async (page: Page, action: string, payload?: unknown): Pro
   await page.evaluate(
     ({ action, payload }) => {
       const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
-      const web3Store = pinia?._s?.get('web3');
+      const web3Store = pinia?._s?.get('web3-legacy') ?? pinia?._s?.get('web3');
 
       return web3Store?.[action]?.(payload);
     },
@@ -39,7 +39,7 @@ const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
   await page.evaluate(() => {
     const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
     const bridgeStore = pinia?._s?.get('bridge');
-    const web3Store = pinia?._s?.get('web3');
+    const web3Store = pinia?._s?.get('web3-legacy') ?? pinia?._s?.get('web3');
 
     const subConnection = {
       nodeIsConnected: true,
@@ -55,15 +55,19 @@ const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
     };
 
     if (bridgeStore?.connector) {
-      bridgeStore.connector.standalone = {
+      bridgeStore.connector.relaychain = {
         subNetwork: 'Kusama',
         subNetworkConnection: subConnection,
         formatAddress: (value: string) => value,
+        stop: async () => undefined,
       };
+      bridgeStore.connector.standalone = undefined;
     }
 
-    web3Store?.setNetworkType?.('Sub');
-    web3Store?.setSelectedNetwork?.('Kusama');
+    web3Store?.$patch?.({
+      networkType: 'Sub',
+      networkSelected: 'Kusama',
+    });
     web3Store?.setSelectSubNodeDialogVisibility?.(true);
   });
 };
@@ -141,6 +145,12 @@ const openAuthenticatedWallet = async (page: Page): Promise<void> => {
 
 test.describe('live runtime smoke', () => {
   test.skip(!process.env.PS_E2E_LIVE_NETWORK, 'Enable with PS_E2E_LIVE_NETWORK=1');
+
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('dexSettings.disclaimerApprove', 'true');
+    });
+  });
 
   test('keeps core shell interactions functional without network stubbing', async ({ page }) => {
     const consoleErrors = trackConsole(page, { mode: 'live' });
@@ -824,7 +834,7 @@ test.describe('live runtime smoke', () => {
   test('keeps route rendering matrix stable on desktop without network stubbing', async ({ page }) => {
     const consoleErrors = trackConsole(page, {
       mode: 'live',
-      extraAllowedPatterns: [/status of 404 \(Not Found\)/i, /you should connect wallet/i],
+      extraAllowedPatterns: [/status of 404/i, /server responded with a status of 404/i, /you should connect wallet/i],
     });
     const routeCases = [...publicRouteAuditCases, ...protectedRedirectRouteAuditCases];
 
@@ -843,7 +853,7 @@ test.describe('live runtime smoke', () => {
   test('keeps route rendering matrix stable on mobile without network stubbing', async ({ page }) => {
     const consoleErrors = trackConsole(page, {
       mode: 'live',
-      extraAllowedPatterns: [/status of 404 \(Not Found\)/i, /you should connect wallet/i],
+      extraAllowedPatterns: [/status of 404/i, /server responded with a status of 404/i, /you should connect wallet/i],
     });
     const routeCases = [...publicRouteAuditCases, ...protectedRedirectRouteAuditCases];
 
@@ -862,7 +872,7 @@ test.describe('live runtime smoke', () => {
   test('keeps protected route rendering stable with authenticated state without network stubbing', async ({ page }) => {
     const consoleErrors = trackConsole(page, {
       mode: 'live',
-      extraAllowedPatterns: [/status of 404 \(Not Found\)/i],
+      extraAllowedPatterns: [/status of 404/i, /server responded with a status of 404/i],
     });
 
     await page.setViewportSize({ width: 1366, height: 900 });

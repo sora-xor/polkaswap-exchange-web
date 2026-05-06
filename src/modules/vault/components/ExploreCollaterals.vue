@@ -94,6 +94,7 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.totalLocked)"
                 :value="row.totalLocked"
               ></formatted-amount>
               <token-logo
@@ -126,6 +127,7 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.totalDebt)"
                 :value="row.totalDebt"
               ></formatted-amount>
               <token-logo
@@ -158,6 +160,7 @@
               <formatted-amount
                 class="explore-table-item-token"
                 :font-size-rate="FontSizeRate.SMALL"
+                :integer-only="isAmountValueIntegerOnly(row.availableToBorrow)"
                 :value="row.availableToBorrow"
               ></formatted-amount>
               <token-logo
@@ -193,21 +196,27 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { SortDirection } from '@soramitsu-ui/ui/types';
+import SortButton from '@/components/shared/Button/SortButton.vue';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
+import DataRowSkeleton from '@/components/shared/Skeleton/DataRow.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components, FontSizeRate, FontWeightRate, HundredNumber, PaginationButton } from '@/consts';
-import { lazyComponent } from '@/router';
+import { FontSizeRate, FontWeightRate, HundredNumber, PaginationButton } from '@/consts';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useVaultStore } from '@/stores/vault';
 import { useWalletStore } from '@/stores/wallet';
+import { isAmountValueIntegerOnly } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
+import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 
 type TableItem = {
   name: string;
@@ -229,13 +238,10 @@ type TableItem = {
   maxLtvValue: number;
 };
 
-const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
-const SortButton = lazyComponent(Components.SortButton);
-const DataRowSkeleton = lazyComponent(Components.DataRowSkeleton);
-const TokenLogo = components.TokenLogo;
-const FormattedAmount = components.FormattedAmount;
-const HistoryPagination = components.HistoryPagination;
-const SearchInput = components.SearchInput;
+const TokenLogo = WalletComponentTokenLogo;
+const FormattedAmount = WalletComponentFormattedAmount;
+const HistoryPagination = WalletComponentHistoryPagination;
+const SearchInput = WalletComponentSearchInput;
 
 const ZERO = FPNumber.ZERO;
 
@@ -546,24 +552,45 @@ $min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
     }
 
     > :deep(.search.search-input) {
+      display: flex;
       min-height: 58px;
+      position: relative;
       border-radius: 24px;
       padding: 8px 16px;
-      background-color: var(--s-color-utility-surface);
-      box-shadow:
-        1px 1px 5px 0 var(--s-shadow-color-light),
-        -5px -5px 5px 0 inset rgba(255, 255, 255, 0.5),
-        1px 1px 10px 0 inset var(--s-shadow-color-dark);
+      border: 0 solid var(--s-color-base-border-primary);
+      background-color: var(--s-color-base-background);
+      box-shadow: var(--s-shadow-element);
     }
 
     > :deep(.search.search-input .s-input__content) {
-      min-height: 42px;
+      height: 21px;
+      width: 100%;
+      min-height: 0;
       padding: 0;
+      gap: 0;
+      border: 0 none var(--s-color-base-content-primary);
+    }
+
+    > :deep(.search.search-input .s-input__prefix) {
+      position: absolute;
+      left: 16px;
+      top: 8px;
+      display: block;
+      height: 21px;
+      line-height: 21px;
+    }
+
+    > :deep(.search.search-input .s-input__input) {
+      display: block;
+      position: relative;
+      width: 100%;
+      border: 0 none var(--s-color-base-content-primary);
     }
 
     > :deep(.search.search-input .el-input__inner) {
       line-height: 21px;
       padding: 0 26px;
+      width: 100%;
     }
   }
 }

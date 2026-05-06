@@ -3,10 +3,7 @@ import { createAsyncComponent } from '@/router/lazy';
 
 import { PoolComponents, PoolPageNames } from './consts';
 
-export const poolLazyView = (name: PoolPageNames) => () => import(`@/modules/pool/views/${name}.vue`);
-
-export const poolLazyViewComponent = (name: PoolPageNames) =>
-  createAsyncComponent(() => import(`@/modules/pool/views/${name}.vue`));
+export const poolLazyViewComponent = () => createAsyncComponent(() => import('@/modules/pool/views/Pool.vue'));
 
 export const poolLazyComponent = (name: PoolComponents) =>
   createAsyncComponent(() => import(`@/modules/pool/components/${name}.vue`));

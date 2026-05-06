@@ -260,6 +260,13 @@
         "disclaimer": "实时文档捕获需要摄像头访问，以防止欺诈。",
         "title": "在浏览器设置中允许相机访问"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "选择一个代币",
         "chooseToken": "选择代币",

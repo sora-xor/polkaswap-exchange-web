@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const useAddAssetMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useAddAsset', () => ({
@@ -34,15 +36,7 @@ describe('Wallet AddAsset tabs', () => {
       ensureAssetCatalogLoaded: vi.fn(),
       handleSelectAsset: vi.fn(),
     });
-    const state = (AddAssetToken as any).setup(
-      {},
-      {
-        attrs: {},
-        emit: vi.fn(),
-        expose: vi.fn(),
-        slots: {},
-      }
-    );
+    const { state } = mountSetup(AddAssetToken as any, {}, { emit: vi.fn() });
 
     expect(state.showAddButton.value).toBe(true);
   });
@@ -65,15 +59,7 @@ describe('Wallet AddAsset tabs', () => {
       ensureAssetCatalogLoaded: vi.fn(),
       handleSelectAsset: vi.fn(),
     });
-    const state = (AddAssetNFT as any).setup(
-      {},
-      {
-        attrs: {},
-        emit,
-        expose: vi.fn(),
-        slots: {},
-      }
-    );
+    const { state } = mountSetup(AddAssetNFT as any, {}, { emit });
 
     state.handleAdd();
 
@@ -100,15 +86,7 @@ describe('Wallet AddAsset tabs', () => {
       handleSelectAsset: vi.fn(),
     });
 
-    const state = (AddAssetToken as any).setup(
-      {},
-      {
-        attrs: {},
-        emit: vi.fn(),
-        expose: vi.fn(),
-        slots: {},
-      }
-    );
+    const { state } = mountSetup(AddAssetToken as any, {}, { emit: vi.fn() });
 
     expect(state.prefilteredAssets.value).toHaveLength(1);
     expect(state.foundAssets.value).toHaveLength(1);

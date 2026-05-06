@@ -1,8 +1,8 @@
 <template>
   <s-modal
     v-model:show="disclaimerVisibility"
-    :teleport-to="null"
-    absolute
+    :teleport-to="useViewportModal ? 'body' : null"
+    :absolute="!useViewportModal"
     :lock-scroll="false"
     :focus-trap="isSwapPage"
     :show-overlay="isSwapPage"
@@ -69,6 +69,7 @@ let handleScroll: Nullable<() => void> = null;
 
 const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
 const isSwapPage = computed(() => route.name === PageNames.Swap);
+const useViewportModal = computed(() => isSwapPage.value && !userDisclaimerApprove.value);
 const modalRootClass = computed(() => ['disclaimer-modal', { 'disclaimer-modal--nonblocking': !isSwapPage.value }]);
 const effectiveDisclaimerVisibility = computed(() =>
   resolveDisclaimerVisibilityOnRouteChange(
@@ -357,16 +358,25 @@ onBeforeUnmount(() => {
   padding: $inner-spacing-medium;
 }
 
-:global(.disclaimer-modal--nonblocking) {
+:global(.s-modal__root.disclaimer-modal--nonblocking) {
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+  padding-top: $inner-spacing-small !important;
+  padding-right: 0 !important;
   pointer-events: none;
 }
 
-:global(.disclaimer-modal--nonblocking .s-modal__modal) {
+:global(.s-modal__root.disclaimer-modal--nonblocking .s-modal__modal) {
   pointer-events: none;
+  width: auto;
 }
 
-:global(.disclaimer-modal--nonblocking .disclaimer) {
+:global(.s-modal__root.disclaimer-modal--nonblocking .disclaimer) {
   pointer-events: auto;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+  margin-right: $inner-spacing-small;
 }
 
 :global(.disclaimer-modal__dialog) {

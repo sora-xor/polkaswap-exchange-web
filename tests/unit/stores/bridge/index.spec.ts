@@ -6,11 +6,9 @@ import { createPinia, setActivePinia } from 'pinia';
 import { of } from 'rxjs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { beforeTransactionSign } from '@/lib/soraneo-wallet/src/util';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { useBridgeStore } from '@/stores/bridge';
-import { useBridgeHistoryStore } from '@/stores/bridge/history';
-import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 import { useMoonpayStore } from '@/stores/moonpay';
 import { BridgeFocusedField } from '@/stores/bridge/types';
 import { BridgeTransactionSignDialogMode } from '@/utils/bridge/common/types';
@@ -186,7 +184,7 @@ const ethersUtilMock = vi.hoisted(() => ({
   })),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({});
@@ -513,14 +511,6 @@ describe('useBridgeStore', () => {
       state.subscriptions = seeded.state.subscriptions as any;
       state.connector = seeded.state.connector as any;
     });
-    useBridgeHistoryStore().syncHistoryPageFromLegacy(store.history.page);
-    useBridgeHistoryStore().syncHistoryIdFromLegacy(store.history.id);
-    useBridgeTransactionsStore().syncHistoryInternalFromLegacy(store.history.internal);
-    useBridgeTransactionsStore().syncHistoryLoadingFromLegacy(store.history.loading);
-    useBridgeTransactionsStore().syncWaitingForApproveFromLegacy(store.history.waitingForApprove);
-    useBridgeTransactionsStore().syncInProgressIdsFromLegacy(store.history.inProgressIds);
-    useBridgeTransactionsStore().syncNotificationDataFromLegacy(store.history.notificationData);
-    useBridgeTransactionsStore().syncSignDialogVisibilityFromLegacy(store.flags.isSignTxDialogVisible);
   });
 
   it('derives eth-bridge metadata from wallet, assets, and web3 Pinia stores', () => {
@@ -581,20 +571,15 @@ describe('useBridgeStore', () => {
     expect(store.isSoraToEvm).toBe(false);
   });
 
-  it('syncs history page and history id through the bridge Pinia facade', () => {
-    const bridgeHistoryStore = useBridgeHistoryStore();
-
+  it('updates history page and history id on the canonical bridge store', () => {
     store.setHistoryPage(3.7);
     store.setHistoryId('tx-updated');
 
     expect(store.history.page).toBe(3);
     expect(store.history.id).toBe('tx-updated');
-    expect(bridgeHistoryStore.historyPage).toBe(3);
-    expect(bridgeHistoryStore.historyId).toBe('tx-updated');
   });
 
-  it('syncs notification and sign dialog visibility into the transactions facade', () => {
-    const bridgeTransactionsStore = useBridgeTransactionsStore();
+  it('updates notification, in-progress state, and sign dialog visibility on the canonical bridge store', () => {
     const tx = { id: 'tx-note' } as any;
 
     store.setNotificationData(tx);
@@ -603,10 +588,8 @@ describe('useBridgeStore', () => {
     store.setSignTxDialogVisibility(true);
 
     expect(store.history.notificationData).toEqual(tx);
-    expect(bridgeTransactionsStore.notificationData).toEqual(tx);
     expect(store.history.inProgressIds['tx-progress']).toBeUndefined();
     expect(store.flags.isSignTxDialogVisible).toBe(true);
-    expect(bridgeTransactionsStore.isSignTxDialogVisible).toBe(true);
   });
 
   it('updates bridge history locally through direct bridge helpers', async () => {
@@ -633,7 +616,7 @@ describe('useBridgeStore', () => {
         externalNetwork: EvmNetworkId.EthereumSepolia,
       },
     });
-    expect(useBridgeTransactionsStore().historyInternal).toEqual(store.history.internal);
+    expect(store.history.internal).toEqual(store.historyRecord);
   });
 
   it('updates external history through direct bridge helpers while syncing loading state', async () => {
@@ -653,6 +636,11 @@ describe('useBridgeStore', () => {
           wallet: expect.objectContaining({
             account: expect.objectContaining({
               address: 'sora-address',
+            }),
+            settings: expect.objectContaining({
+              apiKeys: expect.objectContaining({
+                etherscan: 'etherscan-key',
+              }),
             }),
           }),
           bridge: expect.objectContaining({
@@ -767,10 +755,9 @@ describe('useBridgeStore', () => {
   });
 
   it('signs incoming eth bridge transfers directly while syncing approval state', async () => {
-    const bridgeTransactionsStore = useBridgeTransactionsStore();
     const approvalTx = { hash: '0xapprove-tx' };
     const approveMock = vi.fn(async () => {
-      expect(bridgeTransactionsStore.waitingForApprove['tx-sign-incoming']).toBe(true);
+      expect(store.history.waitingForApprove['tx-sign-incoming']).toBe(true);
       return approvalTx;
     });
 
@@ -803,7 +790,6 @@ describe('useBridgeStore', () => {
     );
     expect(transaction).toEqual({ hash: '0xincoming-tx' });
     expect(store.history.waitingForApprove['tx-sign-incoming']).toBeUndefined();
-    expect(bridgeTransactionsStore.waitingForApprove['tx-sign-incoming']).toBeUndefined();
   });
 
   it('subscribes to block updates locally through the worker data-plane runtime', async () => {
@@ -989,7 +975,6 @@ describe('useBridgeStore', () => {
   });
 
   it('uses Pinia wallet state for before-sign hooks while keeping moonpay records on the root store', async () => {
-    const bridgeTransactionsStore = useBridgeTransactionsStore();
     const visibilityChanges: boolean[] = [];
 
     await store.beforeTransactionSign({ address: 'alice' }, BridgeTransactionSignDialogMode.Bridge);
@@ -1019,10 +1004,10 @@ describe('useBridgeStore', () => {
     });
 
     visibilityController.setVisibility(true);
-    bridgeTransactionsStore.setSignTxDialogVisibility(false);
+    store.setSignTxDialogVisibility(false);
     unsubscribe();
 
     expect(visibilityChanges).toEqual([true, false]);
-    expect(bridgeTransactionsStore.isSignTxDialogVisible).toBe(false);
+    expect(store.flags.isSignTxDialogVisible).toBe(false);
   });
 });

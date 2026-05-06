@@ -78,7 +78,8 @@ export const useMoonpayStore = defineStore('moonpay', {
       this.transactionsFetching = true;
 
       try {
-        this.transactions = await this.api.getTransactionsByExtId(walletStore.address);
+        const transactions = await this.api.getTransactionsByExtId(walletStore.address);
+        this.transactions = Array.isArray(transactions) ? transactions : [];
         console.info('Moonpay: user transactions request');
       } catch (error) {
         console.error(error);
@@ -91,7 +92,8 @@ export const useMoonpayStore = defineStore('moonpay', {
       this.currencies = [];
 
       try {
-        this.currencies = await this.api.getCurrencies();
+        const currencies = await this.api.getCurrencies();
+        this.currencies = Array.isArray(currencies) ? currencies : [];
       } catch (error) {
         console.error(error);
         this.currencies = [];

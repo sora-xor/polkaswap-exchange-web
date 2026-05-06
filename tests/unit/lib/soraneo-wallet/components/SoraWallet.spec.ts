@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-const routerStore = vi.hoisted(() => ({
+const walletRouteState = vi.hoisted(() => ({
   current: null as null | string,
 }));
 
@@ -11,8 +11,8 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useLoading', () => ({
   }),
 }));
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => routerStore,
+vi.mock('@/platform/wallet/navigation', () => ({
+  getWalletCurrentRoute: () => walletRouteState.current,
 }));
 
 vi.mock('@/stores/wallet', () => ({
@@ -58,7 +58,7 @@ import { Operations } from '@/lib/soraneo-wallet/src/types/common';
 
 describe('Wallet SoraWallet', () => {
   it('resolves the current wallet route to a component instead of a raw string tag', () => {
-    routerStore.current = RouteNames.WalletConnection;
+    walletRouteState.current = RouteNames.WalletConnection;
 
     const state = (SoraWallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
 
@@ -66,7 +66,7 @@ describe('Wallet SoraWallet', () => {
   });
 
   it('falls back to the wallet connection component when no wallet route is selected', () => {
-    routerStore.current = null;
+    walletRouteState.current = null;
 
     const state = (SoraWallet as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
 
@@ -74,7 +74,7 @@ describe('Wallet SoraWallet', () => {
   });
 
   it('re-emits wallet operations with their asset payload', () => {
-    routerStore.current = null;
+    walletRouteState.current = null;
     const emit = vi.fn();
     const asset = { address: 'asset-1' };
     const state = (SoraWallet as any).setup({}, { attrs: {}, emit, expose: vi.fn(), slots: {} });
@@ -85,7 +85,7 @@ describe('Wallet SoraWallet', () => {
   });
 
   it('re-emits close and learn-more events', () => {
-    routerStore.current = null;
+    walletRouteState.current = null;
     const emit = vi.fn();
     const state = (SoraWallet as any).setup({}, { attrs: {}, emit, expose: vi.fn(), slots: {} });
 

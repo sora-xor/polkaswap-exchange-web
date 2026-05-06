@@ -98,17 +98,16 @@ vi.mock('vue-i18n', async () => {
   };
 });
 
-import PendingRewardsDialog from '@/modules/staking/sora/components/PendingRewardsDialog.vue';
-
-const soraStakingComponentStub = defineComponent({
-  name: 'SoraStakingLazyComponentStub',
-  template: '<div class="sora-staking-lazy-component-stub"><slot /></div>',
-});
-
-vi.mock('@/modules/staking/router', () => ({
+vi.mock('@/modules/staking/sora/components/ValidatorAvatar.vue', () => ({
   __esModule: true,
-  soraStakingLazyComponent: () => soraStakingComponentStub,
+  default: {
+    name: 'ValidatorAvatarStub',
+    props: ['validator'],
+    template: '<div class="sora-staking-lazy-component-stub"><slot name="icon" /></div>',
+  },
 }));
+
+import PendingRewardsDialog from '@/modules/staking/sora/components/PendingRewardsDialog.vue';
 
 const mountComponent = () =>
   mount(PendingRewardsDialog, {

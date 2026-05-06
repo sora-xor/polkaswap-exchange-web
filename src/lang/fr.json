@@ -260,6 +260,13 @@
         "disclaimer": "L'accès à la caméra est requis pour la capture de documents en temps réel afin de prévenir la fraude.",
         "title": "Autoriser l'accès à la caméra dans les paramètres du navigateur"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Choisissez un jeton",
         "chooseToken": "Choisir le jeton",

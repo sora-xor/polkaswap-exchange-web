@@ -2,25 +2,22 @@ import { describe, expect, it, vi } from 'vitest';
 
 const navigate = vi.hoisted(() => vi.fn());
 
+vi.mock('@/platform/wallet/navigation', () => ({
+  getWalletCurrentParams: () => ({
+    asset: {
+      address: 'asset-address',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+  }),
+  getWalletPreviousRoute: () => 'Wallet',
+  getWalletPreviousParams: () => ({ assetId: 'asset-address' }),
+}));
+
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
     getPublicKeyByAddress: vi.fn(() => 'abcd'),
   },
-}));
-
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    currentParams: {
-      asset: {
-        address: 'asset-address',
-        symbol: 'XOR',
-        decimals: 18,
-      },
-    },
-    prev: 'Wallet',
-    prevParams: { assetId: 'asset-address' },
-    navigate,
-  }),
 }));
 
 vi.mock('@/stores/wallet', () => ({
@@ -29,6 +26,7 @@ vi.mock('@/stores/wallet', () => ({
       address: 'account-address',
       name: 'Primary',
     },
+    navigate,
   }),
 }));
 

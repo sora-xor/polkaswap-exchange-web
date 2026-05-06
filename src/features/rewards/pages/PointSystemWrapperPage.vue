@@ -1,0 +1,27 @@
+<template>
+  <component :is="componentToRender"></component>
+</template>
+
+<script lang="ts" setup>
+import { computed } from 'vue';
+
+import { createAsyncComponent } from '@/shared/ui/async';
+import { useSettingsStore } from '@/stores/settings';
+
+const PointSystemComponent = createAsyncComponent(() => import('./PointSystemPage.vue'));
+const PointSystemV2Component = createAsyncComponent(() => import('./PointSystemV2Page.vue'));
+
+const settingsStore = useSettingsStore();
+
+/**
+ * Picks the point system variant according to the feature flag.
+ */
+const componentToRender = computed(() => (settingsStore.pointSystemV2 ? PointSystemV2Component : PointSystemComponent));
+
+defineExpose({
+  // Exposed for unit tests to assert which loader is active without instantiating the async component.
+  componentToRender,
+  legacyLoader: PointSystemComponent,
+  v2Loader: PointSystemV2Component,
+});
+</script>

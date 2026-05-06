@@ -31,7 +31,7 @@ import {
   WALLET_TYPES,
 } from './core';
 import { initWallet, waitForCore } from './bootstrap';
-import { SoraWallet, components } from './components/registry';
+import SoraWallet from './SoraWallet.vue';
 import { useAccountActions } from './composables/useAccountActions';
 import { useAddAsset } from './composables/useAddAsset';
 import { useCameraPermission } from './composables/useCameraPermission';
@@ -105,8 +105,8 @@ const composables = {
 };
 
 /**
- * Exposes wallet utilities plus the legacy module registry consumed by the
- * host app while its root store still runs through the bridge layer.
+ * Exposes wallet utilities consumed by the host app while its root store
+ * continues to run through the wallet bridge layer.
  */
 export {
   initWallet,
@@ -125,7 +125,6 @@ export {
   getAssetsSubset,
   WALLET_CONSTS,
   WALLET_TYPES,
-  components,
   composables,
   accountUtils,
   ScriptLoader,

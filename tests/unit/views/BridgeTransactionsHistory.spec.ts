@@ -11,7 +11,7 @@ const HistoryPaginationStub = {
   template: '<div class="history-pagination-stub"><slot /></div>',
 };
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -48,6 +48,7 @@ const shared = (() => {
   const updateExternalHistoryMock = vi.fn(async () => undefined);
   const showHistoryMock = vi.fn();
   const setHistoryPageMock = vi.fn();
+  const historyPage = ref(1);
   const networkHistoryId = ref('network-1');
 
   const registeredAssets = reactive<Record<string, RegisteredAsset>>({});
@@ -55,10 +56,11 @@ const shared = (() => {
     registeredAssets,
     registeredAssetsFetching: false,
   });
-  const bridgeHistoryStore = reactive({ historyPage: 1, $id: 'bridgeHistoryStoreMock' });
-  const bridgeTransactionsStore = reactive({ $id: 'bridgeTransactionsStoreMock' });
   const bridgeStoreMock = reactive({
     updateBridgeHistory: vi.fn(),
+    get historyPage() {
+      return historyPage.value;
+    },
     get networkHistoryId() {
       return networkHistoryId.value;
     },
@@ -80,9 +82,9 @@ const shared = (() => {
     updateExternalHistoryMock,
     showHistoryMock,
     setHistoryPageMock,
+    historyPage,
     registeredAssets,
     assetsStore,
-    bridgeHistoryStore,
     bridgeStoreMock,
     networkHistoryId,
     navigateToBridgeMock,
@@ -137,15 +139,6 @@ beforeAll(async () => {
       formatDatetime: shared.formatDatetimeMock,
     }),
   }));
-  vi.doMock('@/stores/bridge/history', () => ({
-    useBridgeHistoryStore: () => shared.bridgeHistoryStore,
-  }));
-  vi.doMock('@/stores/bridge/transactions', () => ({
-    useBridgeTransactionsStore: () => ({ $id: 'bridgeTransactionsStoreMock' }),
-  }));
-  vi.doMock('@/stores/bridge/form', () => ({
-    useBridgeFormStore: () => ({ $id: 'bridgeFormStoreMock' }),
-  }));
   vi.doMock('@/stores/bridge', () => ({
     useBridgeStore: () => shared.bridgeStoreMock,
   }));
@@ -156,9 +149,9 @@ beforeAll(async () => {
     default: {},
   }));
 
-  const walletModule = await import('@wallet');
-  WALLET_CONSTS = walletModule.WALLET_CONSTS;
-  BridgeTransactionsHistory = (await import('@/views/BridgeTransactionsHistory.vue')).default;
+  const walletRuntime = await import('@tests/stubs/walletRuntime');
+  WALLET_CONSTS = walletRuntime.WALLET_CONSTS;
+  BridgeTransactionsHistory = (await import('@/features/bridge/pages/BridgeTransactionsHistoryPage.vue')).default;
 });
 
 vi.mock('@/composables/useNetworkFormatter', () => ({
@@ -248,7 +241,7 @@ const resetEnvironment = () => {
   shared.setHistoryPageMock.mockClear();
   shared.showHistoryMock.mockClear();
   shared.parentLoading.value = false;
-  shared.bridgeHistoryStore.historyPage = 1;
+  shared.historyPage.value = 1;
   shared.networkHistoryId.value = 'network-1';
 };
 

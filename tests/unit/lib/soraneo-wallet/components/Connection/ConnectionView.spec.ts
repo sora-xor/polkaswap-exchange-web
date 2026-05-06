@@ -2,6 +2,8 @@ import { ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppWallet, LoginStep } from '@/lib/soraneo-wallet/src/consts';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const walletStore = vi.hoisted(() => ({
   availableWallets: [],
   isMST: false,
@@ -12,6 +14,12 @@ const walletStore = vi.hoisted(() => ({
   updateAvailableWallets: vi.fn(async () => undefined),
   setAccountPassphrase: vi.fn(),
 }));
+const baseProps = {
+  chainApi: {
+    api: { genesisHash: { toString: () => 'hash' } },
+  },
+  checkConnectedAccountSource: vi.fn(async () => undefined),
+};
 
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStore,
@@ -76,13 +84,12 @@ describe('Wallet ConnectionView', () => {
   it('treats missing wallet availability data as an empty list instead of crashing the logged-out view', () => {
     walletStore.availableWallets = undefined as unknown as [];
 
-    const state = (ConnectionView as any).setup(
+    const { state } = mountSetup(
+      ConnectionView as any,
       {
-        chainApi: {
-          api: { genesisHash: { toString: () => 'hash' } },
-        },
+        ...baseProps,
       },
-      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+      { emit: vi.fn() }
     );
 
     expect(state.wallets.value).toEqual({ internal: [], external: [] });
@@ -100,14 +107,13 @@ describe('Wallet ConnectionView', () => {
 
   it('resets the selected wallet when navigating back to extension list', () => {
     const closeView = vi.fn();
-    const state = (ConnectionView as any).setup(
+    const { state } = mountSetup(
+      ConnectionView as any,
       {
-        chainApi: {
-          api: { genesisHash: { toString: () => 'hash' } },
-        },
+        ...baseProps,
         closeView,
       },
-      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+      { emit: vi.fn() }
     );
 
     state.step.value = LoginStep.AccountList;
@@ -123,14 +129,13 @@ describe('Wallet ConnectionView', () => {
 
   it('closes the view when already at the root step', () => {
     const closeView = vi.fn();
-    const state = (ConnectionView as any).setup(
+    const { state } = mountSetup(
+      ConnectionView as any,
       {
-        chainApi: {
-          api: { genesisHash: { toString: () => 'hash' } },
-        },
+        ...baseProps,
         closeView,
       },
-      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+      { emit: vi.fn() }
     );
 
     state.step.value = LoginStep.ExtensionList;
@@ -142,15 +147,14 @@ describe('Wallet ConnectionView', () => {
   it('closes the view after selecting an external account and completing login', async () => {
     const closeView = vi.fn();
     const loginAccount = vi.fn(async () => undefined);
-    const state = (ConnectionView as any).setup(
+    const { state } = mountSetup(
+      ConnectionView as any,
       {
-        chainApi: {
-          api: { genesisHash: { toString: () => 'hash' } },
-        },
+        ...baseProps,
         closeView,
         loginAccount,
       },
-      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+      { emit: vi.fn() }
     );
 
     await state.handleAccountSelect({ address: 'cn-ext', name: 'External', source: AppWallet.Polkadotjs }, false);
@@ -172,15 +176,14 @@ describe('Wallet ConnectionView', () => {
   it('closes the view after confirming an internal account login', async () => {
     const closeView = vi.fn();
     const loginAccount = vi.fn(async () => undefined);
-    const state = (ConnectionView as any).setup(
+    const { state } = mountSetup(
+      ConnectionView as any,
       {
-        chainApi: {
-          api: { genesisHash: { toString: () => 'hash' } },
-        },
+        ...baseProps,
         closeView,
         loginAccount,
       },
-      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+      { emit: vi.fn() }
     );
 
     state.selectedWallet.value = AppWallet.GoogleDrive;

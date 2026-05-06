@@ -11,35 +11,38 @@ const buttonStub = defineComponent({
   template: `<button class="s-button-stub" :disabled="disabled" @click="$emit('click')"><slot /></button>`,
 });
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    WALLET_CONSTS: { FontSizeRate: { SMALL: 'small', MEDIUM: 'medium' } },
-    components: {
-      DialogBase: defineComponent({
-        name: 'DialogBaseStub',
-        props: ['visible', 'title'],
-        emits: ['update:visible'],
-        template: `<div class="dialog-base-stub"><slot /></div>`,
-      }),
-      InfoLine: defineComponent({
-        name: 'InfoLineStub',
-        props: ['label', 'value', 'fiatValue', 'assetSymbol', 'labelTooltip', 'isFormatted'],
-        template: `<div class="info-line-stub"></div>`,
-      }),
-      TokenLogo: defineComponent({
-        name: 'TokenLogoStub',
-        props: ['token', 'size'],
-        template: `<div class="token-logo-stub"></div>`,
-      }),
-      FormattedAmount: defineComponent({
-        name: 'FormattedAmountStub',
-        props: ['value', 'assetSymbol', 'fontSizeRate', 'isFiatValue', 'valueCanBeHidden'],
-        template: `<div class="formatted-amount-stub"></div>`,
-      }),
-    },
-  });
-});
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: defineComponent({
+    name: 'DialogBaseStub',
+    props: ['visible', 'title'],
+    emits: ['update:visible'],
+    template: `<div class="dialog-base-stub"><slot /></div>`,
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: defineComponent({
+    name: 'InfoLineStub',
+    props: ['label', 'value', 'fiatValue', 'assetSymbol', 'labelTooltip', 'isFormatted'],
+    template: `<div class="info-line-stub"></div>`,
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  default: defineComponent({
+    name: 'TokenLogoStub',
+    props: ['token', 'size'],
+    template: `<div class="token-logo-stub"></div>`,
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmount.vue', () => ({
+  default: defineComponent({
+    name: 'FormattedAmountStub',
+    props: ['value', 'assetSymbol', 'fontSizeRate', 'isFiatValue', 'valueCanBeHidden'],
+    template: `<div class="formatted-amount-stub"></div>`,
+  }),
+}));
 
 vi.mock('@/modules/staking/demeter/router', () => ({
   demeterStakingLazyComponent: () =>

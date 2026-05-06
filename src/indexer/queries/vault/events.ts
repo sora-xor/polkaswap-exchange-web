@@ -1,13 +1,13 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { gql } from '@urql/core';
 
 import type { VaultEvent } from '@/modules/vault/types';
 import type { FetchVariables } from '@/types/indexers';
 
-import type { SubsquidQueryResponse } from '@/shims/wallet-indexer-subsquid-types';
-import type { ConnectionQueryResponse, VaultEventBaseEntity } from '@/shims/wallet-indexer-types';
+import type { SubsquidQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
+import type { ConnectionQueryResponse, VaultEventBaseEntity } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<VaultEventBaseEntity>>`
   query VaultDetailsQuery($first: Int = null, $offset: Int = null, $filter: VaultEventFilter) {

@@ -27,29 +27,59 @@ const sizeNorm = computed(() => {
   }
   return props.size;
 });
+
+const widthNorm = computed(() => {
+  if (typeof props.width === 'number' || !Number.isNaN(Number(props.width))) {
+    return `${props.width}px`;
+  }
+  return props.width;
+});
 </script>
 
 <template>
-  <span class="s-spinner" aria-hidden="true"></span>
+  <svg class="s-spinner" aria-hidden="true" viewBox="25 25 50 50">
+    <circle class="s-spinner__path" cx="50" cy="50" r="20" fill="none"></circle>
+  </svg>
 </template>
 
 <style lang="scss" scoped>
 $size-norm: v-bind(sizeNorm);
+$width-norm: v-bind(widthNorm);
 
 .s-spinner {
-  display: inline-block;
+  display: block;
   width: $size-norm;
   height: $size-norm;
-  background-image: url('@/assets/img/pswap-loader.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  animation: s-spinner__rotate 1s linear infinite;
+  animation: s-spinner__rotate 1.7s linear infinite;
+}
+
+.s-spinner__path {
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: $width-norm;
+  animation: s-spinner__dash 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes s-spinner__rotate {
-  100% {
+  to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes s-spinner__dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+
+  to {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
   }
 }
 </style>

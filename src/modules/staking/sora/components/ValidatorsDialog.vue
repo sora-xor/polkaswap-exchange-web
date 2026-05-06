@@ -44,18 +44,21 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
+import SelectValidatorsMode from '@/modules/staking/sora/components/SelectValidatorsMode.vue';
+import StakingHeader from '@/modules/staking/sora/components/StakingHeader.vue';
 import { useTransaction } from '@/composables/useTransaction';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
-import { soraStakingLazyComponent } from '@/modules/staking/router';
-import { SoraStakingComponents, ValidatorsListMode } from '@/modules/staking/sora/consts';
+import ValidatorsList from '@/modules/staking/sora/components/ValidatorsList.vue';
+import { ValidatorsListMode } from '@/modules/staking/sora/consts';
 import { hasInsufficientXorForFee } from '@/utils';
 
 import type { CodecString } from '@sora-substrate/sdk';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 const props = defineProps<{
   parentLoading?: boolean;
@@ -87,11 +90,8 @@ const { loading, withNotifications, withApi } = useTransaction({
   parentLoading: () => Boolean(props.parentLoading),
 });
 
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
-const StakingHeader = soraStakingLazyComponent(SoraStakingComponents.StakingHeader);
-const ValidatorsList = soraStakingLazyComponent(SoraStakingComponents.ValidatorsList);
-const SelectValidatorsMode = soraStakingLazyComponent(SoraStakingComponents.SelectValidatorsMode);
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
 
 const mode = ref<ValidatorsListMode>(ValidatorsListMode.USER);
 const isSelectingEditingMode = ref(false);

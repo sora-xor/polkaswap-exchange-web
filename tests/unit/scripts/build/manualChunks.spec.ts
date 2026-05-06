@@ -9,28 +9,28 @@ describe('scripts/build/manualChunks', () => {
     );
   });
 
-  it('assigns aliased substrate sources to the substrate chunk', () => {
-    expect(getManualChunk('/Users/test/repo/src/lib/substrate/sdk/index.ts')).toBe('substrate-sdk');
-    expect(getManualChunk('/Users/test/repo/vendor/@polkadot/api/index.js')).toBe('substrate-sdk');
+  it('assigns Polkadot modules to the vendor chunk', () => {
+    expect(getManualChunk('/Users/test/repo/vendor/@polkadot/api/index.js')).toBe('polkadot-vendor');
+    expect(getManualChunk('/Users/test/repo/node_modules/@polkadot/api/index.js')).toBe('polkadot-vendor');
   });
 
-  it('assigns wallet runtime sources to the wallet chunk', () => {
-    expect(getManualChunk('/Users/test/repo/src/lib/soraneo-wallet/src/index.ts')).toBe('wallet-stack');
-    expect(getManualChunk('/Users/test/repo/src/plugins/wallet.ts')).toBe('wallet-stack');
+  it('assigns EVM libraries to dedicated chunks', () => {
+    expect(getManualChunk('/Users/test/repo/node_modules/ethers/lib.esm/index.js')).toBe('ethers');
+    expect(getManualChunk('/Users/test/repo/node_modules/@walletconnect/modal/dist/index.js')).toBe('walletconnect');
+    expect(getManualChunk('/Users/test/repo/node_modules/@cedelabs/widgets-universal/dist/index.js')).toBe('cede');
   });
 
-  it('assigns bridge and EVM dependencies to the bridge-related chunks', () => {
-    expect(getManualChunk('/Users/test/repo/src/stores/bridge/index.ts')).toBe('bridge');
-    expect(getManualChunk('/Users/test/repo/node_modules/ethers/lib.esm/index.js')).toBe('evm-stack');
+  it('assigns GraphQL dependencies to a dedicated chunk', () => {
+    expect(getManualChunk('/Users/test/repo/node_modules/@urql/core/dist/index.js')).toBe('graphql');
   });
 
-  it('assigns order book and charting modules to coarse async chunks', () => {
-    expect(getManualChunk('/Users/test/repo/src/components/pages/OrderBook/BookWidget.vue')).toBe('order-book');
+  it('assigns charting modules to the charts chunk', () => {
     expect(getManualChunk('/Users/test/repo/node_modules/echarts/core.js')).toBe('charts');
   });
 
   it('leaves unrelated application files in the default chunk', () => {
     expect(getManualChunk('/Users/test/repo/src/main.ts')).toBeUndefined();
+    expect(getManualChunk('/Users/test/repo/src/lib/substrate/sdk/index.ts')).toBeUndefined();
     expect(getManualChunk('\0vite/preload-helper')).toBeUndefined();
   });
 });

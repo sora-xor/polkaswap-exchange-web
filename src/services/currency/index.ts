@@ -3,9 +3,9 @@ import { timer } from 'rxjs';
 import notificationService from '@/services/notification';
 import { useSettingsStore } from '@/stores/settings';
 import { settingsStorage } from '@/utils/storage';
-import { API_ENDPOINT } from '@/shims/wallet-currencies';
+import { API_ENDPOINT } from '@/lib/soraneo-wallet/src/consts/currencies';
 
-import type { FiatExchangeRateObject } from '@/shims/wallet-currency-types';
+import type { FiatExchangeRateObject } from '@/lib/soraneo-wallet/src/types/currency';
 
 const INTERVAL = 15; // minutes between refreshes
 const ONE_MINUTE = 60_000;

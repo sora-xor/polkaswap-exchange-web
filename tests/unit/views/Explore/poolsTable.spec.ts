@@ -37,7 +37,11 @@ vi.mock('@/utils', () => ({
 import type { PoolData } from '@/indexer/queries/pool/pools';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import { buildPoolTableItems, filterPoolTableItems, type PoolExploreTableItem } from '@/views/Explore/poolsTable';
+import {
+  buildPoolTableItems,
+  filterPoolTableItems,
+  type PoolExploreTableItem,
+} from '@/features/explore/lib/poolsTable';
 
 const createAsset = (address: string, symbol: string): RegisteredAccountAsset =>
   ({

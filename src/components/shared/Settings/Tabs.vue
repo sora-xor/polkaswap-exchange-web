@@ -45,6 +45,10 @@ const sanitizedTabs = computed(() =>
 
 <style lang="scss">
 .settings-tabs.s-tabs {
+  font-size: var(--s-font-size-extra-small);
+  line-height: 1.15;
+  width: 100%;
+
   .el-tabs__header {
     margin-bottom: 0;
     width: 100%;

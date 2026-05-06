@@ -2,7 +2,7 @@ import { Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useTransaction } from '@/composables/useTransaction';
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 const addActiveTx = vi.hoisted(() => vi.fn());
 const removeActiveTransactions = vi.hoisted(() => vi.fn());
@@ -36,7 +36,7 @@ vi.mock('@/composables/useTranslation', () => ({
 type HistoryEntry = { id: string; startTime: string };
 const historyList = vi.hoisted(() => [] as HistoryEntry[]);
 
-vi.mock('@wallet', () => ({
+vi.mock('@tests/stubs/walletRuntime', () => ({
   api: {
     historyList,
     swap: { isALT: false },

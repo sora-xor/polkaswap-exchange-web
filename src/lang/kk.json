@@ -260,6 +260,13 @@
         "disclaimer": "Алаяқтықтың алдын алу үшін нақты уақыттағы құжатқа түсіру үшін камера қатынасы қажет.",
         "title": "Камераға шолғыш параметрлеріне кіруге рұқсат етіңіз"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Токенді таңдаңыз",
         "chooseToken": "Token таңдаңыз",

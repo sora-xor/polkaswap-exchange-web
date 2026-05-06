@@ -167,9 +167,11 @@ export function useSoraStaking() {
     () => Boolean(stakingAsset.value) && hasInsufficientXorForFee(stakingAsset.value, networkFee.value)
   );
 
-  const minNominatorBondFormatted = computed(() =>
-    formatCodecNumber(`${minNominatorBond.value}`, stakingAsset.value?.decimals)
-  );
+  const minNominatorBondFormatted = computed(() => {
+    return Number(minNominatorBond.value) === 0
+      ? '0'
+      : formatCodecNumber(`${minNominatorBond.value}`, stakingAsset.value?.decimals);
+  });
 
   const maxApy = computed(
     () => validators.value.reduce((max, validator) => Math.max(max, Number(validator.apy)), 0) || 0

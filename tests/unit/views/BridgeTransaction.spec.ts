@@ -3,8 +3,8 @@ import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 
+import { resolveBridgeBackLocation } from '@/features/bridge/services/navigationHistory';
 import { useBridgeStore } from '@/stores/bridge';
-import { useBridgeTransactionsStore } from '@/stores/bridge/transactions';
 
 const createMocks = () => {
   const historyItem = ref<any | null>(null);
@@ -61,9 +61,6 @@ const createMocks = () => {
       waitingForApprove: {} as Record<string, boolean>,
       inProgressIds: {} as Record<string, boolean>,
       externalBlockNumber: 0,
-    },
-    router: {
-      prev: null as string | null,
     },
   });
 
@@ -124,9 +121,8 @@ const createMocks = () => {
 
 let mocks: ReturnType<typeof createMocks>;
 let bridgeStore: ReturnType<typeof useBridgeStore>;
-let bridgeTransactionsStore: ReturnType<typeof useBridgeTransactionsStore>;
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
@@ -151,19 +147,18 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
   },
 }));
 
-vi.mock('@/router', () => {
+vi.mock('vue-router', () => {
   const { defineComponent, h } = require('vue') as typeof import('vue');
   return {
-    default: {
+    useRouter: () => ({
       push: (location: unknown) => mocks.routerPush(location),
-    },
-    lazyComponent: () =>
-      defineComponent({
-        name: 'LazyComponentStub',
-        setup(_, { slots }) {
-          return () => h('div', slots.default?.() ?? []);
-        },
-      }),
+    }),
+    RouterLink: defineComponent({
+      name: 'RouterLinkStub',
+      setup(_, { slots }) {
+        return () => h('a', slots.default?.() ?? []);
+      },
+    }),
   };
 });
 
@@ -329,9 +324,9 @@ const TestBridgeTransaction = defineComponent({
     };
 
     const handleBack = () => {
-      const prev = mocks.state.router.prev;
-      if (prev) {
-        mocks.routerPush({ name: prev });
+      const backLocation = resolveBridgeBackLocation();
+      if (backLocation) {
+        mocks.routerPush(backLocation);
         return;
       }
       mocks.navigateToBridge();
@@ -395,7 +390,6 @@ const mountView = async () => {
 beforeEach(() => {
   setActivePinia(createPinia());
   bridgeStore = useBridgeStore();
-  bridgeTransactionsStore = useBridgeTransactionsStore();
 
   mocks = createMocks();
   mocks.historyItem.value = createTransaction();
@@ -420,13 +414,13 @@ beforeEach(() => {
   mocks.state.bridge.waitingForApprove = {};
   mocks.state.bridge.inProgressIds = {};
   mocks.state.bridge.externalBlockNumber = 0;
-  mocks.state.router.prev = null;
   mocks.navigateToBridge.mockClear();
   mocks.viewHistory.mockClear();
   mocks.connectEvmWallet.mockClear();
   mocks.withParentLoading.mockClear();
   mocks.routerPush.mockClear();
-  bridgeTransactionsStore.syncHistoryInternalFromLegacy({ [mocks.historyItem.value.id]: mocks.historyItem.value });
+  window.history.replaceState({}, '', '/bridge/transaction');
+  bridgeStore.history.internal = { [mocks.historyItem.value.id]: mocks.historyItem.value } as any;
   bridgeStore.history.id = mocks.historyItem.value.id;
   bridgeStore.handleBridgeTransaction = vi.fn().mockResolvedValue(undefined) as any;
   bridgeStore.removeHistory = vi.fn().mockResolvedValue(undefined) as any;
@@ -497,6 +491,19 @@ describe(
       (wrapper.vm as any).handleBack();
       expect(mocks.navigateToBridge).toHaveBeenCalledTimes(1);
       expect(mocks.routerPush).not.toHaveBeenCalled();
+
+      wrapper.unmount();
+    });
+
+    it('uses browser history back location when available', async () => {
+      window.history.replaceState({ back: '/bridge/history' }, '', '/bridge/transaction');
+
+      const wrapper = await mountView();
+      await flushBridgePromises();
+
+      (wrapper.vm as any).handleBack();
+      expect(mocks.routerPush).toHaveBeenCalledWith('/bridge/history');
+      expect(mocks.navigateToBridge).not.toHaveBeenCalled();
 
       wrapper.unmount();
     });

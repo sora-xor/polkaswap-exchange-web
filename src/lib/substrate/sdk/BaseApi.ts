@@ -60,6 +60,7 @@ export class BaseApi<T = void> extends ApiAccount<T> {
     [Operation.XorlessTransfer]: '0',
     [Operation.Mint]: '0',
     [Operation.Burn]: '0',
+    [Operation.BurnWithRemark]: '0',
     [Operation.OrderBookPlaceLimitOrder]: '0',
     [Operation.CreateVault]: '0',
     [Operation.CloseVault]: '0',
@@ -180,6 +181,11 @@ export class BaseApi<T = void> extends ApiAccount<T> {
           return this.api.tx.assets.mint('', '', 0);
         case Operation.Burn:
           return this.api.tx.assets.burn('', 0);
+        case Operation.BurnWithRemark:
+          return this.api.tx.utility.batchAll([
+            this.api.tx.assets.burn('', 0),
+            this.api.tx.system.remark(new Uint8Array()),
+          ]);
         case Operation.OrderBookPlaceLimitOrder:
           return this.api.tx.orderBook.placeLimitOrder(
             { dexId: DexId.XOR, base: XOR.address, quote: XOR.address },

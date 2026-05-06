@@ -2,8 +2,6 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { defineComponent, h, inject, provide } from 'vue';
 
-import type { Component } from 'vue';
-
 const mockGetHistory = vi.fn();
 const mockParseHistoryItem = vi.fn();
 const mockHistoryElementsFilter = vi.fn((params) => params);
@@ -22,29 +20,30 @@ const mockIndexer = {
   },
 };
 
-const walletComponents = {
-  TokenLogo: defineComponent({
-    name: 'TokenLogoStub',
-    props: ['token', 'tokenSymbol'],
-    template: '<span class="token-logo">{{ token?.symbol ?? tokenSymbol ?? "?" }}</span>',
-  }),
-  FormattedAmountWithFiatValue: defineComponent({
-    name: 'FormattedAmountWithFiatValueStub',
-    props: ['value', 'fiatValue'],
-    template: '<div class="formatted-amount">{{ value }}|{{ fiatValue }}</div>',
-  }),
-  FormattedAddress: defineComponent({
-    name: 'FormattedAddressStub',
-    props: ['value'],
-    template: '<div class="formatted-address">{{ value }}</div>',
-  }),
-  HistoryPagination: defineComponent({
-    name: 'HistoryPaginationStub',
-    props: ['currentPage', 'pageAmount', 'total', 'lastPage', 'loading'],
-    emits: ['pagination-click'],
-    template: '<div class="history-pagination"><slot /></div>',
-  }),
-};
+const TokenLogoStub = defineComponent({
+  name: 'TokenLogoStub',
+  props: ['token', 'tokenSymbol'],
+  template: '<span class="token-logo">{{ token?.symbol ?? tokenSymbol ?? "?" }}</span>',
+});
+
+const FormattedAmountWithFiatValueStub = defineComponent({
+  name: 'FormattedAmountWithFiatValueStub',
+  props: ['value', 'fiatValue'],
+  template: '<div class="formatted-amount">{{ value }}|{{ fiatValue }}</div>',
+});
+
+const FormattedAddressStub = defineComponent({
+  name: 'FormattedAddressStub',
+  props: ['value'],
+  template: '<div class="formatted-address">{{ value }}</div>',
+});
+
+const HistoryPaginationStub = defineComponent({
+  name: 'HistoryPaginationStub',
+  props: ['currentPage', 'pageAmount', 'total', 'lastPage', 'loading'],
+  emits: ['pagination-click'],
+  template: '<div class="history-pagination"><slot /></div>',
+});
 
 const storageMock = {
   get: vi.fn(),
@@ -52,9 +51,8 @@ const storageMock = {
   remove: vi.fn(),
 };
 
-vi.mock('@wallet', () => ({
+vi.mock('@tests/stubs/walletRuntime', () => ({
   __esModule: true,
-  components: walletComponents,
   WALLET_CONSTS: {
     FontSizeRate: { SMALL: 'SMALL' },
     PaginationButton: { Prev: 'Prev', Next: 'Next', Last: 'Last' },
@@ -67,6 +65,26 @@ vi.mock('@wallet', () => ({
   settingsStorage: storageMock,
   runtimeStorage: storageMock,
   getExplorerLinks: () => [{ type: 'sorametrics', value: 'https://sorametrics.org/#tx=0x123' }],
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
+  __esModule: true,
+  default: TokenLogoStub,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue', () => ({
+  __esModule: true,
+  default: FormattedAmountWithFiatValueStub,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue', () => ({
+  __esModule: true,
+  default: FormattedAddressStub,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/HistoryPagination.vue', () => ({
+  __esModule: true,
+  default: HistoryPaginationStub,
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
@@ -131,23 +149,6 @@ const SelectTokenStub = defineComponent({
   template: '<div class="select-token" v-if="visible"><slot /></div>',
 });
 
-const lazyComponentMap: Record<string, Component> = {
-  'shared/Widget/Base': BaseWidgetStub,
-  'shared/LinksDropdown': LinksDropdownStub,
-  'shared/Input/TokenSelectButton': TokenSelectButtonStub,
-  'shared/SelectAsset/SelectToken': SelectTokenStub,
-};
-
-const DefaultLazyStub = defineComponent({
-  name: 'DefaultLazyStub',
-  template: '<div />',
-});
-
-vi.mock('@/router', () => ({
-  __esModule: true,
-  lazyComponent: (name: string) => lazyComponentMap[name] ?? DefaultLazyStub,
-}));
-
 const TABLE_INJECTION_KEY = Symbol('s-table');
 
 const STableStub = defineComponent({
@@ -190,16 +191,20 @@ const SIconStub = defineComponent({
   template: '<span class="s-icon" />',
 });
 
-let SwapTransactionsWidget: typeof import('@/components/pages/Swap/Widget/Transactions.vue').default;
+let SwapTransactionsWidget: typeof import('@/features/swap/components/widgets/Transactions.vue').default;
 
 const mountWidget = async () => {
   if (!SwapTransactionsWidget) {
-    ({ default: SwapTransactionsWidget } = await import('@/components/pages/Swap/Widget/Transactions.vue'));
+    ({ default: SwapTransactionsWidget } = await import('@/features/swap/components/widgets/Transactions.vue'));
   }
 
   return mount(SwapTransactionsWidget, {
     global: {
       stubs: {
+        BaseWidget: BaseWidgetStub,
+        LinksDropdown: LinksDropdownStub,
+        TokenSelectButton: TokenSelectButtonStub,
+        SelectToken: SelectTokenStub,
         's-table': STableStub,
         's-table-column': STableColumnStub,
         's-icon': SIconStub,

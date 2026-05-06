@@ -20,11 +20,10 @@
 import { ETH } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, useAttrs } from 'vue';
 
+import ConfirmBridgeTransactionDialog from '@/components/shared/Dialog/ConfirmBridgeTransaction.vue';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
 import { useMoonpayStore } from '@/stores/moonpay';
 import { useSettingsStore } from '@/stores/settings';
 
@@ -32,10 +31,7 @@ import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 defineOptions({
-  components: {
-    MoonpayLogo,
-    ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
-  },
+  name: 'MoonpayConfirmation',
 });
 
 const attrs = useAttrs();

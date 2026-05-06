@@ -1,5 +1,5 @@
-import { ConnectionStatus, type IndexerState } from '@/shims/wallet-common-types';
-import type { IndexerType } from '@/shims/wallet-consts';
+import { ConnectionStatus, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
+import type { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 
 type IndexerStates = Record<IndexerType, Partial<IndexerState>>;
 

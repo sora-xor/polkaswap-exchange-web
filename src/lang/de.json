@@ -260,6 +260,13 @@
         "disclaimer": "Für die Dokumentenerfassung in Echtzeit ist ein Kamerazugriff erforderlich, um Betrug zu verhindern.",
         "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "Wähle einen Token",
         "chooseToken": "Token auswählen",

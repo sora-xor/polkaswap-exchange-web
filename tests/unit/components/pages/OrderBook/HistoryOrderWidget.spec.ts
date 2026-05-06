@@ -13,7 +13,7 @@ const walletApiMocks = vi.hoisted(() => ({
   cancelLimitOrderBatch: vi.fn(),
 }));
 
-vi.mock('@wallet', () => ({
+vi.mock('@tests/stubs/walletRuntime', () => ({
   api: {
     orderBook: {
       cancelLimitOrder: walletApiMocks.cancelLimitOrder,
@@ -89,10 +89,6 @@ vi.mock('@/composables/useTranslation', () => ({
     t: (key: string, params?: Record<string, unknown>) =>
       params && 'value' in params ? `${key}:${params.value}` : key,
   }),
-}));
-
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({ template: '<div><slot /></div>' }),
 }));
 
 const orderBookUserOrdersMocks = vi.hoisted(() => ({

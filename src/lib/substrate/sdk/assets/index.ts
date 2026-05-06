@@ -434,13 +434,25 @@ export class AssetsModule<T> {
   public async updateAccountAssets(): Promise<void> {
     assert(this.root.account, Messages.connectWallet);
 
-    if (!this.accountAssetsAddresses.length) {
+    let currentAddresses = this.accountAssetsAddresses;
+    if (!currentAddresses.length) {
       const defaultList = this.accountDefaultAssetsAddresses;
       const accountList = await this.getAccountTokensAddressesList();
-      this.accountAssetsAddresses = [...new Set([...defaultList, ...accountList])];
+      currentAddresses = [...new Set([...defaultList, ...accountList])];
+      this.accountAssetsAddresses = currentAddresses;
+    } else {
+      const currentAddressesWithDefaults = [...new Set([...currentAddresses, ...this.accountDefaultAssetsAddresses])];
+
+      const shouldPersistAddresses = currentAddressesWithDefaults.some(
+        (address, index) => address !== currentAddresses[index]
+      );
+
+      if (shouldPersistAddresses) {
+        currentAddresses = currentAddressesWithDefaults;
+        this.accountAssetsAddresses = currentAddresses;
+      }
     }
 
-    const currentAddresses = this.accountAssetsAddresses;
     const excludedAddresses = this.accountAssets.reduce<string[]>(
       (result, { address }) => (currentAddresses.includes(address) ? result : [...result, address]),
       []
@@ -826,6 +838,43 @@ export class AssetsModule<T> {
 
     return this.root.submitExtrinsic(
       this.root.api.tx.assets.burn(assetAddress, new FPNumber(amount, asset.decimals).toCodecString()),
+      this.root.account.pair,
+      historyItem
+    );
+  }
+
+  /**
+   * Burn tokens you own and atomically attach a public on-chain remark.
+   *
+   * Empty remarks are submitted as a plain burn to preserve the existing flow and fee shape.
+   *
+   * @param asset Asset object
+   * @param amount Amount value
+   * @param remark Public remark stored in the same signed transaction
+   */
+  public burnWithRemark(asset: Asset | AccountAsset, amount: NumberLike, remark?: string): Promise<T> {
+    const trimmedRemark = remark?.trim() ?? '';
+
+    if (!trimmedRemark) {
+      return this.burn(asset, amount);
+    }
+
+    assert(this.root.account, Messages.connectWallet);
+    const assetAddress = asset.address;
+    const codecAmount = new FPNumber(amount, asset.decimals).toCodecString();
+    const historyItem: History = {
+      type: Operation.Burn,
+      amount: `${amount}`,
+      assetAddress,
+      symbol: asset.symbol,
+      comment: trimmedRemark,
+    };
+
+    return this.root.submitExtrinsic(
+      this.root.api.tx.utility.batchAll([
+        this.root.api.tx.assets.burn(assetAddress, codecAmount),
+        this.root.api.tx.system.remark(stringToU8a(trimmedRemark)),
+      ]),
       this.root.account.pair,
       historyItem
     );

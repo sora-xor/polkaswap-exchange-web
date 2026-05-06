@@ -15,15 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
-import { Components } from '@/consts';
+import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 import type { DemeterAsset } from '@/modules/staking/demeter/types';
-import { lazyComponent } from '@/router';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
-const PairTokenLogo = lazyComponent(Components.PairTokenLogo);
-const TokenLogo = components.TokenLogo;
+const TokenLogo = WalletComponentTokenLogo;
 
 const props = withDefaults(
   defineProps<{

@@ -7,6 +7,8 @@
       size="small"
       :icon="collapseIcon"
       :tooltip="collapseTooltip"
+      :aria-label="collapseTooltip"
+      :title="collapseTooltip"
       @click="collapseMenu"
     ></s-button>
     <s-scrollbar class="app-sidebar-scrollbar">
@@ -99,9 +101,9 @@
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
+import { appRouterLoading } from '@/app/navigation/loading';
 import { useTranslation } from '@/composables/useTranslation';
 import {
-  Components,
   PageNames,
   PoolChildPages,
   BridgeChildPages,
@@ -118,9 +120,6 @@ import { StakingPageNames } from '@/modules/staking/consts';
 import { isStakingPage } from '@/modules/staking/router';
 import { VaultPageNames } from '@/modules/vault/consts';
 import { isVaultPage } from '@/modules/vault/router';
-import { Theme } from '@/consts/theme';
-import { lazyComponent } from '@/router';
-import { useRouterStore } from '@/stores/router';
 import { useSettingsStore } from '@/stores/settings';
 import type { Nullable } from '@/types/common';
 
@@ -139,13 +138,11 @@ const emit = defineEmits<{
 
 const route = useRoute();
 const { t } = useTranslation();
-const routerStore = useRouterStore();
 const settingsStore = useSettingsStore();
 
-const pageLoading = computed(() => Boolean(routerStore.loading));
+const pageLoading = computed(() => Boolean(appRouterLoading.value));
 const collapsed = computed(() => Boolean(settingsStore.menuCollapsed));
 const faucetUrl = computed(() => settingsStore.faucetUrl ?? '');
-const libraryTheme = computed(() => settingsStore.libraryTheme as Theme);
 const orderBookEnabled = computed(() => (settingsStore.orderBookEnabled as Nullable<boolean>) ?? true);
 const kensetsuEnabled = computed(() => (settingsStore.kensetsuEnabled as Nullable<boolean>) ?? true);
 const assetOwnerEnabled = computed(() => Boolean(settingsStore.assetOwnerEnabled));
@@ -187,6 +184,9 @@ const currentPath = computed(() => {
 
 const sidebarMenuItems = computed(() => {
   let menuItems: SidebarMenuItemLink[] = SidebarMenuGroups.slice();
+  if (route.name !== PageNames.Burn) {
+    menuItems = menuItems.filter(({ title }) => title !== PageNames.Burn);
+  }
   if (!orderBookEnabled.value) {
     menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
   }
@@ -202,9 +202,7 @@ const sidebarMenuItems = computed(() => {
 
 const collapseIcon = computed(() => (collapsed.value ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24'));
 const collapseTooltip = computed(() => (collapsed.value ? 'Expand' : 'Collapse'));
-const mainMenuActiveColor = computed(() =>
-  libraryTheme.value === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'
-);
+const mainMenuActiveColor = computed(() => 'var(--s-color-theme-accent)');
 
 function collapseMenu(): void {
   settingsStore.setMenuCollapsed(!collapsed.value);
@@ -256,6 +254,7 @@ onBeforeUnmount(() => {
 .app-menu {
   background: var(--s-color-utility-body);
   border-color: var(--s-color-base-content-primary);
+  border-style: none;
 }
 
 .app-menu.collapsed {
@@ -372,14 +371,26 @@ onBeforeUnmount(() => {
 .collapse-button {
   position: absolute;
   top: 50%;
+  bottom: auto;
   left: calc(100% - var(--s-size-small) / 2);
+  margin: auto;
   transform: translateY(-50%);
-  transition-duration: 0.2s;
+  transition-duration: 0.25s;
   z-index: #{$app-sidebar-layer} + 1;
   background: var(--s-color-utility-body) !important;
   border-color: transparent !important;
+  display: block !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
   box-shadow: var(--s-shadow-element-pressed) !important;
   color: var(--s-color-base-content-tertiary) !important;
+
+  :deep(.s-button__icon) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
 
   :deep(i[class*='s-icon-']) {
     width: 24px !important;
@@ -435,7 +446,7 @@ onBeforeUnmount(() => {
     visibility: hidden;
 
     .collapse-button {
-      opacity: 0;
+      opacity: 1;
     }
 
     @include tablet {
@@ -452,6 +463,11 @@ onBeforeUnmount(() => {
       position: fixed;
       right: 0;
       z-index: $app-above-loader-layer;
+
+      .collapse-button {
+        display: none !important;
+      }
+
       &.visible {
         visibility: visible;
         background-color: rgba(42, 23, 31, 0.1);

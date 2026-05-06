@@ -37,18 +37,19 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
+import RemoveLiquidityTransactionDetails from '@/modules/pool/components/RemoveLiquidity/TransactionDetails.vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
-import { PoolComponents } from '@/modules/pool/consts';
-import { poolLazyComponent } from '@/modules/pool/router';
 import { usePoolStore } from '@/stores/pool';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentAccountConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -88,10 +89,9 @@ const handleConfirmRemoveLiquidity = () => {
   closeDialog();
 };
 
-const DialogBase = components.DialogBase;
-const TokenLogo = components.TokenLogo;
-const AccountConfirmationOption = components.AccountConfirmationOption;
-const RemoveLiquidityTransactionDetails = poolLazyComponent(PoolComponents.RemoveLiquidityTransactionDetails);
+const DialogBase = WalletComponentDialogBase;
+const TokenLogo = WalletComponentTokenLogo;
+const AccountConfirmationOption = WalletComponentAccountConfirmationOption;
 </script>
 
 <style lang="scss" scoped>

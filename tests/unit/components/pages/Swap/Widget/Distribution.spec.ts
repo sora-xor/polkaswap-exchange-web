@@ -4,6 +4,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
+import distributionSource from '@/features/swap/components/widgets/Distribution.vue?raw';
+
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type DistributionEntry = {
@@ -21,7 +23,7 @@ const fromValueRef = ref('');
 const toValueRef = ref('');
 const assetsByAddressRef = ref<Record<string, AccountAsset>>({});
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({
@@ -44,16 +46,6 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/router', () => ({
-  lazyComponent: () =>
-    defineComponent({
-      name: 'LazyStub',
-      setup(_, { attrs, slots }) {
-        return () => h('div', { class: 'lazy-stub', ...attrs }, slots.default?.());
-      },
-    }),
-}));
-
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
@@ -67,7 +59,7 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-vi.mock('@/composables/useSwapAmounts', () => ({
+vi.mock('@/features/swap/composables/useSwapAmounts', () => ({
   useSwapAmounts: () => ({
     tokenFrom: computed(() => tokenFromRef.value),
     tokenTo: computed(() => tokenToRef.value),
@@ -76,7 +68,7 @@ vi.mock('@/composables/useSwapAmounts', () => ({
   }),
 }));
 
-vi.mock('@/stores/swap', () => ({
+vi.mock('@/features/swap/stores/useSwapStore', () => ({
   useSwapStore: () => ({
     distribution: distributionRef.value,
   }),
@@ -94,10 +86,31 @@ vi.mock('@/utils/swap', () => ({
   }),
 }));
 
-const mountWidget = async () => {
-  const module = await import('@/components/pages/Swap/Widget/Distribution.vue');
+const BaseWidgetStub = defineComponent({
+  name: 'BaseWidgetStub',
+  setup(_, { attrs, slots }) {
+    return () => h('div', { class: 'base-widget-stub', ...attrs }, slots.default?.());
+  },
+});
 
-  return mount(module.default);
+const ValueStatusWrapperStub = defineComponent({
+  name: 'ValueStatusWrapperStub',
+  setup(_, { attrs, slots }) {
+    return () => h('div', { class: 'value-status-wrapper-stub', ...attrs }, slots.default?.());
+  },
+});
+
+const mountWidget = async () => {
+  const module = await import('@/features/swap/components/widgets/Distribution.vue');
+
+  return mount(module.default, {
+    global: {
+      stubs: {
+        BaseWidget: BaseWidgetStub,
+        ValueStatusWrapper: ValueStatusWrapperStub,
+      },
+    },
+  });
 };
 
 describe('SwapDistributionWidget', () => {
@@ -173,5 +186,20 @@ describe('SwapDistributionWidget', () => {
     expect(wrapper.findAll('.distribution-path-source').length).toBe(1);
     expect(wrapper.find('.el-skeleton__item').exists()).toBe(true);
     expect(wrapper.text()).not.toContain('XYK Pool');
+  });
+
+  it('keeps the fallback route skeleton styling aligned with production', () => {
+    expect(distributionSource).toMatch(
+      /\.distribution \.el-skeleton__item\s*\{\s*background-color:\s*var\(--s-color-base-content-tertiary\);\s*display:\s*inline-flex;\s*flex-shrink:\s*0;\s*font-size:\s*0;\s*line-height:\s*0;/s
+    );
+    expect(distributionSource).toMatch(
+      /&\.el-skeleton__rect\s*\{\s*border-radius:\s*var\(--s-border-radius-mini\);\s*min-width:\s*48px;\s*min-height:\s*16px;\s*\}/s
+    );
+    expect(distributionSource).toMatch(
+      /&\.el-skeleton__circle\s*\{\s*width:\s*16px;\s*height:\s*16px;\s*line-height:\s*36px;\s*\}/s
+    );
+    expect(distributionSource).toMatch(
+      /\.distribution \.distribution-path-source-name\.el-skeleton__item\s*\{\s*width:\s*64px;\s*\}/s
+    );
   });
 });

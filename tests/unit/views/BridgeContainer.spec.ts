@@ -44,7 +44,7 @@ const useInternalConnectMock = vi.fn();
 const useWeb3ConnectionMock = vi.fn();
 const useSubscriptionsMock = vi.fn();
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock, withWalletMock } = await import('@tests/stubs/createWalletMock');
   const wallet = createWalletMock();
   const WalletConfirmDialogStub = defineComponent({
@@ -65,17 +65,6 @@ vi.mock('@wallet', async () => {
     },
   });
 });
-
-vi.mock('@/router', () => ({
-  lazyComponent: vi.fn(() =>
-    defineComponent({
-      name: 'LazyBridgeComponentStub',
-      setup(_, { slots }) {
-        return () => h('div', { class: 'lazy-bridge-component-stub' }, slots.default?.());
-      },
-    })
-  ),
-}));
 
 vi.mock('@/stores/bridge', () => ({
   useBridgeStore: () => bridgeStoreMock,
@@ -152,7 +141,7 @@ const ConfirmDialogStub = defineComponent({
   },
 });
 
-import BridgeContainer from '@/views/BridgeContainer.vue';
+import BridgeContainer from '@/features/bridge/pages/BridgeContainerPage.vue';
 
 const mountBridgeContainer = async () => {
   return mount(BridgeContainer, {

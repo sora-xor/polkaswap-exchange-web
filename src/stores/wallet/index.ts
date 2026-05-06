@@ -13,20 +13,34 @@ import { combineLatest } from 'rxjs';
 import { DefaultPassphraseTimeout } from '@/consts';
 import type { EditableAlertObject, WalletAssetFilters } from '@/consts';
 import type { Theme } from '@/consts/theme';
-import { api as walletApi } from '@/shims/wallet-api';
-import { accountIdBasedOperations, BLOCK_PRODUCE_TIME, MAX_ALERTS_NUMBER, SoraNetwork } from '@/shims/wallet-consts';
-import { getCurrenciesState } from '@/shims/wallet-currencies';
-import alertsApiService from '@/shims/wallet-alerts';
+import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import {
-  CeresApiService,
-  CurrencyExchangeRateService,
-  checkWallet,
-  getAppWallets,
-  GDriveStorage,
-  WcProvider,
-} from '@/shims/wallet-services';
-import { getCurrentIndexer } from '@/shims/wallet-indexer';
-import { beforeTransactionSign, NFT_BLACK_LIST_URL, WHITE_LIST_URL, formatAccountAddress } from '@/shims/wallet-util';
+  accountIdBasedOperations,
+  BLOCK_PRODUCE_TIME,
+  MAX_ALERTS_NUMBER,
+  RouteNames,
+  SoraNetwork,
+} from '@/lib/soraneo-wallet/src/consts';
+import { getCurrenciesState } from '@/lib/soraneo-wallet/src/consts/currencies';
+import alertsApiService from '@/lib/soraneo-wallet/src/services/alerts';
+import { CeresApiService } from '@/lib/soraneo-wallet/src/services/ceres';
+import { CurrencyExchangeRateService } from '@/lib/soraneo-wallet/src/services/currency';
+import { GDriveStorage } from '@/lib/soraneo-wallet/src/services/google';
+import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
+import { checkWallet, getAppWallets } from '@/lib/soraneo-wallet/src/services/wallet';
+import { setWalletConnectProjectId } from '@/lib/soraneo-wallet/src/services/walletconnect/config';
+import {
+  beforeTransactionSign,
+  NFT_BLACK_LIST_URL,
+  WHITE_LIST_URL,
+  formatAccountAddress,
+} from '@/lib/soraneo-wallet/src/util';
+import {
+  getWalletCurrentParams,
+  getWalletCurrentRoute,
+  navigateWallet,
+  syncWalletCurrentRoute,
+} from '@/platform/wallet/navigation';
 import { initialState as createAccountState } from '@/stores/wallet/account/state';
 import type { AccountState, VestedTransferFeeParams, VestedTransferParams } from '@/stores/wallet/account/types';
 import { initialState as createSettingsState } from '@/stores/wallet/settings/state';
@@ -34,17 +48,17 @@ import { normalizeTheme } from '@/stores/wallet/settings/theme';
 import type { SettingsState } from '@/stores/wallet/settings/types';
 import { initialState as createTransactionsState } from '@/stores/wallet/transactions/state';
 import type { TransactionsState } from '@/stores/wallet/transactions/types';
-import { IpfsStorage } from '@/shims/wallet-ipfs-storage';
-import { runtimeStorage, settingsStorage, storage } from '@/shims/wallet-storage';
-import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/shims/wallet-account';
-import { sanitizeNftBlacklistPayload, sanitizeWhitelistPayload } from '@/shims/wallet-security';
-import type { ExternalHistoryParams } from '@/shims/wallet-history-types';
-import { useRouterStore } from '@/stores/router';
+import { IpfsStorage } from '@/lib/soraneo-wallet/src/util/ipfsStorage';
+import { runtimeStorage, settingsStorage, storage } from '@/lib/soraneo-wallet/src/util/storage';
+import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/lib/soraneo-wallet/src/util/account';
+import { sanitizeNftBlacklistPayload, sanitizeWhitelistPayload } from '@/lib/soraneo-wallet/src/util/security';
+import type { ExternalHistoryParams } from '@/lib/soraneo-wallet/src/types/history';
 import { resolveFallbackIndexer, resolvePreferredIndexer } from '@/stores/wallet/utils/indexers';
 import type { Nullable } from '@/types/common';
-import type { AppWallet } from '@/shims/wallet-consts';
-import type { TransactionSignVisibilityController } from '@/shims/wallet-util';
+import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
+import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
 import { waitForAccountPair } from '@/utils';
+import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 import type {
   Alert,
@@ -52,8 +66,8 @@ import type {
   IndexerState,
   PolkadotJsAccount,
   WhitelistIdsBySymbol,
-} from '@/shims/wallet-common-types';
-import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/shims/wallet-currency-types';
+} from '@/lib/soraneo-wallet/src/types/common';
+import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/lib/soraneo-wallet/src/types/currency';
 import type {
   AccountAsset,
   Asset,
@@ -250,7 +264,7 @@ export const useWalletStore = defineStore('wallet', () => {
   const assetsToNotifyQueue = computed<WhitelistArrayItem[]>(() => accountState.value.assetsToNotifyQueue ?? []);
   const availableWallets = computed(() => accountState.value.availableWallets ?? []);
   const accountSource = computed(() => (accountState.value.source as Nullable<AppWallet>) ?? null);
-  const currentRoute = computed<Nullable<string>>(() => useRouterStore().current);
+  const currentRoute = computed<Nullable<string>>(() => getWalletCurrentRoute());
   const isExternal = computed(() => Boolean(accountState.value.isExternal));
   const isDesktop = computed(() => Boolean(accountState.value.isDesktop));
   const isMST = computed(() => Boolean(accountState.value.isMST));
@@ -267,6 +281,10 @@ export const useWalletStore = defineStore('wallet', () => {
   const currencySymbol = computed(() =>
     resolveCurrencySymbol(settingsState.value.currency, settingsState.value.currencies)
   );
+  const fiatExchangeRateObject = computed<FiatExchangeRateObject>(() => ({
+    [DAI_CURRENCY_KEY]: 1,
+    ...(settingsState.value.fiatExchangeRateObject ?? {}),
+  }));
   const exchangeRate = computed(() => resolveExchangeRate(settingsState.value, accountState.value));
   const networkFees = computed(() => (settingsState.value.networkFees ?? {}) as NetworkFeesObject);
   const blockNumber = computed(() => Number(settingsState.value.blockNumber ?? 0));
@@ -864,7 +882,24 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const navigate = (payload: { name: string; params?: Record<string, unknown> }): void => {
-    useRouterStore().navigate(payload);
+    navigateWallet(payload);
+  };
+
+  /** Prepares the internal wallet runtime route before the outer wallet page is entered. */
+  const prepareWalletEntryNavigation = (): void => {
+    if (!isLoggedIn.value) {
+      navigate({ name: RouteNames.WalletConnection });
+      return;
+    }
+
+    if (currentRoute.value !== RouteNames.Wallet) {
+      navigate({ name: RouteNames.Wallet });
+    }
+  };
+
+  /** Keeps wallet route access synchronized without exposing the router store to feature pages. */
+  const syncWalletRoute = (): void => {
+    syncWalletCurrentRoute();
   };
 
   const loginAccount = async (nextAccount: PolkadotJsAccount): Promise<void> => {
@@ -880,7 +915,7 @@ export const useWalletStore = defineStore('wallet', () => {
     resetAccountAssetsSubscription();
     resetExternalHistorySubscription();
     resetAccountState();
-    useRouterStore().checkCurrentRoute();
+    syncWalletRoute();
   };
 
   const renameAccount = async (payload: { address: string; name: string }): Promise<void> => {
@@ -901,7 +936,7 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const transfer = async ({ to, amount }: { to: string; amount: string }): Promise<void> => {
-    const asset = useRouterStore().currentParams.asset as Nullable<AccountAsset>;
+    const asset = getWalletCurrentParams<{ asset?: Nullable<AccountAsset> }>().asset ?? null;
 
     if (!asset) {
       console.warn('[Transfer]: Route asset is unavailable');
@@ -964,7 +999,7 @@ export const useWalletStore = defineStore('wallet', () => {
   const afterLogin = async (): Promise<void> => {
     await subscribeOnAccountAssets();
     await subscribeOnExternalHistory();
-    useRouterStore().checkCurrentRoute();
+    syncWalletRoute();
   };
 
   const setApiKeys = async (keys: Record<string, string>): Promise<void> => {
@@ -980,7 +1015,7 @@ export const useWalletStore = defineStore('wallet', () => {
     }
 
     if (walletconnect) {
-      WcProvider.projectId = walletconnect;
+      setWalletConnectProjectId(walletconnect);
     }
   };
 
@@ -1295,7 +1330,7 @@ export const useWalletStore = defineStore('wallet', () => {
     clearWhitelist();
 
     try {
-      const response = await fetch(WHITE_LIST_URL, { cache: 'no-cache' });
+      const response = await fetch(resolveStaticAssetUrl(WHITE_LIST_URL), { cache: 'no-cache' });
 
       if (!response.ok) {
         throw new Error(`Whitelist request failed with status ${response.status}`);
@@ -1313,7 +1348,7 @@ export const useWalletStore = defineStore('wallet', () => {
     clearBlacklist();
 
     try {
-      const response = await fetch(NFT_BLACK_LIST_URL, { cache: 'no-cache' });
+      const response = await fetch(resolveStaticAssetUrl(NFT_BLACK_LIST_URL), { cache: 'no-cache' });
 
       if (!response.ok) {
         throw new Error(`NFT blacklist request failed with status ${response.status}`);
@@ -1547,6 +1582,7 @@ export const useWalletStore = defineStore('wallet', () => {
     theme,
     libraryTheme,
     currencySymbol,
+    fiatExchangeRateObject,
     exchangeRate,
     networkFees,
     blockNumber,
@@ -1582,6 +1618,8 @@ export const useWalletStore = defineStore('wallet', () => {
     setIndexerEndpoint,
     setIsDesktop,
     navigate,
+    prepareWalletEntryNavigation,
+    syncWalletRoute,
     loginAccount,
     logout,
     renameAccount,

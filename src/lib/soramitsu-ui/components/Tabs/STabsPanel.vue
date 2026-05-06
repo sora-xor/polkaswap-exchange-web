@@ -4,6 +4,7 @@ import {
   Fragment,
   Text,
   cloneVNode,
+  createTextVNode,
   h,
   nextTick,
   onBeforeUnmount,
@@ -19,13 +20,14 @@ type TabItem = {
   key: string;
   name: string;
   label: string;
+  labelNodes: Array<VNode>;
   disabled: boolean;
 };
 
-const toNodeArray = (nodes: unknown): Array<VNode | null | undefined> => {
-  if (Array.isArray(nodes)) return nodes as Array<VNode | null | undefined>;
+const toNodeArray = (nodes: unknown): Array<unknown> => {
+  if (Array.isArray(nodes)) return nodes;
   if (!nodes) return [];
-  return [nodes as VNode];
+  return [nodes];
 };
 
 const flattenVNodes = (nodes: unknown): Array<VNode> => {
@@ -33,15 +35,26 @@ const flattenVNodes = (nodes: unknown): Array<VNode> => {
 
   toNodeArray(nodes).forEach((node) => {
     if (!node) return;
-    if (node.type === Comment) return;
-    if (node.type === Text && typeof node.children === 'string' && !node.children.trim()) return;
+    if (typeof node === 'string' || typeof node === 'number') {
+      const text = String(node);
+      if (text.trim()) {
+        result.push(createTextVNode(text));
+      }
+      return;
+    }
+    if (typeof node !== 'object') return;
 
-    if (node.type === Fragment) {
-      result.push(...flattenVNodes(node.children));
+    const vnode = node as VNode;
+
+    if (vnode.type === Comment) return;
+    if (vnode.type === Text && typeof vnode.children === 'string' && !vnode.children.trim()) return;
+
+    if (vnode.type === Fragment) {
+      result.push(...flattenVNodes(vnode.children));
       return;
     }
 
-    result.push(node);
+    result.push(vnode);
   });
 
   return result;
@@ -89,6 +102,7 @@ const parseTabs = (defaultNodes: Array<VNode>): Array<TabItem> => {
         key: String(node.key ?? name),
         name,
         label,
+        labelNodes: hasLabelProp ? [] : slotNodes,
         disabled,
       };
     });
@@ -364,7 +378,11 @@ export default {
                           onClick: () => emitSelection(tab.name, tab.disabled),
                           onKeydown: (event: KeyboardEvent) => activateByKeyboard(event, tab.name, tab.disabled),
                         },
-                        tab.label
+                        tab.labelNodes.length
+                          ? tab.labelNodes.map((node, index) =>
+                              cloneVNode(node, { key: node.key ?? `${tab.key}-label-${index}` })
+                            )
+                          : tab.label
                       )
                     ),
                   ]

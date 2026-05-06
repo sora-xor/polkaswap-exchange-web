@@ -47,6 +47,17 @@ function onClick(event: MouseEvent): void {
 }
 </script>
 
+<style lang="scss">
+.app-logo.el-button {
+  border-radius: 0 !important;
+  color: var(--s-color-base-content-primary) !important;
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 14px !important;
+}
+</style>
+
 <style lang="scss" scoped>
 $logo-full-width: 172px;
 $logo-full-height: 46px;

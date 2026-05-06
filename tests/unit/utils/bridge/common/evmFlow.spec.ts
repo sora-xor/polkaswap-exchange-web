@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { api as walletApi } from '@/shims/wallet-api';
+import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 
 // Mock ethersUtil functions used in utils
 vi.mock('@/utils/ethers-util', () => ({
@@ -14,7 +14,7 @@ import * as utils from '@/utils/bridge/common/utils';
 import ethersUtil from '@/utils/ethers-util';
 
 // Mock wallet api used by getTransactionEvents
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });

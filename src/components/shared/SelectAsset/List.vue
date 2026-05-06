@@ -54,20 +54,22 @@
 <script lang="ts" setup>
 import { toRef } from 'vue';
 
-import { components } from '@/shims/wallet-components';
 import { useTranslation } from '@/composables/useTranslation';
 import { useAssetFormatting } from '@/composables/useAssetFormatting';
-import { FontSizeRate, FontWeightRate } from '@/shims/wallet-consts';
+import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentAssetList from '@/lib/soraneo-wallet/src/components/AssetList.vue';
+import WalletComponentPinIcon from '@/lib/soraneo-wallet/src/components/PinIcon.vue';
+import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 
 defineOptions({
   name: 'SelectAssetList',
   components: {
-    AssetList: components.AssetList,
-    PinIcon: components.PinIcon,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    AssetList: WalletComponentAssetList,
+    PinIcon: WalletComponentPinIcon,
+    FormattedAmountWithFiatValue: WalletComponentFormattedAmountWithFiatValue,
   },
 });
 
@@ -110,7 +112,7 @@ const togglePinnedAsset = (asset: AccountAsset): void => {
 const formatBalance = (asset: AccountAsset): string => {
   return formatAssetBalance(asset, {
     internal: props.isSoraToEvm,
-    showZeroBalance: false,
+    showZeroBalance: true,
     formattedZero: FormattedZeroSymbol,
   });
 };

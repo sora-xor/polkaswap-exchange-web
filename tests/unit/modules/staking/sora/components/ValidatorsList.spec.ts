@@ -40,7 +40,7 @@ const stakingInfoRef = ref<{ myValidators: string[] } | null>({ myValidators: []
 const setShowFiltersMock = vi.fn();
 const setValidatorsFilterMock = vi.fn();
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -57,8 +57,9 @@ vi.mock('@wallet', async () => {
   });
 });
 
-vi.mock('@/modules/staking/router', () => {
-  const ValidatorAvatarStub = defineComponent({
+vi.mock('@/modules/staking/sora/components/ValidatorAvatar.vue', () => ({
+  __esModule: true,
+  default: defineComponent({
     name: 'ValidatorAvatarStub',
     props: {
       validator: { type: Object, required: true },
@@ -71,13 +72,8 @@ vi.mock('@/modules/staking/router', () => {
           slots.icon?.()
         );
     },
-  });
-
-  return {
-    __esModule: true,
-    soraStakingLazyComponent: () => ValidatorAvatarStub,
-  };
-});
+  }),
+}));
 
 vi.mock('vue-i18n', async () => {
   const actual = await vi.importActual<typeof import('vue-i18n')>('vue-i18n');

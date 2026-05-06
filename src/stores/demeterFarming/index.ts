@@ -1,7 +1,7 @@
 import { FPNumber } from '@sora-substrate/math';
 import { defineStore } from 'pinia';
 
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import type { DemeterFarmingState, DemeterLiquidityParams } from '@/stores/demeterFarming/types';
 import { useWalletStore } from '@/stores/wallet';
 import type { FnWithoutArgs } from '@/types/common';

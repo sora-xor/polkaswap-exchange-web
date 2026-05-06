@@ -20,7 +20,7 @@ vi.mock('@/router', () => ({
   lazyComponent: () => ({ template: '<div class="router-lazy-component-stub"><slot /></div>' }),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });

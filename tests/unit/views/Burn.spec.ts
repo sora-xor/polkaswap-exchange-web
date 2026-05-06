@@ -2,14 +2,14 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { ref } from 'vue';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-import BurnView from '@/views/Burn.vue';
+import BurnPage from '@/features/misc/pages/BurnPage.vue';
 import { FPNumber } from '@sora-substrate/sdk';
 
 const connectWalletMock = vi.fn();
 const waitForNetworkMock = vi.fn().mockResolvedValue('prod');
 const fetchBurnDataMock = vi.fn().mockResolvedValue([]);
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     vuex: {
@@ -48,28 +48,12 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
-    name: 'LazyLoaded',
-    template: '<div />',
-  }),
-}));
-
 vi.mock('@/indexer/queries/burnXor', () => ({
   fetchData: (...args: unknown[]) => fetchBurnDataMock(...(args as Parameters<typeof fetchBurnDataMock>)),
 }));
 
 vi.mock('@/utils', () => ({
   waitForSoraNetworkFromEnv: () => waitForNetworkMock(),
-}));
-
-vi.mock('@/components/pages/Burn/BurnDialog.vue', () => ({
-  __esModule: true,
-  __isTeleport: false,
-  default: {
-    name: 'BurnDialogStub',
-    template: '<div />',
-  },
 }));
 
 const settingsStoreMock = vi.hoisted(() => ({
@@ -87,6 +71,22 @@ describe('Burn.vue', () => {
     return 1 as unknown as number;
   });
   const clearIntervalSpy = vi.spyOn(global, 'clearInterval').mockImplementation(() => {});
+  const baseStubs = {
+    BurnDialog: { template: '<div />' },
+    GenericPageHeader: { template: '<div><slot /></div>' },
+    ExternalLink: { template: '<a><slot /></a>' },
+    InfoLine: {
+      props: ['label', 'value', 'assetSymbol'],
+      template:
+        '<div class="info-line-stub"><span class="label">{{ label }}</span><span class="value">{{ value }}</span><span class="asset">{{ assetSymbol }}</span></div>',
+    },
+    's-button': { template: '<button><slot /></button>' },
+    's-form': { template: '<form><slot /></form>' },
+    's-row': { template: '<div><slot /></div>' },
+    's-col': { template: '<div><slot /></div>' },
+    's-card': { template: '<div><slot /></div>' },
+  };
+
   beforeEach(async () => {
     settingsStoreMock.blockNumber = 25_100_000;
     settingsStoreMock.soraNetwork = 'Prod';
@@ -100,15 +100,10 @@ describe('Burn.vue', () => {
   });
 
   it('renders only SOLSWAP campaign and opens its burn dialog', async () => {
-    const wrapper = mount(BurnView, {
+    const wrapper = mount(BurnPage, {
       global: {
         stubs: {
-          BurnDialog: { template: '<div />' },
-          's-button': { template: '<button><slot /></button>' },
-          's-form': { template: '<form><slot /></form>' },
-          's-row': { template: '<div><slot /></div>' },
-          's-col': { template: '<div><slot /></div>' },
-          's-card': { template: '<div><slot /></div>' },
+          ...baseStubs,
           's-input': { template: '<input />' },
           's-icon': { template: '<i />' },
           's-button-group': { template: '<div><slot /></div>' },
@@ -134,20 +129,16 @@ describe('Burn.vue', () => {
     expect(vm.selectedRate).toBe('0.01');
     expect(vm.selectedMax).toBe(100_000_000);
     expect(vm.selectedMin).toBe(1);
+    expect(vm.selectedRequiresNexusRecipient).toBe(true);
   });
 
   it('marks campaigns as ended when block height exceeds range', async () => {
     settingsStoreMock.blockNumber = 61_000_000;
 
-    const wrapper = mount(BurnView, {
+    const wrapper = mount(BurnPage, {
       global: {
         stubs: {
-          BurnDialog: { template: '<div />' },
-          's-button': { template: '<button><slot /></button>' },
-          's-form': { template: '<form><slot /></form>' },
-          's-row': { template: '<div><slot /></div>' },
-          's-col': { template: '<div><slot /></div>' },
-          's-card': { template: '<div><slot /></div>' },
+          ...baseStubs,
           's-input': { template: '<input />' },
           's-icon': { template: '<i />' },
         },
@@ -166,15 +157,10 @@ describe('Burn.vue', () => {
   });
 
   it('sets loading after burn confirmation', async () => {
-    const wrapper = mount(BurnView, {
+    const wrapper = mount(BurnPage, {
       global: {
         stubs: {
-          BurnDialog: { template: '<div />' },
-          's-button': { template: '<button><slot /></button>' },
-          's-form': { template: '<form><slot /></form>' },
-          's-row': { template: '<div><slot /></div>' },
-          's-col': { template: '<div><slot /></div>' },
-          's-card': { template: '<div><slot /></div>' },
+          ...baseStubs,
         },
       },
     });
@@ -196,15 +182,10 @@ describe('Burn.vue', () => {
       { blockHeight: 25_100_000, amount, address: 'bob' },
     ]);
 
-    const wrapper = mount(BurnView, {
+    const wrapper = mount(BurnPage, {
       global: {
         stubs: {
-          BurnDialog: { template: '<div />' },
-          's-button': { template: '<button><slot /></button>' },
-          's-form': { template: '<form><slot /></form>' },
-          's-row': { template: '<div><slot /></div>' },
-          's-col': { template: '<div><slot /></div>' },
-          's-card': { template: '<div><slot /></div>' },
+          ...baseStubs,
         },
       },
     });
@@ -218,21 +199,15 @@ describe('Burn.vue', () => {
   });
 
   it('renders burn amounts without trailing decimal zeros', async () => {
-    const wrapper = mount(BurnView, {
+    const wrapper = mount(BurnPage, {
       global: {
         stubs: {
-          BurnDialog: { template: '<div />' },
-          ExternalLink: { template: '<a><slot /></a>' },
+          ...baseStubs,
           InfoLine: {
             props: ['label', 'value', 'assetSymbol'],
             template:
               '<div class="info-line-stub"><span class="label">{{ label }}</span><span class="value">{{ value }}</span><span class="asset">{{ assetSymbol }}</span></div>',
           },
-          's-button': { template: '<button><slot /></button>' },
-          's-form': { template: '<form><slot /></form>' },
-          's-row': { template: '<div><slot /></div>' },
-          's-col': { template: '<div><slot /></div>' },
-          's-card': { template: '<div><slot /></div>' },
         },
       },
     });
@@ -243,7 +218,8 @@ describe('Burn.vue', () => {
 
     expect(text).toContain('0.01');
     expect(text).toContain('100 SOLSWAP per 1 XOR burned');
-    expect(text).toContain('burn XOR to reserve SOLSWAP (SS)');
+    expect(text).toContain('SORA Nexus account for 1:1 Nexus XOR distribution');
+    expect(text).toContain('SORA Nexus XOR');
     expect(text).not.toContain('Time left');
     expect(text).not.toContain('Reserve KARMA');
     expect(text).not.toContain('Reserve KEN');

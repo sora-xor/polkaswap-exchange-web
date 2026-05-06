@@ -61,7 +61,42 @@ vi.mock('@/modules/pool/composables/usePoolApy', () => ({
 vi.mock('@/components/shared/PoolInfo.vue', () => ({
   __esModule: true,
   __isTeleport: false,
-  default: PoolInfoStub,
+  default: {
+    name: 'PoolInfoStub',
+    template: '<div class="pool-info-stub"><slot /><div class="pool-info-buttons"><slot name="buttons" /></div></div>',
+  },
+}));
+
+vi.mock('@/components/shared/GenericPageHeader.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'GenericPageHeaderStub',
+    template: '<div class="header-stub" />',
+  },
+}));
+
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'PairTokenLogoStub',
+    template: '<div class="pair-logo-stub" />',
+  },
+}));
+
+vi.mock('@/modules/pool/components/AddLiquidity/Dialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'AddLiquidityDialogStub',
+    template: '<div class="add-dialog-stub" />',
+  },
+}));
+
+vi.mock('@/modules/pool/components/RemoveLiquidity/Dialog.vue', () => ({
+  __esModule: true,
+  default: {
+    name: 'RemoveLiquidityDialogStub',
+    template: '<div class="remove-dialog-stub" />',
+  },
 }));
 
 const loadingRef = ref(false);
@@ -74,30 +109,6 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-const SlotPassthroughStub = defineComponent({
-  name: 'SlotPassthroughStub',
-  setup(_, { slots }) {
-    return () =>
-      h(
-        'div',
-        { class: 'lazy-component-stub' },
-        Object.keys(slots).flatMap((key) => slots[key]?.() ?? [])
-      );
-  },
-});
-
-vi.mock('@/router', () => ({
-  __esModule: true,
-  lazyComponent: () => SlotPassthroughStub,
-}));
-
-vi.mock('@/modules/pool/router', () => ({
-  __esModule: true,
-  poolLazyComponent: () => ({
-    template: '<div class="pool-lazy-component-stub" />',
-  }),
-}));
-
 const InfoLineStub = defineComponent({
   name: 'InfoLineStub',
   setup(_, { slots }) {
@@ -105,14 +116,14 @@ const InfoLineStub = defineComponent({
   },
 });
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  return createWalletMock({
-    components: {
-      InfoLine: InfoLineStub,
-    },
-  });
+  return createWalletMock();
 });
+
+vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
+  default: InfoLineStub,
+}));
 
 const Pool = (await import('@/modules/pool/views/Pool.vue')).default;
 
@@ -148,17 +159,6 @@ const CollapseItemStub = defineComponent({
   },
 });
 
-const PoolInfoStub = defineComponent({
-  name: 'PoolInfoStub',
-  setup(_, { slots }) {
-    return () =>
-      h('div', { class: 'pool-info-stub' }, [
-        slots.default?.(),
-        h('div', { class: 'pool-info-buttons' }, slots.buttons?.()),
-      ]);
-  },
-});
-
 const mountPoolView = () =>
   mount(Pool, {
     global: {
@@ -170,7 +170,6 @@ const mountPoolView = () =>
         'pair-token-logo': {
           template: '<div class="pair-logo-stub" />',
         },
-        'pool-info': PoolInfoStub,
         'add-liquidity-dialog': {
           template: '<div class="add-dialog-stub" />',
         },
@@ -226,9 +225,11 @@ describe('Pool.vue', () => {
     expect(wrapper.find('.pool-empty-state').exists()).toBe(false);
     expect(wrapper.find('.pool-info-container--empty').exists()).toBe(true);
     expect(wrapper.text()).toContain('pool.connectToWallet');
-    const actionButton = wrapper.find('[data-test-name="addLiquidity"]');
-    expect(actionButton.text()).toContain('connectWalletText');
-    await actionButton.trigger('click');
+    const actionButton = wrapper.findAll('button').find((button) => button.text().includes('connectWalletText'));
+    expect(actionButton).toBeDefined();
+    expect(actionButton?.classes()).not.toContain('el-button--add-liquidity');
+    expect(actionButton?.classes()).toContain('s-typography-button--large');
+    await actionButton?.trigger('click');
 
     expect(connectSpy).toHaveBeenCalledTimes(1);
   });
@@ -262,7 +263,7 @@ describe('Pool.vue', () => {
     expect(setAddressesToRemove).toHaveBeenCalledWith({ firstAddress: 'addr-1', secondAddress: 'addr-2' });
 
     vm.handleAddLiquidity();
-    expect(setDataFromLiquidity).toHaveBeenCalledWith({ firstAddress: XOR.address, secondAddress: '' });
+    expect(setDataFromLiquidity).toHaveBeenCalledWith({ firstAddress: '', secondAddress: '' });
   });
 
   it('renders liquidity rows even when a pool asset is missing from the asset registry', async () => {

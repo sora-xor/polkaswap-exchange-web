@@ -25,9 +25,6 @@ vi.mock('@/composables/usePiniaTelemetry', () => ({
 vi.mock('@/stores/orderBook', () => ({
   useOrderBookStore: () => orderBookStoreStub,
 }));
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({ template: '<div><slot /></div>' }),
-}));
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({ t: (key: string) => key }),

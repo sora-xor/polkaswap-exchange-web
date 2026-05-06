@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@wallet', () => ({
+vi.mock('@tests/stubs/walletRuntime', () => ({
   WALLET_CONSTS: {
     IndexerType: {
       SUBQUERY: 'subquery',

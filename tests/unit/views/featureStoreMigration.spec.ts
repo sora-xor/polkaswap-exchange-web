@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -7,10 +7,10 @@ import { describe, expect, it } from 'vitest';
 const repoRoot = path.resolve(__dirname, '../../..');
 
 const files = {
-  rewards: path.join(repoRoot, 'src', 'views', 'Rewards.vue'),
-  pointSystem: path.join(repoRoot, 'src', 'views', 'PointSystem.vue'),
-  pointSystemV2: path.join(repoRoot, 'src', 'views', 'PointSystemV2.vue'),
-  wallet: path.join(repoRoot, 'src', 'views', 'Wallet.vue'),
+  rewards: path.join(repoRoot, 'src', 'features', 'rewards', 'pages', 'RewardsPage.vue'),
+  pointSystem: path.join(repoRoot, 'src', 'features', 'rewards', 'pages', 'PointSystemPage.vue'),
+  pointSystemV2: path.join(repoRoot, 'src', 'features', 'rewards', 'pages', 'PointSystemV2Page.vue'),
+  wallet: path.join(repoRoot, 'src', 'features', 'wallet', 'pages', 'WalletPage.vue'),
 } as const;
 
 const readSource = async (filePath: string): Promise<string> => readFile(filePath, 'utf8');
@@ -37,7 +37,14 @@ describe('feature view store migration', () => {
     expect(pointSystemSource).toContain("from '@/stores/pool'");
     expect(pointSystemV2Source).toContain("from '@/stores/referrals'");
     expect(pointSystemV2Source).toContain("from '@/stores/pool'");
+    expect(pointSystemV2Source).not.toContain('lazyComponent(');
+    expect(pointSystemV2Source).not.toContain('Components.');
     expect(walletSource).toContain("from '@/stores/pool'");
     expect(walletSource).toContain('poolStore.setAddLiquidityFirstTokenAddress');
+  });
+
+  it('removes the deleted point-system wrapper views', async () => {
+    await expect(stat(path.join(repoRoot, 'src', 'views', 'PointSystem.vue'))).rejects.toBeDefined();
+    await expect(stat(path.join(repoRoot, 'src', 'views', 'PointSystemV2.vue'))).rejects.toBeDefined();
   });
 });

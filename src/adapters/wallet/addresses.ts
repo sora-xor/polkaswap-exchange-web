@@ -1,4 +1,4 @@
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 import type { Nullable } from '@/types/common';
 

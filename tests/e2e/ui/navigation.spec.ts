@@ -160,7 +160,7 @@ const expectNotBlack = (value: string | null): void => {
 };
 
 test.beforeEach(async ({ page }) => {
-  await preparePage(page);
+  await preparePage(page, { stubRuntimeEnv: true });
 });
 
 test('supports sidebar navigation across major routes', async ({ page }) => {
@@ -1917,6 +1917,51 @@ test('keeps disclaimer overlay within viewport on desktop', async ({ page }) => 
 
   const swapFormTopAfter = await swapForm.evaluate((element) => element.getBoundingClientRect().top);
   expect(Math.abs(swapFormTopAfter - swapFormTopBefore)).toBeLessThanOrEqual(1);
+
+  expect(consoleErrors).toEqual([]);
+});
+
+test('covers the full viewport with the first-launch disclaimer overlay on desktop', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await page.addInitScript(() => {
+    localStorage.removeItem('dexSettings.disclaimerApprove');
+  });
+  await openSwap(page);
+
+  const disclaimer = page.locator('.disclaimer');
+  const overlay = page.locator('.s-modal__overlay').first();
+
+  await expect(disclaimer).toBeVisible();
+  await expect(overlay).toBeVisible();
+
+  const overlayCoverage = await page.evaluate(() => {
+    const overlay = document.querySelector('.s-modal__overlay') as HTMLElement | null;
+    if (!overlay) return null;
+
+    const rect = overlay.getBoundingClientRect();
+    const samplePoints = [
+      [8, 8],
+      [window.innerWidth - 8, 8],
+      [8, window.innerHeight - 8],
+    ] as const;
+
+    return {
+      rect: rect.toJSON(),
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
+      intercepted: samplePoints.every(([x, y]) =>
+        Boolean(document.elementFromPoint(x, y)?.closest('.s-modal__overlay'))
+      ),
+    };
+  });
+
+  expect(overlayCoverage).not.toBeNull();
+  expect(overlayCoverage?.intercepted).toBe(true);
+  expect(overlayCoverage?.rect.left ?? 1).toBeLessThanOrEqual(0);
+  expect(overlayCoverage?.rect.top ?? 1).toBeLessThanOrEqual(0);
+  expect(overlayCoverage?.rect.right ?? 0).toBeGreaterThanOrEqual((overlayCoverage?.viewportWidth ?? 0) - 1);
+  expect(overlayCoverage?.rect.bottom ?? 0).toBeGreaterThanOrEqual((overlayCoverage?.viewportHeight ?? 0) - 1);
 
   expect(consoleErrors).toEqual([]);
 });

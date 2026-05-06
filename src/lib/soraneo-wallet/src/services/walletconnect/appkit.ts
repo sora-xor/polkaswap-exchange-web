@@ -1,6 +1,5 @@
-import { WalletConnectModal as WalletConnectLegacyModal } from '@walletconnect/modal';
-
 import type { ChainNamespace } from '@reown/appkit-common';
+import type { WalletConnectModal as WalletConnectLegacyModal } from '@walletconnect/modal';
 import type { ChainId } from './provider/base';
 
 type WalletConnectModalState = { open: boolean };
@@ -29,6 +28,17 @@ let modalInstance: WalletConnectLegacyModal | null = null;
 let cachedProjectId: string | null = null;
 let cachedNamespace: ChainNamespace | null = null;
 let cachedChainsKey: string | null = null;
+let walletConnectModalModulePromise: Promise<typeof import('@walletconnect/modal')> | null = null;
+
+const loadWalletConnectModalCtor = async (): Promise<typeof import('@walletconnect/modal').WalletConnectModal> => {
+  if (!walletConnectModalModulePromise) {
+    walletConnectModalModulePromise = import('@walletconnect/modal');
+  }
+
+  const module = await walletConnectModalModulePromise;
+
+  return module.WalletConnectModal;
+};
 
 const toNetworkId = (value: ChainId): string => {
   if (typeof value === 'number') return value.toString(10);
@@ -41,7 +51,7 @@ const buildChains = (config: EnsureModalConfig): string[] => {
   return Array.from(unique);
 };
 
-const ensureModalInstance = (config: EnsureModalConfig): WalletConnectLegacyModal => {
+const ensureModalInstance = async (config: EnsureModalConfig): Promise<WalletConnectLegacyModal> => {
   const chains = buildChains(config);
   const chainsKey = chains.join('|');
 
@@ -55,7 +65,9 @@ const ensureModalInstance = (config: EnsureModalConfig): WalletConnectLegacyModa
     cachedNamespace = config.namespace;
     cachedChainsKey = chainsKey;
 
-    modalInstance = new WalletConnectLegacyModal({
+    const WalletConnectModalCtor = await loadWalletConnectModalCtor();
+
+    modalInstance = new WalletConnectModalCtor({
       projectId: config.projectId,
       chains,
       enableAuthMode: false,
@@ -74,7 +86,7 @@ const ensureModalInstance = (config: EnsureModalConfig): WalletConnectLegacyModa
  * Reown cloud-auth features, so IPFS-hosted origins can still open the QR flow.
  */
 export const ensureWalletConnectModal = async (config: EnsureModalConfig): Promise<WalletConnectModal> => {
-  const modal = ensureModalInstance(config);
+  const modal = await ensureModalInstance(config);
 
   const subscribeModal: WalletConnectModal['subscribeModal'] = (callback) => {
     return modal.subscribeModal((state) => callback({ open: Boolean(state?.open) }));

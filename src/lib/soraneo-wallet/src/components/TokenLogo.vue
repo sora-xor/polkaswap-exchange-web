@@ -74,7 +74,7 @@ const assetAddress = computed<Nullable<string>>(() => {
   const tokenAddress = props.token?.address ?? null;
   if (tokenAddress) return tokenAddress;
 
-  const normalizedSymbol = normalizeTokenSymbol(props.tokenSymbol);
+  const normalizedSymbol = normalizeTokenSymbol(props.tokenSymbol || props.token?.symbol);
   if (!normalizedSymbol) return null;
 
   return normalizedWhitelistIdsBySymbol.value[normalizedSymbol] ?? null;

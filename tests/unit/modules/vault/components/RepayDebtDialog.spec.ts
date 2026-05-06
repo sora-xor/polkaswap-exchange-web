@@ -42,7 +42,7 @@ const PrevNextInfoLineStub = vi.hoisted(() => ({
   },
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -71,14 +71,14 @@ vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
   default: TokenInputStub,
 }));
 
-vi.mock('@/modules/vault/router', () => ({
+vi.mock('@/components/shared/ValueStatusWrapper.vue', () => ({
   __esModule: true,
-  vaultLazyComponent: () => PrevNextInfoLineStub,
+  default: ValueStatusStub,
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('@/modules/vault/components/PrevNextInfoLine.vue', () => ({
   __esModule: true,
-  lazyComponent: () => TokenInputStub,
+  default: PrevNextInfoLineStub,
 }));
 
 vi.mock('@/stores/wallet', () => ({

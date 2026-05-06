@@ -260,6 +260,13 @@
         "disclaimer": "གཡོ་སྒྱུ་བཀག་ཐབས་ལུ་ དུས་ཐོག་ཡིག་ཆ་བཟུང་ནིའི་དོན་ལུ་ པར་ཆས་འཛུལ་སྤྱོད་དགོཔ་ཨིན།",
         "title": "བརའུ་ཟར་སྒྲིག་སྟངས་ཚུ་ནང་པར་ཆས་འཛུལ་སྤྱོད་འབད་བཅུག།"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "ཐོན་སྒོར་འདེམས་",
         "chooseToken": "ཐོན་སྒོར་འདེམས་",

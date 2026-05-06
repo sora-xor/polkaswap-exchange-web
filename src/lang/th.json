@@ -260,6 +260,13 @@
         "disclaimer": "จำเป็นต้องมีการเข้าถึงกล้องสำหรับการจับเอกสารแบบเรียลไทม์เพื่อป้องกันการฉ้อโกง",
         "title": "อนุญาตให้เข้าถึงกล้องในการตั้งค่าเบราว์เซอร์"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "เลือกโทเค็น",
         "chooseToken": "เลือกโทเค็น",

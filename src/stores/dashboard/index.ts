@@ -1,7 +1,7 @@
 import { FPNumber } from '@sora-substrate/math';
 import { defineStore } from 'pinia';
 
-import { api } from '@/shims/wallet-api';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { useWalletStore } from '@/stores/wallet';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import type { DashboardState } from '@/stores/dashboard/types';

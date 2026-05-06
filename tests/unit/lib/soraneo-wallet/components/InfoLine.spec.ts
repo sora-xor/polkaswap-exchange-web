@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { defineComponent } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 const useWalletStoreMock = vi.hoisted(() =>
@@ -12,6 +13,17 @@ vi.mock('@/stores/wallet', () => ({
 }));
 
 import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+
+const FormattedAmountStub = defineComponent({
+  name: 'FormattedAmountStub',
+  props: {
+    integerOnly: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  template: '<div class="formatted-amount-stub" :data-integer-only="String(integerOnly)" />',
+});
 
 describe('InfoLine', () => {
   it('treats numeric values as displayable strings', () => {
@@ -48,5 +60,24 @@ describe('InfoLine', () => {
 
     expect((wrapper.vm as any).hasInvalidValue).toBe(true);
     expect((wrapper.vm as any).isValueExists).toBe(false);
+  });
+
+  it('passes integer-only formatting through to the formatted amount renderer', () => {
+    const wrapper = mount(InfoLine, {
+      props: {
+        value: '0',
+        isFormatted: true,
+        integerOnly: true,
+      },
+      global: {
+        stubs: {
+          FormattedAmount: FormattedAmountStub,
+          STooltip: { template: '<div><slot /></div>' },
+          SIcon: true,
+        },
+      },
+    });
+
+    expect(wrapper.find('.formatted-amount-stub').attributes('data-integer-only')).toBe('true');
   });
 });

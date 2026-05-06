@@ -1,4 +1,4 @@
-import * as INDEXER_TYPES from '@/shims/wallet-indexer-types';
+import * as INDEXER_TYPES from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 import type { OrderBookId, PriceVariant } from '@sora-substrate/liquidity-proxy';
 import type { FPNumber, CodecString } from '@sora-substrate/sdk';

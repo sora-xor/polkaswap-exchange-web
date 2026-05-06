@@ -3,21 +3,21 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 
-const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
+import { mountSetup } from '@stubs/mountSetup';
 
-vi.mock('@/stores/router', () => ({
-  useRouterStore: () => ({
-    prev: 'Wallet',
-    prevParams: {},
-    currentParams: {
-      asset: {
-        address: XOR.address,
-        symbol: 'XOR',
-        decimals: 18,
-        balance: { transferable: '1000000000000000000' },
-      },
+const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
+const navigate = vi.hoisted(() => vi.fn());
+
+vi.mock('@/platform/wallet/navigation', () => ({
+  getWalletPreviousRoute: () => 'Wallet',
+  getWalletPreviousParams: () => ({}),
+  getWalletCurrentParams: () => ({
+    asset: {
+      address: XOR.address,
+      symbol: 'XOR',
+      decimals: 18,
+      balance: { transferable: '1000000000000000000' },
     },
-    navigate: vi.fn(),
   }),
 }));
 
@@ -25,6 +25,7 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     accountAssets: [],
     isConfirmTxDialogDisabled: false,
+    navigate,
     transfer: vi.fn(),
     vestedTransfer: vi.fn(),
     getVestedTransferFee: vi.fn(),
@@ -81,10 +82,11 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
 }));
 
 import WalletSend from '@/lib/soraneo-wallet/src/components/WalletSend.vue';
+import { RouteNames } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet WalletSend', () => {
   it('routes through the fee warning step when the next transaction would fail the XOR fee check', async () => {
-    const state = (WalletSend as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
 
     state.amount.value = '1';
     await state.handleSend();
@@ -96,5 +98,13 @@ describe('Wallet WalletSend', () => {
     });
     expect(state.showAdditionalInfo.value).toBe(false);
     expect(state.step.value).toBe(2);
+  });
+
+  it('routes back through the wallet store navigation boundary from the first step', () => {
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+
+    state.handleBack();
+
+    expect(navigate).toHaveBeenCalledWith({ name: RouteNames.Wallet, params: {} });
   });
 });

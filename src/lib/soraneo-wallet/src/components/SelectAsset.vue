@@ -22,8 +22,7 @@ import { computed } from 'vue';
 import { useAssets } from '@/composables/useAssets';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { useRouterStore } from '@/stores/router';
-import type { Route } from '@/stores/router/types';
+import { getWalletCurrentParams, navigateWallet, type WalletNavigationTarget } from '@/platform/wallet/navigation';
 import type { Nullable } from '@/types/common';
 
 import AssetList from './AssetList.vue';
@@ -33,16 +32,15 @@ import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 const { t } = useTranslation();
 
-const routerStore = useRouterStore();
 const { sortedAccountAssets } = useAssets();
 
 const accountAssets = computed<AccountAsset[]>(() => sortedAccountAssets.value as AccountAsset[]);
-const currentRouteParams = computed<Record<string, unknown>>(() => routerStore.currentParams);
+const currentRouteParams = computed<Record<string, unknown>>(() => getWalletCurrentParams<Record<string, unknown>>());
 
 const sendAddress = computed(() => currentRouteParams.value.address as Nullable<string>);
 
-const navigate = (route: Route) => {
-  routerStore.navigate(route);
+const navigate = (route: WalletNavigationTarget) => {
+  navigateWallet(route);
 };
 
 const handleBack = () => {

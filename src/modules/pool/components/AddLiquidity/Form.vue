@@ -72,7 +72,7 @@
       </template>
     </s-form>
 
-    <select-token
+    <SelectToken
       is-add-liquidity
       append-to-body
       v-model:visible="showSelectTokenDialog"
@@ -80,8 +80,8 @@
       :asset="isFirstTokenSelected ? secondToken : firstToken"
       :is-first-token-selected="isFirstTokenSelected"
       :disabled-custom="isFirstTokenSelected"
-      @select="selectToken"
-    ></select-token>
+      @select="handleSelectToken"
+    ></SelectToken>
 
     <add-liquidity-confirm
       v-model:visible="confirmDialogVisible"
@@ -109,21 +109,22 @@
 <script setup lang="ts">
 import { Operation } from '@sora-substrate/sdk';
 import { XOR, XSTUSD } from '@sora-substrate/sdk/build/assets/consts';
-import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
+import NetworkFeeWarningDialog from '@/components/shared/Dialog/NetworkFeeWarning.vue';
+import TokenInput from '@/components/shared/Input/TokenInput.vue';
+import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';
+import SlippageTolerance from '@/components/shared/Settings/SlippageTolerance.vue';
 import { useTransaction } from '@/composables/useTransaction';
 import { useNetworkFeeWarning } from '@/composables/useNetworkFeeWarning';
 import { useNetworkFeeDialog } from '@/composables/useNetworkFeeDialog';
 import { useTokenSelect } from '@/composables/useTokenSelect';
 import type { NetworkFeeWarningOptions } from '@/consts';
 import { usePoolTokenPair } from '@/modules/pool/composables/usePoolTokenPair';
+import AddLiquidityConfirm from '@/modules/pool/components/AddLiquidity/Confirm.vue';
+import AddLiquidityTransactionDetails from '@/modules/pool/components/AddLiquidity/TransactionDetails.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { Components } from '@/consts';
-import { PoolComponents } from '@/modules/pool/consts';
-import { poolLazyComponent } from '@/modules/pool/router';
-import { lazyComponent } from '@/router';
 import { useAssetsStore } from '@/stores/assets';
 import { usePoolStore } from '@/stores/pool';
 import { AddLiquidityFocusedField as FocusedField } from '@/stores/pool/types';
@@ -135,6 +136,7 @@ import { sanitizeHtml } from '@/utils/sanitize';
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 
 const emit = defineEmits<{ (event: 'back'): void }>();
 
@@ -171,13 +173,7 @@ const isFirstTokenSelected = ref(false);
 const insufficientBalanceTokenSymbol = ref('');
 const confirmDialogVisible = ref(false);
 
-const AddLiquidityConfirm = poolLazyComponent(PoolComponents.AddLiquidityConfirm);
-const AddLiquidityTransactionDetails = poolLazyComponent(PoolComponents.AddLiquidityTransactionDetails);
-const SelectToken = lazyComponent(Components.SelectToken);
-const SlippageTolerance = lazyComponent(Components.SlippageTolerance);
-const NetworkFeeWarningDialog = lazyComponent(Components.NetworkFeeWarningDialog);
-const TokenInput = lazyComponent(Components.TokenInput);
-const InfoLine = components.InfoLine;
+const InfoLine = WalletComponentInfoLine;
 
 const firstToken = poolTokenPair.firstToken;
 const secondToken = poolTokenPair.secondToken;
@@ -314,7 +310,7 @@ const openSelectTokenDialog = (isFirst: boolean) => {
   showSelectTokenDialog.value = true;
 };
 
-const selectToken = async (token: AccountAsset) => {
+const handleSelectToken = async (token: AccountAsset) => {
   const address = token?.address;
   if (!address) return;
 

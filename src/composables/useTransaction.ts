@@ -2,8 +2,8 @@ import { Operation, TransactionStatus, type HistoryItem } from '@sora-substrate/
 import findLast from 'lodash/fp/findLast';
 import { computed } from 'vue';
 
-import { api } from '@/shims/wallet-api';
-import { delay } from '@/shims/wallet-util';
+import { api } from '@/lib/soraneo-wallet/src/api';
+import { delay } from '@/lib/soraneo-wallet/src/util';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
 

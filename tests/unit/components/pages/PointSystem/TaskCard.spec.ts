@@ -3,12 +3,12 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { tokenLogoStub } from '@stubs/walletComponents';
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
 
-vi.mock('@/components/pages/PointSystem/TaskDialog.vue', () => ({
+vi.mock('@/features/rewards/components/point-system/TaskDialog.vue', () => ({
   __esModule: true,
   __isTeleport: false,
   default: {
@@ -24,7 +24,7 @@ vi.mock('@/components/pages/PointSystem/TaskDialog.vue', () => ({
   },
 }));
 
-import TaskCard from '@/components/pages/PointSystem/TaskCard.vue';
+import TaskCard from '@/features/rewards/components/point-system/TaskCard.vue';
 import type { CalculateCategoryPointResult } from '@/types/pointSystem';
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -37,13 +37,6 @@ vi.mock('@/composables/useTranslation', () => ({
 vi.mock('@/consts/pointSystem', () => ({
   getImageSrc: (name: string) => name,
   isTokenImage: () => false,
-}));
-
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
-    template: '<div />',
-  }),
 }));
 
 function buildCategory(overrides: Partial<CalculateCategoryPointResult> = {}): CalculateCategoryPointResult {

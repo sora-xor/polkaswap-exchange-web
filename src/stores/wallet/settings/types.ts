@@ -1,8 +1,8 @@
-import { IndexerType, Theme } from '@/shims/wallet-consts';
+import { IndexerType, Theme } from '@/lib/soraneo-wallet/src/consts';
 
-import type { SoraNetwork, WalletPermissions, WalletAssetFilters } from '@/shims/wallet-consts';
-import type { Alert, ApiKeysObject, FilterOptions, IndexerState } from '@/shims/wallet-common-types';
-import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/shims/wallet-currency-types';
+import type { SoraNetwork, WalletPermissions, WalletAssetFilters } from '@/lib/soraneo-wallet/src/consts';
+import type { Alert, ApiKeysObject, FilterOptions, IndexerState } from '@/lib/soraneo-wallet/src/types/common';
+import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/lib/soraneo-wallet/src/types/currency';
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { NFTStorage } from 'nft.storage';
 import type { Subscription } from 'rxjs';

@@ -1,6 +1,6 @@
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 
-import { en as walletEn } from '@/shims/wallet';
+import walletEn from '@/lib/soraneo-wallet/src/lang/en';
 import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
@@ -76,6 +76,13 @@ export default {
   transactionDetailsText: 'Transaction Details',
   noDataText: 'No data',
   noir: 'Noir',
+  burnPage: {
+    enterNexusRecipient: 'ENTER SORA NEXUS ACCOUNT',
+    invalidNexusRecipient: 'INVALID SORA NEXUS ACCOUNT',
+    nexusRecipientLabel: 'SORA Nexus account',
+    nexusRecipientPlaceholder: 'Enter your SORA Nexus i105 account',
+    nexusRecipientWarning: 'Your SORA Nexus account is recorded publicly in this burn transaction.',
+  },
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {

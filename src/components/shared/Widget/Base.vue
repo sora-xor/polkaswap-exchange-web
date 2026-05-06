@@ -328,6 +328,7 @@ defineExpose({
 .base-widget {
   &.s-card.neumorphic.s-size-big {
     padding: 0;
+    transition: all 0.3s ease;
 
     &.delimeter .el-card__header {
       border-bottom-color: var(--s-color-base-border-secondary);
@@ -361,7 +362,7 @@ $left: $inner-spacing-medium;
   &.full {
     width: 100%;
     height: 100%;
-    min-height: 0;
+    min-height: 100%;
     flex: 1;
   }
 
@@ -427,6 +428,16 @@ $left: $inner-spacing-medium;
   &-pip {
     :deep(.s-button) {
       color: var(--s-color-base-content-tertiary);
+      display: block;
+      font-size: 12px;
+      line-height: 12px;
+
+      .s-button__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
 
       &:hover,
       &:focus {

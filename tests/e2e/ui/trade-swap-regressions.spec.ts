@@ -503,13 +503,46 @@ test('uses the production polkaswap loader styling for loading indicators', asyn
   });
 
   expect(styles.spinnerBackgroundImage).toMatch(/pswap-loader(?:-[^)"']+)?\.svg/);
-  expect(styles.spinnerAnimationName).toContain('pswap-loader-spin');
-  expect(styles.spinnerAnimationDuration).toBe('1s');
+  expect(styles.spinnerAnimationName).toBe('none');
+  expect(styles.spinnerAnimationDuration).toBe('0s');
   expect(styles.overlayBackgroundImage).toMatch(/pswap-loader(?:-[^)"']+)?\.svg/);
-  expect(styles.overlayAnimationName).toContain('pswap-loader-spin');
-  expect(styles.overlayAnimationDuration).toBe('1s');
+  expect(styles.overlayAnimationName).toBe('none');
+  expect(styles.overlayAnimationDuration).toBe('0s');
   expect(styles.directiveMarginLeft).toBe('0px');
   expect(styles.directiveMarginTop).toBe('0px');
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps the swap token header row stretched to the full input width', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await openSwap(page);
+
+  const metrics = await page.evaluate(() => {
+    const tokenInput = document.querySelector('.swap-form .s-input.token-input') as HTMLElement | null;
+    const header = document.querySelector('.swap-form .s-input.token-input .s-input__top') as HTMLElement | null;
+    const inputLine = document.querySelector('.swap-form .s-input.token-input .input-line') as HTMLElement | null;
+
+    if (!tokenInput || !header || !inputLine) {
+      return null;
+    }
+
+    const inputRect = tokenInput.getBoundingClientRect();
+    const headerRect = header.getBoundingClientRect();
+    const lineRect = inputLine.getBoundingClientRect();
+
+    return {
+      inputWidth: Math.round(inputRect.width),
+      headerWidth: Math.round(headerRect.width),
+      lineWidth: Math.round(lineRect.width),
+      headerDelta: Math.round(headerRect.width - lineRect.width),
+    };
+  });
+
+  expect(metrics).not.toBeNull();
+  expect(metrics?.headerWidth).toBeGreaterThan(250);
+  expect(metrics?.lineWidth).toBeGreaterThan(250);
+  expect((metrics?.headerDelta ?? Number.POSITIVE_INFINITY) <= 4).toBe(true);
   expect(consoleErrors).toEqual([]);
 });
 
@@ -762,6 +795,24 @@ test('keeps swap noir shadows and highlights aligned with production palette', a
   expect(styles?.primaryAction.borderColor).toBe('rgb(105, 61, 129)');
   expect(styles?.primaryAction.color).toBe('rgb(57, 16, 87)');
 
+  const primaryAction = page.locator('.swap-form .action-button').first();
+  await primaryAction.hover();
+
+  const hoverStyles = await primaryAction.evaluate((node) => {
+    const primary = getComputedStyle(node);
+
+    return {
+      boxShadow: primary.boxShadow,
+      backgroundColor: primary.backgroundColor,
+      borderColor: primary.borderColor,
+      color: primary.color,
+    };
+  });
+
+  expect(hoverStyles.backgroundColor).toBe('rgb(247, 84, 163)');
+  expect(hoverStyles.borderColor).toBe('rgb(89, 45, 113)');
+  expect(hoverStyles.color).toBe('rgb(57, 16, 87)');
+
   expect(styles?.tokenSelect.boxShadow).toBe(
     'rgba(155, 111, 165, 0.25) -5px -5px 10px 0px, rgb(73, 32, 103) 2px 2px 15px 0px, rgba(155, 111, 165, 0.25) 1px 1px 2px 0px inset'
   );
@@ -939,8 +990,12 @@ test('keeps swap hover highlights aligned with production in light and noir mode
   const lightSettingsHover = await readHoverStyles('.swap-widget .el-button--settings');
 
   expect(lightPrimaryHover).not.toBeNull();
-  expect(lightPrimaryHover?.boxShadow).toBe('rgb(255, 255, 255) 1px 1px 5px 0px, rgb(255, 255, 255) -1px -1px 5px 0px');
-  expect(lightPrimaryHover?.backgroundColor).toBe('rgb(248, 8, 123)');
+  expect(lightPrimaryHover?.boxShadow).toBe(
+    'rgba(255, 255, 255, 0.9) 1px 1px 5px 0px, rgb(255, 255, 255) -1px -1px 5px 0px, rgba(247, 84, 163, 0.16) 0px 0px 6.42111px 0px'
+  );
+  expect(lightPrimaryHover?.backgroundColor).toBe('rgb(248, 32, 136)');
+  expect(lightPrimaryHover?.borderColor).toBe('rgb(242, 234, 237)');
+  expect(lightPrimaryHover?.color).toBe('rgb(255, 255, 255)');
 
   expect(lightTokenHover).not.toBeNull();
   expect(lightTokenHover?.boxShadow).toBe(
@@ -958,7 +1013,8 @@ test('keeps swap hover highlights aligned with production in light and noir mode
   const darkSettingsHover = await readHoverStyles('.swap-widget .el-button--settings');
 
   expect(darkPrimaryHover).not.toBeNull();
-  expect(darkPrimaryHover?.backgroundColor).toBe('rgb(242, 65, 151)');
+  expect(darkPrimaryHover?.backgroundColor).toBe('rgb(247, 84, 163)');
+  expect(darkPrimaryHover?.color).toBe('rgb(57, 16, 87)');
 
   expect(darkTokenHover).not.toBeNull();
   expect(darkTokenHover?.boxShadow).toBe(

@@ -6,17 +6,17 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 
 import { LogoSize, ObjectInit } from '@/consts';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 defineOptions({
   name: 'PairTokenLogo',
   components: {
-    TokenLogo: components.TokenLogo,
+    TokenLogo: WalletComponentTokenLogo,
   },
 });
 

@@ -71,12 +71,6 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
-    template: '<div class="lazy-component-stub"><slot /><slot name="filters" /></div>',
-  }),
-}));
-
 describe('BookWidget.vue', () => {
   beforeEach(() => {
     orderBookComposableState.asksFormatted = [];

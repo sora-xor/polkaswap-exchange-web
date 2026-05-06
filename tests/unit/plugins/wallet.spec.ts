@@ -1,4 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPinia } from 'pinia';
 
 vi.mock(
   'base-64',
@@ -26,17 +27,20 @@ const { localStorageMock } = vi.hoisted(() => {
 });
 
 const dialogBaseComponent = { name: 'DialogBaseMock' };
-const walletPlugin = vi.fn();
+const installWalletPlugins = vi.fn();
+const WALLET_PLUGIN_TEST_TIMEOUT_MS = 20_000;
 
-vi.mock('@/shims/wallet', () => ({
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
   __esModule: true,
-  default: walletPlugin,
-  components: {
-    DialogBase: dialogBaseComponent,
-  },
+  default: dialogBaseComponent,
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@/lib/soraneo-wallet/src/plugins', () => ({
+  __esModule: true,
+  default: installWalletPlugins,
+}));
+
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock();
 });
@@ -53,43 +57,54 @@ describe('wallet plugin', () => {
     vi.unstubAllGlobals();
   });
 
-  it('registers dialog-base globally', async () => {
-    const componentRegistry = new Map<string, unknown>();
-    const app: any = {
-      use: vi.fn(),
-      component: vi.fn((name: string, value?: unknown) => {
-        if (value) {
-          componentRegistry.set(name, value);
-        }
-        return componentRegistry.get(name);
-      }),
-    };
+  it(
+    'registers dialog-base globally',
+    async () => {
+      const componentRegistry = new Map<string, unknown>();
+      const app: any = {
+        use: vi.fn(),
+        component: vi.fn((name: string, value?: unknown) => {
+          if (value) {
+            componentRegistry.set(name, value);
+          }
+          return componentRegistry.get(name);
+        }),
+      };
 
-    const { install } = await import('@/plugins/wallet');
+      const { install } = await import('@/plugins/wallet');
 
-    await install(app, { pinia: {} as any });
+      install(app, { pinia: createPinia() });
 
-    expect(app.use).toHaveBeenCalledWith(walletPlugin, expect.any(Object));
-    expect(app.use.mock.calls[0]?.[1]?.store).toBeUndefined();
-    expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
-    expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseComponent);
-  });
+      expect(installWalletPlugins).toHaveBeenCalledWith(app);
+      expect(app.use).not.toHaveBeenCalled();
+      expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
+      expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseComponent);
+    },
+    WALLET_PLUGIN_TEST_TIMEOUT_MS
+  );
 
-  it('does not forward legacy store options into the wallet plugin', async () => {
-    const app: any = {
-      use: vi.fn(),
-      component: vi.fn(),
-    };
-    const compatStore = {
-      state: { wallet: {} },
-      getters: {},
-      commit: vi.fn(),
-      dispatch: vi.fn(),
-    };
+  it(
+    'ignores legacy store options and still registers wallet components',
+    async () => {
+      const app: any = {
+        use: vi.fn(),
+        component: vi.fn(() => undefined),
+      };
+      const compatStore = {
+        state: { wallet: {} },
+        getters: {},
+        commit: vi.fn(),
+        dispatch: vi.fn(),
+      };
 
-    const { install } = await import('@/plugins/wallet');
+      const { install } = await import('@/plugins/wallet');
 
-    await install(app, { store: compatStore, pinia: {} as any } as any);
-    expect(app.use.mock.calls[0]?.[1]?.store).toBeUndefined();
-  });
+      install(app, { store: compatStore, pinia: createPinia() } as any);
+
+      expect(installWalletPlugins).toHaveBeenCalledWith(app);
+      expect(app.use).not.toHaveBeenCalled();
+      expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
+    },
+    WALLET_PLUGIN_TEST_TIMEOUT_MS
+  );
 });

@@ -6,10 +6,11 @@ import { describe, expect, it } from 'vitest';
 
 const repoRoot = path.resolve(__dirname, '../../../..');
 const dashboardRoot = path.join(repoRoot, 'src', 'modules', 'dashboard');
+const featureDashboardRoot = path.join(repoRoot, 'src', 'features', 'dashboard');
 
 const files = {
-  assetOwner: path.join(dashboardRoot, 'views', 'AssetOwner.vue'),
-  assetOwnerDetails: path.join(dashboardRoot, 'views', 'AssetOwnerDetails.vue'),
+  assetOwner: path.join(featureDashboardRoot, 'pages', 'AssetOwnerPage.vue'),
+  assetOwnerDetails: path.join(featureDashboardRoot, 'pages', 'AssetOwnerDetailsPage.vue'),
   burnDialog: path.join(dashboardRoot, 'components', 'BurnDialog.vue'),
   mintDialog: path.join(dashboardRoot, 'components', 'MintDialog.vue'),
   createTokenDialog: path.join(dashboardRoot, 'components', 'CreateTokenDialog.vue'),

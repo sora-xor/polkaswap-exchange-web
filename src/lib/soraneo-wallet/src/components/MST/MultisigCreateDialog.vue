@@ -51,7 +51,6 @@ import { useDialogVisibility } from '@/composables/useDialog';
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
-import { useRouterStore } from '@/stores/router';
 import { useWalletStore } from '@/stores/wallet';
 import type { MSTData } from '@/types/mst';
 
@@ -82,7 +81,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useTranslation();
-const routerStore = useRouterStore();
 const walletStore = useWalletStore();
 const { showAppNotification } = useNotification();
 
@@ -119,7 +117,7 @@ const handleCreateClose = async () => {
   await walletStore.afterLogin();
   await walletStore.trackPendingMstTxs();
   closeDialog();
-  routerStore.navigate({ name: RouteNames.Wallet });
+  walletStore.navigate({ name: RouteNames.Wallet });
   showAppNotification(t('mst.successMstSetUp'), 'success');
 };
 </script>

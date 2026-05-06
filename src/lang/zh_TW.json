@@ -260,6 +260,13 @@
         "disclaimer": "即時文件擷取需要攝影機訪問，以防止詐欺。",
         "title": "在瀏覽器設定中允許相機訪問"
     },
+    "burnPage": {
+        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
+        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "nexusRecipientLabel": "SORA Nexus account",
+        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
+        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    },
     "buttons": {
         "chooseAToken": "選擇代幣",
         "chooseToken": "選擇代幣",

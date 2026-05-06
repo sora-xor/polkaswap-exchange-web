@@ -44,7 +44,14 @@ export function useFocusTrap(params: UseFocusTrapParams): UseFocusTrapReturn {
   );
 
   onScopeDispose(() => {
-    trap.value?.deactivate();
+    const currentTrap = trap.value;
+    if (!currentTrap) return;
+
+    try {
+      currentTrap.deactivate();
+    } finally {
+      trap.value = null;
+    }
   });
 
   return { trap };

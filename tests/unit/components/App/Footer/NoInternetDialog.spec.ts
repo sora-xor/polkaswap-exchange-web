@@ -14,27 +14,18 @@ const { networkState, settingsStoreMock } = vi.hoisted(() => {
   };
 });
 
-vi.mock('@wallet', async () => {
-  const { createWalletMock } = await import('@tests/stubs/createWalletMock');
-  const walletMock = await createWalletMock();
-
-  return {
-    ...walletMock,
-    components: {
-      ...walletMock.components,
-      DialogBase: {
-        name: 'DialogBaseStub',
-        props: {
-          visible: {
-            type: Boolean,
-            default: false,
-          },
-        },
-        template: '<div class="dialog-base-stub" v-if="visible"><slot /><slot name="footer" /></div>',
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: {
+    name: 'DialogBaseStub',
+    props: {
+      visible: {
+        type: Boolean,
+        default: false,
       },
     },
-  };
-});
+    template: '<div class="dialog-base-stub" v-if="visible"><slot /><slot name="footer" /></div>',
+  },
+}));
 
 vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => settingsStoreMock,

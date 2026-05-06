@@ -163,6 +163,14 @@ describe('useSoraStaking', () => {
     expect(staking.stakingInitialized.value).toBe(true);
   });
 
+  it('keeps the minimum nominator bond display aligned with the live staking overview when the bond is zero', () => {
+    shared.stakingStore.minNominatorBond = 0;
+
+    const staking = useSoraStaking();
+
+    expect(staking.minNominatorBondFormatted.value).toBe('0');
+  });
+
   it('proxies mutations and actions to the staking store facade', async () => {
     const staking = useSoraStaking();
     const validators = [{ address: 'validator-3', apy: '17' }] as any;

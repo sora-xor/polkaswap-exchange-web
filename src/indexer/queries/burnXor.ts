@@ -1,9 +1,16 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/shims/wallet-indexer';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { IndexerType } from '@/indexer/queries/indexerConsts';
 import { gql } from '@urql/core';
 
-import type { ConnectionQueryResponse, HistoryElement, HistoryElementAssetBurn } from '@/shims/wallet-indexer-types';
+import type {
+  CallArgs,
+  ConnectionQueryResponse,
+  HistoryElement,
+  HistoryElementAssetBurn,
+  HistoryElementBatchCall,
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type XorBurn = {
   address: string;
@@ -95,10 +102,25 @@ const getSubqueryXorBurnQuery = (address?: string) => gql<ConnectionQueryRespons
         and: [
           { blockHeight: { greaterThanOrEqualTo: $start } }
           { blockHeight: { lessThanOrEqualTo: $end } }
-          { module: { equalTo: "assets" } }
-          { method: { equalTo: "burn" } }
-          { data: { contains: { assetId: "0x0200000000000000000000000000000000000000000000000000000000000000" } } }
           ${address ? `{ address: { equalTo: "${address}" } }` : ''}
+          {
+            or: [
+              {
+                and: [
+                  { module: { equalTo: "assets" } }
+                  { method: { equalTo: "burn" } }
+                  { data: { contains: { assetId: "${XOR.address}" } } }
+                ]
+              }
+              {
+                and: [
+                  { module: { equalTo: "utility" } }
+                  { method: { equalTo: "batchAll" } }
+                  { callNames: { contains: ["assets.burn"] } }
+                ]
+              }
+            ]
+          }
         ]
       }
     ) {
@@ -111,6 +133,15 @@ const getSubqueryXorBurnQuery = (address?: string) => gql<ConnectionQueryRespons
           address
           data
           blockHeight
+          module
+          method
+          calls {
+            nodes {
+              module
+              method
+              data
+            }
+          }
         }
       }
     }
@@ -127,10 +158,25 @@ const getSubsquidXorBurnQuery = (address?: string) => gql<ConnectionQueryRespons
         AND: [
           { blockHeight_gte: $start }
           { blockHeight_lte: $end }
-          { module_eq: "assets" }
-          { method_eq: "burn" }
-          { data_jsonContains: { assetId: "0x0200000000000000000000000000000000000000000000000000000000000000" } }
           ${address ? `{ address_eq: "${address}" }` : ''}
+          {
+            OR: [
+              {
+                AND: [
+                  { module_eq: "assets" }
+                  { method_eq: "burn" }
+                  { data_jsonContains: { assetId: "${XOR.address}" } }
+                ]
+              }
+              {
+                AND: [
+                  { module_eq: "utility" }
+                  { method_eq: "batchAll" }
+                  { callNames_containsAny: ["assets.burn"] }
+                ]
+              }
+            ]
+          }
         ]
       }
     ) {
@@ -143,14 +189,48 @@ const getSubsquidXorBurnQuery = (address?: string) => gql<ConnectionQueryRespons
           address
           data
           blockHeight
+          module
+          method
+          calls {
+            module
+            method
+            data
+          }
         }
       }
     }
   }
 `;
 
-const parse = (item: HistoryElement): XorBurn => {
-  const data = item.data as HistoryElementAssetBurn;
+const getCalls = (item: HistoryElement): HistoryElementBatchCall[] => {
+  const calls = item.calls as HistoryElement['calls'] | { nodes?: HistoryElementBatchCall[] } | undefined;
+
+  if (Array.isArray(calls)) return calls;
+  return calls?.nodes ?? [];
+};
+
+const getCallDataArgs = (data: HistoryElementBatchCall['data']): CallArgs => {
+  if (data && typeof data === 'object' && 'args' in data) {
+    return data.args as CallArgs;
+  }
+
+  return data as CallArgs;
+};
+
+const getBurnData = (item: HistoryElement): Nullable<HistoryElementAssetBurn> => {
+  if (item.module === 'assets' && item.method === 'burn') {
+    return item.data as HistoryElementAssetBurn;
+  }
+
+  const burnCall = getCalls(item).find((call) => call.module === 'assets' && call.method === 'burn');
+  return burnCall ? (getCallDataArgs(burnCall.data) as HistoryElementAssetBurn) : null;
+};
+
+const parse = (item: HistoryElement): Nullable<XorBurn> => {
+  const data = getBurnData(item);
+  const assetId = data?.assetId ?? (data as HistoryElementAssetBurn & { asset_id?: string })?.asset_id;
+
+  if (!data?.amount || assetId !== XOR.address) return null;
 
   return {
     address: item.address,
@@ -171,10 +251,11 @@ export async function fetchData(start: number, end: number, accountId?: string):
         variables,
         parse
       );
+      const parsedItems = (items ?? []).filter((item): item is XorBurn => !!item);
       const initData = accountId
         ? dataBeforeSubqueryIndexing.filter((item) => item.address === accountId)
         : dataBeforeSubqueryIndexing;
-      return [...(items ?? []), ...initData];
+      return [...parsedItems, ...initData];
     }
     case IndexerType.SUBSQUID: {
       const subsquidIndexer = indexer as SubsquidIndexer;
@@ -183,7 +264,7 @@ export async function fetchData(start: number, end: number, accountId?: string):
         variables,
         parse
       );
-      return items ?? [];
+      return (items ?? []).filter((item): item is XorBurn => !!item);
     }
   }
 

@@ -14,16 +14,15 @@
 </template>
 
 <script lang="ts" setup>
-import { components } from '@/shims/wallet-components';
-
 import { LogoSize } from '@/consts';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 
 defineOptions({
   name: 'TokensRow',
   components: {
-    TokenLogo: components.TokenLogo,
+    TokenLogo: WalletComponentTokenLogo,
   },
 });
 

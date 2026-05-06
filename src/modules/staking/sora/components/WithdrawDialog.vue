@@ -54,7 +54,6 @@
 
 <script setup lang="ts">
 import { Operation } from '@sora-substrate/sdk';
-import { components } from '@/shims/wallet-components';
 import { computed } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -65,6 +64,10 @@ import { useSettingsStore } from '@/stores/settings';
 import { hasInsufficientXorForFee } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 
 const props = defineProps<{
   parentLoading?: boolean;
@@ -94,10 +97,10 @@ const { loading, withNotifications } = useTransaction({
   parentLoading: () => Boolean(props.parentLoading),
 });
 
-const DialogBase = components.DialogBase;
-const InfoLine = components.InfoLine;
-const TokenLogo = components.TokenLogo;
-const FormattedAmountWithFiatValue = components.FormattedAmountWithFiatValue;
+const DialogBase = WalletComponentDialogBase;
+const InfoLine = WalletComponentInfoLine;
+const TokenLogo = WalletComponentTokenLogo;
+const FormattedAmountWithFiatValue = WalletComponentFormattedAmountWithFiatValue;
 
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 

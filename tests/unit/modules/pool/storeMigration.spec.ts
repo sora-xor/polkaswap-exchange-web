@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -11,7 +11,7 @@ const poolStoreFile = path.join(repoRoot, 'src', 'stores', 'pool', 'index.ts');
 const files = {
   usePoolTokenPair: path.join(poolRoot, 'composables', 'usePoolTokenPair.ts'),
   usePoolApy: path.join(poolRoot, 'composables', 'usePoolApy.ts'),
-  poolContainer: path.join(poolRoot, 'views', 'PoolContainer.vue'),
+  poolContainer: path.join(repoRoot, 'src', 'features', 'explore', 'pages', 'PoolContainerPage.vue'),
   poolView: path.join(poolRoot, 'views', 'Pool.vue'),
   addLiquidityDialog: path.join(poolRoot, 'components', 'AddLiquidity', 'Dialog.vue'),
   addLiquidityForm: path.join(poolRoot, 'components', 'AddLiquidity', 'Form.vue'),
@@ -35,21 +35,31 @@ describe('Pool module store migration', () => {
   });
 
   it('keeps pool state reads on facades or app-store bridge helpers', async () => {
-    const [poolStoreSource, tokenPairSource, poolApySource, poolViewSource, addFormSource, removeFormSource] =
-      await Promise.all([
-        readSource(poolStoreFile),
-        readSource(files.usePoolTokenPair),
-        readSource(files.usePoolApy),
-        readSource(files.poolView),
-        readSource(files.addLiquidityForm),
-        readSource(files.removeLiquidityForm),
-      ]);
+    const [
+      poolStoreSource,
+      tokenPairSource,
+      poolApySource,
+      poolContainerSource,
+      poolViewSource,
+      addFormSource,
+      removeFormSource,
+    ] = await Promise.all([
+      readSource(poolStoreFile),
+      readSource(files.usePoolTokenPair),
+      readSource(files.usePoolApy),
+      readSource(files.poolContainer),
+      readSource(files.poolView),
+      readSource(files.addLiquidityForm),
+      readSource(files.removeLiquidityForm),
+    ]);
 
     expect(poolStoreSource).not.toContain("from '@/utils/app-store'");
     expect(tokenPairSource).toContain("from '@/stores/pool'");
     expect(tokenPairSource).not.toContain("from '@/utils/app-store'");
     expect(poolApySource).toContain("from '@/stores/pool'");
     expect(poolApySource).not.toContain("from '@/utils/app-store'");
+    expect(poolContainerSource).toContain("from '@/stores/pool'");
+    expect(poolContainerSource).not.toContain("from '@/modules/pool'");
     expect(poolViewSource).toContain("from '@/stores/assets'");
     expect(poolViewSource).toContain("from '@/stores/pool'");
     expect(poolViewSource).not.toContain("from '@/utils/app-store'");
@@ -62,5 +72,9 @@ describe('Pool module store migration', () => {
     expect(removeFormSource).toContain("from '@/stores/assets'");
     expect(removeFormSource).toContain("from '@/stores/pool'");
     expect(removeFormSource).not.toContain("from '@/utils/app-store'");
+  });
+
+  it('removes the deleted pool container wrapper view', async () => {
+    await expect(stat(path.join(poolRoot, 'views', 'PoolContainer.vue'))).rejects.toBeDefined();
   });
 });

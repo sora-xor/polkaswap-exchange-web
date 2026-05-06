@@ -2,8 +2,6 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick, reactive, ref } from 'vue';
 
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-
 import { PoolPageNames } from '@/modules/pool/consts';
 
 const poolStoreMock = reactive({
@@ -35,7 +33,7 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-vi.mock('@/composables/useSelectedTokensRoute', () => ({
+vi.mock('@/shared/navigation/useSelectedTokensRoute', () => ({
   useSelectedTokensRoute: () => ({
     firstRouteAddress,
     secondRouteAddress,
@@ -53,34 +51,23 @@ vi.mock('@/stores/pool', () => ({
   usePoolStore: () => poolStoreMock,
 }));
 
-vi.mock('@/router', () => ({
+vi.mock('vue-router', () => ({
   __esModule: true,
-  default: {
+  useRouter: () => ({
     push: pushMock,
-  },
-  lazyComponent: () => ({
-    name: 'LazyComponentStub',
-    template: '<div class="lazy-component-stub"><slot /></div>',
   }),
 }));
 
-vi.mock('@/modules/pool/router', () => ({
-  poolLazyComponent: () => ({
-    name: 'PoolLazyComponentStub',
-    template: '<div class="pool-lazy-component-stub"><slot /></div>',
-  }),
-}));
-
-const AddLiquidityView = (await import('@/views/AddLiquidity.vue')).default;
+const AddLiquidityView = (await import('@/features/pool/pages/AddLiquidityPage.vue')).default;
 
 const mountView = () =>
   mount(AddLiquidityView, {
     global: {
       stubs: {
-        'generic-page-header': {
+        GenericPageHeader: {
           template: '<div class="generic-page-header-stub"><slot /></div>',
         },
-        'add-liquidity-form': {
+        AddLiquidityForm: {
           template: '<div class="add-liquidity-form-stub"></div>',
         },
       },
@@ -101,13 +88,13 @@ describe('AddLiquidity view', () => {
     walletStoreMock.isLoggedIn = true;
   });
 
-  it('falls back to XOR when the current route is not valid', async () => {
+  it('starts with an empty token pair when the current route is not valid', async () => {
     mountView();
     await nextTick();
 
     expect(parseCurrentRouteMock).toHaveBeenCalledTimes(1);
     expect(poolStoreMock.setAddLiquidityDataFromLiquidity).toHaveBeenCalledWith({
-      firstAddress: XOR.address,
+      firstAddress: '',
       secondAddress: '',
     });
   });

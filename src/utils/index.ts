@@ -5,15 +5,15 @@ import { watch } from 'vue';
 
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
-import type { Currency, CurrencyFields } from '@/shims/wallet-currency-types';
+import type { Currency, CurrencyFields } from '@/lib/soraneo-wallet/src/types/currency';
 import type { Route, RouteLocationNormalizedLoaded } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
 import { app, ExplorerType, type ExplorerLink, SoraNetwork, TranslationConsts } from '@/consts';
 import i18n from '@/lang';
-import { api } from '@/shims/wallet-api';
-import { getExplorerLinks } from '@/shims/wallet-util';
+import { api } from '@/lib/soraneo-wallet/src/api';
+import { getExplorerLinks } from '@/lib/soraneo-wallet/src/util';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
 import getScrollbarWidth from '@/utils/scrollbar-width';
@@ -23,6 +23,7 @@ import {
   getAssetDecimals,
   formatAssetBalance as formatAssetBalanceInternal,
   formatAmountWithSuffix as formatAmountWithSuffixInternal,
+  isAmountValueIntegerOnly as isAmountValueIntegerOnlyInternal,
 } from './asset-formatting';
 import { sortAssets as sortAssetsInternal, sortPools as sortPoolsInternal } from './asset-sort';
 import { toPrecision as toPrecisionInternal } from './fp';
@@ -30,6 +31,7 @@ import { toPrecision as toPrecisionInternal } from './fp';
 export { asZeroValue, getAssetBalance, getAssetDecimals };
 export const formatAssetBalance = formatAssetBalanceInternal;
 export const formatAmountWithSuffix = formatAmountWithSuffixInternal;
+export const isAmountValueIntegerOnly = isAmountValueIntegerOnlyInternal;
 export const sortAssets = sortAssetsInternal;
 export const sortPools = sortPoolsInternal;
 export const toPrecision = toPrecisionInternal;

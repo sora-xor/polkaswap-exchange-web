@@ -18,6 +18,7 @@ export type SwapState = {
   rewards: readonly LPRewardsInfo[];
   route: readonly string[];
   distribution: readonly Distribution[][];
+  isPathAvailable: boolean;
   isAvailable: boolean;
   liquiditySources: LiquiditySourceTypes[];
   swapQuote: Nullable<SwapQuote>;

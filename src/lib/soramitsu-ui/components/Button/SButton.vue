@@ -188,12 +188,13 @@ const font = computed(() => {
 
 .s-button .s-button__spinner {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  display: inline-flex;
+  inset: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-  transform: translate(-50%, -50%);
+  margin: auto;
+  transform: none;
+  line-height: 0;
   pointer-events: none;
 }
 

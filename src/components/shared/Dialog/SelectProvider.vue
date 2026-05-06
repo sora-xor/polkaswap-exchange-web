@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { components } from '@/shims/wallet-components';
 import { computed, onScopeDispose, ref, watch } from 'vue';
 
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
@@ -21,6 +20,8 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useWeb3Store } from '@/stores/web3';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import { PredefinedProvider } from '@/utils/connection/evm/providers';
+import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import WalletComponentExtensionConnectionList from '@/lib/soraneo-wallet/src/components/Connection/List/Extension.vue';
 
 type EvmWalletInfo = {
   extensionName: string;
@@ -35,8 +36,8 @@ type EvmWalletInfo = {
 
 defineOptions({
   components: {
-    DialogBase: components.DialogBase,
-    ExtensionConnectionList: components.ExtensionConnectionList,
+    DialogBase: WalletComponentDialogBase,
+    ExtensionConnectionList: WalletComponentExtensionConnectionList,
   },
 });
 

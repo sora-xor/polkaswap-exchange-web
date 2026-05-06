@@ -4,6 +4,7 @@ import { mount } from '@vue/test-utils';
 
 import SMenu from '@/lib/soramitsu-ui/components/Menu/SMenu.vue';
 import SMenuItem from '@/lib/soramitsu-ui/components/Menu/SMenuItem.vue';
+import sMenuItemSource from '@/lib/soramitsu-ui/components/Menu/SMenuItem.vue?raw';
 
 describe('SMenu', () => {
   it('marks the default active item', () => {
@@ -44,5 +45,11 @@ describe('SMenu', () => {
     expect(items[0].classes()).not.toContain('is-active');
     expect(items[1].classes()).toContain('is-active');
     expect(wrapper.emitted('select')?.[0]).toEqual(['Trade']);
+  });
+
+  it('keeps menu item transitions aligned with the live site', () => {
+    expect(sMenuItemSource).toContain('border-color 300ms ease');
+    expect(sMenuItemSource).toContain('background-color 300ms ease');
+    expect(sMenuItemSource).toContain('color 300ms ease');
   });
 });

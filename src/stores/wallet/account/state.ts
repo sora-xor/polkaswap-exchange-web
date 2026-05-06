@@ -3,11 +3,11 @@ import isElectron from 'is-electron';
 
 import type { Book } from '@/types/common';
 
-import { DefaultPassphraseTimeout } from '@/shims/wallet-consts';
-import { storage, settingsStorage } from '@/shims/wallet-storage';
+import { DefaultPassphraseTimeout } from '@/lib/soraneo-wallet/src/consts';
+import { storage, settingsStorage } from '@/lib/soraneo-wallet/src/util/storage';
 
 import type { AccountState } from './types';
-import type { AppWallet } from '@/shims/wallet-consts';
+import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
 
 export function initialState(): AccountState {
   const addressBook = settingsStorage.get('book');

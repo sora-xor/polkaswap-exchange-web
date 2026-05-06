@@ -4,14 +4,13 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import StatusBadge from '@/modules/staking/demeter/components/StatusBadge.vue';
 
-vi.mock('@/router', () => ({
-  lazyComponent: () =>
-    defineComponent({
-      name: 'StatusBadgeSharedStub',
-      props: ['active', 'stopped', 'apr', 'rewardAsset'],
-      emits: ['click'],
-      template: `<div class="status-badge-shared-stub" @click="$emit('click', $event)"><slot /></div>`,
-    }),
+vi.mock('@/components/shared/StatusBadge.vue', () => ({
+  default: defineComponent({
+    name: 'StatusBadgeSharedStub',
+    props: ['active', 'stopped', 'apr', 'rewardAsset'],
+    emits: ['click'],
+    template: `<div class="status-badge-shared-stub" @click="$emit('click', $event)"><slot /></div>`,
+  }),
 }));
 
 const emitParams = { baseAsset: 'base', poolAsset: 'pool', rewardAsset: 'reward' };

@@ -67,7 +67,6 @@
 </template>
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
 import { useNotification } from '@/composables/useNotification';
@@ -81,15 +80,20 @@ import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import { calcPriceChange, showMostFittingValue } from '@/utils';
 
 import type { AccountAsset, WhitelistIdsBySymbol } from '@sora-substrate/sdk/build/assets/types';
-import type { Alert } from '@/shims/wallet-common-types';
+import type { Alert } from '@/lib/soraneo-wallet/src/types/common';
+import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
+import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
+import WalletComponentTokenAddress from '@/lib/soraneo-wallet/src/components/TokenAddress.vue';
+import WalletComponentTokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 
 defineOptions({
   components: {
-    TokenLogo: components.TokenLogo,
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    TokenAddress: components.TokenAddress,
-    TokenSelectButton: components.TokenSelectButton,
+    TokenLogo: WalletComponentTokenLogo,
+    FormattedAmount: WalletComponentFormattedAmount,
+    FormattedAmountWithFiatValue: WalletComponentFormattedAmountWithFiatValue,
+    TokenAddress: WalletComponentTokenAddress,
+    TokenSelectButton: WalletComponentTokenSelectButton,
   },
 });
 

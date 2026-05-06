@@ -1,15 +1,15 @@
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { computed } from 'vue';
 
-import { HiddenValue, accountIdBasedOperations } from '@/shims/wallet-consts';
-import { formatAddress, groupRewardsByAssetsList } from '@/shims/wallet-util';
+import { HiddenValue, accountIdBasedOperations } from '@/lib/soraneo-wallet/src/consts';
+import { formatAddress, groupRewardsByAssetsList } from '@/lib/soraneo-wallet/src/util';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
 import { useTranslation } from '@/composables/useTranslation';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { History } from '@sora-substrate/sdk';
-import type { PolkadotJsAccount } from '@/shims/wallet-common-types';
+import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 
 const twoAssetsBasedOperations = [
   Operation.AddLiquidity,

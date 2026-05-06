@@ -20,7 +20,7 @@ const withNotificationsMock = vi.hoisted(() => vi.fn(async (handler: () => Promi
 const showAppAlertMock = vi.hoisted(() => vi.fn());
 const closeVaultMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
   return createWalletMock({
     components: {
@@ -50,12 +50,12 @@ vi.mock('@wallet', async () => {
 
 vi.mock('@/modules/vault/components/CloseVaultDialog.vue?raw', () => ({}));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => ({
+vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
+  default: {
     name: 'PairTokenLogoStub',
     props: ['firstToken', 'secondToken'],
     template: '<div class="pair-token-logo"></div>',
-  }),
+  },
 }));
 
 vi.mock('@/stores/wallet', () => ({

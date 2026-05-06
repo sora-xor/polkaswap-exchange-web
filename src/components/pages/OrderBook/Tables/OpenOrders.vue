@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
-import { components } from '@/shims/wallet-components';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useLoading } from '@/composables/useLoading';
@@ -27,11 +26,12 @@ import OrderTable from './OrderTable.vue';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
+import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
 
 defineOptions({
   components: {
     OrderTable,
-    HistoryPagination: components.HistoryPagination,
+    HistoryPagination: WalletComponentHistoryPagination,
   },
 });
 

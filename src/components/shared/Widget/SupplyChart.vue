@@ -42,13 +42,17 @@
 
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components } from '@/shims/wallet-components';
+import ChartSkeleton from '@/components/shared/Chart/ChartSkeleton.vue';
+import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
+import PriceChange from '@/components/shared/PriceChange.vue';
+import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';
+import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';
+import BaseWidget from '@/components/shared/Widget/Base.vue';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
-import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, ASSET_SUPPLY_FILTERS } from '@/consts/snapshots';
 import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
@@ -57,7 +61,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useWidgetTokenSelect } from '@/composables/useWidgetTokenSelect';
 import { fetchAssetSupplyData } from '@/indexer/queries/asset/supply';
 import VChart from '@/lib/echarts/component';
-import { lazyComponent } from '@/router';
+import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
@@ -72,14 +76,6 @@ type ChartData = {
   mint: number;
   burn: number;
 };
-
-const ChartSkeleton = lazyComponent(Components.ChartSkeleton);
-const PriceChange = lazyComponent(Components.PriceChange);
-const BaseWidget = lazyComponent(Components.BaseWidget);
-const StatsFilter = lazyComponent(Components.StatsFilter);
-const TokenSelectButton = lazyComponent(Components.TokenSelectButton);
-const SelectToken = lazyComponent(Components.SelectToken);
-const { FormattedAmount } = components;
 
 const props = withDefaults(
   defineProps<{

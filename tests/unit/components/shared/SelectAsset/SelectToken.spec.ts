@@ -205,8 +205,32 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => walletStoreMock,
 }));
 
-vi.mock('@/router', () => ({
-  lazyComponent: () => SelectAssetListStub,
+vi.mock('@/components/shared/SelectAsset/List.vue', () => ({
+  default: SelectAssetListStub,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  default: DialogBaseStub,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/Input/SearchInput.vue', () => ({
+  default: SearchInputStub,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/shared/AssetsFilter.vue', () => ({
+  default: defineComponent({
+    name: 'AssetsFilterStub',
+    template: '<div class="assets-filter-stub"></div>',
+  }),
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/components/AddAsset/AddAssetDetailsCard.vue', () => ({
+  default: defineComponent({
+    name: 'AddAssetDetailsCardStub',
+    props: ['asset', 'theme', 'whitelist', 'whitelistIdsBySymbol', 'loading'],
+    emits: ['add'],
+    template: '<div class="add-asset-details-card-stub"></div>',
+  }),
 }));
 
 vi.mock('@/components/shared/SelectAsset/utils', () => ({
@@ -217,7 +241,7 @@ vi.mock('@/utils', () => ({
   sortAssets: (a: { symbol?: string }, b: { symbol?: string }) => (a.symbol ?? '').localeCompare(b.symbol ?? ''),
 }));
 
-vi.mock('@wallet', async () => {
+vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
 
   return createWalletMock({
@@ -319,6 +343,12 @@ describe('SelectToken', () => {
     expect(selectTokenSource).toContain('.s-tabs--exchange .el-tabs__nav-wrap,');
     expect(selectTokenSource).toContain('.s-tabs--exchange .el-tabs__nav-scroll {');
     expect(selectTokenSource).toContain('width: 100%;');
+  });
+
+  it('loads the component through direct shared imports instead of the router lazy registry', () => {
+    expect(selectTokenSource).not.toContain('lazyComponent(');
+    expect(selectTokenSource).not.toContain("from '@/router'");
+    expect(selectTokenSource).toContain("from '@/lib/soraneo-wallet/src/components/DialogBase.vue'");
   });
 
   it('switches the search placeholder when the custom tab is selected', async () => {
