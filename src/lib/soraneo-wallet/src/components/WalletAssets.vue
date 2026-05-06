@@ -3,15 +3,15 @@
     <wallet-assets-headline :assets-fiat-amount="assetsFiatAmount"></wallet-assets-headline>
     <s-scrollbar class="wallet-assets-scrollbar">
       <draggable
-        v-if="assetList.length"
-        v-model="assetList"
+        v-if="visibleAssetList.length"
+        v-model="visibleAssetList"
         class="wallet-assets__draggable"
         handle=".wallet-assets-dashes"
         item-key="address"
         :move="onMove"
       >
         <template #item="{ element: asset, index }">
-          <div v-if="showAsset(asset)" class="wallet-assets-item s-flex">
+          <div class="wallet-assets-item s-flex">
             <div v-button class="wallet-assets-dashes"><div class="wallet-assets-three-dash"></div></div>
             <asset-list-item
               :asset="asset"
@@ -110,13 +110,17 @@ import { useWalletTranslation } from '../composables/useWalletTranslation';
 import { useWalletStore } from '@/stores/wallet';
 
 import { RouteNames, HiddenValue, WalletFilteringOptions } from '../consts';
+import { mergeVisibleAssetOrder } from './walletAssetsOrder';
 
 import AssetListItem from './AssetListItem.vue';
 import FormattedAmountWithFiatValue from './FormattedAmountWithFiatValue.vue';
 import WalletAssetsHeadline from './WalletAssetsHeadline.vue';
 
 import type { WalletAssetFilters, WalletPermissions } from '../consts';
-import type { AccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, AccountBalance, Whitelist } from '@sora-substrate/sdk/build/assets/types';
+
+type AccountBalanceKey = keyof Pick<AccountBalance, 'locked' | 'total' | 'transferable'>;
+
 type DraggableMoveEvent<T> = {
   draggedContext: { element: T };
   relatedContext: { element: T };
@@ -174,10 +178,15 @@ export default {
         setAccountAssets(sortedAccountAssets);
       },
     });
-    const visibleAssetList = computed(() => assetList.value.filter((asset: AccountAsset) => showAsset(asset)));
+    const visibleAssetList = computed<Array<AccountAsset>>({
+      get: () => assetList.value.filter((asset: AccountAsset) => showAsset(asset)),
+      set: (sortedVisibleAssets: Array<AccountAsset>) => {
+        assetList.value = mergeVisibleAssetOrder(assetList.value, sortedVisibleAssets, showAsset);
+      },
+    });
     const assetsAreHidden = computed(() => visibleAssetList.value.length === 0);
     const formattedAccountAssets = computed(() =>
-      accountAssets.value.filter((asset) => asset.balance && !Number.isNaN(+asset.balance.transferable))
+      accountAssets.value.filter((asset) => asset.balance && hasCodecBalanceValue(asset.balance.transferable))
     );
     const assetsFiatAmount = computed<Nullable<string>>(() => {
       if (isEmpty(fiatPriceObject.value)) {
@@ -188,10 +197,9 @@ export default {
       }
       const fiatAmount = formattedAccountAssets.value.reduce((sum: FPNumber, asset: AccountAsset) => {
         const price = getAssetFiatPrice(asset);
+        const transferableBalance = getCodecBalanceValue(asset, 'transferable');
         return price
-          ? sum.add(
-              getFPNumberFromCodec(asset.balance.transferable, asset.decimals).mul(FPNumber.fromCodecValue(price))
-            )
+          ? sum.add(getFPNumberFromCodec(transferableBalance, asset.decimals).mul(FPNumber.fromCodecValue(price)))
           : sum;
       }, new FPNumber(0));
       return fiatAmount ? fiatAmount.toLocaleString() : null;
@@ -243,23 +251,39 @@ export default {
       return true;
     }
 
+    /**
+     * Validates codec balance strings without coercing them through native numbers.
+     */
+    function hasCodecBalanceValue(value: unknown): value is AccountBalance[AccountBalanceKey] {
+      return typeof value === 'string' && /^\d+$/.test(value.trim());
+    }
+
+    /**
+     * Returns a safe codec balance so incomplete SDK records still render a token amount.
+     */
+    function getCodecBalanceValue(asset: AccountAsset, balanceKey: AccountBalanceKey): AccountBalance[AccountBalanceKey] {
+      const value = asset.balance?.[balanceKey];
+
+      return hasCodecBalanceValue(value) ? value : ('0' as AccountBalance[AccountBalanceKey]);
+    }
+
     function getBalance(asset: AccountAsset): string {
-      return `${formatCodecNumber(asset.balance.transferable, asset.decimals)}`;
+      return formatCodecNumber(getCodecBalanceValue(asset, 'transferable'), asset.decimals);
     }
 
     function isZeroBalance(asset: AccountAsset): boolean {
-      return isCodecZero(asset.balance.transferable, asset.decimals);
+      return isCodecZero(getCodecBalanceValue(asset, 'transferable'), asset.decimals);
     }
 
     function hasLockedBalance(asset: AccountAsset): boolean {
-      return !isCodecZero(asset.balance.locked, asset.decimals);
+      return !isCodecZero(getCodecBalanceValue(asset, 'locked'), asset.decimals);
     }
 
     function formatFrozenBalance(asset: AccountAsset): string {
       if (shouldBalanceBeHidden.value) {
         return HiddenValue;
       }
-      return formatCodecNumber(asset.balance.locked, asset.decimals);
+      return formatCodecNumber(getCodecBalanceValue(asset, 'locked'), asset.decimals);
     }
 
     function handleAssetSwap(asset: AccountAsset): void {
@@ -293,7 +317,7 @@ export default {
 
       const isNft = api.assets.isNft(asset);
       const isWhitelisted = api.assets.isWhitelist(asset, whitelist.value as Whitelist);
-      const hasZeroBalance = !asset.decimals ? asset.balance.total === '0' : asset.balance.total[8] === undefined;
+      const hasZeroBalance = isCodecZero(getCodecBalanceValue(asset, 'total'), asset.decimals);
 
       if (tokenType === WalletFilteringOptions.Currencies && isNft) {
         return false;
@@ -326,6 +350,7 @@ export default {
       whitelist,
       isAssetPinned: isAssetPinned.value,
       assetList,
+      visibleAssetList,
       assetsAreHidden,
       computedClasses,
       assetsFiatAmount,

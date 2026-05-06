@@ -1,5 +1,6 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
+import { u8aToHex } from '@polkadot/util';
 
 import { ApiAccount } from './apiAccount';
 import { DexId } from './dex/consts';
@@ -11,6 +12,14 @@ import type { NetworkFeesObject } from './types';
 
 // We don't need to know real account address for checking network fees
 const mockAccountAddress = 'cnRuw2R6EVgQW3e4h8XeiFym2iU17fNsms15zRGcg9YEJndAs';
+
+// Matches the maximum JSON remark bytes BurnDialog can submit for a Nexus recipient.
+const SORA_NEXUS_BURN_REMARK_JSON_OVERHEAD_BYTES = 55;
+const SORA_NEXUS_RECIPIENT_INPUT_MAX_LENGTH = 128;
+const SORA_NEXUS_RECIPIENT_MAX_UTF8_BYTES_PER_CHAR = 3;
+const SORA_NEXUS_XOR_BURN_REMARK_MAX_BYTES =
+  SORA_NEXUS_BURN_REMARK_JSON_OVERHEAD_BYTES +
+  SORA_NEXUS_RECIPIENT_INPUT_MAX_LENGTH * SORA_NEXUS_RECIPIENT_MAX_UTF8_BYTES_PER_CHAR;
 
 export class BaseApi<T = void> extends ApiAccount<T> {
   /**
@@ -184,7 +193,7 @@ export class BaseApi<T = void> extends ApiAccount<T> {
         case Operation.BurnWithRemark:
           return this.api.tx.utility.batchAll([
             this.api.tx.assets.burn('', 0),
-            this.api.tx.system.remark(new Uint8Array()),
+            this.api.tx.system.remark(u8aToHex(new Uint8Array(SORA_NEXUS_XOR_BURN_REMARK_MAX_BYTES))),
           ]);
         case Operation.OrderBookPlaceLimitOrder:
           return this.api.tx.orderBook.placeLimitOrder(

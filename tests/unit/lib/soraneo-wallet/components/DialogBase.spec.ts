@@ -3,6 +3,7 @@ import { defineComponent } from 'vue';
 import { describe, expect, it } from 'vitest';
 
 import DialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
+import dialogBaseSource from '@/lib/soraneo-wallet/src/components/DialogBase.vue?raw';
 
 const serializeClass = (value: unknown): string => {
   if (Array.isArray(value)) {
@@ -74,6 +75,10 @@ const SModalStub = defineComponent({
 });
 
 describe('DialogBase', () => {
+  it('clips header and content painting to the rounded dialog surface', () => {
+    expect(dialogBaseSource).toMatch(/\.dialog-card\s*\{[\s\S]*overflow:\s*hidden;/);
+  });
+
   it('maps legacy dialog attrs onto the compatibility modal shell', () => {
     const wrapper = mount(DialogBase, {
       props: {

@@ -184,48 +184,6 @@ $button-size: var(--s-size-medium);
     &_action {
       display: flex;
       align-items: flex-start;
-
-      :deep(.s-button) {
-        display: block;
-        height: 42px;
-        min-height: 42px;
-        box-shadow: var(--s-shadow-element);
-        font-size: var(--s-font-size-small);
-        line-height: 14px;
-        font-weight: 500;
-        background-color: var(--s-color-utility-body);
-        border-color: var(--s-color-base-border-primary);
-      }
-
-      :deep(.s-button + .s-button) {
-        margin-left: 10px;
-      }
-
-      :deep(.s-button .s-button__text) {
-        font-size: var(--s-font-size-small);
-        line-height: 14px;
-        font-weight: 500;
-      }
-
-      :deep(.s-button.s-button_type_secondary),
-      :deep(.s-button.s-tertiary) {
-        min-width: 103px;
-        padding: 5px 13px;
-      }
-
-      :deep(.s-button.s-button_type_action),
-      :deep(.s-button.s-action) {
-        width: 42px;
-        min-width: 42px;
-        padding: 0;
-        color: var(--s-color-base-content-tertiary);
-      }
-
-      :deep(.s-button.s-button_type_action .s-button__icon > i),
-      :deep(.s-button.s-action .s-button__icon > i) {
-        color: inherit;
-        opacity: 0.7;
-      }
     }
     &--center {
       padding-left: calc(#{$button-size} + 16px);

@@ -3,6 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Operation } from '@sora-substrate/sdk';
 
+import burnDialogSource from '@/components/pages/Burn/BurnDialog.vue?raw';
+
 const walletMocks = vi.hoisted(() => ({
   burn: vi.fn(),
   burnWithRemark: vi.fn(),
@@ -31,8 +33,19 @@ const formattedAmountMocks = vi.hoisted(() => {
         const multiplier = typeof other === 'object' ? other.value : Number(other);
         return createFp(numeric * multiplier);
       },
+      div(other: ReturnType<typeof createFp> | string | number) {
+        const divisor = typeof other === 'object' ? other.value : Number(other);
+        return createFp(numeric / divisor);
+      },
       sub(other: ReturnType<typeof createFp>) {
         return createFp(numeric - other.value);
+      },
+      lt(other: ReturnType<typeof createFp> | string | number) {
+        const target = typeof other === 'object' ? other.value : Number(other);
+        return numeric < target;
+      },
+      isZero() {
+        return numeric === 0;
       },
       isLtZero() {
         return numeric < 0;
@@ -80,9 +93,9 @@ vi.mock('@/lib/soraneo-wallet/src/components/InfoLine.vue', () => ({
 vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
   default: {
     name: 'TokenInputStub',
-    props: ['modelValue'],
+    props: ['max', 'modelValue', 'title', 'token'],
     emits: ['update:modelValue'],
-    template: '<div class="token-input-stub"><slot /></div>',
+    template: '<div class="token-input-stub" :data-title="title" :data-symbol="token?.symbol"><slot /></div>',
   },
 }));
 
@@ -201,6 +214,40 @@ beforeEach(async () => {
 describe('BurnDialog (pages)', () => {
   const validNexusRecipient = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃaﾘﾒﾓQﾗrﾒoﾘﾅnｳﾘbQｳQJﾆLJ5HSE';
 
+  it('keeps dedicated burn dialog hooks for the neumorphic UI treatment', () => {
+    expect(burnDialogSource).toContain('custom-class="dialog--confirm-burn"');
+    expect(burnDialogSource).toContain('class="burn-dialog__amount-fields"');
+    expect(burnDialogSource).toContain('handleBurnedInputField');
+    expect(burnDialogSource).toContain('class="burn-dialog__metrics"');
+    expect(burnDialogSource).toContain('class="burn-dialog__submit s-typography-button--large"');
+    expect(burnDialogSource).toContain('.dialog-card.dialog--confirm-burn');
+    expect(burnDialogSource).toContain('--burn-highlight');
+    expect(burnDialogSource).toContain('box-shadow:');
+    expect(burnDialogSource).toContain('inset');
+  });
+
+  it('keeps the SORA v3 XOR and reserved token inputs synchronized with the fixed rate', async () => {
+    const wrapper = mountComponent({ rate: '0.02' });
+    const [burnedInput, receivedInput] = wrapper.findAllComponents({ name: 'TokenInputStub' });
+
+    expect(burnedInput.props('title')).toBe('burnPage.soraV3XorAmountTitle');
+    expect(burnedInput.props('modelValue')).toBe('');
+    expect(receivedInput.props('title')).toBe('HOW MUCH RCV DO YOU WANT?');
+    expect(receivedInput.props('modelValue')).toBe('');
+
+    await receivedInput.vm.$emit('update:modelValue', '10');
+    await wrapper.vm.$nextTick();
+
+    expect(receivedInput.props('modelValue')).toBe('10');
+    expect(burnedInput.props('modelValue')).toBe('0.2');
+
+    await burnedInput.vm.$emit('update:modelValue', '0.5');
+    await wrapper.vm.$nextTick();
+
+    expect(receivedInput.props('modelValue')).toBe('25');
+    expect(burnedInput.props('modelValue')).toBe('0.5');
+  });
+
   it('alerts and emits confirm without burning when balance is insufficient', async () => {
     storeMocks.networkFees[Operation.Burn] = '5';
     storeMocks.accountXor = { balance: { transferable: '10' } };
@@ -276,13 +323,34 @@ describe('BurnDialog (pages)', () => {
     });
   });
 
+  it('asks for the required SORA Nexus recipient before showing insufficient balance', async () => {
+    storeMocks.networkFees[Operation.BurnWithRemark] = '2';
+    storeMocks.accountXor = { balance: { transferable: '0' } };
+
+    const wrapper = mountComponent({ requiresNexusRecipient: true });
+
+    (wrapper.vm as unknown as { handleInputField: (value: string) => void }).handleInputField('2');
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.find('.confirm-button').text()).toBe('burnPage.enterNexusRecipient');
+
+    await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
+    await wrapper.vm.$nextTick();
+
+    expect(alertMock).toHaveBeenCalledWith('burnPage.enterNexusRecipient', { title: 'errorText' });
+    expect(transactionMocks.withNotifications).not.toHaveBeenCalled();
+    expect(walletMocks.burn).not.toHaveBeenCalled();
+    expect(walletMocks.burnWithRemark).not.toHaveBeenCalled();
+    expect(wrapper.emitted('update:visible')).toBeUndefined();
+  });
+
   it('does not burn when the required SORA Nexus recipient is invalid', async () => {
     storeMocks.accountXor = { balance: { transferable: '100' } };
 
     const wrapper = mountComponent({ requiresNexusRecipient: true });
 
     (wrapper.vm as unknown as { handleInputField: (value: string) => void }).handleInputField('2');
-    await wrapper.find('.nexus-input').setValue('not-a-nexus-account');
+    (wrapper.vm as unknown as { nexusRecipient: string }).nexusRecipient = 'not-a-nexus-account';
     await wrapper.vm.$nextTick();
 
     await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();

@@ -326,13 +326,22 @@ const formatRewards = async (rewards: ClaimedRewardItem[]): Promise<RewardInfo[]
 
 const formatAmount = (amount: string): string => (amount ? new FPNumber(amount).toString() : '0');
 
-const getBatchMintOrBurnData = (transaction: HistoryElement, method: string): Nullable<HistoryElementAssetBurn> => {
+/** Formats a raw codec balance from nested batch call arguments as a natural amount. */
+const formatCodecAmount = (amount: string, decimals = FPNumber.DEFAULT_PRECISION): string =>
+  amount ? FPNumber.fromCodecValue(amount, decimals).toString() : '0';
+
+type MintOrBurnData = {
+  data: HistoryElementAssetBurn;
+  isCodecAmount: boolean;
+};
+
+const getBatchMintOrBurnData = (transaction: HistoryElement, method: string): Nullable<MintOrBurnData> => {
   if (!isModuleMethod(transaction as HistoryElementBatchCall, ModuleNames.Utility, ModuleMethods.UtilityBatchAll)) {
     return null;
   }
 
   const call = getBatchCall(transaction.calls, { module: ModuleNames.Assets, method });
-  return call ? (getCallDataArgs(call) as HistoryElementAssetBurn) : null;
+  return call ? { data: getCallDataArgs(call) as HistoryElementAssetBurn, isCodecAmount: true } : null;
 };
 
 const decodeRemark = (value: unknown): Nullable<string> => {
@@ -357,7 +366,8 @@ const getSystemRemark = (transaction: HistoryElement): Nullable<string> => {
 
 const parseMintOrBurn = async (transaction: HistoryElement, payload: HistoryItem) => {
   const method = payload.type === Operation.Mint ? ModuleMethods.AssetsMint : ModuleMethods.AssetsBurn;
-  const data = getBatchMintOrBurnData(transaction, method) ?? (transaction.data as HistoryElementAssetBurn);
+  const mintOrBurnData = getBatchMintOrBurnData(transaction, method);
+  const data = mintOrBurnData?.data ?? (transaction.data as HistoryElementAssetBurn);
 
   const assetAddress = (data as HistoryElementAssetBurn & { asset_id?: string }).assetId ?? (data as any).asset_id;
   const amount = data?.amount;
@@ -367,7 +377,7 @@ const parseMintOrBurn = async (transaction: HistoryElement, payload: HistoryItem
   const asset = await getAssetByAddress(assetAddress);
   const comment = payload.type === Operation.Burn ? getSystemRemark(transaction) : null;
 
-  payload.amount = formatAmount(amount);
+  payload.amount = mintOrBurnData?.isCodecAmount ? formatCodecAmount(amount, asset?.decimals) : formatAmount(amount);
   payload.assetAddress = assetAddress;
   payload.symbol = getAssetSymbol(asset);
   payload.comment = comment ?? undefined;

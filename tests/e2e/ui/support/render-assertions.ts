@@ -17,7 +17,6 @@ export const VISUAL_TEST_MASK_SELECTORS = [
   '.echarts',
   '.skeleton',
   '.app-menu',
-  'a[href="#/burn"]',
 ] as const;
 
 export const createVisualMaskLocators = (page: Page): Locator[] => {

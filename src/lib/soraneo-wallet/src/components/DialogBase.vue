@@ -177,6 +177,7 @@ const handleBackClick = () => {
   background: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-surface);
+  overflow: hidden;
 }
 
 .dialog-card__header {

@@ -9,7 +9,8 @@ describe('ExploreOverallStats source styles', () => {
     expect(exploreOverallStatsSource).toContain('shadow="never"');
     expect(exploreOverallStatsSource).toContain('.stats-column {');
     expect(exploreOverallStatsSource).toContain('border-style: none;');
-    expect(exploreOverallStatsSource).toContain('flex-basis: calc(var(--s-col-span-width-current) + 6px);');
+    expect(exploreOverallStatsSource).not.toContain('flex-basis: calc(var(--s-col-span-width-current) + 6px);');
+    expect(exploreOverallStatsSource).not.toContain('max-width: calc(var(--s-col-span-width-current) + 6px);');
     expect(exploreOverallStatsSource).toContain('.stats-card {');
     expect(exploreOverallStatsSource).toContain('padding: $inner-spacing-mini $inner-spacing-small;');
     expect(exploreOverallStatsSource).toContain('box-shadow: var(--s-shadow-element-pressed);');

@@ -261,11 +261,18 @@
     "title": "Allow camera access in browser settings"
   },
   "burnPage": {
+    "copySoraNetworkTxHash": "Copy SORA Network tx hash",
     "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
     "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+    "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
+    "minamotoClaimTitle": "Your Minamoto claim details",
     "nexusRecipientLabel": "SORA Nexus account",
     "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-    "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction."
+    "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
+    "soraNetworkTxHashLabel": "SORA Network tx hash",
+    "soraNexusXorLabel": "SORA Nexus XOR",
+    "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
+    "ssTokensLabel": "SS tokens"
   },
   "buttons": {
     "chooseAToken": "Choose a token",

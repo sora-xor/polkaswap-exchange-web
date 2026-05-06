@@ -52,7 +52,7 @@ describe('IndexerDataParser', () => {
           data: {
             args: {
               assetId: XOR.address,
-              amount: '2',
+              amount: '2000000000000000000',
               amountUSD: '0',
             },
           },
