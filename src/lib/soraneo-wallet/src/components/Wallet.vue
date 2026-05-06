@@ -1,7 +1,15 @@
 <template>
-  <wallet-base :title="headerTitle" :show-back="!!selectedTransaction" :reset-focus="headerTitle" @back="handleBack">
+  <wallet-base
+    :class="{ 'wallet-dashboard': !selectedTransaction }"
+    :title="headerTitle"
+    :show-back="!!selectedTransaction"
+    :reset-focus="headerTitle"
+    @back="handleBack"
+  >
     <template v-if="!selectedTransaction" #actions>
-      <s-button :type="isMultisig() ? 'primary' : 'tertiary'" @click="handleMST"> MULTI-SIG </s-button>
+      <s-button class="wallet-dashboard__mst" :type="isMultisig() ? 'primary' : 'tertiary'" @click="handleMST">
+        MULTI-SIG
+      </s-button>
       <!-- <s-button @click="handleEncrypt">Encrypt</s-button> -->
 
       <s-button type="action" :tooltip="t('accountSettings.title')" @click="handleAccountSettings">
@@ -18,39 +26,41 @@
     </template>
 
     <wallet-account v-if="!selectedTransaction" class="wallet-account-panel">
-      <qr-code-scan-button alternative @change="parseQrCodeValue"></qr-code-scan-button>
+      <div class="wallet-account-actions">
+        <qr-code-scan-button alternative @change="parseQrCodeValue"></qr-code-scan-button>
 
-      <s-button
-        type="action"
-        size="small"
-        alternative
-        rounded
-        :tooltip="t('code.receive')"
-        @click="receiveByQrCode(null)"
-      >
-        <s-icon name="finance-receive-show-QR-24" size="24"></s-icon>
-      </s-button>
+        <s-button
+          type="action"
+          size="small"
+          alternative
+          rounded
+          :tooltip="t('code.receive')"
+          @click="receiveByQrCode(null)"
+        >
+          <s-icon name="finance-receive-show-QR-24" size="24"></s-icon>
+        </s-button>
 
-      <s-button
-        type="action"
-        size="small"
-        alternative
-        rounded
-        :tooltip="t('account.switch')"
-        @click="handleSwitchAccount"
-      >
-        <s-icon name="arrows-refresh-ccw-24" size="24"></s-icon>
-      </s-button>
+        <s-button
+          type="action"
+          size="small"
+          alternative
+          rounded
+          :tooltip="t('account.switch')"
+          @click="handleSwitchAccount"
+        >
+          <s-icon name="arrows-refresh-ccw-24" size="24"></s-icon>
+        </s-button>
 
-      <account-actions-menu
-        v-if="!isExternal"
-        :actions="accountActions"
-        @select="handleAccountActionType"
-      ></account-actions-menu>
+        <account-actions-menu
+          v-if="!isExternal"
+          :actions="accountActions"
+          @select="handleAccountActionType"
+        ></account-actions-menu>
+      </div>
     </wallet-account>
 
     <div v-show="!selectedTransaction" class="wallet">
-      <s-tabs v-model="currentTab" type="rounded">
+      <s-tabs v-model="currentTab" class="wallet-tabs" type="rounded">
         <s-tab v-for="tab in WalletTabs" :key="tab" :label="t(`wallet.${tab}`)" :name="tab"></s-tab>
       </s-tabs>
       <component :is="currentTabComponent" @swap="handleSwap"></component>
@@ -273,6 +283,218 @@ onMounted(() => {
 
   :deep(.el-tabs__item) {
     text-transform: uppercase;
+  }
+}
+
+.wallet-dashboard {
+  max-width: min(680px, calc(100vw - 32px));
+  width: 100%;
+
+  &.base,
+  &.container.container--wallet {
+    max-width: min(680px, calc(100vw - 32px));
+  }
+
+  :deep(.el-card__header) {
+    padding-bottom: 4px;
+  }
+
+  :deep(.base-title) {
+    align-items: flex-start;
+    gap: 16px;
+    height: auto;
+    min-height: var(--s-size-medium);
+    margin-bottom: 20px;
+    padding-right: 0;
+  }
+
+  :deep(.base-title_text) {
+    line-height: var(--s-line-height-medium);
+    white-space: normal;
+  }
+
+  :deep(.base-title_action) {
+    position: static;
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    max-width: 50%;
+    margin-left: auto;
+  }
+
+  :deep(.base-title_action .s-button + .s-button) {
+    margin-left: 0;
+  }
+
+  :deep(.base-title_action .s-button) {
+    box-shadow: none;
+    border-color: var(--s-color-base-border-primary);
+  }
+
+  :deep(.base-title_action .wallet-dashboard__mst) {
+    min-width: 96px;
+  }
+
+  .wallet {
+    margin-top: 20px;
+    padding: 0 24px 24px;
+  }
+
+  .wallet-tabs {
+    :deep(.el-tabs__nav-wrap) {
+      padding: 4px;
+      background: var(--s-color-utility-body);
+      border: 1px solid var(--s-color-base-border-primary);
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    :deep(.el-tabs__item) {
+      min-height: 36px;
+      line-height: 36px;
+      border-radius: 6px;
+      font-size: var(--s-font-size-small);
+      letter-spacing: 0;
+    }
+
+    :deep(.el-tabs__item.is-active) {
+      background: var(--s-color-utility-surface);
+      box-shadow: var(--s-shadow-element);
+    }
+  }
+}
+
+.wallet-account-panel {
+  margin: 0 24px;
+
+  &.s-card.neumorphic {
+    border: 1px solid var(--s-color-base-border-primary);
+    background: var(--s-color-utility-body);
+    box-shadow: none;
+  }
+
+  :deep(.account) {
+    min-height: 72px;
+    gap: 16px;
+  }
+
+  :deep(.account-avatar) {
+    width: 44px;
+    height: 44px;
+  }
+
+  :deep(.account-gravatar) {
+    width: 40px;
+    height: 40px;
+    border-color: var(--s-color-theme-accent);
+  }
+
+  :deep(.account-details) {
+    min-width: 0;
+    gap: 16px;
+  }
+
+  :deep(.account-credentials_name) {
+    font-size: var(--s-font-size-big);
+    line-height: var(--s-line-height-medium);
+  }
+
+  :deep(.account-credentials_description) {
+    max-width: 100%;
+  }
+}
+
+.wallet-account-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+
+  :deep(.s-button + .s-button) {
+    margin-left: 0;
+  }
+
+  :deep(.s-button),
+  :deep(.qr-code-container),
+  :deep(.account-actions) {
+    flex: 0 0 auto;
+  }
+
+  :deep(.s-button.s-button_size_sm),
+  :deep(.s-button.s-small) {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    border-color: var(--s-color-base-border-primary);
+    background: var(--s-color-utility-surface);
+    box-shadow: none;
+    color: var(--s-color-base-content-secondary);
+  }
+
+  :deep(.account-actions) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--s-color-base-border-primary);
+    border-radius: 50%;
+    background: var(--s-color-utility-surface);
+    color: var(--s-color-base-content-secondary);
+  }
+
+  :deep(.s-button:hover),
+  :deep(.s-button:focus),
+  :deep(.account-actions:hover),
+  :deep(.account-actions:focus-within) {
+    color: var(--s-color-theme-accent);
+  }
+}
+
+@media (max-width: 640px) {
+  .wallet-dashboard {
+    max-width: calc(100vw - 20px);
+
+    :deep(.base-title) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    :deep(.base-title_action) {
+      justify-content: flex-start;
+      max-width: 100%;
+      margin-left: 0;
+    }
+
+    .wallet {
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+  }
+
+  .wallet-account-panel {
+    margin-right: 16px;
+    margin-left: 16px;
+
+    :deep(.account) {
+      align-items: flex-start;
+    }
+
+    :deep(.account-details) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+  }
+
+  .wallet-account-actions {
+    justify-content: flex-start;
+    margin-left: 0;
   }
 }
 </style>

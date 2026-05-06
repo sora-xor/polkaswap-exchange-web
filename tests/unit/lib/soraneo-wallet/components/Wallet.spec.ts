@@ -97,8 +97,10 @@ describe('Wallet Wallet', () => {
     expect(resetTxDetailsId).toHaveBeenCalledTimes(1);
   });
 
-  it('does not add local-only icon dimming overrides to the wallet account panel', () => {
-    expect(walletSource).not.toContain('.wallet-account-panel');
+  it('uses the connected-wallet dashboard layout without local icon dimming overrides', () => {
+    expect(walletSource).toContain(':class="{ \'wallet-dashboard\': !selectedTransaction }"');
+    expect(walletSource).toContain('class="wallet-account-actions"');
+    expect(walletSource).toContain('class="wallet-tabs"');
     expect(walletSource).not.toContain('opacity: 0.7');
   });
 

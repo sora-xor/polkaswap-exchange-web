@@ -366,12 +366,25 @@ $padding: 5px;
   &-item {
     position: relative;
     background-color: var(--s-color-utility-surface);
-    border-radius: calc(var(--s-border-radius-mini) / 2);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      transform 150ms ease;
+
+    &:hover,
+    &:focus-within {
+      border-color: var(--s-color-base-border-primary);
+      background-color: var(--s-color-utility-body);
+      transform: translateY(-1px);
+    }
   }
 
   &-dashes {
     position: absolute;
     top: 25%;
+    left: 8px;
     height: 50%;
     width: 10px;
     cursor: grab;
@@ -417,7 +430,7 @@ $padding: 5px;
 
   .asset {
     .logo {
-      margin-left: 20px;
+      margin-left: 28px;
     }
 
     .formatted-amount {
@@ -487,19 +500,60 @@ $padding: 5px;
     margin-top: 16px;
   }
 
+  &__draggable {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
   &__button {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    border-color: var(--s-color-base-border-primary);
+    background: var(--s-color-utility-surface);
+    box-shadow: none;
+    color: var(--s-color-base-content-secondary);
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease,
+      transform 150ms ease;
+
     & + & {
       margin-left: 0;
+    }
+
+    &:hover,
+    &:focus {
+      border-color: var(--s-color-theme-accent);
+      background: var(--s-color-utility-body);
+      color: var(--s-color-theme-accent);
+      transform: translateY(-1px);
     }
   }
 
   &-divider {
-    margin: 0;
+    display: none;
   }
 
   &-item {
     display: flex;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .wallet-assets {
+    &__button {
+      width: 32px;
+      min-width: 32px;
+      height: 32px;
+      min-height: 32px;
+    }
   }
 }
 </style>

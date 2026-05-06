@@ -143,15 +143,14 @@ defineExpose({
     align-items: baseline;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 12px;
     padding-top: #{$basic-spacing-tiny};
     padding-bottom: #{$basic-spacing-tiny};
-    text-align: center;
+    text-align: left;
     font-size: var(--s-font-size-mini);
 
-    &--no-fiat > span {
-      position: relative;
-      left: 100%;
-      transform: translateX(-100%);
+    &--no-fiat {
+      justify-content: flex-end;
     }
   }
   &__divider {
@@ -160,18 +159,20 @@ defineExpose({
 }
 .total-fiat-values {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   &__title {
     text-transform: uppercase;
-    padding-right: #{$basic-spacing-extra-mini};
     white-space: nowrap;
     font-weight: 300;
     letter-spacing: var(--s-letter-spacing-small);
   }
   .formatted-amount--fiat-value {
     display: block;
-    font-size: var(--s-font-size-small);
-    font-weight: 500;
+    font-size: var(--s-font-size-large);
+    font-weight: 700;
+    line-height: var(--s-line-height-small);
   }
 }
 </style>
@@ -215,15 +216,21 @@ $size-px: 16px;
   }
 
   &__button {
-    background-color: var(--s-color-base-border-primary);
-    padding: 3px 8px;
-    border-radius: 10px;
-    transition: 0s background-color;
-
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    background-color: var(--s-color-utility-body);
+    border: 1px solid var(--s-color-base-border-primary);
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
     color: var(--s-color-base-content-primary);
     font-weight: 300;
     &-option {
       color: var(--s-color-theme-accent);
+      margin-left: 4px;
     }
 
     & &-icon {
@@ -234,7 +241,7 @@ $size-px: 16px;
     &:hover {
       cursor: pointer;
       background-color: var(--s-color-base-border-secondary);
-      transition-delay: 0.05s;
+      border-color: var(--s-color-base-border-secondary);
     }
   }
 }
