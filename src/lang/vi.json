@@ -554,7 +554,7 @@
         "synthetics": "token tổng hợp"
     },
     "FAQ": "Câu hỏi thường gặp về {AppName}",
-    "fiatDisclaimer": "Xin lưu ý rằng các giá trị fiat được liên kết với tiền điện tử trên trang web của chúng tôi được cung cấp bởi các dịch vụ bên ngoài (Subquery, Subsquid, Ceres API) là gần đúng. Do sự phức tạp vốn có của các tính toán này, không thể đảm bảo độ chính xác tuyệt đối mọi lúc.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "Chuyển từ {value1} qua {value2}",
         "cedeStoreDesc": "Chuyển bất kỳ mã thông báo nào từ {value1} sang {value2} qua {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Người lập chỉ mục",
                 "title": "{Sora} Lựa chọn dịch vụ mạng",
-                "useCeres": "Sử dụng {Ceres} cho các giá trị tiền pháp định"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Dịch vụ thống kê",
             "title": {

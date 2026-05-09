@@ -554,7 +554,7 @@
         "synthetics": "Синтетик билгеләр"
     },
     "FAQ": "__0__ Сораулар",
-    "fiatDisclaimer": "Зинһар, онытмагыз, FIAT кыйммәтләре безнең сайттагы криптокурорияләр белән бәйле тышкы хезмәтләр (тышкы хезмәтләр белән тәэмин ителә (тышкы хезмәтләр, Киреси, Керес АПИ) якынча. Бу исәпләүләрнең табигый катлаулылыгын исәпкә алып, абсолют төгәллек гарантияләнә алмый.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "__P__0__ аша __P__1__ аша күчү",
         "cedeStoreDesc": "__P__0__дан __P__1__ аша теләсә нинди билге җибәрегез",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Индексацияче",
                 "title": "__0__ челтәр сервис сайлавы",
-                "useCeres": "Fiat кыйммәтләре өчен __P__0__ кулланыгыз"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Статистика хезмәтләре",
             "title": {

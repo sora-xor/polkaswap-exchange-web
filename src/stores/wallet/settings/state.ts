@@ -8,7 +8,7 @@ import { normalizeTheme } from './theme';
 import type { SettingsState } from './types';
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 
-const INDEXERS = [IndexerType.SUBQUERY, IndexerType.SUBSQUID];
+const INDEXERS = [IndexerType.SUBQUERY];
 
 export function initialState(): SettingsState {
   const shouldBalanceBeHidden = storage.get('shouldBalanceBeHidden');
@@ -23,12 +23,13 @@ export function initialState(): SettingsState {
   const filters = storage.get('filters');
   const { option, verifiedOnly, zeroBalance } = filters && JSON.parse(filters);
   const theme = normalizeTheme(settingsStorage.get('theme'));
+  const activeIndexerType = INDEXERS.includes(indexerType as IndexerType) ? (indexerType as IndexerType) : INDEXERS[0];
 
   return {
     apiKeys: {},
     alerts: (alerts || []) as Array<Alert>,
     allowTopUpAlert: allowTopUpAlerts ? Boolean(JSON.parse(allowTopUpAlerts)) : false,
-    indexerType: indexerType ? (indexerType as IndexerType) : INDEXERS[0],
+    indexerType: activeIndexerType,
     indexers: {
       [IndexerType.SUBQUERY]: {
         endpoint: '',

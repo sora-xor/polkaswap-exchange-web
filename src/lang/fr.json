@@ -554,7 +554,7 @@
         "synthetics": "jetons synthétiques"
     },
     "FAQ": "FAQ {AppName}",
-    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "Transfert de {value1} via {value2}",
         "cedeStoreDesc": "Transférez tous les jetons de {value1} à {value2} via {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Indexeur",
                 "title": "{Sora} Sélection du service réseau",
-                "useCeres": "Utilisez {Ceres} pour les valeurs fiduciaires"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Services statistiques",
             "title": {

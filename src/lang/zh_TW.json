@@ -554,7 +554,7 @@
         "synthetics": "合成代幣"
     },
     "FAQ": "{AppName} 常見問題",
-    "fiatDisclaimer": "請注意：本網站所顯示的法幣價值（由 Subquery、Subsquid、Ceres API 等外部服務提供）僅供參考。由於計算相當複雜，無法保證在任何時刻都絕對精準。",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "自 {value1} 經由 {value2} 轉移",
         "cedeStoreDesc": "透過 {value3} 將任意代幣自 {value1} 轉至 {value2}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "索引器",
                 "title": "{Sora} 網路服務選擇",
-                "useCeres": "使用 {Ceres} 表示法定值"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "統計服務",
             "title": {

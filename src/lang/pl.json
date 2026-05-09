@@ -554,7 +554,7 @@
         "synthetics": "tokeny syntetyczne"
     },
     "FAQ": "{AppName} - częste pytania",
-    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "Przelew z {value1} przez {value2}",
         "cedeStoreDesc": "Przenieś dowolne tokeny z {value1} do {value2} za pośrednictwem {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Indeksator",
                 "title": "{Sora} Wybór usługi sieciowej",
-                "useCeres": "Użyj {Ceres} dla wartości fiat"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Usługi statystyczne",
             "title": {

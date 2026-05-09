@@ -554,7 +554,7 @@
         "synthetics": "ဓာတုတိုကင်များ"
     },
     "FAQ": "{AppName} FAQ",
-    "fiatDisclaimer": "ကျွန်ုပ်တို့၏ဝဘ်ဆိုက်ရှိ cryptocurrencies နှင့်ဆက်စပ်သော fiat တန်ဖိုးများကို ပြင်ပဝန်ဆောင်မှုများ (Subquery၊ Subsquid၊ Ceres API) မှ အနီးစပ်ဆုံးဖြစ်ကြောင်း သတိပြုပါ။ ဤတွက်ချက်မှုများ၏ မွေးရာပါ ရှုပ်ထွေးမှုကြောင့်၊ အချိန်တိုင်းတွင် အကြွင်းမဲ့တိကျမှုကို အာမမခံနိုင်ပါ။",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "{value1} မှ {value2} မှတဆင့် လွှဲပြောင်းပါ",
         "cedeStoreDesc": "မည်သည့်တိုကင်များကို {value1} မှ {value2} သို့ {value3} မှတဆင့် လွှဲပြောင်းပါ",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "အညွှန်း",
                 "title": "{Sora} ကွန်ရက်ဝန်ဆောင်မှု ရွေးချယ်မှု",
-                "useCeres": "Fiat တန်ဖိုးများအတွက် {Ceres} ကိုသုံးပါ။"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "စာရင်းအင်းဝန်ဆောင်မှုများ",
             "title": {

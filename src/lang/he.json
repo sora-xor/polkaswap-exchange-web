@@ -554,7 +554,7 @@
         "synthetics": "אסימונים סינתטיים"
     },
     "FAQ": "__Ph__0__ שאלות נפוצות",
-    "fiatDisclaimer": "שימו לב כי ערכי הפיאט המשויכים לקריפטו -מטבעות באתר שלנו ניתנים על ידי שירותים חיצוניים (תת -שאת, SubsQuid, API של CERES) הם משוערים. בהתחשב במורכבות המובנית של חישובים אלה, לא ניתן להבטיח דיוק מוחלט בכל עת.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "העברה מ- __ph__0__ דרך __ph__1__",
         "cedeStoreDesc": "העבר אסימונים מ- __ph__0__ ל- __ph__1__ דרך __ph__2__",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "מַפתְחָן",
                 "title": "__Ph__0__ בחירת שירות רשת",
-                "useCeres": "השתמש ב- __ph__0__ לערכי פיאט"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "שירותי סטטיסטיקה",
             "title": {

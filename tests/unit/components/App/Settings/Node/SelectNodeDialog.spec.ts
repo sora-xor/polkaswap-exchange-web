@@ -17,7 +17,9 @@ vi.mock('@/composables/useNodeNotifications', () => ({
 }));
 
 import NodeInfo from '@/components/App/Settings/Node/NodeInfo.vue';
+import selectNodeSource from '@/components/App/Settings/Node/SelectNode.vue?raw';
 import SelectNodeDialog from '@/components/App/Settings/Node/SelectNodeDialog.vue';
+import selectNodeDialogSource from '@/components/App/Settings/Node/SelectNodeDialog.vue?raw';
 
 const DialogBaseStub = defineComponent({
   name: 'DialogBaseStub',
@@ -172,6 +174,19 @@ describe('SelectNodeDialog', () => {
     await nextTick();
 
     expect(wrapper.get('.dialog-base-stub').attributes('data-custom-class')).toContain('select-node-dialog--add-node');
+  });
+
+  it('keeps the node selection dialog visually compact', () => {
+    expect(selectNodeDialogSource).toContain("const dialogCardClassName = computed(() => ['select-node-dialog'");
+    expect(selectNodeDialogSource).not.toContain('.dialog-card.select-node-dialog {');
+    expect(selectNodeDialogSource).not.toContain('box-shadow: none;');
+  });
+
+  it('renders node options as selectable rows instead of exposed radio controls', () => {
+    expect(selectNodeSource).toContain('name="basic-check-mark-24"');
+    expect(selectNodeSource).not.toContain('icon="arrows-swap-90-24"');
+    expect(selectNodeSource).toMatch(/\.s-radio-atom\s*\{[\s\S]*?display:\s*none;/);
+    expect(selectNodeSource).toMatch(/&\[aria-checked='true'\]\s*\{[\s\S]*?var\(--s-color-theme-accent\)/);
   });
 });
 

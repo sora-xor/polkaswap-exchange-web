@@ -4,7 +4,7 @@ import type { Nullable } from '@/types/common';
 
 type IndexerTable = Partial<Record<string, Partial<Pick<IndexerState, 'endpoint' | 'status'>>>>;
 
-const DEFAULT_INDEXER_ORDER = Object.values(IndexerType);
+const DEFAULT_INDEXER_ORDER = [IndexerType.SUBQUERY];
 
 /**
  * Returns true when an indexer has a usable endpoint configured.
@@ -22,8 +22,10 @@ export function resolvePreferredIndexer(
   indexers: IndexerTable,
   order: readonly string[] = DEFAULT_INDEXER_ORDER
 ): Nullable<string> {
-  if (requested && hasConfiguredIndexerEndpoint(indexers[requested])) {
-    return requested;
+  const supportedRequested = requested && order.includes(requested) ? requested : null;
+
+  if (supportedRequested && hasConfiguredIndexerEndpoint(indexers[supportedRequested])) {
+    return supportedRequested;
   }
 
   for (const candidate of order) {
@@ -32,7 +34,7 @@ export function resolvePreferredIndexer(
     }
   }
 
-  return requested ?? order[0] ?? null;
+  return supportedRequested ?? order[0] ?? null;
 }
 
 /**

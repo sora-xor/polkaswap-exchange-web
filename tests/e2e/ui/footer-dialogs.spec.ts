@@ -133,7 +133,7 @@ test('keeps footer indexer dialog parity across escape/outside/hash/breakpoint a
 
   const indexerDialog = page
     .getByRole('dialog')
-    .filter({ hasText: /network service selection/i })
+    .filter({ hasText: /statistics services/i })
     .first();
 
   await openFooterActionDialog(page, {

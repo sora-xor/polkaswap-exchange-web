@@ -23,7 +23,6 @@ import {
 } from '@/lib/soraneo-wallet/src/consts';
 import { getCurrenciesState } from '@/lib/soraneo-wallet/src/consts/currencies';
 import alertsApiService from '@/lib/soraneo-wallet/src/services/alerts';
-import { CeresApiService } from '@/lib/soraneo-wallet/src/services/ceres';
 import { CurrencyExchangeRateService } from '@/lib/soraneo-wallet/src/services/currency';
 import { GDriveStorage } from '@/lib/soraneo-wallet/src/services/google';
 import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
@@ -698,37 +697,17 @@ export const useWalletStore = defineStore('wallet', () => {
     subscribeOnFiatUsingCurrentIndexer();
   };
 
-  const useFiatValuesFromCeresApi = async (): Promise<void> => {
-    const data = await CeresApiService.getFiatPriceObject();
-
-    if (data) {
-      setFiatPriceObject(data);
-    } else {
-      clearFiatPriceObject();
-    }
-
-    resetFiatPriceSubscription();
-
-    const subscription = CeresApiService.createFiatPriceSubscription(updateFiatPriceObject, clearFiatPriceObject);
-
-    accountState.value.fiatPriceSubscription = subscription;
-  };
-
   const subscribeOnFiatPrice = async (): Promise<void> => {
-    if (!accountState.value.ceresFiatValuesUsage) {
-      await useFiatValuesFromIndexer();
-    } else {
-      await useFiatValuesFromCeresApi();
-    }
+    await useFiatValuesFromIndexer();
   };
 
-  const setCeresFiatValuesUsage = (flag: boolean): void => {
-    accountState.value.ceresFiatValuesUsage = flag;
-    settingsStorage.set('ceresFiatValues', flag);
+  const setCeresFiatValuesUsage = (): void => {
+    accountState.value.ceresFiatValuesUsage = false;
+    settingsStorage.set('ceresFiatValues', false);
   };
 
-  const useCeresApiForFiatValues = async (flag: boolean): Promise<void> => {
-    setCeresFiatValuesUsage(flag);
+  const useCeresApiForFiatValues = async (_flag = false): Promise<void> => {
+    setCeresFiatValuesUsage();
     await subscribeOnFiatPrice();
   };
 
@@ -1131,7 +1110,10 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const setIndexerType = (type: string): void => {
-    settingsState.value.indexerType = type as SettingsState['indexerType'];
+    const nextType = resolvePreferredIndexer(type, settingsState.value.indexers);
+    if (!nextType) return;
+
+    settingsState.value.indexerType = nextType as SettingsState['indexerType'];
     settingsStorage.set('indexerType', settingsState.value.indexerType);
   };
 

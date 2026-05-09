@@ -554,7 +554,7 @@
         "synthetics": "ሰው ሠራሽ ምልክቶች"
     },
     "FAQ": "{AppName} የሚጠየቁ ጥያቄዎች",
-    "fiatDisclaimer": "እባክዎን በድረ-ገፃችን ላይ ከክሪፕቶ ምንዛሬዎች ጋር የተቆራኙት የ fiat እሴቶች በውጫዊ አገልግሎቶች (ንኡስ ኩዊድ ፣ ሴሬስ ኤፒአይ) የሚቀርቡ መሆናቸውን ልብ ይበሉ። የእነዚህን ስሌቶች ውስጣዊ ውስብስብነት ግምት ውስጥ በማስገባት በማንኛውም ጊዜ ፍጹም ትክክለኛነት ሊረጋገጥ አይችልም.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "ከ{value1} በ{value2} ያስተላልፉ",
         "cedeStoreDesc": "ማናቸውንም ቶከኖች ከ{value1} ወደ {value2} በ{value3} ያስተላልፉ",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "መረጃ ጠቋሚ",
                 "title": "{Sora} የአውታረ መረብ አገልግሎት ምርጫ",
-                "useCeres": "ለ fiat እሴቶች {Ceres} ይጠቀሙ"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "የስታቲስቲክስ አገልግሎቶች",
             "title": {

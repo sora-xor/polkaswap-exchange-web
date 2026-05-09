@@ -554,7 +554,7 @@
         "synthetics": "ސިންތެޓިކް ޓޯކަންސް އެވެ"
     },
     "FAQ": "__ޕީއެޗް__0__ އެފްއޭކިއު",
-    "fiatDisclaimer": "އަޅުގަނޑުމެންގެ ވެބްސައިޓުގައިވާ ކްރިޕްޓޯކަރަންސީތަކާ ގުޅުންހުރި ފިއަޓް ވެލިއުތަކަކީ ބޭރުގެ ހިދުމަތްތަކުން (ސަބްކިއުރީ، ސަބްސްކުއިޑް، ސެރެސް އެޕީއައި) ފޯރުކޮށްދޭ އަގުތަކެއްކަން ފާހަގަކުރަމެވެ. މި ހިސާބުތަކުގެ ޠަބީޢީ ކޮމްޕްލެކްސިޓީއަށް ބަލާއިރު، ހުރިހާ ވަގުތެއްގައިވެސް މުޅިން ޕްރެސިޝަން ކަށަވަރު ނުކުރެވޭނެއެވެ.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "{value1} އިން {value2} މެދުވެރިކޮށް ޓްރާންސްފާ",
         "cedeStoreDesc": "އެއްވެސް ޓޯކަންއެއް {value1} އިން {value2} އަށް {value3} މެދުވެރިކޮށް ޓްރާންސްފާ ކުރާށެވެ.",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "އިންޑެކްސަރ އެވެ",
                 "title": "{Sora} ނެޓްވޯކް ޚިދުމަތް ހޮވުން",
-                "useCeres": "ފިއަޓް ވެލިއުތަކަށް {Ceres} ބޭނުން ކުރާށެވެ"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "ތަފާސްހިސާބުތަކުގެ ހިދުމަތް",
             "title": {

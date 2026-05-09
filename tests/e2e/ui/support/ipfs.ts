@@ -33,14 +33,12 @@ const stubbedRuntimeEnvJson = (() => {
     return JSON.stringify({
       ...source,
       DEFAULT_NETWORKS: [],
-      SUBQUERY_ENDPOINT: '',
-      SUBSQUID_ENDPOINT: '',
+      POLKASWAP_INDEXER_ENDPOINT: '',
     });
   } catch {
     return JSON.stringify({
       DEFAULT_NETWORKS: [],
-      SUBQUERY_ENDPOINT: '',
-      SUBSQUID_ENDPOINT: '',
+      POLKASWAP_INDEXER_ENDPOINT: '',
       FEATURE_FLAGS: {},
     });
   }

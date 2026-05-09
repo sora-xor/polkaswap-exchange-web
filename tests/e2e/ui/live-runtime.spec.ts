@@ -577,7 +577,7 @@ test.describe('live runtime smoke', () => {
     let indexerDialog = await openFooterActionDialog(page, {
       statusIndex: 2,
       actionName: /select services/i,
-      dialogText: /network service selection/i,
+      dialogText: /statistics services/i,
     });
 
     await page.keyboard.press('Escape');
@@ -587,7 +587,7 @@ test.describe('live runtime smoke', () => {
     indexerDialog = await openFooterActionDialog(page, {
       statusIndex: 2,
       actionName: /select services/i,
-      dialogText: /network service selection/i,
+      dialogText: /statistics services/i,
     });
     await page.mouse.click(10, 10);
     await expect(indexerDialog).toHaveCount(0);
@@ -596,7 +596,7 @@ test.describe('live runtime smoke', () => {
     indexerDialog = await openFooterActionDialog(page, {
       statusIndex: 2,
       actionName: /select services/i,
-      dialogText: /network service selection/i,
+      dialogText: /statistics services/i,
     });
 
     await page.evaluate(() => {
@@ -623,7 +623,7 @@ test.describe('live runtime smoke', () => {
     indexerDialog = await openFooterActionDialog(page, {
       statusIndex: 2,
       actionName: /select services/i,
-      dialogText: /network service selection/i,
+      dialogText: /statistics services/i,
     });
     await page.setViewportSize({ width: 390, height: 844 });
     await expect(indexerDialog).toHaveCount(0);
@@ -632,7 +632,7 @@ test.describe('live runtime smoke', () => {
     indexerDialog = await openFooterActionDialog(page, {
       statusIndex: 2,
       actionName: /select services/i,
-      dialogText: /network service selection/i,
+      dialogText: /statistics services/i,
     });
     await page.keyboard.press('Escape');
     await expect(indexerDialog).toHaveCount(0);

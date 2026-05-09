@@ -554,7 +554,7 @@
         "synthetics": "синтетик токенууд"
     },
     "FAQ": "{AppName} Түгээмэл асуултууд",
-    "fiatDisclaimer": "Манай вэбсайт дээрх криптовалюттай холбоотой fiat утгыг гадны үйлчилгээ (Subquery, Subsquid, Ceres API) өгдөг болохыг анхаарна уу. Эдгээр тооцооллын нарийн төвөгтэй байдлыг харгалзан үзэхэд туйлын нарийвчлалыг ямар ч үед баталгаажуулж чадахгүй.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "{value1}-аас {value2}-р дамжуулан шилжүүлэх",
         "cedeStoreDesc": "{value1}-аас {value2} руу {value3}-р ямар нэгэн жетон шилжүүлээрэй",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Индексжүүлэгч",
                 "title": "{Sora} Сүлжээний үйлчилгээний сонголт",
-                "useCeres": "Fiat утгыг {Ceres} ашиглана уу"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Статистикийн үйлчилгээ",
             "title": {

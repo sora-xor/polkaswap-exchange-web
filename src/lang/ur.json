@@ -554,7 +554,7 @@
         "synthetics": "مصنوعی ٹوکن"
     },
     "FAQ": "__ph__0__ عمومی سوالنامہ",
-    "fiatDisclaimer": "براہ کرم نوٹ کریں کہ ہماری ویب سائٹ پر کریپٹو کرنسیوں سے وابستہ فیاٹ اقدار بیرونی خدمات (subquery ، subsquid ، سیرس API) کے ذریعہ فراہم کی گئیں ہیں۔ ان حسابات کی موروثی پیچیدگی کو دیکھتے ہوئے ، ہر وقت مطلق صحت سے متعلق ضمانت نہیں دی جاسکتی ہے۔",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "__ph__0__ سے __ph__1__ کے ذریعے منتقل کریں",
         "cedeStoreDesc": "کسی بھی ٹوکن کو __ph__0__ سے __ph__1__ کے ذریعے __ph__2__ کے ذریعے منتقل کریں",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "اشاریہ",
                 "title": "__ph__0__ نیٹ ورک سروس کا انتخاب",
-                "useCeres": "فیاٹ اقدار کے لئے __ph__0__ استعمال کریں"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "اعدادوشمار کی خدمات",
             "title": {

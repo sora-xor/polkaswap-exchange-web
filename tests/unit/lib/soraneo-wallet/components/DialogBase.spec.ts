@@ -79,6 +79,14 @@ describe('DialogBase', () => {
     expect(dialogBaseSource).toMatch(/\.dialog-card\s*\{[\s\S]*overflow:\s*hidden;/);
   });
 
+  it('defines the shared compact modal header treatment', () => {
+    expect(dialogBaseSource).toMatch(/\.dialog-card__header\s*\{[\s\S]*border-bottom:\s*1px solid/);
+    expect(dialogBaseSource).toMatch(/\.dialog-card__header\s*\{[\s\S]*box-shadow:\s*none;/);
+    expect(dialogBaseSource).toMatch(/\.dialog-card__title-text\s*\{[\s\S]*font-size:\s*24px;/);
+    expect(dialogBaseSource).toMatch(/\.dialog-card__title-text\s*\{[\s\S]*white-space:\s*nowrap;/);
+    expect(dialogBaseSource).toMatch(/\.dialog-card__close\.el-button\s*\{[\s\S]*border-radius:\s*50%;/);
+  });
+
   it('maps legacy dialog attrs onto the compatibility modal shell', () => {
     const wrapper = mount(DialogBase, {
       props: {

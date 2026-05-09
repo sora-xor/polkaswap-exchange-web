@@ -5,7 +5,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 describe('public env config', () => {
-  it('ships the same SORA websocket endpoints as production polkaswap.io', async () => {
+  it('prefers the currently healthy MOF #2 SORA websocket endpoint first', async () => {
     const envPath = path.resolve(process.cwd(), 'public/env.json');
     const raw = await readFile(envPath, 'utf8');
     const parsed = JSON.parse(raw) as {
@@ -15,15 +15,15 @@ describe('public env config', () => {
     expect(parsed.DEFAULT_NETWORKS).toEqual([
       {
         chain: 'SORA',
-        name: 'SORA Parliament Ministry of Finance #1',
-        address: 'wss://ws.mof.sora.org',
-        location: 'GB',
-      },
-      {
-        chain: 'SORA',
         name: 'SORA Parliament Ministry of Finance #2',
         address: 'wss://mof2.sora.org',
         location: 'SG',
+      },
+      {
+        chain: 'SORA',
+        name: 'SORA Parliament Ministry of Finance #1',
+        address: 'wss://ws.mof.sora.org',
+        location: 'GB',
       },
       {
         chain: 'SORA',
@@ -31,13 +31,9 @@ describe('public env config', () => {
         address: 'wss://mof3.sora.org',
         location: 'DE',
       },
-      {
-        chain: 'SORA',
-        name: 'OnFinality',
-        address: 'wss://sora.api.onfinality.io/public-ws',
-        location: 'JP',
-      },
     ]);
+    expect(parsed.DEFAULT_NETWORKS.map((node) => node.name)).not.toContain('OnFinality');
+    expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain('wss://sora.api.onfinality.io/public-ws');
   });
 
   it('keeps the root production env aligned with the public production env', async () => {

@@ -22,14 +22,12 @@
               </div>
             </div>
             <div class="select-node-badge">
-              <s-button
+              <s-icon
                 v-if="node.address === currentAddressValue && !nodeAddressConnecting"
                 class="select-node-details"
-                type="action"
-                alternative
-                icon="arrows-swap-90-24"
-                @click.stop="handleNode?.(node)"
-              ></s-button>
+                name="basic-check-mark-24"
+                size="16px"
+              ></s-icon>
               <s-icon v-else-if="isConnecting(node.address)" name="el-icon-loading"></s-icon>
             </div>
             <s-button
@@ -113,12 +111,21 @@ function getTitle(node: Node): string {
 
   &.s-radio {
     width: 100%;
+    border-radius: var(--s-border-radius-mini);
+    cursor: pointer;
+    transition:
+      background-color 120ms ease,
+      box-shadow 120ms ease;
 
     > .flex {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       width: 100%;
       min-width: 0;
+    }
+
+    .s-radio-atom {
+      display: none;
     }
 
     > .flex.space-x-2 {
@@ -133,14 +140,38 @@ function getTitle(node: Node): string {
 
   .el-radio__label,
   > .flex > label {
+    display: block;
     flex: 1;
     width: 100%;
     min-width: 0;
+    cursor: inherit;
+  }
+
+  &[aria-checked='true'] {
+    background: var(--s-color-base-background-hover);
+    box-shadow: inset 3px 0 0 var(--s-color-theme-accent);
+  }
+
+  &:hover:not([aria-disabled='true']):not([aria-checked='true']) {
+    background: var(--s-color-base-background);
   }
 }
 
 .select-node-scrollbar {
-  @include scrollbar(-$inner-spacing-big);
+  @include scrollbar(0, 4px);
+
+  &.el-scrollbar {
+    width: 100%;
+
+    > .el-scrollbar__wrap {
+      max-height: 420px;
+    }
+
+    > .el-scrollbar__bar.is-vertical {
+      bottom: 4px;
+      top: 4px;
+    }
+  }
 }
 
 .select-node {
@@ -151,8 +182,6 @@ function getTitle(node: Node): string {
 </style>
 
 <style lang="scss" scoped>
-$node-list-item-height: 66px;
-$node-list-items: 5;
 $node-desc-spacing: 6px;
 $node-desc-border-radius: 8px;
 
@@ -164,13 +193,13 @@ $node-desc-border-radius: 8px;
   }
 
   &-list {
-    max-height: calc(#{$node-list-item-height} * #{$node-list-items});
     flex-direction: column;
+    gap: $inner-spacing-mini;
 
     &__item {
       margin-right: 0;
       align-items: center;
-      padding: $inner-spacing-small $inner-spacing-big;
+      padding: $inner-spacing-small $inner-spacing-medium;
       white-space: normal;
     }
   }
@@ -178,6 +207,7 @@ $node-desc-border-radius: 8px;
   &-item {
     flex: 1;
     align-items: center;
+    min-width: 0;
   }
 
   &-info {
@@ -210,6 +240,7 @@ $node-desc-border-radius: 8px;
 
   &-details {
     padding: 0;
+    color: var(--s-color-base-content-tertiary);
   }
 
   &-button {
@@ -222,6 +253,8 @@ $node-desc-border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 var(--s-size-medium);
+    color: var(--s-color-theme-accent);
 
     .el-icon-loading {
       color: var(--s-color-base-content-tertiary);

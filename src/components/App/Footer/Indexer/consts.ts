@@ -1,7 +1,7 @@
 import { IndexerType } from '@/consts';
 
 export const IndexerModel = {
-  name: '',
+  name: 'Polkaswap Indexer',
   type: IndexerType.SUBQUERY,
   address: '',
 };

@@ -554,7 +554,7 @@
         "synthetics": "синтетик жетондар"
     },
     "FAQ": "__РН__0__ Һорауҙар",
-    "fiatDisclaimer": "Иғтибар итегеҙ, беҙҙең сайтта криптовалюта менән бәйле фиат ҡиммәттәре тышҡы хеҙмәттәр менән тәьмин ителә (Subquery, Subsquid, Ceres API) яҡынса. Был иҫәпләүҙәрҙең үҙенә генә хас ҡатмарлылығын иҫәпкә алып, һәр ваҡыт абсолют теүәллекте гарантиялап булмай.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "__РН__0__ аша __РН__1__ аша күсерергә",
         "cedeStoreDesc": "__РН__0__-нан __РН__1__-ға __РН__2__ аша теләһә ниндәй токендарҙы күсерергә",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Индексатор",
                 "title": "{Sora} Селтәр хеҙмәтен һайлау",
-                "useCeres": "{Ceres} фиат ҡиммәттәре өсөн ҡулланығыҙ"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Статистика хеҙмәттәре",
             "title": {

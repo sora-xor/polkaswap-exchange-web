@@ -554,7 +554,7 @@
         "synthetics": "синтетические токены"
     },
     "FAQ": "{AppName} Часто задаваемые вопросы",
-    "fiatDisclaimer": "Обратите внимание, что фиатные значения, связанные с криптовалютами на нашем веб-сайте, предоставленные внешними сервисами (Subquery, Subsquid, Ceres API), являются приблизительными. Учитывая присущую этим вычислениям сложность, невозможно гарантировать абсолютную точность в любое время.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "Перевести из {value1} через {value2}",
         "cedeStoreDesc": "Перенесите любые токены из {value1} в {value2} через {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Индексатор",
                 "title": "Выбор сервисов {Sora} сети",
-                "useCeres": "Использовать {Ceres} для получения фиатных значений"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Сервисы статистики",
             "title": {

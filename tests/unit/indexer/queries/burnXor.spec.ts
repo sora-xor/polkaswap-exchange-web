@@ -229,181 +229,16 @@ describe('xor burn query', () => {
     expect(result.find((item) => item.address === 'account-chain')?.txHash).toBe('0xhash-25043004-1');
   });
 
-  it('uses SoraMetrics batchAll extrinsics as account-specific hints for recent burns', async () => {
-    const txHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
+  it('does not call external hint APIs when indexer data is missing', async () => {
+    const fetchMock = vi.fn();
 
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
-    indexerMocks.getBlock.mockResolvedValue(createSignedBlock(txHash, createNexusBatchAllMethod('10000000000000000000')));
-    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
-      if (blockHash !== 'hash-25868450') return [];
-      return [createAssetBurnEvent('account-chain', createAssetIdCodec(XOR.address), '10000000000000000000')];
-    });
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (url: string) => ({
-        ok: true,
-        json: async () =>
-          url.includes('section=utility')
-            ? {
-                data: [
-                  {
-                    block: 25_868_450,
-                    extrinsic_index: 1,
-                    hash: txHash,
-                    signer: 'account-chain',
-                    success: 1,
-                  },
-                ],
-              }
-            : { data: [] },
-      }))
-    );
     indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    vi.stubGlobal('fetch', fetchMock);
 
-    const result = await fetchData(25_868_440, 25_868_450, 'account-chain');
+    await fetchData(25_043_003, 25_043_003, 'account-chain');
 
-    expect(result).toEqual([
-      expect.objectContaining({
-        address: 'account-chain',
-        blockHeight: 25_868_450,
-        nexusRecipient: validSoraNexusAccount,
-        txHash,
-      }),
-    ]);
-    expect(result[0]?.amount.toString()).toBe('10');
-  });
-
-  it('uses SoraMetrics batch extrinsics as logged-out global burn hints', async () => {
-    const txHash = '0xbatch60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
-
-    vi.useFakeTimers();
-    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue(null);
-    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
-      if (blockHash !== 'hash-25870000') return [];
-      return [createAssetBurnEvent('account-batch-chain', createAssetIdCodec(XOR.address), '5000000000000000000')];
-    });
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (url: string) => ({
-        ok: true,
-        json: async () =>
-          url.includes('section=utility') && /[?&]method=batch(?:&|$)/.test(url) && url.includes('page=1')
-            ? {
-                data: [
-                  {
-                    block: 25_870_000,
-                    extrinsic_index: 1,
-                    hash: txHash,
-                    signer: 'account-batch-chain',
-                    success: 1,
-                  },
-                ],
-              }
-            : { data: [] },
-      }))
-    );
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchData(25_867_650, 25_900_000);
-    const metricsBurn = result.find((item) => item.txHash === txHash);
-
-    expect(metricsBurn).toEqual(
-      expect.objectContaining({
-        address: 'account-batch-chain',
-        blockHeight: 25_870_000,
-        txHash,
-      })
-    );
-    expect(metricsBurn?.amount.toString()).toBe('5');
-  });
-
-  it('does not wait for broad account RPC scans when SoraMetrics has a matching burn', async () => {
-    const txHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
-
-    vi.useFakeTimers();
-    indexerMocks.fetchAllEntities.mockResolvedValue(null);
-    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
-      if (blockHash !== 'hash-25868450') return [];
-      return [createAssetBurnEvent('account-chain', createAssetIdCodec(XOR.address), '10000000000000000000')];
-    });
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (url: string) => ({
-        ok: true,
-        json: async () =>
-          url.includes('section=utility') && url.includes('page=1')
-            ? {
-                data: [
-                  {
-                    block: 25_868_450,
-                    extrinsic_index: 1,
-                    hash: txHash,
-                    signer: 'account-chain',
-                    success: 1,
-                  },
-                ],
-              }
-            : { data: [] },
-      }))
-    );
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
-
-    const result = await fetchData(25_043_003, 25_900_000, 'account-chain');
-
-    expect(result).toEqual([
-      expect.objectContaining({
-        address: 'account-chain',
-        blockHeight: 25_868_450,
-        txHash,
-      }),
-    ]);
-    expect(indexerMocks.getBlockHash).toHaveBeenCalledTimes(1);
-    expect(indexerMocks.getBlockHash).toHaveBeenCalledWith(25_868_450);
-  });
-
-  it('uses SoraMetrics hints for logged-out global burn totals before broad RPC scans finish', async () => {
-    const txHash = '0x5ac60114e1cd80551915531094bb38ebb40a90885122c32baf5c0614ebb02957';
-
-    vi.useFakeTimers();
-    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue(null);
-    indexerMocks.getEventsAt.mockImplementation(async (blockHash: string) => {
-      if (blockHash !== 'hash-25868450') return [];
-      return [createAssetBurnEvent('account-chain', createAssetIdCodec(XOR.address), '10000000000000000000')];
-    });
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (url: string) => ({
-        ok: true,
-        json: async () =>
-          url.includes('section=utility') && url.includes('page=1')
-            ? {
-                data: [
-                  {
-                    block: 25_868_450,
-                    extrinsic_index: 1,
-                    hash: txHash,
-                    signer: 'account-chain',
-                    success: 1,
-                  },
-                ],
-              }
-            : { data: [] },
-      }))
-    );
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchData(25_043_003, 25_900_000);
-    const metricsBurn = result.find((item) => item.txHash === txHash);
-
-    expect(metricsBurn).toEqual(
-      expect.objectContaining({
-        address: 'account-chain',
-        blockHeight: 25_868_450,
-        txHash,
-      })
-    );
-    expect(metricsBurn?.amount.toString()).toBe('10');
-    expect(indexerMocks.getBlockHash).toHaveBeenCalledWith(25_868_450);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('does not reject when the chain fallback runs before the websocket is connected', async () => {
@@ -541,7 +376,11 @@ const createAssetBurnEvent = (
   event: {
     section: 'assets',
     method: 'Burn',
-    data: [{ toString: () => address }, typeof assetId === 'string' ? { toString: () => assetId } : assetId, { toString: () => amount }],
+    data: [
+      { toString: () => address },
+      typeof assetId === 'string' ? { toString: () => assetId } : assetId,
+      { toString: () => amount },
+    ],
   },
 });
 

@@ -554,7 +554,7 @@
         "synthetics": "syntetické tokeny"
     },
     "FAQ": "{AppName} - časté dotazy",
-    "fiatDisclaimer": "Vezměte prosím na vědomí, že hodnoty fiat spojené s kryptoměnami na našich webových stránkách jsou poskytovány externími službami (Subquery, Subsquid, Ceres API) jsou přibližné. Vzhledem k přirozené složitosti těchto výpočtů nelze zaručit absolutní přesnost za všech okolností.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "Převod z {value1} přes {value2}",
         "cedeStoreDesc": "Převeďte jakékoli tokeny z {value1} na {value2} prostřednictvím {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Indexátor:",
                 "title": "{Sora} Výběr síťové služby",
-                "useCeres": "Pro hodnoty fiat použijte {Ceres}"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Statistické služby",
             "title": {

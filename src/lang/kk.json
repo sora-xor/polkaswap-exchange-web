@@ -554,7 +554,7 @@
         "synthetics": "Синтетикалық токендер"
     },
     "FAQ": "__Ph__0__ жиі қойылатын сұрақтар",
-    "fiatDisclaimer": "Біздің веб-сайттағы криптоштармен байланысты FIAT мәндері сыртқы қызметтермен қамтамасыз етілгеніне назар аударыңыз (SubQuery, Subsquid, Cers API) шамамен берілген. Осы есептеулердің өзекті күрделілігіне қарамастан, абсолютті дәлдікке әрдайым кепілдік берілмейді.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "__P0__ __p0__ арқылы __ph__1__ арқылы беру",
         "cedeStoreDesc": "__Ph__0__-ден __ph__0__-ден __-ге дейін __-ге дейін",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Индексатор",
                 "title": "__Ph__0__ Желілік қызметті таңдау",
-                "useCeres": "Fiat мәндері үшін __ph__0__ қолданыңыз"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Статистика қызметтері",
             "title": {

@@ -554,7 +554,7 @@
         "synthetics": "合成代币"
     },
     "FAQ": "{AppName} 常见问题",
-    "fiatDisclaimer": "请注意，我们网站上与加密货币相关的法定价值由外部服务（子查询、Subsquid、Ceres API）提供，是近似值。鉴于这些计算的固有复杂性，无法保证始终绝对精确。",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "从{value1}转至{value2}",
         "cedeStoreDesc": "通过{value3}将任意代币从{value1}转移到{value2}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "索引器",
                 "title": "{Sora}网络服务选择",
-                "useCeres": "使用{Ceres}作为法定值"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "统计服务",
             "title": {

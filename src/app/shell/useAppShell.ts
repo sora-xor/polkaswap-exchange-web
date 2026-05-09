@@ -61,8 +61,7 @@ type RuntimeEnvConfig = Partial<{
   FEATURE_FLAGS: FeatureFlags;
   EVM_NETWORKS_IDS: EvmNetwork[];
   SUB_NETWORKS: SubNetworkApps;
-  SUBQUERY_ENDPOINT: string;
-  SUBSQUID_ENDPOINT: string;
+  POLKASWAP_INDEXER_ENDPOINT: string;
   FAUCET_URL: string;
   DEFAULT_NETWORKS: any;
   CHAIN_GENESIS_HASH: string;
@@ -838,17 +837,17 @@ export function useAppShell() {
       const subNetworks = data.SUB_NETWORKS && typeof data.SUB_NETWORKS === 'object' ? data.SUB_NETWORKS : {};
       web3Store.setSubNetworkApps(subNetworks as SubNetworkApps);
 
-      const hasSubqueryEndpoint = typeof data.SUBQUERY_ENDPOINT === 'string' && data.SUBQUERY_ENDPOINT.length > 0;
-      const hasSubsquidEndpoint = typeof data.SUBSQUID_ENDPOINT === 'string' && data.SUBSQUID_ENDPOINT.length > 0;
-      hasIndexerEndpoint = hasSubqueryEndpoint || hasSubsquidEndpoint;
+      const hasPolkaswapIndexerEndpoint =
+        typeof data.POLKASWAP_INDEXER_ENDPOINT === 'string' && data.POLKASWAP_INDEXER_ENDPOINT.length > 0;
+      hasIndexerEndpoint = hasPolkaswapIndexerEndpoint;
 
       walletStore.setIndexerEndpoint({
         indexer: IndexerType.SUBQUERY,
-        endpoint: hasSubqueryEndpoint ? data.SUBQUERY_ENDPOINT : '',
+        endpoint: hasPolkaswapIndexerEndpoint ? data.POLKASWAP_INDEXER_ENDPOINT : '',
       });
       walletStore.setIndexerEndpoint({
         indexer: IndexerType.SUBSQUID,
-        endpoint: hasSubsquidEndpoint ? data.SUBSQUID_ENDPOINT : '',
+        endpoint: '',
       });
 
       if (data.FAUCET_URL) {
@@ -876,7 +875,7 @@ export function useAppShell() {
     });
 
     if (!hasIndexerEndpoint) {
-      console.warn('[bootstrap] Indexer endpoints are not configured. Exchange-rate subscription skipped.');
+      console.warn('[bootstrap] Polkaswap indexer endpoint is not configured. Exchange-rate subscription skipped.');
     }
     void settingsStore.fetchAdsArray();
   });

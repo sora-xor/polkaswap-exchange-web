@@ -3,8 +3,7 @@
     <div id="app" class="app">
       <div class="buttons">
         <s-button class="theme-switch" @click="changeTheme">{{ libraryTheme }} theme</s-button>
-        <s-button class="theme-switch" @click="changeIndexer">{{ indexerType }} indexer</s-button>
-        <s-button class="theme-switch" @click="changeCeresFiatUsage">CERES fiat:{{ ceresFiatValuesUsage }}</s-button>
+        <s-button class="theme-switch" disabled>{{ indexerType }} indexer</s-button>
         <s-button class="hide-balance-switch" @click="toggleHideBalance">
           {{ shouldBalanceBeHidden ? 'hidden' : 'visible' }} balances
         </s-button>
@@ -53,7 +52,6 @@ const walletStore = useWalletStore();
 const { t, account, handleChangeTransaction } = useTransaction();
 
 const assetsToNotifyQueue = computed(() => walletStore.assetsToNotifyQueue);
-const ceresFiatValuesUsage = computed(() => walletStore.ceresFiatValuesUsage);
 const indexerType = computed(() => walletStore.indexerType);
 const currency = computed(() => walletStore.currency);
 const currencies = computed(() => walletStore.currencies);
@@ -93,16 +91,8 @@ function setSignTxDialogVisibility(flag: boolean): void {
   walletStore.setSignTxDialogVisibility(flag);
 }
 
-function useCeresApiForFiatValues(flag: boolean): Promise<void> {
-  return walletStore.useCeresApiForFiatValues(flag);
-}
-
 function notifyOnDeposit(payload: { asset: WhitelistArrayItem; message: string }): Promise<void> {
   return walletStore.notifyOnDeposit(payload);
-}
-
-function selectIndexer(type: IndexerType): Promise<void> {
-  return walletStore.selectIndexer(type);
 }
 
 function setApiKeys(keys: ApiKeysObject): Promise<void> {
@@ -129,14 +119,6 @@ function changeTheme(): void {
   void toggleTheme();
 }
 
-function changeIndexer(): void {
-  void selectIndexer(indexerType.value === IndexerType.SUBSQUID ? IndexerType.SUBQUERY : IndexerType.SUBSQUID);
-}
-
-function changeCeresFiatUsage(): void {
-  void useCeresApiForFiatValues(!ceresFiatValuesUsage.value);
-}
-
 watch(assetsToNotifyQueue, (whitelistAssetArray: WhitelistArrayItem[]) => {
   if (!whitelistAssetArray.length) return;
   if ('Notification' in window) {
@@ -156,8 +138,8 @@ onMounted(() => {
   void (async () => {
     // setIsDesktop(true);
     await setApiKeys(env.API_KEYS as ApiKeysObject);
-    setIndexerEndpoint({ indexer: IndexerType.SUBQUERY, endpoint: env.SUBQUERY_ENDPOINT });
-    setIndexerEndpoint({ indexer: IndexerType.SUBSQUID, endpoint: env.SUBSQUID_ENDPOINT });
+    setIndexerEndpoint({ indexer: IndexerType.SUBQUERY, endpoint: env.POLKASWAP_INDEXER_ENDPOINT });
+    setIndexerEndpoint({ indexer: IndexerType.SUBSQUID, endpoint: '' });
     setSoraNetwork(SoraNetwork.Dev);
     await initWallet({ appName: 'APP NAME HERE' });
     await subscribeOnExchangeRatesApi();

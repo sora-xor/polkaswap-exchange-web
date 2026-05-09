@@ -554,7 +554,7 @@
         "synthetics": "བཅོས་མའི་རྟགས་མཚན།"
     },
     "FAQ": "{AppName} དྲི་བ།",
-    "fiatDisclaimer": "ང་བཅས་རའི་ཡོངས་འབྲེལ་འཆར་སྒོ་ནང་ ཀིརིཔ་ཊོ་ཀཱརན་སི་དང་འབྲེལ་བའི་ ཕིཊ་གནས་གོང་ཚུ་ ཕྱིའི་ཞབས་ཏོག་ཚུ་གིས་ བྱིན་ཡོདཔ་ཨིན་ (Subquery, Subsquid, Ceres API) ཚུ་ ཚོད་རྩིས་ཨིནམ་དྲན་འཛིན་འབད་གནང་། འ་ནི་རྩིས་སྟོན་ཚུ་གི་ རང་བཞིན་གྱི་མགུ་རྙོག་དྲགས་ལུ་བལྟ་སྟེ་ དུས་རྒྱུན་དུ་ ཆ་ཚང་གཏན་གཏན་འདི་ ངེས་གཏན་བཟོ་མི་ཚུགས།",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "{value1} ལས་ {value2} བརྒྱུད་དེ་སྤོ་བཤུད་འབད།",
         "cedeStoreDesc": "ཊོ་ཀེན་གང་རུང་ཅིག་ {value1} ལས་ {value2} ལུ་ {value3} བརྒྱུད་དེ་སྤོ་བཤུད་འབད།",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "ཟུར་ཐོ་བཟོ་མི།",
                 "title": "{Sora} ཡོངས་འབྲེལ་ཞབས་ཏོག་སེལ་འཐུ།",
-                "useCeres": "ཕིཊི་གནས་གོང་ཚུ་གི་དོན་ལུ་ {Ceres} ལག་ལེན་འཐབ།"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "རྩིས་དཔྱད་ཞབས་ཏོག།",
             "title": {

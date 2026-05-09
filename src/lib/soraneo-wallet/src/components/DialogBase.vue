@@ -176,7 +176,7 @@ const handleBackClick = () => {
   max-width: min(496px, calc(100vw - (#{$basic-spacing-big} * 2)));
   background: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
-  box-shadow: var(--s-shadow-surface);
+  box-shadow: 0 20px 60px rgba(42, 23, 31, 0.14);
   overflow: hidden;
 }
 
@@ -184,8 +184,9 @@ const handleBackClick = () => {
   display: flex;
   align-items: center;
   gap: $basic-spacing;
-  padding: $basic-spacing-big;
-  box-shadow: var(--s-shadow-tooltip);
+  padding: $basic-spacing-big $basic-spacing-big $basic-spacing-medium;
+  border-bottom: 1px solid var(--s-color-base-border-secondary);
+  box-shadow: none;
 }
 
 .dialog-card__back {
@@ -205,10 +206,13 @@ const handleBackClick = () => {
   align-items: center;
   gap: $basic-spacing-small;
   color: var(--s-color-base-content-primary);
-  font-size: var(--s-heading2-font-size, 30px);
+  font-size: 24px;
   font-weight: 600;
-  letter-spacing: var(--s-letter-spacing-small);
-  line-height: var(--s-line-height-medium);
+  letter-spacing: 0;
+  line-height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dialog-card__tooltip {
@@ -227,15 +231,34 @@ const handleBackClick = () => {
   display: inline-flex;
 }
 
+.dialog-card__close.el-button {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  color: var(--s-color-base-content-tertiary);
+}
+
+.dialog-card__close.el-button:hover,
+.dialog-card__close.el-button:focus {
+  background: var(--s-color-base-background-hover);
+  color: var(--s-color-base-content-primary);
+}
+
+.dialog-card__close i {
+  font-size: 24px;
+}
+
 .dialog-card__content {
-  padding: $basic-spacing $basic-spacing-big $basic-spacing-big;
+  padding: $basic-spacing-medium $basic-spacing-big $basic-spacing-big;
   max-height: 70vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 .dialog-card__footer {
-  padding: $basic-spacing $basic-spacing-big $basic-spacing-big;
+  padding: $basic-spacing-medium $basic-spacing-big $basic-spacing-big;
   display: flex;
   flex-wrap: wrap;
   gap: $basic-spacing;

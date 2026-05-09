@@ -81,16 +81,12 @@ type AccountOnChainBurnCache = {
   promise: Nullable<Promise<void>>;
 };
 
-type SoraMetricsExtrinsic = {
+type LegacyHintExtrinsic = {
   block?: number | string;
   extrinsic_index?: number | string;
   hash?: string;
   signer?: string;
   success?: number | boolean;
-};
-
-type SoraMetricsExtrinsicsResponse = {
-  data?: SoraMetricsExtrinsic[];
 };
 
 type ChainApiShape = {
@@ -111,11 +107,7 @@ type ChainApiShape = {
 };
 
 const SORA_XOR_BURN_START_BLOCK = 25_043_003;
-const SORA_METRICS_BASE_URL = 'https://sorametrics.org';
-const SORA_METRICS_PAGE_LIMIT = 100;
-const SORA_METRICS_PAGE_COUNT = 3;
-const SORA_METRICS_CACHE_TTL_MS = 30_000;
-const SORA_METRICS_RPC_CONCURRENCY = 12;
+const LEGACY_HINT_RPC_CONCURRENCY = 12;
 const ON_CHAIN_SCAN_CHUNK_SIZE = 250;
 const ON_CHAIN_SCAN_SYNC_BLOCK_LIMIT = ON_CHAIN_SCAN_CHUNK_SIZE;
 const ACCOUNT_ON_CHAIN_SCAN_SYNC_BLOCK_LIMIT = 1_000;
@@ -128,7 +120,6 @@ const onChainBurnCache = {
   burns: [] as XorBurn[],
 };
 const accountOnChainBurnCaches: Record<string, AccountOnChainBurnCache> = {};
-const soraMetricsExtrinsicsCache: Record<string, { expiresAt: number; promise: Promise<SoraMetricsExtrinsic[]> }> = {};
 
 let onChainScanPromise: Nullable<Promise<void>> = null;
 
@@ -143,10 +134,6 @@ export function clearBurnXorQueryCaches(): void {
 
   for (const key of Object.keys(accountOnChainBurnCaches)) {
     delete accountOnChainBurnCaches[key];
-  }
-
-  for (const key of Object.keys(soraMetricsExtrinsicsCache)) {
-    delete soraMetricsExtrinsicsCache[key];
   }
 }
 
@@ -420,7 +407,8 @@ const getCallArgString = (args: CallArgs, key: string): string => {
 };
 
 const decodeRemarkText = (value: unknown): string => {
-  const rawValue = typeof value === 'string' ? value : (value as { toString?: () => string } | undefined)?.toString?.() ?? '';
+  const rawValue =
+    typeof value === 'string' ? value : ((value as { toString?: () => string } | undefined)?.toString?.() ?? '');
 
   if (!rawValue) return '';
 
@@ -448,7 +436,12 @@ const getBatchAllNexusRecipient = (item: HistoryElement): string | undefined => 
   const calls = getCalls(item);
   const [burnCall, remarkCall] = calls;
 
-  if (calls.length !== 2 || !isXorBurnCall(burnCall) || remarkCall?.module !== 'system' || remarkCall.method !== 'remark') {
+  if (
+    calls.length !== 2 ||
+    !isXorBurnCall(burnCall) ||
+    remarkCall?.module !== 'system' ||
+    remarkCall.method !== 'remark'
+  ) {
     return undefined;
   }
 
@@ -651,14 +644,14 @@ const dedupeBurns = (items: XorBurn[]): XorBurn[] => {
 };
 
 /**
- * Defers broad RPC scans so the UI can render indexer and SoraMetrics results first.
+ * Defers broad RPC scans so the UI can render indexer results first.
  */
 const scheduleBackgroundScan = (callback: VoidFunction): void => {
   setTimeout(callback, 0);
 };
 
 /**
- * Runs RPC reads with bounded parallelism so global SoraMetrics verification is fast without flooding the node.
+ * Runs RPC reads with bounded parallelism so global verification is fast without flooding the node.
  */
 async function mapWithConcurrency<T, R>(
   items: T[],
@@ -744,63 +737,27 @@ const getAccountOnChainBurnCache = (accountId: string): AccountOnChainBurnCache 
   return accountOnChainBurnCaches[key];
 };
 
-async function fetchSoraMetricsExtrinsics(section: string, method: string): Promise<SoraMetricsExtrinsic[]> {
-  if (typeof fetch !== 'function') return [];
-
-  const cacheKey = `${section}:${method}`;
-  const now = Date.now();
-  const cached = soraMetricsExtrinsicsCache[cacheKey];
-
-  if (cached && cached.expiresAt > now) return cached.promise;
-
-  const fetchPage = async (page: number): Promise<SoraMetricsExtrinsic[]> => {
-    const params = new URLSearchParams({
-      limit: String(SORA_METRICS_PAGE_LIMIT),
-      page: String(page),
-      section,
-      method,
-    });
-
-    try {
-      const response = await fetch(`${SORA_METRICS_BASE_URL}/history/global/extrinsics?${params.toString()}`);
-      if (!response.ok) return [];
-
-      const json = (await response.json()) as SoraMetricsExtrinsicsResponse;
-      return Array.isArray(json.data) ? json.data : [];
-    } catch {
-      return [];
-    }
-  };
-
-  const promise = Promise.all(
-    Array.from({ length: SORA_METRICS_PAGE_COUNT }, (_, index) => fetchPage(index + 1))
-  ).then((pages) => pages.flat());
-
-  soraMetricsExtrinsicsCache[cacheKey] = {
-    expiresAt: now + SORA_METRICS_CACHE_TTL_MS,
-    promise,
-  };
-
-  return promise;
+async function fetchLegacyHintExtrinsics(_section: string, _method: string): Promise<LegacyHintExtrinsic[]> {
+  return [];
 }
 
-async function fetchSoraMetricsBurnCandidateExtrinsics(): Promise<SoraMetricsExtrinsic[]> {
+async function fetchLegacyHintBurnCandidateExtrinsics(): Promise<LegacyHintExtrinsic[]> {
   const [batchAllItems, batchItems, burnItems] = await Promise.all([
-    fetchSoraMetricsExtrinsics('utility', 'batchAll'),
-    fetchSoraMetricsExtrinsics('utility', 'batch'),
-    fetchSoraMetricsExtrinsics('assets', 'burn'),
+    fetchLegacyHintExtrinsics('utility', 'batchAll'),
+    fetchLegacyHintExtrinsics('utility', 'batch'),
+    fetchLegacyHintExtrinsics('assets', 'burn'),
   ]);
 
   return [...batchAllItems, ...batchItems, ...burnItems];
 }
 
-async function fetchSoraMetricsAccountXorBurns(
+async function fetchLegacyHintAccountXorBurns(
   start: number,
   end: number,
   accountId: string,
   chainApi: NonNullable<ReturnType<typeof getChainApi>>
 ): Promise<XorBurn[]> {
-  const burnCandidateItems = await fetchSoraMetricsBurnCandidateExtrinsics();
+  const burnCandidateItems = await fetchLegacyHintBurnCandidateExtrinsics();
   const candidateKeys = new Set<string>();
   const candidates = burnCandidateItems.filter((item) => {
     const blockHeight = Number(item.block);
@@ -853,19 +810,19 @@ async function fetchSoraMetricsAccountXorBurns(
         }
       }
     } catch {
-      // SoraMetrics is only a hint source; direct RPC scanning continues below.
+      // Legacy hints only narrow candidate transactions; direct RPC scanning continues below.
     }
   }
 
   return dedupeBurns(burns);
 }
 
-async function fetchSoraMetricsGlobalXorBurns(
+async function fetchLegacyHintGlobalXorBurns(
   start: number,
   end: number,
   chainApi: NonNullable<ReturnType<typeof getChainApi>>
 ): Promise<XorBurn[]> {
-  const burnCandidateItems = await fetchSoraMetricsBurnCandidateExtrinsics();
+  const burnCandidateItems = await fetchLegacyHintBurnCandidateExtrinsics();
   const candidateKeys = new Set<string>();
   const candidates = burnCandidateItems.filter((item) => {
     const blockHeight = Number(item.block);
@@ -899,7 +856,7 @@ async function fetchSoraMetricsGlobalXorBurns(
 
   const burnsByBlock = await mapWithConcurrency(
     Array.from(candidatesByBlock.entries()),
-    SORA_METRICS_RPC_CONCURRENCY,
+    LEGACY_HINT_RPC_CONCURRENCY,
     async ([blockHeight, extrinsicCandidates]) => {
       const blockBurns: XorBurn[] = [];
 
@@ -928,7 +885,7 @@ async function fetchSoraMetricsGlobalXorBurns(
           }
         }
       } catch {
-        // SoraMetrics only narrows candidate transactions; broad RPC scanning continues below.
+        // Legacy hints only narrow candidate transactions; broad RPC scanning continues below.
       }
 
       return blockBurns;
@@ -1021,9 +978,9 @@ async function fetchAccountOnChainXorBurns(start: number, end: number, accountId
     return cache.burns.filter(({ blockHeight }) => blockHeight >= from && blockHeight <= end);
   }
 
-  const metricsBurns = await fetchSoraMetricsAccountXorBurns(from, end, accountId, chainApi);
+  const hintBurns = await fetchLegacyHintAccountXorBurns(from, end, accountId, chainApi);
 
-  cache.burns = dedupeBurns([...cache.burns, ...metricsBurns]);
+  cache.burns = dedupeBurns([...cache.burns, ...hintBurns]);
 
   const missingRanges: Array<[number, number]> = [];
 
@@ -1067,9 +1024,9 @@ async function fetchOnChainXorBurns(start: number, end: number): Promise<XorBurn
     return onChainBurnCache.burns.filter(({ blockHeight }) => blockHeight >= from && blockHeight <= end);
   }
 
-  const metricsBurns = await fetchSoraMetricsGlobalXorBurns(from, end, chainApi);
+  const hintBurns = await fetchLegacyHintGlobalXorBurns(from, end, chainApi);
 
-  onChainBurnCache.burns = dedupeBurns([...onChainBurnCache.burns, ...metricsBurns]);
+  onChainBurnCache.burns = dedupeBurns([...onChainBurnCache.burns, ...hintBurns]);
 
   const missingRanges: Array<[number, number]> = [];
 

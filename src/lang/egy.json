@@ -554,7 +554,7 @@
         "synthetics": "𓅱𓂋 𓂋𓏤𓈖"
     },
     "FAQ": "{AppName} 𓋴𓏏𓊪",
-    "fiatDisclaimer": "𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪 𓂋𓏤𓈖 𓋴𓏏𓊪 𓋴𓏏𓊪 𓎛𓂋 𓄿𓎛 𓂋𓏤𓈖 𓄿𓎛 𓋴𓏏𓊪 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓋴𓏏𓊪 (𓂋𓏤𓈖, 𓂋𓏤𓈖, 𓎛𓂋 𓂋𓏤𓈖) 𓋴𓏏𓊪 𓂋𓏤𓈖. 𓄿𓎛 𓄿𓎛 𓉐𓏤 𓂋𓏤𓈖 𓅱𓂋 𓄿𓎛 𓋴𓏏𓊪, 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓏥 𓎛𓂋 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪.",
+    "fiatDisclaimer": "𓎛𓂋 𓋴𓏏𓊪 𓈖𓏏 𓎼𓈖𓎛𓏏 𓄿𓎛 𓋴𓏏𓊪. 𓈖𓎛 𓎛𓂋 𓄿𓎛.",
     "fiatPayment": {
         "cedeStoreBtn": "𓄿𓎛 𓎛𓂋 {value1} 𓎛𓂋 {value2}",
         "cedeStoreDesc": "𓄿𓎛 𓎛𓂋 𓂋𓏤𓈖 𓎛𓂋 {value1} 𓅱𓂋 {value2} 𓎛𓂋 {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "𓉐𓏤",
                 "title": "{Sora} 𓈖𓏏 𓅱𓂋 𓎛𓂋",
-                "useCeres": "𓄿𓎛 {Ceres} 𓅱𓂋 𓋴𓏏𓊪 𓂋𓏤𓈖"
+                "useCeres": "𓄿𓎛 𓎼𓈖𓎛𓏏 𓈖 𓎛𓂋"
             },
             "label": "𓎼𓈖𓎛𓏏 𓋴𓏏𓊪",
             "title": {

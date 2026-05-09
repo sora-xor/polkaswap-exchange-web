@@ -43,26 +43,37 @@ export const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotIt
   return { timestamp, price, volume };
 };
 
+/**
+ * Fills missing snapshot intervals from newest to oldest, capped to the
+ * visible amount the chart requested so sparse history cannot allocate years
+ * of synthetic points.
+ */
 export const normalizeSnapshots = (
   collection: readonly SnapshotItem[],
   difference: number,
-  lastTimestamp: number
+  lastTimestamp: number,
+  limit = Infinity
 ): SnapshotItem[] => {
   const sample: SnapshotItem[] = [];
-  for (const item of collection) {
-    const buffer: SnapshotItem[] = [];
-    const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
+  if (limit <= 0) return sample;
 
-    let currentTimestamp = item.timestamp;
-    while ((currentTimestamp += difference) < prevTimestamp) {
-      buffer.push({
+  for (const item of collection) {
+    const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
+    const closePrice = item.price[1];
+    let currentTimestamp = prevTimestamp - difference;
+
+    while (currentTimestamp > item.timestamp && sample.length < limit) {
+      sample.push({
         timestamp: currentTimestamp,
-        price: [item.price[1], item.price[1], item.price[1], item.price[1]],
+        price: [closePrice, closePrice, closePrice, closePrice],
         volume: 0,
       });
+      currentTimestamp -= difference;
     }
 
-    sample.push(...buffer.reverse(), item);
+    if (sample.length >= limit) break;
+
+    sample.push(item);
   }
 
   return sample;

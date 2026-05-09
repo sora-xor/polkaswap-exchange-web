@@ -554,7 +554,7 @@
         "synthetics": "رموز مُركّبة"
     },
     "FAQ": "__ph__0__ الأسئلة الشائعة",
-    "fiatDisclaimer": "يرجى ملاحظة أن قيم FIAT المرتبطة بالعملات المشفرة على موقعنا يتم توفيرها من خلال الخدمات الخارجية (السعة الفرعية ، Subquid ، CERES API) تقريبية. بالنظر إلى التعقيد الكامن لهذه الحسابات ، لا يمكن ضمان الدقة المطلقة في جميع الأوقات.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "حوّل من {value1} عبر {value2}",
         "cedeStoreDesc": "حوّل أي رموز من {value1} إلى {value2} عبر {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "فهرس",
                 "title": "__ph__0__ اختيار خدمة الشبكة",
-                "useCeres": "استخدم __ph__0__ لقيم فيات"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "خدمات الإحصاء",
             "title": {

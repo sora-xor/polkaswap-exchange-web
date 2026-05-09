@@ -554,7 +554,7 @@
         "synthetics": "luksavve stakaon"
     },
     "FAQ": "{AppName} falom",
-    "fiatDisclaimer": "raonem falom gohed gohed falom stakaon falom falom raonem gohed stakaon gohed falom wakaot wakaot gohed falom (stakaon, stakaon, raonem stakaon) falom stakaon. gohed gohed wakaot stakaon luksavve gohed falom, gohed raonem gohed evri raonem gohed gohed falom.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "gohed raonem {value1} raonem {value2}",
         "cedeStoreDesc": "gohed raonem stakaon raonem {value1} luksavve {value2} raonem {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "wakaot",
                 "title": "{Sora} netwok luksavve raonem",
-                "useCeres": "gohed {Ceres} luksavve falom stakaon"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "namba falom",
             "title": {

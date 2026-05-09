@@ -1,10 +1,6 @@
 <template>
-  <dialog-base v-model:visible="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
-    <select-indexer
-      v-model:indexer="selectedIndexerType"
-      :indexers="indexers"
-      :environment="soraNetwork"
-    ></select-indexer>
+  <dialog-base v-model:visible="visibility" :title="t('footer.statistics.label')" class="select-indexer-dialog">
+    <select-indexer :indexers="indexers"></select-indexer>
   </dialog-base>
 </template>
 
@@ -14,11 +10,9 @@ import { computed } from 'vue';
 import { SelectIndexer } from '@/app/shell/components';
 import { useTranslation } from '@/composables/useTranslation';
 import { ConnectionStatus, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
-import { IndexerType, type SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
+import { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 import { useSettingsStore } from '@/stores/settings';
 import type { Indexer } from '@/types/indexers';
-import type { Nullable } from '@/types/common';
-import { capitalize } from '@/utils';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 defineOptions({ name: 'SelectIndexerDialog' });
@@ -34,40 +28,17 @@ const visibility = computed({
   },
 });
 
-const soraNetwork = computed<Nullable<SoraNetwork>>(() => settingsStore.soraNetwork);
-
 const indexers = computed<Indexer[]>(() => {
   const indexersData = settingsStore.indexers as Record<IndexerType, IndexerState>;
 
-  return Object.values(IndexerType).map((type) => {
+  return [IndexerType.SUBQUERY].map((type) => {
     const data = indexersData?.[type] ?? {};
     return {
-      name: capitalize(type),
+      name: 'Polkaswap Indexer',
       type,
       endpoint: data.endpoint ?? '',
       online: data.status === ConnectionStatus.Available,
     };
   });
 });
-
-const selectedIndexerType = computed<IndexerType>({
-  get: () => settingsStore.indexerType ?? '',
-  set: async (type: IndexerType) => {
-    if (!type || type === settingsStore.indexerType) return;
-    await settingsStore.selectIndexer(type);
-  },
-});
 </script>
-
-<style lang="scss">
-.dialog-wrapper.select-indexer-dialog {
-  &--add-indexer {
-    .el-dialog {
-      .el-dialog__header {
-        padding: 0;
-        display: none;
-      }
-    }
-  }
-}
-</style>

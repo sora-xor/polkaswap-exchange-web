@@ -56,15 +56,13 @@ vi.mock('@/lib/soraneo-wallet/src/bootstrap', () => ({
 }));
 
 import App from '@/lib/soraneo-wallet/src/App.vue';
-import { IndexerType } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet App', () => {
-  it('toggles the selected indexer between subsquid and subquery', () => {
+  it('keeps indexer selection read-only in the local wallet shell', () => {
     const { state } = mountSetup(App as any, {}, { emit: vi.fn() });
 
-    state.changeIndexer();
-
-    expect(selectIndexer).toHaveBeenCalledWith(IndexerType.SUBQUERY);
+    expect(state.changeIndexer).toBeUndefined();
+    expect(selectIndexer).not.toHaveBeenCalled();
   });
 
   it('delegates fiat currency changes through the computed setter', () => {

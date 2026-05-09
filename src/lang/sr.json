@@ -554,7 +554,7 @@
         "synthetics": "sintetički tokeni"
     },
     "FAQ": "{AppName} Česta pitanja",
-    "fiatDisclaimer": "Имајте на уму да су фиат вредности повезане са криптовалутама на нашој веб страници обезбеђене од стране екстерних сервиса (Субкуери, Субскуид, Церес АПИ) су приближне. С обзиром на инхерентну сложеност ових прорачуна, не може се гарантовати апсолутна прецизност у сваком тренутку.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "Пренесите са {value1} преко {value2}",
         "cedeStoreDesc": "Пренесите све токене са {value1} на {value2} преко {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Индексер",
                 "title": "{Sora} Избор мрежне услуге",
-                "useCeres": "Користите {Ceres} за фиат вредности"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Статистичке службе",
             "title": {

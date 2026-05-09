@@ -252,7 +252,7 @@ vi.mock('@/api', () => {
   const get = vi.fn().mockResolvedValue({
     data: {
       NETWORK_TYPE: 'Prod',
-      SUBQUERY_ENDPOINT: 'https://indexer.example',
+      POLKASWAP_INDEXER_ENDPOINT: 'https://indexer.example',
     },
   });
 
@@ -639,7 +639,7 @@ beforeEach(async () => {
   apiMocks.get.mockReset().mockResolvedValue({
     data: {
       NETWORK_TYPE: 'Prod',
-      SUBQUERY_ENDPOINT: 'https://indexer.example',
+      POLKASWAP_INDEXER_ENDPOINT: 'https://indexer.example',
     },
   });
   realtimeMocks.dataPlaneClient.start.mockReset().mockResolvedValue(true);
@@ -873,7 +873,7 @@ describe('App.vue dialog teardown wiring', () => {
     apiMocks.get.mockResolvedValueOnce({
       data: {
         NETWORK_TYPE: 'Prod',
-        SUBQUERY_ENDPOINT: 'https://indexer.example',
+        POLKASWAP_INDEXER_ENDPOINT: 'https://indexer.example',
         FEATURE_FLAGS: {
           wsWorkerDataPlane: true,
         },

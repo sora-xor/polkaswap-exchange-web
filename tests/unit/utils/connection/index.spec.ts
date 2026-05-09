@@ -68,6 +68,15 @@ class RetryNodesConnection extends NodesConnection {
   }
 }
 
+class AlwaysFailNodesConnection extends NodesConnection {
+  public connectNodeCalls = 0;
+
+  protected async connectNode(_options: ConnectToNodeOptions = {}): Promise<void> {
+    this.connectNodeCalls += 1;
+    throw new Error('connect fail');
+  }
+}
+
 class DedupNodesConnection extends NodesConnection {
   public connectNodeCalls = 0;
 
@@ -132,11 +141,24 @@ describe('NodesConnection reconnect behavior', () => {
     vi.restoreAllMocks();
   });
 
-  it('schedules reconnect with backoff without rejecting the caller promise', async () => {
+  it('tries the next default node immediately before applying backoff', async () => {
+    NodesConnection.enableBackoff = true;
+
+    const nodesConnection = new RetryNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    await expect(nodesConnection.connect()).resolves.toBeUndefined();
+
+    expect(nodesConnection.connectNodeCalls).toBe(2);
+    expect(nodesConnection.lastReconnectDelayMs).toBe(0);
+  });
+
+  it('schedules reconnect with backoff after a full default-node cycle fails', async () => {
     NodesConnection.enableBackoff = true;
     vi.useFakeTimers();
 
-    const nodesConnection = new RetryNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
+    const nodesConnection = new AlwaysFailNodesConnection(toStorage(createStorage()), toConnection(createConnection()));
 
     nodesConnection.setDefaultNodes([nodeA, nodeB]);
 
@@ -149,14 +171,17 @@ describe('NodesConnection reconnect behavior', () => {
     try {
       await expect(nodesConnection.connect()).resolves.toBeUndefined();
 
-      await vi.runOnlyPendingTimersAsync();
+      expect(nodesConnection.connectNodeCalls).toBe(2);
+      expect(nodesConnection.lastReconnectDelayMs).toBe(3_400);
+
+      await vi.advanceTimersByTimeAsync(3_400);
       await Promise.resolve();
     } finally {
       process.off('unhandledRejection', listener);
     }
 
     expect(unhandled).toHaveLength(0);
-    expect(nodesConnection.connectNodeCalls).toBe(2);
+    expect(nodesConnection.connectNodeCalls).toBe(4);
   });
 
   it('deduplicates concurrent connect calls', async () => {

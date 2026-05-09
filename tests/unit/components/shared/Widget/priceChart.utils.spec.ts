@@ -41,6 +41,22 @@ describe('priceChart.utils', () => {
     expect(normalized[0].timestamp).toBe(6000);
   });
 
+  it('caps normalized points for sparse indexer history', () => {
+    const difference = 5 * 60 * 1000;
+    const latestTimestamp = 1_778_336_766_000;
+    const oldestTimestamp = 1_619_543_754_000;
+    const snapshots: SnapshotItem[] = [
+      { timestamp: latestTimestamp, price: [1, 1, 1, 1], volume: 1 },
+      { timestamp: oldestTimestamp, price: [2, 2, 2, 2], volume: 1 },
+    ];
+
+    const normalized = normalizeSnapshots(snapshots, difference, latestTimestamp + difference, 48);
+
+    expect(normalized).toHaveLength(48);
+    expect(normalized[0].timestamp).toBe(latestTimestamp);
+    expect(normalized.at(-1)?.timestamp).toBe(latestTimestamp - difference * 47);
+  });
+
   it('computes precision and formats change strings', () => {
     const precision = getPrecision(0.00045);
     expect(precision).toBeGreaterThan(4);

@@ -21,7 +21,8 @@
       <span v-if="!integerOnly || (assetSymbol && symbolAsDecimal)" class="formatted-amount__decimal">
         <span class="formatted-amount__decimal-value">{{
           integerOnly ? '' : isHiddenValue ? HiddenValue : formatted.decimal
-        }}</span>
+        }}</span
+        >{{ integerOnly ? ' ' : '' }}
         <span v-if="assetSymbol && symbolAsDecimal" class="formatted-amount__symbol">{{ assetSymbol }}</span>
       </span>
       <span v-if="assetSymbol && !symbolAsDecimal" class="formatted-amount__symbol">{{ assetSymbol }}</span>

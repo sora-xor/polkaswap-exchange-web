@@ -79,5 +79,5 @@ function getIndexer<T extends IndexerType>(type: T): IndexerTypeMap[T] {
  */
 export function getCurrentIndexer() {
   const indexerType = resolveWalletStore()?.indexerType ?? IndexerType.SUBQUERY;
-  return getIndexer(indexerType);
+  return getIndexer(indexerType === IndexerType.SUBQUERY ? indexerType : IndexerType.SUBQUERY);
 }

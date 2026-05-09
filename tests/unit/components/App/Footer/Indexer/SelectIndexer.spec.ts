@@ -28,57 +28,6 @@ const DividerStub = defineComponent({
   },
 });
 
-const RadioGroupStub = defineComponent({
-  name: 'RadioGroupStub',
-  props: {
-    modelValue: {
-      type: [String, Number, Boolean],
-      default: undefined,
-    },
-  },
-  emits: ['update:modelValue'],
-  setup(props, { slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          class: 'radio-group-stub',
-          'data-value': props.modelValue as string | number | boolean | undefined,
-        },
-        slots.default?.()
-      );
-  },
-});
-
-const RadioStub = defineComponent({
-  name: 'RadioStub',
-  props: {
-    label: {
-      type: [String, Number],
-      default: '',
-    },
-    value: {
-      type: [String, Number],
-      default: '',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props, { slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          class: ['radio-stub', props.disabled ? 'is-disabled' : ''],
-          'data-value': props.value,
-        },
-        slots.default?.()
-      );
-  },
-});
-
 // Needs to be imported after mocks.
 import SelectIndexer from '@/components/App/Footer/Indexer/SelectIndexer.vue';
 
@@ -101,15 +50,12 @@ const mountComponent = (props: Record<string, unknown> = {}) =>
   mount(SelectIndexer, {
     props: {
       indexers: defaultIndexers,
-      indexer: defaultIndexers[0].type,
       ...props,
     },
     global: {
       components: {
         's-scrollbar': ScrollbarStub,
         's-divider': DividerStub,
-        's-radio-group': RadioGroupStub,
-        's-radio': RadioStub,
       },
     },
   });
@@ -125,12 +71,12 @@ describe('SelectIndexer', () => {
     expect(wrapper.text()).toContain('Offline');
   });
 
-  it('emits updates when selecting another indexer', async () => {
+  it('renders service rows without a radio-selection affordance', () => {
     const wrapper = mountComponent();
 
-    wrapper.findComponent(RadioGroupStub).vm.$emit('update:modelValue', defaultIndexers[1].type);
-    await wrapper.vm.$nextTick();
-
-    expect(wrapper.emitted('update:indexer')?.[0]).toEqual([defaultIndexers[1].type]);
+    expect(wrapper.find('.radio-stub').exists()).toBe(false);
+    expect(wrapper.find('.radio-group-stub').exists()).toBe(false);
+    expect(wrapper.findAll('.service-item')).toHaveLength(defaultIndexers.length);
+    expect(wrapper.emitted('update:indexer')).toBeUndefined();
   });
 });

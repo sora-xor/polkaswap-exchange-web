@@ -333,15 +333,25 @@ export class NodesConnection {
         this.setNode(null);
       }
 
-      // loop through the node list with optional backoff scheduling
-      if (this.node?.address || currentNodeIndex !== this.defaultNodes.length - 1) {
-        const nextIndex = requestedNode.address === defaultNode.address ? currentNodeIndex + 1 : 0;
-        // If we wrapped around to index 0, we completed a cycle and should increment attempt
-        const nextAttempt = nextIndex === 0 ? attempt + 1 : 0;
+      // Loop through configured defaults immediately; only back off after a full cycle fails.
+      const defaultNodesCount = this.defaultNodes.length;
+      const isDefaultNodeRequest = requestedNode.address === defaultNode?.address;
+      const canTryFallback =
+        defaultNodesCount > 0 &&
+        (this.node?.address ||
+          !isDefaultNodeRequest ||
+          currentNodeIndex !== defaultNodesCount - 1 ||
+          NodesConnection.enableBackoff);
+
+      if (canTryFallback) {
+        const nextIndex = isDefaultNodeRequest ? (currentNodeIndex + 1) % defaultNodesCount : 0;
+        const completedDefaultCycle = isDefaultNodeRequest && nextIndex === 0;
+        const nextAttempt = completedDefaultCycle ? attempt + 1 : attempt;
         const nextNode = this.nodeList[nextIndex] ?? defaultNode;
         const nextCall = () =>
           this.connect({ onError, currentNodeIndex: nextIndex, attempt: nextAttempt, ...restOptions });
-        if (NodesConnection.enableBackoff) {
+
+        if (NodesConnection.enableBackoff && completedDefaultCycle) {
           const exp = Math.min(
             MAX_BACKOFF_DELAY,
             Math.floor(BASE_BACKOFF_DELAY * Math.pow(BACKOFF_MULTIPLIER, nextAttempt))

@@ -554,7 +554,7 @@
         "synthetics": "ថូខឹនសំយោគ"
     },
     "FAQ": "{AppName} សំណួរគេសួរញឹកញាប់",
-    "fiatDisclaimer": "សូមកត់សម្គាល់ថាតម្លៃរបស់ FIAT ដែលទាក់ទងនឹងគ្រីបគ្រីបនៅលើគេហទំព័ររបស់យើងត្រូវបានផ្តល់ជូនដោយសេវាកម្មខាងក្រៅ (subquery, subquery, ubuquide, ceres api) គឺប្រហាក់ប្រហែល។ ដោយសារភាពស្មុគស្មាញដែលមានស្រាប់នៃការគណនាទាំងនេះភាពជាក់លាក់ដាច់ខាតគ្រប់ពេលវេលាមិនអាចត្រូវបានធានាទេ។",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "ផ្ទេរពី __ph ______0__ តាមរយៈ __ph__1__1",
         "cedeStoreDesc": "ផ្ទេរថូខឹនណាមួយពី __ph ____0 __ ទៅ __ph ______________ តាមរយៈ {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "អ្នកលក្ខិ",
                 "title": "{Sora} ការជ្រើសរើសសេវាកម្មបណ្តាញ",
-                "useCeres": "ប្រើ __ph__0__ សម្រាប់តម្លៃ fiat"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "សេវាកម្មស្ថិតិ",
             "title": {

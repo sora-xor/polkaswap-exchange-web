@@ -554,7 +554,7 @@
         "synthetics": "โทเค็นสังเคราะห์"
     },
     "FAQ": "{AppName} คำถามที่พบบ่อย",
-    "fiatDisclaimer": "โปรดทราบว่าค่าเฟียตที่เกี่ยวข้องกับ cryptocurrencies บนเว็บไซต์ของเรานั้นจัดทำโดยบริการภายนอก (SubQuery, Subsquid, Ceres API) โดยประมาณ ด้วยความซับซ้อนโดยธรรมชาติของการคำนวณเหล่านี้ความแม่นยำสัมบูรณ์ตลอดเวลาไม่สามารถรับประกันได้",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "โอนจาก __ph__0__ ผ่าน __ph__1__",
         "cedeStoreDesc": "ถ่ายโอนโทเค็นใด ๆ จาก __ph__0__ เป็น __ph__1__ ผ่าน __ph__2__",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "ผู้ทำดัชนี",
                 "title": "{Sora} การเลือกบริการเครือข่าย",
-                "useCeres": "ใช้ __ph__0__ สำหรับค่าเฟียต"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "บริการสถิติ",
             "title": {

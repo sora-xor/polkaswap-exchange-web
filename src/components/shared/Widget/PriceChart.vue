@@ -93,6 +93,7 @@ import { createThemePalette, useThemePalette } from '@/composables/useThemePalet
 import { useTranslation } from '@/composables/useTranslation';
 import { FontWeightRate, IndexerType } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
+import { normalizeSnapshots } from '@/components/shared/Widget/priceChart.utils';
 import { fetchAssetPriceData } from '@/indexer/queries/asset/price';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
@@ -207,31 +208,6 @@ const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotItem>): S
   const price = b?.price && a?.price ? dividePrices(a.price, b.price) : (a?.price ?? [0, 0, 0, 0]);
   const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : (a?.volume ?? 0);
   return { timestamp, price, volume };
-};
-
-const normalizeSnapshots = (
-  collection: readonly SnapshotItem[],
-  difference: number,
-  lastTimestamp: number
-): SnapshotItem[] => {
-  const sample: SnapshotItem[] = [];
-  for (const item of collection) {
-    const buffer: SnapshotItem[] = [];
-    const prevTimestamp = last(sample)?.timestamp ?? lastTimestamp;
-
-    let currentTimestamp = item.timestamp;
-    while ((currentTimestamp += difference) < prevTimestamp) {
-      buffer.push({
-        timestamp: currentTimestamp,
-        price: [item.price[1], item.price[1], item.price[1], item.price[1]],
-        volume: 0,
-      });
-    }
-
-    sample.push(...buffer.reverse(), item);
-  }
-
-  return sample;
 };
 
 const getPrecision = (value: number): number => {
@@ -648,7 +624,8 @@ const fetchData = async (entityId: string): Promise<SnapshotItem[]> => {
 
   const { nodes, ...pageInfo } = await requestData(entityId, type, count, hasNextPage, endCursor);
   const lastTimestamp = last(snapshotsUnused)?.timestamp ?? last(dataset.value)?.timestamp ?? Date.now();
-  const snapshotsNormalized = normalizeSnapshots(nodes, timeDifference.value, lastTimestamp);
+  const normalizedLimit = Math.max(count - snapshotsUnused.length, 0);
+  const snapshotsNormalized = normalizeSnapshots(nodes, timeDifference.value, lastTimestamp, normalizedLimit);
 
   fillSnapshotBuffer(entityId, snapshotsNormalized);
   pageInfos = { ...pageInfos, [entityId]: pageInfo };

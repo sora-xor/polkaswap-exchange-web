@@ -220,7 +220,7 @@ describe('Swap view widget model binding', () => {
   it('uses the versioned swap grid storage key', async () => {
     await mountSwapView();
 
-    expect(capturedGridIds.filter(Boolean).at(-1)).toBe('swapGrid:v2');
+    expect(capturedGridIds.filter(Boolean).at(-1)).toBe('swapGrid:v3');
     expect(capturedGridAutoResize.at(-1)).toBe(true);
   });
 
@@ -246,11 +246,20 @@ describe('Swap view widget model binding', () => {
 
     const lg = layouts?.lg ?? [];
     const lgForm = lg.find((widget) => widget.i === 'swapForm');
+    const lgChart = lg.find((widget) => widget.i === 'swapChart');
     const lgCustomise = lg.find((widget) => widget.i === 'customise');
+    expect(lgForm).toMatchObject({ x: 4, w: 7 });
+    expect(lgChart).toMatchObject({ x: 11, w: 9 });
     expect(lgForm?.y).toBe(0);
     expect(lgCustomise?.y).toBe(20);
     expect(lgCustomise?.h).toBe(3);
     expect(lgCustomise?.maxH).toBe(3);
+
+    const sm = layouts?.sm ?? [];
+    const smForm = sm.find((widget) => widget.i === 'swapForm');
+    const smChart = sm.find((widget) => widget.i === 'swapChart');
+    expect(smForm).toMatchObject({ x: 0, w: 5 });
+    expect(smChart).toMatchObject({ x: 5, w: 7 });
 
     const xs = layouts?.xs ?? [];
     const xsForm = xs.find((widget) => widget.i === 'swapForm');

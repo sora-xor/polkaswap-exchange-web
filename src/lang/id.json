@@ -554,7 +554,7 @@
         "synthetics": "token sintetis"
     },
     "FAQ": "Tanya Jawab {AppName}",
-    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin.",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
     "fiatPayment": {
         "cedeStoreBtn": "Transfer dari {value1} melalui {value2}",
         "cedeStoreDesc": "Transfer token apa pun dari {value1} ke {value2} melalui {value3}",
@@ -612,7 +612,7 @@
             "dialog": {
                 "indexer": "Pengindeks",
                 "title": "{Sora} Pemilihan layanan jaringan",
-                "useCeres": "Gunakan {Ceres} untuk nilai fiat"
+                "useCeres": "Use Polkaswap Indexer for fiat values"
             },
             "label": "Layanan statistik",
             "title": {

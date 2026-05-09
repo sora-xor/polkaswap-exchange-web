@@ -556,18 +556,20 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-width: 0;
   max-width: 496px;
   background: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
-  box-shadow: var(--s-shadow-surface);
+  box-shadow: 0 20px 60px rgba(42, 23, 31, 0.14);
   overflow: hidden;
 }
 .dialog-card__header {
   display: flex;
   align-items: center;
   gap: var(--s-basic-spacing);
-  padding: calc(var(--s-basic-spacing) * 3);
-  box-shadow: var(--s-shadow-tooltip);
+  padding: calc(var(--s-basic-spacing) * 3) calc(var(--s-basic-spacing) * 3) calc(var(--s-basic-spacing) * 2);
+  border-bottom: 1px solid var(--s-color-base-border-secondary);
+  box-shadow: none;
 }
 .dialog-card__back {
   margin-right: var(--s-basic-spacing);
@@ -584,10 +586,13 @@
   align-items: center;
   gap: calc(var(--s-basic-spacing) * 1.5);
   color: var(--s-color-base-content-primary);
-  font-size: var(--s-heading2-font-size, 30px);
+  font-size: 24px;
   font-weight: 600;
-  letter-spacing: var(--s-letter-spacing-small);
-  line-height: var(--s-line-height-medium);
+  letter-spacing: 0;
+  line-height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .dialog-card__tooltip {
   display: inline-flex;
@@ -599,13 +604,33 @@
   align-items: center;
   gap: var(--s-basic-spacing);
 }
+.dialog-card__close-wrapper {
+  display: inline-flex;
+}
+.dialog-card__close.el-button {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  color: var(--s-color-base-content-tertiary);
+}
+.dialog-card__close.el-button:hover,
+.dialog-card__close.el-button:focus {
+  background: var(--s-color-base-background-hover);
+  color: var(--s-color-base-content-primary);
+}
+.dialog-card__close i {
+  font-size: 24px;
+}
 .dialog-card__content {
-  padding: var(--s-basic-spacing) calc(var(--s-basic-spacing) * 3) calc(var(--s-basic-spacing) * 3);
+  padding: calc(var(--s-basic-spacing) * 2) calc(var(--s-basic-spacing) * 3) calc(var(--s-basic-spacing) * 3);
   max-height: 70vh;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 .dialog-card__footer {
-  padding: var(--s-basic-spacing) calc(var(--s-basic-spacing) * 3) calc(var(--s-basic-spacing) * 3);
+  padding: calc(var(--s-basic-spacing) * 2) calc(var(--s-basic-spacing) * 3) calc(var(--s-basic-spacing) * 3);
   display: flex;
   flex-wrap: wrap;
   gap: var(--s-basic-spacing);

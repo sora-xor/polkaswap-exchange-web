@@ -63,18 +63,18 @@ describe('getCurrentIndexer', () => {
     expect(useWalletStoreMock).toHaveBeenCalledWith('pinia');
   });
 
-  it('returns the subsquid descriptor from the active wallet settings', async () => {
+  it('uses the Polkaswap indexer descriptor when legacy wallet settings remain stored', async () => {
     useWalletStoreMock.mockReturnValue({ indexerType: IndexerType.SUBSQUID });
 
     const { getCurrentIndexer } = await import('@/lib/soraneo-wallet/src/services/indexer');
 
     expect(getCurrentIndexer()).toEqual({
-      type: IndexerType.SUBSQUID,
+      type: IndexerType.SUBQUERY,
       services: {
-        explorer: SubsquidExplorerServiceMock,
+        explorer: SubqueryExplorerServiceMock,
         dataParser: parserInstance,
       },
-      historyElementsFilter: subsquidHistoryElementsFilterMock,
+      historyElementsFilter: subqueryHistoryElementsFilterMock,
     });
   });
 
@@ -93,11 +93,11 @@ describe('getCurrentIndexer', () => {
     expect(IndexerDataParserMock).toHaveBeenCalledTimes(1);
   });
 
-  it('throws when the wallet store reports an unsupported indexer', async () => {
+  it('falls back when the wallet store reports an unsupported indexer', async () => {
     useWalletStoreMock.mockReturnValue({ indexerType: 'broken' });
 
     const { getCurrentIndexer } = await import('@/lib/soraneo-wallet/src/services/indexer');
 
-    expect(() => getCurrentIndexer()).toThrow('Unsupported indexer type: broken');
+    expect(getCurrentIndexer()).toMatchObject({ type: IndexerType.SUBQUERY });
   });
 });
