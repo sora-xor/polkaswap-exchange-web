@@ -53,6 +53,14 @@ describe('subsquid createExplorerClient', () => {
     );
   });
 
+  it('skips websocket subscription exchange for the Polkaswap-owned indexer', () => {
+    const client = createExplorerClient('https://pi.soramitsu.io/graphql');
+
+    expect(mocks.wsCreateClientMock).not.toHaveBeenCalled();
+    expect(mocks.subscriptionExchangeMock).not.toHaveBeenCalled();
+    expect(client.supportsSubscriptions).toBe(false);
+  });
+
   it('configures graphql-ws subscriptions for supported endpoints', () => {
     const client = createExplorerClient('https://indexer.example.com/graphql');
 

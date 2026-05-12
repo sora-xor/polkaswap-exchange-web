@@ -5,7 +5,6 @@ import { isValidWalletAddress } from '@/adapters/wallet/addresses';
 import { persistReferralAddress } from '@/adapters/wallet/referrals';
 import { PageNames } from '@/consts';
 import { createBeforeEachGuard } from './guards/navigation';
-import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
 import { registerDocumentTitleResolver, updateDocumentTitle } from '@/utils';
 
@@ -23,7 +22,10 @@ if (typeof registerDocumentTitleResolver === 'function') {
 const beforeEachGuard = createBeforeEachGuard({
   setRoute: syncRoute,
   walletStore: useWalletStore(),
-  bridgeStore: useBridgeStore(),
+  resetBridgeHistoryPage: async () => {
+    const { useBridgeStore } = await import('@/stores/bridge');
+    useBridgeStore().resetHistoryPage();
+  },
   persistReferral: persistReferralAddress,
   validateAddress: isValidWalletAddress,
   updateDocumentTitle,

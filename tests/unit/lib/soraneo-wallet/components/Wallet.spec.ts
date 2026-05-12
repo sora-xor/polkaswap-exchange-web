@@ -106,6 +106,13 @@ describe('Wallet Wallet', () => {
     expect(walletSource).not.toContain('opacity: 0.7');
   });
 
+  it('keeps wallet tabs as a stable two-option segmented control', () => {
+    expect(walletSource).toContain(':deep(.el-tabs__nav-scroll)');
+    expect(walletSource).toContain('grid-template-columns: repeat(2, minmax(0, 1fr));');
+    expect(walletSource).toMatch(/:deep\(\.el-tabs__nav-wrap\)\s*{[\s\S]*height: auto;[\s\S]*box-sizing: border-box;/);
+    expect(walletSource).toMatch(/:deep\(\.el-tabs__active-bar\)\s*{\s*display: none;/);
+  });
+
   it('routes account switching through the wallet store navigation boundary', () => {
     navigate.mockClear();
     walletStore.selectedTransaction = null;

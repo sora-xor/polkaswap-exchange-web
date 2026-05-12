@@ -184,6 +184,30 @@ describe('BaseWidget', () => {
     expect(wrapper.find('.base-widget-pip .s-icon-stub[data-name="finance-receive-24"]').exists()).toBe(true);
   });
 
+  it('creates an overlay target inside the Picture-in-Picture document', async () => {
+    const pipDocument = document.implementation.createHTMLDocument('pip');
+    const pipWindow = {
+      document: pipDocument,
+      addEventListener: vi.fn(),
+      close: vi.fn(),
+    };
+    const requestWindow = vi.fn().mockResolvedValue(pipWindow);
+
+    Object.defineProperty(window, 'documentPictureInPicture', {
+      value: { requestWindow },
+      configurable: true,
+    });
+
+    const wrapper = mountComponent({ title: 'details' }, { default: 'content' });
+
+    await (wrapper.vm as unknown as { openPip: () => Promise<void> }).openPip();
+
+    expect(pipDocument.body.querySelector('.s-card-stub')).not.toBeNull();
+    expect(pipDocument.body.querySelector('[data-widget-pip-overlay-root]')).not.toBeNull();
+
+    wrapper.unmount();
+  });
+
   it('reports required widget height from expanded content, not the stale widget box height', async () => {
     const onResize = vi.fn();
     const wrapper = mountComponent({ id: 'swapForm', onResize }, { default: '<div class="content">Body</div>' });

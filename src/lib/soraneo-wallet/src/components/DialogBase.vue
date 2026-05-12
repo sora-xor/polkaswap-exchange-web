@@ -1,6 +1,7 @@
 <template>
   <s-modal
     v-model:show="isVisible"
+    :teleport-to="teleportTo"
     :root-class="'dialog-wrapper__root'"
     :modal-class="modalClass"
     :overlay-class="'dialog-wrapper__overlay'"
@@ -138,6 +139,7 @@ const cardStyle = computed(() => {
 
 const closeOnOverlayClick = computed(() => props.closeOnClickModal);
 const closeOnEsc = computed(() => props.closeOnEsc);
+const teleportTo = computed(() => (props.appendToBody ? 'body' : null));
 
 const handleBackClick = () => {
   emit('back');

@@ -261,17 +261,17 @@
         "title": "在浏览器设置中允许相机访问"
     },
     "burnPage": {
+        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
         "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
         "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
+        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
+        "minamotoClaimTitle": "Your Minamoto claim details",
         "nexusRecipientLabel": "SORA Nexus account",
         "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
         "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
         "soraNetworkTxHashLabel": "SORA Network tx hash",
         "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
         "ssTokensLabel": "SS tokens"
     },
     "buttons": {
@@ -614,6 +614,7 @@
                 "title": "{Sora}网络服务选择",
                 "useCeres": "Use Polkaswap Indexer for fiat values"
             },
+            "indexerBlock": "Polkaswap Indexer Block #{block}",
             "label": "统计服务",
             "title": {
                 "available": "可用的统计数据",

@@ -227,6 +227,7 @@ export default {
         useCeres: 'Use Polkaswap Indexer for fiat values',
       },
       label: 'Statistics services',
+      indexerBlock: 'Polkaswap Indexer Block #{block}',
       title: {
         available: 'Statistics available',
         loading: 'Statistics loading',

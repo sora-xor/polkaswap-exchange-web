@@ -76,13 +76,11 @@ vi.mock('@/components/shared/Dialog/SelectSoraAccount.vue', () => ({
     template: '<div class="select-sora-account-dialog-stub" />',
   }),
 }));
-vi.mock('@/features/bridge', () => ({
+vi.mock('@/app/shell/components', () => ({
   BridgeTransferNotification: defineComponent({
     name: 'BridgeTransferNotificationStub',
     template: '<div class="bridge-transfer-notification-stub" />',
   }),
-}));
-vi.mock('@/features/referrals', () => ({
   ReferralsConfirmInviteUser: createVisibleStub('ReferralsConfirmInviteUserStub'),
 }));
 vi.mock('@/lib/soraneo-wallet/src/components/NotificationEnablingPage.vue', () => ({

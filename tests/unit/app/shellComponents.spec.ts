@@ -28,6 +28,12 @@ vi.mock('@/components/App/Settings/Node/SelectNodeDialog.vue', () => ({
   default: { name: 'SelectNodeDialogComponent' },
 }));
 vi.mock('@/components/App/Footer/Indexer/SelectIndexer.vue', () => ({ default: { name: 'SelectIndexerComponent' } }));
+vi.mock('@/components/pages/Bridge/TransferNotification.vue', () => ({
+  default: { name: 'BridgeTransferNotificationComponent' },
+}));
+vi.mock('@/features/referrals/components/ConfirmInviteUser.vue', () => ({
+  default: { name: 'ReferralsConfirmInviteUserComponent' },
+}));
 
 import * as shellComponents from '@/app/shell/components';
 
@@ -46,6 +52,8 @@ describe('app shell async components', () => {
       ['PairTokenLogo', shellComponents.PairTokenLogo, 'PairTokenLogoComponent'],
       ['SelectNodeDialog', shellComponents.SelectNodeDialog, 'SelectNodeDialogComponent'],
       ['SelectIndexer', shellComponents.SelectIndexer, 'SelectIndexerComponent'],
+      ['BridgeTransferNotification', shellComponents.BridgeTransferNotification, 'BridgeTransferNotificationComponent'],
+      ['ReferralsConfirmInviteUser', shellComponents.ReferralsConfirmInviteUser, 'ReferralsConfirmInviteUserComponent'],
     ] as const;
 
     expect(createAsyncComponentMock).toHaveBeenCalledTimes(registry.length);

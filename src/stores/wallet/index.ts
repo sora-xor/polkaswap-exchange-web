@@ -3,7 +3,6 @@ import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { AES, enc } from 'crypto-js';
 import debounce from 'lodash/fp/debounce';
-import { NFTStorage } from 'nft.storage';
 import { FPNumber } from '@sora-substrate/math';
 import { Operation, TransactionStatus, type HistoryItem, type NetworkFeesObject } from '@sora-substrate/sdk';
 import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
@@ -47,6 +46,7 @@ import { normalizeTheme } from '@/stores/wallet/settings/theme';
 import type { SettingsState } from '@/stores/wallet/settings/types';
 import { initialState as createTransactionsState } from '@/stores/wallet/transactions/state';
 import type { TransactionsState } from '@/stores/wallet/transactions/types';
+import { createNftStorage } from '@/stores/wallet/nftStorage';
 import { IpfsStorage } from '@/lib/soraneo-wallet/src/util/ipfsStorage';
 import { runtimeStorage, settingsStorage, storage } from '@/lib/soraneo-wallet/src/util/storage';
 import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/lib/soraneo-wallet/src/util/account';
@@ -998,26 +998,26 @@ export const useWalletStore = defineStore('wallet', () => {
     }
   };
 
-  const setNftStorage = ({ marketplaceDid, ucan }: { marketplaceDid?: string; ucan?: string } = {}): void => {
+  const setNftStorage = async ({ marketplaceDid, ucan }: { marketplaceDid?: string; ucan?: string } = {}): Promise<void> => {
     settingsState.value.nftStorage =
       marketplaceDid && ucan
-        ? new NFTStorage({
+        ? await createNftStorage({
             token: ucan,
             did: marketplaceDid,
           })
-        : new NFTStorage({ token: settingsState.value.apiKeys.nftStorage });
+        : await createNftStorage({ token: settingsState.value.apiKeys.nftStorage });
   };
 
   const createNftStorageInstance = async (): Promise<void> => {
     if (settingsState.value.soraNetwork === SoraNetwork.Prod) {
       try {
         const { marketplaceDid, ucan } = await IpfsStorage.getUcanTokens();
-        setNftStorage({ marketplaceDid, ucan });
+        await setNftStorage({ marketplaceDid, ucan });
       } catch {
         console.error('Error while getting API keys for NFT marketplace.');
       }
     } else {
-      setNftStorage({});
+      await setNftStorage({});
     }
   };
 

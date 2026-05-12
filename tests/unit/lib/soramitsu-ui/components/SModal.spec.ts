@@ -1,8 +1,9 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, nextTick, ref } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { defineComponent, nextTick, provide, ref } from 'vue';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import SModal from '@/lib/soramitsu-ui/components/Modal/SModal.vue';
+import { OVERLAY_TARGET_KEY } from '@/lib/soramitsu-ui/composables/overlayTarget';
 
 const Host = defineComponent({
   components: { SModal },
@@ -50,6 +51,10 @@ const HostWithComponentAttrs = defineComponent({
 });
 
 describe('SModal', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
   it('updates the root open-state marker with show model changes', async () => {
     const wrapper = mount(Host);
 
@@ -115,6 +120,33 @@ describe('SModal', () => {
     );
 
     warnSpy.mockRestore();
+    wrapper.unmount();
+  });
+
+  it('uses a provided overlay target for body-level teleports', async () => {
+    const overlayTarget = document.createElement('div');
+    document.body.appendChild(overlayTarget);
+
+    const HostWithOverlayTarget = defineComponent({
+      components: { SModal },
+      setup() {
+        const show = ref(true);
+        provide(OVERLAY_TARGET_KEY, ref(overlayTarget));
+        return { show };
+      },
+      template: `
+        <SModal v-model:show="show" :eager="true" :focus-trap="false">
+          <button type="button">content</button>
+        </SModal>
+      `,
+    });
+
+    const wrapper = mount(HostWithOverlayTarget, { attachTo: document.body });
+    await nextTick();
+
+    expect(overlayTarget.querySelector('[data-testid="root"]')).not.toBeNull();
+    expect(overlayTarget.textContent).toContain('content');
+
     wrapper.unmount();
   });
 });

@@ -8,8 +8,6 @@ import { api as soraApi } from '@/lib/soraneo-wallet/src/api';
 import * as accountUtils from '@/lib/soraneo-wallet/src/util/account';
 import { EVM_NETWORKS, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
-import { useAssetsStore } from '@/stores/assets';
-import { useBridgeStore } from '@/stores/bridge';
 import { useWalletStore } from '@/stores/wallet';
 import web3Mutations from '@/stores/web3/mutations';
 import { initialState as createInitialWeb3State } from '@/stores/web3/state';
@@ -146,16 +144,24 @@ const buildSelectedNetwork = (
   return networks[networkSelected]?.data ?? null;
 };
 
-const getAssetsStore = (pinia: Pinia) => useAssetsStore(pinia);
-
-const getBridgeStore = (pinia: Pinia) => useBridgeStore(pinia);
-
-const resolveBridgeConnector = (pinia: Pinia): Nullable<SubNetworksConnector> => {
-  return getBridgeStore(pinia).subBridgeConnector ?? null;
+const getAssetsStore = async (pinia: Pinia): Promise<ReturnType<typeof import('@/stores/assets').useAssetsStore>> => {
+  const { useAssetsStore } = await import('@/stores/assets');
+  return useAssetsStore(pinia);
 };
 
-const resolveAutoselectedBridgeAssetAddress = (pinia: Pinia): Nullable<string> => {
-  return getBridgeStore(pinia).autoselectedAssetAddress ?? null;
+const getBridgeStore = async (pinia: Pinia): Promise<ReturnType<typeof import('@/stores/bridge').useBridgeStore>> => {
+  const { useBridgeStore } = await import('@/stores/bridge');
+  return useBridgeStore(pinia);
+};
+
+const resolveBridgeConnector = async (pinia: Pinia): Promise<Nullable<SubNetworksConnector>> => {
+  const bridgeStore = await getBridgeStore(pinia);
+  return bridgeStore.subBridgeConnector ?? null;
+};
+
+const resolveAutoselectedBridgeAssetAddress = async (pinia: Pinia): Promise<Nullable<string>> => {
+  const bridgeStore = await getBridgeStore(pinia);
+  return bridgeStore.autoselectedAssetAddress ?? null;
 };
 
 const isSubBridgeConnectorReady = (connector?: Nullable<SubNetworksConnector>): boolean => {
@@ -168,7 +174,7 @@ const isSubBridgeConnectorReady = (connector?: Nullable<SubNetworksConnector>): 
 
 const connectSubNetwork = async (store: Web3State & { $pinia: Pinia; selectedNetworkData: Nullable<NetworkData> }) => {
   const subNetwork = store.selectedNetworkData;
-  const connector = resolveBridgeConnector(store.$pinia);
+  const connector = await resolveBridgeConnector(store.$pinia);
 
   if (!subNetwork || !connector?.open) {
     return;
@@ -182,7 +188,7 @@ const updateProvidedEvmNetwork = async (store: Web3State & { $pinia: Pinia }, ev
 
   web3Mutations.setProvidedEvmNetwork(store, evmNetwork);
 
-  await getAssetsStore(store.$pinia).updateRegisteredAssets();
+  await (await getAssetsStore(store.$pinia)).updateRegisteredAssets();
 };
 
 const subscribeOnEvm = async (
@@ -218,10 +224,11 @@ const subscribeOnEvm = async (
 };
 
 const autoselectBridgeAsset = async (pinia: Pinia): Promise<void> => {
-  const assetAddress = resolveAutoselectedBridgeAssetAddress(pinia);
+  const assetAddress = await resolveAutoselectedBridgeAssetAddress(pinia);
 
   if (assetAddress) {
-    await getBridgeStore(pinia).setAssetAddress(assetAddress);
+    const bridgeStore = await getBridgeStore(pinia);
+    await bridgeStore.setAssetAddress(assetAddress);
   }
 };
 
@@ -347,14 +354,14 @@ export const useWeb3Store = defineStore('web3-legacy', {
 
       await Promise.allSettled([
         this.fetchDenominatorCoefficient(),
-        getAssetsStore(this.$pinia).getRegisteredAssets(),
+        getAssetsStore(this.$pinia).then((assetsStore) => assetsStore.getRegisteredAssets()),
         payload.type === BridgeNetworkType.Sub ? connectSubNetwork(this as typeof this & { $pinia: Pinia }) : undefined,
       ]);
 
       await autoselectBridgeAsset(this.$pinia);
     },
     async disconnectExternalNetwork(): Promise<void> {
-      const connector = resolveBridgeConnector(this.$pinia);
+      const connector = await resolveBridgeConnector(this.$pinia);
       await connector?.stop?.();
     },
     async resetEvmProviderConnection(): Promise<void> {
@@ -368,7 +375,7 @@ export const useWeb3Store = defineStore('web3-legacy', {
       ethersUtil.disconnectEvmProvider(provider);
     },
     async resetSubAccount(): Promise<void> {
-      const connector = resolveBridgeConnector(this.$pinia);
+      const connector = await resolveBridgeConnector(this.$pinia);
       const accountApi = connector?.accountApi;
       const { logoutApi, isAppStorageSource } = accountUtils;
       const forgetCurrentAccount = !isAppStorageSource(this.subAddressSource as AppWallet);
@@ -512,7 +519,7 @@ export const useWeb3Store = defineStore('web3-legacy', {
       }
     },
     async selectSubAccount(account: PolkadotJsAccount): Promise<void> {
-      const connector = resolveBridgeConnector(this.$pinia);
+      const connector = await resolveBridgeConnector(this.$pinia);
 
       if (!isSubBridgeConnectorReady(connector)) {
         web3Mutations.setSubAccountDialogVisibility(this, false);
@@ -531,7 +538,7 @@ export const useWeb3Store = defineStore('web3-legacy', {
       });
     },
     async changeSubAccountName(payload: { address: string; name: string }): Promise<void> {
-      const connector = resolveBridgeConnector(this.$pinia);
+      const connector = await resolveBridgeConnector(this.$pinia);
       const accountApi = connector?.accountApi;
       const subAccount = this.subAccount;
 

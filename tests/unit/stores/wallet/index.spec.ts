@@ -1315,7 +1315,8 @@ describe('wallet store actions', () => {
     expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({});
     expect(walletStore.transactionsState.externalHistoryTotal).toBe(2);
     expect(getUcanTokensMock).toHaveBeenCalledTimes(1);
-    expect(walletStore.settingsState.nftStorage).toBeInstanceOf(NFTStorage);
+    expect(walletStore.settingsState.nftStorage?.constructor.name).toBe('NFTStorage');
+    expect(walletStore.settingsState.nftStorage?.store).toEqual(expect.any(Function));
     expect(walletRuntimeBridge.store.commit).not.toHaveBeenCalled();
   });
 

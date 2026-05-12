@@ -1,8 +1,9 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { Fragment, defineComponent, h, nextTick } from 'vue';
+import { Fragment, defineComponent, h, nextTick, ref } from 'vue';
 
 import SPopoverPanel from '@/lib/soramitsu-ui/components/Popover/SPopoverPanel';
+import { OVERLAY_TARGET_KEY } from '@/lib/soramitsu-ui/composables/overlayTarget';
 
 describe('SPopoverPanel', () => {
   afterEach(() => {
@@ -277,6 +278,34 @@ describe('SPopoverPanel', () => {
     expect(popover?.getAttribute('style')).toContain('max-width: calc(100vw - 16px)');
     expect(popover?.getAttribute('style')).toContain('max-height: calc(100vh - 16px)');
     expect(popover?.getAttribute('style')).toContain('overflow-y: auto');
+  });
+
+  it('uses a provided overlay target instead of the document body', async () => {
+    const overlayTarget = document.createElement('div');
+    document.body.appendChild(overlayTarget);
+
+    const wrapper = mount(SPopoverPanel, {
+      attachTo: document.body,
+      props: {
+        trigger: 'click',
+        popperClass: 'test-popper',
+      },
+      global: {
+        provide: {
+          [OVERLAY_TARGET_KEY as symbol]: ref(overlayTarget),
+        },
+      },
+      slots: {
+        reference: '<button class="trigger">Open</button>',
+        default: '<div class="popover-content">Popover content</div>',
+      },
+    });
+
+    await wrapper.get('.trigger').trigger('click');
+    await nextTick();
+
+    expect(overlayTarget.querySelector('.test-popper')).not.toBeNull();
+    expect(overlayTarget.textContent).toContain('Popover content');
   });
 
   it('repositions a visible popover when observed content size changes', async () => {

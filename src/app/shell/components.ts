@@ -22,3 +22,9 @@ export const SelectNodeDialog = createAsyncComponent(
   () => import('@/components/App/Settings/Node/SelectNodeDialog.vue')
 );
 export const SelectIndexer = createAsyncComponent(() => import('@/components/App/Footer/Indexer/SelectIndexer.vue'));
+export const BridgeTransferNotification = createAsyncComponent(
+  () => import('@/components/pages/Bridge/TransferNotification.vue')
+);
+export const ReferralsConfirmInviteUser = createAsyncComponent(
+  () => import('@/features/referrals/components/ConfirmInviteUser.vue')
+);

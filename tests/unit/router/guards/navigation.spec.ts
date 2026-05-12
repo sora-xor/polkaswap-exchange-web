@@ -37,9 +37,7 @@ const createServices = (overrides: Partial<NavigationGuardServices> = {}): Navig
   walletStore: {
     isLoggedIn: false,
   },
-  bridgeStore: {
-    resetHistoryPage: vi.fn(),
-  },
+  resetBridgeHistoryPage: vi.fn(),
   persistReferral: vi.fn(),
   validateAddress: vi.fn(),
   updateDocumentTitle: vi.fn(),
@@ -47,7 +45,7 @@ const createServices = (overrides: Partial<NavigationGuardServices> = {}): Navig
 });
 
 describe('router navigation guard', () => {
-  it('redirects direct referral bonding entries to the referral dashboard while keeping the route hash segment', () => {
+  it('redirects direct referral bonding entries to the referral dashboard while keeping the route hash segment', async () => {
     clearPendingReferralActionNavigation();
 
     const services = createServices({
@@ -56,7 +54,7 @@ describe('router navigation guard', () => {
     const guard = createBeforeEachGuard(services);
     const next = vi.fn();
 
-    guard(
+    await guard(
       createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
       createRoute({ name: PageNames.ReferralProgram }),
       next
@@ -74,7 +72,7 @@ describe('router navigation guard', () => {
     });
   });
 
-  it('allows explicit referral bonding navigation triggered from inside the app', () => {
+  it('allows explicit referral bonding navigation triggered from inside the app', async () => {
     markPendingReferralActionNavigation(PageNames.ReferralBonding);
 
     const services = createServices({
@@ -83,7 +81,7 @@ describe('router navigation guard', () => {
     const guard = createBeforeEachGuard(services);
     const next = vi.fn();
 
-    guard(
+    await guard(
       createRoute({ name: PageNames.ReferralBonding, meta: { requiresAuth: true } }),
       createRoute({ name: PageNames.ReferralProgram }),
       next
@@ -96,12 +94,12 @@ describe('router navigation guard', () => {
     expect(next).toHaveBeenCalledWith();
   });
 
-  it('redirects unnamed routes to swap', () => {
+  it('redirects unnamed routes to swap', async () => {
     const services = createServices();
     const guard = createBeforeEachGuard(services);
     const next = vi.fn();
 
-    guard(createRoute({ name: undefined }), createRoute({ name: PageNames.Wallet }), next);
+    await guard(createRoute({ name: undefined }), createRoute({ name: PageNames.Wallet }), next);
 
     expect(services.setRoute).toHaveBeenCalledWith({
       prev: PageNames.Wallet,
@@ -110,18 +108,18 @@ describe('router navigation guard', () => {
     expect(next).toHaveBeenCalledWith({ name: PageNames.Swap });
   });
 
-  it('redirects to bridge when auth is required and user is not logged in', () => {
+  it('redirects to bridge when auth is required and user is not logged in', async () => {
     const services = createServices();
     const guard = createBeforeEachGuard(services);
     const next = vi.fn();
 
-    guard(
+    await guard(
       createRoute({ name: PageNames.BridgeTransactionsHistory, meta: { requiresAuth: true } }),
       createRoute({ name: PageNames.Swap }),
       next
     );
 
-    expect(services.bridgeStore.resetHistoryPage).toHaveBeenCalled();
+    expect(services.resetBridgeHistoryPage).toHaveBeenCalled();
     expect(services.setRoute).toHaveBeenCalledWith({
       prev: PageNames.Swap,
       current: PageNames.Bridge,
@@ -129,7 +127,7 @@ describe('router navigation guard', () => {
     expect(next).toHaveBeenCalledWith({ path: '/bridge/' });
   });
 
-  it('persists referrals and stays on invitation route when already authenticated', () => {
+  it('persists referrals and stays on invitation route when already authenticated', async () => {
     const services = createServices({
       walletStore: { isLoggedIn: true },
       validateAddress: vi.fn().mockReturnValue(true),
@@ -137,7 +135,7 @@ describe('router navigation guard', () => {
     const guard = createBeforeEachGuard(services);
     const next = vi.fn();
 
-    guard(
+    await guard(
       createRoute({
         name: PageNames.ReferralProgram,
         meta: { isInvitationRoute: true },
@@ -156,14 +154,14 @@ describe('router navigation guard', () => {
     expect(next).toHaveBeenCalledWith();
   });
 
-  it('allows navigation to unprotected routes without redirects', () => {
+  it('allows navigation to unprotected routes without redirects', async () => {
     const services = createServices({
       walletStore: { isLoggedIn: true },
     });
     const guard = createBeforeEachGuard(services);
     const next = vi.fn();
 
-    guard(createRoute({ name: PageNames.Stats }), createRoute({ name: PageNames.Wallet }), next);
+    await guard(createRoute({ name: PageNames.Stats }), createRoute({ name: PageNames.Wallet }), next);
 
     expect(services.setRoute).toHaveBeenCalledWith({
       prev: PageNames.Wallet,

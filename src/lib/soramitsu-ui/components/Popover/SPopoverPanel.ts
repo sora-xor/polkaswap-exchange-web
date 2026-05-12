@@ -17,6 +17,7 @@ import {
   type PropType,
   type VNode,
 } from 'vue';
+import { useResolvedOverlayTarget, type OverlayTarget } from '@/lib/soramitsu-ui/composables/overlayTarget';
 
 type PopoverTrigger = 'click' | 'hover' | 'focus' | 'manual';
 
@@ -152,6 +153,10 @@ export default defineComponent({
       type: [String, Number],
       default: 0,
     },
+    teleportTo: {
+      type: [String, Object] as PropType<OverlayTarget>,
+      default: 'body',
+    },
   },
   emits: ['update:show', 'show', 'hide'],
   setup(props, { attrs, emit, slots, expose }) {
@@ -174,6 +179,8 @@ export default defineComponent({
     let headerMenuSlideTimer: ReturnType<typeof setTimeout> | null = null;
     let activeReferenceEl: HTMLElement | null = null;
     let popperResizeObserver: ResizeObserver | null = null;
+    let eventTargetWindow: Window | null = null;
+    let eventTargetSupportsPointerEvents = false;
 
     const onReferenceClick = (): void => {
       handleReferenceClick();
@@ -218,6 +225,51 @@ export default defineComponent({
     );
 
     const placement = computed(() => (SUPPORTED_PLACEMENTS.has(props.placement) ? props.placement : 'bottom'));
+    const resolvedTeleportTo = useResolvedOverlayTarget(computed(() => props.teleportTo));
+
+    const getReferenceWindow = (): Window => {
+      return referenceEl.value?.ownerDocument?.defaultView ?? window;
+    };
+
+    const unbindWindowListeners = (): void => {
+      if (!eventTargetWindow) return;
+
+      eventTargetWindow.removeEventListener('resize', handleWindowResize);
+      eventTargetWindow.removeEventListener('scroll', handleViewportScroll, true);
+      if (eventTargetSupportsPointerEvents) {
+        eventTargetWindow.removeEventListener('pointerdown', handleDocumentPointerDown, true);
+      } else {
+        eventTargetWindow.removeEventListener('mousedown', handleDocumentPointerDown, true);
+        eventTargetWindow.removeEventListener('touchstart', handleDocumentPointerDown, true);
+      }
+      eventTargetWindow.removeEventListener('keydown', handleDocumentKeyDown, true);
+      eventTargetWindow.removeEventListener('hashchange', handleNavigationChange);
+      eventTargetWindow.removeEventListener('popstate', handleNavigationChange);
+      eventTargetWindow = null;
+    };
+
+    const bindWindowListeners = (targetWindow: Window): void => {
+      if (eventTargetWindow === targetWindow) return;
+
+      unbindWindowListeners();
+      eventTargetSupportsPointerEvents = 'PointerEvent' in targetWindow;
+      targetWindow.addEventListener('resize', handleWindowResize);
+      targetWindow.addEventListener('scroll', handleViewportScroll, true);
+      if (eventTargetSupportsPointerEvents) {
+        targetWindow.addEventListener('pointerdown', handleDocumentPointerDown, true);
+      } else {
+        targetWindow.addEventListener('mousedown', handleDocumentPointerDown, true);
+        targetWindow.addEventListener('touchstart', handleDocumentPointerDown, true);
+      }
+      targetWindow.addEventListener('keydown', handleDocumentKeyDown, true);
+      targetWindow.addEventListener('hashchange', handleNavigationChange);
+      targetWindow.addEventListener('popstate', handleNavigationChange);
+      eventTargetWindow = targetWindow;
+    };
+
+    const syncWindowListeners = (): void => {
+      bindWindowListeners(getReferenceWindow());
+    };
 
     const clearTimers = (): void => {
       if (showTimer) {
@@ -283,14 +335,16 @@ export default defineComponent({
     const toggle = (): void => setVisible(!isVisible.value);
 
     const updatePosition = (): void => {
+      syncWindowListeners();
       const trigger = referenceEl.value;
       const popper = popperEl.value;
       if (!trigger || !popper) return;
 
       const triggerRect = trigger.getBoundingClientRect();
       const popperRect = popper.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
+      const viewportWindow = getReferenceWindow();
+      const viewportWidth = viewportWindow.innerWidth;
+      const viewportHeight = viewportWindow.innerHeight;
       const { base, align } = parsePlacement(placement.value);
 
       let left = triggerRect.left + triggerRect.width / 2 - popperRect.width / 2;
@@ -375,16 +429,19 @@ export default defineComponent({
       el.addEventListener('focusin', onReferenceFocusIn);
       el.addEventListener('focusout', onReferenceFocusOut);
       activeReferenceEl = el;
+      syncWindowListeners();
     };
 
     const handleReferenceClick = (): void => {
       if (props.disabled) return;
       if (normalizedTrigger.value !== 'click') return;
+      syncWindowListeners();
       toggle();
     };
 
     const handleReferenceMouseEnter = (): void => {
       if (props.disabled) return;
+      syncWindowListeners();
       hoverTrigger.value = true;
       if (normalizedTrigger.value === 'hover') {
         scheduleShow();
@@ -400,6 +457,7 @@ export default defineComponent({
 
     const handleReferenceFocusIn = (): void => {
       if (props.disabled) return;
+      syncWindowListeners();
       if (normalizedTrigger.value === 'focus') {
         show();
       }
@@ -463,16 +521,15 @@ export default defineComponent({
     const observePopper = (element: HTMLElement | null): void => {
       disconnectPopperObserver();
       if (!element) return;
-      if (typeof window === 'undefined' || typeof window.ResizeObserver === 'undefined') return;
+      const ownerWindow = element.ownerDocument?.defaultView ?? window;
+      if (typeof ownerWindow.ResizeObserver === 'undefined') return;
 
-      popperResizeObserver = new window.ResizeObserver(() => {
+      popperResizeObserver = new ownerWindow.ResizeObserver(() => {
         if (!isVisible.value) return;
         updatePosition();
       });
       popperResizeObserver.observe(element);
     };
-
-    const supportsPointerEvents = typeof window !== 'undefined' && 'PointerEvent' in window;
 
     watch(
       isVisible,
@@ -482,6 +539,7 @@ export default defineComponent({
         emit(next ? 'show' : 'hide');
 
         if (next) {
+          syncWindowListeners();
           finishHeaderMenuSlideIn();
           nextTick(() => {
             updatePosition();
@@ -513,17 +571,7 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      window.addEventListener('resize', handleWindowResize);
-      window.addEventListener('scroll', handleViewportScroll, true);
-      if (supportsPointerEvents) {
-        window.addEventListener('pointerdown', handleDocumentPointerDown, true);
-      } else {
-        window.addEventListener('mousedown', handleDocumentPointerDown, true);
-        window.addEventListener('touchstart', handleDocumentPointerDown, true);
-      }
-      window.addEventListener('keydown', handleDocumentKeyDown, true);
-      window.addEventListener('hashchange', handleNavigationChange);
-      window.addEventListener('popstate', handleNavigationChange);
+      syncWindowListeners();
     });
 
     onBeforeUnmount(() => {
@@ -531,17 +579,7 @@ export default defineComponent({
       clearHeaderMenuSlideTimer();
       unbindReferenceListeners();
       disconnectPopperObserver();
-      window.removeEventListener('resize', handleWindowResize);
-      window.removeEventListener('scroll', handleViewportScroll, true);
-      if (supportsPointerEvents) {
-        window.removeEventListener('pointerdown', handleDocumentPointerDown, true);
-      } else {
-        window.removeEventListener('mousedown', handleDocumentPointerDown, true);
-        window.removeEventListener('touchstart', handleDocumentPointerDown, true);
-      }
-      window.removeEventListener('keydown', handleDocumentKeyDown, true);
-      window.removeEventListener('hashchange', handleNavigationChange);
-      window.removeEventListener('popstate', handleNavigationChange);
+      unbindWindowListeners();
     });
 
     expose({
@@ -584,7 +622,7 @@ export default defineComponent({
         isVisible.value && slots.default
           ? h(
               Teleport,
-              { to: 'body' },
+              { to: resolvedTeleportTo.value, disabled: resolvedTeleportTo.value === null },
               h(
                 'div',
                 {

@@ -261,17 +261,17 @@
         "title": "𒁾 𒋼"
     },
     "burnPage": {
+        "copySoraNetworkTxHash": "𒁕𒀭 𒊹𒌷 𒆠𒁲",
         "enterNexusRecipient": "𒅗𒁕 𒀭𒆠 𒌷𒊭",
         "invalidNexusRecipient": "𒄿𒉌 𒀭𒆠 𒌷𒊭",
+        "minamotoClaimDescription": "𒊹𒌷 𒆠𒁲 𒀭𒆠 𒁕𒀭 𒌋 𒁁𒂖. 𒁾 𒄩 𒈠 𒉌𒁺.",
+        "minamotoClaimTitle": "𒁁𒂖 𒁾 𒌋",
         "nexusRecipientLabel": "𒀭𒆠 𒌷𒊭",
         "nexusRecipientPlaceholder": "𒅗𒁕 𒀭𒆠 𒌷𒊭",
         "nexusRecipientWarning": "𒀭𒆠 𒌷𒊭 𒊹𒌷 𒁕𒀭 𒉌𒁺 𒆠𒁲 𒊹𒌷.",
-        "soraV3XorAmountTitle": "𒄩 𒈠 {tokenSymbol} 𒋼",
-        "copySoraNetworkTxHash": "𒁕𒀭 𒊹𒌷 𒆠𒁲",
-        "minamotoClaimDescription": "𒊹𒌷 𒆠𒁲 𒀭𒆠 𒁕𒀭 𒌋 𒁁𒂖. 𒁾 𒄩 𒈠 𒉌𒁺.",
-        "minamotoClaimTitle": "𒁁𒂖 𒁾 𒌋",
         "soraNetworkTxHashLabel": "𒊹𒌷 𒆠𒁲",
         "soraNexusXorLabel": "𒀭𒆠 𒊭",
+        "soraV3XorAmountTitle": "𒄩 𒈠 {tokenSymbol} 𒋼",
         "ssTokensLabel": "𒋴𒋴 𒉌"
     },
     "buttons": {
@@ -614,6 +614,7 @@
                 "title": "{Sora} 𒆠 𒁕𒀭 𒌷𒊭",
                 "useCeres": "𒄷 𒈨𒂊 𒀭𒆠 𒄑𒉿"
             },
+            "indexerBlock": "𒁉𒆠 𒊹𒌷 #{block}",
             "label": "𒈨𒂊 𒅆𒀀",
             "title": {
                 "available": "𒈨𒂊 𒉌𒁺",

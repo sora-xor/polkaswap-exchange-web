@@ -9,7 +9,9 @@ import type { ExplorerClient } from '../explorer/base';
 export type { Client, OperationResult, TypedDocumentNode, AnyVariables } from '@urql/core';
 
 const shouldDisableSubscriptionWs = (url: URL): boolean => {
-  return url.hostname === 'api.subquery.network' && url.pathname.startsWith('/sq/');
+  if (url.hostname === 'api.subquery.network' && url.pathname.startsWith('/sq/')) return true;
+
+  return url.hostname === 'pi.soramitsu.io';
 };
 
 const resolveSubscriptionWsUrl = (url: string): string | null => {

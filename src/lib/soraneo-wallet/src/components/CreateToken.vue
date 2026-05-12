@@ -25,15 +25,16 @@
 import { computed, ref } from 'vue';
 
 import { navigateWallet, type WalletNavigationTarget } from '@/platform/wallet/navigation';
+import { createAsyncComponent } from '@/shared/ui/async';
 import { useWalletTranslation } from '../composables/useWalletTranslation';
 
 import { TokenTabs, Step, RouteNames } from '../consts';
 
-import CreateNftToken from './CreateNftToken.vue';
 import CreateSimpleToken from './CreateSimpleToken.vue';
 import WalletBase from './WalletBase.vue';
 
 const { t, TranslationConsts } = useWalletTranslation();
+const CreateNftToken = createAsyncComponent(() => import('./CreateNftToken.vue'));
 
 const step = ref<Step>(Step.CreateSimpleToken);
 const currentTab = ref<Step>(Step.CreateSimpleToken);

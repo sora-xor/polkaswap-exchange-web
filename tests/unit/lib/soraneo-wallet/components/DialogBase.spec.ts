@@ -54,6 +54,10 @@ const SModalStub = defineComponent({
       type: Boolean,
       default: true,
     },
+    teleportTo: {
+      type: [String, Object],
+      default: 'body',
+    },
   },
   template: `
     <div
@@ -65,6 +69,7 @@ const SModalStub = defineComponent({
       :data-lock-scroll="String(lockScroll)"
       :data-close-on-overlay-click="String(closeOnOverlayClick)"
       :data-close-on-esc="String(closeOnEsc)"
+      :data-teleport-to="teleportTo === null ? 'inline' : 'body'"
     >
       <slot />
     </div>
@@ -134,5 +139,28 @@ describe('DialogBase', () => {
     expect(wrapper.get('.dialog-card__content').classes()).toContain('el-dialog__body');
     expect(wrapper.get('.dialog-card__footer').classes()).toContain('el-dialog__footer');
     expect(wrapper.get('.el-dialog__headerbtn .el-dialog__close').exists()).toBe(true);
+  });
+
+  it('renders non-appended dialogs in place for floating widget frames', () => {
+    const wrapper = mount(DialogBase, {
+      props: {
+        visible: true,
+        appendToBody: false,
+      },
+      global: {
+        stubs: {
+          SModal: SModalStub,
+          SButton: {
+            template: '<button type="button"><slot /></button>',
+          },
+          SIcon: true,
+          STooltip: {
+            template: '<span><slot /></span>',
+          },
+        },
+      },
+    });
+
+    expect(wrapper.get('.s-modal-stub').attributes('data-teleport-to')).toBe('inline');
   });
 });

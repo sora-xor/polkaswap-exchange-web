@@ -11,7 +11,12 @@ export type { Client, OperationResult, TypedDocumentNode, AnyVariables } from '@
 const shouldDisableSubscriptionWs = (url: URL): boolean => {
   // `api.subquery.network/sq/*` endpoints currently reject websocket handshake
   // in production for this app setup; skip ws exchange to avoid retry churn.
-  return url.hostname === 'api.subquery.network' && url.pathname.startsWith('/sq/');
+  if (url.hostname === 'api.subquery.network' && url.pathname.startsWith('/sq/')) return true;
+
+  // The Polkaswap-owned indexer exposes websocket subscriptions, but each
+  // subscription currently consumes a Postgres LISTEN session. Price data is
+  // already fetched by query, so avoid long-lived browser subscriptions here.
+  return url.hostname === 'pi.soramitsu.io';
 };
 
 const resolveSubscriptionWsUrl = (url: string): string | null => {

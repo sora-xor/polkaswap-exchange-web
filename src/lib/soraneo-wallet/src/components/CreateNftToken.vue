@@ -147,7 +147,6 @@
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { MaxTotalSupply, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { File as ImageNFT } from 'nft.storage';
 import { computed, ref, type PropType } from 'vue';
 
 import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
@@ -340,7 +339,7 @@ export default {
         const metadata = await (nftStorage.value as NFTStorage).store({
           name: imageFile.name,
           description: tokenDescription.value,
-          image: new ImageNFT([content], imageFile.name, { type: imageFile.type }),
+          image: await createNftStorageFile([content], imageFile.name, { type: imageFile.type }),
         });
 
         tokenContentIpfsParsed.value = IpfsStorage.getIpfsPath(metadata.embed().image.href);
@@ -457,6 +456,15 @@ export default {
     };
   },
 };
+
+async function createNftStorageFile(
+  fileBits: BlobPart[],
+  fileName: string,
+  options: FilePropertyBag
+): Promise<import('nft.storage').File> {
+  const { File: ImageNFT } = await import('nft.storage');
+  return new ImageNFT(fileBits, fileName, options);
+}
 </script>
 
 <style lang="scss" scoped>

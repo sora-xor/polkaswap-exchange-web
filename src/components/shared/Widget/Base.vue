@@ -44,10 +44,11 @@
 
 <script lang="ts" setup>
 import isEqual from 'lodash/fp/isEqual';
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, reactive, ref, useSlots } from 'vue';
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, provide, reactive, ref, useSlots } from 'vue';
 
 import type { Size } from '@/types/layout';
 import { capitalize as capitalizeUtil } from '@/utils';
+import { OVERLAY_TARGET_KEY } from '@/lib/soramitsu-ui/composables/overlayTarget';
 
 const props = withDefaults(
   defineProps<{
@@ -86,6 +87,7 @@ const content = ref<HTMLElement | null>(null);
 
 const pipOpened = ref(false);
 const pipWindow = ref<Window | null>(null);
+const pipOverlayTarget = ref<HTMLElement | null>(null);
 
 const size = reactive<Size>({
   width: 0,
@@ -97,6 +99,8 @@ const hasContent = computed(() => Boolean(slots.default));
 const shadow = computed(() => (props.flat ? 'never' : 'always'));
 
 const capitalize = capitalizeUtil;
+
+provide(OVERLAY_TARGET_KEY, pipOverlayTarget);
 
 const isPipAvailable = computed(() => {
   if (props.pipDisabled || pipOpened.value) return false;
@@ -237,6 +241,7 @@ function destroyMutationObserver(): void {
 
 function closePip(): void {
   if (pipOpened.value && pipWindow.value) {
+    pipOverlayTarget.value = null;
     destroyMutationObserver();
     pipWindow.value.close();
     pipOpened.value = false;
@@ -288,7 +293,12 @@ async function openPip(): Promise<void> {
       pipHtml.setAttribute(attribute.nodeName, attribute.nodeValue ?? '');
     });
 
+    const overlayTarget = pip.document.createElement('div');
+    overlayTarget.setAttribute('data-widget-pip-overlay-root', '');
+
     pip.document.body.appendChild(rootElement);
+    pip.document.body.appendChild(overlayTarget);
+    pipOverlayTarget.value = overlayTarget;
     createMutationObserver();
 
     pip.addEventListener('pagehide', () => {

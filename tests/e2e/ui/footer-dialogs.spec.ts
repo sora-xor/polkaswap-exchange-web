@@ -127,40 +127,23 @@ test('keeps footer node dialog parity across escape/outside/hash/breakpoint and 
   expect(consoleErrors).toEqual([]);
 });
 
-test('keeps footer indexer dialog parity across escape/outside/hash/breakpoint and reopen cycles', async ({ page }) => {
+test('renders the footer indexer block as static non-clickable status text', async ({ page }) => {
   const consoleErrors = trackConsole(page);
   await openSwap(page);
 
+  const indexerBlock = page.locator('.app-status .indexer-block').first();
   const indexerDialog = page
     .getByRole('dialog')
     .filter({ hasText: /statistics services/i })
     .first();
 
-  await openFooterActionDialog(page, {
-    statusIndex: 2,
-    actionName: /select services/i,
-    dialog: indexerDialog,
-  });
-
-  await page.keyboard.press('Escape');
+  await expect(indexerBlock).toBeVisible();
+  await expect(indexerBlock).toContainText(/Polkaswap Indexer Block #/i);
+  await indexerBlock.click({ trial: true, timeout: 500 });
+  await indexerBlock.click();
+  await expect(page.locator('.app-status__tooltip')).toHaveCount(0);
   await expect(indexerDialog).toHaveCount(0);
   await expectSwapSettingsClickable(page);
-
-  await openFooterActionDialog(page, {
-    statusIndex: 2,
-    actionName: /select services/i,
-    dialog: indexerDialog,
-  });
-
-  await page.mouse.click(10, 10);
-  await expect(indexerDialog).toHaveCount(0);
-  await expectSwapSettingsClickable(page);
-
-  await openFooterActionDialog(page, {
-    statusIndex: 2,
-    actionName: /select services/i,
-    dialog: indexerDialog,
-  });
 
   await page.evaluate(() => {
     window.location.hash = '#/bridge';
@@ -170,25 +153,9 @@ test('keeps footer indexer dialog parity across escape/outside/hash/breakpoint a
   await expect(indexerDialog).toHaveCount(0);
 
   await goToSwap(page);
-  await expectSwapSettingsClickable(page);
-
-  await openFooterActionDialog(page, {
-    statusIndex: 2,
-    actionName: /select services/i,
-    dialog: indexerDialog,
-  });
-
+  await expect(indexerBlock).toBeVisible();
+  await expect(indexerBlock).toContainText(/Polkaswap Indexer Block #/i);
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(indexerDialog).toHaveCount(0);
-  await expectSwapSettingsClickable(page);
-
-  await openFooterActionDialog(page, {
-    statusIndex: 2,
-    actionName: /select services/i,
-    dialog: indexerDialog,
-  });
-
-  await page.keyboard.press('Escape');
   await expect(indexerDialog).toHaveCount(0);
   await expectSwapSettingsClickable(page);
 

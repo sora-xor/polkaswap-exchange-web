@@ -614,6 +614,7 @@
                 "title": "{Sora} Network service selection",
                 "useCeres": "Use Polkaswap Indexer for fiat values"
             },
+            "indexerBlock": "Polkaswap Indexer Block #{block}",
             "label": "Statistics services",
             "title": {
                 "available": "Statistics available",

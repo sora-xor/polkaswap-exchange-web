@@ -59,19 +59,16 @@
         <span>{{ internetConnectionDesc }}</span>
       </template>
     </footer-popper>
-    <footer-popper
-      icon="software-cloud-24"
-      panel-class="statistics"
-      :panel-text="statisticsConnectionText"
-      :status="statisticsConnectionStatus"
-      :action-text="t('footer.statistics.action')"
-      @action="setSelectIndexerDialogVisibility(true)"
+    <div
+      class="app-status__item indexer-block s-flex"
+      :class="indexerBlockStatus"
+      :aria-label="indexerBlockText"
+      :title="indexerBlockText"
     >
-      <template #label>
-        <span>{{ t('footer.statistics.label') }}</span>
-        <span>{{ statisticsConnectionDesc }}</span>
-      </template>
-    </footer-popper>
+      <span v-if="isIndexerBlockInitialLoading" class="indexer-block__loading"></span>
+      <s-icon v-else name="software-cloud-24" size="16"></s-icon>
+      <span class="indexer-block__text">{{ indexerBlockText }}</span>
+    </div>
     <div class="sora-logo">
       <span class="sora-logo__title">{{ t('poweredBy') }}</span>
       <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
@@ -83,14 +80,13 @@
       :visibility="selectNodeDialogVisibility"
       :set-visibility="setSelectNodeDialogVisibility"
     ></select-node-dialog>
-    <statistics-dialog></statistics-dialog>
     <no-internet-dialog></no-internet-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { computed, markRaw, onBeforeUnmount, onMounted } from 'vue';
+import { computed, markRaw, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { Status } from '@soramitsu-ui/ui/types';
 import { SelectNodeDialog } from '@/app/shell/components';
@@ -108,13 +104,14 @@ import { toSafeExternalLink } from '@/utils/externalLinks';
 import { settingsStorage } from '@/utils/storage';
 import { formatLocation } from '@/components/App/Settings/Node/utils';
 import { resolveIndexerStatus } from '@/components/App/Footer/utils/resolveIndexerStatus';
+import { fetchLatestIndexedBlock } from '@/indexer/queries/latestIndexedBlock';
 
 import FooterPopper from './FooterPopper.vue';
 import NoInternetDialog from './NoInternetDialog.vue';
-import StatisticsDialog from './StatisticsDialog.vue';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
+const INDEXER_BLOCK_REFRESH_INTERVAL_MS = 30_000;
 
 defineOptions({ name: 'AppFooter' });
 
@@ -136,10 +133,15 @@ const selectNodeDialogVisibility = computed(() => Boolean(settingsStore.selectNo
 const indexersData = computed(
   () => (settingsStore.indexers as Record<IndexerType, IndexerState>) ?? ({} as Record<IndexerType, IndexerState>)
 );
+const indexerEndpoint = computed(() => indexersData.value[indexerType.value]?.endpoint ?? '');
 
 const isBrowserOnline = computed(() => settingsStore.isInternetConnectionEnabled);
 const isConnectionStable = computed(() => settingsStore.isInternetConnectionStable);
 const connectionSpeedMb = computed(() => settingsStore.internetConnectionSpeedMb);
+const latestIndexedBlock = ref<Nullable<number>>(null);
+const isIndexerBlockLoading = ref(false);
+let indexerBlockRefreshTimer: Nullable<ReturnType<typeof window.setInterval>> = null;
+let indexerBlockRequestId = 0;
 
 const blockExplorerLink = computed(() => toSafeExternalLink(getExplorerLinks(soraNetwork.value)?.[0]?.value));
 const blockNumberFormatted = computed(() => new FPNumber(blockNumber.value).toLocaleString());
@@ -216,7 +218,18 @@ const indexerStatus = computed(() => {
   return resolveIndexerStatus(indexerType.value, indexersData.value);
 });
 
-const statisticsConnectionStatus = computed(() => {
+const fallbackIndexedBlock = computed(() => {
+  const block = Number(blockNumber.value);
+
+  return Number.isSafeInteger(block) && block > 0 ? block : null;
+});
+const displayedIndexedBlock = computed(() => latestIndexedBlock.value ?? fallbackIndexedBlock.value);
+
+const indexerBlockStatus = computed(() => {
+  if (displayedIndexedBlock.value !== null) {
+    return Status.SUCCESS;
+  }
+
   switch (indexerStatus.value) {
     case ConnectionStatus.Unavailable:
       return Status.ERROR;
@@ -229,15 +242,19 @@ const statisticsConnectionStatus = computed(() => {
   }
 });
 
-const statisticsConnectionText = computed(() => t(`footer.statistics.title.${indexerStatus.value}`));
-const statisticsConnectionDesc = computed(() => t(`footer.statistics.desc.${indexerStatus.value}`));
+const isIndexerBlockInitialLoading = computed(
+  () => isIndexerBlockLoading.value && displayedIndexedBlock.value === null
+);
+const latestIndexedBlockFormatted = computed(() => {
+  if (displayedIndexedBlock.value === null) return '-';
+  return new FPNumber(displayedIndexedBlock.value).toLocaleString();
+});
+const indexerBlockText = computed(() =>
+  t('footer.statistics.indexerBlock', { block: latestIndexedBlockFormatted.value })
+);
 
 function setSelectNodeDialogVisibility(flag: boolean): void {
   settingsStore.setSelectNodeDialogVisibility(flag);
-}
-
-function setSelectIndexerDialogVisibility(flag: boolean): void {
-  settingsStore.setSelectIndexerDialogVisibility(flag);
 }
 
 async function runLatencyProbe(): Promise<void> {
@@ -268,16 +285,49 @@ function handleConnectionChange(): void {
   settingsStore.setInternetConnectionSpeed();
 }
 
+async function refreshLatestIndexedBlock(): Promise<void> {
+  const requestId = ++indexerBlockRequestId;
+  isIndexerBlockLoading.value = true;
+
+  try {
+    const block = await fetchLatestIndexedBlock();
+    if (requestId !== indexerBlockRequestId) return;
+    if (block !== null) {
+      latestIndexedBlock.value = block;
+    }
+  } catch (error) {
+    console.warn('[footer] Latest Polkaswap indexer block is unavailable', error);
+  } finally {
+    if (requestId === indexerBlockRequestId) {
+      isIndexerBlockLoading.value = false;
+    }
+  }
+}
+
+watch([indexerType, indexerEndpoint], () => {
+  latestIndexedBlock.value = null;
+  void refreshLatestIndexedBlock();
+});
+
 onMounted(() => {
   window.addEventListener('offline', handleOffline);
   window.addEventListener('online', handleOnline);
   (navigator as any)?.connection?.addEventListener('change', handleConnectionChange);
+  void refreshLatestIndexedBlock();
+  indexerBlockRefreshTimer = window.setInterval(() => {
+    void refreshLatestIndexedBlock();
+  }, INDEXER_BLOCK_REFRESH_INTERVAL_MS);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('offline', handleOffline);
   window.removeEventListener('online', handleOnline);
   (navigator as any)?.connection?.removeEventListener('change', handleConnectionChange);
+  indexerBlockRequestId += 1;
+  if (indexerBlockRefreshTimer !== null) {
+    window.clearInterval(indexerBlockRefreshTimer);
+    indexerBlockRefreshTimer = null;
+  }
 });
 </script>
 
@@ -315,6 +365,35 @@ $sora-logo-width: 115px;
     height: $block-icon-size;
     width: $block-icon-size;
     margin-right: 2px;
+  }
+}
+
+.indexer-block {
+  @include app-status-item;
+  cursor: default;
+
+  &.error :deep(i) {
+    color: var(--s-color-status-error);
+  }
+
+  &.warning :deep(i) {
+    color: var(--s-color-status-warning);
+  }
+
+  &.success :deep(i) {
+    color: var(--s-color-status-success);
+  }
+
+  &__loading {
+    height: var(--s-font-size-mini);
+    width: var(--s-font-size-mini);
+    background-image: url('@/assets/img/status-pending.svg');
+    @include loading;
+  }
+
+  &__text {
+    margin-left: $inner-spacing-mini;
+    white-space: nowrap;
   }
 }
 
@@ -358,6 +437,21 @@ $sora-logo-width: 115px;
 
   .block-number {
     display: none;
+  }
+
+  .indexer-block {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: $inner-spacing-tiny;
+    padding-right: $inner-spacing-tiny;
+
+    &__text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .sora-logo {

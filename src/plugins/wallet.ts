@@ -1,5 +1,4 @@
 import installWalletPlugins from '@/lib/soraneo-wallet/src/plugins';
-import SoraWallet from '@/lib/soraneo-wallet/src/SoraWallet.vue';
 import AccountCard from '@/lib/soraneo-wallet/src/components/Account/AccountCard.vue';
 import ConfirmationOption from '@/lib/soraneo-wallet/src/components/Account/Settings/ConfirmationOption.vue';
 import WalletAccount from '@/lib/soraneo-wallet/src/components/Account/WalletAccount.vue';
@@ -36,6 +35,7 @@ import FormattedAddress from '@/lib/soraneo-wallet/src/components/shared/Formatt
 import AssetsFilter from '@/lib/soraneo-wallet/src/components/shared/AssetsFilter.vue';
 import SyntheticSwitcher from '@/lib/soraneo-wallet/src/components/shared/SyntheticSwitcher.vue';
 import { registerGlobalPinia, resolveGlobalPinia } from './pinia';
+import { createAsyncComponent } from '@/shared/ui/async';
 import type { Pinia } from 'pinia';
 import type { App, Component } from 'vue';
 
@@ -61,7 +61,7 @@ const registerIfAbsent = (app: App, name: string, component: Component): void =>
 };
 
 const walletComponents = {
-  SoraWallet,
+  SoraWallet: createAsyncComponent(() => import('@/lib/soraneo-wallet/src/SoraWallet.vue')),
   WalletAccount,
   WalletAvatar,
   WalletBase,

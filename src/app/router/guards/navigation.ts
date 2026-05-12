@@ -20,9 +20,7 @@ export interface NavigationGuardServices {
   walletStore: {
     isLoggedIn: boolean;
   };
-  bridgeStore: {
-    resetHistoryPage: () => void;
-  };
+  resetBridgeHistoryPage: () => void | Promise<void>;
   persistReferral: (address: string) => void;
   validateAddress: (address?: Nullable<string>) => boolean;
   updateDocumentTitle: (to: RouteLocationNormalized) => void;
@@ -40,7 +38,7 @@ const normalizeRouteName = (value: unknown): Nullable<PageNames> => {
  * Factory for the global beforeEach guard so navigation logic stays testable and store-agnostic.
  */
 export const createBeforeEachGuard = (services: NavigationGuardServices): NavigationGuardWithThis<undefined> => {
-  return (to, from, next) => {
+  return async (to, from, next) => {
     const prev = normalizeRouteName(from.name);
     const current = normalizeRouteName(to.name);
     const isInvitationRoute = hasMetaFlag(to, 'isInvitationRoute');
@@ -72,7 +70,7 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
     }
 
     if (shouldResetBridgeHistory(prev, current)) {
-      services.bridgeStore.resetHistoryPage();
+      await services.resetBridgeHistoryPage();
     }
 
     const invitationDecision = resolveInvitationDecision({

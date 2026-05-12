@@ -342,7 +342,15 @@ onMounted(() => {
   }
 
   .wallet-tabs {
+    :deep(.el-tabs__header) {
+      width: 100%;
+    }
+
     :deep(.el-tabs__nav-wrap) {
+      height: auto;
+      min-height: 46px;
+      overflow: visible;
+      box-sizing: border-box;
       padding: 4px;
       background: var(--s-color-utility-body);
       border: 1px solid var(--s-color-base-border-primary);
@@ -350,17 +358,60 @@ onMounted(() => {
       box-shadow: none;
     }
 
+    :deep(.el-tabs__nav-scroll) {
+      overflow: visible;
+      padding: 0;
+    }
+
+    :deep(.el-tabs__nav) {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      width: 100%;
+    }
+
+    :deep(.el-tabs__active-bar) {
+      display: none;
+    }
+
     :deep(.el-tabs__item) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      min-width: 0;
+      height: 36px;
       min-height: 36px;
-      line-height: 36px;
+      padding: 0 12px;
+      line-height: var(--s-line-height-base);
       border-radius: 6px;
       font-size: var(--s-font-size-small);
+      font-weight: 700;
       letter-spacing: 0;
+      color: var(--s-color-base-content-secondary);
+      box-shadow: none;
+      transition:
+        background-color 150ms ease,
+        color 150ms ease,
+        box-shadow 150ms ease;
+    }
+
+    :deep(.el-tabs__item:last-child),
+    :deep(.el-tabs__item:nth-child(2)) {
+      padding: 0 12px;
+    }
+
+    :deep(.el-tabs__item:not(.is-active):hover),
+    :deep(.el-tabs__item:not(.is-active):focus.is-focus) {
+      background: var(--s-color-utility-surface);
+      box-shadow: none;
+      color: var(--s-color-theme-accent-hover);
     }
 
     :deep(.el-tabs__item.is-active) {
       background: var(--s-color-utility-surface);
       box-shadow: var(--s-shadow-element);
+      color: var(--s-color-theme-accent);
     }
   }
 }
@@ -473,6 +524,20 @@ onMounted(() => {
     .wallet {
       padding-right: 16px;
       padding-left: 16px;
+    }
+
+    .wallet-tabs {
+      :deep(.el-tabs__item) {
+        height: 34px;
+        min-height: 34px;
+        padding: 0 8px;
+        font-size: var(--s-font-size-extra-small);
+      }
+
+      :deep(.el-tabs__item:last-child),
+      :deep(.el-tabs__item:nth-child(2)) {
+        padding: 0 8px;
+      }
     }
   }
 

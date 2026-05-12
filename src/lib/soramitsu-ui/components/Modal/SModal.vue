@@ -8,17 +8,18 @@ import type { FocusTrap, Options as FocusTrapOptions } from 'focus-trap';
 import { uniqueElementId } from '@soramitsu-ui/ui/util';
 import { useBodyScrollLockIfPossible } from '../BodyScrollLockProvider';
 import { templateRef } from '@vueuse/core';
+import { useResolvedOverlayTarget, type OverlayTarget } from '@/lib/soramitsu-ui/composables/overlayTarget';
 
 type ClassType = object | string | string[];
 type StyleType = StyleValue;
 
 interface Props {
   /**
-   * CSS-Selector. The Teleport target. Set `null` to render in-place.
+   * CSS selector or element Teleport target. Set `null` to render in-place.
    *
    * @default 'body'
    */
-  teleportTo?: string;
+  teleportTo?: OverlayTarget;
 
   /**
    * Whether position the modal as `absolute` instead of `fixed`
@@ -113,6 +114,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits(['click:overlay', 'before-open', 'after-open', 'before-close', 'after-close']);
+const resolvedTeleportTo = useResolvedOverlayTarget(computed(() => props.teleportTo));
 
 // ***
 
@@ -252,7 +254,7 @@ useCloseOnEsc(
 </script>
 
 <template>
-  <Teleport :to="teleportTo" :disabled="teleportTo === null">
+  <Teleport :to="resolvedTeleportTo" :disabled="resolvedTeleportTo === null">
     <div
       v-if="rootIf"
       v-show="rootShow"

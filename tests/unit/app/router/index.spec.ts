@@ -145,11 +145,12 @@ describe('app router singleton', () => {
     expect(guardMocks.createBeforeEachGuard).toHaveBeenCalledWith({
       setRoute: adapterMocks.syncRoute,
       walletStore: walletStoreMocks.walletStore,
-      bridgeStore: bridgeStoreMocks.bridgeStore,
+      resetBridgeHistoryPage: expect.any(Function),
       persistReferral: referralMocks.persistReferralAddress,
       validateAddress: addressMocks.isValidWalletAddress,
       updateDocumentTitle: utilityMocks.updateDocumentTitle,
     });
+    expect(bridgeStoreMocks.useBridgeStore).not.toHaveBeenCalled();
     expect(routerMocks.beforeEach).toHaveBeenCalledWith(guardMocks.guard);
     expect(utilityMocks.registerDocumentTitleResolver).toHaveBeenCalledTimes(1);
 
@@ -158,6 +159,19 @@ describe('app router singleton', () => {
       | undefined;
 
     expect(resolveCurrentRoute?.()).toBe(routerMocks.currentRoute.value);
+  });
+
+  it('loads the bridge store only when the guard asks to reset bridge history', async () => {
+    await loadRouterModule();
+
+    const services = guardMocks.createBeforeEachGuard.mock.calls[0]?.[0] as
+      | { resetBridgeHistoryPage?: () => Promise<void> }
+      | undefined;
+
+    await services?.resetBridgeHistoryPage?.();
+
+    expect(bridgeStoreMocks.useBridgeStore).toHaveBeenCalledTimes(1);
+    expect(bridgeStoreMocks.bridgeStore.resetHistoryPage).toHaveBeenCalledTimes(1);
   });
 
   it('returns early when navigating to the current wallet route but still prepares wallet entry', async () => {

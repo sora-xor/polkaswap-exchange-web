@@ -49,10 +49,9 @@ import AppBrowserNotifsLocalStorageOverride from '@/components/App/BrowserNotifi
 import AppBrowserMstNotificationTrxs from '@/components/App/BrowserNotification/MstNotificationTrxs.vue';
 import AppMobilePopup from '@/components/App/MobilePopup.vue';
 import SelectSoraAccountDialog from '@/components/shared/Dialog/SelectSoraAccount.vue';
-import { BridgeTransferNotification } from '@/features/bridge';
-import { ReferralsConfirmInviteUser } from '@/features/referrals';
 
 import { useAppShellContext } from './context';
+import { BridgeTransferNotification, ReferralsConfirmInviteUser } from './components';
 import WalletComponentNotificationEnablingPage from '@/lib/soraneo-wallet/src/components/NotificationEnablingPage.vue';
 import WalletComponentConfirmDialog from '@/lib/soraneo-wallet/src/components/ConfirmDialog.vue';
 
