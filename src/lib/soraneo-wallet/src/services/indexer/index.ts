@@ -1,40 +1,18 @@
-import { resolveGlobalPinia } from '@/plugins/pinia';
-import { useWalletStore } from '@/stores/wallet';
-
 import { IndexerType } from '../../consts';
 import IndexerDataParser from './parser';
-import { SubqueryExplorerService, historyElementsFilter as subqueryHistoryElementsFilter } from './subquery';
-import { SubsquidExplorerService, historyElementsFilter as subsquidHistoryElementsFilter } from './subsquid';
+import { PolkaswapExplorerService, historyElementsFilter as polkaswapHistoryElementsFilter } from './polkaswap';
 
-const resolveWalletStore = () => {
-  try {
-    return useWalletStore(resolveGlobalPinia());
-  } catch {
-    return null;
-  }
-};
-
-export interface SubqueryIndexer {
-  type: IndexerType.SUBQUERY;
+export interface PolkaswapIndexer {
+  type: IndexerType.POLKASWAP;
   services: {
-    explorer: typeof SubqueryExplorerService;
+    explorer: typeof PolkaswapExplorerService;
     dataParser: IndexerDataParser;
   };
-  historyElementsFilter: typeof subqueryHistoryElementsFilter;
-}
-
-export interface SubsquidIndexer {
-  type: IndexerType.SUBSQUID;
-  services: {
-    explorer: typeof SubsquidExplorerService;
-    dataParser: IndexerDataParser;
-  };
-  historyElementsFilter: typeof subsquidHistoryElementsFilter;
+  historyElementsFilter: typeof polkaswapHistoryElementsFilter;
 }
 
 type IndexerTypeMap = {
-  [IndexerType.SUBQUERY]: SubqueryIndexer;
-  [IndexerType.SUBSQUID]: SubsquidIndexer;
+  [IndexerType.POLKASWAP]: PolkaswapIndexer;
 };
 
 /**
@@ -50,23 +28,14 @@ const IndexerDataParserService = new IndexerDataParser();
  */
 function getIndexer<T extends IndexerType>(type: T): IndexerTypeMap[T] {
   switch (type) {
-    case IndexerType.SUBQUERY:
+    case IndexerType.POLKASWAP:
       return {
-        type: IndexerType.SUBQUERY,
+        type: IndexerType.POLKASWAP,
         services: {
-          explorer: SubqueryExplorerService,
+          explorer: PolkaswapExplorerService,
           dataParser: IndexerDataParserService,
         },
-        historyElementsFilter: subqueryHistoryElementsFilter,
-      } as IndexerTypeMap[T];
-    case IndexerType.SUBSQUID:
-      return {
-        type: IndexerType.SUBSQUID,
-        services: {
-          explorer: SubsquidExplorerService,
-          dataParser: IndexerDataParserService,
-        },
-        historyElementsFilter: subsquidHistoryElementsFilter,
+        historyElementsFilter: polkaswapHistoryElementsFilter,
       } as IndexerTypeMap[T];
     default:
       throw new Error(`Unsupported indexer type: ${type}`);
@@ -74,10 +43,8 @@ function getIndexer<T extends IndexerType>(type: T): IndexerTypeMap[T] {
 }
 
 /**
- * Convenience helper that resolves the indexer configuration based on the
- * value stored in the active Pinia wallet settings.
+ * Convenience helper that returns the single supported Polkaswap indexer.
  */
 export function getCurrentIndexer() {
-  const indexerType = resolveWalletStore()?.indexerType ?? IndexerType.SUBQUERY;
-  return getIndexer(indexerType === IndexerType.SUBQUERY ? indexerType : IndexerType.SUBQUERY);
+  return getIndexer(IndexerType.POLKASWAP);
 }

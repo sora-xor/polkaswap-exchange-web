@@ -1,5 +1,4 @@
-import { getCurrentIndexer, SubqueryIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import type { OCLH, SnapshotItem } from '@/types/chart';
@@ -27,7 +26,7 @@ const transformSnapshot = (item: PoolSnapshotEntity): SnapshotItem => {
   return { timestamp, price, volume, baseVolume, targetVolume };
 };
 
-const subqueryPoolFilter = (poolId: string, type: SnapshotTypes) => {
+const polkaswapPoolFilter = (poolId: string, type: SnapshotTypes) => {
   return {
     poolId: {
       equalTo: poolId,
@@ -38,8 +37,8 @@ const subqueryPoolFilter = (poolId: string, type: SnapshotTypes) => {
   };
 };
 
-const SubqueryPoolPriceQuery = gql<ConnectionQueryResponse<PoolSnapshotEntity>>`
-  query SubqueryPoolPriceQuery($after: Cursor = "", $filter: PoolSnapshotFilter, $first: Int = null) {
+const PolkaswapPoolPriceQuery = gql<ConnectionQueryResponse<PoolSnapshotEntity>>`
+  query PolkaswapPoolPriceQuery($after: Cursor = "", $filter: PoolSnapshotFilter, $first: Int = null) {
     data: poolSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
       pageInfo {
         hasNextPage
@@ -64,22 +63,13 @@ export async function fetchPoolPriceData(
   first?: number,
   after?: string | null
 ): Promise<Nullable<ConnectionQueryResponseData<SnapshotItem>>> {
-  const indexer = getCurrentIndexer();
-
-  let data!: Nullable<ConnectionQueryResponseData<PoolSnapshotEntity>>;
-
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const filter = subqueryPoolFilter(entityId, type);
-      const variables = { filter, first, after };
-      data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryPoolPriceQuery, variables);
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      break;
-    }
-  }
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const filter = polkaswapPoolFilter(entityId, type);
+  const data = await polkaswapIndexer.services.explorer.fetchEntities(PolkaswapPoolPriceQuery, {
+    filter,
+    first,
+    after,
+  });
 
   if (!data) return null;
 

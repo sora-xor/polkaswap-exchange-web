@@ -7,8 +7,7 @@ import type { Pinia } from 'pinia';
 
 import { registerGlobalPinia, resolveGlobalPinia } from '@/plugins/pinia';
 import {
-  SUBQUERY_TYPES,
-  SUBSQUID_TYPES,
+  POLKASWAP_TYPES,
   AlertsApiService,
   INDEXER_TYPES,
   WC,
@@ -131,8 +130,7 @@ export {
   historyElementsFilter,
   AlertsApiService,
   getCurrentIndexer,
-  SUBQUERY_TYPES,
-  SUBSQUID_TYPES,
+  POLKASWAP_TYPES,
   INDEXER_TYPES,
   WC,
 };

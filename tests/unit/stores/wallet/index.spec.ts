@@ -44,7 +44,9 @@ const removePinnedAssetMock = vi.hoisted(() => vi.fn());
 const logoutMock = vi.hoisted(() => vi.fn());
 const runtimeBridgeAvailable = vi.hoisted(() => ({ value: true }));
 const pushNotificationMock = vi.hoisted(() => vi.fn(async () => undefined));
+const createPriceAlertSubscriptionMock = vi.hoisted(() => vi.fn(() => ({ unsubscribe: vi.fn() })));
 const createExchangeRatesSubscriptionMock = vi.hoisted(() => vi.fn());
+const setGoogleDriveOptionsMock = vi.hoisted(() => vi.fn());
 const changeAccountNameMock = vi.hoisted(() => vi.fn());
 const addAccountAssetMock = vi.hoisted(() => vi.fn(async () => undefined));
 const simpleTransferMock = vi.hoisted(() => vi.fn(async () => undefined));
@@ -146,10 +148,9 @@ const walletRuntimeBridge = vi.hoisted(() => {
         },
         alerts: [],
         allowTopUpAlert: false,
-        indexerType: 'subquery',
+        indexerType: 'polkaswap',
         indexers: {
-          subquery: { endpoint: '', status: 'available' },
-          subsquid: { endpoint: '', status: 'available' },
+          polkaswap: { endpoint: '', status: 'available' },
         },
         isWalletLoaded: false,
         permissions: {
@@ -262,6 +263,7 @@ vi.mock('@/lib/soraneo-wallet/src/services/alerts', () => ({
   __esModule: true,
   default: {
     pushNotification: pushNotificationMock,
+    createPriceAlertSubscription: createPriceAlertSubscriptionMock,
   },
 }));
 
@@ -273,6 +275,12 @@ vi.mock('@/lib/soraneo-wallet/src/services/currency', () => ({
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: getCurrentIndexerMock,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/services/google', () => ({
+  GDriveStorage: {
+    setOptions: setGoogleDriveOptionsMock,
+  },
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/wallet', () => ({
@@ -293,11 +301,8 @@ vi.mock('@/lib/soraneo-wallet/src/util/ipfsStorage', () => ({
   },
 }));
 
-vi.mock('@/utils', async () => {
-  const actual = await vi.importActual<typeof import('@/utils')>('@/utils');
-
+vi.mock('@/utils/walletReady', () => {
   return {
-    ...actual,
     waitForAccountPair: waitForAccountPairMock,
   };
 });
@@ -305,6 +310,46 @@ vi.mock('@/utils', async () => {
 vi.mock('@/utils/staticAssets', () => ({
   resolveStaticAssetUrl: (value: string) => `https://app.test/${value}`,
 }));
+
+vi.mock('@/lib/substrate/sdk/types', () => ({
+  Operation: {
+    AddLiquidity: 'AddLiquidity',
+    BatchAll: 'BatchAll',
+    BorrowVaultDebt: 'BorrowVaultDebt',
+    Burn: 'Burn',
+    BurnWithRemark: 'BurnWithRemark',
+    CreatePair: 'CreatePair',
+    CreateVault: 'CreateVault',
+    EthBridgeIncoming: 'EthBridgeIncoming',
+    EthBridgeOutgoing: 'EthBridgeOutgoing',
+    EvmIncoming: 'EvmIncoming',
+    EvmOutgoing: 'EvmOutgoing',
+    Mint: 'Mint',
+    RegisterAsset: 'RegisterAsset',
+    RepayVaultDebt: 'RepayVaultDebt',
+    SwapAndSend: 'SwapAndSend',
+    SwapTransferBatch: 'SwapTransferBatch',
+    Transfer: 'Transfer',
+    VestedTransfer: 'VestedTransfer',
+    XorEvmTransfer: 'XorEvmTransfer',
+  },
+  TransactionStatus: {
+    Error: 'Error',
+    Failed: 'Failed',
+    Finalized: 'Finalized',
+    InBlock: 'InBlock',
+    Pending: 'Pending',
+  },
+}));
+
+vi.mock('@/lib/substrate/sdk/api', async () => {
+  const sdk = await import('@stubs/sora-sdk');
+
+  return {
+    api: sdk.api,
+    connection: sdk.connection,
+  };
+});
 
 vi.mock('nft.storage', async () => {
   return await import('@tests/stubs/nft-storage');
@@ -376,6 +421,8 @@ describe('wallet store actions', () => {
     runtimeBridgeAvailable.value = true;
     globalThis.localStorage?.clear();
     fetchMock.mockReset();
+    createPriceAlertSubscriptionMock.mockClear();
+    setGoogleDriveOptionsMock.mockClear();
 
     walletRuntimeBridge.store.commit.mockImplementation((type: string, payload?: unknown) => {
       const { account, settings, transactions } = walletRuntimeBridge.store.state.wallet;
@@ -1003,9 +1050,9 @@ describe('wallet store actions', () => {
       eur: 1.25,
     } as never;
     walletStore.settingsState.indexers = {
-      subquery: { endpoint: 'https://subquery.example', status: 'available' },
+      polkaswap: { endpoint: 'https://polkaswap.example', status: 'available' },
     } as never;
-    walletStore.settingsState.indexerType = 'subsquid' as never;
+    walletStore.settingsState.indexerType = 'polkaswap' as never;
     walletStore.settingsState.isWalletLoaded = true;
     walletStore.settingsState.networkFees = { swap: '1000000000' } as never;
     walletStore.settingsState.soraNetwork = 'prod' as never;
@@ -1031,9 +1078,9 @@ describe('wallet store actions', () => {
     expect(walletStore.alerts).toEqual([{ token: 'XOR' }]);
     expect(walletStore.allowTopUpAlert).toBe(true);
     expect(walletStore.indexers).toEqual({
-      subquery: { endpoint: 'https://subquery.example', status: 'available' },
+      polkaswap: { endpoint: 'https://polkaswap.example', status: 'available' },
     });
-    expect(walletStore.indexerType).toBe('subsquid');
+    expect(walletStore.indexerType).toBe('polkaswap');
     expect(walletStore.currency).toBe('eur');
     expect(walletStore.networkFees).toEqual({ swap: '1000000000' });
     expect(walletStore.soraNetwork).toBe('prod');
@@ -1119,7 +1166,7 @@ describe('wallet store actions', () => {
 
   it('forwards wallet settings actions', async () => {
     const walletStore = useWalletStore();
-    const apiKeys = { foo: 'bar' };
+    const apiKeys = { foo: 'bar', googleApi: 'google-api', googleClientId: 'google-client' };
     const exchangeRateUnsubMock = vi.fn();
 
     createExchangeRatesSubscriptionMock.mockImplementation((handler: (value: Record<string, number>) => void) => {
@@ -1128,7 +1175,11 @@ describe('wallet store actions', () => {
     });
 
     await walletStore.setApiKeys(apiKeys);
-    expect(walletStore.settingsState.apiKeys).toEqual({ foo: 'bar' });
+    expect(walletStore.settingsState.apiKeys).toEqual(apiKeys);
+    expect(setGoogleDriveOptionsMock).toHaveBeenCalledWith('google-api', 'google-client');
+
+    await walletStore.subscribeOnAlerts();
+    expect(createPriceAlertSubscriptionMock).toHaveBeenCalledTimes(1);
 
     await walletStore.subscribeOnExchangeRatesApi();
     expect(createExchangeRatesSubscriptionMock).toHaveBeenCalledTimes(1);
@@ -1394,9 +1445,9 @@ describe('wallet store actions', () => {
     walletStore.setFilterOptions({ option: 'Verified', verifiedOnly: true, zeroBalance: false } as any);
     walletStore.setAllowFeePopup(false);
     walletStore.setSoraNetwork('prod');
-    walletStore.setIndexerEndpoint({ indexer: 'subquery', endpoint: 'https://indexer.example' });
+    walletStore.setIndexerEndpoint({ indexer: 'polkaswap', endpoint: 'https://indexer.example' });
     walletStore.setIsDesktop(true);
-    await walletStore.selectIndexer('subsquid');
+    await walletStore.selectIndexer('polkaswap');
     walletStore.setSignTxDialogDisabled(true);
     walletStore.setAccountPassphrase({ address: 'alice', password: 'secret' });
     await walletStore.beforeTransactionSign({ address: 'alice', unlockPair } as any);
@@ -1413,14 +1464,14 @@ describe('wallet store actions', () => {
     });
     expect(walletStore.allowFeePopup).toBe(false);
     expect(walletStore.soraNetwork).toBe('prod');
-    expect(walletStore.indexers.subquery).toEqual({
+    expect(walletStore.indexers.polkaswap).toEqual({
       endpoint: 'https://indexer.example',
       status: 'loading',
     });
     expect(walletStore.isDesktop).toBe(true);
     expect(getFiatPriceObjectMock).toHaveBeenCalledTimes(1);
     expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
-    expect(walletStore.indexerType).toBe('subquery');
+    expect(walletStore.indexerType).toBe('polkaswap');
     expect(unlockPair).toHaveBeenCalledWith('secret');
   });
 

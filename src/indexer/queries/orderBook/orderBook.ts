@@ -1,16 +1,15 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import type { OrderBookDealData, OrderBookUpdateData } from '@/types/orderBook';
 
-import type { SubquerySubscriptionPayload } from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
+import type { PolkaswapSubscriptionPayload } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 import type {
   OrderBookEntity,
   OrderBookDealEntity,
   QueryData,
-  SubscriptionPayload,
 } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type OrderBookEntityMutation = {
@@ -20,11 +19,6 @@ type OrderBookEntityMutation = {
   status: string;
   last_deals: string;
 };
-
-const IndexerType = {
-  SUBQUERY: 'subquery',
-  SUBSQUID: 'subsquid',
-} as const;
 
 const parseSide = (isBuy: boolean): PriceVariant => {
   return isBuy ? PriceVariant.Buy : PriceVariant.Sell;
@@ -43,21 +37,9 @@ const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
   }));
 };
 
-const SubqueryOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
-  query SubqueryOrderBookDataQuery($id: String!) {
+const PolkaswapOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
+  query PolkaswapOrderBookDataQuery($id: String!) {
     data: orderBook(id: $id) {
-      price
-      priceChangeDay
-      volumeDayUSD
-      status
-      lastDeals
-    }
-  }
-`;
-
-const SubsquidOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
-  query SubsquidOrderBookDataQuery($id: String!) {
-    data: orderBookById(id: $id) {
       price
       priceChangeDay
       volumeDayUSD
@@ -88,24 +70,12 @@ const parseOrderBookResponse =
     };
   };
 
-const SubqueryOrderBookDataSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMutation>>`
-  subscription SubqueryOrderBookDataSubscription($id: [ID!]) {
+const PolkaswapOrderBookDataSubscription = gql<PolkaswapSubscriptionPayload<OrderBookEntityMutation>>`
+  subscription PolkaswapOrderBookDataSubscription($id: [ID!]) {
     payload: orderBooks(id: $id, mutation: [UPDATE]) {
       id
       mutation_type
       _entity
-    }
-  }
-`;
-
-const SubsquidOrderBookDataSubscription = gql<SubscriptionPayload<OrderBookEntity>>`
-  subscription SubsquidOrderBookDataSubscription($id: String!) {
-    payload: orderBookById(id: $id) {
-      price
-      priceChangeDay
-      volumeDayUSD
-      status
-      lastDeals
     }
   }
 `;
@@ -131,27 +101,6 @@ const parseOrderBookMutation =
     };
   };
 
-const parseOrderBookUpdate =
-  (dexId: number, base: string, quote: string) =>
-  (item: OrderBookEntity): OrderBookUpdateData => {
-    const { price, priceChangeDay, volumeDayUSD, status, lastDeals } = item;
-
-    return {
-      id: {
-        dexId,
-        base,
-        quote,
-      },
-      stats: {
-        price: new FPNumber(price ?? 0),
-        priceChange: new FPNumber(priceChangeDay ?? 0),
-        volume: new FPNumber(volumeDayUSD ?? 0),
-        status,
-      },
-      deals: parseDeals(lastDeals),
-    };
-  };
-
 export async function subscribeOnOrderBookUpdates(
   orderBookId: string,
   handler: (entity: OrderBookUpdateData) => void | Promise<void>,
@@ -159,51 +108,20 @@ export async function subscribeOnOrderBookUpdates(
 ): Promise<Nullable<FnWithoutArgs>> {
   const [dex, baseAssetId, quoteAssetId] = orderBookId.split('-');
   const dexId = Number(dex);
-  const variables = { id: orderBookId };
-  const indexer = getCurrentIndexer();
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
+  const response = await polkaswapIndexer.services.explorer.request(PolkaswapOrderBookDataQuery, { id: orderBookId });
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
-      const response = await subqueryIndexer.services.explorer.request(SubqueryOrderBookDataQuery, variables);
+  if (!response) return null;
 
-      if (!response) return null;
+  handler(parseQuery(response));
 
-      handler(parseQuery(response));
-
-      const parseSubscription = parseOrderBookMutation(dexId, baseAssetId, quoteAssetId);
-      const subscription = subqueryIndexer.services.explorer.createEntitySubscription(
-        SubqueryOrderBookDataSubscription,
-        variables,
-        parseSubscription,
-        handler,
-        errorHandler
-      );
-
-      return subscription;
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
-      const response = await subsquidIndexer.services.explorer.request(SubsquidOrderBookDataQuery, variables);
-
-      if (!response) return null;
-
-      handler(parseQuery(response));
-
-      const parseSubscription = parseOrderBookUpdate(dexId, baseAssetId, quoteAssetId);
-      const subscription = subsquidIndexer.services.explorer.createEntitySubscription(
-        SubsquidOrderBookDataSubscription,
-        variables,
-        parseSubscription,
-        handler,
-        errorHandler
-      );
-
-      return subscription;
-    }
-  }
-
-  return null;
+  const parseSubscription = parseOrderBookMutation(dexId, baseAssetId, quoteAssetId);
+  return polkaswapIndexer.services.explorer.createEntitySubscription(
+    PolkaswapOrderBookDataSubscription,
+    { id: [orderBookId] },
+    parseSubscription,
+    handler,
+    errorHandler
+  );
 }

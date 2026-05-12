@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@sora-substrate/math';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 

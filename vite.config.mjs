@@ -41,6 +41,7 @@ const soraneoWalletCssEntry = existsSync(soraneoWalletCssPath) ? soraneoWalletCs
 const bufferShimPath = fileURLToPath(new URL('./src/shims/buffer.ts', import.meta.url));
 const safeBufferShimPath = fileURLToPath(new URL('./src/shims/safe-buffer.ts', import.meta.url));
 const polkadotUiSharedPath = fileURLToPath(new URL('./vendor/@polkadot/ui-shared', import.meta.url));
+const vueRouterProdPath = fileURLToPath(new URL('./node_modules/vue-router/dist/vue-router.esm-browser.prod.js', import.meta.url));
 
 const VUE_COMPAT_AUTO_IMPORTS = [
   'computed',
@@ -294,6 +295,13 @@ const alias = [
   },
 ];
 
+if (!isTest) {
+  alias.unshift({
+    find: /^vue-router$/,
+    replacement: vueRouterProdPath,
+  });
+}
+
 if (isTest) {
   const emptyCssPath = fileURLToPath(new URL('./tests/stubs/empty.css', import.meta.url));
   const soramitsuUiStubPath = fileURLToPath(new URL('./tests/stubs/soramitsu-ui/index.ts', import.meta.url));
@@ -351,7 +359,7 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 6000,
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     modulePreload: false,
     rollupOptions: {
       onwarn(warning, defaultHandler) {

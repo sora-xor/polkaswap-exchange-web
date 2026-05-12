@@ -16,14 +16,13 @@ import type { AvailableNetwork, EthBridgeSettings, SubNetworkApps, Web3State } f
 import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';
 import type { AppEIPProvider } from '@/types/evm/provider';
-import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import {
   FearlessWalletProvider,
   MetamaskProvider,
   WalletConnectProvider,
   getProvidersList,
 } from '@/utils/connection/evm/providers';
-import ethersUtil, { PROVIDER_ERROR } from '@/utils/ethers-util';
 
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
@@ -33,6 +32,8 @@ type ExternalNetworkSelection = {
   id: BridgeNetworkId | SubNetwork;
   type: BridgeNetworkType;
 };
+type EthersUtilModule = typeof import('@/utils/ethers-util');
+type SubNetworksConnectorModule = typeof import('@/utils/bridge/sub/classes/adapter');
 
 export type {
   AvailableNetwork,
@@ -154,6 +155,39 @@ const getBridgeStore = async (pinia: Pinia): Promise<ReturnType<typeof import('@
   return useBridgeStore(pinia);
 };
 
+let ethersUtilModulePromise: Promise<EthersUtilModule> | null = null;
+let subNetworksConnectorModulePromise: Promise<SubNetworksConnectorModule> | null = null;
+
+/**
+ * Loads EVM provider helpers only for bridge flows. Pulling `ethers` into the
+ * base web3 store makes the app shell pay for EVM code before any bridge UI is used.
+ */
+const loadEthersUtil = (): Promise<EthersUtilModule> => {
+  ethersUtilModulePromise ??= import('@/utils/ethers-util');
+  return ethersUtilModulePromise;
+};
+
+/**
+ * Loads Substrate bridge adapter code only after bridge app metadata is needed.
+ */
+const loadSubNetworksConnector = (): Promise<SubNetworksConnectorModule> => {
+  subNetworksConnectorModulePromise ??= import('@/utils/bridge/sub/classes/adapter');
+  return subNetworksConnectorModulePromise;
+};
+
+/**
+ * Persists the bridge network choice behind the lazy EVM utility boundary.
+ */
+const persistExternalNetworkSelection = async (
+  networkId: BridgeNetworkId,
+  networkType: BridgeNetworkType
+): Promise<void> => {
+  const { default: ethersUtil } = await loadEthersUtil();
+
+  ethersUtil.storeSelectedBridgeType(networkType);
+  ethersUtil.storeSelectedNetwork(networkId);
+};
+
 const resolveBridgeConnector = async (pinia: Pinia): Promise<Nullable<SubNetworksConnector>> => {
   const bridgeStore = await getBridgeStore(pinia);
   return bridgeStore.subBridgeConnector ?? null;
@@ -184,7 +218,12 @@ const connectSubNetwork = async (store: Web3State & { $pinia: Pinia; selectedNet
 };
 
 const updateProvidedEvmNetwork = async (store: Web3State & { $pinia: Pinia }, evmNetworkId?: number): Promise<void> => {
-  const evmNetwork = evmNetworkId ?? (await ethersUtil.getEvmNetworkId());
+  let evmNetwork = evmNetworkId;
+
+  if (evmNetwork == null) {
+    const { default: ethersUtil } = await loadEthersUtil();
+    evmNetwork = await ethersUtil.getEvmNetworkId();
+  }
 
   web3Mutations.setProvidedEvmNetwork(store, evmNetwork);
 
@@ -199,6 +238,7 @@ const subscribeOnEvm = async (
 ): Promise<void> => {
   web3Mutations.resetEvmProviderSubscription(store);
 
+  const { default: ethersUtil, PROVIDER_ERROR } = await loadEthersUtil();
   const subscription = await ethersUtil.watchEthereum({
     onAccountChange: (addressList: string[]) => {
       if (addressList.length) {
@@ -351,6 +391,7 @@ export const useWeb3Store = defineStore('web3-legacy', {
 
       web3Mutations.setNetworkType(this, payload.type);
       web3Mutations.setSelectedNetwork(this, payload.id as BridgeNetworkId);
+      await persistExternalNetworkSelection(payload.id as BridgeNetworkId, payload.type);
 
       await Promise.allSettled([
         this.fetchDenominatorCoefficient(),
@@ -372,6 +413,7 @@ export const useWeb3Store = defineStore('web3-legacy', {
       web3Mutations.resetEvmProviderNetwork(this);
       web3Mutations.resetEvmProviderSubscription(this);
 
+      const { default: ethersUtil } = await loadEthersUtil();
       ethersUtil.disconnectEvmProvider(provider);
     },
     async resetSubAccount(): Promise<void> {
@@ -393,12 +435,14 @@ export const useWeb3Store = defineStore('web3-legacy', {
         return;
       }
 
+      const { default: ethersUtil } = await loadEthersUtil();
       await ethersUtil.switchOrAddChain(selectedNetwork);
     },
     async selectEvmProvider(provider: AppEIPProvider): Promise<void> {
       try {
         web3Mutations.setEvmProviderLoading(this, provider);
 
+        const { default: ethersUtil } = await loadEthersUtil();
         const address = await ethersUtil.connectEvmProvider(provider, {
           chains: [this.ethBridgeEvmNetwork],
           optionalChains: [...this.evmNetworkApps],
@@ -468,9 +512,11 @@ export const useWeb3Store = defineStore('web3-legacy', {
         return { ...acc, [key]: value.data.nodes };
       }, {});
 
+      const { SubNetworksConnector } = await loadSubNetworksConnector();
       SubNetworksConnector.nodes = nodes;
     },
     async restoreSelectedNetwork(): Promise<void> {
+      const { default: ethersUtil } = await loadEthersUtil();
       const rawType = ethersUtil.getSelectedBridgeType();
       const type =
         rawType && Object.values(BridgeNetworkType).includes(rawType as BridgeNetworkType)
@@ -505,6 +551,7 @@ export const useWeb3Store = defineStore('web3-legacy', {
           throw new Error('Contract address/abi is not found');
         }
 
+        const { default: ethersUtil } = await loadEthersUtil();
         const contractInstance = await ethersUtil.getContract(contractAddress, contractAbi);
         const externalAddress = await contractInstance._sidechainTokens(soraAssetId);
 

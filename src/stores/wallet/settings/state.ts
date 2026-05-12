@@ -6,9 +6,9 @@ import { storage, runtimeStorage, settingsStorage } from '@/lib/soraneo-wallet/s
 import { normalizeTheme } from './theme';
 
 import type { SettingsState } from './types';
-import type { NetworkFeesObject } from '@sora-substrate/sdk';
+import type { NetworkFeesObject } from '@/lib/substrate/sdk/types';
 
-const INDEXERS = [IndexerType.SUBQUERY];
+const INDEXERS = [IndexerType.POLKASWAP] as const;
 
 export function initialState(): SettingsState {
   const shouldBalanceBeHidden = storage.get('shouldBalanceBeHidden');
@@ -31,11 +31,7 @@ export function initialState(): SettingsState {
     allowTopUpAlert: allowTopUpAlerts ? Boolean(JSON.parse(allowTopUpAlerts)) : false,
     indexerType: activeIndexerType,
     indexers: {
-      [IndexerType.SUBQUERY]: {
-        endpoint: '',
-        status: ConnectionStatus.Loading,
-      },
-      [IndexerType.SUBSQUID]: {
+      [IndexerType.POLKASWAP]: {
         endpoint: '',
         status: ConnectionStatus.Loading,
       },

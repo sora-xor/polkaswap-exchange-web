@@ -7,13 +7,11 @@ import { retryOnEmptyResult } from '@/indexer/queries/retry';
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   fetchAllEntities: vi.fn(),
-  fetchAllEntitiesConnection: vi.fn(),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
-  SubsquidIndexer: class SubsquidIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 vi.mock('@/indexer/queries/retry', () => ({
@@ -30,11 +28,11 @@ describe('network tvl query', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches SubQuery tvl snapshots and parses finite liquidity values', async () => {
+  it('fetches Polkaswap tvl snapshots and parses finite liquidity values', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createNetworkSnapshotEntity('1700', '123.45')),
     ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchData(2_000, 1_000, 'DAY' as any);
 
@@ -48,7 +46,6 @@ describe('network tvl query', () => {
       },
       expect.any(Function)
     );
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
     expect(result).toEqual([
       {
         timestamp: 1_700_000,
@@ -57,38 +54,12 @@ describe('network tvl query', () => {
     ]);
   });
 
-  it('fetches Subsquid tvl snapshots through the connection endpoint', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockImplementation(async (_query, _variables, parse) => [
-      parse(createNetworkSnapshotEntity('1800', '456.75')),
-    ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchData(3_000, 2_000, 'HOUR' as any);
-
-    expect(retryOnEmptyResult).toHaveBeenCalledTimes(1);
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        from: 3_000,
-        to: 2_000,
-        type: 'HOUR',
-      },
-      expect.any(Function)
-    );
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(result).toEqual([
-      {
-        timestamp: 1_800_000,
-        value: 456.75,
-      },
-    ]);
-  });
-
+  
   it('normalizes non-finite liquidity values to zero', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createNetworkSnapshotEntity('1900', 'not-a-number')),
     ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchData(3_000, 2_000, 'DAY' as any)).resolves.toEqual([
       {
@@ -100,27 +71,18 @@ describe('network tvl query', () => {
 
   it('returns an empty array when the active indexer returns null data', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchData(2_000, 1_000, 'DAY' as any)).resolves.toEqual([]);
   });
 
-  it('returns an empty array for unsupported indexer types without making requests', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchData(2_000, 1_000, 'DAY' as any)).resolves.toEqual([]);
-    expect(retryOnEmptyResult).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
   });
-});
 
 const createIndexer = (type: unknown) => ({
   type,
   services: {
     explorer: {
       fetchAllEntities: indexerMocks.fetchAllEntities,
-      fetchAllEntitiesConnection: indexerMocks.fetchAllEntitiesConnection,
     },
   },
 });

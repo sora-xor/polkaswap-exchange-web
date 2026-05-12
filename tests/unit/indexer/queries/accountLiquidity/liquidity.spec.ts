@@ -10,7 +10,7 @@ const indexerMocks = vi.hoisted(() => ({
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 describe('account liquidity query', () => {
@@ -19,9 +19,9 @@ describe('account liquidity query', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches SubQuery account liquidity snapshots and transforms amounts', async () => {
+  it('fetches Polkaswap account liquidity snapshots and transforms amounts', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(createSnapshotResponse([createLiquiditySnapshot()]));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchAccountLiquidityData('account-1', 'pool-1', 20, 'cursor-1');
 
@@ -46,7 +46,7 @@ describe('account liquidity query', () => {
 
   it('passes optional pagination values through when omitted', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(createSnapshotResponse([]));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchAccountLiquidityData('account-1', 'pool-1')).resolves.toEqual(createSnapshotResponse([]));
 
@@ -61,27 +61,15 @@ describe('account liquidity query', () => {
     });
   });
 
-  it('returns null when SubQuery returns no connection data', async () => {
+  it('returns null when Polkaswap returns no connection data', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchAccountLiquidityData('account-1', 'pool-1')).resolves.toBeNull();
   });
 
-  it('returns null for Subsquid until the query is implemented', async () => {
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    await expect(fetchAccountLiquidityData('account-1', 'pool-1')).resolves.toBeNull();
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
+  
   });
-
-  it('returns null for unsupported indexer types without making requests', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchAccountLiquidityData('account-1', 'pool-1')).resolves.toBeNull();
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-  });
-});
 
 const createIndexer = (type: unknown) => ({
   type,

@@ -1,10 +1,9 @@
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 
 import type { AppEIPProvider } from '@/types/evm/provider';
-import ethersUtil from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
-import type { FPNumber } from '@sora-substrate/sdk';
+import type { FPNumber } from '@sora-substrate/math';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 
@@ -62,12 +61,10 @@ const mutations = {
   },
   setSelectedNetwork(state, networkId: BridgeNetworkId): void {
     state.networkSelected = networkId;
-    ethersUtil.storeSelectedNetwork(networkId);
   },
 
   setNetworkType(state, networkType: BridgeNetworkType): void {
     state.networkType = networkType;
-    ethersUtil.storeSelectedBridgeType(networkType);
   },
 
   setSelectSubNodeDialogVisibility(state, flag: boolean): void {

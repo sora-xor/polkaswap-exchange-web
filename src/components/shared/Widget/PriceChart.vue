@@ -91,13 +91,12 @@ import { useChartSpec } from '@/composables/useChartSpec';
 import { useLoading } from '@/composables/useLoading';
 import { createThemePalette, useThemePalette } from '@/composables/useThemePalette';
 import { useTranslation } from '@/composables/useTranslation';
-import { FontWeightRate, IndexerType } from '@/consts';
+import { FontWeightRate } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { normalizeSnapshots } from '@/components/shared/Widget/priceChart.utils';
 import { fetchAssetPriceData } from '@/indexer/queries/asset/price';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
-import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
+import * as POLKASWAP_TYPES from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 import { useSettingsStore } from '@/stores/settings';
 import {
   calcPriceChange,
@@ -136,7 +135,7 @@ const CHART_TYPE_ICONS = {
   [CHART_TYPES.CANDLE]: SvgIcons.CandleIcon,
 };
 
-const SNAPSHOT_TYPES = (SUBQUERY_TYPES?.SnapshotTypes ??
+const SNAPSHOT_TYPES = (POLKASWAP_TYPES?.SnapshotTypes ??
   ({
     DEFAULT: 'default',
     HOUR: 'hour',
@@ -590,8 +589,7 @@ const requestData = async (
   let nextPage = hasNextPage;
 
   do {
-    const maxCount = getCurrentIndexer().type === IndexerType.SUBSQUID ? 1000 : 100;
-    const first = Math.min(remaining, maxCount);
+    const first = Math.min(remaining, 100);
     const requestMethod = props.requestMethod ?? fetchAssetPriceData;
     const response = await requestMethod(entityId, type, first, cursor);
 

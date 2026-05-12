@@ -1,40 +1,16 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import type {
-  SubqueryPoolXYKEntity,
-  SubquerySubscriptionPayload,
-} from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
-import type { SubsquidPoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
-import type {
-  ConnectionQueryResponse,
-  PoolApyObject,
-  SubscriptionPayload,
-  UpdatesStream,
-} from '@/lib/soraneo-wallet/src/services/indexer/types';
+  PolkaswapPoolXYKEntity,
+  PolkaswapSubscriptionPayload,
+} from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
+import type { ConnectionQueryResponse, PoolApyObject, UpdatesStream } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
-const SubqueryApyQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
-  query SubqueryApyQuery($after: Cursor = "", $first: Int = 100) {
+const PolkaswapApyQuery = gql<ConnectionQueryResponse<PolkaswapPoolXYKEntity>>`
+  query PolkaswapApyQuery($after: Cursor = "", $first: Int = 100) {
     data: poolXYKs(first: $first, after: $after, filter: { strategicBonusApy: { greaterThan: "0" } }) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          id
-          strategicBonusApy
-        }
-      }
-    }
-  }
-`;
-
-const SubsquidApyQuery = gql<ConnectionQueryResponse<SubsquidPoolXYKEntity>>`
-  query SubsquidApyQuery($after: String = null, $first: Int = 1000) {
-    data: poolXyksConnection(orderBy: id_ASC, first: $first, after: $after, where: { strategicBonusApy_gt: "0" }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -51,7 +27,7 @@ const SubsquidApyQuery = gql<ConnectionQueryResponse<SubsquidPoolXYKEntity>>`
 
 const formatStringNumber = (value: Nullable<string>) => (value ? new FPNumber(value) : FPNumber.ZERO);
 
-const parseApy = (entity: SubsquidPoolXYKEntity | SubqueryPoolXYKEntity): PoolApyObject => {
+const parseApy = (entity: PolkaswapPoolXYKEntity): PoolApyObject => {
   const acc = {};
   const id = entity.id;
   const strategicBonusApyFPNumber = formatStringNumber(entity.strategicBonusApy);
@@ -66,44 +42,20 @@ const parseApy = (entity: SubsquidPoolXYKEntity | SubqueryPoolXYKEntity): PoolAp
  * Get strategic bonus APY for each pool
  */
 export async function getPoolsApyObject(): Promise<Nullable<PoolApyObject>> {
-  const indexer = getCurrentIndexer();
-
-  let result: Nullable<PoolApyObject[]>;
-
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      result = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryApyQuery, {}, parseApy);
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      result = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidApyQuery, {}, parseApy);
-      break;
-    }
-  }
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const result = await polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapApyQuery, {}, parseApy);
 
   if (!result) return null;
 
   return result.reduce((acc, item) => ({ ...acc, ...item }), {});
 }
 
-const SubqueryApyStreamSubscription = gql<SubquerySubscriptionPayload<UpdatesStream>>`
-  subscription SubqueryApyStreamSubscription {
+const PolkaswapApyStreamSubscription = gql<PolkaswapSubscriptionPayload<UpdatesStream>>`
+  subscription PolkaswapApyStreamSubscription {
     payload: updatesStreams(id: "apy", mutation: [UPDATE, INSERT]) {
       id
       mutation_type
       _entity
-    }
-  }
-`;
-
-const SubsquidApyStreamSubscription = gql<SubscriptionPayload<UpdatesStream>>`
-  subscription SubsquidApyStreamSubscription {
-    payload: updatesStreamById(id: "apy") {
-      id
-      block
-      data
     }
   }
 `;
@@ -125,32 +77,13 @@ export function createPoolsApySubscription(
   handler: (entity: PoolApyObject) => void,
   errorHandler: (error: any) => void
 ): Nullable<VoidFunction> {
-  const indexer = getCurrentIndexer();
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-
-      return subqueryIndexer.services.explorer.createEntitySubscription(
-        SubqueryApyStreamSubscription,
-        {},
-        parseApyStreamUpdate,
-        handler,
-        errorHandler
-      );
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-
-      return subsquidIndexer.services.explorer.createEntitySubscription(
-        SubsquidApyStreamSubscription,
-        {},
-        parseApyStreamUpdate,
-        handler,
-        errorHandler
-      );
-    }
-  }
-
-  return null;
+  return polkaswapIndexer.services.explorer.createEntitySubscription(
+    PolkaswapApyStreamSubscription,
+    {},
+    parseApyStreamUpdate,
+    handler,
+    errorHandler
+  );
 }

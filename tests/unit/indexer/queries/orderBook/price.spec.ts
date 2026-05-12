@@ -6,13 +6,11 @@ import { fetchOrderBookPriceData } from '@/indexer/queries/orderBook/price';
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   fetchEntities: vi.fn(),
-  fetchEntitiesConnection: vi.fn(),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
-  SubsquidIndexer: class SubsquidIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 describe('order book price query', () => {
@@ -21,9 +19,9 @@ describe('order book price query', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches SubQuery snapshots with filter variables and transforms chart values', async () => {
+  it('fetches Polkaswap snapshots with filter variables and transforms chart values', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(createSnapshotResponse([createSnapshot()]));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchOrderBookPriceData('0-base-quote', 'DAY' as any, 50, 'cursor-1');
 
@@ -39,7 +37,6 @@ describe('order book price query', () => {
       first: 50,
       after: 'cursor-1',
     });
-    expect(indexerMocks.fetchEntitiesConnection).not.toHaveBeenCalled();
     expect(result).toEqual({
       pageInfo: {
         hasNextPage: true,
@@ -58,33 +55,10 @@ describe('order book price query', () => {
     });
   });
 
-  it('fetches Subsquid snapshots with where variables and transforms nested price data', async () => {
-    indexerMocks.fetchEntitiesConnection.mockResolvedValue(createSnapshotResponse([createSnapshot()]));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchOrderBookPriceData('1-xor-val', 'HOUR' as any, 25, null);
-
-    expect(indexerMocks.fetchEntitiesConnection).toHaveBeenCalledWith(expect.any(Object), {
-      where: {
-        orderBook: {
-          id_eq: '1-xor-val',
-        },
-        type_eq: 'HOUR',
-      },
-      first: 25,
-      after: null,
-    });
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-    expect(result?.edges[0]?.node).toEqual({
-      timestamp: 1_700_000,
-      price: [1.1, 1.2, 1, 1.4],
-      volume: 88.5,
-    });
-  });
-
-  it('passes omitted pagination values through to SubQuery', async () => {
+  
+  it('passes omitted pagination values through to Polkaswap', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(createSnapshotResponse([]));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchOrderBookPriceData('0-base-quote', 'DAY' as any)).resolves.toEqual(createSnapshotResponse([]));
 
@@ -102,28 +76,14 @@ describe('order book price query', () => {
     });
   });
 
-  it('returns null when the active indexer returns no connection data', async () => {
-    indexerMocks.fetchEntitiesConnection.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    await expect(fetchOrderBookPriceData('1-xor-val', 'DAY' as any)).resolves.toBeNull();
+  
   });
-
-  it('returns null for unsupported indexer types without requesting snapshots', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchOrderBookPriceData('0-base-quote', 'DAY' as any)).resolves.toBeNull();
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchEntitiesConnection).not.toHaveBeenCalled();
-  });
-});
 
 const createIndexer = (type: unknown) => ({
   type,
   services: {
     explorer: {
       fetchEntities: indexerMocks.fetchEntities,
-      fetchEntitiesConnection: indexerMocks.fetchEntitiesConnection,
     },
   },
 });

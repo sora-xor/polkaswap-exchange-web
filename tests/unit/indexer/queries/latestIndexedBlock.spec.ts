@@ -4,7 +4,6 @@ const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   request: vi.fn(),
   fetchEntities: vi.fn(),
-  fetchEntitiesConnection: vi.fn(),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
@@ -19,7 +18,6 @@ const createIndexer = (type: string) => ({
     explorer: {
       request: indexerMocks.request,
       fetchEntities: indexerMocks.fetchEntities,
-      fetchEntitiesConnection: indexerMocks.fetchEntitiesConnection,
     },
   },
 });
@@ -29,7 +27,6 @@ describe('latest indexed block query', () => {
     indexerMocks.currentIndexer = undefined;
     indexerMocks.request.mockReset();
     indexerMocks.fetchEntities.mockReset();
-    indexerMocks.fetchEntitiesConnection.mockReset();
   });
 
   it('parses a safe block height from the latest history edge', () => {
@@ -49,18 +46,17 @@ describe('latest indexed block query', () => {
     expect(parseLatestIndexedBlock(null)).toBeNull();
   });
 
-  it('fetches the latest block from the SubQuery stream state first', async () => {
-    indexerMocks.currentIndexer = createIndexer('subquery');
+  it('fetches the latest block from the Polkaswap stream state first', async () => {
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
     indexerMocks.request.mockResolvedValue({ data: { block: '41' } });
 
     await expect(fetchLatestIndexedBlock()).resolves.toBe(41);
     expect(indexerMocks.request).toHaveBeenCalledTimes(1);
     expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchEntitiesConnection).not.toHaveBeenCalled();
   });
 
-  it('falls back to the latest SubQuery history block when stream state is empty', async () => {
-    indexerMocks.currentIndexer = createIndexer('subquery');
+  it('falls back to the latest Polkaswap history block when stream state is empty', async () => {
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
     indexerMocks.request.mockResolvedValue({ data: null });
     indexerMocks.fetchEntities.mockResolvedValue({
       edges: [{ cursor: 'cursor', node: { blockHeight: '42' } }],
@@ -68,28 +64,7 @@ describe('latest indexed block query', () => {
 
     await expect(fetchLatestIndexedBlock()).resolves.toBe(42);
     expect(indexerMocks.fetchEntities).toHaveBeenCalledTimes(1);
-    expect(indexerMocks.fetchEntitiesConnection).not.toHaveBeenCalled();
   });
 
-  it('fetches the latest block from the Subsquid stream state first', async () => {
-    indexerMocks.currentIndexer = createIndexer('subsquid');
-    indexerMocks.request.mockResolvedValue({ data: { block: 83 } });
-
-    await expect(fetchLatestIndexedBlock()).resolves.toBe(83);
-    expect(indexerMocks.request).toHaveBeenCalledTimes(1);
-    expect(indexerMocks.fetchEntitiesConnection).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
+  
   });
-
-  it('falls back to the latest Subsquid history block when stream state is empty', async () => {
-    indexerMocks.currentIndexer = createIndexer('subsquid');
-    indexerMocks.request.mockResolvedValue({ data: null });
-    indexerMocks.fetchEntitiesConnection.mockResolvedValue({
-      edges: [{ cursor: 'cursor', node: { blockHeight: 84 } }],
-    });
-
-    await expect(fetchLatestIndexedBlock()).resolves.toBe(84);
-    expect(indexerMocks.fetchEntitiesConnection).toHaveBeenCalledTimes(1);
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-  });
-});

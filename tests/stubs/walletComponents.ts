@@ -80,8 +80,7 @@ const defaultWalletConsts = {
     Prod: 'Prod',
   },
   IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
+    POLKASWAP: 'polkaswap',
   },
 };
 
@@ -91,8 +90,7 @@ const defaultIndexerTypes = {
     READY: 'READY',
   },
   IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
+    POLKASWAP: 'polkaswap',
   },
   OrderStatus: {
     Filled: 'Filled',

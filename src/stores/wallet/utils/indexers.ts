@@ -4,7 +4,7 @@ import type { Nullable } from '@/types/common';
 
 type IndexerTable = Partial<Record<string, Partial<Pick<IndexerState, 'endpoint' | 'status'>>>>;
 
-const DEFAULT_INDEXER_ORDER = [IndexerType.SUBQUERY];
+const DEFAULT_INDEXER_ORDER = [IndexerType.POLKASWAP];
 
 /**
  * Returns true when an indexer has a usable endpoint configured.

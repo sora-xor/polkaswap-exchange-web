@@ -11,12 +11,12 @@ vi.mock('@/lang', () => ({
   },
 }));
 
-vi.mock('@/consts', () => ({
+vi.mock('@/consts/app', () => ({
   app: { name: 'Polkaswap', title: 'Default Title' },
   TranslationConsts: {},
 }));
 
-import { registerDocumentTitleResolver, updateDocumentTitle } from '@/utils';
+import { registerDocumentTitleResolver, updateDocumentTitle } from '@/utils/documentTitle';
 
 describe('updateDocumentTitle', () => {
   beforeEach(() => {
@@ -26,23 +26,23 @@ describe('updateDocumentTitle', () => {
     registerDocumentTitleResolver(null);
   });
 
-  it('uses the registered route resolver when no route is provided', () => {
+  it('uses the registered route resolver when no route is provided', async () => {
     mockTe.mockReturnValue(true);
     mockT.mockReturnValue('Swap');
 
     registerDocumentTitleResolver(() => ({ name: 'Swap' }));
 
-    updateDocumentTitle();
+    await updateDocumentTitle();
 
     expect(mockTe).toHaveBeenCalledWith('pageTitle.Swap');
     expect(document.title).toBe('Swap - Polkaswap');
   });
 
-  it('falls back to the default title when no translation is available', () => {
+  it('falls back to the default title when no translation is available', async () => {
     mockTe.mockReturnValue(false);
     registerDocumentTitleResolver(() => ({ name: 'Unknown' }));
 
-    updateDocumentTitle();
+    await updateDocumentTitle();
 
     expect(document.title).toBe('Default Title');
   });

@@ -15,7 +15,7 @@ vi.doMock('@tests/stubs/walletRuntime', async () => {
       remove: vi.fn(),
     },
     WALLET_CONSTS: {
-      IndexerType: { SUBQUERY: 'subquery', SUBSQUID: 'subsquid' },
+      IndexerType: { POLKASWAP: 'polkaswap' },
       SoraNetwork: { Test: 'Test' },
     },
   });
@@ -27,8 +27,10 @@ vi.mock('@/lang', () => ({
   setDayJsLocale: vi.fn(),
   setI18nLocale: vi.fn(),
 }));
-vi.mock('@/utils', () => ({
+vi.mock('@/utils/documentTitle', () => ({
   updateDocumentTitle: vi.fn(),
+}));
+vi.mock('@/utils/fp-locale', () => ({
   updateFpNumberLocale: vi.fn(),
 }));
 

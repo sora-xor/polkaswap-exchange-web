@@ -4,6 +4,7 @@ import pinia from '@/plugins/pinia';
 import { useReferralsStore } from '@/stores/referrals';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
+import { loadTelegramWebAppScript } from './telegramLaunch';
 
 enum HapticStatusValue {
   success = 'success',
@@ -51,6 +52,7 @@ class TmaSdk {
 
   public async init(botUrl?: string): Promise<void> {
     try {
+      await loadTelegramWebAppScript();
       // Check if the current platform is Telegram Mini App
       const telegram = window.Telegram as any;
       const WebApp = telegram?.WebApp;

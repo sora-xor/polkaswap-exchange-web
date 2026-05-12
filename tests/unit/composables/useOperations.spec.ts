@@ -46,6 +46,7 @@ const operationsMocks = vi.hoisted(() => ({
 }));
 
 vi.mock('@sora-substrate/sdk', () => sdkMocks);
+vi.mock('@/lib/substrate/sdk/types', () => sdkMocks);
 
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
 

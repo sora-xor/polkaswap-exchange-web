@@ -109,6 +109,12 @@ export const Operation = {
   Burn: 'Burn',
   BurnWithRemark: 'BurnWithRemark',
   BatchAll: 'BatchAll',
+  EthBridgeOutgoing: 'EthBridgeOutgoing',
+  EthBridgeIncoming: 'EthBridgeIncoming',
+  EvmOutgoing: 'EvmOutgoing',
+  EvmIncoming: 'EvmIncoming',
+  SubstrateOutgoing: 'SubstrateOutgoing',
+  SubstrateIncoming: 'SubstrateIncoming',
   BorrowVaultDebt: 'BorrowVaultDebt',
   RepayVaultDebt: 'RepayVaultDebt',
   RegisterAsset: 'RegisterAsset',
@@ -124,7 +130,7 @@ export const KUSD = { address: '0xKUSD' } as Record<string, string>;
 export const KGOLD = { address: '0xKGOLD' } as Record<string, string>;
 export const KXOR = { address: '0xKXOR' } as Record<string, string>;
 export const isEthOperation = () => false;
-export const isEvmOperation = () => false;
+export const isEvmOperation = (operation: string) => [Operation.EvmIncoming, Operation.EvmOutgoing].includes(operation);
 export const isSubstrateOperation = () => false;
 export type IBridgeTransaction = any;
 

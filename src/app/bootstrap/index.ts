@@ -1,17 +1,50 @@
 import { createApp, type App as VueApp } from 'vue';
 
-import pinia from '@/plugins/pinia';
-import i18n from '@/lang';
-import installPlugins from '@/plugins';
+import { installRuntimePlugins, installStartupPlugins } from '@/plugins';
+import { createAsyncComponent } from '@/shared/ui/async';
 import { shouldRenderOfflineShell } from '@/utils/env';
 import { renderOfflineShell } from '@/utils/offlineShell';
 import { registerW3mMessageGuard } from '@/security/w3mMessageGuard';
 import { APP_BUILD_VARIANT, registerPilotFeedbackBridge, registerTelemetryStub, trackEvent } from '@/utils/telemetry';
 import { installConsoleWarningFilter } from '@/utils/consoleWarnings';
 import { installVueErrorHandler } from '@/utils/vueErrorHandler';
+import { updateDocumentTitle } from '@/utils/documentTitle';
 
-import AppShell from '@/app/shell/AppShell.vue';
-import router from '@/app/router';
+type AppShellModule = typeof import('@/app/shell/AppShell.vue');
+type LangModule = typeof import('@/lang');
+type PiniaModule = typeof import('@/plugins/pinia');
+type RouterModule = typeof import('@/app/router');
+
+type PreparedRuntime = {
+  router: RouterModule['default'];
+};
+
+let appShellModulePromise: Promise<AppShellModule> | null = null;
+let langModulePromise: Promise<LangModule> | null = null;
+let piniaModulePromise: Promise<PiniaModule> | null = null;
+let routerModulePromise: Promise<RouterModule> | null = null;
+
+const loadAppShell = (): Promise<AppShellModule> => {
+  appShellModulePromise ??= import('@/app/shell/AppShell.vue');
+  return appShellModulePromise;
+};
+
+const loadLang = (): Promise<LangModule> => {
+  langModulePromise ??= import('@/lang');
+  return langModulePromise;
+};
+
+const loadPinia = (): Promise<PiniaModule> => {
+  piniaModulePromise ??= import('@/plugins/pinia');
+  return piniaModulePromise;
+};
+
+const loadRouter = (): Promise<RouterModule> => {
+  routerModulePromise ??= import('@/app/router');
+  return routerModulePromise;
+};
+
+const AppShell = createAsyncComponent(loadAppShell);
 
 /**
  * Creates the app instance with the app-owned shell and global providers.
@@ -20,20 +53,37 @@ export function bootstrapApp(): VueApp {
   const app = createApp(AppShell);
 
   installVueErrorHandler(app);
+  installStartupPlugins();
+
+  return app;
+}
+
+/**
+ * Loads runtime-only plugins and the app shell chunk after the tiny bootstrap
+ * entry is already executing, keeping global UI and wallet code out of entry.
+ */
+export async function prepareAppRuntime(app: VueApp): Promise<PreparedRuntime> {
+  const [{ default: pinia }, { default: router }, { default: i18n, getLocale, setI18nLocale }] = await Promise.all([
+    loadPinia(),
+    loadRouter(),
+    loadLang(),
+  ]);
+
   app.use(pinia);
   app.use(router);
   app.use(i18n);
 
-  installPlugins(app, { pinia });
+  await Promise.all([installRuntimePlugins(app, { pinia }), loadAppShell(), setI18nLocale(getLocale() as any)]);
+  await updateDocumentTitle();
 
-  return app;
+  return { router };
 }
 
 /**
  * Mounts the statically-hosted application while preserving offline-shell,
  * telemetry, and IPFS-specific startup behavior.
  */
-export function mountApp(): void {
+export async function mountApp(): Promise<void> {
   registerW3mMessageGuard();
   installConsoleWarningFilter();
 
@@ -67,6 +117,7 @@ export function mountApp(): void {
 
   try {
     const app = bootstrapApp();
+    const { router } = await prepareAppRuntime(app);
     app.mount('#app');
     void router.isReady().catch((error) => {
       console.error('[bootstrap] Failed during router readiness', error);

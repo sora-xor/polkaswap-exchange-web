@@ -1,4 +1,4 @@
-import { Storage } from '@sora-substrate/sdk';
+import { Storage } from '@/lib/substrate/sdk/storage';
 
 import type { StorageKey, RuntimeStorageKey, SettingsStorageKey } from '../types/common';
 /** Persists state tied to the active account (cleared on logout). */

@@ -14,8 +14,8 @@ describe('router guard decisions', () => {
     expect(shouldResetBridgeHistory(PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory)).toBe(false);
   });
 
-  it('handles invitation routes', () => {
-    const decision = resolveInvitationDecision({
+  it('handles invitation routes', async () => {
+    const decision = await resolveInvitationDecision({
       isInvitationRoute: true,
       referrerParam: ['cnk'],
       isLoggedIn: true,
@@ -27,8 +27,8 @@ describe('router guard decisions', () => {
     expect(decision.redirect?.callNext).toBe(false);
   });
 
-  it('ignores invalid referral addresses but still redirects when logged in', () => {
-    const decision = resolveInvitationDecision({
+  it('ignores invalid referral addresses but still redirects when logged in', async () => {
+    const decision = await resolveInvitationDecision({
       isInvitationRoute: true,
       referrerParam: 'bad',
       isLoggedIn: true,

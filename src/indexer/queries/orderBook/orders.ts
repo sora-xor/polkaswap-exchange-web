@@ -1,7 +1,6 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import { OrderStatus } from '@/types/orderBook';
@@ -17,8 +16,8 @@ const parseTimestamp = (unixTimestamp: number) => {
   return unixTimestamp * 1000;
 };
 
-const SubqueryAccountOrdersQuery = gql<ConnectionQueryResponse<OrderBookOrderEntity>>`
-  query SubqueryAccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
+const PolkaswapAccountOrdersQuery = gql<ConnectionQueryResponse<OrderBookOrderEntity>>`
+  query PolkaswapAccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
     data: orderBookOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
@@ -44,40 +43,9 @@ const SubqueryAccountOrdersQuery = gql<ConnectionQueryResponse<OrderBookOrderEnt
   }
 `;
 
-const SubsquidAccountOrdersQuery = gql<ConnectionQueryResponse<OrderBookOrderEntity>>`
-  query SubsquidAccountOrdersQuery($after: Cursor, $where: OrderBookOrderWhereInput) {
-    data: orderBookOrdersConnection(orderBy: timestamp_DESC, after: $after, where: $filter) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          type
-          orderId
-          orderBook {
-            id
-          }
-          account {
-            id
-          }
-          timestamp
-          isBuy
-          price
-          amount
-          amountFilled
-          lifetime
-          expiresAt
-          status
-        }
-      }
-    }
-  }
-`;
-
 const parseOrderEntity = (item: OrderBookOrderEntity): OrderData => {
-  const owner = 'accountId' in item ? item.accountId : item.account.id;
-  const orderBookId = 'orderBookId' in item ? item.orderBookId : item.orderBook.id;
+  const owner = item.accountId;
+  const orderBookId = item.orderBookId;
   const [dexId, base, quote] = orderBookId.split('-');
   const originalAmount = new FPNumber(item.amount);
   const filledAmount = new FPNumber(item.amountFilled);
@@ -102,7 +70,7 @@ const parseOrderEntity = (item: OrderBookOrderEntity): OrderData => {
   };
 };
 
-const subqueryAccountOrdersFilter = (accountAddress: string, id?: OrderBookId) => {
+const polkaswapAccountOrdersFilter = (accountAddress: string, id?: OrderBookId) => {
   const filter: any = {
     and: [{ accountId: { equalTo: accountAddress } }, { status: { notEqualTo: OrderStatus.Active } }],
   };
@@ -118,53 +86,16 @@ const subqueryAccountOrdersFilter = (accountAddress: string, id?: OrderBookId) =
   return filter;
 };
 
-const subsquidAccountOrdersFilter = (accountAddress: string, id?: OrderBookId) => {
-  const where: any = {
-    account: { id_eq: accountAddress },
-    status_not_eq: OrderStatus.Active,
-  };
-
-  if (id) {
-    const orderBookId = [id.dexId, id.base, id.quote].join('-');
-
-    where.orderBook = { id_eq: orderBookId };
-  }
-
-  return where;
-};
-
 export async function fetchOrderBookAccountOrders(
   accountAddress: string,
   id?: OrderBookId
 ): Promise<Nullable<OrderData[]>> {
-  const indexer = getCurrentIndexer();
+  const filter = polkaswapAccountOrdersFilter(accountAddress, id);
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const filter = subqueryAccountOrdersFilter(accountAddress, id);
-      const variables = { filter };
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const orders = await subqueryIndexer.services.explorer.fetchAllEntities(
-        SubqueryAccountOrdersQuery,
-        variables,
-        parseOrderEntity
-      );
-
-      return orders;
-    }
-    case IndexerType.SUBSQUID: {
-      const where = subsquidAccountOrdersFilter(accountAddress, id);
-      const variables = { where };
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const orders = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        SubsquidAccountOrdersQuery,
-        variables,
-        parseOrderEntity
-      );
-
-      return orders;
-    }
-  }
-
-  return null;
+  return polkaswapIndexer.services.explorer.fetchAllEntities(
+    PolkaswapAccountOrdersQuery,
+    { filter },
+    parseOrderEntity
+  );
 }

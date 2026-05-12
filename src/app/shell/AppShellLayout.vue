@@ -24,13 +24,15 @@
 </template>
 
 <script setup lang="ts">
-import AppFooter from '@/components/App/Footer/AppFooter.vue';
-import AppHeader from '@/components/App/Header/AppHeader.vue';
-import AppDisclaimer from '@/components/App/Header/AppDisclaimer.vue';
-import AppLogoButton from '@/components/App/Header/AppLogoButton.vue';
-import AppMenu from '@/components/App/Menu/AppMenu.vue';
+import { createAsyncComponent } from '@/shared/ui/async';
 
 import { useAppShellContext } from './context';
+
+const AppDisclaimer = createAsyncComponent(() => import('@/components/App/Header/AppDisclaimer.vue'));
+const AppFooter = createAsyncComponent(() => import('@/components/App/Footer/AppFooter.vue'));
+const AppHeader = createAsyncComponent(() => import('@/components/App/Header/AppHeader.vue'));
+const AppLogoButton = createAsyncComponent(() => import('@/components/App/Header/AppLogoButton.vue'));
+const AppMenu = createAsyncComponent(() => import('@/components/App/Menu/AppMenu.vue'));
 
 const {
   appClasses,

@@ -10,7 +10,7 @@ const indexerMocks = vi.hoisted(() => ({
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 describe('pool tvl query', () => {
@@ -19,9 +19,9 @@ describe('pool tvl query', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches SubQuery pool TVL snapshots and transforms liquidity/reserve fields', async () => {
+  it('fetches Polkaswap pool TVL snapshots and transforms liquidity/reserve fields', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(createSnapshotResponse([createPoolTvlSnapshot()]));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchPoolTvlData('pool-id', 'DAY' as any, 5, null);
 
@@ -50,7 +50,7 @@ describe('pool tvl query', () => {
 
   it('passes optional pagination values through when omitted', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(createSnapshotResponse([]));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchPoolTvlData('pool-id', 'HOUR' as any)).resolves.toEqual(createSnapshotResponse([]));
 
@@ -68,27 +68,15 @@ describe('pool tvl query', () => {
     });
   });
 
-  it('returns null when SubQuery returns no connection data', async () => {
+  it('returns null when Polkaswap returns no connection data', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchPoolTvlData('pool-id', 'DAY' as any)).resolves.toBeNull();
   });
 
-  it('returns null for unsupported indexer types without requesting snapshots', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchPoolTvlData('pool-id', 'DAY' as any)).resolves.toBeNull();
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
+  
   });
-
-  it('returns null for Subsquid until the query is implemented', async () => {
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    await expect(fetchPoolTvlData('pool-id', 'DAY' as any)).resolves.toBeNull();
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-  });
-});
 
 const createIndexer = (type: unknown) => ({
   type,

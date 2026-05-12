@@ -1,4 +1,3 @@
-import { api } from '@sora-substrate/sdk';
 import isElectron from 'is-electron';
 
 import type { Book } from '@/types/common';

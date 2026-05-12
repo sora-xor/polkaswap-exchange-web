@@ -3,8 +3,7 @@ import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { hexToString, isHex, u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { api } from '@/lib/soraneo-wallet/src/api';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 import { parseSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
 
@@ -137,7 +136,7 @@ export function clearBurnXorQueryCaches(): void {
   }
 }
 
-const dataBeforeSubqueryIndexing: XorBurn[] = [
+const dataBeforePolkaswapIndexing: XorBurn[] = [
   // https://sora.subscan.io/extrinsic/0xa072a5c6c0d847cef807e57c303fd60fdde67d8e10b1c080de428ba15b78bdb6
   {
     address: 'cnV21a8zn14wUTuxUK6wy5Fmus8PXaGrsBUchz33MqavYqxHE',
@@ -224,7 +223,7 @@ const dataBeforeSubqueryIndexing: XorBurn[] = [
   },
 ];
 
-const getSubqueryXorBurnQuery = (address?: string) => gql<ConnectionQueryResponse<HistoryElement>>`
+const getPolkaswapXorBurnQuery = (address?: string) => gql<ConnectionQueryResponse<HistoryElement>>`
   query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: Cursor = "", $first: Int = 100) {
     data: historyElements(
       first: $first
@@ -280,68 +279,6 @@ const getSubqueryXorBurnQuery = (address?: string) => gql<ConnectionQueryRespons
               method
               data
             }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const getSubsquidXorBurnQuery = (address?: string) => gql<ConnectionQueryResponse<HistoryElement>>`
-  query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: String = null, $first: Int = 100) {
-    data: historyElementsConnection(
-      orderBy: id_ASC
-      first: $first
-      after: $after
-      where: {
-        AND: [
-          { blockHeight_gte: $start }
-          { blockHeight_lte: $end }
-          ${address ? `{ address_eq: "${address}" }` : ''}
-          {
-            OR: [
-              {
-                AND: [
-                  { module_eq: "assets" }
-                  { method_eq: "burn" }
-                  { data_jsonContains: { assetId: "${XOR.address}" } }
-                ]
-              }
-              {
-                AND: [
-                  { module_eq: "utility" }
-                  { method_eq: "batchAll" }
-                  { callNames_containsAny: ["assets.burn"] }
-                ]
-              }
-              {
-                AND: [
-                  { module_eq: "utility" }
-                  { method_eq: "batch" }
-                  { callNames_containsAny: ["assets.burn"] }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          id
-          address
-          data
-          blockHeight
-          module
-          method
-          calls {
-            module
-            method
-            data
           }
         }
       }
@@ -1069,46 +1006,23 @@ async function fetchOnChainXorBurns(start: number, end: number): Promise<XorBurn
 export async function fetchData(start: number, end: number, accountId?: string): Promise<XorBurn[]> {
   if (accountId && isExcludedXorBurnAddress(accountId)) return [];
 
-  const indexer = getCurrentIndexer();
   const variables = { start, end };
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const items = await polkaswapIndexer.services.explorer.fetchAllEntities(
+    getPolkaswapXorBurnQuery(accountId),
+    variables,
+    parse
+  );
+  const parsedItems = (items ?? []).filter((item): item is XorBurn => !!item);
+  const initData = accountId
+    ? dataBeforePolkaswapIndexing.filter((item) => item.address === accountId)
+    : dataBeforePolkaswapIndexing;
+  const onChainItems = accountId
+    ? await fetchAccountOnChainXorBurns(start, end, accountId)
+    : await fetchOnChainXorBurns(start, end);
+  const filteredOnChainItems = accountId
+    ? onChainItems.filter((item) => isSameAddress(item.address, accountId))
+    : onChainItems;
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const items = await subqueryIndexer.services.explorer.fetchAllEntities(
-        getSubqueryXorBurnQuery(accountId),
-        variables,
-        parse
-      );
-      const parsedItems = (items ?? []).filter((item): item is XorBurn => !!item);
-      const initData = accountId
-        ? dataBeforeSubqueryIndexing.filter((item) => item.address === accountId)
-        : dataBeforeSubqueryIndexing;
-      const onChainItems = accountId
-        ? await fetchAccountOnChainXorBurns(start, end, accountId)
-        : await fetchOnChainXorBurns(start, end);
-      const filteredOnChainItems = accountId
-        ? onChainItems.filter((item) => isSameAddress(item.address, accountId))
-        : onChainItems;
-      return filterEligibleBurns(dedupeBurns([...parsedItems, ...filteredOnChainItems, ...initData]));
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        getSubsquidXorBurnQuery(accountId),
-        variables,
-        parse
-      );
-      const parsedItems = (items ?? []).filter((item): item is XorBurn => !!item);
-      const onChainItems = accountId
-        ? await fetchAccountOnChainXorBurns(start, end, accountId)
-        : await fetchOnChainXorBurns(start, end);
-      const filteredOnChainItems = accountId
-        ? onChainItems.filter((item) => isSameAddress(item.address, accountId))
-        : onChainItems;
-      return filterEligibleBurns(dedupeBurns([...parsedItems, ...filteredOnChainItems]));
-    }
-  }
-
-  return [];
+  return filterEligibleBurns(dedupeBurns([...parsedItems, ...filteredOnChainItems, ...initData]));
 }

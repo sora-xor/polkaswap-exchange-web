@@ -18,7 +18,8 @@ import type { IndexerType, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { getLocale, getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
-import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
+import { updateDocumentTitle } from '@/utils/documentTitle';
+import { updateFpNumberLocale } from '@/utils/fp-locale';
 import { NodesConnection } from '@/utils/connection';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
@@ -423,7 +424,7 @@ export const useSettingsStore = defineStore('settings', {
 
       await setDayJsLocale(locale);
       await setI18nLocale(locale);
-      updateDocumentTitle();
+      await updateDocumentTitle();
       updateFpNumberLocale(locale);
 
       this.setLanguageState(locale);

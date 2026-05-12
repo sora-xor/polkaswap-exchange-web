@@ -1,4 +1,4 @@
-import { PageNames } from '@/consts';
+import { PageNames } from '@/consts/navigation';
 import { PoolPageNames } from '@/features/pool/consts';
 import { loadAsyncImportWithRetry } from '@/shared/ui/async';
 

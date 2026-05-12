@@ -50,8 +50,8 @@ import { useTranslation } from '@/composables/useTranslation';
 import { Links, PageNames } from '@/consts';
 import { SModal } from '@/lib/soramitsu-ui/components/Modal';
 import { useSettingsStore } from '@/stores/settings';
-import { delay } from '@/utils';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
+import { delay } from '@/utils/timing';
 import { resolveDisclaimerVisibilityOnRouteChange } from '@/views/utils/resolveDisclaimerVisibilityOnRouteChange';
 
 defineOptions({ name: 'AppDisclaimer' });

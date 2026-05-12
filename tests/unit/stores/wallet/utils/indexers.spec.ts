@@ -16,47 +16,47 @@ describe('wallet indexer selection helpers', () => {
 
   it('uses the Polkaswap indexer even when a legacy source is configured', () => {
     const indexers = {
-      [IndexerType.SUBQUERY]: { endpoint: 'https://subquery.example/graphql', status: ConnectionStatus.Available },
-      [IndexerType.SUBSQUID]: { endpoint: 'https://subsquid.example/graphql', status: ConnectionStatus.Available },
+      [IndexerType.POLKASWAP]: { endpoint: 'https://polkaswap.example/graphql', status: ConnectionStatus.Available },
+      legacy: { endpoint: 'https://legacy.example/graphql', status: ConnectionStatus.Available },
     };
 
-    expect(resolvePreferredIndexer(IndexerType.SUBSQUID, indexers)).toBe(IndexerType.SUBQUERY);
+    expect(resolvePreferredIndexer('legacy', indexers)).toBe(IndexerType.POLKASWAP);
   });
 
   it('falls back to the first configured indexer when the requested one has no endpoint', () => {
     const indexers = {
-      [IndexerType.SUBQUERY]: { endpoint: 'https://subquery.example/graphql', status: ConnectionStatus.Available },
-      [IndexerType.SUBSQUID]: { endpoint: '', status: ConnectionStatus.Loading },
+      [IndexerType.POLKASWAP]: { endpoint: 'https://polkaswap.example/graphql', status: ConnectionStatus.Available },
+      legacy: { endpoint: '', status: ConnectionStatus.Loading },
     };
 
-    expect(resolvePreferredIndexer(IndexerType.SUBSQUID, indexers)).toBe(IndexerType.SUBQUERY);
+    expect(resolvePreferredIndexer('legacy', indexers)).toBe(IndexerType.POLKASWAP);
   });
 
   it('does not keep an unsupported requested indexer when no endpoint is configured', () => {
     const indexers = {
-      [IndexerType.SUBQUERY]: { endpoint: '', status: ConnectionStatus.Loading },
-      [IndexerType.SUBSQUID]: { endpoint: '', status: ConnectionStatus.Loading },
+      [IndexerType.POLKASWAP]: { endpoint: '', status: ConnectionStatus.Loading },
+      legacy: { endpoint: '', status: ConnectionStatus.Loading },
     };
 
-    expect(resolvePreferredIndexer(IndexerType.SUBSQUID, indexers)).toBe(IndexerType.SUBQUERY);
+    expect(resolvePreferredIndexer('legacy', indexers)).toBe(IndexerType.POLKASWAP);
   });
 
   it('only selects fallback indexers that are configured and not unavailable', () => {
     const indexers = {
-      [IndexerType.SUBQUERY]: { endpoint: 'https://subquery.example/graphql', status: ConnectionStatus.Available },
-      [IndexerType.SUBSQUID]: { endpoint: '', status: ConnectionStatus.Loading },
+      [IndexerType.POLKASWAP]: { endpoint: 'https://polkaswap.example/graphql', status: ConnectionStatus.Available },
+      legacy: { endpoint: '', status: ConnectionStatus.Loading },
     };
 
-    expect(resolveFallbackIndexer(IndexerType.SUBSQUID, indexers)).toBe(IndexerType.SUBQUERY);
-    expect(resolveFallbackIndexer(IndexerType.SUBQUERY, indexers)).toBeNull();
+    expect(resolveFallbackIndexer('legacy', indexers)).toBe(IndexerType.POLKASWAP);
+    expect(resolveFallbackIndexer(IndexerType.POLKASWAP, indexers)).toBeNull();
   });
 
   it('does not fall back from Polkaswap indexer to legacy configured sources by default', () => {
     const indexers = {
-      [IndexerType.SUBQUERY]: { endpoint: '', status: ConnectionStatus.Unavailable },
-      [IndexerType.SUBSQUID]: { endpoint: 'https://subsquid.example/graphql', status: ConnectionStatus.Available },
+      [IndexerType.POLKASWAP]: { endpoint: '', status: ConnectionStatus.Unavailable },
+      legacy: { endpoint: 'https://legacy.example/graphql', status: ConnectionStatus.Available },
     };
 
-    expect(resolveFallbackIndexer(IndexerType.SUBQUERY, indexers)).toBeNull();
+    expect(resolveFallbackIndexer(IndexerType.POLKASWAP, indexers)).toBeNull();
   });
 });

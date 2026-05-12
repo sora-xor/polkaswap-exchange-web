@@ -1,5 +1,5 @@
 import { loadAsyncImportWithRetry } from '@/shared/ui/async';
-import { PageNames } from '@/consts';
+import { PageNames } from '@/consts/navigation';
 
 import type { RouteRecordRaw } from 'vue-router';
 

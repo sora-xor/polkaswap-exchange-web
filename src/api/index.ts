@@ -1,4 +1,4 @@
-import { axiosInstance } from '@sora-substrate/sdk';
+import { axiosInstance } from '@/lib/substrate/sdk/http';
 
 import type { Router } from 'vue-router';
 

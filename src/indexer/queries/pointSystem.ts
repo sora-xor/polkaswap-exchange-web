@@ -1,12 +1,7 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { gql } from '@urql/core';
 
-import { IndexerType } from '@/consts';
-import {
-  getCurrentIndexer,
-  type SubqueryIndexer,
-  type SubsquidIndexer,
-} from '@/lib/soraneo-wallet/src/services/indexer';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { AccountPointSystems, AccountPointsVersioned, AccountPointsCalculation } from '@/types/pointSystem';
 
 import type {
@@ -34,7 +29,7 @@ export enum CountType {
   PoolWithdraw = 'poolWithdraw',
 }
 
-const SubqueryBridgeQuery = gql<ConnectionQueryResponse<HistoryElement>>`
+const PolkaswapBridgeQuery = gql<ConnectionQueryResponse<HistoryElement>>`
   query BridgeQuery($start: Int = 0, $end: Int = 0, $account: String = "", $after: Cursor = "", $first: Int = 100) {
     data: historyElements(
       first: $first
@@ -77,44 +72,6 @@ const SubqueryBridgeQuery = gql<ConnectionQueryResponse<HistoryElement>>`
   }
 `;
 
-const SubsquidBridgeQuery = gql<ConnectionQueryResponse<HistoryElement>>`
-  query BridgeQuery($start: Int = 0, $end: Int = 0, $account: String = "", $after: String = null, $first: Int = 100) {
-    data: historyElementsConnection(
-      orderBy: id_ASC
-      first: $first
-      after: $after
-      where: {
-        AND: [
-          { blockHeight_gte: $start }
-          { blockHeight_lte: $end }
-          {
-            OR: [
-              {
-                AND: [
-                  { data_jsonContains: { to: $account } }
-                  { module_eq: "bridgeMultisig" }
-                  { method_eq: "asMulti" }
-                ]
-              }
-              { AND: [{ address_eq: $account }, { module_eq: "ethBridge" }, { method_eq: "transferToSidechain" }] }
-            ]
-          }
-        ]
-      }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          data
-        }
-      }
-    }
-  }
-`;
-
 const parseBridgeData = (item: HistoryElement): BridgeData => {
   const data = item.data as BridgeHistoryElement;
 
@@ -126,34 +83,18 @@ const parseBridgeData = (item: HistoryElement): BridgeData => {
 };
 
 export async function fetchBridgeData(start: number, end: number, account: string): Promise<BridgeData[]> {
-  const indexer = getCurrentIndexer();
   const variables = { start, end, account };
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const items = await polkaswapIndexer.services.explorer.fetchAllEntities(
+    PolkaswapBridgeQuery,
+    variables,
+    parseBridgeData
+  );
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const items = await subqueryIndexer.services.explorer.fetchAllEntities(
-        SubqueryBridgeQuery,
-        variables,
-        parseBridgeData
-      );
-      return items ?? [];
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        SubsquidBridgeQuery,
-        variables,
-        parseBridgeData
-      );
-      return items ?? [];
-    }
-  }
-
-  return [];
+  return items ?? [];
 }
 
-const getSubqueryCountQuery = (filter: string) => gql<ConnectionQueryResponse<CountResponse>>`
+const getPolkaswapCountQuery = (filter: string) => gql<ConnectionQueryResponse<CountResponse>>`
   query CountQuery($start: Int = 0, $end: Int = 0, $account: String = "", $after: Cursor = "", $first: Int = 100) {
     data: historyElements(
       first: $first
@@ -172,61 +113,19 @@ const getSubqueryCountQuery = (filter: string) => gql<ConnectionQueryResponse<Co
   }
 `;
 
-const getSubsquidCountQuery = (filter: string) => gql<ConnectionQueryResponse<CountResponse>>`
-  query CountQuery($start: Int = 0, $end: Int = 0, $account: String = "", $after: String = null, $first: Int = 100) {
-    data: historyElementsConnection(
-      orderBy: id_ASC
-      first: $first
-      after: $after
-      where: {
-        AND: [
-          { blockHeight_gte: $start }
-          { blockHeight_lte: $end }
-          { address_eq: $account }
-          ${filter}
-        ]
-      }
-    ) {
-      totalCount
-    }
-  }
-`;
-
-const CountFilers = {
-  [IndexerType.SUBQUERY]: {
-    [CountType.Swap]: `{ module: { equalTo: "liquidityProxy" } } { method: { equalTo: "swap" } }`,
-    [CountType.PoolDeposit]: `{ module: { equalTo: "poolXYK" } } { method: { equalTo: "depositLiquidity" } }`,
-    [CountType.PoolWithdraw]: `{ module: { equalTo: "poolXYK" } } { method: { equalTo: "withdrawLiquidity" } }`,
-  },
-  [IndexerType.SUBSQUID]: {
-    [CountType.Swap]: `{ module_eq: "liquidityProxy" } { method_eq: "swap" }`,
-    [CountType.PoolDeposit]: `{ module_eq: "poolXYK" } { method_eq: "depositLiquidity" }`,
-    [CountType.PoolWithdraw]: `{ module_eq: "poolXYK" } { method_eq: "withdrawLiquidity" }`,
-  },
+const CountFilters = {
+  [CountType.Swap]: `{ module: { equalTo: "liquidityProxy" } } { method: { equalTo: "swap" } }`,
+  [CountType.PoolDeposit]: `{ module: { equalTo: "poolXYK" } } { method: { equalTo: "depositLiquidity" } }`,
+  [CountType.PoolWithdraw]: `{ module: { equalTo: "poolXYK" } } { method: { equalTo: "withdrawLiquidity" } }`,
 };
 
 export async function fetchCount(start: number, end: number, account: string, type: CountType): Promise<number> {
-  const indexer = getCurrentIndexer();
   const variables = { start, end, account };
-  const filter = CountFilers[indexer.type]?.[type];
+  const filter = CountFilters[type];
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const response = await polkaswapIndexer.services.explorer.fetchEntities(getPolkaswapCountQuery(filter), variables);
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const response = await subqueryIndexer.services.explorer.fetchEntities(getSubqueryCountQuery(filter), variables);
-      return response?.totalCount ?? 0;
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const response = await subsquidIndexer.services.explorer.fetchEntitiesConnection(
-        getSubsquidCountQuery(filter),
-        variables
-      );
-      return response?.totalCount ?? 0;
-    }
-  }
-
-  return 0;
+  return response?.totalCount ?? 0;
 }
 
 type AccountMetaAssetVolume = {
@@ -280,7 +179,7 @@ type AccountPointSystemEntity = {
   deposit: AccountMetaDeposit;
 };
 
-const SubqueryAccountMetaQuery = gql<QueryData<AccountMetaEntity>>`
+const PolkaswapAccountMetaQuery = gql<QueryData<AccountMetaEntity>>`
   query AccountMetaQuery($id: String = "") {
     data: accountMeta(id: $id) {
       createdAtTimestamp
@@ -296,7 +195,7 @@ const SubqueryAccountMetaQuery = gql<QueryData<AccountMetaEntity>>`
   }
 `;
 
-const SubqueryAccountPointSystemsQuery = gql<ConnectionQueryResponse<AccountPointSystemEntity>>`
+const PolkaswapAccountPointSystemsQuery = gql<ConnectionQueryResponse<AccountPointSystemEntity>>`
   query AccountPointSystemsQuery($id: String = "", $after: Cursor) {
     data: accountPointSystems(orderBy: ID_ASC, after: $after, filter: { accountId: { equalTo: $id } }) {
       pageInfo {
@@ -387,20 +286,15 @@ const parseAccountPointSystem = (item: AccountPointSystemEntity): AccountPointsV
 };
 
 export async function fetchAccountMeta(accountAddress: string): Promise<AccountPointSystems | null> {
-  const indexer = getCurrentIndexer();
   const variables = { id: accountAddress };
 
   try {
-    if (indexer.type === IndexerType.SUBQUERY) {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const response = await subqueryIndexer.services.explorer.request(SubqueryAccountMetaQuery, variables);
+    const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+    const response = await polkaswapIndexer.services.explorer.request(PolkaswapAccountMetaQuery, variables);
 
-      if (!response) return null;
+    if (!response) return null;
 
-      return parseAccountMeta(response.data);
-    }
-
-    return null;
+    return parseAccountMeta(response.data);
   } catch (error) {
     console.error(error);
     return null;
@@ -408,24 +302,19 @@ export async function fetchAccountMeta(accountAddress: string): Promise<AccountP
 }
 
 export async function fetchAccountPointSystems(accountAddress: string): Promise<AccountPointsVersioned[] | null> {
-  const indexer = getCurrentIndexer();
   const variables = { id: accountAddress };
 
   try {
-    if (indexer.type === IndexerType.SUBQUERY) {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const response = await subqueryIndexer.services.explorer.fetchAllEntities(
-        SubqueryAccountPointSystemsQuery,
-        variables,
-        parseAccountPointSystem
-      );
+    const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+    const response = await polkaswapIndexer.services.explorer.fetchAllEntities(
+      PolkaswapAccountPointSystemsQuery,
+      variables,
+      parseAccountPointSystem
+    );
 
-      if (!response) return null;
+    if (!response) return null;
 
-      return response;
-    }
-
-    return null;
+    return response;
   } catch (error) {
     console.error(error);
     return null;

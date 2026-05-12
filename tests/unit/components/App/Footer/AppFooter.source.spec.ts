@@ -12,7 +12,8 @@ describe('AppFooter source', () => {
 
   it('renders the Polkaswap indexer block as a static footer message', () => {
     expect(appFooterSource).toContain('class="app-status__item indexer-block s-flex"');
-    expect(appFooterSource).toContain('fetchLatestIndexedBlock');
+    expect(appFooterSource).toContain("import('@/indexer/queries/latestIndexedBlock')");
+    expect(appFooterSource).toContain('loadLatestIndexedBlockModule');
     expect(appFooterSource).toContain('const displayedIndexedBlock = computed');
     expect(appFooterSource).not.toContain('<statistics-dialog');
     expect(appFooterSource).not.toContain('setSelectIndexerDialogVisibility');

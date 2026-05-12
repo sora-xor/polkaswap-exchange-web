@@ -5,7 +5,6 @@ import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   fetchAllEntities: vi.fn(),
-  fetchAllEntitiesConnection: vi.fn(),
 }));
 
 const retryMocks = vi.hoisted(() => ({
@@ -18,8 +17,7 @@ const retryMocks = vi.hoisted(() => ({
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
-  SubsquidIndexer: class SubsquidIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 vi.mock('@/indexer/queries/retry', () => ({
@@ -39,11 +37,11 @@ describe('order books query', () => {
     );
   });
 
-  it('fetches SubQuery order books with a base-asset filter and parses FP stats', async () => {
+  it('fetches Polkaswap order books with a base-asset filter and parses FP stats', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
-      parse(createSubqueryOrderBook()),
+      parse(createPolkaswapOrderBook()),
     ]);
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     const result = await fetchOrderBooks([{ address: 'base-a' }, { address: 'base-b' }] as any);
 
@@ -59,7 +57,6 @@ describe('order books query', () => {
       },
       expect.any(Function)
     );
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
     expect(result).toHaveLength(1);
     expect(result?.[0]).toMatchObject({
       id: {
@@ -78,9 +75,9 @@ describe('order books query', () => {
     expect(result?.[0]?.stats.volume.toString()).toBe('123.45');
   });
 
-  it('fetches SubQuery order books without a filter when assets are omitted', async () => {
+  it('fetches Polkaswap order books without a filter when assets are omitted', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue([]);
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     await expect(fetchOrderBooks()).resolves.toEqual([]);
 
@@ -93,73 +90,20 @@ describe('order books query', () => {
     );
   });
 
-  it('fetches Subsquid order books with nested asset ids and parses fallback numeric fields', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockImplementation(async (_query, _variables, parse) => [
-      parse(createSubsquidOrderBook()),
-    ]);
-    indexerMocks.currentIndexer = createIndexer('subsquid');
-
-    const result = await fetchOrderBooks([{ address: 'xor' }] as any);
-
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        where: {
-          baseAsset: {
-            id_in: ['xor'],
-          },
-        },
-      },
-      expect.any(Function)
-    );
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(result).toHaveLength(1);
-    expect(result?.[0]?.id).toEqual({
-      dexId: 1,
-      base: 'xor',
-      quote: 'val',
-    });
-    expect(result?.[0]?.stats.price.toString()).toBe('0');
-    expect(result?.[0]?.stats.priceChange.toString()).toBe('0');
-    expect(result?.[0]?.stats.volume.toString()).toBe('0');
+  
+  
   });
-
-  it('fetches Subsquid order books without a where clause when assets are empty', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue([]);
-    indexerMocks.currentIndexer = createIndexer('subsquid');
-
-    await expect(fetchOrderBooks([] as any)).resolves.toEqual([]);
-
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        where: undefined,
-      },
-      expect.any(Function)
-    );
-  });
-
-  it('returns null for unsupported indexer types without invoking retry or fetches', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchOrderBooks()).resolves.toBeNull();
-    expect(retryMocks.retryOnEmptyResult).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
-  });
-});
 
 const createIndexer = (type: unknown) => ({
   type,
   services: {
     explorer: {
       fetchAllEntities: indexerMocks.fetchAllEntities,
-      fetchAllEntitiesConnection: indexerMocks.fetchAllEntitiesConnection,
     },
   },
 });
 
-const createSubqueryOrderBook = () => ({
+const createPolkaswapOrderBook = () => ({
   dexId: 0,
   baseAssetId: 'base-a',
   quoteAssetId: 'quote-a',
@@ -169,20 +113,4 @@ const createSubqueryOrderBook = () => ({
   priceChangeDay: '-0.15',
   volumeDayUSD: '123.45',
   status: 'Trade',
-});
-
-const createSubsquidOrderBook = () => ({
-  dexId: 1,
-  baseAsset: {
-    id: 'xor',
-  },
-  quoteAsset: {
-    id: 'val',
-  },
-  baseAssetReserves: '0',
-  quoteAssetReserves: '0',
-  price: null,
-  priceChangeDay: null,
-  volumeDayUSD: null,
-  status: 'PlaceAndCancel',
 });

@@ -29,7 +29,7 @@ describe('fetchAssetSupplyData', () => {
       },
     ]);
     getCurrentIndexerMock.mockReturnValue({
-      type: 'subquery',
+      type: 'polkaswap',
       services: {
         explorer: {
           fetchAllEntities: fetchAllEntitiesMock,

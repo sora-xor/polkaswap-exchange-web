@@ -33,9 +33,9 @@ import SelectIndexer from '@/components/App/Footer/Indexer/SelectIndexer.vue';
 
 const defaultIndexers = [
   {
-    name: 'SubQuery',
-    type: 'subquery' as IndexerType,
-    endpoint: 'https://subquery.example',
+    name: 'Polkaswap',
+    type: 'polkaswap' as IndexerType,
+    endpoint: 'https://polkaswap.example',
     online: true,
   },
   {
@@ -64,8 +64,8 @@ describe('SelectIndexer', () => {
   it('renders available indexers with status labels', () => {
     const wrapper = mountComponent();
 
-    expect(wrapper.text()).toContain('SubQuery');
-    expect(wrapper.text()).toContain('https://subquery.example');
+    expect(wrapper.text()).toContain('Polkaswap');
+    expect(wrapper.text()).toContain('https://polkaswap.example');
     expect(wrapper.text()).toContain('Hydra');
     expect(wrapper.text()).toContain('Online');
     expect(wrapper.text()).toContain('Offline');

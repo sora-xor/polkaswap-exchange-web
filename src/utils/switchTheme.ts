@@ -1,10 +1,27 @@
 import { Theme } from '@/consts/theme';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
-import { tmaSdkService } from './telegram';
-import { updatePipTheme } from '.';
+import { updatePipTheme } from './pipTheme';
+import { shouldLoadTelegramMiniApp } from './telegramLaunch';
+
+type TelegramModule = typeof import('./telegram');
 
 let prefersDarkScheme: MediaQueryList | null = null;
+let telegramModulePromise: Promise<TelegramModule> | null = null;
+
+const loadTelegramModule = (): Promise<TelegramModule> => {
+  telegramModulePromise ??= import('./telegram');
+  return telegramModulePromise;
+};
+
+const withTelegramModule = (callback: (module: TelegramModule) => void): void => {
+  if (!shouldLoadTelegramMiniApp()) return;
+  void loadTelegramModule()
+    .then(callback)
+    .catch((error) => {
+      console.warn('[TMA]: Telegram theme sync skipped', error);
+    });
+};
 
 const handleThemeChange = (e: MediaQueryListEvent): void => {
   applyTheme(e.matches);
@@ -15,7 +32,9 @@ export const applyTheme = (isDark: boolean): void => {
   const walletStore = useWalletStore(pinia);
   void walletStore.setTheme(nextTheme);
   updatePipTheme();
-  tmaSdkService.updateTheme();
+  withTelegramModule(({ tmaSdkService }) => {
+    tmaSdkService.updateTheme();
+  });
 };
 
 export const detectSystemTheme = (isTMA: boolean): void => {
@@ -32,7 +51,9 @@ export const detectSystemTheme = (isTMA: boolean): void => {
     const colorScheme = webApp.colorScheme;
     applyTheme(colorScheme === 'dark');
 
-    tmaSdkService.listenForThemeChanges(applyTheme);
+    withTelegramModule(({ tmaSdkService }) => {
+      tmaSdkService.listenForThemeChanges(applyTheme);
+    });
   }
 };
 
@@ -43,6 +64,8 @@ export const removeThemeListeners = (isTMA: boolean): void => {
   }
 
   if (isTMA) {
-    tmaSdkService.removeThemeListener();
+    withTelegramModule(({ tmaSdkService }) => {
+      tmaSdkService.removeThemeListener();
+    });
   }
 };

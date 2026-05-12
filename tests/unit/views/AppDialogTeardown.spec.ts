@@ -464,6 +464,17 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
+vi.mock('@/composables/useLoading', () => {
+  const { ref } = require('vue') as typeof import('vue');
+  return {
+    useLoading: () => ({
+      loading: ref(false),
+      withLoading: async (task: () => Promise<unknown> | unknown) => task(),
+      withApi: async (task: () => Promise<unknown> | unknown) => task(),
+    }),
+  };
+});
+
 vi.mock('@/composables/useTransaction', () => {
   const { ref } = require('vue') as typeof import('vue');
   return {
@@ -484,7 +495,7 @@ vi.mock('@/composables/useNodeNotifications', () => ({
   }),
 }));
 
-vi.mock('@/utils', () => ({
+vi.mock('@/utils/device', () => ({
   getMobileCssClasses: () => [],
 }));
 

@@ -18,11 +18,13 @@ import { computed, onBeforeUnmount, useAttrs, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useSubscriptions } from '@/composables/useSubscriptions';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWeb3Store } from '@/stores/web3';
+import { delay } from '@/utils/promise';
 
 import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';
@@ -67,6 +69,20 @@ const resetBridgeForm = () => bridgeStore.resetBridgeForm();
 const resetBlockUpdatesSubscription = () => bridgeStore.resetBlockUpdatesSubscription();
 const resetOutgoingMaxLimitSubscription = () => bridgeStore.resetOutgoingMaxLimitSubscription();
 
+const BRIDGE_APP_CONNECTION_RETRY_DELAY_MS = 250;
+const BRIDGE_APP_CONNECTION_RETRY_LIMIT = 20;
+
+/**
+ * Waits for the shared SORA websocket before bridge app and registry calls run.
+ * The shell connection flag can flip just before Polkadot RPC is ready.
+ */
+const waitForBridgeApiConnection = async (): Promise<void> => {
+  for (let attempt = 0; attempt < BRIDGE_APP_CONNECTION_RETRY_LIMIT; attempt += 1) {
+    if (api.connected) return;
+    await delay(BRIDGE_APP_CONNECTION_RETRY_DELAY_MS);
+  }
+};
+
 let restoreSelectedNetworkTask: Promise<void> | null = null;
 const scheduleRestoreSelectedNetwork = (): Promise<void> => {
   if (!restoreSelectedNetworkTask) {
@@ -79,9 +95,9 @@ const scheduleRestoreSelectedNetwork = (): Promise<void> => {
 };
 
 const updateBridgeApps = async () => {
-  // don't block UI while loading supported apps list
-  void scheduleRestoreSelectedNetwork();
+  await waitForBridgeApiConnection();
   await getSupportedApps();
+  await scheduleRestoreSelectedNetwork();
 };
 
 const { subscriptionsDataLoading, trackLogin } = useSubscriptions({

@@ -1,11 +1,10 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { gql } from '@urql/core';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { AssetEntity, ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
+import type { AssetEntity, ConnectionQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 export type TokenData = {
   priceUSD: FPNumber;
@@ -17,33 +16,9 @@ export type TokenData = {
   velocity: FPNumber;
 };
 
-const SubqueryAssetsQuery = gql<ConnectionQueryResponse<AssetEntity>>`
+const PolkaswapAssetsQuery = gql<ConnectionQueryResponse<AssetEntity>>`
   query AssetsQuery($after: Cursor, $filter: AssetFilter) {
     data: assets(orderBy: ID_ASC, after: $after, filter: $filter) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          id
-          priceUSD
-          priceChangeDay
-          priceChangeWeek
-          volumeDayUSD
-          volumeWeekUSD
-          liquidity
-          liquidityBooks
-          velocity
-        }
-      }
-    }
-  }
-`;
-
-const SubsquidAssetsQuery = gql<ConnectionQueryResponse<AssetEntity>>`
-  query AssetsConnectionQuery($after: String, $where: AssetWhereInput) {
-    data: assetsConnection(orderBy: id_ASC, after: $after, where: $where) {
       pageInfo {
         hasNextPage
         endCursor
@@ -85,7 +60,7 @@ const parse = (item: AssetEntity): Record<string, TokenData> => {
   };
 };
 
-const subqueryAssetsFilter = (ids: string[]) => {
+const polkaswapAssetsFilter = (ids: string[]) => {
   const filter: any = {
     or: [{ liquidity: { greaterThan: '0' } }, { liquidityBooks: { greaterThan: '0' } }],
   };
@@ -97,44 +72,14 @@ const subqueryAssetsFilter = (ids: string[]) => {
   return filter;
 };
 
-const subsquidAssetsFilter = (ids: string[]) => {
-  const where: any = {
-    OR: [{ liquidity_gt: '0' }, { liquidityBooks_gt: '0' }],
-  };
-
-  if (ids.length) {
-    where.id_in = ids;
-  }
-
-  return where;
-};
-
 export async function fetchTokensData(assets: Asset[]): Promise<Record<string, TokenData>> {
   const ids = assets.map((item) => item.address);
-  const indexer = getCurrentIndexer();
-  let items: Nullable<Record<string, TokenData>[]>;
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const filter = subqueryAssetsFilter(ids);
-      const variables = { filter };
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      items = await retryOnEmptyResult(
-        async () => subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAssetsQuery, variables, parse),
-        (value) => !value?.length
-      );
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      const where = subsquidAssetsFilter(ids);
-      const variables = { where };
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      items = await retryOnEmptyResult(
-        async () => subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidAssetsQuery, variables, parse),
-        (value) => !value?.length
-      );
-      break;
-    }
-  }
+  const filter = polkaswapAssetsFilter(ids);
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const items = await retryOnEmptyResult(
+    async () => polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapAssetsQuery, { filter }, parse),
+    (value) => !value?.length
+  );
 
   if (!items) return {};
 

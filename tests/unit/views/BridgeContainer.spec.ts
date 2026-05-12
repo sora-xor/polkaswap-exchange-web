@@ -11,6 +11,9 @@ const externalAccountRef = ref<string>('');
 const subAccountRef = ref<any>(null);
 const subBridgeConnectorRef = ref<{ accountApi: unknown } | null>({ accountApi: {} });
 const isSignTxDialogVisibleRef = ref(false);
+const soraApiMock = vi.hoisted(() => ({
+  connected: true,
+}));
 
 const getSupportedAppsSpy = vi.fn();
 const restoreSelectedNetworkSpy = vi.fn();
@@ -92,6 +95,23 @@ vi.mock('@/stores/web3', () => ({
   }),
 }));
 
+vi.mock('@/lib/soraneo-wallet/src/api', async () => {
+  const actual =
+    await vi.importActual<typeof import('@/lib/soraneo-wallet/src/api')>('@/lib/soraneo-wallet/src/api');
+  const bridgeProxy = (actual.api as any).bridgeProxy ?? { eth: {}, evm: {}, sub: {} };
+
+  return {
+    ...actual,
+    api: new Proxy(actual.api, {
+      get(target, property, receiver) {
+        if (property === 'connected') return soraApiMock.connected;
+        if (property === 'bridgeProxy') return bridgeProxy;
+        return Reflect.get(target, property, receiver);
+      },
+    }),
+  };
+});
+
 vi.mock('@/composables/useInternalConnect', () => ({
   useInternalConnect: (...args: unknown[]) => useInternalConnectMock(...args),
 }));
@@ -159,6 +179,7 @@ const mountBridgeContainer = async () => {
 
 describe('BridgeContainer.vue', () => {
   afterEach(() => {
+    vi.useRealTimers();
     vi.clearAllMocks();
   });
 
@@ -169,6 +190,7 @@ describe('BridgeContainer.vue', () => {
     subAccountRef.value = null;
     subBridgeConnectorRef.value = { accountApi: {} };
     isSignTxDialogVisibleRef.value = false;
+    soraApiMock.connected = true;
 
     getSupportedAppsSpy.mockReset().mockResolvedValue(undefined);
     restoreSelectedNetworkSpy.mockReset().mockResolvedValue(undefined);
@@ -228,6 +250,47 @@ describe('BridgeContainer.vue', () => {
     wrapper.unmount();
   });
 
+  it('waits for the SORA API connection before loading bridge apps', async () => {
+    vi.useFakeTimers();
+    soraApiMock.connected = false;
+    const wrapper = await mountBridgeContainer();
+
+    const bridgeAppsTask = subscriptionsArgs.startSubscriptions[2]!();
+    await Promise.resolve();
+
+    expect(getSupportedAppsSpy).not.toHaveBeenCalled();
+    expect(restoreSelectedNetworkSpy).not.toHaveBeenCalled();
+
+    soraApiMock.connected = true;
+    await vi.advanceTimersByTimeAsync(250);
+    await bridgeAppsTask;
+
+    expect(getSupportedAppsSpy).toHaveBeenCalledTimes(1);
+    expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
+  it('loads bridge apps after the SORA API connection retry limit is exhausted', async () => {
+    vi.useFakeTimers();
+    soraApiMock.connected = false;
+    const wrapper = await mountBridgeContainer();
+
+    const bridgeAppsTask = subscriptionsArgs.startSubscriptions[2]!();
+    await Promise.resolve();
+
+    expect(getSupportedAppsSpy).not.toHaveBeenCalled();
+    expect(restoreSelectedNetworkSpy).not.toHaveBeenCalled();
+
+    await vi.advanceTimersByTimeAsync(250 * 20);
+    await bridgeAppsTask;
+
+    expect(getSupportedAppsSpy).toHaveBeenCalledTimes(1);
+    expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
   it('deduplicates in-flight network restore requests', async () => {
     const wrapper = await mountBridgeContainer();
 
@@ -239,18 +302,55 @@ describe('BridgeContainer.vue', () => {
         })
     );
 
-    await subscriptionsArgs.startSubscriptions[2]!();
-    await subscriptionsArgs.startSubscriptions[2]!();
+    const firstBridgeAppsTask = subscriptionsArgs.startSubscriptions[2]!();
+    await flushPromises();
+    const secondBridgeAppsTask = subscriptionsArgs.startSubscriptions[2]!();
+    await flushPromises();
 
     expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(1);
 
     resolveRestore?.();
-    await flushPromises();
+    await Promise.all([firstBridgeAppsTask, secondBridgeAppsTask]);
 
     restoreSelectedNetworkSpy.mockResolvedValue(undefined);
     await subscriptionsArgs.startSubscriptions[2]!();
 
     expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(2);
+
+    wrapper.unmount();
+  });
+
+  it('retries network restore after a failed restore task', async () => {
+    const wrapper = await mountBridgeContainer();
+    const restoreError = new Error('restore failed');
+
+    restoreSelectedNetworkSpy.mockRejectedValueOnce(restoreError);
+
+    await expect(subscriptionsArgs.startSubscriptions[2]!()).rejects.toThrow(restoreError);
+
+    restoreSelectedNetworkSpy.mockResolvedValueOnce(undefined);
+    await subscriptionsArgs.startSubscriptions[2]!();
+
+    expect(getSupportedAppsSpy).toHaveBeenCalledTimes(2);
+    expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(2);
+
+    wrapper.unmount();
+  });
+
+  it('does not restore the previous network when supported app loading fails', async () => {
+    const wrapper = await mountBridgeContainer();
+    const supportedAppsError = new Error('supported apps unavailable');
+
+    getSupportedAppsSpy.mockRejectedValueOnce(supportedAppsError);
+
+    await expect(subscriptionsArgs.startSubscriptions[2]!()).rejects.toThrow(supportedAppsError);
+    expect(restoreSelectedNetworkSpy).not.toHaveBeenCalled();
+
+    getSupportedAppsSpy.mockResolvedValueOnce(undefined);
+    await subscriptionsArgs.startSubscriptions[2]!();
+
+    expect(getSupportedAppsSpy).toHaveBeenCalledTimes(2);
+    expect(restoreSelectedNetworkSpy).toHaveBeenCalledTimes(1);
 
     wrapper.unmount();
   });

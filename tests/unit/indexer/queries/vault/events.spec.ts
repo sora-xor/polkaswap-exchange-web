@@ -10,8 +10,7 @@ const indexerMocks = vi.hoisted(() => ({
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
-  SubsquidIndexer: class SubsquidIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 describe('vault events query', () => {
@@ -21,7 +20,7 @@ describe('vault events query', () => {
   });
 
   it('returns an empty response without calling the indexer when vault id is missing', async () => {
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchVaultEvents({ id: '', first: 10, offset: 0 })).resolves.toEqual({
       totalCount: 0,
@@ -30,7 +29,7 @@ describe('vault events query', () => {
     expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
   });
 
-  it('fetches SubQuery vault events and parses amount and timestamp values', async () => {
+  it('fetches Polkaswap vault events and parses amount and timestamp values', async () => {
     indexerMocks.fetchEntities.mockResolvedValue({
       totalCount: 2,
       edges: [
@@ -38,7 +37,7 @@ describe('vault events query', () => {
         { node: createVaultEvent('2', null, 'Liquidated', 1_700_000_002) },
       ],
     });
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchVaultEvents({ id: 42, first: 25, offset: 50, fromTimestamp: 1_700_000_000 });
 
@@ -61,32 +60,10 @@ describe('vault events query', () => {
     expect(result.items[1]?.amount).toBeNull();
   });
 
-  it('fetches Subsquid vault events from nodes with the same pagination variables', async () => {
-    indexerMocks.fetchEntities.mockResolvedValue({
-      totalCount: 1,
-      nodes: [createVaultEvent('3', '3.75', 'Withdraw', 1_700_000_003)],
-    });
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchVaultEvents({ id: 'vault-1', first: 10, offset: 0 });
-
-    expect(indexerMocks.fetchEntities).toHaveBeenCalledWith(expect.any(Object), {
-      first: 10,
-      offset: 0,
-      filter: {
-        vaultId: {
-          equalTo: 'vault-1',
-        },
-      },
-    });
-    expect(result.totalCount).toBe(1);
-    expect(result.items[0]?.amount?.toString()).toBe('3.75');
-    expect(result.items[0]?.timestamp).toBe(1_700_000_003_000);
-  });
-
+  
   it('returns an empty response when the indexer returns no vault event data', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchVaultEvents({ id: 42, first: 10, offset: 0 })).resolves.toEqual({
       totalCount: 0,
@@ -94,26 +71,8 @@ describe('vault events query', () => {
     });
   });
 
-  it('returns an empty response when Subsquid returns no vault event data', async () => {
-    indexerMocks.fetchEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    await expect(fetchVaultEvents({ id: 42, first: 10, offset: 0 })).resolves.toEqual({
-      totalCount: 0,
-      items: [],
-    });
+  
   });
-
-  it('returns an empty response for unsupported indexer types without making requests', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchVaultEvents({ id: 42, first: 10, offset: 0 })).resolves.toEqual({
-      totalCount: 0,
-      items: [],
-    });
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-  });
-});
 
 const createIndexer = (type: unknown) => ({
   type,

@@ -362,8 +362,7 @@ export const WALLET_CONSTS = {
     eth: { name: 'Ethereum' },
   },
   IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
+    POLKASWAP: 'polkaswap',
   },
   RouteNames: {
     WalletConnection: 'WalletConnection',
@@ -659,13 +658,7 @@ export const WALLET_TYPES = {
   ConnectionStatus,
   FilterOptions: FilterOptions,
 };
-export const SUBQUERY_TYPES = {
-  status: {
-    IDLE: 'IDLE',
-    READY: 'READY',
-  },
-};
-export const SUBSQUID_TYPES = {
+export const POLKASWAP_TYPES = {
   status: {
     IDLE: 'IDLE',
     READY: 'READY',
@@ -677,8 +670,7 @@ export const INDEXER_TYPES = {
     READY: 'READY',
   },
   IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
+    POLKASWAP: 'polkaswap',
   },
   OrderStatus: {
     Filled: 'Filled',
@@ -841,8 +833,7 @@ const walletPlugin = {
   BalanceType,
   TransactionStatus,
   WALLET_TYPES,
-  SUBQUERY_TYPES,
-  SUBSQUID_TYPES,
+  POLKASWAP_TYPES,
   INDEXER_TYPES,
   vuex,
   getCurrentIndexer,

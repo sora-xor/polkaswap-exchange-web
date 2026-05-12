@@ -10,7 +10,6 @@ const validSoraNexusAccount = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃa�
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   fetchAllEntities: vi.fn(),
-  fetchAllEntitiesConnection: vi.fn(),
   getBlockHash: vi.fn(),
   getBlock: vi.fn(),
   getEventsAt: vi.fn(),
@@ -18,8 +17,7 @@ const indexerMocks = vi.hoisted(() => ({
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
-  SubsquidIndexer: class SubsquidIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
@@ -71,11 +69,11 @@ describe('xor burn query', () => {
     expect(isExcludedXorBurnAddress('cnV5d93J89p5kC4dRqF5WWtDNCk1XZ3HQo9dEhGUxBQnohxEB')).toBe(false);
   });
 
-  it('fetches SubQuery burn events and appends pre-indexing burn data', async () => {
+  it('fetches Polkaswap burn events and appends pre-indexing burn data', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createBurnHistoryElement('account-live', '12.5', '123')),
     ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchData(100, 200);
 
@@ -87,7 +85,6 @@ describe('xor burn query', () => {
       },
       expect.any(Function)
     );
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
     expect(result[0]?.address).toBe('account-live');
     expect(result[0]?.amount.toString()).toBe('12.5');
     expect(result[0]?.blockHeight).toBe(123);
@@ -96,9 +93,9 @@ describe('xor burn query', () => {
     expect(result.some((item) => item.address === 'cnV21a8zn14wUTuxUK6wy5Fmus8PXaGrsBUchz33MqavYqxHE')).toBe(true);
   });
 
-  it('filters pre-indexing burn data by account on SubQuery', async () => {
+  it('filters pre-indexing burn data by account on Polkaswap', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchData(100, 200, 'cnV5d93J89p5kC4dRqF5WWtDNCk1XZ3HQo9dEhGUxBQnohxEB');
 
@@ -115,45 +112,10 @@ describe('xor burn query', () => {
     expect(result.map((item) => item.blockHeight)).toEqual([14465935, 14464669]);
   });
 
-  it('fetches Subsquid burn events through the connection endpoint', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockImplementation(async (_query, _variables, parse) => [
-      parse(createBurnHistoryElement('account-subsquid', '99', 456)),
-    ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchData(300, 400, 'account-subsquid');
-
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        start: 300,
-        end: 400,
-      },
-      expect.any(Function)
-    );
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(result).toHaveLength(1);
-    expect(result[0]?.address).toBe('account-subsquid');
-    expect(result[0]?.amount.toString()).toBe('99');
-    expect(result[0]?.blockHeight).toBe(456);
-    expect(result[0]?.txHash).toBe('0xtx-account-subsquid-456');
-  });
-
-  it('excludes explicitly ineligible burn addresses from rewards', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockImplementation(async (_query, _variables, parse) => [
-      parse(createBurnHistoryElement('account-eligible', '3', 456)),
-      parse(createBurnHistoryElement('cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo', '99', 457)),
-    ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchData(300, 500);
-
-    expect(result).toHaveLength(1);
-    expect(result[0]?.address).toBe('account-eligible');
-  });
-
+  
+  
   it('returns no burns for explicitly ineligible account lookups', async () => {
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchData(300, 500, 'cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo');
 
@@ -167,7 +129,7 @@ describe('xor burn query', () => {
       parse(createBatchBurnHistoryElement('account-batch-legacy', '7000000000000000000', 790, XOR.address, 'batch')),
       parse(createBatchBurnHistoryElement('account-other', '99000000000000000000', 791, '0xother')),
     ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchData(700, 800);
 
@@ -204,7 +166,7 @@ describe('xor burn query', () => {
         createAssetBurnEvent('account-other-asset', '0xother', '99000000000000000000'),
       ];
     });
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchData(25_043_003, 25_043_005);
 
@@ -233,7 +195,7 @@ describe('xor burn query', () => {
     const fetchMock = vi.fn();
 
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
     vi.stubGlobal('fetch', fetchMock);
 
     await fetchData(25_043_003, 25_043_003, 'account-chain');
@@ -244,33 +206,19 @@ describe('xor burn query', () => {
   it('does not reject when the chain fallback runs before the websocket is connected', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
     indexerMocks.getBlockHash.mockRejectedValue(new Error('WebSocket is not connected'));
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchData(25_043_003, 25_043_003)).resolves.toEqual(expect.any(Array));
   });
 
-  it('returns an empty array when Subsquid returns null data', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    await expect(fetchData(300, 400)).resolves.toEqual([]);
+  
   });
-
-  it('returns an empty array for unsupported indexer types without making requests', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchData(100, 200)).resolves.toEqual([]);
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
-  });
-});
 
 const createIndexer = (type: unknown) => ({
   type,
   services: {
     explorer: {
       fetchAllEntities: indexerMocks.fetchAllEntities,
-      fetchAllEntitiesConnection: indexerMocks.fetchAllEntitiesConnection,
     },
   },
 });

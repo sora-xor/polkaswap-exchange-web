@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, nextTick, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const appClasses = ref(['app-main', 'app-main--swap']);
@@ -33,37 +33,56 @@ vi.mock('@/app/shell/context', () => ({
   }),
 }));
 
+vi.mock('@/shared/ui/async', () => {
+  const { defineComponent } = require('vue') as typeof import('vue');
+
+  return {
+    createAsyncComponent: (loader: () => Promise<unknown>) => {
+      const source = String(loader);
+      if (source.includes('AppHeader')) {
+        return defineComponent({
+          name: 'AppHeaderStub',
+          props: ['loading'],
+          emits: ['toggle-menu'],
+          template: '<button class="app-header-stub" @click="$emit(\'toggle-menu\')" />',
+        });
+      }
+      if (source.includes('AppDisclaimer')) {
+        return defineComponent({ name: 'AppDisclaimerStub', template: '<div class="app-disclaimer-stub" />' });
+      }
+      if (source.includes('AppFooter')) {
+        return defineComponent({ name: 'AppFooterStub', template: '<div class="app-footer-stub" />' });
+      }
+      if (source.includes('AppLogoButton')) {
+        return defineComponent({
+          name: 'AppLogoButtonStub',
+          props: ['theme'],
+          emits: ['click'],
+          template: '<button class="app-logo-button-stub" @click="$emit(\'click\')" />',
+        });
+      }
+      if (source.includes('AppMenu')) {
+        return defineComponent({
+          name: 'AppMenuStub',
+          props: ['visible', 'onSelect'],
+          emits: ['open-product-dialog', 'click'],
+          template: '<div class="app-menu-stub"><slot name="head" /></div>',
+        });
+      }
+      return defineComponent({ name: 'AsyncComponentStub', template: '<div class="async-component-stub" />' });
+    },
+  };
+});
+
 vi.mock('@/components/App/Footer/AppFooter.vue', () => ({
   default: defineComponent({ name: 'AppFooterStub', template: '<div class="app-footer-stub" />' }),
 }));
-vi.mock('@/components/App/Header/AppHeader.vue', () => ({
-  default: defineComponent({
-    name: 'AppHeaderStub',
-    props: ['loading'],
-    emits: ['toggle-menu'],
-    template: '<button class="app-header-stub" @click="$emit(\'toggle-menu\')" />',
-  }),
-}));
 vi.mock('@/components/App/Header/AppDisclaimer.vue', () => ({
   default: defineComponent({ name: 'AppDisclaimerStub', template: '<div class="app-disclaimer-stub" />' }),
+  __isTeleport: false,
+  __isKeepAlive: false,
+  name: 'AppDisclaimerStub',
 }));
-vi.mock('@/components/App/Header/AppLogoButton.vue', () => ({
-  default: defineComponent({
-    name: 'AppLogoButtonStub',
-    props: ['theme'],
-    emits: ['click'],
-    template: '<button class="app-logo-button-stub" @click="$emit(\'click\')" />',
-  }),
-}));
-vi.mock('@/components/App/Menu/AppMenu.vue', () => ({
-  default: defineComponent({
-    name: 'AppMenuStub',
-    props: ['visible', 'onSelect'],
-    emits: ['open-product-dialog', 'click'],
-    template: '<div class="app-menu-stub"><slot name="head" /></div>',
-  }),
-}));
-
 let AppShellLayout: (typeof import('@/app/shell/AppShellLayout.vue'))['default'];
 
 beforeEach(async () => {
@@ -84,7 +103,7 @@ beforeEach(async () => {
 });
 
 describe('AppShellLayout', () => {
-  it('renders shell state from the app shell context', () => {
+  it('renders shell state from the app shell context', async () => {
     const wrapper = mount(AppShellLayout, {
       global: {
         stubs: {
@@ -100,6 +119,9 @@ describe('AppShellLayout', () => {
         },
       },
     });
+
+    await vi.dynamicImportSettled();
+    await nextTick();
 
     expect(wrapper.findComponent({ name: 'AppHeaderStub' }).props('loading')).toBe(true);
     expect(wrapper.findComponent({ name: 'AppMenuStub' }).props('visible')).toBe(true);

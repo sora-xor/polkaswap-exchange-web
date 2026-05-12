@@ -55,8 +55,7 @@ vi.mock('@/plugins/pinia', () => ({
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/core', () => ({
-  SUBQUERY_TYPES: {},
-  SUBSQUID_TYPES: {},
+  POLKASWAP_TYPES: {},
   AlertsApiService: {},
   INDEXER_TYPES: {},
   WC: {},
@@ -88,6 +87,31 @@ vi.mock('@/lib/soraneo-wallet/src/core', () => ({
     },
   },
   WALLET_TYPES: {},
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: apiMock,
+  connection: connectionMock,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/consts', async () => {
+  return await vi.importActual<typeof import('@/lib/soraneo-wallet/src/consts')>('@/lib/soraneo-wallet/src/consts');
+});
+
+vi.mock('@/lib/soraneo-wallet/src/services/wallet', async () => ({
+  ...(await vi.importActual<typeof import('@/lib/soraneo-wallet/src/services/wallet')>(
+    '@/lib/soraneo-wallet/src/services/wallet'
+  )),
+  initializeWallets: initializeWalletsMock,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/services/walletconnect', () => ({
+  addWcSubWalletLocally: addWcSubWalletLocallyMock,
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/util', async () => ({
+  ...(await vi.importActual<typeof import('@/lib/soraneo-wallet/src/util')>('@/lib/soraneo-wallet/src/util')),
+  delay: delayMock,
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/plugins', () => ({

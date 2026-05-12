@@ -1,11 +1,6 @@
 import { FPNumber } from '@sora-substrate/math';
 import { VAL, PSWAP } from '@sora-substrate/sdk/build/assets/consts';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
-import {
-  getCurrentIndexer,
-  type SubqueryIndexer,
-  type SubsquidIndexer,
-} from '@/lib/soraneo-wallet/src/services/indexer';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import { useSettingsStore } from '@/stores/settings';
@@ -29,7 +24,7 @@ export type ChartData = {
   burn: number;
 };
 
-const SubqueryAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
+const PolkaswapAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
   query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
     data: assetSnapshots(
       after: $after
@@ -42,29 +37,6 @@ const SubqueryAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity
           { timestamp: { greaterThanOrEqualTo: $to } }
         ]
       }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          timestamp
-          supply
-          mint
-          burn
-        }
-      }
-    }
-  }
-`;
-
-const SubsquidAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
-  query AssetSupplyQuery($after: String, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
-    data: assetSnapshotsConnection(
-      after: $after
-      orderBy: timestamp_DESC
-      where: { AND: [{ type_eq: $type }, { asset: { id_eq: $id } }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
     ) {
       pageInfo {
         hasNextPage
@@ -111,28 +83,12 @@ export async function fetchAssetSupplyData(
   to: number,
   type: SnapshotTypes
 ): Promise<ChartData[]> {
-  const indexer = getCurrentIndexer();
-  let data: Nullable<ChartData[]>;
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      data = await subqueryIndexer.services.explorer.fetchAllEntities(
-        SubqueryAssetSupplyQuery,
-        { id, from, to, type },
-        parse
-      );
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      data = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-        SubsquidAssetSupplyQuery,
-        { id, from, to, type },
-        parse
-      );
-      break;
-    }
-  }
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const data = await polkaswapIndexer.services.explorer.fetchAllEntities(
+    PolkaswapAssetSupplyQuery,
+    { id, from, to, type },
+    parse
+  );
 
   const chartData = data ?? [];
 

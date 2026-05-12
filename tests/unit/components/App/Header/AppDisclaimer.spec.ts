@@ -66,7 +66,7 @@ vi.mock('vue-router', () => ({
   }),
 }));
 
-vi.mock('@/utils', () => ({
+vi.mock('@/utils/timing', () => ({
   delay: vi.fn(() => Promise.resolve()),
 }));
 

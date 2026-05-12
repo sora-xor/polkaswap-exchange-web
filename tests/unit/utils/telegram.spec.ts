@@ -9,6 +9,7 @@ const storageStub = () => ({
   set: vi.fn(),
   remove: vi.fn(),
 });
+const TELEGRAM_WEB_APP_SCRIPT_SRC = 'https://telegram.org/js/telegram-web-app.js';
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');
@@ -91,7 +92,11 @@ describe('tmaSdkService', () => {
     (window as any).Telegram = originalTelegram;
     (window as any).DeviceMotionEvent = originalDeviceMotionEvent;
     (window as any).DeviceOrientationEvent = originalDeviceOrientationEvent;
+    document.head.querySelectorAll(`script[src="${TELEGRAM_WEB_APP_SCRIPT_SRC}"]`).forEach((script) => {
+      script.remove();
+    });
     document.body.innerHTML = '';
+    window.history.replaceState({}, '', '/');
     vi.useRealTimers();
     vi.restoreAllMocks();
   });
@@ -100,6 +105,39 @@ describe('tmaSdkService', () => {
     const { tmaSdkService } = await import('@/utils/telegram');
 
     expect(() => tmaSdkService.useHaptic('light')).not.toThrow();
+  });
+
+  test('init lazy-loads Telegram SDK for Telegram launch URLs', async () => {
+    window.history.replaceState({}, '', '/?tgWebAppData=telegram-init');
+
+    const { tmaSdkService } = await import('@/utils/telegram');
+
+    const pendingInit = tmaSdkService.init('https://t.me/polkaswap_bot');
+    await Promise.resolve();
+
+    const script = document.head.querySelector<HTMLScriptElement>(`script[src="${TELEGRAM_WEB_APP_SCRIPT_SRC}"]`);
+    expect(script).toBeTruthy();
+    expect(script?.async).toBe(true);
+
+    (window as any).Telegram = {
+      WebApp: {
+        initData: 'telegram-init',
+        initDataUnsafe: {
+          start_param: 'not-a-valid-address',
+        },
+        expand: vi.fn(),
+        disableVerticalSwipes: vi.fn(),
+        setHeaderColor: vi.fn(),
+        setBackgroundColor: vi.fn(),
+      },
+    };
+    script?.dispatchEvent(new Event('load'));
+
+    await pendingInit;
+
+    expect(mockStore.settings.enableTMA).toHaveBeenCalledTimes(1);
+    expect(mockStore.wallet.setIsDesktop).toHaveBeenCalledWith(true);
+    expect(mockStore.settings.setTelegramBotUrl).toHaveBeenCalledWith('https://t.me/polkaswap_bot');
   });
 
   test('init uses Pinia facades when Telegram mini app is available', async () => {

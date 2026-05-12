@@ -42,6 +42,7 @@ import {
 import evmBridge from '@/utils/bridge/evm';
 import ethersUtil from '@/utils/ethers-util';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { updateEvmBridgeHistory } from '@/utils/bridge/evm/classes/history';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -345,6 +346,11 @@ const getAccountBridgeBalance = async (
   subConnector: SubNetworksConnector
 ): Promise<CodecString> => {
   if (!(asset?.address && accountAddress)) return ZeroStringValue;
+  if (!isSora && !isSub) {
+    const registeredAssets = resolveRegisteredAssets(useAssetsStore());
+
+    if (!asset.externalAddress || !(asset.address in registeredAssets)) return ZeroStringValue;
+  }
 
   try {
     return isSora
@@ -352,6 +358,42 @@ const getAccountBridgeBalance = async (
       : await getExternalBalance(accountAddress, asset, isSub, subConnector);
   } catch {
     return ZeroStringValue;
+  }
+};
+
+/**
+ * Resolves a transaction asset only when it is still present in the live bridge registry.
+ */
+const getRegisteredTransactionAsset = (assetAddress: string): RegisteredAccountAsset => {
+  const assetsStore = useAssetsStore();
+  const registeredAssets = resolveRegisteredAssets(assetsStore);
+  const asset = assetsStore.assetDataByAddress(assetAddress);
+
+  if (!asset?.externalAddress || !(assetAddress in registeredAssets)) {
+    throw new Error(`Asset not registered: ${assetAddress}`);
+  }
+
+  return asset;
+};
+
+const isPositiveFiniteAmount = (amount?: Nullable<string>): boolean => {
+  const normalized = amount?.trim();
+
+  if (!normalized) return false;
+
+  const value = new FPNumber(normalized);
+
+  return value.isFinity() && value.isGtZero();
+};
+
+/**
+ * Prevents zero, negative, or non-finite transaction amounts from reaching wallet signing helpers.
+ */
+const assertPositiveTransactionAmount = (amount: string): void => {
+  const value = new FPNumber(amount);
+
+  if (!value.isFinity() || !value.isGtZero()) {
+    throw new Error('TX amount must be greater than zero!');
   }
 };
 
@@ -728,8 +770,8 @@ const useBridgeStoreBase = defineStore('bridge', {
       const assetsStore = useAssetsStore();
       const walletStore = useWalletStore();
       const token =
-        walletStore.assetsDataTable?.[state.form.assetAddress] ??
         assetsStore.assetDataByAddress?.(state.form.assetAddress) ??
+        walletStore.assetsDataTable?.[state.form.assetAddress] ??
         null;
 
       if (!token) return null;
@@ -769,8 +811,11 @@ const useBridgeStoreBase = defineStore('bridge', {
      * Determines whether the user can press submit based on the amount and loading flags.
      */
     canSubmit(state): boolean {
-      const hasAmount = Boolean(state.form.amountSend?.trim());
-      return hasAmount && !state.flags.balancesFetching && !state.flags.feesAndLockedFundsFetching;
+      return (
+        isPositiveFiniteAmount(state.form.amountSend) &&
+        !state.flags.balancesFetching &&
+        !state.flags.feesAndLockedFundsFetching
+      );
     },
     historyPage(state): number {
       return state.history.page;
@@ -819,8 +864,14 @@ const useBridgeStoreBase = defineStore('bridge', {
       if (!symbol) return null;
 
       const registered = walletAssets.find((asset) => asset.symbol === symbol && asset.address in registeredAssets);
+      if (registered) return assetsStore.assetDataByAddress(registered.address);
 
-      return registered ? assetsStore.assetDataByAddress(registered.address) : null;
+      for (const address of Object.keys(registeredAssets)) {
+        const asset = assetsStore.assetDataByAddress(address);
+        if (asset?.symbol === symbol) return asset;
+      }
+
+      return null;
     },
     sender(state): string {
       const walletStore = useWalletStore();
@@ -1104,7 +1155,8 @@ const useBridgeStoreBase = defineStore('bridge', {
           const updateHistory = updateSubBridgeHistory(context as never);
           await updateHistory(clearHistory, () => this.updateInternalHistory());
         } else if (web3Store.networkType === BridgeNetworkType.Evm) {
-          console.info('Evm history not implemented');
+          const updateHistory = updateEvmBridgeHistory(context as never);
+          await updateHistory(clearHistory, () => this.updateInternalHistory());
         }
       } finally {
         syncHistoryLoadingCompat(this, networkHistoryId, false);
@@ -1116,6 +1168,7 @@ const useBridgeStoreBase = defineStore('bridge', {
       const asset = this.asset;
       const nativeToken = this.nativeToken;
       const isSubBridge = this.isSubBridge;
+      const isRegisteredAsset = this.isRegisteredAsset;
       const isSoraToEvm = this.form.isSoraToEvm;
       const subConnector = this.connector;
       const spender = isSubBridge ? sender : isSoraToEvm ? recipient : sender;
@@ -1157,7 +1210,7 @@ const useBridgeStoreBase = defineStore('bridge', {
         let recipientBalance = ZeroStringValue;
         const tokenAddress = asset?.externalAddress;
 
-        if (tokenAddress && !ethersUtil.isNativeEvmTokenAddress(tokenAddress)) {
+        if (tokenAddress && isRegisteredAsset && !ethersUtil.isNativeEvmTokenAddress(tokenAddress)) {
           try {
             const balances = await ethersUtil.getErc20BalancesBatch([
               { token: tokenAddress, account: sender },
@@ -1189,8 +1242,12 @@ const useBridgeStoreBase = defineStore('bridge', {
     async updateExternalMinBalance(): Promise<void> {
       let minBalance = ZeroStringValue;
 
-      if (this.isSubBridge && this.asset && !this.form.isSoraToEvm) {
-        minBalance = await this.connector.network.getAssetMinDeposit(this.asset);
+      try {
+        if (this.isSubBridge && this.asset && !this.form.isSoraToEvm) {
+          minBalance = await this.connector.network.getAssetMinDeposit(this.asset);
+        }
+      } catch {
+        minBalance = ZeroStringValue;
       }
 
       syncExternalMinBalanceCompat(this, minBalance);
@@ -1199,38 +1256,42 @@ const useBridgeStoreBase = defineStore('bridge', {
       const asset = this.asset;
       const web3Store = useWeb3Store();
 
-      if (web3Store.networkType === BridgeNetworkType.Eth) {
-        const { address, decimals, externalAddress, externalDecimals } = asset ?? {};
-        const bridgeContractAddress = web3Store.contractAddress(KnownEthBridgeAsset.Other);
-        const hasNetworkData = !!web3Store.networkSelected && web3Store.isValidNetwork && !!bridgeContractAddress;
-        const hasAssetData = !!address && !!externalAddress && this.isRegisteredAsset;
+      try {
+        if (web3Store.networkType === BridgeNetworkType.Eth) {
+          const { address, decimals, externalAddress, externalDecimals } = asset ?? {};
+          const bridgeContractAddress = web3Store.contractAddress(KnownEthBridgeAsset.Other);
+          const hasNetworkData = !!web3Store.networkSelected && web3Store.isValidNetwork && !!bridgeContractAddress;
+          const hasAssetData = !!address && !!externalAddress && this.isRegisteredAsset;
 
-        if (hasNetworkData && hasAssetData && this.isSidechainAsset) {
-          const [lockedValue, bridgeValue] = await Promise.all([
-            ethBridgeApi.getLockedAssets(web3Store.networkSelected as number, address),
-            ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress),
-          ]);
-          const balance = FPNumber.min(
-            FPNumber.fromCodecValue(lockedValue, decimals),
-            FPNumber.fromCodecValue(bridgeValue, externalDecimals)
-          );
+          if (hasNetworkData && hasAssetData && this.isSidechainAsset) {
+            const [lockedValue, bridgeValue] = await Promise.all([
+              ethBridgeApi.getLockedAssets(web3Store.networkSelected as number, address),
+              ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress),
+            ]);
+            const balance = FPNumber.min(
+              FPNumber.fromCodecValue(lockedValue, decimals),
+              FPNumber.fromCodecValue(bridgeValue, externalDecimals)
+            );
 
-          syncAssetLockedBalanceCompat(this, balance);
+            syncAssetLockedBalanceCompat(this, balance);
+            return;
+          }
+
+          syncAssetLockedBalanceCompat(this, null);
           return;
         }
 
-        syncAssetLockedBalanceCompat(this, null);
-        return;
-      }
+        if (asset?.address && web3Store.networkSelected) {
+          const bridgeApi = resolveBridgeApi();
+          const value = await bridgeApi.getLockedAssets?.(web3Store.networkSelected as never, asset.address);
 
-      if (asset?.address && web3Store.networkSelected) {
-        const bridgeApi = resolveBridgeApi();
-        const value = await bridgeApi.getLockedAssets?.(web3Store.networkSelected as never, asset.address);
-
-        if (value !== undefined) {
-          syncAssetLockedBalanceCompat(this, FPNumber.fromCodecValue(value, asset.decimals));
-          return;
+          if (value !== undefined) {
+            syncAssetLockedBalanceCompat(this, FPNumber.fromCodecValue(value, asset.decimals));
+            return;
+          }
         }
+      } catch {
+        // Clear stale financial state when provider data cannot be trusted.
       }
 
       syncAssetLockedBalanceCompat(this, null);
@@ -1239,38 +1300,43 @@ const useBridgeStoreBase = defineStore('bridge', {
       const asset = this.asset;
       let fee = ZeroStringValue;
 
-      if (this.isSubBridge) {
-        if (asset && this.isRegisteredAsset && this.sender && this.recipient) {
-          fee = await this.connector.network.getNetworkFee(asset, this.sender, this.recipient);
-        }
-      } else {
-        const web3Store = useWeb3Store();
-        const walletStore = useWalletStore();
+      try {
+        if (this.isSubBridge) {
+          if (asset && this.isRegisteredAsset && this.sender && this.recipient) {
+            fee = await this.connector.network.getNetworkFee(asset, this.sender, this.recipient);
+          }
+        } else {
+          const web3Store = useWeb3Store();
+          const walletStore = useWalletStore();
 
-        if (
-          asset &&
-          this.isRegisteredAsset &&
-          web3Store.isValidNetwork &&
-          web3Store.evmAddress &&
-          walletStore.address
-        ) {
-          const registeredAssets = resolveRegisteredAssets(useAssetsStore());
-          const bridgeRegisteredAsset = registeredAssets[asset.address];
-          const decimals = this.form.isSoraToEvm ? asset.decimals : asset.externalDecimals;
-          const maxAmount = FPNumber.fromCodecValue(this.balances.assetSenderBalance ?? 0, decimals);
-          const amount = new FPNumber(this.form.amountSend ?? 0, decimals);
-          const value = maxAmount.min(amount).toString();
+          if (
+            asset &&
+            this.isRegisteredAsset &&
+            web3Store.isValidNetwork &&
+            web3Store.evmAddress &&
+            walletStore.address &&
+            isPositiveFiniteAmount(this.form.amountSend)
+          ) {
+            const registeredAssets = resolveRegisteredAssets(useAssetsStore());
+            const bridgeRegisteredAsset = registeredAssets[asset.address];
+            const decimals = this.form.isSoraToEvm ? asset.decimals : asset.externalDecimals;
+            const maxAmount = FPNumber.fromCodecValue(this.balances.assetSenderBalance ?? 0, decimals);
+            const amount = new FPNumber(this.form.amountSend ?? 0, decimals);
+            const value = maxAmount.min(amount).toString();
 
-          fee = await getEthNetworkFee(
-            asset,
-            bridgeRegisteredAsset.kind,
-            web3Store.contractAddress(KnownEthBridgeAsset.Other),
-            value,
-            this.form.isSoraToEvm,
-            walletStore.address,
-            web3Store.evmAddress
-          );
+            fee = await getEthNetworkFee(
+              asset,
+              bridgeRegisteredAsset.kind,
+              web3Store.contractAddress(KnownEthBridgeAsset.Other),
+              value,
+              this.form.isSoraToEvm,
+              walletStore.address,
+              web3Store.evmAddress
+            );
+          }
         }
+      } catch {
+        fee = ZeroStringValue;
       }
 
       syncExternalNetworkFeeCompat(this, fee);
@@ -1294,13 +1360,17 @@ const useBridgeStoreBase = defineStore('bridge', {
       const walletStore = useWalletStore();
       let fee = ZeroStringValue;
 
-      if (web3Store.networkSelected && asset && this.form.isSoraToEvm) {
-        if (web3Store.networkType === BridgeNetworkType.Eth) {
-          fee = walletStore.networkFees?.[this.operation] ?? ZeroStringValue;
-        } else {
-          fee =
-            (await resolveBridgeApi().getNetworkFee?.(asset, web3Store.networkSelected as never)) ?? ZeroStringValue;
+      try {
+        if (web3Store.networkSelected && asset && this.form.isSoraToEvm) {
+          if (web3Store.networkType === BridgeNetworkType.Eth) {
+            fee = walletStore.networkFees?.[this.operation] ?? ZeroStringValue;
+          } else {
+            fee =
+              (await resolveBridgeApi().getNetworkFee?.(asset, web3Store.networkSelected as never)) ?? ZeroStringValue;
+          }
         }
+      } catch {
+        fee = ZeroStringValue;
       }
 
       syncSoraNetworkFeeCompat(this, fee);
@@ -1375,9 +1445,16 @@ const useBridgeStoreBase = defineStore('bridge', {
       if (!tx.amount) throw new Error('TX amount cannot be empty!');
       if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
       if (!tx.to) throw new Error('TX to cannot be empty!');
+      assertPositiveTransactionAmount(tx.amount);
 
-      const asset = useAssetsStore().assetDataByAddress(tx.assetAddress);
-      if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
+      const asset = getRegisteredTransactionAsset(tx.assetAddress);
+
+      if (!web3Store.isValidNetwork) {
+        throw new Error('Change evm network in wallet');
+      }
+
+      const amount = isDenominatedAsset(asset.address) ? tx.amount2 || tx.amount : tx.amount;
+      assertPositiveTransactionAmount(amount);
 
       const request = await waitForApprovedRequest(tx);
 
@@ -1385,11 +1462,6 @@ const useBridgeStoreBase = defineStore('bridge', {
         throw new Error(`Change account in ethereum wallet to ${request.to}`);
       }
 
-      if (!web3Store.isValidNetwork) {
-        throw new Error('Change evm network in wallet');
-      }
-
-      const amount = isDenominatedAsset(asset.address) ? tx.amount2 || tx.amount : tx.amount;
       const { contract, method, args } = await getOutgoingEvmTransactionData({
         asset,
         value: amount,
@@ -1410,14 +1482,15 @@ const useBridgeStoreBase = defineStore('bridge', {
       if (!tx.amount) throw new Error('TX amount cannot be empty!');
       if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
       if (!tx.to) throw new Error('TX to cannot be empty!');
+      assertPositiveTransactionAmount(tx.amount);
 
-      const asset = useAssetsStore().assetDataByAddress(tx.assetAddress);
-      if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
+      const asset = getRegisteredTransactionAsset(tx.assetAddress);
 
       const evmAccount = web3Store.evmAddress;
       const isEvmAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
 
       if (!isEvmAccountConnected) throw new Error('Connect account in ethereum wallet');
+      if (!web3Store.isValidNetwork) throw new Error('Change evm network in wallet');
 
       const contractAddress = web3Store.contractAddress(KnownEthBridgeAsset.Other) as string;
       const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
@@ -1425,15 +1498,14 @@ const useBridgeStoreBase = defineStore('bridge', {
       if (!!allowance && FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(tx.amount))) {
         syncWaitingForApproveCompat(this, tx.id, true);
 
-        const tokenInstance = await ethersUtil.getTokenContract(asset.externalAddress);
-        const methodArgs = [contractAddress, MaxUint256];
-
         let approvalTx: unknown;
         try {
           if (!web3Store.isValidNetwork) {
             throw new Error('Change evm network in wallet');
           }
 
+          const tokenInstance = await ethersUtil.getTokenContract(asset.externalAddress);
+          const methodArgs = [contractAddress, MaxUint256];
           approvalTx = await tokenInstance.approve(...methodArgs);
         } finally {
           syncWaitingForApproveCompat(this, tx.id, false);
@@ -1448,10 +1520,6 @@ const useBridgeStoreBase = defineStore('bridge', {
         recipient: walletStore.address,
         getContractAddress: web3Store.contractAddress,
       });
-
-      if (!web3Store.isValidNetwork) {
-        throw new Error('Change evm network in wallet');
-      }
 
       return await contract[method](...args);
     },

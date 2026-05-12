@@ -1,4 +1,4 @@
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useTransaction } from '@/composables/useTransaction';

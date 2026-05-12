@@ -1,41 +1,30 @@
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref, shallowRef, watch, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import axiosInstance, { getFullBaseUrl, updateBaseUrl } from '@/api';
 import { appRouterLoading } from '@/app/navigation/loading';
-import { useNodeNotifications } from '@/composables/useNodeNotifications';
-import { useTransaction } from '@/composables/useTransaction';
+import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import {
-  IndexerType,
-  Language,
-  LOCAL_STORAGE_LIMIT_PERCENTAGE,
-  PageNames,
-  SoraNetwork,
-  TranslationConsts,
-  WalletPermissions,
-} from '@/consts';
+import { TranslationConsts } from '@/consts/app';
 import { Breakpoint, BreakpointClass } from '@/consts/layout';
+import { Language } from '@/consts/language';
+import { PageNames } from '@/consts/navigation';
+import { LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts/storage';
 import { Theme } from '@/consts/theme';
+import { WalletPermissions } from '@/consts/wallet';
 import { getLocale } from '@/lang';
 import router, { goTo as navigateTo } from '@/app/router';
-import { getDataPlaneClient, normalizeRealtimeProfile } from '@/services/realtime';
-import { api, connection } from '@/lib/soraneo-wallet/src/api';
-import AlertsApiService from '@/lib/soraneo-wallet/src/services/alerts';
-import { initWallet, waitForCore } from '@/lib/soraneo-wallet/src/bootstrap';
+import { IndexerType, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { useReferralsStore } from '@/stores/referrals';
 import { useSettingsStore } from '@/stores/settings';
 import { useWeb3Store } from '@/stores/web3';
 import { useWalletStore } from '@/stores/wallet';
 import { bootstrapRuntimeServices } from '@/utils/bootstrapRuntimeServices';
-import { NodesConnection } from '@/utils/connection';
 import { toDwebLink } from '@/utils/ipfs';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
-import { detectSystemTheme, removeThemeListeners } from '@/utils/switchTheme';
-import { tmaSdkService } from '@/utils/telegram';
+import { shouldLoadTelegramMiniApp } from '@/utils/telegramLaunch';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
-import { getMobileCssClasses } from '@/utils';
+import { getMobileCssClasses } from '@/utils/device';
 
 import { resolveAppMainRouteClass } from './policies/resolveAppMainRouteClass';
 import { resolveDialogVisibilityOnRouteChange } from './policies/resolveDialogVisibilityOnRouteChange';
@@ -67,21 +56,145 @@ type RuntimeEnvConfig = Partial<{
   CHAIN_GENESIS_HASH: string;
 }>;
 
+type ApiModule = typeof import('@/api');
+type AlertsServiceModule = typeof import('@/lib/soraneo-wallet/src/services/alerts');
+type ConnectionModule = typeof import('@/utils/connection');
+type NodeNotificationsModule = typeof import('@/composables/useNodeNotifications');
+type RealtimeModule = typeof import('@/services/realtime');
+type SwitchThemeModule = typeof import('@/utils/switchTheme');
+type TelegramModule = typeof import('@/utils/telegram');
+type TransactionModule = typeof import('@/composables/useTransaction');
+type TransactionComposable = ReturnType<TransactionModule['useTransaction']>;
+type WalletApiModule = typeof import('@/lib/soraneo-wallet/src/api');
+type WalletBootstrapModule = typeof import('@/lib/soraneo-wallet/src/bootstrap');
+type DataPlaneClient = ReturnType<RealtimeModule['getDataPlaneClient']>;
+
+let apiModulePromise: Promise<ApiModule> | null = null;
+let alertsServiceModulePromise: Promise<AlertsServiceModule> | null = null;
+let connectionModulePromise: Promise<ConnectionModule> | null = null;
+let nodeNotificationsModulePromise: Promise<NodeNotificationsModule> | null = null;
+let realtimeModulePromise: Promise<RealtimeModule> | null = null;
+let switchThemeModulePromise: Promise<SwitchThemeModule> | null = null;
+let telegramModulePromise: Promise<TelegramModule> | null = null;
+let transactionModulePromise: Promise<TransactionModule> | null = null;
+let walletApiModulePromise: Promise<WalletApiModule> | null = null;
+let walletBootstrapModulePromise: Promise<WalletBootstrapModule> | null = null;
+
+const loadApiModule = (): Promise<ApiModule> => {
+  apiModulePromise ??= import('@/api');
+  return apiModulePromise;
+};
+
+/**
+ * Loads browser notification alerts outside the initial shell bundle.
+ */
+const loadAlertsServiceModule = (): Promise<AlertsServiceModule> => {
+  alertsServiceModulePromise ??= import('@/lib/soraneo-wallet/src/services/alerts');
+  return alertsServiceModulePromise;
+};
+
+/**
+ * Synchronizes the alert service route once the alert module is requested.
+ */
+const syncAlertsBaseRoute = async (): Promise<void> => {
+  const [{ default: AlertsApiService }, { getFullBaseUrl }] = await Promise.all([
+    loadAlertsServiceModule(),
+    loadApiModule(),
+  ]);
+  AlertsApiService.baseRoute = getFullBaseUrl(router);
+};
+
+const loadConnectionModule = (): Promise<ConnectionModule> => {
+  connectionModulePromise ??= import('@/utils/connection');
+  return connectionModulePromise;
+};
+
+const loadNodeNotificationsModule = (): Promise<NodeNotificationsModule> => {
+  nodeNotificationsModulePromise ??= import('@/composables/useNodeNotifications');
+  return nodeNotificationsModulePromise;
+};
+
+const loadRealtimeModule = (): Promise<RealtimeModule> => {
+  realtimeModulePromise ??= import('@/services/realtime');
+  return realtimeModulePromise;
+};
+
+const loadSwitchThemeModule = (): Promise<SwitchThemeModule> => {
+  switchThemeModulePromise ??= import('@/utils/switchTheme');
+  return switchThemeModulePromise;
+};
+
+const loadTelegramModule = (): Promise<TelegramModule> => {
+  telegramModulePromise ??= import('@/utils/telegram');
+  return telegramModulePromise;
+};
+
+const loadTransactionModule = (): Promise<TransactionModule> => {
+  transactionModulePromise ??= import('@/composables/useTransaction');
+  return transactionModulePromise;
+};
+
+const loadWalletApiModule = (): Promise<WalletApiModule> => {
+  walletApiModulePromise ??= import('@/lib/soraneo-wallet/src/api');
+  return walletApiModulePromise;
+};
+
+const loadWalletBootstrapModule = (): Promise<WalletBootstrapModule> => {
+  walletBootstrapModulePromise ??= import('@/lib/soraneo-wallet/src/bootstrap');
+  return walletBootstrapModulePromise;
+};
+
+const startSystemThemePreference = (isTma: boolean): void => {
+  void loadSwitchThemeModule()
+    .then(({ detectSystemTheme }) => detectSystemTheme(isTma))
+    .catch((error) => {
+      console.warn('[bootstrap] system theme detection skipped', error);
+    });
+};
+
+const stopSystemThemePreference = (isTma: boolean): void => {
+  if (!switchThemeModulePromise) return;
+  void loadSwitchThemeModule()
+    .then(({ removeThemeListeners }) => removeThemeListeners(isTma))
+    .catch((error) => {
+      console.warn('[bootstrap] system theme teardown skipped', error);
+    });
+};
+
+const initTelegramMiniApp = (botUrl?: string): void => {
+  if (!shouldLoadTelegramMiniApp()) return;
+  void loadTelegramModule()
+    .then(({ tmaSdkService }) => tmaSdkService.init(botUrl))
+    .catch((error) => {
+      console.warn('[TMA]: initialization skipped', error);
+    });
+};
+
+const destroyTelegramMiniApp = (): void => {
+  if (!telegramModulePromise && !shouldLoadTelegramMiniApp()) return;
+  void loadTelegramModule()
+    .then(({ tmaSdkService }) => {
+      tmaSdkService.destroy();
+    })
+    .catch((error) => {
+      console.warn('[TMA]: teardown skipped', error);
+    });
+};
+
 /**
  * Central app-shell state and effects. The shell layout and global overlays
  * consume this shared state through app-local composition instead of `App.vue`.
  */
 export function useAppShell() {
   const { t } = useTranslation();
-  const { loading, withLoading, withApi, handleChangeTransaction } = useTransaction();
-  const { handleNodeError, handleNodeDisconnect, handleNodeConnect } = useNodeNotifications();
+  const { loading, withLoading, withApi } = useLoading();
 
   const route = useRoute();
   const settingsStore = useSettingsStore();
   const referralsStore = useReferralsStore();
   const web3Store = useWeb3Store();
   const walletStore = useWalletStore();
-  const dataPlaneClient = getDataPlaneClient();
+  let dataPlaneClient: DataPlaneClient | null = null;
   const buildVariant = getBuildVariant();
   const NODE_CONNECTION_LOADING_TIMEOUT_MS = 12_000;
 
@@ -95,9 +208,10 @@ export function useAppShell() {
   const nodeConnectionGateExpired = ref(false);
 
   const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
-  const appConnection = computed(() => settingsStore.appConnection as NodesConnection);
+  const appConnection = computed(() => settingsStore.appConnection as InstanceType<ConnectionModule['NodesConnection']>);
   const browserNotifPopup = computed(() => Boolean(settingsStore.browserNotifPopupVisibility));
   const browserNotifPopupBlocked = computed(() => settingsStore.browserNotifPopupBlockedVisibility as boolean);
+  const showAlertSettingsPopup = computed(() => Boolean(settingsStore.alertSettingsVisibility));
   const isThemePreference = computed(() => Boolean(settingsStore.isThemePreference));
   const isTMA = computed(() => Boolean(settingsStore.isTMA));
   const isMSTAvailable = computed(() => Boolean(settingsStore.isMSTAvailable));
@@ -148,6 +262,7 @@ export function useAppShell() {
       settingsStore.setBrowserNotifsPopupBlocked(flag);
     },
   });
+  const showSoraAccountDialog = computed(() => Boolean(web3Store.soraAccountDialogVisibility));
   const mobileCssClasses = computed(() => getMobileCssClasses());
   const dsProviderClasses = computed(() => {
     const classes = mobileCssClasses.value;
@@ -177,7 +292,7 @@ export function useAppShell() {
     })
   );
 
-  const chainApi = api;
+  const chainApi = shallowRef<unknown>(null);
 
   const productPopupRefs: Record<string, Ref<boolean>> = {
     showSoraMobilePopup,
@@ -192,10 +307,23 @@ export function useAppShell() {
   let lastDataPlanePressureTs = 0;
   let realtimeVisibilitySyncEnabled = false;
   let realtimeVisibilityListenerBound = false;
+  let transactionComposable: TransactionComposable | null = null;
   const dataPlaneStatusByConnection = new Map<string, string>();
   const DATAPLANE_PRESSURE_PENDING_RPC_THRESHOLD = 40;
   const DATAPLANE_PRESSURE_OPEN_CONNECTIONS_THRESHOLD = 8;
   const DATAPLANE_PRESSURE_MIN_INTERVAL_MS = 60_000;
+
+  async function getTransactionComposable(): Promise<TransactionComposable> {
+    if (transactionComposable) return transactionComposable;
+    const { useTransaction } = await loadTransactionModule();
+    transactionComposable = useTransaction();
+    return transactionComposable;
+  }
+
+  function getOrCreateDataPlaneClient(module: RealtimeModule): DataPlaneClient {
+    dataPlaneClient ??= module.getDataPlaneClient();
+    return dataPlaneClient;
+  }
 
   function resolveWsConnectionCap(value: unknown): number {
     if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
@@ -388,6 +516,7 @@ export function useAppShell() {
   function syncRealtimeVisibility(): void {
     if (typeof document === 'undefined') return;
     if (!realtimeVisibilitySyncEnabled) return;
+    if (!dataPlaneClient) return;
     void dataPlaneClient.setVisibility(document.visibilityState === 'visible');
   }
 
@@ -406,12 +535,12 @@ export function useAppShell() {
     realtimeVisibilityListenerBound = false;
   }
 
-  function subscribeToDataPlaneTelemetry(): void {
+  function subscribeToDataPlaneTelemetry(client: DataPlaneClient): void {
     if (teardownDataPlaneMetricsTelemetry || teardownDataPlaneStatusTelemetry) {
       return;
     }
 
-    teardownDataPlaneMetricsTelemetry = dataPlaneClient.onMetrics(({ metrics }) => {
+    teardownDataPlaneMetricsTelemetry = client.onMetrics(({ metrics }) => {
       const dedupeKey = `${metrics.openConnections}:${metrics.activeSubscriptions}:${metrics.pendingRpcRequests}:${metrics.connectedClients}:${metrics.visible}:${metrics.profile}`;
       if (dedupeKey === lastDataPlaneMetricsKey) return;
 
@@ -442,7 +571,7 @@ export function useAppShell() {
       });
     });
 
-    teardownDataPlaneStatusTelemetry = dataPlaneClient.onStatus(({ connectionId, status, details }) => {
+    teardownDataPlaneStatusTelemetry = client.onStatus(({ connectionId, status, details }) => {
       const previous = dataPlaneStatusByConnection.get(connectionId);
       if (previous === status) return;
 
@@ -492,6 +621,12 @@ export function useAppShell() {
       appName: TranslationConsts.Polkaswap,
     };
 
+    const [{ initWallet, waitForCore }, { useNodeNotifications }] = await Promise.all([
+      loadWalletBootstrapModule(),
+      loadNodeNotificationsModule(),
+    ]);
+    const { handleNodeError, handleNodeDisconnect, handleNodeConnect } = useNodeNotifications();
+
     startNodeConnectionGate();
     void initWallet(walletOptions);
 
@@ -519,6 +654,7 @@ export function useAppShell() {
 
   async function loadRuntimeEnvConfig(): Promise<RuntimeEnvConfig> {
     const candidates = getEnvConfigCandidates();
+    const { default: axiosInstance } = await loadApiModule();
 
     for (const candidate of candidates) {
       const envConfigUrls = [resolveStaticAssetUrl(candidate)];
@@ -588,12 +724,15 @@ export function useAppShell() {
     realtimeVisibilitySyncEnabled = false;
     unsubscribeFromRealtimeVisibility();
     unsubscribeFromDataPlaneTelemetry();
-    removeThemeListeners(isTMA.value);
-    tmaSdkService.destroy();
+    stopSystemThemePreference(isTMA.value);
+    destroyTelegramMiniApp();
     await walletStore.resetInternalSubscriptions();
     await walletStore.resetNetworkSubscriptions();
     referralsStore.unsubscribeFromInvitedUsers();
-    await dataPlaneClient.stop();
+    if (dataPlaneClient) {
+      await dataPlaneClient.stop();
+    }
+    const { connection } = await loadWalletApiModule();
     await connection.close();
   }
 
@@ -624,7 +763,12 @@ export function useAppShell() {
   watch(
     firstReadyTransaction,
     (value, oldValue) => {
-      handleChangeTransaction(value, oldValue);
+      if (!value?.status) return;
+      void getTransactionComposable()
+        .then(({ handleChangeTransaction }) => handleChangeTransaction(value, oldValue))
+        .catch((error) => {
+          console.warn('[bootstrap] transaction notification skipped', error);
+        });
     },
     { deep: true }
   );
@@ -735,9 +879,9 @@ export function useAppShell() {
     isThemePreference,
     (preference) => {
       if (preference) {
-        detectSystemTheme(isTMA.value);
+        startSystemThemePreference(isTMA.value);
       } else {
-        removeThemeListeners(isTMA.value);
+        stopSystemThemePreference(isTMA.value);
       }
     },
     { immediate: true }
@@ -759,11 +903,32 @@ export function useAppShell() {
     }
   });
 
+  watch(
+    isSignTxDialogVisible,
+    (visible) => {
+      if (!visible || chainApi.value) return;
+      void loadWalletApiModule()
+        .then(({ api }) => {
+          chainApi.value = api;
+        })
+        .catch((error) => {
+          console.warn('[bootstrap] sign transaction API load skipped', error);
+        });
+    },
+    { immediate: true }
+  );
+
   onBeforeMount(async () => {
     setResponsiveClass();
     await settingsStore.setLanguage(getLocale() as Language);
-    updateBaseUrl(router);
-    AlertsApiService.baseRoute = getFullBaseUrl(router);
+    void loadApiModule()
+      .then(({ updateBaseUrl }) => updateBaseUrl(router))
+      .catch((error) => {
+        console.warn('[bootstrap] API base route sync skipped', error);
+      });
+    void syncAlertsBaseRoute().catch((error) => {
+      console.warn('[bootstrap] alert service route sync skipped', error);
+    });
     let hasIndexerEndpoint = false;
 
     await withLoading(async () => {
@@ -775,7 +940,7 @@ export function useAppShell() {
         console.warn('[bootstrap] NETWORK_TYPE is not set. Falling back to default network:', networkType);
       }
 
-      tmaSdkService.init(data?.TG_BOT_URL);
+      initTelegramMiniApp(data?.TG_BOT_URL);
 
       try {
         await walletStore.setApiKeys(data?.API_KEYS);
@@ -790,6 +955,7 @@ export function useAppShell() {
       settingsStore.setFeatureFlags((data?.FEATURE_FLAGS ?? {}) as FeatureFlags);
 
       try {
+        const { NodesConnection } = await loadConnectionModule();
         NodesConnection.enableBackoff = Boolean(data?.FEATURE_FLAGS?.wsBackoff);
         NodesConnection.enableParallelDial = Boolean(data?.FEATURE_FLAGS?.wsParallelDial);
         NodesConnection.maxActiveConnections = resolveWsConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps);
@@ -799,10 +965,12 @@ export function useAppShell() {
 
       if (data?.FEATURE_FLAGS?.wsWorkerDataPlane) {
         try {
-          subscribeToDataPlaneTelemetry();
-          const started = await dataPlaneClient.start({
+          const realtimeModule = await loadRealtimeModule();
+          const client = getOrCreateDataPlaneClient(realtimeModule);
+          subscribeToDataPlaneTelemetry(client);
+          const started = await client.start({
             preferSharedWorker: Boolean(data?.FEATURE_FLAGS?.wsSharedWorker),
-            profile: normalizeRealtimeProfile(data?.FEATURE_FLAGS?.wsProfile),
+            profile: realtimeModule.normalizeRealtimeProfile(data?.FEATURE_FLAGS?.wsProfile),
             maxConnections: resolveWsConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps),
           });
 
@@ -813,20 +981,24 @@ export function useAppShell() {
           } else {
             unsubscribeFromDataPlaneTelemetry();
             unsubscribeFromRealtimeVisibility();
-            await dataPlaneClient.stop();
+            await client.stop();
           }
         } catch (error) {
           realtimeVisibilitySyncEnabled = false;
           unsubscribeFromDataPlaneTelemetry();
           unsubscribeFromRealtimeVisibility();
-          await dataPlaneClient.stop();
+          if (dataPlaneClient) {
+            await dataPlaneClient.stop();
+          }
           console.warn('[bootstrap] realtime data-plane init skipped', error);
         }
       } else {
         realtimeVisibilitySyncEnabled = false;
         unsubscribeFromDataPlaneTelemetry();
         unsubscribeFromRealtimeVisibility();
-        await dataPlaneClient.stop();
+        if (dataPlaneClient) {
+          await dataPlaneClient.stop();
+        }
       }
 
       walletStore.setSoraNetwork(networkType);
@@ -842,12 +1014,8 @@ export function useAppShell() {
       hasIndexerEndpoint = hasPolkaswapIndexerEndpoint;
 
       walletStore.setIndexerEndpoint({
-        indexer: IndexerType.SUBQUERY,
+        indexer: IndexerType.POLKASWAP,
         endpoint: hasPolkaswapIndexerEndpoint ? data.POLKASWAP_INDEXER_ENDPOINT : '',
-      });
-      walletStore.setIndexerEndpoint({
-        indexer: IndexerType.SUBSQUID,
-        endpoint: '',
       });
 
       if (data.FAUCET_URL) {
@@ -863,14 +1031,16 @@ export function useAppShell() {
         connectionInstance.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);
       }
 
-      await bootstrapRuntimeServices({
+      void bootstrapRuntimeServices({
         connectToNode: runAppConnectionToNode,
         initializeIndexer:
           hasIndexerEndpoint && typeof settingsStore.selectIndexer === 'function'
-            ? () => settingsStore.selectIndexer((settingsStore.indexerType ?? IndexerType.SUBQUERY) as IndexerType)
+            ? () => settingsStore.selectIndexer((settingsStore.indexerType ?? IndexerType.POLKASWAP) as IndexerType)
             : undefined,
         subscribeToIndexer: () => walletStore.subscribeOnExchangeRatesApi(),
         hasIndexerEndpoint,
+      }).catch((error) => {
+        console.warn('[bootstrap] runtime services skipped', error);
       });
     });
 
@@ -915,11 +1085,13 @@ export function useAppShell() {
     setSignTxDialogVisibility: walletStore.setSignTxDialogVisibility,
     showBrowserNotifBlockedPopup,
     showBrowserNotifPopup,
+    showAlertSettingsPopup,
     showConfirmInviteUser,
     showErrorLocalStorageExceed,
     showNotifsDarkPage,
     showNotificationMST,
     showSoraMobilePopup,
+    showSoraAccountDialog,
     showWalletOverlays,
     t,
     toggleMenu,

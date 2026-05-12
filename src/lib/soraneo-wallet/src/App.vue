@@ -138,8 +138,7 @@ onMounted(() => {
   void (async () => {
     // setIsDesktop(true);
     await setApiKeys(env.API_KEYS as ApiKeysObject);
-    setIndexerEndpoint({ indexer: IndexerType.SUBQUERY, endpoint: env.POLKASWAP_INDEXER_ENDPOINT });
-    setIndexerEndpoint({ indexer: IndexerType.SUBSQUID, endpoint: '' });
+    setIndexerEndpoint({ indexer: IndexerType.POLKASWAP, endpoint: env.POLKASWAP_INDEXER_ENDPOINT });
     setSoraNetwork(SoraNetwork.Dev);
     await initWallet({ appName: 'APP NAME HERE' });
     await subscribeOnExchangeRatesApi();

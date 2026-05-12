@@ -1,4 +1,4 @@
-import { PageNames } from '@/consts';
+import { PageNames } from '@/consts/navigation';
 
 /**
  * Keeps the first-launch app disclaimer scoped to the swap route until the user accepts it.

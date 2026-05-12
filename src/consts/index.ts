@@ -5,10 +5,10 @@ import {
   HiddenValue as WalletHiddenValue,
   IndexerType as WalletIndexerEnum,
   LogoSize as WalletLogoSizeEnum,
-  TranslationConsts as WalletTranslationConsts,
 } from '@/lib/soraneo-wallet/src/consts';
 import invert from 'lodash/fp/invert';
 
+import { PageNames } from './navigation';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
@@ -16,10 +16,15 @@ import { VaultPageNames } from '@/modules/vault/consts';
 
 import pkg from '../../package.json';
 
+export { app, TranslationConsts } from './app';
+export { Language, Languages } from './language';
+export { BridgeChildPages, PageNames, RouteNames } from './navigation';
+export { LOCAL_STORAGE_LIMIT_PERCENTAGE, LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from './storage';
+export { WalletPermissions } from './wallet';
+
 export {
   AddAssetTabs,
   AppWallet,
-  RouteNames,
   AccountActionTypes,
   PassphraseTimeout,
   PassphraseTimeoutDuration,
@@ -40,101 +45,11 @@ export {
 
 import type { Alert } from '@/lib/soraneo-wallet/src/types/common';
 
-export const app = {
-  version: pkg.version,
-  name: 'Polkaswap',
-  email: 'jihoon@tutanota.de',
-  title: 'Polkaswap — The DEX for the Interoperable Future.',
-};
-
-export const WalletPermissions = {
-  addAssets: true,
-  addLiquidity: true,
-  bridgeAssets: true,
-  createAssets: true,
-  sendAssets: true, // enable 'send' button in assets list
-  showAssetDetails: true,
-  swapAssets: true, // enable 'swap' button in assets list
-};
-
 export const IndexerType = WalletIndexerEnum;
 export const LogoSize = WalletLogoSizeEnum;
 export const FontSizeRate = WalletFontSizeRateEnum;
 export const FontWeightRate = WalletFontWeightRateEnum;
 export const HiddenValue = WalletHiddenValue;
-
-/**
- * `navigator.language` values, f.e. ('es', 'eu-ES')
- */
-export enum Language {
-  EN = 'en',
-  RU = 'ru',
-  CS = 'cs',
-  DE = 'de',
-  ES = 'es',
-  FR = 'fr',
-  ID = 'id',
-  IT = 'it',
-  NL = 'nl',
-  PL = 'pl',
-  SR = 'sr',
-  VI = 'vi',
-  ZH_CN = 'zh-CN',
-  ZH_TW = 'zh-TW',
-  HE = 'he',
-  AR = 'ar',
-  UR = 'ur',
-  KM = 'km',
-  TH = 'th',
-  PIS = 'pis',
-  MY = 'my',
-  // Experimental/for-fun locale with cuneiform renderings
-  AKK = 'akk',
-  // Experimental/for-fun locale with semantic hieroglyphic renderings
-  EGY = 'egy',
-  UK = 'uk',
-  BA = 'ba',
-  DZ = 'dz',
-  MN = 'mn',
-  KK = 'kk',
-  TT = 'tt',
-  DV = 'dv',
-  AM = 'am',
-}
-
-export const Languages = [
-  { key: Language.EN, value: 'English', name: 'English (UK)' },
-  { key: Language.ZH_CN, value: 'Chinese Simplified', name: '简体中文' },
-  { key: Language.ZH_TW, value: 'Chinese Traditional', name: '繁體中文' },
-  { key: Language.CS, value: 'Czech', name: 'Čeština' },
-  { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
-  { key: Language.FR, value: 'French', name: 'Français' },
-  { key: Language.DE, value: 'German', name: 'Deutsch' },
-  { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
-  { key: Language.IT, value: 'Italian', name: 'Italiano' },
-  { key: Language.PL, value: 'Polish', name: 'Polski' },
-  { key: Language.RU, value: 'Russian', name: 'Русский' },
-  { key: Language.SR, value: 'Serbian', name: 'Српски' },
-  { key: Language.ES, value: 'Spanish', name: 'Español' },
-  { key: Language.VI, value: 'Vietnamese', name: 'Tiếng Việt' },
-  { key: Language.HE, value: 'Hebrew', name: 'עברית' },
-  { key: Language.AR, value: 'Arabic', name: 'العربية' },
-  { key: Language.UR, value: 'Urdu', name: 'اردو' },
-  { key: Language.KM, value: 'Khmer', name: 'ភាសាខ្មែរ' },
-  { key: Language.TH, value: 'Thai', name: 'ไทย' },
-  { key: Language.PIS, value: 'Solomon Islands Pidgin', name: 'Solomon Pijin' },
-  { key: Language.MY, value: 'Burmese', name: 'ဗမာစာ' },
-  { key: Language.AKK, value: 'Akkadian (Cuneiform)', name: 'Akkadian' },
-  { key: Language.EGY, value: 'Egyptian (Hieroglyphs)', name: '𓂋𓏤𓈖𓎼𓊪𓏏𓊖' },
-  { key: Language.UK, value: 'Ukrainian', name: 'Українська' },
-  { key: Language.BA, value: 'Bashkir', name: 'Башҡортса' },
-  { key: Language.DZ, value: 'Dzongkha', name: 'རྫོང་ཁ' },
-  { key: Language.MN, value: 'Mongolian', name: 'Монгол' },
-  { key: Language.KK, value: 'Kazakh', name: 'Қазақ тілі' },
-  { key: Language.TT, value: 'Tatar', name: 'Татарча' },
-  { key: Language.DV, value: 'Divehi', name: 'ދިވެހި' },
-  { key: Language.AM, value: 'Amharic', name: 'አማርኛ' },
-];
 
 export const Links = {
   about: {
@@ -159,18 +74,6 @@ export const HundredNumber = 100;
 
 export const DefaultSlippageTolerance = '0.5';
 
-export const LOCAL_STORAGE_MAX_SIZE = 4 * 1024 * 1024;
-
-export const LOCAL_STORAGE_LIMIT_PERCENTAGE = 95;
-
-export const listOfRemoveForLocalStorage = [
-  '.assetsAddresses',
-  '.history',
-  '.ethBridgeHistory',
-  '.evmHistory',
-  '.subHistory',
-];
-
 export enum MarketAlgorithms {
   SMART = 'SMART',
   TBC = 'TBC',
@@ -193,46 +96,6 @@ export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarket
 export enum Theme {
   Light = 'light',
   Dark = 'dark',
-}
-
-export enum PageNames {
-  Swap = 'Swap',
-  Pool = 'Pool',
-  Stats = 'Stats',
-  Wallet = 'Wallet',
-  AddLiquidity = 'AddLiquidity',
-  Farming = 'Farming',
-  Rewards = 'Rewards',
-  ReferralProgram = 'ReferralProgram',
-  PointSystemWrapper = 'PointSystemWrapper',
-  RewardsTabs = 'RewardsTabs',
-  ReferralBonding = 'ReferralBonding',
-  ReferralUnbonding = 'ReferralUnbonding',
-  BridgeContainer = 'BridgeContainer',
-  Bridge = 'Bridge',
-  Sccp = 'Sccp',
-  BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  Tokens = 'Tokens',
-  DepositOptions = 'DepositOptions',
-  DepositTxHistory = 'DepositTxHistory',
-  CedeStore = 'CedeStore',
-  StakingContainer = 'StakingContainer',
-  // just for router name & different titles
-  ExploreContainer = 'Explore/Container',
-  ExploreTokens = 'Explore/Tokens',
-  ExploreDemeter = 'Explore/Demeter',
-  ExploreFarming = 'Explore/Farming',
-  ExploreStaking = 'Explore/Staking',
-  ExplorePools = 'Explore/Pools',
-  ExploreBooks = 'Explore/Books',
-  //
-  OrderBook = 'OrderBook',
-  LimitOrderBuy = 'OrderBook/LimitOrderBuy',
-  LimitOrderSell = 'OrderBook/LimitOrderSell',
-  AssetOwnerContainer = 'AssetOwnerContainer',
-  VaultsContainer = 'VaultsContainer',
-  Burn = 'Burn',
 }
 
 export enum Components {
@@ -515,7 +378,6 @@ export const FaucetLink: SidebarMenuItemLink = {
 
 export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
 
-export const BridgeChildPages = [PageNames.Bridge, PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [
   PageNames.PointSystemWrapper,
@@ -548,30 +410,3 @@ export const AboutTopics = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
-
-const TRANSLATION_CONSTS_BASE = WalletTranslationConsts;
-
-export const TranslationConsts = {
-  // extending consts
-  ...TRANSLATION_CONSTS_BASE,
-  AppName: app.name,
-  Ceres: 'Ceres',
-  APR: 'APR', // Annual percentage rate
-  APY: 'APY',
-  TVL: 'TVL',
-  EVM: 'EVM',
-  Substrate: 'Substrate',
-  Kusama: 'Kusama',
-  ROI: 'ROI', // Return of investment
-  mbps: 'mbps',
-  online: 'Online',
-  offline: 'Offline',
-  XCM: 'XCM',
-  Max: 'Max.',
-  XOR: 'XOR',
-  VAL: 'VAL',
-  Kensetsu: 'Kensetsu',
-  LTV: 'LTV',
-  Telegram: 'Telegram',
-  DEX: 'DEX',
-} as const;

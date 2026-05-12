@@ -1,7 +1,7 @@
-import { Operation } from '@sora-substrate/sdk';
+import { Operation } from '@/lib/substrate/sdk/types';
 import { XSTUSD, KUSD, KGOLD, KEN, KXOR } from '@sora-substrate/sdk/build/assets/consts';
 
-import type { FPNumber } from '@sora-substrate/sdk';
+import type { FPNumber } from '@sora-substrate/math';
 
 export const accountIdBasedOperations = [
   Operation.SwapAndSend,
@@ -28,8 +28,7 @@ export const Links = {
 };
 
 export enum IndexerType {
-  SUBQUERY = 'subquery',
-  SUBSQUID = 'subsquid',
+  POLKASWAP = 'polkaswap',
 }
 
 export enum Theme {

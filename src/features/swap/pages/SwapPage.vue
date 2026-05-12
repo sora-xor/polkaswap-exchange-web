@@ -61,24 +61,23 @@ import { useLoading } from '@/composables/useLoading';
 import { usePiniaTelemetry } from '@/composables/usePiniaTelemetry';
 import { useTranslation } from '@/composables/useTranslation';
 import { resolveGlobalPinia } from '@/plugins/pinia';
-import {
-  CustomiseWidget,
-  PriceChartWidget,
-  SupplyChartWidget,
-  TokenPriceChartWidget,
-  WidgetsGrid,
-} from '@/shared/ui/widgets';
+import { createAsyncComponent } from '@/shared/ui/async';
+import { CustomiseWidget, WidgetsGrid } from '@/shared/ui/widgets';
 
 import SwapDistributionWidget from '../components/widgets/Distribution.vue';
 import SwapFormWidget from '../components/widgets/Form.vue';
-import SwapTransactionDetailsWidget from '../components/widgets/TransactionDetails.vue';
-import SwapTransactionsWidget from '../components/widgets/Transactions.vue';
 import { DEFAULT_SWAP_LAYOUTS, SwapWidgets } from '../constants/layout';
 import { useSwapRouteSync } from '../composables/useSwapRouteSync';
 import { useSwapPageStore } from '../stores/useSwapPageStore';
 import { useSwapStore } from '../stores/useSwapStore';
 
 defineOptions({ name: 'SwapPage' });
+
+const PriceChartWidget = createAsyncComponent(() => import('@/components/shared/Widget/PriceChart.vue'));
+const SupplyChartWidget = createAsyncComponent(() => import('@/components/shared/Widget/SupplyChart.vue'));
+const TokenPriceChartWidget = createAsyncComponent(() => import('@/components/shared/Widget/TokenPriceChart.vue'));
+const SwapTransactionDetailsWidget = createAsyncComponent(() => import('../components/widgets/TransactionDetails.vue'));
+const SwapTransactionsWidget = createAsyncComponent(() => import('../components/widgets/Transactions.vue'));
 
 const { t, tc } = useTranslation();
 const { loading, withApi } = useLoading();

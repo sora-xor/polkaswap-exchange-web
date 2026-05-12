@@ -19,6 +19,11 @@ describe('AppHeader source', () => {
     expect(appHeaderSource).not.toContain('Components.AppMarketing');
   });
 
+  it('loads the settings dropdown lazily', () => {
+    expect(appHeaderSource).toContain("const AppHeaderMenu = createAsyncComponent(() => import('./AppHeaderMenu.vue'));");
+    expect(appHeaderSource).not.toContain("import AppHeaderMenu from './AppHeaderMenu.vue';");
+  });
+
   it('keeps mobile header icon controls aligned with the live site', () => {
     expect(appHeaderSource).toContain('.header > &:not(.app-controls--middle) {');
     expect(appHeaderSource).toContain('.app-controls .settings-control.el-button {');

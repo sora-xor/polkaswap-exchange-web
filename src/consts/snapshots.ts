@@ -1,9 +1,9 @@
-import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
+import * as POLKASWAP_TYPES from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
 
-const SnapshotTypes = (SUBQUERY_TYPES?.SnapshotTypes ??
+const SnapshotTypes = (POLKASWAP_TYPES?.SnapshotTypes ??
   ({
     DEFAULT: 'default',
     HOUR: 'hour',

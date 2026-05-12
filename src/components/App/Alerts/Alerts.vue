@@ -30,17 +30,17 @@ import { computed, ref } from 'vue';
 import { AlertList, AlertsSelectToken, CreateAlert } from '@/app/shell/components';
 import { useTranslation } from '@/composables/useTranslation';
 import type { NumberedAlert } from '@/consts';
+import { createAsyncComponent } from '@/shared/ui/async';
 import { useSettingsStore } from '@/stores/settings';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 enum AlertPages {
   AlertList,
   CreateAlert,
 }
 
-const DialogBase = WalletComponentDialogBase;
+const DialogBase = createAsyncComponent(() => import('@/lib/soraneo-wallet/src/components/DialogBase.vue'));
 
 const settingsStore = useSettingsStore();
 

@@ -1,6 +1,6 @@
 import first from 'lodash/fp/first';
 
-import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
+import * as POLKASWAP_TYPES from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
 import { getTransactionEvents, getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
@@ -100,7 +100,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
               await ethBridgeApi.transfer(asset, tx.to as string, tx.amount as string, id);
             }
 
-            // signed sora transaction has to be parsed by subquery
+            // signed sora transaction has to be parsed by polkaswap
             if (tx.txId && !tx.blockId) {
               // format account address to sora format
               const { from: address } = getTransaction(id);
@@ -110,10 +110,10 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
               if (historyItem) {
                 this.updateTransactionParams(id, {
                   blockId: historyItem.blockHash,
-                  hash: (historyItem.data as SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing).requestHash,
+                  hash: (historyItem.data as POLKASWAP_TYPES.HistoryElementEthBridgeOutgoing).requestHash,
                 });
               } else {
-                throw new Error(`[Bridge]: Can not restore TX from Subquery: ${tx.txId}`);
+                throw new Error(`[Bridge]: Can not restore TX from Polkaswap: ${tx.txId}`);
               }
             }
           },

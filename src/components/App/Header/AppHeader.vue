@@ -29,15 +29,14 @@
       <app-account-button @click="navigateToWallet"></app-account-button>
       <app-header-menu></app-header-menu>
     </div>
-    <rotate-phone-dialog></rotate-phone-dialog>
-    <acceleration-access-dialog></acceleration-access-dialog>
-    <select-language-dialog></select-language-dialog>
-    <select-currency-dialog></select-currency-dialog>
+    <rotate-phone-dialog v-if="showRotatePhoneDialog"></rotate-phone-dialog>
+    <acceleration-access-dialog v-if="showAccelerationAccessDialog"></acceleration-access-dialog>
+    <select-language-dialog v-if="showSelectLanguageDialog"></select-language-dialog>
+    <select-currency-dialog v-if="showSelectCurrencyDialog"></select-currency-dialog>
   </header>
 </template>
 
 <script lang="ts" setup>
-import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -56,10 +55,11 @@ import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
+import { createAsyncComponent } from '@/shared/ui/async';
 import { useSettingsStore } from '@/stores/settings';
+import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import AppAccountButton from './AppAccountButton.vue';
-import AppHeaderMenu from './AppHeaderMenu.vue';
 
 defineOptions({ name: 'AppHeader' });
 
@@ -73,6 +73,7 @@ const { t } = useTranslation();
 const { navigateToWallet } = useInternalConnect();
 const route = useRoute();
 const settingsStore = useSettingsStore();
+const AppHeaderMenu = createAsyncComponent(() => import('./AppHeaderMenu.vue'));
 
 const xor = XOR;
 const eth = ETH;
@@ -90,6 +91,22 @@ const showMarketing = computed(() =>
   [BreakpointClass.Desktop, BreakpointClass.LargeDesktop, BreakpointClass.HugeDesktop].includes(
     screenBreakpointClass.value
   )
+);
+const showSelectLanguageDialog = computed(() => Boolean(settingsStore.selectLanguageDialogVisibility));
+const showSelectCurrencyDialog = computed(() => Boolean(settingsStore.selectCurrencyDialogVisibility));
+const showRotatePhoneDialog = computed(() => {
+  const dialogVisible = Boolean(settingsStore.rotatePhoneDialogVisibility);
+  const hideFeatureEnabled = Boolean(settingsStore.isRotatePhoneHideBalanceFeatureEnabled);
+  const accessDeclined = Boolean(settingsStore.isAccessAccelerometrEventDeclined);
+  const rotationListener = Boolean(settingsStore.isAccessRotationListener);
+
+  return dialogVisible && !hideFeatureEnabled && !accessDeclined && !rotationListener;
+});
+const showAccelerationAccessDialog = computed(
+  () =>
+    Boolean(settingsStore.rotatePhoneDialogVisibility) &&
+    !Boolean(settingsStore.isAccessRotationListener) &&
+    Boolean(settingsStore.isAccessAccelerometrEventDeclined)
 );
 
 const fiatBtnClass = computed(() => {

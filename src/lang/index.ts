@@ -1,13 +1,11 @@
-import dayjs from 'dayjs';
-import first from 'lodash/fp/first';
+import dayjs from 'dayjs/esm';
 import type { ComponentInternalInstance } from 'vue';
 import { createI18n, type MissingHandler } from 'vue-i18n';
 
-import { Language, TranslationConsts } from '@/consts';
+import { TranslationConsts } from '@/consts/app';
+import { Language } from '@/consts/language';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { settingsStorage } from '@/utils/storage';
-
-import en from './en.json';
 
 export const TRANSLATION_MISSING_THROTTLE_MS = 30_000;
 
@@ -53,15 +51,13 @@ const i18n = createI18n({
   globalInjection: true,
   locale: Language.EN,
   fallbackLocale: Language.EN,
-  messages: {
-    [Language.EN]: { ...en },
-  },
+  messages: {},
   warnHtmlMessage: false,
   missing: translationMissingHandler,
 });
 
 const i18nGlobal = i18n.global;
-const loadedLanguages: Array<string> = [Language.EN];
+const loadedLanguages: Array<string> = [];
 applyDocumentDirection(Language.EN);
 
 // Set document direction for RTL languages
@@ -78,12 +74,13 @@ function applyDocumentDirection(locale: string): void {
 }
 
 const hasLocale = (locale: string) => Object.values(Language).includes(locale as any);
+const getBaseLocale = (locale: string): string => locale.split('-')[0] ?? locale;
 
 export const getSupportedLocale = (locale: Language): string => {
   if (hasLocale(locale)) return locale;
 
   if (locale.includes('-')) {
-    return getSupportedLocale(first(locale.split('-')) as Language);
+    return getSupportedLocale(getBaseLocale(locale) as Language);
   }
 
   return Language.EN;
@@ -100,7 +97,7 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
   let code: string = locale;
 
   if (locale !== Language.ZH_CN && locale !== Language.ZH_TW && locale.includes('-')) {
-    code = first(locale.split('-')) as string;
+    code = getBaseLocale(locale);
   }
 
   if (code === 'zh') {

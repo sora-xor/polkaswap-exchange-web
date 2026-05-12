@@ -2,10 +2,9 @@ import { api, connection } from './api';
 import en from './lang/en';
 import AlertsApiService from './services/alerts';
 import { getCurrentIndexer } from './services/indexer';
-import * as SUBQUERY_TYPES from './services/indexer/subquery/types';
-import * as SUBSQUID_TYPES from './services/indexer/subsquid/types';
+import * as POLKASWAP_TYPES from './services/indexer/polkaswap/types';
 import * as INDEXER_TYPES from './services/indexer/types';
-import { historyElementsFilter } from './services/indexer/subsquid/queries/historyElements';
+import { historyElementsFilter } from './services/indexer/polkaswap/queries/historyElements';
 import { initializeWallets } from './services/wallet';
 import * as WC from './services/walletconnect';
 import { addWcSubWalletLocally } from './services/walletconnect';
@@ -44,8 +43,7 @@ export {
   historyElementsFilter,
   AlertsApiService,
   getCurrentIndexer,
-  SUBQUERY_TYPES,
-  SUBSQUID_TYPES,
+  POLKASWAP_TYPES,
   INDEXER_TYPES,
   WC,
   en,

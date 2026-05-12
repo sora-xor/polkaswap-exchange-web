@@ -21,6 +21,7 @@ const files = {
   ethBridge: path.join(repoRoot, 'src', 'utils', 'bridge', 'eth', 'index.ts'),
   evmBridge: path.join(repoRoot, 'src', 'utils', 'bridge', 'evm', 'index.ts'),
   subBridge: path.join(repoRoot, 'src', 'utils', 'bridge', 'sub', 'index.ts'),
+  globalStyles: path.join(repoRoot, 'src', 'styles', 'index.ts'),
 } as const;
 
 const mainFile = path.join(repoRoot, 'src', 'main.ts');
@@ -53,6 +54,7 @@ describe('app-level store migration', () => {
       ethBridgeSource,
       evmBridgeSource,
       subBridgeSource,
+      globalStylesSource,
     ] = await Promise.all(Object.values(files).map(readSource));
 
     expect(appSource).not.toContain("from '@/utils/app-store'");
@@ -65,10 +67,17 @@ describe('app-level store migration', () => {
     expect(appSource).not.toContain("from '@tests/stubs/walletRuntime'");
     expect(appSource).not.toContain('./store/settings/types');
     expect(appSource).not.toContain('./store/web3/types');
-    expect(bootstrapSource).toContain("from '@/plugins/pinia'");
+    expect(bootstrapSource).not.toContain("from '@/plugins/pinia'");
+    expect(bootstrapSource).toContain("piniaModulePromise ??= import('@/plugins/pinia');");
     expect(bootstrapSource).toContain("from '@/plugins'");
-    expect(bootstrapSource).toContain("from '@/lang'");
-    expect(bootstrapSource).toContain("from '@/app/router'");
+    expect(bootstrapSource).not.toContain("from '@/lang'");
+    expect(bootstrapSource).toContain("langModulePromise ??= import('@/lang');");
+    expect(bootstrapSource).not.toContain("from '@/app/router'");
+    expect(bootstrapSource).toContain("routerModulePromise ??= import('@/app/router');");
+    expect(bootstrapSource).toContain("appShellModulePromise ??= import('@/app/shell/AppShell.vue');");
+    expect(bootstrapSource).toContain('const AppShell = createAsyncComponent(loadAppShell);');
+    expect(bootstrapSource).toContain('setI18nLocale(getLocale() as any)');
+    expect(bootstrapSource).not.toContain("import AppShell from '@/app/shell/AppShell.vue';");
     expect(bootstrapSource).not.toContain("from '@/utils/app-store'");
     expect(bootstrapSource).not.toContain("from '@/lib/soraneo-wallet/src/api'");
     expect(bootstrapSource).not.toContain("from '@/lib/soraneo-wallet/src/bootstrap'");
@@ -93,6 +102,8 @@ describe('app-level store migration', () => {
     expect(walletPluginSource).not.toContain("from '@/stores/wallet/compat'");
     expect(walletPluginSource).not.toContain('isWalletStoreLike');
     expect(walletPluginSource).not.toContain('createWalletCompatAdapter');
+    expect(walletPluginSource).not.toContain('@/lib/soraneo-wallet/lib/soraneo-wallet-web.css');
+    expect(globalStylesSource).not.toContain('@/lib/soraneo-wallet/lib/soraneo-wallet-web.css');
     expect(telegramSource).toContain("from '@/stores/settings'");
     expect(telegramSource).toContain("from '@/stores/wallet'");
     expect(telegramSource).toContain("from '@/stores/referrals'");
@@ -112,9 +123,10 @@ describe('app-level store migration', () => {
     expect(mainSource).not.toContain('app.use(store.original)');
     expect(mainSource).not.toContain('store: store.original');
     expect(mainSource).toContain("from '@/app/bootstrap'");
-    expect(mainSource).toContain('mountApp()');
+    expect(mainSource).toContain('void mountApp()');
     expect(mainSource).not.toContain('await router.isReady()');
-    expect(bootstrapSource).toContain('installPlugins(app, { pinia })');
+    expect(bootstrapSource).toContain('installStartupPlugins()');
+    expect(bootstrapSource).toContain('installRuntimePlugins(app, { pinia })');
     expect(bootstrapSource).toContain('void router.isReady().catch(');
   });
 });

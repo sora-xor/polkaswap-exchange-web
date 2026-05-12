@@ -1,4 +1,4 @@
-import { Operation, TransactionStatus } from '@sora-substrate/sdk';
+import { Operation, TransactionStatus, type History } from '@/lib/substrate/sdk/types';
 import { computed } from 'vue';
 
 import { HiddenValue, accountIdBasedOperations } from '@/lib/soraneo-wallet/src/consts';
@@ -8,7 +8,6 @@ import { useTranslation } from '@/composables/useTranslation';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { History } from '@sora-substrate/sdk';
 import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 
 const twoAssetsBasedOperations = [

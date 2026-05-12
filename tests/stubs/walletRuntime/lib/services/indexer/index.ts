@@ -1,16 +1,9 @@
-export class SubqueryIndexer {
+export class PolkaswapIndexer {
   async fetchEntities() {
-    return { edges: [], nodes: [] };
-  }
-
-  async fetchEntitiesConnection() {
     return { edges: [], nodes: [] };
   }
 }
 
-export class SubsquidIndexer extends SubqueryIndexer {}
-
 export default {
-  SubqueryIndexer,
-  SubsquidIndexer,
+  PolkaswapIndexer,
 };

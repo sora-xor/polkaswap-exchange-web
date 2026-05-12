@@ -15,7 +15,10 @@ const appMocks = vi.hoisted(() => {
 const pluginMocks = vi.hoisted(() => ({
   pinia: { name: 'pinia-plugin' },
   i18n: { name: 'i18n-plugin' },
-  installPlugins: vi.fn(),
+  getLocale: vi.fn(() => 'en'),
+  setI18nLocale: vi.fn(() => Promise.resolve()),
+  installRuntimePlugins: vi.fn(() => Promise.resolve()),
+  installStartupPlugins: vi.fn(),
 }));
 
 const envMocks = vi.hoisted(() => ({
@@ -48,9 +51,14 @@ const routerMocks = vi.hoisted(() => ({
   },
 }));
 
-const shellMocks = vi.hoisted(() => ({
-  AppShell: { name: 'AppShellStub' },
-}));
+const shellMocks = vi.hoisted(() => {
+  const AppShell = { name: 'AsyncAppShellStub' };
+
+  return {
+    AppShell,
+    createAsyncComponent: vi.fn(() => AppShell),
+  };
+});
 
 vi.mock('vue', () => ({
   createApp: appMocks.createApp,
@@ -61,11 +69,14 @@ vi.mock('@/plugins/pinia', () => ({
 }));
 
 vi.mock('@/lang', () => ({
+  getLocale: pluginMocks.getLocale,
+  setI18nLocale: pluginMocks.setI18nLocale,
   default: pluginMocks.i18n,
 }));
 
 vi.mock('@/plugins', () => ({
-  default: pluginMocks.installPlugins,
+  installRuntimePlugins: pluginMocks.installRuntimePlugins,
+  installStartupPlugins: pluginMocks.installStartupPlugins,
 }));
 
 vi.mock('@/utils/env', () => ({
@@ -95,6 +106,14 @@ vi.mock('@/utils/vueErrorHandler', () => ({
   installVueErrorHandler: errorHandlerMocks.installVueErrorHandler,
 }));
 
+vi.mock('@/utils/documentTitle', () => ({
+  updateDocumentTitle: vi.fn(),
+}));
+
+vi.mock('@/shared/ui/async', () => ({
+  createAsyncComponent: shellMocks.createAsyncComponent,
+}));
+
 vi.mock('@/app/shell/AppShell.vue', () => ({
   default: shellMocks.AppShell,
 }));
@@ -103,7 +122,7 @@ vi.mock('@/app/router', () => ({
   default: routerMocks.router,
 }));
 
-import { bootstrapApp, mountApp } from '@/app/bootstrap';
+import { bootstrapApp, mountApp, prepareAppRuntime } from '@/app/bootstrap';
 
 describe('app bootstrap', () => {
   const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
@@ -133,18 +152,27 @@ describe('app bootstrap', () => {
     expect(app).toBe(appMocks.app);
     expect(appMocks.createApp).toHaveBeenCalledWith(shellMocks.AppShell);
     expect(errorHandlerMocks.installVueErrorHandler).toHaveBeenCalledWith(appMocks.app);
-    expect(appMocks.app.use).toHaveBeenNthCalledWith(1, pluginMocks.pinia);
-    expect(appMocks.app.use).toHaveBeenNthCalledWith(2, routerMocks.router);
-    expect(appMocks.app.use).toHaveBeenNthCalledWith(3, pluginMocks.i18n);
-    expect(pluginMocks.installPlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
+    expect(appMocks.app.use).not.toHaveBeenCalled();
+    expect(pluginMocks.installStartupPlugins).toHaveBeenCalledTimes(1);
+    expect(pluginMocks.installRuntimePlugins).not.toHaveBeenCalled();
   });
 
-  it('renders the offline shell and skips mounting when the runtime is offline', () => {
+  it('loads runtime plugins and preloads the app shell before mounting', async () => {
+    await prepareAppRuntime(appMocks.app as any);
+
+    expect(appMocks.app.use).toHaveBeenCalledWith(pluginMocks.pinia);
+    expect(appMocks.app.use).toHaveBeenCalledWith(routerMocks.router);
+    expect(appMocks.app.use).toHaveBeenCalledWith(pluginMocks.i18n);
+    expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
+    expect(pluginMocks.setI18nLocale).toHaveBeenCalledWith('en');
+  });
+
+  it('renders the offline shell and skips mounting when the runtime is offline', async () => {
     envMocks.shouldRenderOfflineShell.mockReturnValue(true);
     envMocks.renderOfflineShell.mockReturnValue(true);
     window.history.replaceState({}, '', '/?ipfs-check=1');
 
-    mountApp();
+    await mountApp();
 
     expect(securityMocks.registerW3mMessageGuard).toHaveBeenCalledTimes(1);
     expect(consoleFilterMocks.installConsoleWarningFilter).toHaveBeenCalledTimes(1);
@@ -164,11 +192,11 @@ describe('app bootstrap', () => {
     expect(warnSpy).toHaveBeenCalledWith('[OfflineShell] active');
   });
 
-  it('warns when offline shell rendering is requested but the app container is missing', () => {
+  it('warns when offline shell rendering is requested but the app container is missing', async () => {
     envMocks.shouldRenderOfflineShell.mockReturnValue(true);
     envMocks.renderOfflineShell.mockReturnValue(false);
 
-    mountApp();
+    await mountApp();
 
     expect(appMocks.createApp).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith('[OfflineShell] skipped: #app container missing');
@@ -178,21 +206,22 @@ describe('app bootstrap', () => {
     const routerError = new Error('router not ready');
     routerMocks.router.isReady.mockReturnValue(Promise.reject(routerError));
 
-    mountApp();
+    await mountApp();
     await Promise.resolve();
     await Promise.resolve();
 
+    expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
     expect(appMocks.app.mount).toHaveBeenCalledWith('#app');
     expect(errorSpy).toHaveBeenCalledWith('[bootstrap] Failed during router readiness', routerError);
   });
 
-  it('catches app mounting failures', () => {
+  it('catches app mounting failures', async () => {
     const mountError = new Error('mount failed');
     appMocks.app.mount.mockImplementationOnce(() => {
       throw mountError;
     });
 
-    mountApp();
+    await mountApp();
 
     expect(errorSpy).toHaveBeenCalledWith('[bootstrap] Failed to mount application', mountError);
   });

@@ -7,7 +7,7 @@ import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
 import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import * as SUBQUERY_TYPES from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
+import * as POLKASWAP_TYPES from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
 import type { EthBridgeContractsAddresses } from '@/stores/web3';
 import { getEvmTransactionReceiptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
@@ -50,7 +50,7 @@ const isLocalHistoryItem = (item: EthHistory, txId: string, isOutgoing: boolean,
 };
 
 const getType = (module: string) => {
-  return module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig
+  return module === POLKASWAP_TYPES.ModuleNames.BridgeMultisig
     ? Operation.EthBridgeIncoming
     : Operation.EthBridgeOutgoing;
 };
@@ -137,9 +137,9 @@ type TimestampMap<T> = {
 };
 
 type EthTransactionsMap = DataMap<ethers.TransactionResponse>;
-type HistoryElement = SUBQUERY_TYPES.HistoryElement;
-type HistoryElementData = SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing &
-  SUBQUERY_TYPES.HistoryElementEthBridgeIncoming;
+type HistoryElement = POLKASWAP_TYPES.HistoryElement;
+type HistoryElementData = POLKASWAP_TYPES.HistoryElementEthBridgeOutgoing &
+  POLKASWAP_TYPES.HistoryElementEthBridgeIncoming;
 
 export class EthBridgeHistory {
   private externalNetwork!: number;
@@ -222,7 +222,7 @@ export class EthBridgeHistory {
     const historyElement = last(historyElements) as HistoryElement;
 
     // if the last item is Incoming trasfer, timestamp will be sora network start time
-    if (historyElement.module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig) {
+    if (historyElement.module === POLKASWAP_TYPES.ModuleNames.BridgeMultisig) {
       const soraStartBlock = await api.system.getBlockHash(1);
       const soraStartTimestamp = await api.system.getBlockTimestamp(soraStartBlock);
 
@@ -414,7 +414,7 @@ export const getEthBridgeHistoryInstance = async (context: BridgeActionContext):
 };
 
 /**
- * Restore ETH bridge account transactions, using Subquery & Etherscan
+ * Restore ETH bridge account transactions, using Polkaswap & Etherscan
  * @param context store context
  */
 export const updateEthBridgeHistory =

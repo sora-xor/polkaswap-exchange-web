@@ -2,11 +2,36 @@ import { resolveGlobalPinia } from '@/plugins/pinia';
 import { syncWalletCurrentRoute } from '@/platform/wallet/navigation';
 import { useWalletStore } from '@/stores/wallet';
 
-import { addGDriveWalletLocally } from './services/google/wallet';
 import { addSoraWalletLocally } from './services/sorawallet';
-import { addWcSubWalletLocally, api, connection, delay, initializeWallets, WALLET_CONSTS } from './core';
+import { api, connection } from './api';
+import * as WALLET_CONSTS from './consts';
+import { initializeWallets } from './services/wallet';
+import { delay } from './util';
 
 import type { WithKeyring } from '@sora-substrate/sdk';
+
+type GoogleWalletModule = typeof import('./services/google/wallet');
+type WalletConnectServicesModule = typeof import('./services/walletconnect');
+
+let googleWalletModulePromise: Promise<GoogleWalletModule> | null = null;
+let walletConnectServicesPromise: Promise<WalletConnectServicesModule> | null = null;
+
+/**
+ * Loads Google Drive wallet backup support only for browser wallet setup.
+ */
+const loadGoogleWalletModule = (): Promise<GoogleWalletModule> => {
+  googleWalletModulePromise ??= import('./services/google/wallet');
+  return googleWalletModulePromise;
+};
+
+/**
+ * Loads WalletConnect only after the base wallet shell is ready, keeping its
+ * transport stack out of the initial app bundle.
+ */
+const loadWalletConnectServices = (): Promise<WalletConnectServicesModule> => {
+  walletConnectServicesPromise ??= import('./services/walletconnect');
+  return walletConnectServicesPromise;
+};
 
 const resolveWalletStore = () => {
   try {
@@ -21,12 +46,13 @@ const resolveWalletStore = () => {
  * runtime environment (desktop vs web). The initialization is intentionally
  * side-effectful because the wallet modules depend on these registrations.
  */
-const initLocalWallets = (apiInstance: WithKeyring, isDesktop = false, appName?: string) => {
+const initLocalWallets = async (apiInstance: WithKeyring, isDesktop = false, appName?: string): Promise<void> => {
   const dAppName = appName ?? WALLET_CONSTS.TranslationConsts.Polkaswap;
 
   if (isDesktop) {
     addSoraWalletLocally(apiInstance, dAppName);
   } else {
+    const { addGDriveWalletLocally } = await loadGoogleWalletModule();
     addGDriveWalletLocally(dAppName);
   }
   initializeWallets(dAppName);
@@ -38,7 +64,9 @@ const initLocalWallets = (apiInstance: WithKeyring, isDesktop = false, appName?:
   }
 };
 
-const initWalletConnectWallet = (apiInstance: WithKeyring): void => {
+const initWalletConnectWallet = async (apiInstance: WithKeyring): Promise<void> => {
+  const { addWcSubWalletLocally } = await loadWalletConnectServices();
+
   addWcSubWalletLocally(apiInstance, (source) => {
     const walletStore = resolveWalletStore();
 
@@ -161,7 +189,7 @@ async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promis
       // Keep the wallet shell responsive even if websocket connection is still
       // settling. The network-dependent pieces continue below on a best-effort
       // basis.
-      initLocalWallets(api, Boolean(walletStore?.isDesktop), options.appName);
+      await initLocalWallets(api, Boolean(walletStore?.isDesktop), options.appName);
       void walletStore.activateInternalSubscriptions();
       void walletStore.selectIndexer('');
     } catch (error) {
@@ -177,7 +205,7 @@ async function initWallet(options: WALLET_CONSTS.WalletInitOptions = {}): Promis
     }
 
     try {
-      initWalletConnectWallet(api);
+      await initWalletConnectWallet(api);
       await checkActiveAccount();
       walletStore.setIsMstAvailable(walletStore.accountSource === WALLET_CONSTS.AppWallet.FearlessWallet);
     } catch (error) {

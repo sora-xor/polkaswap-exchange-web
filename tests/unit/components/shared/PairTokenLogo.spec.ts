@@ -1,6 +1,12 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
+const TokenLogoStub = vi.hoisted(() => ({
+  name: 'TokenLogoStub',
+  props: ['token', 'size'],
+  template: '<div class="token-logo-stub" :data-size="size"></div>',
+}));
+
 const LogoSize = vi.hoisted(
   () =>
     ({
@@ -13,12 +19,12 @@ const LogoSize = vi.hoisted(
     }) as const
 );
 
+vi.mock('@/shared/ui/async', () => ({
+  createAsyncComponent: vi.fn(() => TokenLogoStub),
+}));
+
 vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({
-  default: {
-    name: 'TokenLogoStub',
-    props: ['token', 'size'],
-    template: '<div class="token-logo-stub" :data-size="size"></div>',
-  },
+  default: TokenLogoStub,
 }));
 
 // Import component after mocking dependencies

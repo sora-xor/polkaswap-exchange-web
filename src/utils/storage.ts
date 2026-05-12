@@ -1,6 +1,6 @@
-import { Storage } from '@sora-substrate/sdk';
+import { Storage } from '@/lib/substrate/sdk/storage';
 
-import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';
+import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/storage';
 
 // Keep storage self contained to avoid circular imports with the wallet bundle.
 export const settingsStorage = new Storage('dexSettings');

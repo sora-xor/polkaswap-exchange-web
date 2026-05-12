@@ -1,4 +1,4 @@
-import { BridgeChildPages, PageNames } from '@/consts';
+import { BridgeChildPages, PageNames } from '@/consts/navigation';
 import { getReferralActionParam } from '@/shared/navigation/referralAction';
 
 import type { Nullable } from '@/types/common';
@@ -14,6 +14,7 @@ type InvitationDecision = {
   persistReferral?: string;
   redirect?: RedirectDecision;
 };
+type MaybePromise<T> = T | Promise<T>;
 
 const normalizeReferrerParam = (value: unknown): Nullable<string> => {
   if (Array.isArray(value)) {
@@ -27,7 +28,7 @@ export const shouldResetBridgeHistory = (prev: Nullable<PageNames>, current: Pag
   return prev !== PageNames.BridgeTransaction && current === PageNames.BridgeTransactionsHistory;
 };
 
-export const resolveInvitationDecision = ({
+export const resolveInvitationDecision = async ({
   isInvitationRoute,
   referrerParam,
   isLoggedIn,
@@ -36,8 +37,8 @@ export const resolveInvitationDecision = ({
   isInvitationRoute: boolean;
   referrerParam: unknown;
   isLoggedIn: boolean;
-  validateAddress: (address?: Nullable<string>) => boolean;
-}): InvitationDecision => {
+  validateAddress: (address?: Nullable<string>) => MaybePromise<boolean>;
+}): Promise<InvitationDecision> => {
   if (!isInvitationRoute) {
     return {};
   }
@@ -45,7 +46,7 @@ export const resolveInvitationDecision = ({
   const address = normalizeReferrerParam(referrerParam);
   const decision: InvitationDecision = {};
 
-  if (validateAddress(address)) {
+  if (await validateAddress(address)) {
     decision.persistReferral = address as string;
   }
 

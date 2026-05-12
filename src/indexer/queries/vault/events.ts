@@ -1,15 +1,13 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import type { VaultEvent } from '@/modules/vault/types';
 import type { FetchVariables } from '@/types/indexers';
 
-import type { SubsquidQueryResponse } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
 import type { ConnectionQueryResponse, VaultEventBaseEntity } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
-const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<VaultEventBaseEntity>>`
+const PolkaswapVaultDetailsQuery = gql<ConnectionQueryResponse<VaultEventBaseEntity>>`
   query VaultDetailsQuery($first: Int = null, $offset: Int = null, $filter: VaultEventFilter) {
     data: vaultEvents(first: $first, offset: $offset, filter: $filter, orderBy: [TIMESTAMP_DESC, ID_DESC]) {
       pageInfo {
@@ -29,21 +27,7 @@ const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<VaultEventBaseEnti
   }
 `;
 
-const SubsquidVaultDetailsQuery = gql<SubsquidQueryResponse<VaultEventBaseEntity>>`
-  query VaultDetailsQuery($first: Int = null, $offset: Int = null, $filter: VaultEventWhereInput) {
-    info: vaultEventsConnection(first: 0, where: $filter, orderBy: [timestamp_DESC, id_DESC]) {
-      totalCount
-    }
-    nodes: vaultEvents(limit: $first, offset: $offset, where: $filter, orderBy: [timestamp_DESC, id_DESC]) {
-      id
-      amount
-      type
-      timestamp
-    }
-  }
-`;
-
-const subqueryVaultEventsFilter = (vaultId: string | number, fromTimestamp?: number) => {
+const polkaswapVaultEventsFilter = (vaultId: string | number, fromTimestamp?: number) => {
   const filter: any = { vaultId: { equalTo: String(vaultId) } };
 
   if (fromTimestamp) filter.timestamp = { greaterThan: fromTimestamp };
@@ -63,7 +47,6 @@ export async function fetchVaultEvents(variables: FetchVariables): Promise<{
   totalCount: number;
   items: VaultEvent[];
 }> {
-  const indexer = getCurrentIndexer();
   const { id, first, offset, fromTimestamp } = variables;
 
   let totalCount = 0;
@@ -71,29 +54,17 @@ export async function fetchVaultEvents(variables: FetchVariables): Promise<{
 
   if (!id) return { totalCount, items };
 
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const filter = subqueryVaultEventsFilter(id, fromTimestamp);
-      const variables = { first, offset, filter };
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const response = await subqueryIndexer.services.explorer.fetchEntities(SubqueryVaultDetailsQuery, variables);
-      if (response) {
-        totalCount = response.totalCount;
-        items = response.edges.map((edge) => parseVaultEvents(edge.node));
-      }
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      const filter = subqueryVaultEventsFilter(id, fromTimestamp);
-      const variables = { first, offset, filter };
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const response = await subsquidIndexer.services.explorer.fetchEntities(SubsquidVaultDetailsQuery, variables);
-      if (response) {
-        totalCount = response.totalCount;
-        items = response.nodes.map((edge) => parseVaultEvents(edge));
-      }
-      break;
-    }
+  const filter = polkaswapVaultEventsFilter(id, fromTimestamp);
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const response = await polkaswapIndexer.services.explorer.fetchEntities(PolkaswapVaultDetailsQuery, {
+    first,
+    offset,
+    filter,
+  });
+
+  if (response) {
+    totalCount = response.totalCount;
+    items = response.edges.map((edge) => parseVaultEvents(edge.node));
   }
 
   return { totalCount, items };

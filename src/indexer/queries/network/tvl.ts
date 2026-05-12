@@ -1,5 +1,4 @@
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
 import { gql } from '@urql/core';
 
@@ -14,7 +13,7 @@ export type ChartData = {
   value: number;
 };
 
-const SubqueryNetworkTvlQuery = gql<ConnectionQueryResponse<NetworkSnapshotEntity>>`
+const PolkaswapNetworkTvlQuery = gql<ConnectionQueryResponse<NetworkSnapshotEntity>>`
   query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     data: networkSnapshots(
       after: $after
@@ -42,27 +41,6 @@ const SubqueryNetworkTvlQuery = gql<ConnectionQueryResponse<NetworkSnapshotEntit
   }
 `;
 
-const SubsquidNetworkTvlQuery = gql<ConnectionQueryResponse<NetworkSnapshotEntity>>`
-  query NetworkTvlQuery($after: String, $type: SnapshotType, $from: Int, $to: Int) {
-    data: networkSnapshotsConnection(
-      after: $after
-      orderBy: timestamp_DESC
-      where: { AND: [{ type_eq: $type }, { timestamp_lte: $from }, { timestamp_gte: $to }, { liquidityUSD_gt: "0" }] }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          timestamp
-          liquidityUSD
-        }
-      }
-    }
-  }
-`;
-
 const parse = (node: NetworkSnapshotEntity): ChartData => {
   const value = +node.liquidityUSD;
 
@@ -73,32 +51,11 @@ const parse = (node: NetworkSnapshotEntity): ChartData => {
 };
 
 export async function fetchData(from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
-  const indexer = getCurrentIndexer();
-  let data: Nullable<ChartData[]>;
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      data = await retryOnEmptyResult(
-        async () =>
-          subqueryIndexer.services.explorer.fetchAllEntities(SubqueryNetworkTvlQuery, { from, to, type }, parse),
-        (value) => !value?.length
-      );
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      data = await retryOnEmptyResult(
-        async () =>
-          subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
-            SubsquidNetworkTvlQuery,
-            { from, to, type },
-            parse
-          ),
-        (value) => !value?.length
-      );
-      break;
-    }
-  }
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const data = await retryOnEmptyResult(
+    async () => polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapNetworkTvlQuery, { from, to, type }, parse),
+    (value) => !value?.length
+  );
 
   return data ?? [];
 }

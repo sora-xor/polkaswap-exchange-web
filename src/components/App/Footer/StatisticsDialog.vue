@@ -31,7 +31,7 @@ const visibility = computed({
 const indexers = computed<Indexer[]>(() => {
   const indexersData = settingsStore.indexers as Record<IndexerType, IndexerState>;
 
-  return [IndexerType.SUBQUERY].map((type) => {
+  return [IndexerType.POLKASWAP].map((type) => {
     const data = indexersData?.[type] ?? {};
     return {
       name: 'Polkaswap Indexer',

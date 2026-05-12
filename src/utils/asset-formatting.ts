@@ -1,4 +1,4 @@
-import { FPNumber, type CodecString } from '@sora-substrate/sdk';
+import { FPNumber, type CodecString } from '@sora-substrate/math';
 
 import type { Nullable } from '@/types/common';
 

@@ -154,11 +154,14 @@ function getElementSize(el?: Element | null): Size {
   };
 }
 
+function isElement(value: unknown): value is Element {
+  return typeof Element !== 'undefined' && value instanceof Element;
+}
+
 function resolveContainerElement(): Element | undefined {
   const el = container.value;
-  if (!el) return instance?.proxy?.$el as Element | undefined;
-  if (el.$el) return el.$el as Element;
-  return el as Element;
+  const candidate = el?.$el ?? el ?? instance?.proxy?.$el;
+  return isElement(candidate) ? candidate : undefined;
 }
 
 function getWidgetSize(): Size {

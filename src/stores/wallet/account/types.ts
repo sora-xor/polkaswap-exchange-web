@@ -1,5 +1,5 @@
 import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
-import type { FiatPriceObject } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
+import type { FiatPriceObject } from '@/lib/soraneo-wallet/src/services/indexer/types';
 import type { Wallet } from '@/lib/soraneo-wallet/src/services/wallet/types';
 import type { Book, AddressKeyMapping, KeyringPair$Json } from '@/lib/soraneo-wallet/src/types/common';
 import type {

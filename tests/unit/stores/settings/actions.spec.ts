@@ -18,7 +18,7 @@ const settingsStorageStub = vi.hoisted(() => ({
   remove: vi.fn(),
 }));
 const walletConstsStub = vi.hoisted(() => ({
-  IndexerType: { SUBQUERY: 'subquery', SUBSQUID: 'subsquid' },
+  IndexerType: { POLKASWAP: 'polkaswap' },
   SoraNetwork: { Test: 'test', Prod: 'prod' },
 }));
 const walletTypesStub = vi.hoisted(() => ({}));
@@ -53,7 +53,7 @@ const walletStoreState = vi.hoisted(() => ({
   alerts: [] as Array<Record<string, unknown>>,
   allowTopUpAlert: false,
   indexers: {} as Record<string, unknown>,
-  indexerType: 'subquery',
+  indexerType: 'polkaswap',
   addPriceAlert: vi.fn(),
   editPriceAlert: vi.fn(),
   removePriceAlert: vi.fn(),
@@ -106,8 +106,10 @@ vi.mock('@/lang', () => ({
   setI18nLocale: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('@/utils', () => ({
+vi.mock('@/utils/documentTitle', () => ({
   updateDocumentTitle: vi.fn(),
+}));
+vi.mock('@/utils/fp-locale', () => ({
   updateFpNumberLocale: vi.fn(),
 }));
 
@@ -185,7 +187,8 @@ describe('settings store actions', () => {
   it('updates language and related intl helpers', async () => {
     const settingsStore = useSettingsStore();
     const { setDayJsLocale, setI18nLocale } = await import('@/lang');
-    const { updateDocumentTitle, updateFpNumberLocale } = await import('@/utils');
+    const { updateDocumentTitle } = await import('@/utils/documentTitle');
+    const { updateFpNumberLocale } = await import('@/utils/fp-locale');
 
     await settingsStore.setLanguage('ru');
 

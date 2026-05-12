@@ -1,62 +1,62 @@
 <template>
   <referrals-confirm-invite-user
-    v-if="showWalletOverlays"
+    v-if="showWalletOverlays && showConfirmInviteUser"
     v-model:visible="showConfirmInviteUser"
   ></referrals-confirm-invite-user>
   <bridge-transfer-notification v-if="showWalletOverlays"></bridge-transfer-notification>
-  <app-mobile-popup v-model:visible="showSoraMobilePopup"></app-mobile-popup>
+  <app-mobile-popup v-if="showSoraMobilePopup" v-model:visible="showSoraMobilePopup"></app-mobile-popup>
   <app-browser-notifs-enable-dialog
-    v-if="showWalletOverlays"
+    v-if="showWalletOverlays && showBrowserNotifPopup"
     v-model:visible="showBrowserNotifPopup"
     @set-dark-page="setDarkPage"
   ></app-browser-notifs-enable-dialog>
   <app-browser-notifs-blocked-dialog
-    v-if="showWalletOverlays"
+    v-if="showWalletOverlays && showBrowserNotifBlockedPopup"
     v-model:visible="showBrowserNotifBlockedPopup"
   ></app-browser-notifs-blocked-dialog>
   <app-browser-notifs-blocked-rotate-phone
-    v-if="showWalletOverlays"
+    v-if="showWalletOverlays && orientationWarningVisible"
     v-model:visible="orientationWarningVisible"
   ></app-browser-notifs-blocked-rotate-phone>
   <app-browser-mst-notification-trxs
-    v-if="showWalletOverlays"
+    v-if="showWalletOverlays && showNotificationMST"
     v-model:visible="showNotificationMST"
   ></app-browser-mst-notification-trxs>
   <notification-enabling-page v-if="showNotifsDarkPage">
     {{ t('browserNotificationDialog.pointer') }}
   </notification-enabling-page>
-  <alerts></alerts>
+  <alerts v-if="showAlertSettingsPopup"></alerts>
   <confirm-dialog
+    v-if="isSignTxDialogVisible && chainApi"
     :chain-api="chainApi"
     :account="account"
     :visibility="isSignTxDialogVisible"
     :set-visibility="setSignTxDialogVisibility"
   ></confirm-dialog>
-  <select-sora-account-dialog></select-sora-account-dialog>
+  <select-sora-account-dialog v-if="showSoraAccountDialog"></select-sora-account-dialog>
   <app-browser-notifs-local-storage-override
-    v-if="showWalletOverlays"
+    v-if="showWalletOverlays && showErrorLocalStorageExceed"
     v-model:visible="showErrorLocalStorageExceed"
     @delete-data-local-storage="clearLocalStorage"
   ></app-browser-notifs-local-storage-override>
 </template>
 
 <script setup lang="ts">
-import Alerts from '@/components/App/Alerts/Alerts.vue';
-import AppBrowserNotifsBlockedDialog from '@/components/App/BrowserNotification/BlockedDialog.vue';
-import AppBrowserNotifsBlockedRotatePhone from '@/components/App/BrowserNotification/BlockedRotatePhone.vue';
-import AppBrowserNotifsEnableDialog from '@/components/App/BrowserNotification/EnableDialog.vue';
-import AppBrowserNotifsLocalStorageOverride from '@/components/App/BrowserNotification/LocalStorageOverride.vue';
-import AppBrowserMstNotificationTrxs from '@/components/App/BrowserNotification/MstNotificationTrxs.vue';
-import AppMobilePopup from '@/components/App/MobilePopup.vue';
-import SelectSoraAccountDialog from '@/components/shared/Dialog/SelectSoraAccount.vue';
-
 import { useAppShellContext } from './context';
-import { BridgeTransferNotification, ReferralsConfirmInviteUser } from './components';
-import WalletComponentNotificationEnablingPage from '@/lib/soraneo-wallet/src/components/NotificationEnablingPage.vue';
-import WalletComponentConfirmDialog from '@/lib/soraneo-wallet/src/components/ConfirmDialog.vue';
-
-const NotificationEnablingPage = WalletComponentNotificationEnablingPage ?? 'div';
-const ConfirmDialog = WalletComponentConfirmDialog ?? 'div';
+import {
+  Alerts,
+  AppBrowserMstNotificationTrxs,
+  AppBrowserNotifsBlockedDialog,
+  AppBrowserNotifsBlockedRotatePhone,
+  AppBrowserNotifsEnableDialog,
+  AppBrowserNotifsLocalStorageOverride,
+  AppMobilePopup,
+  BridgeTransferNotification,
+  ConfirmDialog,
+  NotificationEnablingPage,
+  ReferralsConfirmInviteUser,
+  SelectSoraAccountDialog,
+} from './components';
 
 const {
   account,
@@ -66,12 +66,14 @@ const {
   orientationWarningVisible,
   setDarkPage,
   setSignTxDialogVisibility,
+  showAlertSettingsPopup,
   showBrowserNotifBlockedPopup,
   showBrowserNotifPopup,
   showConfirmInviteUser,
   showErrorLocalStorageExceed,
   showNotifsDarkPage,
   showNotificationMST,
+  showSoraAccountDialog,
   showSoraMobilePopup,
   showWalletOverlays,
   t,

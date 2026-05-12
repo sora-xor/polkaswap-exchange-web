@@ -9,7 +9,7 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     assetsToNotifyQueue: [],
     ceresFiatValuesUsage: false,
-    indexerType: 'subsquid',
+    indexerType: 'polkaswap',
     currency: 'XOR',
     currencies: [{ key: 'USD' }],
     isSignTxDialogVisible: false,

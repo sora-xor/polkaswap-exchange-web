@@ -112,6 +112,11 @@ vi.mock('@sora-substrate/sdk', () => {
     },
   };
 });
+vi.mock('@sora-substrate/math', async () => {
+  const { FPNumber } = await import('@sora-substrate/sdk');
+
+  return { FPNumber };
+});
 vi.mock('@sora-substrate/sdk/build/assets', () => ({ isNativeAsset: () => false }));
 vi.mock('@sora-substrate/sdk/build/assets/consts', () => ({
   XOR: { address: 'xor' },
@@ -266,7 +271,7 @@ let FPNumber: any;
 
 beforeAll(async () => {
   const utils = await import('@/utils');
-  FPNumber = (await import('@sora-substrate/sdk')).FPNumber;
+  FPNumber = (await import('@sora-substrate/math')).FPNumber;
   getMaxBalance = utils.getMaxBalance;
   getMaxValue = utils.getMaxValue;
   isMaxButtonAvailable = utils.isMaxButtonAvailable;

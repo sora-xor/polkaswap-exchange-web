@@ -52,7 +52,7 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
       FormattedAmount: { template: '<div />' },
       TokenAddress: { template: '<div />' },
     },
-    SUBQUERY_TYPES: {
+    POLKASWAP_TYPES: {
       SnapshotTypes: {},
     },
     WALLET_CONSTS: {
@@ -61,8 +61,7 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
         NonFungibleToken: 'nft',
       },
       IndexerType: {
-        SUBQUERY: 'SUBQUERY',
-        SUBSQUID: 'SUBSQUID',
+        POLKASWAP: 'POLKASWAP',
       },
     },
     api: {

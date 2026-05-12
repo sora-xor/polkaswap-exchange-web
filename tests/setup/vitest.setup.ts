@@ -6,8 +6,7 @@ import { mockWalletRuntime } from '@tests/stubs/mockWalletRuntime';
 const fallbackWalletConsts = {
   TranslationConsts: {},
   IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
+    POLKASWAP: 'polkaswap',
   },
 } as const;
 

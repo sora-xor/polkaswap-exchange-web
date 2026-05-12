@@ -1,6 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { getCurrentIndexer, SubqueryIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import type {
@@ -23,7 +22,7 @@ const transformSnapshot = (item: AccountLiquiditySnapshotEntity): LiquidityItem 
   return { timestamp, poolTokens, liquidityUSD };
 };
 
-const subqueryAccountLiquiditySnapshotFilter = (accountLiquidityId: string) => {
+const polkaswapAccountLiquiditySnapshotFilter = (accountLiquidityId: string) => {
   return {
     accountLiquidityId: {
       equalTo: accountLiquidityId,
@@ -31,8 +30,8 @@ const subqueryAccountLiquiditySnapshotFilter = (accountLiquidityId: string) => {
   };
 };
 
-const SubqueryAccountLiquiditySnapshotsQuery = gql<ConnectionQueryResponse<AccountLiquiditySnapshotEntity>>`
-  query SubqueryAccountLiquiditySnapshotsQuery(
+const PolkaswapAccountLiquiditySnapshotsQuery = gql<ConnectionQueryResponse<AccountLiquiditySnapshotEntity>>`
+  query PolkaswapAccountLiquiditySnapshotsQuery(
     $after: Cursor = ""
     $first: Int = null
     $filter: AccountLiquiditySnapshotFilter
@@ -59,23 +58,14 @@ export async function fetchAccountLiquidityData(
   first?: number,
   after?: string | null
 ): Promise<Nullable<ConnectionQueryResponseData<LiquidityItem>>> {
-  const indexer = getCurrentIndexer();
   const id = [accountId, poolId].join('-');
-
-  let data!: Nullable<ConnectionQueryResponseData<AccountLiquiditySnapshotEntity>>;
-
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      const filter = subqueryAccountLiquiditySnapshotFilter(id);
-      const variables = { filter, first, after };
-      data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryAccountLiquiditySnapshotsQuery, variables);
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      break;
-    }
-  }
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const filter = polkaswapAccountLiquiditySnapshotFilter(id);
+  const data = await polkaswapIndexer.services.explorer.fetchEntities(PolkaswapAccountLiquiditySnapshotsQuery, {
+    filter,
+    first,
+    after,
+  });
 
   if (!data) return null;
 

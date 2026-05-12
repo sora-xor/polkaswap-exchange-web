@@ -1,16 +1,41 @@
-import { plugin as soramitsuUIPlugin } from '@soramitsu-ui/ui';
 import buttonDirective from '@/directives/button';
 import loadingDirective from '@/directives/loading';
-import SIconCompat from '@/lib/soramitsu-ui/components/Icon/SIcon.vue';
-import SMenuCompat from '@/lib/soramitsu-ui/components/Menu/SMenu.vue';
-import SMenuItemCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItem.vue';
-import SMenuItemGroupCompat from '@/lib/soramitsu-ui/components/Menu/SMenuItemGroup.vue';
-import STabCompat from '@/lib/soramitsu-ui/components/Tabs/STab.vue';
-import STabsCompat from '@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue';
+import SCard from '@/lib/soramitsu-ui/components/Card/SCard.vue';
+import SDesignSystemProvider from '@/lib/soramitsu-ui/components/DesignSystemProvider/SDesignSystemProvider.vue';
+import SScrollbar from '@/lib/soramitsu-ui/components/Scrollbar/SScrollbar.vue';
+import { createAsyncComponent } from '@/shared/ui/async';
 
 import type { App, Component, Directive } from 'vue';
 
 import '@soramitsu-ui/ui/styles';
+
+type ComponentModule = { default: Component };
+type ComponentLoader = () => Promise<ComponentModule>;
+
+const soramitsuVueComponentModules = import.meta.glob<ComponentModule>([
+  '../lib/soramitsu-ui/components/**/S*.vue',
+  '!../lib/soramitsu-ui/components/JsonInput/**',
+]);
+
+const soramitsuScriptComponentModules: Record<string, ComponentLoader> = {
+  SNotificationsProvider: () => import('@/lib/soramitsu-ui/components/Notifications/SNotificationsProvider'),
+  SPopover: () => import('@/lib/soramitsu-ui/components/Popover/SPopover'),
+  SPopoverPanel: () => import('@/lib/soramitsu-ui/components/Popover/SPopoverPanel'),
+  STableColumn: () => import('@/lib/soramitsu-ui/components/Table/STableColumn'),
+};
+
+const getComponentNameFromPath = (path: string): string => {
+  const filename = path.split('/').pop() ?? '';
+  return filename.replace(/\.(vue|ts)$/, '');
+};
+
+const toKebabCase = (name: string): string => {
+  return name
+    .replace(/([A-Z])([A-Z][a-z])/g, '$1-$2')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/\s+/g, '-')
+    .toLowerCase();
+};
 
 const registerCompat = (app: App, name: string, component: Component): void => {
   const existing = app.component(name);
@@ -45,29 +70,42 @@ const registerDirective = (app: App, name: string, directive: Directive): void =
   app.directive(name, directive);
 };
 
+const registerIfAbsent = (app: App, name: string, component: Component): void => {
+  if (!app.component(name)) {
+    app.component(name, component);
+  }
+};
+
+const registerAsyncComponent = (app: App, name: string, loader: ComponentLoader): void => {
+  const component = createAsyncComponent(loader);
+  registerIfAbsent(app, name, component);
+  registerIfAbsent(app, toKebabCase(name), component);
+};
+
+const registerAsyncCompat = (app: App, name: string, loader: ComponentLoader): void => {
+  registerCompat(app, name, createAsyncComponent(loader));
+};
+
+const registerLazySoramitsuComponents = (app: App): void => {
+  Object.entries(soramitsuVueComponentModules).forEach(([path, loader]) => {
+    registerAsyncComponent(app, getComponentNameFromPath(path), loader);
+  });
+
+  Object.entries(soramitsuScriptComponentModules).forEach(([name, loader]) => {
+    registerAsyncComponent(app, name, loader);
+  });
+};
+
 export function install(app: App): void {
-  app.use(soramitsuUIPlugin());
+  registerLazySoramitsuComponents(app);
+  registerCompat(app, 'SCard', SCard);
+  registerCompat(app, 's-card', SCard);
+  registerCompat(app, 'SDesignSystemProvider', SDesignSystemProvider);
+  registerCompat(app, 's-design-system-provider', SDesignSystemProvider);
+  registerCompat(app, 'SScrollbar', SScrollbar);
+  registerCompat(app, 's-scrollbar', SScrollbar);
   registerDirective(app, 'loading', loadingDirective);
   registerDirective(app, 'button', buttonDirective);
-  registerCompat(app, 'SIcon', SIconCompat);
-
-  registerCompat(app, 's-icon', SIconCompat);
-  registerCompat(app, 'SMenu', SMenuCompat);
-
-  registerCompat(app, 's-menu', SMenuCompat);
-  registerCompat(app, 'SMenuItem', SMenuItemCompat);
-
-  registerCompat(app, 's-menu-item', SMenuItemCompat);
-  registerCompat(app, 'SMenuItemGroup', SMenuItemGroupCompat);
-
-  registerCompat(app, 's-menu-item-group', SMenuItemGroupCompat);
-  registerCompat(app, 'STabs', STabsCompat);
-
-  registerCompat(app, 's-tabs', STabsCompat);
-  registerCompat(app, 'STabsPanel', STabsCompat);
-
-  registerCompat(app, 's-tabs-panel', STabsCompat);
-  registerCompat(app, 'STab', STabCompat);
-
-  registerCompat(app, 's-tab', STabCompat);
+  registerAsyncCompat(app, 'STabs', () => import('@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue'));
+  registerAsyncCompat(app, 's-tabs', () => import('@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue'));
 }

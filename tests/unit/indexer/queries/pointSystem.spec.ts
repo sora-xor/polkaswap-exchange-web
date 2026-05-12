@@ -13,15 +13,12 @@ const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   request: vi.fn(),
   fetchAllEntities: vi.fn(),
-  fetchAllEntitiesConnection: vi.fn(),
   fetchEntities: vi.fn(),
-  fetchEntitiesConnection: vi.fn(),
 }));
 
 vi.mock('@/consts', () => ({
   IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
+    POLKASWAP: 'polkaswap',
   },
 }));
 
@@ -35,12 +32,12 @@ describe('point system indexer queries', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches SubQuery bridge data and classifies incoming and outgoing transfers', async () => {
+  it('fetches Polkaswap bridge data and classifies incoming and outgoing transfers', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse({ data: { amount: '10', assetId: 'xor', to: 'account-1' } }),
       parse({ data: { amount: '2.5', assetId: 'eth', sidechainAddress: '0xabc' } }),
     ]);
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     const result = await fetchBridgeData(100, 200, 'account-1');
 
@@ -53,7 +50,6 @@ describe('point system indexer queries', () => {
       },
       expect.any(Function)
     );
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
     expect(result).toHaveLength(2);
     expect(result[0]).toMatchObject({
       assetId: 'xor',
@@ -67,33 +63,11 @@ describe('point system indexer queries', () => {
     expect(result[1]?.amount.toString()).toBe('2.5');
   });
 
-  it('fetches Subsquid bridge data through connection pagination and returns empty fallback data', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer('subsquid');
-
-    await expect(fetchBridgeData(10, 20, 'account-2')).resolves.toEqual([]);
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        start: 10,
-        end: 20,
-        account: 'account-2',
-      },
-      expect.any(Function)
-    );
-  });
-
-  it('returns empty bridge data for unsupported indexer types without making requests', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchBridgeData(10, 20, 'account-1')).resolves.toEqual([]);
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
-  });
-
-  it('fetches SubQuery activity counts and falls back to zero when no count is returned', async () => {
+  
+  
+  it('fetches Polkaswap activity counts and falls back to zero when no count is returned', async () => {
     indexerMocks.fetchEntities.mockResolvedValue({ totalCount: 7 });
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     await expect(fetchCount(100, 200, 'account-1', CountType.Swap)).resolves.toBe(7);
     expect(indexerMocks.fetchEntities).toHaveBeenCalledWith(expect.any(Object), {
@@ -107,30 +81,12 @@ describe('point system indexer queries', () => {
     await expect(fetchCount(100, 200, 'account-1', CountType.PoolDeposit)).resolves.toBe(0);
   });
 
-  it('fetches Subsquid activity counts and returns zero for unsupported indexers', async () => {
-    indexerMocks.fetchEntitiesConnection.mockResolvedValue({ totalCount: 11 });
-    indexerMocks.currentIndexer = createIndexer('subsquid');
-
-    await expect(fetchCount(300, 400, 'account-2', CountType.PoolWithdraw)).resolves.toBe(11);
-    expect(indexerMocks.fetchEntitiesConnection).toHaveBeenCalledWith(expect.any(Object), {
-      start: 300,
-      end: 400,
-      account: 'account-2',
-    });
-
-    vi.clearAllMocks();
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchCount(300, 400, 'account-2', CountType.PoolWithdraw)).resolves.toBe(0);
-    expect(indexerMocks.fetchEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchEntitiesConnection).not.toHaveBeenCalled();
-  });
-
-  it('fetches and parses SubQuery account metadata into versioned point calculations', async () => {
+  
+  it('fetches and parses Polkaswap account metadata into versioned point calculations', async () => {
     indexerMocks.request.mockResolvedValue({
       data: createAccountMetaEntity(),
     });
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     const result = await fetchAccountMeta('account-1');
 
@@ -147,14 +103,10 @@ describe('point system indexer queries', () => {
     expect(result?.points[0]?.bridge.incomingUSD.toString()).toBe('17');
   });
 
-  it('returns null for account metadata when the indexer is unsupported or throws', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchAccountMeta('account-1')).resolves.toBeNull();
-
+  it('returns null for account metadata when the request throws', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     indexerMocks.request.mockRejectedValue(new Error('query failed'));
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     await expect(fetchAccountMeta('account-1')).resolves.toBeNull();
     expect(consoleErrorSpy).toHaveBeenCalled();
@@ -165,7 +117,7 @@ describe('point system indexer queries', () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createAccountPointSystemEntity()),
     ]);
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     const result = await fetchAccountPointSystems('account-1');
 
@@ -182,15 +134,10 @@ describe('point system indexer queries', () => {
     expect(result?.[0]?.burned.amountUSD.toString()).toBe('4');
   });
 
-  it('returns null for account point systems when the indexer is unsupported or throws', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchAccountPointSystems('account-1')).resolves.toBeNull();
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-
+  it('returns null for account point systems when the request throws', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     indexerMocks.fetchAllEntities.mockRejectedValue(new Error('point query failed'));
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     await expect(fetchAccountPointSystems('account-1')).resolves.toBeNull();
     expect(consoleErrorSpy).toHaveBeenCalled();
@@ -204,7 +151,7 @@ describe('point system indexer queries', () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createAccountPointSystemEntity()),
     ]);
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     const result = await fetchAccountPoints('account-1');
 
@@ -218,7 +165,7 @@ describe('point system indexer queries', () => {
       data: createAccountMetaEntity(),
     });
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     const result = await fetchAccountPoints('account-1');
 
@@ -229,7 +176,7 @@ describe('point system indexer queries', () => {
   it('returns null account points when account metadata is unavailable', async () => {
     indexerMocks.request.mockResolvedValue(null);
     indexerMocks.fetchAllEntities.mockResolvedValue([createAccountPointSystemEntity()]);
-    indexerMocks.currentIndexer = createIndexer('subquery');
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
     await expect(fetchAccountPoints('account-1')).resolves.toBeNull();
   });
@@ -241,9 +188,7 @@ const createIndexer = (type: unknown) => ({
     explorer: {
       request: indexerMocks.request,
       fetchAllEntities: indexerMocks.fetchAllEntities,
-      fetchAllEntitiesConnection: indexerMocks.fetchAllEntitiesConnection,
       fetchEntities: indexerMocks.fetchEntities,
-      fetchEntitiesConnection: indexerMocks.fetchEntitiesConnection,
     },
   },
 });

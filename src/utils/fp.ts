@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@sora-substrate/math';
 
 /**
  * Adjusts an `FPNumber` to the specified precision by leveraging `toFixed`.

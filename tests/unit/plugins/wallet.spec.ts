@@ -28,11 +28,16 @@ const { localStorageMock } = vi.hoisted(() => {
 
 const dialogBaseComponent = { name: 'DialogBaseMock' };
 const installWalletPlugins = vi.fn();
+const createAsyncComponent = vi.fn((loader: () => Promise<unknown>) => loader);
 const WALLET_PLUGIN_TEST_TIMEOUT_MS = 20_000;
 
 vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
   __esModule: true,
   default: dialogBaseComponent,
+}));
+
+vi.mock('@/shared/ui/async', () => ({
+  createAsyncComponent,
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/plugins', () => ({
@@ -51,6 +56,7 @@ describe('wallet plugin', () => {
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
+    installWalletPlugins.mockClear();
   });
 
   afterAll(() => {
@@ -75,10 +81,16 @@ describe('wallet plugin', () => {
 
       install(app, { pinia: createPinia() });
 
-      expect(installWalletPlugins).toHaveBeenCalledWith(app);
+      expect(installWalletPlugins).not.toHaveBeenCalled();
+      await vi.waitFor(() => {
+        expect(installWalletPlugins).toHaveBeenCalledWith(app);
+      });
       expect(app.use).not.toHaveBeenCalled();
-      expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
-      expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseComponent);
+      const dialogBaseLoader = componentRegistry.get('DialogBase') as () => Promise<unknown>;
+
+      expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseLoader);
+      expect(app.component).toHaveBeenCalledWith('dialog-base', dialogBaseLoader);
+      await expect(dialogBaseLoader()).resolves.toMatchObject({ default: dialogBaseComponent });
     },
     WALLET_PLUGIN_TEST_TIMEOUT_MS
   );
@@ -101,9 +113,11 @@ describe('wallet plugin', () => {
 
       install(app, { store: compatStore, pinia: createPinia() } as any);
 
-      expect(installWalletPlugins).toHaveBeenCalledWith(app);
+      await vi.waitFor(() => {
+        expect(installWalletPlugins).toHaveBeenCalledWith(app);
+      });
       expect(app.use).not.toHaveBeenCalled();
-      expect(app.component).toHaveBeenCalledWith('DialogBase', dialogBaseComponent);
+      expect(app.component).toHaveBeenCalledWith('DialogBase', expect.any(Function));
     },
     WALLET_PLUGIN_TEST_TIMEOUT_MS
   );

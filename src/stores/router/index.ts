@@ -1,9 +1,18 @@
 import { defineStore } from 'pinia';
 
 import type { Nullable } from '@/types/common';
-import { RouteNames } from '@/consts';
-import { useWalletStore } from '@/stores/wallet';
+import { RouteNames } from '@/consts/navigation';
 import type { RouterParams, RouterState } from './types';
+
+type WalletStoreModule = typeof import('@/stores/wallet');
+
+let walletStoreModulePromise: Promise<WalletStoreModule> | null = null;
+
+const getWalletStore = async () => {
+  walletStoreModulePromise ??= import('@/stores/wallet');
+  const { useWalletStore } = await walletStoreModulePromise;
+  return useWalletStore();
+};
 
 const buildInitialState = (): RouterState => ({
   current: null,
@@ -52,16 +61,16 @@ export const useRouterStore = defineStore('router', {
       this.prev = normalizeRouteName(route);
       this.prevParams = { ...params };
     },
-    back(): void {
-      const walletStore = useWalletStore();
+    async back(): Promise<void> {
+      const walletStore = await getWalletStore();
       const isLoggedIn = Boolean(walletStore.isLoggedIn);
       if (!isLoggedIn || !this.prev || [this.current, this.prev].includes(RouteNames.WalletConnection)) {
         return;
       }
       this.navigate({ name: this.prev, params: this.prevParams });
     },
-    checkCurrentRoute(): void {
-      const walletStore = useWalletStore();
+    async checkCurrentRoute(): Promise<void> {
+      const walletStore = await getWalletStore();
       const isLoggedIn = Boolean(walletStore.isLoggedIn);
       const accountRoute = RouteNames.Wallet;
       const connectionRoute = RouteNames.WalletConnection;

@@ -16,10 +16,12 @@
 import { provide } from 'vue';
 
 import AppShellLayout from './AppShellLayout.vue';
-import AppShellOverlays from './AppShellOverlays.vue';
 import { provideAppShellKey } from './context';
 import { useAppShell } from './useAppShell';
 import WalletComponentNotificationProvider from '@/lib/soraneo-wallet/src/components/NotificationProvider.vue';
+import { createAsyncComponent } from '@/shared/ui/async';
+
+const AppShellOverlays = createAsyncComponent(() => import('./AppShellOverlays.vue'));
 
 const shell = useAppShell();
 const NotificationProvider = WalletComponentNotificationProvider ?? 'div';

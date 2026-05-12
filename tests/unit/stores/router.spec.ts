@@ -75,40 +75,40 @@ describe('router store', () => {
     expect(routerStore.currentParams).toEqual({ foo: 'bar' });
   });
 
-  it('back navigates to previous wallet route when logged in', () => {
+  it('back navigates to previous wallet route when logged in', async () => {
     const routerStore = useRouterStore();
     routerStore.setRoute({ current: WalletRouteNames.CreateToken, prev: WalletRouteNames.Wallet });
     walletStoreMock.isLoggedIn = true;
 
-    routerStore.back();
+    await routerStore.back();
 
     expect(routerStore.current).toBe(WalletRouteNames.Wallet);
     expect(routerStore.prev).toBe(WalletRouteNames.CreateToken);
   });
 
-  it('checkCurrentRoute redirects to connection when logged out', () => {
+  it('checkCurrentRoute redirects to connection when logged out', async () => {
     const routerStore = useRouterStore();
     routerStore.setRoute({ current: WalletRouteNames.Wallet });
     walletStoreMock.isLoggedIn = false;
 
-    routerStore.checkCurrentRoute();
+    await routerStore.checkCurrentRoute();
 
     expect(routerStore.current).toBe(WalletRouteNames.WalletConnection);
     expect(routerStore.prev).toBe(WalletRouteNames.Wallet);
   });
 
-  it('checkCurrentRoute redirects to wallet when logged in from connection', () => {
+  it('checkCurrentRoute redirects to wallet when logged in from connection', async () => {
     const routerStore = useRouterStore();
     routerStore.setRoute({ current: WalletRouteNames.WalletConnection, prev: WalletRouteNames.Wallet });
     walletStoreMock.isLoggedIn = true;
 
-    routerStore.checkCurrentRoute();
+    await routerStore.checkCurrentRoute();
 
     expect(routerStore.current).toBe(WalletRouteNames.Wallet);
     expect(routerStore.prev).toBe(WalletRouteNames.WalletConnection);
   });
 
-  it('checkCurrentRoute restores the previous page when logging in from another page', () => {
+  it('checkCurrentRoute restores the previous page when logging in from another page', async () => {
     const routerStore = useRouterStore();
     routerStore.setRoute({
       current: WalletRouteNames.WalletConnection,
@@ -117,7 +117,7 @@ describe('router store', () => {
     });
     walletStoreMock.isLoggedIn = true;
 
-    routerStore.checkCurrentRoute();
+    await routerStore.checkCurrentRoute();
 
     expect(routerStore.current).toBe(PageNames.Pool);
     expect(routerStore.currentParams).toEqual({ foo: 'bar' });

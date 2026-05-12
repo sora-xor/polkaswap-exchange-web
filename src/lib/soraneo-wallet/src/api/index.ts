@@ -3,7 +3,7 @@
  * talks to the same Polkadot connection with the wallet-specific storage
  * bindings.
  */
-import { api, connection } from '@sora-substrate/sdk';
+import { api, connection } from '@/lib/substrate/sdk/api';
 
 import { storage } from '../util/storage';
 

@@ -19,8 +19,7 @@ const settingsStorageStub = vi.hoisted(() => ({
 const walletConstsStub = vi.hoisted(() => ({
   TranslationConsts: {},
   IndexerType: {
-    SUBQUERY: 'subquery',
-    SUBSQUID: 'subsquid',
+    POLKASWAP: 'polkaswap',
   },
   SoraNetwork: {
     Test: 'test',
@@ -87,9 +86,12 @@ vi.mock('@/lang', () => {
     setI18nLocale,
   };
 });
-vi.mock('@/utils', () => ({
+vi.mock('@/utils/documentTitle', () => ({
   __esModule: true,
   updateDocumentTitle: vi.fn(),
+}));
+vi.mock('@/utils/fp-locale', () => ({
+  __esModule: true,
   updateFpNumberLocale: vi.fn(),
 }));
 vi.mock('@/stores/wallet', () => ({

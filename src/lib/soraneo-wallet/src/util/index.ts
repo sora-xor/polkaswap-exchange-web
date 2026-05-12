@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@sora-substrate/math';
 import { KnownAssets, NativeAssets } from '@sora-substrate/sdk/build/assets/consts';
 
 import { resolveGlobalPinia } from '@/plugins/pinia';
@@ -19,7 +19,7 @@ import { FilterOptions } from '../types/common';
 import type { AccountIdentity } from '../types/common';
 import type { Currency } from '../types/currency';
 import type { RewardsAmountHeaderItem } from '../types/rewards';
-import type { WithKeyring, WithConnectionApi } from '@sora-substrate/sdk';
+import type { WithKeyring, WithConnectionApi } from '@/lib/substrate/sdk/apiAccount';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
 

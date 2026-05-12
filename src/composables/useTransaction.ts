@@ -1,4 +1,4 @@
-import { Operation, TransactionStatus, type HistoryItem } from '@sora-substrate/sdk';
+import { Operation, TransactionStatus, type HistoryItem } from '@/lib/substrate/sdk/types';
 import findLast from 'lodash/fp/findLast';
 import { computed } from 'vue';
 

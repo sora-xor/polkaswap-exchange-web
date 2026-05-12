@@ -55,4 +55,23 @@ describe('translationMissingHandler', () => {
 
     expect(telemetry.trackEventMock).toHaveBeenCalledTimes(2);
   });
+
+  it('normalizes browser locales to supported base locales without lodash startup helpers', async () => {
+    const { getSupportedLocale } = await loadModule();
+
+    expect(getSupportedLocale('en-AU' as any)).toBe('en');
+    expect(getSupportedLocale('zh-CN' as any)).toBe('zh-CN');
+    expect(getSupportedLocale('unsupported' as any)).toBe('en');
+  });
+
+  it('loads the default English catalog lazily', async () => {
+    const { default: i18n, setI18nLocale } = await loadModule();
+    const composer = i18n.global as any;
+
+    expect(composer.te('swapText')).toBe(false);
+
+    await setI18nLocale('en' as any);
+
+    expect(composer.te('swapText')).toBe(true);
+  });
 });

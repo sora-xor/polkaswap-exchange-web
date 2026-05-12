@@ -20,15 +20,11 @@ import { computed, useAttrs } from 'vue';
 
 import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 import { useTranslation } from '@/composables/useTranslation';
+import { createAsyncComponent } from '@/shared/ui/async';
 import { useWalletStore } from '@/stores/wallet';
-import { formatAddress } from '@/utils';
-import WalletComponentWalletAvatar from '@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue';
+import { formatAddress } from '@/utils/formatAddress';
 
-defineOptions({
-  components: {
-    WalletAvatar: WalletComponentWalletAvatar,
-  },
-});
+const WalletAvatar = createAsyncComponent(() => import('@/lib/soraneo-wallet/src/components/Account/WalletAvatar.vue'));
 
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;

@@ -31,7 +31,7 @@ const setup = (endpoint: Nullable<string> = null, supportsSubscriptions = true):
   const createExplorerClient = vi.fn(() => client);
 
   const explorer = new BaseExplorer({
-    type: IndexerType.SUBQUERY,
+    type: IndexerType.POLKASWAP,
     createExplorerClient,
     getStatus: () => ConnectionStatus.Available,
     setStatus,
@@ -58,7 +58,7 @@ const setupRetryExplorer = (payloads: MockPayload[]) => {
   }));
 
   const explorer = new BaseExplorer({
-    type: IndexerType.SUBQUERY,
+    type: IndexerType.POLKASWAP,
     createExplorerClient: createExplorerClient as never,
     getStatus: () => statuses[statuses.length - 1] ?? ConnectionStatus.Loading,
     setStatus: async (status) => {

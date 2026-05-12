@@ -1,4 +1,4 @@
-import { FPNumber, CodecString } from '@sora-substrate/sdk';
+import { FPNumber, type CodecString } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import debounce from 'lodash/debounce';
 import { watch } from 'vue';
@@ -6,17 +6,15 @@ import { watch } from 'vue';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
 import type { Currency, CurrencyFields } from '@/lib/soraneo-wallet/src/types/currency';
-import type { Route, RouteLocationNormalizedLoaded } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
-import { app, ExplorerType, type ExplorerLink, SoraNetwork, TranslationConsts } from '@/consts';
-import i18n from '@/lang';
-import { api } from '@/lib/soraneo-wallet/src/api';
+import { ExplorerType, type ExplorerLink, SoraNetwork } from '@/consts';
 import { getExplorerLinks } from '@/lib/soraneo-wallet/src/util';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
 import getScrollbarWidth from '@/utils/scrollbar-width';
+import { delay } from './timing';
 import {
   asZeroValue,
   getAssetBalance,
@@ -27,6 +25,12 @@ import {
 } from './asset-formatting';
 import { sortAssets as sortAssetsInternal, sortPools as sortPoolsInternal } from './asset-sort';
 import { toPrecision as toPrecisionInternal } from './fp';
+export { getMobileCssClasses } from './device';
+export { registerDocumentTitleResolver, updateDocumentTitle } from './documentTitle';
+export { updateFpNumberLocale } from './fp-locale';
+export { updatePipTheme } from './pipTheme';
+export { delay } from './timing';
+export { waitForAccountPair } from './walletReady';
 
 export { asZeroValue, getAssetBalance, getAssetDecimals };
 export const formatAssetBalance = formatAssetBalanceInternal;
@@ -196,10 +200,6 @@ export const hasInsufficientNativeTokenForFee = (nativeBalance: CodecString, fee
   return FPNumber.lt(fpBalance, fpFee);
 };
 
-export async function delay(ms = 50, success = true): Promise<void> {
-  return await new Promise((resolve, reject) => setTimeout(success ? resolve : reject, ms));
-}
-
 export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean): Promise<void> {
   if (wait) {
     await func();
@@ -214,72 +214,6 @@ export const getLiquidityBalance = (liquidity: Nullable<AccountLiquidity>): Code
 
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) =>
   debounce(fn, timeout, options);
-
-export const updateFpNumberLocale = (locale: string): void => {
-  const thousandSymbol = Number(10000).toLocaleString(locale).substring(2, 3);
-
-  if (thousandSymbol !== '0') {
-    FPNumber.DELIMITERS_CONFIG.thousand = Number(12345).toLocaleString(locale).substring(2, 3);
-  }
-
-  FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
-};
-
-/** It's used to set css classes for mobile. `[mobile, android | windows | ios]` or `undefined` */
-export const getMobileCssClasses = () => {
-  const win: typeof window & Record<string, any> = window;
-  const userAgent = navigator.userAgent || navigator.vendor || win.opera;
-  const mobileClass = 'mobile';
-  // Windows Phone must come first because its UA also contains "Android"
-  if (/windows phone/i.test(userAgent)) {
-    return [mobileClass, 'windows'];
-  }
-  if (/android/i.test(userAgent)) {
-    return [mobileClass, 'android'];
-  }
-  // iOS detection from: http://stackoverflow.com/a/9039885/177710
-  if (/iPad|iPhone|iPod/.test(userAgent) && !win.MSStream) {
-    return [mobileClass, 'ios'];
-  }
-  // The only difference between iPadPro and the other macos platforms is that iPadPro is touch enabled.
-  if (navigator?.maxTouchPoints > 2 && /Mac/.test(userAgent)) {
-    return [mobileClass, 'ios'];
-  }
-  return undefined;
-};
-
-type RouteLike = Pick<Route | RouteLocationNormalizedLoaded, 'name'>;
-
-let documentTitleRouteResolver: (() => RouteLike | undefined) | null = null;
-
-/**
- * Allows consumers (router) to supply a lazy route resolver so title updates
- * keep working even when `updateDocumentTitle` is invoked without a route arg.
- */
-export const registerDocumentTitleResolver = (resolver?: (() => RouteLike | undefined) | null): void => {
-  documentTitleRouteResolver = resolver ?? null;
-};
-
-/**
- * Updates the document title based on the current or provided route name.
- * Falls back to the default app title when no translation is available.
- */
-export const updateDocumentTitle = (to?: RouteLike) => {
-  const page = to ?? documentTitleRouteResolver?.();
-  const pageName = typeof page?.name === 'string' ? page.name : undefined;
-  const pageTitleKey = `pageTitle.${pageName}`;
-  const composer = ((i18n as any)?.global ?? i18n) as any;
-  const te = typeof composer?.te === 'function' ? (composer.te as (key: string) => boolean).bind(composer) : null;
-  const t =
-    typeof composer?.t === 'function' ? (composer.t as (key: string, ...args: any[]) => unknown).bind(composer) : null;
-  // TODO: update pageTitle list: remove duplicates, add missed / change logic
-  if (pageName && te?.(pageTitleKey) && t) {
-    const pageTitleValue = t(pageTitleKey, TranslationConsts) as string;
-    document.title = `${pageTitleValue} - ${app.name}`;
-  } else {
-    document.title = app.title;
-  }
-};
 
 const getCssVariablesScopeElement = (): Nullable<Element> => {
   if (typeof document === 'undefined') return null;
@@ -314,15 +248,6 @@ export const toQueryString = (params: any): string => {
   return Object.entries(params)
     .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
     .join('&');
-};
-
-export const waitForAccountPair = async (func?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<any> => {
-  if (!api.accountPair) {
-    await delay();
-    return await waitForAccountPair(func);
-  } else {
-    return func?.();
-  }
 };
 
 export const getTextWidth = (text: string, fontFamily = 'Sora', size = 10): number => {
@@ -456,13 +381,4 @@ export const soraExplorerLinks = (
   if (!soraNetwork) return [];
 
   return getSubstrateExplorerLinks(getExplorerLinks(soraNetwork), isAccount, txValue, blockId, eventIndex);
-};
-
-export const updatePipTheme = (): void => {
-  const pipWindow = (window as any).documentPictureInPicture?.window;
-  if (pipWindow) {
-    const htmlElement = pipWindow.document.documentElement;
-    const theme = document.documentElement.getAttribute('design-system-theme');
-    htmlElement.setAttribute('design-system-theme', theme);
-  }
 };

@@ -429,7 +429,7 @@ const files = {
   alertsService: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'services', 'alerts', 'index.ts'),
   currencyService: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'services', 'currency', 'index.ts'),
   indexerService: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'services', 'indexer', 'index.ts'),
-  subsquidService: path.join(
+  polkaswapService: path.join(
     repoRoot,
     'src',
     'lib',
@@ -437,18 +437,7 @@ const files = {
     'src',
     'services',
     'indexer',
-    'subsquid',
-    'index.ts'
-  ),
-  subqueryService: path.join(
-    repoRoot,
-    'src',
-    'lib',
-    'soraneo-wallet',
-    'src',
-    'services',
-    'indexer',
-    'subquery',
+    'polkaswap',
     'index.ts'
   ),
   indexerParser: path.join(repoRoot, 'src', 'lib', 'soraneo-wallet', 'src', 'services', 'indexer', 'parser.ts'),
@@ -597,12 +586,8 @@ describe('wallet store migration', () => {
     expect(sources.alertsService).toContain("from '@/stores/wallet'");
     expect(sources.currencyService).toContain("from '@/plugins/pinia'");
     expect(sources.currencyService).toContain("from '@/stores/wallet'");
-    expect(sources.indexerService).toContain("from '@/plugins/pinia'");
-    expect(sources.indexerService).toContain("from '@/stores/wallet'");
-    expect(sources.subsquidService).toContain("from '@/plugins/pinia'");
-    expect(sources.subsquidService).toContain("from '@/stores/wallet'");
-    expect(sources.subqueryService).toContain("from '@/plugins/pinia'");
-    expect(sources.subqueryService).toContain("from '@/stores/wallet'");
+    expect(sources.polkaswapService).toContain("from '@/plugins/pinia'");
+    expect(sources.polkaswapService).toContain("from '@/stores/wallet'");
     expect(sources.indexerParser).toContain("from '@/plugins/pinia'");
     expect(sources.indexerParser).toContain("from '@/stores/wallet'");
     expect(sources.transactionSignUtil).toContain("from '@/plugins/pinia'");
@@ -610,8 +595,7 @@ describe('wallet store migration', () => {
     expect(sources.alertsService).not.toContain('store/pinia');
     expect(sources.currencyService).not.toContain('store/pinia');
     expect(sources.indexerService).not.toContain('store/pinia');
-    expect(sources.subsquidService).not.toContain('store/pinia');
-    expect(sources.subqueryService).not.toContain('store/pinia');
+    expect(sources.polkaswapService).not.toContain('store/pinia');
     expect(sources.indexerParser).not.toContain('store/pinia');
     expect(sources.transactionSignUtil).not.toContain('store/pinia');
   });
@@ -804,8 +788,7 @@ describe('wallet store migration', () => {
       files.alertsService,
       files.currencyService,
       files.indexerService,
-      files.subsquidService,
-      files.subqueryService,
+      files.polkaswapService,
       files.indexerParser,
       files.transactionSignUtil,
     ];

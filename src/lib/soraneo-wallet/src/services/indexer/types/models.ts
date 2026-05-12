@@ -1,26 +1,16 @@
 import {
-  SubqueryAccountEntity,
-  SubqueryAssetEntity,
-  SubqueryOrderBookEntity,
-  SubqueryOrderBookSnapshotEntity,
-  SubqueryOrderBookOrderEntity,
-  SubqueryPoolXYKEntity,
-  SubqueryVaultEntity,
-  SubqueryVaultEventEntity,
-  SubqueryAccountLiquidityEntity,
-  SubqueryAccountLiquiditySnapshotEntity,
-  SubqueryPoolSnapshotEntity,
-} from '../subquery/types';
-import {
-  SubsquidAccountEntity,
-  SubsquidAssetEntity,
-  SubsquidOrderBookEntity,
-  SubsquidOrderBookSnapshotEntity,
-  SubsquidOrderBookOrderEntity,
-  SubsquidPoolXYKEntity,
-  SubsquidVaultEntity,
-  SubsquidVaultEventEntity,
-} from '../subsquid/types';
+  type PolkaswapAccountEntity,
+  type PolkaswapAccountLiquidityEntity,
+  type PolkaswapAccountLiquiditySnapshotEntity,
+  type PolkaswapAssetEntity,
+  type PolkaswapOrderBookEntity,
+  type PolkaswapOrderBookOrderEntity,
+  type PolkaswapOrderBookSnapshotEntity,
+  type PolkaswapPoolSnapshotEntity,
+  type PolkaswapPoolXYKEntity,
+  type PolkaswapVaultEntity,
+  type PolkaswapVaultEventEntity,
+} from '../polkaswap/types';
 
 import type { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import type { CodecString } from '@sora-substrate/sdk';
@@ -414,6 +404,21 @@ export type HistoryElementEthBridgeIncoming = {
   to: string;
 };
 
+export type HistoryElementEvmBridgeOutgoing = {
+  amount: string;
+  amountUSD?: string;
+  assetId: string;
+  networkId?: number | string | Record<string, unknown>;
+  recipient?: string;
+  requestHash?: string;
+  status?: string;
+};
+
+export type HistoryElementEvmBridgeIncoming = HistoryElementEvmBridgeOutgoing & {
+  sender?: string;
+  to?: string;
+};
+
 export type HistoryElementReferralSetReferrer = {
   from: string; // referral
   to: string; // referrer
@@ -533,6 +538,8 @@ export type HistoryElementDataBase = Nullable<
   | HistoryElementAssetRegistration
   | HistoryElementEthBridgeOutgoing
   | HistoryElementEthBridgeIncoming
+  | HistoryElementEvmBridgeOutgoing
+  | HistoryElementEvmBridgeIncoming
   | HistoryElementRewardsClaim
   | HistoryElementDemeterFarming
   | HistoryElementPlaceLimitOrder
@@ -590,31 +597,31 @@ export type UpdatesStream = {
 };
 
 // export unions
-export type AssetEntity = SubqueryAssetEntity | SubsquidAssetEntity;
+export type AssetEntity = PolkaswapAssetEntity;
 
 export type AssetSnapshotEntity = AssetSnapshotBaseEntity & {
   asset: AssetBaseEntity;
 };
 
-export type PoolXYKEntity = SubqueryPoolXYKEntity | SubsquidPoolXYKEntity;
+export type PoolXYKEntity = PolkaswapPoolXYKEntity;
 
-export type PoolSnapshotEntity = SubqueryPoolSnapshotEntity;
+export type PoolSnapshotEntity = PolkaswapPoolSnapshotEntity;
 
-export type OrderBookEntity = SubqueryOrderBookEntity | SubsquidOrderBookEntity;
+export type OrderBookEntity = PolkaswapOrderBookEntity;
 
-export type OrderBookSnapshotEntity = SubqueryOrderBookSnapshotEntity | SubsquidOrderBookSnapshotEntity;
+export type OrderBookSnapshotEntity = PolkaswapOrderBookSnapshotEntity;
 
-export type OrderBookOrderEntity = SubqueryOrderBookOrderEntity | SubsquidOrderBookOrderEntity;
+export type OrderBookOrderEntity = PolkaswapOrderBookOrderEntity;
 
-export type VaultEntity = SubqueryVaultEntity | SubsquidVaultEntity;
+export type VaultEntity = PolkaswapVaultEntity;
 
-export type VaultEventEntity = SubqueryVaultEventEntity | SubsquidVaultEventEntity;
+export type VaultEventEntity = PolkaswapVaultEventEntity;
 
-export type AccountEntity = SubqueryAccountEntity | SubsquidAccountEntity;
+export type AccountEntity = PolkaswapAccountEntity;
 
-export type AccountLiquidityEntity = SubqueryAccountLiquidityEntity;
+export type AccountLiquidityEntity = PolkaswapAccountLiquidityEntity;
 
-export type AccountLiquiditySnapshotEntity = SubqueryAccountLiquiditySnapshotEntity;
+export type AccountLiquiditySnapshotEntity = PolkaswapAccountLiquiditySnapshotEntity;
 
 export type AccountMetaEntity = {
   id: string; // account id

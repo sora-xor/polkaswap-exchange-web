@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import BurnPage from '@/features/misc/pages/BurnPage.vue';
+import { Language } from '@/consts/language';
+import { setI18nLocale } from '@/lang';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { createSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
@@ -122,6 +124,7 @@ describe('Burn.vue', () => {
   };
 
   beforeEach(async () => {
+    await setI18nLocale(Language.EN);
     settingsStoreMock.blockNumber = 25_900_000;
     settingsStoreMock.soraNetwork = 'Prod';
     loadingRef.value = false;

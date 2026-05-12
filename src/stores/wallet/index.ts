@@ -4,14 +4,13 @@ import { defineStore } from 'pinia';
 import { AES, enc } from 'crypto-js';
 import debounce from 'lodash/fp/debounce';
 import { FPNumber } from '@sora-substrate/math';
-import { Operation, TransactionStatus, type HistoryItem, type NetworkFeesObject } from '@sora-substrate/sdk';
-import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { combineLatest } from 'rxjs';
+import { Operation, TransactionStatus, type HistoryItem, type NetworkFeesObject } from '@/lib/substrate/sdk/types';
 
 import { DefaultPassphraseTimeout } from '@/consts';
 import type { EditableAlertObject, WalletAssetFilters } from '@/consts';
 import type { Theme } from '@/consts/theme';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
 import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import {
   accountIdBasedOperations,
@@ -21,10 +20,6 @@ import {
   SoraNetwork,
 } from '@/lib/soraneo-wallet/src/consts';
 import { getCurrenciesState } from '@/lib/soraneo-wallet/src/consts/currencies';
-import alertsApiService from '@/lib/soraneo-wallet/src/services/alerts';
-import { CurrencyExchangeRateService } from '@/lib/soraneo-wallet/src/services/currency';
-import { GDriveStorage } from '@/lib/soraneo-wallet/src/services/google';
-import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { checkWallet, getAppWallets } from '@/lib/soraneo-wallet/src/services/wallet';
 import { setWalletConnectProjectId } from '@/lib/soraneo-wallet/src/services/walletconnect/config';
 import {
@@ -56,8 +51,8 @@ import { resolveFallbackIndexer, resolvePreferredIndexer } from '@/stores/wallet
 import type { Nullable } from '@/types/common';
 import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
 import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
-import { waitForAccountPair } from '@/utils';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
+import { waitForAccountPair } from '@/utils/walletReady';
 
 import type {
   Alert,
@@ -78,11 +73,79 @@ import type {
 type AssetsTable = Record<string, Asset | RegisteredAccountAsset>;
 type AccountAssetsTable = Record<string, AccountAsset>;
 type FiatPriceObject = Record<string, string>;
+type AlertsServiceModule = typeof import('@/lib/soraneo-wallet/src/services/alerts');
+type CurrencyServiceModule = typeof import('@/lib/soraneo-wallet/src/services/currency');
+type GoogleServicesModule = typeof import('@/lib/soraneo-wallet/src/services/google');
+type IndexerServicesModule = typeof import('@/lib/soraneo-wallet/src/services/indexer');
+type RxjsModule = typeof import('rxjs');
+type CurrentIndexer = ReturnType<IndexerServicesModule['getCurrentIndexer']>;
+
 const DEFAULT_CURRENCY_SYMBOL = '$';
 const XOR_CURRENCY_KEY = 'xor';
 const DAI_CURRENCY_KEY = 'dai';
 const UPDATE_ACTIVE_TRANSACTIONS_INTERVAL = 2_000;
 const UPDATE_ASSETS_TIMEOUT = BLOCK_PRODUCE_TIME * 3;
+
+let indexerServicesModulePromise: Promise<IndexerServicesModule> | null = null;
+let alertsServiceModulePromise: Promise<AlertsServiceModule> | null = null;
+let currencyServiceModulePromise: Promise<CurrencyServiceModule> | null = null;
+let googleServicesModulePromise: Promise<GoogleServicesModule> | null = null;
+let rxjsModulePromise: Promise<RxjsModule> | null = null;
+
+/**
+ * Loads browser notification alert code only when alert subscriptions or
+ * deposit notifications need it.
+ */
+const loadAlertsApiService = async (): Promise<AlertsServiceModule['default']> => {
+  alertsServiceModulePromise ??= import('@/lib/soraneo-wallet/src/services/alerts');
+  const { default: alertsApiService } = await alertsServiceModulePromise;
+  return alertsApiService;
+};
+
+/**
+ * Loads the fiat exchange-rate service only after indexer subscriptions start.
+ */
+const loadCurrencyExchangeRateService = async (): Promise<
+  CurrencyServiceModule['CurrencyExchangeRateService']
+> => {
+  currencyServiceModulePromise ??= import('@/lib/soraneo-wallet/src/services/currency');
+  const { CurrencyExchangeRateService } = await currencyServiceModulePromise;
+  return CurrencyExchangeRateService;
+};
+
+/**
+ * Loads Google Drive backup support only when Google API credentials are present.
+ */
+const loadGoogleDriveStorage = async (): Promise<GoogleServicesModule['GDriveStorage']> => {
+  googleServicesModulePromise ??= import('@/lib/soraneo-wallet/src/services/google');
+  const { GDriveStorage } = await googleServicesModulePromise;
+  return GDriveStorage;
+};
+
+/**
+ * Loads RxJS combination helpers for network-fee/runtime subscriptions on demand.
+ */
+const loadRxjs = (): Promise<RxjsModule> => {
+  rxjsModulePromise ??= import('rxjs');
+  return rxjsModulePromise;
+};
+
+/**
+ * Defers Polkaswap indexer and GraphQL client code until an indexer-backed
+ * wallet action actually needs it.
+ */
+const loadIndexerServices = (): Promise<IndexerServicesModule> => {
+  indexerServicesModulePromise ??= import('@/lib/soraneo-wallet/src/services/indexer');
+  return indexerServicesModulePromise;
+};
+
+/**
+ * Resolves the active indexer descriptor from the lazily loaded service module.
+ */
+const getCurrentIndexerService = async (): Promise<CurrentIndexer> => {
+  const { getCurrentIndexer } = await loadIndexerServices();
+  return getCurrentIndexer();
+};
 
 const fallbackFilters: WalletAssetFilters = {
   option: 'All',
@@ -392,7 +455,7 @@ export const useWalletStore = defineStore('wallet', () => {
     resetAssetsSubscription();
     await getAssets();
 
-    const indexer = getCurrentIndexer();
+    const indexer = await getCurrentIndexerService();
     const subscription = indexer.services.explorer.asset.createNewAssetsSubscription((newAssets) => {
       if (!newAssets.length) {
         return;
@@ -501,7 +564,7 @@ export const useWalletStore = defineStore('wallet', () => {
     }
 
     try {
-      const indexer = getCurrentIndexer();
+      const indexer = await getCurrentIndexerService();
       const subscription = indexer.services.explorer.account.createHistorySubscription(
         address.value,
         async (transaction) => {
@@ -556,7 +619,7 @@ export const useWalletStore = defineStore('wallet', () => {
     page = 1,
     query = {},
   }: ExternalHistoryParams = {}): Promise<void> => {
-    const indexer = getCurrentIndexer();
+    const indexer = await getCurrentIndexerService();
     const operations = indexer.services.dataParser.supportedOperations;
     const filter = indexer.historyElementsFilter({
       address,
@@ -655,7 +718,7 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const getFiatPriceObjectUsingIndexer = async (): Promise<void> => {
-    const indexer = getCurrentIndexer();
+    const indexer = await getCurrentIndexerService();
     const data = await indexer.services.explorer.price.getFiatPriceObject();
 
     if (data) {
@@ -666,7 +729,7 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const getFiatPriceUpdatesUsingIndexer = async (): Promise<void> => {
-    const indexer = getCurrentIndexer();
+    const indexer = await getCurrentIndexerService();
     const data = await indexer.services.explorer.price.getFiatPriceUpdates();
 
     if (data) {
@@ -674,10 +737,10 @@ export const useWalletStore = defineStore('wallet', () => {
     }
   };
 
-  const subscribeOnFiatUsingCurrentIndexer = (): void => {
+  const subscribeOnFiatUsingCurrentIndexer = async (): Promise<void> => {
     resetFiatPriceSubscription();
 
-    const indexer = getCurrentIndexer();
+    const indexer = await getCurrentIndexerService();
     const subscription = indexer.services.explorer.price.createFiatPriceSubscription(
       (priceObject) => {
         if (priceObject) {
@@ -694,7 +757,7 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const useFiatValuesFromIndexer = async (): Promise<void> => {
     await getFiatPriceObjectUsingIndexer();
-    subscribeOnFiatUsingCurrentIndexer();
+    await subscribeOnFiatUsingCurrentIndexer();
   };
 
   const subscribeOnFiatPrice = async (): Promise<void> => {
@@ -711,7 +774,8 @@ export const useWalletStore = defineStore('wallet', () => {
     await subscribeOnFiatPrice();
   };
 
-  const subscribeOnAlerts = (): void => {
+  const subscribeOnAlerts = async (): Promise<void> => {
+    const alertsApiService = await loadAlertsApiService();
     const alertSubject = alertsApiService.createPriceAlertSubscription();
 
     accountState.value.alertSubject = alertSubject;
@@ -766,9 +830,10 @@ export const useWalletStore = defineStore('wallet', () => {
     runtimeStorage.set('version', version);
   };
 
-  const subscribeOnFeeMultiplierAndRuntime = (): void => {
+  const subscribeOnFeeMultiplierAndRuntime = async (): Promise<void> => {
     resetFeeMultiplierAndRuntimeSubscriptions();
 
+    const { combineLatest } = await loadRxjs();
     const subscription = combineLatest([
       walletApi.system.getRuntimeVersionObservable(),
       walletApi.system.getNetworkFeeMultiplierObservable(),
@@ -971,6 +1036,7 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const notifyOnDeposit = async (data: { asset: WhitelistArrayItem; message: string }): Promise<void> => {
+    const alertsApiService = await loadAlertsApiService();
     await alertsApiService.pushNotification(data.asset, data.message);
     popAssetFromNotificationQueue();
   };
@@ -990,6 +1056,7 @@ export const useWalletStore = defineStore('wallet', () => {
     const { googleApi, googleClientId, walletconnect } = settingsState.value.apiKeys;
 
     if (googleApi && googleClientId) {
+      const GDriveStorage = await loadGoogleDriveStorage();
       GDriveStorage.setOptions(googleApi, googleClientId);
     }
 
@@ -1023,6 +1090,7 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const subscribeOnExchangeRatesApi = async (): Promise<void> => {
     resetExchangeRateSubscription();
+    const CurrencyExchangeRateService = await loadCurrencyExchangeRateService();
     settingsState.value.exchangeRateUnsubFn = CurrencyExchangeRateService.createExchangeRatesSubscription(
       handleExchangeRatesSuccess,
       handleExchangeRatesError

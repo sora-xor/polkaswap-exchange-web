@@ -10,7 +10,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { api } from '../../api';
 import { ObjectInit } from '../../consts';
 
-import { ModuleNames, ModuleMethods } from './subquery/types';
+import { ModuleNames, ModuleMethods } from './polkaswap/types';
 
 import type {
   HistoryElement,
@@ -44,9 +44,11 @@ import type {
   HistoryElementVaultDebt,
   HistoryElementEthBridgeIncoming,
   HistoryElementEthBridgeOutgoing,
+  HistoryElementEvmBridgeIncoming,
+  HistoryElementEvmBridgeOutgoing,
   ClaimedRewardItem,
   CallArgs,
-} from './subquery/types';
+} from './polkaswap/types';
 import type { HistoryItem } from '@sora-substrate/sdk';
 import type {
   Asset,
@@ -55,6 +57,7 @@ import type {
   VestedTransferHistory,
 } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { VaultHistory } from '@sora-substrate/sdk/build/kensetsu/types';
 import type { LimitOrderHistory } from '@sora-substrate/sdk/build/orderBook/types';
 import type { RewardClaimHistory, RewardInfo } from '@sora-substrate/sdk/build/rewards/types';
@@ -202,6 +205,10 @@ const OperationsMap = {
   [insensitive(ModuleNames.EthBridge)]: {
     [insensitive(ModuleMethods.EthBridgeTransferToSidechain)]: () => Operation.EthBridgeOutgoing,
   },
+  [insensitive(ModuleNames.BridgeProxy)]: {
+    [insensitive(ModuleMethods.BridgeProxyBurn)]: () => Operation.EvmOutgoing,
+    [insensitive(ModuleMethods.BridgeProxyMint)]: () => Operation.EvmIncoming,
+  },
 };
 
 const getAssetSymbol = (asset: Nullable<Asset | WhitelistItem>): string => asset?.symbol ?? '';
@@ -329,6 +336,84 @@ const formatAmount = (amount: string): string => (amount ? new FPNumber(amount).
 /** Formats a raw codec balance from nested batch call arguments as a natural amount. */
 const formatCodecAmount = (amount: string, decimals = FPNumber.DEFAULT_PRECISION): string =>
   amount ? FPNumber.fromCodecValue(amount, decimals).toString() : '0';
+
+const firstString = (data: Record<string, unknown>, keys: string[]): string => {
+  for (const key of keys) {
+    const value = data[key];
+
+    if (typeof value === 'string' && value) return value;
+    if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const nested = firstString(value as Record<string, unknown>, [
+        'EVM',
+        'Evm',
+        'evm',
+        'EVMLegacy',
+        'evmLegacy',
+        'Sora',
+        'sora',
+        'Parachain',
+        'parachain',
+        'Liberland',
+        'liberland',
+        'Unknown',
+        'unknown',
+        'Root',
+        'root',
+        'value',
+        'id',
+        'code',
+      ]);
+      if (nested) return nested;
+    }
+  }
+
+  return '';
+};
+
+const normalizeEvmNetwork = (value: unknown): number | undefined => {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'bigint') return Number(value);
+  if (typeof value === 'string' && value) {
+    if (value.startsWith('0x')) {
+      try {
+        const parsed = Number(BigInt(value));
+        return Number.isSafeInteger(parsed) ? parsed : undefined;
+      } catch {
+        return undefined;
+      }
+    }
+
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return normalizeEvmNetwork(firstString(value as Record<string, unknown>, ['EVM', 'Evm', 'evm', 'EVMLegacy', 'evmLegacy']));
+  }
+
+  return undefined;
+};
+
+const formatBridgeProxyAmount = (
+  amount: unknown,
+  asset: Nullable<Asset>,
+  data: HistoryElementEvmBridgeIncoming | HistoryElementEvmBridgeOutgoing
+): string => {
+  const text = String(amount ?? '');
+
+  if (!text) return '0';
+  if ('amountUSD' in data && data.amountUSD !== undefined) return formatAmount(text);
+
+  return formatCodecAmount(text, asset?.decimals);
+};
+
+const applyBridgeProxyStatus = (payload: HistoryItem, status?: string): void => {
+  if (['Failed', 'Refunded'].includes(status ?? '')) {
+    payload.status = TransactionStatus.Error;
+  }
+};
 
 type MintOrBurnData = {
   data: HistoryElementAssetBurn;
@@ -907,6 +992,48 @@ const parseEthBridgeOutgoing = async (transaction: HistoryElement, payload: Hist
   return payload;
 };
 
+const parseEvmBridgeOutgoing = async (transaction: HistoryElement, payload: HistoryItem) => {
+  const data = (transaction.data ?? {}) as HistoryElementEvmBridgeOutgoing;
+  const assetAddress = data.assetId ?? (data as Record<string, unknown>).asset_id ?? '';
+  const asset = await getAssetByAddress(assetAddress);
+  const _payload = payload as EvmHistory;
+
+  if (!assetAddress || data.amount === undefined) return null;
+
+  _payload.amount = formatBridgeProxyAmount(data.amount, asset, data);
+  _payload.assetAddress = assetAddress;
+  _payload.symbol = getAssetSymbol(asset);
+  _payload.to = firstString(data as Record<string, unknown>, ['recipient', 'to', 'dest', 'account']);
+  _payload.hash = data.requestHash;
+  _payload.externalNetwork = normalizeEvmNetwork(data.networkId);
+  _payload.externalNetworkFee = undefined;
+  applyBridgeProxyStatus(payload, data.status);
+
+  return payload;
+};
+
+const parseEvmBridgeIncoming = async (transaction: HistoryElement, payload: HistoryItem) => {
+  const data = (transaction.data ?? {}) as HistoryElementEvmBridgeIncoming;
+  const assetAddress = data.assetId ?? (data as Record<string, unknown>).asset_id ?? '';
+  const asset = await getAssetByAddress(assetAddress);
+  const _payload = payload as EvmHistory;
+
+  if (!assetAddress || data.amount === undefined) return null;
+
+  _payload.amount = formatBridgeProxyAmount(data.amount, asset, data);
+  _payload.assetAddress = assetAddress;
+  _payload.symbol = getAssetSymbol(asset);
+  _payload.to =
+    firstString(data as Record<string, unknown>, ['sender', 'from', 'source', 'account']) ||
+    firstString(data as Record<string, unknown>, ['recipient', 'to']);
+  _payload.hash = data.requestHash;
+  _payload.externalNetwork = normalizeEvmNetwork(data.networkId);
+  _payload.externalNetworkFee = undefined;
+  applyBridgeProxyStatus(payload, data.status);
+
+  return payload;
+};
+
 export default class IndexerDataParser {
   // Operations visible in wallet
   public static readonly SUPPORTED_OPERATIONS = [
@@ -1097,6 +1224,12 @@ export default class IndexerDataParser {
       }
       case Operation.EthBridgeOutgoing: {
         return await parseEthBridgeOutgoing(transaction, payload);
+      }
+      case Operation.EvmIncoming: {
+        return await parseEvmBridgeIncoming(transaction, payload);
+      }
+      case Operation.EvmOutgoing: {
+        return await parseEvmBridgeOutgoing(transaction, payload);
       }
       default:
         return null;

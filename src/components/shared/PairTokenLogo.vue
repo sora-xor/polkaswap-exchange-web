@@ -9,15 +9,14 @@
 import { computed } from 'vue';
 
 import { LogoSize, ObjectInit } from '@/consts';
+import { createAsyncComponent } from '@/shared/ui/async';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
-import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
+
+const TokenLogo = createAsyncComponent(() => import('@/lib/soraneo-wallet/src/components/TokenLogo.vue'));
 
 defineOptions({
   name: 'PairTokenLogo',
-  components: {
-    TokenLogo: WalletComponentTokenLogo,
-  },
 });
 
 const props = withDefaults(

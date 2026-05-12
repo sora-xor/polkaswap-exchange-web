@@ -1,4 +1,4 @@
-import { PageNames } from '@/consts';
+import { PageNames } from '@/consts/navigation';
 import {
   resolveAuthRedirect,
   resolveInvitationDecision,
@@ -17,13 +17,14 @@ interface RouteTrackerParams {
 
 export interface NavigationGuardServices {
   setRoute: (params: RouteTrackerParams) => void;
-  walletStore: {
+  walletStore?: {
     isLoggedIn: boolean;
   };
+  getWalletStore?: () => { isLoggedIn: boolean } | Promise<{ isLoggedIn: boolean }>;
   resetBridgeHistoryPage: () => void | Promise<void>;
-  persistReferral: (address: string) => void;
-  validateAddress: (address?: Nullable<string>) => boolean;
-  updateDocumentTitle: (to: RouteLocationNormalized) => void;
+  persistReferral: (address: string) => void | Promise<void>;
+  validateAddress: (address?: Nullable<string>) => boolean | Promise<boolean>;
+  updateDocumentTitle: (to: RouteLocationNormalized) => void | Promise<void>;
 }
 
 const hasMetaFlag = (to: RouteLocationNormalized, key: string): boolean => {
@@ -61,7 +62,18 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
       } else {
         next();
       }
-      services.updateDocumentTitle(to);
+      void services.updateDocumentTitle(to);
+    };
+    let walletAuthStatePromise: Promise<{ isLoggedIn: boolean }> | null = null;
+    const getWalletAuthState = async (): Promise<{ isLoggedIn: boolean }> => {
+      if (walletAuthStatePromise) return walletAuthStatePromise;
+
+      if (services.walletStore) return services.walletStore;
+      if (services.getWalletStore) {
+        walletAuthStatePromise = Promise.resolve(services.getWalletStore());
+        return walletAuthStatePromise;
+      }
+      return { isLoggedIn: false };
     };
 
     if (!current) {
@@ -73,15 +85,16 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
       await services.resetBridgeHistoryPage();
     }
 
-    const invitationDecision = resolveInvitationDecision({
+    const invitationAuthState = isInvitationRoute ? await getWalletAuthState() : { isLoggedIn: false };
+    const invitationDecision = await resolveInvitationDecision({
       isInvitationRoute,
       referrerParam: to.params.referrerAddress,
-      isLoggedIn: services.walletStore.isLoggedIn,
+      isLoggedIn: invitationAuthState.isLoggedIn,
       validateAddress: services.validateAddress,
     });
 
     if (invitationDecision.persistReferral) {
-      services.persistReferral(invitationDecision.persistReferral);
+      await services.persistReferral(invitationDecision.persistReferral);
     }
 
     if (invitationDecision.redirect) {
@@ -109,10 +122,11 @@ export const createBeforeEachGuard = (services: NavigationGuardServices): Naviga
       return;
     }
 
+    const authState = requiresAuth ? await getWalletAuthState() : { isLoggedIn: false };
     const authRedirect = resolveAuthRedirect({
       requiresAuth,
       current,
-      isLoggedIn: services.walletStore.isLoggedIn,
+      isLoggedIn: authState.isLoggedIn,
     });
 
     if (authRedirect) {

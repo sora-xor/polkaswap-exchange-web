@@ -1,11 +1,23 @@
 import { defineStore } from 'pinia';
 
-import { getReferralRewards, type ReferrerRewards } from '@/indexer/queries/referrals';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { useWalletStore } from '@/stores/wallet';
 import storage from '@/utils/storage';
 
 import type { Subscription } from 'rxjs';
+import type { ReferrerRewards } from '@/indexer/queries/referrals';
+
+type ReferralsQueriesModule = typeof import('@/indexer/queries/referrals');
+
+let referralsQueriesModulePromise: Promise<ReferralsQueriesModule> | null = null;
+
+/**
+ * Loads indexer-backed referral reward queries only when rewards are requested.
+ */
+const loadReferralsQueries = (): Promise<ReferralsQueriesModule> => {
+  referralsQueriesModulePromise ??= import('@/indexer/queries/referrals');
+  return referralsQueriesModulePromise;
+};
 
 type ReferralsState = {
   referrer: string;
@@ -95,6 +107,7 @@ export const useReferralsStore = defineStore('referrals-legacy', {
       const address = walletStore.account?.address;
       if (!walletStore.isLoggedIn || !address) return;
 
+      const { getReferralRewards } = await loadReferralsQueries();
       const data = await getReferralRewards(address);
 
       if (data) {

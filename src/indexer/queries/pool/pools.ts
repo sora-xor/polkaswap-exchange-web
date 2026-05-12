@@ -1,12 +1,10 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { getCurrentIndexer, SubqueryIndexer, SubsquidIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
-import { IndexerType } from '@/indexer/queries/indexerConsts';
+import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubqueryPoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/subquery/types';
-import type { SubsquidPoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/subsquid/types';
+import type { PolkaswapPoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 import type { ConnectionQueryResponse, PoolXYKEntity } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 export type PoolData = {
@@ -18,8 +16,8 @@ export type PoolData = {
   apy: FPNumber;
 };
 
-const SubqueryPoolsQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
-  query SubqueryPoolsQuery($after: Cursor, $filter: PoolXYKFilter) {
+const PolkaswapPoolsQuery = gql<ConnectionQueryResponse<PolkaswapPoolXYKEntity>>`
+  query PolkaswapPoolsQuery($after: Cursor, $filter: PoolXYKFilter) {
     data: poolXYKs(after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
@@ -40,41 +38,13 @@ const SubqueryPoolsQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
   }
 `;
 
-const SubsquidPoolsQuery = gql<ConnectionQueryResponse<SubsquidPoolXYKEntity>>`
-  query SubsquidPoolsQuery($after: String, $where: PoolXYKWhereInput) {
-    data: poolXyksConnection(orderBy: id_ASC, after: $after, where: $where) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          baseAsset {
-            id
-          }
-          targetAsset {
-            id
-          }
-          baseAssetReserves
-          targetAssetReserves
-          priceUSD
-          strategicBonusApy
-        }
-      }
-    }
-  }
-`;
-
 const parse = (item: PoolXYKEntity): PoolData => {
   const apy = new FPNumber(item.strategicBonusApy ?? 0).mul(FPNumber.HUNDRED);
   const priceUSD = new FPNumber(item.priceUSD ?? 0);
 
-  const baseAssetId = 'baseAssetId' in item ? item.baseAssetId : item.baseAsset.id;
-  const targetAssetId = 'targetAssetId' in item ? item.targetAssetId : item.targetAsset.id;
-
   return {
-    baseAssetId,
-    targetAssetId,
+    baseAssetId: item.baseAssetId,
+    targetAssetId: item.targetAssetId,
     baseAssetReserves: item.baseAssetReserves,
     targetAssetReserves: item.targetAssetReserves,
     priceUSD,
@@ -82,7 +52,7 @@ const parse = (item: PoolXYKEntity): PoolData => {
   };
 };
 
-const subqueryPoolsFilter = (ids: string[]) => {
+const polkaswapPoolsFilter = (ids: string[]) => {
   const filter: any = {
     baseAssetReserves: { greaterThan: '0' },
     targetAssetReserves: { greaterThan: '0' },
@@ -95,41 +65,11 @@ const subqueryPoolsFilter = (ids: string[]) => {
   return filter;
 };
 
-const subsquidPoolsFilter = (ids: string[]) => {
-  const where: any = {
-    baseAssetReserves_gt: '0',
-    targetAssetReserves_gt: '0',
-  };
-
-  if (ids.length) {
-    where.targetAsset = { id_in: ids };
-  }
-
-  return where;
-};
-
 export async function fetchPoolsData(assets?: Asset[]): Promise<PoolData[]> {
   const ids = assets?.map((item) => item.address) ?? [];
-  const indexer = getCurrentIndexer();
-
-  let result: Nullable<PoolData[]>;
-
-  switch (indexer.type) {
-    case IndexerType.SUBQUERY: {
-      const filter = subqueryPoolsFilter(ids);
-      const variables = { filter };
-      const subqueryIndexer = indexer as SubqueryIndexer;
-      result = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryPoolsQuery, variables, parse);
-      break;
-    }
-    case IndexerType.SUBSQUID: {
-      const where = subsquidPoolsFilter(ids);
-      const variables = { where };
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      result = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidPoolsQuery, variables, parse);
-      break;
-    }
-  }
+  const filter = polkaswapPoolsFilter(ids);
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const result = await polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapPoolsQuery, { filter }, parse);
 
   return result ?? [];
 }

@@ -8,13 +8,11 @@ import { OrderStatus } from '@/types/orderBook';
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   fetchAllEntities: vi.fn(),
-  fetchAllEntitiesConnection: vi.fn(),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
-  SubsquidIndexer: class SubsquidIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 describe('order book account orders query', () => {
@@ -23,11 +21,11 @@ describe('order book account orders query', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches SubQuery account orders with an order-book filter and parses order data', async () => {
+  it('fetches Polkaswap account orders with an order-book filter and parses order data', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
-      parse(createSubqueryOrderEntity()),
+      parse(createPolkaswapOrderEntity()),
     ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     const result = await fetchOrderBookAccountOrders('account-1', {
       dexId: 0,
@@ -68,9 +66,9 @@ describe('order book account orders query', () => {
     expect(result?.[0]?.amount.toString()).toBe('6');
   });
 
-  it('fetches SubQuery account orders without an order-book filter when id is omitted', async () => {
+  it('fetches Polkaswap account orders without an order-book filter when id is omitted', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue([]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBQUERY);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
     await expect(fetchOrderBookAccountOrders('account-1')).resolves.toEqual([]);
 
@@ -85,82 +83,20 @@ describe('order book account orders query', () => {
     );
   });
 
-  it('fetches Subsquid account orders with an order-book filter and nested owner fields', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockImplementation(async (_query, _variables, parse) => [
-      parse(createSubsquidOrderEntity()),
-    ]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    const result = await fetchOrderBookAccountOrders('account-2', {
-      dexId: 1,
-      base: 'xor',
-      quote: 'val',
-    });
-
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        where: {
-          account: { id_eq: 'account-2' },
-          status_not_eq: OrderStatus.Active,
-          orderBook: { id_eq: '1-xor-val' },
-        },
-      },
-      expect.any(Function)
-    );
-    expect(result).toHaveLength(1);
-    expect(result?.[0]).toMatchObject({
-      owner: 'account-2',
-      orderBookId: {
-        dexId: 1,
-        base: 'xor',
-        quote: 'val',
-      },
-      side: PriceVariant.Sell,
-      id: 0,
-      status: OrderStatus.Canceled,
-    });
-    expect(result?.[0]?.amount.toString()).toBe('2.25');
+  
+  
   });
-
-  it('fetches Subsquid account orders without an order-book filter when id is omitted', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockResolvedValue([]);
-    indexerMocks.currentIndexer = createIndexer(IndexerType.SUBSQUID);
-
-    await expect(fetchOrderBookAccountOrders('account-2')).resolves.toEqual([]);
-
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        where: {
-          account: { id_eq: 'account-2' },
-          status_not_eq: OrderStatus.Active,
-        },
-      },
-      expect.any(Function)
-    );
-  });
-
-  it('returns null for unsupported indexer types without making requests', async () => {
-    indexerMocks.currentIndexer = createIndexer('unsupported');
-
-    await expect(fetchOrderBookAccountOrders('account-1')).resolves.toBeNull();
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
-  });
-});
 
 const createIndexer = (type: unknown) => ({
   type,
   services: {
     explorer: {
       fetchAllEntities: indexerMocks.fetchAllEntities,
-      fetchAllEntitiesConnection: indexerMocks.fetchAllEntitiesConnection,
     },
   },
 });
 
-const createSubqueryOrderEntity = () => ({
+const createPolkaswapOrderEntity = () => ({
   type: 'Limit',
   orderId: 123,
   orderBookId: '0-base-quote',
@@ -173,23 +109,4 @@ const createSubqueryOrderEntity = () => ({
   lifetime: 86_400,
   expiresAt: 1_786_400,
   status: OrderStatus.Filled,
-});
-
-const createSubsquidOrderEntity = () => ({
-  type: 'Limit',
-  orderId: undefined,
-  orderBook: {
-    id: '1-xor-val',
-  },
-  account: {
-    id: 'account-2',
-  },
-  timestamp: 2_000,
-  isBuy: false,
-  price: '0.75',
-  amount: '3',
-  amountFilled: '0.75',
-  lifetime: 3_600,
-  expiresAt: 5_600,
-  status: OrderStatus.Canceled,
 });

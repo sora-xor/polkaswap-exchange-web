@@ -5,7 +5,7 @@ import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 import routeWhitelistBySymbol from '@/consts/routeWhitelistBySymbol.json';
 
 import type { AssetsTable, WhitelistIdsBySymbol } from '@/lib/soraneo-wallet/src/types/common';
-import { PageNames } from '@/consts';
+import { PageNames } from '@/consts/navigation';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';

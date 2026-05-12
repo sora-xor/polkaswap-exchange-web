@@ -38,5 +38,5 @@ export const navigateWallet = (target: WalletNavigationTarget): void => {
 
 /** Reconciles the mirrored wallet route with the outer router after auth changes. */
 export const syncWalletCurrentRoute = (): void => {
-  getWalletRouterStore().checkCurrentRoute();
+  void getWalletRouterStore().checkCurrentRoute();
 };

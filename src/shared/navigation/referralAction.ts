@@ -1,4 +1,4 @@
-import { PageNames } from '@/consts';
+import { PageNames } from '@/consts/navigation';
 
 import type { Nullable } from '@/types/common';
 

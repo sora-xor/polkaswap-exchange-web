@@ -7,13 +7,11 @@ import { retryOnEmptyResult } from '@/indexer/queries/retry';
 const indexerMocks = vi.hoisted(() => ({
   currentIndexer: undefined as any,
   fetchAllEntities: vi.fn(),
-  fetchAllEntitiesConnection: vi.fn(),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: () => indexerMocks.currentIndexer,
-  SubqueryIndexer: class SubqueryIndexer {},
-  SubsquidIndexer: class SubsquidIndexer {},
+  PolkaswapIndexer: class PolkaswapIndexer {},
 }));
 
 vi.mock('@/indexer/queries/retry', () => ({
@@ -30,12 +28,12 @@ describe('network stats query', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches SubQuery network snapshots and converts numeric fields to FPNumbers', async () => {
+  it('fetches Polkaswap network snapshots and converts numeric fields to FPNumbers', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createNetworkSnapshotEntity('1700', '11', '22', '3', '4')),
     ]);
     indexerMocks.currentIndexer = {
-      type: IndexerType.SUBQUERY,
+      type: IndexerType.POLKASWAP,
       services: {
         explorer: {
           fetchAllEntities: indexerMocks.fetchAllEntities,
@@ -63,42 +61,11 @@ describe('network stats query', () => {
     expect(result[0]?.bridgeOutgoingTransactions.toString()).toBe('4');
   });
 
-  it('fetches Subsquid network snapshots through the connection endpoint', async () => {
-    indexerMocks.fetchAllEntitiesConnection.mockImplementation(async (_query, _variables, parse) => [
-      parse(createNetworkSnapshotEntity('1800', '100.5', '200.25', '7.75', '8.5')),
-    ]);
-    indexerMocks.currentIndexer = {
-      type: IndexerType.SUBSQUID,
-      services: {
-        explorer: {
-          fetchAllEntitiesConnection: indexerMocks.fetchAllEntitiesConnection,
-        },
-      },
-    };
-
-    const result = await fetchData(3_000, 2_000, 'HOUR' as any);
-
-    expect(retryOnEmptyResult).toHaveBeenCalledTimes(1);
-    expect(indexerMocks.fetchAllEntitiesConnection).toHaveBeenCalledWith(
-      expect.any(Object),
-      {
-        from: 3_000,
-        to: 2_000,
-        type: 'HOUR',
-      },
-      expect.any(Function)
-    );
-    expect(result[0]?.timestamp).toBe(1_800_000);
-    expect(result[0]?.accounts.toString()).toBe('100.5');
-    expect(result[0]?.transactions.toString()).toBe('200.25');
-    expect(result[0]?.bridgeIncomingTransactions.toString()).toBe('7.75');
-    expect(result[0]?.bridgeOutgoingTransactions.toString()).toBe('8.5');
-  });
-
+  
   it('returns an empty array when the active indexer returns null data', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = {
-      type: IndexerType.SUBQUERY,
+      type: IndexerType.POLKASWAP,
       services: {
         explorer: {
           fetchAllEntities: indexerMocks.fetchAllEntities,
@@ -109,20 +76,7 @@ describe('network stats query', () => {
     await expect(fetchData(2_000, 1_000, 'DAY' as any)).resolves.toEqual([]);
   });
 
-  it('returns an empty array for unsupported indexer types without making requests', async () => {
-    indexerMocks.currentIndexer = {
-      type: 'unknown',
-      services: {
-        explorer: {},
-      },
-    };
-
-    await expect(fetchData(2_000, 1_000, 'DAY' as any)).resolves.toEqual([]);
-    expect(indexerMocks.fetchAllEntities).not.toHaveBeenCalled();
-    expect(indexerMocks.fetchAllEntitiesConnection).not.toHaveBeenCalled();
-    expect(retryOnEmptyResult).not.toHaveBeenCalled();
   });
-});
 
 const createNetworkSnapshotEntity = (
   timestamp: string,

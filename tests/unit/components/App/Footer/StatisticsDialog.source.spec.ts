@@ -11,7 +11,7 @@ describe('StatisticsDialog source', () => {
 
   it('renders only the Polkaswap-owned indexer source', () => {
     expect(statisticsDialogSource).toContain("name: 'Polkaswap Indexer'");
-    expect(statisticsDialogSource).toContain('return [IndexerType.SUBQUERY].map');
+    expect(statisticsDialogSource).toContain('return [IndexerType.POLKASWAP].map');
     expect(statisticsDialogSource).not.toContain('Object.values(IndexerType).map');
   });
 

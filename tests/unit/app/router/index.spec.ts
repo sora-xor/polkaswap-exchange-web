@@ -110,12 +110,12 @@ vi.mock('@/adapters/wallet/addresses', () => ({
   isValidWalletAddress: addressMocks.isValidWalletAddress,
 }));
 
-vi.mock('@/utils', () => ({
+vi.mock('@/utils/documentTitle', () => ({
   registerDocumentTitleResolver: utilityMocks.registerDocumentTitleResolver,
   updateDocumentTitle: utilityMocks.updateDocumentTitle,
 }));
 
-vi.mock('@/consts', () => ({
+vi.mock('@/consts/navigation', () => ({
   PageNames: PAGE_NAMES,
 }));
 
@@ -144,12 +144,15 @@ describe('app router singleton', () => {
     });
     expect(guardMocks.createBeforeEachGuard).toHaveBeenCalledWith({
       setRoute: adapterMocks.syncRoute,
-      walletStore: walletStoreMocks.walletStore,
+      getWalletStore: expect.any(Function),
       resetBridgeHistoryPage: expect.any(Function),
-      persistReferral: referralMocks.persistReferralAddress,
-      validateAddress: addressMocks.isValidWalletAddress,
+      persistReferral: expect.any(Function),
+      validateAddress: expect.any(Function),
       updateDocumentTitle: utilityMocks.updateDocumentTitle,
     });
+    expect(walletStoreMocks.useWalletStore).not.toHaveBeenCalled();
+    expect(referralMocks.persistReferralAddress).not.toHaveBeenCalled();
+    expect(addressMocks.isValidWalletAddress).not.toHaveBeenCalled();
     expect(bridgeStoreMocks.useBridgeStore).not.toHaveBeenCalled();
     expect(routerMocks.beforeEach).toHaveBeenCalledWith(guardMocks.guard);
     expect(utilityMocks.registerDocumentTitleResolver).toHaveBeenCalledTimes(1);
@@ -172,6 +175,36 @@ describe('app router singleton', () => {
 
     expect(bridgeStoreMocks.useBridgeStore).toHaveBeenCalledTimes(1);
     expect(bridgeStoreMocks.bridgeStore.resetHistoryPage).toHaveBeenCalledTimes(1);
+  });
+
+  it('loads the wallet store only when the guard asks for auth state', async () => {
+    await loadRouterModule();
+
+    const services = guardMocks.createBeforeEachGuard.mock.calls[0]?.[0] as
+      | { getWalletStore?: () => Promise<unknown> }
+      | undefined;
+
+    await services?.getWalletStore?.();
+
+    expect(walletStoreMocks.useWalletStore).toHaveBeenCalledTimes(1);
+  });
+
+  it('loads wallet referral helpers only when the guard needs invitation services', async () => {
+    addressMocks.isValidWalletAddress.mockReturnValueOnce(true);
+    await loadRouterModule();
+
+    const services = guardMocks.createBeforeEachGuard.mock.calls[0]?.[0] as
+      | {
+          persistReferral?: (address: string) => Promise<void>;
+          validateAddress?: (address: string) => Promise<boolean>;
+        }
+      | undefined;
+
+    await expect(services?.validateAddress?.('addr')).resolves.toBe(true);
+    await services?.persistReferral?.('addr');
+
+    expect(addressMocks.isValidWalletAddress).toHaveBeenCalledWith('addr');
+    expect(referralMocks.persistReferralAddress).toHaveBeenCalledWith('addr');
   });
 
   it('returns early when navigating to the current wallet route but still prepares wallet entry', async () => {

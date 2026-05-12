@@ -20,8 +20,12 @@ vi.mock('@/stores/wallet', () => ({
   }),
 }));
 
-vi.mock('@/utils', () => ({
+vi.mock('@/utils/pipTheme', () => ({
   updatePipTheme: switchThemeMocks.updatePipThemeMock,
+}));
+
+vi.mock('@/utils/telegramLaunch', () => ({
+  shouldLoadTelegramMiniApp: () => true,
 }));
 
 vi.mock('@/utils/telegram', () => ({
@@ -31,6 +35,8 @@ vi.mock('@/utils/telegram', () => ({
     removeThemeListener: switchThemeMocks.removeThemeListenerMock,
   },
 }));
+
+const settleAsyncImports = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
 describe('utils/switchTheme', () => {
   beforeEach(() => {
@@ -51,6 +57,7 @@ describe('utils/switchTheme', () => {
 
     applyTheme(true);
     applyTheme(false);
+    await settleAsyncImports();
 
     expect(switchThemeMocks.setThemeMock).toHaveBeenNthCalledWith(1, Theme.DARK);
     expect(switchThemeMocks.setThemeMock).toHaveBeenNthCalledWith(2, Theme.LIGHT);
@@ -105,6 +112,7 @@ describe('utils/switchTheme', () => {
     const { detectSystemTheme, removeThemeListeners } = await import('@/utils/switchTheme');
 
     detectSystemTheme(true);
+    await settleAsyncImports();
 
     expect(switchThemeMocks.setThemeMock).toHaveBeenNthCalledWith(1, Theme.LIGHT);
     expect(switchThemeMocks.setThemeMock).toHaveBeenNthCalledWith(2, Theme.DARK);
@@ -118,6 +126,7 @@ describe('utils/switchTheme', () => {
     expect(switchThemeMocks.setThemeMock).toHaveBeenLastCalledWith(Theme.LIGHT);
 
     removeThemeListeners(true);
+    await settleAsyncImports();
 
     expect(removeEventListener).toHaveBeenCalledTimes(1);
     expect(switchThemeMocks.removeThemeListenerMock).toHaveBeenCalledTimes(1);

@@ -76,16 +76,17 @@
       </a>
     </div>
     <select-node-dialog
+      v-if="selectNodeDialogVisibility"
       :connection="appConnection"
       :visibility="selectNodeDialogVisibility"
       :set-visibility="setSelectNodeDialogVisibility"
     ></select-node-dialog>
-    <no-internet-dialog></no-internet-dialog>
+    <no-internet-dialog v-if="!isBrowserOnline"></no-internet-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber } from '@sora-substrate/math';
 import { computed, markRaw, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { Status } from '@soramitsu-ui/ui/types';
@@ -94,6 +95,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { IndexerType, type SoraNetwork } from '@/consts';
 import { Theme } from '@/consts/theme';
+import { createAsyncComponent } from '@/shared/ui/async';
 import { connection } from '@/lib/soraneo-wallet/src/api';
 import { getExplorerLinks } from '@/lib/soraneo-wallet/src/util';
 import { ConnectionStatus, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
@@ -104,10 +106,22 @@ import { toSafeExternalLink } from '@/utils/externalLinks';
 import { settingsStorage } from '@/utils/storage';
 import { formatLocation } from '@/components/App/Settings/Node/utils';
 import { resolveIndexerStatus } from '@/components/App/Footer/utils/resolveIndexerStatus';
-import { fetchLatestIndexedBlock } from '@/indexer/queries/latestIndexedBlock';
 
 import FooterPopper from './FooterPopper.vue';
-import NoInternetDialog from './NoInternetDialog.vue';
+
+const NoInternetDialog = createAsyncComponent(() => import('./NoInternetDialog.vue'));
+type LatestIndexedBlockModule = typeof import('@/indexer/queries/latestIndexedBlock');
+
+let latestIndexedBlockModulePromise: Promise<LatestIndexedBlockModule> | null = null;
+
+/**
+ * Defers Polkaswap indexer query code until the footer refreshes indexer
+ * status, keeping GraphQL out of the shell startup path.
+ */
+const loadLatestIndexedBlockModule = (): Promise<LatestIndexedBlockModule> => {
+  latestIndexedBlockModulePromise ??= import('@/indexer/queries/latestIndexedBlock');
+  return latestIndexedBlockModulePromise;
+};
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
@@ -120,7 +134,7 @@ const settingsStore = useSettingsStore();
 
 const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
 const blockNumber = computed(() => settingsStore.blockNumber);
-const indexerType = computed(() => settingsStore.indexerType ?? IndexerType.SUBQUERY);
+const indexerType = computed(() => settingsStore.indexerType ?? IndexerType.POLKASWAP);
 const libraryTheme = computed(() => (settingsStore.libraryTheme as Theme | null) ?? Theme.LIGHT);
 
 const fallbackAppConnection = markRaw(new NodesConnection(settingsStorage, markRaw(connection)));
@@ -290,6 +304,7 @@ async function refreshLatestIndexedBlock(): Promise<void> {
   isIndexerBlockLoading.value = true;
 
   try {
+    const { fetchLatestIndexedBlock } = await loadLatestIndexedBlockModule();
     const block = await fetchLatestIndexedBlock();
     if (requestId !== indexerBlockRequestId) return;
     if (block !== null) {

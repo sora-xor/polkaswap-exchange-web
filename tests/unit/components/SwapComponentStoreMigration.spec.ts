@@ -168,8 +168,8 @@ describe('Swap component store migration', () => {
 
     expect(swapPageSource).toContain("from '../components/widgets/Distribution.vue'");
     expect(swapPageSource).toContain("from '../components/widgets/Form.vue'");
-    expect(swapPageSource).toContain("from '../components/widgets/TransactionDetails.vue'");
-    expect(swapPageSource).toContain("from '../components/widgets/Transactions.vue'");
+    expect(swapPageSource).toContain("import('../components/widgets/TransactionDetails.vue')");
+    expect(swapPageSource).toContain("import('../components/widgets/Transactions.vue')");
   });
 
   it('keeps the shared status action badge as the canonical implementation', async () => {
