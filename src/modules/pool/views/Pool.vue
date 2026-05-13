@@ -236,12 +236,56 @@ const getPairTitle = (firstTokenSymbol?: string, secondTokenSymbol?: string): st
 <style lang="scss">
 .pool-list {
   @include collapse-items;
+
   .el-collapse-item__header {
     align-items: flex-start;
 
     .pair-logo {
+      flex-shrink: 0;
       margin-right: $inner-spacing-medium;
       margin-top: $inner-spacing-tiny;
+    }
+
+    .el-collapse-item__arrow {
+      align-items: center;
+      align-self: flex-start;
+      background: transparent;
+      border: 1px solid var(--s-color-base-border-primary);
+      border-radius: 50%;
+      box-shadow: none;
+      color: var(--s-color-base-content-tertiary);
+      display: inline-flex;
+      flex: 0 0 36px;
+      font-size: 0;
+      height: 36px;
+      justify-content: center;
+      line-height: 1;
+      margin-left: $inner-spacing-small;
+      transition:
+        color var(--s-transition-default),
+        transform var(--s-transition-default);
+      width: 36px;
+
+      &::before {
+        border-bottom: 2px solid currentColor;
+        border-right: 2px solid currentColor;
+        content: '';
+        display: block;
+        height: 8px;
+        transform: rotate(-45deg);
+        width: 8px;
+      }
+
+      &.is-active {
+        transform: rotate(90deg);
+      }
+    }
+
+    &:hover,
+    &:focus-visible {
+      .el-collapse-item__arrow {
+        color: var(--s-color-base-content-primary);
+      }
     }
   }
 }

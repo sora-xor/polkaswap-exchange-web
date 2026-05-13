@@ -27,31 +27,33 @@
             {{ t('connectWalletText') }}
           </s-button>
         </div>
-        <div v-else v-loading="loading" :class="['points__cards', 's-flex-column', { loading: loading }]">
+        <div v-else v-loading="loading" :class="['points__content', { 'points__content--loading': loading }]">
           <s-tabs v-model="categoryPoints" type="rounded" class="points__tabs">
             <s-tab :label="t('points.yourTasks').toUpperCase()" name="tasks">
               <s-scrollbar
                 class="points__cards-scrollbar"
                 :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
               >
-                <a
-                  class="points__soratopia s-flex"
-                  rel="nofollow noopener"
-                  target="_blank"
-                  href="https://t.me/soratopia_bot/app"
-                >
-                  <div class="points__soratopia-container s-flex">
-                    <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
-                    <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
-                  </div>
-                </a>
-                <task-card
-                  v-for="(pointsForCategory, categoryName) in pointsForCards"
-                  :key="categoryName"
-                  :points-for-category="pointsForCategory"
-                  :category-name="categoryName"
-                  class="points__card-task"
-                ></task-card>
+                <div class="points__task-list">
+                  <a
+                    class="points__soratopia s-flex"
+                    rel="nofollow noopener"
+                    target="_blank"
+                    href="https://t.me/soratopia_bot/app"
+                  >
+                    <div class="points__soratopia-container s-flex">
+                      <button class="points__soratopia-action">{{ t('points.openTelegram') }}</button>
+                      <span class="points__soratopia-text">{{ t('points.toEarnPoints') }}</span>
+                    </div>
+                  </a>
+                  <task-card
+                    v-for="(pointsForCategory, categoryName) in pointsForCards"
+                    :key="categoryName"
+                    :points-for-category="pointsForCategory"
+                    :category-name="categoryName"
+                    class="points__card-task"
+                  ></task-card>
+                </div>
               </s-scrollbar>
             </s-tab>
             <s-tab :label="t('points.progress').toUpperCase()" name="progress">
@@ -59,7 +61,7 @@
                 class="points__cards-scrollbar"
                 :wrap-style="{ padding: '0', margin: '0', overflowY: 'auto' }"
               >
-                <div class="points__cards">
+                <div class="points__card-grid">
                   <point-card
                     v-for="[categoryName, pointsForCategory] in Object.entries(pointsForCards ?? {}).slice(0, -1)"
                     :key="categoryName"
@@ -274,24 +276,49 @@ watch(isLoggedIn, async (value) => {
   margin-left: calc(0px - $inner-spacing-small);
   width: calc(100% + $inner-spacing-big);
 }
-.el-tabs__header {
-  width: 100% !important;
-}
-.el-tabs__nav {
-  width: 100%;
-  justify-content: space-between;
-}
 
 .points__tabs {
+  .el-tabs__header {
+    margin-bottom: $inner-spacing-medium;
+    width: 100% !important;
+  }
+  .el-tabs__nav {
+    background-color: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--s-border-radius-big);
+    box-sizing: border-box;
+    display: flex;
+    gap: $inner-spacing-mini;
+    justify-content: center;
+    padding: $inner-spacing-mini;
+    width: 100%;
+  }
   .el-tabs__item {
-    padding: 0 50px !important;
+    border: 1px solid transparent;
+    border-radius: var(--s-border-radius-small) !important;
+    flex: 1 1 0;
+    height: 44px;
+    line-height: 44px;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 $inner-spacing-medium !important;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.is-active {
+      border-color: var(--s-color-status-info);
+      box-shadow: 0 0 0 1px rgba(82, 185, 255, 0.28), 0 10px 24px rgba(34, 9, 51, 0.2);
+    }
+
     @include mobile(true) {
-      padding: 0 25px !important;
+      padding: 0 $inner-spacing-small !important;
     }
   }
 }
 .points__tabs.s-tabs .el-tabs__header .el-tabs__item {
-  font-weight: 400 !important;
+  font-size: 14px;
+  font-weight: 700 !important;
 }
 
 .points__cards-scrollbar {
@@ -304,10 +331,11 @@ watch(isLoggedIn, async (value) => {
 $card-height: calc($sidebar-max-width - $inner-spacing-mini);
 $scrollbar-loader-height: calc($card-height * 2.6);
 $max-asset-size: calc($select-asset-item-height * 2);
+$points-card-min-width: 258px;
 
 .points.s-card {
-  padding: $inner-spacing-small !important;
-  padding-bottom: unset !important;
+  overflow: hidden;
+  padding: 0 !important;
 }
 
 .points {
@@ -316,15 +344,19 @@ $max-asset-size: calc($select-asset-item-height * 2);
   }
   background-image: url('@/assets/img/points/header.png');
   background-repeat: no-repeat;
-  background-position: top;
+  background-position: top center;
+  background-size: 100% 214px;
   background-color: var(--s-color-base-background);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   width: 100%;
   &__cards-scrollbar {
     max-height: $scrollbar-loader-height;
     overflow-y: auto;
+    padding-right: $inner-spacing-mini;
   }
   &__main {
-    margin-top: calc($inner-spacing-medium + $inner-spacing-tiny);
+    margin-top: 0;
+    padding: 0 $inner-spacing-medium $inner-spacing-medium;
   }
   &__row {
     display: flex;
@@ -343,32 +375,67 @@ $max-asset-size: calc($select-asset-item-height * 2);
   &__header {
     display: flex;
     flex-direction: column;
-    gap: calc($inner-spacing-big + 3px);
-    margin-bottom: calc($inner-spacing-small + 2px);
-    margin-top: $inner-spacing-small;
+    gap: $inner-spacing-medium;
+    justify-content: center;
+    margin: 0;
+    min-height: 214px;
+    padding: $inner-spacing-big $inner-spacing-medium calc($inner-spacing-big + $inner-spacing-mini);
     div {
       align-items: center;
       width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      color: var(--s-color-base-on-accent);
+      color: #230735;
+      gap: $inner-spacing-medium;
       h3 {
+        font-size: 44px;
         font-weight: 300;
-        font-size: 32px;
+        line-height: 1;
+        text-align: right;
       }
       h2 {
+        color: #230735;
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.15;
         text-align: left;
         max-width: $max-asset-size;
-        font-weight: 700;
-        font-size: 16px;
       }
     }
     p {
-      max-width: $explore-search-input-max-width;
-      color: var(--s-color-base-border-primary);
-      font-weight: 400;
+      color: rgba(35, 7, 53, 0.66);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.35;
+      max-width: calc($explore-search-input-max-width + $inner-spacing-large);
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.16);
     }
+  }
+  &__content {
+    min-width: 0;
+    width: 100%;
+
+    &--loading {
+      min-height: $scrollbar-loader-height;
+    }
+  }
+  &__task-list {
+    display: flex;
+    flex-direction: column;
+    gap: $inner-spacing-small;
+    padding-bottom: $inner-spacing-mini;
+  }
+  &__card-grid {
+    display: grid;
+    gap: $inner-spacing-small;
+    grid-template-columns: repeat(auto-fit, minmax($points-card-min-width, 1fr));
+    padding-bottom: $inner-spacing-mini;
+    width: 100%;
+  }
+  &__card-grid,
+  &__task-list {
+    box-sizing: border-box;
   }
   &_main {
     display: flex;
@@ -391,52 +458,62 @@ $max-asset-size: calc($select-asset-item-height * 2);
       margin: 0 $basic-spacing-medium;
     }
   }
-  &__cards {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: calc($basic-spacing-small + 1px);
-    &.loading {
-      height: $scrollbar-loader-height;
-    }
-  }
 
   &__card,
   &__card-task,
   &__first-tx-card {
-    width: $sidebar-max-width;
-    height: $card-height;
-    background-color: var(--s-color-base-border-primary);
-    border-radius: var(--s-border-radius-mini);
-    padding: $inner-spacing-medium;
-    margin-bottom: $inner-spacing-mini;
-    background-size: contain;
-    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0.1);
     background-position: top right;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--s-border-radius-small);
+    box-shadow: 0 18px 34px rgba(23, 6, 41, 0.18);
     box-sizing: border-box;
+    height: auto;
+    margin-bottom: 0;
+    min-height: $card-height;
+    padding: $inner-spacing-medium;
+    width: 100%;
   }
   &__first-tx-card {
-    height: calc($basic-spacing * 3);
-    width: 100%;
+    min-height: calc($basic-spacing * 3);
     padding: $basic-spacing-small $basic-spacing;
-    margin-bottom: unset;
   }
   &__card-task {
-    width: 100%;
-    max-height: $max-asset-size;
+    min-height: unset;
     padding: $basic-spacing;
   }
 
   @include mobile(true) {
-    &__card {
-      width: 100%;
+    background-size: 100% 196px;
+
+    &__main {
+      padding: 0 $inner-spacing-small $inner-spacing-small;
     }
-    &__first-tx-card {
-      height: unset;
+
+    &__header {
+      min-height: 196px;
+      padding: $inner-spacing-medium $inner-spacing-small;
+
+      div {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: $inner-spacing-small;
+
+        h3 {
+          font-size: 38px;
+          text-align: left;
+        }
+      }
+
+      p {
+        max-width: 100%;
+      }
     }
-    &__card-task {
-      max-height: unset;
-      height: unset;
+
+    &__card-grid {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -448,9 +525,10 @@ $max-asset-size: calc($select-asset-item-height * 2);
     background-size: cover;
     text-decoration: none;
     color: var(--s-color-base-on-accent);
-    border-radius: var(--s-border-radius-mini);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--s-border-radius-small);
+    box-shadow: 0 16px 30px rgba(23, 6, 41, 0.16);
     align-items: flex-end;
-    margin-bottom: 8px;
     @include focus-outline;
     &-container {
       align-items: center;
@@ -466,7 +544,14 @@ $max-asset-size: calc($select-asset-item-height * 2);
       white-space: nowrap;
       padding: $inner-spacing-mini $inner-spacing-medium;
       cursor: pointer;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
       @include focus-outline;
+
+      &:hover,
+      &:focus {
+        box-shadow: 0 8px 18px rgba(82, 185, 255, 0.24);
+        transform: translateY(-1px);
+      }
     }
     &-text {
       flex: 1;

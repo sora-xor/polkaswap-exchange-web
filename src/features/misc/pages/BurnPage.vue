@@ -12,7 +12,7 @@
         :xl="6"
       >
         <s-form
-          v-loading="parentLoading"
+          v-loading="isBurnFormLoading"
           class="container container--burn el-form--actions"
           :class="{ disabled: ended[id] }"
           :show-message="false"
@@ -175,11 +175,7 @@ import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { useCopyAddress } from '@/composables/useCopyAddress';
 import { SoraNetwork } from '@/consts';
-import {
-  fetchData as fetchBurnData,
-  isExcludedXorBurnAddress,
-  type XorBurn,
-} from '@/indexer/queries/burnXor';
+import { fetchData as fetchBurnData, isExcludedXorBurnAddress, type XorBurn } from '@/indexer/queries/burnXor';
 import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import { useSettingsStore } from '@/stores/settings';
 import { waitForSoraNetworkFromEnv } from '@/utils';
@@ -356,6 +352,7 @@ const ended = reactive<Record<CampaignKey, boolean>>({
   solswap: false,
 });
 
+const isBurnFormLoading = computed(() => parentLoadingRef.value || loading.value);
 const burnDialogVisible = ref(false);
 const selectedReceivedAsset = ref<Asset>(campaignsObj.solswap.receivedAsset);
 const selectedRate = ref<string>(campaignsObj.solswap.rate);
@@ -440,8 +437,6 @@ function calcCountdown(): void {
 
 async function fetchStatistics(): Promise<void> {
   const currentEndBlock = await getCurrentEndBlock();
-
-  if (currentEndBlock === null) return;
 
   const address = soraAddress.value;
   const [indexedBurnsResult, accountIndexedBurnsResult] = await Promise.allSettled([
@@ -590,11 +585,7 @@ async function getCurrentChainBlockHeight(): Promise<Nullable<number>> {
   try {
     const chainApi = getChainApi() as Nullable<ChainApiHeaderShape>;
 
-    if (
-      !chainApi ||
-      chainApi.isConnected === false ||
-      typeof chainApi.rpc?.chain?.getHeader !== 'function'
-    ) {
+    if (!chainApi || chainApi.isConnected === false || typeof chainApi.rpc?.chain?.getHeader !== 'function') {
       return null;
     }
 
@@ -608,7 +599,13 @@ async function getCurrentChainBlockHeight(): Promise<Nullable<number>> {
   }
 }
 
-async function getCurrentEndBlock(): Promise<Nullable<number>> {
+/**
+ * Resolves the upper campaign block for burn statistics without blocking the
+ * indexed totals on a live chain header. When the wallet connection is still
+ * booting, the campaign cap lets the Polkaswap indexer return available burns
+ * immediately from static IPFS builds.
+ */
+async function getCurrentEndBlock(): Promise<number> {
   if (blockNumber.value >= minBlock.value) {
     return Math.min(maxBlock.value, blockNumber.value);
   }
@@ -619,7 +616,7 @@ async function getCurrentEndBlock(): Promise<Nullable<number>> {
     return Math.min(maxBlock.value, chainBlockHeight);
   }
 
-  return null;
+  return maxBlock.value;
 }
 
 async function getBlockHeightFromBlockId(blockId?: string): Promise<Nullable<number>> {
@@ -670,9 +667,7 @@ function dedupeBurnEntries(items: BurnForStats[]): BurnForStats[] {
   const result: BurnForStats[] = [];
 
   for (const item of items) {
-    const key = item.txHash
-      ? `tx:${item.txHash}`
-      : `${item.address}:${item.blockHeight}:${item.amount.toString()}`;
+    const key = item.txHash ? `tx:${item.txHash}` : `${item.address}:${item.blockHeight}:${item.amount.toString()}`;
     const existing = seen.get(key);
 
     if (existing) {
@@ -829,6 +824,7 @@ defineExpose({
   selectedRequiresNexusRecipient,
   handleBurnConfirm,
   loading,
+  isBurnFormLoading,
   timeLeftFormatted,
   ended,
   totalXorBurned,

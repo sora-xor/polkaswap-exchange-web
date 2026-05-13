@@ -33,7 +33,7 @@ describe('services/notification', () => {
     expect(toastHandler).toHaveBeenNthCalledWith(1, {
       message: 'queued toast',
       title: undefined,
-      status: NOTIFICATION_STATUS.Info,
+      status: undefined,
       timeout: undefined,
       showCloseBtn: undefined,
     });
@@ -126,7 +126,7 @@ describe('services/notification', () => {
     expect(replayToastHandler).toHaveBeenCalledWith({
       message: 'replayed toast',
       title: undefined,
-      status: NOTIFICATION_STATUS.Info,
+      status: undefined,
       timeout: undefined,
       showCloseBtn: undefined,
     });

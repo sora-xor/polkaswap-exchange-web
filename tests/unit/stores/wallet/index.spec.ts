@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { RouteNames } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { NFTStorage } from 'nft.storage';
-import { SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
+import { AppWallet, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { NFT_BLACK_LIST_URL, WHITE_LIST_URL } from '@/lib/soraneo-wallet/src/util';
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
 import type { WALLET_TYPES } from '@tests/stubs/walletRuntime';
@@ -928,7 +928,7 @@ describe('wallet store actions', () => {
 
     walletStore.accountState.address = 'addr';
     walletStore.accountState.name = 'Alice';
-    walletStore.accountState.source = 'polkadot-js' as any;
+    walletStore.accountState.source = AppWallet.PolkadotJS;
     walletStore.accountState.assets = [{ address: 'xor', symbol: 'XOR', name: 'SORA', decimals: 18 }] as never;
     walletStore.transactionsState.history = {
       'tx-1': { id: 'tx-1', status: TransactionStatus.InBlock },
@@ -982,6 +982,49 @@ describe('wallet store actions', () => {
       name: 'Sync User',
       source: 'polkadot-js',
     });
+  });
+
+  it('exposes transaction history collections for wallet UI components', () => {
+    const walletStore = useWalletStore();
+
+    walletStore.transactionsState.history = {
+      'tx-local': { id: 'tx-local', status: TransactionStatus.Finalized },
+    } as never;
+    walletStore.transactionsState.externalHistory = {
+      'tx-external': { id: 'tx-external', status: TransactionStatus.Finalized },
+    } as never;
+    walletStore.transactionsState.externalHistoryUpdates = {
+      'tx-update': { id: 'tx-update', status: TransactionStatus.Pending },
+    } as never;
+    walletStore.transactionsState.externalHistoryTotal = 3;
+
+    expect(walletStore.history).toEqual({
+      'tx-local': { id: 'tx-local', status: TransactionStatus.Finalized },
+    });
+    expect(walletStore.externalHistory).toEqual({
+      'tx-external': { id: 'tx-external', status: TransactionStatus.Finalized },
+    });
+    expect(walletStore.externalHistoryUpdates).toEqual({
+      'tx-update': { id: 'tx-update', status: TransactionStatus.Pending },
+    });
+    expect(walletStore.externalHistoryTotal).toBe(3);
+  });
+
+  it('exposes account book, source, and NFT storage aliases for wallet UI components', () => {
+    const walletStore = useWalletStore();
+    const storageInstance = { store: vi.fn() };
+
+    walletStore.accountState.source = 'polkadot-js' as any;
+    walletStore.accountState.book = {
+      cnContact: 'Saved Contact',
+    };
+    walletStore.settingsState.nftStorage = storageInstance as never;
+
+    expect(walletStore.source).toBe(AppWallet.PolkadotJS);
+    expect(walletStore.book).toEqual({
+      cnContact: 'Saved Contact',
+    });
+    expect(walletStore.nftStorage).toEqual(storageInstance);
   });
 
   it('exposes password timeout state and forwards MST dialog helpers', async () => {

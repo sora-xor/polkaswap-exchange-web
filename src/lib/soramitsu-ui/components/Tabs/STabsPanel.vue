@@ -87,10 +87,10 @@ const parseTabs = (defaultNodes: Array<VNode>): Array<TabItem> => {
         node.children && typeof node.children === 'object' && 'default' in node.children
           ? (node.children as { default?: () => Array<VNode> })
           : null;
-      const slotNodes = slotObject?.default ? flattenVNodes(slotObject.default()) : [];
 
       const name = String(rawProps.name ?? node.key ?? `tab-${index}`);
       const hasLabelProp = rawProps.label !== undefined && rawProps.label !== null && String(rawProps.label).length > 0;
+      const slotNodes = !hasLabelProp && slotObject?.default ? flattenVNodes(slotObject.default()) : [];
       const label = hasLabelProp ? String(rawProps.label) : stringifyNodes(slotNodes);
       const disabled =
         rawProps.disabled === '' ||

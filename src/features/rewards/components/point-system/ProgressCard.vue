@@ -81,6 +81,9 @@ const imageSrc = computed(() => getImageSrc(imageName.value));
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 
   svg {
     position: absolute;
@@ -96,7 +99,7 @@ const imageSrc = computed(() => getImageSrc(imageName.value));
 
   &__background {
     stroke: var(--s-color-status-info);
-    opacity: 0.2;
+    opacity: 0.18;
   }
 
   &__bar {

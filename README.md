@@ -15,6 +15,7 @@ The IPFS bundle reads runtime configuration from `public/env.json`. Two keys are
 
 - `BASE_API_URL` — points to the target runtime (production, staging, etc.).
 - `DEFAULT_NETWORKS` — array of nodes that appear in the network selector. The first entry must be a trusted SORAMITSU node because its `genesisHash` is used to validate custom connections.
+- `POLKASWAP_INDEXER_ENDPOINT` — GraphQL endpoint for Polkaswap statistics and indexed history. Local browser origins route the hosted `https://pi.soramitsu.io/graphql` config, or an empty value, to the sibling `../polkaswap-indexer` endpoint (`http://localhost:4350/graphql`) so localhost previews can query data without hosted CORS restrictions.
 
 ```json
 {

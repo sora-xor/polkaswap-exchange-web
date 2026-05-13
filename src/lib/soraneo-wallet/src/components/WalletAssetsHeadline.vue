@@ -140,39 +140,77 @@ defineExpose({
 .wallet-assets-headline {
   &__content {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
-    padding-top: #{$basic-spacing-tiny};
-    padding-bottom: #{$basic-spacing-tiny};
+    gap: 8px 12px;
+    padding-top: 0;
+    padding-bottom: #{$basic-spacing-mini};
     text-align: left;
     font-size: var(--s-font-size-mini);
 
     &--no-fiat {
       justify-content: flex-end;
+      min-height: 32px;
     }
   }
   &__divider {
-    margin: 0;
+    display: none;
   }
 }
 .total-fiat-values {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
+  min-width: 0;
+  gap: 1px;
+
   &__title {
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-extra-small);
     text-transform: uppercase;
     white-space: nowrap;
     font-weight: 300;
-    letter-spacing: var(--s-letter-spacing-small);
+    letter-spacing: 0;
   }
+
   .formatted-amount--fiat-value {
     display: block;
+    max-width: 100%;
+    overflow: hidden;
     font-size: var(--s-font-size-large);
     font-weight: 700;
     line-height: var(--s-line-height-small);
+    letter-spacing: 0;
+    overflow-wrap: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: normal;
+  }
+
+  .formatted-amount--shifted {
+    margin-left: 0;
+  }
+
+  :deep(.formatted-amount__value) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: normal;
+  }
+}
+
+@media (max-width: 640px) {
+  .wallet-assets-headline {
+    &__content {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+
+  .total-fiat-values {
+    flex: 1 0 100%;
   }
 }
 </style>
@@ -218,16 +256,20 @@ $size-px: 16px;
   &__button {
     display: inline-flex;
     align-items: center;
-    min-height: 32px;
+    min-height: 30px;
     background-color: var(--s-color-utility-body);
     border: 1px solid var(--s-color-base-border-primary);
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 8px;
     transition:
       background-color 150ms ease,
       border-color 150ms ease;
     color: var(--s-color-base-content-primary);
+    font-size: var(--s-font-size-extra-small);
     font-weight: 300;
+    letter-spacing: 0;
+    margin-left: auto;
+
     &-option {
       color: var(--s-color-theme-accent);
       margin-left: 4px;

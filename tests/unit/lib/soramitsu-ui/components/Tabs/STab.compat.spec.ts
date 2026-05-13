@@ -234,4 +234,25 @@ describe('STab compatibility', () => {
     expect(wrapper.find('.assets-panel').exists()).toBe(true);
     expect(wrapper.find('.custom-panel').exists()).toBe(false);
   });
+
+  it('does not evaluate inactive labelled tab content while parsing tab labels', () => {
+    const activeSlot = vi.fn(() => h('div', { class: 'assets-panel' }, 'Assets panel'));
+    const inactiveSlot = vi.fn(() => h('div', { class: 'custom-panel' }, 'Custom panel'));
+
+    const wrapper = mount(STabs, {
+      props: {
+        value: 'assets',
+      },
+      slots: {
+        default: () => [
+          h(STab, { name: 'assets', label: 'Assets' }, activeSlot),
+          h(STab, { name: 'custom', label: 'Custom' }, inactiveSlot),
+        ],
+      },
+    });
+
+    expect(wrapper.find('.assets-panel').exists()).toBe(true);
+    expect(activeSlot).toHaveBeenCalled();
+    expect(inactiveSlot).not.toHaveBeenCalled();
+  });
 });

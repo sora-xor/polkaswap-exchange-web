@@ -64,6 +64,10 @@ export default class PolkaswapExplorer extends BaseExplorer {
     }
   }
 
+  /**
+   * Creates an entity subscription, skipping empty subscription frames while
+   * preserving error reporting for GraphQL and parser failures.
+   */
   public createEntitySubscription<T, R>(
     subscription: TypedDocumentNode<PolkaswapSubscriptionPayload<T>>,
     variables: AnyVariables = {},
@@ -75,12 +79,15 @@ export default class PolkaswapExplorer extends BaseExplorer {
 
     return createSubscription((result) => {
       try {
-        if (result.data) {
-          const entity = parse(result.data.payload._entity);
-          handler(entity);
-        } else {
-          throw new Error('Subscription payload data is undefined');
+        if (result.error) {
+          errorHandler?.(result.error);
+          return;
         }
+
+        const entity = result.data?.payload?._entity;
+        if (entity === undefined || entity === null) return;
+
+        handler(parse(entity));
       } catch (error) {
         errorHandler?.(error);
       }

@@ -206,6 +206,73 @@ describe('IndexerDataParser', () => {
     ).resolves.toBeNull();
   });
 
+  it.each([
+    ['zero codec', '0'],
+    ['negative codec', '-1000000000000000000'],
+    ['decimal codec', '1000000000000000000.5'],
+    ['comma-separated codec', '1,000000000000000000'],
+    ['blank codec', ' '],
+    ['non-numeric codec', 'not-a-number'],
+  ])('rejects bridgeProxy burn history with %s amount', async (_case, amount) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    await expect(
+      new IndexerDataParser().parseTransactionAsHistoryItem({
+        id: `0xbad-burn-${_case}`,
+        module: 'bridgeProxy',
+        method: 'burn',
+        address: 'sora-address',
+        blockHash: '0xblock',
+        blockHeight: '105',
+        timestamp: 15,
+        networkFee: '0',
+        execution: { success: true, error: null },
+        data: {
+          assetId: XOR.address,
+          amount,
+          networkId: { EVM: '0x6f' },
+          recipient: '0xevm-recipient',
+          requestHash: '0xrequest',
+        },
+        calls: [],
+      } as any)
+    ).resolves.toBeNull();
+  });
+
+  it.each([
+    ['zero natural', '0'],
+    ['negative natural', '-1'],
+    ['comma-separated natural', '1,000'],
+    ['blank natural', ' '],
+    ['non-numeric natural', 'not-a-number'],
+  ])('rejects bridgeProxy mint history with %s amount', async (_case, amount) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    await expect(
+      new IndexerDataParser().parseTransactionAsHistoryItem({
+        id: `0xbad-mint-${_case}`,
+        module: 'bridgeProxy',
+        method: 'mint',
+        address: 'relayer',
+        blockHash: '0xblock',
+        blockHeight: '105',
+        timestamp: 15,
+        networkFee: '0',
+        execution: { success: true, error: null },
+        data: {
+          assetId: XOR.address,
+          amount,
+          amountUSD: '1',
+          networkId: 111,
+          sender: '0xevm-sender',
+          recipient: 'sora-address',
+          requestHash: '0xincoming-request',
+        },
+        calls: [],
+      } as any)
+    ).resolves.toBeNull();
+  });
+
   it('does not throw or assign a network for malformed bridgeProxy EVM network variants', async () => {
     const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
 
@@ -235,6 +302,47 @@ describe('IndexerDataParser', () => {
       type: Operation.EvmOutgoing,
       amount: '1',
       to: '0xevm-recipient',
+    });
+    expect((parsed as any).externalNetwork).toBeUndefined();
+  });
+
+  it.each([
+    ['negative number', -1],
+    ['fractional number', 111.5],
+    ['unsafe number', Number.MAX_SAFE_INTEGER + 1],
+    ['unsafe bigint', BigInt(Number.MAX_SAFE_INTEGER) + 1n],
+    ['zero hex', '0x0'],
+    ['negative string', '-1'],
+    ['fractional string', '111.5'],
+    ['unsafe string', '9007199254740992'],
+  ])('does not assign unsafe EVM network variants from %s', async (_case, networkId) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem({
+      id: `0xunsafe-network-${String(networkId)}`,
+      module: 'bridgeProxy',
+      method: 'burn',
+      address: 'sora-address',
+      blockHash: '0xblock',
+      blockHeight: '106',
+      timestamp: 16,
+      networkFee: '0',
+      execution: { success: true, error: null },
+      dataFrom: 'sora-address',
+      dataTo: '0xevm-recipient',
+      data: {
+        assetId: XOR.address,
+        amount: '1000000000000000000',
+        networkId,
+        recipient: '0xevm-recipient',
+        requestHash: '0xrequest',
+      },
+      calls: [],
+    } as any);
+
+    expect(parsed).toMatchObject({
+      type: Operation.EvmOutgoing,
+      amount: '1',
     });
     expect((parsed as any).externalNetwork).toBeUndefined();
   });

@@ -107,10 +107,14 @@ describe('Wallet Wallet', () => {
   });
 
   it('keeps wallet tabs as a stable two-option segmented control', () => {
+    expect(walletSource).toContain('max-width: min(760px, calc(100vw - 32px));');
+    expect(walletSource).toContain('width: min(300px, 100%);');
     expect(walletSource).toContain(':deep(.el-tabs__nav-scroll)');
-    expect(walletSource).toContain('grid-template-columns: repeat(2, minmax(0, 1fr));');
+    expect(walletSource).toContain('grid-template-columns: repeat(2, 1fr);');
+    expect(walletSource).toContain(':deep(.base-title_action .s-button:not(.wallet-dashboard__mst))');
     expect(walletSource).toMatch(/:deep\(\.el-tabs__nav-wrap\)\s*{[\s\S]*height: auto;[\s\S]*box-sizing: border-box;/);
     expect(walletSource).toMatch(/:deep\(\.el-tabs__active-bar\)\s*{\s*display: none;/);
+    expect(walletSource).not.toContain('minmax(0, 1fr)');
   });
 
   it('routes account switching through the wallet store navigation boundary', () => {

@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, nextTick } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { defineComponent, nextTick, reactive } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import BarChart from '@/components/pages/Stats/BarChart.vue';
 import barChartSource from '@/components/pages/Stats/BarChart.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
-const nodeIsConnectedState = vi.hoisted(() => ({ value: false }));
+const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));
 
 vi.mock('@/components/shared/Widget/Base.vue', () => ({
   default: {
@@ -75,13 +75,32 @@ vi.mock('@/indexer/queries/network/volume', () => ({
   fetchData: fetchDataMock,
 }));
 
-vi.mock('@/stores/settings', () => ({
-  useSettingsStore: () => ({
-    get nodeIsConnected() {
-      return nodeIsConnectedState.value;
-    },
-  }),
-}));
+vi.mock('@/stores/settings', async () => {
+  const { reactive } = await import('vue');
+
+  settingsStoreMock.state ??= reactive({
+    nodeIsConnected: false,
+    indexerEndpoint: '',
+  });
+
+  return {
+    useSettingsStore: () => ({
+      get nodeIsConnected() {
+        return settingsStoreMock.state.nodeIsConnected;
+      },
+      get indexerType() {
+        return 'POLKASWAP';
+      },
+      get indexers() {
+        return {
+          POLKASWAP: {
+            endpoint: settingsStoreMock.state.indexerEndpoint,
+          },
+        };
+      },
+    }),
+  };
+});
 
 vi.mock('@/consts/snapshots', () => ({
   SECONDS_IN_TYPE: {
@@ -109,8 +128,15 @@ vi.mock('pinia', async (importOriginal) => {
 });
 
 describe('BarChart', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    settingsStoreMock.state = reactive({
+      nodeIsConnected: false,
+      indexerEndpoint: '',
+    });
+  });
+
   it('keeps chart loading visible when node is disconnected and data is unresolved', async () => {
-    nodeIsConnectedState.value = false;
     fetchDataMock.mockResolvedValueOnce([]);
     fetchDataMock.mockResolvedValueOnce([]);
 
@@ -129,6 +155,29 @@ describe('BarChart', () => {
     const skeleton = wrapper.find('.chart-skeleton-stub');
     expect(skeleton.exists()).toBe(true);
     expect(skeleton.attributes('data-loading')).toBe('true');
+  });
+
+  it('refreshes unresolved chart data when the indexer endpoint becomes available', async () => {
+    fetchDataMock.mockResolvedValue([]);
+
+    mount(BarChart, {
+      global: {
+        stubs: {
+          VChart: true,
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(2);
+
+    settingsStoreMock.state.indexerEndpoint = 'http://localhost:4350/graphql';
+    await nextTick();
+    await nextTick();
+
+    expect(fetchDataMock).toHaveBeenCalledTimes(4);
   });
 
   it('uses direct shared imports instead of the central lazy registry', () => {

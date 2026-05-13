@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, nextTick } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { defineComponent, nextTick, reactive } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import TvlChart from '@/components/pages/Stats/TvlChart.vue';
 import tvlChartSource from '@/components/pages/Stats/TvlChart.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
-const nodeIsConnectedState = vi.hoisted(() => ({ value: false }));
+const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));
 
 vi.mock('@/components/shared/Widget/Base.vue', () => ({
   default: {
@@ -78,13 +78,32 @@ vi.mock('@/indexer/queries/network/tvl', () => ({
   fetchData: fetchDataMock,
 }));
 
-vi.mock('@/stores/settings', () => ({
-  useSettingsStore: () => ({
-    get nodeIsConnected() {
-      return nodeIsConnectedState.value;
-    },
-  }),
-}));
+vi.mock('@/stores/settings', async () => {
+  const { reactive } = await import('vue');
+
+  settingsStoreMock.state ??= reactive({
+    nodeIsConnected: false,
+    indexerEndpoint: '',
+  });
+
+  return {
+    useSettingsStore: () => ({
+      get nodeIsConnected() {
+        return settingsStoreMock.state.nodeIsConnected;
+      },
+      get indexerType() {
+        return 'POLKASWAP';
+      },
+      get indexers() {
+        return {
+          POLKASWAP: {
+            endpoint: settingsStoreMock.state.indexerEndpoint,
+          },
+        };
+      },
+    }),
+  };
+});
 
 vi.mock('@/consts/snapshots', () => ({
   SECONDS_IN_TYPE: {
@@ -112,8 +131,15 @@ vi.mock('pinia', async (importOriginal) => {
 });
 
 describe('TvlChart', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    settingsStoreMock.state = reactive({
+      nodeIsConnected: false,
+      indexerEndpoint: '',
+    });
+  });
+
   it('keeps chart skeleton loading when node is disconnected and data is unresolved', async () => {
-    nodeIsConnectedState.value = false;
     fetchDataMock.mockResolvedValueOnce([]);
 
     const wrapper = mount(TvlChart, {
@@ -134,7 +160,7 @@ describe('TvlChart', () => {
   });
 
   it('stops chart skeleton loading when node is connected even with empty dataset', async () => {
-    nodeIsConnectedState.value = true;
+    settingsStoreMock.state.nodeIsConnected = true;
     fetchDataMock.mockResolvedValueOnce([]);
 
     const wrapper = mount(TvlChart, {
@@ -155,7 +181,6 @@ describe('TvlChart', () => {
   });
 
   it('renders without runtime errors when translation consts are available', async () => {
-    nodeIsConnectedState.value = false;
     fetchDataMock.mockResolvedValueOnce([]);
 
     const wrapper = mount(TvlChart, {
@@ -172,6 +197,29 @@ describe('TvlChart', () => {
     expect(wrapper.exists()).toBe(true);
     expect(fetchDataMock).toHaveBeenCalled();
     expect(wrapper.find('.price-change-stub').exists()).toBe(true);
+  });
+
+  it('refreshes unresolved TVL data when the indexer endpoint becomes available', async () => {
+    fetchDataMock.mockResolvedValue([]);
+
+    mount(TvlChart, {
+      global: {
+        stubs: {
+          VChart: true,
+          'v-chart': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(1);
+
+    settingsStoreMock.state.indexerEndpoint = 'http://localhost:4350/graphql';
+    await nextTick();
+    await nextTick();
+
+    expect(fetchDataMock).toHaveBeenCalledTimes(2);
   });
 
   it('uses direct shared imports instead of the central lazy registry', () => {

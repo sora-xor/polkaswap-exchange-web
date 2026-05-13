@@ -27,7 +27,7 @@ export interface NotificationToastRequest {
 export interface NormalizedToastRequest {
   message: string;
   title?: string;
-  status: StatusValue;
+  status?: StatusValue;
   timeout?: number;
   showCloseBtn?: boolean;
 }
@@ -53,8 +53,8 @@ export interface NormalizedAlertRequest {
 type ToastHandler = (payload: NormalizedToastRequest) => void;
 type AlertHandler = (payload: NormalizedAlertRequest) => void;
 
-function toStatus(severity?: NotificationSeverity): StatusValue {
-  if (!severity) return NOTIFICATION_STATUS.Info;
+function toStatus(severity?: NotificationSeverity): StatusValue | undefined {
+  if (!severity) return undefined;
   if (typeof severity === 'string' && severity in severityLookup) {
     return severityLookup[severity as keyof typeof severityLookup];
   }
@@ -91,7 +91,7 @@ class NotificationService {
     const normalized: NormalizedAlertRequest = {
       message: request.message,
       title: request.title,
-      status: toStatus(request.severity ?? NOTIFICATION_STATUS.Error),
+      status: toStatus(request.severity) ?? NOTIFICATION_STATUS.Error,
       confirmText: request.confirmText,
       cancelText: request.cancelText,
       onConfirm: request.onConfirm,

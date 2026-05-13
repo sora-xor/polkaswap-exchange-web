@@ -161,6 +161,7 @@ import { DexId } from '@/lib/substrate/sdk/dex/consts';
 import { createAsyncComponent } from '@/shared/ui/async';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
+import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';
 import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
 import {
   asZeroValue,
@@ -188,7 +189,6 @@ const SwapStatusActionBadge = createAsyncComponent(() => import('@/shared/ui/Sta
 const SwapTransactionDetails = createAsyncComponent(() => import('@/features/swap/components/TransactionDetails.vue'));
 const SwapLossWarningDialog = createAsyncComponent(() => import('@/features/swap/components/LossWarningDialog.vue'));
 const SlippageTolerance = createAsyncComponent(() => import('@/components/shared/Settings/SlippageTolerance.vue'));
-const SelectToken = createAsyncComponent(() => import('@/components/shared/SelectAsset/SelectToken.vue'));
 const TokenInput = createAsyncComponent(() => import('@/components/shared/Input/TokenInput.vue'));
 const ValueStatusWrapper = createAsyncComponent(() => import('@/components/shared/ValueStatusWrapper.vue'));
 const FormattedAmount = WalletComponentFormattedAmount;

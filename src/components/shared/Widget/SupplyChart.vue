@@ -98,6 +98,11 @@ const isFetchingError = ref(false);
 
 const settingsStore = useSettingsStore();
 const { exchangeRate } = storeToRefs(settingsStore);
+const indexerEndpoint = computed(() => {
+  const type = settingsStore.indexerType;
+
+  return type ? (settingsStore.indexers?.[type]?.endpoint ?? '') : '';
+});
 
 const parentLoading = computed(() => props.parentLoading);
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
@@ -281,6 +286,12 @@ watch(
     updateData();
   }
 );
+
+watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  updateData();
+});
 
 if (getCurrentScope()) {
   onScopeDispose(() => {

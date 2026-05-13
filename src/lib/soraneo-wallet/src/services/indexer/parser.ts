@@ -372,21 +372,29 @@ const firstString = (data: Record<string, unknown>, keys: string[]): string => {
   return '';
 };
 
+const normalizeEvmNetworkNumber = (value: number): number | undefined => {
+  return Number.isSafeInteger(value) && value > 0 ? value : undefined;
+};
+
 const normalizeEvmNetwork = (value: unknown): number | undefined => {
-  if (typeof value === 'number' && Number.isFinite(value)) return value;
-  if (typeof value === 'bigint') return Number(value);
+  if (typeof value === 'number') return normalizeEvmNetworkNumber(value);
+  if (typeof value === 'bigint') {
+    if (value <= 0n || value > BigInt(Number.MAX_SAFE_INTEGER)) return undefined;
+
+    return Number(value);
+  }
   if (typeof value === 'string' && value) {
     if (value.startsWith('0x')) {
       try {
         const parsed = Number(BigInt(value));
-        return Number.isSafeInteger(parsed) ? parsed : undefined;
+        return normalizeEvmNetworkNumber(parsed);
       } catch {
         return undefined;
       }
     }
 
     const parsed = Number(value);
-    return Number.isFinite(parsed) ? parsed : undefined;
+    return normalizeEvmNetworkNumber(parsed);
   }
 
   if (value && typeof value === 'object' && !Array.isArray(value)) {
@@ -407,6 +415,30 @@ const formatBridgeProxyAmount = (
   if ('amountUSD' in data && data.amountUSD !== undefined) return formatAmount(text);
 
   return formatCodecAmount(text, asset?.decimals);
+};
+
+/** Ensures indexed bridgeProxy restores cannot surface empty or malformed token movements. */
+const hasPositiveBridgeProxyAmount = (
+  amount: unknown,
+  data: HistoryElementEvmBridgeIncoming | HistoryElementEvmBridgeOutgoing
+): boolean => {
+  const text = String(amount ?? '').trim();
+
+  if (!text) return false;
+
+  try {
+    if ('amountUSD' in data && data.amountUSD !== undefined) {
+      if (!/^\d+(\.\d+)?$/.test(text)) return false;
+
+      return FPNumber.isGreaterThan(new FPNumber(text), FPNumber.ZERO);
+    }
+
+    if (!/^\d+$/.test(text)) return false;
+
+    return BigInt(text) > 0n;
+  } catch {
+    return false;
+  }
 };
 
 const applyBridgeProxyStatus = (payload: HistoryItem, status?: string): void => {
@@ -998,7 +1030,7 @@ const parseEvmBridgeOutgoing = async (transaction: HistoryElement, payload: Hist
   const asset = await getAssetByAddress(assetAddress);
   const _payload = payload as EvmHistory;
 
-  if (!assetAddress || data.amount === undefined) return null;
+  if (!assetAddress || !hasPositiveBridgeProxyAmount(data.amount, data)) return null;
 
   _payload.amount = formatBridgeProxyAmount(data.amount, asset, data);
   _payload.assetAddress = assetAddress;
@@ -1018,7 +1050,7 @@ const parseEvmBridgeIncoming = async (transaction: HistoryElement, payload: Hist
   const asset = await getAssetByAddress(assetAddress);
   const _payload = payload as EvmHistory;
 
-  if (!assetAddress || data.amount === undefined) return null;
+  if (!assetAddress || !hasPositiveBridgeProxyAmount(data.amount, data)) return null;
 
   _payload.amount = formatBridgeProxyAmount(data.amount, asset, data);
   _payload.assetAddress = assetAddress;

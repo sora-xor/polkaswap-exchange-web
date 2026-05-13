@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, nextTick } from 'vue';
-import { describe, expect, it, vi } from 'vitest';
+import { defineComponent, nextTick, reactive } from 'vue';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import NetworkStats from '@/components/pages/Stats/NetworkStats.vue';
 import networkStatsSource from '@/components/pages/Stats/NetworkStats.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
-const nodeIsConnectedState = vi.hoisted(() => ({ value: false }));
+const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));
 
 vi.mock('@/components/shared/Widget/Base.vue', () => ({
   default: {
@@ -59,13 +59,32 @@ vi.mock('@/indexer/queries/network/stats', () => ({
   fetchData: fetchDataMock,
 }));
 
-vi.mock('@/stores/settings', () => ({
-  useSettingsStore: () => ({
-    get nodeIsConnected() {
-      return nodeIsConnectedState.value;
-    },
-  }),
-}));
+vi.mock('@/stores/settings', async () => {
+  const { reactive } = await import('vue');
+
+  settingsStoreMock.state ??= reactive({
+    nodeIsConnected: false,
+    indexerEndpoint: '',
+  });
+
+  return {
+    useSettingsStore: () => ({
+      get nodeIsConnected() {
+        return settingsStoreMock.state.nodeIsConnected;
+      },
+      get indexerType() {
+        return 'POLKASWAP';
+      },
+      get indexers() {
+        return {
+          POLKASWAP: {
+            endpoint: settingsStoreMock.state.indexerEndpoint,
+          },
+        };
+      },
+    }),
+  };
+});
 
 vi.mock('@/consts/snapshots', () => ({
   SECONDS_IN_TYPE: {
@@ -81,8 +100,15 @@ vi.mock('@/consts/snapshots', () => ({
 }));
 
 describe('NetworkStats', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    settingsStoreMock.state = reactive({
+      nodeIsConnected: false,
+      indexerEndpoint: '',
+    });
+  });
+
   it('keeps filters disabled while stats data is unresolved and node is disconnected', async () => {
-    nodeIsConnectedState.value = false;
     fetchDataMock.mockResolvedValueOnce([]);
     fetchDataMock.mockResolvedValueOnce([]);
 
@@ -112,6 +138,30 @@ describe('NetworkStats', () => {
     expect(wrapper.find('.app-loading-overlay').classes()).toContain('el-loading-mask');
     expect(wrapper.find('.app-loading-overlay__spinner').exists()).toBe(true);
     expect(wrapper.find('.app-loading-overlay__spinner').classes()).toContain('el-loading-spinner');
+  });
+
+  it('refreshes unresolved stats when the indexer endpoint becomes available', async () => {
+    fetchDataMock.mockResolvedValue([]);
+
+    mount(NetworkStats, {
+      global: {
+        stubs: {
+          's-card': true,
+          's-tooltip': true,
+          's-icon': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(2);
+
+    settingsStoreMock.state.indexerEndpoint = 'http://localhost:4350/graphql';
+    await nextTick();
+    await nextTick();
+
+    expect(fetchDataMock).toHaveBeenCalledTimes(4);
   });
 
   it('binds integer-only rendering for whole-number counters', () => {

@@ -5,6 +5,7 @@ import {
   formatIndividualRewardPoints,
   formatNominations,
   formatPayee,
+  formatStakingBondParams,
   formatValidatorExposure,
 } from '@/lib/substrate/sdk/staking/helpers';
 import { StakingRewardsDestination } from '@/lib/substrate/sdk/staking/types';
@@ -48,6 +49,18 @@ describe('staking helper formatters', () => {
   it('formats payee destinations and account-specific payees', () => {
     expect(formatPayee(StakingRewardsDestination.Stash)).toBe(StakingRewardsDestination.Stash);
     expect(formatPayee('5Account')).toEqual({ Account: '5Account' });
+  });
+
+  it('formats staking bond params from runtime metadata', () => {
+    expect(
+      formatStakingBondParams({ meta: { args: [{}, {}] } }, 'controller', '100', StakingRewardsDestination.Stash)
+    ).toEqual(['100', StakingRewardsDestination.Stash]);
+
+    expect(formatStakingBondParams({}, 'controller', '100', StakingRewardsDestination.Stash)).toEqual([
+      'controller',
+      '100',
+      StakingRewardsDestination.Stash,
+    ]);
   });
 
   it('formats validator exposure totals and nominator exposure rows', () => {

@@ -44,6 +44,21 @@ const openAccountActionsMenu = async (page: Page): Promise<Locator> => {
   return menu;
 };
 
+const openQrSourceMenu = async (page: Page): Promise<Locator> => {
+  const qrTrigger = page.locator('.container--wallet .wallet-account-actions .qr-code-dropdown').first();
+  const menu = page
+    .locator('.el-dropdown-menu')
+    .filter({ hasText: /scan with camera/i })
+    .first();
+
+  await expect(qrTrigger).toBeVisible();
+  await qrTrigger.click({ trial: true, timeout: 500 });
+  await qrTrigger.click();
+  await expect(menu).toBeVisible();
+
+  return menu;
+};
+
 const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
   const swapSettingsTrigger = page.locator('.el-button--settings').first();
   const swapSettingsDialog = page.locator('.market-algorithm').first();
@@ -123,6 +138,20 @@ test('covers authenticated wallet account settings and account-action dialogs', 
     await page.keyboard.press('Escape');
     await expect(scenario.dialog).toHaveCount(0);
   }
+
+  expect(filterKnownWalletConsoleNoise(consoleErrors)).toEqual([]);
+});
+
+test('opens authenticated wallet QR source menu from one scanner click', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openAuthenticatedWallet(page);
+
+  const menu = await openQrSourceMenu(page);
+  await expect(menu.getByText(/import an image/i)).toBeVisible();
+  await expect(menu.getByText(/scan with camera/i)).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
 
   expect(filterKnownWalletConsoleNoise(consoleErrors)).toEqual([]);
 });

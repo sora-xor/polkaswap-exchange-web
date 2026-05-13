@@ -13,4 +13,13 @@ describe('Pool.vue source', () => {
     expect(poolSource).not.toContain('border-color: var(--s-color-base-content-secondary);');
     expect(poolSource).not.toContain('letter-spacing: -0.28px;');
   });
+
+  it('renders pool collapse arrows without the legacy glowing icon glyph', () => {
+    expect(poolSource).toContain('.el-collapse-item__arrow');
+    expect(poolSource).toContain('box-shadow: none;');
+    expect(poolSource).toContain('font-size: 0;');
+    expect(poolSource).toContain("content: '';");
+    expect(poolSource).toContain('border-right: 2px solid currentColor;');
+    expect(poolSource).toContain('&.is-active');
+  });
 });

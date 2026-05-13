@@ -30,8 +30,8 @@
                   :asset-symbol="slotAsset.symbol"
                   symbol-as-decimal
                   :fiat-value="getFiatBalance(slotAsset)"
-                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                  :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+                  :fiat-font-size-rate="FontSizeRate.SMALL"
+                  :fiat-font-weight-rate="FontWeightRate.SMALL"
                 >
                   <div v-if="hasLockedBalance(slotAsset)" class="asset-value-locked p4">
                     <s-icon name="lock-16" size="12px"></s-icon>
@@ -89,7 +89,7 @@
 
     <s-button
       v-if="permissions.addAssets"
-      class="wallet-assets-add s-typography-button--large"
+      class="wallet-assets-add s-typography-button--medium"
       @click="handleOpenAddAsset"
     >
       {{ t('addAssetText') }}
@@ -386,6 +386,8 @@ $padding: 5px;
 }
 
 .wallet-assets {
+  --s-asset-item-height--fiat: 76px;
+
   &-item {
     position: relative;
     background-color: var(--s-color-utility-surface);
@@ -407,11 +409,12 @@ $padding: 5px;
   &-dashes {
     position: absolute;
     top: 25%;
-    left: 8px;
+    left: 12px;
     height: 50%;
     width: 10px;
     cursor: grab;
     z-index: 1;
+    opacity: 0.65;
   }
 
   &-three-dash {
@@ -452,8 +455,13 @@ $padding: 5px;
   }
 
   .asset {
+    gap: 12px;
+    box-sizing: border-box;
+    padding: 0 12px 0 34px;
+
     .logo {
-      margin-left: 28px;
+      flex: 0 0 auto;
+      margin-left: 0;
     }
 
     .formatted-amount {
@@ -462,33 +470,105 @@ $padding: 5px;
       line-height: var(--s-line-height-reset);
       &__container {
         justify-content: flex-start;
+        max-width: 100%;
+        min-width: 0;
         text-align: left;
       }
       &--fiat-value {
-        margin-top: $basic-spacing-mini;
+        margin-top: $basic-spacing-extra-mini;
+        color: var(--s-color-base-content-secondary);
+        font-size: var(--s-font-size-extra-small);
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: var(--s-line-height-mini);
       }
     }
 
+    &-description {
+      min-width: 0;
+      flex: 1 1 auto;
+      width: auto;
+      padding: 0 10px 0 0;
+    }
+
     &-value {
-      height: $basic-spacing-medium;
-      font-size: var(--s-font-size-medium);
-      font-weight: 800;
-      letter-spacing: var(--s-letter-spacing-mini);
-      line-height: var(--s-line-height-reset);
+      height: auto;
+      max-width: 100%;
+      overflow: hidden;
+      overflow-wrap: normal;
+      font-size: var(--s-font-size-small);
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: var(--s-line-height-small);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      word-break: normal;
+
+      .formatted-amount__value {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: normal;
+      }
+
       &-locked {
         margin-left: $basic-spacing-tiny;
       }
       .formatted-amount__decimal {
-        font-weight: 600;
+        font-weight: 500;
       }
 
       @include formatted-amount-tooltip;
     }
 
     &-info {
-      margin-top: $basic-spacing-mini;
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      margin-top: $basic-spacing-extra-mini;
       color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-reset);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .wallet-assets {
+    --s-asset-item-height--fiat: 74px;
+
+    &-dashes {
+      display: none;
+    }
+
+    .asset {
+      gap: 8px;
+      padding: 0 10px;
+
+      .logo .asset-logo--big {
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+        min-height: 42px;
+        font-size: 28px;
+        line-height: 42px;
+      }
+
+      &-description {
+        padding-right: 2px;
+      }
+
+      &-value {
+        font-size: var(--s-font-size-mini);
+        line-height: var(--s-line-height-mini);
+      }
+
+      &-info {
+        font-size: var(--s-font-size-extra-small);
+      }
     }
   }
 }
@@ -520,22 +600,29 @@ $padding: 5px;
   }
 
   &-add {
-    margin-top: 16px;
+    align-self: center;
+    width: min(320px, 100%);
+    margin-top: 14px;
+    border-radius: 8px;
+
+    :deep(.s-button__text) {
+      letter-spacing: 0 !important;
+    }
   }
 
   &__draggable {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    gap: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   &__button {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    min-height: 34px;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
     border-color: var(--s-color-base-border-primary);
     background: var(--s-color-utility-surface);
     box-shadow: none;
@@ -572,11 +659,26 @@ $padding: 5px;
 @media (max-width: 640px) {
   .wallet-assets {
     &__button {
-      width: 32px;
-      min-width: 32px;
-      height: 32px;
-      min-height: 32px;
+      width: 30px;
+      min-width: 30px;
+      height: 30px;
+      min-height: 30px;
     }
+
+    &-add {
+      align-self: stretch;
+      width: auto;
+      margin-top: 12px;
+    }
+  }
+
+  .wallet-assets__button.send,
+  .wallet-assets__button.swap {
+    display: none;
+  }
+
+  .wallet-assets :deep(.pin) {
+    display: none;
   }
 }
 </style>

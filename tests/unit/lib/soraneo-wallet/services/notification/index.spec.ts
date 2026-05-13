@@ -80,4 +80,32 @@ describe('wallet services/notification', () => {
       showCloseBtn: undefined,
     });
   });
+
+  it('keeps untyped wallet toasts neutral while defaulting alerts to errors', async () => {
+    const { default: notificationService, NOTIFICATION_STATUS } = await loadNotificationService();
+    const toastHandler = vi.fn();
+    const alertHandler = vi.fn();
+
+    notificationService.notify({ message: 'neutral toast' });
+    notificationService.alert({ message: 'blocking alert' });
+
+    notificationService.registerToastHandler(toastHandler);
+    notificationService.registerAlertHandler(alertHandler);
+
+    expect(toastHandler).toHaveBeenCalledWith({
+      message: 'neutral toast',
+      title: undefined,
+      status: undefined,
+      timeout: undefined,
+      showCloseBtn: undefined,
+    });
+    expect(alertHandler).toHaveBeenCalledWith({
+      message: 'blocking alert',
+      title: undefined,
+      status: NOTIFICATION_STATUS.Error,
+      confirmText: undefined,
+      cancelText: undefined,
+      onConfirm: undefined,
+    });
+  });
 });

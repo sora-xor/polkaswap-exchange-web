@@ -362,6 +362,35 @@ const getAccountBridgeBalance = async (
 };
 
 /**
+ * Fetches the EVM-side balance for a bridge asset while keeping SORA accounts
+ * on the SORA balance API.
+ */
+const getEvmBridgeAssetBalance = async (
+  accountAddress: string,
+  asset: Nullable<RegisteredAccountAsset>,
+  isRegisteredAsset: boolean,
+  subConnector: SubNetworksConnector
+): Promise<CodecString> => {
+  const tokenAddress = asset?.externalAddress;
+
+  if (!(asset?.address && accountAddress && tokenAddress && isRegisteredAsset)) {
+    return ZeroStringValue;
+  }
+
+  if (ethersUtil.isNativeEvmTokenAddress(tokenAddress)) {
+    return getAccountBridgeBalance(accountAddress, asset, false, false, subConnector);
+  }
+
+  try {
+    const balances = await ethersUtil.getErc20BalancesBatch([{ token: tokenAddress, account: accountAddress }]);
+
+    return balances[0]?.balance ?? ZeroStringValue;
+  } catch {
+    return getAccountBridgeBalance(accountAddress, asset, false, false, subConnector);
+  }
+};
+
+/**
  * Resolves a transaction asset only when it is still present in the live bridge registry.
  */
 const getRegisteredTransactionAsset = (assetAddress: string): RegisteredAccountAsset => {
@@ -749,6 +778,8 @@ const createExternalHistoryContext = (store: BridgeStateStoreLike) => {
       },
       web3: {
         networkSelected: web3Store.networkSelected,
+        ethBridgeContractAddress: web3Store.ethBridgeContractAddress,
+        ethBridgeEvmNetwork: web3Store.ethBridgeEvmNetwork,
       },
       bridge: {
         inProgressIds: store.history.inProgressIds,
@@ -1206,29 +1237,15 @@ const useBridgeStoreBase = defineStore('bridge', {
           return;
         }
 
-        let senderBalance = ZeroStringValue;
-        let recipientBalance = ZeroStringValue;
-        const tokenAddress = asset?.externalAddress;
-
-        if (tokenAddress && isRegisteredAsset && !ethersUtil.isNativeEvmTokenAddress(tokenAddress)) {
-          try {
-            const balances = await ethersUtil.getErc20BalancesBatch([
-              { token: tokenAddress, account: sender },
-              { token: tokenAddress, account: recipient },
-            ]);
-
-            senderBalance = balances[0]?.balance ?? ZeroStringValue;
-            recipientBalance = balances[1]?.balance ?? ZeroStringValue;
-          } catch {
-            senderBalance = await getAccountBridgeBalance(sender, asset, isSoraToEvm, false, subConnector);
-            recipientBalance = await getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false, subConnector);
-          }
-        } else {
-          senderBalance = await getAccountBridgeBalance(sender, asset, isSoraToEvm, false, subConnector);
-          recipientBalance = await getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false, subConnector);
-        }
-
-        const nativeBalance = await getAccountBridgeBalance(spender, nativeToken, false, false, subConnector);
+        const soraAccount = isSoraToEvm ? sender : recipient;
+        const externalAccount = isSoraToEvm ? recipient : sender;
+        const [soraBalance, externalBalance, nativeBalance] = await Promise.all([
+          getAccountBridgeBalance(soraAccount, asset, true, false, subConnector),
+          getEvmBridgeAssetBalance(externalAccount, asset, isRegisteredAsset, subConnector),
+          getAccountBridgeBalance(spender, nativeToken, false, false, subConnector),
+        ]);
+        const senderBalance = isSoraToEvm ? soraBalance : externalBalance;
+        const recipientBalance = isSoraToEvm ? externalBalance : soraBalance;
 
         syncBalancesBatchCompat(this, {
           sender: senderBalance,

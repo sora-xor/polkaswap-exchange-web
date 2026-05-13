@@ -16,7 +16,7 @@
     <template #default="token">
       <div v-if="connected" class="asset__balance-container">
         <button
-          v-if="formatBalance(token) !== FormattedZeroSymbol"
+          v-if="hasFormattedBalance(token)"
           @click.stop="togglePinnedAsset(token)"
           class="pin-button"
           :title="isAssetPinned(token) ? t('addAsset.unpinAsset') : t('addAsset.pinAsset')"
@@ -25,13 +25,13 @@
         </button>
 
         <formatted-amount-with-fiat-value
-          v-if="formatBalance(token) !== FormattedZeroSymbol"
+          v-if="hasFormattedBalance(token)"
           value-class="asset__balance"
           value-can-be-hidden
-          :value="formatBalance(token)"
+          :value="getFormattedBalance(token)"
           :font-size-rate="FontSizeRate.MEDIUM"
           :has-fiat-value="shouldFiatBeShown(token)"
-          :fiat-value="getFiatBalance(token)"
+          :fiat-value="getFormattedFiatBalance(token)"
           :fiat-font-size-rate="FontSizeRate.MEDIUM"
           :fiat-font-weight-rate="FontWeightRate.MEDIUM"
         ></formatted-amount-with-fiat-value>
@@ -52,14 +52,15 @@
 </template>
 
 <script lang="ts" setup>
-import { toRef } from 'vue';
+import { toRef, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { useAssetFormatting } from '@/composables/useAssetFormatting';
 import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import { useWalletStore } from '@/stores/wallet';
 
-import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
+import type { Nullable } from '@/types/common';
 import WalletComponentAssetList from '@/lib/soraneo-wallet/src/components/AssetList.vue';
 import WalletComponentPinIcon from '@/lib/soraneo-wallet/src/components/PinIcon.vue';
 import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
@@ -75,7 +76,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    assets?: AccountAsset[];
+    assets?: Asset[];
     connected?: boolean;
     shouldBalanceBeHidden?: boolean;
     isSoraToEvm?: boolean;
@@ -96,12 +97,31 @@ const { formatAssetBalance, getFiatBalance, getAssetFiatPrice } = useAssetFormat
 const walletStore = useWalletStore();
 
 const FormattedZeroSymbol = '-';
+type AssetDisplay = {
+  balance: string;
+  fiatBalance: Nullable<string>;
+  hasBalance: boolean;
+  hasFiatValue: boolean;
+};
+type AssetDisplayCacheEntry = {
+  key: string;
+  display: AssetDisplay;
+};
+type AssetDisplayFields = Asset &
+  Partial<AccountAsset> & {
+    externalBalance?: string | null;
+    externalDecimals?: number | null;
+  };
 
-const isAssetPinned = (asset: AccountAsset): boolean => {
+const assetDisplayCache = new Map<string, AssetDisplayCacheEntry>();
+
+watch(assets, () => assetDisplayCache.clear());
+
+const isAssetPinned = (asset: Asset): boolean => {
   return walletStore.isAssetPinned(asset);
 };
 
-const togglePinnedAsset = (asset: AccountAsset): void => {
+const togglePinnedAsset = (asset: Asset): void => {
   if (isAssetPinned(asset)) {
     walletStore.removePinnedAsset(asset);
   } else {
@@ -109,16 +129,53 @@ const togglePinnedAsset = (asset: AccountAsset): void => {
   }
 };
 
-const formatBalance = (asset: AccountAsset): string => {
-  return formatAssetBalance(asset, {
+/** Builds a stable cache key from the fields that affect row amount display. */
+const getAssetDisplayCacheKey = (asset: Asset): string => {
+  const displayAsset = asset as AssetDisplayFields;
+  const balanceFingerprint = props.isSoraToEvm
+    ? `${displayAsset.balance?.transferable ?? ''}:${asset.decimals ?? ''}`
+    : `${displayAsset.externalBalance ?? ''}:${displayAsset.externalDecimals ?? ''}`;
+
+  return [
+    asset.address,
+    props.isSoraToEvm ? 'internal' : 'external',
+    balanceFingerprint,
+    getAssetFiatPrice(asset) ?? '',
+  ].join('|');
+};
+
+/** Formats row balance and fiat values once per asset display state. */
+const getAssetDisplay = (asset: Asset): AssetDisplay => {
+  const key = getAssetDisplayCacheKey(asset);
+  const cached = assetDisplayCache.get(asset.address);
+
+  if (cached?.key === key) {
+    return cached.display;
+  }
+
+  const balance = formatAssetBalance(asset, {
     internal: props.isSoraToEvm,
     showZeroBalance: true,
     formattedZero: FormattedZeroSymbol,
   });
+  const hasFiatValue = Boolean(props.isSoraToEvm && getAssetFiatPrice(asset));
+  const display: AssetDisplay = {
+    balance,
+    fiatBalance: hasFiatValue ? getFiatBalance(asset as AccountAsset) : null,
+    hasBalance: balance !== FormattedZeroSymbol,
+    hasFiatValue,
+  };
+
+  assetDisplayCache.set(asset.address, { key, display });
+
+  return display;
 };
 
-const shouldFiatBeShown = (asset: AccountAsset): boolean => {
-  return Boolean(props.isSoraToEvm && getAssetFiatPrice(asset));
+const hasFormattedBalance = (asset: Asset): boolean => getAssetDisplay(asset).hasBalance;
+const getFormattedBalance = (asset: Asset): string => getAssetDisplay(asset).balance;
+const getFormattedFiatBalance = (asset: Asset): Nullable<string> => getAssetDisplay(asset).fiatBalance;
+const shouldFiatBeShown = (asset: Asset): boolean => {
+  return getAssetDisplay(asset).hasFiatValue;
 };
 </script>
 

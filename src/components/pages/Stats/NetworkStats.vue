@@ -101,6 +101,11 @@ const { loading, withLoading, withParentLoading } = useLoading({ parentLoading }
 const { t, tc, TranslationConsts } = useTranslation();
 const settingsStore = useSettingsStore();
 const nodeIsConnected = computed(() => settingsStore.nodeIsConnected);
+const indexerEndpoint = computed(() => {
+  const type = settingsStore.indexerType;
+
+  return type ? (settingsStore.indexers?.[type]?.endpoint ?? '') : '';
+});
 const loadingState = computed(() => parentLoading.value || loading.value || !hasResolvedData.value);
 
 const arrow = String.fromCodePoint(0x2192);
@@ -194,6 +199,12 @@ watch(nodeIsConnected, (connected) => {
   if (!hasResolvedData.value) {
     void updateData();
   }
+});
+
+watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  void updateData();
 });
 
 onMounted(() => {

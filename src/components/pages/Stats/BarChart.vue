@@ -110,6 +110,11 @@ const filter = ref<SnapshotFilter>(filters[0]);
 const settingsStore = useSettingsStore();
 const { exchangeRate, currencySymbol } = storeToRefs(settingsStore);
 const nodeIsConnected = computed(() => settingsStore.nodeIsConnected);
+const indexerEndpoint = computed(() => {
+  const type = settingsStore.indexerType;
+
+  return type ? (settingsStore.indexers?.[type]?.endpoint ?? '') : '';
+});
 const hasResolvedData = ref(false);
 
 const parentLoading = computed(() => props.parentLoading);
@@ -222,6 +227,12 @@ watch(nodeIsConnected, (connected) => {
   if (!hasResolvedData.value) {
     void updateData();
   }
+});
+
+watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  void updateData();
 });
 
 onMounted(() => {

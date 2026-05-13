@@ -48,7 +48,7 @@ import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/lib/
 import { sanitizeNftBlacklistPayload, sanitizeWhitelistPayload } from '@/lib/soraneo-wallet/src/util/security';
 import type { ExternalHistoryParams } from '@/lib/soraneo-wallet/src/types/history';
 import { resolveFallbackIndexer, resolvePreferredIndexer } from '@/stores/wallet/utils/indexers';
-import type { Nullable } from '@/types/common';
+import type { Book, Nullable } from '@/types/common';
 import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
 import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
 import { resolveStaticAssetUrl } from '@/utils/staticAssets';
@@ -326,6 +326,8 @@ export const useWalletStore = defineStore('wallet', () => {
   const assetsToNotifyQueue = computed<WhitelistArrayItem[]>(() => accountState.value.assetsToNotifyQueue ?? []);
   const availableWallets = computed(() => accountState.value.availableWallets ?? []);
   const accountSource = computed(() => (accountState.value.source as Nullable<AppWallet>) ?? null);
+  const source = computed(() => accountSource.value);
+  const book = computed<Book>(() => ({ ...((accountState.value.book ?? {}) as Book) }));
   const currentRoute = computed<Nullable<string>>(() => getWalletCurrentRoute());
   const isExternal = computed(() => Boolean(accountState.value.isExternal));
   const isDesktop = computed(() => Boolean(accountState.value.isDesktop));
@@ -360,11 +362,16 @@ export const useWalletStore = defineStore('wallet', () => {
   const allowTopUpAlert = computed(() => Boolean(settingsState.value.allowTopUpAlert));
   const indexers = computed(() => (settingsState.value.indexers ?? {}) as Record<string, IndexerState>);
   const indexerType = computed(() => (settingsState.value.indexerType as Nullable<string>) ?? null);
+  const nftStorage = computed(() => settingsState.value.nftStorage ?? null);
   const activeTransactions = computed<HistoryItem[]>(() =>
     transactionsState.value.activeTxsIds
       .map((id) => transactionsState.value.history[id])
       .filter((transaction): transaction is HistoryItem => Boolean(transaction))
   );
+  const history = computed(() => transactionsState.value.history ?? {});
+  const externalHistory = computed(() => transactionsState.value.externalHistory ?? {});
+  const externalHistoryUpdates = computed(() => transactionsState.value.externalHistoryUpdates ?? {});
+  const externalHistoryTotal = computed(() => Number(transactionsState.value.externalHistoryTotal ?? 0));
   const firstReadyTransaction = computed(() => resolveFirstReadyTransaction(transactionsState.value));
   const selectedTransaction = computed(() => resolveSelectedTransaction(transactionsState.value));
   const pendingMstTransactions = computed(() => transactionsState.value.pendingMstTransactions ?? []);
@@ -1617,6 +1624,8 @@ export const useWalletStore = defineStore('wallet', () => {
     assetsToNotifyQueue,
     availableWallets,
     accountSource,
+    source,
+    book,
     currentRoute,
     isExternal,
     isDesktop,
@@ -1646,7 +1655,12 @@ export const useWalletStore = defineStore('wallet', () => {
     allowTopUpAlert,
     indexers,
     indexerType,
+    nftStorage,
     activeTransactions,
+    history,
+    externalHistory,
+    externalHistoryUpdates,
+    externalHistoryTotal,
     firstReadyTransaction,
     selectedTransaction,
     pendingMstTransactions,

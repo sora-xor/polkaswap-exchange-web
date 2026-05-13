@@ -35,18 +35,21 @@ const formattedDate = computed(() => formatDate(props.date, 'L'));
 .task-card {
   .el-divider {
     height: 100%;
-    background-color: var(--s-color-base-content-tertiary);
+    background-color: rgba(255, 255, 255, 0.12);
   }
+  align-items: center;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: $inner-spacing-big;
   &__first-trx {
+    color: var(--s-color-base-on-accent);
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 600;
+    line-height: 1.25;
     max-width: calc($inner-spacing-large * 4.5);
   }
   &__date {
-    margin-left: $inner-spacing-big;
     display: flex;
     flex-direction: column;
     color: var(--s-color-base-content-secondary);

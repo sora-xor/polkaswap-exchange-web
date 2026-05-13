@@ -84,37 +84,50 @@ function handleClick(): void {
 
 <style lang="scss" scoped>
 .el-divider {
-  margin-top: $inner-spacing-mini;
-  margin-bottom: $inner-spacing-mini;
-  background-color: var(--s-color-base-content-tertiary);
+  background-color: rgba(255, 255, 255, 0.12);
+  margin-bottom: $inner-spacing-small;
+  margin-top: $inner-spacing-small;
 }
 .point-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: $inner-spacing-medium;
   position: relative;
-  padding: $inner-spacing-mini;
-  border-radius: $inner-spacing-small;
-  text-align: center;
+  text-align: left;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: rgba(82, 185, 255, 0.34);
+    box-shadow: 0 22px 42px rgba(23, 6, 41, 0.24);
+    transform: translateY(-1px);
+  }
 
   &__progress {
+    align-items: flex-start;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    margin-bottom: $inner-spacing-small;
+    gap: $inner-spacing-small;
+    justify-content: space-between;
+    margin-bottom: $inner-spacing-medium;
 
     .progress-circle {
-      margin-top: $inner-spacing-mini;
+      flex: 0 0 auto;
     }
 
     p {
+      background-color: rgba(35, 7, 53, 0.64);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--s-border-radius-small);
+      color: var(--s-color-base-on-accent);
       font-size: 12px;
       font-weight: 700;
-      padding: 3px $inner-spacing-mini;
-      border-radius: $inner-spacing-small;
       margin-left: auto;
-      margin-bottom: auto;
-      background-color: var(--s-color-base-on-accent);
-      color: var(--s-color-base-content-primary);
       max-width: 100px;
+      padding: 5px $inner-spacing-mini;
+      text-align: center;
       span {
+        color: var(--s-color-base-on-accent);
         opacity: 0.4;
         font-size: 10px;
       }
@@ -122,32 +135,39 @@ function handleClick(): void {
   }
 
   &__name {
-    margin-top: $inner-spacing-small;
+    align-items: center;
     display: flex;
     flex-direction: row;
+    gap: $inner-spacing-small;
     justify-content: space-between;
-    text-align: left;
+    margin-top: auto;
+    min-height: 42px;
     &:hover {
       cursor: pointer;
       p {
-        color: var(--s-color-base-content-secondary);
+        color: var(--s-color-base-on-accent);
       }
     }
     p {
       font-weight: 300;
-      font-size: 12px;
-      color: var(--s-color-base-content-primary);
+      font-size: 15px;
+      line-height: 1.25;
+      color: var(--s-color-base-on-accent);
     }
     i {
       align-self: center;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
       color: var(--s-color-base-content-tertiary);
+      flex: 0 0 auto;
+      padding: $inner-spacing-mini;
     }
     &.disabled {
       cursor: default;
 
       &:hover {
         p {
-          color: var(--s-color-base-content-primary);
+          color: var(--s-color-base-on-accent);
         }
       }
     }
@@ -163,6 +183,7 @@ function handleClick(): void {
     p {
       font-weight: 800;
       font-size: 11px;
+      line-height: 1.15;
       &:first-of-type {
         color: var(--s-color-base-content-secondary);
       }
@@ -183,7 +204,7 @@ function handleClick(): void {
     }
   }
   @include mobile(true) {
-    padding: $inner-spacing-mini $inner-spacing-big;
+    padding: $inner-spacing-medium;
   }
 }
 </style>

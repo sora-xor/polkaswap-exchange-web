@@ -8,4 +8,12 @@ describe('staking sora ValidatorsAttentionDialog source', () => {
     expect(validatorsAttentionDialogSource).toContain('<br />');
     expect(validatorsAttentionDialogSource).not.toMatch(/p\s*\{\s*width:\s*100%;/s);
   });
+
+  it('keeps the warning content clear of the modal close header', () => {
+    expect(validatorsAttentionDialogSource).toContain('custom-class="validators-attention-dialog"');
+    expect(validatorsAttentionDialogSource).toContain(
+      ':global(.dialog-card.validators-attention-dialog .dialog-card__header)'
+    );
+    expect(validatorsAttentionDialogSource).not.toContain('margin-top: -50px');
+  });
 });

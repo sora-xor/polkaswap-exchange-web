@@ -189,6 +189,7 @@ const getIncomingEvmTransactionDataMock = vi.hoisted(() =>
 
 const getEthNetworkFeeMock = vi.hoisted(() => vi.fn(async () => '9'));
 const waitForEvmTransactionMinedMock = vi.hoisted(() => vi.fn(async () => undefined));
+const getSoraAssetBalanceMock = vi.hoisted(() => vi.fn(async () => ({ transferable: '33' })));
 const dataPlaneClientMock = vi.hoisted(() => ({
   start: vi.fn(async () => true),
   disconnect: vi.fn(async () => undefined),
@@ -203,10 +204,12 @@ const ethersUtilMock = vi.hoisted(() => ({
   getAccountAssetBalance: vi.fn(async () => '7'),
   getBlockNumber: vi.fn(async () => 777),
   getAllowance: vi.fn(async () => '0'),
-  getErc20BalancesBatch: vi.fn(async () => [
-    { token: '0xexternal-asset', account: 'sora-address', balance: '11' },
-    { token: '0xexternal-asset', account: '0xrecipient', balance: '22' },
-  ]),
+  getErc20BalancesBatch: vi.fn(async (pairs: Array<{ token: string; account: string }>) =>
+    pairs.map((pair) => ({
+      ...pair,
+      balance: pair.account === '0xsender' ? '11' : pair.account === '0xrecipient' ? '22' : '0',
+    }))
+  ),
   isNativeEvmTokenAddress: vi.fn(() => false),
   getTokenContract: vi.fn(async () => ({
     approve: vi.fn(async () => ({ hash: '0xapprove-tx' })),
@@ -290,6 +293,16 @@ vi.mock('@/utils/bridge/common/utils', async () => {
   return {
     ...actual,
     waitForEvmTransactionMined: waitForEvmTransactionMinedMock,
+  };
+});
+
+vi.mock('@sora-substrate/sdk/build/assets', async () => {
+  const actual =
+    await vi.importActual<typeof import('@sora-substrate/sdk/build/assets')>('@sora-substrate/sdk/build/assets');
+
+  return {
+    ...actual,
+    getAssetBalance: getSoraAssetBalanceMock,
   };
 });
 
@@ -503,6 +516,8 @@ describe('useBridgeStore', () => {
     getIncomingEvmTransactionDataMock.mockClear();
     getEthNetworkFeeMock.mockClear();
     waitForEvmTransactionMinedMock.mockClear();
+    getSoraAssetBalanceMock.mockReset();
+    getSoraAssetBalanceMock.mockResolvedValue({ transferable: '33' });
     dataPlaneClientMock.start.mockClear();
     dataPlaneClientMock.disconnect.mockClear();
     dataPlaneClientMock.subscribeSubstrateFinalizedHeads.mockClear();
@@ -871,6 +886,15 @@ describe('useBridgeStore', () => {
                 etherscan: 'etherscan-key',
               }),
             }),
+          }),
+          web3: expect.objectContaining({
+            networkSelected: EvmNetworkId.EthereumSepolia,
+            ethBridgeEvmNetwork: EvmNetworkId.EthereumSepolia,
+            ethBridgeContractAddress: {
+              XOR: '0xcontract-xor',
+              VAL: '0xcontract-val',
+              OTHER: '0xcontract-other',
+            },
           }),
           bridge: expect.objectContaining({
             subBridgeConnector: seededConnector,
@@ -1455,11 +1479,30 @@ describe('useBridgeStore', () => {
     await store.updateExternalBalance();
     await store.updateOutgoingMaxLimit();
 
-    expect(store.balances.assetSenderBalance).toBe('11');
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(ethersUtilMock.getErc20BalancesBatch).toHaveBeenCalledWith([
+      { token: '0xexternal-asset', account: '0xrecipient' },
+    ]);
+    expect(store.balances.assetSenderBalance).toBe('33');
     expect(store.balances.assetRecipientBalance).toBe('22');
     expect(store.fees.externalNativeBalance).toBe('7');
     expect(store.balances.outgoingMaxLimit?.toString()).toBe('20');
     expect(store.subscriptions.outgoingMaxLimit).not.toBeNull();
+  });
+
+  it('maps the SORA balance to the recipient when bridging into SORA', async () => {
+    web3StoreMock.evmAddress = '0xsender';
+    getSoraAssetBalanceMock.mockResolvedValueOnce({ transferable: '44' });
+    store.updateForm({ isSoraToEvm: false });
+
+    await store.updateExternalBalance();
+
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(ethersUtilMock.getErc20BalancesBatch).toHaveBeenCalledWith([
+      { token: '0xexternal-asset', account: '0xsender' },
+    ]);
+    expect(store.balances.assetSenderBalance).toBe('11');
+    expect(store.balances.assetRecipientBalance).toBe('44');
   });
 
   it('clears stale outgoing max limit and subscription when the asset has no bridge limit', async () => {
@@ -1551,7 +1594,7 @@ describe('useBridgeStore', () => {
     expect(store.subscriptions.outgoingMaxLimit).not.toBeNull();
   });
 
-  it('returns zero balances and clears the loading flag when EVM balance providers fail', async () => {
+  it('keeps the SORA balance and clears the loading flag when EVM balance providers fail', async () => {
     ethersUtilMock.getErc20BalancesBatch.mockRejectedValueOnce(new Error('batch unavailable'));
     ethersUtilMock.getAccountAssetBalance
       .mockRejectedValueOnce(new Error('sender unavailable'))
@@ -1559,7 +1602,7 @@ describe('useBridgeStore', () => {
 
     await store.updateExternalBalance();
 
-    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetSenderBalance).toBe('33');
     expect(store.balances.assetRecipientBalance).toBe('0');
     expect(store.fees.externalNativeBalance).toBe('0');
     expect(store.flags.balancesFetching).toBe(false);
@@ -1570,7 +1613,7 @@ describe('useBridgeStore', () => {
 
     await store.updateExternalBalance();
 
-    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetSenderBalance).toBe('33');
     expect(store.balances.assetRecipientBalance).toBe('0');
     expect(store.fees.externalNativeBalance).toBe('7');
     expect(store.flags.balancesFetching).toBe(false);

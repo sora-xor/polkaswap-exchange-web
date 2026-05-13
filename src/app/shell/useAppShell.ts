@@ -21,6 +21,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { bootstrapRuntimeServices } from '@/utils/bootstrapRuntimeServices';
 import { toDwebLink } from '@/utils/ipfs';
 import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { resolvePolkaswapIndexerEndpoint } from '@/utils/indexerEndpoint';
 import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { shouldLoadTelegramMiniApp } from '@/utils/telegramLaunch';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
@@ -1009,13 +1010,13 @@ export function useAppShell() {
       const subNetworks = data.SUB_NETWORKS && typeof data.SUB_NETWORKS === 'object' ? data.SUB_NETWORKS : {};
       web3Store.setSubNetworkApps(subNetworks as SubNetworkApps);
 
-      const hasPolkaswapIndexerEndpoint =
-        typeof data.POLKASWAP_INDEXER_ENDPOINT === 'string' && data.POLKASWAP_INDEXER_ENDPOINT.length > 0;
+      const polkaswapIndexerEndpoint = resolvePolkaswapIndexerEndpoint(data.POLKASWAP_INDEXER_ENDPOINT);
+      const hasPolkaswapIndexerEndpoint = polkaswapIndexerEndpoint.length > 0;
       hasIndexerEndpoint = hasPolkaswapIndexerEndpoint;
 
       walletStore.setIndexerEndpoint({
         indexer: IndexerType.POLKASWAP,
-        endpoint: hasPolkaswapIndexerEndpoint ? data.POLKASWAP_INDEXER_ENDPOINT : '',
+        endpoint: polkaswapIndexerEndpoint,
       });
 
       if (data.FAUCET_URL) {

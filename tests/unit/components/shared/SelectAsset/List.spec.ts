@@ -191,9 +191,11 @@ describe('SelectAssetList', () => {
       internal: true,
       showZeroBalance: true,
     });
+    expect(formattingMocks.formatAssetBalance).toHaveBeenCalledTimes(1);
 
     expect(wrapper.find('.formatted-amount-with-fiat-stub .value').text()).toBe('123.45');
     expect(formattingMocks.getFiatBalance).toHaveBeenCalledWith(defaultAsset);
+    expect(formattingMocks.getFiatBalance).toHaveBeenCalledTimes(1);
   });
 
   it('toggles pinned state via legacy wallet mutations', async () => {

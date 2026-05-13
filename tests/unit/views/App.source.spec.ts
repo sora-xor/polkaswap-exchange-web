@@ -13,6 +13,15 @@ describe('App shell source', () => {
     expect(appShellSource).toContain("const NotificationProvider = WalletComponentNotificationProvider ?? 'div';");
   });
 
+  it('keeps Vue 3 notification toasts mapped to the Polkaswap popup design skin', () => {
+    expect(appShellSource).toContain(".s-toasts-display[data-placement-v='top'][data-placement-h='right']");
+    expect(appShellSource).toContain('.s-notification-body');
+    expect(appShellSource).toContain('z-index: 2000;');
+    expect(appShellSource).toContain('background: var(--s-color-brand-day);');
+    expect(appShellSource).toContain('box-shadow: var(--s-shadow-tooltip);');
+    expect(appShellSource).toContain('width: 405px;');
+  });
+
   it('loads dormant shell overlays through an async boundary', () => {
     expect(appShellSource).toContain("const AppShellOverlays = createAsyncComponent(() => import('./AppShellOverlays.vue'));");
     expect(appShellSource).not.toContain("import AppShellOverlays from './AppShellOverlays.vue';");

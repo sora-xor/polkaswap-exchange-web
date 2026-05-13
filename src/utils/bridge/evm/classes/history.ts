@@ -33,19 +33,48 @@ const normalizeTransactionState = (item: EvmHistory): BridgeTxStatus => {
   return item.status === TransactionStatus.Error ? BridgeTxStatus.Failed : BridgeTxStatus.Done;
 };
 
-const matchesNetwork = (item: EvmHistory, network: EvmNetwork): boolean => {
-  if (item.externalNetwork === undefined || item.externalNetwork === null) return true;
+const normalizeSyncTimestamp = (timestamp: unknown, fallback = 0): number => {
+  const value = Number(timestamp);
 
-  return Number(item.externalNetwork) === Number(network);
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+};
+
+const getLatestHistoryTimestamp = (historyElements: HistoryElement[], fallback: number): number => {
+  for (const historyElement of historyElements) {
+    const timestamp = normalizeSyncTimestamp(historyElement?.timestamp);
+
+    if (timestamp) return timestamp;
+  }
+
+  return fallback;
+};
+
+const notifyUpdate = async (updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> => {
+  try {
+    await updateCallback?.();
+  } catch {
+    // UI refresh callbacks must not break history restoration.
+  }
+};
+
+const matchesNetwork = (item: EvmHistory, network: EvmNetwork): boolean => {
+  const rawNetwork = item.externalNetwork as unknown;
+
+  if (rawNetwork === undefined || rawNetwork === null || rawNetwork === '') return false;
+
+  const itemNetwork = Number(rawNetwork);
+  const selectedNetwork = Number(network);
+
+  return Number.isFinite(itemNetwork) && Number.isFinite(selectedNetwork) && itemNetwork === selectedNetwork;
 };
 
 export class EvmBridgeHistory {
   public get historySyncTimestamp(): number {
-    return +(evmBridgeApi.accountStorage?.get('evmBridgeHistorySyncTimestamp') || 0);
+    return normalizeSyncTimestamp(evmBridgeApi.accountStorage?.get('evmBridgeHistorySyncTimestamp'));
   }
 
   public set historySyncTimestamp(timestamp: number) {
-    evmBridgeApi.accountStorage?.set('evmBridgeHistorySyncTimestamp', timestamp);
+    evmBridgeApi.accountStorage?.set('evmBridgeHistorySyncTimestamp', normalizeSyncTimestamp(timestamp));
   }
 
   /**
@@ -56,7 +85,7 @@ export class EvmBridgeHistory {
     const filter = indexer.historyElementsFilter({
       address,
       operations: EvmBridgeOperations,
-      timestamp,
+      timestamp: normalizeSyncTimestamp(timestamp),
     });
     const history: HistoryElement[] = [];
     let hasNext = true;
@@ -71,9 +100,15 @@ export class EvmBridgeHistory {
 
       if (!response) return history;
 
-      hasNext = !!response.pageInfo?.hasNextPage;
-      after = response.pageInfo?.endCursor ?? '';
-      history.push(...response.edges.map((edge) => edge.node as HistoryElement));
+      const edges = Array.isArray(response.edges) ? response.edges : [];
+      const nextAfter = response.pageInfo?.endCursor ?? '';
+      const historyNodes = edges
+        .map((edge) => edge?.node)
+        .filter((node): node is HistoryElement => Boolean(node));
+
+      hasNext = !!response.pageInfo?.hasNextPage && !!nextAfter && nextAfter !== after;
+      history.push(...historyNodes);
+      after = nextAfter;
     } while (hasNext);
 
     return history;
@@ -84,7 +119,7 @@ export class EvmBridgeHistory {
    */
   public async clearHistory(
     network: EvmNetwork,
-    inProgressIds: Record<string, boolean>,
+    inProgressIds: Record<string, boolean> = {},
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     const ids = Object.entries(evmBridgeApi.history).reduce<string[]>((buffer, [id, item]) => {
@@ -99,7 +134,7 @@ export class EvmBridgeHistory {
 
     evmBridgeApi.removeHistory(...ids);
     this.historySyncTimestamp = 0;
-    await updateCallback?.();
+    await notifyUpdate(updateCallback);
   }
 
   /**
@@ -108,7 +143,7 @@ export class EvmBridgeHistory {
   public async updateAccountHistory(
     address: string,
     network: EvmNetwork,
-    inProgressIds: Record<string, boolean>,
+    inProgressIds: Record<string, boolean> = {},
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     const indexer = getCurrentIndexer();
@@ -117,18 +152,22 @@ export class EvmBridgeHistory {
     if (!historyElements.length) return;
 
     const currentHistory = [...(evmBridgeApi.historyList as EvmHistory[])];
-    const historySyncTimestampUpdated = historyElements[0]?.timestamp ?? this.historySyncTimestamp;
+    const historySyncTimestampUpdated = getLatestHistoryTimestamp(historyElements, this.historySyncTimestamp);
 
     for (const historyElement of historyElements) {
-      const historyItem = (await indexer.services.dataParser.parseTransactionAsHistoryItem(
-        historyElement
-      )) as Nullable<EvmHistory>;
+      let historyItem: Nullable<EvmHistory>;
+
+      try {
+        historyItem = (await indexer.services.dataParser.parseTransactionAsHistoryItem(historyElement)) as Nullable<EvmHistory>;
+      } catch {
+        continue;
+      }
 
       if (!historyItem?.id) continue;
       if (![Operation.EvmIncoming, Operation.EvmOutgoing].includes(historyItem.type)) continue;
       if (!matchesNetwork(historyItem, network)) continue;
 
-      const localHistoryItem = currentHistory.find((item) => isSameHistoryItem(item, historyItem));
+      const localHistoryItem = currentHistory.find((item) => matchesNetwork(item, network) && isSameHistoryItem(item, historyItem));
 
       if ((localHistoryItem?.id as string) in inProgressIds) continue;
       if (hasFinishedState(localHistoryItem)) continue;
@@ -143,7 +182,7 @@ export class EvmBridgeHistory {
 
       evmBridgeApi.saveHistory(nextHistoryItem);
       currentHistory.push(nextHistoryItem);
-      await updateCallback?.();
+      await notifyUpdate(updateCallback);
     }
 
     this.historySyncTimestamp = historySyncTimestampUpdated;
@@ -163,10 +202,11 @@ export const updateEvmBridgeHistory =
           account: { address },
         },
         web3: { networkSelected },
-        bridge: { inProgressIds },
+        bridge: { inProgressIds = {} } = {},
       } = rootState;
 
       if (networkSelected === undefined || networkSelected === null) return;
+      if (!address) return;
 
       const network = networkSelected as EvmNetwork;
       const evmBridgeHistory = new EvmBridgeHistory();

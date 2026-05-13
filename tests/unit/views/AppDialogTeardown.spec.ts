@@ -17,8 +17,6 @@ const createStoreMocks = () => {
         setDefaultNodes: vi.fn(),
         setNetworkChainGenesisHash: vi.fn(),
       },
-      userDisclaimerApprove: false,
-      disclaimerVisibility: true,
       browserNotifPopupVisibility: false,
       browserNotifPopupBlockedVisibility: false,
       isThemePreference: false,
@@ -72,9 +70,6 @@ const createStoreMocks = () => {
       setFaucetUrl: vi.fn(),
       setFeatureFlags: vi.fn(),
       setScreenBreakpointClass: vi.fn(),
-      setDisclaimerDialogVisibility: vi.fn((flag: boolean) => {
-        state.settings.disclaimerVisibility = flag;
-      }),
       setSelectNodeDialogVisibility: vi.fn((flag: boolean) => {
         state.settings.selectNodeDialogVisibility = flag;
       }),
@@ -330,7 +325,6 @@ vi.mock('@/stores/settings', () => ({
       hideOrientationWarning: root.commit.settings.hideOrientationWarning,
       setSelectNodeDialogVisibility: root.commit.settings.setSelectNodeDialogVisibility,
       setSelectIndexerDialogVisibility: root.commit.settings.setSelectIndexerDialogVisibility,
-      setDisclaimerDialogVisibility: root.commit.settings.setDisclaimerDialogVisibility,
       setBrowserNotifsPopupEnabled: root.commit.settings.setBrowserNotifsPopupEnabled,
       setBrowserNotifsPopupBlocked: root.commit.settings.setBrowserNotifsPopupBlocked,
       setLanguage: root.dispatch.settings.setLanguage,

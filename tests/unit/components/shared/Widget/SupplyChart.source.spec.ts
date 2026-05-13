@@ -16,4 +16,11 @@ describe('SupplyChart source', () => {
     );
     expect(supplyChartSource).toContain("import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';");
   });
+
+  it('refreshes supply data when the runtime indexer endpoint changes', () => {
+    expect(supplyChartSource).toContain('const indexerEndpoint = computed(() => {');
+    expect(supplyChartSource).toContain('watch(indexerEndpoint, (endpoint, previousEndpoint) => {');
+    expect(supplyChartSource).toContain('if (!endpoint || endpoint === previousEndpoint) return;');
+    expect(supplyChartSource).toContain('updateData();');
+  });
 });

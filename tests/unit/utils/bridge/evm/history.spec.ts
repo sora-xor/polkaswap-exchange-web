@@ -192,6 +192,35 @@ describe('EvmBridgeHistory', () => {
     });
   });
 
+  it('stops pagination when the indexer repeats a cursor', async () => {
+    getHistoryPagedMock
+      .mockResolvedValueOnce({
+        edges: [{ node: { id: 'tx-1', timestamp: 17 } }],
+        pageInfo: { hasNextPage: true, endCursor: 'cursor-1' },
+      })
+      .mockResolvedValueOnce({
+        edges: [{ node: { id: 'tx-2', timestamp: 16 } }],
+        pageInfo: { hasNextPage: true, endCursor: 'cursor-1' },
+      });
+
+    const history = await new EvmBridgeHistory().fetchHistoryElements('sora-address');
+
+    expect(history).toEqual([
+      { id: 'tx-1', timestamp: 17 },
+      { id: 'tx-2', timestamp: 16 },
+    ]);
+    expect(getHistoryPagedMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('treats malformed page edges as an empty page instead of throwing', async () => {
+    getHistoryPagedMock.mockResolvedValueOnce({
+      edges: null,
+      pageInfo: { hasNextPage: false, endCursor: '' },
+    });
+
+    await expect(new EvmBridgeHistory().fetchHistoryElements('sora-address')).resolves.toEqual([]);
+  });
+
   it('skips cross-network, in-progress, and finalized local bridge history', async () => {
     const updateCallback = vi.fn();
 
@@ -269,6 +298,64 @@ describe('EvmBridgeHistory', () => {
     expect(updateCallback).toHaveBeenCalledTimes(1);
   });
 
+  it('does not let same-hash local history from another EVM network suppress restore', async () => {
+    const updateCallback = vi.fn();
+
+    evmBridgeApiMock.history = {
+      doneOtherNetwork: {
+        id: 'doneOtherNetwork',
+        hash: '0xshared-done-request',
+        externalNetwork: 222,
+        transactionState: BridgeTxStatus.Done,
+      },
+      pendingOtherNetwork: {
+        id: 'pendingOtherNetwork',
+        hash: '0xshared-pending-request',
+        externalNetwork: 222,
+      },
+    };
+    getHistoryPagedMock.mockResolvedValueOnce({
+      edges: [
+        { node: { id: 'selected-done-hash', timestamp: 33 } },
+        { node: { id: 'selected-pending-hash', timestamp: 32 } },
+      ],
+      pageInfo: { hasNextPage: false, endCursor: '' },
+    });
+    parseTransactionAsHistoryItemMock
+      .mockResolvedValueOnce({
+        id: 'selected-done-hash',
+        type: Operation.EvmIncoming,
+        hash: '0xshared-done-request',
+        status: TransactionStatus.Finalized,
+        externalNetwork: 111,
+      })
+      .mockResolvedValueOnce({
+        id: 'selected-pending-hash',
+        type: Operation.EvmOutgoing,
+        hash: '0xshared-pending-request',
+        status: TransactionStatus.Finalized,
+        externalNetwork: 111,
+      });
+
+    await new EvmBridgeHistory().updateAccountHistory(
+      'sora-address',
+      111,
+      { pendingOtherNetwork: true },
+      updateCallback
+    );
+
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenCalledTimes(2);
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ id: 'selected-done-hash', externalNetwork: 111 })
+    );
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ id: 'selected-pending-hash', externalNetwork: 111 })
+    );
+    expect(updateCallback).toHaveBeenCalledTimes(2);
+  });
+
   it('deduplicates repeated indexer records from the same restore batch', async () => {
     const updateCallback = vi.fn();
 
@@ -310,11 +397,158 @@ describe('EvmBridgeHistory', () => {
     expect(updateCallback).toHaveBeenCalledTimes(1);
   });
 
+  it('continues restoring later records when parsing one indexer record fails', async () => {
+    const updateCallback = vi.fn();
+
+    getHistoryPagedMock.mockResolvedValueOnce({
+      edges: [
+        { node: { id: 'broken-row', timestamp: 62 } },
+        { node: { id: 'valid-row', timestamp: 61 } },
+      ],
+      pageInfo: { hasNextPage: false, endCursor: '' },
+    });
+    parseTransactionAsHistoryItemMock
+      .mockRejectedValueOnce(new Error('bad indexer row'))
+      .mockResolvedValueOnce({
+        id: 'valid-row',
+        type: Operation.EvmIncoming,
+        status: TransactionStatus.Finalized,
+        externalNetwork: 111,
+      });
+
+    await new EvmBridgeHistory().updateAccountHistory('sora-address', 111, {}, updateCallback);
+
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenCalledTimes(1);
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 'valid-row',
+        transactionState: BridgeTxStatus.Done,
+      })
+    );
+    expect(updateCallback).toHaveBeenCalledTimes(1);
+  });
+
+  it('continues restoring later records when the update callback throws', async () => {
+    const updateCallback = vi.fn().mockRejectedValueOnce(new Error('render failed')).mockResolvedValueOnce(undefined);
+
+    getHistoryPagedMock.mockResolvedValueOnce({
+      edges: [
+        { node: { id: 'first-row', timestamp: 66 } },
+        { node: { id: 'second-row', timestamp: 65 } },
+      ],
+      pageInfo: { hasNextPage: false, endCursor: '' },
+    });
+    parseTransactionAsHistoryItemMock
+      .mockResolvedValueOnce({
+        id: 'first-row',
+        type: Operation.EvmIncoming,
+        status: TransactionStatus.Finalized,
+        externalNetwork: 111,
+      })
+      .mockResolvedValueOnce({
+        id: 'second-row',
+        type: Operation.EvmOutgoing,
+        status: TransactionStatus.Finalized,
+        externalNetwork: 111,
+      });
+
+    await new EvmBridgeHistory().updateAccountHistory('sora-address', 111, {}, updateCallback);
+
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenCalledTimes(2);
+    expect(evmBridgeApiMock.history).toEqual({
+      'first-row': expect.objectContaining({ id: 'first-row' }),
+      'second-row': expect.objectContaining({ id: 'second-row' }),
+    });
+    expect(updateCallback).toHaveBeenCalledTimes(2);
+    expect(evmBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('evmBridgeHistorySyncTimestamp', 66);
+  });
+
+  it('still clears history and resets sync timestamp when the clear callback throws', async () => {
+    evmBridgeApiMock.history = {
+      remove: { id: 'remove', externalNetwork: 111 },
+    };
+
+    await expect(
+      new EvmBridgeHistory().clearHistory(111, {}, vi.fn().mockRejectedValueOnce(new Error('render failed')))
+    ).resolves.toBeUndefined();
+
+    expect(evmBridgeApiMock.history).toEqual({});
+    expect(evmBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('evmBridgeHistorySyncTimestamp', 0);
+  });
+
+  it('uses the first valid indexer timestamp when leading records have corrupt timestamps', async () => {
+    getHistoryPagedMock.mockResolvedValueOnce({
+      edges: [
+        { node: { id: 'bad-timestamp', timestamp: 'not-a-number' } },
+        { node: { id: 'valid-timestamp', timestamp: 64 } },
+      ],
+      pageInfo: { hasNextPage: false, endCursor: '' },
+    });
+    parseTransactionAsHistoryItemMock
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({
+        id: 'valid-timestamp',
+        type: Operation.EvmIncoming,
+        status: TransactionStatus.Finalized,
+        externalNetwork: 111,
+      });
+
+    await new EvmBridgeHistory().updateAccountHistory('sora-address', 111, {});
+
+    expect(evmBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('evmBridgeHistorySyncTimestamp', 64);
+  });
+
+  it('does not restore EVM bridge history when the indexer cannot prove the external network', async () => {
+    const updateCallback = vi.fn();
+
+    getHistoryPagedMock.mockResolvedValueOnce({
+      edges: [
+        { node: { id: 'missing-network', timestamp: 52 } },
+        { node: { id: 'null-network', timestamp: 51 } },
+        { node: { id: 'valid-network', timestamp: 50 } },
+      ],
+      pageInfo: { hasNextPage: false, endCursor: '' },
+    });
+    parseTransactionAsHistoryItemMock
+      .mockResolvedValueOnce({
+        id: 'missing-network',
+        type: Operation.EvmOutgoing,
+        status: TransactionStatus.Finalized,
+      })
+      .mockResolvedValueOnce({
+        id: 'null-network',
+        type: Operation.EvmIncoming,
+        status: TransactionStatus.Finalized,
+        externalNetwork: null,
+      })
+      .mockResolvedValueOnce({
+        id: 'valid-network',
+        type: Operation.EvmIncoming,
+        status: TransactionStatus.Finalized,
+        externalNetwork: '111',
+      });
+
+    await new EvmBridgeHistory().updateAccountHistory('sora-address', 111, {}, updateCallback);
+
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenCalledTimes(1);
+    expect(evmBridgeApiMock.saveHistory).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 'valid-network',
+        externalNetwork: 111,
+      })
+    );
+    expect(evmBridgeApiMock.history).toEqual({
+      'valid-network': expect.objectContaining({ id: 'valid-network' }),
+    });
+    expect(updateCallback).toHaveBeenCalledTimes(1);
+  });
+
   it('clears only selected-network restored history and preserves in-progress transactions', async () => {
     evmBridgeApiMock.history = {
       keepProgress: { id: 'keepProgress', externalNetwork: 111 },
       remove: { id: 'remove', externalNetwork: 111 },
       otherNetwork: { id: 'otherNetwork', externalNetwork: 222 },
+      unknownNetwork: { id: 'unknownNetwork' },
     };
 
     await new EvmBridgeHistory().clearHistory(111, { keepProgress: true });
@@ -323,6 +557,19 @@ describe('EvmBridgeHistory', () => {
     expect(evmBridgeApiMock.history).toEqual({
       keepProgress: { id: 'keepProgress', externalNetwork: 111 },
       otherNetwork: { id: 'otherNetwork', externalNetwork: 222 },
+      unknownNetwork: { id: 'unknownNetwork' },
+    });
+  });
+
+  it('normalizes corrupt sync timestamps before querying the indexer', async () => {
+    evmBridgeApiMock.state.storage.evmBridgeHistorySyncTimestamp = 'not-a-number';
+
+    await new EvmBridgeHistory().updateAccountHistory('sora-address', 111, {});
+
+    expect(historyElementsFilterMock).toHaveBeenCalledWith({
+      address: 'sora-address',
+      operations: [Operation.EvmOutgoing, Operation.EvmIncoming],
+      timestamp: 0,
     });
   });
 
@@ -338,6 +585,38 @@ describe('EvmBridgeHistory', () => {
     } as any)(false);
 
     expect(updateHistorySpy).toHaveBeenCalledWith('sora-address', 111, { pending: true }, undefined);
+
+    updateHistorySpy.mockRestore();
+  });
+
+  it('uses an empty in-progress map when the bridge store has not initialized it yet', async () => {
+    const updateHistorySpy = vi.spyOn(EvmBridgeHistory.prototype, 'updateAccountHistory').mockResolvedValue(undefined);
+
+    await updateEvmBridgeHistory({
+      rootState: {
+        wallet: { account: { address: 'sora-address' } },
+        web3: { networkSelected: 111 },
+        bridge: {},
+      },
+    } as any)(false);
+
+    expect(updateHistorySpy).toHaveBeenCalledWith('sora-address', 111, {}, undefined);
+
+    updateHistorySpy.mockRestore();
+  });
+
+  it('does not query EVM bridge history before the wallet address is available', async () => {
+    const updateHistorySpy = vi.spyOn(EvmBridgeHistory.prototype, 'updateAccountHistory').mockResolvedValue(undefined);
+
+    await updateEvmBridgeHistory({
+      rootState: {
+        wallet: { account: { address: '' } },
+        web3: { networkSelected: 111 },
+        bridge: { inProgressIds: {} },
+      },
+    } as any)(false);
+
+    expect(updateHistorySpy).not.toHaveBeenCalled();
 
     updateHistorySpy.mockRestore();
   });

@@ -12,12 +12,11 @@ const props = withDefaults(
     showCloseBtn?: boolean;
   }>(),
   {
-    status: 'info' as Status,
     timeout: 0,
   }
 );
 
-const StatusIcon = computed(() => STATUS_ICONS_MAP[props.status]);
+const StatusIcon = computed(() => (props.status ? STATUS_ICONS_MAP[props.status] : undefined));
 
 const emit = defineEmits(['click:close', 'timeout']);
 
@@ -33,18 +32,18 @@ function onTimeout() {
 <template>
   <div class="s-notification-body" :data-status="status">
     <div class="flex space-x-4">
-      <div class="s-notification-body__icon-wrapper">
+      <div v-if="StatusIcon" class="s-notification-body__icon-wrapper">
         <component :is="StatusIcon" />
       </div>
 
       <div class="flex-1">
-        <div class="sora-tpg-p2">
+        <div v-if="title || $slots.title" class="sora-tpg-p2">
           <slot name="title">
             {{ title }}
           </slot>
         </div>
 
-        <div class="sora-tpg-p4">
+        <div v-if="description || $slots.description" class="sora-tpg-p4">
           <slot name="description">
             {{ description }}
           </slot>

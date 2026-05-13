@@ -16,6 +16,7 @@
         type="ellipsis"
         border-radius="mini"
         icon="basic-scan-24"
+        trigger="manual"
         class="qr-code-dropdown"
         tabindex="-1"
         @select="handleSelect"

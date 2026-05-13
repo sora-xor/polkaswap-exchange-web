@@ -163,7 +163,7 @@ export const useStakingStore = defineStore('staking-legacy', {
     resetCurrentEraTotalStakeUpdates(): void {
       this.currentEraTotalStakeUpdates = unsubscribe(this.currentEraTotalStakeUpdates);
     },
-    setMaxNominations(value: number): void {
+    setMaxNominations(value: Nullable<number>): void {
       this.maxNominations = value;
     },
     setHistoryDepth(value: number): void {

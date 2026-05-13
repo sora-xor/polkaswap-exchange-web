@@ -180,6 +180,19 @@ const getRenderedAssetAddresses = (wrapper: ReturnType<typeof mountComponent>): 
   return ((list.props('assets') as RegisteredAccountAsset[] | undefined) ?? []).map((asset) => asset.address);
 };
 
+const waitForAssetsListHydration = async (): Promise<void> => {
+  await nextTick();
+  await new Promise<void>((resolve) => {
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(() => setTimeout(resolve, 0));
+      return;
+    }
+
+    setTimeout(resolve, 0);
+  });
+  await nextTick();
+};
+
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
@@ -351,6 +364,35 @@ describe('SelectToken', () => {
     expect(selectTokenSource).toContain("from '@/lib/soraneo-wallet/src/components/DialogBase.vue'");
   });
 
+  it('keeps the custom asset details card out of the default selector bundle', () => {
+    expect(selectTokenSource).toContain(
+      "const AddAssetDetailsCard = createAsyncComponent(\n  () => import('@/lib/soraneo-wallet/src/components/AddAsset/AddAssetDetailsCard.vue')"
+    );
+    expect(selectTokenSource).not.toContain(
+      "import WalletAddAssetDetailsCard from '@/lib/soraneo-wallet/src/components/AddAsset/AddAssetDetailsCard.vue'"
+    );
+  });
+
+  it('defers asset list hydration until after the modal shell renders', async () => {
+    const wrapper = mountComponent();
+
+    expect(wrapper.find('.token-search').exists()).toBe(true);
+    expect(wrapper.findComponent(SelectAssetListStub).exists()).toBe(false);
+
+    await waitForAssetsListHydration();
+
+    expect(wrapper.findComponent(SelectAssetListStub).exists()).toBe(true);
+  });
+
+  it('skips balance hydration for disconnected selectors', async () => {
+    const wrapper = mountComponent({ connected: false });
+
+    await waitForAssetsListHydration();
+
+    expect(assetsStoreMock.assetDataByAddress).not.toHaveBeenCalled();
+    expect(getRenderedAssetAddresses(wrapper)).toEqual(expect.arrayContaining(['xor-address', 'val-address']));
+  });
+
   it('switches the search placeholder when the custom tab is selected', async () => {
     const wrapper = mountComponent();
     const tabs = wrapper.findAll('.el-tabs__item');
@@ -368,6 +410,8 @@ describe('SelectToken', () => {
     const wrapper = mountComponent();
     const tabs = wrapper.findAll('.el-tabs__item');
 
+    await waitForAssetsListHydration();
+
     expect(getRenderedAssetAddresses(wrapper)).toEqual(expect.arrayContaining(['xor-address', 'val-address']));
     expect(getRenderedAssetAddresses(wrapper)).not.toContain('custom-address');
 
@@ -377,10 +421,12 @@ describe('SelectToken', () => {
     expect(getRenderedAssetAddresses(wrapper)).toEqual(['custom-address']);
   });
 
-  it('does not render the empty asset list until whitelist-backed assets are ready', () => {
+  it('does not render the empty asset list until whitelist-backed assets are ready', async () => {
     walletStoreMock.whitelist = {};
 
     const wrapper = mountComponent();
+
+    await waitForAssetsListHydration();
 
     expect(wrapper.findComponent(SelectAssetListStub).exists()).toBe(false);
     expect(wrapper.text()).not.toContain('selectToken.emptyListMessage');

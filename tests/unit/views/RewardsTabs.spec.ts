@@ -47,7 +47,8 @@ const mountView = (props: Record<string, unknown> = {}, attrs: Record<string, un
             '<button class="tabs-stub" :data-value="value" @click="$emit(\'update:modelValue\', \'ReferralProgram\')"><slot /></button>',
         },
         's-tab': {
-          template: '<div class="tab-stub"></div>',
+          props: ['label', 'name'],
+          template: '<div class="tab-stub" :data-name="name">{{ label }}</div>',
         },
         'router-view': {
           props: ['parentLoading'],
@@ -80,8 +81,21 @@ describe('RewardsTabs.vue', () => {
     expect(pushMock).toHaveBeenCalledWith({ name: 'ReferralProgram' });
   });
 
+  it('renders only the supported rewards tabs', () => {
+    const wrapper = mountView();
+    const tabs = wrapper.findAll('.tab-stub');
+
+    expect(tabs).toHaveLength(3);
+    expect(tabs.map((tab) => tab.attributes('data-name'))).toEqual(['PointSystemWrapper', 'Rewards', 'ReferralProgram']);
+    expect(tabs.map((tab) => tab.text())).toEqual([
+      'rewards.PointSystemWrapper',
+      'rewards.Rewards',
+      'rewards.ReferralProgram',
+    ]);
+  });
+
   it('keeps the rewards tab strip at the live-site height', () => {
-    expect(rewardsTabsSource).toContain('$rewards-tabs-height: 72px;');
-    expect(rewardsTabsSource).toContain('height: 71px;');
+    expect(rewardsTabsSource).toContain('$rewards-tabs-height: 64px;');
+    expect(rewardsTabsSource).toContain('height: $rewards-tabs-height;');
   });
 });

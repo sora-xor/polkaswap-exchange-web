@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 
 import SelectAssetList from '@/components/shared/SelectAsset/List.vue';
 import { useTranslation } from '@/composables/useTranslation';
@@ -78,11 +78,11 @@ import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
+import { createAsyncComponent } from '@/shared/ui/async';
 import { sortAssets } from '@/utils';
 
 import type { Nullable } from '@/types/common';
 import type { Asset, AccountAsset, RegisteredAccountAsset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
-import WalletAddAssetDetailsCard from '@/lib/soraneo-wallet/src/components/AddAsset/AddAssetDetailsCard.vue';
 import WalletAssetsFilter from '@/lib/soraneo-wallet/src/components/shared/AssetsFilter.vue';
 import WalletDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
@@ -96,11 +96,14 @@ type SelectTokenEvents = {
   (event: 'select', asset: Asset | AccountAsset | RegisteredAccountAsset): void;
   (event: 'close'): void;
 };
+type SelectableAsset = Asset | AccountAsset | RegisteredAccountAsset;
 
 const DialogBase = WalletDialogBase;
 const SearchInput = WalletSearchInput;
 const AssetsFilter = WalletAssetsFilter;
-const AddAssetDetailsCard = WalletAddAssetDetailsCard;
+const AddAssetDetailsCard = createAsyncComponent(
+  () => import('@/lib/soraneo-wallet/src/components/AddAsset/AddAssetDetailsCard.vue')
+);
 
 const isNonEmptyBalance = (asset: AccountAsset | RegisteredAccountAsset): boolean =>
   Boolean(asset.balance) && Boolean(+asset.balance.transferable);
@@ -150,18 +153,71 @@ const searchRef = ref<InstanceType<any> | null>(null);
 const query = ref('');
 const isVisible = defineModel<boolean>('visible', { required: true });
 const tabValue = ref<Tabs>(Tabs.Assets);
+const isAssetsListHydrated = ref(false);
+let assetsListHydrationTimer: number | undefined;
+let assetsListHydrationFrame: number | undefined;
+
+/** Cancels deferred token-list setup when the selector closes quickly. */
+const cancelAssetsListHydration = (): void => {
+  if (typeof window === 'undefined') return;
+
+  if (assetsListHydrationFrame !== undefined) {
+    window.cancelAnimationFrame(assetsListHydrationFrame);
+    assetsListHydrationFrame = undefined;
+  }
+
+  if (assetsListHydrationTimer !== undefined) {
+    window.clearTimeout(assetsListHydrationTimer);
+    assetsListHydrationTimer = undefined;
+  }
+};
+
+const hydrateAssetsList = (): void => {
+  assetsListHydrationTimer = undefined;
+  isAssetsListHydrated.value = true;
+};
+
+const queueAssetsListHydration = (): void => {
+  assetsListHydrationTimer = window.setTimeout(hydrateAssetsList, 0);
+};
+
+/** Defers the heavy virtual-list data path until after the modal shell can paint. */
+const scheduleAssetsListHydration = (): void => {
+  cancelAssetsListHydration();
+
+  if (typeof window === 'undefined') {
+    isAssetsListHydrated.value = true;
+    return;
+  }
+
+  if (typeof window.requestAnimationFrame !== 'function') {
+    queueAssetsListHydration();
+    return;
+  }
+
+  assetsListHydrationFrame = window.requestAnimationFrame(() => {
+    assetsListHydrationFrame = undefined;
+    queueAssetsListHydration();
+  });
+};
 
 watch(
   isVisible,
   async (value) => {
+    cancelAssetsListHydration();
+    isAssetsListHydrated.value = false;
+
     if (value) {
       tabValue.value = Tabs.Assets;
       await nextTick();
       clearAndFocusSearch();
+      scheduleAssetsListHydration();
     }
   },
   { immediate: true }
 );
+
+onBeforeUnmount(cancelAssetsListHydration);
 
 const searchQuery = computed(() => query.value.trim().toLowerCase());
 
@@ -248,8 +304,8 @@ const sortByBalance = (a: AccountAsset | RegisteredAccountAsset, b: AccountAsset
 };
 
 const filterAssetsByQuery =
-  (items: Array<Asset | AccountAsset | RegisteredAccountAsset>, isRegisteredAssets = false) =>
-  (queryValue: string): Array<Asset | AccountAsset | RegisteredAccountAsset> => {
+  (items: SelectableAsset[], isRegisteredAssets = false) =>
+  (queryValue: string): SelectableAsset[] => {
     if (!queryValue) return items;
 
     const searchValue = queryValue.toLowerCase().trim();
@@ -263,14 +319,23 @@ const filterAssetsByQuery =
     });
   };
 
-const whitelistAssetsList = computed(() => {
+const getAssetsWithoutBalances = (items: Asset[], excludeAddress?: string): Asset[] => {
+  return items.filter((asset) => asset.address !== excludeAddress).sort(sortAssets);
+};
+
+const whitelistAssetsList = computed<SelectableAsset[]>(() => {
   const addresses = whitelistAssets.value.map((asset) => asset.address);
   const excludeAddress = props.asset?.address;
+
+  if (!props.connected) {
+    return getAssetsWithoutBalances(whitelistAssets.value, excludeAddress);
+  }
+
   return getAssetsWithBalances(addresses, excludeAddress).sort(sortByBalance);
 });
 
 const filteredWhitelistTokens = computed(() => {
-  const filtered = filterAssetsByQuery(whitelistAssetsList.value)(searchQuery.value) as AccountAsset[];
+  const filtered = filterAssetsByQuery(whitelistAssetsList.value)(searchQuery.value);
   const pinnedOrderMap = new Map(pinnedAssetsAddresses.value.map((address, index) => [address, index]));
 
   return [...filtered].sort((a, b) => {
@@ -284,8 +349,13 @@ const filteredWhitelistTokens = computed(() => {
   });
 });
 
-const sortedNonWhitelistAccountAssets = computed(() => {
+const sortedNonWhitelistAccountAssets = computed<SelectableAsset[]>(() => {
   const excludeAddress = props.asset?.address;
+
+  if (!props.connected) {
+    return getAssetsWithoutBalances(Object.values(nonWhitelistAssets.value), excludeAddress);
+  }
+
   const addresses = Object.keys(nonWhitelistAccountAssets.value);
   return getAssetsWithBalances(addresses, excludeAddress).sort(sortByBalance);
 });
@@ -294,7 +364,7 @@ const isCustomTabActive = computed(() => tabValue.value === Tabs.Custom);
 
 const activeAssetsList = computed(() => {
   const list = isCustomTabActive.value ? sortedNonWhitelistAccountAssets.value : filteredWhitelistTokens.value;
-  return list.filter(props.filter);
+  return list.filter((asset) => props.filter(asset as AccountAsset));
 });
 
 const activeSearchPlaceholder = computed(() =>
@@ -312,9 +382,10 @@ const hasReadyAssetsForActiveTab = computed(() =>
     ? Boolean(sortedNonWhitelistAccountAssets.value.length)
     : Boolean(whitelistAssetsList.value.length)
 );
-const shouldAssetsListBeRendered = computed(
-  () => shouldAssetsListBeShown.value && (Boolean(activeAssetsList.value.length) || hasReadyAssetsForActiveTab.value)
-);
+const shouldAssetsListBeRendered = computed(() => {
+  if (!isVisible.value || !isAssetsListHydrated.value) return false;
+  return shouldAssetsListBeShown.value && (Boolean(activeAssetsList.value.length) || hasReadyAssetsForActiveTab.value);
+});
 
 const assetsListSize = computed(() => (isCustomTabActive.value ? 5 : 6));
 

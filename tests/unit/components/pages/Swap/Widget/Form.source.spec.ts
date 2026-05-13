@@ -24,4 +24,11 @@ describe('SwapForm source', () => {
     expect(formSource).toContain('border-color: #592d71 !important;');
     expect(formSource).toContain('color: #391057 !important;');
   });
+
+  it('bundles the token selector with the swap form to avoid delayed first-open loading', () => {
+    expect(formSource).toContain("import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';");
+    expect(formSource).not.toContain(
+      "const SelectToken = createAsyncComponent(() => import('@/components/shared/SelectAsset/SelectToken.vue'))"
+    );
+  });
 });

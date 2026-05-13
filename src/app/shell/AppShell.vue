@@ -177,6 +177,96 @@ ul ul {
   }
 }
 
+.s-toasts-display[data-placement-v='top'][data-placement-h='right'] {
+  z-index: 2000;
+  padding-top: calc(var(--s-basic-spacing) * 2);
+  padding-right: calc(var(--s-basic-spacing) * 2);
+}
+
+.s-toasts-display[data-placement-h='right'] .s-toasts-display__stack {
+  max-width: calc(100vw - 24px);
+}
+
+.s-notification-body {
+  box-sizing: border-box;
+  width: 405px;
+  max-width: calc(100vw - 24px);
+  padding: $inner-spacing-medium $inner-spacing-big;
+  background: var(--s-color-brand-day);
+  border: none;
+  border-radius: calc(var(--s-border-radius-mini) / 2);
+  color: var(--s-color-utility-surface);
+  box-shadow: var(--s-shadow-tooltip);
+
+  > .flex {
+    align-items: center;
+  }
+
+  .sora-tpg-p2,
+  .sora-tpg-p4 {
+    color: var(--s-color-utility-surface);
+    font-size: var(--s-font-size-small);
+    font-weight: 400;
+    line-height: var(--s-line-height-base);
+    text-align: left;
+  }
+
+  .sora-tpg-p2 + .sora-tpg-p4 {
+    margin-top: calc(var(--s-basic-spacing) / 2);
+  }
+
+  .s-notification-body__icon-wrapper {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--s-color-utility-surface);
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin: -2px;
+    }
+  }
+
+  .s-notification-body__close-wrapper {
+    display: flex;
+    align-items: center;
+
+    button {
+      display: flex;
+      padding: 0;
+      color: var(--s-color-utility-surface);
+      cursor: pointer;
+      background: transparent;
+      border: none;
+
+      &:hover {
+        color: var(--s-color-utility-surface);
+      }
+    }
+  }
+
+  .s-notification-body__close-wrapper svg {
+    color: currentColor;
+    fill: currentColor;
+  }
+}
+
+.s-notification-body-timeline {
+  height: 2px;
+  background: var(--s-color-utility-surface);
+}
+
+@include mobile(true) {
+  .s-notification-body {
+    width: 300px;
+  }
+}
+
 .el-form--actions {
   display: flex;
   flex-direction: column;

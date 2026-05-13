@@ -51,7 +51,11 @@ const route = useRoute();
 const router = useRouter();
 const settingsStore = useSettingsStore();
 
-const rewardsTabsItems = Object.values(RewardsTabsItemsEnum);
+const rewardsTabsItems = [
+  RewardsTabsItemsEnum.PointSystem,
+  RewardsTabsItemsEnum.Rewards,
+  RewardsTabsItemsEnum.ReferralProgram,
+];
 const windowWidth = computed(() => settingsStore.windowWidth);
 const currentTab = computed(() => route.name as string);
 
@@ -61,13 +65,13 @@ const handleChangeTab = async (name: string) => {
 </script>
 
 <style lang="scss">
-$rewards-tabs-height: 72px;
+$rewards-tabs-height: 64px;
 $tab-margin: 22px;
 
 .rewards-tabs.container {
   .rewards-tabs__tabs {
-    background-color: inherit;
-    height: 71px;
+    background-color: rgba(255, 255, 255, 0.03);
+    height: $rewards-tabs-height;
     margin-left: -$tab-margin;
     margin-top: -$tab-margin;
     width: calc(100% + $tab-margin * 2);
@@ -97,18 +101,33 @@ $tab-margin: 22px;
         line-height: $rewards-tabs-height;
       }
       &__nav {
+        display: flex;
         .el-tabs__item {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          padding: 0 $inner-spacing-small;
           width: 33.3%;
         }
       }
       &__nav-wrap {
         .el-tabs__item {
+          color: var(--s-color-base-content-primary);
+          font-size: 28px;
+          font-weight: 500;
+          opacity: 0.82;
           text-overflow: ellipsis;
           overflow-x: hidden;
+          white-space: nowrap;
           &,
           &.is-active {
             border-radius: 0;
-            @include page-header-title(true);
+            letter-spacing: 0;
+          }
+          &.is-active {
+            background-color: rgba(255, 255, 255, 0.04);
+            color: var(--s-color-base-content-primary);
+            opacity: 1;
           }
           &:first-child,
           &:first-child.is-active {
@@ -127,11 +146,22 @@ $tab-margin: 22px;
   }
 
   @include mobile(true) {
-    #tab-Rewards,
-    #tab-ReferralProgram,
-    .el-tabs__nav > .el-tabs__item:nth-child(3),
-    .el-tabs__nav > .el-tabs__item:nth-child(4) {
-      font-size: var(--s-icon-font-size-medium) !important;
+    .rewards-tabs__tabs {
+      height: 60px;
+
+      .el-tabs__header .el-tabs {
+        &__nav,
+        &__nav-wrap,
+        &__item {
+          height: 60px;
+          line-height: 60px;
+        }
+      }
+
+      .el-tabs__header .el-tabs__nav-wrap .el-tabs__item {
+        font-size: 18px !important;
+        padding: 0 $inner-spacing-mini;
+      }
     }
   }
 }

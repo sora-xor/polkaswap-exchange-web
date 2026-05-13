@@ -7,6 +7,7 @@ import { DexId } from './dex/consts';
 import { XOR } from './assets/consts';
 import { MAX_TIMESTAMP } from './orderBook/consts';
 import { Operation } from './types';
+import { formatStakingBondParams } from './staking/helpers';
 
 import type { NetworkFeesObject } from './types';
 
@@ -85,6 +86,18 @@ export class BaseApi<T = void> extends ApiAccount<T> {
   } as NetworkFeesObject;
 
   /**
+   * Builds the static staking.bond fee call for the runtime metadata version in use.
+   */
+  private getEmptyStakingBondExtrinsic(): SubmittableExtrinsic<'promise'> {
+    const params = formatStakingBondParams(this.api.tx.staking.bond, mockAccountAddress, 0, {
+      Account: mockAccountAddress,
+    });
+    const bond = this.api.tx.staking.bond as unknown as (...params: unknown[]) => SubmittableExtrinsic<'promise'>;
+
+    return bond(...params);
+  }
+
+  /**
    * Returns an extrinsic with the default or empty params.
    *
    * Actually, network fee value doesn't depend on extrinsic params, so, we can use empty/default values
@@ -158,10 +171,10 @@ export class BaseApi<T = void> extends ApiAccount<T> {
         case Operation.CeresLiquidityLockerLockLiquidity:
           return this.api.tx.ceresLiquidityLocker.lockLiquidity(XOR.address, XOR.address, 0, 100, false);
         case Operation.StakingBond:
-          return this.api.tx.staking.bond(mockAccountAddress, 0, { Account: mockAccountAddress });
+          return this.getEmptyStakingBondExtrinsic();
         case Operation.StakingBondAndNominate:
           return this.api.tx.utility.batchAll([
-            this.api.tx.staking.bond(mockAccountAddress, 0, { Account: mockAccountAddress }),
+            this.getEmptyStakingBondExtrinsic(),
             this.api.tx.staking.nominate([mockAccountAddress]),
           ]);
         case Operation.StakingBondExtra:

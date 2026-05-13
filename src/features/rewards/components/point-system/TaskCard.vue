@@ -67,7 +67,7 @@ function handleButtonClick(): void {
 <style lang="scss" scoped>
 .task-card {
   .el-divider {
-    background-color: var(--s-color-base-content-tertiary);
+    background-color: rgba(255, 255, 255, 0.1);
     margin-top: $basic-spacing-small;
     margin-bottom: $basic-spacing-small;
   }
@@ -103,7 +103,17 @@ function handleButtonClick(): void {
 
   display: flex;
   flex-direction: column;
+  gap: $inner-spacing-mini;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: rgba(82, 185, 255, 0.28);
+    box-shadow: 0 20px 38px rgba(23, 6, 41, 0.22);
+    transform: translateY(-1px);
+  }
+
   &__title-image {
+    align-items: center;
     display: flex;
     flex-direction: row;
     gap: $basic-spacing-small;
@@ -115,27 +125,43 @@ function handleButtonClick(): void {
     }
 
     p {
+      color: var(--s-color-base-on-accent);
       font-weight: 800;
+      line-height: 1.2;
     }
   }
   &__description-task {
     color: var(--s-color-base-content-secondary);
     font-weight: 400;
     margin-left: calc($inner-spacing-mini * 3.5);
-    margin-top: $inner-spacing-mini;
+    margin-top: 0;
+    max-width: calc(100% - $inner-spacing-big);
   }
 
   &__current-progress {
+    gap: $inner-spacing-small;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     span {
       color: var(--s-color-status-info);
       margin-left: $inner-spacing-tiny;
     }
+    p {
+      color: var(--s-color-base-content-secondary);
+      font-weight: 700;
+    }
     button {
       margin-left: auto;
+    }
+  }
+
+  @include mobile(true) {
+    &__description-task {
+      margin-left: 0;
+      max-width: 100%;
     }
   }
 }

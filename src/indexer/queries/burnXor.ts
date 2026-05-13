@@ -23,6 +23,16 @@ export type XorBurn = {
   txHash?: string;
 };
 
+type XorBurnEntity = {
+  id?: string;
+  address?: string;
+  amount?: string;
+  assetId?: string;
+  blockHeight?: number | string;
+  nexusRecipient?: string;
+  txHash?: string;
+};
+
 type ApiEventRecord = {
   phase?: {
     isApplyExtrinsic?: boolean;
@@ -223,8 +233,32 @@ const dataBeforePolkaswapIndexing: XorBurn[] = [
   },
 ];
 
-const getPolkaswapXorBurnQuery = (address?: string) => gql<ConnectionQueryResponse<HistoryElement>>`
-  query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: Cursor = "", $first: Int = 100) {
+const graphqlString = (value: string): string => JSON.stringify(value);
+
+const getPolkaswapCompactXorBurnQuery = () => gql<ConnectionQueryResponse<XorBurnEntity>>`
+  query XorBurnsQuery($after: Cursor = "", $first: Int = 1000) {
+    data: xorBurns(first: $first, after: $after, orderBy: [BLOCK_HEIGHT_ASC]) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          address
+          amount
+          assetId
+          blockHeight
+          nexusRecipient
+          txHash
+        }
+      }
+    }
+  }
+`;
+
+const getPolkaswapHistoryXorBurnQuery = (address?: string) => gql<ConnectionQueryResponse<HistoryElement>>`
+  query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: Cursor = "", $first: Int = 1000) {
     data: historyElements(
       first: $first
       after: $after
@@ -232,14 +266,14 @@ const getPolkaswapXorBurnQuery = (address?: string) => gql<ConnectionQueryRespon
         and: [
           { blockHeight: { greaterThanOrEqualTo: $start } }
           { blockHeight: { lessThanOrEqualTo: $end } }
-          ${address ? `{ address: { equalTo: "${address}" } }` : ''}
+          ${address ? `{ address: { equalTo: ${graphqlString(address)} } }` : ''}
+          { dataAssets: { contains: ["${XOR.address}"] } }
           {
             or: [
               {
                 and: [
                   { module: { equalTo: "assets" } }
                   { method: { equalTo: "burn" } }
-                  { data: { contains: { assetId: "${XOR.address}" } } }
                 ]
               }
               {
@@ -404,6 +438,21 @@ const parse = (item: HistoryElement): Nullable<XorBurn> => {
   };
 };
 
+const parseCompactXorBurn = (item: XorBurnEntity): Nullable<XorBurn> => {
+  if (!item.address || !item.amount || (item.assetId && item.assetId !== XOR.address)) return null;
+
+  const blockHeight = Number(item.blockHeight);
+  if (!Number.isFinite(blockHeight)) return null;
+
+  return {
+    address: item.address,
+    amount: new FPNumber(item.amount),
+    blockHeight,
+    nexusRecipient: item.nexusRecipient,
+    txHash: item.txHash || item.id,
+  };
+};
+
 const getChainApi = () => {
   try {
     return api.connection?.api ?? null;
@@ -454,6 +503,14 @@ export function isExcludedXorBurnAddress(address: string): boolean {
 
 const filterEligibleBurns = (items: XorBurn[]): XorBurn[] => {
   return items.filter((item) => !isExcludedXorBurnAddress(item.address));
+};
+
+const isBurnInRange = (item: XorBurn, start: number, end: number): boolean => {
+  return item.blockHeight >= start && item.blockHeight <= end;
+};
+
+const isAccountBurn = (item: XorBurn, accountId?: string): boolean => {
+  return !accountId || isSameAddress(item.address, accountId);
 };
 
 const getEventExtrinsicIndex = (eventRecord: ApiEventRecord): Nullable<number> => {
@@ -1008,18 +1065,33 @@ export async function fetchData(start: number, end: number, accountId?: string):
 
   const variables = { start, end };
   const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
-  const items = await polkaswapIndexer.services.explorer.fetchAllEntities(
-    getPolkaswapXorBurnQuery(accountId),
-    variables,
-    parse
+  const compactItems = await polkaswapIndexer.services.explorer.fetchAllEntities(
+    getPolkaswapCompactXorBurnQuery(),
+    {},
+    parseCompactXorBurn
   );
-  const parsedItems = (items ?? []).filter((item): item is XorBurn => !!item);
+  const parsedCompactItems = (compactItems ?? [])
+    .filter((item): item is XorBurn => !!item)
+    .filter((item) => isBurnInRange(item, start, end) && isAccountBurn(item, accountId));
+  const historyItems = parsedCompactItems.length
+    ? []
+    : await polkaswapIndexer.services.explorer.fetchAllEntities(
+        getPolkaswapHistoryXorBurnQuery(accountId),
+        variables,
+        parse
+      );
+  const parsedHistoryItems = (historyItems ?? [])
+    .filter((item): item is XorBurn => !!item)
+    .filter((item) => isBurnInRange(item, start, end) && isAccountBurn(item, accountId));
+  const parsedItems = parsedCompactItems.length ? parsedCompactItems : parsedHistoryItems;
   const initData = accountId
     ? dataBeforePolkaswapIndexing.filter((item) => item.address === accountId)
     : dataBeforePolkaswapIndexing;
-  const onChainItems = accountId
-    ? await fetchAccountOnChainXorBurns(start, end, accountId)
-    : await fetchOnChainXorBurns(start, end);
+  const onChainItems = parsedItems.length
+    ? []
+    : accountId
+      ? await fetchAccountOnChainXorBurns(start, end, accountId)
+      : await fetchOnChainXorBurns(start, end);
   const filteredOnChainItems = accountId
     ? onChainItems.filter((item) => isSameAddress(item.address, accountId))
     : onChainItems;

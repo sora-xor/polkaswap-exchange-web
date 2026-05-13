@@ -5,6 +5,15 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 describe('public env config', () => {
+  it('allows the local Polkaswap indexer through the static CSP', async () => {
+    const html = await readFile(path.resolve(process.cwd(), 'index.html'), 'utf8');
+    const csp = html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/)?.[1] ?? '';
+
+    expect(csp).toContain('http://localhost:*');
+    expect(csp).toContain('http://127.0.0.1:*');
+    expect(csp).toContain('ws://localhost:*');
+  });
+
   it('prefers the currently healthy MOF #2 SORA websocket endpoint first', async () => {
     const envPath = path.resolve(process.cwd(), 'public/env.json');
     const raw = await readFile(envPath, 'utf8');
@@ -43,5 +52,12 @@ describe('public env config', () => {
     ]);
 
     expect(JSON.parse(rootRaw)).toEqual(JSON.parse(publicRaw));
+  });
+
+  it('keeps the production env pointed at the hosted Polkaswap indexer', async () => {
+    const raw = await readFile(path.resolve(process.cwd(), 'public/env.json'), 'utf8');
+    const parsed = JSON.parse(raw) as { POLKASWAP_INDEXER_ENDPOINT?: string };
+
+    expect(parsed.POLKASWAP_INDEXER_ENDPOINT).toBe('https://pi.soramitsu.io/graphql');
   });
 });

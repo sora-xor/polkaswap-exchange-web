@@ -1,5 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils';
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import BurnPage from '@/features/misc/pages/BurnPage.vue';
@@ -264,6 +264,59 @@ describe('Burn.vue', () => {
         txHash: '0xlegacyalice',
       }),
     ]);
+  });
+
+  it('queries the full indexed campaign range when the chain block is not ready', async () => {
+    settingsStoreMock.blockNumber = 0;
+    fetchBurnDataMock.mockResolvedValue([
+      {
+        blockHeight: 25_900_000,
+        amount: new FPNumber(10),
+        address: 'alice',
+        nexusRecipient: validSoraNexusAccount,
+        txHash: '0xindexedburn',
+      },
+    ]);
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+
+    expect(fetchBurnDataMock).toHaveBeenCalledWith(25_043_003, 60_000_000);
+    expect(fetchBurnDataMock).toHaveBeenCalledWith(25_043_003, 60_000_000, 'alice');
+    expect(vm.totalXorBurned.solswap.toString()).toBe('10');
+    expect(vm.accountXorBurned.solswap.toString()).toBe('10');
+    expect(vm.totalReserved.solswap.toString()).toBe('500');
+    expect(vm.totalNexusReserved.solswap.toString()).toBe('10');
+  });
+
+  it('keeps the burn form loading while statistics are being fetched', async () => {
+    loadingRef.value = true;
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+
+    expect(vm.isBurnFormLoading).toBe(true);
+
+    loadingRef.value = false;
+    await nextTick();
+
+    expect(vm.isBurnFormLoading).toBe(false);
   });
 
   it('keeps account-specific burn totals separate when the global burn fetch is not ready yet', async () => {

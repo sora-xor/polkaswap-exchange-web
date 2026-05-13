@@ -48,7 +48,7 @@ export function useSoraStaking() {
   const activeEraStart = computed(() => stakingStore.activeEraStart as Nullable<number>);
   const currentEra = computed(() => stakingStore.currentEra as number);
   const currentEraTotalStake = computed(() => stakingStore.currentEraTotalStake as string);
-  const maxNominations = computed(() => stakingStore.maxNominations as number);
+  const maxNominations = computed(() => stakingStore.maxNominations);
   const accountLedger = computed(() => stakingStore.accountLedger as Nullable<AccountStakingLedger>);
   const pendingRewards = computed(() => stakingStore.pendingRewards as Nullable<NominatorReward>);
   const validatorsFilter = computed({

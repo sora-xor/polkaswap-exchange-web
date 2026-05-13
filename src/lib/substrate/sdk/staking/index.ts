@@ -8,6 +8,7 @@ import { XOR, VAL } from '../assets/consts';
 import {
   formatEra,
   formatPayee,
+  formatStakingBondParams,
   formatNominations,
   formatValidatorExposure,
   formatIndividualRewardPoints,
@@ -89,6 +90,16 @@ export async function mapWithConcurrency<T, R>(
 export class StakingModule<T> {
   constructor(private readonly root: Api<T>) {}
 
+  /**
+   * Reads staking constants that may differ between runtime metadata versions.
+   */
+  private getStakingConstNumber(name: string): number | null {
+    const constant = (this.root.api.consts.staking as Record<string, { toNumber?: () => number } | undefined>)[name];
+    const value = constant?.toNumber?.();
+
+    return typeof value === 'number' ? value : null;
+  }
+
   private isAddressValid(address?: string): address is string {
     return !!address && this.root.validateAddress(address);
   }
@@ -130,7 +141,11 @@ export class StakingModule<T> {
    * @returns max nominators
    */
   public getMaxNominatorRewardedPerValidator(): number {
-    return this.root.api.consts.staking.maxNominatorRewardedPerValidator.toNumber();
+    return (
+      this.getStakingConstNumber('maxNominatorRewardedPerValidator') ??
+      this.getStakingConstNumber('maxExposurePageSize') ??
+      Number.POSITIVE_INFINITY
+    );
   }
 
   /**
@@ -145,10 +160,10 @@ export class StakingModule<T> {
 
   /**
    * Maximum number of nominations per nominator.
-   * @returns max nominations
+   * @returns max nominations or null when the runtime does not expose a client-readable limit
    */
-  public getMaxNominations(): number {
-    return this.root.api.consts.staking.maxNominations.toNumber();
+  public getMaxNominations(): number | null {
+    return this.getStakingConstNumber('maxNominations');
   }
 
   /**
@@ -735,15 +750,23 @@ export class StakingModule<T> {
    * @param payee destination of rewards (one of payee or specific account address for payments)
    * @returns
    */
-  private calcBondParams(
-    value: NumberLike,
-    controller: string,
-    payee: StakingRewardsDestination | string
-  ): [string, string, string | { Account: string }] {
+  private calcBondParams(value: NumberLike, controller: string, payee: StakingRewardsDestination | string) {
     const amount = new FPNumber(value, XOR.decimals).toCodecString();
     const destination = formatPayee(payee);
 
-    return [controller, amount, destination];
+    return formatStakingBondParams(this.root.api.tx.staking.bond, controller, amount, destination);
+  }
+
+  /**
+   * Builds a staking.bond extrinsic using the argument shape advertised by runtime metadata.
+   */
+  private getBondCall(value: NumberLike, controller: string, payee: StakingRewardsDestination | string) {
+    const params = this.calcBondParams(value, controller, payee);
+    const bond = this.root.api.tx.staking.bond as unknown as (
+      ...params: unknown[]
+    ) => ReturnType<typeof this.root.api.tx.staking.bond>;
+
+    return bond(...params);
   }
 
   /**
@@ -759,9 +782,8 @@ export class StakingModule<T> {
     signerPair?: KeyringPair
   ): Promise<T> {
     const pair = this.getSignerPair(signerPair);
-    const params = this.calcBondParams(args.value, args.controller, args.payee);
 
-    return this.root.submitExtrinsic(this.root.api.tx.staking.bond(...params), pair, {
+    return this.root.submitExtrinsic(this.getBondCall(args.value, args.controller, args.payee), pair, {
       type: Operation.StakingBond,
       symbol: XOR.symbol,
       assetAddress: XOR.address,
@@ -783,9 +805,11 @@ export class StakingModule<T> {
     signerPair?: KeyringPair
   ): Promise<T> {
     const pair = this.getSignerPair(signerPair);
-    const params = this.calcBondParams(args.value, args.controller, args.payee);
 
-    const transactions = [this.root.api.tx.staking.bond(...params), this.root.api.tx.staking.nominate(args.validators)];
+    const transactions = [
+      this.getBondCall(args.value, args.controller, args.payee),
+      this.root.api.tx.staking.nominate(args.validators),
+    ];
 
     const call = this.root.api.tx.utility.batchAll(transactions);
 
@@ -804,8 +828,10 @@ export class StakingModule<T> {
     payee: StakingRewardsDestination | string;
     validators: string[];
   }): Promise<CodecString> {
-    const params = this.calcBondParams(args.value, args.controller, args.payee);
-    const transactions = [this.root.api.tx.staking.bond(...params), this.root.api.tx.staking.nominate(args.validators)];
+    const transactions = [
+      this.getBondCall(args.value, args.controller, args.payee),
+      this.root.api.tx.staking.nominate(args.validators),
+    ];
     const call = this.root.api.tx.utility.batchAll(transactions);
 
     return await this.root.getTransactionFee(call);

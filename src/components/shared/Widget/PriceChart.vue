@@ -247,6 +247,11 @@ const currency = computed<Nullable<Currency>>(() => settingsStore.currency);
 const currencies = computed<CurrencyFields[]>(() => settingsStore.currencies ?? []);
 const exchangeRate = computed(() => settingsStore.exchangeRate ?? 1);
 const currencySymbol = computed(() => settingsStore.currencySymbol ?? USD_SYMBOL);
+const indexerEndpoint = computed(() => {
+  const type = settingsStore.indexerType;
+
+  return type ? (settingsStore.indexers?.[type]?.endpoint ?? '') : '';
+});
 
 const chart = ref<any>(null);
 const isFetchingError = ref(false);
@@ -278,6 +283,7 @@ const tokenB = computed(() => (isReversedChart.value ? baseAsset.value : quoteAs
 const tokens = computed(() => [tokenA.value, tokenB.value].filter((token): token is AccountAsset => Boolean(token)));
 const tokensAddresses = computed(() => tokens.value.map((token) => token.address));
 const isTokensPair = computed(() => tokensAddresses.value.length === 2);
+const chartRequestAvailable = computed(() => !isTokensPair.value || (props.isAvailable ?? false));
 const reversible = computed(() => isTokensPair.value && !props.requestEntityId);
 const entities = computed(() => (props.requestEntityId ? [props.requestEntityId] : tokensAddresses.value));
 
@@ -544,7 +550,7 @@ const isAllHistoricalPricesFetched = () => {
 };
 
 const requestIsAllowed = (entitiesSnapshot: string[]): boolean => {
-  if (isTokensPair.value && !(props.isAvailable ?? false)) return false;
+  if (!chartRequestAvailable.value) return false;
   return isEqual(entitiesSnapshot)(entities.value);
 };
 
@@ -654,7 +660,7 @@ const getUpdatedPrecision = (min: number, max: number): number => {
 };
 
 const getHistoricalPrices = async (): Promise<void> => {
-  if (loading.value || isAllHistoricalPricesFetched()) {
+  if (loading.value || !chartRequestAvailable.value || isAllHistoricalPricesFetched()) {
     return;
   }
 
@@ -761,7 +767,7 @@ const getPriceUpdatesSubscription = async (entitiesSnapshot: string[]): Promise<
 
 const subscribeToPriceUpdates = async (): Promise<void> => {
   unsubscribeFromPriceUpdates();
-  if (!entities.value.length) return;
+  if (!entities.value.length || !chartRequestAvailable.value) return;
 
   const entitiesSnapshot = [...entities.value];
   priceUpdateSubscription = await getPriceUpdatesSubscription(entitiesSnapshot);
@@ -856,6 +862,24 @@ watch(inputTokensAddresses, (current, prev) => {
       forceUpdatePrices();
     }
   }
+});
+
+watch(chartRequestAvailable, (available, previous) => {
+  if (available === previous) return;
+
+  if (!available) {
+    clearData(true, false);
+    unsubscribeFromPriceUpdates();
+    return;
+  }
+
+  forceUpdatePrices(true, false);
+});
+
+watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  forceUpdatePrices(true, true);
 });
 
 onMounted(() => {
