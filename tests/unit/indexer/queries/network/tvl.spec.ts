@@ -54,7 +54,7 @@ describe('network tvl query', () => {
     ]);
   });
 
-  
+
   it('normalizes non-finite liquidity values to zero', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createNetworkSnapshotEntity('1900', 'not-a-number')),

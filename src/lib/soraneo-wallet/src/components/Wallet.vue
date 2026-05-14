@@ -12,13 +12,19 @@
       </s-button>
       <!-- <s-button @click="handleEncrypt">Encrypt</s-button> -->
 
-      <s-button type="action" :tooltip="t('accountSettings.title')" @click="handleAccountSettings">
+      <s-button
+        type="action"
+        :tooltip="t('accountSettings.title')"
+        :aria-label="t('accountSettings.title')"
+        @click="handleAccountSettings"
+      >
         <s-icon name="basic-settings-24" size="28"></s-icon>
       </s-button>
       <s-button
         v-if="permissions.createAssets"
         type="action"
         :tooltip="t('createTokenText')"
+        :aria-label="t('createTokenText')"
         @click="handleCreateToken"
       >
         <s-icon name="various-atom-24" size="28"></s-icon>
@@ -35,6 +41,7 @@
           alternative
           rounded
           :tooltip="t('code.receive')"
+          :aria-label="t('code.receive')"
           @click="receiveByQrCode(null)"
         >
           <s-icon name="finance-receive-show-QR-24" size="24"></s-icon>
@@ -46,6 +53,7 @@
           alternative
           rounded
           :tooltip="t('account.switch')"
+          :aria-label="t('account.switch')"
           @click="handleSwitchAccount"
         >
           <s-icon name="arrows-refresh-ccw-24" size="24"></s-icon>

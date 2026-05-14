@@ -9,9 +9,9 @@
     >
       <template #header>
         <div class="points__header">
-          <div>
+          <div class="points__header-heading">
             <h2>{{ t('points.title') }}</h2>
-            <h3 v-if="!loading && isLoggedIn">{{ totalPoints }}</h3>
+            <h3 v-if="!loading && isLoggedIn">{{ formattedTotalPoints }}</h3>
           </div>
           <p>{{ t('points.airdrop') }}</p>
         </div>
@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import { XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
+import { BalanceType, XOR, KUSD, VXOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { pointSystemCategory } from '@/consts/pointSystem';
@@ -131,7 +131,7 @@ const pointsForCards = ref<Record<string, CalculateCategoryPointResult> | null>(
 
 const { t } = useTranslation();
 const { loading, withApi, withLoading } = useLoading();
-const { getFiatAmountByCodecString, getFiatBalance } = useFormattedAmount();
+const { getFPNumberFromCodec, getFPNumberFiatAmountByFPNumber } = useFormattedAmount();
 const { connectSoraWallet, isLoggedIn } = useInternalConnect();
 const poolStore = usePoolStore();
 const referralsStore = useReferralsStore();
@@ -148,10 +148,15 @@ const totalPoints = computed(() => {
   if (!pointsForCards.value) return 0;
   return Object.values(pointsForCards.value).reduce((sum, category) => sum + (category.points || 0), 0);
 });
+const formattedTotalPoints = computed(() =>
+  new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(totalPoints.value)
+);
 
-const parseFiat = (value: Nullable<string>): number => {
-  if (!value) return 0;
-  return parseFloat(value.replace(',', '.'));
+const getFiatNumberByCodec = (amount: Nullable<string>, asset: Nullable<AccountAsset>): number => {
+  if (!amount || !asset) return 0;
+
+  const amountValue = getFPNumberFromCodec(amount, asset.decimals);
+  return getFPNumberFiatAmountByFPNumber(amountValue, asset)?.toNumber() ?? 0;
 };
 
 const getTotalLiquidityFiatValue = (): number =>
@@ -159,17 +164,15 @@ const getTotalLiquidityFiatValue = (): number =>
     const firstAsset = getAsset(liquidity.firstAddress);
     const secondAsset = getAsset(liquidity.secondAddress);
 
-    const firstValue =
-      firstAsset != null ? parseFiat(getFiatAmountByCodecString(liquidity.firstBalance, firstAsset)) : 0;
-    const secondValue =
-      secondAsset != null ? parseFiat(getFiatAmountByCodecString(liquidity.secondBalance, secondAsset)) : 0;
+    const firstValue = getFiatNumberByCodec(liquidity.firstBalance, firstAsset);
+    const secondValue = getFiatNumberByCodec(liquidity.secondBalance, secondAsset);
 
     return total + firstValue + secondValue;
   }, 0);
 
 const getCurrentFiatBalanceForToken = (assetSymbol: string): number => {
   const asset = accountAssets.value.find((value) => value.symbol === assetSymbol);
-  return parseFiat(getFiatBalance(asset));
+  return getFiatNumberByCodec(asset?.balance?.[BalanceType.Transferable] ?? null, asset ?? null);
 };
 
 /**
@@ -273,6 +276,9 @@ watch(isLoggedIn, async (value) => {
 
 <style lang="scss">
 .container .points .el-loading-mask {
+  backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: inherit;
   margin-left: calc(0px - $inner-spacing-small);
   width: calc(100% + $inner-spacing-big);
 }
@@ -308,7 +314,9 @@ watch(isLoggedIn, async (value) => {
 
     &.is-active {
       border-color: var(--s-color-status-info);
-      box-shadow: 0 0 0 1px rgba(82, 185, 255, 0.28), 0 10px 24px rgba(34, 9, 51, 0.2);
+      box-shadow:
+        0 0 0 1px rgba(82, 185, 255, 0.28),
+        0 10px 24px rgba(34, 9, 51, 0.2);
     }
 
     @include mobile(true) {
@@ -340,7 +348,8 @@ $points-card-min-width: 258px;
 
 .points {
   &.points-loading {
-    background-color: unset;
+    background-color: var(--s-color-base-background);
+    min-height: calc(214px + $scrollbar-loader-height);
   }
   background-image: url('@/assets/img/points/header.png');
   background-repeat: no-repeat;
@@ -380,7 +389,7 @@ $points-card-min-width: 258px;
     margin: 0;
     min-height: 214px;
     padding: $inner-spacing-big $inner-spacing-medium calc($inner-spacing-big + $inner-spacing-mini);
-    div {
+    &-heading {
       align-items: center;
       width: 100%;
       display: flex;
@@ -389,9 +398,11 @@ $points-card-min-width: 258px;
       color: #230735;
       gap: $inner-spacing-medium;
       h3 {
+        font-variant-numeric: tabular-nums;
         font-size: 44px;
         font-weight: 300;
         line-height: 1;
+        overflow-wrap: anywhere;
         text-align: right;
       }
       h2 {
@@ -444,18 +455,28 @@ $points-card-min-width: 258px;
     align-items: flex-start;
   }
   &__connect {
-    height: 350px;
-    padding-top: $inner-spacing-big * 2;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--s-border-radius-small);
+    box-sizing: border-box;
+    gap: $inner-spacing-medium;
+    min-height: 264px;
+    padding: $inner-spacing-big $inner-spacing-medium;
     justify-content: center;
+    width: 100%;
     &-title {
-      font-size: var(--s-font-size-large);
+      color: var(--s-color-base-content-primary);
+      font-size: 22px;
       font-weight: 300;
+      line-height: 1.18;
+      max-width: calc($select-asset-item-height * 4);
       text-align: center;
-      padding: 0 15%;
-      margin-bottom: $inner-spacing-medium;
     }
     &-action {
-      margin: 0 $basic-spacing-medium;
+      box-shadow: 0 12px 28px rgba(239, 3, 126, 0.24);
+      min-width: calc($select-asset-item-height * 3);
+      margin: 0;
     }
   }
 
@@ -496,7 +517,7 @@ $points-card-min-width: 258px;
       min-height: 196px;
       padding: $inner-spacing-medium $inner-spacing-small;
 
-      div {
+      &-heading {
         align-items: flex-start;
         flex-direction: column;
         gap: $inner-spacing-small;
@@ -515,9 +536,22 @@ $points-card-min-width: 258px;
     &__card-grid {
       grid-template-columns: 1fr;
     }
+
+    &__connect {
+      min-height: 252px;
+      padding: $inner-spacing-big $inner-spacing-small;
+
+      &-title {
+        font-size: 20px;
+        max-width: calc($select-asset-item-height * 3.4);
+      }
+
+      &-action {
+        min-width: calc($select-asset-item-height * 2.6);
+      }
+    }
   }
 
-  &__soratopia,
   &__soratopia {
     min-height: 102px;
     background-image: url('@/assets/img/points/soratopia.png');
@@ -532,6 +566,7 @@ $points-card-min-width: 258px;
     @include focus-outline;
     &-container {
       align-items: center;
+      flex-wrap: wrap;
       gap: $inner-spacing-medium;
       margin: $inner-spacing-medium;
     }
@@ -544,7 +579,9 @@ $points-card-min-width: 258px;
       white-space: nowrap;
       padding: $inner-spacing-mini $inner-spacing-medium;
       cursor: pointer;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
       @include focus-outline;
 
       &:hover,

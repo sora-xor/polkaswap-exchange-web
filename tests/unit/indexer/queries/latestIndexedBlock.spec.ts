@@ -66,5 +66,5 @@ describe('latest indexed block query', () => {
     expect(indexerMocks.fetchEntities).toHaveBeenCalledTimes(1);
   });
 
-  
+
   });

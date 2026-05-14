@@ -9,6 +9,7 @@
             class="el-button--settings"
             type="action"
             icon="basic-settings-24"
+            :aria-label="t('headerMenu.settings')"
             @click="openSettingsDialog"
           ></s-button>
         </template>
@@ -36,6 +37,7 @@
         type="action"
         icon="arrows-swap-90-24"
         :disabled="!areTokensSelected"
+        :aria-label="t('exchange.Swap')"
         @click="handleSwitchTokens"
       ></s-button>
 

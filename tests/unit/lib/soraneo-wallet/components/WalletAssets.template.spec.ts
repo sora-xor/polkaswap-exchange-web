@@ -19,6 +19,7 @@ describe('WalletAssets template', () => {
     expect(source).toContain('<s-button');
     expect(source).toContain('class="wallet-assets-add s-typography-button--medium"');
     expect(addAssetStyleBlock).toContain('margin-top: 14px;');
+    expect(addAssetStyleBlock).toContain('margin-bottom: max(8px, env(safe-area-inset-bottom, 0px));');
     expect(source).toContain(':deep(.s-button__text)');
     expect(addAssetStyleBlock).not.toContain('background-color');
     expect(addAssetStyleBlock).not.toContain('box-shadow');
@@ -30,9 +31,12 @@ describe('WalletAssets template', () => {
 
     expect(source).not.toContain('&__button.el-button.neumorphic.s-action:not(.s-primary).s-alternative');
     expect(source).toContain('class="wallet-assets__button send"');
+    expect(source).toContain(':aria-label="t(\'assets.send\')"');
     expect(source).toContain('name="finance-send-24"');
     expect(source).toContain('class="wallet-assets__button swap"');
+    expect(source).toContain(':aria-label="t(\'assets.swap\')"');
     expect(source).toContain('name="arrows-swap-24"');
+    expect(source).toContain(':aria-label="t(\'assets.details\')"');
     expect(source).toContain('name="arrows-chevron-right-rounded-24"');
   });
 
@@ -54,6 +58,8 @@ describe('WalletAssets template', () => {
     expect(source).toContain('white-space: nowrap;');
     expect(source).toContain('.wallet-assets__button.send,');
     expect(source).toContain('.wallet-assets :deep(.pin)');
+    expect(source).not.toContain('v-button class="wallet-assets-dashes"');
+    expect(source).toContain('class="wallet-assets-dashes" aria-hidden="true"');
   });
 
   it('keeps the asset headline compact when fiat data and filters share the row', async () => {
@@ -89,5 +95,23 @@ describe('WalletAssets template', () => {
 
     expect(assetListItem).not.toContain('word-break: break-word');
     expect(tokenAddress).not.toContain('word-break: break-word');
+  });
+
+  it('keeps wallet row pin controls keyboard accessible and named', async () => {
+    const assetListItem = (await import('@/lib/soraneo-wallet/src/components/AssetListItem.vue?raw')).default as string;
+
+    expect(assetListItem).toContain('<button v-if="pinnable" type="button" class="pin" :aria-label="pinLabel"');
+    expect(assetListItem).toContain("t(props.pinned ? 'addAsset.unpinAsset' : 'addAsset.pinAsset')");
+  });
+
+  it('only exposes clickable token logos as named native buttons', async () => {
+    const assetListItem = (await import('@/lib/soraneo-wallet/src/components/AssetListItem.vue?raw')).default as string;
+
+    expect(assetListItem).not.toContain('<token-logo\n      v-button');
+    expect(assetListItem).toContain('v-if="withClickableLogo"');
+    expect(assetListItem).toContain('type="button"');
+    expect(assetListItem).toContain('class="asset-logo-button"');
+    expect(assetListItem).toContain(':aria-label="t(\'assets.details\')"');
+    expect(assetListItem).toContain('<token-logo v-else :size="defaultLogoSize" :token="asset"></token-logo>');
   });
 });

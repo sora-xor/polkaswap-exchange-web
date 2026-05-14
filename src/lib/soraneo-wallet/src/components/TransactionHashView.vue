@@ -6,6 +6,7 @@
       :class="{ 'with-dropdown': hasExplorerLinks }"
       icon="basic-copy-24"
       :tooltip="copyTooltip(t(translation))"
+      :aria-label="copyTooltip(t(translation))"
       type="action"
       alternative
       @click="handleCopyAddress(formattedValue, $event)"

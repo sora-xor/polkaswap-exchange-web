@@ -621,11 +621,11 @@ export const quoteWithoutImpact = (
         if (isBuyDirection) { // NOSONAR
           const base = alignAmount(amount.dp(book.stepLotSize.precision), book);
           const quote = base.mul(price);
-  
+
           return [quote, base];
         } else {
           const base = alignAmount(safeDivide(amount.dp(book.tickSize.precision), price), book);
-  
+
           return [base, base];
         }
       }

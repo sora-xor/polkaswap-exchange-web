@@ -99,7 +99,7 @@ describe('SDatePicker', () => {
       cy.mount({
         components: { SDatePicker },
         template: `
-          <SDatePicker v-model="date" :type="'day'" data-cy="picker"/>          
+          <SDatePicker v-model="date" :type="'day'" data-cy="picker"/>
           <p data-cy="result">
             <span data-cy="date">{{date.getDate()}}</span>
             <span data-cy="month">{{date.getMonth()}}</span>

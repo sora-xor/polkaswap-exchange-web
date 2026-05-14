@@ -52,7 +52,7 @@ describe('network volume query', () => {
     expect(result[0]?.value.toString()).toBe('88.5');
   });
 
-  
+
   it('normalizes non-finite volume values to zero', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createNetworkSnapshotEntity('1900', 'not-a-number', '0')),

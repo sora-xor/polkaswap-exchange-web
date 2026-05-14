@@ -380,7 +380,7 @@ it('SDropdown - model usage works', () => {
         v-model="model"
         label="drop"
         v-bind="{ options }"
-      />  
+      />
     `,
   })
 

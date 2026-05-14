@@ -63,8 +63,8 @@ describe('point system indexer queries', () => {
     expect(result[1]?.amount.toString()).toBe('2.5');
   });
 
-  
-  
+
+
   it('fetches Polkaswap activity counts and falls back to zero when no count is returned', async () => {
     indexerMocks.fetchEntities.mockResolvedValue({ totalCount: 7 });
     indexerMocks.currentIndexer = createIndexer('polkaswap');
@@ -81,7 +81,7 @@ describe('point system indexer queries', () => {
     await expect(fetchCount(100, 200, 'account-1', CountType.PoolDeposit)).resolves.toBe(0);
   });
 
-  
+
   it('fetches and parses Polkaswap account metadata into versioned point calculations', async () => {
     indexerMocks.request.mockResolvedValue({
       data: createAccountMetaEntity(),

@@ -55,7 +55,7 @@ describe('order book price query', () => {
     });
   });
 
-  
+
   it('passes omitted pagination values through to Polkaswap', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(createSnapshotResponse([]));
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
@@ -76,7 +76,7 @@ describe('order book price query', () => {
     });
   });
 
-  
+
   });
 
 const createIndexer = (type: unknown) => ({

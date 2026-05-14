@@ -70,8 +70,7 @@ export const Identicon = defineComponent({
             key: address,
             size: iconSize,
           }),
-        },
-        []
+        }
       );
     } else if (type === 'jdenticon') {
       return h(
@@ -82,8 +81,7 @@ export const Identicon = defineComponent({
             publicKey,
             size: iconSize,
           }),
-        },
-        []
+        }
       );
     } else if (type === 'substrate') {
       throw new Error('substrate type is not supported');
@@ -100,8 +98,7 @@ export const Identicon = defineComponent({
             key: address,
             size: iconSize,
           }),
-        },
-        []
+        }
       );
     } else {
       return h(cmp, {}, []);

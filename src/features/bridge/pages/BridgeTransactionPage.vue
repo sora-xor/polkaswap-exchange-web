@@ -6,6 +6,7 @@
         type="action"
         icon="time-time-history-24"
         :tooltip="t('bridgeHistory.showHistory')"
+        :aria-label="t('bridgeHistory.showHistory')"
         tooltip-placement="bottom-end"
         @click="handleViewTransactionsHistory"
       ></s-button>
@@ -47,6 +48,7 @@
           alternative
           icon="basic-copy-24"
           :tooltip="tooltip"
+          :aria-label="tooltip"
           @click="handleCopyAddress(value, $event)"
         ></s-button>
         <links-dropdown v-if="links.length" :links="links"></links-dropdown>
@@ -117,6 +119,7 @@
           alternative
           icon="basic-copy-24"
           :tooltip="tooltip"
+          :aria-label="tooltip"
           @click="handleCopyAddress(value, $event)"
         ></s-button>
         <links-dropdown v-if="links.length" :links="links"></links-dropdown>

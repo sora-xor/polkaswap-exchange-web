@@ -12,7 +12,7 @@
       >
         <template #item="{ element: asset, index }">
           <div class="wallet-assets-item s-flex">
-            <div v-button class="wallet-assets-dashes"><div class="wallet-assets-three-dash"></div></div>
+            <div class="wallet-assets-dashes" aria-hidden="true"><div class="wallet-assets-three-dash"></div></div>
             <asset-list-item
               :asset="asset"
               :pinned="isAssetPinned(asset)"
@@ -47,6 +47,7 @@
                   size="small"
                   alternative
                   :tooltip="t('assets.send')"
+                  :aria-label="t('assets.send')"
                   @click="handleAssetSend(slotAsset)"
                 >
                   <s-icon name="finance-send-24" size="24"></s-icon>
@@ -58,6 +59,7 @@
                   size="small"
                   alternative
                   :tooltip="t('assets.swap')"
+                  :aria-label="t('assets.swap')"
                   @click="handleAssetSwap(slotAsset)"
                 >
                   <s-icon name="arrows-swap-24" size="24"></s-icon>
@@ -69,6 +71,7 @@
                   size="small"
                   alternative
                   :tooltip="t('assets.details')"
+                  :aria-label="t('assets.details')"
                   @click="handleOpenAssetDetails(slotAsset)"
                 >
                   <s-icon name="arrows-chevron-right-rounded-24" size="24"></s-icon>
@@ -603,6 +606,7 @@ $padding: 5px;
     align-self: center;
     width: min(320px, 100%);
     margin-top: 14px;
+    margin-bottom: max(8px, env(safe-area-inset-bottom, 0px));
     border-radius: 8px;
 
     :deep(.s-button__text) {

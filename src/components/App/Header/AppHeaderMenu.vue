@@ -4,6 +4,7 @@
       type="action"
       :class="['settings-control', 's-pressed', { 'settings-control--open': isDropdownVisible }]"
       :tooltip="isDropdownVisible ? '' : t('headerMenu.settings')"
+      :aria-label="t('headerMenu.settings')"
     >
       <template #icon>
         <s-dropdown
@@ -23,6 +24,7 @@
                 class="header-menu__settings-close s-pressed"
                 type="action"
                 icon="x-16"
+                :aria-label="t('closeText')"
                 @click="handleClickHeaderMenu"
               ></s-button>
             </div>

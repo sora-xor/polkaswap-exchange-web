@@ -66,7 +66,13 @@
                 <h4 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset, vault.debtAsset) }}</h4>
                 <position-status :status="selectedTab"></position-status>
               </div>
-              <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
+              <s-button
+                type="action"
+                size="small"
+                alternative
+                :tooltip="t('assets.details')"
+                :aria-label="t('assets.details')"
+              >
                 <template #icon>
                   <s-icon name="arrows-chevron-right-rounded-24" size="24"></s-icon>
                 </template>

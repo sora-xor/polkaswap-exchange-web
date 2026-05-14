@@ -102,18 +102,22 @@ $tab-margin: 22px;
       }
       &__nav {
         display: flex;
+        overflow: hidden;
         .el-tabs__item {
           align-items: center;
+          box-sizing: border-box;
           display: flex;
+          flex: 1 1 0;
           justify-content: center;
+          min-width: 0;
           padding: 0 $inner-spacing-small;
-          width: 33.3%;
+          width: calc(100% / 3);
         }
       }
       &__nav-wrap {
         .el-tabs__item {
           color: var(--s-color-base-content-primary);
-          font-size: 28px;
+          font-size: 24px;
           font-weight: 500;
           opacity: 0.82;
           text-overflow: ellipsis;

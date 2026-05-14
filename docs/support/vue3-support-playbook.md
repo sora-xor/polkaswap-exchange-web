@@ -87,7 +87,7 @@ Log findings in the shared Zendesk/Jira template and tag the relevant squad.
 **Initial acknowledgement (Zendesk / email):**
 
 ```
-Thanks for reporting this issue. We’re currently investigating and will update you within <target window>. 
+Thanks for reporting this issue. We’re currently investigating and will update you within <target window>.
 Could you confirm the following so we can reproduce the problem?
 - Wallet/account ID (if you’re comfortable sharing)
 - Browser + version

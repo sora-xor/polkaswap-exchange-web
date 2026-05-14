@@ -1,7 +1,13 @@
 <template>
   <wallet-base :title="headerTitle" show-back :reset-focus="hasResetFocus" @back="handleBack">
     <template v-if="!selectedTransaction" #actions>
-      <s-button v-if="!isXor" type="action" :tooltip="t('asset.remove')" @click="handleRemoveAsset">
+      <s-button
+        v-if="!isXor"
+        type="action"
+        :tooltip="t('asset.remove')"
+        :aria-label="t('asset.remove')"
+        @click="handleRemoveAsset"
+      >
         <s-icon name="basic-eye-24" size="28"></s-icon>
       </s-button>
     </template>
@@ -55,6 +61,7 @@
               size="medium"
               rounded
               primary
+              :aria-label="getOperationTooltip(operation)"
               @click="handleOperation(operation.type)"
             >
               <s-icon :name="operation.icon" size="24"></s-icon>
@@ -62,7 +69,14 @@
 
             <qr-code-scan-button primary size="medium" @change="parseQrCodeValue"></qr-code-scan-button>
 
-            <s-button type="action" primary rounded :tooltip="t('code.receive')" @click="receiveByQrCode(asset)">
+            <s-button
+              type="action"
+              primary
+              rounded
+              :tooltip="t('code.receive')"
+              :aria-label="t('code.receive')"
+              @click="receiveByQrCode(asset)"
+            >
               <s-icon name="finance-receive-show-QR-24" size="24"></s-icon>
             </s-button>
           </div>

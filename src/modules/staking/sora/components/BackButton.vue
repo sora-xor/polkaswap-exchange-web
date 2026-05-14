@@ -1,5 +1,5 @@
 <template>
-  <s-button class="back-button" type="action" size="medium" @click="handleBack">
+  <s-button class="back-button" type="action" size="medium" :aria-label="t('backText')" @click="handleBack">
     <template #icon>
       <s-icon name="arrows-chevron-left-rounded-24" size="24"></s-icon>
     </template>
@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
+import { useTranslation } from '@/composables/useTranslation';
 
 import { StakingPageNames } from '../../consts';
 
@@ -18,6 +19,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'back'): void;
 }>();
+const { t } = useTranslation();
 
 const handleBack = () => {
   if (props.page) {

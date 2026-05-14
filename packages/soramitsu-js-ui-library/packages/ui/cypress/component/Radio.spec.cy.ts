@@ -207,20 +207,20 @@ describe('Keyboard, Focusing, Disabling', () => {
 
           <button>Pre</button>
 
-          <SRadioGroup v-model="value">        
+          <SRadioGroup v-model="value">
             <SRadio value="regular" :disabled="disableAll">
               Regular crust
             </SRadio>
-        
+
             <SRadio value="deep" :disabled="disableDeep || disableAll">
               Deep dish
             </SRadio>
-        
+
             <SRadio value="thin" :disabled="disableAll">
               Thin crust
             </SRadio>
           </SRadioGroup>
-      
+
 
           <button>Post</button>
         </div>
@@ -403,7 +403,7 @@ describe('SRadioGroup', () => {
       },
       template: `
         <p id="model">{{ val }}</p>
-        
+
         <SRadioGroup v-model="val" :radio-selector="selector">
           <CustomRadio value="aaa">
             AAA

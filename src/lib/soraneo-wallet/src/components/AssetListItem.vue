@@ -11,13 +11,16 @@
     v-bind="$attrs"
     :tabindex="withTabindex ? 0 : -1"
   >
-    <token-logo
-      v-button
-      :size="defaultLogoSize"
-      :token="asset"
-      :with-clickable-logo="withClickableLogo"
+    <button
+      v-if="withClickableLogo"
+      type="button"
+      class="asset-logo-button"
+      :aria-label="t('assets.details')"
       @click="handleIconClick"
-    ></token-logo>
+    >
+      <token-logo :size="defaultLogoSize" :token="asset" with-clickable-logo></token-logo>
+    </button>
+    <token-logo v-else :size="defaultLogoSize" :token="asset"></token-logo>
     <div class="asset-description s-flex">
       <slot name="value" v-bind="asset">
         <div class="asset-symbol">{{ asset.symbol }}</div>
@@ -34,14 +37,17 @@
     <div v-if="selectable" class="check">
       <s-icon name="basic-check-mark-24" size="12px"></s-icon>
     </div>
-    <div v-if="pinnable" class="pin" @click="pin">
+    <button v-if="pinnable" type="button" class="pin" :aria-label="pinLabel" @click="pin">
       <pin-icon :is-pinned="pinned"></pin-icon>
-    </div>
+    </button>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 import { LogoSize } from '@/consts';
+import { useTranslation } from '@/composables/useTranslation';
 
 import NftTokenLogo from './NftTokenLogo.vue';
 import PinIcon from './PinIcon.vue';
@@ -78,6 +84,8 @@ const emit = defineEmits<{
 }>();
 
 const defaultLogoSize = LogoSize.BIG;
+const { t } = useTranslation();
+const pinLabel = computed(() => t(props.pinned ? 'addAsset.unpinAsset' : 'addAsset.pinAsset'));
 
 const handleIconClick = (event: Event) => {
   if (!props.withClickableLogo) {
@@ -156,7 +164,23 @@ defineExpose({ handleIconClick, pin });
   &:not(:hover):not(&--selected) .check {
     opacity: 0;
   }
+
+  .asset-logo-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    line-height: 0;
+    cursor: pointer;
+  }
+
   .pin {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;

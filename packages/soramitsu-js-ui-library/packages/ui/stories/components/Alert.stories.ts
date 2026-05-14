@@ -7,7 +7,7 @@ const StoryComponent = defineComponent({
   template: `
     <SAlert v-bind="{ status }">
       <template #title>
-        {{ title }} 
+        {{ title }}
       </template>
       <template #description v-if="description">
         {{ description }}

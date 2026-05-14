@@ -7,6 +7,7 @@
           size="small"
           alternative
           :tooltip="t('asset.receive', { symbol: asset.symbol })"
+          :aria-label="t('asset.receive', { symbol: asset.symbol })"
           @click="selectAsset(asset)"
         >
           <s-icon name="arrows-chevron-right-rounded-24" size="28"></s-icon>

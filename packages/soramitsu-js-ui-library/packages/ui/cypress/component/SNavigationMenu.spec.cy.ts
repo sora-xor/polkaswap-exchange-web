@@ -30,7 +30,7 @@ describe('NavigationMenu', () => {
         },
         template: `
           <button id="collapse-btn" @click="collapsed = !collapsed">collapse</button>
-      
+
           <SNavigationMenu v-model="selectedItem" :collapsed="collapsed">
           <template #header>
             <div id="header-content">${HEADER_TEXT}</div>
@@ -49,7 +49,7 @@ describe('NavigationMenu', () => {
                 Option {{ String(i) + 0 }}
               </SNavigationMenuItem>
             </SNavigationSubmenu>
-          
+
             <template #footer>
               <div id="footer-content">${FOOTER_TEXT}</div>
             </template>

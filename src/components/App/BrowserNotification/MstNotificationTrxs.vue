@@ -1,6 +1,8 @@
 <template>
   <div v-if="visible" class="notification-mst">
-    <s-button class="close-button" @click="closeNotification"> <s-icon name="x-16" size="14"></s-icon> </s-button>
+    <s-button class="close-button" :aria-label="t('closeText')" @click="closeNotification">
+      <s-icon name="x-16" size="14"></s-icon>
+    </s-button>
 
     <p>{{ t('mst.warningSwitch') }}</p>
     <s-button type="secondary" @click="handleButtonClick">{{ t('mst.seeActivity') }}</s-button>

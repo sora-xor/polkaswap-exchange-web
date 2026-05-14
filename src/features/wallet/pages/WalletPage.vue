@@ -150,6 +150,10 @@ const handleBridge = (asset: AccountAsset) => {
 }
 
 .app-main--wallet {
+  .app-content {
+    padding-bottom: calc(#{$footer-height} + #{$inner-spacing-medium});
+  }
+
   .app-body-scrollbar > .el-scrollbar__bar.is-vertical,
   .container--wallet .el-scrollbar__bar.is-vertical {
     opacity: 0 !important;

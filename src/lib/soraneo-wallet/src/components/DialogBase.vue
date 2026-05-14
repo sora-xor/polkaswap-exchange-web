@@ -12,7 +12,7 @@
     <div :class="cardClasses" :style="cardStyle">
       <header class="dialog-card__header el-dialog__header">
         <div v-if="showBack" class="dialog-card__back">
-          <s-button type="action" size="sm" @click="handleBackClick">
+          <s-button type="action" size="sm" :aria-label="t('backText')" @click="handleBackClick">
             <s-icon name="arrows-chevron-left-rounded-24" size="28"></s-icon>
           </s-button>
         </div>
@@ -36,7 +36,13 @@
         <div class="dialog-card__actions">
           <slot name="header-actions"></slot>
           <span v-if="showCloseButton" class="dialog-card__close-wrapper el-dialog__headerbtn">
-            <s-button class="dialog-card__close el-dialog__close" type="action" size="sm" @click="closeDialog">
+            <s-button
+              class="dialog-card__close el-dialog__close"
+              type="action"
+              size="sm"
+              :aria-label="t('closeText')"
+              @click="closeDialog"
+            >
               <s-icon name="basic-close-24" size="28"></s-icon>
             </s-button>
           </span>
@@ -56,6 +62,7 @@
 import { computed, useAttrs } from 'vue';
 
 import { useDialogVisibility } from '@/composables/useDialog';
+import { useTranslation } from '@/composables/useTranslation';
 
 defineOptions({ inheritAttrs: false });
 
@@ -89,6 +96,7 @@ const props = withDefaults(
 );
 
 const attrs = useAttrs();
+const { t } = useTranslation();
 
 const emit = defineEmits<{
   (event: 'close'): void;

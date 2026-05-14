@@ -25,6 +25,8 @@ describe('AppHeader source', () => {
   });
 
   it('keeps mobile header icon controls aligned with the live site', () => {
+    expect(appHeaderSource).toContain('aria-label="Menu"');
+    expect(appHeaderSource).toContain(':aria-label="t(\'moonpay.buttons.buy\')"');
     expect(appHeaderSource).toContain('.header > &:not(.app-controls--middle) {');
     expect(appHeaderSource).toContain('.app-controls .settings-control.el-button {');
     expect(appHeaderSource).toContain('color: var(--s-color-base-content-tertiary) !important;');

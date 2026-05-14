@@ -26,6 +26,7 @@ const KNOWN_WALLET_NOISE_PATTERNS = [/Unable to retrieve keypair/i, /You should 
 
 const emptyJson = JSON.stringify({ data: null });
 const runtimeEnvRoutePattern = /\/env(?:\.dev)?\.json(?:\?.*)?$/i;
+const localPolkaswapIndexerRoutePattern = /^http:\/\/localhost:4350\/graphql(?:\?.*)?$/i;
 
 const stubbedRuntimeEnvJson = (() => {
   try {
@@ -123,6 +124,10 @@ async function stubNetwork(page: Page, options: PreparePageOptions = {}): Promis
       });
     });
   }
+
+  await page.route(localPolkaswapIndexerRoutePattern, async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: emptyJson });
+  });
 
   const remoteRequestMatcher = (url: string): boolean => {
     try {

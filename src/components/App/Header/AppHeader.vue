@@ -5,6 +5,7 @@
       type="action"
       primary
       icon="basic-more-horizontal-24"
+      aria-label="Menu"
       @click="toggleMenu"
     ></s-button>
     <app-logo-button
@@ -15,7 +16,13 @@
     ></app-logo-button>
     <div class="app-controls app-controls--middle s-flex">
       <app-marketing v-show="showMarketing"></app-marketing>
-      <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.DepositOptions)">
+      <s-button
+        :class="fiatBtnClass"
+        :type="fiatBtnType"
+        size="medium"
+        :aria-label="t('moonpay.buttons.buy')"
+        @click="goTo(PageNames.DepositOptions)"
+      >
         <pair-token-logo
           class="payment-icon"
           :first-token="xor"

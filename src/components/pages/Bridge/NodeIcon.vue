@@ -4,6 +4,7 @@
     size="mini"
     alternative
     :tooltip="t('selectNodeText')"
+    :aria-label="t('selectNodeText')"
     @click="handleClick"
     class="status-button"
   >

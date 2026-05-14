@@ -231,4 +231,3 @@ Domains reflect the first meaningful segment within `src/**` paths (e.g. `pages/
 | views/SoraCard | src/views/SoraCard.vue | 15 | 3 | 2 | 1 | 9 |
 | views/Swap | src/views/Swap.vue | 1 | 1 | 0 | 0 | 0 |
 | views/Wallet | src/views/Wallet.vue | 4 | 0 | 1 | 0 | 3 |
-

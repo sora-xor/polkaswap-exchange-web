@@ -77,8 +77,8 @@ describe('pool list query', () => {
     );
   });
 
-  
-  
+
+
   });
 
 const createIndexer = (type: unknown) => ({

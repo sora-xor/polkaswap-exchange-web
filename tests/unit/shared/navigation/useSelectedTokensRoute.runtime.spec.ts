@@ -6,7 +6,11 @@ import { useSelectedTokensRoute } from '@/shared/navigation/useSelectedTokensRou
 
 type RouteParams = Record<string, string | undefined>;
 type RouteUpdateTarget = { name?: string; params: RouteParams };
-type RouteUpdateHandler = (to: RouteUpdateTarget, from: unknown, next: () => void) => Promise<void> | void;
+type RouteUpdateHandler = (
+  to: RouteUpdateTarget,
+  from: unknown,
+  next: (location?: { name: string; params?: undefined }) => void
+) => Promise<void> | void;
 
 const mocks = vi.hoisted(() => ({
   route: {
@@ -178,9 +182,9 @@ describe('useSelectedTokensRoute runtime behavior', () => {
       next
     );
 
-    expect(mocks.router.replace).toHaveBeenCalledWith({ name: PageNames.AddLiquidity, params: undefined });
+    expect(mocks.router.replace).not.toHaveBeenCalled();
     expect(onTokensChange).not.toHaveBeenCalled();
-    expect(next).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith({ name: PageNames.AddLiquidity, params: undefined });
   });
 
   it('redirects invalid route updates without invoking the token-change handler', async () => {
@@ -191,8 +195,8 @@ describe('useSelectedTokensRoute runtime behavior', () => {
 
     await mocks.routeUpdateHandler?.({ name: PageNames.Swap, params: { first: 'XOR', second: 'XOR' } }, {}, next);
 
-    expect(mocks.router.replace).toHaveBeenCalledWith({ name: PageNames.Swap, params: undefined });
+    expect(mocks.router.replace).not.toHaveBeenCalled();
     expect(onTokensChange).not.toHaveBeenCalled();
-    expect(next).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith({ name: PageNames.Swap, params: undefined });
   });
 });

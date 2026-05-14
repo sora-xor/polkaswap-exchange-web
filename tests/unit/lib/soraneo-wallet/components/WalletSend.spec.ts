@@ -82,6 +82,7 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
 }));
 
 import WalletSend from '@/lib/soraneo-wallet/src/components/WalletSend.vue';
+import walletSendSource from '@/lib/soraneo-wallet/src/components/WalletSend.vue?raw';
 import { RouteNames } from '@/lib/soraneo-wallet/src/consts';
 
 describe('Wallet WalletSend', () => {
@@ -106,5 +107,10 @@ describe('Wallet WalletSend', () => {
     state.handleBack();
 
     expect(navigate).toHaveBeenCalledWith({ name: RouteNames.Wallet, params: {} });
+  });
+
+  it('passes vesting periods through the current select options contract', () => {
+    expect(walletSendSource).toContain(':options="vestingPeriodOptions"');
+    expect(walletSendSource).not.toContain('<s-option');
   });
 });

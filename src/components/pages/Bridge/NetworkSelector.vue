@@ -9,6 +9,7 @@
         type="action"
         icon="basic-settings-24"
         :tooltip="t('bridge.selectNetwork')"
+        :aria-label="t('bridge.selectNetwork')"
         tooltip-placement="bottom-end"
         @click="handleChangeNetwork"
       ></s-button>

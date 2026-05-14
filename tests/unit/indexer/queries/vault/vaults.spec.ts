@@ -53,7 +53,7 @@ describe('closed vaults query', () => {
     expect(result[0]?.returned.toString()).toBe('45.25');
   });
 
-  
+
   it('returns an empty list when the active indexer has no closed vaults', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);

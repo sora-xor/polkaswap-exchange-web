@@ -109,7 +109,7 @@ export class BaseApi<T = void> extends ApiAccount<T> {
       switch (operation) { // NOSONAR
         case Operation.AddLiquidity:
           return this.api.tx.poolXYK.depositLiquidity(DexId.XOR, '', '', 0, 0, 0, 0);
-        case Operation.BatchAll: 
+        case Operation.BatchAll:
           return this.api.tx.utility.batchAll([]);
         case Operation.CreatePair:
           return this.api.tx.utility.batchAll([
@@ -228,13 +228,13 @@ export class BaseApi<T = void> extends ApiAccount<T> {
           return this.api.tx.kensetsu.borrow(0, 0, 0);
         case Operation.SetAccessExpiration:
           return this.api.tx.extendedAssets.setSbtExpiration('', '', 0);
-        case Operation.RegulateAsset: 
+        case Operation.RegulateAsset:
           return this.api.tx.extendedAssets.regulateAsset('');
         case Operation.RegisterAndRegulateAsset:
           return  this.api.tx.extendedAssets.registerRegulatedAsset('', '', 0, false, false, null, null);
-        case Operation.BindRegulatedAsset: 
+        case Operation.BindRegulatedAsset:
           return this.api.tx.extendedAssets.bindRegulatedAssetToSbt('', '');
-        case Operation.IssueSoulBoundToken: 
+        case Operation.IssueSoulBoundToken:
           return this.api.tx.extendedAssets.issueSbt('', '', '', '', '');
         case Operation.Checkin:
           return this.api.tx.soratopia.checkIn();

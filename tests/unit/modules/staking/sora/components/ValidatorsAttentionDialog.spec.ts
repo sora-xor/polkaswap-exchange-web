@@ -49,6 +49,30 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
   });
 });
 
+vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
+  __esModule: true,
+  default: defineComponent({
+    name: 'DialogBaseStub',
+    props: {
+      visible: { type: Boolean, default: false },
+      customClass: { type: String, default: '' },
+    },
+    emits: ['update:visible'],
+    setup(props, { slots, emit }) {
+      return () =>
+        h(
+          'div',
+          {
+            class: ['dialog-base-stub', props.customClass],
+            'data-visible': String(props.visible),
+            onClick: () => emit('update:visible', !props.visible),
+          },
+          slots.default?.()
+        );
+    },
+  }),
+}));
+
 vi.mock('vue-i18n', () => ({
   __esModule: true,
   useI18n: () => ({
@@ -122,6 +146,14 @@ describe('ValidatorsAttentionDialog.vue', () => {
     expect(lines.at(0)?.text()).toBe('line-1');
     expect(lines.at(1)?.text()).toBe('line-2');
     expect(wrapper.text()).toContain('Confirm');
+  });
+
+  it('passes the modal styling hook to DialogBase', () => {
+    const wrapper = mountComponent();
+
+    expect(wrapper.findComponent({ name: 'DialogBaseStub' }).props('customClass')).toBe(
+      'validators-attention-dialog'
+    );
   });
 
   it('renders object-based translation payloads in numeric order', () => {

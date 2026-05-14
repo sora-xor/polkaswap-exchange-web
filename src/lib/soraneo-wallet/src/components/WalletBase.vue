@@ -12,7 +12,7 @@
     <template #header>
       <div ref="headerBase" :class="headerClasses" :tabindex="hasFocusReset ? 0 : -1">
         <div v-if="showBack" :class="backButtonClass">
-          <s-button type="action" @click="handleBackClick">
+          <s-button type="action" :aria-label="t('backText')" @click="handleBackClick">
             <s-icon name="arrows-chevron-left-rounded-24" size="28"></s-icon>
           </s-button>
         </div>
@@ -42,6 +42,7 @@
           type="action"
           rounded
           :tooltip="t('closeText')"
+          :aria-label="t('closeText')"
           @click="handleCloseClick"
         >
           <s-icon name="basic-close-24" size="28"></s-icon>

@@ -83,8 +83,8 @@ describe('order book account orders query', () => {
     );
   });
 
-  
-  
+
+
   });
 
 const createIndexer = (type: unknown) => ({

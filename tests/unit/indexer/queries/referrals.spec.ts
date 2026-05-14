@@ -47,7 +47,7 @@ describe('referral reward queries', () => {
     expect(result?.invitedUserRewards.bob.toString()).toBe('2.5');
   });
 
-  
+
   it('omits the referrer filter when no referrer is supplied and returns zero totals for empty results', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue([]);
     indexerMocks.currentIndexer = {
@@ -66,7 +66,7 @@ describe('referral reward queries', () => {
     expect(result?.invitedUserRewards).toEqual({});
   });
 
-  
+
   });
 
 const createRewardEntity = (referral: string, naturalAmount: number) => ({

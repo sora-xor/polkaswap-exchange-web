@@ -216,12 +216,11 @@ export function useSelectedTokensRoute(onTokensChange: TokensChangeHandler) {
 
     const valid = routeIsValid(params, (to.name as string) ?? '', firstAddress, secondAddress);
 
-    const validState = parseCurrentRoute({
-      isValidRoute: valid,
-      name: (to.name as string) ?? '',
-    });
-
-    if (!validState) return;
+    if (!valid) {
+      wasRedirected.value = true;
+      next({ name: (to.name as string) ?? '', params: undefined });
+      return;
+    }
 
     await onTokensChange({ firstAddress, secondAddress });
     next();

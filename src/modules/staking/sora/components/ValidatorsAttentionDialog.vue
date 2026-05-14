@@ -4,10 +4,7 @@
       <s-icon class="icon" name="notifications-alert-triangle-24" size="64px"></s-icon>
       <h1 class="title">{{ t('soraStaking.validatorsAttentionDialog.title') }}</h1>
       <div class="description">
-        <template v-for="item in description" :key="item">
-          <p>{{ item }}</p>
-          <br />
-        </template>
+        <p v-for="item in description" :key="item">{{ item }}</p>
       </div>
       <s-button type="primary" class="action-button" :loading="parentLoading" @click="handleConfirm">
         {{ t('soraStaking.validatorsAttentionDialog.confirm') }}
@@ -128,10 +125,6 @@ defineExpose({
     max-width: 100%;
     margin: 0;
   }
-
-  br {
-    display: none;
-  }
 }
 
 .action-button {
@@ -141,7 +134,13 @@ defineExpose({
 }
 
 :global(.dialog-card.validators-attention-dialog) {
+  --validators-attention-shadow-light: rgba(155, 111, 165, 0.22);
+  --validators-attention-shadow-dark: rgba(23, 0, 42, 0.34);
+
   position: relative;
+  box-shadow:
+    -6px -6px 18px var(--validators-attention-shadow-light),
+    14px 18px 44px var(--validators-attention-shadow-dark);
 }
 
 :global(.dialog-card.validators-attention-dialog .dialog-card__header) {
@@ -165,9 +164,44 @@ defineExpose({
   pointer-events: auto;
 }
 
+:global(
+    .dialog-card.validators-attention-dialog
+      button.dialog-card__close.el-button.neumorphic.s-action:not(.s-primary)
+  ) {
+  box-shadow:
+    -4px -4px 10px var(--validators-attention-shadow-light),
+    4px 4px 12px var(--validators-attention-shadow-dark),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.06),
+    inset -1px -1px 2px rgba(23, 0, 42, 0.18);
+}
+
+:global(
+    .dialog-card.validators-attention-dialog
+      button.dialog-card__close.el-button.neumorphic.s-action:not(.s-primary):focus
+  ),
+:global(
+    .dialog-card.validators-attention-dialog
+      button.dialog-card__close.el-button.neumorphic.s-action:not(.s-primary):hover
+  ) {
+  box-shadow:
+    -5px -5px 12px var(--validators-attention-shadow-light),
+    5px 5px 14px var(--validators-attention-shadow-dark),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.08),
+    inset -1px -1px 2px rgba(23, 0, 42, 0.2);
+}
+
+:global(
+    .dialog-card.validators-attention-dialog
+      button.dialog-card__close.el-button.neumorphic.s-action:not(.s-primary):active
+  ) {
+  box-shadow:
+    inset 3px 3px 7px var(--validators-attention-shadow-dark),
+    inset -2px -2px 5px var(--validators-attention-shadow-light);
+}
+
 :global(.dialog-card.validators-attention-dialog .dialog-card__content) {
   padding: $basic-spacing-medium clamp(#{$basic-spacing}, 7vw, #{$inner-spacing-large}) $inner-spacing-large;
-  max-height: min(84vh, calc(100vh - (#{$basic-spacing} * 2)));
+  max-height: min(84vh, calc(100vh - #{$basic-spacing * 2}));
 }
 
 .action-button :deep(span) {

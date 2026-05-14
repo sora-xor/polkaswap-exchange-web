@@ -9,7 +9,7 @@
     @close="closeView"
   >
     <template v-if="logoutButtonVisibility" #actions>
-      <s-button type="action" :tooltip="t('logoutText')" @click="handleAccountLogout">
+      <s-button type="action" :tooltip="t('logoutText')" :aria-label="t('logoutText')" @click="handleAccountLogout">
         <s-icon name="basic-eye-24" size="28"></s-icon>
       </s-button>
     </template>

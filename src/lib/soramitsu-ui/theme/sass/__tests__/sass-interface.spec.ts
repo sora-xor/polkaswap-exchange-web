@@ -372,7 +372,7 @@ describe('Utils', () => {
           'sys.color.primary': red,
           'sys.color.secondary': blue
         );
-        
+
         :root {
           @include util.eval-tokens($src, $values)
         }
@@ -400,7 +400,7 @@ describe('Utils', () => {
           'sys.color.secondary': blue,
           'sys.color.tertiary': green
         );
-        
+
         :root {
           @include util.eval-tokens($src, $values)
         }
@@ -421,7 +421,7 @@ describe('Utils', () => {
         $values: (
           'sys.color.secondary': blue
         );
-        
+
         :root {
           @include util.eval-tokens($src, $values, true)
         }
@@ -446,7 +446,7 @@ describe('Utils', () => {
         $values: (
           'sys.color.tertiary': green
         );
-        
+
         :root {
           @include util.eval-tokens($src, $values, true)
         }

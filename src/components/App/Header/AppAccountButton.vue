@@ -4,6 +4,7 @@
     size="medium"
     :class="['account-control', { 's-pressed': isLoggedIn }]"
     :tooltip="accountTooltip"
+    :aria-label="accountTooltip"
     v-bind="attrs"
     @click="handleClick"
   >

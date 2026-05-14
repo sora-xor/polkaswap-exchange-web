@@ -28,7 +28,14 @@
         </div>
 
         <div v-if="isPipAvailable" class="base-widget-block base-widget-pip">
-          <s-button type="action" size="small" alternative @click="openPip" tooltip="Open in top window">
+          <s-button
+            type="action"
+            size="small"
+            alternative
+            tooltip="Open in top window"
+            aria-label="Open in top window"
+            @click="openPip"
+          >
             <template #icon>
               <s-icon name="finance-receive-24" size="24"></s-icon>
             </template>

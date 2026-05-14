@@ -37,7 +37,7 @@
         </div>
       </s-scrollbar>
       <div class="add-multisig-address">
-        <s-button type="secondary" :tooltip="t('mst.addAddr')" @click="addAddress">
+        <s-button type="secondary" :tooltip="t('mst.addAddr')" :aria-label="t('mst.addAddr')" @click="addAddress">
           <s-icon name="plus-16" size="14"></s-icon>
         </s-button>
         <p>{{ t('mst.addAddress') }}</p>

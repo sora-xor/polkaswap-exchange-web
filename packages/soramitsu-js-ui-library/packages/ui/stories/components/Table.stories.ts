@@ -37,7 +37,7 @@ const meta = {
       <button class="mr-4 shadow rounded-xl px-8px py-4px" @click="currentData = data">Set main data</button>
       <button class="mr-4 shadow rounded-xl px-8px py-4px" @click="currentData = altData">Set alt data</button>
       <button class="mr-4 shadow rounded-xl px-8px py-4px" @click="currentData = []">Remove data</button>
-  
+
       <s-table
         class="mt-24px"
         :data="currentData"
@@ -67,12 +67,12 @@ const meta = {
           <template #default="{ row, column, rowIndex }">
             Row #{{ rowIndex }}: {{ row.prop1 }} - custom
           </template>
-          
+
           <template #header="{ column, columnIndex }">
             {{ column.label }} - custom
           </template>
         </s-table-column>
-  
+
         <s-table-column
           prop="prop2"
           label="Prop 2"

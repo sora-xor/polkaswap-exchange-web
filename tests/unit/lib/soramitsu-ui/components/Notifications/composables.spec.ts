@@ -76,6 +76,7 @@ describe('useNotifications', () => {
     const vnode = payload.slot();
 
     expect(vnode.props.timeout).toBe(2500);
+    expect(vnode.props.status).toBeUndefined();
 
     vnode.props['onClick:close']();
     vnode.props.onTimeout();

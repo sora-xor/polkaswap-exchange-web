@@ -22,7 +22,7 @@ describe('rewards feature routes', () => {
 
   it('uses feature-local async page imports instead of the legacy lazy view helper', () => {
     expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/RewardsTabsPage.vue'))");
-    expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/PointSystemV2Page.vue'))");
+    expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/PointSystemWrapperPage.vue'))");
     expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/RewardsPage.vue'))");
     expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/ReferralProgramPage.vue'))");
     expect(routesSource).not.toContain('lazyView');

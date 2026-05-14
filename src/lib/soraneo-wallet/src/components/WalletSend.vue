@@ -90,15 +90,9 @@
             <s-select
               v-model="selectedVestingPeriod"
               class="wallet-send__vesting-period"
-              :placeholder="t('walletSend.unlockFrequency')"
-            >
-              <s-option
-                v-for="period in vestingPeriodsInDays"
-                :key="period"
-                :label="formatDuration(period)"
-                :value="period"
-              ></s-option>
-            </s-select>
+              :label="t('walletSend.unlockFrequency')"
+              :options="vestingPeriodOptions"
+            ></s-select>
             <s-float-input
               v-model="vestingPercentage"
               class="wallet-send__vesting-input"
@@ -411,6 +405,12 @@ export default {
         .locale(dayjsLocale.value)
         .humanize();
     };
+    const vestingPeriodOptions = computed(() =>
+      vestingPeriodsInDays.map((period) => ({
+        label: formatDuration(period),
+        value: period,
+      }))
+    );
 
     const resetAssetBalanceSubscription = (): void => {
       assetBalanceSubscription.value?.unsubscribe();
@@ -567,6 +567,7 @@ export default {
       showAdditionalInfo,
       withVesting,
       selectedVestingPeriod,
+      vestingPeriodOptions,
       vestingPercentage,
       vestingStart,
       fee,

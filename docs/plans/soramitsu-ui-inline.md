@@ -1,7 +1,7 @@
 # Soramitsu UI Inline Plan
 
-**Last updated:** 2025-10-26  
-**Owner:** Frontend migration pod  
+**Last updated:** 2025-10-26
+**Owner:** Frontend migration pod
 **Source reference:** `src/lib/soramitsu-ui/**`
 
 ## 1. Current State Snapshot
@@ -39,7 +39,7 @@
 
 ## 5. Vendored UI Maintenance
 
-**Owners:** Frontend migration pod (primary), Design systems squad (review)  
+**Owners:** Frontend migration pod (primary), Design systems squad (review)
 **Cadence:** Align with upstream weekly RCs or as-needed hotfixes
 
 1. **Monitor upstream releases.** Track the private `soramitsu-ui` repository for new tags or hotfix branches. Release announcements in `#ui-kit` should include changelog links and checksum artefacts.

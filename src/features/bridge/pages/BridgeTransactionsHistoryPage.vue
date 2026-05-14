@@ -3,7 +3,12 @@
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header :title="t('bridgeHistory.title')">
         <template #back>
-          <s-button type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack"></s-button>
+          <s-button
+            type="action"
+            icon="arrows-chevron-left-rounded-24"
+            :aria-label="t('backText')"
+            @click="handleBack"
+          ></s-button>
         </template>
 
         <div class="history-header-buttons">
@@ -13,6 +18,7 @@
             icon="arrows-swap-90-24"
             :disabled="networkHistoryLoading"
             :tooltip="t('bridgeHistory.restoreHistory')"
+            :aria-label="t('bridgeHistory.restoreHistory')"
             @click="refreshExternalHistory(true)"
           ></s-button>
 

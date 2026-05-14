@@ -28,7 +28,7 @@ describe('staking nominators count query', () => {
     expect(indexerMocks.fetchEntities).toHaveBeenCalledWith(expect.any(Object));
   });
 
-  
+
   it('returns undefined when the active indexer returns no count response', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);

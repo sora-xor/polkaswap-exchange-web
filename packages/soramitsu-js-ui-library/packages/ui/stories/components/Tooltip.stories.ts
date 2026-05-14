@@ -42,7 +42,7 @@ const meta = {
           </template>
         </SUseNotification>
       </SNotificationsProvider>
-      
+
       <div class="p-32 flex justify-center">
         <STooltip
             v-bind="$attrs"
@@ -53,7 +53,7 @@ const meta = {
           <SButton type="primary">Hover me?</SButton>
         </STooltip>
       </div>
-  
+
     `,
   }),
   args: {

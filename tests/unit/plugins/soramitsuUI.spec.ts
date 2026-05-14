@@ -33,6 +33,10 @@ describe('soramitsuUI plugin', () => {
     expect(contextDirectives.button).toEqual(expect.any(Object));
     expect(contextComponents.SCard).toEqual(expect.any(Object));
     expect(contextComponents['s-card']).toEqual(expect.any(Object));
+    expect(contextComponents.SDivider).toEqual(expect.any(Object));
+    expect(contextComponents['s-divider']).toEqual(expect.any(Object));
+    expect(contextComponents.SSlider).toEqual(expect.any(Object));
+    expect(contextComponents['s-slider']).toEqual(expect.any(Object));
     expect(contextComponents.SIcon).toEqual(expect.any(Object));
     expect(contextComponents['s-icon']).toEqual(expect.any(Object));
     expect(contextComponents.SMenu).toEqual({ name: 'LegacySMenu' });

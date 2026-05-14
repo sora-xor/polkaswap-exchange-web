@@ -17,6 +17,7 @@
               type="action"
               icon="time-time-history-24"
               :tooltip="t('bridgeHistory.showHistory')"
+              :aria-label="t('bridgeHistory.showHistory')"
               tooltip-placement="bottom-end"
               @click="handleViewTransactionsHistory"
             >
@@ -74,6 +75,7 @@
           type="action"
           icon="arrows-swap-90-24"
           :disabled="isConfirmTxLoading"
+          :aria-label="t('exchange.Swap')"
           @click="switchDirection"
         ></s-button>
 
@@ -195,7 +197,7 @@
       @select="selectAsset"
     ></bridge-select-asset>
     <bridge-select-sub-account></bridge-select-sub-account>
-    <app-browser-m-s-t-warning-bridge v-model:visible="showMSTWarning"></app-browser-m-s-t-warning-bridge>
+    <app-browser-mst-bridge-warning v-model:visible="showMSTWarning"></app-browser-mst-bridge-warning>
     <select-node-dialog
       v-if="subConnection"
       :connection="subConnection"
@@ -270,6 +272,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/ty
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
 import type { Nullable } from '@/types/common';
+import AppBrowserMstBridgeWarning from '@/components/App/BrowserNotification/MstBridgeWarning.vue';
 import BridgeAccountPanel from '@/components/pages/Bridge/AccountPanel.vue';
 import BridgeLimitCard from '@/components/pages/Bridge/LimitCard.vue';
 import BridgeNetworkSelector from '@/components/pages/Bridge/NetworkSelector.vue';

@@ -6,6 +6,7 @@
       size="small"
       alternative
       :tooltip="t('backText')"
+      :aria-label="t('backText')"
       @click="handleBack"
     >
       <s-icon name="arrows-chevron-left-rounded-24" size="24"></s-icon>

@@ -32,7 +32,7 @@ const meta = {
         <template #control>
           <SSelectButton />
         </template>
-    
+
         <template #dropdown>
           <CustomDropdown />
         </template>

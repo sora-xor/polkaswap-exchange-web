@@ -21,7 +21,7 @@ const meta = {
           :disabled="$attrs.disabled && x === 'Soramitsu'"
         >
           {{ x }}
-  
+
           <template #description>
             Would you pick the correct one?
           </template>

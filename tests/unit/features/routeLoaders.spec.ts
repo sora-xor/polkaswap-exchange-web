@@ -50,6 +50,7 @@ vi.mock('@/features/pool/pages/AddLiquidityPage.vue', () => ({ default: { name: 
 vi.mock('@/features/referrals/pages/ReferralBondingPage.vue', () => ({ default: { name: 'ReferralBondingPage' } }));
 
 vi.mock('@/features/rewards/pages/RewardsTabsPage.vue', () => ({ default: { name: 'RewardsTabsPage' } }));
+vi.mock('@/features/rewards/pages/PointSystemWrapperPage.vue', () => ({ default: { name: 'PointSystemWrapperPage' } }));
 vi.mock('@/features/rewards/pages/PointSystemV2Page.vue', () => ({ default: { name: 'PointSystemV2Page' } }));
 vi.mock('@/features/rewards/pages/RewardsPage.vue', () => ({ default: { name: 'RewardsPage' } }));
 vi.mock('@/features/rewards/pages/ReferralProgramPage.vue', () => ({ default: { name: 'ReferralProgramPage' } }));
@@ -228,7 +229,7 @@ describe('feature route loaders', () => {
       default: { name: 'RewardsTabsPage' },
     });
     await expect(resolveComponent(pointsRoute)).resolves.toMatchObject({
-      default: { name: 'PointSystemV2Page' },
+      default: { name: 'PointSystemWrapperPage' },
     });
     await expect(resolveComponent(rewardsRoute)).resolves.toMatchObject({
       default: { name: 'RewardsPage' },

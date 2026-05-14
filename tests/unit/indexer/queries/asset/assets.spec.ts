@@ -65,8 +65,8 @@ describe('asset token stats query', () => {
     expect(result['asset-a']?.velocity.toString()).toBe('1.25');
   });
 
-  
-  
+
+
   it('returns an empty map when retry resolves with no token data', async () => {
     retryMocks.retryOnEmptyResult.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);

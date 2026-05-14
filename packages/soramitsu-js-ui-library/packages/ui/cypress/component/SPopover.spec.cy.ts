@@ -228,7 +228,7 @@ describe('Popper API', () => {
           <template #trigger>
             <button>trigger</button>
           </template>
-  
+
           <template #popper="{ show, popper }">
             <span v-if="show">
               Instance: {{ checkInstance(popper) }}
@@ -278,7 +278,7 @@ describe('SPopoverWrappedTransition', () => {
             <template #trigger>
               <button>trigger</button>
             </template>
-  
+
             <template #popper>
               <SPopoverWrappedTransition
                 :eager="eager"

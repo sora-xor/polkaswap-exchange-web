@@ -82,6 +82,15 @@ describe('QrCodeScanButton', () => {
     expect(qrCodeScanButtonSource).not.toContain('.qr-code-button.el-button');
   });
 
+  it('passes camera devices through the current select options contract', () => {
+    expect(qrCodeScanButtonSource).toContain(':options="mediaDeviceOptions"');
+    expect(qrCodeScanButtonSource).not.toContain('<s-option');
+  });
+
+  it('names the icon-only scan/upload action', () => {
+    expect(qrCodeScanButtonSource).toContain(':aria-label="t(\'code.upload\')"');
+  });
+
   it('opens the QR source menu from a single scanner icon click', async () => {
     const wrapper = mount(QrCodeScanButton, {
       attachTo: document.body,

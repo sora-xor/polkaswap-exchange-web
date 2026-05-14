@@ -1,5 +1,4 @@
 export const LOCAL_POLKASWAP_INDEXER_ENDPOINT = 'http://localhost:4350/graphql';
-const HOSTED_POLKASWAP_INDEXER_ENDPOINTS = new Set(['https://pi.soramitsu.io/graphql']);
 
 const getBrowserHostname = (): string => {
   if (typeof window === 'undefined') return '';
@@ -26,18 +25,15 @@ export function isLocalDevelopmentHost(hostname = getBrowserHostname()): boolean
 /**
  * Resolves the Polkaswap indexer endpoint used by the static UI.
  *
- * Local previews should talk to the sibling `polkaswap-indexer` service when
- * env.json points at the hosted Polkaswap endpoint, because localhost browsers
- * cannot rely on hosted indexer CORS. Production/IPFS hosts and custom local
- * endpoints keep the endpoint supplied by env.json.
+ * Configured endpoints are authoritative for both production/IPFS and local
+ * previews. Local development only falls back to the sibling
+ * `polkaswap-indexer` service when env.json does not provide an endpoint.
  */
 export function resolvePolkaswapIndexerEndpoint(configuredEndpoint: unknown, hostname = getBrowserHostname()): string {
   const endpoint = typeof configuredEndpoint === 'string' ? configuredEndpoint.trim() : '';
 
-  if (!isLocalDevelopmentHost(hostname)) return endpoint;
-  if (!endpoint || HOSTED_POLKASWAP_INDEXER_ENDPOINTS.has(endpoint.toLowerCase())) {
-    return LOCAL_POLKASWAP_INDEXER_ENDPOINT;
-  }
+  if (endpoint) return endpoint;
+  if (isLocalDevelopmentHost(hostname)) return LOCAL_POLKASWAP_INDEXER_ENDPOINT;
 
   return endpoint;
 }

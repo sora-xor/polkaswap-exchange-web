@@ -70,8 +70,8 @@ describe('asset price query', () => {
     });
   });
 
-  
-  
+
+
   it('returns null when the active indexer returns no snapshot connection data', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = {

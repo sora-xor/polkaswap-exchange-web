@@ -41,7 +41,7 @@
 
         <label class="sccp-field">
           <span>{{ t('sccp.amountLabel') }}</span>
-          <input v-model.trim="amount" type="number" min="0" step="0.000001" placeholder="0.0" />
+          <input v-model.trim="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.0" />
         </label>
 
         <label class="sccp-field">
@@ -72,7 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { FPNumber } from '@sora-substrate/sdk';
+import { computed, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -132,6 +133,7 @@ const asset = ref('SORA');
 const amount = ref('');
 const memo = ref('');
 const copyState = ref<'idle' | 'copied' | 'error'>('idle');
+const payloadText = ref('');
 
 const selectedSource = computed(() => networkByKey[sourceNetwork.value]);
 const selectedDestination = computed(() => networkByKey[destinationNetwork.value]);
@@ -139,8 +141,11 @@ const isDestinationAddressValid = computed(() =>
   selectedDestination.value.addressPattern.test(destinationAddress.value || '')
 );
 const amountValue = computed(() => {
-  const normalized = Number.parseFloat(amount.value);
-  return Number.isFinite(normalized) && normalized > 0 ? normalized : null;
+  const normalizedAmount = String(amount.value ?? '').trim();
+  if (!/^\d+(\.\d+)?$/.test(normalizedAmount)) return null;
+
+  const normalized = new FPNumber(normalizedAmount);
+  return FPNumber.gt(normalized, FPNumber.ZERO) ? normalized : null;
 });
 const canBuildPayload = computed(
   () =>
@@ -153,34 +158,6 @@ const canBuildPayload = computed(
 const networkSummary = computed(() => networks.map((item) => item.symbol).join(', '));
 const addressHint = computed(() => selectedDestination.value?.note || '');
 const invalidAddressMessage = computed(() => `Expected ${selectedDestination.value?.name} address format.`);
-const payloadText = computed(() =>
-  canBuildPayload.value
-    ? JSON.stringify(
-        {
-          protocol: 'SCCP',
-          version: '1.0',
-          source: {
-            chain: selectedSource.value.key,
-            chainId: selectedSource.value.chainId,
-            explorer: selectedSource.value.explorer,
-          },
-          destination: {
-            chain: selectedDestination.value.key,
-            chainId: selectedDestination.value.chainId,
-            explorer: selectedDestination.value.explorer,
-            recipient: destinationAddress.value,
-          },
-          asset: asset.value.toUpperCase(),
-          amount: amountValue.value,
-          memo: memo.value || undefined,
-          generatedAt: new Date().toISOString(),
-        },
-        null,
-        2
-      )
-    : ''
-);
-
 const copyButtonText = computed(() => {
   if (copyState.value === 'copied') {
     return t('sccp.payloadCopied');
@@ -207,6 +184,29 @@ const copyPayload = async () => {
 const generatePayload = () => {
   if (!canBuildPayload.value) return;
   copyState.value = 'idle';
+  payloadText.value = JSON.stringify(
+    {
+      protocol: 'SCCP',
+      version: '1.0',
+      source: {
+        chain: selectedSource.value.key,
+        chainId: selectedSource.value.chainId,
+        explorer: selectedSource.value.explorer,
+      },
+      destination: {
+        chain: selectedDestination.value.key,
+        chainId: selectedDestination.value.chainId,
+        explorer: selectedDestination.value.explorer,
+        recipient: destinationAddress.value,
+      },
+      asset: asset.value.toUpperCase(),
+      amount: amountValue.value?.toString(),
+      memo: memo.value || undefined,
+      generatedAt: new Date().toISOString(),
+    },
+    null,
+    2
+  );
 };
 
 const clearForm = () => {
@@ -217,7 +217,13 @@ const clearForm = () => {
   amount.value = '';
   memo.value = '';
   copyState.value = 'idle';
+  payloadText.value = '';
 };
+
+watch([sourceNetwork, destinationNetwork, destinationAddress, asset, amount, memo], () => {
+  payloadText.value = '';
+  copyState.value = 'idle';
+});
 </script>
 
 <style lang="scss" scoped>

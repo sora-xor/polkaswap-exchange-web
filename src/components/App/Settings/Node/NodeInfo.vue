@@ -8,7 +8,12 @@
   >
     <generic-page-header class="node-info-title" has-button-back :title="title" @back.stop="handleBackClick">
       <template v-if="existing && removable">
-        <s-button type="action" icon="basic-trash-24" @click="removeNodeHandler"></s-button>
+        <s-button
+          type="action"
+          icon="basic-trash-24"
+          :aria-label="t('addressBook.options.delete')"
+          @click="removeNodeHandler"
+        ></s-button>
       </template>
     </generic-page-header>
     <s-form-item prop="name">

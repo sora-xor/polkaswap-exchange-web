@@ -27,14 +27,14 @@ const meta = {
           </template>
           Option {{ String(i) }}
         </SNavigationMenuItem>
-  
+
         <SNavigationSubmenu>
           <template #title>Submenu</template>
           <SNavigationMenuItem v-for="i in 5" :value="String(i) + 0">
             Option {{ String(i) + 0 }}
           </SNavigationMenuItem>
         </SNavigationSubmenu>
-  
+
         <SNavigationMenuItem value="01">
           <template #icon="iconProps">
             <IconStatusInfo v-bind="iconProps" />

@@ -90,8 +90,8 @@ describe('order books query', () => {
     );
   });
 
-  
-  
+
+
   });
 
 const createIndexer = (type: unknown) => ({

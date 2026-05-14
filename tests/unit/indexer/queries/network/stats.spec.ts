@@ -61,7 +61,7 @@ describe('network stats query', () => {
     expect(result[0]?.bridgeOutgoingTransactions.toString()).toBe('4');
   });
 
-  
+
   it('returns an empty array when the active indexer returns null data', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = {

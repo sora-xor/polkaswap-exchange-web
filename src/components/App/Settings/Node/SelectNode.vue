@@ -35,6 +35,7 @@
               type="action"
               alternative
               icon="arrows-chevron-right-rounded-24"
+              :aria-label="t('assets.details')"
               @click.stop="viewNode?.(node)"
             ></s-button>
           </div>

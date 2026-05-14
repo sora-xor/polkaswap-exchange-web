@@ -41,6 +41,7 @@
         type="action"
         icon="plus-16"
         @click="handleCreateAlert"
+        :aria-label="t('alerts.createBtn')"
         :disabled="loading"
       ></s-button>
       <span class="create">{{ t('alerts.createBtn') }}</span>

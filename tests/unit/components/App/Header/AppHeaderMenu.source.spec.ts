@@ -5,6 +5,8 @@ import appHeaderMenuSource from '@/components/App/Header/AppHeaderMenu.vue?raw';
 describe('AppHeaderMenu source', () => {
   it('keeps the settings close button geometry aligned with the live site', () => {
     expect(appHeaderMenuSource).toContain('class="header-menu__settings-close s-pressed"');
+    expect(appHeaderMenuSource).toContain(':aria-label="t(\'headerMenu.settings\')"');
+    expect(appHeaderMenuSource).toContain(':aria-label="t(\'closeText\')"');
     expect(appHeaderMenuSource).toMatch(
       /&__settings-close\.el-button\.s-action\s*\{\s*display:\s*block;\s*width:\s*42px;\s*min-width:\s*auto;\s*height:\s*42px;\s*min-height:\s*42px;\s*padding:\s*0;\s*color:\s*var\(--s-color-base-content-tertiary\) !important;\s*font-weight:\s*500;\s*line-height:\s*14px;\s*\}/s
     );

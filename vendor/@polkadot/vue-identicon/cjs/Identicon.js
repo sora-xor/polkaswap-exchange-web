@@ -74,8 +74,7 @@ exports.Identicon = (0, vue_1.defineComponent)({
             key: address,
             size: iconSize,
           }),
-        },
-        []
+        }
       );
     } else if (type === 'jdenticon') {
       return (0, vue_1.h)(
@@ -86,8 +85,7 @@ exports.Identicon = (0, vue_1.defineComponent)({
             publicKey,
             size: iconSize,
           }),
-        },
-        []
+        }
       );
     } else if (type === 'substrate') {
       throw new Error('substrate type is not supported');
@@ -104,8 +102,7 @@ exports.Identicon = (0, vue_1.defineComponent)({
             key: address,
             size: iconSize,
           }),
-        },
-        []
+        }
       );
     } else {
       return (0, vue_1.h)(cmp, {}, []);

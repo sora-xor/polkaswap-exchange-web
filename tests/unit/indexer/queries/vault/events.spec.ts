@@ -60,7 +60,7 @@ describe('vault events query', () => {
     expect(result.items[1]?.amount).toBeNull();
   });
 
-  
+
   it('returns an empty response when the indexer returns no vault event data', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
@@ -71,7 +71,7 @@ describe('vault events query', () => {
     });
   });
 
-  
+
   });
 
 const createIndexer = (type: unknown) => ({

@@ -1,8 +1,10 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
+const notifyMock = vi.hoisted(() => vi.fn());
+
 vi.mock('@/services/notification', () => ({
   default: {
-    notify: vi.fn(),
+    notify: notifyMock,
   },
 }));
 
@@ -23,6 +25,7 @@ describe('CurrencyExchangeRateService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.resetModules();
+    notifyMock.mockClear();
     settingsStorageGetMock.mockReturnValue(null);
   });
 
@@ -102,6 +105,11 @@ describe('CurrencyExchangeRateService', () => {
 
     expect(updateFiatExchangeRates).toHaveBeenCalled();
     expect(setFiatCurrency).toHaveBeenCalled();
+    expect(notifyMock).toHaveBeenCalledWith({
+      message: 'Switched to DAI fiat pricing.',
+      severity: 'warning',
+      timeout: 3000,
+    });
   });
 
   it('does not throw if settings store is unavailable', async () => {
@@ -111,5 +119,14 @@ describe('CurrencyExchangeRateService', () => {
     const { CurrencyExchangeRateService } = await import('@/services/currency');
 
     expect(() => CurrencyExchangeRateService.resetData('error')).not.toThrow();
+  });
+
+  it('dedupes repeated fiat fallback notifications', async () => {
+    const { CurrencyExchangeRateService } = await import('@/services/currency');
+
+    CurrencyExchangeRateService.resetData('first');
+    CurrencyExchangeRateService.resetData('second');
+
+    expect(notifyMock).toHaveBeenCalledTimes(1);
   });
 });

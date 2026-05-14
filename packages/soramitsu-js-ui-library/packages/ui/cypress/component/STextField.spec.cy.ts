@@ -261,7 +261,7 @@ describe('Append slot', () => {
       },
       template: `
         <input type="checkbox" v-model="showSlot">
-    
+
         <STextField>
           <template #append v-if="showSlot">
             He

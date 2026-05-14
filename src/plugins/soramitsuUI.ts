@@ -3,6 +3,8 @@ import loadingDirective from '@/directives/loading';
 import SCard from '@/lib/soramitsu-ui/components/Card/SCard.vue';
 import SDesignSystemProvider from '@/lib/soramitsu-ui/components/DesignSystemProvider/SDesignSystemProvider.vue';
 import SScrollbar from '@/lib/soramitsu-ui/components/Scrollbar/SScrollbar.vue';
+import SDivider from '@/components/shared/compat/SDivider.vue';
+import SSlider from '@/components/shared/compat/SSlider.vue';
 import { createAsyncComponent } from '@/shared/ui/async';
 
 import type { App, Component, Directive } from 'vue';
@@ -104,6 +106,10 @@ export function install(app: App): void {
   registerCompat(app, 's-design-system-provider', SDesignSystemProvider);
   registerCompat(app, 'SScrollbar', SScrollbar);
   registerCompat(app, 's-scrollbar', SScrollbar);
+  registerCompat(app, 'SDivider', SDivider);
+  registerCompat(app, 's-divider', SDivider);
+  registerCompat(app, 'SSlider', SSlider);
+  registerCompat(app, 's-slider', SSlider);
   registerDirective(app, 'loading', loadingDirective);
   registerDirective(app, 'button', buttonDirective);
   registerAsyncCompat(app, 'STabs', () => import('@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue'));

@@ -1,7 +1,7 @@
 # Soraneo Wallet Inline Plan
 
-**Last updated:** 2026-04-21  
-**Owner:** Frontend migration pod  
+**Last updated:** 2026-04-21
+**Owner:** Frontend migration pod
 **Source reference:** `src/lib/soraneo-wallet/**`
 
 ## 1. Current State Snapshot
@@ -45,7 +45,7 @@ Legacy wallet-package aliases were removed during the final cutover. Current imp
 
 ## 4. Vendored Library Maintenance
 
-**Owners:** Frontend migration pod (primary), Wallet squad (review)  
+**Owners:** Frontend migration pod (primary), Wallet squad (review)
 **Cadence:** Weekly (aligned with Thursday RC drops) or as-needed for hotfixes
 
 1. **Track upstream changes.** Monitor the private `wallet-web` repository for tagged releases or hotfix branches. New RC announcements land in `#wallet-migration` together with changelog links and checksum artifacts.

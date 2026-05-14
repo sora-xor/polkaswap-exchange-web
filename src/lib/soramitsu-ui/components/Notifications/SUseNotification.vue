@@ -17,7 +17,6 @@ const props = withDefaults(
     description?: string;
   }>(),
   {
-    status: 'info' as Status,
     timeout: 5000,
   }
 );

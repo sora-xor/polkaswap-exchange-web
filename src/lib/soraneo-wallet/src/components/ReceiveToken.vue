@@ -1,7 +1,7 @@
 <template>
   <wallet-base :title="title" show-back @back="handleBack">
     <template #actions>
-      <s-button type="action" :tooltip="t('code.download')" @click="downloadCode">
+      <s-button type="action" :tooltip="t('code.download')" :aria-label="t('code.download')" @click="downloadCode">
         <s-icon name="basic-pulse-24" size="28"></s-icon>
       </s-button>
     </template>

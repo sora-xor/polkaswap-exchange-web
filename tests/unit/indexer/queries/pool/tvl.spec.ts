@@ -75,7 +75,7 @@ describe('pool tvl query', () => {
     await expect(fetchPoolTvlData('pool-id', 'DAY' as any)).resolves.toBeNull();
   });
 
-  
+
   });
 
 const createIndexer = (type: unknown) => ({

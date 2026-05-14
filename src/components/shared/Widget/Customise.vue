@@ -10,7 +10,14 @@
           :visible-arrow="false"
         >
           <template #reference>
-            <s-button id="customise-button" type="action" alternative size="small" icon="basic-settings-24"></s-button>
+            <s-button
+              id="customise-button"
+              type="action"
+              alternative
+              size="small"
+              icon="basic-settings-24"
+              :aria-label="t('customisePageText')"
+            ></s-button>
           </template>
 
           <div class="customise">

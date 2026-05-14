@@ -11,6 +11,7 @@ const INTERVAL = 15; // minutes between refreshes
 const ONE_MINUTE = 60_000;
 const exchangeRateUpdateInterval = timer(0, ONE_MINUTE * 0.25); // polling interval (15s)
 const TIMESTAMP_FIELD = 'timestamp';
+let hasShownFiatFallbackNotification = false;
 
 const getWalletSettingsStore = () => {
   try {
@@ -69,6 +70,7 @@ export class CurrencyExchangeRateService {
         throw new Error('Exchange rate API returned an invalid payload');
       }
 
+      hasShownFiatFallbackNotification = false;
       return { ...fetchedRates, timestamp: Date.now() };
     } catch (error) {
       if (hasCachedRates) {
@@ -109,11 +111,14 @@ export class CurrencyExchangeRateService {
 
   static resetData(error?: Error | string): void {
     console.warn('[Exchange rate API] not available. Now using default option.', error);
-    notificationService.notify({
-      message: 'Switched to DAI fiat pricing.',
-      severity: 'error',
-      timeout: 4500,
-    });
+    if (!hasShownFiatFallbackNotification) {
+      hasShownFiatFallbackNotification = true;
+      notificationService.notify({
+        message: 'Switched to DAI fiat pricing.',
+        severity: 'warning',
+        timeout: 3000,
+      });
+    }
     const walletSettings = getWalletSettingsStore();
     walletSettings?.updateFiatExchangeRates();
     walletSettings?.setFiatCurrency();

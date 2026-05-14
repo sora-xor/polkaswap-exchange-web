@@ -98,4 +98,11 @@ describe('RewardsTabs.vue', () => {
     expect(rewardsTabsSource).toContain('$rewards-tabs-height: 64px;');
     expect(rewardsTabsSource).toContain('height: $rewards-tabs-height;');
   });
+
+  it('keeps rewards tab labels from crowding at constrained widths', () => {
+    expect(rewardsTabsSource).toContain('box-sizing: border-box;');
+    expect(rewardsTabsSource).toContain('flex: 1 1 0;');
+    expect(rewardsTabsSource).toContain('width: calc(100% / 3);');
+    expect(rewardsTabsSource).toContain('font-size: 24px;');
+  });
 });

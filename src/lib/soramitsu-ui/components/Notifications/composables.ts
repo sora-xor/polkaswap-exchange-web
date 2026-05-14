@@ -12,7 +12,7 @@ export interface ShowNotificationParams {
   description?: MaybeRef<string | undefined | null>;
   descriptionSlot?: Slot | FunctionalComponent;
   /**
-   * @default 'info'
+   * Optional status treatment. Omitted statuses render as neutral toasts.
    */
   status?: MaybeRef<Status>;
   /**

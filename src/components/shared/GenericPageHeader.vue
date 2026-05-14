@@ -5,6 +5,7 @@
         v-if="hasButtonBack"
         type="action"
         icon="arrows-chevron-left-rounded-24"
+        :aria-label="t('backText')"
         @click="handleBack($event)"
       ></s-button>
     </slot>
@@ -31,6 +32,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
+import { useTranslation } from '@/composables/useTranslation';
+
 const props = withDefaults(
   defineProps<{
     hasButtonBack?: boolean;
@@ -51,6 +54,7 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: 'back', value?: Event): void;
 }>();
+const { t } = useTranslation();
 
 const headerClasses = computed(() => {
   const baseClass = 'page-header';

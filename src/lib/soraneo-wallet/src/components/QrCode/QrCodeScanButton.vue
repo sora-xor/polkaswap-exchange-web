@@ -7,6 +7,7 @@
         ...$attrs,
       }"
       :tooltip="t('code.upload')"
+      :aria-label="t('code.upload')"
       rounded
       class="qr-code-button"
       @click="handleButtonClick"
@@ -57,16 +58,13 @@
       <template #footer>
         <s-select
           v-if="multipleMediaDevices"
-          :value="selectedDeviceId"
-          :placeholder="t('code.camera')"
+          v-model="selectedDeviceId"
+          :label="t('code.camera')"
+          :options="mediaDeviceOptions"
           border-radius="mini"
           popper-class="device-select-popper"
           @update:model-value="handleChangeDevice"
-        >
-          <s-option v-for="(device, index) in mediaDevices" :key="index" :label="device.label" :value="device.deviceId">
-            {{ device.label }}
-          </s-option>
-        </s-select>
+        ></s-select>
       </template>
     </dialog-base>
 
@@ -122,6 +120,12 @@ const scanerDialog = computed({
 });
 
 const multipleMediaDevices = computed(() => mediaDevices.value.length > 1);
+const mediaDeviceOptions = computed(() =>
+  mediaDevices.value.map((device) => ({
+    label: device.label,
+    value: device.deviceId,
+  }))
+);
 
 function handleButtonClick(): void {
   dropdown.value?.$refs?.dropdown?.handleClick?.();

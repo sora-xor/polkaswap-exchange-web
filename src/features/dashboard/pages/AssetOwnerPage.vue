@@ -95,7 +95,13 @@
                 <h3 class="asset-title__name">{{ asset.name }}</h3>
                 <p class="p3 asset-title__symbol asset__label">{{ asset.symbol }}</p>
               </div>
-              <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
+              <s-button
+                type="action"
+                size="small"
+                alternative
+                :tooltip="t('assets.details')"
+                :aria-label="t('assets.details')"
+              >
                 <template #icon>
                   <s-icon name="arrows-chevron-right-rounded-24" size="24"></s-icon>
                 </template>

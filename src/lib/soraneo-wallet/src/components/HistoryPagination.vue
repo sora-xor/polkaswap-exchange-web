@@ -4,6 +4,7 @@
     <s-button
       type="link"
       :tooltip="t('firstText')"
+      :aria-label="t('firstText')"
       :disabled="disabledFirstPrev"
       @click="handlePaginationClick(PaginationButton.First)"
     >
@@ -12,6 +13,7 @@
     <s-button
       type="link"
       :tooltip="t('prevText')"
+      :aria-label="t('prevText')"
       :disabled="disabledFirstPrev"
       @click="handlePaginationClick(PaginationButton.Prev)"
     >
@@ -20,6 +22,7 @@
     <s-button
       type="link"
       :tooltip="t('nextText')"
+      :aria-label="t('nextText')"
       :disabled="disabledNextLast"
       @click="handlePaginationClick(PaginationButton.Next)"
     >
@@ -28,6 +31,7 @@
     <s-button
       type="link"
       :tooltip="t('lastText')"
+      :aria-label="t('lastText')"
       :disabled="disabledNextLast"
       @click="handlePaginationClick(PaginationButton.Last)"
     >

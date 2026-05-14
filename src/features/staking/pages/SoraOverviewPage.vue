@@ -10,7 +10,13 @@
         placement="bottom-start"
         @select="handleSelectDropdownMenuItem"
       >
-        <s-button type="action" class="s-pressed" icon="basic-more-vertical-24" :tooltip="t('headerMenu.settings')">
+        <s-button
+          type="action"
+          class="s-pressed"
+          icon="basic-more-vertical-24"
+          :tooltip="t('headerMenu.settings')"
+          :aria-label="t('headerMenu.settings')"
+        >
         </s-button>
         <template #menu>
           <s-dropdown-item

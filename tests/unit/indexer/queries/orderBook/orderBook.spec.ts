@@ -103,8 +103,8 @@ describe('order book update subscription query', () => {
     expect(indexerMocks.createEntitySubscription).not.toHaveBeenCalled();
   });
 
-  
-  
+
+
   });
 
 const createIndexer = (type: unknown) => ({

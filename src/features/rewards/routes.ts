@@ -11,7 +11,7 @@ export const rewardsRoutes: RouteRecordRaw[] = [
       {
         path: '/points',
         name: PageNames.PointSystemWrapper,
-        component: () => loadAsyncImportWithRetry(() => import('./pages/PointSystemV2Page.vue')),
+        component: () => loadAsyncImportWithRetry(() => import('./pages/PointSystemWrapperPage.vue')),
       },
       {
         path: '/rewards',

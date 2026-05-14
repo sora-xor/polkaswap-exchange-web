@@ -80,4 +80,10 @@ describe('BridgeNetworkSelector', () => {
 
     expect(commitSpy).toHaveBeenCalledWith(true);
   });
+
+  it('names the icon-only network selector action', () => {
+    const wrapper = factory();
+
+    expect(wrapper.find('button').attributes('aria-label')).toBe('bridge.selectNetwork');
+  });
 });

@@ -15,6 +15,7 @@
           type="action"
           alternative
           icon="arrows-swap-90-24"
+          :aria-label="t('exchange.Swap')"
           @click="revertChart"
         ></s-button>
       </slot>
@@ -34,6 +35,7 @@
         :icon="icon"
         :active="active"
         :disabled="chartIsLoading"
+        :aria-label="t('priceChartText')"
         size="small"
         @click="selectChartType(type)"
       ></svg-icon-button>

@@ -68,7 +68,7 @@ describe('account liquidity query', () => {
     await expect(fetchAccountLiquidityData('account-1', 'pool-1')).resolves.toBeNull();
   });
 
-  
+
   });
 
 const createIndexer = (type: unknown) => ({

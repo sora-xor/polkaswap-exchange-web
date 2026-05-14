@@ -1,19 +1,26 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/services/notification', () => ({
-  default: {
-    notify: vi.fn(),
-  },
+const {
+  getWalletPiniaStoreMock,
+  useWalletStoreMock,
+  resolveGlobalPiniaMock,
+  sharedPinia,
+  settingsStorageGetMock,
+  notifyMock,
+} = vi.hoisted(() => ({
+  getWalletPiniaStoreMock: vi.fn(),
+  useWalletStoreMock: vi.fn(),
+  resolveGlobalPiniaMock: vi.fn(),
+  sharedPinia: { id: 'shared-pinia' },
+  settingsStorageGetMock: vi.fn(),
+  notifyMock: vi.fn(),
 }));
 
-const { getWalletPiniaStoreMock, useWalletStoreMock, resolveGlobalPiniaMock, sharedPinia, settingsStorageGetMock } =
-  vi.hoisted(() => ({
-    getWalletPiniaStoreMock: vi.fn(),
-    useWalletStoreMock: vi.fn(),
-    resolveGlobalPiniaMock: vi.fn(),
-    sharedPinia: { id: 'shared-pinia' },
-    settingsStorageGetMock: vi.fn(),
-  }));
+vi.mock('@/services/notification', () => ({
+  default: {
+    notify: notifyMock,
+  },
+}));
 
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: useWalletStoreMock,
@@ -33,6 +40,7 @@ describe('wallet lib CurrencyExchangeRateService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.resetModules();
+    notifyMock.mockClear();
     resolveGlobalPiniaMock.mockReturnValue(sharedPinia);
     useWalletStoreMock.mockImplementation(() => getWalletPiniaStoreMock());
     settingsStorageGetMock.mockReturnValue(null);
@@ -82,5 +90,24 @@ describe('wallet lib CurrencyExchangeRateService', () => {
 
     expect(updateFiatExchangeRates).toHaveBeenCalled();
     expect(setFiatCurrency).toHaveBeenCalled();
+    expect(notifyMock).toHaveBeenCalledWith({
+      message: 'Switched to DAI fiat pricing.',
+      severity: 'warning',
+      timeout: 3000,
+    });
+  });
+
+  it('dedupes repeated fiat fallback notifications', async () => {
+    getWalletPiniaStoreMock.mockReturnValue({
+      updateFiatExchangeRates: vi.fn(),
+      setFiatCurrency: vi.fn(),
+    });
+
+    const { CurrencyExchangeRateService } = await import('@/lib/soraneo-wallet/src/services/currency');
+
+    CurrencyExchangeRateService.resetData('first');
+    CurrencyExchangeRateService.resetData('second');
+
+    expect(notifyMock).toHaveBeenCalledTimes(1);
   });
 });

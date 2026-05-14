@@ -402,7 +402,7 @@ const quoteSingle = (
         return smartSplit(baseAssetId, syntheticBaseAssetId, inputAsset, outputAsset, amount, isDesiredInput, payload, deduceFee);
       }
     }
-  
+
     throw new Error('[liquidityProxy] Unsupported operation');
   } else {
     return newSmartSplit(

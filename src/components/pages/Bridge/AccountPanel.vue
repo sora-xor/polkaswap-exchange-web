@@ -130,6 +130,7 @@ function handleDisconnect(): void {
   display: flex;
   align-items: center;
   gap: $inner-spacing-mini;
+  min-width: 0;
 
   &-logo {
     width: 18px;
@@ -146,9 +147,31 @@ function handleDisconnect(): void {
 
   &-btn {
     @include copy-address;
+    white-space: nowrap;
 
     &.disconnect {
       color: var(--s-color-status-error);
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .account-panel {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $inner-spacing-mini;
+  }
+
+  .account-panel-divider {
+    margin-bottom: 0;
+  }
+
+  .account-group {
+    flex-wrap: wrap;
+    row-gap: $basic-spacing-extra-mini;
+
+    &-name {
+      max-width: min(160px, 42vw);
     }
   }
 }

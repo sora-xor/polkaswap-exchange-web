@@ -84,7 +84,7 @@ describe('pool price query', () => {
     await expect(fetchPoolPriceData('pool-id', 'DAY' as any)).resolves.toBeNull();
   });
 
-  
+
   });
 
 const createIndexer = (type: unknown) => ({

@@ -13,6 +13,7 @@
         type="link"
         class="s-button--clear"
         icon="clear-X-16"
+        :aria-label="t('resetText')"
         @click="handleClearSearch"
       ></s-button>
     </template>
@@ -21,6 +22,8 @@
 
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
+
+import { useTranslation } from '@/composables/useTranslation';
 
 import { useInputFocus } from '../../composables/useInputFocus';
 
@@ -46,6 +49,7 @@ const emit = defineEmits<{
 
 const attrs = useAttrs();
 const { input } = useInputFocus(() => props.autofocus);
+const { t } = useTranslation();
 
 const query = computed({
   get: (): string => props.modelValue,

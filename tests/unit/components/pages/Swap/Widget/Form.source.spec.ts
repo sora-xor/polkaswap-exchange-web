@@ -31,4 +31,9 @@ describe('SwapForm source', () => {
       "const SelectToken = createAsyncComponent(() => import('@/components/shared/SelectAsset/SelectToken.vue'))"
     );
   });
+
+  it('names icon-only action buttons for assistive technology', () => {
+    expect(formSource).toContain(':aria-label="t(\'headerMenu.settings\')"');
+    expect(formSource).toContain(':aria-label="t(\'exchange.Swap\')"');
+  });
 });

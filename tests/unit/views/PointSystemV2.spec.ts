@@ -1,5 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { FPNumber } from '@sora-substrate/sdk';
+import { BalanceType, VXOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -17,6 +18,7 @@ const settingsStoreMock = {
 const walletStoreMock = {
   account: { address: '5mock' },
   accountAssets: [] as Array<any>,
+  fiatPriceObject: {} as Record<string, string>,
 };
 
 const referralsStoreMock = {
@@ -122,6 +124,11 @@ vi.mock('@/indexer/queries/pointSystem', () => ({
 
 const PointSystemV2 = (await import('@/features/rewards/pages/PointSystemV2Page.vue')).default;
 
+type PointSystemV2Vm = InstanceType<typeof PointSystemV2> & {
+  pointsForCards: Record<string, { points: number }>;
+  formattedTotalPoints: string;
+};
+
 const buildWrapper = () =>
   mount(PointSystemV2, {
     global: {
@@ -165,6 +172,7 @@ describe('PointSystemV2.vue', () => {
     referralsStoreMock.referralRewards = null;
     poolStoreMock.accountLiquidity = [];
     walletStoreMock.accountAssets = [];
+    walletStoreMock.fiatPriceObject = {};
     walletStoreMock.account = { address: '5mock' };
     assetsStoreMock.assetDataByAddress.mockClear();
   });
@@ -217,5 +225,45 @@ describe('PointSystemV2.vue', () => {
     expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock');
     expect(wrapper.vm.pointsForCards).not.toBeNull();
     expect(wrapper.vm.totalPoints).toBeGreaterThanOrEqual(0);
+  });
+
+  it('keeps point progress in numeric fiat values instead of parsing formatted strings', async () => {
+    loginState.value = true;
+    walletStoreMock.fiatPriceObject = {
+      [VXOR.address]: FPNumber.fromNatural('1', 18).toCodecString(),
+    };
+    walletStoreMock.accountAssets = [
+      {
+        address: VXOR.address,
+        symbol: VXOR.symbol,
+        decimals: 18,
+        balance: {
+          [BalanceType.Transferable]: FPNumber.fromNatural('2000', 18).toCodecString(),
+        },
+      },
+    ];
+    fetchAccountMetaMock.mockResolvedValue({
+      createdAt: { timestamp: 1, block: 1 },
+      points: [],
+    });
+
+    const wrapper = buildWrapper();
+
+    await flushPromises();
+
+    expect(wrapper.vm.pointsForCards?.VXORHoldings.currentProgress).toBe(2000);
+  });
+
+  it('formats large total point values for the dashboard header', async () => {
+    const wrapper = buildWrapper();
+    const vm = wrapper.vm as unknown as PointSystemV2Vm;
+
+    vm.pointsForCards = {
+      bridge: { points: 35000 },
+      fees: { points: 450 },
+    };
+    await wrapper.vm.$nextTick();
+
+    expect(vm.formattedTotalPoints).toBe('35,450');
   });
 });

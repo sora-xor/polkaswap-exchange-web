@@ -40,7 +40,7 @@ describe('pool apy query', () => {
     expect(indexerMocks.fetchAllEntities).toHaveBeenCalledWith(expect.any(Object), {}, expect.any(Function));
   });
 
-  
+
   it('returns null when no APY entities are available', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);

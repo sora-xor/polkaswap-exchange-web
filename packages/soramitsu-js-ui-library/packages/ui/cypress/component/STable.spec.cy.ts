@@ -546,7 +546,7 @@ describe('Table', () => {
           >
             <STableColumn />
           </STable>
-          
+
         <button data-testid="toggle-handler" @click="eventHandlerExistence = false">Toggle</button>`,
       })
     })
