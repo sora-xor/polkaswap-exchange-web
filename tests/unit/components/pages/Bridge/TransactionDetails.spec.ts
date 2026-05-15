@@ -47,11 +47,11 @@ vi.mock('@/components/shared/TransactionDetails.vue', () => ({
   },
 }));
 
-let TransactionDetails: typeof import('@/components/pages/Bridge/TransactionDetails.vue').default;
+let TransactionDetails: typeof import('@/features/bridge/components/TransactionDetails.vue').default;
 
 describe('BridgeTransactionDetails', () => {
   beforeEach(async () => {
-    ({ default: TransactionDetails } = await import('@/components/pages/Bridge/TransactionDetails.vue'));
+    ({ default: TransactionDetails } = await import('@/features/bridge/components/TransactionDetails.vue'));
   });
 
   it('formats labels and exposes asset metadata', () => {

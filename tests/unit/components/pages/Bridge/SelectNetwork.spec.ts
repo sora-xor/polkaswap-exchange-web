@@ -94,7 +94,7 @@ vi.mock('@/lib/soramitsu-ui/components/Scrollbar/SScrollbar.vue', () => ({
   },
 }));
 
-let SelectNetwork: typeof import('@/components/pages/Bridge/SelectNetwork.vue').default;
+let SelectNetwork: typeof import('@/features/bridge/components/SelectNetwork.vue').default;
 
 const factory = () => mount(SelectNetwork);
 
@@ -107,7 +107,7 @@ describe('BridgeSelectNetwork', () => {
     web3StorePiniaMock.setSelectNetworkDialogVisibility = setDialogVisibilitySpy;
     web3StorePiniaMock.selectExternalNetwork = selectExternalNetworkSpy;
 
-    ({ default: SelectNetwork } = await import('@/components/pages/Bridge/SelectNetwork.vue'));
+    ({ default: SelectNetwork } = await import('@/features/bridge/components/SelectNetwork.vue'));
   });
 
   it('exposes available networks sorted by availability', () => {

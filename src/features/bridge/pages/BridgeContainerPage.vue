@@ -30,7 +30,7 @@ import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';
 import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import WalletComponentConfirmDialog from '@/lib/soraneo-wallet/src/components/ConfirmDialog.vue';
-import BridgeSelectNetwork from '@/components/pages/Bridge/SelectNetwork.vue';
+import BridgeSelectNetwork from '@/features/bridge/components/SelectNetwork.vue';
 import SelectProviderDialog from '@/components/shared/Dialog/SelectProvider.vue';
 
 defineOptions({

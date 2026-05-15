@@ -542,6 +542,30 @@ describe('useAssetsStore actions', () => {
     expect(store.registeredAssetsFetching).toBe(false);
   });
 
+  it('keeps unresolved EVM asset metadata without querying decimals for an empty address', async () => {
+    const store = useAssetsStore();
+    web3StoreMock.networkType = BridgeNetworkType.Eth;
+    store.setRegisteredAssets({
+      '0x01': {
+        address: '',
+        decimals: 0,
+        kind: 'evm',
+      },
+    });
+    web3StoreMock.getEvmTokenAddressByAssetId.mockResolvedValue('');
+
+    await store.updateRegisteredAssets();
+
+    expect(web3StoreMock.getEvmTokenAddressByAssetId).toHaveBeenCalledWith('0x01');
+    expect(getTokenDecimalsMock).not.toHaveBeenCalled();
+    expect(store.registeredAssets['0x01']).toMatchObject({
+      address: '',
+      decimals: 0,
+      kind: 'evm',
+    });
+    expect(store.registeredAssetsFetching).toBe(false);
+  });
+
   it('populates parachain asset IDs for Sub networks', async () => {
     const store = useAssetsStore();
     web3StoreMock.networkType = BridgeNetworkType.Sub;

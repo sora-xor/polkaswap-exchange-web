@@ -20,6 +20,16 @@ describe('AppMenu source', () => {
     expect(appMenuSource).not.toContain('left: calc(100% - var(--s-size-small));');
   });
 
+  it('keeps the sidebar collapse button hidden until the sidebar is hovered', () => {
+    expect(appMenuSource).toMatch(
+      /\.collapse-button\s*\{[\s\S]*opacity:\s*0;[\s\S]*pointer-events:\s*none;[\s\S]*transition-property:\s*opacity, background-color, border-color, box-shadow, color;/s
+    );
+    expect(appMenuSource).toMatch(/&:focus-visible\s*\{[\s\S]*opacity:\s*1;[\s\S]*pointer-events:\s*all;/s);
+    expect(appMenuSource).toMatch(
+      /@include tablet\s*\{[\s\S]*&:hover\s*\{[\s\S]*\.collapse-button\s*\{[\s\S]*opacity:\s*1;[\s\S]*pointer-events:\s*all;/s
+    );
+  });
+
   it('uses the app-owned loading state instead of the legacy router store mirror', () => {
     expect(appMenuSource).toContain("from '@/app/navigation/loading'");
     expect(appMenuSource).not.toContain("from '@/stores/router'");

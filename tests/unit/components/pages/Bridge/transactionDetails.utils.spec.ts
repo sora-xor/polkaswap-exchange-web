@@ -5,7 +5,7 @@ import {
   isNonZeroCodecString,
   resolveAssetSymbol,
   resolveNativeTokenSymbol,
-} from '@/components/pages/Bridge/transactionDetails.utils';
+} from '@/features/bridge/components/transactionDetails.utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 

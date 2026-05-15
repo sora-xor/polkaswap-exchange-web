@@ -1,12 +1,43 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent } from 'vue';
-import { describe, expect, it } from 'vitest';
+import { defineComponent, h } from 'vue';
+import { describe, expect, it, vi } from 'vitest';
 
 import { SInput } from '@/lib/soramitsu-ui/components/Input';
 import SearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 import searchInputSource from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue?raw';
 
 describe('Wallet SearchInput', () => {
+  it('exposes focus for dialogs that restore cursor focus after opening', () => {
+    const focus = vi.fn();
+    const wrapper = mount(SearchInput, {
+      props: {
+        modelValue: '',
+      },
+      global: {
+        components: {
+          SInput: defineComponent({
+            name: 'SInputStub',
+            inheritAttrs: false,
+            setup(_, { expose }) {
+              expose({ focus });
+              return () => h('input', { class: 'el-input__inner' });
+            },
+          }),
+        },
+        stubs: {
+          SButton: {
+            name: 'SButton',
+            template: '<button type="button"><slot /></button>',
+          },
+        },
+      },
+    });
+
+    (wrapper.vm as unknown as { focus: () => void }).focus();
+
+    expect(focus).toHaveBeenCalledTimes(1);
+  });
+
   it('keeps the native search field editable even when readonly leaks through attrs', () => {
     const wrapper = mount(SearchInput, {
       props: {

@@ -823,6 +823,65 @@ describe('useBridgeStore', () => {
     expect(store.history.id).toBe('tx-updated');
   });
 
+  it('keeps the active bridge transaction available when execution advances to chain identifiers', () => {
+    const tx = {
+      id: 'tx-local',
+      type: Operation.EvmOutgoing,
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+      hash: '0xsora-hash',
+      txId: '0xsora-tx',
+      externalHash: '0xexternal-hash',
+    } as any;
+
+    store.history.internal = {
+      'tx-local': tx,
+    };
+
+    store.setHistoryId('0xsora-hash');
+
+    expect(store.activeTransaction).toMatchObject(tx);
+    expect(store.getHistoryTransaction('tx-local')).toMatchObject(tx);
+    expect(store.getHistoryTransaction('0xsora-tx')).toMatchObject(tx);
+    expect(store.getHistoryTransaction('0xexternal-hash')).toMatchObject(tx);
+  });
+
+  it('preserves the selected bridge transaction when a history refresh temporarily omits it', async () => {
+    const tx = {
+      id: 'tx-local',
+      type: Operation.EthBridgeOutgoing,
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+      hash: '0xsora-hash',
+      transactionState: 'Pending',
+    } as any;
+
+    store.history.internal = {
+      'tx-local': tx,
+    };
+    store.setHistoryId('0xsora-hash');
+    ethBridgeApiMock.history = {};
+
+    await store.updateInternalHistory();
+
+    expect(store.activeTransaction).toMatchObject(tx);
+    expect(store.history.internal['tx-local']).toMatchObject(tx);
+  });
+
+  it('drops stale bridge transactions on refresh when none are selected or in progress', async () => {
+    store.history.internal = {
+      'tx-stale': {
+        id: 'tx-stale',
+        type: Operation.EthBridgeOutgoing,
+        externalNetwork: EvmNetworkId.EthereumSepolia,
+      } as any,
+    };
+    store.setHistoryId();
+    ethBridgeApiMock.history = {};
+
+    await store.updateInternalHistory();
+
+    expect(store.history.internal).toEqual({});
+  });
+
   it('updates notification, in-progress state, and sign dialog visibility on the canonical bridge store', () => {
     const tx = { id: 'tx-note' } as any;
 
@@ -849,6 +908,7 @@ describe('useBridgeStore', () => {
         externalNetwork: 'other-network',
       },
     };
+    store.setHistoryId();
 
     await store.updateBridgeHistory();
 

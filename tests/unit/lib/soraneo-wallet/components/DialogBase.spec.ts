@@ -25,6 +25,7 @@ const serializeClass = (value: unknown): string => {
 
 const SModalStub = defineComponent({
   name: 'SModal',
+  emits: ['after-open'],
   props: {
     show: {
       type: Boolean,
@@ -162,5 +163,29 @@ describe('DialogBase', () => {
     });
 
     expect(wrapper.get('.s-modal-stub').attributes('data-teleport-to')).toBe('inline');
+  });
+
+  it('forwards the modal after-open event for dialog focus restoration', async () => {
+    const wrapper = mount(DialogBase, {
+      props: {
+        visible: true,
+      },
+      global: {
+        stubs: {
+          SModal: SModalStub,
+          SButton: {
+            template: '<button type="button"><slot /></button>',
+          },
+          SIcon: true,
+          STooltip: {
+            template: '<span><slot /></span>',
+          },
+        },
+      },
+    });
+
+    wrapper.getComponent(SModalStub).vm.$emit('after-open');
+
+    expect(wrapper.emitted('after-open')).toHaveLength(1);
   });
 });

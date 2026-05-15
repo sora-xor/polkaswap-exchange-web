@@ -6,7 +6,7 @@ import {
   isNodeConnecting,
   resolveNodeIcon,
   resolveNodeStatus,
-} from '@/components/pages/Bridge/nodeIcon.utils';
+} from '@/features/bridge/components/nodeIcon.utils';
 
 describe('nodeIcon.utils', () => {
   const connected = { nodeIsConnected: true, nodeAddressConnecting: null } as const;

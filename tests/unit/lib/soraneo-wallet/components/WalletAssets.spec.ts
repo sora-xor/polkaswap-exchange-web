@@ -4,6 +4,9 @@ import { ref } from 'vue';
 
 const walletStoreMock = vi.hoisted(() => ({
   accountAssets: [] as Array<Record<string, unknown>>,
+  accountAssetsLoading: false,
+  accountAssetsLoaded: true,
+  isLoggedIn: true,
   fiatPriceObject: {} as Record<string, string>,
   permissions: { addAssets: true },
   filters: { option: 'All', verifiedOnly: false, zeroBalance: false },
@@ -53,6 +56,9 @@ import WalletAssets from '@/lib/soraneo-wallet/src/components/WalletAssets.vue';
 describe('Wallet WalletAssets', () => {
   beforeEach(() => {
     walletStoreMock.accountAssets = [];
+    walletStoreMock.accountAssetsLoading = false;
+    walletStoreMock.accountAssetsLoaded = true;
+    walletStoreMock.isLoggedIn = true;
     walletStoreMock.fiatPriceObject = {};
     walletStoreMock.permissions = { addAssets: true };
     walletStoreMock.filters = { option: 'All', verifiedOnly: false, zeroBalance: false };
@@ -79,6 +85,36 @@ describe('Wallet WalletAssets', () => {
 
     expect(state.assetsFiatAmount.value).toBe(null);
     expect(state.permissions.value.addAssets).toBe(true);
+  });
+
+  it('shows the wallet asset loading state while account assets hydrate', () => {
+    walletStoreMock.accountAssetsLoading = true;
+
+    const state = (WalletAssets as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    expect(state.assetsLoading.value).toBe(true);
+    expect(state.assetsAreHidden.value).toBe(true);
+    expect(state.showEmptyAssets.value).toBe(false);
+  });
+
+  it('suppresses the empty state until the first account asset hydration settles', () => {
+    walletStoreMock.accountAssetsLoaded = false;
+
+    const state = (WalletAssets as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    expect(state.assetsLoading.value).toBe(true);
+    expect(state.assetsAreHidden.value).toBe(true);
+    expect(state.showEmptyAssets.value).toBe(false);
+  });
+
+  it('shows the empty state after account asset hydration settles with no visible assets', () => {
+    walletStoreMock.accountAssetsLoaded = true;
+
+    const state = (WalletAssets as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    expect(state.assetsLoading.value).toBe(false);
+    expect(state.assetsAreHidden.value).toBe(true);
+    expect(state.showEmptyAssets.value).toBe(true);
   });
 
   it('keeps pinned and unpinned assets in separate draggable groups', () => {

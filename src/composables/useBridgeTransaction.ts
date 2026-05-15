@@ -3,6 +3,7 @@ import { computed, type ComputedRef } from 'vue';
 
 import { soraExplorerLinks } from '@/utils';
 import { useNetworkFormatter } from '@/composables/useNetworkFormatter';
+import { EvmLinkType } from '@/consts/evm';
 
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
@@ -18,8 +19,7 @@ type NetworkTextOptions = {
  */
 export function useBridgeTransaction(tx: ComputedRef<Nullable<IBridgeTransaction>>) {
   const formatter = useNetworkFormatter();
-  const { soraNetwork, getNetworkExplorerLinks, getNetworkName, isOutgoingTx, TranslationConsts, EvmLinkType } =
-    formatter;
+  const { soraNetwork, getNetworkExplorerLinks, getNetworkName, isOutgoingTx, TranslationConsts } = formatter;
 
   const isOutgoing = computed(() => isOutgoingTx(tx.value));
 
@@ -63,26 +63,24 @@ export function useBridgeTransaction(tx: ComputedRef<Nullable<IBridgeTransaction
   const externalExplorerLinks = computed(() => {
     if (!(externalNetworkType.value && externalNetworkId.value)) return [];
 
-    return getNetworkExplorerLinks(
-      externalNetworkType.value,
-      externalNetworkId.value,
-      txExternalHash.value,
-      txExternalBlockNumber.value ?? txExternalBlockId.value,
-      txExternalEventIndex.value
-    );
+    return getNetworkExplorerLinks({
+      networkType: externalNetworkType.value,
+      networkId: externalNetworkId.value,
+      value: txExternalHash.value,
+      blockId: txExternalBlockNumber.value ?? txExternalBlockId.value,
+      eventIndex: txExternalEventIndex.value,
+    });
   });
 
   const externalAccountLinks = computed(() => {
     if (!(externalNetworkType.value && externalNetworkId.value)) return [];
 
-    return getNetworkExplorerLinks(
-      externalNetworkType.value,
-      externalNetworkId.value,
-      txExternalAccount.value,
-      undefined,
-      undefined,
-      EvmLinkType.Account
-    );
+    return getNetworkExplorerLinks({
+      networkType: externalNetworkType.value,
+      networkId: externalNetworkId.value,
+      value: txExternalAccount.value,
+      type: EvmLinkType.Account,
+    });
   });
 
   const getNetworkText = (

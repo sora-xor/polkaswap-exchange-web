@@ -122,6 +122,8 @@ const walletRuntimeBridge = vi.hoisted(() => {
         assets: [],
         assetsSubscription: null,
         accountAssets: [],
+        accountAssetsLoading: false,
+        accountAssetsLoaded: false,
         alertSubject: null,
         accountAssetsSubscription: null,
         book: {},
@@ -1205,6 +1207,44 @@ describe('wallet store actions', () => {
     expect(waitForAccountPairMock).toHaveBeenCalledTimes(1);
     expect(updateAccountAssetsMock).toHaveBeenCalledTimes(1);
     expect(walletStore.accountAssets).toEqual(assets);
+    expect(walletStore.accountAssetsLoaded).toBe(true);
+  });
+
+  it('tracks account asset hydration loading while balances are updating', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+    let resolveUpdateAccountAssets!: () => void;
+
+    updateAccountAssetsMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveUpdateAccountAssets = resolve;
+        })
+    );
+
+    const loginPromise = walletStore.loginAccount(account);
+
+    await vi.waitFor(() => {
+      expect(walletStore.accountAssetsLoading).toBe(true);
+      expect(walletStore.accountAssetsLoaded).toBe(false);
+    });
+
+    resolveUpdateAccountAssets();
+    await loginPromise;
+
+    expect(walletStore.accountAssetsLoading).toBe(false);
+    expect(walletStore.accountAssetsLoaded).toBe(true);
+  });
+
+  it('marks account asset hydration settled after an empty asset update', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+
+    await walletStore.loginAccount(account);
+
+    expect(walletStore.accountAssets).toEqual([]);
+    expect(walletStore.accountAssetsLoading).toBe(false);
+    expect(walletStore.accountAssetsLoaded).toBe(true);
   });
 
   it('forwards wallet settings actions', async () => {

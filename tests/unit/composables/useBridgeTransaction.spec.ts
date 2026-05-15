@@ -33,10 +33,6 @@ vi.mock('@/composables/useNetworkFormatter', () => ({
       Sora: 'Sora',
       Max: '≈',
     },
-    EvmLinkType: {
-      Transaction: 'tx',
-      Account: 'account',
-    },
   }),
 }));
 
@@ -108,23 +104,21 @@ describe('useBridgeTransaction', () => {
     );
 
     expect(bridgeTx.externalExplorerLinks.value).toEqual(['network-link']);
-    expect(getNetworkExplorerLinksMock).toHaveBeenCalledWith(
-      baseTx.externalNetworkType,
-      baseTx.externalNetwork,
-      baseTx.externalHash,
-      baseTx.externalBlockHeight,
-      baseTx.externalEventIndex
-    );
+    expect(getNetworkExplorerLinksMock).toHaveBeenCalledWith({
+      networkType: baseTx.externalNetworkType,
+      networkId: baseTx.externalNetwork,
+      value: baseTx.externalHash,
+      blockId: baseTx.externalBlockHeight,
+      eventIndex: baseTx.externalEventIndex,
+    });
 
     expect(bridgeTx.externalAccountLinks.value).toEqual(['network-link']);
-    expect(getNetworkExplorerLinksMock).toHaveBeenLastCalledWith(
-      baseTx.externalNetworkType,
-      baseTx.externalNetwork,
-      baseTx.to,
-      undefined,
-      undefined,
-      bridgeTx.EvmLinkType.Account
-    );
+    expect(getNetworkExplorerLinksMock).toHaveBeenLastCalledWith({
+      networkType: baseTx.externalNetworkType,
+      networkId: baseTx.externalNetwork,
+      value: baseTx.to,
+      type: bridgeTx.EvmLinkType.Account,
+    });
   });
 
   it('builds network text with approximate prefix when requested', () => {

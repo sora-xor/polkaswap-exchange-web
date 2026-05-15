@@ -510,11 +510,77 @@ const resolveBridgeApi = (): BridgeApiLike => {
   }
 };
 
+type HistoryTransactionEntry = {
+  key: string;
+  transaction: IBridgeTransaction;
+};
+
+/**
+ * Resolves bridge transactions by their storage key or chain-level aliases.
+ * During execution the active id can advance from a generated local id to
+ * a SORA hash before the history cache is re-keyed by the bridge indexer.
+ */
+const findHistoryTransactionEntry = (
+  history: Record<string, IBridgeTransaction>,
+  id?: Nullable<string>
+): Nullable<HistoryTransactionEntry> => {
+  if (!id) return null;
+
+  const keyedTransaction = history[id];
+  if (keyedTransaction) {
+    return { key: id, transaction: keyedTransaction };
+  }
+
+  const entry = Object.entries(history).find(([, item]) => {
+    return item?.id === id || item?.hash === id || item?.txId === id || item?.externalHash === id;
+  });
+
+  if (!entry) return null;
+
+  const [key, transaction] = entry;
+  return { key, transaction };
+};
+
+const findHistoryTransaction = (
+  history: Record<string, IBridgeTransaction>,
+  id?: Nullable<string>
+): Nullable<IBridgeTransaction> => findHistoryTransactionEntry(history, id)?.transaction ?? null;
+
+const preservePinnedHistoryTransactions = (
+  store: BridgeStateStoreLike,
+  history: Record<string, IBridgeTransaction>
+): Record<string, IBridgeTransaction> => {
+  const previousHistory = store.history.internal ?? {};
+  const pinnedIds = new Set<string>([
+    store.history.id,
+    ...Object.keys(store.history.inProgressIds),
+    ...Object.keys(store.history.waitingForApprove),
+  ].filter(Boolean));
+
+  if (!pinnedIds.size) return history;
+
+  const nextHistory = { ...history };
+
+  pinnedIds.forEach((id) => {
+    if (findHistoryTransaction(nextHistory, id)) return;
+
+    const previousEntry = findHistoryTransactionEntry(previousHistory, id);
+    if (!previousEntry) return;
+
+    nextHistory[previousEntry.key] = previousEntry.transaction;
+  });
+
+  return nextHistory;
+};
+
 const syncInternalHistoryCompat = (
   store: BridgeStateStoreLike,
   history: Record<string, IBridgeTransaction> = {}
 ): Record<string, IBridgeTransaction> => {
-  const nextHistory = Object.freeze({ ...history }) as Record<string, IBridgeTransaction>;
+  const nextHistory = Object.freeze(preservePinnedHistoryTransactions(store, history)) as Record<
+    string,
+    IBridgeTransaction
+  >;
 
   store.history.internal = nextHistory;
 
@@ -1009,9 +1075,7 @@ const useBridgeStoreBase = defineStore('bridge', {
       }, {});
     },
     activeTransaction(state): Nullable<IBridgeTransaction> {
-      if (!state.history.id) return null;
-
-      return this.historyRecord[state.history.id] ?? null;
+      return findHistoryTransaction(state.history.internal, state.history.id);
     },
     subBridgeConnector(state): SubNetworksConnector {
       return state.connector;
@@ -1121,6 +1185,9 @@ const useBridgeStoreBase = defineStore('bridge', {
       if (!id) return;
 
       syncInProgressCompat(this, id, false);
+    },
+    getHistoryTransaction(id?: Nullable<string>): Nullable<IBridgeTransaction> {
+      return findHistoryTransaction(this.history.internal, id);
     },
     setBlockUpdatesSubscription(subscription: Nullable<Subscription>): void {
       syncBlockUpdatesSubscriptionCompat(this, subscription ?? null);

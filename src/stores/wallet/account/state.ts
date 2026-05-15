@@ -27,6 +27,8 @@ export function initialState(): AccountState {
     book: (book || {}) as Book,
     alertSubject: null,
     accountAssets: [],
+    accountAssetsLoading: false,
+    accountAssetsLoaded: false,
     pinnedAssets: pinnedAssets || [],
     accountAssetsSubscription: null,
     whitelistArray: [],

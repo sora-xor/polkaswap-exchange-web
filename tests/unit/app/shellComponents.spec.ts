@@ -45,7 +45,7 @@ vi.mock('@/components/App/Settings/Node/SelectNodeDialog.vue', () => ({
   default: { name: 'SelectNodeDialogComponent' },
 }));
 vi.mock('@/components/App/Footer/Indexer/SelectIndexer.vue', () => ({ default: { name: 'SelectIndexerComponent' } }));
-vi.mock('@/components/pages/Bridge/TransferNotification.vue', () => ({
+vi.mock('@/features/bridge/components/TransferNotification.vue', () => ({
   default: { name: 'BridgeTransferNotificationComponent' },
 }));
 vi.mock('@/lib/soraneo-wallet/src/components/ConfirmDialog.vue', () => ({

@@ -4,6 +4,7 @@ import { SButton } from '@soramitsu-ui/ui/components/Button';
 import type { BasePlacement } from '@popperjs/core';
 import SPopoverPanel from '@/lib/soramitsu-ui/components/Popover/SPopoverPanel';
 import type { OverlayTarget } from '@/lib/soramitsu-ui/composables/overlayTarget';
+import { resolveDynamicComponentTag } from '@/lib/soramitsu-ui/util';
 
 defineOptions({ inheritAttrs: false });
 
@@ -48,6 +49,7 @@ const emit = defineEmits(['click:primary-button', 'click:secondary-button']);
 
 const popperClassNames = computed(() => ['s-tooltip-popper', props.popperClass].filter(Boolean).join(' '));
 const resolvedTeleportTo = computed(() => (props.appendToBody ? props.teleportTo : null));
+const resolvedWrapperTag = computed(() => resolveDynamicComponentTag(props.wrapperTag, 'div'));
 
 function handlePrimaryButtonClick() {
   emit('click:primary-button');
@@ -70,7 +72,7 @@ function handleSecondaryButtonClick() {
     :close-delay="closeDelay"
   >
     <template #reference>
-      <component :is="wrapperTag" v-bind="$attrs" data-testid="tooltip-trigger">
+      <component :is="resolvedWrapperTag" v-bind="$attrs" data-testid="tooltip-trigger">
         <slot />
       </component>
     </template>

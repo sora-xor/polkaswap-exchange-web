@@ -1,6 +1,8 @@
 import type { App, InjectionKey, Ref, Component, FunctionalComponent } from 'vue';
 import { getCurrentInstance, inject } from 'vue';
 
+const SAFE_DYNAMIC_TAG_RE = /^[A-Za-z][A-Za-z0-9._:-]*$/;
+
 export function forceInject<T>(key: string | InjectionKey<T>): T {
   const sentinel = Symbol('forceInject sentinel');
   const something = inject(key, sentinel as unknown);
@@ -61,4 +63,39 @@ export function nextIncrementalCounter(): number {
 
 export function uniqueElementId(): string {
   return `soraui-uid-${nextIncrementalCounter()}`;
+}
+
+/**
+ * Returns true when a dynamic component string is safe to pass to Vue's renderer
+ * as a native/custom element tag name.
+ */
+export function isSafeDynamicTagName(value: string): boolean {
+  return SAFE_DYNAMIC_TAG_RE.test(value.trim());
+}
+
+/**
+ * Normalizes runtime-provided dynamic component values before they reach
+ * `<component :is="...">`, preventing DOM InvalidCharacterError crashes.
+ */
+export function resolveDynamicComponentTag<T extends string | object | Function | null | undefined>(
+  value: T,
+  fallback: string
+): Exclude<T, null | undefined> | string {
+  if (typeof value === 'string') {
+    return isSafeDynamicTagName(value) ? value : fallback;
+  }
+
+  if (typeof value === 'function' || (value && typeof value === 'object')) {
+    return value as Exclude<T, null | undefined>;
+  }
+
+  return fallback;
+}
+
+/**
+ * Checks whether a value can be rendered by `<component :is="...">`.
+ */
+export function isRenderableDynamicComponent(value: unknown): boolean {
+  if (typeof value === 'string') return isSafeDynamicTagName(value);
+  return typeof value === 'function' || Boolean(value && typeof value === 'object');
 }

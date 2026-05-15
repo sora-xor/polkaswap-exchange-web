@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { resolveDynamicComponentTag } from '@/lib/soramitsu-ui/util';
+
 const props = withDefaults(
   defineProps<{
     /**
@@ -39,11 +42,13 @@ const props = withDefaults(
     minified: false,
   }
 );
+
+const resolvedTag = computed(() => resolveDynamicComponentTag(props.tag, 'div'));
 </script>
 
 <template>
   <component
-    :is="tag"
+    :is="resolvedTag"
     class="s-navigation-menu-item-body flex items-center cursor-pointer pl-24px pr-16px"
     :class="{
       's-navigation-menu-item-body_submenu-item': submenuItem,

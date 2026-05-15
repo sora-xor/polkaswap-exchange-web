@@ -40,7 +40,7 @@ export const SelectNodeDialog = createAsyncComponent(
 );
 export const SelectIndexer = createAsyncComponent(() => import('@/components/App/Footer/Indexer/SelectIndexer.vue'));
 export const BridgeTransferNotification = createAsyncComponent(
-  () => import('@/components/pages/Bridge/TransferNotification.vue')
+  () => import('@/features/bridge/components/TransferNotification.vue')
 );
 export const ConfirmDialog = createAsyncComponent(() => import('@/lib/soraneo-wallet/src/components/ConfirmDialog.vue'));
 export const NotificationEnablingPage = createAsyncComponent(

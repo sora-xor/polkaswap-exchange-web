@@ -8,6 +8,7 @@
     :lock-scroll="true"
     :close-on-overlay-click="closeOnOverlayClick"
     :close-on-esc="closeOnEsc"
+    @after-open="emit('after-open')"
   >
     <div :class="cardClasses" :style="cardStyle">
       <header class="dialog-card__header el-dialog__header">
@@ -101,6 +102,7 @@ const { t } = useTranslation();
 const emit = defineEmits<{
   (event: 'close'): void;
   (event: 'back'): void;
+  (event: 'after-open'): void;
 }>();
 const visibleModel = defineModel<boolean>('visible', { default: false });
 const { isVisible, closeDialog } = useDialogVisibility(visibleModel, {

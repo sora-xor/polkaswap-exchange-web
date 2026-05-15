@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { usePropTypeFilter } from '@soramitsu-ui/ui/composables/prop-type-filter';
+import { resolveDynamicComponentTag } from '@/lib/soramitsu-ui/util';
 import { IconBasicExternalLink24 } from '../icons';
 import { LINK_ICON_POSITION_VALUES, LINK_UNDERLINE_TYPE_VALUES } from './consts';
 import type { LinkIconPosition, LinkUnderlineType } from './types';
@@ -23,11 +25,12 @@ const propFilter = usePropTypeFilter(props);
 
 const definitelyUnderlineType = propFilter('underline', LINK_UNDERLINE_TYPE_VALUES, 'solid');
 const definitelyIconPosition = propFilter('iconPosition', LINK_ICON_POSITION_VALUES, 'right');
+const resolvedTag = computed(() => resolveDynamicComponentTag(props.tag, 'a'));
 </script>
 
 <template>
   <component
-    :is="tag"
+    :is="resolvedTag"
     :class="[
       's-link',
       `s-link_type_${definitelyUnderlineType}`,

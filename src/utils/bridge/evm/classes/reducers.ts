@@ -58,13 +58,13 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            let currentId = id;
+            const currentId = id;
             this.beforeSubmit(currentId);
             this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(currentId);
             await this.waitForTransactionBlockId(currentId);
 
-            currentId = await this.checkTxSoraHash(currentId);
+            await this.checkTxSoraHash(currentId);
             await this.subscribeOnTxBySoraHash(currentId);
             await this.onComplete(currentId);
           },

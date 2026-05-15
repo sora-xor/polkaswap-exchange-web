@@ -5,10 +5,9 @@ import { appRouterLoading } from '@/app/navigation/loading';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { TranslationConsts } from '@/consts/app';
-import { Breakpoint, BreakpointClass } from '@/consts/layout';
+import { BreakpointClass } from '@/consts/layout';
 import { Language } from '@/consts/language';
 import { PageNames } from '@/consts/navigation';
-import { LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts/storage';
 import { Theme } from '@/consts/theme';
 import { WalletPermissions } from '@/consts/wallet';
 import { getLocale } from '@/lang';
@@ -19,8 +18,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWeb3Store } from '@/stores/web3';
 import { useWalletStore } from '@/stores/wallet';
 import { bootstrapRuntimeServices } from '@/utils/bootstrapRuntimeServices';
-import { toDwebLink } from '@/utils/ipfs';
-import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
+import { clearLocalStorage } from '@/utils/storage';
 import { resolvePolkaswapIndexerEndpoint } from '@/utils/indexerEndpoint';
 import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { shouldLoadTelegramMiniApp } from '@/utils/telegramLaunch';
@@ -35,6 +33,9 @@ import { resolveMenuVisibilityOnRouteChange } from './policies/resolveMenuVisibi
 import { resolveParentLoadingByConnection } from './policies/resolveParentLoadingByConnection';
 import { resolveProductPopupKey } from './policies/resolveProductPopupKey';
 import { resolveWalletOverlayVisibility } from './policies/resolveWalletOverlayVisibility';
+import { createAppShellBrowserEffects } from './useAppShellBrowserEffects';
+import { createDataPlaneTelemetry } from './useDataPlaneTelemetry';
+import { createIpfsImageNormalizer } from './useIpfsImageNormalizer';
 
 import type { FeatureFlags } from '@/stores/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from '@/stores/web3/types';
@@ -299,20 +300,12 @@ export function useAppShell() {
     showSoraMobilePopup,
   };
 
-  let ipfsObserver: MutationObserver | undefined;
-  let teardownDataPlaneMetricsTelemetry: Nullable<FnWithoutArgs> = null;
-  let teardownDataPlaneStatusTelemetry: Nullable<FnWithoutArgs> = null;
-  let lastDataPlaneMetricsKey = '';
-  let lastDataPlanePressureKey = '';
   let nodeConnectionGateTimer: Nullable<ReturnType<typeof setTimeout>> = null;
-  let lastDataPlanePressureTs = 0;
   let realtimeVisibilitySyncEnabled = false;
   let realtimeVisibilityListenerBound = false;
   let transactionComposable: TransactionComposable | null = null;
-  const dataPlaneStatusByConnection = new Map<string, string>();
-  const DATAPLANE_PRESSURE_PENDING_RPC_THRESHOLD = 40;
-  const DATAPLANE_PRESSURE_OPEN_CONNECTIONS_THRESHOLD = 8;
-  const DATAPLANE_PRESSURE_MIN_INTERVAL_MS = 60_000;
+  const ipfsImageNormalizer = createIpfsImageNormalizer();
+  const dataPlaneTelemetry = createDataPlaneTelemetry({ buildVariant, trackEvent });
 
   async function getTransactionComposable(): Promise<TransactionComposable> {
     if (transactionComposable) return transactionComposable;
@@ -380,139 +373,11 @@ export function useAppShell() {
     }
   }
 
-  function normalizeImage(el: HTMLImageElement): void {
-    try {
-      const current = el.getAttribute('src') || '';
-      const normalized = toDwebLink(current);
-      if (normalized && normalized !== current) {
-        el.setAttribute('src', normalized);
-      }
-    } catch {
-      // noop
-    }
-  }
-
-  function scanAndNormalizeImages(root: ParentNode | Document = document): void {
-    try {
-      const images = root.querySelectorAll ? root.querySelectorAll('img[src]') : [];
-      images.forEach((img) => normalizeImage(img as HTMLImageElement));
-    } catch {
-      // noop
-    }
-  }
-
-  function startIpfsObserver(): void {
-    try {
-      scanAndNormalizeImages();
-      ipfsObserver = new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-          if (
-            mutation.type === 'attributes' &&
-            mutation.target instanceof HTMLImageElement &&
-            mutation.attributeName === 'src'
-          ) {
-            normalizeImage(mutation.target);
-          } else if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach((node) => {
-              if (node instanceof HTMLImageElement) {
-                normalizeImage(node);
-              } else if ((node as ParentNode).querySelectorAll) {
-                scanAndNormalizeImages(node as ParentNode);
-              }
-            });
-          }
-        }
-      });
-      ipfsObserver.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['src'],
-        childList: true,
-        subtree: true,
-      });
-    } catch {
-      // noop
-    }
-  }
-
-  function stopIpfsObserver(): void {
-    try {
-      ipfsObserver?.disconnect();
-      ipfsObserver = undefined;
-    } catch {
-      // noop
-    }
-  }
-
-  function handleLocalStorageChange(): void {
-    const usagePercentage = calculateStorageUsagePercentage();
-    if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
-      showErrorLocalStorageExceed.value = true;
-    }
-  }
-
-  function subscribeOnLocalStorage(): void {
-    window.addEventListener('localStorageUpdated', handleLocalStorageChange);
-  }
-
-  function unsubscribeFromLocalStorage(): void {
-    window.removeEventListener('localStorageUpdated', handleLocalStorageChange);
-  }
-
-  function setResponsiveClass(): void {
-    closeMenu();
-    settingsStore.setScreenBreakpointClass(window.innerWidth);
-  }
-
-  function subscribeOnScreenSize(): void {
-    window.addEventListener('resize', setResponsiveClass);
-  }
-
-  function unsubscribeFromScreenSize(): void {
-    window.removeEventListener('resize', setResponsiveClass);
-  }
-
-  function handleOrientationChange(): void {
-    const isLandscape = screen.orientation
-      ? screen.orientation.type.startsWith('landscape')
-      : window.innerHeight < window.innerWidth;
-    if (isLandscape) {
-      settingsStore.showOrientationWarning();
-    } else {
-      settingsStore.hideOrientationWarning();
-    }
-  }
-
-  function subscribeOnScreenOrientation(): void {
-    if (window.innerWidth <= Breakpoint.LargeMobile) {
-      if (screen.orientation) {
-        screen.orientation.addEventListener('change', handleOrientationChange);
-      } else {
-        window.addEventListener('resize', handleOrientationChange);
-      }
-    }
-  }
-
-  function unsubscribeFromScreenOrientation(): void {
-    if (screen.orientation) {
-      screen.orientation.removeEventListener('change', handleOrientationChange);
-    } else {
-      window.removeEventListener('resize', handleOrientationChange);
-    }
-  }
-
-  function handleGlobalKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Escape') {
-      closeMenu();
-    }
-  }
-
-  function subscribeOnKeyboard(): void {
-    window.addEventListener('keydown', handleGlobalKeydown);
-  }
-
-  function unsubscribeFromKeyboard(): void {
-    window.removeEventListener('keydown', handleGlobalKeydown);
-  }
+  const browserEffects = createAppShellBrowserEffects({
+    settingsStore,
+    showErrorLocalStorageExceed,
+    closeMenu,
+  });
 
   function syncRealtimeVisibility(): void {
     if (typeof document === 'undefined') return;
@@ -534,67 +399,6 @@ export function useAppShell() {
     if (!realtimeVisibilityListenerBound) return;
     document.removeEventListener('visibilitychange', syncRealtimeVisibility);
     realtimeVisibilityListenerBound = false;
-  }
-
-  function subscribeToDataPlaneTelemetry(client: DataPlaneClient): void {
-    if (teardownDataPlaneMetricsTelemetry || teardownDataPlaneStatusTelemetry) {
-      return;
-    }
-
-    teardownDataPlaneMetricsTelemetry = client.onMetrics(({ metrics }) => {
-      const dedupeKey = `${metrics.openConnections}:${metrics.activeSubscriptions}:${metrics.pendingRpcRequests}:${metrics.connectedClients}:${metrics.visible}:${metrics.profile}`;
-      if (dedupeKey === lastDataPlaneMetricsKey) return;
-
-      lastDataPlaneMetricsKey = dedupeKey;
-      trackEvent('realtime_dataplane_metrics', {
-        ...metrics,
-        buildVariant,
-      });
-
-      const isPressure =
-        metrics.pendingRpcRequests >= DATAPLANE_PRESSURE_PENDING_RPC_THRESHOLD ||
-        metrics.openConnections >= DATAPLANE_PRESSURE_OPEN_CONNECTIONS_THRESHOLD;
-
-      if (!isPressure) return;
-
-      const pressureKey = `${metrics.openConnections}:${metrics.pendingRpcRequests}:${metrics.profile}`;
-      const now = Date.now();
-      const canEmitByTime = now - lastDataPlanePressureTs >= DATAPLANE_PRESSURE_MIN_INTERVAL_MS;
-      if (pressureKey === lastDataPlanePressureKey && !canEmitByTime) return;
-
-      lastDataPlanePressureKey = pressureKey;
-      lastDataPlanePressureTs = now;
-      trackEvent('realtime_dataplane_pressure', {
-        ...metrics,
-        buildVariant,
-        pendingRpcThreshold: DATAPLANE_PRESSURE_PENDING_RPC_THRESHOLD,
-        openConnectionsThreshold: DATAPLANE_PRESSURE_OPEN_CONNECTIONS_THRESHOLD,
-      });
-    });
-
-    teardownDataPlaneStatusTelemetry = client.onStatus(({ connectionId, status, details }) => {
-      const previous = dataPlaneStatusByConnection.get(connectionId);
-      if (previous === status) return;
-
-      dataPlaneStatusByConnection.set(connectionId, status);
-      trackEvent('realtime_dataplane_status', {
-        connectionId,
-        status,
-        ...(details ? { details } : {}),
-        buildVariant,
-      });
-    });
-  }
-
-  function unsubscribeFromDataPlaneTelemetry(): void {
-    teardownDataPlaneMetricsTelemetry?.();
-    teardownDataPlaneStatusTelemetry?.();
-    teardownDataPlaneMetricsTelemetry = null;
-    teardownDataPlaneStatusTelemetry = null;
-    lastDataPlaneMetricsKey = '';
-    lastDataPlanePressureKey = '';
-    lastDataPlanePressureTs = 0;
-    dataPlaneStatusByConnection.clear();
   }
 
   function startNodeConnectionGate(): void {
@@ -717,14 +521,14 @@ export function useAppShell() {
     isTearingDown.value = true;
 
     releaseNodeConnectionGate();
-    stopIpfsObserver();
-    unsubscribeFromLocalStorage();
-    unsubscribeFromScreenSize();
-    unsubscribeFromScreenOrientation();
-    unsubscribeFromKeyboard();
+    ipfsImageNormalizer.stop();
+    browserEffects.unsubscribeFromLocalStorage();
+    browserEffects.unsubscribeFromScreenSize();
+    browserEffects.unsubscribeFromScreenOrientation();
+    browserEffects.unsubscribeFromKeyboard();
     realtimeVisibilitySyncEnabled = false;
     unsubscribeFromRealtimeVisibility();
-    unsubscribeFromDataPlaneTelemetry();
+    dataPlaneTelemetry.unsubscribe();
     stopSystemThemePreference(isTMA.value);
     destroyTelegramMiniApp();
     await walletStore.resetInternalSubscriptions();
@@ -920,7 +724,7 @@ export function useAppShell() {
   );
 
   onBeforeMount(async () => {
-    setResponsiveClass();
+    browserEffects.setResponsiveClass();
     await settingsStore.setLanguage(getLocale() as Language);
     void loadApiModule()
       .then(({ updateBaseUrl }) => updateBaseUrl(router))
@@ -968,7 +772,7 @@ export function useAppShell() {
         try {
           const realtimeModule = await loadRealtimeModule();
           const client = getOrCreateDataPlaneClient(realtimeModule);
-          subscribeToDataPlaneTelemetry(client);
+          dataPlaneTelemetry.subscribe(client);
           const started = await client.start({
             preferSharedWorker: Boolean(data?.FEATURE_FLAGS?.wsSharedWorker),
             profile: realtimeModule.normalizeRealtimeProfile(data?.FEATURE_FLAGS?.wsProfile),
@@ -980,13 +784,13 @@ export function useAppShell() {
             subscribeOnRealtimeVisibility();
             syncRealtimeVisibility();
           } else {
-            unsubscribeFromDataPlaneTelemetry();
+            dataPlaneTelemetry.unsubscribe();
             unsubscribeFromRealtimeVisibility();
             await client.stop();
           }
         } catch (error) {
           realtimeVisibilitySyncEnabled = false;
-          unsubscribeFromDataPlaneTelemetry();
+          dataPlaneTelemetry.unsubscribe();
           unsubscribeFromRealtimeVisibility();
           if (dataPlaneClient) {
             await dataPlaneClient.stop();
@@ -995,7 +799,7 @@ export function useAppShell() {
         }
       } else {
         realtimeVisibilitySyncEnabled = false;
-        unsubscribeFromDataPlaneTelemetry();
+        dataPlaneTelemetry.unsubscribe();
         unsubscribeFromRealtimeVisibility();
         if (dataPlaneClient) {
           await dataPlaneClient.stop();
@@ -1052,11 +856,11 @@ export function useAppShell() {
   });
 
   onMounted(() => {
-    startIpfsObserver();
-    subscribeOnLocalStorage();
-    subscribeOnScreenSize();
-    subscribeOnScreenOrientation();
-    subscribeOnKeyboard();
+    ipfsImageNormalizer.start();
+    browserEffects.subscribeOnLocalStorage();
+    browserEffects.subscribeOnScreenSize();
+    browserEffects.subscribeOnScreenOrientation();
+    browserEffects.subscribeOnKeyboard();
     subscribeOnRealtimeVisibility();
   });
 

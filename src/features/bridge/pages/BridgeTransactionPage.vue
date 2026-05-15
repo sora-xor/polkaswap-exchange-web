@@ -244,7 +244,7 @@ const { withParentLoading } = useLoading();
 const router = useRouter();
 const { connectEvmWallet } = useWeb3Connection();
 const bridgeStore = useBridgeStore();
-const { waitingForApprove, inProgressIds, historyInternal } = storeToRefs(bridgeStore);
+const { waitingForApprove, inProgressIds } = storeToRefs(bridgeStore);
 const bridgeCore = useBridgeCore();
 const {
   handleViewTransactionsHistory,
@@ -261,12 +261,7 @@ const {
   soraNetworkFee,
 } = bridgeCore;
 
-const historyId = computed(() => bridgeStore.history.id);
-const tx = computed(() => {
-  const id = historyId.value;
-  if (!id) return null;
-  return (historyInternal.value as Record<string, IBridgeTransaction>)[id] ?? null;
-});
+const tx = computed(() => bridgeStore.activeTransaction as Nullable<IBridgeTransaction>);
 const bridgeTransaction = useBridgeTransaction(tx);
 const getNetworkIcon = bridgeTransaction.formatter.getNetworkIcon;
 const getNetworkText = bridgeTransaction.getNetworkText;
@@ -277,15 +272,21 @@ const externalBlockNumber = computed(() => bridgeStore.fees.externalBlockNumber)
 const externalAccount = bridgeTransaction.txExternalAccount;
 
 const txIsUnsigned = computed(() => (tx.value?.id ? isUnsignedTx(tx.value) : false));
+const txTrackingIds = computed(() => {
+  const item = tx.value;
+  const ids = [item?.id, item?.hash, item?.txId, item?.externalHash, bridgeStore.history.id].filter(
+    (value): value is string => typeof value === 'string' && value.length > 0
+  );
+
+  return [...new Set(ids)];
+});
+const hasTrackedTxFlag = (flags: Record<string, boolean>): boolean =>
+  txTrackingIds.value.some((id) => Boolean(flags[id]));
 const txInProcess = computed(() => {
-  const id = tx.value?.id;
-  if (!id) return false;
-  return Boolean(inProgressIds.value[id]);
+  return hasTrackedTxFlag(inProgressIds.value);
 });
 const txWaitingForApprove = computed(() => {
-  const id = tx.value?.id;
-  if (!id) return false;
-  return Boolean(waitingForApprove.value[id]);
+  return hasTrackedTxFlag(waitingForApprove.value);
 });
 
 const amount = computed(() => tx.value?.amount ?? '');
@@ -455,7 +456,12 @@ const parachainExplorerLinks = computed(() => {
   const networkId = parachainNetworkId.value;
   if (!(type && networkId)) return [];
 
-  return bridgeTransaction.formatter.getNetworkExplorerLinks(type, networkId, '', txParachainBlockNumber.value);
+  return bridgeTransaction.formatter.getNetworkExplorerLinks({
+    networkType: type,
+    networkId,
+    value: '',
+    blockId: txParachainBlockNumber.value,
+  });
 });
 
 const confirmationBlocksLeft = computed(() => {
@@ -604,8 +610,9 @@ onMounted(async () => {
 
 onBeforeUnmount(async () => {
   if (!tx.value) return;
+  if (txInProcess.value) return;
 
-  if (!txInProcess.value && txIsUnsigned.value) {
+  if (txIsUnsigned.value) {
     const historyCopy = { ...tx.value };
     await bridgeStore.removeHistory({ tx: historyCopy, force: true });
   }

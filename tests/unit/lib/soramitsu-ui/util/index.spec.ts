@@ -2,7 +2,15 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h, provide, ref, type Component, type FunctionalComponent, type InjectionKey } from 'vue';
 import { describe, expect, it } from 'vitest';
 
-import { bareMetalVModel, forceInject, getComponentName, uniqueElementId } from '@/lib/soramitsu-ui/util';
+import {
+  bareMetalVModel,
+  forceInject,
+  getComponentName,
+  isRenderableDynamicComponent,
+  isSafeDynamicTagName,
+  resolveDynamicComponentTag,
+  uniqueElementId,
+} from '@/lib/soramitsu-ui/util';
 
 describe('soramitsu-ui util', () => {
   it('creates v-model bindings for default and custom prop names', () => {
@@ -100,5 +108,26 @@ describe('soramitsu-ui util', () => {
     secondWrapper.unmount();
 
     expect(secondAppIds).toEqual(['soraui-uid-0']);
+  });
+
+  it('guards dynamic component tags before Vue creates DOM elements', () => {
+    const ComponentObject = defineComponent({ name: 'DynamicObject' });
+    const Functional = (() => null) as FunctionalComponent;
+
+    expect(isSafeDynamicTagName('span')).toBe(true);
+    expect(isSafeDynamicTagName('s-tooltip')).toBe(true);
+    expect(isSafeDynamicTagName('0.5')).toBe(false);
+    expect(isSafeDynamicTagName('bad tag')).toBe(false);
+
+    expect(resolveDynamicComponentTag('0.5', 'div')).toBe('div');
+    expect(resolveDynamicComponentTag('s-tooltip', 'div')).toBe('s-tooltip');
+    expect(resolveDynamicComponentTag(ComponentObject, 'div')).toBe(ComponentObject);
+    expect(resolveDynamicComponentTag(Functional, 'div')).toBe(Functional);
+    expect(resolveDynamicComponentTag(null, 'div')).toBe('div');
+
+    expect(isRenderableDynamicComponent('0.5')).toBe(false);
+    expect(isRenderableDynamicComponent('s-tooltip')).toBe(true);
+    expect(isRenderableDynamicComponent(ComponentObject)).toBe(true);
+    expect(isRenderableDynamicComponent(Functional)).toBe(true);
   });
 });

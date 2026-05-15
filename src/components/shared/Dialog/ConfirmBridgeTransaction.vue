@@ -50,7 +50,7 @@
 import { CodecString } from '@sora-substrate/sdk';
 import { computed } from 'vue';
 
-import BridgeTransactionDetails from '@/components/pages/Bridge/TransactionDetails.vue';
+import BridgeTransactionDetails from '@/features/bridge/components/TransactionDetails.vue';
 import { useLoading } from '@/composables/useLoading';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';

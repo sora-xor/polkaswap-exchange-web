@@ -2,6 +2,7 @@
 import { computed, useSlots } from 'vue';
 
 import { usePropTypeFilter } from '@soramitsu-ui/ui/composables/prop-type-filter';
+import { resolveDynamicComponentTag } from '@/lib/soramitsu-ui/util';
 
 import {
   CARD_BORDER_RADIUS_VALUES,
@@ -54,7 +55,7 @@ const normalizedBorderRadius = filterProp('borderRadius', CARD_BORDER_RADIUS_VAL
 const normalizedStatus = filterProp('status', CARD_STATUS_VALUES, 'default');
 const normalizedSize = filterProp('size', CARD_SIZE_VALUES, 'medium');
 
-const rootTag = computed(() => props.tag || 'div');
+const rootTag = computed(() => resolveDynamicComponentTag(props.tag, 'div'));
 
 const hasHeaderSlot = computed(() => typeof slots.header === 'function');
 const shouldRenderHeader = computed(() => Boolean(props.header) || hasHeaderSlot.value);

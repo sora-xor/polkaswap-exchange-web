@@ -1,5 +1,5 @@
 <template>
-  <div class="add-asset-details">
+  <div class="add-asset-details" :class="{ 'add-asset-details--dark': isDarkTheme }">
     <s-scrollbar class="asset-list-scrollbar" :style="{ height }">
       <div class="asset-list-container">
         <div v-for="asset in selectAssets" :key="asset.address">
@@ -51,28 +51,25 @@ import AssetListItem from '../AssetListItem.vue';
 import type { WhitelistIdsBySymbol } from '../../types/common';
 import type { Asset, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
-const props = withDefaults(
-  defineProps<{
-    selectAssets: Asset[];
-    theme?: Theme;
-    assetTypeKey: string;
-  }>(),
-  {
-    theme: Theme.Light,
-  }
-);
+const props = defineProps<{
+  selectAssets: Asset[];
+  theme?: Theme;
+  assetTypeKey: string;
+}>();
 
 const emit = defineEmits<{
   add: [];
 }>();
 
-const { t, tc, addAccountAsset } = useAddAsset();
+const { t, tc, loading, addAccountAsset } = useAddAsset();
 const walletStore = useWalletStore();
 const isConfirmed = ref(false);
 
 const whitelist = computed(() => walletStore.whitelist);
 const whitelistIdsBySymbol = computed(() => walletStore.whitelistIdsBySymbol);
-const isCardPrimary = computed(() => props.theme !== Theme.Dark);
+const currentTheme = computed(() => props.theme ?? walletStore.libraryTheme ?? Theme.Light);
+const isDarkTheme = computed(() => currentTheme.value === Theme.Dark);
+const isCardPrimary = computed(() => !isDarkTheme.value);
 const height = computed(() => {
   const itemHeight = parseFloat(getCssVariableValue('--s-asset-item-height--fiat'));
   const itemHeightFixed = itemHeight + 1; // card is bigger on 1px
@@ -165,6 +162,14 @@ async function handleAddAssets(): Promise<void> {
   }
   &_text {
     color: var(--s-color-status-warning);
+  }
+
+  &--dark {
+    :deep(.s-card.s-status-success),
+    :deep(.s-card.s-status-warning),
+    :deep(.s-card.s-status-error) {
+      color: var(--s-color-base-on-accent);
+    }
   }
 
   .asset-list-container {

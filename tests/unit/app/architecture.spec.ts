@@ -20,6 +20,7 @@ const walletCoreSegment = ['utils', 'walletCore'].join('/');
 const walletShimSegment = ['shims', 'wallet'].join('/');
 const deletedRegistrySegment = ['components', 'registry'].join('/');
 const deletedMstWarningBridgeSegment = ['components', 'App', 'BrowserNotification', 'MSTWarningBridge.vue'].join('/');
+const oldBridgePageComponentsSegment = ['components', 'pages', 'Bridge'].join('/');
 const legacySegment = `${path.posix.sep}legacy${path.posix.sep}`;
 const deletedBridgeCompatImports = new Set([
   '@/stores/bridge/history',
@@ -175,6 +176,7 @@ const hasDeletedBoundaryImport = (specifier: string): boolean => {
     normalizedPath.includes(walletShimSegment) ||
     normalizedPath.includes(deletedRegistrySegment) ||
     normalizedPath.includes(deletedMstWarningBridgeSegment) ||
+    normalizedPath.includes(oldBridgePageComponentsSegment) ||
     normalizedPath.includes(legacySegment)
   );
 };

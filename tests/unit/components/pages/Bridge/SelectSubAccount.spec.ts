@@ -66,7 +66,7 @@ vi.mock('@/lib/soraneo-wallet/src/components/Connection/ConnectionView.vue', () 
   },
 }));
 
-let SelectSubAccount: typeof import('@/components/pages/Bridge/SelectSubAccount.vue').default;
+let SelectSubAccount: typeof import('@/features/bridge/components/SelectSubAccount.vue').default;
 
 const factory = () => mount(SelectSubAccount);
 
@@ -80,7 +80,7 @@ describe('BridgeSelectSubAccount', () => {
     web3StorePiniaMock.selectSubAccount = selectSpy;
     web3StorePiniaMock.setSubAccountDialogVisibility = vi.fn();
 
-    ({ default: SelectSubAccount } = await import('@/components/pages/Bridge/SelectSubAccount.vue'));
+    ({ default: SelectSubAccount } = await import('@/features/bridge/components/SelectSubAccount.vue'));
   });
 
   it('exposes the chain API from the connector', () => {

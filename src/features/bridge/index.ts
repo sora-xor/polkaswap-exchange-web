@@ -1,2 +1,2 @@
 export { bridgeRoutes } from './routes';
-export { default as BridgeTransferNotification } from '@/components/pages/Bridge/TransferNotification.vue';
+export { default as BridgeTransferNotification } from '@/features/bridge/components/TransferNotification.vue';

@@ -2,7 +2,7 @@
 import { validateHorizontalPlacement, validateVerticalPlacement } from './util';
 import type { ToastsApi } from './api';
 import { TOASTS_API_KEY } from './api';
-import { forceInject } from '@soramitsu-ui/ui/util';
+import { forceInject, isRenderableDynamicComponent } from '@/lib/soramitsu-ui/util';
 import type { PropType } from 'vue';
 import type { ToastsDisplayPlacementVertical, ToastsDisplayPlacementHorizontal } from './types';
 
@@ -60,7 +60,7 @@ function leave(element: HTMLElement) {
         <TransitionGroup name="s-toasts-display__grow-transition" @leave="leave as any">
           <div v-for="[key, toast] in api.toasts" :key="key" class="s-toasts-display__item">
             <div class="s-toasts-display__item-spacer" />
-            <component :is="toast.slot" />
+            <component :is="toast.slot" v-if="isRenderableDynamicComponent(toast.slot)" />
           </div>
         </TransitionGroup>
       </div>

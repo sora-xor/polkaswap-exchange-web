@@ -33,6 +33,10 @@ export type AccountState = {
   assets: Readonly<Asset[]>;
   assetsSubscription: Nullable<VoidFunction>;
   accountAssets: Array<AccountAsset>;
+  /** True while account-specific asset balances are hydrating from the wallet SDK. */
+  accountAssetsLoading: boolean;
+  /** True after the first account-specific asset hydration attempt settles for the active account. */
+  accountAssetsLoaded: boolean;
   alertSubject: Nullable<Subject<FiatPriceObject>>;
   accountAssetsSubscription: Nullable<Subscription>;
   book: Nullable<Book>;

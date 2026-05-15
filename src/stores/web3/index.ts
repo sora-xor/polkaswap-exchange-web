@@ -34,6 +34,7 @@ type ExternalNetworkSelection = {
 };
 type EthersUtilModule = typeof import('@/utils/ethers-util');
 type SubNetworksConnectorModule = typeof import('@/utils/bridge/sub/classes/adapter');
+const ASSET_NOT_REGISTERED_ERROR = 'Asset is not registered';
 
 export type {
   AvailableNetwork,
@@ -556,11 +557,15 @@ export const useWeb3Store = defineStore('web3-legacy', {
         const externalAddress = await contractInstance._sidechainTokens(soraAssetId);
 
         if (ethersUtil.isNativeEvmTokenAddress(externalAddress)) {
-          throw new Error('Asset is not registered');
+          throw new Error(ASSET_NOT_REGISTERED_ERROR);
         }
 
         return externalAddress;
       } catch (error) {
+        if (error instanceof Error && error.message === ASSET_NOT_REGISTERED_ERROR) {
+          return '';
+        }
+
         console.error(soraAssetId, error);
         return '';
       }

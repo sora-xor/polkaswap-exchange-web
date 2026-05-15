@@ -44,7 +44,7 @@ const evmBridge: EvmBridge = new Bridge({
   getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
   getTransaction: (id: string) =>
-    (resolveBridgeStore().historyRecord?.[id] || evmBridgeApi.getHistory(id)) as EvmHistory,
+    (resolveBridgeStore().getHistoryTransaction(id) || evmBridgeApi.getHistory(id)) as EvmHistory,
   updateTransaction,
   // ui integration
   showNotification: (tx: EvmHistory) => resolveBridgeStore().setNotificationData(tx),

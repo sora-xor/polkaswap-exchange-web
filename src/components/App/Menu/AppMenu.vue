@@ -264,12 +264,7 @@ onBeforeUnmount(() => {
       }
     }
 
-    .collapse-button {
-      pointer-events: all;
-    }
-
-    &:hover,
-    &:focus {
+    &:hover {
       background: var(--s-color-utility-body);
       box-shadow: 20px 20px 60px 0px #0000001a;
 
@@ -372,6 +367,9 @@ onBeforeUnmount(() => {
   left: calc(100% - var(--s-size-small) / 2);
   margin: auto;
   transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity, background-color, border-color, box-shadow, color;
   transition-duration: 0.25s;
   z-index: #{$app-sidebar-layer} + 1;
   background: var(--s-color-utility-body) !important;
@@ -405,6 +403,11 @@ onBeforeUnmount(() => {
     box-shadow: var(--s-shadow-element-pressed) !important;
     color: var(--s-color-base-on-accent) !important;
   }
+
+  &:focus-visible {
+    opacity: 1;
+    pointer-events: all;
+  }
 }
 
 .app-menu.collapsed {
@@ -418,9 +421,7 @@ onBeforeUnmount(() => {
     box-shadow: var(--s-shadow-element-pressed) !important;
   }
 
-  &:hover,
-  &:focus,
-  &:focus-within {
+  &:hover {
     .collapse-button:not(:hover) {
       background: var(--s-color-utility-body) !important;
       border-color: transparent !important;
@@ -443,15 +444,15 @@ onBeforeUnmount(() => {
     visibility: hidden;
 
     .collapse-button {
-      opacity: 1;
+      opacity: 0;
+      pointer-events: none;
     }
 
     @include tablet {
-      &:hover,
-      &:focus,
-      &:focus-within {
+      &:hover {
         .collapse-button {
           opacity: 1;
+          pointer-events: all;
         }
       }
     }
@@ -496,12 +497,6 @@ onBeforeUnmount(() => {
 
       &:not(.collapsed) {
         position: relative;
-      }
-
-      &.collapsed {
-        .collapse-button {
-          opacity: 1;
-        }
       }
     }
 

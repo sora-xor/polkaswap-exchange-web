@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import selectSubAccountSource from '@/components/pages/Bridge/SelectSubAccount.vue?raw';
+import selectSubAccountSource from '@/features/bridge/components/SelectSubAccount.vue?raw';
 import selectSoraAccountSource from '@/components/shared/Dialog/SelectSoraAccount.vue?raw';
 
 const accountDialogSources: Array<[string, string]> = [

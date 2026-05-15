@@ -83,7 +83,7 @@ vi.mock('@/composables/useSelectAssetTools', () => ({
   }),
 }));
 
-let BridgeSelectAsset: typeof import('@/components/pages/Bridge/SelectAsset.vue').default;
+let BridgeSelectAsset: typeof import('@/features/bridge/components/SelectAsset.vue').default;
 
 const factory = (props: Record<string, unknown> = {}) => {
   return mount(BridgeSelectAsset, {
@@ -119,7 +119,7 @@ describe('BridgeSelectAsset', () => {
     walletStoreMock.shouldBalanceBeHidden = false;
     web3StoreMock.selectedNetworkData = { shortName: 'ETH' };
 
-    ({ default: BridgeSelectAsset } = await import('@/components/pages/Bridge/SelectAsset.vue'));
+    ({ default: BridgeSelectAsset } = await import('@/features/bridge/components/SelectAsset.vue'));
   });
 
   it('uses Sora label when bridging from Sora', () => {

@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" :class="computedClasses">
+  <div v-loading="assetsLoading" :class="computedClasses">
     <wallet-assets-headline :assets-fiat-amount="assetsFiatAmount"></wallet-assets-headline>
     <s-scrollbar class="wallet-assets-scrollbar">
       <draggable
@@ -82,11 +82,11 @@
           </div>
         </template>
         <template #footer>
-          <div v-if="assetsAreHidden" class="wallet-assets--empty">{{ t('addAsset.empty') }}</div>
+          <div v-if="showEmptyAssets" class="wallet-assets--empty">{{ t('addAsset.empty') }}</div>
         </template>
       </draggable>
       <div v-else class="wallet-assets__draggable">
-        <div v-if="assetsAreHidden" class="wallet-assets--empty">{{ t('addAsset.empty') }}</div>
+        <div v-if="showEmptyAssets" class="wallet-assets--empty">{{ t('addAsset.empty') }}</div>
       </div>
     </s-scrollbar>
 
@@ -156,6 +156,10 @@ export default {
     const permissions = computed(() => walletStore.permissions);
     const filters = computed(() => walletStore.filters);
     const whitelist = computed(() => walletStore.whitelist);
+    const accountAssetsLoading = computed(() => walletStore.accountAssetsLoading);
+    const accountAssetsLoaded = computed(() => walletStore.accountAssetsLoaded);
+    const waitingForAccountAssets = computed(() => Boolean(walletStore.isLoggedIn) && !accountAssetsLoaded.value);
+    const assetsLoading = computed(() => loading.value || accountAssetsLoading.value || waitingForAccountAssets.value);
     const isAssetPinned = computed(() => walletStore.isAssetPinned);
     const assetList = computed<Array<AccountAsset>>({
       get: () => {
@@ -188,6 +192,7 @@ export default {
       },
     });
     const assetsAreHidden = computed(() => visibleAssetList.value.length === 0);
+    const showEmptyAssets = computed(() => assetsAreHidden.value && !assetsLoading.value);
     const formattedAccountAssets = computed(() =>
       accountAssets.value.filter((asset) => asset.balance && hasCodecBalanceValue(asset.balance.transferable))
     );
@@ -343,7 +348,7 @@ export default {
 
     return {
       draggable,
-      loading,
+      assetsLoading,
       t,
       FontSizeRate,
       FontWeightRate,
@@ -355,6 +360,7 @@ export default {
       assetList,
       visibleAssetList,
       assetsAreHidden,
+      showEmptyAssets,
       computedClasses,
       assetsFiatAmount,
       getBalance,

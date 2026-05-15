@@ -43,7 +43,7 @@ const SIconStub = {
   template: '<i v-bind="$attrs"></i>',
 };
 
-let NetworkSelector: typeof import('@/components/pages/Bridge/NetworkSelector.vue').default;
+let NetworkSelector: typeof import('@/features/bridge/components/NetworkSelector.vue').default;
 
 const factory = () =>
   mount(NetworkSelector, {
@@ -59,7 +59,7 @@ describe('BridgeNetworkSelector', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     networkShortName.value = 'SORA';
-    ({ default: NetworkSelector } = await import('@/components/pages/Bridge/NetworkSelector.vue'));
+    ({ default: NetworkSelector } = await import('@/features/bridge/components/NetworkSelector.vue'));
   });
 
   it('exposes the selected network short name from the formatter', () => {

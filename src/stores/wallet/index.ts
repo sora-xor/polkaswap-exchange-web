@@ -292,6 +292,7 @@ export const useWalletStore = defineStore('wallet', () => {
   const transactionsState = ref<TransactionsState>(createTransactionsState());
 
   const storageUpdatesSubscription = ref<Nullable<VoidFunction>>(null);
+  let accountAssetsLoadingRequestId = 0;
 
   const address = computed(() => accountState.value.address ?? '');
   const soraAddress = computed(() => address.value);
@@ -315,6 +316,8 @@ export const useWalletStore = defineStore('wallet', () => {
   );
   const assets = computed(() => (accountState.value.assets ?? []) as AccountAsset[]);
   const accountAssets = computed(() => accountState.value.accountAssets ?? []);
+  const accountAssetsLoading = computed(() => Boolean(accountState.value.accountAssetsLoading));
+  const accountAssetsLoaded = computed(() => Boolean(accountState.value.accountAssetsLoaded));
   const isAssetPinned = (asset: AccountAsset): boolean =>
     Boolean(asset && accountState.value.pinnedAssets.includes(asset.address));
   const fiatPriceObject = computed(() => (accountState.value.fiatPriceObject ?? {}) as FiatPriceObject);
@@ -433,6 +436,16 @@ export const useWalletStore = defineStore('wallet', () => {
     accountState.value.accountAssets = value;
   };
 
+  /** Updates the account asset hydration flag used by wallet account loading UI. */
+  const setAccountAssetsLoading = (value: boolean): void => {
+    accountState.value.accountAssetsLoading = value;
+  };
+
+  /** Tracks whether the active account asset list is settled enough to show a real empty state. */
+  const setAccountAssetsLoaded = (value: boolean): void => {
+    accountState.value.accountAssetsLoaded = value;
+  };
+
   const setAssets = (value: Asset[]): void => {
     accountState.value.assets = value;
   };
@@ -494,11 +507,17 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const subscribeOnAccountAssets = async (): Promise<void> => {
+    const loadingRequestId = ++accountAssetsLoadingRequestId;
+
     resetAccountAssetsSubscription();
+    setAccountAssetsLoaded(false);
 
     if (!isLoggedIn.value) {
+      setAccountAssetsLoading(false);
       return;
     }
+
+    setAccountAssetsLoading(true);
 
     try {
       await waitForAccountPair(async () => {
@@ -512,6 +531,11 @@ export const useWalletStore = defineStore('wallet', () => {
       });
     } catch {
       setAccountAssets([]);
+    } finally {
+      if (accountAssetsLoadingRequestId === loadingRequestId) {
+        setAccountAssetsLoaded(true);
+        setAccountAssetsLoading(false);
+      }
     }
   };
 
@@ -1615,6 +1639,8 @@ export const useWalletStore = defineStore('wallet', () => {
     whitelistIdsBySymbol,
     assets,
     accountAssets,
+    accountAssetsLoading,
+    accountAssetsLoaded,
     setAccountAssets,
     isAssetPinned,
     fiatPriceObject,

@@ -217,6 +217,33 @@ describe('useWeb3Store', () => {
     expect(web3Store.evmProviderLoading).toBeNull();
   });
 
+  it('returns an empty EVM token address without logging expected unregistered assets', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const web3Store = useWeb3Store();
+    const sidechainTokens = vi.fn().mockResolvedValue('0xNativeToken');
+
+    try {
+      web3Store.setEthBridgeSettings({
+        evmNetwork: EvmNetworkId.EthereumMainnet,
+        address: {
+          XOR: '',
+          VAL: '',
+          OTHER: '0xBridge',
+        },
+      } as any);
+      shared.getContractMock.mockResolvedValue({ _sidechainTokens: sidechainTokens });
+      shared.isNativeEvmTokenAddressMock.mockReturnValue(true);
+
+      await expect(web3Store.getEvmTokenAddressByAssetId('0xAsset')).resolves.toBe('');
+
+      expect(shared.getContractMock).toHaveBeenCalled();
+      expect(sidechainTokens).toHaveBeenCalledWith('0xAsset');
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
+  });
+
   it('subscribes on discovered EVM providers without duplicating providers', async () => {
     const unsubscribe = vi.fn();
     const web3Store = useWeb3Store();

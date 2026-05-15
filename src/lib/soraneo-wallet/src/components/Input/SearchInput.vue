@@ -48,7 +48,7 @@ const emit = defineEmits<{
 }>();
 
 const attrs = useAttrs();
-const { input } = useInputFocus(() => props.autofocus);
+const { input, focus } = useInputFocus(() => props.autofocus);
 const { t } = useTranslation();
 
 const query = computed({
@@ -68,6 +68,12 @@ const inputAttrs = computed<Record<string, unknown>>(() => {
 function handleClearSearch(): void {
   emit('clear');
 }
+
+// Dialogs reopen this component after it has already mounted, so parent
+// focus helpers need access to the wrapped design-system input.
+defineExpose({
+  focus,
+});
 </script>
 
 <style lang="scss">

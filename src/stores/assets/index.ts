@@ -114,6 +114,8 @@ const updateEthAssetsData = async (
 
       if (!asset.address) {
         asset.address = await web3Store.getEvmTokenAddressByAssetId(soraAddress);
+        if (!asset.address) return [soraAddress, asset] as const;
+
         asset.decimals = await ethersUtil.getTokenDecimals(asset.address);
       }
 

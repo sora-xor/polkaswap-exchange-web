@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createWalletMock } from '@tests/stubs/createWalletMock';
 
-let SelectAddress: typeof import('@/components/pages/Bridge/SelectAddress.vue').default;
+let SelectAddress: typeof import('@/features/bridge/components/SelectAddress.vue').default;
 let walletRuntime: typeof import('@tests/stubs/walletRuntime');
 let originalValidate: (value: string) => boolean;
 const addressBookInputStub = {
@@ -35,7 +35,7 @@ vi.mock('@/composables/useTranslation', () => ({
 describe('BridgeSelectAddress', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
-    ({ default: SelectAddress } = await import('@/components/pages/Bridge/SelectAddress.vue'));
+    ({ default: SelectAddress } = await import('@/features/bridge/components/SelectAddress.vue'));
     walletRuntime = await import('@tests/stubs/walletRuntime');
     originalValidate = walletRuntime.api.validateAddress;
     walletRuntime.api.validateAddress = (value: string) => value.startsWith('5');

@@ -257,9 +257,9 @@ const getHistoryElementData = (
   const data = (historyElement.data ?? {}) as HistoryElementData;
   const assetAddress = data.assetId;
 
-  if (data.requestHash && data.amount && assetAddress) {
+  if (data.amount && assetAddress) {
     return {
-      requestHash: data.requestHash,
+      requestHash: data.requestHash || historyElement.id,
       amount: data.amount,
       assetAddress,
       sidechainAddress: data.sidechainAddress,
@@ -467,23 +467,20 @@ export class EthBridgeHistory {
     await updateCallback?.();
   }
 
-  public async updateAccountHistory(
+  private async restoreHistoryElements(
+    historyElements: HistoryElement[],
     address: string,
     networkFees: NetworkFeesObject,
     inProgressIds: Record<string, boolean>,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
+    currentHistory: EthHistory[],
+    initialSyncTimestamp: number,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
-  ): Promise<void> {
-    const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
-
-    if (!historyElements.length) return;
-
-    const currentHistory = ethBridgeApi.historyList as EthHistory[];
-
+  ): Promise<{ matchedHistory: boolean; syncTimestamp: number }> {
     const { externalNetwork } = this;
-
-    const fromTimestamp = await this.getFromTimestamp(historyElements);
-    const historySyncTimestampUpdated = first(historyElements)?.timestamp as number;
+    const fromTimestamp = this.getFromTimestamp(historyElements);
+    let matchedHistory = false;
+    let historySyncTimestampUpdated = initialSyncTimestamp;
 
     for (const historyElement of historyElements) {
       const type = getType(historyElement.module);
@@ -494,7 +491,10 @@ export class EthBridgeHistory {
       if (!historyElementData) continue;
       if (!isOutgoing && historyElementData.recipient !== address) continue;
 
+      matchedHistory = true;
+
       const { requestHash, amount, assetAddress, sidechainAddress } = historyElementData;
+      const syncTimestamp = historyElement.timestamp ?? 0;
 
       const localHistoryItem = currentHistory.find((item: EthHistory) =>
         isLocalHistoryItem(item, txId, isOutgoing, requestHash)
@@ -502,7 +502,10 @@ export class EthBridgeHistory {
 
       // don't restore transaction what is in process in app
       if ((localHistoryItem?.id as string) in inProgressIds) continue;
-      if (hasFinishedState(localHistoryItem)) continue;
+      if (hasFinishedState(localHistoryItem)) {
+        historySyncTimestampUpdated = Math.max(historySyncTimestampUpdated, syncTimestamp);
+        continue;
+      }
 
       const soraHash = await getSoraHash(isOutgoing, requestHash);
       const asset = assetDataByAddress(assetAddress);
@@ -565,12 +568,66 @@ export class EthBridgeHistory {
         } else {
           currentHistory.push(savedHistoryItem);
         }
+
+        historySyncTimestampUpdated = Math.max(historySyncTimestampUpdated, syncTimestamp);
       }
 
       await updateCallback?.();
     }
 
-    this.historySyncTimestamp = historySyncTimestampUpdated;
+    return { matchedHistory, syncTimestamp: historySyncTimestampUpdated };
+  }
+
+  public async updateAccountHistory(
+    address: string,
+    networkFees: NetworkFeesObject,
+    inProgressIds: Record<string, boolean>,
+    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
+  ): Promise<void> {
+    const initialSyncTimestamp = this.historySyncTimestamp;
+    const currentHistory = ethBridgeApi.historyList as EthHistory[];
+    let historyElements = await this.fetchHistoryElements(address, initialSyncTimestamp);
+
+    if (!historyElements.length && initialSyncTimestamp && !currentHistory.length) {
+      historyElements = await this.fetchHistoryElements(address, 0);
+    }
+
+    if (!historyElements.length) return;
+
+    let result = await this.restoreHistoryElements(
+      historyElements,
+      address,
+      networkFees,
+      inProgressIds,
+      assetDataByAddress,
+      currentHistory,
+      initialSyncTimestamp,
+      updateCallback
+    );
+
+    if (!result.matchedHistory && initialSyncTimestamp) {
+      const fallbackHistoryElements = await this.fetchHistoryElements(address, 0);
+
+      if (fallbackHistoryElements.length) {
+        const fallbackResult = await this.restoreHistoryElements(
+          fallbackHistoryElements,
+          address,
+          networkFees,
+          inProgressIds,
+          assetDataByAddress,
+          currentHistory,
+          0,
+          updateCallback
+        );
+
+        if (fallbackResult.matchedHistory) {
+          result = fallbackResult;
+        }
+      }
+    }
+
+    this.historySyncTimestamp = result.syncTimestamp;
   }
 }
 

@@ -269,30 +269,41 @@ test('collapses and expands the sidebar menu', async ({ page }) => {
 
   const sidebar = page.locator('.app-menu');
   const collapseButton = sidebar.locator('.collapse-button');
+  const readCollapseButtonMetrics = async () => {
+    return await page.evaluate(() => {
+      const button = document.querySelector('.app-menu .collapse-button') as HTMLElement | null;
+      if (!button) return null;
+
+      const rect = button.getBoundingClientRect();
+      const style = getComputedStyle(button);
+
+      return {
+        opacity: style.opacity,
+        pointerEvents: style.pointerEvents,
+        top: rect.top,
+        bottom: rect.bottom,
+        viewportHeight: window.innerHeight,
+      };
+    });
+  };
 
   await expect(sidebar).not.toHaveClass(/collapsed/);
-  await expect(collapseButton).toBeVisible();
+  await expect.poll(readCollapseButtonMetrics).toMatchObject({ opacity: '0', pointerEvents: 'none' });
+
+  await sidebar.hover();
+  await expect.poll(readCollapseButtonMetrics).toMatchObject({ opacity: '1', pointerEvents: 'all' });
+
   await collapseButton.click();
   await expect(sidebar).toHaveClass(/collapsed/);
 
-  await expect(collapseButton).toBeVisible();
-  const collapsedButtonMetrics = await page.evaluate(() => {
-    const button = document.querySelector('.app-menu.collapsed .collapse-button') as HTMLElement | null;
-    if (!button) return null;
+  await page.mouse.move(900, 120);
+  await expect.poll(readCollapseButtonMetrics).toMatchObject({ opacity: '0', pointerEvents: 'none' });
 
-    const rect = button.getBoundingClientRect();
-    const style = getComputedStyle(button);
-
-    return {
-      pointerEvents: style.pointerEvents,
-      top: rect.top,
-      bottom: rect.bottom,
-      viewportHeight: window.innerHeight,
-    };
-  });
+  await sidebar.hover();
+  await expect.poll(readCollapseButtonMetrics).toMatchObject({ opacity: '1', pointerEvents: 'all' });
+  const collapsedButtonMetrics = await readCollapseButtonMetrics();
 
   expect(collapsedButtonMetrics).not.toBeNull();
-  expect(collapsedButtonMetrics?.pointerEvents).toBe('all');
   expect(collapsedButtonMetrics!.top).toBeGreaterThanOrEqual(0);
   expect(collapsedButtonMetrics!.bottom).toBeLessThanOrEqual(collapsedButtonMetrics!.viewportHeight);
 

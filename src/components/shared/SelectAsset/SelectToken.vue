@@ -6,6 +6,7 @@
     wrapper-class="asset-select-wrapper"
     :append-to-body="appendToBody"
     :modal-append-to-body="appendToBody"
+    @after-open="handleAfterOpen"
   >
     <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @update:model-value="handleTabChange">
       <search-input
@@ -416,6 +417,10 @@ const handleRemoveCustomAsset = (asset: AccountAsset) => {
 
 const handleTabChange = (name: Tabs) => {
   tabValue.value = name;
+  clearAndFocusSearch();
+};
+
+const handleAfterOpen = () => {
   clearAndFocusSearch();
 };
 </script>

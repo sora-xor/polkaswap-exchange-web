@@ -1,4 +1,4 @@
-import { computed, defineComponent, nextTick, onMounted, reactive, ref } from 'vue';
+import { computed, defineComponent, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
@@ -306,6 +306,17 @@ const TestBridgeTransaction = defineComponent({
     const isTxPending = computed(
       () => !mocks.failedState.value && !mocks.successState.value && !mocks.waitingForActionState.value
     );
+    const txTrackingIds = computed(() => {
+      const item = historyItem.value;
+      const ids = [item?.id, item?.hash, item?.txId, item?.externalHash].filter(
+        (value): value is string => typeof value === 'string' && value.length > 0
+      );
+
+      return [...new Set(ids)];
+    });
+    const txInProcess = computed(() =>
+      txTrackingIds.value.some((id) => Boolean(mocks.state.bridge.inProgressIds[id]))
+    );
 
     const confirmationButtonDisabled = computed(
       () =>
@@ -344,10 +355,18 @@ const TestBridgeTransaction = defineComponent({
 
       await mocks.withParentLoading(async () => {
         const id = historyItem.value?.id;
-        if (id && !mocks.state.bridge.inProgressIds[id]) {
+        if (id && !txInProcess.value) {
           await mocks.store.dispatch.bridge.handleBridgeTransaction(id);
         }
       });
+    });
+
+    onBeforeUnmount(() => {
+      const id = historyItem.value?.id;
+      if (!id) return;
+      if (txInProcess.value) return;
+
+      mocks.store.commit.bridge.setHistoryId();
     });
 
     return {
@@ -506,6 +525,41 @@ describe(
       expect(mocks.navigateToBridge).not.toHaveBeenCalled();
 
       wrapper.unmount();
+    });
+
+    it('keeps the selected transaction id when an in-progress transaction page unmounts', async () => {
+      mocks.state.bridge.inProgressIds = {
+        [mocks.historyItem.value.id]: true,
+      };
+
+      const wrapper = await mountView();
+      await flushBridgePromises();
+
+      wrapper.unmount();
+
+      expect(mocks.store.commit.bridge.setHistoryId).not.toHaveBeenCalled();
+    });
+
+    it('keeps the selected transaction id when progress is tracked by a chain alias', async () => {
+      mocks.state.bridge.inProgressIds = {
+        [mocks.historyItem.value.hash]: true,
+      };
+
+      const wrapper = await mountView();
+      await flushBridgePromises();
+
+      wrapper.unmount();
+
+      expect(mocks.store.commit.bridge.setHistoryId).not.toHaveBeenCalled();
+    });
+
+    it('clears the selected transaction id when an inactive transaction page unmounts', async () => {
+      const wrapper = await mountView();
+      await flushBridgePromises();
+
+      wrapper.unmount();
+
+      expect(mocks.store.commit.bridge.setHistoryId).toHaveBeenCalledWith();
     });
   }
 );

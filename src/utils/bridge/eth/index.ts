@@ -11,7 +11,7 @@ import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/bridge/eth/classes/reducers';
 import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
-import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
+import { getTransaction as getEthBridgeTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 
@@ -45,7 +45,8 @@ const ethBridge: EthBridge = new Bridge({
   addAsset: (assetAddress: string) => resolveWalletStore().addAsset(assetAddress),
   getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
-  getTransaction,
+  getTransaction: (id: string) =>
+    (resolveBridgeStore().getHistoryTransaction(id) || getEthBridgeTransaction(id)) as EthHistory,
   updateTransaction,
   // ui integration
   showNotification: (tx: EthHistory) => resolveBridgeStore().setNotificationData(tx as any),

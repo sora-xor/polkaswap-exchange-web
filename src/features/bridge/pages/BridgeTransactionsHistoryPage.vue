@@ -110,7 +110,7 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 import WalletComponentFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletComponentHistoryPagination from '@/lib/soraneo-wallet/src/components/HistoryPagination.vue';
-import BridgeNetworkSelector from '@/components/pages/Bridge/NetworkSelector.vue';
+import BridgeNetworkSelector from '@/features/bridge/components/NetworkSelector.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 
 const SearchAttrs = [

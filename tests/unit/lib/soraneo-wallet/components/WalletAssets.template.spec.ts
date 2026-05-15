@@ -8,6 +8,8 @@ describe('WalletAssets template', () => {
     expect(source).toContain('<template #item');
     expect(source).toContain('v-if="visibleAssetList.length"');
     expect(source).toContain('v-model="visibleAssetList"');
+    expect(source).toContain('v-loading="assetsLoading"');
+    expect(source).toContain('v-if="showEmptyAssets"');
     expect(source).not.toContain('v-if="showAsset(asset)"');
     expect(source).toContain('<div v-else class="wallet-assets__draggable">');
   });

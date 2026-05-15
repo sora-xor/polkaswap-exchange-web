@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 
+import { resolveDynamicComponentTag } from '@/lib/soramitsu-ui/util';
 import { ROW_INJECTION_KEY } from '../Row/context';
 
 type ResponsiveConfig = Partial<Record<'span' | 'offset' | 'push' | 'pull', number>>;
@@ -106,7 +107,7 @@ const style = computed(() => {
   return map;
 });
 
-const tag = computed(() => props.tag || 'div');
+const tag = computed(() => resolveDynamicComponentTag(props.tag, 'div'));
 </script>
 
 <template>

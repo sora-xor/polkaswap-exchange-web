@@ -135,6 +135,15 @@ const createOutgoingHistoryElement = (id: string, timestamp: number) => ({
   calls: [],
 });
 
+const createOutgoingHistoryElementWithoutRequestHash = (id: string, timestamp: number) => ({
+  ...createOutgoingHistoryElement(id, timestamp),
+  data: {
+    amount: '1',
+    assetId: XOR.address,
+    sidechainAddress: '0xrecipient',
+  },
+});
+
 const mockIncomingCall = (recipient = 'sora-address') => ({
   section: 'ethBridge',
   method: 'importIncomingRequest',
@@ -250,5 +259,105 @@ describe('EthBridgeHistory', () => {
     );
     expect(updateCallback).toHaveBeenCalledTimes(1);
     expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 20);
+  });
+
+  it('does not advance the sync timestamp from unrelated global incoming rows', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const otherRecipient = createIncomingHistoryElement('other-recipient', 20);
+
+    ethBridgeApiMock.state.storage.ethBridgeHistorySyncTimestamp = '7';
+    (history as any).externalNetwork = 1;
+    createTypeMock.mockImplementation(() => mockIncomingCall('other-sora-address'));
+    setPagedHistory([otherRecipient]);
+
+    await history.updateAccountHistory(
+      'sora-address',
+      { [Operation.EthBridgeOutgoing]: '0' } as any,
+      {},
+      () => ({ ...XOR, decimals: 18 } as any)
+    );
+
+    expect(ethBridgeApiMock.generateHistoryItem).not.toHaveBeenCalled();
+    expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 7);
+  });
+
+  it('retries from the beginning when a stale sync timestamp only returns unrelated incoming rows', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const otherRecipient = createIncomingHistoryElement('other-recipient', 50);
+    const outgoing = createOutgoingHistoryElementWithoutRequestHash('restored-after-fallback', 22);
+
+    ethBridgeApiMock.state.storage.ethBridgeHistorySyncTimestamp = '40';
+    ethBridgeApiMock.history = {
+      'local-unrelated': {
+        id: 'local-unrelated',
+        type: Operation.EthBridgeOutgoing,
+        hash: 'local-unrelated-hash',
+        transactionState: ETH_BRIDGE_STATES.SORA_PENDING,
+      },
+    };
+    (history as any).externalNetwork = 1;
+    vi.spyOn(history, 'findEthTxBySoraHash').mockResolvedValue(null);
+    createTypeMock.mockReturnValue(mockIncomingCall('other-sora-address'));
+    getHistoryPagedMock.mockImplementation(async ({ filter }) => {
+      const operation = filter.operations?.[0];
+      const nodes =
+        filter.timestamp === 40
+          ? operation === Operation.EthBridgeIncoming
+            ? [otherRecipient]
+            : []
+          : operation === Operation.EthBridgeOutgoing
+            ? [outgoing]
+            : [];
+
+      return {
+        edges: nodes.map((node) => ({ node })),
+        pageInfo: { hasNextPage: false, endCursor: '' },
+      };
+    });
+
+    await history.updateAccountHistory(
+      'sora-address',
+      { [Operation.EthBridgeOutgoing]: '0' } as any,
+      {},
+      () => ({ ...XOR, decimals: 18 } as any)
+    );
+
+    expect(ethBridgeApiMock.generateHistoryItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        txId: 'restored-after-fallback',
+        hash: 'restored-after-fallback',
+      })
+    );
+    expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 22);
+  });
+
+  it('restores outgoing ETH rows that no longer include an indexer requestHash field', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const outgoing = createOutgoingHistoryElementWithoutRequestHash('outgoing-no-request-hash', 22);
+
+    (history as any).externalNetwork = 1;
+    vi.spyOn(history, 'findEthTxBySoraHash').mockResolvedValue(null);
+    setPagedHistory([], [outgoing]);
+
+    await history.updateAccountHistory(
+      'sora-address',
+      { [Operation.EthBridgeOutgoing]: '0' } as any,
+      {},
+      () => ({ ...XOR, decimals: 18 } as any)
+    );
+
+    expect(ethBridgeApiMock.generateHistoryItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        txId: 'outgoing-no-request-hash',
+        type: Operation.EthBridgeOutgoing,
+        from: 'sora-address',
+        amount: '1',
+        assetAddress: XOR.address,
+        hash: 'outgoing-no-request-hash',
+        transactionState: ETH_BRIDGE_STATES.SORA_PENDING,
+        to: '0xrecipient',
+      })
+    );
+    expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 22);
   });
 });

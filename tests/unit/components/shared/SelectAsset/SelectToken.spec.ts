@@ -128,7 +128,7 @@ const DialogBaseStub = defineComponent({
       default: '',
     },
   },
-  emits: ['update:visible'],
+  emits: ['update:visible', 'after-open'],
   template:
     '<div class="dialog-base-stub" :data-custom-class="customClass" :data-wrapper-class="wrapperClass"><slot /></div>',
 });
@@ -382,6 +382,39 @@ describe('SelectToken', () => {
     await waitForAssetsListHydration();
 
     expect(wrapper.findComponent(SelectAssetListStub).exists()).toBe(true);
+  });
+
+  it('clears and focuses the search input when the selector opens', async () => {
+    const wrapper = mountComponent({ visible: false });
+    const vm = wrapper.vm as unknown as { query: string };
+
+    vm.query = 'val';
+    await nextTick();
+
+    expect(searchFocusSpy).not.toHaveBeenCalled();
+
+    await wrapper.setProps({ visible: true });
+    await nextTick();
+    await nextTick();
+
+    expect(vm.query).toBe('');
+    expect(searchFocusSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('refocuses the search input after the modal focus trap finishes opening', async () => {
+    const wrapper = mountComponent();
+    const vm = wrapper.vm as unknown as { query: string };
+
+    await nextTick();
+    await nextTick();
+    searchFocusSpy.mockClear();
+    vm.query = 'xor';
+
+    wrapper.getComponent(DialogBaseStub).vm.$emit('after-open');
+    await nextTick();
+
+    expect(vm.query).toBe('');
+    expect(searchFocusSpy).toHaveBeenCalledTimes(1);
   });
 
   it('skips balance hydration for disconnected selectors', async () => {
