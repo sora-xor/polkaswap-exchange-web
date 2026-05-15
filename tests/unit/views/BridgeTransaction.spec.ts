@@ -484,6 +484,18 @@ describe(
       expect(bridgeTransactionSource).toContain('buildBridgeAddressAriaLabel(direction, link.placeholder)');
     });
 
+    it('renders pending bridge actions with a concrete network name', () => {
+      expect(bridgeTransactionSource).toContain('{{ transactionPendingText }}');
+      expect(bridgeTransactionSource).toContain(
+        "t('bridgeTransaction.pending', { network: txPendingNetworkName.value })"
+      );
+    });
+
+    it('starts bridge transaction processing without awaiting the full bridge state machine', () => {
+      expect(bridgeTransactionSource).toContain('void bridgeStore.handleBridgeTransaction(id).catch');
+      expect(bridgeTransactionSource).not.toContain('await bridgeStore.handleBridgeTransaction');
+    });
+
     it('triggers wallet connect when an EVM account mismatch is detected', async () => {
       mocks.historyItem.value = createTransaction({ to: '0xother' });
       mocks.externalAccount.value = '0xcurrent';

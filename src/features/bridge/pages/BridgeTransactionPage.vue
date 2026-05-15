@@ -162,7 +162,7 @@
           <template v-else-if="txWaitingForApprove">{{
             t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
           }}</template>
-          <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
+          <template v-else-if="isTxPending">{{ transactionPendingText }}</template>
           <template v-else-if="!(isOutgoing || isValidNetwork)">{{ t('changeNetworkText') }}</template>
           <template v-else-if="isInsufficientBalance">{{
             t('insufficientBalanceText', { tokenSymbol: assetSymbol })
@@ -210,7 +210,11 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { type ExplorerLink, PageNames, ZeroStringValue } from '@/consts';
 import { resolveBridgeBackLocation } from '@/features/bridge/services/navigationHistory';
-import { buildBridgeAddressAriaLabel } from '@/features/bridge/pages/bridgeTransactionPage.utils';
+import {
+  buildBridgeAddressAriaLabel,
+  isBridgeWaitingForSoraConfirmation,
+  resolveBridgePendingNetworkName,
+} from '@/features/bridge/pages/bridgeTransactionPage.utils';
 import { useBridgeStore } from '@/stores/bridge';
 import {
   formatAddress,
@@ -375,6 +379,7 @@ const isTxWaiting = computed(() => bridgeTransaction.formatter.isWaitingForActio
 const isTxPending = computed(() => !isTxFailed.value && !isTxCompleted.value);
 const hasRetry = computed(() => isTxFailed.value && (txIsUnsigned.value || bridgeTransaction.isEvmTxType.value));
 const txIsFinilized = computed(() => !isTxPending.value && !isTxWaiting.value && !hasRetry.value);
+const isSoraConfirmationPending = computed(() => isBridgeWaitingForSoraConfirmation(txState.value));
 
 const headerIconClasses = computed(() => {
   const iconClass = 'header-icon';
@@ -394,7 +399,7 @@ const headerIconClasses = computed(() => {
 });
 
 const transactionStatus = computed(() => {
-  if (txIsUnsigned.value || isTxWaiting.value) {
+  if (txIsUnsigned.value || isTxWaiting.value || isSoraConfirmationPending.value) {
     return t('bridgeTransaction.statuses.waitingForConfirmation');
   }
   if (isTxFailed.value) {
@@ -470,6 +475,19 @@ const externalNetworkName = computed(() => {
   if (!(type && id)) return '';
   return bridgeTransaction.formatter.getNetworkName(type, id);
 });
+
+const txPendingNetworkName = computed(() =>
+  resolveBridgePendingNetworkName({
+    transactionState: txState.value,
+    isOutgoing: bridgeTransaction.isOutgoing.value,
+    internalNetworkName: bridgeTransaction.TranslationConsts.Sora,
+    externalNetworkName: externalNetworkName.value,
+  })
+);
+
+const transactionPendingText = computed(() =>
+  t('bridgeTransaction.pending', { network: txPendingNetworkName.value })
+);
 
 const parachainExplorerLinks = computed(() => {
   const type = bridgeTransaction.externalNetworkType.value;
@@ -585,10 +603,14 @@ function getLinkData(
   };
 }
 
-async function handleTransaction(withAutoStart = true): Promise<void> {
-  if (withAutoStart && tx.value?.id) {
-    await bridgeStore.handleBridgeTransaction(tx.value.id);
-  }
+function handleTransaction(withAutoStart = true): void {
+  if (!(withAutoStart && tx.value?.id)) return;
+
+  const id = tx.value.id;
+
+  void bridgeStore.handleBridgeTransaction(id).catch((error) => {
+    console.error('[BridgeTransactionPage]: bridge transaction processing failed', error);
+  });
 }
 
 function handleBack(): void {
@@ -639,9 +661,9 @@ onMounted(async () => {
     return;
   }
 
-  await withParentLoading(async () => {
+  await withParentLoading(() => {
     const withAutoStart = !txInProcess.value && isTxPending.value;
-    await handleTransaction(withAutoStart);
+    handleTransaction(withAutoStart);
   });
 });
 
