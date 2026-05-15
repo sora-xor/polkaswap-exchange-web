@@ -443,8 +443,8 @@ export class EthBridgeHistory {
       timestamp,
       ids,
     });
+    // Raw bridge-multisig incoming rows store the SORA recipient inside data.call, not in the indexer address.
     const incomingFilter = indexer.historyElementsFilter({
-      address,
       operations: [Operation.EthBridgeIncoming],
       timestamp,
       ids,

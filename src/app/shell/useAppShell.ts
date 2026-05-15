@@ -25,9 +25,9 @@ import { shouldLoadTelegramMiniApp } from '@/utils/telegramLaunch';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { getMobileCssClasses } from '@/utils/device';
 
+import { closeVisibleDialog, syncRouteScopedDialogVisibility, type DialogVisibilityBinding } from './dialogVisibility';
 import { buildRuntimeEnvConfigUrls, resolveRuntimeEnvConfigPayload, type RuntimeEnvConfig } from './runtimeEnvConfig';
 import { resolveAppMainRouteClass } from './policies/resolveAppMainRouteClass';
-import { resolveDialogVisibilityOnRouteChange } from './policies/resolveDialogVisibilityOnRouteChange';
 import { resolveDisclaimerVisibilityOnRouteChange } from './policies/resolveDisclaimerVisibilityOnRouteChange';
 import { resolveMenuVisibilityOnBreakpointChange } from './policies/resolveMenuVisibilityOnBreakpointChange';
 import { resolveMenuVisibilityOnRouteChange } from './policies/resolveMenuVisibilityOnRouteChange';
@@ -298,6 +298,39 @@ export function useAppShell() {
   const ipfsImageNormalizer = createIpfsImageNormalizer();
   const dataPlaneTelemetry = createDataPlaneTelemetry({ buildVariant, trackEvent });
 
+  function getShellDialogBindings(): DialogVisibilityBinding[] {
+    return [
+      {
+        isVisible: Boolean(web3Store.soraAccountDialogVisibility),
+        setVisibility: web3Store.setSoraAccountDialogVisibility,
+      },
+      {
+        isVisible: Boolean(web3Store.selectProviderDialogVisibility),
+        setVisibility: web3Store.setSelectProviderDialogVisibility,
+      },
+      {
+        isVisible: Boolean(web3Store.selectNetworkDialogVisibility),
+        setVisibility: web3Store.setSelectNetworkDialogVisibility,
+      },
+      {
+        isVisible: Boolean(web3Store.selectSubNodeDialogVisibility),
+        setVisibility: web3Store.setSelectSubNodeDialogVisibility,
+      },
+      {
+        isVisible: Boolean(web3Store.subAccountDialogVisibility),
+        setVisibility: web3Store.setSubAccountDialogVisibility,
+      },
+      {
+        isVisible: Boolean(settingsStore.selectNodeDialogVisibility),
+        setVisibility: settingsStore.setSelectNodeDialogVisibility,
+      },
+      {
+        isVisible: Boolean(settingsStore.selectIndexerDialogVisibility),
+        setVisibility: settingsStore.setSelectIndexerDialogVisibility,
+      },
+    ];
+  }
+
   async function getTransactionComposable(): Promise<TransactionComposable> {
     if (transactionComposable) return transactionComposable;
     const { useTransaction } = await loadTransactionModule();
@@ -565,35 +598,7 @@ export function useAppShell() {
     (nextPath, prevPath) => {
       menuVisibility.value = resolveMenuVisibilityOnRouteChange(menuVisibility.value, prevPath, nextPath);
 
-      const syncRouteScopedDialog = (isVisible: boolean, setter: unknown): void => {
-        const nextVisibility = resolveDialogVisibilityOnRouteChange(isVisible, prevPath, nextPath);
-        if (nextVisibility !== isVisible && typeof setter === 'function') {
-          setter(nextVisibility);
-        }
-      };
-
-      syncRouteScopedDialog(Boolean(web3Store.soraAccountDialogVisibility), web3Store.setSoraAccountDialogVisibility);
-      syncRouteScopedDialog(
-        Boolean(web3Store.selectProviderDialogVisibility),
-        web3Store.setSelectProviderDialogVisibility
-      );
-      syncRouteScopedDialog(
-        Boolean(web3Store.selectNetworkDialogVisibility),
-        web3Store.setSelectNetworkDialogVisibility
-      );
-      syncRouteScopedDialog(
-        Boolean(web3Store.selectSubNodeDialogVisibility),
-        web3Store.setSelectSubNodeDialogVisibility
-      );
-      syncRouteScopedDialog(Boolean(web3Store.subAccountDialogVisibility), web3Store.setSubAccountDialogVisibility);
-      syncRouteScopedDialog(
-        Boolean(settingsStore.selectNodeDialogVisibility),
-        settingsStore.setSelectNodeDialogVisibility
-      );
-      syncRouteScopedDialog(
-        Boolean(settingsStore.selectIndexerDialogVisibility),
-        settingsStore.setSelectIndexerDialogVisibility
-      );
+      getShellDialogBindings().forEach((dialog) => syncRouteScopedDialogVisibility(dialog, prevPath, nextPath));
     }
   );
 
@@ -618,22 +623,7 @@ export function useAppShell() {
 
     if (nextClass === prevClass) return;
 
-    const closeVisibleDialog = (isVisible: boolean, setter: unknown): void => {
-      if (isVisible && typeof setter === 'function') {
-        setter(false);
-      }
-    };
-
-    closeVisibleDialog(Boolean(web3Store.soraAccountDialogVisibility), web3Store.setSoraAccountDialogVisibility);
-    closeVisibleDialog(Boolean(web3Store.selectProviderDialogVisibility), web3Store.setSelectProviderDialogVisibility);
-    closeVisibleDialog(Boolean(web3Store.selectNetworkDialogVisibility), web3Store.setSelectNetworkDialogVisibility);
-    closeVisibleDialog(Boolean(web3Store.selectSubNodeDialogVisibility), web3Store.setSelectSubNodeDialogVisibility);
-    closeVisibleDialog(Boolean(web3Store.subAccountDialogVisibility), web3Store.setSubAccountDialogVisibility);
-    closeVisibleDialog(Boolean(settingsStore.selectNodeDialogVisibility), settingsStore.setSelectNodeDialogVisibility);
-    closeVisibleDialog(
-      Boolean(settingsStore.selectIndexerDialogVisibility),
-      settingsStore.setSelectIndexerDialogVisibility
-    );
+    getShellDialogBindings().forEach(closeVisibleDialog);
   });
 
   watch(

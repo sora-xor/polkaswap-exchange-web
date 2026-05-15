@@ -562,6 +562,7 @@ const mountApp = async () => {
   });
 
   await flushPromises();
+  await flushPromises();
   return wrapper;
 };
 
@@ -887,7 +888,7 @@ describe('App.vue dialog teardown wiring', () => {
 
     const wrapper = await mountApp();
 
-    expect(realtimeMocks.dataPlaneClient.start).toHaveBeenCalledTimes(1);
+    await vi.waitFor(() => expect(realtimeMocks.dataPlaneClient.start).toHaveBeenCalledTimes(1));
     realtimeMocks.dataPlaneClient.setVisibility.mockClear();
 
     Object.defineProperty(document, 'visibilityState', {

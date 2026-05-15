@@ -95,11 +95,53 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
     }
   }
 
+  private async restoreOutgoingTransactionBlock(id: string): Promise<void> {
+    const { blockId, blockHeight, from, hash, txId } = this.getTransaction(id);
+
+    if (blockId && txId) {
+      return;
+    }
+
+    const soraTxId = txId || hash;
+
+    if (!(from && soraTxId)) {
+      return;
+    }
+
+    const bridgeHistory = await this.getBridgeHistoryInstance();
+    const historyItem = first(await bridgeHistory.fetchHistoryElements(from as string, 0, [soraTxId]));
+
+    if (!historyItem?.blockHash) {
+      return;
+    }
+
+    const requestHash = (historyItem.data as POLKASWAP_TYPES.HistoryElementEthBridgeOutgoing)?.requestHash;
+
+    this.updateTransactionParams(id, {
+      txId: soraTxId,
+      blockId: historyItem.blockHash,
+      blockHeight: blockHeight ?? Number(historyItem.blockHeight),
+      ...(requestHash ? { hash: requestHash } : {}),
+    });
+  }
+
   private async restoreOutgoingRequestHash(id: string): Promise<void> {
-    const { blockId, txId } = this.getTransaction(id);
+    await this.restoreOutgoingTransactionBlock(id);
+
+    const restoredTx = this.getTransaction(id);
+
+    if (restoredTx.hash) {
+      const requestStatus = await ethBridgeApi.getRequestStatus(restoredTx.hash);
+
+      if (requestStatus != null) {
+        return;
+      }
+    }
+
+    const { blockId, txId } = restoredTx;
 
     if (!(blockId && txId)) {
-      return;
+      throw new Error(`[Bridge]: Unable to restore ETH bridge request hash because SORA block data is unavailable`);
     }
 
     const transactionEvents = await getTransactionEvents(blockId, txId, ethBridgeApi.api);

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const ethBridgeApiMock = vi.hoisted(() => ({
   getHistory: vi.fn(),
@@ -105,10 +105,15 @@ import {
 
 describe('ETH bridge utils', () => {
   beforeEach(() => {
+    vi.useRealTimers();
     Object.values(ethBridgeApiMock).forEach((mock) => mock.mockReset());
     Object.values(ethersUtilMock).forEach((mock) => mock.mockReset());
     ethersUtilMock.accountAddressToHex.mockImplementation((address: string) => `hex:${address}`);
     ethersUtilMock.getContract.mockResolvedValue({ contract: 'mock' });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('detects outgoing Ethereum bridge transactions', () => {
@@ -196,8 +201,8 @@ describe('ETH bridge utils', () => {
 
     ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
-      subscribe: (handler: (status: string) => void) => {
-        handler('Ready');
+      subscribe: (observer: { next: (status: string) => void }) => {
+        observer.next('Ready');
         return { unsubscribe };
       },
     });
@@ -217,11 +222,49 @@ describe('ETH bridge utils', () => {
     expect(ethBridgeApiMock.subscribeOnRequestStatus).not.toHaveBeenCalled();
   });
 
+  it('polls request status when the subscription does not emit approval updates', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const request = { hash: '0xhash', from: '0xfrom' };
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValueOnce(null).mockResolvedValueOnce('Ready');
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
+    ethBridgeApiMock.getApprovedRequest.mockResolvedValue(request);
+
+    const promise = waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any);
+
+    await vi.advanceTimersByTimeAsync(6_000);
+
+    await expect(promise).resolves.toBe(request);
+    expect(ethBridgeApiMock.getRequestStatus).toHaveBeenCalledTimes(2);
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects approved request waiting instead of staying pending forever', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
+
+    const promise = waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any);
+    const expectation = expect(promise).rejects.toThrow('[Bridge]: Transaction approval timed out, hash="0xhash"');
+
+    await vi.advanceTimersByTimeAsync(10 * 60_000);
+
+    await expectation;
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
   it('rejects approved request waiting when bridge status becomes failed', async () => {
     ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
-      subscribe: (handler: (status: string) => void) => {
-        handler('Failed');
+      subscribe: (observer: { next: (status: string) => void }) => {
+        observer.next('Failed');
         return { unsubscribe: vi.fn() };
       },
     });

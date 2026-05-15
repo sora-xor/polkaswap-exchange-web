@@ -100,6 +100,66 @@ describe('EthBridgeOutgoingReducer', () => {
     });
   });
 
+  it('restores missing SORA block data from history before reading the bridge request hash', async () => {
+    const tx = {
+      id: 'tx-outgoing',
+      type: Operation.EthBridgeOutgoing,
+      from: 'sora-address',
+      hash: '0xextrinsic-hash',
+    } as any;
+    const updateTransaction = vi.fn((id: string, params: Record<string, unknown>) => {
+      if (id === tx.id) {
+        Object.assign(tx, params);
+      }
+    });
+    const fetchHistoryElements = vi.fn().mockResolvedValue([
+      {
+        id: '0xextrinsic-hash',
+        blockHash: '0xblock',
+        blockHeight: '123',
+        data: {},
+      },
+    ]);
+    const getBridgeHistoryInstance = vi.fn().mockResolvedValue({ fetchHistoryElements });
+    const reducer = createReducer(tx, updateTransaction, { getBridgeHistoryInstance });
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
+    getTransactionEventsMock.mockResolvedValueOnce([
+      {
+        event: {
+          data: [{ toString: () => '0xrequest-hash' }],
+        },
+      },
+    ]);
+
+    await (reducer as any).ensureOutgoingRequestHash(tx.id);
+
+    expect(fetchHistoryElements).toHaveBeenCalledWith('sora-address', 0, ['0xextrinsic-hash']);
+    expect(getTransactionEventsMock).toHaveBeenCalledWith('0xblock', '0xextrinsic-hash', ethBridgeApiMock.api);
+    expect(tx).toMatchObject({
+      txId: '0xextrinsic-hash',
+      blockId: '0xblock',
+      blockHeight: 123,
+      hash: '0xrequest-hash',
+    });
+  });
+
+  it('rejects invalid local hashes when the SORA block data cannot be restored', async () => {
+    const tx = {
+      id: 'tx-outgoing',
+      type: Operation.EthBridgeOutgoing,
+      hash: '0xextrinsic-hash',
+    };
+    const reducer = createReducer(tx);
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
+
+    await expect((reducer as any).ensureOutgoingRequestHash(tx.id)).rejects.toThrow(
+      '[Bridge]: Unable to restore ETH bridge request hash because SORA block data is unavailable'
+    );
+    expect(getTransactionEventsMock).not.toHaveBeenCalled();
+  });
+
   it('keeps an existing hash when it already resolves to a bridge request status', async () => {
     const tx = {
       id: 'tx-outgoing',

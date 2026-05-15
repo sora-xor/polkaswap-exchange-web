@@ -14,7 +14,7 @@ import { api } from '@/lib/soraneo-wallet/src/api';
 import { beforeTransactionSign } from '@/lib/soraneo-wallet/src/util';
 import { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
-import { getDataPlaneClient, normalizeRealtimeProfile, parseSubstrateHeaderNumber } from '@/services/realtime';
+import { getDataPlaneClient, parseSubstrateHeaderNumber } from '@/services/realtime';
 import { resolveNativeBridgeToken, resolveRegisteredAssets } from '@/stores/bridge/assets';
 import {
   assertPositiveBridgeTransactionAmount,
@@ -28,6 +28,18 @@ import { useAssetsStore } from '@/stores/assets';
 import { buildInitialBridgeState } from '@/stores/bridge/state';
 import { resolveBridgeExternalNetworkType, resolveBridgeOperation } from '@/stores/bridge/network';
 import {
+  clearReconcileTimer,
+  createBridgeSignDialogController,
+  enqueueWorkerLifecycle,
+  flushWorkerLifecycle,
+  getBridgeRealtimeState,
+  resolveBridgeSubscriptionEndpoint,
+  resolveRealtimeProfile,
+  scheduleReconcile,
+  updateExternalBlockNumber,
+  type BridgeRealtimeStoreLike,
+} from '@/stores/bridge/realtime';
+import {
   syncAmountReceivedCompat,
   syncAmountSendCompat,
   syncAssetAddressValueCompat,
@@ -36,7 +48,6 @@ import {
   syncBalancesFetchingCompat,
   syncBlockUpdatesSubscriptionCompat,
   syncDirectionCompat,
-  syncExternalBlockNumberCompat,
   syncExternalMinBalanceCompat,
   syncExternalNetworkFeeCompat,
   syncExternalTransferFeeCompat,
@@ -63,7 +74,6 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
 import type { Nullable } from '@/types/common';
-import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
 import { BridgeTransactionSignDialogMode } from '@/utils/bridge/common/types';
 import { isDenominatedAsset, isWaitingForAction, waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
@@ -96,16 +106,7 @@ import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
-import type { RealtimeProfile } from '@/services/realtime';
 
-type BridgeRealtimeStoreLike = BridgeStateStoreLike &
-  Pick<BridgeState, 'connector'> & {
-    $subscribe: (callback: (mutation: unknown, state: BridgeState) => void, options?: unknown) => () => void;
-    setSignTxDialogVisibility: (visible: boolean) => void;
-    updateExternalBalance: () => Promise<void>;
-    updateExternalMinBalance: () => Promise<void>;
-    updateFeesAndLockedFunds: () => Promise<void>;
-  };
 type BridgeApiLike = {
   history: Record<string, IBridgeTransaction>;
   generateHistoryItem: (data: unknown) => Nullable<IBridgeTransaction>;
@@ -113,23 +114,7 @@ type BridgeApiLike = {
   getLockedAssets?: (...params: unknown[]) => Promise<CodecString>;
   getNetworkFee?: (...params: unknown[]) => Promise<CodecString>;
 };
-type BridgeRealtimeRuntimeState = {
-  reconcileTimer: ReturnType<typeof setTimeout> | null;
-  reconcileInFlight: boolean;
-  reconcileLastRunTs: number;
-  reconcilePending: boolean;
-  workerLifecycle: Promise<void>;
-};
-
-const BRIDGE_REALTIME_RUNTIME_STATE = new WeakMap<object, BridgeRealtimeRuntimeState>();
-const PROFILE_RECONCILE_INTERVAL_MS: Record<RealtimeProfile, { visible: number; hidden: number }> = {
-  balanced: { visible: 1000, hidden: 5000 },
-  ultra: { visible: 250, hidden: 1000 },
-  load_first: { visible: 2000, hidden: 7000 },
-};
 const dataPlaneClient = getDataPlaneClient();
-
-let lastEvmBlockPollTs = 0;
 
 const Direction =
   BridgeTxDirection ??
@@ -139,156 +124,6 @@ const Direction =
   } as Record<'Outgoing' | 'Incoming', string>);
 
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object';
-
-// Bridge signing still relies on wallet-level password checks, but the dialog
-// itself is owned by the bridge Pinia UI state instead of a root-store mutation.
-const createBridgeSignDialogController = (store: BridgeRealtimeStoreLike): TransactionSignVisibilityController => {
-  return {
-    setVisibility: (visible: boolean) => {
-      store.setSignTxDialogVisibility(visible);
-    },
-    subscribe: (handler: (visible: boolean) => void) => {
-      let previous = Boolean(store.flags.isSignTxDialogVisible);
-
-      return store.$subscribe(
-        (_mutation, state) => {
-          const next = Boolean(state.flags?.isSignTxDialogVisible);
-
-          if (next === previous) {
-            return;
-          }
-
-          previous = next;
-          handler(next);
-        },
-        { detached: true, flush: 'sync' }
-      );
-    },
-  };
-};
-
-const getBridgeRealtimeState = (store: BridgeRealtimeStoreLike): BridgeRealtimeRuntimeState => {
-  const key = store as object;
-  const existing = BRIDGE_REALTIME_RUNTIME_STATE.get(key);
-
-  if (existing) {
-    return existing;
-  }
-
-  const created: BridgeRealtimeRuntimeState = {
-    reconcileTimer: null,
-    reconcileInFlight: false,
-    reconcileLastRunTs: 0,
-    reconcilePending: false,
-    workerLifecycle: Promise.resolve(),
-  };
-
-  BRIDGE_REALTIME_RUNTIME_STATE.set(key, created);
-
-  return created;
-};
-
-const enqueueWorkerLifecycle = (store: BridgeRealtimeStoreLike, task: () => Promise<void>): Promise<void> => {
-  const runtime = getBridgeRealtimeState(store);
-  runtime.workerLifecycle = runtime.workerLifecycle.then(task, task).catch(() => undefined);
-
-  return runtime.workerLifecycle;
-};
-
-const flushWorkerLifecycle = async (store: BridgeRealtimeStoreLike): Promise<void> => {
-  await getBridgeRealtimeState(store).workerLifecycle;
-};
-
-const resolveRealtimeProfile = (): RealtimeProfile => {
-  return normalizeRealtimeProfile(useSettingsStore().featureFlags.wsProfile) as RealtimeProfile;
-};
-
-const resolveReconcileInterval = (): number => {
-  const profile = resolveRealtimeProfile();
-  const visible = typeof document === 'undefined' ? true : document.visibilityState === 'visible';
-  const schedule = PROFILE_RECONCILE_INTERVAL_MS[profile];
-
-  return visible ? schedule.visible : schedule.hidden;
-};
-
-const clearReconcileTimer = (store: BridgeRealtimeStoreLike): void => {
-  const runtime = getBridgeRealtimeState(store);
-
-  if (runtime.reconcileTimer) {
-    clearTimeout(runtime.reconcileTimer);
-  }
-
-  runtime.reconcileTimer = null;
-  runtime.reconcilePending = false;
-};
-
-const refreshRealtimeBridgeData = async (store: BridgeRealtimeStoreLike): Promise<void> => {
-  await Promise.allSettled([
-    store.updateExternalBalance(),
-    store.updateExternalMinBalance(),
-    store.updateFeesAndLockedFunds(),
-  ]);
-};
-
-const runScheduledReconcile = async (store: BridgeRealtimeStoreLike): Promise<void> => {
-  const runtime = getBridgeRealtimeState(store);
-
-  if (runtime.reconcileInFlight) {
-    runtime.reconcilePending = true;
-    return;
-  }
-
-  runtime.reconcileInFlight = true;
-  runtime.reconcilePending = false;
-  runtime.reconcileLastRunTs = Date.now();
-
-  try {
-    await refreshRealtimeBridgeData(store);
-  } finally {
-    runtime.reconcileInFlight = false;
-
-    if (runtime.reconcilePending) {
-      runtime.reconcilePending = false;
-      scheduleReconcile(store);
-    }
-  }
-};
-
-const scheduleReconcile = (store: BridgeRealtimeStoreLike): void => {
-  const runtime = getBridgeRealtimeState(store);
-
-  if (runtime.reconcileInFlight) {
-    runtime.reconcilePending = true;
-    return;
-  }
-
-  if (runtime.reconcileTimer) {
-    return;
-  }
-
-  const interval = resolveReconcileInterval();
-  const now = Date.now();
-  const delay = Math.max(0, interval - (now - runtime.reconcileLastRunTs));
-
-  runtime.reconcileTimer = setTimeout(() => {
-    runtime.reconcileTimer = null;
-    void runScheduledReconcile(store);
-  }, delay);
-};
-
-const resolveBridgeSubscriptionEndpoint = (store: BridgeRealtimeStoreLike): string | null => {
-  if (useWeb3Store().networkType === BridgeNetworkType.Sub) {
-    return (
-      store.connector.network?.subNetworkConnection?.connection?.endpoint ??
-      store.connector.network?.subNetworkConnection?.node?.address ??
-      null
-    );
-  }
-
-  const settingsStore = useSettingsStore();
-
-  return settingsStore.appConnection?.connection?.endpoint ?? settingsStore.appConnection?.node?.address ?? null;
-};
 
 const shouldUseWorkerDataPlane = (): boolean => {
   return Boolean(useSettingsStore().featureFlags.wsWorkerDataPlane);
@@ -386,42 +221,6 @@ const chainAddress = (address: string, connector: SubNetworksConnector): string 
   }
 
   return address;
-};
-
-const updateExternalBlockNumber = async (
-  store: BridgeRealtimeStoreLike,
-  knownSubBlockNumber?: number
-): Promise<void> => {
-  const isSubBridge = useWeb3Store().networkType === BridgeNetworkType.Sub;
-
-  try {
-    if (isSubBridge) {
-      if (Number.isFinite(knownSubBlockNumber)) {
-        syncExternalBlockNumberCompat(store, knownSubBlockNumber as number);
-        return;
-      }
-
-      const subNetwork = store.connector?.network;
-      if (!subNetwork?.getBlockNumber) {
-        syncExternalBlockNumberCompat(store, 0);
-        return;
-      }
-
-      syncExternalBlockNumberCompat(store, await subNetwork.getBlockNumber());
-      return;
-    }
-
-    const now = Date.now();
-    if (now - lastEvmBlockPollTs < 3000) {
-      return;
-    }
-
-    lastEvmBlockPollTs = now;
-    syncExternalBlockNumberCompat(store, await ethersUtil.getBlockNumber());
-  } catch (error) {
-    console.error(error);
-    syncExternalBlockNumberCompat(store, 0);
-  }
 };
 
 const resolveBridgeApi = (): BridgeApiLike => {

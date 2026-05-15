@@ -64,6 +64,8 @@ export const updateTransaction = async (id: string, params = {}) => {
 };
 
 const failedRequestStatuses = [BridgeTxStatus.Failed, BridgeTxStatus.Frozen, BridgeTxStatus.Broken];
+const REQUEST_READY_POLL_INTERVAL_MS = 6_000;
+const REQUEST_READY_TIMEOUT_MS = 10 * 60_000;
 
 const assertRequestStatusIsNotFailed = (status: unknown): void => {
   if (failedRequestStatuses.includes(status as BridgeTxStatus)) {
@@ -82,23 +84,50 @@ const waitForReadyRequestStatus = async (hash: string): Promise<void> => {
   }
 
   let subscription: Subscription | undefined;
+  let pollInterval: ReturnType<typeof setInterval> | undefined;
+  let timeout: ReturnType<typeof setTimeout> | undefined;
 
   try {
     await new Promise<void>((resolve, reject) => {
-      subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe((status) => {
+      let settled = false;
+
+      const settle = (callback: () => void): void => {
+        if (settled) return;
+        settled = true;
+        callback();
+      };
+      const handleStatus = (status: BridgeTxStatus | null): void => {
         try {
           assertRequestStatusIsNotFailed(status);
         } catch (error) {
-          reject(error);
+          settle(() => reject(error));
           return;
         }
 
         if (status === BridgeTxStatus.Ready) {
-          resolve();
+          settle(resolve);
         }
+      };
+      const pollStatus = async (): Promise<void> => {
+        try {
+          handleStatus(await ethBridgeApi.getRequestStatus(hash));
+        } catch (error) {
+          settle(() => reject(error));
+        }
+      };
+
+      subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe({
+        next: handleStatus,
+        error: (error) => settle(() => reject(error)),
       });
+      pollInterval = setInterval(() => void pollStatus(), REQUEST_READY_POLL_INTERVAL_MS);
+      timeout = setTimeout(() => {
+        settle(() => reject(new Error(`[Bridge]: Transaction approval timed out, hash="${hash}"`)));
+      }, REQUEST_READY_TIMEOUT_MS);
     });
   } finally {
+    if (pollInterval) clearInterval(pollInterval);
+    if (timeout) clearTimeout(timeout);
     subscription?.unsubscribe();
   }
 };

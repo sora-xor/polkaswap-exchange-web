@@ -126,6 +126,8 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { OrderStatus } from '@/types/orderBook';
 
+import { resolveOrderTableScrollElements, type OrderTableComponentRef } from '../table';
+
 import type { OrderData } from '@/types/orderBook';
 import type { LimitOrder } from '@sora-substrate/sdk/build/orderBook/types';
 import type { OrderStatus as OrderStatusType } from '@/lib/soraneo-wallet/src/services/indexer/types';
@@ -183,7 +185,7 @@ const settingsStore = useSettingsStore();
 const formattedAmount = useFormattedAmount();
 const { loading, withParentLoading } = useLoading({ parentLoading: () => props.parentLoading });
 
-const tableComponent = ref<any>();
+const tableComponent = ref<OrderTableComponentRef | null>(null);
 const teardownScrollSync = ref<Nullable<() => void>>(null);
 
 const PriceVariant = LiquidityPriceVariant;
@@ -279,22 +281,23 @@ watch(
 
 const initScrollbarSync = () => {
   const elTable = tableComponent.value;
-  const elTableBodyWrapper = elTable?.$refs?.bodyWrapper as HTMLElement | undefined;
-  const elTableHeaderWrapper = elTable?.$refs?.headerWrapper as HTMLElement | undefined;
+  const scrollElements = resolveOrderTableScrollElements(elTable);
 
-  if (!elTableBodyWrapper || !elTableHeaderWrapper) return;
+  if (!elTable || !scrollElements) return;
+
+  const { bodyWrapper, headerWrapper } = scrollElements;
 
   const syncScroll = () => {
-    const scrollLeft = elTableBodyWrapper.scrollLeft;
-    elTableHeaderWrapper.scrollLeft = scrollLeft;
+    const scrollLeft = bodyWrapper.scrollLeft;
+    headerWrapper.scrollLeft = scrollLeft;
     elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
   };
 
-  elTableBodyWrapper.addEventListener('scroll', syncScroll, { passive: true });
+  bodyWrapper.addEventListener('scroll', syncScroll, { passive: true });
   syncScroll();
 
   teardownScrollSync.value = () => {
-    elTableBodyWrapper.removeEventListener('scroll', syncScroll);
+    bodyWrapper.removeEventListener('scroll', syncScroll);
   };
 };
 
