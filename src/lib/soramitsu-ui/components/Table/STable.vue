@@ -803,6 +803,7 @@ const hasClickRowHandler = computed(
 $col-number: v-bind(cardsGridColumnNumber);
 
 .s-table {
+  overflow-x: auto;
   overflow-y: auto;
 
   &__cards-grid {

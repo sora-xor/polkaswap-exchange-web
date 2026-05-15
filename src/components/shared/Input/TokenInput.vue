@@ -412,6 +412,8 @@ $el-input-class: '.el-input';
     & > .s-input__content {
       color: var(--s-color-fiat-value);
       gap: 0;
+      padding-left: 0;
+      padding-right: 0;
       line-height: var(--s-line-height-medium);
       letter-spacing: var(--s-letter-spacing-small);
       font-size: var(--s-font-size-small);

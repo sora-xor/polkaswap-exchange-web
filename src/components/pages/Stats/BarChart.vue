@@ -28,7 +28,6 @@
 <script setup lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -80,15 +79,16 @@ const normalizeTo = (sample: ChartData[], difference: number, from: number, to: 
 
 const normalizeData = (collection: ChartData[], difference: number, from: number, to: number): ChartData[] => {
   const sample: ChartData[] = [];
+  const sortedCollection = collection.slice().sort((a, b) => b.timestamp - a.timestamp);
 
-  for (const item of collection) {
+  for (const item of sortedCollection) {
     normalizeTo(sample, difference, from, item.timestamp);
     sample.push(item);
   }
 
   normalizeTo(sample, difference, from, to);
 
-  return sample;
+  return sample.sort((a, b) => a.timestamp - b.timestamp);
 };
 
 const props = withDefaults(

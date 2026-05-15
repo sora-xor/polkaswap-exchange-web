@@ -39,6 +39,27 @@ describe('ConnectionItems', () => {
     expect((wrapper.vm as any).style).toEqual({});
   });
 
+  it('sizes the default account-list viewport from the rendered row height', () => {
+    const wrapper = mount(ConnectionItems, {
+      props: {
+        size: 7,
+      },
+      global: {
+        stubs: {
+          SScrollbar: { template: '<div><slot /></div>' },
+        },
+      },
+    });
+
+    expect((wrapper.vm as any).style).toEqual({ height: '496px' });
+  });
+
+  it('uses border-box rows so card padding does not clip the account list', () => {
+    expect(connectionItemsSource).toContain('itemHeight: 64');
+    expect(connectionItemsSource).toContain('.connection-items-list');
+    expect(connectionItemsSource).toMatch(/& > \.account-card\s*\{[\s\S]*box-sizing:\s*border-box;/);
+  });
+
   it('keeps the wallet list scrollbar on the production selector and rail geometry', () => {
     expect(connectionItemsSource).toContain('.connection-items.el-scrollbar');
     expect(connectionItemsSource).not.toContain('.connection-items.s-scrollbar.el-scrollbar');

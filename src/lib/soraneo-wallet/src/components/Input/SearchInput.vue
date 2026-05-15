@@ -72,8 +72,58 @@ function handleClearSearch(): void {
 
 <style lang="scss">
 .search-input {
+  display: flex;
   position: relative;
   margin-top: 2px; // to deal with outline
+  min-height: var(--s-size-big);
+  padding: 8px 16px;
+  border: 0 solid var(--s-color-base-border-primary);
+  border-radius: var(--s-border-radius-small);
+  background-color: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
+
+  @include focus-outline($focusWithin: true, $withOffset: true);
+
+  .s-input__content {
+    position: relative;
+    width: 100%;
+    min-height: 21px;
+    margin: auto 0;
+    padding: 0;
+    gap: 0;
+    border: 0 none var(--s-color-base-content-primary);
+  }
+
+  .s-input__input {
+    display: block;
+    position: relative;
+    width: 100%;
+    border: 0 none var(--s-color-base-content-primary);
+  }
+
+  .s-input__prefix,
+  .s-input__suffix {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    transform: translateY(-50%);
+  }
+
+  .s-input__prefix {
+    left: 0;
+    color: var(--s-color-base-content-secondary);
+  }
+
+  .s-input__suffix {
+    right: 0;
+  }
+
+  .el-input__inner {
+    height: 21px;
+    padding: 0 26px;
+    line-height: 21px;
+  }
 
   .s-button--clear {
     width: 18px;

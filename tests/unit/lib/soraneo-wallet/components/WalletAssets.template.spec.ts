@@ -76,6 +76,10 @@ describe('WalletAssets template', () => {
     expect(source).toContain('padding: 4px 8px;');
     expect(source).toContain('flex: 1 0 100%;');
     expect(source).toContain('margin-left: auto;');
+    expect(source).toContain('id="wallet-assets-filter-verified-only"');
+    expect(source).toContain(':label="t(\'filter.verifiedOnly\')"');
+    expect(source).toContain('id="wallet-assets-filter-zero-balance"');
+    expect(source).toContain(':label="t(\'filter.zeroBalance\')"');
   });
 
   it('keeps wallet header actions on shared production button sizing', async () => {

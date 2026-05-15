@@ -20,12 +20,20 @@
         </s-radio-group>
         <s-divider class="wallet-assets-filter__divider"></s-divider>
         <div class="wallet-assets-filter__switch">
-          <s-switch v-model="onlyVerifiedAssets" :disabled="verifiedOnlySwitchDisabled"></s-switch>
-          <span>{{ t('filter.verifiedOnly') }}</span>
+          <s-switch
+            id="wallet-assets-filter-verified-only"
+            v-model="onlyVerifiedAssets"
+            :disabled="verifiedOnlySwitchDisabled"
+            :label="t('filter.verifiedOnly')"
+          ></s-switch>
         </div>
         <div class="wallet-assets-filter__switch">
-          <s-switch v-model="zeroBalanceAssets" :disabled="zeroBalanceSwitch"></s-switch>
-          <span>{{ t('filter.zeroBalance') }}</span>
+          <s-switch
+            id="wallet-assets-filter-zero-balance"
+            v-model="zeroBalanceAssets"
+            :disabled="zeroBalanceSwitch"
+            :label="t('filter.zeroBalance')"
+          ></s-switch>
         </div>
         <template #reference>
           <div v-button class="wallet-assets-filter__button">
@@ -239,6 +247,12 @@ $size-px: 16px;
     @include switch-block(var(--s-font-size-small));
     & {
       padding-top: 0;
+    }
+    .s-switch__label {
+      font-size: var(--s-font-size-small);
+      font-weight: 300;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-medium);
     }
     .s-switch.neumorphic .el-switch__input:disabled + .el-switch__core {
       background-color: var(--s-color-base-border-secondary);

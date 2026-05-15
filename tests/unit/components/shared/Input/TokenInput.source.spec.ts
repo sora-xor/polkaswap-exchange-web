@@ -14,6 +14,8 @@ describe('TokenInput source', () => {
     expect(tokenInputSource).toContain('&--fiat {');
     expect(tokenInputSource).toContain('& > .s-input__content {');
     expect(tokenInputSource).toContain('gap: 0;');
+    expect(tokenInputSource).toContain('padding-left: 0;');
+    expect(tokenInputSource).toContain('padding-right: 0;');
     expect(tokenInputSource).toContain('.input-prefix {');
   });
 

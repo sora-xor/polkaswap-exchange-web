@@ -294,24 +294,29 @@ onMounted(() => {
 }
 
 .wallet-dashboard {
-  max-width: min(760px, calc(100vw - 32px));
+  max-width: min($inner-window-width, calc(100vw - 32px));
   width: 100%;
+  border-radius: var(--s-border-radius-small);
 
   &.base,
   &.container.container--wallet {
-    max-width: min(760px, calc(100vw - 32px));
+    max-width: min($inner-window-width, calc(100vw - 32px));
+  }
+
+  &.s-card.neumorphic.s-size-big {
+    padding: 0;
   }
 
   :deep(.el-card__header) {
-    padding-bottom: 4px;
+    padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-mini;
   }
 
   :deep(.base-title) {
-    align-items: flex-start;
+    align-items: center;
     gap: 16px;
     height: auto;
     min-height: var(--s-size-medium);
-    margin-bottom: 20px;
+    margin-bottom: 0;
     padding-right: 0;
   }
 
@@ -346,7 +351,7 @@ onMounted(() => {
 
   .wallet {
     margin-top: 18px;
-    padding: 0 28px 28px;
+    padding: 0 $inner-spacing-medium $inner-spacing-medium;
   }
 
   .wallet-tabs {
@@ -428,10 +433,11 @@ onMounted(() => {
 }
 
 .wallet-account-panel {
-  margin: 0 28px;
+  margin: 0 $inner-spacing-medium;
 
   &.s-card.neumorphic {
     border: 1px solid var(--s-color-base-border-primary);
+    border-radius: var(--s-border-radius-small);
     background: var(--s-color-utility-body);
     box-shadow: none;
   }

@@ -20,7 +20,7 @@ const props = withDefaults(
     size: 0,
     visible: 7,
     itemOffset: 8,
-    itemHeight: 60,
+    itemHeight: 64,
   }
 );
 
@@ -37,7 +37,7 @@ const style = computed<Partial<CSSStyleDeclaration>>(() => {
 </script>
 
 <style lang="scss">
-$item-height: 60px;
+$item-height: 64px;
 
 .connection-items.el-scrollbar {
   @include scrollbar($basic-spacing-big);
@@ -63,28 +63,29 @@ $item-height: 60px;
   > .el-scrollbar__bar.is-horizontal {
     display: none !important;
   }
+}
 
-  &-list {
-    display: flex;
-    flex-flow: column nowrap;
+.connection-items-list {
+  display: flex;
+  flex-flow: column nowrap;
 
-    & > .account-card {
-      height: $item-height;
+  & > .account-card {
+    height: $item-height;
+    box-sizing: border-box;
 
-      @include focus-outline($withOffset: true);
+    @include focus-outline($withOffset: true);
 
-      &.s-card.neumorphic {
-        border-width: 1px;
+    &.s-card.neumorphic {
+      border-width: 1px;
 
-        &:hover {
-          cursor: pointer;
-          border-color: var(--s-color-base-content-secondary);
-        }
+      &:hover {
+        cursor: pointer;
+        border-color: var(--s-color-base-content-secondary);
       }
+    }
 
-      a.connection-action {
-        @include focus-outline($borderRadius: var(--s-border-radius-small));
-      }
+    a.connection-action {
+      @include focus-outline($borderRadius: var(--s-border-radius-small));
     }
   }
 }

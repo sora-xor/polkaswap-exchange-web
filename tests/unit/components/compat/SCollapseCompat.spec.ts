@@ -85,4 +85,8 @@ describe('SCollapse', () => {
     expect(sCollapseItemSource).toContain('@leave="handleLeave"');
     expect(sCollapseItemSource).toContain('height 0.3s ease-in-out');
   });
+
+  it('renders legacy collapse arrow glyphs with the Soramitsu icon font', () => {
+    expect(sCollapseItemSource).toContain('font-family: var(--s-font-family-icons, soramitsu-icons);');
+  });
 });

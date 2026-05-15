@@ -7,14 +7,26 @@ import SRadioAtom from './SRadioAtom';
 import SRadioBody from './SRadioBody';
 import { usePropTypeFilter } from '@soramitsu-ui/ui/composables/prop-type-filter';
 
+type RadioValue = null | symbol | string | number | boolean | object;
+type LegacyRadioSize = RadioSize | 'small';
+
 interface Props {
-  value: any;
+  /**
+   * Radio option value used by Vue 3 templates.
+   */
+  value?: RadioValue;
+  /**
+   * Legacy Element-style option value used by older wallet templates.
+   */
+  label?: RadioValue;
   disabled?: boolean;
   type?: RadioType;
-  size?: RadioSize;
+  size?: LegacyRadioSize;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  value: undefined,
+  label: undefined,
   disabled: false,
   type: 'default',
   size: 'md',
@@ -22,10 +34,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const propFilter = usePropTypeFilter(props);
 const definitelyType = propFilter('type', RADIO_TYPE_VALUES, 'default');
-const definitelySize = propFilter('size', RADIO_SIZE_VALUES, 'md');
+const definitelySize = computed<RadioSize>(() => {
+  // Older wallet templates pass Element-style "small"; use the closest local radio size.
+  if (props.size === 'small') return 'md';
+  return RADIO_SIZE_VALUES.includes(props.size as RadioSize) ? (props.size as RadioSize) : 'md';
+});
+const radioValue = computed(() => (props.value !== undefined ? props.value : props.label));
 
 const api = useRadioGroupApi().registerRadio({
-  valueRef: computed(() => props.value),
+  valueRef: radioValue,
   disabledRef: computed(() => props.disabled),
   elRef: templateRef('root'),
 });

@@ -1,5 +1,6 @@
 import { FPNumber } from '@sora-substrate/math';
 import { VAL, PSWAP } from '@sora-substrate/sdk/build/assets/consts';
+import { api } from '@/lib/soraneo-wallet/src/api';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
@@ -60,6 +61,47 @@ const toNumber = (value: string): number => {
   return fp.isFinity() ? fp.toNumber() : 0;
 };
 
+/** Detects whether indexer snapshots contain a supply value worth rendering. */
+const hasUsableSupplyData = (items: readonly ChartData[]): boolean =>
+  items.some((item) => Number.isFinite(item.value) && item.value > 0);
+
+/** Fetches the chain's current total issuance as a fallback for broken indexer snapshots. */
+const fetchCurrentSupplyValue = async (id: string): Promise<Nullable<number>> => {
+  try {
+    const supply = await api.assets.getAssetSupply(id);
+    const value = toNumber(supply);
+
+    return value > 0 ? value : null;
+  } catch {
+    return null;
+  }
+};
+
+/** Replaces an all-zero supply series with a flat current-supply series so the chart remains informative. */
+const withCurrentSupplyFallback = async (
+  id: string,
+  timestamp: number,
+  items: readonly ChartData[]
+): Promise<ChartData[]> => {
+  if (hasUsableSupplyData(items)) {
+    return [...items];
+  }
+
+  const currentSupply = await fetchCurrentSupplyValue(id);
+  if (!currentSupply) {
+    return [...items];
+  }
+
+  if (!items.length) {
+    return [{ timestamp: timestamp * 1000, value: currentSupply, mint: 0, burn: 0 }];
+  }
+
+  return items.map((item) => ({ ...item, value: currentSupply }));
+};
+
+const applyCirculatingDiff = (items: readonly ChartData[], diff: number): ChartData[] =>
+  hasUsableSupplyData(items) ? items.map((item) => ({ ...item, value: item.value - diff })) : [...items];
+
 const parse = (node: AssetSnapshotEntity): ChartData => {
   return {
     timestamp: +node.timestamp * 1000,
@@ -91,14 +133,15 @@ export async function fetchAssetSupplyData(
   );
 
   const chartData = data ?? [];
+  const dataWithFallback = await withCurrentSupplyFallback(id, from, chartData);
 
   if (![VAL.address, PSWAP.address].includes(id)) {
-    return chartData;
+    return dataWithFallback;
   }
   // VAL & PSWAP have huge difference between circulating & total supply on prod env
   const env = await resolveSoraNetwork();
-  if (env !== 'Prod') return chartData;
+  if (env !== 'Prod') return dataWithFallback;
 
   const diff = CIRCULATING_DIFF[id];
-  return chartData.map((item) => ({ ...item, value: item.value - diff }));
+  return applyCirculatingDiff(dataWithFallback, diff);
 }

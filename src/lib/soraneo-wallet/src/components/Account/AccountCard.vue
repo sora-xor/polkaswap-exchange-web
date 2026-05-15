@@ -38,6 +38,7 @@ const handleClick = (event: MouseEvent): void => {
 
   & > .el-card__body {
     flex: 1;
+    min-width: 0;
     max-width: 100%;
   }
 
@@ -80,6 +81,8 @@ $avatar-size: 32px;
   display: flex;
   align-items: center;
   gap: $gap;
+  width: 100%;
+  min-width: 0;
 
   &-avatar {
     display: flex;
@@ -95,6 +98,7 @@ $avatar-size: 32px;
   &-details {
     flex: 1;
     align-items: center;
+    min-width: 0;
     max-width: calc(100% - $gap - $avatar-size);
   }
 
@@ -102,10 +106,12 @@ $avatar-size: 32px;
     flex: 1;
     flex-direction: column;
     justify-content: center;
+    min-width: 0;
     overflow: hidden;
 
     &_name,
     &_description {
+      max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       letter-spacing: var(--s-letter-spacing-small);

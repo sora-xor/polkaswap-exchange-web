@@ -47,4 +47,21 @@ describe('useFlexColumns compatibility', () => {
     expect(columnsWidths.value[5]).toBeCloseTo(132.5);
     expect(columnsWidthsSum.value).toBeCloseTo(920);
   });
+
+  it('keeps base widths once fitting would make flexible columns unreadable', () => {
+    const columns = [
+      makeColumn('name', { minWidth: 290 }),
+      makeColumn('price', { minWidth: 130 }),
+      makeColumn('change1d', { minWidth: 104 }),
+      makeColumn('change7d', { minWidth: 104 }),
+      makeColumn('volume', { minWidth: 104 }),
+      makeColumn('tvl', { minWidth: 104 }),
+      makeColumn('velocity', { minWidth: 88 }),
+    ];
+
+    const { columnsWidths, columnsWidthsSum } = useFlexColumns(columns, ref(310), ref(true));
+
+    expect(columnsWidths.value).toEqual([290, 130, 104, 104, 104, 104, 88]);
+    expect(columnsWidthsSum.value).toBe(924);
+  });
 });

@@ -53,13 +53,6 @@ const HALF_YEAR_IN_DAYS_FILTER = {
   count: 180,
 };
 
-const YEAR_IN_MONTHS_FILTER = {
-  name: Timeframes.YEAR,
-  label: '1Y',
-  type: SnapshotTypes.MONTH,
-  count: 12,
-};
-
 const YEAR_IN_DAYS_FILTER = {
   name: Timeframes.YEAR,
   label: '1Y',
@@ -73,7 +66,8 @@ export const NETWORK_STATS_FILTERS: SnapshotFilter[] = [
   MONTH_IN_DAYS_FILTER,
   QUARTER_IN_DAYS_FILTER,
   HALF_YEAR_IN_DAYS_FILTER,
-  YEAR_IN_MONTHS_FILTER,
+  // Network MONTH snapshots can be sparse, so yearly stats use daily history.
+  YEAR_IN_DAYS_FILTER,
 ];
 
 export const ASSET_SUPPLY_FILTERS: SnapshotFilter[] = [

@@ -106,8 +106,13 @@ describe('Wallet Wallet', () => {
     expect(walletSource).not.toContain('opacity: 0.7');
   });
 
-  it('keeps wallet tabs as a stable two-option segmented control', () => {
-    expect(walletSource).toContain('max-width: min(760px, calc(100vw - 32px));');
+  it('keeps wallet tabs inside the shared compact dashboard shell', () => {
+    expect(walletSource).toContain('max-width: min($inner-window-width, calc(100vw - 32px));');
+    expect(walletSource).toContain('border-radius: var(--s-border-radius-small);');
+    expect(walletSource).toContain('&.s-card.neumorphic.s-size-big');
+    expect(walletSource).toContain('padding: 0;');
+    expect(walletSource).toContain('padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-mini;');
+    expect(walletSource).toContain('margin: 0 $inner-spacing-medium;');
     expect(walletSource).toContain('width: min(300px, 100%);');
     expect(walletSource).toContain(':deep(.el-tabs__nav-scroll)');
     expect(walletSource).toContain('grid-template-columns: repeat(2, 1fr);');

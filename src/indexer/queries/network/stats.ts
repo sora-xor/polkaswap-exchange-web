@@ -1,6 +1,7 @@
 import { FPNumber } from '@sora-substrate/math';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
+import { resolveNetworkHistorySnapshotType } from '@/indexer/queries/network/snapshotType';
 import { gql } from '@urql/core';
 
 import type {
@@ -62,8 +63,10 @@ const parse = (node: NetworkSnapshotEntity): NetworkSnapshotData => {
 
 export async function fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkSnapshotData[]> {
   const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const requestType = resolveNetworkHistorySnapshotType(type);
   const data = await retryOnEmptyResult(
-    async () => polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapStatsQuery, { from, to, type }, parse),
+    async () =>
+      polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapStatsQuery, { from, to, type: requestType }, parse),
     (value) => !value?.length
   );
 

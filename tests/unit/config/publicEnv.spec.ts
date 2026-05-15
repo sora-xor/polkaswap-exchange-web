@@ -60,4 +60,15 @@ describe('public env config', () => {
 
     expect(parsed.POLKASWAP_INDEXER_ENDPOINT).toBe('https://pi.soramitsu.io/graphql');
   });
+
+  it('keeps the task-based point system enabled in production envs', async () => {
+    const envPaths = ['public/env.json', 'public/env.taira.json', 'env.json'];
+
+    for (const envPath of envPaths) {
+      const raw = await readFile(path.resolve(process.cwd(), envPath), 'utf8');
+      const parsed = JSON.parse(raw) as { FEATURE_FLAGS?: { pointSystemV2?: boolean } };
+
+      expect(parsed.FEATURE_FLAGS?.pointSystemV2).toBe(true);
+    }
+  });
 });

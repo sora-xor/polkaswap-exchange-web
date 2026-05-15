@@ -4,6 +4,7 @@
 }
 .account-card > .el-card__body {
   flex: 1;
+  min-width: 0;
   max-width: 100%;
 }
 .account-card.s-card.neumorphic {
@@ -24,6 +25,8 @@
   display: flex;
   align-items: center;
   gap: calc(var(--s-basic-spacing) * 1.5);
+  width: 100%;
+  min-width: 0;
 }
 .account-avatar[data-v-a3cbe450] {
   display: flex;
@@ -38,16 +41,19 @@
 .account-details[data-v-a3cbe450] {
   flex: 1;
   align-items: center;
+  min-width: 0;
   max-width: calc(100% - var(--s-basic-spacing) * 1.5 - 32px);
 }
 .account-credentials[data-v-a3cbe450] {
   flex: 1;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
   overflow: hidden;
 }
 .account-credentials_name[data-v-a3cbe450],
 .account-credentials_description[data-v-a3cbe450] {
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   letter-spacing: var(--s-letter-spacing-small);
@@ -1015,7 +1021,8 @@
   flex-flow: column nowrap;
 }
 .connection-items-list > .account-card {
-  height: 60px;
+  height: 64px;
+  box-sizing: border-box;
 }
 .connection-items-list > .account-card {
   outline-offset: -1px;

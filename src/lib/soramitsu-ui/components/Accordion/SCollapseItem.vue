@@ -144,7 +144,10 @@ const handleAfterLeave = (element: Element): void => {
   &__arrow {
     transition: transform var(--s-transition-default);
     transform: rotate(0deg);
-    font-family: element-icons;
+    // The legacy compatibility layer maps Element arrow pseudo-elements to
+    // Soramitsu icon glyphs; keep the matching font here so collapse arrows
+    // do not render as fallback boxes.
+    font-family: var(--s-font-family-icons, soramitsu-icons);
     font-weight: 300;
     box-shadow:
       #fff -5px -5px 10px 0,

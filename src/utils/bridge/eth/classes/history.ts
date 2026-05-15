@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { ethers, EtherscanProvider } from 'ethers';
@@ -140,6 +140,151 @@ type EthTransactionsMap = DataMap<ethers.TransactionResponse>;
 type HistoryElement = POLKASWAP_TYPES.HistoryElement;
 type HistoryElementData = POLKASWAP_TYPES.HistoryElementEthBridgeOutgoing &
   POLKASWAP_TYPES.HistoryElementEthBridgeIncoming;
+type NormalizedEthBridgeData = {
+  requestHash: string;
+  amount: string;
+  assetAddress: string;
+  sidechainAddress: string;
+  recipient?: string;
+};
+type DecodedIncomingRequest = {
+  requestHash: string;
+  amountCodec: string;
+  assetAddress: string;
+  sidechainAddress: string;
+  recipient: string;
+};
+
+/** Sorts merged indexer pages in the same newest-first order requested from GraphQL. */
+const sortHistoryElements = (historyElements: HistoryElement[]): HistoryElement[] => {
+  return [...historyElements].sort((a, b) => {
+    const timestampDiff = (b.timestamp ?? 0) - (a.timestamp ?? 0);
+    if (timestampDiff) return timestampDiff;
+
+    return String(b.id ?? '').localeCompare(String(a.id ?? ''));
+  });
+};
+
+/** Merges independently queried history pages without surfacing duplicate indexer rows. */
+const mergeHistoryElements = (historyElementGroups: HistoryElement[][]): HistoryElement[] => {
+  const seen = new Set<string>();
+  const merged: HistoryElement[] = [];
+
+  for (const historyElements of historyElementGroups) {
+    for (const historyElement of historyElements) {
+      const id = historyElement?.id;
+      if (!id || seen.has(id)) continue;
+
+      seen.add(id);
+      merged.push(historyElement);
+    }
+  }
+
+  return sortHistoryElements(merged);
+};
+
+/** Reads asset ids from both legacy decoded JSON and SCALE decoded `{ code }` wrappers. */
+const normalizeAssetAddress = (value: unknown): string => {
+  if (typeof value === 'string') return value;
+
+  if (value && typeof value === 'object') {
+    const code = (value as { code?: unknown }).code;
+    if (typeof code === 'string') return code;
+  }
+
+  return '';
+};
+
+/** Formats a raw bridge amount from decoded SCALE call data into the natural app amount. */
+const formatCodecAmount = (amount: unknown, decimals?: number): string => {
+  const value = String(amount ?? '');
+  if (!value) return '';
+
+  try {
+    return FPNumber.fromCodecValue(value, decimals).toString();
+  } catch {
+    return '';
+  }
+};
+
+/** Decodes the new indexer shape where ETH incoming transfer details are stored as a raw multisig call. */
+const decodeIncomingRequest = (historyElement: HistoryElement): Nullable<DecodedIncomingRequest> => {
+  const callHex = (historyElement.data as { call?: unknown })?.call;
+  const registry = api.connection?.api?.registry;
+
+  if (typeof callHex !== 'string' || !callHex || !registry?.createType) return null;
+
+  try {
+    const call = registry.createType('Call', callHex) as any;
+
+    if (call.section !== 'ethBridge' || call.method !== 'importIncomingRequest') return null;
+
+    const args = call.toJSON?.()?.args ?? {};
+    const loadRequest = args.load_incoming_request ?? args.loadIncomingRequest ?? {};
+    const loadTransaction = loadRequest.transaction ?? loadRequest.Transaction ?? {};
+    const incomingResult = args.incoming_request_result ?? args.incomingRequestResult ?? {};
+    const okResult = incomingResult.ok ?? incomingResult.Ok ?? {};
+    const transfer = okResult.transfer ?? okResult.Transfer;
+
+    if (!transfer || typeof transfer !== 'object') return null;
+
+    const requestHash = String(transfer.txHash ?? transfer.tx_hash ?? loadTransaction.hash ?? loadTransaction.hash_ ?? '');
+    const amountCodec = String(transfer.amount ?? '');
+    const assetAddress = normalizeAssetAddress(transfer.assetId ?? transfer.asset_id);
+    const sidechainAddress = String(transfer.from ?? '');
+    const recipient = String(transfer.to ?? '');
+
+    if (!(requestHash && amountCodec && assetAddress && recipient)) return null;
+
+    return {
+      requestHash,
+      amountCodec,
+      assetAddress,
+      sidechainAddress,
+      recipient,
+    };
+  } catch {
+    return null;
+  }
+};
+
+/** Normalizes old decoded indexer payloads and new raw incoming payloads into one history shape. */
+const getHistoryElementData = (
+  historyElement: HistoryElement,
+  isOutgoing: boolean,
+  assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>
+): Nullable<NormalizedEthBridgeData> => {
+  const data = (historyElement.data ?? {}) as HistoryElementData;
+  const assetAddress = data.assetId;
+
+  if (data.requestHash && data.amount && assetAddress) {
+    return {
+      requestHash: data.requestHash,
+      amount: data.amount,
+      assetAddress,
+      sidechainAddress: data.sidechainAddress,
+      recipient: data.to,
+    };
+  }
+
+  if (isOutgoing) return null;
+
+  const decoded = decodeIncomingRequest(historyElement);
+  if (!decoded) return null;
+
+  const asset = assetDataByAddress(decoded.assetAddress);
+  const amount = formatCodecAmount(decoded.amountCodec, asset?.decimals);
+
+  if (!amount) return null;
+
+  return {
+    requestHash: decoded.requestHash,
+    amount,
+    assetAddress: decoded.assetAddress,
+    sidechainAddress: decoded.sidechainAddress,
+    recipient: decoded.recipient,
+  };
+};
 
 export class EthBridgeHistory {
   private externalNetwork!: number;
@@ -218,18 +363,12 @@ export class EthBridgeHistory {
     return this.ethAccountTransactionsMap[key];
   }
 
-  private async getFromTimestamp(historyElements: HistoryElement[]) {
-    const historyElement = last(historyElements) as HistoryElement;
+  private getFromTimestamp(historyElements: HistoryElement[]) {
+    const historyElement = last(
+      historyElements.filter((item) => item.module !== POLKASWAP_TYPES.ModuleNames.BridgeMultisig)
+    ) as Nullable<HistoryElement>;
 
-    // if the last item is Incoming trasfer, timestamp will be sora network start time
-    if (historyElement.module === POLKASWAP_TYPES.ModuleNames.BridgeMultisig) {
-      const soraStartBlock = await api.system.getBlockHash(1);
-      const soraStartTimestamp = await api.system.getBlockTimestamp(soraStartBlock);
-
-      return soraStartTimestamp;
-    }
-
-    return historyElement.timestamp * 1000;
+    return historyElement?.timestamp ? historyElement.timestamp * 1000 : Date.now();
   }
 
   public async findEthTxBySoraHash(
@@ -270,12 +409,12 @@ export class EthBridgeHistory {
     return tx;
   }
 
-  public async fetchHistoryElements(address: string, timestamp = 0, ids?: string[]): Promise<HistoryElement[]> {
+  /**
+   * Reads all pages for one prepared Polkaswap history filter.
+   */
+  private async fetchHistoryElementsByFilter(filter: unknown): Promise<HistoryElement[]> {
     const indexer = getCurrentIndexer();
-    const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
-    const filter = indexer.historyElementsFilter({ address, operations, timestamp, ids });
     const history: HistoryElement[] = [];
-
     let hasNext = true;
     let after = '';
 
@@ -285,12 +424,36 @@ export class EthBridgeHistory {
 
       if (!response) return history;
 
-      hasNext = !!response.pageInfo?.hasNextPage;
-      after = response.pageInfo?.endCursor ?? '';
-      history.push(...response.edges.map((edge) => edge.node));
+      const edges = Array.isArray(response.edges) ? response.edges : [];
+      const nextAfter = response.pageInfo?.endCursor ?? '';
+
+      hasNext = !!response.pageInfo?.hasNextPage && !!nextAfter && nextAfter !== after;
+      after = nextAfter;
+      history.push(...edges.map((edge) => edge?.node).filter((node): node is HistoryElement => Boolean(node)));
     } while (hasNext);
 
     return history;
+  }
+
+  public async fetchHistoryElements(address: string, timestamp = 0, ids?: string[]): Promise<HistoryElement[]> {
+    const indexer = getCurrentIndexer();
+    const outgoingFilter = indexer.historyElementsFilter({
+      address,
+      operations: [Operation.EthBridgeOutgoing],
+      timestamp,
+      ids,
+    });
+    const incomingFilter = indexer.historyElementsFilter({
+      operations: [Operation.EthBridgeIncoming],
+      timestamp,
+      ids,
+    });
+    const historyElementGroups = await Promise.all([
+      this.fetchHistoryElementsByFilter(outgoingFilter),
+      this.fetchHistoryElementsByFilter(incomingFilter),
+    ]);
+
+    return mergeHistoryElements(historyElementGroups);
   }
 
   public async clearHistory(
@@ -325,8 +488,13 @@ export class EthBridgeHistory {
     for (const historyElement of historyElements) {
       const type = getType(historyElement.module);
       const isOutgoing = isOutgoingTransaction({ type });
-      const { id: txId, blockHash: blockId, blockHeight, data: historyElementData } = historyElement;
-      const { requestHash, amount, assetId: assetAddress, sidechainAddress } = historyElementData as HistoryElementData;
+      const { id: txId, blockHash: blockId, blockHeight } = historyElement;
+      const historyElementData = getHistoryElementData(historyElement, isOutgoing, assetDataByAddress);
+
+      if (!historyElementData) continue;
+      if (!isOutgoing && historyElementData.recipient !== address) continue;
+
+      const { requestHash, amount, assetAddress, sidechainAddress } = historyElementData;
 
       const localHistoryItem = currentHistory.find((item: EthHistory) =>
         isLocalHistoryItem(item, txId, isOutgoing, requestHash)
@@ -381,10 +549,22 @@ export class EthBridgeHistory {
       };
 
       // update or create local history item
+      let savedHistoryItem: EthHistory | null;
       if (localHistoryItem) {
-        ethBridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as EthHistory);
+        savedHistoryItem = { ...localHistoryItem, ...historyItemData } as EthHistory;
+        ethBridgeApi.saveHistory(savedHistoryItem);
       } else {
-        ethBridgeApi.generateHistoryItem(historyItemData as EthHistory);
+        savedHistoryItem = ethBridgeApi.generateHistoryItem(historyItemData as EthHistory);
+      }
+
+      if (savedHistoryItem) {
+        const currentIndex = localHistoryItem ? currentHistory.indexOf(localHistoryItem) : -1;
+
+        if (currentIndex >= 0) {
+          currentHistory[currentIndex] = savedHistoryItem;
+        } else {
+          currentHistory.push(savedHistoryItem);
+        }
       }
 
       await updateCallback?.();

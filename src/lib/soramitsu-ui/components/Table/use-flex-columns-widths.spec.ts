@@ -66,4 +66,12 @@ describe('useFlexColumns', () => {
     expect(columnsWidths.value[0]).toBeCloseTo(140);
     expect(columnsWidths.value[1]).toBeCloseTo(140);
   });
+
+  test('preserves minimum widths when a fit table is narrower than its columns', () => {
+    const columns = [col('name', { minWidth: 290 }), col('price', { minWidth: 130 }), col('tvl', { minWidth: 104 })];
+    const { columnsWidths, columnsWidthsSum } = useFlexColumns(columns, ref(310), ref(true));
+
+    expect(columnsWidths.value).toEqual([290, 130, 104]);
+    expect(columnsWidthsSum.value).toBe(524);
+  });
 });

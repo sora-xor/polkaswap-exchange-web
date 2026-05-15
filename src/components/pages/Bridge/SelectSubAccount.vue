@@ -110,6 +110,36 @@ const login = async (account: PolkadotJsAccount): Promise<void> => {
     }
   }
 
+  .dialog-card .base-title.base-title--center {
+    padding-left: calc(var(--s-size-medium) + 8px);
+    padding-right: calc(var(--s-size-medium) + 8px);
+  }
+
+  .dialog-card .base-title.base-title--actions.base-title--center {
+    padding-left: calc(var(--s-size-medium) + 8px);
+    padding-right: calc(var(--s-size-medium) + 8px);
+  }
+
+  .dialog-card .base-title_text {
+    min-width: 0;
+  }
+
+  @media (max-width: 480px) {
+    .dialog-card .base-title {
+      height: auto;
+      min-height: var(--s-size-medium);
+      align-items: flex-start;
+    }
+
+    .dialog-card .base-title_text {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      font-size: var(--s-font-size-medium);
+      line-height: var(--s-line-height-small);
+    }
+  }
+
   .dialog-card__content .connection-items.el-scrollbar > .el-scrollbar__wrap {
     overflow-y: auto !important;
   }

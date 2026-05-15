@@ -179,7 +179,8 @@ ul ul {
 
 .s-toasts-display[data-placement-v='top'][data-placement-h='right'] {
   z-index: 2000;
-  padding-top: calc(var(--s-basic-spacing) * 2);
+  // Top toasts are fixed to the viewport; keep them clear of the fixed app header.
+  padding-top: $header-height;
   padding-right: calc(var(--s-basic-spacing) * 2);
 }
 

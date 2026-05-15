@@ -1,5 +1,6 @@
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { retryOnEmptyResult } from '@/indexer/queries/retry';
+import { resolveNetworkHistorySnapshotType } from '@/indexer/queries/network/snapshotType';
 import { gql } from '@urql/core';
 
 import type {
@@ -52,8 +53,14 @@ const parse = (node: NetworkSnapshotEntity): ChartData => {
 
 export async function fetchData(from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
   const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+  const requestType = resolveNetworkHistorySnapshotType(type);
   const data = await retryOnEmptyResult(
-    async () => polkaswapIndexer.services.explorer.fetchAllEntities(PolkaswapNetworkTvlQuery, { from, to, type }, parse),
+    async () =>
+      polkaswapIndexer.services.explorer.fetchAllEntities(
+        PolkaswapNetworkTvlQuery,
+        { from, to, type: requestType },
+        parse
+      ),
     (value) => !value?.length
   );
 

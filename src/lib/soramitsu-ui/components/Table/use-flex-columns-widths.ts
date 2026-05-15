@@ -1,6 +1,8 @@
 import type { TableActionColumnApi, TableColumnApi } from './api';
 import { computed, type Ref } from 'vue';
 
+const MIN_READABLE_FIT_COLUMN_WIDTH = 72;
+
 export function useFlexColumns(
   columns: (TableColumnApi | TableActionColumnApi)[],
   tableWidth: Ref<number>,
@@ -15,11 +17,22 @@ export function useFlexColumns(
       const columnsMinWidthsSum = columns.reduce((sum, col) => sum + (col.width ? 0 : col.minWidth), 0);
 
       if (freeSpace !== 0 && columnsMinWidthsSum > 0) {
-        return columns.map((col) => {
+        const fittedWidths = columns.map((col) => {
           if (col.width) return col.width;
 
-          return Math.max(col.minWidth + (col.minWidth * freeSpace) / columnsMinWidthsSum, 0);
+          return col.minWidth + (col.minWidth * freeSpace) / columnsMinWidthsSum;
         });
+
+        if (
+          freeSpace > 0 ||
+          fittedWidths.every((width, index) => {
+            const column = columns[index];
+
+            return Boolean(column.width) || width >= Math.min(column.minWidth, MIN_READABLE_FIT_COLUMN_WIDTH);
+          })
+        ) {
+          return fittedWidths;
+        }
       }
     }
 

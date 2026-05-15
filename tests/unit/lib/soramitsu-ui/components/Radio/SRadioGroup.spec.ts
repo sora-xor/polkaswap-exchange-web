@@ -128,4 +128,31 @@ describe('SRadioGroup', () => {
 
     expect((wrapper.vm as unknown as { value: string }).value).toBe('one');
   });
+
+  it('uses the legacy label prop as the option value when value is absent', async () => {
+    const wrapper = mount(
+      defineComponent({
+        components: { SRadio, SRadioGroup },
+        data: () => ({
+          value: 'legacy-one',
+        }),
+        template: `
+          <SRadioGroup v-model="value">
+            <SRadio label="legacy-one" size="small">Legacy One</SRadio>
+            <SRadio label="legacy-two">Legacy Two</SRadio>
+          </SRadioGroup>
+        `,
+      })
+    );
+    const radios = wrapper.findAll('[role="radio"]');
+
+    expect(radios[0].attributes('aria-checked')).toBe('true');
+    expect(radios[0].attributes('data-size')).toBe('md');
+
+    await radios[1].trigger('click');
+    await nextTick();
+
+    expect((wrapper.vm as unknown as { value: string }).value).toBe('legacy-two');
+    expect(radios[1].attributes('aria-checked')).toBe('true');
+  });
 });

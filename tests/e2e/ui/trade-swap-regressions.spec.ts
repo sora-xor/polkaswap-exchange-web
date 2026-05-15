@@ -2,6 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { ensureAppLoaded, ipfsEntryUrl, preparePage, trackConsole } from './support/ipfs';
 
+// Playwright executes specs outside Vite aliases, so keep the XOR asset id local to the test.
+const XOR_ADDRESS = '0x0200000000000000000000000000000000000000000000000000000000000000';
+
 const openSwap = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/swap`);
   await ensureAppLoaded(page);
@@ -543,6 +546,57 @@ test('keeps the swap token header row stretched to the full input width', async 
   expect(metrics?.headerWidth).toBeGreaterThan(250);
   expect(metrics?.lineWidth).toBeGreaterThan(250);
   expect((metrics?.headerDelta ?? Number.POSITIVE_INFINITY) <= 4).toBe(true);
+  expect(consoleErrors).toEqual([]);
+});
+
+test('keeps the swap fiat price aligned with the token amount input', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+
+  await openSwap(page);
+  await page.evaluate((xorAddress) => {
+    const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+    const walletStore = pinia?._s?.get('wallet');
+
+    if (walletStore?.accountState) {
+      walletStore.accountState.fiatPriceObject = Object.freeze({ [xorAddress]: '1000000000000000000' });
+    }
+  }, XOR_ADDRESS);
+  await expect(page.locator('.swap-form .token-input--fiat').first()).toBeVisible({ timeout: 15_000 });
+
+  const metrics = await page.evaluate(() => {
+    const tokenInput = document.querySelector('.swap-form .s-input.token-input') as HTMLElement | null;
+    const amountInput = tokenInput?.querySelector(':scope > .s-input__content .el-input__inner') as HTMLElement | null;
+    const fiatInput = tokenInput?.querySelector('.token-input--fiat') as HTMLElement | null;
+    const fiatContent = fiatInput?.querySelector(':scope > .s-input__content') as HTMLElement | null;
+    const fiatPrefix = fiatInput?.querySelector('.input-prefix') as HTMLElement | null;
+
+    if (!amountInput || !fiatContent || !fiatPrefix) {
+      return null;
+    }
+
+    const amountRect = amountInput.getBoundingClientRect();
+    const fiatContentRect = fiatContent.getBoundingClientRect();
+    const fiatPrefixRect = fiatPrefix.getBoundingClientRect();
+    const fiatContentStyles = getComputedStyle(fiatContent);
+
+    return {
+      amountLeft: Math.round(amountRect.left),
+      fiatContentLeft: Math.round(fiatContentRect.left),
+      fiatPrefixLeft: Math.round(fiatPrefixRect.left),
+      fiatContentPaddingLeft: fiatContentStyles.paddingLeft,
+      fiatContentPaddingRight: fiatContentStyles.paddingRight,
+    };
+  });
+
+  expect(metrics).not.toBeNull();
+  const fiatPrefixOffset = Math.abs(
+    (metrics?.fiatPrefixLeft ?? 0) - (metrics?.amountLeft ?? Number.POSITIVE_INFINITY)
+  );
+
+  expect(fiatPrefixOffset).toBeLessThanOrEqual(1);
+  expect(metrics?.fiatContentLeft).toBe(metrics?.amountLeft);
+  expect(metrics?.fiatContentPaddingLeft).toBe('0px');
+  expect(metrics?.fiatContentPaddingRight).toBe('0px');
   expect(consoleErrors).toEqual([]);
 });
 
