@@ -8,7 +8,7 @@ import {
   formatOrderRows,
   runOrderBookSubscription,
   type OrderBookPriceVolumeAggregated,
-} from '@/components/pages/OrderBook/bookWidget.utils';
+} from '@/features/misc/components/order-book/bookWidget.utils';
 
 const createRow = (price: string, amount: string): OrderBookPriceVolumeAggregated => {
   const priceFp = new FPNumber(price);

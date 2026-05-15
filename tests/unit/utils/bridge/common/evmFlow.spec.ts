@@ -165,7 +165,7 @@ describe('evm flow helpers', () => {
     expect(getEvmTransactionMock).not.toHaveBeenCalled();
   });
 
-  it('onEvmTransactionPending resets external hash when the receipt is missing', async () => {
+  it('onEvmTransactionPending preserves external hash when the receipt is missing', async () => {
     const id = 'missing-receipt';
     const externalHash = '0xdead';
     const getTx = vi.fn(() => ({ id, externalHash }) as any);
@@ -178,15 +178,16 @@ describe('evm flow helpers', () => {
       replaceableTransaction: () => ({ wait: vi.fn(async () => null) }),
     };
     getEvmTransactionMock.mockResolvedValueOnce(txResponse);
+    const getEvmTransactionReceiptMock = vi.mocked(
+      ((ethersUtil as any).getEvmTransactionReceipt ?? (ethersUtil as any).default?.getEvmTransactionReceipt) as any
+    );
+    getEvmTransactionReceiptMock.mockResolvedValueOnce(null);
 
     await expect(utils.onEvmTransactionPending(id, getTx as any, updateTx as any)).rejects.toThrow(
-      /Ethereum transaction not found/
+      /Ethereum transaction receipt not found/
     );
 
-    expect(updateTx).toHaveBeenCalledWith(id, {
-      externalHash: undefined,
-      externalNetworkFee: undefined,
-    });
+    expect(updateTx).not.toHaveBeenCalledWith(id, expect.objectContaining({ externalHash: undefined }));
   });
 
   it('onEvmTransactionPending surfaces failed status while preserving updates', async () => {

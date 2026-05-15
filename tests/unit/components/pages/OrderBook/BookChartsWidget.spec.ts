@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
-import bookChartsWidgetSource from '@/components/pages/OrderBook/BookChartsWidget.vue?raw';
+import bookChartsWidgetSource from '@/features/misc/components/order-book/BookChartsWidget.vue?raw';
 
 const usePiniaTelemetryMock = vi.fn();
 const orderBookStoreStub = { $id: 'order-book-store' };
@@ -40,7 +40,7 @@ describe('BookChartsWidget.vue', () => {
   it('emits telemetry metadata for charts widget', async () => {
     usePiniaTelemetryMock.mockClear();
 
-    const module = await import('@/components/pages/OrderBook/BookChartsWidget.vue');
+    const module = await import('@/features/misc/components/order-book/BookChartsWidget.vue');
     mount(module.default, {
       global: {
         stubs: {

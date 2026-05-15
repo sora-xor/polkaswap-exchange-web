@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import IFrameWidget from '@/components/shared/Widget/IFrame.vue';
 import { useMoonpayBridge } from '@/composables/useMoonpayBridge';

@@ -421,7 +421,7 @@ const handleTabChange = (name: Tabs) => {
 };
 
 const handleAfterOpen = () => {
-  clearAndFocusSearch();
+  focusSearchInput();
 };
 </script>
 

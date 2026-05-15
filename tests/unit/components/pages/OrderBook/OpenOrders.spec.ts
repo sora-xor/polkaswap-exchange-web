@@ -56,7 +56,7 @@ vi.mock('@tests/stubs/walletRuntime', () => ({
 }));
 
 const mountComponent = async () => {
-  const module = await import('@/components/pages/OrderBook/Tables/OpenOrders.vue');
+  const module = await import('@/features/misc/components/order-book/Tables/OpenOrders.vue');
 
   return mount(module.default, {
     props: {

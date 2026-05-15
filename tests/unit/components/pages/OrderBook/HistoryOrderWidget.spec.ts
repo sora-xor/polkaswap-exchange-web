@@ -121,7 +121,7 @@ vi.mock('@/composables/useOrderBookUserOrders', () => ({
 }));
 
 const mountWidget = async () => {
-  const module = await import('@/components/pages/OrderBook/HistoryOrderWidget.vue');
+  const module = await import('@/features/misc/components/order-book/HistoryOrderWidget.vue');
 
   return mount(module.default, {
     global: {

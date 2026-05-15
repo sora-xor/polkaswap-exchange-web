@@ -50,12 +50,12 @@ import { useWalletStore } from '@/stores/wallet';
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
-import BookChartsWidget from '@/components/pages/OrderBook/BookChartsWidget.vue';
-import BookWidget from '@/components/pages/OrderBook/BookWidget.vue';
-import CustomisePageWidget from '@/components/pages/OrderBook/Dialogs/CustomisePage.vue';
-import HistoryOrderWidget from '@/components/pages/OrderBook/HistoryOrderWidget.vue';
-import MarketTradesWidget from '@/components/pages/OrderBook/MarketTradesWidget.vue';
-import SetLimitOrderWidget from '@/components/pages/OrderBook/SetLimitOrderWidget.vue';
+import BookChartsWidget from '@/features/misc/components/order-book/BookChartsWidget.vue';
+import BookWidget from '@/features/misc/components/order-book/BookWidget.vue';
+import CustomisePageWidget from '@/features/misc/components/order-book/Dialogs/CustomisePage.vue';
+import HistoryOrderWidget from '@/features/misc/components/order-book/HistoryOrderWidget.vue';
+import MarketTradesWidget from '@/features/misc/components/order-book/MarketTradesWidget.vue';
+import SetLimitOrderWidget from '@/features/misc/components/order-book/SetLimitOrderWidget.vue';
 
 defineOptions({ name: 'OrderBookPage' });
 

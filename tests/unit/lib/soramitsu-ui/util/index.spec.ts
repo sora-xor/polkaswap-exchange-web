@@ -116,11 +116,13 @@ describe('soramitsu-ui util', () => {
 
     expect(isSafeDynamicTagName('span')).toBe(true);
     expect(isSafeDynamicTagName('s-tooltip')).toBe(true);
+    expect(isSafeDynamicTagName(' div ')).toBe(true);
     expect(isSafeDynamicTagName('0.5')).toBe(false);
     expect(isSafeDynamicTagName('bad tag')).toBe(false);
 
     expect(resolveDynamicComponentTag('0.5', 'div')).toBe('div');
     expect(resolveDynamicComponentTag('s-tooltip', 'div')).toBe('s-tooltip');
+    expect(resolveDynamicComponentTag(' div ', 'span')).toBe('div');
     expect(resolveDynamicComponentTag(ComponentObject, 'div')).toBe(ComponentObject);
     expect(resolveDynamicComponentTag(Functional, 'div')).toBe(Functional);
     expect(resolveDynamicComponentTag(null, 'div')).toBe('div');

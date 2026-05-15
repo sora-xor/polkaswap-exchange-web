@@ -2,8 +2,8 @@ import { mount } from '@vue/test-utils';
 import { ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
-import setLimitOrderWidgetSource from '@/components/pages/OrderBook/SetLimitOrderWidget.vue?raw';
-import SetLimitOrderWidget from '@/components/pages/OrderBook/SetLimitOrderWidget.vue';
+import setLimitOrderWidgetSource from '@/features/misc/components/order-book/SetLimitOrderWidget.vue?raw';
+import SetLimitOrderWidget from '@/features/misc/components/order-book/SetLimitOrderWidget.vue';
 
 const usePiniaTelemetryMock = vi.fn();
 const orderBookStoreStub = { $id: 'order-book-store' };

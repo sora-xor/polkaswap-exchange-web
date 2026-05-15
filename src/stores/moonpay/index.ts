@@ -14,7 +14,7 @@ import {
   type MoonpayTransaction,
 } from '@/utils/moonpay';
 import ethersUtil from '@/utils/ethers-util';
-import type { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import type { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
 import type { Nullable, FnWithoutArgs } from '@/types/common';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';

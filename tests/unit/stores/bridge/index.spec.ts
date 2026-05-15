@@ -297,8 +297,9 @@ vi.mock('@/utils/bridge/common/utils', async () => {
 });
 
 vi.mock('@sora-substrate/sdk/build/assets', async () => {
-  const actual =
-    await vi.importActual<typeof import('@sora-substrate/sdk/build/assets')>('@sora-substrate/sdk/build/assets');
+  const actual = await vi.importActual<typeof import('@sora-substrate/sdk/build/assets')>(
+    '@sora-substrate/sdk/build/assets'
+  );
 
   return {
     ...actual,
@@ -629,7 +630,7 @@ describe('useBridgeStore', () => {
         };
       }
 
-      return address ? (walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null : null;
+      return address ? ((walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null) : null;
     });
 
     store.updateForm({ assetAddress: DAI.address });
@@ -666,7 +667,7 @@ describe('useBridgeStore', () => {
         };
       }
 
-      return address ? (walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null : null;
+      return address ? ((walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null) : null;
     });
 
     store.updateForm({ assetAddress: DAI.address });
@@ -694,7 +695,7 @@ describe('useBridgeStore', () => {
     assetsStoreMock.assetDataByAddress.mockImplementation((address?: string | null) => {
       if (address === '0x01') return liveAccountAsset;
 
-      return address ? (walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null : null;
+      return address ? ((walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null) : null;
     });
     store.balances.assetSenderBalance = null;
     store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
@@ -769,7 +770,7 @@ describe('useBridgeStore', () => {
       },
     };
     assetsStoreMock.assetDataByAddress.mockImplementation((address?: string | null) =>
-      address ? (walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null : null
+      address ? ((walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null) : null
     );
 
     expect(store.nativeToken).toBeNull();
@@ -1078,6 +1079,28 @@ describe('useBridgeStore', () => {
     expect(store.history.id).toBe('tx-final');
     expect(store.history.inProgressIds['tx-final']).toBe(true);
     expect(store.history.inProgressIds[generated.id]).toBeUndefined();
+  });
+
+  it('keeps the generated transaction visible when SDK history storage is account-scoped elsewhere', async () => {
+    ethBridgeApiMock.history = {};
+    ethBridgeApiMock.generateHistoryItem.mockImplementationOnce((data: Record<string, any>) => ({
+      id: 'tx-generated-detached-storage',
+      ...data,
+    }));
+
+    const generated = (await store.generateHistoryItem({ amount: '5' })) as Record<string, any>;
+
+    store.setHistoryId(generated.id);
+
+    expect(store.historyRecord[generated.id]).toMatchObject({
+      id: generated.id,
+      amount: '5',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    });
+    expect(store.activeTransaction).toMatchObject({
+      id: generated.id,
+      amount: '5',
+    });
   });
 
   it('rejects failed history generation without mutating local history', async () => {
@@ -1750,7 +1773,7 @@ describe('useBridgeStore', () => {
     assetsStoreMock.assetDataByAddress.mockImplementation((address?: string | null) => {
       if (address === DAI.address) return staleDaiAsset;
 
-      return address ? (walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null : null;
+      return address ? ((walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null) : null;
     });
     store.updateForm({ isSoraToEvm: false, assetAddress: DAI.address });
 

@@ -76,7 +76,7 @@ describe('app-level store migration', () => {
     expect(bootstrapSource).toContain("routerModulePromise ??= import('@/app/router');");
     expect(bootstrapSource).toContain("appShellModulePromise ??= import('@/app/shell/AppShell.vue');");
     expect(bootstrapSource).toContain('const AppShell = createAsyncComponent(loadAppShell);');
-    expect(bootstrapSource).toContain('setI18nLocale(getLocale() as any)');
+    expect(bootstrapSource).toContain('setI18nLocale(getLocale() as SupportedLocale)');
     expect(bootstrapSource).not.toContain("import AppShell from '@/app/shell/AppShell.vue';");
     expect(bootstrapSource).not.toContain("from '@/utils/app-store'");
     expect(bootstrapSource).not.toContain("from '@/lib/soraneo-wallet/src/api'");

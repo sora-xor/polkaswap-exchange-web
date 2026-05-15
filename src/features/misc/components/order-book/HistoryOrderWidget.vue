@@ -65,9 +65,9 @@
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
-import CancelConfirm from '@/components/pages/OrderBook/Dialogs/CancelOrders.vue';
-import AllOrders from '@/components/pages/OrderBook/Tables/AllOrders.vue';
-import OpenOrders from '@/components/pages/OrderBook/Tables/OpenOrders.vue';
+import CancelConfirm from '@/features/misc/components/order-book/Dialogs/CancelOrders.vue';
+import AllOrders from '@/features/misc/components/order-book/Tables/AllOrders.vue';
+import OpenOrders from '@/features/misc/components/order-book/Tables/OpenOrders.vue';
 import BaseWidget from '@/components/shared/Widget/Base.vue';
 
 import { useConfirmDialog } from '@/composables/useConfirmDialog';

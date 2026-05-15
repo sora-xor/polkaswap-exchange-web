@@ -52,18 +52,25 @@ export const APP_NAME = 'Sora2 Wallet';
  */
 export const WHITE_LIST_URL = 'whitelist.json';
 export const NFT_BLACK_LIST_URL = 'blacklist.json';
-export const SORAMETRICS_EXPLORER_URL = 'https://sorametrics.org';
+export const SORAMETRICS_EXPLORER_URL = 'https://sorametrics.org/sorav2';
 
-const getSorametricsLink = (fragment: string): string => `${SORAMETRICS_EXPLORER_URL.replace(/\/+$/, '')}/${fragment}`;
+/** Builds SoraMetrics v2 dashboard links; the root route is now a network chooser. */
+const getSorametricsLink = (params: Record<string, string>): string => {
+  const query = Object.entries(params)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+
+  return `${SORAMETRICS_EXPLORER_URL.replace(/\/+$/, '')}?${query}`;
+};
 
 export const getSorametricsAccountLink = (address: string): string =>
-  getSorametricsLink(`#wallet=${encodeURIComponent(address)}`);
+  getSorametricsLink({ tab: 'balance', address });
 
 export const getSorametricsBlockLink = (block: string | number): string =>
-  getSorametricsLink(`#block=${encodeURIComponent(String(block))}`);
+  getSorametricsLink({ tab: 'extrinsics', block: String(block) });
 
 export const getSorametricsTransactionLink = (value: string): string =>
-  getSorametricsLink(`${value.startsWith('0x') ? '#tx=' : '#extrinsic='}${encodeURIComponent(value)}`);
+  getSorametricsLink({ tab: 'extrinsics', q: value });
 
 /**
  * Resolves once the browser has finished loading the document. Useful for

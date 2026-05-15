@@ -190,10 +190,18 @@ import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
-import PlaceConfirm from '@/components/pages/OrderBook/Dialogs/PlaceOrder.vue';
-import PairListPopover from '@/components/pages/OrderBook/Popovers/PairListPopover.vue';
-import PlaceTransactionDetails from '@/components/pages/OrderBook/TransactionDetails.vue';
-import Error from '@/components/pages/OrderBook/common/ErrorButton.vue';
+import PlaceConfirm from '@/features/misc/components/order-book/Dialogs/PlaceOrder.vue';
+import PairListPopover from '@/features/misc/components/order-book/Popovers/PairListPopover.vue';
+import PlaceTransactionDetails from '@/features/misc/components/order-book/TransactionDetails.vue';
+import Error from '@/features/misc/components/order-book/common/ErrorButton.vue';
+import {
+  calculateOrderBookSliderAmount,
+  calculateOrderBookSliderPercent,
+  doesOrderBookPriceExceedSpread,
+  formatOrderBookInputValue,
+  isOrderBookAmountOutOfBounds,
+  isOrderBookPriceUnique,
+} from '@/features/misc/components/order-book/form';
 import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';
 import PriceChange from '@/components/shared/PriceChange.vue';
 import TokenInput from '@/components/shared/Input/TokenInput.vue';
@@ -425,19 +433,12 @@ const orderBookVolume = computed(() => (orderBookStats.value?.volume ?? FPNumber
 const marketOptionDisabled = computed(() => orderBookStatus.value === OrderBookStatus.PlaceAndCancel);
 
 const priceExceedsSpread = computed(() => {
-  if (!quoteValue.value) return false;
-
-  if (isBuySide.value) {
-    const bestAsk = asks.value[asks.value.length - 1]?.[0];
-    if (!bestAsk) return false;
-    const price = new FPNumber(quoteValue.value);
-    return FPNumber.gte(price, bestAsk);
-  }
-
-  const bestBid = bids.value[0]?.[0];
-  if (!bestBid) return false;
-  const price = new FPNumber(quoteValue.value);
-  return FPNumber.lte(price, bestBid);
+  return doesOrderBookPriceExceedSpread({
+    asks: asks.value,
+    bids: bids.value,
+    quoteValue: quoteValue.value,
+    side: side.value,
+  });
 });
 const setLiquiditySource = (source: string) => swapStore.setLiquiditySource(source as LiquiditySourceTypes);
 const selectSwapDexId = (dex: DexId) => swapStore.selectDexId(dex);
@@ -479,13 +480,7 @@ const isPriceBeyondPrecision = computed(() => {
 });
 
 const isOutOfAmountBounds = computed(() => {
-  const orderBook = currentOrderBook.value;
-  if (!orderBook) return false;
-
-  const { maxLotSize, minLotSize, stepLotSize } = orderBook;
-  const amountFP = new FPNumber(baseValue.value || '0');
-
-  return !(FPNumber.lte(amountFP, maxLotSize) && FPNumber.gte(amountFP, minLotSize) && amountFP.isZeroMod(stepLotSize));
+  return isOrderBookAmountOutOfBounds(currentOrderBook.value, baseValue.value);
 });
 
 const computedBtnClass = computed(() => {
@@ -502,31 +497,20 @@ const icon = computed(() =>
 const getTokenBalance = (token: AccountAsset): CodecString => getAssetBalance(token);
 
 const getPercent = (value: string) => {
-  if (!value) return 0;
-  return new FPNumber(value).div(maxPossibleAmount.value).mul(FPNumber.HUNDRED).toNumber();
+  return calculateOrderBookSliderPercent(value, maxPossibleAmount.value);
 };
 const handleSlideInputChange = (percent: string) => {
   amountSliderValue.value = Number(percent);
 
-  const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(maxPossibleAmount.value).dp(amountPrecision.value);
+  const value = calculateOrderBookSliderAmount(percent, maxPossibleAmount.value, amountPrecision.value);
 
   if (!value.isZero()) {
     handleInputFieldBase(value.toString());
   }
 };
 
-const formatInputValue = (value: string, precision: number) => {
-  if (!value) return '';
-
-  const [, decimal] = value.split('.');
-
-  if (value.endsWith('.') && precision === 0) return value.slice(0, -1);
-
-  return value.endsWith('.') || decimal?.length <= precision ? value : new FPNumber(value).dp(precision).toString();
-};
-
 const handleInputFieldQuote = (preciseValue: string) => {
-  const value = formatInputValue(preciseValue, bookPrecision.value);
+  const value = formatOrderBookInputValue(preciseValue, bookPrecision.value);
   quoteValue.value = value;
   void checkInputValidation();
 };
@@ -573,7 +557,7 @@ const subscribeOnBookQuote = () => {
 };
 
 const handleInputFieldBase = (preciseValue: string) => {
-  const value = formatInputValue(preciseValue, amountPrecision.value);
+  const value = formatOrderBookInputValue(preciseValue, amountPrecision.value);
   baseValue.value = value;
   amountSliderValue.value = getPercent(value);
   void checkInputValidation();
@@ -638,10 +622,7 @@ const handleTabClick = () => {
 };
 
 const isPriceUnique = (statedPrice: string) => {
-  const rawPrices = (!isBuySide.value ? asks.value : bids.value).map((priceVolume) => priceVolume[0]);
-  const prices = rawPrices.map((price) => price.toString());
-
-  return !prices.includes(statedPrice);
+  return isOrderBookPriceUnique(!isBuySide.value ? asks.value : bids.value, statedPrice);
 };
 
 const singlePriceReachedLimit = async () => {

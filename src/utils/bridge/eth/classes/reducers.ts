@@ -12,6 +12,7 @@ import { getTransaction, waitForApprovedRequest, waitForIncomingRequest } from '
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import type { TransactionResponse } from 'ethers';
 
 type EthBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {
   getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;
@@ -32,6 +33,31 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
     this.signExternalIncoming = options.signExternalIncoming;
   }
 
+  /** Finds an already-submitted EVM bridge transaction for the SORA request before prompting to sign again. */
+  private async findSubmittedEvmTxBySoraHash(id: string): Promise<TransactionResponse | null> {
+    const { to, hash, startTime } = this.getTransaction(id);
+
+    if (!(to && hash)) {
+      return null;
+    }
+
+    const bridgeHistory = await this.getBridgeHistoryInstance();
+
+    return await bridgeHistory.findEthTxBySoraHash(to, hash, startTime);
+  }
+
+  private async restoreSubmittedEvmTx(id: string): Promise<boolean> {
+    const transaction = await this.findSubmittedEvmTxBySoraHash(id);
+
+    if (!transaction) {
+      return false;
+    }
+
+    this.updateTransactionParams(id, { externalHash: transaction.hash });
+
+    return true;
+  }
+
   async onEvmPending(id: string): Promise<void> {
     await onEvmTransactionPending(id, this.getTransaction.bind(this), this.updateTransactionParams.bind(this));
   }
@@ -43,6 +69,14 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
       this.beforeSubmit(id);
 
       try {
+        if (await this.restoreSubmittedEvmTx(id)) {
+          return;
+        }
+      } catch (error) {
+        console.info('[Bridge]: Unable to restore submitted Ethereum transaction before signing', error);
+      }
+
+      try {
         const signedTx = await signExternal(id);
         // update after sign
         this.updateTransactionParams(id, {
@@ -52,22 +86,45 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash
         if (error.code !== 'ACTION_REJECTED') {
-          const { to, hash, startTime } = tx;
-          const bridgeHistory = await this.getBridgeHistoryInstance();
-          const transaction = await bridgeHistory.findEthTxBySoraHash(
-            to as string,
-            hash as string,
-            startTime as number
-          );
-
-          if (transaction) {
-            this.updateTransactionParams(id, { externalHash: transaction.hash });
+          if (await this.restoreSubmittedEvmTx(id)) {
             return;
           }
         }
         throw error;
       }
     }
+  }
+
+  private async restoreOutgoingRequestHash(id: string): Promise<void> {
+    const { blockId, txId } = this.getTransaction(id);
+
+    if (!(blockId && txId)) {
+      return;
+    }
+
+    const transactionEvents = await getTransactionEvents(blockId, txId, ethBridgeApi.api);
+    const requestEvent = transactionEvents.find((e) => ethBridgeApi.api.events.ethBridge.RequestRegistered.is(e.event));
+    const hash = requestEvent?.event.data[0]?.toString();
+
+    if (!hash) {
+      throw new Error(`[Bridge]: Unable to restore ETH bridge request hash from SORA transaction "${txId}"`);
+    }
+
+    this.updateTransactionParams(id, { hash });
+  }
+
+  protected async ensureOutgoingRequestHash(id: string): Promise<void> {
+    const { hash } = this.getTransaction(id);
+
+    if (hash) {
+      const requestStatus = await ethBridgeApi.getRequestStatus(hash);
+
+      if (requestStatus != null) {
+        return;
+      }
+    }
+
+    await this.restoreOutgoingRequestHash(id);
   }
 }
 
@@ -128,17 +185,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
             await this.waitForTransactionStatus(id);
             await this.waitForTransactionBlockId(id);
 
-            const { blockId, txId, hash: soraHash } = this.getTransaction(id);
-
-            if (!soraHash) {
-              const transactionEvents = await getTransactionEvents(blockId as string, txId as string, ethBridgeApi.api);
-              const requestEvent = transactionEvents.find((e) =>
-                ethBridgeApi.api.events.ethBridge.RequestRegistered.is(e.event)
-              );
-              const hash = requestEvent.event.data[0].toString();
-
-              this.updateTransactionParams(id, { hash });
-            }
+            await this.ensureOutgoingRequestHash(id);
 
             const tx = this.getTransaction(id);
 

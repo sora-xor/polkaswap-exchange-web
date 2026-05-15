@@ -38,7 +38,7 @@ vi.mock('@/composables/useTranslation', () => ({
 
 describe('CancelOrders.vue', () => {
   it('emits confirm event with Cancel.all and hides dialog', async () => {
-    const module = await import('@/components/pages/OrderBook/Dialogs/CancelOrders.vue');
+    const module = await import('@/features/misc/components/order-book/Dialogs/CancelOrders.vue');
     const wrapper = mount(module.default, {
       props: {
         visible: true,

@@ -20,11 +20,12 @@ import { useWalletStore } from '@/stores/wallet';
 import { bootstrapRuntimeServices } from '@/utils/bootstrapRuntimeServices';
 import { clearLocalStorage } from '@/utils/storage';
 import { resolvePolkaswapIndexerEndpoint } from '@/utils/indexerEndpoint';
-import { getEnvConfigCandidates, resolveStaticAssetUrl } from '@/utils/staticAssets';
+import { getEnvConfigCandidates } from '@/utils/staticAssets';
 import { shouldLoadTelegramMiniApp } from '@/utils/telegramLaunch';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { getMobileCssClasses } from '@/utils/device';
 
+import { buildRuntimeEnvConfigUrls, resolveRuntimeEnvConfigPayload, type RuntimeEnvConfig } from './runtimeEnvConfig';
 import { resolveAppMainRouteClass } from './policies/resolveAppMainRouteClass';
 import { resolveDialogVisibilityOnRouteChange } from './policies/resolveDialogVisibilityOnRouteChange';
 import { resolveDisclaimerVisibilityOnRouteChange } from './policies/resolveDisclaimerVisibilityOnRouteChange';
@@ -37,26 +38,14 @@ import { createAppShellBrowserEffects } from './useAppShellBrowserEffects';
 import { createDataPlaneTelemetry } from './useDataPlaneTelemetry';
 import { createIpfsImageNormalizer } from './useIpfsImageNormalizer';
 
+import { resolveRealtimeConnectionCap } from '@/utils/realtimeConnectionCap';
+
 import type { FeatureFlags } from '@/stores/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from '@/stores/web3/types';
 import type { Nullable } from '@/types/common';
 import type { HistoryItem } from '@sora-substrate/sdk';
 import type { WhitelistArrayItem } from '@sora-substrate/sdk/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
-
-type RuntimeEnvConfig = Partial<{
-  NETWORK_TYPE: string;
-  TG_BOT_URL: string;
-  API_KEYS: Record<string, string>;
-  ETH_BRIDGE: EthBridgeSettings;
-  FEATURE_FLAGS: FeatureFlags;
-  EVM_NETWORKS_IDS: EvmNetwork[];
-  SUB_NETWORKS: SubNetworkApps;
-  POLKASWAP_INDEXER_ENDPOINT: string;
-  FAUCET_URL: string;
-  DEFAULT_NETWORKS: any;
-  CHAIN_GENESIS_HASH: string;
-}>;
 
 type ApiModule = typeof import('@/api');
 type AlertsServiceModule = typeof import('@/lib/soraneo-wallet/src/services/alerts');
@@ -210,7 +199,9 @@ export function useAppShell() {
   const nodeConnectionGateExpired = ref(false);
 
   const responsiveClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
-  const appConnection = computed(() => settingsStore.appConnection as InstanceType<ConnectionModule['NodesConnection']>);
+  const appConnection = computed(
+    () => settingsStore.appConnection as InstanceType<ConnectionModule['NodesConnection']>
+  );
   const browserNotifPopup = computed(() => Boolean(settingsStore.browserNotifPopupVisibility));
   const browserNotifPopupBlocked = computed(() => settingsStore.browserNotifPopupBlockedVisibility as boolean);
   const showAlertSettingsPopup = computed(() => Boolean(settingsStore.alertSettingsVisibility));
@@ -317,18 +308,6 @@ export function useAppShell() {
   function getOrCreateDataPlaneClient(module: RealtimeModule): DataPlaneClient {
     dataPlaneClient ??= module.getDataPlaneClient();
     return dataPlaneClient;
-  }
-
-  function resolveWsConnectionCap(value: unknown): number {
-    if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
-      return Math.floor(value);
-    }
-
-    if (value === true) {
-      return 4;
-    }
-
-    return Number.POSITIVE_INFINITY;
   }
 
   function setDarkPage(value: boolean): void {
@@ -460,38 +439,25 @@ export function useAppShell() {
   async function loadRuntimeEnvConfig(): Promise<RuntimeEnvConfig> {
     const candidates = getEnvConfigCandidates();
     const { default: axiosInstance } = await loadApiModule();
+    const origin =
+      typeof window !== 'undefined' && typeof window.location?.origin === 'string' ? window.location.origin : undefined;
 
     for (const candidate of candidates) {
-      const envConfigUrls = [resolveStaticAssetUrl(candidate)];
-      const normalizedCandidate = candidate.replace(/^\/+/g, '');
-
-      if (typeof window !== 'undefined' && typeof window.location?.origin === 'string') {
-        try {
-          const rootConfigUrl = new URL(normalizedCandidate, `${window.location.origin}/`).toString();
-          if (!envConfigUrls.includes(rootConfigUrl)) {
-            envConfigUrls.push(rootConfigUrl);
-          }
-        } catch {
-          // Ignore malformed runtime location values and continue with resolved URLs.
-        }
-      }
+      const envConfigUrls = buildRuntimeEnvConfigUrls(candidate, origin);
 
       for (const envConfigUrl of envConfigUrls) {
         try {
           const { data } = await axiosInstance.get(envConfigUrl);
+          const payload = resolveRuntimeEnvConfigPayload(data);
 
-          if (data && typeof data === 'object' && !Array.isArray(data)) {
-            return data as RuntimeEnvConfig;
+          if (payload.ok) {
+            return payload.config;
           }
 
-          const payloadType = Array.isArray(data) ? 'array' : typeof data;
-          const payloadPreview = typeof data === 'string' ? data.trim().slice(0, 32).toLowerCase() : undefined;
-          const isHtmlFallback = payloadType === 'string' && payloadPreview?.startsWith('<!doctype html');
-
-          if (isHtmlFallback) {
+          if (payload.isHtmlFallback) {
             console.warn('[bootstrap] Env config fallback returned HTML document:', candidate, envConfigUrl);
           } else {
-            console.warn('[bootstrap] Invalid env config payload type:', candidate, payloadType, envConfigUrl);
+            console.warn('[bootstrap] Invalid env config payload type:', candidate, payload.payloadType, envConfigUrl);
           }
         } catch (error) {
           console.warn('[bootstrap] Failed to load env config:', candidate, envConfigUrl, error);
@@ -763,7 +729,7 @@ export function useAppShell() {
         const { NodesConnection } = await loadConnectionModule();
         NodesConnection.enableBackoff = Boolean(data?.FEATURE_FLAGS?.wsBackoff);
         NodesConnection.enableParallelDial = Boolean(data?.FEATURE_FLAGS?.wsParallelDial);
-        NodesConnection.maxActiveConnections = resolveWsConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps);
+        NodesConnection.maxActiveConnections = resolveRealtimeConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps);
       } catch {
         // noop
       }
@@ -776,7 +742,7 @@ export function useAppShell() {
           const started = await client.start({
             preferSharedWorker: Boolean(data?.FEATURE_FLAGS?.wsSharedWorker),
             profile: realtimeModule.normalizeRealtimeProfile(data?.FEATURE_FLAGS?.wsProfile),
-            maxConnections: resolveWsConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps),
+            maxConnections: resolveRealtimeConnectionCap(data?.FEATURE_FLAGS?.wsConnectionCaps),
           });
 
           realtimeVisibilitySyncEnabled = started;

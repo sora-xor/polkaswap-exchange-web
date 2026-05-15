@@ -10,10 +10,10 @@ const files = {
   store: path.join(repoRoot, 'src', 'stores', 'moonpay', 'index.ts'),
   bridge: path.join(repoRoot, 'src', 'composables', 'useMoonpayBridge.ts'),
   depositOptions: path.join(repoRoot, 'src', 'features', 'deposit', 'pages', 'DepositOptionsPage.vue'),
-  moonpay: path.join(repoRoot, 'src', 'components', 'pages', 'Moonpay', 'Moonpay.vue'),
-  history: path.join(repoRoot, 'src', 'components', 'pages', 'Moonpay', 'MoonpayHistory.vue'),
-  confirmation: path.join(repoRoot, 'src', 'components', 'pages', 'Moonpay', 'Confirmation.vue'),
-  notification: path.join(repoRoot, 'src', 'components', 'pages', 'Moonpay', 'Notification.vue'),
+  moonpay: path.join(repoRoot, 'src', 'features', 'deposit', 'components', 'moonpay', 'Moonpay.vue'),
+  history: path.join(repoRoot, 'src', 'features', 'deposit', 'components', 'moonpay', 'MoonpayHistory.vue'),
+  confirmation: path.join(repoRoot, 'src', 'features', 'deposit', 'components', 'moonpay', 'Confirmation.vue'),
+  notification: path.join(repoRoot, 'src', 'features', 'deposit', 'components', 'moonpay', 'Notification.vue'),
 } as const;
 
 const readSource = async (filePath: string): Promise<string> => readFile(filePath, 'utf8');

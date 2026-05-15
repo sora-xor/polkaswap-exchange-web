@@ -19,7 +19,7 @@
           <formatted-amount
             class="info-line-value"
             value-can-be-hidden
-            :value="formattedAmount"
+            :value="amountFormatted"
             :asset-symbol="assetSymbol"
           >
             <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? 0 : externalNetworkId)}`"></i>
@@ -28,7 +28,7 @@
           <formatted-amount
             class="info-line-value"
             value-can-be-hidden
-            :value="formattedAmountReceived"
+            :value="amountReceivedFormatted"
             :asset-symbol="assetSymbol"
           >
             <i :class="`network-icon network-icon--${getNetworkIcon(isOutgoing ? externalNetworkId : 0)}`"></i>
@@ -41,7 +41,7 @@
         class="transaction-hash-container transaction-hash-container--with-dropdown"
         :key="value"
       >
-        <s-input :placeholder="placeholder" :value="formatted" readonly></s-input>
+        <s-input class="transaction-address" :placeholder="placeholder" :value="formatted" readonly></s-input>
         <s-button
           class="s-button--hash-copy"
           type="action"
@@ -65,7 +65,7 @@
         is-formatted
         value-can-be-hidden
         :label="t('bridgeTransaction.networkInfo.amount')"
-        :value="formattedAmount"
+        :value="amountFormatted"
         :asset-symbol="assetSymbol"
         :fiat-value="amountFiatValue"
       ></info-line>
@@ -74,7 +74,7 @@
         is-formatted
         value-can-be-hidden
         :label="t('receivedText')"
-        :value="formattedAmountReceived"
+        :value="amountReceivedFormatted"
         :asset-symbol="assetSymbol"
         :fiat-value="amountReceivedFiatValue"
       ></info-line>
@@ -112,7 +112,7 @@
         class="transaction-hash-container transaction-hash-container--with-dropdown"
         :key="value"
       >
-        <s-input :placeholder="placeholder" :value="formatted" readonly></s-input>
+        <s-input class="transaction-address" :placeholder="placeholder" :value="formatted" readonly></s-input>
         <s-button
           class="s-button--hash-copy"
           type="action"
@@ -297,10 +297,10 @@ const amountReceivedFiatValue = computed(() =>
   asset.value ? getFiatAmountByString(amountReceived.value, asset.value) : null
 );
 
-const formattedAmount = computed(() =>
+const amountFormatted = computed(() =>
   amount.value && asset.value ? formatStringValue(amount.value, asset.value.decimals) : ''
 );
-const formattedAmountReceived = computed(() =>
+const amountReceivedFormatted = computed(() =>
   amountReceived.value && asset.value ? formatStringValue(amountReceived.value, asset.value.decimals) : ''
 );
 
@@ -675,23 +675,63 @@ $header-font-size: var(--s-heading3-font-size);
     }
   }
   &-hash-container {
+    --transaction-address-action-gap: #{$inner-spacing-tiny};
+    --transaction-address-action-inset: #{$inner-spacing-mini};
+    --transaction-address-action-size: var(--s-size-small);
+
+    .transaction-address.s-input {
+      background-color: var(--s-color-utility-body);
+      border-radius: var(--s-border-radius-small);
+      box-shadow: var(--s-shadow-element-pressed);
+      color: var(--s-color-base-content-primary);
+
+      .s-input__content {
+        min-height: var(--s-size-medium);
+        padding: 0
+          calc(
+            var(--transaction-address-action-inset) + var(--transaction-address-action-size) +
+              var(--transaction-address-action-size) + var(--transaction-address-action-gap)
+          )
+          0 #{$inner-spacing-medium};
+      }
+
+      .el-input__inner {
+        font-size: var(--s-font-size-medium);
+        font-weight: 600;
+        line-height: var(--s-line-height-small);
+        text-overflow: ellipsis;
+      }
+    }
+
     .s-button--hash-copy {
       padding: 0;
+      width: var(--transaction-address-action-size);
+      height: var(--transaction-address-action-size);
       color: var(--s-color-base-content-tertiary) !important;
-      .s-icon-copy {
+
+      .s-button__icon {
         margin-right: 0 !important;
       }
     }
     &--with-dropdown {
       .s-button--hash-copy {
-        right: calc(#{$inner-spacing-medium} + var(--s-size-mini));
+        right: calc(
+          var(--transaction-address-action-inset) + var(--transaction-address-action-size) +
+            var(--transaction-address-action-gap)
+        );
       }
       .s-dropdown--hash-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: absolute;
         z-index: $app-content-layer;
         top: 0;
         bottom: 0;
-        right: $inner-spacing-medium;
+        right: var(--transaction-address-action-inset);
+        width: var(--transaction-address-action-size);
+        height: var(--transaction-address-action-size);
+        color: var(--s-color-base-content-tertiary);
       }
     }
     i {
@@ -710,7 +750,7 @@ $header-font-size: var(--s-heading3-font-size);
   }
 }
 [design-system-theme='dark'] {
-  .transaction-content .s-input {
+  .transaction-content .transaction-address.s-input {
     background-color: var(--s-color-base-on-accent);
   }
 }
@@ -755,8 +795,8 @@ $network-title-max-width: 250px;
       margin-top: auto;
       margin-bottom: auto;
       padding: 0;
-      width: var(--s-size-mini);
-      height: var(--s-size-mini);
+      width: var(--transaction-address-action-size);
+      height: var(--transaction-address-action-size);
       line-height: 1;
     }
   }

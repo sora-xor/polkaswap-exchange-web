@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import buySellSource from '@/components/pages/OrderBook/BuySell.vue?raw';
+import buySellSource from '@/features/misc/components/order-book/BuySell.vue?raw';
 
 describe('BuySell source', () => {
   it('renders order-book tab labels from the default STab slot content', () => {
@@ -40,13 +40,17 @@ describe('BuySell source', () => {
     expect(buySellSource).toContain("import TokenInput from '@/components/shared/Input/TokenInput.vue';");
     expect(buySellSource).toContain("import PairTokenLogo from '@/components/shared/PairTokenLogo.vue';");
     expect(buySellSource).toContain(
-      "import PairListPopover from '@/components/pages/OrderBook/Popovers/PairListPopover.vue';"
+      "import PairListPopover from '@/features/misc/components/order-book/Popovers/PairListPopover.vue';"
     );
-    expect(buySellSource).toContain("import PlaceConfirm from '@/components/pages/OrderBook/Dialogs/PlaceOrder.vue';");
     expect(buySellSource).toContain(
-      "import PlaceTransactionDetails from '@/components/pages/OrderBook/TransactionDetails.vue';"
+      "import PlaceConfirm from '@/features/misc/components/order-book/Dialogs/PlaceOrder.vue';"
+    );
+    expect(buySellSource).toContain(
+      "import PlaceTransactionDetails from '@/features/misc/components/order-book/TransactionDetails.vue';"
     );
     expect(buySellSource).toContain("import PriceChange from '@/components/shared/PriceChange.vue';");
-    expect(buySellSource).toContain("import Error from '@/components/pages/OrderBook/common/ErrorButton.vue';");
+    expect(buySellSource).toContain(
+      "import Error from '@/features/misc/components/order-book/common/ErrorButton.vue';"
+    );
   });
 });

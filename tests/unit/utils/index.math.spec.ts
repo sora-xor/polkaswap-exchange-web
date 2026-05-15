@@ -649,14 +649,14 @@ describe('substrate explorer links', () => {
     expect(getSubstrateExplorerLinks(baseLinks, false, '0xabc')).toEqual([
       {
         type: 'sorametrics',
-        value: 'https://sorametrics.org/#tx=0xabc',
+        value: 'https://sorametrics.org/sorav2?tab=extrinsics&q=0xabc',
       },
     ]);
 
     expect(getSubstrateExplorerLinks(baseLinks, true, 'cnValidAddress')).toEqual([
       {
         type: 'sorametrics',
-        value: 'https://sorametrics.org/#wallet=cnValidAddress',
+        value: 'https://sorametrics.org/sorav2?tab=balance&address=cnValidAddress',
       },
     ]);
   });
@@ -667,21 +667,21 @@ describe('substrate explorer links', () => {
     expect(getSubstrateExplorerLinks(baseLinks, false, '25268814-1')).toEqual([
       {
         type: 'sorametrics',
-        value: 'https://sorametrics.org/#extrinsic=25268814-1',
+        value: 'https://sorametrics.org/sorav2?tab=extrinsics&q=25268814-1',
       },
     ]);
 
     expect(getSubstrateExplorerLinks(baseLinks, false, undefined, 25268814, 1)).toEqual([
       {
         type: 'sorametrics',
-        value: 'https://sorametrics.org/#extrinsic=25268814-1',
+        value: 'https://sorametrics.org/sorav2?tab=extrinsics&q=25268814-1',
       },
     ]);
 
     expect(getSubstrateExplorerLinks(baseLinks, false, undefined, 25268814)).toEqual([
       {
         type: 'sorametrics',
-        value: 'https://sorametrics.org/#block=25268814',
+        value: 'https://sorametrics.org/sorav2?tab=extrinsics&block=25268814',
       },
     ]);
   });

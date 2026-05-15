@@ -32,7 +32,7 @@ vi.mock('@/composables/useTranslation', () => ({
 
 describe('MarketTradesWidget.vue', () => {
   it('renders completed orders provided by useOrderBook composable', async () => {
-    const module = await import('@/components/pages/OrderBook/MarketTradesWidget.vue');
+    const module = await import('@/features/misc/components/order-book/MarketTradesWidget.vue');
     const wrapper = mount(module.default, {
       global: {
         stubs: {

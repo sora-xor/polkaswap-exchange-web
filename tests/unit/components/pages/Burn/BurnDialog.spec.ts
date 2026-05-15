@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Operation } from '@sora-substrate/sdk';
 
-import burnDialogSource from '@/components/pages/Burn/BurnDialog.vue?raw';
+import burnDialogSource from '@/features/misc/components/burn/BurnDialog.vue?raw';
 
 const walletMocks = vi.hoisted(() => ({
   burn: vi.fn(),
@@ -154,7 +154,7 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   useFormattedAmount: () => formattedAmountMocks,
 }));
 
-let BurnDialog: typeof import('@/components/pages/Burn/BurnDialog.vue').default;
+let BurnDialog: typeof import('@/features/misc/components/burn/BurnDialog.vue').default;
 let alertMock: ReturnType<typeof vi.fn>;
 
 const mountComponent = (props: Record<string, unknown> = {}) =>
@@ -208,7 +208,7 @@ beforeEach(async () => {
   storeMocks.isLoggedIn = true;
   alertMock = vi.fn();
 
-  ({ default: BurnDialog } = await import('@/components/pages/Burn/BurnDialog.vue'));
+  ({ default: BurnDialog } = await import('@/features/misc/components/burn/BurnDialog.vue'));
 });
 
 describe('BurnDialog (pages)', () => {

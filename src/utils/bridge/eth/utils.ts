@@ -63,6 +63,46 @@ export const updateTransaction = async (id: string, params = {}) => {
   ethBridgeApi.saveHistory({ ...tx, ...params });
 };
 
+const failedRequestStatuses = [BridgeTxStatus.Failed, BridgeTxStatus.Frozen, BridgeTxStatus.Broken];
+
+const assertRequestStatusIsNotFailed = (status: unknown): void => {
+  if (failedRequestStatuses.includes(status as BridgeTxStatus)) {
+    throw new Error('[Bridge]: Transaction was failed or canceled');
+  }
+};
+
+/** Waits until bridge peers have approved an outgoing SORA-to-EVM request. */
+const waitForReadyRequestStatus = async (hash: string): Promise<void> => {
+  const currentStatus = await ethBridgeApi.getRequestStatus(hash);
+
+  assertRequestStatusIsNotFailed(currentStatus);
+
+  if (currentStatus === BridgeTxStatus.Ready) {
+    return;
+  }
+
+  let subscription: Subscription | undefined;
+
+  try {
+    await new Promise<void>((resolve, reject) => {
+      subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe((status) => {
+        try {
+          assertRequestStatusIsNotFailed(status);
+        } catch (error) {
+          reject(error);
+          return;
+        }
+
+        if (status === BridgeTxStatus.Ready) {
+          resolve();
+        }
+      });
+    });
+  } finally {
+    subscription?.unsubscribe();
+  }
+};
+
 export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprovedRequest> => {
   const hash = tx.hash;
 
@@ -70,24 +110,7 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
-  let subscription!: Subscription;
-
-  await new Promise<void>((resolve, reject) => {
-    subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe((status) => {
-      switch (status) {
-        case BridgeTxStatus.Failed:
-        case BridgeTxStatus.Frozen:
-        case BridgeTxStatus.Broken:
-          reject(new Error('[Bridge]: Transaction was failed or canceled'));
-          break;
-        case BridgeTxStatus.Ready:
-          resolve();
-          break;
-      }
-    });
-  });
-
-  subscription.unsubscribe();
+  await waitForReadyRequestStatus(hash);
 
   const request = await ethBridgeApi.getApprovedRequest(hash);
 

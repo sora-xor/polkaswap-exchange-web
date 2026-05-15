@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import marketTradesSource from '@/components/pages/OrderBook/MarketTradesWidget.vue?raw';
+import marketTradesSource from '@/features/misc/components/order-book/MarketTradesWidget.vue?raw';
 
 describe('MarketTradesWidget source', () => {
   it('renders market trades columns in the same order as polkaswap.io', () => {

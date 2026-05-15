@@ -3,6 +3,7 @@ import { shallowMount } from '@vue/test-utils';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 
+import bridgeTransactionSource from '@/features/bridge/pages/BridgeTransactionPage.vue?raw';
 import { resolveBridgeBackLocation } from '@/features/bridge/services/navigationHistory';
 import { useBridgeStore } from '@/stores/bridge';
 
@@ -464,6 +465,18 @@ describe(
       expect(mocks.navigateToBridge).toHaveBeenCalledTimes(1);
 
       wrapper.unmount();
+    });
+
+    it('keeps the formatted amount refs from shadowing the formatted-amount component tag', () => {
+      expect(bridgeTransactionSource).toContain('<formatted-amount');
+      expect(bridgeTransactionSource).not.toMatch(/const\s+formattedAmount\s*=/);
+      expect(bridgeTransactionSource).not.toMatch(/const\s+formattedAmountReceived\s*=/);
+    });
+
+    it('keeps bridge address rows on the design-system pressed surface', () => {
+      expect(bridgeTransactionSource.match(/class="transaction-address"/g)).toHaveLength(2);
+      expect(bridgeTransactionSource).toContain('--transaction-address-action-size: var(--s-size-small)');
+      expect(bridgeTransactionSource).toContain('box-shadow: var(--s-shadow-element-pressed)');
     });
 
     it('triggers wallet connect when an EVM account mismatch is detected', async () => {

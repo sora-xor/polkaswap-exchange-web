@@ -64,7 +64,7 @@ vi.mock('@tests/stubs/walletRuntime', () => ({
   storage: storageMock,
   settingsStorage: storageMock,
   runtimeStorage: storageMock,
-  getExplorerLinks: () => [{ type: 'sorametrics', value: 'https://sorametrics.org/#tx=0x123' }],
+  getExplorerLinks: () => [{ type: 'sorametrics', value: 'https://sorametrics.org/sorav2' }],
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/components/TokenLogo.vue', () => ({

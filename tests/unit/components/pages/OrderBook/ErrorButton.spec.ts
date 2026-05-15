@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
-import ErrorButton from '@/components/pages/OrderBook/common/ErrorButton.vue';
+import ErrorButton from '@/features/misc/components/order-book/common/ErrorButton.vue';
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({

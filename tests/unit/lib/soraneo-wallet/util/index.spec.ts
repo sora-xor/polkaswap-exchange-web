@@ -69,10 +69,16 @@ describe('wallet util helpers', () => {
   });
 
   it('builds Sorametrics account, block, and transaction links', () => {
-    expect(getSorametricsAccountLink('addr/with space')).toBe('https://sorametrics.org/#wallet=addr%2Fwith%20space');
-    expect(getSorametricsBlockLink(123)).toBe('https://sorametrics.org/#block=123');
-    expect(getSorametricsTransactionLink('0xabc')).toBe('https://sorametrics.org/#tx=0xabc');
-    expect(getSorametricsTransactionLink('42-1')).toBe('https://sorametrics.org/#extrinsic=42-1');
+    expect(getSorametricsAccountLink('addr/with space')).toBe(
+      'https://sorametrics.org/sorav2?tab=balance&address=addr%2Fwith%20space'
+    );
+    expect(getSorametricsBlockLink(123)).toBe('https://sorametrics.org/sorav2?tab=extrinsics&block=123');
+    expect(getSorametricsTransactionLink('0xabc')).toBe(
+      'https://sorametrics.org/sorav2?tab=extrinsics&q=0xabc'
+    );
+    expect(getSorametricsTransactionLink('42-1')).toBe(
+      'https://sorametrics.org/sorav2?tab=extrinsics&q=42-1'
+    );
   });
 
   it('resolves document readiness immediately when the page is already complete', async () => {
@@ -153,7 +159,7 @@ describe('wallet util helpers', () => {
     expect(getExplorerLinks(SoraNetwork.Prod)).toEqual([
       {
         type: ExplorerType.Sorametrics,
-        value: 'https://sorametrics.org',
+        value: 'https://sorametrics.org/sorav2',
       },
       {
         type: ExplorerType.Polkadot,

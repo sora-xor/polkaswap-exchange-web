@@ -19,7 +19,7 @@ vi.mock('@/stores/assets', () => ({
 }));
 
 import { getActivePinia } from 'pinia';
-import { resolveAssetLookup, resolveRegisteredAssets } from '@/stores/bridge/assets';
+import { resolveAssetLookup, resolveNativeBridgeToken, resolveRegisteredAssets } from '@/stores/bridge/assets';
 import { useAssetsStore } from '@/stores/assets';
 
 const getActivePiniaMock = vi.mocked(getActivePinia);
@@ -90,5 +90,79 @@ describe('stores/bridge/assets', () => {
     const result = resolveRegisteredAssets(undefined);
 
     expect(result).toEqual({});
+  });
+
+  it('resolves native bridge tokens from registered wallet assets first', () => {
+    const assetDataByAddress = vi.fn((address?: string | null) =>
+      address === 'native'
+        ? {
+            address: 'native',
+            symbol: 'ETH',
+            decimals: 18,
+          }
+        : null
+    );
+
+    expect(
+      resolveNativeBridgeToken({
+        nativeSymbol: 'ETH',
+        registeredAssets: {
+          native: { address: '0xnative', decimals: 18, kind: 'Sidechain' },
+        },
+        walletAssets: [
+          { address: 'spoof', symbol: 'ETH' },
+          { address: 'native', symbol: 'ETH' },
+        ],
+        assetDataByAddress,
+      })
+    ).toEqual({
+      address: 'native',
+      symbol: 'ETH',
+      decimals: 18,
+    });
+    expect(assetDataByAddress).toHaveBeenCalledWith('native');
+  });
+
+  it('falls back to registered assets when wallet assets have not loaded and rejects spoofed symbols', () => {
+    const assetDataByAddress = vi.fn((address?: string | null) =>
+      address === 'native'
+        ? {
+            address: 'native',
+            symbol: 'ETH',
+            decimals: 18,
+          }
+        : null
+    );
+
+    expect(
+      resolveNativeBridgeToken({
+        nativeSymbol: 'ETH',
+        registeredAssets: {
+          native: { address: '0xnative', decimals: 18, kind: 'Sidechain' },
+        },
+        walletAssets: [{ address: 'spoof', symbol: 'ETH' }],
+        assetDataByAddress,
+      })
+    ).toEqual({
+      address: 'native',
+      symbol: 'ETH',
+      decimals: 18,
+    });
+    expect(
+      resolveNativeBridgeToken({
+        nativeSymbol: 'ETH',
+        registeredAssets: {},
+        walletAssets: [{ address: 'spoof', symbol: 'ETH' }],
+        assetDataByAddress,
+      })
+    ).toBeNull();
+    expect(
+      resolveNativeBridgeToken({
+        nativeSymbol: null,
+        registeredAssets: {},
+        walletAssets: [],
+        assetDataByAddress,
+      })
+    ).toBeNull();
   });
 });

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import MoonpayHistory from '@/components/pages/Moonpay/MoonpayHistory.vue';
+import MoonpayHistory from '@/features/deposit/components/moonpay/MoonpayHistory.vue';
 import { MoonpayTransactionStatus } from '@/utils/moonpay';
 
 import type { Nullable } from '@/types/common';

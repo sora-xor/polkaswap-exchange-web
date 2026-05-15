@@ -444,6 +444,7 @@ export class EthBridgeHistory {
       ids,
     });
     const incomingFilter = indexer.historyElementsFilter({
+      address,
       operations: [Operation.EthBridgeIncoming],
       timestamp,
       ids,

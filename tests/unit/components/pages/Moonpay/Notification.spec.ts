@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
 
 const storeSetup = vi.hoisted(() => {
   const setNotificationVisibility = vi.fn();
@@ -87,7 +87,7 @@ vi.mock('@/composables/useTranslation', () => ({
   }),
 }));
 
-let MoonpayNotification: typeof import('@/components/pages/Moonpay/Notification.vue').default;
+let MoonpayNotification: typeof import('@/features/deposit/components/moonpay/Notification.vue').default;
 
 const mountComponent = () =>
   mount(MoonpayNotification, {
@@ -104,7 +104,7 @@ beforeEach(async () => {
   storeMocks.notificationKey = MoonpayNotifications.Success;
   storeSetup.setNotificationVisibility.mockClear();
 
-  ({ default: MoonpayNotification } = await import('@/components/pages/Moonpay/Notification.vue'));
+  ({ default: MoonpayNotification } = await import('@/features/deposit/components/moonpay/Notification.vue'));
 });
 
 describe('MoonpayNotification.vue', () => {

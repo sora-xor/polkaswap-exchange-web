@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import MoonpayConfirmation from '@/components/pages/Moonpay/Confirmation.vue';
+import MoonpayConfirmation from '@/features/deposit/components/moonpay/Confirmation.vue';
 
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import { ETH } from '@sora-substrate/sdk/build/assets/consts';

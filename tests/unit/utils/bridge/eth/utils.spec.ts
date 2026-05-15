@@ -5,6 +5,7 @@ const ethBridgeApiMock = vi.hoisted(() => ({
   saveHistory: vi.fn(),
   subscribeOnRequestStatus: vi.fn(),
   subscribeOnRequest: vi.fn(),
+  getRequestStatus: vi.fn(),
   getApprovedRequest: vi.fn(),
   getSoraHashByEthereumHash: vi.fn(),
   getSoraBlockHashByRequestHash: vi.fn(),
@@ -193,6 +194,7 @@ describe('ETH bridge utils', () => {
     const unsubscribe = vi.fn();
     const request = { hash: '0xhash', from: '0xfrom' };
 
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
       subscribe: (handler: (status: string) => void) => {
         handler('Ready');
@@ -205,7 +207,18 @@ describe('ETH bridge utils', () => {
     expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 
+  it('uses an already-ready outgoing request without waiting for another status emission', async () => {
+    const request = { hash: '0xhash', from: '0xfrom' };
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue('Ready');
+    ethBridgeApiMock.getApprovedRequest.mockResolvedValue(request);
+
+    await expect(waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any)).resolves.toBe(request);
+    expect(ethBridgeApiMock.subscribeOnRequestStatus).not.toHaveBeenCalled();
+  });
+
   it('rejects approved request waiting when bridge status becomes failed', async () => {
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
       subscribe: (handler: (status: string) => void) => {
         handler('Failed');

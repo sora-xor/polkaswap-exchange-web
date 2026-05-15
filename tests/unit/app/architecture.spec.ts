@@ -21,6 +21,7 @@ const walletShimSegment = ['shims', 'wallet'].join('/');
 const deletedRegistrySegment = ['components', 'registry'].join('/');
 const deletedMstWarningBridgeSegment = ['components', 'App', 'BrowserNotification', 'MSTWarningBridge.vue'].join('/');
 const oldBridgePageComponentsSegment = ['components', 'pages', 'Bridge'].join('/');
+const oldPageComponentImportPrefix = '@/components/pages/';
 const legacySegment = `${path.posix.sep}legacy${path.posix.sep}`;
 const deletedBridgeCompatImports = new Set([
   '@/stores/bridge/history',
@@ -206,7 +207,10 @@ describe('direct-import architecture guards', () => {
 
     for (const file of files) {
       const source = await readFile(file, 'utf8');
-      const blockedImports = collectImports(source).filter(hasDeletedBoundaryImport);
+      const imports = collectImports(source);
+      const blockedImports = imports.filter(
+        (specifier) => hasDeletedBoundaryImport(specifier) || specifier.startsWith(oldPageComponentImportPrefix)
+      );
 
       if (blockedImports.length) {
         offenders.push(`${relativeToRepo(file)} -> ${blockedImports.join(', ')}`);

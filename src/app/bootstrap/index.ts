@@ -14,6 +14,7 @@ type AppShellModule = typeof import('@/app/shell/AppShell.vue');
 type LangModule = typeof import('@/lang');
 type PiniaModule = typeof import('@/plugins/pinia');
 type RouterModule = typeof import('@/app/router');
+type SupportedLocale = Parameters<LangModule['setI18nLocale']>[0];
 
 type PreparedRuntime = {
   router: RouterModule['default'];
@@ -73,7 +74,11 @@ export async function prepareAppRuntime(app: VueApp): Promise<PreparedRuntime> {
   app.use(router);
   app.use(i18n);
 
-  await Promise.all([installRuntimePlugins(app, { pinia }), loadAppShell(), setI18nLocale(getLocale() as any)]);
+  await Promise.all([
+    installRuntimePlugins(app, { pinia }),
+    loadAppShell(),
+    setI18nLocale(getLocale() as SupportedLocale),
+  ]);
   await updateDocumentTitle();
 
   return { router };

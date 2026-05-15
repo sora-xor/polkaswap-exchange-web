@@ -121,7 +121,7 @@ const TableStub = defineComponent({
 });
 
 const mountComponent = async (options: { props?: Record<string, unknown> } = {}) => {
-  const module = await import('@/components/pages/OrderBook/Tables/OrderTable.vue');
+  const module = await import('@/features/misc/components/order-book/Tables/OrderTable.vue');
 
   return mount(module.default, {
     props: {

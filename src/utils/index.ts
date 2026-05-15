@@ -298,12 +298,26 @@ const getSubscanTxLink = (baseUrl: string, txId?: string, blockId?: number | str
   return link;
 };
 
-const getSorametricsBaseUrl = (baseUrl: string): string => `${baseUrl.replace(/\/+$/, '')}/`;
+const SORAMETRICS_V2_PATH = 'sorav2';
+
+/** Builds SoraMetrics v2 dashboard links; the root route is now a network chooser. */
+const getSorametricsBaseUrl = (baseUrl: string): string => {
+  const trimmedUrl = baseUrl.replace(/\/+$/, '');
+  return trimmedUrl.endsWith(`/${SORAMETRICS_V2_PATH}`) ? trimmedUrl : `${trimmedUrl}/${SORAMETRICS_V2_PATH}`;
+};
+
+const getSorametricsLink = (baseUrl: string, params: Record<string, string>): string => {
+  const query = Object.entries(params)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+
+  return `${getSorametricsBaseUrl(baseUrl)}?${query}`;
+};
 
 const getSorametricsAccountLink = (baseUrl: string, accountId?: string): string => {
   if (!accountId) return '';
 
-  return `${getSorametricsBaseUrl(baseUrl)}#wallet=${encodeURIComponent(accountId)}`;
+  return getSorametricsLink(baseUrl, { tab: 'balance', address: accountId });
 };
 
 const getSorametricsTxLink = (
@@ -313,16 +327,15 @@ const getSorametricsTxLink = (
   eventIndex?: number
 ): string => {
   if (txId) {
-    const fragment = txId.startsWith('0x') ? '#tx=' : '#extrinsic=';
-    return `${getSorametricsBaseUrl(baseUrl)}${fragment}${encodeURIComponent(txId)}`;
+    return getSorametricsLink(baseUrl, { tab: 'extrinsics', q: txId });
   }
 
   if (Number.isFinite(eventIndex) && Number.isFinite(blockId)) {
-    return `${getSorametricsBaseUrl(baseUrl)}#extrinsic=${encodeURIComponent(`${blockId}-${eventIndex}`)}`;
+    return getSorametricsLink(baseUrl, { tab: 'extrinsics', q: `${blockId}-${eventIndex}` });
   }
 
   if (blockId) {
-    return `${getSorametricsBaseUrl(baseUrl)}#block=${encodeURIComponent(String(blockId))}`;
+    return getSorametricsLink(baseUrl, { tab: 'extrinsics', block: String(blockId) });
   }
 
   return '';

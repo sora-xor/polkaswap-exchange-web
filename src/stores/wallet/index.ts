@@ -1,15 +1,12 @@
-import cryptoRandomString from 'crypto-random-string';
 import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
-import { AES, enc } from 'crypto-js';
 import debounce from 'lodash/fp/debounce';
 import { FPNumber } from '@sora-substrate/math';
-import { Operation, TransactionStatus, type HistoryItem, type NetworkFeesObject } from '@/lib/substrate/sdk/types';
+import { Operation, type HistoryItem, type NetworkFeesObject } from '@/lib/substrate/sdk/types';
 
 import { DefaultPassphraseTimeout } from '@/consts';
 import type { EditableAlertObject, WalletAssetFilters } from '@/consts';
 import type { Theme } from '@/consts/theme';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { excludePoolXYKAssets } from '@sora-substrate/sdk/build/assets';
 import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import {
@@ -41,6 +38,36 @@ import { normalizeTheme } from '@/stores/wallet/settings/theme';
 import type { SettingsState } from '@/stores/wallet/settings/types';
 import { initialState as createTransactionsState } from '@/stores/wallet/transactions/state';
 import type { TransactionsState } from '@/stores/wallet/transactions/types';
+import {
+  areLocalNetworkFeesOkay,
+  DAI_CURRENCY_KEY,
+  mapByAddress,
+  resolveCurrencySymbol,
+  resolveExchangeRate,
+  resolveFirstReadyTransaction,
+  resolveSelectedTransaction,
+} from '@/stores/wallet/derived';
+import { resolveWhitelist, resolveWhitelistIdsBySymbol } from '@/stores/wallet/whitelist';
+import { clearAccountPassphrase, readAccountPassphrase, storeAccountPassphrase } from '@/stores/wallet/passphrase';
+import {
+  appendPinnedAssetAddress,
+  normalizePinnedAssetAddresses,
+  removeAddressBookEntry,
+  removePinnedAssetAddress,
+  setAddressBookEntry,
+} from '@/stores/wallet/accountCollections';
+import {
+  mergeWalletApiKeys,
+  resolveGoogleDriveOptions,
+  resolveNftStorageOptions,
+  resolveWalletConnectProjectId,
+} from '@/stores/wallet/runtimeSettings';
+import {
+  prependPriceAlert,
+  removePriceAlertAt,
+  replacePriceAlert,
+  setPriceAlertNotified,
+} from '@/stores/wallet/alerts';
 import { createNftStorage } from '@/stores/wallet/nftStorage';
 import { IpfsStorage } from '@/lib/soraneo-wallet/src/util/ipfsStorage';
 import { runtimeStorage, settingsStorage, storage } from '@/lib/soraneo-wallet/src/util/storage';
@@ -80,9 +107,6 @@ type IndexerServicesModule = typeof import('@/lib/soraneo-wallet/src/services/in
 type RxjsModule = typeof import('rxjs');
 type CurrentIndexer = ReturnType<IndexerServicesModule['getCurrentIndexer']>;
 
-const DEFAULT_CURRENCY_SYMBOL = '$';
-const XOR_CURRENCY_KEY = 'xor';
-const DAI_CURRENCY_KEY = 'dai';
 const UPDATE_ACTIVE_TRANSACTIONS_INTERVAL = 2_000;
 const UPDATE_ASSETS_TIMEOUT = BLOCK_PRODUCE_TIME * 3;
 
@@ -105,9 +129,7 @@ const loadAlertsApiService = async (): Promise<AlertsServiceModule['default']> =
 /**
  * Loads the fiat exchange-rate service only after indexer subscriptions start.
  */
-const loadCurrencyExchangeRateService = async (): Promise<
-  CurrencyServiceModule['CurrencyExchangeRateService']
-> => {
+const loadCurrencyExchangeRateService = async (): Promise<CurrencyServiceModule['CurrencyExchangeRateService']> => {
   currencyServiceModulePromise ??= import('@/lib/soraneo-wallet/src/services/currency');
   const { CurrencyExchangeRateService } = await currencyServiceModulePromise;
   return CurrencyExchangeRateService;
@@ -153,135 +175,6 @@ const fallbackFilters: WalletAssetFilters = {
   zeroBalance: false,
 };
 
-const mapByAddress = <T extends { address: string }>(items: ReadonlyArray<T> = []): Record<string, T> => {
-  return items.reduce<Record<string, T>>((buffer, item) => {
-    if (item?.address) {
-      buffer[item.address] = item;
-    }
-
-    return buffer;
-  }, {});
-};
-
-const resolveWhitelist = (whitelistArray: ReadonlyArray<WhitelistArrayItem> = []): Whitelist => {
-  if (!whitelistArray.length) {
-    return {};
-  }
-
-  try {
-    return walletApi.assets.getWhitelist([...whitelistArray]);
-  } catch {
-    return {};
-  }
-};
-
-const resolveWhitelistIdsBySymbol = (whitelistArray: ReadonlyArray<WhitelistArrayItem> = []): WhitelistIdsBySymbol => {
-  if (!whitelistArray.length) {
-    return {} as WhitelistIdsBySymbol;
-  }
-
-  try {
-    return walletApi.assets.getWhitelistIdsBySymbol([...whitelistArray]) as WhitelistIdsBySymbol;
-  } catch {
-    return {} as WhitelistIdsBySymbol;
-  }
-};
-
-const resolveCurrencySymbol = (currency: Nullable<string>, currencies: CurrencyFields[] = []): string => {
-  if (!currency) {
-    return DEFAULT_CURRENCY_SYMBOL;
-  }
-
-  const currencyKey = currency.toLowerCase();
-  const configuredCurrency = currencies.find((entry) => String(entry.key).toLowerCase() === currencyKey);
-
-  if (configuredCurrency?.symbol) {
-    return configuredCurrency.symbol;
-  }
-
-  if (currencyKey === XOR_CURRENCY_KEY) {
-    return 'XOR';
-  }
-
-  try {
-    const parts = new Intl.NumberFormat('en', {
-      style: 'currency',
-      currency: currencyKey.toUpperCase(),
-      currencyDisplay: 'narrowSymbol',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).formatToParts(1);
-
-    return parts.find((part) => part.type === 'currency')?.value ?? DEFAULT_CURRENCY_SYMBOL;
-  } catch {
-    return DEFAULT_CURRENCY_SYMBOL;
-  }
-};
-
-const resolveExchangeRate = (settings: SettingsState, account: AccountState): number => {
-  if (String(settings.currency).toLowerCase() === XOR_CURRENCY_KEY) {
-    const xorPriceCodec = account.fiatPriceObject?.[XOR.address];
-    const xorPrice = FPNumber.fromCodecValue(xorPriceCodec ?? 0);
-
-    if (xorPrice.isGtZero()) {
-      return FPNumber.ONE.div(xorPrice).toNumber();
-    }
-
-    return 1;
-  }
-
-  return settings.fiatExchangeRateObject?.[settings.currency] ?? 1;
-};
-
-const areLocalNetworkFeesOkay = (
-  localFees: NetworkFeesObject = {} as NetworkFeesObject,
-  apiFees: NetworkFeesObject = {} as NetworkFeesObject
-): boolean => {
-  const localFeeKeys = Object.keys(localFees);
-  const apiFeeKeys = Object.keys(apiFees);
-
-  if (!localFeeKeys.length) {
-    return false;
-  }
-
-  if (!Number(localFees.Swap ?? 0)) {
-    return false;
-  }
-
-  if (localFeeKeys.length !== apiFeeKeys.length) {
-    return false;
-  }
-
-  localFeeKeys.sort();
-  apiFeeKeys.sort();
-
-  return localFeeKeys.every((key, index) => key === apiFeeKeys[index]);
-};
-
-const resolveFirstReadyTransaction = (state: TransactionsState): Nullable<HistoryItem> => {
-  return state.activeTxsIds
-    .map((id) => state.history[id])
-    .find((transaction) =>
-      transaction
-        ? [TransactionStatus.InBlock, TransactionStatus.Finalized, TransactionStatus.Error].includes(
-            transaction.status as TransactionStatus
-          )
-        : false
-    ) as Nullable<HistoryItem>;
-};
-
-const resolveSelectedTransaction = (state: TransactionsState): Nullable<HistoryItem> => {
-  if (!state.selectedTxId) {
-    return null;
-  }
-
-  return (
-    state.history[state.selectedTxId] ||
-    state.externalHistory[state.selectedTxId] ||
-    state.externalHistoryUpdates[state.selectedTxId]
-  );
-};
-
 /**
  * Pinia-backed wallet facade that owns wallet state locally and exposes
  * stable wallet state/getters to the rest of the app.
@@ -310,9 +203,9 @@ export const useWalletStore = defineStore('wallet', () => {
     };
   });
   const isLoggedIn = computed(() => Boolean(accountState.value.address && accountState.value.source));
-  const whitelist = computed<Whitelist>(() => resolveWhitelist(accountState.value.whitelistArray));
+  const whitelist = computed<Whitelist>(() => resolveWhitelist(accountState.value.whitelistArray, walletApi.assets));
   const whitelistIdsBySymbol = computed<WhitelistIdsBySymbol>(() =>
-    resolveWhitelistIdsBySymbol(accountState.value.whitelistArray)
+    resolveWhitelistIdsBySymbol(accountState.value.whitelistArray, walletApi.assets)
   );
   const assets = computed(() => (accountState.value.assets ?? []) as AccountAsset[]);
   const accountAssets = computed(() => accountState.value.accountAssets ?? []);
@@ -390,20 +283,10 @@ export const useWalletStore = defineStore('wallet', () => {
   const isMstWarningVisible = computed(() => Boolean(settingsState.value.isMSTAvailable));
   const isMSTAvailable = computed(() => Boolean(settingsState.value.isMSTAvailable));
   const soraNetwork = computed(() => (settingsState.value.soraNetwork as Nullable<string>) ?? null);
+  const formatWalletAddress = (nextAddress: string, isFormatted?: boolean): string =>
+    walletApi.formatAddress(nextAddress, isFormatted);
   const getPassword = (accountAddress: string): Nullable<string> => {
-    if (!accountAddress) {
-      return null;
-    }
-
-    const address = walletApi.formatAddress(accountAddress, false);
-    const encryptedPassphrase = accountState.value.addressPassphraseMapping[address];
-    const sessionKey = accountState.value.addressKeyMapping[address];
-
-    if (!(encryptedPassphrase && sessionKey)) {
-      return null;
-    }
-
-    return AES.decrypt(encryptedPassphrase, sessionKey).toString(enc.Utf8);
+    return readAccountPassphrase(accountState.value, accountAddress, formatWalletAddress);
   };
   const isConnectedAccount = (nextAccount: PolkadotJsAccount): boolean => {
     if (!nextAccount) {
@@ -1079,31 +962,29 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const setApiKeys = async (keys: Record<string, string>): Promise<void> => {
-    settingsState.value.apiKeys = {
-      ...settingsState.value.apiKeys,
-      ...keys,
-    };
+    settingsState.value.apiKeys = mergeWalletApiKeys(settingsState.value.apiKeys, keys);
 
-    const { googleApi, googleClientId, walletconnect } = settingsState.value.apiKeys;
+    const googleDriveOptions = resolveGoogleDriveOptions(settingsState.value.apiKeys);
 
-    if (googleApi && googleClientId) {
+    if (googleDriveOptions) {
       const GDriveStorage = await loadGoogleDriveStorage();
-      GDriveStorage.setOptions(googleApi, googleClientId);
+      GDriveStorage.setOptions(googleDriveOptions.googleApi, googleDriveOptions.googleClientId);
     }
 
-    if (walletconnect) {
-      setWalletConnectProjectId(walletconnect);
+    const walletConnectProjectId = resolveWalletConnectProjectId(settingsState.value.apiKeys);
+
+    if (walletConnectProjectId) {
+      setWalletConnectProjectId(walletConnectProjectId);
     }
   };
 
-  const setNftStorage = async ({ marketplaceDid, ucan }: { marketplaceDid?: string; ucan?: string } = {}): Promise<void> => {
-    settingsState.value.nftStorage =
-      marketplaceDid && ucan
-        ? await createNftStorage({
-            token: ucan,
-            did: marketplaceDid,
-          })
-        : await createNftStorage({ token: settingsState.value.apiKeys.nftStorage });
+  const setNftStorage = async ({
+    marketplaceDid,
+    ucan,
+  }: { marketplaceDid?: string; ucan?: string } = {}): Promise<void> => {
+    settingsState.value.nftStorage = await createNftStorage(
+      resolveNftStorageOptions(settingsState.value.apiKeys, { marketplaceDid, ucan })
+    );
   };
 
   const createNftStorageInstance = async (): Promise<void> => {
@@ -1129,18 +1010,17 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const addPriceAlert = (alert: Alert): void => {
-    const nextAlerts = [alert, ...settingsState.value.alerts].slice(0, MAX_ALERTS_NUMBER);
-    settingsState.value.alerts = nextAlerts;
-    settingsStorage.set('alerts', JSON.stringify(nextAlerts));
+    settingsState.value.alerts = prependPriceAlert(settingsState.value.alerts, alert, MAX_ALERTS_NUMBER);
+    settingsStorage.set('alerts', JSON.stringify(settingsState.value.alerts));
   };
 
   const editPriceAlert = (payload: EditableAlertObject): void => {
-    settingsState.value.alerts[payload.position] = payload.alert;
+    settingsState.value.alerts = replacePriceAlert(settingsState.value.alerts, payload);
     settingsStorage.set('alerts', JSON.stringify(settingsState.value.alerts));
   };
 
   const removePriceAlert = (position: number): void => {
-    settingsState.value.alerts.splice(position, 1);
+    settingsState.value.alerts = removePriceAlertAt(settingsState.value.alerts, position);
     settingsStorage.set('alerts', JSON.stringify(settingsState.value.alerts));
   };
 
@@ -1151,10 +1031,7 @@ export const useWalletStore = defineStore('wallet', () => {
       return;
     }
 
-    settingsState.value.alerts[payload.position] = {
-      ...nextAlert,
-      wasNotified: payload.value,
-    };
+    settingsState.value.alerts = setPriceAlertNotified(settingsState.value.alerts, payload);
     settingsStorage.set('alerts', JSON.stringify(settingsState.value.alerts));
   };
 
@@ -1274,17 +1151,17 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const setPinnedAsset = (asset: AccountAsset): void => {
-    accountState.value.pinnedAssets.push(asset.address);
+    accountState.value.pinnedAssets = appendPinnedAssetAddress(accountState.value.pinnedAssets, asset.address);
     settingsStorage.set('pinnedAssets', JSON.stringify(accountState.value.pinnedAssets));
   };
 
   const removePinnedAsset = (asset: AccountAsset): void => {
-    accountState.value.pinnedAssets = accountState.value.pinnedAssets.filter((address) => address !== asset.address);
+    accountState.value.pinnedAssets = removePinnedAssetAddress(accountState.value.pinnedAssets, asset.address);
     settingsStorage.set('pinnedAssets', JSON.stringify(accountState.value.pinnedAssets));
   };
 
   const setMultiplePinnedAssets = (assetAddresses: string[]): void => {
-    accountState.value.pinnedAssets = [...new Set(assetAddresses.filter(Boolean))];
+    accountState.value.pinnedAssets = normalizePinnedAssetAddresses(assetAddresses);
     settingsStorage.set('pinnedAssets', JSON.stringify(accountState.value.pinnedAssets));
   };
 
@@ -1306,10 +1183,7 @@ export const useWalletStore = defineStore('wallet', () => {
       return;
     }
 
-    accountState.value.book = {
-      ...(accountState.value.book ?? {}),
-      [payload.address]: payload.name ?? '',
-    };
+    accountState.value.book = setAddressBookEntry(accountState.value.book, payload);
     settingsStorage.set('book', JSON.stringify(accountState.value.book));
   };
 
@@ -1318,39 +1192,18 @@ export const useWalletStore = defineStore('wallet', () => {
       return;
     }
 
-    const nextBook = { ...(accountState.value.book ?? {}) };
-    delete nextBook[address];
-
-    accountState.value.book = nextBook;
-    settingsStorage.set('book', JSON.stringify(nextBook));
+    accountState.value.book = removeAddressBookEntry(accountState.value.book, address);
+    settingsStorage.set('book', JSON.stringify(accountState.value.book));
   };
 
   const setAccountPassphrase = (payload: { address: string; password: string }): void => {
-    resetAccountPassphrase(payload.address);
-
-    const address = walletApi.formatAddress(payload.address, false);
-    const key = cryptoRandomString({ length: 10, type: 'ascii-printable' });
-    const passphrase = AES.encrypt(payload.password, key).toString();
-
-    accountState.value.addressPassphraseMapping = {
-      ...accountState.value.addressPassphraseMapping,
-      [address]: passphrase,
-    };
-    accountState.value.addressKeyMapping = {
-      ...accountState.value.addressKeyMapping,
-      [address]: key,
-    };
-
-    const timer = setTimeout(() => resetAccountPassphrase(payload.address), accountState.value.accountPasswordTimeout);
-
-    accountState.value.accountPasswordTimer = {
-      ...accountState.value.accountPasswordTimer,
-      [address]: timer,
-    };
-    accountState.value.accountPasswordTimestamp = {
-      ...accountState.value.accountPasswordTimestamp,
-      [address]: Date.now(),
-    };
+    storeAccountPassphrase({
+      state: accountState.value,
+      address: payload.address,
+      password: payload.password,
+      formatAddress: formatWalletAddress,
+      clearExisting: resetAccountPassphrase,
+    });
   };
 
   const syncAccountWithStorage = (): void => {
@@ -1363,23 +1216,7 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const resetAccountPassphrase = (nextAddress: string): void => {
-    const address = walletApi.formatAddress(nextAddress, false);
-    const timer = accountState.value.accountPasswordTimer[address];
-
-    if (timer) {
-      clearTimeout(timer);
-    }
-
-    accountState.value.accountPasswordTimer[address] = null;
-    accountState.value.accountPasswordTimestamp[address] = null;
-    accountState.value.addressKeyMapping = {
-      ...accountState.value.addressKeyMapping,
-      [address]: null,
-    };
-    accountState.value.addressPassphraseMapping = {
-      ...accountState.value.addressPassphraseMapping,
-      [address]: null,
-    };
+    clearAccountPassphrase(accountState.value, nextAddress, formatWalletAddress);
   };
 
   const updateAvailableWallets = async (): Promise<void> => {

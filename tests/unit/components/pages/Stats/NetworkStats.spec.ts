@@ -2,8 +2,8 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import NetworkStats from '@/components/pages/Stats/NetworkStats.vue';
-import networkStatsSource from '@/components/pages/Stats/NetworkStats.vue?raw';
+import NetworkStats from '@/features/misc/components/stats/NetworkStats.vue';
+import networkStatsSource from '@/features/misc/components/stats/NetworkStats.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
 const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));

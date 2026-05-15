@@ -20,7 +20,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
 import { createAsyncComponent } from '@/shared/ui/async';
 import { FiatOptionTabs } from '@/types/tabs';
-import DepositMoonpayHistory from '@/components/pages/Moonpay/MoonpayHistory.vue';
+import DepositMoonpayHistory from '@/features/deposit/components/moonpay/MoonpayHistory.vue';
 
 const GenericPageHeader = createAsyncComponent(() => import('@/components/shared/GenericPageHeader.vue'));
 

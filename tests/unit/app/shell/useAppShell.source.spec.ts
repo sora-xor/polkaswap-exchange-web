@@ -19,7 +19,9 @@ describe('useAppShell source', () => {
     expect(useAppShellSource).toContain("import('@/services/realtime')");
     expect(useAppShellSource).toContain("import('@/composables/useTransaction')");
     expect(useAppShellSource).not.toContain("import { api, connection } from '@/lib/soraneo-wallet/src/api'");
-    expect(useAppShellSource).not.toContain("import { initWallet, waitForCore } from '@/lib/soraneo-wallet/src/bootstrap'");
+    expect(useAppShellSource).not.toContain(
+      "import { initWallet, waitForCore } from '@/lib/soraneo-wallet/src/bootstrap'"
+    );
     expect(useAppShellSource).not.toContain("from '@/services/realtime';");
     expect(useAppShellSource).not.toContain("from '@/composables/useTransaction';");
   });

@@ -160,10 +160,8 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber, Operation, type HistoryItem } from '@sora-substrate/sdk';
+import type { FPNumber } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { u8aToHex } from '@polkadot/util';
-import { decodeAddress } from '@polkadot/util-crypto';
 import dayjs from 'dayjs/esm';
 import durationPlugin from 'dayjs/plugin/duration';
 import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef, watch } from 'vue';
@@ -175,85 +173,39 @@ import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { useCopyAddress } from '@/composables/useCopyAddress';
 import { SoraNetwork } from '@/consts';
-import { fetchData as fetchBurnData, isExcludedXorBurnAddress, type XorBurn } from '@/indexer/queries/burnXor';
+import { fetchData as fetchBurnData, isExcludedXorBurnAddress } from '@/indexer/queries/burnXor';
 import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import { useSettingsStore } from '@/stores/settings';
 import { waitForSoraNetworkFromEnv } from '@/utils';
-import { parseSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
+import {
+  calculateBurnCampaignStatistics,
+  calculateBurnCountdowns,
+  createBurnCampaigns,
+  createDefaultBurned,
+  createDefaultClaimRows,
+  dedupeBurnEntries,
+  formatBurnAmount,
+  SOLSWAP_LEGACY_START_BLOCK,
+  type BurnForStats,
+  type CampaignKey,
+  type ClaimRow,
+} from '@/features/misc/lib/burnCampaigns';
+import {
+  createLocalXorBurns,
+  getBlockHeightFromBlockId as getChainBlockHeightFromBlockId,
+  getCurrentChainBlockHeight,
+  resolveCurrentEndBlock,
+  type ChainApiHeaderShape,
+  type LocalBurnHistoryItem,
+} from '@/features/misc/lib/burnLocalHistory';
 
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
-import BurnDialog from '@/components/pages/Burn/BurnDialog.vue';
+import BurnDialog from '@/features/misc/components/burn/BurnDialog.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 
 dayjs.extend(durationPlugin);
-
-type CampaignKey = 'solswap';
-
-type RewardTier = {
-  blockRange: string;
-  reward: string;
-};
-
-type Campaign = {
-  id: CampaignKey;
-  title: string;
-  description: string;
-  rewardTiers: RewardTier[];
-  disabledText?: string;
-  link: string;
-  receivedAsset: Asset;
-  rate: string;
-  max: number;
-  min: number;
-  requiresNexusRecipient: boolean;
-  from: number;
-  fromTimestamp: number;
-  to: number;
-  toTimestamp: number;
-};
-
-type ClaimRow = {
-  id: string;
-  blockHeight: Nullable<number>;
-  burned: string;
-  ssReserved: string;
-  nexusReserved: string;
-  txHash: string;
-};
-
-type BurnForStats = XorBurn & {
-  displayBlockHeight?: Nullable<number>;
-};
-
-type BurnReservationAmounts = {
-  reserved: FPNumber;
-  nexus: FPNumber;
-};
-
-type BurnStatsByAddress = Record<string, { address: string; burned: FPNumber; reserved: FPNumber; nexus: FPNumber }>;
-
-type LocalBurnHistoryItem = HistoryItem & {
-  amount?: string;
-  assetAddress?: string;
-  blockHeight?: number;
-  blockId?: string;
-  comment?: string;
-  from?: string;
-  id?: string;
-  txId?: string;
-  type?: Operation;
-};
-
-type ChainApiHeaderShape = {
-  isConnected?: boolean;
-  rpc?: {
-    chain?: {
-      getHeader?: (blockHash?: string) => Promise<{ number?: { toString?: () => string } }>;
-    };
-  };
-};
 
 defineOptions({
   name: 'BurnPage',
@@ -286,53 +238,15 @@ const settingsStore = useSettingsStore();
 const xor = XOR;
 const zeroString = '0';
 const blockDuration = 6_000; // 6 seconds
-const SOLSWAP_LEGACY_START_BLOCK = 25_043_003;
-const SOLSWAP_NEXUS_START_BLOCK = 25_867_650;
-const SOLSWAP_CURRENT_RATE = '0.02';
-const SOLSWAP_LEGACY_RATE = '0.01';
-const SOLSWAP_CURRENT_SS_PER_XOR = '50';
-const SOLSWAP_LEGACY_SS_PER_XOR = '100';
 const POST_BURN_REFRESH_DELAYS_MS = [15_000, 45_000];
-const MIN_NORMALIZABLE_ADDRESS_LENGTH = 32;
 
 const blockNumber = computed(() => settingsStore.blockNumber);
 const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNetwork>);
 
-const campaignsObj = reactive<Record<CampaignKey, Campaign>>({
-  solswap: {
-    id: 'solswap',
-    title: 'Burn XOR for SOLSWAP + SORA Nexus XOR',
-    description:
-      'Burn XOR to reserve SS. Reward rates depend on the burn block, with SORA Nexus XOR distribution starting at block 25,867,650.',
-    rewardTiers: [
-      {
-        blockRange: 'From block 25,867,650',
-        reward: '1 SORA Nexus XOR and 50 SS tokens per 1 XOR burned',
-      },
-      {
-        blockRange: 'Blocks 25,043,003-25,867,649',
-        reward: '0 SORA Nexus XOR and 100 SS tokens per 1 XOR burned',
-      },
-    ],
-    link: 'https://t.me/solswap_io',
-    receivedAsset: { symbol: 'SS', address: '', name: 'SOLSWAP', decimals: 18 } as Asset,
-    rate: SOLSWAP_CURRENT_RATE,
-    max: 100_000_000,
-    min: 1,
-    requiresNexusRecipient: true,
-    from: SOLSWAP_LEGACY_START_BLOCK,
-    fromTimestamp: 1717693074001,
-    to: 60_000_000,
-    toTimestamp: 1893456000000,
-  },
-});
+const campaignsObj = reactive(createBurnCampaigns());
 
 const campaignOrder: CampaignKey[] = ['solswap'];
 const campaigns = computed(() => campaignOrder.map((key) => campaignsObj[key]));
-
-const createDefaultBurned = () => ({
-  solswap: new FPNumber(0),
-});
 
 const totalXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 const accountXorBurned = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
@@ -340,9 +254,7 @@ const totalReserved = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurne
 const accountReserved = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 const totalNexusReserved = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
 const accountNexusReserved = reactive<Record<CampaignKey, FPNumber>>(createDefaultBurned());
-const accountClaimRows = reactive<Record<CampaignKey, ClaimRow[]>>({
-  solswap: [],
-});
+const accountClaimRows = reactive<Record<CampaignKey, ClaimRow[]>>(createDefaultClaimRows());
 
 const timeLeftFormatted = reactive<Record<CampaignKey, string>>({
   solswap: '30D',
@@ -362,29 +274,12 @@ const selectedRequiresNexusRecipient = ref<boolean>(campaignsObj.solswap.require
 
 const intervalId = ref<Nullable<number>>(null);
 const refreshTimeoutIds = ref<number[]>([]);
-const decimalDelimiter = FPNumber.DELIMITERS_CONFIG.decimal;
-const escapedDecimalDelimiter = decimalDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const decimalOnlyZerosRegExp = new RegExp(`${escapedDecimalDelimiter}0+$`);
-const trailingZerosRegExp = new RegExp(`(${escapedDecimalDelimiter}\\d*?[1-9])0+$`);
-const danglingDecimalRegExp = new RegExp(`${escapedDecimalDelimiter}$`);
 
 const minBlock = computed(() => Math.min(...campaignOrder.map((key) => campaignsObj[key].from)));
 const maxBlock = computed(() => Math.max(...campaignOrder.map((key) => campaignsObj[key].to)));
 
-function trimTrailingZeros(value: string): string {
-  return value
-    .replace(decimalOnlyZerosRegExp, '')
-    .replace(trailingZerosRegExp, '$1')
-    .replace(danglingDecimalRegExp, '');
-}
-
-function formatAmount(value: FPNumber, precision?: number): string {
-  const formatted = precision === undefined ? value.toLocaleString() : value.toLocaleString(precision);
-  return trimTrailingZeros(formatted);
-}
-
 function getFormattedXor(rate: string): string {
-  return formatAmount(getFPNumber(rate));
+  return formatBurnAmount(getFPNumber(rate));
 }
 
 function getFormattedXorFiat(rate: string): Nullable<string> {
@@ -392,23 +287,23 @@ function getFormattedXorFiat(rate: string): Nullable<string> {
 }
 
 function getFormattedTotalXorBurned(id: CampaignKey): string {
-  return totalXorBurned[id] ? formatAmount(totalXorBurned[id]) : zeroString;
+  return totalXorBurned[id] ? formatBurnAmount(totalXorBurned[id]) : zeroString;
 }
 
 function getFormattedTotalReserved(id: CampaignKey): string {
-  return totalReserved[id] ? formatAmount(totalReserved[id], 3) : zeroString;
+  return totalReserved[id] ? formatBurnAmount(totalReserved[id], 3) : zeroString;
 }
 
 function getFormattedTotalNexusReserved(id: CampaignKey): string {
-  return totalNexusReserved[id] ? formatAmount(totalNexusReserved[id], 3) : zeroString;
+  return totalNexusReserved[id] ? formatBurnAmount(totalNexusReserved[id], 3) : zeroString;
 }
 
 function getFormattedAccountXorBurned(id: CampaignKey): string {
-  return accountXorBurned[id] ? formatAmount(accountXorBurned[id]) : zeroString;
+  return accountXorBurned[id] ? formatBurnAmount(accountXorBurned[id]) : zeroString;
 }
 
 function getFormattedAccountReserved(id: CampaignKey): string {
-  return accountReserved[id] ? formatAmount(accountReserved[id], 3) : zeroString;
+  return accountReserved[id] ? formatBurnAmount(accountReserved[id], 3) : zeroString;
 }
 
 const copyTxHashTooltip = computed(() => copyTooltip(t('burnPage.soraNetworkTxHashLabel')));
@@ -418,20 +313,13 @@ function handleCopyTxHash(txHash: string, event: MouseEvent): void {
 }
 
 function calcCountdown(): void {
-  const currentBlock = blockNumber.value;
+  const nextCountdowns = calculateBurnCountdowns(campaigns.value, blockNumber.value, blockDuration, (msLeft) => {
+    return dayjs.duration(msLeft).format('D[D] HH[H] mm[M]');
+  });
 
-  for (const campaign of campaigns.value) {
-    const msLeft = (campaign.to - currentBlock) * blockDuration;
-
-    if (msLeft <= 0) {
-      timeLeftFormatted[campaign.id] = '0D 0H 0M';
-      ended[campaign.id] = true;
-      continue;
-    }
-
-    ended[campaign.id] = false;
-    const expires = dayjs.duration(msLeft);
-    timeLeftFormatted[campaign.id] = expires.format('D[D] HH[H] mm[M]');
+  for (const key of campaignOrder) {
+    timeLeftFormatted[key] = nextCountdowns.timeLeftFormatted[key];
+    ended[key] = nextCountdowns.ended[key];
   }
 }
 
@@ -449,105 +337,25 @@ async function fetchStatistics(): Promise<void> {
   const hasGlobalBurns = indexedBurnsResult.status === 'fulfilled';
   const globalBurns = dedupeBurnEntries(indexedBurns);
   const accountBurns = dedupeBurnEntries([...indexedBurns, ...accountIndexedBurns, ...localBurns]);
-
-  const accountTotals = createDefaultBurned();
-  const overallTotals = createDefaultBurned();
-  const accountReservedTotals = createDefaultBurned();
-  const overallReservedTotals = createDefaultBurned();
-  const accountNexusReservedTotals = createDefaultBurned();
-  const overallNexusReservedTotals = createDefaultBurned();
-  const nextAccountClaimRows: Record<CampaignKey, ClaimRow[]> = {
-    solswap: [],
-  };
-
-  for (const campaign of campaigns.value) {
-    const campaignGlobalBurns = globalBurns.filter(
-      ({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to
-    );
-    const campaignAccountBurns = accountBurns.filter(
-      ({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to
-    );
-    const overallStats = aggregateBurnStatsByAddress(campaign, campaignGlobalBurns);
-    const accountStats = aggregateBurnStatsByAddress(campaign, campaignAccountBurns);
-
-    Object.values(overallStats).forEach((totals) => {
-      overallTotals[campaign.id] = overallTotals[campaign.id].add(totals.burned);
-      overallReservedTotals[campaign.id] = overallReservedTotals[campaign.id].add(totals.reserved);
-      overallNexusReservedTotals[campaign.id] = overallNexusReservedTotals[campaign.id].add(totals.nexus);
-    });
-
-    Object.values(accountStats).forEach((totals) => {
-      if (address && isSameSoraAddress(totals.address, address)) {
-        accountTotals[campaign.id] = accountTotals[campaign.id].add(totals.burned);
-        accountReservedTotals[campaign.id] = accountReservedTotals[campaign.id].add(totals.reserved);
-        accountNexusReservedTotals[campaign.id] = accountNexusReservedTotals[campaign.id].add(totals.nexus);
-      }
-    });
-
-    if (address) {
-      campaignAccountBurns.forEach((burn) => {
-        const { address: burnAddress, amount, blockHeight, txHash } = burn;
-        const reservationAmounts = getReservationAmountsForBurn(campaign, burn);
-
-        if (!txHash || !reservationAmounts || !isSameSoraAddress(burnAddress, address)) return;
-
-        nextAccountClaimRows[campaign.id].push(
-          createClaimRow(
-            blockHeight,
-            amount,
-            reservationAmounts.reserved,
-            reservationAmounts.nexus,
-            txHash,
-            'displayBlockHeight' in burn ? burn.displayBlockHeight : blockHeight
-          )
-        );
-      });
-    }
-  }
+  const statistics = calculateBurnCampaignStatistics({
+    campaigns: campaigns.value,
+    accountAddress: address,
+    globalBurns,
+    accountBurns,
+  });
 
   for (const key of campaignOrder) {
-    accountXorBurned[key] = accountTotals[key];
-    accountReserved[key] = accountReservedTotals[key];
-    accountNexusReserved[key] = accountNexusReservedTotals[key];
-    accountClaimRows[key] = nextAccountClaimRows[key].sort(
-      (a, b) => (b.blockHeight ?? Number.MAX_SAFE_INTEGER) - (a.blockHeight ?? Number.MAX_SAFE_INTEGER)
-    );
+    accountXorBurned[key] = statistics.accountTotals[key];
+    accountReserved[key] = statistics.accountReservedTotals[key];
+    accountNexusReserved[key] = statistics.accountNexusReservedTotals[key];
+    accountClaimRows[key] = statistics.accountClaimRows[key];
 
     if (hasGlobalBurns) {
-      totalXorBurned[key] = overallTotals[key];
-      totalReserved[key] = overallReservedTotals[key];
-      totalNexusReserved[key] = overallNexusReservedTotals[key];
+      totalXorBurned[key] = statistics.overallTotals[key];
+      totalReserved[key] = statistics.overallReservedTotals[key];
+      totalNexusReserved[key] = statistics.overallNexusReservedTotals[key];
     }
   }
-}
-
-/**
- * Formats one qualifying burn into the claim row users need for Minamoto claims.
- */
-function createClaimRow(
-  blockHeight: number,
-  burned: FPNumber,
-  ssReserved: FPNumber,
-  nexusReserved: FPNumber,
-  txHash: string,
-  displayBlockHeight: Nullable<number> = blockHeight
-): ClaimRow {
-  return {
-    id: `${txHash}:${blockHeight}`,
-    blockHeight: displayBlockHeight,
-    burned: formatAmount(burned, 3),
-    ssReserved: formatAmount(ssReserved, 3),
-    nexusReserved: formatAmount(nexusReserved, 3),
-    txHash,
-  };
-}
-
-function isLocalXorBurn(item: LocalBurnHistoryItem): boolean {
-  return item.type === Operation.Burn && item.assetAddress === XOR.address && !!item.amount && !!getLocalTxHash(item);
-}
-
-function getLocalTxHash(item: LocalBurnHistoryItem): string {
-  return item.txId || item.id || '';
 }
 
 function getLocalHistoryList(): LocalBurnHistoryItem[] {
@@ -558,42 +366,9 @@ function getLocalHistoryList(): LocalBurnHistoryItem[] {
   }
 }
 
-function getChainApi() {
+function getChainApi(): Nullable<ChainApiHeaderShape> {
   try {
-    return walletApi.connection?.api ?? null;
-  } catch {
-    return null;
-  }
-}
-
-function normalizeSoraAddress(address: string): string {
-  if (address.length < MIN_NORMALIZABLE_ADDRESS_LENGTH) return address;
-
-  try {
-    const decoded = decodeAddress(address);
-    return decoded.length === 32 ? u8aToHex(decoded) : address;
-  } catch {
-    return address;
-  }
-}
-
-function isSameSoraAddress(left: string, right: string): boolean {
-  return left === right || normalizeSoraAddress(left) === normalizeSoraAddress(right);
-}
-
-async function getCurrentChainBlockHeight(): Promise<Nullable<number>> {
-  try {
-    const chainApi = getChainApi() as Nullable<ChainApiHeaderShape>;
-
-    if (!chainApi || chainApi.isConnected === false || typeof chainApi.rpc?.chain?.getHeader !== 'function') {
-      return null;
-    }
-
-    const header = await chainApi.rpc.chain.getHeader();
-    const rawBlockHeight = header?.number?.toString?.();
-    const chainBlockHeight = rawBlockHeight ? Number(rawBlockHeight) : Number.NaN;
-
-    return Number.isFinite(chainBlockHeight) ? chainBlockHeight : null;
+    return (walletApi.connection?.api ?? null) as Nullable<ChainApiHeaderShape>;
   } catch {
     return null;
   }
@@ -607,30 +382,25 @@ async function getCurrentChainBlockHeight(): Promise<Nullable<number>> {
  */
 async function getCurrentEndBlock(): Promise<number> {
   if (blockNumber.value >= minBlock.value) {
-    return Math.min(maxBlock.value, blockNumber.value);
+    return resolveCurrentEndBlock({
+      blockNumber: blockNumber.value,
+      minBlock: minBlock.value,
+      maxBlock: maxBlock.value,
+    });
   }
 
-  const chainBlockHeight = await getCurrentChainBlockHeight();
+  const chainBlockHeight = await getCurrentChainBlockHeight(getChainApi());
 
-  if (chainBlockHeight !== null && chainBlockHeight >= minBlock.value) {
-    return Math.min(maxBlock.value, chainBlockHeight);
-  }
-
-  return maxBlock.value;
+  return resolveCurrentEndBlock({
+    blockNumber: blockNumber.value,
+    minBlock: minBlock.value,
+    maxBlock: maxBlock.value,
+    chainBlockHeight,
+  });
 }
 
 async function getBlockHeightFromBlockId(blockId?: string): Promise<Nullable<number>> {
-  if (!blockId) return null;
-
-  try {
-    const header = await getChainApi()?.rpc.chain.getHeader(blockId);
-    const rawBlockHeight = header?.number?.toString?.();
-    const blockHeight = rawBlockHeight ? Number(rawBlockHeight) : Number.NaN;
-
-    return Number.isFinite(blockHeight) ? blockHeight : null;
-  } catch {
-    return null;
-  }
+  return getChainBlockHeightFromBlockId(getChainApi(), blockId);
 }
 
 /**
@@ -638,138 +408,13 @@ async function getBlockHeightFromBlockId(blockId?: string): Promise<Nullable<num
  * the public indexer or historical RPC scan catches up.
  */
 async function getLocalXorBurns(address: Nullable<string>, fallbackBlockHeight: number): Promise<BurnForStats[]> {
-  if (!address) return [];
-  if (isExcludedXorBurnAddress(address)) return [];
-
-  const localHistory = getLocalHistoryList().filter(isLocalXorBurn);
-  const rows = await Promise.all(
-    localHistory.map(async (item): Promise<Nullable<BurnForStats>> => {
-      const exactBlockHeight = item.blockHeight ?? (await getBlockHeightFromBlockId(item.blockId));
-      const blockHeight = exactBlockHeight ?? fallbackBlockHeight;
-      const nexusRemark = item.comment ? parseSoraNexusXorBurnRemark(item.comment) : null;
-
-      return {
-        address,
-        amount: new FPNumber(item.amount as string),
-        blockHeight,
-        displayBlockHeight: exactBlockHeight,
-        nexusRecipient: nexusRemark?.recipient,
-        txHash: getLocalTxHash(item),
-      };
-    })
-  );
-
-  return rows.filter((item): item is BurnForStats => !!item);
-}
-
-function dedupeBurnEntries(items: BurnForStats[]): BurnForStats[] {
-  const seen = new Map<string, BurnForStats>();
-  const result: BurnForStats[] = [];
-
-  for (const item of items) {
-    const key = item.txHash ? `tx:${item.txHash}` : `${item.address}:${item.blockHeight}:${item.amount.toString()}`;
-    const existing = seen.get(key);
-
-    if (existing) {
-      existing.nexusRecipient ??= item.nexusRecipient;
-      continue;
-    }
-
-    seen.set(key, item);
-    result.push(item);
-  }
-
-  return result;
-}
-
-/**
- * Returns campaign reservation amounts for one qualifying XOR burn.
- */
-function getReservationAmountsForBurn(campaign: Campaign, burn: BurnForStats): Nullable<BurnReservationAmounts> {
-  const { amount, blockHeight } = burn;
-
-  if (!amount.gte(getMinimumBurnedForBlock(campaign, blockHeight))) return null;
-
-  return {
-    reserved: getReservedAmount(campaign, blockHeight, amount),
-    nexus: getNexusReservedAmount(campaign, burn),
-  };
-}
-
-/**
- * Aggregates qualifying campaign burns by burner address.
- */
-function aggregateBurnStatsByAddress(campaign: Campaign, burns: BurnForStats[]): BurnStatsByAddress {
-  return burns.reduce<BurnStatsByAddress>((acc, burn) => {
-    const { address: burnAddress, amount } = burn;
-    const reservationAmounts = getReservationAmountsForBurn(campaign, burn);
-
-    if (!reservationAmounts) return acc;
-
-    const burnAddressKey = normalizeSoraAddress(burnAddress);
-    const current = acc[burnAddressKey] ?? {
-      address: burnAddress,
-      burned: new FPNumber(0),
-      reserved: new FPNumber(0),
-      nexus: new FPNumber(0),
-    };
-
-    current.burned = current.burned.add(amount);
-    current.reserved = current.reserved.add(reservationAmounts.reserved);
-    current.nexus = current.nexus.add(reservationAmounts.nexus);
-    acc[burnAddressKey] = current;
-
-    return acc;
-  }, {});
-}
-
-/**
- * Returns the minimum XOR burn accepted by the SOLSWAP UI for the reward tier active at a block.
- */
-function getSolswapMinimumBurned(blockHeight: number, minReservedSs: number): FPNumber {
-  const rate = blockHeight >= SOLSWAP_NEXUS_START_BLOCK ? SOLSWAP_CURRENT_RATE : SOLSWAP_LEGACY_RATE;
-  return new FPNumber(rate).mul(minReservedSs);
-}
-
-/**
- * Returns the SS reservation multiplier for a historical SOLSWAP XOR burn block.
- */
-function getSolswapSsPerXor(blockHeight: number): FPNumber {
-  const ssPerXor = blockHeight >= SOLSWAP_NEXUS_START_BLOCK ? SOLSWAP_CURRENT_SS_PER_XOR : SOLSWAP_LEGACY_SS_PER_XOR;
-  return new FPNumber(ssPerXor);
-}
-
-/**
- * Returns the minimum XOR amount that qualifies a burn for the campaign total calculations.
- */
-function getMinimumBurnedForBlock(campaign: Campaign, blockHeight: number): FPNumber {
-  if (campaign.id === 'solswap') {
-    return getSolswapMinimumBurned(blockHeight, campaign.min);
-  }
-
-  return new FPNumber(campaign.rate).mul(campaign.min);
-}
-
-/**
- * Converts a historical XOR burn into reserved campaign tokens according to the block's reward tier.
- */
-function getReservedAmount(campaign: Campaign, blockHeight: number, amount: FPNumber): FPNumber {
-  if (campaign.id === 'solswap') {
-    return amount.mul(getSolswapSsPerXor(blockHeight));
-  }
-
-  return amount.div(campaign.rate);
-}
-
-/**
- * Converts a historical XOR burn into reserved SORA Nexus XOR for the active tier.
- */
-function getNexusReservedAmount(campaign: Campaign, burn: BurnForStats): FPNumber {
-  if (campaign.id !== 'solswap' || burn.blockHeight < SOLSWAP_NEXUS_START_BLOCK || !burn.nexusRecipient) {
-    return new FPNumber(0);
-  }
-
-  return burn.amount;
+  return createLocalXorBurns({
+    address,
+    fallbackBlockHeight,
+    localHistory: getLocalHistoryList(),
+    resolveBlockHeightByBlockId: getBlockHeightFromBlockId,
+    isExcludedAddress: isExcludedXorBurnAddress,
+  });
 }
 
 async function fetchDataAndCalcCountdown(): Promise<void> {

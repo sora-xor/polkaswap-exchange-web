@@ -245,12 +245,18 @@ describe('bridge common utils', () => {
     const replacementWait = vi.fn().mockResolvedValue(receipt);
     const replacementTx: any = {
       hash: '0xreplacement',
+      to: '0xbridge',
+      data: '0xabcdef',
+      value: 0n,
       blockNumber: 77,
       replaceableTransaction: vi.fn(() => ({ wait: replacementWait })),
     };
-    const replacedError = { replacement: replacementTx };
+    const replacedError = { cancelled: false, reason: 'repriced', replacement: replacementTx };
     const originalTx: any = {
       hash: '0xoriginal',
+      to: '0xbridge',
+      data: '0xabcdef',
+      value: 0n,
       blockNumber: undefined,
       replaceableTransaction: vi.fn(() => ({
         wait: vi.fn().mockRejectedValue(replacedError),
@@ -267,6 +273,39 @@ describe('bridge common utils', () => {
     expect(originalTx.replaceableTransaction).toHaveBeenCalledWith(100);
     expect(replaceCallback).toHaveBeenCalledWith(replacementTx);
     expect(replacementTx.replaceableTransaction).toHaveBeenCalledWith(77);
+  });
+
+  it('waitForEvmTransactionMined rejects same-nonce replacements that change the EVM action', async () => {
+    const replacementTx: any = {
+      hash: '0xcancel',
+      to: '0xuser',
+      data: '0x',
+      value: 0n,
+      blockNumber: 77,
+      replaceableTransaction: vi.fn(() => ({
+        wait: vi.fn().mockResolvedValue({ status: 1 }),
+      })),
+    };
+    const replacedError = { cancelled: true, reason: 'cancelled', replacement: replacementTx };
+    const originalTx: any = {
+      hash: '0xoriginal',
+      to: '0xbridge',
+      data: '0xabcdef',
+      value: 0n,
+      blockNumber: 10,
+      replaceableTransaction: vi.fn(() => ({
+        wait: vi.fn().mockRejectedValue(replacedError),
+      })),
+    };
+    const replaceCallback = vi.fn();
+    isEthersErrorMock.mockImplementation(
+      (error: unknown, code: string) => code === 'TRANSACTION_REPLACED' && error === replacedError
+    );
+
+    await expect(waitForEvmTransactionMined(originalTx, replaceCallback)).rejects.toThrow(
+      '[waitForEvmTransactionMined]: EVM transaction 0xoriginal was replaced by a different transaction'
+    );
+    expect(replaceCallback).not.toHaveBeenCalled();
   });
 
   it('waitForEvmTransactionMined rethrows non-replacement wait failures', async () => {
@@ -403,6 +442,9 @@ describe('bridge common utils', () => {
     };
     const replacementTx: any = {
       hash: '0xreplacement',
+      to: '0xbridge',
+      data: '0xabcdef',
+      value: 0n,
       gasPrice: 2n,
       gasLimit: 3n,
       blockNumber: 11,
@@ -410,8 +452,12 @@ describe('bridge common utils', () => {
         wait: vi.fn().mockResolvedValue(receipt),
       })),
     };
-    const replacementError = { replacement: replacementTx };
+    const replacementError = { cancelled: false, reason: 'repriced', replacement: replacementTx };
     const txResponse = {
+      hash: '0xoriginal',
+      to: '0xbridge',
+      data: '0xabcdef',
+      value: 0n,
       blockNumber: 10,
       replaceableTransaction: vi.fn(() => ({
         wait: vi.fn().mockRejectedValue(replacementError),
@@ -436,25 +482,90 @@ describe('bridge common utils', () => {
     });
   });
 
-  it('onEvmTransactionPending resets stale hashes when no mined receipt is available', async () => {
+  it('onEvmTransactionPending does not accept a mined replacement with different bridge calldata', async () => {
+    const replacementTx: any = {
+      hash: '0xreplacement',
+      to: '0xbridge',
+      data: '0xdifferent',
+      value: 0n,
+      blockNumber: 11,
+      replaceableTransaction: vi.fn(() => ({
+        wait: vi.fn().mockResolvedValue({
+          fee: { toString: () => '11' },
+          blockNumber: 321,
+          blockHash: '0xevmBlock',
+          status: 1,
+        }),
+      })),
+    };
+    const replacementError = { cancelled: true, reason: 'replaced', replacement: replacementTx };
+    const txResponse = {
+      hash: '0xoriginal',
+      to: '0xbridge',
+      data: '0xabcdef',
+      value: 0n,
+      blockNumber: 10,
+      replaceableTransaction: vi.fn(() => ({
+        wait: vi.fn().mockRejectedValue(replacementError),
+      })),
+    };
+    isEthersErrorMock.mockImplementation(
+      (error: unknown, code: string) => code === 'TRANSACTION_REPLACED' && error === replacementError
+    );
+    (ethersUtil.getEvmTransaction as any).mockResolvedValue(txResponse);
+    const updateTransaction = vi.fn();
+
+    await expect(
+      onEvmTransactionPending('tx-id', () => ({ externalHash: '0xoriginal' }) as any, updateTransaction)
+    ).rejects.toThrow(
+      '[waitForEvmTransactionMined]: EVM transaction 0xoriginal was replaced by a different transaction'
+    );
+    expect(updateTransaction).not.toHaveBeenCalledWith(
+      'tx-id',
+      expect.objectContaining({ externalHash: '0xreplacement' })
+    );
+    expect(updateTransaction).not.toHaveBeenCalledWith('tx-id', expect.objectContaining({ externalBlockHeight: 321 }));
+  });
+
+  it('onEvmTransactionPending falls back to receipt lookup when the transaction response is unavailable', async () => {
+    (ethersUtil.getEvmTransaction as any).mockResolvedValue(null);
+    (ethersUtil.getEvmTransactionReceipt as any).mockResolvedValueOnce({
+      fee: { toString: () => '42' },
+      from: '0xsender',
+      blockNumber: 654,
+      blockHash: '0xreceiptBlock',
+      status: 1,
+    });
+    const updateTransaction = vi.fn();
+
+    await onEvmTransactionPending('tx-id', () => ({ externalHash: '0xmined' }) as any, updateTransaction);
+
+    expect(ethersUtil.getEvmTransactionReceipt).toHaveBeenCalledWith('0xmined');
+    expect(updateTransaction).toHaveBeenCalledWith('tx-id', {
+      externalNetworkFee: '42',
+      externalBlockHeight: 654,
+      externalBlockId: '0xreceiptBlock',
+    });
+  });
+
+  it('onEvmTransactionPending preserves the EVM hash when no mined receipt is available', async () => {
     (ethersUtil.getEvmTransaction as any).mockResolvedValue({
       blockNumber: 10,
       replaceableTransaction: vi.fn(() => ({
         wait: vi.fn().mockResolvedValue(null),
       })),
     });
+    (ethersUtil.getEvmTransactionReceipt as any).mockResolvedValueOnce(null);
     const updateTransaction = vi.fn();
 
     await expect(
       onEvmTransactionPending('tx-id', () => ({ externalHash: '0xmissing' }) as any, updateTransaction)
-    ).rejects.toThrow(
-      "[onEvmTransactionPending]: Ethereum transaction not found, hash: 0xmissing. 'externalHash' is reset"
-    );
+    ).rejects.toThrow('[onEvmTransactionPending]: Ethereum transaction receipt not found, hash: 0xmissing.');
 
-    expect(updateTransaction).toHaveBeenCalledWith('tx-id', {
-      externalHash: undefined,
-      externalNetworkFee: undefined,
-    });
+    expect(updateTransaction).not.toHaveBeenCalledWith(
+      'tx-id',
+      expect.objectContaining({ externalHash: undefined })
+    );
   });
 
   it('onEvmTransactionPending rejects failed EVM receipts after saving receipt metadata', async () => {

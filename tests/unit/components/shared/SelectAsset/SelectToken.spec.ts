@@ -401,7 +401,7 @@ describe('SelectToken', () => {
     expect(searchFocusSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('refocuses the search input after the modal focus trap finishes opening', async () => {
+  it('refocuses the search input after the modal focus trap finishes opening without clearing input', async () => {
     const wrapper = mountComponent();
     const vm = wrapper.vm as unknown as { query: string };
 
@@ -413,7 +413,7 @@ describe('SelectToken', () => {
     wrapper.getComponent(DialogBaseStub).vm.$emit('after-open');
     await nextTick();
 
-    expect(vm.query).toBe('');
+    expect(vm.query).toBe('xor');
     expect(searchFocusSpy).toHaveBeenCalledTimes(1);
   });
 

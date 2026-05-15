@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const repoRoot = path.resolve(__dirname, '../../..');
 
 const files = {
-  burnDialog: path.join(repoRoot, 'src/components/pages/Burn/BurnDialog.vue'),
+  burnDialog: path.join(repoRoot, 'src/features/misc/components/burn/BurnDialog.vue'),
   componentsConsts: path.join(repoRoot, 'src/consts/index.ts'),
   featureSwapConfirm: path.join(repoRoot, 'src/features/swap/components/Confirm.vue'),
   featureSwapLossWarningDialog: path.join(repoRoot, 'src/features/swap/components/LossWarningDialog.vue'),

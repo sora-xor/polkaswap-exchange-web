@@ -58,9 +58,9 @@ import { useSettingsStore } from '@/stores/settings';
 
 import type { Nullable } from '@/types/common';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
-import DepositMoonpay from '@/components/pages/Moonpay/Moonpay.vue';
-import DepositMoonpayConfirmation from '@/components/pages/Moonpay/Confirmation.vue';
-import DepositMoonpayNotification from '@/components/pages/Moonpay/Notification.vue';
+import DepositMoonpay from '@/features/deposit/components/moonpay/Moonpay.vue';
+import DepositMoonpayConfirmation from '@/features/deposit/components/moonpay/Confirmation.vue';
+import DepositMoonpayNotification from '@/features/deposit/components/moonpay/Notification.vue';
 
 const PaymentError = createAsyncComponent(() => import('@/components/shared/Dialog/PaymentError.vue'));
 const SelectProviderDialog = createAsyncComponent(() => import('@/components/shared/Dialog/SelectProvider.vue'));

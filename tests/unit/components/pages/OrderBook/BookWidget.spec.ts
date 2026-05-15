@@ -84,7 +84,7 @@ describe('BookWidget.vue', () => {
   it('registers telemetry for legacy usage', async () => {
     usePiniaTelemetryMock.mockClear();
 
-    const module = await import('@/components/pages/OrderBook/BookWidget.vue');
+    const module = await import('@/features/misc/components/order-book/BookWidget.vue');
     const wrapper = mount(module.default, {
       global: {
         stubs: {
@@ -140,7 +140,7 @@ describe('BookWidget.vue', () => {
     orderBookComposableState.lastPriceFormatted = '5,000,000,000,000';
     orderBookComposableState.fiatValue = '$23,364,485,051,464.178875';
 
-    const module = await import('@/components/pages/OrderBook/BookWidget.vue');
+    const module = await import('@/features/misc/components/order-book/BookWidget.vue');
     const wrapper = mount(module.default, {
       global: {
         stubs: {

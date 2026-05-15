@@ -97,6 +97,22 @@ export default [
     },
   },
   {
+    files: [
+      'src/app/**/*.{ts,tsx,vue}',
+      'src/platform/**/*.{ts,tsx,vue}',
+      'src/security/**/*.{ts,tsx,vue}',
+      'src/services/realtime/**/*.{ts,tsx,vue}',
+      'src/shared/**/*.{ts,tsx,vue}',
+      'src/features/bridge/**/*.{ts,tsx,vue}',
+      'src/features/wallet/**/*.{ts,tsx,vue}',
+      'src/stores/bridge/**/*.{ts,tsx,vue}',
+      'src/stores/wallet/**/*.{ts,tsx,vue}',
+    ],
+    rules: {
+      '@typescript-eslint/no-explicit-any': ['error'],
+    },
+  },
+  {
     rules: {
       'prefer-const': 'off',
       'no-var': 'off',

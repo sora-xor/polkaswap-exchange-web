@@ -7,6 +7,17 @@ import type { Nullable } from '@/types/common';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
 type AssetLookup = (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>;
+type LegacyAssetRootGetters = {
+  assets?: {
+    assetDataByAddress?: unknown;
+  };
+};
+export type NativeBridgeTokenParams = {
+  nativeSymbol?: Nullable<string>;
+  registeredAssets: Record<string, BridgeRegisteredAsset>;
+  walletAssets: ReadonlyArray<Partial<RegisteredAccountAsset>>;
+  assetDataByAddress: AssetLookup;
+};
 
 const noopLookup: AssetLookup = () => null;
 
@@ -15,7 +26,7 @@ const noopLookup: AssetLookup = () => null;
  * getter objects passed from compatibility code and the active Pinia assets
  * store once the app has fully booted.
  */
-export function resolveAssetLookup(rootGetters: Record<string, any>): AssetLookup {
+export function resolveAssetLookup(rootGetters: LegacyAssetRootGetters): AssetLookup {
   const legacyGetter = rootGetters?.assets?.assetDataByAddress;
 
   if (typeof legacyGetter === 'function') {
@@ -61,4 +72,32 @@ export function resolveRegisteredAssets(source?: AssetsRegistrySource): Record<s
   }
 
   return {};
+}
+
+/**
+ * Resolves a bridge network native token only from assets registered for the
+ * selected bridge, preventing same-symbol spoofed wallet assets from matching.
+ */
+export function resolveNativeBridgeToken({
+  nativeSymbol,
+  registeredAssets,
+  walletAssets,
+  assetDataByAddress,
+}: NativeBridgeTokenParams): Nullable<RegisteredAccountAsset> {
+  if (!nativeSymbol) return null;
+
+  const registeredWalletAsset = walletAssets.find(
+    (asset) => asset.symbol === nativeSymbol && Boolean(asset.address && asset.address in registeredAssets)
+  );
+
+  if (registeredWalletAsset?.address) {
+    return assetDataByAddress(registeredWalletAsset.address);
+  }
+
+  for (const address of Object.keys(registeredAssets)) {
+    const asset = assetDataByAddress(address);
+    if (asset?.symbol === nativeSymbol) return asset;
+  }
+
+  return null;
 }

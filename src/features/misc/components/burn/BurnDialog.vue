@@ -49,10 +49,7 @@
           :maxlength="128"
           :disabled="loading"
         ></s-input>
-        <p
-          class="nexus-recipient__message p4"
-          :class="{ 'nexus-recipient__message--error': isNexusRecipientInvalid }"
-        >
+        <p class="nexus-recipient__message p4" :class="{ 'nexus-recipient__message--error': isNexusRecipientInvalid }">
           {{ nexusRecipientMessage }}
         </p>
       </div>
@@ -599,9 +596,7 @@ watch(isVisible, async (dialogVisible) => {
   padding: 24px 26px;
   border: 1px solid var(--burn-highlight-soft);
   border-radius: 28px;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 42%),
-    var(--burn-surface-raised);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 42%), var(--burn-surface-raised);
   box-shadow:
     -9px -9px 22px var(--burn-highlight),
     12px 16px 32px rgba(42, 23, 31, 0.1),
@@ -624,9 +619,7 @@ watch(isVisible, async (dialogVisible) => {
   height: 56px;
   margin-left: 20px;
   border-radius: 50%;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 42%),
-    var(--burn-accent);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 42%), var(--burn-accent);
   box-shadow:
     -6px -6px 14px var(--burn-highlight),
     8px 10px 20px rgba(246, 35, 137, 0.3),

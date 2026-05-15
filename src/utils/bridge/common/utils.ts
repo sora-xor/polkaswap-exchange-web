@@ -18,8 +18,17 @@ import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
+import type { TransactionReplacedError, TransactionResponse } from 'ethers';
 
 const DenominatedAssets = [XOR.address, TBCD.address];
+
+type EvmReceiptMetadata = {
+  fee: string;
+  blockHash: string;
+  blockNumber: number;
+  from: string;
+  status?: number;
+};
 
 export const isDenominatedAsset = (assetId: string): boolean => {
   return DenominatedAssets.includes(assetId);
@@ -30,6 +39,32 @@ export const getEvmTransactionFee = (tx: ethers.TransactionResponse | ethers.Tra
   const gasAmount = 'gasUsed' in tx ? tx.gasUsed : tx.gasLimit;
 
   return ethersUtil.calcEvmFee(gasPrice, gasAmount);
+};
+
+const normalizeEvmAddress = (value?: string | null): string => (value ?? '').toLowerCase();
+const normalizeEvmData = (value?: string | null): string => (value ?? '0x').toLowerCase();
+const normalizeEvmValue = (value: bigint | null | undefined): string => (value ?? 0n).toString();
+
+/** Returns true only for same-action replacements, such as a gas-price speed-up. */
+const isSameEvmActionReplacement = (originalTx: TransactionResponse, replacementTx: TransactionResponse): boolean => {
+  return (
+    normalizeEvmAddress(originalTx.to) === normalizeEvmAddress(replacementTx.to) &&
+    normalizeEvmData(originalTx.data) === normalizeEvmData(replacementTx.data) &&
+    normalizeEvmValue(originalTx.value) === normalizeEvmValue(replacementTx.value)
+  );
+};
+
+const getValidEvmReplacement = (
+  originalTx: TransactionResponse,
+  error: TransactionReplacedError
+): TransactionResponse => {
+  if (error.cancelled || !isSameEvmActionReplacement(originalTx, error.replacement)) {
+    throw new Error(
+      `[waitForEvmTransactionMined]: EVM transaction ${originalTx.hash} was replaced by a different transaction`
+    );
+  }
+
+  return error.replacement;
 };
 
 export const waitForEvmTransactionMined = async (
@@ -46,7 +81,7 @@ export const waitForEvmTransactionMined = async (
     return txReceipt;
   } catch (error) {
     if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
-      const replacedTx = error.replacement;
+      const replacedTx = getValidEvmReplacement(tx, error);
 
       replaceCallback?.(replacedTx);
 
@@ -57,17 +92,33 @@ export const waitForEvmTransactionMined = async (
   }
 };
 
+/** Converts an ethers receipt into the bridge metadata persisted in local history. */
+const getEvmReceiptMetadata = (receipt: ethers.TransactionReceipt | null): EvmReceiptMetadata | null => {
+  if (!receipt) return null;
+
+  const { fee, from, blockNumber, blockHash, status } = receipt;
+
+  if (fee == null || blockNumber == null || !blockHash) return null;
+
+  return {
+    fee: fee.toString(),
+    from,
+    blockNumber,
+    blockHash,
+    status: status == null ? undefined : Number(status),
+  };
+};
+
 export const getEvmTransactionReceiptByHash = async (
   transactionHash: string
-): Promise<{ fee: string; blockHash: string; blockNumber: number; from: string } | null> => {
+): Promise<EvmReceiptMetadata | null> => {
   try {
     const receipt = await ethersUtil.getEvmTransactionReceipt(transactionHash);
+    const metadata = getEvmReceiptMetadata(receipt);
 
-    if (!receipt) throw new Error(`Transaction receipt "${transactionHash}" not found`);
+    if (!metadata) throw new Error(`Transaction receipt "${transactionHash}" not found`);
 
-    const { fee, from, blockNumber, blockHash } = receipt;
-
-    return { fee: fee.toString(), blockHash, blockNumber, from };
+    return metadata;
   } catch (error) {
     return null;
   }
@@ -131,35 +182,34 @@ export const onEvmTransactionPending = async (
 
   if (!hash) throw new Error(`[onEvmTransactionPending] Evm transaction hash is empty`);
 
+  let minedHash = hash;
   const txResponse = await ethersUtil.getEvmTransaction(hash);
-  const txReceipt = await waitForEvmTransactionMined(txResponse, (replacedTx) => {
-    if (replacedTx) {
-      updateTransaction(id, {
-        externalHash: replacedTx.hash,
-        externalNetworkFee: getEvmTransactionFee(replacedTx),
-      });
-    }
-  });
+  const txReceipt = txResponse
+    ? await waitForEvmTransactionMined(txResponse, (replacedTx) => {
+        if (replacedTx) {
+          minedHash = replacedTx.hash;
+          updateTransaction(id, {
+            externalHash: replacedTx.hash,
+            externalNetworkFee: getEvmTransactionFee(replacedTx),
+          });
+        }
+      })
+    : null;
 
-  const { fee, blockNumber, blockHash, status } = txReceipt || {};
+  const receiptMetadata = getEvmReceiptMetadata(txReceipt) ?? (await getEvmTransactionReceiptByHash(minedHash));
 
-  if (!(fee && blockNumber && blockHash)) {
-    updateTransaction(id, { externalHash: undefined, externalNetworkFee: undefined });
-    throw new Error(
-      `[onEvmTransactionPending]: Ethereum transaction not found, hash: ${tx.externalHash}. 'externalHash' is reset`
-    );
+  if (!receiptMetadata) {
+    throw new Error(`[onEvmTransactionPending]: Ethereum transaction receipt not found, hash: ${minedHash}.`);
   }
 
   // In EthHistory 'blockHeight' will store evm block number
   updateTransaction(id, {
-    externalNetworkFee: fee.toString(),
-    externalBlockHeight: blockNumber,
-    externalBlockId: blockHash,
+    externalNetworkFee: receiptMetadata.fee,
+    externalBlockHeight: receiptMetadata.blockNumber,
+    externalBlockId: receiptMetadata.blockHash,
   });
 
-  const failedStatus = !Number(status ?? 0);
-
-  if (failedStatus) {
-    throw new Error(`[onEvmTransactionPending]: Ethereum transaction has failed status, hash: ${tx.externalHash}.`);
+  if (receiptMetadata.status === 0) {
+    throw new Error(`[onEvmTransactionPending]: Ethereum transaction has failed status, hash: ${minedHash}.`);
   }
 };

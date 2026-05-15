@@ -3,7 +3,7 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { mount } from '@vue/test-utils';
 import { computed } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import pairListPopoverSource from '@/components/pages/OrderBook/Popovers/PairListPopover.vue?raw';
+import pairListPopoverSource from '@/features/misc/components/order-book/Popovers/PairListPopover.vue?raw';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { OrderBookStats } from '@/types/orderBook';
@@ -121,7 +121,7 @@ describe('PairListPopover.vue', () => {
   });
 
   const createWrapper = async () => {
-    const module = await import('@/components/pages/OrderBook/Popovers/PairListPopover.vue');
+    const module = await import('@/features/misc/components/order-book/Popovers/PairListPopover.vue');
 
     return mount(module.default, {
       global: {

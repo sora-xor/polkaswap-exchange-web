@@ -2,8 +2,8 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import TvlChart from '@/components/pages/Stats/TvlChart.vue';
-import tvlChartSource from '@/components/pages/Stats/TvlChart.vue?raw';
+import TvlChart from '@/features/misc/components/stats/TvlChart.vue';
+import tvlChartSource from '@/features/misc/components/stats/TvlChart.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
 const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));

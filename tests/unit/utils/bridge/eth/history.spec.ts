@@ -193,7 +193,7 @@ describe('EthBridgeHistory', () => {
     });
   });
 
-  it('fetches outgoing ETH bridge history by account and incoming multisig history without account filtering', async () => {
+  it('fetches outgoing and incoming ETH bridge history by account', async () => {
     const incoming = createIncomingHistoryElement('incoming', 20);
     const outgoing = createOutgoingHistoryElement('outgoing', 10);
     setPagedHistory([incoming], [outgoing]);
@@ -207,6 +207,7 @@ describe('EthBridgeHistory', () => {
       ids: undefined,
     });
     expect(historyElementsFilterMock).toHaveBeenNthCalledWith(2, {
+      address: 'sora-address',
       operations: [Operation.EthBridgeIncoming],
       timestamp: 7,
       ids: undefined,

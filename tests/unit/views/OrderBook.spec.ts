@@ -115,7 +115,7 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/OrderBook/BookWidget.vue', () => ({
+vi.mock('@/features/misc/components/order-book/BookWidget.vue', () => ({
   default: defineComponent({
     name: 'BookWidget',
     setup(_props, { slots }) {
@@ -124,7 +124,7 @@ vi.mock('@/components/pages/OrderBook/BookWidget.vue', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/OrderBook/SetLimitOrderWidget.vue', () => ({
+vi.mock('@/features/misc/components/order-book/SetLimitOrderWidget.vue', () => ({
   default: defineComponent({
     name: 'SetLimitOrderWidget',
     setup(_props, { slots }) {
@@ -133,7 +133,7 @@ vi.mock('@/components/pages/OrderBook/SetLimitOrderWidget.vue', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/OrderBook/HistoryOrderWidget.vue', () => ({
+vi.mock('@/features/misc/components/order-book/HistoryOrderWidget.vue', () => ({
   default: defineComponent({
     name: 'HistoryOrderWidget',
     setup(_props, { slots }) {
@@ -142,7 +142,7 @@ vi.mock('@/components/pages/OrderBook/HistoryOrderWidget.vue', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/OrderBook/BookChartsWidget.vue', () => ({
+vi.mock('@/features/misc/components/order-book/BookChartsWidget.vue', () => ({
   default: defineComponent({
     name: 'BookChartsWidget',
     setup(_props, { slots }) {
@@ -151,7 +151,7 @@ vi.mock('@/components/pages/OrderBook/BookChartsWidget.vue', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/OrderBook/MarketTradesWidget.vue', () => ({
+vi.mock('@/features/misc/components/order-book/MarketTradesWidget.vue', () => ({
   default: defineComponent({
     name: 'MarketTradesWidget',
     setup(_props, { slots }) {
@@ -160,7 +160,7 @@ vi.mock('@/components/pages/OrderBook/MarketTradesWidget.vue', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/OrderBook/Dialogs/CustomisePage.vue', () => ({
+vi.mock('@/features/misc/components/order-book/Dialogs/CustomisePage.vue', () => ({
   default: defineComponent({
     name: 'CustomisePageWidget',
     setup(_props, { slots }) {

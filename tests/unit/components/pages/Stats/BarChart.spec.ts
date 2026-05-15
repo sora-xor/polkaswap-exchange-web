@@ -3,8 +3,8 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import BarChart from '@/components/pages/Stats/BarChart.vue';
-import barChartSource from '@/components/pages/Stats/BarChart.vue?raw';
+import BarChart from '@/features/misc/components/stats/BarChart.vue';
+import barChartSource from '@/features/misc/components/stats/BarChart.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
 const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));

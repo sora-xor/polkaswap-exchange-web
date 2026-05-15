@@ -174,7 +174,7 @@ vi.mock('@/components/shared/PairTokenLogo.vue', () => ({
   },
 }));
 
-vi.mock('@/components/pages/OrderBook/Popovers/PairListPopover.vue', () => ({
+vi.mock('@/features/misc/components/order-book/Popovers/PairListPopover.vue', () => ({
   default: {
     name: 'PairListPopoverStub',
     emits: ['close'],
@@ -182,7 +182,7 @@ vi.mock('@/components/pages/OrderBook/Popovers/PairListPopover.vue', () => ({
   },
 }));
 
-vi.mock('@/components/pages/OrderBook/Dialogs/PlaceOrder.vue', () => ({
+vi.mock('@/features/misc/components/order-book/Dialogs/PlaceOrder.vue', () => ({
   default: {
     name: 'PlaceOrderDialogStub',
     props: ['visible'],
@@ -191,7 +191,7 @@ vi.mock('@/components/pages/OrderBook/Dialogs/PlaceOrder.vue', () => ({
   },
 }));
 
-vi.mock('@/components/pages/OrderBook/TransactionDetails.vue', () => ({
+vi.mock('@/features/misc/components/order-book/TransactionDetails.vue', () => ({
   default: {
     name: 'PlaceTransactionDetailsStub',
     template: '<div class="place-transaction-details-stub" />',
@@ -205,7 +205,7 @@ vi.mock('@/components/shared/PriceChange.vue', () => ({
   },
 }));
 
-vi.mock('@/components/pages/OrderBook/common/ErrorButton.vue', () => ({
+vi.mock('@/features/misc/components/order-book/common/ErrorButton.vue', () => ({
   default: {
     name: 'OrderBookErrorButtonStub',
     template: '<div class="error-button-stub" />',
@@ -548,11 +548,11 @@ const patchWalletRuntime = async () => {
   return { walletMocks, restore };
 };
 
-let buySellModulePromise: Promise<typeof import('@/components/pages/OrderBook/BuySell.vue')> | null = null;
+let buySellModulePromise: Promise<typeof import('@/features/misc/components/order-book/BuySell.vue')> | null = null;
 
 const loadBuySellModule = async () => {
   if (!buySellModulePromise) {
-    buySellModulePromise = import('@/components/pages/OrderBook/BuySell.vue');
+    buySellModulePromise = import('@/features/misc/components/order-book/BuySell.vue');
   }
   return buySellModulePromise;
 };

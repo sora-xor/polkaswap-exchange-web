@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import PlaceTransactionDetails from '@/components/pages/OrderBook/TransactionDetails.vue';
+import PlaceTransactionDetails from '@/features/misc/components/order-book/TransactionDetails.vue';
 import { computed } from 'vue';
 
 import { useSwapAmounts } from '@/composables/useSwapAmounts';

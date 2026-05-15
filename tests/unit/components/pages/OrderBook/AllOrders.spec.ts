@@ -46,7 +46,7 @@ vi.mock('@/composables/useLoading', () => ({
   }),
 }));
 
-vi.mock('@/components/pages/OrderBook/Tables/OrderTable.vue', () => ({
+vi.mock('@/features/misc/components/order-book/Tables/OrderTable.vue', () => ({
   __esModule: true,
   default: defineComponent({
     name: 'OrderTableStub',
@@ -70,7 +70,7 @@ describe('AllOrders.vue', () => {
   });
 
   const createWrapper = async (props?: Record<string, unknown>) => {
-    const module = await import('@/components/pages/OrderBook/Tables/AllOrders.vue');
+    const module = await import('@/features/misc/components/order-book/Tables/AllOrders.vue');
 
     return mount(module.default, {
       props,

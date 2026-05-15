@@ -82,7 +82,8 @@ export function resolveDynamicComponentTag<T extends string | object | Function 
   fallback: string
 ): Exclude<T, null | undefined> | string {
   if (typeof value === 'string') {
-    return isSafeDynamicTagName(value) ? value : fallback;
+    const tagName = value.trim();
+    return isSafeDynamicTagName(tagName) ? tagName : fallback;
   }
 
   if (typeof value === 'function' || (value && typeof value === 'object')) {

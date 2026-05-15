@@ -25,9 +25,9 @@
 import { computed } from 'vue';
 
 import SupplyChartWidget from '@/components/shared/Widget/SupplyChart.vue';
-import StatsBarChart from '@/components/pages/Stats/BarChart.vue';
-import StatsNetworkStats from '@/components/pages/Stats/NetworkStats.vue';
-import StatsTvlChart from '@/components/pages/Stats/TvlChart.vue';
+import StatsBarChart from '@/features/misc/components/stats/BarChart.vue';
+import StatsNetworkStats from '@/features/misc/components/stats/NetworkStats.vue';
+import StatsTvlChart from '@/features/misc/components/stats/TvlChart.vue';
 
 defineOptions({
   name: 'StatsPage',

@@ -3,7 +3,7 @@ import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts'
 import { storeToRefs } from 'pinia';
 import { computed, type Ref } from 'vue';
 
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
 import { useBridgeHistory } from '@/composables/useBridgeHistory';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';

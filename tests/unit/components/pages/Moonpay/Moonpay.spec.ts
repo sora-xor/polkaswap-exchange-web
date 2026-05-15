@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
-import Moonpay from '@/components/pages/Moonpay/Moonpay.vue';
+import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
+import Moonpay from '@/features/deposit/components/moonpay/Moonpay.vue';
 
 import type { MoonpayTransaction } from '@/utils/moonpay';
 

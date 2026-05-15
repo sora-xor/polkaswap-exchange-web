@@ -63,24 +63,69 @@ const handleConfirm = async () => {
 
 <style lang="scss" scoped>
 :deep(.dialog-card.loss-warning-dialog) {
-  overflow: visible;
+  position: relative;
+  overflow: hidden;
 }
 
 :deep(.dialog-card.loss-warning-dialog .dialog-card__header) {
-  position: relative;
-  z-index: 0;
-  overflow: visible;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  justify-content: flex-end;
+  padding: $basic-spacing-medium $basic-spacing-medium 0;
+  border-bottom: 0;
+  pointer-events: none;
+}
+
+:deep(.dialog-card.loss-warning-dialog .dialog-card__title) {
+  display: none;
+}
+
+:deep(.dialog-card.loss-warning-dialog .dialog-card__actions) {
+  margin-left: auto;
+  pointer-events: auto;
 }
 
 :deep(.dialog-card.loss-warning-dialog .dialog-card__content) {
   position: relative;
   z-index: 1;
-  padding-top: calc(var(--s-size-big) + #{$basic-spacing});
+  padding: $inner-spacing-large clamp(#{$basic-spacing-medium}, 7vw, #{$inner-spacing-large}) $inner-spacing-large;
   max-height: none;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 :deep(.dialog-card.loss-warning-dialog .simple-notification.modal-content) {
-  margin-top: calc(var(--s-size-big) * -1);
+  margin-top: 0;
+}
+
+:deep(.dialog-card.loss-warning-dialog .simple-notification-icon) {
+  margin-bottom: 0;
+}
+
+:deep(.dialog-card.loss-warning-dialog .simple-notification__text) {
+  max-width: 100%;
+}
+
+:deep(.dialog-card.loss-warning-dialog .simple-notification__switch) {
+  justify-content: center;
+  max-width: 100%;
+}
+
+:deep(.dialog-card.loss-warning-dialog .simple-notification__switch > span) {
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+:deep(.dialog-card.loss-warning-dialog .simple-notification__button) {
+  min-height: var(--s-size-big);
+  white-space: normal;
+}
+
+:deep(.dialog-card.loss-warning-dialog .simple-notification__button span) {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 </style>

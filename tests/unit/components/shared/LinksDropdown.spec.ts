@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import LinksDropdown from '@/components/shared/LinksDropdown.vue';
 
 const explorerLinks = [
-  { type: 'sorametrics', value: 'https://sorametrics.org/#tx=0x123' },
+  { type: 'sorametrics', value: 'https://sorametrics.org/sorav2?tab=extrinsics&q=0x123' },
   { type: 'Sorascan', value: 'https://sorascan.io' },
 ];
 
@@ -36,6 +36,32 @@ describe('LinksDropdown.vue', () => {
 
     const exposed = wrapper.vm as unknown as { links: typeof explorerLinks };
     expect(exposed.links).toEqual(explorerLinks);
+  });
+
+  it('opens explorer links in a new tab without an opener', () => {
+    const wrapper = shallowMount(LinksDropdown, {
+      props: { links: explorerLinks },
+      global: {
+        components: {
+          's-dropdown': {
+            template: '<div class="dropdown-stub"><slot name="menu" /></div>',
+          },
+          's-dropdown-item': {
+            template: '<div class="dropdown-item"><slot /></div>',
+          },
+        },
+        stubs: {
+          SDropdown: false,
+          SDropdownItem: false,
+        },
+      },
+    });
+
+    const links = wrapper.findAll('a.transaction-link');
+    expect(links).toHaveLength(2);
+    expect(links[0].attributes('href')).toBe('https://sorametrics.org/sorav2?tab=extrinsics&q=0x123');
+    expect(links[0].attributes('target')).toBe('_blank');
+    expect(links[0].attributes('rel')).toContain('noopener');
   });
 
   it('maps known explorer ids to readable labels', () => {
