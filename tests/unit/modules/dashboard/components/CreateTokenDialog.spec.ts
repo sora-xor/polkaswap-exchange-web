@@ -13,6 +13,9 @@ const storeStateMocks = vi.hoisted(() => ({
 
 const transactionMocks = vi.hoisted(() => ({
   loading: { value: false },
+  withNotifications: vi.fn(async (handler: () => unknown | Promise<unknown>) => {
+    await handler();
+  }),
 }));
 
 const formattedAmountMocks = vi.hoisted(() => {
@@ -76,9 +79,35 @@ const infoLineStub = vi.hoisted(() => ({
   setup: () => () => null,
 }));
 
+const formMocks = vi.hoisted(() => ({
+  isCreateDisabled: false,
+  buttonTitle: 'Create from form',
+  registerAsset: vi.fn(async () => undefined),
+  resetForm: vi.fn(),
+}));
+
 const tabComponentStub = vi.hoisted(() => ({
   name: 'TabComponentStub',
-  template: '<div />',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup: (_props: Record<string, unknown>, { expose }: { expose: (exposed: Record<string, unknown>) => void }) => {
+    expose({
+      get isCreateDisabled() {
+        return formMocks.isCreateDisabled;
+      },
+      get buttonTitle() {
+        return formMocks.buttonTitle;
+      },
+      registerAsset: formMocks.registerAsset,
+      resetForm: formMocks.resetForm,
+    });
+    return {};
+  },
+  template: '<div class="tab-component-stub" />',
 }));
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
@@ -119,6 +148,7 @@ vi.mock('@/stores/assets', () => ({
 vi.mock('@/composables/useTransaction', () => ({
   useTransaction: () => ({
     loading: transactionMocks.loading,
+    withNotifications: transactionMocks.withNotifications,
   }),
   __mocks: transactionMocks,
 }));
@@ -168,7 +198,12 @@ beforeEach(() => {
   wrapperStoreState = storeStateMocks;
   wrapperTransactionState = transactionMocks;
 
+  formMocks.isCreateDisabled = false;
+  formMocks.buttonTitle = 'Create from form';
+  formMocks.registerAsset.mockClear();
+  formMocks.resetForm.mockClear();
   wrapperTransactionState.loading.value = false;
+  wrapperTransactionState.withNotifications.mockClear();
   wrapperStoreState.networkFees.RegisterAsset = '1';
   wrapperStoreState.accountXor = { balance: { transferable: '10' } };
 });
@@ -179,6 +214,12 @@ describe('CreateTokenDialog.vue', () => {
     const exposed = (wrapper.vm as any).$?.exposed!;
 
     expect(exposed.disabled.value).toBe(false);
+  });
+
+  it('renders the selected token tab through the component map', () => {
+    const wrapper = mountComponent();
+
+    expect(wrapper.find('.tab-component-stub').exists()).toBe(true);
   });
 
   it('disables create button when xor balance is insufficient', () => {
@@ -196,6 +237,18 @@ describe('CreateTokenDialog.vue', () => {
     expect(exposed.currentTab.value).toBe(WALLET_CONSTS_STUB.TokenTabs.Token);
     exposed.handleChangeTab(WALLET_CONSTS_STUB.TokenTabs.NonFungibleToken);
     expect(exposed.currentTab.value).toBe(WALLET_CONSTS_STUB.TokenTabs.NonFungibleToken);
+  });
+
+  it('submits the active form through transaction notifications and closes dialog', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    await exposed.handleCreate();
+
+    expect(wrapperTransactionState.withNotifications).toHaveBeenCalledTimes(1);
+    expect(formMocks.registerAsset).toHaveBeenCalledTimes(1);
+    expect(exposed.isVisible.value).toBe(false);
+    expect(wrapper.emitted()['update:visible']).toBeTruthy();
   });
 
   // Visibility sync covered implicitly via parent usage; no direct assertion required here.

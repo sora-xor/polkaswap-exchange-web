@@ -117,6 +117,7 @@ const shared = vi.hoisted(() => {
     }
   });
   let baseAssetsIds = ['base'];
+  let poolBaseAssetsIds = ['base'];
 
   return {
     walletStore,
@@ -160,6 +161,12 @@ const shared = vi.hoisted(() => {
     },
     set baseAssetsIds(value: string[]) {
       baseAssetsIds = value;
+    },
+    get poolBaseAssetsIds() {
+      return poolBaseAssetsIds;
+    },
+    set poolBaseAssetsIds(value: string[]) {
+      poolBaseAssetsIds = value;
     },
     get accountLiquidity() {
       return accountLiquidity;
@@ -216,6 +223,9 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
       get baseAssetsIds() {
         return shared.baseAssetsIds;
       },
+      get poolBaseAssetsIds() {
+        return shared.poolBaseAssetsIds;
+      },
     },
     poolXyk: {
       estimatePoolTokensMinted: shared.estimatePoolTokensMinted,
@@ -252,6 +262,9 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
         update: shared.dexUpdate,
         get baseAssetsIds() {
           return shared.baseAssetsIds;
+        },
+        get poolBaseAssetsIds() {
+          return shared.poolBaseAssetsIds;
         },
       },
       poolXyk: {
@@ -330,6 +343,7 @@ describe('pool store', () => {
       }
     });
     shared.baseAssetsIds = ['base'];
+    shared.poolBaseAssetsIds = ['base'];
     const codec = (value: number) => SDKFPNumber.fromNatural(value).toCodecString();
 
     shared.accountLiquidity = [
@@ -517,6 +531,20 @@ describe('pool store', () => {
     await store.resetAddLiquidityData();
     expect(store.addLiquidity.firstTokenAddress).toBe('');
     expect(store.addLiquidity.secondTokenAddress).toBe('');
+  });
+
+  it('normalizes add-liquidity route data so supported base pairs subscribe in base-first order', async () => {
+    const store = usePoolStore();
+
+    await store.setAddLiquidityDataFromLiquidity({ firstAddress: 'quote', secondAddress: 'base' });
+
+    expect(shared.getAssetInfo).toHaveBeenCalledWith('quote');
+    expect(shared.getAssetInfo).toHaveBeenCalledWith('base');
+    expect(store.addLiquidity.firstTokenAddress).toBe('base');
+    expect(store.addLiquidity.secondTokenAddress).toBe('quote');
+    expect(shared.getPoolPropertiesObservable).toHaveBeenLastCalledWith('base', 'quote');
+    expect(shared.getReservesObservable).toHaveBeenLastCalledWith('base', 'quote');
+    expect(shared.getTotalSupplyObservable).toHaveBeenLastCalledWith('base', 'quote');
   });
 
   it('updates remove-liquidity amounts and dispatches native remove calls', async () => {

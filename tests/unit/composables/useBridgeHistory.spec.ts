@@ -10,11 +10,15 @@ const bridgeStoreMock = vi.hoisted(() => ({
   get historyInternal() {
     return this.history.internal;
   },
+  get historyRecord() {
+    return this.history.record;
+  },
   get historyLoading() {
     return this.history.loading;
   },
   history: {
     internal: {},
+    record: {},
     loading: {},
   },
   networkHistoryId: 'kusama',
@@ -59,19 +63,37 @@ describe('useBridgeHistory', () => {
     bridgeStoreMock.setAssetAddress.mockClear();
     bridgeStoreMock.setHistoryPage.mockClear();
     bridgeStoreMock.history.internal = {};
+    bridgeStoreMock.history.record = {};
     bridgeStoreMock.history.loading = {};
   });
 
-  it('reads history and loading flags from the bridge Pinia store', () => {
+  it('reads canonical history and loading flags from the bridge Pinia store', () => {
     const tx = { id: 'tx-1' } as any;
 
-    bridgeStoreMock.history.internal = { 'tx-1': tx };
+    bridgeStoreMock.history.internal = { rawStorageKey: tx };
+    bridgeStoreMock.history.record = { 'tx-1': tx };
     bridgeStoreMock.history.loading = { kusama: true };
 
     const { history, networkHistoryLoading } = useBridgeHistory();
 
     expect(history.value['tx-1']).toStrictEqual(tx);
     expect(networkHistoryLoading.value).toBe(true);
+  });
+
+  it('opens history details through the canonical history id', async () => {
+    const tx = { id: 'tx-canonical', assetAddress: 'asset-1' } as any;
+
+    bridgeStoreMock.history.internal = { rawStorageKey: tx };
+    bridgeStoreMock.history.record = { 'tx-canonical': tx };
+
+    const bridgeHistory = useBridgeHistory();
+
+    await bridgeHistory.showHistory('tx-canonical');
+
+    expect(bridgeStoreMock.updateForm).toHaveBeenCalledWith({ isSoraToEvm: true });
+    expect(bridgeStoreMock.setAssetAddress).toHaveBeenCalledWith('asset-1');
+    expect(bridgeStoreMock.setHistoryId).toHaveBeenCalledWith('tx-canonical');
+    expect(routerPushMock).toHaveBeenCalledWith({ name: PageNames.BridgeTransaction });
   });
 
   it('navigates back to bridge when browser history does not have an in-app back location', () => {

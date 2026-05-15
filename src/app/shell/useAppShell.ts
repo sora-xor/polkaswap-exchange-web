@@ -11,6 +11,7 @@ import { PageNames } from '@/consts/navigation';
 import { Theme } from '@/consts/theme';
 import { WalletPermissions } from '@/consts/wallet';
 import { getLocale } from '@/lang';
+import { getLocaleDirection } from '@/lang/direction';
 import router, { goTo as navigateTo } from '@/app/router';
 import { IndexerType, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { useReferralsStore } from '@/stores/referrals';
@@ -257,9 +258,11 @@ export function useAppShell() {
   });
   const showSoraAccountDialog = computed(() => Boolean(web3Store.soraAccountDialogVisibility));
   const mobileCssClasses = computed(() => getMobileCssClasses());
+  const localeDirection = computed(() => getLocaleDirection(settingsStore.language as string));
   const dsProviderClasses = computed(() => {
-    const classes = mobileCssClasses.value;
-    return classes?.length ? [...classes, responsiveClass.value] : responsiveClass.value;
+    const classes = mobileCssClasses.value?.length ? [...mobileCssClasses.value] : [];
+    classes.push(responsiveClass.value, `locale-${localeDirection.value}`);
+    return classes;
   });
   const appClasses = computed(() => {
     const baseClass = 'app-main';

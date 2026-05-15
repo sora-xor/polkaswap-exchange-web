@@ -64,7 +64,7 @@ export const updateTransaction = async (id: string, params = {}) => {
 };
 
 const failedRequestStatuses = [BridgeTxStatus.Failed, BridgeTxStatus.Frozen, BridgeTxStatus.Broken];
-const REQUEST_READY_POLL_INTERVAL_MS = 6_000;
+const REQUEST_READY_POLL_INTERVAL_MS = 2_000;
 const REQUEST_READY_TIMEOUT_MS = 10 * 60_000;
 
 const assertRequestStatusIsNotFailed = (status: unknown): void => {
@@ -73,14 +73,34 @@ const assertRequestStatusIsNotFailed = (status: unknown): void => {
   }
 };
 
+const getApprovedRequestIfAvailable = async (hash: string): Promise<EthApprovedRequest | null> => {
+  try {
+    return (await ethBridgeApi.getApprovedRequest(hash)) ?? null;
+  } catch {
+    return null;
+  }
+};
+
+const checkApprovedRequest = async (hash: string): Promise<EthApprovedRequest | null> => {
+  const request = await getApprovedRequestIfAvailable(hash);
+
+  if (request) {
+    return request;
+  }
+
+  const status = await ethBridgeApi.getRequestStatus(hash);
+
+  assertRequestStatusIsNotFailed(status);
+
+  return null;
+};
+
 /** Waits until bridge peers have approved an outgoing SORA-to-EVM request. */
-const waitForReadyRequestStatus = async (hash: string): Promise<void> => {
-  const currentStatus = await ethBridgeApi.getRequestStatus(hash);
+const waitForApprovedRequestData = async (hash: string): Promise<EthApprovedRequest> => {
+  const approvedRequest = await checkApprovedRequest(hash);
 
-  assertRequestStatusIsNotFailed(currentStatus);
-
-  if (currentStatus === BridgeTxStatus.Ready) {
-    return;
+  if (approvedRequest) {
+    return approvedRequest;
   }
 
   let subscription: Subscription | undefined;
@@ -88,13 +108,21 @@ const waitForReadyRequestStatus = async (hash: string): Promise<void> => {
   let timeout: ReturnType<typeof setTimeout> | undefined;
 
   try {
-    await new Promise<void>((resolve, reject) => {
+    return await new Promise<EthApprovedRequest>((resolve, reject) => {
       let settled = false;
 
       const settle = (callback: () => void): void => {
         if (settled) return;
         settled = true;
         callback();
+      };
+
+      const checkApproval = async (): Promise<void> => {
+        const request = await checkApprovedRequest(hash);
+
+        if (request) {
+          settle(() => resolve(request));
+        }
       };
       const handleStatus = (status: BridgeTxStatus | null): void => {
         try {
@@ -105,22 +133,23 @@ const waitForReadyRequestStatus = async (hash: string): Promise<void> => {
         }
 
         if (status === BridgeTxStatus.Ready) {
-          settle(resolve);
+          void checkApproval().catch((error) => settle(() => reject(error)));
         }
       };
-      const pollStatus = async (): Promise<void> => {
+      const pollApproval = async (): Promise<void> => {
         try {
-          handleStatus(await ethBridgeApi.getRequestStatus(hash));
+          await checkApproval();
         } catch (error) {
           settle(() => reject(error));
         }
       };
 
+      void pollApproval();
       subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe({
         next: handleStatus,
         error: (error) => settle(() => reject(error)),
       });
-      pollInterval = setInterval(() => void pollStatus(), REQUEST_READY_POLL_INTERVAL_MS);
+      pollInterval = setInterval(() => void pollApproval(), REQUEST_READY_POLL_INTERVAL_MS);
       timeout = setTimeout(() => {
         settle(() => reject(new Error(`[Bridge]: Transaction approval timed out, hash="${hash}"`)));
       }, REQUEST_READY_TIMEOUT_MS);
@@ -139,9 +168,7 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
-  await waitForReadyRequestStatus(hash);
-
-  const request = await ethBridgeApi.getApprovedRequest(hash);
+  const request = await waitForApprovedRequestData(hash);
 
   if (!request) throw new Error(`[Bridge]: getApprovedRequest is empty, hash="${hash}"`);
 

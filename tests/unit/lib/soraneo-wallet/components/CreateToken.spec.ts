@@ -49,4 +49,14 @@ describe('Wallet CreateToken', () => {
 
     expect(navigate).toHaveBeenCalledWith({ name: RouteNames.Wallet });
   });
+
+  it('resolves token and NFT tab strings to renderable components', () => {
+    const state = (CreateToken as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+
+    expect(state.currentTabComponent.value.name).toBe('CreateSimpleTokenStub');
+
+    state.handleChangeTab(Step.CreateNftToken);
+
+    expect(state.currentTabComponent.value.name).toBe('AsyncComponentWrapper');
+  });
 });

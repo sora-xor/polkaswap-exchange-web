@@ -58,6 +58,40 @@ describe('bridge history record helpers', () => {
     });
   });
 
+  it('deduplicates transactions that share chain identifiers', () => {
+    const local = tx({
+      id: 'local-id',
+      hash: 'sora-hash',
+      txId: 'sora-tx',
+      amount: '1',
+    });
+    const restored = tx({
+      id: 'restored-id',
+      txId: 'sora-tx',
+      externalHash: 'external-hash',
+      amount: '1',
+      endTime: 2,
+    });
+    const distinct = tx({
+      id: 'distinct-id',
+      txId: 'distinct-tx',
+    });
+
+    expect(
+      buildBridgeHistoryRecord({
+        localStorage: local,
+        restoredStorage: restored,
+        distinctStorage: distinct,
+      })
+    ).toEqual({
+      'restored-id': {
+        ...local,
+        ...restored,
+      },
+      'distinct-id': distinct,
+    });
+  });
+
   it('preserves active and pending transactions while refreshed history catches up', () => {
     const active = tx({ id: 'active-id', hash: 'active-hash' });
     const approving = tx({ id: 'approval-id' });

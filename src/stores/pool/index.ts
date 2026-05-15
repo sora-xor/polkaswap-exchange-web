@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { ZeroStringValue } from '@/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { getPoolsApyObject, createPoolsApySubscription } from '@/indexer/queries/pool/apy';
+import { normalizeSupportedPoolBasePair } from '@/modules/pool/utils/basePairs';
 import { useAssetsStore } from '@/stores/assets';
 import { useDemeterFarmingStore } from '@/stores/demeterFarming';
 import type {
@@ -592,7 +593,14 @@ export const usePoolStore = defineStore('pool-legacy', {
         }
       };
 
-      const [first, second] = await Promise.all([findAssetAddress(firstAddress), findAssetAddress(secondAddress)]);
+      const [resolvedFirst, resolvedSecond] = await Promise.all([
+        findAssetAddress(firstAddress),
+        findAssetAddress(secondAddress),
+      ]);
+      const { firstAddress: first, secondAddress: second } = normalizeSupportedPoolBasePair({
+        firstAddress: resolvedFirst,
+        secondAddress: resolvedSecond,
+      });
 
       await this.setAddLiquidityFirstTokenAddress(first);
       await this.setAddLiquiditySecondTokenAddress(second);

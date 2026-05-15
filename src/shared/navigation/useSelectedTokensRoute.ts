@@ -1,11 +1,11 @@
 import { DAI, KUSD, XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 import routeWhitelistBySymbol from '@/consts/routeWhitelistBySymbol.json';
 
 import type { AssetsTable, WhitelistIdsBySymbol } from '@/lib/soraneo-wallet/src/types/common';
 import { PageNames } from '@/consts/navigation';
+import { isSupportedPoolBasePair } from '@/modules/pool/utils/basePairs';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountAsset, Asset } from '@sora-substrate/sdk/build/assets/types';
@@ -98,13 +98,7 @@ export const routeIsValid = (
     case PageNames.OrderBook:
       return bothArePresented;
     case PageNames.AddLiquidity: {
-      if (!(bothArePresented && api.dex.baseAssetsIds.includes(firstAddress))) {
-        return false;
-      }
-      if (firstAddress === XSTUSD.address && secondAddress === XOR.address) {
-        return false;
-      }
-      return true;
+      return bothArePresented && isSupportedPoolBasePair(firstAddress, secondAddress);
     }
     default:
       return bothArePresented;

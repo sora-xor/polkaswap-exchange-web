@@ -11,7 +11,7 @@
         <s-tab v-for="tab in TokenTabs" :key="tab" :label="getTabName(tab)" :name="tab"></s-tab>
       </s-tabs>
       <component
-        :is="currentTab"
+        :is="currentTabComponent"
         :step="currentStep"
         @show-tabs="setTabVisibility"
         @show-header="setHeaderVisibility"
@@ -43,6 +43,9 @@ const showHeader = ref(true);
 const createTokenTitle = ref(t('createToken.titleCommon'));
 
 const currentStep = computed(() => step.value);
+const currentTabComponent = computed(() => {
+  return currentTab.value === Step.CreateNftToken ? CreateNftToken : CreateSimpleToken;
+});
 
 function navigate(options: WalletNavigationTarget): void {
   navigateWallet(options);

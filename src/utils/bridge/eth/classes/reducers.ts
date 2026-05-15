@@ -3,7 +3,12 @@ import first from 'lodash/fp/first';
 import * as POLKASWAP_TYPES from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
-import { getTransactionEvents, getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
+import {
+  getTransactionEvents,
+  getEvmTransactionFee,
+  getEvmTransactionReceiptByHash,
+  onEvmTransactionPending,
+} from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
@@ -46,10 +51,27 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
     return await bridgeHistory.findEthTxBySoraHash(to, hash, startTime);
   }
 
+  /** Returns true when a restored EVM transaction is known to have failed on-chain. */
+  private async isFailedSubmittedEvmTx(transaction: TransactionResponse): Promise<boolean> {
+    const isError = (transaction as { isError?: unknown }).isError;
+
+    if (isError !== undefined && Number(isError) !== 0) {
+      return true;
+    }
+
+    const receipt = await getEvmTransactionReceiptByHash(transaction.hash);
+
+    return receipt?.status === 0;
+  }
+
   private async restoreSubmittedEvmTx(id: string): Promise<boolean> {
     const transaction = await this.findSubmittedEvmTxBySoraHash(id);
 
     if (!transaction) {
+      return false;
+    }
+
+    if (await this.isFailedSubmittedEvmTx(transaction)) {
       return false;
     }
 
@@ -95,24 +117,24 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
     }
   }
 
-  private async restoreOutgoingTransactionBlock(id: string): Promise<void> {
+  private async restoreOutgoingTransactionBlock(id: string): Promise<boolean> {
     const { blockId, blockHeight, from, hash, txId } = this.getTransaction(id);
 
     if (blockId && txId) {
-      return;
+      return true;
     }
 
     const soraTxId = txId || hash;
 
     if (!(from && soraTxId)) {
-      return;
+      return false;
     }
 
     const bridgeHistory = await this.getBridgeHistoryInstance();
     const historyItem = first(await bridgeHistory.fetchHistoryElements(from as string, 0, [soraTxId]));
 
     if (!historyItem?.blockHash) {
-      return;
+      return false;
     }
 
     const requestHash = (historyItem.data as POLKASWAP_TYPES.HistoryElementEthBridgeOutgoing)?.requestHash;
@@ -123,6 +145,8 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
       blockHeight: blockHeight ?? Number(historyItem.blockHeight),
       ...(requestHash ? { hash: requestHash } : {}),
     });
+
+    return true;
   }
 
   private async restoreOutgoingRequestHash(id: string): Promise<void> {
@@ -185,15 +209,25 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
    * Restored rows do not always include the transient SDK `status` field.
    */
   protected async waitForOutgoingSoraPartSubmitted(id: string): Promise<void> {
-    const { blockId, status, txId } = this.getTransaction(id);
     let hasKnownRequestHash = await this.hasKnownOutgoingRequestHash(id);
+    let { blockId, hash, status, txId } = this.getTransaction(id);
 
     if (!(status || txId || blockId || hasKnownRequestHash)) {
       await this.waitForTransactionStatus(id);
       hasKnownRequestHash = await this.hasKnownOutgoingRequestHash(id);
+      ({ blockId, hash, status, txId } = this.getTransaction(id));
     }
 
-    if (!hasKnownRequestHash) {
+    if (!hasKnownRequestHash && (txId || hash)) {
+      const restoredBlock = await this.restoreOutgoingTransactionBlock(id);
+
+      if (restoredBlock) {
+        hasKnownRequestHash = await this.hasKnownOutgoingRequestHash(id);
+        ({ blockId, hash, status, txId } = this.getTransaction(id));
+      }
+    }
+
+    if (!hasKnownRequestHash && !blockId) {
       await this.waitForTransactionBlockId(id);
     }
   }

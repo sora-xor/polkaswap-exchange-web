@@ -4,6 +4,7 @@ import { createI18n, type MissingHandler } from 'vue-i18n';
 
 import { TranslationConsts } from '@/consts/app';
 import { Language } from '@/consts/language';
+import { getLocaleDirection } from '@/lang/direction';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { settingsStorage } from '@/utils/storage';
 
@@ -60,16 +61,43 @@ const i18nGlobal = i18n.global;
 const loadedLanguages: Array<string> = [];
 applyDocumentDirection(Language.EN);
 
-// Set document direction for RTL languages
-const rtlLocales = [Language.AR, Language.HE, Language.UR, Language.DV];
+const LOCALIZED_TRANSLATION_CONST_DEFAULTS = {
+  AppName: TranslationConsts.AppName,
+  Sora: TranslationConsts.Sora,
+  VAL: TranslationConsts.VAL,
+} as const;
+
+const AKK_TRANSLATION_CONST_OVERRIDES = {
+  AppName: '𒊹𒂵𒆜',
+  Sora: '𒀭',
+  VAL: '𒋾',
+} as const;
+
+type LocalizedTranslationConstKey = keyof typeof LOCALIZED_TRANSLATION_CONST_DEFAULTS;
+type MutableLocalizedTranslationConsts = Record<LocalizedTranslationConstKey, string>;
+
 function applyDocumentDirection(locale: string): void {
   try {
     if (typeof document !== 'undefined') {
-      const dir = rtlLocales.includes(locale as Language) ? 'rtl' : 'ltr';
-      document.documentElement.setAttribute('dir', dir);
+      document.documentElement.setAttribute('dir', getLocaleDirection(locale));
     }
   } catch (e) {
     // noop: environment may not have document (tests)
+  }
+}
+
+/**
+ * Keeps mutable i18n interpolation constants in sync with the active locale.
+ * They are merged into every translation call, so locale-specific overrides must
+ * be reset before applying overrides for the newly selected locale.
+ */
+function applyTranslationConstLocaleOverrides(locale: Language): void {
+  const mutableConsts = TranslationConsts as unknown as MutableLocalizedTranslationConsts;
+
+  Object.assign(mutableConsts, LOCALIZED_TRANSLATION_CONST_DEFAULTS);
+
+  if (locale === Language.AKK) {
+    Object.assign(mutableConsts, AKK_TRANSLATION_CONST_OVERRIDES);
   }
 }
 
@@ -130,19 +158,9 @@ export async function setI18nLocale(lang: Language): Promise<void> {
     loadedLanguages.push(locale);
   }
 
+  applyTranslationConstLocaleOverrides(locale);
   i18nGlobal.locale.value = locale;
   applyDocumentDirection(locale);
-
-  // Apply locale-specific constant overrides (non-critical, optional)
-  if (locale === Language.AKK) {
-    try {
-      (TranslationConsts as any).AppName = '𒊹𒂵𒆜'; // Polkaswap
-      if ((TranslationConsts as any).Sora) (TranslationConsts as any).Sora = '𒀭'; // SORA
-      (TranslationConsts as any).VAL = '𒋾';
-    } catch (e) {
-      // noop
-    }
-  }
 }
 const globalComposer = i18n.global as Record<string, unknown>;
 if (typeof globalComposer.rt !== 'function') {

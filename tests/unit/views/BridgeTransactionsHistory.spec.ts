@@ -279,6 +279,24 @@ describe('BridgeTransactionsHistory.vue', () => {
     wrapper.unmount();
   });
 
+  it('shows the newest bridge transactions first on the current page', async () => {
+    setHistoryItems([
+      createHistoryItem('tx-older', { startTime: 100 }),
+      createHistoryItem('tx-newest', { startTime: 300 }),
+      createHistoryItem('tx-middle', { startTime: 200 }),
+    ]);
+
+    const wrapper = await mountHistoryView();
+
+    expect(wrapper.vm.filteredHistoryItems.map((item: { id: string }) => item.id)).toEqual([
+      'tx-newest',
+      'tx-middle',
+      'tx-older',
+    ]);
+
+    wrapper.unmount();
+  });
+
   it('switches pagination direction when navigating to the last page', async () => {
     const items = Array.from({ length: 10 }, (_, index) =>
       createHistoryItem(`tx-${index}`, { startTime: index + 1, direction: index % 2 ? 'incoming' : 'outgoing' })

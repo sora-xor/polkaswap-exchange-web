@@ -74,4 +74,21 @@ describe('translationMissingHandler', () => {
 
     expect(composer.te('swapText')).toBe(true);
   });
+
+  it('restores localized interpolation constants when switching back to English', async () => {
+    const { setI18nLocale } = await loadModule();
+    const { TranslationConsts } = await import('@/consts/app');
+
+    await setI18nLocale('akk' as any);
+
+    expect(TranslationConsts.AppName).toBe('𒊹𒂵𒆜');
+    expect(TranslationConsts.Sora).toBe('𒀭');
+    expect(TranslationConsts.VAL).toBe('𒋾');
+
+    await setI18nLocale('en' as any);
+
+    expect(TranslationConsts.AppName).toBe('Polkaswap');
+    expect(TranslationConsts.Sora).toBe('SORA');
+    expect(TranslationConsts.VAL).toBe('VAL');
+  });
 });

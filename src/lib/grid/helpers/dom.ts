@@ -20,6 +20,16 @@ export function getDocumentDir(): DocumentDirection {
   return dir;
 }
 
+/**
+ * Reads the effective CSS direction for a grid element, falling back to the document.
+ */
+export function getElementDir(element?: Element | null): DocumentDirection {
+  if (!element || !hasWindow()) return getDocumentDir();
+
+  const direction = window.getComputedStyle(element).direction;
+  return direction === 'rtl' || direction === 'ltr' ? direction : getDocumentDir();
+}
+
 export function setDocumentDir(dir: DocumentDirection): void {
   if (!hasDocument()) {
     cachedDirection = dir;

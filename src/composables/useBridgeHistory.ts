@@ -31,7 +31,7 @@ export function useBridgeHistory<T extends IBridgeTransaction>(options: UseBridg
   const loadingApi = useLoading({ parentLoading: options.parentLoading });
 
   const networkHistoryId = computed(() => bridgeStore.networkHistoryId as Nullable<BridgeNetworkId>);
-  const history = computed(() => bridgeStore.historyInternal as Record<string, T>);
+  const history = computed(() => bridgeStore.historyRecord as Record<string, T>);
   const networkHistoryLoading = computed(() =>
     Boolean(networkHistoryId.value && bridgeStore.historyLoading[networkHistoryId.value])
   );

@@ -10,12 +10,14 @@ import {
   isNoSpaceLeftError,
   isPermissionError,
   multiaddrToGatewayBaseUrl,
+  pinIpfsCidRecursively,
   publishDirectoryToIpfs,
   resolveGatewayBaseUrlFromRepo,
   resolveLocalGatewayBaseUrl,
   resolveVue3BuildArgs,
   swapEnvConfigForProduction,
   swapEnvConfigForTestnet,
+  verifyRecursiveIpfsPin,
 } from '../../../../scripts/ipfs/publish';
 
 function createFsDeps(files: Record<string, string>) {
@@ -163,6 +165,61 @@ describe('isNoSpaceLeftError', () => {
 });
 
 describe('publishDirectoryToIpfs', () => {
+  it('adds the directory with explicit pinning and verifies the recursive pin', () => {
+    const calls: string[] = [];
+
+    const cid = publishDirectoryToIpfs('/dist', {
+      resolveRepoPath: () => '/home/user/.ipfs',
+      runCommand: (command, args) => {
+        calls.push([command, ...args].join(' '));
+
+        if (command === 'ipfs' && args[0] === 'add') {
+          return { stdout: 'QmPublishedCid\n', stderr: '' };
+        }
+
+        if (command === 'ipfs' && args[0] === 'pin' && args[1] === 'add') {
+          return { stdout: 'pinned QmPublishedCid recursively\n', stderr: '' };
+        }
+
+        if (command === 'ipfs' && args[0] === 'pin' && args[1] === 'ls') {
+          return { stdout: 'QmPublishedCid\n', stderr: '' };
+        }
+
+        throw new Error(`Unexpected command: ${[command, ...args].join(' ')}`);
+      },
+    });
+
+    expect(cid).toBe('QmPublishedCid');
+    expect(calls).toEqual([
+      'ipfs add -Qr --pin=false /dist',
+      'ipfs pin add --recursive=true QmPublishedCid',
+      'ipfs pin ls --type=recursive --quiet QmPublishedCid',
+    ]);
+  });
+
+  it('throws when the returned CID is not recorded as a recursive pin', () => {
+    expect(() =>
+      publishDirectoryToIpfs('/dist', {
+        resolveRepoPath: () => '/home/user/.ipfs',
+        runCommand: (command, args) => {
+          if (command === 'ipfs' && args[0] === 'add') {
+            return { stdout: 'QmUnpinnedCid\n', stderr: '' };
+          }
+
+          if (command === 'ipfs' && args[0] === 'pin' && args[1] === 'add') {
+            return { stdout: 'pinned QmUnpinnedCid recursively\n', stderr: '' };
+          }
+
+          if (command === 'ipfs' && args[0] === 'pin' && args[1] === 'ls') {
+            return { stdout: '', stderr: '' };
+          }
+
+          throw new Error(`Unexpected command: ${[command, ...args].join(' ')}`);
+        },
+      })
+    ).toThrowError(/QmUnpinnedCid was added, but it is not recorded as a recursive local pin/);
+  });
+
   it('runs ipfs repo gc and retries once after a no-space error', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const calls: string[] = [];
@@ -189,12 +246,26 @@ describe('publishDirectoryToIpfs', () => {
           return { stdout: '', stderr: '' };
         }
 
+        if (command === 'ipfs' && args[0] === 'pin' && args[1] === 'add') {
+          return { stdout: 'pinned QmRecoveredCid recursively\n', stderr: '' };
+        }
+
+        if (command === 'ipfs' && args[0] === 'pin' && args[1] === 'ls') {
+          return { stdout: 'QmRecoveredCid\n', stderr: '' };
+        }
+
         throw new Error(`Unexpected command: ${[command, ...args].join(' ')}`);
       },
     });
 
     expect(cid).toBe('QmRecoveredCid');
-    expect(calls).toEqual(['ipfs add -Qr /dist', 'ipfs repo gc', 'ipfs add -Qr /dist']);
+    expect(calls).toEqual([
+      'ipfs add -Qr --pin=false /dist',
+      'ipfs repo gc',
+      'ipfs add -Qr --pin=false /dist',
+      'ipfs pin add --recursive=true QmRecoveredCid',
+      'ipfs pin ls --type=recursive --quiet QmRecoveredCid',
+    ]);
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('IPFS reported no space left on device while publishing /dist.')
     );
@@ -222,6 +293,27 @@ describe('publishDirectoryToIpfs', () => {
     ).toThrowError(/Local IPFS repository ran out of space while publishing \/dist\./);
 
     warnSpy.mockRestore();
+  });
+});
+
+describe('pinIpfsCidRecursively', () => {
+  it('runs an explicit recursive pin command for a CID', () => {
+    const calls: string[] = [];
+
+    pinIpfsCidRecursively('QmPinnedCid', (command, args) => {
+      calls.push([command, ...args].join(' '));
+      return { stdout: 'pinned QmPinnedCid recursively\n', stderr: '' };
+    });
+
+    expect(calls).toEqual(['ipfs pin add --recursive=true QmPinnedCid']);
+  });
+});
+
+describe('verifyRecursiveIpfsPin', () => {
+  it('accepts a matching recursive pin result', () => {
+    expect(() =>
+      verifyRecursiveIpfsPin('QmPinnedCid', () => ({ stdout: 'QmPinnedCid\n', stderr: '' }))
+    ).not.toThrow();
   });
 });
 

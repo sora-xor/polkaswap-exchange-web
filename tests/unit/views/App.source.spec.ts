@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
+import appHeaderSource from '@/components/App/Header/AppHeader.vue?raw';
 import appShellLayoutSource from '@/app/shell/AppShellLayout.vue?raw';
 import appShellSource from '@/app/shell/AppShell.vue?raw';
+import useAppShellSource from '@/app/shell/useAppShell.ts?raw';
 
 describe('App shell source', () => {
   it('wraps the app shell with the wallet notification provider so transaction toasts can render', () => {
@@ -25,6 +27,15 @@ describe('App shell source', () => {
   it('loads dormant shell overlays through an async boundary', () => {
     expect(appShellSource).toContain("const AppShellOverlays = createAsyncComponent(() => import('./AppShellOverlays.vue'));");
     expect(appShellSource).not.toContain("import AppShellOverlays from './AppShellOverlays.vue';");
+  });
+
+  it('keeps RTL locale direction explicit without forcing the shell back to LTR', () => {
+    expect(useAppShellSource).toContain("import { getLocaleDirection } from '@/lang/direction';");
+    expect(useAppShellSource).toContain('const localeDirection = computed(() => getLocaleDirection(settingsStore.language as string));');
+    expect(useAppShellSource).toContain('`locale-${localeDirection.value}`');
+    expect(appShellSource).not.toContain('direction: ltr;');
+    expect(appHeaderSource).toContain("html[dir='rtl']");
+    expect(appHeaderSource).toContain('margin-right: auto !important;');
   });
 
   it('renders the desktop menu logo through the named AppMenu head slot', () => {

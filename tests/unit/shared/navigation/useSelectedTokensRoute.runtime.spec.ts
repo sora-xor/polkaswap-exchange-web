@@ -47,6 +47,7 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
     dex: {
       baseAssetsIds: [mocks.baseAssetAddress, mocks.xstUsdAddress],
+      poolBaseAssetsIds: [mocks.baseAssetAddress, mocks.xstUsdAddress],
     },
   },
 }));
@@ -158,6 +159,31 @@ describe('useSelectedTokensRoute runtime behavior', () => {
     expect(onTokensChange).toHaveBeenCalledWith({
       firstAddress: mocks.baseAssetAddress,
       secondAddress: mocks.quoteAssetAddress,
+    });
+    expect(next).toHaveBeenCalledOnce();
+  });
+
+  it('accepts add-liquidity route updates when the second token resolves to a supported pool base asset', async () => {
+    const onTokensChange = vi.fn();
+    const next = vi.fn();
+
+    mocks.route.name = PageNames.AddLiquidity;
+    mocks.walletStore.assetsDataTable = {
+      [mocks.baseAssetAddress]: { address: mocks.baseAssetAddress, symbol: 'BASE' },
+      [mocks.quoteAssetAddress]: { address: mocks.quoteAssetAddress, symbol: 'QUOTE' },
+    };
+
+    useSelectedTokensRoute(onTokensChange);
+
+    await mocks.routeUpdateHandler?.(
+      { name: PageNames.AddLiquidity, params: { first: 'QUOTE', second: 'BASE' } },
+      {},
+      next
+    );
+
+    expect(onTokensChange).toHaveBeenCalledWith({
+      firstAddress: mocks.quoteAssetAddress,
+      secondAddress: mocks.baseAssetAddress,
     });
     expect(next).toHaveBeenCalledOnce();
   });

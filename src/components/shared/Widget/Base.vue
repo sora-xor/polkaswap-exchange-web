@@ -366,6 +366,22 @@ defineExpose({
     margin-left: unset;
   }
 }
+
+html[dir='rtl'] {
+  .base-widget {
+    .base-widget-filters {
+      order: -3;
+    }
+
+    .base-widget-types {
+      order: -2;
+    }
+
+    .base-widget-pip {
+      order: -1;
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>

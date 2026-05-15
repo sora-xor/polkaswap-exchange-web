@@ -43,9 +43,19 @@ import { computed, ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { useNumberFormatter } from '@/composables/useNumberFormatter';
+import { api } from '@/lib/soraneo-wallet/src/api';
 
 const { t } = useTranslation();
-const { formatStringValue } = useNumberFormatter();
+const { formatStringValue, getCorrectSupply } = useNumberFormatter();
+
+withDefaults(
+  defineProps<{
+    loading?: boolean;
+  }>(),
+  {
+    loading: false,
+  }
+);
 
 const decimals = FPNumber.DEFAULT_PRECISION;
 const delimiters = FPNumber.DELIMITERS_CONFIG;
@@ -57,22 +67,54 @@ const tokenSymbol = ref('');
 const tokenName = ref('');
 const tokenSupply = ref('');
 const extensibleSupply = ref(false);
-const loading = ref(false);
 
+const hasPositiveSupply = computed(() => {
+  try {
+    const supply = new FPNumber(tokenSupply.value || '0', decimals);
+    return supply.isFinity() && FPNumber.gt(supply, FPNumber.ZERO);
+  } catch {
+    return false;
+  }
+});
 const isCreateDisabled = computed(() => {
-  return !(tokenSymbol.value && tokenName.value.trim() && Number(tokenSupply.value));
+  return !(tokenSymbol.value.trim() && tokenName.value.trim() && hasPositiveSupply.value);
 });
 
 const formattedTokenSupply = computed(() => formatStringValue(tokenSupply.value, decimals));
+const buttonTitle = computed(() => {
+  if (!tokenSymbol.value.trim()) return t('createToken.enterSymbol');
+  if (!tokenName.value.trim()) return t('createToken.enterName');
+  if (!hasPositiveSupply.value) return t('createToken.enterSupply');
+  return t('createTokenText');
+});
+
+/** Clears all token form fields when the parent dialog is reopened. */
+const resetForm = () => {
+  tokenSymbol.value = '';
+  tokenName.value = '';
+  tokenSupply.value = '';
+  extensibleSupply.value = false;
+};
+
+/** Registers a simple token asset after normalizing the requested supply. */
+const registerAsset = async (): Promise<void> => {
+  if (isCreateDisabled.value) return;
+
+  tokenSupply.value = getCorrectSupply(tokenSupply.value, decimals);
+  await api.assets.register(tokenSymbol.value.trim(), tokenName.value.trim(), tokenSupply.value, extensibleSupply.value);
+};
 
 defineExpose({
   tokenSymbol,
   tokenName,
   tokenSupply,
   extensibleSupply,
-  loading,
+  hasPositiveSupply,
   isCreateDisabled,
+  buttonTitle,
   formattedTokenSupply,
+  resetForm,
+  registerAsset,
   decimals,
   delimiters,
   maxTotalSupply,

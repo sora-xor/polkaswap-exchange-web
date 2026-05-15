@@ -162,10 +162,16 @@ const pageAmount = 8;
 
 const historyList = computed(() => Object.values(history.value));
 
-const sortTransactions = (transactions: ReadonlyArray<IBridgeTransaction>, ascending = false): IBridgeTransaction[] => {
+/**
+ * Orders bridge history by transaction time while keeping pagination immutable.
+ */
+const sortTransactions = (
+  transactions: ReadonlyArray<IBridgeTransaction>,
+  newestFirst = true
+): IBridgeTransaction[] => {
   return [...transactions].sort((a, b) => {
     if (!a?.startTime || !b?.startTime) return 0;
-    return ascending ? a.startTime - b.startTime : b.startTime - a.startTime;
+    return newestFirst ? b.startTime - a.startTime : a.startTime - b.startTime;
   });
 };
 

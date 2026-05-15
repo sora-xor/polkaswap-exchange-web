@@ -13,6 +13,43 @@ export type BridgePinnedHistoryState = Pick<
   'id' | 'inProgressIds' | 'internal' | 'waitingForApprove'
 >;
 
+const BridgeHistoryIdentityFields = ['id', 'hash', 'txId', 'externalHash'] as const;
+
+/**
+ * Returns stable transaction identifiers that can point to the same bridge row
+ * across locally generated and indexer-restored history entries.
+ */
+const getBridgeHistoryIdentityValues = (transaction: IBridgeTransaction): string[] => {
+  return BridgeHistoryIdentityFields.reduce<string[]>((buffer, field) => {
+    const value = transaction[field];
+
+    if (typeof value === 'string' && value) {
+      buffer.push(value);
+    }
+
+    return buffer;
+  }, []);
+};
+
+/**
+ * Finds the existing canonical history key when a transaction shares any known
+ * bridge identifier with an item already written to the record.
+ */
+const findDuplicateBridgeHistoryKey = (
+  history: Record<string, IBridgeTransaction>,
+  transaction: IBridgeTransaction
+): Nullable<string> => {
+  const identities = new Set(getBridgeHistoryIdentityValues(transaction));
+
+  if (!identities.size) return null;
+
+  const duplicate = Object.entries(history).find(([, item]) => {
+    return getBridgeHistoryIdentityValues(item).some((identity) => identities.has(identity));
+  });
+
+  return duplicate?.[0] ?? null;
+};
+
 /**
  * Resolves bridge transactions by their storage key or chain-level aliases.
  */
@@ -47,6 +84,8 @@ export const findBridgeHistoryTransaction = (
 
 /**
  * Builds the public id-keyed history record consumed by bridge views.
+ * Entries that share chain-level aliases are merged so the same bridge transfer
+ * cannot appear more than once when restored history overlaps local history.
  */
 export const buildBridgeHistoryRecord = (
   history: Record<string, IBridgeTransaction>
@@ -54,7 +93,18 @@ export const buildBridgeHistoryRecord = (
   return Object.values(history).reduce<Record<string, IBridgeTransaction>>((buffer, item) => {
     if (!item?.id) return buffer;
 
-    buffer[item.id] = item;
+    const duplicateKey = findDuplicateBridgeHistoryKey(buffer, item);
+
+    if (!duplicateKey) {
+      buffer[item.id] = item;
+      return buffer;
+    }
+
+    const transaction = { ...buffer[duplicateKey], ...item };
+
+    delete buffer[duplicateKey];
+    buffer[transaction.id] = transaction;
+
     return buffer;
   }, {});
 };

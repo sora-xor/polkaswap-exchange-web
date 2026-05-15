@@ -78,6 +78,7 @@ import { Theme } from '@/consts/theme';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
+import { getSupportedPoolBaseAssetIds } from '@/modules/pool/utils/basePairs';
 import { isSelectableAsset } from '@/components/shared/SelectAsset/utils';
 import { createAsyncComponent } from '@/shared/ui/async';
 import { sortAssets } from '@/utils';
@@ -261,7 +262,7 @@ const nonWhitelistAssets = computed(() => getNonWhitelistDivisibleAssets(assets.
 const nonWhitelistAccountAssets = computed(() => getNonWhitelistDivisibleAssets(accountAssets.value, whitelist.value));
 
 const mainLPSources = computed(() => {
-  const mainSourceAddresses = api.dex.poolBaseAssetsIds;
+  const mainSourceAddresses = getSupportedPoolBaseAssetIds();
   return assets.value.filter((asset) => mainSourceAddresses.includes(asset.address));
 });
 

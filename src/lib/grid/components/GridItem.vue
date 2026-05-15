@@ -16,7 +16,7 @@ import '@interactjs/dev-tools';
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch, type CSSProperties } from 'vue';
 
 import { GRID_EVENT_BUS_KEY, GRID_LAYOUT_KEY, type GridMargin } from '@/lib/grid/context';
-import { getDocumentDir } from '@/lib/grid/helpers/dom';
+import { getElementDir } from '@/lib/grid/helpers/dom';
 import { getControlPosition, createCoreData } from '@/lib/grid/helpers/draggableUtils';
 import { getColsFromBreakpoint } from '@/lib/grid/helpers/responsiveUtils';
 import { setTopLeft, setTopRight, setTransformRtl, setTransform } from '@/lib/grid/helpers/utils';
@@ -187,7 +187,7 @@ export default {
     const lastW = ref<number | null>(null);
     const lastH = ref<number | null>(null);
     const style = ref<CSSProperties>({});
-    const rtl = ref(getDocumentDir() === 'rtl');
+    const rtl = ref(false);
     const dragEventSet = ref(false);
     const resizeEventSet = ref(false);
     const previousW = ref<number | null>(null);
@@ -662,8 +662,9 @@ export default {
         maxRows.value = nextMaxRows;
       }
     };
+    const resolveRtl = (): boolean => getElementDir(itemRef.value) === 'rtl';
     const directionchangeHandler = (): void => {
-      rtl.value = getDocumentDir() === 'rtl';
+      rtl.value = resolveRtl();
       compactItem();
     };
     const setColNumHandler = (colNum?: unknown): void => {
@@ -800,6 +801,8 @@ export default {
     );
 
     onMounted(() => {
+      rtl.value = resolveRtl();
+
       if (layout.responsive.value && layout.lastBreakpoint.value) {
         cols.value = getColsFromBreakpoint(layout.lastBreakpoint.value, layout.cols.value);
       } else {

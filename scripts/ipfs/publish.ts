@@ -423,6 +423,42 @@ function extractCid(result: CommandResult, directory: string): string {
   return cid;
 }
 
+/**
+ * Pins a root CID recursively after importing the directory into the local repo.
+ */
+export function pinIpfsCidRecursively(cid: string, runCommandLike: RunCommandLike = runCommand): void {
+  runCommandLike('ipfs', ['pin', 'add', '--recursive=true', cid], {
+    capture: true,
+  });
+}
+
+/**
+ * Ensures the returned root CID is recorded as a recursive local pin.
+ */
+export function verifyRecursiveIpfsPin(cid: string, runCommandLike: RunCommandLike = runCommand): void {
+  let result: CommandResult;
+
+  try {
+    result = runCommandLike('ipfs', ['pin', 'ls', '--type=recursive', '--quiet', cid], {
+      capture: true,
+      silent: true,
+    });
+  } catch (error) {
+    throw new Error(`IPFS CID ${cid} was added, but it is not recorded as a recursive local pin.`, {
+      cause: error,
+    });
+  }
+
+  const pinnedCids = result.stdout
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (!pinnedCids.includes(cid)) {
+    throw new Error(`IPFS CID ${cid} was added, but it is not recorded as a recursive local pin.`);
+  }
+}
+
 function createNoSpaceRecoveryMessage(directory: string, repoPath: string | null, attemptedGc: boolean): string {
   const retryMessage = attemptedGc
     ? 'The script ran `ipfs repo gc` and retried `ipfs add -Qr` once, but the publish still failed.'
@@ -454,7 +490,10 @@ export function publishDirectoryToIpfs(
   const repoPath = deps.resolveRepoPath?.() ?? resolveIpfsRepoPath();
 
   try {
-    return extractCid(run('ipfs', ['add', '-Qr', directory], { capture: true }), directory);
+    const cid = extractCid(run('ipfs', ['add', '-Qr', '--pin=false', directory], { capture: true }), directory);
+    pinIpfsCidRecursively(cid, run);
+    verifyRecursiveIpfsPin(cid, run);
+    return cid;
   } catch (error) {
     if (!isNoSpaceLeftError(error)) {
       throw error;
@@ -477,7 +516,9 @@ export function publishDirectoryToIpfs(
     }
 
     try {
-      const cid = extractCid(run('ipfs', ['add', '-Qr', directory], { capture: true }), directory);
+      const cid = extractCid(run('ipfs', ['add', '-Qr', '--pin=false', directory], { capture: true }), directory);
+      pinIpfsCidRecursively(cid, run);
+      verifyRecursiveIpfsPin(cid, run);
       console.warn('IPFS publish recovered after `ipfs repo gc`.');
       return cid;
     } catch (retryError) {

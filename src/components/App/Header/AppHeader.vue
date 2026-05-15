@@ -317,6 +317,32 @@ function toggleMenu(): void {
   color: var(--s-color-base-content-secondary);
 }
 
+html[dir='rtl'] {
+  .app-controls {
+    &:not(:last-child),
+    .header > &:not(.app-controls--middle),
+    & > *:not(:last-child),
+    .payment-icon {
+      margin-right: 0;
+      margin-left: $inner-spacing-mini;
+    }
+
+    &.app-controls--middle {
+      @include desktop {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .header > .app-controls:not(.app-controls--middle) {
+    @include desktop {
+      margin-left: 0 !important;
+      margin-right: auto !important;
+    }
+  }
+}
+
 @include large-mobile(true) {
   .app-logo--header.app-logo.el-button {
     display: none !important;

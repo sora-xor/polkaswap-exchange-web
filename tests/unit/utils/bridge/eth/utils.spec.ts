@@ -207,39 +207,40 @@ describe('ETH bridge utils', () => {
         return { unsubscribe };
       },
     });
-    ethBridgeApiMock.getApprovedRequest.mockResolvedValue(request);
+    ethBridgeApiMock.getApprovedRequest.mockResolvedValueOnce(null).mockResolvedValueOnce(request);
 
     await expect(waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any)).resolves.toBe(request);
     expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 
-  it('uses an already-ready outgoing request without waiting for another status emission', async () => {
+  it('uses available outgoing approval data without waiting for another status emission', async () => {
     const request = { hash: '0xhash', from: '0xfrom' };
 
-    ethBridgeApiMock.getRequestStatus.mockResolvedValue(BridgeTxStatus.Ready);
     ethBridgeApiMock.getApprovedRequest.mockResolvedValue(request);
 
     await expect(waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any)).resolves.toBe(request);
+    expect(ethBridgeApiMock.getRequestStatus).not.toHaveBeenCalled();
     expect(ethBridgeApiMock.subscribeOnRequestStatus).not.toHaveBeenCalled();
   });
 
-  it('polls request status when the subscription does not emit approval updates', async () => {
+  it('polls approval data when the subscription does not emit approval updates', async () => {
     vi.useFakeTimers();
     const unsubscribe = vi.fn();
     const request = { hash: '0xhash', from: '0xfrom' };
 
-    ethBridgeApiMock.getRequestStatus.mockResolvedValueOnce(null).mockResolvedValueOnce(BridgeTxStatus.Ready);
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
       subscribe: () => ({ unsubscribe }),
     });
-    ethBridgeApiMock.getApprovedRequest.mockResolvedValue(request);
+    ethBridgeApiMock.getApprovedRequest.mockResolvedValueOnce(null).mockResolvedValueOnce(request);
 
     const promise = waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any);
 
-    await vi.advanceTimersByTimeAsync(6_000);
+    await vi.advanceTimersByTimeAsync(2_000);
 
     await expect(promise).resolves.toBe(request);
-    expect(ethBridgeApiMock.getRequestStatus).toHaveBeenCalledTimes(2);
+    expect(ethBridgeApiMock.getApprovedRequest).toHaveBeenCalledTimes(2);
+    expect(ethBridgeApiMock.getRequestStatus).toHaveBeenCalledTimes(1);
     expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 

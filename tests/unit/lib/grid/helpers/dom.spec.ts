@@ -16,6 +16,20 @@ describe('grid dom helpers', () => {
     expect(dom.getDocumentDir()).toBe('rtl');
   });
 
+  it('reads the effective direction from a grid element before falling back to the document', async () => {
+    const dom = await import('@/lib/grid/helpers/dom');
+    const element = document.createElement('div');
+
+    dom.setDocumentDir('rtl');
+    element.style.direction = 'ltr';
+    document.body.appendChild(element);
+
+    expect(dom.getElementDir(element)).toBe('ltr');
+    expect(dom.getElementDir(null)).toBe('rtl');
+
+    element.remove();
+  });
+
   it('falls back to cached direction and immediate callbacks when document or window are unavailable', async () => {
     vi.stubGlobal('document', undefined);
     vi.stubGlobal('window', undefined);

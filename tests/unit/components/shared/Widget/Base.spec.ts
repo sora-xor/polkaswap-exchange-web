@@ -166,6 +166,13 @@ describe('BaseWidget', () => {
     expect(baseWidgetSource).toMatch(/&-pip \{[\s\S]*display: block;[\s\S]*font-size: 12px;[\s\S]*line-height: 12px;/);
   });
 
+  it('keeps widget header action toolbars on the right edge in RTL', () => {
+    expect(baseWidgetSource).toContain("html[dir='rtl']");
+    expect(baseWidgetSource).toMatch(/\.base-widget-filters \{[\s\S]*order: -3;/);
+    expect(baseWidgetSource).toMatch(/\.base-widget-types \{[\s\S]*order: -2;/);
+    expect(baseWidgetSource).toMatch(/\.base-widget-pip \{[\s\S]*order: -1;/);
+  });
+
   it('hides pip control when disabled', () => {
     const wrapper = mountComponent({ pipDisabled: true }, { default: 'content' });
 
