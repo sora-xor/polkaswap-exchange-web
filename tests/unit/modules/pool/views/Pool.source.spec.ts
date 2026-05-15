@@ -22,4 +22,14 @@ describe('Pool.vue source', () => {
     expect(poolSource).toContain('border-right: 2px solid currentColor;');
     expect(poolSource).toContain('&.is-active');
   });
+
+  it('keeps pool row icons and titles vertically centered at the readable pair-logo size', () => {
+    expect(poolSource).toContain('size="medium"');
+    expect(poolSource).toContain('align-items: center;');
+    expect(poolSource).toContain('align-self: center;');
+    expect(poolSource).toContain('margin-top: 0;');
+    expect(poolSource).toContain('margin: 0;');
+    expect(poolSource).not.toContain('align-items: flex-start;');
+    expect(poolSource).not.toContain('align-self: flex-start;');
+  });
 });

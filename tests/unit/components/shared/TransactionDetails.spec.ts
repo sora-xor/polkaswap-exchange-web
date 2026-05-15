@@ -76,6 +76,35 @@ describe('TransactionDetails', () => {
     expect(wrapper.find('.s-icon-stub').attributes('data-name')).toBe('arrows-chevron-top-24');
   });
 
+  it('toggles inline details in document flow without creating a popover', async () => {
+    const wrapper = mountComponent(
+      { infoOnly: false, inline: true },
+      {
+        reference: '<span class="reference-slot">Network Fee</span>',
+        default: '<p class="details">Content</p>',
+      },
+      { class: 'swap-details' }
+    );
+
+    const trigger = wrapper.find('.transaction-details');
+
+    expect(wrapper.find('.popover-stub').exists()).toBe(false);
+    expect(wrapper.find('.transaction-details-inline').classes()).toContain('swap-details');
+    expect(trigger.attributes('aria-expanded')).toBe('false');
+    expect(wrapper.find('.transaction-details-inline-content').exists()).toBe(false);
+
+    await trigger.trigger('click');
+
+    expect(trigger.attributes('aria-expanded')).toBe('true');
+    expect(wrapper.find('.transaction-details-inline-content .details').text()).toBe('Content');
+    expect(wrapper.find('.s-icon-stub').attributes('data-name')).toBe('arrows-chevron-top-24');
+
+    await trigger.trigger('click');
+
+    expect(trigger.attributes('aria-expanded')).toBe('false');
+    expect(wrapper.find('.transaction-details-inline-content').exists()).toBe(false);
+  });
+
   it('keeps external class on wrapper when rendered through popover branch', () => {
     const wrapper = mountComponent({ infoOnly: false }, undefined, {
       class: 'swap-details',

@@ -9,11 +9,11 @@ import {
 } from '@/utils/indexerEndpoint';
 
 describe('indexer endpoint resolution', () => {
-  it('uses the local Polkaswap indexer for localhost previews with the standard hosted endpoint', () => {
+  it('keeps the configured hosted indexer for localhost previews', () => {
     const endpoint = 'https://pi.soramitsu.io/graphql';
 
-    expect(resolvePolkaswapIndexerEndpoint(endpoint, 'localhost')).toBe(LOCAL_POLKASWAP_INDEXER_ENDPOINT);
-    expect(resolvePolkaswapIndexerEndpoint(`${endpoint}/`, 'localhost')).toBe(LOCAL_POLKASWAP_INDEXER_ENDPOINT);
+    expect(resolvePolkaswapIndexerEndpoint(endpoint, 'localhost')).toBe(endpoint);
+    expect(resolvePolkaswapIndexerEndpoint(` ${endpoint}/ `, 'localhost')).toBe(`${endpoint}/`);
   });
 
   it('uses the local Polkaswap indexer for localhost previews without an explicit endpoint', () => {

@@ -140,7 +140,7 @@ const { t } = useTranslation();
 const { formatStringValue } = useNumberFormatter();
 const { getNetworkIcon, isOutgoingTx, isFailedState, isSuccessState, isWaitingForActionState, formatDatetime } =
   useNetworkFormatter();
-const { loading: parentLoading, withParentLoading } = useLoading();
+const { loading: parentLoading, withLoading } = useLoading();
 const bridgeHistory = useBridgeHistory({ parentLoading });
 const bridgeStore = useBridgeStore();
 usePiniaTelemetry('bridge-history', [{ store: bridgeStore, storeId: 'bridge' }]);
@@ -255,7 +255,7 @@ const handleResetSearch = () => {
 const updateBridgeHistoryAction = () => bridgeStore.updateBridgeHistory();
 
 const fetchNetworkHistory = async () => {
-  await withParentLoading(async () => {
+  await withLoading(async () => {
     await updateBridgeHistoryAction();
     await nextTick();
 
@@ -352,7 +352,7 @@ const handleBack = () => {
 };
 
 const refreshExternalHistory = async (clearHistory = false) => {
-  await withParentLoading(async () => {
+  await withLoading(async () => {
     await updateExternalHistory(clearHistory);
   });
 };

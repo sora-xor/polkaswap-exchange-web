@@ -3,6 +3,7 @@ import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';
+import { getFiatPriceByAddress } from '@/utils/fiatPrice';
 import { FontSizeRate, FontWeightRate } from '../consts';
 
 import { useNumberFormatter } from './useNumberFormatter';
@@ -17,11 +18,7 @@ export function useFormattedAmount() {
   const fiatPriceObject = computed(() => walletStore.fiatPriceObject);
 
   const getAssetFiatPrice = (asset: Asset | AccountAsset): Nullable<CodecString> => {
-    if (!asset?.address) {
-      return null;
-    }
-
-    return fiatPriceObject.value?.[asset.address] ?? null;
+    return getFiatPriceByAddress(fiatPriceObject.value, asset?.address);
   };
 
   const getFiatBalance = (

@@ -175,6 +175,7 @@ import { fetchPoolsData, type PoolData } from '@/indexer/queries/pool/pools';
 import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import { useAssetsStore } from '@/stores/assets';
 import { usePoolStore } from '@/stores/pool';
+import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { AccountLiquidity } from '@sora-substrate/sdk/build/poolXyk/types';
@@ -206,9 +207,15 @@ const loadingState = computed(() => loading.value || parentLoading.value);
 
 const assetsStore = useAssetsStore();
 const poolStore = usePoolStore();
+const settingsStore = useSettingsStore();
 const walletStore = useWalletStore();
 const whitelistAssets = computed(() => assetsStore.whitelistAssets ?? []);
 const allowedAssets = computed(() => (whitelistAssets.value.length ? whitelistAssets.value : KnownAssets));
+const indexerEndpoint = computed(() => {
+  const type = settingsStore.indexerType;
+
+  return type ? (settingsStore.indexers?.[type]?.endpoint ?? '') : '';
+});
 
 const getAsset = (address?: string) => assetsStore.assetDataByAddress(address);
 const accountLiquidity = computed<readonly AccountLiquidity[]>(() => poolStore.accountLiquidity ?? []);
@@ -273,6 +280,12 @@ watch(
   },
   { immediate: true }
 );
+
+watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  updateExploreData();
+});
 </script>
 
 <style lang="scss">

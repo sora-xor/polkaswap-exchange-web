@@ -87,9 +87,9 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
         await walletStore.beforeTransactionSign(api);
         const time = Date.now();
         await handler();
+        notification.showAppNotification(t('transactionSubmittedText'), 'info');
         const tx = await getLastTransaction(time);
         addActiveTransaction(tx.id as string);
-        notification.showAppNotification(t('transactionSubmittedText'));
       });
     });
   };

@@ -447,7 +447,7 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  min-height: 60px;
   padding: 10px 0;
   border-bottom: 1px solid var(--s-color-base-border-secondary);
 
@@ -456,12 +456,8 @@ defineExpose({
   }
 }
 
-.avatar,
-.name {
-  height: 100%;
-}
-
 .avatar {
+  flex: 0 0 36px;
   margin-right: 10px;
 
   .check {

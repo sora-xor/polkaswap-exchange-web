@@ -37,21 +37,33 @@
       </div>
 
       <div
-        v-for="{ value, formatted, placeholder, tooltip, links } in accountLinks"
+        v-for="{ value, formatted, placeholder, tooltip, links, direction, ariaLabel } in accountLinks"
         class="transaction-hash-container transaction-hash-container--with-dropdown"
         :key="value"
       >
-        <s-input class="transaction-address" :placeholder="placeholder" :value="formatted" readonly></s-input>
-        <s-button
-          class="s-button--hash-copy"
-          type="action"
-          alternative
-          icon="basic-copy-24"
-          :tooltip="tooltip"
-          :aria-label="tooltip"
-          @click="handleCopyAddress(value, $event)"
-        ></s-button>
-        <links-dropdown v-if="links.length" :links="links"></links-dropdown>
+        <div class="transaction-address-label">
+          <span class="transaction-address-label__direction">{{ direction }}:</span>
+          <span class="transaction-address-label__network">{{ placeholder }}</span>
+        </div>
+        <div class="transaction-address-control">
+          <s-input
+            class="transaction-address"
+            :aria-label="ariaLabel"
+            :placeholder="placeholder"
+            :value="formatted"
+            readonly
+          ></s-input>
+          <s-button
+            class="s-button--hash-copy"
+            type="action"
+            alternative
+            icon="basic-copy-24"
+            :tooltip="tooltip"
+            :aria-label="tooltip"
+            @click="handleCopyAddress(value, $event)"
+          ></s-button>
+          <links-dropdown v-if="links.length" :links="links"></links-dropdown>
+        </div>
       </div>
 
       <info-line
@@ -112,17 +124,19 @@
         class="transaction-hash-container transaction-hash-container--with-dropdown"
         :key="value"
       >
-        <s-input class="transaction-address" :placeholder="placeholder" :value="formatted" readonly></s-input>
-        <s-button
-          class="s-button--hash-copy"
-          type="action"
-          alternative
-          icon="basic-copy-24"
-          :tooltip="tooltip"
-          :aria-label="tooltip"
-          @click="handleCopyAddress(value, $event)"
-        ></s-button>
-        <links-dropdown v-if="links.length" :links="links"></links-dropdown>
+        <div class="transaction-address-control">
+          <s-input class="transaction-address" :placeholder="placeholder" :value="formatted" readonly></s-input>
+          <s-button
+            class="s-button--hash-copy"
+            type="action"
+            alternative
+            icon="basic-copy-24"
+            :tooltip="tooltip"
+            :aria-label="tooltip"
+            @click="handleCopyAddress(value, $event)"
+          ></s-button>
+          <links-dropdown v-if="links.length" :links="links"></links-dropdown>
+        </div>
       </div>
 
       <template v-if="!txIsFinilized">
@@ -196,6 +210,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
 import { type ExplorerLink, PageNames, ZeroStringValue } from '@/consts';
 import { resolveBridgeBackLocation } from '@/features/bridge/services/navigationHistory';
+import { buildBridgeAddressAriaLabel } from '@/features/bridge/pages/bridgeTransactionPage.utils';
 import { useBridgeStore } from '@/stores/bridge';
 import {
   formatAddress,
@@ -226,6 +241,11 @@ type LinkData = {
   placeholder: string;
   tooltip: string;
   links: Array<ExplorerLink>;
+};
+
+type AddressLinkData = LinkData & {
+  direction: string;
+  ariaLabel: string;
 };
 
 defineOptions({
@@ -506,7 +526,13 @@ const accountLinks = computed(() => {
     bridgeTransaction.externalNetworkId.value
   );
 
-  return sortLinksByTxDirection([internal, external]);
+  const source = bridgeTransaction.isOutgoing.value ? internal : external;
+  const destination = bridgeTransaction.isOutgoing.value ? external : internal;
+
+  return [
+    withAddressDirection(source, t('transaction.from')),
+    withAddressDirection(destination, t('transaction.to')),
+  ].filter(Boolean) as AddressLinkData[];
 });
 
 const transactionLinks = computed(() => {
@@ -527,6 +553,17 @@ const transactionLinks = computed(() => {
 function sortLinksByTxDirection(outgoingOrderedLinks: Array<LinkData | null>): LinkData[] {
   const links = outgoingOrderedLinks.filter(Boolean) as LinkData[];
   return bridgeTransaction.isOutgoing.value ? links : [...links].reverse();
+}
+
+/** Attaches explicit FROM/TO context to an address row while preserving its network label. */
+function withAddressDirection(link: LinkData | null, direction: string): AddressLinkData | null {
+  if (!link) return null;
+
+  return {
+    ...link,
+    direction,
+    ariaLabel: buildBridgeAddressAriaLabel(direction, link.placeholder),
+  };
 }
 
 function getLinkData(
@@ -679,6 +716,32 @@ $header-font-size: var(--s-heading3-font-size);
     --transaction-address-action-inset: #{$inner-spacing-mini};
     --transaction-address-action-size: var(--s-size-small);
 
+    .transaction-address-label {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(#{$inner-spacing-mini} / 2);
+      align-items: baseline;
+      margin: 0 0 $inner-spacing-mini $inner-spacing-tiny;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-mini);
+      letter-spacing: 0;
+      text-transform: uppercase;
+
+      &__direction {
+        color: var(--s-color-base-content-primary);
+        font-weight: 700;
+      }
+
+      &__network {
+        font-weight: 600;
+      }
+    }
+
+    .transaction-address-control {
+      position: relative;
+    }
+
     .transaction-address.s-input {
       background-color: var(--s-color-utility-body);
       border-radius: var(--s-border-radius-small);
@@ -785,8 +848,6 @@ $network-title-max-width: 250px;
   }
 
   &-hash-container {
-    position: relative;
-
     .s-button--hash-copy {
       position: absolute;
       z-index: $app-content-layer;

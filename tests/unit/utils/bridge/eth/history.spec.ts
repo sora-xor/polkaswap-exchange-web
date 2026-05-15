@@ -331,6 +331,52 @@ describe('EthBridgeHistory', () => {
     expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 22);
   });
 
+  it('reconciles from the beginning once when incremental ETH history may have skipped older outgoing rows', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const olderMissing = createOutgoingHistoryElementWithoutRequestHash('older-missing', 10);
+    const newerIncremental = createOutgoingHistoryElementWithoutRequestHash('newer-incremental', 40);
+
+    ethBridgeApiMock.state.storage.ethBridgeHistorySyncTimestamp = '30';
+    (history as any).externalNetwork = 1;
+    vi.spyOn(history, 'findEthTxBySoraHash').mockResolvedValue(null);
+    getHistoryPagedMock.mockImplementation(async ({ filter }) => {
+      const operation = filter.operations?.[0];
+      const nodes =
+        operation !== Operation.EthBridgeOutgoing
+          ? []
+          : filter.timestamp === 30
+            ? [newerIncremental]
+            : [newerIncremental, olderMissing];
+
+      return {
+        edges: nodes.map((node) => ({ node })),
+        pageInfo: { hasNextPage: false, endCursor: '' },
+      };
+    });
+
+    await history.updateAccountHistory(
+      'sora-address',
+      { [Operation.EthBridgeOutgoing]: '0' } as any,
+      {},
+      () => ({ ...XOR, decimals: 18 } as any)
+    );
+
+    expect(getHistoryPagedMock).toHaveBeenCalledWith(
+      expect.objectContaining({ filter: expect.objectContaining({ timestamp: 30 }) })
+    );
+    expect(getHistoryPagedMock).toHaveBeenCalledWith(
+      expect.objectContaining({ filter: expect.objectContaining({ timestamp: 0 }) })
+    );
+    expect(ethBridgeApiMock.generateHistoryItem).toHaveBeenCalledWith(
+      expect.objectContaining({ txId: 'newer-incremental' })
+    );
+    expect(ethBridgeApiMock.generateHistoryItem).toHaveBeenCalledWith(
+      expect.objectContaining({ txId: 'older-missing' })
+    );
+    expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 40);
+    expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistoryFullSyncTimestamp', 40);
+  });
+
   it('restores outgoing ETH rows that no longer include an indexer requestHash field', async () => {
     const history = new EthBridgeHistory('etherscan-key');
     const outgoing = createOutgoingHistoryElementWithoutRequestHash('outgoing-no-request-hash', 22);

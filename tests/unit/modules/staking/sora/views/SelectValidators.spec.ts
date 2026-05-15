@@ -253,6 +253,22 @@ describe('SelectValidators.vue', () => {
     expect(vm.confirmDisabled).toBe(false);
   });
 
+  it('keeps the validators list visible while parent subscriptions refresh existing validators', async () => {
+    const wrapper = mountComponent({ parentLoading: true });
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as {
+      containerLoading: boolean;
+    };
+
+    expect(vm.containerLoading).toBe(false);
+
+    validatorsRef.value = [];
+    await flushPromises();
+
+    expect(vm.containerLoading).toBe(true);
+  });
+
   it('opens the stake dialog and navigates on confirm', async () => {
     selectedValidatorsRef.value = [makeValidator('A')];
     const wrapper = mountComponent({ parentLoading: true });

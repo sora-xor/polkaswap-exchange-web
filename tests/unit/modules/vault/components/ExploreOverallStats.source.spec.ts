@@ -19,4 +19,16 @@ describe('ExploreOverallStats source styles', () => {
     expect(exploreOverallStatsSource).toContain(':deep(.el-card__body) {');
     expect(exploreOverallStatsSource).toContain('padding: 0;');
   });
+
+  it('uses Kensetsu fiat fallback for summary totals while prices hydrate', () => {
+    expect(exploreOverallStatsSource).toContain("import { getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';");
+    expect(exploreOverallStatsSource).toContain(
+      'const fiatDebt = getKensetsuFiatAmount(debtSupply, debtAsset, getFPNumberFiatAmountByFPNumber);'
+    );
+    expect(exploreOverallStatsSource).toContain(
+      'const value = getKensetsuFiatAmount(info.badDebt, debtAsset, getFPNumberFiatAmountByFPNumber);'
+    );
+    expect(exploreOverallStatsSource).toContain('const available = hardCap.sub(debtSupply);');
+    expect(exploreOverallStatsSource).toContain('if (available.isGtZero()) {');
+  });
 });

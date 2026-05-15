@@ -168,7 +168,8 @@ const mountPoolView = () =>
           template: '<div class="header-stub" />',
         },
         'pair-token-logo': {
-          template: '<div class="pair-logo-stub" />',
+          props: ['size'],
+          template: '<div class="pair-logo-stub" :data-size="size" />',
         },
         'add-liquidity-dialog': {
           template: '<div class="add-dialog-stub" />',
@@ -243,6 +244,27 @@ describe('Pool.vue', () => {
     expect(wrapper.find('.pool-info-container--empty').exists()).toBe(true);
     expect(wrapper.text()).toContain('pool.liquidityNotFound');
     expect(wrapper.find('[data-test-name="addLiquidity"]').text()).toContain('pool.addLiquidity');
+  });
+
+  it('renders pool row pair icons with the larger readable size', async () => {
+    loginState.value = true;
+    poolStoreMock.accountLiquidity = [
+      {
+        address: 'pool-addr-1',
+        firstAddress: 'addr-1',
+        secondAddress: 'addr-2',
+        firstBalance: '1000000000000000000',
+        secondBalance: '2000000000000000000',
+        poolShare: '12.5',
+        decimals: 18,
+        decimals2: 18,
+      },
+    ];
+
+    const wrapper = mountPoolView();
+    await flushPromises();
+
+    expect(wrapper.find('.pair-logo-stub').attributes('data-size')).toBe('medium');
   });
 
   it('triggers add and remove actions for existing liquidity', async () => {

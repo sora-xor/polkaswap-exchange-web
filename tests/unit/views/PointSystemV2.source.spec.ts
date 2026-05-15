@@ -12,8 +12,13 @@ describe('PointSystemV2 page styles', () => {
 
     expect(source).not.toContain('box-shadow: unset !important;');
     expect(source).not.toContain('background-color: unset;');
+    expect(source).not.toContain('background-size: 100% 214px;');
+    expect(source).not.toContain('background-size: 100% 196px;');
     expect(source).toContain('.points.s-card {');
     expect(source).toContain('background-color: var(--s-color-base-background);');
+    expect(source).toContain('background-position: top right;');
+    expect(source).toContain('background-size: auto 214px;');
+    expect(source).toContain('background-size: auto 196px;');
   });
 
   it('keeps points tab overrides scoped to the points tabs instance', async () => {

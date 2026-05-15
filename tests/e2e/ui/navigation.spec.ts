@@ -1390,13 +1390,13 @@ test('keeps mobile sidebar within viewport width on extra narrow screens', async
   expect(consoleErrors).toEqual([]);
 });
 
-test('keeps transaction details popover within viewport on narrow screens', async ({ page }) => {
+test('keeps inline transaction details within viewport on narrow screens', async ({ page }) => {
   const consoleErrors = trackConsole(page);
   await page.setViewportSize({ width: 320, height: 640 });
   await openSwap(page);
 
   const detailsTrigger = page.locator('.transaction-details').first();
-  const detailsPopper = page.locator('.transaction-details-popper');
+  const inlineDetails = page.locator('.transaction-details-inline-content');
 
   if ((await detailsTrigger.count()) === 0) {
     expect(consoleErrors).toEqual([]);
@@ -1404,19 +1404,20 @@ test('keeps transaction details popover within viewport on narrow screens', asyn
   }
 
   await detailsTrigger.click();
-  await expect(detailsPopper).toHaveCount(1);
+  await expect(inlineDetails).toHaveCount(1);
+  await expect(page.locator('.transaction-details-popper')).toHaveCount(0);
   await expectNoHorizontalOverflow(page);
 
   expect(consoleErrors).toEqual([]);
 });
 
-test('keeps transaction details popover within viewport on extra narrow screens', async ({ page }) => {
+test('keeps inline transaction details within viewport on extra narrow screens', async ({ page }) => {
   const consoleErrors = trackConsole(page);
   await page.setViewportSize({ width: 280, height: 640 });
   await openSwap(page);
 
   const detailsTrigger = page.locator('.transaction-details').first();
-  const detailsPopper = page.locator('.transaction-details-popper');
+  const inlineDetails = page.locator('.transaction-details-inline-content');
 
   if ((await detailsTrigger.count()) === 0) {
     expect(consoleErrors).toEqual([]);
@@ -1424,9 +1425,10 @@ test('keeps transaction details popover within viewport on extra narrow screens'
   }
 
   await detailsTrigger.click();
-  await expect(detailsPopper).toHaveCount(1);
+  await expect(inlineDetails).toHaveCount(1);
+  await expect(page.locator('.transaction-details-popper')).toHaveCount(0);
   await expectNoHorizontalOverflow(page);
-  await expectLocatorWithinViewport(page, '.transaction-details-popper');
+  await expectLocatorWithinViewport(page, '.transaction-details-inline-content');
 
   expect(consoleErrors).toEqual([]);
 });

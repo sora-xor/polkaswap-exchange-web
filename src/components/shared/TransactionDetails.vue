@@ -2,6 +2,24 @@
   <div v-if="infoOnly" v-bind="attrs">
     <slot></slot>
   </div>
+  <div v-else-if="inline" class="transaction-details-inline" v-bind="attrs">
+    <div
+      :class="['transaction-details', { visible, disabled }]"
+      :aria-expanded="String(visible)"
+      v-button
+      @click="toggleInlineVisibility"
+    >
+      <slot name="reference">
+        <span>{{ t('transactionDetailsText') }}</span>
+      </slot>
+      <s-icon :name="icon" size="16px" class="transaction-details-icon"></s-icon>
+    </div>
+    <transition name="transaction-details-inline">
+      <div v-if="visible" class="transaction-details-inline-content">
+        <slot></slot>
+      </div>
+    </transition>
+  </div>
   <span v-else v-bind="attrs">
     <s-popover-panel
       v-model:show="visible"
@@ -28,14 +46,21 @@ import { computed, ref, useAttrs, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
+type Props = {
+  /** Renders the details content directly without a disclosure trigger. */
+  infoOnly?: boolean;
+  /** Applies disabled styling and closes currently open details when set. */
+  disabled?: boolean;
+  /** Renders details in normal document flow so parent widgets expand instead of showing an overlay. */
+  inline?: boolean;
+};
+
 const props = withDefaults(
-  defineProps<{
-    infoOnly?: boolean;
-    disabled?: boolean;
-  }>(),
+  defineProps<Props>(),
   {
     infoOnly: true,
     disabled: false,
+    inline: false,
   }
 );
 
@@ -55,6 +80,10 @@ watch(
 const icon = computed(() => (visible.value ? 'arrows-chevron-top-24' : 'arrows-chevron-bottom-24'));
 
 const { t } = useTranslation();
+
+const toggleInlineVisibility = (): void => {
+  visible.value = !visible.value;
+};
 
 defineExpose({
   visible,
@@ -102,6 +131,30 @@ defineExpose({
 
   &-icon {
     @include icon-styles;
+  }
+}
+
+.transaction-details-inline {
+  width: 100%;
+
+  &-content {
+    @include popper-content;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: $inner-spacing-small;
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition:
+      opacity 0.12s ease,
+      transform 0.12s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-4px);
   }
 }
 </style>

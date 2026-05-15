@@ -353,8 +353,8 @@ $points-card-min-width: 258px;
   }
   background-image: url('@/assets/img/points/header.png');
   background-repeat: no-repeat;
-  background-position: top center;
-  background-size: 100% 214px;
+  background-position: top right;
+  background-size: auto 214px;
   background-color: var(--s-color-base-background);
   border: 1px solid rgba(255, 255, 255, 0.06);
   width: 100%;
@@ -507,7 +507,7 @@ $points-card-min-width: 258px;
   }
 
   @include mobile(true) {
-    background-size: 100% 196px;
+    background-size: auto 196px;
 
     &__main {
       padding: 0 $inner-spacing-small $inner-spacing-small;

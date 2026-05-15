@@ -255,6 +255,11 @@ const settingsStore = useSettingsStore();
 
 const loadingState = computed(() => parentLoading.value || loading.value);
 const tokensData = ref<Record<string, TokenData>>({});
+const indexerEndpoint = computed(() => {
+  const type = settingsStore.indexerType;
+
+  return type ? (settingsStore.indexers?.[type]?.endpoint ?? '') : '';
+});
 const velocityFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2,
   minimumFractionDigits: 0,
@@ -374,6 +379,12 @@ watch(
   },
   { immediate: true }
 );
+
+watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  void updateExploreData();
+});
 </script>
 
 <style lang="scss">

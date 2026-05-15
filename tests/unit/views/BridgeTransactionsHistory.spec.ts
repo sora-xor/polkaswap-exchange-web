@@ -37,10 +37,13 @@ type RegisteredAsset = {
 
 const shared = (() => {
   const parentLoading = ref(false);
-  const withParentLoadingMock = vi.fn(async (cb: () => Promise<void> | void) => {
+  const withLoadingMock = vi.fn(async (cb: () => Promise<void> | void) => {
     parentLoading.value = true;
-    await cb();
-    parentLoading.value = false;
+    try {
+      await cb();
+    } finally {
+      parentLoading.value = false;
+    }
   });
 
   const historyRef = ref<Record<string, any>>({});
@@ -76,7 +79,7 @@ const shared = (() => {
 
   return {
     parentLoading,
-    withParentLoadingMock,
+    withLoadingMock,
     historyRef,
     networkHistoryLoading,
     updateExternalHistoryMock,
@@ -117,7 +120,7 @@ beforeAll(async () => {
   vi.doMock('@/composables/useLoading', () => ({
     useLoading: () => ({
       loading: shared.parentLoading,
-      withParentLoading: shared.withParentLoadingMock,
+      withLoading: shared.withLoadingMock,
     }),
   }));
   vi.doMock('@/composables/useBridgeHistory', () => ({
@@ -236,7 +239,7 @@ const resetEnvironment = () => {
 
   shared.bridgeStoreMock.updateBridgeHistory.mockClear();
   shared.updateExternalHistoryMock.mockClear();
-  shared.withParentLoadingMock.mockClear();
+  shared.withLoadingMock.mockClear();
   shared.navigateToBridgeMock.mockClear();
   shared.setHistoryPageMock.mockClear();
   shared.showHistoryMock.mockClear();
@@ -301,11 +304,25 @@ describe('BridgeTransactionsHistory.vue', () => {
     setHistoryItems([createHistoryItem('tx-1')]);
 
     const wrapper = await mountHistoryView();
+    let resolveRefresh!: () => void;
+    shared.updateExternalHistoryMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveRefresh = resolve;
+        })
+    );
 
-    await wrapper.vm.refreshExternalHistory(true);
+    const refreshPromise = wrapper.vm.refreshExternalHistory(true);
+
+    await nextTick();
+
+    expect(shared.parentLoading.value).toBe(true);
+
+    resolveRefresh();
+    await refreshPromise;
 
     expect(shared.updateExternalHistoryMock).toHaveBeenCalledWith(true);
-    expect(shared.withParentLoadingMock).toHaveBeenCalled();
+    expect(shared.withLoadingMock).toHaveBeenCalled();
     expect(shared.parentLoading.value).toBe(false);
 
     wrapper.unmount();

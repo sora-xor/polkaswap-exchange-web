@@ -1,5 +1,7 @@
+import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
+import { SInput } from '@/lib/soramitsu-ui/components/Input';
 import { mountSetup } from '@stubs/mountSetup';
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
@@ -25,6 +27,34 @@ vi.mock('@/lib/soraneo-wallet/src/util/account', () => ({
 import AddressBookInput from '@/lib/soraneo-wallet/src/components/AddressBook/Input.vue';
 
 describe('Wallet AddressBookInput', () => {
+  it('applies the wallet input surface class while preserving parent classes', () => {
+    const wrapper = mount(AddressBookInput, {
+      props: {
+        modelValue: '',
+        value: '',
+        isValid: false,
+      },
+      attrs: {
+        class: 'wallet-send-address',
+      },
+      global: {
+        components: {
+          's-input': SInput,
+        },
+        stubs: {
+          AddressBookContact: true,
+          AddressBookList: true,
+          WalletAccount: true,
+        },
+      },
+    });
+
+    const inputRoot = wrapper.find('.s-input.address-input__field');
+
+    expect(inputRoot.exists()).toBe(true);
+    expect(inputRoot.classes()).toContain('wallet-send-address');
+  });
+
   it('trims the emitted address from the computed proxy setter', () => {
     const emit = vi.fn();
     const { state } = mountSetup(

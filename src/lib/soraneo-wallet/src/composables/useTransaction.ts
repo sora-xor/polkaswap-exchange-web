@@ -83,9 +83,9 @@ export function useTransaction() {
 
         const time = Date.now();
         await func();
+        notification.showAppNotification(t('transactionSubmittedText'), 'info');
         const tx = await getLastTransaction(time);
         addActiveTransaction(tx.id as string);
-        notification.showAppNotification(t('transactionSubmittedText'));
       });
     });
   };

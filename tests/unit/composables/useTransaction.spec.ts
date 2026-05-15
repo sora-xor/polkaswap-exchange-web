@@ -35,6 +35,7 @@ vi.mock('@/composables/useTranslation', () => ({
 
 type HistoryEntry = { id: string; startTime: string };
 const historyList = vi.hoisted(() => [] as HistoryEntry[]);
+const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
 
 vi.mock('@tests/stubs/walletRuntime', () => ({
   api: {
@@ -51,7 +52,7 @@ vi.mock('@/lib/soraneo-wallet/src/util', async () => {
   return {
     __esModule: true,
     ...actual,
-    delay: vi.fn(async () => undefined),
+    delay: delayMock,
   };
 });
 
@@ -73,6 +74,7 @@ vi.mock('@/stores/wallet', () => ({
 describe('useTransaction', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    delayMock.mockResolvedValue(undefined);
     (api.historyList as Array<{ id: string; startTime: string }>).length = 0;
     getOperationMessage.mockClear();
   });
@@ -91,7 +93,37 @@ describe('useTransaction', () => {
     expect(withAppNotification).toHaveBeenCalledTimes(1);
     expect(beforeTransactionSign).toHaveBeenCalledWith(api);
     expect(addActiveTx).toHaveBeenCalledWith('tx-1');
-    expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText');
+    expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+  });
+
+  it('shows submitted notification before waiting for wallet history', async () => {
+    let resolveDelay: () => void = () => undefined;
+    delayMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveDelay = resolve;
+        })
+    );
+
+    const { withNotifications } = useTransaction();
+    const promise = withNotifications(vi.fn(async () => undefined));
+
+    for (let i = 0; i < 5 && !delayMock.mock.calls.length; i += 1) {
+      await Promise.resolve();
+    }
+
+    expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+    expect(addActiveTx).not.toHaveBeenCalled();
+
+    (api.historyList as Array<{ id: string; startTime: string }>).push({
+      id: 'tx-delayed',
+      startTime: String(Date.now() + 5),
+    });
+    resolveDelay();
+
+    await promise;
+
+    expect(addActiveTx).toHaveBeenCalledWith('tx-delayed');
   });
 
   it('shows error notification for failed transactions', () => {

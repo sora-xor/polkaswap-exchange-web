@@ -195,7 +195,6 @@
 </template>
 
 <script lang="ts" setup>
-import { FPNumber } from '@sora-substrate/math';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { SortDirection } from '@soramitsu-ui/ui/types';
@@ -210,6 +209,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useVaultStore } from '@/stores/vault';
 import { useWalletStore } from '@/stores/wallet';
 import { isAmountValueIntegerOnly } from '@/utils';
+import { getKensetsuAmountSortValue, getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral } from '@sora-substrate/sdk/build/kensetsu/types';
@@ -242,8 +242,6 @@ const TokenLogo = WalletComponentTokenLogo;
 const FormattedAmount = WalletComponentFormattedAmount;
 const HistoryPagination = WalletComponentHistoryPagination;
 const SearchInput = WalletComponentSearchInput;
-
-const ZERO = FPNumber.ZERO;
 
 const props = defineProps<{
   exploreQuery: string;
@@ -295,26 +293,34 @@ const prefilteredItems = computed<TableItem[]>(() =>
     const maxLtv = formatPercent(maxLtvValue);
 
     const totalLocked = collateral.totalLocked.toLocaleString(2);
-    const totalLockedFiatFp = getFPNumberFiatAmountByFPNumber(collateral.totalLocked, lockedAsset) ?? ZERO;
-    const totalLockedValue = totalLockedFiatFp.toNumber();
-    const totalLockedFiat = totalLockedFiatFp.toLocaleString(2);
+    const totalLockedFiatFp = getKensetsuFiatAmount(
+      collateral.totalLocked,
+      lockedAsset,
+      getFPNumberFiatAmountByFPNumber
+    );
+    const totalLockedValue = getKensetsuAmountSortValue(collateral.totalLocked, totalLockedFiatFp);
+    const totalLockedFiat = totalLockedFiatFp?.toLocaleString(2);
 
     const totalDebt = collateral.debtSupply.toLocaleString(2);
-    const totalDebtFiatFp = getFPNumberFiatAmountByFPNumber(collateral.debtSupply, debtAsset) ?? ZERO;
-    const totalDebtValue = totalDebtFiatFp.toNumber();
-    const totalDebtFiat = totalDebtFiatFp.toLocaleString(2);
+    const totalDebtFiatFp = getKensetsuFiatAmount(collateral.debtSupply, debtAsset, getFPNumberFiatAmountByFPNumber);
+    const totalDebtValue = getKensetsuAmountSortValue(collateral.debtSupply, totalDebtFiatFp);
+    const totalDebtFiat = totalDebtFiatFp?.toLocaleString(2);
 
     let availableToBorrowValue = 0;
     let availableToBorrow = '0';
-    let availableToBorrowFiat: Nullable<string> = '0';
+    let availableToBorrowFiat: Nullable<string> = null;
     let isAvailable = false;
     const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.debtSupply).dp(2);
     if (availableToBorrowFp.isGtZero()) {
       isAvailable = true;
       availableToBorrow = availableToBorrowFp.toLocaleString(2);
-      const availableToBorrowFiatFp = getFPNumberFiatAmountByFPNumber(availableToBorrowFp, debtAsset) ?? ZERO;
-      availableToBorrowValue = availableToBorrowFiatFp.toNumber();
-      availableToBorrowFiat = availableToBorrowFiatFp.toLocaleString(2);
+      const availableToBorrowFiatFp = getKensetsuFiatAmount(
+        availableToBorrowFp,
+        debtAsset,
+        getFPNumberFiatAmountByFPNumber
+      );
+      availableToBorrowValue = getKensetsuAmountSortValue(availableToBorrowFp, availableToBorrowFiatFp);
+      availableToBorrowFiat = availableToBorrowFiatFp?.toLocaleString(2);
     }
 
     acc.push({

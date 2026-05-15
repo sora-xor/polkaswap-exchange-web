@@ -214,16 +214,19 @@ beforeEach(async () => {
 describe('BurnDialog (pages)', () => {
   const validNexusRecipient = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃaﾘﾒﾓQﾗrﾒoﾘﾅnｳﾘbQｳQJﾆLJ5HSE';
 
-  it('keeps dedicated burn dialog hooks for the neumorphic UI treatment', () => {
+  it('keeps dedicated burn dialog hooks aligned with the app dialog treatment', () => {
     expect(burnDialogSource).toContain('custom-class="dialog--confirm-burn"');
     expect(burnDialogSource).toContain('class="burn-dialog__amount-fields"');
     expect(burnDialogSource).toContain('handleBurnedInputField');
     expect(burnDialogSource).toContain('class="burn-dialog__metrics"');
     expect(burnDialogSource).toContain('class="burn-dialog__submit s-typography-button--large"');
     expect(burnDialogSource).toContain('.dialog-card.dialog--confirm-burn');
-    expect(burnDialogSource).toContain('--burn-highlight');
-    expect(burnDialogSource).toContain('box-shadow:');
-    expect(burnDialogSource).toContain('inset');
+    expect(burnDialogSource).toContain('--burn-warning-background');
+    expect(burnDialogSource).toContain('background: var(--s-color-utility-surface);');
+    expect(burnDialogSource).toContain('box-shadow: var(--s-shadow-dialog);');
+    expect(burnDialogSource).toContain('.burn-dialog__submit.el-button .s-button__text');
+    expect(burnDialogSource).not.toContain('--burn-highlight');
+    expect(burnDialogSource).not.toContain('linear-gradient');
   });
 
   it('keeps the SORA v3 XOR and reserved token inputs synchronized with the fixed rate', async () => {

@@ -24,6 +24,7 @@
     <s-input
       v-else
       v-model="address"
+      class="address-input__field"
       v-bind="{
         maxlength: 128,
         disabled,
@@ -327,6 +328,41 @@ export default {
 .address-input {
   .new-address {
     margin-top: $basic-spacing;
+  }
+
+  :deep(.address-input__field.s-input) {
+    display: flex;
+    position: relative;
+    min-height: var(--s-size-big);
+    padding: 8px 16px;
+    border: 0 solid var(--s-color-base-border-primary);
+    border-radius: var(--s-border-radius-small);
+    background-color: var(--s-color-base-background);
+    box-shadow: var(--s-shadow-element);
+
+    @include focus-outline($focusWithin: true, $withOffset: true);
+  }
+
+  :deep(.address-input__field .s-input__content) {
+    width: 100%;
+    min-height: calc(var(--s-size-big) - 16px);
+    padding: 0;
+    gap: var(--s-basic-spacing);
+  }
+
+  :deep(.address-input__field .s-input__input) {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  :deep(.address-input__field .el-input__inner) {
+    color: var(--s-color-base-content-primary);
+    font-size: var(--s-font-size-small);
+    line-height: var(--s-line-height-base);
+  }
+
+  :deep(.address-input__field .el-input__inner::placeholder) {
+    color: var(--s-color-base-content-tertiary);
   }
 }
 

@@ -109,7 +109,7 @@
         </template>
       </s-button>
 
-      <swap-transaction-details :disabled="!areTokensSelected || hasZeroAmount" class="swap-details">
+      <swap-transaction-details :disabled="!areTokensSelected || hasZeroAmount" inline class="swap-details">
         <template #reference>
           <info-line
             :label="t('networkFeeText')"

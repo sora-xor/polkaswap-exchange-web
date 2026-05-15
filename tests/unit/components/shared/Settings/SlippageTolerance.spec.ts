@@ -156,13 +156,13 @@ describe('SlippageTolerance', () => {
     expect(Number(storeState.settings.slippageTolerance)).toBeGreaterThanOrEqual(0.01);
   });
 
-  it('keeps the slippage arrow chip and glyph flip aligned with production', () => {
+  it('keeps the slippage arrow aligned with the shared collapse icon treatment', () => {
     expect(slippageToleranceSource).toContain('.el-collapse.neumorphic .el-icon-arrow-right {');
-    expect(slippageToleranceSource).toContain('box-shadow: var(--s-shadow-element-pressed);');
-    expect(slippageToleranceSource).toContain('.el-collapse-item__header .el-icon-arrow-right.is-active {');
-    expect(slippageToleranceSource).toContain('transform: none;');
-    expect(slippageToleranceSource).toContain('.el-collapse-item__header .el-icon-arrow-right.is-active::before {');
-    expect(slippageToleranceSource).toContain('transform: scaleY(-1);');
+    expect(slippageToleranceSource).toContain('background-color: transparent;');
+    expect(slippageToleranceSource).toContain('color: var(--s-color-base-content-tertiary) !important;');
+    expect(slippageToleranceSource).toContain('box-shadow: none;');
+    expect(slippageToleranceSource).not.toContain('box-shadow: var(--s-shadow-element-pressed);');
+    expect(slippageToleranceSource).not.toContain('transform: scaleY(-1);');
   });
 
   it('keeps the expanded slippage input compact like the production swap panel', () => {

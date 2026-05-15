@@ -1,4 +1,5 @@
 import { Operation } from '@sora-substrate/sdk';
+import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
@@ -176,6 +177,36 @@ describe('EthBridgeOutgoingReducer', () => {
 
     expect(getTransactionEventsMock).not.toHaveBeenCalled();
     expect(tx.hash).toBe('0xrequest-hash');
+  });
+
+  it('continues restored outgoing transfers without waiting for the volatile SDK status', async () => {
+    const tx = {
+      id: 'tx-outgoing',
+      type: Operation.EthBridgeOutgoing,
+      transactionState: ETH_BRIDGE_STATES.SORA_PENDING,
+      blockId: '0xblock',
+      txId: '0xextrinsic-hash',
+      hash: '0xrequest-hash',
+      externalNetwork: 1,
+      to: '0xrecipient',
+    } as any;
+    const updateTransaction = vi.fn((id: string, params: Record<string, unknown>) => {
+      if (id === tx.id) {
+        Object.assign(tx, params);
+      }
+    });
+    const reducer = createReducer(tx, updateTransaction);
+    const waitForTransactionStatus = vi
+      .spyOn(reducer, 'waitForTransactionStatus')
+      .mockRejectedValue(new Error('status should not be required for restored transactions'));
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(BridgeTxStatus.Ready);
+    ethBridgeApiMock.getApprovedRequest.mockResolvedValue({ to: '0xrecipient' });
+
+    await reducer.changeState(tx);
+
+    expect(waitForTransactionStatus).not.toHaveBeenCalled();
+    expect(tx.transactionState).toBe(ETH_BRIDGE_STATES.EVM_SUBMITTED);
   });
 
   it('restores an already submitted Ethereum transaction before asking for another signature', async () => {

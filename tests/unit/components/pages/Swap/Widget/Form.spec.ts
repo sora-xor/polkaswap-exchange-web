@@ -482,6 +482,8 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     const wrapper = await mountWidget();
     await flushPromises();
 
+    expect(wrapper.find('.swap-details').attributes('inline')).toBeDefined();
+
     const feeInfoLine = wrapper.find('.swap-details-info-line.info-line-stub');
 
     expect(feeInfoLine.exists()).toBe(true);

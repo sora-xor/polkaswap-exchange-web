@@ -150,6 +150,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import { useAssetsStore } from '@/stores/assets';
+import { useSettingsStore } from '@/stores/settings';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
 import { formatAmountWithSuffix, isAmountValueIntegerOnly, sortPools, showMostFittingValue } from '@/utils';
@@ -207,6 +208,7 @@ const { getAssetFiatPrice } = useFormattedAmount();
 const parentLoading = toRef(props, 'parentLoading');
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
 const assetsStore = useAssetsStore();
+const settingsStore = useSettingsStore();
 
 const loadingState = computed(() => parentLoading.value || loading.value);
 const orderBooks = ref<readonly OrderBookWithStats[]>([]);
@@ -217,6 +219,11 @@ const allowedAssets = computed<Array<Asset>>(() =>
   whitelistAssets.value.length ? whitelistAssets.value : [...KnownAssets]
 );
 const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => asset.address).join(';'));
+const indexerEndpoint = computed(() => {
+  const type = settingsStore.indexerType;
+
+  return type ? (settingsStore.indexers?.[type]?.endpoint ?? '') : '';
+});
 
 const prefilteredItems = computed<TableItem[]>(() => {
   const items = orderBooks.value.reduce<TableItem[]>((buffer, item) => {
@@ -311,6 +318,12 @@ watch(
   },
   { immediate: true }
 );
+
+watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+  if (!endpoint || endpoint === previousEndpoint) return;
+
+  void updateExploreData();
+});
 </script>
 
 <style lang="scss">

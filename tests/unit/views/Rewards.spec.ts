@@ -1,6 +1,6 @@
-import { flushPromises, shallowMount } from '@vue/test-utils';
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils';
 import { reactive, ref } from 'vue';
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const connectSoraWalletMock = vi.fn();
 const showAppNotificationMock = vi.fn();
@@ -20,6 +20,7 @@ const subscribeOnRewardsMock = vi.fn().mockResolvedValue(undefined);
 const unsubscribeFromRewardsMock = vi.fn().mockResolvedValue(undefined);
 const resetRewardsMock = vi.fn();
 const checkAccountIsConnectedMock = vi.fn().mockResolvedValue(true);
+const subscribeOnFiatPriceMock = vi.fn().mockResolvedValue(undefined);
 
 const rewardsStoreMock = reactive({
   feeFetching: false,
@@ -66,6 +67,17 @@ const assetsStoreMock = {
   },
 };
 
+const walletStoreMock = reactive({
+  fiatPriceObject: {} as Record<string, string>,
+  indexerType: 'polkaswap',
+  indexers: {
+    polkaswap: {
+      endpoint: 'https://indexer.test/graphql',
+    },
+  },
+  subscribeOnFiatPrice: subscribeOnFiatPriceMock,
+});
+
 vi.mock('@/stores/rewards', () => ({
   useRewardsStore: () => rewardsStoreMock,
 }));
@@ -76,6 +88,10 @@ vi.mock('@/stores/settings', () => ({
 
 vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => assetsStoreMock,
+}));
+
+vi.mock('@/stores/wallet', () => ({
+  useWalletStore: () => walletStoreMock,
 }));
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
@@ -170,13 +186,14 @@ vi.mock('@/utils/ethers-util', () => ({
 }));
 
 let RewardsView: (typeof import('@/features/rewards/pages/RewardsPage.vue'))['default'];
+const mountedWrappers: VueWrapper[] = [];
 
 beforeAll(async () => {
   RewardsView = (await import('@/features/rewards/pages/RewardsPage.vue')).default;
 });
 
-const mountComponent = () =>
-  shallowMount(RewardsView, {
+const mountComponent = () => {
+  const wrapper = shallowMount(RewardsView, {
     global: {
       stubs: {
         RewardsGradientBox: { template: '<div><slot /></div>' },
@@ -195,7 +212,16 @@ const mountComponent = () =>
     },
   });
 
+  mountedWrappers.push(wrapper);
+
+  return wrapper;
+};
+
 describe('Rewards.vue', () => {
+  afterEach(() => {
+    mountedWrappers.splice(0).forEach((wrapper) => wrapper.unmount());
+  });
+
   beforeEach(() => {
     isLoggedInRef.value = false;
     soraAddressRef.value = 'sora-address';
@@ -212,6 +238,7 @@ describe('Rewards.vue', () => {
     unsubscribeFromRewardsMock.mockClear();
     resetRewardsMock.mockClear();
     checkAccountIsConnectedMock.mockClear();
+    subscribeOnFiatPriceMock.mockClear();
 
     Object.assign(rewardsStoreMock, {
       feeFetching: false,
@@ -246,6 +273,8 @@ describe('Rewards.vue', () => {
         transferable: '0',
       },
     };
+    walletStoreMock.fiatPriceObject = {};
+    walletStoreMock.indexers.polkaswap.endpoint = 'https://indexer.test/graphql';
   });
 
   it('connects SORA wallet when user is not logged in', async () => {
@@ -304,5 +333,57 @@ describe('Rewards.vue', () => {
     await flushPromises();
 
     expect(getExternalRewardsMock).toHaveBeenCalledWith('0x123');
+  });
+
+  it('refreshes fiat prices when displayed reward assets are missing prices', async () => {
+    isLoggedInRef.value = true;
+    rewardsStoreMock.rewardsByAssetsList = [
+      {
+        asset: { address: 'pswap', symbol: 'PSWAP', decimals: 18 },
+        amount: '1',
+      },
+    ];
+
+    mountComponent();
+    await flushPromises();
+
+    expect(subscribeOnFiatPriceMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not refresh fiat prices when displayed reward assets already have prices', async () => {
+    isLoggedInRef.value = true;
+    walletStoreMock.fiatPriceObject = { pswap: '1' };
+    rewardsStoreMock.rewardsByAssetsList = [
+      {
+        asset: { address: 'pswap', symbol: 'PSWAP', decimals: 18 },
+        amount: '1',
+      },
+    ];
+
+    mountComponent();
+    await flushPromises();
+
+    expect(subscribeOnFiatPriceMock).not.toHaveBeenCalled();
+  });
+
+  it('waits for an indexer endpoint before refreshing reward fiat prices', async () => {
+    isLoggedInRef.value = true;
+    walletStoreMock.indexers.polkaswap.endpoint = '';
+    rewardsStoreMock.rewardsByAssetsList = [
+      {
+        asset: { address: 'pswap', symbol: 'PSWAP', decimals: 18 },
+        amount: '1',
+      },
+    ];
+
+    mountComponent();
+    await flushPromises();
+
+    expect(subscribeOnFiatPriceMock).not.toHaveBeenCalled();
+
+    walletStoreMock.indexers.polkaswap.endpoint = 'https://indexer.test/graphql';
+    await flushPromises();
+
+    expect(subscribeOnFiatPriceMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -43,7 +43,7 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
     Done: 'Done',
     Failed: 'Failed',
     Frozen: 'Frozen',
-    Ready: 'Ready',
+    Ready: 'ApprovalsReady',
   },
 }));
 
@@ -89,6 +89,7 @@ vi.mock('@/utils/ethers-util', () => ({
 }));
 
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
+import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import {
   getIncomingEvmTransactionData,
   getOutgoingEvmTransactionData,
@@ -202,7 +203,7 @@ describe('ETH bridge utils', () => {
     ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
       subscribe: (observer: { next: (status: string) => void }) => {
-        observer.next('Ready');
+        observer.next(BridgeTxStatus.Ready);
         return { unsubscribe };
       },
     });
@@ -215,7 +216,7 @@ describe('ETH bridge utils', () => {
   it('uses an already-ready outgoing request without waiting for another status emission', async () => {
     const request = { hash: '0xhash', from: '0xfrom' };
 
-    ethBridgeApiMock.getRequestStatus.mockResolvedValue('Ready');
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(BridgeTxStatus.Ready);
     ethBridgeApiMock.getApprovedRequest.mockResolvedValue(request);
 
     await expect(waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any)).resolves.toBe(request);
@@ -227,7 +228,7 @@ describe('ETH bridge utils', () => {
     const unsubscribe = vi.fn();
     const request = { hash: '0xhash', from: '0xfrom' };
 
-    ethBridgeApiMock.getRequestStatus.mockResolvedValueOnce(null).mockResolvedValueOnce('Ready');
+    ethBridgeApiMock.getRequestStatus.mockResolvedValueOnce(null).mockResolvedValueOnce(BridgeTxStatus.Ready);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
       subscribe: () => ({ unsubscribe }),
     });

@@ -408,9 +408,10 @@ $el-input-class: '.el-input';
     height: 21px;
     box-shadow: none !important;
     border-radius: 0;
+    color: var(--s-color-fiat-value);
 
     & > .s-input__content {
-      color: var(--s-color-fiat-value);
+      color: inherit;
       gap: 0;
       padding-left: 0;
       padding-right: 0;
@@ -433,6 +434,10 @@ $el-input-class: '.el-input';
         font-size: inherit !important;
         line-height: inherit !important;
         letter-spacing: inherit;
+      }
+
+      #{$el-input-class}__inner::placeholder {
+        color: inherit;
       }
     }
 

@@ -42,4 +42,15 @@ describe('ExploreCollaterals source', () => {
     expect(exploreCollateralsSource).toContain(':integer-only="isAmountValueIntegerOnly(row.totalDebt)"');
     expect(exploreCollateralsSource).toContain(':integer-only="isAmountValueIntegerOnly(row.availableToBorrow)"');
   });
+
+  it('keeps Kensetsu rows sortable while fiat prices are hydrating', () => {
+    expect(exploreCollateralsSource).toContain(
+      "import { getKensetsuAmountSortValue, getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';"
+    );
+    expect(exploreCollateralsSource).toContain(
+      'const totalDebtValue = getKensetsuAmountSortValue(collateral.debtSupply, totalDebtFiatFp);'
+    );
+    expect(exploreCollateralsSource).toContain('const totalDebtFiat = totalDebtFiatFp?.toLocaleString(2);');
+    expect(exploreCollateralsSource).not.toContain('const totalDebtFiatFp = getFPNumberFiatAmountByFPNumber');
+  });
 });

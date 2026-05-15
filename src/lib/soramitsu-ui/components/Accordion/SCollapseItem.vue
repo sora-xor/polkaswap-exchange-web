@@ -142,21 +142,34 @@ const handleAfterLeave = (element: Element): void => {
   }
 
   &__arrow {
-    transition: transform var(--s-transition-default);
+    align-items: center;
+    box-shadow: none;
+    color: var(--s-color-base-content-tertiary);
+    display: inline-flex;
+    flex: 0 0 var(--s-icon-font-size-medium, 24px);
+    font-size: var(--s-icon-font-size-mini, 16px);
+    height: var(--s-icon-font-size-medium, 24px);
+    justify-content: center;
+    line-height: 1;
+    width: var(--s-icon-font-size-medium, 24px);
+    transition:
+      color var(--s-transition-default),
+      transform var(--s-transition-default);
     transform: rotate(0deg);
     // The legacy compatibility layer maps Element arrow pseudo-elements to
     // Soramitsu icon glyphs; keep the matching font here so collapse arrows
     // do not render as fallback boxes.
     font-family: var(--s-font-family-icons, soramitsu-icons);
     font-weight: 300;
-    box-shadow:
-      #fff -5px -5px 10px 0,
-      rgba(0, 0, 0, 0.1) 1px 1px 10px 0,
-      rgba(255, 255, 255, 0.8) 1px 1px 2px 0 inset;
   }
 
   &__arrow.is-active {
-    transform: rotate(90deg);
+    transform: rotate(180deg);
+  }
+
+  &__header:hover &__arrow,
+  &__header:focus-visible &__arrow {
+    color: var(--s-color-base-content-primary);
   }
 }
 

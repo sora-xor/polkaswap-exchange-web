@@ -47,7 +47,8 @@ const { newStakeValidatorsMode, validators, selectedValidators, selectValidators
 
 const showStakeDialog = ref(false);
 
-const containerLoading = computed(() => Boolean(props.parentLoading) || !validators.value.length);
+// Keep the selection list usable when validators are already loaded and only background staking subscriptions are pending.
+const containerLoading = computed(() => !validators.value.length && Boolean(props.parentLoading));
 
 const dialogParentLoading = computed(() => Boolean(props.parentLoading) || loading.value);
 

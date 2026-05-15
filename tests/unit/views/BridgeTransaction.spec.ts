@@ -315,9 +315,7 @@ const TestBridgeTransaction = defineComponent({
 
       return [...new Set(ids)];
     });
-    const txInProcess = computed(() =>
-      txTrackingIds.value.some((id) => Boolean(mocks.state.bridge.inProgressIds[id]))
-    );
+    const txInProcess = computed(() => txTrackingIds.value.some((id) => Boolean(mocks.state.bridge.inProgressIds[id])));
 
     const confirmationButtonDisabled = computed(
       () =>
@@ -477,6 +475,13 @@ describe(
       expect(bridgeTransactionSource.match(/class="transaction-address"/g)).toHaveLength(2);
       expect(bridgeTransactionSource).toContain('--transaction-address-action-size: var(--s-size-small)');
       expect(bridgeTransactionSource).toContain('box-shadow: var(--s-shadow-element-pressed)');
+    });
+
+    it('renders visible transfer direction labels for bridge address rows', () => {
+      expect(bridgeTransactionSource).toContain('transaction-address-label__direction');
+      expect(bridgeTransactionSource).toContain("withAddressDirection(source, t('transaction.from'))");
+      expect(bridgeTransactionSource).toContain("withAddressDirection(destination, t('transaction.to'))");
+      expect(bridgeTransactionSource).toContain('buildBridgeAddressAriaLabel(direction, link.placeholder)');
     });
 
     it('triggers wallet connect when an EVM account mismatch is detected', async () => {

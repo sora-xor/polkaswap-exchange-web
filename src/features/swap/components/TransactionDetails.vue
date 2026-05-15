@@ -1,5 +1,5 @@
 <template>
-  <transaction-details :info-only="expanded" :disabled="disabled">
+  <transaction-details :info-only="expanded" :disabled="disabled" :inline="inline">
     <template #reference>
       <slot name="reference"></slot>
     </template>
@@ -74,11 +74,14 @@ const InfoLine = WalletComponentInfoLine;
 
 const props = withDefaults(
   defineProps<{
+    /** Opens details inline so compact swap widgets expand instead of overlaying adjacent content. */
+    inline?: boolean;
     full?: boolean;
     expanded?: boolean;
     disabled?: boolean;
   }>(),
   {
+    inline: false,
     full: false,
     expanded: false,
     disabled: false,

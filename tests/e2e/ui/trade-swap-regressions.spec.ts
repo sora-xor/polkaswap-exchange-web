@@ -569,20 +569,28 @@ test('keeps the swap fiat price aligned with the token amount input', async ({ p
     const fiatInput = tokenInput?.querySelector('.token-input--fiat') as HTMLElement | null;
     const fiatContent = fiatInput?.querySelector(':scope > .s-input__content') as HTMLElement | null;
     const fiatPrefix = fiatInput?.querySelector('.input-prefix') as HTMLElement | null;
+    const fiatValue = fiatInput?.querySelector('.el-input__inner') as HTMLElement | null;
 
-    if (!amountInput || !fiatContent || !fiatPrefix) {
+    if (!amountInput || !fiatInput || !fiatContent || !fiatPrefix || !fiatValue) {
       return null;
     }
 
     const amountRect = amountInput.getBoundingClientRect();
     const fiatContentRect = fiatContent.getBoundingClientRect();
     const fiatPrefixRect = fiatPrefix.getBoundingClientRect();
+    const fiatInputStyles = getComputedStyle(fiatInput);
     const fiatContentStyles = getComputedStyle(fiatContent);
+    const fiatPrefixStyles = getComputedStyle(fiatPrefix);
+    const fiatValueStyles = getComputedStyle(fiatValue);
 
     return {
       amountLeft: Math.round(amountRect.left),
       fiatContentLeft: Math.round(fiatContentRect.left),
       fiatPrefixLeft: Math.round(fiatPrefixRect.left),
+      fiatInputColor: fiatInputStyles.color,
+      fiatContentColor: fiatContentStyles.color,
+      fiatPrefixColor: fiatPrefixStyles.color,
+      fiatValueColor: fiatValueStyles.color,
       fiatContentPaddingLeft: fiatContentStyles.paddingLeft,
       fiatContentPaddingRight: fiatContentStyles.paddingRight,
     };
@@ -597,6 +605,10 @@ test('keeps the swap fiat price aligned with the token amount input', async ({ p
   expect(metrics?.fiatContentLeft).toBe(metrics?.amountLeft);
   expect(metrics?.fiatContentPaddingLeft).toBe('0px');
   expect(metrics?.fiatContentPaddingRight).toBe('0px');
+  expect(metrics?.fiatInputColor).toBe('rgb(71, 154, 239)');
+  expect(metrics?.fiatContentColor).toBe('rgb(71, 154, 239)');
+  expect(metrics?.fiatPrefixColor).toBe('rgb(71, 154, 239)');
+  expect(metrics?.fiatValueColor).toBe('rgb(71, 154, 239)');
   expect(consoleErrors).toEqual([]);
 });
 
@@ -1150,9 +1162,10 @@ test('keeps swap network fee details accessible before token selection', async (
 
   await trigger.click();
 
-  const detailsPopper = page.locator('.transaction-details-popper');
-  await expect(detailsPopper).toHaveCount(1);
-  await expect(detailsPopper).toContainText('Liquidity Provider Fee');
+  const inlineDetails = page.locator('.transaction-details-inline-content');
+  await expect(inlineDetails).toHaveCount(1);
+  await expect(inlineDetails).toContainText('Liquidity Provider Fee');
+  await expect(page.locator('.transaction-details-popper')).toHaveCount(0);
 });
 
 test('keeps selected swap token colors aligned with production in light and noir modes', async ({ page }) => {

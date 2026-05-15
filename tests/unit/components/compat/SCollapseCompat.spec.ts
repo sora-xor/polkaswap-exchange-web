@@ -89,4 +89,11 @@ describe('SCollapse', () => {
   it('renders legacy collapse arrow glyphs with the Soramitsu icon font', () => {
     expect(sCollapseItemSource).toContain('font-family: var(--s-font-family-icons, soramitsu-icons);');
   });
+
+  it('keeps collapse arrows as clean icon controls in the active state', () => {
+    expect(sCollapseItemSource).toContain('&__arrow.is-active');
+    expect(sCollapseItemSource).toContain('transform: rotate(180deg);');
+    expect(sCollapseItemSource).toContain('box-shadow: none;');
+    expect(sCollapseItemSource).not.toContain('#fff -5px -5px 10px 0');
+  });
 });

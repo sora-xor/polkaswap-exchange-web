@@ -20,7 +20,7 @@
             <pair-token-logo
               :first-token="liquidityItem.firstAsset"
               :second-token="liquidityItem.secondAsset"
-              size="small"
+              size="medium"
             ></pair-token-logo>
             <div class="pool-info-container-block">
               <h3 class="pool-info-container__title">
@@ -238,17 +238,17 @@ const getPairTitle = (firstTokenSymbol?: string, secondTokenSymbol?: string): st
   @include collapse-items;
 
   .el-collapse-item__header {
-    align-items: flex-start;
+    align-items: center;
 
     .pair-logo {
       flex-shrink: 0;
       margin-right: $inner-spacing-medium;
-      margin-top: $inner-spacing-tiny;
+      margin-top: 0;
     }
 
     .el-collapse-item__arrow {
       align-items: center;
-      align-self: flex-start;
+      align-self: center;
       background: transparent;
       border: 1px solid var(--s-color-base-border-primary);
       border-radius: 50%;
@@ -300,7 +300,7 @@ const getPairTitle = (firstTokenSymbol?: string, secondTokenSymbol?: string): st
 </style>
 
 <style lang="scss" scoped>
-$title-height: 42px;
+$title-height: 44px;
 
 .el-form--pool {
   display: flex;
@@ -354,11 +354,14 @@ $title-height: 42px;
       }
 
       &__title {
+        display: flex;
+        align-items: center;
         flex: 1;
         font-weight: 700;
-        text-align: left;
+        line-height: var(--s-line-height-medium);
+        margin: 0;
         min-height: $title-height;
-        line-height: $title-height;
+        text-align: left;
       }
 
       & + .el-button {

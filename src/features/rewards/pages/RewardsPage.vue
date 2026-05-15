@@ -130,8 +130,10 @@ import { useAssetsStore } from '@/stores/assets';
 import { useRewardsStore } from '@/stores/rewards';
 import type { ClaimRewardsParams } from '@/stores/rewards/types';
 import { useSettingsStore } from '@/stores/settings';
+import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
+import { getMissingRewardFiatPriceAssets } from '@/features/rewards/utils/fiat';
 import { hasInsufficientXorForFee } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -185,6 +187,7 @@ const { loading, withNotifications } = useTransaction({ parentLoading: parentLoa
 const assetsStore = useAssetsStore();
 const rewardsStore = useRewardsStore();
 const settingsStore = useSettingsStore();
+const walletStore = useWalletStore();
 
 const subscribeOnRewardsAction = () => rewardsStore.subscribeOnRewards();
 const unsubscribeFromRewardsAction = () => rewardsStore.unsubscribeFromRewards();
@@ -236,6 +239,17 @@ const rewardsAmountHeaderItems = computed<RewardsAmountHeaderItem[]>(() =>
 );
 
 const rewardTokens = computed<Asset[]>(() => rewardsAmountHeaderItems.value.map((item) => item.asset));
+const rewardAssetsMissingFiatPrices = computed<Asset[]>(() =>
+  getMissingRewardFiatPriceAssets(rewardsAmountHeaderItems.value, walletStore.fiatPriceObject)
+);
+const rewardAssetsMissingFiatPriceKey = computed(() =>
+  rewardAssetsMissingFiatPrices.value.map((asset) => asset.address).join('|')
+);
+const activeIndexerEndpoint = computed(() => {
+  const indexerType = walletStore.indexerType;
+
+  return indexerType ? walletStore.indexers?.[indexerType]?.endpoint : '';
+});
 const rewardTokenSymbols = computed<Array<KnownSymbols>>(() =>
   rewardTokens.value.map((item) => item.symbol as KnownSymbols)
 );
@@ -405,6 +419,30 @@ const checkExternalRewards = async (showNotification = false): Promise<void> => 
   await getRewardsProcess(showNotification);
 };
 
+let lastRewardFiatPriceRefreshKey = '';
+
+const ensureRewardFiatPrices = async (): Promise<void> => {
+  const missingPricesKey = rewardAssetsMissingFiatPriceKey.value;
+
+  if (
+    !isLoggedIn.value ||
+    !activeIndexerEndpoint.value ||
+    !missingPricesKey ||
+    missingPricesKey === lastRewardFiatPriceRefreshKey
+  ) {
+    return;
+  }
+
+  lastRewardFiatPriceRefreshKey = missingPricesKey;
+
+  try {
+    await walletStore.subscribeOnFiatPrice();
+  } catch (error) {
+    lastRewardFiatPriceRefreshKey = '';
+    console.error(error);
+  }
+};
+
 const getRewardsProcess = async (showNotification = false): Promise<void> => {
   await getExternalRewardsAction(evmAddress.value);
 
@@ -447,6 +485,14 @@ watch(
     void checkExternalRewards();
   },
   { flush: 'post' }
+);
+
+watch(
+  [isLoggedIn, rewardAssetsMissingFiatPriceKey, activeIndexerEndpoint],
+  () => {
+    void ensureRewardFiatPrices();
+  },
+  { flush: 'post', immediate: true }
 );
 
 onMounted(async () => {

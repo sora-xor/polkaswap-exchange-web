@@ -458,23 +458,13 @@ export class PoolXykModule<T> {
   private async updateAccountLiquiditySubscriptions(assetIdPairs: Array<Array<string>>): Promise<void> {
     assert(this.root.account, Messages.connectWallet);
 
-    // liquidities to be subscribed
+    // The aggregate account-pools storage is a discovery source. Existing
+    // per-pool provider subscriptions remove positions when their balance
+    // becomes empty, which avoids dropping valid pools during partial updates.
     const includedLiquidityList = assetIdPairs.map(([first, second]) => ({
       firstAddress: first,
       secondAddress: second,
     }));
-    // liquidities to be unsubscribed and removed
-    const excludedLiquidityList = this.accountLiquidity.reduce<AccountLiquidity[]>(
-      (result, liquidity) =>
-        assetIdPairs.find(([first, second]) => liquidity.firstAddress === first && liquidity.secondAddress === second)
-          ? result
-          : [...result, liquidity],
-      []
-    );
-
-    for (const liquidity of excludedLiquidityList) {
-      this.removeAccountLiquidity(liquidity);
-    }
 
     const subscribeOnAccountLiquidityPromises = includedLiquidityList.map((liquidity) => {
       return this.subscribeOnAccountLiquidity(liquidity);

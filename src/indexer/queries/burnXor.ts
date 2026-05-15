@@ -1064,22 +1064,31 @@ export async function fetchData(start: number, end: number, accountId?: string):
   if (accountId && isExcludedXorBurnAddress(accountId)) return [];
 
   const variables = { start, end };
-  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
-  const compactItems = await polkaswapIndexer.services.explorer.fetchAllEntities(
-    getPolkaswapCompactXorBurnQuery(),
-    {},
-    parseCompactXorBurn
-  );
+  const polkaswapIndexer = getCurrentIndexer() as Nullable<PolkaswapIndexer>;
+  const explorer = polkaswapIndexer?.services?.explorer;
+  let compactItems: Nullable<Array<Nullable<XorBurn>>> = [];
+
+  try {
+    compactItems = (await explorer?.fetchAllEntities(getPolkaswapCompactXorBurnQuery(), {}, parseCompactXorBurn)) ?? [];
+  } catch {
+    compactItems = [];
+  }
+
   const parsedCompactItems = (compactItems ?? [])
     .filter((item): item is XorBurn => !!item)
     .filter((item) => isBurnInRange(item, start, end) && isAccountBurn(item, accountId));
-  const historyItems = parsedCompactItems.length
-    ? []
-    : await polkaswapIndexer.services.explorer.fetchAllEntities(
-        getPolkaswapHistoryXorBurnQuery(accountId),
-        variables,
-        parse
-      );
+
+  let historyItems: Nullable<Array<Nullable<XorBurn>>> = [];
+
+  if (!parsedCompactItems.length) {
+    try {
+      historyItems =
+        (await explorer?.fetchAllEntities(getPolkaswapHistoryXorBurnQuery(accountId), variables, parse)) ?? [];
+    } catch {
+      historyItems = [];
+    }
+  }
+
   const parsedHistoryItems = (historyItems ?? [])
     .filter((item): item is XorBurn => !!item)
     .filter((item) => isBurnInRange(item, start, end) && isAccountBurn(item, accountId));

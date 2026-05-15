@@ -255,7 +255,7 @@ const handleContactAction = (actionType: string, { address, name, source }: Polk
       }
 
       & + & {
-        margin-top: $basic-spacing;
+        margin-top: var(--s-basic-spacing);
       }
     }
   }

@@ -12,11 +12,14 @@ describe('TokenInput source', () => {
 
   it('keeps the fiat sublabel prefix flush against the value like live polkaswap', () => {
     expect(tokenInputSource).toContain('&--fiat {');
+    expect(tokenInputSource).toContain('color: var(--s-color-fiat-value);');
     expect(tokenInputSource).toContain('& > .s-input__content {');
+    expect(tokenInputSource).toContain('color: inherit;');
     expect(tokenInputSource).toContain('gap: 0;');
     expect(tokenInputSource).toContain('padding-left: 0;');
     expect(tokenInputSource).toContain('padding-right: 0;');
     expect(tokenInputSource).toContain('.input-prefix {');
+    expect(tokenInputSource).toContain('#{$el-input-class}__inner::placeholder');
   });
 
   it('uses app-owned wallet UI exports instead of router lazy registration', () => {

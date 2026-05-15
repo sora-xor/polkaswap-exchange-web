@@ -4,6 +4,7 @@ import { computed } from 'vue';
 
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
+import { getFiatPriceByAddress } from '@/utils/fiatPrice';
 
 import { useNumberFormatter } from './useNumberFormatter';
 
@@ -19,8 +20,7 @@ export function useFormattedAmount() {
   const fiatPriceObject = computed(() => walletStore.fiatPriceObject);
 
   const getAssetFiatPrice = (asset?: Nullable<Asset | AccountAsset>): Nullable<CodecString> => {
-    if (!asset?.address) return null;
-    return fiatPriceObject.value?.[asset.address] ?? null;
+    return getFiatPriceByAddress(fiatPriceObject.value, asset?.address);
   };
 
   const getFiatBalance = (

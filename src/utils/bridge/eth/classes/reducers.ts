@@ -168,6 +168,35 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
 
     await this.restoreOutgoingRequestHash(id);
   }
+
+  /** Checks whether the stored hash already resolves to a bridge request. */
+  private async hasKnownOutgoingRequestHash(id: string): Promise<boolean> {
+    const { hash } = this.getTransaction(id);
+
+    if (!hash) {
+      return false;
+    }
+
+    return (await ethBridgeApi.getRequestStatus(hash)) != null;
+  }
+
+  /**
+   * Waits for the SORA side unless history was restored after submission.
+   * Restored rows do not always include the transient SDK `status` field.
+   */
+  protected async waitForOutgoingSoraPartSubmitted(id: string): Promise<void> {
+    const { blockId, status, txId } = this.getTransaction(id);
+    let hasKnownRequestHash = await this.hasKnownOutgoingRequestHash(id);
+
+    if (!(status || txId || blockId || hasKnownRequestHash)) {
+      await this.waitForTransactionStatus(id);
+      hasKnownRequestHash = await this.hasKnownOutgoingRequestHash(id);
+    }
+
+    if (!hasKnownRequestHash) {
+      await this.waitForTransactionBlockId(id);
+    }
+  }
 }
 
 export class EthBridgeOutgoingReducer extends EthBridgeReducer {
@@ -224,9 +253,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
-            await this.waitForTransactionStatus(id);
-            await this.waitForTransactionBlockId(id);
-
+            await this.waitForOutgoingSoraPartSubmitted(id);
             await this.ensureOutgoingRequestHash(id);
 
             const tx = this.getTransaction(id);

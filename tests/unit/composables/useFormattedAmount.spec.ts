@@ -51,6 +51,21 @@ describe('useFormattedAmount', () => {
     expect(getFiatBalance({ address: 'asset', decimals: 18 } as any)).toBeNull();
   });
 
+  it('resolves fiat prices when the asset address casing differs from the indexer key', () => {
+    walletStoreMock.fiatPriceObject['0xasset'] = '2';
+
+    const { getAssetFiatPrice, getFiatAmountByString } = useFormattedAmount();
+    const asset = {
+      address: '0xASSET',
+      decimals: 18,
+    } as any;
+
+    expect(getAssetFiatPrice(asset)).toBe('2');
+    expect(getFiatAmountByString('1', asset)).toBe(
+      FPNumber.fromNatural('1', 18).mul(FPNumber.fromCodecValue('2')).toLocaleString()
+    );
+  });
+
   it('returns null for undefined amounts while treating empty strings as zero', () => {
     const { getFiatAmount, getFiatAmountByString } = useFormattedAmount();
     const asset = { address: 'asset', decimals: 18 } as any;

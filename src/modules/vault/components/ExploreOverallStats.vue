@@ -46,6 +46,7 @@ import { useAssetsStore } from '@/stores/assets';
 import { useVaultStore } from '@/stores/vault';
 import { useWalletStore } from '@/stores/wallet';
 import { formatAmountWithSuffix } from '@/utils';
+import { getKensetsuFiatAmount } from '@/modules/vault/utils/fiat';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Collateral, StablecoinInfo } from '@sora-substrate/sdk/build/kensetsu/types';
@@ -71,7 +72,7 @@ const badDebt = computed(() =>
     const debtAsset = getAsset(id);
     if (!debtAsset) return acc;
 
-    const value = getFPNumberFiatAmountByFPNumber(info.badDebt, debtAsset);
+    const value = getKensetsuFiatAmount(info.badDebt, debtAsset, getFPNumberFiatAmountByFPNumber);
     if (!value) return acc;
 
     return acc.add(value.mul(exchangeRate.value));
@@ -83,7 +84,7 @@ const total = computed(() =>
     (acc, { totalLocked, lockedAssetId, debtSupply, debtAssetId, riskParams: { hardCap } }) => {
       const lockedAsset = getAsset(lockedAssetId);
       if (lockedAsset) {
-        const fiatLocked = getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
+        const fiatLocked = getKensetsuFiatAmount(totalLocked, lockedAsset, getFPNumberFiatAmountByFPNumber);
         if (fiatLocked) {
           acc.collateral = acc.collateral.add(fiatLocked.mul(exchangeRate.value));
         }
@@ -91,13 +92,16 @@ const total = computed(() =>
 
       const debtAsset = getAsset(debtAssetId);
       if (debtAsset) {
-        const fiatDebt = getFPNumberFiatAmountByFPNumber(debtSupply, debtAsset);
+        const fiatDebt = getKensetsuFiatAmount(debtSupply, debtAsset, getFPNumberFiatAmountByFPNumber);
         if (fiatDebt) {
           acc.debt = acc.debt.add(fiatDebt.mul(exchangeRate.value));
         }
-        const fiatAvailable = getFPNumberFiatAmountByFPNumber(hardCap.sub(debtSupply), debtAsset);
-        if (fiatAvailable) {
-          acc.available = acc.available.add(fiatAvailable.mul(exchangeRate.value));
+        const available = hardCap.sub(debtSupply);
+        if (available.isGtZero()) {
+          const fiatAvailable = getKensetsuFiatAmount(available, debtAsset, getFPNumberFiatAmountByFPNumber);
+          if (fiatAvailable) {
+            acc.available = acc.available.add(fiatAvailable.mul(exchangeRate.value));
+          }
         }
       }
 

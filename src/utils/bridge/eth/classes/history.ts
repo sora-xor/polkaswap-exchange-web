@@ -155,6 +155,8 @@ type DecodedIncomingRequest = {
   recipient: string;
 };
 
+const ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY = 'ethBridgeHistoryFullSyncTimestamp';
+
 /** Sorts merged indexer pages in the same newest-first order requested from GraphQL. */
 const sortHistoryElements = (historyElements: HistoryElement[]): HistoryElement[] => {
   return [...historyElements].sort((a, b) => {
@@ -306,6 +308,14 @@ export class EthBridgeHistory {
 
   public set historySyncTimestamp(timestamp: number) {
     ethBridgeApi.accountStorage?.set('ethBridgeHistorySyncTimestamp', timestamp);
+  }
+
+  public get fullHistorySyncTimestamp(): number {
+    return +(ethBridgeApi.accountStorage?.get(ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY) || 0);
+  }
+
+  public set fullHistorySyncTimestamp(timestamp: number) {
+    ethBridgeApi.accountStorage?.set(ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY, timestamp);
   }
 
   public async init(contracts: EthBridgeContractsAddresses, evmId: number): Promise<void> {
@@ -465,6 +475,7 @@ export class EthBridgeHistory {
     const ids = Object.keys(ethBridgeApi.history).filter((id) => !(id in inProgressIds));
     ethBridgeApi.removeHistory(...ids);
     this.historySyncTimestamp = 0;
+    this.fullHistorySyncTimestamp = 0;
     await updateCallback?.();
   }
 
@@ -589,9 +600,15 @@ export class EthBridgeHistory {
     const initialSyncTimestamp = this.historySyncTimestamp;
     const currentHistory = ethBridgeApi.historyList as EthHistory[];
     let historyElements = await this.fetchHistoryElements(address, initialSyncTimestamp);
+    let fetchedFromBeginning = initialSyncTimestamp === 0;
 
-    if (!historyElements.length && initialSyncTimestamp && !currentHistory.length) {
+    if (
+      !historyElements.length &&
+      initialSyncTimestamp &&
+      (!currentHistory.length || this.fullHistorySyncTimestamp < initialSyncTimestamp)
+    ) {
       historyElements = await this.fetchHistoryElements(address, 0);
+      fetchedFromBeginning = true;
     }
 
     if (!historyElements.length) return;
@@ -607,7 +624,7 @@ export class EthBridgeHistory {
       updateCallback
     );
 
-    if (!result.matchedHistory && initialSyncTimestamp) {
+    if (!result.matchedHistory && initialSyncTimestamp && !fetchedFromBeginning) {
       const fallbackHistoryElements = await this.fetchHistoryElements(address, 0);
 
       if (fallbackHistoryElements.length) {
@@ -624,11 +641,40 @@ export class EthBridgeHistory {
 
         if (fallbackResult.matchedHistory) {
           result = fallbackResult;
+          fetchedFromBeginning = true;
+        }
+      }
+    } else if (
+      !fetchedFromBeginning &&
+      initialSyncTimestamp &&
+      result.syncTimestamp &&
+      this.fullHistorySyncTimestamp < result.syncTimestamp
+    ) {
+      const fallbackHistoryElements = await this.fetchHistoryElements(address, 0);
+
+      if (fallbackHistoryElements.length) {
+        const fallbackResult = await this.restoreHistoryElements(
+          fallbackHistoryElements,
+          address,
+          networkFees,
+          inProgressIds,
+          assetDataByAddress,
+          currentHistory,
+          0,
+          updateCallback
+        );
+
+        if (fallbackResult.matchedHistory) {
+          result = fallbackResult;
+          fetchedFromBeginning = true;
         }
       }
     }
 
     this.historySyncTimestamp = result.syncTimestamp;
+    if (fetchedFromBeginning && result.syncTimestamp) {
+      this.fullHistorySyncTimestamp = result.syncTimestamp;
+    }
   }
 }
 

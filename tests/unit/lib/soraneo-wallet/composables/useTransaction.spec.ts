@@ -5,6 +5,7 @@ const useWalletStoreMock = vi.hoisted(() => vi.fn());
 const showAppNotificationMock = vi.hoisted(() => vi.fn());
 const withAppNotificationMock = vi.hoisted(() => vi.fn(async (handler: () => Promise<void>) => await handler()));
 const getOperationMessageMock = vi.hoisted(() => vi.fn(() => 'operation-message'));
+const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
 const api = vi.hoisted(() => ({
   historyList: [] as Array<{ id: string; startTime: string }>,
 }));
@@ -12,6 +13,16 @@ const api = vi.hoisted(() => ({
 vi.mock('@/api', () => ({
   api,
 }));
+
+vi.mock('@/util', async () => {
+  const actual = await vi.importActual<typeof import('@/util')>('@/util');
+
+  return {
+    __esModule: true,
+    ...actual,
+    delay: delayMock,
+  };
+});
 
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
@@ -80,6 +91,7 @@ describe('useTransaction', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    delayMock.mockResolvedValue(undefined);
     api.historyList = [];
     walletStore = {
       isWalletLoaded: true,
@@ -106,6 +118,36 @@ describe('useTransaction', () => {
     expect(beforeTransactionSign).toHaveBeenCalledWith(api);
     expect(handler).toHaveBeenCalledTimes(1);
     expect(walletStore.addActiveTransaction).toHaveBeenCalledWith('tx-1');
-    expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText');
+    expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+  });
+
+  it('shows submitted notification before waiting for wallet history', async () => {
+    let resolveDelay: () => void = () => undefined;
+    delayMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveDelay = resolve;
+        })
+    );
+
+    const { withNotifications } = useTransaction();
+    const promise = withNotifications(vi.fn(async () => undefined));
+
+    for (let i = 0; i < 5 && !delayMock.mock.calls.length; i += 1) {
+      await Promise.resolve();
+    }
+
+    expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+    expect(walletStore.addActiveTransaction).not.toHaveBeenCalled();
+
+    api.historyList.push({
+      id: 'tx-delayed',
+      startTime: String(Date.now() + 5),
+    });
+    resolveDelay();
+
+    await promise;
+
+    expect(walletStore.addActiveTransaction).toHaveBeenCalledWith('tx-delayed');
   });
 });

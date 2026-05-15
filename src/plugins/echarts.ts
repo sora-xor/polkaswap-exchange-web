@@ -1,5 +1,11 @@
 import { LineChart, CandlestickChart, BarChart } from 'echarts/charts';
-import { GridComponent, TooltipComponent, DataZoomComponent, LegendComponent } from 'echarts/components';
+import {
+  GridComponent,
+  TooltipComponent,
+  DataZoomComponent,
+  LegendComponent,
+  DatasetComponent,
+} from 'echarts/components';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import ECharts from 'vue-echarts';
@@ -17,6 +23,7 @@ use([
   TooltipComponent,
   DataZoomComponent,
   LegendComponent,
+  DatasetComponent,
 ]);
 
 export function install(app: App): void {

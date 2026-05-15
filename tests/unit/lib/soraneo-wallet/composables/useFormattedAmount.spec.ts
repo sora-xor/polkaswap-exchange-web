@@ -5,6 +5,7 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     fiatPriceObject: {
       asset: '2',
+      '0xasset': '3',
     },
   }),
 }));
@@ -30,5 +31,11 @@ describe('wallet lib useFormattedAmount', () => {
         decimals: 18,
       } as never)
     ).not.toBeNull();
+  });
+
+  it('matches fiat prices case-insensitively for hex asset addresses', () => {
+    const { getAssetFiatPrice } = useFormattedAmount();
+
+    expect(getAssetFiatPrice({ address: '0xASSET', decimals: 18 } as never)).toBe('3');
   });
 });

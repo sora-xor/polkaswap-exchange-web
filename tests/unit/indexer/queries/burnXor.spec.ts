@@ -80,11 +80,7 @@ describe('xor burn query', () => {
     const result = await fetchData(100, 200);
 
     expect(indexerMocks.fetchAllEntities).toHaveBeenCalledTimes(1);
-    expect(indexerMocks.fetchAllEntities).toHaveBeenCalledWith(
-      expect.any(Object),
-      {},
-      expect.any(Function)
-    );
+    expect(indexerMocks.fetchAllEntities).toHaveBeenCalledWith(expect.any(Object), {}, expect.any(Function));
     expect(result[0]?.address).toBe('account-live');
     expect(result[0]?.amount.toString()).toBe('12.5');
     expect(result[0]?.blockHeight).toBe(123);
@@ -115,6 +111,33 @@ describe('xor burn query', () => {
       })
     );
     expect(result[0]?.amount.toString()).toBe('12.5');
+  });
+
+  it('falls back to historyElements when the compact Polkaswap burn query is unavailable', async () => {
+    indexerMocks.fetchAllEntities
+      .mockRejectedValueOnce(new Error('Cannot query field "xorBurns" on type "Query"'))
+      .mockImplementationOnce(async (_query, _variables, parse) => [
+        parse(createBurnHistoryElement('account-history', '42', 150)),
+      ]);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
+
+    const result = await fetchData(100, 200);
+
+    expect(indexerMocks.fetchAllEntities).toHaveBeenCalledTimes(2);
+    expect(indexerMocks.fetchAllEntities.mock.calls[1]?.[1]).toEqual({
+      start: 100,
+      end: 200,
+    });
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          address: 'account-history',
+          blockHeight: 150,
+          txHash: '0xtx-account-history-150',
+        }),
+      ])
+    );
+    expect(result.find((item) => item.address === 'account-history')?.amount.toString()).toBe('42');
   });
 
   it('filters pre-indexing burn data by account on Polkaswap', async () => {

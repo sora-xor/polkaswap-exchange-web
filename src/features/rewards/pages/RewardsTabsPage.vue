@@ -65,7 +65,7 @@ const handleChangeTab = async (name: string) => {
 </script>
 
 <style lang="scss">
-$rewards-tabs-height: 64px;
+$rewards-tabs-height: 56px;
 $tab-margin: 22px;
 
 .rewards-tabs.container {
@@ -117,11 +117,13 @@ $tab-margin: 22px;
       &__nav-wrap {
         .el-tabs__item {
           color: var(--s-color-base-content-primary);
-          font-size: 24px;
-          font-weight: 500;
-          opacity: 0.82;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 1.2;
+          opacity: 0.72;
           text-overflow: ellipsis;
           overflow-x: hidden;
+          text-transform: none;
           white-space: nowrap;
           &,
           &.is-active {
@@ -151,19 +153,19 @@ $tab-margin: 22px;
 
   @include mobile(true) {
     .rewards-tabs__tabs {
-      height: 60px;
+      height: 52px;
 
       .el-tabs__header .el-tabs {
         &__nav,
         &__nav-wrap,
         &__item {
-          height: 60px;
-          line-height: 60px;
+          height: 52px;
+          line-height: 1.2;
         }
       }
 
       .el-tabs__header .el-tabs__nav-wrap .el-tabs__item {
-        font-size: 18px !important;
+        font-size: 14px !important;
         padding: 0 $inner-spacing-mini;
       }
     }

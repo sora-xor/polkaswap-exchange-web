@@ -242,22 +242,20 @@ defineExpose({
   }
 
   .el-collapse.neumorphic .el-icon-arrow-right {
-    transition: transform 0.3s;
-
     margin-left: 6px;
-    height: 15px;
-    line-height: 15px;
-    width: 15.8px;
+    height: var(--s-icon-font-size-medium);
+    line-height: 1;
+    width: var(--s-icon-font-size-medium);
     padding: 0;
     position: relative;
 
-    background-color: var(--s-color-base-content-tertiary);
-    color: var(--s-color-base-on-accent) !important;
-    border-radius: var(--s-border-radius-medium);
-    font-size: 16px;
+    background-color: transparent;
+    color: var(--s-color-base-content-tertiary) !important;
+    border-radius: 0;
+    font-size: var(--s-icon-font-size-mini);
     font-weight: 300;
     font-family: var(--s-font-family-icons) !important;
-    box-shadow: var(--s-shadow-element-pressed);
+    box-shadow: none;
   }
 
   .el-collapse-item__header {
@@ -279,15 +277,6 @@ defineExpose({
 
   .el-collapse-item__header .el-icon-arrow-right::before {
     position: absolute;
-    transition: transform 0.25s ease-in-out;
-  }
-
-  .el-collapse-item__header .el-icon-arrow-right.is-active {
-    transform: none;
-  }
-
-  .el-collapse-item__header .el-icon-arrow-right.is-active::before {
-    transform: scaleY(-1);
   }
 
   .info-line .s-icon-info-16 {

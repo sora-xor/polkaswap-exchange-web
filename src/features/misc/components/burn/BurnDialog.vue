@@ -312,35 +312,15 @@ watch(isVisible, async (dialogVisible) => {
 
 <style lang="scss">
 .dialog-card.dialog--confirm-burn {
-  --burn-surface: rgb(253, 247, 251);
-  --burn-surface-raised: rgb(255, 251, 254);
-  --burn-surface-recessed: rgb(246, 238, 244);
-  --burn-content-primary: rgb(42, 23, 31);
-  --burn-content-secondary: rgb(123, 111, 118);
-  --burn-content-tertiary: rgb(169, 158, 165);
-  --burn-hairline: rgba(42, 23, 31, 0.08);
-  --burn-shadow-ambient: rgba(42, 23, 31, 0.16);
-  --burn-shadow-contact: rgba(42, 23, 31, 0.1);
-  --burn-shadow-inset: rgba(42, 23, 31, 0.11);
-  --burn-highlight: rgba(255, 255, 255, 0.88);
-  --burn-highlight-soft: rgba(255, 255, 255, 0.54);
-  --burn-accent: var(--s-color-theme-accent, rgb(246, 35, 137));
-  --burn-accent-soft: rgba(246, 35, 137, 0.22);
+  --burn-warning-background: rgba(247, 84, 163, 0.12);
+  --burn-warning-border: rgba(247, 84, 163, 0.32);
 
   position: relative;
-  max-width: min(560px, calc(100vw - (#{$basic-spacing-big} * 2)));
-  border: 1px solid var(--burn-highlight-soft);
-  border-radius: 32px;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0) 38%),
-    linear-gradient(160deg, var(--burn-surface-raised), var(--burn-surface));
-  box-shadow:
-    -18px -18px 42px var(--burn-highlight),
-    22px 28px 64px var(--burn-shadow-ambient),
-    0 18px 36px rgba(42, 23, 31, 0.08),
-    inset 1px 1px 0 var(--burn-highlight),
-    inset -1px -1px 2px rgba(42, 23, 31, 0.05);
-  color: var(--burn-content-primary);
+  max-width: min(520px, calc(100vw - (#{$basic-spacing-big} * 2)));
+  border-radius: 24px;
+  background: var(--s-color-utility-surface);
+  box-shadow: var(--s-shadow-dialog);
+  color: var(--s-color-base-content-primary);
   overflow: hidden;
 }
 
@@ -348,173 +328,120 @@ watch(isVisible, async (dialogVisible) => {
 :root[design-system-theme='dark'] .dialog-card.dialog--confirm-burn,
 .sora-theme-provider[data-theme='dark'] .dialog-card.dialog--confirm-burn,
 .sora-theme-provider[design-system-theme='dark'] .dialog-card.dialog--confirm-burn {
-  --burn-surface: rgb(88, 45, 112);
-  --burn-surface-raised: rgb(100, 52, 127);
-  --burn-surface-recessed: rgb(76, 35, 101);
-  --burn-content-primary: rgb(249, 235, 242);
-  --burn-content-secondary: rgb(219, 191, 211);
-  --burn-content-tertiary: rgb(178, 140, 174);
-  --burn-hairline: rgba(249, 235, 242, 0.11);
-  --burn-shadow-ambient: rgba(20, 6, 38, 0.5);
-  --burn-shadow-contact: rgba(20, 6, 38, 0.34);
-  --burn-shadow-inset: rgba(20, 6, 38, 0.42);
-  --burn-highlight: rgba(155, 111, 165, 0.28);
-  --burn-highlight-soft: rgba(255, 255, 255, 0.08);
-  --burn-accent-soft: rgba(246, 35, 137, 0.3);
+  --burn-warning-background: rgba(247, 84, 163, 0.16);
+  --burn-warning-border: rgba(247, 84, 163, 0.42);
 }
 
 .dialog--confirm-burn .dialog-card__header {
-  padding: 36px 40px 20px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
-  box-shadow: inset 0 -1px 0 var(--burn-hairline);
+  padding: 24px 24px 8px;
+  border-bottom: 0;
+  box-shadow: none;
 }
 
 .dialog--confirm-burn .dialog-card__title-text {
-  color: var(--burn-content-primary);
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.08;
+  color: var(--s-color-base-content-primary);
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: normal;
+  line-height: 31.2px;
 }
 
 .dialog--confirm-burn .dialog-card__content {
-  padding: 24px 40px 22px;
-  max-height: min(76vh, 840px);
+  padding: 8px 24px 16px;
+  max-height: min(76vh, 760px);
 }
 
 .dialog--confirm-burn .dialog-card__footer {
   display: block;
-  padding: 18px 40px 40px;
+  padding: 8px 24px 24px;
 }
 
 .dialog--confirm-burn .dialog-card__close.el-button {
-  width: 52px;
-  min-width: 52px;
-  height: 52px;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
   padding: 0;
-  border-radius: 50% !important;
-  background: linear-gradient(145deg, var(--burn-surface-raised), var(--burn-surface-recessed));
-  color: var(--burn-content-tertiary);
-  box-shadow:
-    -8px -8px 18px var(--burn-highlight),
-    9px 11px 22px var(--burn-shadow-contact),
-    inset 1px 1px 0 var(--burn-highlight-soft);
-  transition:
-    box-shadow 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
-}
-
-.dialog--confirm-burn .dialog-card__close.el-button:hover,
-.dialog--confirm-burn .dialog-card__close.el-button:focus {
-  color: var(--burn-content-secondary);
-  transform: translateY(-1px);
-  box-shadow:
-    -10px -10px 22px var(--burn-highlight),
-    12px 14px 26px var(--burn-shadow-contact),
-    inset 1px 1px 0 var(--burn-highlight-soft);
-}
-
-.dialog--confirm-burn .dialog-card__close.el-button:active {
-  transform: translateY(1px);
-  box-shadow:
-    inset 7px 7px 16px var(--burn-shadow-inset),
-    inset -7px -7px 16px var(--burn-highlight);
+  border-radius: 24px !important;
 }
 
 .dialog--confirm-burn .dialog-card__close i {
-  font-size: 28px;
-  line-height: 28px;
+  font-size: 24px;
+  line-height: 24px;
 }
 
 .dialog--confirm-burn .burn-dialog__amount-fields {
   display: grid;
-  gap: 14px;
-  margin-bottom: 22px;
+  gap: $basic-spacing;
+  margin-bottom: $basic-spacing-medium;
 }
 
 .dialog--confirm-burn .token-input.s-input {
-  min-height: 112px;
+  min-height: 100px;
   margin-bottom: 0;
-  padding: 20px 24px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 30px;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 44%),
-    linear-gradient(145deg, var(--burn-surface-recessed), var(--burn-surface-raised));
-  box-shadow:
-    inset 9px 9px 22px var(--burn-shadow-inset),
-    inset -10px -10px 24px var(--burn-highlight),
-    0 14px 34px rgba(42, 23, 31, 0.06);
+  padding: $basic-spacing-medium;
+  border: 1px solid var(--s-color-base-border-secondary);
+  border-radius: 24px;
+  background: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
   transition:
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .dialog--confirm-burn .token-input.s-input.s-focused {
+  border-color: var(--s-color-theme-accent);
   box-shadow:
-    inset 7px 7px 18px var(--burn-shadow-inset),
-    inset -10px -10px 24px var(--burn-highlight),
-    0 0 0 1px var(--burn-accent-soft),
-    0 16px 34px rgba(246, 35, 137, 0.1);
+    0 0 0 1px var(--s-color-theme-accent-focused),
+    var(--s-shadow-element);
 }
 
 .dialog--confirm-burn .token-input.s-input > .s-input__content .el-input__inner {
-  color: var(--burn-content-primary);
-  font-size: 30px;
-  font-weight: 800;
+  color: var(--s-color-base-content-primary);
+  font-size: 24px;
+  font-weight: 700;
   letter-spacing: 0;
-  line-height: 1.1;
+  line-height: var(--s-line-height-medium);
 }
 
 .dialog--confirm-burn .token-input .input-title {
-  color: var(--burn-content-secondary);
-  font-size: 14px;
+  color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-extra-small);
   font-weight: 600;
   letter-spacing: 0;
 }
 
-.dialog--confirm-burn .token-input .input-title--primary {
-  color: inherit;
-}
-
 .dialog--confirm-burn .token-input .el-buttons {
-  padding: 4px 8px 4px 4px;
-  border-radius: 999px;
-  background: linear-gradient(145deg, var(--burn-surface-raised), var(--burn-surface-recessed));
-  box-shadow:
-    -5px -5px 12px var(--burn-highlight),
-    6px 7px 16px var(--burn-shadow-contact),
-    inset 1px 1px 0 var(--burn-highlight-soft);
-}
-
-.dialog--confirm-burn .token-input .token-select-button.el-button {
-  height: 40px;
-  border-radius: 999px;
+  padding: 0;
+  border-radius: var(--s-border-radius-small);
   background: transparent;
   box-shadow: none;
 }
 
+.dialog--confirm-burn .token-input .token-select-button.el-button {
+  height: 36px;
+  border-radius: var(--s-border-radius-small);
+}
+
 .dialog--confirm-burn .token-input .token-select-button__text {
-  color: var(--burn-content-primary);
-  font-size: 20px;
+  color: var(--s-color-base-content-primary);
+  font-size: var(--s-font-size-medium);
   letter-spacing: 0;
 }
 
 .dialog--confirm-burn .burn-dialog__metrics {
   display: grid;
-  gap: 8px;
-  margin-bottom: 22px;
+  gap: $basic-spacing-tiny;
+  margin-bottom: $basic-spacing-medium;
 }
 
 .dialog--confirm-burn .burn-dialog__info-line.info-line {
-  min-height: 44px;
-  padding: 8px 10px;
-  border-bottom: 0;
-  border-radius: 16px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0));
-  box-shadow: inset 0 -1px 0 var(--burn-hairline);
-  color: var(--burn-content-primary);
+  min-height: 38px;
+  padding: $basic-spacing-small 0;
+  border-bottom: 1px solid var(--s-color-base-border-secondary);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--s-color-base-content-primary);
 }
 
 .dialog--confirm-burn .burn-dialog__info-line.info-line + .burn-dialog__info-line.info-line {
@@ -522,13 +449,13 @@ watch(isVisible, async (dialogVisible) => {
 }
 
 .dialog--confirm-burn .burn-dialog__info-line .info-line-label {
-  color: var(--burn-content-primary);
+  color: var(--s-color-base-content-secondary);
   font-weight: 600;
   letter-spacing: 0;
 }
 
 .dialog--confirm-burn .burn-dialog__info-line .info-line-content {
-  color: var(--burn-content-primary);
+  color: var(--s-color-base-content-primary);
   gap: 6px;
   word-break: normal;
 }
@@ -543,46 +470,46 @@ watch(isVisible, async (dialogVisible) => {
 }
 
 .dialog--confirm-burn .nexus-recipient {
-  margin: 4px 0 10px;
-  padding: 0 10px;
+  margin: $basic-spacing-small 0;
+  padding: 0;
 }
 
 .dialog--confirm-burn .nexus-recipient__label {
-  color: var(--burn-content-secondary);
-  font-weight: 800;
+  color: var(--s-color-base-content-secondary);
+  font-weight: 600;
   letter-spacing: 0;
-  margin-bottom: 8px;
+  margin-bottom: $basic-spacing-small;
   text-transform: uppercase;
 }
 
 .dialog--confirm-burn .nexus-recipient__input.s-input {
   width: 100%;
-  border-radius: 999px;
-  background: var(--burn-surface-recessed);
-  box-shadow:
-    inset 5px 5px 12px var(--burn-shadow-inset),
-    inset -6px -6px 14px var(--burn-highlight);
+  min-height: 42px;
+  border: 1px solid var(--s-color-base-border-secondary);
+  border-radius: var(--s-border-radius-small);
+  background: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
 }
 
 .dialog--confirm-burn .nexus-recipient__input .s-input__content {
-  min-height: 44px;
-  padding: 0 18px;
+  min-height: 40px;
+  padding: 0 $basic-spacing-medium;
 }
 
 .dialog--confirm-burn .nexus-recipient__input .el-input__inner {
-  color: var(--burn-content-primary);
+  color: var(--s-color-base-content-primary);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0;
 }
 
 .dialog--confirm-burn .nexus-recipient__input .el-input__inner::placeholder {
-  color: var(--burn-content-tertiary);
+  color: var(--s-color-base-content-tertiary);
 }
 
 .dialog--confirm-burn .nexus-recipient__message {
-  color: var(--burn-content-secondary);
-  margin-top: 10px;
+  color: var(--s-color-base-content-secondary);
+  margin-top: $basic-spacing-small;
 }
 
 .dialog--confirm-burn .nexus-recipient__message--error {
@@ -592,38 +519,33 @@ watch(isVisible, async (dialogVisible) => {
 .dialog--confirm-burn .disclaimer {
   align-items: center;
   width: 100%;
-  margin-top: 4px;
-  padding: 24px 26px;
-  border: 1px solid var(--burn-highlight-soft);
-  border-radius: 28px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 42%), var(--burn-surface-raised);
-  box-shadow:
-    -9px -9px 22px var(--burn-highlight),
-    12px 16px 32px rgba(42, 23, 31, 0.1),
-    inset 1px 1px 0 var(--burn-highlight-soft);
+  margin-top: $basic-spacing;
+  padding: $basic-spacing-medium;
+  border: 1px solid var(--burn-warning-border);
+  border-radius: var(--s-border-radius-small);
+  background: var(--burn-warning-background);
+  box-shadow: none;
 }
 
 .dialog--confirm-burn .disclaimer__text {
   flex: 1;
-  color: var(--burn-content-primary);
-  font-size: 16px;
-  font-weight: 500;
+  color: var(--s-color-base-content-primary);
+  font-size: var(--s-font-size-small);
+  font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.35;
+  line-height: var(--s-line-height-medium);
 }
 
 .dialog--confirm-burn .disclaimer__badge {
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin-left: 20px;
+  width: 40px;
+  height: 40px;
+  margin-left: $basic-spacing-medium;
   border-radius: 50%;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 42%), var(--burn-accent);
-  box-shadow:
-    -6px -6px 14px var(--burn-highlight),
-    8px 10px 20px rgba(246, 35, 137, 0.3),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.38);
+  background: var(--s-color-status-error);
+  box-shadow: none;
+  flex-shrink: 0;
 }
 
 .dialog--confirm-burn .disclaimer__icon {
@@ -632,36 +554,47 @@ watch(isVisible, async (dialogVisible) => {
 
 .dialog--confirm-burn .burn-dialog__submit.el-button {
   width: 100%;
-  min-height: 58px;
-  border-radius: 999px !important;
-  font-size: 26px !important;
+  min-height: 56px !important;
+  height: auto !important;
+  border-radius: var(--s-border-radius-small) !important;
+  font-size: 18px !important;
   font-weight: 800;
   letter-spacing: 0;
-  box-shadow:
-    -7px -7px 18px var(--burn-highlight),
-    12px 16px 28px rgba(246, 35, 137, 0.28),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.38);
+  line-height: 24px;
+  text-align: center;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  box-shadow: var(--s-shadow-element);
   transition:
     box-shadow 180ms ease,
     filter 180ms ease,
     transform 180ms ease;
 }
 
+.dialog--confirm-burn .burn-dialog__submit.el-button .s-button__text {
+  display: block !important;
+  font-size: inherit !important;
+  justify-content: center;
+  letter-spacing: 0 !important;
+  line-height: inherit !important;
+  max-width: 100%;
+  overflow: visible !important;
+  overflow-wrap: anywhere !important;
+  text-align: center;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
 .dialog--confirm-burn .burn-dialog__submit.el-button:not(:disabled):not(.is-disabled):hover,
 .dialog--confirm-burn .burn-dialog__submit.el-button:not(:disabled):not(.is-disabled):focus {
   filter: saturate(1.06) brightness(1.02);
   transform: translateY(-1px);
-  box-shadow:
-    -9px -9px 22px var(--burn-highlight),
-    15px 19px 34px rgba(246, 35, 137, 0.32),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.42);
+  box-shadow: var(--s-shadow-element);
 }
 
 .dialog--confirm-burn .burn-dialog__submit.el-button:not(:disabled):not(.is-disabled):active {
   transform: translateY(1px);
-  box-shadow:
-    inset 7px 7px 14px rgba(128, 8, 74, 0.24),
-    inset -6px -6px 14px rgba(255, 255, 255, 0.22);
+  box-shadow: var(--s-shadow-element-pressed);
 }
 
 .dialog--confirm-burn .burn-dialog__submit.el-button:disabled,
@@ -673,44 +606,49 @@ watch(isVisible, async (dialogVisible) => {
 @media (max-width: 560px) {
   .dialog-card.dialog--confirm-burn {
     max-width: calc(100vw - (#{$basic-spacing} * 2));
-    border-radius: 26px;
+    border-radius: 24px;
   }
 
   .dialog--confirm-burn .dialog-card__header {
-    padding: 28px 24px 16px;
+    padding: 20px 20px 8px;
   }
 
   .dialog--confirm-burn .dialog-card__title-text {
-    font-size: 30px;
+    font-size: 22px;
+    line-height: 28px;
   }
 
   .dialog--confirm-burn .dialog-card__content {
-    padding: 20px 24px 18px;
+    padding: 8px 20px 14px;
   }
 
   .dialog--confirm-burn .dialog-card__footer {
-    padding: 14px 24px 30px;
+    padding: 8px 20px 20px;
   }
 
   .dialog--confirm-burn .token-input.s-input {
-    min-height: 96px;
-    padding: 18px 20px;
+    min-height: 92px;
+    padding: $basic-spacing;
+  }
+
+  .dialog--confirm-burn .token-input.s-input > .s-input__content .el-input__inner {
+    font-size: 22px;
   }
 
   .dialog--confirm-burn .burn-dialog__submit.el-button {
-    min-height: 54px;
-    font-size: 22px !important;
+    min-height: 52px !important;
+    font-size: 16px !important;
   }
 
   .dialog--confirm-burn .disclaimer {
     align-items: flex-start;
-    padding: 20px;
+    padding: $basic-spacing;
   }
 
   .dialog--confirm-burn .disclaimer__badge {
-    width: 48px;
-    height: 48px;
-    margin-left: 14px;
+    width: 36px;
+    height: 36px;
+    margin-left: $basic-spacing;
   }
 }
 </style>
