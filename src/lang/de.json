@@ -73,7 +73,7 @@
         "noContacts": "Sie haben noch keine Kontakte hinzugefügt",
         "noFoundRecords": "Keine Aufzeichnungen gefunden",
         "none": "Keiner",
-        "notSoraAddress": "Diese Adresse wird unten als {SORA}-Adresse gespeichert. Stellen Sie sicher, dass der Empfänger auf die {SORA}-Kette zugreifen kann:",
+        "notSoraAddress": "Diese Adresse wird unten als {Sora}-Adresse gespeichert. Stellen Sie sicher, dass der Empfänger auf die {Sora}-Kette zugreifen kann:",
         "options": {
             "delete": "Löschen",
             "edit": "Kontakt bearbeiten",
@@ -261,18 +261,18 @@
         "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Kopieren Sie den Sende-Hash des SORA-Netzwerks",
+        "enterNexusRecipient": "Geben Sie das SORA-NEXUS-Konto ein",
+        "invalidNexusRecipient": "UNGÜLTIGES SORA NEXUS-KONTO",
+        "minamotoClaimDescription": "Verwenden Sie den Sende-Hash des SORA-Netzwerks für Ihren Anspruch auf SORA Minamoto. In jeder Zeile wird angezeigt, welche Verbrennungsreserven vorhanden sind.",
+        "minamotoClaimTitle": "Ihre Minamoto-Anspruchsdetails",
+        "nexusRecipientLabel": "SORA Nexus-Konto",
+        "nexusRecipientPlaceholder": "Geben Sie Ihr SORA Nexus i105-Konto ein",
+        "nexusRecipientWarning": "Ihr SORA Nexus-Konto wird bei dieser Brenntransaktion öffentlich erfasst.",
+        "soraNetworkTxHashLabel": "SORA-Netzwerk-TX-Hash",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "WIEVIEL {tokenSymbol} WOLLEN SIE?",
+        "ssTokensLabel": "SS-Token"
     },
     "buttons": {
         "chooseAToken": "Wähle einen Token",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "Ja, ich verstehe das Risiko",
         "header": "Achtung",
-        "info": "Ihr {symbol} -Guthaben wird nach dieser Transaktion weniger als {fee} {symbol} betragen. Sie können die Netzwerkgebühr für eine weitere Transaktion nicht bezahlen.",
+        "info": "Ihr XOR-Guthaben wird nach dieser Transaktion weniger als {fee} XOR betragen. Sie können die Netzwerkgebühr für eine weitere Transaktion nicht bezahlen.",
         "payoff": "Du musst die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen {Sora}-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits auf deinem Konto befindet, in XOR einzutauschen."
     },
     "confirmSupply": {
@@ -456,7 +456,7 @@
             "placeholder": "Mnemonische Phrase"
         },
         "accountName": {
-            "desc": "Dies ist der Name Ihres Kontos. Es ist nur für Sie in {Polkaswap} sichtbar.",
+            "desc": "Dies ist der Name Ihres Kontos. Es wird in {AppName} nur für Sie sichtbar sein.",
             "placeholder": "Kontoname"
         },
         "addAccount": "Füge ein Konto hinzu",
@@ -554,7 +554,7 @@
         "synthetics": "Synthetische Tokens"
     },
     "FAQ": "{AppName} FAQ",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Bitte beachten Sie, dass die auf dieser Website mit Kryptowährungen verbundenen Fiat-Werte vom Polkaswap-Indexer bereitgestellt werden und ungefähre Werte sind. Aufgrund der inhärenten Komplexität dieser Berechnungen kann eine absolute Genauigkeit zu jedem Zeitpunkt nicht garantiert werden.",
     "fiatPayment": {
         "cedeStoreBtn": "Überweisung von {value1} über {value2}",
         "cedeStoreDesc": "Übertragen Sie alle Token von {value1} nach {value2} über {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal.",
         "historyBtn": "Meine Einkäufe",
         "historyTitle": "Verlauf der Transaktionen",
-        "moonpayDesc": "Kaufen Sie ETH-Tokens auf {Ethereum} und übertragen Sie sie über die Bridge an das {SORA}-Netzwerk",
+        "moonpayDesc": "Kaufen Sie ETH-Tokens für {Ethereum} und übertragen Sie diese über die Bridge an das {Sora}-Netzwerk",
         "moonpayTitle": "Kaufen Sie ETH über MoonPay"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "Zuerst",
     "footer": {
         "internet": {
-            "action": "{Polkaswap} aktualisieren",
+            "action": "{AppName} aktualisieren",
             "desc": {
                 "disabled": "Getrennt",
                 "stable": "Optimale Geschwindigkeit",
                 "unstable": "Langsame Verbindung"
             },
-            "dialogDesc": "{Polkaswap} erfordert eine Internetverbindung für eine stabile Erfahrung",
+            "dialogDesc": "{AppName} erfordert eine Internetverbindung für ein stabiles Erlebnis",
             "dialogTitle": "Verbinden Sie sich mit der Internetquelle",
             "label": "Ihre Internetgeschwindigkeit",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Indexer",
                 "title": "{Sora} Netzwerkdienstauswahl",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Verwenden Sie Polkaswap Indexer für Fiat-Werte"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Polkaswap-Indexerblock #{block}",
             "label": "Statistikdienste",
             "title": {
                 "available": "Statistiken verfügbar",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "Der Betrag, den Sie noch aus Ihrer Position entnehmen können, ohne Ihr Kreditlimit zu überschreiten, basierend auf Ihrem aktuellen Sicherheitenwert.",
         "debtDetails": "Schulden Details",
         "depositCollateral": "Kollateral einzahlen",
-        "disclaimerDescription": "Das Ausleihen digitaler Vermögenswerte über {Polkaswap} birgt erhebliche Risiken und erfolgt vollständig auf Ihr eigenes Risiko. Der Wert digitaler Vermögenswerte ist stark volatil, und Änderungen der Marktpreise der von Ihnen ausgeliehenen oder als Sicherheit verwendeten Vermögenswerte können zu erheblichen finanziellen Verlusten führen.",
+        "disclaimerDescription": "Das Ausleihen digitaler Vermögenswerte über {AppName} birgt ein erhebliches Risiko und erfolgt ausschließlich auf Ihr eigenes Risiko. Der Wert digitaler Vermögenswerte ist sehr volatil und jede Änderung der Marktpreise der Vermögenswerte, die Sie geliehen oder als Sicherheit verwendet haben, kann zu erheblichen finanziellen Verlusten führen.",
         "error": {
             "borrowMoreThanAvailable": "Verfügbarer Schuldenbetrag überschritten",
             "enterBorrow": "Geben Sie den Betrag ein, den Sie ausleihen möchten",
@@ -1183,7 +1183,7 @@
             "limitOrder": "Mit einer „Limit“-Order können Sie den genauen Preis angeben, zu dem Sie einen Vermögenswert kaufen oder verkaufen möchten. Eine „Limit Buy“-Order wird nur zum angegebenen Preis oder niedriger ausgeführt, während eine „Limit Sell“-Order nur zum angegebenen Preis oder höher ausgeführt wird. Diese Kontrolle stellt sicher, dass Sie nicht mehr bezahlen oder für weniger verkaufen, als Ihnen lieb ist.",
             "marketOrder": "Eine „Market Order“ ist eine Order zum sofortigen Kauf oder Verkauf zum besten verfügbaren aktuellen Preis. Es ist nicht erforderlich, einen Preis festzulegen, was eine schnelle Ausführung gewährleistet, allerdings mit dem Nachteil einer geringeren Kontrolle über den erhaltenen oder gezahlten Preis. Diese Art von Order wird verwendet, wenn die Sicherheit der Ausführung Vorrang vor der Preiskontrolle hat.",
             "marketWidget": "Dieses Widget zeigt einen Echtzeit-Stream ausgeführter Trades auf dem Markt und bietet Informationen über Transaktionsvolumina, aktuelle Aktivitäten und aktuelle Markttrends. Durch die Beobachtung des Zeitpunkts, des Preises und des Umfangs tatsächlicher Geschäfte können Händler Einblicke in die Marktdynamik und -stimmung gewinnen und so Handelsmöglichkeiten erkennen und fundierte Entscheidungen treffen",
-            "pairsList": "Eine Echtzeitliste mit aktuellen Kauf- und Verkaufsaufträgen für eine Kryptowährung. Es hilft Ihnen, die Nachfrage, die potenzielle Preisrichtung und das Handelsvolumen im SORA-Netzwerk und Polkaswap DEX zu verstehen",
+            "pairsList": "Eine Echtzeitliste mit aktuellen Kauf- und Verkaufsaufträgen für eine Kryptowährung. Es hilft Ihnen, die Nachfrage, die potenzielle Preisrichtung und das Handelsvolumen im {Sora}-Netzwerk und {AppName}-DEX zu verstehen",
             "txDetails": {
                 "amount": "Der „Betrag“ bezieht sich auf die Gesamtzahl der Vermögenswerte, die Sie in Ihrer Bestellung kaufen oder verkaufen möchten. Die Angabe ist wichtig, da sie die Größe Ihrer Transaktion bestimmt und sich auf die Gesamtkosten für Kaufaufträge oder den Umsatz für Verkaufsaufträge auswirkt.",
                 "expiryDate": "Das „Ablaufdatum“ ist die Frist für die Ausführung Ihrer Bestellung. Wenn der Markt Ihren angegebenen Preis nicht vor diesem Datum erreicht, wird die Bestellung automatisch storniert. Sie müssen nicht ständig warten, wenn die Marktbedingungen nicht Ihren Handelspräferenzen entsprechen.",
@@ -1400,7 +1400,7 @@
         "startInviting": "Bonde XOR, um andere zu empfehlen",
         "title": "Referral Programm",
         "unbondTitle": "XOR unbonden",
-        "welcomeMessage": "\nKomm zu mir auf {Polkaswap}!\n\nEntdecke den stylischen {DEX}, mit dem du Dutzende Token mit Cross-Chain-Swaps, Orderbuch und vielen Belohnungen tauschen kannst!\n\n🎁 Lade Freunde ein und verdiene 10% ihrer Handelsgebühren\n\nBis dann!"
+        "welcomeMessage": "Begleiten Sie mich auf {AppName}!\n\nEntdecken Sie das stilvolle {DEX}, mit dem Sie über Dutzende Token mit Cross-Chain-Swaps, Orderbuch und vielen Belohnungen tauschen können!\n\n🎁 Laden Sie Freunde ein und verdienen Sie 10 % ihrer Handelsgebühren\n\nWir sehen uns dort!"
     },
     "releaseNotesText": "Versionshinweise",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Regulierte Institution"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Menge",
+        "assetLabel": "Vermögenssymbol",
+        "clearPayload": "Klare Form",
+        "copyPayload": "Nutzlast kopieren",
+        "destinationAddressLabel": "Empfängeradresse",
+        "destinationNetworkLabel": "Zum Netzwerken",
+        "emptyPayloadHelp": "Legen Sie die Formularfelder fest, um eine versandfertige SCCP-Nutzlast zu generieren.",
+        "generatePayload": "Generieren Sie SCCP-Nutzlast",
+        "noteLabel": "Optionales Memo",
+        "payloadCopied": "Nutzlast kopiert",
+        "payloadCopyFailed": "Der Kopiervorgang ist fehlgeschlagen. Bitte versuchen Sie es erneut",
+        "payloadLabel": "Nutzlast vorbereitet",
+        "sourceNetworkLabel": "Aus dem Netzwerk",
+        "subtitle": "Secure Cross-Chain Protocol (SCCP)-Übertragungshelfer für BSC, Ethereum und TRON.",
+        "supportedNetworks": "Unterstützte Ketten: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Suchen",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "Sie haben keine nominierten Validatoren",
             "noValidators": "Es gibt keine Validatoren, die den angegebenen Filter erfüllen",
             "return": "Zurückkehren",
-            "search": "Suchen..."
+            "search": "Suchen...",
+            "staked": "Abgesteckt",
+            "stakedTooltip": "Gesamter XOR-Einsatz mit diesem Validator, einschließlich des eigenen Einsatzes des Validators und des nominierten Einsatzes"
         },
         "withdraw": {
             "beingWithdrawn": "Zurückgezogen werden",

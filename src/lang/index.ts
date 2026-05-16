@@ -59,7 +59,7 @@ const i18n = createI18n({
 
 const i18nGlobal = i18n.global;
 const loadedLanguages: Array<string> = [];
-applyDocumentDirection(Language.EN);
+applyDocumentLocaleAttributes(Language.EN);
 
 const LOCALIZED_TRANSLATION_CONST_DEFAULTS = {
   AppName: TranslationConsts.AppName,
@@ -76,9 +76,14 @@ const AKK_TRANSLATION_CONST_OVERRIDES = {
 type LocalizedTranslationConstKey = keyof typeof LOCALIZED_TRANSLATION_CONST_DEFAULTS;
 type MutableLocalizedTranslationConsts = Record<LocalizedTranslationConstKey, string>;
 
-function applyDocumentDirection(locale: string): void {
+/**
+ * Applies document-level locale attributes used by browser text shaping,
+ * accessibility, RTL layout, and locale-specific typography rules.
+ */
+function applyDocumentLocaleAttributes(locale: string): void {
   try {
     if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('lang', locale);
       document.documentElement.setAttribute('dir', getLocaleDirection(locale));
     }
   } catch (e) {
@@ -160,7 +165,7 @@ export async function setI18nLocale(lang: Language): Promise<void> {
 
   applyTranslationConstLocaleOverrides(locale);
   i18nGlobal.locale.value = locale;
-  applyDocumentDirection(locale);
+  applyDocumentLocaleAttributes(locale);
 }
 const globalComposer = i18n.global as Record<string, unknown>;
 if (typeof globalComposer.rt !== 'function') {

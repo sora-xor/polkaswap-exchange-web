@@ -15,6 +15,7 @@ export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountA
 export type GetActiveTransaction<T> = () => Nullable<T>;
 export type AddTransactionToProgress = (id: string) => void;
 export type RemoveTransactionFromProgress = (id: string) => void;
+export type IsTransactionInProgress = (id: string) => boolean;
 export type GetBridgeHistoryInstance<T> = () => Promise<T>;
 export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
@@ -56,6 +57,8 @@ export interface IBridgeOptions<T extends IBridgeTransaction> {
   getActiveTransaction: GetActiveTransaction<T>;
   addTransactionToProgress: AddTransactionToProgress;
   removeTransactionFromProgress: RemoveTransactionFromProgress;
+  /** Returns whether the transaction was already being processed before the current reducer step. */
+  isTransactionInProgress?: IsTransactionInProgress;
   // transaction signing
   beforeTransactionSign: BeforeTransactionSign;
   // boundary states ("failed", "done")

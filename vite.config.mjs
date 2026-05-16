@@ -1,4 +1,5 @@
-import { existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 import './scripts/suppress-baseline-warning.js';
 
@@ -13,6 +14,36 @@ const isTest = !!process.env.VITEST;
 const projectArgIndex = process.argv.findIndex((arg) => arg === '--project');
 const vitestProject = projectArgIndex >= 0 ? process.argv[projectArgIndex + 1] : undefined;
 const disableNodePolyfills = vitestProject === 'unit-scripts' || process.env.DISABLE_VITE_NODE_POLYFILLS === '1';
+const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('./package.json', import.meta.url)), 'utf8'));
+
+function resolveGitRevision() {
+  try {
+    return execFileSync('git', ['rev-parse', '--short=12', 'HEAD'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    return '';
+  }
+}
+
+function resolveAppVersion() {
+  const explicitVersion =
+    process.env.VITE_APP_VERSION ||
+    process.env.SOURCE_VERSION ||
+    process.env.GIT_COMMIT ||
+    process.env.VERCEL_GIT_COMMIT_SHA ||
+    process.env.CF_PAGES_COMMIT_SHA;
+
+  if (explicitVersion?.trim()) {
+    return explicitVersion.trim().slice(0, 40);
+  }
+
+  const gitRevision = resolveGitRevision();
+  return [packageJson.version, gitRevision].filter(Boolean).join('-');
+}
+
+process.env.VITE_APP_VERSION = process.env.VITE_APP_VERSION || resolveAppVersion();
 
 const stylesPath = fileURLToPath(new URL('./src/styles', import.meta.url));
 const nodeModulesPath = fileURLToPath(new URL('./node_modules', import.meta.url));

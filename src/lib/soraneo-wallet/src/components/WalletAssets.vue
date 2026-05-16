@@ -485,7 +485,7 @@ $padding: 5px;
       }
       &--fiat-value {
         margin-top: $basic-spacing-extra-mini;
-        color: var(--s-color-base-content-secondary);
+        color: var(--s-color-fiat-value);
         font-size: var(--s-font-size-extra-small);
         font-weight: 400;
         letter-spacing: 0;

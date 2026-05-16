@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "You don't have any nominated validators",
             "noValidators": "There are no validators satisfying the specified filter",
             "return": "Return",
-            "search": "Search..."
+            "search": "Search...",
+            "staked": "Staked",
+            "stakedTooltip": "Total XOR staked with this validator, including the validator's own stake and nominated stake"
         },
         "withdraw": {
             "beingWithdrawn": "Being withdrawn",

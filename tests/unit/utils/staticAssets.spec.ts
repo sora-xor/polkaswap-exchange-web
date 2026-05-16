@@ -1,10 +1,13 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  appendStaticAssetVersion,
   ensureRelativeAssetPath,
   getEnvConfigCandidates,
   getEnvConfigFilename,
+  getStaticAssetVersion,
   resolveStaticAssetUrl,
+  resolveVersionedStaticAssetUrl,
 } from '@/utils/staticAssets';
 
 describe('getEnvConfigFilename', () => {
@@ -48,6 +51,30 @@ describe('ensureRelativeAssetPath', () => {
 
   it('throws when an empty asset path is provided', () => {
     expect(() => ensureRelativeAssetPath('')).toThrowError('Static asset path is required');
+  });
+});
+
+describe('static asset versioning', () => {
+  it('normalizes explicit build versions', () => {
+    expect(getStaticAssetVersion('  1.46.0-abcdef  ')).toBe('1.46.0-abcdef');
+  });
+
+  it('adds a build version query to plain static asset URLs', () => {
+    expect(appendStaticAssetVersion('env.json', '1.46.0-abcdef')).toBe('env.json?v=1.46.0-abcdef');
+  });
+
+  it('preserves existing query strings and fragments', () => {
+    expect(appendStaticAssetVersion('marketing.json?locale=en#/ignored', 'build 1')).toBe(
+      'marketing.json?locale=en&v=build%201#/ignored'
+    );
+  });
+
+  it('does not duplicate an existing version query', () => {
+    expect(appendStaticAssetVersion('env.json?v=old', 'new')).toBe('env.json?v=old');
+  });
+
+  it('leaves URLs unchanged when no build version is available', () => {
+    expect(appendStaticAssetVersion('env.json', '')).toBe('env.json');
   });
 });
 
@@ -157,5 +184,15 @@ describe('resolveStaticAssetUrl', () => {
     } as Window;
 
     expect(resolveStaticAssetUrl('env.json')).toBe('https://example.org/env.json');
+  });
+
+  it('resolves versioned static assets under the runtime base path', () => {
+    (global as any).window = {
+      location: { href: 'https://example.org/ipfs/QmHash/index.html#/swap' },
+    } as Window;
+
+    expect(resolveVersionedStaticAssetUrl('env.json', '1.46.0-abcdef')).toBe(
+      'https://example.org/ipfs/QmHash/env.json?v=1.46.0-abcdef'
+    );
   });
 });

@@ -135,7 +135,7 @@
         },
         "guide": {
             "createToken": "Створіть свій токен",
-            "createTokenDesc": "Легко запустіть унікальний токен — у форматі NFT або SBT — використовуючи надійну та безпечну інфраструктуру мережі {Sora}",
+            "createTokenDesc": "Легко запустіть свій унікальний токен, доступний у різних форматах, наприклад NFT і SBT, використовуючи надійну безпечну інфраструктуру мережі SORA.",
             "disclaimerSbt": "Тримайте цю сторінку відкритою протягом усього процесу. Закриття чи перехід на іншу сторінку змусить почати спочатку. Виконуйте кроки швидко, щоб уникнути завершення часу очікування.",
             "stepOneDesc": "Виберіть або створіть активи, які ви особисто створили та регулюєте. Це активи під вашим контролем та управлінням.",
             "stepOneTitle": "Виберіть або створіть регульовані активи",
@@ -261,18 +261,18 @@
         "title": "Дозвольте доступ до камери в налаштуваннях браузера"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Скопіюйте хеш SORA Network tx",
+        "enterNexusRecipient": "УВІЙТИ ОБЛІКОВИЙ ЗАПИС SORA NEXUS",
+        "invalidNexusRecipient": "НЕДІЙСНИЙ ОБЛІКОВИЙ ЗАПИС SORA NEXUS",
+        "minamotoClaimDescription": "Використовуйте хеш SORA Network tx для своєї претензії на SORA Minamoto. Кожен рядок показує, які резерви спалюються.",
+        "minamotoClaimTitle": "Деталі вашої претензії Мінамото",
+        "nexusRecipientLabel": "Обліковий запис SORA Nexus",
+        "nexusRecipientPlaceholder": "Введіть свій обліковий запис SORA Nexus i105",
+        "nexusRecipientWarning": "Ваш обліковий запис SORA Nexus зареєстровано у відкритому доступі в цій записаній транзакції.",
+        "soraNetworkTxHashLabel": "SORA Мережа tx хеш",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "СКІЛЬКИ {tokenSymbol} ВИ ХОЧЕТЕ?",
+        "ssTokensLabel": "Жетони SS"
     },
     "buttons": {
         "chooseAToken": "Виберіть токен",
@@ -517,8 +517,8 @@
     "dexSettings": {
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
-            "SMART": "{smartAlgorithm} маршрутизація ліквідності забезпечує найкращу ціну для будь-якої транзакції, поєднуючи лише найкращі варіанти цін з усіх доступних ринків. Коли це можливо, крива облігацій токенів (__PH __ 1__) буде використовуватися для забезпечення ліквідності, якщо ціна активу є більш доступною, ніж з інших джерел, на яких використовується пул __PH __ 2__.",
-            "TBC": "{tbcAlgorithm} — купівля лише з кривої прив 'язки токенів (первинний ринок). Існує ймовірність того, що ціна може стати несприятливою порівняно з пулом __PH __ 1__ (вторинний ринок), але вартість, отримана від отриманих винагород, може виявитися набагато сприятливішою з часом.",
+            "SMART": "{smartAlgorithm} маршрутизація ліквідності забезпечує найкращу ціну для будь-якої транзакції, поєднуючи лише найкращі цінові варіанти з усіх доступних ринків. Якщо доступна, токенова крива зв’язування ({tbcAlgorithm}) використовуватиметься для ліквідності, доки ціна активу є доступнішою, ніж з інших джерел, на основі яких використовується пул {xycAlgorithm}.",
+            "TBC": "{tbcAlgorithm} — купівля лише з кривої Token Bonding (первинний ринок). Існує ймовірність того, що ціна може стати несприятливішою порівняно з пулом {xycAlgorithm} (вторинний ринок), але вартість, отримана від наданих винагород, з часом може виявитися набагато вигіднішою.",
             "XYK": "{xycAlgorithm} — купівля лише в пулі XYK (вторинний ринок). Традиційний обмін пулом XYK."
         },
         "marketAlgorithmTooltip": {
@@ -554,7 +554,7 @@
         "synthetics": "синтетичні токени"
     },
     "FAQ": "Поширені запитання {AppName}",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Зверніть увагу, що фіатні значення, пов’язані з криптовалютами на цьому веб-сайті, надаються індексатором Polkaswap і є приблизними. Враховуючи природну складність цих обчислень, не можна гарантувати абсолютну точність у будь-який час.",
     "fiatPayment": {
         "cedeStoreBtn": "Переказ від {value1} через {value2}",
         "cedeStoreDesc": "Переказ будь-яких токенів з {value1} на {value2} через {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Вибачте за незручності. Ми наполегливо працюємо над вирішенням цієї проблеми. Повторіть спробу пізніше.",
         "historyBtn": "Мої покупки",
         "historyTitle": "Журнал операцій (транзакцій)",
-        "moonpayDesc": "Придбайте токени ETH на {Ethereum} та передайте їх до мережі __PH __ 1__ через міст",
+        "moonpayDesc": "Придбайте токени ETH на {Ethereum} та передайте їх у мережу {Sora} через міст",
         "moonpayTitle": "Купуйте ETH через MoonPay"
     },
     "filter": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Індексатор:",
                 "title": "{Sora} Вибір мережевої послуги",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Використовуйте Polkaswap Indexer для фіатних значень"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Блок індексатора Polkaswap #{block}",
             "label": "Послуги статистики",
             "title": {
                 "available": "Статистика відсутня.",
@@ -1241,7 +1241,7 @@
             "titleTask": "Внесення та виведення"
         },
         "feesSpent": "Витрачені комісії",
-        "firstSoraNetworkTransaction": "Ваша перша транзакція в мережі {Sora}",
+        "firstSoraNetworkTransaction": "Ваша перша мережева транзакція SORA",
         "firstTxAccount": {
             "descriptionTask": "Завершіть першу транзакцію XOR і отримайте винагороду",
             "titleProgress": "Перша транзакція",
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Регульована установа"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Сума",
+        "assetLabel": "Символ активу",
+        "clearPayload": "Чітка форма",
+        "copyPayload": "Копіювати корисне навантаження",
+        "destinationAddressLabel": "Адреса отримувача",
+        "destinationNetworkLabel": "До мережі",
+        "emptyPayloadHelp": "Налаштуйте поля форми для створення готового до надсилання корисного навантаження SCCP.",
+        "generatePayload": "Створення корисного навантаження SCCP",
+        "noteLabel": "Додаткова пам'ятка",
+        "payloadCopied": "Корисне навантаження скопійовано",
+        "payloadCopyFailed": "Помилка копіювання, спробуйте ще раз",
+        "payloadLabel": "Підготовлений корисний вантаж",
+        "sourceNetworkLabel": "З мережі",
+        "subtitle": "Помічник передавання безпечного міжланцюгового протоколу (SCCP) для BSC, Ethereum і TRON.",
+        "supportedNetworks": "Підтримувані ланцюжки: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Пошук",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "У вас немає номінованих валідаторів",
             "noValidators": "Немає валідаторів, що відповідають фільтрам",
             "return": "Повернутись",
-            "search": "Пошук..."
+            "search": "Пошук...",
+            "staked": "Ставили",
+            "stakedTooltip": "Загальна частка валідатора XOR, включно з власною часткою валідатора та номінальною часткою"
         },
         "withdraw": {
             "beingWithdrawn": "Виведення триває",

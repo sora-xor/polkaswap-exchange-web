@@ -70,8 +70,9 @@
                     class="points__card"
                   ></point-card>
                   <first-tx-card
+                    v-if="firstTxTimestamp"
                     class="points__first-tx-card"
-                    :date="pointsForCards?.firstTxAccount?.currentProgress ?? 0"
+                    :date="firstTxTimestamp"
                   ></first-tx-card>
                 </div>
               </s-scrollbar>
@@ -148,6 +149,7 @@ const totalPoints = computed(() => {
   if (!pointsForCards.value) return 0;
   return Object.values(pointsForCards.value).reduce((sum, category) => sum + (category.points || 0), 0);
 });
+const firstTxTimestamp = computed(() => pointsForCards.value?.firstTxAccount?.currentProgress || null);
 const formattedTotalPoints = computed(() =>
   new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(totalPoints.value)
 );
@@ -256,12 +258,17 @@ const initData = async (): Promise<void> => {
     : null;
 };
 
+/**
+ * Starts long-lived liquidity subscriptions without holding the page-level loading overlay open.
+ */
+const subscribeAccountLiquidity = async (): Promise<void> => {
+  await poolStore.subscribeOnAccountLiquidityList();
+  await poolStore.subscribeOnAccountLiquidityUpdates();
+};
+
 onMounted(() => {
-  void withApi(async () => {
-    await poolStore.subscribeOnAccountLiquidityList();
-    await poolStore.subscribeOnAccountLiquidityUpdates();
-    await initData();
-  });
+  void subscribeAccountLiquidity().catch(console.error);
+  void withApi(initData);
 });
 
 watch(isLoggedIn, async (value) => {
@@ -285,38 +292,46 @@ watch(isLoggedIn, async (value) => {
 
 .points__tabs {
   .el-tabs__header {
-    margin-bottom: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-small;
     width: 100% !important;
   }
   .el-tabs__nav {
-    background-color: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--s-border-radius-big);
+    background-color: var(--s-color-utility-surface);
+    border: 1px solid var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-small);
     box-sizing: border-box;
+    box-shadow: var(--s-shadow-element-pressed);
     display: flex;
-    gap: $inner-spacing-mini;
+    gap: $inner-spacing-tiny;
     justify-content: center;
-    padding: $inner-spacing-mini;
+    padding: $inner-spacing-tiny;
     width: 100%;
   }
   .el-tabs__item {
     border: 1px solid transparent;
-    border-radius: var(--s-border-radius-small) !important;
+    border-radius: var(--s-border-radius-mini) !important;
+    color: var(--s-color-base-content-secondary);
     flex: 1 1 0;
-    height: 44px;
-    line-height: 44px;
+    height: 40px;
+    line-height: 40px;
     min-width: 0;
     overflow: hidden;
     padding: 0 $inner-spacing-medium !important;
     text-align: center;
     text-overflow: ellipsis;
+    transition: var(--s-transition-default);
     white-space: nowrap;
 
+    &:hover,
+    &:focus {
+      color: var(--s-color-theme-accent);
+    }
+
     &.is-active {
-      border-color: var(--s-color-status-info);
-      box-shadow:
-        0 0 0 1px rgba(82, 185, 255, 0.28),
-        0 10px 24px rgba(34, 9, 51, 0.2);
+      background-color: var(--s-color-theme-accent) !important;
+      border-color: var(--s-color-theme-accent) !important;
+      box-shadow: var(--s-shadow-element);
+      color: var(--s-color-base-on-accent) !important;
     }
 
     @include mobile(true) {
@@ -325,7 +340,7 @@ watch(isLoggedIn, async (value) => {
   }
 }
 .points__tabs.s-tabs .el-tabs__header .el-tabs__item {
-  font-size: 14px;
+  font-size: var(--s-font-size-small);
   font-weight: 700 !important;
 }
 
@@ -356,7 +371,7 @@ $points-card-min-width: 258px;
   background-position: top right;
   background-size: auto 214px;
   background-color: var(--s-color-base-background);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--s-color-base-border-secondary);
   width: 100%;
   &__cards-scrollbar {
     max-height: $scrollbar-loader-height;
@@ -399,7 +414,7 @@ $points-card-min-width: 258px;
       gap: $inner-spacing-medium;
       h3 {
         font-variant-numeric: tabular-nums;
-        font-size: 44px;
+        font-size: var(--s-heading0-font-size);
         font-weight: 300;
         line-height: 1;
         overflow-wrap: anywhere;
@@ -456,10 +471,11 @@ $points-card-min-width: 258px;
   }
   &__connect {
     align-items: center;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--s-color-utility-surface);
+    border: 1px solid var(--s-color-base-border-secondary);
     border-radius: var(--s-border-radius-small);
     box-sizing: border-box;
+    box-shadow: var(--s-shadow-element-pressed);
     gap: $inner-spacing-medium;
     min-height: 264px;
     padding: $inner-spacing-big $inner-spacing-medium;
@@ -483,13 +499,13 @@ $points-card-min-width: 258px;
   &__card,
   &__card-task,
   &__first-tx-card {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--s-color-utility-surface);
     background-position: top right;
     background-repeat: no-repeat;
     background-size: contain;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--s-color-base-border-secondary);
     border-radius: var(--s-border-radius-small);
-    box-shadow: 0 18px 34px rgba(23, 6, 41, 0.18);
+    box-shadow: var(--s-shadow-element-pressed);
     box-sizing: border-box;
     height: auto;
     margin-bottom: 0;
@@ -518,13 +534,17 @@ $points-card-min-width: 258px;
       padding: $inner-spacing-medium $inner-spacing-small;
 
       &-heading {
-        align-items: flex-start;
-        flex-direction: column;
+        align-items: center;
+        flex-direction: row;
         gap: $inner-spacing-small;
 
+        h2 {
+          max-width: calc(100% - $inner-spacing-large * 2);
+        }
+
         h3 {
-          font-size: 38px;
-          text-align: left;
+          font-size: var(--s-heading1-font-size);
+          text-align: right;
         }
       }
 
@@ -559,9 +579,9 @@ $points-card-min-width: 258px;
     background-size: cover;
     text-decoration: none;
     color: var(--s-color-base-on-accent);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--s-color-base-border-secondary);
     border-radius: var(--s-border-radius-small);
-    box-shadow: 0 16px 30px rgba(23, 6, 41, 0.16);
+    box-shadow: var(--s-shadow-element-pressed);
     align-items: flex-end;
     @include focus-outline;
     &-container {

@@ -95,7 +95,7 @@ describe('RewardsTabs.vue', () => {
   });
 
   it('keeps the rewards tab strip at the live-site height', () => {
-    expect(rewardsTabsSource).toContain('$rewards-tabs-height: 64px;');
+    expect(rewardsTabsSource).toContain('$rewards-tabs-height: 56px;');
     expect(rewardsTabsSource).toContain('height: $rewards-tabs-height;');
   });
 
@@ -103,6 +103,6 @@ describe('RewardsTabs.vue', () => {
     expect(rewardsTabsSource).toContain('box-sizing: border-box;');
     expect(rewardsTabsSource).toContain('flex: 1 1 0;');
     expect(rewardsTabsSource).toContain('width: calc(100% / 3);');
-    expect(rewardsTabsSource).toContain('font-size: 24px;');
+    expect(rewardsTabsSource).toContain('font-size: 16px;');
   });
 });

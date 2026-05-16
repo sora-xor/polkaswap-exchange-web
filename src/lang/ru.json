@@ -73,7 +73,7 @@
         "noContacts": "У вас еще нет контактов.",
         "noFoundRecords": "записей не найдено",
         "none": "Никто",
-        "notSoraAddress": "Этот адрес будет сохранен как адрес {SORA} ниже. Убедитесь, что получатель может получить доступ к цепочке {SORA}:",
+        "notSoraAddress": "Этот адрес будет сохранен как адрес {Sora} ниже. Убедитесь, что получатель имеет доступ к цепочке {Sora}:",
         "options": {
             "delete": "Удалить",
             "edit": "Изменить контакт",
@@ -261,18 +261,18 @@
         "title": "Разрешите доступ к камере в настройках браузера"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Скопировать хеш передачи сети SORA",
+        "enterNexusRecipient": "ВОЙДИТЕ В СЧЕТ SORA NEXUS",
+        "invalidNexusRecipient": "НЕДЕЙСТВИТЕЛЬНЫЙ АККАУНТ SORA NEXUS",
+        "minamotoClaimDescription": "Используйте хеш передачи сети SORA для подачи заявки на SORA Minamoto. В каждой строке показано, какие резервы сжигаются.",
+        "minamotoClaimTitle": "Подробности вашей претензии в Минамото",
+        "nexusRecipientLabel": "Аккаунт SORA Nexus",
+        "nexusRecipientPlaceholder": "Войдите в свою учетную запись SORA Nexus i105.",
+        "nexusRecipientWarning": "Ваша учетная запись SORA Nexus записывается публично в этой транзакции записи.",
+        "soraNetworkTxHashLabel": "Хэш передачи сети SORA",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "СКОЛЬКО {tokenSymbol} ВЫ ХОТИТЕ?",
+        "ssTokensLabel": "жетоны СС"
     },
     "buttons": {
         "chooseAToken": "Выберите токен",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "Да, я понимаю риск",
         "header": "Внимание",
-        "info": "Ваш баланс {symbol} будет меньше, чем {fee} {symbol} после этой транзакции. Вы не сможете оплатить сетевую комиссию за другую транзакцию.",
+        "info": "После этой транзакции ваш баланс XOR будет меньше {fee} XOR. Вы не сможете оплатить комиссию сети за другую транзакцию.",
         "payoff": "Вам нужно будет использовать мост, чтобы получить XOR из других сетей, получить отправку XOR из другой учетной записи {Sora} или заменить любой другой токен, уже находящийся в вашей учетной записи, на XOR."
     },
     "confirmSupply": {
@@ -456,7 +456,7 @@
             "placeholder": "Мнемоническая фраза"
         },
         "accountName": {
-            "desc": "Это имя вашего аккаунта. Оно будет видно только Вам в {Polkaswap}.",
+            "desc": "Это имя вашей учетной записи. В {AppName} он будет виден только вам.",
             "placeholder": "Имя аккаунта"
         },
         "addAccount": "Добавить аккаунт",
@@ -554,7 +554,7 @@
         "synthetics": "синтетические токены"
     },
     "FAQ": "{AppName} Часто задаваемые вопросы",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Обратите внимание, что бумажные значения, связанные с криптовалютами на этом веб-сайте, предоставлены индексатором Polkaswap и являются приблизительными. Учитывая присущую этим расчетам сложность, невозможно гарантировать абсолютную точность в любой момент времени.",
     "fiatPayment": {
         "cedeStoreBtn": "Перевести из {value1} через {value2}",
         "cedeStoreDesc": "Перенесите любые токены из {value1} в {value2} через {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Приносим извинения за неудобства. Мы прилагаем все усилия, чтобы решить эту проблему. Пожалуйста, повторите попытку позже.",
         "historyBtn": "Мои покупки",
         "historyTitle": "История транзакций",
-        "moonpayDesc": "Приобретите токены ETH на {Ethereum} и переведите их в сеть {SORA} через мост.",
+        "moonpayDesc": "Приобретите токены ETH на {Ethereum} и перенесите их в сеть {Sora} через мост.",
         "moonpayTitle": "Купить ETH через MoonPay"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "Первая",
     "footer": {
         "internet": {
-            "action": "Обновить {Polkaswap}",
+            "action": "Обновить {AppName}",
             "desc": {
                 "disabled": "Отключено",
                 "stable": "Оптимальная скорость",
                 "unstable": "Медленное соединение"
             },
-            "dialogDesc": "{Polkaswap} требует подключения к Интернету для стабильной работы",
+            "dialogDesc": "{AppName} требуется подключение к Интернету для стабильной работы",
             "dialogTitle": "Подключиться к источнику Интернета",
             "label": "Ваша скорость интернета",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Индексатор",
                 "title": "Выбор сервисов {Sora} сети",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Используйте индексатор Polkaswap для фиатных ценностей"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Блок индексатора Polkaswap №{block}",
             "label": "Сервисы статистики",
             "title": {
                 "available": "Статистика доступна",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "Сумма средств, которую вы все еще можете получить из своей позиции, не превышая ваш лимит по кредиту, на основе вашего текущего залога.",
         "debtDetails": "Детали долга",
         "depositCollateral": "Внести залог",
-        "disclaimerDescription": "Заимствование цифровых активов через {Polkaswap} сопряжено с существенными рисками, за которые вы несете ответственность. Стоимость цифровых активов крайне волатильна, и любые изменения в рыночных ценах активов, которые вы заимствовали или использовали в качестве залога, могут привести к значительным финансовым потерям.",
+        "disclaimerDescription": "Заимствование цифровых активов через {AppName} сопряжено со значительным риском и осуществляется исключительно на ваш страх и риск. Стоимость цифровых активов очень нестабильна, и любые изменения рыночных цен на активы, которые вы взяли взаймы или использовали в качестве залога, могут привести к существенным финансовым потерям.",
         "error": {
             "borrowMoreThanAvailable": "Доступный долг превышен",
             "enterBorrow": "Введите сумму заимствования",
@@ -768,7 +768,7 @@
         "repayDebt": "Погасить долг",
         "repayDebtDescription": "Верните заимствованные средства, чтобы уменьшить ваш непогашенный долг. Это может уменьшить затраты на проценты и снизить риск ликвидации.",
         "requiredAmountWithSlippage": "Требуемая сумма с учетом проскальзывания",
-        "requiredAmountWithSlippageDescription": "Для плавного закрытия позиции купите немного больше {tokenSymbol} чем требуется ({amount} {tokenSymbol}) из-за возможного проскальзывания. Вам понадобится дополнительное количество, чтобы покрыть остаток. Обменяйте ваши активы на {tokenSymbol}, чтобы удовлетворить эту потребность.",
+        "requiredAmountWithSlippageDescription": "Для плавного закрытия позиции покупайте немного больше {tokenSymbol}, чем требуется {amount} из-за возможного проскальзывания. Вам понадобится дополнительная сумма, чтобы покрыть недостачу. Поменяйте свои активы на {tokenSymbol}, чтобы удовлетворить эту потребность.",
         "status": {
             "Closed": "Закрыто",
             "Liquidated": "Ликвидировано",
@@ -1183,7 +1183,7 @@
             "limitOrder": "«Лимитный» ордер позволяет вам указать точную цену, по которой вы хотите купить или продать актив. Ордер «Лимитная покупка» будет исполнен только по указанной цене или ниже, а ордер «Лимитная продажа» будет исполнен только по указанной цене или выше. Этот контроль гарантирует, что вы не заплатите больше и не продадите дешевле, чем вам нужно.",
             "marketOrder": "«Рыночный ордер» — это немедленная покупка или продажа по лучшей доступной текущей цене. Он не требует установления цены, обеспечивая быстрое исполнение, но с компромиссом в виде меньшего контроля над полученной или уплаченной ценой. Этот тип ордера используется, когда уверенность в исполнении является приоритетом над контролем цены.",
             "marketWidget": "Этот виджет показывает в реальном времени поток совершенных сделок на рынке, предоставляя информацию об объемах транзакций, недавней активности и текущих тенденциях рынка. Наблюдая за временем, ценой и размером реальных сделок, трейдеры могут получить представление о динамике и настроениях рынка, что помогает им определять торговые возможности и принимать обоснованные решения.",
-            "pairsList": "Список в реальном времени, показывающий текущие ордера на покупку и продажу криптовалюты. Это поможет вам понять спрос, потенциальное направление цен и объем торгов в сети SORA и Polkaswap DEX.",
+            "pairsList": "Список в реальном времени, показывающий текущие заказы на покупку и продажу криптовалюты. Это поможет вам понять спрос, потенциальное направление цен и объем торгов в сети {Sora} и {AppName} DEX.",
             "txDetails": {
                 "amount": "«Сумма» относится к общему количеству активов, которые вы хотите купить или продать в своем ордере. Это важно указать, поскольку от этого зависит размер вашей транзакции, влияющий на общую стоимость ордеров на покупку или доход от ордеров на продажу.",
                 "expiryDate": "«Срок действия» — это крайний срок исполнения вашего ордера. Если рынок не достигнет указанной вами цены до этой даты, ордер автоматически отменяется. Вы не обязаны постоянно ждать, если рыночные условия не соответствуют вашим торговым предпочтениям.",
@@ -1400,7 +1400,7 @@
         "startInviting": "Bond XOR для приглашения других",
         "title": "Рефералы",
         "unbondTitle": "Вывести XOR из резерва",
-        "welcomeMessage": "\nПрисоединяйся ко мне на {Polkaswap}!\n\nОткрой для себя стильный {DEX}, который позволяет обменивать десятки токенов с кроссчейн обменами, книгой ордеров и множеством наград!\n\n🎁 Приглашай друзей и зарабатывай 10% от их торговых комиссий\n\nУвидимся там!"
+        "welcomeMessage": "Присоединяйтесь ко мне {AppName}!\n\nОткройте для себя стильный {DEX}, который позволяет вам обмениваться десятками токенов с помощью перекрестных обменов, книгой заказов и множеством наград!\n\n🎁 Приглашайте друзей и зарабатывайте 10% от их торговых комиссий\n\nУвидимся там!"
     },
     "releaseNotesText": "О версии приложения",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Регулируемое учреждение"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Количество",
+        "assetLabel": "Символ актива",
+        "clearPayload": "Очистить форму",
+        "copyPayload": "Копировать полезные данные",
+        "destinationAddressLabel": "Адрес получателя",
+        "destinationNetworkLabel": "В сеть",
+        "emptyPayloadHelp": "Настройте поля формы для создания готовых к отправке полезных данных SCCP.",
+        "generatePayload": "Создать полезную нагрузку SCCP",
+        "noteLabel": "Дополнительная памятка",
+        "payloadCopied": "Полезная нагрузка скопирована.",
+        "payloadCopyFailed": "Не удалось скопировать, попробуйте еще раз",
+        "payloadLabel": "Подготовленная полезная нагрузка",
+        "sourceNetworkLabel": "Из сети",
+        "subtitle": "Помощник по передаче по безопасному межсетевому протоколу (SCCP) для BSC, Ethereum и TRON.",
+        "supportedNetworks": "Поддерживаемые цепочки: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Поиск",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "У вас нет номинированных валидаторов",
             "noValidators": "Нет валидаторов, удовлетворяющих указанному фильтру",
             "return": "Возврат",
-            "search": "Поиск..."
+            "search": "Поиск...",
+            "staked": "Ставка",
+            "stakedTooltip": "Общая сумма ставок XOR с этим валидатором, включая собственную долю валидатора и назначенную долю"
         },
         "withdraw": {
             "beingWithdrawn": "Будет выведено",

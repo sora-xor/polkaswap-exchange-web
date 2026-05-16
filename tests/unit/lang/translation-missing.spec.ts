@@ -75,6 +75,20 @@ describe('translationMissingHandler', () => {
     expect(composer.te('swapText')).toBe(true);
   });
 
+  it('applies document locale attributes for Urdu typography and RTL layout', async () => {
+    const { setI18nLocale } = await loadModule();
+
+    await setI18nLocale('ur' as any);
+
+    expect(document.documentElement.getAttribute('lang')).toBe('ur');
+    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
+
+    await setI18nLocale('en' as any);
+
+    expect(document.documentElement.getAttribute('lang')).toBe('en');
+    expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+  });
+
   it('restores localized interpolation constants when switching back to English', async () => {
     const { setI18nLocale } = await loadModule();
     const { TranslationConsts } = await import('@/consts/app');

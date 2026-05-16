@@ -113,6 +113,13 @@ describe('point system indexer queries', () => {
     consoleErrorSpy.mockRestore();
   });
 
+  it('returns null for account metadata when the indexer has no account row', async () => {
+    indexerMocks.request.mockResolvedValue({ data: null });
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
+
+    await expect(fetchAccountMeta('account-1')).resolves.toBeNull();
+  });
+
   it('fetches and parses versioned account point systems', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
       parse(createAccountPointSystemEntity()),

@@ -261,18 +261,18 @@
         "title": "ဘရောက်ဇာ ဆက်တင်များတွင် ကင်မရာ ခွင့်ပြုပါ"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "SORA Network tx hash ကို ကူးယူပါ။",
+        "enterNexusRecipient": "SORA NEXUS အကောင့်ကိုဝင်ပါ။",
+        "invalidNexusRecipient": "SORA NEXUS အကောင့် မမှန်ကန်ပါ။",
+        "minamotoClaimDescription": "SORA Minamoto တွင် သင့်တောင်းဆိုမှုအတွက် SORA Network tx hash ကို အသုံးပြုပါ။ အတန်းတစ်ခုစီတွင် အရန်ငွေကို လောင်ကျွမ်းစေသော အရာများကို ပြသသည်။",
+        "minamotoClaimTitle": "သင်၏ Minamoto တောင်းဆိုမှုအသေးစိတ်",
+        "nexusRecipientLabel": "SORA Nexus အကောင့်",
+        "nexusRecipientPlaceholder": "သင်၏ SORA Nexus i105 အကောင့်ကို ထည့်ပါ။",
+        "nexusRecipientWarning": "သင်၏ SORA Nexus အကောင့်ကို ဤမီးလောင်မှုဖြစ်စဉ်တွင် လူသိရှင်ကြား မှတ်တမ်းတင်ထားသည်။",
+        "soraNetworkTxHashLabel": "SORA ကွန်ရက် tx hash",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "{tokenSymbol} ဘယ်လောက် လိုချင်လဲ။",
+        "ssTokensLabel": "SS တိုကင်များ"
     },
     "buttons": {
         "chooseAToken": "တိုကင်ရွေးပါ",
@@ -515,7 +515,7 @@
         }
     },
     "dexSettings": {
-        "marketAlgorithm": "@.upper:marketAlgorithm စာသား",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} ၏ ရေကြွယ်ဝမှု လမ်းကြောင်းက မည်သည့် လုပ်ငန်းရယူနည်းမဆို အကောင်းဆုံး စျေးနှုန်းရရှိစေဖို့ အနိုင်ကျင့်ပါတယ် — ရရှိနိုင်သည့် စျေးကွက်အားလုံးမှ အကောင်းဆုံး ရွေးချယ်မှုပေါင်းစည်းခြင်းဖြင့်။ ရရှိနိုင်ပါက Token Bonding Curve ({tbcAlgorithm}) ကို ရေကြွယ်ဝမှုအတွက် အသုံးပြုပေးမည် — အခြား ရင်းမြစ်များထက် ပစ္စည်း စျေးနှုန်း ပိုမို သက်သာသေးအောင် — ထိုအခါ {xycAlgorithm} ကန်ကို အသုံးပြုမည်",
             "TBC": "{tbcAlgorithm} — Token Bonding Curve (ပထမဈေးကွက်) မှသာ ဝယ်ယူခြင်း။ {xycAlgorithm} ကန် (ဒုတိယဈေးကွက်) နှင့် နှိုင်းယှဉ်သောအခါ စျေးနှုန်း မဟာသ ဖြစ်နိုင်ခြေ ရှိသော်လည်း အချိန်ကြာလာသည်နှင့် အတူ စောင့်ဆိုင်းထားသော ဆုများမှ ရရှိသည့် တန်ဖိုးသည် ပိုမို အရေးပါလာနိုင်သည်",
@@ -533,14 +533,14 @@
         },
         "title": "ဆက်တင်များ"
     },
-    "disclaimer": "{disclaimerPrefix} ဤဝဘ်ဆိုက်အား {Sora} အသိုင်းအဝိုင်းမှ ထိန်းသိမ်းထားသည်။ ဤဝဘ်ဆိုက်ကို ဆက်လက်အသုံးမပြုမီ၊ {AppName} နှင့် {memorandumLink} နှင့် {privacyLink} နှင့် {privacyLink} နှင့် {privacyLink} တို့ကို အသေးစိတ်ရှင်းလင်းချက်ပါ၀င်သည့် {polkaswapFaqLink} နှင့် စာရွက်စာတမ်းများကို ပြန်လည်သုံးသပ်ပါ။ ဤစာရွက်စာတမ်းများသည် လုံခြုံပြီး အပြုသဘောဆောင်သော သုံးစွဲသူအတွေ့အကြုံအတွက် အရေးကြီးပါသည်။ {AppName} ကို အသုံးပြုခြင်းဖြင့် သင်သည် ဤစာရွက်စာတမ်းများကို ဖတ်ပြီး နားလည်ကြောင်း အသိအမှတ်ပြုပါသည်။ သင်သည် အောက်ပါတို့ကို အသိအမှတ်ပြုပါသည်- 1) သင့်တရားစီရင်ပိုင်ခွင့်အတွင်း {AppName} ကို သင့်တရားစီရင်ပိုင်ခွင့်အတွင်း အသုံးပြုမှုတွင် သက်ရောက်နိုင်သည့် ဥပဒေများအားလုံးကို လိုက်နာရန် သင့်တစ်ဦးတည်း တာဝန်ရှိသည်၊ 2) {AppName} ၏ လက်ရှိဗားရှင်းသည် အယ်လ်ဖာဗားရှင်းဖြစ်ကြောင်း သင့်နားလည်သဘောပေါက်သည်- ၎င်းကို အပြည့်အဝ မစမ်းသပ်ရသေးဘဲ၊ အချို့သောလုပ်ဆောင်ချက်များသည် ပုံစံထုတ်ထားသည့်အတိုင်း လုပ်ဆောင်မည်မဟုတ်ပါ။ နှင့် 3) တိုကင်များ ဆုံးရှုံးနိုင်ခြေ အပါအဝင် {AppName} အသုံးပြုခြင်းတွင် ပါ၀င်သော အန္တရာယ်များကို သင့်သဘောပေါက်နားလည်မှုနှင့် ဆန္ဒအလျောက် လက်ခံမှု။ ကျေးဇူးပြု၍ {polkaswapFaqLink}၊ {memorandumLink}၊ {privacyLink} ကို မဖတ်ဘဲ ဆက်မလုပ်ပါနှင့်။",
+    "disclaimer": "{disclaimerPrefix} ဤဝဘ်ဆိုဒ်ကို {Sora} အသိုင်းအဝိုင်းမှ ထိန်းသိမ်းထားသည်။ ဤဝဘ်ဆိုက်ကို ဆက်လက်အသုံးမပြုမီ၊ {AppName} မည်သို့အလုပ်လုပ်ပုံ၊ {memorandumLink} နှင့် {privacyLink} တို့ကို အသေးစိတ်ရှင်းလင်းချက်ပါ၀င်သော {polkaswapFaqLink} နှင့် စာရွက်စာတမ်းများကို ပြန်လည်သုံးသပ်ပါ။ ဤစာရွက်စာတမ်းများသည် လုံခြုံပြီး အပြုသဘောဆောင်သော သုံးစွဲသူအတွေ့အကြုံအတွက် အရေးကြီးပါသည်။ {AppName}ကိုအသုံးပြုခြင်းဖြင့် သင်သည် ဤစာရွက်စာတမ်းများကိုဖတ်ပြီး နားလည်ကြောင်း အသိအမှတ်ပြုပါသည်။ အောက်ပါတို့ကို သင်လည်း အသိအမှတ်ပြုပါသည်- 1) သင့်တရားစီရင်ပိုင်ခွင့်အတွင်း {AppName} ကို သင့်တရားစီရင်ပိုင်ခွင့်အတွင်း သင် သီးခြားအသုံးပြုမှုနှင့် သက်ဆိုင်စေမည့် ဥပဒေများအားလုံးကို လိုက်နာရန် သင့်တစ်ဦးတည်း တာဝန်ရှိသည်၊ 2) {AppName} ၏ လက်ရှိဗားရှင်းသည် အယ်လ်ဖာဗားရှင်းဖြစ်ကြောင်း သင့်နားလည်သဘောပေါက်သည်- ၎င်းကို အပြည့်အဝ မစမ်းသပ်ရသေးဘဲ၊ အချို့သောလုပ်ဆောင်ချက်များသည် ဒီဇိုင်းထုတ်ထားသည့်အတိုင်း လုပ်ဆောင်မည်မဟုတ်ပါ။ နှင့် 3) တိုကင်များ ဆုံးရှုံးနိုင်ခြေ အပါအဝင် {AppName} ကို အသုံးပြုခြင်းတွင် ပါ၀င်သော အန္တရာယ်များကို သင်၏ နားလည်မှုနှင့် ဆန္ဒအလျောက် လက်ခံမှု။ ကျေးဇူးပြု၍ {polkaswapFaqLink}၊ {memorandumLink}၊ {privacyLink} ကို မဖတ်ဘဲ ဆက်မလုပ်ပါနှင့်။",
     "disclaimerTitle": "ရှင်းလင်းချက်",
     "disconnectWalletText": "အဆက်ဖြတ်ပါ။",
     "doNotShowText": "ဒါကို ထပ်မပြပါနဲ့။",
     "dragAndDropText": "ဆွဲဆွဲချပါ သို့မဟုတ် {extension} ဖိုင်ကို ရွေးပါ။",
     "editText": "တည်းဖြတ်ပါ။",
     "errorText": "အမှား",
-    "ethNetworkFeeTooltipText": "{network} တွင်ပြသထားသည့် {network} ကွန်ရက်အခကြေးငွေများသည် {AppName} အကြမ်းဖျင်းခန့်မှန်းချက်မျှသာဖြစ်သည်၊ ငွေပေးငွေယူကိုအတည်ပြုခြင်းမပြုမီ သင့်ချိတ်ဆက်ထားသော {network} ပိုက်ဆံအိတ်တွင် မှန်ကန်သောအခကြေးငွေပမာဏကို သင်တွေ့မြင်နိုင်ပါသည်။",
+    "ethNetworkFeeTooltipText": "{AppName} တွင်ပြသထားသော {network} ကွန်ရက်အခကြေးငွေများသည် အကြမ်းဖျင်းခန့်မှန်းချက်မျှသာဖြစ်သည်၊ ငွေပေးငွေယူကိုအတည်ပြုခြင်းမပြုမီ သင့်ချိတ်ဆက်ထားသော {network} ပိုက်ဆံအိတ်တွင် မှန်ကန်သောအခကြေးငွေပမာဏကို သင်တွေ့မြင်နိုင်ပါသည်။",
     "exceededAmountText": "{amount} ကျော်လွန်သွားသည်။",
     "exchange": {
         "lossWarning": "သင့်ကုန်သွယ်မှုတွင် {value}% ဆုံးရှုံးမည်ဖြစ်သည်။ ငွေဖြစ်လွယ်မှု ပံ့ပိုးမှုပြဿနာကို ကျွန်ုပ်တို့ တွေ့ရှိထားပါသည်။ ၎င်းသည် တိုကင်လဲလှယ်မှုများအတွင်း သိသာထင်ရှားသော ဆုံးရှုံးမှုများကို ဖြစ်ပေါ်စေနိုင်သည်။ သင်လိုချင်သော swap အတွဲအတွက် လုံလောက်သော ငွေဖြစ်လွယ်မှုရှိမရှိ သေချာပါစေ။",
@@ -554,7 +554,7 @@
         "synthetics": "ဓာတုတိုကင်များ"
     },
     "FAQ": "{AppName} FAQ",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "ဤဝဘ်ဆိုက်ရှိ cryptocurrencies နှင့်ဆက်စပ်သော fiat တန်ဖိုးများကို Polkaswap Indexer မှပေးဆောင်ပြီး အနီးစပ်ဆုံးဖြစ်ကြောင်း ကျေးဇူးပြု၍ သတိပြုပါ။ ဤတွက်ချက်မှုများ၏ မွေးရာပါ ရှုပ်ထွေးမှုကြောင့်၊ အချိန်တိုင်းတွင် အကြွင်းမဲ့တိကျမှုကို အာမမခံနိုင်ပါ။",
     "fiatPayment": {
         "cedeStoreBtn": "{value1} မှ {value2} မှတဆင့် လွှဲပြောင်းပါ",
         "cedeStoreDesc": "မည်သည့်တိုကင်များကို {value1} မှ {value2} သို့ {value3} မှတဆင့် လွှဲပြောင်းပါ",
@@ -576,7 +576,7 @@
         "verifiedOnly": "အတည်ပြုထားသော ပိုင်ဆိုင်မှုများကိုသာ ပြသပါ။",
         "zeroBalance": "၀ယ်မှူကို ဝှက်အပ်ပါတယ်။"
     },
-    "firstPerSecond": "{first} {second} တစ်ခုလျှင် {first}",
+    "firstPerSecond": "{first}နှုန်း{second}",
     "firstText": "ပထမ",
     "footer": {
         "internet": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "အညွှန်း",
                 "title": "{Sora} ကွန်ရက်ဝန်ဆောင်မှု ရွေးချယ်မှု",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Fiat တန်ဖိုးများအတွက် Polkaswap Indexer ကိုသုံးပါ။"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Polkaswap Indexer ဘလောက် #{block}",
             "label": "စာရင်းအင်းဝန်ဆောင်မှုများ",
             "title": {
                 "available": "စာရင်းအင်းများ ရရှိနိုင်သည်။",
@@ -833,7 +833,7 @@
         },
         "notifications": {
             "accountAddressError": {
-                "text": "ကံမကောင်းစွာပဲ၊ {Hashi} မှာယူမှုတွင် တိုကင်များ၏ လက်ခံရရှိသူလိပ်စာသည် သင့်လက်ရှိ {Ethereum} အကောင့်လိပ်စာနှင့် ကိုက်ညီမှုမရှိသောကြောင့် {Hashi} တံတားလွှဲပြောင်းမှု မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ တိုးချဲ့မှုတွင် {Ethereum} အကောင့်ကို ပြောင်းပြီး ထပ်စမ်းကြည့်ပါ။",
+                "text": "ကံမကောင်းစွာဖြင့်၊ @:moonpayText အမှာစာရှိ တိုကင်လက်ခံသူလိပ်စာသည် သင်၏လက်ရှိ {Ethereum} အကောင့်လိပ်စာနှင့် မကိုက်ညီသောကြောင့် {Hashi} တံတား အရောင်းအဝယ် မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ တိုးချဲ့မှုတွင် {Ethereum} အကောင့်ကို ပြောင်းပြီး ထပ်စမ်းကြည့်ပါ။",
                 "title": "{Ethereum} အကောင့် မှားနေသည်။"
             },
             "amountError": {
@@ -841,7 +841,7 @@
                 "title": "လက်ကျန်မလုံလောက်"
             },
             "feeError": {
-                "text": "ဝမ်းနည်းစွာပင် {Hashi} ကွန်ရက်ကူးပြောင်းမှုအခကြေးငွေအတွက် ETH လုံလောက်စွာ မရရှိခြင်းကြောင့် {Hashi} တံတား အရောင်းအဝယ် မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ ETH ထပ်ထည့်ပြီး ထပ်စမ်းကြည့်ပါ။",
+                "text": "ကံမကောင်းစွာပဲ {Ethereum} ကွန်ရက်ကူးပြောင်းမှုအခကြေးငွေအတွက် ETH လုံလောက်စွာ မရရှိခြင်းကြောင့် {Hashi} တံတား အရောင်းအဝယ်မှာ မအောင်မြင်ခဲ့ပါ။ ကျေးဇူးပြု၍ ETH ထပ်ထည့်ကာ ထပ်စမ်းကြည့်ပါ။",
                 "title": "တံတား tx အတွက် ETH မလုံလောက်ပါ။"
             },
             "success": {
@@ -849,7 +849,7 @@
                 "title": "တိုကင်များ ဝယ်ယူခဲ့သည်။"
             },
             "supportError": {
-                "text": "ဝမ်းနည်းစွာပင် @:moonpayText မှတစ်ဆင့် ဝယ်ယူထားသော တိုကင်ကို {Hashi} တံတား {AppName} ရှိ {Hashi} မှ မပံ့ပိုးရသေးပါ။ ပုံမှန်အားဖြင့် ပံ့ပိုးပေးထားသော တိုကင်များကို {AppName} တွင် MoonPay မှတစ်ဆင့် ဝယ်ယူနိုင်သင့်သည်၊ ထို့ကြောင့် တစ်စုံတစ်ခု မှားယွင်းသွားပါသည်။ <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram အဖွဲ့</a> တွင် ဤကိစ္စနှင့်ပတ်သက်၍ အသိုင်းအဝိုင်းအား အသိပေးရန် တုံ့ဆိုင်းမနေပါနှင့်။",
+                "text": "ကံမကောင်းစွာပဲ @:moonpayText မှတစ်ဆင့် ဝယ်ယူထားသော တိုကင်ကို {AppName} ရှိ {Hashi} တံတားမှ မပံ့ပိုးရသေးပါ။ ပုံမှန်အားဖြင့် ပံ့ပိုးပေးထားသော တိုကင်များကို {AppName} တွင် MoonPay မှတစ်ဆင့် ဝယ်ယူနိုင်သင့်သည်၊ ထို့ကြောင့် တစ်စုံတစ်ခု မှားယွင်းသွားပါသည်။ <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram group</a> တွင် ဤကိစ္စနှင့် ပတ်သက်၍ အသိုင်းအဝိုင်းအား အသိပေးရန် တုံ့ဆိုင်းမနေပါနှင့်။",
                 "title": "တိုကင်ကို မပံ့ပိုးပါ။"
             },
             "transactionError": {
@@ -969,7 +969,7 @@
             "Mint": "{amount} {symbol} သို့ {address} သို့ ရေးသွင်းရန် မအောင်မြင်ပါ",
             "OrderBookCancelLimitOrder": "ကန့်သတ်မှာယူမှုကို ပယ်ဖျက်၍မရပါ။",
             "OrderBookCancelLimitOrders": "ကန့်သတ်မှာယူမှုများကို ပယ်ဖျက်၍မရပါ။",
-            "OrderBookPlaceLimitOrder": "{amount} {symbol} {price} {symbol2} တွင် {amount} {symbol} ၏ ကန့်သတ်အမိန့်ကို မအောင်မြင်ပါ",
+            "OrderBookPlaceLimitOrder": "{amount} {symbol} တွင် {price} {symbol2} ၏ ကန့်သတ်အမိန့်ကို မအောင်မြင်ပါ။",
             "ReferralReserveXor": "{amount} XOR ချည်နှောင်ရန် မအောင်မြင်ပါ။",
             "ReferralSetInvitedUser": "{role} {address} သတ်မှတ်ရန် မအောင်မြင်ပါ",
             "ReferralUnreserveXor": "{amount} XOR ကို ခွဲထုတ်ရန် မအောင်မြင်ပါ။",
@@ -988,10 +988,10 @@
             "StakingRebond": "{amount} {symbol} ကို ပြန်လည်ပေါင်းစည်းရန် မအောင်မြင်ပါ",
             "StakingSetController": "ထိန်းချုပ်ကိရိယာ {address} ကို သတ်မှတ်ရန် မအောင်မြင်ပါ",
             "StakingSetPayee": "ငွေလက်ခံသူ {address} ကို သတ်မှတ်၍ မရပါ",
-            "StakingUnbond": "{amount} {symbol} {symbol} ဖျက်သိမ်းရန် မအောင်မြင်ပါ",
+            "StakingUnbond": "{amount} {symbol} ကို ဖြုတ်၍မရပါ။",
             "StakingWithdrawUnbonded": "{amount} {symbol} ကို ရုပ်သိမ်းရန် မအောင်မြင်ပါ",
-            "Swap": "{amount} {symbol} {amount2} {symbol2} အတွက် {amount} {symbol} ကို လဲလှယ်ရန် မအောင်မြင်ပါ",
-            "SwapAndSend": "{amount} {symbol} {amount2} {symbol2} နှင့် {action} {direction} {address} အတွက် {direction} {address} ကို လဲလှယ်ရန် မအောင်မြင်ပါ",
+            "Swap": "{amount} {symbol} for {amount2} {symbol2} ကို လဲလှယ်ရန် မအောင်မြင်ပါ။",
+            "SwapAndSend": "{amount} {symbol} ကို {amount2} {symbol2} နှင့် {action} {direction} {address} အတွက် လဲလှယ်ရန် မအောင်မြင်ပါ",
             "SwapTransferBatch": "{action} {amount} {symbol} မအောင်မြင်ပါ",
             "Transfer": "{action} {amount} {symbol} {direction} {address} သို့ မအောင်မြင်ပါ",
             "VestedTransfer": "{action} {amount} {symbol} {direction} {address} သို့ မအောင်မြင်ပါ",
@@ -1041,8 +1041,8 @@
             "StakingSetPayee": "ငွေပေးသူအဖြစ် သတ်မှတ်ရန် {address}",
             "StakingUnbond": "အနှောင်အဖွဲ့ကင်းသော {amount} {symbol}",
             "StakingWithdrawUnbonded": "နုတ်ထွက် {amount} {symbol}",
-            "Swap": "{amount} {symbol} {amount2} {symbol2} အတွက် {symbol2} ကို လဲလှယ်ခဲ့သည်",
-            "SwapAndSend": "{amount} {symbol} {amount2} {symbol2} နှင့် {action} {direction} {address} အတွက် {direction} {address} သို့ လဲလှယ်ခဲ့သည်",
+            "Swap": "{amount} {symbol} သည် {amount2} {symbol2} အတွက် လဲလှယ်ခဲ့သည်။",
+            "SwapAndSend": "{amount} {symbol} {amount2} {symbol2} နှင့် {action} {direction} {address} အတွက် လဲလှယ်ခဲ့သည်",
             "SwapTransferBatch": "{action} {amount} {symbol}",
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
@@ -1466,7 +1466,7 @@
         "totalVested": "စုစုပေါင်းဆုများ",
         "transactions": {
             "confimation": "{total} လွှဲပြောင်းမှုများ၏ {order} ကို အတည်ပြုပါ...",
-            "failed": "ငွေပေးငွေယူ {order} ၏ {order} သည် မအောင်မြင်ပါ။ @:retryText",
+            "failed": "{total} ၏ {order} အရောင်းအဝယ်များ မအောင်မြင်ပါ။ @:retryText",
             "success": "သင်၏ဆုလာဘ်များကို မကြာမီရရှိမည်ဖြစ်သည်။"
         }
     },
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "သင့်တွင် အမည်စာရင်းတင်သွင်းခံရသူများ မရှိပါ။",
             "noValidators": "သတ်မှတ်ထားသော စစ်ထုတ်မှုကို ကျေနပ်စေသော တရားဝင်သူ မရှိပါ။",
             "return": "ပြန်လာ",
-            "search": "ရှာဖွေပါ..."
+            "search": "ရှာဖွေပါ...",
+            "staked": "Stake လုပ်ထားသည်",
+            "stakedTooltip": "ဤ validator တွင် stake လုပ်ထားသော XOR စုစုပေါင်း၊ validator ၏ ကိုယ်ပိုင် stake နှင့် nominate လုပ်ထားသော stake အပါအဝင်"
         },
         "withdraw": {
             "beingWithdrawn": "ရုပ်သိမ်းခံရခြင်း။",

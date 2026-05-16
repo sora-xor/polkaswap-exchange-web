@@ -135,7 +135,7 @@
         },
         "guide": {
             "createToken": "أنشئ رمزك",
-            "createTokenDesc": "أطلق بسهولة رمزك الفريد — متاح بصيغ متعددة مثل NFT وSBT — بالاعتماد على بنية {Sora} القوية والآمنة",
+            "createTokenDesc": "أطلق رمزك المميز بسهولة - متوفر بتنسيقات متعددة مثل NFTs وSBT - باستخدام البنية التحتية القوية والآمنة لشبكة SORA",
             "disclaimerSbt": "أبقِ هذه الصفحة مفتوحة طوال العملية؛ الإغلاق أو مغادرة الصفحة سيستلزم البدء من جديد. أكمِل الخطوات بسرعة لتفادي انتهاء المهلة.",
             "stepOneDesc": "اختر أو أنشئ أصولاً قمت بإنشائها وإدارتها شخصياً — تقع تحت سيطرتك وإدارتك.",
             "stepOneTitle": "اختيار أو إنشاء أصول مُنظمة",
@@ -242,7 +242,7 @@
         "agree": "نعم ، أنا أفهم",
         "button": "تمكين الإخطارات",
         "info": "سنرسل لك التحديثات ذات الصلة فقط حول محفظتك ، على سبيل المثال: تغييرات توازن الأصول",
-        "notificationBlocked": "لتلقي الإخطارات حول __ph__0__ ، من فضلك ، السماح بالإشعارات في إعدادات المتصفح الأصلية",
+        "notificationBlocked": "لتلقي الإشعارات حول {AppName}، يرجى السماح بالإشعارات في الإعدادات الأصلية للمتصفح الخاص بك",
         "pointer": "اضغط على \"السماح\" لتشغيل الإخطارات",
         "rotateMessage": "التجربة متوفرة فقط في وضع الصورة",
         "rotatetitle": "من فضلك ، تدوير جهازك",
@@ -250,8 +250,8 @@
     },
     "browserNotificationLocalStorageOverride": {
         "agree": "نعم ، أنا أفهم",
-        "info": "إن التخزين المحلي الخاص بك محمّل ، لمواصلة العمل مع __ph__0__ بحاجة لتنظيفه",
-        "title": "تخزين محلي __ph__0__"
+        "info": "وحدة التخزين المحلية الخاصة بك محملة بشكل زائد، لمواصلة العمل مع {AppName} بحاجة إلى تنظيفها",
+        "title": "مسح التخزين {AppName} المحلي"
     },
     "browserPermission": {
         "btnAllow": "السماح بالوصول",
@@ -261,18 +261,18 @@
         "title": "السماح للوصول إلى الكاميرا في إعدادات المتصفح"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "انسخ تجزئة SORA Network tx",
+        "enterNexusRecipient": "أدخل حساب سورا نيكزس",
+        "invalidNexusRecipient": "حساب SORA NEXUS غير صالح",
+        "minamotoClaimDescription": "استخدم تجزئة SORA Network tx لمطالبتك بـ SORA Minamoto. يوضح كل صف ما احتياطيات الحرق.",
+        "minamotoClaimTitle": "تفاصيل مطالبة ميناموتو الخاصة بك",
+        "nexusRecipientLabel": "حساب سورا نيكزس",
+        "nexusRecipientPlaceholder": "أدخل حساب SORA Nexus i105 الخاص بك",
+        "nexusRecipientWarning": "يتم تسجيل حساب SORA Nexus الخاص بك بشكل علني في معاملة النسخ هذه.",
+        "soraNetworkTxHashLabel": "تجزئة شبكة SORA",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "كم {tokenSymbol} هل تريد؟",
+        "ssTokensLabel": "رموز SS"
     },
     "buttons": {
         "chooseAToken": "اختر رمزاً",
@@ -302,26 +302,26 @@
     "confirmNextTxFailure": {
         "button": "نعم ، أنا أفهم المخاطر",
         "header": "انتباه",
-        "info": "سيكون توازن XOR الخاص بك أقل من __ph__0__ xor بعد هذه الصفقة. لن تكون قادرًا على دفع رسوم الشبكة لمعاملة أخرى.",
-        "payoff": "يجب عليك استخدام الجسر للحصول على XOR من شبكات أخرى ، أو يتم إرسال XOR من حساب __ph__0__ آخر ، أو تبديل أي رمز آخر بالفعل في حسابك في XOR."
+        "info": "سيكون رصيد XOR الخاص بك أقل من {fee} XOR بعد هذه المعاملة. لن تتمكن من دفع رسوم الشبكة لمعاملة أخرى.",
+        "payoff": "سيتعين عليك استخدام Bridge للحصول على XOR من شبكات أخرى، أو إرسال XOR من حساب {Sora} آخر، أو تبديل أي رمز مميز آخر موجود بالفعل في حسابك إلى XOR."
     },
     "confirmSupply": {
-        "outputDescription": "يتم تقدير الإخراج. إذا تغير السعر أكثر من __ph__0 __ ٪ ستعود معاملتك.",
+        "outputDescription": "ويقدر الناتج. إذا تغير السعر أكثر من {slippageTolerance}%، فسيتم إرجاع معاملتك.",
         "title": "ستكون مشاركة حمام السباحة الخاصة بك"
     },
     "confirmText": "يتأكد",
     "confirmTransactionText": "تأكيد المعاملة",
     "connectedAccount": "حساب متصل",
     "connectedText": "متصل",
-    "connectEthereumWalletText": "توصيل __ph__0__ محفظة",
+    "connectEthereumWalletText": "ربط {Ethereum} المحفظة",
     "connection": {
         "action": {
             "learnMore": "تعرف على المزيد حول اتصال المحفظة",
             "refresh": "ينعش"
         },
         "disclaimer": "يرجى ملاحظة أن بعض المحافظ قد لا يتم دعمها بالكامل.",
-        "internalText": "يمكنك إنشاء أو استيراد حساب __ph__0__ الحالي للاتصال بحساب __ph__1__ الخاص بك. يتم تشفير جميع البيانات التي يتم تخزينها بواسطة __ph__2__ باستخدام التشفير المتقدم المدمج.",
-        "internalTitle": "تواصل مع __ph__0__",
+        "internalText": "يمكنك إنشاء أو استيراد حساب {Sora} موجود للتواصل مع حسابك {wallet}. يتم تشفير جميع البيانات المخزنة بواسطة {wallet} باستخدام التشفير المتقدم المدمج.",
+        "internalTitle": "تواصل مع {wallet}",
         "list": {
             "extensions": "الامتدادات",
             "integrated": "مدمج"
@@ -334,17 +334,17 @@
         }
     },
     "connectWalletText": "اتصال حساب",
-    "connectWalletTextTooltip": "الاتصال بشبكة __ph__0__ مع __ph__1__",
+    "connectWalletTextTooltip": "اتصل بشبكة {Sora} باستخدام {PolkadotJs}",
     "continueText": "يكمل",
     "copiedText": "نسخ!",
-    "copiedWithValue": "__ph__0__ يتم نسخه!",
+    "copiedWithValue": "{value} منقول!",
     "copyPhraseText": "نسخ عبارة الممر",
-    "copyWithValue": "نسخ __ph__0__",
+    "copyWithValue": "نسخ {value}",
     "createPair": {
         "deposit": "إيداع",
         "firstLiquidityProvider": "أنت أول مزود سيولة",
         "firstLiquidityProviderInfo": "ستقوم نسبة الرموز التي تضيفها بتعيين سعر هذا المجمع. <br/> بمجرد أن تكون راضيًا عن سعر الفائدة للمراجعة.",
-        "firstSecondPoolTokens": "__ph__0 __-__ ph__1__ pool",
+        "firstSecondPoolTokens": "{first}-{second} حمام سباحة",
         "pricePool": "الأسعار والرسوم",
         "shareOfPool": "حصة البلياردو",
         "supply": "إمداد",
@@ -362,7 +362,7 @@
         "enterSupply": "أدخل رمز العرض",
         "enterSymbol": "أدخل رمز الرمز المميز",
         "enterTokenDescription": "أدخل الوصف",
-        "error": "فشل في إنشاء رمز __ph__0__",
+        "error": "فشل إنشاء الرمز المميز {symbol}",
         "extensibleSupply": {
             "desc": "القدرة على النعناع المزيد من الرموز.",
             "placeholder": "العرض القابل للتمديد"
@@ -374,7 +374,7 @@
             "image": {
                 "placeholderBadSource": "فشل الملف في معالجته",
                 "placeholderBadSourceAddition": "أو لم يتم تحميلها إلى IPFs حتى الآن",
-                "placeholderFileLimit": "يتجاوز حجم الملف حد __ph__0__mb",
+                "placeholderFileLimit": "حجم الملف يتجاوز الحد {value}mb",
                 "placeholderNoImage": "قم بتحميل الملف إما بإدخال رابط أو اختيار من التخزين المحلي"
             },
             "link": {
@@ -395,7 +395,7 @@
         },
         "provideContent": "توفير المحتوى",
         "success": {
-            "desc": "إنشاء __ph__0__ الرمز المميز",
+            "desc": "إنشاء {symbol} رمز مميز",
             "title": "المعاملة المقدمة"
         },
         "titleCommon": "يخلق",
@@ -431,20 +431,20 @@
         "amountRemove": "مقدار الإزالة",
         "calculator": "آلة حاسبة",
         "info": {
-            "earned": "__ph__0__ كسب",
+            "earned": "{symbol} حصل",
             "fee": "مصاريف",
             "feeTooltip": "يتم تطبيق رسوم الإيداع على المبلغ الخاص بك إلى حصة",
             "owned": "{symbol} @:balanceText",
             "poolShare": "مشاركة حمام السباحة الخاص بك",
             "poolShareWillBe": "سوف تكون مشاركة حمام السباحة الخاصة بك stake",
             "rewardToken": "رمز مكافأة",
-            "stake": "__ph__0__ staked",
-            "stakeWillBe": "ستكون حصتك __ph__0__",
+            "stake": "الخاص بك {symbol} راهن",
+            "stakeWillBe": "ستكون حصتك {symbol}",
             "totalLiquidityLocked": "إجمالي السيولة مغلق"
         },
         "poweredBy": "مدعوم من ديميتر الزراعة",
         "results": "نتائج",
-        "rewards": "__ph__0__ المكافآت",
+        "rewards": "{symbol} المكافآت",
         "staking": {
             "active": "Staking نشط",
             "inactive": "حصة لكسب مكافآت إضافية",
@@ -456,7 +456,7 @@
             "placeholder": "عبارة ذاكري"
         },
         "accountName": {
-            "desc": "هذا هو اسم حسابك. سيكون مرئيًا لك فقط في __ph__0__.",
+            "desc": "هذا هو اسم حسابك. سيكون مرئيًا لك فقط في {AppName}.",
             "placeholder": "إسم الحساب"
         },
         "addAccount": "أضف حسابًا",
@@ -477,16 +477,16 @@
             "confirmTitle": "تأكيد بكلمة المرور"
         },
         "errorMessages": {
-            "alreadyImported": "الحساب المستورد بالفعل __ph__0__",
+            "alreadyImported": "تم استيراد الحساب بالفعل {address}",
             "jsonFields": "ملف JSON لا يتطلب الحقول",
             "mnemonic": "محدد BIP39 ذاكري غير صالح",
-            "mnemonicLength": "يجب أن تحتوي ذاكري على كلمات __ph__0__",
+            "mnemonicLength": "يجب أن يحتوي ذاكري {number} الكلمات",
             "password": "كلمة المرور لا تتطابق",
             "passwords": "لا تتطابق كلمات المرور"
         },
         "errorMnemonicText": "أمر غير صحيح في عبارة المرور",
-        "exportJsonText": "ستتمكن دائمًا من استعادة حسابك عن طريق استيراد ملف __ph__0__. لا تشاركها مع أي شخص! تخزينها بأمان ، ويفضل تشفيرها.",
-        "exportOptionText": "تصدير __ph__0__ ملف لاستعادة الحساب",
+        "exportJsonText": "ستتمكن دائمًا من استعادة حسابك عن طريق استيراد هذا الملف {JSON}. لا تشاركها مع أي شخص! قم بتخزينه بشكل آمن، ويفضل أن يكون مشفرًا.",
+        "exportOptionText": "تصدير ملف {JSON} لاستعادة الحساب",
         "exportTutorialsText": "تصدير الدروس",
         "heading": {
             "accountDetailsTitle": "تفاصيل الحساب",
@@ -495,7 +495,7 @@
             "seedPhraseTitle": "عبارة المرور"
         },
         "importSteps": {
-            "exportAccount": "تصدير ملف __ph__0__",
+            "exportAccount": "قم بتصدير الملف {JSON}",
             "selectAccount": "حدد الحساب الذي تريد تصديره",
             "selectWallet": "افتح المحفظة بحسابك الحالي"
         },
@@ -505,17 +505,17 @@
         },
         "seedAdviceAdditionText": "إذا سألك شخص ما عن عبارة الممر الخاص بك ، فمن المرجح أن يحاولوا احتيالك وسرقة أصولك!",
         "seedAdviceAdditionTitle": "لا تشارك في عبارة الممر مع أي شخص!",
-        "seedAdviceText": "عبارة Passphrase المكونة من 12 كلمة هي مفتاح خاص لاستعادة الوصول إلى حسابك __ph__0__ في حالة فقدك الوصول إلى حسابك __ph__1__. قم بتخزينه بأمان بالترتيب الدقيق الذي يظهر أعلاه.",
+        "seedAdviceText": "عبارة المرور المكونة من 12 كلمة هي مفتاح خاص لاستعادة الوصول إلى حسابك {Sora} في حالة فقدان الوصول إلى حسابك {wallet}. قم بتخزينه بأمان بالترتيب الدقيق الذي يظهر أعلاه.",
         "welcome": {
             "createAccount": "إنشاء حساب",
-            "header": "مرحبا بكم في __ph__0__!",
+            "header": "مرحبًا بك في {AppName}!",
             "headline": "دعنا ننشئ حسابك",
             "importAccount": "حساب الاستيراد",
-            "text": "قم بإنشاء حساب شبكة __ph__0__ الخاص بك أو تسجيل الدخول إلى الحساب القديم باستخدام العبارة ذاكري أو استيراد .json. يتيح لك ذلك توقيع المعاملات بشكل آمن وإدارة الأصول في شبكة __ph__1__."
+            "text": "قم بإنشاء حساب الشبكة {Sora} الخاص بك أو قم بتسجيل الدخول إلى الحسابات القديمة باستخدام عبارة ذاكري أو استيراد .json. يتيح لك ذلك توقيع المعاملات وإدارة الأصول بشكل آمن في شبكة {Sora}."
         }
     },
     "dexSettings": {
-        "marketAlgorithm": "@.upper: marketalgorithmtext",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "توجيه السيولة عبر {smartAlgorithm} يضمن أفضل سعر لأي معاملة بدمج أفضل الأسعار من جميع الأسواق المتاحة. عند الإمكان، سيتم استخدام منحنى ربط الرموز ({tbcAlgorithm}) لتوفير السيولة طالما كان سعر الأصل أفضل من المصادر الأخرى، وإلا فسيُستخدم مجمع {xycAlgorithm}.",
             "TBC": "{tbcAlgorithm} — الشراء فقط من منحنى ربط الرموز (السوق الأولية). قد يكون السعر غير ملائم مقارنة بمجمع {xycAlgorithm} (السوق الثانوية)، لكن القيمة من المكافآت المؤجلة قد تصبح أفضل على المدى الطويل.",
@@ -533,15 +533,15 @@
         },
         "title": "الإعدادات"
     },
-    "disclaimer": "__ph__0__ يتم الحفاظ على هذا الموقع بواسطة مجتمع __ph__1__. قبل الاستمرار في استخدام هذا الموقع ، يرجى مراجعة __ph__2__ والوثائق ، والتي تتضمن شرحًا مفصلاً حول كيفية عمل __ph__3 ، وكذلك __ph__4__ ، و __ph__5__. هذه المستندات ضرورية لتجربة مستخدم آمنة وإيجابية. باستخدام __ph__6__ ، تقر بأنك قد قرأت هذه المستندات وفهمها. أنت تقر أيضًا بما يلي: 1) مسؤوليتك الوحيدة عن الامتثال لجميع القوانين التي قد تنطبق على استخدامك الخاص لـ __ph__7 في اختصاصك القانوني ؛ 2) فهمك أن الإصدار الحالي من __ph__8__ هو إصدار ألفا: لم يتم اختباره بالكامل ، وقد لا تؤدي بعض الوظائف على أنها مصممة ؛ و 3) فهمك وقبولك التطوعي للمخاطر التي ينطوي عليها استخدام __ph__9__ ، بما في ذلك ، على سبيل المثال لا الحصر ، خطر فقدان الرموز. من فضلك لا تستمر دون قراءة __ph__10__ ، __ph__11__ ، __ph__12__!",
+    "disclaimer": "{disclaimerPrefix} تتم صيانة هذا الموقع من قبل مجتمع {Sora}. قبل الاستمرار في استخدام هذا الموقع، يرجى مراجعة {polkaswapFaqLink} والوثائق، التي تتضمن شرحًا تفصيليًا لكيفية عمل {AppName}، بالإضافة إلى {memorandumLink} و{privacyLink}. تعتبر هذه المستندات ضرورية لتجربة مستخدم آمنة وإيجابية. باستخدام {AppName}، فإنك تقر بأنك قد قرأت وفهمت هذه المستندات. أنت تقر أيضًا بما يلي: 1) مسؤوليتك وحدك عن الامتثال لجميع القوانين التي قد تنطبق على استخدامك الخاص لـ {AppName} في ولايتك القضائية؛ 2) فهمك أن الإصدار الحالي من {AppName} هو إصدار ألفا: لم يتم اختباره بالكامل، وقد لا تعمل بعض الوظائف كما هو مصمم؛ و3) فهمك وقبولك الطوعي للمخاطر التي ينطوي عليها استخدام {AppName}، بما في ذلك، على سبيل المثال لا الحصر، خطر فقدان الرموز المميزة. من فضلك لا تستمر دون قراءة {polkaswapFaqLink}، {memorandumLink}، {privacyLink}!",
     "disclaimerTitle": "تنصل",
     "disconnectWalletText": "قطع الاتصال",
     "doNotShowText": "لا تريني هذا مرة أخرى",
-    "dragAndDropText": "سحب وإسقاط أو اختر __ph__0__",
+    "dragAndDropText": "قم بالسحب والإفلات أو اختيار ملف {extension}",
     "editText": "يحرر",
     "errorText": "خطأ",
     "ethNetworkFeeTooltipText": "الرسوم المعروضة لشبكة {network} في {AppName} هي تقديرية فقط؛ يمكنك رؤية القيمة الصحيحة في محفظة {network} المتصلة قبل تأكيد المعاملة.",
-    "exceededAmountText": "__ph__0__ تجاوزت",
+    "exceededAmountText": "{amount} تجاوزت",
     "exchange": {
         "lossWarning": "قد تخسر {value}% في هذه الصفقة. اكتشفنا مشكلة في تزويد السيولة، ما قد يؤدي إلى خسائر كبيرة أثناء المبادلة. تأكد من توفر سيولة كافية لزوج التداول المطلوب.",
         "Pool": "المجمّع",
@@ -553,8 +553,8 @@
         "showOnly": "إظهار {entities} فقط",
         "synthetics": "رموز مُركّبة"
     },
-    "FAQ": "__ph__0__ الأسئلة الشائعة",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "FAQ": "{AppName} الأسئلة الشائعة",
+    "fiatDisclaimer": "يرجى ملاحظة أن القيم الورقية المرتبطة بالعملات المشفرة على هذا الموقع يتم توفيرها بواسطة Polkaswap Indexer وهي تقريبية. ونظرًا للتعقيد المتأصل في هذه الحسابات، لا يمكن ضمان الدقة المطلقة في جميع الأوقات.",
     "fiatPayment": {
         "cedeStoreBtn": "حوّل من {value1} عبر {value2}",
         "cedeStoreDesc": "حوّل أي رموز من {value1} إلى {value2} عبر {value3}",
@@ -576,17 +576,17 @@
         "verifiedOnly": "عرض الأصول التي تم التحقق منها فقط",
         "zeroBalance": "إخفاء 0 الأصول العمومية"
     },
-    "firstPerSecond": "__ph__0__ لكل __ph__1__",
+    "firstPerSecond": "{first} لكل {second}",
     "firstText": "أولاً",
     "footer": {
         "internet": {
-            "action": "تحديث __ph__0__",
+            "action": "تحديث {AppName}",
             "desc": {
                 "disabled": "منفصل",
                 "stable": "السرعة المثلى",
                 "unstable": "اتصال بطيء"
             },
-            "dialogDesc": "__ph__0__ يتطلب اتصال الإنترنت لتجربة مستقرة",
+            "dialogDesc": "{AppName} يتطلب الاتصال بالإنترنت للحصول على تجربة مستقرة",
             "dialogTitle": "الاتصال بمصدر الإنترنت",
             "label": "سرعة الإنترنت الخاصة بك",
             "title": {
@@ -611,10 +611,10 @@
             },
             "dialog": {
                 "indexer": "فهرس",
-                "title": "__ph__0__ اختيار خدمة الشبكة",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "title": "{Sora} اختيار خدمة الشبكة",
+                "useCeres": "استخدم Polkaswap Indexer للقيم الورقية"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "كتلة مفهرس Polkaswap # {block}",
             "label": "خدمات الإحصاء",
             "title": {
                 "available": "الإحصائيات المتاحة",
@@ -628,10 +628,10 @@
         "github": "جيثب",
         "info": "المعلومات والمجتمع",
         "privacy": "سياسة الخصوصية",
-        "sorawiki": "__ph__0__ ويكي"
+        "sorawiki": "{Sora} ويكي"
     },
     "forText": "ل",
-    "hashiBridgeText": "جسر __ph__0__",
+    "hashiBridgeText": "{Hashi} جسر",
     "headerMenu": {
         "hideBalances": "إخفاء الأرصدة",
         "hideDisclaimer": "إخفاء إخلاء المسئولية",
@@ -639,7 +639,7 @@
         "settings": "إعدادات",
         "showBalances": "عرض الأرصدة",
         "showDisclaimer": "عرض إخلاء المسئولية",
-        "switchTheme": "__ph__0__ وضع",
+        "switchTheme": "الوضع {theme}",
         "systemPreferencesTheme": "تفضيلات النظام",
         "titleBalance": "الأرصدة",
         "titleCurrency": "عملة فيات",
@@ -648,7 +648,7 @@
         "turnPhoneHideBalances": "اقلب الهاتف واختبئ"
     },
     "helpDialog": {
-        "appVersion": "__ph__0__ الإصدار",
+        "appVersion": "{AppName} الإصدار",
         "contactUs": "اتصل بنا",
         "privacyPolicy": "سياسة الخصوصية",
         "termsOfService": "شروط الخدمة",
@@ -711,7 +711,7 @@
         "borrowMore": "استعارة أكثر",
         "borrowMoreDescription": "ارسم أموالًا إضافية من وضعك إلى الحد الأقصى المتاح. تأكد من دعم القيمة الجانبية لزيادة الديون لتجنب مخاطر التصفية.",
         "borrowTax": "ضريبة الاقتراض",
-        "borrowTaxDescription": "الضريبة __ph__0__ المطبق على المبلغ المقترض",
+        "borrowTaxDescription": "تطبق ضريبة {value} على المبلغ المقترض",
         "closeVault": "أغلق موقفي",
         "closeVaultDescription": "أغلق الموقف المحدد من خلال سداد جميع الديون المعلقة وسحب جميع الضمانات",
         "collateralDetails": "تفاصيل الجانبية",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "مقدار الأموال التي لا يزال بإمكانك رسمها من موقعك دون تجاوز حد الاقتراض الخاص بك ، استنادًا إلى ضمانك الحالي.",
         "debtDetails": "تفاصيل الديون",
         "depositCollateral": "ضمانات الإيداع",
-        "disclaimerDescription": "إن استعارة الأصول الرقمية من خلال __ph__0__ يحمل مخاطر كبيرة ويكون على مسؤوليتك بالكامل. قيمة الأصول الرقمية متقلبة للغاية ، وأي تغييرات في أسعار السوق للأصول التي استعارتها أو استخدامها كضمان يمكن أن تؤدي إلى خسائر مالية كبيرة.",
+        "disclaimerDescription": "ينطوي اقتراض الأصول الرقمية من خلال {AppName} على مخاطر كبيرة ويكون على مسؤوليتك الخاصة تمامًا. إن قيمة الأصول الرقمية متقلبة للغاية، وأي تغييرات في أسعار السوق للأصول التي اقترضتها أو استخدمتها كضمان يمكن أن تؤدي إلى خسائر مالية كبيرة.",
         "error": {
             "borrowMoreThanAvailable": "الديون المتاحة تجاوزت",
             "enterBorrow": "أدخل مبلغ الاقتراض",
@@ -735,15 +735,15 @@
         "highLiquidationRisk": "خطر التصفية العالي",
         "interest": "اهتمام",
         "interestDescription": "رسوم سنوية يتم فرضها على المبلغ المستمد من موقعك ، محسوبة كنسبة مئوية. تعوض هذه الرسوم المخاطر وتقلبات السوق.",
-        "introDescription": "تجربة الاقتراض والإقراض آمن وبدون مجهود. فتح مواقف الاقتراض مع منصة __ph__0__.",
-        "introTitle": "فتح مواقف الاقتراض وكسب مع __ph__0__",
+        "introDescription": "استمتع بتجربة الاقتراض والإقراض الآمنة والسهلة. فتح مراكز الاقتراض مع منصة {Kensetsu}.",
+        "introTitle": "افتح مراكز الاقتراض واكسب مع {Kensetsu}",
         "liquidated": "تصفية",
-        "liquidatedMessage": "مصففة __ph__0__ __ph__1__",
+        "liquidatedMessage": "تمت تصفيته {amount} {symbol}",
         "liquidationClose": "إغلاق التصفية",
         "liquidationPenalty": "عقوبة التصفية",
         "liquidationPenaltyDescription": "يتم تطبيق الرسوم المطبقة إذا انخفضت قيمة الضمانات الخاصة بك إلى أقل من عتبة معينة ، مما يؤدي إلى بيع الأصول لتغطية الدين. هذه العقوبة تزيد من إجمالي ديونك.",
-        "ltv": "قرض للقيمة (__ph__0__)",
-        "ltvDescription": "نسبة المبلغ المرسوم إلى قيمة الضمان في وضعك ، معبراً عنه كنسبة مئوية. أعلى __ph__0__ يزيد من العوائد المحتملة ولكن أيضًا خطر ، بما في ذلك فرصة التصفية.",
+        "ltv": "قيمة القرض ({LTV})",
+        "ltvDescription": "نسبة المبلغ المسحوب إلى قيمة الضمان في مركزك، معبرًا عنها كنسبة مئوية. يؤدي ارتفاع {LTV} إلى زيادة العوائد المحتملة ولكن أيضًا المخاطر، بما في ذلك فرصة التصفية.",
         "ltvMaxTooltip": "الحد الأقصى لموقع الاقتراض الذي يمكن توفيره فيما يتعلق بالقيمة المقدرة للأصل المستخدم كضمان.",
         "maxAvailableToBorrow": "الأعلى. متاح للاقتراض",
         "maxAvailableToBorrowDescription": "الحد الأقصى للمبلغ الذي يمكنك رسمه من موضعك ، يحدده قيمة الضمان الخاص بك. هذا الحد يضبط كقيمة التغييرات الجانبية.",
@@ -753,13 +753,13 @@
         "outstandingDebt": "ديون معلقة",
         "outstandingDebtDescription": "إجمالي المبلغ الذي تدين به حاليًا من الأموال المستمدة من وضعك ، بما في ذلك الفائدة المستحقة. يجب سداد هذا لإغلاق موقفك أو الحفاظ على نسب قرض إلى قيمة صحية.",
         "overallAvailable": "إجمالي متاح",
-        "overallAvailableDescription": "إجمالي المبلغ من الأموال المتاحة للاقتراض على منصة __ph__0__.",
+        "overallAvailableDescription": "المبلغ الإجمالي للأموال المتاحة للاقتراض على منصة {Kensetsu}.",
         "overallBadDebt": "ديون سيئة",
         "overallBadDebtDescription": "جزء من الديون التي من غير المرجح أن يتم استردادها بسبب التخلف عن سداد المقترض أو غير كافٍ.",
         "overallTotalCollateral": "إجمالي ضمانات",
-        "overallTotalCollateralDescription": "القيمة الإجمالية للأصول المودعة من قبل المقترضين لتأمين مواقع الاقتراض الخاصة بهم على منصة __ph__0__.",
+        "overallTotalCollateralDescription": "القيمة الإجمالية للأصول المودعة من قبل المقترضين لتأمين مراكز الاقتراض الخاصة بهم على منصة {Kensetsu}.",
         "overallTotalDebt": "إجمالي الديون",
-        "overallTotalDebtDescription": "المبلغ الإجمالي للديون المعلقة حاليًا عبر جميع مواقع الاقتراض على منصة __ph__0__.",
+        "overallTotalDebtDescription": "المبلغ الإجمالي للديون المستحقة حاليًا عبر جميع مراكز الاقتراض على منصة {Kensetsu}.",
         "positionHistory": "تاريخ الموقف",
         "positionInfo": "معلومات الموقف",
         "positionSafe": "موقف آمن",
@@ -768,7 +768,7 @@
         "repayDebt": "سداد الديون",
         "repayDebtDescription": "إرجاع الأموال المقترضة لتقليل ديونك المستحقة. هذا يمكن أن يقلل من تكاليف الفائدة ويقلل من خطر التصفية.",
         "requiredAmountWithSlippage": "المبلغ المطلوب بما في ذلك الانزلاق",
-        "requiredAmountWithSlippageDescription": "لإغلاق الموضع السلس ، اشتر أكثر قليلاً __ph__0__ من __ph__1__ المطلوبة بسبب الانزلاق المحتمل. تحتاج إلى إضافي لتغطية النقص. تبديل أصولك إلى __ph__2__ لتلبية هذه الحاجة.",
+        "requiredAmountWithSlippageDescription": "للحصول على إغلاق سلس للصفقة، قم بشراء ما يزيد قليلاً عن {tokenSymbol} من {amount} المطلوب بسبب الانزلاق المحتمل. أنت بحاجة إلى مبلغ إضافي لتغطية النقص. قم بتبديل الأصول الخاصة بك إلى {tokenSymbol} لتلبية هذه الحاجة.",
         "status": {
             "Closed": "مغلق",
             "Liquidated": "تصفية",
@@ -782,7 +782,7 @@
         "yourCollateralDescription": "الأصول التي أودعت في موقعك لتأمين الأموال المرسومة. قد يتم تصفية هذه الأصول من قبل المقرض إذا فشلت في الحفاظ على نسبة القرض إلى القيمة المطلوبة.",
         "yourDebt": "ديونك",
         "yourDebtDescription": "المبلغ الإجمالي المعقول حاليًا في وضعك ، بما في ذلك المبلغ المرسوم وأي فائدة مستحقة. يزداد هذا التوازن بمرور الوقت إذا تراكم الفائدة.",
-        "yourDebtTokenBalance": "توازن __ph__0__"
+        "yourDebtTokenBalance": "رصيدك {tokenSymbol}"
     },
     "lastText": "الأخيرة",
     "learnMoreText": "اعرف المزيد",
@@ -810,7 +810,7 @@
     "marketAlgorithmText": "خوارزمية السوق",
     "marketText": "سوق",
     "maxAmountText": "الأعلى. كمية",
-    "memorandum": "__ph__0__ مذكرة وشروط الخدمات",
+    "memorandum": "{AppName} مذكرة وشروط الخدمة",
     "minAmountText": "دقيقة. كمية",
     "mobilePopup": {
         "header": "قم بتنزيل محفظة {Sora} مع ميزات {polkaswapHighlight}",
@@ -833,27 +833,27 @@
         },
         "notifications": {
             "accountAddressError": {
-                "text": "لسوء الحظ ، فشلت معاملة الجسر __ph__0__ بسبب عنوان المستلم للرموز في ترتيب __ph__3__ لا يتطابق مع عنوان حساب __ph__1__ الحالي. يرجى التبديل __ph__2__ حساب في التمديد وحاول مرة أخرى.",
-                "title": "خطأ __ph__0__"
+                "text": "لسوء الحظ، فشلت معاملة الجسر {Hashi} نظرًا لأن عنوان مستلم الرموز المميزة في طلب @:moonpayText لا يتطابق مع عنوان حسابك {Ethereum} الحالي. يرجى تبديل حساب {Ethereum} في الامتداد والمحاولة مرة أخرى.",
+                "title": "حساب {Ethereum} خاطئ"
             },
             "amountError": {
-                "text": "لسوء الحظ ، فشلت معاملة الجسر __ph__0__ بسبب عدم وجود رموز كافية للمعاملات. يرجى التحقق من رصيد حساب __ph__1__ الخاص بك والمحاولة مرة أخرى.",
+                "text": "لسوء الحظ، فشلت معاملة الجسر {Hashi} بسبب عدم وجود رموز كافية للمعاملة. يرجى التحقق من رصيد حسابك {Ethereum} والمحاولة مرة أخرى.",
                 "title": "توازن غير كاف"
             },
             "feeError": {
-                "text": "لسوء الحظ ، فشلت معاملة الجسر __ph__0__ بسبب عدم وجود ما يكفي من ETH لدفع رسوم نقل الشبكة __ph__1__. الرجاء إضافة المزيد من ETH وحاول مرة أخرى.",
+                "text": "لسوء الحظ، فشلت معاملة الجسر {Hashi} بسبب عدم وجود ما يكفي من ETH لدفع رسوم تحويل الشبكة {Ethereum}. الرجاء إضافة المزيد من ETH والمحاولة مرة أخرى.",
                 "title": "لا يكفي ETH للجسر TX"
             },
             "success": {
-                "text": "تم الانتهاء من شراء الرمز المميز. ستبدأ معاملة الجسر __ph__0__ تلقائيًا بمجرد استلام الرموز في حساب Connection __ph__1__. من الآمن إغلاق هذه النافذة والاستمرار في استخدام __ph__2__. سيكون هناك إشعار حول معاملة الجسر عندما يكون جاهزًا.",
+                "text": "تم الانتهاء من شراء الرمز المميز. ستبدأ معاملة الجسر {Hashi} تلقائيًا بمجرد استلام الرموز المميزة في حساب {Ethereum} المتصل. من الآمن إغلاق هذه النافذة ومواصلة استخدام {AppName}. سيكون هناك إشعار حول معاملة الجسر عندما تكون جاهزة.",
                 "title": "الرموز المشتراة"
             },
             "supportError": {
-                "text": "لسوء الحظ ، لم يتم دعم الرمز المميز الذي تم شراؤه عبر __ph__5__ بعد جسر __ph__0__ في __ph__1__. عادةً ما يجب أن تكون الرموز المميزة المدعومة متاحة فقط للشراء عبر MoonPay في __ph__2__ ، وبالتالي يجب أن يكون هناك شيء ما قد حدث في مكان ما. يرجى ألا تتردد في إخبار المجتمع بهذه الحالة في <a class = \"link\" href = \"https://t.me/polkaswap\" target = \"_ blank\" rel = \"nofollow noopener\" title = \"__ ph__3 __\"> __ ph__4 telegram </a>.",
+                "text": "لسوء الحظ، الرمز المميز الذي تم شراؤه عبر @:moonpayText غير مدعوم بعد بواسطة الجسر {Hashi} في {AppName}. عادةً، يجب أن تكون الرموز المدعومة فقط متاحة للشراء عبر MoonPay في {AppName}، وبالتالي يجب أن يكون هناك خطأ ما في مكان ما. من فضلك لا تتردد في إعلام المجتمع بهذه الحالة في <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} مجموعة Telegram</a>.",
                 "title": "رمز غير مدعوم"
             },
             "transactionError": {
-                "text": "لسوء الحظ ، يبدو أن معاملة __ph__0__ قد فشلت. من فضلك حاول مرة أخرى. للحصول على دعم __ph__1__ ، انتقل إلى <a class = \"link\" href = \"https://support.moonpay.com\" target = \"_ blank\" rel = \"nofollow noopener\" title = \"__ph__2__\"> https://support.moonpay.com </a>",
+                "text": "لسوء الحظ، يبدو أن المعاملة @:moonpayText قد فشلت. يرجى المحاولة مرة أخرى. للحصول على دعم @:moonpayText انتقل إلى <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>",
                 "title": "فشلت المعاملة"
             }
         },
@@ -911,19 +911,19 @@
     "multipleRecipients": "متعددة المستفيدين",
     "nameText": "اسم",
     "networkFeeText": "رسوم الشبكة",
-    "networkFeeTooltipText": "يتم استخدام رسوم الشبكة لضمان نمو النظام والأداء المستقر __ph__0__.",
+    "networkFeeTooltipText": "يتم استخدام رسوم الشبكة لضمان نمو النظام {Sora} وأدائه المستقر.",
     "networkStatisticsText": "إحصائيات الشبكة",
     "newAccountsText": "حسابات جديدة",
     "nextText": "التالي",
     "noDataText": "لا توجد بيانات",
     "node": {
         "errors": {
-            "connection": "حدث خطأ أثناء الاتصال بالعقدة\n__ph__0__",
-            "existing": "تمت إضافة هذه العقدة بالفعل: __ph__0__",
-            "network": "العقدة\n__ph__0__\n من الشبكة الأخرى"
+            "connection": "حدث خطأ أثناء الاتصال بالعقدة\n{address}",
+            "existing": "تمت إضافة هذه العقدة بالفعل: {title}",
+            "network": "العقدة\n{address}\n هو من شبكة أخرى"
         },
         "messages": {
-            "connected": "تم إنشاء الاتصال مع العقدة\n__ph__0__",
+            "connected": "تم إنشاء الاتصال مع العقدة\n{address}",
             "selectNode": "يرجى اختيار عقدة من القائمة للاتصال بها"
         },
         "warnings": {
@@ -931,7 +931,7 @@
         }
     },
     "noir": "نوير",
-    "ofText": "__ph__0__ من __ph__1__",
+    "ofText": "{first} من {second}",
     "operations": {
         "AddLiquidity": "أضف السيولة",
         "andText": "و",
@@ -949,100 +949,100 @@
         "DemeterFarmingWithdrawLiquidity": "إلغاء السيولة",
         "DepositCollateral": "وضع الإيداع",
         "error": {
-            "AddLiquidity": "فشل في توفير __ph__0__ __ph__1__ و __ph__2__ __ph__3__",
-            "BindRegulatedAsset": "فشل في ربط الأصول __ph__0__ إلى sbt __ph__1__",
-            "BorrowVaultDebt": "فشل في الاقتراض __ph__0__ __ph__1__",
-            "Burn": "فشل في حرق __ph__0__ __ph__1__",
-            "ClaimRewards": "فشل في المطالبة بالمكافآت __ph__0__",
-            "CloseVault": "فشل في إغلاق __ph__0 __/__ ph__1__ موقف",
-            "CreatePair": "فشل في توفير __ph__0__ __ph__1__ و __ph__2__ __ph__3__",
-            "CreateVault": "فشل في إنشاء __ph__0 __/__ ph__1__",
-            "DemeterFarmingDepositLiquidity": "فشل في توفير __ph__0__ __ph__1__ و __ph__2__ lp الرموز",
-            "DemeterFarmingGetRewards": "فشل في المطالبة __ph__0__",
-            "DemeterFarmingStakeToken": "فشل في إضافة __ph__0__ __ph__1__",
-            "DemeterFarmingUnstakeToken": "فشل في إزالة __ph__0__ __ph__1__",
-            "DemeterFarmingWithdrawLiquidity": "فشل في إزالة __ph__0__ __ph__1__ و __ph__2__ lp الرموز",
-            "DepositCollateral": "فشل في الإيداع __ph__0__ __ph__1__",
-            "EthBridgeIncoming": "فشل نقل __ph__0__ __ph__1__ من __ph__2__ إلى __ph__3__",
-            "EthBridgeOutgoing": "فشل نقل __ph__0__ __ph__1__ من __ph__2__ إلى __ph__3__",
-            "IssueSoulBoundToken": "فشل في إصدار رمز Soulbound __ph__0__",
-            "Mint": "فشل في النعناع __ph__0__ __ph__1__",
+            "AddLiquidity": "فشل في توفير {amount} {symbol} و {amount2} {symbol2}",
+            "BindRegulatedAsset": "فشل ربط الأصل {symbol} بـ SBT {symbol2}",
+            "BorrowVaultDebt": "فشل في الاقتراض {amount} {symbol}",
+            "Burn": "فشل في الحرق {amount} {symbol}",
+            "ClaimRewards": "فشل المطالبة بالمكافآت {rewards}",
+            "CloseVault": "فشل في إغلاق المركز {symbol}/{symbol2}",
+            "CreatePair": "فشل في توفير {amount} {symbol} و {amount2} {symbol2}",
+            "CreateVault": "فشل إنشاء الموضع {symbol}/{symbol2}",
+            "DemeterFarmingDepositLiquidity": "فشل في توفير {amount} {symbol} و{symbol2} LP الرموز المميزة",
+            "DemeterFarmingGetRewards": "فشلت المطالبة {symbol}",
+            "DemeterFarmingStakeToken": "فشلت إضافة {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "فشلت إزالة {amount} {symbol}",
+            "DemeterFarmingWithdrawLiquidity": "فشلت إزالة الرموز {amount} {symbol} و{symbol2} LP",
+            "DepositCollateral": "فشل في الإيداع {amount} {symbol}",
+            "EthBridgeIncoming": "فشل تحويل {amount} {symbol} من {Ethereum} إلى {Sora}",
+            "EthBridgeOutgoing": "فشل تحويل {amount} {symbol} من {Sora} إلى {Ethereum}",
+            "IssueSoulBoundToken": "فشل في إصدار رمز Soulbound {symbol}",
+            "Mint": "فشل في سك {amount} {symbol} إلى {address}",
             "OrderBookCancelLimitOrder": "فشل إلغاء أمر الحد",
             "OrderBookCancelLimitOrders": "فشل في إلغاء أوامر الحد",
-            "OrderBookPlaceLimitOrder": "فشل في وضع ترتيب حد __ph__0__ __ph__1__ في __ph__2__ __ph__3__",
-            "ReferralReserveXor": "فشل في ربط __ph__0__ xor",
-            "ReferralSetInvitedUser": "فشل في تعيين __ph__0__ __ph__1__",
-            "ReferralUnreserveXor": "فشل في عدم الراحة __ph__0__ xor",
-            "RegisterAndRegulateAsset": "فشل في التسجيل وتنظيم __ph__0__",
-            "RegisterAsset": "فشل في تسجيل __ph__0__ أصول",
-            "RegulateAsset": "فشل في تنظيم الأصول __ph__0__",
-            "RemoveLiquidity": "فشل في إزالة __ph__0__ __ph__1__ و __ph__2__ __ph__3__",
-            "RepayVaultDebt": "فشل في سداد __ph__0__ __ph__1__",
-            "SetAccessExpiration": "فشل في تحديث انتهاء صلاحية __ph__0__ لـ __ph__1__",
-            "StakingBond": "فشل في الارتباط __ph__0__ __ph__1__",
-            "StakingBondAndNominate": "فشل في الارتباط __ph__0__ __ph__1__",
-            "StakingBondExtra": "فشل في الارتباط الإضافي __ph__0__ __ph__1__",
+            "OrderBookPlaceLimitOrder": "فشل في تقديم طلب محدد بقيمة {amount} {symbol} عند {price} {symbol2}",
+            "ReferralReserveXor": "فشل الارتباط {amount} XOR",
+            "ReferralSetInvitedUser": "فشل في الضبط {role} {address}",
+            "ReferralUnreserveXor": "فشل في فك الارتباط {amount} XOR",
+            "RegisterAndRegulateAsset": "فشل في التسجيل والتنظيم {symbol}",
+            "RegisterAsset": "فشل في تسجيل {symbol} الأصل",
+            "RegulateAsset": "فشل في تنظيم الأصول {symbol}",
+            "RemoveLiquidity": "فشلت إزالة {amount} {symbol} و {amount2} {symbol2}",
+            "RepayVaultDebt": "فشل في السداد {amount} {symbol}",
+            "SetAccessExpiration": "فشل تحديث انتهاء الصلاحية إلى {to} لـ {symbol}",
+            "StakingBond": "فشل الارتباط {amount} {symbol}",
+            "StakingBondAndNominate": "فشل الارتباط {amount} {symbol}",
+            "StakingBondExtra": "فشل الربط الإضافي {amount} {symbol}",
             "StakingChill": "فشل في البرد",
             "StakingNominate": "فشل في ترشيح المدققين",
             "StakingPayout": "فشل في دفع المكافآت",
-            "StakingRebond": "فشل في إعادة التوزيع __ph__0__ __ph__1__",
-            "StakingSetController": "فشل في تعيين وحدة التحكم __ph__0__",
-            "StakingSetPayee": "فشل في تعيين المستفيد __ph__0__",
-            "StakingUnbond": "فشل في عدم الرضا __ph__0__ __ph__1__",
-            "StakingWithdrawUnbonded": "فشل في الانسحاب __ph__0__ __ph__1__",
-            "Swap": "فشل في تبديل __ph__0__ __ph__1__ لـ __ph__2__ __ph__3__",
-            "SwapAndSend": "فشل في المبادلة __ph__0__ __ph__1__ من أجل __ph__2__ __ph__3 __ و __ph__4__ __ph__5__ __ph__6__",
-            "SwapTransferBatch": "فشل في __ph__0__ __ph__1__ __ph__2__",
-            "Transfer": "فشل في __ph__0__ __ph__1__ __ph__2__ __ph__3__ __ph__4__",
-            "VestedTransfer": "فشل في __ph__0__ __ph__1__ __ph__2__ __ph__3__ __ph__4__",
-            "XorlessTransfer": "فشل في إرسال __ph__0__ __ph__1__ إلى __ph__2__"
+            "StakingRebond": "فشل في إعادة الاتصال {amount} {symbol}",
+            "StakingSetController": "فشل في ضبط وحدة التحكم {address}",
+            "StakingSetPayee": "فشل في تعيين المستفيد {address}",
+            "StakingUnbond": "فشل في فك الارتباط {amount} {symbol}",
+            "StakingWithdrawUnbonded": "فشل السحب {amount} {symbol}",
+            "Swap": "فشل استبدال {amount} {symbol} بـ {amount2} {symbol2}",
+            "SwapAndSend": "فشل في تبديل {amount} {symbol} بـ {amount2} {symbol2} و {action} {direction} {address}",
+            "SwapTransferBatch": "فشل في {action} {amount} {symbol}",
+            "Transfer": "فشل في {action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "فشل في {action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "فشل إرسال {amount} {symbol} إلى {address}"
         },
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
         "finalized": {
-            "AddLiquidity": "مزود __ph__0__ __ph__1__ و __ph__2__ __ph__3__",
-            "BindRegulatedAsset": "ربط الأصل __ph__0__ إلى SBT",
-            "BorrowVaultDebt": "استعار __ph__0__ __ph__1__",
-            "Burn": "محترق __ph__0__ __ph__1__",
-            "ClaimRewards": "ادعى المكافأة بنجاح __ph__0__",
-            "CloseVault": "__ph__0 __/__ ph__1__ موقف مغلق",
-            "CreatePair": "مزود __ph__0__ __ph__1__ و __ph__2__ __ph__3__",
-            "CreateVault": "__ph__0 __/__ ph__1__ الموقف الذي تم إنشاؤه",
-            "DemeterFarmingDepositLiquidity": "مزود __ph__0__ و __ph__1__ __ph__2__ lp الرموز",
-            "DemeterFarmingGetRewards": "__ph__0__ __ph__1__ ادعى بنجاح",
-            "DemeterFarmingStakeToken": "أضاف __ph__0__ __ph__1__",
-            "DemeterFarmingUnstakeToken": "تمت إزالته __ph__0__ __ph__1__",
-            "DemeterFarmingWithdrawLiquidity": "تمت إزالته __ph__0__ و __ph__1__ __ph__2__ lp الرموز",
-            "DepositCollateral": "مودعة __ph__0__ __ph__1__",
-            "EthBridgeIncoming": "نقل __ph__0__ __ph__1__ من __ph__2__ إلى __ph__3__",
-            "EthBridgeOutgoing": "نقل __ph__0__ __ph__1__ من __ph__2__ إلى __ph__3__",
-            "IssueSoulBoundToken": "إصدار رمز Soulbound __ph__0__",
-            "Mint": "minted __ph__0__ __ph__1__ to __ph__2__",
+            "AddLiquidity": "تم توفير {amount} {symbol} و {amount2} {symbol2}",
+            "BindRegulatedAsset": "ربط الأصل {symbol2} بـ SBT",
+            "BorrowVaultDebt": "مقترضة {amount} {symbol}",
+            "Burn": "احترقت {amount} {symbol}",
+            "ClaimRewards": "تم استلام المكافأة بنجاح {rewards}",
+            "CloseVault": "{symbol}/{symbol2} المركز مغلق",
+            "CreatePair": "تم توفير {amount} {symbol} و {amount2} {symbol2}",
+            "CreateVault": "{symbol}/{symbol2} تم إنشاء المنصب",
+            "DemeterFarmingDepositLiquidity": "تم توفير رموز {symbol} و{symbol2} {amount} LP",
+            "DemeterFarmingGetRewards": "{amount} {symbol} تمت المطالبة به بنجاح",
+            "DemeterFarmingStakeToken": "تمت الإضافة {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "تمت الإزالة {amount} {symbol}",
+            "DemeterFarmingWithdrawLiquidity": "تمت إزالة {symbol} و{symbol2} {amount} رموز LP",
+            "DepositCollateral": "تم الإيداع {amount} {symbol}",
+            "EthBridgeIncoming": "تم النقل {amount} {symbol} من {Ethereum} إلى {Sora}",
+            "EthBridgeOutgoing": "تم النقل {amount} {symbol} من {Sora} إلى {Ethereum}",
+            "IssueSoulBoundToken": "إصدار رمز Soulbound {symbol}",
+            "Mint": "مسكوك {amount} {symbol} إلى {address}",
             "OrderBookCancelLimitOrder": "تم إلغاء أمر الحد",
             "OrderBookCancelLimitOrders": "الحد من أوامر إلغاء",
-            "OrderBookPlaceLimitOrder": "__ph__0__ __ph__1__ __ph__2__ at __ph__3__ __ph__4__",
-            "ReferralReserveXor": "المستعبدين __ph__0__ xor",
-            "ReferralSetInvitedUser": "__ph__0__ __ph__1__ تم تعيينه بنجاح",
-            "ReferralUnreserveXor": "غير موثوق __ph__0__ xor",
-            "RegisterAndRegulateAsset": "تسجيل وتنظيم __ph__0__ أصول",
-            "RegisterAsset": "مسجل __ph__0__ الأصول",
-            "RegulateAsset": "تنظيم الأصول __ph__0__",
-            "RemoveLiquidity": "تمت إزالته __ph__0__ __ph__1__ و __ph__2__ __ph__3__",
-            "RepayVaultDebt": "سدد __ph__0__ __ph__1__",
-            "SetAccessExpiration": "SB Token __ph__0__ انتهاء الصلاحية المحدثة لـ __ph__1__",
-            "StakingBond": "المستعبدين __ph__0__ __ph__1__",
-            "StakingBondAndNominate": "المستعبدين __ph__0__ __ph__1__",
-            "StakingBondExtra": "المستعبدين إضافي __ph__0__ __ph__1__",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} في {price} {symbol2} تم وضعها",
+            "ReferralReserveXor": "المستعبدين {amount} XOR",
+            "ReferralSetInvitedUser": "تم ضبط {role} {address} بنجاح",
+            "ReferralUnreserveXor": "غير مرتبط {amount} XOR",
+            "RegisterAndRegulateAsset": "تسجيل وتنظيم {symbol} الأصول",
+            "RegisterAsset": "مسجل {symbol} الأصول",
+            "RegulateAsset": "تنظيم الأصول {symbol}",
+            "RemoveLiquidity": "تمت إزالة {amount} {symbol} و {amount2} {symbol2}",
+            "RepayVaultDebt": "مسدد {amount} {symbol}",
+            "SetAccessExpiration": "رمز SB {symbol} تم تحديث انتهاء الصلاحية إلى {endTime}",
+            "StakingBond": "المستعبدين {amount} {symbol}",
+            "StakingBondAndNominate": "المستعبدين {amount} {symbol}",
+            "StakingBondExtra": "المستعبدين اضافية {amount} {symbol}",
             "StakingChill": "برد",
             "StakingNominate": "المدققون المرشحون",
             "StakingPayout": "مكافآت الدفع",
-            "StakingRebond": "تم ترقيته __ph__0__ __ph__1__",
-            "StakingSetController": "تعيين وحدة التحكم __ph__0__",
-            "StakingSetPayee": "اضبط Pleadee __ph__0__",
-            "StakingUnbond": "__ph__ __ph__0__ __ph__1__",
-            "StakingWithdrawUnbonded": "انسحب __ph__0__ __ph__1__",
-            "Swap": "تبديل __ph__0__ __ph__1__ لـ __ph__2__ __ph__3__",
-            "SwapAndSend": "تبديل __ph__0__ __ph__1__ من أجل __ph__2__ __ph__3 __ و __ph__4__ __ph__5__ __ph__6__",
+            "StakingRebond": "ريبونديد {amount} {symbol}",
+            "StakingSetController": "ضبط وحدة التحكم {address}",
+            "StakingSetPayee": "تعيين المستفيد {address}",
+            "StakingUnbond": "غير مرتبط {amount} {symbol}",
+            "StakingWithdrawUnbonded": "انسحب {amount} {symbol}",
+            "Swap": "تم استبدال {amount} {symbol} بـ {amount2} {symbol2}",
+            "SwapAndSend": "تم تبديل {amount} {symbol} بـ {amount2} {symbol2} و {action} {direction} {address}",
             "SwapTransferBatch": "{action} {amount} {symbol}",
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
@@ -1054,7 +1054,7 @@
         "OrderBookCancelLimitOrders": "إلغاء الطلبات",
         "OrderBookPlaceLimitOrder": "ترتيب مكان",
         "ReferralReserveXor": "بوند xor",
-        "ReferralSetInvitedUser": "تعيين __ph__0__",
+        "ReferralSetInvitedUser": "تعيين {role}",
         "ReferralUnreserveXor": "XOR UNDOND",
         "RegisterAndRegulateAsset": "تسجيل الأصول",
         "RegisterAsset": "تسجيل الأصول",
@@ -1075,7 +1075,7 @@
         "StakingWithdrawUnbonded": "انسحب غير موثوق",
         "Swap": "تبديل",
         "SwapAndSend": "مبادلة وإرسال",
-        "SwapTransferBatch": "__ph__0__ النقل",
+        "SwapTransferBatch": "{ADAR} نقل",
         "Transfer": "تحويل",
         "VestedTransfer": "تحويل",
         "XorlessTransfer": "تحويل"
@@ -1092,18 +1092,18 @@
             "inactive": "غير نشط",
             "placeable": "قابلة للوسعار"
         },
-        "Buy": "شراء __ph__0__",
+        "Buy": "شراء {asset}",
         "cantPlaceOrder": "لا يمكن وضع الطلب",
         "change": "يتغير",
         "dayVolume": "1D حجم",
         "dialog": {
             "askCancel": "هل أنت متأكد من أنك تريد إلغاء جميع الطلبات المفتوحة؟",
-            "at": "في __ph__0__ __ph__1__",
-            "buy": "شراء __ph__0__ __ph__1__",
+            "at": "في {price} {symbol}",
+            "buy": "شراء {amount} {symbol}",
             "cancelAll": "نعم ، إلغاء الكل",
             "placeLimit": "وضع الحد",
             "placeMarket": "وضع أمر السوق",
-            "sell": "بيع __ph__0__ __ph__1__"
+            "sell": "بيع {amount} {symbol}"
         },
         "enterAmount": "أدخل المبلغ",
         "error": {
@@ -1124,11 +1124,11 @@
                 "reason": "لا توجد أوامر كافية متاحة لإكمال هذا الطلب"
             },
             "multipleOf": {
-                "reading": "لمعالجة طلبك ، يرجى إدخال سعر مضاعف __ph__0__",
+                "reading": "لمعالجة طلبك، يرجى إدخال سعر يكون من مضاعفات {value}",
                 "reason": "السعر الذي تم إدخاله محدد للغاية"
             },
             "outOfBounds": {
-                "reading": "تجاوز نطاق blockchain: يقع المبلغ الذي تم إدخاله خارج نطاق blockchain المسموح به. مين: __ph__0__ ؛ ماكس: __ph__1__",
+                "reading": "تم تجاوز نطاق Blockchain: يقع المبلغ الذي أدخلته خارج النطاق المسموح به لـ blockchain. الحد الأدنى: {min}; الحد الأقصى: {max}",
                 "reason": "فشل المبلغ في الامتثال لنطاق blockchain"
             },
             "singlePriceLimit": {
@@ -1141,10 +1141,10 @@
             }
         },
         "history": {
-            "cancel": "إلغاء الطلب __ph__0__",
+            "cancel": "إلغاء الطلب {value}",
             "cancelAll": "إلغاء الكل",
             "connect": "قم بتوصيل حساب لبدء التداول",
-            "openOrders": "أوامر مفتوحة __ph__0__",
+            "openOrders": "الطلبات المفتوحة {value}",
             "orderHistory": "تاريخ النظام",
             "tradeHistory": "تاريخ التجارة"
         },
@@ -1167,7 +1167,7 @@
             "side": "جانب",
             "time": "وقت"
         },
-        "Sell": "بيع __ph__0__",
+        "Sell": "بيع {asset}",
         "setPrice": "حدد السعر",
         "stop": "توقف الكتاب",
         "time": "وقت",
@@ -1183,7 +1183,7 @@
             "limitOrder": "يتيح لك أمر \"الحد\" تحديد السعر الدقيق الذي تريد شراء أو بيع أحد الأصول. لن يتم تنفيذ أمر \"الحد من الشراء\" إلا بالسعر المحدد أو أقل ، في حين سيتم تنفيذ أمر \"بيع الحد\" فقط بالسعر المحدد أو أعلى. يضمن هذا التحكم أنك لا تدفع أكثر أو تبيع مقابل أقل مما تشعر بالراحة.",
             "marketOrder": "\"أمر السوق\" هو ​​أمر لشراء أو بيع على الفور بأفضل سعر حالي متاح. لا يتطلب الأمر تحديد سعر ، وضمان تنفيذ سريع ولكن مع مفاضلة أقل سيطرة على السعر المستلم أو المدفوع. يتم استخدام هذا النوع من الترتيب عندما يكون اليقين في التنفيذ أولوية عن التحكم في الأسعار.",
             "marketWidget": "تعرض هذه القطعة دفقًا في الوقت الفعلي من التداولات التي تم تنفيذه في السوق ، حيث توفر معلومات عن أحجام المعاملات والنشاط الحديث واتجاهات السوق الحالية. من خلال مراقبة توقيت وسعر وحجم التداول الفعلي ، يمكن للتجار الحصول على رؤى حول ديناميات السوق والمعنويات ، ومساعدتهم على اكتشاف فرص التداول واتخاذ القرارات المستنيرة",
-            "pairsList": "قائمة في الوقت الحقيقي تظهر أوامر الشراء والبيع الحالية للعملة المشفرة. يساعدك على فهم الطلب ، واتجاه السعر المحتمل ، وحجم التجارة على شبكة __ph__0__ و __ph__1__ dex",
+            "pairsList": "قائمة في الوقت الفعلي توضح أوامر الشراء والبيع الحالية للعملة المشفرة. يساعدك على فهم الطلب واتجاه السعر المحتمل وحجم التداول على شبكة {Sora} و{AppName} DEX",
             "txDetails": {
                 "amount": "يشير \"المبلغ\" إلى إجمالي عدد الأصول التي تريد شراؤها أو بيعها في طلبك. من المهم تحديد ، لأنه يحدد حجم معاملتك ، مما يؤثر على التكلفة الإجمالية لأوامر الشراء أو الإيرادات لأوامر البيع.",
                 "expiryDate": "\"تاريخ انتهاء الصلاحية\" هو الموعد النهائي لتنفيذ طلبك. إذا لم يصل السوق إلى السعر المحدد قبل هذا التاريخ ، يتم إلغاء الطلب تلقائيًا. أنت لست ملزماً بالانتظار الدائم إذا لم تتماشى ظروف السوق مع تفضيلات التداول الخاصة بك.",
@@ -1196,7 +1196,7 @@
         "tradingPair": {
             "choosePair": "اختر زوج التداول",
             "status": "حالة",
-            "total": "__ph__0__ __ph__1__ في __ph__2__ __ph__3__",
+            "total": "{amount} {symbol} في {amount2} {symbol2}",
             "volume": "مقدار"
         },
         "txDetails": {
@@ -1229,7 +1229,7 @@
     },
     "pairIsNotCreated": "لم يتم إنشاء زوج الرمز المميز",
     "points": {
-        "accountsText": "__ph__0__ الحسابات",
+        "accountsText": "{amount} حسابات",
         "airdrop": "أكمل المهام المتعلقة بالنظام الإيكولوجي Sora من أجل التأهل للحصول على 3 ملايين دولار Airdrop",
         "bridgeVolume": "حجم الجسر",
         "complete": "أكمل | مكتمل",
@@ -1281,7 +1281,7 @@
             "titleTask": "إنفاق XOR على رسوم الشبكة"
         },
         "nextLvl": "LVL التالي",
-        "openTelegram": "افتح __ph__0__",
+        "openTelegram": "مفتوح {Telegram}",
         "orderbookVolume": {
             "descriptionTask": "إنشاء أوامر الحد في دفتر الطلبات",
             "titleProgress": "دفتر الطلبات",
@@ -1293,22 +1293,22 @@
             "titleProgress": "الإحالة sytem",
             "titleTask": "راجع الحسابات"
         },
-        "relatedTasks": "أكمل __ph__0 __- المهام ذات الصلة من أجل رفع مستوى مهارتك",
+        "relatedTasks": "أكمل المهام ذات الصلة بـ {title} من أجل رفع مستوى مهارتك",
         "rewardNextLvl": "مكافأة المستوى التالي",
         "soraCard": "تقدم الآن",
         "title": "نقاطك",
         "toEarnPoints": "لتحقيق النقاط",
         "tokenHold": {
-            "descriptionTask": "امسك حياتك الحالية __ph__0__",
-            "titleProgress": "__ph__0__ الممتلكات",
-            "titleTask": "عقد __ph__0__"
+            "descriptionTask": "احتفظ بممتلكاتك الحالية {token}",
+            "titleProgress": "{token} المقتنيات",
+            "titleTask": "اضغط على {token}"
         },
         "VXORHoldings": {
             "descriptionTask": "امسك حيازاتك الحالية",
             "titleProgress": "Vxor Holdings",
             "titleTask": "عقد vxor"
         },
-        "xorBurned": "__ph__0__ المحترق",
+        "xorBurned": "{XOR} محروق",
         "XORBurned": {
             "descriptionTask": "حرق xor وتحويلها إلى قيمة $",
             "titleProgress": "أحرق Xor",
@@ -1325,11 +1325,11 @@
         "yourTasks": "مهامك"
     },
     "polkadotjs": {
-        "connectionError": "حدث خطأ أثناء توصيل المحفظة. يمكنك محاولة توصيل المحفظة عبر __ph__0__ مرة أخرى",
-        "noAccount": "__ph__0__ خطأ في الحساب. يرجى التحقق من حسابك في امتداد __ph__1__",
-        "noExtension": "لم يتم العثور على امتداد __ph__0__. يرجى تثبيته وإعادة تحميل هذه الصفحة",
-        "noExtensions": "لم يتم العثور على امتداد __ph__0__. يرجى تثبيته وإعادة تحميل هذه الصفحة\nhttps://polkadot.js.org/extense/",
-        "noSigner": "تم الرفض. انتقل إلى __ph__0__ إعدادات الامتداد وفتح \"إدارة وصول الموقع\" للسماح."
+        "connectionError": "حدث خطأ أثناء ربط المحفظة. يمكنك محاولة توصيل المحفظة عبر {extension} مرة أخرى",
+        "noAccount": "{extension} خطأ في الحساب. يرجى التحقق من حسابك في الامتداد {extension}",
+        "noExtension": "لم يتم العثور على الامتداد {extension}. الرجاء تثبيته وإعادة تحميل هذه الصفحة",
+        "noExtensions": "لم يتم العثور على الامتداد {PolkadotJs}. الرجاء تثبيته وإعادة تحميل هذه الصفحة\nhttps://polkadot.js.org/extension/",
+        "noSigner": "تم الرفض. انتقل إلى إعدادات الامتداد {extension} وافتح \"إدارة الوصول إلى موقع الويب\" للسماح بذلك."
     },
     "pool": {
         "addLiquidity": "أضف السيولة",
@@ -1337,8 +1337,8 @@
         "createPair": "إنشاء زوج",
         "description": "عند إضافة السيولة ، يتم إعطاؤك رموز تجمع تمثل موقفك. تكسب هذه الرموز تلقائيًا رسومًا تتناسب مع حصتك من التجمع ، ويمكن استردادها في أي وقت.",
         "liquidityNotFound": "لم يتم العثور على السيولة.",
-        "pairTokens": "__ph__0__ رموز البلياردو",
-        "pooledToken": "__ph__0__ مجمع",
+        "pairTokens": "{pair} رموز البلياردو",
+        "pooledToken": "{tokenSymbol} مجمعة",
         "poolShare": "حصة حمام السباحة الخاص بك",
         "removeLiquidity": "إزالة السيولة",
         "strategicBonusApy": "مكافأة استراتيجية APY"
@@ -1349,10 +1349,10 @@
     "priceText": "سعر",
     "provider": {
         "messages": {
-            "checkExtension": "__ph__0__ امتداد مشغول ، يرجى التحقق منه",
-            "extensionLogin": "يرجى تسجيل الدخول إلى امتداد __ph__0__",
-            "installExtension": "لم يتم العثور على امتداد __ph__0__. الرجاء تثبيته!\n\nامتداد مثبت بالفعل؟ الرجاء إعادة تحميل الصفحة",
-            "notAvailable": "__ph__0__ غير متوفر.",
+            "checkExtension": "{name} الملحق مشغول الرجاء التأكد منه",
+            "extensionLogin": "يرجى تسجيل الدخول إلى ملحق {name} الخاص بك",
+            "installExtension": "{name} لم يتم العثور على الامتداد. الرجاء تثبيته!\n\nهل تم تثبيت الامتداد بالفعل؟ يرجى إعادة تحميل الصفحة",
+            "notAvailable": "{name} غير متوفر.",
             "reloadPage": "صفحة إعادة التحميل"
         }
     },
@@ -1373,26 +1373,26 @@
             "hasReferrerDescription": "لسوء الحظ ، يمكنك فقط تعيين واحدة",
             "hasReferrerTitle": "لقد قمت بالفعل بتعيين المرجع الخاص بك",
             "inviteDescription": "لكل معاملة ، ستذهب 10 ٪ من الرسوم إلى المرجع الخاص بك ، دون أي تكلفة إضافية لك.",
-            "inviteTitle": "لقد تمت دعوتك إلى __ph__0__",
+            "inviteTitle": "لقد تمت دعوتك إلى {AppName}",
             "ok": "نعم",
             "signInvitation": "يعتمد",
             "unbond": "تأكيد غير مألوف"
         },
-        "connectAccount": "لدعوة المستخدمين ، تحتاج إلى توصيل حساب __ph__0__.",
-        "insufficientBondedAmount": "لدعوة المزيد من الإحالات ، بوند على الأقل __ph__0__ xor",
+        "connectAccount": "لدعوة المستخدمين، يجب عليك ربط حسابك {Sora}.",
+        "insufficientBondedAmount": "لدعوة المزيد من الإحالات، اربط على الأقل {inviteUserFee} XOR",
         "insufficientBondedBalance": "الرصيد المستعبدين غير كاف",
         "invitationLink": "رابط الدعوة",
-        "inviteViaTelegram": "دعوة عبر __ph__0__",
+        "inviteViaTelegram": "الدعوة عبر {Telegram}",
         "receivedRewards": "تلقى مكافآت",
-        "referralsNumber": "__ph__0__ الإحالات",
+        "referralsNumber": "{number} الإحالات",
         "referrer": {
             "approve": "يعتمد",
             "approved": "موافقة",
-            "description": "يمكنك الإشارة إلى __ph__0__ ، <br/> اكتب في الرابط أو رمز المرجع",
+            "description": "يمكنك الحصول على إحالتك إلى {AppName}،<br/>اكتب الرابط أو رمز المُحيل",
             "info": "عندما تدفع رسومًا للمعاملة ، فإن <br/> سوف يذهب 10 ٪ إلى المرجع الخاص بك",
             "label": "رابط الدعوة أو الرمز",
             "placeholder": "أدخل رابط الدعوة أو الرمز",
-            "referredBy": "لقد تمت إحالتك بواسطة __ph__0__",
+            "referredBy": "تمت إحالتك بواسطة {referrer}",
             "referredLablel": "العنوان المحال",
             "title": "أضف المرجع الخاص بك",
             "titleReferrer": "المرجع الخاص بك"
@@ -1400,7 +1400,7 @@
         "startInviting": "بوند XOR لإحالة الآخرين",
         "title": "برنامج الإحالة",
         "unbondTitle": "XOR UNDOND",
-        "welcomeMessage": "انضم إلي على __ph__0__!\n\nاكتشف __ph__1__ الأنيق الذي يتيح لك تبديل العشرات من الرموز مع مقايضات السلسلة المتقاطعة ، وكتاب الطلبات ، والكثير من المكافآت!\n\n🎁 دعوة الأصدقاء وكسب 10 ٪ من رسوم التداول الخاصة بهم\n\nأراك هناك!"
+        "welcomeMessage": "انضم إلي على {AppName}!\n\nاكتشف {DEX} الأنيق الذي يتيح لك مبادلة عشرات العملات من خلال عمليات المبادلة عبر السلاسل، ودفتر الطلبات، والكثير من المكافآت!\n\n🎁 قم بدعوة الأصدقاء واحصل على 10% من رسوم التداول الخاصة بهم\n\nنراكم هناك!"
     },
     "releaseNotesText": "ملاحظات الإصدار",
     "removeLiquidity": {
@@ -1409,9 +1409,9 @@
         "description": "إن إزالة الرموز المميزة للسباحة يحول موقعك مرة أخرى إلى الرموز الأساسية بالمعدل الحالي ، ويتتفق مع حصتك من التجمع. يتم تضمين الرسوم المستحقة في المبالغ التي تتلقاها.",
         "input": "مدخل",
         "liquidity": "السيولة",
-        "locked": "__ph__0__ من حمام السباحة الخاص بك في __ph__1__",
+        "locked": "{percent} من حمام السباحة الخاص بك موجود في {lock}",
         "output": "الإخراج",
-        "outputMessage": "يتم تقدير الإخراج. إذا تغير السعر أكثر من __ph__0 __ ٪ ستعود معاملتك.",
+        "outputMessage": "ويقدر الناتج. إذا تغير السعر أكثر من {slippageTolerance}%، فسيتم إرجاع معاملتك.",
         "remove": "يزيل",
         "shareOfPool": "حصة البركة بعد المعاملة",
         "title": "إزالة السيولة"
@@ -1421,9 +1421,9 @@
     "rewards": {
         "action": {
             "checkRewards": "يفحص",
-            "connectExternalWallet": "توصيل حساب __ph__0__",
-            "pendingExternal": "__ph__0__ معاملة معلقة ...",
-            "pendingInternal": "__ph__0__ معاملة معلقة ...",
+            "connectExternalWallet": "ربط حساب {Ethereum}",
+            "pendingExternal": "{Ethereum} المعاملة في انتظار...",
+            "pendingInternal": "{Sora} المعاملة في انتظار...",
             "signAndClaim": "التوقيع والمطالبة"
         },
         "andText": "و",
@@ -1438,20 +1438,20 @@
             "LiquidityProvisionFarming": "الزراعة",
             "MarketMakerVolume": "صنع السوق",
             "NftAirdrop": "NFT Airdrop",
-            "SoraFarmHarvest": "__ph__0__. الحصاد",
+            "SoraFarmHarvest": "{Sora}.حصاد المزرعة",
             "XorErc20": "XOR ERC-20"
         },
         "forText": "ل",
         "groups": {
             "crowdloan": "مكافآت Crowdloan",
-            "external": "مكافآت لحساب __ph__0__ المتصل",
+            "external": "مكافآت لحساب {Ethereum} المتصل",
             "strategic": "المكافآت الاستراتيجية"
         },
         "hint": {
-            "connectAccounts": "للمطالبة بمكافآت PSWAP و VAL ، تحتاج إلى توصيل حسابات __ph__0__ و __ph__1__.",
-            "connectAnotherAccount": "قم بتوصيل حساب __ph__0__ آخر للتحقق من مكافآت PSWAP و VAL المتاحة.",
-            "connectExternalAccount": "قم بتوصيل حساب __ph__0__ للتحقق من مكافآت PSWAP و VAL المتاحة.",
-            "howToClaimRewards": "للمطالبة بمكافآتك __ph__0__ ، تحتاج إلى توقيع __ph__1__ __ph__2__ في __ph__3__. سيتم إيداع المكافآت في حساب __ph__4__."
+            "connectAccounts": "للمطالبة بمكافآت PSWAP وVAL، يتعين عليك ربط حساباتك {Sora} و{Ethereum}.",
+            "connectAnotherAccount": "قم بتوصيل حساب {Ethereum} آخر للتحقق من مكافآت PSWAP وVAL المتاحة.",
+            "connectExternalAccount": "قم بتوصيل حساب {Ethereum} للتحقق من مكافآت PSWAP وVAL المتاحة.",
+            "howToClaimRewards": "للمطالبة بمكافآت {symbols} الخاصة بك، عليك التوقيع على {count} {transactions} في {destination}. سيتم إيداع المكافآت في حساب {Sora} الخاص بك."
         },
         "notification": {
             "empty": "لا توجد مطالبات متاحة لهذا الحساب"
@@ -1460,13 +1460,13 @@
         "ReferralProgram": "الإحالات",
         "Rewards": "مكافآت",
         "signing": {
-            "accounts": "حسابات __ph__0__ و __ph__1__ على التوالي",
-            "extension": "__ph__0__ امتداد المتصفح"
+            "accounts": "حساباتك {Sora} و{Ethereum} على التوالي",
+            "extension": "{PolkadotJs} امتداد المتصفح"
         },
         "totalVested": "إجمالي المكافآت",
         "transactions": {
-            "confimation": "تأكيد __ph__0__ من المعاملات __ph__1__ ...",
-            "failed": "__ph__0__ من __ph__1__ المعاملات. __ph__2__",
+            "confimation": "قم بتأكيد {order} من {total} المعاملات...",
+            "failed": "{order} من {total} المعاملات فشلت. @:retryText",
             "success": "سوف تتلقى مكافآتك قريبا"
         }
     },
@@ -1485,9 +1485,9 @@
         "expiryDate": "تاريخ انتهاء الصلاحية",
         "expiryDateTooltip": "\"تاريخ انتهاء الصلاحية\" هو الموعد النهائي لوصلك إلى الأصول المنظمة لـ SBT",
         "indefiniteExp": "مفتوح",
-        "issuedBy": "__ph__0__ الصادر عن",
-        "kycProvider": "__ph__0__ مزود",
-        "kycVerification": "__ph__0__ التحقق",
+        "issuedBy": "{SBT} صادر عن",
+        "kycProvider": "{KYC} مقدم",
+        "kycVerification": "{KYC} التحقق",
         "listOperable": "الأصول الخاضعة للتنظيم قابلة للتشغيل",
         "noPermissions": "لا أذونات إضافية",
         "noReceiverAccess": "أنت تحاول إرسال رمز رمزي منظم إلى المستخدم بدون وصول SBT",
@@ -1496,28 +1496,28 @@
         "regulatedInsitution": "المؤسسة الخاضعة للتنظيم"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "كمية",
+        "assetLabel": "رمز الأصول",
+        "clearPayload": "شكل واضح",
+        "copyPayload": "نسخ الحمولة",
+        "destinationAddressLabel": "عنوان المستلم",
+        "destinationNetworkLabel": "إلى الشبكة",
+        "emptyPayloadHelp": "قم بتعيين حقول النموذج لإنشاء حمولة SCCP جاهزة للإرسال.",
+        "generatePayload": "إنشاء حمولة SCCP",
+        "noteLabel": "مذكرة اختيارية",
+        "payloadCopied": "تم نسخ الحمولة",
+        "payloadCopyFailed": "فشل النسخ، يرجى المحاولة مرة أخرى",
+        "payloadLabel": "الحمولة المعدة",
+        "sourceNetworkLabel": "من الشبكة",
+        "subtitle": "مساعد النقل الآمن للبروتوكول عبر السلسلة (SCCP) لـ BSC وEthereum وTRON.",
+        "supportedNetworks": "السلاسل المدعومة: {chains}.",
         "title": "SCCP"
     },
     "searchText": "يبحث",
     "selectLanguageDialog": {
         "title": "اللغة"
     },
-    "selectNodeConnected": "متصل بـ: __ph__0__",
+    "selectNodeConnected": "متصل بـ: {chain}",
     "selectNodeDialog": {
         "addNode": "أضف عقدة مخصصة",
         "connected": "متصل",
@@ -1529,7 +1529,7 @@
             "incorrectAddress": "عنوان غير صحيح",
             "incorrectProtocol": "يجب أن يبدأ العنوان من WS: // أو WSS: //"
         },
-        "nodeTitle": "__ph__0__ استضافته __ph__1__",
+        "nodeTitle": "{chain} تمت استضافته بواسطة {name}",
         "select": "يختار",
         "title": "اختيار عقدة الشبكة",
         "updateNode": "تحديث العقدة"
@@ -1537,8 +1537,8 @@
     "selectNodeText": "حدد عقدة الشبكة",
     "selectRegisteredAsset": {
         "search": {
-            "networkLabelEthereum": "__ph__0__ رموز مرآة الشبكة",
-            "networkLabelSora": "__ph__0__ رموز الشبكة",
+            "networkLabelEthereum": "{network} رموز مرآة الشبكة",
+            "networkLabelSora": "{Sora} رموز الشبكة",
             "placeholder": "تصفية حسب معرف الأصول أو الاسم أو رمز المؤشر"
         },
         "title": "حدد رمزًا"
@@ -1568,7 +1568,7 @@
         "reddit": "رديت",
         "telegram": "برقية",
         "twitter": "تغريد",
-        "wiki": "__ph__0__ ويكي"
+        "wiki": "{Sora} ويكي"
     },
     "soraStaking": {
         "actions": {
@@ -1606,8 +1606,8 @@
             "title": "ابدأ في الاهتمام"
         },
         "overview": {
-            "description": "حصة __ph__0__ الرموز على شبكة __ph__1__ كمرشح للتحقق من صحة المعاملات وكسب __ph__2__ الرمز المميز.",
-            "title": "__ph__0__ staking"
+            "description": "حصة {XOR} الرموز المميزة على {Sora} الشبكة كمرشح للتحقق من صحة المعاملات وكسب {VAL} مكافآت رمزية.",
+            "title": "{Sora} التوقيع المساحي"
         },
         "pendingRewardsDialog": {
             "information": "مدفوعات المدققين المكافآت كل 2-5 أيام. ومع ذلك ، يمكنك الدفع لهم بنفسك ، خاصة إذا كانت المكافآت قريبة من انتهاء الصلاحية ، لكنك ستدفع الرسوم.",
@@ -1629,7 +1629,7 @@
                 "3": "لم يقطع",
                 "4": "حد 2 من المدققين لكل هوية"
             },
-            "description": "اختارت خوارزمية الشبكة __ph__0__ قائمة من المصدين الموصى بهم بناءً على المعايير:",
+            "description": "{Sora} قامت خوارزمية الشبكة بتحديد قائمة من أدوات التحقق الموصى بها بناءً على المعايير:",
             "title": "حصة مع المدققين المقترحة من الخوارزمية"
         },
         "stakeDialog": {
@@ -1643,8 +1643,8 @@
             "recommended": "المدققون الموصى بهم",
             "save": "حفظ التغييرات",
             "select": "حدد المدققات",
-            "selected": "__ph__0 __/__ ph__1__ المختار",
-            "tooManyValidators": "تم اختيار الكثير من المدققين (__ph__0__ __ph__1__)"
+            "selected": "{selected}/{total} تم التحديد",
+            "tooManyValidators": "تم تحديد عدد كبير جدًا من أدوات التحقق ({Max} {max})"
         },
         "validatorsAttentionDialog": {
             "confirm": "نعم ، أنا أفهم المخاطر",
@@ -1671,7 +1671,7 @@
                     "name": "الهوية على السلسلة"
                 },
                 "notOversubscribed": {
-                    "description": "الحساب ضمن حد التخصيص ، يتجنب عقوبات الاكتتاب الزائد على __ph__0__ staking.",
+                    "description": "الحساب ضمن حد التخصيص، يتجنب عقوبات الإفراط في الاكتتاب على {Polkadot} التوقيع المساحي.",
                     "name": "لا مفر من الاكتتاب"
                 },
                 "notSlashed": {
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "ليس لديك أي مدقق مرشحين",
             "noValidators": "لا يوجد مصادقون يفيون بالمرشح المحدد",
             "return": "يعود",
-            "search": "يبحث..."
+            "search": "يبحث...",
+            "staked": "راهن",
+            "stakedTooltip": "إجمالي XOR مرتبط بهذا المدقق، بما في ذلك حصة المدقق الخاصة والحصة المرشحة"
         },
         "withdraw": {
             "beingWithdrawn": "يتم سحبها",
@@ -1733,27 +1735,27 @@
     },
     "tooltips": {
         "accounts": "الحسابات هي عناوين رقمية تحمل أصول المستخدم على الشبكة. يرتبط كل حساب بعنوان عام فريد ومفتاح خاص يسمح للمستخدم بالوصول إلى أصوله وإدارتها.",
-        "bridgeTransactions": "__ph__0__ إلى __ph__1__ يشير الجسر إلى عملية نقل الأصول بين شبكات __ph__2__ و __ph__3__ باستخدام جسر. يسمح الجسر بإمكانية التشغيل البيني للشبكتين ، مما يتيح للمستخدمين نقل الأصول بسلاسة بينهما.",
-        "fees": "تشير الرسوم الموجودة على __ph__0__ blockchain إلى الرسوم التي يتم تكبدها لتنفيذ المعاملات على الشبكة. يتم دفع هذه الرسوم في XOR ، العملة المشفرة الأصلية لشبكة __ph__1__. يتم تحديد مبلغ الرسوم من خلال تعقيد وحجم المعاملة التي يتم تنفيذها",
-        "roi": "__ph__0__ تعني العائد على الاستثمار. يتم حسابه من خلال تقسيم الربح المكتسب على استثمار بتكلفة هذا الاستثمار في نسبة مئوية.",
+        "bridgeTransactions": "يشير الجسر {from} إلى {to} إلى عملية نقل الأصول بين الشبكتين {from} و{to} باستخدام الجسر. ويتيح الجسر إمكانية التشغيل البيني للشبكتين، مما يتيح للمستخدمين نقل الأصول بينهما بسلاسة.",
+        "fees": "تشير الرسوم على {Sora} blockchain إلى الرسوم المتكبدة لتنفيذ المعاملات على الشبكة. يتم دفع هذه الرسوم بعملة XOR، العملة المشفرة الأصلية لشبكة {Sora}. يتم تحديد مبلغ الرسوم حسب مدى تعقيد وحجم المعاملة التي يتم تنفيذها",
+        "roi": "{ROI} يرمز إلى العائد على الاستثمار. ويتم حسابه عن طريق قسمة الربح المكتسب من الاستثمار على تكلفة ذلك الاستثمار بنسبة مئوية مكافئة.",
         "supply": "يشير إمدادات الرمز إلى إجمالي عدد الرموز المميزة التي تم إنشاؤها وهي متداولة على الشبكة. يمكن أن يتقلب إمداد الرمز المميز بناءً على كمية الرموز التي يتم حرقها أو حرقها أو نقلها على الشبكة.",
         "transactions": "تشير المعاملات إلى عملية إرسال أو استلام الأصول الرقمية على الشبكة ، بما في ذلك عمليات السيولة ، وكذلك المقايضات.",
-        "tvl": "__ph__0__ يرمز إلى إجمالي القيمة المقفلة. إنه يمثل الرموز المميزة المقفلة في حمامات السباحة في الدولار المكافئ.",
+        "tvl": "{TVL} يرمز إلى إجمالي القيمة المقفلة. وهو يمثل الرموز المميزة المقفلة في المجمعات بما يعادل الدولار.",
         "velocity": "سرعة الرمز المميز هي عدد المرات التي تتغير فيها التغيرات الرمزية خلال الفترة (الشهر) في المتوسط. ويشير إلى مستوى نشاط التداول والسيولة.",
         "volume": "يشير الحجم إلى المبلغ الإجمالي للأصول التي تم تداولها أو تبادلها على الشبكة على مدى فترة زمنية محددة. يعد مستوى المجلد مقياسًا مهمًا لقياس السيولة والنشاط العام للشبكة."
     },
     "transaction": {
         "amount": "@:amountText",
-        "amount2": "__ph__0__ 2",
+        "amount2": "@:amountText 2",
         "blockId": "معرف الكتلة",
         "comment": "تعليق",
-        "copy": "نسخ __ph__0__",
+        "copy": "نسخ {value}",
         "fee": "رسوم المعاملة",
         "from": "من",
         "history": {
             "confirmed": "أكد المعاملة",
-            "created": "تم إنشاء معاملة لـ __ph__0__ __ph__1__.",
-            "submitted": "المعاملة المقدمة برسوم __ph__0__ __ph__1__"
+            "created": "تم إنشاء معاملة لـ {amount} {symbol}.",
+            "submitted": "تم تقديم المعاملة برسوم قدرها {fee} {symbol}"
         },
         "price": "سعر",
         "referral": "الإحالة",
@@ -1770,7 +1772,7 @@
         "to": "ل",
         "total": "المجموع",
         "txId": "معرف المعاملة",
-        "viewIn": "عرض في __ph__0__"
+        "viewIn": "عرض في {explorer}"
     },
     "transactionDetailsText": "تفاصيل المعاملة",
     "transactionSubmittedText": "تم تقديم المعاملة",
@@ -1787,7 +1789,7 @@
     },
     "walletSend": {
         "addressError": "لا يمكنك إرسال مخصصات إلى نفس الحساب الذي تتصل به حاليًا.",
-        "addressWarning": "سيتم إرسال الرموز إلى عنوان __ph__0__ أدناه. تأكد من أن المستلم يمكنه الوصول إلى سلسلة __ph__1__ لاستخدام الرموز:",
+        "addressWarning": "سيتم إرسال الرموز إلى العنوان {Sora} أدناه. تأكد من أن المستلم يمكنه الوصول إلى سلسلة {Sora} لاستخدام الرموز المميزة:",
         "badAddress": "عنوان غير صحيح",
         "balance": "توازن",
         "confirmTitle": "تأكيد المعاملة",
@@ -1799,7 +1801,7 @@
         "max": "MAX",
         "startUnlockingDate": "ابدأ بفتح التاريخ",
         "title": "يرسل",
-        "tooltip": "إرسال الرموز بين حسابات الشبكة __ph__0__",
+        "tooltip": "إرسال الرموز بين حسابات الشبكة {Sora}",
         "unlockFrequency": "فتح التردد",
         "vestingPercentage": "نسبة الثياب"
     },

@@ -115,7 +115,10 @@ import { useSettingsStore } from '@/stores/settings';
 
 import type { Currency } from '@/lib/soraneo-wallet/src/types/currency';
 
-vi.mock('@/utils/staticAssets', () => ({ resolveStaticAssetUrl: (value: string) => value }));
+vi.mock('@/utils/staticAssets', () => ({
+  resolveStaticAssetUrl: (value: string) => value,
+  resolveVersionedStaticAssetUrl: (value: string) => value,
+}));
 
 const makeSettingsStore = () => {
   if (!createPiniaInstance || !setActivePiniaInstance) {

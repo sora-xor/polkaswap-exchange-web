@@ -121,7 +121,7 @@
         "addRegulatedAssets": "Көйләнә торған активтарҙы өҫтәү",
         "attachedRegulatedAssets": "Беркетелгән көйләнгән активтар",
         "createRegulatedAsset": "Яңы көйләнгән актив булдырыу",
-        "createSbt": "__РН__0__ булдырыу",
+        "createSbt": "{type} булдырыу",
         "dialog": {
             "addExisting": "Булған активты өҫтәү",
             "addExistingDesc": "СБТ өсөн инде булдырылған активты өҫтәгеҙ",
@@ -143,12 +143,12 @@
             "stepThreeTitle": "Транзакцияны ҡарап сығыу һәм ҡул ҡуйыу",
             "stepTwoDesc": "СБТ-ның исеме һәм тикер символы кеүек мөһим мәғлүмәт бирегеҙ, шулай уҡ иконка.",
             "stepTwoTitle": "SBT ентекле мәғлүмәттәрен индерегеҙ",
-            "title": "Нисек __РН__0__ булдырырға:"
+            "title": "{type} нисек төҙөргә:"
         },
-        "issueSbtAccess": "Мәсьәлә __РН__0__ рөхсәт итеү",
+        "issueSbtAccess": "Мәсьәлә {type} инеү",
         "letsStartBtn": "БАШЛАЙЫҠ",
         "orSelectExisting": "Йәки булғанын һайлағыҙ",
-        "ownerSbtTitle": "Һеҙҙең __РН__0__",
+        "ownerSbtTitle": "Һеҙҙең {type}",
         "permissionedAssets": "Рөхсәт ителгән активтар",
         "regulatedAssetsConnected": "Көйләнә торған активтар тоташтырылған",
         "regulatedPools": "Көйләнгән бассейндар",
@@ -158,7 +158,7 @@
             "addMeta": "SBT ентекле мәғлүмәттәрен индерегеҙ",
             "preview": "SBT алдан ҡарау"
         },
-        "sbtManagers": "__РН__0__ Етәкселәр",
+        "sbtManagers": "{type} Етәкселәр",
         "selectExisting": "Булғанын һайлағыҙ",
         "startIssue": "СБТ өсөн иҫәпкә инеү хоҡуғын бирә башлай",
         "you": "Һин"
@@ -189,15 +189,15 @@
     "blockNumberText": "Блок номеры",
     "bridge": {
         "connectWallets": "Тейешле транзакция тарихын ҡарау өсөн янсыҡтарҙы тоташтырыу.",
-        "externalMinDeposit": "__РН__0__ мин. депозит",
+        "externalMinDeposit": "{network} мин. депозит",
         "externalMinDepositTooltip": "Минималь баланс {symbol}, тип һеҙҙең иҫәптә булырға тейеш {network} күпер күсергәндән һуң",
-        "externalTransferFee": "__РН__0____РН__1__ түләү",
+        "externalTransferFee": "{network} {XCM} түләү",
         "externalTransferFeeTooltip": "Һеҙ күпер транзакция ебәргәндә {network} селтәре, һеҙ күсергән сумманан бәләкәй генә түләү алына .",
-        "info": "__РН__0__ һәм __РН__1__ селтәрҙәре араһында токендарҙы үҙгәртеп ҡороу.",
-        "limitMessage": "Әлеге ваҡытта __РН__0__ __РН__1__ __РН__2__ күпер өсөн күперҙәр төҙөү өсөн __РН__3__ Селтәренең тотороҡлолоғон һәм хәүефһеҙлеген тәьмин итеү бар. Аңлауығыҙҙы ҡәҙерләп ҡабул итәбеҙ.",
-        "networkInfo": "Күпер __РН__0__ Селтәр менән:",
+        "info": "{Sora} һәм {Ethereum} селтәрҙәре араһында токендарҙы үҙгәртеп ҡороу.",
+        "limitMessage": "Әлеге ваҡытта {Sora} селтәренең тотороҡлолоғон һәм хәүефһеҙлеген тәьмин итеү өсөн күпер төҙөү өсөн {type} {amount} {symbol} бар. Аңлауығыҙҙы ҡәҙерләп ҡабул итәбеҙ.",
+        "networkInfo": "Күпер {Sora} Селтәр менән:",
         "next": "Артабан",
-        "notRegisteredAsset": "Актив __РН__0__ теркәлмәгән",
+        "notRegisteredAsset": "Актив {assetSymbol} теркәлмәгән",
         "selectNetwork": "Селтәрҙе һайлау",
         "soraNetworkFee": "{Sora} селтәр түләбе",
         "title": "Күпер"
@@ -235,7 +235,7 @@
         "transactionHash": "Транзакция хэше"
     },
     "bridgeTransferNotification": {
-        "addToken": "__РН__0__ янсыҡҡа өҫтәгеҙ",
+        "addToken": "{symbol} янсыҡҡа өҫтәгеҙ",
         "title": "Күпер операцияһы уңышлы"
     },
     "browserNotificationDialog": {
@@ -261,18 +261,18 @@
         "title": "Браузерҙа камераға инеш бирегеҙ"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Күсермә SORA Селтәр tx хеш",
+        "enterNexusRecipient": "СОРА НЕКСУС ИҪӘБЕНӘ ИНДЕРЕГЕҘ",
+        "invalidNexusRecipient": "СОРА НЕКСУС ИҪӘБӘТЕ ДӨРӨҪ ТҮГЕЛ",
+        "minamotoClaimDescription": "SORA селтәре tx хеш ҡулланыу өсөн һеҙҙең дәғүә SORA Минамото. Һәр рәттә шул янғындың нимә һаҡланғаны күрһәтелгән.",
+        "minamotoClaimTitle": "Һеҙҙең Минамото дәғүә ентекле",
+        "nexusRecipientLabel": "SORA Nexus иҫәбенә",
+        "nexusRecipientPlaceholder": "Һеҙҙең SORA Nexus i105 иҫәбенә индерегеҙ",
+        "nexusRecipientWarning": "Һеҙҙең SORA Nexus иҫәбенә был яндырыу транзакцияһында асыҡ теркәлгән.",
+        "soraNetworkTxHashLabel": "SORA Селтәр tx хэш",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "КҮПМӘ {tokenSymbol} КЕЛӘЙҺЕГЕҘ?",
+        "ssTokensLabel": "SS жетондары"
     },
     "buttons": {
         "chooseAToken": "Токен һайлау",
@@ -321,7 +321,7 @@
         },
         "disclaimer": "Иғтибар итегеҙ, ҡайһы бер янсыҡтар тулыһынса эшләмәүе ихтимал.",
         "internalText": "Һеҙ үҙегеҙҙең {wallet} иҫәп яҙмаһы менән тоташыу өсөн булған {Sora} иҫәп яҙмаһын булдыра йәки импортлай алаһығыҙ. {wallet} тарафынан һаҡланған бөтә мәғлүмәттәр ҙә өҫтәмә шифрлау ярҙамында шифрлана.",
-        "internalTitle": "__РН__0__ менән бәйләнешкә инегеҙ",
+        "internalTitle": "{wallet} менән тоташтырығыҙ",
         "list": {
             "extensions": "Оҙонайтыуҙар",
             "integrated": "Интеграцияланған"
@@ -334,10 +334,10 @@
         }
     },
     "connectWalletText": "Хисап яҙмаһын тоташтырыу",
-    "connectWalletTextTooltip": "__РН__0__ селтәренә __РН__1__ менән тоташтырыу",
+    "connectWalletTextTooltip": "{Sora} селтәренә {PolkadotJs} менән тоташтырыу",
     "continueText": "Дауам итеү",
     "copiedText": "Скопияланды!",
-    "copiedWithValue": "__РН__0__ күсерелгән!",
+    "copiedWithValue": "{value} күсерелгән!",
     "copyPhraseText": "Пароль фразаһын күсереп алыу",
     "copyWithValue": "{value} күсереп алыу",
     "createPair": {
@@ -395,7 +395,7 @@
         },
         "provideContent": "Йөкмәтке биреү",
         "success": {
-            "desc": "__РН__0__ токенын булдырыу",
+            "desc": "{symbol} токен булдырыу",
             "title": "Транзакция тапшырылды"
         },
         "titleCommon": "Ижад итеү",
@@ -431,20 +431,20 @@
         "amountRemove": "Сумма сығарырға",
         "calculator": "Калькулятор",
         "info": {
-            "earned": "__РН__0__ эшләгән",
+            "earned": "{symbol} эшләгән",
             "fee": "Түләү",
             "feeTooltip": "Депозит өсөн түләү ҡулланыла һеҙҙең суммаға ставка",
             "owned": "{symbol} @:balanceText",
             "poolShare": "Һеҙҙең бассейн өлөшө ставка",
             "poolShareWillBe": "Һеҙҙең бассейн өлөшө ставкаһы буласаҡ",
             "rewardToken": "Бүләк жетоны",
-            "stake": "Һеҙҙең __РН__0__ ставкаһы",
-            "stakeWillBe": "Һеҙҙең __РН__0__ ставкаһы буласаҡ",
+            "stake": "Һеҙҙең {symbol} ставка",
+            "stakeWillBe": "Һеҙҙең {symbol} ставкаһы 100 буласаҡ.",
             "totalLiquidityLocked": "Дөйөм ликвидлыҡ бикләнгән"
         },
         "poweredBy": "Деметра фермерлыҡ идаралығы",
         "results": "Һөҙөмтәләр",
-        "rewards": "__РН__0__ бүләктәр",
+        "rewards": "{symbol} бүләктәр",
         "staking": {
             "active": "Ставка әүҙем",
             "inactive": "Өҫтәмә бүләктәр алыу өсөн ставка",
@@ -505,17 +505,17 @@
         },
         "seedAdviceAdditionText": "Әгәр кемдер һеҙҙең пароль һорай, улар, ихтимал, һеҙҙе алдап тырышып, һеҙҙең активтарҙы урларға!",
         "seedAdviceAdditionTitle": "Бер ҡасан да бер кем менән дә пароль бүлешмәгеҙ!",
-        "seedAdviceText": "һүҙҙән торған пароль - {Sora} иҫәп яҙмаһына инеү мөмкинлеген юғалтҡан осраҡта {Sora} иҫәп яҙмаһына инеү мөмкинлеген ҡайтарыу өсөн шәхси асҡыс. Уны өҫтә күрһәтелгән тәртиптә һаҡларға.",
+        "seedAdviceText": "һүҙ пароль-был шәхси асҡыс һеҙҙең {Sora} иҫәбенә инеү мөмкинлеген ҡайтарыу өсөн осраҡта һеҙ үҙегеҙҙең {wallet} иҫәбенә инеү мөмкинлеген юғалта. Уны өҫтә күрһәтелгән тәртиптә һаҡларға.",
         "welcome": {
             "createAccount": "Иҫәп яҙмаһы булдырыу .",
-            "header": "__ПХ__0__ -ға рәхим итегеҙ!",
+            "header": "{AppName} -ға рәхим итегеҙ!",
             "headline": "Әйҙәгеҙ, һеҙҙең иҫәп яҙмаһын ойошторайыҡ",
             "importAccount": "Иҫәп яҙмаһын импортлау",
             "text": "Һеҙҙең {Sora} Селтәр иҫәбен булдырыу йәки мнемоник фраза йәки .json импорты ярҙамында иҫкеләренә инеү. Был һеҙгә операцияларға ышаныслы ҡул ҡуйырға һәм {Sora} Селтәрендә активтар менән идара итергә мөмкинлек бирә."
         }
     },
     "dexSettings": {
-        "marketAlgorithm": "@.өҫкө:баҙарАлгоритмыТексты",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} ликвидлыҡ маршрутлаштырыу теләһә ниндәй операция өсөн иң яҡшы хаҡты тәьмин итә, бөтә мөмкин булған баҙарҙарҙан иң яҡшы хаҡ варианттарын ғына берләштереп. Ҡасан бар, Токен облигациялар ҡойроғо ({tbcAlgorithm}) ликвидлыҡ өсөн ҡулланыласаҡ, әгәр актив хаҡы башҡа сығанаҡтарҙан ҡарағанда арзаныраҡ, улар өҫтөндә {xycAlgorithm} пулы файҙаланыла.",
             "TBC": "{tbcAlgorithm} — тик Токендарҙы бәйләү ҡойроғонан (Беренсел баҙар) һатып алыу. {xycAlgorithm} пулы (Икенсел баҙар) менән сағыштырғанда хаҡтың уңайһыҙ булыуы ихтимал, әммә йөкмәтелгән бүләктәрҙән алынған ҡиммәт ваҡыт үткән һайын күпкә уңайлыраҡ булып сығыуы ихтимал.",
@@ -533,7 +533,7 @@
         },
         "title": "Көйләүҙәр"
     },
-    "disclaimer": "Был сайтты {Sora} берләшмәһе алып бара. Был сайтты ҡулланыуҙы дауам иткәнсе, {polkaswapFaqLink} һәм документацияны ҡарап сығығыҙ, унда {AppName} нисек эшләүе тураһында ентекле аңлатма бирелгән, шулай уҡ {memorandumLink} һәм {privacyLink}. Был документтар хәүефһеҙ һәм ыңғай ҡулланыусы тәжрибәһе өсөн мөһим. {AppName} ҡулланып, һеҙ был документтарҙы уҡығанығыҙҙы һәм аңлағанығыҙҙы таныйһығыҙ. Һеҙ шулай уҡ түбәндәгеләрҙе таныйһығыҙ: 1) һеҙҙең хоҡуҡи юрисдикцияла {AppName} һеҙҙең айырым ҡулланыу өсөн ҡағылырға мөмкин булған бөтә закондарҙы үтәү өсөн һеҙҙең берҙән-бер яуаплылыҡ; 2) {AppName}-тың хәҙерге версияһы альфа-версия икәнлеген аңлауығыҙ: ул тулыһынса тикшерелмәгән, ҡайһы бер функциялар ҙа уйланылғанса эшләмәүе ихтимал; һәм 3) һеҙҙең аңлау һәм ирекле ҡабул итеү хәүефтәре менән бәйле ҡулланыу {AppName}, шул иҫәптән, әммә сикләнмәй, юғалтыу хәүефе токендар. Зинһар, __РХ__10__, __РХ__11__, __РХ__12__ уҡымайынса дауам итмәгеҙ!",
+    "disclaimer": "{disclaimerPrefix} Был сайтты {Sora} йәмәғәтселеге алып бара. Был сайтты ҡулланыуҙы дауам иткәнсе, {polkaswapFaqLink} һәм документацияны ҡарап сығығыҙ, унда {AppName} нисек эшләүе тураһында ентекле аңлатма бирелгән, шулай уҡ {memorandumLink} һәм {privacyLink}. Был документтар хәүефһеҙ һәм ыңғай ҡулланыусы тәжрибәһе өсөн мөһим. {AppName} ҡулланып, һеҙ был документтарҙы уҡығанығыҙҙы һәм аңлағанығыҙҙы таныйһығыҙ. Һеҙ шулай уҡ түбәндәгеләрҙе таныйһығыҙ: 1) һеҙҙең хоҡуҡи юрисдикцияла {AppName}-ны айырым ҡулланыуығыҙға ҡағылырға мөмкин булған бөтә закондарҙы үтәү өсөн һеҙҙең яуаплылыҡ; 2) {AppName}-ның хәҙерге версияһы альфа-версия икәнлеген аңлауығыҙ: ул тулыһынса тикшерелмәгән, ҡайһы бер функциялар ҙа уйланылғанса эшләмәүе ихтимал; һәм 3) һеҙҙең аңлау һәм ирекле ҡабул итеү хәүефтәре менән бәйле ҡулланыу {AppName}, шул иҫәптән, әммә сикләнмәй, юғалтыу хәүефе токендар. Зинһар, {polkaswapFaqLink}, {memorandumLink}, {privacyLink} һандарын уҡымайынса дауам итмәгеҙ!",
     "disclaimerTitle": "Яуаплылыҡтан баш тартыу",
     "disconnectWalletText": "Тоташтырыуҙы өҙөргә",
     "doNotShowText": "Don’t күрһәтергә миңә был тағы",
@@ -541,7 +541,7 @@
     "editText": "Мөхәррирләү",
     "errorText": "Хата",
     "ethNetworkFeeTooltipText": "Иғтибар итегеҙ, {network} селтәр өсөн түләүҙәр күрһәтелгән {AppName} тик ҡырыҫ баһалау, һеҙ дөрөҫ түләү суммаһын күрә алаһығыҙ һеҙҙең тоташтырылған {network} янсыҡта транзакцияны раҫлау алдынан.",
-    "exceededAmountText": "__РН__0__ артып китте",
+    "exceededAmountText": "{amount} артып китте",
     "exchange": {
         "lossWarning": "Һеҙ үҙегеҙҙең сауҙала {value}% юғалтырға йыйынаһығыҙ. Беҙ&#8217;ликвидлыҡ менән тәьмин итеү мәсьәләһен асыҡланы. Был токендарҙы алмаштырыу ваҡытында ҙур юғалтыуҙарға килтерергә мөмкин. Зинһар, һеҙҙең өсөн тейешле ликвидлыҡ булыуын тәьмин итеү өсөн теләк своп пары.",
         "Pool": "Бассейн",
@@ -550,15 +550,15 @@
     "expandText": "Киңәйтеү",
     "explore": {
         "myPositions": "минең вазифаларым",
-        "showOnly": "Тик __РН__0__ күрһәтеү",
+        "showOnly": "{entities} ғына күрһәтергә",
         "synthetics": "синтетик жетондар"
     },
-    "FAQ": "__РН__0__ Һорауҙар",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "FAQ": "{AppName} Һорауҙар",
+    "fiatDisclaimer": "Иғтибар итегеҙ, был сайтта криптовалюта менән бәйле фиат ҡиммәттәре Polkaswap Indexer тарафынан бирелә һәм яҡынса. Был иҫәпләүҙәрҙең үҙенә генә хас ҡатмарлылығын иҫәпкә алып, һәр ваҡыт абсолют теүәллекте гарантиялап булмай.",
     "fiatPayment": {
-        "cedeStoreBtn": "__РН__0__ аша __РН__1__ аша күсерергә",
-        "cedeStoreDesc": "__РН__0__-нан __РН__1__-ға __РН__2__ аша теләһә ниндәй токендарҙы күсерергә",
-        "cedeStoreTitle": "__РН__0__ дан күсерергә",
+        "cedeStoreBtn": "{value1}-нан {value2} аша күсереү",
+        "cedeStoreDesc": "Теләһә ниндәй токендарҙы {value1}-нан {value2}-ға {value3} аша күсерергә",
+        "cedeStoreTitle": "{value} -нан күсерергә",
         "errorMessage": "Уңайһыҙлыҡтар өсөн ғәфү үтенәм. Беҙ был мәсьәләне хәл итеү өсөн тырышып эшләйбеҙ. Зинһар, һуңыраҡ тағы ла тырышығыҙ.",
         "historyBtn": "Минең һатып алыуҙарым",
         "historyTitle": "Транзакциялар тарихы",
@@ -576,11 +576,11 @@
         "verifiedOnly": "Тик раҫланған активтарҙы ғына күрһәтегеҙ",
         "zeroBalance": "баланс активтарын йәшерергә"
     },
-    "firstPerSecond": "__РН__0__ бер __РН__1__",
+    "firstPerSecond": "{first} бер {second}",
     "firstText": "Беренсе",
     "footer": {
         "internet": {
-            "action": "Яңыртыу __РН__0__",
+            "action": "Яңыртыу {AppName}",
             "desc": {
                 "disabled": "Өҙөлгән",
                 "stable": "Оптималь тиҙлек",
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Индексатор",
                 "title": "{Sora} Селтәр хеҙмәтен һайлау",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Фиат ҡиммәттәре өсөн Polkaswap индексаторын ҡулланығыҙ"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Полкасвап индексаторы блогы #{block}",
             "label": "Статистика хеҙмәттәре",
             "title": {
                 "available": "Статистика бар",
@@ -700,7 +700,7 @@
         }
     },
     "importText": "Импорт",
-    "insufficientBalanceText": "Етерлек булмаған __РН__0__ баланс",
+    "insufficientBalanceText": "Етерлек булмаған {tokenSymbol} баланс",
     "kensetsu": {
         "addCollateral": "Залог өҫтәргә",
         "addCollateralDescription": "Позицияғыҙға күберәк актив өҫтәп, ҡарыз сиген арттырығыҙ йәки кредит/залог нисбәтен яҡшыртығыҙ. Был ликвидация хәүефен кәметергә лә ярҙам итә.",
@@ -768,7 +768,7 @@
         "repayDebt": "Бурысты ҡаплау .",
         "repayDebtDescription": "Бурысҡа алынған аҡсаны кире ҡайтарығыҙ, бурысығыҙҙы кәметегеҙ. Был процент сығымдарын кәметергә һәм бөтөрөү хәүефен кәметергә мөмкин.",
         "requiredAmountWithSlippage": "Кәрәкле сумма, шул иҫәптән тайпылыш",
-        "requiredAmountWithSlippageDescription": "Тигеҙ позиция ябыу өсөн, мөмкин булған тайпылыш арҡаһында кәрәкле {tokenSymbol} ҡарағанда бер аҙ күберәк {tokenSymbol} һатып алығыҙ. Етешһеҙлекте ҡаплау өсөн өҫтәмә кәрәк. Был ихтыяжды ҡәнәғәтләндерер өсөн активтарығыҙҙы {tokenSymbol} алмаштырығыҙ.",
+        "requiredAmountWithSlippageDescription": "Тигеҙ позиция ябыу өсөн, мөмкин булған тайпылыш арҡаһында кәрәкле {amount} ҡарағанда бер аҙ күберәк {tokenSymbol} һатып алыу. Етешһеҙлекте ҡаплау өсөн өҫтәмә кәрәк. Был ихтыяжды ҡәнәғәтләндерер өсөн активтарығыҙҙы {tokenSymbol}-ҡа алмаштырығыҙ.",
         "status": {
             "Closed": "Ябыҡ",
             "Liquidated": "Бөтөрөлдө",
@@ -782,7 +782,7 @@
         "yourCollateralDescription": "Активтар һеҙ&#8217;ве һеҙҙең позицияға һалынған аҡсаны тәьмин итеү өсөн тартып. Был активтарҙы кредитор бөтөрөүе мөмкин, әгәр һеҙ кәрәкле кредит-ҡиммәт нисбәтен һаҡлай алмаһағыҙ.",
         "yourDebt": "Һинең бурысың .",
         "yourDebtDescription": "Дөйөм сумма әлеге ваҡытта һеҙҙең вазифала түләнмәгән, шул иҫәптән тартып сумма һәм теләһә ниндәй тупланған проценттар. Был баланс ваҡыт үткән һайын арта, әгәр проценттар туплана.",
-        "yourDebtTokenBalance": "Һеҙҙең баланс"
+        "yourDebtTokenBalance": "Һеҙҙең {tokenSymbol} баланс"
     },
     "lastText": "Һуңғы",
     "learnMoreText": "Тулыраҡ белергә",
@@ -800,7 +800,7 @@
         "Pool": "Бассейн",
         "Rewards": "Бүләктәр",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "__РН__0__ Карта",
+        "SoraCard": "{Sora} Карта",
         "StakingContainer": "Ставка",
         "Stats": "Статистика",
         "Swap": "Алмаштырыу",
@@ -813,9 +813,9 @@
     "memorandum": "{AppName} меморандумы һәм хеҙмәт шарттары",
     "minAmountText": "мин. суммаһы",
     "mobilePopup": {
-        "header": "Скачать __РН__0__ Кошелек менән __РН__1__ функциялары",
-        "info": "Төрлө селтәрҙәрҙән токендарҙы алмаштырыу - __РН__0__, __РН__1__, __РН__2__, __РН__3__. Ликвидлыҡ пулы менән тәьмин итеү һәм эшләп алыу % алмашыу өсөн түләүҙәр.",
-        "sideMenu": "__РН__0__ Кошелек алырға"
+        "header": "Скачать {Sora} Кошелек с {polkaswapHighlight} функциями",
+        "info": "Төрлө селтәрҙәрҙән токендарҙы алмаштырыу - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Ликвидлыҡ пулы менән тәьмин итеү һәм эшләп алыу % алмашыу өсөн түләүҙәр.",
+        "sideMenu": "{Sora} Кошелек алырға"
     },
     "moonpay": {
         "buttons": {
@@ -931,7 +931,7 @@
         }
     },
     "noir": "Нуар",
-    "ofText": "__РН__0__РН__1__",
+    "ofText": "{first} {second}",
     "operations": {
         "AddLiquidity": "Ликвидлыҡ өҫтәү",
         "andText": "һәм",
@@ -1022,27 +1022,27 @@
             "OrderBookCancelLimitOrders": "Лимит ордерҙары юҡҡа сығарылды",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} хаҡы менән ҡуйылды",
             "ReferralReserveXor": "{amount} XOR блокланды",
-            "ReferralSetInvitedUser": "__РН__0____РН__1__ уңышлы ҡуйылған",
-            "ReferralUnreserveXor": "Бәйләнмәгән __РН__0__ ХОР",
+            "ReferralSetInvitedUser": "{role} {address} уңышлы ҡуйылған",
+            "ReferralUnreserveXor": "Бәйләнешһеҙ {amount} XOR",
             "RegisterAndRegulateAsset": "Теркәү һәм көйләү {symbol} актив",
-            "RegisterAsset": "Теркәлгән __РН__0__ актив",
-            "RegulateAsset": "Активты көйләү __РН__0__",
-            "RemoveLiquidity": "__РН__0__ __РН__1__ һәм __РН__2____РН__3__ юйылған",
-            "RepayVaultDebt": "Ҡайтарылған __РХ__0__РХ__1__",
+            "RegisterAsset": "Теркәлгән {symbol} актив",
+            "RegulateAsset": "Активты көйләү {symbol}",
+            "RemoveLiquidity": "{amount} {symbol} һәм {amount2} {symbol2} сығарылған",
+            "RepayVaultDebt": "Түләнде {amount} {symbol}",
             "SetAccessExpiration": "SB маркеры {symbol} Яңыртылған ғәмәлдән сығыу ваҡыты {endTime}",
-            "StakingBond": "Бәйләнгән __РН__0__РН__1__",
-            "StakingBondAndNominate": "Бәйләнгән __РН__0__РН__1__",
-            "StakingBondExtra": "Өҫтәмә йәбештерелгән __РН__0__РН__1__",
+            "StakingBond": "Бәйләнгән {amount} {symbol}",
+            "StakingBondAndNominate": "Бәйләнгән {amount} {symbol}",
+            "StakingBondExtra": "Өҫтәмә йәбештерелгән {amount} {symbol}",
             "StakingChill": "Һыуыт",
             "StakingNominate": "Тәҡдим ителгән валидаторҙар",
             "StakingPayout": "Түләү бүләктәре",
-            "StakingRebond": "Ҡабаттан йәбештерелгән __РН__0__РН__1__",
-            "StakingSetController": "Контроллер ҡуйыу __РН__0__",
-            "StakingSetPayee": "Түләү алыусыны ҡуйығыҙ __РН__0__",
-            "StakingUnbond": "Бәйләнмәгән __РН__0__РН__1__",
-            "StakingWithdrawUnbonded": "__РХ__0__РХ__1__",
-            "Swap": "__РН__0____РН__1__ өсөн __РН__2____РН___3__",
-            "SwapAndSend": "__РН__0__ __РН__1__ __РН__2__ __РН__3__ һәм __РН__4____РН________РН__6__ өсөн алмаштырылды",
+            "StakingRebond": "Ребонд {amount} {symbol}",
+            "StakingSetController": "Контроллер ҡуйырға {address}",
+            "StakingSetPayee": "Түләү алыусы ҡуйылған {address}",
+            "StakingUnbond": "Бәйләнмәгән {amount} {symbol}",
+            "StakingWithdrawUnbonded": "Сыҡты {amount} {symbol}",
+            "Swap": "{amount} {symbol} {amount2} {symbol2} менән алмаштырылды",
+            "SwapAndSend": "{amount} {symbol} {amount2} {symbol2} һәм {action} {direction} {address} менән алмаштырылған",
             "SwapTransferBatch": "{action} {amount} {symbol}",
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
@@ -1054,7 +1054,7 @@
         "OrderBookCancelLimitOrders": "Заказдарҙы юҡҡа сығарыу",
         "OrderBookPlaceLimitOrder": "Заказ бирегеҙ",
         "ReferralReserveXor": "Бәйләнеш XOR",
-        "ReferralSetInvitedUser": "__РН__0__",
+        "ReferralSetInvitedUser": "Комплект {role}",
         "ReferralUnreserveXor": "ХОР-ҙы сисергә",
         "RegisterAndRegulateAsset": "Активты теркәү",
         "RegisterAsset": "Активты теркәү",
@@ -1075,7 +1075,7 @@
         "StakingWithdrawUnbonded": "Облигацияһыҙ сығарыу",
         "Swap": "Алмаштырыу",
         "SwapAndSend": "Алмаштырыу һәм ебәреү",
-        "SwapTransferBatch": "__РН__0__ тапшырыу",
+        "SwapTransferBatch": "{ADAR} күсереү",
         "Transfer": "Күсереү",
         "VestedTransfer": "Күсереү",
         "XorlessTransfer": "Күсереү"
@@ -1092,18 +1092,18 @@
             "inactive": "Әүҙем булмаған",
             "placeable": "Урынлаштырыла торған"
         },
-        "Buy": "Һатып алыу __РН__0__",
+        "Buy": "Һатып ал {asset}",
         "cantPlaceOrder": "Заказ бирә алмайым",
         "change": "үҙгәреш",
         "dayVolume": "1D күләм",
         "dialog": {
             "askCancel": "Һеҙ ышанаһығыҙмы, һеҙҙең бөтә асыҡ заказдарҙы юҡҡа сығарырға теләйһегеҙме?",
-            "at": "__РН__0__РН__1__",
-            "buy": "Һатып алыу __РН__0____РН__1__",
+            "at": "{price} {symbol} ваҡытында",
+            "buy": "Һатып ал {amount} {symbol}",
             "cancelAll": "Эйе, бөтәһен дә юҡҡа сығарығыҙ",
             "placeLimit": "Урын сикләү заказ",
             "placeMarket": "Баҙар заказын урынлаштырыу",
-            "sell": "Һатыу __РН__0____РН__1__"
+            "sell": "Һатам {amount} {symbol}"
         },
         "enterAmount": "Сумманы индерегеҙ",
         "error": {
@@ -1128,7 +1128,7 @@
                 "reason": "Керелгән хаҡ бик аныҡ"
             },
             "outOfBounds": {
-                "reading": "Блокчейн диапазоны артып китте: Һеҙ индергән сумма блокчейндың рөхсәт ителгән диапазонынан ситкә төшә. Мин: __РН__0__; Макс: __РН__1__",
+                "reading": "Блокчейн диапазоны артып китте: Һеҙ индергән сумма блокчейндың рөхсәт ителгән диапазонынан ситкә төшә. Мин: {min}; Макс: {max}",
                 "reason": "Сумма блокчейн диапазоны менән тап килмәй"
             },
             "singlePriceLimit": {
@@ -1141,10 +1141,10 @@
             }
         },
         "history": {
-            "cancel": "Заказды юҡҡа сығарыу",
+            "cancel": "Заказды юҡҡа сығарыу {value}",
             "cancelAll": "Барыһын да юҡҡа сығарыу",
             "connect": "Сауҙа башлау өсөн иҫәп яҙмаһын тоташтырыу .",
-            "openOrders": "Асыҡ заказдар __РН__0__",
+            "openOrders": "Асыҡ заказдар {value}",
             "orderHistory": "Заказдар тарихы",
             "tradeHistory": "Сауҙа тарихы ."
         },
@@ -1196,7 +1196,7 @@
         "tradingPair": {
             "choosePair": "Сауҙа пары һайлау",
             "status": "Статус",
-            "total": "__РН__0__ __РН__1__ __РН__2__ __РН__3__",
+            "total": "{amount} {symbol} при {amount2} {symbol2}",
             "volume": "Күләм"
         },
         "txDetails": {
@@ -1229,7 +1229,7 @@
     },
     "pairIsNotCreated": "Токен пары булдырылмаған",
     "points": {
-        "accountsText": "__РН__0__ иҫәп яҙмалары",
+        "accountsText": "{amount} иҫәп яҙмалары",
         "airdrop": "SORA экосистемаһы менән бәйле бурыстарҙы үтәү өсөн квалификация $3m AIRDROP",
         "bridgeVolume": "Күпер күләме",
         "complete": "Тамамланды | Тулы",
@@ -1281,7 +1281,7 @@
             "titleTask": "Селтәр өсөн түләүҙәр өсөн XOR сарыф итегеҙ"
         },
         "nextLvl": "Киләһе кимәл",
-        "openTelegram": "Асыҡ __РН__0__",
+        "openTelegram": "Асыҡ {Telegram}",
         "orderbookVolume": {
             "descriptionTask": "Заказдар китабында лимит заказдар булдырыу",
             "titleProgress": "Заказдар китабы",
@@ -1300,15 +1300,15 @@
         "toEarnPoints": "Мәрәйҙәр йыйыу өсөн .",
         "tokenHold": {
             "descriptionTask": "Һеҙҙең хәҙерге {token} холдингтарығыҙҙы тотоғоҙ",
-            "titleProgress": "__РН__0__ холдингтар",
-            "titleTask": "Тотоп __РН__0__"
+            "titleProgress": "{token} холдингтар",
+            "titleTask": "Тот {token}"
         },
         "VXORHoldings": {
             "descriptionTask": "Һеҙҙең ағымдағы VXOR холдингтарын тотоу",
             "titleProgress": "VXOR холдингтары",
             "titleTask": "VXOR тотоғоҙ"
         },
-        "xorBurned": "__РН__0__ янды",
+        "xorBurned": "{XOR} янған",
         "XORBurned": {
             "descriptionTask": "XOR яндырыу һәм $ ҡиммәтенә үҙгәртеү",
             "titleProgress": "XOR яндырылған",
@@ -1337,8 +1337,8 @@
         "createPair": "Пар булдырыу .",
         "description": "Һеҙ ликвидлыҡ өҫтәгәндә, һеҙгә һеҙҙең позицияны күрһәткән пул жетондар бирелә. Был жетондар автоматик рәүештә һеҙҙең өлөшөгөҙгә пропорциональ түләүҙәр эшләй бассейн, һәм теләһә ниндәй ваҡытта һатып алырға мөмкин.",
         "liquidityNotFound": "Ликвидлыҡ табылмаған.",
-        "pairTokens": "__РН__0__ Пул жетондары",
-        "pooledToken": "__РН__0__ Пул",
+        "pairTokens": "{pair} Бассейн жетондары",
+        "pooledToken": "{tokenSymbol} Йыйылған",
         "poolShare": "Һеҙҙең бассейн өлөшө",
         "removeLiquidity": "Ликвидлыҡты бөтөрөү",
         "strategicBonusApy": "Стратегик бонус APY"
@@ -1352,7 +1352,7 @@
             "checkExtension": "{name} оҙонайтыу эш менән мәшғүл, зинһар, уны тикшерегеҙ",
             "extensionLogin": "Зинһар, һеҙҙең {name} киңәйтеүенә инегеҙ",
             "installExtension": "{name} киңәйтеүе табылмаған. Зинһар, ҡуйығыҙ!\n\nИнде ҡуйылған оҙайтыу? Зинһар, битте яңынан тейәгеҙ .",
-            "notAvailable": "__РН__0__ юҡ.",
+            "notAvailable": "{name} юҡ.",
             "reloadPage": "Битте яңынан тейәп ."
         }
     },
@@ -1409,7 +1409,7 @@
         "description": "Пул токендарҙы алып ташлау һеҙҙең позицияны кире нигеҙендә токендарға үҙгәртә, ағымдағы ставка буйынса, һеҙҙең өлөшөгөҙгә пропорциональ пул. Тупланған түләүҙәр һеҙ алған суммаларға инә.",
         "input": "Индереү",
         "liquidity": "ликвидлыҡ",
-        "locked": "Һеҙҙең бассейндың __РН__0__РН__1__",
+        "locked": "Һеҙҙең бассейндың {percent} {lock} өлөшөндә.",
         "output": "Сығыш",
         "outputMessage": "Сығыш баһалана. Әгәр хаҡ {slippageTolerance}%-тан күберәк үҙгәрһә, һеҙҙең транзакция кире ҡайтарыла.",
         "remove": "Алып ташлау",
@@ -1485,9 +1485,9 @@
         "expiryDate": "Ҡулланыу ваҡыты",
         "expiryDateTooltip": "'Ваҡытлылыҡ ваҡыты' һеҙҙең өсөн срок рөхсәт итеү өсөн көйләнгән активтар SBT .",
         "indefiniteExp": "асыҡ осло",
-        "issuedBy": "__РН__0__ тарафынан сығарылған.",
-        "kycProvider": "__РН__0__ Провайдер",
-        "kycVerification": "__РН__0__ Раҫлау",
+        "issuedBy": "{SBT} сығарылған.",
+        "kycProvider": "{KYC} Провайдер",
+        "kycVerification": "{KYC} Тикшереү",
         "listOperable": "Көйләнә торған активтар эшләй",
         "noPermissions": "Өҫтәмә рөхсәттәр юҡ",
         "noReceiverAccess": "Һеҙ&#8217;s тырышып ебәрергә көйләнгән токен ҡулланыусыға SBT рөхсәт юҡ",
@@ -1510,7 +1510,7 @@
         "payloadLabel": "Әҙерләнгән файҙалы йөк",
         "sourceNetworkLabel": "Селтәрҙән",
         "subtitle": "Хәүефһеҙ сылбырлы протокол (SCCP) тапшырыу ярҙамсыһы өсөн BSC, Эфириум, һәм TRON.",
-        "supportedNetworks": "Ярҙам ителгән сылбырҙар: __РН__0__.",
+        "supportedNetworks": "Терәк сылбырҙар: {chains}.",
         "title": "СКЦП"
     },
     "searchText": "Эҙләү",
@@ -1529,7 +1529,7 @@
             "incorrectAddress": "Дөрөҫ булмаған адрес",
             "incorrectProtocol": "Адрес ws:// йәки wss:// -нан башланырға тейеш."
         },
-        "nodeTitle": "__РХ__0_ __РХ__1__ тарафынан ҡабул ителә",
+        "nodeTitle": "{chain} {name} алып бара",
         "select": "Һайлағыҙ",
         "title": "Селтәр төйөнөн һайлау",
         "updateNode": "Яңыртыу төйөнө"
@@ -1538,7 +1538,7 @@
     "selectRegisteredAsset": {
         "search": {
             "networkLabelEthereum": "{network} селтәр көҙгө маркерҙары",
-            "networkLabelSora": "__РН__0__ селтәр маркерҙары",
+            "networkLabelSora": "{Sora} селтәр токендары",
             "placeholder": "Активтың идентификаторы, исеме йәки тикер символы буйынса фильтрлау"
         },
         "title": "Токен һайлағыҙ"
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "Һеҙҙә номинацияланған валидаторҙар юҡ",
             "noValidators": "Бирелгән фильтрға тура килгән валидаторҙар юҡ",
             "return": "Ҡайтыу",
-            "search": "Эҙләү..."
+            "search": "Эҙләү...",
+            "staked": "Ҡуйылған",
+            "stakedTooltip": "Дөйөм XOR ставкаһы менән был валидатор, шул иҫәптән валидатор үҙ ставкаһы һәм тәҡдим ителгән ставкаһы"
         },
         "withdraw": {
             "beingWithdrawn": "Сығарыла",
@@ -1713,7 +1715,7 @@
     "swap": {
         "confirmSwap": "Алмаштырыуҙы раҫлау",
         "errorFetching": "Мәғлүмәттәрҙе алыуҙа хата",
-        "insufficientAmount": "Етерлек булмаған __РН__0__ күләме",
+        "insufficientAmount": "Етерлек булмаған {tokenSymbol} сумма",
         "insufficientLiquidity": "Ликвидлыҡтың етерлек булмауы",
         "liquidityProviderFee": "Ликвидлыҡ менән тәьмин итеүсе өсөн түләү",
         "liquidityProviderFeeTooltip": "Һәр сауҙаның бер өлөшө ({liquidityProviderFee}%) протокол стимул булараҡ ликвидлыҡ менән тәьмин итеүселәргә китә.",
@@ -1744,16 +1746,16 @@
     },
     "transaction": {
         "amount": "@:amountText",
-        "amount2": "__РН__0__ 2",
+        "amount2": "@:amountText 2",
         "blockId": "Блок идентификаторы",
         "comment": "Комментарий",
-        "copy": "Күсермәһе __РН__0__",
+        "copy": "Күсермә {value}",
         "fee": "Транзакция өсөн түләү",
         "from": "2012 йылдан.",
         "history": {
             "confirmed": "Транзакция раҫланды",
-            "created": "__РН__0__ __РН__1__ өсөн транзакция булдырылған.",
-            "submitted": "Транзакция түләү менән тапшырылған __РН__0____РН__1__"
+            "created": "{amount} {symbol} өсөн транзакция булдырылған.",
+            "submitted": "Транзакция {fee} {symbol} түләү менән тапшырылған"
         },
         "price": "Хаҡы",
         "referral": "Йүнәлтмә",
@@ -1770,7 +1772,7 @@
         "to": "Ҡ.",
         "total": "Дөйөм",
         "txId": "Транзакция идентификаторы",
-        "viewIn": "__РН__0__ -ла ҡарау"
+        "viewIn": "{explorer} -ла ҡарау"
     },
     "transactionDetailsText": "Транзакция тураһында мәғлүмәт",
     "transactionSubmittedText": "Транзакция тапшырылды",

@@ -35,7 +35,7 @@ const formattedDate = computed(() => formatDate(props.date, 'L'));
 .task-card {
   .el-divider {
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: var(--s-color-base-border-secondary);
   }
   align-items: center;
   display: flex;
@@ -43,7 +43,7 @@ const formattedDate = computed(() => formatDate(props.date, 'L'));
   flex-wrap: wrap;
   gap: $inner-spacing-big;
   &__first-trx {
-    color: var(--s-color-base-on-accent);
+    color: var(--s-color-base-content-primary);
     font-size: 15px;
     font-weight: 600;
     line-height: 1.25;

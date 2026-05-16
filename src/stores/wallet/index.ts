@@ -78,7 +78,7 @@ import { resolveFallbackIndexer, resolvePreferredIndexer } from '@/stores/wallet
 import type { Book, Nullable } from '@/types/common';
 import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
 import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
-import { resolveStaticAssetUrl } from '@/utils/staticAssets';
+import { resolveVersionedStaticAssetUrl } from '@/utils/staticAssets';
 import { waitForAccountPair } from '@/utils/walletReady';
 
 import type {
@@ -1248,7 +1248,7 @@ export const useWalletStore = defineStore('wallet', () => {
     clearWhitelist();
 
     try {
-      const response = await fetch(resolveStaticAssetUrl(WHITE_LIST_URL), { cache: 'no-cache' });
+      const response = await fetch(resolveVersionedStaticAssetUrl(WHITE_LIST_URL), { cache: 'no-cache' });
 
       if (!response.ok) {
         throw new Error(`Whitelist request failed with status ${response.status}`);
@@ -1266,7 +1266,7 @@ export const useWalletStore = defineStore('wallet', () => {
     clearBlacklist();
 
     try {
-      const response = await fetch(resolveStaticAssetUrl(NFT_BLACK_LIST_URL), { cache: 'no-cache' });
+      const response = await fetch(resolveVersionedStaticAssetUrl(NFT_BLACK_LIST_URL), { cache: 'no-cache' });
 
       if (!response.ok) {
         throw new Error(`NFT blacklist request failed with status ${response.status}`);

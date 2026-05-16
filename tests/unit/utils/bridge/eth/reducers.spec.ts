@@ -44,6 +44,7 @@ const createReducer = (
   options: {
     getBridgeHistoryInstance?: ReturnType<typeof vi.fn>;
     signExternalOutgoing?: ReturnType<typeof vi.fn>;
+    isTransactionInProgress?: ReturnType<typeof vi.fn>;
   } = {}
 ) =>
   new EthBridgeOutgoingReducer({
@@ -56,6 +57,7 @@ const createReducer = (
     getActiveTransaction: () => tx,
     addTransactionToProgress: vi.fn(),
     removeTransactionFromProgress: vi.fn(),
+    isTransactionInProgress: options.isTransactionInProgress ?? vi.fn(() => false),
     beforeTransactionSign: vi.fn(),
     boundaryStates: {
       [Operation.EthBridgeOutgoing]: {
@@ -284,6 +286,37 @@ describe('EthBridgeOutgoingReducer', () => {
     expect(findEthTxBySoraHash).toHaveBeenCalledWith('0xrecipient', '0xrequest-hash', 123);
     expect(signExternalOutgoing).not.toHaveBeenCalled();
     expect(tx.externalHash).toBe('0xevm-hash');
+  });
+
+  it('skips submitted Ethereum transaction restoration for a live in-progress transfer', async () => {
+    const tx = {
+      id: 'tx-outgoing',
+      type: Operation.EthBridgeOutgoing,
+      to: '0xrecipient',
+      hash: '0xrequest-hash',
+      startTime: 123,
+    } as any;
+    const updateTransaction = vi.fn((id: string, params: Record<string, unknown>) => {
+      if (id === tx.id) {
+        Object.assign(tx, params);
+      }
+    });
+    const findEthTxBySoraHash = vi.fn().mockResolvedValue({ hash: '0xexisting-evm-hash' });
+    const getBridgeHistoryInstance = vi.fn().mockResolvedValue({ findEthTxBySoraHash });
+    const signExternalOutgoing = vi.fn().mockResolvedValue({ hash: '0xfresh-evm-hash' });
+    const reducer = createReducer(tx, updateTransaction, {
+      getBridgeHistoryInstance,
+      signExternalOutgoing,
+      isTransactionInProgress: vi.fn(() => true),
+    });
+
+    await reducer.onEvmSubmitted(tx.id, signExternalOutgoing);
+
+    expect(getBridgeHistoryInstance).not.toHaveBeenCalled();
+    expect(findEthTxBySoraHash).not.toHaveBeenCalled();
+    expect(signExternalOutgoing).toHaveBeenCalledWith(tx.id);
+    expect(tx.externalHash).toBe('0xfresh-evm-hash');
+    expect(tx.externalNetworkFee).toBe('0.01');
   });
 
   it('asks for a fresh Ethereum signature when the restored matching transaction failed', async () => {

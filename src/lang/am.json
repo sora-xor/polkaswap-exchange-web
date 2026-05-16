@@ -261,18 +261,18 @@
         "title": "በአሳሽ ቅንብሮች ውስጥ የካሜራ መዳረሻ ፍቀድ"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "የ SORA አውታረ መረብ tx hash ቅዳ",
+        "enterNexusRecipient": "የ SORA NEXUS መለያ አስገባ",
+        "invalidNexusRecipient": "ልክ ያልሆነ የሶራ NEXUS መለያ",
+        "minamotoClaimDescription": "በSORA Minamoto ላይ ላቀረቡት ጥያቄ የ SORA አውታረ መረብ tx hash ይጠቀሙ። እያንዳንዱ ረድፍ የሚቃጠለው ምን እንደሚከማች ያሳያል.",
+        "minamotoClaimTitle": "የእርስዎ Minamoto የይገባኛል ጥያቄ ዝርዝሮች",
+        "nexusRecipientLabel": "SORA Nexus መለያ",
+        "nexusRecipientPlaceholder": "የ SORA Nexus i105 መለያዎን ያስገቡ",
+        "nexusRecipientWarning": "የእርስዎ SORA Nexus መለያ በዚህ የተቃጠለ ግብይት ውስጥ በይፋ ተመዝግቧል።",
+        "soraNetworkTxHashLabel": "SORA አውታረ መረብ tx hash",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "ምን ያህል {tokenSymbol} ይፈልጋሉ?",
+        "ssTokensLabel": "ኤስኤስ ምልክቶች"
     },
     "buttons": {
         "chooseAToken": "ማስመሰያ ይምረጡ",
@@ -515,7 +515,7 @@
         }
     },
     "dexSettings": {
-        "marketAlgorithm": "@.የላይኛው፡ገበያ አልጎሪዝም ጽሑፍ",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} ፈሳሽ ማዘዋወር ከሁሉም ገበያዎች የተሻሉ የዋጋ አማራጮችን ብቻ በማጣመር ለማንኛውም ግብይት የተሻለውን ዋጋ ያረጋግጣል። ሲገኝ የቶከን ቦንዲንግ ከርቭ ({tbcAlgorithm}) የንብረቱ ዋጋ ከሌሎች ምንጮች የበለጠ ተመጣጣኝ እስከሆነ ድረስ {xycAlgorithm} ገንዳው ጥቅም ላይ የሚውል እስከሆነ ድረስ ለፈሳሽነት ጥቅም ላይ ይውላል።",
             "TBC": "{tbcAlgorithm} — ከቶከን ቦንዲንግ ከርቭ (ዋና ገበያ) ብቻ መግዛት። ከ{xycAlgorithm} ገንዳ (ሁለተኛ ገበያ) ጋር ሲነጻጸር ዋጋው የማይመች ሊሆን የሚችልበት እድል አለ ነገር ግን ከተሸለሙት ሽልማቶች የተገኘው ዋጋ በጊዜ ሂደት የበለጠ አመቺ ሊሆን ይችላል።",
@@ -554,7 +554,7 @@
         "synthetics": "ሰው ሠራሽ ምልክቶች"
     },
     "FAQ": "{AppName} የሚጠየቁ ጥያቄዎች",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "እባክዎን በዚህ ድህረ ገጽ ላይ ከክሪፕቶ ምንዛሬዎች ጋር የተቆራኙት የ fiat ዋጋዎች በፖልካስዋፕ መረጃ ጠቋሚ የተሰጡ እና ግምታዊ መሆናቸውን ልብ ይበሉ። የእነዚህን ስሌቶች ውስጣዊ ውስብስብነት ግምት ውስጥ በማስገባት በማንኛውም ጊዜ ፍጹም ትክክለኛነት ሊረጋገጥ አይችልም.",
     "fiatPayment": {
         "cedeStoreBtn": "ከ{value1} በ{value2} ያስተላልፉ",
         "cedeStoreDesc": "ማናቸውንም ቶከኖች ከ{value1} ወደ {value2} በ{value3} ያስተላልፉ",
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "መረጃ ጠቋሚ",
                 "title": "{Sora} የአውታረ መረብ አገልግሎት ምርጫ",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "ለ fiat እሴቶች የፖልካስዋፕ መረጃ ጠቋሚን ይጠቀሙ"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "የፖልካስዋፕ መረጃ ጠቋሚ አግድ #{block}",
             "label": "የስታቲስቲክስ አገልግሎቶች",
             "title": {
                 "available": "ስታቲስቲክስ ይገኛል።",
@@ -1241,7 +1241,7 @@
             "titleTask": "ተቀማጭ እና ማውጣት"
         },
         "feesSpent": "የተከፈሉ ክፍያዎች",
-        "firstSoraNetworkTransaction": "የመጀመሪያዎ የ{Sora} ኔትወርክ ግብይት",
+        "firstSoraNetworkTransaction": "የመጀመሪያው የ SORA አውታረ መረብ ግብይትዎ",
         "firstTxAccount": {
             "descriptionTask": "የመጀመሪያውን XOR ግብይት አጠናቅተው ሽልማት ይቀበሉ",
             "titleProgress": "መጀመሪያ ግብይት",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "ምንም የተሾሙ ማረጋገጫዎች የሉዎትም።",
             "noValidators": "የተገለጸውን ማጣሪያ የሚያረኩ አረጋጋጮች የሉም",
             "return": "ተመለስ",
-            "search": "ፈልግ..."
+            "search": "ፈልግ...",
+            "staked": "የተቆለፈ",
+            "stakedTooltip": "ጠቅላላ XOR ከዚህ አረጋጋጭ ጋር፣የአረጋጋጭው የራሱ ድርሻ እና በእጩነት የተመረጠ ድርሻን ጨምሮ"
         },
         "withdraw": {
             "beingWithdrawn": "መወገድ",

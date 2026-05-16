@@ -508,8 +508,10 @@ vi.mock('@/utils/storage', () => ({
 }));
 
 vi.mock('@/utils/staticAssets', () => ({
+  appendStaticAssetVersion: (candidate: string) => candidate,
   getEnvConfigCandidates: () => ['env.test.json'],
   resolveStaticAssetUrl: (candidate: string) => candidate,
+  resolveVersionedStaticAssetUrl: (candidate: string) => candidate,
 }));
 
 vi.mock('@/utils/switchTheme', () => ({

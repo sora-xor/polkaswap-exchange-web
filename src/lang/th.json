@@ -44,11 +44,11 @@
         "pinAsset": "สินทรัพย์พิน",
         "scam": "การหลอกลวง",
         "searchInputText": "ค้นหาด้วยรหัสสินทรัพย์ชื่อหรือสัญลักษณ์ทิพย์",
-        "success": "มีการเพิ่มสินทรัพย์ __ph__0__ สำเร็จ!",
+        "success": "เพิ่มเนื้อหา {symbol} สำเร็จแล้ว!",
         "understand": "ฉันเข้าใจ",
         "unknown": "แหล่งที่ไม่รู้จัก",
         "unpinAsset": "สินทรัพย์ปลดปล่อย",
-        "warningMessage": "{assetType} | __ph__1__ เหล่านี้",
+        "warningMessage": "นี้ {assetType} | {assetTypePlural} เหล่านี้",
         "warningMessageText": "ทุกคนสามารถสร้าง {assetType} รวมถึงการสร้าง {assetTypePlural} รุ่นปลอมที่อ้างว่าเป็นตัวแทนของโครงการ\nหากคุณซื้อ {purchaseAssetType} คุณอาจไม่สามารถขายได้",
         "warningTitle": "แลกเปลี่ยนความเสี่ยงของคุณเอง!"
     },
@@ -110,7 +110,7 @@
     "amountText": "จำนวน",
     "appName": "{AppName}",
     "asset": {
-        "receive": "รับ __ph__0__",
+        "receive": "รับ {symbol}",
         "remove": "ลบสินทรัพย์",
         "select": "เลือกสินทรัพย์"
     },
@@ -121,12 +121,12 @@
         "addRegulatedAssets": "เพิ่มสินทรัพย์ที่มีการควบคุม",
         "attachedRegulatedAssets": "สินทรัพย์ที่มีการควบคุม",
         "createRegulatedAsset": "สร้างสินทรัพย์ที่มีการควบคุมใหม่",
-        "createSbt": "สร้าง __ph__0__",
+        "createSbt": "สร้าง {type}",
         "dialog": {
             "addExisting": "เพิ่มสินทรัพย์ที่มีอยู่",
             "addExistingDesc": "เพิ่มสินทรัพย์ที่สร้างขึ้นแล้วสำหรับ SBT",
             "createAsset": "สร้างสินทรัพย์ใหม่",
-            "createAssetDesc": "ตั้งค่าสินทรัพย์ที่ได้รับอนุญาตใหม่สำหรับ __ph__0__",
+            "createAssetDesc": "ตั้งค่าเนื้อหาที่ได้รับอนุญาตใหม่สำหรับ {type}",
             "enterAddress": "ป้อนที่อยู่สำหรับการออก",
             "issueAccess": "การเข้าถึงออก",
             "pickDate": "เลือกวัน",
@@ -143,12 +143,12 @@
             "stepThreeTitle": "ตรวจสอบและลงนามในธุรกรรม",
             "stepTwoDesc": "ให้ข้อมูลที่สำคัญเช่นชื่อ SBT และสัญลักษณ์ทิพย์รวมถึงไอคอน",
             "stepTwoTitle": "ป้อนรายละเอียด SBT",
-            "title": "วิธีสร้าง __ph__0__:"
+            "title": "วิธีสร้าง {type}:"
         },
-        "issueSbtAccess": "ปัญหา __ph__0__ การเข้าถึง",
+        "issueSbtAccess": "ปัญหาการเข้าถึง {type}",
         "letsStartBtn": "เริ่มกันเถอะ",
         "orSelectExisting": "หรือเลือกที่มีอยู่",
-        "ownerSbtTitle": "__ph__0__ ของคุณ",
+        "ownerSbtTitle": "{type}ของคุณ",
         "permissionedAssets": "สินทรัพย์ที่ได้รับอนุญาต",
         "regulatedAssetsConnected": "สินทรัพย์ที่มีการควบคุม",
         "regulatedPools": "สระว่ายน้ำ",
@@ -189,15 +189,15 @@
     "blockNumberText": "หมายเลขบล็อก",
     "bridge": {
         "connectWallets": "เชื่อมต่อกระเป๋าเงินเพื่อดูประวัติการทำธุรกรรมที่เกี่ยวข้อง",
-        "externalMinDeposit": "__ph__0__ นาที เงินฝาก",
-        "externalMinDepositTooltip": "ยอดคงเหลือขั้นต่ำ __ph__0__ ที่ต้องอยู่ในบัญชี {network} ของคุณหลังจากการโอนสะพาน",
+        "externalMinDeposit": "{network} นาที เงินฝาก",
+        "externalMinDepositTooltip": "ยอดขั้นต่ำ {symbol} ที่ต้องอยู่ในบัญชี {network} ของคุณหลังการโอนสะพาน",
         "externalTransferFee": "{network} {XCM} ค่าธรรมเนียม",
         "externalTransferFeeTooltip": "เมื่อคุณส่งธุรกรรมบริดจ์ไปยังเครือข่าย {network} ค่าธรรมเนียมเล็กน้อยจะถูกนำมาจากจำนวนเงินที่คุณโอน",
         "info": "แปลงโทเค็นระหว่างเครือข่าย {Sora} และ {Ethereum}",
-        "limitMessage": "ปัจจุบันมี __ph__0__ __ph__1__ __ph__2__ สำหรับการเชื่อมโยงเพื่อให้แน่ใจว่ามีความมั่นคงและความปลอดภัยของเครือข่าย {Sora} เราขอขอบคุณความเข้าใจของคุณ",
-        "networkInfo": "สะพาน __ph__0__ เครือข่ายด้วย:",
+        "limitMessage": "ปัจจุบันมี {type} {amount} {symbol} สำหรับการเชื่อมโยงเพื่อให้มั่นใจถึงเสถียรภาพและความปลอดภัยของเครือข่าย {Sora} ขอขอบคุณสำหรับความเข้าใจของคุณ",
+        "networkInfo": "สะพาน {Sora} เครือข่ายด้วย:",
         "next": "ต่อไป",
-        "notRegisteredAsset": "สินทรัพย์ __ph__0__ ไม่ได้ลงทะเบียน",
+        "notRegisteredAsset": "สินทรัพย์ {assetSymbol} ยังไม่ได้ลงทะเบียน",
         "selectNetwork": "เลือกเครือข่าย",
         "soraNetworkFee": "{Sora} ค่าธรรมเนียมเครือข่าย",
         "title": "สะพาน"
@@ -213,7 +213,7 @@
     },
     "bridgeText": "สะพาน",
     "bridgeTransaction": {
-        "allowToken": "อนุญาตให้ __ph__0__ ใช้ __ph__1__ ของคุณ",
+        "allowToken": "อนุญาตให้ {AppName} ใช้ {tokenSymbol} ของคุณ",
         "approveToken": "โปรดทราบว่าจำเป็นต้องอนุมัติโทเค็นเพียงครั้งเดียวเท่านั้น หากส่วนขยายของคุณมีคำขอการอนุมัติโทเค็นหลายครั้งตรวจสอบให้แน่ใจว่าได้ยืนยันเฉพาะคนสุดท้ายในขณะที่ปฏิเสธส่วนที่เหลือ",
         "blocksLeft": "{count} บล็อกเหลือ ...",
         "for": "สำหรับ",
@@ -235,14 +235,14 @@
         "transactionHash": "แฮชธุรกรรม"
     },
     "bridgeTransferNotification": {
-        "addToken": "เพิ่ม __ph__0__ ลงในกระเป๋าเงิน",
+        "addToken": "เพิ่ม {symbol} ลงในกระเป๋าเงิน",
         "title": "การทำธุรกรรมสะพานประสบความสำเร็จ"
     },
     "browserNotificationDialog": {
         "agree": "ใช่ฉันเข้าใจ",
         "button": "เปิดใช้งานการแจ้งเตือน",
         "info": "เราจะส่งการอัปเดตที่เกี่ยวข้องเกี่ยวกับกระเป๋าเงินของคุณเท่านั้นเช่น: การเปลี่ยนแปลงยอดคงเหลือของสินทรัพย์",
-        "notificationBlocked": "หากต้องการรับการแจ้งเตือนเกี่ยวกับ __ph__0__ โปรดอนุญาตให้มีการแจ้งเตือนในการตั้งค่าดั้งเดิมของเบราว์เซอร์",
+        "notificationBlocked": "หากต้องการรับการแจ้งเตือนเกี่ยวกับ {AppName} โปรดอนุญาตการแจ้งเตือนในการตั้งค่าดั้งเดิมของเบราว์เซอร์ของคุณ",
         "pointer": "กด“ อนุญาต” เพื่อเปิดการแจ้งเตือน",
         "rotateMessage": "ประสบการณ์มีเฉพาะในโหมดแนวตั้งเท่านั้น",
         "rotatetitle": "กรุณาหมุนอุปกรณ์ของคุณ",
@@ -250,7 +250,7 @@
     },
     "browserNotificationLocalStorageOverride": {
         "agree": "ใช่ฉันเข้าใจ",
-        "info": "ที่เก็บข้อมูลในพื้นที่ของคุณเกินพิกัดเพื่อทำงานต่อไปกับ __ph__0__ จำเป็นต้องทำความสะอาด",
+        "info": "ที่เก็บข้อมูลในเครื่องของคุณมีมากเกินไป หากต้องการทำงานต่อกับ {AppName} จำเป็นต้องทำความสะอาด",
         "title": "ล้างพื้นที่เก็บข้อมูล {AppName} ท้องถิ่น"
     },
     "browserPermission": {
@@ -261,18 +261,18 @@
         "title": "อนุญาตให้เข้าถึงกล้องในการตั้งค่าเบราว์เซอร์"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "คัดลอกแฮช SORA Network tx",
+        "enterNexusRecipient": "เข้าสู่บัญชี SORA NEXUS",
+        "invalidNexusRecipient": "บัญชี SORA NEXUS ไม่ถูกต้อง",
+        "minamotoClaimDescription": "ใช้แฮช tx ของ SORA Network สำหรับการอ้างสิทธิ์ใน SORA Minamoto แต่ละแถวจะแสดงสิ่งที่สำรองไว้สำหรับการเผาไหม้",
+        "minamotoClaimTitle": "รายละเอียดการเรียกร้องมินาโมโตะของคุณ",
+        "nexusRecipientLabel": "บัญชี SORA Nexus",
+        "nexusRecipientPlaceholder": "ป้อนบัญชี SORA Nexus i105 ของคุณ",
+        "nexusRecipientWarning": "บัญชี SORA Nexus ของคุณได้รับการบันทึกแบบสาธารณะในธุรกรรมการเบิร์นนี้",
+        "soraNetworkTxHashLabel": "SORA เครือข่าย tx แฮช",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "คุณต้องการ {tokenSymbol} เท่าไหร่?",
+        "ssTokensLabel": "โทเค็น SS"
     },
     "buttons": {
         "chooseAToken": "เลือกโทเค็น",
@@ -306,7 +306,7 @@
         "payoff": "คุณจะต้องใช้บริดจ์เพื่อรับ XOR จากเครือข่ายอื่น ๆ รับ XOR จากบัญชี {Sora} อื่นหรือสลับโทเค็นอื่น ๆ ที่อยู่ในบัญชีของคุณเป็น XOR"
     },
     "confirmSupply": {
-        "outputDescription": "ผลผลิตถูกประเมิน หากราคาเปลี่ยนแปลงมากกว่า __PH__0 __% การทำธุรกรรมของคุณจะเปลี่ยนกลับ",
+        "outputDescription": "มีการประเมินผลผลิต หากราคาเปลี่ยนแปลงมากกว่า {slippageTolerance}% ธุรกรรมของคุณจะกลับมา",
         "title": "สระว่ายน้ำของคุณจะเป็น"
     },
     "confirmText": "ยืนยัน",
@@ -321,7 +321,7 @@
         },
         "disclaimer": "โปรดทราบว่ากระเป๋าเงินบางตัวอาจไม่ได้รับการสนับสนุนอย่างเต็มที่",
         "internalText": "คุณสามารถสร้างหรือนำเข้าบัญชี {Sora} ที่มีอยู่เพื่อเชื่อมต่อกับบัญชี {wallet} ของคุณ ข้อมูลทั้งหมดที่เก็บไว้โดย {wallet} ถูกเข้ารหัสโดยใช้การเข้ารหัสขั้นสูงในตัว",
-        "internalTitle": "เชื่อมต่อกับ __ph__0__",
+        "internalTitle": "เชื่อมต่อกับ {wallet}",
         "list": {
             "extensions": "ส่วนขยาย",
             "integrated": "ซึ่งรวมเข้าด้วยกัน"
@@ -334,17 +334,17 @@
         }
     },
     "connectWalletText": "เชื่อมต่อบัญชี",
-    "connectWalletTextTooltip": "เชื่อมต่อกับเครือข่าย {Sora} ด้วย __ph__1__",
+    "connectWalletTextTooltip": "เชื่อมต่อกับ {Sora} เครือข่ายด้วย {PolkadotJs}",
     "continueText": "ดำเนินการต่อ",
     "copiedText": "คัดลอก",
     "copiedWithValue": "{value} ถูกคัดลอก!",
     "copyPhraseText": "คัดลอกรหัสผ่าน",
-    "copyWithValue": "คัดลอก __ph__0__",
+    "copyWithValue": "คัดลอก {value}",
     "createPair": {
         "deposit": "เงินฝาก",
         "firstLiquidityProvider": "คุณเป็นผู้ให้บริการสภาพคล่องคนแรก",
         "firstLiquidityProviderInfo": "อัตราส่วนของโทเค็นที่คุณเพิ่มจะกำหนดราคาของพูลนี้ <br/> เมื่อคุณมีความสุขกับอัตราการคลิกเพื่อตรวจสอบ",
-        "firstSecondPoolTokens": "__PH__0 __-__ pH__1__ พูล",
+        "firstSecondPoolTokens": "{first}-{second} พูล",
         "pricePool": "ราคาและค่าธรรมเนียม",
         "shareOfPool": "สระว่ายน้ำ",
         "supply": "จัดหา",
@@ -362,7 +362,7 @@
         "enterSupply": "ป้อนโทเค็นจัดหา",
         "enterSymbol": "ป้อนสัญลักษณ์โทเค็น",
         "enterTokenDescription": "ป้อนคำอธิบาย",
-        "error": "ไม่สามารถสร้างโทเค็น __ph__0__",
+        "error": "ไม่สามารถสร้างโทเค็น {symbol}",
         "extensibleSupply": {
             "desc": "ความสามารถในการทำลายโทเค็นมากขึ้น",
             "placeholder": "อุปทานที่ขยายได้"
@@ -374,7 +374,7 @@
             "image": {
                 "placeholderBadSource": "ไฟล์ไม่สามารถประมวลผลได้",
                 "placeholderBadSourceAddition": "หรือยังไม่ได้อัปโหลดไปยัง IPFS",
-                "placeholderFileLimit": "ขนาดไฟล์เกินขีด จำกัด ของ __ph__0__mb",
+                "placeholderFileLimit": "ขนาดไฟล์เกินขีดจำกัดที่ {value}mb",
                 "placeholderNoImage": "อัปโหลดไฟล์โดยป้อนลิงค์หรือเลือกจากที่เก็บข้อมูลในเครื่อง"
             },
             "link": {
@@ -395,7 +395,7 @@
         },
         "provideContent": "ให้เนื้อหา",
         "success": {
-            "desc": "สร้างโทเค็น __ph__0__",
+            "desc": "สร้างโทเค็น {symbol}",
             "title": "ส่งธุรกรรม"
         },
         "titleCommon": "สร้าง",
@@ -438,7 +438,7 @@
             "poolShare": "สระว่ายน้ำของคุณแบ่งปัน staked",
             "poolShareWillBe": "สระว่ายน้ำของคุณแบ่งปันจะเป็น",
             "rewardToken": "รางวัลโทเค็น",
-            "stake": "staked __ph__0__ ของคุณ",
+            "stake": "{symbol} ของคุณถูกเดิมพัน",
             "stakeWillBe": "สเตค {symbol} ของคุณจะเป็น",
             "totalLiquidityLocked": "ล็อคสภาพคล่องทั้งหมด"
         },
@@ -456,7 +456,7 @@
             "placeholder": "วลีช่วยจำ"
         },
         "accountName": {
-            "desc": "นี่คือชื่อบัญชีของคุณ มันจะปรากฏให้คุณเฉพาะใน __ph__0__",
+            "desc": "นี่คือชื่อบัญชีของคุณ มันจะปรากฏให้คุณเห็นใน {AppName} เท่านั้น",
             "placeholder": "ชื่อบัญชี"
         },
         "addAccount": "เพิ่มบัญชี",
@@ -477,16 +477,16 @@
             "confirmTitle": "ยืนยันด้วยรหัสผ่าน"
         },
         "errorMessages": {
-            "alreadyImported": "บัญชีนำเข้าแล้ว __ph__0__",
+            "alreadyImported": "นำเข้าบัญชีแล้ว {address}",
             "jsonFields": "ไฟล์ JSON ไม่มีฟิลด์ที่จำเป็น",
             "mnemonic": "ระบุ BIP39 MNEMONIC ที่ไม่ถูกต้อง",
-            "mnemonicLength": "Mnemonic ควรมีคำ __ph__0__",
+            "mnemonicLength": "ช่วยในการจำควรมี {number} คำ",
             "password": "รหัสผ่านไม่ตรงกัน",
             "passwords": "รหัสผ่านไม่ตรงกัน"
         },
         "errorMnemonicText": "คำสั่งรหัสผ่านไม่ถูกต้อง",
         "exportJsonText": "คุณจะสามารถกู้คืนบัญชีของคุณได้โดยการนำเข้าไฟล์ {JSON} นี้ อย่าแบ่งปันกับใคร! เก็บไว้อย่างปลอดภัยโดยเฉพาะอย่างยิ่งเข้ารหัส",
-        "exportOptionText": "ส่งออก __ph__0__ ไฟล์สำหรับการกู้คืนบัญชี",
+        "exportOptionText": "ส่งออกไฟล์ {JSON} เพื่อกู้คืนบัญชี",
         "exportTutorialsText": "แบบฝึกหัดการส่งออก",
         "heading": {
             "accountDetailsTitle": "รายละเอียดบัญชี",
@@ -495,7 +495,7 @@
             "seedPhraseTitle": "วรรณะ"
         },
         "importSteps": {
-            "exportAccount": "ส่งออกไฟล์ __ph__0__",
+            "exportAccount": "ส่งออกไฟล์ {JSON}",
             "selectAccount": "เลือกบัญชีที่คุณต้องการส่งออก",
             "selectWallet": "เปิดกระเป๋าเงินด้วยบัญชีที่มีอยู่ของคุณ"
         },
@@ -508,14 +508,14 @@
         "seedAdviceText": "ข้อความรหัสผ่าน 12 คำเป็นคีย์ส่วนตัวเพื่อให้เข้าถึงบัญชี {Sora} ของคุณในกรณีที่คุณสูญเสียการเข้าถึงบัญชี {wallet} ของคุณ เก็บไว้อย่างปลอดภัยตามลำดับที่แน่นอนที่ปรากฏด้านบน",
         "welcome": {
             "createAccount": "สร้างบัญชี",
-            "header": "ยินดีต้อนรับสู่ __ph__0__!",
+            "header": "ยินดีต้อนรับสู่ {AppName}!",
             "headline": "มาตั้งค่าบัญชีของคุณ",
             "importAccount": "นำเข้าบัญชี",
             "text": "สร้างบัญชีเครือข่าย {Sora} ของคุณหรือเข้าสู่บัญชีเก่าโดยใช้วลีช่วยจำหรือนำเข้า. JSON สิ่งนี้ช่วยให้คุณสามารถลงนามในการทำธุรกรรมและจัดการสินทรัพย์ในเครือข่าย {Sora}"
         }
     },
     "dexSettings": {
-        "marketAlgorithm": "@.UPPER: MarketAlgorithMtext",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} การกำหนดเส้นทางสภาพคล่องทำให้มั่นใจได้ว่าราคาที่ดีที่สุดสำหรับการทำธุรกรรมใด ๆ โดยการรวมตัวเลือกราคาที่ดีที่สุดจากตลาดที่มีอยู่ทั้งหมด เมื่อมีอยู่จะใช้ Token Bonding Curve ({tbcAlgorithm}) สำหรับสภาพคล่องตราบใดที่ราคาสินทรัพย์มีราคาไม่แพงกว่าจากแหล่งอื่น ๆ ซึ่งใช้สระ {xycAlgorithm}",
             "TBC": "{tbcAlgorithm} - ซื้อเฉพาะจากเส้นโค้งพันธะโทเค็น (ตลาดหลัก) มีความเป็นไปได้ที่ราคาจะไม่เอื้ออำนวยเมื่อเทียบกับสระ {xycAlgorithm} (ตลาดรอง) แต่มูลค่าที่ได้รับจากรางวัลที่ได้รับอาจกลายเป็นที่นิยมมากขึ้นเมื่อเวลาผ่านไป",
@@ -533,32 +533,32 @@
         },
         "title": "การตั้งค่า"
     },
-    "disclaimer": "{disclaimerPrefix} เว็บไซต์นี้ได้รับการดูแลโดยชุมชน {Sora} ก่อนที่จะใช้เว็บไซต์นี้ต่อไปโปรดตรวจสอบ {polkaswapFaqLink} และเอกสารประกอบซึ่งรวมถึงคำอธิบายโดยละเอียดเกี่ยวกับวิธีการทำงานของ {AppName} รวมถึง {memorandumLink} และ {privacyLink} เอกสารเหล่านี้มีความสำคัญต่อประสบการณ์ผู้ใช้ที่ปลอดภัยและเป็นบวก โดยใช้ __ph__6__ คุณรับทราบว่าคุณได้อ่านและเข้าใจเอกสารเหล่านี้ นอกจากนี้คุณยังรับทราบสิ่งต่อไปนี้: 1) ความรับผิดชอบ แต่เพียงผู้เดียวของคุณในการปฏิบัติตามกฎหมายทั้งหมดที่อาจใช้กับการใช้ __ph__7__ โดยเฉพาะในเขตอำนาจศาลทางกฎหมายของคุณ 2) ความเข้าใจของคุณว่าเวอร์ชันปัจจุบันของ {AppName} เป็นเวอร์ชันอัลฟ่า: มันยังไม่ได้รับการทดสอบอย่างเต็มที่และฟังก์ชั่นบางอย่างอาจไม่ทำงานตามที่ออกแบบมา และ 3) ความเข้าใจและการยอมรับความเสี่ยงที่เกี่ยวข้องกับการใช้ {AppName} รวมถึง แต่ไม่ จำกัด เพียงความเสี่ยงของการสูญเสียโทเค็น โปรดอย่าดำเนินการต่อโดยไม่อ่าน __ph__10__, __ph__11__, __ph__12__!",
+    "disclaimer": "{disclaimerPrefix} เว็บไซต์นี้ดูแลโดยชุมชน {Sora} ก่อนที่จะใช้เว็บไซต์นี้ต่อไป โปรดตรวจสอบ {polkaswapFaqLink} และเอกสารประกอบ ซึ่งรวมถึงคำอธิบายโดยละเอียดเกี่ยวกับวิธีการทำงาน {AppName} รวมถึง {memorandumLink} และ {privacyLink} เอกสารเหล่านี้มีความสำคัญต่อประสบการณ์ผู้ใช้ที่ดีและปลอดภัย การใช้ {AppName} แสดงว่าคุณรับทราบว่าคุณได้อ่านและทำความเข้าใจเอกสารเหล่านี้แล้ว คุณรับทราบสิ่งต่อไปนี้ด้วย: 1) ความรับผิดชอบของคุณแต่เพียงผู้เดียวในการปฏิบัติตามกฎหมายทั้งหมดที่อาจนำไปใช้กับการใช้งาน {AppName} ของคุณโดยเฉพาะในเขตอำนาจศาลทางกฎหมายของคุณ; 2) ความเข้าใจของคุณว่าเวอร์ชันปัจจุบันของ {AppName} เป็นเวอร์ชันอัลฟ่า: ยังไม่ผ่านการทดสอบอย่างสมบูรณ์ และฟังก์ชันบางอย่างอาจไม่ทำงานตามที่ออกแบบไว้ และ 3) ความเข้าใจและการยอมรับโดยสมัครใจต่อความเสี่ยงที่เกี่ยวข้องกับการใช้ {AppName} รวมถึงแต่ไม่จำกัดเพียง ความเสี่ยงในการสูญเสียโทเค็น โปรดอย่าดำเนินการต่อโดยไม่อ่าน {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "disclaimerTitle": "คำเตือน",
     "disconnectWalletText": "ตัดการเชื่อมต่อ",
     "doNotShowText": "อย่าแสดงสิ่งนี้อีก",
-    "dragAndDropText": "ลากและวางหรือเลือกไฟล์ __ph__0__",
+    "dragAndDropText": "ลากและวางหรือเลือกไฟล์ {extension}",
     "editText": "แก้ไข",
     "errorText": "ข้อผิดพลาด",
     "ethNetworkFeeTooltipText": "โปรดทราบว่าค่าธรรมเนียมเครือข่าย {network} ที่แสดงใน {AppName} เป็นเพียงการประมาณค่าคร่าวๆเท่านั้นคุณสามารถเห็นจำนวนค่าธรรมเนียมที่ถูกต้องในกระเป๋าเงิน {network} ที่เชื่อมต่อของคุณก่อนที่จะยืนยันการทำธุรกรรม",
-    "exceededAmountText": "__ph__0__ เกิน",
+    "exceededAmountText": "เกิน {amount} แล้ว",
     "exchange": {
-        "lossWarning": "คุณกำลังจะสูญเสีย __ph__0 __% ในการซื้อขายของคุณ เราตรวจพบปัญหาการจัดหาสภาพคล่องแล้ว สิ่งนี้อาจนำไปสู่การสูญเสียอย่างมีนัยสำคัญในระหว่างการแลกเปลี่ยนโทเค็น โปรดตรวจสอบให้แน่ใจว่ามีสภาพคล่องเพียงพอสำหรับคู่แลกเปลี่ยนที่คุณต้องการ",
+        "lossWarning": "คุณจะสูญเสีย {value}% จากการซื้อขายของคุณ เราตรวจพบปัญหาการจัดหาสภาพคล่อง สิ่งนี้อาจนำไปสู่การสูญเสียที่สำคัญระหว่างการแลกเปลี่ยนโทเค็น โปรดตรวจสอบให้แน่ใจว่ามีสภาพคล่องเพียงพอสำหรับคู่สวอปที่คุณต้องการ",
         "Pool": "สระน้ำ",
         "Swap": "แลกเปลี่ยน"
     },
     "expandText": "ขยาย",
     "explore": {
         "myPositions": "ตำแหน่งของฉัน",
-        "showOnly": "แสดงเฉพาะ __ph__0__",
+        "showOnly": "แสดงเฉพาะ {entities}",
         "synthetics": "โทเค็นสังเคราะห์"
     },
     "FAQ": "{AppName} คำถามที่พบบ่อย",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "โปรดทราบว่าค่าคำสั่งที่เกี่ยวข้องกับสกุลเงินดิจิทัลบนเว็บไซต์นี้จัดทำโดย Polkaswap Indexer และเป็นค่าโดยประมาณ เนื่องจากความซับซ้อนโดยธรรมชาติของการคำนวณเหล่านี้ จึงไม่สามารถรับประกันความแม่นยำสัมบูรณ์ตลอดเวลาได้",
     "fiatPayment": {
-        "cedeStoreBtn": "โอนจาก __ph__0__ ผ่าน __ph__1__",
-        "cedeStoreDesc": "ถ่ายโอนโทเค็นใด ๆ จาก __ph__0__ เป็น __ph__1__ ผ่าน __ph__2__",
-        "cedeStoreTitle": "โอนจาก __ph__0__",
+        "cedeStoreBtn": "โอนจาก {value1} ผ่าน {value2}",
+        "cedeStoreDesc": "โอนโทเค็นใด ๆ จาก {value1} ถึง {value2} ผ่าน {value3}",
+        "cedeStoreTitle": "โอนจาก {value}",
         "errorMessage": "ขออภัยในความไม่สะดวก เรากำลังทำงานอย่างขยันขันแข็งเพื่อแก้ไขปัญหานี้ กรุณาลองอีกครั้งในภายหลัง",
         "historyBtn": "การซื้อของฉัน",
         "historyTitle": "ประวัติการทำธุรกรรม",
@@ -580,7 +580,7 @@
     "firstText": "อันดับแรก",
     "footer": {
         "internet": {
-            "action": "รีเฟรช __ph__0__",
+            "action": "รีเฟรช {AppName}",
             "desc": {
                 "disabled": "ตัดการเชื่อมต่อ",
                 "stable": "ความเร็วที่เหมาะสมที่สุด",
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "ผู้ทำดัชนี",
                 "title": "{Sora} การเลือกบริการเครือข่าย",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "ใช้ Polkaswap Indexer สำหรับค่าคำสั่ง"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "บล็อกดัชนี Polkaswap #{block}",
             "label": "บริการสถิติ",
             "title": {
                 "available": "สถิติที่มีอยู่",
@@ -700,7 +700,7 @@
         }
     },
     "importText": "นำเข้า",
-    "insufficientBalanceText": "ความสมดุล __ph__0__ ไม่เพียงพอ",
+    "insufficientBalanceText": "ยอดคงเหลือ {tokenSymbol} ไม่เพียงพอ",
     "kensetsu": {
         "addCollateral": "เพิ่มหลักประกัน",
         "addCollateralDescription": "ฝากสินทรัพย์เพิ่มเติมไว้ในตำแหน่งของคุณเพื่อเพิ่มขีด จำกัด การกู้ยืมของคุณหรือเพื่อปรับปรุงอัตราส่วนสินเชื่อต่อมูลค่าของคุณ นอกจากนี้ยังสามารถช่วยป้องกันการชำระบัญชี",
@@ -736,13 +736,13 @@
         "interest": "ความสนใจ",
         "interestDescription": "ค่าธรรมเนียมรายปีที่เรียกเก็บจากจำนวนเงินที่ดึงมาจากตำแหน่งของคุณซึ่งคำนวณเป็นเปอร์เซ็นต์ ค่าธรรมเนียมนี้ชดเชยความเสี่ยงและความผันผวนของตลาด",
         "introDescription": "สัมผัสกับการกู้ยืมและการกู้ยืมที่ปลอดภัยและง่ายดาย เปิดตำแหน่งการกู้ยืมด้วยแพลตฟอร์ม {Kensetsu}",
-        "introTitle": "เปิดตำแหน่งยืมและรับ __ph__0__",
+        "introTitle": "เปิดตำแหน่งยืม & รับรายได้ด้วย {Kensetsu}",
         "liquidated": "ที่ชำระแล้ว",
-        "liquidatedMessage": "ชำระบัญชี __ph__0__ __ph__1__",
+        "liquidatedMessage": "ชำระบัญชีแล้ว {amount} {symbol}",
         "liquidationClose": "การชำระบัญชีปิด",
         "liquidationPenalty": "โทษการชำระบัญชี",
         "liquidationPenaltyDescription": "ค่าธรรมเนียมที่ใช้หากมูลค่าของหลักประกันของคุณต่ำกว่าเกณฑ์ที่กำหนดทำให้การขายสินทรัพย์ครอบคลุมหนี้ การลงโทษนี้จะเพิ่มหนี้ทั้งหมดของคุณ",
-        "ltv": "สินเชื่อเพื่อมูลค่า (__ph__0__)",
+        "ltv": "สินเชื่อต่อมูลค่า ({LTV})",
         "ltvDescription": "อัตราส่วนของจำนวนเงินที่ดึงไปยังมูลค่าของหลักประกันในตำแหน่งของคุณแสดงเป็นเปอร์เซ็นต์ {LTV} ที่สูงขึ้นจะเพิ่มผลตอบแทนที่อาจเกิดขึ้น แต่ยังมีความเสี่ยงรวมถึงโอกาสในการชำระบัญชี",
         "ltvMaxTooltip": "จำนวนสูงสุดของตำแหน่งการกู้ยืมที่สามารถให้ได้เกี่ยวกับมูลค่าการประเมินของสินทรัพย์ที่ใช้เป็นหลักประกัน",
         "maxAvailableToBorrow": "สูงสุด มีให้ยืม",
@@ -768,7 +768,7 @@
         "repayDebt": "ชำระหนี้",
         "repayDebtDescription": "คืนเงินที่ยืมมาเพื่อลดหนี้คงค้างของคุณ สิ่งนี้สามารถลดต้นทุนดอกเบี้ยและลดความเสี่ยงของการชำระบัญชี",
         "requiredAmountWithSlippage": "จำนวนเงินที่ต้องการรวมถึงการลื่นไถล",
-        "requiredAmountWithSlippageDescription": "สำหรับการปิดตำแหน่งที่ราบรื่นซื้อ {tokenSymbol} มากกว่า {amount} เล็กน้อยเนื่องจากการลื่นไถลที่เป็นไปได้ คุณต้องเพิ่มพิเศษเพื่อครอบคลุมการขาดแคลน สลับทรัพย์สินของคุณเป็น __ph__2__ เพื่อตอบสนองความต้องการนี้",
+        "requiredAmountWithSlippageDescription": "เพื่อการปิดสถานะที่ราบรื่น ให้ซื้อ {tokenSymbol} มากกว่า {amount} ที่ต้องการเล็กน้อยเนื่องจากการเลื่อนหลุดที่อาจเกิดขึ้น คุณต้องมีเงินเพิ่มเพื่อชดเชยการขาดแคลน สลับสินทรัพย์ของคุณเป็น {tokenSymbol} เพื่อตอบสนองความต้องการนี้",
         "status": {
             "Closed": "ปิด",
             "Liquidated": "ที่ชำระแล้ว",
@@ -814,7 +814,7 @@
     "minAmountText": "นาที จำนวน",
     "mobilePopup": {
         "header": "ดาวน์โหลด {Sora} Wallet พร้อมฟีเจอร์ {polkaswapHighlight}",
-        "info": "เปลี่ยนโทเค็นจากเครือข่ายที่แตกต่างกัน - __ph__0__, __ph__1__, __ph__2__, __ph__3__ จัดหากลุ่มสภาพคล่องและรับ % จากค่าธรรมเนียมการแลกเปลี่ยน",
+        "info": "สลับโทเค็นจากเครือข่ายที่แตกต่างกัน - {Sora}, {Ethereum}, {Polkadot}, {Kusama} จัดให้มีแหล่งรวมสภาพคล่องและรับ % จากค่าธรรมเนียมการแลกเปลี่ยน",
         "sideMenu": "รับ {Sora} Wallet"
     },
     "moonpay": {
@@ -834,7 +834,7 @@
         "notifications": {
             "accountAddressError": {
                 "text": "น่าเสียดายที่การทำธุรกรรมสะพาน {Hashi} ล้มเหลวเนื่องจากที่อยู่ผู้รับโทเค็นในคำสั่ง @:moonpayText ไม่ตรงกับที่อยู่บัญชี {Ethereum} ปัจจุบันของคุณ โปรดสลับบัญชี {Ethereum} ในส่วนขยายและลองอีกครั้ง",
-                "title": "ผิด __ph__0__ บัญชี"
+                "title": "ผิดบัญชี {Ethereum}"
             },
             "amountError": {
                 "text": "น่าเสียดายที่การทำธุรกรรมสะพาน {Hashi} ล้มเหลวเนื่องจากมีโทเค็นไม่เพียงพอสำหรับการทำธุรกรรม โปรดตรวจสอบยอดคงเหลือบัญชี {Ethereum} ของคุณแล้วลองอีกครั้ง",
@@ -845,15 +845,15 @@
                 "title": "ETH ไม่เพียงพอสำหรับ Bridge TX"
             },
             "success": {
-                "text": "การซื้อโทเค็นเสร็จสิ้น การทำธุรกรรมสะพาน {Hashi} จะเริ่มต้นโดยอัตโนมัติทันทีที่โทเค็นได้รับในบัญชี {Ethereum} ที่เชื่อมต่อ ปลอดภัยที่จะปิดหน้าต่างนี้และใช้ __ph__2__ ต่อไป จะมีการแจ้งเตือนเกี่ยวกับธุรกรรมบริดจ์เมื่อพร้อม",
+                "text": "การซื้อโทเค็นเสร็จสิ้นแล้ว ธุรกรรมบริดจ์ {Hashi} จะเริ่มต้นโดยอัตโนมัติทันทีที่ได้รับโทเค็นในบัญชี {Ethereum} ที่เชื่อมต่อ คุณสามารถปิดหน้าต่างนี้แล้วใช้ {AppName} ต่อไปได้อย่างปลอดภัย จะมีการแจ้งเตือนเกี่ยวกับการทำธุรกรรมบริดจ์เมื่อพร้อม",
                 "title": "ซื้อโทเค็น"
             },
             "supportError": {
-                "text": "น่าเสียดายที่โทเค็นที่ซื้อผ่าน @:moonpayText ยังไม่ได้รับการสนับสนุนโดยสะพาน {Hashi} ใน {AppName} โดยปกติเฉพาะโทเค็นที่ได้รับการสนับสนุนเท่านั้นที่จะซื้อผ่าน Moonpay ใน __ph__2__ ดังนั้นจึงต้องมีอะไรผิดพลาดไปที่ไหนสักแห่ง โปรดอย่าลังเลที่จะแจ้งให้ชุมชนทราบเกี่ยวกับกรณีนี้ใน <a class = \"link\" href = \"https://t.me/polkaswap\" target = \"_ blank\" rel = \"nofollow noopener\" title = \"__ ph__3 __\"> __ ph__4__",
+                "text": "น่าเสียดายที่โทเค็นที่ซื้อผ่าน @:moonpayText ยังไม่รองรับโดยบริดจ์ {Hashi} ใน {AppName} โดยปกติแล้ว เฉพาะโทเค็นที่รองรับเท่านั้นที่จะสามารถซื้อผ่าน MoonPay ได้ใน {AppName} ดังนั้น มีบางอย่างผิดพลาดเกิดขึ้น โปรดอย่าลังเลที่จะแจ้งให้ชุมชนทราบเกี่ยวกับกรณีนี้ใน <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} กลุ่มโทรเลข</a>",
                 "title": "โทเค็นไม่รองรับ"
             },
             "transactionError": {
-                "text": "น่าเสียดายที่การทำธุรกรรม @:moonpayText ล้มเหลว โปรดลองอีกครั้ง สำหรับการสนับสนุน __ph__1__ ไปที่ <a class = \"link\" href = \"https://support.moonpay.com\" target = \"_ blank\" rel = \"nofollow noopener\" title = \"__ph__2__\"> https://support.moonpay.com </a",
+                "text": "ขออภัย ดูเหมือนว่าธุรกรรม @:moonpayText ล้มเหลว โปรดลองอีกครั้ง สำหรับการสนับสนุน @:moonpayText ไปที่ <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>",
                 "title": "การทำธุรกรรมล้มเหลว"
             }
         },
@@ -919,7 +919,7 @@
     "node": {
         "errors": {
             "connection": "เกิดข้อผิดพลาดขณะเชื่อมต่อกับโหนด\n{address}",
-            "existing": "โหนดนี้เพิ่มแล้ว: __ph__0__",
+            "existing": "โหนดนี้ถูกเพิ่มแล้ว: {title}",
             "network": "โหนด\n{address}\n มาจากเครือข่ายอื่น"
         },
         "messages": {
@@ -949,100 +949,100 @@
         "DemeterFarmingWithdrawLiquidity": "ไม่มีสภาพคล่อง",
         "DepositCollateral": "ตำแหน่งเงินฝาก",
         "error": {
-            "AddLiquidity": "ล้มเหลวในการจัดหา __ph__0__ __ph__1__ และ __ph__2__ __ph__3__",
-            "BindRegulatedAsset": "ไม่สามารถผูกสินทรัพย์ __ph__0__ กับ SBT __ph__1__",
-            "BorrowVaultDebt": "ล้มเหลวในการยืม __ph__0__ __ph__1__",
-            "Burn": "เผาไม่ได้ __ph__0__ __ph__1__",
-            "ClaimRewards": "ไม่สามารถเรียกร้องรางวัลได้ __ph__0__",
-            "CloseVault": "ล้มเหลวในการปิดตำแหน่ง __ph__0 __/__ ph__1__",
-            "CreatePair": "ล้มเหลวในการจัดหา __ph__0__ __ph__1__ และ __ph__2__ __ph__3__",
-            "CreateVault": "ไม่สามารถสร้างตำแหน่ง __ph__0 __/__ ph__1__",
-            "DemeterFarmingDepositLiquidity": "ล้มเหลวในการจัดหา __ph__0__ __ph__1__ และ __ph__2__ LP โทเค็น",
-            "DemeterFarmingGetRewards": "ล้มเหลวในการเรียกร้อง __ph__0__",
-            "DemeterFarmingStakeToken": "ไม่สามารถเพิ่ม __ph__0__ __ph__1__",
-            "DemeterFarmingUnstakeToken": "ไม่สามารถลบ __ph__0__ __ph__1__ ได้",
-            "DemeterFarmingWithdrawLiquidity": "ไม่สามารถลบ __ph__0__ __ph__1__ และ __ph__2__ LP โทเค็น",
-            "DepositCollateral": "เงินฝากไม่ได้ __ph__0__ __ph__1__",
-            "EthBridgeIncoming": "ไม่สามารถถ่ายโอน __ph__0__ __ph__1__ จาก __ph__2__ ไป __ph__3__ จาก __ph__2__",
-            "EthBridgeOutgoing": "ไม่สามารถถ่ายโอน __ph__0__ __ph__1__ จาก __ph__2__ ไป __ph__3__ จาก __ph__2__",
-            "IssueSoulBoundToken": "ล้มเหลวในการออกโทเค็น Soulbound __ph__0__",
-            "Mint": "ล้มเหลวในการมินต์ __ph__0__ __ph__1__ ถึง __ph__2__",
+            "AddLiquidity": "ไม่สามารถจัดหา {amount} {symbol} และ {amount2} {symbol2}",
+            "BindRegulatedAsset": "ไม่สามารถผูกเนื้อหา {symbol} กับ SBT {symbol2}",
+            "BorrowVaultDebt": "ยืมไม่สำเร็จ {amount} {symbol}",
+            "Burn": "ล้มเหลวในการเขียน {amount} {symbol}",
+            "ClaimRewards": "ไม่สามารถรับรางวัล {rewards}",
+            "CloseVault": "ไม่สามารถปิดตำแหน่ง {symbol}/{symbol2}",
+            "CreatePair": "ไม่สามารถจัดหา {amount} {symbol} และ {amount2} {symbol2}",
+            "CreateVault": "ไม่สามารถสร้างตำแหน่ง {symbol}/{symbol2}",
+            "DemeterFarmingDepositLiquidity": "ไม่สามารถจัดหาโทเค็น {amount} {symbol} และ {symbol2} LP",
+            "DemeterFarmingGetRewards": "ไม่สามารถอ้างสิทธิ์ {symbol}",
+            "DemeterFarmingStakeToken": "ไม่สามารถเพิ่ม {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "ไม่สามารถลบ {amount} {symbol}",
+            "DemeterFarmingWithdrawLiquidity": "ไม่สามารถลบโทเค็น {amount} {symbol} และ {symbol2} LP",
+            "DepositCollateral": "ไม่สามารถฝากเงิน {amount} {symbol}",
+            "EthBridgeIncoming": "ไม่สามารถถ่ายโอน {amount} {symbol} จาก {Ethereum} ถึง {Sora}",
+            "EthBridgeOutgoing": "ไม่สามารถถ่ายโอน {amount} {symbol} จาก {Sora} ถึง {Ethereum}",
+            "IssueSoulBoundToken": "ไม่สามารถออกโทเค็น Soulbound {symbol}",
+            "Mint": "ล้มเหลวในการสร้าง {amount} {symbol} ถึง {address}",
             "OrderBookCancelLimitOrder": "ล้มเหลวในการยกเลิกคำสั่ง จำกัด",
             "OrderBookCancelLimitOrders": "ไม่สามารถยกเลิกคำสั่งซื้อ จำกัด ได้",
-            "OrderBookPlaceLimitOrder": "ล้มเหลวในการวางลำดับขีด จำกัด ของ __ph__0__ __ph__1__ ที่ __ph__2__ __ph__3__",
-            "ReferralReserveXor": "ไม่สามารถผูกมัด __ph__0__ xor",
-            "ReferralSetInvitedUser": "ล้มเหลวในการตั้งค่า __ph__0__ __ph__1__",
-            "ReferralUnreserveXor": "ไม่สามารถยกเว้น __ph__0__ xor",
-            "RegisterAndRegulateAsset": "ไม่สามารถลงทะเบียนและควบคุม __ph__0__",
-            "RegisterAsset": "ไม่สามารถลงทะเบียนสินทรัพย์ __ph__0__",
-            "RegulateAsset": "ไม่สามารถควบคุมสินทรัพย์ __ph__0__",
-            "RemoveLiquidity": "ล้มเหลวในการลบ __ph__0__ __ph__1__ และ __ph__2__ __ph__3__",
-            "RepayVaultDebt": "ไม่สามารถชำระคืนได้ __ph__0__ __ph__1__",
-            "SetAccessExpiration": "ไม่สามารถอัปเดตการหมดอายุเป็น __ph__0__ สำหรับ __ph__1__",
-            "StakingBond": "ล้มเหลวในการผูกมัด __ph__0__ __ph__1__",
-            "StakingBondAndNominate": "ล้มเหลวในการผูกมัด __ph__0__ __ph__1__",
-            "StakingBondExtra": "ล้มเหลวในการผูกมัดพิเศษ __ph__0__ __ph__1__",
+            "OrderBookPlaceLimitOrder": "ไม่สามารถวางลำดับจำกัดของ {amount} {symbol} ที่ {price} {symbol2}",
+            "ReferralReserveXor": "ไม่สามารถผูกมัด {amount} XOR",
+            "ReferralSetInvitedUser": "ไม่สามารถตั้งค่า {role} {address}",
+            "ReferralUnreserveXor": "ไม่สามารถยกเลิกการเชื่อมโยง {amount} XOR",
+            "RegisterAndRegulateAsset": "ไม่สามารถลงทะเบียนและควบคุม {symbol}",
+            "RegisterAsset": "ไม่สามารถลงทะเบียนสินทรัพย์ {symbol}",
+            "RegulateAsset": "ไม่สามารถควบคุมสินทรัพย์ {symbol}",
+            "RemoveLiquidity": "ไม่สามารถลบ {amount} {symbol} และ {amount2} {symbol2}",
+            "RepayVaultDebt": "ล้มเหลวในการชำระคืน {amount} {symbol}",
+            "SetAccessExpiration": "ไม่สามารถอัปเดตการหมดอายุเป็น {to} สำหรับ {symbol}",
+            "StakingBond": "ไม่สามารถเชื่อม {amount} {symbol}",
+            "StakingBondAndNominate": "ไม่สามารถเชื่อม {amount} {symbol}",
+            "StakingBondExtra": "ล้มเหลวในการผูกมัดพิเศษ {amount} {symbol}",
             "StakingChill": "ล้มเหลวในการทำใจให้สบาย",
             "StakingNominate": "ล้มเหลวในการเสนอชื่อผู้ตรวจสอบ",
             "StakingPayout": "รางวัลไม่สามารถจ่ายเงินได้",
-            "StakingRebond": "ล้มเหลวในการ rebond __ph__0__ __ph__1__",
-            "StakingSetController": "ไม่สามารถตั้งค่าคอนโทรลเลอร์ __ph__0__",
-            "StakingSetPayee": "ไม่สามารถตั้งค่าผู้รับเงินได้ __ph__0__",
-            "StakingUnbond": "ไม่สามารถยกเว้น __ph__0__ __ph__1__",
-            "StakingWithdrawUnbonded": "ถอนตัวไม่ได้ __ph__0__ __ph__1__",
-            "Swap": "ล้มเหลวในการแลกเปลี่ยน __ph__0__ __ph__1__ สำหรับ __ph__2__ __ph__3__",
-            "SwapAndSend": "ล้มเหลวในการแลกเปลี่ยน __ph__0__ __ph__1__ สำหรับ __ph__2__ __ph__3__ และ __ph__4__ __ph__5__ __ph__6__",
-            "SwapTransferBatch": "ล้มเหลวในการ __ph__0__ __ph__1__ __ph__2__",
-            "Transfer": "ล้มเหลวในการ __ph__0__ {amount} {symbol} {direction} {address}",
-            "VestedTransfer": "ล้มเหลวในการ __ph__0__ {amount} {symbol} {direction} {address}",
-            "XorlessTransfer": "ไม่สามารถส่ง __ph__0__ __ph__1__ ถึง __ph__2__"
+            "StakingRebond": "ไม่สามารถเชื่อมต่อใหม่ {amount} {symbol}",
+            "StakingSetController": "ไม่สามารถตั้งค่าคอนโทรลเลอร์ {address}",
+            "StakingSetPayee": "ไม่สามารถตั้งค่าผู้รับเงิน {address}",
+            "StakingUnbond": "ไม่สามารถยกเลิกการผูกมัด {amount} {symbol}",
+            "StakingWithdrawUnbonded": "ไม่สามารถถอนออก {amount} {symbol}",
+            "Swap": "ไม่สามารถสลับ {amount} {symbol} สำหรับ {amount2} {symbol2}",
+            "SwapAndSend": "ไม่สามารถสลับ {amount} {symbol} สำหรับ {amount2} {symbol2} และ {action} {direction} {address}",
+            "SwapTransferBatch": "ล้มเหลวในการ {action} {amount} {symbol}",
+            "Transfer": "ล้มเหลวในการ {action} {amount} {symbol} {direction} {address}",
+            "VestedTransfer": "ล้มเหลวในการ {action} {amount} {symbol} {direction} {address}",
+            "XorlessTransfer": "ไม่สามารถส่ง {amount} {symbol} ไปยัง {address}"
         },
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
         "finalized": {
-            "AddLiquidity": "จัดหา __ph__0__ __ph__1__ และ __ph__2__ __ph__3__",
-            "BindRegulatedAsset": "ผูกสินทรัพย์ __ph__0__ กับ SBT",
-            "BorrowVaultDebt": "ยืม __ph__0__ __ph__1__",
-            "Burn": "เผา __ph__0__ __ph__1__",
-            "ClaimRewards": "รางวัลที่อ้างว่าประสบความสำเร็จ __ph__0__",
-            "CloseVault": "__PH__0 __/__ pH__1__ ตำแหน่งปิดตำแหน่ง",
-            "CreatePair": "จัดหา __ph__0__ __ph__1__ และ __ph__2__ __ph__3__",
-            "CreateVault": "__PH__0 __/__ pH__1__ ตำแหน่งที่สร้างขึ้น",
-            "DemeterFarmingDepositLiquidity": "จัดหา __ph__0__ และ __ph__1__ __ph__2__ LP โทเค็น",
-            "DemeterFarmingGetRewards": "__ph__0__ __ph__1__ อ้างว่าประสบความสำเร็จ",
-            "DemeterFarmingStakeToken": "เพิ่ม __ph__0__ __ph__1__",
-            "DemeterFarmingUnstakeToken": "ลบ __ph__0__ __ph__1__",
-            "DemeterFarmingWithdrawLiquidity": "ลบ __ph__0__ และ __ph__1__ __ph__2__ lp โทเค็น",
-            "DepositCollateral": "ฝาก __ph__0__ __ph__1__",
-            "EthBridgeIncoming": "ถ่ายโอน __ph__0__ __ph__1__ จาก __ph__2__ เป็น __ph__3__",
-            "EthBridgeOutgoing": "ถ่ายโอน __ph__0__ __ph__1__ จาก __ph__2__ เป็น __ph__3__",
-            "IssueSoulBoundToken": "ออกโทเค็น Soulbound __ph__0__",
-            "Mint": "minted __ph__0__ __ph__1__ ถึง __ph__2__",
+            "AddLiquidity": "มีมาให้ {amount} {symbol} และ {amount2} {symbol2}",
+            "BindRegulatedAsset": "ผูกสินทรัพย์ {symbol2} กับ SBT",
+            "BorrowVaultDebt": "ยืมมา {amount} {symbol}",
+            "Burn": "เผา {amount} {symbol}",
+            "ClaimRewards": "รับรางวัลสำเร็จ {rewards}",
+            "CloseVault": "{symbol}/{symbol2} ปิดสถานะแล้ว",
+            "CreatePair": "มีมาให้ {amount} {symbol} และ {amount2} {symbol2}",
+            "CreateVault": "{symbol}/{symbol2} สร้างตำแหน่งแล้ว",
+            "DemeterFarmingDepositLiquidity": "มีโทเค็น LP {symbol} และ {symbol2} {amount}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} อ้างสิทธิ์สำเร็จแล้ว",
+            "DemeterFarmingStakeToken": "เพิ่ม {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "ลบ {amount} {symbol} แล้ว",
+            "DemeterFarmingWithdrawLiquidity": "ลบโทเค็น {symbol} และ {symbol2} {amount} ออก",
+            "DepositCollateral": "ฝากแล้ว {amount} {symbol}",
+            "EthBridgeIncoming": "โอน {amount} {symbol} จาก {Ethereum} เป็น {Sora}",
+            "EthBridgeOutgoing": "โอน {amount} {symbol} จาก {Sora} เป็น {Ethereum}",
+            "IssueSoulBoundToken": "ออกโทเค็น Soulbound {symbol}",
+            "Mint": "สร้างเสร็จ {amount} {symbol} ถึง {address}",
             "OrderBookCancelLimitOrder": "ยกเลิกคำสั่งซื้อ จำกัด",
             "OrderBookCancelLimitOrders": "จำกัด คำสั่งซื้อ",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ที่ {price} {symbol2}",
-            "ReferralReserveXor": "ถูกผูกมัด __ph__0__ xor",
+            "ReferralReserveXor": "ผูกมัด {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ได้รับการตั้งค่าให้สำเร็จ",
-            "ReferralUnreserveXor": "__ -ph__0__ xor ที่ไม่ได้รับการไว้วางใจ",
-            "RegisterAndRegulateAsset": "ลงทะเบียนและควบคุมสินทรัพย์ __ph__0__",
+            "ReferralUnreserveXor": "ไม่ถูกผูกมัด {amount} XOR",
+            "RegisterAndRegulateAsset": "ลงทะเบียนและควบคุมสินทรัพย์ {symbol}",
             "RegisterAsset": "ลงทะเบียน {symbol} สินทรัพย์",
-            "RegulateAsset": "ควบคุมสินทรัพย์ __ph__0__",
-            "RemoveLiquidity": "ลบ __ph__0__ __ph__1__ และ __ph__2__ __ph__3__",
-            "RepayVaultDebt": "ชำระคืน __ph__0__ __ph__1__",
-            "SetAccessExpiration": "โทเค็น SB __ph__0__ อัปเดตการหมดอายุเป็น __ph__1__",
-            "StakingBond": "ผูกมัด __ph__0__ __ph__1__",
-            "StakingBondAndNominate": "ผูกมัด __ph__0__ __ph__1__",
-            "StakingBondExtra": "ผูกมัดพิเศษ __ph__0__ __ph__1__",
+            "RegulateAsset": "ควบคุมสินทรัพย์ {symbol}",
+            "RemoveLiquidity": "ลบ {amount} {symbol} และ {amount2} {symbol2} ออกแล้ว",
+            "RepayVaultDebt": "ชำระแล้ว {amount} {symbol}",
+            "SetAccessExpiration": "โทเค็น SB {symbol} อัปเดตการหมดอายุเป็น {endTime}",
+            "StakingBond": "ผูกมัด {amount} {symbol}",
+            "StakingBondAndNominate": "ผูกมัด {amount} {symbol}",
+            "StakingBondExtra": "ผูกมัดพิเศษ {amount} {symbol}",
             "StakingChill": "เย็น",
             "StakingNominate": "ผู้ตรวจสอบที่ได้รับการเสนอชื่อ",
             "StakingPayout": "รางวัลการจ่ายเงิน",
-            "StakingRebond": "rebonded __ph__0__ __ph__1__",
-            "StakingSetController": "ตั้งค่าคอนโทรลเลอร์ __ph__0__",
-            "StakingSetPayee": "ตั้งค่าผู้รับเงิน __ph__0__",
-            "StakingUnbond": "__ -ph__0__ __ph__0__ {symbol}",
-            "StakingWithdrawUnbonded": "ถอนออก __ph__0__ __ph__1__",
-            "Swap": "swapped __ph__0__ __ph__1__ สำหรับ __ph__2__ __ph__3__",
-            "SwapAndSend": "swapped __ph__0__ __ph__1__ สำหรับ __ph__2__ __ph__3__ และ __ph__4__ {direction} __ph__6__",
+            "StakingRebond": "รีบอนด์ {amount} {symbol}",
+            "StakingSetController": "ตั้งค่าคอนโทรลเลอร์ {address}",
+            "StakingSetPayee": "ตั้งค่าผู้รับเงิน {address}",
+            "StakingUnbond": "ไม่ถูกผูกมัด {amount} {symbol}",
+            "StakingWithdrawUnbonded": "ถอนออก {amount} {symbol}",
+            "Swap": "สลับ {amount} {symbol} เป็น {amount2} {symbol2}",
+            "SwapAndSend": "สลับ {amount} {symbol} เป็น {amount2} {symbol2} และ {action} {direction} {address}",
             "SwapTransferBatch": "{action} {amount} {symbol}",
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
@@ -1054,7 +1054,7 @@
         "OrderBookCancelLimitOrders": "ยกเลิกคำสั่งซื้อ",
         "OrderBookPlaceLimitOrder": "สั่งซื้อ",
         "ReferralReserveXor": "พันธบัตร XOR",
-        "ReferralSetInvitedUser": "ตั้งค่า __ph__0__",
+        "ReferralSetInvitedUser": "ตั้ง {role}",
         "ReferralUnreserveXor": "ไม่มี xor",
         "RegisterAndRegulateAsset": "ลงทะเบียนสินทรัพย์",
         "RegisterAsset": "ลงทะเบียนสินทรัพย์",
@@ -1092,18 +1092,18 @@
             "inactive": "ไม่ทำงาน",
             "placeable": "ซึ่งวางได้"
         },
-        "Buy": "ซื้อ __ph__0__",
+        "Buy": "ซื้อ {asset}",
         "cantPlaceOrder": "ไม่สามารถสั่งซื้อได้",
         "change": "เปลี่ยน",
         "dayVolume": "ปริมาตร 1d",
         "dialog": {
             "askCancel": "แน่ใจหรือว่าต้องการยกเลิกคำสั่งซื้อแบบเปิดทั้งหมดของคุณ?",
-            "at": "ที่ __ph__0__ __ph__1__",
-            "buy": "ซื้อ __ph__0__ __ph__1__",
+            "at": "ที่ {price} {symbol}",
+            "buy": "ซื้อ {amount} {symbol}",
             "cancelAll": "ใช่ยกเลิกทั้งหมด",
             "placeLimit": "วางคำสั่ง จำกัด",
             "placeMarket": "วางคำสั่งซื้อของตลาด",
-            "sell": "ขาย __ph__0__ __ph__1__"
+            "sell": "ขาย {amount} {symbol}"
         },
         "enterAmount": "ป้อนจำนวนเงิน",
         "error": {
@@ -1124,11 +1124,11 @@
                 "reason": "คำสั่งซื้อไม่เพียงพอที่จะเติมเต็มคำสั่งนี้"
             },
             "multipleOf": {
-                "reading": "ในการประมวลผลคำสั่งซื้อของคุณโปรดป้อนราคาที่เป็นหลาย __ph__0__",
+                "reading": "เพื่อประมวลผลคำสั่งซื้อของคุณ โปรดป้อนราคาที่เป็นจำนวนเท่าของ {value}",
                 "reason": "ราคาที่ป้อนนั้นเฉพาะเจาะจงเกินไป"
             },
             "outOfBounds": {
-                "reading": "เกินช่วง blockchain: จำนวนเงินที่คุณป้อนอยู่นอกช่วงที่อนุญาตของ blockchain ขั้นต่ำ: __ph__0__; สูงสุด: __ph__1__",
+                "reading": "เกินช่วงบล็อคเชน: จำนวนเงินที่คุณป้อนอยู่นอกช่วงที่อนุญาตของบล็อคเชน ต่ำสุด: {min}; สูงสุด: {max}",
                 "reason": "จำนวนเงินล้มเหลวในการปฏิบัติตามช่วง blockchain"
             },
             "singlePriceLimit": {
@@ -1141,10 +1141,10 @@
             }
         },
         "history": {
-            "cancel": "ยกเลิกคำสั่งซื้อ __ph__0__",
+            "cancel": "ยกเลิกคำสั่งซื้อ {value}",
             "cancelAll": "ยกเลิกทั้งหมด",
             "connect": "เชื่อมต่อบัญชีเพื่อเริ่มการซื้อขาย",
-            "openOrders": "เปิดคำสั่งซื้อ __ph__0__",
+            "openOrders": "เปิดออเดอร์ {value}",
             "orderHistory": "ประวัติความเป็นมา",
             "tradeHistory": "ประวัติการค้า"
         },
@@ -1167,7 +1167,7 @@
             "side": "ด้านข้าง",
             "time": "เวลา"
         },
-        "Sell": "ขาย __ph__0__",
+        "Sell": "ขาย {asset}",
         "setPrice": "กำหนดราคา",
         "stop": "หนังสือหยุด",
         "time": "เวลา",
@@ -1281,7 +1281,7 @@
             "titleTask": "ใช้จ่าย XOR กับค่าธรรมเนียมเครือข่าย"
         },
         "nextLvl": "LVL ถัดไป",
-        "openTelegram": "เปิด __ph__0__",
+        "openTelegram": "เปิด {Telegram}",
         "orderbookVolume": {
             "descriptionTask": "สร้างคำสั่งซื้อขีด จำกัด ในสมุดสั่งซื้อ",
             "titleProgress": "สมุดสั่งซื้อ",
@@ -1293,15 +1293,15 @@
             "titleProgress": "Sytem ผู้อ้างอิง",
             "titleTask": "อ้างอิงบัญชี"
         },
-        "relatedTasks": "ทำภารกิจที่เกี่ยวข้องกับ __PH__0 __- เพื่อยกระดับทักษะของคุณ",
+        "relatedTasks": "ทำภารกิจที่เกี่ยวข้องกับ {title} ให้สำเร็จเพื่อยกระดับทักษะของคุณ",
         "rewardNextLvl": "รางวัลระดับถัดไป",
         "soraCard": "สมัครเลย",
         "title": "คะแนนของคุณ",
         "toEarnPoints": "เพื่อรับคะแนน",
         "tokenHold": {
-            "descriptionTask": "ถือโฮลดิ้ง __ph__0__ ปัจจุบันของคุณ",
+            "descriptionTask": "ถือครอง {token} ปัจจุบันของคุณ",
             "titleProgress": "{token} ถือครอง",
-            "titleTask": "ถือ __ph__0__"
+            "titleTask": "กดค้าง {token}"
         },
         "VXORHoldings": {
             "descriptionTask": "ถือ VXOR Holdings ปัจจุบันของคุณ",
@@ -1325,7 +1325,7 @@
         "yourTasks": "งานของคุณ"
     },
     "polkadotjs": {
-        "connectionError": "เกิดข้อผิดพลาดในขณะที่เชื่อมต่อกระเป๋าเงิน คุณสามารถลองเชื่อมต่อกระเป๋าเงินผ่าน __ph__0__ อีกครั้ง",
+        "connectionError": "เกิดข้อผิดพลาดขณะเชื่อมต่อกระเป๋าเงิน คุณสามารถลองเชื่อมต่อกระเป๋าเงินผ่าน {extension} อีกครั้ง",
         "noAccount": "{extension} ข้อผิดพลาดบัญชี โปรดตรวจสอบบัญชีของคุณในส่วนขยาย {extension}",
         "noExtension": "ไม่พบส่วนขยาย {extension} โปรดติดตั้งและโหลดหน้านี้ใหม่",
         "noExtensions": "ไม่พบส่วนขยาย {PolkadotJs} โปรดติดตั้งและโหลดหน้านี้ใหม่\nhttps://polkadot.js.org/extension/",
@@ -1373,26 +1373,26 @@
             "hasReferrerDescription": "น่าเสียดายที่คุณสามารถตั้งค่าได้เท่านั้น",
             "hasReferrerTitle": "คุณได้ตั้งค่าผู้อ้างอิงแล้ว",
             "inviteDescription": "สำหรับการทำธุรกรรมทุกครั้ง 10% ของค่าธรรมเนียมจะไปที่ผู้อ้างอิงของคุณโดยไม่มีค่าใช้จ่ายเพิ่มเติมสำหรับคุณ",
-            "inviteTitle": "คุณได้รับเชิญให้ __ph__0__",
+            "inviteTitle": "คุณได้รับเชิญให้ไปที่ {AppName}",
             "ok": "ตกลง",
             "signInvitation": "อนุมัติ",
             "unbond": "ยืนยันว่าไม่มีใคร"
         },
         "connectAccount": "ในการเชิญผู้ใช้คุณต้องเชื่อมต่อบัญชี {Sora} ของคุณ",
-        "insufficientBondedAmount": "เพื่อเชิญผู้อ้างอิงมากขึ้นพันธบัตรอย่างน้อย __ph__0__ XOR",
+        "insufficientBondedAmount": "หากต้องการเชิญผู้อ้างอิงเพิ่มเติม ให้ผูกมัดอย่างน้อย {inviteUserFee} XOR",
         "insufficientBondedBalance": "ความสมดุลที่ถูกผูกมัดไม่เพียงพอ",
         "invitationLink": "ลิงค์คำเชิญ",
-        "inviteViaTelegram": "เชิญผ่าน __ph__0__",
+        "inviteViaTelegram": "เชิญทาง {Telegram}",
         "receivedRewards": "ได้รับรางวัล",
         "referralsNumber": "{number} การอ้างอิง",
         "referrer": {
             "approve": "อนุมัติ",
             "approved": "ที่ได้รับการอนุมัติ",
-            "description": "คุณสามารถอ้างถึง __ph__0__, <br/> พิมพ์ในลิงค์หรือรหัสของผู้อ้างอิง",
+            "description": "คุณสามารถรับการอ้างอิง {AppName},<br/> พิมพ์ในลิงก์หรือรหัสของผู้อ้างอิง",
             "info": "เมื่อคุณจ่ายค่าธรรมเนียมสำหรับการทำธุรกรรม <br/> 10% จะไปที่ผู้อ้างอิงของคุณ",
             "label": "ลิงค์คำเชิญหรือรหัส",
             "placeholder": "ป้อนลิงค์คำเชิญหรือรหัส",
-            "referredBy": "คุณได้รับการอ้างอิงโดย __ph__0__",
+            "referredBy": "คุณได้รับการแนะนำโดย {referrer}",
             "referredLablel": "ที่อยู่ที่อ้างถึง",
             "title": "เพิ่มผู้อ้างอิงของคุณ",
             "titleReferrer": "ผู้อ้างอิงของคุณ"
@@ -1400,7 +1400,7 @@
         "startInviting": "Bond Xor เพื่ออ้างอิงผู้อื่น",
         "title": "โปรแกรมการอ้างอิง",
         "unbondTitle": "ไม่มี xor",
-        "welcomeMessage": "เข้าร่วมกับฉันที่ __ph__0__!\n\nค้นพบ {DEX} ที่มีสไตล์ที่ช่วยให้คุณเปลี่ยนโทเค็นหลายสิบโทด้วยการแลกเปลี่ยนข้ามสายโซ่หนังสือสั่งซื้อและรางวัลมากมาย!\n\n🎁เชิญเพื่อนและรับ 10% ของค่าธรรมเนียมการซื้อขาย\n\nแล้วเจอกัน!"
+        "welcomeMessage": "เข้าร่วมกับฉันที่ {AppName}!\n\nค้นพบ {DEX} สุดเก๋ที่ให้คุณแลกเปลี่ยนโทเค็นได้หลายสิบรายการด้วยการแลกเปลี่ยนข้ามสายโซ่ การจองคำสั่งซื้อ และรางวัลมากมาย!\n\n🎁 เชิญเพื่อนและรับ 10% ของค่าธรรมเนียมการซื้อขายของพวกเขา\n\nแล้วเจอกัน!"
     },
     "releaseNotesText": "บันทึกย่อ",
     "removeLiquidity": {
@@ -1411,7 +1411,7 @@
         "liquidity": "สภาพคล่อง",
         "locked": "{percent} สระว่ายน้ำของคุณอยู่ใน {lock}",
         "output": "เอาท์พุท",
-        "outputMessage": "ผลผลิตถูกประเมิน หากราคาเปลี่ยนแปลงมากกว่า __PH__0 __% การทำธุรกรรมของคุณจะเปลี่ยนกลับ",
+        "outputMessage": "มีการประเมินผลผลิต หากราคาเปลี่ยนแปลงมากกว่า {slippageTolerance}% ธุรกรรมของคุณจะกลับมา",
         "remove": "ลบ",
         "shareOfPool": "ส่วนแบ่งพูลหลังการทำธุรกรรม",
         "title": "กำจัดสภาพคล่อง"
@@ -1451,7 +1451,7 @@
             "connectAccounts": "ในการรับรางวัล PSWAP และ VAL ของคุณคุณต้องเชื่อมต่อทั้งบัญชี {Sora} และ {Ethereum} ของคุณ",
             "connectAnotherAccount": "เชื่อมต่อบัญชี {Ethereum} อื่นเพื่อตรวจสอบรางวัล PSWAP และ VAL ที่มีอยู่",
             "connectExternalAccount": "เชื่อมต่อบัญชี {Ethereum} เพื่อตรวจสอบรางวัล PSWAP และ VAL ที่มีอยู่",
-            "howToClaimRewards": "ในการเรียกร้องรางวัล __ph__0__ ของคุณคุณต้องลงนาม __ph__1__ __ph__2__ ใน __ph__3__ รางวัลจะถูกฝากเข้าบัญชี {Sora} ของคุณ"
+            "howToClaimRewards": "หากต้องการรับรางวัล {symbols} คุณต้องลงชื่อ {count} {transactions} ใน {destination} รางวัลจะถูกฝากเข้าบัญชี {Sora} ของคุณ"
         },
         "notification": {
             "empty": "ไม่มีการอ้างสิทธิ์สำหรับบัญชีนี้"
@@ -1496,28 +1496,28 @@
         "regulatedInsitution": "สถาบันที่มีการควบคุม"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "จำนวน",
+        "assetLabel": "สัญลักษณ์สินทรัพย์",
+        "clearPayload": "ฟอร์มใส",
+        "copyPayload": "คัดลอกเพย์โหลด",
+        "destinationAddressLabel": "ที่อยู่ผู้รับ",
+        "destinationNetworkLabel": "เพื่อสร้างเครือข่าย",
+        "emptyPayloadHelp": "ตั้งค่าฟิลด์แบบฟอร์มเพื่อสร้างเพย์โหลด SCCP ที่พร้อมส่ง",
+        "generatePayload": "สร้างเพย์โหลด SCCP",
+        "noteLabel": "บันทึกเพิ่มเติม",
+        "payloadCopied": "คัดลอกเพย์โหลดแล้ว",
+        "payloadCopyFailed": "การคัดลอกล้มเหลว โปรดลองอีกครั้ง",
+        "payloadLabel": "บรรทุกที่เตรียมไว้",
+        "sourceNetworkLabel": "จากเครือข่าย",
+        "subtitle": "ตัวช่วยถ่ายโอน Secure Cross-Chain Protocol (SCCP) สำหรับ BSC, Ethereum และ TRON",
+        "supportedNetworks": "โซ่ที่รองรับ: {chains}",
         "title": "SCCP"
     },
     "searchText": "ค้นหา",
     "selectLanguageDialog": {
         "title": "ภาษา"
     },
-    "selectNodeConnected": "เชื่อมต่อกับ: __ph__0__",
+    "selectNodeConnected": "เชื่อมต่อกับ: {chain}",
     "selectNodeDialog": {
         "addNode": "เพิ่มโหนดที่กำหนดเอง",
         "connected": "ซึ่งเชื่อมต่อกัน",
@@ -1643,8 +1643,8 @@
             "recommended": "ผู้ตรวจสอบที่แนะนำ",
             "save": "บันทึกการเปลี่ยนแปลง",
             "select": "เลือกผู้ตรวจสอบ",
-            "selected": "__PH__0 __/__ pH__1__ เลือก",
-            "tooManyValidators": "เลือกผู้ตรวจสอบมากเกินไป (__ph__0__ __ph__1__)"
+            "selected": "{selected}/{total} เลือกอยู่",
+            "tooManyValidators": "เลือกเครื่องมือตรวจสอบความถูกต้องมากเกินไป ({Max} {max})"
         },
         "validatorsAttentionDialog": {
             "confirm": "ใช่ฉันเข้าใจความเสี่ยง",
@@ -1671,7 +1671,7 @@
                     "name": "ตัวตนบนห่วงโซ่"
                 },
                 "notOversubscribed": {
-                    "description": "บัญชีภายในวงเงินการจัดสรรหลีกเลี่ยงบทลงโทษแบบ oversubscription ในการปักหลัก __ph__0__",
+                    "description": "บัญชีอยู่ในขีดจำกัดการจัดสรร หลีกเลี่ยงการลงโทษการสมัครสมาชิกเกินจากการเดิมพัน {Polkadot}",
                     "name": "ไม่ได้ใช้งานมากเกินไป"
                 },
                 "notSlashed": {
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "คุณไม่มีผู้ตรวจสอบที่ได้รับการเสนอชื่อ",
             "noValidators": "ไม่มีตัวตรวจสอบที่ตอบสนองตัวกรองที่ระบุ",
             "return": "กลับ",
-            "search": "ค้นหา..."
+            "search": "ค้นหา...",
+            "staked": "เดิมพัน",
+            "stakedTooltip": "XOR ทั้งหมดที่วางเดิมพันกับเครื่องมือตรวจสอบความถูกต้องนี้ รวมถึงสัดส่วนการเดิมพันของผู้ตรวจสอบเองและสัดส่วนการถือหุ้นที่ได้รับการเสนอชื่อ"
         },
         "withdraw": {
             "beingWithdrawn": "ถูกถอนออก",
@@ -1747,13 +1749,13 @@
         "amount2": "@:amountText 2",
         "blockId": "บล็อก ID",
         "comment": "การแสดงความคิดเห็น",
-        "copy": "คัดลอก __ph__0__",
+        "copy": "คัดลอก {value}",
         "fee": "ค่าธรรมเนียมการทำธุรกรรม",
         "from": "จาก",
         "history": {
             "confirmed": "ได้รับการยืนยันการทำธุรกรรม",
-            "created": "ธุรกรรมสำหรับ __ph__0__ __ph__1__ ได้ถูกสร้างขึ้น",
-            "submitted": "การทำธุรกรรมที่ส่งด้วยค่าธรรมเนียม __ph__0__ __ph__1__"
+            "created": "สร้างธุรกรรมสำหรับ {amount} {symbol} แล้ว",
+            "submitted": "ส่งธุรกรรมโดยมีค่าธรรมเนียม {fee} {symbol}"
         },
         "price": "ราคา",
         "referral": "การอ้างอิง",
@@ -1770,7 +1772,7 @@
         "to": "ถึง",
         "total": "ทั้งหมด",
         "txId": "รหัสธุรกรรม",
-        "viewIn": "ดูใน __ph__0__"
+        "viewIn": "ดูใน {explorer}"
     },
     "transactionDetailsText": "รายละเอียดการทำธุรกรรม",
     "transactionSubmittedText": "มีการส่งธุรกรรม",
@@ -1799,7 +1801,7 @@
         "max": "MAX",
         "startUnlockingDate": "เริ่มปลดล็อควันที่",
         "title": "ส่ง",
-        "tooltip": "ส่งโทเค็นระหว่างบัญชีเครือข่าย __ph__0__",
+        "tooltip": "ส่งโทเค็นระหว่างบัญชีเครือข่าย {Sora}",
         "unlockFrequency": "ปลดล็อกความถี่",
         "vestingPercentage": "เปอร์เซ็นต์การได้รับสิทธิ"
     },

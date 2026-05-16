@@ -52,6 +52,7 @@ const ethBridge: EthBridge = new Bridge({
   showNotification: (tx: EthHistory) => resolveBridgeStore().setNotificationData(tx as any),
   addTransactionToProgress: (id: string) => resolveBridgeStore().addTransactionToProgress(id),
   removeTransactionFromProgress: (id: string) => resolveBridgeStore().removeTransactionFromProgress(id),
+  isTransactionInProgress: (id: string) => !!resolveBridgeStore().inProgressIds[id],
   updateHistory: () => resolveBridgeStore().updateInternalHistory(),
   getActiveTransaction: () => resolveBridgeStore().activeTransaction as EthHistory,
   // transaction signing

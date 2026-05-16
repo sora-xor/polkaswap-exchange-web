@@ -179,7 +179,7 @@ type AccountPointSystemEntity = {
   deposit: AccountMetaDeposit;
 };
 
-const PolkaswapAccountMetaQuery = gql<QueryData<AccountMetaEntity>>`
+const PolkaswapAccountMetaQuery = gql<QueryData<AccountMetaEntity | null>>`
   query AccountMetaQuery($id: String = "") {
     data: accountMeta(id: $id) {
       createdAtTimestamp
@@ -292,7 +292,7 @@ export async function fetchAccountMeta(accountAddress: string): Promise<AccountP
     const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
     const response = await polkaswapIndexer.services.explorer.request(PolkaswapAccountMetaQuery, variables);
 
-    if (!response) return null;
+    if (!response?.data) return null;
 
     return parseAccountMeta(response.data);
   } catch (error) {

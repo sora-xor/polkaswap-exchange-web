@@ -8,6 +8,7 @@
         <div v-if="currentIndex === index" :key="ad.title">
           <a
             class="marketing-card"
+            dir="ltr"
             rel="nofollow noopener"
             :target="getTarget(ad.link)"
             :style="getStyles(ad)"

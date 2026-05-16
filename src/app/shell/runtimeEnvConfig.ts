@@ -1,4 +1,4 @@
-import { resolveStaticAssetUrl } from '@/utils/staticAssets';
+import { appendStaticAssetVersion, resolveVersionedStaticAssetUrl } from '@/utils/staticAssets';
 
 import type { FeatureFlags } from '@/stores/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from '@/stores/web3/types';
@@ -33,12 +33,12 @@ export type RuntimeEnvConfigPayloadResolution =
  * Builds runtime config URLs in lookup order for IPFS-relative and origin-root fallbacks.
  */
 export const buildRuntimeEnvConfigUrls = (candidate: string, origin?: string): string[] => {
-  const envConfigUrls = [resolveStaticAssetUrl(candidate)];
+  const envConfigUrls = [resolveVersionedStaticAssetUrl(candidate)];
   const normalizedCandidate = candidate.replace(/^\/+/g, '');
 
   if (typeof origin === 'string') {
     try {
-      const rootConfigUrl = new URL(normalizedCandidate, `${origin}/`).toString();
+      const rootConfigUrl = appendStaticAssetVersion(new URL(normalizedCandidate, `${origin}/`).toString());
       if (!envConfigUrls.includes(rootConfigUrl)) {
         envConfigUrls.push(rootConfigUrl);
       }

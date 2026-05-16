@@ -184,10 +184,45 @@ const flattenTranslationValues = (
   return values;
 };
 
+const extractRuntimeTokens = (value: string): Array<string> =>
+  [
+    ...value.matchAll(/\{[^}]+\}|@:\([^)]+\)|@:[A-Za-z0-9_.-]+|@\.\w+:[A-Za-z0-9_.-]+/g),
+  ]
+    .map((match) => match[0])
+    .sort();
+
 test('Translation catalogs mirror English keys', () => {
   const expectedKeys = flattenTranslationKeys(getDefault(enJson)).sort();
   localeCatalogEntries.forEach(({ file, data }) => {
     expect(flattenTranslationKeys(data).sort(), file).toEqual(expectedKeys);
+  });
+});
+
+test('Translation catalogs do not contain machine translation placeholder artifacts', () => {
+  const artifactPattern =
+    /__[\p{L}\p{N}\s_-]*?(?:ph|PH|Ph|pH|P|РН|ПХ|РХ|ޕީއެޗް)[\p{L}\p{N}\s_-]*?__|__[0-9]+__|[⟦⟧]|[\uE000-\uF8FF]|XQ\d+X/iu;
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    const artifacts = flattenTranslationValues(data).filter(({ value }) => artifactPattern.test(value));
+
+    expect(artifacts, `${file} contains machine translation placeholder artifacts`).toEqual([]);
+  });
+});
+
+test('Translation catalogs preserve runtime interpolation tokens', () => {
+  const englishValues = new Map(
+    flattenTranslationValues(getDefault(enJson)).map(({ key, value }) => [key, extractRuntimeTokens(value)])
+  );
+  const tokenCheckedCatalogs = localeCatalogEntries.filter(
+    ({ file }) => !['akk.json', 'egy.json', 'pis.json'].includes(file)
+  );
+
+  tokenCheckedCatalogs.forEach(({ file, data }) => {
+    const mismatches = flattenTranslationValues(data).filter(({ key, value }) => {
+      return JSON.stringify(extractRuntimeTokens(value)) !== JSON.stringify(englishValues.get(key) ?? []);
+    });
+
+    expect(mismatches, `${file} has runtime token mismatches`).toEqual([]);
   });
 });
 
@@ -202,6 +237,72 @@ test('Translation catalogs avoid excessive English fallback drift', () => {
 
     expect(ratio, `${file} has too much untranslated English drift`).toBeLessThanOrEqual(0.08);
   });
+});
+
+test('Translation catalogs do not contain machine-translation placeholder artifacts', () => {
+  const artifactPattern =
+    /__[\p{L}\p{N}\s_-]*?(?:ph|PH|Ph|pH|P|РН|ПХ|РХ|ޕީއެޗް)[\p{L}\p{N}\s_-]*?__|__[0-9]+__/u;
+  const offenders: Array<string> = [];
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    flattenTranslationValues(data).forEach(({ key, value }) => {
+      if (artifactPattern.test(value)) {
+        offenders.push(`${file}:${key}`);
+      }
+    });
+  });
+
+  expect(offenders).toEqual([]);
+});
+
+test('High-risk user-facing translation keys are localized', () => {
+  const english = getDefault(enJson);
+  const keys = [
+    'burnPage.copySoraNetworkTxHash',
+    'burnPage.enterNexusRecipient',
+    'burnPage.invalidNexusRecipient',
+    'burnPage.minamotoClaimDescription',
+    'burnPage.minamotoClaimTitle',
+    'burnPage.nexusRecipientLabel',
+    'burnPage.nexusRecipientPlaceholder',
+    'burnPage.nexusRecipientWarning',
+    'burnPage.soraNetworkTxHashLabel',
+    'burnPage.soraV3XorAmountTitle',
+    'burnPage.ssTokensLabel',
+    'fiatDisclaimer',
+    'footer.statistics.dialog.useCeres',
+    'footer.statistics.indexerBlock',
+    'sccp.amountLabel',
+    'sccp.assetLabel',
+    'sccp.clearPayload',
+    'sccp.copyPayload',
+    'sccp.destinationAddressLabel',
+    'sccp.destinationNetworkLabel',
+    'sccp.emptyPayloadHelp',
+    'sccp.generatePayload',
+    'sccp.noteLabel',
+    'sccp.payloadCopied',
+    'sccp.payloadCopyFailed',
+    'sccp.payloadLabel',
+    'sccp.sourceNetworkLabel',
+    'sccp.subtitle',
+    'sccp.supportedNetworks',
+    'soraStaking.validatorsList.staked',
+    'soraStaking.validatorsList.stakedTooltip',
+  ];
+  const getPathValue = (source: Record<string, any>, key: string): string | undefined =>
+    key.split('.').reduce<any>((value, part) => value?.[part], source);
+  const offenders: Array<string> = [];
+
+  localeCatalogEntries.forEach(({ file, data }) => {
+    keys.forEach((key) => {
+      if (getPathValue(data, key) === getPathValue(english, key)) {
+        offenders.push(`${file}:${key}`);
+      }
+    });
+  });
+
+  expect(offenders).toEqual([]);
 });
 
 test('Translation Multiple Whitespaces check and fix', () => {

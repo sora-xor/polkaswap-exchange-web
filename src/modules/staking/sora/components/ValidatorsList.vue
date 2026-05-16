@@ -38,6 +38,13 @@
           </s-tooltip>
           <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18"></s-icon>
         </div>
+        <div v-button :class="stakedHeaderClass" @click="setStakedSort">
+          <span>{{ t('soraStaking.validatorsList.staked') }}</span>
+          <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.stakedTooltip')">
+            <s-icon name="info-16" size="14px"></s-icon>
+          </s-tooltip>
+          <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18"></s-icon>
+        </div>
       </div>
     </div>
 
@@ -65,6 +72,13 @@
               <span :class="commissionClass">{{ formatCommission(validator.commission) }}%</span>
               <br />
               <span :class="returnClass">{{ formatReturn(validator.apy) }}%</span>
+              <br />
+              <span
+                :class="stakedClass"
+                :title="formatStake(validator.stake?.total, stakingAsset?.decimals, stakingAsset?.symbol, 7)"
+              >
+                {{ formatStake(validator.stake?.total, stakingAsset?.decimals, stakingAsset?.symbol) }}
+              </span>
             </div>
             <div
               v-if="mode === ValidatorsListMode.SELECT"
@@ -83,6 +97,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
+import { FPNumber } from '@sora-substrate/sdk';
 
 import ValidatorAvatar from '@/modules/staking/sora/components/ValidatorAvatar.vue';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
@@ -105,6 +120,8 @@ enum Sort {
   COMMISSION_DESC = 'commission-desc',
   RETURN_ASC = 'return-asc',
   RETURN_DESC = 'return-desc',
+  STAKED_ASC = 'staked-asc',
+  STAKED_DESC = 'staked-desc',
 }
 
 const props = defineProps<{
@@ -124,8 +141,9 @@ const {
   setValidatorsFilter,
   maxNominations,
   stakingInfo,
+  stakingAsset,
 } = useSoraStaking();
-const { formatName, decodeName, formatCommission, formatReturn } = useValidatorsFormatting();
+const { formatName, decodeName, formatCommission, formatReturn, formatStake } = useValidatorsFormatting();
 
 const search = ref('');
 const sort = ref<Sort>(Sort.RETURN_DESC);
@@ -140,6 +158,18 @@ const calcSortClass = (base: string, value: Sort, asc: Sort, desc: Sort) => ({
   [`${base}--desc`]: value === desc,
 });
 
+/**
+ * Compares staking exposure totals as codec amounts to avoid precision loss on large token values.
+ */
+const compareCodecStake = (first: string | undefined, second: string | undefined): number => {
+  const firstStake = FPNumber.fromCodecValue(first ?? '0', stakingAsset.value?.decimals);
+  const secondStake = FPNumber.fromCodecValue(second ?? '0', stakingAsset.value?.decimals);
+
+  if (FPNumber.eq(firstStake, secondStake)) return 0;
+
+  return FPNumber.lt(firstStake, secondStake) ? -1 : 1;
+};
+
 const sortedValidators = computed(() => {
   const list = [...(validators.value ?? [])];
 
@@ -153,6 +183,10 @@ const sortedValidators = computed(() => {
         return Number(a.apy) - Number(b.apy);
       case Sort.RETURN_DESC:
         return Number(b.apy) - Number(a.apy);
+      case Sort.STAKED_ASC:
+        return compareCodecStake(a.stake?.total, b.stake?.total);
+      case Sort.STAKED_DESC:
+        return compareCodecStake(b.stake?.total, a.stake?.total);
       default:
         return 0;
     }
@@ -203,10 +237,14 @@ const commissionHeaderClass = computed(() =>
 const returnHeaderClass = computed(() =>
   calcSortClass('table-header-return', sort.value, Sort.RETURN_ASC, Sort.RETURN_DESC)
 );
+const stakedHeaderClass = computed(() =>
+  calcSortClass('table-header-staked', sort.value, Sort.STAKED_ASC, Sort.STAKED_DESC)
+);
 const commissionClass = computed(() =>
   calcSortClass('info-commission', sort.value, Sort.COMMISSION_ASC, Sort.COMMISSION_DESC)
 );
 const returnClass = computed(() => calcSortClass('info-return', sort.value, Sort.RETURN_ASC, Sort.RETURN_DESC));
+const stakedClass = computed(() => calcSortClass('info-staked', sort.value, Sort.STAKED_ASC, Sort.STAKED_DESC));
 
 const setCommissionSort = () => {
   sort.value =
@@ -219,6 +257,18 @@ const setCommissionSort = () => {
 
 const setReturnSort = () => {
   sort.value = sort.value === Sort.RETURN_ASC ? Sort.RETURN_DESC : Sort.RETURN_ASC;
+};
+
+/**
+ * Toggles stake sorting with the highest exposure first so the most-backed validators surface immediately.
+ */
+const setStakedSort = () => {
+  sort.value =
+    sort.value === Sort.STAKED_DESC
+      ? Sort.STAKED_ASC
+      : sort.value === Sort.STAKED_ASC
+        ? Sort.STAKED_DESC
+        : Sort.STAKED_DESC;
 };
 
 const toggleSelectValidator = (validator: ValidatorInfoFull) => {
@@ -261,6 +311,7 @@ defineExpose({
   toggleSelectValidator,
   setCommissionSort,
   setReturnSort,
+  setStakedSort,
   openFilters,
 });
 </script>
@@ -329,7 +380,7 @@ defineExpose({
 .table-header {
   display: flex;
   align-content: center;
-  height: 64px;
+  height: 84px;
   margin-top: 16px;
   border-bottom: 1px solid var(--s-color-base-border-secondary);
 
@@ -363,9 +414,12 @@ defineExpose({
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
+    flex: 0 0 clamp(96px, 28%, 154px);
+    max-width: 154px;
   }
   &-commission,
-  &-return {
+  &-return,
+  &-staked {
     display: flex;
     align-items: center;
     height: 21px;
@@ -373,13 +427,15 @@ defineExpose({
     border-radius: 8px;
   }
   &-commission:not(&-commission--active),
-  &-return:not(&-return--active) {
+  &-return:not(&-return--active),
+  &-staked:not(&-staked--active) {
     font-style: normal;
     padding-right: 6px;
     cursor: pointer;
   }
   &-commission--active,
-  &-return--active {
+  &-return--active,
+  &-staked--active {
     background: var(--s-color-utility-surface);
     box-shadow: var(--s-shadow-element-pressed);
     color: var(--s-color-status-info);
@@ -390,12 +446,19 @@ defineExpose({
   }
 
   &-commission--desc .chevron,
-  &-return--desc .chevron {
+  &-return--desc .chevron,
+  &-staked--desc .chevron {
     transform: rotate(180deg);
   }
 
-  &-return {
+  &-return,
+  &-staked {
     margin-top: 4px;
+  }
+
+  &-staked {
+    justify-content: flex-end;
+    color: var(--s-color-base-content-tertiary);
   }
 
   i {
@@ -492,30 +555,40 @@ defineExpose({
 
 .info {
   flex-shrink: 0;
+  flex-basis: clamp(96px, 28%, 154px);
+  max-width: 154px;
   line-height: 150%;
   text-align: right;
 
   span {
     display: inline-block;
     margin-right: 8px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
   }
 
   .info-commission,
-  .info-return {
+  .info-return,
+  .info-staked {
     height: 21px;
     padding: 2px 6px;
     font-weight: 600;
   }
 
   .info-commission:not(.info-commission--active),
-  .info-return:not(.info-return--active) {
+  .info-return:not(.info-return--active),
+  .info-staked:not(.info-staked--active) {
     font-size: 14px;
     font-style: normal;
-    letter-spacing: -0.32px;
+    letter-spacing: 0;
   }
 
   .info-commission--active,
-  .info-return--active {
+  .info-return--active,
+  .info-staked--active {
     background: var(--s-color-utility-surface);
     border-radius: 8px;
     box-shadow: var(--s-shadow-element-pressed);

@@ -88,10 +88,12 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
     const tx = this.getTransaction(id);
 
     if (!tx.externalHash) {
+      const wasAlreadyInProgress = this.isTransactionInProgress(id);
+
       this.beforeSubmit(id);
 
       try {
-        if (await this.restoreSubmittedEvmTx(id)) {
+        if (!wasAlreadyInProgress && (await this.restoreSubmittedEvmTx(id))) {
           return;
         }
       } catch (error) {

@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "𓅱𓂋 𓋴𓏏𓊪 𓋴𓏏𓊪 𓎛𓂋 𓉐𓏤 𓅱𓂋",
             "noValidators": "𓋴𓏏𓊪 𓋴𓏏𓊪 𓅱𓂋 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓎛𓂋 𓆑𓂋",
             "return": "𓎛𓂋",
-            "search": "𓋴𓈖𓈖..."
+            "search": "𓋴𓈖𓈖...",
+            "staked": "𓋴𓏏𓊪",
+            "stakedTooltip": "𓋴𓏏𓊪 𓅱𓂋 𓎛𓂋 𓅱𓂋 𓋴𓏏𓊪 𓄿𓎛"
         },
         "withdraw": {
             "beingWithdrawn": "𓉐𓏤 𓋴𓏏𓊪",

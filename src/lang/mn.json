@@ -261,18 +261,18 @@
         "title": "Хөтөчийн тохиргоонд камерт хандахыг зөвшөөрнө үү"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "SORA Network tx хэшийг хуулах",
+        "enterNexusRecipient": "SORA NEXUS БҮРТГЭЛЭЭР ОРОХ",
+        "invalidNexusRecipient": "SORA NEXUS БҮРТГЭЛ ХҮЧИНГҮЙ",
+        "minamotoClaimDescription": "SORA Minamoto дээрх нэхэмжлэлдээ SORA Network tx хэшийг ашиглана уу. Мөр бүр нь юуг шатааж байгааг харуулдаг.",
+        "minamotoClaimTitle": "Таны Минамото нэхэмжлэлийн дэлгэрэнгүй мэдээлэл",
+        "nexusRecipientLabel": "SORA Nexus бүртгэл",
+        "nexusRecipientPlaceholder": "SORA Nexus i105 бүртгэлээ оруулна уу",
+        "nexusRecipientWarning": "Таны SORA Nexus бүртгэл энэ шаталтын гүйлгээнд олон нийтэд бүртгэгдсэн байна.",
+        "soraNetworkTxHashLabel": "SORA сүлжээний tx хэш",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "ТА ХЭДЭН {tokenSymbol} ХҮСЭЖ БАЙНА ВЭ?",
+        "ssTokensLabel": "SS токенууд"
     },
     "buttons": {
         "chooseAToken": "Токен сонгоно уу",
@@ -515,7 +515,7 @@
         }
     },
     "dexSettings": {
-        "marketAlgorithm": "@.дээд: зах зээлийнАлгоритмТекст",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} хөрвөх чадварын чиглүүлэлт нь бүх зах зээлээс зөвхөн хамгийн сайн үнийн сонголтыг нэгтгэснээр аливаа гүйлгээний хамгийн сайн үнийг баталгаажуулдаг. Боломжтой үед хөрөнгийн үнэ нь {xycAlgorithm} нөөцийг ашигладаг бусад эх үүсвэрээс илүү боломжийн байгаа тохиолдолд төлбөрийн чадварын хувьд Токен бондын муруйг ({tbcAlgorithm}) ашиглана.",
             "TBC": "{tbcAlgorithm} — зөвхөн Токен бондын муруйгаас (Анхдагч зах зээл) худалдан авах. Үнэ нь {xycAlgorithm} сан (хоёрдогч зах зээл) -тэй харьцуулахад таагүй байх магадлалтай боловч олгосон шагналаас хүлээн авсан үнэ цэнэ нь цаг хугацааны явцад илүү тааламжтай болж магадгүй юм.",
@@ -554,7 +554,7 @@
         "synthetics": "синтетик токенууд"
     },
     "FAQ": "{AppName} Түгээмэл асуултууд",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Энэ вэб сайт дээрх криптовалюттай холбоотой fiat утгыг Polkaswap Indexer өгсөн бөгөөд ойролцоо утгатай болохыг анхаарна уу. Эдгээр тооцооллын нарийн төвөгтэй байдлыг харгалзан үзэхэд туйлын нарийвчлалыг ямар ч үед баталгаажуулж чадахгүй.",
     "fiatPayment": {
         "cedeStoreBtn": "{value1}-аас {value2}-р дамжуулан шилжүүлэх",
         "cedeStoreDesc": "{value1}-аас {value2} руу {value3}-р ямар нэгэн жетон шилжүүлээрэй",
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Индексжүүлэгч",
                 "title": "{Sora} Сүлжээний үйлчилгээний сонголт",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Fiat утгын хувьд Polkaswap Indexer ашиглана уу"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Polkaswap Indexer блок #{block}",
             "label": "Статистикийн үйлчилгээ",
             "title": {
                 "available": "Статистик мэдээлэл байна",
@@ -849,7 +849,7 @@
                 "title": "Токен худалдаж авсан"
             },
             "supportError": {
-                "text": "Харамсалтай нь @:moonpayText-ээр худалдаж авсан токеныг {AppName} дахь {Hashi} гүүр хараахан дэмжээгүй байна. Дүрмээр бол {AppName}-д MoonPay-ээр дамжуулан зөвхөн дэмжигдсэн жетонуудыг худалдаж авах боломжтой байдаг тул ямар нэг зүйл буруу болсон байх ёстой. Олон нийтэд энэ хэргийн талаар <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram групп</a>-д мэдэгдэхээс бүү эргэлз.",
+                "text": "Харамсалтай нь @:moonpayText ээр худалдаж авсан токеныг {AppName} дээрх {Hashi} гүүр хараахан дэмжээгүй байна. Ер нь {AppName}-д MoonPay-ээр дамжуулан зөвхөн дэмжигдсэн жетонуудыг худалдаж авах боломжтой байдаг тул ямар нэг зүйл буруу болсон байх ёстой. <a class=\"link\" href=\"https://t.me/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram групп</a> дээр энэ хэргийн талаар олон нийтэд мэдэгдэхээс бүү эргэлз.",
                 "title": "Токен дэмжигдээгүй"
             },
             "transactionError": {
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "Танд нэр дэвшсэн баталгаажуулагч байхгүй байна",
             "noValidators": "Заасан шүүлтүүрийг хангасан баталгаажуулагч байхгүй байна",
             "return": "Буцах",
-            "search": "Хайх..."
+            "search": "Хайх...",
+            "staked": "Стейк хийсэн",
+            "stakedTooltip": "Энэ validator дээр стейк хийсэн нийт XOR, validator-ийн өөрийн стейк болон нэр дэвшүүлсэн стейкийг багтаасан"
         },
         "withdraw": {
             "beingWithdrawn": "Татаж байна",

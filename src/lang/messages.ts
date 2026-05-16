@@ -815,6 +815,8 @@ export default {
       commissionTooltip:
         "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
       return: 'Return',
+      staked: 'Staked',
+      stakedTooltip: "Total XOR staked with this validator, including the validator's own stake and nominated stake",
       noNominatedValidators: "You don't have any nominated validators",
       noValidators: 'There are no validators satisfying the specified filter',
     },

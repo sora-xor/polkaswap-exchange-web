@@ -38,5 +38,6 @@ describe('useValidatorsFormatting', () => {
       formatting.formatName({ ...validator, identity: { info: { display: 'Long validator name for truncation' } } }, 10)
     ).toBe('Long valid...');
     expect(formatting.formatCommission('100000000')).toBe('10');
+    expect(formatting.formatStake('1234567890000000000000', 18, 'XOR')).toBe('1,234.56 XOR');
   });
 });

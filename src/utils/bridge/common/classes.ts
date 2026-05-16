@@ -9,6 +9,7 @@ import type {
   GetActiveTransaction,
   AddTransactionToProgress,
   RemoveTransactionFromProgress,
+  IsTransactionInProgress,
   UpdateTransaction,
   ShowNotification,
   TransactionBoundaryStates,
@@ -35,6 +36,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   protected readonly getActiveTransaction!: GetActiveTransaction<Transaction>;
   protected readonly addTransactionToProgress!: AddTransactionToProgress;
   protected readonly removeTransactionFromProgress!: RemoveTransactionFromProgress;
+  protected readonly isTransactionInProgress!: IsTransactionInProgress;
   // transaction signing
   protected readonly beforeTransactionSign!: BeforeTransactionSign;
   // boundary states
@@ -53,6 +55,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     getActiveTransaction,
     addTransactionToProgress,
     removeTransactionFromProgress,
+    isTransactionInProgress,
     // transaction signing
     beforeTransactionSign,
     // boundary states
@@ -67,6 +70,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     this.showNotification = showNotification;
     this.addTransactionToProgress = addTransactionToProgress;
     this.removeTransactionFromProgress = removeTransactionFromProgress;
+    this.isTransactionInProgress = isTransactionInProgress ?? (() => false);
     this.beforeTransactionSign = beforeTransactionSign;
     this.boundaryStates = boundaryStates;
   }

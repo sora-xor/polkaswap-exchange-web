@@ -3,6 +3,7 @@ const DEV_ENV_CONFIG_FILENAME = 'env.dev.json';
 const INDEX_DOCUMENT_PATTERN = /index\.html?$/i;
 const IPFS_SCOPE_PATTERN = /^\/(?:ipfs|ipns)\/[^/]+/i;
 const SORAFS_SCOPE_PATTERN = /^\/sorafs\/cid\/[^/]+/i;
+const STATIC_ASSET_VERSION_QUERY_PARAM = 'v';
 
 /**
  * Picks which static environment configuration file should be requested
@@ -52,6 +53,39 @@ export function ensureRelativeAssetPath(assetPath: string): string {
   }
 
   return assetPath.replace(/^\/+/g, '');
+}
+
+/**
+ * Returns the build identifier used to cache-bust mutable static files copied
+ * from Vite's `public/` directory.
+ */
+export function getStaticAssetVersion(version: string = (import.meta as any)?.env?.VITE_APP_VERSION ?? ''): string {
+  return version.trim();
+}
+
+/**
+ * Appends the current build version as a query parameter while preserving any
+ * existing query string or fragment.
+ */
+export function appendStaticAssetVersion(assetUrl: string, version = getStaticAssetVersion()): string {
+  const normalizedVersion = version.trim();
+  if (!normalizedVersion) {
+    return assetUrl;
+  }
+
+  const hashIndex = assetUrl.indexOf('#');
+  const hrefWithoutHash = hashIndex >= 0 ? assetUrl.slice(0, hashIndex) : assetUrl;
+  const hash = hashIndex >= 0 ? assetUrl.slice(hashIndex) : '';
+  const versionParamPattern = new RegExp(`(?:^|[?&])${STATIC_ASSET_VERSION_QUERY_PARAM}=`);
+
+  if (versionParamPattern.test(hrefWithoutHash)) {
+    return assetUrl;
+  }
+
+  const separator = hrefWithoutHash.includes('?') ? '&' : '?';
+  const encodedVersion = encodeURIComponent(normalizedVersion);
+
+  return `${hrefWithoutHash}${separator}${STATIC_ASSET_VERSION_QUERY_PARAM}=${encodedVersion}${hash}`;
 }
 
 const stripFragment = (href: string): string => {
@@ -118,4 +152,12 @@ export function resolveStaticAssetUrl(assetPath: string): string {
   } catch {
     return relativePath;
   }
+}
+
+/**
+ * Resolves a static asset URL and adds a build-version query parameter for
+ * mutable public files that keep stable filenames across releases.
+ */
+export function resolveVersionedStaticAssetUrl(assetPath: string, version = getStaticAssetVersion()): string {
+  return appendStaticAssetVersion(resolveStaticAssetUrl(assetPath), version);
 }

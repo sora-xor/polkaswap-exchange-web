@@ -126,6 +126,7 @@ const PointSystemV2 = (await import('@/features/rewards/pages/PointSystemV2Page.
 
 type PointSystemV2Vm = InstanceType<typeof PointSystemV2> & {
   pointsForCards: Record<string, { points: number }>;
+  loading: boolean;
   formattedTotalPoints: string;
 };
 
@@ -225,6 +226,35 @@ describe('PointSystemV2.vue', () => {
     expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock');
     expect(wrapper.vm.pointsForCards).not.toBeNull();
     expect(wrapper.vm.totalPoints).toBeGreaterThanOrEqual(0);
+  });
+
+  it('does not block point loading on long-lived account liquidity subscriptions', async () => {
+    loginState.value = true;
+    subscribeOnList.mockReturnValueOnce(new Promise(() => undefined));
+    fetchAccountMetaMock.mockResolvedValue({
+      createdAt: { timestamp: 1, block: 1 },
+      points: [],
+    });
+
+    const wrapper = buildWrapper();
+
+    await flushPromises();
+
+    expect(subscribeOnList).toHaveBeenCalledTimes(1);
+    expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock');
+    expect((wrapper.vm as unknown as PointSystemV2Vm).loading).toBe(false);
+  });
+
+  it('does not render a placeholder first-transaction date without point metadata', async () => {
+    loginState.value = true;
+    fetchAccountMetaMock.mockResolvedValue(null);
+
+    const wrapper = buildWrapper();
+
+    await flushPromises();
+
+    expect(wrapper.vm.pointsForCards).toBeNull();
+    expect(wrapper.find('.first-tx-card-stub').exists()).toBe(false);
   });
 
   it('keeps point progress in numeric fiat values instead of parsing formatted strings', async () => {

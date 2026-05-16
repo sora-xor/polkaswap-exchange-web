@@ -77,10 +77,17 @@ const shared = vi.hoisted(() => {
       return { unsubscribe: vi.fn() };
     },
   };
+  let poolUpdateCallbacks: Array<() => void> = [];
   const updated = {
     subscribe: (callback: () => void) => {
+      poolUpdateCallbacks.push(callback);
       callback();
-      return { unsubscribe: poolUpdatesUnsubscribe };
+      return {
+        unsubscribe: () => {
+          poolUpdateCallbacks = poolUpdateCallbacks.filter((item) => item !== callback);
+          poolUpdatesUnsubscribe();
+        },
+      };
     },
   };
   let accountLiquidity: Array<any> = [
@@ -150,6 +157,12 @@ const shared = vi.hoisted(() => {
       accountLiquidityLoaded = value;
     },
     updated,
+    emitPoolUpdate: () => {
+      poolUpdateCallbacks.forEach((callback) => callback());
+    },
+    resetPoolUpdateCallbacks: () => {
+      poolUpdateCallbacks = [];
+    },
     getLockerDataObservable,
     getAssetInfo,
     getPoolsApyObject,
@@ -315,6 +328,7 @@ describe('pool store', () => {
     shared.balanceAdd.mockClear();
     shared.balanceRemove.mockClear();
     shared.userPoolsUnsubscribe.mockClear();
+    shared.resetPoolUpdateCallbacks();
     shared.poolUpdatesUnsubscribe.mockClear();
     shared.lockedLiquidityUnsubscribe.mockClear();
     shared.availabilityUnsubscribe.mockClear();
@@ -441,6 +455,45 @@ describe('pool store', () => {
     expect(store.accountLiquidity).toEqual([]);
     expect(store.accountLockedLiquidity).toEqual([]);
     expect(store.poolApyObject).toEqual({});
+  });
+
+  it('keeps existing LP rows when add-liquidity updates only include the new pool', async () => {
+    const store = usePoolStore();
+    const codec = (value: number) => SDKFPNumber.fromNatural(value).toCodecString();
+    const createLiquidity = (target: string, balance: number) => ({
+      address: `pool-${target}`,
+      firstAddress: 'base',
+      secondAddress: target,
+      balance: codec(balance),
+      totalSupply: codec(100),
+      reserveA: codec(50),
+      reserveB: codec(80),
+      firstBalance: codec(balance / 2),
+      secondBalance: codec(balance),
+    });
+    const firstPool = createLiquidity('quote-a', 40);
+    const secondPool = createLiquidity('quote-b', 20);
+    const addedPool = createLiquidity('quote-c', 10);
+
+    shared.accountLiquidity = [firstPool, secondPool];
+
+    await store.subscribeOnAccountLiquidityUpdates();
+
+    expect(store.accountLiquidity.map((liquidity) => liquidity.secondAddress)).toEqual(['quote-a', 'quote-b']);
+
+    shared.accountLiquidity = [addedPool];
+    shared.emitPoolUpdate();
+
+    expect(store.accountLiquidity.map((liquidity) => liquidity.secondAddress)).toEqual([
+      'quote-a',
+      'quote-b',
+      'quote-c',
+    ]);
+
+    shared.accountLiquidity = [firstPool, addedPool];
+    shared.emitPoolUpdate();
+
+    expect(store.accountLiquidity.map((liquidity) => liquidity.secondAddress)).toEqual(['quote-a', 'quote-c']);
   });
 
   it('waits for dex base assets before subscribing to account liquidity data', async () => {

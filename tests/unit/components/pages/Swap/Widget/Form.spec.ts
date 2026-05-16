@@ -493,6 +493,26 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     wrapper.unmount();
   });
 
+  it('opens the output token selector from the main choose-tokens action', async () => {
+    isLoggedInRef.value = true;
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const confirmButton = wrapper.get('[data-test-name="confirmSwap"]');
+
+    expect(confirmButton.text()).toBe('buttons.chooseTokens');
+    expect(confirmButton.attributes('disabled')).toBeUndefined();
+
+    await confirmButton.trigger('click');
+    await nextTick();
+
+    expect((wrapper.vm as any).showSelectTokenDialog).toBe(true);
+    expect((wrapper.vm as any).isTokenFromSelected).toBe(false);
+
+    wrapper.unmount();
+  });
+
   it('renders pair creation errors outside the confirm button', async () => {
     isLoggedInRef.value = true;
     tokenToRef.value = {

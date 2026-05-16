@@ -9,6 +9,10 @@ type Validator = {
   address: string;
   commission: string;
   apy: string;
+  stake?: {
+    total: string;
+    own: string;
+  };
   blocked?: boolean;
   isOversubscribed?: boolean;
   identity?: {
@@ -29,6 +33,7 @@ const createValidator = (address: string, extra: Partial<Validator> = {}): Valid
 const tMock = vi.fn((key: string) => key);
 
 const validatorsRef = ref<Validator[]>([]);
+const stakingAssetRef = ref({ symbol: 'XOR', decimals: 18 });
 const validatorsFilterRef = ref({
   hasIdentity: false,
   notSlashed: false,
@@ -96,6 +101,7 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
     setValidatorsFilter: setValidatorsFilterMock,
     maxNominations: computed(() => maxNominationsRef.value),
     stakingInfo: computed(() => stakingInfoRef.value),
+    stakingAsset: computed(() => stakingAssetRef.value),
   }),
 }));
 
@@ -106,6 +112,15 @@ vi.mock('@/modules/staking/sora/composables/useValidatorsFormatting', () => ({
     decodeName: (validator: Validator) => validator.identity?.info.display ?? validator.address,
     formatCommission: (value: string) => value,
     formatReturn: (value: string) => value,
+    formatStake: (value: string | null | undefined, _decimals = 18, symbol = 'XOR') => {
+      const values: Record<string, string> = {
+        '1000000000000000000': `1 ${symbol}`,
+        '2500000000000000000': `2.5 ${symbol}`,
+        '9000000000000000000': `9 ${symbol}`,
+      };
+
+      return values[value ?? ''] ?? `0 ${symbol}`;
+    },
   }),
 }));
 
@@ -248,6 +263,7 @@ describe('ValidatorsList.vue', () => {
 
   beforeEach(() => {
     validatorsRef.value = [createValidator('addr-1'), createValidator('addr-2'), createValidator('addr-3')];
+    stakingAssetRef.value = { symbol: 'XOR', decimals: 18 };
     validatorsFilterRef.value = {
       hasIdentity: false,
       notSlashed: false,
@@ -291,5 +307,48 @@ describe('ValidatorsList.vue', () => {
 
     wrapper.vm.openFilters();
     expect(setShowFiltersMock).toHaveBeenCalledWith(true);
+  });
+
+  it('shows total XOR staked for each validator', async () => {
+    validatorsRef.value = [
+      createValidator('addr-1', { stake: { total: '2500000000000000000', own: '0' } }),
+      createValidator('addr-2', { stake: { total: '1000000000000000000', own: '0' } }),
+    ];
+
+    const wrapper = mountComponent({ mode: ValidatorsListMode.SELECT });
+    await flushPromises();
+
+    expect(wrapper.text()).toContain('soraStaking.validatorsList.staked');
+    expect(wrapper.text()).toContain('2.5 XOR');
+    expect(wrapper.text()).toContain('1 XOR');
+  });
+
+  it('sorts validators by total stake using codec totals', async () => {
+    validatorsRef.value = [
+      createValidator('addr-low', { apy: '0', stake: { total: '1000000000000000000', own: '0' } }),
+      createValidator('addr-high', { apy: '0', stake: { total: '9000000000000000000', own: '0' } }),
+      createValidator('addr-mid', { apy: '0', stake: { total: '2500000000000000000', own: '0' } }),
+    ];
+
+    const wrapper = mountComponent({ mode: ValidatorsListMode.SELECT });
+    await flushPromises();
+
+    wrapper.vm.setStakedSort();
+    await flushPromises();
+
+    expect(wrapper.findAll('.validator .name').map((item) => item.text())).toEqual([
+      'addr-high',
+      'addr-mid',
+      'addr-low',
+    ]);
+
+    wrapper.vm.setStakedSort();
+    await flushPromises();
+
+    expect(wrapper.findAll('.validator .name').map((item) => item.text())).toEqual([
+      'addr-low',
+      'addr-mid',
+      'addr-high',
+    ]);
   });
 });

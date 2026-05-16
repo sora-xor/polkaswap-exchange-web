@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { ZeroStringValue } from '@/consts';
+import { getValidatorsInfoFromIndexer } from '@/indexer/queries/staking/validators';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { emptyValidatorsFilter, ValidatorsListMode } from '@/modules/staking/sora/consts';
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
@@ -291,6 +292,12 @@ export const useStakingStore = defineStore('staking-legacy', {
       this.setStakingInfo(await api.staking.getMyStakingInfo(this.stash));
     },
     async getValidatorsInfo(): Promise<void> {
+      const indexedValidators = await getValidatorsInfoFromIndexer();
+      if (indexedValidators?.length) {
+        this.setValidatorsInfo(indexedValidators);
+        return;
+      }
+
       if (!(await waitForStakingApiReady())) return;
 
       this.setValidatorsInfo(await api.staking.getValidatorsInfo());

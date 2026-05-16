@@ -2,7 +2,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 
 import axiosInstance from '@/api';
 import { api } from '@/lib/soraneo-wallet/src/api';
-import { resolveStaticAssetUrl } from '@/utils/staticAssets';
+import { resolveVersionedStaticAssetUrl } from '@/utils/staticAssets';
 
 const walletApiStub = vi.hoisted(() => ({
   swap: { isALT: false },
@@ -217,7 +217,7 @@ describe('settings store actions', () => {
 
     expect(axiosGetSpy).toHaveBeenCalledWith(expect.stringContaining('marketing.json'));
     expect(settingsStore.adsArray).toHaveLength(1);
-    expect(settingsStore.adsArray[0]?.img).toBe(resolveStaticAssetUrl('/marketing/banner.png'));
+    expect(settingsStore.adsArray[0]?.img).toBe(resolveVersionedStaticAssetUrl('/marketing/banner.png'));
     expect(settingsStore.adsArray[0]?.link).toBe('#/swap');
   });
 

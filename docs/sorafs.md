@@ -41,6 +41,12 @@ The SoraFS packaging flow stages a copy of `dist/` under `artifacts/sorafs/<host
 
 The original `dist/` output is left untouched.
 
+The app cache-busts mutable public runtime files with `?v=<build-version>` when
+it requests `env.json`, marketing config, and wallet allow/deny lists. The
+gateway should still serve `index.html` with `Cache-Control: no-store` on any
+stable hostname because an old HTML shell can keep pointing at an old set of
+hashed bundle files.
+
 Important: this Polkaswap app is still a Substrate websocket client built on
 `@polkadot/api`. Hosting the static bundle on Taira does not make the app speak
 Torii, MCP, or Iroha Connect. The shipped `env.taira.json` therefore points at

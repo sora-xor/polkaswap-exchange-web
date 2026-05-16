@@ -73,7 +73,7 @@
         "noContacts": "您还没有添加任何联系人",
         "noFoundRecords": "没有找到记录",
         "none": "没有任何",
-        "notSoraAddress": "该地址将在下面保存为 {SORA} 地址。确保接收者可以访问 {SORA} 链：",
+        "notSoraAddress": "该地址将被保存为下面的{Sora}地址。确保接收者可以访问{Sora}链：",
         "options": {
             "delete": "删除",
             "edit": "更改联系资料",
@@ -261,18 +261,18 @@
         "title": "在浏览器设置中允许相机访问"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "复制 SORA 网络 tx 哈希",
+        "enterNexusRecipient": "输入 Sora Nexus 帐户",
+        "invalidNexusRecipient": "Sora Nexus 帐户无效",
+        "minamotoClaimDescription": "使用 SORA Network tx 哈希在 SORA Minamoto 进行申领。每一行都会显示该销毁交易预留的内容。",
+        "minamotoClaimTitle": "您的 Minamoto 申领详情",
+        "nexusRecipientLabel": "SORA Nexus 帐户",
+        "nexusRecipientPlaceholder": "输入您的 SORA Nexus i105 帐户",
+        "nexusRecipientWarning": "您的 SORA Nexus 帐户会公开记录在这笔销毁交易中。",
+        "soraNetworkTxHashLabel": "SORA 网络 tx 哈希",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "您想要多少{tokenSymbol}？",
+        "ssTokensLabel": "SS代币"
     },
     "buttons": {
         "chooseAToken": "选择一个代币",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "是的，我了解风险",
         "header": "注意",
-        "info": "在此交易后，您的 {symbol} 余额将低于{fee}{symbol} 您将无法支付另一笔交易的网络费用。",
+        "info": "本次交易后，您的异或余额将小于 {fee} 异或。您将无法支付另一笔交易的网络费用。",
         "payoff": "您必须使用转接桥从其他网络获取 XOR，从另一个 {Sora} 账户发送 XOR，或者将您账户中已有的任何其他代币兑换为 XOR。"
     },
     "confirmSupply": {
@@ -456,7 +456,7 @@
             "placeholder": "助记词"
         },
         "accountName": {
-            "desc": "这是您的账户名称。只有您在{Polkaswap}中才能看到它。",
+            "desc": "这是您的帐户名称。只有您在 {AppName} 中才能看到它。",
             "placeholder": "帐户名称"
         },
         "addAccount": "添加帐户",
@@ -515,7 +515,7 @@
         }
     },
     "dexSettings": {
-        "marketAlgorithm": "@ .upper: marketAlgorithmText",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm}流动性路由通过从所有可用市场中仅选择最佳价格选项，确保任何交易的最佳价格。在可用时，将使用Token Bonding Curve（{tbcAlgorithm}）提供流动性，前提是资产价格比其他来源更实惠；否则将利用{xycAlgorithm}池。",
             "TBC": "{tbcAlgorithm} — 仅从代币绑定曲线（一级市场）购买。 与{xycAlgorithm}流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
@@ -554,7 +554,7 @@
         "synthetics": "合成代币"
     },
     "FAQ": "{AppName} 常见问题",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "请注意，本网站上与加密货币相关的法定价值由 Polkaswap Indexer 提供，并且是近似值。鉴于这些计算固有的复杂性，无法保证任何时候的绝对精度。",
     "fiatPayment": {
         "cedeStoreBtn": "从{value1}转至{value2}",
         "cedeStoreDesc": "通过{value3}将任意代币从{value1}转移到{value2}",
@@ -562,7 +562,7 @@
         "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。",
         "historyBtn": "我的购买",
         "historyTitle": "交易记录",
-        "moonpayDesc": "在{Ethereum}上购买ETH代币并通过网桥将其转移到{SORA}网络",
+        "moonpayDesc": "在{Ethereum}上购买ETH代币并通过桥将其转移到{Sora}网络",
         "moonpayTitle": "通过 MoonPay 购买 ETH"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "第一的",
     "footer": {
         "internet": {
-            "action": "刷新{Polkaswap}",
+            "action": "刷新{AppName}",
             "desc": {
                 "disabled": "断开连接",
                 "stable": "最佳速度",
                 "unstable": "连接缓慢"
             },
-            "dialogDesc": "{Polkaswap}需要互联网连接以获得稳定的体验",
+            "dialogDesc": "{AppName}需要互联网连接才能获得稳定的体验",
             "dialogTitle": "连接到互联网资源",
             "label": "你的网速",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "索引器",
                 "title": "{Sora}网络服务选择",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "使用 Polkaswap Indexer 获取法币值"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Polkaswap 索引器区块#{block}",
             "label": "统计服务",
             "title": {
                 "available": "可用的统计数据",
@@ -628,7 +628,7 @@
         "github": "GitHub",
         "info": "信息与社区",
         "privacy": "隐私政策",
-        "sorawiki": "__ PH __ 0 __维基"
+        "sorawiki": "{Sora} 维基"
     },
     "forText": "给",
     "hashiBridgeText": "{Hashi}桥",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "根据您当前的抵押品，您可以从您的仓位中提取的资金数量，而不会超过您的借款限额。",
         "debtDetails": "债务详情",
         "depositCollateral": "存入抵押品",
-        "disclaimerDescription": "通过 {Polkaswap} 借贷数字资产存在重大风险，并完全由您自行承担。数字资产的价值极易波动，您所借出或用作抵押品的资产的市场价格任何变化都可能导致巨大的财务损失。",
+        "disclaimerDescription": "通过{AppName}借入数字资产存在重大风险，风险完全由您自行承担。数字资产的价值波动很大，您借入或用作抵押品的资产的市场价格的任何变化都可能导致重大财务损失。",
         "error": {
             "borrowMoreThanAvailable": "可用债务超出",
             "enterBorrow": "输入借贷金额",
@@ -1046,7 +1046,7 @@
             "SwapTransferBatch": "{action} {amount} {symbol}",
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "VestedTransfer": "{action} {amount} {symbol} {direction} {address}",
-            "XorlessTransfer": "{action} {amount} { {symbol} {direction} {address}"
+            "XorlessTransfer": "{action} {amount} {symbol} {direction} {address}"
         },
         "IssueSoulBoundToken": "发行 SBT",
         "Mint": "薄荷",
@@ -1183,7 +1183,7 @@
             "limitOrder": "“限价”订单可让您指定您想要购买或出售资产的确切价格。 “限价买入”订单将仅以指定价格或更低价格执行，而“限价卖出”订单将仅以指定价格或更高价格执行。这种控制可确保您支付的费用或售价不会低于您愿意接受的价格。",
             "marketOrder": "“市价订单”是指以当前最佳价格立即买入或卖出的订单。它不需要设定价格，确保快速执行，但代价是对收到或支付的价格控制较少。当执行的确定性优先于价格控制时，使用这种类型的订单。",
             "marketWidget": "该小部件显示市场中已执行交易的实时流，提供有关交易量、近期活动和当前市场趋势的信息。通过观察实际交易的时间、价格和规模，交易者可以深入了解市场动态和情绪，帮助他们发现交易机会并做出明智的决策",
-            "pairsList": "显示加密货币当前买卖订单的实时列表。它可以帮助您了解 SORA 网络和 Polkaswap DEX 上的需求、潜在价格方向和交易量",
+            "pairsList": "显示加密货币当前买卖订单的实时列表。它可以帮助您了解 {Sora} 网络和 {AppName} DEX 上的需求、潜在价格方向和交易量",
             "txDetails": {
                 "amount": "“数量”指的是您在订单中想要购买或出售的资产总数。这一点很重要，因为它决定了您的交易规模，影响着买入订单的总成本或卖出订单的收入。",
                 "expiryDate": "“到期日”是您订单执行的截止日期。如果市场在此日期之前未达到您指定的价格，订单将自动取消。如果市场条件与您的交易偏好不符，您不必永远等待。",
@@ -1400,7 +1400,7 @@
         "startInviting": "绑定 XOR 以推荐他人",
         "title": "推荐计划",
         "unbondTitle": "解绑XOR",
-        "welcomeMessage": "\n加入我在 {Polkaswap}！\n\n发现时尚的 {DEX}，可以跨链交换数十种代币，订单簿和丰富的奖励！\n\n🎁 邀请朋友并赚取他们交易费用的 10%\n\n到时见！"
+        "welcomeMessage": "加入我的 {AppName} 吧！\n\n探索时尚的 {DEX}，它可以让您通过跨链交换、订单簿和大量奖励来交换数十种代币！\n\n🎁 邀请好友，赚取好友交易费的 10%\n\n到时见！"
     },
     "releaseNotesText": "发行说明",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "监管机构"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "数量",
+        "assetLabel": "资产符号",
+        "clearPayload": "清晰的表格",
+        "copyPayload": "复制有效负载",
+        "destinationAddressLabel": "收件人地址",
+        "destinationNetworkLabel": "至网络",
+        "emptyPayloadHelp": "设置表单字段以生成准备发送的 SCCP 有效负载。",
+        "generatePayload": "生成 SCCP 有效负载",
+        "noteLabel": "可选备注",
+        "payloadCopied": "已复制有效负载",
+        "payloadCopyFailed": "复制失败，请重试",
+        "payloadLabel": "准备好的有效载荷",
+        "sourceNetworkLabel": "来自网络",
+        "subtitle": "BSC、以太坊和 TRON 的安全跨链协议 (SCCP) 传输助手。",
+        "supportedNetworks": "支持的链：{chains}。",
         "title": "SCCP"
     },
     "searchText": "搜索",
@@ -1568,7 +1568,7 @@
         "reddit": "保存此",
         "telegram": "电报群",
         "twitter": "推特",
-        "wiki": "__ PH __ 0 __维基"
+        "wiki": "{Sora} 维基"
     },
     "soraStaking": {
         "actions": {
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "您没有任何指定的验证人",
             "noValidators": "没有满足指定过滤器的验证器",
             "return": "返回",
-            "search": "搜索..."
+            "search": "搜索...",
+            "staked": "质押",
+            "stakedTooltip": "与该验证者质押的 XOR 总量，包括验证者自己的质押和指定质押"
         },
         "withdraw": {
             "beingWithdrawn": "被撤回",
@@ -1744,7 +1746,7 @@
     },
     "transaction": {
         "amount": "@:amountText",
-        "amount2": "__ PH __ 0 __ 2",
+        "amount2": "@:amountText 2",
         "blockId": "区块 ID",
         "comment": "评论",
         "copy": "复制{value}",

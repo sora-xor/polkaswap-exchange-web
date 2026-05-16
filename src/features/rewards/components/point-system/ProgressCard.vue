@@ -82,8 +82,8 @@ const imageSrc = computed(() => getImageSrc(imageName.value));
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element-pressed);
 
   svg {
     position: absolute;

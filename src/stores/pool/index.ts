@@ -114,6 +114,35 @@ const findLiquidity = (
   );
 };
 
+const getAccountLiquidityKey = (liquidity: Pick<AccountLiquidity, 'firstAddress' | 'secondAddress'>): string =>
+  `${liquidity.firstAddress}:${liquidity.secondAddress}`;
+
+/**
+ * Account-pool discovery can emit only the freshly-added LP row after a deposit.
+ * Treat updates containing new pairs as additive snapshots so existing LP rows
+ * stay visible while still allowing pure removal snapshots to replace state.
+ */
+const mergeAccountLiquiditySnapshot = (
+  current: readonly AccountLiquidity[],
+  incoming: readonly AccountLiquidity[]
+): readonly AccountLiquidity[] => {
+  if (!(current.length && incoming.length)) {
+    return freezeArray(incoming) as readonly AccountLiquidity[];
+  }
+
+  const currentKeys = new Set(current.map(getAccountLiquidityKey));
+  const incomingKeys = new Set(incoming.map(getAccountLiquidityKey));
+  const hasNewLiquidity = incoming.some((liquidity) => !currentKeys.has(getAccountLiquidityKey(liquidity)));
+
+  if (!hasNewLiquidity) {
+    return freezeArray(incoming) as readonly AccountLiquidity[];
+  }
+
+  const retainedCurrent = current.filter((liquidity) => !incomingKeys.has(getAccountLiquidityKey(liquidity)));
+
+  return freezeArray([...retainedCurrent, ...incoming]) as readonly AccountLiquidity[];
+};
+
 const normalizePoolApy = (value: Nullable<PoolApyObject>): PoolApyObject =>
   value ? Object.freeze({ ...value }) : EMPTY_POOL_APY_OBJECT;
 
@@ -378,6 +407,9 @@ export const usePoolStore = defineStore('pool-legacy', {
     resetAccountLiquidity(): void {
       this.accountLiquidity = EMPTY_ACCOUNT_LIQUIDITY;
     },
+    syncAccountLiquidity(liquidity: readonly AccountLiquidity[]): void {
+      this.accountLiquidity = mergeAccountLiquiditySnapshot(this.accountLiquidity, liquidity);
+    },
     resetPoolApyObject(): void {
       this.poolApyObject = EMPTY_POOL_APY_OBJECT;
     },
@@ -455,7 +487,7 @@ export const usePoolStore = defineStore('pool-legacy', {
           await firstValueFrom(api.poolXyk.accountLiquidityLoaded);
         }
 
-        this.accountLiquidity = freezeArray(api.poolXyk.accountLiquidity ?? []) as readonly AccountLiquidity[];
+        this.syncAccountLiquidity(api.poolXyk.accountLiquidity ?? []);
       });
     },
     async subscribeOnAccountLiquidityUpdates(): Promise<void> {
@@ -467,10 +499,10 @@ export const usePoolStore = defineStore('pool-legacy', {
       await waitForAccountPair(async () => {
         await ensurePoolDiscoveryReady();
         this.accountLiquidityUpdates = api.poolXyk.updated.subscribe(() => {
-          this.accountLiquidity = freezeArray(api.poolXyk.accountLiquidity ?? []) as readonly AccountLiquidity[];
+          this.syncAccountLiquidity(api.poolXyk.accountLiquidity ?? []);
         });
 
-        this.accountLiquidity = freezeArray(api.poolXyk.accountLiquidity ?? []) as readonly AccountLiquidity[];
+        this.syncAccountLiquidity(api.poolXyk.accountLiquidity ?? []);
       });
     },
     async subscribeOnAccountLockedLiquidity(): Promise<void> {

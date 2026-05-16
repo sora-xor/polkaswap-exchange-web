@@ -73,7 +73,7 @@
         "noContacts": "Bạn chưa thêm địa chỉ liên hệ nào",
         "noFoundRecords": "Không có dữ liệu được tìm thấy",
         "none": "Không có",
-        "notSoraAddress": "Địa chỉ này sẽ được lưu dưới dạng địa chỉ {SORA} bên dưới. Đảm bảo người nhận có thể truy cập chuỗi {SORA}:",
+        "notSoraAddress": "Địa chỉ này sẽ được lưu dưới dạng địa chỉ {Sora} bên dưới. Đảm bảo người nhận có thể truy cập vào chuỗi {Sora}:",
         "options": {
             "delete": "Xóa bỏ",
             "edit": "Chỉnh sửa liên hệ",
@@ -261,18 +261,18 @@
         "title": "Cho phép truy cập máy ảnh trong cài đặt trình duyệt"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Sao chép hàm băm tx của Mạng SORA",
+        "enterNexusRecipient": "NHẬP TÀI KHOẢN SORA NEXUS",
+        "invalidNexusRecipient": "TÀI KHOẢN SORA NEXUS KHÔNG HỢP LỆ",
+        "minamotoClaimDescription": "Sử dụng hàm băm tx của Mạng SORA cho yêu cầu bồi thường của bạn trên SORA Minamoto. Mỗi hàng hiển thị những gì mà đốt dự trữ.",
+        "minamotoClaimTitle": "Chi tiết yêu cầu bồi thường Minamoto của bạn",
+        "nexusRecipientLabel": "Tài khoản SORA Nexus",
+        "nexusRecipientPlaceholder": "Nhập tài khoản SORA Nexus i105 của bạn",
+        "nexusRecipientWarning": "Tài khoản SORA Nexus của bạn được ghi lại công khai trong giao dịch ghi này.",
+        "soraNetworkTxHashLabel": "Băm tx mạng SORA",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "BẠN MUỐN BAO NHIÊU {tokenSymbol}?",
+        "ssTokensLabel": "Mã thông báo SS"
     },
     "buttons": {
         "chooseAToken": "Chọn 1 token",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "Vâng, tôi hiểu về rủi ro",
         "header": "Chú ý",
-        "info": "Số dư {symbol} của bạn sẽ ít hơn {fee} {symbol} sau giao dịch này. Bạn sẽ không thể thanh toán phí mạng cho một giao dịch khác.",
+        "info": "Số dư XOR của bạn sẽ nhỏ hơn {fee} XOR sau giao dịch này. Bạn sẽ không thể trả phí mạng cho một giao dịch khác.",
         "payoff": "Bạn sẽ phải sử dụng Cầu nối (Bridge) để nhận XOR từ các mạng khác, nhận XOR từ tài khoản {Sora} khác hoặc hoán đổi bất kỳ mã thông báo nào khác đã có trong tài khoản của bạn thành XOR."
     },
     "confirmSupply": {
@@ -456,7 +456,7 @@
             "placeholder": "Cụm từ ghi nhớ"
         },
         "accountName": {
-            "desc": "Đây là tên tài khoản của bạn. Nó sẽ chỉ hiển thị với bạn trong {Polkaswap}.",
+            "desc": "Đây là tên tài khoản của bạn. Nó sẽ chỉ hiển thị với bạn trong {AppName}.",
             "placeholder": "Tên tài khoản"
         },
         "addAccount": "Thêm tài khoản",
@@ -554,7 +554,7 @@
         "synthetics": "token tổng hợp"
     },
     "FAQ": "Câu hỏi thường gặp về {AppName}",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Xin lưu ý rằng các giá trị tiền pháp định liên quan đến tiền điện tử trên trang web này được cung cấp bởi Polkaswap Indexer và chỉ mang tính gần đúng. Do tính phức tạp vốn có của những phép tính này nên không thể đảm bảo độ chính xác tuyệt đối ở mọi thời điểm.",
     "fiatPayment": {
         "cedeStoreBtn": "Chuyển từ {value1} qua {value2}",
         "cedeStoreDesc": "Chuyển bất kỳ mã thông báo nào từ {value1} sang {value2} qua {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau.",
         "historyBtn": "Sự thanh toán của tôi",
         "historyTitle": "Lịch sử giao dịch",
-        "moonpayDesc": "Mua mã thông báo ETH trên {Ethereum} và chuyển chúng sang mạng {SORA} qua cầu nối",
+        "moonpayDesc": "Mua token ETH trên {Ethereum} và chuyển chúng sang mạng {Sora} thông qua cầu nối",
         "moonpayTitle": "Mua ETH qua MoonPay"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "Đầu tiên",
     "footer": {
         "internet": {
-            "action": "Làm mới {Polkaswap}",
+            "action": "Làm mới {AppName}",
             "desc": {
                 "disabled": "ngắt kết nối",
                 "stable": "tốc độ tối ưu",
                 "unstable": "Kết nối chậm"
             },
-            "dialogDesc": "{Polkaswap} yêu cầu kết nối internet để có trải nghiệm ổn định",
+            "dialogDesc": "{AppName} yêu cầu kết nối internet để có trải nghiệm ổn định",
             "dialogTitle": "Kết nối với nguồn internet",
             "label": "Tốc độ internet của bạn",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Người lập chỉ mục",
                 "title": "{Sora} Lựa chọn dịch vụ mạng",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Sử dụng Polkaswap Indexer cho các giá trị fiat"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Khối lập chỉ mục Polkaswap #{block}",
             "label": "Dịch vụ thống kê",
             "title": {
                 "available": "thống kê có sẵn",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "Số tiền bạn vẫn có thể rút từ vị thế của mình mà không vượt quá hạn mức vay, dựa trên tài sản thế chấp hiện tại của bạn.",
         "debtDetails": "Chi tiết nợ",
         "depositCollateral": "Gửi tài sản đảm bảo",
-        "disclaimerDescription": "Việc vay các tài sản kỹ thuật số thông qua {Polkaswap} mang lại rủi ro đáng kể và hoàn toàn do bạn tự chịu. Giá trị của tài sản kỹ thuật số biến động mạnh mẽ, và bất kỳ thay đổi nào trong giá cả thị trường của các tài sản bạn đã vay hoặc sử dụng làm tài sản đảm bảo đều có thể dẫn đến tổn thất tài chính đáng kể.",
+        "disclaimerDescription": "Việc vay tài sản kỹ thuật số thông qua {AppName} mang lại rủi ro đáng kể và bạn hoàn toàn chịu rủi ro. Giá trị của tài sản kỹ thuật số rất biến động và bất kỳ thay đổi nào về giá thị trường của tài sản bạn đã vay hoặc sử dụng làm tài sản thế chấp đều có thể dẫn đến tổn thất tài chính đáng kể.",
         "error": {
             "borrowMoreThanAvailable": "Nợ có sẵn vượt quá",
             "enterBorrow": "Nhập số tiền vay",
@@ -1183,7 +1183,7 @@
             "limitOrder": "Lệnh 'Giới hạn' cho phép bạn chỉ định mức giá chính xác mà bạn muốn mua hoặc bán một tài sản. Lệnh 'Giới hạn Mua' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc thấp hơn, trong khi lệnh 'Bán Giới hạn' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc cao hơn. Sự kiểm soát này đảm bảo bạn không phải trả nhiều hơn hoặc bán với giá thấp hơn mức bạn cảm thấy thoải mái.",
             "marketOrder": "'Lệnh thị trường' là lệnh mua hoặc bán ngay lập tức ở mức giá hiện tại tốt nhất. Nó không yêu cầu đặt giá, đảm bảo thực hiện nhanh chóng nhưng phải đánh đổi bằng việc ít kiểm soát hơn đối với giá nhận hoặc trả. Loại lệnh này được sử dụng khi sự chắc chắn trong việc khớp lệnh được ưu tiên hơn việc kiểm soát giá.",
             "marketWidget": "Tiện ích này hiển thị luồng giao dịch được thực hiện trên thị trường theo thời gian thực, cung cấp thông tin về khối lượng giao dịch, hoạt động gần đây và xu hướng thị trường hiện tại. Bằng cách quan sát thời gian, giá cả và quy mô của các giao dịch thực tế, nhà giao dịch có thể hiểu rõ hơn về động lực và tâm lý thị trường, giúp họ phát hiện các cơ hội giao dịch và đưa ra quyết định sáng suốt.",
-            "pairsList": "Danh sách thời gian thực hiển thị các lệnh mua và bán hiện tại đối với tiền điện tử. Nó giúp bạn hiểu nhu cầu, hướng giá tiềm năng và khối lượng giao dịch trên Mạng SORA và Polkaswap DEX",
+            "pairsList": "Danh sách thời gian thực hiển thị các lệnh mua và bán hiện tại đối với tiền điện tử. Nó giúp bạn hiểu được nhu cầu, hướng giá tiềm năng và khối lượng giao dịch trên Mạng {Sora} và {AppName} DEX",
             "txDetails": {
                 "amount": "'Số tiền' đề cập đến tổng số tài sản bạn muốn mua hoặc bán trong đơn đặt hàng của mình. Điều quan trọng là phải chỉ định vì nó xác định quy mô giao dịch của bạn, ảnh hưởng đến tổng chi phí cho lệnh mua hoặc doanh thu cho lệnh bán.",
                 "expiryDate": "'Ngày hết hạn' là thời hạn để lệnh của bạn được thực thi. Nếu thị trường không đạt đến mức giá bạn chỉ định trước ngày này, lệnh sẽ tự động bị hủy. Bạn không bị ràng buộc phải chờ đợi vĩnh viễn nếu điều kiện thị trường không phù hợp với sở thích giao dịch của bạn.",
@@ -1400,7 +1400,7 @@
         "startInviting": "Bond XOR để giới thiệu những người khác",
         "title": "Giới thiệu",
         "unbondTitle": "Unbond XOR",
-        "welcomeMessage": "\nTham gia cùng tôi trên {Polkaswap}!\n\nKhám phá {DEX} phong cách cho phép bạn hoán đổi hàng chục mã thông báo với các giao dịch xuyên chuỗi, sổ lệnh và rất nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp lại!"
+        "welcomeMessage": "Hãy tham gia cùng tôi trên {AppName}!\n\nKhám phá {DEX} đầy phong cách cho phép bạn trao đổi hàng chục token với các giao dịch hoán đổi chuỗi chéo, sổ đặt hàng và nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp bạn ở đó!"
     },
     "releaseNotesText": "Ghi chú phát hành",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Cơ quan quản lý"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Số lượng",
+        "assetLabel": "Ký hiệu tài sản",
+        "clearPayload": "Xóa biểu mẫu",
+        "copyPayload": "Sao chép tải trọng",
+        "destinationAddressLabel": "Địa chỉ người nhận",
+        "destinationNetworkLabel": "Đến mạng",
+        "emptyPayloadHelp": "Đặt các trường biểu mẫu để tạo tải trọng SCCP sẵn sàng gửi.",
+        "generatePayload": "Tạo tải trọng SCCP",
+        "noteLabel": "Bản ghi nhớ tùy chọn",
+        "payloadCopied": "Đã sao chép tải trọng",
+        "payloadCopyFailed": "Sao chép không thành công, vui lòng thử lại",
+        "payloadLabel": "Tải trọng đã chuẩn bị",
+        "sourceNetworkLabel": "Từ mạng",
+        "subtitle": "Trình trợ giúp chuyển giao thức chuỗi chéo an toàn (SCCP) cho BSC, Ethereum và TRON.",
+        "supportedNetworks": "Chuỗi được hỗ trợ: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Tìm kiếm",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "Bạn không có bất kỳ người xác thực nào được chỉ định",
             "noValidators": "Không có trình xác thực nào đáp ứng bộ lọc được chỉ định",
             "return": "Trở lại",
-            "search": "Tìm kiếm..."
+            "search": "Tìm kiếm...",
+            "staked": "đặt cược",
+            "stakedTooltip": "Tổng số XOR được đặt cược với trình xác thực này, bao gồm cả cổ phần của chính người xác thực và cổ phần được đề cử"
         },
         "withdraw": {
             "beingWithdrawn": "Bị rút tiền",

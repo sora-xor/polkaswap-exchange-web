@@ -67,33 +67,35 @@ function handleButtonClick(): void {
 <style lang="scss" scoped>
 .task-card {
   .el-divider {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--s-color-base-border-secondary);
     margin-top: $basic-spacing-small;
     margin-bottom: $basic-spacing-small;
   }
   .el-button.s-secondary {
     padding: $inner-spacing-tiny $inner-spacing-small;
-    background-color: var(--s-color-base-on-accent);
+    background-color: var(--s-color-theme-accent);
+    border-color: var(--s-color-theme-accent);
     box-shadow: unset;
-    color: var(--s-color-base-content-primary);
+    color: var(--s-color-base-on-accent);
 
     &:hover,
     &:focus {
-      box-shadow: var(--s-shadow-element-pressed);
-      background-color: var(--s-color-base-on-accent);
-      color: var(--s-color-base-content-primary);
+      box-shadow: var(--s-shadow-element);
+      background-color: var(--s-color-theme-accent-hover);
+      border-color: var(--s-color-theme-accent-hover);
+      color: var(--s-color-base-on-accent);
     }
   }
 
   .el-button.completed {
     background-color: transparent;
     color: var(--s-color-base-content-secondary);
-    border: 1px solid var(--s-color-base-content-tertiary);
+    border: 1px solid var(--s-color-base-border-secondary);
 
     &:hover,
     &:focus {
       box-shadow: none;
-      border: 1px solid var(--s-color-base-content-tertiary);
+      border: 1px solid var(--s-color-base-border-secondary);
       background-color: transparent;
       cursor: default;
       color: var(--s-color-base-content-secondary);
@@ -107,8 +109,8 @@ function handleButtonClick(): void {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    border-color: rgba(82, 185, 255, 0.28);
-    box-shadow: 0 20px 38px rgba(23, 6, 41, 0.22);
+    border-color: var(--s-color-theme-accent);
+    box-shadow: var(--s-shadow-element);
     transform: translateY(-1px);
   }
 
@@ -125,8 +127,8 @@ function handleButtonClick(): void {
     }
 
     p {
-      color: var(--s-color-base-on-accent);
-      font-weight: 800;
+      color: var(--s-color-base-content-primary);
+      font-weight: 700;
       line-height: 1.2;
     }
   }

@@ -73,7 +73,7 @@
         "noContacts": "Zatím nemáte přidány žádné kontakty",
         "noFoundRecords": "Nenalezeny žádné záznamy",
         "none": "Žádný",
-        "notSoraAddress": "Tato adresa bude níže uložena jako adresa {SORA}. Ujistěte se, že příjemce má přístup k řetězci {SORA}:",
+        "notSoraAddress": "Tato adresa bude uložena jako {Sora} adresa níže. Ujistěte se, že příjemce má přístup k řetězci {Sora}:",
         "options": {
             "delete": "Vymazat",
             "edit": "Upravit kontakt",
@@ -261,18 +261,18 @@
         "title": "Povolit přístup k fotoaparátu v nastavení prohlížeče"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Zkopírujte SORA Network TX hash",
+        "enterNexusRecipient": "ZADEJTE ÚČET SORA NEXUS",
+        "invalidNexusRecipient": "NEPLATNÝ ÚČET SORA NEXUS",
+        "minamotoClaimDescription": "Použijte SORA Network tx hash pro svůj nárok na SORA Minamoto. Každý řádek ukazuje, jaké zásoby spalují.",
+        "minamotoClaimTitle": "Podrobnosti vašeho nároku na Minamoto",
+        "nexusRecipientLabel": "Účet SORA Nexus",
+        "nexusRecipientPlaceholder": "Zadejte svůj účet SORA Nexus i105",
+        "nexusRecipientWarning": "Váš účet SORA Nexus je v této vypalovací transakci veřejně zaznamenán.",
+        "soraNetworkTxHashLabel": "SORA Network TX hash",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "KOLIK {tokenSymbol} CHCETE?",
+        "ssTokensLabel": "žetony SS"
     },
     "buttons": {
         "chooseAToken": "Vybrat token",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "Ano, chápu riziko",
         "header": "Pozor",
-        "info": "Váš zůstatek {symbol} bude po této transakci nižší než {fee} {symbol} . Nebudete moci platit za síťový poplatek za další transakci.",
+        "info": "Váš zůstatek XOR bude po této transakci nižší než {fee} XOR. Nebudete moci platit za síťový poplatek za jinou transakci.",
         "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, zaslat si XOR z jiného účtu {Sora}, nebo provést swap jakéhokoli jiného tokenu, který již máte na účtu, za XOR."
     },
     "confirmSupply": {
@@ -456,7 +456,7 @@
             "placeholder": "Mnemotechnická fráze"
         },
         "accountName": {
-            "desc": "Toto je název vašeho účtu. Zobrazí se pouze vám v {Polkaswap}.",
+            "desc": "Toto je název vašeho účtu. Za {AppName} se zobrazí pouze vám.",
             "placeholder": "Jméno účtu"
         },
         "addAccount": "Přidat účet",
@@ -554,7 +554,7 @@
         "synthetics": "syntetické tokeny"
     },
     "FAQ": "{AppName} - časté dotazy",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Vezměte prosím na vědomí, že fiat hodnoty spojené s kryptoměnami na této webové stránce jsou poskytovány Polkaswap Indexer a jsou přibližné. Vzhledem k přirozené složitosti těchto výpočtů nelze zaručit absolutní přesnost za všech okolností.",
     "fiatPayment": {
         "cedeStoreBtn": "Převod z {value1} přes {value2}",
         "cedeStoreDesc": "Převeďte jakékoli tokeny z {value1} na {value2} prostřednictvím {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Omlouváme se za nepříjemnosti. Na vyřešení tohoto problému usilovně pracujeme. Prosím zkuste to znovu později.",
         "historyBtn": "Moje nákupy",
         "historyTitle": "historie transakcí",
-        "moonpayDesc": "Kupte si ETH tokeny na {Ethereum} a přeneste je do sítě {SORA} přes most",
+        "moonpayDesc": "Kupte si tokeny ETH na {Ethereum} a přeneste je do sítě {Sora} přes most",
         "moonpayTitle": "Kupte si ETH přes MoonPay"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "První",
     "footer": {
         "internet": {
-            "action": "Obnovit {Polkaswap}",
+            "action": "Obnovit {AppName}",
             "desc": {
                 "disabled": "Odpojeno",
                 "stable": "Optimální rychlost",
                 "unstable": "Pomalé připojení"
             },
-            "dialogDesc": "{Polkaswap} vyžaduje připojení k internetu pro stabilní provoz",
+            "dialogDesc": "{AppName} vyžaduje připojení k internetu pro stabilní provoz",
             "dialogTitle": "Připojte se ke zdroji internetu",
             "label": "Rychlost vašeho internetu",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Indexátor:",
                 "title": "{Sora} Výběr síťové služby",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Pro hodnoty fiat použijte Polkaswap Indexer"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Blok Polkaswap Indexer #{block}",
             "label": "Statistické služby",
             "title": {
                 "available": "Dostupné statistiky",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "Částka, kterou můžete stále čerpat ze své pozice, aniž byste překročili svůj úvěrový limit, na základě aktuálního zajištění.",
         "debtDetails": "Podrobnosti o dluhu",
         "depositCollateral": "Vložit zástavu",
-        "disclaimerDescription": "Půjčování digitálních aktiv přes {Polkaswap} nese významné riziko a je zcela na vaše vlastní riziko. Hodnota digitálních aktiv je velmi volatilní a jakékoliv změny v tržních cenách aktiv, která jste si půjčili nebo použili jako zástavu, mohou vést k významným finančním ztrátám.",
+        "disclaimerDescription": "Půjčování digitálních aktiv prostřednictvím {AppName} nese značné riziko a je zcela na vaše vlastní riziko. Hodnota digitálních aktiv je vysoce nestálá a jakékoli změny v tržních cenách aktiv, která jste si vypůjčili nebo použili jako zajištění, mohou vést ke značným finančním ztrátám.",
         "error": {
             "borrowMoreThanAvailable": "Dostupný dluh překročen",
             "enterBorrow": "Zadejte částku k půjčení",
@@ -1183,7 +1183,7 @@
             "limitOrder": "Příkaz „Limit“ vám umožňuje specifikovat přesnou cenu, za kterou chcete aktivum koupit nebo prodat. Příkaz „Limit Buy“ bude proveden pouze za specifikovanou cenu nebo nižší, zatímco příkaz „Limit Sell“ bude proveden pouze za specifikovanou cenu nebo vyšší. Tato kontrola zajišťuje, že nebudete platit více nebo neprodávat za méně, než je vám příjemné.",
             "marketOrder": "„Tržní příkaz“ je příkaz k okamžitému nákupu nebo prodeji za nejlepší dostupnou aktuální cenu. Nevyžaduje stanovení ceny, zajištění rychlého provedení, ale s kompromisem menší kontroly nad přijatou nebo zaplacenou cenou. Tento typ příkazu se používá, když je jistota provedení prioritou před kontrolou ceny.",
             "marketWidget": "Tento widget zobrazuje tok provedených obchodů na trhu v reálném čase a poskytuje informace o objemech transakcí, nedávné aktivitě a aktuálních trendech na trhu. Sledováním načasování, ceny a velikosti skutečných obchodů mohou obchodníci získat přehled o dynamice trhu a sentimentu, což jim pomůže najít obchodní příležitosti a činit informovaná rozhodnutí.",
-            "pairsList": "Seznam v reálném čase zobrazující aktuální nákupní a prodejní objednávky pro kryptoměnu. Pomůže vám porozumět poptávce, potenciálnímu směru ceny a objemu obchodu na SORA Network a Polkaswap DEX",
+            "pairsList": "Seznam v reálném čase zobrazující aktuální nákupní a prodejní objednávky pro kryptoměnu. Pomáhá vám porozumět poptávce, potenciálnímu směru ceny a objemu obchodu v síti {Sora} a {AppName} DEX",
             "txDetails": {
                 "amount": "'Částka' odkazuje na celkový počet aktiv, která chcete koupit nebo prodat ve své objednávce. Je důležité specifikovat, protože to určuje velikost vaší transakce, ovlivňující celkové náklady na nákupní objednávky nebo výnosy na prodejní objednávky.",
                 "expiryDate": "'Datum expirace' je konečným termínem pro provedení vaší objednávky. Pokud trh nedosáhne vaší stanovené ceny před tímto datem, objednávka se automaticky zruší. Pokud podmínky na trhu neodpovídají vašim obchodním preferencím, nejste vázáni věčným čekáním.",
@@ -1400,7 +1400,7 @@
         "startInviting": "Bond XOR doporučit ostatním",
         "title": "Program doporučení",
         "unbondTitle": "Zrušit vazbu XOR",
-        "welcomeMessage": "\nPřipojte se ke mně na {Polkaswap}!\n\nObjevte stylový {DEX}, který vám umožní vyměňovat desítky tokenů s křížovými řetězovými swapmi, knihou objednávek a spoustou odměn!\n\n🎁 Pozvěte přátele a získejte 10% z jejich obchodních poplatků\n\nUvidíme se tam!"
+        "welcomeMessage": "Připojte se ke mně na {AppName}!\n\nObjevte stylový {DEX}, který vám umožní vyměnit desítky tokenů za swapy napříč řetězci, knihu objednávek a spoustu odměn!\n\n🎁 Pozvěte přátele a získejte 10 % z jejich poplatků za obchodování\n\nUvidíme se tam!"
     },
     "releaseNotesText": "Poznámky k vydání",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Regulovaná instituce"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Množství",
+        "assetLabel": "Symbol aktiva",
+        "clearPayload": "Jasná forma",
+        "copyPayload": "Kopírovat užitečné zatížení",
+        "destinationAddressLabel": "Adresa příjemce",
+        "destinationNetworkLabel": "Do sítě",
+        "emptyPayloadHelp": "Nastavte pole formuláře, abyste vygenerovali užitečné zatížení SCCP připravené k odeslání.",
+        "generatePayload": "Vygenerujte užitečné zatížení SCCP",
+        "noteLabel": "Volitelná poznámka",
+        "payloadCopied": "Užitečná zátěž zkopírována",
+        "payloadCopyFailed": "Kopírování se nezdařilo, zkuste to prosím znovu",
+        "payloadLabel": "Připravený náklad",
+        "sourceNetworkLabel": "Ze sítě",
+        "subtitle": "Pomocník pro přenos Secure Cross-Chain Protocol (SCCP) pro BSC, Ethereum a TRON.",
+        "supportedNetworks": "Podporované řetězy: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Hledat",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "Nemáte žádné nominované validátory",
             "noValidators": "Neexistují žádné validátory splňující zadaný filtr",
             "return": "Vrátit se",
-            "search": "Vyhledávání..."
+            "search": "Vyhledávání...",
+            "staked": "Vsazeno",
+            "stakedTooltip": "Celkový vklad XOR s tímto validátorem, včetně jeho vlastního vkladu a nominovaného vkladu"
         },
         "withdraw": {
             "beingWithdrawn": "Být stažen",

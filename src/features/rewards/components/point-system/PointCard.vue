@@ -84,7 +84,7 @@ function handleClick(): void {
 
 <style lang="scss" scoped>
 .el-divider {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: var(--s-color-base-border-secondary);
   margin-bottom: $inner-spacing-small;
   margin-top: $inner-spacing-small;
 }
@@ -98,8 +98,8 @@ function handleClick(): void {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    border-color: rgba(82, 185, 255, 0.34);
-    box-shadow: 0 22px 42px rgba(23, 6, 41, 0.24);
+    border-color: var(--s-color-theme-accent);
+    box-shadow: var(--s-shadow-element);
     transform: translateY(-1px);
   }
 
@@ -116,10 +116,10 @@ function handleClick(): void {
     }
 
     p {
-      background-color: rgba(35, 7, 53, 0.64);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background-color: var(--s-color-base-background);
+      border: 1px solid var(--s-color-base-border-secondary);
       border-radius: var(--s-border-radius-small);
-      color: var(--s-color-base-on-accent);
+      color: var(--s-color-base-content-primary);
       font-size: 12px;
       font-weight: 700;
       margin-left: auto;
@@ -127,8 +127,7 @@ function handleClick(): void {
       padding: 5px $inner-spacing-mini;
       text-align: center;
       span {
-        color: var(--s-color-base-on-accent);
-        opacity: 0.4;
+        color: var(--s-color-base-content-secondary);
         font-size: 10px;
       }
     }
@@ -145,20 +144,20 @@ function handleClick(): void {
     &:hover {
       cursor: pointer;
       p {
-        color: var(--s-color-base-on-accent);
+        color: var(--s-color-theme-accent);
       }
     }
     p {
       font-weight: 300;
       font-size: 15px;
       line-height: 1.25;
-      color: var(--s-color-base-on-accent);
+      color: var(--s-color-base-content-primary);
     }
     i {
       align-self: center;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: var(--s-color-base-background);
       border-radius: 50%;
-      color: var(--s-color-base-content-tertiary);
+      color: var(--s-color-base-content-secondary);
       flex: 0 0 auto;
       padding: $inner-spacing-mini;
     }
@@ -167,7 +166,7 @@ function handleClick(): void {
 
       &:hover {
         p {
-          color: var(--s-color-base-on-accent);
+          color: var(--s-color-base-content-primary);
         }
       }
     }

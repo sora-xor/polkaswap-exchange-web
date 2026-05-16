@@ -360,6 +360,14 @@ $wallet-dark-token-overrides: (
   }
 }
 
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  src: url('@/assets/fonts/NotoNastaliqUrdu-wght.ttf') format('truetype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400 700;
+}
+
 @include theme.typography-preset-default;
 
 :root,
@@ -379,6 +387,12 @@ $wallet-dark-token-overrides: (
 
   @include theme.eval-tokens-partial($polkaswap-dark-token-overrides);
   @include apply-custom-properties($legacy-dark-overrides);
+}
+
+html[lang='ur'] {
+  --s-font-family-default: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', 'Jameel Noori Nastaleeq', 'Nafees Nastaleeq',
+    'Segoe UI', Tahoma, Sora, sans-serif;
+  --s-font-family-mono: var(--s-font-family-default);
 }
 
 // Soramitsu UI now renders many icons as inline SVG. Ensure icon primitives

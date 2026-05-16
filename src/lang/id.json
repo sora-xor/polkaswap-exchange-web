@@ -73,7 +73,7 @@
         "noContacts": "Anda belum menambahkan kontak apa pun",
         "noFoundRecords": "Tidak ada catatan yang ditemukan",
         "none": "Tidak ada",
-        "notSoraAddress": "Alamat ini akan disimpan sebagai alamat {SORA} di bawah ini. Pastikan penerima dapat mengakses rantai {SORA}:",
+        "notSoraAddress": "Alamat ini akan disimpan sebagai alamat {Sora} di bawah. Pastikan penerima dapat mengakses rantai {Sora}:",
         "options": {
             "delete": "Menghapus",
             "edit": "Mengedit kontak",
@@ -261,18 +261,18 @@
         "title": "Izinkan akses kamera di setelan browser"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Salin hash tx Jaringan SORA",
+        "enterNexusRecipient": "MASUK AKUN SORA NEXUS",
+        "invalidNexusRecipient": "AKUN SORA NEXUS TIDAK VALID",
+        "minamotoClaimDescription": "Gunakan hash tx Jaringan SORA untuk klaim Anda pada SORA Minamoto. Setiap baris menunjukkan cadangan yang terbakar.",
+        "minamotoClaimTitle": "Detail klaim Minamoto Anda",
+        "nexusRecipientLabel": "akun SORA Nexus",
+        "nexusRecipientPlaceholder": "Masukkan akun SORA Nexus i105 Anda",
+        "nexusRecipientWarning": "Akun SORA Nexus Anda dicatat secara publik dalam transaksi pembakaran ini.",
+        "soraNetworkTxHashLabel": "Hash jaringan SORA",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "BERAPA {tokenSymbol} YANG ANDA INGINKAN?",
+        "ssTokensLabel": "token SS"
     },
     "buttons": {
         "chooseAToken": "Pilih token",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "Ya, saya mengerti risikonya",
         "header": "Perhatian",
-        "info": "Saldo {symbol} Anda akan kurang dari {fee} {symbol} setelah transaksi ini. Anda tidak akan dapat membayar biaya jaringan untuk transaksi lain.",
+        "info": "Saldo XOR Anda akan kurang dari {fee} XOR setelah transaksi ini. Anda tidak akan dapat membayar biaya jaringan untuk transaksi lain.",
         "payoff": "Anda harus menggunakan Bridge untuk mendapatkan XOR dari jaringan lain, mengirim XOR dari akun {Sora} lain, atau menukar token lain yang sudah ada di akun Anda ke XOR."
     },
     "confirmSupply": {
@@ -456,7 +456,7 @@
             "placeholder": "Frasa mnemonik"
         },
         "accountName": {
-            "desc": "Ini adalah nama akun Anda. Ini hanya akan terlihat oleh Anda di {Polkaswap}.",
+            "desc": "Ini adalah nama akun Anda. Ini hanya akan terlihat oleh Anda pada tahun {AppName}.",
             "placeholder": "Nama akun"
         },
         "addAccount": "Tambahkan akun",
@@ -554,7 +554,7 @@
         "synthetics": "token sintetis"
     },
     "FAQ": "Tanya Jawab {AppName}",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Harap dicatat bahwa nilai fiat yang terkait dengan mata uang kripto di situs web ini disediakan oleh Pengindeks Polkaswap dan merupakan perkiraan. Mengingat kompleksitas yang melekat pada perhitungan ini, ketepatan mutlak tidak dapat dijamin setiap saat.",
     "fiatPayment": {
         "cedeStoreBtn": "Transfer dari {value1} melalui {value2}",
         "cedeStoreDesc": "Transfer token apa pun dari {value1} ke {value2} melalui {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti.",
         "historyBtn": "pembelian saya",
         "historyTitle": "sejarah transaksi",
-        "moonpayDesc": "Beli token ETH di {Ethereum} dan transfer ke jaringan {SORA} melalui jembatan",
+        "moonpayDesc": "Beli token ETH di {Ethereum} dan transfer ke jaringan {Sora} melalui jembatan",
         "moonpayTitle": "Beli ETH melalui MoonPay"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "Pertama",
     "footer": {
         "internet": {
-            "action": "Segarkan {Polkaswap}",
+            "action": "Segarkan {AppName}",
             "desc": {
                 "disabled": "Terputus",
                 "stable": "Kecepatan optimal",
                 "unstable": "Koneksi lambat"
             },
-            "dialogDesc": "{Polkaswap} membutuhkan koneksi internet untuk pengalaman yang stabil",
+            "dialogDesc": "{AppName} memerlukan koneksi internet untuk pengalaman yang stabil",
             "dialogTitle": "Hubungkan ke sumber internet",
             "label": "Kecepatan internet Anda",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Pengindeks",
                 "title": "{Sora} Pemilihan layanan jaringan",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Gunakan Pengindeks Polkaswap untuk nilai fiat"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Blok Pengindeks Polkaswap #{block}",
             "label": "Layanan statistik",
             "title": {
                 "available": "Statistik tersedia",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "Jumlah dana yang masih dapat Anda tarik dari posisi Anda tanpa melebihi batas pinjaman Anda, berdasarkan jaminan Anda saat ini.",
         "debtDetails": "Rincian hutang",
         "depositCollateral": "Deposit agunan",
-        "disclaimerDescription": "Meminjam aset digital melalui {Polkaswap} memiliki risiko signifikan dan sepenuhnya menjadi tanggung jawab Anda sendiri. Nilai aset digital sangat fluktuatif, dan setiap perubahan dalam harga pasar aset yang Anda pinjam atau gunakan sebagai jaminan dapat mengakibatkan kerugian keuangan yang signifikan.",
+        "disclaimerDescription": "Meminjam aset digital melalui {AppName} membawa risiko yang signifikan dan sepenuhnya menjadi risiko Anda sendiri. Nilai aset digital sangat fluktuatif, dan setiap perubahan harga pasar dari aset yang Anda pinjam atau gunakan sebagai jaminan dapat menyebabkan kerugian finansial yang besar.",
         "error": {
             "borrowMoreThanAvailable": "Dana yang tersedia melebihi",
             "enterBorrow": "Masukkan jumlah pinjaman",
@@ -853,7 +853,7 @@
                 "title": "Token tidak didukung"
             },
             "transactionError": {
-                "text": "Sayangnya sepertinya transaksi @:moonpayText gagal. Silakan coba lagi. Untuk dukungan @:(moonpayText), buka <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:// support.moonpay.com </a>",
+                "text": "Sayangnya tampaknya transaksi @:moonpayText gagal. Silakan coba lagi. Untuk dukungan @:moonpayText, buka <a class=\"link\" href=\"https://support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https://support.moonpay.com</a>",
                 "title": "Transaksi gagal"
             }
         },
@@ -1183,7 +1183,7 @@
             "limitOrder": "Perintah 'Batas' memungkinkan Anda menentukan harga pasti di mana Anda ingin membeli atau menjual suatu aset. Order 'Limit Buy' hanya akan dieksekusi pada harga yang ditentukan atau lebih rendah, sedangkan order 'Limit Sell' hanya akan dieksekusi pada harga yang ditentukan atau lebih tinggi. Kontrol ini memastikan Anda tidak membayar lebih atau menjual dengan harga kurang dari yang Anda rasa nyaman.",
             "marketOrder": "'Market Order' adalah perintah untuk segera membeli atau menjual pada harga terbaik yang tersedia saat ini. Hal ini tidak memerlukan penetapan harga, memastikan eksekusi yang cepat namun dengan trade-off berupa berkurangnya kendali atas harga yang diterima atau dibayar. Jenis order ini digunakan ketika kepastian eksekusi menjadi prioritas dibandingkan pengendalian harga.",
             "marketWidget": "Widget ini menunjukkan aliran perdagangan yang dieksekusi di pasar secara real-time, memberikan informasi tentang volume transaksi, aktivitas terkini, dan tren pasar saat ini. Dengan mengamati waktu, harga, dan ukuran perdagangan aktual, pedagang dapat memperoleh wawasan tentang dinamika dan sentimen pasar, membantu mereka melihat peluang perdagangan dan membuat keputusan yang tepat.",
-            "pairsList": "Daftar real-time yang menunjukkan pesanan beli dan jual saat ini untuk mata uang kripto. Ini membantu Anda memahami permintaan, potensi arah harga, dan volume perdagangan di Jaringan SORA dan Polkaswap DEX",
+            "pairsList": "Daftar real-time yang menunjukkan pesanan beli dan jual terkini untuk mata uang kripto. Ini membantu Anda memahami permintaan, potensi arah harga, dan volume perdagangan di {Sora} Jaringan dan {AppName} DEX",
             "txDetails": {
                 "amount": "'Jumlah' mengacu pada jumlah total aset yang ingin Anda beli atau jual dalam pesanan Anda. Penting untuk menentukannya, karena ini menentukan ukuran transaksi Anda, yang berdampak pada total biaya untuk pesanan beli atau pendapatan untuk pesanan jual.",
                 "expiryDate": "'Tanggal Kedaluwarsa' adalah batas waktu eksekusi pesanan Anda. Jika pasar tidak mencapai harga yang Anda tentukan sebelum tanggal ini, pesanan otomatis dibatalkan. Anda tidak perlu menunggu terus-menerus jika kondisi pasar tidak sesuai dengan preferensi perdagangan Anda.",
@@ -1400,7 +1400,7 @@
         "startInviting": "Obligasi XOR untuk merujuk orang lain",
         "title": "Program Rujukan",
         "unbondTitle": "Lepaskan ikatan XOR",
-        "welcomeMessage": "\nBergabunglah dengan saya di {Polkaswap}!\n\nTemukan {DEX} bergaya yang memungkinkan Anda menukar puluhan token dengan pertukaran lintas rantai, buku pesanan, dan banyak hadiah!\n\n🎁 Undang teman dan dapatkan 10% dari biaya perdagangan mereka\n\nSampai jumpa di sana!"
+        "welcomeMessage": "Bergabunglah dengan saya di {AppName}!\n\nTemukan {DEX} penuh gaya yang memungkinkan Anda menukar lusinan token dengan pertukaran lintas rantai, buku pesanan, dan banyak hadiah!\n\n🎁 Undang teman dan dapatkan 10% dari biaya perdagangan mereka\n\nSampai jumpa di sana!"
     },
     "releaseNotesText": "Catatan rilis",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Lembaga yang Diatur"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Jumlah",
+        "assetLabel": "Simbol aset",
+        "clearPayload": "Bentuk yang jelas",
+        "copyPayload": "Salin muatan",
+        "destinationAddressLabel": "Alamat penerima",
+        "destinationNetworkLabel": "Ke jaringan",
+        "emptyPayloadHelp": "Atur kolom formulir untuk menghasilkan muatan SCCP yang siap dikirim.",
+        "generatePayload": "Hasilkan muatan SCCP",
+        "noteLabel": "Memo opsional",
+        "payloadCopied": "Muatan disalin",
+        "payloadCopyFailed": "Penyalinan gagal, coba lagi",
+        "payloadLabel": "Muatan yang sudah disiapkan",
+        "sourceNetworkLabel": "Dari jaringan",
+        "subtitle": "Pembantu transfer Secure Cross-Chain Protocol (SCCP) untuk BSC, Ethereum, dan TRON.",
+        "supportedNetworks": "Rantai yang didukung: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Cari",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "Anda tidak memiliki validator yang dinominasikan",
             "noValidators": "Tidak ada validator yang memenuhi filter yang ditentukan",
             "return": "Kembali",
-            "search": "Mencari..."
+            "search": "Mencari...",
+            "staked": "Dipertaruhkan",
+            "stakedTooltip": "Total XOR yang dipertaruhkan dengan validator ini, termasuk taruhan validator itu sendiri dan taruhan yang dinominasikan"
         },
         "withdraw": {
             "beingWithdrawn": "Ditarik",

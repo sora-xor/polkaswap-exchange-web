@@ -5,8 +5,10 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   announceIpfsCidRecursively,
   collectMissingOutputs,
+  createBunnyOriginUrl,
   createDwebGatewayUrl,
   createLocalGatewayUrl,
+  formatStaticSiteCacheHeaderRecommendations,
   hasVueMajorVersion,
   isNoSpaceLeftError,
   isPermissionError,
@@ -428,6 +430,35 @@ describe('swapEnvConfigForProduction', () => {
 describe('createDwebGatewayUrl', () => {
   it('builds a public dweb link for the provided CID', () => {
     expect(createDwebGatewayUrl('QmExampleCid')).toBe('https://dweb.link/ipfs/QmExampleCid/index.html');
+  });
+});
+
+describe('createBunnyOriginUrl', () => {
+  it('builds an IPFS directory origin URL for Bunny', () => {
+    expect(createBunnyOriginUrl('QmExampleCid')).toBe('https://ipfs.io/ipfs/QmExampleCid');
+  });
+
+  it('normalizes a custom gateway base URL before appending the CID', () => {
+    expect(createBunnyOriginUrl('QmExampleCid', 'https://gateway.example.com/')).toBe(
+      'https://gateway.example.com/ipfs/QmExampleCid'
+    );
+  });
+});
+
+describe('formatStaticSiteCacheHeaderRecommendations', () => {
+  it('documents the cache policy required for stable gateway hosts', () => {
+    expect(formatStaticSiteCacheHeaderRecommendations()).toBe(
+      [
+        'Recommended stable-host cache headers:',
+        '  / -> Cache-Control: no-store',
+        '  /index.html -> Cache-Control: no-store',
+        '  /env*.json -> Cache-Control: no-cache, must-revalidate',
+        '  /marketing.json -> Cache-Control: no-cache, must-revalidate',
+        '  /whitelist.json -> Cache-Control: no-cache, must-revalidate',
+        '  /blacklist.json -> Cache-Control: no-cache, must-revalidate',
+        '  /assets/* -> Cache-Control: public, max-age=31536000, immutable',
+      ].join('\n')
+    );
   });
 });
 

@@ -48,7 +48,7 @@
         "understand": "Ik begrijp het",
         "unknown": "Onbekende bron",
         "unpinAsset": "Losmaken activa",
-        "warningMessage": "deze {assetType} | deze {assetTypePlura",
+        "warningMessage": "deze {assetType} | deze {assetTypePlural}",
         "warningMessageText": "Iedereen kan een {assetType} maken, inclusief het maken van valse versies van bestaande {assetTypePlural} die beweren projecten te vertegenwoordigen. Als je een {purchaseAssetType} koopt, kun je het misschien niet terugverkopen.",
         "warningTitle": "Handel op eigen risico!"
     },
@@ -73,7 +73,7 @@
         "noContacts": "Je hebt nog geen contacten toegevoegd",
         "noFoundRecords": "Geen verslagen gevonden",
         "none": "Geen",
-        "notSoraAddress": "Dit adres wordt opgeslagen als {SORA}-adres hieronder. Zorg ervoor dat de ontvanger toegang heeft tot de {SORA}-keten:",
+        "notSoraAddress": "Dit adres wordt hieronder opgeslagen als {Sora} adres. Zorg ervoor dat de ontvanger toegang heeft tot de {Sora}-keten:",
         "options": {
             "delete": "Verwijderen",
             "edit": "Bewerk contact",
@@ -261,18 +261,18 @@
         "title": "Cameratoegang toestaan in browserinstellingen"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Kopieer SORA Network tx-hash",
+        "enterNexusRecipient": "VOER HET SORA NEXUS-ACCOUNT IN",
+        "invalidNexusRecipient": "ONGELDIG SORA NEXUS-ACCOUNT",
+        "minamotoClaimDescription": "Gebruik de SORA Network tx-hash voor uw claim op SORA Minamoto. Elke rij laat zien wat die verbranding reserveert.",
+        "minamotoClaimTitle": "Uw Minamoto-claimgegevens",
+        "nexusRecipientLabel": "SORA Nexus-account",
+        "nexusRecipientPlaceholder": "Voer uw SORA Nexus i105-account in",
+        "nexusRecipientWarning": "Uw SORA Nexus-account wordt openbaar vastgelegd in deze brandtransactie.",
+        "soraNetworkTxHashLabel": "SORA Netwerk tx-hash",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "HOEVEEL {tokenSymbol} WILT U?",
+        "ssTokensLabel": "SS-tokens"
     },
     "buttons": {
         "chooseAToken": "Kies een token",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "Ja, ik begrijp het risico",
         "header": "Aandacht",
-        "info": "Uw {symbol} -saldo is na deze transactie minder dan {fee} {symbol} . U kunt de netwerkkosten voor een andere transactie niet betalen.",
+        "info": "Uw XOR-saldo zal na deze transactie minder dan {fee} XOR bedragen. U kunt de netwerkkosten voor een andere transactie niet betalen.",
         "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander {Sora}-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR."
     },
     "confirmSupply": {
@@ -344,7 +344,7 @@
         "deposit": "Storting",
         "firstLiquidityProvider": "U bent de eerste liquiditeitsverschaffer",
         "firstLiquidityProviderInfo": "De verhouding van de tokens die u toevoegt zal de prijs van deze pool bepalen.<br/>Zodra u tevreden bent met de koers klikt u op leveren om te herzien.",
-        "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
+        "firstSecondPoolTokens": "{first}-{second} Zwembad",
         "pricePool": "Prijzen en vergoedingen",
         "shareOfPool": "Aandeel van de pool",
         "supply": "Toevoegen",
@@ -456,7 +456,7 @@
             "placeholder": "Mnemotechnische zin"
         },
         "accountName": {
-            "desc": "Dit is de naam van uw account. Het zal alleen voor jou zichtbaar zijn in {Polkaswap}.",
+            "desc": "Dit is de naam van uw account. Het zal alleen voor u zichtbaar zijn over {AppName}.",
             "placeholder": "Accountnaam"
         },
         "addAccount": "Een account toevoegen",
@@ -554,7 +554,7 @@
         "synthetics": "synthetische tokens"
     },
     "FAQ": "{AppName} Veelgestelde vragen",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Houd er rekening mee dat de fiatwaarden die verband houden met cryptocurrencies op deze website worden verstrekt door de Polkaswap Indexer en bij benadering zijn. Gezien de inherente complexiteit van deze berekeningen kan absolute nauwkeurigheid niet te allen tijde worden gegarandeerd.",
     "fiatPayment": {
         "cedeStoreBtn": "Overboeking van {value1} via {value2}",
         "cedeStoreDesc": "Draag eventuele tokens over van {value1} naar {value2} via {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw.",
         "historyBtn": "Mijn aankopen",
         "historyTitle": "Transactie Geschiedenis",
-        "moonpayDesc": "Koop ETH-tokens op {Ethereum} en verplaats ze via de bridge naar het {SORA}-netwerk",
+        "moonpayDesc": "Koop ETH-tokens op {Ethereum} en draag ze over naar het {Sora}-netwerk via de bridge",
         "moonpayTitle": "Koop ETH via MoonPay"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "Eerst",
     "footer": {
         "internet": {
-            "action": "Vernieuw {Polkaswap}",
+            "action": "Vernieuwen {AppName}",
             "desc": {
                 "disabled": "Losgekoppeld",
                 "stable": "Optimale snelheid",
                 "unstable": "Langzame verbinding"
             },
-            "dialogDesc": "{Polkaswap} vereist een internetverbinding voor een stabiele ervaring",
+            "dialogDesc": "{AppName} vereist een internetverbinding voor een stabiele ervaring",
             "dialogTitle": "Maak verbinding met internetbron",
             "label": "Je internetsnelheid",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Indexeerder",
                 "title": "{Sora} Netwerkserviceselectie",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Gebruik Polkaswap Indexer voor fiatwaarden"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Polkaswap-indexerblok #{block}",
             "label": "Statistische diensten",
             "title": {
                 "available": "Statistieken beschikbaar",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "Het bedrag aan fondsen dat u nog kunt opnemen uit uw positie zonder uw leencapaciteit te overschrijden, gebaseerd op uw huidige onderpand.",
         "debtDetails": "Schuld details",
         "depositCollateral": "Deponeer onderpand",
-        "disclaimerDescription": "Het lenen van digitale activa via {Polkaswap} brengt aanzienlijke risico's met zich mee en is volledig op eigen risico. De waarde van digitale activa is zeer volatiel en eventuele wijzigingen in de marktprijzen van de activa die u heeft geleend of als onderpand heeft gebruikt, kunnen leiden tot aanzienlijke financiële verliezen.",
+        "disclaimerDescription": "Het lenen van digitale activa via {AppName} brengt aanzienlijke risico's met zich mee en is geheel op eigen risico. De waarde van digitale activa is zeer volatiel en eventuele veranderingen in de marktprijzen van de activa die u hebt geleend of als onderpand gebruikt, kunnen tot aanzienlijke financiële verliezen leiden.",
         "error": {
             "borrowMoreThanAvailable": "Beschikbare schuld overschreden",
             "enterBorrow": "Voer het leenbedrag in",
@@ -1183,7 +1183,7 @@
             "limitOrder": "Met een 'Limiet'-order kunt u de exacte prijs opgeven waartegen u een actief wilt kopen of verkopen. Een 'Limit Buy'-order wordt alleen uitgevoerd tegen de opgegeven prijs of lager, terwijl een 'Limit Sell'-order alleen tegen de opgegeven prijs of hoger wordt uitgevoerd. Deze controle zorgt ervoor dat u niet meer betaalt of voor minder verkoopt dan u prettig vindt.",
             "marketOrder": "Een 'Marktorder' is een order om onmiddellijk te kopen of verkopen tegen de best beschikbare huidige prijs. Het vereist geen vaststelling van een prijs, waardoor een snelle uitvoering wordt gegarandeerd, maar met de wisselwerking van minder controle over de ontvangen of betaalde prijs. Dit type order wordt gebruikt wanneer zekerheid van uitvoering prioriteit heeft boven prijscontrole.",
             "marketWidget": "Deze widget toont een realtime stroom van uitgevoerde transacties op de markt en biedt informatie over transactievolumes, recente activiteiten en huidige markttrends. Door de timing, prijs en omvang van daadwerkelijke transacties te observeren, kunnen handelaren inzicht krijgen in de marktdynamiek en het sentiment, waardoor ze handelsmogelijkheden kunnen herkennen en weloverwogen beslissingen kunnen nemen.",
-            "pairsList": "Een realtime lijst met huidige koop- en verkooporders voor een cryptocurrency. Het helpt u de vraag, de potentiële prijsrichting en het handelsvolume op het SORA-netwerk en Polkaswap DEX te begrijpen",
+            "pairsList": "Een realtime lijst met huidige koop- en verkooporders voor een cryptocurrency. Het helpt u de vraag, de potentiële koersrichting en het handelsvolume op het {Sora} netwerk en {AppName} DEX te begrijpen",
             "txDetails": {
                 "amount": "Het 'Bedrag' verwijst naar het totale aantal activa dat u in uw bestelling wilt kopen of verkopen. Het is belangrijk om dit op te geven, omdat dit de omvang van uw transactie bepaalt en van invloed is op de totale kosten voor kooporders of de opbrengst voor verkooporders.",
                 "expiryDate": "De 'Vervaldatum' is de uiterste datum waarop uw order moet worden uitgevoerd. Als de markt de door u opgegeven prijs niet vóór deze datum bereikt, wordt de bestelling automatisch geannuleerd. U hoeft niet eeuwig te wachten als de marktomstandigheden niet aansluiten bij uw handelsvoorkeuren.",
@@ -1400,7 +1400,7 @@
         "startInviting": "Bond XOR om anderen door te verwijzen",
         "title": "Referentieprogramma (Referral Program) ",
         "unbondTitle": "Ontbonden XOR",
-        "welcomeMessage": "\nDoe met mij mee op {Polkaswap}!\n\nOntdek de stijlvolle {DEX} waarmee je tientallen tokens kunt wisselen met cross-chain swaps, orderboek en veel beloningen!\n\n🎁 Nodig vrienden uit en verdien 10% van hun handelskosten\n\nZie je daar!"
+        "welcomeMessage": "Sluit me aan bij {AppName}!\n\nOntdek de stijlvolle {DEX} waarmee je tientallen tokens kunt ruilen met cross-chain swaps, een orderboek en tal van beloningen!\n\n🎁 Nodig vrienden uit en verdien 10% van hun handelskosten\n\nZie je daar!"
     },
     "releaseNotesText": "Release-opmerkingen",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Gereguleerde instelling"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Hoeveelheid",
+        "assetLabel": "Activa-symbool",
+        "clearPayload": "Duidelijke vorm",
+        "copyPayload": "Kopieer de lading",
+        "destinationAddressLabel": "Adres van ontvanger",
+        "destinationNetworkLabel": "Om te netwerken",
+        "emptyPayloadHelp": "Stel de formuliervelden in om een ​​SCCP-payload te genereren die gereed is voor verzending.",
+        "generatePayload": "SCCP-payload genereren",
+        "noteLabel": "Optioneel memo",
+        "payloadCopied": "Payload gekopieerd",
+        "payloadCopyFailed": "Kopiëren mislukt. Probeer het opnieuw",
+        "payloadLabel": "Voorbereide lading",
+        "sourceNetworkLabel": "Van netwerk",
+        "subtitle": "Secure Cross-Chain Protocol (SCCP) overdrachtshelper voor BSC, Ethereum en TRON.",
+        "supportedNetworks": "Ondersteunde kettingen: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Zoeken",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "U heeft geen genomineerde validators",
             "noValidators": "Er zijn geen validators die aan het opgegeven filter voldoen",
             "return": "Opbrengst",
-            "search": "Zoekopdracht..."
+            "search": "Zoekopdracht...",
+            "staked": "Uitgezet",
+            "stakedTooltip": "Totale XOR-inzet bij deze validator, inclusief de eigen inzet van de validator en de genomineerde inzet"
         },
         "withdraw": {
             "beingWithdrawn": "Teruggetrokken zijn",

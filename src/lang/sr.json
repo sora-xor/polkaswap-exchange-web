@@ -73,7 +73,7 @@
         "noContacts": "Још увек нисте додали ниједан контакт",
         "noFoundRecords": "Није пронађен ниједан запис",
         "none": "Ниједан",
-        "notSoraAddress": "Ова адреса ће бити сачувана као {SORA} адреса испод. Уверите се да прималац може да приступи ланцу {SORA}:",
+        "notSoraAddress": "Ова адреса ће бити сачувана као {Sora} адреса испод. Уверите се да прималац може да приступи ланцу {Sora}:",
         "options": {
             "delete": "Избриши",
             "edit": "Уредите контакт",
@@ -261,18 +261,18 @@
         "title": "Дозволите приступ камери у подешавањима претраживача"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "Copy SORA Network tx hash",
-        "enterNexusRecipient": "ENTER SORA NEXUS ACCOUNT",
-        "invalidNexusRecipient": "INVALID SORA NEXUS ACCOUNT",
-        "minamotoClaimDescription": "Use the SORA Network tx hash for your claim on SORA Minamoto. Each row shows what that burn reserves.",
-        "minamotoClaimTitle": "Your Minamoto claim details",
-        "nexusRecipientLabel": "SORA Nexus account",
-        "nexusRecipientPlaceholder": "Enter your SORA Nexus i105 account",
-        "nexusRecipientWarning": "Your SORA Nexus account is recorded publicly in this burn transaction.",
-        "soraNetworkTxHashLabel": "SORA Network tx hash",
+        "copySoraNetworkTxHash": "Копирај СОРА Нетворк тк хеш",
+        "enterNexusRecipient": "УЛАЗИТЕ СОРА НЕКСУС НАЛОГ",
+        "invalidNexusRecipient": "НЕВАЖЕЋИ СОРА НЕКСУС НАЛОГ",
+        "minamotoClaimDescription": "Користите СОРА Нетворк тк хеш за своје потраживање на СОРА Минамото. Сваки ред показује шта резерве сагоревања.",
+        "minamotoClaimTitle": "Детаљи вашег захтева за Минамото",
+        "nexusRecipientLabel": "СОРА Некус налог",
+        "nexusRecipientPlaceholder": "Унесите свој СОРА Некус и105 налог",
+        "nexusRecipientWarning": "Ваш СОРА Некус налог је јавно евидентиран у овој трансакцији снимања.",
+        "soraNetworkTxHashLabel": "СОРА Нетворк тк хасх",
         "soraNexusXorLabel": "SORA Nexus XOR",
-        "soraV3XorAmountTitle": "HOW MUCH {tokenSymbol} DO YOU WANT?",
-        "ssTokensLabel": "SS tokens"
+        "soraV3XorAmountTitle": "КОЛИКО {tokenSymbol} ЖЕЛИТЕ?",
+        "ssTokensLabel": "СС токенс"
     },
     "buttons": {
         "chooseAToken": "Изаберите токен",
@@ -302,7 +302,7 @@
     "confirmNextTxFailure": {
         "button": "Да, разумем ризик",
         "header": "Пажња",
-        "info": "Ваше стање {symbol} ће бити мање од {fee} {symbol} након ове трансакције. Нећете моћи да платите мрежну накнаду за другу трансакцију.",
+        "info": "Ваше стање КСОР ће бити мање од {fee} КСОР након ове трансакције. Нећете моћи да платите мрежну накнаду за другу трансакцију.",
         "payoff": "Морали бисте да користите мост да добијете XOR са других мрежа, да добијете XOR са другог {Sora} рачуна или да замените било који други токен који је већ на вашем рачуну у XOR."
     },
     "confirmSupply": {
@@ -456,7 +456,7 @@
             "placeholder": "Мнемоничка фраза"
         },
         "accountName": {
-            "desc": "Ovo je ime vašeg naloga. Biće vidljiv samo vama u {Polkaswap}.",
+            "desc": "Ово је назив вашег налога. Биће видљиво само вама у {AppName}.",
             "placeholder": "Ime naloga"
         },
         "addAccount": "Додајте налог",
@@ -554,7 +554,7 @@
         "synthetics": "sintetički tokeni"
     },
     "FAQ": "{AppName} Česta pitanja",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on this website are provided by the Polkaswap Indexer and are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatDisclaimer": "Имајте на уму да су фиат вредности повезане са криптовалутама на овој веб страници обезбеђене од стране Полкасвап индекса и да су приближне. С обзиром на инхерентну сложеност ових прорачуна, не може се гарантовати апсолутна прецизност у сваком тренутку.",
     "fiatPayment": {
         "cedeStoreBtn": "Пренесите са {value1} преко {value2}",
         "cedeStoreDesc": "Пренесите све токене са {value1} на {value2} преко {value3}",
@@ -562,7 +562,7 @@
         "errorMessage": "Извињења због непогодности. Радимо марљиво на решавању овог проблема. Покушајте поново касније.",
         "historyBtn": "Моје куповине",
         "historyTitle": "Трансакције",
-        "moonpayDesc": "Купите ЕТХ токене на {Ethereum} и пренесите их на {SORA} мрежу преко моста",
+        "moonpayDesc": "Купите ЕТХ токене на {Ethereum} и пренесите их на мрежу {Sora} преко моста",
         "moonpayTitle": "Купите ЕТХ преко МоонПаи-а"
     },
     "filter": {
@@ -580,13 +580,13 @@
     "firstText": "Први",
     "footer": {
         "internet": {
-            "action": "Освежи {Polkaswap}",
+            "action": "Освежи {AppName}",
             "desc": {
                 "disabled": "Дисцоннецтед",
                 "stable": "Оптимална брзина",
                 "unstable": "Спора веза"
             },
-            "dialogDesc": "{Polkaswap} захтева интернет везу за стабилно искуство",
+            "dialogDesc": "{AppName} захтева интернет везу за стабилно искуство",
             "dialogTitle": "Повежите се на интернет извор",
             "label": "Ваша брзина интернета",
             "title": {
@@ -612,9 +612,9 @@
             "dialog": {
                 "indexer": "Индексер",
                 "title": "{Sora} Избор мрежне услуге",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "useCeres": "Користите Полкасвап индекс за фиат вредности"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "Полкасвап индексни блок #{block}",
             "label": "Статистичке службе",
             "title": {
                 "available": "Доступна статистика",
@@ -722,7 +722,7 @@
         "debtAvailableDescription": "Iznos sredstava koje još uvek možete povući iz svoje pozicije, a da ne prekoračite svoj kreditni limit, na osnovu vašeg trenutnog kolaterala.",
         "debtDetails": "Детаљи дуга",
         "depositCollateral": "Уплати залог",
-        "disclaimerDescription": "Zaduživanje digitalnih sredstava putem {Polkaswap} nosi značajan rizik i u potpunosti je na vaš rizik. Vrednost digitalnih sredstava je veoma promenljiva, i bilo kakve promene u tržišnim cenama sredstava koje ste pozajmili ili koristili kao zalog mogu dovesti do značajnih finansijskih gubitaka.",
+        "disclaimerDescription": "Позајмљивање дигиталне имовине преко {AppName} носи значајан ризик и потпуно је на сопствени ризик. Вредност дигиталне имовине је веома променљива, а све промене у тржишним ценама имовине коју сте позајмили или користили као колатерал могу довести до значајних финансијских губитака.",
         "error": {
             "borrowMoreThanAvailable": "Dostupni dug premašen",
             "enterBorrow": "Унесите износ за позајмљивање",
@@ -1183,7 +1183,7 @@
             "limitOrder": "„Лимит“ налог вам омогућава да одредите тачну цену по којој желите да купите или продате средство. Налог 'Лимит Буи' ће бити извршен само по наведеној цени или нижој, док ће налог 'Лимит Селл' бити извршен само по наведеној цени или вишој. Ова контрола осигурава да не плаћате више или продајете за мање него што вам одговара.",
             "marketOrder": "'Тржишни налог' је налог да се одмах купи или прода по најбољој доступној тренутној цени. Не захтева постављање цене, обезбеђујући брзо извршење, али уз компромис мање контроле над примљеном или плаћеном ценом. Ова врста налога се користи када је сигурност извршења приоритет над контролом цене.",
             "marketWidget": "Овај виџет приказује ток извршених трансакција на тржишту у реалном времену, пружајући информације о обиму трансакција, недавним активностима и тренутним тржишним трендовима. Посматрајући тајминг, цену и величину стварних трговина, трговци могу да стекну увид у динамику и расположење тржишта, помажући им да уоче могућности трговања и донесу информисане одлуке",
-            "pairsList": "Листа у реалном времену која приказује тренутне наруџбе за куповину и продају криптовалуте. Помаже вам да разумете потражњу, потенцијални правац цена и обим трговине на СОРА мрежи и Полкасвап ДЕКС-у",
+            "pairsList": "Листа у реалном времену која приказује тренутне наруџбе за куповину и продају криптовалуте. Помаже вам да разумете потражњу, потенцијални правац цене и обим трговине на {Sora} мрежи и {AppName} ДЕКС",
             "txDetails": {
                 "amount": "„Износ“ се односи на укупан број средстава коју желите да купите или продате у својој наруџбини. Важно је да наведете, јер то одређује величину ваше трансакције, утичући на укупне трошкове за наруџбине за куповину или приход за поруџбине за продају.",
                 "expiryDate": "'Датум истека' је крајњи рок за извршење вашег налога. Ако тржиште не достигне наведену цену пре овог датума, поруџбина се аутоматски отказује. Нисте везани за вечито чекање ако тржишни услови нису у складу са вашим преференцијама трговања.",
@@ -1400,7 +1400,7 @@
         "startInviting": "Vežite XOR да бисте упутили друге",
         "title": "Програм препорука",
         "unbondTitle": "Razveži XOR",
-        "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stajliš {DEX} koji ti omogućava da menjaš desetine tokena sa međulančanim menjanjem, knjigom narudžbina i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!"
+        "welcomeMessage": "Придружите ми се на {AppName}!\n\nОткријте елегантан {DEX} који вам омогућава да замените више десетина токена са заменама унакрсних ланаца, књигом наруџбина и мноштвом награда!\n\n🎁 Позовите пријатеље и зарадите 10% њихових накнада за трговање\n\nВидимо се тамо!"
     },
     "releaseNotesText": "Напомене о издању",
     "removeLiquidity": {
@@ -1496,21 +1496,21 @@
         "regulatedInsitution": "Регулисана институција"
     },
     "sccp": {
-        "amountLabel": "Amount",
-        "assetLabel": "Asset symbol",
-        "clearPayload": "Clear form",
-        "copyPayload": "Copy payload",
-        "destinationAddressLabel": "Recipient address",
-        "destinationNetworkLabel": "To network",
-        "emptyPayloadHelp": "Set the form fields to generate a ready-to-send SCCP payload.",
-        "generatePayload": "Generate SCCP payload",
-        "noteLabel": "Optional memo",
-        "payloadCopied": "Payload copied",
-        "payloadCopyFailed": "Copy failed, please try again",
-        "payloadLabel": "Prepared payload",
-        "sourceNetworkLabel": "From network",
-        "subtitle": "Secure Cross-Chain Protocol (SCCP) transfer helper for BSC, Ethereum, and TRON.",
-        "supportedNetworks": "Supported chains: {chains}.",
+        "amountLabel": "Износ",
+        "assetLabel": "Симбол имовине",
+        "clearPayload": "Јасна форма",
+        "copyPayload": "Копирај терет",
+        "destinationAddressLabel": "Адреса примаоца",
+        "destinationNetworkLabel": "У мрежу",
+        "emptyPayloadHelp": "Подесите поља обрасца да генеришете СЦЦП корисни терет спреман за слање.",
+        "generatePayload": "Генеришите СЦЦП терет",
+        "noteLabel": "Опциона белешка",
+        "payloadCopied": "Корисно оптерећење је копирано",
+        "payloadCopyFailed": "Копирање није успело, покушајте поново",
+        "payloadLabel": "Припремљени терет",
+        "sourceNetworkLabel": "Са мреже",
+        "subtitle": "Помоћник за пренос безбедног унакрсног ланца протокола (СЦЦП) за БСЦ, Етхереум и ТРОН.",
+        "supportedNetworks": "Подржани ланци: {chains}.",
         "title": "SCCP"
     },
     "searchText": "Претрага",
@@ -1694,7 +1694,9 @@
             "noNominatedValidators": "Nemaš nominovane validatore",
             "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
             "return": "Повратак",
-            "search": "Претрага..."
+            "search": "Претрага...",
+            "staked": "Стакед",
+            "stakedTooltip": "Укупан КСОР уложен са овим валидатором, укључујући сопствени улог валидатора и номиновани улог"
         },
         "withdraw": {
             "beingWithdrawn": "Бити повучен",

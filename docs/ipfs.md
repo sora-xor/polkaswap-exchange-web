@@ -24,6 +24,10 @@ This guide documents how to prepare Polkaswap for an IPFS release, publish the b
    ```bash
    yarn build --base ./
    ```
+   The build stamps runtime requests for mutable public files (`env*.json`,
+   `marketing.json`, `whitelist.json`, and `blacklist.json`) with
+   `?v=<build-version>`. Vite-emitted JS/CSS/image assets under `dist/assets/`
+   keep their content-hashed filenames.
 4. (Optional) Start a local IPFS daemon if you plan to host the bundle yourself:
    ```bash
    ipfs daemon
@@ -44,6 +48,18 @@ The script performs the following:
 3. Runs `yarn build --base ./` to generate an IPFS-friendly `dist/`.
 4. Publishes `dist/` to IPFS (production config) and prints the resulting CID and gateway URLs.
 5. Creates a temporary copy of `dist/`, swaps in `public/env.dev.json`, publishes the testnet variant, and prints its CID.
+
+For stable gateway hostnames or container deployments, keep `index.html`
+uncached or revalidated while allowing hashed `dist/assets/*` files to be
+cached immutably. The Docker image in this repo ships `nginx.conf` with those
+headers:
+
+| Path                                        | Cache policy                                         |
+| ------------------------------------------- | ---------------------------------------------------- |
+| `/`, `/index.html`, SPA fallbacks           | `Cache-Control: no-store`                            |
+| `/env*.json`, `/marketing.json`, lists JSON | `Cache-Control: no-cache, must-revalidate`           |
+| `/assets/*`                                 | `Cache-Control: public, max-age=31536000, immutable` |
+| Other root public assets                    | `Cache-Control: no-cache, must-revalidate`           |
 
 The output looks similar to:
 

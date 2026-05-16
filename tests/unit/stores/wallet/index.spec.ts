@@ -311,6 +311,7 @@ vi.mock('@/utils/walletReady', () => {
 
 vi.mock('@/utils/staticAssets', () => ({
   resolveStaticAssetUrl: (value: string) => `https://app.test/${value}`,
+  resolveVersionedStaticAssetUrl: (value: string) => `https://app.test/${value}`,
 }));
 
 vi.mock('@/lib/substrate/sdk/types', () => ({

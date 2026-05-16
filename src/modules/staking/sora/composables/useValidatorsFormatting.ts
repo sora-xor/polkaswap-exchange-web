@@ -40,12 +40,22 @@ export function useValidatorsFormatting() {
 
   const formatReturn = (value: string): string => value;
 
+  /**
+   * Formats validator exposure totals from codec units without coercing token amounts through JS numbers.
+   */
+  const formatStake = (value: string | null | undefined, decimals?: number, symbol = 'XOR', precision = 2): string => {
+    const amount = FPNumber.fromCodecValue(value ?? '0', decimals).toLocaleString(precision);
+
+    return `${amount} ${symbol}`;
+  };
+
   return {
     historyDepth,
     decodeName,
     formatName,
     formatCommission,
     formatReturn,
+    formatStake,
   };
 }
 

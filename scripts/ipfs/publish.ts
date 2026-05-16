@@ -8,6 +8,16 @@ const PROD_ENV_CONFIG_FILENAME = 'env.json';
 const TESTNET_ENV_CONFIG_FILENAME = 'env.dev.json';
 const DEFAULT_LOCAL_GATEWAY_BASE_URL = 'http://127.0.0.1:8080';
 
+export const STATIC_SITE_CACHE_HEADERS = [
+  { path: '/', header: 'Cache-Control: no-store' },
+  { path: '/index.html', header: 'Cache-Control: no-store' },
+  { path: '/env*.json', header: 'Cache-Control: no-cache, must-revalidate' },
+  { path: '/marketing.json', header: 'Cache-Control: no-cache, must-revalidate' },
+  { path: '/whitelist.json', header: 'Cache-Control: no-cache, must-revalidate' },
+  { path: '/blacklist.json', header: 'Cache-Control: no-cache, must-revalidate' },
+  { path: '/assets/*', header: 'Cache-Control: public, max-age=31536000, immutable' },
+] as const;
+
 interface WorkspaceRepository {
   name: string;
   path: string;
@@ -699,10 +709,27 @@ export function createDwebGatewayUrl(cid: string): string {
 }
 
 /**
+ * Creates the IPFS directory URL to use as a Bunny pull-zone origin.
+ */
+export function createBunnyOriginUrl(cid: string, gatewayBaseUrl: string = 'https://ipfs.io'): string {
+  return `${gatewayBaseUrl.replace(/\/+$/, '')}/ipfs/${cid}`;
+}
+
+/**
  * Creates a local gateway URL for a published IPFS CID.
  */
 export function createLocalGatewayUrl(cid: string, baseUrl: string = DEFAULT_LOCAL_GATEWAY_BASE_URL): string {
   return `${baseUrl.replace(/\/+$/, '')}/ipfs/${cid}/index.html`;
+}
+
+/**
+ * Formats the edge headers required for stale-cache-safe static hosting.
+ */
+export function formatStaticSiteCacheHeaderRecommendations(): string {
+  return [
+    'Recommended stable-host cache headers:',
+    ...STATIC_SITE_CACHE_HEADERS.map(({ path, header }) => `  ${path} -> ${header}`),
+  ].join('\n');
 }
 
 function logGatewayUrls(cid: string, label: string, localGatewayBaseUrl: string): void {
@@ -712,6 +739,7 @@ function logGatewayUrls(cid: string, label: string, localGatewayBaseUrl: string)
   if (label === 'Production') {
     console.log('Production dweb link:', createDwebGatewayUrl(cid));
   }
+  console.log(`${label} Bunny origin URL:`, createBunnyOriginUrl(cid));
   console.log(`${label} local gateway:`, createLocalGatewayUrl(cid, localGatewayBaseUrl));
 }
 
@@ -731,6 +759,7 @@ function main(): void {
   console.log('Publishing production `dist/` to IPFS...');
   const productionCid = publishDirectoryToIpfs(DIST_DIR);
   logGatewayUrls(productionCid, 'Production', resolveLocalGatewayBaseUrl());
+  console.log(`\n${formatStaticSiteCacheHeaderRecommendations()}`);
 
   console.log('Preparing testnet assets from the build output...');
   const { distPath: testnetDistPath, cleanup } = createTestnetDistClone();

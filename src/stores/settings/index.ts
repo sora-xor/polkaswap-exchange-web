@@ -22,7 +22,7 @@ import { updateDocumentTitle } from '@/utils/documentTitle';
 import { updateFpNumberLocale } from '@/utils/fp-locale';
 import { NodesConnection } from '@/utils/connection';
 import { toSafeExternalLink } from '@/utils/externalLinks';
-import { resolveStaticAssetUrl } from '@/utils/staticAssets';
+import { resolveStaticAssetUrl, resolveVersionedStaticAssetUrl } from '@/utils/staticAssets';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
@@ -431,14 +431,14 @@ export const useSettingsStore = defineStore('settings', {
     },
     async fetchAdsArray(): Promise<void> {
       try {
-        const marketingConfigUrl = resolveStaticAssetUrl('marketing.json');
+        const marketingConfigUrl = resolveVersionedStaticAssetUrl('marketing.json');
         const { data } = await axiosInstance.get<Array<Ad>>(marketingConfigUrl);
         const normalizedAds = Array.isArray(data)
           ? data.map((ad) => {
               const normalized = { ...ad };
 
               if (ad?.img) {
-                normalized.img = resolveStaticAssetUrl(ad.img);
+                normalized.img = resolveVersionedStaticAssetUrl(ad.img);
               }
 
               if (typeof ad?.link === 'string') {

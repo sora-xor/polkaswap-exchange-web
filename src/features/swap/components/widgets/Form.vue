@@ -79,7 +79,7 @@
         class="action-button s-typography-button--large"
         data-test-name="confirmSwap"
         type="primary"
-        :disabled="isConfirmSwapDisabled"
+        :disabled="isSwapActionDisabled"
         :loading="loading || quoteLoading || pathAvailabilityLoading || isSelectAssetLoading"
         @click="handleSwapClick"
       >
@@ -329,6 +329,7 @@ const isConfirmSwapDisabled = computed(
     isInsufficientBalance.value ||
     isInsufficientXorForFee.value
 );
+const isSwapActionDisabled = computed(() => areTokensSelected.value && isConfirmSwapDisabled.value);
 
 const recountSwapValues = debouncedInputHandler(async () => {
   await runRecountSwapValues();
@@ -559,6 +560,13 @@ function openSelectTokenDialog(isFrom: boolean) {
   showSelectTokenDialog.value = true;
 }
 
+/**
+ * Opens the selector for the first incomplete side of the swap pair.
+ */
+function openMissingTokenDialog() {
+  openSelectTokenDialog(!tokenFrom.value);
+}
+
 async function handleSelectToken(token: AccountAsset) {
   if (!isSelectableAsset(token)) return;
 
@@ -572,6 +580,11 @@ async function handleSelectToken(token: AccountAsset) {
 }
 
 function handleSwapClick() {
+  if (!areTokensSelected.value) {
+    openMissingTokenDialog();
+    return;
+  }
+
   if (isErrorFiatDifferenceStatus.value && allowLossPopup.value) {
     lossWarningVisibility.value = true;
   } else {

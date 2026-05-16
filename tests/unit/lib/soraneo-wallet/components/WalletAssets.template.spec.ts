@@ -64,6 +64,14 @@ describe('WalletAssets template', () => {
     expect(source).toContain('class="wallet-assets-dashes" aria-hidden="true"');
   });
 
+  it('keeps account asset fiat values on the fiat blue design token', async () => {
+    const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
+    const fiatAmountStyleBlock = source.match(/&--fiat-value\s*\{[^}]*\}/)?.[0] ?? '';
+
+    expect(fiatAmountStyleBlock).toContain('color: var(--s-color-fiat-value);');
+    expect(fiatAmountStyleBlock).not.toContain('color: var(--s-color-base-content-secondary);');
+  });
+
   it('keeps the asset headline compact when fiat data and filters share the row', async () => {
     const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssetsHeadline.vue?raw')).default as string;
 

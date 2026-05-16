@@ -38,7 +38,7 @@
           :external="!isSoraToEvm"
           :without-fiat="!isSoraToEvm && isDenominatedAsset"
           :is-max-available="isMaxAvailable"
-          :is-select-available="!autoselectedAssetAddress"
+          :is-select-available="isAssetSelectionAvailable"
           :loading="isConfirmTxLoading"
           :model-value="amountSend"
           :title="t('transfers.from')"
@@ -122,7 +122,7 @@
           class="el-button--next s-typography-button--large"
           data-test-name="nextButton"
           type="primary"
-          :disabled="!areAccountsConnected || (isValidNetwork && isTxConfirmDisabled)"
+          :disabled="nextButtonDisabled"
           :loading="areAccountsConnected && isValidNetwork && isConfirmTxLoading"
           @click="handleNextButtonClick"
         >
@@ -280,6 +280,11 @@ import BridgeNodeIcon from '@/features/bridge/components/NodeIcon.vue';
 import BridgeSelectAsset from '@/features/bridge/components/SelectAsset.vue';
 import BridgeSelectSubAccount from '@/features/bridge/components/SelectSubAccount.vue';
 import BridgeTransactionDetails from '@/features/bridge/components/TransactionDetails.vue';
+import {
+  BridgeNextAction,
+  isBridgeNextButtonDisabled,
+  resolveBridgeNextAction,
+} from '@/features/bridge/pages/bridgePage.actions';
 import ConfirmBridgeTransactionDialog from '@/components/shared/Dialog/ConfirmBridgeTransaction.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 import NetworkFeeWarningDialog from '@/components/shared/Dialog/NetworkFeeWarning.vue';
@@ -384,6 +389,7 @@ const senderName = computed(() => bridgeStore.senderName);
 const recipientName = computed(() => bridgeStore.recipientName);
 const isRegisteredAsset = computed(() => bridgeStore.isRegisteredAsset);
 const autoselectedAssetAddress = computed(() => bridgeStore.autoselectedAssetAddress);
+const isAssetSelectionAvailable = computed(() => !autoselectedAssetAddress.value);
 const hasWaitingForActionTx = computed(() => bridgeStore.hasWaitingForActionTx);
 const balancesFetching = computed(() => bridgeStore.flags.balancesFetching);
 const feesAndLockedFundsFetching = computed(() => bridgeStore.flags.feesAndLockedFundsFetching);
@@ -562,6 +568,16 @@ const isConfirmTxLoading = computed(
     registeredAssetsFetching.value
 );
 
+const nextButtonDisabled = computed(() =>
+  isBridgeNextButtonDisabled({
+    areAccountsConnected: areAccountsConnected.value,
+    isValidNetwork: isValidNetwork.value,
+    isAssetSelected: isAssetSelected.value,
+    isAssetSelectionAvailable: isAssetSelectionAvailable.value,
+    isTxConfirmDisabled: isTxConfirmDisabled.value,
+  })
+);
+
 const setFocusedField = (field: FocusedFieldEnum) => {
   bridgeStore.setFocusedField(field);
 };
@@ -715,14 +731,28 @@ const handleConfirmButtonClick = async () => {
 };
 
 const handleNextButtonClick = () => {
-  if (!areAccountsConnected.value) return;
+  const action = resolveBridgeNextAction({
+    areAccountsConnected: areAccountsConnected.value,
+    isValidNetwork: isValidNetwork.value,
+    isAssetSelected: isAssetSelected.value,
+    isAssetSelectionAvailable: isAssetSelectionAvailable.value,
+    isTxConfirmDisabled: isTxConfirmDisabled.value,
+  });
 
-  if (!isValidNetwork.value) {
-    changeEvmNetworkProvided();
-    return;
+  switch (action) {
+    case BridgeNextAction.ChangeNetwork:
+      changeEvmNetworkProvided();
+      return;
+    case BridgeNextAction.SelectAsset:
+      openSelectAssetDialog();
+      return;
+    case BridgeNextAction.Confirm:
+      void handleConfirmButtonClick();
+      return;
+    case BridgeNextAction.Ignore:
+    default:
+      return;
   }
-
-  void handleConfirmButtonClick();
 };
 
 const autoupdateRouteParams = async () => {

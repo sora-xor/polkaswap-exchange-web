@@ -29,6 +29,7 @@ const shared = vi.hoisted(() => {
   const withdrawUnbonded = vi.fn(async () => undefined);
   const payout = vi.fn(async () => undefined);
   const getPayoutNetworkFee = vi.fn(async () => '3');
+  const getIndexedValidatorsInfo = vi.fn(async () => null);
   const getMyStakingInfo = vi.fn(async () => ({
     totalStake: '10',
     activeStake: '5',
@@ -103,6 +104,7 @@ const shared = vi.hoisted(() => {
     withdrawUnbonded,
     payout,
     getPayoutNetworkFee,
+    getIndexedValidatorsInfo,
     getMyStakingInfo,
     getValidatorsInfo,
     getNominatorsReward,
@@ -122,6 +124,10 @@ const shared = vi.hoisted(() => {
 
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => shared.walletStore,
+}));
+
+vi.mock('@/indexer/queries/staking/validators', () => ({
+  getValidatorsInfoFromIndexer: shared.getIndexedValidatorsInfo,
 }));
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
@@ -186,6 +192,8 @@ describe('staking store', () => {
     shared.withdrawUnbonded.mockClear();
     shared.payout.mockClear();
     shared.getPayoutNetworkFee.mockClear();
+    shared.getIndexedValidatorsInfo.mockClear();
+    shared.getIndexedValidatorsInfo.mockResolvedValue(null);
     shared.getMyStakingInfo.mockClear();
     shared.getValidatorsInfo.mockClear();
     shared.getNominatorsReward.mockClear();
@@ -357,6 +365,35 @@ describe('staking store', () => {
     expect(shared.payeeUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.nominationsUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.accountLedgerUnsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('loads validator info from the indexer before waiting for chain RPC readiness', async () => {
+    const store = useStakingStore();
+    let resolveReady!: () => void;
+
+    shared.apiRef.isReady = new Promise<void>((resolve) => {
+      resolveReady = resolve;
+    });
+    shared.getIndexedValidatorsInfo.mockResolvedValue([{ address: 'indexed-validator', apy: '65.7' }]);
+
+    await store.getValidatorsInfo();
+
+    expect(store.validatorsInfo).toEqual([{ address: 'indexed-validator', apy: '65.7' }]);
+    expect(shared.getIndexedValidatorsInfo).toHaveBeenCalledTimes(1);
+    expect(shared.getValidatorsInfo).not.toHaveBeenCalled();
+    resolveReady();
+  });
+
+  it('falls back to chain RPC when the indexer returns an empty validator list', async () => {
+    const store = useStakingStore();
+
+    shared.getIndexedValidatorsInfo.mockResolvedValue([]);
+
+    await store.getValidatorsInfo();
+
+    expect(store.validatorsInfo).toEqual([{ address: 'validator-1', apy: '10' }]);
+    expect(shared.getIndexedValidatorsInfo).toHaveBeenCalledTimes(1);
+    expect(shared.getValidatorsInfo).toHaveBeenCalledTimes(1);
   });
 
   it('waits for the staking api readiness before loading staking info', async () => {

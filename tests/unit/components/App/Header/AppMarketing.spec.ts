@@ -52,6 +52,7 @@ describe('AppMarketing', () => {
 
     const card = wrapper.find('.marketing-card');
     expect(card.exists()).toBe(true);
+    expect(card.attributes('dir')).toBe('ltr');
     expect(card.attributes('target')).toBe('_self');
     expect(card.attributes('href')).toBe('#/swap/XOR/DAI');
     expect(wrapper.text()).toContain('NOW IN TELEGRAM');
