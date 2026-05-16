@@ -57,6 +57,8 @@ const shellMocks = vi.hoisted(() => {
   return {
     AppShell,
     createAsyncComponent: vi.fn(() => AppShell),
+    installViteCssPreloadErrorHandler: vi.fn(),
+    loadAsyncImportWithRetry: vi.fn((loader: () => Promise<unknown>) => loader()),
   };
 });
 
@@ -112,6 +114,8 @@ vi.mock('@/utils/documentTitle', () => ({
 
 vi.mock('@/shared/ui/async', () => ({
   createAsyncComponent: shellMocks.createAsyncComponent,
+  installViteCssPreloadErrorHandler: shellMocks.installViteCssPreloadErrorHandler,
+  loadAsyncImportWithRetry: shellMocks.loadAsyncImportWithRetry,
 }));
 
 vi.mock('@/app/shell/AppShell.vue', () => ({
@@ -176,6 +180,7 @@ describe('app bootstrap', () => {
 
     expect(securityMocks.registerW3mMessageGuard).toHaveBeenCalledTimes(1);
     expect(consoleFilterMocks.installConsoleWarningFilter).toHaveBeenCalledTimes(1);
+    expect(shellMocks.installViteCssPreloadErrorHandler).toHaveBeenCalledTimes(1);
     expect(telemetryMocks.registerTelemetryStub).toHaveBeenCalledWith('?ipfs-check=1');
     expect(telemetryMocks.registerPilotFeedbackBridge).toHaveBeenCalledTimes(1);
     expect(telemetryMocks.trackEvent).toHaveBeenCalledWith(

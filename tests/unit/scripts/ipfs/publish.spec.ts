@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 
 import {
+  announceIpfsCidRecursively,
   collectMissingOutputs,
   createDwebGatewayUrl,
   createLocalGatewayUrl,
@@ -165,7 +166,7 @@ describe('isNoSpaceLeftError', () => {
 });
 
 describe('publishDirectoryToIpfs', () => {
-  it('adds the directory with explicit pinning and verifies the recursive pin', () => {
+  it('adds the directory with explicit pinning, verifies the pin, and announces providers', () => {
     const calls: string[] = [];
 
     const cid = publishDirectoryToIpfs('/dist', {
@@ -185,6 +186,10 @@ describe('publishDirectoryToIpfs', () => {
           return { stdout: 'QmPublishedCid\n', stderr: '' };
         }
 
+        if (command === 'ipfs' && args[0] === 'routing' && args[1] === 'provide') {
+          return { stdout: '', stderr: '' };
+        }
+
         throw new Error(`Unexpected command: ${[command, ...args].join(' ')}`);
       },
     });
@@ -194,6 +199,7 @@ describe('publishDirectoryToIpfs', () => {
       'ipfs add -Qr --pin=false /dist',
       'ipfs pin add --recursive=true QmPublishedCid',
       'ipfs pin ls --type=recursive --quiet QmPublishedCid',
+      'ipfs routing provide --recursive QmPublishedCid',
     ]);
   });
 
@@ -254,6 +260,10 @@ describe('publishDirectoryToIpfs', () => {
           return { stdout: 'QmRecoveredCid\n', stderr: '' };
         }
 
+        if (command === 'ipfs' && args[0] === 'routing' && args[1] === 'provide') {
+          return { stdout: '', stderr: '' };
+        }
+
         throw new Error(`Unexpected command: ${[command, ...args].join(' ')}`);
       },
     });
@@ -265,6 +275,7 @@ describe('publishDirectoryToIpfs', () => {
       'ipfs add -Qr --pin=false /dist',
       'ipfs pin add --recursive=true QmRecoveredCid',
       'ipfs pin ls --type=recursive --quiet QmRecoveredCid',
+      'ipfs routing provide --recursive QmRecoveredCid',
     ]);
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('IPFS reported no space left on device while publishing /dist.')
@@ -314,6 +325,27 @@ describe('verifyRecursiveIpfsPin', () => {
     expect(() =>
       verifyRecursiveIpfsPin('QmPinnedCid', () => ({ stdout: 'QmPinnedCid\n', stderr: '' }))
     ).not.toThrow();
+  });
+});
+
+describe('announceIpfsCidRecursively', () => {
+  it('announces a recursive provider record for a CID', () => {
+    const calls: string[] = [];
+
+    announceIpfsCidRecursively('QmAnnouncedCid', (command, args) => {
+      calls.push([command, ...args].join(' '));
+      return { stdout: '', stderr: '' };
+    });
+
+    expect(calls).toEqual(['ipfs routing provide --recursive QmAnnouncedCid']);
+  });
+
+  it('throws a focused error when provider announcement fails', () => {
+    expect(() =>
+      announceIpfsCidRecursively('QmUnavailableCid', () => {
+        throw new Error('routing unavailable');
+      })
+    ).toThrowError(/provider announcement failed/);
   });
 });
 

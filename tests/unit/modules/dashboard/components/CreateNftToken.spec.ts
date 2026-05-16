@@ -1,5 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const formatterMocks = vi.hoisted(() => ({
   formatStringValue: vi.fn((value: string) => `formatted-${value}`),
@@ -87,12 +87,33 @@ const mountComponent = () =>
     },
   });
 
+const stubImageFetch = () => {
+  const fetchMock = vi.fn(async () => ({
+    blob: async () => new Blob(['png'], { type: 'image/png' }),
+  }));
+
+  vi.stubGlobal('fetch', fetchMock);
+
+  return fetchMock;
+};
+
+const fillRequiredNftFields = (exposed: any) => {
+  exposed.tokenSymbol.value = 'NFT';
+  exposed.tokenName.value = 'Collectible';
+  exposed.tokenDescription.value = 'Test NFT';
+  exposed.tokenSupply.value = '1';
+};
+
 beforeEach(() => {
   formatterMocks.formatStringValue.mockClear();
   formatterMocks.getCorrectSupply.mockClear();
   walletStoreMocks.nftStorage = null;
   walletStoreMocks.createNftStorageInstance.mockClear();
   walletApiMocks.registerAsset.mockClear();
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
 });
 
 describe('CreateNftToken.vue', () => {
@@ -135,5 +156,88 @@ describe('CreateNftToken.vue', () => {
       content: 'QmToken/nft.png',
       description: 'Test NFT',
     });
+  });
+
+  it('registers subdomain gateway NFT image links with the CID preserved', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    stubImageFetch();
+
+    exposed.handleInputLinkChange('https://bafybeigdyrzt.ipfs.dweb.link/logo.png');
+    fillRequiredNftFields(exposed);
+
+    await flushPromises();
+    await exposed.registerAsset();
+
+    expect(exposed.badSource.value).toBe(false);
+    expect(walletApiMocks.registerAsset).toHaveBeenCalledWith('NFT', 'Collectible', 'correct-1', false, true, {
+      content: 'bafybeigdyrzt/logo.png',
+      description: 'Test NFT',
+    });
+  });
+
+  it('rejects image links that are not supported IPFS URL formats', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    stubImageFetch();
+
+    exposed.handleInputLinkChange('https://example.com/logo.png');
+    fillRequiredNftFields(exposed);
+
+    await flushPromises();
+    await exposed.registerAsset();
+
+    expect(exposed.badSource.value).toBe(true);
+    expect(exposed.tokenContentIpfsParsed.value).toBe('');
+    expect(exposed.isCreateDisabled.value).toBe(true);
+    expect(walletApiMocks.registerAsset).not.toHaveBeenCalled();
+  });
+
+  it.each(['https://ipfs.io/ipfs//logo.png', 'javascript:alert(1)'])(
+    'rejects fetched image links that cannot produce a supported IPFS path: %s',
+    async (url) => {
+      const wrapper = mountComponent();
+      const exposed = (wrapper.vm as any).$?.exposed!;
+
+      stubImageFetch();
+
+      exposed.handleInputLinkChange(url);
+      fillRequiredNftFields(exposed);
+
+      await flushPromises();
+      await exposed.registerAsset();
+
+      expect(exposed.badSource.value).toBe(true);
+      expect(exposed.contentSrcLink.value).toBe('');
+      expect(exposed.tokenContentIpfsParsed.value).toBe('');
+      expect(walletApiMocks.registerAsset).not.toHaveBeenCalled();
+    }
+  );
+
+  it('clears previously parsed content when a replacement image link fails IPFS parsing', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    stubImageFetch();
+
+    exposed.handleInputLinkChange('https://bafybeigdyrzt.ipfs.dweb.link/logo.png');
+
+    await flushPromises();
+
+    expect(exposed.badSource.value).toBe(false);
+    expect(exposed.tokenContentIpfsParsed.value).toBe('bafybeigdyrzt/logo.png');
+
+    exposed.handleInputLinkChange('https://ipfs.io/ipfs//replacement.png');
+    fillRequiredNftFields(exposed);
+
+    await flushPromises();
+    await exposed.registerAsset();
+
+    expect(exposed.badSource.value).toBe(true);
+    expect(exposed.contentSrcLink.value).toBe('');
+    expect(exposed.tokenContentIpfsParsed.value).toBe('');
+    expect(walletApiMocks.registerAsset).not.toHaveBeenCalled();
   });
 });

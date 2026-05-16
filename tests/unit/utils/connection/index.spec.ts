@@ -314,6 +314,31 @@ describe('NodesConnection reconnect behavior', () => {
     expect(nodesConnection.probeCalls).toBe(0);
   });
 
+  it('clears a persisted default node after it is removed from the runtime default list', () => {
+    const storage = createStorage();
+    storage.set('node', JSON.stringify(nodeB));
+
+    const nodesConnection = new RetryNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA]);
+
+    expect(nodesConnection.node).toBeNull();
+    expect(storage.get('node')).toBeNull();
+  });
+
+  it('preserves a persisted custom node when runtime defaults change', () => {
+    const storage = createStorage();
+    storage.set('node', JSON.stringify(nodeB));
+    storage.set('customNodes', JSON.stringify([nodeB]));
+
+    const nodesConnection = new RetryNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA]);
+
+    expect(nodesConnection.node).toEqual(nodeB);
+    expect(storage.get('node')).toBe(JSON.stringify(nodeB));
+  });
+
   it('unregisters active connection tracking even when close() throws', async () => {
     NodesConnection.maxActiveConnections = 1;
 

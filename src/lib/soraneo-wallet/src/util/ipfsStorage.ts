@@ -20,10 +20,32 @@ export class IpfsStorage {
     return new URL(link).hostname;
   }
 
-  /** Normalizes gateway URLs into bare IPFS paths. */
+  /** Normalizes supported IPFS URLs into bare content paths suitable for asset registration. */
   static getIpfsPath(url: string): string {
-    const path = new URL(url).pathname;
-    return path.replace(/\/ipfs\//, '');
+    const parsedUrl = new URL(url.trim());
+    const normalizedPath = parsedUrl.pathname.replace(/^\/+/, '');
+
+    if (parsedUrl.protocol === 'ipfs:') {
+      return [parsedUrl.hostname, normalizedPath].filter(Boolean).join('/');
+    }
+
+    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+      throw new Error('Unsupported IPFS URL protocol');
+    }
+
+    const subdomainGatewayMatch = parsedUrl.hostname.match(/^([^./]+)\.ipfs\./i);
+
+    if (subdomainGatewayMatch) {
+      return [subdomainGatewayMatch[1], normalizedPath].filter(Boolean).join('/');
+    }
+
+    const pathGatewayMatch = parsedUrl.pathname.match(/^\/ipfs\/([^/].*)$/i);
+
+    if (pathGatewayMatch) {
+      return pathGatewayMatch[1];
+    }
+
+    throw new Error('Unsupported IPFS URL format');
   }
 
   /** Encodes a browser `File` as a base64 data URL. */

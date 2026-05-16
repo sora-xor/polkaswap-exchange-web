@@ -126,10 +126,14 @@ export class NodesConnection {
 
     if (node) {
       const defaultNode = defaultNodes.find((item) => item.address === node.address);
+      const customNode = this.customNodes.find((item) => item.address === node.address);
 
       if (defaultNode) {
         // If node from default nodes list - keep this node from localstorage up to date
         this.setNode(defaultNode);
+      } else if (!customNode) {
+        // Drop stale persisted defaults so removed offline endpoints are not retried invisibly.
+        this.setNode(null);
       }
     }
 

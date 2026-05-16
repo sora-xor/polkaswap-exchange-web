@@ -8,7 +8,13 @@ vi.mock('vue', () => ({
   defineAsyncComponent: vueMocks.defineAsyncComponent,
 }));
 
-import { createAsyncComponent, isRetryableAsyncComponentError, loadAsyncImportWithRetry } from '@/shared/ui/async';
+import {
+  createAsyncComponent,
+  installViteCssPreloadErrorHandler,
+  isRetryableAsyncComponentError,
+  isViteCssPreloadError,
+  loadAsyncImportWithRetry,
+} from '@/shared/ui/async';
 import { defineAsyncComponent } from 'vue';
 
 const defineAsyncComponentMock = defineAsyncComponent as unknown as ReturnType<typeof vi.fn>;
@@ -31,6 +37,48 @@ describe('shared async UI helpers', () => {
     expect(isRetryableAsyncComponentError('ChunkLoadError: Loading chunk 7 failed.')).toBe(true);
     expect(isRetryableAsyncComponentError(new Error('Network timeout'))).toBe(false);
     expect(isRetryableAsyncComponentError({ message: 'Loading chunk 7 failed.' })).toBe(false);
+  });
+
+  it('detects Vite CSS preload failures', () => {
+    expect(isViteCssPreloadError(new Error('Unable to preload CSS for https://cdn/app.css'))).toBe(true);
+    expect(isViteCssPreloadError(new Error('Failed to fetch dynamically imported module: https://cdn/app.js'))).toBe(
+      false
+    );
+  });
+
+  it('prevents CSS preload errors without swallowing JavaScript chunk failures', () => {
+    const target = new EventTarget();
+    const logger = { warn: vi.fn() };
+    const teardown = installViteCssPreloadErrorHandler(target, logger);
+
+    const cssEvent = new Event('vite:preloadError', { cancelable: true });
+    Object.defineProperty(cssEvent, 'payload', {
+      value: new Error('Unable to preload CSS for https://cdn/widget.css'),
+    });
+
+    expect(target.dispatchEvent(cssEvent)).toBe(false);
+    expect(logger.warn).toHaveBeenCalledWith(
+      '[bootstrap] CSS preload failed; continuing app startup',
+      expect.any(Error)
+    );
+
+    const jsEvent = new Event('vite:preloadError', { cancelable: true });
+    Object.defineProperty(jsEvent, 'payload', {
+      value: new Error('Failed to fetch dynamically imported module: https://cdn/widget.js'),
+    });
+
+    expect(target.dispatchEvent(jsEvent)).toBe(true);
+    expect(logger.warn).toHaveBeenCalledTimes(1);
+
+    teardown();
+
+    const detachedEvent = new Event('vite:preloadError', { cancelable: true });
+    Object.defineProperty(detachedEvent, 'payload', {
+      value: new Error('Unable to preload CSS for https://cdn/after-teardown.css'),
+    });
+
+    expect(target.dispatchEvent(detachedEvent)).toBe(true);
+    expect(logger.warn).toHaveBeenCalledTimes(1);
   });
 
   it('retries transient async imports with queue-microtask and timer backoff', async () => {

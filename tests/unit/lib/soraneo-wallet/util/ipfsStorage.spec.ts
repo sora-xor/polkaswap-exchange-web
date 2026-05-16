@@ -18,6 +18,46 @@ describe('IpfsStorage', () => {
     expect(IpfsStorage.getIpfsPath('https://ipfs.io/ipfs/QmHash/metadata.json')).toBe('QmHash/metadata.json');
   });
 
+  it('extracts IPFS paths from supported URL formats', () => {
+    expect(IpfsStorage.getIpfsPath('ipfs://QmHash/metadata.json')).toBe('QmHash/metadata.json');
+    expect(IpfsStorage.getIpfsPath('https://bafybeigdyrzt.ipfs.dweb.link/dir/file.png')).toBe(
+      'bafybeigdyrzt/dir/file.png'
+    );
+    expect(IpfsStorage.getIpfsPath('https://bafybeigdyrzt.ipfs.dweb.link/ipfs/file.png')).toBe(
+      'bafybeigdyrzt/ipfs/file.png'
+    );
+    expect(IpfsStorage.getIpfsPath('https://bafybeigdyrzt.ipfs.dweb.link')).toBe('bafybeigdyrzt');
+  });
+
+  it('ignores URL decorations when extracting the IPFS content path', () => {
+    expect(IpfsStorage.getIpfsPath('  https://ipfs.io/ipfs/QmHash/metadata.json?download=1#preview  ')).toBe(
+      'QmHash/metadata.json'
+    );
+    expect(IpfsStorage.getIpfsPath('https://bafybeigdyrzt.ipfs.dweb.link/dir/file.png?cache=false#image')).toBe(
+      'bafybeigdyrzt/dir/file.png'
+    );
+  });
+
+  it('rejects URLs that do not identify IPFS content', () => {
+    expect(() => IpfsStorage.getIpfsPath('https://example.com/logo.png')).toThrow('Unsupported IPFS URL format');
+    expect(() => IpfsStorage.getIpfsPath('ftp://ipfs.io/ipfs/QmHash/logo.png')).toThrow(
+      'Unsupported IPFS URL protocol'
+    );
+  });
+
+  it.each([
+    'https://ipfs.io/ipfs/',
+    'https://ipfs.io/ipfs//logo.png',
+    'https://ipfs.io/not-ipfs/QmHash/logo.png',
+    'https://example.com/logo.png?next=/ipfs/QmHash/logo.png',
+    'https://ipfs.io@evil.example/logo.png',
+    'ipns://name/logo.png',
+    'javascript:alert(1)',
+    '   ',
+  ])('rejects adversarial or malformed IPFS URL input: %s', (url) => {
+    expect(() => IpfsStorage.getIpfsPath(url)).toThrow();
+  });
+
   it('retrieves UCAN tokens without caching', async () => {
     const json = vi.fn().mockResolvedValue({ space: 'token' });
     const fetchMock = vi.fn().mockResolvedValue({ json });

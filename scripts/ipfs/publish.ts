@@ -459,6 +459,25 @@ export function verifyRecursiveIpfsPin(cid: string, runCommandLike: RunCommandLi
   }
 }
 
+/**
+ * Announces a published DAG to IPFS routing so public gateways can discover this node as a provider.
+ */
+export function announceIpfsCidRecursively(cid: string, runCommandLike: RunCommandLike = runCommand): void {
+  try {
+    runCommandLike('ipfs', ['routing', 'provide', '--recursive', cid], {
+      capture: true,
+    });
+  } catch (error) {
+    throw new Error(
+      [
+        `IPFS CID ${cid} was pinned locally, but the provider announcement failed.`,
+        'Make sure `ipfs daemon` is running with network access, then rerun `yarn ipfs:publish`.',
+      ].join('\n'),
+      { cause: error }
+    );
+  }
+}
+
 function createNoSpaceRecoveryMessage(directory: string, repoPath: string | null, attemptedGc: boolean): string {
   const retryMessage = attemptedGc
     ? 'The script ran `ipfs repo gc` and retried `ipfs add -Qr` once, but the publish still failed.'
@@ -475,9 +494,18 @@ function createNoSpaceRecoveryMessage(directory: string, repoPath: string | null
     .join('\n');
 }
 
+function addPinVerifyAndAnnounceDirectory(directory: string, run: RunCommandLike): string {
+  const cid = extractCid(run('ipfs', ['add', '-Qr', '--pin=false', directory], { capture: true }), directory);
+  pinIpfsCidRecursively(cid, run);
+  verifyRecursiveIpfsPin(cid, run);
+  announceIpfsCidRecursively(cid, run);
+  return cid;
+}
+
 /**
  * Publishes a directory to the local IPFS repository, retrying once after
- * garbage collection when the datastore runs out of space.
+ * garbage collection when the datastore runs out of space, then announces the
+ * recursive DAG to IPFS routing for public gateway discovery.
  */
 export function publishDirectoryToIpfs(
   directory: string,
@@ -490,10 +518,7 @@ export function publishDirectoryToIpfs(
   const repoPath = deps.resolveRepoPath?.() ?? resolveIpfsRepoPath();
 
   try {
-    const cid = extractCid(run('ipfs', ['add', '-Qr', '--pin=false', directory], { capture: true }), directory);
-    pinIpfsCidRecursively(cid, run);
-    verifyRecursiveIpfsPin(cid, run);
-    return cid;
+    return addPinVerifyAndAnnounceDirectory(directory, run);
   } catch (error) {
     if (!isNoSpaceLeftError(error)) {
       throw error;
@@ -516,9 +541,7 @@ export function publishDirectoryToIpfs(
     }
 
     try {
-      const cid = extractCid(run('ipfs', ['add', '-Qr', '--pin=false', directory], { capture: true }), directory);
-      pinIpfsCidRecursively(cid, run);
-      verifyRecursiveIpfsPin(cid, run);
+      const cid = addPinVerifyAndAnnounceDirectory(directory, run);
       console.warn('IPFS publish recovered after `ipfs repo gc`.');
       return cid;
     } catch (retryError) {
@@ -695,7 +718,6 @@ function logGatewayUrls(cid: string, label: string, localGatewayBaseUrl: string)
 function main(): void {
   console.log('Checking IPFS CLI availability...');
   ensureIpfsCli();
-  const localGatewayBaseUrl = resolveLocalGatewayBaseUrl();
 
   console.log('Ensuring local workspaces are built...');
   buildLocalRepositories();
@@ -708,14 +730,14 @@ function main(): void {
 
   console.log('Publishing production `dist/` to IPFS...');
   const productionCid = publishDirectoryToIpfs(DIST_DIR);
-  logGatewayUrls(productionCid, 'Production', localGatewayBaseUrl);
+  logGatewayUrls(productionCid, 'Production', resolveLocalGatewayBaseUrl());
 
   console.log('Preparing testnet assets from the build output...');
   const { distPath: testnetDistPath, cleanup } = createTestnetDistClone();
   try {
     console.log('Publishing testnet build to IPFS...');
     const testnetCid = publishDirectoryToIpfs(testnetDistPath);
-    logGatewayUrls(testnetCid, 'Testnet', localGatewayBaseUrl);
+    logGatewayUrls(testnetCid, 'Testnet', resolveLocalGatewayBaseUrl());
   } finally {
     cleanup();
   }

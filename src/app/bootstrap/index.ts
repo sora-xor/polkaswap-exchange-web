@@ -1,7 +1,11 @@
 import { createApp, type App as VueApp } from 'vue';
 
 import { installRuntimePlugins, installStartupPlugins } from '@/plugins';
-import { createAsyncComponent } from '@/shared/ui/async';
+import {
+  createAsyncComponent,
+  installViteCssPreloadErrorHandler,
+  loadAsyncImportWithRetry,
+} from '@/shared/ui/async';
 import { shouldRenderOfflineShell } from '@/utils/env';
 import { renderOfflineShell } from '@/utils/offlineShell';
 import { registerW3mMessageGuard } from '@/security/w3mMessageGuard';
@@ -26,22 +30,22 @@ let piniaModulePromise: Promise<PiniaModule> | null = null;
 let routerModulePromise: Promise<RouterModule> | null = null;
 
 const loadAppShell = (): Promise<AppShellModule> => {
-  appShellModulePromise ??= import('@/app/shell/AppShell.vue');
+  appShellModulePromise ??= loadAsyncImportWithRetry(() => import('@/app/shell/AppShell.vue'));
   return appShellModulePromise;
 };
 
 const loadLang = (): Promise<LangModule> => {
-  langModulePromise ??= import('@/lang');
+  langModulePromise ??= loadAsyncImportWithRetry(() => import('@/lang'));
   return langModulePromise;
 };
 
 const loadPinia = (): Promise<PiniaModule> => {
-  piniaModulePromise ??= import('@/plugins/pinia');
+  piniaModulePromise ??= loadAsyncImportWithRetry(() => import('@/plugins/pinia'));
   return piniaModulePromise;
 };
 
 const loadRouter = (): Promise<RouterModule> => {
-  routerModulePromise ??= import('@/app/router');
+  routerModulePromise ??= loadAsyncImportWithRetry(() => import('@/app/router'));
   return routerModulePromise;
 };
 
@@ -91,6 +95,7 @@ export async function prepareAppRuntime(app: VueApp): Promise<PreparedRuntime> {
 export async function mountApp(): Promise<void> {
   registerW3mMessageGuard();
   installConsoleWarningFilter();
+  installViteCssPreloadErrorHandler();
 
   const buildVariant = APP_BUILD_VARIANT;
 

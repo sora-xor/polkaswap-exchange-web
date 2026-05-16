@@ -1,5 +1,6 @@
 import { installCountryFlagEmoji } from './countryFlagEmoji';
 
+import { loadAsyncImportWithRetry } from '@/shared/ui/async';
 import type { Pinia } from 'pinia';
 import type { App } from 'vue';
 
@@ -19,9 +20,9 @@ export function installStartupPlugins(): void {
  */
 export async function installRuntimePlugins(app: App, context: PluginInstallContext = {}): Promise<void> {
   const [{ install: installSoramitsuUI }, { install: installWallet }, { installDayjsDuration }] = await Promise.all([
-    import('./soramitsuUI'),
-    import('./wallet'),
-    import('./days-js-duration'),
+    loadAsyncImportWithRetry(() => import('./soramitsuUI')),
+    loadAsyncImportWithRetry(() => import('./wallet')),
+    loadAsyncImportWithRetry(() => import('./days-js-duration')),
   ]);
 
   installDayjsDuration();

@@ -1,11 +1,12 @@
 import { defineAsyncComponent } from 'vue';
 
 const ASYNC_COMPONENT_DEFAULT_INIT_MESSAGE = "Cannot access 'default' before initialization";
+const VITE_CSS_PRELOAD_FAILURE_PATTERN = 'Unable to preload CSS for';
 const RETRYABLE_IMPORT_FAILURE_PATTERNS = [
   ASYNC_COMPONENT_DEFAULT_INIT_MESSAGE,
   'Failed to fetch dynamically imported module',
   'Importing a module script failed',
-  'Unable to preload CSS for',
+  VITE_CSS_PRELOAD_FAILURE_PATTERN,
   'status of 429',
   'ERR_ABORTED',
   'Loading chunk',
@@ -35,6 +36,44 @@ const resolveRetryDelay = (attempts: number): number => {
 export const isRetryableAsyncComponentError = (error: unknown): boolean => {
   const message = getErrorMessage(error);
   return RETRYABLE_IMPORT_FAILURE_PATTERNS.some((pattern) => message.includes(pattern));
+};
+
+/**
+ * Detects Vite CSS preload failures that should not block app bootstrap.
+ */
+export const isViteCssPreloadError = (error: unknown): boolean =>
+  getErrorMessage(error).includes(VITE_CSS_PRELOAD_FAILURE_PATTERN);
+
+type VitePreloadErrorEvent = Event & {
+  payload?: unknown;
+};
+
+type VitePreloadErrorTarget = Pick<EventTarget, 'addEventListener' | 'removeEventListener'>;
+
+/**
+ * Prevents non-critical dynamic CSS preload errors from aborting Vite dynamic
+ * imports. JavaScript chunk failures still propagate normally.
+ */
+export const installViteCssPreloadErrorHandler = (
+  target: VitePreloadErrorTarget | undefined = typeof window === 'undefined' ? undefined : window,
+  logger: Pick<Console, 'warn'> = console
+): (() => void) => {
+  if (!target) return () => undefined;
+
+  const handlePreloadError = (event: Event): void => {
+    const preloadEvent = event as VitePreloadErrorEvent;
+
+    if (!isViteCssPreloadError(preloadEvent.payload)) return;
+
+    event.preventDefault();
+    logger.warn('[bootstrap] CSS preload failed; continuing app startup', preloadEvent.payload);
+  };
+
+  target.addEventListener('vite:preloadError', handlePreloadError);
+
+  return () => {
+    target.removeEventListener('vite:preloadError', handlePreloadError);
+  };
 };
 
 type AsyncImportRetryOptions = {

@@ -68,13 +68,15 @@ describe('app-level store migration', () => {
     expect(appSource).not.toContain('./store/settings/types');
     expect(appSource).not.toContain('./store/web3/types');
     expect(bootstrapSource).not.toContain("from '@/plugins/pinia'");
-    expect(bootstrapSource).toContain("piniaModulePromise ??= import('@/plugins/pinia');");
+    expect(bootstrapSource).toContain("piniaModulePromise ??= loadAsyncImportWithRetry(() => import('@/plugins/pinia'));");
     expect(bootstrapSource).toContain("from '@/plugins'");
     expect(bootstrapSource).not.toContain("from '@/lang'");
-    expect(bootstrapSource).toContain("langModulePromise ??= import('@/lang');");
+    expect(bootstrapSource).toContain("langModulePromise ??= loadAsyncImportWithRetry(() => import('@/lang'));");
     expect(bootstrapSource).not.toContain("from '@/app/router'");
-    expect(bootstrapSource).toContain("routerModulePromise ??= import('@/app/router');");
-    expect(bootstrapSource).toContain("appShellModulePromise ??= import('@/app/shell/AppShell.vue');");
+    expect(bootstrapSource).toContain("routerModulePromise ??= loadAsyncImportWithRetry(() => import('@/app/router'));");
+    expect(bootstrapSource).toContain(
+      "appShellModulePromise ??= loadAsyncImportWithRetry(() => import('@/app/shell/AppShell.vue'));"
+    );
     expect(bootstrapSource).toContain('const AppShell = createAsyncComponent(loadAppShell);');
     expect(bootstrapSource).toContain('setI18nLocale(getLocale() as SupportedLocale)');
     expect(bootstrapSource).not.toContain("import AppShell from '@/app/shell/AppShell.vue';");
