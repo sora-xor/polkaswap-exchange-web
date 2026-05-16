@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { FPNumber } from '@sora-substrate/sdk';
 import { BalanceType, VXOR } from '@sora-substrate/sdk/build/assets/consts';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const loginState = ref(false);
@@ -26,11 +26,11 @@ const referralsStoreMock = {
   getAccountReferralRewards,
 };
 
-const poolStoreMock = {
+const poolStoreMock = reactive({
   accountLiquidity: [] as Array<any>,
   subscribeOnAccountLiquidityList: subscribeOnList,
   subscribeOnAccountLiquidityUpdates: subscribeOnUpdates,
-};
+});
 
 const assetsStoreMock = {
   assetDataByAddress: vi.fn((address?: string) => ({
@@ -243,6 +243,40 @@ describe('PointSystemV2.vue', () => {
     expect(subscribeOnList).toHaveBeenCalledTimes(1);
     expect(fetchAccountMetaMock).toHaveBeenCalledWith('5mock');
     expect((wrapper.vm as unknown as PointSystemV2Vm).loading).toBe(false);
+  });
+
+  it('recalculates liquidity-provision points when account liquidity arrives after metadata', async () => {
+    loginState.value = true;
+    const firstAddress = '0xfirst';
+    const secondAddress = '0xsecond';
+
+    walletStoreMock.fiatPriceObject = {
+      [firstAddress]: FPNumber.fromNatural('2', 18).toCodecString(),
+      [secondAddress]: FPNumber.fromNatural('3', 18).toCodecString(),
+    };
+    fetchAccountMetaMock.mockResolvedValue({
+      createdAt: { timestamp: 1, block: 1 },
+      points: [],
+    });
+
+    const wrapper = buildWrapper();
+
+    await flushPromises();
+
+    expect(wrapper.vm.pointsForCards?.liquidityProvision.currentProgress).toBe(0);
+
+    poolStoreMock.accountLiquidity = [
+      {
+        firstAddress,
+        secondAddress,
+        firstBalance: FPNumber.fromNatural('100', 18).toCodecString(),
+        secondBalance: FPNumber.fromNatural('50', 18).toCodecString(),
+      },
+    ];
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.pointsForCards?.liquidityProvision.currentProgress).toBe(350);
   });
 
   it('does not render a placeholder first-transaction date without point metadata', async () => {

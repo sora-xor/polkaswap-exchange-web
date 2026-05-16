@@ -129,6 +129,7 @@ defineOptions({
 });
 const categoryPoints = ref(pointSystemCategory.tasks);
 const pointsForCards = ref<Record<string, CalculateCategoryPointResult> | null>(null);
+const accountPointSystems = ref<AccountPointSystems | null>(null);
 
 const { t } = useTranslation();
 const { loading, withApi, withLoading } = useLoading();
@@ -235,11 +236,31 @@ const getPointsForCategories = (pointSystems: AccountPointSystems): CategoryPoin
 };
 
 /**
+ * Clears cached point metadata and rendered cards when the active account is unavailable.
+ */
+const resetPointData = (): void => {
+  accountPointSystems.value = null;
+  pointsForCards.value = null;
+};
+
+/**
+ * Recalculates visible cards from the current account metadata and wallet snapshots.
+ */
+const updatePointsForCards = (): void => {
+  if (!accountPointSystems.value || !isLoggedIn.value) {
+    pointsForCards.value = null;
+    return;
+  }
+
+  pointsForCards.value = pointsService.calculateCategoryPoints(getPointsForCategories(accountPointSystems.value));
+};
+
+/**
  * Loads the point system snapshot for the active account.
  */
 const initData = async (): Promise<void> => {
   if (!isLoggedIn.value) {
-    pointsForCards.value = null;
+    resetPointData();
     return;
   }
 
@@ -247,15 +268,13 @@ const initData = async (): Promise<void> => {
 
   const accountAddress = account.value?.address;
   if (!accountAddress) {
-    pointsForCards.value = null;
+    resetPointData();
     return;
   }
 
-  const accountMeta = await fetchAccountMeta(accountAddress);
+  accountPointSystems.value = await fetchAccountMeta(accountAddress);
 
-  pointsForCards.value = accountMeta
-    ? pointsService.calculateCategoryPoints(getPointsForCategories(accountMeta))
-    : null;
+  updatePointsForCards();
 };
 
 /**
@@ -273,12 +292,14 @@ onMounted(() => {
 
 watch(isLoggedIn, async (value) => {
   if (!value) {
-    pointsForCards.value = null;
+    resetPointData();
     return;
   }
 
   await withLoading(initData);
 });
+
+watch(accountLiquidity, updatePointsForCards, { deep: true });
 </script>
 
 <style lang="scss">
