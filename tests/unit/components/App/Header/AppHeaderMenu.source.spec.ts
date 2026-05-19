@@ -3,6 +3,15 @@ import { describe, expect, it } from 'vitest';
 import appHeaderMenuSource from '@/components/App/Header/AppHeaderMenu.vue?raw';
 
 describe('AppHeaderMenu source', () => {
+  it('eagerly imports the settings menu controls instead of waiting on global async components', () => {
+    expect(appHeaderMenuSource).toContain("import SButton from '@/lib/soramitsu-ui/components/Button/SButton.vue';");
+    expect(appHeaderMenuSource).toContain("import SDropdown from '@/lib/soramitsu-ui/components/Select/SDropdown.vue';");
+    expect(appHeaderMenuSource).toContain("import SDropdownItem from '@/lib/soramitsu-ui/components/Select/SDropdownItem.vue';");
+    expect(appHeaderMenuSource).toContain("import SIcon from '@/lib/soramitsu-ui/components/Icon/SIcon.vue';");
+    expect(appHeaderMenuSource).toContain("import SSwitch from '@/lib/soramitsu-ui/components/Switch/SSwitch.vue';");
+    expect(appHeaderMenuSource).not.toContain('createAsyncComponent');
+  });
+
   it('keeps the settings close button geometry aligned with the live site', () => {
     expect(appHeaderMenuSource).toContain('class="header-menu__settings-close s-pressed"');
     expect(appHeaderMenuSource).toContain(':aria-label="t(\'headerMenu.settings\')"');
@@ -38,5 +47,17 @@ describe('AppHeaderMenu source', () => {
     expect(appHeaderMenuSource).toMatch(
       /\.el-divider--horizontal\s*\{\s*margin:\s*unset;\s*height:\s*1px;\s*background-color:\s*var\(--s-color-base-border-secondary\);\s*\}/s
     );
+  });
+
+  it('mirrors the settings toolbar drawer and indicators for RTL locales', () => {
+    expect(appHeaderMenuSource).toContain("import { getLocaleDirection } from '@/lang/direction';");
+    expect(appHeaderMenuSource).toContain(":icon=\"headerMenuIcon\"");
+    expect(appHeaderMenuSource).toContain("'grid-block-align-right-24'");
+    expect(appHeaderMenuSource).toContain("'arrows-chevron-left-rounded-24'");
+    expect(appHeaderMenuSource).toContain("html[dir='rtl'] &");
+    expect(appHeaderMenuSource).toContain('left: -272px !important;');
+    expect(appHeaderMenuSource).toContain('transform: translateX(264px) !important;');
+    expect(appHeaderMenuSource).toContain('margin-right: auto;');
+    expect(appHeaderMenuSource).toContain('margin-right: 64px;');
   });
 });

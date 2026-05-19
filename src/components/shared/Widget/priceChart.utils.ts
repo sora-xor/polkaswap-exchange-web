@@ -44,6 +44,52 @@ export const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotIt
 };
 
 /**
+ * Aggregates real snapshots into fixed chart buckets without creating missing
+ * buckets, keeping sparse history visually sparse instead of inventing prices.
+ */
+export const aggregateSnapshotsByInterval = (
+  collection: readonly SnapshotItem[],
+  intervalMs: number
+): SnapshotItem[] => {
+  if (!Number.isFinite(intervalMs) || intervalMs <= 0) {
+    return [...collection];
+  }
+
+  const buckets: SnapshotItem[] = [];
+
+  for (const item of [...collection].filter((item) => Number.isFinite(item.timestamp)).sort((a, b) => a.timestamp - b.timestamp)) {
+    const timestamp = Math.floor(item.timestamp / intervalMs) * intervalMs;
+    const lastBucket = buckets[buckets.length - 1];
+
+    if (!lastBucket || lastBucket.timestamp !== timestamp) {
+      buckets.push({
+        ...item,
+        timestamp,
+        price: [...item.price] as OCLH,
+      });
+      continue;
+    }
+
+    lastBucket.price = [
+      lastBucket.price[0],
+      item.price[1],
+      Math.min(lastBucket.price[2], item.price[2]),
+      Math.max(lastBucket.price[3], item.price[3]),
+    ];
+    lastBucket.volume = (lastBucket.volume ?? 0) + (item.volume ?? 0);
+
+    if (lastBucket.baseVolume !== undefined || item.baseVolume !== undefined) {
+      lastBucket.baseVolume = (lastBucket.baseVolume ?? 0n) + (item.baseVolume ?? 0n);
+    }
+    if (lastBucket.targetVolume !== undefined || item.targetVolume !== undefined) {
+      lastBucket.targetVolume = (lastBucket.targetVolume ?? 0n) + (item.targetVolume ?? 0n);
+    }
+  }
+
+  return buckets;
+};
+
+/**
  * Fills missing snapshot intervals from newest to oldest, capped to the
  * visible amount the chart requested so sparse history cannot allocate years
  * of synthetic points.
@@ -56,6 +102,7 @@ export const normalizeSnapshots = (
 ): SnapshotItem[] => {
   const sample: SnapshotItem[] = [];
   if (limit <= 0) return sample;
+  if (!Number.isFinite(difference) || difference <= 0) return [...collection];
 
   for (const item of collection) {
     const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;

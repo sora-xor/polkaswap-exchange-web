@@ -1237,6 +1237,144 @@ describe('wallet store actions', () => {
     expect(walletStore.accountAssetsLoaded).toBe(true);
   });
 
+  it('keeps previous account balances visible while account asset hydration rebuilds the SDK list', async () => {
+    const walletStore = useWalletStore();
+    let resolveUpdateAccountAssets!: () => void;
+    let balanceUpdateHandler: (() => void) | null = null;
+    const previousAssets = [
+      {
+        address: 'xor-address',
+        symbol: 'XOR',
+        decimals: 18,
+        balance: {
+          transferable: '1000000000000000000',
+          total: '1000000000000000000',
+          locked: '0',
+        },
+      },
+      {
+        address: 'kusd-address',
+        symbol: 'KUSD',
+        decimals: 18,
+        balance: {
+          transferable: '2000000000000000000',
+          total: '2000000000000000000',
+          locked: '0',
+        },
+      },
+    ];
+    const partialAssets = [
+      {
+        ...previousAssets[0],
+        balance: {
+          transferable: '0',
+          total: '0',
+          locked: '0',
+        },
+      },
+    ];
+    const finalAssets = [
+      {
+        ...previousAssets[0],
+        balance: {
+          transferable: '900000000000000000',
+          total: '900000000000000000',
+          locked: '0',
+        },
+      },
+      previousAssets[1],
+    ];
+    const liveAssets = [
+      finalAssets[0],
+      {
+        ...previousAssets[1],
+        balance: {
+          transferable: '2500000000000000000',
+          total: '2500000000000000000',
+          locked: '0',
+        },
+      },
+    ];
+
+    walletStore.accountState.address = 'addr';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    walletStore.setAccountAssets(previousAssets as never);
+
+    balanceUpdatedSubscribeMock.mockImplementationOnce((handler: () => void) => {
+      balanceUpdateHandler = handler;
+      return { unsubscribe: accountAssetsUnsubscribeMock };
+    });
+    updateAccountAssetsMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+            accountAssets: partialAssets,
+          });
+          balanceUpdateHandler?.();
+          resolveUpdateAccountAssets = () => {
+            Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+              accountAssets: finalAssets,
+            });
+            resolve();
+          };
+        })
+    );
+
+    const hydrationPromise = walletStore.subscribeOnAccountAssets();
+
+    await vi.waitFor(() => {
+      expect(updateAccountAssetsMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(balanceUpdatedSubscribeMock).not.toHaveBeenCalled();
+    expect(walletStore.accountAssets).toEqual(previousAssets);
+
+    resolveUpdateAccountAssets();
+    await hydrationPromise;
+
+    expect(balanceUpdatedSubscribeMock).toHaveBeenCalledTimes(1);
+    expect(walletStore.accountAssets).toEqual(finalAssets);
+
+    Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+      accountAssets: liveAssets,
+    });
+    balanceUpdateHandler?.();
+
+    expect(walletStore.accountAssets).toEqual(liveAssets);
+  });
+
+  it('does not clear SDK account assets when refreshing balances for the same account', async () => {
+    const walletStore = useWalletStore();
+    const assets = [
+      {
+        address: 'dai-address',
+        symbol: 'DAI',
+        decimals: 18,
+        balance: {
+          transferable: '1000000000000000000',
+          total: '1000000000000000000',
+          locked: '0',
+        },
+      },
+    ];
+
+    walletStore.accountState.address = 'addr';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+      accountAssets: assets,
+    });
+
+    await walletStore.subscribeOnAccountAssets();
+
+    const clearAccountAssetsCount = clearAccountAssetsMock.mock.calls.length;
+    expect(walletStore.accountAssets).toEqual(assets);
+
+    await walletStore.subscribeOnAccountAssets();
+
+    expect(clearAccountAssetsMock.mock.calls.length).toBe(clearAccountAssetsCount);
+    expect(walletStore.accountAssets).toEqual(assets);
+  });
+
   it('marks account asset hydration settled after an empty asset update', async () => {
     const walletStore = useWalletStore();
     const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
@@ -1439,6 +1577,7 @@ describe('wallet store actions', () => {
       },
       first: 2,
       offset: 4,
+      orderBy: ['TIMESTAMP_DESC', 'ID_DESC'],
     });
     expect(removeHistoryMock).toHaveBeenCalledWith('tx-internal');
     expect(walletStore.transactionsState.activeTxsIds).toEqual(['tx-keep']);
@@ -1453,6 +1592,336 @@ describe('wallet store actions', () => {
     expect(walletStore.settingsState.nftStorage?.constructor.name).toBe('NFTStorage');
     expect(walletStore.settingsState.nftStorage?.store).toEqual(expect.any(Function));
     expect(walletRuntimeBridge.store.commit).not.toHaveBeenCalled();
+  });
+
+  it('keeps usable account activity when one indexer history row cannot be parsed', async () => {
+    const walletStore = useWalletStore();
+    const parseError = new Error('bad history row');
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    getExplorerHistoryMock.mockResolvedValueOnce({
+      nodes: [{ id: 'tx-bad' }, { id: 'tx-good' }],
+      totalCount: 2,
+    });
+    parseTransactionAsHistoryItemMock
+      .mockRejectedValueOnce(parseError)
+      .mockResolvedValueOnce({ id: 'tx-good', type: Operation.Swap });
+
+    try {
+      await walletStore.getExternalHistory({
+        address: 'cnUser',
+        pageAmount: 2,
+        page: 1,
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith('[wallet] Failed to parse indexer history item', parseError);
+      expect(walletStore.transactionsState.externalHistory).toEqual({
+        'tx-good': { id: 'tx-good', type: Operation.Swap },
+      });
+      expect(walletStore.transactionsState.externalHistoryTotal).toBe(2);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('skips malformed, blank, duplicate, and unparsable external history rows', async () => {
+    const walletStore = useWalletStore();
+
+    walletStore.transactionsState.externalHistory = {
+      'tx-existing': { id: 'tx-existing', type: Operation.Swap },
+    } as never;
+
+    getExplorerHistoryMock.mockResolvedValueOnce({
+      nodes: [
+        null,
+        {},
+        { id: '' },
+        { id: '   ' },
+        { id: 42 },
+        { id: ['tx-array'] },
+        { id: 'tx-existing' },
+        { id: 'tx-null' },
+        { id: 'tx-good' },
+      ],
+      totalCount: 9,
+    } as never);
+    parseTransactionAsHistoryItemMock.mockImplementation(async (transaction: { id: string }) => {
+      if (transaction.id === 'tx-null') return null;
+
+      return {
+        id: transaction.id,
+        type: Operation.Swap,
+      };
+    });
+
+    await walletStore.getExternalHistory({
+      address: 'cnUser',
+      pageAmount: 9,
+      page: 1,
+    });
+
+    expect(parseTransactionAsHistoryItemMock).toHaveBeenCalledTimes(2);
+    expect(parseTransactionAsHistoryItemMock).toHaveBeenNthCalledWith(1, { id: 'tx-null' });
+    expect(parseTransactionAsHistoryItemMock).toHaveBeenNthCalledWith(2, { id: 'tx-good' });
+    expect(walletStore.transactionsState.externalHistory).toEqual({
+      'tx-existing': { id: 'tx-existing', type: Operation.Swap },
+      'tx-good': { id: 'tx-good', type: Operation.Swap },
+    });
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(9);
+  });
+
+  it('skips external history rows when the parser returns a different transaction id', async () => {
+    const walletStore = useWalletStore();
+
+    getExplorerHistoryMock.mockResolvedValueOnce({
+      nodes: [{ id: 'tx-row' }],
+      totalCount: 1,
+    });
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: 'tx-other',
+      type: Operation.Swap,
+    });
+
+    await walletStore.getExternalHistory({
+      address: 'cnUser',
+      pageAmount: 1,
+      page: 1,
+    });
+
+    expect(parseTransactionAsHistoryItemMock).toHaveBeenCalledWith({ id: 'tx-row' });
+    expect(walletStore.transactionsState.externalHistory).toEqual({});
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(1);
+  });
+
+  it('does not clear internal or pending history when a parsed row id mismatches the indexer row id', async () => {
+    const walletStore = useWalletStore();
+
+    (walletApi as Record<string, unknown>).history = {
+      'tx-row': { id: 'tx-row', type: Operation.Swap },
+    };
+    walletStore.transactionsState.activeTxsIds = ['tx-row'];
+    walletStore.transactionsState.externalHistoryUpdates = {
+      'tx-row': { id: 'tx-row', type: Operation.Swap },
+    } as never;
+
+    getExplorerHistoryMock.mockResolvedValueOnce({
+      nodes: [{ id: 'tx-row' }],
+      totalCount: 1,
+    });
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: 'tx-other',
+      type: Operation.Swap,
+    });
+
+    await walletStore.getExternalHistory({
+      address: 'cnUser',
+      pageAmount: 1,
+      page: 1,
+    });
+
+    expect(removeHistoryMock).not.toHaveBeenCalled();
+    expect(walletStore.transactionsState.activeTxsIds).toEqual(['tx-row']);
+    expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({
+      'tx-row': { id: 'tx-row', type: Operation.Swap },
+    });
+    expect(walletStore.transactionsState.externalHistory).toEqual({});
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(1);
+  });
+
+  it('handles malformed external history node containers without discarding the total count', async () => {
+    const walletStore = useWalletStore();
+
+    getExplorerHistoryMock.mockResolvedValueOnce({
+      nodes: { id: 'tx-object' },
+      totalCount: 9,
+    } as never);
+
+    await walletStore.getExternalHistory({
+      address: 'cnUser',
+      pageAmount: 1,
+      page: 1,
+    });
+
+    expect(parseTransactionAsHistoryItemMock).not.toHaveBeenCalled();
+    expect(walletStore.transactionsState.externalHistory).toEqual({});
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(9);
+  });
+
+  it.each([
+    ['missing total count', undefined],
+    ['null total count', null],
+    ['negative total count', -1],
+    ['fractional total count', 1.5],
+    ['string total count', '9'],
+  ])('normalizes malformed external history %s to zero', async (_case, totalCount) => {
+    const walletStore = useWalletStore();
+
+    getExplorerHistoryMock.mockResolvedValueOnce({
+      nodes: [],
+      totalCount,
+    } as never);
+
+    await walletStore.getExternalHistory({
+      address: 'cnUser',
+      pageAmount: 1,
+      page: 1,
+    });
+
+    expect(walletStore.transactionsState.externalHistory).toEqual({});
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(0);
+  });
+
+  it('trims matching parser ids before saving paginated external history rows', async () => {
+    const walletStore = useWalletStore();
+
+    getExplorerHistoryMock.mockResolvedValueOnce({
+      nodes: [{ id: ' tx-row ' }],
+      totalCount: 1,
+    });
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: ' tx-row ',
+      type: Operation.Swap,
+    });
+
+    await walletStore.getExternalHistory({
+      address: 'cnUser',
+      pageAmount: 1,
+      page: 1,
+    });
+
+    expect(walletStore.transactionsState.externalHistory).toEqual({
+      'tx-row': {
+        id: 'tx-row',
+        type: Operation.Swap,
+      },
+    });
+    expect(walletStore.transactionsState.externalHistoryTotal).toBe(1);
+  });
+
+  it('keeps realtime external history subscriptions alive when parsing an update fails', async () => {
+    const walletStore = useWalletStore();
+    const parseError = new Error('bad realtime row');
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+
+    await walletStore.loginAccount(account);
+    walletStore.saveExternalHistoryUpdates(true);
+    parseTransactionAsHistoryItemMock.mockRejectedValueOnce(parseError);
+
+    const subscriptionCallback = createHistorySubscriptionMock.mock.calls.at(-1)?.[1];
+
+    try {
+      await expect(subscriptionCallback?.({ id: 'tx-bad' })).resolves.toBeUndefined();
+
+      expect(warnSpy).toHaveBeenCalledWith('[wallet] Failed to parse indexer history update', parseError);
+      expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({});
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('normalizes realtime external history update ids and drops blank parsed ids', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+
+    await walletStore.loginAccount(account);
+    walletStore.saveExternalHistoryUpdates(true);
+
+    const subscriptionCallback = createHistorySubscriptionMock.mock.calls.at(-1)?.[1];
+
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: ' tx-live ',
+      type: Operation.Swap,
+    });
+    await subscriptionCallback?.({ id: 'tx-live' });
+
+    expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({
+      'tx-live': {
+        id: 'tx-live',
+        type: Operation.Swap,
+      },
+    });
+
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: '   ',
+      type: Operation.Swap,
+    });
+    await subscriptionCallback?.({ id: 'tx-blank' });
+
+    expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({
+      'tx-live': {
+        id: 'tx-live',
+        type: Operation.Swap,
+      },
+    });
+  });
+
+  it('drops realtime external history updates with non-string parsed ids', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+
+    await walletStore.loginAccount(account);
+    walletStore.saveExternalHistoryUpdates(true);
+
+    const subscriptionCallback = createHistorySubscriptionMock.mock.calls.at(-1)?.[1];
+
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: 123,
+      type: Operation.Swap,
+    });
+    await subscriptionCallback?.({ id: 'tx-numeric' });
+
+    expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({});
+  });
+
+  it('does not overwrite existing external history with realtime updates for the same id', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+
+    walletStore.transactionsState.externalHistory = {
+      'tx-live': { id: 'tx-live', type: Operation.Swap, amount: 'original' },
+    } as never;
+
+    await walletStore.loginAccount(account);
+    walletStore.saveExternalHistoryUpdates(true);
+
+    const subscriptionCallback = createHistorySubscriptionMock.mock.calls.at(-1)?.[1];
+
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: 'tx-live',
+      type: Operation.Swap,
+      amount: 'attacker-replay',
+    });
+    await subscriptionCallback?.({ id: 'tx-live' });
+
+    expect(walletStore.transactionsState.externalHistory).toEqual({
+      'tx-live': { id: 'tx-live', type: Operation.Swap, amount: 'original' },
+    });
+    expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({});
+  });
+
+  it('ignores legacy bridge realtime history updates before mutating activity state', async () => {
+    const walletStore = useWalletStore();
+    const account = { address: 'addr', name: 'User', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+
+    (walletApi as Record<string, unknown>).history = {
+      'tx-bridge': { id: 'tx-bridge', type: Operation.EthBridgeOutgoing },
+    };
+
+    await walletStore.loginAccount(account);
+    walletStore.saveExternalHistoryUpdates(true);
+
+    const subscriptionCallback = createHistorySubscriptionMock.mock.calls.at(-1)?.[1];
+
+    parseTransactionAsHistoryItemMock.mockResolvedValueOnce({
+      id: ' tx-bridge ',
+      type: Operation.EthBridgeOutgoing,
+    });
+    await subscriptionCallback?.({ id: 'tx-bridge' });
+
+    expect(removeHistoryMock).not.toHaveBeenCalled();
+    expect(walletStore.transactionsState.externalHistory).toEqual({});
+    expect(walletStore.transactionsState.externalHistoryUpdates).toEqual({});
   });
 
   it('loads and sanitizes the wallet whitelist through the Pinia store', async () => {

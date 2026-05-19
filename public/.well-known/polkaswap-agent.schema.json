@@ -1,0 +1,1103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Polkaswap Agent Trading API Schema",
+  "version": "v1",
+  "global": "window.PolkaswapAgent",
+  "readyEvent": "polkaswap-agent-ready",
+  "description": "Request and response schemas for the same-page Polkaswap browser agent API.",
+  "methods": {
+    "capabilities": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/emptyRequest" },
+      "response": { "$ref": "#/$defs/capabilities" }
+    },
+    "ready": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/readyOptions" },
+      "response": { "$ref": "#/$defs/status" }
+    },
+    "status": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/emptyRequest" },
+      "response": { "$ref": "#/$defs/status" }
+    },
+    "refreshWallets": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/emptyRequest" },
+      "response": { "type": "array", "items": { "$ref": "#/$defs/walletProviderStatus" } }
+    },
+    "walletAccounts": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/walletAccountsRequest" },
+      "response": { "type": "array", "items": { "$ref": "#/$defs/walletAccount" } }
+    },
+    "connectWallet": {
+      "stateChanging": false,
+      "requiresUserApproval": true,
+      "request": { "$ref": "#/$defs/walletConnectRequest" },
+      "response": { "$ref": "#/$defs/walletStatus" }
+    },
+    "assets": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/assetsRequest" },
+      "response": { "type": "array", "items": { "$ref": "#/$defs/asset" } }
+    },
+    "resolveAsset": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/resolveAssetRequest" },
+      "response": { "$ref": "#/$defs/resolvedAsset" }
+    },
+    "commonAssets": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/assetsRequest" },
+      "response": { "type": "array", "items": { "$ref": "#/$defs/resolvedAsset" } }
+    },
+    "quoteSwap": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/swapRequest" },
+      "response": { "$ref": "#/$defs/swapQuote" }
+    },
+    "prepareSwap": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/swapRequest" },
+      "response": { "$ref": "#/$defs/preparedSwap" }
+    },
+    "assessSwap": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/swapAssessmentRequest" },
+      "response": { "$ref": "#/$defs/policyAssessment" }
+    },
+    "executeSwap": {
+      "stateChanging": true,
+      "requiresWallet": true,
+      "acceptsIntentId": true,
+      "acceptsClientOrderId": true,
+      "request": { "$ref": "#/$defs/swapRequest" },
+      "response": { "$ref": "#/$defs/swapExecution" }
+    },
+    "prepareTransfer": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/transferRequest" },
+      "response": { "$ref": "#/$defs/preparedTransfer" }
+    },
+    "executeTransfer": {
+      "stateChanging": true,
+      "requiresWallet": true,
+      "acceptsIntentId": true,
+      "acceptsClientOrderId": true,
+      "request": { "$ref": "#/$defs/transferRequest" },
+      "response": { "$ref": "#/$defs/transferExecution" }
+    },
+    "poolInfo": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/poolInfoRequest" },
+      "response": { "$ref": "#/$defs/poolInfo" }
+    },
+    "liquidityPositions": {
+      "stateChanging": false,
+      "requiresWallet": true,
+      "request": { "$ref": "#/$defs/liquidityPositionsRequest" },
+      "response": { "type": "array", "items": { "$ref": "#/$defs/liquidityPosition" } }
+    },
+    "quoteAddLiquidity": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/addLiquidityRequest" },
+      "response": { "$ref": "#/$defs/addLiquidityQuote" }
+    },
+    "prepareAddLiquidity": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/addLiquidityRequest" },
+      "response": { "$ref": "#/$defs/preparedAddLiquidity" }
+    },
+    "executeAddLiquidity": {
+      "stateChanging": true,
+      "requiresWallet": true,
+      "acceptsIntentId": true,
+      "acceptsClientOrderId": true,
+      "request": { "$ref": "#/$defs/addLiquidityRequest" },
+      "response": { "$ref": "#/$defs/addLiquidityExecution" }
+    },
+    "quoteRemoveLiquidity": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/removeLiquidityRequest" },
+      "response": { "$ref": "#/$defs/removeLiquidityQuote" }
+    },
+    "prepareRemoveLiquidity": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/removeLiquidityRequest" },
+      "response": { "$ref": "#/$defs/preparedRemoveLiquidity" }
+    },
+    "executeRemoveLiquidity": {
+      "stateChanging": true,
+      "requiresWallet": true,
+      "acceptsIntentId": true,
+      "acceptsClientOrderId": true,
+      "request": { "$ref": "#/$defs/removeLiquidityRequest" },
+      "response": { "$ref": "#/$defs/removeLiquidityExecution" }
+    },
+    "maxTransferAmount": {
+      "stateChanging": false,
+      "requiresWallet": true,
+      "request": { "$ref": "#/$defs/maxAmountRequest" },
+      "response": { "$ref": "#/$defs/maxAmount" }
+    },
+    "maxSwapInput": {
+      "stateChanging": false,
+      "requiresWallet": true,
+      "request": { "$ref": "#/$defs/maxSwapInputRequest" },
+      "response": { "$ref": "#/$defs/maxAmount" }
+    },
+    "maxAddLiquidity": {
+      "stateChanging": false,
+      "requiresWallet": true,
+      "request": { "$ref": "#/$defs/maxAddLiquidityRequest" },
+      "response": { "$ref": "#/$defs/maxAddLiquidity" }
+    },
+    "maxRemoveLiquidity": {
+      "stateChanging": false,
+      "requiresWallet": true,
+      "request": { "$ref": "#/$defs/maxRemoveLiquidityRequest" },
+      "response": { "$ref": "#/$defs/maxRemoveLiquidity" }
+    },
+    "transactionStatus": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/transactionStatusRequest" },
+      "response": { "$ref": "#/$defs/transactionStatus" }
+    },
+    "lookupTransaction": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/transactionStatusRequest" },
+      "response": { "$ref": "#/$defs/transactionStatus" }
+    },
+    "recoverTransaction": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/recoverTransactionRequest" },
+      "response": { "$ref": "#/$defs/transactionStatus" }
+    },
+    "waitForTransaction": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/waitForTransactionRequest" },
+      "response": { "$ref": "#/$defs/transactionStatus" }
+    },
+    "recentTransactions": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/recentTransactionsRequest" },
+      "response": { "type": "array", "items": { "$ref": "#/$defs/historyItem" } }
+    },
+    "subscribeTransactions": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/transactionSubscriptionRequest" },
+      "response": true
+    },
+    "subscribeStatus": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/statusSubscriptionRequest" },
+      "response": true
+    },
+    "exportState": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/exportStateRequest" },
+      "response": { "$ref": "#/$defs/stateExport" }
+    },
+    "importState": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/importStateRequest" },
+      "response": { "$ref": "#/$defs/stateImportResult" }
+    },
+    "clearState": {
+      "stateChanging": false,
+      "request": { "$ref": "#/$defs/clearStateRequest" },
+      "response": { "$ref": "#/$defs/stateExport" }
+    }
+  },
+  "$defs": {
+    "emptyRequest": { "type": "object", "additionalProperties": false },
+    "decimal": {
+      "oneOf": [
+        { "type": "string", "pattern": "^(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$" },
+        { "type": "number", "exclusiveMinimum": 0 }
+      ]
+    },
+    "intentFields": {
+      "type": "object",
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" }
+      }
+    },
+    "assetRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "address": { "type": "string", "minLength": 1 },
+        "symbol": { "type": "string", "minLength": 1 }
+      },
+      "anyOf": [{ "required": ["address"] }, { "required": ["symbol"] }]
+    },
+    "readyOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requireNode": { "type": "boolean" },
+        "requireWallet": { "type": "boolean" },
+        "timeoutMs": { "type": "number", "minimum": 100 }
+      }
+    },
+    "walletAccountsRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source"],
+      "properties": { "source": { "type": "string", "minLength": 1 } }
+    },
+    "walletConnectRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "address": { "type": "string", "minLength": 1 }
+      }
+    },
+    "assetsRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "query": { "type": "string" },
+        "includeBalances": { "type": "boolean" }
+      }
+    },
+    "resolveAssetRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset"],
+      "properties": {
+        "asset": { "$ref": "#/$defs/assetRef" },
+        "includeBalance": { "type": "boolean" }
+      }
+    },
+    "intentId": { "type": "string", "pattern": "^polkaswap:[a-z-]+:[0-9a-f]{8}$" },
+    "swapRequest": {
+      "allOf": [
+        { "$ref": "#/$defs/intentFields" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["assetIn", "assetOut", "amount"],
+          "properties": {
+            "assetIn": { "$ref": "#/$defs/assetRef" },
+            "assetOut": { "$ref": "#/$defs/assetRef" },
+            "amount": { "$ref": "#/$defs/decimal" },
+            "side": { "enum": ["input", "output"] },
+            "slippageTolerance": { "$ref": "#/$defs/decimal" },
+            "liquiditySource": { "type": "string" },
+            "dexId": {
+              "oneOf": [
+                { "const": "best" },
+                { "type": "integer", "minimum": 0 },
+                { "type": "string", "pattern": "^[0-9]+$" }
+              ]
+            },
+            "quoteTimeoutMs": { "type": "number", "minimum": 100 },
+            "intentId": { "$ref": "#/$defs/intentId" },
+            "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" }
+          }
+        }
+      ]
+    },
+    "riskPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maxPriceImpact": { "$ref": "#/$defs/decimal" },
+        "requireCanExecute": { "type": "boolean" },
+        "allowWarnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "swapAssessmentRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetIn", "assetOut", "amount"],
+      "properties": {
+        "assetIn": { "$ref": "#/$defs/assetRef" },
+        "assetOut": { "$ref": "#/$defs/assetRef" },
+        "amount": { "$ref": "#/$defs/decimal" },
+        "side": { "enum": ["input", "output"] },
+        "slippageTolerance": { "$ref": "#/$defs/decimal" },
+        "liquiditySource": { "type": "string" },
+        "dexId": {
+          "oneOf": [
+            { "const": "best" },
+            { "type": "integer", "minimum": 0 },
+            { "type": "string", "pattern": "^[0-9]+$" }
+          ]
+        },
+        "quoteTimeoutMs": { "type": "number", "minimum": 100 },
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" },
+        "policy": { "$ref": "#/$defs/riskPolicy" },
+        "maxPriceImpact": { "$ref": "#/$defs/decimal" },
+        "requireCanExecute": { "type": "boolean" },
+        "allowWarnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "transferRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset", "to", "amount"],
+      "properties": {
+        "asset": { "$ref": "#/$defs/assetRef" },
+        "to": { "type": "string", "minLength": 1 },
+        "amount": { "$ref": "#/$defs/decimal" },
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" }
+      }
+    },
+    "poolInfoRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetA", "assetB"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/assetRef" },
+        "assetB": { "$ref": "#/$defs/assetRef" }
+      }
+    },
+    "liquidityPositionsRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assetA": { "$ref": "#/$defs/assetRef" },
+        "assetB": { "$ref": "#/$defs/assetRef" },
+        "timeoutMs": { "type": "number", "minimum": 100 }
+      }
+    },
+    "addLiquidityRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetA", "assetB"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/assetRef" },
+        "assetB": { "$ref": "#/$defs/assetRef" },
+        "amountA": { "$ref": "#/$defs/decimal" },
+        "amountB": { "$ref": "#/$defs/decimal" },
+        "slippageTolerance": { "$ref": "#/$defs/decimal" },
+        "allowPoolCreation": { "type": "boolean" },
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" }
+      },
+      "anyOf": [{ "required": ["amountA"] }, { "required": ["amountB"] }]
+    },
+    "removeLiquidityRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetA", "assetB"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/assetRef" },
+        "assetB": { "$ref": "#/$defs/assetRef" },
+        "liquidityAmount": { "$ref": "#/$defs/decimal" },
+        "percent": { "$ref": "#/$defs/decimal" },
+        "slippageTolerance": { "$ref": "#/$defs/decimal" },
+        "timeoutMs": { "type": "number", "minimum": 100 },
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" }
+      },
+      "oneOf": [{ "required": ["liquidityAmount"] }, { "required": ["percent"] }]
+    },
+    "maxAmountRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset"],
+      "properties": { "asset": { "$ref": "#/$defs/assetRef" } }
+    },
+    "maxSwapInputRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetIn"],
+      "properties": {
+        "assetIn": { "$ref": "#/$defs/assetRef" },
+        "assetOut": { "$ref": "#/$defs/assetRef" }
+      }
+    },
+    "maxAddLiquidityRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetA", "assetB"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/assetRef" },
+        "assetB": { "$ref": "#/$defs/assetRef" }
+      }
+    },
+    "maxRemoveLiquidityRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetA", "assetB"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/assetRef" },
+        "assetB": { "$ref": "#/$defs/assetRef" },
+        "timeoutMs": { "type": "number", "minimum": 100 }
+      }
+    },
+    "transactionStatusRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "txId": { "type": "string", "minLength": 1 },
+        "lookup": { "enum": ["local", "indexer", "chain", "any"] },
+        "blockHash": { "type": "string", "minLength": 1 },
+        "blockHeight": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "string", "pattern": "^[0-9]+$" }
+          ]
+        }
+      },
+      "anyOf": [{ "required": ["id"] }, { "required": ["txId"] }]
+    },
+    "recoverTransactionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "txId": { "type": "string", "minLength": 1 },
+        "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" },
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "lookup": { "enum": ["local", "indexer", "chain", "any"] },
+        "blockHash": { "type": "string", "minLength": 1 },
+        "blockHeight": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "string", "pattern": "^[0-9]+$" }
+          ]
+        },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 100 }
+      },
+      "anyOf": [
+        { "required": ["id"] },
+        { "required": ["txId"] },
+        { "required": ["clientOrderId"] },
+        { "required": ["intentId"] }
+      ]
+    },
+    "waitForTransactionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "txId": { "type": "string", "minLength": 1 },
+        "lookup": { "enum": ["local", "indexer", "chain", "any"] },
+        "blockHash": { "type": "string", "minLength": 1 },
+        "blockHeight": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "string", "pattern": "^[0-9]+$" }
+          ]
+        },
+        "timeoutMs": { "type": "number", "minimum": 100 },
+        "status": { "type": "string", "minLength": 1 }
+      },
+      "anyOf": [{ "required": ["id"] }, { "required": ["txId"] }]
+    },
+    "recentTransactionsRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "asset": { "$ref": "#/$defs/assetRef" },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 100 }
+      }
+    },
+    "transactionSubscriptionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "asset": { "$ref": "#/$defs/assetRef" },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "source": { "enum": ["local", "indexer", "all"] },
+        "address": { "type": "string", "minLength": 1 },
+        "pollMs": { "type": "integer", "minimum": 250, "maximum": 60000 },
+        "includeExisting": { "type": "boolean" }
+      }
+    },
+    "statusSubscriptionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pollMs": { "type": "integer", "minimum": 250, "maximum": 60000 },
+        "emitImmediately": { "type": "boolean" }
+      }
+    },
+    "accountBalance": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "free": { "type": "string" },
+        "reserved": { "type": "string" },
+        "frozen": { "type": "string" },
+        "bonded": { "type": "string" },
+        "locked": { "type": "string" },
+        "total": { "type": "string" },
+        "transferable": { "type": "string" }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["address", "symbol", "name", "decimals"],
+      "additionalProperties": true,
+      "properties": {
+        "address": { "type": "string" },
+        "symbol": { "type": "string" },
+        "name": { "type": "string" },
+        "decimals": { "type": "number" },
+        "type": { "type": "string" },
+        "isMintable": { "type": "boolean" },
+        "balance": { "$ref": "#/$defs/accountBalance" }
+      }
+    },
+    "resolvedAsset": {
+      "allOf": [
+        { "$ref": "#/$defs/asset" },
+        {
+          "type": "object",
+          "required": ["canonical"],
+          "properties": { "canonical": { "type": "boolean" } }
+        }
+      ]
+    },
+    "assetAmount": {
+      "type": "object",
+      "required": ["asset", "value", "codec", "decimals", "display"],
+      "properties": {
+        "asset": { "$ref": "#/$defs/asset" },
+        "value": { "type": "string" },
+        "codec": { "type": "string" },
+        "decimals": { "type": "number" },
+        "display": { "type": "string" }
+      }
+    },
+    "feeEstimate": {
+      "type": "object",
+      "required": ["operation", "asset", "amount", "amountCodec", "source"],
+      "properties": {
+        "operation": { "type": "string" },
+        "asset": { "$ref": "#/$defs/asset" },
+        "amount": { "type": "string" },
+        "amountCodec": { "type": "string" },
+        "source": { "enum": ["static", "unavailable"] }
+      }
+    },
+    "requiredBalance": {
+      "type": "object",
+      "required": ["asset", "required", "requiredCodec", "available", "availableCodec", "sufficient", "reason"],
+      "properties": {
+        "asset": { "$ref": "#/$defs/asset" },
+        "required": { "type": "string" },
+        "requiredCodec": { "type": "string" },
+        "available": { "type": "string" },
+        "availableCodec": { "type": "string" },
+        "sufficient": { "type": "boolean" },
+        "reason": { "type": "string" }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "required": ["code", "severity", "message"],
+      "properties": {
+        "code": { "type": "string" },
+        "severity": { "enum": ["info", "warning", "critical"] },
+        "message": { "type": "string" },
+        "details": true
+      }
+    },
+    "walletProviderStatus": {
+      "type": "object",
+      "required": ["source", "title", "installed", "available", "supportsSigning", "requiresUserApproval"],
+      "properties": {
+        "source": { "type": "string" },
+        "title": { "type": "string" },
+        "installed": { "type": "boolean" },
+        "available": { "type": "boolean" },
+        "supportsSigning": { "type": "boolean" },
+        "requiresUserApproval": { "type": "boolean" },
+        "accountsCount": { "type": "number" }
+      }
+    },
+    "walletAccount": {
+      "type": "object",
+      "required": ["address", "name", "source"],
+      "properties": {
+        "address": { "type": "string" },
+        "name": { "type": "string" },
+        "source": { "type": "string" }
+      }
+    },
+    "walletStatus": {
+      "type": "object",
+      "required": ["loaded", "connected", "address", "source", "availableWallets"],
+      "properties": {
+        "loaded": { "type": "boolean" },
+        "connected": { "type": "boolean" },
+        "address": { "type": "string" },
+        "source": { "type": "string" },
+        "accountsCount": { "type": "number" },
+        "availableWallets": { "type": "array", "items": { "$ref": "#/$defs/walletProviderStatus" } }
+      }
+    },
+    "status": {
+      "type": "object",
+      "required": ["version", "node", "wallet", "settings"],
+      "properties": {
+        "version": { "type": "string" },
+        "node": {
+          "type": "object",
+          "required": ["connected", "endpoint", "blockNumber"],
+          "properties": {
+            "connected": { "type": "boolean" },
+            "endpoint": { "type": "string" },
+            "blockNumber": { "type": "number" }
+          }
+        },
+        "wallet": { "$ref": "#/$defs/walletStatus" },
+        "settings": {
+          "type": "object",
+          "required": ["slippageTolerance"],
+          "properties": { "slippageTolerance": { "type": "string" } }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "required": ["version", "runtime", "hosting", "global", "readyEvent", "methods", "capabilities", "defaults", "limits", "security", "status"],
+      "properties": {
+        "version": { "type": "string" },
+        "runtime": { "const": "browser" },
+        "hosting": { "const": "static-ipfs" },
+        "global": { "const": "window.PolkaswapAgent" },
+        "readyEvent": { "const": "polkaswap-agent-ready" },
+        "methods": { "type": "array", "items": { "type": "string" } },
+        "capabilities": { "type": "array", "items": { "type": "string" } },
+        "defaults": {
+          "type": "object",
+          "required": ["side", "slippageTolerance", "dexId", "allowPoolCreation"],
+          "properties": {
+            "side": { "enum": ["input", "output"] },
+            "slippageTolerance": { "type": "string" },
+            "dexId": { "oneOf": [{ "const": "best" }, { "type": "number" }] },
+            "allowPoolCreation": { "type": "boolean" }
+          }
+        },
+        "limits": { "type": "object", "additionalProperties": true },
+        "security": { "type": "object", "additionalProperties": true },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "callPreview": {
+      "type": "object",
+      "required": ["operation", "sdkCall", "stateChanging", "signer", "args", "summary"],
+      "properties": {
+        "operation": { "type": "string" },
+        "sdkCall": { "type": "string" },
+        "stateChanging": { "const": true },
+        "signer": {
+          "type": "object",
+          "required": ["address", "source", "connected"],
+          "properties": {
+            "address": { "type": "string" },
+            "source": { "type": "string" },
+            "connected": { "type": "boolean" }
+          }
+        },
+        "args": { "type": "object", "additionalProperties": true },
+        "summary": { "type": "string" }
+      }
+    },
+    "poolInfo": {
+      "type": "object",
+      "required": ["assetA", "assetB", "poolToken", "exists", "reserveA", "reserveB", "reserveACodec", "reserveBCodec", "totalSupply", "totalSupplyCodec", "priceAInB", "priceBInA"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/asset" },
+        "assetB": { "$ref": "#/$defs/asset" },
+        "poolToken": { "oneOf": [{ "$ref": "#/$defs/asset" }, { "type": "null" }] },
+        "exists": { "type": "boolean" },
+        "reserveA": { "type": "string" },
+        "reserveB": { "type": "string" },
+        "reserveACodec": { "type": "string" },
+        "reserveBCodec": { "type": "string" },
+        "totalSupply": { "type": "string" },
+        "totalSupplyCodec": { "type": "string" },
+        "priceAInB": { "type": "string" },
+        "priceBInA": { "type": "string" }
+      }
+    },
+    "swapQuote": {
+      "type": "object",
+      "required": ["intentId", "request", "assetIn", "assetOut", "dexId", "amountIn", "amountOut", "amountWithoutImpact", "amountInMeta", "amountOutMeta", "amountWithoutImpactMeta", "minMaxCodec", "priceImpact", "liquiditySources", "raw"],
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "request": { "type": "object", "additionalProperties": true },
+        "assetIn": { "$ref": "#/$defs/asset" },
+        "assetOut": { "$ref": "#/$defs/asset" },
+        "dexId": { "type": "number" },
+        "amountIn": { "type": "string" },
+        "amountOut": { "type": "string" },
+        "amountWithoutImpact": { "type": "string" },
+        "amountInMeta": { "$ref": "#/$defs/assetAmount" },
+        "amountOutMeta": { "$ref": "#/$defs/assetAmount" },
+        "amountWithoutImpactMeta": { "$ref": "#/$defs/assetAmount" },
+        "minAmountOut": { "type": "string" },
+        "maxAmountIn": { "type": "string" },
+        "minAmountOutMeta": { "$ref": "#/$defs/assetAmount" },
+        "maxAmountInMeta": { "$ref": "#/$defs/assetAmount" },
+        "minMaxCodec": { "type": "string" },
+        "priceImpact": { "type": "string" },
+        "liquidityProviderFee": true,
+        "rewards": true,
+        "route": { "type": "array", "items": { "type": "string" } },
+        "distribution": true,
+        "liquiditySources": { "type": "array", "items": { "type": "string" } },
+        "raw": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "liquidityPosition": {
+      "type": "object",
+      "required": ["assetA", "assetB", "poolToken", "liquidityAmount", "liquidityAmountCodec", "amountA", "amountB", "amountACodec", "amountBCodec", "poolShare", "totalSupply", "totalSupplyCodec"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/asset" },
+        "assetB": { "$ref": "#/$defs/asset" },
+        "poolToken": { "$ref": "#/$defs/asset" },
+        "liquidityAmount": { "type": "string" },
+        "liquidityAmountCodec": { "type": "string" },
+        "amountA": { "type": "string" },
+        "amountB": { "type": "string" },
+        "amountACodec": { "type": "string" },
+        "amountBCodec": { "type": "string" },
+        "poolShare": { "type": "string" },
+        "totalSupply": { "type": "string" },
+        "totalSupplyCodec": { "type": "string" }
+      }
+    },
+    "addLiquidityQuote": {
+      "type": "object",
+      "required": ["intentId", "pool", "createsPool", "amountA", "amountB", "amountACodec", "amountBCodec", "amountAMeta", "amountBMeta", "minAmountA", "minAmountB", "minAmountACodec", "minAmountBCodec", "minAmountAMeta", "minAmountBMeta", "mintedLiquidity", "mintedLiquidityCodec", "mintedLiquidityMeta", "shareOfPool", "slippageTolerance", "warnings"],
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "pool": { "$ref": "#/$defs/poolInfo" },
+        "createsPool": { "type": "boolean" },
+        "amountA": { "type": "string" },
+        "amountB": { "type": "string" },
+        "amountACodec": { "type": "string" },
+        "amountBCodec": { "type": "string" },
+        "amountAMeta": { "$ref": "#/$defs/assetAmount" },
+        "amountBMeta": { "$ref": "#/$defs/assetAmount" },
+        "minAmountA": { "type": "string" },
+        "minAmountB": { "type": "string" },
+        "minAmountACodec": { "type": "string" },
+        "minAmountBCodec": { "type": "string" },
+        "minAmountAMeta": { "$ref": "#/$defs/assetAmount" },
+        "minAmountBMeta": { "$ref": "#/$defs/assetAmount" },
+        "mintedLiquidity": { "type": "string" },
+        "mintedLiquidityCodec": { "type": "string" },
+        "mintedLiquidityMeta": { "oneOf": [{ "$ref": "#/$defs/assetAmount" }, { "type": "null" }] },
+        "shareOfPool": { "type": "string" },
+        "slippageTolerance": { "type": "string" },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "removeLiquidityQuote": {
+      "type": "object",
+      "required": ["intentId", "pool", "liquidityAmount", "liquidityAmountCodec", "liquidityAmountMeta", "amountA", "amountB", "amountACodec", "amountBCodec", "amountAMeta", "amountBMeta", "minAmountA", "minAmountB", "minAmountACodec", "minAmountBCodec", "minAmountAMeta", "minAmountBMeta", "shareOfPool", "slippageTolerance", "warnings"],
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "pool": { "$ref": "#/$defs/poolInfo" },
+        "liquidityAmount": { "type": "string" },
+        "liquidityAmountCodec": { "type": "string" },
+        "liquidityAmountMeta": { "oneOf": [{ "$ref": "#/$defs/assetAmount" }, { "type": "null" }] },
+        "percentOfPosition": { "type": "string" },
+        "amountA": { "type": "string" },
+        "amountB": { "type": "string" },
+        "amountACodec": { "type": "string" },
+        "amountBCodec": { "type": "string" },
+        "amountAMeta": { "$ref": "#/$defs/assetAmount" },
+        "amountBMeta": { "$ref": "#/$defs/assetAmount" },
+        "minAmountA": { "type": "string" },
+        "minAmountB": { "type": "string" },
+        "minAmountACodec": { "type": "string" },
+        "minAmountBCodec": { "type": "string" },
+        "minAmountAMeta": { "$ref": "#/$defs/assetAmount" },
+        "minAmountBMeta": { "$ref": "#/$defs/assetAmount" },
+        "shareOfPool": { "type": "string" },
+        "slippageTolerance": { "type": "string" },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "preparedSwap": {
+      "type": "object",
+      "required": ["intentId", "canExecute", "quote", "preview", "fees", "requiredBalances", "warnings"],
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "canExecute": { "type": "boolean" },
+        "quote": { "$ref": "#/$defs/swapQuote" },
+        "preview": { "$ref": "#/$defs/callPreview" },
+        "fees": { "type": "array", "items": { "$ref": "#/$defs/feeEstimate" } },
+        "requiredBalances": { "type": "array", "items": { "$ref": "#/$defs/requiredBalance" } },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "policyAssessment": {
+      "type": "object",
+      "required": ["approved", "reasons", "prepared", "policy"],
+      "properties": {
+        "approved": { "type": "boolean" },
+        "reasons": { "type": "array", "items": { "$ref": "#/$defs/warning" } },
+        "prepared": { "$ref": "#/$defs/preparedSwap" },
+        "policy": {
+          "type": "object",
+          "required": ["requireCanExecute", "allowWarnings"],
+          "properties": {
+            "maxPriceImpact": { "type": "string" },
+            "requireCanExecute": { "type": "boolean" },
+            "allowWarnings": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "preparedTransfer": {
+      "type": "object",
+      "required": ["intentId", "canExecute", "asset", "to", "amount", "amountMeta", "preview", "fees", "requiredBalances", "warnings"],
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "canExecute": { "type": "boolean" },
+        "asset": { "$ref": "#/$defs/asset" },
+        "to": { "type": "string" },
+        "amount": { "type": "string" },
+        "amountMeta": { "$ref": "#/$defs/assetAmount" },
+        "preview": { "$ref": "#/$defs/callPreview" },
+        "fees": { "type": "array", "items": { "$ref": "#/$defs/feeEstimate" } },
+        "requiredBalances": { "type": "array", "items": { "$ref": "#/$defs/requiredBalance" } },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "preparedAddLiquidity": {
+      "type": "object",
+      "required": ["intentId", "canExecute", "quote", "preview", "fees", "requiredBalances", "warnings"],
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "canExecute": { "type": "boolean" },
+        "quote": { "$ref": "#/$defs/addLiquidityQuote" },
+        "preview": { "$ref": "#/$defs/callPreview" },
+        "fees": { "type": "array", "items": { "$ref": "#/$defs/feeEstimate" } },
+        "requiredBalances": { "type": "array", "items": { "$ref": "#/$defs/requiredBalance" } },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "preparedRemoveLiquidity": {
+      "type": "object",
+      "required": ["intentId", "canExecute", "quote", "preview", "fees", "requiredBalances", "warnings"],
+      "properties": {
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "canExecute": { "type": "boolean" },
+        "quote": { "$ref": "#/$defs/removeLiquidityQuote" },
+        "preview": { "$ref": "#/$defs/callPreview" },
+        "fees": { "type": "array", "items": { "$ref": "#/$defs/feeEstimate" } },
+        "requiredBalances": { "type": "array", "items": { "$ref": "#/$defs/requiredBalance" } },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "transactionRef": {
+      "type": ["object", "null"],
+      "properties": {
+        "id": { "type": "string" },
+        "txId": { "type": "string" },
+        "status": { "type": "string" },
+        "history": { "oneOf": [{ "$ref": "#/$defs/historyItem" }, { "type": "null" }] }
+      }
+    },
+    "executionBase": {
+      "type": "object",
+      "properties": {
+        "transaction": { "$ref": "#/$defs/transactionRef" },
+        "clientOrderId": { "type": "string" },
+        "reusedClientOrder": { "type": "boolean" }
+      }
+    },
+    "swapExecution": {
+      "allOf": [
+        { "$ref": "#/$defs/executionBase" },
+        {
+          "type": "object",
+          "required": ["quote", "transaction"],
+          "properties": { "quote": { "$ref": "#/$defs/swapQuote" } }
+        }
+      ]
+    },
+    "transferExecution": {
+      "allOf": [
+        { "$ref": "#/$defs/executionBase" },
+        {
+          "type": "object",
+          "required": ["intentId", "asset", "to", "amount", "amountMeta", "transaction"],
+          "properties": {
+            "intentId": { "$ref": "#/$defs/intentId" },
+            "asset": { "$ref": "#/$defs/asset" },
+            "to": { "type": "string" },
+            "amount": { "type": "string" },
+            "amountMeta": { "$ref": "#/$defs/assetAmount" }
+          }
+        }
+      ]
+    },
+    "addLiquidityExecution": {
+      "allOf": [
+        { "$ref": "#/$defs/executionBase" },
+        {
+          "type": "object",
+          "required": ["quote", "transaction"],
+          "properties": { "quote": { "$ref": "#/$defs/addLiquidityQuote" } }
+        }
+      ]
+    },
+    "removeLiquidityExecution": {
+      "allOf": [
+        { "$ref": "#/$defs/executionBase" },
+        {
+          "type": "object",
+          "required": ["quote", "transaction"],
+          "properties": { "quote": { "$ref": "#/$defs/removeLiquidityQuote" } }
+        }
+      ]
+    },
+    "maxAmount": {
+      "type": "object",
+      "required": ["asset", "amount", "amountCodec", "fees", "warnings"],
+      "properties": {
+        "asset": { "$ref": "#/$defs/asset" },
+        "amount": { "type": "string" },
+        "amountCodec": { "type": "string" },
+        "quote": { "$ref": "#/$defs/swapQuote" },
+        "fees": { "type": "array", "items": { "$ref": "#/$defs/feeEstimate" } },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "maxAddLiquidity": {
+      "type": "object",
+      "required": ["assetA", "assetB", "amountA", "amountB", "amountACodec", "amountBCodec", "fees", "warnings"],
+      "properties": {
+        "assetA": { "$ref": "#/$defs/asset" },
+        "assetB": { "$ref": "#/$defs/asset" },
+        "amountA": { "type": "string" },
+        "amountB": { "type": "string" },
+        "amountACodec": { "type": "string" },
+        "amountBCodec": { "type": "string" },
+        "fees": { "type": "array", "items": { "$ref": "#/$defs/feeEstimate" } },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "maxRemoveLiquidity": {
+      "type": "object",
+      "required": ["position", "liquidityAmount", "liquidityAmountCodec", "percent", "warnings"],
+      "properties": {
+        "position": { "oneOf": [{ "$ref": "#/$defs/liquidityPosition" }, { "type": "null" }] },
+        "liquidityAmount": { "type": "string" },
+        "liquidityAmountCodec": { "type": "string" },
+        "percent": { "type": "string" },
+        "warnings": { "type": "array", "items": { "$ref": "#/$defs/warning" } }
+      }
+    },
+    "idempotencyRecord": {
+      "type": "object",
+      "required": ["clientOrderId", "intentId", "action", "status", "createdAt", "updatedAt"],
+      "properties": {
+        "clientOrderId": { "type": "string" },
+        "intentId": { "$ref": "#/$defs/intentId" },
+        "action": { "enum": ["swap", "transfer", "add-liquidity", "remove-liquidity"] },
+        "status": { "enum": ["pending", "submitted"] },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" },
+        "preview": { "$ref": "#/$defs/callPreview" },
+        "transaction": { "$ref": "#/$defs/transactionRef" }
+      }
+    },
+    "exportedIdempotencyRecord": {
+      "allOf": [
+        { "$ref": "#/$defs/idempotencyRecord" },
+        {
+          "type": "object",
+          "properties": {
+            "result": true
+          }
+        }
+      ]
+    },
+    "stateExport": {
+      "type": "object",
+      "required": ["version", "exportedAt", "idempotency"],
+      "properties": {
+        "version": { "const": "v1" },
+        "exportedAt": { "type": "number" },
+        "idempotency": { "type": "array", "items": { "$ref": "#/$defs/exportedIdempotencyRecord" } }
+      }
+    },
+    "exportStateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "redacted": { "type": "boolean" }
+      }
+    },
+    "importStateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": { "$ref": "#/$defs/stateExport" },
+        "merge": { "type": "boolean" }
+      }
+    },
+    "clearStateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "clientOrderId": { "type": "string", "pattern": "^[a-zA-Z0-9._:-]{1,128}$" }
+      }
+    },
+    "stateImportResult": {
+      "type": "object",
+      "required": ["imported", "skipped", "records"],
+      "properties": {
+        "imported": { "type": "number" },
+        "skipped": { "type": "number" },
+        "records": { "type": "array", "items": { "$ref": "#/$defs/exportedIdempotencyRecord" } }
+      }
+    },
+    "transactionStatus": {
+      "type": "object",
+      "required": ["id", "lookup", "source", "transaction"],
+      "properties": {
+        "id": { "type": "string" },
+        "lookup": { "enum": ["local", "indexer", "chain", "any"] },
+        "source": { "enum": ["local", "indexer", "chain", "idempotency", "none"] },
+        "transaction": { "oneOf": [{ "$ref": "#/$defs/historyItem" }, { "type": "null" }] },
+        "idempotency": { "$ref": "#/$defs/idempotencyRecord" }
+      }
+    },
+    "historyItem": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string" },
+        "txId": { "type": "string" },
+        "type": { "type": "string" },
+        "status": { "type": "string" },
+        "blockId": { "type": "string" },
+        "blockHeight": { "type": "number" },
+        "assetAddress": { "type": "string" },
+        "asset2Address": { "type": "string" },
+        "amount": { "type": "string" },
+        "amount2": { "type": "string" },
+        "startTime": { "type": "number" },
+        "endTime": { "type": "number" },
+        "payload": true
+      }
+    }
+  }
+}

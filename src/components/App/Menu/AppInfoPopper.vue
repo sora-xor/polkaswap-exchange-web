@@ -160,6 +160,25 @@ function openProductDialog(): void {
   line-height: 150%;
   color: #a19a9d;
 }
+
+:root[data-theme='dark'] .app-info-popper.el-popover.el-popper,
+:root[design-system-theme='dark'] .app-info-popper.el-popover.el-popper,
+.sora-theme-provider[data-theme='dark'] .app-info-popper.el-popover.el-popper,
+.sora-theme-provider[design-system-theme='dark'] .app-info-popper.el-popover.el-popper {
+  border-color: var(--s-color-base-border-secondary);
+  background: var(--s-color-utility-surface);
+  box-shadow: var(--s-shadow-dialog);
+  color: var(--s-color-base-content-primary);
+
+  .el-divider--horizontal {
+    background: var(--s-color-base-border-secondary);
+  }
+
+  .app-info-link i,
+  .app-info__versions {
+    color: var(--s-color-base-content-tertiary) !important;
+  }
+}
 </style>
 
 <style lang="scss" scoped>

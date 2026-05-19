@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Polkaswap Agent API Playground</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body {
+        background: #f6f7fb;
+        color: #101828;
+        margin: 0;
+      }
+
+      main {
+        box-sizing: border-box;
+        display: grid;
+        gap: 16px;
+        grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      section,
+      pre {
+        background: #fff;
+        border: 1px solid #d9deea;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgb(16 24 40 / 6%);
+      }
+
+      section {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 20px;
+        line-height: 1.2;
+        margin: 0 0 6px;
+      }
+
+      p {
+        color: #475467;
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 0 0 14px;
+      }
+
+      label {
+        display: grid;
+        font-size: 12px;
+        font-weight: 650;
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      input,
+      select,
+      button {
+        border: 1px solid #c9d1df;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font: inherit;
+        min-height: 36px;
+      }
+
+      input,
+      select {
+        background: #fff;
+        padding: 6px 8px;
+        width: 100%;
+      }
+
+      button {
+        background: #17324d;
+        color: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 650;
+        padding: 7px 10px;
+      }
+
+      button.secondary {
+        background: #fff;
+        color: #17324d;
+      }
+
+      .buttons {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 16px;
+      }
+
+      pre {
+        margin: 0;
+        min-height: 360px;
+        overflow: auto;
+        padding: 14px;
+        white-space: pre-wrap;
+      }
+
+      iframe {
+        border: 1px solid #d9deea;
+        border-radius: 8px;
+        height: 240px;
+        width: 100%;
+      }
+
+      @media (max-width: 860px) {
+        main {
+          grid-template-columns: 1fr;
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1>Polkaswap Agent API Playground</h1>
+        <p>
+          Same-origin helper for inspecting <code>window.PolkaswapAgent</code>. It loads the app below and calls the
+          agent API inside that frame. This page does not execute swaps.
+        </p>
+
+        <iframe id="app-frame" title="Polkaswap app frame"></iframe>
+
+        <label>
+          Input asset symbol
+          <input id="asset-in" autocomplete="off" value="XOR" />
+        </label>
+
+        <label>
+          Output asset symbol
+          <input id="asset-out" autocomplete="off" value="PSWAP" />
+        </label>
+
+        <label>
+          Amount
+          <input id="amount" autocomplete="off" inputmode="decimal" value="1" />
+        </label>
+
+        <label>
+          Side
+          <select id="side">
+            <option value="input">input</option>
+            <option value="output">output</option>
+          </select>
+        </label>
+
+        <div class="buttons">
+          <button id="connect" type="button">Connect</button>
+          <button id="status" class="secondary" type="button">Status</button>
+          <button id="resolve" class="secondary" type="button">Resolve</button>
+          <button id="quote" type="button">Quote</button>
+          <button id="prepare" type="button">Prepare</button>
+          <button id="clear" class="secondary" type="button">Clear</button>
+        </div>
+      </section>
+
+      <pre id="output" aria-live="polite">Loading Polkaswap frame...</pre>
+    </main>
+
+    <script>
+      const frame = document.getElementById('app-frame');
+      const output = document.getElementById('output');
+
+      function getAppUrl() {
+        const url = new URL('.', window.location.href);
+        url.hash = '/swap';
+        return url.toString();
+      }
+
+      function print(value) {
+        output.textContent = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+      }
+
+      function getRequest() {
+        return {
+          assetIn: { symbol: document.getElementById('asset-in').value.trim() },
+          assetOut: { symbol: document.getElementById('asset-out').value.trim() },
+          amount: document.getElementById('amount').value.trim(),
+          side: document.getElementById('side').value,
+        };
+      }
+
+      async function getAgent(timeoutMs = 30000) {
+        const appWindow = frame.contentWindow;
+        if (!appWindow) throw new Error('App frame is unavailable.');
+        if (appWindow.PolkaswapAgent) return appWindow.PolkaswapAgent;
+
+        return new Promise((resolve, reject) => {
+          const timeout = window.setTimeout(() => {
+            appWindow.removeEventListener('polkaswap-agent-ready', onReady);
+            reject(new Error('Timed out waiting for PolkaswapAgent.'));
+          }, timeoutMs);
+
+          function onReady(event) {
+            window.clearTimeout(timeout);
+            appWindow.removeEventListener('polkaswap-agent-ready', onReady);
+            resolve(event.detail.api);
+          }
+
+          appWindow.addEventListener('polkaswap-agent-ready', onReady);
+        });
+      }
+
+      async function run(label, task) {
+        try {
+          print(`${label}...`);
+          const agent = await getAgent();
+          const result = await task(agent);
+          print(result);
+        } catch (error) {
+          print({
+            error: {
+              name: error.name,
+              code: error.code,
+              message: error.message,
+              details: error.details,
+            },
+          });
+        }
+      }
+
+      frame.src = getAppUrl();
+
+      document.getElementById('connect').addEventListener('click', () =>
+        run('Connecting', async (agent) => agent.ready({ requireNode: true, timeoutMs: 30000 }))
+      );
+
+      document.getElementById('status').addEventListener('click', () =>
+        run('Reading status', async (agent) => agent.status())
+      );
+
+      document.getElementById('resolve').addEventListener('click', () =>
+        run('Resolving assets', async (agent) => {
+          const request = getRequest();
+          const assetIn = await agent.resolveAsset({ asset: request.assetIn, includeBalance: true });
+          const assetOut = await agent.resolveAsset({ asset: request.assetOut, includeBalance: true });
+          return { assetIn, assetOut };
+        })
+      );
+
+      document.getElementById('quote').addEventListener('click', () =>
+        run('Quoting swap', async (agent) => agent.quoteSwap(getRequest()))
+      );
+
+      document.getElementById('prepare').addEventListener('click', () =>
+        run('Preparing swap', async (agent) => agent.prepareSwap(getRequest()))
+      );
+
+      document.getElementById('clear').addEventListener('click', () => print(''));
+
+      frame.addEventListener('load', () => {
+        getAgent()
+          .then((agent) => agent.ready({ requireNode: true, timeoutMs: 30000 }))
+          .then((status) => print({ ready: true, status }))
+          .catch((error) => print({ ready: false, error: { message: error.message, code: error.code } }));
+      });
+    </script>
+  </body>
+</html>

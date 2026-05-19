@@ -77,7 +77,7 @@ const injectLiberlandSubBridgeContext = async (
       const node = {
         chain: 'Liberland',
         name: 'Dwellir',
-        address: 'wss://liberland-rpc.dwellir.com',
+        address: 'wss://liberland-rpc.n.dwellir.com',
         location: 'EU',
       };
 

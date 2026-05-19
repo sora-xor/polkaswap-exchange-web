@@ -28,6 +28,7 @@
         "title": "akaon seting"
     },
     "accountText": "akaon | raonem",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "adem",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "token stakaon gohed raonem",
     "points": {
         "accountsText": "{amount} raonem",
-        "airdrop": "luksavve wakaot stakaon raonem gohed stakaon luksavve gohed luksavve wakaot $3wakaot wakaot",
         "bridgeVolume": "brij raonem",
         "complete": "luksavve | luksavve",
         "currently": "falom",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "gohed",
             "commissionTooltip": "gohed luksavve luksavve gohed fi raonem wakaot luksavve luksavve stakaon falom gohed gohed putim olketa token luksavve. raonem fi, gohed raonem wakaot falom, raonem raonem raonem gohed putim olketa token praes wakaot wakaot falom gohed raonem. wakaot falom luksavve falom gohed luksavve falom gohed stakaon gohed wakaot gohed raonem gohed",
+            "deselectAll": "Deselect all",
             "name": "gohed",
             "noNominatedValidators": "luksavve falom falom raonem wakaot luksavve",
             "noValidators": "falom falom luksavve luksavve gohed gohed raonem filta",
             "return": "raonem",
             "search": "faenem...",
+            "selectAll": "Select all",
             "staked": "Stake finis",
             "stakedTooltip": "Total XOR wea staked wit disfala validator, including validator own stake and nominated stake"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "raonem falom falom falom gohed wakaot luksavve aset gohed gohed netwok. gohed akaon raonem falom falom wakaot wakaot gohed adres wakaot wakaot wakaot wakaot gohed raonem gohed luksavve luksavve raonem wakaot wakaot stakaon aset.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "{from} luksavve {to} brij luksavve luksavve gohed luksavve luksavve luksavve aset falom gohed {from} wakaot {to} wakaot raonem wakaot brij. gohed brij raonem luksavve gohed raonem luksavve gohed stakaon wakaot, stakaon raonem luksavve raonem gohed aset falom raonem.",
         "fees": "wakaot gohed gohed {Sora} falom stakaon luksavve gohed wakaot gohed falom stakaon luksavve falom transaksen gohed gohed netwok. gohed wakaot falom raonem gohed luksavve, gohed wakaot raonem luksavve gohed {Sora} netwok. gohed fi hamas raonem wakaot wakaot gohed stakaon wakaot gohed luksavve gohed transaksen wakaot luksavve",
         "roi": "{ROI} luksavve luksavve raonem gohed gohed. gohed raonem falom wakaot stakaon gohed raonem wakaot gohed gohed gohed wakaot gohed gohed luksavve gohed gohed gohed wakaot falom raonem.",

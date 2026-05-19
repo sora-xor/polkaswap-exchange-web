@@ -73,6 +73,13 @@ const resolveWalletStore = () => {
 
 const insensitive = (value: string) => value.toLowerCase();
 
+/** Returns true only for plain object payloads from indexer GraphQL rows. */
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  Boolean(value && typeof value === 'object' && !Array.isArray(value));
+
+/** Guards history fields that must be present before case-insensitive matching or id storage. */
+const isNonEmptyString = (value: unknown): value is string => typeof value === 'string' && Boolean(value.trim());
+
 const OperationsMap = {
   // events
   [insensitive(ModuleNames.Tokens)]: {
@@ -213,10 +220,24 @@ const OperationsMap = {
 
 const getAssetSymbol = (asset: Nullable<Asset | WhitelistItem>): string => asset?.symbol ?? '';
 
-const getTransactionId = (tx: HistoryElement): string => tx.id;
+/** Normalizes string metadata from indexer rows and rejects attacker-controlled object coercion. */
+const getStringField = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
+
+const getTransactionId = (tx: HistoryElement): string => getStringField(tx.id);
+
+const getTransactionBlockHeight = (tx: HistoryElement): number => {
+  const blockHeight = Number(tx.blockHeight);
+
+  return Number.isSafeInteger(blockHeight) && blockHeight >= 0 ? blockHeight : 0;
+};
+
+const getTransactionBlockId = (tx: HistoryElement): string => getStringField(tx.blockHash);
 
 const isModuleMethod = (item: HistoryElementBatchCall, module: string, method: string) =>
-  insensitive(item.module) === insensitive(module) && insensitive(item.method) === insensitive(method);
+  isNonEmptyString(item.module) &&
+  isNonEmptyString(item.method) &&
+  insensitive(item.module) === insensitive(module) &&
+  insensitive(item.method) === insensitive(method);
 
 const getBatchCall = (calls: HistoryElementBatchCall[], { module, method }): Nullable<HistoryElementBatchCall> =>
   calls.find((item) => isModuleMethod(item, module, method));
@@ -238,6 +259,10 @@ const getCallDataArgs = (call: HistoryElementBatchCall): CallArgs => {
 const getTransactionOperationType = (tx: HistoryElement): Nullable<Operation> => {
   const { module, method, data, calls } = tx;
 
+  if (!(isNonEmptyString(module) && isNonEmptyString(method))) {
+    return null;
+  }
+
   const operationGetter = getOr(ObjectInit, [insensitive(module), insensitive(method)], OperationsMap);
   const operationData = isModuleMethod(
     tx as HistoryElementBatchCall,
@@ -251,13 +276,20 @@ const getTransactionOperationType = (tx: HistoryElement): Nullable<Operation> =>
 };
 
 const getTransactionTimestamp = (tx: HistoryElement): number => {
-  const timestamp = tx.timestamp * 1000;
+  const timestamp = Number(tx.timestamp) * 1000;
 
-  return !Number.isNaN(timestamp) ? timestamp : Date.now();
+  return Number.isFinite(timestamp) && timestamp >= 0 ? timestamp : Date.now();
 };
 
 const getErrorMessage = (historyElementError: HistoryElementError): Record<string, string> => {
-  const [error, index] = [new BN(historyElementError.moduleErrorId), new BN(historyElementError.moduleErrorIndex)];
+  let error: BN;
+  let index: BN;
+
+  try {
+    [error, index] = [new BN(historyElementError.moduleErrorId), new BN(historyElementError.moduleErrorIndex)];
+  } catch {
+    return { section: '', name: '' };
+  }
 
   // Indexer data can arrive before the chain API metadata is ready (or even without any connection).
   // This helper must never throw, otherwise history parsing turns into a noisy console error storm on static/IPFS loads.
@@ -275,19 +307,29 @@ const getErrorMessage = (historyElementError: HistoryElementError): Record<strin
 };
 
 const getTransactionStatus = (tx: HistoryElement): string => {
-  if (tx.execution.success) return TransactionStatus.Finalized;
+  if (tx.execution?.success) return TransactionStatus.Finalized;
 
   return TransactionStatus.Error;
 };
 
 const getTransactionNetworkFee = (tx: HistoryElement): string => {
-  const fromCodec = FPNumber.fromCodecValue(tx.networkFee);
-  const minFee = new FPNumber('0.0007');
+  const rawNetworkFee = tx.networkFee;
+  const networkFee =
+    typeof rawNetworkFee === 'string' || typeof rawNetworkFee === 'number' ? String(rawNetworkFee).trim() : '';
 
-  if (FPNumber.isLessThan(fromCodec, minFee)) {
-    return new FPNumber(tx.networkFee).toCodecString();
-  } else {
-    return tx.networkFee;
+  if (!/^\d+(\.\d+)?$/.test(networkFee)) return '0';
+
+  try {
+    const fromCodec = FPNumber.fromCodecValue(networkFee);
+    const minFee = new FPNumber('0.0007');
+
+    if (FPNumber.isLessThan(fromCodec, minFee)) {
+      return new FPNumber(networkFee).toCodecString();
+    } else {
+      return networkFee;
+    }
+  } catch {
+    return '0';
   }
 };
 
@@ -336,6 +378,35 @@ const formatAmount = (amount: string): string => (amount ? new FPNumber(amount).
 /** Formats a raw codec balance from nested batch call arguments as a natural amount. */
 const formatCodecAmount = (amount: string, decimals = FPNumber.DEFAULT_PRECISION): string =>
   amount ? FPNumber.fromCodecValue(amount, decimals).toString() : '0';
+
+/** Accepts only decimal natural amount strings; rejects signs, exponent notation, separators, and objects. */
+const isUnsignedNaturalAmount = (value: unknown): value is string => {
+  if (typeof value !== 'string') return false;
+
+  return /^\d+(\.\d+)?$/.test(value.trim());
+};
+
+/** Ensures required swap token amounts are both syntactically valid and greater than zero. */
+const isPositiveNaturalAmount = (value: unknown): value is string => {
+  if (!isUnsignedNaturalAmount(value)) return false;
+
+  try {
+    return FPNumber.isGreaterThan(new FPNumber(value), FPNumber.ZERO);
+  } catch {
+    return false;
+  }
+};
+
+/** Formats optional fiat metadata without letting malformed indexer values drop the whole transaction. */
+const formatOptionalNaturalAmount = (value: unknown): string => {
+  if (!isUnsignedNaturalAmount(value)) return '0';
+
+  try {
+    return formatAmount(value);
+  } catch {
+    return '0';
+  }
+};
 
 const firstString = (data: Record<string, unknown>, keys: string[]): string => {
   for (const key of keys) {
@@ -508,10 +579,22 @@ const parseMintOrBurn = async (transaction: HistoryElement, payload: HistoryItem
 };
 
 const parseSwapTransfer = async (transaction: HistoryElement, payload: HistoryItem) => {
+  if (!isRecord(transaction.data)) return null;
+
   const data = transaction.data as HistoryElementSwap & HistoryElementSwapTransfer;
 
   const assetAddress = data.baseAssetId;
   const asset2Address = data.targetAssetId;
+
+  if (
+    !isNonEmptyString(assetAddress) ||
+    !isNonEmptyString(asset2Address) ||
+    !isPositiveNaturalAmount(data.baseAssetAmount) ||
+    !isPositiveNaturalAmount(data.targetAssetAmount)
+  ) {
+    return null;
+  }
+
   const asset = await getAssetByAddress(assetAddress);
   const asset2 = await getAssetByAddress(asset2Address);
 
@@ -524,8 +607,8 @@ const parseSwapTransfer = async (transaction: HistoryElement, payload: HistoryIt
   payload.liquiditySource = data.selectedMarket;
 
   payload.payload = {
-    amountUSD: formatAmount(data.baseAssetAmountUSD),
-    amount2USD: formatAmount(data.targetAssetAmountUSD),
+    amountUSD: formatOptionalNaturalAmount(data.baseAssetAmountUSD),
+    amount2USD: formatOptionalNaturalAmount(data.targetAssetAmountUSD),
   };
 
   return payload;
@@ -1118,6 +1201,11 @@ export default class IndexerDataParser {
   }
 
   public async parseTransactionAsHistoryItem(transaction: HistoryElement): Promise<Nullable<HistoryItem>> {
+    if (!isRecord(transaction)) {
+      console.warn('Unsupported transaction:', transaction);
+      return null;
+    }
+
     const type = getTransactionOperationType(transaction);
 
     if (!type) {
@@ -1126,9 +1214,13 @@ export default class IndexerDataParser {
     }
 
     const id = getTransactionId(transaction);
+    if (!id) {
+      return null;
+    }
+
     const timestamp = getTransactionTimestamp(transaction);
-    const blockHeight = +transaction.blockHeight;
-    const blockId = transaction.blockHash;
+    const blockHeight = getTransactionBlockHeight(transaction);
+    const blockId = getTransactionBlockId(transaction);
 
     // common attributes
     const payload: HistoryItem = {
@@ -1143,10 +1235,10 @@ export default class IndexerDataParser {
       status: getTransactionStatus(transaction),
     };
 
-    payload.from = transaction.dataFrom ?? transaction.address;
-    payload.to = transaction.dataTo;
+    payload.from = getStringField(transaction.dataFrom) || getStringField(transaction.address);
+    payload.to = getStringField(transaction.dataTo);
 
-    if (transaction.execution.error) {
+    if (transaction.execution?.error) {
       const { name, section } = getErrorMessage(transaction.execution.error);
 
       payload.errorMessage = {

@@ -15,6 +15,7 @@ import { installVueErrorHandler } from '@/utils/vueErrorHandler';
 import { updateDocumentTitle } from '@/utils/documentTitle';
 
 type AppShellModule = typeof import('@/app/shell/AppShell.vue');
+type AgentTradingModule = typeof import('@/features/agent-trading');
 type LangModule = typeof import('@/lang');
 type PiniaModule = typeof import('@/plugins/pinia');
 type RouterModule = typeof import('@/app/router');
@@ -25,6 +26,7 @@ type PreparedRuntime = {
 };
 
 let appShellModulePromise: Promise<AppShellModule> | null = null;
+let agentTradingModulePromise: Promise<AgentTradingModule> | null = null;
 let langModulePromise: Promise<LangModule> | null = null;
 let piniaModulePromise: Promise<PiniaModule> | null = null;
 let routerModulePromise: Promise<RouterModule> | null = null;
@@ -32,6 +34,11 @@ let routerModulePromise: Promise<RouterModule> | null = null;
 const loadAppShell = (): Promise<AppShellModule> => {
   appShellModulePromise ??= loadAsyncImportWithRetry(() => import('@/app/shell/AppShell.vue'));
   return appShellModulePromise;
+};
+
+const loadAgentTrading = (): Promise<AgentTradingModule> => {
+  agentTradingModulePromise ??= loadAsyncImportWithRetry(() => import('@/features/agent-trading'));
+  return agentTradingModulePromise;
 };
 
 const loadLang = (): Promise<LangModule> => {
@@ -83,6 +90,11 @@ export async function prepareAppRuntime(app: VueApp): Promise<PreparedRuntime> {
     loadAppShell(),
     setI18nLocale(getLocale() as SupportedLocale),
   ]);
+  await loadAgentTrading()
+    .then(({ installPolkaswapAgentApi }) => installPolkaswapAgentApi({ pinia }))
+    .catch((error) => {
+      console.warn('[bootstrap] Polkaswap agent API install skipped', error);
+    });
   await updateDocumentTitle();
 
   return { router };

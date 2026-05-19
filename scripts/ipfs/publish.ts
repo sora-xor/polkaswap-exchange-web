@@ -51,6 +51,13 @@ const VUE3_BUILD_SCRIPT_CANDIDATES = [/^build(?::|-)vue3$/i, /^build.*vue3$/i];
 const PERMISSION_DENIED_PATTERN = /(EPERM|EACCES|permission denied|Operation not permitted)/i;
 const NO_SPACE_LEFT_PATTERN = /(ENOSPC|no space left on device|disk full)/i;
 const GLOB_PATTERN = /[*?[{\]]/;
+const BASE58BTC_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const BASE32_LOWER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz234567';
+const CIDV0_SHA2_256_MULTIHASH_LENGTH = 34;
+const CIDV0_SHA2_256_CODE = 0x12;
+const CIDV0_SHA2_256_LENGTH = 0x20;
+const CIDV1_VERSION = 0x01;
+const CIDV1_DAG_PB_CODEC = 0x70;
 
 type RunCommandOptions = Omit<SpawnSyncOptionsWithStringEncoding, 'encoding'> & {
   encoding?: SpawnSyncOptionsWithStringEncoding['encoding'];
@@ -702,17 +709,119 @@ export function resolveLocalGatewayBaseUrl(options: ResolveLocalGatewayOptions =
 }
 
 /**
- * Creates a public dweb.link URL for a published IPFS CID.
+ * Decodes a CIDv0 base58btc value into its multihash bytes.
  */
-export function createDwebGatewayUrl(cid: string): string {
-  return `https://dweb.link/ipfs/${cid}/index.html`;
+function decodeBase58btc(value: string): Uint8Array {
+  let numericValue = 0n;
+
+  for (const character of value) {
+    const digit = BASE58BTC_ALPHABET.indexOf(character);
+    if (digit === -1) {
+      throw new Error(`Unsupported base58btc character in IPFS CID: ${character}`);
+    }
+
+    numericValue = numericValue * 58n + BigInt(digit);
+  }
+
+  const bytes: number[] = [];
+  while (numericValue > 0n) {
+    bytes.unshift(Number(numericValue % 256n));
+    numericValue /= 256n;
+  }
+
+  for (const character of value) {
+    if (character !== '1') {
+      break;
+    }
+
+    bytes.unshift(0);
+  }
+
+  return Uint8Array.from(bytes);
 }
 
 /**
- * Creates the IPFS directory URL to use as a Bunny pull-zone origin.
+ * Encodes binary CIDv1 bytes as lowercase base32 with a multibase prefix for DNS-safe gateway subdomains.
  */
-export function createBunnyOriginUrl(cid: string, gatewayBaseUrl: string = 'https://ipfs.io'): string {
+function encodeBase32LowerMultibase(bytes: Uint8Array): string {
+  let output = 'b';
+  let buffer = 0;
+  let bitsLeft = 0;
+
+  for (const byte of bytes) {
+    buffer = (buffer << 8) | byte;
+    bitsLeft += 8;
+
+    while (bitsLeft >= 5) {
+      output += BASE32_LOWER_ALPHABET[(buffer >> (bitsLeft - 5)) & 31];
+      bitsLeft -= 5;
+      buffer &= (1 << bitsLeft) - 1;
+    }
+  }
+
+  if (bitsLeft > 0) {
+    output += BASE32_LOWER_ALPHABET[(buffer << (5 - bitsLeft)) & 31];
+  }
+
+  return output;
+}
+
+/**
+ * Converts a CID into the lowercase CIDv1 base32 form required by IPFS subdomain gateways.
+ */
+export function toCidV1Base32(cid: string): string {
+  const normalizedCid = cid.trim();
+  if (/^b[a-z2-7]+$/i.test(normalizedCid)) {
+    return normalizedCid.toLowerCase();
+  }
+
+  const multihash = decodeBase58btc(normalizedCid);
+  if (
+    multihash.length !== CIDV0_SHA2_256_MULTIHASH_LENGTH ||
+    multihash[0] !== CIDV0_SHA2_256_CODE ||
+    multihash[1] !== CIDV0_SHA2_256_LENGTH
+  ) {
+    throw new Error(`Cannot convert unsupported IPFS CID to a CIDv1 base32 subdomain: ${cid}`);
+  }
+
+  return encodeBase32LowerMultibase(Uint8Array.from([CIDV1_VERSION, CIDV1_DAG_PB_CODEC, ...multihash]));
+}
+
+/**
+ * Creates a direct dweb.link subdomain origin for a published IPFS CID without a cross-host redirect.
+ */
+export function createDwebSubdomainOriginUrl(cid: string): string {
+  return `https://${toCidV1Base32(cid)}.ipfs.dweb.link`;
+}
+
+/**
+ * Creates a public dweb.link URL for a published IPFS CID without a path-to-subdomain redirect.
+ */
+export function createDwebGatewayUrl(cid: string): string {
+  return `${createDwebSubdomainOriginUrl(cid)}/index.html`;
+}
+
+/**
+ * Creates the URL to use as a Bunny pull-zone origin.
+ *
+ * By default, this uses the CIDv1 dweb.link subdomain form so Bunny can fetch
+ * assets without following a path-to-subdomain redirect. Pass a custom gateway
+ * base only for legacy/private gateway origins that intentionally use
+ * `/ipfs/<cid>` paths.
+ */
+export function createBunnyOriginUrl(cid: string, gatewayBaseUrl?: string): string {
+  if (!gatewayBaseUrl) {
+    return createDwebSubdomainOriginUrl(cid);
+  }
+
   return `${gatewayBaseUrl.replace(/\/+$/, '')}/ipfs/${cid}`;
+}
+
+/**
+ * Creates the Host header Bunny should send to the dweb.link origin.
+ */
+export function createBunnyOriginHostHeader(cid: string): string {
+  return new URL(createBunnyOriginUrl(cid)).hostname;
 }
 
 /**
@@ -736,10 +845,10 @@ function logGatewayUrls(cid: string, label: string, localGatewayBaseUrl: string)
   const url = `https://ipfs.io/ipfs/${cid}/index.html`;
   console.log(`\n${label} CID:`, cid);
   console.log(`${label} gateway (ipfs.io):`, url);
-  if (label === 'Production') {
-    console.log('Production dweb link:', createDwebGatewayUrl(cid));
-  }
+  console.log(`${label} dweb link:`, createDwebGatewayUrl(cid));
   console.log(`${label} Bunny origin URL:`, createBunnyOriginUrl(cid));
+  console.log(`${label} Bunny origin host header:`, createBunnyOriginHostHeader(cid));
+  console.log(`${label} Bunny origin request header:`, 'Sec-Fetch-Dest: empty');
   console.log(`${label} local gateway:`, createLocalGatewayUrl(cid, localGatewayBaseUrl));
 }
 

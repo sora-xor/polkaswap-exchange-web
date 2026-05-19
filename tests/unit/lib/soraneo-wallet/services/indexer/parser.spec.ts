@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { KUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 vi.mock('@/plugins/pinia', () => ({
   resolveGlobalPinia: () => ({}),
@@ -11,6 +11,7 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     assetsDataTable: {
       [XOR.address]: XOR,
+      [KUSD.address]: KUSD,
     },
   }),
 }));
@@ -24,7 +25,369 @@ vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   },
 }));
 
+const walletAddress = 'cnRwt3q7DkvJqr3YkuN7dFibTx6yu8rqDDYKmBp4Sko5TW2Dd';
+const liveSwapId = '0x8705a4a869a35f45c40528581601c4a99962d5f5cf8b77489fccf340e4212fbc';
+const liveSwapData = {
+  baseAssetId: XOR.address,
+  targetAssetId: KUSD.address,
+  selectedMarket: 'PoolXYK',
+  baseAssetAmount: '0.803870313140829364',
+  targetAssetAmount: '4.7',
+  baseAssetAmountUSD: '4.80280251',
+  targetAssetAmountUSD: '4.7',
+};
+
+const createLiveSwapHistoryElement = ({
+  data,
+  ...overrides
+}: {
+  data?: unknown;
+  [key: string]: unknown;
+} = {}) => ({
+  id: liveSwapId,
+  module: 'liquidityProxy',
+  method: 'swap',
+  address: walletAddress,
+  dataFrom: walletAddress,
+  dataTo: '',
+  blockHash: '0xblock',
+  blockHeight: '26166250',
+  timestamp: 1778997216,
+  networkFee: '0',
+  execution: { success: true, error: null },
+  data:
+    data && typeof data === 'object' && !Array.isArray(data)
+      ? {
+          ...liveSwapData,
+          ...(data as Record<string, unknown>),
+        }
+      : data === undefined
+        ? liveSwapData
+        : data,
+  calls: [],
+  ...overrides,
+});
+
 describe('IndexerDataParser', () => {
+  it('parses pi.soramitsu.io account swap history rows used by wallet activity', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(createLiveSwapHistoryElement() as any);
+
+    expect(parsed).toMatchObject({
+      id: liveSwapId,
+      type: Operation.Swap,
+      from: walletAddress,
+      assetAddress: XOR.address,
+      asset2Address: KUSD.address,
+      amount: '0.803870313140829364',
+      amount2: '4.7',
+      symbol: XOR.symbol,
+      symbol2: KUSD.symbol,
+      liquiditySource: 'PoolXYK',
+      payload: {
+        amountUSD: '4.80280251',
+        amount2USD: '4.7',
+      },
+      status: TransactionStatus.Finalized,
+    });
+  });
+
+  it.each([
+    ['null transaction', null],
+    ['array transaction', []],
+    ['string transaction', 'liquidityProxy.swap'],
+  ])('drops malformed top-level indexer rows with %s', async (_case, transaction) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    try {
+      await expect(new IndexerDataParser().parseTransactionAsHistoryItem(transaction as any)).resolves.toBeNull();
+      expect(warn).toHaveBeenCalledWith('Unsupported transaction:', transaction);
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it.each([
+    ['null data payload', null],
+    ['array data payload', []],
+    ['missing base asset', { baseAssetId: '' }],
+    ['missing target asset', { targetAssetId: '' }],
+    ['numeric base asset', { baseAssetId: 42 }],
+    ['object target asset', { targetAssetId: { address: KUSD.address } }],
+    ['zero base amount', { baseAssetAmount: '0' }],
+    ['zero target amount', { targetAssetAmount: '0' }],
+    ['negative base amount', { baseAssetAmount: '-1' }],
+    ['negative target amount', { targetAssetAmount: '-1' }],
+    ['comma-separated base amount', { baseAssetAmount: '1,000' }],
+    ['blank target amount', { targetAssetAmount: ' ' }],
+    ['non-numeric base amount', { baseAssetAmount: 'not-a-number' }],
+    ['NaN target amount', { targetAssetAmount: 'NaN' }],
+    ['infinite base amount', { baseAssetAmount: 'Infinity' }],
+    ['object target amount', { targetAssetAmount: { value: '4.7' } }],
+  ])('drops malformed pi.soramitsu.io swap history rows with %s', async (_case, data) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    await expect(
+      new IndexerDataParser().parseTransactionAsHistoryItem(createLiveSwapHistoryElement({ data }) as any)
+    ).resolves.toBeNull();
+  });
+
+  it('normalizes malformed swap USD fields to zero without dropping valid token amounts', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement({
+        data: {
+          baseAssetAmountUSD: '<script>alert(1)</script>',
+          targetAssetAmountUSD: '1,000',
+        },
+      }) as any
+    );
+
+    expect(parsed).toMatchObject({
+      amount: '0.803870313140829364',
+      amount2: '4.7',
+      payload: {
+        amountUSD: '0',
+        amount2USD: '0',
+      },
+    });
+  });
+
+  it('normalizes adversarial swap USD field variants to zero', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement({
+        data: {
+          baseAssetAmountUSD: 'NaN',
+          targetAssetAmountUSD: '-1',
+        },
+      }) as any
+    );
+
+    expect(parsed).toMatchObject({
+      payload: {
+        amountUSD: '0',
+        amount2USD: '0',
+      },
+    });
+  });
+
+  it('ignores unsupported liquidityProxy methods instead of treating them as swaps', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    await expect(
+      new IndexerDataParser().parseTransactionAsHistoryItem(
+        createLiveSwapHistoryElement({
+          method: 'swapEverything',
+        }) as any
+      )
+    ).resolves.toBeNull();
+    expect(warn).toHaveBeenCalledWith(
+      'Unsupported transaction:',
+      expect.objectContaining({
+        module: 'liquidityProxy',
+        method: 'swapEverything',
+      })
+    );
+
+    warn.mockRestore();
+  });
+
+  it.each([
+    ['missing module', { module: undefined }],
+    ['blank module', { module: '   ' }],
+    ['missing method', { method: undefined }],
+    ['blank method', { method: '   ' }],
+  ])('drops rows with %s before reading transaction payloads', async (_case, overrides) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    try {
+      await expect(
+        new IndexerDataParser().parseTransactionAsHistoryItem(createLiveSwapHistoryElement(overrides) as any)
+      ).resolves.toBeNull();
+      expect(warn).toHaveBeenCalledWith(
+        'Unsupported transaction:',
+        expect.objectContaining(overrides as Record<string, unknown>)
+      );
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it.each([
+    ['missing id', { id: undefined }],
+    ['blank id', { id: '   ' }],
+    ['numeric id', { id: 42 }],
+    ['object id', { id: { hash: liveSwapId } }],
+  ])('drops otherwise valid swap rows with %s', async (_case, overrides) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    await expect(
+      new IndexerDataParser().parseTransactionAsHistoryItem(createLiveSwapHistoryElement(overrides) as any)
+    ).resolves.toBeNull();
+  });
+
+  it('trims transaction ids before exposing activity keys', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement({ id: ` ${liveSwapId} ` }) as any
+    );
+
+    expect(parsed).toMatchObject({
+      id: liveSwapId,
+      txId: liveSwapId,
+    });
+  });
+
+  it.each([
+    ['missing block hash', { blockHash: undefined }],
+    ['object block hash', { blockHash: { hash: '0xblock' } }],
+  ])('normalizes %s metadata to an empty block id', async (_case, overrides) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement(overrides) as any
+    );
+
+    expect(parsed).toMatchObject({
+      id: liveSwapId,
+      blockId: '',
+    });
+  });
+
+  it.each([
+    ['missing block height', undefined],
+    ['negative block height', '-1'],
+    ['fractional block height', '42.5'],
+    ['infinite block height', Number.POSITIVE_INFINITY],
+    ['object block height', { value: 42 }],
+  ])('normalizes %s metadata to zero', async (_case, blockHeight) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement({ blockHeight }) as any
+    );
+
+    expect(parsed).toMatchObject({
+      id: liveSwapId,
+      blockHeight: 0,
+    });
+  });
+
+  it.each([
+    ['missing execution', { execution: undefined }],
+    ['null execution', { execution: null }],
+  ])('treats %s metadata as failed instead of throwing', async (_case, overrides) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    await expect(
+      new IndexerDataParser().parseTransactionAsHistoryItem(createLiveSwapHistoryElement(overrides) as any)
+    ).resolves.toMatchObject({
+      id: liveSwapId,
+      type: Operation.Swap,
+      status: TransactionStatus.Error,
+    });
+  });
+
+  it.each([
+    ['missing error', { execution: { success: false } }],
+    ['null error', { execution: { success: false, error: null } }],
+  ])('treats failed rows with %s metadata as failed without synthetic error text', async (_case, overrides) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement(overrides) as any
+    );
+
+    expect(parsed).toMatchObject({
+      id: liveSwapId,
+      type: Operation.Swap,
+      status: TransactionStatus.Error,
+    });
+    expect(parsed?.errorMessage).toBeUndefined();
+  });
+
+  it.each([
+    ['negative timestamp', -1],
+    ['NaN timestamp', 'not-a-time'],
+    ['infinite timestamp', Number.POSITIVE_INFINITY],
+  ])('uses current time for %s metadata instead of surfacing invalid dates', async (_case, timestamp) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+    const now = Date.UTC(2026, 0, 1);
+
+    vi.useFakeTimers();
+    vi.setSystemTime(now);
+
+    try {
+      await expect(
+        new IndexerDataParser().parseTransactionAsHistoryItem(createLiveSwapHistoryElement({ timestamp }) as any)
+      ).resolves.toMatchObject({
+        endTime: now,
+        startTime: now,
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it.each([
+    ['missing fee', undefined],
+    ['null fee', null],
+    ['blank fee', '   '],
+    ['negative fee', '-1'],
+    ['NaN fee', 'NaN'],
+    ['infinite fee', 'Infinity'],
+    ['hex fee', '0x10'],
+    ['script fee', '<script>alert(1)</script>'],
+    ['exponential fee', '1e18'],
+    ['single-value array fee', ['1']],
+    ['array fee', ['1', '2']],
+    ['object fee', { value: '1' }],
+  ])('normalizes malformed network fee metadata from %s to zero', async (_case, networkFee) => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement({ networkFee }) as any
+    );
+
+    expect(parsed).toMatchObject({
+      id: liveSwapId,
+      soraNetworkFee: '0',
+    });
+  });
+
+  it('keeps malformed module error metadata inert when the transaction failed', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem(
+      createLiveSwapHistoryElement({
+        execution: {
+          success: false,
+          error: {
+            moduleErrorId: '<script>alert(1)</script>',
+            moduleErrorIndex: {},
+          },
+        },
+      }) as any
+    );
+
+    expect(parsed).toMatchObject({
+      id: liveSwapId,
+      status: TransactionStatus.Error,
+      errorMessage: {
+        name: '',
+        section: '',
+      },
+    });
+  });
+
   it('parses batched burn transactions and exposes the system remark', async () => {
     const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
     const remark = JSON.stringify({

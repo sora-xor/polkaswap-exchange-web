@@ -1,3 +1,4 @@
+import { FPNumber } from '@sora-substrate/math';
 import { mount } from '@vue/test-utils';
 import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -6,6 +7,7 @@ import NetworkStats from '@/features/misc/components/stats/NetworkStats.vue';
 import networkStatsSource from '@/features/misc/components/stats/NetworkStats.vue?raw';
 
 const fetchDataMock = vi.hoisted(() => vi.fn(async () => []));
+const fetchActiveAccountsMock = vi.hoisted(() => vi.fn());
 const settingsStoreMock = vi.hoisted(() => ({ state: undefined as any }));
 
 vi.mock('@/components/shared/Widget/Base.vue', () => ({
@@ -57,6 +59,7 @@ vi.mock('@/composables/useLoading', () => ({
 
 vi.mock('@/indexer/queries/network/stats', () => ({
   fetchData: fetchDataMock,
+  fetchActiveAccounts: fetchActiveAccountsMock,
 }));
 
 vi.mock('@/stores/settings', async () => {
@@ -102,6 +105,7 @@ vi.mock('@/consts/snapshots', () => ({
 describe('NetworkStats', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    fetchActiveAccountsMock.mockResolvedValue(FPNumber.ZERO);
     settingsStoreMock.state = reactive({
       nodeIsConnected: false,
       indexerEndpoint: '',
@@ -162,6 +166,76 @@ describe('NetworkStats', () => {
     await nextTick();
 
     expect(fetchDataMock).toHaveBeenCalledTimes(4);
+    expect(fetchActiveAccountsMock).toHaveBeenCalledTimes(4);
+  });
+
+  it('renders the active account metric returned for the selected period', async () => {
+    fetchDataMock.mockResolvedValue([]);
+    fetchActiveAccountsMock.mockResolvedValueOnce(new FPNumber(12)).mockResolvedValueOnce(new FPNumber(8));
+
+    const wrapper = mount(NetworkStats, {
+      global: {
+        stubs: {
+          's-card': {
+            template: '<section><slot name="header"></slot><slot /></section>',
+          },
+          's-tooltip': {
+            template: '<span><slot /></span>',
+          },
+          's-icon': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await Promise.resolve();
+    await Promise.resolve();
+    await nextTick();
+
+    expect(wrapper.text()).toContain('activeAccountsText');
+    expect(wrapper.find('[data-value="12"]').exists()).toBe(true);
+  });
+
+  it('keeps snapshot metrics visible when the active account endpoint fails', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    fetchDataMock
+      .mockResolvedValueOnce([
+        {
+          timestamp: 1_700_000_000,
+          accounts: new FPNumber(5),
+          activeAccounts: FPNumber.ZERO,
+          transactions: new FPNumber(7),
+          bridgeIncomingTransactions: FPNumber.ZERO,
+          bridgeOutgoingTransactions: FPNumber.ZERO,
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    fetchActiveAccountsMock.mockRejectedValue(new Error('account activity unavailable'));
+
+    const wrapper = mount(NetworkStats, {
+      global: {
+        stubs: {
+          's-card': {
+            template: '<section><slot name="header"></slot><slot /></section>',
+          },
+          's-tooltip': {
+            template: '<span><slot /></span>',
+          },
+          's-icon': true,
+        },
+      },
+    });
+
+    await nextTick();
+    await Promise.resolve();
+    await Promise.resolve();
+    await nextTick();
+
+    expect(wrapper.find('[data-value="5"]').exists()).toBe(true);
+    expect(wrapper.find('[data-value="7"]').exists()).toBe(true);
+    expect(wrapper.find('[data-value="0"]').exists()).toBe(true);
+    expect(consoleError).toHaveBeenCalledTimes(2);
+    consoleError.mockRestore();
   });
 
   it('binds integer-only rendering for whole-number counters', () => {
@@ -173,5 +247,8 @@ describe('NetworkStats', () => {
     expect(networkStatsSource).toContain("import BaseWidget from '@/components/shared/Widget/Base.vue';");
     expect(networkStatsSource).toContain("import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';");
     expect(networkStatsSource).toContain("import PriceChange from '@/components/shared/PriceChange.vue';");
+    expect(networkStatsSource).toContain('fetchActiveAccounts');
+    expect(networkStatsSource).toContain('fetchActiveAccountsOrZero');
+    expect(networkStatsSource).toContain("prop: 'activeAccounts' as const");
   });
 });

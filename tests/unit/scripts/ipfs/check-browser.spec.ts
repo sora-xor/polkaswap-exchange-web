@@ -228,6 +228,30 @@ describe('check-browser helpers', () => {
     ]);
   });
 
+  it('only treats path-based IPFS URLs as immutable content routes', () => {
+    expect(checkBrowser.isIpfsPathUrl('https://gateway.example/ipfs/QmHash/index.html')).toBe(true);
+    expect(checkBrowser.isIpfsPathUrl('https://gateway.example/ipns/polkaswap/index.html')).toBe(true);
+    expect(checkBrowser.isIpfsPathUrl('https://polkaswap.io/')).toBe(false);
+  });
+
+  it('requires stable host HTML responses to be uncacheable', () => {
+    expect(
+      checkBrowser.findStableHostHtmlCacheIssue(
+        { 'cache-control': 'public, max-age=29030400, immutable' },
+        'https://polkaswap.io/'
+      )
+    ).toContain('must not be cached immutably');
+    expect(
+      checkBrowser.findStableHostHtmlCacheIssue({ 'cache-control': 'no-store' }, 'https://polkaswap.io/')
+    ).toBeNull();
+    expect(
+      checkBrowser.findStableHostHtmlCacheIssue(
+        { 'cache-control': 'public, max-age=31536000, immutable' },
+        'https://gateway.example/ipfs/QmHash/index.html'
+      )
+    ).toBeNull();
+  });
+
   it('ignores optional endpoint failed requests', () => {
     const failedRequests = [
       { url: 'https://api.coingecko.com/api/v3/simple/price?ids=dai', errorText: 'net::ERR_FAILED' },

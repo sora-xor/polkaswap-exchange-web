@@ -109,6 +109,12 @@ type CurrentIndexer = ReturnType<IndexerServicesModule['getCurrentIndexer']>;
 
 const UPDATE_ACTIVE_TRANSACTIONS_INTERVAL = 2_000;
 const UPDATE_ASSETS_TIMEOUT = BLOCK_PRODUCE_TIME * 3;
+/** Keeps account activity pages stable when an indexer changes its GraphQL defaults. */
+const HISTORY_ELEMENTS_ORDER_BY_NEWEST = ['TIMESTAMP_DESC', 'ID_DESC'] as const;
+
+/** Keeps malformed indexer totals from leaking into pagination state. */
+const normalizeHistoryTotalCount = (value: unknown): number =>
+  typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 ? value : 0;
 
 let indexerServicesModulePromise: Promise<IndexerServicesModule> | null = null;
 let alertsServiceModulePromise: Promise<AlertsServiceModule> | null = null;
@@ -186,6 +192,7 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const storageUpdatesSubscription = ref<Nullable<VoidFunction>>(null);
   let accountAssetsLoadingRequestId = 0;
+  let accountAssetsOwnerAddress = '';
 
   const address = computed(() => accountState.value.address ?? '');
   const soraAddress = computed(() => address.value);
@@ -374,12 +381,15 @@ export const useWalletStore = defineStore('wallet', () => {
     accountState.value.assetsSubscription = subscription;
   };
 
-  const resetAccountAssetsSubscription = (): void => {
-    walletApi.assets.clearAccountAssets();
-
+  const resetAccountAssetsSubscription = (clearSdkAccountAssets = true): void => {
     if (accountState.value.accountAssetsSubscription) {
       accountState.value.accountAssetsSubscription.unsubscribe();
       accountState.value.accountAssetsSubscription = null;
+    }
+
+    if (clearSdkAccountAssets) {
+      walletApi.assets.clearAccountAssets();
+      accountAssetsOwnerAddress = '';
     }
   };
 
@@ -391,11 +401,13 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const subscribeOnAccountAssets = async (): Promise<void> => {
     const loadingRequestId = ++accountAssetsLoadingRequestId;
+    const activeAddress = address.value;
 
-    resetAccountAssetsSubscription();
+    resetAccountAssetsSubscription(!activeAddress || accountAssetsOwnerAddress !== activeAddress);
     setAccountAssetsLoaded(false);
 
     if (!isLoggedIn.value) {
+      accountAssetsOwnerAddress = '';
       setAccountAssetsLoading(false);
       return;
     }
@@ -404,16 +416,35 @@ export const useWalletStore = defineStore('wallet', () => {
 
     try {
       await waitForAccountPair(async () => {
+        await walletApi.assets.updateAccountAssets();
+
+        if (accountAssetsLoadingRequestId !== loadingRequestId) {
+          return;
+        }
+
+        accountAssetsOwnerAddress = activeAddress;
+        syncAccountAssetsFromApi();
+
+        // Subscribe only after the SDK finishes rebuilding its account asset list;
+        // interim balanceUpdated emissions can contain partial zero-balance snapshots.
         const subscription = walletApi.assets.balanceUpdated.subscribe(() => {
+          if (accountAssetsLoadingRequestId !== loadingRequestId) {
+            return;
+          }
+
           syncAccountAssetsFromApi();
         });
 
-        accountState.value.accountAssetsSubscription = subscription;
-        await walletApi.assets.updateAccountAssets();
-        syncAccountAssetsFromApi();
+        if (accountAssetsLoadingRequestId === loadingRequestId) {
+          accountState.value.accountAssetsSubscription = subscription;
+        } else {
+          subscription.unsubscribe();
+        }
       });
     } catch {
-      setAccountAssets([]);
+      if (accountAssetsLoadingRequestId === loadingRequestId && !accountState.value.accountAssets.length) {
+        setAccountAssets([]);
+      }
     } finally {
       if (accountAssetsLoadingRequestId === loadingRequestId) {
         setAccountAssetsLoaded(true);
@@ -482,36 +513,46 @@ export const useWalletStore = defineStore('wallet', () => {
       const subscription = indexer.services.explorer.account.createHistorySubscription(
         address.value,
         async (transaction) => {
-          const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(transaction);
+          let historyItem: Nullable<HistoryItem>;
 
-          if (!historyItem?.id) {
+          try {
+            historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(transaction);
+          } catch (error) {
+            console.warn('[wallet] Failed to parse indexer history update', error);
             return;
           }
 
-          if ([Operation.EthBridgeIncoming, Operation.EthBridgeOutgoing].includes(historyItem.type as Operation)) {
+          const id = typeof historyItem?.id === 'string' ? historyItem.id.trim() : '';
+
+          if (!id) {
             return;
           }
 
-          if (historyItem.id in walletApi.history) {
-            removeHistoryByIds([historyItem.id]);
+          const normalizedHistoryItem = historyItem.id === id ? historyItem : { ...historyItem, id };
+
+          if (
+            [Operation.EthBridgeIncoming, Operation.EthBridgeOutgoing].includes(normalizedHistoryItem.type as Operation)
+          ) {
+            return;
+          }
+
+          if (id in walletApi.history) {
+            removeHistoryByIds([id]);
             syncAccountHistory();
           }
 
-          if (
-            transactionsState.value.saveExternalHistoryUpdates &&
-            !(historyItem.id in transactionsState.value.externalHistory)
-          ) {
+          if (transactionsState.value.saveExternalHistoryUpdates && !(id in transactionsState.value.externalHistory)) {
             transactionsState.value.externalHistoryUpdates = Object.freeze({
               ...transactionsState.value.externalHistoryUpdates,
-              [historyItem.id]: historyItem,
+              [id]: normalizedHistoryItem,
             });
           }
 
           if (
-            accountIdBasedOperations.includes(historyItem.type as Operation) &&
-            historyItem.to === account.value?.address
+            accountIdBasedOperations.includes(normalizedHistoryItem.type as Operation) &&
+            normalizedHistoryItem.to === account.value?.address
           ) {
-            const asset = whitelist.value[historyItem.assetAddress as string];
+            const asset = whitelist.value[normalizedHistoryItem.assetAddress as string];
 
             if (asset && settingsState.value.allowTopUpAlert) {
               setAssetToNotify(asset as WhitelistArrayItem);
@@ -545,6 +586,7 @@ export const useWalletStore = defineStore('wallet', () => {
       filter,
       first: pageAmount,
       offset: pageAmount * (page - 1),
+      orderBy: HISTORY_ELEMENTS_ORDER_BY_NEWEST,
     };
 
     try {
@@ -558,21 +600,31 @@ export const useWalletStore = defineStore('wallet', () => {
       const buffer: Record<string, HistoryItem> = {};
       const removeInternalIds: string[] = [];
       const removeExternalUpdatesIds: string[] = [];
+      const historyNodes = Array.isArray(nodes) ? nodes : [];
 
-      for (const transaction of nodes ?? []) {
-        const id = transaction?.id as Nullable<string>;
+      for (const transaction of historyNodes) {
+        const id = typeof transaction?.id === 'string' ? transaction.id.trim() : '';
 
         if (!(id && !(id in transactionsState.value.externalHistory))) {
           continue;
         }
 
-        const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(transaction as never);
+        let historyItem: Nullable<HistoryItem>;
 
-        if (!historyItem?.id) {
+        try {
+          historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(transaction as never);
+        } catch (error) {
+          console.warn('[wallet] Failed to parse indexer history item', error);
           continue;
         }
 
-        buffer[id] = historyItem;
+        const historyItemId = typeof historyItem?.id === 'string' ? historyItem.id.trim() : '';
+
+        if (!historyItemId || historyItemId !== id) {
+          continue;
+        }
+
+        buffer[id] = historyItem.id === historyItemId ? historyItem : { ...historyItem, id: historyItemId };
 
         if (id in walletApi.history) {
           removeInternalIds.push(id);
@@ -601,7 +653,7 @@ export const useWalletStore = defineStore('wallet', () => {
         ...transactionsState.value.externalHistory,
         ...buffer,
       });
-      setExternalHistoryTotal(totalCount);
+      setExternalHistoryTotal(normalizeHistoryTotalCount(totalCount));
     } catch (error) {
       console.error(error);
     }

@@ -107,13 +107,34 @@ function applyTranslationConstLocaleOverrides(locale: Language): void {
 }
 
 const hasLocale = (locale: string) => Object.values(Language).includes(locale as any);
-const getBaseLocale = (locale: string): string => locale.split('-')[0] ?? locale;
 
-export const getSupportedLocale = (locale: Language): string => {
-  if (hasLocale(locale)) return locale;
+/**
+ * Normalizes browser and persisted locale codes before matching app catalogs.
+ */
+const normalizeLocaleCode = (locale: string): string => {
+  const normalizedLocale = locale.trim().replace(/_/g, '-');
+  const [languageCode, regionCode, ...rest] = normalizedLocale.split('-');
 
-  if (locale.includes('-')) {
-    return getSupportedLocale(getBaseLocale(locale) as Language);
+  if (!languageCode) return '';
+
+  const normalizedLanguage = languageCode.toLowerCase();
+
+  if (normalizedLanguage === 'zh' && regionCode) {
+    return [normalizedLanguage, regionCode.toUpperCase(), ...rest].join('-');
+  }
+
+  return [normalizedLanguage, regionCode, ...rest].filter(Boolean).join('-');
+};
+
+const getBaseLocale = (locale: string): string => normalizeLocaleCode(locale).split('-')[0] ?? locale;
+
+export const getSupportedLocale = (locale: Language | string): string => {
+  const normalizedLocale = normalizeLocaleCode(locale);
+
+  if (hasLocale(normalizedLocale)) return normalizedLocale;
+
+  if (normalizedLocale.includes('-')) {
+    return getSupportedLocale(getBaseLocale(normalizedLocale) as Language);
   }
 
   return Language.EN;

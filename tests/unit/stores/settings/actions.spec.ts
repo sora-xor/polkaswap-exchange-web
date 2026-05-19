@@ -260,6 +260,30 @@ describe('settings store actions', () => {
     expect(walletStoreState.setDepositNotifications).toHaveBeenCalledWith(true);
   });
 
+  it('syncs live browser notification permission and closes stale prompt dialogs', () => {
+    const originalNotification = globalThis.Notification;
+    Object.defineProperty(globalThis, 'Notification', {
+      configurable: true,
+      value: { permission: 'granted' },
+    });
+
+    try {
+      const settingsStore = useSettingsStore();
+      settingsStore.browserNotifPopupVisibility = true;
+      settingsStore.browserNotifPopupBlockedVisibility = true;
+
+      expect(settingsStore.syncBrowserNotificationPermission()).toBe('granted');
+      expect(settingsStore.browserNotifsPermission).toBe('granted');
+      expect(settingsStore.browserNotifPopupVisibility).toBe(false);
+      expect(settingsStore.browserNotifPopupBlockedVisibility).toBe(false);
+    } finally {
+      Object.defineProperty(globalThis, 'Notification', {
+        configurable: true,
+        value: originalNotification,
+      });
+    }
+  });
+
   it('forwards wallet filter and exchange-rate mutations to the wallet Pinia facade', () => {
     const settingsStore = useSettingsStore();
     const filters = {

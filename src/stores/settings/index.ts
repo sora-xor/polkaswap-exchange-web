@@ -20,6 +20,10 @@ import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { updateDocumentTitle } from '@/utils/documentTitle';
 import { updateFpNumberLocale } from '@/utils/fp-locale';
+import {
+  getBrowserNotificationPermission,
+  isBrowserNotificationApiAvailable as detectBrowserNotificationApiAvailability,
+} from '@/utils/browserNotifications';
 import { NodesConnection } from '@/utils/connection';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 import { resolveStaticAssetUrl, resolveVersionedStaticAssetUrl } from '@/utils/staticAssets';
@@ -30,11 +34,6 @@ import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import { FilterOptions, type Alert, type IndexerState } from '@/lib/soraneo-wallet/src/types/common';
 import type { Currency, CurrencyFields, FiatExchangeRateObject } from '@/lib/soraneo-wallet/src/types/currency';
-
-const detectNotificationApiAvailability = (): boolean => typeof Notification !== 'undefined';
-
-const resolveNotificationPermission = (available: boolean): NotificationPermission =>
-  available ? Notification.permission : 'default';
 
 const resolveWindowWidth = (): number => (typeof window !== 'undefined' ? window.innerWidth : 0);
 
@@ -60,7 +59,7 @@ const buildInitialState = (): SettingsState => {
   const isAccessAccelerometrEventDeclined = settingsStorage.get('isAccessAccelerometrEventDeclined') === 'true';
   const isAccessRotationListener = settingsStorage.get('isAccessRotationListener') === 'true';
   const isThemePreference = settingsStorage.get('isThemePreference') === 'true';
-  const isBrowserNotificationApiAvailable = detectNotificationApiAvailability();
+  const isBrowserNotificationApiAvailable = detectBrowserNotificationApiAvailability();
   const appConnection = new NodesConnection(settingsStorage, markRaw(connection));
 
   const state: SettingsState = {
@@ -71,7 +70,7 @@ const buildInitialState = (): SettingsState => {
     userDisclaimerApprove,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     isBrowserNotificationApiAvailable,
-    browserNotifsPermission: resolveNotificationPermission(isBrowserNotificationApiAvailable),
+    browserNotifsPermission: getBrowserNotificationPermission(isBrowserNotificationApiAvailable),
     language: getLocale(),
     displayRegions: undefined,
     percentFormat: undefined,
@@ -297,6 +296,19 @@ export const useSettingsStore = defineStore('settings', {
     },
     setBrowserNotifsAgreement(value: NotificationPermission): void {
       this.browserNotifsPermission = value;
+    },
+    syncBrowserNotificationPermission(): NotificationPermission {
+      const permission = getBrowserNotificationPermission(this.isBrowserNotificationApiAvailable);
+      this.browserNotifsPermission = permission;
+
+      if (permission === 'granted') {
+        this.browserNotifPopupVisibility = false;
+        this.browserNotifPopupBlockedVisibility = false;
+      } else if (permission === 'denied') {
+        this.browserNotifPopupVisibility = false;
+      }
+
+      return permission;
     },
     setLanguageState(value: Language): void {
       this.language = value;

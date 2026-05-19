@@ -27,7 +27,7 @@
             </div>
           </div>
           <s-divider></s-divider>
-          <template v-if="ltv">
+          <template v-if="isActiveVault">
             <div class="vault-collateral s-flex-column">
               <h4>{{ t('kensetsu.collateralDetails') }}</h4>
               <div class="vault-collateral__details s-flex">
@@ -154,7 +154,7 @@
             <formatted-amount value-can-be-hidden is-fiat-value :value="fiatReturnedAmount"></formatted-amount>
           </div>
         </s-card>
-        <s-button v-if="ltv" class="close-vault-button" type="link" @click="closePosition">
+        <s-button v-if="isActiveVault" class="close-vault-button" type="link" @click="closePosition">
           {{ t('kensetsu.closeVault') }}
         </s-button>
       </s-col>
@@ -262,7 +262,7 @@
         ></vault-details-history>
       </s-col>
     </s-row>
-    <template v-if="ltv">
+    <template v-if="isActiveVault && ltv">
       <add-collateral-dialog
         v-model:visible="showAddCollateralDialog"
         :vault="vault"
@@ -411,11 +411,12 @@ const hasVaultLookupSettled = computed(() => accountVaultsLoaded.value && closed
 
 const vault = computed<Nullable<AnyVault>>(() => foundVault.value ?? vaultSkeleton);
 
-const isOpenedVault = (value: AnyVault | null | undefined): value is Vault => {
-  return Boolean(value && (value as Vault).lockedAmount !== undefined);
-};
+const isOpenedVault = (value: AnyVault | null | undefined): value is Vault =>
+  Boolean(value && !('status' in value) && (value as Vault).lockedAmount !== undefined);
 
 const isClosedVault = (value: AnyVault | null | undefined): value is ClosedVault => !isOpenedVault(value);
+
+const isActiveVault = computed(() => isOpenedVault(vault.value));
 
 const status = computed<VaultStatus>(() => {
   const current = vault.value;
@@ -632,7 +633,7 @@ watch(
       return;
     }
 
-    if (settled && routeVaultId.value !== null) {
+    if (settled) {
       goToVaults();
     }
   },

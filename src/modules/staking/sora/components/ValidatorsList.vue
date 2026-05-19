@@ -1,11 +1,11 @@
 <template>
   <div class="validators">
     <div v-if="!isValidatorModeRecommended" class="search-container">
-      <s-input
+      <SearchInput
         v-model="search"
-        type="text"
+        class="validators-search"
         :placeholder="t('soraStaking.validatorsList.search')"
-        prefix="s-icon-basic-search-24"
+        @clear="clearSearch"
       >
         <template #right>
           <s-button class="filters-button" type="outline" size="mini" @click="openFilters">
@@ -15,30 +15,68 @@
             </div>
           </s-button>
         </template>
-      </s-input>
+      </SearchInput>
     </div>
 
-    <div class="table-header">
-      <div class="table-header-avatar table-header-item">
-        <s-icon name="various-bone-24" size="14px"></s-icon>
-      </div>
-      <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
-      <div class="table-header-info table-header-item">
-        <div v-button :class="commissionHeaderClass" @click="setCommissionSort">
+    <div v-if="showSelectionControls && canToggleValidatorSelection" class="selection-controls" role="group">
+      <s-button
+        class="selection-control"
+        type="outline"
+        size="mini"
+        :disabled="selectAllDisabled"
+        @click="selectAllValidators"
+      >
+        {{ t('soraStaking.validatorsList.selectAll') }}
+      </s-button>
+      <s-button
+        class="selection-control"
+        type="outline"
+        size="mini"
+        :disabled="deselectAllDisabled"
+        @click="deselectAllValidators"
+      >
+        {{ t('soraStaking.validatorsList.deselectAll') }}
+      </s-button>
+    </div>
+
+    <div class="validators-table" role="table">
+      <div class="table-header" role="row">
+        <div class="table-header-avatar table-header-item" role="columnheader">
+          <s-icon name="various-bone-24" size="14px"></s-icon>
+        </div>
+        <div class="table-header-name table-header-item" role="columnheader">
+          {{ t('soraStaking.validatorsList.name') }}
+        </div>
+        <div
+          v-button
+          :class="['table-header-metric', 'table-header-item', commissionHeaderClass]"
+          role="columnheader"
+          @click="setCommissionSort"
+        >
           <span>{{ t('soraStaking.validatorsList.commission') }}</span>
           <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
             <s-icon name="info-16" size="14px"></s-icon>
           </s-tooltip>
           <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18"></s-icon>
         </div>
-        <div v-button :class="returnHeaderClass" @click="setReturnSort">
+        <div
+          v-button
+          :class="['table-header-metric', 'table-header-item', returnHeaderClass]"
+          role="columnheader"
+          @click="setReturnSort"
+        >
           <span>{{ t('soraStaking.validatorsList.return') }}</span>
           <s-tooltip border-radius="mini" :content="t('comingSoonText')">
             <s-icon name="info-16" size="14px"></s-icon>
           </s-tooltip>
           <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18"></s-icon>
         </div>
-        <div v-button :class="stakedHeaderClass" @click="setStakedSort">
+        <div
+          v-button
+          :class="['table-header-metric', 'table-header-item', stakedHeaderClass]"
+          role="columnheader"
+          @click="setStakedSort"
+        >
           <span>{{ t('soraStaking.validatorsList.staked') }}</span>
           <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.stakedTooltip')">
             <s-icon name="info-16" size="14px"></s-icon>
@@ -46,49 +84,61 @@
           <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18"></s-icon>
         </div>
       </div>
-    </div>
 
-    <div class="list">
-      <div v-if="!filteredValidators.length" class="empty">
-        <span>{{ emptyText }}</span>
-      </div>
-      <s-scrollbar v-else class="validators-list-scrollbar">
-        <ul class="list">
-          <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
-            <ValidatorAvatar class="avatar" :validator="validator">
-              <template #icon>
-                <div v-if="isSelected(validator)" class="check">
-                  <s-icon name="basic-check-mark-24" size="12px"></s-icon>
-                </div>
-              </template>
-            </ValidatorAvatar>
-            <div class="name-and-address">
-              <div class="name">
-                {{ formatName(validator) }}
+      <div class="list" role="rowgroup">
+        <div v-if="!filteredValidators.length" class="empty">
+          <span>{{ emptyText }}</span>
+        </div>
+        <s-scrollbar v-else class="validators-list-scrollbar">
+          <ul class="list">
+            <li
+              v-for="validator in filteredValidators"
+              :key="validator.address"
+              :class="['validator', { 'validator--selectable': canToggleValidatorSelection }]"
+              role="row"
+            >
+              <div class="validator-cell validator-avatar" role="cell">
+                <ValidatorAvatar class="avatar" :validator="validator">
+                  <template #icon>
+                    <div v-if="isSelected(validator)" class="check">
+                      <s-icon name="basic-check-mark-24" size="12px"></s-icon>
+                    </div>
+                  </template>
+                </ValidatorAvatar>
               </div>
-              <FormattedAddress :value="validator.address" :symbols="16"></FormattedAddress>
-            </div>
-            <div class="info">
-              <span :class="commissionClass">{{ formatCommission(validator.commission) }}%</span>
-              <br />
-              <span :class="returnClass">{{ formatReturn(validator.apy) }}%</span>
-              <br />
-              <span
-                :class="stakedClass"
-                :title="formatStake(validator.stake?.total, stakingAsset?.decimals, stakingAsset?.symbol, 7)"
-              >
-                {{ formatStake(validator.stake?.total, stakingAsset?.decimals, stakingAsset?.symbol) }}
-              </span>
-            </div>
-            <div
-              v-if="mode === ValidatorsListMode.SELECT"
-              v-button
-              class="select-area"
-              @click="toggleSelectValidator(validator)"
-            ></div>
-          </li>
-        </ul>
-      </s-scrollbar>
+              <div class="validator-cell name-and-address" role="cell">
+                <div class="name" :id="getValidatorNameId(validator)">
+                  {{ formatName(validator) }}
+                </div>
+                <FormattedAddress :value="validator.address" :symbols="16"></FormattedAddress>
+              </div>
+              <div class="validator-cell validator-commission" role="cell">
+                <span :class="commissionClass">{{ formatCommission(validator.commission) }}%</span>
+              </div>
+              <div class="validator-cell validator-return" role="cell">
+                <span :class="returnClass">{{ formatReturn(validator.apy) }}%</span>
+              </div>
+              <div class="validator-cell validator-staked" role="cell">
+                <span
+                  :class="stakedClass"
+                  :title="formatStake(validator.stake?.total, stakingAsset?.decimals, stakingAsset?.symbol, 7)"
+                >
+                  {{ formatStake(validator.stake?.total, stakingAsset?.decimals, stakingAsset?.symbol) }}
+                </span>
+              </div>
+              <button
+                v-if="canToggleValidatorSelection"
+                v-button
+                type="button"
+                class="select-area"
+                :aria-labelledby="getValidatorNameId(validator)"
+                :aria-pressed="isSelected(validator)"
+                @click="toggleSelectValidator(validator)"
+              ></button>
+            </li>
+          </ul>
+        </s-scrollbar>
+      </div>
     </div>
     <div class="blackout"></div>
   </div>
@@ -106,6 +156,7 @@ import { emptyValidatorsFilter, recommendedValidatorsFilter, ValidatorsListMode 
 
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 import type { ValidatorInfoFull } from '@sora-substrate/sdk/build/staking/types';
+import SearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 import WalletComponentFormattedAddress from '@/lib/soraneo-wallet/src/components/shared/FormattedAddress.vue';
 
 defineOptions({
@@ -127,6 +178,7 @@ enum Sort {
 const props = defineProps<{
   mode: ValidatorsListMode;
   selectedValidators?: ValidatorInfoFull[];
+  showSelectionControls?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -147,9 +199,58 @@ const { formatName, decodeName, formatCommission, formatReturn, formatStake } = 
 
 const search = ref('');
 const sort = ref<Sort>(Sort.RETURN_DESC);
+/**
+ * Prevents recommended auto-selection from overwriting validator checkmarks after the user changes them.
+ */
+const hasUserChangedSelection = ref(false);
 
 const isValidatorModeRecommended = computed(() => props.mode === ValidatorsListMode.RECOMMENDED);
-const selectedValidators = computed(() => props.selectedValidators ?? []);
+const canToggleValidatorSelection = computed(
+  () => props.mode === ValidatorsListMode.RECOMMENDED || props.mode === ValidatorsListMode.SELECT
+);
+/**
+ * Normalizes external selected-validator props so malformed entries cannot break row toggling.
+ */
+const isValidatorWithAddress = (value: unknown): value is ValidatorInfoFull =>
+  typeof value === 'object' &&
+  value !== null &&
+  typeof (value as Partial<ValidatorInfoFull>).address === 'string' &&
+  Boolean((value as Partial<ValidatorInfoFull>).address);
+
+const selectedValidators = computed(() =>
+  Array.isArray(props.selectedValidators) ? props.selectedValidators.filter(isValidatorWithAddress) : []
+);
+
+const selectedValidatorAddresses = computed(
+  () => new Set(selectedValidators.value.map((validator) => validator.address))
+);
+
+/**
+ * Removes duplicate validator addresses while preserving the first complete payload returned by upstream data.
+ */
+const uniqueValidatorsByAddress = (list: ValidatorInfoFull[]): ValidatorInfoFull[] => {
+  const seen = new Set<string>();
+
+  return list.filter((validator) => {
+    if (seen.has(validator.address)) return false;
+
+    seen.add(validator.address);
+    return true;
+  });
+};
+
+const validValidators = computed(() =>
+  uniqueValidatorsByAddress(Array.isArray(validators.value) ? validators.value.filter(isValidatorWithAddress) : [])
+);
+
+/**
+ * Normalizes nominated-validator store data before filtering so malformed persisted payloads cannot match rows.
+ */
+const nominatedValidatorAddresses = computed(() => {
+  const myValidators = stakingInfo.value?.myValidators;
+
+  return Array.isArray(myValidators) ? myValidators : [];
+});
 
 const calcSortClass = (base: string, value: Sort, asc: Sort, desc: Sort) => ({
   [base]: true,
@@ -159,11 +260,45 @@ const calcSortClass = (base: string, value: Sort, asc: Sort, desc: Sort) => ({
 });
 
 /**
+ * Treats malformed indexer percentages as zero so bad rows cannot poison table sorting.
+ */
+const parseSortMetric = (value: string | undefined): number => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
+/**
+ * Keeps malformed max-nomination values from selecting an unsafe number of validators.
+ */
+const normalizeNominationLimit = (value: number | null, fallback: number): number => {
+  if (value === null) return fallback;
+  if (!Number.isFinite(value)) return 0;
+
+  return Math.max(0, Math.floor(value));
+};
+
+/**
+ * Parses indexed staking totals defensively so malformed rows sort as zero instead of breaking the list.
+ */
+const parseCodecStake = (value: string | undefined): FPNumber => {
+  const normalizedValue = (value ?? '0').replace(/[,. ]/g, '');
+
+  if (!/^\d+$/.test(normalizedValue)) return FPNumber.ZERO;
+
+  try {
+    const stake = FPNumber.fromCodecValue(normalizedValue, stakingAsset.value?.decimals);
+    return stake.isFinity() ? stake : FPNumber.ZERO;
+  } catch {
+    return FPNumber.ZERO;
+  }
+};
+
+/**
  * Compares staking exposure totals as codec amounts to avoid precision loss on large token values.
  */
 const compareCodecStake = (first: string | undefined, second: string | undefined): number => {
-  const firstStake = FPNumber.fromCodecValue(first ?? '0', stakingAsset.value?.decimals);
-  const secondStake = FPNumber.fromCodecValue(second ?? '0', stakingAsset.value?.decimals);
+  const firstStake = parseCodecStake(first);
+  const secondStake = parseCodecStake(second);
 
   if (FPNumber.eq(firstStake, secondStake)) return 0;
 
@@ -171,18 +306,18 @@ const compareCodecStake = (first: string | undefined, second: string | undefined
 };
 
 const sortedValidators = computed(() => {
-  const list = [...(validators.value ?? [])];
+  const list = [...validValidators.value];
 
   return list.sort((a, b) => {
     switch (sort.value) {
       case Sort.COMMISSION_ASC:
-        return Number(a.commission) - Number(b.commission);
+        return parseSortMetric(a.commission) - parseSortMetric(b.commission);
       case Sort.COMMISSION_DESC:
-        return Number(b.commission) - Number(a.commission);
+        return parseSortMetric(b.commission) - parseSortMetric(a.commission);
       case Sort.RETURN_ASC:
-        return Number(a.apy) - Number(b.apy);
+        return parseSortMetric(a.apy) - parseSortMetric(b.apy);
       case Sort.RETURN_DESC:
-        return Number(b.apy) - Number(a.apy);
+        return parseSortMetric(b.apy) - parseSortMetric(a.apy);
       case Sort.STAKED_ASC:
         return compareCodecStake(a.stake?.total, b.stake?.total);
       case Sort.STAKED_DESC:
@@ -195,16 +330,18 @@ const sortedValidators = computed(() => {
 
 const applyFilter = (list: ValidatorInfoFull[], filter: ValidatorsFilter, term = '') =>
   list.filter((validator) => {
-    if (filter.hasIdentity && (!validator.identity || !Object.keys(validator.identity.info).length)) return false;
+    const identityInfo = validator.identity?.info;
+
+    if (filter.hasIdentity && (!identityInfo || !Object.keys(identityInfo).length)) return false;
     if (filter.notSlashed && validator.blocked) return false;
     if (filter.notOversubscribed && validator.isOversubscribed) return false;
     if (filter.twoValidatorsPerIdentity && validator.isOversubscribed) {
-      const sameIdentity = list.filter((item) => item.identity?.info.display === validator.identity?.info.display);
+      const sameIdentity = list.filter((item) => item.identity?.info?.display === identityInfo?.display);
       if (sameIdentity.length > 2) return false;
     }
 
-    const name = decodeName(validator);
-    return name.toLowerCase().includes(term.toLowerCase());
+    const name = String(decodeName(validator));
+    return name.toLowerCase().includes(term.trim().toLowerCase());
   });
 
 const filteredValidators = computed(() => {
@@ -213,18 +350,29 @@ const filteredValidators = computed(() => {
 
   switch (props.mode) {
     case ValidatorsListMode.RECOMMENDED:
-      return applyFilter(currentList, recommendedValidatorsFilter).slice(0, maxNominations.value ?? currentList.length);
+      return applyFilter(currentList, recommendedValidatorsFilter).slice(
+        0,
+        normalizeNominationLimit(maxNominations.value, currentList.length)
+      );
     case ValidatorsListMode.USER:
       return applyFilter(currentList, baseFilter, search.value).filter((validator) =>
-        stakingInfo.value?.myValidators.includes(validator.address)
+        nominatedValidatorAddresses.value.includes(validator.address)
       );
     default:
       return applyFilter(currentList, baseFilter, search.value);
   }
 });
 
+const selectAllDisabled = computed(
+  () =>
+    !filteredValidators.value.length ||
+    filteredValidators.value.every((validator) => selectedValidatorAddresses.value.has(validator.address))
+);
+
+const deselectAllDisabled = computed(() => selectedValidators.value.length === 0);
+
 const emptyText = computed(() => {
-  if (props.mode === ValidatorsListMode.USER && (stakingInfo.value?.myValidators.length ?? 0) === 0) {
+  if (props.mode === ValidatorsListMode.USER && nominatedValidatorAddresses.value.length === 0) {
     return t('soraStaking.validatorsList.noNominatedValidators');
   }
 
@@ -245,6 +393,11 @@ const commissionClass = computed(() =>
 );
 const returnClass = computed(() => calcSortClass('info-return', sort.value, Sort.RETURN_ASC, Sort.RETURN_DESC));
 const stakedClass = computed(() => calcSortClass('info-staked', sort.value, Sort.STAKED_ASC, Sort.STAKED_DESC));
+
+/**
+ * Returns a stable DOM id used to make the full-row selection button accessible by validator name.
+ */
+const getValidatorNameId = (validator: ValidatorInfoFull): string => `validator-name-${validator.address}`;
 
 const setCommissionSort = () => {
   sort.value =
@@ -272,22 +425,64 @@ const setStakedSort = () => {
 };
 
 const toggleSelectValidator = (validator: ValidatorInfoFull) => {
-  if (isValidatorModeRecommended.value) return;
+  if (!canToggleValidatorSelection.value) return;
 
+  hasUserChangedSelection.value = true;
   const selected = [...selectedValidators.value];
   const index = selected.findIndex((item) => item.address === validator.address);
 
   if (index > -1) {
-    selected.splice(index, 1);
+    emit(
+      'update:selected',
+      selected.filter((item) => item.address !== validator.address)
+    );
   } else {
     selected.push(validator);
+    emit('update:selected', selected);
   }
-
-  emit('update:selected', selected);
 };
 
 const isSelected = (validator: ValidatorInfoFull) =>
   selectedValidators.value.some((item) => item.address === validator.address);
+
+/**
+ * Adds the currently visible validator rows to the selected set without duplicating addresses.
+ */
+const selectAllValidators = () => {
+  if (!canToggleValidatorSelection.value || !filteredValidators.value.length) return;
+
+  hasUserChangedSelection.value = true;
+  const selectedAddresses = new Set<string>();
+  const nextSelection = [...selectedValidators.value, ...filteredValidators.value].reduce<ValidatorInfoFull[]>(
+    (buffer, validator) => {
+      if (selectedAddresses.has(validator.address)) return buffer;
+
+      selectedAddresses.add(validator.address);
+      buffer.push(validator);
+      return buffer;
+    },
+    []
+  );
+
+  emit('update:selected', nextSelection);
+};
+
+/**
+ * Clears all selected validators for the current editable selection flow.
+ */
+const deselectAllValidators = () => {
+  if (!canToggleValidatorSelection.value || !selectedValidators.value.length) return;
+
+  hasUserChangedSelection.value = true;
+  emit('update:selected', []);
+};
+
+/**
+ * Resets the search term through the shared search input clear action.
+ */
+const clearSearch = () => {
+  search.value = '';
+};
 
 const openFilters = () => {
   setShowValidatorsFilterDialog(true);
@@ -298,9 +493,16 @@ onMounted(() => {
 });
 
 watch(
+  () => props.mode,
+  () => {
+    hasUserChangedSelection.value = false;
+  }
+);
+
+watch(
   () => [filteredValidators.value, props.mode],
   () => {
-    if (isValidatorModeRecommended.value) {
+    if (isValidatorModeRecommended.value && !hasUserChangedSelection.value) {
       emit('update:selected', filteredValidators.value);
     }
   },
@@ -313,6 +515,9 @@ defineExpose({
   setReturnSort,
   setStakedSort,
   openFilters,
+  getValidatorNameId,
+  selectAllValidators,
+  deselectAllValidators,
 });
 </script>
 
@@ -329,6 +534,10 @@ defineExpose({
 
 <style scoped lang="scss">
 .validators {
+  --validators-table-columns: 44px minmax(176px, 1fr) minmax(120px, 0.52fr) minmax(132px, 0.56fr) minmax(150px, 0.64fr);
+  --validators-table-gap: 12px;
+  --validators-table-min-width: 694px;
+
   overflow: hidden;
   position: relative;
   padding: 0 8px;
@@ -367,6 +576,18 @@ defineExpose({
   }
 }
 
+.selection-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.selection-control {
+  min-width: 112px;
+}
+
 .blackout {
   position: absolute;
   width: 100%;
@@ -377,10 +598,18 @@ defineExpose({
   background: linear-gradient(180deg, transparent 0%, var(--s-color-utility-surface) 100%);
 }
 
+.validators-table {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .table-header {
-  display: flex;
-  align-content: center;
-  height: 84px;
+  display: grid;
+  grid-template-columns: var(--validators-table-columns);
+  column-gap: var(--validators-table-gap);
+  align-items: center;
+  min-width: var(--validators-table-min-width);
+  height: 52px;
   margin-top: 16px;
   border-bottom: 1px solid var(--s-color-base-border-secondary);
 
@@ -398,33 +627,25 @@ defineExpose({
     user-select: none;
   }
   &-avatar {
-    display: flex;
     justify-content: center;
-    width: 38px;
 
     i {
       color: var(--s-color-base-content-tertiary);
     }
   }
   &-name {
-    flex: 1;
-    margin-left: 8px;
-  }
-  &-info {
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    flex: 0 0 clamp(96px, 28%, 154px);
-    max-width: 154px;
+    min-width: 0;
   }
   &-commission,
   &-return,
   &-staked {
-    display: flex;
+    justify-content: flex-end;
     align-items: center;
-    height: 21px;
-    padding: 2px 6px;
+    min-width: 0;
+    height: 28px;
+    padding: 4px 6px;
     border-radius: 8px;
+    white-space: nowrap;
   }
   &-commission:not(&-commission--active),
   &-return:not(&-return--active),
@@ -451,13 +672,7 @@ defineExpose({
     transform: rotate(180deg);
   }
 
-  &-return,
   &-staked {
-    margin-top: 4px;
-  }
-
-  &-staked {
-    justify-content: flex-end;
     color: var(--s-color-base-content-tertiary);
   }
 
@@ -469,13 +684,12 @@ defineExpose({
 
 .empty,
 .validators-list-scrollbar {
-  height: 380px;
+  height: var(--validators-list-height, 380px);
   padding-bottom: 64px;
 }
 
 .validators-list-scrollbar.el-scrollbar {
-  margin-left: 0;
-  margin-right: 0;
+  min-width: var(--validators-table-min-width);
 
   > .el-scrollbar__wrap {
     display: flex;
@@ -496,20 +710,18 @@ defineExpose({
   }
 }
 
-.list .validators-list-scrollbar {
-  margin: 0 -24px;
-}
-
 .validators-list-scrollbar ul {
   list-style-type: none;
-  padding: 0 24px 64px;
+  padding: 0 0 64px;
 }
 
 .validator {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: var(--validators-table-columns);
+  column-gap: var(--validators-table-gap);
   align-items: center;
-  justify-content: space-between;
+  min-width: var(--validators-table-min-width);
   min-height: 60px;
   padding: 10px 0;
   border-bottom: 1px solid var(--s-color-base-border-secondary);
@@ -517,12 +729,26 @@ defineExpose({
   &:last-child {
     border-bottom: none;
   }
+
+  &--selectable {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--s-color-base-background-hover);
+    }
+  }
+}
+
+.validator-cell {
+  min-width: 0;
+}
+
+.validator-avatar {
+  display: flex;
+  justify-content: center;
 }
 
 .avatar {
-  flex: 0 0 36px;
-  margin-right: 10px;
-
   .check {
     display: flex;
     justify-content: center;
@@ -540,10 +766,7 @@ defineExpose({
 
 .name-and-address {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  min-width: 0;
-  margin-right: 10px;
   font-weight: 700;
 }
 
@@ -553,16 +776,14 @@ defineExpose({
   white-space: nowrap;
 }
 
-.info {
-  flex-shrink: 0;
-  flex-basis: clamp(96px, 28%, 154px);
-  max-width: 154px;
-  line-height: 150%;
+.validator-commission,
+.validator-return,
+.validator-staked {
+  line-height: 1.5;
   text-align: right;
 
   span {
     display: inline-block;
-    margin-right: 8px;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -573,7 +794,7 @@ defineExpose({
   .info-commission,
   .info-return,
   .info-staked {
-    height: 21px;
+    height: 24px;
     padding: 2px 6px;
     font-weight: 600;
   }
@@ -604,6 +825,15 @@ defineExpose({
   left: 0;
   width: calc(100% - 20px);
   height: 100%;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+
+  &:focus-visible {
+    outline: 2px solid var(--s-color-theme-accent);
+    outline-offset: -2px;
+  }
 }
 
 .empty {

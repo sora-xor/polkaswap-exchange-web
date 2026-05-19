@@ -13,7 +13,6 @@
             <h2>{{ t('points.title') }}</h2>
             <h3 v-if="!loading && isLoggedIn">{{ formattedTotalPoints }}</h3>
           </div>
-          <p>{{ t('points.airdrop') }}</p>
         </div>
       </template>
       <div class="points__main s-flex-row">
@@ -449,14 +448,6 @@ $points-card-min-width: 258px;
         text-align: left;
         max-width: $max-asset-size;
       }
-    }
-    p {
-      color: rgba(35, 7, 53, 0.66);
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 1.35;
-      max-width: calc($explore-search-input-max-width + $inner-spacing-large);
-      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.16);
     }
   }
   &__content {

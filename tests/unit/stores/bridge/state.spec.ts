@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { isReactive, reactive } from 'vue';
 
 import { buildInitialBridgeState, normalizeBridgeHistoryPage } from '@/stores/bridge/state';
 
@@ -26,5 +27,36 @@ describe('bridge store state helpers', () => {
     });
     expect(first.history.page).toBe(1);
     expect(first.flags.isSignTxDialogVisible).toBe(false);
+  });
+
+  it('keeps the Substrate bridge connector out of Vue reactivity', () => {
+    const state = reactive(buildInitialBridgeState());
+
+    expect(isReactive(state.connector)).toBe(false);
+  });
+
+  it('does not make late-attached connector internals reactive', () => {
+    const state = reactive(buildInitialBridgeState());
+    const apiLike = {
+      isReady: Promise.resolve(),
+      query: {
+        system: {
+          account: () => undefined,
+        },
+      },
+    };
+
+    state.connector.standalone = {
+      api: apiLike,
+      subNetworkConnection: {
+        connection: {
+          api: apiLike,
+        },
+      },
+    } as never;
+
+    expect(isReactive(state.connector.standalone)).toBe(false);
+    expect(isReactive(state.connector.standalone?.api)).toBe(false);
+    expect(isReactive(state.connector.standalone?.subNetworkConnection?.connection?.api)).toBe(false);
   });
 });

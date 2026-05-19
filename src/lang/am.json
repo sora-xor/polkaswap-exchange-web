@@ -28,6 +28,7 @@
         "title": "የመለያ ቅንብሮች"
     },
     "accountText": "መለያ | መለያዎች",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "አክል",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "ማስመሰያ ጥንድ አልተፈጠረም።",
     "points": {
         "accountsText": "{amount} መለያዎች",
-        "airdrop": "ወደ $3m AIRDROP ለመቀላቀል ከSORA ኢኮሲስተም ጋር የተያያዙ ተግባሮችን አስፈጽሙ",
         "bridgeVolume": "የድልድይ መጠን",
         "complete": "ተጠናቀቀ | ተጠናቀቀ",
         "currently": "አሁን",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "ኮሚሽን",
             "commissionTooltip": "ኮሚሽኑ በአክሲዮን ሂደት ውስጥ አረጋጋጮች ለአገልግሎታቸው የሚከፍሉትን ክፍያ ያመለክታል። ይህ ክፍያ፣ በመቶኛ የተገለጸው፣ ከመከፋፈሉ በፊት በእጩ ተወዳዳሪዎች ከተገኙት የአክሲዮን ሽልማቶች ተቀንሷል። አረጋጋጮች በማንኛውም ጊዜ የኮሚሽን ዋጋቸውን ማስተካከል እንደሚችሉ ልብ ማለት ያስፈልጋል",
+            "deselectAll": "Deselect all",
             "name": "ስም",
             "noNominatedValidators": "ምንም የተሾሙ ማረጋገጫዎች የሉዎትም።",
             "noValidators": "የተገለጸውን ማጣሪያ የሚያረኩ አረጋጋጮች የሉም",
             "return": "ተመለስ",
             "search": "ፈልግ...",
+            "selectAll": "Select all",
             "staked": "የተቆለፈ",
             "stakedTooltip": "ጠቅላላ XOR ከዚህ አረጋጋጭ ጋር፣የአረጋጋጭው የራሱ ድርሻ እና በእጩነት የተመረጠ ድርሻን ጨምሮ"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "መለያዎች በኔትወርኩ ላይ የተጠቃሚዎችን ንብረቶች የሚይዙ ዲጂታል አድራሻዎች ናቸው። እያንዳንዱ መለያ ከልዩ የህዝብ አድራሻ እና ተጠቃሚው ንብረታቸውን እንዲደርስ እና እንዲያስተዳድር ከሚፈቅድ የግል ቁልፍ ጋር የተቆራኘ ነው።",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "{from} ወደ {to} ድልድይ ድልድይ በመጠቀም ንብረቶችን በ{from} እና {to} አውታረ መረቦች መካከል የማስተላለፊያ ሂደትን ያመለክታል። ድልድዩ የሁለቱን ኔትወርኮች መስተጋብር ይፈቅዳል፣ተጠቃሚዎች ያለችግር በመካከላቸው ንብረቶችን እንዲያንቀሳቅሱ ያስችላቸዋል።",
         "fees": "በ{Sora} blockchain ላይ ያሉ ክፍያዎች በኔትወርኩ ላይ ግብይቶችን ለማስፈጸም የሚከፈሉትን ክፍያዎች ያመለክታሉ። እነዚህ ክፍያዎች የሚከፈሉት የ{Sora} አውታረ መረብ ተወላጅ በሆነው በXOR ነው። የክፍያው መጠን የሚወሰነው በግብይቱ ውስብስብነት እና መጠን ነው።",
         "roi": "{ROI} ማለት በኢንቨስትመንት መመለስ ማለት ነው። በመዋዕለ ንዋይ ላይ የተገኘውን ትርፍ ለዚያ ኢንቬስትመንት ወጭ እኩል በመቶኛ በማካፈል ይሰላል።",

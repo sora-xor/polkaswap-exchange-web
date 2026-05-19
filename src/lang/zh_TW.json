@@ -28,6 +28,7 @@
         "title": "帳戶設定"
     },
     "accountText": "帳戶 | 帳戶",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "新增",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "未建立令牌對",
     "points": {
         "accountsText": "{amount} 帳戶",
-        "airdrop": "完成 SORA 生態系相關任務，以獲得 300 萬美元空投的資格",
         "bridgeVolume": "橋捲",
         "complete": "已完成 |完全的",
         "currently": "目前",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "佣金",
             "commissionTooltip": "佣金為驗證者在質押程序中收取之服務費（百分比）。此費用會於分配前自提名者的質押獎勵中扣除。請注意驗證者可隨時調整其佣金費率。",
+            "deselectAll": "Deselect all",
             "name": "名稱",
             "noNominatedValidators": "你尚未提名任何驗證者",
             "noValidators": "沒有符合條件的驗證者",
             "return": "返回",
             "search": "搜尋...",
+            "selectAll": "Select all",
             "staked": "質押",
             "stakedTooltip": "與該驗證者質押的 XOR 總量，包括驗證者自己的質押及指定質押"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "帳戶是在網路上保存使用者資產的數位位址。每個帳戶都與唯一的公共地址和私鑰相關聯，允許使用者存取和管理其資產。",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "{from} 到 {to} 橋接是指使用橋接器在 {from} 和 {to} 網路之間轉移資產的過程。該橋允許兩個網路之間的互通性，使用戶能夠在它們之間無縫地移動資產。",
         "fees": "{Sora} 區塊鏈上的費用是指在網路上執行交易所產生的費用。這些費用以 {Sora} 網路的原生加密貨幣 XOR 支付。費用金額取決於所執行交易的複雜性和規模",
         "roi": "{ROI} 代表投資報酬率。它的計算方法是將投資所賺取的利潤除以該投資的成本（以百分比表示）。",

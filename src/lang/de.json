@@ -28,6 +28,7 @@
         "title": "Account Einstellungen"
     },
     "accountText": "Konto | Konten",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Hinzufügen",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "Token-Paar wurde nicht erstellt",
     "points": {
         "accountsText": "{amount} Konten",
-        "airdrop": "Schließe Aufgaben im Zusammenhang mit dem SORA-Ökosystem ab, um sich für einen Airdrop von 3 Millionen Dollar zu qualifizieren",
         "bridgeVolume": "Bridge-Volumen",
         "complete": "Abgeschlossen | Abschließen",
         "currently": "Momentan",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Kommission",
             "commissionTooltip": "Unter Provision versteht man die Gebühr, die Validatoren für ihre Dienste im Staking-Prozess erheben. Diese als Prozentsatz ausgedrückte Gebühr wird vor der Verteilung von den Einsatzprämien abgezogen, die die Nominatoren erhalten. Es ist wichtig zu beachten, dass Prüfer ihre Provisionssätze jederzeit anpassen können",
+            "deselectAll": "Deselect all",
             "name": "Bezeichnung",
             "noNominatedValidators": "Sie haben keine nominierten Validatoren",
             "noValidators": "Es gibt keine Validatoren, die den angegebenen Filter erfüllen",
             "return": "Zurückkehren",
             "search": "Suchen...",
+            "selectAll": "Select all",
             "staked": "Abgesteckt",
             "stakedTooltip": "Gesamter XOR-Einsatz mit diesem Validator, einschließlich des eigenen Einsatzes des Validators und des nominierten Einsatzes"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Konten sind digitale Adressen, die das Vermögen des Benutzers im Netzwerk enthalten. Jedes Konto ist mit einer eindeutigen öffentlichen Adresse und einem privaten Schlüssel verknüpft, der es dem Benutzer ermöglicht, auf sein Vermögen zuzugreifen und es zu verwalten.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "{from} to {to} Bridge bezieht sich auf den Prozess der Übertragung von Assets zwischen den Netzwerken {from} und {to} mithilfe einer Bridge. Die Bridge ermöglicht die Interoperabilität der beiden Netzwerke, sodass Benutzer Assets nahtlos zwischen ihnen verschieben können.",
         "fees": "Gebühren auf der {Sora} -Blockchain beziehen sich auf die Gebühren, die für die Ausführung von Transaktionen im Netzwerk anfallen. Diese Gebühren werden in XOR, der nativen Kryptowährung des {Sora} -Netzwerks, bezahlt. Die Höhe der Gebühr richtet sich nach der Komplexität und Größe der ausgeführten Transaktion",
         "roi": "{ROI} steht für Return on Investment. Es wird berechnet, indem der mit einer Investition erzielte Gewinn durch die Kosten dieser Investition in einem prozentualen Äquivalent dividiert wird.",

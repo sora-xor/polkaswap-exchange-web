@@ -16,11 +16,11 @@
         @select-asset="selectAsset"
       ></create-alert>
     </dialog-base>
-    <alerts-select-asset
+    <alerts-select-token
       v-model:visible="showAlertSelectTokenDialog"
       disabled-custom
       @select="selectAsset"
-    ></alerts-select-asset>
+    ></alerts-select-token>
   </div>
 </template>
 

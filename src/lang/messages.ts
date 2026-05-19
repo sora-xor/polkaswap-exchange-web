@@ -21,6 +21,7 @@ export default {
   moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in wallet',
   accountText: 'account | accounts',
+  activeAccountsText: 'Active accounts',
   newAccountsText: 'New accounts',
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
@@ -612,7 +613,6 @@ export default {
     relatedTasks: 'Complete {title}-related tasks in order to level up your skill',
     yourLevel: 'Your level',
     rewardNextLvl: 'Next level reward',
-    airdrop: 'Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP',
     soraCard: 'Apply now',
     complete: 'Completed | Complete',
     progress: 'Progress',
@@ -810,6 +810,8 @@ export default {
     },
     validatorsList: {
       search: 'Search...',
+      selectAll: 'Select all',
+      deselectAll: 'Deselect all',
       name: 'Name',
       commission: 'Commission',
       commissionTooltip:
@@ -942,6 +944,7 @@ export default {
   ofText: '{first} of {second}',
   accountAddressText: 'Account address',
   tooltips: {
+    activeAccounts: 'Unique accounts that participated in transactions during the selected period.',
     roi: '{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.',
     tvl: '{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.',
     volume:

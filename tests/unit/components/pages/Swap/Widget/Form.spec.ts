@@ -43,6 +43,7 @@ const swapStoreMock = reactive({
   isPathAvailable: false,
   isAvailable: false,
   isExchangeB: false,
+  priceImpact: '0',
   selectedDexId: 0,
   allowLossPopup: true,
   swapLiquiditySource: undefined,
@@ -105,7 +106,10 @@ const createPassthroughStub = (name: string) =>
 
 const FormattedAmountStub = defineComponent({
   name: 'FormattedAmountStub',
-  template: '<span><slot /></span>',
+  props: {
+    value: { type: [String, Number], default: '' },
+  },
+  template: '<span class="formatted-amount-stub" :data-value="value"><slot /></span>',
 });
 
 const InfoLineStub = defineComponent({
@@ -115,6 +119,55 @@ const InfoLineStub = defineComponent({
     labelTooltip: { type: String, default: '' },
   },
   template: '<div class="info-line-stub" :data-label="label" :data-label-tooltip="labelTooltip"><slot /></div>',
+});
+
+const TokenInputStub = defineComponent({
+  name: 'TokenInputStub',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h('div', { ...attrs, class: ['token-input-stub', attrs.class] }, [
+        slots.default?.(),
+        slots['fiat-amount-append']?.(),
+      ]);
+  },
+});
+
+const ValueStatusWrapperStub = defineComponent({
+  name: 'ValueStatusWrapperStub',
+  props: {
+    value: { type: [String, Number], default: '' },
+    badge: { type: Boolean, default: false },
+  },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          class: ['value-status-wrapper-stub', attrs.class],
+          'data-value': String(props.value),
+          'data-badge': String(props.badge),
+        },
+        slots.default?.()
+      );
+  },
+});
+
+const SwapLossWarningDialogStub = defineComponent({
+  name: 'SwapLossWarningDialogStub',
+  props: {
+    value: { type: String, default: '' },
+    visible: { type: Boolean, default: false },
+  },
+  emits: ['update:visible', 'confirm'],
+  setup(props) {
+    return () =>
+      h('div', {
+        class: 'swap-loss-warning-dialog-stub',
+        'data-value': props.value,
+        'data-visible': String(props.visible),
+      });
+  },
 });
 
 vi.mock('@tests/stubs/walletRuntime', () => ({
@@ -227,7 +280,6 @@ vi.mock('@/composables/useFormattedAmount', () => ({
     formatCodecNumber: () => '0',
     formatStringValue: (value: string) => value,
     getFiatAmountByCodecString: () => '0',
-    getFPNumberFiatAmountByFPNumber: () => ({ toFixed: () => '0' }),
   }),
 }));
 
@@ -264,8 +316,12 @@ vi.mock('@/utils', () => ({
 
 vi.mock('@/utils/swap', () => ({
   DifferenceStatus: { Error: 'error' },
-  calcFiatDifference: () => ({ toFixed: () => '0' }),
-  getDifferenceStatus: () => 'ok',
+  getDifferenceStatus: (value: number) => {
+    if (value > 0) return 'success';
+    if (value < -10) return 'error';
+    if (value < -1) return 'warning';
+    return '';
+  },
   getVisibleSwapTokenBalance: () => null,
 }));
 
@@ -279,11 +335,11 @@ const mountWidget = async () => {
         SwapConfirm: createPassthroughStub('SwapConfirmStub'),
         SwapStatusActionBadge: createPassthroughStub('SwapStatusActionBadgeStub'),
         SwapTransactionDetails: createPassthroughStub('SwapTransactionDetailsStub'),
-        SwapLossWarningDialog: createPassthroughStub('SwapLossWarningDialogStub'),
+        SwapLossWarningDialog: SwapLossWarningDialogStub,
         SlippageTolerance: createPassthroughStub('SlippageToleranceStub'),
         SelectToken: createPassthroughStub('SelectTokenStub'),
-        TokenInput: createPassthroughStub('TokenInputStub'),
-        ValueStatusWrapper: createPassthroughStub('ValueStatusWrapperStub'),
+        TokenInput: TokenInputStub,
+        ValueStatusWrapper: ValueStatusWrapperStub,
         's-button': { template: '<button v-bind="$attrs"><slot /></button>' },
         's-icon': { template: '<i></i>' },
       },
@@ -342,6 +398,7 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     swapStoreMock.isPathAvailable = false;
     swapStoreMock.isAvailable = false;
     swapStoreMock.isExchangeB = false;
+    swapStoreMock.priceImpact = '0';
     swapStoreMock.liquiditySources = [];
     isLoggedInRef.value = false;
     nodeIsConnectedRef.value = true;
@@ -489,6 +546,28 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     expect(feeInfoLine.exists()).toBe(true);
     expect(feeInfoLine.attributes('data-label')).toBe('networkFeeText');
     expect(feeInfoLine.attributes('data-label-tooltip')).toBe('networkFeeTooltipText');
+
+    wrapper.unmount();
+  });
+
+  it('renders the receive badge and loss warning from the store price impact', async () => {
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+    swapStoreMock.priceImpact = '-1.90';
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const badge = wrapper.get('.price-difference__value');
+
+    expect(badge.attributes('data-value')).toBe('-1.90');
+    expect(badge.attributes('data-badge')).toBe('true');
+    expect(badge.get('.formatted-amount-stub').attributes('data-value')).toBe('-1.90');
+    expect(wrapper.get('.swap-loss-warning-dialog-stub').attributes('data-value')).toBe('-1.90');
 
     wrapper.unmount();
   });

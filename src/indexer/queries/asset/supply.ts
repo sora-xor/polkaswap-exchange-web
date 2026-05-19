@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { VAL, PSWAP } from '@sora-substrate/sdk/build/assets/consts';
+import { VAL, PSWAP, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
@@ -17,6 +17,8 @@ const CIRCULATING_DIFF = {
   [VAL.address]: 33449609.3779,
   [PSWAP.address]: 6345014420.6195,
 };
+const XOR_SUPPLY_REDENOMINATION_FACTOR = new FPNumber('1000000');
+const XOR_LEGACY_SUPPLY_THRESHOLD = new FPNumber('1000000000000000');
 
 export type ChartData = {
   timestamp: number;
@@ -55,8 +57,23 @@ const PolkaswapAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntit
   }
 `;
 
+/**
+ * Keeps already-correct XOR rows intact while fixing legacy indexer rows written in pre-redenomination units.
+ */
+const normalizeSupplyValue = (id: string, value: FPNumber): FPNumber => {
+  if (id !== XOR.address || !FPNumber.gt(value, XOR_LEGACY_SUPPLY_THRESHOLD)) return value;
+
+  return value.div(XOR_SUPPLY_REDENOMINATION_FACTOR);
+};
+
 const toNumber = (value: string): number => {
   const fp = FPNumber.fromCodecValue(value);
+
+  return fp.isFinity() ? fp.toNumber() : 0;
+};
+
+const toSupplyNumber = (id: string, value: string): number => {
+  const fp = normalizeSupplyValue(id, FPNumber.fromCodecValue(value));
 
   return fp.isFinity() ? fp.toNumber() : 0;
 };
@@ -69,7 +86,7 @@ const hasUsableSupplyData = (items: readonly ChartData[]): boolean =>
 const fetchCurrentSupplyValue = async (id: string): Promise<Nullable<number>> => {
   try {
     const supply = await api.assets.getAssetSupply(id);
-    const value = toNumber(supply);
+    const value = toSupplyNumber(id, supply);
 
     return value > 0 ? value : null;
   } catch {
@@ -102,14 +119,16 @@ const withCurrentSupplyFallback = async (
 const applyCirculatingDiff = (items: readonly ChartData[], diff: number): ChartData[] =>
   hasUsableSupplyData(items) ? items.map((item) => ({ ...item, value: item.value - diff })) : [...items];
 
-const parse = (node: AssetSnapshotEntity): ChartData => {
-  return {
-    timestamp: +node.timestamp * 1000,
-    value: toNumber(node.supply),
-    mint: toNumber(node.mint),
-    burn: toNumber(node.burn),
+const parse =
+  (id: string) =>
+  (node: AssetSnapshotEntity): ChartData => {
+    return {
+      timestamp: +node.timestamp * 1000,
+      value: toSupplyNumber(id, node.supply),
+      mint: toNumber(node.mint),
+      burn: toNumber(node.burn),
+    };
   };
-};
 
 const resolveSoraNetwork = async (): Promise<string> => {
   try {
@@ -129,7 +148,7 @@ export async function fetchAssetSupplyData(
   const data = await polkaswapIndexer.services.explorer.fetchAllEntities(
     PolkaswapAssetSupplyQuery,
     { id, from, to, type },
-    parse
+    parse(id)
   );
 
   const chartData = data ?? [];

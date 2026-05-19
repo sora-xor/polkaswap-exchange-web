@@ -65,8 +65,9 @@
     <template #bottom>
       <slot name="bottom">
         <div class="input-line input-line--footer">
-          <div v-if="hasFiatValue" class="s-flex">
+          <div v-if="hasFiatValue || hasFiatAmountAppend" class="s-flex">
             <s-float-input
+              v-if="hasFiatValue"
               ref="fiatEl"
               class="token-input--fiat"
               size="mini"
@@ -119,7 +120,7 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, useSlots, watch } from 'vue';
 
 import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -197,6 +198,7 @@ const fiatEl = ref<any>(null);
 
 const fiatValue = ref('');
 const fiatFocus = ref(false);
+const slots = useSlots();
 
 const delimiters = FPNumber.DELIMITERS_CONFIG;
 
@@ -226,6 +228,7 @@ const tokenPrice = computed(() => {
 });
 
 const hasFiatValue = computed(() => !(props.withoutFiat || tokenPrice.value.isZero()));
+const hasFiatAmountAppend = computed(() => Boolean(slots['fiat-amount-append']));
 
 const fpBalance = computed(() =>
   formattedAmount.getFPNumberFromCodec(props.balance ?? ZeroStringValue, decimals.value)

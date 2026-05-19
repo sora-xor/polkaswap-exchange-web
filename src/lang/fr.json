@@ -28,6 +28,7 @@
         "title": "Paramètres du compte"
     },
     "accountText": "compte | comptes",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Ajouter",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "La paire de jetons n'est pas créée",
     "points": {
         "accountsText": "{amount} comptes",
-        "airdrop": "Complétez des tâches liées à l'écosystème SORA pour être éligible à un airdrop de 3 millions de dollars",
         "bridgeVolume": "Volume du pont",
         "complete": "Terminé | Terminer",
         "currently": "Actuellement",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Commission",
             "commissionTooltip": "La commission fait référence aux frais facturés par les validateurs pour leurs services dans le processus de jalonnement. Ces frais, exprimés en pourcentage, sont déduits des récompenses de mise gagnées par les proposants avant distribution. Il est important de noter que les validateurs peuvent ajuster leurs taux de commission à tout moment.",
+            "deselectAll": "Deselect all",
             "name": "Nom",
             "noNominatedValidators": "Vous n'avez aucun validateur nommé",
             "noValidators": "Il n'y a aucun validateur satisfaisant au filtre spécifié",
             "return": "Retour",
             "search": "Recherche...",
+            "selectAll": "Select all",
             "staked": "Jalonné",
             "stakedTooltip": "Total XOR mis en jeu avec ce validateur, y compris la propre mise du validateur et la mise nominée"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Les comptes sont des adresses numériques qui contiennent les actifs de l'utilisateur sur le réseau. Chaque compte est associé à une adresse publique unique et à une clé privée qui permet à l'utilisateur d'accéder et de gérer ses actifs.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "Le pont {from} vers {to} fait référence au processus de transfert d'actifs entre les réseaux {from} et {to} à l'aide d'un pont. Le pont permet l'interopérabilité des deux réseaux, permettant aux utilisateurs de déplacer en toute transparence des actifs entre eux.",
         "fees": "Les frais sur la blockchain {Sora} font référence aux frais encourus pour l'exécution des transactions sur le réseau. Ces frais sont payés en XOR, la crypto-monnaie native du réseau {Sora} . Le montant des frais est déterminé par la complexité et la taille de la transaction en cours d'exécution",
         "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",

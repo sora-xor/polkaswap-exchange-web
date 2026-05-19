@@ -28,6 +28,7 @@
         "title": "Thiết lập tài khoản"
     },
     "accountText": "tài khoản | tài khoản",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Thêm",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "Cặp token này chưa được tạo",
     "points": {
         "accountsText": "{amount} tài khoản",
-        "airdrop": "Hoàn thành các nhiệm vụ liên quan đến Hệ sinh thái SORA để đủ điều kiện nhận airdrop trị giá 3 triệu đô la",
         "bridgeVolume": "Khối lượng cầu",
         "complete": "Đã hoàn thành | Hoàn thành",
         "currently": "Hiện nay",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Nhiệm vụ",
             "commissionTooltip": "Hoa hồng đề cập đến khoản phí mà người xác nhận tính cho các dịch vụ của họ trong quá trình đặt cược. Khoản phí này, được biểu thị bằng phần trăm, được khấu trừ từ phần thưởng đặt cược mà người đề cử kiếm được trước khi phân phối. Điều quan trọng cần lưu ý là người xác thực có thể điều chỉnh tỷ lệ hoa hồng của họ bất cứ lúc nào",
+            "deselectAll": "Deselect all",
             "name": "Tên",
             "noNominatedValidators": "Bạn không có bất kỳ người xác thực nào được chỉ định",
             "noValidators": "Không có trình xác thực nào đáp ứng bộ lọc được chỉ định",
             "return": "Trở lại",
             "search": "Tìm kiếm...",
+            "selectAll": "Select all",
             "staked": "đặt cược",
             "stakedTooltip": "Tổng số XOR được đặt cược với trình xác thực này, bao gồm cả cổ phần của chính người xác thực và cổ phần được đề cử"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Tài khoản là địa chỉ kỹ thuật số chứa tài sản của người dùng trên mạng. Mỗi tài khoản được liên kết với một địa chỉ công khai duy nhất và một khóa riêng cho phép người dùng truy cập và quản lý tài sản của họ.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "Cầu nối {from} đến {to} đề cập đến quá trình chuyển nội dung giữa mạng {from} và mạng {to} bằng cầu nối. Cây cầu cho phép khả năng tương tác của hai mạng, cho phép người dùng di chuyển tài sản giữa chúng một cách liền mạch.",
         "fees": "Phí trên chuỗi khối {Sora} đề cập đến các khoản phí phát sinh khi thực hiện các giao dịch trên mạng. Các khoản phí này được thanh toán bằng XOR, tiền điện tử gốc của Mạng {Sora} . Số tiền phí được xác định bởi mức độ phức tạp và quy mô của giao dịch được thực hiện",
         "roi": "{ROI} là viết tắt của Lợi tức đầu tư. Nó được tính bằng cách chia lợi nhuận kiếm được từ một khoản đầu tư cho chi phí của khoản đầu tư đó theo tỷ lệ phần trăm tương đương.",

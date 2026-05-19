@@ -53,7 +53,7 @@ import BaseWidget from '@/components/shared/Widget/Base.vue';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
-import { fetchData } from '@/indexer/queries/network/stats';
+import { fetchActiveAccounts, fetchData } from '@/indexer/queries/network/stats';
 import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
@@ -64,6 +64,7 @@ import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
 type NetworkSnapshot = {
   accounts: FPNumber;
+  activeAccounts: FPNumber;
   transactions: FPNumber;
   bridgeIncomingTransactions: FPNumber;
   bridgeOutgoingTransactions: FPNumber;
@@ -120,6 +121,11 @@ const columns = computed(() => {
       prop: 'transactions' as const,
     },
     {
+      title: t('activeAccountsText'),
+      tooltip: t('tooltips.activeAccounts'),
+      prop: 'activeAccounts' as const,
+    },
+    {
       title: t('newAccountsText'),
       tooltip: t('tooltips.accounts'),
       prop: 'accounts' as const,
@@ -150,16 +156,41 @@ const statsColumns = computed<NetworkStatsColumn[]>(() => {
   });
 });
 
-const groupData = (data: NetworkSnapshotData[]): Nullable<NetworkSnapshot> => {
-  return data.reduce<Nullable<NetworkSnapshot>>((buffer, item) => {
-    if (!buffer) return item;
+const createEmptyNetworkSnapshot = (): NetworkSnapshot => ({
+  accounts: FPNumber.ZERO,
+  activeAccounts: FPNumber.ZERO,
+  transactions: FPNumber.ZERO,
+  bridgeIncomingTransactions: FPNumber.ZERO,
+  bridgeOutgoingTransactions: FPNumber.ZERO,
+});
 
+const groupData = (data: NetworkSnapshotData[], activeAccounts: FPNumber): Nullable<NetworkSnapshot> => {
+  if (!data.length && activeAccounts.isZero()) return null;
+
+  const grouped = data.reduce<NetworkSnapshot>((buffer, item) => {
     for (const { prop } of columns.value) {
       buffer[prop] = (buffer[prop] as FPNumber).add(item[prop]);
     }
 
     return buffer;
-  }, null);
+  }, createEmptyNetworkSnapshot());
+
+  grouped.activeAccounts = activeAccounts;
+
+  return grouped;
+};
+
+/**
+ * Keeps the existing snapshot metrics visible if the account-activity endpoint
+ * is temporarily unavailable or returns an invalid response.
+ */
+const fetchActiveAccountsOrZero = async (from: number, to: number): Promise<FPNumber> => {
+  try {
+    return await fetchActiveAccounts(from, to);
+  } catch (error) {
+    console.error(error);
+    return FPNumber.ZERO;
+  }
 };
 
 const updateData = async () => {
@@ -172,11 +203,21 @@ const updateData = async () => {
         const aTime = now - seconds * count;
         const bTime = aTime - seconds * count;
 
-        const [current, previous] = await Promise.all([fetchData(now, aTime, type), fetchData(aTime, bTime, type)]);
+        const [current, previous, currentActiveAccounts, previousActiveAccounts] = await Promise.all([
+          fetchData(now, aTime, type),
+          fetchData(aTime, bTime, type),
+          fetchActiveAccountsOrZero(now, aTime),
+          fetchActiveAccountsOrZero(aTime, bTime),
+        ]);
 
-        currData.value = Object.freeze(groupData(current));
-        prevData.value = Object.freeze(groupData(previous));
-        hasResolvedData.value = current.length > 0 || previous.length > 0 || nodeIsConnected.value;
+        currData.value = Object.freeze(groupData(current, currentActiveAccounts));
+        prevData.value = Object.freeze(groupData(previous, previousActiveAccounts));
+        hasResolvedData.value =
+          current.length > 0 ||
+          previous.length > 0 ||
+          !currentActiveAccounts.isZero() ||
+          !previousActiveAccounts.isZero() ||
+          nodeIsConnected.value;
       } catch (error) {
         console.error(error);
         hasResolvedData.value = nodeIsConnected.value;
@@ -238,7 +279,7 @@ $gap: $inner-spacing-mini;
     @include columns(2, $gap);
 
     @include desktop {
-      @include columns(4, $gap);
+      @include columns(5, $gap);
     }
   }
 }

@@ -19,9 +19,10 @@ describe('AppHeader source', () => {
     expect(appHeaderSource).not.toContain('Components.AppMarketing');
   });
 
-  it('loads the settings dropdown lazily', () => {
-    expect(appHeaderSource).toContain("const AppHeaderMenu = createAsyncComponent(() => import('./AppHeaderMenu.vue'));");
-    expect(appHeaderSource).not.toContain("import AppHeaderMenu from './AppHeaderMenu.vue';");
+  it('bundles the settings dropdown with the header so it is present while logged out', () => {
+    expect(appHeaderSource).toContain("import AppHeaderMenu from './AppHeaderMenu.vue';");
+    expect(appHeaderSource).toContain('<app-header-menu></app-header-menu>');
+    expect(appHeaderSource).not.toContain("const AppHeaderMenu = createAsyncComponent(() => import('./AppHeaderMenu.vue'));");
   });
 
   it('keeps mobile header icon controls aligned with the live site', () => {
@@ -52,5 +53,13 @@ describe('AppHeader source', () => {
     );
     expect(appHeaderSource).toContain('background-color: var(--s-color-theme-accent-hover) !important;');
     expect(appHeaderSource).toContain('0 0 20px rgba(247, 84, 163, 0.5) !important;');
+  });
+
+  it('mirrors the centered header toolbar offset for RTL locales', () => {
+    expect(appHeaderSource).toContain("html[dir='rtl']");
+    expect(appHeaderSource).toContain('direction: rtl;');
+    expect(appHeaderSource).toContain('right: 42.5%;');
+    expect(appHeaderSource).toContain('left: auto;');
+    expect(appHeaderSource).toContain('transform: translate(50%, -50%);');
   });
 });

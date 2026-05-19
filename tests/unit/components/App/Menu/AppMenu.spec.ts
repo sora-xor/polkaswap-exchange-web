@@ -18,6 +18,7 @@ const {
   settingsStore: {
     menuCollapsed: false,
     faucetUrl: '',
+    language: 'en',
     libraryTheme: 'light',
     orderBookEnabled: true,
     debugEnabled: false,
@@ -103,6 +104,7 @@ describe('AppMenu', () => {
     routerLoading.value = false;
     settingsStore.menuCollapsed = false;
     settingsStore.faucetUrl = '';
+    settingsStore.language = 'en';
     routeMock.name = PageNames.Swap;
     settingsStore.orderBookEnabled = true;
     settingsStore.debugEnabled = false;
@@ -131,12 +133,16 @@ describe('AppMenu', () => {
       global: {
         stubs: {
           's-button': {
+            props: ['icon'],
             emits: ['click'],
-            template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+            template:
+              '<button class="s-button-stub" :data-icon="icon" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
           },
           SButton: {
+            props: ['icon'],
             emits: ['click'],
-            template: '<button class="s-button-stub" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
+            template:
+              '<button class="s-button-stub" :data-icon="icon" @click="$emit(\'click\')"><slot name="icon" /><slot /></button>',
           },
           's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
           SScrollbar: { template: '<div class="s-scrollbar-stub"><slot /></div>' },
@@ -253,6 +259,22 @@ describe('AppMenu', () => {
     await wrapper.get('.collapse-button').trigger('click');
 
     expect(setMenuCollapsedMock).toHaveBeenCalledWith(true);
+  });
+
+  it.each(['ar', 'he', 'ur', 'dv'])('mirrors the sidebar collapse icon for RTL locale "%s"', (locale) => {
+    settingsStore.language = locale;
+    settingsStore.menuCollapsed = false;
+
+    const expandedWrapper = mountComponent();
+
+    expect(expandedWrapper.get('.collapse-button').attributes('data-icon')).toBe('arrows-chevron-right-24');
+
+    expandedWrapper.unmount();
+    settingsStore.menuCollapsed = true;
+
+    const collapsedWrapper = mountComponent();
+
+    expect(collapsedWrapper.get('.collapse-button').attributes('data-icon')).toBe('arrows-chevron-left-24');
   });
 
   it('tracks sidebar width and clears observer-driven sidebar styles on unmount', () => {

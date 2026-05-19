@@ -28,6 +28,7 @@
         "title": "Nastavení účtu"
     },
     "accountText": "účet | účty",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Přidat",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "Tokenový pár není vytvořen",
     "points": {
         "accountsText": "{amount} účtů",
-        "airdrop": "Splňte úkoly související s ekosystémem SORA, abyste se kvalifikovali na airdrop v hodnotě 3 milionů dolarů",
         "bridgeVolume": "Objem na mostě",
         "complete": "Dokončeno | Dokončit",
         "currently": "V současné době",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Komise",
             "commissionTooltip": "Provize odkazuje na poplatek, který si validátoři účtují za své služby v procesu sázek. Tento poplatek, vyjádřený v procentech, se odečítá z odměn za sázky, které nominátoři získali před rozdělením. Je důležité si uvědomit, že validátoři mohou své provize kdykoli upravit",
+            "deselectAll": "Deselect all",
             "name": "Název",
             "noNominatedValidators": "Nemáte žádné nominované validátory",
             "noValidators": "Neexistují žádné validátory splňující zadaný filtr",
             "return": "Vrátit se",
             "search": "Vyhledávání...",
+            "selectAll": "Select all",
             "staked": "Vsazeno",
             "stakedTooltip": "Celkový vklad XOR s tímto validátorem, včetně jeho vlastního vkladu a nominovaného vkladu"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Účty jsou digitální adresy, které uchovávají majetek uživatele v síti. Každý účet je spojen s jedinečnou veřejnou adresou a soukromým klíčem, který uživateli umožňuje přístup a správu jeho majetku.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "Most {from} do {to} označuje proces přenosu aktiv mezi sítěmi {from} a {to} pomocí mostu. Most umožňuje interoperabilitu obou sítí a umožňuje uživatelům bezproblémově přesouvat prostředky mezi nimi.",
         "fees": "Poplatky na blockchainu {Sora} odkazují na poplatky, které vznikají za provádění transakcí v síti. Tyto poplatky se platí v XOR, nativní kryptoměně sítě {Sora} . Výše poplatku je určena složitostí a velikostí prováděné transakce",
         "roi": "{ROI} znamená návratnost investic. Vypočítá se vydělením zisku získaného z investice náklady na tuto investici v procentuálním ekvivalentu.",

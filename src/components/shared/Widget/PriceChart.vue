@@ -77,7 +77,6 @@
 import { FPNumber } from '@sora-substrate/sdk';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
-import last from 'lodash/fp/last';
 import pick from 'lodash/fp/pick';
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
@@ -95,7 +94,7 @@ import { createThemePalette, useThemePalette } from '@/composables/useThemePalet
 import { useTranslation } from '@/composables/useTranslation';
 import { FontWeightRate } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
-import { normalizeSnapshots } from '@/components/shared/Widget/priceChart.utils';
+import { aggregateSnapshotsByInterval } from '@/components/shared/Widget/priceChart.utils';
 import { fetchAssetPriceData } from '@/indexer/queries/asset/price';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import * as POLKASWAP_TYPES from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
@@ -270,7 +269,6 @@ let snapshotBuffer: Record<string, readonly SnapshotItem[]> = {};
 let pageInfos: Record<string, Partial<PageInfo>> = {};
 const priceUpdateRequestId = ref(0);
 let priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
-let priceUpdateTimestampSync: Nullable<ReturnType<typeof setInterval>> = null;
 
 const baseAsset = computed(() => props.baseAsset ?? null);
 const quoteAsset = computed(() => props.quoteAsset ?? null);
@@ -310,25 +308,12 @@ const currentPriceFormatted = computed(() => toAmount(currentPrice.value, precis
 const timeDifference = computed(() => SECONDS_IN_TYPE[selectedFilter.value.type] * 1000);
 
 const chartData = computed<readonly ChartDataItem[]>(() => {
-  const ordered = dataset.value.slice().reverse();
+  const ordered = dataset.value.slice().sort((a, b) => a.timestamp - b.timestamp);
   const group = selectedFilter.value.group;
-  const groups: ChartDataItem[] = [];
+  const items = group ? aggregateSnapshotsByInterval(ordered, timeDifference.value * group) : ordered;
+  const chartItems = items.map<ChartDataItem>((item) => [item.timestamp, ...item.price, item.volume]);
 
-  for (let i = 0; i < ordered.length; i++) {
-    if (!group || i % group === 0) {
-      groups.push([ordered[i].timestamp, ...ordered[i].price, ordered[i].volume]);
-    } else {
-      const lastGroup = last(groups);
-      if (lastGroup) {
-        lastGroup[2] = ordered[i].price[1];
-        lastGroup[3] = Math.min(lastGroup[3], ordered[i].price[2]);
-        lastGroup[4] = Math.max(lastGroup[4], ordered[i].price[3]);
-        lastGroup[5] = lastGroup[5] + (ordered[i].volume ?? 0);
-      }
-    }
-  }
-
-  return Object.freeze(groups);
+  return Object.freeze(chartItems);
 });
 
 const chartKey = computed(() =>
@@ -568,6 +553,21 @@ const updateDataset = (items: SnapshotItem[]): void => {
   dataset.value = Object.freeze(items);
 };
 
+const filterSnapshotsBySelectedWindow = (items: readonly SnapshotItem[]): SnapshotItem[] => {
+  const { count } = selectedFilter.value;
+  const interval = timeDifference.value;
+
+  if (!Number.isFinite(count) || !Number.isFinite(interval) || interval <= 0) {
+    return [...items];
+  }
+
+  const latestTimestamp = Math.max(...items.map((item) => item.timestamp).filter(Number.isFinite));
+  if (!Number.isFinite(latestTimestamp)) return [];
+
+  const windowStart = latestTimestamp - interval * Math.max(count - 1, 0);
+  return items.filter((item) => item.timestamp >= windowStart);
+};
+
 const clearData = (saveReversedState = false, clearBuffer = false): void => {
   snapshotBuffer = clearBuffer ? {} : (pick(entities.value, snapshotBuffer) as typeof snapshotBuffer);
   pageInfos = clearBuffer ? {} : (pick(entities.value, pageInfos) as typeof pageInfos);
@@ -599,6 +599,7 @@ const requestData = async (
   do {
     const first = Math.min(remaining, 100);
     const requestMethod = props.requestMethod ?? fetchAssetPriceData;
+    const previousCursor = cursor;
     const response = await requestMethod(entityId, type, first, cursor);
 
     if (!response) {
@@ -607,8 +608,14 @@ const requestData = async (
 
     nextPage = response.pageInfo.hasNextPage;
     cursor = response.pageInfo.endCursor;
-    nodes.push(...response.edges.map((edge) => edge.node));
-    remaining -= response.edges.length;
+    const cursorDidNotAdvance = nextPage && !!previousCursor && cursor === previousCursor;
+    const edges = response.edges;
+    nodes.push(...edges.map((edge) => edge.node));
+    remaining -= edges.length;
+
+    if (!edges.length || (nextPage && !cursor) || cursorDidNotAdvance) {
+      nextPage = false;
+    }
   } while (nextPage && remaining > 0);
 
   return { nodes, hasNextPage: nextPage, endCursor: cursor };
@@ -628,15 +635,16 @@ const fetchData = async (entityId: string): Promise<SnapshotItem[]> => {
     return snapshotsUnused;
   }
 
-  const { nodes, ...pageInfo } = await requestData(entityId, type, count, hasNextPage, endCursor);
-  const lastTimestamp = last(snapshotsUnused)?.timestamp ?? last(dataset.value)?.timestamp ?? Date.now();
-  const normalizedLimit = Math.max(count - snapshotsUnused.length, 0);
-  const snapshotsNormalized = normalizeSnapshots(nodes, timeDifference.value, lastTimestamp, normalizedLimit);
+  const requestedLimit = Math.max(count - snapshotsUsedCount - snapshotsUnused.length, 0);
+  if (requestedLimit <= 0) return snapshotsUnused;
 
-  fillSnapshotBuffer(entityId, snapshotsNormalized);
+  const { nodes, ...pageInfo } = await requestData(entityId, type, requestedLimit, hasNextPage, endCursor);
+  const snapshots = nodes.slice(0, requestedLimit);
+
+  fillSnapshotBuffer(entityId, snapshots);
   pageInfos = { ...pageInfos, [entityId]: pageInfo };
 
-  return [...snapshotsUnused, ...snapshotsNormalized];
+  return filterSnapshotsBySelectedWindow([...snapshotsUnused, ...snapshots]);
 };
 
 const fetchDataLastUpdates = async (entitiesSnapshot: string[]): Promise<Nullable<LastUpdates>> => {
@@ -653,7 +661,7 @@ const fetchDataLastUpdates = async (entitiesSnapshot: string[]): Promise<Nullabl
     })
   );
 
-  return lastUpdates;
+  return entitiesSnapshot.every((entityId) => !!lastUpdates[entityId]) ? lastUpdates : null;
 };
 
 const getUpdatedPrecision = (min: number, max: number): number => {
@@ -687,8 +695,11 @@ const getHistoricalPrices = async (): Promise<void> => {
       for (let i = 0; i < size; i++) {
         const a = snapshots[0]?.[i];
         const b = snapshots[1]?.[i];
+        if (a && b && a.timestamp !== b.timestamp) continue;
+
         const { timestamp, price, volume } = mergeSnapshots(a, b);
 
+        if (!Number.isFinite(timestamp)) continue;
         if (price.some((part) => !Number.isFinite(part))) continue;
         if (price[0] === 0 && price[1] === 0) continue;
 
@@ -709,29 +720,6 @@ const getHistoricalPrices = async (): Promise<void> => {
   });
 };
 
-const getCurrentSnapshotTimestamp = (): number => {
-  const now = Math.floor(Date.now() / 1000);
-  const seconds = timeDifference.value / 1000;
-  const index = Math.floor(now / seconds);
-  return seconds * index * 1000;
-};
-
-const handlePriceTimestampSync = (entitiesSnapshot: string[]): void => {
-  if (!requestIsAllowed(entitiesSnapshot)) return;
-
-  const timestamp = getCurrentSnapshotTimestamp();
-  const lastItem = dataset.value[0];
-
-  if (!lastItem || timestamp === lastItem.timestamp) return;
-
-  const close = lastItem.price[1];
-  const price: OCLH = [close, close, close, close];
-  const volume = 0;
-  const item: SnapshotItem = { timestamp, price, volume };
-
-  updateDataset([item, ...dataset.value]);
-};
-
 const fetchAndHandleUpdate = async (entitiesSnapshot: string[]): Promise<void> => {
   if (!requestIsAllowed(entitiesSnapshot)) return;
 
@@ -741,9 +729,13 @@ const fetchAndHandleUpdate = async (entitiesSnapshot: string[]): Promise<void> =
   const datasetClone = [...dataset.value];
   const lastItem = datasetClone[0];
   const [a, b] = entitiesSnapshot.map((entityId) => lastUpdates[entityId]);
+  if (a && b && a.timestamp !== b.timestamp) return;
+
   const item = mergeSnapshots(a, b);
 
+  if (!Number.isFinite(item.timestamp)) return;
   if (item.price.some((part) => !Number.isFinite(part))) return;
+  if (item.price[0] === 0 && item.price[1] === 0) return;
   if (lastItem?.timestamp > item.timestamp) return;
 
   if (lastItem?.timestamp === item.timestamp) {
@@ -773,18 +765,13 @@ const subscribeToPriceUpdates = async (): Promise<void> => {
 
   const entitiesSnapshot = [...entities.value];
   priceUpdateSubscription = await getPriceUpdatesSubscription(entitiesSnapshot);
-  priceUpdateTimestampSync = setInterval(() => handlePriceTimestampSync(entitiesSnapshot), SYNC_INTERVAL);
 };
 
 const unsubscribeFromPriceUpdates = (): void => {
   if (priceUpdateSubscription) {
     priceUpdateSubscription();
   }
-  if (priceUpdateTimestampSync) {
-    clearInterval(priceUpdateTimestampSync);
-  }
   priceUpdateSubscription = null;
-  priceUpdateTimestampSync = null;
 };
 
 const updatePrices = debouncedInputHandler(getHistoricalPrices, 250, { leading: false });

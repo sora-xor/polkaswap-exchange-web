@@ -62,11 +62,11 @@ import { useTranslation } from '@/composables/useTranslation';
 import { PageNames } from '@/consts';
 import { BreakpointClass } from '@/consts/layout';
 import { Theme } from '@/consts/theme';
-import { createAsyncComponent } from '@/shared/ui/async';
 import { useSettingsStore } from '@/stores/settings';
 import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import AppAccountButton from './AppAccountButton.vue';
+import AppHeaderMenu from './AppHeaderMenu.vue';
 
 defineOptions({ name: 'AppHeader' });
 
@@ -80,7 +80,6 @@ const { t } = useTranslation();
 const { navigateToWallet } = useInternalConnect();
 const route = useRoute();
 const settingsStore = useSettingsStore();
-const AppHeaderMenu = createAsyncComponent(() => import('./AppHeaderMenu.vue'));
 
 const xor = XOR;
 const eth = ETH;
@@ -485,6 +484,28 @@ html[dir='rtl'] {
 .app-logo--header {
   @include large-mobile(true) {
     display: none;
+  }
+}
+
+html[dir='rtl'] {
+  .header {
+    direction: rtl;
+  }
+
+  .app-controls--middle {
+    margin-right: auto;
+    margin-left: 0;
+
+    @include desktop {
+      right: 42.5%;
+      left: auto;
+      margin-right: 0;
+      transform: translate(50%, -50%);
+    }
+
+    @media (minmax(1220px, false)) {
+      right: 50%;
+    }
   }
 }
 </style>

@@ -1,0 +1,30 @@
+# Polkaswap Agent Discovery
+
+This static app supports browser-native automation through `window.PolkaswapAgent`.
+
+Start here:
+
+- `.well-known/polkaswap-agent.json`
+
+The manifest links the v1 API docs, TypeScript declarations, JSON schema, error catalog, runnable examples, and optional same-page helper client.
+
+For manual inspection from a deployed build, open `agent-playground.html`.
+
+Important constraints:
+
+- Same-page JavaScript only.
+- No hosted API or middleware.
+- No MCP server.
+- No URL command mode.
+- No `postMessage` command bridge.
+- No private-key custody in the page.
+- Wallet signing must come from the runner's chosen injected wallet or signer.
+
+Minimum flow:
+
+1. Open the app in a browser.
+2. Wait for `window.PolkaswapAgent` or `polkaswap-agent-ready`.
+3. Call `ready({ requireNode: true })`.
+4. Use `prepare*` methods before `execute*` methods.
+5. Pass `intentId` and `clientOrderId` to execution calls.
+6. Recover uncertain submissions before retrying.

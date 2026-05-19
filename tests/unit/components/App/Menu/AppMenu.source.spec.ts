@@ -32,6 +32,7 @@ describe('AppMenu source', () => {
 
   it('uses the app-owned loading state instead of the legacy router store mirror', () => {
     expect(appMenuSource).toContain("from '@/app/navigation/loading'");
+    expect(appMenuSource).toContain("import { getLocaleDirection } from '@/lang/direction';");
     expect(appMenuSource).not.toContain("from '@/stores/router'");
     expect(appMenuSource).not.toContain("from '@/router'");
     expect(appMenuSource).not.toContain('lazyComponent(');
@@ -43,5 +44,15 @@ describe('AppMenu source', () => {
     expect(appMenuSource).not.toContain(
       "libraryTheme.value === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'"
     );
+  });
+
+  it('mirrors sidebar placement and slide-in direction for RTL documents', () => {
+    expect(appMenuSource).toContain("html[dir='rtl'] &");
+    expect(appMenuSource).toContain("html[dir='rtl'] & .app-sidebar");
+    expect(appMenuSource).toContain("html[dir='rtl'] &.visible .app-sidebar");
+    expect(appMenuSource).toContain('right: calc(100% - var(--s-size-small) / 2);');
+    expect(appMenuSource).toContain('transform: translateX(100%);');
+    expect(appMenuSource).toContain('filter: drop-shadow(-32px 0px 64px rgba(0, 0, 0, 0.1));');
+    expect(appMenuSource).toContain('padding-left: $inner-spacing-mini; // for shadow');
   });
 });

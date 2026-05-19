@@ -17,7 +17,7 @@
             {{ wallet.title }}
             <div v-if="isRecommendedWallet(wallet)" class="extension-label extension-label--recommended">
               <span>{{ t('connection.wallet.recommended') }}</span>
-              <s-icon name="basic-circle-star-24" size="12" class="extension-label__icon"></s-icon>
+              <s-icon name="star-16" size="14" class="extension-label__icon"></s-icon>
             </div>
           </div>
         </template>
@@ -185,13 +185,20 @@ function handleDisconnect(wallet: Wallet): void {
   }
 
   &-label {
-    display: flex;
-    align-items: baseline;
+    display: inline-flex;
+    align-items: center;
     gap: $basic-spacing-tiny;
+    width: fit-content;
+    min-height: 20px;
     border-radius: var(--s-border-radius-medium);
-    padding: 2px 6px;
+    margin-top: 2px;
+    padding: 3px 7px 3px 8px;
     font-size: var(--s-font-size-mini);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0;
     text-transform: uppercase;
+    white-space: nowrap;
 
     i {
       color: inherit;
@@ -207,6 +214,12 @@ function handleDisconnect(wallet: Wallet): void {
 .extension-label__icon {
   flex-shrink: 0;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 14px;
+  height: 14px;
+  line-height: 14px;
 
   &::before {
     content: none !important;

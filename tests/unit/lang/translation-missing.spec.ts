@@ -61,6 +61,11 @@ describe('translationMissingHandler', () => {
 
     expect(getSupportedLocale('en-AU' as any)).toBe('en');
     expect(getSupportedLocale('zh-CN' as any)).toBe('zh-CN');
+    expect(getSupportedLocale('zh_cn' as any)).toBe('zh-CN');
+    expect(getSupportedLocale('ar_EG' as any)).toBe('ar');
+    expect(getSupportedLocale('he-IL' as any)).toBe('he');
+    expect(getSupportedLocale('UR-PK' as any)).toBe('ur');
+    expect(getSupportedLocale('dv_MV' as any)).toBe('dv');
     expect(getSupportedLocale('unsupported' as any)).toBe('en');
   });
 
@@ -75,13 +80,15 @@ describe('translationMissingHandler', () => {
     expect(composer.te('swapText')).toBe(true);
   });
 
-  it('applies document locale attributes for Urdu typography and RTL layout', async () => {
+  it('applies document locale attributes for supported RTL typography and layout', async () => {
     const { setI18nLocale } = await loadModule();
 
-    await setI18nLocale('ur' as any);
+    for (const locale of ['ar', 'he', 'ur', 'dv']) {
+      await setI18nLocale(locale as any);
 
-    expect(document.documentElement.getAttribute('lang')).toBe('ur');
-    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
+      expect(document.documentElement.getAttribute('lang')).toBe(locale);
+      expect(document.documentElement.getAttribute('dir')).toBe('rtl');
+    }
 
     await setI18nLocale('en' as any);
 

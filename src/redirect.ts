@@ -1,3 +1,5 @@
+import { retireLegacyServiceWorkers } from '@/utils/serviceWorkerCleanup';
+
 type LocationLike = Pick<Location, 'protocol' | 'hostname' | 'pathname' | 'hash'> & {
   [key: string]: any;
 };
@@ -90,5 +92,6 @@ export function normalizeLocation(location: LocationLike): void {
 }
 
 if (typeof window !== 'undefined' && typeof window.location !== 'undefined') {
+  void retireLegacyServiceWorkers({ reloadControlledPage: true });
   normalizeLocation(window.location);
 }

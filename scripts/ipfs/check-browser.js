@@ -35,6 +35,8 @@ const CORRUPTED_UI_PATTERNS = [
   /Cannot read properties of undefined \(reading '\$refs'\)/i,
   /Cannot read properties of null \(reading 'query'\)/i,
 ];
+const CACHE_CONTROL_MAX_AGE_PATTERN = /(?:^|,)\s*max-age=(\d+)/i;
+const STABLE_HOST_HTML_MAX_AGE_SECONDS = 60;
 
 function parseArgs(argv) {
   const args = {};
@@ -369,6 +371,55 @@ function collectCorruptedUiPatterns(samples) {
   return [...new Set(patterns)];
 }
 
+/**
+ * Detects immutable IPFS/IPNS gateway paths where long-lived HTML caching is expected.
+ */
+function isIpfsPathUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return /^\/(?:ipfs|ipns)\//i.test(parsed.pathname);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Limits cache validation to stable HTTP hostnames, not content-addressed gateway paths.
+ */
+function shouldValidateStableHostHtmlCache(targetUrl) {
+  if (!targetUrl || isIpfsPathUrl(targetUrl)) return false;
+
+  try {
+    const parsed = new URL(targetUrl);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Returns the cache-header issue that would keep old app shells or service workers alive.
+ */
+function findStableHostHtmlCacheIssue(headers, targetUrl) {
+  if (!shouldValidateStableHostHtmlCache(targetUrl)) return null;
+
+  const cacheControl = String(headers?.['cache-control'] || '').trim();
+  if (!cacheControl) {
+    return 'Stable host HTML response is missing Cache-Control.';
+  }
+
+  if (/\bno-store\b/i.test(cacheControl)) {
+    return null;
+  }
+
+  const maxAge = Number(cacheControl.match(CACHE_CONTROL_MAX_AGE_PATTERN)?.[1] ?? 0);
+  if (/\bimmutable\b/i.test(cacheControl) || maxAge > STABLE_HOST_HTML_MAX_AGE_SECONDS) {
+    return `Stable host HTML must not be cached immutably; received Cache-Control: ${cacheControl}`;
+  }
+
+  return null;
+}
+
 const BROWSER_LAUNCHERS = {
   chromium: async () =>
     chromium.launch({
@@ -417,6 +468,7 @@ async function run() {
     launchErrors: [],
     bodyText: null,
     bodyTextSamples: [],
+    mainResponse: null,
     gateway: {
       attempted: spawnGateway,
       ipfsPath,
@@ -522,7 +574,14 @@ async function run() {
       }
     });
 
-    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: LOAD_TIMEOUT });
+    const mainResponse = await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: LOAD_TIMEOUT });
+    if (mainResponse) {
+      status.mainResponse = {
+        url: mainResponse.url(),
+        status: mainResponse.status(),
+        headers: mainResponse.headers(),
+      };
+    }
 
     status.content = await waitForContent(page, selector);
 
@@ -615,6 +674,11 @@ async function run() {
     issues.push(`${failed.length} failed network request(s).`);
   }
 
+  const cacheHeaderIssue = findStableHostHtmlCacheIssue(status.mainResponse?.headers, status.mainResponse?.url);
+  if (cacheHeaderIssue) {
+    issues.push(cacheHeaderIssue);
+  }
+
   const summary = {
     targetUrl: status.targetUrl,
     selector: status.selector,
@@ -627,6 +691,8 @@ async function run() {
     failedRequests: failed,
     settleMs,
     sampleIntervalMs,
+    mainResponse: status.mainResponse,
+    cacheHeaderIssue,
     bodyTextSamples: status.bodyTextSamples,
     corruptedBodyPatterns: collectCorruptedUiPatterns(status.bodyTextSamples),
     corruptedDomPatterns: findCorruptedUiPatterns(status.domSnapshot),
@@ -681,6 +747,9 @@ module.exports = {
   findCorruptedUiPatterns,
   parseNonNegativeInteger,
   collectCorruptedUiPatterns,
+  isIpfsPathUrl,
+  shouldValidateStableHostHtmlCache,
+  findStableHostHtmlCacheIssue,
   BROWSER_LAUNCHERS,
   run,
 };

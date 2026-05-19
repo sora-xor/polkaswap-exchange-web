@@ -28,6 +28,7 @@
         "title": "ПОДЕШАВАЊА РАЧУНА"
     },
     "accountText": "рачун | рачуни",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Додајте",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "Пар токена није креиран",
     "points": {
         "accountsText": "{amount} naloga",
-        "airdrop": "Завршите задатке везане за SORA екосистем да бисте се квалификовали за аирдроп од 3 милиона долара",
         "bridgeVolume": "Obim mosta",
         "complete": "Завршено | Заврши",
         "currently": "Тренутно",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Комисија",
             "commissionTooltip": "Провизија се односи на накнаду коју наплаћују валидатори за своје услуге у процесу стекинга. Ова накнада, изражена у процентима, одбија се од награда за улагање које су номинатори зарадили пре дистрибуције. Важно је напоменути да валидатори могу прилагодити своје стопе провизије у било ком тренутку",
+            "deselectAll": "Deselect all",
             "name": "Име",
             "noNominatedValidators": "Nemaš nominovane validatore",
             "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
             "return": "Повратак",
             "search": "Претрага...",
+            "selectAll": "Select all",
             "staked": "Стакед",
             "stakedTooltip": "Укупан КСОР уложен са овим валидатором, укључујући сопствени улог валидатора и номиновани улог"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Налози су дигиталне адресе које држе имовину корисника на мрежи. Сваки налог је повезан са јединственом јавном адресом и приватним кључем који омогућава кориснику да приступи и управља својим средствима.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "Мост {from} до {to} се односи на процес преноса средстава између {from} и {to} мрежа помоћу моста. Мост омогућава интероперабилност две мреже, омогућавајући корисницима да неприметно премештају средства између њих.",
         "fees": "Накнаде на блокчејну {Sora} односе се на трошкове који су настали за извршавање трансакција на мрежи. Ове накнаде се плаћају у КСОР-у, изворној криптовалути мреже {Sora} . Висина накнаде је одређена сложеношћу и величином трансакције која се извршава",
         "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",

@@ -160,14 +160,19 @@ watch(
 
 .select-language-list {
   flex-direction: column;
-  min-width: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   height: 600px;
   max-height: 462px;
+  padding: 6px;
 }
 
 :deep(.select-language-list__item) {
   align-items: center;
-  min-width: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   border-radius: var(--s-border-radius-mini);
   min-height: 56px;
   padding: 12px 24px;

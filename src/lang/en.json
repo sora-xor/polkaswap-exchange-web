@@ -28,6 +28,7 @@
         "title": "Account settings"
     },
     "accountText": "account | accounts",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Add",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "Token pair isn't created",
     "points": {
         "accountsText": "{amount} accounts",
-        "airdrop": "Complete SORA Ecosystem-related tasks in order to qualify for a $3m AIRDROP",
         "bridgeVolume": "Bridge volume",
         "complete": "Completed | Complete",
         "currently": "Currently",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Commission",
             "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
+            "deselectAll": "Deselect all",
             "name": "Name",
             "noNominatedValidators": "You don't have any nominated validators",
             "noValidators": "There are no validators satisfying the specified filter",
             "return": "Return",
             "search": "Search...",
+            "selectAll": "Select all",
             "staked": "Staked",
             "stakedTooltip": "Total XOR staked with this validator, including the validator's own stake and nominated stake"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.",
         "fees": "Fees on the {Sora} blockchain refer to the charges that are incurred for executing transactions on the network. These fees are paid in XOR, the native cryptocurrency of the {Sora} Network. The fee amount is determined by the complexity and size of the transaction being executed",
         "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",

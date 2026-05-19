@@ -26,6 +26,10 @@ const envMocks = vi.hoisted(() => ({
   renderOfflineShell: vi.fn(() => false),
 }));
 
+const agentTradingMocks = vi.hoisted(() => ({
+  installPolkaswapAgentApi: vi.fn(),
+}));
+
 const securityMocks = vi.hoisted(() => ({
   registerW3mMessageGuard: vi.fn(),
 }));
@@ -87,6 +91,10 @@ vi.mock('@/utils/env', () => ({
 
 vi.mock('@/utils/offlineShell', () => ({
   renderOfflineShell: envMocks.renderOfflineShell,
+}));
+
+vi.mock('@/features/agent-trading', () => ({
+  installPolkaswapAgentApi: agentTradingMocks.installPolkaswapAgentApi,
 }));
 
 vi.mock('@/security/w3mMessageGuard', () => ({
@@ -169,6 +177,7 @@ describe('app bootstrap', () => {
     expect(appMocks.app.use).toHaveBeenCalledWith(pluginMocks.i18n);
     expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
     expect(pluginMocks.setI18nLocale).toHaveBeenCalledWith('en');
+    expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledWith({ pinia: pluginMocks.pinia });
   });
 
   it('renders the offline shell and skips mounting when the runtime is offline', async () => {

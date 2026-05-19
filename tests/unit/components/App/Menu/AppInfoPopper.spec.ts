@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick, useAttrs } from 'vue';
 
 import AppInfoPopper from '@/components/App/Menu/AppInfoPopper.vue';
+import appInfoPopperSource from '@/components/App/Menu/AppInfoPopper.vue?raw';
 import { Links, SocialNetworkLinks, app } from '@/consts';
 import SPopoverPanel from '@/lib/soramitsu-ui/components/Popover/SPopoverPanel';
 
@@ -99,5 +100,17 @@ describe('AppInfoPopper', () => {
     await nextTick();
 
     expect(document.body.querySelector('.app-info')).not.toBeNull();
+  });
+
+  it('keeps the info popover aligned with noir theme tokens', () => {
+    expect(appInfoPopperSource).toContain(":root[data-theme='dark'] .app-info-popper.el-popover.el-popper");
+    expect(appInfoPopperSource).toContain(
+      ":root[design-system-theme='dark'] .app-info-popper.el-popover.el-popper"
+    );
+    expect(appInfoPopperSource).toContain('background: var(--s-color-utility-surface);');
+    expect(appInfoPopperSource).toContain('box-shadow: var(--s-shadow-dialog);');
+    expect(appInfoPopperSource).toContain('color: var(--s-color-base-content-primary);');
+    expect(appInfoPopperSource).toContain('background: var(--s-color-base-border-secondary);');
+    expect(appInfoPopperSource).toContain('color: var(--s-color-base-content-tertiary) !important;');
   });
 });

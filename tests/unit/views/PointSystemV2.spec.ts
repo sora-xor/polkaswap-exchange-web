@@ -193,6 +193,14 @@ describe('PointSystemV2.vue', () => {
     expect(wrapper.vm.pointsForCards).toBeNull();
   });
 
+  it('does not render the deprecated airdrop promotion in the header', async () => {
+    const wrapper = buildWrapper();
+
+    await flushPromises();
+
+    expect(wrapper.text()).not.toContain('points.airdrop');
+  });
+
   it('loads point-system data after the login state flips to true', async () => {
     const zero = FPNumber.ZERO;
     fetchAccountMetaMock.mockResolvedValue({

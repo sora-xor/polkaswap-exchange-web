@@ -57,6 +57,8 @@
     "test:e2e:root": "env -u NO_COLOR PS_PLAYWRIGHT_REUSE_SERVER=0 PS_IPFS_TEST_PREFIX='' playwright test tests/e2e/ui/app.spec.ts tests/e2e/ui/navigation.spec.ts tests/e2e/ui/bridge-moonpay.spec.ts tests/e2e/ui/wallet-overlays.spec.ts tests/e2e/ui/bridge-route-overlays.spec.ts tests/e2e/ui/footer-dialogs.spec.ts tests/e2e/ui/stability.spec.ts tests/e2e/ui/route-rendering.spec.ts",
     "test:e2e:live": "env -u NO_COLOR PS_E2E_LIVE_NETWORK=1 playwright test tests/e2e/ui/live-runtime.spec.ts",
     "test:all": "yarn test:unit",
+    "test:e2e:agent:smoke": "yarn build --logLevel error && node ./scripts/playwright/agent-trading-smoke.mjs",
+    "agent:runner": "node ./examples/agent-runner/agent-runner.mjs",
     "test:e2e:swap:smoke": "node ./scripts/playwright/swap-smoke.mjs",
     "test:e2e:safari:smoke": "node ./scripts/playwright/safari-smoke.mjs",
     "test:e2e:wallet:matrix": "node ./scripts/playwright/wallet-matrix.mjs",

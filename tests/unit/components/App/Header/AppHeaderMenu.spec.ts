@@ -392,6 +392,88 @@ describe('AppHeaderMenu', () => {
     expect(disclaimerIndicator.attributes('data-icon')).toBe('arrows-chevron-right-rounded-24');
   });
 
+  it.each(['en-dv', 'und-DV', 'dvx', 'locale:ar', 'az-Arab', 'ar,he', 'dv;en', 'ar\nEG', '__proto__'])(
+    'does not mirror the toolbar for adversarial LTR locale "%s"',
+    (locale) => {
+      settingsStoreMock.language = locale;
+      const wrapper = mountComponent();
+
+      const ltrTrigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-left-24"]');
+      const rtlTrigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-right-24"]');
+      const currencyIndicator = wrapper.find('[data-test-name="currency"] .icontype.s-icon-stub');
+      const languageIndicator = wrapper.find('[data-test-name="language"] .icontype.s-icon-stub');
+
+      expect(ltrTrigger.exists()).toBe(true);
+      expect(rtlTrigger.exists()).toBe(false);
+      expect(currencyIndicator.attributes('data-icon')).toBe('arrows-chevron-right-rounded-24');
+      expect(languageIndicator.attributes('data-icon')).toBe('arrows-chevron-right-rounded-24');
+    }
+  );
+
+  it.each([
+    ['leading right-to-left mark', '\u200fdv'],
+    ['trailing right-to-left mark', 'dv\u200f'],
+    ['leading right-to-left override', '\u202edv'],
+  ])('does not mirror the toolbar for bidi-control-injected locale with %s', (_, locale) => {
+    settingsStoreMock.language = locale;
+    const wrapper = mountComponent();
+
+    const ltrTrigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-left-24"]');
+    const rtlTrigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-right-24"]');
+    const currencyIndicator = wrapper.find('[data-test-name="currency"] .icontype.s-icon-stub');
+
+    expect(ltrTrigger.exists()).toBe(true);
+    expect(rtlTrigger.exists()).toBe(false);
+    expect(currencyIndicator.attributes('data-icon')).toBe('arrows-chevron-right-rounded-24');
+  });
+
+  it('does not mirror the mobile turn-phone row for an RTL-looking locale suffix', () => {
+    settingsStoreMock.language = 'en-dv';
+    settingsStoreMock.isTMA = true;
+    settingsStoreMock.screenBreakpointClass = 'min-mobile';
+    settingsStoreMock.isAccessRotationListener = false;
+    const wrapper = mountComponent();
+
+    const ltrTrigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-left-24"]');
+    const rtlTrigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-right-24"]');
+    const turnPhoneIndicator = wrapper.find('[data-test-name="turn-phone-hide"] .icontype.s-icon-stub');
+
+    expect(ltrTrigger.exists()).toBe(true);
+    expect(rtlTrigger.exists()).toBe(false);
+    expect(turnPhoneIndicator.attributes('data-icon')).toBe('arrows-chevron-right-rounded-24');
+  });
+
+  it.each(['ar', 'he', 'ur', 'dv'])('mirrors the toolbar icon and drill-in indicators for RTL locale "%s"', (locale) => {
+    settingsStoreMock.language = locale;
+    const wrapper = mountComponent();
+
+    const trigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-right-24"]');
+    const currencyIndicator = wrapper.find('[data-test-name="currency"] .icontype.s-icon-stub');
+    const languageIndicator = wrapper.find('[data-test-name="language"] .icontype.s-icon-stub');
+    const notificationIndicator = wrapper.find('[data-test-name="notification"] .icontype.s-icon-stub');
+    const disclaimerIndicator = wrapper.find('[data-test-name="disclaimer"] .icontype.s-icon-stub');
+
+    expect(trigger.exists()).toBe(true);
+    expect(currencyIndicator.attributes('data-icon')).toBe('arrows-chevron-left-rounded-24');
+    expect(languageIndicator.attributes('data-icon')).toBe('arrows-chevron-left-rounded-24');
+    expect(notificationIndicator.attributes('data-icon')).toBe('arrows-chevron-left-rounded-24');
+    expect(disclaimerIndicator.attributes('data-icon')).toBe('arrows-chevron-left-rounded-24');
+  });
+
+  it('mirrors region-qualified Divehi on the mobile turn-phone row', () => {
+    settingsStoreMock.language = 'DV-MV';
+    settingsStoreMock.isTMA = true;
+    settingsStoreMock.screenBreakpointClass = 'min-mobile';
+    settingsStoreMock.isAccessRotationListener = false;
+    const wrapper = mountComponent();
+
+    const trigger = wrapper.find('.header-menu__button[data-icon="grid-block-align-right-24"]');
+    const turnPhoneIndicator = wrapper.find('[data-test-name="turn-phone-hide"] .icontype.s-icon-stub');
+
+    expect(trigger.exists()).toBe(true);
+    expect(turnPhoneIndicator.attributes('data-icon')).toBe('arrows-chevron-left-rounded-24');
+  });
+
   it('does not toggle disclaimer when disclaimer entry is disabled', async () => {
     const wrapper = mountComponent();
     const disclaimerItem = wrapper.find('[data-test-name="disclaimer"]');

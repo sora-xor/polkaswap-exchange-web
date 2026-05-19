@@ -2,7 +2,7 @@
   <s-input
     ref="input"
     v-model="query"
-    class="search-input"
+    :class="['search-input', { 'search-input--with-right': $slots.right }]"
     prefix="s-icon-search-16"
     v-bind="inputAttrs"
     :readonly="false"
@@ -16,6 +16,9 @@
         :aria-label="t('resetText')"
         @click="handleClearSearch"
       ></s-button>
+    </template>
+    <template v-if="$slots.right" #right>
+      <slot name="right"></slot>
     </template>
   </s-input>
 </template>
@@ -144,6 +147,17 @@ defineExpose({
       i {
         @include focus-outline($inner: true, $borderRadius: 50%);
       }
+    }
+  }
+
+  &--with-right {
+    .s-input__suffix {
+      position: static;
+      transform: none;
+    }
+
+    .s-button--clear {
+      margin-right: 0;
     }
   }
 }

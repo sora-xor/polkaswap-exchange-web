@@ -1,4 +1,5 @@
 import { FPNumber } from '@sora-substrate/sdk';
+import { markRaw } from 'vue';
 
 import { ZeroStringValue } from '@/consts';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -64,5 +65,5 @@ export const buildInitialBridgeState = (): BridgeState => ({
     outgoingMaxLimit: null,
     blockUpdates: null,
   },
-  connector: new SubNetworksConnector(),
+  connector: markRaw(new SubNetworksConnector()),
 });

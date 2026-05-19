@@ -125,13 +125,23 @@ const Direction =
 
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object';
 
+/**
+ * Accepts only plain decimal balance strings from bridge providers.
+ */
+const normalizeBridgeBalance = (value: unknown): CodecString => {
+  if (typeof value !== 'string') return ZeroStringValue;
+  if (!/^\d+(?:\.\d+)?$/.test(value)) return ZeroStringValue;
+
+  return value as CodecString;
+};
+
 const shouldUseWorkerDataPlane = (): boolean => {
   return Boolean(useSettingsStore().featureFlags.wsWorkerDataPlane);
 };
 
 const getSoraBalance = async (accountAddress: string, asset: RegisteredAccountAsset): Promise<CodecString> => {
   const accountBalance = await getAssetBalance(api.api, accountAddress, asset.address, asset.decimals);
-  return accountBalance.transferable;
+  return normalizeBridgeBalance(accountBalance.transferable);
 };
 
 const getExternalBalance = async (
@@ -140,9 +150,11 @@ const getExternalBalance = async (
   isSub: boolean,
   subConnector: SubNetworksConnector
 ): Promise<CodecString> => {
-  return isSub
+  const balance = isSub
     ? await subConnector.network.getTokenBalance(accountAddress, asset)
     : await ethersUtil.getAccountAssetBalance(accountAddress, asset.externalAddress);
+
+  return normalizeBridgeBalance(balance);
 };
 
 const getAccountBridgeBalance = async (
@@ -191,7 +203,7 @@ const getEvmBridgeAssetBalance = async (
   try {
     const balances = await ethersUtil.getErc20BalancesBatch([{ token: tokenAddress, account: accountAddress }]);
 
-    return balances[0]?.balance ?? ZeroStringValue;
+    return normalizeBridgeBalance(balances[0]?.balance);
   } catch {
     return getAccountBridgeBalance(accountAddress, asset, false, false, subConnector);
   }
@@ -683,6 +695,15 @@ const useBridgeStoreBase = defineStore('bridge', {
 
       try {
         if (isSubBridge) {
+          if (!isRegisteredAsset) {
+            syncBalancesBatchCompat(this, {
+              sender: ZeroStringValue,
+              recipient: ZeroStringValue,
+              native: ZeroStringValue,
+            });
+            return;
+          }
+
           try {
             const balances = await subConnector.network.getTokenBalancesBatch([
               { accountAddress: sender, asset },
@@ -690,10 +711,14 @@ const useBridgeStoreBase = defineStore('bridge', {
               { accountAddress: spender, asset: nativeToken },
             ]);
 
+            if (!Array.isArray(balances)) {
+              throw new Error('Invalid Sub bridge balance batch response');
+            }
+
             syncBalancesBatchCompat(this, {
-              sender: balances[0],
-              recipient: balances[1],
-              native: balances[2],
+              sender: normalizeBridgeBalance(balances[0]),
+              recipient: normalizeBridgeBalance(balances[1]),
+              native: normalizeBridgeBalance(balances[2]),
             });
           } catch {
             const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([

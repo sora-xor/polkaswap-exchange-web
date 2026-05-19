@@ -1,0 +1,35 @@
+# Polkaswap
+
+Polkaswap is a static IPFS-hosted browser app for swaps, transfers, and liquidity operations on SORA. The app exposes a same-page JavaScript API for automation agents.
+
+## Agent Trading API
+
+- Discovery manifest: `.well-known/polkaswap-agent.json`
+- Quick reference: `.well-known/polkaswap-agent.md`
+- TypeScript types: `.well-known/polkaswap-agent.d.ts`
+- Request and response schema: `.well-known/polkaswap-agent.schema.json`
+- Copyable examples: `.well-known/polkaswap-agent.examples.json`
+- Error catalog: `.well-known/polkaswap-agent.errors.json`
+- Optional same-page helper client: `.well-known/polkaswap-agent-client.js`
+- Static playground: `agent-playground.html`
+- Browser global: `window.PolkaswapAgent`
+- Ready event: `polkaswap-agent-ready`
+- Version: `v1`
+
+Agents should open the app in a real browser page, wait for `window.PolkaswapAgent`, call `ready({ requireNode: true })`, and use `prepare*` before every `execute*` operation. Signing is handled only through the wallet/signer available in the page; the app does not accept private keys, provide custody, expose a hosted API, or provide cross-origin command execution.
+
+## Recommended Agent Flow
+
+1. Fetch `.well-known/polkaswap-agent.json`.
+2. Require `version === "v1"`.
+3. Load the linked docs, schema, types, and examples.
+4. Open the app and wait for `window.PolkaswapAgent` or `polkaswap-agent-ready`.
+5. Connect a wallet through `refreshWallets`, `walletAccounts`, and `connectWallet` when signing is needed.
+6. Resolve asset symbols to addresses before repeated execution.
+7. Call `quote*` for read-only exploration and `prepare*` before signing.
+8. Execute only with the returned `intentId` and a stable `clientOrderId`.
+9. Use `transactionStatus`, `lookupTransaction`, and `recoverTransaction` before retrying uncertain submissions.
+
+Repository documentation for humans is available in `docs/agent-trading.md` and `docs/agent-trading-cookbook.md`.
+
+A copyable Playwright runner is available in `examples/agent-runner/` when working from the source repository.

@@ -24,6 +24,7 @@ const ValidatorsListStub = defineComponent({
   name: 'ValidatorsListStub',
   props: {
     selectedValidators: { type: Array, default: () => [] },
+    showSelectionControls: { type: Boolean, default: false },
   },
   emits: ['update:selected'],
   setup(props, { emit }) {
@@ -150,9 +151,11 @@ vi.mock('@/modules/staking/sora/components/ValidatorsList.vue', () => ({
     name: 'ValidatorsListStub',
     props: {
       selectedValidators: { type: Array, default: () => [] },
+      showSelectionControls: { type: Boolean, default: false },
     },
     emits: ['update:selected'],
-    template: '<div class="validators-list-stub">validators-list</div>',
+    template:
+      '<div class="validators-list-stub" :data-show-selection-controls="String(showSelectionControls)">validators-list</div>',
   },
 }));
 
@@ -229,6 +232,8 @@ describe('SelectValidators.vue', () => {
     expect(vm.title).toBe('soraStaking.validators.recommended');
     expect(vm.confirmText).toBe('soraStaking.validators.next');
     expect(vm.confirmDisabled).toBe(true);
+    expect(wrapper.classes()).toContain('container--validator-select');
+    expect(wrapper.findComponent({ name: 'ValidatorsListStub' }).props('showSelectionControls')).toBe(true);
   });
 
   it('updates selection and confirmation text in manual mode', async () => {
@@ -245,12 +250,93 @@ describe('SelectValidators.vue', () => {
     expect(vm.confirmDisabled).toBe(true);
 
     const validatorsList = wrapper.findComponent({ name: 'ValidatorsListStub' });
-    await validatorsList.vm.$emit('update:selected', [makeValidator('manual')]);
+    await validatorsList.vm.$emit('update:selected', [makeValidator('A')]);
     await flushPromises();
 
     expect(selectValidatorsMock).toHaveBeenCalled();
     expect(vm.confirmText).toBe('soraStaking.validators.selected:{"selected":1,"total":2}');
     expect(vm.confirmDisabled).toBe(false);
+  });
+
+  it('returns to a disabled confirmation state after an empty adversarial selection update', async () => {
+    modeRef.value = 'select';
+    selectedValidatorsRef.value = [makeValidator('A')];
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as {
+      confirmText: string;
+      confirmDisabled: boolean;
+    };
+
+    expect(vm.confirmDisabled).toBe(false);
+
+    const validatorsList = wrapper.findComponent({ name: 'ValidatorsListStub' });
+    await validatorsList.vm.$emit('update:selected', []);
+    await flushPromises();
+
+    expect(selectValidatorsMock).toHaveBeenCalledWith([]);
+    expect(vm.confirmText).toBe('soraStaking.validators.selected:{"selected":0,"total":2}');
+    expect(vm.confirmDisabled).toBe(true);
+  });
+
+  it('drops duplicate and stale validators from adversarial selection updates', async () => {
+    modeRef.value = 'select';
+    validatorsRef.value = [makeValidator('A'), makeValidator('B')];
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const duplicateA = makeValidator('A');
+    const validB = makeValidator('B');
+    const stale = makeValidator('stale-validator');
+
+    const validatorsList = wrapper.findComponent({ name: 'ValidatorsListStub' });
+    await validatorsList.vm.$emit('update:selected', [duplicateA, stale, duplicateA, validB]);
+    await flushPromises();
+
+    expect(selectValidatorsMock).toHaveBeenCalledWith([duplicateA, validB]);
+  });
+
+  it('treats non-array adversarial selection updates as empty', async () => {
+    modeRef.value = 'select';
+    selectedValidatorsRef.value = [makeValidator('A')];
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as {
+      confirmDisabled: boolean;
+    };
+
+    const validatorsList = wrapper.findComponent({ name: 'ValidatorsListStub' });
+    await validatorsList.vm.$emit('update:selected', null);
+    await flushPromises();
+
+    expect(selectValidatorsMock).toHaveBeenCalledWith([]);
+    expect(vm.confirmDisabled).toBe(true);
+  });
+
+  it('drops malformed validator entries from adversarial selection updates', async () => {
+    modeRef.value = 'select';
+    validatorsRef.value = [makeValidator('A'), makeValidator('B')];
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const validA = makeValidator('A');
+    const validB = makeValidator('B');
+    const malformedPayload = [
+      null,
+      { address: '' },
+      { address: 12 },
+      { foo: 'bar' },
+      validA,
+      validB,
+    ] as unknown as ValidatorInfoFull[];
+
+    const validatorsList = wrapper.findComponent({ name: 'ValidatorsListStub' });
+    await validatorsList.vm.$emit('update:selected', malformedPayload);
+    await flushPromises();
+
+    expect(selectValidatorsMock).toHaveBeenCalledWith([validA, validB]);
   });
 
   it('keeps the validators list visible while parent subscriptions refresh existing validators', async () => {

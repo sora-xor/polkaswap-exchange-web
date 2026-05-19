@@ -97,6 +97,7 @@ export const api = {
 };
 export const connection = {} as Record<string, unknown>;
 export const Operation = {
+  Swap: 'Swap',
   AddLiquidity: 'AddLiquidity',
   CreatePair: 'CreatePair',
   CreateVault: 'CreateVault',

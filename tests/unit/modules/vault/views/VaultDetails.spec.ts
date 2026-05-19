@@ -10,6 +10,18 @@ const routerBackSpy = vi.fn();
 const routeParams = ref<Record<string, string | undefined>>({ vault: '1' });
 const isLoggedInRef = ref(false);
 
+const defaultAssetDataByAddress = (address?: string) =>
+  address
+    ? {
+        address,
+        symbol: address.toUpperCase(),
+        decimals: 18,
+        balance: {},
+      }
+    : null;
+
+const defaultBorrowTax = () => 0;
+
 function createSlotPassthroughStub() {
   return defineComponent({
     name: 'SlotPassthroughStub',
@@ -68,18 +80,10 @@ const storeStub = {
       },
     },
     assets: {
-      assetDataByAddress: (address?: string) =>
-        address
-          ? {
-              address,
-              symbol: address.toUpperCase(),
-              decimals: 18,
-              balance: {},
-            }
-          : null,
+      assetDataByAddress: defaultAssetDataByAddress,
     },
     vault: {
-      getBorrowTax: () => 0,
+      getBorrowTax: defaultBorrowTax,
     },
   },
 };
@@ -229,6 +233,33 @@ const mountVaultDetails = () =>
     },
   });
 
+const createActiveVault = (id = 1) => ({
+  id,
+  lockedAssetId: 'xor',
+  debtAssetId: 'kusd',
+  lockedAmount: FPNumber.fromNatural(10),
+  debt: FPNumber.fromNatural(5),
+  vaultType: VaultTypes.V2,
+});
+
+const createClosedVault = (id = 1, status = 'Closed') => ({
+  id,
+  status,
+  lockedAssetId: 'xor',
+  debtAssetId: 'kusd',
+  vaultType: VaultTypes.V2,
+  returned: FPNumber.fromNatural(7),
+});
+
+const createCollateral = () => ({
+  debtSupply: FPNumber.fromNatural(100),
+  riskParams: {
+    liquidationRatioReversed: 150,
+    hardCap: FPNumber.fromNatural(1000),
+    stabilityFeeAnnual: FPNumber.fromNatural(12),
+  },
+});
+
 describe('VaultDetails.vue', () => {
   beforeEach(() => {
     routerPushSpy.mockClear();
@@ -241,6 +272,9 @@ describe('VaultDetails.vue', () => {
     storeStub.state.vault.closedAccountVaultsLoaded = false;
     storeStub.state.vault.collaterals = {};
     storeStub.state.vault.averageCollateralPrices = {};
+    storeStub.state.vault.liquidationPenalty = 10;
+    storeStub.getters.assets.assetDataByAddress = defaultAssetDataByAddress;
+    storeStub.getters.vault.getBorrowTax = defaultBorrowTax;
   });
 
   it('redirects to vault list when user is not logged in', async () => {
@@ -353,6 +387,168 @@ describe('VaultDetails.vue', () => {
     await flushPromises();
 
     expect(routerPushSpy).toHaveBeenCalledWith({ path: '/kensetsu/' });
+
+    wrapper.unmount();
+  });
+
+  it('redirects to vaults for a non-numeric deep-linked vault id after lookup settles', async () => {
+    isLoggedInRef.value = true;
+    routeParams.value = { vault: 'not-a-vault-id' };
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).toHaveBeenCalledWith({ path: '/kensetsu/' });
+
+    wrapper.unmount();
+  });
+
+  it('keeps active details renderable when collateral metadata is missing', async () => {
+    isLoggedInRef.value = true;
+    storeStub.state.vault.accountVaults = [createActiveVault()];
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).not.toHaveBeenCalled();
+    expect(wrapper.text()).toContain('kensetsu.yourCollateral');
+    expect(wrapper.text()).toContain('kensetsu.yourDebt');
+    expect(wrapper.text()).toContain('kensetsu.availableToBorrow');
+    expect(wrapper.text()).not.toContain('kensetsu.totalCollateralReturned');
+
+    wrapper.unmount();
+  });
+
+  it('keeps malformed closed vault payloads out of the active details branch', async () => {
+    isLoggedInRef.value = true;
+    storeStub.state.vault.closedAccountVaults = [
+      {
+        ...createClosedVault(),
+        lockedAmount: FPNumber.fromNatural(999),
+        debt: FPNumber.fromNatural(999),
+      },
+    ];
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).not.toHaveBeenCalled();
+    expect(wrapper.text()).toContain('kensetsu.totalCollateralReturned');
+    expect(wrapper.text()).not.toContain('kensetsu.yourDebt');
+
+    wrapper.unmount();
+  });
+
+  it('renders closed details defensively when returned collateral is missing', async () => {
+    isLoggedInRef.value = true;
+    storeStub.state.vault.closedAccountVaults = [
+      {
+        ...createClosedVault(),
+        returned: undefined,
+      },
+    ];
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).not.toHaveBeenCalled();
+    expect(wrapper.text()).toContain('kensetsu.totalCollateralReturned');
+    expect(wrapper.html()).toContain('value="0"');
+
+    wrapper.unmount();
+  });
+
+  it('keeps active details renderable and actions disabled when asset lookup returns null', async () => {
+    isLoggedInRef.value = true;
+    storeStub.state.vault.accountVaults = [createActiveVault()];
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+    storeStub.getters.assets.assetDataByAddress = () => null;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).not.toHaveBeenCalled();
+    expect(wrapper.find('.vault-title__container h3').text()).toBe('');
+    expect(wrapper.text()).toContain('kensetsu.yourCollateral');
+
+    const actionButtons = wrapper.findAll('button.s-typography-button--small');
+    expect(actionButtons).toHaveLength(3);
+    expect(actionButtons.every((button) => button.attributes('disabled') !== undefined)).toBe(true);
+
+    wrapper.unmount();
+  });
+
+  it('escapes hostile asset symbols in the details title', async () => {
+    isLoggedInRef.value = true;
+    const lockedAssetId = 'xor';
+    const debtAssetId = 'kusd';
+    const key = `${lockedAssetId}-${debtAssetId}`;
+
+    storeStub.state.vault.accountVaults = [createActiveVault()];
+    storeStub.state.vault.collaterals = { [key]: createCollateral() };
+    storeStub.state.vault.averageCollateralPrices = { [key]: FPNumber.fromNatural(2) };
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+    storeStub.getters.assets.assetDataByAddress = (address?: string) =>
+      address
+        ? {
+            address,
+            symbol: '<script>alert(1)</script>',
+            decimals: 18,
+            balance: {},
+          }
+        : null;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    const title = wrapper.find('.vault-title__container h3');
+    expect(title.text()).toBe('<script>alert(1)</script> / <script>alert(1)</script>');
+    expect(title.html()).not.toContain('<script>alert(1)</script>');
+    expect(title.html()).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+
+    wrapper.unmount();
+  });
+
+  it('keeps active details in the active branch under pathological collateral math', async () => {
+    isLoggedInRef.value = true;
+    const lockedAssetId = 'xor';
+    const debtAssetId = 'kusd';
+    const key = `${lockedAssetId}-${debtAssetId}`;
+
+    storeStub.state.vault.accountVaults = [createActiveVault()];
+    storeStub.state.vault.collaterals = {
+      [key]: {
+        debtSupply: FPNumber.fromNatural(1000),
+        riskParams: {
+          liquidationRatioReversed: 0,
+          hardCap: FPNumber.fromNatural(100),
+          stabilityFeeAnnual: FPNumber.ZERO,
+        },
+      },
+    };
+    storeStub.state.vault.averageCollateralPrices = { [key]: FPNumber.ZERO };
+    storeStub.getters.vault.getBorrowTax = () => 2;
+    storeStub.state.vault.accountVaultsLoaded = true;
+    storeStub.state.vault.closedAccountVaultsLoaded = true;
+
+    const wrapper = mountVaultDetails();
+    await flushPromises();
+
+    expect(routerPushSpy).not.toHaveBeenCalled();
+    expect(wrapper.text()).toContain('kensetsu.yourCollateral');
+    expect(wrapper.text()).toContain('kensetsu.availableToBorrow');
+    expect(wrapper.text()).not.toContain('kensetsu.totalCollateralReturned');
+    expect(wrapper.find('.ltv__title').exists()).toBe(false);
 
     wrapper.unmount();
   });

@@ -1,0 +1,146 @@
+{
+  "version": "v1",
+  "description": "Stable PolkaswapAgent error catalog for automation runners. Branch on error.code, not message text.",
+  "errors": {
+    "AGENT_API_UNAVAILABLE": {
+      "retry": "after-page-load",
+      "safeToRetrySameRequest": true,
+      "action": "Wait for polkaswap-agent-ready or reload the app before calling the API."
+    },
+    "ASSET_AMBIGUOUS": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Resolve the asset by address instead of symbol."
+    },
+    "ASSET_NOT_FOUND": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Search assets or provide a known asset address."
+    },
+    "INVALID_AMOUNT": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Rebuild the request with a positive decimal string amount."
+    },
+    "INVALID_AGENT_STATE": {
+      "retry": "after-state-reset",
+      "safeToRetrySameRequest": false,
+      "action": "Import only v1 state or clear local agent state before retrying."
+    },
+    "INVALID_ASSET_REF": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Pass either { address } or an unambiguous { symbol }."
+    },
+    "INVALID_CLIENT_ORDER_ID": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Provide a non-empty stable clientOrderId for execution retries."
+    },
+    "INVALID_DEX_ID": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Use dexId \"best\" or a valid numeric DEX id."
+    },
+    "IDEMPOTENCY_CONFLICT": {
+      "retry": "after-recovery",
+      "safeToRetrySameRequest": false,
+      "action": "Call transactionStatus or recoverTransaction for the existing clientOrderId; do not reuse it for a different intent."
+    },
+    "INTENT_MISMATCH": {
+      "retry": "after-prepare",
+      "safeToRetrySameRequest": false,
+      "action": "Re-run the matching prepare* method and execute with the new intentId."
+    },
+    "INVALID_LIQUIDITY_SOURCE": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Use a liquidity source accepted by the current app capabilities."
+    },
+    "INVALID_PERCENT": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Stay within capabilities().limits.percent."
+    },
+    "INVALID_POOL_PAIR": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Use two different assets that can form a pool pair."
+    },
+    "INVALID_RECIPIENT": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Validate the destination address before preparing the transfer."
+    },
+    "INVALID_SLIPPAGE": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Stay within capabilities().limits.slippageTolerance."
+    },
+    "INVALID_SUBSCRIPTION_SOURCE": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Use source local, indexer, or all."
+    },
+    "INVALID_SWAP_SIDE": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Use side input or output."
+    },
+    "INVALID_TRANSACTION_ID": {
+      "retry": "after-input-change",
+      "safeToRetrySameRequest": false,
+      "action": "Provide id, txId, clientOrderId, or intentId for transaction lookup."
+    },
+    "INVALID_WALLET_SOURCE": {
+      "retry": "after-wallet-selection",
+      "safeToRetrySameRequest": false,
+      "action": "Refresh wallets and select a valid wallet source."
+    },
+    "NODE_NOT_READY": {
+      "retry": "after-node-ready",
+      "safeToRetrySameRequest": true,
+      "action": "Call ready({ requireNode: true }) again after reconnecting, reloading, or switching endpoint."
+    },
+    "PATH_UNAVAILABLE": {
+      "retry": "after-route-change",
+      "safeToRetrySameRequest": false,
+      "action": "Try a different pair, amount, DEX, or liquidity source."
+    },
+    "POOL_UNAVAILABLE": {
+      "retry": "after-route-change",
+      "safeToRetrySameRequest": false,
+      "action": "Call poolInfo and use an existing pool or explicitly opt into pool creation where supported."
+    },
+    "QUOTE_TIMEOUT": {
+      "retry": "after-timeout-change",
+      "safeToRetrySameRequest": true,
+      "action": "Retry with a longer quoteTimeoutMs or choose a simpler route."
+    },
+    "SIGNING_CANCELLED": {
+      "retry": "after-recovery",
+      "safeToRetrySameRequest": false,
+      "action": "Treat as cancellation and call recoverTransaction before retrying."
+    },
+    "WALLET_ACCOUNT_NOT_FOUND": {
+      "retry": "after-wallet-selection",
+      "safeToRetrySameRequest": false,
+      "action": "Refresh wallet accounts and choose an available address."
+    },
+    "WALLET_ACCOUNT_REQUIRED": {
+      "retry": "after-wallet-selection",
+      "safeToRetrySameRequest": false,
+      "action": "Connect a wallet account before calling wallet-only helpers."
+    },
+    "WALLET_NOT_CONNECTED": {
+      "retry": "after-wallet-selection",
+      "safeToRetrySameRequest": false,
+      "action": "Connect/select a wallet and call ready({ requireWallet: true })."
+    },
+    "WALLET_NOT_FOUND": {
+      "retry": "after-wallet-selection",
+      "safeToRetrySameRequest": false,
+      "action": "Install, unlock, or choose an available injected wallet provider."
+    }
+  }
+}

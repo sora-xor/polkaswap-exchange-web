@@ -219,6 +219,8 @@ describe('settings dialogs (BVT)', () => {
     expect(selectLanguageDialogSource).toContain('const filteredEntries = computed(() => {');
     expect(selectLanguageDialogSource).toContain('.select-language-list {');
     expect(selectLanguageDialogSource).toContain('flex-direction: column;');
+    expect(selectLanguageDialogSource).toContain('box-sizing: border-box;');
+    expect(selectLanguageDialogSource).toContain('padding: 6px;');
     expect(selectLanguageDialogSource).toContain('overflow-x: hidden;');
   });
 

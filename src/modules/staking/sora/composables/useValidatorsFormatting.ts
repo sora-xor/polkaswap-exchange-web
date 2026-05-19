@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/sdk';
-import { hexToString } from '@polkadot/util';
+import { hexToString, isHex } from '@polkadot/util';
 import { computed } from 'vue';
 
 import { useStakingStore } from '@/stores/staking';
@@ -11,17 +11,37 @@ export function useValidatorsFormatting() {
   const stakingStore = useStakingStore();
   const historyDepth = computed(() => stakingStore.historyDepth as Nullable<number>);
 
-  const decodeName = (validator: ValidatorInfoFull): string => {
-    const identityName = validator.identity?.info.display;
+  /**
+   * Parses codec values defensively so malformed indexer rows render as zero instead of breaking the validator table.
+   */
+  const parseCodecAmount = (value: string | null | undefined, decimals?: number): FPNumber => {
+    try {
+      const amount = FPNumber.fromCodecValue(value ?? '0', decimals);
+      return amount.isFinity() ? amount : FPNumber.ZERO;
+    } catch {
+      return FPNumber.ZERO;
+    }
+  };
 
-    if (identityName) {
+  /**
+   * Rejects empty and control-character validator names from malformed identity data.
+   */
+  const isPrintableIdentityName = (value: string): boolean => Boolean(value.trim()) && !/[\u0000-\u001F\u007F]/u.test(value);
+
+  const decodeName = (validator: ValidatorInfoFull): string => {
+    const identityName = validator.identity?.info?.display;
+
+    if (typeof identityName === 'string' && identityName) {
       if (identityName.startsWith('0x')) {
+        if (!isHex(identityName)) return validator.address;
+
         try {
-          return hexToString(identityName);
+          const decodedName = hexToString(identityName);
+          return isPrintableIdentityName(decodedName) ? decodedName : validator.address;
         } catch (error) {
           console.error('Failed to decode validator name', error);
         }
-      } else {
+      } else if (isPrintableIdentityName(identityName)) {
         return identityName;
       }
     }
@@ -35,7 +55,7 @@ export function useValidatorsFormatting() {
   };
 
   const formatCommission = (value: string): string => {
-    return FPNumber.fromCodecValue(value, 7).toString();
+    return parseCodecAmount(value, 7).toString();
   };
 
   const formatReturn = (value: string): string => value;
@@ -44,7 +64,7 @@ export function useValidatorsFormatting() {
    * Formats validator exposure totals from codec units without coercing token amounts through JS numbers.
    */
   const formatStake = (value: string | null | undefined, decimals?: number, symbol = 'XOR', precision = 2): string => {
-    const amount = FPNumber.fromCodecValue(value ?? '0', decimals).toLocaleString(precision);
+    const amount = parseCodecAmount(value, decimals).toLocaleString(precision);
 
     return `${amount} ${symbol}`;
   };

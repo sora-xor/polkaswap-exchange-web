@@ -261,7 +261,8 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 6000,
-    cssCodeSplit: true,
+    // Keep CSS in one static asset so IPFS/CDN cold starts do not fail on many lazy style chunk pulls.
+    cssCodeSplit: false,
     modulePreload: false,
     rollupOptions: {
       onwarn(warning, defaultHandler) {

@@ -9,6 +9,17 @@ const filterStub = reactive({
   twoValidatorsPerIdentity: false,
 });
 
+const translations: Record<string, string> = {
+  'soraStaking.validatorsFilterDialog.filters.hasIdentity.name': 'Identity',
+  'soraStaking.validatorsFilterDialog.filters.hasIdentity.description': 'has identity',
+  'soraStaking.validatorsFilterDialog.filters.notSlashed.name': 'Not slashed',
+  'soraStaking.validatorsFilterDialog.filters.notSlashed.description': 'not slashed',
+  'soraStaking.validatorsFilterDialog.filters.notOversubscribed.name': 'Not oversubscribed',
+  'soraStaking.validatorsFilterDialog.filters.notOversubscribed.description': 'not over',
+  'soraStaking.validatorsFilterDialog.filters.twoValidatorsPerIdentity.name': 'Two per identity',
+  'soraStaking.validatorsFilterDialog.filters.twoValidatorsPerIdentity.description': 'two per identity',
+};
+
 vi.mock('@/modules/staking/sora/consts', async () => {
   const actual = await vi.importActual<typeof import('@/modules/staking/sora/consts')>('@/modules/staking/sora/consts');
   return {
@@ -17,26 +28,12 @@ vi.mock('@/modules/staking/sora/consts', async () => {
   };
 });
 
-vi.mock('vue-i18n', async () => {
-  const actual = await vi.importActual<typeof import('vue-i18n')>('vue-i18n');
-  return {
-    __esModule: true,
-    ...actual,
-    useI18n: () => ({
-      t: (key: string) => {
-        if (key === 'soraStaking.validatorsFilterDialog.filters') {
-          return {
-            hasIdentity: { name: 'Identity', description: 'has identity' },
-            notSlashed: { name: 'Not slashed', description: 'not slashed' },
-            notOversubscribed: { name: 'Not oversubscribed', description: 'not over' },
-            twoValidatorsPerIdentity: { name: 'Two per identity', description: 'two per identity' },
-          };
-        }
-        return key;
-      },
-    }),
-  };
-});
+vi.mock('@/composables/useTranslation', () => ({
+  __esModule: true,
+  useTranslation: () => ({
+    t: (key: string) => translations[key] ?? key,
+  }),
+}));
 
 import ValidatorsFilterDialog from '@/modules/staking/sora/components/ValidatorsFilterDialog.vue';
 
@@ -61,6 +58,19 @@ const mountComponent = (overrides: Partial<{ visible: boolean }> = {}) =>
   });
 
 describe('ValidatorsFilterDialog.vue', () => {
+  it('renders one translated row for each known filter', async () => {
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    const items = wrapper.findAll('.filter-item');
+
+    expect(items).toHaveLength(4);
+    expect(wrapper.text()).toContain('Identity');
+    expect(wrapper.text()).toContain('has identity');
+    expect(wrapper.text()).toContain('Two per identity');
+    expect(wrapper.text()).not.toContain('soraStaking.validatorsFilterDialog.filters');
+  });
+
   it('syncs filter when opened and emits save', async () => {
     const wrapper = mountComponent();
     await flushPromises();

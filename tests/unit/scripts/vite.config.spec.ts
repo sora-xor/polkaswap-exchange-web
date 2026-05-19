@@ -8,6 +8,10 @@ describe('vite.config', () => {
     expect(viteConfig.build?.rollupOptions?.output?.manualChunks).toBeUndefined();
   });
 
+  it('emits one CSS bundle for IPFS CDN reliability', () => {
+    expect(viteConfig.build?.cssCodeSplit).toBe(false);
+  });
+
   it('keeps Electron pointed at the dedicated main and preload entrypoints', () => {
     expect(electronViteConfig.main?.build?.lib?.entry).toBe('electron/main/index.ts');
     expect(electronViteConfig.preload?.build?.lib?.entry).toBe('electron/preload/index.ts');

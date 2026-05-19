@@ -159,6 +159,36 @@ describe('TokenInput', () => {
     expect(asHuman).toBe('5');
   });
 
+  it('keeps the fiat append slot visible when fiat amount is hidden', () => {
+    const wrapper = mount(TokenInput, {
+      props: {
+        token,
+        withoutFiat: true,
+      },
+      slots: {
+        'fiat-amount-append': '<span class="loss-warning-pill">-1.9%</span>',
+      },
+      global: {
+        stubs: {
+          's-float-input': FloatInputStub,
+          's-button': ButtonStub,
+          's-slider': SliderStub,
+          'token-select-button': TokenSelectButtonStub,
+          's-icon': IconStub,
+        },
+        directives: {
+          button: {
+            created: () => undefined,
+            mounted: () => undefined,
+          },
+        },
+      },
+    });
+
+    expect(wrapper.find('.loss-warning-pill').exists()).toBe(true);
+    expect(wrapper.find('.fiat-input').exists()).toBe(false);
+  });
+
   it('forwards primary amount input from the main float input', async () => {
     const wrapper = createWrapper({
       token,

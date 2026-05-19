@@ -28,6 +28,7 @@
         "title": "USTAWIENIA KONTA"
     },
     "accountText": "konto | konta",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Dodaj",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "Para tokenów nie została utworzona.",
     "points": {
         "accountsText": "{amount} kont",
-        "airdrop": "Wykonaj zadania związane z ekosystemem SORA, aby zakwalifikować się do airdropu o wartości 3 milionów dolarów",
         "bridgeVolume": "Wolumen mostu",
         "complete": "Ukończono | Ukończ",
         "currently": "Obecnie",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Zamawiać",
             "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji",
+            "deselectAll": "Deselect all",
             "name": "Nazwa",
             "noNominatedValidators": "Nie masz żadnych wyznaczonych walidatorów",
             "noValidators": "Brak walidatorów spełniających określony filtr",
             "return": "Powrót",
             "search": "Szukaj...",
+            "selectAll": "Select all",
             "staked": "Postawione",
             "stakedTooltip": "Całkowita stawka XOR postawiona u tego walidatora, w tym stawka własna walidatora i stawka nominowana"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Konta to adresy cyfrowe, które przechowują zasoby użytkownika w sieci. Każde konto jest powiązane z unikalnym adresem publicznym i kluczem prywatnym, który umożliwia użytkownikowi dostęp do zasobów i zarządzanie nimi.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "Most {from} do {to} odnosi się do procesu przesyłania zasobów między sieciami {from} i {to} za pomocą mostu. Most umożliwia interoperacyjność obu sieci, umożliwiając użytkownikom płynne przenoszenie zasobów między nimi.",
         "fees": "Opłaty na blockchainie {Sora} odnoszą się do opłat, które są naliczane za wykonywanie transakcji w sieci. Opłaty te są uiszczane w XOR, natywnej kryptowalucie sieci {Sora} . Wysokość opłaty uzależniona jest od złożoności i wielkości realizowanej transakcji",
         "roi": "{ROI} oznacza zwrot z inwestycji. Oblicza się go, dzieląc zysk uzyskany z inwestycji przez koszt tej inwestycji w ekwiwalencie procentowym.",

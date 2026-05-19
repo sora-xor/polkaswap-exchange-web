@@ -33,6 +33,14 @@ The IPFS bundle reads runtime configuration from `public/env.json`. Two keys are
 
 For IPFS publish guidance (pre-flight checklist, `yarn ipfs:publish`, verification scripts) see `docs/ipfs.md`. For SoraFS/Torii packaging and publish commands see `docs/sorafs.md`.
 
+For same-page automation from AI agents, see `docs/agent-trading.md` and `docs/agent-trading-cookbook.md`. The API is exposed as `window.PolkaswapAgent` from the static IPFS app and ships `.well-known` manifest, types, schema, examples, and optional browser client without middleware.
+
+Generic agent discovery breadcrumbs are also published as `llms.txt`, `agents.txt`, `AGENTS.md`, `robots.txt`, and HTML head tags that point at `.well-known/polkaswap-agent.json`.
+
+Developers can use `yarn agent:runner` for a copyable Playwright runner, or open `agent-playground.html` from a deployed/static build to inspect the API in a browser.
+
+Run `yarn test:e2e:agent:smoke` to verify the browser-native agent API against the built static app.
+
 ## Installation
 
 ```sh
@@ -65,6 +73,7 @@ yarn install
 | `yarn test:e2e:root` | Run key UI app/navigation specs with root prefix (`PS_IPFS_TEST_PREFIX=''`) to catch `/` deployment regressions. |
 | `yarn test:e2e:live` | Run live-runtime UI smokes without network stubs (`PS_E2E_LIVE_NETWORK=1`) and fail on browser console/page errors. |
 | `yarn test:e2e:all` | Run the full e2e matrix (`default` + `root-prefix` + `live`). |
+| `yarn agent:runner` | Run the copyable Playwright agent example that discovers the v1 API, quotes, prepares, and optionally executes a swap. |
 | `yarn test:all` | Alias for `yarn test:unit`. |
 | `yarn lang:generate` | Build `src/lang/en.json` from `src/lang/messages.ts` (keeps wallet bundles in sync). |
 | `yarn lang:fix` | Alphabetize and format `src/lang/en.json`. |
@@ -89,6 +98,7 @@ Vitest is configured via `vitest.config.mjs` with projects for unit suites and i
 - `yarn test:e2e:root` — validates key UI flows when served from root path (`/`) instead of `/ipfs/<cid>/`.
 - `yarn test:e2e:live` — runs real-runtime UI smoke tests without request/WebSocket stubbing.
 - `yarn test:e2e:all` — runs default + root + live e2e checks in sequence.
+- `yarn agent:runner` — runs the copyable Playwright agent example against a deployed or local app URL.
 - `yarn test:all` — alias for unit tests, handy for CI hooks.
 
 Always keep `yarn test:unit` and `yarn test:translation` green locally before opening a PR. They are also part of `yarn ci:nightly`, so failures break the nightly Vue 3 smoke streak.

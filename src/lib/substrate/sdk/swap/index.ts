@@ -182,7 +182,8 @@ type DexSwapResult = SwapResult;
 type DexesSwapResults = Record<number, DexSwapResult>;
 
 export const getBestResult = (isExchangeB: boolean, results: DexesSwapResults) => {
-  let bestDexId: number = DexId.XOR;
+  const [firstDexId] = Object.keys(results);
+  let bestDexId = firstDexId === undefined ? DexId.XOR : Number(firstDexId);
 
   for (const currentDexId in results) {
     const currAmount = FPNumber.fromCodecValue(results[currentDexId].amount);

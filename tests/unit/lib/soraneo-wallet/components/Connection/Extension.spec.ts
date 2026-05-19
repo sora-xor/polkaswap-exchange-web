@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { mount } from '@vue/test-utils';
 
 vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
   useWalletTranslation: () => ({
@@ -7,6 +8,7 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useWalletTranslation', () => ({
 }));
 
 import extensionConnectionListSource from '@/lib/soraneo-wallet/src/components/Connection/List/Extension.vue?raw';
+import ExtensionConnectionList from '@/lib/soraneo-wallet/src/components/Connection/List/Extension.vue';
 
 describe('ExtensionConnectionList source', () => {
   it('does not throw when a wallet has no provider yet', async () => {
@@ -18,9 +20,47 @@ describe('ExtensionConnectionList source', () => {
     expect(state.hasDisconnectAction({ extensionName: 'fearless-wallet' })).toBe(false);
   });
 
-  it('renders the recommended badge with a dedicated star icon class', () => {
-    expect(extensionConnectionListSource).toContain(
-      '<s-icon name="basic-circle-star-24" size="12" class="extension-label__icon"></s-icon>'
+  it('renders the recommended badge with the compact star icon', () => {
+    const wrapper = mount(ExtensionConnectionList, {
+      props: {
+        wallets: [
+          {
+            extensionName: 'fearless-wallet',
+            title: 'Fearless Wallet',
+            logo: { src: '', alt: 'Fearless Wallet' },
+          },
+        ],
+        recommendedWallets: ['fearless-wallet'],
+      },
+      global: {
+        stubs: {
+          AccountCard: {
+            template: '<article><slot name="avatar" /><slot name="name" /><slot /></article>',
+          },
+          ConnectionItems: {
+            template: '<section><slot /></section>',
+          },
+          's-icon': {
+            props: ['name', 'size'],
+            template: '<i class="s-icon-stub" :data-name="name" :data-size="size"></i>',
+          },
+        },
+      },
+    });
+
+    const icon = wrapper.find('.extension-label__icon');
+
+    expect(icon.attributes('data-name')).toBe('star-16');
+    expect(icon.attributes('data-size')).toBe('14');
+    expect(extensionConnectionListSource).not.toContain('name="basic-circle-star-24"');
+  });
+
+  it('styles the recommended badge as a compact aligned pill', () => {
+    expect(extensionConnectionListSource).toMatch(
+      /&-label\s*\{[\s\S]*?display:\s*inline-flex;[\s\S]*?align-items:\s*center;[\s\S]*?min-height:\s*20px;[\s\S]*?font-weight:\s*600;[\s\S]*?white-space:\s*nowrap;[\s\S]*?\}/
+    );
+    expect(extensionConnectionListSource).toMatch(
+      /\.extension-label__icon\s*\{[\s\S]*?align-items:\s*center;[\s\S]*?justify-content:\s*center;[\s\S]*?width:\s*14px;[\s\S]*?height:\s*14px;[\s\S]*?\}/
     );
   });
 

@@ -1,0 +1,96 @@
+{
+  "version": "v1",
+  "description": "Copyable same-page JavaScript examples for automation agents using window.PolkaswapAgent.",
+  "examples": [
+    {
+      "name": "Load v1 agent and require node readiness",
+      "goal": "Start every runner from the ready event, then verify the public API version.",
+      "code": "const agent = window.PolkaswapAgent ?? await new Promise((resolve) => window.addEventListener('polkaswap-agent-ready', (event) => resolve(event.detail.api), { once: true }));\nconst capabilities = agent.capabilities();\nif (capabilities.version !== 'v1') throw new Error(`Unsupported PolkaswapAgent version: ${capabilities.version}`);\nawait agent.ready({ requireNode: true, timeoutMs: 30000 });"
+    },
+    {
+      "name": "Connect an injected wallet account",
+      "goal": "Select a signer through the existing page wallet system.",
+      "code": "const wallets = await agent.refreshWallets();\nconst wallet = wallets.find((item) => item.source === 'polkadot-js');\nif (!wallet?.available) throw new Error('WALLET_NOT_FOUND');\nconst accounts = await agent.walletAccounts({ source: 'polkadot-js' });\nawait agent.connectWallet({ source: 'polkadot-js', address: accounts[0].address });\nawait agent.ready({ requireWallet: true, timeoutMs: 10000 });"
+    },
+    {
+      "name": "Resolve symbols once and execute with addresses",
+      "goal": "Avoid ambiguous symbols in repeated automated runs.",
+      "code": "const xor = await agent.resolveAsset({ asset: { symbol: 'XOR' }, includeBalance: true });\nconst pswap = await agent.resolveAsset({ asset: { symbol: 'PSWAP' }, includeBalance: true });\nconst assetIn = { address: xor.address };\nconst assetOut = { address: pswap.address };"
+    },
+    {
+      "name": "Search common route assets",
+      "goal": "Discover likely route endpoints and optionally include balances.",
+      "code": "const common = await agent.commonAssets({ query: 'xor', includeBalances: true });\nconst allMatches = await agent.assets({ query: 'pswap', includeBalances: true });"
+    },
+    {
+      "name": "Quote exact-input swap",
+      "goal": "Explore a route without preparing signer state.",
+      "code": "const quote = await agent.quoteSwap({ assetIn, assetOut, amount: '1', side: 'input', dexId: 'best', quoteTimeoutMs: 15000 });\nconsole.log(quote.amountIn, quote.amountOut, quote.minAmountOut);"
+    },
+    {
+      "name": "Prepare then execute exact-input swap",
+      "goal": "Spend exactly the input amount and protect output with slippage.",
+      "code": "const prepared = await agent.prepareSwap({ assetIn, assetOut, amount: '1', side: 'input' });\nif (!prepared.canExecute || prepared.warnings.some((warning) => warning.severity === 'critical')) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeSwap({ assetIn, assetOut, amount: prepared.quote.amountIn, side: prepared.quote.request.side, slippageTolerance: prepared.quote.request.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-swap-input-001' });"
+    },
+    {
+      "name": "Prepare then execute exact-output swap",
+      "goal": "Receive exactly the output amount and protect maximum input spend.",
+      "code": "const prepared = await agent.prepareSwap({ assetIn, assetOut, amount: '100', side: 'output' });\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeSwap({ assetIn, assetOut, amount: prepared.quote.request.amount, side: 'output', slippageTolerance: prepared.quote.request.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-swap-output-001' });"
+    },
+    {
+      "name": "Assess swap against runner policy",
+      "goal": "Make an explicit no-signing approval decision before execution.",
+      "code": "const assessment = await agent.assessSwap({ assetIn, assetOut, amount: '1', maxPriceImpact: '3', requireCanExecute: true });\nif (!assessment.approved) throw new Error(assessment.reasons.map((reason) => reason.code).join(', '));\nawait agent.executeSwap({ assetIn, assetOut, amount: assessment.prepared.quote.amountIn, intentId: assessment.prepared.intentId, clientOrderId: 'agent-policy-swap-001' });"
+    },
+    {
+      "name": "Prepare then execute transfer",
+      "goal": "Transfer through the same prepare, intent, and idempotency flow.",
+      "code": "const prepared = await agent.prepareTransfer({ asset: assetIn, to: 'cn...', amount: '0.1' });\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeTransfer({ asset: { address: prepared.asset.address }, to: prepared.to, amount: prepared.amount, intentId: prepared.intentId, clientOrderId: 'agent-transfer-001' });"
+    },
+    {
+      "name": "Prepare then execute add liquidity",
+      "goal": "Add liquidity without enabling pool creation by accident.",
+      "code": "const prepared = await agent.prepareAddLiquidity({ assetA: assetIn, assetB: assetOut, amountA: '1' });\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeAddLiquidity({ assetA: { address: prepared.quote.pool.assetA.address }, assetB: { address: prepared.quote.pool.assetB.address }, amountA: prepared.quote.amountA, amountB: prepared.quote.amountB, slippageTolerance: prepared.quote.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-lp-add-001' });"
+    },
+    {
+      "name": "Prepare then execute remove liquidity by percent",
+      "goal": "Withdraw a position-relative LP amount.",
+      "code": "const positions = await agent.liquidityPositions({ assetA: assetIn, assetB: assetOut });\nif (!positions.length) throw new Error('NO_LIQUIDITY_POSITION');\nconst request = { assetA: assetIn, assetB: assetOut, percent: '25' };\nconst prepared = await agent.prepareRemoveLiquidity(request);\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeRemoveLiquidity({ ...request, slippageTolerance: prepared.quote.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-lp-remove-001' });"
+    },
+    {
+      "name": "Plan with max helpers",
+      "goal": "Read maximum executable amounts before building a prepare request.",
+      "code": "const maxTransfer = await agent.maxTransferAmount({ asset: assetIn });\nconst maxSwap = await agent.maxSwapInput({ assetIn, assetOut });\nconst maxLp = await agent.maxAddLiquidity({ assetA: assetIn, assetB: assetOut });\nconst maxRemove = await agent.maxRemoveLiquidity({ assetA: assetIn, assetB: assetOut });"
+    },
+    {
+      "name": "Recover before retrying",
+      "goal": "Avoid duplicate submissions after signing cancellation, browser crash, or uncertain handoff.",
+      "code": "const clientOrderId = 'agent-swap-input-001';\nconst local = agent.transactionStatus({ id: clientOrderId });\nconst status = local.source !== 'none' ? local : await agent.recoverTransaction({ clientOrderId, lookup: 'any' });\nif (status.source === 'none') console.log('safe to prepare and execute again with the same clientOrderId');"
+    },
+    {
+      "name": "Wait for a transaction",
+      "goal": "Poll local, indexer, or chain-backed status until the desired state is reached.",
+      "code": "const status = await agent.waitForTransaction({ txId: '0x...', lookup: 'any', status: 'finalized', timeoutMs: 60000 });"
+    },
+    {
+      "name": "Subscribe to local and indexer history",
+      "goal": "Receive local page updates and account-history indexer updates.",
+      "code": "const stopLocal = await agent.subscribeTransactions({ source: 'local', limit: 20, pollMs: 1000 }, (tx) => console.log(tx));\nconst stopIndexer = await agent.subscribeTransactions({ source: 'indexer', address: agent.status().wallet.address, includeExisting: true, limit: 20 }, (tx) => console.log(tx));\nstopLocal();\nstopIndexer();"
+    },
+    {
+      "name": "Export portable state safely",
+      "goal": "Move idempotency state between browser profiles or produce redacted logs.",
+      "code": "const fullState = agent.exportState();\nconst auditState = agent.exportState({ redacted: true });\nagent.importState({ state: fullState, merge: true });\nagent.clearState({ clientOrderId: 'agent-swap-input-001' });"
+    },
+    {
+      "name": "Use optional browser client",
+      "goal": "Use a small same-page helper for prepare-and-execute flows.",
+      "code": "const client = await window.PolkaswapAgentClient.attach({ timeoutMs: 30000 });\nawait client.ready({ requireNode: true });\nawait client.prepareAndExecuteSwap({ assetIn, assetOut, amount: '1', side: 'input' }, { clientOrderId: 'client-swap-001' });\nawait client.prepareAndExecuteAddLiquidity({ assetA: assetIn, assetB: assetOut, amountA: '1' }, { clientOrderId: 'client-lp-add-001' });"
+    },
+    {
+      "name": "Map error code to runner action",
+      "goal": "Branch on stable error codes instead of localized text.",
+      "code": "try {\n  await agent.ready({ requireWallet: true, timeoutMs: 10000 });\n} catch (error) {\n  if (error.code === 'WALLET_NOT_CONNECTED') console.log('connect wallet, then retry readiness');\n  else if (error.code === 'NODE_NOT_READY') console.log('reload or switch endpoint');\n  else throw error;\n}"
+    }
+  ]
+}

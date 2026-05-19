@@ -80,7 +80,7 @@ export default {
   },
   setup(props) {
     const walletStore = useWalletStore();
-    const { t, formatDate, getTitle, loading, withLoading } = useTransaction();
+    const { t, formatDate, getTitle, getOperationMessage, loading, withLoading } = useTransaction();
     const { isEthBridgeTx, isEthBridgeTxToCompleted, isEthBridgeTxFromFailed, isEthBridgeTxToFailed } =
       useEthBridgeTransaction();
     const {
@@ -103,6 +103,7 @@ export default {
     const externalHistory = computed(() => walletStore.externalHistory);
     const externalHistoryUpdates = computed(() => walletStore.externalHistoryUpdates);
     const externalHistoryTotal = computed(() => walletStore.externalHistoryTotal);
+    const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
     const account = computed(() => walletStore.account);
     const assetAddress = computed(() => props.asset?.address || '');
 
@@ -336,6 +337,8 @@ export default {
       handleOpenTransactionDetails,
       handlePaginationClick,
       getTitle,
+      getOperationMessage,
+      shouldBalanceBeHidden,
       getStatusClass: getStatusClassValue,
       getStatusIcon: getStatusIconValue,
       isFinalizedStatus,

@@ -839,6 +839,7 @@ export function useAppShell() {
     handleAppMenuClick,
     isSignTxDialogVisible,
     libraryTheme,
+    localeDirection,
     loading,
     menuVisibility,
     openProductDialog,

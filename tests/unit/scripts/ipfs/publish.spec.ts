@@ -5,8 +5,10 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   announceIpfsCidRecursively,
   collectMissingOutputs,
+  createBunnyOriginHostHeader,
   createBunnyOriginUrl,
   createDwebGatewayUrl,
+  createDwebSubdomainOriginUrl,
   createLocalGatewayUrl,
   formatStaticSiteCacheHeaderRecommendations,
   hasVueMajorVersion,
@@ -20,6 +22,7 @@ import {
   resolveVue3BuildArgs,
   swapEnvConfigForProduction,
   swapEnvConfigForTestnet,
+  toCidV1Base32,
   verifyRecursiveIpfsPin,
 } from '../../../../scripts/ipfs/publish';
 
@@ -324,9 +327,7 @@ describe('pinIpfsCidRecursively', () => {
 
 describe('verifyRecursiveIpfsPin', () => {
   it('accepts a matching recursive pin result', () => {
-    expect(() =>
-      verifyRecursiveIpfsPin('QmPinnedCid', () => ({ stdout: 'QmPinnedCid\n', stderr: '' }))
-    ).not.toThrow();
+    expect(() => verifyRecursiveIpfsPin('QmPinnedCid', () => ({ stdout: 'QmPinnedCid\n', stderr: '' }))).not.toThrow();
   });
 });
 
@@ -428,19 +429,53 @@ describe('swapEnvConfigForProduction', () => {
 });
 
 describe('createDwebGatewayUrl', () => {
-  it('builds a public dweb link for the provided CID', () => {
-    expect(createDwebGatewayUrl('QmExampleCid')).toBe('https://dweb.link/ipfs/QmExampleCid/index.html');
+  it('builds a direct CIDv1 dweb subdomain link for a CIDv0 value', () => {
+    expect(createDwebGatewayUrl('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
+      'https://bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link/index.html'
+    );
+  });
+});
+
+describe('createDwebSubdomainOriginUrl', () => {
+  it('builds the Bunny-safe dweb origin URL without a path-to-subdomain redirect', () => {
+    expect(createDwebSubdomainOriginUrl('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
+      'https://bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link'
+    );
+  });
+});
+
+describe('toCidV1Base32', () => {
+  it('converts CIDv0 values to lowercase CIDv1 base32 values', () => {
+    expect(toCidV1Base32('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
+      'bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y'
+    );
+  });
+
+  it('normalizes CIDv1 base32 values for DNS-safe subdomain use', () => {
+    expect(toCidV1Base32('BAFYBEIFN2Z3CHS3574G2WE5ORCFMW2KW5EEXLYELKW5NCQTYXVB7LFHS3Y')).toBe(
+      'bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y'
+    );
   });
 });
 
 describe('createBunnyOriginUrl', () => {
-  it('builds an IPFS directory origin URL for Bunny', () => {
-    expect(createBunnyOriginUrl('QmExampleCid')).toBe('https://ipfs.io/ipfs/QmExampleCid');
+  it('builds a dweb subdomain origin URL for Bunny by default', () => {
+    expect(createBunnyOriginUrl('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
+      'https://bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link'
+    );
   });
 
   it('normalizes a custom gateway base URL before appending the CID', () => {
     expect(createBunnyOriginUrl('QmExampleCid', 'https://gateway.example.com/')).toBe(
       'https://gateway.example.com/ipfs/QmExampleCid'
+    );
+  });
+});
+
+describe('createBunnyOriginHostHeader', () => {
+  it('extracts the dweb hostname Bunny should send as the origin Host header', () => {
+    expect(createBunnyOriginHostHeader('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
+      'bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link'
     );
   });
 });

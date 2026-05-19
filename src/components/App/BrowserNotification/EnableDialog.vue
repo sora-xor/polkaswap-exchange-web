@@ -23,6 +23,7 @@ import { ref } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
+import { requestBrowserNotificationPermission } from '@/utils/browserNotifications';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 
 defineOptions({
@@ -54,9 +55,12 @@ async function handleConfirm(): Promise<void> {
   loading.value = true;
   try {
     closeDialog();
-    emit('set-dark-page', true);
-    const permission = await Notification.requestPermission();
+    const permission = await requestBrowserNotificationPermission((visible) => emit('set-dark-page', visible));
     settingsStore.setBrowserNotifsAgreement(permission);
+
+    if (permission === 'denied') {
+      settingsStore.setBrowserNotifsPopupBlocked(true);
+    }
   } finally {
     emit('set-dark-page', false);
     loading.value = false;

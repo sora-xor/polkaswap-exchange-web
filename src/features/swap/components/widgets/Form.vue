@@ -53,8 +53,8 @@
         @select="openSelectTokenDialog(false)"
       >
         <template #fiat-amount-append v-if="tokenTo">
-          <value-status-wrapper :value="fiatDifference" badge class="price-difference__value">
-            <formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>
+          <value-status-wrapper :value="priceImpact" badge class="price-difference__value">
+            <formatted-amount :value="priceImpactFormatted">%</formatted-amount>
           </value-status-wrapper>
         </template>
       </token-input>
@@ -100,7 +100,7 @@
         </template>
         <template v-else>
           <s-icon
-            v-if="isErrorFiatDifferenceStatus"
+            v-if="isErrorPriceImpactStatus"
             name="notifications-alert-triangle-24"
             size="18"
             class="action-button-icon"
@@ -131,7 +131,7 @@
       ></select-token>
       <swap-loss-warning-dialog
         v-model:visible="lossWarningVisibility"
-        :value="fiatDifferenceFormatted"
+        :value="priceImpactFormatted"
         @confirm="handleConfirm"
       ></swap-loss-warning-dialog>
       <swap-confirm
@@ -173,7 +173,7 @@ import {
   hasInsufficientXorForFee,
   isMaxButtonAvailable,
 } from '@/utils';
-import { DifferenceStatus, calcFiatDifference, getDifferenceStatus, getVisibleSwapTokenBalance } from '@/utils/swap';
+import { DifferenceStatus, getDifferenceStatus, getVisibleSwapTokenBalance } from '@/utils/swap';
 
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
@@ -240,7 +240,6 @@ const {
   formatCodecNumber,
   formatStringValue,
   getFiatAmountByCodecString,
-  getFPNumberFiatAmountByFPNumber,
 } = useFormattedAmount();
 
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
@@ -271,26 +270,16 @@ const delimiters = FPNumber.DELIMITERS_CONFIG;
 const xorSymbol = ` ${XOR.symbol}`;
 const swapPathDexIds = [DexId.XOR, DexId.XSTUSD, DexId.KUSD, DexId.VXOR] as const;
 
-const fiatDifference = computed(() => calcFiatDifference(fromFiatAmount.value, toFiatAmount.value).toFixed(2));
-
-const fiatDifferenceFormatted = computed(() => formatStringValue(fiatDifference.value));
-const isErrorFiatDifferenceStatus = computed(
-  () => getDifferenceStatus(Number(fiatDifference.value) || 0) === DifferenceStatus.Error
+const priceImpact = computed(() => swapStore.priceImpact);
+const priceImpactFormatted = computed(() => formatStringValue(priceImpact.value ?? '0'));
+const isErrorPriceImpactStatus = computed(
+  () => getDifferenceStatus(Number(priceImpact.value) || 0) === DifferenceStatus.Error
 );
 
 const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
 const tokenFromSymbol = computed(() => tokenFrom.value?.symbol ?? '');
 const isXorOutputSwap = computed(() => tokenTo.value?.address === XOR.address);
 const preparedForSwap = computed(() => isLoggedIn.value && areTokensSelected.value);
-const fromFiatAmount = computed(() => {
-  if (!tokenFrom.value || !fromValue.value) return FPNumber.ZERO;
-  return getFPNumberFiatAmountByFPNumber(new FPNumber(fromValue.value), tokenFrom.value) ?? FPNumber.ZERO;
-});
-const toFiatAmount = computed(() => {
-  if (!tokenTo.value || !toValue.value) return FPNumber.ZERO;
-  return getFPNumberFiatAmountByFPNumber(new FPNumber(toValue.value), tokenTo.value) ?? FPNumber.ZERO;
-});
-
 const isMaxSwapAvailable = computed(() => {
   if (!preparedForSwap.value || !tokenFrom.value) return false;
 
@@ -585,7 +574,7 @@ function handleSwapClick() {
     return;
   }
 
-  if (isErrorFiatDifferenceStatus.value && allowLossPopup.value) {
+  if (isErrorPriceImpactStatus.value && allowLossPopup.value) {
     lossWarningVisibility.value = true;
   } else {
     handleConfirm();

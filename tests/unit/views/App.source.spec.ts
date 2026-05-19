@@ -33,9 +33,19 @@ describe('App shell source', () => {
     expect(useAppShellSource).toContain("import { getLocaleDirection } from '@/lang/direction';");
     expect(useAppShellSource).toContain('const localeDirection = computed(() => getLocaleDirection(settingsStore.language as string));');
     expect(useAppShellSource).toContain('`locale-${localeDirection.value}`');
+    expect(useAppShellSource).toContain('localeDirection,');
+    expect(appShellSource).toContain(':dir="localeDirection"');
+    expect(appShellSource).toContain(':data-locale-direction="localeDirection"');
     expect(appShellSource).not.toContain('direction: ltr;');
     expect(appHeaderSource).toContain("html[dir='rtl']");
     expect(appHeaderSource).toContain('margin-right: auto !important;');
+  });
+
+  it('mirrors the app sidebar side and collapsed content offset for RTL documents', () => {
+    expect(appShellSource).toContain("html[dir='rtl'] {");
+    expect(appShellSource).toContain('flex-direction: row-reverse;');
+    expect(appShellSource).toContain('margin-right: 74px;');
+    expect(appShellSource).toContain('margin-left: 0;');
   });
 
   it('renders the desktop menu logo through the named AppMenu head slot', () => {

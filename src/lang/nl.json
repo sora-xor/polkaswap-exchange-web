@@ -28,6 +28,7 @@
         "title": "Accountinstellingen"
     },
     "accountText": "rekening | rekeningen",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Toevoegen",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "Tokenpaar is niet aangemaakt",
     "points": {
         "accountsText": "{amount} accounts",
-        "airdrop": "Voltooi SORA Ecosysteem-gerelateerde taken om in aanmerking te komen voor een airdrop van $3 miljoen",
         "bridgeVolume": "Brugvolume",
         "complete": "Voltooid | Voltooien",
         "currently": "Momenteel",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Commissie",
             "commissionTooltip": "Commissie verwijst naar de vergoeding die validators in rekening brengen voor hun diensten in het stakingproces. Deze vergoeding, uitgedrukt als een percentage, wordt afgetrokken van de inzetoefeningen die de nominatoren vóór distributie hebben verdiend. Het is belangrijk op te merken dat validators hun commissietarieven op elk moment kunnen aanpassen",
+            "deselectAll": "Deselect all",
             "name": "Naam",
             "noNominatedValidators": "U heeft geen genomineerde validators",
             "noValidators": "Er zijn geen validators die aan het opgegeven filter voldoen",
             "return": "Opbrengst",
             "search": "Zoekopdracht...",
+            "selectAll": "Select all",
             "staked": "Uitgezet",
             "stakedTooltip": "Totale XOR-inzet bij deze validator, inclusief de eigen inzet van de validator en de genomineerde inzet"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Accounts zijn digitale adressen die de activa van de gebruiker op het netwerk bevatten. Elk account is gekoppeld aan een uniek openbaar adres en een privésleutel waarmee de gebruiker toegang heeft tot zijn activa en deze kan beheren.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "{from} to {to} bridge verwijst naar het proces van het overbrengen van activa tussen de {from} en {to} netwerken met behulp van een bridge. De brug zorgt voor de interoperabiliteit van de twee netwerken, waardoor gebruikers naadloos activa tussen hen kunnen verplaatsen.",
         "fees": "Kosten op de {Sora} -blockchain verwijzen naar de kosten die worden gemaakt voor het uitvoeren van transacties op het netwerk. Deze vergoedingen worden betaald in XOR, de native cryptocurrency van het {Sora} -netwerk. Het bedrag van de vergoeding wordt bepaald door de complexiteit en omvang van de transactie die wordt uitgevoerd",
         "roi": "{ROI} staat voor Return on Investment. Het wordt berekend door de winst op een investering te delen door de kosten van die investering in een procentueel equivalent.",

@@ -79,6 +79,37 @@ This is a financial application — treat security as a first‑class concern.
   - Ensure assets and routes resolve under content‑addressed paths.
 - Verify that dynamic features degrade gracefully without server assistance.
 
+### Bunny/IPFS Deployment Runbook
+
+Use this exact order when the user asks to rebuild, redeploy to IPFS, and update Bunny:
+
+1. Run `yarn ipfs:publish` from the repo root. Capture the **Production CID**, **Production Bunny origin URL**, and **Production Bunny origin host header** from the command output. Do not use the testnet CID for `polkaswap.io`.
+2. In the Bunny `polkaswap` pull zone, update **Origin URL** to the CIDv1 dweb subdomain printed by the publish command, for example `https://<cidv1>.ipfs.dweb.link`. Set **Host header** to the same hostname without `https://`. If a Bunny edge repeatedly returns `5xx`/`504` while pulling from dweb.link, do **not** use Traffic Manager, regional redirects, or any traffic redirection workaround. Switch only the pull-zone origin to Filebase's IPFS path gateway: **Origin URL** `https://ipfs.filebase.io/ipfs/<cidv1>` and **Host header** `ipfs.filebase.io`.
+3. Confirm the Bunny origin settings stay in this state:
+   - **Forward host header**: off
+   - **Follow redirects**: on
+   - **Verify origin SSL certificate**: off for dweb.link/Filebase IPFS gateway origins
+   - **Cache error responses**: off
+4. Confirm the Edge Rule named `RawDwebOriginHeaders` exists:
+   - Action: `Add Request Header` on `Origin`
+   - Header name: `Sec-Fetch-Dest`
+   - Header value: `empty`
+   - Condition: stable host URL, for example `*://polkaswap.io/*`
+5. Confirm the Edge Rule named `SetPolkaswapCSP` exists when the origin is Filebase:
+   - Action: `Cache Origin Set Response Header`
+   - Header name: `Content-Security-Policy`
+   - Header value: `default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval'; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; worker-src 'self' blob:; frame-src 'self' https:;`
+   - Condition: stable host URL, for example `*://polkaswap.io/*`
+6. Save the origin settings and wait for Bunny to show the success toast before purging.
+7. Purge the Bunny pull-zone cache only after explicit user confirmation. Cache purge deletes cached CDN objects, so Computer Use requires action-time confirmation even if the user asked for a deploy earlier.
+8. Immediately verify the root is serving the new CID with `curl -sS -D - -o /tmp/polkaswap-root.html https://polkaswap.io/` and check `x-ipfs-roots` for the new CIDv1 root.
+9. Warm Bunny sequentially before running browser verification. dweb.link often returns `429` when a cold Bunny edge requests many chunks at once. Warm all `dist/assets` plus `/`, `/index.html`, and JSON/text root files with one request at a time and short delays. If WebKit verification still reports `429`, warm through Playwright WebKit using `page.evaluate(() => fetch(assetUrl))`; plain `curl` can warm a different Bunny edge than WebKit.
+10. Run the official WebKit verification:
+   - `IPFS_CHECK_SETTLE_MS=30000 node scripts/ipfs/check-browser.js --url 'https://polkaswap.io/#/swap' --no-spawn-gateway --browser=webkit`
+11. Do a final WebKit title check. Deployment is not complete until the title reaches `Swap - Polkaswap`, `x-ipfs-roots` is the new CIDv1 root, and there are `0` failed requests and `0` console errors.
+
+The `RawDwebOriginHeaders` rule prevents dweb.link from treating Bunny's browser-style origin fetch as a document navigation and redirecting to the IPFS in-browser service-worker shell. The `SetPolkaswapCSP` rule replaces Filebase's restrictive gateway CSP, which otherwise blocks Polkaswap's API/WebSocket connections and WebAssembly. If a real browser is stuck on an old IPFS service-worker shell, open `https://polkaswap.io/?ipfs-sw-unregister=true` once, then reload.
+
 ## PR Checklist (must pass before merging)
 
 - [ ] Unit tests added/updated for all new/changed functions and critical paths.

@@ -66,12 +66,40 @@ The output looks similar to:
 ```
 Production CID: QmProd...
 Production gateway (ipfs.io): https://ipfs.io/ipfs/QmProd/index.html
+Production dweb link: https://bafy...ipfs.dweb.link/index.html
+Production Bunny origin URL: https://bafy...ipfs.dweb.link
+Production Bunny origin host header: bafy...ipfs.dweb.link
+Production Bunny origin request header: Sec-Fetch-Dest: empty
 
 Testnet CID: QmTest...
 Testnet gateway (ipfs.io): https://ipfs.io/ipfs/QmTest/index.html
+Testnet dweb link: https://bafy...ipfs.dweb.link/index.html
+Testnet Bunny origin URL: https://bafy...ipfs.dweb.link
+Testnet Bunny origin host header: bafy...ipfs.dweb.link
+Testnet Bunny origin request header: Sec-Fetch-Dest: empty
 ```
 
 Record both CIDs for the release announcement and downstream verification.
+
+For Bunny pull zones, use the printed `Bunny origin URL` as the Origin URL and
+the printed `Bunny origin host header` as the Host header. Keep **Follow
+redirects** enabled, **Verify origin SSL certificate** disabled for dweb.link
+origins, and **Cache error response** disabled. This avoids caching transient
+gateway 404/403 responses and avoids path-gateway redirects for immutable
+assets.
+
+Also add a Bunny Edge Rule for each stable hostname that points at a dweb.link
+origin:
+
+- Description: `RawDwebOriginHeaders`
+- Action: `Add Request Header` on `Origin`, with header name `Sec-Fetch-Dest`
+  and value `empty`
+- Condition: `Request URL` matches the stable hostname, for example
+  `*://polkaswap.io/*`
+
+Browser navigations send `Sec-Fetch-Dest: document`, which can make dweb.link
+redirect the origin request to the IPFS in-browser service-worker shell. The
+origin request header override keeps Bunny fetching the raw static site HTML.
 
 ## 4. Verifying a CID (`ipfs:check`)
 
@@ -122,6 +150,12 @@ It shares the same CLI flags as the browser script and captures console/network 
   ```
   Keep that temporary repo around if you need the local node to continue serving or pinning those CIDs.
 - **Gateway failures in `ipfs:check`** – use `--url` to point to a staging gateway or pass `--ipfs-path` plus `--no-spawn-gateway` if you already have a daemon running.
+- **Generic “IPFS Service Worker” screen on `polkaswap.io`** – verify the stable hostname with
+  `node scripts/ipfs/check-browser.js --url https://polkaswap.io/ --no-spawn-gateway`. The stable host must serve
+  `/` and `/index.html` with short-lived HTML caching, such as `Cache-Control: no-cache`; an immutable HTML response
+  can keep old service-worker shells alive in browsers. Confirm the Bunny dweb origin edge rule above is enabled,
+  then purge the pull-zone cache. Affected browsers can be unstuck by opening
+  `https://polkaswap.io/?ipfs-sw-unregister=true` once, then reloading.
 - **Screenshots not written** – set `--screenshot` or export `IPFS_CHECK_SCREENSHOT=<path>` to capture evidence when tests run in CI.
 
 For additional details on the scripts themselves, see:

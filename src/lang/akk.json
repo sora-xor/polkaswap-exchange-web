@@ -28,6 +28,7 @@
         "title": "𒃻𒋃 𒊩𒆜"
     },
     "accountText": "𒃻𒋃 | 𒃻𒋃",
+    "activeAccountsText": "𒌷𒊭 𒁕𒀭",
     "addAsset": {
         "add": "𒄷",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "𒉌 𒀭𒆠 𒉌𒁺 𒌷𒊭",
     "points": {
         "accountsText": "{amount} 𒌷𒊭",
-        "airdrop": "𒁕𒀭 𒊹𒌷 𒀭𒆠 𒌷𒊭 𒉌𒁺 𒀭𒆠 𒁕𒀭 𒉌𒁺 𒁕𒀭 𒊹𒌷 $3𒊹𒌷 𒊹𒌷",
         "bridgeVolume": "𒆜 𒌷𒊭",
         "complete": "𒁕𒀭 | 𒁕𒀭",
         "currently": "𒅆𒀀",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "𒈠𒄦",
             "commissionTooltip": "𒈠𒄦 𒀭",
+            "deselectAll": "𒁍𒋗 𒃻",
             "name": "𒌓𒍣",
             "noNominatedValidators": "𒀭 𒄭𒄭",
             "noValidators": "𒀭 𒄭𒄭",
             "return": "𒄯",
             "search": "𒊺...",
+            "selectAll": "𒋗𒁉 𒃻",
             "staked": "𒊹𒆠",
             "stakedTooltip": "𒊹𒆠 𒀭 𒈾 𒄿 𒀀 𒆠"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "𒌷𒊭 𒅆𒀀 𒅆𒀀 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒁕𒀭 𒉌 𒉌𒁺 𒉌𒁺 𒆠. 𒉌𒁺 𒃻𒋃 𒌷𒊭 𒅆𒀀 𒅆𒀀 𒊹𒌷 𒊹𒌷 𒉌𒁺 𒅗𒋗 𒊹𒌷 𒊹𒌷 𒊹𒌷 𒊹𒌷 𒉌𒁺 𒌷𒊭 𒉌𒁺 𒁕𒀭 𒁕𒀭 𒌷𒊭 𒊹𒌷 𒊹𒌷 𒀭𒆠 𒉌.",
+        "activeAccounts": "𒌷𒊭 𒅆𒀀 𒁕𒀭 𒆠𒁲 𒉌𒁺 𒌷𒊭 𒁕𒀭 𒅆𒀀.",
         "bridgeTransactions": "{from} 𒁕𒀭 {to} 𒆜 𒁕𒀭 𒁕𒀭 𒉌𒁺 𒁕𒀭 𒁕𒀭 𒁕𒀭 𒉌 𒅆𒀀 𒉌𒁺 {from} 𒊹𒌷 {to} 𒊹𒌷 𒌷𒊭 𒊹𒌷 𒆜. 𒉌𒁺 𒆜 𒌷𒊭 𒁕𒀭 𒉌𒁺 𒌷𒊭 𒁕𒀭 𒉌𒁺 𒀭𒆠 𒊹𒌷, 𒀭𒆠 𒌷𒊭 𒁕𒀭 𒌷𒊭 𒉌𒁺 𒉌 𒅆𒀀 𒌷𒊭.",
         "fees": "𒊹𒌷 𒉌𒁺 𒉌𒁺 {Sora} 𒅆𒀀 𒀭𒆠 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒉌𒁺 𒅆𒀀 𒀭𒆠 𒁕𒀭 𒅆𒀀 𒆠𒁲 𒉌𒁺 𒉌𒁺 𒆠. 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒌷𒊭 𒉌𒁺 𒁕𒀭, 𒉌𒁺 𒊹𒌷 𒌷𒊭 𒁕𒀭 𒉌𒁺 {Sora} 𒆠. 𒉌𒁺 𒈠𒄦 𒈦 𒌷𒊭 𒊹𒌷 𒊹𒌷 𒉌𒁺 𒀭𒆠 𒊹𒌷 𒉌𒁺 𒁕𒀭 𒉌𒁺 𒆠𒁲 𒊹𒌷 𒁕𒀭",
         "roi": "{ROI} 𒁕𒀭 𒁕𒀭 𒌷𒊭 𒉌𒁺 𒉌𒁺. 𒉌𒁺 𒌷𒊭 𒅆𒀀 𒊹𒌷 𒀭𒆠 𒉌𒁺 𒌷𒊭 𒊹𒌷 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒊹𒌷 𒉌𒁺 𒉌𒁺 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒌷𒊭.",

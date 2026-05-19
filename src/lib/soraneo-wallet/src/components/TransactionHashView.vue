@@ -1,10 +1,17 @@
 <template>
-  <div class="s-input-container">
-    <s-input :placeholder="t(translation)" :value="formattedAddress" readonly tabindex="-1"></s-input>
+  <div :class="['transaction-hash-view', { 'transaction-hash-view--with-menu': hasExplorerLinks }]">
+    <s-input
+      class="transaction-hash-view__input"
+      :placeholder="t(translation)"
+      :value="formattedAddress"
+      readonly
+      tabindex="-1"
+    ></s-input>
     <s-button
-      class="s-button--copy"
+      class="transaction-hash-view__copy"
       :class="{ 'with-dropdown': hasExplorerLinks }"
       icon="basic-copy-24"
+      size="small"
       :tooltip="copyTooltip(t(translation))"
       :aria-label="copyTooltip(t(translation))"
       type="action"
@@ -13,7 +20,7 @@
     ></s-button>
     <s-dropdown
       v-if="hasExplorerLinks"
-      class="s-dropdown-menu"
+      class="transaction-hash-view__menu"
       border-radius="mini"
       type="ellipsis"
       icon="basic-more-vertical-24"
@@ -91,54 +98,60 @@ const formattedValue = computed(() => {
   return props.value;
 });
 
+const explorerValue = computed(() => formattedValue.value.trim());
 const displayValue = computed(() => props.hash || formattedValue.value);
 
+const encodeExplorerPath = (value: string): string => encodeURIComponent(value);
+
 const explorerLinks = computed<ExplorerLink[]>(() => {
-  if (isEthHash.value) return [];
+  if (isEthHash.value || !explorerValue.value) return [];
 
   const baseLinks = getExplorerLinks(soraNetwork.value);
   if (!baseLinks.length) return [];
+
+  const value = explorerValue.value;
 
   switch (props.type) {
     case HashType.Account:
       return baseLinks
         .filter(({ type }) => type !== ExplorerType.Polkadot)
-        .map(({ type, value }) => ({
+        .map(({ type, value: explorerUrl }) => ({
           type,
           value:
             type === ExplorerType.Sorametrics
-              ? getSorametricsAccountLink(formattedValue.value)
-              : `${value}/${props.type}/${formattedValue.value}`,
+              ? getSorametricsAccountLink(value)
+              : `${explorerUrl}/${props.type}/${encodeExplorerPath(value)}`,
         }));
     case HashType.Block:
-      return baseLinks.map(({ type, value }) => {
+      return baseLinks.map(({ type, value: explorerUrl }) => {
         const link: ExplorerLink = { type, value: '' };
 
         if (type === ExplorerType.Polkadot) {
-          link.value = `${value}/${formattedValue.value}`;
+          link.value = `${explorerUrl}/${encodeExplorerPath(value)}`;
         } else if (type === ExplorerType.Sorametrics) {
-          link.value = getSorametricsBlockLink(formattedValue.value);
+          link.value = getSorametricsBlockLink(value);
         } else {
-          link.value = `${value}/${props.type}/${formattedValue.value}`;
+          link.value = `${explorerUrl}/${props.type}/${encodeExplorerPath(value)}`;
         }
 
         return link;
       });
     case HashType.ID:
       return baseLinks
-        .map(({ type, value }) => {
+        .map(({ type, value: explorerUrl }) => {
           const link: ExplorerLink = { type, value: '' };
+          const block = props.block.trim();
 
           if (type === ExplorerType.Sorametrics) {
-            link.value = getSorametricsTransactionLink(props.value);
+            link.value = getSorametricsTransactionLink(value);
           } else if (type === ExplorerType.Sorascan) {
-            link.value = `${value}/transaction/${props.value}`;
+            link.value = `${explorerUrl}/transaction/${encodeExplorerPath(value)}`;
           } else if (type === ExplorerType.Subscan) {
-            if (props.value.startsWith('0x')) {
-              link.value = `${value}/extrinsic/${props.value}`;
+            if (value.startsWith('0x')) {
+              link.value = `${explorerUrl}/extrinsic/${encodeExplorerPath(value)}`;
             }
-          } else if (props.block) {
-            link.value = `${value}/${props.block}`;
+          } else if (block) {
+            link.value = `${explorerUrl}/${encodeExplorerPath(block)}`;
           }
 
           return link;
@@ -149,7 +162,8 @@ const explorerLinks = computed<ExplorerLink[]>(() => {
   }
 });
 
-const hasExplorerLinks = computed(() => isEthHash.value || explorerLinks.value.length > 0);
+const hasEthExplorerLink = computed(() => isEthHash.value && Boolean(props.value.trim()));
+const hasExplorerLinks = computed(() => hasEthExplorerLink.value || explorerLinks.value.length > 0);
 
 const formattedAddress = computed(() => formatAddress(displayValue.value, 24));
 
@@ -157,7 +171,7 @@ const etherscanLink = computed(() => {
   const path = props.type === HashType.EthAccount ? 'address' : 'tx';
   const base = soraNetwork.value !== SoraNetwork.Prod ? 'sepolia.' : '';
 
-  return `https://${base}etherscan.io/${path}/${props.value}`;
+  return `https://${base}etherscan.io/${path}/${encodeExplorerPath(props.value.trim())}`;
 });
 
 const getExplorerTranslation = (type: ExplorerType) => {
@@ -176,6 +190,8 @@ const getExplorerTranslation = (type: ExplorerType) => {
 };
 
 const handleOpenEtherscan = () => {
+  if (!hasEthExplorerLink.value) return;
+
   const win = window.open(etherscanLink.value, '_blank', 'noopener,noreferrer');
   if (win) {
     win.opener = null;
@@ -192,45 +208,84 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-$dropdown-right: 15px;
-$dropdown-width: var(--s-size-mini);
+$action-gap: #{$basic-spacing-mini};
+$action-inset: #{$basic-spacing-medium};
+$action-size: var(--s-size-small);
 
-.s-input-container {
+.transaction-hash-view {
   position: relative;
-  + .s-input-container {
+
+  + .transaction-hash-view {
     margin-top: var(--s-basic-spacing);
   }
-  .s-dropdown-menu {
+
+  &__input.s-input {
+    background-color: var(--s-color-utility-body);
+    border-radius: var(--s-border-radius-small);
+    box-shadow: var(--s-shadow-element-pressed);
+    color: var(--s-color-base-content-primary);
+
+    :deep(.s-input__content) {
+      min-height: var(--s-size-medium);
+      padding: 0 calc(#{$action-inset} + #{$action-size} + #{$action-gap}) 0 #{$basic-spacing-medium};
+    }
+
+    :deep(.el-input__inner) {
+      font-size: var(--s-font-size-medium);
+      font-weight: 600;
+      line-height: var(--s-line-height-small);
+      text-overflow: ellipsis;
+    }
+  }
+
+  &--with-menu &__input.s-input {
+    :deep(.s-input__content) {
+      padding-right: calc(#{$action-inset} + #{$action-size} + #{$action-size} + #{$action-gap});
+    }
+  }
+
+  :deep(.transaction-hash-view__copy),
+  :deep(.transaction-hash-view__menu) {
     position: absolute;
     z-index: 1;
     top: 0;
-    right: $dropdown-right;
     bottom: 0;
     margin-top: auto;
     margin-bottom: auto;
-    width: $dropdown-width;
-    height: var(--s-size-mini);
+    width: $action-size;
+    height: $action-size;
     line-height: 1;
+    color: var(--s-color-base-content-tertiary);
   }
-  .s-button--copy {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-    right: $dropdown-right;
-    z-index: 1;
-    &,
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: transparent;
-      border-color: transparent;
+
+  :deep(.transaction-hash-view__copy) {
+    right: $action-inset;
+    padding: 0;
+
+    .s-button__icon {
+      margin-right: 0;
     }
+
     &.with-dropdown {
-      right: calc(#{$dropdown-right} + #{$dropdown-width} + #{$basic-spacing-mini});
+      right: calc(#{$action-inset} + #{$action-size} + #{$action-gap});
     }
   }
+
+  :deep(.transaction-hash-view__menu) {
+    right: $action-inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 0;
+    border-radius: var(--s-border-radius-small);
+  }
+}
+
+:global(:root[data-theme='dark'] .transaction-hash-view__input.s-input),
+:global(.sora-theme-provider[data-theme='dark'] .transaction-hash-view__input.s-input),
+:global([design-system-theme='dark'] .transaction-hash-view__input.s-input) {
+  background-color: var(--s-color-base-on-accent);
 }
 
 .transaction-link {

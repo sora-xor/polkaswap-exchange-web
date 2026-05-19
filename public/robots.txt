@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# AI and automation agent discovery:
+# Polkaswap Agent API manifest: .well-known/polkaswap-agent.json
+# LLM summary: llms.txt
+# Agent quickstart: agents.txt
+# Browser global after app load: window.PolkaswapAgent

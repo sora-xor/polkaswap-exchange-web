@@ -116,7 +116,7 @@ function isNotificationsEnabledByUser(): boolean {
     return false;
   }
 
-  switch (Notification.permission) {
+  switch (settingsStore.syncBrowserNotificationPermission()) {
     case 'denied':
       settingsStore.setBrowserNotifsPopupBlocked(true);
       return false;
@@ -174,7 +174,11 @@ function handleEditAlert(alert: Alert, position: number): void {
 }
 
 function handleTopUpNotifs(value: boolean): void {
-  isNotificationsEnabledByUser();
+  if (value && !isNotificationsEnabledByUser()) {
+    topUpNotifs.value = false;
+    return;
+  }
+
   settingsStore.setDepositNotifications(value);
 }
 
@@ -184,7 +188,7 @@ function getAssetFiatPrice(asset: AccountAsset | undefined): Nullable<string> {
 }
 
 onMounted(() => {
-  if (Notification.permission !== 'granted') {
+  if (settingsStore.syncBrowserNotificationPermission() !== 'granted') {
     settingsStore.setDepositNotifications(false);
   }
 

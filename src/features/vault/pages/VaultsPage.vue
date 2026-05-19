@@ -529,8 +529,9 @@ const updateActiveCollapseItems = (items: string[]) => {
   activeCollapseItems.value = items;
 };
 
-const isOpenedVaultItem = (vault: VaultData): vault is OpenedVaultData =>
-  (vault as OpenedVaultData).lockedAmount !== undefined;
+/** Identifies active Kensetsu vaults that still expose live collateral and debt amounts. */
+const isOpenedVault = (vault: VaultData): vault is OpenedVaultData =>
+  !('status' in vault) && (vault as OpenedVaultData).lockedAmount !== undefined;
 
 const getVaultTitle = (
   lockedAsset?: Nullable<RegisteredAccountAsset>,

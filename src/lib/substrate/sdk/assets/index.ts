@@ -32,6 +32,64 @@ import type {
 } from './types';
 import type { Api } from '../api';
 
+const ACCOUNT_BALANCE_KEYS: Array<keyof AccountBalance> = [
+  'free',
+  'reserved',
+  'frozen',
+  'bonded',
+  'locked',
+  'total',
+  'transferable',
+];
+
+/** Parses codec balances without passing token amounts through native floating-point coercion. */
+function parseCodecBalanceValue(value: CodecString, decimals?: number): FPNumber | null {
+  if (!/^\d+$/.test(value)) {
+    return null;
+  }
+
+  try {
+    const parsed = FPNumber.fromCodecValue(value, decimals);
+
+    return parsed.isFinity() ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Parses every tracked balance component, rejecting malformed snapshots. */
+function parseAccountBalance(balance: AccountBalance, decimals?: number): FPNumber[] | null {
+  const parsed = ACCOUNT_BALANCE_KEYS.map((key) => parseCodecBalanceValue(balance[key], decimals));
+
+  return parsed.every((value): value is FPNumber => value !== null) ? parsed : null;
+}
+
+/** Returns true when every tracked balance component is a valid zero value. */
+function isAccountBalanceZero(balance: AccountBalance, decimals?: number): boolean {
+  const parsed = parseAccountBalance(balance, decimals);
+
+  return Boolean(parsed && parsed.every((value) => value.isZero()));
+}
+
+/** Returns true when a fully valid balance snapshot carries any value. */
+function hasAccountBalanceValue(balance: AccountBalance, decimals?: number): boolean {
+  const parsed = parseAccountBalance(balance, decimals);
+
+  return Boolean(parsed && parsed.some((value) => !value.isZero()));
+}
+
+/**
+ * Detects provider races where a live balance stream reports an all-zero
+ * snapshot while the wallet is still holding a non-zero balance.
+ */
+function isTransientZeroBalanceUpdate(
+  currentBalance: AccountBalance,
+  nextBalance: AccountBalance,
+  decimals?: number
+): boolean {
+  return hasAccountBalanceValue(currentBalance, decimals) && isAccountBalanceZero(nextBalance, decimals);
+}
+
 export function toAssetId(asset: CommonPrimitivesAssetId32) {
   return asset.code.toString();
 }
@@ -300,23 +358,77 @@ export class AssetsModule<T> {
 
   private _accountAssetsAddresses: Array<string> = [];
   private balanceSubscriptions: Map<string, Subscription> = new Map();
+  private zeroBalanceConfirmations: Map<string, number> = new Map();
+  private zeroBalanceConfirmationId = 0;
   private balanceSubject = new Subject<void>();
   public balanceUpdated = this.balanceSubject.asObservable();
   public accountAssets: Array<AccountAsset> = [];
 
   // # Account assets methods
 
+  private applyAssetBalanceUpdate(asset: AccountAsset, accountBalance: AccountBalance): void {
+    this.zeroBalanceConfirmations.delete(asset.address);
+    asset.balance = accountBalance;
+    this.balanceSubject.next();
+  }
+
+  /**
+   * Confirms live non-zero -> zero updates with a direct chain read before the
+   * wallet UI replaces a visible balance with zero.
+   */
+  private confirmZeroBalanceUpdate(asset: AccountAsset): void {
+    if (this.zeroBalanceConfirmations.has(asset.address)) {
+      return;
+    }
+
+    const confirmationId = ++this.zeroBalanceConfirmationId;
+    this.zeroBalanceConfirmations.set(asset.address, confirmationId);
+
+    void this.getAccountAsset(asset.address)
+      .then((confirmedAsset) => {
+        if (this.zeroBalanceConfirmations.get(asset.address) !== confirmationId) {
+          return;
+        }
+
+        this.zeroBalanceConfirmations.delete(asset.address);
+
+        if (this.getAsset(asset.address) !== asset) {
+          return;
+        }
+
+        if (isAccountBalanceZero(confirmedAsset.balance, asset.decimals)) {
+          this.applyAssetBalanceUpdate(asset, confirmedAsset.balance);
+        }
+      })
+      .catch(() => {
+        if (this.zeroBalanceConfirmations.get(asset.address) === confirmationId) {
+          this.zeroBalanceConfirmations.delete(asset.address);
+        }
+      });
+  }
+
   private subscribeToAssetBalance(asset: AccountAsset): void {
+    let isSubscriptionBootstrap = true;
+
     const subscription = this.getAssetBalanceObservable(asset).subscribe((accountBalance: AccountBalance) => {
-      asset.balance = accountBalance;
-      this.balanceSubject.next();
+      if (asset.balance && isTransientZeroBalanceUpdate(asset.balance, accountBalance, asset.decimals)) {
+        if (!isSubscriptionBootstrap) {
+          this.confirmZeroBalanceUpdate(asset);
+        }
+
+        return;
+      }
+
+      this.applyAssetBalanceUpdate(asset, accountBalance);
     });
+    isSubscriptionBootstrap = false;
     this.balanceSubscriptions.set(asset.address, subscription);
   }
 
   private unsubscribeFromAssetBalance(address: string): void {
     this.balanceSubscriptions.get(address)?.unsubscribe();
     this.balanceSubscriptions.delete(address);
+    this.zeroBalanceConfirmations.delete(address);
   }
 
   private async addToAccountAssetsList(address: string): Promise<void> {

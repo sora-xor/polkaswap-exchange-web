@@ -1280,6 +1280,45 @@ test('keeps stats filter colors aligned with production in noir mode', async ({ 
   expect(consoleErrors).toEqual([]);
 });
 
+test('keeps info and community popover colors aligned with production in noir mode', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openSwap(page);
+  await enableNoirTheme(page);
+
+  const infoTrigger = page.locator('.app-menu .menu-item--small').first();
+  const infoPopover = page.locator('.app-info-popper');
+
+  await infoTrigger.click();
+  await expect(infoPopover).toBeVisible();
+
+  const colors = await infoPopover.evaluate((element) => {
+    const root = element as HTMLElement;
+    const rootStyles = getComputedStyle(root);
+    const divider = root.querySelector('.el-divider--horizontal') as HTMLElement | null;
+    const icon = root.querySelector('.app-info-link i') as HTMLElement | null;
+    const versions = root.querySelector('.app-info__versions') as HTMLElement | null;
+
+    return {
+      backgroundColor: rootStyles.backgroundColor,
+      borderColor: rootStyles.borderColor,
+      boxShadow: rootStyles.boxShadow,
+      color: rootStyles.color,
+      dividerBackgroundColor: divider ? getComputedStyle(divider).backgroundColor : null,
+      iconColor: icon ? getComputedStyle(icon).color : null,
+      versionsColor: versions ? getComputedStyle(versions).color : null,
+    };
+  });
+
+  expect(colors.backgroundColor).toBe('rgb(89, 45, 113)');
+  expect(colors.borderColor).toBe('rgb(105, 61, 129)');
+  expect(colors.color).toBe('rgb(240, 215, 220)');
+  expect(colors.dividerBackgroundColor).toBe('rgb(105, 61, 129)');
+  expect(colors.iconColor).toBe('rgb(155, 111, 165)');
+  expect(colors.versionsColor).toBe('rgb(155, 111, 165)');
+  expect(colors.boxShadow).toContain('rgb(73, 32, 103) 2px 2px 15px');
+  expect(consoleErrors).toEqual([]);
+});
+
 test('opens info popover and launches the SORA Wallet popup dialog', async ({ page }) => {
   const consoleErrors = trackConsole(page);
   await openSwap(page);

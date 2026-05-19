@@ -113,6 +113,7 @@ import {
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
+import { getLocaleDirection } from '@/lang/direction';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { isDashboardPage } from '@/modules/dashboard/router';
 import { PoolPageNames } from '@/modules/pool/consts';
@@ -146,6 +147,7 @@ const faucetUrl = computed(() => settingsStore.faucetUrl ?? '');
 const orderBookEnabled = computed(() => (settingsStore.orderBookEnabled as Nullable<boolean>) ?? true);
 const kensetsuEnabled = computed(() => (settingsStore.kensetsuEnabled as Nullable<boolean>) ?? true);
 const assetOwnerEnabled = computed(() => Boolean(settingsStore.assetOwnerEnabled));
+const isRtl = computed(() => getLocaleDirection(settingsStore.language as string) === 'rtl');
 
 const menuElement = ref<HTMLElement | null>(null);
 const resizeObserver = ref<ResizeObserver | null>(null);
@@ -197,7 +199,13 @@ const sidebarMenuItems = computed(() => {
   return menuItems;
 });
 
-const collapseIcon = computed(() => (collapsed.value ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24'));
+const collapseIcon = computed(() => {
+  if (isRtl.value) {
+    return collapsed.value ? 'arrows-chevron-left-24' : 'arrows-chevron-right-24';
+  }
+
+  return collapsed.value ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
+});
 const collapseTooltip = computed(() => (collapsed.value ? 'Expand' : 'Collapse'));
 const mainMenuActiveColor = computed(() => 'var(--s-color-theme-accent)');
 
@@ -276,6 +284,14 @@ onBeforeUnmount(() => {
 
       .collapse-button {
         pointer-events: all;
+      }
+    }
+  }
+
+  html[dir='rtl'] & {
+    @include tablet {
+      &:hover {
+        box-shadow: -20px 20px 60px 0px #0000001a;
       }
     }
   }
@@ -408,6 +424,11 @@ onBeforeUnmount(() => {
     opacity: 1;
     pointer-events: all;
   }
+
+  html[dir='rtl'] & {
+    right: calc(100% - var(--s-size-small) / 2);
+    left: auto;
+  }
 }
 
 .app-menu.collapsed {
@@ -443,6 +464,11 @@ onBeforeUnmount(() => {
     z-index: $app-sidebar-layer;
     visibility: hidden;
 
+    html[dir='rtl'] & {
+      right: 0;
+      left: auto;
+    }
+
     .collapse-button {
       opacity: 0;
       pointer-events: none;
@@ -461,6 +487,10 @@ onBeforeUnmount(() => {
       position: fixed;
       right: 0;
       z-index: $app-above-loader-layer;
+
+      html[dir='rtl'] & {
+        left: 0;
+      }
 
       .collapse-button {
         display: none !important;
@@ -484,6 +514,16 @@ onBeforeUnmount(() => {
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
         transform: translateX(-100%);
+      }
+
+      html[dir='rtl'] & .app-sidebar {
+        margin-left: auto;
+        filter: drop-shadow(-32px 0px 64px rgba(0, 0, 0, 0.1));
+        transform: translateX(100%);
+      }
+
+      html[dir='rtl'] &.visible .app-sidebar {
+        transform: translateX(0);
       }
     }
 
@@ -527,6 +567,11 @@ onBeforeUnmount(() => {
       justify-content: space-between;
       max-width: $sidebar-max-width;
       padding-right: $inner-spacing-mini; // for shadow
+
+      html[dir='rtl'] & {
+        padding-right: 0;
+        padding-left: $inner-spacing-mini; // for shadow
+      }
     }
   }
 }

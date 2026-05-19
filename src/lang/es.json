@@ -28,6 +28,7 @@
         "title": "Ajustes de la cuenta"
     },
     "accountText": "cuenta | cuentas",
+    "activeAccountsText": "Active accounts",
     "addAsset": {
         "add": "Añadir",
         "AddAssetToken": {
@@ -1230,7 +1231,6 @@
     "pairIsNotCreated": "El par de token no se ha creado",
     "points": {
         "accountsText": "{amount} cuentas",
-        "airdrop": "Completa tareas relacionadas con el ecosistema SORA para calificar para un airdrop de $3 millones",
         "bridgeVolume": "Volumen de puente",
         "complete": "Completado | Completar",
         "currently": "Actualmente",
@@ -1690,11 +1690,13 @@
         "validatorsList": {
             "commission": "Comisión",
             "commissionTooltip": "La comisión se refiere a la tarifa que cobran los validadores por sus servicios en el proceso de apuesta. Esta tarifa, expresada como porcentaje, se deduce de las recompensas obtenidas por los nominadores antes de la distribución. Es importante tener en cuenta que los validadores pueden ajustar sus tasas de comisión en cualquier momento.",
+            "deselectAll": "Deselect all",
             "name": "Nombre",
             "noNominatedValidators": "No tienes ningún validador nominado.",
             "noValidators": "No hay validadores que cumplan el filtro especificado.",
             "return": "Devolver",
             "search": "Buscar...",
+            "selectAll": "Select all",
             "staked": "apostado",
             "stakedTooltip": "XOR total apostado con este validador, incluida la participación propia del validador y la participación nominada"
         },
@@ -1735,6 +1737,7 @@
     },
     "tooltips": {
         "accounts": "Las cuentas son direcciones digitales que contienen los activos de los usuarios en la red. Cada cuenta está asociada con una dirección pública única y una clave privada que le permite al usuario acceder y administrar sus activos.",
+        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
         "bridgeTransactions": "{from} to {to} bridge se refiere al proceso de transferencia de activos entre las redes {from} y {to} mediante un puente. El puente permite la interoperabilidad de las dos redes, lo que permite a los usuarios mover activos entre ellas sin inconvenientes.",
         "fees": "Las tarifas en la cadena de bloques {Sora} se refieren a los cargos en los que se incurre por ejecutar transacciones en la red. Estas tarifas se pagan en XOR, la criptomoneda nativa de {Sora} Network. El monto de la tarifa está determinado por la complejidad y el tamaño de la transacción que se ejecuta",
         "roi": "{ROI} significa Retorno de la Inversión. Se calcula dividiendo la ganancia obtenida en una inversión por el costo de esa inversión en un porcentaje equivalente.",

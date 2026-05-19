@@ -528,6 +528,21 @@ const createOperationsCriteria = (operations: Array<Operation>) => {
   }, []);
 };
 
+/** Normalizes optional account/asset search strings before constructing GraphQL criteria. */
+const normalizeFilterString = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
+
+/** Normalizes optional GraphQL string-list filters while dropping malformed or blank entries. */
+const normalizeFilterStrings = (values: unknown): string[] =>
+  Array.isArray(values) ? values.map(normalizeFilterString).filter(Boolean) : [];
+
+/** Accepts only operation arrays; explicit malformed operation filters should not fall back to broader defaults. */
+const normalizeOperations = (operations: unknown): Array<Operation> =>
+  Array.isArray(operations) ? operations.filter((operation): operation is Operation => typeof operation === 'string') : [];
+
+/** Treats malformed query containers as empty search criteria. */
+const normalizeQuery = (query: unknown): Partial<HistoryQuery> =>
+  query && typeof query === 'object' && !Array.isArray(query) ? (query as Partial<HistoryQuery>) : {};
+
 const createAssetCriteria = (assetAddress: string) => {
   return {
     dataAssets: {
@@ -565,27 +580,30 @@ type PolkaswapHistoryElementsFilterOptions = {
   query?: HistoryQuery;
 };
 
-export const historyElementsFilter = ({
-  address = '',
-  assetAddress = '',
-  timestamp = 0,
-  operations = [],
-  ids = [],
-  query: { operationNames, assetsAddresses = [], accountAddress = '', hexAddress = '' } = {},
-}: PolkaswapHistoryElementsFilterOptions = {}): any => {
+export const historyElementsFilter = (options: PolkaswapHistoryElementsFilterOptions = {}): any => {
+  const { address = '', assetAddress = '', timestamp = 0, operations = [], ids = [], query = {} } = options ?? {};
+  const { operationNames, assetsAddresses = [], accountAddress = '', hexAddress = '' } = normalizeQuery(query);
   const filter: any = {
     and: [],
   };
+  const preparedAddress = normalizeFilterString(address);
+  const preparedAssetAddress = normalizeFilterString(assetAddress);
+  const preparedAccountAddress = normalizeFilterString(accountAddress);
+  const preparedHexAddress = normalizeFilterString(hexAddress);
+  const preparedAssetsAddresses = normalizeFilterStrings(assetsAddresses);
+  const preparedIds = normalizeFilterStrings(ids);
+  const preparedTimestamp =
+    typeof timestamp === 'number' && Number.isFinite(timestamp) && timestamp > 0 ? timestamp : 0;
 
   // history owner
-  if (address) {
+  if (preparedAddress) {
     filter.and.push({
-      or: createAddressCriterias(address),
+      or: createAddressCriterias(preparedAddress),
     });
   }
 
   // filter has more priority
-  const operationsPrepared = operationNames ?? operations;
+  const operationsPrepared = normalizeOperations(operationNames === undefined ? operations : operationNames);
 
   if (operationsPrepared.length) {
     const operationCriteria = createOperationsCriteria(operationsPrepared);
@@ -597,22 +615,22 @@ export const historyElementsFilter = ({
     }
   }
 
-  if (assetAddress) {
-    filter.and.push(createAssetCriteria(assetAddress));
+  if (preparedAssetAddress) {
+    filter.and.push(createAssetCriteria(preparedAssetAddress));
   }
 
-  if (timestamp) {
+  if (preparedTimestamp) {
     filter.and.push({
       timestamp: {
-        greaterThan: timestamp,
+        greaterThan: preparedTimestamp,
       },
     });
   }
 
-  if (ids.length) {
+  if (preparedIds.length) {
     filter.and.push({
       id: {
-        in: ids,
+        in: preparedIds,
       },
     });
   }
@@ -620,23 +638,23 @@ export const historyElementsFilter = ({
   const queryFilters: Array<any> = [];
 
   // account address criteria
-  if (accountAddress) {
-    queryFilters.push(...createAddressCriterias(accountAddress));
+  if (preparedAccountAddress) {
+    queryFilters.push(...createAddressCriterias(preparedAccountAddress));
   }
 
   // hex address criteria
-  if (hexAddress) {
-    queryFilters.push(createAssetCriteria(hexAddress));
+  if (preparedHexAddress) {
+    queryFilters.push(createAssetCriteria(preparedHexAddress));
     queryFilters.push({
       blockHash: {
-        includesInsensitive: hexAddress,
+        includesInsensitive: preparedHexAddress,
       },
     });
   }
 
   // symbol criteria
-  if (assetsAddresses.length) {
-    assetsAddresses.forEach((assetAddress) => {
+  if (preparedAssetsAddresses.length) {
+    preparedAssetsAddresses.forEach((assetAddress) => {
       queryFilters.push(createAssetCriteria(assetAddress));
     });
   }

@@ -1702,6 +1702,232 @@ describe('useBridgeStore', () => {
     expect(store.flags.balancesFetching).toBe(false);
   });
 
+  it('uses zero external balance when an ERC-20 batch provider returns non-codec balance data', async () => {
+    ethersUtilMock.getErc20BalancesBatch.mockResolvedValueOnce([
+      { balance: { toString: () => '22' } },
+    ] as any);
+
+    await store.updateExternalBalance();
+
+    expect(store.balances.assetSenderBalance).toBe('33');
+    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.fees.externalNativeBalance).toBe('7');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('uses zero external balance when an ERC-20 batch provider returns numeric-looking hostile strings', async () => {
+    for (const balance of ['.', '.5', '1.', '+1', '1_000', '1,000', 'Infinity']) {
+      ethersUtilMock.getErc20BalancesBatch.mockResolvedValueOnce([{ balance }]);
+
+      await store.updateExternalBalance();
+
+      expect(store.balances.assetSenderBalance).toBe('33');
+      expect(store.balances.assetRecipientBalance).toBe('0');
+      expect(store.fees.externalNativeBalance).toBe('7');
+      expect(store.flags.balancesFetching).toBe(false);
+    }
+  });
+
+  it('uses zero SORA balance when the wallet balance provider returns malformed transferable data', async () => {
+    getSoraAssetBalanceMock.mockResolvedValueOnce({ transferable: '0x33' });
+
+    await store.updateExternalBalance();
+
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetRecipientBalance).toBe('22');
+    expect(store.fees.externalNativeBalance).toBe('7');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('uses zero balances when EVM fallback providers return malformed balance strings', async () => {
+    ethersUtilMock.getErc20BalancesBatch.mockRejectedValueOnce(new Error('batch unavailable'));
+    ethersUtilMock.getAccountAssetBalance.mockResolvedValueOnce('1e3').mockResolvedValueOnce('0x7');
+
+    await store.updateExternalBalance();
+
+    expect(store.balances.assetSenderBalance).toBe('33');
+    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.fees.externalNativeBalance).toBe('0');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('falls back to individual Sub bridge balance queries when batch lookup fails', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
+    seededConnector.network.getTokenBalancesBatch.mockRejectedValueOnce(new Error('batch unavailable'));
+    seededConnector.network.getTokenBalance.mockResolvedValueOnce('222').mockResolvedValueOnce('777');
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledWith([
+      { accountAddress: 'sora-address', asset: expect.objectContaining({ address: '0x01' }) },
+      { accountAddress: 'formatted-sub-address', asset: expect.objectContaining({ address: '0x01' }) },
+      { accountAddress: 'sora-address', asset: expect.objectContaining({ address: '0x02' }) },
+    ]);
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
+      1,
+      'formatted-sub-address',
+      expect.objectContaining({ address: '0x01' })
+    );
+    expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
+      2,
+      'sora-address',
+      expect.objectContaining({ address: '0x02' })
+    );
+    expect(store.balances.assetSenderBalance).toBe('33');
+    expect(store.balances.assetRecipientBalance).toBe('222');
+    expect(store.fees.externalNativeBalance).toBe('777');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('falls back to individual Sub bridge balance queries when batch lookup returns a non-array shape', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
+    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce(null as any);
+    seededConnector.network.getTokenBalance.mockResolvedValueOnce('222').mockResolvedValueOnce('777');
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
+      1,
+      'formatted-sub-address',
+      expect.objectContaining({ address: '0x01' })
+    );
+    expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
+      2,
+      'sora-address',
+      expect.objectContaining({ address: '0x02' })
+    );
+    expect(store.balances.assetSenderBalance).toBe('33');
+    expect(store.balances.assetRecipientBalance).toBe('222');
+    expect(store.fees.externalNativeBalance).toBe('777');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('clears stale Sub bridge balances when batch lookup omits response slots', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
+    store.balances.assetSenderBalance = '999';
+    store.balances.assetRecipientBalance = '888';
+    store.fees.externalNativeBalance = '777';
+    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce(['444']);
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
+    expect(seededConnector.network.getTokenBalance).not.toHaveBeenCalled();
+    expect(store.balances.assetSenderBalance).toBe('444');
+    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.fees.externalNativeBalance).toBe('0');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('clears stale Sub bridge balances when batch lookup returns non-codec balance slots', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
+    store.balances.assetSenderBalance = '999';
+    store.balances.assetRecipientBalance = '888';
+    store.fees.externalNativeBalance = '777';
+    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce([
+      { toString: () => '444' },
+      'NaN',
+      '-1',
+    ] as any);
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
+    expect(seededConnector.network.getTokenBalance).not.toHaveBeenCalled();
+    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.fees.externalNativeBalance).toBe('0');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('clears stale Sub bridge balances when batch lookup returns numeric-looking hostile strings', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
+    store.balances.assetSenderBalance = '999';
+    store.balances.assetRecipientBalance = '888';
+    store.fees.externalNativeBalance = '777';
+    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce(['.5', '1.', '+1']);
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
+    expect(seededConnector.network.getTokenBalance).not.toHaveBeenCalled();
+    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.fees.externalNativeBalance).toBe('0');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('clears stale Sub bridge balances when fallback providers return malformed balances', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
+    store.balances.assetSenderBalance = '999';
+    store.balances.assetRecipientBalance = '888';
+    store.fees.externalNativeBalance = '777';
+    seededConnector.network.getTokenBalancesBatch.mockRejectedValueOnce(new Error('batch unavailable'));
+    getSoraAssetBalanceMock.mockResolvedValueOnce({ transferable: ' 33 ' });
+    seededConnector.network.getTokenBalance.mockResolvedValueOnce({ balance: '222' } as any).mockResolvedValueOnce('-1');
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(seededConnector.network.getTokenBalance).toHaveBeenCalledTimes(2);
+    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.fees.externalNativeBalance).toBe('0');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('does not query Sub bridge balances for stale unregistered external asset metadata', async () => {
+    const staleAsset = {
+      address: '0xstale-sub',
+      symbol: 'STALE',
+      decimals: 18,
+      externalAddress: 'stale-sub-asset-id',
+      externalDecimals: 12,
+      externalBalance: '0',
+      balance: { transferable: '0' },
+    };
+
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    assetsStoreMock.registeredAssets = {};
+    assetsStoreMock.assetDataByAddress.mockImplementation((address?: string | null) => {
+      if (address === staleAsset.address) return staleAsset;
+
+      return address ? ((walletStoreMock.assetsDataTable as Record<string, unknown>)[address] ?? null) : null;
+    });
+    store.updateForm({ isSoraToEvm: true, assetAddress: staleAsset.address });
+    store.balances.assetSenderBalance = '999';
+    store.balances.assetRecipientBalance = '888';
+    store.fees.externalNativeBalance = '777';
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).not.toHaveBeenCalled();
+    expect(seededConnector.network.getTokenBalance).not.toHaveBeenCalled();
+    expect(getSoraAssetBalanceMock).not.toHaveBeenCalled();
+    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.fees.externalNativeBalance).toBe('0');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
   it('clears stale external minimum balance when the sub-bridge provider fails', async () => {
     web3StoreMock.networkType = BridgeNetworkType.Sub;
     web3StoreMock.networkSelected = 'kusama' as any;

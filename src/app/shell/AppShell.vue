@@ -3,7 +3,9 @@
     :value="libraryTheme"
     class="app sora-theme-provider"
     :class="dsProviderClasses"
+    :dir="localeDirection"
     :data-theme="libraryTheme"
+    :data-locale-direction="localeDirection"
   >
     <notification-provider>
       <app-shell-layout></app-shell-layout>
@@ -28,7 +30,7 @@ const NotificationProvider = WalletComponentNotificationProvider ?? 'div';
 
 provide(provideAppShellKey, shell);
 
-const { dsProviderClasses, libraryTheme } = shell;
+const { dsProviderClasses, libraryTheme, localeDirection } = shell;
 </script>
 
 <style lang="scss">
@@ -307,11 +309,26 @@ i.icon-divider {
   @include icon-styles;
 }
 
+html[dir='rtl'] {
+  .app-main {
+    flex-direction: row-reverse;
+  }
+}
+
 .app-main--orderbook {
   @include large-mobile {
     .app-menu {
       position: absolute;
       right: initial;
+    }
+  }
+
+  html[dir='rtl'] & {
+    @include large-mobile {
+      .app-menu {
+        right: 0;
+        left: initial;
+      }
     }
   }
 
@@ -336,6 +353,11 @@ i.icon-divider {
         &.collapsed {
           & + .app-body {
             margin-left: 74px;
+
+            html[dir='rtl'] & {
+              margin-right: 74px;
+              margin-left: 0;
+            }
           }
         }
       }

@@ -5,13 +5,13 @@
         {{ t('soraStaking.validatorsFilterDialog.title') }}
       </h1>
       <div class="filter">
-        <div v-for="(item, key) in filterData" :key="item.name" class="filter-item">
+        <div v-for="item in filterData" :key="item.key" class="filter-item">
           <div class="filter-item-header">
             <div class="filter-item-label">{{ item.name }}</div>
             <s-switch
               class="filter-item-switch"
-              :class="{ 'is-active': localFilter[key] }"
-              v-model="localFilter[key]"
+              :class="{ 'is-active': localFilter[item.key] }"
+              v-model="localFilter[item.key]"
             ></s-switch>
           </div>
           <div class="filter-item-description">{{ item.description }}</div>
@@ -35,6 +35,12 @@ import { emptyValidatorsFilter, ValidatorsFilterType } from '@/modules/staking/s
 
 import type { ValidatorsFilter } from '@/modules/staking/sora/types';
 
+type ValidatorFilterRow = {
+  key: ValidatorsFilterType;
+  name: string;
+  description: string;
+};
+
 const props = defineProps<{
   filter: ValidatorsFilter;
 }>();
@@ -49,12 +55,18 @@ const { t } = useTranslation();
 
 const localFilter = reactive<ValidatorsFilter>({ ...emptyValidatorsFilter, ...props.filter });
 
-const filterData = computed(
-  () =>
-    t('soraStaking.validatorsFilterDialog.filters') as Record<
-      ValidatorsFilterType,
-      { name: string; description: string }
-    >
+const filterKeys = Object.values(ValidatorsFilterType);
+
+/**
+ * Resolves each filter row through string translation keys so Vue I18n never
+ * returns an object fallback that can be iterated into blank switch rows.
+ */
+const filterData = computed<ValidatorFilterRow[]>(() =>
+  filterKeys.map((key) => ({
+    key,
+    name: t(`soraStaking.validatorsFilterDialog.filters.${key}.name`),
+    description: t(`soraStaking.validatorsFilterDialog.filters.${key}.description`),
+  }))
 );
 
 const syncLocalFilter = () => {
