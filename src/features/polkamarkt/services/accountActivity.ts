@@ -8,7 +8,7 @@ type AccountActivityResponse = Record<string, unknown>;
 
 const AccountActivityQuery = gql<AccountActivityResponse>`
   query PolkamarktAccountActivity($account: String!, $limit: Int = 50) {
-    accountPositions(first: $limit, orderBy: [UPDATED_AT_DESC], where: { account: { equalTo: $account } }) {
+    accountPositions(first: $limit, orderBy: [UPDATED_AT_DESC], filter: { account: { equalTo: $account } }) {
       edges {
         node {
           id
@@ -39,7 +39,7 @@ const AccountActivityQuery = gql<AccountActivityResponse>`
         }
       }
     }
-    accountTrades(first: $limit, orderBy: [TIMESTAMP_DESC], where: { account: { equalTo: $account } }) {
+    accountTrades(first: $limit, orderBy: [TIMESTAMP_DESC], filter: { account: { equalTo: $account } }) {
       edges {
         node {
           id

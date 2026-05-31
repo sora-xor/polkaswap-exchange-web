@@ -124,7 +124,14 @@
         </div>
       </template>
 
-      <s-button v-else type="primary" class="trade-ticket__submit" :disabled="submitDisabled" :loading="loading" @click="submit">
+      <s-button
+        v-else
+        type="primary"
+        class="trade-ticket__submit"
+        :disabled="submitDisabled"
+        :loading="loading"
+        @click="submit"
+      >
         {{ submitLabel }}
       </s-button>
     </template>
@@ -175,7 +182,15 @@ const amount = ref('');
 const slippage = ref('0.5');
 const quoteLoading = ref(false);
 const error = ref('');
-const quote = ref<BuyQuote | SellQuote | FlipQuote | LiquidityQuote | null>(null);
+type TradeQuote = BuyQuote | SellQuote | FlipQuote | LiquidityQuote;
+type TradeMinimums =
+  | { mode: 'buy'; minSharesOut: CodecString }
+  | { mode: 'sell'; minCollateralOut: CodecString }
+  | { mode: 'flip'; minCollateralOut: CodecString; minSharesOut: CodecString }
+  | { mode: 'liquidity'; minLpShares: CodecString };
+
+const quote = ref<TradeQuote | null>(null);
+const activeQuoteKey = ref('');
 const claimable = ref<ClaimableInfo | null>(null);
 const networkFee = ref<CodecString | null>(null);
 
@@ -183,9 +198,11 @@ type MaybeValue<T> = T | { value: T };
 
 const isConnectedSource = isLoggedIn as unknown as MaybeValue<boolean>;
 const accountAddressSource = soraAddress as unknown as MaybeValue<string | undefined>;
-const isConnected = computed(() => Boolean(typeof isConnectedSource === 'object' ? isConnectedSource.value : isConnectedSource));
+const isConnected = computed(() =>
+  Boolean(typeof isConnectedSource === 'object' ? isConnectedSource.value : isConnectedSource)
+);
 const accountAddress = computed(() =>
-  String(typeof accountAddressSource === 'object' ? accountAddressSource.value ?? '' : accountAddressSource ?? '')
+  String(typeof accountAddressSource === 'object' ? (accountAddressSource.value ?? '') : (accountAddressSource ?? ''))
 );
 const collateralSymbol = KUSD.symbol;
 const marketId = computed(() => props.market?.chainId);
@@ -201,7 +218,9 @@ const accountKusd = computed(() => walletStore.accountAssetsAddressTable?.[KUSD.
 const accountXor = computed(() => walletStore.accountAssetsAddressTable?.[XOR.address]);
 const prices = computed(() => yesNoPricesFromProbability(props.market?.probability));
 const yesSplit = computed(() =>
-  Number.isFinite(props.market?.probability) ? Math.max(0, Math.min(100, Math.round(props.market?.probability ?? 0))) : undefined
+  Number.isFinite(props.market?.probability)
+    ? Math.max(0, Math.min(100, Math.round(props.market?.probability ?? 0)))
+    : undefined
 );
 const noSplit = computed(() => (yesSplit.value === undefined ? undefined : 100 - yesSplit.value));
 const yesSplitWidth = computed(() => `${yesSplit.value ?? 50}%`);
@@ -213,9 +232,18 @@ const isClaimModeAvailable = computed(
     isClaimableMarketStatus(claimable.value?.status)
 );
 const modes = computed<TradeMode[]>(() => (isClaimModeAvailable.value ? ['claim'] : [...baseModes]));
+const currentQuoteKey = computed(() => {
+  if (mode.value === 'claim') return '';
+  if (!marketId.value && marketId.value !== 0) return '';
+  if (!amount.value || !isPositiveCodec(amountCodec.value)) return '';
+
+  return [mode.value, marketId.value, runtimeOutcome.value, amountCodec.value, slippage.value.trim()].join(':');
+});
+const hasCurrentQuote = computed(() => Boolean(quote.value && activeQuoteKey.value === currentQuoteKey.value));
 
 const amountLabel = computed(() => {
-  if (mode.value === 'buy' || mode.value === 'liquidity') return t('polkamarkt.ticket.collateralAmount', { symbol: collateralSymbol });
+  if (mode.value === 'buy' || mode.value === 'liquidity')
+    return t('polkamarkt.ticket.collateralAmount', { symbol: collateralSymbol });
   return t('polkamarkt.ticket.sharesAmount');
 });
 
@@ -239,10 +267,13 @@ const disabledReason = computed(() => {
   if (!hasEnoughKusd.value) return t('polkamarkt.ticket.insufficientKusd', { symbol: collateralSymbol });
   if (!hasEnoughXor.value) return t('polkamarkt.ticket.insufficientXor');
   if (error.value) return error.value;
+  if (currentQuoteKey.value && !hasCurrentQuote.value) return t('polkamarkt.ticket.refreshingQuote');
   return '';
 });
 
-const submitDisabled = computed(() => isConnected.value && (Boolean(disabledReason.value) || loading.value || quoteLoading.value));
+const submitDisabled = computed(
+  () => isConnected.value && (Boolean(disabledReason.value) || loading.value || quoteLoading.value)
+);
 const submitLabel = computed(() => {
   if (!isConnected.value) return t('connectWalletText');
   return disabledReason.value || t(`polkamarkt.actions.${mode.value}`);
@@ -257,7 +288,9 @@ const quotePrimaryLabel = computed(() => {
 });
 
 const quotePrimaryValue = computed(() => {
-  if (!quote.value) return mode.value === 'claim' ? claimable.value?.status || t('polkamarkt.notIndexed') : t('polkamarkt.notIndexed');
+  if (!hasCurrentQuote.value)
+    return mode.value === 'claim' ? claimable.value?.status || t('polkamarkt.notIndexed') : t('polkamarkt.notIndexed');
+  if (!quote.value) return t('polkamarkt.notIndexed');
   if ('sharesOut' in quote.value) return `${formatCodec(quote.value.sharesOut)} ${t('polkamarkt.units.shares')}`;
   if ('collateralOut' in quote.value) return `${formatCodec(quote.value.collateralOut)} ${collateralSymbol}`;
   if ('lpSharesOut' in quote.value) return `${formatCodec(quote.value.lpSharesOut)} LP`;
@@ -271,7 +304,8 @@ const networkFeeFormatted = computed(() => {
 });
 const formatOutcomePrice = (value?: number): string =>
   Number.isFinite(value) ? `${(value ?? 0).toFixed(2)} ${collateralSymbol}` : t('polkamarkt.notIndexed');
-const formatOutcomeSplit = (value?: number): string => (Number.isFinite(value) ? `${value}%` : t('polkamarkt.notIndexed'));
+const formatOutcomeSplit = (value?: number): string =>
+  Number.isFinite(value) ? `${value}%` : t('polkamarkt.notIndexed');
 const yesPriceFormatted = computed(() => formatOutcomePrice(prices.value.yes));
 const noPriceFormatted = computed(() => formatOutcomePrice(prices.value.no));
 const yesSplitFormatted = computed(() => formatOutcomeSplit(yesSplit.value));
@@ -280,21 +314,115 @@ const outcomeSplitLabel = computed(
   () =>
     `${t('polkamarkt.outcomes.yes')} ${yesSplitFormatted.value}, ${t('polkamarkt.outcomes.no')} ${noSplitFormatted.value}`
 );
-const canClaimTrader = computed(() => isClaimModeAvailable.value && isConnected.value && isPositiveCodec(claimable.value?.traderPayout));
-const canClaimCreatorFees = computed(() => isClaimModeAvailable.value && isConnected.value && isPositiveCodec(claimable.value?.creatorFees));
+const canClaimTrader = computed(
+  () => isClaimModeAvailable.value && isConnected.value && isPositiveCodec(claimable.value?.traderPayout)
+);
+const canClaimCreatorFees = computed(
+  () => isClaimModeAvailable.value && isConnected.value && isPositiveCodec(claimable.value?.creatorFees)
+);
 const canClaimCreatorLiquidity = computed(
   () => isClaimModeAvailable.value && isConnected.value && isPositiveCodec(claimable.value?.creatorLiquidity)
 );
 const canClaimLp = computed(() =>
-  Boolean(isClaimModeAvailable.value && isConnected.value && props.accountPosition?.lpShares && props.accountPosition.lpShares > 0)
+  Boolean(
+    isClaimModeAvailable.value &&
+    isConnected.value &&
+    props.accountPosition?.lpShares &&
+    props.accountPosition.lpShares > 0
+  )
 );
+
+let quoteRequestId = 0;
 
 function formatCodec(value?: CodecString): string {
   return formatPolkamarktCodec(value || '0');
 }
 
-async function refreshQuote(): Promise<void> {
+function clearTradeQuoteState(): void {
+  quoteRequestId += 1;
   quote.value = null;
+  activeQuoteKey.value = '';
+  networkFee.value = null;
+  error.value = '';
+  quoteLoading.value = Boolean(currentQuoteKey.value);
+}
+
+function isCurrentQuoteRequest(requestId: number, quoteKey: string): boolean {
+  return requestId === quoteRequestId && quoteKey === currentQuoteKey.value;
+}
+
+function setQuoteFailed(): void {
+  error.value = t('polkamarkt.ticket.quoteFailed');
+}
+
+function positiveQuoteOutput(value?: CodecString): CodecString | null {
+  if (isPositiveCodec(value)) return value as CodecString;
+  setQuoteFailed();
+  return null;
+}
+
+function acceptQuote(
+  requestId: number,
+  quoteKey: string,
+  nextQuote: TradeQuote | null,
+  outputs: Array<CodecString | undefined>
+): boolean {
+  if (!isCurrentQuoteRequest(requestId, quoteKey)) return false;
+  if (!nextQuote || outputs.some((value) => !isPositiveCodec(value))) {
+    setQuoteFailed();
+    return false;
+  }
+
+  quote.value = nextQuote;
+  activeQuoteKey.value = quoteKey;
+  return true;
+}
+
+function buildTradeMinimums(): TradeMinimums | null {
+  if (!hasCurrentQuote.value || !quote.value) {
+    setQuoteFailed();
+    return null;
+  }
+
+  if (mode.value === 'buy') {
+    const sharesOut = positiveQuoteOutput((quote.value as BuyQuote).sharesOut);
+    return sharesOut ? { mode: 'buy', minSharesOut: applySlippageMinimum(sharesOut, slippage.value) } : null;
+  }
+
+  if (mode.value === 'sell') {
+    const collateralOut = positiveQuoteOutput((quote.value as SellQuote).collateralOut);
+    return collateralOut
+      ? { mode: 'sell', minCollateralOut: applySlippageMinimum(collateralOut, slippage.value) }
+      : null;
+  }
+
+  if (mode.value === 'flip') {
+    const flipQuote = quote.value as FlipQuote;
+    const collateralReinvested = positiveQuoteOutput(flipQuote.collateralReinvested);
+    const sharesOut = positiveQuoteOutput(flipQuote.sharesOut);
+    return collateralReinvested && sharesOut
+      ? {
+          mode: 'flip',
+          minCollateralOut: applySlippageMinimum(collateralReinvested, slippage.value),
+          minSharesOut: applySlippageMinimum(sharesOut, slippage.value),
+        }
+      : null;
+  }
+
+  if (mode.value === 'liquidity') {
+    const lpSharesOut = positiveQuoteOutput((quote.value as LiquidityQuote).lpSharesOut);
+    return lpSharesOut ? { mode: 'liquidity', minLpShares: applySlippageMinimum(lpSharesOut, slippage.value) } : null;
+  }
+
+  return null;
+}
+
+async function refreshQuote(): Promise<void> {
+  const requestId = quoteRequestId;
+  const requestQuoteKey = currentQuoteKey.value;
+
+  quote.value = null;
+  activeQuoteKey.value = '';
   error.value = '';
   networkFee.value = null;
 
@@ -316,13 +444,18 @@ async function refreshQuote(): Promise<void> {
         outcome: runtimeOutcome.value,
         collateralIn: amountCodec.value,
       });
-      quote.value = nextQuote;
+      if (!nextQuote) {
+        if (isCurrentQuoteRequest(requestId, requestQuoteKey)) setQuoteFailed();
+        return;
+      }
+      if (!acceptQuote(requestId, requestQuoteKey, nextQuote, [nextQuote.sharesOut])) return;
       const fee = await api.polkamarkt.estimateBuyTradeNetworkFee({
         marketId: marketId.value,
         outcome: runtimeOutcome.value,
         collateralIn: amountCodec.value,
-        minSharesOut: applySlippageMinimum(nextQuote?.sharesOut ?? '0', slippage.value),
+        minSharesOut: applySlippageMinimum(nextQuote.sharesOut, slippage.value),
       });
+      if (!isCurrentQuoteRequest(requestId, requestQuoteKey)) return;
       networkFee.value = isPositiveCodec(fee) ? fee : null;
     } else if (mode.value === 'sell') {
       const nextQuote = await api.polkamarkt.quoteSellTrade({
@@ -330,13 +463,18 @@ async function refreshQuote(): Promise<void> {
         outcome: runtimeOutcome.value,
         sharesIn: amountCodec.value,
       });
-      quote.value = nextQuote;
+      if (!nextQuote) {
+        if (isCurrentQuoteRequest(requestId, requestQuoteKey)) setQuoteFailed();
+        return;
+      }
+      if (!acceptQuote(requestId, requestQuoteKey, nextQuote, [nextQuote.collateralOut])) return;
       const fee = await api.polkamarkt.estimateSellTradeNetworkFee({
         marketId: marketId.value,
         outcome: runtimeOutcome.value,
         sharesIn: amountCodec.value,
-        minCollateralOut: applySlippageMinimum(nextQuote?.collateralOut ?? '0', slippage.value),
+        minCollateralOut: applySlippageMinimum(nextQuote.collateralOut, slippage.value),
       });
+      if (!isCurrentQuoteRequest(requestId, requestQuoteKey)) return;
       networkFee.value = isPositiveCodec(fee) ? fee : null;
     } else if (mode.value === 'flip') {
       const nextQuote = await api.polkamarkt.quoteFlipPosition({
@@ -344,32 +482,47 @@ async function refreshQuote(): Promise<void> {
         fromOutcome: runtimeOutcome.value,
         sharesIn: amountCodec.value,
       });
-      quote.value = nextQuote;
+      if (!nextQuote) {
+        if (isCurrentQuoteRequest(requestId, requestQuoteKey)) setQuoteFailed();
+        return;
+      }
+      if (!acceptQuote(requestId, requestQuoteKey, nextQuote, [nextQuote.collateralReinvested, nextQuote.sharesOut]))
+        return;
       const fee = await api.polkamarkt.estimateFlipNetworkFee({
         marketId: marketId.value,
         fromOutcome: runtimeOutcome.value,
         sharesIn: amountCodec.value,
-        minCollateralOut: applySlippageMinimum(nextQuote?.collateralReinvested ?? '0', slippage.value),
-        minSharesOut: applySlippageMinimum(nextQuote?.sharesOut ?? '0', slippage.value),
+        minCollateralOut: applySlippageMinimum(nextQuote.collateralReinvested, slippage.value),
+        minSharesOut: applySlippageMinimum(nextQuote.sharesOut, slippage.value),
       });
+      if (!isCurrentQuoteRequest(requestId, requestQuoteKey)) return;
       networkFee.value = isPositiveCodec(fee) ? fee : null;
     } else if (mode.value === 'liquidity') {
       const nextQuote = await api.polkamarkt.quoteAddLiquidity({
         marketId: marketId.value,
         collateralAmount: amountCodec.value,
       });
-      quote.value = nextQuote;
+      if (!nextQuote) {
+        if (isCurrentQuoteRequest(requestId, requestQuoteKey)) setQuoteFailed();
+        return;
+      }
+      if (!acceptQuote(requestId, requestQuoteKey, nextQuote, [nextQuote.lpSharesOut])) return;
       const fee = await api.polkamarkt.estimateAddLiquidityNetworkFee({
         marketId: marketId.value,
         collateralAmount: amountCodec.value,
-        minLpShares: applySlippageMinimum(nextQuote?.lpSharesOut ?? '0', slippage.value),
+        minLpShares: applySlippageMinimum(nextQuote.lpSharesOut, slippage.value),
       });
+      if (!isCurrentQuoteRequest(requestId, requestQuoteKey)) return;
       networkFee.value = isPositiveCodec(fee) ? fee : null;
     }
   } catch (err) {
-    error.value = err instanceof Error ? err.message : t('polkamarkt.ticket.quoteFailed');
+    if (isCurrentQuoteRequest(requestId, requestQuoteKey)) {
+      error.value = err instanceof Error ? err.message : t('polkamarkt.ticket.quoteFailed');
+    }
   } finally {
-    quoteLoading.value = false;
+    if (isCurrentQuoteRequest(requestId, requestQuoteKey)) {
+      quoteLoading.value = false;
+    }
   }
 }
 
@@ -407,38 +560,37 @@ async function submit(): Promise<void> {
   }
   if (submitDisabled.value || (!marketId.value && marketId.value !== 0)) return;
 
+  const minimums = buildTradeMinimums();
+  if (!minimums) return;
+
   await withNotifications(async () => {
-    if (mode.value === 'buy') {
-      const buyQuote = quote.value as BuyQuote | null;
+    if (minimums.mode === 'buy') {
       await api.polkamarkt.submitBuyTrade({
         marketId: marketId.value!,
         outcome: runtimeOutcome.value,
         collateralIn: amountCodec.value,
-        minSharesOut: applySlippageMinimum(buyQuote?.sharesOut ?? '0', slippage.value),
+        minSharesOut: minimums.minSharesOut,
       });
-    } else if (mode.value === 'sell') {
-      const sellQuote = quote.value as SellQuote | null;
+    } else if (minimums.mode === 'sell') {
       await api.polkamarkt.submitSellTrade({
         marketId: marketId.value!,
         outcome: runtimeOutcome.value,
         sharesIn: amountCodec.value,
-        minCollateralOut: applySlippageMinimum(sellQuote?.collateralOut ?? '0', slippage.value),
+        minCollateralOut: minimums.minCollateralOut,
       });
-    } else if (mode.value === 'flip') {
-      const flipQuote = quote.value as FlipQuote | null;
+    } else if (minimums.mode === 'flip') {
       await api.polkamarkt.flipPosition({
         marketId: marketId.value!,
         fromOutcome: runtimeOutcome.value,
         sharesIn: amountCodec.value,
-        minCollateralOut: applySlippageMinimum(flipQuote?.collateralReinvested ?? '0', slippage.value),
-        minSharesOut: applySlippageMinimum(flipQuote?.sharesOut ?? '0', slippage.value),
+        minCollateralOut: minimums.minCollateralOut,
+        minSharesOut: minimums.minSharesOut,
       });
-    } else if (mode.value === 'liquidity') {
-      const liquidityQuote = quote.value as LiquidityQuote | null;
+    } else if (minimums.mode === 'liquidity') {
       await api.polkamarkt.addLiquidity({
         marketId: marketId.value!,
         collateralAmount: amountCodec.value,
-        minLpShares: applySlippageMinimum(liquidityQuote?.lpSharesOut ?? '0', slippage.value),
+        minLpShares: minimums.minLpShares,
       });
     }
   });
@@ -501,6 +653,7 @@ watch(
   [marketId, mode, outcome, amount, slippage, isConnected, accountAddress],
   () => {
     clearTimeout(quoteTimer);
+    clearTradeQuoteState();
     quoteTimer = setTimeout(() => void refreshQuote(), 250);
   },
   { immediate: true }
@@ -511,6 +664,7 @@ watch(
   () => {
     amount.value = '';
     quote.value = null;
+    activeQuoteKey.value = '';
     claimable.value = null;
     networkFee.value = null;
     error.value = '';

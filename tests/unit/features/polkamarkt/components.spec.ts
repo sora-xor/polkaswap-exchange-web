@@ -124,6 +124,7 @@ vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
   }),
 }));
 
+import { KUSD, XOR } from '@/lib/substrate/sdk/assets/consts';
 import CreateMarketDialog from '@/features/polkamarkt/components/CreateMarketDialog.vue';
 import MarketDetail from '@/features/polkamarkt/components/MarketDetail.vue';
 import MarketList from '@/features/polkamarkt/components/MarketList.vue';
@@ -193,11 +194,29 @@ describe('polkamarkt components', () => {
     mocks.connectSoraWallet.mockReset();
     mocks.withNotifications.mockClear();
     mocks.walletStore.isLoggedIn = true;
+    mocks.walletStore.accountAssetsAddressTable[KUSD.address] = {
+      balance: { transferable: '1000000000000000000000000000000' },
+    };
+    mocks.walletStore.accountAssetsAddressTable[XOR.address] = {
+      balance: { transferable: '1000000000000000000000000000000' },
+    };
     mocks.api.polkamarkt.estimateMarketCreationFee.mockClear().mockResolvedValue({
       totalFee: '1',
       conditionFee: '1',
       marketFee: '0',
     });
+    mocks.api.polkamarkt.quoteBuyTrade.mockReset();
+    mocks.api.polkamarkt.quoteSellTrade.mockReset();
+    mocks.api.polkamarkt.quoteAddLiquidity.mockReset();
+    mocks.api.polkamarkt.quoteFlipPosition.mockReset();
+    mocks.api.polkamarkt.estimateBuyTradeNetworkFee.mockReset().mockResolvedValue('1');
+    mocks.api.polkamarkt.estimateSellTradeNetworkFee.mockReset().mockResolvedValue('1');
+    mocks.api.polkamarkt.estimateFlipNetworkFee.mockReset().mockResolvedValue('1');
+    mocks.api.polkamarkt.estimateAddLiquidityNetworkFee.mockReset().mockResolvedValue('1');
+    mocks.api.polkamarkt.submitBuyTrade.mockReset();
+    mocks.api.polkamarkt.submitSellTrade.mockReset();
+    mocks.api.polkamarkt.flipPosition.mockReset();
+    mocks.api.polkamarkt.addLiquidity.mockReset();
     mocks.api.polkamarkt.getClaimableInfo.mockReset().mockResolvedValue({
       marketId: 1,
       account: 'cnAccount',
@@ -314,7 +333,9 @@ describe('polkamarkt components', () => {
 
     await wrapper.get('[data-testid="market-share-copy"]').trigger('click');
 
-    expect(writeText).toHaveBeenCalledWith(expect.stringContaining('Trade on Polkaswap: https://polkaswap.io/#/polkamarkt/1'));
+    expect(writeText).toHaveBeenCalledWith(
+      expect.stringContaining('Trade on Polkaswap: https://polkaswap.io/#/polkamarkt/1')
+    );
   });
 
   it('creates an exact-size PNG share image', async () => {
@@ -409,7 +430,9 @@ describe('polkamarkt components', () => {
     expect(resolvedWrapper.find('.trade-ticket__tabs').text()).not.toContain('polkamarkt.modes.buy');
     expect(resolvedWrapper.find('.trade-ticket__claim-grid').exists()).toBe(true);
 
-    const claimTab = resolvedWrapper.findAll('.trade-ticket__tabs button').find((button) => button.text().includes('polkamarkt.modes.claim'));
+    const claimTab = resolvedWrapper
+      .findAll('.trade-ticket__tabs button')
+      .find((button) => button.text().includes('polkamarkt.modes.claim'));
     expect(claimTab).toBeDefined();
     await claimTab?.trigger('click');
     expect(resolvedWrapper.find('.trade-ticket__claim-grid').exists()).toBe(true);
@@ -442,6 +465,138 @@ describe('polkamarkt components', () => {
     await submit.trigger('click');
 
     expect(mocks.connectSoraWallet).toHaveBeenCalled();
+  });
+
+  it('blocks trade signing until the current debounced quote is available', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '0',
+        noShares: '0',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        creatorFees: '0',
+        creatorLiquidity: '0',
+        isCreator: false,
+      });
+      mocks.api.polkamarkt.quoteBuyTrade.mockResolvedValueOnce({
+        marketId: 1,
+        outcome: 'Yes',
+        collateralIn: '1000000000000000000',
+        feeAmount: '0',
+        pricingCollateral: '1000000000000000000',
+        sharesOut: '2000000000000000000',
+      });
+
+      const wrapper = mount(TradeTicket, {
+        props: { market },
+        global: { stubs: globalStubs },
+      });
+
+      await wrapper.get('.trade-field--amount input').setValue('1');
+
+      expect(wrapper.get('.trade-ticket__submit').attributes('disabled')).toBeDefined();
+      expect(wrapper.text()).toContain('polkamarkt.ticket.refreshingQuote');
+      expect(mocks.api.polkamarkt.submitBuyTrade).not.toHaveBeenCalled();
+
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(mocks.api.polkamarkt.estimateBuyTradeNetworkFee).toHaveBeenCalled());
+      await vi.waitFor(() => expect(wrapper.get('.trade-ticket__submit').text()).toContain('polkamarkt.actions.buy'));
+
+      await wrapper.get('.trade-ticket__submit').trigger('click');
+
+      expect(mocks.api.polkamarkt.submitBuyTrade).toHaveBeenCalledWith(
+        expect.objectContaining({
+          collateralIn: '1000000000000000000',
+          minSharesOut: '1990000000000000000',
+        })
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not sign trades when the quote RPC returns no output', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '0',
+        noShares: '0',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        creatorFees: '0',
+        creatorLiquidity: '0',
+        isCreator: false,
+      });
+      mocks.api.polkamarkt.quoteBuyTrade.mockResolvedValueOnce(null);
+
+      const wrapper = mount(TradeTicket, {
+        props: { market },
+        global: { stubs: globalStubs },
+      });
+
+      await wrapper.get('.trade-field--amount input').setValue('1');
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(wrapper.text()).toContain('polkamarkt.ticket.quoteFailed'));
+
+      expect(wrapper.get('.trade-ticket__submit').attributes('disabled')).toBeDefined();
+      await wrapper.get('.trade-ticket__submit').trigger('click');
+
+      expect(mocks.withNotifications).not.toHaveBeenCalled();
+      expect(mocks.api.polkamarkt.submitBuyTrade).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('invalidates a resolved quote when trade inputs change before submit', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '0',
+        noShares: '0',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        creatorFees: '0',
+        creatorLiquidity: '0',
+        isCreator: false,
+      });
+      mocks.api.polkamarkt.quoteBuyTrade.mockResolvedValueOnce({
+        marketId: 1,
+        outcome: 'Yes',
+        collateralIn: '1000000000000000000',
+        feeAmount: '0',
+        pricingCollateral: '1000000000000000000',
+        sharesOut: '2000000000000000000',
+      });
+
+      const wrapper = mount(TradeTicket, {
+        props: { market },
+        global: { stubs: globalStubs },
+      });
+
+      await wrapper.get('.trade-field--amount input').setValue('1');
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(mocks.api.polkamarkt.estimateBuyTradeNetworkFee).toHaveBeenCalled());
+      await vi.waitFor(() => expect(wrapper.get('.trade-ticket__submit').text()).toContain('polkamarkt.actions.buy'));
+
+      await wrapper.get('.trade-field--amount input').setValue('2');
+
+      expect(wrapper.get('.trade-ticket__submit').attributes('disabled')).toBeDefined();
+      await wrapper.get('.trade-ticket__submit').trigger('click');
+      expect(mocks.api.polkamarkt.submitBuyTrade).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('renders the create wizard with metadata and fee preview controls', () => {

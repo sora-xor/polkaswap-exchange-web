@@ -20,6 +20,14 @@ function createRoot() {
   const flipTx = tx('flip');
   const liquidityTx = tx('liquidity');
   const claimTx = tx('claim');
+  const history: Record<string, any> = {};
+  const conditionTxId = '0xcondition';
+  const marketTxId = '0xmarket';
+  const blockId = '0xblock';
+  const phase = (index: number) => ({
+    isApplyExtrinsic: true,
+    asApplyExtrinsic: { toNumber: () => index },
+  });
 
   const root = {
     account: { pair: { address: 'cnAccount' } },
@@ -85,10 +93,52 @@ function createRoot() {
       },
     },
     getTransactionFee: vi.fn().mockResolvedValue('123'),
-    submitExtrinsic: vi.fn().mockResolvedValue(undefined),
+    getHistory: vi.fn((id: string) => history[id] ?? null),
+    system: {
+      getExtrinsicsFromBlock: vi
+        .fn()
+        .mockResolvedValue([{ hash: { toString: () => conditionTxId } }, { hash: { toString: () => marketTxId } }]),
+      getBlockEvents: vi.fn().mockResolvedValue([
+        {
+          phase: phase(0),
+          event: {
+            section: 'polkamarkt',
+            method: 'ConditionCreated',
+            data: { toJSON: () => ({ condition_id: '42' }) },
+          },
+        },
+        {
+          phase: phase(1),
+          event: {
+            section: 'polkamarkt',
+            method: 'MarketCreated',
+            data: { toJSON: () => ({ market_id: '51', condition_id: '42' }) },
+          },
+        },
+      ]),
+    },
+    submitExtrinsic: vi.fn(async (submittedTx, _pair, historyData) => {
+      const txId = submittedTx === conditionTx ? conditionTxId : marketTxId;
+      history[historyData.id] = {
+        ...historyData,
+        status: 'finalized',
+        blockId,
+        txId,
+      };
+    }),
   } as any;
 
-  return { root, module: new PolkamarktModule(root), conditionTx, marketTx, buyTx, sellTx, flipTx, liquidityTx, claimTx };
+  return {
+    root,
+    module: new PolkamarktModule(root),
+    conditionTx,
+    marketTx,
+    buyTx,
+    sellTx,
+    flipTx,
+    liquidityTx,
+    claimTx,
+  };
 }
 
 describe('PolkamarktModule', () => {
@@ -129,7 +179,7 @@ describe('PolkamarktModule', () => {
     });
   });
 
-  it('creates condition and market with fallback ids and history metadata', async () => {
+  it('creates condition and market with finalized event ids and history metadata', async () => {
     const { root, module, conditionTx, marketTx } = createRoot();
 
     await expect(
@@ -139,22 +189,43 @@ describe('PolkamarktModule', () => {
         resolutionSource: 'Root',
         category: 'Crypto',
       })
-    ).resolves.toEqual({ conditionId: 9 });
-    expect(root.submitExtrinsic).toHaveBeenCalledWith(conditionTx, root.account.pair, {
-      type: Operation.PolkamarktCreateCondition,
-    });
+    ).resolves.toEqual({ conditionId: 42 });
+    expect(root.submitExtrinsic).toHaveBeenCalledWith(
+      conditionTx,
+      root.account.pair,
+      expect.objectContaining({
+        id: expect.any(String),
+        type: Operation.PolkamarktCreateCondition,
+      })
+    );
 
-    await expect(module.createMarket({ conditionId: 9, closeBlock: 10_000, seedLiquidity: '100000000000000000000' }))
-      .resolves.toMatchObject({ conditionId: 9, marketId: 14 });
+    await expect(
+      module.createMarket({ conditionId: 42, closeBlock: 10_000, seedLiquidity: '100000000000000000000' })
+    ).resolves.toMatchObject({ conditionId: 42, marketId: 51 });
     expect(root.submitExtrinsic).toHaveBeenLastCalledWith(
       marketTx,
       root.account.pair,
       expect.objectContaining({
+        id: expect.any(String),
         type: Operation.PolkamarktCreateMarket,
         amount: '100',
         symbol: 'KUSD',
       })
     );
+  });
+
+  it('fails condition creation when the finalized extrinsic has no condition-created event', async () => {
+    const { root, module } = createRoot();
+    root.system.getBlockEvents.mockResolvedValueOnce([]);
+
+    await expect(
+      module.createCondition({
+        question: 'Will missing events block unsafe retries?',
+        oracle: 'SORA governance',
+        resolutionSource: 'Root',
+        category: 'Crypto',
+      })
+    ).rejects.toThrow('Finalized Polkamarkt transaction did not emit ConditionCreated.conditionId.');
   });
 
   it('submits trade, liquidity, claim, and fee-estimate calls with runtime parameters', async () => {
@@ -184,8 +255,9 @@ describe('PolkamarktModule', () => {
       expect.objectContaining({ type: Operation.PolkamarktClaimMarket })
     );
 
-    await expect(module.estimateBuyTradeNetworkFee({ marketId: 7, outcome: 'Yes', collateralIn: '100', minSharesOut: '90' }))
-      .resolves.toBe('123');
+    await expect(
+      module.estimateBuyTradeNetworkFee({ marketId: 7, outcome: 'Yes', collateralIn: '100', minSharesOut: '90' })
+    ).resolves.toBe('123');
   });
 
   it('returns claimable trader, creator, and liquidity values', async () => {

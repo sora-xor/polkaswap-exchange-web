@@ -3,7 +3,7 @@ import { FPNumber } from '@sora-substrate/math';
 
 import { KUSD } from '../assets/consts';
 import { Messages } from '../logger';
-import { Operation } from '../types';
+import { Operation, TransactionStatus } from '../types';
 
 import type { Api } from '../api';
 import type { HistoryItem } from '../types';
@@ -52,6 +52,12 @@ type RawRpcResponse = {
   };
 };
 type RuntimeEventRecord = {
+  phase?: {
+    isApplyExtrinsic?: boolean;
+    asApplyExtrinsic?: {
+      toNumber?: () => number;
+    };
+  };
   event: {
     section: string;
     method: string;
@@ -60,6 +66,8 @@ type RuntimeEventRecord = {
 };
 
 const RAW_RPC_TIMEOUT_MS = 10_000;
+const FINALIZED_HISTORY_TIMEOUT_MS = 30_000;
+const FINALIZED_HISTORY_POLL_MS = 250;
 const ZERO_CODEC = '0';
 let rawRpcId = 0;
 
@@ -120,12 +128,13 @@ export const eventNumber = (
   method: string,
   fieldName: string
 ): number | undefined => {
-  const targetMethod = method.toLowerCase();
+  const targetMethod = method.replace(/_/g, '').toLowerCase();
   const targetField = fieldName.toLowerCase();
 
   for (const record of events ?? []) {
     const { event } = record;
-    if (event.section.toLowerCase() !== 'polkamarkt' || event.method.toLowerCase() !== targetMethod) {
+    const eventMethod = event.method.replace(/_/g, '').toLowerCase();
+    if (event.section.toLowerCase() !== 'polkamarkt' || eventMethod !== targetMethod) {
       continue;
     }
 
@@ -209,9 +218,7 @@ const rawRpcParamJson = (value: RawRpcPrimitive): string => {
 };
 
 const rawRpcPayload = (id: number, method: string, params: RawRpcPrimitive[]): string =>
-  `{"jsonrpc":"2.0","id":${id},"method":${JSON.stringify(method)},"params":[${params
-    .map(rawRpcParamJson)
-    .join(',')}]}`;
+  `{"jsonrpc":"2.0","id":${id},"method":${JSON.stringify(method)},"params":[${params.map(rawRpcParamJson).join(',')}]}`;
 
 const rawRpcError = (method: string, error: RawRpcResponse['error']): Error => {
   const message = error?.message ?? 'RPC error';
@@ -289,6 +296,31 @@ const codecToNatural = (value: CodecString, decimals = KUSD.decimals): string =>
 const addCodecStrings = (...values: CodecString[]): CodecString =>
   values.reduce((sum, value) => (BigInt(sum || ZERO_CODEC) + BigInt(value || ZERO_CODEC)).toString(), ZERO_CODEC);
 
+const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
+
+const uniqueHistoryId = (operation: Operation): string =>
+  `${operation}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+
+const readHistoryError = (history: HistoryItem): string | undefined => {
+  const errorMessage = (history as { errorMessage?: unknown }).errorMessage;
+  if (!errorMessage) return undefined;
+  if (typeof errorMessage === 'string') return errorMessage;
+  if (typeof errorMessage === 'object') {
+    const record = errorMessage as Record<string, unknown>;
+    const section = typeof record.section === 'string' ? record.section : '';
+    const name = typeof record.name === 'string' ? record.name : '';
+    return section && name ? `${section}.${name}` : JSON.stringify(record);
+  }
+  return String(errorMessage);
+};
+
+const eventPhaseIndex = (record: RuntimeEventRecord): number | undefined => {
+  const phase = record.phase;
+  if (!phase?.isApplyExtrinsic) return undefined;
+  const value = phase.asApplyExtrinsic?.toNumber?.();
+  return Number.isSafeInteger(value) && value >= 0 ? value : undefined;
+};
+
 export class PolkamarktModule<T> {
   constructor(private readonly root: Api<T>) {}
 
@@ -337,6 +369,65 @@ export class PolkamarktModule<T> {
   }
 
   /**
+   * Waits for the known creation history row to be finalized before reading its finalized block events.
+   */
+  private async waitForFinalizedHistory(historyId: string): Promise<HistoryItem> {
+    const startedAt = Date.now();
+
+    while (Date.now() - startedAt < FINALIZED_HISTORY_TIMEOUT_MS) {
+      const history = this.root.getHistory(historyId);
+      if (history?.status === TransactionStatus.Finalized) return history;
+      if (history?.status === TransactionStatus.Error) {
+        throw new Error(readHistoryError(history) ?? 'Polkamarkt creation transaction failed.');
+      }
+      await delay(FINALIZED_HISTORY_POLL_MS);
+    }
+
+    throw new Error('Timed out waiting for finalized Polkamarkt creation transaction.');
+  }
+
+  /**
+   * Reads events belonging to the finalized extrinsic recorded in transaction history.
+   */
+  private async finalizedExtrinsicEvents(history: HistoryItem): Promise<RuntimeEventRecord[]> {
+    if (!history.blockId || !history.txId) {
+      throw new Error('Finalized Polkamarkt creation history is missing block or transaction hash.');
+    }
+
+    const extrinsics = await this.root.system.getExtrinsicsFromBlock(history.blockId);
+    const txIndex = extrinsics.findIndex((extrinsic) => extrinsic.hash.toString() === history.txId);
+    if (txIndex < 0) {
+      throw new Error('Finalized Polkamarkt creation extrinsic was not found in its block.');
+    }
+
+    const events = (await this.root.system.getBlockEvents(history.blockId)) as RuntimeEventRecord[];
+    return events.filter((record) => eventPhaseIndex(record) === txIndex);
+  }
+
+  /**
+   * Submits a creation transaction and derives the runtime id from its finalized Polkamarkt event.
+   */
+  private async submitCreationAndReadEventId(
+    tx: SubmittableExtrinsic<'promise'>,
+    historyData: HistoryItem,
+    eventMethod: string,
+    eventField: string
+  ): Promise<number> {
+    const historyId = uniqueHistoryId(historyData.type as Operation);
+
+    await this.root.submitExtrinsic(tx, this.root.account!.pair, { ...historyData, id: historyId });
+
+    const history = await this.waitForFinalizedHistory(historyId);
+    const events = await this.finalizedExtrinsicEvents(history);
+    const eventId = eventNumber(events, eventMethod, eventField);
+    if (eventId === undefined) {
+      throw new Error(`Finalized Polkamarkt transaction did not emit ${eventMethod}.${eventField}.`);
+    }
+
+    return eventId;
+  }
+
+  /**
    * Reads the next condition id before submitting a condition creation transaction.
    */
   public async readNextConditionId(): Promise<number | undefined> {
@@ -373,7 +464,8 @@ export class PolkamarktModule<T> {
     assert(Number.isSafeInteger(params.closeBlock) && params.closeBlock > 0, 'Close block must be a positive integer.');
     assert(BigInt(params.seedLiquidity || ZERO_CODEC) > 0n, 'Seed liquidity must be greater than zero.');
 
-    const createConditionWithDetails = this.txApi.create_condition_with_details ?? this.txApi.createConditionWithDetails;
+    const createConditionWithDetails =
+      this.txApi.create_condition_with_details ?? this.txApi.createConditionWithDetails;
     const createCondition = this.txApi.create_condition ?? this.txApi.createCondition;
     if (!(createConditionWithDetails || createCondition)) {
       throw new Error('Connected runtime does not expose polkamarkt.create_condition.');
@@ -410,26 +502,27 @@ export class PolkamarktModule<T> {
   public async createCondition(params: CreateConditionParams): Promise<CreateConditionResult> {
     assert(this.root.account, Messages.connectWallet);
 
-    const createConditionWithDetails = this.txApi.create_condition_with_details ?? this.txApi.createConditionWithDetails;
+    const createConditionWithDetails =
+      this.txApi.create_condition_with_details ?? this.txApi.createConditionWithDetails;
     const createCondition = this.txApi.create_condition ?? this.txApi.createCondition;
     if (!(createConditionWithDetails || createCondition)) {
       throw new Error('Connected runtime does not expose polkamarkt.create_condition.');
     }
 
-    const expectedConditionId = await this.readNextConditionId();
     const conditionInput = this.buildConditionInput(params);
     const conditionDetails = this.buildConditionDetailsInput(params.category);
     const tx = createConditionWithDetails
       ? createConditionWithDetails(conditionInput, conditionDetails)
       : createCondition!(conditionInput);
 
-    await this.root.submitExtrinsic(tx, this.root.account.pair, { type: Operation.PolkamarktCreateCondition });
+    const conditionId = await this.submitCreationAndReadEventId(
+      tx,
+      { type: Operation.PolkamarktCreateCondition },
+      'ConditionCreated',
+      'conditionId'
+    );
 
-    if (expectedConditionId === undefined) {
-      throw new Error('Condition was submitted, but the runtime did not expose nextConditionId.');
-    }
-
-    return { conditionId: expectedConditionId };
+    return { conditionId };
   }
 
   /**
@@ -441,20 +534,24 @@ export class PolkamarktModule<T> {
     assert(Number.isSafeInteger(params.closeBlock) && params.closeBlock > 0, 'Close block must be a positive integer.');
     assert(BigInt(params.seedLiquidity || ZERO_CODEC) > 0n, 'Seed liquidity must be greater than zero.');
 
-    const marketId = await this.readNextMarketId();
     const tx = this.getTxFactory('create_market', 'createMarket')(
       params.conditionId,
       params.closeBlock,
       params.seedLiquidity
     );
 
-    await this.root.submitExtrinsic(tx, this.root.account.pair, {
-      type: Operation.PolkamarktCreateMarket,
-      amount: codecToNatural(params.seedLiquidity),
-      symbol: KUSD.symbol,
-      assetAddress: KUSD.address,
-      decimals: KUSD.decimals,
-    });
+    const marketId = await this.submitCreationAndReadEventId(
+      tx,
+      {
+        type: Operation.PolkamarktCreateMarket,
+        amount: codecToNatural(params.seedLiquidity),
+        symbol: KUSD.symbol,
+        assetAddress: KUSD.address,
+        decimals: KUSD.decimals,
+      },
+      'MarketCreated',
+      'marketId'
+    );
 
     return {
       conditionId: params.conditionId,
@@ -526,11 +623,7 @@ export class PolkamarktModule<T> {
     assert(BigInt(params.collateralAmount || ZERO_CODEC) > 0n, 'Liquidity amount must be greater than zero.');
 
     return this.root.submitExtrinsic(
-      this.getTxFactory('add_liquidity', 'addLiquidity')(
-        params.marketId,
-        params.collateralAmount,
-        params.minLpShares
-      ),
+      this.getTxFactory('add_liquidity', 'addLiquidity')(params.marketId, params.collateralAmount, params.minLpShares),
       this.root.account.pair,
       {
         type: Operation.PolkamarktAddLiquidity,
@@ -625,9 +718,7 @@ export class PolkamarktModule<T> {
   public async getClaimableInfo(account: string, marketId: number) {
     const rpc = this.rpcApi.claimable;
     const record = rpcRecord(
-      rpc
-        ? await rpc(account, marketId)
-        : await rawJsonRpc(this.endpoint, 'polkamarkt_claimable', [account, marketId])
+      rpc ? await rpc(account, marketId) : await rawJsonRpc(this.endpoint, 'polkamarkt_claimable', [account, marketId])
     );
     if (!Object.keys(record).length) return null;
     return {
@@ -671,11 +762,7 @@ export class PolkamarktModule<T> {
 
   public estimateAddLiquidityNetworkFee(params: AddLiquidityParams): Promise<CodecString> {
     return this.root.getTransactionFee(
-      this.getTxFactory('add_liquidity', 'addLiquidity')(
-        params.marketId,
-        params.collateralAmount,
-        params.minLpShares
-      )
+      this.getTxFactory('add_liquidity', 'addLiquidity')(params.marketId, params.collateralAmount, params.minLpShares)
     );
   }
 
