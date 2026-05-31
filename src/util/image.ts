@@ -108,6 +108,10 @@ const ALLOWED_ICON_MIME_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp'
 
 const DATA_URI_BASE64_REGEX = /^data:(image\/[a-z0-9+.-]+);base64,([A-Za-z0-9+/=]+)$/i;
 const DATA_URI_UTF8_SVG_REGEX = /^data:(image\/svg\+xml)(?:;charset=[a-z0-9-]+|;utf8)?,(.+)$/i;
+const RELATIVE_ICON_PATH_REGEX = /^(?!\/\/)[A-Za-z0-9._~!$&*+,;=:@/%?#-]+$/;
+const ICON_SCHEME_REGEX = /^[a-z][a-z\d+.-]*:/i;
+const RELATIVE_ICON_PATH_TRAVERSAL_REGEX = /(?:^|\/)\.\.(?:\/|$)/;
+const ENCODED_LINE_BREAK_REGEX = /%0[ad]/i;
 
 const decodeBase64 = (value: string): string => {
   try {
@@ -230,6 +234,27 @@ const sanitizeDataUri = (dataUri: string): string => {
 };
 
 /**
+ * Accepts Vite-generated local asset paths while rejecting protocol-relative,
+ * traversal, and CSS-breaking values.
+ */
+const sanitizeRelativeIconPath = (iconPath: string): string => {
+  if (ICON_SCHEME_REGEX.test(iconPath)) return '';
+  if (!RELATIVE_ICON_PATH_REGEX.test(iconPath)) return '';
+  if (ENCODED_LINE_BREAK_REGEX.test(iconPath)) return '';
+
+  try {
+    const decodedPath = decodeURIComponent(iconPath);
+    if (decodedPath.startsWith('//')) return '';
+    if (RELATIVE_ICON_PATH_TRAVERSAL_REGEX.test(decodedPath)) return '';
+    if (/["'()<>\\\s]/.test(decodedPath)) return '';
+  } catch {
+    return '';
+  }
+
+  return iconPath;
+};
+
+/**
  * Ensures the provided icon URL or data URI is safe to embed. Returns an empty
  * string when the input is considered unsafe.
  */
@@ -248,9 +273,8 @@ export const sanitizeIconSource = (icon: Nullable<string>): string => {
     if (/["'()\s]/.test(trimmed)) return '';
 
     return url.href;
-  } catch (error) {
-    console.error(error);
-    return '';
+  } catch {
+    return sanitizeRelativeIconPath(trimmed);
   }
 };
 

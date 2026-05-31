@@ -171,6 +171,7 @@ test('supports sidebar navigation across major routes', async ({ page }) => {
   const navTargets = [
     'Swap',
     'Trade',
+    'Polkamarkt',
     'Rewards',
     'Pool',
     'Staking',

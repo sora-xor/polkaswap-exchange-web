@@ -20,6 +20,27 @@ type EthTxParams = {
   request?: EthApprovedRequest;
 };
 
+/**
+ * Guards approved-request data before constructing wallet calldata.
+ */
+const assertOutgoingRequest = (request: EthApprovedRequest): void => {
+  const currencyTypes = Object.values(EthCurrencyType);
+
+  if (!currencyTypes.includes(request.currencyType)) {
+    throw new Error(`[Bridge]: Unsupported Ethereum bridge currency type "${request.currencyType}"`);
+  }
+
+  if (!(request.from && request.hash)) {
+    throw new Error('[Bridge]: Approved Ethereum bridge request is missing required fields');
+  }
+
+  const signatureLength = request.v?.length;
+
+  if (!signatureLength || request.r?.length !== signatureLength || request.s?.length !== signatureLength) {
+    throw new Error('[Bridge]: Approved Ethereum bridge request has malformed signatures');
+  }
+};
+
 export const isOutgoingTx = (tx: EthHistory): boolean => {
   return tx.type === Operation.EthBridgeOutgoing;
 };
@@ -244,10 +265,20 @@ export async function getOutgoingEvmTransactionData({
   request,
 }: EthTxParams) {
   if (!request) throw new Error('request is required!');
+  assertOutgoingRequest(request);
 
   const symbol = asset.symbol as KnownEthBridgeAsset;
   const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
-  const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
+  const isEthereumCurrency = request.currencyType === EthCurrencyType.TokenAddress;
+  const useLegacyPeerMinting = isValOrXor && isEthereumCurrency;
+  const bridgeAsset: KnownEthBridgeAsset = useLegacyPeerMinting ? symbol : KnownEthBridgeAsset.Other;
+  const bridgeContractMethod = isEthereumCurrency ? 'receiveByEthereumAssetAddress' : 'receiveBySidechainAssetId';
+  const method = useLegacyPeerMinting ? 'mintTokensByPeers' : bridgeContractMethod;
+  const bridgeAssetAddress = useLegacyPeerMinting || isEthereumCurrency ? asset.externalAddress : asset.address;
+
+  if (!bridgeAssetAddress) {
+    throw new Error('[Bridge]: Asset is missing required Ethereum bridge address data');
+  }
 
   const contractAddress = getContractAddress(bridgeAsset) as string;
   const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
@@ -255,20 +286,13 @@ export async function getOutgoingEvmTransactionData({
 
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
-  const isEthereumCurrency = request.currencyType === EthCurrencyType.TokenAddress;
-  const bridgeContractMethod = isEthereumCurrency ? 'receiveByEthereumAssetAddress' : 'receiveBySidechainAssetId';
-
-  const method = isValOrXor ? 'mintTokensByPeers' : bridgeContractMethod;
-
   const args: Array<any> = [
-    isValOrXor || isEthereumCurrency
-      ? asset.externalAddress // address tokenAddress OR
-      : asset.address, // bytes32 assetId
+    bridgeAssetAddress, // address tokenAddress OR bytes32 assetId
     amount, // uint256 amount
     recipient, // address beneficiary
   ];
   args.push(
-    ...(isValOrXor
+    ...(useLegacyPeerMinting
       ? [
           request.hash, // bytes32 txHash
           request.v, // uint8[] memory v

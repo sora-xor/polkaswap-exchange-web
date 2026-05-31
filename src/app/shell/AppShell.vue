@@ -340,6 +340,7 @@ html[dir='rtl'] {
 
 @include desktop {
   .app-main--swap,
+  .app-main--polkamarkt,
   .app-main--vaults,
   .app-main--vaultdetails,
   .app-main--assetowner,

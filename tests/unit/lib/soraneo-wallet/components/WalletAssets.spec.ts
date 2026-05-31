@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { mount } from '@vue/test-utils';
 import { api } from '@sora-substrate/sdk';
 import { ref } from 'vue';
 
@@ -171,6 +172,109 @@ describe('Wallet WalletAssets', () => {
 
     expect(state.getBalance(asset)).toBe('0');
     expect(formattedAmountMock.formatCodecNumber).toHaveBeenCalledWith('0', 18);
+  });
+
+  it('normalizes parseable codec balances so the token amount renders with its fiat value', () => {
+    const state = (WalletAssets as any).setup({}, { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} });
+    const transferable = '218116474998731886993';
+    const asset = {
+      address: 'xor',
+      symbol: 'XOR',
+      decimals: 18,
+      balance: {
+        total: transferable,
+        transferable: `0x${BigInt(transferable).toString(16)}`,
+        locked: '0',
+      },
+    };
+
+    expect(state.getBalance(asset)).toBe(transferable);
+    expect(formattedAmountMock.formatCodecNumber).toHaveBeenCalledWith(transferable, 18);
+  });
+
+  it('renders the multisig XOR amount when fiat and locked balances are also present', () => {
+    const originalAssets = api.assets;
+    const transferable = '99601922365042012692';
+    const locked = '900000000000000000000';
+    const total = '999601922365042012692';
+    const fakeAssets = {
+      ...(originalAssets ?? {}),
+      isNft: vi.fn(() => false),
+      isWhitelist: vi.fn(() => true),
+    };
+    (api as any).assets = fakeAssets;
+    walletStoreMock.accountAssets = [
+      {
+        address: '0x0200000000000000000000000000000000000000000000000000000000000000',
+        symbol: 'XOR',
+        name: 'SORA',
+        decimals: 18,
+        balance: {
+          free: total,
+          reserved: '0',
+          frozen: locked,
+          bonded: '0',
+          locked,
+          total,
+          transferable,
+        },
+      },
+    ];
+    formattedAmountMock.formatCodecNumber.mockImplementation((value: string) => {
+      if (value === transferable) return '99.6019223';
+      if (value === locked) return '900';
+      if (value === total) return '999.6019223';
+      return value;
+    });
+    formattedAmountMock.getFiatBalance.mockReturnValue('423.44');
+
+    try {
+      const wrapper = mount(WalletAssets, {
+        global: {
+          stubs: {
+            draggable: {
+              props: ['modelValue'],
+              template:
+                '<div class="draggable-stub"><slot v-for="(element, index) in modelValue" name="item" :element="element" :index="index" /><slot name="footer" /></div>',
+            },
+            's-scrollbar': {
+              template: '<div class="s-scrollbar-stub"><slot /></div>',
+            },
+            TokenLogo: {
+              template: '<div class="token-logo-stub" />',
+            },
+            WalletAssetsHeadline: {
+              template: '<div class="wallet-assets-headline-stub" />',
+            },
+          },
+        },
+      });
+      const assetValue = wrapper.get('.asset-value');
+
+      expect(assetValue.text()).toContain('99.6019223');
+      expect(assetValue.find('.formatted-amount__symbol').text()).toBe('XOR');
+      expect(assetValue.text()).toContain('900');
+      expect(wrapper.text()).toContain('$423.44');
+      expect(wrapper.find('.asset-value-locked').attributes('aria-label')).toContain(
+        'assets.balance.frozen (pointSystem.governanceLockedXOR.titleProgress / StakingContainer): 900 XOR'
+      );
+      expect(
+        wrapper.findAll('.asset-value-locked-tooltip__row').map((row) => ({
+          label: row.get('.asset-value-locked-tooltip__label').text(),
+          value: row.get('.asset-value-locked-tooltip__value').text(),
+        }))
+      ).toEqual([
+        { label: 'assets.balance.transferable', value: '99.6019223 XOR' },
+        { label: 'assets.balance.locked', value: '900 XOR' },
+        {
+          label: 'assets.balance.frozen (pointSystem.governanceLockedXOR.titleProgress / StakingContainer)',
+          value: '900 XOR',
+        },
+        { label: 'assets.balance.total', value: '999.6019223 XOR' },
+      ]);
+    } finally {
+      (api as any).assets = originalAssets;
+    }
   });
 
   it('uses codec math for zero-balance filtering instead of digit-position checks', () => {

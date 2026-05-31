@@ -38,6 +38,7 @@ describe('burn campaign helpers', () => {
 
     expect(campaigns.solswap.from).toBe(SOLSWAP_LEGACY_START_BLOCK);
     expect(campaigns.solswap.receivedAsset.symbol).toBe('SS');
+    expect(campaigns.solswap.receivedAsset.icon).toContain('solswap-mark');
     expect(campaigns.solswap.rate).toBe('0.02');
     expect(campaigns.solswap.requiresNexusRecipient).toBe(true);
     expect(campaigns.solswap.rewardTiers).toHaveLength(2);

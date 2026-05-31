@@ -32,4 +32,25 @@ describe('FormattedAmount', () => {
     expect(wrapper.find('.formatted-amount__symbol').text()).toBe('XOR');
     expect(wrapper.text().replace(/\s+/g, ' ').trim()).toBe('0 XOR');
   });
+
+  it('marks overflowing values so row styles can reveal the full amount on hover', async () => {
+    const wrapper = mount(FormattedAmount, {
+      props: {
+        value: '998,999,999,999,999.1234',
+      },
+    });
+    const amount = wrapper.get('.formatted-amount');
+    const value = wrapper.get('.formatted-amount__value');
+
+    Object.defineProperty(amount.element, 'offsetWidth', { configurable: true, value: 100 });
+    Object.defineProperty(value.element, 'offsetWidth', { configurable: true, value: 180 });
+
+    await amount.trigger('mouseenter');
+
+    expect(amount.classes()).toContain('formatted-amount--value-wider');
+
+    await amount.trigger('mouseleave');
+
+    expect(amount.classes()).not.toContain('formatted-amount--value-wider');
+  });
 });

@@ -39,6 +39,9 @@ vi.mock('@/features/explore/pages/ExploreBooksPage.vue', () => ({ default: { nam
 vi.mock('@/features/misc/pages/StatsPage.vue', () => ({ default: { name: 'StatsPage' } }));
 vi.mock('@/features/misc/pages/OrderBookPage.vue', () => ({ default: { name: 'OrderBookPage' } }));
 vi.mock('@/features/misc/pages/BurnPage.vue', () => ({ default: { name: 'BurnPage' } }));
+vi.mock('@/features/misc/pages/ForAgentsPage.vue', () => ({ default: { name: 'ForAgentsPage' } }));
+
+vi.mock('@/features/polkamarkt/pages/PolkamarktPage.vue', () => ({ default: { name: 'PolkamarktPage' } }));
 
 vi.mock('@/features/pool/pages/DemeterDataContainerPage.vue', () => ({
   default: { name: 'PoolDemeterDataContainerPage' },
@@ -79,6 +82,7 @@ import { dashboardRoutes } from '@/features/dashboard/routes';
 import { depositRoutes } from '@/features/deposit/routes';
 import { exploreRoutes } from '@/features/explore/routes';
 import { miscRoutes } from '@/features/misc/routes';
+import { polkamarktRoutes } from '@/features/polkamarkt/routes';
 import { poolRoutes } from '@/features/pool/routes';
 import { referralRoutes } from '@/features/referrals/routes';
 import { rewardsRoutes } from '@/features/rewards/routes';
@@ -155,7 +159,7 @@ describe('feature route loaders', () => {
     const [exploreTokens, exploreDemeterRoot, explorePoolsRoot, exploreBooks] = exploreRoot.children ?? [];
     const [exploreStaking, exploreFarming] = exploreDemeterRoot.children ?? [];
     const [explorePoolsIndex] = explorePoolsRoot.children ?? [];
-    const [statsRoute, orderBookRoute, burnRoute, catchAllRoute] = miscRoutes as LazyRoute[];
+    const [statsRoute, orderBookRoute, burnRoute, forAgentsRoute, catchAllRoute] = miscRoutes as LazyRoute[];
 
     await expect(resolveComponent(exploreRoot)).resolves.toMatchObject({
       default: { name: 'ExploreContainerPage' },
@@ -188,8 +192,17 @@ describe('feature route loaders', () => {
     await expect(resolveComponent(statsRoute)).resolves.toMatchObject({ default: { name: 'StatsPage' } });
     await expect(resolveComponent(orderBookRoute)).resolves.toMatchObject({ default: { name: 'OrderBookPage' } });
     await expect(resolveComponent(burnRoute)).resolves.toMatchObject({ default: { name: 'BurnPage' } });
+    await expect(resolveComponent(forAgentsRoute)).resolves.toMatchObject({ default: { name: 'ForAgentsPage' } });
     expect(catchAllRoute.redirect).toBe('/swap');
-    expect(loadAsyncImportWithRetryMock).toHaveBeenCalledTimes(11);
+    expect(loadAsyncImportWithRetryMock).toHaveBeenCalledTimes(12);
+  });
+
+  it('loads the polkamarkt route component through the async import helper', async () => {
+    const [polkamarktRoute] = polkamarktRoutes as LazyRoute[];
+
+    await expect(resolveComponent(polkamarktRoute)).resolves.toMatchObject({ default: { name: 'PolkamarktPage' } });
+    expect(polkamarktRoute.name).toBe(PageNames.Polkamarkt);
+    expect(loadAsyncImportWithRetryMock).toHaveBeenCalledTimes(1);
   });
 
   it('loads the pool, referral, rewards, and swap route components through the async import helper', async () => {

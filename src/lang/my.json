@@ -28,7 +28,7 @@
         "title": "အကောင့် ဆက်တင်"
     },
     "accountText": "အကောင့် | အကောင့်များ",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "အသက်ဝင်သောအကောင့်များ",
     "addAsset": {
         "add": "ထည့်ရန်",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first}နှုန်း{second}",
     "firstText": "ပထမ",
     "footer": {
+        "forAgents": "အေးဂျင့်များအတွက်",
         "internet": {
             "action": "ပြန်လည်စတင်ရန် {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "အချက်အလက်နှင့် အသိုင်းအဝိုင်း",
         "privacy": "ကိုယ်ရေးအချက်အလက် မူဝါဒ",
         "sorawiki": "{Sora} ဝီကီ"
+    },
+    "forAgents": {
+        "apiContext": "အက်ပ်စတင်ပြီးနောက် စာမျက်နှာအကြောင်းအရာတွင် ထည့်သွင်းထားသည်။ ၎င်းသည် တူညီသော node၊ wallet၊ indexer နှင့် SDK လမ်းကြောင်းကို user interface အဖြစ်အသုံးပြုသည်။",
+        "contract": {
+            "idempotent": "တည်ငြိမ်သော clientOrderId ကိုသုံး၍ ထပ်မစမ်းမီ မသေချာသောတင်ပြမှုများကို ပြန်လည်ရယူပါ။",
+            "noCustody": "စာမျက်နှာသည် ကိုယ်ရေးကိုယ်တာသော့များကို ဘယ်တော့မှ လက်ခံမည်မဟုတ်ပါ။ လက်မှတ်ထိုးခြင်းသည် ရွေးချယ်ထားသော ပိုက်ဆံအိတ်နှင့်အတူ ရှိနေမည်ဖြစ်သည်။",
+            "prepareFirst": "ပြည်နယ်ပြောင်းလဲခြင်းခေါ်ဆိုမှုများကို လုပ်ဆောင်ခြင်းမပြုမီ ပြင်ဆင်ခြင်း* မှတစ်ဆင့် လုပ်ဆောင်ရပါမည်။",
+            "samePage": "အဆင်သင့်ဖြစ်ရပ်ပြီးနောက် Polkaswap စာမျက်နှာအကြောင်းအရာအတွင်းတွင် လုပ်ဆောင်ပါ။"
+        },
+        "discoveryText": "ပထမဦးစွာဖော်ပြချက်ကိုရယူပါ။ ၎င်းသည် ဗားရှင်းပြုလုပ်ထားသော ကိုးကားချက်၊ schema ဖိုင်များ၊ ဥပမာများ၊ အမှားအယွင်း ကတ်တလောက်နှင့် ဤအငြိမ်တည်ဆောက်မှုဖြင့် ပေးပို့ထားသော အကူအညီပေးသူ client တို့ကို လင့်ခ်ချိတ်ထားသည်။",
+        "discoveryTitle": "ရှာဖွေတွေ့ရှိမှု",
+        "entrypointsLabel": "အေးဂျင့် API ဝင်ခွင့်အမှတ်များ",
+        "eyebrow": "အလိုအလျောက်စနစ်",
+        "flow": {
+            "execute": "ပြင်ဆင်ထားသော ရည်ရွယ်ချက်နှင့် တည်ငြိမ်သော ဖောက်သည်အမိန့် ID ဖြင့် မူဝါဒအတည်ပြုပြီးမှသာ လုပ်ဆောင်ပါ။",
+            "open": "တကယ့်ဘရောက်ဆာစာမျက်နှာတွင် Polkaswap ကိုဖွင့်ပါ။",
+            "prepare": "လက်မှတ်ထိုးခြင်းလုပ်ငန်းမစမီ ကိုက်ညီသော ပြင်ဆင်သည့်နည်းလမ်းကို ခေါ်ဆိုပါ။",
+            "ready": "အဆင်သင့်ဖြစ်ရပ်ကိုစောင့်ပြီး အသက်ဝင်သော SORA node တစ်ခုလိုအပ်သည်။",
+            "recover": "ထပ်မကြိုးစားမီ မသေချာမရေရာသော တင်ပြမှုများကို ပြန်လည်ရယူပါ။",
+            "resolve": "ထပ်ခါတလဲလဲ မလုပ်ဆောင်မီ ပိုင်ဆိုင်မှုသင်္ကေတများကို ဖြေရှင်းပါ။",
+            "wallet": "လက်မှတ်ထိုးရန်လိုအပ်သည့်အခါ ပိုက်ဆံအိတ်ဝန်ဆောင်မှုပေးသူနှင့် အကောင့်ကိုရွေးချယ်ပါ။"
+        },
+        "flowTitle": "ဘေးကင်းသော ကွပ်မျက်ကွင်း",
+        "lead": "Polkaswap သည် static app ကိုဖွင့်သည့်အေးဂျင့်အပြေးသမားများအတွက်ဘရောက်ဆာ-ဇာတိအလိုအလျောက်လုပ်ဆောင်ခြင်း API ကိုဖော်ထုတ်သည်။",
+        "links": {
+            "client": "JavaScript အကူ client",
+            "errors": "ကက်တလောက်အမှား",
+            "examples": "ဥပမာများ",
+            "manifest": "ရှာဖွေတွေ့ရှိမှု ထင်ရှားသည်။",
+            "playground": "အေးဂျင့်ကစားကွင်း",
+            "reference": "API ကိုးကားချက်အပြည့်အစုံ",
+            "schema": "JSON အစီအစဉ်",
+            "types": "TypeScript အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "ယေဘူယျအပြေးသမားများအတွက် Canonical ရှာဖွေတွေ့ရှိမှုစာတမ်း။",
+                "title": "ထင်ရှားသည့်အရာဖြင့် စတင်ပါ။"
+            },
+            "playground": {
+                "description": "အခြေအနေ၊ ပိုင်ဆိုင်မှု၊ ကိုးကားချက်များနှင့် အစမ်းကြည့်ခြင်းများအတွက် လက်ဖြင့် တူညီသည့် စုံစမ်းစစ်ဆေးမှု။",
+                "title": "ကစားကွင်းဖွင့်ပါ။"
+            },
+            "reference": {
+                "description": "ဖတ်နိုင်သောနည်းလမ်းမြေပုံ၊ ဥပမာများ၊ လက်မှတ်ထိုးစည်းမျဉ်းများနှင့် ပြန်လည်ရယူရေးမှတ်စုများ။",
+                "title": "API ကိုးကားချက်ကိုဖတ်ပါ။"
+            }
+        },
+        "signingTextAfter": "ထပ်ခါတလဲလဲ ကြိုးစားမှု မပြတ်သားစေရန်။",
+        "signingTextBefore": "စာမျက်နှာသည် သီးသန့်သော့များကို ဘယ်တော့မှမယူပါ။ ပြည်နယ်ပြောင်းလဲခြင်းနည်းလမ်းများသည် ရွေးချယ်ထားသော ပိုက်ဆံအိတ်လက်မှတ်ထိုးသူကို အသုံးပြုပြီး ပြန်ပေးသည့်ငွေကို ကျော်ဖြတ်ရန် အပြေးသမားကို လိုအပ်သည်။",
+        "signingTextMiddle": "အပေါင်းတည်ငြိမ်",
+        "signingTitle": "လက်မှတ်ထိုးပြီး ချုပ်ထားတယ်။",
+        "startTitle": "ဤနေရာတွင် စတင်ပါ။",
+        "title": "အေးဂျင့်များအတွက်"
     },
     "forText": "အတွက်",
     "hashiBridgeText": "{Hashi} ဘရစ်ဂ်",
@@ -798,6 +879,7 @@
         "Explore/Container": "စူးစမ်းပါ။",
         "Farming": "လယ်ယာလုပ်ငန်း",
         "OrderBook": "ကုန်သွယ်မှု",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "ရေကူးကန်",
         "Rewards": "ဆုလာဘ်",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "ကန့်သတ်မှာယူမှုကို ပယ်ဖျက်၍မရပါ။",
             "OrderBookCancelLimitOrders": "ကန့်သတ်မှာယူမှုများကို ပယ်ဖျက်၍မရပါ။",
             "OrderBookPlaceLimitOrder": "{amount} {symbol} တွင် {price} {symbol2} ၏ ကန့်သတ်အမိန့်ကို မအောင်မြင်ပါ။",
+            "PolkamarktAddLiquidity": "Polkamarkt တွင် {amount} {symbol} ငွေဖြစ်လွယ်မှုကို ထည့်၍မရပါ",
+            "PolkamarktBuy": "Polkamarkt တွင် {amount} {symbol} ကို ဝယ်ယူရန် မအောင်မြင်ပါ။",
+            "PolkamarktClaimCreatorFees": "Polkamarkt ဖန်တီးသူ အခကြေးငွေကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
+            "PolkamarktClaimCreatorLiquidity": "Polkamarkt ဖန်တီးသူ၏ ငွေဖြစ်လွယ်မှုကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP အကြွင်းအကျန်ကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
+            "PolkamarktClaimMarket": "Polkamarkt ပေးချေမှုကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
+            "PolkamarktClaimMarkets": "Polkamarkt ပေးချေမှုများကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
+            "PolkamarktCreateCondition": "Polkamarkt အခြေအနေ ဖန်တီး၍မရပါ။",
+            "PolkamarktCreateMarket": "Polkamarkt စျေးကွက်ကို {amount} {symbol} ဖြင့် ဖန်တီး၍မရပါ။",
+            "PolkamarktFlip": "Polkamarkt တွင် {amount} {symbol} ကိုလှန်၍မရပါ",
+            "PolkamarktSell": "Polkamarkt တွင် {amount} {symbol} ကို ရောင်းချရန် မအောင်မြင်ပါ။",
             "ReferralReserveXor": "{amount} XOR ချည်နှောင်ရန် မအောင်မြင်ပါ။",
             "ReferralSetInvitedUser": "{role} {address} သတ်မှတ်ရန် မအောင်မြင်ပါ",
             "ReferralUnreserveXor": "{amount} XOR ကို ခွဲထုတ်ရန် မအောင်မြင်ပါ။",
@@ -1022,7 +1115,18 @@
             "OrderBookCancelLimitOrder": "ကန့်သတ်မှာယူမှုကို ပယ်ဖျက်လိုက်ပါပြီ။",
             "OrderBookCancelLimitOrders": "ကန့်သတ်အော်ဒါများကို ပယ်ဖျက်လိုက်ပါပြီ။",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} တွင် နေရာချထားသည်",
-            "ReferralReserveXor": "Bonded {amount} XOR",
+            "PolkamarktAddLiquidity": "Polkamarkt သို့ {amount} {symbol} ငွေဖြစ်လွယ်မှုကို ထည့်ခဲ့သည်။",
+            "PolkamarktBuy": "Polkamarkt တွင် {amount} {symbol} ကို ဝယ်သည်။",
+            "PolkamarktClaimCreatorFees": "Polkamarkt ဖန်တီးသူ အခကြေးငွေကို တောင်းဆိုထားသည်။",
+            "PolkamarktClaimCreatorLiquidity": "Polkamarkt သည် ဖန်တီးသူဖြစ်လွယ်သည်ဟု ဆိုထားသည်။",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP အကြွင်းအကျန်များကို အရေးဆိုထားသည်။",
+            "PolkamarktClaimMarket": "Polkamarkt ပေးချေမှုကို တောင်းဆိုထားသည်။",
+            "PolkamarktClaimMarkets": "Polkamarkt ဆုကြေးငွေများကို တောင်းဆိုထားသည်။",
+            "PolkamarktCreateCondition": "Polkamarkt အခြေအနေ ဖန်တီးထားသည်။",
+            "PolkamarktCreateMarket": "Polkamarkt စျေးကွက် {amount} {symbol} ဖြင့် ဖန်တီးထားသည်",
+            "PolkamarktFlip": "Polkamarkt တွင် {amount} {symbol} ကို ပြန်လှန်ထားသည်။",
+            "PolkamarktSell": "Polkamarkt တွင် {amount} {symbol} ရောင်းချခဲ့သည်။",
+            "ReferralReserveXor": "ချည်နှောင်ထားသော {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ကို အောင်မြင်စွာသတ်မှတ်ထားသည်။",
             "ReferralUnreserveXor": "စည်းမထားသော {amount} XOR",
             "RegisterAndRegulateAsset": "မှတ်ပုံတင်ပြီး {symbol} ပိုင်ဆိုင်မှုကို ထိန်းညှိပါ။",
@@ -1051,9 +1155,20 @@
         },
         "IssueSoulBoundToken": "SBT စာစောင်",
         "Mint": "Mint",
-        "OrderBookCancelLimitOrder": "Cancel Order",
+        "OrderBookCancelLimitOrder": "မှာယူမှုကို ပယ်ဖျက်ပါ။",
         "OrderBookCancelLimitOrders": "မှာယူမှုများကို ပယ်ဖျက်ပါ။",
         "OrderBookPlaceLimitOrder": "Order တင်ပါ။",
+        "PolkamarktAddLiquidity": "Polkamarkt Liquidity ကိုထည့်ပါ။",
+        "PolkamarktBuy": "Polkamarkt ရှယ်ယာများကို ဝယ်ယူပါ။",
+        "PolkamarktClaimCreatorFees": "Polkamarkt ဖန်တီးရှင်အခကြေးငွေကို တောင်းဆိုပါ။",
+        "PolkamarktClaimCreatorLiquidity": "Polkamarkt Creator Liquidity ကို တောင်းဆိုပါ။",
+        "PolkamarktClaimLiquidity": "Polkamarkt LP လက်ကျန်ကို တောင်းဆိုပါ။",
+        "PolkamarktClaimMarket": "Polkamarkt ပေးချေမှုကို တောင်းဆိုပါ။",
+        "PolkamarktClaimMarkets": "Polkamarkt ပေးချေမှုများကို တောင်းဆိုပါ။",
+        "PolkamarktCreateCondition": "Polkamarkt အခြေအနေ ဖန်တီးပါ။",
+        "PolkamarktCreateMarket": "Polkamarkt စျေးကွက်ကိုဖန်တီးပါ။",
+        "PolkamarktFlip": "Polkamarkt အနေအထားကိုလှန်ပါ။",
+        "PolkamarktSell": "Polkamarkt ရှယ်ယာများကိုရောင်းပါ။",
         "ReferralReserveXor": "ဘွန်း XOR",
         "ReferralSetInvitedUser": "{role} သတ်မှတ်ရန်",
         "ReferralUnreserveXor": "XOR ကို အဆက်ဖြတ်ပါ။",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "ကန်",
         "Explore/Staking": "စတိတ်",
         "Explore/Tokens": "တိုကင်များ",
+        "ForAgents": "အေးဂျင့်များအတွက်",
         "OrderBook": "ရောင်းဝယ်မှု",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "ကန်",
         "Rewards": "ဆုများ",
         "Sccp": "SCCP",
@@ -1330,6 +1447,155 @@
         "noExtension": "{extension} နောက်ဆက်တွဲကို ရှာမတွေ့ပါ။ ၎င်းကို ထည့်သွင်းပြီး ဤစာမျက်နှာကို ပြန်လည်စတင်ပါ။",
         "noExtensions": "{PolkadotJs} နောက်ဆက်တွဲကို ရှာမတွေ့ပါ။ ၎င်းကို ထည့်သွင်းပြီး ဤစာမျက်နှာကို ပြန်လည်စတင်ပါ။\nhttps://polkadot.js.org/extension/",
         "noSigner": "ဝင်ရောက်ချိတ်ဆက်ရန်ငြင်းဆိုခြင်း။ {extension} တိုးချဲ့ဆက်တင်များသို့ သွား၍ ခွင့်ပြုရန် \"ဝဘ်ဆိုက်ဝင်ရောက်ခွင့်ကို စီမံပါ\" ကိုဖွင့်ပါ။"
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "ဝယ်ပါ။",
+            "claimCreatorFees": "ဖန်တီးသူအခကြေးငွေကို တောင်းဆိုပါ။",
+            "claimCreatorLiquidity": "ငွေဖြစ်လွယ်မှုကို ဖန်တီးသူကို တောင်းဆိုပါ။",
+            "claimLpResidual": "LP လက်ကျန်ကို တောင်းဆိုပါ။",
+            "claimTraderPayout": "ငွေပေးချေမှုကို ကုန်သည်ထံ တောင်းဆိုပါ။",
+            "createMarket": "စျေးကွက်ဖန်တီးပါ။",
+            "flip": "လှန်ပါ။",
+            "liquidity": "ငွေဖြစ်လွယ်မှုထည့်ပါ။",
+            "sell": "ရောင်း"
+        },
+        "create": {
+            "category": "အမျိုးအစား",
+            "closeBlock": "ဘလောက်ပိတ်",
+            "creationFee": "ဖန်တီးမှုအခကြေးငွေ",
+            "deadline": "ကုန်သွယ်မှုနောက်ဆုံးရက်",
+            "marketFailed": "အခြေအနေများကို ဖန်တီးထားသော်လည်း စျေးကွက်ဖန်တီးမှု မအောင်မြင်ပါ။ သိမ်းဆည်းထားသော အခြေအနေဖြင့် စျေးကွက်ဖန်တီးမှုကို ပြန်လည်ကြိုးစားပါ။",
+            "metadataTooLong": "မေးခွန်း၊ oracle နှင့် ဖြေရှင်းချက် မက်တာဒေတာသည် 512 bytes အတွင်း ကိုက်ညီရပါမည်။",
+            "question": "စျေးကွက်မေးခွန်း",
+            "questionPlaceholder": "ရွေးချယ်ထားသော နောက်ဆုံးရက်တွင် ပွဲက YES သို့ ဖြေရှင်းမည်လား။",
+            "questionTooShort": "မေးခွန်းသည် အနည်းဆုံး 32 bytes ရှိရမည်။",
+            "retryMessage": "အခြေအနေ {id} ကို ဖန်တီးခဲ့သည်။ စျေးကွက်ဖန်တီးမှု အဆင့်ကိုသာ ပြန်စမ်းကြည့်ပါ။",
+            "retrySubmit": "စျေးကွက်ဖန်တီးမှုကို ပြန်စမ်းကြည့်ပါ။",
+            "seedLiquidity": "အစေ့ဖြစ်လွယ်ခြင်း။",
+            "seedTooSmall": "မျိုးစေ့များ၏ ငွေဖြစ်လွယ်မှုသည် အနည်းဆုံး {amount} {symbol} ဖြစ်ရပါမည်။",
+            "submit": "အခြေအနေနှင့်စျေးကွက်ဖန်တီးပါ။",
+            "title": "Polkamarkt စျေးကွက်ကိုဖန်တီးပါ။"
+        },
+        "details": {
+            "awaitingSettlement": "အပြီးသတ်မှုကို စောင့်ဆိုင်းနေသည်။",
+            "empty": "pallet အခြေအနေ၊ oracle အသေးစိတ်များနှင့် ဖြေရှင်းမှုအထောက်အထားများကိုကြည့်ရှုရန် စျေးကွက်ကိုရွေးချယ်ပါ။",
+            "openResolutionSource": "Open Source လင့်ခ်",
+            "oracle": "ကယ်လ်",
+            "pool": "Liquidity ရေကန်",
+            "settlement": "ဖြေရှင်းမှုအသေးစိတ်"
+        },
+        "errors": {
+            "loadActivity": "Polkamarkt အကောင့်လုပ်ဆောင်ချက်ကို ဖွင့်၍မရပါ။",
+            "loadMarkets": "Polkamarkt စျေးကွက်များကို ဖွင့်၍မရပါ။"
+        },
+        "fields": {
+            "collateralAsset": "စရံပစ္စည်း",
+            "conditionId": "အခြေအနေ ID",
+            "evidenceBlock": "အထောက်အထား ပိတ်ဆို့ခြင်း။",
+            "evidenceHash": "သက်သေပြချက်",
+            "evidenceUri": "URI အထောက်အထား",
+            "lpContributed": "LP မှ ပံ့ပိုးကူညီခဲ့ပါသည်။",
+            "lpShares": "LP ရှယ်ယာများ",
+            "noReserve": "အရံမရှိပါ။",
+            "oracle": "ကယ်လ်",
+            "poolCollateral": "ရေကူးကန် စရံ",
+            "resolutionOutcome": "ဆုံးဖြတ်ချက်ရလဒ်",
+            "resolutionSource": "ဆုံးဖြတ်ချက်အရင်းအမြစ်",
+            "yesReserve": "YES စရံ"
+        },
+        "filters": {
+            "active": "လှုပ်လှုပ်ရှားရှား",
+            "allCategories": "အမျိုးအစားအားလုံး",
+            "allStatuses": "အခြေအနေအားလုံး",
+            "finalized": "မပြီးသေး",
+            "mine": "မိုင်း"
+        },
+        "loadingMarkets": "စျေးကွက်များကို ဖွင့်နေသည်...",
+        "markets": {
+            "search": "စျေးကွက်ရှာဖွေပါ။",
+            "subtitle": "{count} စျေးကွက်များသည် လက်ရှိ စစ်ထုတ်မှုများနှင့် ကိုက်ညီပါသည်။",
+            "title": "စျေးကွက်များ"
+        },
+        "metrics": {
+            "closeBlock": "ဘလောက်ပိတ်",
+            "liquidity": "ငွေဖြစ်လွယ်ခြင်း။",
+            "noQuote": "ကိုးကားမရှိပါ။",
+            "status": "အဆင့်အတန်း",
+            "volume": "အတွဲ",
+            "yesProbability": "ဟုတ်သည်။",
+            "yesQuote": "ဟုတ်သည်ကိုးကား"
+        },
+        "modes": {
+            "buy": "ဝယ်ပါ။",
+            "claim": "ပြောနေပါတယ်။",
+            "flip": "လှန်ပါ။",
+            "liquidity": "LP",
+            "sell": "ရောင်း"
+        },
+        "my": {
+            "claimsSummary": "ကုန်သည် {trader} / LP {lp}",
+            "connect": "ဖန်တီးထားသောစျေးကွက်များ၊ LP ရှယ်ယာများ၊ ပေးချေမှုများနှင့် လတ်တလောကုန်သွယ်မှုများကိုကြည့်ရှုရန် အကောင့်တစ်ခုချိတ်ဆက်ပါ။",
+            "createdMarkets": "စျေးကွက်များဖန်တီးခဲ့သည်။",
+            "empty": "Polkamarkt ရာထူးများ သို့မဟုတ် ဤအကောင့်အတွက် ဖန်တီးထားသော စျေးကွက်များ မရှိသေးပါ။",
+            "loading": "Polkamarkt အကောင့်လုပ်ဆောင်ချက်ကို ဖွင့်နေသည်...",
+            "market": "စျေးကွက် {id}",
+            "positions": "LP နှင့် trader ရာထူးများ",
+            "recentTrades": "လတ်တလော ကုန်သွယ်မှုများ",
+            "sharesSummary": "ဟုတ်သည် {yes} / NO {no} / LP {lp}",
+            "subtitle": "ဖန်တီးထားသော စျေးကွက်များ၊ LP ရှယ်ယာများ၊ ကုန်သည်မှ ပေးချေမှုများ၊ ဖန်တီးသူ အခကြေးငွေများနှင့် ကျန်ရှိသော LP တောင်းဆိုမှုများ။",
+            "title": "ကျွန်ုပ်၏စျေးကွက်များ / LP"
+        },
+        "noMarkets": "လက်ရှိ စစ်ထုတ်မှုများနှင့် ကိုက်ညီသော စျေးကွက်မရှိပါ။",
+        "notIndexed": "ညွှန်းမထားပါ။",
+        "outcomes": {
+            "no": "မဟုတ်ဘူး",
+            "yes": "ဟုတ်သည်။"
+        },
+        "pageSubtitle": "တက်ကြွသောခန့်မှန်းစျေးကွက်များ၊ မျိုးစေ့စျေးကွက်အသစ်များကိုရောင်းဝယ်ဖောက်ကားပြီး LP နှင့် Polkaswap ပိုက်ဆံအိတ်စီးဆင်းမှုမှတောင်းဆိုနိုင်သောလက်ကျန်များကိုစီမံပါ။",
+        "status": {
+            "active": "လှုပ်လှုပ်ရှားရှား"
+        },
+        "ticket": {
+            "amountPlaceholder": "၀.၀",
+            "claimable": "အခိုင်အမာ",
+            "claimableFailed": "တောင်းဆိုနိုင်သော လက်ကျန်များကို မဖတ်နိုင်ပါ။",
+            "claimStatus": "အရေးဆိုမှု အခြေအနေ",
+            "collateralAmount": "ပမာဏ ({symbol})",
+            "collateralOut": "ဒါကလည်း ထွက်လာတယ်။",
+            "enterAmount": "ပမာဏတစ်ခုထည့်ပါ။",
+            "flippedShares": "ပြန်လှန်ရှယ်ယာများ",
+            "insufficientKusd": "လက်ကျန် {symbol} မလုံလောက်ပါ။",
+            "insufficientXor": "ကွန်ရက်အခကြေးငွေအတွက် XOR မလုံလောက်ပါ။",
+            "invalidAmount": "မှန်ကန်သောပမာဏကို ထည့်ပါ။",
+            "lpSharesOut": "LP က ရှယ်ယာထုတ်တယ်။",
+            "noChainMarket": "စျေးကွက်သည် ကွင်းဆက်တွင် အရောင်းအဝယ်မဖြစ်ပါ။",
+            "quoteFailed": "ကိုးကားချက်ကို ပြန်လည်စတင်၍မရပါ။",
+            "refreshingQuote": "ပြန်လည်ဆန်းသစ်ထားသောကိုးကား...",
+            "selectMarket": "အရောင်းအ၀ယ်ပြုလုပ်ရန် တက်ကြွသောစျေးကွက်ကို ရွေးချယ်ပါ။",
+            "sharesAmount": "ရှယ်ယာများ",
+            "sharesOut": "မျှဝေသည်။",
+            "slippage": "ချော်မှု %",
+            "subtitle": "စျေးနူန်းများ၊ အခကြေးငွေများ၊ ချော်လဲခြင်းများကို အကာအကွယ်ပေးခြင်းနှင့် ပိုက်ဆံအိတ်တင်သွင်းခြင်းတို့သည် SORA runtime ကို အသုံးပြုပါသည်။",
+            "title": "ကုန်သွယ်မှုလက်မှတ်",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "ဘိုက်",
+            "shares": "ရှယ်ယာများ"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "ရေကြွယ်ဝမှု ထည့်ရန်",
@@ -1550,7 +1816,7 @@
         "custom": {
             "alreadyAttached": "ဤတိုကင်ကို ပူးတွဲပြီးဖြစ်သည်။",
             "notFound": "တိုကင်မတွေ့ပါ။",
-            "search": "Input Asset ID",
+            "search": "ပိုင်ဆိုင်မှု ID ကို ထည့်သွင်းပါ။",
             "text": "စိတ်ကြိုက်တိုကင်များ",
             "title": "စိတ်ကြိုက်"
         },
@@ -1607,7 +1873,7 @@
         },
         "overview": {
             "description": "အရောင်းအ၀ယ်များကိုအတည်ပြုရန်နှင့် {VAL} တိုကင်ဆုလာဘ်များရယူရန် အမည်စာရင်းတင်သွင်းသူအဖြစ် {Sora} ကွန်ရက်ပေါ်တွင် လောင်းကြေး {XOR} တိုကင်များ။",
-            "title": "{Sora} Staking"
+            "title": "{Sora} လောင်းကြေးထပ်ခြင်း။"
         },
         "pendingRewardsDialog": {
             "information": "စိစစ်သူများသည် 2-5 ရက်တိုင်း ဆုလာဘ်များကို ပေးသည်။ သို့သော်၊ အထူးသဖြင့် ဆုလက်ဆောင်များ သက်တမ်းကုန်ခါနီးလျှင် ၎င်းတို့ကို သင်ကိုယ်တိုင် ပေးချေနိုင်သော်လည်း အခကြေးငွေကို ပေးဆောင်ရမည်ဖြစ်သည်။",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "ကော်မရှင်",
             "commissionTooltip": "ကော်မရှင်သည် စတိတ် လုပ်ငန်းစဉ်တွင် ဝယ်လီဒေးတာများက ပေးဆောင်ရမည့် ကုန်ကျစရိတ် ဖြစ်သည်။ ဤကုန်ကျစရိတ်ကို ရာခိုင်နှုန်း အနေဖြင့် ဖော်ပြပြီး ထုတ်ဝေရန်မတိုင်မီ စတိတ် ဆုများမှ ပြတ်တောက် ပေးလိုက်သည်။ ဝယ်လီဒေးတာများသည် မည်သည့်အချိန်တွင်မဆို ကော်မရှင် အတိုးအအောက် ပြုလုပ်နိုင်ကြောင်း သတိပြုရန် လိုအပ်သည်",
-            "deselectAll": "Deselect all",
+            "deselectAll": "အားလုံးကို ဖြုတ်လိုက်ပါ။",
             "name": "နာမည်",
             "noNominatedValidators": "သင့်တွင် အမည်စာရင်းတင်သွင်းခံရသူများ မရှိပါ။",
             "noValidators": "သတ်မှတ်ထားသော စစ်ထုတ်မှုကို ကျေနပ်စေသော တရားဝင်သူ မရှိပါ။",
             "return": "ပြန်လာ",
             "search": "ရှာဖွေပါ...",
-            "selectAll": "Select all",
+            "selectAll": "အားလုံးကို ရွေးပါ။",
             "staked": "Stake လုပ်ထားသည်",
             "stakedTooltip": "ဤ validator တွင် stake လုပ်ထားသော XOR စုစုပေါင်း၊ validator ၏ ကိုယ်ပိုင် stake နှင့် nominate လုပ်ထားသော stake အပါအဝင်"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "အကောင့်များသည် ကွန်ရက်ပေါ်တွင် အသုံးပြုသူ၏ပိုင်ဆိုင်မှုများကို ကိုင်ဆောင်ထားသည့် ဒစ်ဂျစ်တယ်လိပ်စာများဖြစ်သည်။ အကောင့်တစ်ခုစီသည် အသုံးပြုသူ၏ပိုင်ဆိုင်မှုများကို ဝင်ရောက်စီမံခန့်ခွဲနိုင်စေမည့် သီးခြားအများပြည်သူလိပ်စာနှင့် သီးသန့်သော့တစ်ခုနှင့် ဆက်စပ်နေသည်။",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "ရွေးချယ်ထားသည့်ကာလအတွင်း ငွေပေးချေမှုများတွင် ပါဝင်ခဲ့သည့် သီးသန့်အကောင့်များ။",
         "bridgeTransactions": "{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. တံတားသည် ကွန်ရက်နှစ်ခု၏ အပြန်အလှန်လုပ်ဆောင်နိုင်မှုကို ခွင့်ပြုပေးပြီး သုံးစွဲသူများအကြား ပိုင်ဆိုင်မှုများကို ချောမွေ့စွာ ရွှေ့ပြောင်းနိုင်စေပါသည်။",
         "fees": "{Sora} blockchain ပေါ်ရှိ အခကြေးငွေများသည် ကွန်ရက်ပေါ်ရှိ ငွေပေးငွေယူများကို လုပ်ဆောင်ခြင်းအတွက် ဖြစ်ပေါ်လာသည့် အခကြေးငွေများကို ရည်ညွှန်းပါသည်။ ဤအခကြေးငွေများကို {Sora} ကွန်ရက်၏ မူရင်း cryptocurrency ဖြစ်သော XOR ဖြင့် ပေးဆောင်ပါသည်။ အခကြေးငွေပမာဏကို ငွေသွင်းငွေထုတ်၏ ရှုပ်ထွေးမှုနှင့် အရွယ်အစားဖြင့် ဆုံးဖြတ်သည်။",
         "roi": "{ROI} သည် Return on Investment ကို ကိုယ်စားပြုသည်။ ရင်းနှီးမြုပ်နှံမှုတစ်ခုတွင် ရရှိသည့်အမြတ်ကို ထိုရင်းနှီးမြှုပ်နှံမှု၏ ကုန်ကျစရိတ်နှင့် ညီမျှသော ရာခိုင်နှုန်းတစ်ခုဖြင့် တွက်ချက်သည်။",

@@ -20,13 +20,13 @@ export function useNetworkFeeDialog() {
 
   const confirmNetworkFeeWariningDialog = () => {
     isWarningFeeDialogConfirmed.value = true;
+    showWarningFeeDialog.value = false;
   };
 
   const waitOnFeeWarningConfirmation = async (delayMs = 500): Promise<void> => {
-    if (!showWarningFeeDialog.value) return;
-
-    await delay(delayMs);
-    return await waitOnFeeWarningConfirmation(delayMs);
+    while (showWarningFeeDialog.value) {
+      await delay(delayMs);
+    }
   };
 
   return {

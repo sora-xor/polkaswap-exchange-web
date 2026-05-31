@@ -8,6 +8,11 @@
       "code": "const agent = window.PolkaswapAgent ?? await new Promise((resolve) => window.addEventListener('polkaswap-agent-ready', (event) => resolve(event.detail.api), { once: true }));\nconst capabilities = agent.capabilities();\nif (capabilities.version !== 'v1') throw new Error(`Unsupported PolkaswapAgent version: ${capabilities.version}`);\nawait agent.ready({ requireNode: true, timeoutMs: 30000 });"
     },
     {
+      "name": "Verify transient agent mode",
+      "goal": "Confirm the page was opened with the agent query flag before relying on modal-free automation.",
+      "code": "const status = agent.status();\nif (!status.agent.mode) throw new Error(`Agent mode disabled; open with ?${status.agent.queryParam}=1 before the hash route.`);\nif (!status.agent.disclaimerSuppressed) throw new Error('Agent disclaimer suppression is not active.');"
+    },
+    {
       "name": "Connect an injected wallet account",
       "goal": "Select a signer through the existing page wallet system.",
       "code": "const wallets = await agent.refreshWallets();\nconst wallet = wallets.find((item) => item.source === 'polkadot-js');\nif (!wallet?.available) throw new Error('WALLET_NOT_FOUND');\nconst accounts = await agent.walletAccounts({ source: 'polkadot-js' });\nawait agent.connectWallet({ source: 'polkadot-js', address: accounts[0].address });\nawait agent.ready({ requireWallet: true, timeoutMs: 10000 });"

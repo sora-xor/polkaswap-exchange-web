@@ -348,7 +348,7 @@ describe('useAssetsStore bridge fetchers', () => {
     expect(ethRegisteredAssetsMock).toHaveBeenCalledTimes(1);
   });
 
-  it('filters XOR from Hashi assets on Ethereum Mainnet', async () => {
+  it('keeps XOR selectable for Hashi assets on Ethereum Mainnet', async () => {
     const ethPayload = {
       [XOR.address]: {
         address: '0xXorContract',
@@ -369,6 +369,13 @@ describe('useAssetsStore bridge fetchers', () => {
     const result = await store.fetchRegisteredAssetsFromNetwork();
 
     expect(result).toEqual([
+      {
+        [XOR.address]: {
+          address: '0xXorContract',
+          decimals: 18,
+          kind: 'xor',
+        },
+      },
       {
         '0x01': {
           address: '0xExternal',

@@ -9,6 +9,7 @@ import {
 import invert from 'lodash/fp/invert';
 
 import { PageNames } from './navigation';
+import polkamarktLogoUrl from '@/assets/img/polkamarkt/pm_logo.svg?url';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
@@ -225,6 +226,8 @@ export interface NumberedAlert extends Alert {
 
 export interface SidebarMenuItem {
   icon?: string;
+  /** Optional asset URL for menu items that use branded SVG artwork instead of an icon font glyph. */
+  iconSrc?: string;
   title: string;
   disabled?: boolean;
   /**
@@ -244,6 +247,7 @@ export interface SidebarMenuItemLink extends SidebarMenuItem {
 export const SidebarIcon = {
   Swap: 'arrows-swap-90-24',
   Trade: 'music-CD-24',
+  Polkamarkt: 'various-lightbulb-24',
   Rewards: 'basic-circle-star-24',
   Pool: 'basic-drop-24',
   Staking: 'basic-layers-24',
@@ -258,6 +262,8 @@ export const SidebarIcon = {
   Info: 'info-16',
 } as const;
 
+export const PolkamarktLogo = polkamarktLogoUrl;
+
 const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: SidebarIcon.Swap,
@@ -268,6 +274,12 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     icon: SidebarIcon.Trade,
     title: PageNames.OrderBook,
     href: '#/trade',
+  },
+  {
+    icon: SidebarIcon.Polkamarkt,
+    iconSrc: PolkamarktLogo,
+    title: PageNames.Polkamarkt,
+    href: '#/polkamarkt',
   },
   {
     icon: SidebarIcon.Rewards,

@@ -260,10 +260,14 @@ const calcSortClass = (base: string, value: Sort, asc: Sort, desc: Sort) => ({
 });
 
 /**
- * Treats malformed indexer percentages as zero so bad rows cannot poison table sorting.
+ * Treats malformed indexer percentage strings as zero so bad rows cannot poison table sorting.
  */
 const parseSortMetric = (value: string | undefined): number => {
-  const parsed = Number(value);
+  const normalizedValue = String(value ?? '').trim();
+
+  if (!/^\d+(\.\d+)?$/.test(normalizedValue)) return 0;
+
+  const parsed = Number(normalizedValue);
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
@@ -281,7 +285,7 @@ const normalizeNominationLimit = (value: number | null, fallback: number): numbe
  * Parses indexed staking totals defensively so malformed rows sort as zero instead of breaking the list.
  */
 const parseCodecStake = (value: string | undefined): FPNumber => {
-  const normalizedValue = (value ?? '0').replace(/[,. ]/g, '');
+  const normalizedValue = (value ?? '0').replace(/[,\s]/g, '');
 
   if (!/^\d+$/.test(normalizedValue)) return FPNumber.ZERO;
 

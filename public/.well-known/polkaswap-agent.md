@@ -19,14 +19,15 @@ There is no middleware, hosted server, cross-origin command channel, URL command
 
 1. Fetch `.well-known/polkaswap-agent.json`.
 2. Require `version === 'v1'`.
-3. Open the app in a browser page.
+3. Open the app in a browser page with `?polkaswap-agent=1` before the hash route, for example `?polkaswap-agent=1#/swap`. This transient agent flag suppresses the first-launch disclaimer modal without persisting disclaimer approval.
 4. Wait for `window.PolkaswapAgent` or the `polkaswap-agent-ready` event.
 5. Call `ready({ requireNode: true })`.
-6. Connect/select a wallet only through `refreshWallets`, `walletAccounts`, and `connectWallet`.
-7. Resolve symbols to asset addresses before repeated execution.
-8. Use `prepare*` before every state-changing `execute*` call.
-9. Execute with the returned `intentId` and a stable `clientOrderId`.
-10. Recover uncertain submissions before retrying.
+6. Verify `status().agent.mode === true`.
+7. Connect/select a wallet only through `refreshWallets`, `walletAccounts`, and `connectWallet`.
+8. Resolve symbols to asset addresses before repeated execution.
+9. Use `prepare*` before every state-changing `execute*` call.
+10. Execute with the returned `intentId` and a stable `clientOrderId`.
+11. Recover uncertain submissions before retrying.
 
 ```ts
 async function getPolkaswapAgent() {
@@ -69,7 +70,7 @@ These breadcrumbs use relative URLs so the same static bundle works from root do
 | --- | --- |
 | Check v1 metadata and limits | `capabilities()` |
 | Wait for readiness | `ready({ requireNode?, requireWallet?, timeoutMs? })` |
-| Inspect current node, wallet, and settings | `status()` |
+| Inspect current agent mode, node, wallet, and settings | `status()` |
 | Discover wallet providers | `refreshWallets()` |
 | List accounts for a provider | `walletAccounts({ source })` |
 | Select a wallet account | `connectWallet({ source, address? })` |

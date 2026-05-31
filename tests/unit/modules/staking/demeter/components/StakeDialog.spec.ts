@@ -136,7 +136,7 @@ const stubs = {
   's-form': defineComponent({ template: '<form><slot /></form>' }),
   's-float-input': defineComponent({
     name: 'SFloatInputStub',
-    props: ['value', 'class', 'decimals', 'max'],
+    props: ['value', 'decimals', 'max'],
     emits: ['update:modelValue'],
     template: '<div class="float-input-stub"><slot /></div>',
   }),
@@ -225,5 +225,22 @@ describe('Demeter StakeDialog', () => {
 
     const button = wrapper.find('button.s-button-stub');
     expect(button.attributes('disabled')).toBeDefined();
+  });
+
+  it('applies the Demeter percentage input class and three-digit state for max farm removal', async () => {
+    useDemeterPoolStatusMock.mockReturnValue(buildStatusApi({ isFarm: ref(true), hasStake: ref(true) }));
+
+    const wrapper = mount(StakeDialog, {
+      props: { ...baseProps, visible: true, isAdding: false },
+      global: { stubs },
+    });
+
+    const slider = wrapper.findComponent({ name: 'SSliderStub' });
+    slider.vm.$emit('input', 100);
+    await wrapper.vm.$nextTick();
+
+    const input = wrapper.get('.float-input-stub');
+    expect(input.classes()).toContain('demeter-stake-part');
+    expect(input.classes()).toContain('three-char');
   });
 });

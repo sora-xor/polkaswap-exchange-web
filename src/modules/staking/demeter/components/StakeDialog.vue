@@ -16,7 +16,7 @@
           v-if="isFarm"
           key="farm-input"
           size="medium"
-          :class="['s-input--stake-part', valuePartCharClass]"
+          :class="['s-input--stake-part', 'demeter-stake-part', valuePartCharClass]"
           :value="value"
           :decimals="0"
           :max="100"
@@ -352,7 +352,17 @@ const combinedLoading = computed(() => props.parentLoading);
 </style>
 
 <style lang="scss">
-.s-input.s-input--stake-part {
+.s-input.s-input--stake-part.demeter-stake-part {
   @include input-slider;
+
+  &.three-char .el-input__inner {
+    max-width: 3.6ch;
+    width: 3.6ch;
+  }
+
+  .s-input__right .percent {
+    display: inline-block;
+    min-width: 1ch;
+  }
 }
 </style>

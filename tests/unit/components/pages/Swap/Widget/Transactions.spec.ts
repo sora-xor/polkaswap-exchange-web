@@ -154,6 +154,10 @@ const TABLE_INJECTION_KEY = Symbol('s-table');
 const STableStub = defineComponent({
   name: 'STableStub',
   props: {
+    adaptBreakpoint: {
+      type: Number,
+      default: undefined,
+    },
     data: {
       type: Array,
       default: () => [],
@@ -268,6 +272,20 @@ describe('SwapTransactionsWidget', () => {
     const tokens = wrapper.findAll('.explore-table-item-token').map((node) => node.text());
     expect(tokens).toContain('XOR');
     expect(tokens).toContain('VAL');
+
+    wrapper.unmount();
+  });
+
+  it('keeps swap transaction history in table layout instead of generated card rows', async () => {
+    mockGetHistory.mockResolvedValue({
+      nodes: [],
+      totalCount: 0,
+    });
+
+    const wrapper = await mountWidget();
+    await advanceFetchQueue();
+
+    expect(wrapper.getComponent(STableStub).props('adaptBreakpoint')).toBe(-1);
 
     wrapper.unmount();
   });

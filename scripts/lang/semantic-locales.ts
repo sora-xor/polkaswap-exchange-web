@@ -12,6 +12,7 @@ type LocaleDefinition = {
 const LINK_PATTERN = /@:\(([^)]+)\)|@:([A-Za-z0-9_.-]+)/g;
 const PLACEHOLDER_PATTERN = /^\{[^}]+\}$/;
 const TOKEN_PATTERN = /(\{[^}]+\}|[A-Za-z]+(?:['-][A-Za-z]+)?|\d+|\s+|.)/g;
+const LATIN_PATTERN = /[A-Za-z]/;
 
 const AKK: LocaleDefinition = {
   exact: {
@@ -409,6 +410,10 @@ function translateValue(
   return fallback;
 }
 
+function containsLatinOutsidePlaceholders(value: string): boolean {
+  return LATIN_PATTERN.test(value.replace(/\{[^}]+\}/g, ''));
+}
+
 function mergeLocale(
   english: Record<string, any>,
   current: Record<string, any>,
@@ -432,7 +437,12 @@ function mergeLocale(
       return;
     }
 
-    if (locale === 'akk' && typeof currentValue === 'string' && currentValue.length > 0) {
+    if (
+      locale === 'akk' &&
+      typeof currentValue === 'string' &&
+      currentValue.length > 0 &&
+      !containsLatinOutsidePlaceholders(currentValue)
+    ) {
       result[key] = currentValue;
       return;
     }

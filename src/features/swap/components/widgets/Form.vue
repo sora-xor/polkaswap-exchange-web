@@ -70,6 +70,7 @@
         v-if="!isLoggedIn"
         type="primary"
         class="action-button s-typography-button--large"
+        :loading="isSoraAccountDialogVisible"
         @click="connectSoraWallet"
       >
         {{ t('connectWalletText') }}
@@ -228,19 +229,14 @@ const {
   setFromValue,
   setToValue,
 } = useSwapAmounts();
-const { isLoggedIn, connectSoraWallet } = useInternalConnect();
+const { isLoggedIn, isSoraAccountDialogVisible, connectSoraWallet } = useInternalConnect();
 const { confirmDialogVisible, confirmOrExecute } = useConfirmDialog();
 const { isSelectAssetLoading, withSelectAssetLoading } = useTokenSelect();
 const { loading, withApi, withChainApi, withNotifications } = useTransaction({
   parentLoading: computed(() => props.parentLoading),
 });
-const {
-  getFPNumber,
-  getFPNumberFromCodec,
-  formatCodecNumber,
-  formatStringValue,
-  getFiatAmountByCodecString,
-} = useFormattedAmount();
+const { getFPNumber, getFPNumberFromCodec, formatCodecNumber, formatStringValue, getFiatAmountByCodecString } =
+  useFormattedAmount();
 
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
 const networkFee = computed(() => networkFees.value[Operation.Swap]);

@@ -6,7 +6,13 @@ type GoogleOauthOptions = {
   scope: string;
 };
 
+type GoogleOauthTokenResponse = google.accounts.oauth2.TokenResponse & {
+  error?: string;
+  error_description?: string;
+};
+
 const FIVE_MINUTES = 5 * 60 * 1000;
+const GOOGLE_OAUTH_PROMPT_TIMEOUT_MS = 90_000;
 
 /**
  * Handles OAuth token acquisition for Google Drive access, wrapping the GSI
@@ -23,6 +29,7 @@ export class GoogleOauth {
   };
 
   private isAuthProcess = false;
+  private authPromise: Nullable<Promise<void>> = null;
 
   get ready(): boolean {
     return !!this.client;
@@ -62,27 +69,95 @@ export class GoogleOauth {
     });
   }
 
+  /** Converts a GIS token callback payload into the cached absolute-expiry token state. */
+  private prepareToken(token: GoogleOauthTokenResponse): google.accounts.oauth2.TokenResponse {
+    if (token.error) {
+      const details = [token.error, token.error_description].filter(Boolean).join(': ');
+
+      throw new Error(details || 'Google OAuth token request failed');
+    }
+
+    const expiresIn = Number(token.expires_in);
+
+    if (!token.access_token || !Number.isFinite(expiresIn)) {
+      throw new Error('Google OAuth token response is invalid');
+    }
+
+    const expires = String(Date.now() + expiresIn * 1000);
+
+    return { ...token, expires_in: expires };
+  }
+
   /**
    * Wraps the token prompt in a promise, resolving only after the GSI client
-   * returns success or failure.
+   * returns success or failure. GIS can leave the prompt unresolved when the
+   * popup is blocked or closed before callback delivery, so the prompt is
+   * bounded to avoid leaving wallet selection permanently loading.
    */
   private async waitForAuthFinalization(func: FnWithoutArgs): Promise<void> {
-    await new Promise<void>((resolve, reject) => {
-      this.authCallback = (token) => {
-        const expires = String(Date.now() + Number(token.expires_in) * 1000);
-        this.token = { ...token, expires_in: expires };
+    let startPrompt: FnWithoutArgs = () => undefined;
+    const authPromise = new Promise<void>((resolve, reject) => {
+      let settled = false;
+      let timeoutId: ReturnType<typeof setTimeout>;
+
+      const clearAuthProcess = (): void => {
+        clearTimeout(timeoutId);
         this.isAuthProcess = false;
-        resolve();
+        this.authPromise = null;
       };
-      this.authErrorCallback = (error) => {
+
+      const rejectAuth = (error: unknown): void => {
+        if (settled) return;
+        settled = true;
         this.token = null;
-        this.isAuthProcess = false;
+        clearAuthProcess();
         reject(error);
       };
 
+      const resolveAuth = (token: GoogleOauthTokenResponse): void => {
+        if (settled) return;
+        settled = true;
+
+        try {
+          this.token = this.prepareToken(token);
+          clearAuthProcess();
+          resolve();
+        } catch (error) {
+          this.token = null;
+          clearAuthProcess();
+          reject(error);
+        }
+      };
+
+      this.authCallback = (token) => {
+        resolveAuth(token);
+      };
+      this.authErrorCallback = (error) => {
+        rejectAuth(error);
+      };
+
       this.isAuthProcess = true;
-      func();
+      timeoutId = setTimeout(() => {
+        rejectAuth(new Error('Google OAuth token request timed out'));
+      }, GOOGLE_OAUTH_PROMPT_TIMEOUT_MS);
+
+      startPrompt = () => {
+        try {
+          func();
+        } catch (error) {
+          rejectAuth(error);
+        }
+      };
     });
+
+    this.authPromise = authPromise;
+    if (typeof queueMicrotask === 'function') {
+      queueMicrotask(startPrompt);
+    } else {
+      void Promise.resolve().then(startPrompt);
+    }
+
+    await authPromise;
   }
 
   /** Refreshes the token if it is missing or about to expire. */
@@ -94,7 +169,10 @@ export class GoogleOauth {
 
   /** Starts an interactive token request unless a prompt is already running. */
   public async getToken(): Promise<void> {
-    if (this.isAuthProcess) return;
+    if (this.authPromise) {
+      await this.authPromise;
+      return;
+    }
 
     await this.waitForAuthFinalization(() => {
       // Prompt the user to select a Google Account

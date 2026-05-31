@@ -6,6 +6,7 @@ const oauthInstances = vi.hoisted(() => [] as any[]);
 const GoogleDriveApiMock = vi.hoisted(() =>
   vi.fn(function GoogleDriveApiMock() {
     const instance = {
+      ready: false,
       hasKey: false,
       setOptions: vi.fn(),
       init: vi.fn().mockResolvedValue(undefined),
@@ -26,6 +27,7 @@ const GoogleDriveApiMock = vi.hoisted(() =>
 const GoogleOauthMock = vi.hoisted(() =>
   vi.fn(function GoogleOauthMock() {
     const instance = {
+      ready: false,
       hasKey: false,
       setOptions: vi.fn(),
       init: vi.fn().mockResolvedValue(undefined),
@@ -92,6 +94,19 @@ describe('GDriveStorage', () => {
     expect(api.init).toHaveBeenCalledTimes(2);
     expect(oauth.init).toHaveBeenCalledTimes(2);
     expect(oauth.checkToken).toHaveBeenCalledTimes(1);
+    expect(api.init.mock.invocationCallOrder[1]).toBeLessThan(oauth.checkToken.mock.invocationCallOrder[0]);
+    expect(oauth.init.mock.invocationCallOrder[1]).toBeLessThan(oauth.checkToken.mock.invocationCallOrder[0]);
+  });
+
+  it('reports Google client readiness before click-safe prompts', async () => {
+    const { storage, api, oauth } = await loadStorage();
+
+    expect(storage.ready).toBe(false);
+
+    api.ready = true;
+    oauth.ready = true;
+
+    expect(storage.ready).toBe(true);
   });
 
   it('creates the backup folder when it does not already exist', async () => {

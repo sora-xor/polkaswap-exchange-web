@@ -18,6 +18,7 @@ import type { IndexerType, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { getLocale, getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
+import { isAgentAutomationSession } from '@/utils/agentSession';
 import { updateDocumentTitle } from '@/utils/documentTitle';
 import { updateFpNumberLocale } from '@/utils/fp-locale';
 import {
@@ -53,7 +54,8 @@ const fallbackWalletFilters: WalletAssetFilters = {
 
 const buildInitialState = (): SettingsState => {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-  const userDisclaimerApprove = disclaimerApprove ? JSON.parse(disclaimerApprove) : false;
+  const storedDisclaimerApprove = disclaimerApprove ? JSON.parse(disclaimerApprove) : false;
+  const userDisclaimerApprove = Boolean(storedDisclaimerApprove || isAgentAutomationSession());
   const isRotatePhoneHideBalanceFeatureEnabled =
     settingsStorage.get('isRotatePhoneHideBalanceFeatureEnabled') === 'true';
   const isAccessAccelerometrEventDeclined = settingsStorage.get('isAccessAccelerometrEventDeclined') === 'true';

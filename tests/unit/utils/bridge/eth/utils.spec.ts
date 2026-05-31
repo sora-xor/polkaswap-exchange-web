@@ -54,6 +54,7 @@ vi.mock('@sora-substrate/sdk/build/bridgeProxy/eth/consts', () => ({
     Thischain: 'Thischain',
   },
   EthCurrencyType: {
+    AssetId: 'AssetId',
     TokenAddress: 'TokenAddress',
   },
 }));
@@ -90,6 +91,7 @@ vi.mock('@/utils/ethers-util', () => ({
 
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import {
   getIncomingEvmTransactionData,
   getOutgoingEvmTransactionData,
@@ -116,6 +118,26 @@ describe('ETH bridge utils', () => {
   afterEach(() => {
     vi.useRealTimers();
   });
+
+  const createApprovedRequest = (overrides: Record<string, unknown> = {}) =>
+    ({
+      currencyType: EthCurrencyType.AssetId,
+      from: '0xfrom',
+      hash: '0xhash',
+      r: ['0xr'],
+      s: ['0xs'],
+      v: [27],
+      ...overrides,
+    }) as any;
+
+  const createBridgeAsset = (overrides: Record<string, unknown> = {}) =>
+    ({
+      address: 'sidechain-asset-id',
+      externalAddress: '0xToken',
+      externalDecimals: 18,
+      symbol: 'TOKEN',
+      ...overrides,
+    }) as any;
 
   it('detects outgoing Ethereum bridge transactions', () => {
     expect(isOutgoingTx({ type: 'EthBridgeOutgoing' } as any)).toBe(true);
@@ -351,7 +373,7 @@ describe('ETH bridge utils', () => {
     ).rejects.toThrow('request is required!');
   });
 
-  it('builds VAL/XOR outgoing transaction data with peer minting arguments', async () => {
+  it('builds VAL/XOR token-address outgoing transaction data with peer minting arguments', async () => {
     const getContractAddress = vi.fn((symbol: string) => `contract:${symbol}`);
 
     await expect(
@@ -361,7 +383,7 @@ describe('ETH bridge utils', () => {
         recipient: '0xbeneficiary',
         getContractAddress,
         request: {
-          currencyType: 'SidechainAssetId',
+          currencyType: EthCurrencyType.TokenAddress,
           from: '0xfrom',
           hash: '0xhash',
           r: ['0xr'],
@@ -378,6 +400,73 @@ describe('ETH bridge utils', () => {
     expect(getContractAddress).toHaveBeenCalledWith('VAL');
   });
 
+  it('builds XOR asset-id outgoing transaction data through the standard bridge contract', async () => {
+    const getContractAddress = vi.fn((symbol: string) => `contract:${symbol}`);
+
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: { address: 'xor-asset-id', externalAddress: '0xXOR', externalDecimals: 18, symbol: 'XOR' } as any,
+        value: '3',
+        recipient: '0xbeneficiary',
+        getContractAddress,
+        request: {
+          currencyType: EthCurrencyType.AssetId,
+          from: '0xfrom',
+          hash: '0xhash',
+          r: ['0xr'],
+          s: ['0xs'],
+          v: [27],
+        } as any,
+      })
+    ).resolves.toEqual({
+      contract: { contract: 'mock' },
+      method: 'receiveBySidechainAssetId',
+      args: ['xor-asset-id', '3:codec:18', '0xbeneficiary', '0xfrom', '0xhash', [27], ['0xr'], ['0xs']],
+    });
+
+    expect(getContractAddress).toHaveBeenCalledWith('Other');
+  });
+
+  it('builds XOR token-address outgoing transaction data through the XOR legacy contract', async () => {
+    const getContractAddress = vi.fn((symbol: string) => `contract:${symbol}`);
+
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset({ address: 'xor-asset-id', externalAddress: '0xXOR', symbol: 'XOR' }),
+        value: '3',
+        recipient: '0xbeneficiary',
+        getContractAddress,
+        request: createApprovedRequest({ currencyType: EthCurrencyType.TokenAddress }),
+      })
+    ).resolves.toEqual({
+      contract: { contract: 'mock' },
+      method: 'mintTokensByPeers',
+      args: ['0xXOR', '3:codec:18', '0xbeneficiary', '0xhash', [27], ['0xr'], ['0xs'], '0xfrom'],
+    });
+
+    expect(getContractAddress).toHaveBeenCalledWith('XOR');
+  });
+
+  it('builds VAL asset-id outgoing transaction data through the standard bridge contract', async () => {
+    const getContractAddress = vi.fn((symbol: string) => `contract:${symbol}`);
+
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset({ address: 'val-asset-id', externalAddress: '0xVAL', symbol: 'VAL' }),
+        value: '7',
+        recipient: '0xbeneficiary',
+        getContractAddress,
+        request: createApprovedRequest({ currencyType: EthCurrencyType.AssetId, v: [28], r: ['0xr2'], s: ['0xs2'] }),
+      })
+    ).resolves.toEqual({
+      contract: { contract: 'mock' },
+      method: 'receiveBySidechainAssetId',
+      args: ['val-asset-id', '7:codec:18', '0xbeneficiary', '0xfrom', '0xhash', [28], ['0xr2'], ['0xs2']],
+    });
+
+    expect(getContractAddress).toHaveBeenCalledWith('Other');
+  });
+
   it('builds outgoing transaction data for Ethereum-address based assets', async () => {
     await expect(
       getOutgoingEvmTransactionData({
@@ -386,7 +475,7 @@ describe('ETH bridge utils', () => {
         recipient: '0xbeneficiary',
         getContractAddress: (symbol) => `contract:${symbol}`,
         request: {
-          currencyType: 'TokenAddress',
+          currencyType: EthCurrencyType.TokenAddress,
           from: '0xfrom',
           hash: '0xhash',
           r: ['0xr'],
@@ -409,7 +498,7 @@ describe('ETH bridge utils', () => {
         recipient: '0xbeneficiary',
         getContractAddress: (symbol) => `contract:${symbol}`,
         request: {
-          currencyType: 'SidechainAssetId',
+          currencyType: EthCurrencyType.AssetId,
           from: '0xfrom',
           hash: '0xhash',
           r: ['0xr'],
@@ -421,6 +510,132 @@ describe('ETH bridge utils', () => {
       contract: { contract: 'mock' },
       method: 'receiveBySidechainAssetId',
       args: ['sidechain-asset-id', '5:codec:18', '0xbeneficiary', '0xfrom', '0xhash', [29], ['0xr'], ['0xs']],
+    });
+  });
+
+  it('rejects outgoing transaction data with an unsupported currency type', async () => {
+    const getContractAddress = vi.fn((symbol: string) => `contract:${symbol}`);
+
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset(),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress,
+        request: createApprovedRequest({ currencyType: 'SidechainAssetId' }),
+      })
+    ).rejects.toThrow('[Bridge]: Unsupported Ethereum bridge currency type "SidechainAssetId"');
+
+    expect(getContractAddress).not.toHaveBeenCalled();
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it('rejects outgoing transaction data when an asset-id approval has no sidechain asset id', async () => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset({ address: '' }),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: vi.fn((symbol: string) => `contract:${symbol}`),
+        request: createApprovedRequest({ currencyType: EthCurrencyType.AssetId }),
+      })
+    ).rejects.toThrow('[Bridge]: Asset is missing required Ethereum bridge address data');
+
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it('rejects outgoing transaction data when a token-address approval has no external token address', async () => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset({ externalAddress: '' }),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: vi.fn((symbol: string) => `contract:${symbol}`),
+        request: createApprovedRequest({ currencyType: EthCurrencyType.TokenAddress }),
+      })
+    ).rejects.toThrow('[Bridge]: Asset is missing required Ethereum bridge address data');
+
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it('rejects outgoing transaction data when a legacy XOR approval has no external token address', async () => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset({ externalAddress: '', symbol: 'XOR' }),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: vi.fn((symbol: string) => `contract:${symbol}`),
+        request: createApprovedRequest({ currencyType: EthCurrencyType.TokenAddress }),
+      })
+    ).rejects.toThrow('[Bridge]: Asset is missing required Ethereum bridge address data');
+
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['missing from', { from: '' }],
+    ['missing hash', { hash: '' }],
+  ])('rejects outgoing transaction data with %s in the approved request', async (_, overrides) => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset(),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: vi.fn((symbol: string) => `contract:${symbol}`),
+        request: createApprovedRequest(overrides),
+      })
+    ).rejects.toThrow('[Bridge]: Approved Ethereum bridge request is missing required fields');
+
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['empty signer set', { v: [], r: [], s: [] }],
+    ['missing r signature', { v: [27], r: [], s: ['0xs'] }],
+    ['missing s signature', { v: [27], r: ['0xr'], s: [] }],
+    ['extra r signature', { v: [27], r: ['0xr', '0xr2'], s: ['0xs'] }],
+    ['extra s signature', { v: [27], r: ['0xr'], s: ['0xs', '0xs2'] }],
+  ])('rejects outgoing transaction data with malformed signatures: %s', async (_, overrides) => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset(),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: vi.fn((symbol: string) => `contract:${symbol}`),
+        request: createApprovedRequest(overrides),
+      })
+    ).rejects.toThrow('[Bridge]: Approved Ethereum bridge request has malformed signatures');
+
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it('keeps all peer signatures in order for standard asset-id outgoing transaction data', async () => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset({ address: 'xor-asset-id', externalAddress: '0xXOR', symbol: 'XOR' }),
+        value: '11',
+        recipient: '0xbeneficiary',
+        getContractAddress: (symbol) => `contract:${symbol}`,
+        request: createApprovedRequest({
+          currencyType: EthCurrencyType.AssetId,
+          v: [27, 28, 29],
+          r: ['0xr1', '0xr2', '0xr3'],
+          s: ['0xs1', '0xs2', '0xs3'],
+        }),
+      })
+    ).resolves.toEqual({
+      contract: { contract: 'mock' },
+      method: 'receiveBySidechainAssetId',
+      args: [
+        'xor-asset-id',
+        '11:codec:18',
+        '0xbeneficiary',
+        '0xfrom',
+        '0xhash',
+        [27, 28, 29],
+        ['0xr1', '0xr2', '0xr3'],
+        ['0xs1', '0xs2', '0xs3'],
+      ],
     });
   });
 });

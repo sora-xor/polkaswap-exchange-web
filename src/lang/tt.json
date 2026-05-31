@@ -28,7 +28,7 @@
         "title": "Хисап көйләүләре"
     },
     "accountText": "хисап | Хисаплар",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Актив счетлар",
     "addAsset": {
         "add": "Өстәргә",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{second} өчен {first}",
     "firstText": "Беренче",
     "footer": {
+        "forAgents": "Агентлар өчен",
         "internet": {
             "action": "Яңарту {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "Мәгълүмат һәм җәмгыять",
         "privacy": "Хосусыйлык политикасы",
         "sorawiki": "{Sora} Вики"
+    },
+    "forAgents": {
+        "apiContext": "кушымта ботинкасыннан соң бит контекстында урнаштырылган. Ул кулланучы интерфейсы белән бер үк төен, капчык, индексер һәм SDK юлын куллана.",
+        "contract": {
+            "idempotent": "Тотрыклы клиентOrderId кулланыгыз һәм кабатлап караганчы билгесез тапшыруларны торгызыгыз.",
+            "noCustody": "Бит беркайчан да шәхси ачкычлар алмый; имза сайланган капчык белән кала.",
+            "prepareFirst": "Дәүләт үзгәртүче шалтыратулар * башкарганчы * әзерләнергә тиеш.",
+            "samePage": "Полкасвап бите контекстында әзер вакыйгадан соң йөгерегез."
+        },
+        "discoveryText": "Башта манифестны алыгыз. Бу версияләнгән белешмәлекне, схема файлларын, мисалларны, хаталар каталогын һәм бу статик төзү белән җибәрелгән ярдәмче клиентны бәйли.",
+        "discoveryTitle": "Табыш",
+        "entrypointsLabel": "Агент API керү нокталары",
+        "eyebrow": "Автоматизация",
+        "flow": {
+            "execute": "Сәясәт расланганнан соң гына, әзер ният һәм тотрыклы клиент заказы белән башкарыгыз.",
+            "open": "Полкасвапны чын браузер битендә ачыгыз.",
+            "prepare": "Имзалау операциясенә кадәр әзерләү ысулына шалтыратыгыз.",
+            "ready": "Әзер вакыйганы көтегез һәм актив SORA төенен таләп итегез.",
+            "recover": "Кабатлап караганчы билгесез тапшыруларны торгызыгыз.",
+            "resolve": "Актив символларны кат-кат башкарганчы адресларга чишегез.",
+            "wallet": "Имза кирәк булганда капчык тәэмин итүчесен һәм счетны сайлагыз."
+        },
+        "flowTitle": "Куркынычсыз башкару әйләнәсе",
+        "lead": "Polkaswap статик кушымтаны ачкан агент йөгерүчеләр өчен браузерда туган автоматлаштыру API фаш итә.",
+        "links": {
+            "client": "JavaScript ярдәмчесе клиенты",
+            "errors": "Хата каталогы",
+            "examples": "Мисаллар",
+            "manifest": "Табыш манифесты",
+            "playground": "Агент уен мәйданчыгы",
+            "reference": "Тулы API сылтамасы",
+            "schema": "JSON схемасы",
+            "types": "TypeScript төшенчәләре"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Гомуми йөгерүчеләр өчен каноник ачыш документы.",
+                "title": "Манифесттан башлап җибәрегез"
+            },
+            "playground": {
+                "description": "Статус, активлар, цитаталар, алдан карау өчен бер үк чыганак тикшерү.",
+                "title": "Уен мәйданчыгын ач"
+            },
+            "reference": {
+                "description": "Укылырлык метод картасы, мисаллар, имза кую кагыйдәләре, торгызу язмалары.",
+                "title": "API сылтамасын укыгыз"
+            }
+        },
+        "signingTextAfter": "кабатланмаска тырышу.",
+        "signingTextBefore": "Бит беркайчан да шәхси ачкычлар алмый. Дәүләт үзгәртү ысуллары сайланган капчык имзасын кулланалар һәм йөгерүченең кире кайтуларын таләп итәләр",
+        "signingTextMiddle": "плюс абзар",
+        "signingTitle": "Кул кую һәм саклау",
+        "startTitle": "Моннан башлап җибәрегез",
+        "title": "Агентлар өчен"
     },
     "forText": "өчен",
     "hashiBridgeText": "{Hashi} күпер",
@@ -798,6 +879,7 @@
         "Explore/Container": "Тикшерүче",
         "Farming": "Игенчелек",
         "OrderBook": "Сәүдә",
+        "Polkamarkt": "Полкамаркт",
         "Pool": "Бассейн",
         "Rewards": "Бүләкләр",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Лимит заказын кире кага алмады",
             "OrderBookCancelLimitOrders": "Лимит заказларын юкка чыгармады",
             "OrderBookPlaceLimitOrder": "{amount} {symbol} лимит тәртибен {price} {symbol2} урнаштыра алмады",
+            "PolkamarktAddLiquidity": "Полкамарктка {amount} {symbol} ликвидлыгын кертә алмады",
+            "PolkamarktBuy": "Полкамаркта {amount} {symbol} сатып алмады",
+            "PolkamarktClaimCreatorFees": "Полкамаркт ясаучы түләүләрен таләп итә алмады",
+            "PolkamarktClaimCreatorLiquidity": "Полкамаркт ясаучы ликвидлыгын таләп итә алмады",
+            "PolkamarktClaimLiquidity": "Полкамаркт LP калдыкларын таләп итә алмады",
+            "PolkamarktClaimMarket": "Полкамаркт түләвен таләп итә алмады",
+            "PolkamarktClaimMarkets": "Полкамаркт түләүләрен таләп итә алмады",
+            "PolkamarktCreateCondition": "Полкамарк шартын булдыра алмады",
+            "PolkamarktCreateMarket": "{amount} {symbol} белән Полкамаркт базарын булдыра алмады",
+            "PolkamarktFlip": "Полкамаркта {amount} {symbol} борыла алмады",
+            "PolkamarktSell": "Полкамаркта {amount} {symbol} сата алмады",
             "ReferralReserveXor": "{amount} XOR бәйли алмады",
             "ReferralSetInvitedUser": "{role} {address} куя алмады",
             "ReferralUnreserveXor": "{amount} XORны чишә алмады",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "Заказны юкка чыгару",
             "OrderBookCancelLimitOrders": "Түләү заказлары юкка чыгарылды",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} урнаштырылган",
+            "PolkamarktAddLiquidity": "Полкамарктка {amount} {symbol} ликвидлыгы өстәлде",
+            "PolkamarktBuy": "Полкамаркта {amount} {symbol} сатып алынган",
+            "PolkamarktClaimCreatorFees": "Полкамаркт ясаучы өчен түләүләр таләп ителде",
+            "PolkamarktClaimCreatorLiquidity": "Полкамаркт ясаучы ликвидлылыгы таләп ителде",
+            "PolkamarktClaimLiquidity": "Полкамаркт LP калдыклары",
+            "PolkamarktClaimMarket": "Полкамаркт түләү таләп ителде",
+            "PolkamarktClaimMarkets": "Полкамарк түләүләре таләп ителде",
+            "PolkamarktCreateCondition": "Полкамарк шартлары булдырылды",
+            "PolkamarktCreateMarket": "Полкамаркт базары {amount} {symbol} белән ясалган",
+            "PolkamarktFlip": "Полкамаркта {amount} {symbol} очты",
+            "PolkamarktSell": "Полкамаркта {amount} {symbol} сатылды",
             "ReferralReserveXor": "{amount} XOR белән бәйләнгән",
             "ReferralSetInvitedUser": "{role} {address} уңышлы куелган",
             "ReferralUnreserveXor": "Чиксез {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Заказны кире кагарга",
         "OrderBookCancelLimitOrders": "Заказларны юкка чыгару",
         "OrderBookPlaceLimitOrder": "Заказ",
+        "PolkamarktAddLiquidity": "Полкамаркт ликвидлыгын өстәргә",
+        "PolkamarktBuy": "Полкамарк акцияләрен сатып алыгыз",
+        "PolkamarktClaimCreatorFees": "Полкамаркт ясаучы өчен түләүләр таләп итегез",
+        "PolkamarktClaimCreatorLiquidity": "Полкамаркт ясаучы ликвидлылыгын таләп итегез",
+        "PolkamarktClaimLiquidity": "Полкамаркт LP калдыкларын таләп итегез",
+        "PolkamarktClaimMarket": "Полкамаркт түләү",
+        "PolkamarktClaimMarkets": "Полкамаркт түләүләрен таләп итегез",
+        "PolkamarktCreateCondition": "Полкамарк шартын булдырыгыз",
+        "PolkamarktCreateMarket": "Полкамаркт базары булдыру",
+        "PolkamarktFlip": "Полкамаркт позициясе",
+        "PolkamarktSell": "Полкамаркт акцияләрен сату",
         "ReferralReserveXor": "Облига",
         "ReferralSetInvitedUser": "{role}",
         "ReferralUnreserveXor": "Шартсыз",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "Бассейннар",
         "Explore/Staking": "Штак",
         "Explore/Tokens": "Билгеләр",
+        "ForAgents": "Агентлар өчен",
         "OrderBook": "Сәүдә",
+        "Polkamarkt": "Полкамаркт",
         "Pool": "Бассейн",
         "Rewards": "Бүләкләр",
         "Sccp": "SCCP",
@@ -1330,6 +1447,155 @@
         "noExtension": "{extension} киңәйтүсе табылмады. Урнаштырыгыз һәм битне яңадан йөкләгез",
         "noExtensions": "{PolkadotJs} киңәйтүсе табылмады. Урнаштырыгыз һәм битне яңадан йөкләгез\nhttps://polkadot.js.org/extension/",
         "noSigner": "Керү тыелган. {extension} киңәйтүсе көйләүләренә кереп, \"Веб‑сайтка керүне идарә итү\"ны ачыгыз."
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Сатып ал",
+            "claimCreatorFees": "Иҗат түләүләрен таләп итегез",
+            "claimCreatorLiquidity": "Иҗат итүченең ликвидлыгын таләп итегез",
+            "claimLpResidual": "LP калдыкларын таләп итегез",
+            "claimTraderPayout": "Сәүдәгәрнең түләвен таләп итегез",
+            "createMarket": "Базар булдыру",
+            "flip": "Флип",
+            "liquidity": "Ликвидлелек өстәгез",
+            "sell": "Сату"
+        },
+        "create": {
+            "category": "Төркем",
+            "closeBlock": "Блокны ябу",
+            "creationFee": "Иҗат өчен түләү",
+            "deadline": "Сәүдә вакыты",
+            "marketFailed": "Шарт тудырылды, ләкин базар булдыру уңышсыз булды. Сакланган шарт белән базар булдыруны кабатлап карагыз.",
+            "metadataTooLong": "Сорау, оракаль, резолюция мета-мәгълүматлары 512 байт эчендә булырга тиеш.",
+            "question": "Базар сораулары",
+            "questionPlaceholder": "Вакыйга сайланган срокка әйе?",
+            "questionTooShort": "Сорау ким дигәндә 32 байт булырга тиеш.",
+            "retryMessage": "{id} шартлары булдырылды. Базар булдыру адымын гына кабатлап карагыз.",
+            "retrySubmit": "Базар булдыруны кабатлап карагыз",
+            "seedLiquidity": "Орлык ликвидлыгы",
+            "seedTooSmall": "Орлык ликвидлыгы ким дигәндә {amount} {symbol} булырга тиеш.",
+            "submit": "Шарт һәм базар булдыру",
+            "title": "Полкамаркт базары булдыру"
+        },
+        "details": {
+            "awaitingSettlement": "Йомгаклау көтә",
+            "empty": "Паллет торышын, оракаль детальләрен, урнашу дәлилләрен карау өчен базар сайлагыз.",
+            "openResolutionSource": "Ачык чыганак сылтамасы",
+            "oracle": "Oracle",
+            "pool": "Ликвидлык бассейны",
+            "settlement": "Бистә детальләре"
+        },
+        "errors": {
+            "loadActivity": "Полкамаркт хисап эшчәнлеген йөкли алмый.",
+            "loadMarkets": "Полкамаркт базарларын йөкләп булмый."
+        },
+        "fields": {
+            "collateralAsset": "Күрсәтелгән актив",
+            "conditionId": "Шарт ID",
+            "evidenceBlock": "Дәлилләр блокы",
+            "evidenceHash": "Дәлилләр хэш",
+            "evidenceUri": "Дәлилләр URI",
+            "lpContributed": "LP үз өлешен кертте",
+            "lpShares": "LP акцияләре",
+            "noReserve": "Резерв юк",
+            "oracle": "Oracle",
+            "poolCollateral": "Бассейн залогы",
+            "resolutionOutcome": "Резолюция нәтиҗәләре",
+            "resolutionSource": "Резолюция чыганагы",
+            "yesReserve": "Әйе резерв"
+        },
+        "filters": {
+            "active": "Актив",
+            "allCategories": "Барлык категорияләр",
+            "allStatuses": "Барлык статуслар",
+            "finalized": "Ахыр",
+            "mine": "Минеке"
+        },
+        "loadingMarkets": "Базарларны йөкләү ...",
+        "markets": {
+            "search": "Базарларны эзләү",
+            "subtitle": "{count} базарлары хәзерге фильтрларга туры килә",
+            "title": "Базарлар"
+        },
+        "metrics": {
+            "closeBlock": "Блокны ябу",
+            "liquidity": "Ликвидлык",
+            "noQuote": "NOК",
+            "status": "Статус",
+            "volume": "Том",
+            "yesProbability": "Әйе",
+            "yesQuote": "Әйе"
+        },
+        "modes": {
+            "buy": "Сатып ал",
+            "claim": "Дәгъва",
+            "flip": "Флип",
+            "liquidity": "LP",
+            "sell": "Сату"
+        },
+        "my": {
+            "claimsSummary": "Сәүдәгәр {trader} / LP {lp}",
+            "connect": "Ясалган базарларны, LP акцияләрен, түләүләрне һәм соңгы сәүдәләрне карау өчен счетны тоташтырыгыз.",
+            "createdMarkets": "Базарлар булдырылды",
+            "empty": "Полкамаркт позициясе юк, бу хисап өчен базарлар булдырмаган.",
+            "loading": "Полкамаркт хисап эшчәнлеген йөкләү ...",
+            "market": "Базар {id}",
+            "positions": "LP һәм сәүдәгәр позицияләре",
+            "recentTrades": "Соңгы сәүдә",
+            "sharesSummary": "ЙӘ {yes} / NOК {no} / LP {lp}",
+            "subtitle": "Базарлар, LP акцияләре, сәүдәгәр түләүләре, иҗат өчен түләүләр, калдык LP таләпләре.",
+            "title": "Минем базарлар / LP"
+        },
+        "noMarkets": "Хәзерге фильтрларга бернинди базар да туры килми.",
+        "notIndexed": "Индексацияләнмәгән",
+        "outcomes": {
+            "no": "NOК",
+            "yes": "Әйе"
+        },
+        "pageSubtitle": "Актив фаразлау базарларын сәүдә итегез, яңа базарлар чәчегез, һәм LP һәм Polkaswap капчык агымыннан таләп ителгән баланс белән идарә итегез.",
+        "status": {
+            "active": "Актив"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "Игътибарлы",
+            "claimableFailed": "Игътибарлы балансны укый алмый.",
+            "claimStatus": "Дәгъва статусы",
+            "collateralAmount": "Суммасы ({symbol})",
+            "collateralOut": "Залог",
+            "enterAmount": "Сумма кертегез",
+            "flippedShares": "Акчалар",
+            "insufficientKusd": "{symbol} балансы җитми",
+            "insufficientXor": "Челтәр өчен түләү өчен XOR җитми",
+            "invalidAmount": "Дөрес күләмне кертегез",
+            "lpSharesOut": "LP бүлешә",
+            "noChainMarket": "Базар чылбыр белән сәүдә ителми",
+            "quoteFailed": "Oteитатаны яңартып булмый.",
+            "refreshingQuote": "Яңартучы цитата ...",
+            "selectMarket": "Сәүдә итү өчен актив базар сайлагыз.",
+            "sharesAmount": "Акцияләр",
+            "sharesOut": "Акцияләр",
+            "slippage": "Слайд%",
+            "subtitle": "Otesитаталар, түләүләр, тайпылудан саклау, капчыкны тапшыру SORA эш вакытын куллана.",
+            "title": "Сәүдә билеты",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "байт",
+            "shares": "акцияләр"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "Ликвидлык өстәү",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Комиссия",
             "commissionTooltip": "Комиссия стакан процессында үз хезмәтләре өчен ватандашлар өчен түләүләрне аңлата. Бу түләү, процент буларак күрсәтелгән, сайлау алдыннан номинаторлар эшләгән стоминаторлар белән алынган бүләкләрдән алынган. Әйтергә кирәк, валидаторлар теләсә кайсы вакытта аларның комиссия ставкаларын көйли ала",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Барысын да сайлагыз",
             "name": "Исем",
             "noNominatedValidators": "Сездә тәкъдим ителгән валандашлар юк",
             "noValidators": "Күрсәтелгән фильтрны канәгатьләндерерлек программа юк",
             "return": "Кайту",
             "search": "Эзләү ...",
-            "selectAll": "Select all",
+            "selectAll": "Барысын да сайлагыз",
             "staked": "Стейкланган",
             "stakedTooltip": "Бу validator белән стейкланган гомуми XOR, validator-ның үз стейкы һәм номинацияләнгән стейк белән бергә"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Челтәрдә кулланучы активларын тотучы саннар санлы мәгълүматлар. Eachәр счетның уникаль иҗтимагый адресы һәм кулланучыга үз активларына керергә һәм идарә итәргә мөмкинлек бирүче шәхси ачкыч белән бәйле.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Сайланган чорда операцияләрдә катнашкан уникаль счетлар.",
         "bridgeTransactions": "{from} {to} күперенә күпер ярдәмендә {from} һәм {to} челтәрләре арасында активларны күчерү процессын аңлата. Күпер ике челтәрнең үзара бәйләнешенә мөмкинлек бирә, кулланучыларга активларны бер-бер артлы күчерергә мөмкинлек бирә.",
         "fees": "{Sora} блокчейнындагы түләүләр челтәрдәге операцияләрне башкару өчен алынган түләүләрне аңлата. Бу түләүләр XOR, {Sora} челтәренең туган криптокурансында түләнә. Түләү күләме башкарылган операциянең катлаулылыгы һәм күләме белән билгеләнә",
         "roi": "{ROI} - инвестицияләр буенча кире кайту. Ул инвестициядән алынган табышны шул инвестиция бәясенә эквивалентка бүлеп исәпләнә.",

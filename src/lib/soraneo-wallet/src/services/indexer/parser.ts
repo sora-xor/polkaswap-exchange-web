@@ -1,6 +1,8 @@
 import { BN, hexToString, isHex } from '@polkadot/util';
 import { FPNumber, Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { RewardType, RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 import getOr from 'lodash/fp/getOr';
 
@@ -58,6 +60,7 @@ import type {
 } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { EvmHistory } from '@sora-substrate/sdk/build/bridgeProxy/evm/types';
+import type { SubHistory, SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { VaultHistory } from '@sora-substrate/sdk/build/kensetsu/types';
 import type { LimitOrderHistory } from '@sora-substrate/sdk/build/orderBook/types';
 import type { RewardClaimHistory, RewardInfo } from '@sora-substrate/sdk/build/rewards/types';
@@ -213,8 +216,10 @@ const OperationsMap = {
     [insensitive(ModuleMethods.EthBridgeTransferToSidechain)]: () => Operation.EthBridgeOutgoing,
   },
   [insensitive(ModuleNames.BridgeProxy)]: {
-    [insensitive(ModuleMethods.BridgeProxyBurn)]: () => Operation.EvmOutgoing,
-    [insensitive(ModuleMethods.BridgeProxyMint)]: () => Operation.EvmIncoming,
+    [insensitive(ModuleMethods.BridgeProxyBurn)]: (data: unknown) =>
+      isSubBridgeProxyData(data) ? Operation.SubstrateOutgoing : Operation.EvmOutgoing,
+    [insensitive(ModuleMethods.BridgeProxyMint)]: (data: unknown) =>
+      isSubBridgeProxyData(data) ? Operation.SubstrateIncoming : Operation.EvmIncoming,
   },
 };
 
@@ -422,6 +427,8 @@ const firstString = (data: Record<string, unknown>, keys: string[]): string => {
         'evm',
         'EVMLegacy',
         'evmLegacy',
+        'Sub',
+        'sub',
         'Sora',
         'sora',
         'Parachain',
@@ -475,6 +482,25 @@ const normalizeEvmNetwork = (value: unknown): number | undefined => {
   return undefined;
 };
 
+const normalizeSubNetwork = (value: unknown): SubNetwork | undefined => {
+  const network = isRecord(value)
+    ? firstString(value, ['externalNetwork', 'networkId', 'Sub', 'sub', 'value', 'id'])
+    : firstString({ value }, ['value']);
+
+  return Object.values(SubNetworkId).find((item) => item.toLowerCase() === network.toLowerCase()) as
+    | SubNetwork
+    | undefined;
+};
+
+const isSubBridgeProxyData = (data: unknown): boolean => {
+  if (!isRecord(data)) return false;
+
+  const networkType = firstString(data, ['externalNetworkType', 'networkType']);
+  if (networkType.toLowerCase() === BridgeNetworkType.Sub.toLowerCase()) return true;
+
+  return normalizeSubNetwork(data.externalNetwork ?? data.networkId) !== undefined;
+};
+
 const formatBridgeProxyAmount = (
   amount: unknown,
   asset: Nullable<Asset>,
@@ -516,6 +542,16 @@ const applyBridgeProxyStatus = (payload: HistoryItem, status?: string): void => 
   if (['Failed', 'Refunded'].includes(status ?? '')) {
     payload.status = TransactionStatus.Error;
   }
+};
+
+const bridgeProxyTransactionState = (payload: HistoryItem, status?: string): BridgeTxStatus => {
+  if (['Failed', 'Refunded'].includes(status ?? '') || payload.status === TransactionStatus.Error) {
+    return BridgeTxStatus.Failed;
+  }
+
+  if (status === BridgeTxStatus.Pending) return BridgeTxStatus.Pending;
+
+  return BridgeTxStatus.Done;
 };
 
 type MintOrBurnData = {
@@ -1149,6 +1185,41 @@ const parseEvmBridgeIncoming = async (transaction: HistoryElement, payload: Hist
   return payload;
 };
 
+const parseSubBridgeProxy = async (transaction: HistoryElement, payload: HistoryItem) => {
+  const data = (transaction.data ?? {}) as HistoryElementEvmBridgeIncoming;
+  const assetAddress = data.assetId ?? (data as Record<string, unknown>).asset_id ?? '';
+  const asset = await getAssetByAddress(assetAddress);
+  const externalNetwork = normalizeSubNetwork(data.externalNetwork ?? data.networkId);
+  const _payload = payload as SubHistory;
+
+  if (!externalNetwork || !assetAddress || !hasPositiveBridgeProxyAmount(data.amount, data)) return null;
+
+  _payload.amount = formatBridgeProxyAmount(data.amount, asset, data);
+  _payload.amount2 = _payload.amount;
+  _payload.assetAddress = assetAddress;
+  _payload.symbol = getAssetSymbol(asset);
+  _payload.hash = data.requestHash || getStringField(transaction.id);
+  _payload.externalNetwork = externalNetwork;
+  _payload.externalNetworkType = BridgeNetworkType.Sub;
+  _payload.externalNetworkFee = '0';
+  _payload.externalTransferFee = '0';
+  _payload.transactionState = bridgeProxyTransactionState(payload, data.status);
+  _payload.payload = isRecord(_payload.payload) ? _payload.payload : {};
+
+  if (payload.type === Operation.SubstrateOutgoing) {
+    _payload.to = firstString(data as Record<string, unknown>, ['recipient', 'to', 'dest', 'account']) || _payload.to;
+  } else {
+    _payload.to =
+      firstString(data as Record<string, unknown>, ['sender', 'from', 'source', 'account']) ||
+      firstString(data as Record<string, unknown>, ['recipient', 'to']) ||
+      _payload.to;
+  }
+
+  applyBridgeProxyStatus(payload, data.status);
+
+  return payload;
+};
+
 export default class IndexerDataParser {
   // Operations visible in wallet
   public static readonly SUPPORTED_OPERATIONS = [
@@ -1354,6 +1425,10 @@ export default class IndexerDataParser {
       }
       case Operation.EvmOutgoing: {
         return await parseEvmBridgeOutgoing(transaction, payload);
+      }
+      case Operation.SubstrateIncoming:
+      case Operation.SubstrateOutgoing: {
+        return await parseSubBridgeProxy(transaction, payload);
       }
       default:
         return null;

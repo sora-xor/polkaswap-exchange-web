@@ -28,7 +28,7 @@
         "title": "Pengaturan akun"
     },
     "accountText": "akun | akun",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Akun aktif",
     "addAsset": {
         "add": "Menambahkan",
         "AddAssetToken": {
@@ -171,7 +171,7 @@
             "frozen": "Dibekukan",
             "locked": "Terkunci",
             "reserved": "Dicadangkan",
-            "total": "Total",
+            "total": "Jumlah",
             "transferable": "Dapat ditransfer"
         },
         "bridge": "Jembatan",
@@ -342,7 +342,7 @@
     "copyPhraseText": "Salin Frasa Sandi",
     "copyWithValue": "Salin {value}",
     "createPair": {
-        "deposit": "Deposit",
+        "deposit": "Setoran",
         "firstLiquidityProvider": "Anda adalah penyedia likuiditas pertama",
         "firstLiquidityProviderInfo": "Rasio token yang Anda tambahkan akan menentukan nilai pool ini. <br/> Setelah Anda puas dengan tarif, klik suplai untuk meninjau.",
         "firstSecondPoolTokens": "{first}-{second} Token Pool",
@@ -354,7 +354,7 @@
     "createToken": {
         "confirmTokenTitleCommon": "Buat Token",
         "confirmTokenTitleNFT": "Buat NFT",
-        "CreateSimpleToken": "Token",
+        "CreateSimpleToken": "Tanda",
         "divisible": {
             "desc": "Kemampuan NFT untuk membagi menjadi bagian-bagian pecahan. Penyediaan likuiditas hanya berfungsi dengan aset yang dapat dibagi",
             "placeholder": "Terbagi"
@@ -539,14 +539,14 @@
     "disconnectWalletText": "Memutuskan",
     "doNotShowText": "Jangan tunjukkan ini lagi",
     "dragAndDropText": "Seret & lepas atau pilih file {extension}",
-    "editText": "Edit",
+    "editText": "Sunting",
     "errorText": "Kesalahan",
     "ethNetworkFeeTooltipText": "Harap perhatikan bahwa biaya jaringan {network} yang ditampilkan di {AppName} hanyalah perkiraan kasar, Anda dapat melihat jumlah biaya yang benar di dompet {network} yang terhubung sebelum mengonfirmasi transaksi.",
     "exceededAmountText": "{amount} terlampaui",
     "exchange": {
         "lossWarning": "Anda akan kehilangan {value}% pada perdagangan Anda. Kami mendeteksi masalah penyediaan likuiditas. Ini dapat menyebabkan kerugian yang signifikan selama pertukaran token. Pastikan ada likuiditas yang memadai untuk pasangan swap yang Anda inginkan.",
         "Pool": "Kolam renang",
-        "Swap": "Swap"
+        "Swap": "Tukar"
     },
     "expandText": "Memperluas",
     "explore": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} per {second}",
     "firstText": "Pertama",
     "footer": {
+        "forAgents": "Untuk Agen",
         "internet": {
             "action": "Segarkan {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "Info & Komunitas",
         "privacy": "Kebijakan Privasi",
         "sorawiki": "{Sora} Wiki"
+    },
+    "forAgents": {
+        "apiContext": "dipasang dalam konteks halaman setelah aplikasi melakukan booting. Ia menggunakan node, dompet, pengindeks, dan jalur SDK yang sama dengan antarmuka pengguna.",
+        "contract": {
+            "idempotent": "Gunakan clientOrderId yang stabil dan pulihkan pengiriman yang tidak pasti sebelum mencoba lagi.",
+            "noCustody": "Halaman tersebut tidak pernah menerima kunci pribadi; penandatanganan tetap dengan dompet yang dipilih.",
+            "prepareFirst": "Panggilan perubahan status harus melalui persiapan* sebelum dieksekusi*.",
+            "samePage": "Jalankan di dalam konteks halaman Polkaswap setelah acara siap."
+        },
+        "discoveryText": "Ambil manifesnya terlebih dahulu. Ini menghubungkan referensi berversi, file skema, contoh, katalog kesalahan, dan klien pembantu yang dikirimkan dengan build statis ini.",
+        "discoveryTitle": "Penemuan",
+        "entrypointsLabel": "Titik masuk API Agen",
+        "eyebrow": "Otomatisasi",
+        "flow": {
+            "execute": "Jalankan hanya setelah persetujuan kebijakan, dengan maksud yang telah disiapkan dan id pesanan klien yang stabil.",
+            "open": "Buka Polkaswap di halaman browser sebenarnya.",
+            "prepare": "Panggil metode persiapan yang cocok sebelum operasi penandatanganan apa pun.",
+            "ready": "Tunggu acara siap dan memerlukan node SORA aktif.",
+            "recover": "Pulihkan kiriman yang tidak pasti sebelum mencoba lagi.",
+            "resolve": "Selesaikan simbol aset ke alamat sebelum eksekusi berulang.",
+            "wallet": "Pilih penyedia dompet dan akun saat penandatanganan diperlukan."
+        },
+        "flowTitle": "Loop eksekusi yang aman",
+        "lead": "Polkaswap memperlihatkan API otomatisasi asli browser untuk pelari agen yang membuka aplikasi statis.",
+        "links": {
+            "client": "Klien pembantu JavaScript",
+            "errors": "Katalog kesalahan",
+            "examples": "Contoh",
+            "manifest": "Manifes penemuan",
+            "playground": "Taman bermain agen",
+            "reference": "Referensi API lengkap",
+            "schema": "Skema JSON",
+            "types": "Definisi TypeScript"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Dokumen penemuan kanonik untuk pelari umum.",
+                "title": "Mulailah dengan manifes"
+            },
+            "playground": {
+                "description": "Pemeriksaan manual asal yang sama untuk status, aset, kuotasi, dan pratinjau.",
+                "title": "Buka taman bermain"
+            },
+            "reference": {
+                "description": "Peta metode yang dapat dibaca, contoh, aturan penandatanganan, dan catatan pemulihan.",
+                "title": "Baca referensi API"
+            }
+        },
+        "signingTextAfter": "untuk menjaga percobaan ulang idempoten.",
+        "signingTextBefore": "Halaman ini tidak pernah mengambil kunci pribadi. Metode pengubahan status menggunakan penandatangan dompet yang dipilih dan mengharuskan pelari untuk meneruskan pengembaliannya",
+        "signingTextMiddle": "ditambah kandang",
+        "signingTitle": "Penandatanganan dan hak asuh",
+        "startTitle": "Mulai di sini",
+        "title": "Untuk Agen"
     },
     "forText": "untuk",
     "hashiBridgeText": "Jembatan {Hashi}",
@@ -798,13 +879,14 @@
         "Explore/Container": "Menjelajahi",
         "Farming": "Bertani?",
         "OrderBook": "Berdagang",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Kolam renang",
         "Rewards": "Hadiah",
         "Sccp": "@:pageTitle.Sccp",
         "SoraCard": "{Sora} Kartu",
-        "StakingContainer": "Staking",
+        "StakingContainer": "Mempertaruhkan",
         "Stats": "Statistik",
-        "Swap": "Swap",
+        "Swap": "Tukar",
         "VaultsContainer": "@:pageTitle.Vaults",
         "Wallet": "Akun"
     },
@@ -862,7 +944,7 @@
             "transfer": "Token berhasil dibeli!\n Klik untuk memulai transaksi jembatan"
         }
     },
-    "moonpayText": "MoonPay",
+    "moonpayText": "Pembayaran Bulan",
     "mst": {
         "about": "Tentang",
         "accountNameMst": "Nama akun Multisig",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas",
             "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
             "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
+            "PolkamarktAddLiquidity": "Gagal menambah likuiditas {amount} {symbol} ke Polkamarkt",
+            "PolkamarktBuy": "Gagal membeli {amount} {symbol} di Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Gagal mengklaim biaya pencipta Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Gagal mengklaim likuiditas pencipta Polkamarkt",
+            "PolkamarktClaimLiquidity": "Gagal mengklaim sisa LP Polkamarkt",
+            "PolkamarktClaimMarket": "Gagal mengklaim pembayaran Polkamarkt",
+            "PolkamarktClaimMarkets": "Gagal mengklaim pembayaran Polkamarkt",
+            "PolkamarktCreateCondition": "Gagal membuat kondisi Polkamarkt",
+            "PolkamarktCreateMarket": "Gagal membuat pasar Polkamarkt dengan {amount} {symbol}",
+            "PolkamarktFlip": "Gagal membalik {amount} {symbol} di Polkamarkt",
+            "PolkamarktSell": "Gagal menjual {amount} {symbol} di Polkamarkt",
             "ReferralReserveXor": "Gagal mengikat {amount} XOR",
             "ReferralSetInvitedUser": "Gagal menyetel {role} {address}",
             "ReferralUnreserveXor": "Gagal melepaskan ikatan {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "Batas pesanan dibatalkan",
             "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} pada {price} {symbol2} ditempatkan",
+            "PolkamarktAddLiquidity": "Menambahkan likuiditas {amount} {symbol} ke Polkamarkt",
+            "PolkamarktBuy": "Membeli {amount} {symbol} di Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Biaya pencipta Polkamarkt diklaim",
+            "PolkamarktClaimCreatorLiquidity": "Likuiditas pencipta Polkamarkt diklaim",
+            "PolkamarktClaimLiquidity": "Residu LP Polkamarkt diklaim",
+            "PolkamarktClaimMarket": "Pembayaran polkamarkt diklaim",
+            "PolkamarktClaimMarkets": "Pembayaran Polkamarkt diklaim",
+            "PolkamarktCreateCondition": "Kondisi polkamarkt tercipta",
+            "PolkamarktCreateMarket": "Pasar Polkamarkt dibuat dengan {amount} {symbol}",
+            "PolkamarktFlip": "Membalik {amount} {symbol} di Polkamarkt",
+            "PolkamarktSell": "Dijual {amount} {symbol} di Polkamarkt",
             "ReferralReserveXor": "Berikat {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} berhasil disetel",
             "ReferralUnreserveXor": "XOR {amount} tidak terikat",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Batalkan pesanan",
         "OrderBookCancelLimitOrders": "Batalkan Pesanan",
         "OrderBookPlaceLimitOrder": "Tempatkan Pesanan",
+        "PolkamarktAddLiquidity": "Tambahkan Likuiditas Polkamarkt",
+        "PolkamarktBuy": "Beli Saham Polkamarkt",
+        "PolkamarktClaimCreatorFees": "Klaim Biaya Pencipta Polkamarkt",
+        "PolkamarktClaimCreatorLiquidity": "Klaim Likuiditas Pencipta Polkamarkt",
+        "PolkamarktClaimLiquidity": "Klaim Sisa LP Polkamarkt",
+        "PolkamarktClaimMarket": "Klaim Pembayaran Polkamarkt",
+        "PolkamarktClaimMarkets": "Klaim Pembayaran Polkamarkt",
+        "PolkamarktCreateCondition": "Buat Kondisi Polkamarkt",
+        "PolkamarktCreateMarket": "Buat Pasar Polkamarkt",
+        "PolkamarktFlip": "Balik Posisi Polkamarkt",
+        "PolkamarktSell": "Jual Saham Polkamarkt",
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralSetInvitedUser": "Tetapkan {role}",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -1069,17 +1184,17 @@
         "StakingChill": "Santai",
         "StakingNominate": "Mencalonkan",
         "StakingPayout": "Hadiah Pembayaran",
-        "StakingRebond": "Rebond",
+        "StakingRebond": "Rebonding",
         "StakingSetController": "Atur Pengontrol",
         "StakingSetPayee": "Tetapkan Penerima Pembayaran",
         "StakingUnbond": "Tidak terikat",
         "StakingWithdrawUnbonded": "Penarikan Tanpa Ikatan",
-        "Swap": "Swap",
+        "Swap": "Tukar",
         "SwapAndSend": "Tukar dan Kirim",
         "SwapTransferBatch": "{ADAR} Transfer",
-        "Transfer": "Transfer",
-        "VestedTransfer": "Transfer",
-        "XorlessTransfer": "Transfer"
+        "Transfer": "Pemindahan",
+        "VestedTransfer": "Pemindahan",
+        "XorlessTransfer": "Pemindahan"
     },
     "orderBook": {
         "amount": "jumlah",
@@ -1193,7 +1308,7 @@
                 "orderType": "Order 'Beli' hanya akan dieksekusi pada harga yang ditentukan atau lebih rendah, sedangkan order 'Jual' hanya akan dieksekusi pada harga yang ditentukan atau lebih tinggi. Kontrol ini memastikan Anda tidak membayar lebih atau menjual dengan harga kurang dari yang Anda rasa nyaman."
             }
         },
-        "total": "Total",
+        "total": "Jumlah",
         "tradingPair": {
             "choosePair": "Pilih pasangan perdagangan",
             "status": "Status",
@@ -1215,15 +1330,17 @@
         "Explore/Books": "@:pageTitle.OrderBook",
         "Explore/Farming": "Bertani?",
         "Explore/Pools": "Kolam",
-        "Explore/Staking": "Staking",
+        "Explore/Staking": "Mempertaruhkan",
         "Explore/Tokens": "Token",
+        "ForAgents": "Untuk Agen",
         "OrderBook": "Berdagang",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Kolam renang",
         "Rewards": "Hadiah",
         "Sccp": "SCCP",
-        "Staking": "Staking",
+        "Staking": "Mempertaruhkan",
         "Stats": "Statistik",
-        "Swap": "Swap",
+        "Swap": "Tukar",
         "VaultDetails": "Detail Posisi",
         "Vaults": "{Kensetsu}",
         "Wallet": "Dompet"
@@ -1273,7 +1390,7 @@
         "nativeXorStaking": {
             "descriptionTask": "Stake XOR dan dapatkan hadiah VAL",
             "titleProgress": "Staking XOR",
-            "titleTask": "Stake XOR"
+            "titleTask": "Taruhan XOR"
         },
         "networkFeeSpent": {
             "descriptionTask": "Gunakan XOR untuk biaya jaringan di berbagai transaksi on-chain",
@@ -1330,6 +1447,155 @@
         "noExtension": "Tidak ada {extension} yang ditemukan. Silakan instal dan muat ulang halaman ini",
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https://polkadot.js.org/extension/",
         "noSigner": "Akses ditolak. Buka setelan ekstensi {extension} dan buka \"Kelola Akses Situs Web\" untuk mengizinkan."
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Beli",
+            "claimCreatorFees": "Klaim biaya pembuat",
+            "claimCreatorLiquidity": "Likuiditas pembuat klaim",
+            "claimLpResidual": "Klaim sisa LP",
+            "claimTraderPayout": "Klaim pembayaran pedagang",
+            "createMarket": "Ciptakan pasar",
+            "flip": "Balik",
+            "liquidity": "Tambahkan likuiditas",
+            "sell": "Jual"
+        },
+        "create": {
+            "category": "Kategori",
+            "closeBlock": "Tutup blok",
+            "creationFee": "Biaya pembuatan",
+            "deadline": "Batas waktu perdagangan",
+            "marketFailed": "Kondisi telah tercipta, namun penciptaan pasar gagal. Coba lagi pembuatan pasar dengan kondisi tersimpan.",
+            "metadataTooLong": "Metadata pertanyaan, oracle, dan resolusi harus sesuai dalam 512 byte.",
+            "question": "Pertanyaan pasar",
+            "questionPlaceholder": "Apakah acara tersebut akan berakhir menjadi YA pada tenggat waktu yang dipilih?",
+            "questionTooShort": "Pertanyaan harus berukuran minimal 32 byte.",
+            "retryMessage": "Kondisi {id} telah dibuat. Coba lagi hanya langkah penciptaan pasar.",
+            "retrySubmit": "Coba lagi penciptaan pasar",
+            "seedLiquidity": "Likuiditas benih",
+            "seedTooSmall": "Likuiditas benih minimal harus {amount} {symbol}.",
+            "submit": "Ciptakan kondisi dan pasar",
+            "title": "Buat Pasar Polkamarkt"
+        },
+        "details": {
+            "awaitingSettlement": "Menunggu finalisasi",
+            "empty": "Pilih pasar untuk melihat status palet, detail oracle, dan bukti penyelesaian.",
+            "openResolutionSource": "Tautan sumber terbuka",
+            "oracle": "Peramal",
+            "pool": "Kumpulan likuiditas",
+            "settlement": "Detail penyelesaian"
+        },
+        "errors": {
+            "loadActivity": "Tidak dapat memuat aktivitas akun Polkamarkt.",
+            "loadMarkets": "Tidak dapat memuat pasar Polkamarkt."
+        },
+        "fields": {
+            "collateralAsset": "Aset jaminan",
+            "conditionId": "ID kondisi",
+            "evidenceBlock": "Blok bukti",
+            "evidenceHash": "Bukti hash",
+            "evidenceUri": "URI bukti",
+            "lpContributed": "LP berkontribusi",
+            "lpShares": "saham LP",
+            "noReserve": "TIDAK ADA cadangan",
+            "oracle": "Peramal",
+            "poolCollateral": "Jaminan kolam renang",
+            "resolutionOutcome": "Hasil resolusi",
+            "resolutionSource": "Sumber resolusi",
+            "yesReserve": "YA, cadangan"
+        },
+        "filters": {
+            "active": "Aktif",
+            "allCategories": "Semua kategori",
+            "allStatuses": "Semua status",
+            "finalized": "Selesai",
+            "mine": "Milik saya"
+        },
+        "loadingMarkets": "Memuat pasar...",
+        "markets": {
+            "search": "Cari pasar",
+            "subtitle": "Pasar {count} cocok dengan filter saat ini",
+            "title": "Pasar"
+        },
+        "metrics": {
+            "closeBlock": "Tutup blok",
+            "liquidity": "Likuiditas",
+            "noQuote": "TIDAK ADA kutipan",
+            "status": "Status",
+            "volume": "Volume",
+            "yesProbability": "YA",
+            "yesQuote": "kutipan YA"
+        },
+        "modes": {
+            "buy": "Beli",
+            "claim": "Klaim",
+            "flip": "Balik",
+            "liquidity": "LP",
+            "sell": "Jual"
+        },
+        "my": {
+            "claimsSummary": "Pedagang {trader} / LP {lp}",
+            "connect": "Hubungkan akun untuk melihat pasar yang dibuat, pembagian LP, pembayaran, dan perdagangan terkini.",
+            "createdMarkets": "Pasar yang diciptakan",
+            "empty": "Belum ada posisi Polkamarkt atau pasar yang diciptakan untuk akun ini.",
+            "loading": "Memuat aktivitas akun Polkamarkt...",
+            "market": "Pasar {id}",
+            "positions": "Posisi LP dan trader",
+            "recentTrades": "Perdagangan baru-baru ini",
+            "sharesSummary": "YA {yes} / TIDAK {no} / LP {lp}",
+            "subtitle": "Pasar yang diciptakan, saham LP, pembayaran pedagang, biaya pencipta, dan sisa klaim LP.",
+            "title": "Pasar Saya / LP"
+        },
+        "noMarkets": "Tidak ada pasar yang cocok dengan filter saat ini.",
+        "notIndexed": "Tidak diindeks",
+        "outcomes": {
+            "no": "TIDAK",
+            "yes": "YA"
+        },
+        "pageSubtitle": "Perdagangkan pasar prediksi aktif, sematkan pasar baru, dan kelola LP serta saldo yang dapat diklaim dari aliran dompet Polkaswap.",
+        "status": {
+            "active": "Aktif"
+        },
+        "ticket": {
+            "amountPlaceholder": "0,0",
+            "claimable": "Dapat diklaim",
+            "claimableFailed": "Tidak dapat membaca saldo yang dapat diklaim.",
+            "claimStatus": "Status klaim",
+            "collateralAmount": "Jumlah ({symbol})",
+            "collateralOut": "Jaminan keluar",
+            "enterAmount": "Masukkan jumlah",
+            "flippedShares": "Membalik saham",
+            "insufficientKusd": "Saldo {symbol} tidak mencukupi",
+            "insufficientXor": "XOR tidak mencukupi untuk biaya jaringan",
+            "invalidAmount": "Masukkan jumlah yang valid",
+            "lpSharesOut": "LP membagikan",
+            "noChainMarket": "Pasar tidak dapat diperdagangkan secara on-chain",
+            "quoteFailed": "Tidak dapat menyegarkan kutipan.",
+            "refreshingQuote": "Kutipan yang menyegarkan...",
+            "selectMarket": "Pilih pasar aktif untuk diperdagangkan.",
+            "sharesAmount": "Bagikan",
+            "sharesOut": "Bagikan",
+            "slippage": "% selip",
+            "subtitle": "Penawaran harga, biaya, perlindungan slippage, dan pengiriman dompet menggunakan runtime SORA.",
+            "title": "Tiket perdagangan",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "byte",
+            "shares": "saham"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "Tambahkan",
@@ -1565,8 +1831,8 @@
     "social": {
         "github": "Github",
         "medium": "Sedang",
-        "reddit": "Reddit",
-        "telegram": "Telegram",
+        "reddit": "reddit",
+        "telegram": "telegram",
         "twitter": "Twitter",
         "wiki": "{Sora} Wiki"
     },
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Komisi",
             "commissionTooltip": "Komisi mengacu pada biaya yang dibebankan oleh validator atas layanan mereka dalam proses staking. Biaya ini, yang dinyatakan dalam persentase, dipotong dari imbalan staking yang diperoleh nominator sebelum didistribusikan. Penting untuk diperhatikan bahwa validator dapat menyesuaikan tarif komisinya kapan saja",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Batalkan pilihan semua",
             "name": "Nama",
             "noNominatedValidators": "Anda tidak memiliki validator yang dinominasikan",
             "noValidators": "Tidak ada validator yang memenuhi filter yang ditentukan",
             "return": "Kembali",
             "search": "Mencari...",
-            "selectAll": "Select all",
+            "selectAll": "Pilih semua",
             "staked": "Dipertaruhkan",
             "stakedTooltip": "Total XOR yang dipertaruhkan dengan validator ini, termasuk taruhan validator itu sendiri dan taruhan yang dinominasikan"
         },
@@ -1731,13 +1997,13 @@
         "slippageTolerance": "Toleransi Slippage",
         "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan."
     },
-    "swapText": "Swap",
+    "swapText": "Tukar",
     "tokens": {
         "assetId": "ID Aset"
     },
     "tooltips": {
         "accounts": "Akun adalah alamat digital yang menyimpan aset pengguna di jaringan. Setiap akun dikaitkan dengan alamat publik unik dan kunci pribadi yang memungkinkan pengguna mengakses dan mengelola aset mereka.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Akun unik yang berpartisipasi dalam transaksi selama periode yang dipilih.",
         "bridgeTransactions": "Jembatan {from} to {to} mengacu pada proses transfer aset antara jaringan {from} dan {to} menggunakan jembatan. Jembatan memungkinkan untuk interoperabilitas dari dua jaringan, memungkinkan pengguna untuk memindahkan aset dengan mulus di antara keduanya.",
         "fees": "Biaya pada blockchain {Sora} mengacu pada biaya yang dikeluarkan untuk melakukan transaksi di jaringan. Biaya ini dibayarkan dalam XOR, mata uang kripto asli dari Jaringan {Sora} . Jumlah biaya ditentukan oleh kompleksitas dan ukuran transaksi yang dijalankan",
         "roi": "{ROI} adalah singkatan dari Pengembalian Investasi. Ini dihitung dengan membagi laba yang diperoleh dari investasi dengan biaya investasi itu dalam persentase yang setara.",

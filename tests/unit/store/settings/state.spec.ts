@@ -60,6 +60,7 @@ vi.doMock('@/lib/soraneo-wallet/src/api', () => ({
 describe('settings store initialisation', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    window.history.replaceState({}, '', '/#/swap');
   });
 
   it('marks the shared connection instance as raw', async () => {
@@ -67,5 +68,23 @@ describe('settings store initialisation', () => {
     const settingsStore = useSettingsStore();
 
     expect(settingsStore.appConnection.connection).toBe(connectionStub);
+  });
+
+  it('keeps the first-launch disclaimer visible for ordinary visits', async () => {
+    const { useSettingsStore } = await import('@/stores/settings');
+    const settingsStore = useSettingsStore();
+
+    expect(settingsStore.userDisclaimerApprove).toBe(false);
+    expect(settingsStore.disclaimerVisibility).toBe(true);
+  });
+
+  it('suppresses the first-launch disclaimer for transient agent sessions', async () => {
+    window.history.replaceState({}, '', '/?polkaswap-agent=1#/swap');
+
+    const { useSettingsStore } = await import('@/stores/settings');
+    const settingsStore = useSettingsStore();
+
+    expect(settingsStore.userDisclaimerApprove).toBe(true);
+    expect(settingsStore.disclaimerVisibility).toBe(false);
   });
 });

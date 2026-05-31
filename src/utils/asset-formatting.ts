@@ -13,6 +13,69 @@ export const asZeroValue = (value: unknown): boolean => {
   return !Number.isFinite(+value) || +value === 0;
 };
 
+const isObjectRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+/**
+ * Converts supported codec balance representations into a plain decimal integer string.
+ * Accepts strings, bigint values, safe integer numbers, and codec-like objects
+ * returned by the Polkadot API.
+ */
+export const normalizeCodecBalanceValue = (value: unknown): Nullable<CodecString> => {
+  if (typeof value === 'bigint') {
+    return value >= 0n ? value.toString() : null;
+  }
+
+  if (typeof value === 'number') {
+    return Number.isSafeInteger(value) && value >= 0 ? value.toString() : null;
+  }
+
+  if (typeof value !== 'string') {
+    if (!isObjectRecord(value)) {
+      return null;
+    }
+
+    const maybeToJson = value.toJSON;
+    if (typeof maybeToJson === 'function') {
+      const json = maybeToJson.call(value);
+
+      if (isObjectRecord(json) && 'balance' in json) {
+        return normalizeCodecBalanceValue(json.balance);
+      }
+
+      const normalizedJson = normalizeCodecBalanceValue(json);
+      if (normalizedJson !== null) {
+        return normalizedJson;
+      }
+    }
+
+    const maybeToString = value.toString;
+    if (typeof maybeToString === 'function' && maybeToString !== Object.prototype.toString) {
+      return normalizeCodecBalanceValue(maybeToString.call(value));
+    }
+
+    return null;
+  }
+
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return null;
+  }
+
+  if (/^0x[0-9a-f]+$/i.test(trimmed)) {
+    try {
+      return BigInt(trimmed).toString();
+    } catch {
+      return null;
+    }
+  }
+
+  const compact = trimmed.replace(/[,\s]/g, '');
+
+  return /^\d+$/.test(compact) ? compact : null;
+};
+
 export const getAssetBalance = (
   asset: Nullable<AssetWithBalance>,
   { internal = true, isBondedBalance = false } = {}
@@ -20,14 +83,14 @@ export const getAssetBalance = (
   if (!asset) return ZERO_STRING_VALUE;
 
   if (!internal) {
-    return (asset as RegisteredAccountAsset)?.externalBalance ?? ZERO_STRING_VALUE;
+    return normalizeCodecBalanceValue((asset as RegisteredAccountAsset)?.externalBalance) ?? ZERO_STRING_VALUE;
   }
 
   if (isBondedBalance) {
-    return (asset as AccountAsset)?.balance?.bonded ?? ZERO_STRING_VALUE;
+    return normalizeCodecBalanceValue((asset as AccountAsset)?.balance?.bonded) ?? ZERO_STRING_VALUE;
   }
 
-  return (asset as AccountAsset)?.balance?.transferable ?? ZERO_STRING_VALUE;
+  return normalizeCodecBalanceValue((asset as AccountAsset)?.balance?.transferable) ?? ZERO_STRING_VALUE;
 };
 
 export const getAssetDecimals = (asset: Nullable<AssetWithBalance>, { internal = true } = {}): number | undefined => {
@@ -42,7 +105,12 @@ export const formatAssetBalance = (
 ): string => {
   if (!asset) return formattedZero;
 
-  const balance = getAssetBalance(asset, { internal, isBondedBalance });
+  const rawBalance = !internal
+    ? (asset as RegisteredAccountAsset)?.externalBalance
+    : isBondedBalance
+      ? (asset as AccountAsset)?.balance?.bonded
+      : (asset as AccountAsset)?.balance?.transferable;
+  const balance = normalizeCodecBalanceValue(rawBalance);
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero;
 
@@ -101,6 +169,7 @@ export const isAmountValueIntegerOnly = (value: Nullable<string | number>): bool
 
 export type AssetFormattingUtils = {
   asZeroValue: typeof asZeroValue;
+  normalizeCodecBalanceValue: typeof normalizeCodecBalanceValue;
   getAssetBalance: typeof getAssetBalance;
   getAssetDecimals: typeof getAssetDecimals;
   formatAssetBalance: typeof formatAssetBalance;

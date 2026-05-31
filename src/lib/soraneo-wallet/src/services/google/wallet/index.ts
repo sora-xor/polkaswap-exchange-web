@@ -43,6 +43,16 @@ class GoogleDriveWallet implements InjectedWindowProvider {
       signer: this.signer,
     };
   }
+
+  /**
+   * Loads the Google clients before the user clicks the wallet row. This keeps
+   * the later token prompt inside the browser's click activation window.
+   */
+  async prepare(): Promise<void> {
+    if (!GDriveStorage.hasKey || GDriveStorage.ready) return;
+
+    await GDriveStorage.init();
+  }
 }
 
 export const GDriveWallet = new GoogleDriveWallet();

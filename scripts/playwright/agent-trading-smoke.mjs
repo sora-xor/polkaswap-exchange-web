@@ -7,7 +7,8 @@ import { resolveAppBaseUrl, resolveRouteUrl } from './url-helpers.mjs';
 
 const RAW_BASE_URL = process.env.AGENT_SMOKE_BASE_URL || 'http://127.0.0.1:8896';
 const BASE_URL = resolveAppBaseUrl(RAW_BASE_URL, process.env.AGENT_SMOKE_PREFIX);
-const APP_URL = resolveRouteUrl(RAW_BASE_URL, '#/swap', process.env.AGENT_SMOKE_PREFIX);
+const AGENT_SESSION_QUERY_PARAM = 'polkaswap-agent';
+const APP_URL = withAgentSessionParam(resolveRouteUrl(RAW_BASE_URL, '#/swap', process.env.AGENT_SMOKE_PREFIX));
 const QUOTE_IN_SYMBOL = process.env.AGENT_SMOKE_ASSET_IN || 'XOR';
 const QUOTE_OUT_SYMBOL = process.env.AGENT_SMOKE_ASSET_OUT || 'VAL';
 const QUOTE_AMOUNT = process.env.AGENT_SMOKE_AMOUNT || '100';
@@ -67,6 +68,12 @@ const EXPECTED_AGENT_METHODS = [
   'importState',
   'clearState',
 ];
+
+function withAgentSessionParam(rawUrl) {
+  const url = new URL(rawUrl);
+  url.searchParams.set(AGENT_SESSION_QUERY_PARAM, '1');
+  return url.toString();
+}
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -248,7 +255,6 @@ const run = async () => {
 
   try {
     await page.addInitScript(() => {
-      localStorage.setItem('dexSettings.disclaimerApprove', 'true');
       window.__polkaswapAgentReadyEvents = [];
       window.addEventListener('polkaswap-agent-ready', (event) => {
         window.__polkaswapAgentReadyEvents.push({

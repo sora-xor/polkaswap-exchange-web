@@ -4,12 +4,14 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   announceIpfsCidRecursively,
+  BUNNY_FILEBASE_CSP_HEADER,
   collectMissingOutputs,
   createBunnyOriginHostHeader,
   createBunnyOriginUrl,
   createDwebGatewayUrl,
   createDwebSubdomainOriginUrl,
   createLocalGatewayUrl,
+  formatBunnyFilebaseCspRecommendation,
   formatStaticSiteCacheHeaderRecommendations,
   hasVueMajorVersion,
   isNoSpaceLeftError,
@@ -201,7 +203,7 @@ describe('publishDirectoryToIpfs', () => {
 
     expect(cid).toBe('QmPublishedCid');
     expect(calls).toEqual([
-      'ipfs add -Qr --pin=false /dist',
+      'ipfs add -Qr --hidden --pin=false /dist',
       'ipfs pin add --recursive=true QmPublishedCid',
       'ipfs pin ls --type=recursive --quiet QmPublishedCid',
       'ipfs routing provide --recursive QmPublishedCid',
@@ -245,7 +247,7 @@ describe('publishDirectoryToIpfs', () => {
           addAttempts += 1;
 
           if (addAttempts === 1) {
-            throw new Error('Command `ipfs add -Qr /dist` exited with code 1', {
+            throw new Error('Command `ipfs add -Qr --hidden /dist` exited with code 1', {
               cause: { stdout: 'QmPartialCid\n', stderr: 'Error: no space left on device\n' },
             });
           }
@@ -275,9 +277,9 @@ describe('publishDirectoryToIpfs', () => {
 
     expect(cid).toBe('QmRecoveredCid');
     expect(calls).toEqual([
-      'ipfs add -Qr --pin=false /dist',
+      'ipfs add -Qr --hidden --pin=false /dist',
       'ipfs repo gc',
-      'ipfs add -Qr --pin=false /dist',
+      'ipfs add -Qr --hidden --pin=false /dist',
       'ipfs pin add --recursive=true QmRecoveredCid',
       'ipfs pin ls --type=recursive --quiet QmRecoveredCid',
       'ipfs routing provide --recursive QmRecoveredCid',
@@ -493,6 +495,21 @@ describe('formatStaticSiteCacheHeaderRecommendations', () => {
         '  /blacklist.json -> Cache-Control: no-cache, must-revalidate',
         '  /assets/* -> Cache-Control: public, max-age=31536000, immutable',
       ].join('\n')
+    );
+  });
+});
+
+describe('formatBunnyFilebaseCspRecommendation', () => {
+  it('keeps the Filebase CSP override compatible with Google Drive wallet scripts', () => {
+    expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://accounts.google.com');
+    expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://apis.google.com');
+    expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://www.gstatic.com');
+    expect(BUNNY_FILEBASE_CSP_HEADER).toContain("connect-src 'self' https: wss:");
+
+    expect(formatBunnyFilebaseCspRecommendation()).toBe(
+      ['Recommended Filebase origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join(
+        '\n'
+      )
     );
   });
 });

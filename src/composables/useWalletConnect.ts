@@ -10,6 +10,23 @@ import { PredefinedProvider, WalletConnectProvider } from '@/utils/connection/ev
 import { handleRpcProviderError, installExtensionKey } from '@/utils/ethers-util';
 
 /**
+ * Guards provider-selection arguments so DOM events from template handlers are
+ * ignored instead of being treated as wallet providers.
+ */
+const isAppEipProvider = (value: unknown): value is AppEIPProvider => {
+  if (!value || typeof value !== 'object') return false;
+
+  const provider = value as Partial<AppEIPProvider>;
+
+  return (
+    typeof provider.uuid === 'string' &&
+    typeof provider.name === 'string' &&
+    typeof provider.icon === 'string' &&
+    typeof provider.getProvider === 'function'
+  );
+};
+
+/**
  * Composition-friendly helpers covering the responsibilities of the legacy
  * `WalletConnectMixin`.
  */
@@ -54,8 +71,8 @@ export function useWalletConnect() {
    * Reuses the previously connected provider if available, falls back to any
    * installed extension, and finally to WalletConnect/AppKit.
    */
-  const resolveTargetProvider = async (requested?: AppEIPProvider | null): Promise<AppEIPProvider> => {
-    if (requested) return requested;
+  const resolveTargetProvider = async (requested?: AppEIPProvider | Event | null): Promise<AppEIPProvider> => {
+    if (isAppEipProvider(requested)) return requested;
     if (evmProvider.value) return evmProvider.value;
 
     const installed = appEvmProviders.value.filter((provider) => provider.installed);
@@ -87,7 +104,7 @@ export function useWalletConnect() {
     return walletConnect ?? WalletConnectProvider;
   };
 
-  const connectEvmWallet = async (provider?: AppEIPProvider): Promise<void> => {
+  const connectEvmWallet = async (provider?: AppEIPProvider | Event): Promise<void> => {
     const target = await resolveTargetProvider(provider ?? null);
     await connectEvmProvider(target);
   };

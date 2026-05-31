@@ -1,5 +1,10 @@
 <template>
-  <dialog-base v-model:visible="visible" :append-to-body="appendToBody" :modal-append-to-body="appendToBody">
+  <dialog-base
+    v-model:visible="visible"
+    custom-class="network-fee-warning-dialog"
+    :append-to-body="appendToBody"
+    :modal-append-to-body="appendToBody"
+  >
     <network-fee-warning
       class="network-fee"
       :fee="fee"
@@ -51,3 +56,37 @@ function handleConfirm(): void {
   emit('confirm');
 }
 </script>
+
+<style lang="scss">
+.network-fee-warning-dialog.dialog-card {
+  position: relative;
+}
+
+.network-fee-warning-dialog {
+  .dialog-card__header {
+    position: absolute;
+    top: $basic-spacing-medium;
+    right: $basic-spacing-medium;
+    z-index: 1;
+    width: auto;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .dialog-card__title {
+    display: none;
+  }
+
+  .dialog-card__actions {
+    gap: 0;
+  }
+
+  .dialog-card__content {
+    padding-top: $basic-spacing-big;
+  }
+
+  .simple-notification.modal-content {
+    margin-top: 0;
+  }
+}
+</style>

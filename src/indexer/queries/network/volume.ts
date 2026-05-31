@@ -5,8 +5,11 @@ import { resolveNetworkHistorySnapshotType } from '@/indexer/queries/network/sna
 import { gql } from '@urql/core';
 
 import {
+  ModuleMethods,
+  ModuleNames,
   SnapshotTypes,
   type ConnectionQueryResponse,
+  type HistoryElement,
   type NetworkSnapshotEntity,
 } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
@@ -16,9 +19,14 @@ type ChartData = {
 };
 
 const BLOCK_BACKFILL_TYPES = new Set<SnapshotTypes>([SnapshotTypes.HOUR, SnapshotTypes.DAY]);
+const SWAP_VOLUME_METHODS = new Set<string>([
+  ModuleMethods.LiquidityProxySwap,
+  ModuleMethods.LiquidityProxySwapTransfer,
+  ModuleMethods.LiquidityProxySwapTransferBatch,
+]);
 
-const PolkaswapNetworkVolumeQuery = gql<ConnectionQueryResponse<NetworkSnapshotEntity>>`
-  query NetworkVolumeQuery($after: Cursor, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
+const PolkaswapNetworkFeesQuery = gql<ConnectionQueryResponse<NetworkSnapshotEntity>>`
+  query NetworkFeesQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     data: networkSnapshots(
       after: $after
       orderBy: TIMESTAMP_DESC
@@ -37,8 +45,7 @@ const PolkaswapNetworkVolumeQuery = gql<ConnectionQueryResponse<NetworkSnapshotE
       edges {
         node {
           timestamp
-          volumeUSD @skip(if: $fees)
-          fees @include(if: $fees)
+          fees
         }
       }
     }
@@ -73,17 +80,16 @@ const PolkaswapNetworkBlockFeesQuery = gql<ConnectionQueryResponse<NetworkSnapsh
   }
 `;
 
-const PolkaswapNetworkBlockVolumeQuery = gql<ConnectionQueryResponse<NetworkSnapshotEntity>>`
-  query NetworkBlockVolumeQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
-    data: networkSnapshots(
+const PolkaswapSwapVolumeQuery = gql<ConnectionQueryResponse<HistoryElement>>`
+  query NetworkSwapVolumeQuery($after: Cursor, $from: Int, $to: Int) {
+    data: historyElements(
       after: $after
-      orderBy: TIMESTAMP_DESC
+      orderBy: [TIMESTAMP_DESC, ID_DESC]
       filter: {
         and: [
-          { type: { equalTo: $type } }
           { timestamp: { lessThanOrEqualTo: $from } }
-          { timestamp: { greaterThanOrEqualTo: $to } }
-          { volumeUSD: { greaterThan: "0" } }
+          { timestamp: { greaterThan: $to } }
+          { module: { equalTo: "liquidityProxy" } }
         ]
       }
     ) {
@@ -94,23 +100,81 @@ const PolkaswapNetworkBlockVolumeQuery = gql<ConnectionQueryResponse<NetworkSnap
       edges {
         node {
           timestamp
-          volumeUSD
+          module
+          method
+          execution
+          data
         }
       }
     }
   }
 `;
 
-const parse =
-  (fees: boolean) =>
-  (node: NetworkSnapshotEntity): ChartData => {
-    const value = fees ? FPNumber.fromCodecValue(node.fees) : new FPNumber(node.volumeUSD);
+const parseFees = (node: NetworkSnapshotEntity): ChartData => {
+  const value = FPNumber.fromCodecValue(node.fees);
 
+  return {
+    timestamp: +node.timestamp * 1000,
+    value: value.isFinity() ? value : FPNumber.ZERO,
+  };
+};
+
+/** Converts a natural decimal indexer value into a finite, non-negative amount. */
+const parseNaturalAmount = (value: unknown): FPNumber => {
+  if (typeof value !== 'string' && typeof value !== 'number') return FPNumber.ZERO;
+
+  const amount = new FPNumber(value);
+
+  return amount.isFinity() && !amount.isLtZero() ? amount : FPNumber.ZERO;
+};
+
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return !!value && typeof value === 'object' && !Array.isArray(value);
+};
+
+/** Uses the larger side of a swap as its USD volume, matching indexer snapshot semantics. */
+const parseSwapAmount = (data: unknown): FPNumber => {
+  if (!isRecord(data)) return FPNumber.ZERO;
+
+  const baseAmount = parseNaturalAmount(data.baseAssetAmountUSD);
+  const targetAmount = parseNaturalAmount(data.targetAssetAmountUSD);
+
+  return FPNumber.gt(baseAmount, targetAmount) ? baseAmount : targetAmount;
+};
+
+/** Sums receiver USD amounts for swap-and-transfer batches that do not expose base/target USD fields. */
+const parseSwapTransferBatchAmount = (data: unknown): FPNumber => {
+  if (!isRecord(data) || !Array.isArray(data.receivers)) return FPNumber.ZERO;
+
+  return data.receivers.reduce((total, receiver) => {
+    const amountUSD = isRecord(receiver) ? receiver.amountUSD : undefined;
+
+    return total.add(parseNaturalAmount(amountUSD));
+  }, FPNumber.ZERO);
+};
+
+/**
+ * Reads exchange volume from successful swap history rows instead of broad
+ * network snapshots, which can include non-trading events such as asset burns.
+ */
+const parseSwapVolume = (node: HistoryElement): ChartData => {
+  if (node.module !== ModuleNames.LiquidityProxy || !SWAP_VOLUME_METHODS.has(node.method) || !node.execution.success) {
     return {
       timestamp: +node.timestamp * 1000,
-      value: value.isFinity() ? value : FPNumber.ZERO,
+      value: FPNumber.ZERO,
     };
+  }
+
+  const value =
+    node.method === ModuleMethods.LiquidityProxySwapTransferBatch
+      ? parseSwapTransferBatchAmount(node.data)
+      : parseSwapAmount(node.data);
+
+  return {
+    timestamp: +node.timestamp * 1000,
+    value: value.isFinity() ? value : FPNumber.ZERO,
   };
+};
 
 /**
  * Maps an indexer timestamp to the chart bucket used by the selected snapshot type.
@@ -153,17 +217,15 @@ const aggregateBlockBackfill = (blocks: ChartData[], aggregateData: ChartData[],
 
 const fetchBlockBackfill = async (
   polkaswapIndexer: PolkaswapIndexer,
-  fees: boolean,
   from: number,
   to: number
 ): Promise<ChartData[]> => {
-  const query = fees ? PolkaswapNetworkBlockFeesQuery : PolkaswapNetworkBlockVolumeQuery;
   const data = await retryOnEmptyResult(
     async () =>
       polkaswapIndexer.services.explorer.fetchAllEntities(
-        query,
+        PolkaswapNetworkBlockFeesQuery,
         { from, to, type: SnapshotTypes.BLOCK },
-        parse(fees)
+        parseFees
       ),
     (value) => !value?.length
   );
@@ -171,15 +233,52 @@ const fetchBlockBackfill = async (
   return data ?? [];
 };
 
-export async function fetchData(fees: boolean, from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
-  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+/** Aggregates parsed swap rows into fixed chart buckets for the selected filter granularity. */
+const aggregateSwapVolume = (items: ChartData[], bucketSize: number): ChartData[] => {
+  const buckets = new Map<number, FPNumber>();
+
+  for (const item of items) {
+    if (item.value.isZero()) continue;
+
+    const timestamp = getBucketTimestamp(item.timestamp, bucketSize * 1000);
+
+    buckets.set(timestamp, (buckets.get(timestamp) ?? FPNumber.ZERO).add(item.value));
+  }
+
+  return Array.from(buckets, ([timestamp, value]) => ({ timestamp, value })).sort((a, b) => b.timestamp - a.timestamp);
+};
+
+/** Fetches exchange volume from swap history so unrelated asset events cannot affect the Volume chart. */
+const fetchSwapVolume = async (
+  polkaswapIndexer: PolkaswapIndexer,
+  from: number,
+  to: number,
+  type: SnapshotTypes
+): Promise<ChartData[]> => {
+  const data = await polkaswapIndexer.services.explorer.fetchAllEntities(
+    PolkaswapSwapVolumeQuery,
+    { from, to },
+    parseSwapVolume
+  );
+  const bucketSize = type === SnapshotTypes.HOUR ? 3600 : 86400;
+
+  return aggregateSwapVolume(data ?? [], bucketSize);
+};
+
+/** Fetches network fee snapshots and fills sparse aggregate buckets from block-level fee data. */
+const fetchFees = async (
+  polkaswapIndexer: PolkaswapIndexer,
+  from: number,
+  to: number,
+  type: SnapshotTypes
+): Promise<ChartData[]> => {
   const requestType = resolveNetworkHistorySnapshotType(type);
   const data = await retryOnEmptyResult(
     async () =>
       polkaswapIndexer.services.explorer.fetchAllEntities(
-        PolkaswapNetworkVolumeQuery,
-        { fees, from, to, type: requestType },
-        parse(fees)
+        PolkaswapNetworkFeesQuery,
+        { from, to, type: requestType },
+        parseFees
       ),
     (value) => !value?.length
   );
@@ -190,9 +289,15 @@ export async function fetchData(fees: boolean, from: number, to: number, type: S
     return aggregateData;
   }
 
-  const blockBackfill = await fetchBlockBackfill(polkaswapIndexer, fees, from, to);
+  const blockBackfill = await fetchBlockBackfill(polkaswapIndexer, from, to);
   const bucketSize = type === SnapshotTypes.HOUR ? 3600 : 86400;
   const aggregatedBackfill = aggregateBlockBackfill(blockBackfill, aggregateData, bucketSize);
 
   return [...aggregateData, ...aggregatedBackfill].sort((a, b) => b.timestamp - a.timestamp);
+};
+
+export async function fetchData(fees: boolean, from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
+  const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
+
+  return fees ? fetchFees(polkaswapIndexer, from, to, type) : fetchSwapVolume(polkaswapIndexer, from, to, type);
 }

@@ -75,6 +75,9 @@
         <sora-logo :theme="libraryTheme"></sora-logo>
       </a>
     </div>
+    <router-link class="agents-link" :to="{ name: PageNames.ForAgents }">
+      {{ t('footer.forAgents') }}
+    </router-link>
     <select-node-dialog
       v-if="selectNodeDialogVisibility"
       :connection="appConnection"
@@ -93,7 +96,7 @@ import { Status } from '@soramitsu-ui/ui/types';
 import { SelectNodeDialog } from '@/app/shell/components';
 import { useTranslation } from '@/composables/useTranslation';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { IndexerType, type SoraNetwork } from '@/consts';
+import { IndexerType, PageNames, type SoraNetwork } from '@/consts';
 import { Theme } from '@/consts/theme';
 import { createAsyncComponent } from '@/shared/ui/async';
 import { connection } from '@/lib/soraneo-wallet/src/api';
@@ -437,6 +440,22 @@ $sora-logo-width: 115px;
   }
 }
 
+.agents-link {
+  display: flex;
+  align-items: center;
+  color: var(--s-color-base-content-secondary);
+  font-size: var(--s-font-size-extra-mini);
+  font-weight: 400;
+  text-decoration: none;
+  white-space: nowrap;
+  @include app-status-item;
+
+  &:hover,
+  &:focus {
+    color: var(--s-color-base-content-primary);
+  }
+}
+
 @include desktop(true) {
   .sora-logo {
     display: none;
@@ -471,6 +490,14 @@ $sora-logo-width: 115px;
 
   .sora-logo {
     display: none;
+  }
+
+  .agents-link {
+    flex: 0 0 auto;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: $inner-spacing-tiny;
+    padding-right: $inner-spacing-tiny;
   }
 }
 </style>

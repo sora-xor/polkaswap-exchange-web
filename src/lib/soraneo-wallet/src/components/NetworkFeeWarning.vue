@@ -4,7 +4,7 @@
     optional
     modal-content
     :button-text="t('confirmNextTxFailure.button')"
-    @submit.prevent="handleConfirm"
+    @submit="handleConfirm"
   >
     <template #title>{{ t('confirmNextTxFailure.header') }}</template>
     <template #text>

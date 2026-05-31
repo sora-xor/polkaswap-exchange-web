@@ -25,6 +25,10 @@ class GoogleDriveStorage {
     return this.api.hasKey && this.oauth.hasKey;
   }
 
+  get ready(): boolean {
+    return this.api.ready && this.oauth.ready;
+  }
+
   /** Stores configuration for both the API client and the OAuth helper. */
   setOptions(apiKey: string, clientId: string) {
     this.api.setOptions({ apiKey, discoveryDocs: [DRIVE_DISCOVERY_DOC] });

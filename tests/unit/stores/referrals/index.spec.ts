@@ -160,8 +160,14 @@ describe('referrals store', () => {
     expect(store.invitedUsers).toEqual([]);
   });
 
-  it('fetches referral rewards through the current wallet account', async () => {
-    const rewards = { rewards: { toString: () => '1' }, invitedUserRewards: {} };
+  it('fetches referral rewards through the current wallet account and seeds invited users from the indexer', async () => {
+    const rewards = {
+      rewards: { toString: () => '1' },
+      invitedUserRewards: {
+        alice: { toString: () => '0.4' },
+        bob: { toString: () => '0.6' },
+      },
+    };
     shared.walletStore.isLoggedIn = true;
     shared.walletStore.account = { address: '5wallet' };
     shared.getReferralRewards.mockResolvedValueOnce(rewards as any);
@@ -171,5 +177,55 @@ describe('referrals store', () => {
 
     expect(shared.getReferralRewards).toHaveBeenCalledWith('5wallet');
     expect(store.referralRewards).toEqual(rewards);
+    expect(store.invitedUsers).toEqual(['alice', 'bob']);
+  });
+
+  it('keeps indexer-loaded invited users visible while replacing the live subscription', async () => {
+    const invitedUnsubscribe = vi.fn();
+    const subscribeOnInvitedUsers = vi.fn(() => ({ unsubscribe: invitedUnsubscribe }));
+
+    shared.walletStore.isLoggedIn = true;
+    shared.walletStore.account = { address: '5wallet' };
+    shared.subscribeOnAccountInvitedUsers.mockReturnValue({ subscribe: subscribeOnInvitedUsers });
+
+    const store = useReferralsStore();
+    store.invitedUsers = ['indexed-user'];
+    store.invitedUsersSubscription = { unsubscribe: invitedUnsubscribe } as any;
+
+    await store.subscribeOnInvitedUsers();
+
+    expect(invitedUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(shared.subscribeOnAccountInvitedUsers).toHaveBeenCalledTimes(1);
+    expect(store.invitedUsers).toEqual(['indexed-user']);
+  });
+
+  it('keeps indexer-loaded invited users when the live wallet subscription is unavailable', async () => {
+    shared.walletStore.isLoggedIn = true;
+    shared.walletStore.account = { address: '5wallet' };
+    shared.subscribeOnAccountInvitedUsers.mockImplementationOnce(() => {
+      throw new Error('wallet api is not ready');
+    });
+
+    const store = useReferralsStore();
+    store.invitedUsers = ['indexed-user'];
+
+    await expect(store.subscribeOnInvitedUsers()).resolves.toBeUndefined();
+
+    expect(store.invitedUsers).toEqual(['indexed-user']);
+    expect(store.invitedUsersSubscription).toBeNull();
+  });
+
+  it('does not fail referral loading when the live referrer subscription is unavailable', async () => {
+    shared.walletStore.isLoggedIn = true;
+    shared.walletStore.account = { address: '5wallet' };
+    shared.subscribeOnReferrer.mockImplementationOnce(() => {
+      throw new Error('apiRx is not ready');
+    });
+
+    const store = useReferralsStore();
+
+    await expect(store.subscribeOnReferrer()).resolves.toBeUndefined();
+
+    expect(store.referrerSubscription).toBeNull();
   });
 });

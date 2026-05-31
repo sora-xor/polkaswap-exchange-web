@@ -13,7 +13,7 @@ yarn agent:runner
 Useful overrides:
 
 ```sh
-POLKASWAP_AGENT_URL="http://127.0.0.1:8896/#/swap" \
+POLKASWAP_AGENT_URL="http://127.0.0.1:8896/?polkaswap-agent=1#/swap" \
 POLKASWAP_AGENT_ASSET_IN=XOR \
 POLKASWAP_AGENT_ASSET_OUT=PSWAP \
 POLKASWAP_AGENT_AMOUNT=1 \
@@ -34,7 +34,7 @@ yarn agent:runner
 
 | Variable | Default | Description |
 | --- | --- | --- |
-| `POLKASWAP_AGENT_URL` | `https://polkaswap.io/#/swap` | App URL to open. |
+| `POLKASWAP_AGENT_URL` | `https://polkaswap.io/?polkaswap-agent=1#/swap` | App URL to open. The runner adds `polkaswap-agent=1` if it is missing. |
 | `POLKASWAP_AGENT_ASSET_IN` | `XOR` | Input asset symbol for discovery. |
 | `POLKASWAP_AGENT_ASSET_OUT` | `PSWAP` | Output asset symbol for discovery. |
 | `POLKASWAP_AGENT_AMOUNT` | `1` | Decimal string amount. |

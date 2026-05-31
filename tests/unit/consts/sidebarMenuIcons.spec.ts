@@ -1,16 +1,27 @@
 import { describe, expect, it } from 'vitest';
 
-import { PageNames, SidebarMenuGroups } from '@/consts';
+import { PageNames, PolkamarktLogo, SidebarMenuGroups } from '@/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
 import { VaultPageNames } from '@/modules/vault/consts';
 
 describe('SidebarMenuGroups icons', () => {
   it('keeps sidebar icons aligned with polkaswap menu', () => {
-    const menuEntries = SidebarMenuGroups.map(({ href, icon, title }) => ({ href, icon, title }));
+    const menuEntries = SidebarMenuGroups.map(({ href, icon, iconSrc, title }) => ({
+      href,
+      icon,
+      ...(iconSrc ? { iconSrc } : {}),
+      title,
+    }));
 
     expect(menuEntries).toEqual([
       { href: '#/swap', icon: 'arrows-swap-90-24', title: PageNames.Swap },
       { href: '#/trade', icon: 'music-CD-24', title: PageNames.OrderBook },
+      {
+        href: '#/polkamarkt',
+        icon: 'various-lightbulb-24',
+        iconSrc: PolkamarktLogo,
+        title: PageNames.Polkamarkt,
+      },
       { href: '#/points', icon: 'basic-circle-star-24', title: PageNames.Rewards },
       { href: '#/pool', icon: 'basic-drop-24', title: PoolPageNames.Pool },
       { href: '#/staking', icon: 'basic-layers-24', title: PageNames.StakingContainer },

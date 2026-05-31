@@ -39,4 +39,22 @@ describe('NetworkFeeWarning', () => {
     expect(setAllowFeePopup).toHaveBeenCalledWith(false);
     expect(wrapper.emitted('confirm')).toHaveLength(1);
   });
+
+  it('confirms when the notification submit event has no native form event payload', async () => {
+    const wrapper = mount(NetworkFeeWarning, {
+      global: {
+        stubs: {
+          SimpleNotification: {
+            emits: ['submit'],
+            template: '<button class="submit-warning" @click="$emit(\'submit\')"></button>',
+          },
+        },
+      },
+    });
+
+    await wrapper.find('.submit-warning').trigger('click');
+
+    expect(setAllowFeePopup).toHaveBeenCalledWith(true);
+    expect(wrapper.emitted('confirm')).toHaveLength(1);
+  });
 });

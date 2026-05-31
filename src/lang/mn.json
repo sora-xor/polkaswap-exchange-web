@@ -28,7 +28,7 @@
         "title": "Бүртгэлийн тохиргоо"
     },
     "accountText": "данс | дансууд",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Идэвхтэй дансууд",
     "addAsset": {
         "add": "Нэмэх",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{second} тутамд {first}",
     "firstText": "Эхлээд",
     "footer": {
+        "forAgents": "Агентуудын хувьд",
         "internet": {
             "action": "Сэргээх {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "Мэдээлэл ба Нийгэмлэг",
         "privacy": "Нууцлалын бодлого",
         "sorawiki": "{Sora} Вики"
+    },
+    "forAgents": {
+        "apiContext": "програмыг ачаалсны дараа хуудасны контекст суулгасан байна. Энэ нь хэрэглэгчийн интерфэйстэй ижил зангилаа, түрийвч, индексжүүлэгч, SDK замыг ашигладаг.",
+        "contract": {
+            "idempotent": "Тогтвортой clientOrderId ашиглан дахин оролдохын өмнө тодорхойгүй илгээлтүүдийг сэргээнэ үү.",
+            "noCustody": "Энэ хуудас хэзээ ч хувийн түлхүүр хүлээн авдаггүй; гарын үсэг зурах нь сонгосон түрийвчтэй үлдэнэ.",
+            "prepareFirst": "Төлөв өөрчлөх дуудлагуудыг гүйцэтгэхийн өмнө* бэлтгэл хийх ёстой.",
+            "samePage": "Бэлэн болсон үйл явдлын дараа Polkaswap хуудасны контекст дотор ажиллуулна уу."
+        },
+        "discoveryText": "Эхлээд манифестыг аваарай. Энэ нь статик бүтэцтэй хамт илгээгдсэн хувилбарын лавлагаа, схем файлууд, жишээнүүд, алдааны каталог, туслах клиентийг холбодог.",
+        "discoveryTitle": "Нээлт",
+        "entrypointsLabel": "Агент API нэвтрэх цэгүүд",
+        "eyebrow": "Автоматжуулалт",
+        "flow": {
+            "execute": "Бодлого баталсны дараа, бэлтгэсэн зорилго, тогтвортой үйлчлүүлэгчийн захиалгын ID-г ашиглан гүйцэтгэнэ.",
+            "open": "Polkaswap-г жинхэнэ хөтчийн хуудсан дээр нээнэ үү.",
+            "prepare": "Аливаа гарын үсэг зурахын өмнө тохирох бэлтгэх аргыг дууд.",
+            "ready": "Бэлэн болсон үйл явдлыг хүлээж, идэвхтэй SORA зангилаа шаардагдана.",
+            "recover": "Дахин оролдохоос өмнө тодорхойгүй мэдүүлгийг сэргээнэ үү.",
+            "resolve": "Давтан гүйцэтгэхийн өмнө хөрөнгийн тэмдэгтүүдийг хаягаар нь шийд.",
+            "wallet": "Гарын үсэг зурах шаардлагатай үед түрийвчний үйлчилгээ үзүүлэгч болон дансаа сонгоно уу."
+        },
+        "flowTitle": "Аюулгүй гүйцэтгэлийн давталт",
+        "lead": "Polkaswap нь статик програмыг нээдэг агент ажиллуулагчдад зориулсан хөтчийн уугуул автоматжуулалтын API-г үзүүлдэг.",
+        "links": {
+            "client": "JavaScript туслах үйлчлүүлэгч",
+            "errors": "Алдааны каталог",
+            "examples": "Жишээ",
+            "manifest": "Нээлтийн манифест",
+            "playground": "Агент тоглоомын талбай",
+            "reference": "Бүрэн API лавлагаа",
+            "schema": "JSON схем",
+            "types": "TypeScript тодорхойлолтууд"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Ерөнхий гүйгчдэд зориулсан каноник нээлтийн баримт бичиг.",
+                "title": "Манифестээс эхэл"
+            },
+            "playground": {
+                "description": "Статус, хөрөнгө, үнийн санал, урьдчилж харахын тулд гар аргаар ижил гарал үүсэлтэй шалгалт.",
+                "title": "Тоглоомын талбайг нээ"
+            },
+            "reference": {
+                "description": "Унших боломжтой аргын зураг, жишээ, гарын үсэг зурах дүрэм, сэргээх тэмдэглэл.",
+                "title": "API лавлагааг уншина уу"
+            }
+        },
+        "signingTextAfter": "Дахин оролдлогыг idempotent байлгах.",
+        "signingTextBefore": "Энэ хуудас хэзээ ч хувийн түлхүүр авдаггүй. Төрийн өөрчлөлтийн аргууд нь сонгосон түрийвчний гарын үсэг зурагчийг ашигладаг бөгөөд гүйгчээс буцаасан мөнгийг нэвтрүүлэхийг шаарддаг",
+        "signingTextMiddle": "дээр нь жүчээ",
+        "signingTitle": "Гарын үсэг зурах, асран хамгаалах",
+        "startTitle": "Эндээс эхэл",
+        "title": "Агентуудын хувьд"
     },
     "forText": "төлөө",
     "hashiBridgeText": "{Hashi} гүүр",
@@ -798,6 +879,7 @@
         "Explore/Container": "Судлах",
         "Farming": "Газар тариалан",
         "OrderBook": "Худалдаа",
+        "Polkamarkt": "Полкамаркт",
         "Pool": "Усан сан",
         "Rewards": "Шагнал",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Хязгаарлалтын захиалгыг цуцалж чадсангүй",
             "OrderBookCancelLimitOrders": "Хязгаарлалтын захиалгыг цуцалж чадсангүй",
             "OrderBookPlaceLimitOrder": "{amount} {symbol}-н {price} {symbol2}-н хязгаарын захиалгыг өгч чадсангүй.",
+            "PolkamarktAddLiquidity": "Полкамаркт руу {amount} {symbol} хөрвөх чадварыг нэмж чадсангүй",
+            "PolkamarktBuy": "Polkamarkt дээр {amount} {symbol} худалдаж авч чадсангүй",
+            "PolkamarktClaimCreatorFees": "Polkamarkt зохиогчийн хураамжийг нэхэмжилж чадсангүй",
+            "PolkamarktClaimCreatorLiquidity": "Полкамаркт бүтээгчийн хөрвөх чадварыг нэхэмжилж чадсангүй",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP үлдэгдлийг нэхэмжилж чадсангүй",
+            "PolkamarktClaimMarket": "Полкамарктын төлбөрийг нэхэмжилж чадсангүй",
+            "PolkamarktClaimMarkets": "Полкамарктын төлбөрийг нэхэмжилж чадсангүй",
+            "PolkamarktCreateCondition": "Полкамаркт нөхцөлийг үүсгэж чадсангүй",
+            "PolkamarktCreateMarket": "{amount} {symbol} ашиглан Полкамаркт зах зээлийг үүсгэж чадсангүй",
+            "PolkamarktFlip": "Polkamarkt дээр {amount} {symbol} эргүүлж чадсангүй",
+            "PolkamarktSell": "Polkamarkt дээр {amount} {symbol} зарж чадсангүй",
             "ReferralReserveXor": "{amount} XOR-г холбож чадсангүй",
             "ReferralSetInvitedUser": "{role} {address}-г тохируулж чадсангүй",
             "ReferralUnreserveXor": "{amount} XOR-г салгаж чадсангүй",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "Хязгаарлалтын захиалгыг цуцалсан",
             "OrderBookCancelLimitOrders": "Хязгаарлалтын захиалгыг цуцалсан",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} байранд",
+            "PolkamarktAddLiquidity": "Полкамаркт руу {amount} {symbol} хөрвөх чадварыг нэмсэн",
+            "PolkamarktBuy": "Polkamarkt дээр {amount} {symbol} худалдаж авсан",
+            "PolkamarktClaimCreatorFees": "Полкамаркт бүтээгчийн хураамжийг нэхэмжилсэн",
+            "PolkamarktClaimCreatorLiquidity": "Полкамаркт бүтээгчийн хөрвөх чадвар шаардсан",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP үлдэгдэл нэхэмжилсэн",
+            "PolkamarktClaimMarket": "Полкамарктын төлбөрийг нэхэмжилсэн",
+            "PolkamarktClaimMarkets": "Полкамарктын төлбөрийг нэхэмжилсэн",
+            "PolkamarktCreateCondition": "Полкамаркт нөхцөл үүссэн",
+            "PolkamarktCreateMarket": "Полкамаркт зах зээлийг {amount} {symbol}-ээр үүсгэсэн.",
+            "PolkamarktFlip": "Polkamarkt дээр {amount} {symbol} хөрвүүлсэн",
+            "PolkamarktSell": "Полкамаркт дээр {amount} {symbol} зарагдсан",
             "ReferralReserveXor": "Барьцаалагдсан {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address}-г амжилттай тохирууллаа",
             "ReferralUnreserveXor": "Холбогдоогүй {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Захиалга цуцлах",
         "OrderBookCancelLimitOrders": "Захиалгыг цуцлах",
         "OrderBookPlaceLimitOrder": "Захиалга өгөх",
+        "PolkamarktAddLiquidity": "Полкамаркт хөрвөх чадварыг нэмнэ үү",
+        "PolkamarktBuy": "Полкамарктын хувьцааг худалдаж аваарай",
+        "PolkamarktClaimCreatorFees": "Полкамаркт бүтээгчийн хураамжийг нэхэмжлэх",
+        "PolkamarktClaimCreatorLiquidity": "Полкамаркт бүтээгчийн хөрвөх чадварыг нэхэмжлэх",
+        "PolkamarktClaimLiquidity": "Polkamarkt LP үлдэгдлийг нэхэмжлэх",
+        "PolkamarktClaimMarket": "Полкамарктын төлбөрийг нэхэмжлэх",
+        "PolkamarktClaimMarkets": "Полкамарктын төлбөрийг нэхэмжлэх",
+        "PolkamarktCreateCondition": "Полкамарктын нөхцөлийг бий болгох",
+        "PolkamarktCreateMarket": "Полкамаркт зах зээлийг бий болгох",
+        "PolkamarktFlip": "Полкамарктын байрлалыг эргүүлэх",
+        "PolkamarktSell": "Полкамарктын хувьцааг зарах",
         "ReferralReserveXor": "Бонд XOR",
         "ReferralSetInvitedUser": "{role} тохируулах",
         "ReferralUnreserveXor": "XOR-г салга",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "Усан сан",
         "Explore/Staking": "Бооцоо тавих",
         "Explore/Tokens": "Токенууд",
+        "ForAgents": "Агентуудын хувьд",
         "OrderBook": "Худалдаа",
+        "Polkamarkt": "Полкамаркт",
         "Pool": "Усан сан",
         "Rewards": "Шагнал",
         "Sccp": "SCCP",
@@ -1330,6 +1447,155 @@
         "noExtension": "{extension} өргөтгөл олдсонгүй. Суурилуулж, хуудсыг дахин ачаална уу",
         "noExtensions": "{PolkadotJs} өргөтгөл олдсонгүй. Суурилуулж, хуудсыг дахин ачаална уу\nhttps://polkadot.js.org/extension/",
         "noSigner": "Хандалт хориотой. {extension} өргөтгөлийн тохиргоонд орж \"Вэбсайтын эрхийг удирдах\" цэсийг нээнэ үү."
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Худалдан авах",
+            "claimCreatorFees": "Зохиогчийн хураамжийг нэхэмжлэх",
+            "claimCreatorLiquidity": "Бүтээгчийн хөрвөх чадварыг нэхэмжлэх",
+            "claimLpResidual": "LP үлдэгдэл нэхэмжлэх",
+            "claimTraderPayout": "Худалдаачдын төлбөрийг нэхэмжлэх",
+            "createMarket": "Зах зээлийг бий болгох",
+            "flip": "Flip",
+            "liquidity": "Хөрвөх чадварыг нэмнэ",
+            "sell": "Зарна"
+        },
+        "create": {
+            "category": "Ангилал",
+            "closeBlock": "Блокыг хаах",
+            "creationFee": "Бүтээлийн төлбөр",
+            "deadline": "Арилжааны эцсийн хугацаа",
+            "marketFailed": "Нөхцөл байдал бий болсон ч зах зээлийг бий болгож чадсангүй. Хадгалсан нөхцлөөр зах зээл үүсгэхийг дахин оролдоно уу.",
+            "metadataTooLong": "Асуулт, oracle болон нарийвчлалын мета өгөгдөл нь 512 байт дотор багтах ёстой.",
+            "question": "Зах зээлийн асуулт",
+            "questionPlaceholder": "Сонгосон хугацаанд ТИЙМ гэж шийдэгдэх үү?",
+            "questionTooShort": "Асуулт дор хаяж 32 байт байх ёстой.",
+            "retryMessage": "{id} нөхцөл үүссэн. Зөвхөн зах зээл үүсгэх алхамыг дахин оролдоно уу.",
+            "retrySubmit": "Зах зээл үүсгэхийг дахин оролдоно уу",
+            "seedLiquidity": "Үрийн хөрвөх чадвар",
+            "seedTooSmall": "Үрийн хөрвөх чадвар хамгийн багадаа {amount} {symbol} байх ёстой.",
+            "submit": "Нөхцөл байдал, зах зээлийг бий болгох",
+            "title": "Полкамаркт зах зээлийг бий болгох"
+        },
+        "details": {
+            "awaitingSettlement": "Эцсийн боловсруулалтыг хүлээж байна",
+            "empty": "Тавиурын төлөв байдал, oracle дэлгэрэнгүй мэдээлэл, төлбөр тооцооны нотлох баримтыг харахын тулд зах зээлийг сонго.",
+            "openResolutionSource": "Нээлттэй эхийн холбоос",
+            "oracle": "Oracle",
+            "pool": "Хөрвөх чадварын сан",
+            "settlement": "Төлбөрийн дэлгэрэнгүй мэдээлэл"
+        },
+        "errors": {
+            "loadActivity": "Polkamarkt дансны үйл ажиллагааг ачаалах боломжгүй байна.",
+            "loadMarkets": "Полкамарктын зах зээлийг ачаалах боломжгүй."
+        },
+        "fields": {
+            "collateralAsset": "Барьцааны хөрөнгө",
+            "conditionId": "Нөхцөл байдлын ID",
+            "evidenceBlock": "Нотлох баримтын блок",
+            "evidenceHash": "Нотлох баримт хэш",
+            "evidenceUri": "Нотлох баримт URI",
+            "lpContributed": "LP хувь нэмэр оруулсан",
+            "lpShares": "LP хувьцаа",
+            "noReserve": "Нөөц байхгүй",
+            "oracle": "Oracle",
+            "poolCollateral": "Усан сангийн барьцаа",
+            "resolutionOutcome": "Шийдвэрлэлтийн үр дүн",
+            "resolutionSource": "Шийдвэрлэх эх сурвалж",
+            "yesReserve": "ТИЙМ нөөц"
+        },
+        "filters": {
+            "active": "Идэвхтэй",
+            "allCategories": "Бүх ангилал",
+            "allStatuses": "Бүх статусууд",
+            "finalized": "Дуусгасан",
+            "mine": "Минийх"
+        },
+        "loadingMarkets": "Зах зээлүүдийг ачаалж байна...",
+        "markets": {
+            "search": "Зах зээл хайх",
+            "subtitle": "{count} зах зээл нь одоогийн шүүлтүүртэй таарч байна",
+            "title": "Зах зээлүүд"
+        },
+        "metrics": {
+            "closeBlock": "Блокыг хаах",
+            "liquidity": "Хөрвөх чадвар",
+            "noQuote": "Үнийн санал ҮГҮЙ",
+            "status": "Статус",
+            "volume": "Эзлэхүүн",
+            "yesProbability": "ТИЙМ",
+            "yesQuote": "ТИЙМ ишлэл"
+        },
+        "modes": {
+            "buy": "Худалдан авах",
+            "claim": "Нэхэмжлэл",
+            "flip": "Flip",
+            "liquidity": "LP",
+            "sell": "Зарна"
+        },
+        "my": {
+            "claimsSummary": "Худалдаачин {trader} / LP {lp}",
+            "connect": "Үүсгэсэн зах зээл, LP хувьцаа, төлбөр, сүүлийн арилжааг харахын тулд бүртгэлээ холбоно уу.",
+            "createdMarkets": "Зах зээлүүдийг бий болгосон",
+            "empty": "Энэ бүртгэлд зориулж Polkamarkt-ын байрлал эсвэл зах зээл хараахан үүсгээгүй байна.",
+            "loading": "Polkamarkt дансны үйл ажиллагааг ачаалж байна...",
+            "market": "Зах зээл {id}",
+            "positions": "LP болон худалдаачны албан тушаал",
+            "recentTrades": "Сүүлийн үеийн арилжаа",
+            "sharesSummary": "ТИЙМ {yes} / ҮГҮЙ {no} / LP {lp}",
+            "subtitle": "Үүсгэсэн зах зээл, LP хувьцаа, худалдаачдын төлбөр, бүтээгчийн хураамж, үлдэгдэл LP нэхэмжлэл.",
+            "title": "Миний зах зээл / LP"
+        },
+        "noMarkets": "Одоогийн шүүлтүүртэй тохирох зах зээл алга.",
+        "notIndexed": "Индексжүүлээгүй",
+        "outcomes": {
+            "no": "ҮГҮЙ",
+            "yes": "ТИЙМ"
+        },
+        "pageSubtitle": "Идэвхтэй таамаглалын зах зээлийг худалдаалж, шинэ зах зээлийг бий болгож, Polkaswap түрийвчний урсгалаас LP болон нэхэмжлэх боломжтой үлдэгдлийг удирдаарай.",
+        "status": {
+            "active": "Идэвхтэй"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "Нэхэмжлэх боломжтой",
+            "claimableFailed": "Нэхэмжлэлийн үлдэгдлийг унших боломжгүй.",
+            "claimStatus": "Нэхэмжлэлийн статус",
+            "collateralAmount": "Дүн ({symbol})",
+            "collateralOut": "Барьцаа хөрөнгө гарна",
+            "enterAmount": "Хэмжээ оруулна уу",
+            "flippedShares": "Эргүүлсэн хувьцаа",
+            "insufficientKusd": "{symbol} үлдэгдэл хангалтгүй",
+            "insufficientXor": "Сүлжээний төлбөрт XOR хангалтгүй",
+            "invalidAmount": "Хүчинтэй дүнг оруулна уу",
+            "lpSharesOut": "LP хувьцаагаа гаргалаа",
+            "noChainMarket": "Зах зээл нь сүлжээгээр арилжаалагдах боломжгүй",
+            "quoteFailed": "Ишлэлийг сэргээх боломжгүй.",
+            "refreshingQuote": "Ишлэлийг сэргээж байна...",
+            "selectMarket": "Худалдаа хийх идэвхтэй зах зээлийг сонго.",
+            "sharesAmount": "Хувьцаа",
+            "sharesOut": "Хувьцаа гаргадаг",
+            "slippage": "Гулсалт %",
+            "subtitle": "Үнийн санал, хураамж, гулсалтын хамгаалалт, түрийвч илгээх нь SORA-ийн ажиллах хугацааг ашигладаг.",
+            "title": "Худалдааны тасалбар",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "байт",
+            "shares": "хувьцаа"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "Ликвид нэмэх",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Комисс",
             "commissionTooltip": "Комисс гэдэг нь баталгаажуулагчаас бооцоо тавих явцад үйлчилгээнийхээ төлөө авдаг хураамжийг хэлнэ. Хувиар илэрхийлсэн энэхүү хураамжийг нэр дэвшүүлэгчдийн хуваарилахаас өмнө олсон бооцооны урамшууллаас хасна. Баталгаажуулагчид шимтгэлийнхээ хэмжээг хүссэн үедээ тохируулах боломжтой гэдгийг анхаарах нь чухал",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Бүгдийг нь цуцлах",
             "name": "Нэр",
             "noNominatedValidators": "Танд нэр дэвшсэн баталгаажуулагч байхгүй байна",
             "noValidators": "Заасан шүүлтүүрийг хангасан баталгаажуулагч байхгүй байна",
             "return": "Буцах",
             "search": "Хайх...",
-            "selectAll": "Select all",
+            "selectAll": "Бүгдийг сонгоно уу",
             "staked": "Стейк хийсэн",
             "stakedTooltip": "Энэ validator дээр стейк хийсэн нийт XOR, validator-ийн өөрийн стейк болон нэр дэвшүүлсэн стейкийг багтаасан"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Данс гэдэг нь сүлжээн дэх хэрэглэгчийн хөрөнгийг хадгалдаг дижитал хаяг юм. Бүртгэл бүр нь өвөрмөц нийтийн хаяг, хувийн түлхүүртэй холбоотой бөгөөд энэ нь хэрэглэгч өөрийн хөрөнгөө хандах, удирдах боломжийг олгодог.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Сонгосон хугацаанд гүйлгээнд оролцсон өвөрмөц дансууд.",
         "bridgeTransactions": "{from}-аас {to} гүүр гэдэг нь гүүр ашиглан {from} болон {to} сүлжээнүүдийн хооронд хөрөнгө шилжүүлэх үйл явцыг хэлнэ. Энэхүү гүүр нь хоёр сүлжээг харилцан уялдаатай болгох боломжийг олгож, хэрэглэгчдэд хөрөнгийг хооронд нь саадгүй шилжүүлэх боломжийг олгодог.",
         "fees": "{Sora} блокчейн хураамж нь сүлжээн дэх гүйлгээг гүйцэтгэхэд гарсан төлбөрийг хэлнэ. Эдгээр хураамжийг {Sora} сүлжээний уугуул криптовалют болох XOR-д төлдөг. Шимтгэлийн хэмжээг гүйцэтгэсэн гүйлгээний нарийн төвөгтэй байдал, хэмжээнээс хамаарч тодорхойлно",
         "roi": "{ROI} гэдэг нь Хөрөнгө оруулалтын өгөөж гэсэн үг. Хөрөнгө оруулалтаас олсон ашгийг тухайн хөрөнгө оруулалтын өртөгт хуваах замаар тооцоолно.",

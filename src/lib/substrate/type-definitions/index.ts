@@ -25,6 +25,7 @@ import vestedRewards from './vestedRewards';
 import leafProvider from './leafProvider';
 import basicChannel from './basicChannel';
 import intentivizedChannel from './intentivizedChannel';
+import polkamarkt from './polkamarkt';
 
 import versionedOverrides from './versioned';
 
@@ -55,6 +56,7 @@ const soraDefs = {
   leafProvider,
   basicChannel,
   intentivizedChannel,
+  polkamarkt,
 };
 
 const overrides = {

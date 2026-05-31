@@ -101,6 +101,20 @@ Browser navigations send `Sec-Fetch-Dest: document`, which can make dweb.link
 redirect the origin request to the IPFS in-browser service-worker shell. The
 origin request header override keeps Bunny fetching the raw static site HTML.
 
+When the stable hostname uses Filebase as the origin, also add a Bunny Edge Rule
+that replaces Filebase's restrictive CSP:
+
+- Description: `SetPolkaswapCSP`
+- Action: `Cache Origin Set Response Header`, with header name
+  `Content-Security-Policy`
+- Header value: `default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data: https:; worker-src 'self' blob:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self';`
+- Condition: `Request URL` matches the stable hostname, for example
+  `*://polkaswap.io/*`
+
+The Google Drive wallet dynamically loads Google Identity and Google API
+scripts, so the Filebase override must allow `accounts.google.com`,
+`apis.google.com`, and `www.gstatic.com`.
+
 ## 4. Verifying a CID (`ipfs:check`)
 
 After publishing, run the Playwright-based smoke script against each CID or preview URL. The script opens the site in a headless browser, waits for `#app` to render content, and reports failed requests or console errors.

@@ -140,4 +140,22 @@ describe('TokenLogo', () => {
     expect(logo.classes()).not.toContain('s-icon-notifications-info-24');
     expect(logo.attributes('style') ?? '').toContain('background-image');
   });
+
+  it('uses a safe token icon for synthetic assets that are not in the whitelist yet', () => {
+    const wrapper = mount(TokenLogo, {
+      props: {
+        token: {
+          address: '',
+          symbol: 'SS',
+          icon: '/assets/solswap-mark.svg',
+        },
+        size: 'small',
+      },
+    });
+
+    const logo = wrapper.find('.asset-logo');
+    expect(logo.classes()).not.toContain('s-icon-notifications-info-24');
+    expect(logo.attributes('style') ?? '').toContain('background-image');
+    expect(logo.attributes('style') ?? '').toContain('/assets/solswap-mark.svg');
+  });
 });

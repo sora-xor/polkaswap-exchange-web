@@ -28,7 +28,7 @@
         "title": "การตั้งค่าบัญชี"
     },
     "accountText": "บัญชี | บัญชี",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "บัญชีที่ใช้งานอยู่",
     "addAsset": {
         "add": "เพิ่ม",
         "AddAssetToken": {
@@ -271,7 +271,7 @@
         "nexusRecipientPlaceholder": "ป้อนบัญชี SORA Nexus i105 ของคุณ",
         "nexusRecipientWarning": "บัญชี SORA Nexus ของคุณได้รับการบันทึกแบบสาธารณะในธุรกรรมการเบิร์นนี้",
         "soraNetworkTxHashLabel": "SORA เครือข่าย tx แฮช",
-        "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraNexusXorLabel": "โซระ เน็กซัส เอ็กซ์ออร์",
         "soraV3XorAmountTitle": "คุณต้องการ {tokenSymbol} เท่าไหร่?",
         "ssTokensLabel": "โทเค็น SS"
     },
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} ต่อ {second}",
     "firstText": "อันดับแรก",
     "footer": {
+        "forAgents": "สำหรับตัวแทน",
         "internet": {
             "action": "รีเฟรช {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "ข้อมูลและชุมชน",
         "privacy": "นโยบายความเป็นส่วนตัว",
         "sorawiki": "{Sora} วิกิ"
+    },
+    "forAgents": {
+        "apiContext": "ได้รับการติดตั้งในบริบทของหน้าหลังจากที่แอปบูท โดยจะใช้โหนด กระเป๋าเงิน ตัวสร้างดัชนี และเส้นทาง SDK เดียวกันเป็นอินเทอร์เฟซผู้ใช้",
+        "contract": {
+            "idempotent": "ใช้ clientOrderId ที่เสถียรและกู้คืนการส่งที่ไม่แน่นอนก่อนลองอีกครั้ง",
+            "noCustody": "เพจไม่เคยได้รับคีย์ส่วนตัว การลงนามจะคงอยู่กับกระเป๋าเงินที่เลือก",
+            "prepareFirst": "การเรียกที่เปลี่ยนสถานะจะต้องผ่านการจัดเตรียม* ก่อนที่จะดำเนินการ*",
+            "samePage": "เรียกใช้ภายในบริบทของหน้า Polkaswap หลังจากเหตุการณ์ที่พร้อม"
+        },
+        "discoveryText": "ดึงรายการมาแสดงก่อน โดยจะเชื่อมโยงการอ้างอิงเวอร์ชัน ไฟล์สคีมา ตัวอย่าง แค็ตตาล็อกข้อผิดพลาด และไคลเอ็นต์ตัวช่วยที่มาพร้อมกับบิลด์แบบคงที่นี้",
+        "discoveryTitle": "การค้นพบ",
+        "entrypointsLabel": "จุดเข้าใช้งาน Agent API",
+        "eyebrow": "ระบบอัตโนมัติ",
+        "flow": {
+            "execute": "ดำเนินการหลังจากได้รับการอนุมัตินโยบายแล้วเท่านั้น โดยมีเจตนาที่เตรียมไว้และรหัสคำสั่งซื้อของลูกค้าที่มั่นคง",
+            "open": "เปิด Polkaswap ในหน้าเบราว์เซอร์จริง",
+            "prepare": "เรียกวิธีการจัดเตรียมการจับคู่ก่อนการดำเนินการลงนามใดๆ",
+            "ready": "รอเหตุการณ์ที่พร้อมและต้องการโหนด SORA ที่ใช้งานอยู่",
+            "recover": "กู้คืนการส่งที่ไม่แน่ใจก่อนที่จะลองอีกครั้ง",
+            "resolve": "แก้ไขสัญลักษณ์สินทรัพย์ไปยังที่อยู่ก่อนดำเนินการซ้ำ",
+            "wallet": "เลือกผู้ให้บริการกระเป๋าเงินและบัญชีเมื่อจำเป็นต้องลงนาม"
+        },
+        "flowTitle": "ลูปการดำเนินการที่ปลอดภัย",
+        "lead": "Polkaswap เปิดเผย API อัตโนมัติแบบเนทีฟของเบราว์เซอร์สำหรับตัวแทนนักวิ่งที่เปิดแอปแบบคงที่",
+        "links": {
+            "client": "ไคลเอ็นต์ตัวช่วย JavaScript",
+            "errors": "แคตตาล็อกข้อผิดพลาด",
+            "examples": "ตัวอย่าง",
+            "manifest": "รายการการค้นพบ",
+            "playground": "สนามเด็กเล่นตัวแทน",
+            "reference": "การอ้างอิง API แบบเต็ม",
+            "schema": "สคีมา JSON",
+            "types": "คำจำกัดความของ TypeScript"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "เอกสารการค้นพบ Canonical สำหรับนักวิ่งทั่วไป",
+                "title": "เริ่มต้นด้วยรายการ"
+            },
+            "playground": {
+                "description": "การสอบสวนต้นกำเนิดเดียวกันด้วยตนเองสำหรับสถานะ สินทรัพย์ ราคา และการแสดงตัวอย่าง",
+                "title": "เปิดสนามเด็กเล่น"
+            },
+            "reference": {
+                "description": "แผนผังวิธีการที่อ่านได้ ตัวอย่าง กฎการลงนาม และบันทึกการกู้คืน",
+                "title": "อ่านข้อมูลอ้างอิง API"
+            }
+        },
+        "signingTextAfter": "เพื่อลองอีกครั้ง idempotent",
+        "signingTextBefore": "เพจไม่เคยรับคีย์ส่วนตัว วิธีการเปลี่ยนสถานะใช้ผู้ลงนามกระเป๋าเงินที่เลือกและกำหนดให้นักวิ่งผ่านการส่งคืน",
+        "signingTextMiddle": "บวกกับความมั่นคง",
+        "signingTitle": "การลงนามและการดูแล",
+        "startTitle": "เริ่มที่นี่",
+        "title": "สำหรับตัวแทน"
     },
     "forText": "สำหรับ",
     "hashiBridgeText": "{Hashi} สะพาน",
@@ -798,6 +879,7 @@
         "Explore/Container": "สำรวจ",
         "Farming": "การทำฟาร์ม",
         "OrderBook": "ซื้อขาย",
+        "Polkamarkt": "โพลคามาร์ก",
         "Pool": "สระน้ำ",
         "Rewards": "รางวัล",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "ล้มเหลวในการยกเลิกคำสั่ง จำกัด",
             "OrderBookCancelLimitOrders": "ไม่สามารถยกเลิกคำสั่งซื้อ จำกัด ได้",
             "OrderBookPlaceLimitOrder": "ไม่สามารถวางลำดับจำกัดของ {amount} {symbol} ที่ {price} {symbol2}",
+            "PolkamarktAddLiquidity": "ไม่สามารถเพิ่ม {amount} {symbol} สภาพคล่องให้กับ Polkamarkt",
+            "PolkamarktBuy": "ไม่สามารถซื้อ {amount} {symbol} บน Polkamarkt",
+            "PolkamarktClaimCreatorFees": "ไม่สามารถเรียกร้องค่าธรรมเนียมผู้สร้าง Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "ไม่สามารถเรียกร้องสภาพคล่องของผู้สร้าง Polkamarkt",
+            "PolkamarktClaimLiquidity": "ไม่สามารถอ้างสิทธิ์คงเหลือของ Polkamarkt LP ได้",
+            "PolkamarktClaimMarket": "ไม่สามารถเรียกร้องการจ่ายเงินของ Polkamarkt",
+            "PolkamarktClaimMarkets": "ไม่สามารถเรียกร้องการจ่ายเงินของ Polkamarkt",
+            "PolkamarktCreateCondition": "ไม่สามารถสร้างเงื่อนไข Polkamarkt",
+            "PolkamarktCreateMarket": "ไม่สามารถสร้างตลาด Polkamarkt ด้วย {amount} {symbol}",
+            "PolkamarktFlip": "ไม่สามารถพลิก {amount} {symbol} บน Polkamarkt",
+            "PolkamarktSell": "ไม่สามารถขาย {amount} {symbol} บน Polkamarkt",
             "ReferralReserveXor": "ไม่สามารถผูกมัด {amount} XOR",
             "ReferralSetInvitedUser": "ไม่สามารถตั้งค่า {role} {address}",
             "ReferralUnreserveXor": "ไม่สามารถยกเลิกการเชื่อมโยง {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "ยกเลิกคำสั่งซื้อ จำกัด",
             "OrderBookCancelLimitOrders": "จำกัด คำสั่งซื้อ",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ที่ {price} {symbol2}",
+            "PolkamarktAddLiquidity": "เพิ่ม {amount} {symbol} สภาพคล่องให้กับ Polkamarkt",
+            "PolkamarktBuy": "ซื้อ {amount} {symbol} จาก Polkamarkt",
+            "PolkamarktClaimCreatorFees": "อ้างสิทธิ์ค่าธรรมเนียมผู้สร้าง Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "สภาพคล่องของผู้สร้าง Polkamarkt อ้างสิทธิ์แล้ว",
+            "PolkamarktClaimLiquidity": "อ้างสิทธิ์คงเหลือของ Polkamarkt LP",
+            "PolkamarktClaimMarket": "อ้างสิทธิ์การจ่ายเงินของ Polkamarkt",
+            "PolkamarktClaimMarkets": "อ้างสิทธิ์การจ่ายเงินของ Polkamarkt",
+            "PolkamarktCreateCondition": "สร้างเงื่อนไข Polkamarkt แล้ว",
+            "PolkamarktCreateMarket": "ตลาด Polkamarkt สร้างขึ้นด้วย {amount} {symbol}",
+            "PolkamarktFlip": "พลิก {amount} {symbol} บน Polkamarkt",
+            "PolkamarktSell": "ขาย {amount} {symbol} บน Polkamarkt",
             "ReferralReserveXor": "ผูกมัด {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ได้รับการตั้งค่าให้สำเร็จ",
             "ReferralUnreserveXor": "ไม่ถูกผูกมัด {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "ยกเลิกคำสั่งซื้อ",
         "OrderBookCancelLimitOrders": "ยกเลิกคำสั่งซื้อ",
         "OrderBookPlaceLimitOrder": "สั่งซื้อ",
+        "PolkamarktAddLiquidity": "เพิ่มสภาพคล่อง Polkamarkt",
+        "PolkamarktBuy": "ซื้อหุ้น Polkamarkt",
+        "PolkamarktClaimCreatorFees": "อ้างสิทธิ์ค่าธรรมเนียมผู้สร้าง Polkamarkt",
+        "PolkamarktClaimCreatorLiquidity": "รับสภาพคล่องของผู้สร้าง Polkamarkt",
+        "PolkamarktClaimLiquidity": "เคลม Polkamarkt LP Residual",
+        "PolkamarktClaimMarket": "เรียกร้องการจ่ายเงิน Polkamarkt",
+        "PolkamarktClaimMarkets": "เรียกร้องการจ่ายเงิน Polkamarkt",
+        "PolkamarktCreateCondition": "สร้างเงื่อนไข Polkamarkt",
+        "PolkamarktCreateMarket": "สร้างตลาด Polkamarkt",
+        "PolkamarktFlip": "พลิกตำแหน่ง Polkamarkt",
+        "PolkamarktSell": "ขายหุ้น Polkamarkt",
         "ReferralReserveXor": "พันธบัตร XOR",
         "ReferralSetInvitedUser": "ตั้ง {role}",
         "ReferralUnreserveXor": "ไม่มี xor",
@@ -1217,10 +1332,12 @@
         "Explore/Pools": "สระว่ายน้ำ",
         "Explore/Staking": "การปักหลัก",
         "Explore/Tokens": "โทเค็น",
+        "ForAgents": "สำหรับตัวแทน",
         "OrderBook": "ซื้อขาย",
+        "Polkamarkt": "โพลคามาร์ก",
         "Pool": "สระน้ำ",
         "Rewards": "รางวัล",
-        "Sccp": "SCCP",
+        "Sccp": "สคส",
         "Staking": "การปักหลัก",
         "Stats": "สถิติ",
         "Swap": "แลกเปลี่ยน",
@@ -1331,6 +1448,155 @@
         "noExtensions": "ไม่พบส่วนขยาย {PolkadotJs} โปรดติดตั้งและโหลดหน้านี้ใหม่\nhttps://polkadot.js.org/extension/",
         "noSigner": "การเข้าถึงถูกปฏิเสธ ไปที่การตั้งค่าส่วนขยาย {extension} และเปิด \"จัดการการเข้าถึงเว็บไซต์\" เพื่ออนุญาต"
     },
+    "polkamarkt": {
+        "actions": {
+            "buy": "ซื้อ",
+            "claimCreatorFees": "เรียกร้องค่าธรรมเนียมผู้สร้าง",
+            "claimCreatorLiquidity": "เรียกร้องสภาพคล่องของผู้สร้าง",
+            "claimLpResidual": "เคลม LP คงเหลือ",
+            "claimTraderPayout": "เรียกร้องการจ่ายเงินของเทรดเดอร์",
+            "createMarket": "สร้างตลาด",
+            "flip": "พลิก",
+            "liquidity": "เพิ่มสภาพคล่อง",
+            "sell": "ขาย"
+        },
+        "create": {
+            "category": "หมวดหมู่",
+            "closeBlock": "ปิดบล็อก",
+            "creationFee": "ค่าธรรมเนียมการสร้าง",
+            "deadline": "กำหนดเวลาการซื้อขาย",
+            "marketFailed": "สร้างเงื่อนไขแล้ว แต่การสร้างตลาดล้มเหลว ลองสร้างตลาดอีกครั้งด้วยเงื่อนไขที่บันทึกไว้",
+            "metadataTooLong": "ข้อมูลเมตาของคำถาม oracle และการแก้ไขต้องมีขนาดไม่เกิน 512 ไบต์",
+            "question": "คำถามตลาด",
+            "questionPlaceholder": "กิจกรรมจะตกลงเป็น YES ภายในกำหนดเวลาที่เลือกหรือไม่",
+            "questionTooShort": "คำถามต้องมีขนาดอย่างน้อย 32 ไบต์",
+            "retryMessage": "สร้างเงื่อนไข {id} แล้ว ลองใหม่เฉพาะขั้นตอนการสร้างตลาด",
+            "retrySubmit": "ลองสร้างตลาดอีกครั้ง",
+            "seedLiquidity": "สภาพคล่องของเมล็ด",
+            "seedTooSmall": "สภาพคล่องของเมล็ดต้องมีอย่างน้อย {amount} {symbol}",
+            "submit": "สร้างสภาพและตลาด",
+            "title": "สร้างตลาด Polkamarkt"
+        },
+        "details": {
+            "awaitingSettlement": "รอการสรุปผล",
+            "empty": "เลือกตลาดเพื่อดูสถานะของพาเลท รายละเอียด Oracle และหลักฐานการชำระบัญชี",
+            "openResolutionSource": "ลิงค์โอเพ่นซอร์ส",
+            "oracle": "ออราเคิล",
+            "pool": "แหล่งรวมสภาพคล่อง",
+            "settlement": "รายละเอียดการชำระบัญชี"
+        },
+        "errors": {
+            "loadActivity": "ไม่สามารถโหลดกิจกรรมบัญชี Polkamarkt",
+            "loadMarkets": "ไม่สามารถโหลดตลาด Polkamarkt ได้"
+        },
+        "fields": {
+            "collateralAsset": "หลักทรัพย์ค้ำประกัน",
+            "conditionId": "รหัสเงื่อนไข",
+            "evidenceBlock": "บล็อกหลักฐาน",
+            "evidenceHash": "แฮชหลักฐาน",
+            "evidenceUri": "URI หลักฐาน",
+            "lpContributed": "ลพ.ร่วมบริจาค.",
+            "lpShares": "หุ้น แอล.พี",
+            "noReserve": "ไม่มีการสำรอง",
+            "oracle": "ออราเคิล",
+            "poolCollateral": "หลักประกันสระว่ายน้ำ",
+            "resolutionOutcome": "ผลการแก้ปัญหา",
+            "resolutionSource": "แหล่งความละเอียด",
+            "yesReserve": "ใช่ สำรอง"
+        },
+        "filters": {
+            "active": "ใช้งานอยู่",
+            "allCategories": "ทุกหมวดหมู่",
+            "allStatuses": "สถานะทั้งหมด",
+            "finalized": "เสร็จสิ้นแล้ว",
+            "mine": "ของฉัน"
+        },
+        "loadingMarkets": "กำลังโหลดตลาด...",
+        "markets": {
+            "search": "ค้นหาตลาด",
+            "subtitle": "{count} ตลาดตรงกับตัวกรองปัจจุบัน",
+            "title": "ตลาด"
+        },
+        "metrics": {
+            "closeBlock": "ปิดบล็อก",
+            "liquidity": "สภาพคล่อง",
+            "noQuote": "ไม่มีคำพูด",
+            "status": "สถานะ",
+            "volume": "ปริมาณ",
+            "yesProbability": "ใช่",
+            "yesQuote": "ใช่คำพูด"
+        },
+        "modes": {
+            "buy": "ซื้อ",
+            "claim": "การเรียกร้อง",
+            "flip": "พลิก",
+            "liquidity": "ห้างหุ้นส่วนจำกัด",
+            "sell": "ขาย"
+        },
+        "my": {
+            "claimsSummary": "เทรดเดอร์ {trader} / LP {lp}",
+            "connect": "เชื่อมต่อบัญชีเพื่อดูตลาดที่สร้างขึ้น หุ้น LP การจ่ายเงิน และการซื้อขายล่าสุด",
+            "createdMarkets": "สร้างตลาด",
+            "empty": "ยังไม่มีตำแหน่ง Polkamarkt หรือสร้างตลาดสำหรับบัญชีนี้",
+            "loading": "กำลังโหลดกิจกรรมบัญชี Polkamarkt...",
+            "market": "ตลาด {id}",
+            "positions": "ตำแหน่ง LP และเทรดเดอร์",
+            "recentTrades": "การซื้อขายล่าสุด",
+            "sharesSummary": "ใช่ {yes} / ไม่ใช่ {no} / แผ่นเสียง {lp}",
+            "subtitle": "ตลาดที่สร้างขึ้น, หุ้น LP, การจ่ายเงินของเทรดเดอร์, ค่าธรรมเนียมผู้สร้าง และการเรียกร้อง LP ที่เหลือ",
+            "title": "ตลาดของฉัน / ห้างหุ้นส่วนจำกัด"
+        },
+        "noMarkets": "ไม่มีตลาดที่ตรงกับตัวกรองปัจจุบัน",
+        "notIndexed": "ไม่ได้รับการจัดทำดัชนี",
+        "outcomes": {
+            "no": "ไม่",
+            "yes": "ใช่"
+        },
+        "pageSubtitle": "ซื้อขายตลาดการคาดการณ์ที่ใช้งานอยู่ สร้างตลาดใหม่ และจัดการ LP และยอดคงเหลือที่รับสิทธิ์ได้จากกระแสกระเป๋าเงิน Polkaswap",
+        "status": {
+            "active": "ใช้งานอยู่"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "เรียกร้องได้",
+            "claimableFailed": "ไม่สามารถอ่านยอดคงเหลือที่ขอรับสิทธิ์ได้",
+            "claimStatus": "สถานะการเรียกร้อง",
+            "collateralAmount": "จำนวนเงิน ({symbol})",
+            "collateralOut": "หลักประกันออก",
+            "enterAmount": "ป้อนจำนวนเงิน",
+            "flippedShares": "หุ้นพลิก",
+            "insufficientKusd": "ยอดคงเหลือ {symbol} ไม่เพียงพอ",
+            "insufficientXor": "XOR ไม่เพียงพอสำหรับค่าธรรมเนียมเครือข่าย",
+            "invalidAmount": "ป้อนจำนวนเงินที่ถูกต้อง",
+            "lpSharesOut": "LP หุ้นออก",
+            "noChainMarket": "ตลาดไม่สามารถซื้อขายแบบออนไลน์ได้",
+            "quoteFailed": "ไม่สามารถรีเฟรชใบเสนอราคาได้",
+            "refreshingQuote": "คำคมสดชื่น...",
+            "selectMarket": "เลือกตลาดที่มีการซื้อขายเพื่อซื้อขาย",
+            "sharesAmount": "หุ้น",
+            "sharesOut": "หุ้นออก",
+            "slippage": "สลิปเพจ %",
+            "subtitle": "การเสนอราคา ค่าธรรมเนียม การป้องกัน Slippage และการส่งกระเป๋าเงินใช้รันไทม์ SORA",
+            "title": "ตั๋วการค้า",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "ไบต์",
+            "shares": "หุ้น"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
+    },
     "pool": {
         "addLiquidity": "เพิ่มสภาพคล่อง",
         "connectToWallet": "เชื่อมต่อบัญชีเพื่อดูสภาพคล่องของคุณ",
@@ -1437,7 +1703,7 @@
             "LiquidityProvision": "ค่าธรรมเนียมที่ได้รับจากการจัดหาสภาพคล่อง",
             "LiquidityProvisionFarming": "การทำฟาร์ม",
             "MarketMakerVolume": "การทำตลาด",
-            "NftAirdrop": "NFT Airdrop",
+            "NftAirdrop": "NFT แอร์ดรอป",
             "SoraFarmHarvest": "{Sora}. ฟาร์มเก็บเกี่ยว",
             "XorErc20": "Xor ERC-20"
         },
@@ -1511,7 +1777,7 @@
         "sourceNetworkLabel": "จากเครือข่าย",
         "subtitle": "ตัวช่วยถ่ายโอน Secure Cross-Chain Protocol (SCCP) สำหรับ BSC, Ethereum และ TRON",
         "supportedNetworks": "โซ่ที่รองรับ: {chains}",
-        "title": "SCCP"
+        "title": "สคส"
     },
     "searchText": "ค้นหา",
     "selectLanguageDialog": {
@@ -1567,7 +1833,7 @@
         "medium": "ปานกลาง",
         "reddit": "สีแดง",
         "telegram": "โทรเลข",
-        "twitter": "Twitter",
+        "twitter": "ทวิตเตอร์",
         "wiki": "{Sora} วิกิ"
     },
     "soraStaking": {
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "คณะกรรมการ",
             "commissionTooltip": "ค่าคอมมิชชั่นหมายถึงค่าธรรมเนียมที่เรียกเก็บโดยผู้ตรวจสอบสำหรับบริการของพวกเขาในกระบวนการปักหลัก ค่าธรรมเนียมนี้แสดงเป็นเปอร์เซ็นต์ถูกหักออกจากรางวัลการปักหลักที่ได้รับจากผู้เสนอชื่อก่อนการแจกจ่าย สิ่งสำคัญคือต้องทราบว่าผู้ตรวจสอบสามารถปรับอัตราค่าคอมมิชชั่นได้ตลอดเวลา",
-            "deselectAll": "Deselect all",
+            "deselectAll": "ยกเลิกการเลือกทั้งหมด",
             "name": "ชื่อ",
             "noNominatedValidators": "คุณไม่มีผู้ตรวจสอบที่ได้รับการเสนอชื่อ",
             "noValidators": "ไม่มีตัวตรวจสอบที่ตอบสนองตัวกรองที่ระบุ",
             "return": "กลับ",
             "search": "ค้นหา...",
-            "selectAll": "Select all",
+            "selectAll": "เลือกทั้งหมด",
             "staked": "เดิมพัน",
             "stakedTooltip": "XOR ทั้งหมดที่วางเดิมพันกับเครื่องมือตรวจสอบความถูกต้องนี้ รวมถึงสัดส่วนการเดิมพันของผู้ตรวจสอบเองและสัดส่วนการถือหุ้นที่ได้รับการเสนอชื่อ"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "บัญชีเป็นที่อยู่ดิจิตอลที่เก็บสินทรัพย์ของผู้ใช้ไว้ในเครือข่าย แต่ละบัญชีจะเชื่อมโยงกับที่อยู่สาธารณะที่ไม่ซ้ำกันและคีย์ส่วนตัวที่ช่วยให้ผู้ใช้สามารถเข้าถึงและจัดการสินทรัพย์ของพวกเขา",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "บัญชีที่ไม่ซ้ำที่เข้าร่วมในการทำธุรกรรมในช่วงเวลาที่เลือก",
         "bridgeTransactions": "{from} ถึง {to} Bridge หมายถึงกระบวนการถ่ายโอนสินทรัพย์ระหว่างเครือข่าย {from} และ {to} โดยใช้สะพาน สะพานช่วยให้สามารถทำงานร่วมกันได้ของทั้งสองเครือข่ายทำให้ผู้ใช้สามารถย้ายสินทรัพย์ระหว่างพวกเขาได้อย่างราบรื่น",
         "fees": "ค่าธรรมเนียมใน blockchain {Sora} หมายถึงค่าใช้จ่ายที่เกิดขึ้นสำหรับการดำเนินการธุรกรรมบนเครือข่าย ค่าธรรมเนียมเหล่านี้จ่ายใน XOR ซึ่งเป็นสกุลเงินดิจิตอลดั้งเดิมของเครือข่าย {Sora} จำนวนค่าธรรมเนียมจะถูกกำหนดโดยความซับซ้อนและขนาดของการทำธุรกรรมที่ดำเนินการ",
         "roi": "{ROI} ย่อมาจากผลตอบแทนจากการลงทุน มันถูกคำนวณโดยการหารกำไรที่ได้จากการลงทุนโดยต้นทุนของการลงทุนนั้นในอัตราร้อยละเทียบเท่า",

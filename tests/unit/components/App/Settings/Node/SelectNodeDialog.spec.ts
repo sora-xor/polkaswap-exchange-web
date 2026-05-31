@@ -182,6 +182,10 @@ describe('SelectNodeDialog', () => {
     expect(selectNodeDialogSource).not.toContain('box-shadow: none;');
   });
 
+  it('marks dialog-driven node changes as manual selections', () => {
+    expect(selectNodeDialogSource).toContain('manualSelection: true');
+  });
+
   it('renders node options as selectable rows instead of exposed radio controls', () => {
     expect(selectNodeSource).toContain('name="basic-check-mark-24"');
     expect(selectNodeSource).not.toContain('icon="arrows-swap-90-24"');

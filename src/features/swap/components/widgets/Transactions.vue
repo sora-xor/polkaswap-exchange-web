@@ -22,6 +22,7 @@
       v-loading="loading"
       :data="tableItems"
       :highlight-current-row="false"
+      :adapt-breakpoint="TRANSACTIONS_TABLE_ADAPT_BREAKPOINT"
       size="small"
       class="explore-table"
     >
@@ -196,6 +197,8 @@ const soraNetwork = computed(() => settingsStore.soraNetwork as Nullable<SoraNet
 const assetsDataTable = computed(() => (walletStore.assetsDataTable as AssetsTable) ?? ({} as AssetsTable));
 const operations = [Operation.Swap];
 const fromTimestamp = dayjs().subtract(1, 'week').startOf('day').unix();
+/** Disables generated card rows; transaction history is denser and clearer as a scrollable table. */
+const TRANSACTIONS_TABLE_ADAPT_BREAKPOINT = -1;
 
 let indexerLoadingRef: Nullable<Ref<boolean>> = null;
 let parseHistoryWarningShown = false;

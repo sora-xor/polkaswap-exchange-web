@@ -28,7 +28,7 @@
         "title": "ПОДЕШАВАЊА РАЧУНА"
     },
     "accountText": "рачун | рачуни",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Активни налози",
     "addAsset": {
         "add": "Додајте",
         "AddAssetToken": {
@@ -271,7 +271,7 @@
         "nexusRecipientPlaceholder": "Унесите свој СОРА Некус и105 налог",
         "nexusRecipientWarning": "Ваш СОРА Некус налог је јавно евидентиран у овој трансакцији снимања.",
         "soraNetworkTxHashLabel": "СОРА Нетворк тк хасх",
-        "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraNexusXorLabel": "СОРА Некус КСОР",
         "soraV3XorAmountTitle": "КОЛИКО {tokenSymbol} ЖЕЛИТЕ?",
         "ssTokensLabel": "СС токенс"
     },
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} по {second}",
     "firstText": "Први",
     "footer": {
+        "forAgents": "За агенте",
         "internet": {
             "action": "Освежи {AppName}",
             "desc": {
@@ -626,10 +627,90 @@
     },
     "footerMenu": {
         "faucet": "Česma",
-        "github": "GitHub",
+        "github": "ГитХуб",
         "info": "Информација & Заједница",
         "privacy": "Politika privatnosti",
-        "sorawiki": "{Sora} Wiki"
+        "sorawiki": "{Sora} Вики"
+    },
+    "forAgents": {
+        "apiContext": "се инсталира у контексту странице након покретања апликације. Користи исти чвор, новчаник, индексер и СДК путању као и кориснички интерфејс.",
+        "contract": {
+            "idempotent": "Користите стабилан цлиентОрдерИд и опоравите неизвесне поднеске пре него што покушате поново.",
+            "noCustody": "Страница никада не прима приватне кључеве; потписивање остаје са изабраним новчаником.",
+            "prepareFirst": "Позиви који мењају стање морају проћи кроз припрему* пре извршења*.",
+            "samePage": "Покрените унутар контекста странице Полкасвап након догађаја спремног."
+        },
+        "discoveryText": "Прво преузми манифест. Повезује верзионисану референцу, датотеке шеме, примере, каталог грешака и помоћног клијента који се испоручује са овом статичком конструкцијом.",
+        "discoveryTitle": "Дисцовери",
+        "entrypointsLabel": "Улазне тачке АПИ агента",
+        "eyebrow": "Аутоматизација",
+        "flow": {
+            "execute": "Извршите тек након одобрења политике, са припремљеном намером и стабилним ИД налога клијента.",
+            "open": "Отворите Полкасвап у стварној страници претраживача.",
+            "prepare": "Позовите метод припреме за подударање пре било које операције потписивања.",
+            "ready": "Сачекајте догађај спреман и захтевајте активан СОРА чвор.",
+            "recover": "Опоравите неизвесне поднеске пре него што покушате поново.",
+            "resolve": "Разреши симболе средстава на адресе пре поновног извршења.",
+            "wallet": "Изаберите добављача новчаника и налог када је потребно потписивање."
+        },
+        "flowTitle": "Петља за сигурно извршење",
+        "lead": "Полкасвап открива АПИ за аутоматизацију који је урођен у претраживачу за покретаче агената који отварају статичку апликацију.",
+        "links": {
+            "client": "ЈаваСцрипт помоћни клијент",
+            "errors": "Каталог грешака",
+            "examples": "Примери",
+            "manifest": "Манифест открића",
+            "playground": "Агент плаигроунд",
+            "reference": "Пуна АПИ референца",
+            "schema": "ЈСОН шема",
+            "types": "Дефиниције ТипеСцрипт-а"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Документ о канонском открићу за генеричке тркаче.",
+                "title": "Почните са манифестом"
+            },
+            "playground": {
+                "description": "Ручна сонда истог порекла за статус, средства, понуде и прегледе.",
+                "title": "Отворите игралиште"
+            },
+            "reference": {
+                "description": "Читљива мапа метода, примери, правила потписивања и белешке о опоравку.",
+                "title": "Прочитајте АПИ референцу"
+            }
+        },
+        "signingTextAfter": "да би поновни покушаји били идемпотентни.",
+        "signingTextBefore": "Страница никада не узима приватне кључеве. Методе за промену стања користе изабрани потписник новчаника и захтевају од покретача да проследи враћени",
+        "signingTextMiddle": "плус штала",
+        "signingTitle": "Потписивање и старатељство",
+        "startTitle": "Почните овде",
+        "title": "За агенте"
     },
     "forText": "за",
     "hashiBridgeText": "{Hashi} most",
@@ -798,6 +879,7 @@
         "Explore/Container": "Истражите",
         "Farming": "Пољопривреда",
         "OrderBook": "Траде",
+        "Polkamarkt": "Полкамаркт",
         "Pool": "Пул",
         "Rewards": "Награде",
         "Sccp": "@:pageTitle.Sccp",
@@ -862,7 +944,7 @@
             "transfer": "Токени су успешно купљени!\nКликните да бисте започели трансакцију на мосту"
         }
     },
-    "moonpayText": "MoonPay",
+    "moonpayText": "МоонПаи",
     "mst": {
         "about": "О",
         "accountNameMst": "Назив мултисиг налога",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело",
             "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело",
             "OrderBookPlaceLimitOrder": "Постављање ограничене поруџбине од {amount} {symbol} по {price} {symbol2} није успело",
+            "PolkamarktAddLiquidity": "Додавање {amount} {symbol} ликвидности Полкамаркту није успело",
+            "PolkamarktBuy": "Куповина {amount} {symbol} на Полкамаркту није успела",
+            "PolkamarktClaimCreatorFees": "Захтевање накнада за ауторе Полкамаркта није успело",
+            "PolkamarktClaimCreatorLiquidity": "Захтевање ликвидности креатора Полкамаркта није успело",
+            "PolkamarktClaimLiquidity": "Захтевање остатка Полкамаркт ЛП није успело",
+            "PolkamarktClaimMarket": "Захтевање Полкамаркт исплате није успело",
+            "PolkamarktClaimMarkets": "Захтевање Полкамаркт исплата није успело",
+            "PolkamarktCreateCondition": "Креирање Полкамаркт услова није успело",
+            "PolkamarktCreateMarket": "Није успело креирање Полкамаркт тржишта са {amount} {symbol}",
+            "PolkamarktFlip": "Окретање {amount} {symbol} на Полкамаркту није успело",
+            "PolkamarktSell": "Продаја {amount} {symbol} на Полкамаркту није успела",
             "ReferralReserveXor": "Povezivanje {amount} XOR nije uspelo",
             "ReferralSetInvitedUser": "Постављање {role} {address} није успело",
             "ReferralUnreserveXor": "Povezivanje {amount} XOR nije uspelo",
@@ -1022,7 +1115,18 @@
             "OrderBookCancelLimitOrder": "Лимит налог је отказан",
             "OrderBookCancelLimitOrders": "Ограничени налози су отказани",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} по {price} {symbol2} постављено",
-            "ReferralReserveXor": "Bonded {amount} XOR",
+            "PolkamarktAddLiquidity": "Додато {amount} {symbol} ликвидности Полкамаркту",
+            "PolkamarktBuy": "Купио {amount} {symbol} на Полкамаркту",
+            "PolkamarktClaimCreatorFees": "Потражене накнаде за ауторе Полкамаркта",
+            "PolkamarktClaimCreatorLiquidity": "Потражена ликвидност креатора Полкамаркта",
+            "PolkamarktClaimLiquidity": "Полкамаркт ЛП заостало потраживање",
+            "PolkamarktClaimMarket": "Потражила се исплата Полкамаркт-а",
+            "PolkamarktClaimMarkets": "Потражене исплате Полкамаркта",
+            "PolkamarktCreateCondition": "Полкамаркт услов је створен",
+            "PolkamarktCreateMarket": "Полкамаркт тржиште креирано са {amount} {symbol}",
+            "PolkamarktFlip": "Окренуо {amount} {symbol} на Полкамаркту",
+            "PolkamarktSell": "Продато {amount} {symbol} на Полкамаркту",
+            "ReferralReserveXor": "Везано {amount} КСОР",
             "ReferralSetInvitedUser": "{role} {address} је успешно постављена",
             "ReferralUnreserveXor": "Neobonženi {amount} XOR",
             "RegisterAndRegulateAsset": "Региструјте и регулишите {symbol} средство",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Откажи наруџбу",
         "OrderBookCancelLimitOrders": "Откажите поруџбине",
         "OrderBookPlaceLimitOrder": "Наручите",
+        "PolkamarktAddLiquidity": "Додајте Полкамаркт ликвидност",
+        "PolkamarktBuy": "Купите акције Полкамаркта",
+        "PolkamarktClaimCreatorFees": "Захтевајте Полкамаркт накнаде за креаторе",
+        "PolkamarktClaimCreatorLiquidity": "Захтевајте ликвидност Полкамаркт креатора",
+        "PolkamarktClaimLiquidity": "Захтев Полкамаркт ЛП Остатак",
+        "PolkamarktClaimMarket": "Захтевајте Полкамаркт исплату",
+        "PolkamarktClaimMarkets": "Захтевајте Полкамаркт исплате",
+        "PolkamarktCreateCondition": "Креирајте Полкамаркт услов",
+        "PolkamarktCreateMarket": "Направите Полкамаркт Маркет",
+        "PolkamarktFlip": "Флип Полкамаркт Поситион",
+        "PolkamarktSell": "Продаја акција Полкамаркта",
         "ReferralReserveXor": "Veži XOR",
         "ReferralSetInvitedUser": "Поставите {role}",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -1217,10 +1332,12 @@
         "Explore/Pools": "Базени",
         "Explore/Staking": "Ulog",
         "Explore/Tokens": "Токени",
+        "ForAgents": "За агенте",
         "OrderBook": "Траде",
+        "Polkamarkt": "Полкамаркт",
         "Pool": "Пул",
         "Rewards": "Награде",
-        "Sccp": "SCCP",
+        "Sccp": "СЦЦП",
         "Staking": "Ulaganje",
         "Stats": "Статистикa",
         "Swap": "Замените",
@@ -1331,6 +1448,155 @@
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps://polkadot.js.org/extension/",
         "noSigner": "Приступ одбијен. Идите на подешавања {extension} и отворите „Управљање приступом веб локацији“ да бисте дозволили."
     },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Купи",
+            "claimCreatorFees": "Захтевајте накнаде за креаторе",
+            "claimCreatorLiquidity": "Захтевајте ликвидност креатора",
+            "claimLpResidual": "Захтев ЛП остатак",
+            "claimTraderPayout": "Исплата трговца потраживањем",
+            "createMarket": "Креирајте тржиште",
+            "flip": "Флип",
+            "liquidity": "Додајте ликвидност",
+            "sell": "Селл"
+        },
+        "create": {
+            "category": "Категорија",
+            "closeBlock": "Затвори блок",
+            "creationFee": "Накнада за креирање",
+            "deadline": "Рок за трговање",
+            "marketFailed": "Услови су створени, али стварање тржишта није успело. Поново покушајте са креирањем тржишта са сачуваним условом.",
+            "metadataTooLong": "Метаподаци о питању, пророчанству и резолуцији морају да стане унутар 512 бајтова.",
+            "question": "Питање тржишта",
+            "questionPlaceholder": "Да ли ће се догађај решити на ДА до изабраног рока?",
+            "questionTooShort": "Питање мора имати најмање 32 бајта.",
+            "retryMessage": "Услов {id} је креиран. Покушајте поново само корак креирања тржишта.",
+            "retrySubmit": "Поново покушајте са креирањем тржишта",
+            "seedLiquidity": "Ликвидност семена",
+            "seedTooSmall": "Почетна ликвидност мора бити најмање {amount} {symbol}.",
+            "submit": "Створите услове и тржиште",
+            "title": "Направите Полкамаркт Маркет"
+        },
+        "details": {
+            "awaitingSettlement": "Чека се финализација",
+            "empty": "Изаберите тржиште да бисте видели стање палете, детаље о оракулу и доказе о поравнању.",
+            "openResolutionSource": "Веза отвореног кода",
+            "oracle": "Орацле",
+            "pool": "Фонд ликвидности",
+            "settlement": "Детаљи насеља"
+        },
+        "errors": {
+            "loadActivity": "Није могуће учитати активност Полкамаркт налога.",
+            "loadMarkets": "Није могуће учитати Полкамаркт тржишта."
+        },
+        "fields": {
+            "collateralAsset": "Колатерална имовина",
+            "conditionId": "ИД услова",
+            "evidenceBlock": "Блок доказа",
+            "evidenceHash": "Хаш доказа",
+            "evidenceUri": "УРИ доказа",
+            "lpContributed": "ЛП је допринео",
+            "lpShares": "ЛП акције",
+            "noReserve": "НЕМА резерве",
+            "oracle": "Орацле",
+            "poolCollateral": "Поол колатерал",
+            "resolutionOutcome": "Исход решења",
+            "resolutionSource": "Извор резолуције",
+            "yesReserve": "ДА резерва"
+        },
+        "filters": {
+            "active": "Ацтиве",
+            "allCategories": "Све категорије",
+            "allStatuses": "Сви статуси",
+            "finalized": "Финализед",
+            "mine": "Моје"
+        },
+        "loadingMarkets": "Учитавање тржишта...",
+        "markets": {
+            "search": "Претражите тржишта",
+            "subtitle": "{count} тржишта одговарају тренутним филтерима",
+            "title": "Тржишта"
+        },
+        "metrics": {
+            "closeBlock": "Затвори блок",
+            "liquidity": "Ликвидност",
+            "noQuote": "НО куоте",
+            "status": "Статус",
+            "volume": "Волуме",
+            "yesProbability": "ДА",
+            "yesQuote": "ДА цитат"
+        },
+        "modes": {
+            "buy": "Купи",
+            "claim": "Захтев",
+            "flip": "Флип",
+            "liquidity": "ЛП",
+            "sell": "Селл"
+        },
+        "my": {
+            "claimsSummary": "Трговац {trader} / ЛП {lp}",
+            "connect": "Повежите налог да бисте видели створена тржишта, ЛП акције, исплате и недавне трговине.",
+            "createdMarkets": "Створена тржишта",
+            "empty": "Још увек нема Полкамаркт позиција или креираних тржишта за овај налог.",
+            "loading": "Учитавање активности Полкамаркт налога...",
+            "market": "Маркет {id}",
+            "positions": "ЛП и позиције трговаца",
+            "recentTrades": "Недавне трговине",
+            "sharesSummary": "ДА {yes} / НЕ {no} / ЛП {lp}",
+            "subtitle": "Створена тржишта, ЛП акције, исплате трговаца, накнаде за креаторе и заостала потраживања ЛП.",
+            "title": "Ми Маркетс / ЛП"
+        },
+        "noMarkets": "Ниједно тржиште не одговара тренутним филтерима.",
+        "notIndexed": "Није индексирано",
+        "outcomes": {
+            "no": "НО",
+            "yes": "ДА"
+        },
+        "pageSubtitle": "Тргујте активним тржиштима предвиђања, оснивајте нова тржишта и управљајте ЛП и потраживаним билансима из Полкасвап тока новчаника.",
+        "status": {
+            "active": "Ацтиве"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "Захтевано",
+            "claimableFailed": "Није могуће прочитати потраживања.",
+            "claimStatus": "Статус потраживања",
+            "collateralAmount": "Износ ({symbol})",
+            "collateralOut": "Цоллатерал оут",
+            "enterAmount": "Унесите износ",
+            "flippedShares": "Преокренуте акције",
+            "insufficientKusd": "Недовољно стање {symbol}",
+            "insufficientXor": "Недовољно КСОР за мрежну накнаду",
+            "invalidAmount": "Унесите важећи износ",
+            "lpSharesOut": "ЛП дели",
+            "noChainMarket": "Тржиште се не може трговати на ланцу",
+            "quoteFailed": "Није могуће освежити цитат.",
+            "refreshingQuote": "Освежавајући цитат...",
+            "selectMarket": "Изаберите активно тржиште за трговину.",
+            "sharesAmount": "Дионице",
+            "sharesOut": "Схарес оут",
+            "slippage": "% проклизавања",
+            "subtitle": "Понуде, накнаде, заштита од клизања и подношење новчаника користе СОРА рунтиме.",
+            "title": "Трговинска карта",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "бајтова",
+            "shares": "акције"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
+    },
     "pool": {
         "addLiquidity": "Додати ликвидност",
         "connectToWallet": "Повежите рачун да бисте видели своју ликвидност.",
@@ -1437,9 +1703,9 @@
             "LiquidityProvision": "Накнаде добијене давањем ликвидности",
             "LiquidityProvisionFarming": "Пољопривреда",
             "MarketMakerVolume": "Kreiranje tržišta",
-            "NftAirdrop": "NFT Airdrop",
+            "NftAirdrop": "НФТ Аирдроп",
             "SoraFarmHarvest": "{Sora}.farm харвест",
-            "XorErc20": "XOR ERC-20"
+            "XorErc20": "КСОР ЕРЦ-20"
         },
         "forText": "за",
         "groups": {
@@ -1511,7 +1777,7 @@
         "sourceNetworkLabel": "Са мреже",
         "subtitle": "Помоћник за пренос безбедног унакрсног ланца протокола (СЦЦП) за БСЦ, Етхереум и ТРОН.",
         "supportedNetworks": "Подржани ланци: {chains}.",
-        "title": "SCCP"
+        "title": "СЦЦП"
     },
     "searchText": "Претрага",
     "selectLanguageDialog": {
@@ -1563,12 +1829,12 @@
     "settingsText": "Подешавања",
     "signAndClaimText": "Потпишите и затражите",
     "social": {
-        "github": "GitHub",
+        "github": "ГитХуб",
         "medium": "Srednja",
         "reddit": "редит",
-        "telegram": "Telegram",
-        "twitter": "Twitter",
-        "wiki": "{Sora} Wiki"
+        "telegram": "Телеграм",
+        "twitter": "Твиттер",
+        "wiki": "{Sora} Вики"
     },
     "soraStaking": {
         "actions": {
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Комисија",
             "commissionTooltip": "Провизија се односи на накнаду коју наплаћују валидатори за своје услуге у процесу стекинга. Ова накнада, изражена у процентима, одбија се од награда за улагање које су номинатори зарадили пре дистрибуције. Важно је напоменути да валидатори могу прилагодити своје стопе провизије у било ком тренутку",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Опозови све",
             "name": "Име",
             "noNominatedValidators": "Nemaš nominovane validatore",
             "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
             "return": "Повратак",
             "search": "Претрага...",
-            "selectAll": "Select all",
+            "selectAll": "Изаберите све",
             "staked": "Стакед",
             "stakedTooltip": "Укупан КСОР уложен са овим валидатором, укључујући сопствени улог валидатора и номиновани улог"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Налози су дигиталне адресе које држе имовину корисника на мрежи. Сваки налог је повезан са јединственом јавном адресом и приватним кључем који омогућава кориснику да приступи и управља својим средствима.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Јединствени рачуни који су учествовали у трансакцијама током изабраног периода.",
         "bridgeTransactions": "Мост {from} до {to} се односи на процес преноса средстава између {from} и {to} мрежа помоћу моста. Мост омогућава интероперабилност две мреже, омогућавајући корисницима да неприметно премештају средства између њих.",
         "fees": "Накнаде на блокчејну {Sora} односе се на трошкове који су настали за извршавање трансакција на мрежи. Ове накнаде се плаћају у КСОР-у, изворној криптовалути мреже {Sora} . Висина накнаде је одређена сложеношћу и величином трансакције која се извршава",
         "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",

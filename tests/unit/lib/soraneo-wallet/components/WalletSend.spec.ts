@@ -1,34 +1,31 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 
 import { mountSetup } from '@stubs/mountSetup';
 
 const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
 const navigate = vi.hoisted(() => vi.fn());
+const currentRouteParams = vi.hoisted(() => ({ value: {} as Record<string, unknown> }));
+const walletStoreMock = vi.hoisted(() => ({
+  accountAssets: [] as Array<Record<string, unknown>>,
+  isConfirmTxDialogDisabled: false,
+  transfer: vi.fn(),
+  vestedTransfer: vi.fn(),
+  getVestedTransferFee: vi.fn(),
+}));
 
 vi.mock('@/platform/wallet/navigation', () => ({
   getWalletPreviousRoute: () => 'Wallet',
   getWalletPreviousParams: () => ({}),
-  getWalletCurrentParams: () => ({
-    asset: {
-      address: XOR.address,
-      symbol: 'XOR',
-      decimals: 18,
-      balance: { transferable: '1000000000000000000' },
-    },
-  }),
+  getWalletCurrentParams: () => currentRouteParams.value,
 }));
 
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
-    accountAssets: [],
-    isConfirmTxDialogDisabled: false,
+    ...walletStoreMock,
     navigate,
-    transfer: vi.fn(),
-    vestedTransfer: vi.fn(),
-    getVestedTransferFee: vi.fn(),
   }),
 }));
 
@@ -85,7 +82,28 @@ import WalletSend from '@/lib/soraneo-wallet/src/components/WalletSend.vue';
 import walletSendSource from '@/lib/soraneo-wallet/src/components/WalletSend.vue?raw';
 import { RouteNames } from '@/lib/soraneo-wallet/src/consts';
 
+const createAsset = (address: string, symbol: string, transferable = '1000000000000000000') => ({
+  address,
+  symbol,
+  name: symbol,
+  decimals: 18,
+  balance: { transferable },
+});
+
 describe('Wallet WalletSend', () => {
+  beforeEach(() => {
+    const xorAsset = createAsset(XOR.address, 'XOR');
+
+    currentRouteParams.value = { asset: xorAsset };
+    walletStoreMock.accountAssets = [xorAsset];
+    walletStoreMock.isConfirmTxDialogDisabled = false;
+    walletStoreMock.transfer.mockClear();
+    walletStoreMock.vestedTransfer.mockClear();
+    walletStoreMock.getVestedTransferFee.mockClear();
+    isXorSufficientForNextTx.mockClear().mockReturnValue(false);
+    navigate.mockClear();
+  });
+
   it('routes through the fee warning step when the next transaction would fail the XOR fee check', async () => {
     const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
 
@@ -107,6 +125,23 @@ describe('Wallet WalletSend', () => {
     state.handleBack();
 
     expect(navigate).toHaveBeenCalledWith({ name: RouteNames.Wallet, params: {} });
+  });
+
+  it('shows MAX for a funded non-XOR send asset and applies the full transferable balance', async () => {
+    const daiAsset = createAsset('0xdai', 'DAI', '5000000000000000000');
+    currentRouteParams.value = { asset: daiAsset };
+    walletStoreMock.accountAssets = [daiAsset];
+
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+
+    expect(state.isMaxButtonAvailable.value).toBe(true);
+
+    state.amount.value = '5';
+    expect(state.isMaxButtonAvailable.value).toBe(true);
+
+    await state.handleMaxClick();
+
+    expect(state.amount.value).toBe('5');
   });
 
   it('passes vesting periods through the current select options contract', () => {

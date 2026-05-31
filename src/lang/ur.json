@@ -28,7 +28,7 @@
         "title": "اکاؤنٹ کی ترتیبات"
     },
     "accountText": "اکاؤنٹ | اکاؤنٹس",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "فعال اکاؤنٹس",
     "addAsset": {
         "add": "شامل کریں",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} فی {second}",
     "firstText": "پہلے",
     "footer": {
+        "forAgents": "ایجنٹوں کے لیے",
         "internet": {
             "action": "ریفریش کریں {AppName}",
             "desc": {
@@ -629,7 +630,87 @@
         "github": "گٹ ہب",
         "info": "معلومات اور برادری",
         "privacy": "رازداری کی پالیسی",
-        "sorawiki": "{Sora} Wiki"
+        "sorawiki": "{Sora} وکی"
+    },
+    "forAgents": {
+        "apiContext": "ایپ کے بوٹ ہونے کے بعد صفحہ کے سیاق و سباق میں انسٹال ہوتا ہے۔ یہ وہی نوڈ، والیٹ، انڈیکسر، اور SDK پاتھ یوزر انٹرفیس کے طور پر استعمال کرتا ہے۔",
+        "contract": {
+            "idempotent": "ایک مستحکم clientOrderId استعمال کریں اور دوبارہ کوشش کرنے سے پہلے غیر یقینی گذارشات کو بازیافت کریں۔",
+            "noCustody": "صفحہ کو کبھی بھی نجی چابیاں نہیں ملتی ہیں۔ دستخط منتخب بٹوے کے ساتھ رہتا ہے۔",
+            "prepareFirst": "ریاست کو تبدیل کرنے والی کالوں پر عمل کرنے سے پہلے تیاری* سے گزرنا ضروری ہے۔",
+            "samePage": "تیار ایونٹ کے بعد Polkaswap صفحہ کے سیاق و سباق کے اندر چلائیں۔"
+        },
+        "discoveryText": "پہلے مینی فیسٹ حاصل کریں۔ یہ اس سٹیٹک بلڈ کے ساتھ بھیجے گئے ورژن شدہ حوالہ، اسکیما فائلوں، مثالوں، ایرر کیٹلاگ، اور مددگار کلائنٹ کو جوڑتا ہے۔",
+        "discoveryTitle": "دریافت",
+        "entrypointsLabel": "ایجنٹ API انٹری پوائنٹس",
+        "eyebrow": "آٹومیشن",
+        "flow": {
+            "execute": "پالیسی کی منظوری کے بعد ہی تیار شدہ ارادے اور مستحکم کلائنٹ آرڈر آئی ڈی کے ساتھ عملدرآمد کریں۔",
+            "open": "ایک حقیقی براؤزر کے صفحے میں پولکاسواپ کھولیں۔",
+            "prepare": "کسی بھی دستخطی آپریشن سے پہلے مماثل تیاری کے طریقہ کار کو کال کریں۔",
+            "ready": "تیار ایونٹ کا انتظار کریں اور ایک فعال SORA نوڈ کی ضرورت ہے۔",
+            "recover": "دوبارہ کوشش کرنے سے پہلے غیر یقینی گذارشات کو بازیافت کریں۔",
+            "resolve": "بار بار عملدرآمد سے پہلے پتوں پر اثاثہ کی علامتوں کو حل کریں۔",
+            "wallet": "جب دستخط کرنے کی ضرورت ہو تو والیٹ فراہم کنندہ اور اکاؤنٹ منتخب کریں۔"
+        },
+        "flowTitle": "محفوظ عملدرآمد لوپ",
+        "lead": "Polkaswap ایجنٹ رنرز کے لیے براؤزر کے مقامی آٹومیشن API کو ظاہر کرتا ہے جو جامد ایپ کو کھولتے ہیں۔",
+        "links": {
+            "client": "جاوا اسکرپٹ مددگار کلائنٹ",
+            "errors": "غلطی کا کیٹلاگ",
+            "examples": "مثالیں",
+            "manifest": "دریافت کا اظہار",
+            "playground": "ایجنٹ کھیل کا میدان",
+            "reference": "مکمل API حوالہ",
+            "schema": "JSON اسکیما",
+            "types": "TypeScript کی تعریفیں"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "عام رنرز کے لیے کیننیکل دریافت دستاویز۔",
+                "title": "منشور کے ساتھ شروع کریں۔"
+            },
+            "playground": {
+                "description": "اسٹیٹس، اثاثوں، کوٹس، اور پیش نظاروں کے لیے دستی ایک ہی اصل کی تحقیقات۔",
+                "title": "کھیل کا میدان کھولو"
+            },
+            "reference": {
+                "description": "پڑھنے کے قابل طریقہ کا نقشہ، مثالیں، دستخط کرنے کے اصول، اور ریکوری نوٹ۔",
+                "title": "API حوالہ پڑھیں"
+            }
+        },
+        "signingTextAfter": "دوبارہ کوششوں کو کمزور رکھنے کے لیے۔",
+        "signingTextBefore": "صفحہ کبھی بھی نجی چابیاں نہیں لیتا ہے۔ ریاست کو تبدیل کرنے کے طریقے منتخب بٹوے کے دستخط کنندہ کا استعمال کرتے ہیں اور رنر سے واپسی کو پاس کرنے کی ضرورت ہوتی ہے۔",
+        "signingTextMiddle": "اس کے علاوہ ایک مستحکم",
+        "signingTitle": "دستخط اور تحویل",
+        "startTitle": "یہاں سے شروع کریں۔",
+        "title": "ایجنٹوں کے لیے"
     },
     "forText": "کے لئے",
     "hashiBridgeText": "{Hashi} پل",
@@ -798,6 +879,7 @@
         "Explore/Container": "دریافت کریں",
         "Farming": "کاشتکاری",
         "OrderBook": "تجارت",
+        "Polkamarkt": "پولکا مارکٹ",
         "Pool": "پول",
         "Rewards": "انعامات",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "حد آرڈر منسوخ کرنے میں ناکام",
             "OrderBookCancelLimitOrders": "حد کے احکامات منسوخ کرنے میں ناکام",
             "OrderBookPlaceLimitOrder": "{price} {symbol2} پر {amount} {symbol} کا حد آرڈر دینے میں ناکام",
+            "PolkamarktAddLiquidity": "Polkamarkt میں {amount} {symbol} لیکویڈیٹی شامل کرنے میں ناکام",
+            "PolkamarktBuy": "Polkamarkt پر {amount} {symbol} خریدنے میں ناکام",
+            "PolkamarktClaimCreatorFees": "Polkamarkt تخلیق کار کی فیس کا دعوی کرنے میں ناکام",
+            "PolkamarktClaimCreatorLiquidity": "Polkamarkt تخلیق کار لیکویڈیٹی کا دعوی کرنے میں ناکام",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP بقایا کا دعوی کرنے میں ناکام",
+            "PolkamarktClaimMarket": "Polkamarkt ادائیگی کا دعوی کرنے میں ناکام",
+            "PolkamarktClaimMarkets": "Polkamarkt ادائیگیوں کا دعوی کرنے میں ناکام",
+            "PolkamarktCreateCondition": "Polkamarkt کی حالت بنانے میں ناکام",
+            "PolkamarktCreateMarket": "{amount} {symbol} کے ساتھ Polkamarkt مارکیٹ بنانے میں ناکام",
+            "PolkamarktFlip": "Polkamarkt پر {amount} {symbol} کو پلٹنے میں ناکام",
+            "PolkamarktSell": "Polkamarkt پر {amount} {symbol} فروخت کرنے میں ناکام",
             "ReferralReserveXor": "{amount} XOR بانڈ کرنے میں ناکام",
             "ReferralSetInvitedUser": "{role} {address} سیٹ کرنے میں ناکام",
             "ReferralUnreserveXor": "{amount} XOR کو بند کرنے میں ناکام",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "حد آرڈر منسوخ",
             "OrderBookCancelLimitOrders": "حدود کے احکامات منسوخ کردیئے گئے",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} پر رکھا گیا",
+            "PolkamarktAddLiquidity": "Polkamarkt میں {amount} {symbol} لیکویڈیٹی شامل کی گئی۔",
+            "PolkamarktBuy": "Polkamarkt پر {amount} {symbol} خریدا۔",
+            "PolkamarktClaimCreatorFees": "Polkamarkt کے تخلیق کار کی فیس کا دعوی کیا گیا ہے۔",
+            "PolkamarktClaimCreatorLiquidity": "Polkamarkt تخلیق کار لیکویڈیٹی کا دعویٰ کیا گیا۔",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP بقایا دعوی کیا",
+            "PolkamarktClaimMarket": "پولکا مارکٹ کی ادائیگی کا دعوی کیا گیا۔",
+            "PolkamarktClaimMarkets": "پولکا مارکٹ کی ادائیگیوں کا دعوی کیا گیا۔",
+            "PolkamarktCreateCondition": "Polkamarkt کی حالت بنائی گئی۔",
+            "PolkamarktCreateMarket": "Polkamarkt مارکیٹ {amount} {symbol} کے ساتھ بنائی گئی",
+            "PolkamarktFlip": "Polkamarkt پر {amount} {symbol} کو پلٹایا",
+            "PolkamarktSell": "Polkamarkt پر {amount} {symbol} فروخت ہوا۔",
             "ReferralReserveXor": "بانڈڈ {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} کامیابی سے سیٹ ہو گیا ہے۔",
             "ReferralUnreserveXor": "غیر بانڈ شدہ {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "آرڈر منسوخ کریں",
         "OrderBookCancelLimitOrders": "احکامات منسوخ کریں",
         "OrderBookPlaceLimitOrder": "جگہ کا آرڈر",
+        "PolkamarktAddLiquidity": "Polkamarkt لیکویڈیٹی شامل کریں۔",
+        "PolkamarktBuy": "Polkamarkt کے حصص خریدیں۔",
+        "PolkamarktClaimCreatorFees": "Polkamarkt تخلیق کار کی فیس کا دعوی کریں۔",
+        "PolkamarktClaimCreatorLiquidity": "پولکا مارکٹ تخلیق کار لیکویڈیٹی کا دعوی کریں۔",
+        "PolkamarktClaimLiquidity": "Polkamarkt LP بقایا کا دعوی کریں۔",
+        "PolkamarktClaimMarket": "Polkamarkt ادائیگی کا دعوی کریں۔",
+        "PolkamarktClaimMarkets": "Polkamarkt ادائیگیوں کا دعوی کریں۔",
+        "PolkamarktCreateCondition": "Polkamarkt کی حالت بنائیں",
+        "PolkamarktCreateMarket": "پولکا مارکٹ مارکیٹ بنائیں",
+        "PolkamarktFlip": "Polkamarkt پوزیشن پلٹائیں",
+        "PolkamarktSell": "Polkamarkt کے حصص فروخت کریں۔",
         "ReferralReserveXor": "بانڈ ژور",
         "ReferralSetInvitedUser": "{role} سیٹ کریں",
         "ReferralUnreserveXor": "unbond xor",
@@ -1197,7 +1312,7 @@
         "tradingPair": {
             "choosePair": "تجارتی جوڑی کا انتخاب کریں",
             "status": "حیثیت",
-            "total": "{amount} {symbol} at {amount2} {symbol2}",
+            "total": "{amount} {symbol} بوقت {amount2} {symbol2}",
             "volume": "حجم"
         },
         "txDetails": {
@@ -1217,10 +1332,12 @@
         "Explore/Pools": "تالاب",
         "Explore/Staking": "اسٹیکنگ",
         "Explore/Tokens": "ٹوکن",
+        "ForAgents": "ایجنٹوں کے لیے",
         "OrderBook": "تجارت",
+        "Polkamarkt": "پولکا مارکٹ",
         "Pool": "پول",
         "Rewards": "انعامات",
-        "Sccp": "SCCP",
+        "Sccp": "ایس سی سی پی",
         "Staking": "اسٹیکنگ",
         "Stats": "اعداد و شمار",
         "Swap": "تبادلہ",
@@ -1330,6 +1447,155 @@
         "noExtension": "کوئی {extension} توسیع نہیں ملی۔ براہ کرم اسے انسٹال کریں اور اس صفحہ کو دوبارہ لوڈ کریں۔",
         "noExtensions": "کوئی {PolkadotJs} توسیع نہیں ملی۔ براہ کرم اسے انسٹال کریں اور اس صفحہ کو دوبارہ لوڈ کریں۔\nhttps://polkadot.js.org/extension/",
         "noSigner": "رسائی سے انکار کر دیا گیا۔ {extension} ایکسٹینشن کی ترتیبات پر جائیں اور اجازت دینے کے لیے \"ویب سائٹ تک رسائی کا نظم کریں\" کو کھولیں۔"
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "خریدیں۔",
+            "claimCreatorFees": "تخلیق کار کی فیس کا دعوی کریں۔",
+            "claimCreatorLiquidity": "خالق کی لیکویڈیٹی کا دعوی کریں۔",
+            "claimLpResidual": "LP بقایا کا دعوی کریں۔",
+            "claimTraderPayout": "تاجر کی ادائیگی کا دعوی کریں۔",
+            "createMarket": "مارکیٹ بنائیں",
+            "flip": "پلٹائیں",
+            "liquidity": "لیکویڈیٹی شامل کریں۔",
+            "sell": "بیچنا"
+        },
+        "create": {
+            "category": "زمرہ",
+            "closeBlock": "بلاک بند کریں۔",
+            "creationFee": "تخلیق کی فیس",
+            "deadline": "ٹریڈنگ کی آخری تاریخ",
+            "marketFailed": "حالت تو بنائی گئی لیکن مارکیٹ بنانے میں ناکام رہا۔ محفوظ شدہ حالت کے ساتھ مارکیٹ بنانے کی دوبارہ کوشش کریں۔",
+            "metadataTooLong": "سوال، اوریکل، اور ریزولوشن میٹا ڈیٹا کا 512 بائٹس کے اندر فٹ ہونا ضروری ہے۔",
+            "question": "مارکیٹ کا سوال",
+            "questionPlaceholder": "کیا ایونٹ منتخب آخری تاریخ تک ہاں میں حل ہو جائے گا؟",
+            "questionTooShort": "سوال کم از کم 32 بائٹس کا ہونا چاہیے۔",
+            "retryMessage": "حالت {id} بنائی گئی تھی۔ صرف مارکیٹ بنانے کے مرحلے پر دوبارہ کوشش کریں۔",
+            "retrySubmit": "مارکیٹ بنانے کی دوبارہ کوشش کریں۔",
+            "seedLiquidity": "بیج کی لیکویڈیٹی",
+            "seedTooSmall": "بیج کی لیکویڈیٹی کم از کم {amount} {symbol} ہونی چاہئے۔",
+            "submit": "حالت اور مارکیٹ بنائیں",
+            "title": "پولکا مارکٹ مارکیٹ بنائیں"
+        },
+        "details": {
+            "awaitingSettlement": "حتمی ہونے کا انتظار ہے۔",
+            "empty": "پیلیٹ کی حالت، اوریکل کی تفصیلات، اور تصفیہ کے ثبوت دیکھنے کے لیے مارکیٹ کا انتخاب کریں۔",
+            "openResolutionSource": "اوپن سورس لنک",
+            "oracle": "اوریکل",
+            "pool": "لیکویڈیٹی پول",
+            "settlement": "تصفیہ کی تفصیلات"
+        },
+        "errors": {
+            "loadActivity": "Polkamarkt اکاؤنٹ کی سرگرمی لوڈ کرنے سے قاصر ہے۔",
+            "loadMarkets": "Polkamarkt مارکیٹوں کو لوڈ کرنے سے قاصر ہے۔"
+        },
+        "fields": {
+            "collateralAsset": "ضمنی اثاثہ",
+            "conditionId": "شرط کی شناخت",
+            "evidenceBlock": "ثبوت بلاک",
+            "evidenceHash": "ثبوت ہیش",
+            "evidenceUri": "ثبوت URI",
+            "lpContributed": "ایل پی نے تعاون کیا۔",
+            "lpShares": "ایل پی کے حصص",
+            "noReserve": "کوئی ریزرو نہیں۔",
+            "oracle": "اوریکل",
+            "poolCollateral": "پول کولیٹرل",
+            "resolutionOutcome": "قرارداد کا نتیجہ",
+            "resolutionSource": "حل کا ذریعہ",
+            "yesReserve": "ہاں ریزرو"
+        },
+        "filters": {
+            "active": "فعال",
+            "allCategories": "تمام زمرے",
+            "allStatuses": "تمام سٹیٹس",
+            "finalized": "حتمی شکل دی گئی۔",
+            "mine": "میرا"
+        },
+        "loadingMarkets": "مارکیٹیں لوڈ ہو رہی ہیں...",
+        "markets": {
+            "search": "بازار تلاش کریں۔",
+            "subtitle": "{count} مارکیٹیں موجودہ فلٹرز سے ملتی ہیں۔",
+            "title": "منڈیاں"
+        },
+        "metrics": {
+            "closeBlock": "بلاک بند کریں۔",
+            "liquidity": "لیکویڈیٹی",
+            "noQuote": "کوئی اقتباس نہیں۔",
+            "status": "حیثیت",
+            "volume": "حجم",
+            "yesProbability": "جی ہاں",
+            "yesQuote": "ہاں اقتباس"
+        },
+        "modes": {
+            "buy": "خریدیں۔",
+            "claim": "دعویٰ",
+            "flip": "پلٹائیں",
+            "liquidity": "ایل پی",
+            "sell": "بیچنا"
+        },
+        "my": {
+            "claimsSummary": "تاجر {trader} / LP {lp}",
+            "connect": "تخلیق شدہ مارکیٹس، LP شیئرز، ادائیگیوں اور حالیہ تجارتوں کو دیکھنے کے لیے ایک اکاؤنٹ مربوط کریں۔",
+            "createdMarkets": "منڈیاں بنائیں",
+            "empty": "اس اکاؤنٹ کے لیے ابھی تک پولکا مارکٹ کی کوئی پوزیشن یا مارکیٹ نہیں بنائی گئی ہے۔",
+            "loading": "Polkamarkt اکاؤنٹ کی سرگرمی لوڈ ہو رہی ہے...",
+            "market": "مارکیٹ {id}",
+            "positions": "ایل پی اور ٹریڈر کے عہدے",
+            "recentTrades": "حالیہ تجارت",
+            "sharesSummary": "ہاں {yes} / نہیں {no} / LP {lp}",
+            "subtitle": "تخلیق کردہ مارکیٹس، LP حصص، تاجر کی ادائیگی، تخلیق کار کی فیس، اور بقایا LP دعوے۔",
+            "title": "میری مارکیٹس / ایل پی"
+        },
+        "noMarkets": "کوئی مارکیٹ موجودہ فلٹرز سے مماثل نہیں ہے۔",
+        "notIndexed": "انڈیکس نہیں کیا گیا۔",
+        "outcomes": {
+            "no": "NO",
+            "yes": "جی ہاں"
+        },
+        "pageSubtitle": "فعال پیشن گوئی کی منڈیوں، بیجوں کی نئی منڈیوں کی تجارت کریں، اور پولکاسواپ والیٹ کے بہاؤ سے ایل پی اور قابل دعوی بیلنس کا انتظام کریں۔",
+        "status": {
+            "active": "فعال"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "قابلِ دعویٰ",
+            "claimableFailed": "قابل دعوی بیلنس پڑھنے سے قاصر ہے۔",
+            "claimStatus": "دعوی کی حیثیت",
+            "collateralAmount": "رقم ({symbol})",
+            "collateralOut": "کولیٹرل آؤٹ",
+            "enterAmount": "ایک رقم درج کریں۔",
+            "flippedShares": "پلٹ گئے حصص",
+            "insufficientKusd": "ناکافی {symbol} بیلنس",
+            "insufficientXor": "نیٹ ورک فیس کے لیے ناکافی XOR",
+            "invalidAmount": "ایک درست رقم درج کریں۔",
+            "lpSharesOut": "ایل پی شیئر کرتا ہے۔",
+            "noChainMarket": "مارکیٹ چین پر تجارت کے قابل نہیں ہے۔",
+            "quoteFailed": "اقتباس کو ریفریش کرنے سے قاصر۔",
+            "refreshingQuote": "ریفریشنگ اقتباس...",
+            "selectMarket": "تجارت کے لیے ایک فعال مارکیٹ کا انتخاب کریں۔",
+            "sharesAmount": "شیئرز",
+            "sharesOut": "شیئر کرتا ہے۔",
+            "slippage": "پھسلن %",
+            "subtitle": "قیمتیں، فیس، slippage تحفظ، اور والیٹ جمع کرانے کے لیے SORA رن ٹائم استعمال کیا جاتا ہے۔",
+            "title": "تجارتی ٹکٹ",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "بائٹس",
+            "shares": "شیئرز"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "لیکویڈیٹی شامل کریں",
@@ -1511,7 +1777,7 @@
         "sourceNetworkLabel": "نیٹ ورک سے",
         "subtitle": "BSC، Ethereum، اور TRON کے لیے سیکیور کراس چین پروٹوکول (SCCP) ٹرانسفر مددگار۔",
         "supportedNetworks": "تائید شدہ زنجیریں: {chains}۔",
-        "title": "SCCP"
+        "title": "ایس سی سی پی"
     },
     "searchText": "تلاش",
     "selectLanguageDialog": {
@@ -1568,7 +1834,7 @@
         "reddit": "reddit",
         "telegram": "ٹیلیگرام",
         "twitter": "ٹویٹر",
-        "wiki": "{Sora} Wiki"
+        "wiki": "{Sora} وکی"
     },
     "soraStaking": {
         "actions": {
@@ -1607,7 +1873,7 @@
         },
         "overview": {
             "description": "لین دین کی توثیق کرنے اور {VAL} ٹوکن انعامات حاصل کرنے کے لیے {XOR} ٹوکنز {Sora} نیٹ ورک پر بطور نامزد کنندہ لگائیں۔",
-            "title": "{Sora} Staking"
+            "title": "{Sora} سٹیکنگ"
         },
         "pendingRewardsDialog": {
             "information": "جائز کاروں نے ہر 2-5 دن میں انعامات کی ادائیگی کی۔ تاہم ، آپ خود ان کی ادائیگی کرسکتے ہیں ، خاص طور پر اگر انعامات ختم ہونے کے قریب ہوں ، لیکن آپ فیس ادا کریں گے۔",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "کمیشن",
             "commissionTooltip": "کمیشن سے مراد وہ فیس ہے جو توثیق کاروں کے ذریعہ اسٹیکنگ کے عمل میں ان کی خدمات کے لئے وصول کی جاتی ہے۔ یہ فیس ، جس کا اظہار ایک فیصد کے طور پر کیا جاتا ہے ، تقسیم سے قبل نامزد افراد کے ذریعہ حاصل کردہ اسٹیکنگ انعامات سے کٹوتی کی جاتی ہے۔ یہ نوٹ کرنا ضروری ہے کہ توثیق کرنے والے کسی بھی وقت اپنے کمیشن کی شرحوں کو ایڈجسٹ کرسکتے ہیں",
-            "deselectAll": "Deselect all",
+            "deselectAll": "سبھی کو غیر منتخب کریں۔",
             "name": "نام",
             "noNominatedValidators": "آپ کے پاس کوئی نامزد کردہ تصدیق کنندہ نہیں ہے",
             "noValidators": "مخصوص فلٹر کو مطمئن کرنے والے کوئی جائز افراد نہیں ہیں",
             "return": "واپس",
             "search": "تلاش ...",
-            "selectAll": "Select all",
+            "selectAll": "سبھی کو منتخب کریں۔",
             "staked": "داؤ پر لگا دیا۔",
             "stakedTooltip": "اس توثیق کنندہ کے ساتھ کل XOR اسٹیک ہوا، بشمول تصدیق کنندہ کا اپنا حصہ اور نامزد کردہ حصہ"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "اکاؤنٹس ڈیجیٹل پتے ہیں جو صارف کے اثاثوں کو نیٹ ورک پر رکھتے ہیں۔ ہر اکاؤنٹ کا تعلق ایک منفرد عوامی پتے اور ایک نجی کلید سے ہوتا ہے جو صارف کو اپنے اثاثوں تک رسائی اور انتظام کرنے کی اجازت دیتا ہے۔",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "منفرد اکاؤنٹس جنہوں نے منتخب مدت کے دوران لین دین میں حصہ لیا۔",
         "bridgeTransactions": "{from} سے {to} پل سے مراد پل کا استعمال کرتے ہوئے {from} اور {to} نیٹ ورکس کے درمیان اثاثوں کی منتقلی کا عمل ہے۔ یہ پل دونوں نیٹ ورکس کے باہمی تعاون کی اجازت دیتا ہے، جو صارفین کو ان کے درمیان بغیر کسی رکاوٹ کے اثاثوں کو منتقل کرنے کے قابل بناتا ہے۔",
         "fees": "{Sora} بلاکچین پر فیس ان چارجز کا حوالہ دیتی ہے جو نیٹ ورک پر لین دین کو انجام دینے کے لیے لگتے ہیں۔ یہ فیسیں XOR میں ادا کی جاتی ہیں، {Sora} نیٹ ورک کی مقامی کریپٹو کرنسی۔ فیس کی رقم کا تعین اس لین دین کی پیچیدگی اور سائز سے کیا جاتا ہے۔",
         "roi": "{ROI} کا مطلب ہے سرمایہ کاری پر واپسی۔ اس کا حساب کسی سرمایہ کاری پر کمائے گئے منافع کو اس سرمایہ کاری کی لاگت سے فیصد کے مساوی میں تقسیم کر کے لگایا جاتا ہے۔",

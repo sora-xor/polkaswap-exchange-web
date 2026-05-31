@@ -58,7 +58,7 @@
                       <formatted-address :value="evmAddress" :symbols="8"></formatted-address>
                     </div>
                     <div class="rewards-account-group">
-                      <span v-if="changeWalletEvm" v-button class="rewards-account-btn" @click="connectEvmWallet">
+                      <span v-if="changeWalletEvm" v-button class="rewards-account-btn" @click="connectEvmWallet()">
                         {{ t('changeAccountText') }}
                       </span>
                       <span v-else>{{ t('connectedText') }}</span>
@@ -72,7 +72,7 @@
                       </span>
                     </div>
                   </div>
-                  <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet">
+                  <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet()">
                     {{ t('rewards.action.connectExternalWallet') }}
                   </s-button>
                   <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>

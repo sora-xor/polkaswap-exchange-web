@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { computed, nextTick } from 'vue';
 
 import { goTo } from '@/app/router';
 import { PageNames } from '@/consts';
@@ -17,8 +17,14 @@ export function useInternalConnect() {
 
   const soraAddress = computed(() => walletStore.address);
   const isLoggedIn = computed(() => walletStore.isLoggedIn);
+  const isSoraAccountDialogVisible = computed(() => Boolean(web3Store.soraAccountDialogVisibility));
 
-  const connectSoraWallet = () => {
+  const connectSoraWallet = async () => {
+    if (web3Store.soraAccountDialogVisibility) {
+      web3Store.setSoraAccountDialogVisibility(false);
+      await nextTick();
+    }
+
     web3Store.setSoraAccountDialogVisibility(true);
   };
 
@@ -31,6 +37,7 @@ export function useInternalConnect() {
   return {
     soraAddress,
     isLoggedIn,
+    isSoraAccountDialogVisible,
     connectSoraWallet,
     disconnectSoraWallet,
     navigateToWallet,

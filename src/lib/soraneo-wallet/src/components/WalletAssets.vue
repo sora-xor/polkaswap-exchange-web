@@ -33,10 +33,30 @@
                   :fiat-font-size-rate="FontSizeRate.SMALL"
                   :fiat-font-weight-rate="FontWeightRate.SMALL"
                 >
-                  <div v-if="hasLockedBalance(slotAsset)" class="asset-value-locked p4">
-                    <s-icon name="lock-16" size="12px"></s-icon>
-                    <span>{{ formatFrozenBalance(slotAsset) }}</span>
-                  </div>
+                  <s-tooltip
+                    v-if="hasLockedBalance(slotAsset)"
+                    popper-class="wallet-assets-locked-tooltip"
+                    wrapper-tag="span"
+                    placement="top"
+                    tabindex="0"
+                  >
+                    <span class="asset-value-locked p4" :aria-label="getLockedBalanceTooltipLabel(slotAsset)">
+                      <s-icon name="lock-16" size="12px"></s-icon>
+                      <span>{{ formatFrozenBalance(slotAsset) }}</span>
+                    </span>
+                    <template #content>
+                      <div class="asset-value-locked-tooltip" role="tooltip">
+                        <div
+                          v-for="row in getLockedBalanceTooltipRows(slotAsset)"
+                          :key="row.key"
+                          class="asset-value-locked-tooltip__row"
+                        >
+                          <span class="asset-value-locked-tooltip__label">{{ row.label }}</span>
+                          <span class="asset-value-locked-tooltip__value">{{ row.value }} {{ slotAsset.symbol }}</span>
+                        </div>
+                      </div>
+                    </template>
+                  </s-tooltip>
                 </formatted-amount-with-fiat-value>
               </template>
               <template #default="slotAsset">
@@ -102,11 +122,13 @@
 
 <script lang="ts">
 import { api, FPNumber } from '@sora-substrate/sdk';
+import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed } from 'vue';
 import draggable from 'vuedraggable';
 
 import type { WalletNavigationTarget } from '@/platform/wallet/navigation';
+import { normalizeCodecBalanceValue } from '@/utils/asset-formatting';
 import { useFormattedAmount } from '../composables/useFormattedAmount';
 import { useLoading } from '../composables/useLoading';
 import { useWalletTranslation } from '../composables/useWalletTranslation';
@@ -122,7 +144,15 @@ import WalletAssetsHeadline from './WalletAssetsHeadline.vue';
 import type { WalletAssetFilters, WalletPermissions } from '../consts';
 import type { AccountAsset, AccountBalance, Whitelist } from '@sora-substrate/sdk/build/assets/types';
 
-type AccountBalanceKey = keyof Pick<AccountBalance, 'locked' | 'total' | 'transferable'>;
+type AccountBalanceKey = keyof Pick<
+  AccountBalance,
+  'bonded' | 'frozen' | 'locked' | 'reserved' | 'total' | 'transferable'
+>;
+type LockedBalanceTooltipRow = {
+  key: AccountBalanceKey;
+  label: string;
+  value: string;
+};
 
 type DraggableMoveEvent<T> = {
   draggedContext: { element: T };
@@ -260,19 +290,22 @@ export default {
     }
 
     /**
-     * Validates codec balance strings without coercing them through native numbers.
+     * Validates codec balance values without coercing them through native numbers.
      */
     function hasCodecBalanceValue(value: unknown): value is AccountBalance[AccountBalanceKey] {
-      return typeof value === 'string' && /^\d+$/.test(value.trim());
+      return normalizeCodecBalanceValue(value) !== null;
     }
 
     /**
      * Returns a safe codec balance so incomplete SDK records still render a token amount.
      */
-    function getCodecBalanceValue(asset: AccountAsset, balanceKey: AccountBalanceKey): AccountBalance[AccountBalanceKey] {
+    function getCodecBalanceValue(
+      asset: AccountAsset,
+      balanceKey: AccountBalanceKey
+    ): AccountBalance[AccountBalanceKey] {
       const value = asset.balance?.[balanceKey];
 
-      return hasCodecBalanceValue(value) ? value : ('0' as AccountBalance[AccountBalanceKey]);
+      return (normalizeCodecBalanceValue(value) ?? '0') as AccountBalance[AccountBalanceKey];
     }
 
     function getBalance(asset: AccountAsset): string {
@@ -292,6 +325,58 @@ export default {
         return HiddenValue;
       }
       return formatCodecNumber(getCodecBalanceValue(asset, 'locked'), asset.decimals);
+    }
+
+    /** Formats a tooltip balance while respecting hidden-balance privacy mode. */
+    function formatTooltipBalance(asset: AccountAsset, balanceKey: AccountBalanceKey): string {
+      if (shouldBalanceBeHidden.value) {
+        return HiddenValue;
+      }
+      return formatCodecNumber(getCodecBalanceValue(asset, balanceKey), asset.decimals);
+    }
+
+    /** Returns the display label for a balance type in the locked-balance tooltip. */
+    function getTooltipBalanceLabel(asset: AccountAsset, balanceKey: AccountBalanceKey): string {
+      const label = t(`assets.balance.${balanceKey}`);
+
+      if (balanceKey === 'frozen' && (asset.address === XOR.address || asset.symbol === XOR.symbol)) {
+        return `${label} (${t('pointSystem.governanceLockedXOR.titleProgress')} / ${t('StakingContainer')})`;
+      }
+
+      return label;
+    }
+
+    /** Omits zero component rows while keeping summary rows stable. */
+    function shouldShowTooltipBalance(asset: AccountAsset, balanceKey: AccountBalanceKey): boolean {
+      if (['transferable', 'locked', 'total'].includes(balanceKey)) {
+        return true;
+      }
+      return !isCodecZero(getCodecBalanceValue(asset, balanceKey), asset.decimals);
+    }
+
+    /** Builds the hover/focus breakdown for locked balances in the asset row. */
+    function getLockedBalanceTooltipRows(asset: AccountAsset): LockedBalanceTooltipRow[] {
+      const balanceKeys: AccountBalanceKey[] = ['transferable', 'locked', 'frozen', 'reserved', 'bonded', 'total'];
+
+      return balanceKeys.reduce<LockedBalanceTooltipRow[]>((rows, balanceKey) => {
+        if (!shouldShowTooltipBalance(asset, balanceKey)) {
+          return rows;
+        }
+
+        rows.push({
+          key: balanceKey,
+          label: getTooltipBalanceLabel(asset, balanceKey),
+          value: formatTooltipBalance(asset, balanceKey),
+        });
+        return rows;
+      }, []);
+    }
+
+    /** Provides an accessible text equivalent for the locked-balance breakdown. */
+    function getLockedBalanceTooltipLabel(asset: AccountAsset): string {
+      return getLockedBalanceTooltipRows(asset)
+        .map((row) => `${row.label}: ${row.value} ${asset.symbol}`)
+        .join('; ');
     }
 
     function handleAssetSwap(asset: AccountAsset): void {
@@ -367,6 +452,8 @@ export default {
       isZeroBalance,
       hasLockedBalance,
       formatFrozenBalance,
+      getLockedBalanceTooltipRows,
+      getLockedBalanceTooltipLabel,
       handleAssetSwap,
       handleAssetSend,
       handleOpenAssetDetails,
@@ -466,7 +553,9 @@ $padding: 5px;
   .asset {
     gap: 12px;
     box-sizing: border-box;
-    padding: 0 12px 0 34px;
+    height: auto;
+    min-height: var(--s-asset-item-height--fiat);
+    padding: 8px 12px 8px 34px;
 
     .logo {
       flex: 0 0 auto;
@@ -503,21 +592,22 @@ $padding: 5px;
     &-value {
       height: auto;
       max-width: 100%;
-      overflow: hidden;
-      overflow-wrap: normal;
+      overflow: visible;
+      overflow-wrap: anywhere;
       font-size: var(--s-font-size-small);
       font-weight: 700;
       letter-spacing: 0;
       line-height: var(--s-line-height-small);
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      text-overflow: clip;
+      white-space: normal;
       word-break: normal;
 
       .formatted-amount__value {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        display: inline;
+        overflow: visible;
+        overflow-wrap: anywhere;
+        text-overflow: clip;
+        white-space: normal;
         word-break: normal;
       }
 
@@ -525,14 +615,16 @@ $padding: 5px;
         margin-left: $basic-spacing-tiny;
       }
       .formatted-amount__decimal {
+        display: inline-block;
         font-weight: 500;
+        white-space: nowrap;
       }
-
-      @include formatted-amount-tooltip;
     }
 
     &-info {
-      display: block;
+      display: flex;
+      align-items: baseline;
+      min-width: 0;
       max-width: 100%;
       overflow: hidden;
       margin-top: $basic-spacing-extra-mini;
@@ -541,6 +633,19 @@ $padding: 5px;
       line-height: var(--s-line-height-reset);
       text-overflow: ellipsis;
       white-space: nowrap;
+
+      .token-address__name {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .token-address__value {
+        flex: 0 0 auto;
+        min-width: max-content;
+      }
     }
   }
 }
@@ -555,7 +660,7 @@ $padding: 5px;
 
     .asset {
       gap: 8px;
-      padding: 0 10px;
+      padding: 8px 10px;
 
       .logo .asset-logo--big {
         width: 42px;
@@ -578,6 +683,33 @@ $padding: 5px;
       &-info {
         font-size: var(--s-font-size-extra-small);
       }
+    }
+  }
+}
+
+.wallet-assets-locked-tooltip {
+  .asset-value-locked-tooltip {
+    min-width: 190px;
+
+    &__row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+
+      & + & {
+        margin-top: 4px;
+      }
+    }
+
+    &__label {
+      color: var(--s-color-base-content-tertiary);
+      white-space: nowrap;
+    }
+
+    &__value {
+      font-weight: 600;
+      text-align: right;
+      white-space: nowrap;
     }
   }
 }

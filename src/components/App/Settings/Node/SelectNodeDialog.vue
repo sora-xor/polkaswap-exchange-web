@@ -141,6 +141,7 @@ const setCurrentNode = async (node: Node, isNewOrUpdatedNode = false) => {
 
   await props.connection.connect({
     node: nodeCopy,
+    manualSelection: true,
     onError: handleNodeError,
     onDisconnect: handleNodeDisconnect,
     onReconnect: handleNodeConnect,

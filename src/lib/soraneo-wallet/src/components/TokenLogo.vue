@@ -18,6 +18,9 @@ import NftTokenLogo from './NftTokenLogo.vue';
 
 import type { AccountAsset, Asset, Whitelist, WhitelistItem } from '@sora-substrate/sdk/build/assets/types';
 
+/** Locally-defined assets can provide a bundled icon before they exist in the runtime whitelist. */
+type AssetWithOptionalIcon = (AccountAsset | Asset) & { icon?: string };
+
 const props = withDefaults(
   defineProps<{
     tokenSymbol?: string;
@@ -94,7 +97,8 @@ const whitelistedItem = computed<Nullable<WhitelistItem>>(() => {
 });
 
 const sanitizedIcon = computed(() => {
-  const icon = whitelistedItem.value?.icon;
+  const tokenIcon = (props.token as Nullable<AssetWithOptionalIcon>)?.icon;
+  const icon = whitelistedItem.value?.icon || tokenIcon;
   return sanitizeIconSource(icon ?? '');
 });
 
@@ -117,9 +121,9 @@ const iconClasses = computed(() => {
   const classes = [tokenLogoClass];
   const hasIcon = Boolean(sanitizedIcon.value);
 
-  if (!assetAddress.value) {
+  if (!assetAddress.value && !hasIcon) {
     classes.push(questionMark);
-  } else if (!whitelistedItem.value) {
+  } else if (!whitelistedItem.value && !hasIcon) {
     classes.push(isNft.value ? 'asset-logo-nft' : questionMark);
   } else if (!isNft.value && !hasIcon) {
     classes.push(questionMark);

@@ -28,7 +28,7 @@
         "title": "Accountinstellingen"
     },
     "accountText": "rekening | rekeningen",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Actieve accounts",
     "addAsset": {
         "add": "Toevoegen",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} per {second}",
     "firstText": "Eerst",
     "footer": {
+        "forAgents": "Voor agenten",
         "internet": {
             "action": "Vernieuwen {AppName}",
             "desc": {
@@ -631,6 +632,86 @@
         "privacy": "Privacybeleid",
         "sorawiki": "{Sora} Wiki"
     },
+    "forAgents": {
+        "apiContext": "wordt geïnstalleerd in de paginacontext nadat de app is opgestart. Het gebruikt hetzelfde knooppunt, dezelfde portemonnee, indexer en SDK-pad als de gebruikersinterface.",
+        "contract": {
+            "idempotent": "Gebruik een stabiele clientOrderId en herstel onzekere inzendingen voordat u het opnieuw probeert.",
+            "noCustody": "De pagina ontvangt nooit privésleutels; het ondertekenen blijft bij de geselecteerde portemonnee.",
+            "prepareFirst": "Aanroepen die de status wijzigen, moeten voorbereiding* ondergaan voordat ze worden uitgevoerd*.",
+            "samePage": "Voer het uit binnen de Polkaswap-paginacontext na de ready-gebeurtenis."
+        },
+        "discoveryText": "Haal eerst het manifest op. Het koppelt de versiereferentie, schemabestanden, voorbeelden, foutencatalogus en helperclient die bij deze statische build worden geleverd.",
+        "discoveryTitle": "Ontdekking",
+        "entrypointsLabel": "Agent-API-ingangspunten",
+        "eyebrow": "Automatisering",
+        "flow": {
+            "execute": "Alleen uitvoeren na goedkeuring van het beleid, met de voorbereide intentie en een stabiele klantorder-ID.",
+            "open": "Open Polkaswap op een echte browserpagina.",
+            "prepare": "Roep vóór elke ondertekeningsbewerking de overeenkomende voorbereidingsmethode aan.",
+            "ready": "Wacht op de ready-gebeurtenis en heb een actief SORA-knooppunt nodig.",
+            "recover": "Herstel onzekere inzendingen voordat u het opnieuw probeert.",
+            "resolve": "Herstel activasymbolen naar adressen vóór herhaalde uitvoering.",
+            "wallet": "Selecteer een portemonneeprovider en account wanneer ondertekenen nodig is."
+        },
+        "flowTitle": "Veilige uitvoeringslus",
+        "lead": "Polkaswap stelt een browser-native automatiserings-API beschikbaar voor agentrunners die de statische app openen.",
+        "links": {
+            "client": "JavaScript-helperclient",
+            "errors": "Foutcatalogus",
+            "examples": "Voorbeelden",
+            "manifest": "Ontdekkingsmanifest",
+            "playground": "Agentenspeelplaats",
+            "reference": "Volledige API-referentie",
+            "schema": "JSON-schema",
+            "types": "TypeScript-definities"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Canoniek ontdekkingsdocument voor generieke hardlopers.",
+                "title": "Begin met het manifest"
+            },
+            "playground": {
+                "description": "Handmatig onderzoek van dezelfde oorsprong voor status, activa, offertes en voorbeelden.",
+                "title": "Open de speeltuin"
+            },
+            "reference": {
+                "description": "Leesbare methodekaart, voorbeelden, ondertekeningsregels en herstelnotities.",
+                "title": "Lees de API-referentie"
+            }
+        },
+        "signingTextAfter": "om nieuwe pogingen idempotent te houden.",
+        "signingTextBefore": "De pagina gebruikt nooit privésleutels. Bij staatsveranderende methoden wordt gebruik gemaakt van de geselecteerde portemonnee-ondertekenaar en wordt vereist dat de loper de geretourneerde passeert",
+        "signingTextMiddle": "plus een stal",
+        "signingTitle": "Ondertekening en bewaring",
+        "startTitle": "Begin hier",
+        "title": "Voor agenten"
+    },
     "forText": "voor",
     "hashiBridgeText": "{Hashi} brug",
     "headerMenu": {
@@ -653,7 +734,7 @@
         "contactUs": "Contacteer ons",
         "privacyPolicy": "Privacybeleid",
         "termsOfService": "Servicevoorwaarden",
-        "title": "Help"
+        "title": "Hulp"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",
@@ -798,15 +879,16 @@
         "Explore/Container": "Ontdekken",
         "Farming": "Landbouw",
         "OrderBook": "Handel",
-        "Pool": "Pool",
+        "Polkamarkt": "Polkamarkt",
+        "Pool": "Zwembad",
         "Rewards": "Beloningen",
         "Sccp": "@:pageTitle.Sccp",
         "SoraCard": "{Sora} Kaart",
-        "StakingContainer": "Staking",
+        "StakingContainer": "Uitzetten",
         "Stats": "Stats",
         "Swap": "Verwisselen",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Wallet": "Account"
+        "Wallet": "Rekening"
     },
     "marketAlgorithmText": "Markt algoritme",
     "marketText": "Markt",
@@ -862,7 +944,7 @@
             "transfer": "Tokens succesvol gekocht!\n Klik om de bridge transactie te starten"
         }
     },
-    "moonpayText": "MoonPay",
+    "moonpayText": "MaanPay",
     "mst": {
         "about": "Over",
         "accountNameMst": "Multisig-accountnaam",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren",
             "OrderBookCancelLimitOrders": "Kan limietorders niet annuleren",
             "OrderBookPlaceLimitOrder": "Het plaatsen van een limietorder van {amount} {symbol} bij {price} {symbol2} is niet gelukt",
+            "PolkamarktAddLiquidity": "Het is niet gelukt om {amount} {symbol} liquiditeit toe te voegen aan Polkamarkt",
+            "PolkamarktBuy": "Het is niet gelukt om {amount} {symbol} te kopen op de Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Kan de makerkosten van Polkamarkt niet claimen",
+            "PolkamarktClaimCreatorLiquidity": "Kan de liquiditeit van de maker van Polkamarkt niet claimen",
+            "PolkamarktClaimLiquidity": "Het is niet gelukt om het restant van Polkamarkt LP te claimen",
+            "PolkamarktClaimMarket": "Kan de uitbetaling van Polkamarkt niet claimen",
+            "PolkamarktClaimMarkets": "Kan Polkamarkt-uitbetalingen niet claimen",
+            "PolkamarktCreateCondition": "Kan de Polkamarkt-voorwaarde niet maken",
+            "PolkamarktCreateMarket": "Kan Polkamarkt-markt niet creëren met {amount} {symbol}",
+            "PolkamarktFlip": "Kan {amount} {symbol} op de Polkamarkt niet omdraaien",
+            "PolkamarktSell": "Kan {amount} {symbol} niet verkopen op Polkamarkt",
             "ReferralReserveXor": "Kan {amount} XOR niet binden",
             "ReferralSetInvitedUser": "Kan {role} {address} niet instellen",
             "ReferralUnreserveXor": "Kan de binding van {amount} XOR niet ongedaan maken",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "Limietorder geannuleerd",
             "OrderBookCancelLimitOrders": "Limietorders geannuleerd",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} voor {price} {symbol2} geplaatst",
+            "PolkamarktAddLiquidity": "{amount} {symbol} liquiditeit toegevoegd aan Polkamarkt",
+            "PolkamarktBuy": "Gekocht {amount} {symbol} op Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Kosten voor makers van Polkamarkt geclaimd",
+            "PolkamarktClaimCreatorLiquidity": "De liquiditeit van de Polkamarkt-maker werd geclaimd",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP restant geclaimd",
+            "PolkamarktClaimMarket": "Polkamarkt-uitbetaling geclaimd",
+            "PolkamarktClaimMarkets": "Polkamarkt-uitbetalingen geclaimd",
+            "PolkamarktCreateCondition": "Polkamarkt-voorwaarde gecreëerd",
+            "PolkamarktCreateMarket": "Polkamarkt-markt gecreëerd met {amount} {symbol}",
+            "PolkamarktFlip": "{amount} {symbol} omgedraaid op de Polkamarkt",
+            "PolkamarktSell": "Verkocht {amount} {symbol} op Polkamarkt",
             "ReferralReserveXor": "Gebonden {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} is succesvol ingesteld",
             "ReferralUnreserveXor": "Ontbonden {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Annuleer bestelling",
         "OrderBookCancelLimitOrders": "Bestellingen annuleren",
         "OrderBookPlaceLimitOrder": "Plaats bestelling",
+        "PolkamarktAddLiquidity": "Voeg Polkamarkt-liquiditeit toe",
+        "PolkamarktBuy": "Koop Polkamarkt-aandelen",
+        "PolkamarktClaimCreatorFees": "Claim de makerskosten van Polkamarkt",
+        "PolkamarktClaimCreatorLiquidity": "Claim de liquiditeit van Polkamarkt Creator",
+        "PolkamarktClaimLiquidity": "Claim Polkamarkt LP Residueel",
+        "PolkamarktClaimMarket": "Claim Polkamarkt-uitbetaling",
+        "PolkamarktClaimMarkets": "Claim Polkamarkt-uitbetalingen",
+        "PolkamarktCreateCondition": "Maak Polkamarkt-voorwaarde",
+        "PolkamarktCreateMarket": "Creëer Polkamarkt-markt",
+        "PolkamarktFlip": "Draai de Polkamarkt-positie om",
+        "PolkamarktSell": "Verkoop Polkamarkt-aandelen",
         "ReferralReserveXor": "Bond XOR",
         "ReferralSetInvitedUser": "{role} instellen",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -1215,18 +1330,20 @@
         "Explore/Books": "@:pageTitle.OrderBook",
         "Explore/Farming": "Landbouw",
         "Explore/Pools": "Zwembaden",
-        "Explore/Staking": "Staking",
+        "Explore/Staking": "Uitzetten",
         "Explore/Tokens": "Tokens",
+        "ForAgents": "Voor agenten",
         "OrderBook": "Handel",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "pool",
         "Rewards": "Beloningen",
         "Sccp": "SCCP",
-        "Staking": "Staking",
+        "Staking": "Uitzetten",
         "Stats": "Stats",
         "Swap": "Verwisselen",
         "VaultDetails": "Positiedetails",
         "Vaults": "{Kensetsu}",
-        "Wallet": "Wallet"
+        "Wallet": "Portemonnee"
     },
     "pairIsNotCreated": "Tokenpaar is niet aangemaakt",
     "points": {
@@ -1331,6 +1448,155 @@
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https://polkadot.js.org/extension/",
         "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Koop",
+            "claimCreatorFees": "Claim makerkosten",
+            "claimCreatorLiquidity": "Liquiditeit van de maker van claims",
+            "claimLpResidual": "Claim LP-residu",
+            "claimTraderPayout": "Claim de uitbetaling van een handelaar",
+            "createMarket": "Creëer markt",
+            "flip": "Omdraaien",
+            "liquidity": "Voeg liquiditeit toe",
+            "sell": "Verkopen"
+        },
+        "create": {
+            "category": "Categorie",
+            "closeBlock": "Sluit blok",
+            "creationFee": "Aanmaakkosten",
+            "deadline": "Handelsdeadline",
+            "marketFailed": "Er werd een voorwaarde gecreëerd, maar het creëren van een markt mislukte. Probeer opnieuw een markt te creëren met de opgeslagen voorwaarde.",
+            "metadataTooLong": "Metagegevens voor vragen, orakel en resolutie moeten binnen 512 bytes passen.",
+            "question": "Markt vraag",
+            "questionPlaceholder": "Zal de gebeurtenis binnen de geselecteerde deadline een JA worden?",
+            "questionTooShort": "De vraag moet minimaal 32 bytes groot zijn.",
+            "retryMessage": "Voorwaarde {id} is aangemaakt. Probeer alleen de stap voor het creëren van een markt opnieuw.",
+            "retrySubmit": "Probeer opnieuw marktcreatie",
+            "seedLiquidity": "Zaadliquiditeit",
+            "seedTooSmall": "De startliquiditeit moet minimaal {amount} {symbol} zijn.",
+            "submit": "Creëer conditie en markt",
+            "title": "Creëer Polkamarkt-markt"
+        },
+        "details": {
+            "awaitingSettlement": "In afwachting van de afronding",
+            "empty": "Selecteer een markt om de palletstatus, orakeldetails en schikkingsbewijs te bekijken.",
+            "openResolutionSource": "Open source-link",
+            "oracle": "Orakel",
+            "pool": "Liquiditeitspool",
+            "settlement": "Afrekeningsdetails"
+        },
+        "errors": {
+            "loadActivity": "Kan Polkamarkt-accountactiviteit niet laden.",
+            "loadMarkets": "Kan Polkamarkt-markten niet laden."
+        },
+        "fields": {
+            "collateralAsset": "Onderpand",
+            "conditionId": "Conditie-ID",
+            "evidenceBlock": "Bewijs blok",
+            "evidenceHash": "Bewijs-hash",
+            "evidenceUri": "Bewijs-URI",
+            "lpContributed": "LP heeft bijgedragen",
+            "lpShares": "LP-aandelen",
+            "noReserve": "GEEN reserve",
+            "oracle": "Orakel",
+            "poolCollateral": "Onderpand voor de pool",
+            "resolutionOutcome": "Resolutie resultaat",
+            "resolutionSource": "Resolutie bron",
+            "yesReserve": "JA reserveren"
+        },
+        "filters": {
+            "active": "Actief",
+            "allCategories": "Alle categorieën",
+            "allStatuses": "Alle statussen",
+            "finalized": "Afgerond",
+            "mine": "De mijne"
+        },
+        "loadingMarkets": "Markten laden...",
+        "markets": {
+            "search": "Zoek markten",
+            "subtitle": "{count} markten komen overeen met de huidige filters",
+            "title": "Markten"
+        },
+        "metrics": {
+            "closeBlock": "Sluit blok",
+            "liquidity": "Liquiditeit",
+            "noQuote": "GEEN citaat",
+            "status": "Status",
+            "volume": "Volume",
+            "yesProbability": "JA",
+            "yesQuote": "JA citaat"
+        },
+        "modes": {
+            "buy": "Kopen",
+            "claim": "Beweren",
+            "flip": "Omdraaien",
+            "liquidity": "LP",
+            "sell": "Verkopen"
+        },
+        "my": {
+            "claimsSummary": "Handelaar {trader} / LP {lp}",
+            "connect": "Koppel een account om gecreëerde markten, LP-aandelen, uitbetalingen en recente transacties te bekijken.",
+            "createdMarkets": "Markten gecreëerd",
+            "empty": "Er zijn nog geen Polkamarkt-posities of gecreëerde markten voor dit account.",
+            "loading": "Polkamarkt-accountactiviteit laden...",
+            "market": "Markt {id}",
+            "positions": "LP- en handelaarsposities",
+            "recentTrades": "Recente transacties",
+            "sharesSummary": "JA {yes} / NEE {no} / LP {lp}",
+            "subtitle": "Gecreëerde markten, LP-aandelen, uitbetalingen aan handelaars, makervergoedingen en resterende LP-claims.",
+            "title": "Mijn markten / LP"
+        },
+        "noMarkets": "Er zijn geen markten die overeenkomen met de huidige filters.",
+        "notIndexed": "Niet geïndexeerd",
+        "outcomes": {
+            "no": "NEE",
+            "yes": "JA"
+        },
+        "pageSubtitle": "Handel in actieve voorspellingsmarkten, zaai nieuwe markten en beheer LP- en claimbare saldi uit de Polkaswap-portemonneestroom.",
+        "status": {
+            "active": "Actief"
+        },
+        "ticket": {
+            "amountPlaceholder": "0,0",
+            "claimable": "Opeisbaar",
+            "claimableFailed": "Kan claimbare saldi niet lezen.",
+            "claimStatus": "Claimstatus",
+            "collateralAmount": "Bedrag ({symbol})",
+            "collateralOut": "Onderpand eruit",
+            "enterAmount": "Voer een bedrag in",
+            "flippedShares": "Omgedraaide aandelen",
+            "insufficientKusd": "Onvoldoende {symbol} saldo",
+            "insufficientXor": "Onvoldoende XOR voor netwerkkosten",
+            "invalidAmount": "Vul een geldig bedrag in",
+            "lpSharesOut": "LP deelt uit",
+            "noChainMarket": "De markt is niet on-chain verhandelbaar",
+            "quoteFailed": "Kan offerte niet vernieuwen.",
+            "refreshingQuote": "Verfrissend citaat...",
+            "selectMarket": "Selecteer een actieve markt om in te handelen.",
+            "sharesAmount": "Aandelen",
+            "sharesOut": "Aandelen uit",
+            "slippage": "Slippercentage",
+            "subtitle": "Offertes, kosten, bescherming tegen wegglijden en het indienen van portemonnees maken gebruik van de SORA-runtime.",
+            "title": "Handelskaartje",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "bytes",
+            "shares": "aandelen"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
+    },
     "pool": {
         "addLiquidity": "Toevoegen",
         "connectToWallet": "Maak verbinding met een wallet om uw liquiditeit toe te voegen en te bekijken.",
@@ -1374,7 +1640,7 @@
             "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
             "inviteDescription": "Voor elke transactie gaat 10% van de vergoeding naar uw verwijzer, zonder extra kosten voor u.",
             "inviteTitle": "Je bent uitgenodigd voor {AppName}",
-            "ok": "OK",
+            "ok": "Oké",
             "signInvitation": "Goedkeuren",
             "unbond": "Ontbinding bevestigen"
         },
@@ -1436,8 +1702,8 @@
             "BuyOnBondingCurve": "kopen van de TBC",
             "LiquidityProvision": "Vergoedingen verkregen uit liquiditeitsvoorziening",
             "LiquidityProvisionFarming": "Landbouw",
-            "MarketMakerVolume": "Market Making",
-            "NftAirdrop": "NFT Airdrop",
+            "MarketMakerVolume": "Markt maken",
+            "NftAirdrop": "NFT luchtdruppel",
             "SoraFarmHarvest": "{Sora}.farm oogst",
             "XorErc20": "XOR ERC-20"
         },
@@ -1567,7 +1833,7 @@
         "medium": "Gemiddeld",
         "reddit": "Reddit",
         "telegram": "Telegram",
-        "twitter": "Twitter",
+        "twitter": "Twitteren",
         "wiki": "{Sora} Wiki"
     },
     "soraStaking": {
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Commissie",
             "commissionTooltip": "Commissie verwijst naar de vergoeding die validators in rekening brengen voor hun diensten in het stakingproces. Deze vergoeding, uitgedrukt als een percentage, wordt afgetrokken van de inzetoefeningen die de nominatoren vóór distributie hebben verdiend. Het is belangrijk op te merken dat validators hun commissietarieven op elk moment kunnen aanpassen",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Deselecteer alles",
             "name": "Naam",
             "noNominatedValidators": "U heeft geen genomineerde validators",
             "noValidators": "Er zijn geen validators die aan het opgegeven filter voldoen",
             "return": "Opbrengst",
             "search": "Zoekopdracht...",
-            "selectAll": "Select all",
+            "selectAll": "Selecteer alles",
             "staked": "Uitgezet",
             "stakedTooltip": "Totale XOR-inzet bij deze validator, inclusief de eigen inzet van de validator en de genomineerde inzet"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Accounts zijn digitale adressen die de activa van de gebruiker op het netwerk bevatten. Elk account is gekoppeld aan een uniek openbaar adres en een privésleutel waarmee de gebruiker toegang heeft tot zijn activa en deze kan beheren.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Unieke rekeningen die hebben deelgenomen aan transacties tijdens de geselecteerde periode.",
         "bridgeTransactions": "{from} to {to} bridge verwijst naar het proces van het overbrengen van activa tussen de {from} en {to} netwerken met behulp van een bridge. De brug zorgt voor de interoperabiliteit van de twee netwerken, waardoor gebruikers naadloos activa tussen hen kunnen verplaatsen.",
         "fees": "Kosten op de {Sora} -blockchain verwijzen naar de kosten die worden gemaakt voor het uitvoeren van transacties op het netwerk. Deze vergoedingen worden betaald in XOR, de native cryptocurrency van het {Sora} -netwerk. Het bedrag van de vergoeding wordt bepaald door de complexiteit en omvang van de transactie die wordt uitgevoerd",
         "roi": "{ROI} staat voor Return on Investment. Het wordt berekend door de winst op een investering te delen door de kosten van die investering in een procentueel equivalent.",

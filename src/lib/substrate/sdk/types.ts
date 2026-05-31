@@ -96,6 +96,18 @@ export enum Operation {
   RepayVaultDebt = 'RepayVaultDebt',
   DepositCollateral = 'DepositCollateral',
   BorrowVaultDebt = 'BorrowVaultDebt',
+  /** Polkamarkt */
+  PolkamarktCreateCondition = 'PolkamarktCreateCondition',
+  PolkamarktCreateMarket = 'PolkamarktCreateMarket',
+  PolkamarktBuy = 'PolkamarktBuy',
+  PolkamarktSell = 'PolkamarktSell',
+  PolkamarktFlip = 'PolkamarktFlip',
+  PolkamarktAddLiquidity = 'PolkamarktAddLiquidity',
+  PolkamarktClaimMarket = 'PolkamarktClaimMarket',
+  PolkamarktClaimMarkets = 'PolkamarktClaimMarkets',
+  PolkamarktClaimCreatorFees = 'PolkamarktClaimCreatorFees',
+  PolkamarktClaimCreatorLiquidity = 'PolkamarktClaimCreatorLiquidity',
+  PolkamarktClaimLiquidity = 'PolkamarktClaimLiquidity',
   /** DEFI-R */
   SetAccessExpiration = 'SetAccessExpiration',
   RegulateAsset = 'RegulateAsset',

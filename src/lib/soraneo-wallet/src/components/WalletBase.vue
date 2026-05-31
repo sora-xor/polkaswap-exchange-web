@@ -89,7 +89,17 @@ const { t } = useTranslation();
 const headerBase = ref<HTMLElement | null>(null);
 const hasFocusReset = ref(false);
 
+/** Returns true for focused controls where typed input must keep browser focus. */
+const isEditableElement = (element: Element | null): boolean => {
+  if (!(element instanceof HTMLElement)) return false;
+
+  const tagName = element.tagName.toLowerCase();
+  return tagName === 'input' || tagName === 'textarea' || tagName === 'select' || element.isContentEditable;
+};
+
 const setFocusToHeader = () => {
+  if (isEditableElement(document.activeElement)) return;
+
   const element = headerBase.value;
   if (!element) return;
   element.focus();

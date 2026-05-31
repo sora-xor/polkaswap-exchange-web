@@ -17,14 +17,22 @@ const CIRCULATING_DIFF = {
   [VAL.address]: 33449609.3779,
   [PSWAP.address]: 6345014420.6195,
 };
-const XOR_SUPPLY_REDENOMINATION_FACTOR = new FPNumber('1000000');
-const XOR_LEGACY_SUPPLY_THRESHOLD = new FPNumber('1000000000000000');
+const XOR_INDEXER_SUPPLY_REDENOMINATION_FACTOR = new FPNumber('1000000');
+const XOR_CHAIN_SUPPLY_REDENOMINATION_FACTOR = new FPNumber('1000000000000');
+const XOR_DELTA_REDENOMINATION_RATIO_THRESHOLD = new FPNumber('1000');
+const XOR_EVENT_REDENOMINATION_FACTOR = new FPNumber('1000000');
+const XOR_EVENT_REASONABLE_SUPPLY_MULTIPLIER = new FPNumber('1000');
 
 export type ChartData = {
   timestamp: number;
   value: number;
   mint: number;
   burn: number;
+};
+
+type ParsedChartData = ChartData & {
+  supplyValue?: FPNumber;
+  rawSupplyValue?: FPNumber;
 };
 
 const PolkaswapAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
@@ -57,29 +65,59 @@ const PolkaswapAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntit
   }
 `;
 
+const toAmountValue = (value: string): FPNumber =>
+  value.includes('.') ? new FPNumber(value) : FPNumber.fromCodecValue(value);
+
 /**
- * Keeps already-correct XOR rows intact while fixing legacy indexer rows written in pre-redenomination units.
+ * Production XOR supply snapshots are stored with six more decimal places than
+ * the user-facing XOR precision after redenomination. Decode those snapshots to
+ * the same units used in balances and swap forms.
  */
-const normalizeSupplyValue = (id: string, value: FPNumber): FPNumber => {
-  if (id !== XOR.address || !FPNumber.gt(value, XOR_LEGACY_SUPPLY_THRESHOLD)) return value;
-
-  return value.div(XOR_SUPPLY_REDENOMINATION_FACTOR);
-};
-
-const toNumber = (value: string): number => {
+const toIndexerSupplyValue = (id: string, value: string): FPNumber => {
   const fp = FPNumber.fromCodecValue(value);
 
-  return fp.isFinity() ? fp.toNumber() : 0;
+  return id === XOR.address ? fp.div(XOR_INDEXER_SUPPLY_REDENOMINATION_FACTOR) : fp;
+};
+
+/**
+ * The live native XOR total issuance fallback comes from `balances.totalIssuance`,
+ * whose effective scale is larger than asset snapshot rows. Keep this separate
+ * from snapshot decoding so one source cannot accidentally over-normalize the other.
+ */
+const toCurrentSupplyValue = (id: string, value: string): FPNumber => {
+  const fp = FPNumber.fromCodecValue(value);
+
+  return id === XOR.address ? fp.div(XOR_CHAIN_SUPPLY_REDENOMINATION_FACTOR) : fp;
 };
 
 const toSupplyNumber = (id: string, value: string): number => {
-  const fp = normalizeSupplyValue(id, FPNumber.fromCodecValue(value));
+  const fp = toCurrentSupplyValue(id, value);
 
   return fp.isFinity() ? fp.toNumber() : 0;
 };
 
+/**
+ * Some XOR snapshot buckets contain denomination-era event totals decoded at a
+ * storage scale. Reduce only bucket amounts that are impossible relative to the
+ * supply, leaving normal large burns and sub-unit burns untouched.
+ */
+const normalizeXorEventAmount = (id: string, value: FPNumber, supplyValue: FPNumber): FPNumber => {
+  if (id !== XOR.address || !value.isFinity() || !supplyValue.isFinity() || supplyValue.isZero()) {
+    return value;
+  }
+
+  const maxReasonableBucketAmount = supplyValue.mul(XOR_EVENT_REASONABLE_SUPPLY_MULTIPLIER);
+  let normalized = value;
+
+  for (let scaleCount = 0; scaleCount < 3 && FPNumber.gt(normalized, maxReasonableBucketAmount); scaleCount++) {
+    normalized = normalized.div(XOR_EVENT_REDENOMINATION_FACTOR);
+  }
+
+  return normalized;
+};
+
 /** Detects whether indexer snapshots contain a supply value worth rendering. */
-const hasUsableSupplyData = (items: readonly ChartData[]): boolean =>
+const hasUsableSupplyData = (items: readonly ParsedChartData[]): boolean =>
   items.some((item) => Number.isFinite(item.value) && item.value > 0);
 
 /** Fetches the chain's current total issuance as a fallback for broken indexer snapshots. */
@@ -98,8 +136,8 @@ const fetchCurrentSupplyValue = async (id: string): Promise<Nullable<number>> =>
 const withCurrentSupplyFallback = async (
   id: string,
   timestamp: number,
-  items: readonly ChartData[]
-): Promise<ChartData[]> => {
+  items: readonly ParsedChartData[]
+): Promise<ParsedChartData[]> => {
   if (hasUsableSupplyData(items)) {
     return [...items];
   }
@@ -116,17 +154,72 @@ const withCurrentSupplyFallback = async (
   return items.map((item) => ({ ...item, value: currentSupply }));
 };
 
-const applyCirculatingDiff = (items: readonly ChartData[], diff: number): ChartData[] =>
+const applyCirculatingDiff = (items: readonly ParsedChartData[], diff: number): ParsedChartData[] =>
   hasUsableSupplyData(items) ? items.map((item) => ({ ...item, value: item.value - diff })) : [...items];
+
+const toChartData = ({ timestamp, value, mint, burn }: ParsedChartData): ChartData => ({ timestamp, value, mint, burn });
+
+/**
+ * XOR production snapshots need post-denomination absolute supply values, while
+ * small historical raw movements can still be smaller by the redenomination
+ * factor. Preserve the latest absolute value and scale only those tiny
+ * historical movements so ordinary burns remain visible on the chart.
+ */
+const normalizeXorSupplyDeltas = (id: string, items: readonly ParsedChartData[]): ChartData[] => {
+  if (id !== XOR.address || items.length < 2) {
+    return items.map(({ timestamp, value, mint, burn }) => ({ timestamp, value, mint, burn }));
+  }
+
+  const anchorSupply = items[0]?.supplyValue;
+  const anchorRawSupply = items[0]?.rawSupplyValue;
+  if (!anchorSupply?.isFinity() || !anchorRawSupply?.isFinity()) {
+    return items.map(({ timestamp, value, mint, burn }) => ({ timestamp, value, mint, burn }));
+  }
+
+  const supplyDeltas = items
+    .map((item) => item.rawSupplyValue?.sub(anchorRawSupply).abs())
+    .filter((item): item is FPNumber => !!item?.isFinity());
+  const maxSupplyDelta = FPNumber.max(...supplyDeltas) ?? FPNumber.ZERO;
+  const totalMintBurn = items.reduce(
+    (total, item) => total.add(new FPNumber(item.mint).abs()).add(new FPNumber(item.burn).abs()),
+    FPNumber.ZERO
+  );
+  const shouldScaleDeltas =
+    FPNumber.gt(maxSupplyDelta, FPNumber.ZERO) &&
+    FPNumber.gt(totalMintBurn, FPNumber.ZERO) &&
+    FPNumber.gt(totalMintBurn.div(maxSupplyDelta), XOR_DELTA_REDENOMINATION_RATIO_THRESHOLD);
+
+  return items.map(({ timestamp, value, mint, burn, rawSupplyValue }) => {
+    if (!shouldScaleDeltas || !rawSupplyValue?.isFinity()) {
+      return { timestamp, value, mint, burn };
+    }
+
+    return {
+      timestamp,
+      value: anchorSupply
+        .add(rawSupplyValue.sub(anchorRawSupply).mul(XOR_INDEXER_SUPPLY_REDENOMINATION_FACTOR))
+        .toNumber(),
+      mint,
+      burn,
+    };
+  });
+};
 
 const parse =
   (id: string) =>
-  (node: AssetSnapshotEntity): ChartData => {
+  (node: AssetSnapshotEntity): ParsedChartData => {
+    const supplyValue = toIndexerSupplyValue(id, node.supply);
+    const rawSupplyValue = FPNumber.fromCodecValue(node.supply);
+    const mint = normalizeXorEventAmount(id, toAmountValue(node.mint), supplyValue);
+    const burn = normalizeXorEventAmount(id, toAmountValue(node.burn), supplyValue);
+
     return {
       timestamp: +node.timestamp * 1000,
-      value: toSupplyNumber(id, node.supply),
-      mint: toNumber(node.mint),
-      burn: toNumber(node.burn),
+      value: supplyValue.isFinity() ? supplyValue.toNumber() : 0,
+      mint: mint.isFinity() ? mint.toNumber() : 0,
+      burn: burn.isFinity() ? burn.toNumber() : 0,
+      supplyValue,
+      rawSupplyValue,
     };
   };
 
@@ -151,16 +244,16 @@ export async function fetchAssetSupplyData(
     parse(id)
   );
 
-  const chartData = data ?? [];
+  const chartData = normalizeXorSupplyDeltas(id, data ?? []);
   const dataWithFallback = await withCurrentSupplyFallback(id, from, chartData);
 
   if (![VAL.address, PSWAP.address].includes(id)) {
-    return dataWithFallback;
+    return dataWithFallback.map(toChartData);
   }
   // VAL & PSWAP have huge difference between circulating & total supply on prod env
   const env = await resolveSoraNetwork();
-  if (env !== 'Prod') return dataWithFallback;
+  if (env !== 'Prod') return dataWithFallback.map(toChartData);
 
   const diff = CIRCULATING_DIFF[id];
-  return applyCirculatingDiff(dataWithFallback, diff);
+  return applyCirculatingDiff(dataWithFallback, diff).map(toChartData);
 }

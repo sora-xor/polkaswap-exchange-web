@@ -91,12 +91,10 @@ test.describe('agent trading signer profile', () => {
 
     try {
       const page = await context.newPage();
-      await page.addInitScript(() => {
-        localStorage.setItem('dexSettings.disclaimerApprove', 'true');
-      });
-      await page.goto(`${baseURL}${ipfsBasePath}/#/swap`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`${baseURL}${ipfsBasePath}/?polkaswap-agent=1#/swap`, { waitUntil: 'domcontentloaded' });
       await page.waitForFunction(() => Boolean(window.PolkaswapAgent), { timeout: 20_000 });
       await page.evaluate(async () => window.PolkaswapAgent.ready({ requireNode: true, timeoutMs: 20_000 }));
+      await expect.poll(() => page.evaluate(() => window.PolkaswapAgent.status().agent.mode)).toBe(true);
 
       const walletStatus = await runWithWalletPopupHandling(
         context,

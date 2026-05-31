@@ -117,6 +117,13 @@ const createHarness = () => {
     },
     assets: {
       getAssetInfo: vi.fn(),
+      getAccountAsset: vi.fn(async (address: string) => {
+        const accountAsset = [accountAssetIn, accountAssetOut, accountXor].find((asset) => asset.address === address);
+
+        if (!accountAsset) throw new Error(`Unknown account asset: ${address}`);
+
+        return accountAsset;
+      }),
       simpleTransfer: vi.fn(async (asset: Asset, to: string, amount: string) => {
         history.push({
           id: 'transfer-1',
@@ -242,6 +249,7 @@ const createHarness = () => {
     api,
     settingsStore,
     walletStore,
+    assetsStore,
     deps,
     assetIn,
     assetOut,
@@ -258,6 +266,7 @@ describe('PolkaswapAgent service', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
+    window.history.replaceState({}, '', '/#/swap');
   });
 
   it('reports node, wallet, and settings status', () => {
@@ -266,6 +275,11 @@ describe('PolkaswapAgent service', () => {
     expect(agent.status()).toEqual(
       expect.objectContaining({
         version: 'v1',
+        agent: {
+          mode: false,
+          disclaimerSuppressed: false,
+          queryParam: 'polkaswap-agent',
+        },
         node: expect.objectContaining({ connected: true, endpoint: 'wss://node.test' }),
         wallet: expect.objectContaining({ connected: true, address: 'cn-account' }),
         settings: { slippageTolerance: '0.5' },
@@ -280,6 +294,18 @@ describe('PolkaswapAgent service', () => {
         requiresUserApproval: true,
       })
     );
+  });
+
+  it('reports transient agent mode from the URL query', () => {
+    window.history.replaceState({}, '', '/?polkaswap-agent=1#/swap');
+
+    const { agent } = createHarness();
+
+    expect(agent.status().agent).toEqual({
+      mode: true,
+      disclaimerSuppressed: true,
+      queryParam: 'polkaswap-agent',
+    });
   });
 
   it('reports live capabilities and wallet accounts for agent discovery', async () => {
@@ -379,6 +405,45 @@ describe('PolkaswapAgent service', () => {
           expect.objectContaining({ asset: expect.objectContaining({ symbol: 'XOR' }), sufficient: true }),
         ]),
       })
+    );
+  });
+
+  it('refreshes live XOR gas balance when cached account assets are stale zero', async () => {
+    const { agent, api, assetsStore, walletStore, assetIn, assetOut } = createHarness();
+    const staleXor = { ...XOR, balance: createBalance('0') };
+    const liveXorCodec = new FPNumber('1.2', 18).toCodecString();
+    const liveXor = { ...XOR, balance: createBalance(liveXorCodec) };
+    const originalAssetDataByAddress = assetsStore.assetDataByAddress;
+
+    walletStore.accountAssetsAddressTable[XOR.address] = staleXor;
+    walletStore.assets = walletStore.assets.map((asset) => (asset.address === XOR.address ? staleXor : asset));
+    assetsStore.assetDataByAddress = vi.fn((address?: string | null) =>
+      address === XOR.address ? staleXor : originalAssetDataByAddress(address)
+    );
+    api.assets.getAccountAsset.mockResolvedValueOnce(liveXor);
+
+    const prepared = await agent.prepareSwap({
+      assetIn: { address: assetIn.address },
+      assetOut: { address: assetOut.address },
+      amount: '1',
+    });
+    const xorRequiredBalance = prepared.requiredBalances.find((balance) => balance.asset.address === XOR.address);
+
+    expect(api.assets.getAccountAsset).toHaveBeenCalledWith(XOR.address, 'cn-account');
+    expect(xorRequiredBalance).toEqual(
+      expect.objectContaining({
+        available: '1.2',
+        availableCodec: liveXorCodec,
+        sufficient: true,
+      })
+    );
+    expect(prepared.warnings).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          code: 'INSUFFICIENT_BALANCE',
+          details: expect.objectContaining({ asset: expect.objectContaining({ symbol: 'XOR' }) }),
+        }),
+      ])
     );
   });
 

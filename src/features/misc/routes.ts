@@ -20,6 +20,11 @@ export const miscRoutes: RouteRecordRaw[] = [
     component: () => loadAsyncImportWithRetry(() => import('./pages/BurnPage.vue')),
   },
   {
+    path: '/for-agents',
+    name: PageNames.ForAgents,
+    component: () => loadAsyncImportWithRetry(() => import('./pages/ForAgentsPage.vue')),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/swap',
   },

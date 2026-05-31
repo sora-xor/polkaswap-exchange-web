@@ -209,6 +209,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { api } from '../api';
 import { RouteNames } from '../consts';
 import { validateAddress, formatAccountAddress, delay } from '../util';
+import { getWalletSendMaxAmount, isWalletSendMaxAvailable } from '../util/walletSendMax';
 
 import AccountConfirmationOption from './Account/Settings/ConfirmationOption.vue';
 import WalletAccount from './Account/WalletAccount.vue';
@@ -251,7 +252,6 @@ export default {
       formatDate,
       getFPNumber,
       getFPNumberFromCodec,
-      getStringFromCodec,
       formatCodecNumber,
       formatStringValue,
       MaxInputNumber,
@@ -335,25 +335,20 @@ export default {
       return fpAmount.isFinity() && !fpAmount.isZero() && FPNumber.lte(fpAmount, balance);
     });
     const isXorAccountAsset = computed(() => asset.value.address === XOR.address);
-    const isMaxButtonAvailable = computed(() => {
-      if (shouldBalanceBeHidden.value) {
-        return false;
-      }
-
-      const decimals = asset.value.decimals;
-      const balance = getFPNumberFromCodec(transferableBalance.value, decimals);
-      const fpAmount = getFPNumber(amount.value, decimals);
-
-      if (isXorAccountAsset.value) {
-        if (fee.value.isZero()) {
-          return false;
-        }
-
-        return !FPNumber.eq(fee.value, balance.sub(fpAmount)) && FPNumber.gt(balance, fee.value);
-      }
-
-      return !FPNumber.eq(balance, fpAmount);
-    });
+    const maxAmount = computed(() =>
+      getWalletSendMaxAmount({
+        assetAddress: asset.value.address,
+        balance: transferableBalance.value,
+        decimals: asset.value.decimals,
+        fee: fee.value,
+      })
+    );
+    const isMaxButtonAvailable = computed(() =>
+      isWalletSendMaxAvailable({
+        maxAmount: maxAmount.value,
+        shouldBalanceBeHidden: shouldBalanceBeHidden.value,
+      })
+    );
     const hasEnoughXor = computed(() => api.hasEnoughXor(asset.value, amount.value, fee.value));
     const sendButtonDisabled = computed(
       () =>
@@ -457,13 +452,7 @@ export default {
     };
 
     const handleMaxClick = async (): Promise<void> => {
-      if (isXorAccountAsset.value) {
-        const balance = getFPNumberFromCodec(transferableBalance.value, asset.value.decimals);
-        amount.value = balance.sub(fee.value).toString();
-        return;
-      }
-
-      amount.value = getStringFromCodec(transferableBalance.value, asset.value.decimals);
+      amount.value = maxAmount.value.toString();
     };
 
     const handleSend = async (): Promise<void> => {

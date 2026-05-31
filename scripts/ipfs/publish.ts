@@ -18,6 +18,10 @@ export const STATIC_SITE_CACHE_HEADERS = [
   { path: '/assets/*', header: 'Cache-Control: public, max-age=31536000, immutable' },
 ] as const;
 
+/** CSP override for Bunny pull zones that use Filebase as an IPFS origin. */
+export const BUNNY_FILEBASE_CSP_HEADER =
+  "default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data: https:; worker-src 'self' blob:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self';";
+
 interface WorkspaceRepository {
   name: string;
   path: string;
@@ -497,7 +501,7 @@ export function announceIpfsCidRecursively(cid: string, runCommandLike: RunComma
 
 function createNoSpaceRecoveryMessage(directory: string, repoPath: string | null, attemptedGc: boolean): string {
   const retryMessage = attemptedGc
-    ? 'The script ran `ipfs repo gc` and retried `ipfs add -Qr` once, but the publish still failed.'
+    ? 'The script ran `ipfs repo gc` and retried `ipfs add -Qr --hidden` once, but the publish still failed.'
     : 'Automatic recovery via `ipfs repo gc` failed before the publish could be retried.';
 
   return [
@@ -512,7 +516,7 @@ function createNoSpaceRecoveryMessage(directory: string, repoPath: string | null
 }
 
 function addPinVerifyAndAnnounceDirectory(directory: string, run: RunCommandLike): string {
-  const cid = extractCid(run('ipfs', ['add', '-Qr', '--pin=false', directory], { capture: true }), directory);
+  const cid = extractCid(run('ipfs', ['add', '-Qr', '--hidden', '--pin=false', directory], { capture: true }), directory);
   pinIpfsCidRecursively(cid, run);
   verifyRecursiveIpfsPin(cid, run);
   announceIpfsCidRecursively(cid, run);
@@ -544,7 +548,7 @@ export function publishDirectoryToIpfs(
     console.warn(
       [
         `IPFS reported no space left on device while publishing ${directory}.`,
-        'Running `ipfs repo gc` and retrying `ipfs add -Qr` once...',
+        'Running `ipfs repo gc` and retrying `ipfs add -Qr --hidden` once...',
         repoPath ? `Repository: ${repoPath}` : null,
       ]
         .filter((line): line is string => Boolean(line))
@@ -841,6 +845,15 @@ export function formatStaticSiteCacheHeaderRecommendations(): string {
   ].join('\n');
 }
 
+/**
+ * Formats the CSP that Bunny should apply when it replaces restrictive Filebase gateway headers.
+ */
+export function formatBunnyFilebaseCspRecommendation(): string {
+  return ['Recommended Filebase origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join(
+    '\n'
+  );
+}
+
 function logGatewayUrls(cid: string, label: string, localGatewayBaseUrl: string): void {
   const url = `https://ipfs.io/ipfs/${cid}/index.html`;
   console.log(`\n${label} CID:`, cid);
@@ -869,6 +882,7 @@ function main(): void {
   const productionCid = publishDirectoryToIpfs(DIST_DIR);
   logGatewayUrls(productionCid, 'Production', resolveLocalGatewayBaseUrl());
   console.log(`\n${formatStaticSiteCacheHeaderRecommendations()}`);
+  console.log(`\n${formatBunnyFilebaseCspRecommendation()}`);
 
   console.log('Preparing testnet assets from the build output...');
   const { distPath: testnetDistPath, cleanup } = createTestnetDistClone();

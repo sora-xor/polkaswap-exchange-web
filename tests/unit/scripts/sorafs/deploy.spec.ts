@@ -141,9 +141,6 @@ describe('validateRuntimeEnvConfig', () => {
           {
             address: 'wss://ws.mof.sora.org',
           },
-          {
-            address: 'wss://mof2.sora.org',
-          },
         ],
       })
     ).not.toThrow();

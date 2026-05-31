@@ -48,6 +48,10 @@ describe('App shell source', () => {
     expect(appShellSource).toContain('margin-left: 0;');
   });
 
+  it('keeps Polkamarkt wide desktop content out from under the sidebar', () => {
+    expect(appShellSource).toMatch(/\.app-main--swap,\s*\.app-main--polkamarkt,\s*\.app-main--vaults,/);
+  });
+
   it('renders the desktop menu logo through the named AppMenu head slot', () => {
     expect(appShellLayoutSource).toContain('<template #head>');
     expect(appShellLayoutSource).toContain(

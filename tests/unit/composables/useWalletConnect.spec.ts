@@ -290,6 +290,24 @@ describe('useWalletConnect', () => {
     wrapper.unmount();
   });
 
+  it('ignores DOM events passed by direct template click bindings', async () => {
+    web3StorePiniaMock.evmProvider = null;
+    web3StorePiniaMock.appEvmProviders = [fearlessProvider, metamaskProvider, provider];
+    fearlessProvider.getProvider.mockResolvedValue(undefined);
+    metamaskProvider.getProvider.mockResolvedValue({ request: vi.fn() });
+
+    const wrapper = createHarness();
+    const { wallet } = wrapper.vm as { wallet: ReturnType<typeof useWalletConnect> };
+    const clickEvent = new MouseEvent('click');
+
+    await wallet.connectEvmWallet(clickEvent);
+
+    expect(selectProviderMock).toHaveBeenCalledWith(metamaskProvider);
+    expect(selectProviderMock).not.toHaveBeenCalledWith(clickEvent);
+
+    wrapper.unmount();
+  });
+
   it('opens the node selector instead of the sub-account dialog when the sub bridge is not ready', () => {
     bridgeStorePiniaMock.isSubBridge = true;
     bridgeStorePiniaMock.connector = {

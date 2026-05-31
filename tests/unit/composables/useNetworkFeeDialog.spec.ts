@@ -34,5 +34,6 @@ describe('useNetworkFeeDialog', () => {
 
     confirmNetworkFeeWariningDialog();
     expect(isWarningFeeDialogConfirmed.value).toBe(true);
+    expect(showWarningFeeDialog.value).toBe(false);
   });
 });

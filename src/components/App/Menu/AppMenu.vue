@@ -42,6 +42,7 @@
                   tabindex="-1"
                   :href="item.href"
                   :icon="item.icon"
+                  :icon-src="item.iconSrc"
                   :title="getMenuTitle(item)"
                   @click.prevent="preventAnchorNavigation"
                 ></app-sidebar-item-content>
@@ -98,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
+import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { appRouterLoading } from '@/app/navigation/loading';
@@ -229,6 +230,21 @@ function getMenuTitle(item: SidebarMenuItemLink): string {
   return t(`mainMenu.${item.title}`);
 }
 
+function resetSidebarScroll(): void {
+  const scrollbar = menuElement.value?.closest<HTMLElement>('.app-sidebar-scrollbar');
+
+  if (!scrollbar) return;
+
+  const scrollTargets = [
+    scrollbar,
+    ...Array.from(scrollbar.querySelectorAll<HTMLElement>('.el-scrollbar__wrap, .s-scrollbar__wrap')),
+  ];
+
+  scrollTargets.forEach((target) => {
+    target.scrollTop = 0;
+  });
+}
+
 onMounted(() => {
   if (!menuElement.value) return;
 
@@ -242,7 +258,24 @@ onMounted(() => {
   resizeObserver.value = new ResizeObserver(updateSidebarWidth);
   resizeObserver.value.observe(menuElement.value);
   updateSidebarWidth();
+  nextTick(resetSidebarScroll);
 });
+
+watch(
+  () => route.fullPath,
+  () => {
+    nextTick(resetSidebarScroll);
+  }
+);
+
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) {
+      nextTick(resetSidebarScroll);
+    }
+  }
+);
 
 onBeforeUnmount(() => {
   resizeObserver.value?.disconnect();

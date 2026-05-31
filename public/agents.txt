@@ -22,7 +22,7 @@ Important constraints:
 
 Minimum flow:
 
-1. Open the app in a browser.
+1. Open the app in a browser with `?polkaswap-agent=1` before the hash route.
 2. Wait for `window.PolkaswapAgent` or `polkaswap-agent-ready`.
 3. Call `ready({ requireNode: true })`.
 4. Use `prepare*` methods before `execute*` methods.

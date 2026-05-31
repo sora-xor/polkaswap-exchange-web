@@ -1,5 +1,5 @@
 <template>
-  <DialogBase :title="title" v-model:visible="isVisible" tooltip="COMING SOON...">
+  <DialogBase :title="title" v-model:visible="isVisible" tooltip="COMING SOON..." @after-open="handleAfterOpen">
     <div class="dashboard-send">
       <AddressBookInput
         class="dashboard-send__address"
@@ -187,6 +187,16 @@ const resetForm = () => {
   comment.value = '';
 };
 
+/** Restores amount focus after the modal focus trap finishes opening. */
+const focusTokenInput = async () => {
+  await nextTick();
+  tokenInput.value?.focus?.();
+};
+
+const handleAfterOpen = () => {
+  void focusTokenInput();
+};
+
 const handlePercentChange = (percent: number) => {
   const amount = fpBalance.value.mul(percent / HundredNumber);
   value.value = amount.toString();
@@ -232,8 +242,7 @@ watch(
   async (visible) => {
     if (visible) {
       resetForm();
-      await nextTick();
-      tokenInput.value?.focus?.();
+      await focusTokenInput();
     }
   },
   { immediate: true }
@@ -251,6 +260,7 @@ defineExpose({
   handleMaxValue,
   handlePercentChange,
   handleCommentInput,
+  handleAfterOpen,
   resetForm,
 });
 </script>

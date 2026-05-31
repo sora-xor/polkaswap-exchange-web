@@ -28,7 +28,7 @@
         "title": "𓋴𓎛𓄿 𓊹𓏏𓊪"
     },
     "accountText": "𓋴𓎛𓄿 | 𓎛𓂋",
-    "activeAccountsText": "𓎛𓂋 𓅱𓂋",
+    "activeAccountsText": "𓋴𓏏𓊪 𓎛𓂋",
     "addAsset": {
         "add": "𓄿𓎛",
         "AddAssetToken": {
@@ -262,18 +262,18 @@
         "title": "𓄿𓎛 𓉐𓏤 𓎛𓂋 𓄿𓎛 𓏏𓁐 𓊹𓏏𓊪"
     },
     "burnPage": {
-        "copySoraNetworkTxHash": "𓋴𓏏𓊪 𓉐𓏤 𓎛𓂋",
-        "enterNexusRecipient": "𓂋𓏤𓈖 𓉐𓏤 𓎛𓂋",
-        "invalidNexusRecipient": "𓄿𓏏 𓉐𓏤 𓎛𓂋",
-        "minamotoClaimDescription": "𓉐𓏤 𓎛𓂋 𓈖𓂧𓂋 𓂋𓐍 𓋴𓏏𓊪. 𓂋𓏤𓈖 𓅱𓂋 𓄿𓎛 𓉐𓏤.",
-        "minamotoClaimTitle": "𓂋𓐍 𓋴𓏏𓊪 𓁷",
-        "nexusRecipientLabel": "𓉐𓏤 𓎛𓂋",
-        "nexusRecipientPlaceholder": "𓂋𓏤𓈖 𓉐𓏤 𓎛𓂋",
-        "nexusRecipientWarning": "𓉐𓏤 𓎛𓂋 𓈖𓂧𓂋 𓂋𓐍 𓋴𓏏𓊪 𓅱𓂋.",
-        "soraNetworkTxHashLabel": "𓉐𓏤 𓎛𓂋",
-        "soraNexusXorLabel": "𓊹 𓎛𓂋",
-        "soraV3XorAmountTitle": "𓅱𓂋 {tokenSymbol} 𓂋𓏤𓈖",
-        "ssTokensLabel": "𓋴𓋴 𓋴𓏏𓊪"
+        "copySoraNetworkTxHash": "𓎡𓄿 𓉐𓏤 𓈖𓏏 𓂋𓏤𓈖 𓋴𓏏𓊪",
+        "enterNexusRecipient": "𓂋𓏤𓈖 𓉐𓏤 𓉐𓏤 𓋴𓎛𓄿",
+        "invalidNexusRecipient": "𓄿𓎛 𓉐𓏤 𓉐𓏤 𓋴𓎛𓄿",
+        "minamotoClaimDescription": "𓄿𓎛 𓄿𓎛 𓉐𓏤 𓈖𓏏 𓂋𓏤𓈖 𓋴𓏏𓊪 𓅱𓂋 𓅱𓂋 𓋴𓏏𓏭 𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪. 𓄿𓎛 𓋴𓏏𓊪 𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛 𓄿𓎛 𓅱𓂋.",
+        "minamotoClaimTitle": "𓅱𓂋 𓋴𓏏𓊪 𓋴𓏏𓏭 𓈖𓎛",
+        "nexusRecipientLabel": "𓉐𓏤 𓉐𓏤 𓋴𓎛𓄿",
+        "nexusRecipientPlaceholder": "𓂋𓏤𓈖 𓅱𓂋 𓉐𓏤 𓉐𓏤 𓅱𓂋105 𓋴𓎛𓄿",
+        "nexusRecipientWarning": "𓅱𓂋 𓉐𓏤 𓉐𓏤 𓋴𓎛𓄿 𓎛𓂋 𓂋𓏤𓈖 𓂋𓏤𓈖 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓈖𓂧𓂋.",
+        "soraNetworkTxHashLabel": "𓉐𓏤 𓈖𓏏 𓂋𓏤𓈖 𓋴𓏏𓊪",
+        "soraNexusXorLabel": "𓉐𓏤 𓉐𓏤 𓅱𓂋",
+        "soraV3XorAmountTitle": "𓋴𓏏𓊪 𓄿𓎛 {tokenSymbol} 𓅱𓂋 𓅱𓂋 𓋴𓏏𓊪?",
+        "ssTokensLabel": "𓎛𓂋 𓂋𓏤𓈖"
     },
     "buttons": {
         "chooseAToken": "𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪",
@@ -555,7 +555,7 @@
         "synthetics": "𓅱𓂋 𓂋𓏤𓈖"
     },
     "FAQ": "{AppName} 𓋴𓏏𓊪",
-    "fiatDisclaimer": "𓎛𓂋 𓋴𓏏𓊪 𓈖𓏏 𓎼𓈖𓎛𓏏 𓄿𓎛 𓋴𓏏𓊪. 𓈖𓎛 𓎛𓂋 𓄿𓎛.",
+    "fiatDisclaimer": "𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪 𓂋𓏤𓈖 𓋴𓏏𓊪 𓋴𓏏𓊪 𓎛𓂋 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓋴𓏏𓊪 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓎛𓂋 𓉐𓏤 𓉐𓏤 𓋴𓏏𓊪 𓂋𓏤𓈖. 𓄿𓎛 𓄿𓎛 𓉐𓏤 𓂋𓏤𓈖 𓅱𓂋 𓄿𓎛 𓋴𓏏𓊪, 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓏥 𓎛𓂋 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪.",
     "fiatPayment": {
         "cedeStoreBtn": "𓄿𓎛 𓎛𓂋 {value1} 𓎛𓂋 {value2}",
         "cedeStoreDesc": "𓄿𓎛 𓎛𓂋 𓂋𓏤𓈖 𓎛𓂋 {value1} 𓅱𓂋 {value2} 𓎛𓂋 {value3}",
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} 𓅱𓂋 {second}",
     "firstText": "𓋴𓏏𓊪",
     "footer": {
+        "forAgents": "𓅱𓂋 𓎛𓂋",
         "internet": {
             "action": "𓅱𓂋 {AppName}",
             "desc": {
@@ -613,9 +614,9 @@
             "dialog": {
                 "indexer": "𓉐𓏤",
                 "title": "{Sora} 𓈖𓏏 𓅱𓂋 𓎛𓂋",
-                "useCeres": "𓄿𓎛 𓎼𓈖𓎛𓏏 𓈖 𓎛𓂋"
+                "useCeres": "𓄿𓎛 𓎛𓂋 𓉐𓏤 𓅱𓂋 𓋴𓏏𓊪 𓂋𓏤𓈖"
             },
-            "indexerBlock": "𓉐𓏤 𓎼𓈖𓎛𓏏 #{block}",
+            "indexerBlock": "𓎛𓂋 𓉐𓏤 𓄿𓎛 #{block}",
             "label": "𓎼𓈖𓎛𓏏 𓋴𓏏𓊪",
             "title": {
                 "available": "𓎼𓈖𓎛𓏏 𓄿𓎛",
@@ -630,6 +631,86 @@
         "info": "𓈖𓎛 & 𓅱𓂋",
         "privacy": "𓂋𓏤𓈖 𓂋𓏤𓈖",
         "sorawiki": "{Sora} 𓂋𓏤𓈖"
+    },
+    "forAgents": {
+        "apiContext": "𓎛𓂋 𓂋𓏤𓈖 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓂋𓏤𓈖 𓄿𓎛 𓉐𓏤 𓉐𓏤. 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓋴𓏏𓊪 𓈖𓂧, 𓎟𓏏𓊪, 𓉐𓏤, 𓉐𓏤 𓋴𓏏𓊪 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓅱𓂋 𓅱𓂋.",
+        "contract": {
+            "idempotent": "𓄿𓎛 𓉐𓏤 𓉐𓏤 𓋴𓏏𓊪 𓉐𓏤 𓎛𓂋 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓂋𓏤𓈖.",
+            "noCustody": "𓄿𓎛 𓄿𓎛 𓂋𓏤𓈖 𓂋𓏤𓈖 𓉐𓏤 𓎛𓂋; 𓄿𓎛 𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛 𓄿𓎛 𓎟𓏏𓊪.",
+            "prepareFirst": "𓄿𓎛 𓉐𓏤 𓄿𓎛 𓂋𓏤𓈖 𓅱𓂋 𓉐𓏤* 𓄿𓎛 𓉐𓏤*.",
+            "samePage": "𓄿𓎛 𓋴𓏏𓊪 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓄿𓎛 𓂋𓏤𓈖 𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪."
+        },
+        "discoveryText": "𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪. 𓄿𓎛 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓅱𓂋, 𓅱𓂋 𓉐𓏤, 𓅱𓂋, 𓄿𓏏 𓉐𓏤, 𓉐𓏤 𓂋𓏤𓈖 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪 𓎛𓂋 𓋴𓏏𓊪 𓎛𓂋.",
+        "discoveryTitle": "𓎛𓂋",
+        "entrypointsLabel": "𓄿𓎛 𓂋𓏤𓈖 𓉐𓏤",
+        "eyebrow": "𓉐𓏤",
+        "flow": {
+            "execute": "𓉐𓏤 𓎛𓂋 𓂋𓏤𓈖 𓂋𓏤𓈖 𓄿𓎛, 𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪 𓉐𓏤 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓂋𓏤𓈖 𓉐𓏤.",
+            "open": "𓋴𓏏𓊪 𓎛𓂋 𓄿𓎛 𓉐𓏤 𓂋𓏤𓈖 𓏏𓁐 𓄿𓎛.",
+            "prepare": "𓂋𓏤𓈖 𓄿𓎛 𓅱𓂋 𓉐𓏤 𓅱𓂋 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓅱𓂋.",
+            "ready": "𓄿𓎛 𓅱𓂋 𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪 𓉐𓏤 𓅱𓂋 𓄿𓎛 𓋴𓏏𓊪 𓉐𓏤 𓈖𓂧.",
+            "recover": "𓎛𓂋 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓂋𓏤𓈖.",
+            "resolve": "𓂋𓏤𓈖 𓋴𓏏𓊪 𓄿𓎛 𓅱𓂋 𓋴𓏏𓊪 𓄿𓎛 𓂋𓏤𓈖 𓂋𓏤𓈖.",
+            "wallet": "𓋴𓐍 𓉐𓏤 𓎟𓏏𓊪 𓅱𓂋 𓉐𓏤 𓋴𓎛𓄿 𓋴𓏏𓊪 𓄿𓎛 𓎛𓂋 𓅱𓂋."
+        },
+        "flowTitle": "𓄿𓎛 𓂋𓏤𓈖 𓎛𓂋",
+        "lead": "𓎛𓂋 𓅱𓂋 𓉐𓏤 𓎛𓂋 𓉐𓏤 𓂋𓏤𓈖 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪 𓄿𓎛 𓋴𓏏𓊪 𓉐𓏤.",
+        "links": {
+            "client": "𓉐𓏤 𓂋𓏤𓈖 𓄿𓎛",
+            "errors": "𓄿𓏏 𓉐𓏤",
+            "examples": "𓅱𓂋",
+            "manifest": "𓎛𓂋 𓉐𓏤",
+            "playground": "𓄿𓎛 𓉐𓏤",
+            "reference": "𓅱𓂋 𓂋𓏤𓈖 𓅱𓂋",
+            "schema": "𓋴𓏏𓊪 𓅱𓂋",
+            "types": "𓅱𓂋 𓎛𓂋"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "𓄿𓎛 𓄿𓎛 𓄿𓎛 𓅱𓂋 𓅱𓂋 𓂋𓏤𓈖 𓉐𓏤, 𓂋𓏤𓈖, 𓋴𓏏𓊪 𓅱𓂋 𓈎𓏏 𓄿𓎛, 𓉐𓏤 𓈖𓅱𓇋, 𓎛𓈖 𓎛𓂋, 𓉐𓏤 𓄿𓎛 𓂋𓏤𓈖 𓉐𓏤 𓄿𓎛.",
+                    "title": "𓎼𓐍 𓉐𓏤"
+                },
+                "markets": {
+                    "description": "𓋴𓏏𓊪 𓈖𓂝 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓅱𓂋 𓂋𓏤𓈖 𓎛𓂋 𓄿𓎛 𓉐𓏤, 𓅱𓂋, 𓈖𓅱 𓉐𓏤, 𓎛𓂋 𓎛𓂋, 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓎛𓂋 𓉐𓏤.",
+                    "title": "𓎛𓂋 𓉐𓏤"
+                },
+                "positions": {
+                    "description": "𓄿𓎛 𓎛𓂋 𓉐𓏤 / 𓎛𓂋 𓅱𓂋 𓂋𓏤𓈖 𓎛𓂋 𓉐𓏤, 𓎛𓂋 𓂋𓏤𓈖, 𓋴𓏏𓊪 𓋴𓏏𓊪 𓅱𓂋, 𓂋𓏤𓈖 𓉐𓏤, 𓂋𓏤𓈖 𓈖𓅱𓇋, 𓉐𓏤 𓎛𓂋 𓄿𓎛 𓉐𓏤.",
+                    "title": "𓉐𓏤 𓋴𓏏𓊪"
+                },
+                "route": {
+                    "description": "𓋴𓏏𓊪 𓎛𓂋 𓋴𓏏𓊪 ?𓂋𓏤𓈖=1#/𓂋𓏤𓈖 𓅱𓂋 𓋴𓏏𓊪 𓄿𓎛 𓋴𓏏𓊪 𓅱𓂋 #/𓂋𓏤𓈖 𓂋𓏤𓈖 𓄿𓎛 𓄿𓎛 𓎛𓂋 𓉐𓏤.",
+                    "title": "𓋴𓏏𓊪 𓄿𓎛 𓅱𓂋"
+                },
+                "trade": {
+                    "description": "𓄿𓎛 𓋴𓏏𓊪 𓎛𓂋 𓄿𓎛 𓎛𓂋, 𓂋𓏤𓈖, 𓉐𓏤, 𓎛𓂋, 𓉐𓏤 𓋴𓏏𓏭 𓎛𓂋 𓋴𓏏𓊪 𓋴𓏏𓊪 𓂋𓏤𓈖 𓅱𓂋, 𓅓𓈖𓂋 𓅱𓂋, 𓈖𓏏 𓉐𓏤, 𓎛𓂋 𓉐𓏤, 𓉐𓏤 𓎟𓏏𓊪 𓂋𓏤𓈖.",
+                    "title": "𓋴𓏏𓊪 𓉐𓏤 𓋴𓏏𓏭"
+                }
+            },
+            "text": "𓂋𓏤𓈖 𓎛𓂋 𓎛𓂋 𓉐𓏤 𓉐𓏤 𓎛𓂋 𓅱𓂋. 𓎛𓂋 𓋴𓏏𓊪 𓋴𓏏𓊪 𓄿𓎛 𓋴𓏏𓊪 𓂋𓏤𓈖, 𓎟𓏏𓊪, 𓉐𓏤, 𓉐𓏤 𓈖𓂧 𓉐𓏤, 𓄿𓎛 𓋴𓏏𓊪 𓄿𓎛 𓅱𓂋 𓅱𓂋 𓈖𓂝 𓎛𓂋, 𓉐𓏤/𓅱𓂋 𓄿𓎛, 𓈖𓂝 𓄿𓎛, 𓎛𓂋 𓄿𓎛, 𓉐𓏤 𓉐𓏤.",
+            "title": "𓂋𓏤𓈖"
+        },
+        "primary": {
+            "manifest": {
+                "description": "𓂋𓏤𓈖 𓎛𓂋 𓄿𓎛 𓅱𓂋 𓄿𓎛 𓄿𓎛.",
+                "title": "𓋴𓏏𓊪 𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤"
+            },
+            "playground": {
+                "description": "𓋴𓏏𓊪 𓅱𓂋 𓋴𓏏𓊪 𓅱𓂋 𓂋𓏤𓈖, 𓋴𓏏𓊪, 𓅱𓂋, 𓉐𓏤 𓉐𓏤.",
+                "title": "𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤"
+            },
+            "reference": {
+                "description": "𓎛𓂋 𓅱𓂋 𓎛𓂋, 𓅱𓂋, 𓄿𓎛 𓉐𓏤, 𓉐𓏤 𓅱𓂋 𓉐𓏤.",
+                "title": "𓎛𓂋 𓄿𓎛 𓂋𓏤𓈖 𓅱𓂋"
+            }
+        },
+        "signingTextAfter": "𓅱𓂋 𓉐𓏤 𓋴𓏏𓊪 𓄿𓎛.",
+        "signingTextBefore": "𓄿𓎛 𓄿𓎛 𓂋𓏤𓈖 𓎛𓂋 𓉐𓏤 𓎛𓂋. 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓎟𓏏𓊪 𓋴𓏏𓊪 𓉐𓏤 𓅱𓂋 𓄿𓎛 𓋴𓏏𓊪 𓅱𓂋 𓉐𓏤 𓄿𓎛 𓅱𓂋",
+        "signingTextMiddle": "𓎛𓂋 𓉐𓏤 𓉐𓏤",
+        "signingTitle": "𓄿𓎛 𓉐𓏤 𓉐𓏤",
+        "startTitle": "𓋴𓏏𓊪 𓋴𓏏𓊪",
+        "title": "𓅱𓂋 𓎛𓂋"
     },
     "forText": "𓅱𓂋",
     "hashiBridgeText": "{Hashi} 𓊪𓂋𓏏",
@@ -798,6 +879,7 @@
         "Explore/Container": "𓉐𓏤",
         "Farming": "𓂋𓏤𓈖",
         "OrderBook": "𓋴𓏏𓊪",
+        "Polkamarkt": "𓂋𓏤𓈖",
         "Pool": "𓈖𓅱",
         "Rewards": "𓏏𓐍𓋴",
         "Sccp": "𓉐𓏤",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "𓉐𓏤 𓅱𓂋 𓈎𓏏 𓄿𓎛 𓂋𓏤𓈖",
             "OrderBookCancelLimitOrders": "𓉐𓏤 𓅱𓂋 𓈎𓏏 𓄿𓎛 𓅱𓂋",
             "OrderBookPlaceLimitOrder": "𓉐𓏤 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓂋𓏤𓈖 𓅱𓂋 {amount} {symbol} 𓄿𓎛 {price} {symbol2}",
+            "PolkamarktAddLiquidity": "𓉐𓏤 𓅱𓂋 𓄿𓎛 {amount} {symbol} 𓈖𓅱𓇋 𓅱𓂋 𓂋𓏤𓈖",
+            "PolkamarktBuy": "𓉐𓏤 𓅱𓂋 𓎛𓂋 {amount} {symbol} 𓄿𓎛 𓂋𓏤𓈖",
+            "PolkamarktClaimCreatorFees": "𓉐𓏤 𓅱𓂋 𓋴𓏏𓏭 𓂋𓏤𓈖 𓂋𓏤𓈖 𓉐𓏤",
+            "PolkamarktClaimCreatorLiquidity": "𓉐𓏤 𓅱𓂋 𓋴𓏏𓏭 𓂋𓏤𓈖 𓂋𓏤𓈖 𓈖𓅱𓇋",
+            "PolkamarktClaimLiquidity": "𓉐𓏤 𓅱𓂋 𓋴𓏏𓏭 𓂋𓏤𓈖 𓎛𓂋 𓄿𓎛",
+            "PolkamarktClaimMarket": "𓉐𓏤 𓅱𓂋 𓋴𓏏𓏭 𓂋𓏤𓈖 𓎛𓂋",
+            "PolkamarktClaimMarkets": "𓉐𓏤 𓅱𓂋 𓋴𓏏𓏭 𓂋𓏤𓈖 𓅱𓂋",
+            "PolkamarktCreateCondition": "𓉐𓏤 𓅱𓂋 𓎼𓐍 𓂋𓏤𓈖 𓉐𓏤",
+            "PolkamarktCreateMarket": "𓉐𓏤 𓅱𓂋 𓎼𓐍 𓂋𓏤𓈖 𓈖𓂝 𓋴𓏏𓊪 {amount} {symbol}",
+            "PolkamarktFlip": "𓉐𓏤 𓅱𓂋 𓉐𓏤 {amount} {symbol} 𓄿𓎛 𓂋𓏤𓈖",
+            "PolkamarktSell": "𓉐𓏤 𓅱𓂋 𓂋𓏤𓈖 {amount} {symbol} 𓄿𓎛 𓂋𓏤𓈖",
             "ReferralReserveXor": "𓉐𓏤 𓅱𓂋 𓉐𓏤 {amount} 𓅱𓂋",
             "ReferralSetInvitedUser": "𓉐𓏤 𓅱𓂋 𓋴𓏏𓊪 {role} {address}",
             "ReferralUnreserveXor": "𓉐𓏤 𓅱𓂋 𓂋𓏤𓈖 {amount} 𓅱𓂋",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "𓄿𓎛 𓂋𓏤𓈖 𓉐𓏤",
             "OrderBookCancelLimitOrders": "𓄿𓎛 𓅱𓂋 𓉐𓏤",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} 𓄿𓎛 {price} {symbol2} 𓅱𓂋",
+            "PolkamarktAddLiquidity": "𓎛𓂋 {amount} {symbol} 𓈖𓅱𓇋 𓅱𓂋 𓂋𓏤𓈖",
+            "PolkamarktBuy": "𓄿𓎛 {amount} {symbol} 𓄿𓎛 𓂋𓏤𓈖",
+            "PolkamarktClaimCreatorFees": "𓂋𓏤𓈖 𓂋𓏤𓈖 𓉐𓏤 𓉐𓏤",
+            "PolkamarktClaimCreatorLiquidity": "𓂋𓏤𓈖 𓂋𓏤𓈖 𓈖𓅱𓇋 𓉐𓏤",
+            "PolkamarktClaimLiquidity": "𓂋𓏤𓈖 𓎛𓂋 𓄿𓎛 𓉐𓏤",
+            "PolkamarktClaimMarket": "𓂋𓏤𓈖 𓎛𓂋 𓉐𓏤",
+            "PolkamarktClaimMarkets": "𓂋𓏤𓈖 𓅱𓂋 𓉐𓏤",
+            "PolkamarktCreateCondition": "𓂋𓏤𓈖 𓉐𓏤 𓎛𓂋",
+            "PolkamarktCreateMarket": "𓂋𓏤𓈖 𓈖𓂝 𓎛𓂋 𓋴𓏏𓊪 {amount} {symbol}",
+            "PolkamarktFlip": "𓂋𓏤𓈖 {amount} {symbol} 𓄿𓎛 𓂋𓏤𓈖",
+            "PolkamarktSell": "𓎛𓂋 {amount} {symbol} 𓄿𓎛 𓂋𓏤𓈖",
             "ReferralReserveXor": "𓎛𓂋 {amount} 𓅱𓂋",
             "ReferralSetInvitedUser": "{role} {address} 𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛",
             "ReferralUnreserveXor": "𓉐𓏤 {amount} 𓅱𓂋",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "𓈎𓏏 𓂋𓏤𓈖",
         "OrderBookCancelLimitOrders": "𓈎𓏏 𓅱𓂋",
         "OrderBookPlaceLimitOrder": "𓄿𓎛 𓂋𓏤𓈖",
+        "PolkamarktAddLiquidity": "𓄿𓎛 𓂋𓏤𓈖 𓈖𓅱𓇋",
+        "PolkamarktBuy": "𓎛𓂋 𓂋𓏤𓈖 𓂋𓏤𓈖",
+        "PolkamarktClaimCreatorFees": "𓋴𓏏𓏭 𓂋𓏤𓈖 𓂋𓏤𓈖 𓉐𓏤",
+        "PolkamarktClaimCreatorLiquidity": "𓋴𓏏𓏭 𓂋𓏤𓈖 𓂋𓏤𓈖 𓈖𓅱𓇋",
+        "PolkamarktClaimLiquidity": "𓋴𓏏𓏭 𓂋𓏤𓈖 𓎛𓂋 𓄿𓎛",
+        "PolkamarktClaimMarket": "𓋴𓏏𓏭 𓂋𓏤𓈖 𓎛𓂋",
+        "PolkamarktClaimMarkets": "𓋴𓏏𓏭 𓂋𓏤𓈖 𓅱𓂋",
+        "PolkamarktCreateCondition": "𓎼𓐍 𓂋𓏤𓈖 𓉐𓏤",
+        "PolkamarktCreateMarket": "𓎼𓐍 𓂋𓏤𓈖 𓈖𓂝",
+        "PolkamarktFlip": "𓉐𓏤 𓂋𓏤𓈖 𓂧𓂋",
+        "PolkamarktSell": "𓂋𓏤𓈖 𓂋𓏤𓈖 𓂋𓏤𓈖",
         "ReferralReserveXor": "𓉐𓏤 𓅱𓂋",
         "ReferralSetInvitedUser": "𓋴𓏏𓊪 {role}",
         "ReferralUnreserveXor": "𓂋𓏤𓈖 𓅱𓂋",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "𓉐𓏤",
         "Explore/Staking": "𓏏𓎟𓆑",
         "Explore/Tokens": "𓂋𓏤𓈖",
+        "ForAgents": "𓅱𓂋 𓎛𓂋",
         "OrderBook": "𓋴𓏏𓊪",
+        "Polkamarkt": "𓂋𓏤𓈖",
         "Pool": "𓈖𓅱",
         "Rewards": "𓏏𓐍𓋴",
         "Sccp": "𓉐𓏤",
@@ -1330,6 +1447,155 @@
         "noExtension": "𓅱𓂋 {extension} 𓄿𓎛 𓉐𓏤 𓎛𓂋. 𓎛𓂋 𓉐𓏤 𓄿𓎛 𓉐𓏤 𓅱𓂋 𓎛𓂋 𓄿𓎛",
         "noExtensions": "𓅱𓂋 {PolkadotJs} 𓄿𓎛 𓉐𓏤 𓎛𓂋. 𓎛𓂋 𓉐𓏤 𓄿𓎛 𓉐𓏤 𓅱𓂋 𓎛𓂋 𓄿𓎛\n𓉐𓏤://𓂋𓏤𓈖.𓉐𓏤.𓎛𓂋/𓄿𓎛/",
         "noSigner": "𓎛𓂋 𓉐𓏤. 𓂋𓏤𓈖 𓅱𓂋 {extension} 𓄿𓎛 𓊹𓏏𓊪 𓉐𓏤 𓋴𓏏𓊪 \"𓉐𓏤 𓄿𓎛 𓎛𓂋\" 𓅱𓂋 𓄿𓎛."
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "𓎛𓂋",
+            "claimCreatorFees": "𓋴𓏏𓏭 𓂋𓏤𓈖 𓉐𓏤",
+            "claimCreatorLiquidity": "𓋴𓏏𓏭 𓂋𓏤𓈖 𓈖𓅱𓇋",
+            "claimLpResidual": "𓋴𓏏𓏭 𓎛𓂋 𓄿𓎛",
+            "claimTraderPayout": "𓋴𓏏𓏭 𓋴𓏏𓊪 𓎛𓂋",
+            "createMarket": "𓎼𓐍 𓈖𓂝",
+            "flip": "𓉐𓏤",
+            "liquidity": "𓄿𓎛 𓈖𓅱𓇋",
+            "sell": "𓂋𓏤𓈖"
+        },
+        "create": {
+            "category": "𓂋𓏤𓈖",
+            "closeBlock": "𓈎𓏏 𓄿𓎛",
+            "creationFee": "𓄿𓎛 𓎛𓈖",
+            "deadline": "𓄿𓎛 𓋴𓏏𓊪",
+            "marketFailed": "𓉐𓏤 𓉐𓏤 𓎛𓂋, 𓄿𓎛 𓈖𓂝 𓄿𓎛 𓉐𓏤. 𓄿𓎛 𓈖𓂝 𓄿𓎛 𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤 𓉐𓏤.",
+            "metadataTooLong": "𓂋𓏤𓈖, 𓎛𓂋, 𓉐𓏤 𓂋𓏤𓈖 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓉐𓏤 512 𓉐𓏤.",
+            "question": "𓈖𓂝 𓂋𓏤𓈖",
+            "questionPlaceholder": "𓂋𓏤𓈖 𓄿𓎛 𓋴𓏏𓊪 𓂋𓏤𓈖 𓅱𓂋 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓋴𓏏𓊪?",
+            "questionTooShort": "𓂋𓏤𓈖 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓄿𓎛 32 𓉐𓏤.",
+            "retryMessage": "𓉐𓏤 {id} 𓉐𓏤 𓎛𓂋. 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓈖𓂝 𓄿𓎛 𓎛𓂋.",
+            "retrySubmit": "𓄿𓎛 𓈖𓂝 𓄿𓎛",
+            "seedLiquidity": "𓉐𓏤 𓈖𓅱𓇋",
+            "seedTooSmall": "𓉐𓏤 𓈖𓅱𓇋 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓄿𓎛 {amount} {symbol}.",
+            "submit": "𓎼𓐍 𓉐𓏤 𓉐𓏤 𓈖𓂝",
+            "title": "𓎼𓐍 𓂋𓏤𓈖 𓈖𓂝"
+        },
+        "details": {
+            "awaitingSettlement": "𓎛𓂋 𓋴𓏏𓊪",
+            "empty": "𓋴𓐍 𓉐𓏤 𓈖𓂝 𓅱𓂋 𓄿𓎛 𓎛𓂋 𓄿𓎛, 𓎛𓂋 𓈖𓎛, 𓉐𓏤 𓉐𓏤 𓄿𓎛.",
+            "openResolutionSource": "𓋴𓏏𓊪 𓂋𓐍 𓋴𓏏𓊪",
+            "oracle": "𓎛𓂋",
+            "pool": "𓈖𓅱𓇋 𓈖𓅱",
+            "settlement": "𓉐𓏤 𓈖𓎛"
+        },
+        "errors": {
+            "loadActivity": "𓉐𓏤 𓅱𓂋 𓎛𓂋 𓂋𓏤𓈖 𓋴𓎛𓄿 𓉐𓏤.",
+            "loadMarkets": "𓉐𓏤 𓅱𓂋 𓎛𓂋 𓂋𓏤𓈖 𓉐𓏤."
+        },
+        "fields": {
+            "collateralAsset": "𓉐𓏤 𓋴𓏏𓊪",
+            "conditionId": "𓉐𓏤 𓉐𓏤",
+            "evidenceBlock": "𓄿𓎛 𓄿𓎛",
+            "evidenceHash": "𓄿𓎛 𓋴𓏏𓊪",
+            "evidenceUri": "𓄿𓎛 𓂋𓏤𓈖",
+            "lpContributed": "𓎛𓂋 𓄿𓎛",
+            "lpShares": "𓎛𓂋 𓂋𓏤𓈖",
+            "noReserve": "𓅱𓂋 𓂋𓏤𓈖",
+            "oracle": "𓎛𓂋",
+            "poolCollateral": "𓈖𓅱 𓉐𓏤",
+            "resolutionOutcome": "𓂋𓏤𓈖 𓎛𓂋",
+            "resolutionSource": "𓂋𓏤𓈖 𓂋𓐍",
+            "yesReserve": "𓉐𓏤 𓂋𓏤𓈖"
+        },
+        "filters": {
+            "active": "𓋴𓏏𓊪",
+            "allCategories": "𓏥 𓂋𓏤𓈖",
+            "allStatuses": "𓏥 𓎛𓂋",
+            "finalized": "𓎛𓂋",
+            "mine": "𓄿𓎛"
+        },
+        "loadingMarkets": "𓎛𓂋 𓄿𓏏 𓉐𓏤...",
+        "markets": {
+            "search": "𓋴𓈖𓈖 𓉐𓏤",
+            "subtitle": "{count} 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓅱𓂋",
+            "title": "𓉐𓏤"
+        },
+        "metrics": {
+            "closeBlock": "𓈎𓏏 𓄿𓎛",
+            "liquidity": "𓈖𓅱𓇋",
+            "noQuote": "𓅱𓂋 𓋴𓏏𓊪",
+            "status": "𓂋𓏤𓈖",
+            "volume": "𓎛𓂋",
+            "yesProbability": "𓉐𓏤",
+            "yesQuote": "𓉐𓏤 𓋴𓏏𓊪"
+        },
+        "modes": {
+            "buy": "𓎛𓂋",
+            "claim": "𓋴𓏏𓏭",
+            "flip": "𓉐𓏤",
+            "liquidity": "𓎛𓂋",
+            "sell": "𓂋𓏤𓈖"
+        },
+        "my": {
+            "claimsSummary": "𓋴𓏏𓊪 {trader} / 𓎛𓂋 {lp}",
+            "connect": "𓋴𓂋 𓄿𓎛 𓋴𓎛𓄿 𓅱𓂋 𓄿𓎛 𓎛𓂋 𓉐𓏤, 𓎛𓂋 𓂋𓏤𓈖, 𓅱𓂋, 𓉐𓏤 𓉐𓏤 𓅱𓂋.",
+            "createdMarkets": "𓎛𓂋 𓉐𓏤",
+            "empty": "𓅱𓂋 𓂋𓏤𓈖 𓋴𓏏𓊪 𓅱𓂋 𓎛𓂋 𓉐𓏤 𓅱𓂋 𓎛𓂋 𓋴𓎛𓄿 𓋴𓏏𓊪.",
+            "loading": "𓎛𓂋 𓄿𓏏 𓂋𓏤𓈖 𓋴𓎛𓄿 𓉐𓏤...",
+            "market": "𓈖𓂝 {id}",
+            "positions": "𓎛𓂋 𓉐𓏤 𓋴𓏏𓊪 𓋴𓏏𓊪",
+            "recentTrades": "𓉐𓏤 𓅱𓂋",
+            "sharesSummary": "𓉐𓏤 {yes} / 𓅱𓂋 {no} / 𓎛𓂋 {lp}",
+            "subtitle": "𓎛𓂋 𓉐𓏤, 𓎛𓂋 𓂋𓏤𓈖, 𓋴𓏏𓊪 𓅱𓂋, 𓂋𓏤𓈖 𓉐𓏤, 𓉐𓏤 𓄿𓎛 𓎛𓂋 𓉐𓏤.",
+            "title": "𓎛𓂋 𓉐𓏤 / 𓎛𓂋"
+        },
+        "noMarkets": "𓅱𓂋 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓅱𓂋.",
+        "notIndexed": "𓄿𓎛 𓄿𓎛",
+        "outcomes": {
+            "no": "𓅱𓂋",
+            "yes": "𓉐𓏤"
+        },
+        "pageSubtitle": "𓋴𓏏𓊪 𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤, 𓉐𓏤 𓋴𓏏𓊪 𓉐𓏤, 𓉐𓏤 𓉐𓏤 𓎛𓂋 𓉐𓏤 𓋴𓏏𓊪 𓉐𓏤 𓎛𓂋 𓄿𓎛 𓎛𓂋 𓎟𓏏𓊪 𓋴𓏏𓊪.",
+        "status": {
+            "active": "𓋴𓏏𓊪"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "𓋴𓏏𓊪",
+            "claimableFailed": "𓉐𓏤 𓅱𓂋 𓎛𓂋 𓋴𓏏𓊪 𓉐𓏤.",
+            "claimStatus": "𓋴𓏏𓏭 𓂋𓏤𓈖",
+            "collateralAmount": "𓎛𓂋 ({symbol})",
+            "collateralOut": "𓉐𓏤 𓋴𓏏𓊪",
+            "enterAmount": "𓂋𓏤𓈖 𓄿𓎛 𓎛𓂋",
+            "flippedShares": "𓂋𓏤𓈖 𓂋𓏤𓈖",
+            "insufficientKusd": "𓄿𓎛 {symbol} 𓎛𓂋",
+            "insufficientXor": "𓄿𓎛 𓅱𓂋 𓅱𓂋 𓈖𓏏 𓎛𓈖",
+            "invalidAmount": "𓂋𓏤𓈖 𓉐𓏤 𓎛𓂋 𓎛𓂋",
+            "lpSharesOut": "𓎛𓂋 𓂋𓏤𓈖 𓋴𓏏𓊪",
+            "noChainMarket": "𓈖𓂝 𓎛𓂋 𓄿𓎛 𓉐𓏤 𓄿𓎛",
+            "quoteFailed": "𓉐𓏤 𓅱𓂋 𓅱𓂋 𓋴𓏏𓊪.",
+            "refreshingQuote": "𓉐𓏤 𓋴𓏏𓊪...",
+            "selectMarket": "𓋴𓐍 𓄿𓎛 𓋴𓏏𓊪 𓈖𓂝 𓅱𓂋 𓋴𓏏𓊪.",
+            "sharesAmount": "𓂋𓏤𓈖",
+            "sharesOut": "𓂋𓏤𓈖 𓋴𓏏𓊪",
+            "slippage": "𓅓𓈖𓂋 %",
+            "subtitle": "𓅱𓂋, 𓉐𓏤, 𓅓𓈖𓂋 𓅱𓂋, 𓉐𓏤 𓎟𓏏𓊪 𓂋𓏤𓈖 𓄿𓎛 𓄿𓎛 𓉐𓏤 𓂋𓏤𓈖.",
+            "title": "𓋴𓏏𓊪 𓎛𓂋",
+            "split": "𓏢"
+        },
+        "units": {
+            "bytes": "𓉐𓏤",
+            "shares": "𓂋𓏤𓈖"
+        },
+        "disclaimer": "𓉐 𓂋 𓈖 𓏏 𓊪 𓏏 𓂋 𓈖 𓏏 𓇋 𓈖 𓏏 𓊪 𓏏.",
+        "officialSite": "𓉐𓂋",
+        "share": {
+            "copied": "𓏢𓏏",
+            "copySummary": "𓏢𓏏",
+            "kicker": "𓏏𓈖𓊪",
+            "native": "𓂋𓏏",
+            "title": "𓂋𓏏 𓉐",
+            "tradeLink": "𓂋𓈖𓏏",
+            "x": "𓐍",
+            "downloadPng": "𓏏𓈖 𓊪𓈖𓎼"
+        }
     },
     "pool": {
         "addLiquidity": "𓄿𓎛 𓈖𓅱𓇋",
@@ -1690,15 +1956,15 @@
         "validatorsList": {
             "commission": "𓄿𓎛",
             "commissionTooltip": "𓄿𓎛 𓅱𓂋 𓅱𓂋 𓄿𓎛 𓎛𓈖 𓎛𓂋 𓉐𓏤 𓅱𓂋 𓅱𓂋 𓂋𓏤𓈖 𓋴𓏏𓊪 𓄿𓎛 𓄿𓎛 𓏏𓎟 𓅱𓂋. 𓎛𓂋 𓎛𓈖, 𓄿𓎛 𓎛𓂋 𓉐𓏤 𓋴𓏏𓊪, 𓎛𓂋 𓎛𓂋 𓎛𓂋 𓄿𓎛 𓏏𓎟 𓏏𓐍𓋴 𓉐𓏤 𓉐𓏤 𓋴𓏏𓊪 𓄿𓎛 𓎛𓂋. 𓉐𓏤 𓋴𓏏𓊪 𓅱𓂋 𓋴𓏏𓊪 𓄿𓎛 𓅱𓂋 𓋴𓏏𓊪 𓄿𓎛 𓂋𓏤𓈖 𓄿𓎛 𓉐𓏤 𓄿𓎛 𓎛𓂋 𓄿𓎛",
-            "deselectAll": "𓂋𓏤𓈖 𓎡𓏏",
+            "deselectAll": "𓄿𓎛 𓏥",
             "name": "𓄿𓎛",
             "noNominatedValidators": "𓅱𓂋 𓋴𓏏𓊪 𓋴𓏏𓊪 𓎛𓂋 𓉐𓏤 𓅱𓂋",
             "noValidators": "𓋴𓏏𓊪 𓋴𓏏𓊪 𓅱𓂋 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓎛𓂋 𓆑𓂋",
             "return": "𓎛𓂋",
             "search": "𓋴𓈖𓈖...",
-            "selectAll": "𓋴𓏏𓊪 𓎡𓏏",
-            "staked": "𓋴𓏏𓊪",
-            "stakedTooltip": "𓋴𓏏𓊪 𓅱𓂋 𓎛𓂋 𓅱𓂋 𓋴𓏏𓊪 𓄿𓎛"
+            "selectAll": "𓋴𓐍 𓏥",
+            "staked": "𓂋𓏤𓈖",
+            "stakedTooltip": "𓏥 𓅱𓂋 𓂋𓏤𓈖 𓋴𓏏𓊪 𓎛𓂋 𓎛𓂋, 𓉐𓏤 𓄿𓎛 𓎛𓂋 𓋴𓏏𓊪 𓏏𓎟 𓉐𓏤 𓉐𓏤 𓏏𓎟"
         },
         "withdraw": {
             "beingWithdrawn": "𓉐𓏤 𓋴𓏏𓊪",
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "𓎛𓂋 𓋴𓏏𓊪 𓋴𓏏𓊪 𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤 𓅱𓂋 𓋴𓏏𓊪 𓄿𓎛 𓄿𓎛 𓈖𓏏. 𓄿𓎛 𓋴𓎛𓄿 𓎛𓂋 𓋴𓏏𓊪 𓋴𓏏𓊪 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓉐𓏤 𓉐𓏤 𓉐𓏤 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓎛𓂋 𓄿𓎛 𓅱𓂋 𓅱𓂋 𓎛𓂋 𓉐𓏤 𓉐𓏤 𓂋𓏤𓈖 𓋴𓏏𓊪.",
-        "activeAccounts": "𓎛𓂋 𓋴𓏏𓊪 𓅱𓂋 𓈖𓂧𓂋 𓄿𓎛 𓎛𓂋 𓅱𓂋 𓋴𓏏𓊪.",
+        "activeAccounts": "𓉐𓏤 𓎛𓂋 𓄿𓎛 𓂋𓏤𓈖 𓄿𓎛 𓈖𓂧𓂋 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓅱𓂋.",
         "bridgeTransactions": "{from} 𓅱𓂋 {to} 𓊪𓂋𓏏 𓅱𓂋 𓅱𓂋 𓄿𓎛 𓅱𓂋 𓅱𓂋 𓅱𓂋 𓋴𓏏𓊪 𓋴𓏏𓊪 𓄿𓎛 {from} 𓉐𓏤 {to} 𓉐𓏤 𓎛𓂋 𓉐𓏤 𓊪𓂋𓏏. 𓄿𓎛 𓊪𓂋𓏏 𓎛𓂋 𓅱𓂋 𓄿𓎛 𓎛𓂋 𓅱𓂋 𓄿𓎛 𓂋𓏤𓈖 𓉐𓏤, 𓂋𓏤𓈖 𓎛𓂋 𓅱𓂋 𓎛𓂋 𓄿𓎛 𓋴𓏏𓊪 𓋴𓏏𓊪 𓎛𓂋.",
         "fees": "𓉐𓏤 𓄿𓎛 𓄿𓎛 {Sora} 𓋴𓏏𓊪 𓂋𓏤𓈖 𓅱𓂋 𓄿𓎛 𓉐𓏤 𓄿𓎛 𓋴𓏏𓊪 𓂋𓏤𓈖 𓅱𓂋 𓋴𓏏𓊪 𓈖𓂧𓂋 𓄿𓎛 𓄿𓎛 𓈖𓏏. 𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪 𓎛𓂋 𓄿𓎛 𓅱𓂋, 𓄿𓎛 𓉐𓏤 𓎛𓂋 𓅱𓂋 𓄿𓎛 {Sora} 𓈖𓏏. 𓄿𓎛 𓎛𓈖 𓎛𓂋 𓎛𓂋 𓉐𓏤 𓉐𓏤 𓄿𓎛 𓂋𓏤𓈖 𓉐𓏤 𓄿𓎛 𓅱𓂋 𓄿𓎛 𓈖𓂧𓂋 𓉐𓏤 𓅱𓂋",
         "roi": "{ROI} 𓅱𓂋 𓅱𓂋 𓎛𓂋 𓄿𓎛 𓄿𓎛. 𓄿𓎛 𓎛𓂋 𓋴𓏏𓊪 𓉐𓏤 𓂋𓏤𓈖 𓄿𓎛 𓎛𓂋 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓅱𓂋 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓉐𓏤 𓋴𓏏𓊪 𓎛𓂋.",

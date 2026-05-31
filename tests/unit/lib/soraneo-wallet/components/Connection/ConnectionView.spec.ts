@@ -53,6 +53,17 @@ const accountUtils = vi.hoisted(() => ({
 
 vi.mock('@/lib/soraneo-wallet/src/util/account', () => accountUtils);
 
+const getWalletMock = vi.hoisted(() => vi.fn(async () => undefined));
+
+vi.mock('@/lib/soraneo-wallet/src/services/wallet', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/soraneo-wallet/src/services/wallet')>();
+
+  return {
+    ...actual,
+    getWallet: getWalletMock,
+  };
+});
+
 const gdriveAccounts = vi.hoisted(() => ({
   getAccount: vi.fn(async () => ({
     address: 'cn-demo-address',
@@ -61,10 +72,12 @@ const gdriveAccounts = vi.hoisted(() => ({
   add: vi.fn(),
   changeName: vi.fn(),
 }));
+const prepareGoogleDriveWalletMock = vi.hoisted(() => vi.fn(async () => undefined));
 
 vi.mock('@/lib/soraneo-wallet/src/services/google/wallet', () => ({
   GDriveWallet: {
     accounts: gdriveAccounts,
+    prepare: prepareGoogleDriveWalletMock,
   },
 }));
 
@@ -79,6 +92,9 @@ describe('Wallet ConnectionView', () => {
     walletStore.isMST = false;
     walletStore.isSignTxDialogDisabled = false;
     walletStore.isMSTAvailable = false;
+    getWalletMock.mockResolvedValue(undefined);
+    accountUtils.subscribeToWalletAccounts.mockResolvedValue(() => undefined);
+    prepareGoogleDriveWalletMock.mockResolvedValue(undefined);
   });
 
   it('treats missing wallet availability data as an empty list instead of crashing the logged-out view', () => {
@@ -171,6 +187,70 @@ describe('Wallet ConnectionView', () => {
     });
     expect(walletStore.initMultisigAddress).toHaveBeenCalledTimes(1);
     expect(closeView).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the selected wallet spinner active until the account subscription is ready', async () => {
+    let resolveSubscription!: (unsubscribe: VoidFunction) => void;
+    accountUtils.subscribeToWalletAccounts.mockImplementationOnce(
+      async () =>
+        new Promise<VoidFunction>((resolve) => {
+          resolveSubscription = resolve;
+        })
+    );
+
+    const { state } = mountSetup(
+      ConnectionView as any,
+      {
+        ...baseProps,
+      },
+      { emit: vi.fn() }
+    );
+
+    const selectPromise = state.handleWalletSelect({
+      extensionName: AppWallet.PolkadotJS,
+      title: 'Polkadot.js',
+      installed: true,
+      logo: { src: '', alt: '' },
+    });
+
+    expect(state.selectedWallet.value).toBe(AppWallet.PolkadotJS);
+    expect(state.selectedWalletLoading.value).toBe(true);
+
+    await Promise.resolve();
+
+    resolveSubscription(() => undefined);
+    await selectPromise;
+
+    expect(state.selectedWalletLoading.value).toBe(false);
+    expect(state.step.value).toBe(LoginStep.AccountList);
+  });
+
+  it('prepares Google Drive OAuth silently while the wallet list is opening', async () => {
+    prepareGoogleDriveWalletMock.mockResolvedValueOnce(undefined);
+    walletStore.availableWallets = [
+      {
+        extensionName: AppWallet.GoogleDrive,
+        title: 'Google',
+        installed: true,
+        logo: { src: '', alt: '' },
+      },
+    ] as any;
+
+    const { state } = mountSetup(
+      ConnectionView as any,
+      {
+        ...baseProps,
+      },
+      { emit: vi.fn() }
+    );
+
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(prepareGoogleDriveWalletMock).toHaveBeenCalledTimes(1);
+    expect(state.selectedWallet.value).toBeNull();
+    expect(state.selectedWalletLoading.value).toBe(false);
   });
 
   it('closes the view after confirming an internal account login', async () => {

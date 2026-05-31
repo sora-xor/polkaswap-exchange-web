@@ -104,6 +104,8 @@ export type SettingsStorageKey =
   | 'alerts'
   | 'language'
   | 'node'
+  | 'nodeLatencies'
+  | 'nodeSelectionMode'
   | 'customNodes'
   | 'allowFeePopup'
   | 'allowTopUpAlerts'

@@ -1,9 +1,10 @@
-import { FPNumber, Operation } from '@sora-substrate/sdk';
+import { FPNumber, Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { ZeroStringValue } from '@/consts';
+import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { getBlockEventsByTxIndex } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -22,6 +23,7 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
+import type { HistoryElement } from '@/lib/soraneo-wallet/src/services/indexer/types';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeTransactionData } from '@sora-substrate/sdk/build/bridgeProxy/types';
@@ -37,8 +39,56 @@ const hasFinishedState = (item: Nullable<SubHistory>) => {
   return [BridgeTxStatus.Done, BridgeTxStatus.Failed].includes(item.transactionState as BridgeTxStatus);
 };
 
+const SubBridgeOperations = [Operation.SubstrateOutgoing, Operation.SubstrateIncoming];
+
+const normalizeSyncTimestamp = (timestamp: unknown, fallback = 0): number => {
+  const value = Number(timestamp);
+
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+};
+
+const getLatestHistoryTimestamp = (historyElements: HistoryElement[], fallback: number): number => {
+  for (const historyElement of historyElements) {
+    const timestamp = normalizeSyncTimestamp(historyElement?.timestamp);
+
+    if (timestamp) return timestamp;
+  }
+
+  return fallback;
+};
+
+const notifyUpdate = async (updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> => {
+  try {
+    await updateCallback?.();
+  } catch {
+    // UI refresh callbacks must not break history restoration.
+  }
+};
+
 const getType = (isOutgoing: boolean) => {
   return isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming;
+};
+
+const isSameHistoryItem = (localItem: SubHistory, indexerItem: SubHistory): boolean => {
+  if (localItem.id && localItem.id === indexerItem.id) return true;
+  if (localItem.txId && localItem.txId === indexerItem.txId) return true;
+  if (localItem.hash && localItem.hash === indexerItem.hash) return true;
+
+  return false;
+};
+
+const normalizeTransactionState = (item: SubHistory): BridgeTxStatus => {
+  if (item.transactionState) return item.transactionState as BridgeTxStatus;
+
+  return item.status === TransactionStatus.Error ? BridgeTxStatus.Failed : BridgeTxStatus.Done;
+};
+
+const matchesNetwork = (item: SubHistory, network: SubNetwork): boolean => item.externalNetwork === network;
+
+const hasVisibleAsset = (assets: string[], item: SubHistory): boolean => {
+  if (!assets.length) return true;
+
+  return Boolean(item.assetAddress && assets.includes(item.assetAddress));
 };
 
 const getBlockHeights = (isOutgoing: boolean, tx: BridgeTransactionData) => {
@@ -64,7 +114,7 @@ const findTxInBlock = async (blockHash: string, soraHash: string) => {
   return { tx, txEvents, blockEvents };
 };
 
-class SubBridgeHistory extends SubNetworksConnector {
+export class SubBridgeHistory extends SubNetworksConnector {
   get soraApi(): ApiPromise {
     return subBridgeApi.api;
   }
@@ -81,6 +131,52 @@ class SubBridgeHistory extends SubNetworksConnector {
     return this.network.api;
   }
 
+  private getHistorySyncTimestamp(network: SubNetwork): number {
+    return normalizeSyncTimestamp(subBridgeApi.accountStorage?.get(`subBridgeHistorySyncTimestamp:${network}`));
+  }
+
+  private setHistorySyncTimestamp(network: SubNetwork, timestamp: number): void {
+    subBridgeApi.accountStorage?.set(`subBridgeHistorySyncTimestamp:${network}`, normalizeSyncTimestamp(timestamp));
+  }
+
+  /**
+   * Reads SORA-side Sub bridge history from the Polkaswap indexer so completed
+   * requests remain restorable after bridgeProxy storage no longer lists them.
+   */
+  public async fetchHistoryElements(address: string, timestamp = 0): Promise<HistoryElement[]> {
+    const indexer = getCurrentIndexer();
+    const filter = indexer.historyElementsFilter({
+      address,
+      operations: SubBridgeOperations,
+      timestamp: normalizeSyncTimestamp(timestamp),
+    });
+    const history: HistoryElement[] = [];
+    let hasNext = true;
+    let after = '';
+
+    do {
+      const response = await indexer.services.explorer.account.getHistoryPaged({
+        after,
+        filter,
+        first: 100,
+      });
+
+      if (!response) return history;
+
+      const edges = Array.isArray(response.edges) ? response.edges : [];
+      const nextAfter = response.pageInfo?.endCursor ?? '';
+      const historyNodes = edges
+        .map((edge) => edge?.node)
+        .filter((node): node is HistoryElement => Boolean(node));
+
+      hasNext = !!response.pageInfo?.hasNextPage && !!nextAfter && nextAfter !== after;
+      history.push(...historyNodes);
+      after = nextAfter;
+    } while (hasNext);
+
+    return history;
+  }
+
   public async clearHistory(
     network: SubNetwork,
     inProgressIds: Record<string, boolean>,
@@ -94,7 +190,8 @@ class SubBridgeHistory extends SubNetworksConnector {
       return acc;
     }, []);
     subBridgeApi.removeHistory(...ids);
-    await updateCallback?.();
+    this.setHistorySyncTimestamp(network, 0);
+    await notifyUpdate(updateCallback);
   }
 
   public async updateAccountHistory(
@@ -106,6 +203,15 @@ class SubBridgeHistory extends SubNetworksConnector {
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     try {
+      await this.updateAccountHistoryFromIndexer(
+        network,
+        address,
+        assets,
+        inProgressIds,
+        assetDataByAddress,
+        updateCallback
+      );
+
       const transactions = await subBridgeApi.getUserTransactions(address, network);
 
       if (!transactions.length) return;
@@ -136,11 +242,70 @@ class SubBridgeHistory extends SubNetworksConnector {
           subBridgeApi.generateHistoryItem(historyItemData);
         }
 
-        await updateCallback?.();
+        await notifyUpdate(updateCallback);
       }
     } finally {
       this.stop();
     }
+  }
+
+  private async updateAccountHistoryFromIndexer(
+    network: SubNetwork,
+    address: string,
+    assets: string[],
+    inProgressIds: Record<string, boolean>,
+    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
+  ): Promise<void> {
+    if (!address) return;
+
+    // Always ask for the full account range. Historical bridge rows can be
+    // backfilled after a wallet has already synced, so timestamp cursors would
+    // permanently hide older Liberland transactions.
+    const historyElements = await this.fetchHistoryElements(address, 0);
+    if (!historyElements.length) return;
+
+    const currentHistory = [...(subBridgeApi.historyList as SubHistory[])];
+    const historySyncTimestampUpdated = getLatestHistoryTimestamp(historyElements, this.getHistorySyncTimestamp(network));
+
+    for (const historyElement of historyElements) {
+      let historyItem: Nullable<SubHistory>;
+
+      try {
+        historyItem = (await getCurrentIndexer().services.dataParser.parseTransactionAsHistoryItem(
+          historyElement
+        )) as Nullable<SubHistory>;
+      } catch {
+        continue;
+      }
+
+      if (!historyItem?.id) continue;
+      if (![Operation.SubstrateIncoming, Operation.SubstrateOutgoing].includes(historyItem.type)) continue;
+      if (!matchesNetwork(historyItem, network)) continue;
+      if (!hasVisibleAsset(assets, historyItem)) continue;
+
+      const localHistoryItem = currentHistory.find((item) => matchesNetwork(item, network) && isSameHistoryItem(item, historyItem));
+
+      if ((localHistoryItem?.id as string) in inProgressIds) continue;
+      if (hasFinishedState(localHistoryItem)) continue;
+
+      const asset = assetDataByAddress(historyItem.assetAddress);
+      const nextHistoryItem: SubHistory = {
+        ...localHistoryItem,
+        ...historyItem,
+        externalNetwork: network,
+        externalNetworkType: BridgeNetworkType.Sub,
+        transactionState: normalizeTransactionState(historyItem),
+        payload: historyItem.payload ?? {},
+        ...(asset?.symbol && !historyItem.symbol ? { symbol: asset.symbol } : {}),
+      };
+
+      subBridgeApi.saveHistory(nextHistoryItem);
+      currentHistory.push(nextHistoryItem);
+      await notifyUpdate(updateCallback);
+    }
+
+    this.setHistorySyncTimestamp(network, historySyncTimestampUpdated);
   }
 
   private async txDataToHistory(

@@ -28,7 +28,7 @@
         "title": "USTAWIENIA KONTA"
     },
     "accountText": "konto | konta",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Aktywne konta",
     "addAsset": {
         "add": "Dodaj",
         "AddAssetToken": {
@@ -221,7 +221,7 @@
         "networkInfo": {
             "amount": "Kwota",
             "date": "Data",
-            "status": "Status",
+            "status": "Stan",
             "transactionFee": "Opłata transakcyjna"
         },
         "newTransaction": "Utwórz nową transakcję",
@@ -354,7 +354,7 @@
     "createToken": {
         "confirmTokenTitleCommon": "Utwórz token",
         "confirmTokenTitleNFT": "Utwórz token NFT",
-        "CreateSimpleToken": "Token",
+        "CreateSimpleToken": "Żeton",
         "divisible": {
             "desc": "Zdolność tokenu NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych.",
             "placeholder": "Podzielny"
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} za {second}",
     "firstText": "Pierwszy",
     "footer": {
+        "forAgents": "Dla agentów",
         "internet": {
             "action": "Odśwież {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "Informacje i społeczność",
         "privacy": "Polityka prywatności",
         "sorawiki": "Wiki {Sora}"
+    },
+    "forAgents": {
+        "apiContext": "jest instalowany w kontekście strony po uruchomieniu aplikacji. Używa tego samego węzła, portfela, indeksatora i ścieżki SDK, co interfejs użytkownika.",
+        "contract": {
+            "idempotent": "Użyj stabilnego ClientOrderId i odzyskaj niepewne przesłania przed ponowną próbą.",
+            "noCustody": "Strona nigdy nie otrzymuje kluczy prywatnych; podpisanie pozostaje przy wybranym portfelu.",
+            "prepareFirst": "Wywołania zmieniające stan muszą przejść proces przygotowania* przed wykonaniem*.",
+            "samePage": "Uruchom w kontekście strony Polkaswap po zdarzeniu Ready."
+        },
+        "discoveryText": "Najpierw pobierz manifest. Łączy wersjonowane odniesienia, pliki schematu, przykłady, katalog błędów i klienta pomocniczego dostarczonego z tą statyczną kompilacją.",
+        "discoveryTitle": "Odkrycie",
+        "entrypointsLabel": "Punkty wejścia API agenta",
+        "eyebrow": "Automatyzacja",
+        "flow": {
+            "execute": "Wykonaj dopiero po zatwierdzeniu polisy, z przygotowanym zamiarem i stabilnym identyfikatorem zamówienia klienta.",
+            "open": "Otwórz Polkaswap na prawdziwej stronie przeglądarki.",
+            "prepare": "Wywołaj pasującą metodę przygotowania przed jakąkolwiek operacją podpisywania.",
+            "ready": "Poczekaj na gotowe zdarzenie i wymagaj aktywnego węzła SORA.",
+            "recover": "Odzyskaj niepewne przesłania przed ponowną próbą.",
+            "resolve": "Przypisz symbole zasobów do adresów przed ponownym wykonaniem.",
+            "wallet": "Wybierz dostawcę portfela i konto, jeśli wymagane jest podpisanie."
+        },
+        "flowTitle": "Bezpieczna pętla wykonawcza",
+        "lead": "Polkaswap udostępnia natywny dla przeglądarki interfejs API automatyzacji dla agentów uruchamiających, którzy otwierają aplikację statyczną.",
+        "links": {
+            "client": "Klient pomocniczy JavaScript",
+            "errors": "Katalog błędów",
+            "examples": "Przykłady",
+            "manifest": "Manifest odkrycia",
+            "playground": "Plac zabaw dla agentów",
+            "reference": "Pełne odniesienie do API",
+            "schema": "Schemat JSON-a",
+            "types": "Definicje TypeScriptu"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Dokument dotyczący odkrycia kanonicznego dla generycznych biegaczy.",
+                "title": "Zacznij od manifestu"
+            },
+            "playground": {
+                "description": "Ręczna sonda tego samego pochodzenia pod kątem statusu, zasobów, ofert i podglądów.",
+                "title": "Otwórz plac zabaw"
+            },
+            "reference": {
+                "description": "Czytelna mapa metod, przykłady, zasady podpisywania i uwagi dotyczące odzyskiwania.",
+                "title": "Przeczytaj dokumentację API"
+            }
+        },
+        "signingTextAfter": "aby utrzymać idempotentność ponownych prób.",
+        "signingTextBefore": "Strona nigdy nie pobiera kluczy prywatnych. Metody zmiany stanu korzystają z wybranego podpisu portfela i wymagają od biegacza przekazania zwróconego",
+        "signingTextMiddle": "plus stajnia",
+        "signingTitle": "Podpisanie i opieka",
+        "startTitle": "Zacznij tutaj",
+        "title": "Dla agentów"
     },
     "forText": "za",
     "hashiBridgeText": "Most {Hashi}",
@@ -798,11 +879,12 @@
         "Explore/Container": "Badać",
         "Farming": "Uprawy",
         "OrderBook": "Handel",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Pula",
         "Rewards": "Wynagrodzenie",
         "Sccp": "@:pageTitle.Sccp",
         "SoraCard": "{Sora} Karta",
-        "StakingContainer": "Staking",
+        "StakingContainer": "Stawianie",
         "Stats": "Statystyki",
         "Swap": "Wymiana",
         "VaultsContainer": "@:pageTitle.Vaults",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem",
             "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem",
             "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol2}",
+            "PolkamarktAddLiquidity": "Nie udało się dodać płynności {amount} {symbol} do Polkamarkt",
+            "PolkamarktBuy": "Nie udało się kupić {amount} {symbol} na Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Nie udało się pobrać opłat dla twórców Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Nie udało się uzyskać płynności twórcy Polkamarkt",
+            "PolkamarktClaimLiquidity": "Nie udało się odebrać pozostałości Polkamarkt LP",
+            "PolkamarktClaimMarket": "Nie udało się odebrać wypłaty Polkamarkt",
+            "PolkamarktClaimMarkets": "Nie udało się odebrać wypłat Polkamarkt",
+            "PolkamarktCreateCondition": "Nie udało się utworzyć warunku Polkamarkt",
+            "PolkamarktCreateMarket": "Nie udało się utworzyć rynku Polkamarkt z {amount} {symbol}",
+            "PolkamarktFlip": "Nie udało się odwrócić {amount} {symbol} na Polkamarkt",
+            "PolkamarktSell": "Nie udało się sprzedać {amount} {symbol} na Polkamarkt",
             "ReferralReserveXor": "Nie udało się połączyć {amount} XOR",
             "ReferralSetInvitedUser": "Nie udało się utworzyć {role} {address}",
             "ReferralUnreserveXor": "Nie udało się odłączyć {amount} XOR",
@@ -1022,7 +1115,18 @@
             "OrderBookCancelLimitOrder": "Zlecenie limitowane anulowane",
             "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} po {price} {symbol2}",
-            "ReferralReserveXor": "Bonded {amount} XOR",
+            "PolkamarktAddLiquidity": "Dodano płynność {amount} {symbol} do Polkamarkt",
+            "PolkamarktBuy": "Kupiłem {amount} {symbol} na Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Zgłoszono opłaty dla twórców Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Zgłoszono płynność twórcy Polkamarkt",
+            "PolkamarktClaimLiquidity": "Zgłoszono resztę Polkamarkt LP",
+            "PolkamarktClaimMarket": "Zgłoszono wypłatę w Polkamarkt",
+            "PolkamarktClaimMarkets": "Odebrano wypłaty w Polkamarkt",
+            "PolkamarktCreateCondition": "Utworzono warunek Polkamarkt",
+            "PolkamarktCreateMarket": "Rynek Polkamarkt stworzony z {amount} {symbol}",
+            "PolkamarktFlip": "Odwrócono {amount} {symbol} na Polkamarkt",
+            "PolkamarktSell": "Sprzedane {amount} {symbol} na Polkamarkt",
+            "ReferralReserveXor": "Związany {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} został utworzony z powodzeniem",
             "ReferralUnreserveXor": "Niepowiązany {amount} XOR",
             "RegisterAndRegulateAsset": "Zarejestruj i ureguluj {symbol} aktywa",
@@ -1031,8 +1135,8 @@
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",
             "RepayVaultDebt": "Spłacono dług {amount} {symbol}",
             "SetAccessExpiration": "Token SB {symbol} Zaktualizowano datę wygaśnięcia na {endTime}",
-            "StakingBond": "Bonded {amount} {symbol}",
-            "StakingBondAndNominate": "Bonded {amount} {symbol}",
+            "StakingBond": "Związane {amount} {symbol}",
+            "StakingBondAndNominate": "Związane {amount} {symbol}",
             "StakingBondExtra": "Dodatkowa opłata {amount} {symbol}",
             "StakingChill": "Chłod",
             "StakingNominate": "Nominowani walidatorzy",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Anuluj zamówienie",
         "OrderBookCancelLimitOrders": "Anuluj zamówienia",
         "OrderBookPlaceLimitOrder": "Złożyć zamówienie",
+        "PolkamarktAddLiquidity": "Dodaj płynność Polkamarkt",
+        "PolkamarktBuy": "Kup akcje Polkamarkt",
+        "PolkamarktClaimCreatorFees": "Odbierz opłaty dla twórców Polkamarkt",
+        "PolkamarktClaimCreatorLiquidity": "Uzyskaj płynność kreatora Polkamarkt",
+        "PolkamarktClaimLiquidity": "Odbierz resztę Polkamarkt LP",
+        "PolkamarktClaimMarket": "Odbierz wypłatę w Polkamarkt",
+        "PolkamarktClaimMarkets": "Odbierz wypłaty Polkamarkt",
+        "PolkamarktCreateCondition": "Utwórz warunek Polkamarkt",
+        "PolkamarktCreateMarket": "Utwórz rynek Polkamarkt",
+        "PolkamarktFlip": "Odwróć pozycję Polkamarkt",
+        "PolkamarktSell": "Sprzedaj akcje Polkamarkt",
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralSetInvitedUser": "Utwórz {role}",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -1069,7 +1184,7 @@
         "StakingChill": "Chłod",
         "StakingNominate": "Mianować",
         "StakingPayout": "Nagrody za wypłatę",
-        "StakingRebond": "Rebond",
+        "StakingRebond": "Połącz ponownie",
         "StakingSetController": "Ustaw kontroler",
         "StakingSetPayee": "Ustaw odbiorcę",
         "StakingUnbond": "Uwolnij rezerwy",
@@ -1196,7 +1311,7 @@
         "total": "Całkowity",
         "tradingPair": {
             "choosePair": "Wybierz parę handlową",
-            "status": "Status",
+            "status": "Stan",
             "total": "{amount} {symbol} przy {amount2} {symbol2}",
             "volume": "Tom"
         },
@@ -1215,13 +1330,15 @@
         "Explore/Books": "@:pageTitle.OrderBook",
         "Explore/Farming": "Uprawy",
         "Explore/Pools": "Baseny",
-        "Explore/Staking": "Staking",
+        "Explore/Staking": "Stawianie",
         "Explore/Tokens": "Tokeny",
+        "ForAgents": "Dla agentów",
         "OrderBook": "Handel",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Pula",
         "Rewards": "Wynagrodzenie",
         "Sccp": "SCCP",
-        "Staking": "Staking",
+        "Staking": "Stawianie",
         "Stats": "Statystyki",
         "Swap": "Wymiana",
         "VaultDetails": "Szczegóły pozycji",
@@ -1330,6 +1447,155 @@
         "noExtension": "Nie znaleziono {extension} . Zainstaluj go i ponownie załaduj tę stronę",
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps://polkadot.js.org/extension/",
         "noSigner": "Brak dostępu. Przejdź do ustawień {extension} i otwórz „Zarządzaj dostępem do witryny”, aby zezwolić."
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Kup",
+            "claimCreatorFees": "Żądaj opłat dla twórców",
+            "claimCreatorLiquidity": "Zdobądź płynność twórcy",
+            "claimLpResidual": "Złóż wniosek o resztę LP",
+            "claimTraderPayout": "Żądaj wypłaty dla handlowca",
+            "createMarket": "Stwórz rynek",
+            "flip": "Odwróć",
+            "liquidity": "Dodaj płynność",
+            "sell": "Sprzedaj"
+        },
+        "create": {
+            "category": "Kategoria",
+            "closeBlock": "Zamknij blok",
+            "creationFee": "Opłata za utworzenie",
+            "deadline": "Termin handlu",
+            "marketFailed": "Stworzono warunek, ale utworzenie rynku nie powiodło się. Spróbuj ponownie utworzyć rynek z zapisanym warunkiem.",
+            "metadataTooLong": "Metadane pytania, wyroczni i rozwiązania muszą mieścić się w 512 bajtach.",
+            "question": "Pytanie rynkowe",
+            "questionPlaceholder": "Czy wydarzenie zakończy się na TAK w wybranym terminie?",
+            "questionTooShort": "Pytanie musi mieć co najmniej 32 bajty.",
+            "retryMessage": "Warunek {id} został utworzony. Spróbuj ponownie tylko krok tworzenia rynku.",
+            "retrySubmit": "Spróbuj ponownie utworzyć rynek",
+            "seedLiquidity": "Płynność nasion",
+            "seedTooSmall": "Płynność nasion musi wynosić co najmniej {amount} {symbol}.",
+            "submit": "Stwórz warunki i rynek",
+            "title": "Utwórz rynek Polkamarkt"
+        },
+        "details": {
+            "awaitingSettlement": "Oczekiwanie na finalizację",
+            "empty": "Wybierz rynek, aby wyświetlić stan palet, szczegóły wyroczni i dowody rozliczeń.",
+            "openResolutionSource": "Link do otwartego źródła",
+            "oracle": "Wyrocznia",
+            "pool": "Pula płynności",
+            "settlement": "Szczegóły rozliczenia"
+        },
+        "errors": {
+            "loadActivity": "Nie można załadować aktywności na koncie Polkamarkt.",
+            "loadMarkets": "Nie można załadować rynków Polkamarkt."
+        },
+        "fields": {
+            "collateralAsset": "Aktywo zabezpieczające",
+            "conditionId": "Identyfikator stanu",
+            "evidenceBlock": "Blok dowodów",
+            "evidenceHash": "Hash dowodu",
+            "evidenceUri": "URI dowodu",
+            "lpContributed": "LP przyczynił się",
+            "lpShares": "Akcje PL",
+            "noReserve": "BEZ rezerwy",
+            "oracle": "Wyrocznia",
+            "poolCollateral": "Zabezpieczenie basenu",
+            "resolutionOutcome": "Wynik rozwiązania",
+            "resolutionSource": "Źródło rozdzielczości",
+            "yesReserve": "TAK rezerwa"
+        },
+        "filters": {
+            "active": "Aktywny",
+            "allCategories": "Wszystkie kategorie",
+            "allStatuses": "Wszystkie statusy",
+            "finalized": "Sfinalizowane",
+            "mine": "Mój"
+        },
+        "loadingMarkets": "Ładowanie rynków...",
+        "markets": {
+            "search": "Szukaj rynków",
+            "subtitle": "{count} rynki odpowiadają bieżącym filtrom",
+            "title": "Rynki"
+        },
+        "metrics": {
+            "closeBlock": "Zamknij blok",
+            "liquidity": "Płynność",
+            "noQuote": "BEZ cytatu",
+            "status": "Stan",
+            "volume": "Objętość",
+            "yesProbability": "TAK",
+            "yesQuote": "TAK cytat"
+        },
+        "modes": {
+            "buy": "Kup",
+            "claim": "Roszczenie",
+            "flip": "Odwróć",
+            "liquidity": "płyta długogrająca",
+            "sell": "Sprzedaj"
+        },
+        "my": {
+            "claimsSummary": "Trader {trader} / LP {lp}",
+            "connect": "Połącz konto, aby zobaczyć utworzone rynki, akcje LP, wypłaty i ostatnie transakcje.",
+            "createdMarkets": "Stworzone rynki",
+            "empty": "Nie ma jeszcze pozycji Polkamarkt ani nie utworzono rynków dla tego konta.",
+            "loading": "Ładowanie aktywności na koncie Polkamarkt...",
+            "market": "Rynek {id}",
+            "positions": "Pozycje LP i traderów",
+            "recentTrades": "Ostatnie transakcje",
+            "sharesSummary": "TAK {yes} / NIE {no} / LP {lp}",
+            "subtitle": "Utworzone rynki, akcje LP, wypłaty dla handlowców, opłaty dla twórców i pozostałe roszczenia LP.",
+            "title": "Moje rynki / LP"
+        },
+        "noMarkets": "Żaden rynek nie pasuje do bieżących filtrów.",
+        "notIndexed": "Nieindeksowane",
+        "outcomes": {
+            "no": "NIE",
+            "yes": "TAK"
+        },
+        "pageSubtitle": "Handluj aktywnymi rynkami prognostycznymi, zasiewaj nowe rynki i zarządzaj LP i saldami do odzyskania z przepływu portfela Polkaswap.",
+        "status": {
+            "active": "Aktywny"
+        },
+        "ticket": {
+            "amountPlaceholder": "0,0",
+            "claimable": "Możliwość roszczenia",
+            "claimableFailed": "Nie można odczytać sald do roszczeń.",
+            "claimStatus": "Stan roszczenia",
+            "collateralAmount": "Kwota ({symbol})",
+            "collateralOut": "Zabezpieczenie wyjęte",
+            "enterAmount": "Wpisz kwotę",
+            "flippedShares": "Odwrócone akcje",
+            "insufficientKusd": "Niewystarczające saldo {symbol}",
+            "insufficientXor": "Niewystarczający XOR dla opłaty sieciowej",
+            "invalidAmount": "Wprowadź prawidłową kwotę",
+            "lpSharesOut": "LP udostępnia",
+            "noChainMarket": "Rynkiem nie można handlować w łańcuchu",
+            "quoteFailed": "Nie można odświeżyć wyceny.",
+            "refreshingQuote": "Odświeżający cytat...",
+            "selectMarket": "Wybierz aktywny rynek, na którym chcesz handlować.",
+            "sharesAmount": "Akcje",
+            "sharesOut": "Udostępnia",
+            "slippage": "Poślizg %",
+            "subtitle": "Wyceny, opłaty, ochrona przed poślizgiem i przesyłanie portfela korzystają ze środowiska wykonawczego SORA.",
+            "title": "Bilet handlowy",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "bajty",
+            "shares": "akcje"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "Dodaj płynność",
@@ -1567,7 +1833,7 @@
         "medium": "Średni",
         "reddit": "Reddit",
         "telegram": "Telegram",
-        "twitter": "Twitter",
+        "twitter": "Twitterze",
         "wiki": "{Sora} Wiki"
     },
     "soraStaking": {
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Zamawiać",
             "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Odznacz wszystko",
             "name": "Nazwa",
             "noNominatedValidators": "Nie masz żadnych wyznaczonych walidatorów",
             "noValidators": "Brak walidatorów spełniających określony filtr",
             "return": "Powrót",
             "search": "Szukaj...",
-            "selectAll": "Select all",
+            "selectAll": "Zaznacz wszystko",
             "staked": "Postawione",
             "stakedTooltip": "Całkowita stawka XOR postawiona u tego walidatora, w tym stawka własna walidatora i stawka nominowana"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Konta to adresy cyfrowe, które przechowują zasoby użytkownika w sieci. Każde konto jest powiązane z unikalnym adresem publicznym i kluczem prywatnym, który umożliwia użytkownikowi dostęp do zasobów i zarządzanie nimi.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Unikalne konta, które brały udział w transakcjach w wybranym okresie.",
         "bridgeTransactions": "Most {from} do {to} odnosi się do procesu przesyłania zasobów między sieciami {from} i {to} za pomocą mostu. Most umożliwia interoperacyjność obu sieci, umożliwiając użytkownikom płynne przenoszenie zasobów między nimi.",
         "fees": "Opłaty na blockchainie {Sora} odnoszą się do opłat, które są naliczane za wykonywanie transakcji w sieci. Opłaty te są uiszczane w XOR, natywnej kryptowalucie sieci {Sora} . Wysokość opłaty uzależniona jest od złożoności i wielkości realizowanej transakcji",
         "roi": "{ROI} oznacza zwrot z inwestycji. Oblicza się go, dzieląc zysk uzyskany z inwestycji przez koszt tej inwestycji w ekwiwalencie procentowym.",

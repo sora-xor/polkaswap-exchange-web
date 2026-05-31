@@ -16,6 +16,11 @@ const BACKOFF_MULTIPLIER = 1.7; // gentler than 2x for smoother growth
 const MAX_BACKOFF_DELAY = 120_000; // 120s
 const LATENCY_PROBE_TIMEOUT_MS = 5_000;
 const LATENCY_PROBE_MIN_INTERVAL_MS = 5 * 60_000;
+const NODE_SELECTION_MODE_STORAGE_KEY = 'nodeSelectionMode';
+
+type NodeSelectionMode = 'auto' | 'manual';
+
+const isNodeSelectionMode = (value: string): value is NodeSelectionMode => value === 'auto' || value === 'manual';
 
 export class NodesConnection {
   // Feature flags can be toggled at runtime, e.g. from App.vue after env is loaded
@@ -35,8 +40,10 @@ export class NodesConnection {
   public nodeAddressConnecting = '';
   public chainId = '';
   protected nodeLatencies: Record<string, number> = {};
+  protected nodeSelectionMode: NodeSelectionMode = 'auto';
   protected lastLatencyProbeTs = 0;
   protected lastLatencyProbeNodeListKey = '';
+  protected latencyProbePromise: Nullable<Promise<void>> = null;
   public lastReconnectDelayMs = 0;
   public reconnectAttempt = 0;
 
@@ -84,9 +91,12 @@ export class NodesConnection {
     const node = this.storage.get('node');
     const nodes = this.storage.get('customNodes');
     const lat = this.storage.get('nodeLatencies');
+    const selectedNode = node ? (JSON.parse(node) as Node) : null;
+    const customNodes = nodes ? (JSON.parse(nodes) as Node[]) : [];
 
-    this.setNode(node ? JSON.parse(node) : null);
-    this.setCustomNodes(nodes ? JSON.parse(nodes) : []);
+    this.setCustomNodes(customNodes);
+    this.setNodeSelectionMode(this.resolveInitialNodeSelectionMode(selectedNode, customNodes));
+    this.setNode(selectedNode);
     this.nodeLatencies = lat ? JSON.parse(lat) : {};
   }
 
@@ -102,6 +112,26 @@ export class NodesConnection {
       this.storage.remove('node');
       this.node = null;
     }
+  }
+
+  /**
+   * Classifies old persisted defaults as automatic selections while preserving
+   * user-added custom nodes as manual choices across upgrades.
+   */
+  protected resolveInitialNodeSelectionMode(node: Nullable<Node>, customNodes: readonly Node[]): NodeSelectionMode {
+    const storedMode = this.storage.get(NODE_SELECTION_MODE_STORAGE_KEY);
+    if (isNodeSelectionMode(storedMode)) return storedMode;
+    if (node && customNodes.some((item) => item.address === node.address)) return 'manual';
+    return 'auto';
+  }
+
+  protected setNodeSelectionMode(mode: NodeSelectionMode): void {
+    this.nodeSelectionMode = mode;
+    this.storage.set(NODE_SELECTION_MODE_STORAGE_KEY, mode);
+  }
+
+  protected shouldUseAutoNodeSelection(): boolean {
+    return this.nodeSelectionMode !== 'manual';
   }
 
   setCustomNodes(nodes: Node[]): void {
@@ -134,12 +164,14 @@ export class NodesConnection {
       } else if (!customNode) {
         // Drop stale persisted defaults so removed offline endpoints are not retried invisibly.
         this.setNode(null);
+        this.setNodeSelectionMode('auto');
       }
     }
 
     if (this.shouldProbeNodeLatency()) {
-      // fire and forget
-      void this.probeAndSortDefaultNodesByLatency();
+      void this.probeAndSelectFastestDefaultNode().catch((error) => {
+        console.warn(`[${this.network}] Node latency probe failed`, error);
+      });
     }
   }
 
@@ -178,25 +210,44 @@ export class NodesConnection {
     return true;
   }
 
+  protected async probeNodeLatency(address: string): Promise<number | null> {
+    const start = Date.now();
+    let timeout: Nullable<ReturnType<typeof setTimeout>> = null;
+
+    try {
+      await Promise.race([
+        this.getChainId(address),
+        new Promise((_resolve, reject) => {
+          timeout = setTimeout(() => reject(new Error('probe-timeout')), LATENCY_PROBE_TIMEOUT_MS);
+        }),
+      ]);
+      return Date.now() - start;
+    } catch (_) {
+      return null;
+    } finally {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    }
+  }
+
+  protected async refreshDefaultNodeLatency(): Promise<void> {
+    if (!this.latencyProbePromise) {
+      this.latencyProbePromise = this.probeAndSortDefaultNodesByLatency().finally(() => {
+        this.latencyProbePromise = null;
+      });
+    }
+
+    await this.latencyProbePromise;
+  }
+
   protected async probeAndSortDefaultNodesByLatency(): Promise<void> {
     this.lastLatencyProbeTs = Date.now();
     const nodes = [...this.defaultNodes];
     this.lastLatencyProbeNodeListKey = this.buildProbeNodeListKey(nodes);
     const timings: Array<{ addr: string; t: number | null }> = await Promise.all(
       nodes.map(async (n) => {
-        const start = Date.now();
-        try {
-          // race with timeout to avoid probe hangs delaying later retries
-          await Promise.race([
-            this.getChainId(n.address),
-            new Promise((_resolve, reject) =>
-              setTimeout(() => reject(new Error('probe-timeout')), LATENCY_PROBE_TIMEOUT_MS)
-            ),
-          ]);
-          return { addr: n.address, t: Date.now() - start };
-        } catch (_) {
-          return { addr: n.address, t: null };
-        }
+        return { addr: n.address, t: await this.probeNodeLatency(n.address) };
       })
     );
 
@@ -217,9 +268,46 @@ export class NodesConnection {
     this.defaultNodes = Object.freeze(sorted);
   }
 
+  protected getFastestDefaultNode(): Nullable<Node> {
+    const [fastestNode] = [...this.defaultNodes].sort((a, b) => {
+      const ta = this.nodeLatencies[a.address] ?? Number.MAX_SAFE_INTEGER;
+      const tb = this.nodeLatencies[b.address] ?? Number.MAX_SAFE_INTEGER;
+      return ta - tb;
+    });
+
+    return fastestNode ?? null;
+  }
+
+  /**
+   * Stores the fastest default node for automatic selection while leaving
+   * manual user choices untouched.
+   */
+  protected selectFastestDefaultNode(): void {
+    if (!this.shouldUseAutoNodeSelection()) return;
+
+    const fastestNode = this.getFastestDefaultNode();
+    if (!fastestNode) return;
+
+    this.setNode(fastestNode);
+    this.setNodeSelectionMode('auto');
+  }
+
+  protected async probeAndSelectFastestDefaultNode(): Promise<void> {
+    if (this.latencyProbePromise) {
+      await this.latencyProbePromise;
+    }
+
+    if (this.shouldProbeNodeLatency()) {
+      await this.refreshDefaultNodeLatency();
+    }
+
+    this.selectFastestDefaultNode();
+  }
+
   /** Public wrapper to trigger latency probe and resort nodes */
   public async testLatency(): Promise<void> {
-    await this.probeAndSortDefaultNodesByLatency();
+    await this.refreshDefaultNodeLatency();
+    this.selectFastestDefaultNode();
   }
 
   protected lockConnection(): void {
@@ -293,7 +381,11 @@ export class NodesConnection {
   }
 
   protected async connectInternal(options: ConnectToNodeOptions = {}): Promise<void> {
-    const { node, onError, currentNodeIndex = 0, attempt = 0, ...restOptions } = options;
+    const { node, onError, currentNodeIndex = 0, attempt = 0, manualSelection = false, ...restOptions } = options;
+
+    if (!node && currentNodeIndex === 0) {
+      await this.probeAndSelectFastestDefaultNode();
+    }
 
     const defaultNode = this.nodeList[currentNodeIndex];
     let requestedNode = node ?? this.node ?? defaultNode;
@@ -329,6 +421,12 @@ export class NodesConnection {
     try {
       this.lockConnection();
       await this.connectNode({ node: requestedNode, onError, ...restOptions });
+
+      if (manualSelection && node && this.node?.address === node.address) {
+        this.setNodeSelectionMode('manual');
+      } else if (!manualSelection && this.shouldUseAutoNodeSelection()) {
+        this.setNodeSelectionMode('auto');
+      }
     } catch (error) {
       onError?.(error, requestedNode);
 

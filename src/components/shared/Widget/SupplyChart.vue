@@ -48,6 +48,7 @@ import PriceChange from '@/components/shared/PriceChange.vue';
 import SelectToken from '@/components/shared/SelectAsset/SelectToken.vue';
 import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';
 import BaseWidget from '@/components/shared/Widget/Base.vue';
+import { getMintBurnRange, getSupplyRange } from '@/components/shared/Widget/supplyChart.utils';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { computed, getCurrentScope, onMounted, onScopeDispose, ref, watch } from 'vue';
@@ -133,6 +134,8 @@ const chartKey = computed(() => `supply-chart-${selectedToken.value.address}`);
 
 const firstValue = computed(() => new FPNumber(first(data.value)?.value ?? 0));
 const lastValue = computed(() => new FPNumber(last(data.value)?.value ?? 0));
+const supplyRange = computed(() => getSupplyRange(data.value));
+const mintBurnRange = computed(() => getMintBurnRange(data.value));
 
 const amount = computed<AmountWithSuffix>(() => formatAmountWithSuffix(firstValue.value));
 const priceChange = computed(() => calcPriceChange(firstValue.value, lastValue.value));
@@ -166,6 +169,7 @@ const chartSpec = computed(() => {
         },
         type: 'log',
         min: 1,
+        ...(mintBurnRange.value ?? {}),
         axisLabel: {
           formatter,
         },
@@ -174,6 +178,7 @@ const chartSpec = computed(() => {
       yAxisSpec({
         name: 'Supply',
         nameGap: 22,
+        ...(supplyRange.value ?? {}),
         nameTextStyle: {
           align: 'left',
         },
@@ -264,7 +269,8 @@ const updateData = async () => {
         const id = selectedToken.value.address;
         const { type, count } = filter.value;
         const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
+        // Indexer snapshot timestamps can land a few seconds after the bucket boundary.
+        const now = Math.floor(Date.now() / 1000);
         const aTime = now - seconds * count;
 
         data.value = Object.freeze(await fetchAssetSupplyData(id, now, aTime, type));

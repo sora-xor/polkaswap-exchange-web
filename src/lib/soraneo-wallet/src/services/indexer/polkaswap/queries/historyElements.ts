@@ -314,6 +314,22 @@ const OperationFilterMap = {
       equalTo: ModuleMethods.BridgeProxyMint,
     },
   },
+  [Operation.SubstrateOutgoing]: {
+    module: {
+      equalTo: ModuleNames.BridgeProxy,
+    },
+    method: {
+      equalTo: ModuleMethods.BridgeProxyBurn,
+    },
+  },
+  [Operation.SubstrateIncoming]: {
+    module: {
+      equalTo: ModuleNames.BridgeProxy,
+    },
+    method: {
+      equalTo: ModuleMethods.BridgeProxyMint,
+    },
+  },
   [Operation.ClaimRewards]: {
     or: [
       ...RewardsClaimExtrinsics.map(([module, method]) => ({

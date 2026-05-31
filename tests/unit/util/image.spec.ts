@@ -30,4 +30,13 @@ describe('sanitizeIconSource', () => {
     expect(decoded.toLowerCase()).not.toContain('<script');
     expect(decoded).toContain('<circle');
   });
+
+  it('accepts safe local asset paths and rejects unsafe relative icon paths', () => {
+    expect(sanitizeIconSource('/assets/solswap-mark.svg')).toBe('/assets/solswap-mark.svg');
+    expect(sanitizeIconSource('assets/solswap-mark.ABC123.svg?v=1')).toBe('assets/solswap-mark.ABC123.svg?v=1');
+    expect(sanitizeIconSource('//cdn.example.com/icon.svg')).toBe('');
+    expect(sanitizeIconSource('../private/icon.svg')).toBe('');
+    expect(sanitizeIconSource('assets/%2e%2e/private.svg')).toBe('');
+    expect(sanitizeIconSource('assets/bad icon.svg')).toBe('');
+  });
 });

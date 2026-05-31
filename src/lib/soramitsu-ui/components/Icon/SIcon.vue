@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Component } from 'vue';
+import { SSpinner } from '../Spinner';
 
 defineOptions({
   name: 'SIcon',
@@ -24,6 +25,8 @@ const ICON_COMPONENTS = import.meta.glob('../../icons/icomoon/*.svg', {
   import: 'default',
 }) as Record<string, Component>;
 
+const LEGACY_LOADING_ICON = 'el-icon-loading';
+
 const ELEMENT_ICON_MAP: Record<string, string> = {
   'el-icon-arrow-down': 'arrows-chevron-bottom-24',
   'el-icon-arrow-up': 'arrows-chevron-top-24',
@@ -39,18 +42,17 @@ const ELEMENT_ICON_MAP: Record<string, string> = {
   'el-icon-document': 'basic-newspaper-24',
   'el-icon-link': 'basic-link-24',
   'el-icon-success': 'basic-circle-checked-24',
-  'el-icon-loading': 'arrows-refresh-cw-24',
 };
-
-const ICON_SPIN_SET = new Set(['el-icon-loading']);
 
 const rawName = computed(() => props.name.trim());
 
 const iconClassTokens = computed(() => rawName.value.split(/\s+/).filter(Boolean));
 const legacyElementClassTokens = computed(() => iconClassTokens.value.filter((token) => token.startsWith('el-icon')));
+const isLoadingIcon = computed(() => iconClassTokens.value.some((token) => token === LEGACY_LOADING_ICON));
 
 const normalizedName = computed(() => {
   if (!rawName.value) return '';
+  if (isLoadingIcon.value) return '';
 
   const token = iconClassTokens.value.find((item) => item.startsWith('el-icon-')) ?? iconClassTokens.value[0];
   if (!token) return '';
@@ -104,15 +106,15 @@ const classes = computed(() => {
     result.add(`s-icon-${normalizedName.value}`);
   }
 
-  if (iconClassTokens.value.some((token) => ICON_SPIN_SET.has(token))) {
-    result.add('s-icon--spin');
+  if (isLoadingIcon.value) {
+    result.add('s-icon-loading');
   }
 
   return Array.from(result);
 });
 
 const styles = computed(() => {
-  if (isLegacyElementIcon.value) return undefined;
+  if (isLegacyElementIcon.value && !isLoadingIcon.value) return undefined;
 
   return {
     fontSize: iconSize.value,
@@ -123,7 +125,8 @@ const styles = computed(() => {
 
 <template>
   <i :class="classes" :style="styles" :title="tooltipText || undefined" aria-hidden="true">
-    <component :is="iconComponent" v-if="iconComponent" class="s-icon__svg" />
+    <SSpinner v-if="isLoadingIcon" class="s-icon__spinner" :size="iconSize" />
+    <component :is="iconComponent" v-else-if="iconComponent" class="s-icon__svg" />
   </i>
 </template>
 
@@ -159,15 +162,9 @@ i[class*='s-icon-'] {
       fill: currentColor;
     }
   }
-}
 
-.s-icon--spin {
-  animation: s-icon-spin 1s linear infinite;
-}
-
-@keyframes s-icon-spin {
-  to {
-    transform: rotate(360deg);
+  .s-icon__spinner {
+    display: block;
   }
 }
 </style>

@@ -66,6 +66,24 @@ describe('referral reward queries', () => {
     expect(result?.invitedUserRewards).toEqual({});
   });
 
+  it('keeps zero-reward referral rows so the referral screen can render invited users from indexed storage', async () => {
+    indexerMocks.fetchAllEntities.mockResolvedValue([createRewardEntity('alice', 0)]);
+    indexerMocks.currentIndexer = {
+      type: IndexerType.POLKASWAP,
+      services: {
+        explorer: {
+          fetchAllEntities: indexerMocks.fetchAllEntities,
+        },
+      },
+    };
+
+    const result = await getReferralRewards('referrer-address');
+
+    expect(result?.rewards.toString()).toBe('0');
+    expect(Object.keys(result?.invitedUserRewards ?? {})).toEqual(['alice']);
+    expect(result?.invitedUserRewards.alice.toString()).toBe('0');
+  });
+
 
   });
 

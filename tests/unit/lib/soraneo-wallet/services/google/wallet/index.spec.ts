@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const addWalletLocallyMock = vi.hoisted(() => vi.fn());
 const authMock = vi.hoisted(() => vi.fn());
+const initMock = vi.hoisted(() => vi.fn());
 const AccountsMock = vi.hoisted(() =>
   vi.fn(function AccountsMock() {
     return { kind: 'accounts' };
@@ -17,7 +18,11 @@ vi.mock('@/lib/soraneo-wallet/src/services/google/index', () => ({
     get hasKey() {
       return (globalThis as any).__gdriveHasKey ?? false;
     },
+    get ready() {
+      return (globalThis as any).__gdriveReady ?? false;
+    },
     auth: authMock,
+    init: initMock,
   },
 }));
 
@@ -34,6 +39,7 @@ describe('GoogleDriveWallet', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (globalThis as any).__gdriveHasKey = false;
+    (globalThis as any).__gdriveReady = false;
   });
 
   it('enables the wallet when Drive auth succeeds', async () => {
@@ -85,5 +91,28 @@ describe('GoogleDriveWallet', () => {
     addGDriveWalletLocally('Polkaswap');
 
     expect(addWalletLocallyMock).not.toHaveBeenCalled();
+  });
+
+  it('prepares the OAuth client when Drive keys are configured', async () => {
+    (globalThis as any).__gdriveHasKey = true;
+
+    const { GDriveWallet } = await loadGoogleWalletRuntime();
+
+    await GDriveWallet.prepare();
+
+    expect(initMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('skips OAuth preparation when it is already ready or unconfigured', async () => {
+    const { GDriveWallet } = await loadGoogleWalletRuntime();
+
+    await GDriveWallet.prepare();
+
+    (globalThis as any).__gdriveHasKey = true;
+    (globalThis as any).__gdriveReady = true;
+
+    await GDriveWallet.prepare();
+
+    expect(initMock).not.toHaveBeenCalled();
   });
 });

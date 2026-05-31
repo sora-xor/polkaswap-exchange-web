@@ -23,4 +23,6 @@ export interface ConnectToNodeOptions {
   currentNodeIndex?: number;
   /** internal: reconnect attempt number for backoff */
   attempt?: number;
+  /** Marks an explicit user choice so automatic latency probes do not override it. */
+  manualSelection?: boolean;
 }

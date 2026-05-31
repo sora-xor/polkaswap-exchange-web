@@ -24,6 +24,7 @@ describe('GoogleOauth', () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
   });
 
@@ -157,7 +158,78 @@ describe('GoogleOauth', () => {
     expect((oauth as any).isAuthProcess).toBe(false);
   });
 
-  it('does not start a second token prompt while auth is already running', async () => {
+  it('rejects token callback errors and clears auth state', async () => {
+    let config: Record<string, Fn> = {};
+
+    vi.stubGlobal('google', {
+      accounts: {
+        oauth2: {
+          initTokenClient: vi.fn((input) => {
+            config = input;
+            return {
+              requestAccessToken: vi.fn(() => {
+                (config.callback as Fn)({
+                  error: 'access_denied',
+                  error_description: 'User denied access',
+                });
+              }),
+            };
+          }),
+        },
+      },
+    });
+
+    const oauth = new GoogleOauth();
+    oauth.setOptions({ clientId: 'client-id', scope: 'drive-scope' });
+    await oauth.init();
+
+    await expect(oauth.getToken()).rejects.toThrow('access_denied: User denied access');
+    expect((oauth as any).token).toBeNull();
+    expect((oauth as any).isAuthProcess).toBe(false);
+  });
+
+  it('reuses the in-flight token prompt while auth is already running', async () => {
+    const requestAccessTokenMock = vi.fn();
+    let config: Record<string, Fn> = {};
+
+    vi.stubGlobal('google', {
+      accounts: {
+        oauth2: {
+          initTokenClient: vi.fn((input) => {
+            config = input;
+            return {
+              requestAccessToken: requestAccessTokenMock,
+            };
+          }),
+        },
+      },
+    });
+
+    const oauth = new GoogleOauth();
+    oauth.setOptions({ clientId: 'client-id', scope: 'drive-scope' });
+    await oauth.init();
+
+    const firstPrompt = oauth.getToken();
+    const secondPrompt = oauth.getToken();
+
+    await Promise.resolve();
+
+    expect(requestAccessTokenMock).toHaveBeenCalledTimes(1);
+    expect((oauth as any).isAuthProcess).toBe(true);
+
+    (config.callback as Fn)({
+      access_token: 'token',
+      expires_in: '60',
+    });
+
+    await expect(firstPrompt).resolves.toBeUndefined();
+    await expect(secondPrompt).resolves.toBeUndefined();
+    expect((oauth as any).isAuthProcess).toBe(false);
+  });
+
+  it('times out unresolved Google prompts and clears auth state', async () => {
+    vi.useFakeTimers();
+
     const requestAccessTokenMock = vi.fn();
 
     vi.stubGlobal('google', {
@@ -173,9 +245,46 @@ describe('GoogleOauth', () => {
     const oauth = new GoogleOauth();
     oauth.setOptions({ clientId: 'client-id', scope: 'drive-scope' });
     await oauth.init();
-    (oauth as any).isAuthProcess = true;
 
-    await expect(oauth.getToken()).resolves.toBeUndefined();
-    expect(requestAccessTokenMock).not.toHaveBeenCalled();
+    const tokenRequest = oauth.getToken();
+
+    await Promise.resolve();
+
+    expect(requestAccessTokenMock).toHaveBeenCalledTimes(1);
+    expect((oauth as any).isAuthProcess).toBe(true);
+
+    const rejection = expect(tokenRequest).rejects.toThrow('Google OAuth token request timed out');
+
+    await vi.advanceTimersByTimeAsync(90_000);
+
+    await rejection;
+    expect((oauth as any).token).toBeNull();
+    expect((oauth as any).isAuthProcess).toBe(false);
+    expect((oauth as any).authPromise).toBeNull();
+  });
+
+  it('clears auth state when the token prompt throws synchronously', async () => {
+    const requestError = new Error('popup failed');
+
+    vi.stubGlobal('google', {
+      accounts: {
+        oauth2: {
+          initTokenClient: vi.fn(() => ({
+            requestAccessToken: vi.fn(() => {
+              throw requestError;
+            }),
+          })),
+        },
+      },
+    });
+
+    const oauth = new GoogleOauth();
+    oauth.setOptions({ clientId: 'client-id', scope: 'drive-scope' });
+    await oauth.init();
+
+    await expect(oauth.getToken()).rejects.toBe(requestError);
+    expect((oauth as any).token).toBeNull();
+    expect((oauth as any).isAuthProcess).toBe(false);
+    expect((oauth as any).authPromise).toBeNull();
   });
 });

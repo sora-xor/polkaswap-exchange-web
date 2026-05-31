@@ -28,7 +28,7 @@
         "title": "އެކައުންޓް ސެޓިންގސް"
     },
     "accountText": "އެކައުންޓް | އެކައުންޓްތައް",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "އެކްޓިވް އެކައުންޓްތައް",
     "addAsset": {
         "add": "އިތުރުކުރުން",
         "AddAssetToken": {
@@ -271,7 +271,7 @@
         "nexusRecipientPlaceholder": "ސޯރާ ނެކްސަސް އައި105 އެކައުންޓަށް ވަދެވޭނެއެވެ",
         "nexusRecipientWarning": "މި އަނދާ މުއާމަލާތުގައި ތިޔަބޭފުޅާގެ ސޯރާ ނެކްސަސް އެކައުންޓް އާންމުކޮށް ރެކޯޑް ކުރެވެއެވެ.",
         "soraNetworkTxHashLabel": "ސޯރާ ނެޓްވޯކް tx ހެޝް",
-        "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraNexusXorLabel": "ސޯރާ ނެކްސަސް އެކްސްއޯއާރް އެވެ",
         "soraV3XorAmountTitle": "ބޭނުންވަނީ ކިހާވަރަކަށް {tokenSymbol} ހެއްޔެވެ؟",
         "ssTokensLabel": "އެސްއެސް ޓޯކަންސް އެވެ"
     },
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} އަށް {second}",
     "firstText": "ފުރަތަމަ",
     "footer": {
+        "forAgents": "އޭޖެންޓުންނަށް",
         "internet": {
             "action": "ރިފްރެޝް {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "އިންފޯ އެންޑް ކޮމިއުނިޓީ",
         "privacy": "ޕްރައިވެސީ ޕޮލިސީ",
         "sorawiki": "{Sora} ވިކިޕީޑިއާ"
+    },
+    "forAgents": {
+        "apiContext": "އެޕް ބޫޓް ކުރުމަށްފަހު ޕޭޖް ކޮންޓެކްސްޓްގައި އިންސްޓޯލް ވެއެވެ. އެއީ ޔޫޒަރ އިންޓަރފޭސް އާއި އެއް ނޯޑް، ވޮލެޓް، އިންޑެކްސަރ، އަދި އެސްޑީކޭ ޕަތު ބޭނުން ކުރާ އެއްޗެކެވެ.",
+        "contract": {
+            "idempotent": "ސްޓޭބަލް ކްލައިންޓްއޯޑަރއައިޑީ ބޭނުންކޮށް އަލުން މަސައްކަތް ކުރުމުގެ ކުރިން ޔަގީން ނުވާ ސަބްމިޝަންތައް ރިކަވަރ ކުރުން.",
+            "noCustody": "ޕޭޖަށް ދުވަހަކުވެސް ޕްރައިވެޓް ކީއެއް ނުލިބެއެވެ؛ ސޮއިކުރުން މަޑުކުރަނީ ހޮވާފައިވާ ވޮލެޓާއެކުގައެވެ.",
+            "prepareFirst": "ސްޓޭޓް ބަދަލުކުރާ ކޯލްތައް އެގްޒެކެޓް ކުރުމުގެ ކުރިން ޕްރިޕެއާ* މެދުވެރިކޮށް ދާން ޖެހެއެވެ*.",
+            "samePage": "ރެޑީ އިވެންޓަށްފަހު ޕޮލްކަސްވޮޕް ޕޭޖް ކޮންޓެކްސްޓްގެ ތެރޭގައި ދުއްވާށެވެ."
+        },
+        "discoveryText": "ފުރަތަމަ މެނިފެސްޓް ގެންނަވާށެވެ. މިއީ މި ސްޓޭޓިކް ބިލްޑާއެކު ޝިޕް ކުރެވޭ ވަރޝަންޑް ރެފަރެންސް، ސްކީމާ ފައިލްސް، މިސާލުތައް، އެރަރ ކެޓަލަގް، އަދި ހެލްޕަރ ކްލައިންޓް ލިންކް ކުރާ އެއްޗެކެވެ.",
+        "discoveryTitle": "ހޯދުން",
+        "entrypointsLabel": "އޭޖެންޓް އެޕީއައި އެންޓްރީޕޮއިންޓްސް",
+        "eyebrow": "އޮޓޮމޭޝަން",
+        "flow": {
+            "execute": "އެގްޒެކެޓްކުރުން ހަމައެކަނި ޕޮލިސީ ފާސްކުރުމަށްފަހު، ތައްޔާރުކޮށްފައިވާ ނިޔަތާއި ސްޓޭބަލް ކްލައިންޓް އޯޑަރ އައިޑީއަކާއެކު.",
+            "open": "ހަގީގީ ބްރައުޒާ ޕޭޖެއްގައި ޕޮލްކަސްވޮޕް ހުޅުވާލާށެވެ.",
+            "prepare": "އެއްވެސް ސޮއިކުރުމުގެ އޮޕަރޭޝަނެއްގެ ކުރިން މެޗިންގ ޕްރިޕެއާ މެތޯޑަށް ގުޅާށެވެ.",
+            "ready": "ރެޑީ އިވެންޓަށް އިންތިޒާރުކޮށް އެކްޓިވް ސޯރާ ނޯޑެއް ބޭނުންވާނެއެވެ.",
+            "recover": "އަލުން މަސައްކަތް ކުރުމުގެ ކުރިން ޔަގީން ނުވާ ހުށަހެޅުންތައް ހޯދުން.",
+            "resolve": "ތަކުރާރުކޮށް އެގްޒެކެޝަންގެ ކުރިން އެސެޓް ސިމްބަލްތައް އެޑްރެސްތަކަށް ރިޒޮލިއުޓްކުރުން.",
+            "wallet": "ސޮއިކުރަން ބޭނުންވާ ވަގުތު ވޮލެޓް ޕްރޮވައިޑަރެއް އަދި އެކައުންޓެއް ހޮވުން."
+        },
+        "flowTitle": "ސޭފް އެގްޒެކެޝަން ލޫޕް",
+        "lead": "ޕޮލްކަސްވޮޕް އިން ސްޓޭޓިކް އެޕް ހުޅުވާ އޭޖެންޓް ރަނަރުންނަށް ބްރައުޒާ ނެޓިވް އޮޓޮމޭޝަން އެޕީއައި އެއް ހާމަކޮށްދެ އެވެ.",
+        "links": {
+            "client": "ޖާވާސްކްރިޕްޓް ހެލްޕަރ ކްލައިންޓެވެ",
+            "errors": "އެރަރ ކެޓަލަގް",
+            "examples": "މިސާލުތައް",
+            "manifest": "ޑިސްކަވަރީ މެނިފެސްޓް",
+            "playground": "އޭޖެންޓް ކުޅޭ ސަރަހައްދެވެ",
+            "reference": "ފުރިހަމަ އެޕީއައި ރެފަރެންސް",
+            "schema": "ޖޭއެސްއޯއެން ސްކީމާ އެވެ",
+            "types": "ޓައިޕްސްކްރިޕްޓް ޑެފިނިޝަންސް"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "ޖެނެރިކް ދުވުންތެރިންނަށް ކެނޮނިކަލް ޑިސްކަވަރީ ޑޮކިއުމަންޓް.",
+                "title": "މެނިފެސްޓުން ފަށާށެވެ"
+            },
+            "playground": {
+                "description": "ސްޓޭޓަސް، އެސެޓްސް، ކޯޓްސް، އަދި ޕްރިވިއުސް އަށް މެނުއަލް ސޭމް-އޮރިޖިން ޕްރޯބް.",
+                "title": "ކުޅިވަރު ކުޅޭ ސަރަހައްދު ހުޅުވާލާށެވެ"
+            },
+            "reference": {
+                "description": "ކިޔަން ފަސޭހަ މެތޯޑް މެޕް، މިސާލުތައް، ސޮއިކުރުމުގެ އުސޫލުތައް، އަދި ރިކަވަރީ ނޯޓްސް.",
+                "title": "އެޕީއައި ރެފަރެންސް ކިޔާށެވެ"
+            }
+        },
+        "signingTextAfter": "ރީޓްރައިސް އައިޑެމްޕޮޓެންޓްކޮށް ބެހެއްޓުމަށް.",
+        "signingTextBefore": "އެ ޕޭޖުން ދުވަހަކުވެސް ޕްރައިވެޓް ކީއެއް ނުނަގައެވެ. ސްޓޭޓް ބަދަލުކުރުމުގެ އުސޫލުތަކުގައި ބޭނުންކުރަނީ ހޮވާފައިވާ ވޮލެޓް ސޮއިކުރާ މީހާ ކަމަށާއި، ދުވުންތެރިޔާއަށް އެނބުރި އަންނަ އެއްޗެއް ފާސްކުރަން ޖެހެއެވެ",
+        "signingTextMiddle": "ޕްލަސް ސްޓޭބަލް އެއް",
+        "signingTitle": "ސޮއިކުރުމާއި ބެލެހެއްޓުން",
+        "startTitle": "މިތަނުން ފަށާށެވެ",
+        "title": "އޭޖެންޓުންނަށް"
     },
     "forText": "އެހެނީ",
     "hashiBridgeText": "{Hashi} ބްރިޖް",
@@ -798,6 +879,7 @@
         "Explore/Container": "އެކްސްޕްލޯރ ކުރާށެވެ",
         "Farming": "ދަނޑުވެރިކަން",
         "OrderBook": "ވިޔަފާރި",
+        "Polkamarkt": "ޕޮލްކަމާރކްޓް އެވެ",
         "Pool": "ޕޫލް އެވެ",
         "Rewards": "އިނާމު",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "ލިމިޓް އޯޑަރު ކެންސަލް ނުކުރެވިއްޖެ",
             "OrderBookCancelLimitOrders": "ލިމިޓް އޯޑަރުތައް ކެންސަލް ނުކުރެވިއްޖެ",
             "OrderBookPlaceLimitOrder": "{amount} {symbol} ގެ ލިމިޓް އޯޑަރ {price} {symbol2} ގައި ޖައްސަން ނާކާމިޔާބުވިއެވެ.",
+            "PolkamarktAddLiquidity": "ޕޯލްކަމާރކްޓަށް {amount} {symbol} ލިކުއިޑިޓީ އިތުރު ނުކުރެވިއްޖެއެވެ",
+            "PolkamarktBuy": "ޕޮލްކާމާރކްޓް އިން {amount} {symbol} ގަތުމަށް ނާކާމިޔާބުވިއެވެ",
+            "PolkamarktClaimCreatorFees": "ޕޮލްކަމާރކްޓް ކްރިއޭޓަރ ފީ ހޯދުމަށް ނާކާމިޔާބުވިއެވެ",
+            "PolkamarktClaimCreatorLiquidity": "ޕޮލްކަމާރކްޓް ކްރިއޭޓަރ ލިކުއިޑިޓީ ހޯދުމަށް ނާކާމިޔާބުވިއެވެ",
+            "PolkamarktClaimLiquidity": "ޕޮލްކަމާރކްޓް އެލްޕީ ރެޒިޑިއުއަލް ކްލެއިމް ނުކުރެވިއްޖެއެވެ",
+            "PolkamarktClaimMarket": "ޕޮލްކަމާރކްޓް ޕޭއައުޓް ކްލެއިމް ނުކުރެވިއްޖެއެވެ",
+            "PolkamarktClaimMarkets": "ޕޮލްކަމާރކްޓް ޕޭއައުޓްސް ކްލޭމް ނުކުރެވިއްޖެއެވެ",
+            "PolkamarktCreateCondition": "ޕޮލްކަމާރކްޓް ކޮންޑިޝަން އުފެއްދުމަށް ނާކާމިޔާބުވިއެވެ",
+            "PolkamarktCreateMarket": "{amount} {symbol} އާއެކު ޕޮލްކަމާރކްޓް މާކެޓް އުފެއްދުމަށް ނާކާމިޔާބުވިއެވެ.",
+            "PolkamarktFlip": "ޕޮލްކާމާރކްޓްގައި {amount} {symbol} ފްލިޕް ކުރަން ނާކާމިޔާބުވިއެވެ",
+            "PolkamarktSell": "ޕޯލްކާމާރކްޓްގައި {amount} {symbol} ވިއްކުމަށް ނާކާމިޔާބުވިއެވެ",
             "ReferralReserveXor": "ބޮންޑް ކުރަން ނާކާމިޔާބު {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ސެޓް ނުކުރެވިއްޖެ",
             "ReferralUnreserveXor": "{amount} XOR އަންބޮންޑް ކުރުމަށް ނާކާމިޔާބުވެއްޖެ",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "ލިމިޓް އޯޑަރު ކެންސަލްކޮށްފި",
             "OrderBookCancelLimitOrders": "ލިމިޓް އޯޑަރުތައް ކެންސަލް ކޮށްފި",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ގައި {price} {symbol2} ބަހައްޓާފައި",
+            "PolkamarktAddLiquidity": "ޕޯލްކާމާރކްޓަށް {amount} {symbol} ލިކުއިޑިޓީ އިތުރުކޮށްފި",
+            "PolkamarktBuy": "ޕޮލްކާމާރޓް އިން {amount} {symbol} ގަތީ",
+            "PolkamarktClaimCreatorFees": "ޕޮލްކަމާކްޓް ކްރިއޭޓަރ ފީސް ކްލޭމް ކުރިއެވެ",
+            "PolkamarktClaimCreatorLiquidity": "ޕޮލްކަމާކްޓް ކްރިއޭޓަރ ލިކުއިޑިޓީ ކްލޭމް ކުރިއެވެ",
+            "PolkamarktClaimLiquidity": "ޕޮލްކަމާރކްޓް އެލްޕީ ރެޒިޑިއުއަލް ކްލޭމް ކުރިއެވެ",
+            "PolkamarktClaimMarket": "ޕޮލްކަމާކްޓް ޕޭއައުޓް ކްލޭމް ކުރި އެވެ",
+            "PolkamarktClaimMarkets": "ޕޮލްކަމާކްޓް ޕޭއައުޓްސް އިން ދައުވާ ކުރި އެވެ",
+            "PolkamarktCreateCondition": "ޕޮލްކަމާރކްޓް ކޮންޑިޝަން އުފެދިއްޖެއެވެ",
+            "PolkamarktCreateMarket": "ޕޯލްކަމާރކެޓް މާކެޓް އުފެދިފައިވަނީ {amount} {symbol} އާއެކު",
+            "PolkamarktFlip": "ޕޮލްކާމާރކްޓްގައި {amount} {symbol} ފްލިޕް ކޮށްފިއެވެ",
+            "PolkamarktSell": "ޕޯލްކާމާރޓްގައި ވިއްކާފައިވަނީ {amount} {symbol} އެވެ",
             "ReferralReserveXor": "ބޮންޑެޑް {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ކާމިޔާބުކަމާއެކު ސެޓް ކުރެވިއްޖެއެވެ",
             "ReferralUnreserveXor": "އަންބޮންޑް {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "އޯޑަރު ކެންސަލް ކުރުން",
         "OrderBookCancelLimitOrders": "އޯޑަރުތައް ކެންސަލް ކުރުން",
         "OrderBookPlaceLimitOrder": "ޕްލޭސް އޯޑަރ",
+        "PolkamarktAddLiquidity": "ޕޮލްކަމާރކްޓް ލިކުއިޑިޓީ އިތުރުކުރުން",
+        "PolkamarktBuy": "ޕޮލްކާމާކެޓް ހިއްސާ ގަންނަން",
+        "PolkamarktClaimCreatorFees": "ކްލޭމް ޕޮލްކަމާރކްޓް ކްރިއޭޓަރ ފީސް",
+        "PolkamarktClaimCreatorLiquidity": "ކްލޭމް ޕޮލްކަމާރކްޓް ކްރިއޭޓަރ ލިކުއިޑިޓީ",
+        "PolkamarktClaimLiquidity": "ކްލޭމް ޕޮލްކަމާރކްޓް އެލްޕީ ރެޒިޑިއުއަލް",
+        "PolkamarktClaimMarket": "ކްލޭމް ޕޮލްކަމާރކްޓް ޕޭއައުޓް",
+        "PolkamarktClaimMarkets": "ކްލޭމް ޕޮލްކަމާރކްޓް ޕޭއައުޓްސް",
+        "PolkamarktCreateCondition": "ޕޮލްކާމާރކްޓް ކޮންޑިޝަން އުފެއްދުން",
+        "PolkamarktCreateMarket": "ޕޮލްކާމާކެޓް މާކެޓް އުފެއްދުން",
+        "PolkamarktFlip": "ފްލިޕް ޕޮލްކަމާރކްޓް ޕޮޒިޝަން",
+        "PolkamarktSell": "ޕޯލްކާމާރޓްގެ ހިއްސާ ވިއްކުން",
         "ReferralReserveXor": "ބޮންޑް އެކްސްއޯއާރް އެވެ",
         "ReferralSetInvitedUser": "ސެޓް {role} .",
         "ReferralUnreserveXor": "އަންބޮންޑް އެކްސްއޯއާރު",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "ޕޫލްތަކެވެ",
         "Explore/Staking": "ސްޓޭކިންގ",
         "Explore/Tokens": "ޓޯކަންސް އެވެ",
+        "ForAgents": "އޭޖެންޓުންނަށް",
         "OrderBook": "ވިޔަފާރި",
+        "Polkamarkt": "ޕޮލްކަމާރކްޓް އެވެ",
         "Pool": "ޕޫލް އެވެ",
         "Rewards": "އިނާމު",
         "Sccp": "އެސްސީސީޕީ އެވެ",
@@ -1330,6 +1447,155 @@
         "noExtension": "{extension} އެކްސްޓެންޝަން ނެތް. ސުރިލުވާ އަދި މި ޞަފުޙާ ރީލޯޑް ކުރޭ",
         "noExtensions": "{PolkadotJs} އެކްސްޓެންޝަން ނެތް. ސުރިލުވާ އަދި މި ޞަފުޙާ ރީލޯޑް ކުރޭ\nhttps://polkadot.js.org/extension/",
         "noSigner": "އެކްސެސް ނުދޭ. {extension} ކޮންފިގިއުރޭޝަން ސެޓިންގސް ގައި \"Manage Website Access\" އޮޕަން ކުރޭ"
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "ގަންނަން",
+            "claimCreatorFees": "ކްލޭމް ކްރިއޭޓަރ ފީސް",
+            "claimCreatorLiquidity": "ކްލޭމް ކްރިއޭޓަރ ލިކުއިޑިޓީ",
+            "claimLpResidual": "ކްލޭމް އެލްޕީ ރެޒިޑިއުއަލް",
+            "claimTraderPayout": "ކްލޭމް ޓްރޭޑަރ ޕޭއައުޓް",
+            "createMarket": "މާކެޓް އުފެއްދުން",
+            "flip": "ފްލިޕް ކޮށްލާށެވެ",
+            "liquidity": "ލިކުއިޑިޓީ އިތުރުކުރުން",
+            "sell": "ވިއްކާ"
+        },
+        "create": {
+            "category": "ކެޓަގަރީ އެވެ",
+            "closeBlock": "ބްލޮކް ބަންދުކުރުން",
+            "creationFee": "އުފެއްދުމުގެ ފީ",
+            "deadline": "ޓްރޭޑިންގ ސުންގަޑި",
+            "marketFailed": "ޝަރުތު އުފެދުނު ނަމަވެސް މާކެޓް އުފެއްދުން ނާކާމިޔާބުވި އެވެ. ސޭވްކޮށްފައިވާ ޝަރުތާއެކު މާކެޓް އުފެއްދުމަށް އަލުން މަސައްކަތް ކުރާށެވެ.",
+            "metadataTooLong": "ސުވާލު، އޮރެކަލް، އަދި ރިޒޮލިއުޝަން މެޓަޑޭޓާ 512 ބައިޓްގެ ތެރޭގައި ފިޓްވާން ޖެހެއެވެ.",
+            "question": "މާކެޓް ސުވާލެވެ",
+            "questionPlaceholder": "ހޮވާފައިވާ ސުންގަޑިއަށް އިވެންޓް އާނއެކޭ އަށް ހައްލުވާނެ ހެއްޔެވެ؟",
+            "questionTooShort": "ސުވާލު މަދުވެގެން 32 ބައިޓް ވާންޖެހޭނެއެވެ.",
+            "retryMessage": "ޝަރުޠު {id} އުފެދިފައިވެއެވެ. ހަމައެކަނި މާކެޓް އުފެއްދުމުގެ ފިޔަވަޅު އަލުން މަސައްކަތް ކުރާށެވެ.",
+            "retrySubmit": "މާކެޓް އުފެއްދުމަށް އަލުން މަސައްކަތް ކުރާށެވެ",
+            "seedLiquidity": "ސީޑް ލިކުއިޑިޓީ",
+            "seedTooSmall": "އޮށުގެ ލިކުއިޑިޓީ މަދުވެގެން {amount} {symbol} އަށް ވާންޖެހޭނެއެވެ.",
+            "submit": "ޝަރުތު އުފެއްދުމާއި މާކެޓް އުފެއްދުން",
+            "title": "ޕޮލްކާމާކެޓް މާކެޓް އުފެއްދުން"
+        },
+        "details": {
+            "awaitingSettlement": "ފައިނަލް ކުރުމަށް އިންތިޒާރު ކުރަމުންނެވެ",
+            "empty": "ޕެލެޓް ސްޓޭޓް، އޮރެކަލް ޑީޓެއިލްސް، އަދި ސެޓްލްމަންޓް ހެކި ބަލާލުމަށް މާކެޓެއް ހޮވުން.",
+            "openResolutionSource": "އޮޕަން ސޯސް ލިންކް",
+            "oracle": "އޮރެކަލް އެވެ",
+            "pool": "ލިކުއިޑިޓީ ޕޫލް އެވެ",
+            "settlement": "ސެޓްލްމަންޓްގެ ތަފްސީލް"
+        },
+        "errors": {
+            "loadActivity": "ޕޮލްކަމާރކްޓް އެކައުންޓް އެކްޓިވިޓީ ލޯޑް ނުކުރެވޭ.",
+            "loadMarkets": "ޕޯލްކާމާކެޓް މާކެޓްތައް ލޯޑް ނުކުރެވިގެން."
+        },
+        "fields": {
+            "collateralAsset": "ކޮލެޓަރަލް އެސެޓް",
+            "conditionId": "ކޮންޑިޝަން އައިޑީ",
+            "evidenceBlock": "ހެކި ބްލޮކް",
+            "evidenceHash": "ހެކި ހެޝް",
+            "evidenceUri": "ހެކި ޔޫ.އާރު.އައި",
+            "lpContributed": "އެލްޕީ ކޮންޓްރިބިއުޓް ކުރިއެވެ",
+            "lpShares": "އެލްޕީގެ ހިއްސާ އެވެ",
+            "noReserve": "ރިޒާވެއް ނެތް",
+            "oracle": "އޮރެކަލް އެވެ",
+            "poolCollateral": "ޕޫލް ކޮލެޓަރަލް އެވެ",
+            "resolutionOutcome": "ރިޒޮލިއުޝަންގެ ނަތީޖާ",
+            "resolutionSource": "ރިޒޮލިއުޝަން ސޯސް",
+            "yesReserve": "އާދެ ރިޒާވް"
+        },
+        "filters": {
+            "active": "އެކްޓިވް",
+            "allCategories": "ހުރިހާ ކެޓަގަރީއަކުންނެވެ",
+            "allStatuses": "ހުރިހާ ސްޓޭޓަސްއެއް",
+            "finalized": "ފައިނަލް ވެއްޖެއެވެ",
+            "mine": "މައިން"
+        },
+        "loadingMarkets": "ލޯޑިންގ މާކެޓްތަކުގައި...",
+        "markets": {
+            "search": "މާކެޓްތައް ހޯދުން",
+            "subtitle": "{count} މާކެޓްތައް މިހާރު ހުރި ފިލްޓަރުތަކާ އެއްގޮތްވެއެވެ",
+            "title": "މާކެޓްތަކެވެ"
+        },
+        "metrics": {
+            "closeBlock": "ބްލޮކް ބަންދުކުރުން",
+            "liquidity": "ލިކުއިޑިޓީ އެވެ",
+            "noQuote": "ނޯ ކޯޓް",
+            "status": "ސްޓޭޓަސް",
+            "volume": "ވޮލިއުމް",
+            "yesProbability": "އާދެ",
+            "yesQuote": "ޔެސް ކޯޓް"
+        },
+        "modes": {
+            "buy": "ގަތުން",
+            "claim": "ދައުވާ ކުރާށެވެ",
+            "flip": "ފްލިޕް ކޮށްލާށެވެ",
+            "liquidity": "އެލްޕީ އެވެ",
+            "sell": "ވިއްކާ"
+        },
+        "my": {
+            "claimsSummary": "ވިޔަފާރިވެރިޔާ __ޕީއެޗް{trader} / އެލްޕީ __ޕީއެޗް{lp}",
+            "connect": "އުފެދިފައިވާ މާކެޓްތަކާއި، އެލްޕީ ހިއްސާތަކާއި، ޕޭއައުޓްތަކާއި، ފަހުގެ ޓްރޭޑްތައް ބަލާލުމަށް އެކައުންޓެއް ގުޅުވާށެވެ.",
+            "createdMarkets": "އުފެއްދި މާކެޓްތަކެވެ",
+            "empty": "މި އެކައުންޓަށް އަދި ޕޮލްކަމާރކްޓްގެ ޕޮޒިޝަނެއް ނުވަތަ މާކެޓެއް އުފެއްދިފައެއް ނުވެއެވެ.",
+            "loading": "ޕޮލްކަމާރކްޓް އެކައުންޓް އެކްޓިވިޓީ ލޯޑް ކުރަމުންދާ...",
+            "market": "މާކެޓް __ޕީއެޗް{id}",
+            "positions": "އެލްޕީ އަދި ޓްރޭޑަރ މަގާމުތަކެވެ",
+            "recentTrades": "ފަހުގެ ވިޔަފާރިތަކެވެ",
+            "sharesSummary": "އާދެ __ޕީއެޗް{yes} / ނޫން __ޕީއެޗް{no} / އެލްޕީ __ޕީއެޗް{lp}",
+            "subtitle": "އުފެއްދި މާކެޓްތަކާއި، އެލްޕީ ހިއްސާއާއި، ޓްރޭޑަރ ޕޭއައުޓްތަކާއި، ކްރިއޭޓަރ ފީއާއި، ރެޒިޑިއުއަލް އެލްޕީ ކްލޭމްސް.",
+            "title": "މައި މާކެޓްސް / އެލްޕީ"
+        },
+        "noMarkets": "މިހާރުގެ ފިލްޓަރުތަކާ އެއްވެސް މާކެޓެއް ނުފެތޭ.",
+        "notIndexed": "އިންޑެކްސް ކުރެވިފައެއް ނުވެއެވެ",
+        "outcomes": {
+            "no": "ނ",
+            "yes": "އާދެ"
+        },
+        "pageSubtitle": "އެކްޓިވް ޕްރިޑިކްޝަން މާކެޓްތައް ޓްރޭޑްކޮށް، އާ މާކެޓްތައް ސީޑްކޮށް، ޕޮލްކަސްވޮޕް ވޮލެޓް ފްލޯއިން އެލްޕީ އަދި ކްލޭމް ކުރެވޭ ބެލެންސްތައް މެނޭޖްކުރުން.",
+        "status": {
+            "active": "އެކްޓިވް"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0 އެވެ",
+            "claimable": "ކްލޭމް ކުރެވޭނެއެވެ",
+            "claimableFailed": "ކްލޭމް ކުރެވޭ ބެލެންސްތައް ކިޔަން ނުކުޅެދިފައިވުން.",
+            "claimStatus": "ކްލޭމް ސްޓޭޓަސް",
+            "collateralAmount": "އަދަދު ({symbol})",
+            "collateralOut": "ކޮލެޓަރަލް އައުޓް",
+            "enterAmount": "އަދަދެއް ލިޔެލާށެވެ",
+            "flippedShares": "ފްލިޕްޑް ޝެއާސް",
+            "insufficientKusd": "އެކަށީގެންވާ __ޕީއެޗް{symbol} ބެލެންސް ނުވުން",
+            "insufficientXor": "ނެޓްވޯކް ފީއަށް އެކަށީގެންވާ އެކްސްއޯއާރު ނުލިބުން",
+            "invalidAmount": "ސައްހަ އަދަދެއް ލިޔެލާށެވެ",
+            "lpSharesOut": "އެލްޕީ ޝެއާ އައުޓް",
+            "noChainMarket": "މާކެޓަކީ އޮން ޗޭން ވިޔަފާރި ކުރެވޭ ތަނެއް ނޫނެވެ",
+            "quoteFailed": "ކޯޓް ރިފްރެޝް ކުރަން ނުކުޅެދިއްޖެއެވެ.",
+            "refreshingQuote": "ތާޒާ ކޯޓެއް...",
+            "selectMarket": "ވިޔަފާރި ކުރުމަށް ހަރަކާތްތެރި މާކެޓެއް ހޮވުން.",
+            "sharesAmount": "ހިއްސާ...",
+            "sharesOut": "ހިއްސާ އައުޓް",
+            "slippage": "ސްލިޕްޕޭޖް % .",
+            "subtitle": "ކޯޓްސް، ފީ، ސްލިޕްޕޭޖް ޕްރޮޓެކްޝަން، އަދި ވޮލެޓް ހުށަހެޅުމުގައި ބޭނުންކުރަނީ ސޯރާ ރަންޓައިމް އެވެ.",
+            "title": "ޓްރޭޑް ޓިކެޓެވެ",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "ބައިޓްސް އެވެ",
+            "shares": "ހިއްސާ އެވެ"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "ލިކުއިޑިޓީ އިތުރު ކުރޭ",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "ކޮމިޝަން",
             "commissionTooltip": "ކޮމިޝަނަށް ނިސްބަތްވަނީ ސްޓޭކިންގ ޕްރޮސެސްގައި ވެލިޑޭޓަރުންގެ ހިދުމަތަށް ނަގާ ފީއަށެވެ. ޕަސެންޓެއްގެ ގޮތުގައި ހާމަކުރާ މި ފީ އުނިކުރަނީ ބެހުމުގެ ކުރިން ނޮމިނޭޓަރުންނަށް ލިބޭ ސްޓޭކިން އިނާމުތަކުންނެވެ. ފާހަގަކޮށްލަންޖެހޭ މުހިންމު ކަމަކީ ވެލިޑޭޓަރުންނަށް ކޮންމެ ވަގުތަކުވެސް ކޮމިޝަން ރޭޓް އެޖެސްޓް ކުރެވޭނެ ކަމެވެ",
-            "deselectAll": "Deselect all",
+            "deselectAll": "ހުރިހާ އެއްޗެއް ޑިސެލެކްޓް ކުރާށެވެ",
             "name": "ނަން",
             "noNominatedValidators": "ތިޔަބޭފުޅުންގެ އެއްވެސް ނޮމިނޭޓް ވެލިޑޭޓަރެއް ނެތް",
             "noValidators": "ކަނޑައެޅިފައިވާ ފިލްޓަރ ފުރިހަމަވާ ވެލިޑޭޓަރެއް ނެތެވެ",
             "return": "އެނބުރި ދިއުން",
             "search": "ހޯދުން...",
-            "selectAll": "Select all",
+            "selectAll": "ހުރިހާ އެއްޗެއް ހޮވާށެވެ",
             "staked": "ސްޓޭކް ކޮށްފައި",
             "stakedTooltip": "މި ވެލިޑޭޓަރާއި އެކު ޖުމްލަ އެކްސްއޯއާރު ސްޓޭކް ކުރިއިރު، ވެލިޑޭޓަރުގެ އަމިއްލަ ހިއްސާއާއި ނޮމިނޭޓް ކުރެވިފައިވާ ހިއްސާ ހިމެނެއެވެ"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "އެކައުންޓްތަކަކީ ނެޓްވޯކްގައި ޔޫޒަރުގެ އެސެޓްތައް ހިފަހައްޓާ ޑިޖިޓަލް އެޑްރެސްތަކެކެވެ. ކޮންމެ އެކައުންޓަކީ ވެސް ޔުނިކް ޕަބްލިކް އެޑްރެހަކާއި ޕްރައިވެޓް ކީއަކާ ގުޅިފައިވާ އެކައުންޓެއް ކަމުން އެ އެކައުންޓްތަކުގެ އެސެޓްތަކަށް ވަދެ ބެލެހެއްޓޭނެ އެވެ.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "ހޮވާފައިވާ މުއްދަތުގައި މުއާމަލާތްތަކުގައި ބައިވެރިވި ޔުނިކް އެކައުންޓްތައް.",
         "bridgeTransactions": "{from} އިން {to} ބްރިޖަށް ނިސްބަތްވަނީ ބްރިޖެއް ބޭނުންކޮށްގެން {from} އަދި {to} ނެޓްވޯކްތަކުގެ މެދުގައި އެސެޓްތައް ބަދަލުކުރުމުގެ ޕްރޮސެސްއަށެވެ. މި ބްރިޖުގެ ސަބަބުން ދެ ނެޓްވޯކް އިންޓައޮޕަރޭބިލިޓީ ކުރެވޭއިރު، އެ ނެޓްވޯކްތަކުގެ މެދުގައި އެސެޓްތައް އެއްވެސް ދަތިކަމެއް ނެތި ގެންދެވޭނެ އެވެ.",
         "fees": "{Sora} ބްލޮކްޗޭންގައި ނަގާ ފީތަކަށް ނިސްބަތްވަނީ ނެޓްވޯކްގައި މުއާމަލާތްތައް ހިންގުމަށް ނަގާ ފީތަކަށެވެ. މި ފީތައް ދައްކަނީ {Sora} ނެޓްވޯކްގެ ނެޓިވް ކްރިޕްޓޯކަރަންސީ ކަމަށްވާ އެކްސްއޯއާރް އިންނެވެ. ފީގެ އަދަދު ކަނޑައެޅެނީ ކުރިއަށް ގެންދާ މުއާމަލާތުގެ ކޮމްޕްލެކްސިޓީއާއި ސައިޒުންނެވެ",
         "roi": "{ROI} ގެ މާނައަކީ ރިޓަރން އޮން އިންވެސްޓްމަންޓެވެ. އެއީ އިންވެސްޓްމަންޓަކުން ލިބޭ ފައިދާ އެ އިންވެސްޓްމަންޓެއްގެ އަގަށް ޕަސެންޓް އިކުއިވެންޓަކަށް ބަހާލައިގެން ހިސާބުކޮށްގެންނެވެ.",
@@ -1749,7 +2015,7 @@
     },
     "transaction": {
         "amount": "@:amountText",
-        "amount2": "@:amountText 2",
+        "amount2": "__ޕީއެޗް@:amountText 2",
         "blockId": "ބްލޮކް އައިޑީ",
         "comment": "ކޮމެންޓް ކޮށްލައްވާ",
         "copy": "ކޮޕީ {value}",

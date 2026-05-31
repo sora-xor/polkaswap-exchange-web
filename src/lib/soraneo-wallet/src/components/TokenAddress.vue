@@ -5,7 +5,8 @@
       (<formatted-address
         :value="tokenAddress"
         :tooltip-text="t('assets.assetId')"
-        v-bind="{ ...$attrs, symbols, symbolsOffset }"
+        :symbols="symbols"
+        :symbols-offset="symbolsOffset"
       ></formatted-address
       >)
     </div>

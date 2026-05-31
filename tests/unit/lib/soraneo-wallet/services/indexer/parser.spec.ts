@@ -778,4 +778,90 @@ describe('IndexerDataParser', () => {
       externalNetwork: 111,
     });
   });
+
+  it('parses Liberland bridgeProxy burn history as Substrate outgoing history', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem({
+      id: '0xliberland-out',
+      module: 'bridgeProxy',
+      method: 'burn',
+      address: 'sora-address',
+      blockHash: '0xblock',
+      blockHeight: '108',
+      timestamp: 18,
+      networkFee: '0',
+      execution: { success: true, error: null },
+      dataFrom: 'sora-address',
+      dataTo: '5GrwvaEF5zXb26Fz9rcQpDWSxZ9zC7d4L4sUx8m6RRnF9jqw',
+      data: {
+        assetId: XOR.address,
+        amount: '2.5',
+        amountUSD: '5',
+        networkId: { Sub: 'Liberland' },
+        externalNetworkType: 'Sub',
+        recipient: { Liberland: '5GrwvaEF5zXb26Fz9rcQpDWSxZ9zC7d4L4sUx8m6RRnF9jqw' },
+        requestHash: '0xliberland-request',
+        status: 'Done',
+      },
+      calls: [],
+    } as any);
+
+    expect(parsed).toMatchObject({
+      type: Operation.SubstrateOutgoing,
+      amount: '2.5',
+      amount2: '2.5',
+      assetAddress: XOR.address,
+      symbol: XOR.symbol,
+      from: 'sora-address',
+      to: '5GrwvaEF5zXb26Fz9rcQpDWSxZ9zC7d4L4sUx8m6RRnF9jqw',
+      hash: '0xliberland-request',
+      externalNetwork: 'Liberland',
+      externalNetworkType: 'Sub',
+      transactionState: 'Done',
+    });
+  });
+
+  it('parses Liberland bridgeProxy mint history as Substrate incoming history', async () => {
+    const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+    const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem({
+      id: '0xliberland-request-mint',
+      module: 'bridgeProxy',
+      method: 'mint',
+      address: 'relayer',
+      blockHash: '0xblock',
+      blockHeight: '109',
+      timestamp: 19,
+      networkFee: '0',
+      execution: { success: true, error: null },
+      dataFrom: 'sora-address',
+      dataTo: '5GrwvaEF5zXb26Fz9rcQpDWSxZ9zC7d4L4sUx8m6RRnF9jqw',
+      data: {
+        assetId: XOR.address,
+        amount: '3',
+        amountUSD: '6',
+        externalNetwork: 'Liberland',
+        externalNetworkType: 'Sub',
+        sender: { Liberland: '5GrwvaEF5zXb26Fz9rcQpDWSxZ9zC7d4L4sUx8m6RRnF9jqw' },
+        recipient: { Sora: 'sora-address' },
+        requestHash: '0xliberland-request',
+      },
+      calls: [],
+    } as any);
+
+    expect(parsed).toMatchObject({
+      type: Operation.SubstrateIncoming,
+      amount: '3',
+      amount2: '3',
+      assetAddress: XOR.address,
+      symbol: XOR.symbol,
+      from: 'sora-address',
+      to: '5GrwvaEF5zXb26Fz9rcQpDWSxZ9zC7d4L4sUx8m6RRnF9jqw',
+      hash: '0xliberland-request',
+      externalNetwork: 'Liberland',
+      externalNetworkType: 'Sub',
+      transactionState: 'Done',
+    });
+  });
 });

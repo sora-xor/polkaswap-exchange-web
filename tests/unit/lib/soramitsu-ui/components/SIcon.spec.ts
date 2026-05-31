@@ -29,7 +29,7 @@ describe('SIcon', () => {
     expect(swapPaths.every((path) => path.attributes('stroke') === '#000')).toBe(true);
   });
 
-  it('maps element loading icon class to soramitsu icon class and keeps spin behavior', () => {
+  it('renders legacy element loading icon as the shared circular spinner', () => {
     const wrapper = mount(SIcon, {
       props: {
         name: 'el-icon-loading',
@@ -38,9 +38,11 @@ describe('SIcon', () => {
 
     const icon = wrapper.get('i');
 
-    expect(icon.classes()).toContain('s-icon-arrows-refresh-cw-24');
-    expect(icon.classes()).toContain('s-icon--spin');
-    expect(wrapper.find('svg').exists()).toBe(true);
+    expect(icon.classes()).toContain('el-icon-loading');
+    expect(icon.classes()).toContain('s-icon-loading');
+    expect(icon.classes()).not.toContain('s-icon-arrows-refresh-cw-24');
+    expect(wrapper.find('svg.s-spinner').exists()).toBe(true);
+    expect(wrapper.find('circle.s-spinner__path').exists()).toBe(true);
   });
 
   it('maps element arrow icons to soramitsu chevron svg icons', () => {

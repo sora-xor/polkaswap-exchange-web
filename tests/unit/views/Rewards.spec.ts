@@ -12,6 +12,8 @@ const loadingRef = ref(false);
 const isLoggedInRef = ref(false);
 const soraAddressRef = ref('sora-address');
 const evmAddressRef = ref('');
+const connectEvmWalletMock = vi.fn();
+const evmProviderRef = ref(null);
 
 const setSelectedRewardsMock = vi.fn().mockResolvedValue(undefined);
 const getExternalRewardsMock = vi.fn().mockResolvedValue(undefined);
@@ -131,9 +133,9 @@ vi.mock('@/composables/useInternalConnect', () => ({
 
 vi.mock('@/composables/useWalletConnect', () => ({
   useWalletConnect: () => ({
-    evmProvider: ref(null),
+    evmProvider: evmProviderRef,
     evmAddress: evmAddressRef,
-    connectEvmWallet: vi.fn(),
+    connectEvmWallet: connectEvmWalletMock,
     disconnectEvmWallet: vi.fn(),
     disconnectExternalNetwork: vi.fn(),
     getEvmProviderIcon: vi.fn(),
@@ -226,9 +228,11 @@ describe('Rewards.vue', () => {
     isLoggedInRef.value = false;
     soraAddressRef.value = 'sora-address';
     evmAddressRef.value = '';
+    evmProviderRef.value = null;
     loadingRef.value = false;
     subscriptionsLoadingRef.value = false;
     connectSoraWalletMock.mockClear();
+    connectEvmWalletMock.mockClear();
     showAppNotificationMock.mockClear();
     withNotificationsMock.mockClear();
     setSelectedRewardsMock.mockClear();
@@ -333,6 +337,18 @@ describe('Rewards.vue', () => {
     await flushPromises();
 
     expect(getExternalRewardsMock).toHaveBeenCalledWith('0x123');
+  });
+
+  it('connects an Ethereum account without forwarding the click event as a provider', async () => {
+    isLoggedInRef.value = true;
+
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    await wrapper.find('.rewards-connect-button').trigger('click');
+
+    expect(connectEvmWalletMock).toHaveBeenCalledTimes(1);
+    expect(connectEvmWalletMock).toHaveBeenCalledWith();
   });
 
   it('refreshes fiat prices when displayed reward assets are missing prices', async () => {

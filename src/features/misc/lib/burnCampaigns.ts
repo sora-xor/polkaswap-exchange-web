@@ -2,11 +2,18 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
+import solswapMarkUrl from '@/assets/img/solswap-mark.svg?url';
+
 import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
 import type { XorBurn } from '@/indexer/queries/burnXor';
 
 export type CampaignKey = 'solswap';
+
+/** Campaign reward assets may be local placeholders before a chain asset address is available. */
+export type CampaignAsset = Asset & {
+  icon?: string;
+};
 
 export type RewardTier = {
   blockRange: string;
@@ -20,7 +27,7 @@ export type Campaign = {
   rewardTiers: RewardTier[];
   disabledText?: string;
   link: string;
-  receivedAsset: Asset;
+  receivedAsset: CampaignAsset;
   rate: string;
   max: number;
   min: number;
@@ -103,7 +110,7 @@ export const createBurnCampaigns = (): Record<CampaignKey, Campaign> => ({
       },
     ],
     link: 'https://t.me/solswap_io',
-    receivedAsset: { symbol: 'SS', address: '', name: 'SOLSWAP', decimals: 18 } as Asset,
+    receivedAsset: { symbol: 'SS', address: '', name: 'SOLSWAP', decimals: 18, icon: solswapMarkUrl } as CampaignAsset,
     rate: SOLSWAP_CURRENT_RATE,
     max: 100_000_000,
     min: 1,

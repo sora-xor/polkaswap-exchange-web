@@ -23,6 +23,7 @@ import { DexModule } from './dex';
 import { CeresLiquidityLockerModule } from './ceresLiquidityLocker';
 import { KensetsuModule } from './kensetsu';
 import { CryptoModule } from './crypto';
+import { PolkamarktModule } from './polkamarkt';
 import { XOR } from './assets/consts';
 import type { Storage } from './storage';
 import type { AccountAsset, Asset } from './assets/types';
@@ -55,6 +56,7 @@ export class Api<T = void> extends BaseApi<T> {
   public readonly dex = new DexModule<T>(this);
   public readonly ceresLiquidityLocker = new CeresLiquidityLockerModule<T>(this);
   public readonly kensetsu = new KensetsuModule<T>(this);
+  public readonly polkamarkt = new PolkamarktModule<T>(this);
 
   public override setConnection(connection: Connection) {
     super.setConnection(connection);

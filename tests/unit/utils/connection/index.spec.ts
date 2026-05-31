@@ -10,6 +10,7 @@ import type { Connection } from '@sora-substrate/connection';
 import type { Storage } from '@sora-substrate/sdk';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
+import { fetchRpc } from '@/utils/rpc';
 
 type MockedStorage = {
   get: (key: string) => string | null;
@@ -53,6 +54,12 @@ const toStorage = (storage: MockedStorage): Storage => storage as unknown as Sto
 const toConnection = (connection: MockedConnection, overrides: Partial<Connection> = {}): Connection =>
   ({ endpoint: '', api: undefined, ...connection, ...overrides }) as unknown as Connection;
 
+const flushLatencyProbe = async (): Promise<void> => {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+};
+
 class RetryNodesConnection extends NodesConnection {
   public connectNodeCalls = 0;
 
@@ -83,6 +90,21 @@ class DedupNodesConnection extends NodesConnection {
   protected async connectNode(_options: ConnectToNodeOptions = {}): Promise<void> {
     this.connectNodeCalls += 1;
     await new Promise<void>((resolve) => setTimeout(resolve, 10));
+    this.nodeAddressConnecting = '';
+    this.unlockConnection();
+  }
+}
+
+class SuccessfulNodesConnection extends NodesConnection {
+  public connectedNodes: Node[] = [];
+
+  protected async connectNode(options: ConnectToNodeOptions = {}): Promise<void> {
+    if (!options.node) {
+      throw new Error('node missing');
+    }
+
+    this.connectedNodes.push(options.node);
+    this.setNode(options.node);
     this.nodeAddressConnecting = '';
     this.unlockConnection();
   }
@@ -124,18 +146,22 @@ class CapTrackingNodesConnection extends NodesConnection {
 describe('NodesConnection reconnect behavior', () => {
   let originalBackoff: boolean;
   let originalLatencyProbe: boolean;
+  let originalParallelDial: boolean;
   let originalMaxActiveConnections: number;
 
   beforeEach(() => {
     originalBackoff = NodesConnection.enableBackoff;
     originalLatencyProbe = NodesConnection.enableLatencyProbe;
+    originalParallelDial = NodesConnection.enableParallelDial;
     originalMaxActiveConnections = NodesConnection.maxActiveConnections;
+    vi.mocked(fetchRpc).mockResolvedValue('0x1');
     vi.spyOn(Math, 'random').mockReturnValue(0);
   });
 
   afterEach(() => {
     NodesConnection.enableBackoff = originalBackoff;
     NodesConnection.enableLatencyProbe = originalLatencyProbe;
+    NodesConnection.enableParallelDial = originalParallelDial;
     NodesConnection.maxActiveConnections = originalMaxActiveConnections;
     vi.useRealTimers();
     vi.restoreAllMocks();
@@ -266,7 +292,7 @@ describe('NodesConnection reconnect behavior', () => {
     expect(nodesConnection.defaultNodes).toEqual([]);
   });
 
-  it('throttles default-node latency probes within the TTL window', () => {
+  it('throttles default-node latency probes within the TTL window', async () => {
     NodesConnection.enableLatencyProbe = true;
     vi.useFakeTimers();
 
@@ -277,16 +303,18 @@ describe('NodesConnection reconnect behavior', () => {
 
     nodesConnection.setDefaultNodes([nodeA, nodeB]);
     nodesConnection.setDefaultNodes([nodeA, nodeB]);
+    await flushLatencyProbe();
 
     expect(nodesConnection.probeCalls).toBe(1);
 
     vi.advanceTimersByTime(5 * 60_000 + 1);
     nodesConnection.setDefaultNodes([nodeA, nodeB]);
+    await flushLatencyProbe();
 
     expect(nodesConnection.probeCalls).toBe(2);
   });
 
-  it('re-probes immediately when default node list changes within TTL window', () => {
+  it('re-probes immediately when default node list changes within TTL window', async () => {
     NodesConnection.enableLatencyProbe = true;
     vi.useFakeTimers();
 
@@ -298,6 +326,7 @@ describe('NodesConnection reconnect behavior', () => {
     nodesConnection.setDefaultNodes([nodeA, nodeB]);
     nodesConnection.setDefaultNodes([nodeA]);
     nodesConnection.setDefaultNodes([nodeB, nodeA, { name: 'C', chain: 'chain', address: 'ws://node-c' }]);
+    await flushLatencyProbe();
 
     expect(nodesConnection.probeCalls).toBe(2);
   });
@@ -312,6 +341,93 @@ describe('NodesConnection reconnect behavior', () => {
     nodesConnection.setDefaultNodes([nodeA]);
 
     expect(nodesConnection.probeCalls).toBe(0);
+  });
+
+  it('selects and persists the fastest default node before the initial automatic connection', async () => {
+    NodesConnection.enableLatencyProbe = true;
+
+    vi.mocked(fetchRpc).mockImplementation(async (url: string) => {
+      if (url.includes('node-a')) {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+
+      return '0x1';
+    });
+
+    const storage = createStorage();
+    const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    await nodesConnection.connect();
+
+    expect(nodesConnection.connectedNodes[0]).toEqual(nodeB);
+    expect(JSON.parse(storage.get('node') as string)).toEqual(nodeB);
+    expect(storage.get('nodeSelectionMode')).toBe('auto');
+  });
+
+  it('treats legacy persisted default nodes as automatic selections and refreshes them by latency', async () => {
+    NodesConnection.enableLatencyProbe = true;
+
+    vi.mocked(fetchRpc).mockImplementation(async (url: string) => {
+      if (url.includes('node-a')) {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+
+      return '0x1';
+    });
+
+    const storage = createStorage();
+    storage.set('node', JSON.stringify(nodeA));
+    const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    await nodesConnection.connect();
+
+    expect(nodesConnection.connectedNodes[0]).toEqual(nodeB);
+    expect(JSON.parse(storage.get('node') as string)).toEqual(nodeB);
+    expect(storage.get('nodeSelectionMode')).toBe('auto');
+  });
+
+  it('preserves a manually selected node when latency probing finds a faster default', async () => {
+    NodesConnection.enableLatencyProbe = true;
+
+    vi.mocked(fetchRpc).mockImplementation(async (url: string) => {
+      if (url.includes('node-a')) {
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+
+      return '0x1';
+    });
+
+    const storage = createStorage();
+    storage.set('node', JSON.stringify(nodeA));
+    storage.set('nodeSelectionMode', 'manual');
+    const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    await nodesConnection.connect();
+
+    expect(nodesConnection.connectedNodes[0]).toEqual(nodeA);
+    expect(JSON.parse(storage.get('node') as string)).toEqual(nodeA);
+    expect(storage.get('nodeSelectionMode')).toBe('manual');
+  });
+
+  it('persists explicit user node selections as manual choices', async () => {
+    NodesConnection.enableLatencyProbe = false;
+
+    const storage = createStorage();
+    const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    await nodesConnection.connect({ node: nodeB, manualSelection: true });
+
+    expect(nodesConnection.connectedNodes[0]).toEqual(nodeB);
+    expect(JSON.parse(storage.get('node') as string)).toEqual(nodeB);
+    expect(storage.get('nodeSelectionMode')).toBe('manual');
   });
 
   it('clears a persisted default node after it is removed from the runtime default list', () => {

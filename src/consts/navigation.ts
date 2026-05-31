@@ -29,10 +29,12 @@ export enum PageNames {
   ExplorePools = 'Explore/Pools',
   ExploreBooks = 'Explore/Books',
   OrderBook = 'OrderBook',
+  Polkamarkt = 'Polkamarkt',
   LimitOrderBuy = 'OrderBook/LimitOrderBuy',
   LimitOrderSell = 'OrderBook/LimitOrderSell',
   AssetOwnerContainer = 'AssetOwnerContainer',
   VaultsContainer = 'VaultsContainer',
+  ForAgents = 'ForAgents',
   Burn = 'Burn',
 }
 

@@ -11,7 +11,7 @@
   "examples": "./polkaswap-agent.examples.json",
   "errorCatalog": "./polkaswap-agent.errors.json",
   "client": "./polkaswap-agent-client.js",
-  "repositoryDocs": "docs/agent-trading.md",
+  "repositoryDocs": "https://github.com/sora-xor/polkaswap-exchange-web/blob/develop/docs/agent-trading.md",
   "breadcrumbs": {
     "llms": "../llms.txt",
     "agents": "../agents.txt",
@@ -25,12 +25,12 @@
   },
   "developerTools": {
     "playground": "../agent-playground.html",
-    "exampleRunner": "examples/agent-runner/",
+    "exampleRunner": "https://github.com/sora-xor/polkaswap-exchange-web/tree/develop/examples/agent-runner",
     "exampleRunnerCommand": "yarn agent:runner"
   },
   "learningPath": [
     "Require version v1.",
-    "Open the app in a browser and wait for window.PolkaswapAgent or polkaswap-agent-ready.",
+    "Open the app in a browser with ?polkaswap-agent=1 before the hash route, then wait for window.PolkaswapAgent or polkaswap-agent-ready.",
     "Call ready({ requireNode: true }) before quotes, prepares, or execution.",
     "Use refreshWallets, walletAccounts, and connectWallet to select a signer through the page wallet system.",
     "Resolve asset symbols to addresses once, then use addresses for repeated execution.",

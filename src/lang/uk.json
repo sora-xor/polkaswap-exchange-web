@@ -28,7 +28,7 @@
         "title": "Налаштування облікового запису"
     },
     "accountText": "обліковий запис | облікові записи",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Активні облікові записи",
     "addAsset": {
         "add": "Додати",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} за {second}",
     "firstText": "Перший",
     "footer": {
+        "forAgents": "Для агентів",
         "internet": {
             "action": "Оновити {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "Інфо та спільнота",
         "privacy": "Політика конфіденційності",
         "sorawiki": "Вікі {Sora}"
+    },
+    "forAgents": {
+        "apiContext": "встановлюється в контексті сторінки після завантаження програми. Він використовує той самий вузол, гаманець, індексатор і шлях SDK, що й інтерфейс користувача.",
+        "contract": {
+            "idempotent": "Використовуйте стабільний clientOrderId і відновіть непевні подання перед повторною спробою.",
+            "noCustody": "Сторінка ніколи не отримує закриті ключі; підпис залишається з вибраним гаманцем.",
+            "prepareFirst": "Виклики, що змінюють стан, повинні пройти підготовку* перед виконанням*.",
+            "samePage": "Запустіть у контексті сторінки Polkaswap після події Ready."
+        },
+        "discoveryText": "Спочатку отримайте маніфест. Він пов’язує посилання з версіями, файли схем, приклади, каталог помилок і допоміжний клієнт, який постачається разом із цією статичною збіркою.",
+        "discoveryTitle": "Відкриття",
+        "entrypointsLabel": "Точки входу API агента",
+        "eyebrow": "автоматизація",
+        "flow": {
+            "execute": "Виконуйте лише після схвалення політики з підготовленим наміром і стабільним ідентифікатором замовлення клієнта.",
+            "open": "Відкрийте Polkaswap на сторінці реального браузера.",
+            "prepare": "Викличте відповідний метод підготовки перед будь-якою операцією підписання.",
+            "ready": "Зачекайте на подію готовності та вимагайте активного вузла SORA.",
+            "recover": "Відновіть непевні подання перед повторною спробою.",
+            "resolve": "Перетворіть символи активів на адреси перед повторним виконанням.",
+            "wallet": "Виберіть постачальника гаманця та обліковий запис, коли потрібен підпис."
+        },
+        "flowTitle": "Цикл безпечного виконання",
+        "lead": "Polkaswap надає вбудований у браузер API автоматизації для запуску агентів, які відкривають статичну програму.",
+        "links": {
+            "client": "Допоміжний клієнт JavaScript",
+            "errors": "Каталог помилок",
+            "examples": "Приклади",
+            "manifest": "Маніфест відкриття",
+            "playground": "Агентський майданчик",
+            "reference": "Повне посилання на API",
+            "schema": "Схема JSON",
+            "types": "Визначення TypeScript"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Канонічний документ відкриття для загальних бігунів.",
+                "title": "Почніть з маніфесту"
+            },
+            "playground": {
+                "description": "Ручне дослідження того самого походження для статусу, активів, котирувань і попереднього перегляду.",
+                "title": "Відкрийте дитячий майданчик"
+            },
+            "reference": {
+                "description": "Зрозуміла карта методів, приклади, правила підписання та примітки щодо відновлення.",
+                "title": "Прочитайте посилання на API"
+            }
+        },
+        "signingTextAfter": "щоб повторні спроби були ідемпотентними.",
+        "signingTextBefore": "Сторінка ніколи не приймає закритих ключів. Методи зміни стану використовують вибраний підписувач гаманця та вимагають, щоб бігун передав повернутий",
+        "signingTextMiddle": "плюс стайня",
+        "signingTitle": "Підписання та зберігання",
+        "startTitle": "Почніть тут",
+        "title": "Для агентів"
     },
     "forText": "для",
     "hashiBridgeText": "міст {Hashi}",
@@ -798,6 +879,7 @@
         "Explore/Container": "Популярне",
         "Farming": "Сільське господарство",
         "OrderBook": "Обмін",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Пул",
         "Rewards": "Нагороди",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Не вдалося скасувати лімітний ордер",
             "OrderBookCancelLimitOrders": "Не вдалося скасувати лімітні ордери",
             "OrderBookPlaceLimitOrder": "Не вдалося розмістити лімітний ордер на {amount} {symbol} за ціною {price} {symbol2}",
+            "PolkamarktAddLiquidity": "Не вдалося додати {amount} {symbol} ліквідність до Polkamarkt",
+            "PolkamarktBuy": "Не вдалося купити {amount} {symbol} на Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Не вдалося вимагати винагороди автора Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Не вдалося отримати ліквідність творця Polkamarkt",
+            "PolkamarktClaimLiquidity": "Не вдалося вимагати залишок від Polkamarkt LP",
+            "PolkamarktClaimMarket": "Не вдалося отримати виплату Polkamarkt",
+            "PolkamarktClaimMarkets": "Не вдалося отримати виплати Polkamarkt",
+            "PolkamarktCreateCondition": "Не вдалося створити умову Polkamarkt",
+            "PolkamarktCreateMarket": "Не вдалося створити ринок Polkamarkt із {amount} {symbol}",
+            "PolkamarktFlip": "Не вдалося перевернути {amount} {symbol} на Polkamarkt",
+            "PolkamarktSell": "Не вдалося продати {amount} {symbol} на Polkamarkt",
             "ReferralReserveXor": "Не вдалося заблокувати {amount} XOR",
             "ReferralSetInvitedUser": "Не вдалося встановити {role} {address}",
             "ReferralUnreserveXor": "Не вдалося розблокувати {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "Лімітний ордер скасовано",
             "OrderBookCancelLimitOrders": "Лімітні ордери скасовано",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} за {price} {symbol2} розміщено",
+            "PolkamarktAddLiquidity": "Додано {amount} {symbol} ліквідності до Polkamarkt",
+            "PolkamarktBuy": "Купив {amount} {symbol} на Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Заявлена винагорода творця Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Творець Polkamarkt заявив про ліквідність",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP заявляє про залишки",
+            "PolkamarktClaimMarket": "Заявка на виплату Polkamarkt",
+            "PolkamarktClaimMarkets": "Заявлено виплати Polkamarkt",
+            "PolkamarktCreateCondition": "Стан Polkamarkt створено",
+            "PolkamarktCreateMarket": "Ринок Polkamarkt створено за допомогою {amount} {symbol}",
+            "PolkamarktFlip": "Перегорнуто {amount} {symbol} на Polkamarkt",
+            "PolkamarktSell": "Продано {amount} {symbol} на Polkamarkt",
             "ReferralReserveXor": "Заблоковано {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} успішно встановлено",
             "ReferralUnreserveXor": "Розблоковано {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Скасувати ордер",
         "OrderBookCancelLimitOrders": "Скасувати ордери",
         "OrderBookPlaceLimitOrder": "Розмістити ордер",
+        "PolkamarktAddLiquidity": "Додайте ліквідність Polkamarkt",
+        "PolkamarktBuy": "Купуйте акції Polkamarkt",
+        "PolkamarktClaimCreatorFees": "Отримайте винагороду Polkamarkt Creator",
+        "PolkamarktClaimCreatorLiquidity": "Вимагайте ліквідність Polkamarkt Creator",
+        "PolkamarktClaimLiquidity": "Претензія Polkamarkt LP Залишок",
+        "PolkamarktClaimMarket": "Отримайте виплату Polkamarkt",
+        "PolkamarktClaimMarkets": "Вимагайте виплати Polkamarkt",
+        "PolkamarktCreateCondition": "Створіть умову Polkamarkt",
+        "PolkamarktCreateMarket": "Створіть ринок Polkamarkt",
+        "PolkamarktFlip": "Перевернути позицію Polkamarkt",
+        "PolkamarktSell": "Продайте акції Polkamarkt",
         "ReferralReserveXor": "Заблокувати XOR",
         "ReferralSetInvitedUser": "Встановити {role}",
         "ReferralUnreserveXor": "Розблокувати XOR",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "Пули",
         "Explore/Staking": "Стейкінг",
         "Explore/Tokens": "Токени",
+        "ForAgents": "Для агентів",
         "OrderBook": "Торгівля",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Пул",
         "Rewards": "Винагороди",
         "Sccp": "SCCP",
@@ -1331,6 +1448,155 @@
         "noExtensions": "Розширення {PolkadotJs} не знайдено. Встановіть його й перезавантажте сторінку\nhttps://polkadot.js.org/extension/",
         "noSigner": "Доступ заборонено. Перейдіть до налаштувань розширення {extension} та відкрийте \"Manage Website Access\", щоб дозволити."
     },
+    "polkamarkt": {
+        "actions": {
+            "buy": "купити",
+            "claimCreatorFees": "Вимагати комісію творця",
+            "claimCreatorLiquidity": "Вимагати ліквідність творця",
+            "claimLpResidual": "Претензія LP залишок",
+            "claimTraderPayout": "Вимагати виплату трейдера",
+            "createMarket": "Створити ринок",
+            "flip": "Перевернути",
+            "liquidity": "Додати ліквідність",
+            "sell": "Продати"
+        },
+        "create": {
+            "category": "Категорія",
+            "closeBlock": "Закрити блок",
+            "creationFee": "Плата за створення",
+            "deadline": "Термін торгівлі",
+            "marketFailed": "Умови були створені, але створити ринок не вдалося. Повторіть спробу створення ринку зі збереженою умовою.",
+            "metadataTooLong": "Метадані запитань, оракул і резолюцій мають міститися в межах 512 байт.",
+            "question": "Ринкове питання",
+            "questionPlaceholder": "Чи завершиться подія ТАК до вибраного терміну?",
+            "questionTooShort": "Питання має бути не менше 32 байтів.",
+            "retryMessage": "Створено умову {id}. Повторіть лише крок створення ринку.",
+            "retrySubmit": "Повторіть спробу створення ринку",
+            "seedLiquidity": "Насіннєва ліквідність",
+            "seedTooSmall": "Початкова ліквідність має бути принаймні {amount} {symbol}.",
+            "submit": "Створити умови та ринок",
+            "title": "Створіть ринок Polkamarkt"
+        },
+        "details": {
+            "awaitingSettlement": "Очікує доопрацювання",
+            "empty": "Виберіть ринок, щоб переглянути стан піддона, деталі оракула та докази розрахунків.",
+            "openResolutionSource": "Відкритий вихідний код",
+            "oracle": "Оракул",
+            "pool": "Пул ліквідності",
+            "settlement": "Реквізити розрахунку"
+        },
+        "errors": {
+            "loadActivity": "Не вдалося завантажити активність облікового запису Polkamarkt.",
+            "loadMarkets": "Не вдалося завантажити ринки Polkamarkt."
+        },
+        "fields": {
+            "collateralAsset": "Заставний актив",
+            "conditionId": "ID умови",
+            "evidenceBlock": "Блок доказів",
+            "evidenceHash": "Хеш доказів",
+            "evidenceUri": "URI доказів",
+            "lpContributed": "LP сприяв",
+            "lpShares": "Акції LP",
+            "noReserve": "БЕЗ резерву",
+            "oracle": "Оракул",
+            "poolCollateral": "Застава басейну",
+            "resolutionOutcome": "Результат вирішення",
+            "resolutionSource": "Джерело дозволу",
+            "yesReserve": "ТАК резерв"
+        },
+        "filters": {
+            "active": "Активний",
+            "allCategories": "Всі категорії",
+            "allStatuses": "Всі статуси",
+            "finalized": "Завершено",
+            "mine": "моя"
+        },
+        "loadingMarkets": "Завантаження ринків...",
+        "markets": {
+            "search": "Пошукові ринки",
+            "subtitle": "{count} ринки відповідають поточним фільтрам",
+            "title": "Ринки"
+        },
+        "metrics": {
+            "closeBlock": "Закрити блок",
+            "liquidity": "Ліквідність",
+            "noQuote": "БЕЗ цитати",
+            "status": "Статус",
+            "volume": "Обсяг",
+            "yesProbability": "ТАК",
+            "yesQuote": "цитата ТАК"
+        },
+        "modes": {
+            "buy": "купити",
+            "claim": "Претензія",
+            "flip": "Перевернути",
+            "liquidity": "LP",
+            "sell": "Продати"
+        },
+        "my": {
+            "claimsSummary": "Трейдер {trader} / LP {lp}",
+            "connect": "Підключіть обліковий запис, щоб переглянути створені ринки, акції LP, виплати та останні угоди.",
+            "createdMarkets": "Створені ринки",
+            "empty": "Для цього облікового запису ще немає позицій на Polkamarkt або створених ринків.",
+            "loading": "Завантаження облікового запису Polkamarkt...",
+            "market": "Ринок {id}",
+            "positions": "Позиції LP і трейдера",
+            "recentTrades": "Останні торги",
+            "sharesSummary": "ТАК {yes} / НІ {no} / LP {lp}",
+            "subtitle": "Створені ринки, акції LP, виплати трейдерам, винагороди творців і залишкові вимоги LP.",
+            "title": "Мої ринки / Л.П"
+        },
+        "noMarkets": "Жоден ринок не відповідає поточним фільтрам.",
+        "notIndexed": "Не індексується",
+        "outcomes": {
+            "no": "НІ",
+            "yes": "ТАК"
+        },
+        "pageSubtitle": "Торгуйте на активних прогнозованих ринках, створюйте нові ринки та керуйте LP і затребуваними балансами з потоку гаманців Polkaswap.",
+        "status": {
+            "active": "Активний"
+        },
+        "ticket": {
+            "amountPlaceholder": "0,0",
+            "claimable": "Вимагається",
+            "claimableFailed": "Неможливо прочитати залишки, на які можна претендувати.",
+            "claimStatus": "Статус претензії",
+            "collateralAmount": "Сума ({symbol})",
+            "collateralOut": "Вихід застави",
+            "enterAmount": "Введіть суму",
+            "flippedShares": "Перевернуті акції",
+            "insufficientKusd": "Недостатній баланс {symbol}",
+            "insufficientXor": "Недостатньо XOR для плати за мережу",
+            "invalidAmount": "Введіть дійсну суму",
+            "lpSharesOut": "LP ділиться",
+            "noChainMarket": "Ринок не торгується в мережі",
+            "quoteFailed": "Не вдалося оновити цитату.",
+            "refreshingQuote": "Оновлення цитати...",
+            "selectMarket": "Виберіть активний ринок для торгівлі.",
+            "sharesAmount": "акції",
+            "sharesOut": "Ділиться",
+            "slippage": "Ковзання %",
+            "subtitle": "Котирування, комісії, захист від прослизання та подання гаманця використовують середовище виконання SORA.",
+            "title": "Торговий квиток",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "байтів",
+            "shares": "акції"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
+    },
     "pool": {
         "addLiquidity": "Додати ліквідність",
         "connectToWallet": "Під’єднайте обліковий запис, щоб переглянути вашу ліквідність.",
@@ -1374,7 +1640,7 @@
             "hasReferrerTitle": "Ви вже вказали свого реферера",
             "inviteDescription": "З кожної транзакції 10% комісії надходитиме вашому рефереру — для вас без додаткових витрат.",
             "inviteTitle": "Вас запросили до {AppName}",
-            "ok": "OK",
+            "ok": "добре",
             "signInvitation": "Підтвердити",
             "unbond": "Підтвердити розблокування"
         },
@@ -1566,7 +1832,7 @@
         "github": "GitHub",
         "medium": "Середній",
         "reddit": "Reddit",
-        "telegram": "Telegram",
+        "telegram": "Телеграма",
         "twitter": "Twitter",
         "wiki": "Вікі {Sora}"
     },
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Комісія",
             "commissionTooltip": "Комісія — плата, яку утримують валідатори за свої послуги у процесі стейкінгу. Ця комісія, виражена у відсотках, віднімається з винагород номінаторів до розподілу. Зверніть увагу: валідатори можуть змінювати ставку комісії будь‑коли.",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Зняти вибір із усіх",
             "name": "Назва",
             "noNominatedValidators": "У вас немає номінованих валідаторів",
             "noValidators": "Немає валідаторів, що відповідають фільтрам",
             "return": "Повернутись",
             "search": "Пошук...",
-            "selectAll": "Select all",
+            "selectAll": "Вибрати все",
             "staked": "Ставили",
             "stakedTooltip": "Загальна частка валідатора XOR, включно з власною часткою валідатора та номінальною часткою"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Облікові записи — це цифрові адреси, на яких зберігаються активи користувача в мережі. Кожен обліковий запис має унікальну публічну адресу та приватний ключ, що дозволяє керувати активами.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Унікальні акаунти, які брали участь в транзакціях протягом вибраного періоду.",
         "bridgeTransactions": "Міст {from} → {to} — це процес переказу активів між мережами {from} та {to} за допомогою мосту. Міст забезпечує взаємодію між мережами й дозволяє безшовно переміщувати активи між ними.",
         "fees": "Комісії в блокчейні {Sora} — це плата за виконання транзакцій у мережі. Комісії сплачуються в XOR — нативній криптовалюті мережі {Sora}. Розмір комісії залежить від складності та обсягу транзакції.",
         "roi": "{ROI} — це окупність інвестицій (Return on Investment). Обчислюється як відношення отриманого прибутку до вартості інвестиції у відсотках.",

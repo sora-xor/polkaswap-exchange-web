@@ -3,6 +3,7 @@ import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';
+import { normalizeCodecBalanceValue } from '@/utils/asset-formatting';
 import { getFiatPriceByAddress } from '@/utils/fiatPrice';
 import { FontSizeRate, FontWeightRate } from '../consts';
 
@@ -31,9 +32,11 @@ export function useFormattedAmount() {
     if (!price || !asset.balance) {
       return null;
     }
-    return getFPNumberFromCodec(asset.balance[type], asset.decimals)
-      .mul(FPNumber.fromCodecValue(price))
-      .toLocaleString();
+    const balance = normalizeCodecBalanceValue(asset.balance[type]);
+    if (!balance) {
+      return null;
+    }
+    return getFPNumberFromCodec(balance, asset.decimals).mul(FPNumber.fromCodecValue(price)).toLocaleString();
   };
 
   const getFiatAmount = (
@@ -49,7 +52,10 @@ export function useFormattedAmount() {
       return null;
     }
     const { decimals } = asset;
-    const amountParam = amount || '0';
+    const amountParam = isCodecString ? (amount === '' ? '0' : normalizeCodecBalanceValue(amount)) : amount || '0';
+    if (amountParam === null) {
+      return null;
+    }
     return (isCodecString ? getFPNumberFromCodec(amountParam, decimals) : getFPNumber(amountParam, decimals))
       .mul(FPNumber.fromCodecValue(price))
       .toLocaleString();

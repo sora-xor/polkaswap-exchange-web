@@ -105,19 +105,27 @@ describe('PolkaswapAgent discovery surface', () => {
 
     expect(runner).toContain('window.PolkaswapAgent');
     expect(runner).toContain('polkaswap-agent.json');
+    expect(runner).toContain('polkaswap-agent');
+    expect(runner).not.toContain('disclaimerApprove');
     expect(runnerReadme).toContain('POLKASWAP_AGENT_EXECUTE_SWAP');
+    expect(runnerReadme).toContain('?polkaswap-agent=1#/swap');
     expect(packageJson.scripts['agent:runner']).toBe('node ./examples/agent-runner/agent-runner.mjs');
   });
 
   it('publishes generic agent discovery breadcrumbs', async () => {
-    const [index, llms, agents, agentInstructions, robots, playground, manifest] = await Promise.all([
+    const [index, llms, agents, agentInstructions, robots, playground, playgroundScript, manifest] = await Promise.all([
       readText('index.html'),
       readText('public/llms.txt'),
       readText('public/agents.txt'),
       readText('public/AGENTS.md'),
       readText('public/robots.txt'),
       readText('public/agent-playground.html'),
-      readJson<{ breadcrumbs: Record<string, unknown>; developerTools: Record<string, string> }>(
+      readText('public/agent-playground.js'),
+      readJson<{
+        repositoryDocs: string;
+        breadcrumbs: Record<string, unknown>;
+        developerTools: Record<string, string>;
+      }>(
         'public/.well-known/polkaswap-agent.json'
       ),
     ]);
@@ -133,6 +141,10 @@ describe('PolkaswapAgent discovery surface', () => {
       expect(breadcrumb).toContain('window.PolkaswapAgent');
     }
 
+    expect(llms).toContain('?polkaswap-agent=1');
+    expect(agents).toContain('?polkaswap-agent=1');
+    expect(agentInstructions).toContain('?polkaswap-agent=1');
+
     expect(manifest.breadcrumbs).toEqual(
       expect.objectContaining({
         llms: '../llms.txt',
@@ -144,13 +156,23 @@ describe('PolkaswapAgent discovery surface', () => {
     expect(manifest.developerTools).toEqual(
       expect.objectContaining({
         playground: '../agent-playground.html',
-        exampleRunner: 'examples/agent-runner/',
+        exampleRunner: 'https://github.com/sora-xor/polkaswap-exchange-web/tree/develop/examples/agent-runner',
         exampleRunnerCommand: 'yarn agent:runner',
       })
     );
-    expect(playground).toContain('window.PolkaswapAgent');
-    expect(playground).toContain('agent.prepareSwap');
+    expect(manifest.repositoryDocs).toBe(
+      'https://github.com/sora-xor/polkaswap-exchange-web/blob/develop/docs/agent-trading.md'
+    );
+    expect(playground).toContain('src="./agent-playground.js"');
+    expect(playground).not.toContain('<script>');
+    expect(playgroundScript).toContain('PolkaswapAgent');
+    expect(playgroundScript).toContain('polkaswap-agent');
+    expect(playgroundScript).toContain('agent.prepareSwap');
+    expect(playgroundScript.indexOf("frame.addEventListener('load'")).toBeLessThan(
+      playgroundScript.indexOf('frame.src = getAppUrl()')
+    );
     expect(playground).not.toContain('agent.executeSwap');
+    expect(playgroundScript).not.toContain('agent.executeSwap');
   });
 
   it('does not publish old numbered agent API versions', async () => {

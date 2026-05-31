@@ -369,13 +369,13 @@ describe('utils amount math edge cases', () => {
     expect(result.toString()).toBe('0');
   });
 
-  it('getMaxBalance subtracts fee only for native balances', () => {
+  it('getMaxBalance subtracts fee and a native safety margin only for SORA native balances', () => {
     const asset = mockAsset({ address: 'xor', decimals: 18, transferable: '1000000000000000000' });
     const fee = '100000000000000000';
 
     const result = getMaxBalance(asset as any, fee);
 
-    expect(result.toString()).toBe('0.9');
+    expect(result.toString()).toBe('0.899999');
 
     const externalAsset = mockAsset({
       address: '0xExternal',
@@ -417,7 +417,8 @@ describe('utils amount math edge cases', () => {
   it('hasInsufficientBalance respects provided options', () => {
     const asset = mockAsset({ address: 'xor', decimals: 18, transferable: '100000000000000000' });
 
-    expect(hasInsufficientBalance(asset as any, '0.09', '10000000000000000')).toBe(false);
+    expect(hasInsufficientBalance(asset as any, '0.08', '10000000000000000')).toBe(false);
+    expect(hasInsufficientBalance(asset as any, '0.09', '10000000000000000')).toBe(true);
     expect(hasInsufficientBalance(asset as any, '0.09', '90000000000000000')).toBe(true);
   });
 

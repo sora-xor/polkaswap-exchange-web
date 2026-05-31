@@ -55,6 +55,79 @@ describe('ExtensionConnectionList source', () => {
     expect(extensionConnectionListSource).not.toContain('name="basic-circle-star-24"');
   });
 
+  it('renders a loading wallet spinner only for the user-selected wallet', async () => {
+    const wrapper = mount(ExtensionConnectionList, {
+      props: {
+        wallets: [
+          {
+            extensionName: 'google-drive',
+            title: 'Google',
+            installed: true,
+            logo: { src: '', alt: 'Google' },
+          },
+        ],
+        selectedWallet: 'google-drive',
+        selectedWalletLoading: true,
+      },
+      global: {
+        stubs: {
+          AccountCard: {
+            template:
+              '<article class="account-card-stub" @click="$emit(\'click\', $event)"><slot name="avatar" /><slot name="name" /><slot /></article>',
+          },
+          ConnectionItems: {
+            template: '<section><slot /></section>',
+          },
+          's-icon': {
+            props: ['name', 'size'],
+            template: '<i class="s-icon-stub" :data-name="name" :data-size="size"></i>',
+          },
+        },
+      },
+    });
+
+    expect(wrapper.find('.connection-loading-icon').attributes('data-name')).toBe('el-icon-loading');
+
+    await wrapper.get('.account-card-stub').trigger('click');
+
+    expect(wrapper.emitted('select')).toBeUndefined();
+  });
+
+  it('does not render a spinner for unselected wallets', async () => {
+    const wallet = {
+      extensionName: 'google-drive',
+      title: 'Google',
+      installed: true,
+      logo: { src: '', alt: 'Google' },
+    };
+    const wrapper = mount(ExtensionConnectionList, {
+      props: {
+        wallets: [wallet],
+      },
+      global: {
+        stubs: {
+          AccountCard: {
+            template:
+              '<article class="account-card-stub" @click="$emit(\'click\', $event)"><slot name="avatar" /><slot name="name" /><slot /></article>',
+          },
+          ConnectionItems: {
+            template: '<section><slot /></section>',
+          },
+          's-icon': {
+            props: ['name', 'size'],
+            template: '<i class="s-icon-stub" :data-name="name" :data-size="size"></i>',
+          },
+        },
+      },
+    });
+
+    expect(wrapper.find('.connection-loading-icon').exists()).toBe(false);
+
+    await wrapper.get('.account-card-stub').trigger('click');
+
+    expect(wrapper.emitted('select')?.[0]).toEqual([wallet]);
+  });
+
   it('styles the recommended badge as a compact aligned pill', () => {
     expect(extensionConnectionListSource).toMatch(
       /&-label\s*\{[\s\S]*?display:\s*inline-flex;[\s\S]*?align-items:\s*center;[\s\S]*?min-height:\s*20px;[\s\S]*?font-weight:\s*600;[\s\S]*?white-space:\s*nowrap;[\s\S]*?\}/

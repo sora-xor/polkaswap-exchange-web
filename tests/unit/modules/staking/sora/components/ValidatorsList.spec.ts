@@ -481,6 +481,88 @@ describe('ValidatorsList.vue', () => {
     expect(list.findAll('.selection-controls .s-button-stub').at(1)?.attributes('disabled')).toBeDefined();
   });
 
+  it('bulk-selects without carrying malformed or duplicate selected payloads forward', async () => {
+    const wrapper = mountComponent({
+      mode: ValidatorsListMode.SELECT,
+      showSelectionControls: true,
+      selectedValidators: [
+        null,
+        { address: '' },
+        validatorsRef.value[0],
+        { ...validatorsRef.value[0] },
+        validatorsRef.value[2],
+      ] as unknown as Validator[],
+    });
+    await flushPromises();
+
+    wrapper.vm.selectAllValidators();
+    await flushPromises();
+
+    const emitted = wrapper.emitted('update:selected') ?? [];
+    expect((emitted[0][0] as Validator[]).map((validator) => validator.address)).toEqual([
+      'addr-1',
+      'addr-3',
+      'addr-2',
+    ]);
+  });
+
+  it('bulk-select does not emit when an adversarial search hides every row', async () => {
+    const wrapper = mountComponent({
+      mode: ValidatorsListMode.SELECT,
+      showSelectionControls: true,
+    });
+    await flushPromises();
+
+    await wrapper.get('.validators-search input').setValue('"><script>alert(1)</script>');
+    await flushPromises();
+
+    wrapper.vm.selectAllValidators();
+    await flushPromises();
+
+    expect(wrapper.findAll('.validator')).toHaveLength(0);
+    expect(wrapper.emitted('update:selected')).toBeUndefined();
+  });
+
+  for (const mode of [ValidatorsListMode.ALL, ValidatorsListMode.USER]) {
+    it(`bulk selection handlers do not emit in ${mode} mode`, async () => {
+      const wrapper = mountComponent({
+        mode,
+        showSelectionControls: true,
+        selectedValidators: [validatorsRef.value[0]],
+      });
+      await flushPromises();
+
+      wrapper.vm.selectAllValidators();
+      wrapper.vm.deselectAllValidators();
+      await flushPromises();
+
+      expect(wrapper.emitted('update:selected')).toBeUndefined();
+      expect(wrapper.find('.selection-controls').exists()).toBe(false);
+    });
+  }
+
+  it('does not reselect recommended validators after a bulk deselect and data refresh', async () => {
+    const wrapper = mountParentForMode(ValidatorsListMode.RECOMMENDED, true);
+    await flushPromises();
+
+    const list = wrapper.getComponent(ValidatorsList);
+    expect((wrapper.vm as unknown as { selected: Validator[] }).selected.map((validator) => validator.address)).toEqual(
+      ['addr-1', 'addr-2']
+    );
+
+    await list.findAll('.selection-controls .s-button-stub').at(1)?.trigger('click');
+    await flushPromises();
+
+    validatorsRef.value = [
+      createValidator('addr-1', { apy: '100' }),
+      createValidator('addr-2', { apy: '90' }),
+      createValidator('addr-4', { apy: '80' }),
+    ];
+    await flushPromises();
+
+    expect((wrapper.vm as unknown as { selected: Validator[] }).selected).toEqual([]);
+  });
+
   it('removes duplicate selected entries for the same validator address when deselecting', async () => {
     const duplicateSelectedValidator = { ...validatorsRef.value[0] };
     const wrapper = mountComponent({
@@ -891,6 +973,45 @@ describe('ValidatorsList.vue', () => {
     ]);
   });
 
+  it('treats non-decimal commission and return encodings as zero during sorting', async () => {
+    validatorsRef.value = [
+      createValidator('addr-hex', { commission: '0x200000000', apy: '0x64' }),
+      createValidator('addr-exponent', { commission: '1e9', apy: '1e2' }),
+      createValidator('addr-negative', { commission: '-1', apy: '-5' }),
+      createValidator('addr-valid', { commission: '2.5', apy: '12.5' }),
+    ];
+
+    const wrapper = mountComponent({ mode: ValidatorsListMode.SELECT });
+    await flushPromises();
+
+    expect(wrapper.findAll('.validator .name').map((item) => item.text())).toEqual([
+      'addr-valid',
+      'addr-hex',
+      'addr-exponent',
+      'addr-negative',
+    ]);
+
+    wrapper.vm.setReturnSort();
+    await flushPromises();
+
+    expect(wrapper.findAll('.validator .name').map((item) => item.text())).toEqual([
+      'addr-hex',
+      'addr-exponent',
+      'addr-negative',
+      'addr-valid',
+    ]);
+
+    wrapper.vm.setCommissionSort();
+    await flushPromises();
+
+    expect(wrapper.findAll('.validator .name').map((item) => item.text())).toEqual([
+      'addr-hex',
+      'addr-exponent',
+      'addr-negative',
+      'addr-valid',
+    ]);
+  });
+
   it('treats missing or malformed staked totals as zero during stake sorting', async () => {
     validatorsRef.value = [
       createValidator('addr-invalid', { apy: '0', stake: { total: 'not-a-codec-value', own: '0' } }),
@@ -936,6 +1057,26 @@ describe('ValidatorsList.vue', () => {
     expect(wrapper.findAll('.validator .name').map((item) => item.text())).toEqual([
       'addr-separated',
       'addr-plain',
+      'addr-zero',
+    ]);
+  });
+
+  it('treats decimal codec stake totals as invalid instead of stripping the decimal point', async () => {
+    validatorsRef.value = [
+      createValidator('addr-decimal', { apy: '0', stake: { total: '1.5', own: '0' } }),
+      createValidator('addr-zero', { apy: '0', stake: { total: '0', own: '0' } }),
+      createValidator('addr-high', { apy: '0', stake: { total: '1000000000000000000', own: '0' } }),
+    ];
+
+    const wrapper = mountComponent({ mode: ValidatorsListMode.SELECT });
+    await flushPromises();
+
+    wrapper.vm.setStakedSort();
+    await flushPromises();
+
+    expect(wrapper.findAll('.validator .name').map((item) => item.text())).toEqual([
+      'addr-high',
+      'addr-decimal',
       'addr-zero',
     ]);
   });

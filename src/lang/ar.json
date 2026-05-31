@@ -28,7 +28,7 @@
         "title": "إعدادات الحساب"
     },
     "accountText": "حساب | حسابات",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "الحسابات النشطة",
     "addAsset": {
         "add": "إضافة",
         "AddAssetToken": {
@@ -271,7 +271,7 @@
         "nexusRecipientPlaceholder": "أدخل حساب SORA Nexus i105 الخاص بك",
         "nexusRecipientWarning": "يتم تسجيل حساب SORA Nexus الخاص بك بشكل علني في معاملة النسخ هذه.",
         "soraNetworkTxHashLabel": "تجزئة شبكة SORA",
-        "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraNexusXorLabel": "سورا نيكزس XOR",
         "soraV3XorAmountTitle": "كم {tokenSymbol} هل تريد؟",
         "ssTokensLabel": "رموز SS"
     },
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} لكل {second}",
     "firstText": "أولاً",
     "footer": {
+        "forAgents": "للوكلاء",
         "internet": {
             "action": "تحديث {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "المعلومات والمجتمع",
         "privacy": "سياسة الخصوصية",
         "sorawiki": "{Sora} ويكي"
+    },
+    "forAgents": {
+        "apiContext": "يتم تثبيته في سياق الصفحة بعد تشغيل التطبيق. ويستخدم نفس العقدة والمحفظة والمفهرس ومسار SDK كواجهة المستخدم.",
+        "contract": {
+            "idempotent": "استخدم ClientOrderId مستقرًا واسترد عمليات الإرسال غير المؤكدة قبل إعادة المحاولة.",
+            "noCustody": "الصفحة لا تتلقى مفاتيح خاصة أبدًا؛ يبقى التوقيع مع المحفظة المحددة.",
+            "prepareFirst": "يجب أن تمر مكالمات تغيير الحالة بالتحضير* قبل التنفيذ*.",
+            "samePage": "قم بالتشغيل داخل سياق صفحة Polkaswap بعد الحدث الجاهز."
+        },
+        "discoveryText": "إحضار البيان أولاً. فهو يربط المرجع الذي تم إصداره وملفات المخطط والأمثلة وكتالوج الأخطاء والعميل المساعد الذي تم شحنه مع هذا الإصدار الثابت.",
+        "discoveryTitle": "اكتشاف",
+        "entrypointsLabel": "نقاط دخول واجهة برمجة تطبيقات الوكيل",
+        "eyebrow": "الأتمتة",
+        "flow": {
+            "execute": "لا يتم التنفيذ إلا بعد الموافقة على السياسة، مع النية المعدة ومعرف طلب العميل الثابت.",
+            "open": "افتح Polkaswap في صفحة متصفح حقيقية.",
+            "prepare": "قم باستدعاء طريقة التحضير المطابقة قبل أي عملية توقيع.",
+            "ready": "انتظر الحدث الجاهز واطلب عقدة SORA نشطة.",
+            "recover": "قم باسترداد الإرسالات غير المؤكدة قبل إعادة المحاولة.",
+            "resolve": "قم بحل رموز الأصول إلى العناوين قبل التنفيذ المتكرر.",
+            "wallet": "حدد مزود المحفظة والحساب عند الحاجة إلى التوقيع."
+        },
+        "flowTitle": "حلقة التنفيذ الآمنة",
+        "lead": "يكشف Polkaswap عن واجهة برمجة تطبيقات أتمتة أصلية للمتصفح لمشغلي الوكلاء الذين يفتحون التطبيق الثابت.",
+        "links": {
+            "client": "عميل مساعد جافا سكريبت",
+            "errors": "كتالوج الأخطاء",
+            "examples": "أمثلة",
+            "manifest": "بيان الاكتشاف",
+            "playground": "ملعب الوكيل",
+            "reference": "مرجع API الكامل",
+            "schema": "مخطط JSON",
+            "types": "تعريفات تايب سكريبت"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "وثيقة الاكتشاف الكنسي للعدائين العامين.",
+                "title": "ابدأ بالبيان"
+            },
+            "playground": {
+                "description": "التحقيق اليدوي من نفس المصدر للحالة والأصول وعروض الأسعار والمعاينات.",
+                "title": "افتح الملعب"
+            },
+            "reference": {
+                "description": "خريطة طريقة قابلة للقراءة وأمثلة وقواعد التوقيع وملاحظات الاسترداد.",
+                "title": "اقرأ مرجع API"
+            }
+        },
+        "signingTextAfter": "للحفاظ على إعادة المحاولة عاجزة.",
+        "signingTextBefore": "الصفحة لا تأخذ مفاتيح خاصة أبدًا. تستخدم أساليب تغيير الحالة موقع المحفظة المحدد وتتطلب من العداء تمرير ما تم إرجاعه",
+        "signingTextMiddle": "بالإضافة إلى مستقرة",
+        "signingTitle": "التوقيع والحضانة",
+        "startTitle": "ابدأ هنا",
+        "title": "للوكلاء"
     },
     "forText": "ل",
     "hashiBridgeText": "{Hashi} جسر",
@@ -798,6 +879,7 @@
         "Explore/Container": "استكشاف",
         "Farming": "الزراعة",
         "OrderBook": "دفتر الأوامر",
+        "Polkamarkt": "بولكاماركت",
         "Pool": "المجمّع",
         "Rewards": "المكافآت",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "فشل إلغاء أمر الحد",
             "OrderBookCancelLimitOrders": "فشل في إلغاء أوامر الحد",
             "OrderBookPlaceLimitOrder": "فشل في تقديم طلب محدد بقيمة {amount} {symbol} عند {price} {symbol2}",
+            "PolkamarktAddLiquidity": "فشل في إضافة {amount} {symbol} السيولة إلى Polkamarkt",
+            "PolkamarktBuy": "فشل شراء {amount} {symbol} على Polkamarkt",
+            "PolkamarktClaimCreatorFees": "تعذّرت المطالبة برسوم منشئ محتوى Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "فشل في المطالبة بسيولة منشئ Polkamarkt",
+            "PolkamarktClaimLiquidity": "فشلت المطالبة بالمتبقي من Polkamarkt LP",
+            "PolkamarktClaimMarket": "تعذّرت المطالبة بدفع تعويضات Polkamarkt",
+            "PolkamarktClaimMarkets": "فشل في المطالبة بدفعات Polkamarkt",
+            "PolkamarktCreateCondition": "فشل إنشاء شرط Polkamarkt",
+            "PolkamarktCreateMarket": "فشل إنشاء سوق Polkamarkt باستخدام {amount} {symbol}",
+            "PolkamarktFlip": "فشل في قلب {amount} {symbol} على Polkamarkt",
+            "PolkamarktSell": "فشل بيع {amount} {symbol} على Polkamarkt",
             "ReferralReserveXor": "فشل الارتباط {amount} XOR",
             "ReferralSetInvitedUser": "فشل في الضبط {role} {address}",
             "ReferralUnreserveXor": "فشل في فك الارتباط {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "تم إلغاء أمر الحد",
             "OrderBookCancelLimitOrders": "الحد من أوامر إلغاء",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} في {price} {symbol2} تم وضعها",
+            "PolkamarktAddLiquidity": "تمت إضافة {amount} {symbol} السيولة إلى Polkamarkt",
+            "PolkamarktBuy": "تم شراؤه {amount} {symbol} من Polkamarkt",
+            "PolkamarktClaimCreatorFees": "تمت المطالبة برسوم منشئ محتوى Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "تمت المطالبة بسيولة منشئ Polkamarkt",
+            "PolkamarktClaimLiquidity": "تمت المطالبة بالمتبقي من Polkamarkt LP",
+            "PolkamarktClaimMarket": "تمت المطالبة بدفع تعويضات Polkamarkt",
+            "PolkamarktClaimMarkets": "تمت المطالبة بدفعات Polkamarkt",
+            "PolkamarktCreateCondition": "تم إنشاء حالة Polkamarkt",
+            "PolkamarktCreateMarket": "تم إنشاء سوق Polkamarkt باستخدام {amount} {symbol}",
+            "PolkamarktFlip": "انقلبت {amount} {symbol} على Polkamarkt",
+            "PolkamarktSell": "تم بيعه {amount} {symbol} في Polkamarkt",
             "ReferralReserveXor": "المستعبدين {amount} XOR",
             "ReferralSetInvitedUser": "تم ضبط {role} {address} بنجاح",
             "ReferralUnreserveXor": "غير مرتبط {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "إلغاء الطلب",
         "OrderBookCancelLimitOrders": "إلغاء الطلبات",
         "OrderBookPlaceLimitOrder": "ترتيب مكان",
+        "PolkamarktAddLiquidity": "أضف سيولة Polkamarkt",
+        "PolkamarktBuy": "شراء أسهم بولكاماركت",
+        "PolkamarktClaimCreatorFees": "المطالبة برسوم Polkamarkt Creator",
+        "PolkamarktClaimCreatorLiquidity": "المطالبة بسيولة Polkamarkt Creator",
+        "PolkamarktClaimLiquidity": "المطالبة بالمتبقي من Polkamarkt LP",
+        "PolkamarktClaimMarket": "المطالبة بدفع تعويضات Polkamarkt",
+        "PolkamarktClaimMarkets": "المطالبة بدفعات Polkamarkt",
+        "PolkamarktCreateCondition": "إنشاء حالة Polkamarkt",
+        "PolkamarktCreateMarket": "إنشاء سوق بولكاماركت",
+        "PolkamarktFlip": "اقلب موضع Polkamarkt",
+        "PolkamarktSell": "بيع أسهم Polkamarkt",
         "ReferralReserveXor": "بوند xor",
         "ReferralSetInvitedUser": "تعيين {role}",
         "ReferralUnreserveXor": "XOR UNDOND",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "حمامات السباحة",
         "Explore/Staking": "الاهتمام",
         "Explore/Tokens": "الرموز",
+        "ForAgents": "للوكلاء",
         "OrderBook": "تجارة",
+        "Polkamarkt": "بولكاماركت",
         "Pool": "حمام سباحة",
         "Rewards": "مكافآت",
         "Sccp": "SCCP",
@@ -1331,6 +1448,155 @@
         "noExtensions": "لم يتم العثور على الامتداد {PolkadotJs}. الرجاء تثبيته وإعادة تحميل هذه الصفحة\nhttps://polkadot.js.org/extension/",
         "noSigner": "تم الرفض. انتقل إلى إعدادات الامتداد {extension} وافتح \"إدارة الوصول إلى موقع الويب\" للسماح بذلك."
     },
+    "polkamarkt": {
+        "actions": {
+            "buy": "يشتري",
+            "claimCreatorFees": "المطالبة برسوم المنشئ",
+            "claimCreatorLiquidity": "المطالبة بالسيولة الخالقة",
+            "claimLpResidual": "المطالبة بـ LP المتبقية",
+            "claimTraderPayout": "المطالبة بدفع تعويضات التاجر",
+            "createMarket": "إنشاء السوق",
+            "flip": "الوجه",
+            "liquidity": "أضف السيولة",
+            "sell": "بيع"
+        },
+        "create": {
+            "category": "الفئة",
+            "closeBlock": "إغلاق الكتلة",
+            "creationFee": "رسوم الإنشاء",
+            "deadline": "الموعد النهائي للتداول",
+            "marketFailed": "لقد تم إنشاء الظروف، ولكن فشل إنشاء السوق. أعد محاولة إنشاء السوق بالشرط المحفوظ.",
+            "metadataTooLong": "يجب أن تتناسب البيانات التعريفية للأسئلة والأوراكل والحل مع 512 بايت.",
+            "question": "سؤال السوق",
+            "questionPlaceholder": "هل سيصل الحدث إلى \"نعم\" بحلول الموعد النهائي المحدد؟",
+            "questionTooShort": "يجب أن يكون حجم السؤال 32 بايت على الأقل.",
+            "retryMessage": "تم إنشاء الحالة {id}. أعد محاولة خطوة إنشاء السوق فقط.",
+            "retrySubmit": "أعد محاولة إنشاء السوق",
+            "seedLiquidity": "سيولة البذور",
+            "seedTooSmall": "يجب أن تكون سيولة البذور على الأقل {amount} {symbol}.",
+            "submit": "خلق الحالة والسوق",
+            "title": "إنشاء سوق بولكاماركت"
+        },
+        "details": {
+            "awaitingSettlement": "في انتظار الانتهاء",
+            "empty": "حدد السوق لعرض حالة منصة التحميل وتفاصيل أوراكل وأدلة التسوية.",
+            "openResolutionSource": "رابط مفتوح المصدر",
+            "oracle": "أوراكل",
+            "pool": "تجمع السيولة",
+            "settlement": "تفاصيل التسوية"
+        },
+        "errors": {
+            "loadActivity": "غير قادر على تحميل نشاط حساب Polkamarkt.",
+            "loadMarkets": "غير قادر على تحميل أسواق Polkamarkt."
+        },
+        "fields": {
+            "collateralAsset": "الأصول الجانبية",
+            "conditionId": "معرف الحالة",
+            "evidenceBlock": "كتلة الأدلة",
+            "evidenceHash": "تجزئة الأدلة",
+            "evidenceUri": "معرف الموارد المنتظم (URI) للأدلة",
+            "lpContributed": "ساهم ليرة لبنانية",
+            "lpShares": "أسهم LP",
+            "noReserve": "لا احتياطي",
+            "oracle": "أوراكل",
+            "poolCollateral": "ضمانات المسبح",
+            "resolutionOutcome": "نتيجة القرار",
+            "resolutionSource": "مصدر القرار",
+            "yesReserve": "نعم احتياطي"
+        },
+        "filters": {
+            "active": "نشط",
+            "allCategories": "جميع الفئات",
+            "allStatuses": "جميع الحالات",
+            "finalized": "تم الانتهاء منه",
+            "mine": "الألغام"
+        },
+        "loadingMarkets": "جارٍ تحميل الأسواق...",
+        "markets": {
+            "search": "أسواق البحث",
+            "subtitle": "{count} تتطابق الأسواق مع المرشحات الحالية",
+            "title": "الأسواق"
+        },
+        "metrics": {
+            "closeBlock": "إغلاق الكتلة",
+            "liquidity": "السيولة",
+            "noQuote": "لا يوجد اقتباس",
+            "status": "الحالة",
+            "volume": "الحجم",
+            "yesProbability": "نعم",
+            "yesQuote": "نعم الاقتباس"
+        },
+        "modes": {
+            "buy": "شراء",
+            "claim": "المطالبة",
+            "flip": "الوجه",
+            "liquidity": "ليرة لبنانية",
+            "sell": "بيع"
+        },
+        "my": {
+            "claimsSummary": "التاجر {trader} / ليرة لبنانية {lp}",
+            "connect": "قم بتوصيل حساب لرؤية الأسواق التي تم إنشاؤها، وأسهم LP، والدفعات، والتداولات الأخيرة.",
+            "createdMarkets": "الأسواق التي تم إنشاؤها",
+            "empty": "لا توجد مراكز Polkamarkt أو أسواق تم إنشاؤها لهذا الحساب حتى الآن.",
+            "loading": "جارٍ تحميل نشاط حساب Polkamarkt...",
+            "market": "السوق {id}",
+            "positions": "مواقف LP والتاجر",
+            "recentTrades": "الصفقات الأخيرة",
+            "sharesSummary": "نعم {yes} / لا {no} / LP {lp}",
+            "subtitle": "الأسواق التي تم إنشاؤها، وأسهم LP، ودفعات المتداولين، ورسوم المنشئ، ومطالبات LP المتبقية.",
+            "title": "أسواقي / إل بي"
+        },
+        "noMarkets": "لا توجد أسواق تتطابق مع المرشحات الحالية.",
+        "notIndexed": "غير مفهرسة",
+        "outcomes": {
+            "no": "لا",
+            "yes": "نعم"
+        },
+        "pageSubtitle": "تداول في أسواق التنبؤ النشطة، وأنشئ أسواقًا جديدة، وقم بإدارة LP والأرصدة القابلة للمطالبة من تدفق محفظة Polkaswap.",
+        "status": {
+            "active": "نشط"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "يمكن المطالبة به",
+            "claimableFailed": "غير قادر على قراءة الأرصدة المطالب بها.",
+            "claimStatus": "حالة المطالبة",
+            "collateralAmount": "المبلغ ({symbol})",
+            "collateralOut": "ضمانات خارج",
+            "enterAmount": "أدخل المبلغ",
+            "flippedShares": "الاسهم المقلوبة",
+            "insufficientKusd": "رصيد {symbol} غير كافٍ",
+            "insufficientXor": "XOR غير كافية لرسوم الشبكة",
+            "invalidAmount": "أدخل مبلغًا صالحًا",
+            "lpSharesOut": "أسهم LP خارج",
+            "noChainMarket": "السوق غير قابل للتداول عبر السلسلة",
+            "quoteFailed": "غير قادر على تحديث الاقتباس.",
+            "refreshingQuote": "اقتباس متجدد...",
+            "selectMarket": "حدد سوقًا نشطًا للتداول.",
+            "sharesAmount": "أسهم",
+            "sharesOut": "شارك خارجا",
+            "slippage": "نسبة الانزلاق",
+            "subtitle": "تستخدم عروض الأسعار والرسوم والحماية من الانزلاق وتقديم المحفظة وقت تشغيل SORA.",
+            "title": "تذكرة التجارة",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "بايت",
+            "shares": "أسهم"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
+    },
     "pool": {
         "addLiquidity": "أضف السيولة",
         "connectToWallet": "قم بتوصيل حساب لعرض السيولة.",
@@ -1437,7 +1703,7 @@
             "LiquidityProvision": "الرسوم المكتسبة من توفير السيولة",
             "LiquidityProvisionFarming": "الزراعة",
             "MarketMakerVolume": "صنع السوق",
-            "NftAirdrop": "NFT Airdrop",
+            "NftAirdrop": "إن إف تي إير دروب",
             "SoraFarmHarvest": "{Sora}.حصاد المزرعة",
             "XorErc20": "XOR ERC-20"
         },
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "عمولة",
             "commissionTooltip": "تشير اللجنة إلى الرسوم التي يتقاضاها المدققون لخدماتهم في عملية التقييم. يتم خصم هذه الرسوم ، التي يتم التعبير عنها كنسبة مئوية ، من المكافآت المكتسبة من قبل المرشحين قبل التوزيع. من المهم أن نلاحظ أنه يمكن للمقدين ضبط أسعار العمولات في أي وقت",
-            "deselectAll": "Deselect all",
+            "deselectAll": "قم بإلغاء تحديد الكل",
             "name": "اسم",
             "noNominatedValidators": "ليس لديك أي مدقق مرشحين",
             "noValidators": "لا يوجد مصادقون يفيون بالمرشح المحدد",
             "return": "يعود",
             "search": "يبحث...",
-            "selectAll": "Select all",
+            "selectAll": "حدد الكل",
             "staked": "راهن",
             "stakedTooltip": "إجمالي XOR مرتبط بهذا المدقق، بما في ذلك حصة المدقق الخاصة والحصة المرشحة"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "الحسابات هي عناوين رقمية تحمل أصول المستخدم على الشبكة. يرتبط كل حساب بعنوان عام فريد ومفتاح خاص يسمح للمستخدم بالوصول إلى أصوله وإدارتها.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "الحسابات الفريدة التي شاركت في المعاملات خلال الفترة المحددة.",
         "bridgeTransactions": "يشير الجسر {from} إلى {to} إلى عملية نقل الأصول بين الشبكتين {from} و{to} باستخدام الجسر. ويتيح الجسر إمكانية التشغيل البيني للشبكتين، مما يتيح للمستخدمين نقل الأصول بينهما بسلاسة.",
         "fees": "تشير الرسوم على {Sora} blockchain إلى الرسوم المتكبدة لتنفيذ المعاملات على الشبكة. يتم دفع هذه الرسوم بعملة XOR، العملة المشفرة الأصلية لشبكة {Sora}. يتم تحديد مبلغ الرسوم حسب مدى تعقيد وحجم المعاملة التي يتم تنفيذها",
         "roi": "{ROI} يرمز إلى العائد على الاستثمار. ويتم حسابه عن طريق قسمة الربح المكتسب من الاستثمار على تكلفة ذلك الاستثمار بنسبة مئوية مكافئة.",

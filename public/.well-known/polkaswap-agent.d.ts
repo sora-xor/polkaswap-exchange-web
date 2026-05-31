@@ -173,6 +173,11 @@ export interface PolkaswapAgentWalletStatus {
 
 export interface PolkaswapAgentStatus {
   version: string;
+  agent: {
+    mode: boolean;
+    disclaimerSuppressed: boolean;
+    queryParam: string;
+  };
   node: {
     connected: boolean;
     endpoint: string;

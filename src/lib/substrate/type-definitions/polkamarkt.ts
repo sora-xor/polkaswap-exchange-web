@@ -1,0 +1,102 @@
+export default {
+  rpc: {
+    quoteBuy: {
+      description: 'Quote a Polkamarkt buy without mutating runtime storage.',
+      params: [
+        { name: 'marketId', type: 'u32' },
+        { name: 'outcome', type: 'Text' },
+        { name: 'collateralIn', type: 'Balance' },
+        { name: 'at', type: 'Hash', isOptional: true },
+      ],
+      type: 'Option<PolkamarktBuyQuote>',
+    },
+    quoteSell: {
+      description: 'Quote a Polkamarkt sell without mutating runtime storage.',
+      params: [
+        { name: 'marketId', type: 'u32' },
+        { name: 'outcome', type: 'Text' },
+        { name: 'sharesIn', type: 'Balance' },
+        { name: 'at', type: 'Hash', isOptional: true },
+      ],
+      type: 'Option<PolkamarktSellQuote>',
+    },
+    quoteAddLiquidity: {
+      description: 'Quote Polkamarkt LP shares without mutating runtime storage.',
+      params: [
+        { name: 'marketId', type: 'u32' },
+        { name: 'collateralIn', type: 'Balance' },
+        { name: 'at', type: 'Hash', isOptional: true },
+      ],
+      type: 'Option<PolkamarktLiquidityQuote>',
+    },
+    quoteFlipPosition: {
+      description: 'Quote an atomic Polkamarkt position flip without mutating runtime storage.',
+      params: [
+        { name: 'marketId', type: 'u32' },
+        { name: 'fromOutcome', type: 'Text' },
+        { name: 'sharesIn', type: 'Balance' },
+        { name: 'at', type: 'Hash', isOptional: true },
+      ],
+      type: 'Option<PolkamarktFlipQuote>',
+    },
+    claimable: {
+      description: 'Return Polkamarkt trader and creator claimable balances.',
+      params: [
+        { name: 'account', type: 'AccountId' },
+        { name: 'marketId', type: 'u32' },
+        { name: 'at', type: 'Hash', isOptional: true },
+      ],
+      type: 'Option<PolkamarktClaimableInfo>',
+    },
+  },
+  types: {
+    PolkamarktBuyQuote: {
+      marketId: 'u32',
+      outcome: 'Text',
+      collateralIn: 'Balance',
+      feeAmount: 'Balance',
+      pricingCollateral: 'Balance',
+      sharesOut: 'Balance',
+    },
+    PolkamarktSellQuote: {
+      marketId: 'u32',
+      outcome: 'Text',
+      sharesIn: 'Balance',
+      grossCollateralOut: 'Balance',
+      feeAmount: 'Balance',
+      collateralOut: 'Balance',
+    },
+    PolkamarktLiquidityQuote: {
+      marketId: 'u32',
+      collateralIn: 'Balance',
+      lpSharesOut: 'Balance',
+      poolCollateral: 'Balance',
+      totalLpShares: 'Balance',
+    },
+    PolkamarktFlipQuote: {
+      marketId: 'u32',
+      fromOutcome: 'Text',
+      toOutcome: 'Text',
+      sharesIn: 'Balance',
+      grossCollateralOut: 'Balance',
+      sellFeeAmount: 'Balance',
+      collateralReinvested: 'Balance',
+      buyFeeAmount: 'Balance',
+      pricingCollateral: 'Balance',
+      sharesOut: 'Balance',
+    },
+    PolkamarktClaimableInfo: {
+      marketId: 'u32',
+      account: 'AccountId',
+      status: 'Text',
+      resolutionOutcome: 'Option<Text>',
+      yesShares: 'Balance',
+      noShares: 'Balance',
+      netCollateralPaid: 'Balance',
+      traderPayout: 'Balance',
+      creatorFees: 'Balance',
+      creatorLiquidity: 'Balance',
+      isCreator: 'bool',
+    },
+  },
+};

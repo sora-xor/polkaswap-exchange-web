@@ -34,6 +34,11 @@ const amountBasedOperations = [
   Operation.EthBridgeOutgoing,
   Operation.ReferralReserveXor,
   Operation.ReferralUnreserveXor,
+  Operation.PolkamarktCreateMarket,
+  Operation.PolkamarktBuy,
+  Operation.PolkamarktSell,
+  Operation.PolkamarktFlip,
+  Operation.PolkamarktAddLiquidity,
 ];
 
 const orderBookOperations = [

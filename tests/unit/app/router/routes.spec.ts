@@ -6,6 +6,7 @@ import { dashboardRoutes } from '@/features/dashboard/routes';
 import { depositRoutes } from '@/features/deposit/routes';
 import { exploreRoutes } from '@/features/explore/routes';
 import { miscRoutes } from '@/features/misc/routes';
+import { polkamarktRoutes } from '@/features/polkamarkt/routes';
 import { poolRoutes } from '@/features/pool/routes';
 import { referralRoutes } from '@/features/referrals/routes';
 import { rewardsRoutes } from '@/features/rewards/routes';
@@ -28,6 +29,7 @@ describe('app router routes', () => {
       ...depositRoutes,
       ...vaultRoutes,
       ...dashboardRoutes,
+      ...polkamarktRoutes,
       ...miscRoutes,
     ]);
   });

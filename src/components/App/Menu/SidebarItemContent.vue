@@ -1,7 +1,14 @@
 <template>
   <component :is="tag" :class="classes" :tabindex="tabindex" v-bind="attrs">
     <div class="icon-container">
-      <s-icon :name="icon" :tooltip-text="title" size="28"></s-icon>
+      <span
+        v-if="iconSrc"
+        class="sidebar-item-content__logo"
+        :style="logoStyle"
+        :title="title"
+        aria-hidden="true"
+      />
+      <s-icon v-else :name="icon" :tooltip-text="title" size="28"></s-icon>
     </div>
     <span>{{ title }}</span>
   </component>
@@ -12,6 +19,10 @@ import { computed, useAttrs } from 'vue';
 
 const props = defineProps({
   icon: {
+    type: String,
+    default: '',
+  },
+  iconSrc: {
     type: String,
     default: '',
   },
@@ -35,6 +46,10 @@ const classes = computed(() => {
   const base = 'sidebar-item-content';
   return props.tag === 'a' ? [base, `${base}--link`] : [base];
 });
+
+const logoStyle = computed(() => ({
+  '--sidebar-item-logo': `url(${props.iconSrc})`,
+}));
 </script>
 
 <style lang="scss" scoped>
@@ -79,6 +94,16 @@ $icon-size: 42px;
     height: 28px !important;
     border-color: currentColor;
   }
+  .sidebar-item-content__logo {
+    display: block;
+    width: 28px;
+    height: 28px;
+    margin: auto;
+    background-color: var(--s-color-base-content-tertiary);
+    mask: var(--sidebar-item-logo) center / contain no-repeat;
+    -webkit-mask: var(--sidebar-item-logo) center / contain no-repeat;
+    transition: background-color var(--s-transition-default);
+  }
   & + span {
     margin-left: $inner-spacing-small;
 
@@ -95,6 +120,16 @@ $icon-size: 42px;
       -1px -1px 1px var(--s-shadow-color-dark-light),
       1px 1px 3px var(--s-shadow-color-dark),
       inset 1px 1px 2px var(--s-shadow-color-light-dark);
+
+    .sidebar-item-content__logo {
+      background-color: var(--s-color-theme-accent);
+    }
+  }
+  .el-menu-item:not(.is-active):not(.is-disabled):hover &,
+  .el-menu-item:not(.is-active):not(.is-disabled):focus & {
+    .sidebar-item-content__logo {
+      background-color: var(--s-color-base-content-secondary);
+    }
   }
   .menu-item--small & {
     margin-right: 0;

@@ -31,8 +31,11 @@ const setToValueMock = vi.fn((value: string) => {
 });
 
 const isLoggedInRef = ref(false);
+const isSoraAccountDialogVisibleRef = ref(false);
 const nodeIsConnectedRef = ref(true);
-const connectSoraWalletMock = vi.fn();
+const connectSoraWalletMock = vi.fn(() => {
+  isSoraAccountDialogVisibleRef.value = true;
+});
 const quoteSubscribeMock = vi.fn(() => ({ unsubscribe: vi.fn() }));
 const getDexesSwapQuoteObservableMock = vi.fn(() => ({ subscribe: quoteSubscribeMock }));
 const checkSwapMock = vi.fn(async () => false);
@@ -238,6 +241,7 @@ vi.mock('@/stores/assets', () => ({
 vi.mock('@/composables/useInternalConnect', () => ({
   useInternalConnect: () => ({
     isLoggedIn: computed(() => isLoggedInRef.value),
+    isSoraAccountDialogVisible: computed(() => isSoraAccountDialogVisibleRef.value),
     connectSoraWallet: connectSoraWalletMock,
   }),
 }));
@@ -340,7 +344,25 @@ const mountWidget = async () => {
         SelectToken: createPassthroughStub('SelectTokenStub'),
         TokenInput: TokenInputStub,
         ValueStatusWrapper: ValueStatusWrapperStub,
-        's-button': { template: '<button v-bind="$attrs"><slot /></button>' },
+        's-button': defineComponent({
+          name: 'SButtonStub',
+          props: {
+            loading: { type: Boolean, default: false },
+            disabled: { type: Boolean, default: false },
+          },
+          setup(props, { attrs, slots }) {
+            return () =>
+              h(
+                'button',
+                {
+                  ...attrs,
+                  disabled: props.loading || props.disabled,
+                  'data-loading': String(props.loading),
+                },
+                slots.default?.()
+              );
+          },
+        }),
         's-icon': { template: '<i></i>' },
       },
       directives: {
@@ -401,8 +423,26 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     swapStoreMock.priceImpact = '0';
     swapStoreMock.liquiditySources = [];
     isLoggedInRef.value = false;
+    isSoraAccountDialogVisibleRef.value = false;
     nodeIsConnectedRef.value = true;
     connectSoraWalletMock.mockClear();
+  });
+
+  it('shows the swap connect CTA as loading while the SORA account dialog is opening', async () => {
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const connectButton = wrapper.findAll('button').find((button) => button.text().includes('connectWalletText'));
+
+    expect(connectButton?.attributes('data-loading')).toBe('false');
+
+    await connectButton?.trigger('click');
+    await nextTick();
+
+    expect(connectSoraWalletMock).toHaveBeenCalledTimes(1);
+    expect(connectButton?.attributes('data-loading')).toBe('true');
+
+    wrapper.unmount();
   });
 
   it('refreshes swap configuration on mount and subscribes when token pair becomes selected', async () => {

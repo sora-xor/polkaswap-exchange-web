@@ -292,6 +292,11 @@ export interface AgentWalletStatus {
 
 export interface AgentStatus {
   version: string;
+  agent: {
+    mode: boolean;
+    disclaimerSuppressed: boolean;
+    queryParam: string;
+  };
   node: AgentNodeStatus;
   wallet: AgentWalletStatus;
   settings: {

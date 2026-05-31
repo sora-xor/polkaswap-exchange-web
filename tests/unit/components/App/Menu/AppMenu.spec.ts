@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, nextTick } from 'vue';
 
-import { PageNames } from '@/consts';
+import { PageNames, PolkamarktLogo } from '@/consts';
 
 const {
   routeMock,
@@ -59,6 +59,10 @@ const SidebarItemContentStub = defineComponent({
       type: String,
       default: '',
     },
+    iconSrc: {
+      type: String,
+      default: '',
+    },
     title: {
       type: String,
       default: '',
@@ -77,6 +81,7 @@ const SidebarItemContentStub = defineComponent({
       h('div', {
         class: ['sidebar-item-content-stub', attrs.class],
         'data-icon': props.icon || undefined,
+        'data-icon-src': props.iconSrc || undefined,
         'data-title': props.title || undefined,
         'data-href': props.href || undefined,
         'data-tag': props.tag || undefined,
@@ -169,15 +174,20 @@ describe('AppMenu', () => {
 
     const renderedRouteItems = wrapper
       .findAll('.sidebar-item-content-stub')
-      .map((item) => ({
-        href: item.attributes('data-href'),
-        icon: item.attributes('data-icon'),
-      }))
+      .map((item) => {
+        const iconSrc = item.attributes('data-icon-src');
+        return {
+          href: item.attributes('data-href'),
+          icon: item.attributes('data-icon'),
+          ...(iconSrc ? { iconSrc } : {}),
+        };
+      })
       .filter((item) => item.href?.startsWith('#/'));
 
     const expectedRouteItems = [
       { href: '#/swap', icon: 'arrows-swap-90-24' },
       { href: '#/trade', icon: 'music-CD-24' },
+      { href: '#/polkamarkt', icon: 'various-lightbulb-24', iconSrc: PolkamarktLogo },
       { href: '#/points', icon: 'basic-circle-star-24' },
       { href: '#/pool', icon: 'basic-drop-24' },
       { href: '#/staking', icon: 'basic-layers-24' },
@@ -293,6 +303,23 @@ describe('AppMenu', () => {
     expect(document.documentElement.style.getPropertyValue('--sidebar-width')).toBe('');
 
     clientWidthSpy.mockRestore();
+  });
+
+  it('resets the sidebar scrollbar when the menu is reopened', async () => {
+    const wrapper = mountComponent(false);
+    const scrollbar = wrapper.get('.app-sidebar-scrollbar').element as HTMLElement;
+    const wrap = document.createElement('div');
+    wrap.className = 'el-scrollbar__wrap';
+    scrollbar.appendChild(wrap);
+
+    scrollbar.scrollTop = 120;
+    wrap.scrollTop = 240;
+
+    await wrapper.setProps({ visible: true });
+    await nextTick();
+
+    expect(scrollbar.scrollTop).toBe(0);
+    expect(wrap.scrollTop).toBe(0);
   });
 
   it('forwards product popup requests from the info popper', async () => {

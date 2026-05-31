@@ -28,7 +28,7 @@
         "title": "Nastavení účtu"
     },
     "accountText": "účet | účty",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Aktivní účty",
     "addAsset": {
         "add": "Přidat",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} za {second}",
     "firstText": "První",
     "footer": {
+        "forAgents": "Pro agenty",
         "internet": {
             "action": "Obnovit {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "Informace a komunita",
         "privacy": "Zásady ochrany osobních údajů",
         "sorawiki": "{Sora} Wiki"
+    },
+    "forAgents": {
+        "apiContext": "je nainstalován v kontextu stránky po spuštění aplikace. Používá stejný uzel, peněženku, indexátor a cestu SDK jako uživatelské rozhraní.",
+        "contract": {
+            "idempotent": "Použijte stabilní clientOrderId a před dalším pokusem obnovte nejisté odeslání.",
+            "noCustody": "Stránka nikdy neobdrží soukromé klíče; podpis zůstane u vybrané peněženky.",
+            "prepareFirst": "Volání měnící stav musí projít přípravou* před provedením*.",
+            "samePage": "Spusťte v kontextu stránky Polkaswap po události ready."
+        },
+        "discoveryText": "Nejprve si vyzvedněte manifest. Propojuje verzovanou referenci, soubory schémat, příklady, katalog chyb a pomocného klienta dodávané s tímto statickým sestavením.",
+        "discoveryTitle": "Objevování",
+        "entrypointsLabel": "Vstupní body API agenta",
+        "eyebrow": "automatizace",
+        "flow": {
+            "execute": "Proveďte pouze po schválení zásad, s připraveným záměrem a stabilním ID objednávky klienta.",
+            "open": "Otevřete Polkaswap na skutečné stránce prohlížeče.",
+            "prepare": "Před jakoukoli operací podepisování zavolejte metodu přípravy shody.",
+            "ready": "Počkejte na událost ready a vyžádejte si aktivní uzel SORA.",
+            "recover": "Před dalším pokusem obnovte nejisté odeslání.",
+            "resolve": "Před opakovaným spuštěním rozložte symboly aktiv na adresy.",
+            "wallet": "Když je potřeba podpis, vyberte poskytovatele peněženky a účet."
+        },
+        "flowTitle": "Bezpečná prováděcí smyčka",
+        "lead": "Polkaswap odhaluje nativní automatizační API prohlížeče pro agenty, kteří otevírají statickou aplikaci.",
+        "links": {
+            "client": "Pomocný klient JavaScriptu",
+            "errors": "Katalog chyb",
+            "examples": "Příklady",
+            "manifest": "Objevovací manifest",
+            "playground": "Agentské hřiště",
+            "reference": "Úplná reference API",
+            "schema": "schéma JSON",
+            "types": "Definice TypeScript"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Kanonický objevný dokument pro generické běžce.",
+                "title": "Začněte manifestem"
+            },
+            "playground": {
+                "description": "Manuální sonda stejného původu pro stav, aktiva, nabídky a náhledy.",
+                "title": "Otevřete hřiště"
+            },
+            "reference": {
+                "description": "Čitelná mapa metod, příklady, pravidla podepisování a poznámky k obnově.",
+                "title": "Přečtěte si odkaz na API"
+            }
+        },
+        "signingTextAfter": "udržet pokusy idempotentní.",
+        "signingTextBefore": "Stránka nikdy nebere soukromé klíče. Metody změny stavu používají vybraného signatáře peněženky a vyžadují, aby běžec předal vrácené",
+        "signingTextMiddle": "plus stáj",
+        "signingTitle": "Podepisování a úschova",
+        "startTitle": "Začněte zde",
+        "title": "Pro agenty"
     },
     "forText": "za",
     "hashiBridgeText": "Most {Hashi}",
@@ -798,6 +879,7 @@
         "Explore/Container": "Prozkoumat",
         "Farming": "Zemědělství",
         "OrderBook": "Obchod",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Bazén",
         "Rewards": "Odměny",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
             "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit",
             "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol2}",
+            "PolkamarktAddLiquidity": "Nepodařilo se přidat {amount} {symbol} likviditu do Polkamarktu",
+            "PolkamarktBuy": "Nepodařilo se zakoupit {amount} {symbol} na Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Nepodařilo se uplatnit poplatky za tvůrce Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Nepodařilo se získat likviditu tvůrců Polkamarkt",
+            "PolkamarktClaimLiquidity": "Nepodařilo se nárokovat zbytky Polkamarkt LP",
+            "PolkamarktClaimMarket": "Nepodařilo se požádat o výplatu Polkamarkt",
+            "PolkamarktClaimMarkets": "Nepodařilo se nárokovat výplaty Polkamarkt",
+            "PolkamarktCreateCondition": "Nepodařilo se vytvořit podmínku Polkamarkt",
+            "PolkamarktCreateMarket": "Nepodařilo se vytvořit trh Polkamarkt s {amount} {symbol}",
+            "PolkamarktFlip": "Nepodařilo se převrátit {amount} {symbol} na Polkamarkt",
+            "PolkamarktSell": "Nepodařilo se prodat {amount} {symbol} na Polkamarkt",
             "ReferralReserveXor": "Nepodařilo se spojit {amount} XOR",
             "ReferralSetInvitedUser": "Nepodařilo se nastavit {role} {address}",
             "ReferralUnreserveXor": "Nepodařilo se zrušit vazbu {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "Limitní objednávka zrušena",
             "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} za {price} {symbol2} umístěno",
+            "PolkamarktAddLiquidity": "Přidána likvidita {amount} {symbol} Polkamarktu",
+            "PolkamarktBuy": "Zakoupeno {amount} {symbol} na Polkamarktu",
+            "PolkamarktClaimCreatorFees": "Byly požadovány poplatky za tvůrce Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Požadována likvidita tvůrců Polkamarktu",
+            "PolkamarktClaimLiquidity": "Nárokován zbytek Polkamarkt LP",
+            "PolkamarktClaimMarket": "Byla požadována výplata Polkamarkt",
+            "PolkamarktClaimMarkets": "Byly požadovány výplaty Polkamarkt",
+            "PolkamarktCreateCondition": "Podmínka Polkamarkt vytvořena",
+            "PolkamarktCreateMarket": "Trh Polkamarkt vytvořen s {amount} {symbol}",
+            "PolkamarktFlip": "Překlopeno {amount} {symbol} na Polkamarkt",
+            "PolkamarktSell": "Prodáno {amount} {symbol} na Polkamarkt",
             "ReferralReserveXor": "Vázané {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} bylo úspěšně nastaveno",
             "ReferralUnreserveXor": "Nespojené {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "Zrušit objednávku",
         "OrderBookCancelLimitOrders": "Zrušit objednávky",
         "OrderBookPlaceLimitOrder": "Objednejte si",
+        "PolkamarktAddLiquidity": "Přidejte Polkamarkt Liquidity",
+        "PolkamarktBuy": "Kupte si akcie Polkamarkt",
+        "PolkamarktClaimCreatorFees": "Uplatněte nárok na poplatky pro autory Polkamarkt",
+        "PolkamarktClaimCreatorLiquidity": "Nárokujte si likviditu tvůrců Polkamarkt",
+        "PolkamarktClaimLiquidity": "Nárokujte Polkamarkt LP Residual",
+        "PolkamarktClaimMarket": "Vyžádejte si výplatu Polkamarkt",
+        "PolkamarktClaimMarkets": "Nárokujte si výplaty Polkamarkt",
+        "PolkamarktCreateCondition": "Vytvořte podmínku Polkamarkt",
+        "PolkamarktCreateMarket": "Vytvořte Polkamarkt Market",
+        "PolkamarktFlip": "Flip Polkamarkt Position",
+        "PolkamarktSell": "Prodej akcií Polkamarkt",
         "ReferralReserveXor": "Vázat XOR",
         "ReferralSetInvitedUser": "Nastavit {role}",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "Bazény",
         "Explore/Staking": "Stakování",
         "Explore/Tokens": "Tokeny",
+        "ForAgents": "Pro agenty",
         "OrderBook": "Obchod",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Bazén",
         "Rewards": "Odměny",
         "Sccp": "SCCP",
@@ -1330,6 +1447,155 @@
         "noExtension": "Nebylo nalezeno žádné {extension} . Nainstalujte jej a znovu načtěte tuto stránku",
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https://polkadot.js.org/extension/",
         "noSigner": "Přístup odepřen. Přejděte do nastavení {extension} a povolte otevřením možnosti Správa přístupu k webu."
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Koupit",
+            "claimCreatorFees": "Poplatky za tvůrce nároku",
+            "claimCreatorLiquidity": "Likvidita tvůrce nároku",
+            "claimLpResidual": "Nárokovat zbytky LP",
+            "claimTraderPayout": "Nárokujte si výplatu obchodníka",
+            "createMarket": "Vytvořit trh",
+            "flip": "Překlopit",
+            "liquidity": "Přidejte likviditu",
+            "sell": "prodat"
+        },
+        "create": {
+            "category": "Kategorie",
+            "closeBlock": "Zavřít blok",
+            "creationFee": "Poplatek za vytvoření",
+            "deadline": "Termín obchodování",
+            "marketFailed": "Podmínka byla vytvořena, ale vytvoření trhu selhalo. Opakujte vytvoření trhu s uloženou podmínkou.",
+            "metadataTooLong": "Metadata otázek, věštců a řešení se musí vejít do 512 bajtů.",
+            "question": "Otázka trhu",
+            "questionPlaceholder": "Vyřeší se akce na ANO do zvoleného termínu?",
+            "questionTooShort": "Otázka musí mít alespoň 32 bajtů.",
+            "retryMessage": "Podmínka {id} byla vytvořena. Opakujte pouze krok vytvoření trhu.",
+            "retrySubmit": "Opakujte vytvoření trhu",
+            "seedLiquidity": "Seedová likvidita",
+            "seedTooSmall": "Likvidita seedu musí být alespoň {amount} {symbol}.",
+            "submit": "Vytvořte podmínky a trh",
+            "title": "Vytvořte Polkamarkt Market"
+        },
+        "details": {
+            "awaitingSettlement": "Čeká se na finalizaci",
+            "empty": "Vyberte trh pro zobrazení stavu palet, podrobností o orákulu a důkazů o vypořádání.",
+            "openResolutionSource": "Odkaz na otevřený zdroj",
+            "oracle": "Oracle",
+            "pool": "Bazén likvidity",
+            "settlement": "Podrobnosti o vypořádání"
+        },
+        "errors": {
+            "loadActivity": "Aktivitu účtu Polkamarkt nelze načíst.",
+            "loadMarkets": "Nelze načíst trhy Polkamarkt."
+        },
+        "fields": {
+            "collateralAsset": "Zajištění aktiva",
+            "conditionId": "ID podmínky",
+            "evidenceBlock": "Důkazní blok",
+            "evidenceHash": "Hash důkazů",
+            "evidenceUri": "URI důkazu",
+            "lpContributed": "LP přispěl",
+            "lpShares": "akcie LP",
+            "noReserve": "ŽÁDNÁ rezerva",
+            "oracle": "Oracle",
+            "poolCollateral": "Zajištění bazénu",
+            "resolutionOutcome": "Výsledek řešení",
+            "resolutionSource": "Zdroj rozlišení",
+            "yesReserve": "ANO rezerva"
+        },
+        "filters": {
+            "active": "Aktivní",
+            "allCategories": "Všechny kategorie",
+            "allStatuses": "Všechny stavy",
+            "finalized": "Dokončeno",
+            "mine": "můj"
+        },
+        "loadingMarkets": "Načítání trhů...",
+        "markets": {
+            "search": "Prohledejte trhy",
+            "subtitle": "Aktuálním filtrům odpovídá {count} trhy",
+            "title": "trhy"
+        },
+        "metrics": {
+            "closeBlock": "Zavřít blok",
+            "liquidity": "Likvidita",
+            "noQuote": "ŽÁDNÁ citace",
+            "status": "Stav",
+            "volume": "Hlasitost",
+            "yesProbability": "ANO",
+            "yesQuote": "Citát ANO"
+        },
+        "modes": {
+            "buy": "Koupit",
+            "claim": "Nárokovat",
+            "flip": "Překlopit",
+            "liquidity": "LP",
+            "sell": "prodat"
+        },
+        "my": {
+            "claimsSummary": "Obchodník {trader} / LP {lp}",
+            "connect": "Připojte účet, abyste viděli vytvořené trhy, akcie LP, výplaty a nedávné obchody.",
+            "createdMarkets": "Vytvořené trhy",
+            "empty": "Pro tento účet zatím nejsou žádné pozice Polkamarktu ani vytvořené trhy.",
+            "loading": "Načítání aktivity účtu Polkamarkt...",
+            "market": "Trh {id}",
+            "positions": "LP a pozice obchodníků",
+            "recentTrades": "Nedávné obchody",
+            "sharesSummary": "ANO {yes} / NE {no} / LP {lp}",
+            "subtitle": "Vytvořené trhy, akcie LP, výplaty obchodníků, poplatky za tvůrce a zbytkové nároky na LP.",
+            "title": "Moje trhy / LP"
+        },
+        "noMarkets": "Aktuálním filtrům neodpovídají žádné trhy.",
+        "notIndexed": "Není indexováno",
+        "outcomes": {
+            "no": "NE",
+            "yes": "ANO"
+        },
+        "pageSubtitle": "Obchodujte s aktivními prediktivními trhy, zakládejte nové trhy a spravujte LP a nárokovatelné zůstatky z toku peněženky Polkaswap.",
+        "status": {
+            "active": "Aktivní"
+        },
+        "ticket": {
+            "amountPlaceholder": "0,0",
+            "claimable": "Nárokovatelné",
+            "claimableFailed": "Nelze přečíst nárokovatelné zůstatky.",
+            "claimStatus": "Stav reklamace",
+            "collateralAmount": "Částka ({symbol})",
+            "collateralOut": "Kolaterál ven",
+            "enterAmount": "Zadejte částku",
+            "flippedShares": "Převrácené akcie",
+            "insufficientKusd": "Nedostatečný zůstatek {symbol}",
+            "insufficientXor": "Nedostatečný XOR pro síťový poplatek",
+            "invalidAmount": "Zadejte platnou částku",
+            "lpSharesOut": "LP sdílí",
+            "noChainMarket": "Trh není obchodovatelný v řetězci",
+            "quoteFailed": "Cenu nelze obnovit.",
+            "refreshingQuote": "Obnovující se citát...",
+            "selectMarket": "Vyberte aktivní trh k obchodování.",
+            "sharesAmount": "akcie",
+            "sharesOut": "Sdílí se",
+            "slippage": "Skluz %",
+            "subtitle": "Cenové nabídky, poplatky, ochrana proti skluzu a odeslání peněženky používají běhové prostředí SORA.",
+            "title": "Obchodní lístek",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "bajtů",
+            "shares": "akcií"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "Přidat likviditu",
@@ -1566,8 +1832,8 @@
         "github": "GitHub",
         "medium": "Střední",
         "reddit": "Reddit",
-        "telegram": "Telegram",
-        "twitter": "Twitter",
+        "telegram": "telegram",
+        "twitter": "Cvrlikání",
         "wiki": "{Sora} Wiki"
     },
     "soraStaking": {
@@ -1607,7 +1873,7 @@
         },
         "overview": {
             "description": "Vsaďte tokeny {XOR} v síti {Sora} jako nominátor, abyste mohli ověřovat transakce a získávat odměny v tokenech {VAL}.",
-            "title": "{Sora} Staking"
+            "title": "{Sora} Vytyčování"
         },
         "pendingRewardsDialog": {
             "information": "Validátoři vyplácejí odměny každých 2-5 dní. Můžete si je však vyplatit sami, zvláště pokud se blíží konec platnosti odměn, ale budete platit poplatek.",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Komise",
             "commissionTooltip": "Provize odkazuje na poplatek, který si validátoři účtují za své služby v procesu sázek. Tento poplatek, vyjádřený v procentech, se odečítá z odměn za sázky, které nominátoři získali před rozdělením. Je důležité si uvědomit, že validátoři mohou své provize kdykoli upravit",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Zrušte výběr všech",
             "name": "Název",
             "noNominatedValidators": "Nemáte žádné nominované validátory",
             "noValidators": "Neexistují žádné validátory splňující zadaný filtr",
             "return": "Vrátit se",
             "search": "Vyhledávání...",
-            "selectAll": "Select all",
+            "selectAll": "Vyberte vše",
             "staked": "Vsazeno",
             "stakedTooltip": "Celkový vklad XOR s tímto validátorem, včetně jeho vlastního vkladu a nominovaného vkladu"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Účty jsou digitální adresy, které uchovávají majetek uživatele v síti. Každý účet je spojen s jedinečnou veřejnou adresou a soukromým klíčem, který uživateli umožňuje přístup a správu jeho majetku.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Jedinečné účty, které se účastnily transakcí během zvoleného období.",
         "bridgeTransactions": "Most {from} do {to} označuje proces přenosu aktiv mezi sítěmi {from} a {to} pomocí mostu. Most umožňuje interoperabilitu obou sítí a umožňuje uživatelům bezproblémově přesouvat prostředky mezi nimi.",
         "fees": "Poplatky na blockchainu {Sora} odkazují na poplatky, které vznikají za provádění transakcí v síti. Tyto poplatky se platí v XOR, nativní kryptoměně sítě {Sora} . Výše poplatku je určena složitostí a velikostí prováděné transakce",
         "roi": "{ROI} znamená návratnost investic. Vypočítá se vydělením zisku získaného z investice náklady na tuto investici v procentuálním ekvivalentu.",

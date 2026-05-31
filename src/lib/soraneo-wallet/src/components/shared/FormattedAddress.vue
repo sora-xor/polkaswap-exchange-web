@@ -1,5 +1,5 @@
 <template>
-  <s-tooltip :content="copyTooltip(tooltipText)" tabindex="-1" append-to-body>
+  <s-tooltip :content="copyTooltip(tooltipText)" tabindex="-1" popper-class="formatted-address-tooltip" append-to-body>
     <div class="formatted-address" @click="handleCopyAddress(value, $event)">
       <template v-if="sliced">
         <span class="address" :style="{ width: firstPartWidth }">{{ value }}</span>
@@ -78,5 +78,28 @@ defineExpose({
     white-space: nowrap;
     overflow: hidden;
   }
+}
+
+:global(.formatted-address-tooltip.s-tooltip-popper.el-popover.el-popper) {
+  background: transparent;
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+:global(.formatted-address-tooltip .s-tooltip__body) {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)),
+    rgba(49, 21, 78, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 10px;
+  box-shadow:
+    0 16px 36px rgba(17, 0, 46, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  color: var(--sora_sys_color_content-on-background-inverted);
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  backdrop-filter: blur(14px) saturate(1.35);
+  -webkit-backdrop-filter: blur(14px) saturate(1.35);
 }
 </style>

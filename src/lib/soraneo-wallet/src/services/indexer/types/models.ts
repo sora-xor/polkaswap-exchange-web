@@ -408,6 +408,8 @@ export type HistoryElementEvmBridgeOutgoing = {
   amount: string;
   amountUSD?: string;
   assetId: string;
+  externalNetwork?: string;
+  externalNetworkType?: string;
   networkId?: number | string | Record<string, unknown>;
   recipient?: string;
   requestHash?: string;

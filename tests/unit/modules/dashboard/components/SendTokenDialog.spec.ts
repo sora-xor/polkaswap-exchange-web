@@ -62,6 +62,7 @@ const formattedAmountMocks = vi.hoisted(() => {
 });
 
 const isMaxButtonAvailableMock = vi.hoisted(() => vi.fn(() => true));
+const tokenInputFocusMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
@@ -89,7 +90,7 @@ vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
         default: '',
       },
     },
-    emits: ['update:visible'],
+    emits: ['update:visible', 'after-open'],
     setup:
       (_props, { slots }) =>
       () =>
@@ -128,7 +129,10 @@ vi.mock('@/components/shared/Input/TokenInput.vue', () => ({
       },
     },
     emits: ['update:modelValue', 'max', 'slide'],
-    setup: () => () => null,
+    setup: (_props: unknown, { expose }: { expose: (exposed: { focus: ReturnType<typeof vi.fn> }) => void }) => {
+      expose({ focus: tokenInputFocusMock });
+      return () => null;
+    },
   },
 }));
 
@@ -237,6 +241,7 @@ beforeEach(() => {
   storeState.networkFees.XorlessTransfer = '1';
   storeState.accountXor = { balance: { transferable: '10' } };
   isMaxButtonAvailableMock.mockClear();
+  tokenInputFocusMock.mockClear();
 });
 
 describe('SendTokenDialog.vue', () => {
@@ -309,5 +314,22 @@ describe('SendTokenDialog.vue', () => {
     expect(exposed.value.value).toBe('');
     expect(exposed.address.value).toBe('');
     expect(exposed.comment.value).toBe('');
+  });
+
+  it('refocuses the amount input after the modal opens without clearing typed value', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+    exposed.value.value = '1';
+    tokenInputFocusMock.mockClear();
+
+    wrapper.getComponent({ name: 'DialogBaseStub' }).vm.$emit('after-open');
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
+
+    expect(exposed.value.value).toBe('1');
+    expect(tokenInputFocusMock).toHaveBeenCalledTimes(1);
   });
 });

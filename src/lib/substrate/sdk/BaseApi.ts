@@ -77,6 +77,17 @@ export class BaseApi<T = void> extends ApiAccount<T> {
     [Operation.RepayVaultDebt]: '0',
     [Operation.DepositCollateral]: '0',
     [Operation.BorrowVaultDebt]: '0',
+    [Operation.PolkamarktCreateCondition]: '0',
+    [Operation.PolkamarktCreateMarket]: '0',
+    [Operation.PolkamarktBuy]: '0',
+    [Operation.PolkamarktSell]: '0',
+    [Operation.PolkamarktFlip]: '0',
+    [Operation.PolkamarktAddLiquidity]: '0',
+    [Operation.PolkamarktClaimMarket]: '0',
+    [Operation.PolkamarktClaimMarkets]: '0',
+    [Operation.PolkamarktClaimCreatorFees]: '0',
+    [Operation.PolkamarktClaimCreatorLiquidity]: '0',
+    [Operation.PolkamarktClaimLiquidity]: '0',
     [Operation.SetAccessExpiration]: '0',
     [Operation.RegulateAsset]: '0',
     [Operation.RegisterAndRegulateAsset]: '0',
@@ -226,6 +237,36 @@ export class BaseApi<T = void> extends ApiAccount<T> {
           return this.api.tx.kensetsu.depositCollateral(0, 0);
         case Operation.BorrowVaultDebt:
           return this.api.tx.kensetsu.borrow(0, 0, 0);
+        case Operation.PolkamarktCreateCondition:
+          return (this.api.tx as any).polkamarkt?.createCondition?.({
+            question: [81, 117, 101, 115, 116, 105, 111, 110, 32, 109, 111, 99, 107],
+            oracle: [71, 111, 118, 101, 114, 110, 97, 110, 99, 101],
+            resolutionSource: [82, 111, 111, 116],
+          }) ?? (this.api.tx as any).polkamarkt?.create_condition?.({
+            question: [81, 117, 101, 115, 116, 105, 111, 110, 32, 109, 111, 99, 107],
+            oracle: [71, 111, 118, 101, 114, 110, 97, 110, 99, 101],
+            resolutionSource: [82, 111, 111, 116],
+          }) ?? null;
+        case Operation.PolkamarktCreateMarket:
+          return (this.api.tx as any).polkamarkt?.createMarket?.(0, 7200, '1') ?? (this.api.tx as any).polkamarkt?.create_market?.(0, 7200, '1') ?? null;
+        case Operation.PolkamarktBuy:
+          return (this.api.tx as any).polkamarkt?.buy?.(0, 'Yes', '1', '0') ?? null;
+        case Operation.PolkamarktSell:
+          return (this.api.tx as any).polkamarkt?.sell?.(0, 'Yes', '1', '0') ?? null;
+        case Operation.PolkamarktFlip:
+          return (this.api.tx as any).polkamarkt?.flipPosition?.(0, 'Yes', '1', '0', '0') ?? (this.api.tx as any).polkamarkt?.flip_position?.(0, 'Yes', '1', '0', '0') ?? null;
+        case Operation.PolkamarktAddLiquidity:
+          return (this.api.tx as any).polkamarkt?.addLiquidity?.(0, '1', '0') ?? (this.api.tx as any).polkamarkt?.add_liquidity?.(0, '1', '0') ?? null;
+        case Operation.PolkamarktClaimMarket:
+          return (this.api.tx as any).polkamarkt?.claimMarket?.(0) ?? (this.api.tx as any).polkamarkt?.claim_market?.(0) ?? null;
+        case Operation.PolkamarktClaimMarkets:
+          return (this.api.tx as any).polkamarkt?.claimMarkets?.([0]) ?? (this.api.tx as any).polkamarkt?.claim_markets?.([0]) ?? null;
+        case Operation.PolkamarktClaimCreatorFees:
+          return (this.api.tx as any).polkamarkt?.claimCreatorFees?.(0) ?? (this.api.tx as any).polkamarkt?.claim_creator_fees?.(0) ?? null;
+        case Operation.PolkamarktClaimCreatorLiquidity:
+          return (this.api.tx as any).polkamarkt?.claimCreatorLiquidity?.(0) ?? (this.api.tx as any).polkamarkt?.claim_creator_liquidity?.(0) ?? null;
+        case Operation.PolkamarktClaimLiquidity:
+          return (this.api.tx as any).polkamarkt?.claimLiquidity?.(0, '0') ?? (this.api.tx as any).polkamarkt?.claim_liquidity?.(0, '0') ?? null;
         case Operation.SetAccessExpiration:
           return this.api.tx.extendedAssets.setSbtExpiration('', '', 0);
         case Operation.RegulateAsset:

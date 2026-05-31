@@ -10,13 +10,14 @@ Use this order when building a generic runner:
 
 1. Fetch `.well-known/polkaswap-agent.json` from the app base URL.
 2. Check `version === 'v1'`, then load `.well-known/polkaswap-agent.d.ts` and `.well-known/polkaswap-agent.schema.json`.
-3. Open the app in a real browser page and wait for `window.PolkaswapAgent`.
+3. Open the app in a real browser page with `?polkaswap-agent=1` before the hash route, then wait for `window.PolkaswapAgent`.
 4. Call `ready({ requireNode: true })`.
-5. Discover wallets and assets with `refreshWallets`, `walletAccounts`, `assets`, `resolveAsset`, and `commonAssets`.
-6. For any state-changing operation, call the matching `prepare*` method first.
-7. Review `canExecute`, `warnings`, `requiredBalances`, `fees`, and `preview`.
-8. Execute only with the returned `intentId` and a stable `clientOrderId`.
-9. Persist `exportState()` after handoff to signing, and use `recoverTransaction` if the runner is interrupted.
+5. Verify `status().agent.mode === true` so the runner knows the transient agent mode is active.
+6. Discover wallets and assets with `refreshWallets`, `walletAccounts`, `assets`, `resolveAsset`, and `commonAssets`.
+7. For any state-changing operation, call the matching `prepare*` method first.
+8. Review `canExecute`, `warnings`, `requiredBalances`, `fees`, and `preview`.
+9. Execute only with the returned `intentId` and a stable `clientOrderId`.
+10. Persist `exportState()` after handoff to signing, and use `recoverTransaction` if the runner is interrupted.
 
 The API is intentionally page-context only. A browser automation runner should evaluate JavaScript inside the Polkaswap page; it should not try to call these methods from another origin.
 
@@ -67,7 +68,7 @@ The manifest also exposes compact `methodMetadata` arrays for tools that need to
 | --- | --- |
 | Check API version, defaults, limits, and capabilities | `capabilities()` |
 | Wait for node or wallet readiness | `ready({ requireNode?, requireWallet?, timeoutMs? })` |
-| Inspect current node, wallet, and slippage setting | `status()` |
+| Inspect current agent mode, node, wallet, and slippage setting | `status()` |
 | Discover injected wallet providers | `refreshWallets()` |
 | List accounts for a wallet provider | `walletAccounts({ source })` |
 | Select an existing wallet account | `connectWallet({ source, address? })` |

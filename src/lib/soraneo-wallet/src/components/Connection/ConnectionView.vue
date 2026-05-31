@@ -297,9 +297,29 @@ export default {
       });
     };
 
+    let googleDrivePreparePromise: Nullable<Promise<void>> = null;
+
+    const prepareGoogleDriveWallet = async (): Promise<void> => {
+      const wallet = availableWallets.value.find((wallet: Wallet) => wallet.extensionName === AppWallet.GoogleDrive);
+
+      if (!wallet?.installed) return;
+      if (googleDrivePreparePromise) return googleDrivePreparePromise;
+
+      googleDrivePreparePromise = GDriveWallet.prepare()
+        .catch((error) => {
+          console.warn('[GoogleDriveWallet] OAuth preload failed', error);
+        })
+        .finally(() => {
+          googleDrivePreparePromise = null;
+        });
+
+      await googleDrivePreparePromise;
+    };
+
     const updateWallets = async (): Promise<void> => {
       await updateWcWallet();
       await updateAvailableWallets();
+      void prepareGoogleDriveWallet();
     };
 
     const navigateToCreateAccount = (): void => {
@@ -411,14 +431,13 @@ export default {
         setSelectedWalletLoading(true);
 
         await getWallet(wallet);
-
-        setSelectedWalletLoading(false);
-
         await subscribeToWalletAccountsFn();
       } catch (error) {
         console.error(error);
         resetSelectedWallet();
         throw error;
+      } finally {
+        setSelectedWalletLoading(false);
       }
     };
 

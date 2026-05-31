@@ -22,6 +22,7 @@ import type vestedRewards from './vestedRewards';
 import type leafProvider from './leafProvider';
 import type basicChannel from './basicChannel';
 import type intentivizedChannel from './intentivizedChannel';
+import type polkamarkt from './polkamarkt';
 
 export type SoraDefinitions = typeof runtime.types &
   typeof dexApi.types &
@@ -46,4 +47,5 @@ export type SoraDefinitions = typeof runtime.types &
   typeof vestedRewards.types &
   typeof leafProvider.types &
   typeof basicChannel.types &
-  typeof intentivizedChannel.types;
+  typeof intentivizedChannel.types &
+  typeof polkamarkt.types;

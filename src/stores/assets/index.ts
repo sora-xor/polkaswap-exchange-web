@@ -1,6 +1,5 @@
 import { KnownAssets, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineStore } from 'pinia';
 
@@ -38,32 +37,18 @@ const getSubAssetIdAddress = (address: SubAssetId, network: SubNetwork): string 
   return '';
 };
 
-/**
- * XOR's legacy Hashi bridge contract is no longer active on Ethereum Mainnet,
- * so it must not be exposed as a selectable Hashi asset there.
- */
-const isUnavailableHashiEthereumAsset = (soraAddress: string, network?: Nullable<unknown>): boolean => {
-  const networkId = typeof network === 'number' || typeof network === 'string' ? Number(network) : NaN;
-
-  return networkId === EvmNetworkId.EthereumMainnet && soraAddress.toLowerCase() === XOR.address.toLowerCase();
-};
-
 const fetchEthRegisteredAssets = async (): Promise<Record<string, BridgeRegisteredAsset>[]> => {
   if (!ethBridgeApi?.getRegisteredAssets) return [];
 
-  const web3Store = useWeb3Store();
-  const hashiNetwork = web3Store.networkSelected ?? web3Store.ethBridgeEvmNetwork;
   const networkAssets = await ethBridgeApi.getRegisteredAssets();
 
-  return Object.entries(networkAssets)
-    .filter(([soraAddress]) => !isUnavailableHashiEthereumAsset(soraAddress, hashiNetwork))
-    .map(([soraAddress, assetData]) => ({
-      [soraAddress]: {
-        address: assetData.address,
-        decimals: assetData.decimals ?? 18,
-        kind: assetData.assetKind,
-      },
-    }));
+  return Object.entries(networkAssets).map(([soraAddress, assetData]) => ({
+    [soraAddress]: {
+      address: assetData.address,
+      decimals: assetData.decimals ?? 18,
+      kind: assetData.assetKind,
+    },
+  }));
 };
 
 const fetchEvmRegisteredAssets = async (

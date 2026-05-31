@@ -28,7 +28,7 @@
         "title": "帳戶設定"
     },
     "accountText": "帳戶 | 帳戶",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "活躍帳戶",
     "addAsset": {
         "add": "新增",
         "AddAssetToken": {
@@ -271,7 +271,7 @@
         "nexusRecipientPlaceholder": "輸入您的 SORA Nexus i105 帳戶",
         "nexusRecipientWarning": "您的 SORA Nexus 帳戶會公開記錄在這筆銷毀交易中。",
         "soraNetworkTxHashLabel": "SORA 網路 tx 哈希",
-        "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraNexusXorLabel": "SORA Nexus 異或",
         "soraV3XorAmountTitle": "您想要多少{tokenSymbol}？",
         "ssTokensLabel": "SS代幣"
     },
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} 每 {second}",
     "firstText": "第一",
     "footer": {
+        "forAgents": "對於代理商",
         "internet": {
             "action": "刷新 {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "資訊與社群",
         "privacy": "隱私權政策",
         "sorawiki": "{Sora} 維基"
+    },
+    "forAgents": {
+        "apiContext": "應用程式啟動後安裝在頁面上下文中。它使用與使用者介面相同的節點、錢包、索引器和 SDK 路徑。",
+        "contract": {
+            "idempotent": "使用穩定的 clientOrderId 並在重試之前恢復不確定的提交。",
+            "noCustody": "該頁面永遠不會收到私鑰；簽名保留在所選錢包中。",
+            "prepareFirst": "狀態變更呼叫必須在執行*之前經過準備*。",
+            "samePage": "就緒事件後在 Polkaswap 頁面上下文中運行。"
+        },
+        "discoveryText": "首先取得清單。它連結了此靜態建置附帶的版本化參考、模式檔案、範例、錯誤目錄和幫助程式用戶端。",
+        "discoveryTitle": "發現",
+        "entrypointsLabel": "代理 API 入口點",
+        "eyebrow": "自動化",
+        "flow": {
+            "execute": "僅在政策批准後執行，並具有準備好的意圖和穩定的客戶訂單 ID。",
+            "open": "在真實的瀏覽器頁面中開啟 Polkaswap。",
+            "prepare": "在任何簽章操作之前呼叫匹配的準備方法。",
+            "ready": "等待就緒事件並需要一個活動的 SORA 節點。",
+            "recover": "在重試之前恢復不確定的提交。",
+            "resolve": "在重複執行之前將資產符號解析為位址。",
+            "wallet": "需要簽名時選擇錢包提供者和帳戶。"
+        },
+        "flowTitle": "安全執行循環",
+        "lead": "Polkaswap 為開啟靜態應用程式的代理程式運行者公開了瀏覽器本機自動化 API。",
+        "links": {
+            "client": "JavaScript 幫助客戶端",
+            "errors": "錯誤目錄",
+            "examples": "範例",
+            "manifest": "發現清單",
+            "playground": "代理遊樂場",
+            "reference": "完整 API 參考",
+            "schema": "JSON 模式",
+            "types": "TypeScript 定義"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "通用跑者的規範發現文件。",
+                "title": "從清單開始"
+            },
+            "playground": {
+                "description": "針對狀態、資產、報價和預覽的手動同源探測。",
+                "title": "打開遊樂場"
+            },
+            "reference": {
+                "description": "可讀的方法圖、範例、簽名規則和復原說明。",
+                "title": "閱讀 API 參考"
+            }
+        },
+        "signingTextAfter": "以保持重試冪等。",
+        "signingTextBefore": "該頁面從不獲取私鑰。狀態改變方法使用選定的錢包簽署者並要求運行者傳遞返回的",
+        "signingTextMiddle": "加上一個穩定的",
+        "signingTitle": "簽名及保管",
+        "startTitle": "從這裡開始",
+        "title": "對於代理商"
     },
     "forText": "於",
     "hashiBridgeText": "{Hashi} 橋接",
@@ -798,6 +879,7 @@
         "Explore/Container": "探索",
         "Farming": "挖礦",
         "OrderBook": "交易",
+        "Polkamarkt": "波爾卡市場",
         "Pool": "資金池",
         "Rewards": "獎勵",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "取消限價單失敗",
             "OrderBookCancelLimitOrders": "取消限價單失敗",
             "OrderBookPlaceLimitOrder": "未能在 {price} {symbol2} 下達 {amount} {symbol} 限價單",
+            "PolkamarktAddLiquidity": "無法在 Polkamarkt 中加入 {amount} {symbol} 流動性",
+            "PolkamarktBuy": "無法在 Polkamarkt 上購買 {amount} {symbol}",
+            "PolkamarktClaimCreatorFees": "未能領取 Polkamarkt 創作者費用",
+            "PolkamarktClaimCreatorLiquidity": "未能申領 Polkamarkt 創作者流動性",
+            "PolkamarktClaimLiquidity": "未能領取 Polkamarkt LP 剩餘金額",
+            "PolkamarktClaimMarket": "未能領取 Polkamarkt 付款",
+            "PolkamarktClaimMarkets": "未能領取 Polkamarkt 付款",
+            "PolkamarktCreateCondition": "無法建立 Polkamarkt 條件",
+            "PolkamarktCreateMarket": "無法使用 {amount} {symbol} 建立 Polkamarkt 市場",
+            "PolkamarktFlip": "無法在 Polkamarkt 上翻轉 {amount} {symbol}",
+            "PolkamarktSell": "未能在 Polkamarkt 上出售 {amount} {symbol}",
             "ReferralReserveXor": "無法綁定 {amount} XOR",
             "ReferralSetInvitedUser": "無法設定 {role} {address}",
             "ReferralUnreserveXor": "無法解綁 {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "限價訂單已取消",
             "OrderBookCancelLimitOrders": "限價訂單已取消",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} 位於 {price} {symbol2} 處",
+            "PolkamarktAddLiquidity": "為 Polkamarkt 增加了 {amount} {symbol} 流動性",
+            "PolkamarktBuy": "在 Polkamarkt 上購買了 {amount} {symbol}",
+            "PolkamarktClaimCreatorFees": "Polkamarkt 創作者已索取費用",
+            "PolkamarktClaimCreatorLiquidity": "Polkamarkt 創作者聲稱擁有流動性",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP 剩餘索賠",
+            "PolkamarktClaimMarket": "Polkamarkt 已領取付款",
+            "PolkamarktClaimMarkets": "Polkamarkt 已領取付款",
+            "PolkamarktCreateCondition": "Polkamarkt 條件已建立",
+            "PolkamarktCreateMarket": "使用 {amount} {symbol} 建立的 Polkamarkt 市場",
+            "PolkamarktFlip": "在 Polkamarkt 上翻轉 {amount} {symbol}",
+            "PolkamarktSell": "已售出在 Polkamarkt 上 {amount} {symbol}",
             "ReferralReserveXor": "保稅 {amount} 異或",
             "ReferralSetInvitedUser": "{role} {address} 設定成功",
             "ReferralUnreserveXor": "非綁定 {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "取消訂單",
         "OrderBookCancelLimitOrders": "取消訂單",
         "OrderBookPlaceLimitOrder": "下訂單",
+        "PolkamarktAddLiquidity": "添加 Polkamarkt 流動性",
+        "PolkamarktBuy": "購買 Polkamarkt 股票",
+        "PolkamarktClaimCreatorFees": "索取 Polkamarkt 創建者費用",
+        "PolkamarktClaimCreatorLiquidity": "索取 Polkamarkt Creator 流動性",
+        "PolkamarktClaimLiquidity": "索取 Polkamarkt LP 剩餘部分",
+        "PolkamarktClaimMarket": "領取 Polkamarkt 付款",
+        "PolkamarktClaimMarkets": "領取 Polkamarkt 付款",
+        "PolkamarktCreateCondition": "建立 Polkamarkt 條件",
+        "PolkamarktCreateMarket": "創建 Polkamarkt 市場",
+        "PolkamarktFlip": "翻轉 Polkamarkt 頭寸",
+        "PolkamarktSell": "出售 Polkamarkt 股票",
         "ReferralReserveXor": "債券異或",
         "ReferralSetInvitedUser": "設定 {role}",
         "ReferralUnreserveXor": "解綁異或",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "泳池",
         "Explore/Staking": "質押",
         "Explore/Tokens": "代幣",
+        "ForAgents": "對於代理商",
         "OrderBook": "貿易",
+        "Polkamarkt": "波爾卡市場",
         "Pool": "泳池",
         "Rewards": "獎勵",
         "Sccp": "短鏈氯化石蠟",
@@ -1330,6 +1447,155 @@
         "noExtension": "找不到 {extension} 副檔名。請安裝它並重新加載此頁面",
         "noExtensions": "找不到 {PolkadotJs} 副檔名。請安裝它並重新加載此頁面\nhttps://polkadot.js.org/extension/",
         "noSigner": "拒絕訪問。前往 {extension} 擴充功能設定並開啟「管理網站存取」以允許。"
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "買",
+            "claimCreatorFees": "索取創作者費用",
+            "claimCreatorLiquidity": "索賠創建者流動性",
+            "claimLpResidual": "索賠LP剩餘",
+            "claimTraderPayout": "要求交易者付款",
+            "createMarket": "創造市場",
+            "flip": "翻轉",
+            "liquidity": "增加流動性",
+            "sell": "出售"
+        },
+        "create": {
+            "category": "類別",
+            "closeBlock": "關閉區塊",
+            "creationFee": "創作費",
+            "deadline": "交易截止日期",
+            "marketFailed": "條件創造了，但市場創造失敗了。使用已儲存的條件重試市場創建。",
+            "metadataTooLong": "問題、預言和解決方案元資料必須在 512 位元組以內。",
+            "question": "市場問題",
+            "questionPlaceholder": "該事件會在選定的截止日期前解決為“是”嗎？",
+            "questionTooShort": "問題必須至少為 32 位元組。",
+            "retryMessage": "條件 {id} 已建立。僅重試市場創建步驟。",
+            "retrySubmit": "重試市場創建",
+            "seedLiquidity": "種子流動性",
+            "seedTooSmall": "種子流動性必須至少為 {amount} {symbol}。",
+            "submit": "創造條件和市場",
+            "title": "創建 Polkamarkt 市場"
+        },
+        "details": {
+            "awaitingSettlement": "等待最終確定",
+            "empty": "選擇一個市場以查看托盤狀態、預言機詳細資訊和結算證據。",
+            "openResolutionSource": "開源連結",
+            "oracle": "甲骨文",
+            "pool": "流動性池",
+            "settlement": "結算詳情"
+        },
+        "errors": {
+            "loadActivity": "無法載入 Polkamarkt 帳戶活動。",
+            "loadMarkets": "無法載入 Polkamarkt 市場。"
+        },
+        "fields": {
+            "collateralAsset": "抵押資產",
+            "conditionId": "條件ID",
+            "evidenceBlock": "證據塊",
+            "evidenceHash": "證據哈希",
+            "evidenceUri": "證據 URI",
+            "lpContributed": "LP 貢獻",
+            "lpShares": "有限合夥人股份",
+            "noReserve": "無預留",
+            "oracle": "甲骨文",
+            "poolCollateral": "池抵押品",
+            "resolutionOutcome": "解決結果",
+            "resolutionSource": "解析度來源",
+            "yesReserve": "是的儲備"
+        },
+        "filters": {
+            "active": "活躍",
+            "allCategories": "所有類別",
+            "allStatuses": "所有狀態",
+            "finalized": "最終確定",
+            "mine": "我的"
+        },
+        "loadingMarkets": "正在加載市場...",
+        "markets": {
+            "search": "搜尋市場",
+            "subtitle": "{count} 市场符合当前过滤条件",
+            "title": "市場"
+        },
+        "metrics": {
+            "closeBlock": "關閉區塊",
+            "liquidity": "流動性",
+            "noQuote": "無報價",
+            "status": "狀態",
+            "volume": "體積",
+            "yesProbability": "是的",
+            "yesQuote": "是的報價"
+        },
+        "modes": {
+            "buy": "購買",
+            "claim": "索賠",
+            "flip": "翻轉",
+            "liquidity": "LP",
+            "sell": "出售"
+        },
+        "my": {
+            "claimsSummary": "交易員 {trader} / 有限合夥人 {lp}",
+            "connect": "連接帳戶以查看創建的市場、有限合夥人股票、支出和最近的交易。",
+            "createdMarkets": "創造市場",
+            "empty": "該帳戶尚未有 Polkamarkt 部位或創建市場。",
+            "loading": "正在加載 Polkamarkt 帳戶活動...",
+            "market": "市場{id}",
+            "positions": "有限合夥人和交易員頭寸",
+            "recentTrades": "最近的交易",
+            "sharesSummary": "是 {yes} / 否 {no} / LP {lp}",
+            "subtitle": "創建市場、有限合夥人份額、交易者支出、創建者費用和剩餘有限合夥人債權。",
+            "title": "我的市場 / LP"
+        },
+        "noMarkets": "沒有市場符合當前的過濾條件。",
+        "notIndexed": "未編入索引",
+        "outcomes": {
+            "no": "否",
+            "yes": "是的"
+        },
+        "pageSubtitle": "交易活躍的預測市場，培育新市場，並管理 Polkaswap 錢包流中的 LP 和可索賠餘額。",
+        "status": {
+            "active": "活躍"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "可索賠",
+            "claimableFailed": "無法讀取可索賠餘額。",
+            "claimStatus": "索賠狀態",
+            "collateralAmount": "金額 ({symbol})",
+            "collateralOut": "抵押品出",
+            "enterAmount": "輸入金額",
+            "flippedShares": "翻轉股票",
+            "insufficientKusd": "{symbol} 餘額不足",
+            "insufficientXor": "網路費用異或不足",
+            "invalidAmount": "輸入有效金額",
+            "lpSharesOut": "LP 出股",
+            "noChainMarket": "市場不可在鏈上交易",
+            "quoteFailed": "無法刷新報價。",
+            "refreshingQuote": "刷新報價...",
+            "selectMarket": "選擇一個活躍的市場進行交易。",
+            "sharesAmount": "股份",
+            "sharesOut": "分享出去",
+            "slippage": "滑點%",
+            "subtitle": "報價、費用、滑點保護和錢包提交使用 SORA 運行時。",
+            "title": "貿易票",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "位元組",
+            "shares": "股份"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "增加流動性",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "佣金",
             "commissionTooltip": "佣金為驗證者在質押程序中收取之服務費（百分比）。此費用會於分配前自提名者的質押獎勵中扣除。請注意驗證者可隨時調整其佣金費率。",
-            "deselectAll": "Deselect all",
+            "deselectAll": "取消全選",
             "name": "名稱",
             "noNominatedValidators": "你尚未提名任何驗證者",
             "noValidators": "沒有符合條件的驗證者",
             "return": "返回",
             "search": "搜尋...",
-            "selectAll": "Select all",
+            "selectAll": "選擇全部",
             "staked": "質押",
             "stakedTooltip": "與該驗證者質押的 XOR 總量，包括驗證者自己的質押及指定質押"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "帳戶是在網路上保存使用者資產的數位位址。每個帳戶都與唯一的公共地址和私鑰相關聯，允許使用者存取和管理其資產。",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "在選定期間參與交易的唯一帳戶。",
         "bridgeTransactions": "{from} 到 {to} 橋接是指使用橋接器在 {from} 和 {to} 網路之間轉移資產的過程。該橋允許兩個網路之間的互通性，使用戶能夠在它們之間無縫地移動資產。",
         "fees": "{Sora} 區塊鏈上的費用是指在網路上執行交易所產生的費用。這些費用以 {Sora} 網路的原生加密貨幣 XOR 支付。費用金額取決於所執行交易的複雜性和規模",
         "roi": "{ROI} 代表投資報酬率。它的計算方法是將投資所賺取的利潤除以該投資的成本（以百分比表示）。",

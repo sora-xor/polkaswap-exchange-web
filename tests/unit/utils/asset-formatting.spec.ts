@@ -8,6 +8,7 @@ import {
   getAssetBalance,
   getAssetDecimals,
   isAmountValueIntegerOnly,
+  normalizeCodecBalanceValue,
 } from '@/utils/asset-formatting';
 
 const accountAsset = {
@@ -50,6 +51,24 @@ describe('getAssetBalance', () => {
     expect(getAssetBalance(accountAsset as any)).toBe('1234500');
     expect(getAssetBalance(accountAsset as any, { isBondedBalance: true })).toBe('990000');
     expect(getAssetBalance(registeredAsset as any, { internal: false })).toBe('7654321');
+  });
+
+  it('normalizes formatted and hex codec balances before display math', () => {
+    expect(normalizeCodecBalanceValue(' 218,116,474,998,731,886,993 ')).toBe('218116474998731886993');
+    expect(normalizeCodecBalanceValue('0x0bd2c467fd9df2a1')).toBe('851959230442107553');
+    expect(normalizeCodecBalanceValue('1.5')).toBeNull();
+    expect(getAssetBalance({ balance: { transferable: '0x0bd2c467fd9df2a1' } } as any)).toBe('851959230442107553');
+  });
+
+  it('normalizes codec-like API balance values without unsafe number coercion', () => {
+    expect(normalizeCodecBalanceValue(42)).toBe('42');
+    expect(normalizeCodecBalanceValue(1.5)).toBeNull();
+    expect(normalizeCodecBalanceValue({ toJSON: () => ({ balance: '999,601,922,365,042,012,692' }) })).toBe(
+      '999601922365042012692'
+    );
+    expect(normalizeCodecBalanceValue({ toJSON: () => null, toString: () => '0x04e62b741e86d3014' })).toBe(
+      '5648278376376250388'
+    );
   });
 });
 

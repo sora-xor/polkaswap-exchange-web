@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 import { chromium } from 'playwright';
 
-const appUrl = process.env.POLKASWAP_AGENT_URL || 'https://polkaswap.io/#/swap';
+const AGENT_SESSION_QUERY_PARAM = 'polkaswap-agent';
+const rawAppUrl = process.env.POLKASWAP_AGENT_URL || 'https://polkaswap.io/?polkaswap-agent=1#/swap';
+const appUrl = withAgentSessionParam(rawAppUrl);
 const assetInSymbol = process.env.POLKASWAP_AGENT_ASSET_IN || 'XOR';
 const assetOutSymbol = process.env.POLKASWAP_AGENT_ASSET_OUT || 'PSWAP';
 const amount = process.env.POLKASWAP_AGENT_AMOUNT || '1';
@@ -12,6 +14,12 @@ const executeSwap = process.env.POLKASWAP_AGENT_EXECUTE_SWAP === '1';
 const headless = process.env.POLKASWAP_AGENT_HEADLESS !== '0';
 const readyTimeoutMs = Number(process.env.POLKASWAP_AGENT_READY_TIMEOUT_MS || 30_000);
 const quoteTimeoutMs = Number(process.env.POLKASWAP_AGENT_QUOTE_TIMEOUT_MS || 15_000);
+
+function withAgentSessionParam(rawUrl) {
+  const url = new URL(rawUrl);
+  url.searchParams.set(AGENT_SESSION_QUERY_PARAM, '1');
+  return url.toString();
+}
 
 function toErrorShape(error) {
   return {
@@ -26,10 +34,6 @@ const browser = await chromium.launch({ headless });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 
 try {
-  await page.addInitScript(() => {
-    localStorage.setItem('dexSettings.disclaimerApprove', 'true');
-  });
-
   await page.goto(appUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });
   await page.waitForFunction(() => Boolean(window.PolkaswapAgent), { timeout: readyTimeoutMs });
 

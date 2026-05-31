@@ -479,8 +479,8 @@ const resetState = () => {
 const initData = async () => {
   if (!isLoggedIn.value) return;
 
-  await referralsStore.subscribeOnInvitedUsers();
   await referralsStore.getAccountReferralRewards();
+  await referralsStore.subscribeOnInvitedUsers();
   await referralsStore.getReferrer();
   await referralsStore.subscribeOnReferrer();
 };

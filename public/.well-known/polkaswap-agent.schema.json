@@ -645,9 +645,18 @@
     },
     "status": {
       "type": "object",
-      "required": ["version", "node", "wallet", "settings"],
+      "required": ["version", "agent", "node", "wallet", "settings"],
       "properties": {
         "version": { "type": "string" },
+        "agent": {
+          "type": "object",
+          "required": ["mode", "disclaimerSuppressed", "queryParam"],
+          "properties": {
+            "mode": { "type": "boolean" },
+            "disclaimerSuppressed": { "type": "boolean" },
+            "queryParam": { "const": "polkaswap-agent" }
+          }
+        },
         "node": {
           "type": "object",
           "required": ["connected", "endpoint", "blockNumber"],

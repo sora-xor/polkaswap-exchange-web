@@ -195,6 +195,8 @@ const shouldFiatBeShown = (asset: Asset): boolean => {
     &__balance {
       line-height: var(--s-line-height-small);
       font-weight: 800;
+
+      @include formatted-amount-tooltip;
     }
 
     &__balance-container {

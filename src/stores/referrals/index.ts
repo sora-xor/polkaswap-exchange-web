@@ -76,10 +76,12 @@ export const useReferralsStore = defineStore('referrals-legacy', {
       this.storageReferrer = next.storageReferrer;
       this.isReferrerApproved = next.isReferrerApproved;
     },
-    unsubscribeFromInvitedUsers(): void {
+    unsubscribeFromInvitedUsers(clearUsers = true): void {
       this.invitedUsersSubscription?.unsubscribe();
       this.invitedUsersSubscription = null;
-      this.invitedUsers = [];
+      if (clearUsers) {
+        this.invitedUsers = [];
+      }
     },
     async getReferrer(): Promise<void> {
       this.referrer = '';
@@ -91,17 +93,22 @@ export const useReferralsStore = defineStore('referrals-legacy', {
       }
     },
     async subscribeOnInvitedUsers(): Promise<void> {
-      this.unsubscribeFromInvitedUsers();
+      this.unsubscribeFromInvitedUsers(false);
 
       const walletStore = useWalletStore();
-      if (!walletStore.isLoggedIn) return;
+      if (!walletStore.isLoggedIn || !walletStore.account?.address) return;
 
-      this.invitedUsersSubscription = api.referralSystem.subscribeOnAccountInvitedUsers().subscribe((users) => {
-        this.invitedUsers = users;
-      });
+      try {
+        this.invitedUsersSubscription = api.referralSystem.subscribeOnAccountInvitedUsers().subscribe((users) => {
+          this.invitedUsers = users;
+        });
+      } catch {
+        this.invitedUsersSubscription = null;
+      }
     },
     async getAccountReferralRewards(): Promise<void> {
       this.referralRewards = null;
+      this.invitedUsers = [];
 
       const walletStore = useWalletStore();
       const address = walletStore.account?.address;
@@ -112,6 +119,7 @@ export const useReferralsStore = defineStore('referrals-legacy', {
 
       if (data) {
         this.referralRewards = data;
+        this.invitedUsers = Object.keys(data.invitedUserRewards);
       }
     },
     async subscribeOnReferrer(): Promise<void> {
@@ -121,11 +129,15 @@ export const useReferralsStore = defineStore('referrals-legacy', {
       const address = walletStore.account?.address;
       if (!walletStore.isLoggedIn || !address) return;
 
-      this.referrerSubscription = api.referralSystem.subscribeOnReferrer(address).subscribe((referrer) => {
-        if (referrer) {
-          this.referrer = referrer;
-        }
-      });
+      try {
+        this.referrerSubscription = api.referralSystem.subscribeOnReferrer(address).subscribe((referrer) => {
+          if (referrer) {
+            this.referrer = referrer;
+          }
+        });
+      } catch {
+        this.referrerSubscription = null;
+      }
     },
   },
 });

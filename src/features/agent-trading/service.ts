@@ -12,6 +12,7 @@ import { Operation } from '@/lib/substrate/sdk/types';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
+import { isAgentAutomationSession, POLKASWAP_AGENT_QUERY_PARAM } from '@/utils/agentSession';
 
 import { collectAssets, resolveAssetRef, toAgentAsset, type AgentAssetContext } from './assets';
 import { agentError, normalizeAgentError } from './errors';
@@ -655,9 +656,15 @@ export function createPolkaswapAgentApi(
     const walletStore = deps.getWalletStore();
     const appConnection = settingsStore.appConnection;
     const availableWallets = (walletStore.availableWallets ?? []).map(simplifyWalletProvider);
+    const agentMode = isAgentAutomationSession();
 
     return {
       version: POLKASWAP_AGENT_API_VERSION,
+      agent: {
+        mode: agentMode,
+        disclaimerSuppressed: agentMode,
+        queryParam: POLKASWAP_AGENT_QUERY_PARAM,
+      },
       node: {
         connected: Boolean(settingsStore.nodeIsConnected),
         endpoint: appConnection?.connection?.endpoint ?? appConnection?.node?.address ?? '',
@@ -834,20 +841,58 @@ export function createPolkaswapAgentApi(
     return (fromStore ?? XOR) as Asset;
   };
 
-  const getAvailableBalanceCodec = (asset: Asset): string => {
+  const getCachedAvailableBalanceCodec = (asset: Asset): string | null => {
     const context = createAssetContext();
     const normalizedAddress = asset.address.toLowerCase();
-    const fromAssetsStore = context.assetsStore.assetDataByAddress(normalizedAddress);
+    const matchesAssetAddress = (candidate?: string): boolean =>
+      Boolean(candidate) && candidate?.toLowerCase() === normalizedAddress;
+    const fromAssetsStore =
+      context.assetsStore.assetDataByAddress(normalizedAddress) ??
+      context.assetsStore.assetDataByAddress(asset.address);
+    const fromWalletAssets = context.walletStore.assets?.find((accountAsset) =>
+      matchesAssetAddress(accountAsset.address)
+    );
     const fromWalletStore =
       context.walletStore.accountAssetsAddressTable?.[normalizedAddress] ??
       context.walletStore.accountAssetsAddressTable?.[asset.address];
-    const balance = fromAssetsStore?.balance ?? fromWalletStore?.balance;
+    const balance = fromAssetsStore?.balance ?? fromWalletStore?.balance ?? fromWalletAssets?.balance;
 
-    return `${balance?.transferable ?? '0'}`;
+    return balance?.transferable === undefined ? null : `${balance.transferable}`;
   };
 
-  const getAvailableAssetAmount = (asset: Asset): AgentAssetAmount =>
-    toAssetAmountFromCodec(asset, getAvailableBalanceCodec(asset));
+  /**
+   * Reads the connected account balance directly from the SDK when cached account assets
+   * are absent or still showing a stale zero after wallet connection.
+   */
+  const getLiveAvailableBalanceCodec = async (asset: Asset): Promise<string | null> => {
+    const status = getStatus();
+    const accountAddress = deps.api.accountPair?.address ?? deps.getWalletStore().address;
+
+    if (!(status.node.connected && status.wallet.connected && accountAddress)) return null;
+
+    try {
+      const accountAsset = await deps.api.assets.getAccountAsset(asset.address, accountAddress);
+
+      return accountAsset.balance?.transferable === undefined ? null : `${accountAsset.balance.transferable}`;
+    } catch {
+      return null;
+    }
+  };
+
+  const getAvailableBalanceCodec = async (asset: Asset): Promise<string> => {
+    const cachedCodec = getCachedAvailableBalanceCodec(asset);
+    const cachedBalance = cachedCodec ? FPNumber.fromCodecValue(cachedCodec, asset.decimals) : FPNumber.ZERO;
+
+    if (cachedCodec && !cachedBalance.isZero()) return cachedCodec;
+
+    return (await getLiveAvailableBalanceCodec(asset)) ?? cachedCodec ?? '0';
+  };
+
+  const getAvailableAssetAmount = async (asset: Asset): Promise<AgentAssetAmount> => {
+    const availableCodec = await getAvailableBalanceCodec(asset);
+
+    return toAssetAmountFromCodec(asset, availableCodec);
+  };
 
   const getFeeEstimate = (operation: Operation): AgentFeeEstimate => {
     const feeCodec = `${deps.getWalletStore().networkFees?.[operation] ?? '0'}`;
@@ -862,9 +907,9 @@ export function createPolkaswapAgentApi(
     };
   };
 
-  const mergeRequiredBalances = (
+  const mergeRequiredBalances = async (
     entries: Array<{ asset: Asset; amountCodec: string; reason: string }>
-  ): AgentRequiredBalance[] => {
+  ): Promise<AgentRequiredBalance[]> => {
     const grouped = new Map<
       string,
       {
@@ -891,23 +936,25 @@ export function createPolkaswapAgentApi(
       }
     });
 
-    return [...grouped.values()].map(({ asset, amount, reasons }) => {
-      const required = amount.toString();
-      const requiredCodec = amount.toCodecString();
-      const availableCodec = getAvailableBalanceCodec(asset);
-      const available = getNaturalFromCodec(availableCodec, asset.decimals);
-      const sufficient = FPNumber.gte(FPNumber.fromCodecValue(availableCodec, asset.decimals), amount);
+    return await Promise.all(
+      [...grouped.values()].map(async ({ asset, amount, reasons }) => {
+        const required = amount.toString();
+        const requiredCodec = amount.toCodecString();
+        const availableCodec = await getAvailableBalanceCodec(asset);
+        const available = getNaturalFromCodec(availableCodec, asset.decimals);
+        const sufficient = FPNumber.gte(FPNumber.fromCodecValue(availableCodec, asset.decimals), amount);
 
-      return {
-        asset: toAgentAsset(asset),
-        required,
-        requiredCodec,
-        available,
-        availableCodec,
-        sufficient,
-        reason: [...reasons].join('+'),
-      };
-    });
+        return {
+          asset: toAgentAsset(asset),
+          required,
+          requiredCodec,
+          available,
+          availableCodec,
+          sufficient,
+          reason: [...reasons].join('+'),
+        };
+      })
+    );
   };
 
   const getInsufficientBalanceWarnings = (requiredBalances: AgentRequiredBalance[]): AgentWarning[] =>
@@ -1906,7 +1953,7 @@ export function createPolkaswapAgentApi(
     try {
       const { quote, state } = await buildAddLiquidityQuote(request);
       const fee = getFeeEstimate(quote.createsPool ? Operation.CreatePair : Operation.AddLiquidity);
-      const requiredBalances = mergeRequiredBalances([
+      const requiredBalances = await mergeRequiredBalances([
         { asset: state.pair.assetA, amountCodec: quote.amountACodec, reason: 'liquidity-asset-a' },
         { asset: state.pair.assetB, amountCodec: quote.amountBCodec, reason: 'liquidity-asset-b' },
         { asset: getXorAsset(), amountCodec: fee.amountCodec, reason: 'network-fee' },
@@ -1945,7 +1992,7 @@ export function createPolkaswapAgentApi(
       const { quote, state } = await buildRemoveLiquidityQuote(request);
       const fee = getFeeEstimate(Operation.RemoveLiquidity);
       const poolToken = state.poolToken;
-      const feeBalances = mergeRequiredBalances([
+      const feeBalances = await mergeRequiredBalances([
         { asset: getXorAsset(), amountCodec: fee.amountCodec, reason: 'network-fee' },
       ]);
       const position =
@@ -2250,7 +2297,7 @@ export function createPolkaswapAgentApi(
     try {
       const { quote, resolved } = await buildQuote(request);
       const fee = getFeeEstimate(Operation.Swap);
-      const requiredBalances = mergeRequiredBalances([
+      const requiredBalances = await mergeRequiredBalances([
         {
           asset: resolved.assetIn,
           amountCodec: getCodecFromNatural(quote.amountIn, resolved.assetIn.decimals),
@@ -2416,7 +2463,7 @@ export function createPolkaswapAgentApi(
       const fee = getFeeEstimate(Operation.Transfer);
       const amountCodec = getCodecFromNatural(amount, asset.decimals);
       const intentId = createIntentId('transfer', { asset: asset.address, to, amount, amountCodec });
-      const requiredBalances = mergeRequiredBalances([
+      const requiredBalances = await mergeRequiredBalances([
         { asset: asset as Asset, amountCodec, reason: 'transfer-amount' },
         { asset: getXorAsset(), amountCodec: fee.amountCodec, reason: 'network-fee' },
       ]);
@@ -2677,11 +2724,11 @@ export function createPolkaswapAgentApi(
     }
   };
 
-  const getMaxAmountAfterFee = (asset: Asset, operation: Operation): AgentMaxAmount => {
+  const getMaxAmountAfterFee = async (asset: Asset, operation: Operation): Promise<AgentMaxAmount> => {
     ensureWalletReady();
 
     const fee = getFeeEstimate(operation);
-    const available = getAvailableAssetAmount(asset);
+    const available = await getAvailableAssetAmount(asset);
     let maxAmount = FPNumber.fromCodecValue(available.codec, asset.decimals);
     const warnings: AgentWarning[] = [];
 
@@ -2710,7 +2757,7 @@ export function createPolkaswapAgentApi(
   const maxTransferAmount = async (request: AgentMaxAmountRequest): Promise<AgentMaxAmount> => {
     try {
       const asset = await resolveAssetRef(createAssetContext(), request.asset, 'asset');
-      return getMaxAmountAfterFee(asset as Asset, Operation.Transfer);
+      return await getMaxAmountAfterFee(asset as Asset, Operation.Transfer);
     } catch (error) {
       throw normalizeAgentError(error);
     }
@@ -2719,7 +2766,7 @@ export function createPolkaswapAgentApi(
   const maxSwapInput = async (request: AgentMaxSwapInputRequest): Promise<AgentMaxAmount> => {
     try {
       const asset = await resolveAssetRef(createAssetContext(), request.assetIn, 'assetIn');
-      const maxAmount = getMaxAmountAfterFee(asset as Asset, Operation.Swap);
+      const maxAmount = await getMaxAmountAfterFee(asset as Asset, Operation.Swap);
 
       if (!request.assetOut || new FPNumber(maxAmount.amount).isZero()) {
         return maxAmount;
@@ -2764,8 +2811,10 @@ export function createPolkaswapAgentApi(
 
       const state = await getPoolState({ assetA: request.assetA, assetB: request.assetB });
       const fee = getFeeEstimate(Operation.AddLiquidity);
-      const maxA = getMaxAmountAfterFee(state.pair.assetA, Operation.AddLiquidity);
-      const maxB = getMaxAmountAfterFee(state.pair.assetB, Operation.AddLiquidity);
+      const [maxA, maxB] = await Promise.all([
+        getMaxAmountAfterFee(state.pair.assetA, Operation.AddLiquidity),
+        getMaxAmountAfterFee(state.pair.assetB, Operation.AddLiquidity),
+      ]);
       let amountA = maxA.amount;
       let amountB = maxB.amount;
       const warnings: AgentWarning[] = [...maxA.warnings, ...maxB.warnings];

@@ -28,7 +28,7 @@
         "title": "הגדרות חשבון"
     },
     "accountText": "חשבון | חשבונות",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "חשבונות פעילים",
     "addAsset": {
         "add": "לְהוֹסִיף",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} לכל {second}",
     "firstText": "רֵאשִׁית",
     "footer": {
+        "forAgents": "עבור סוכנים",
         "internet": {
             "action": "רענן {AppName}",
             "desc": {
@@ -631,6 +632,86 @@
         "privacy": "מדיניות פרטיות",
         "sorawiki": "{Sora} ויקי"
     },
+    "forAgents": {
+        "apiContext": "מותקן בהקשר העמוד לאחר אתחול האפליקציה. הוא משתמש באותו צומת, בארנק, באינדקס ובנתיב SDK כמו ממשק המשתמש.",
+        "contract": {
+            "idempotent": "השתמש ב-clientOrderId יציב ושחזר הגשות לא ודאיות לפני שתנסה שוב.",
+            "noCustody": "הדף לעולם לא מקבל מפתחות פרטיים; החתימה נשארת עם הארנק שנבחר.",
+            "prepareFirst": "שיחות משנות מדינה חייבות לעבור הכנה* לפני ביצוע*.",
+            "samePage": "הפעל בתוך ההקשר של דף Polkaswap לאחר האירוע המוכן."
+        },
+        "discoveryText": "קודם תביא את המניפסט. הוא מקשר את ההפניה המנוסחת, קבצי הסכימה, הדוגמאות, קטלוג השגיאות ולקוח העוזר שנשלח עם המבנה הסטטי הזה.",
+        "discoveryTitle": "גילוי",
+        "entrypointsLabel": "נקודות כניסה של Agent API",
+        "eyebrow": "אוטומציה",
+        "flow": {
+            "execute": "ביצוע רק לאחר אישור המדיניות, עם הכוונה המוכנה ומזהה הזמנה יציב של הלקוח.",
+            "open": "פתח את Polkaswap בדף דפדפן אמיתי.",
+            "prepare": "קרא לשיטת הכנת ההתאמה לפני כל פעולת חתימה.",
+            "ready": "המתן לאירוע המוכן ודרוש צומת SORA פעיל.",
+            "recover": "שחזר הגשות לא ודאיות לפני שתנסה שוב.",
+            "resolve": "פתרו סמלי נכסים לכתובות לפני ביצוע חוזר.",
+            "wallet": "בחר ספק ארנק וחשבון כאשר יש צורך בחתימה."
+        },
+        "flowTitle": "לולאת ביצוע בטוחה",
+        "lead": "Polkaswap חושף ממשק API לאוטומציה מקורי בדפדפן עבור רצים של סוכנים שפותחים את האפליקציה הסטטית.",
+        "links": {
+            "client": "לקוח עוזר JavaScript",
+            "errors": "קטלוג שגיאות",
+            "examples": "דוגמאות",
+            "manifest": "מניפסט גילוי",
+            "playground": "מגרש משחקים לסוכן",
+            "reference": "הפניה מלאה ל-API",
+            "schema": "סכימת JSON",
+            "types": "הגדרות TypeScript"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "מסמך גילוי קנוני לרצים גנריים.",
+                "title": "התחל עם המניפסט"
+            },
+            "playground": {
+                "description": "בדיקה ידנית מאותו מקור לסטטוס, נכסים, הצעות מחיר ותצוגות מקדימות.",
+                "title": "פתח את מגרש המשחקים"
+            },
+            "reference": {
+                "description": "מפת שיטה ניתנת לקריאה, דוגמאות, כללי חתימה והערות שחזור.",
+                "title": "קרא את ההפניה ל-API"
+            }
+        },
+        "signingTextAfter": "כדי לשמור על ניסיונות חוזרים אימפוטנטיים.",
+        "signingTextBefore": "הדף אף פעם לא לוקח מפתחות פרטיים. שיטות לשינוי מצב משתמשות בחותם הארנק שנבחר ומחייבות את הרץ לעבור את המוחזר",
+        "signingTextMiddle": "בתוספת אורווה",
+        "signingTitle": "חתימה ומשמורת",
+        "startTitle": "התחל כאן",
+        "title": "עבור סוכנים"
+    },
     "forText": "עֲבוּר",
     "hashiBridgeText": "{Hashi} גשר",
     "headerMenu": {
@@ -644,7 +725,7 @@
         "systemPreferencesTheme": "העדפות מערכת",
         "titleBalance": "יתרות",
         "titleCurrency": "מטבע פיאט",
-        "titleMisc": "Misc",
+        "titleMisc": "שונות",
         "titleTheme": "נושא צבע",
         "turnPhoneHideBalances": "הפוך טלפון והסתתר"
     },
@@ -798,6 +879,7 @@
         "Explore/Container": "לַחקוֹר",
         "Farming": "חַקלָאוּת",
         "OrderBook": "סַחַר",
+        "Polkamarkt": "פולקמרקט",
         "Pool": "פּוּל",
         "Rewards": "תגמולים",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "נכשל בביטול הזמנת הגבלה",
             "OrderBookCancelLimitOrders": "נכשל בביטול הגבלת הזמנות",
             "OrderBookPlaceLimitOrder": "ביצוע הזמנה מוגבלת של {amount} {symbol} ב{price} {symbol2} נכשל.",
+            "PolkamarktAddLiquidity": "הוספת נזילות {amount} {symbol} ל-Polkamarkt נכשלה",
+            "PolkamarktBuy": "קניית {amount} {symbol} ב-Polkamarkt נכשלה",
+            "PolkamarktClaimCreatorFees": "לא ניתן לתבוע עמלות ליוצרים של Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "נכשל לתבוע נזילות של יוצר Polkamarkt",
+            "PolkamarktClaimLiquidity": "נכשלו לתבוע את שאריות Polkamarkt LP",
+            "PolkamarktClaimMarket": "נכשל בדרישת תשלום Polkamarkt",
+            "PolkamarktClaimMarkets": "נכשל בדרישת תשלומי Polkamarkt",
+            "PolkamarktCreateCondition": "יצירת מצב Polkamarkt נכשלה",
+            "PolkamarktCreateMarket": "יצירת שוק פולקמרקט נכשלה עם {amount} {symbol}",
+            "PolkamarktFlip": "הפיכת {amount} {symbol} ב-Polkamarkt נכשלה",
+            "PolkamarktSell": "מכירת {amount} {symbol} ב-Polkamarkt נכשלה",
             "ReferralReserveXor": "נכשל חיבור {amount} XOR",
             "ReferralSetInvitedUser": "נכשל ההגדרה של {role} {address}",
             "ReferralUnreserveXor": "נכשל ביטול הקשר {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "הגבלת הזמנה מבוטלת",
             "OrderBookCancelLimitOrders": "הגבל את ההזמנות שבוטלו",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ב{price} {symbol2} ממוקם",
+            "PolkamarktAddLiquidity": "נוספה נזילות {amount} {symbol} ל-Polkamarkt",
+            "PolkamarktBuy": "קנה {amount} {symbol} ב-Polkamarkt",
+            "PolkamarktClaimCreatorFees": "תבעו דמי יוצר של Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "יוצר Polkamarkt טען נזילות",
+            "PolkamarktClaimLiquidity": "שארית Polkamarkt LP נתבע",
+            "PolkamarktClaimMarket": "נתבע תשלום של Polkamarkt",
+            "PolkamarktClaimMarkets": "תשלומי Polkamarkt נתבעו",
+            "PolkamarktCreateCondition": "נוצר מצב Polkamarkt",
+            "PolkamarktCreateMarket": "שוק פולקמרקט נוצר עם {amount} {symbol}",
+            "PolkamarktFlip": "היפוך {amount} {symbol} ב-Polkamarkt",
+            "PolkamarktSell": "נמכר {amount} {symbol} ב-Polkamarkt",
             "ReferralReserveXor": "מלוכד {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} הוגדר בהצלחה",
             "ReferralUnreserveXor": "לא קשור {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "בטל את ההזמנה",
         "OrderBookCancelLimitOrders": "בטל הזמנות",
         "OrderBookPlaceLimitOrder": "הצב הזמנה",
+        "PolkamarktAddLiquidity": "הוסף פולקמרקט נזילות",
+        "PolkamarktBuy": "קנה מניות Polkamarkt",
+        "PolkamarktClaimCreatorFees": "תבע דמי יוצר של Polkamarkt",
+        "PolkamarktClaimCreatorLiquidity": "תבע את נזילות היוצר של Polkamarkt",
+        "PolkamarktClaimLiquidity": "תביעת שארית Polkamarkt LP",
+        "PolkamarktClaimMarket": "תבע תשלום של Polkamarkt",
+        "PolkamarktClaimMarkets": "תבע תשלומי Polkamarkt",
+        "PolkamarktCreateCondition": "צור מצב Polkamarkt",
+        "PolkamarktCreateMarket": "צור שוק פולקמרקט",
+        "PolkamarktFlip": "Flip Polkamarkt עמדת",
+        "PolkamarktSell": "למכור מניות פולקמרקט",
         "ReferralReserveXor": "בונד Xor",
         "ReferralSetInvitedUser": "הגדר {role}",
         "ReferralUnreserveXor": "Unbond Xor",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "בריכות",
         "Explore/Staking": "מעלה",
         "Explore/Tokens": "אסימונים",
+        "ForAgents": "עבור סוכנים",
         "OrderBook": "סַחַר",
+        "Polkamarkt": "פולקמרקט",
         "Pool": "פּוּל",
         "Rewards": "תגמולים",
         "Sccp": "SCCP",
@@ -1330,6 +1447,155 @@
         "noExtension": "לא נמצאה הרחבה {extension}. אנא התקן אותו וטען מחדש את הדף הזה",
         "noExtensions": "לא נמצאה הרחבה {PolkadotJs}. אנא התקן אותו וטען מחדש את הדף הזה\nhttps://polkadot.js.org/extension/",
         "noSigner": "הגִישָׁה נִדחֲתָה. עבור אל הגדרות התוסף {extension} ופתח את \"נהל גישה לאתר\" כדי לאפשר."
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "קנה",
+            "claimCreatorFees": "תבע דמי יוצר",
+            "claimCreatorLiquidity": "תבע נזילות יוצר",
+            "claimLpResidual": "טען שארית LP",
+            "claimTraderPayout": "תבע תשלום לסוחר",
+            "createMarket": "ליצור שוק",
+            "flip": "הפוך",
+            "liquidity": "הוסף נזילות",
+            "sell": "למכור"
+        },
+        "create": {
+            "category": "קטגוריה",
+            "closeBlock": "סגור בלוק",
+            "creationFee": "דמי יצירה",
+            "deadline": "מועד אחרון למסחר",
+            "marketFailed": "התנאי נוצר, אך יצירת השוק נכשלה. נסה שוב ליצור שוק עם התנאי השמור.",
+            "metadataTooLong": "מטא נתונים של שאלות, אורקל ורזולוציה חייבים להתאים ל-512 בתים.",
+            "question": "שאלת שוק",
+            "questionPlaceholder": "האם האירוע ייפתר ל-YES עד למועד הנבחר?",
+            "questionTooShort": "השאלה חייבת להיות לפחות 32 בתים.",
+            "retryMessage": "התנאי {id} נוצר. נסה שוב רק את שלב יצירת השוק.",
+            "retrySubmit": "נסה שוב ליצור שוק",
+            "seedLiquidity": "נזילות זרעים",
+            "seedTooSmall": "נזילות הזרע חייבת להיות לפחות {amount} {symbol}.",
+            "submit": "צור מצב ושווק",
+            "title": "צור שוק פולקמרקט"
+        },
+        "details": {
+            "awaitingSettlement": "ממתין לסיום",
+            "empty": "בחר שוק כדי להציג מצב משטחים, פרטי אורקל וראיות להסדר.",
+            "openResolutionSource": "קישור קוד פתוח",
+            "oracle": "אורקל",
+            "pool": "בריכת נזילות",
+            "settlement": "פרטי ההסדר"
+        },
+        "errors": {
+            "loadActivity": "לא ניתן לטעון את פעילות חשבון Polkamarkt.",
+            "loadMarkets": "לא ניתן לטעון את שווקי Polkamarkt."
+        },
+        "fields": {
+            "collateralAsset": "נכס בטחונות",
+            "conditionId": "מזהה מצב",
+            "evidenceBlock": "חסימת ראיות",
+            "evidenceHash": "חשיש של ראיות",
+            "evidenceUri": "URI של עדות",
+            "lpContributed": "LP תרם",
+            "lpShares": "מניות LP",
+            "noReserve": "אין מילואים",
+            "oracle": "אורקל",
+            "poolCollateral": "בטחונות פול",
+            "resolutionOutcome": "תוצאה של רזולוציה",
+            "resolutionSource": "מקור הרזולוציה",
+            "yesReserve": "YES מילואים"
+        },
+        "filters": {
+            "active": "פעיל",
+            "allCategories": "כל הקטגוריות",
+            "allStatuses": "כל הסטטוסים",
+            "finalized": "סופית",
+            "mine": "שלי"
+        },
+        "loadingMarkets": "טוען שווקים...",
+        "markets": {
+            "search": "חפש בשווקים",
+            "subtitle": "שווקים {count} תואמים את המסננים הנוכחיים",
+            "title": "שווקים"
+        },
+        "metrics": {
+            "closeBlock": "סגור בלוק",
+            "liquidity": "נזילות",
+            "noQuote": "בלי ציטוט",
+            "status": "סטטוס",
+            "volume": "כֶּרֶך",
+            "yesProbability": "כן",
+            "yesQuote": "כן ציטוט"
+        },
+        "modes": {
+            "buy": "קנה",
+            "claim": "תביעה",
+            "flip": "הפוך",
+            "liquidity": "LP",
+            "sell": "למכור"
+        },
+        "my": {
+            "claimsSummary": "סוחר {trader} / LP {lp}",
+            "connect": "חבר חשבון כדי לראות שווקים שנוצרו, מניות LP, תשלומים ועסקאות אחרונות.",
+            "createdMarkets": "יצרו שווקים",
+            "empty": "אין עדיין פוזיציות של Polkamarkt או שווקים שנוצרו עבור חשבון זה.",
+            "loading": "טוען פעילות חשבון Polkamarkt...",
+            "market": "שוק {id}",
+            "positions": "LP ועמדות סוחרים",
+            "recentTrades": "עסקאות אחרונות",
+            "sharesSummary": "כן {yes} / לא {no} / LP {lp}",
+            "subtitle": "נוצרו שווקים, מניות LP, תשלומי סוחרים, עמלות יוצר ותביעות LP שיוריות.",
+            "title": "השווקים שלי / LP"
+        },
+        "noMarkets": "אין שווקים שתואמים למסננים הנוכחיים.",
+        "notIndexed": "לא באינדקס",
+        "outcomes": {
+            "no": "לא",
+            "yes": "כן"
+        },
+        "pageSubtitle": "סחר בשווקי חיזוי פעילים, פתח שווקים חדשים וניהול יתרות LP ויתרות ניתנות לתביעה מתזרים ארנק Polkaswap.",
+        "status": {
+            "active": "פעיל"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "ניתן לתביעה",
+            "claimableFailed": "אין אפשרות לקרוא יתרות שניתן לתבוע.",
+            "claimStatus": "סטטוס תביעה",
+            "collateralAmount": "כמות ({symbol})",
+            "collateralOut": "בטחונות החוצה",
+            "enterAmount": "הזן סכום",
+            "flippedShares": "היפוך מניות",
+            "insufficientKusd": "יתרת {symbol} לא מספקת",
+            "insufficientXor": "XOR לא מספיק עבור עמלת רשת",
+            "invalidAmount": "הזן סכום חוקי",
+            "lpSharesOut": "LP משתפת",
+            "noChainMarket": "השוק אינו סחיר ברשת",
+            "quoteFailed": "לא ניתן לרענן הצעת מחיר.",
+            "refreshingQuote": "ציטוט מרענן...",
+            "selectMarket": "בחר שוק פעיל למסחר.",
+            "sharesAmount": "מניות",
+            "sharesOut": "משתף החוצה",
+            "slippage": "% החלקה",
+            "subtitle": "הצעות מחיר, עמלות, הגנה מפני החלקה והגשת ארנק משתמשים בזמן הריצה של SORA.",
+            "title": "כרטיס סחר",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "בתים",
+            "shares": "מניות"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "הוסף נזילות",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "עֲמָלָה",
             "commissionTooltip": "העמלה מתייחסת לתשלום שגובה תוקפים בגין שירותיהם בתהליך ההפעלה. שכר טרחה זה, המתבטא כאחוזים, מנוכה מהתגמולים המגיעים שהרוויחו המועמדים לפני ההפצה. חשוב לציין כי תוקפים יכולים להתאים את שיעורי העמלה שלהם בכל עת",
-            "deselectAll": "Deselect all",
+            "deselectAll": "בטל את הבחירה בכולם",
             "name": "שֵׁם",
             "noNominatedValidators": "אין לך תוקפים מועמדים",
             "noValidators": "אין מאמתים המספקים את המסנן שצוין",
             "return": "לַחֲזוֹר",
             "search": "לְחַפֵּשׂ...",
-            "selectAll": "Select all",
+            "selectAll": "בחר הכל",
             "staked": "מושקע",
             "stakedTooltip": "סה\"כ XOR שהושקע עם מאמת זה, כולל ההימור העצמי של המאמת וההימור שמועמד אליו"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "חשבונות הם כתובות דיגיטליות המחזיקות בנכסי המשתמש ברשת. כל חשבון משויך לכתובת ציבורית ייחודית ולמפתח פרטי המאפשר למשתמש לגשת ולנהל את נכסיו.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "חשבונות ייחודיים שהשתתפו בעסקאות במהלך התקופה שנבחרה.",
         "bridgeTransactions": "גשר {from} עד {to} מתייחס לתהליך העברת נכסים בין רשתות {from} ו{to} באמצעות גשר. הגשר מאפשר יכולת פעולה הדדית של שתי הרשתות, ומאפשר למשתמשים להעביר בצורה חלקה נכסים ביניהן.",
         "fees": "עמלות בבלוקצ'יין {Sora} מתייחסות לחיובים שנגרמים עבור ביצוע עסקאות ברשת. עמלות אלו משולמות ב-XOR, המטבע הקריפטו המקומי של רשת {Sora}. גובה העמלה נקבע על פי מורכבות וגודל העסקה המתבצעת",
         "roi": "{ROI} מייצג החזר על ההשקעה. זה מחושב על ידי חלוקת הרווח שהושג על השקעה בעלות ההשקעה באותה אחוז שווה ערך.",

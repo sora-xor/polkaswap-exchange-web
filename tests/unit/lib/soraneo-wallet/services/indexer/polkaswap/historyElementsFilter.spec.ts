@@ -301,6 +301,37 @@ describe('Polkaswap historyElementsFilter', () => {
     });
   });
 
+  it('maps Substrate bridge operations to bridgeProxy burn and mint calls for indexer-backed history', () => {
+    expect(
+      historyElementsFilter({
+        address: 'sora-address',
+        operations: [Operation.SubstrateOutgoing, Operation.SubstrateIncoming],
+      })
+    ).toEqual({
+      and: [
+        {
+          or: [
+            { address: { equalTo: 'sora-address' } },
+            { dataFrom: { equalTo: 'sora-address' } },
+            { dataTo: { equalTo: 'sora-address' } },
+          ],
+        },
+        {
+          or: [
+            {
+              module: { equalTo: ModuleNames.BridgeProxy },
+              method: { equalTo: ModuleMethods.BridgeProxyBurn },
+            },
+            {
+              module: { equalTo: ModuleNames.BridgeProxy },
+              method: { equalTo: ModuleMethods.BridgeProxyMint },
+            },
+          ],
+        },
+      ],
+    });
+  });
+
   it('ignores unsupported operation names instead of emitting an empty operation filter', () => {
     expect(
       historyElementsFilter({

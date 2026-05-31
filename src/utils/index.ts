@@ -25,6 +25,9 @@ import {
 } from './asset-formatting';
 import { sortAssets as sortAssetsInternal, sortPools as sortPoolsInternal } from './asset-sort';
 import { toPrecision as toPrecisionInternal } from './fp';
+
+const SORA_NATIVE_MAX_FEE_MARGIN_CODEC = '1000000000000';
+
 export { getMobileCssClasses } from './device';
 export { registerDocumentTitleResolver, updateDocumentTitle } from './documentTitle';
 export { updateFpNumberLocale } from './fp-locale';
@@ -127,6 +130,12 @@ export const getMaxBalance = (
   ) {
     const fpFee = FPNumber.fromCodecValue(fee, decimals);
     fpResult = fpResult.sub(fpFee);
+
+    // Static SORA fees are estimated from placeholder calls; reserve a tiny
+    // native-token margin so MAX values do not exceed post-fee balance.
+    if (!isExternalBalance && isXorAccountAsset(asset)) {
+      fpResult = fpResult.sub(FPNumber.fromCodecValue(SORA_NATIVE_MAX_FEE_MARGIN_CODEC, decimals));
+    }
   }
 
   return fpResult.max(FPNumber.ZERO);

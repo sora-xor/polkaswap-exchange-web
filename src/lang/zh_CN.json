@@ -28,7 +28,7 @@
         "title": "帐号设定"
     },
     "accountText": "帐户 | 帐户",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "活跃账户",
     "addAsset": {
         "add": "添加",
         "AddAssetToken": {
@@ -271,7 +271,7 @@
         "nexusRecipientPlaceholder": "输入您的 SORA Nexus i105 帐户",
         "nexusRecipientWarning": "您的 SORA Nexus 帐户会公开记录在这笔销毁交易中。",
         "soraNetworkTxHashLabel": "SORA 网络 tx 哈希",
-        "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraNexusXorLabel": "SORA Nexus 异或",
         "soraV3XorAmountTitle": "您想要多少{tokenSymbol}？",
         "ssTokensLabel": "SS代币"
     },
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first}每{second}",
     "firstText": "第一的",
     "footer": {
+        "forAgents": "对于代理商",
         "internet": {
             "action": "刷新{AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "信息与社区",
         "privacy": "隐私政策",
         "sorawiki": "{Sora} 维基"
+    },
+    "forAgents": {
+        "apiContext": "应用程序启动后安装在页面上下文中。它使用与用户界面相同的节点、钱包、索引器和 SDK 路径。",
+        "contract": {
+            "idempotent": "使用稳定的 clientOrderId 并在重试之前恢复不确定的提交。",
+            "noCustody": "该页面永远不会收到私钥；签名保留在所选钱包中。",
+            "prepareFirst": "状态更改调用必须在执行*之前经过准备*。",
+            "samePage": "就绪事件后在 Polkaswap 页面上下文中运行。"
+        },
+        "discoveryText": "首先获取清单。它链接了此静态构建附带的版本化参考、模式文件、示例、错误目录和帮助程序客户端。",
+        "discoveryTitle": "发现",
+        "entrypointsLabel": "代理 API 入口点",
+        "eyebrow": "自动化",
+        "flow": {
+            "execute": "仅在政策批准后执行，并具有准备好的意图和稳定的客户订单 ID。",
+            "open": "在真实的浏览器页面中打开 Polkaswap。",
+            "prepare": "在任何签名操作之前调用匹配的准备方法。",
+            "ready": "等待就绪事件并需要一个活动的 SORA 节点。",
+            "recover": "在重试之前恢复不确定的提交。",
+            "resolve": "在重复执行之前将资产符号解析为地址。",
+            "wallet": "需要签名时选择钱包提供商和帐户。"
+        },
+        "flowTitle": "安全执行循环",
+        "lead": "Polkaswap 为打开静态应用程序的代理运行者公开了浏览器本机自动化 API。",
+        "links": {
+            "client": "JavaScript 帮助客户端",
+            "errors": "错误目录",
+            "examples": "示例",
+            "manifest": "发现清单",
+            "playground": "代理游乐场",
+            "reference": "完整 API 参考",
+            "schema": "JSON 模式",
+            "types": "TypeScript 定义"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "通用跑步者的规范发现文档。",
+                "title": "从清单开始"
+            },
+            "playground": {
+                "description": "针对状态、资产、报价和预览的手动同源探测。",
+                "title": "打开游乐场"
+            },
+            "reference": {
+                "description": "可读的方法图、示例、签名规则和恢复说明。",
+                "title": "阅读 API 参考"
+            }
+        },
+        "signingTextAfter": "以保持重试幂等。",
+        "signingTextBefore": "该页面从不获取私钥。状态改变方法使用选定的钱包签名者并要求运行者传递返回的",
+        "signingTextMiddle": "加上一个稳定的",
+        "signingTitle": "签字及保管",
+        "startTitle": "从这里开始",
+        "title": "对于代理商"
     },
     "forText": "给",
     "hashiBridgeText": "{Hashi}桥",
@@ -798,6 +879,7 @@
         "Explore/Container": "探索",
         "Farming": "农耕",
         "OrderBook": "现货交易",
+        "Polkamarkt": "波尔卡市场",
         "Pool": "流动池",
         "Rewards": "奖励",
         "Sccp": "@:pageTitle.Sccp",
@@ -862,7 +944,7 @@
             "transfer": "代币购买成功了！\n点击开始转接桥交易"
         }
     },
-    "moonpayText": "MoonPay",
+    "moonpayText": "月付",
     "mst": {
         "about": "关于",
         "accountNameMst": "多签账户名称",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "取消限价单失败",
             "OrderBookCancelLimitOrders": "取消限价单失败",
             "OrderBookPlaceLimitOrder": "未能以{price} } {symbol2}下达{amount} {symbol}限价单",
+            "PolkamarktAddLiquidity": "无法向 Polkamarkt 添加 {amount} {symbol} 流动性",
+            "PolkamarktBuy": "无法在 Polkamarkt 上购买 {amount} {symbol}",
+            "PolkamarktClaimCreatorFees": "未能领取 Polkamarkt 创建者费用",
+            "PolkamarktClaimCreatorLiquidity": "未能申领 Polkamarkt 创建者流动性",
+            "PolkamarktClaimLiquidity": "未能领取 Polkamarkt LP 剩余金额",
+            "PolkamarktClaimMarket": "未能领取 Polkamarkt 付款",
+            "PolkamarktClaimMarkets": "未能领取 Polkamarkt 付款",
+            "PolkamarktCreateCondition": "无法创建 Polkamarkt 条件",
+            "PolkamarktCreateMarket": "无法使用 {amount} {symbol} 创建 Polkamarkt 市场",
+            "PolkamarktFlip": "无法在 Polkamarkt 上翻转 {amount} {symbol}",
+            "PolkamarktSell": "未能在 Polkamarkt 上出售 {amount} {symbol}",
             "ReferralReserveXor": "未能绑定{amount} XOR",
             "ReferralSetInvitedUser": "设置 {role} {address} 失败",
             "ReferralUnreserveXor": "无法解绑{amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "限价订单已取消",
             "OrderBookCancelLimitOrders": "限价订单已取消",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol}以{price} {symbol2}放置",
+            "PolkamarktAddLiquidity": "为 Polkamarkt 添加了 {amount} {symbol} 流动性",
+            "PolkamarktBuy": "在 Polkamarkt 上购买了 {amount} {symbol}",
+            "PolkamarktClaimCreatorFees": "Polkamarkt 创作者已索要费用",
+            "PolkamarktClaimCreatorLiquidity": "Polkamarkt 创造者声称拥有流动性",
+            "PolkamarktClaimLiquidity": "Polkamarkt LP 剩余索赔",
+            "PolkamarktClaimMarket": "Polkamarkt 已领取付款",
+            "PolkamarktClaimMarkets": "Polkamarkt 已领取付款",
+            "PolkamarktCreateCondition": "Polkamarkt 条件已创建",
+            "PolkamarktCreateMarket": "使用 {amount} {symbol} 创建的 Polkamarkt 市场",
+            "PolkamarktFlip": "在 Polkamarkt 上翻转 {amount} {symbol}",
+            "PolkamarktSell": "在 Polkamarkt 上已售出 {amount} {symbol}",
             "ReferralReserveXor": "保税{amount}异或",
             "ReferralSetInvitedUser": "{role} {address} 设置成功",
             "ReferralUnreserveXor": "非保税{amount}异或",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "取消订单",
         "OrderBookCancelLimitOrders": "取消订单",
         "OrderBookPlaceLimitOrder": "下订单",
+        "PolkamarktAddLiquidity": "添加 Polkamarkt 流动性",
+        "PolkamarktBuy": "购买 Polkamarkt 股票",
+        "PolkamarktClaimCreatorFees": "索取 Polkamarkt 创建者费用",
+        "PolkamarktClaimCreatorLiquidity": "索取 Polkamarkt Creator 流动性",
+        "PolkamarktClaimLiquidity": "索取 Polkamarkt LP 剩余部分",
+        "PolkamarktClaimMarket": "领取 Polkamarkt 付款",
+        "PolkamarktClaimMarkets": "领取 Polkamarkt 付款",
+        "PolkamarktCreateCondition": "创建 Polkamarkt 条件",
+        "PolkamarktCreateMarket": "创建 Polkamarkt 市场",
+        "PolkamarktFlip": "翻转 Polkamarkt 头寸",
+        "PolkamarktSell": "出售 Polkamarkt 股票",
         "ReferralReserveXor": "绑定XOR",
         "ReferralSetInvitedUser": "设置 {role}",
         "ReferralUnreserveXor": "解绑XOR",
@@ -1217,10 +1332,12 @@
         "Explore/Pools": "流动池",
         "Explore/Staking": "质押",
         "Explore/Tokens": "代币",
+        "ForAgents": "对于代理商",
         "OrderBook": "现货交易",
+        "Polkamarkt": "波尔卡市场",
         "Pool": "流动池",
         "Rewards": "奖励",
-        "Sccp": "SCCP",
+        "Sccp": "短链氯化石蜡",
         "Staking": "质押",
         "Stats": "统计数据",
         "Swap": "兑换",
@@ -1331,6 +1448,155 @@
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps://polkadot.js.org/extension/",
         "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
     },
+    "polkamarkt": {
+        "actions": {
+            "buy": "购买",
+            "claimCreatorFees": "索取创作者费用",
+            "claimCreatorLiquidity": "索赔创建者流动性",
+            "claimLpResidual": "索赔LP剩余",
+            "claimTraderPayout": "要求交易者付款",
+            "createMarket": "创造市场",
+            "flip": "翻转",
+            "liquidity": "增加流动性",
+            "sell": "出售"
+        },
+        "create": {
+            "category": "类别",
+            "closeBlock": "关闭区块",
+            "creationFee": "创作费",
+            "deadline": "交易截止日期",
+            "marketFailed": "条件创造了，但市场创造失败了。使用保存的条件重试市场创建。",
+            "metadataTooLong": "问题、预言和解决方案元数据必须在 512 字节以内。",
+            "question": "市场问题",
+            "questionPlaceholder": "该事件会在选定的截止日期前解决为“是”吗？",
+            "questionTooShort": "问题必须至少为 32 字节。",
+            "retryMessage": "条件 {id} 已创建。仅重试市场创建步骤。",
+            "retrySubmit": "重试市场创建",
+            "seedLiquidity": "种子流动性",
+            "seedTooSmall": "种子流动性必须至少为 {amount} {symbol}。",
+            "submit": "创造条件和市场",
+            "title": "创建 Polkamarkt 市场"
+        },
+        "details": {
+            "awaitingSettlement": "等待最终确定",
+            "empty": "选择一个市场以查看托盘状态、预言机详细信息和结算证据。",
+            "openResolutionSource": "开源链接",
+            "oracle": "甲骨文",
+            "pool": "流动性池",
+            "settlement": "结算详情"
+        },
+        "errors": {
+            "loadActivity": "无法加载 Polkamarkt 帐户活动。",
+            "loadMarkets": "无法加载 Polkamarkt 市场。"
+        },
+        "fields": {
+            "collateralAsset": "抵押资产",
+            "conditionId": "条件ID",
+            "evidenceBlock": "证据块",
+            "evidenceHash": "证据哈希",
+            "evidenceUri": "证据 URI",
+            "lpContributed": "LP 贡献",
+            "lpShares": "有限合伙人股份",
+            "noReserve": "无预留",
+            "oracle": "甲骨文",
+            "poolCollateral": "池抵押品",
+            "resolutionOutcome": "解决结果",
+            "resolutionSource": "分辨率来源",
+            "yesReserve": "是的储备"
+        },
+        "filters": {
+            "active": "活跃",
+            "allCategories": "所有类别",
+            "allStatuses": "所有状态",
+            "finalized": "最终确定",
+            "mine": "我的"
+        },
+        "loadingMarkets": "正在加载市场...",
+        "markets": {
+            "search": "搜索市场",
+            "subtitle": "{count} 市场符合当前过滤条件",
+            "title": "市场"
+        },
+        "metrics": {
+            "closeBlock": "关闭区块",
+            "liquidity": "流动性",
+            "noQuote": "无报价",
+            "status": "状态",
+            "volume": "体积",
+            "yesProbability": "是的",
+            "yesQuote": "是的报价"
+        },
+        "modes": {
+            "buy": "购买",
+            "claim": "索赔",
+            "flip": "翻转",
+            "liquidity": "LP",
+            "sell": "出售"
+        },
+        "my": {
+            "claimsSummary": "交易员 {trader} / 有限合伙人 {lp}",
+            "connect": "连接账户以查看创建的市场、有限合伙人股票、支出和最近的交易。",
+            "createdMarkets": "创造市场",
+            "empty": "该账户尚未有 Polkamarkt 头寸或创建市场。",
+            "loading": "正在加载 Polkamarkt 账户活动...",
+            "market": "市场{id}",
+            "positions": "有限合伙人和交易员头寸",
+            "recentTrades": "最近的交易",
+            "sharesSummary": "是 {yes} / 否 {no} / LP {lp}",
+            "subtitle": "创建市场、有限合伙人份额、交易者支出、创建者费用和剩余有限合伙人债权。",
+            "title": "我的市场 / LP"
+        },
+        "noMarkets": "没有市场符合当前的过滤条件。",
+        "notIndexed": "未编入索引",
+        "outcomes": {
+            "no": "否",
+            "yes": "是的"
+        },
+        "pageSubtitle": "交易活跃的预测市场，培育新市场，并管理 Polkaswap 钱包流中的 LP 和可索赔余额。",
+        "status": {
+            "active": "活跃"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "可索赔",
+            "claimableFailed": "无法读取可索赔余额。",
+            "claimStatus": "索赔状态",
+            "collateralAmount": "金额 ({symbol})",
+            "collateralOut": "抵押品出",
+            "enterAmount": "输入金额",
+            "flippedShares": "翻转股票",
+            "insufficientKusd": "{symbol} 余额不足",
+            "insufficientXor": "网络费用异或不足",
+            "invalidAmount": "输入有效金额",
+            "lpSharesOut": "LP 出股",
+            "noChainMarket": "市场不可在链上交易",
+            "quoteFailed": "无法刷新报价。",
+            "refreshingQuote": "刷新报价...",
+            "selectMarket": "选择一个活跃的市场进行交易。",
+            "sharesAmount": "股份",
+            "sharesOut": "分享出去",
+            "slippage": "滑点%",
+            "subtitle": "报价、费用、滑点保护和钱包提交使用 SORA 运行时。",
+            "title": "贸易票",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "字节",
+            "shares": "股份"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
+    },
     "pool": {
         "addLiquidity": "添加流动性",
         "connectToWallet": "连接一个账户以查看您的流动性。",
@@ -1439,7 +1705,7 @@
             "MarketMakerVolume": "做市商",
             "NftAirdrop": "NFT空投",
             "SoraFarmHarvest": "{Sora}.农场收获",
-            "XorErc20": "XOR ERC-20"
+            "XorErc20": "异或ERC-20"
         },
         "forText": "给",
         "groups": {
@@ -1511,7 +1777,7 @@
         "sourceNetworkLabel": "来自网络",
         "subtitle": "BSC、以太坊和 TRON 的安全跨链协议 (SCCP) 传输助手。",
         "supportedNetworks": "支持的链：{chains}。",
-        "title": "SCCP"
+        "title": "短链氯化石蜡"
     },
     "searchText": "搜索",
     "selectLanguageDialog": {
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "委员会",
             "commissionTooltip": "佣金是指验证者在质押过程中为其提供的服务收取的费用。该费用以百分比表示，在分配前从提名人获得的质押奖励中扣除。需要注意的是，验证者可以随时调整佣金率",
-            "deselectAll": "Deselect all",
+            "deselectAll": "取消全选",
             "name": "名称",
             "noNominatedValidators": "您没有任何指定的验证人",
             "noValidators": "没有满足指定过滤器的验证器",
             "return": "返回",
             "search": "搜索...",
-            "selectAll": "Select all",
+            "selectAll": "选择全部",
             "staked": "质押",
             "stakedTooltip": "与该验证者质押的 XOR 总量，包括验证者自己的质押和指定质押"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "帐户是在网络上保存用户资产的数字地址。每个帐户都与一个唯一的公共地址和一个私钥相关联，允许用户访问和管理他们的资产。",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "在选定期间参与交易的唯一帐户。",
         "bridgeTransactions": "{from} to {to} bridge 是指使用网桥在{from}和{to}网络之间转移资产的过程。该桥允许两个网络的互操作性，使用户能够在它们之间无缝移动资产。",
         "fees": "{Sora}区块链上的费用是指在网络上执行交易所产生的费用。这些费用以{Sora}网络的原生加密货币 XOR 支付。费用金额取决于正在执行的交易的复杂性和规模",
         "roi": "{ROI}代表投资回报率。它的计算方法是将投资赚取的利润除以该投资的成本（以等值百分比表示）。",

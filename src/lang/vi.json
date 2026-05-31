@@ -28,7 +28,7 @@
         "title": "Thiết lập tài khoản"
     },
     "accountText": "tài khoản | tài khoản",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "Tài khoản đang hoạt động",
     "addAsset": {
         "add": "Thêm",
         "AddAssetToken": {
@@ -38,7 +38,7 @@
         "alreadyAttached": "Token đã được thêm vào",
         "approved": "Tài sản được cộng đồng phê duyệt",
         "assetType": {
-            "nft": "NFT | NFTs",
+            "nft": "NFT | NFT",
             "token": "Mã thông báo | Mã thông báo"
         },
         "empty": "Không tìm thấy token",
@@ -354,7 +354,7 @@
     "createToken": {
         "confirmTokenTitleCommon": "Tạo Token",
         "confirmTokenTitleNFT": "Tạo NFT",
-        "CreateSimpleToken": "Token",
+        "CreateSimpleToken": "Mã thông báo",
         "divisible": {
             "desc": "NFT có thể chia thành các phần phân nhỏ khác nhau. Việc cung cấp thanh khoản Liquedity chỉ hoạt động với tài sản có thể phân chia được",
             "placeholder": "Chia hết"
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} mỗi {second}",
     "firstText": "Đầu tiên",
     "footer": {
+        "forAgents": "Dành cho đại lý",
         "internet": {
             "action": "Làm mới {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "Thông tin & Cộng đồng",
         "privacy": "Chính sách bảo mật",
         "sorawiki": "{Sora} Wiki"
+    },
+    "forAgents": {
+        "apiContext": "được cài đặt trong ngữ cảnh trang sau khi ứng dụng khởi động. Nó sử dụng cùng một nút, ví, bộ chỉ mục và đường dẫn SDK làm giao diện người dùng.",
+        "contract": {
+            "idempotent": "Sử dụng clientOrderId ổn định và khôi phục các nội dung gửi không chắc chắn trước khi thử lại.",
+            "noCustody": "Trang này không bao giờ nhận được khóa riêng; việc ký kết vẫn giữ nguyên ví đã chọn.",
+            "prepareFirst": "Cuộc gọi thay đổi trạng thái phải trải qua quá trình chuẩn bị* trước khi thực hiện*.",
+            "samePage": "Chạy bên trong bối cảnh trang Polkaswap sau sự kiện sẵn sàng."
+        },
+        "discoveryText": "Tìm nạp bảng kê khai đầu tiên. Nó liên kết tham chiếu đã được phiên bản, tệp lược đồ, ví dụ, danh mục lỗi và ứng dụng khách trợ giúp được cung cấp cùng với bản dựng tĩnh này.",
+        "discoveryTitle": "khám phá",
+        "entrypointsLabel": "Điểm truy cập API tác nhân",
+        "eyebrow": "Tự động hóa",
+        "flow": {
+            "execute": "Chỉ thực hiện sau khi phê duyệt chính sách, với mục đích đã chuẩn bị sẵn và id đơn hàng khách hàng ổn định.",
+            "open": "Mở Polkaswap trong một trang trình duyệt thực.",
+            "prepare": "Gọi phương thức chuẩn bị phù hợp trước bất kỳ thao tác ký nào.",
+            "ready": "Đợi sự kiện sẵn sàng và yêu cầu nút SORA hoạt động.",
+            "recover": "Khôi phục các bài gửi không chắc chắn trước khi thử lại.",
+            "resolve": "Phân giải các ký hiệu nội dung thành địa chỉ trước khi thực hiện lặp lại.",
+            "wallet": "Chọn nhà cung cấp ví và tài khoản khi cần ký."
+        },
+        "flowTitle": "Vòng thực thi an toàn",
+        "lead": "Polkaswap hiển thị API tự động hóa gốc của trình duyệt dành cho người chạy tác nhân mở ứng dụng tĩnh.",
+        "links": {
+            "client": "Ứng dụng khách trợ giúp JavaScript",
+            "errors": "Danh mục lỗi",
+            "examples": "Ví dụ",
+            "manifest": "Bản kê khai khám phá",
+            "playground": "Sân chơi đại lý",
+            "reference": "Tham chiếu API đầy đủ",
+            "schema": "Lược đồ JSON",
+            "types": "Định nghĩa TypeScript"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "Tài liệu khám phá kinh điển dành cho người chạy chung.",
+                "title": "Bắt đầu với bảng kê khai"
+            },
+            "playground": {
+                "description": "Thăm dò cùng nguồn gốc thủ công để biết trạng thái, nội dung, báo giá và bản xem trước.",
+                "title": "Mở sân chơi"
+            },
+            "reference": {
+                "description": "Bản đồ phương pháp có thể đọc được, ví dụ, quy tắc ký và ghi chú khôi phục.",
+                "title": "Đọc tài liệu tham khảo API"
+            }
+        },
+        "signingTextAfter": "để giữ cho số lần thử bình thường.",
+        "signingTextBefore": "Trang này không bao giờ lấy khóa riêng. Các phương thức thay đổi trạng thái sử dụng người ký ví đã chọn và yêu cầu người chạy vượt qua số tiền được trả về",
+        "signingTextMiddle": "cộng với sự ổn định",
+        "signingTitle": "Ký kết và giám hộ",
+        "startTitle": "Bắt đầu ở đây",
+        "title": "Dành cho đại lý"
     },
     "forText": "cho",
     "hashiBridgeText": "Cầu {Hashi}",
@@ -798,6 +879,7 @@
         "Explore/Container": "Khám phá",
         "Farming": "Nông nghiệp ",
         "OrderBook": "Buôn bán",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Bể bơi",
         "Rewards": "Phần thưởng",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn",
             "OrderBookCancelLimitOrders": "Không thể hủy lệnh giới hạn",
             "OrderBookPlaceLimitOrder": "Không đặt được lệnh giới hạn {amount} {symbol} ở {price} {symbol2}",
+            "PolkamarktAddLiquidity": "Không thể thêm tính thanh khoản {amount} {symbol} vào Polkamarkt",
+            "PolkamarktBuy": "Không mua được {amount} {symbol} trên Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Không thể yêu cầu phí người tạo Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Không thể yêu cầu thanh khoản của người sáng tạo Polkamarkt",
+            "PolkamarktClaimLiquidity": "Không thể yêu cầu phần còn lại của Polkamarkt LP",
+            "PolkamarktClaimMarket": "Không thể yêu cầu thanh toán Polkamarkt",
+            "PolkamarktClaimMarkets": "Không thể yêu cầu thanh toán Polkamarkt",
+            "PolkamarktCreateCondition": "Không tạo được điều kiện Polkamarkt",
+            "PolkamarktCreateMarket": "Không tạo được thị trường Polkamarkt với {amount} {symbol}",
+            "PolkamarktFlip": "Không lật được {amount} {symbol} trên Polkamarkt",
+            "PolkamarktSell": "Không bán được {amount} {symbol} trên Polkamarkt",
             "ReferralReserveXor": "Không thể liên kết {amount} XOR",
             "ReferralSetInvitedUser": "Thất bại trong việc đặt {role} {address}",
             "ReferralUnreserveXor": "Không thể hủy liên kết {amount} XOR",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "Lệnh giới hạn bị hủy",
             "OrderBookCancelLimitOrders": "Lệnh giới hạn bị hủy",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ở mức {price} {symbol2} đã đặt",
+            "PolkamarktAddLiquidity": "Đã thêm tính thanh khoản {amount} {symbol} vào Polkamarkt",
+            "PolkamarktBuy": "Đã mua {amount} {symbol} trên Polkamarkt",
+            "PolkamarktClaimCreatorFees": "Đã yêu cầu phí người tạo Polkamarkt",
+            "PolkamarktClaimCreatorLiquidity": "Đã yêu cầu thanh khoản của người sáng tạo Polkamarkt",
+            "PolkamarktClaimLiquidity": "Đã xác nhận phần còn lại của Polkamarkt LP",
+            "PolkamarktClaimMarket": "Đã yêu cầu thanh toán Polkamarkt",
+            "PolkamarktClaimMarkets": "Đã yêu cầu thanh toán Polkamarkt",
+            "PolkamarktCreateCondition": "Đã tạo điều kiện Polkamarkt",
+            "PolkamarktCreateMarket": "Thị trường Polkamarkt được tạo bằng {amount} {symbol}",
+            "PolkamarktFlip": "Đã lật {amount} {symbol} trên Polkamarkt",
+            "PolkamarktSell": "Đã bán {amount} {symbol} trên Polkamarkt",
             "ReferralReserveXor": "Ngoại quan {amount} XOR",
             "ReferralSetInvitedUser": "Thiết lập {role} {address} thành công",
             "ReferralUnreserveXor": "XOR {amount} không liên kết",
@@ -1054,9 +1158,20 @@
         "OrderBookCancelLimitOrder": "Hủy đơn hàng",
         "OrderBookCancelLimitOrders": "Hủy đơn hàng",
         "OrderBookPlaceLimitOrder": "Đặt hàng",
-        "ReferralReserveXor": "Bond XOR",
+        "PolkamarktAddLiquidity": "Thêm thanh khoản Polkamarkt",
+        "PolkamarktBuy": "Mua cổ phiếu Polkamarkt",
+        "PolkamarktClaimCreatorFees": "Yêu cầu phí người sáng tạo Polkamarkt",
+        "PolkamarktClaimCreatorLiquidity": "Yêu cầu tính thanh khoản của Polkamarkt Creator",
+        "PolkamarktClaimLiquidity": "Yêu cầu dư lượng Polkamarkt LP",
+        "PolkamarktClaimMarket": "Yêu cầu thanh toán Polkamarkt",
+        "PolkamarktClaimMarkets": "Yêu cầu thanh toán Polkamarkt",
+        "PolkamarktCreateCondition": "Tạo điều kiện Polkamarkt",
+        "PolkamarktCreateMarket": "Tạo thị trường Polkamarkt",
+        "PolkamarktFlip": "Lật vị trí Polkamarkt",
+        "PolkamarktSell": "Bán cổ phiếu Polkamarkt",
+        "ReferralReserveXor": "Trái phiếu XOR",
         "ReferralSetInvitedUser": "Thiết lập {role}",
-        "ReferralUnreserveXor": "Unbond XOR",
+        "ReferralUnreserveXor": "Hủy liên kết XOR",
         "RegisterAndRegulateAsset": "Đăng ký tài sản",
         "RegisterAsset": "Đăng ký Tài sản",
         "RegulateAsset": "Điều chỉnh tài sản",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "hồ bơi",
         "Explore/Staking": "Ký gửi (staking)",
         "Explore/Tokens": "Token",
+        "ForAgents": "Dành cho đại lý",
         "OrderBook": "Buôn bán",
+        "Polkamarkt": "Polkamarkt",
         "Pool": "Bể bơi",
         "Rewards": "Phần thưởng",
         "Sccp": "SCCP",
@@ -1273,7 +1390,7 @@
         "nativeXorStaking": {
             "descriptionTask": "Stake XOR và nhận phần thưởng VAL",
             "titleProgress": "Đặt cọc XOR",
-            "titleTask": "Stake XOR"
+            "titleTask": "Cổ phần XOR"
         },
         "networkFeeSpent": {
             "descriptionTask": "Dùng XOR để trả phí mạng cho nhiều giao dịch on-chain",
@@ -1331,6 +1448,155 @@
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps://polkadot.js.org/extension/",
         "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
     },
+    "polkamarkt": {
+        "actions": {
+            "buy": "Mua",
+            "claimCreatorFees": "Yêu cầu phí của người sáng tạo",
+            "claimCreatorLiquidity": "Yêu cầu tính thanh khoản của người sáng tạo",
+            "claimLpResidual": "Yêu cầu LP còn lại",
+            "claimTraderPayout": "Yêu cầu thanh toán của nhà giao dịch",
+            "createMarket": "Tạo thị trường",
+            "flip": "Lật",
+            "liquidity": "Thêm thanh khoản",
+            "sell": "Bán"
+        },
+        "create": {
+            "category": "Danh mục",
+            "closeBlock": "Đóng khối",
+            "creationFee": "Phí tạo",
+            "deadline": "Thời hạn giao dịch",
+            "marketFailed": "Điều kiện đã được tạo ra nhưng việc tạo lập thị trường không thành công. Thử lại việc tạo thị trường với điều kiện đã lưu.",
+            "metadataTooLong": "Siêu dữ liệu câu hỏi, lời tiên tri và độ phân giải phải nằm trong phạm vi 512 byte.",
+            "question": "Câu hỏi thị trường",
+            "questionPlaceholder": "Sự kiện có chuyển sang CÓ theo thời hạn đã chọn không?",
+            "questionTooShort": "Câu hỏi phải có ít nhất 32 byte.",
+            "retryMessage": "Điều kiện {id} đã được tạo. Chỉ thử lại bước tạo thị trường.",
+            "retrySubmit": "Thử lại việc tạo thị trường",
+            "seedLiquidity": "Thanh khoản hạt giống",
+            "seedTooSmall": "Tính thanh khoản của hạt giống ít nhất phải là {amount} {symbol}.",
+            "submit": "Tạo điều kiện và thị trường",
+            "title": "Tạo thị trường Polkamarkt"
+        },
+        "details": {
+            "awaitingSettlement": "Đang chờ quyết toán",
+            "empty": "Chọn một thị trường để xem trạng thái pallet, chi tiết oracle và bằng chứng thanh toán.",
+            "openResolutionSource": "Liên kết nguồn mở",
+            "oracle": "Lời tiên tri",
+            "pool": "Nhóm thanh khoản",
+            "settlement": "Chi tiết quyết toán"
+        },
+        "errors": {
+            "loadActivity": "Không thể tải hoạt động tài khoản Polkamarkt.",
+            "loadMarkets": "Không thể tải thị trường Polkamarkt."
+        },
+        "fields": {
+            "collateralAsset": "Tài sản đảm bảo",
+            "conditionId": "ID tình trạng",
+            "evidenceBlock": "Khối bằng chứng",
+            "evidenceHash": "Băm bằng chứng",
+            "evidenceUri": "URI bằng chứng",
+            "lpContributed": "LP đóng góp",
+            "lpShares": "cổ phiếu LP",
+            "noReserve": "KHÔNG dự trữ",
+            "oracle": "Lời tiên tri",
+            "poolCollateral": "Tài sản thế chấp nhóm",
+            "resolutionOutcome": "Kết quả giải quyết",
+            "resolutionSource": "Nguồn độ phân giải",
+            "yesReserve": "CÓ dự trữ"
+        },
+        "filters": {
+            "active": "Đang hoạt động",
+            "allCategories": "Tất cả danh mục",
+            "allStatuses": "Tất cả trạng thái",
+            "finalized": "Đã hoàn tất",
+            "mine": "Của tôi"
+        },
+        "loadingMarkets": "Đang tải thị trường...",
+        "markets": {
+            "search": "Tìm kiếm thị trường",
+            "subtitle": "{count} thị trường phù hợp với các bộ lọc hiện tại",
+            "title": "Thị trường"
+        },
+        "metrics": {
+            "closeBlock": "Đóng khối",
+            "liquidity": "Thanh khoản",
+            "noQuote": "KHÔNG trích dẫn",
+            "status": "Trạng thái",
+            "volume": "khối lượng",
+            "yesProbability": "CÓ",
+            "yesQuote": "CÓ báo giá"
+        },
+        "modes": {
+            "buy": "Mua",
+            "claim": "Yêu cầu",
+            "flip": "Lật",
+            "liquidity": "LP",
+            "sell": "Bán"
+        },
+        "my": {
+            "claimsSummary": "Nhà giao dịch {trader} / LP {lp}",
+            "connect": "Kết nối tài khoản để xem các thị trường đã tạo, cổ phiếu LP, khoản thanh toán và giao dịch gần đây.",
+            "createdMarkets": "Thị trường được tạo",
+            "empty": "Chưa có vị trí Polkamarkt hoặc thị trường nào được tạo cho tài khoản này.",
+            "loading": "Đang tải hoạt động tài khoản Polkamarkt...",
+            "market": "Chợ {id}",
+            "positions": "Vị trí LP và nhà giao dịch",
+            "recentTrades": "Giao dịch gần đây",
+            "sharesSummary": "CÓ {yes} / KHÔNG {no} / LP {lp}",
+            "subtitle": "Thị trường được tạo, cổ phiếu LP, khoản thanh toán của nhà giao dịch, phí của người sáng tạo và các yêu cầu LP còn lại.",
+            "title": "Thị trường của tôi / LP"
+        },
+        "noMarkets": "Không có thị trường nào phù hợp với các bộ lọc hiện tại.",
+        "notIndexed": "Không được lập chỉ mục",
+        "outcomes": {
+            "no": "KHÔNG",
+            "yes": "CÓ"
+        },
+        "pageSubtitle": "Giao dịch trên các thị trường dự đoán đang hoạt động, tạo dựng thị trường mới và quản lý LP cũng như số dư có thể yêu cầu từ luồng ví Polkaswap.",
+        "status": {
+            "active": "Đang hoạt động"
+        },
+        "ticket": {
+            "amountPlaceholder": "0,0",
+            "claimable": "Có thể yêu cầu",
+            "claimableFailed": "Không thể đọc số dư có thể yêu cầu.",
+            "claimStatus": "Trạng thái yêu cầu",
+            "collateralAmount": "Số tiền ({symbol})",
+            "collateralOut": "Tài sản thế chấp",
+            "enterAmount": "Nhập số tiền",
+            "flippedShares": "Cổ phiếu đảo ngược",
+            "insufficientKusd": "Số dư {symbol} không đủ",
+            "insufficientXor": "Không đủ XOR cho phí mạng",
+            "invalidAmount": "Nhập số tiền hợp lệ",
+            "lpSharesOut": "LP chia sẻ hết",
+            "noChainMarket": "Thị trường không thể giao dịch trên chuỗi",
+            "quoteFailed": "Không thể làm mới báo giá.",
+            "refreshingQuote": "Báo giá đang làm mới...",
+            "selectMarket": "Chọn một thị trường đang hoạt động để giao dịch.",
+            "sharesAmount": "Chia sẻ",
+            "sharesOut": "Chia sẻ ra",
+            "slippage": "% trượt giá",
+            "subtitle": "Báo giá, phí, chống trượt giá và gửi ví sử dụng thời gian chạy SORA.",
+            "title": "Vé giao dịch",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "byte",
+            "shares": "cổ phiếu"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
+    },
     "pool": {
         "addLiquidity": "Thêm thanh khoản",
         "connectToWallet": "Kết nối tài khoản để xem thanh khoản của bạn.",
@@ -1366,7 +1632,7 @@
             "unbond": "Hủy liên kết"
         },
         "bondedXOR": "XOR ngoại quan",
-        "bondTitle": "Bond XOR",
+        "bondTitle": "Trái phiếu XOR",
         "confirm": {
             "bond": "Xác nhận bond",
             "freeOfCharge": "Hành động này là miễn phí",
@@ -1374,7 +1640,7 @@
             "hasReferrerTitle": "Bạn đã thêm người giới thiệu của bạn",
             "inviteDescription": "Đối với mỗi giao dịch, 10% phí sẽ được chuyển cho người giới thiệu của bạn, mà bạn không phải trả thêm bất kỳ khoản phí nào.",
             "inviteTitle": "Bạn đã được mời tham gia {AppName}",
-            "ok": "OK",
+            "ok": "được rồi",
             "signInvitation": "Chấp thuận",
             "unbond": "Xác nhận unbond"
         },
@@ -1399,7 +1665,7 @@
         },
         "startInviting": "Bond XOR để giới thiệu những người khác",
         "title": "Giới thiệu",
-        "unbondTitle": "Unbond XOR",
+        "unbondTitle": "Hủy liên kết XOR",
         "welcomeMessage": "Hãy tham gia cùng tôi trên {AppName}!\n\nKhám phá {DEX} đầy phong cách cho phép bạn trao đổi hàng chục token với các giao dịch hoán đổi chuỗi chéo, sổ đặt hàng và nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp bạn ở đó!"
     },
     "releaseNotesText": "Ghi chú phát hành",
@@ -1566,7 +1832,7 @@
         "github": "Github",
         "medium": "Trung bình",
         "reddit": "Reddit",
-        "telegram": "Telegram",
+        "telegram": "điện tín",
         "twitter": "Twitter",
         "wiki": "{Sora} Wiki"
     },
@@ -1607,7 +1873,7 @@
         },
         "overview": {
             "description": "Stake {XOR} token trên {Sora} Network với tư cách là người đề cử để xác thực giao dịch và kiếm phần thưởng token {VAL}.",
-            "title": "{Sora} Staking"
+            "title": "{Sora} Đặt cược"
         },
         "pendingRewardsDialog": {
             "information": "Người xác nhận thanh toán phần thưởng cứ sau 2-5 ngày. Tuy nhiên, bạn có thể tự mình chi trả, đặc biệt nếu phần thưởng sắp hết hạn nhưng bạn sẽ phải trả phí.",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "Nhiệm vụ",
             "commissionTooltip": "Hoa hồng đề cập đến khoản phí mà người xác nhận tính cho các dịch vụ của họ trong quá trình đặt cược. Khoản phí này, được biểu thị bằng phần trăm, được khấu trừ từ phần thưởng đặt cược mà người đề cử kiếm được trước khi phân phối. Điều quan trọng cần lưu ý là người xác thực có thể điều chỉnh tỷ lệ hoa hồng của họ bất cứ lúc nào",
-            "deselectAll": "Deselect all",
+            "deselectAll": "Bỏ chọn tất cả",
             "name": "Tên",
             "noNominatedValidators": "Bạn không có bất kỳ người xác thực nào được chỉ định",
             "noValidators": "Không có trình xác thực nào đáp ứng bộ lọc được chỉ định",
             "return": "Trở lại",
             "search": "Tìm kiếm...",
-            "selectAll": "Select all",
+            "selectAll": "Chọn tất cả",
             "staked": "đặt cược",
             "stakedTooltip": "Tổng số XOR được đặt cược với trình xác thực này, bao gồm cả cổ phần của chính người xác thực và cổ phần được đề cử"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "Tài khoản là địa chỉ kỹ thuật số chứa tài sản của người dùng trên mạng. Mỗi tài khoản được liên kết với một địa chỉ công khai duy nhất và một khóa riêng cho phép người dùng truy cập và quản lý tài sản của họ.",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "Các tài khoản duy nhất đã tham gia giao dịch trong khoảng thời gian đã chọn.",
         "bridgeTransactions": "Cầu nối {from} đến {to} đề cập đến quá trình chuyển nội dung giữa mạng {from} và mạng {to} bằng cầu nối. Cây cầu cho phép khả năng tương tác của hai mạng, cho phép người dùng di chuyển tài sản giữa chúng một cách liền mạch.",
         "fees": "Phí trên chuỗi khối {Sora} đề cập đến các khoản phí phát sinh khi thực hiện các giao dịch trên mạng. Các khoản phí này được thanh toán bằng XOR, tiền điện tử gốc của Mạng {Sora} . Số tiền phí được xác định bởi mức độ phức tạp và quy mô của giao dịch được thực hiện",
         "roi": "{ROI} là viết tắt của Lợi tức đầu tư. Nó được tính bằng cách chia lợi nhuận kiếm được từ một khoản đầu tư cho chi phí của khoản đầu tư đó theo tỷ lệ phần trăm tương đương.",

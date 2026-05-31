@@ -14,6 +14,15 @@ describe('public env config', () => {
     expect(csp).toContain('ws://localhost:*');
   });
 
+  it('allows Google Drive wallet scripts through the static CSP', async () => {
+    const html = await readFile(path.resolve(process.cwd(), 'index.html'), 'utf8');
+    const csp = html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/)?.[1] ?? '';
+
+    expect(csp).toContain('https://accounts.google.com');
+    expect(csp).toContain('https://apis.google.com');
+    expect(csp).toContain('https://www.gstatic.com');
+  });
+
   it('renders the branded bootstrap loader before Vue mounts', async () => {
     const html = await readFile(path.resolve(process.cwd(), 'index.html'), 'utf8');
 
@@ -23,25 +32,23 @@ describe('public env config', () => {
     expect(html).toContain('src="/src/assets/img/pswap-loader.svg"');
   });
 
-  it('exposes only the currently healthy MOF #2 SORA websocket endpoint in production envs', async () => {
+  it('exposes only the MOF #1 SORA websocket endpoint in production envs', async () => {
     const envPaths = ['public/env.json', 'public/env.taira.json', 'env.json'];
     const expectedNodes = [
       {
         chain: 'SORA',
-        name: 'SORA Parliament Ministry of Finance #2',
-        address: 'wss://mof2.sora.org',
-        location: 'SG',
+        name: 'SORA Parliament Ministry of Finance #1',
+        address: 'wss://ws.mof.sora.org',
       },
     ];
 
     for (const envPath of envPaths) {
       const raw = await readFile(path.resolve(process.cwd(), envPath), 'utf8');
       const parsed = JSON.parse(raw) as {
-        DEFAULT_NETWORKS: Array<{ name: string; address: string; location: string; chain: string }>;
+        DEFAULT_NETWORKS: Array<{ name: string; address: string; location?: string; chain: string }>;
       };
 
       expect(parsed.DEFAULT_NETWORKS).toEqual(expectedNodes);
-      expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain('wss://ws.mof.sora.org');
       expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain('wss://mof3.sora.org');
       expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain('wss://sora.api.onfinality.io/public-ws');
     }

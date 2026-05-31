@@ -28,7 +28,7 @@
         "title": "རྩིས་ཐོའི་སྒྲིག་སྟངས་ཚུ།"
     },
     "accountText": "| རྩིས་ཁྲ།",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "ཤུགས་ལྡན་རྩིས་ཐོ་ཚུ།",
     "addAsset": {
         "add": "ཁ་སྐོང་",
         "AddAssetToken": {
@@ -271,7 +271,7 @@
         "nexusRecipientPlaceholder": "ཁྱོད་རའི་ SORA Nexus i105 རྩིས་ཐོ་བཙུགས།",
         "nexusRecipientWarning": "ཁྱོད་ཀྱི་SORA Nexus རྩིས་ཐོ་འདི་ མེ་བཏང་ཚོང་འབྲེལ་འདི་ནང་ མི་མང་ལུ་ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།",
         "soraNetworkTxHashLabel": "SORA ཡོངས་འབྲེལ་tx ཧ་ཤི།",
-        "soraNexusXorLabel": "SORA Nexus XOR",
+        "soraNexusXorLabel": "SORA ནེགསི་ཨེགསི་ཨོ་ཨར།",
         "soraV3XorAmountTitle": "{tokenSymbol} ག་ཚོད་དགོས་སམ།",
         "ssTokensLabel": "ཨེསི་ཨེསི་ཊོ་ཀེན་ཚུ།"
     },
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} རེ་ {second}",
     "firstText": "དང་པོ།",
     "footer": {
+        "forAgents": "ལས་ཚབ་ཚུ་གི་དོན་ལུ་",
         "internet": {
             "action": "གསར་བསྐྲུན་འབད་ {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "བརྡ་དོན་དང་མི་སྡེ་",
         "privacy": "གསང་བའི་སྲིད་གཞུང་",
         "sorawiki": "{Sora} ཝི་ཀི་"
+    },
+    "forAgents": {
+        "apiContext": "འདི་ གློག་རིམ་འགོ་བཙུགས་པའི་ཤུལ་ལས་ ཤོག་ལེབ་སྐབས་དོན་ནང་ གཞི་བཙུགས་འབད་ཡོདཔ་ཨིན། འདི་གིས་ ལག་ལེན་པའི་ངོས་འདྲ་བ་བཟུམ་སྦེ་ མཐུད་མཚམས་དང་ དངུལ་ཁུག་ ཟུར་ཐོ་ དེ་ལས་ ཨེསི་ཌི་ཀེ་འགྲུལ་ལམ་ཚུ་ ལག་ལེན་འཐབ་ཨིན།",
+        "contract": {
+            "idempotent": "བརྟན་ཏོག་ཏོ་ clientOrderId ལག་ལེན་འཐབ་སྟེ་ ལོག་སྟེ་འབད་རྩོལ་བསྐྱེད་པའི་ཧེ་མ་ གཏན་གཏན་མེད་པའི་ཕུལ་མི་ཚུ་སླར་ལོག་འབད།",
+            "noCustody": "ཤོག་ལེབ་འདི་གིས་ སྒེར་གྱི་ལྡེ་མིག་ཚུ་ ནམ་ཡང་མི་ཐོབ། མིང་རྟགས་བཀོད་མི་འདི་ སེལ་འཐུ་འབད་ཡོད་པའི་དངུལ་ཁུག་དང་གཅིག་ཁར་སྡོདཔ་ཨིན།",
+            "prepareFirst": "གནས་སྟངས་བསྒྱུར་བཅོས་འབད་མི་འབོད་བརྡ་ཚུ་ ལག་ལེན་འཐབ་མ་བཏུབ་པའི་ཧེ་མ་ གྲ་སྒྲིག་* བརྒྱུད་དེ་འགྱོ་དགོ།",
+            "samePage": "གྲ་སྒྲིག་བྱུང་ལས་གི་ཤུལ་ལས་ པོལ་ཀསཝཔ་ཤོག་ལེབ་སྐབས་དོན་ནང་ལུ་གཡོག་བཀོལ།"
+        },
+        "discoveryText": "དང་པ་ གསལ་སྟོན་འདི་འབག་ཤོག། འདི་གིས་ ཐོན་རིམ་བཟོ་ཡོད་པའི་གཞི་བསྟུན་དང་ ལས་རིམ་ཡིག་སྣོད་ དཔེ་ འཛོལ་བ་ཐོ་གཞུང་ དེ་ལས་ གནས་སྟངས་བཟོ་བསྐྲུན་འདི་དང་གཅིག་ཁར་ བཏང་ཡོད་པའི་ གྲོགས་རམ་མཁོ་སྤྲོད་འབད་མི་ཚུ་འབྲེལ་མཐུད་འབདཝ་ཨིན།",
+        "discoveryTitle": "གསར་རྙེད།",
+        "entrypointsLabel": "ལས་ཚབ་ཨེ་པི་ཨའི་ འཛུལ་སྒོ་ཚུ།",
+        "eyebrow": "རང་འགུལ་ཅན།",
+        "flow": {
+            "execute": "གྲ་སྒྲིག་འབད་ཡོད་པའི་དམིགས་ཡུལ་དང་ བརྟན་ཏོག་ཏོ་ཡོད་པའི་ མཁོ་སྤྲོད་འབད་མི་བཀའ་རྒྱ་ཨའི་ཌི་དང་གཅིག་ཁར་ སྲིད་བྱུས་ཆ་འཇོག་འབད་བའི་ཤུལ་ལས་རྐྱངམ་ཅིག་ ལག་ལེན་འཐབ།",
+            "open": "བརྡ་འཚོལ་ཤོག་ལེབ་ངོ་མ་ཅིག་ནང་ Polkaswap ཁ་ཕྱེ།",
+            "prepare": "མིང་རྟགས་བཀོད་ནིའི་བཀོལ་སྤྱོད་གང་རུང་ཅིག་གི་ཧེ་མ་ མཐུན་སྒྲིག་གྲ་སྒྲིག་ཐབས་ལམ་འདི་འབོ།",
+            "ready": "གྲ་སྒྲིག་བྱུང་ལས་ལུ་བསྒུག་སྡོད་ཞིནམ་ལས་ ཤུགས་ལྡན་སོ་ར་མཛུབ་གནོན་ཅིག་དགོཔ་ཨིན།",
+            "recover": "ལོག་འབད་རྩོལ་བསྐྱེད་པའི་ཧེ་མ་ གཏན་གཏན་མེད་པའི་ཕུལ་མི་ཚུ་སླར་གསོ་འབད།",
+            "resolve": "བསྐྱར་ལོག་ལག་ལེན་འཐབ་མ་བཏུབ་པའི་ཧེ་མ་ ཁ་བྱང་ཚུ་ལུ་ རྒྱུ་དངོས་བརྡ་མཚོན་ཚུ་སེལ་འཐུ་འབད།",
+            "wallet": "མིང་རྟགས་བཀོད་དགོཔ་ད་ དངུལ་ཁུག་བྱིན་མི་དང་རྩིས་ཐོ་སེལ་འཐུ་འབད།"
+        },
+        "flowTitle": "ཉེན་སྲུང་ལག་ལེན་འཐབ་ཐངས།",
+        "lead": "པོལ་ཀཱསི་ཝཔ་གིས་ གནས་སྟངས་གློག་རིམ་ཁ་ཕྱེ་མི་ ལས་ཚབ་རྒྱུག་མི་ཚུ་གི་དོན་ལུ་ བརྡ་འཚོལ་-ས་གནས་རང་བཞིན་རང་བཞིན་ཨེ་པི་ཨའི་ གསལ་སྟོན་འབདཝ་ཨིན།",
+        "links": {
+            "client": "ཇ་བ་ཨིསི་ཀིརིཔཊི་གྲོགས་རམ་མཁོ་མངགས་པ།",
+            "errors": "འཛོལ་བའི་ཐོ་གཞུང་།",
+            "examples": "དཔེ།",
+            "manifest": "གསར་རྙེད་གསལ་བསྒྲགས།",
+            "playground": "ལས་ཚབ་རྩེད་ཐང་།",
+            "reference": "ཨེ་པི་ཨའི་གཞི་བསྟུན་ཆ་ཚང་།",
+            "schema": "JSON འཆར་གཞི།",
+            "types": "ཊའིཔ་སི་ཀིརིཔཊི་ངེས་ཚིག།"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "སྤྱིར་བཏང་རྒྱུག་མི་ཚུ་གི་དོན་ལུ་ ཀེ་ནོ་ནིཀ་གསར་ཐོབ་ཡིག་ཆ།",
+                "title": "གསལ་སྟོན་དང་གཅིག་ཁར་འགོ་བཙུགས།"
+            },
+            "playground": {
+                "description": "གནས་རིམ་དང་རྒྱུ་དངོས་ ཚིག་བརྗོད་ཚུ་དང་སྔོན་ལྟ་ཚུ་གི་དོན་ལུ་ ལག་ཐོག་འབྱུང་ཁུངས་གཅིག་པའི་ཞིབ་འཚོལ།",
+                "title": "རྩེད་ཐང་ཁ་ཕྱེ།"
+            },
+            "reference": {
+                "description": "ལྷག་བཏུབ་པའི་ཐབས་ལམ་སབ་ཁྲ་དང་དཔེ་ མིང་རྟགས་བཀོད་ནིའི་ལམ་ལུགས་ དེ་ལས་ སླར་གསོའི་དྲན་ཐོ་ཚུ།",
+                "title": "ཨེ་པི་ཨའི་གཞི་བསྟུན་ལྷག།"
+            }
+        },
+        "signingTextAfter": "ལོག་འབད་རྩོལ་བསྐྱེད་མི་ཚུ་ ནུས་མེད་སྦེ་བཞག་ནི།",
+        "signingTextBefore": "ཤོག་ལེབ་འདི་གིས་ ནམ་ཡང་ སྒེར་གྱི་ལྡེ་མིག་ཚུ་ མི་ལེན། གནས་སྟངས་བསྒྱུར་བཅོས་ཐབས་ལམ་ཚུ་གིས་ སེལ་འཐུ་འབད་ཡོད་པའི་དངུལ་ཁུག་མིང་རྟགས་བཀོད་མི་འདི་ལག་ལེན་འཐབ་ཨིནམ་དང་ རྒྱུག་མི་འདི་གིས་ ལོག་བཏང་ཡོད་མི་འདི་སྤྲོད་དགོཔ་ཨིན།",
+        "signingTextMiddle": "བརྟན་ཏོག་ཏོ་གཅིག་བསྣོན།",
+        "signingTitle": "མིང་རྟགས་བཀོད་ནི་དང་ བདག་འཛིན།",
+        "startTitle": "འདི་ལས་འགོ་བཙུགས།",
+        "title": "ལས་ཚབ་ཚུ་གི་དོན་ལུ་"
     },
     "forText": "དོན་ལུ།",
     "hashiBridgeText": "{Hashi} ཟམ་པ།",
@@ -798,6 +879,7 @@
         "Explore/Container": "འཚོལ་ཞིབ་འབད།",
         "Farming": "ཞིང་ལཱ་འབད་ནི།",
         "OrderBook": "ཚོང་ལས།",
+        "Polkamarkt": "པོལ་ཀ་མར་ཀཊ།",
         "Pool": "Pool",
         "Rewards": "བྱ་དགའ།",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "ཚད་འཛིན་གོ་རིམ་ཆ་མེད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
             "OrderBookCancelLimitOrders": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
             "OrderBookPlaceLimitOrder": "{amount} {symbol} ལུ་ {price} {symbol2} ལུ་ ཚད་འཛིན་གོ་རིམ་བཙུགས་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "PolkamarktAddLiquidity": "པོལ་ཀ་མར་ཀཊི་ལུ་ {amount} {symbol} དངུལ་ཆུ་ཁ་སྐོང་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "PolkamarktBuy": "པོལ་ཀ་མར་ཀཊི་ནང་ {amount} {symbol} ཉོ་མ་ཚུགས།",
+            "PolkamarktClaimCreatorFees": "པོལ་ཀ་མཱརཀ་ཊི་བཟོ་མིའི་འཐུས་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
+            "PolkamarktClaimCreatorLiquidity": "པོལ་ཀ་མཱརཀ་ཊི་བཟོ་མི་ དངུལ་གྱི་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
+            "PolkamarktClaimLiquidity": "པོལ་ཀ་མརཀ་ཊི་ཨེལ་པི་ལྷག་ལུས་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
+            "PolkamarktClaimMarket": "པོལ་ཀ་མཱརཀ་ཊི་གི་དངུལ་ཕོགས་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
+            "PolkamarktClaimMarkets": "པོལ་ཀ་མཱརཀ་ཊི་གི་དངུལ་ཕོགས་ཚུ་ ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
+            "PolkamarktCreateCondition": "པོལ་ཀ་མཱརཀཊི་གནས་སྟངས་གསར་བསྐྲུན་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "PolkamarktCreateMarket": "{amount} {symbol} དང་གཅིག་ཁར་ པོལ་ཀ་མར་ཀཊི་ཚོང་ལམ་གསར་བསྐྲུན་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "PolkamarktFlip": "པོལ་ཀ་མར་ཀཊི་གུ་ {amount} {symbol} ཕིལིཔ་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
+            "PolkamarktSell": "པོལ་ཀ་མར་ཀཊི་གུ་ {amount} {symbol} བཙོང་མ་ཚུགས།",
             "ReferralReserveXor": "བོནཌི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ། {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} གཞི་སྒྲིག་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
             "ReferralUnreserveXor": "{amount} XOR མཐུད་མཚམས་བཤོལ་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་བཏང་ཡོདཔ།",
             "OrderBookCancelLimitOrders": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་བཏང་ཡོདཔ།",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} བཞག་ཡོད།",
+            "PolkamarktAddLiquidity": "{amount} {symbol} པཱོལ་ཀ་མཱརཀ་ཊི་ལུ་ཁ་སྐོང་འབད་ཡོདཔ།",
+            "PolkamarktBuy": "{amount} {symbol} པོལ་ཀ་མར་ཀཊ་ནང་ལས་ཉོས།",
+            "PolkamarktClaimCreatorFees": "Polkamarkt བཟོ་མིའི་འཐུས་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
+            "PolkamarktClaimCreatorLiquidity": "Polkamarkt བཟོ་མི་ དངུལ་གྱི་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
+            "PolkamarktClaimLiquidity": "པོལ་ཀ་མཱརཀ་ཊི་ཨེལ་པི་ལྷག་ལུས་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
+            "PolkamarktClaimMarket": "པོལ་ཀ་མཱརཀ་ཊི་གིས་ དངུལ་སྤྲོད་ལེན་འབད་ཡོདཔ།",
+            "PolkamarktClaimMarkets": "པོལ་ཀ་མཱརཀ་ཊི་གི་དངུལ་ཕོགས་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
+            "PolkamarktCreateCondition": "Polkamarkt གནས་སྟངས་གསར་བསྐྲུན་འབད་ཡོདཔ།",
+            "PolkamarktCreateMarket": "{amount} {symbol} དང་ཅིག་ཁར་ པོལ་ཀ་མར་ཀཊ་ཁྲོམ་ར་བཟོ་ཡོདཔ།",
+            "PolkamarktFlip": "ཕོལ་ཀ་མརཀ་ཊི་ནང་ {amount} {symbol} གཡོག་བཀོལ་ཡོདཔ།",
+            "PolkamarktSell": "{amount} {symbol} པོལ་ཀ་མཱརཀ་ཊི་ནང་བཙོང་ཡོདཔ།",
             "ReferralReserveXor": "བོན་ཌི་ {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} མཐར་འཁྱོལ་ཅན་སྦེ་གཞི་སྒྲིག་འབད་ཡོདཔ།",
             "ReferralUnreserveXor": "མཐུད་མེད་ {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "བཀའ་རྒྱ་ཆ་མེད་གཏང་།",
         "OrderBookCancelLimitOrders": "བཀའ་རྒྱ་ཆ་མེད་གཏང་།",
         "OrderBookPlaceLimitOrder": "བཀོད་སྒྲིག་འབད་ནི།",
+        "PolkamarktAddLiquidity": "པོལ་ཀ་མཱརཀ་ཊི་ མ་དངུལ་ཁ་སྐོང་རྐྱབས།",
+        "PolkamarktBuy": "པོལ་ཀ་མཱརཀ་ཊི་གི་བགོ་བཤའ་ཉོ།",
+        "PolkamarktClaimCreatorFees": "ཐོབ་བརྗོད་ Polkamarkt བཟོ་མིའི་འཐུས་ཚུ།",
+        "PolkamarktClaimCreatorLiquidity": "ཐོབ་བརྗོད་ Polkamarkt བཟོ་མཁན་གྱི་དངུལ་འབབ།",
+        "PolkamarktClaimLiquidity": "ཐོབ་བརྗོད་ པོལ་ཀ་མཱརཀ་ཊི་ཨེལ་པི་ལྷག་ལུས།",
+        "PolkamarktClaimMarket": "ཐོབ་བརྗོད་ པོལ་ཀ་མར་ཀཊ་ དངུལ་སྤྲོད།",
+        "PolkamarktClaimMarkets": "ཐོབ་བརྗོད་ པོལ་ཀ་མར་ཀཊ་ དངུལ་སྤྲོད་ཚུ།",
+        "PolkamarktCreateCondition": "པོལ་ཀ་མར་ཀཊི་གནས་སྟངས་གསར་བསྐྲུན་འབད།",
+        "PolkamarktCreateMarket": "པོལ་ཀ་མཱརཀ་ཊི་ཚོང་ཁང་བཟོ།",
+        "PolkamarktFlip": "ཕིལིཔ་པོལ་ཀ་མར་ཀཊ་གནས་རིམ།",
+        "PolkamarktSell": "པོལ་ཀ་མཱརཀ་ཊི་གི་བགོ་བཤའ་བཙོང་།",
         "ReferralReserveXor": "བོནཌི་ཨེགསི་ཨོ་ཨར།",
         "ReferralSetInvitedUser": "{role} གཞི་སྒྲིག།",
         "ReferralUnreserveXor": "ཨེགསི་ཨོ་ཨར་ བཤུད།",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "ཆུ་རྫིང་།",
         "Explore/Staking": "བཙུགས་ནི།",
         "Explore/Tokens": "ཊོ་ཀེན་ཚུ།",
+        "ForAgents": "ལས་ཚབ་ཚུ་གི་དོན་ལུ་",
         "OrderBook": "ཚོང་ལས།",
+        "Polkamarkt": "པོལ་ཀ་མར་ཀཊ།",
         "Pool": "Pool",
         "Rewards": "བྱ་དགའ།",
         "Sccp": "SCCP",
@@ -1330,6 +1447,155 @@
         "noExtension": "{extension} རྒྱ་བསྐྱེད་འཚོལ་མ་ཐོབ། གཞི་བཙུགས་འབད་ཞིནམ་ལས་ ཤོག་ལེབ་འདི་ལོག་མངོན་གསལ་འབད་གནང་།",
         "noExtensions": "{PolkadotJs} རྒྱ་བསྐྱེད་འཚོལ་མ་ཐོབ། གཞི་བཙུགས་འབད་ཞིནམ་ལས་ ཤོག་ལེབ་འདི་ལོག་མངོན་གསལ་འབད་གནང་།\nhttps://polkadot.js.org/རྒྱ་བསྐྱེད།/",
         "noSigner": "འཛུལ་སྤྱོད་བཀག་ཆ་འབད་ཡོདཔ། {extension} རྒྱ་བསྐྱེད་སྒྲིག་སྟངས་ཚུ་ནང་འགྱོ་ཞིནམ་ལས་ གནང་བ་བྱིན་ནིའི་དོན་ལུ་ \"Manage Website Access\" ཁ་ཕྱེ།"
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "ཉོ།",
+            "claimCreatorFees": "གསར་བསྐྲུན་པའི་འཐུས་ཐོབ་བརྗོད་བཀོད།",
+            "claimCreatorLiquidity": "ཐོབ་བརྗོད་བཟོ་མི་ དངུལ་འགྱུར།",
+            "claimLpResidual": "ཐོབ་བརྗོད་ཨེལ་པི་ལྷག་ལུགས།",
+            "claimTraderPayout": "ཚོང་པ་སྤྲོད་ལེན་ཐོབ་བརྗོད་བཀོད།",
+            "createMarket": "ཁྲོམ་ར་བཟོ་ནི།",
+            "flip": "གཡོ་སྒྱུར།",
+            "liquidity": "དངུལ་འབབ་ཁ་སྐོང་རྐྱབས།",
+            "sell": "བཙོངས།"
+        },
+        "create": {
+            "category": "དབྱེ་རིམ།",
+            "closeBlock": "སྡེབ་ཚན་ཁ་བསྡམས།",
+            "creationFee": "གསར་བསྐྲུན་འཐུས།",
+            "deadline": "ཚོང་འབྲེལ་དུས་ཚོད།",
+            "marketFailed": "གནས་སྟངས་བཟོ་ཡོད་རུང་ ཁྲོམ་ར་བཟོ་མ་ཚུགས། སྲུང་བཞག་འབད་ཡོད་པའི་གནས་སྟངས་དང་གཅིག་ཁར་ ཁྲོམ་གསར་བསྐྲུན་འབད་ནི་ལུ་ ལོག་འབད་རྩོལ་བསྐྱེད།",
+            "metadataTooLong": "དྲི་བ་དང་ཨོ་རཱ་ཀཱལ་ དེ་ལས་ ཐག་གཅད་མེ་ཊ་ཌེ་ཊ་ཚུ་ བཱའིཊི་༥༡༢ ནང་འཁོད་ལུ་ཚུད་དགོ།",
+            "question": "ཁྲོམ་རའི་དྲི་བ།",
+            "questionPlaceholder": "སེལ་འཐུ་འབད་ཡོད་པའི་དུས་ཚོད་ནང་ བྱུང་ལས་འདི་ ཨིན་ ལུ་ཐག་བཅད་འོང་ག?",
+            "questionTooShort": "དྲི་བ་འདི་ ཉུང་མཐའ་ བཱའིཊིསི་ ༣༢ འོང་དགོ།",
+            "retryMessage": "གནས་སྟངས་ {id} གསར་བསྐྲུན་འབད་ཡོདཔ་ཨིན། ཁྲོམ་གསར་བསྐྲུན་གྱི་གོ་རིམ་རྐྱངམ་ཅིག་ལོག་འབད་རྩོལ་བསྐྱེད།",
+            "retrySubmit": "ཚོང་ལམ་གསར་བསྐྲུན་འབད་ནིའི་དཔའ་བཅམ།",
+            "seedLiquidity": "ས་བོན་གྱི་དངུལ་འགྱུར།",
+            "seedTooSmall": "སོན་གྱི་ ཆུ་ཚད་འདི་ ཉུང་མཐའ་ {amount} {symbol} འོང་དགོ།",
+            "submit": "ཆ་རྐྱེན་དང་ཁྲོམ་ར་བསྐྲུན་པ།",
+            "title": "པོལ་ཀ་མཱརཀ་ཊི་ཚོང་ཁང་བཟོ།"
+        },
+        "details": {
+            "awaitingSettlement": "མཐའ་དཔྱད་ལུ་སྒུག་དོ།",
+            "empty": "པེ་ལེཊི་གནས་སྟངས་དང་ ཨོ་རཱ་ཀཱལ་ཁ་གསལ་ དེ་ལས་ གཞིས་ཆགས་སྒྲུབ་བྱེད་ཚུ་བལྟ་ནི་ལུ་ ཁྲོམ་སེལ་འཐུ་འབད།",
+            "openResolutionSource": "ཁ་ཕྱེ་ཐོན་ཁུངས་འབྲེལ་མཐུད།",
+            "oracle": "ཨོ་རེ་ཀཱལ།",
+            "pool": "དངུལ་འཛིན་ཆུ་རྫིང་།",
+            "settlement": "གཞིས་ཆགས་ཁ་གསལ།"
+        },
+        "errors": {
+            "loadActivity": "པོལ་ཀ་མཱརཀཊི་རྩིས་ཐོའི་ལས་སྣ་མངོན་གསལ་འབད་མི་ཚུགས།",
+            "loadMarkets": "པོལ་ཀ་མར་ཀཊི་ཚོང་ལམ་ཚུ་མངོན་གསལ་འབད་མ་ཚུགས།"
+        },
+        "fields": {
+            "collateralAsset": "གཏའ་མའི་རྒྱུ་ནོར།",
+            "conditionId": "གནས་སྟངས་ཨའི་ཌི།",
+            "evidenceBlock": "བདེན་དཔང་བཀག་སྡོམ།",
+            "evidenceHash": "སྒྲུབ་བྱེད་ཧ་ཤི།",
+            "evidenceUri": "སྒྲུབ་བྱེད་ཡུ་ཨར་ཨའི་།",
+            "lpContributed": "LP ཕན་འདེབས་བྱས།",
+            "lpShares": "LP བགོ་བཤའ།",
+            "noReserve": "གསོག་འཇོག་མེད།",
+            "oracle": "ཨོ་རེ་ཀཱལ།",
+            "poolCollateral": "ཆུ་རྫིང་གི་འགན་འཁྲི།",
+            "resolutionOutcome": "གྲོས་ཆོད་གྲུབ་འབྲས།",
+            "resolutionSource": "ཐག་གཅོད་འབྱུང་ཁུངས།",
+            "yesReserve": "ཨིན་ གསོག་འཇོག།"
+        },
+        "filters": {
+            "active": "ཤུགས་ལྡན་ཅན།",
+            "allCategories": "དབྱེ་རིམ་ཆ་མཉམ།",
+            "allStatuses": "གནས་ཚད་ཆ་མཉམ།",
+            "finalized": "མཐའ་དཔྱད་འབད་ཡོདཔ།",
+            "mine": "ངའི་"
+        },
+        "loadingMarkets": "ཁྲོམ་ཚུ་མངོན་གསལ་འབད་དོ་...",
+        "markets": {
+            "search": "ཁྲོམ་ར་འཚོལ།",
+            "subtitle": "{count} ཚོང་འབྲེལ་ཚུ་གིས་ ད་ལྟོའི་ཚགས་མ་ཚུ་དང་མཐུན་སྒྲིག་འབདཝ་ཨིན།",
+            "title": "ཁྲོམ་ར།"
+        },
+        "metrics": {
+            "closeBlock": "སྡེབ་ཚན་ཁ་བསྡམས།",
+            "liquidity": "དངུལ་འབབ།",
+            "noQuote": "NO quote",
+            "status": "གནས་ཚད།",
+            "volume": "སྐད་ཤུགས།",
+            "yesProbability": "ཨིན་",
+            "yesQuote": "ཨིན་ ལུང་འདྲེན།"
+        },
+        "modes": {
+            "buy": "ཉོ།",
+            "claim": "ཐོབ་བཤད།",
+            "flip": "གཡོ་སྒྱུར།",
+            "liquidity": "LP",
+            "sell": "བཙོངས།"
+        },
+        "my": {
+            "claimsSummary": "Trader {trader} / LP {lp}",
+            "connect": "གསར་བསྐྲུན་འབད་ཡོད་པའི་ཚོང་འབྲེལ་དང་ ཨེལ་པི་བགོ་བཤའ་ དངུལ་ཕོགས་ཚུ་ དེ་ལས་ འཕྲལ་གྱི་ཚོང་འབྲེལ་ཚུ་བལྟ་ནི་ལུ་ རྩིས་ཐོ་ཅིག་མཐུད།",
+            "createdMarkets": "ཁྲོམ་ར་བཟོ་ཡོདཔ།",
+            "empty": "རྩིས་ཐོ་འདི་གི་དོན་ལུ་ ད་ལྟོ་ཡང་ Polkamarkt གི་གནས་རིམ་དང་ ཡང་ན་ ཚོང་འབྲེལ་ཚུ་གསར་བསྐྲུན་འབད་མ་ཚུགས།",
+            "loading": "པོལ་ཀ་མར་ཀཊི་རྩིས་ཐོའི་ལས་སྣ་མངོན་གསལ་འབད་དོ།",
+            "market": "ཁྲོམ་ར་ {id}",
+            "positions": "LP དང་ཚོང་པའི་གནས་ཚུལ།",
+            "recentTrades": "འཕྲལ་གྱི་ཚོང་འབྲེལ་ཚུ།",
+            "sharesSummary": "YES {yes} / NO {no} / LP {lp}",
+            "subtitle": "བཟོ་ཡོད་པའི་ཚོང་ཁང་དང་ ཨེལ་པི་བགོ་བཤའ་ ཚོང་པ་གི་དངུལ་ཕོགས་ བཟོ་མིའི་འཐུས་ དེ་ལས་ ལྷག་ལུས་ཨེལ་པི་ཐོབ་བརྗོད་ཚུ།",
+            "title": "ངའི་ཁྲོམ་ར། / LP"
+        },
+        "noMarkets": "ད་ལྟོའི་ཚགས་མ་ཚུ་དང་མཐུན་སྒྲིག་འབད་མི་ཚོང་ལམ་ཚུ་མེད།",
+        "notIndexed": "ཟུར་ཐོ་མ་བཟོ།",
+        "outcomes": {
+            "no": "NO",
+            "yes": "ཨིན་"
+        },
+        "pageSubtitle": "ཚོང་འབྲེལ་གྱི་སྔོན་དཔག་ཚོང་འབྲེལ་དང་ ཚོང་འབྲེལ་གསརཔ་ དེ་ལས་ LP དང་ Polkaswap wallet flow ལས་ ཐོབ་བརྗོད་བཀོད་ཚུགས་པའི་ ལྷག་ལུས་ཚུ་ འཛིན་སྐྱོང་འཐབ་ནི།",
+        "status": {
+            "active": "ཤུགས་ལྡན་ཅན།"
+        },
+        "ticket": {
+            "amountPlaceholder": "༠.༠",
+            "claimable": "ཐོབ་བརྗོད་འབད་བཏུབ།",
+            "claimableFailed": "ཐོབ་བརྗོད་བཀོད་བཏུབ་པའི་ལྷག་ལུས་ཚུ་ལྷག་མ་ཚུགས།",
+            "claimStatus": "ཐོབ་བརྗོད་ཀྱི་གནས་ཚད།",
+            "collateralAmount": "Amount ({symbol})",
+            "collateralOut": "གཏའ་མ་ཕྱིར་འཐེན།",
+            "enterAmount": "དངུལ་བསྡོམས་བཙུགས།",
+            "flippedShares": "བགོ་བཤའ་བསྒྱིར་ཡོདཔ།",
+            "insufficientKusd": "{symbol} ལྷག་ལུས་མི་འདང་བ།",
+            "insufficientXor": "ཡོངས་འབྲེལ་འཐུས་དོན་ལུ་ ཨེགསི་ཨོ་ཨར་ལངམ་མེདཔ།",
+            "invalidAmount": "ནུས་ཅན་དངུལ་བསྡོམས་བཙུགས།",
+            "lpSharesOut": "LP བགོ་བཤའ་བཏོན་ཡོདཔ།",
+            "noChainMarket": "ཁྲོམ་འདི་ རིམ་སྒྲིག་ཐོག་ལུ་ ཚོང་འབྲེལ་འཐབ་མི་ཚུགས།",
+            "quoteFailed": "འདྲེན་ཚིག་གསར་བསྐྲུན་འབད་མི་ཚུགས།",
+            "refreshingQuote": "བསྐྱར་གསོའི་ཚིག་བཅད་...",
+            "selectMarket": "ཚོང་འབྲེལ་འཐབ་ནིའི་དོན་ལུ་ ཤུགས་ལྡན་ཚོང་ལམ་ཅིག་སེལ་འཐུ་འབད།",
+            "sharesAmount": "བགོ་བཤའ།",
+            "sharesOut": "བགོ་བཤའ་རྐྱབ་ཡོདཔ།",
+            "slippage": "བཤུད་ % .",
+            "subtitle": "ཚིག་བརྗོད་དང་འཐུས་ བཤུད་འགོག་སྲུང་སྐྱོབ་ དེ་ལས་ དངུལ་ཁུག་ཕུལ་ནི་ཚུ་ སོ་ར་རཱན་ཊའིམ་ལག་ལེན་འཐབ་ཨིན།",
+            "title": "ཚོང་འབྲེལ་འཛིན་བྱང་།",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "བཱའིཊ།",
+            "shares": "བགོ་བཤའ།"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "ལྟོས་སྤྱོད་ཁ་སྣོན་",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "འབག་ཤོག་",
             "commissionTooltip": "འབག་ཤོག་ཟེར་མི་ སྡེབ་འབུལ་ནང་ བདེན་བཤེར་གྱིས་ལཱ་གཡོག་དང་འབྲེལ་བའི་གླ་སྒྲིག་ཨིན་ བརྒྱ་ཆ་གཞིར་བཟོས་ མི་དགོས་པའི་བསྡུས་ལས་མ་བཟུང་་ དེ་འབདཝ་ད་ བདེན་བཤེར་ཚུ་གིས་འབག་ཤོག་གོང་འདོར་བཏུབ་",
-            "deselectAll": "Deselect all",
+            "deselectAll": "ཆ་མཉམ་སེལ་འཐུ་བཤོལ།",
             "name": "མིང་",
             "noNominatedValidators": "འོས་འགན་བྱས་པའི་བདེན་བཤེར་མེད་",
             "noValidators": "ཚགས་མའི་ཁྱད་ཚད་ལྟུང་མི་བདེན་བཤེར་མེད་",
             "return": "ལོག་",
             "search": "འཚོལ་...",
-            "selectAll": "Select all",
+            "selectAll": "ཆ་མཉམ་སེལ་འཐུ་འབད།",
             "staked": "སིཊེཀ་འབད་ཡོདཔ",
             "stakedTooltip": "validator འདི་དང་གཅིག་ཁར stake འབད་ཡོད་པའི XOR ཡོངས་བསྡོམས་ དེ་ནང་ validator རང་གི stake དང་ nominate འབད་ཡོད་པའི stake ཚུ་ཚུདཔ་ཨིན"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "རྩིས་ཐོ་ཚུ་ ཡོངས་འབྲེལ་གུ་ལག་ལེན་པའི་རྒྱུ་དངོས་ཚུ་བཞག་མི་ ཌི་ཇི་ཊཱལ་ཁ་བྱང་ཚུ་ཨིན། རྩིས་ཐོ་རེ་རེ་བཞིན་དུ་ གཞན་དང་མ་འདྲ་བའི་ མི་མང་ཁ་བྱང་དང་ སྒེར་གྱི་ལྡེ་མིག་ཅིག་དང་ འབྲེལ་བ་ཡོདཔ་ལས་ ལག་ལེན་པ་གིས་ ཁོང་རའི་རྒྱུ་དངོས་ཚུ་ འཛུལ་སྤྱོད་དང་ འཛིན་སྐྱོང་འཐབ་བཅུགཔ་ཨིན།",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "སེལ་འཐུ་འབད་ཡོད་པའི་དུས་ཡུན་ནང་ ཚོང་འབྲེལ་ཚུ་ནང་ བཅའ་མར་གཏོགས་མི་ གཞན་དང་མ་འདྲ་བའི་རྩིས་ཐོ་ཚུ།",
         "bridgeTransactions": "{from} ལས་ {to} ཟམ་འདི་ ཟམ་ལག་ལེན་འཐབ་སྟེ་ {from} དང་ {to} ཡོངས་འབྲེལ་གྱི་བར་ན་ རྒྱུ་དངོས་སྤོ་བཤུད་འབད་ནིའི་བྱ་རིམ་ལུ་གོཝ་ཨིན། ཟམ་འདི་གིས་ ཡོངས་འབྲེལ་གཉིས་ཀྱི་བར་ན་ ཕན་ཚུན་འབྲེལ་བ་འཐབ་ཚུགས་པའི་ གོ་སྐབས་བྱིན་དོ་ཡོདཔ་ལས་ ལག་ལེན་པ་ཚུ་གིས་ རྒྱུ་དངོས་ཚུ་ མཐུན་སྒྲིག་མེད་པར་ སྤོ་བཤུད་འབད་ཚུགསཔ་ཨིན།",
         "fees": "{Sora} བཀག་ཆའི་ཐོག་ལུ་འཐུས་ཚུ་ ཡོངས་འབྲེལ་གུ་ཚོང་འབྲེལ་ཚུ་ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་ འཐུས་སྤྲོད་མི་ཚུ་ལུ་གཞི་བསྟུན་འབདཝ་ཨིན། འཐུས་འདི་ཚུ་ {Sora} ཡོངས་འབྲེལ་གྱི་ ས་གནས་ཀྱི་ཀིརིཔ་ཊོ་ཀརན་སི་ ཨེགསི་ཨོ་ཨར་ནང་ སྤྲོདཔ་ཨིན། འཐུས་དངུལ་འབོར་འདི་ ལག་ལེན་འཐབ་པའི་བསྒང་ཡོད་མི་ ཚོང་འབྲེལ་གྱི་ མགུ་རྙོག་དྲགས་དང་ ཚད་གཞི་གིས་ གཏན་འབེབས་བཟོཝ་ཨིན།",
         "roi": "{ROI} ཟེར་མི་འདི་ མ་རྩ་བཙུགས་པའི་ཁེབ་སང་ལུ་གོཝ་ཨིན། དེ་ཡང་ མ་རྩ་བཙུགས་མི་ལས་ཐོབ་མི་ཁེ་སང་འདི་ མ་རྩ་བཙུགས་མི་དེ་གི་འགྲོ་སོང་གིས་ བརྒྱ་ཆ་འདྲ་མཉམ་ནང་ བགོ་བཤའ་རྐྱབ་སྟེ་ རྩིས་རྐྱབ་ཨིན།",

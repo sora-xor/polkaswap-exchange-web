@@ -28,7 +28,7 @@
         "title": "የመለያ ቅንብሮች"
     },
     "accountText": "መለያ | መለያዎች",
-    "activeAccountsText": "Active accounts",
+    "activeAccountsText": "ንቁ መለያዎች",
     "addAsset": {
         "add": "አክል",
         "AddAssetToken": {
@@ -580,6 +580,7 @@
     "firstPerSecond": "{first} በ{second}",
     "firstText": "መጀመሪያ",
     "footer": {
+        "forAgents": "ለኤጀንቶች",
         "internet": {
             "action": "አድስ {AppName}",
             "desc": {
@@ -630,6 +631,86 @@
         "info": "መረጃ እና ማህበረሰብ",
         "privacy": "የግላዊነት ፖሊሲ",
         "sorawiki": "{Sora} ዊኪ"
+    },
+    "forAgents": {
+        "apiContext": "መተግበሪያው ከተነሳ በኋላ በገጹ አውድ ውስጥ ተጭኗል። እንደ የተጠቃሚ በይነገጽ ተመሳሳይ መስቀለኛ መንገድ፣ ቦርሳ፣ መረጃ ጠቋሚ እና ኤስዲኬ ይጠቀማል።",
+        "contract": {
+            "idempotent": "የተረጋጋ ደንበኛOrderId ይጠቀሙ እና እንደገና ከመሞከርዎ በፊት እርግጠኛ ያልሆኑ ግቤቶችን ያግኙ።",
+            "noCustody": "ገጹ በጭራሽ የግል ቁልፎችን አይቀበልም; ከተመረጠው የኪስ ቦርሳ ጋር መፈረም.",
+            "prepareFirst": "ሁኔታን የሚቀይሩ ጥሪዎች ከመተግበሩ በፊት* መዘጋጀት አለባቸው።",
+            "samePage": "ከተዘጋጀው ዝግጅት በኋላ በPolkaswap ገጽ አውድ ውስጥ ያሂዱ።"
+        },
+        "discoveryText": "መጀመሪያ አንጸባራቂውን አምጡ። በዚህ የማይንቀሳቀስ ግንባታ የተላከውን የማጣቀሻ፣ የሼማ ፋይሎች፣ ምሳሌዎች፣ የስህተት ካታሎግ እና አጋዥ ደንበኛን ያገናኛል።",
+        "discoveryTitle": "ግኝት",
+        "entrypointsLabel": "ወኪል ኤፒአይ የመግቢያ ነጥቦች",
+        "eyebrow": "አውቶማቲክ",
+        "flow": {
+            "execute": "ከተዘጋጀው ሐሳብ እና የተረጋጋ የደንበኛ ማዘዣ መታወቂያ በመመሪያው ከጸደቀ በኋላ ብቻ ያስፈጽሙ።",
+            "open": "Open Polkaswap in a real browser page.",
+            "prepare": "ከማንኛውም የፊርማ ሥራ በፊት የማዛመጃውን ዝግጅት ዘዴ ይደውሉ።",
+            "ready": "ዝግጁ የሆነውን ክስተት ይጠብቁ እና ንቁ የ SORA ኖድ ይፈልጉ።",
+            "recover": "እንደገና ከመሞከርዎ በፊት እርግጠኛ ያልሆኑ ማስገባቶችን መልሰው ያግኙ።",
+            "resolve": "ተደጋጋሚ ግድያ ከመፈጸሙ በፊት የንብረት ምልክቶችን በአድራሻዎች ላይ ይፍቱ።",
+            "wallet": "መፈረም ሲያስፈልግ የኪስ ቦርሳ አቅራቢ እና መለያ ይምረጡ።"
+        },
+        "flowTitle": "ደህንነቱ የተጠበቀ የአፈፃፀም ዑደት",
+        "lead": "ፖልካስዋፕ የማይንቀሳቀስ መተግበሪያን ለሚከፍቱ ወኪል ሯጮች የአሳሽ-ቤተኛ አውቶሜሽን ኤፒአይን ያጋልጣል።",
+        "links": {
+            "client": "የጃቫስክሪፕት አጋዥ ደንበኛ",
+            "errors": "የስህተት ካታሎግ",
+            "examples": "ምሳሌዎች",
+            "manifest": "የግኝት አንጸባራቂ",
+            "playground": "ወኪል መጫወቻ ቦታ",
+            "reference": "ሙሉ የኤፒአይ ማጣቀሻ",
+            "schema": "JSON እቅድ",
+            "types": "የጽሕፈት ጽሕፈት ፍቺዎች"
+        },
+        "polkamarkt": {
+            "items": {
+                "create": {
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "title": "Create markets"
+                },
+                "markets": {
+                    "description": "Active market cards and the detail panel read indexed markets, snapshots, pool balances, oracle data, and settlement evidence from the Polkaswap indexer.",
+                    "title": "Read markets"
+                },
+                "positions": {
+                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "title": "Manage positions"
+                },
+                "route": {
+                    "description": "Open Polkaswap with ?polkaswap-agent=1#/polkamarkt or change the hash to #/polkamarkt after the page is ready.",
+                    "title": "Open the route"
+                },
+                "trade": {
+                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "title": "Trade and claim"
+                }
+            },
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "title": "Polkamarkt"
+        },
+        "primary": {
+            "manifest": {
+                "description": "ለአጠቃላይ ሯጮች ቀኖናዊ ግኝት ሰነድ።",
+                "title": "በአንጸባራቂው ይጀምሩ"
+            },
+            "playground": {
+                "description": "ለሁኔታ፣ ለንብረቶች፣ ጥቅሶች እና ቅድመ ዕይታዎች በእጅ የተመሳሳይ አመጣጥ መጠይቅ።",
+                "title": "የመጫወቻ ሜዳውን ይክፈቱ"
+            },
+            "reference": {
+                "description": "ሊነበብ የሚችል ዘዴ ካርታ፣ ምሳሌዎች፣ የመፈረሚያ ደንቦች እና የመልሶ ማግኛ ማስታወሻዎች።",
+                "title": "የኤፒአይ ማመሳከሪያውን ያንብቡ"
+            }
+        },
+        "signingTextAfter": "ጠንካራ ሙከራዎችን ለማድረግ።",
+        "signingTextBefore": "ገጹ መቼም የግል ቁልፎችን አይወስድም። የግዛት መለወጫ ዘዴዎች የተመረጠውን የኪስ ቦርሳ ፈራሚ ይጠቀማሉ እና ሯጩ የተመለሰውን እንዲያሳልፍ ይጠይቃሉ።",
+        "signingTextMiddle": "ሲደመር በረት",
+        "signingTitle": "መፈረም እና ጥበቃ",
+        "startTitle": "እዚ ጀምር",
+        "title": "ለኤጀንቶች"
     },
     "forText": "ለ",
     "hashiBridgeText": "{Hashi} ድልድይ",
@@ -798,6 +879,7 @@
         "Explore/Container": "ያስሱ",
         "Farming": "እርሻ",
         "OrderBook": "ንግድ",
+        "Polkamarkt": "ፖልካማርት",
         "Pool": "ገንዳ",
         "Rewards": "ሽልማቶች",
         "Sccp": "@:pageTitle.Sccp",
@@ -971,6 +1053,17 @@
             "OrderBookCancelLimitOrder": "ገደብ ማዘዙን መሰረዝ አልተሳካም።",
             "OrderBookCancelLimitOrders": "ገደብ ትዕዛዞችን መሰረዝ አልተሳካም።",
             "OrderBookPlaceLimitOrder": "በ{price} {symbol2} ላይ የ{amount} {symbol} ገደብ ማዘዝ አልተሳካም",
+            "PolkamarktAddLiquidity": "{amount} {symbol} ፈሳሽ ወደ ፖልካማርት ማከል አልተሳካም።",
+            "PolkamarktBuy": "በፖልካማርት ላይ {amount} {symbol} መግዛት አልተሳካም።",
+            "PolkamarktClaimCreatorFees": "የPolkamarkt ፈጣሪ ክፍያዎችን መጠየቅ አልተሳካም።",
+            "PolkamarktClaimCreatorLiquidity": "የPolkamarkt ፈጣሪ ፈሳሽነት ይገባኛል ማለት አልተሳካም።",
+            "PolkamarktClaimLiquidity": "የPolkamarkt LP ቀሪ የይገባኛል ጥያቄ አልተሳካም።",
+            "PolkamarktClaimMarket": "የPolkamarkt ክፍያ መጠየቅ አልተሳካም።",
+            "PolkamarktClaimMarkets": "የPolkamarkt ክፍያዎችን መጠየቅ አልተሳካም።",
+            "PolkamarktCreateCondition": "የPolkamarkt ሁኔታን መፍጠር አልተሳካም።",
+            "PolkamarktCreateMarket": "በ{amount} {symbol} የPolkamarkt ገበያ መፍጠር አልተሳካም",
+            "PolkamarktFlip": "በፖልካማርት ላይ {amount} {symbol} መገልበጥ አልተሳካም።",
+            "PolkamarktSell": "በፖልካማርት ላይ {amount} {symbol} መሸጥ አልተሳካም።",
             "ReferralReserveXor": "{amount} XOR ማስያዝ አልተሳካም።",
             "ReferralSetInvitedUser": "{role} {address} ማዘጋጀት አልተሳካም",
             "ReferralUnreserveXor": "የ{amount} XORን ትስስር መፍታት አልተሳካም።",
@@ -1022,6 +1115,17 @@
             "OrderBookCancelLimitOrder": "የገደብ ትዕዛዝ ተሰርዟል።",
             "OrderBookCancelLimitOrders": "የትእዛዝ ገደብ ተሰርዟል።",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} በ{price} {symbol2} ተቀምጧል",
+            "PolkamarktAddLiquidity": "ወደ ፖልካማርት {amount} {symbol} ፈሳሽ ታክሏል።",
+            "PolkamarktBuy": "በፖልካማርት ላይ {amount} {symbol} ገዛ",
+            "PolkamarktClaimCreatorFees": "የPolkamarkt ፈጣሪ ክፍያዎች ተጠይቀዋል።",
+            "PolkamarktClaimCreatorLiquidity": "የፖልካማርት ፈጣሪ ፈሳሽነት ይገባኛል ብሏል።",
+            "PolkamarktClaimLiquidity": "የPolkamarkt LP ቀሪ የይገባኛል ጥያቄ አቅርቧል",
+            "PolkamarktClaimMarket": "የPolkamarkt ክፍያ ተጠይቀዋል።",
+            "PolkamarktClaimMarkets": "የPolkamarkt ክፍያዎች ተጠይቀዋል።",
+            "PolkamarktCreateCondition": "Polkamarkt ሁኔታ ተፈጥሯል።",
+            "PolkamarktCreateMarket": "የፖልካማርት ገበያ በ{amount} {symbol} ተፈጠረ",
+            "PolkamarktFlip": "በፖልካማርት ላይ {amount} {symbol} ተገልብጧል",
+            "PolkamarktSell": "በፖልካማርት ላይ {amount} {symbol} ተሽጧል",
             "ReferralReserveXor": "የታሰረ {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} በተሳካ ሁኔታ ተቀናብሯል።",
             "ReferralUnreserveXor": "ያልተያያዘ {amount} XOR",
@@ -1054,6 +1158,17 @@
         "OrderBookCancelLimitOrder": "ትእዛዝ ሰርዝ",
         "OrderBookCancelLimitOrders": "ትዕዛዞችን ሰርዝ",
         "OrderBookPlaceLimitOrder": "የቦታ ማዘዣ",
+        "PolkamarktAddLiquidity": "Polkamarkt ፈሳሽ አክል",
+        "PolkamarktBuy": "የPolkamarkt ማጋራቶችን ይግዙ",
+        "PolkamarktClaimCreatorFees": "የPolkamarkt ፈጣሪ ክፍያዎችን ይጠይቁ",
+        "PolkamarktClaimCreatorLiquidity": "የPolkamarkt ፈጣሪ ፈሳሽነት ይገባኛል።",
+        "PolkamarktClaimLiquidity": "የይገባኛል ጥያቄ Polkamarkt LP ቀሪ",
+        "PolkamarktClaimMarket": "የPolkamarkt ክፍያ የይገባኛል ጥያቄ",
+        "PolkamarktClaimMarkets": "የPolkamarkt ክፍያዎችን ይጠይቁ",
+        "PolkamarktCreateCondition": "የPolkamarkt ሁኔታን ይፍጠሩ",
+        "PolkamarktCreateMarket": "የPolkamarkt ገበያ ፍጠር",
+        "PolkamarktFlip": "የPolkamarkt አቀማመጥን ይግለጡ",
+        "PolkamarktSell": "የPolkamarkt ማጋራቶችን ይሽጡ",
         "ReferralReserveXor": "ቦንድ XOR",
         "ReferralSetInvitedUser": "{role} አዘጋጅ",
         "ReferralUnreserveXor": "XORን ንቀል",
@@ -1217,7 +1332,9 @@
         "Explore/Pools": "ገንዳዎች",
         "Explore/Staking": "መቆንጠጥ",
         "Explore/Tokens": "ማስመሰያዎች",
+        "ForAgents": "ለኤጀንቶች",
         "OrderBook": "ንግድ",
+        "Polkamarkt": "ፖልካማርት",
         "Pool": "ገንዳ",
         "Rewards": "ሽልማቶች",
         "Sccp": "SCCP",
@@ -1330,6 +1447,155 @@
         "noExtension": "{extension} ኤክስቴንሽን አልተገኘም። እባክዎ ይጫኑ እና ይህን ገጽ ዳግም ያስጀምሩ",
         "noExtensions": "{PolkadotJs} ኤክስቴንሽን አልተገኘም። እባክዎ ይጫኑ እና ገጹን ዳግም ያስጀምሩ\nhttps://polkadot.js.org/extension/",
         "noSigner": "መዳረሻ ተከልክሏል። ወደ {extension} አቀራረብ ቅንብሮች ይሂዱ እና \"Manage Website Access\" ይክፈቱ"
+    },
+    "polkamarkt": {
+        "actions": {
+            "buy": "ይግዙ",
+            "claimCreatorFees": "የፈጣሪ ክፍያዎችን ይጠይቁ",
+            "claimCreatorLiquidity": "የይገባኛል ጥያቄ ፈጣሪ ፈሳሽ",
+            "claimLpResidual": "የይገባኛል ጥያቄ LP ቀሪ",
+            "claimTraderPayout": "የይገባኛል ጥያቄ ነጋዴ ክፍያ",
+            "createMarket": "ገበያ ፍጠር",
+            "flip": "ገልብጥ",
+            "liquidity": "ፈሳሽነት ይጨምሩ",
+            "sell": "መሸጥ"
+        },
+        "create": {
+            "category": "ምድብ",
+            "closeBlock": "ብሎክ ዝጋ",
+            "creationFee": "የፍጥረት ክፍያ",
+            "deadline": "የግብይት ቀነ-ገደብ",
+            "marketFailed": "ሁኔታ ተፈጥሯል, ነገር ግን የገበያ ፈጠራ አልተሳካም. በተቀመጠው ሁኔታ የገበያ መፍጠርን እንደገና ይሞክሩ።",
+            "metadataTooLong": "ጥያቄ፣ ንግግር እና ጥራት ዲበ ዳታ በ512 ባይት ውስጥ መመጣጠን አለባቸው።",
+            "question": "የገበያ ጥያቄ",
+            "questionPlaceholder": "ክስተቱ በተመረጠው የጊዜ ገደብ ወደ አዎ መፍትሄ ያገኛል?",
+            "questionTooShort": "ጥያቄ ቢያንስ 32 ባይት መሆን አለበት።",
+            "retryMessage": "ሁኔታ {id} ተፈጥሯል። የገበያ ፈጠራ ደረጃን ብቻ እንደገና ይሞክሩ።",
+            "retrySubmit": "የገበያ ፈጠራን እንደገና ይሞክሩ",
+            "seedLiquidity": "የዘር ፈሳሽነት",
+            "seedTooSmall": "የዘር ፈሳሽነት ቢያንስ {amount} {symbol} መሆን አለበት።",
+            "submit": "ሁኔታ እና ገበያ ይፍጠሩ",
+            "title": "የPolkamarkt ገበያ ፍጠር"
+        },
+        "details": {
+            "awaitingSettlement": "ማጠናቀቅን በመጠባበቅ ላይ",
+            "empty": "የፓሌት ሁኔታን፣ የቃል ዝርዝሮችን እና የሰፈራ ማስረጃዎችን ለማየት ገበያ ይምረጡ።",
+            "openResolutionSource": "ምንጭ አገናኝ ክፈት",
+            "oracle": "ኦራክል",
+            "pool": "ፈሳሽ ገንዳ",
+            "settlement": "የሰፈራ ዝርዝሮች"
+        },
+        "errors": {
+            "loadActivity": "የPolkamarkt መለያ እንቅስቃሴን መጫን አልተቻለም።",
+            "loadMarkets": "የPolkamarkt ገበያዎችን መጫን አልተቻለም።"
+        },
+        "fields": {
+            "collateralAsset": "የዋስትና ንብረት",
+            "conditionId": "የሁኔታ መታወቂያ",
+            "evidenceBlock": "የማስረጃ እገዳ",
+            "evidenceHash": "ማስረጃ ሃሽ",
+            "evidenceUri": "ማስረጃ URI",
+            "lpContributed": "LP አበርክቷል።",
+            "lpShares": "LP ማጋራቶች",
+            "noReserve": "ምንም መጠባበቂያ የለም",
+            "oracle": "ኦራክል",
+            "poolCollateral": "ገንዳ መያዣ",
+            "resolutionOutcome": "የመፍትሄው ውጤት",
+            "resolutionSource": "የመፍትሄ ምንጭ",
+            "yesReserve": "አዎ ተጠባባቂ"
+        },
+        "filters": {
+            "active": "ንቁ",
+            "allCategories": "ሁሉም ምድቦች",
+            "allStatuses": "ሁሉም ሁኔታዎች",
+            "finalized": "ተጠናቀቀ",
+            "mine": "የኔ"
+        },
+        "loadingMarkets": "ገበያዎችን በመጫን ላይ...",
+        "markets": {
+            "search": "ገበያዎችን ፈልግ",
+            "subtitle": "{count} ገበያዎች ከአሁኑ ማጣሪያዎች ጋር ይዛመዳሉ",
+            "title": "ገበያዎች"
+        },
+        "metrics": {
+            "closeBlock": "ብሎክ ዝጋ",
+            "liquidity": "ፈሳሽነት",
+            "noQuote": "ጥቅስ የለም",
+            "status": "ሁኔታ",
+            "volume": "ድምጽ",
+            "yesProbability": "አዎ",
+            "yesQuote": "አዎ ጥቅስ"
+        },
+        "modes": {
+            "buy": "ይግዙ",
+            "claim": "የይገባኛል ጥያቄ",
+            "flip": "ገልብጥ",
+            "liquidity": "ኤል.ፒ",
+            "sell": "መሸጥ"
+        },
+        "my": {
+            "claimsSummary": "ነጋዴ {trader} / LP {lp}",
+            "connect": "የተፈጠሩ ገበያዎችን፣ LP ማጋራቶችን፣ ክፍያዎችን እና የቅርብ ጊዜ ልውውጦችን ለማየት መለያ ያገናኙ።",
+            "createdMarkets": "ገበያዎች ፈጥረዋል።",
+            "empty": "ለዚህ መለያ እስካሁን ምንም የPolkamarkt ቦታዎች አልተፈጠረም።",
+            "loading": "የPolkamarkt መለያ እንቅስቃሴን በመጫን ላይ...",
+            "market": "ገበያ {id}",
+            "positions": "LP እና የነጋዴ ቦታዎች",
+            "recentTrades": "የቅርብ ጊዜ ግብይቶች",
+            "sharesSummary": "አዎ {yes} / አይ {no} / LP {lp}",
+            "subtitle": "Created markets, LP shares, trader payouts, creator fees, and residual LP claims.",
+            "title": "የእኔ ገበያዎች / ኤል.ፒ"
+        },
+        "noMarkets": "ምንም ገበያዎች ከአሁኑ ማጣሪያዎች ጋር አይዛመዱም።",
+        "notIndexed": "በመረጃ ጠቋሚ አልተጠቆመም።",
+        "outcomes": {
+            "no": "አይ",
+            "yes": "አዎ"
+        },
+        "pageSubtitle": "ንቁ የትንበያ ገበያዎችን ይገበያዩ፣ አዳዲስ ገበያዎችን ዘርግተው፣ እና LP እና ይገባኛል የሚሉ ሚዛኖችን ከPolkaswap የኪስ ቦርሳ ፍሰት ያስተዳድሩ።",
+        "status": {
+            "active": "ንቁ"
+        },
+        "ticket": {
+            "amountPlaceholder": "0.0",
+            "claimable": "ሊጠየቅ የሚችል",
+            "claimableFailed": "ይገባኛል የሚሉ ሒሳቦችን ማንበብ አልተቻለም።",
+            "claimStatus": "የይገባኛል ጥያቄ ሁኔታ",
+            "collateralAmount": "መጠን ({symbol})",
+            "collateralOut": "ማስያዣ ወጥቷል።",
+            "enterAmount": "መጠን ያስገቡ",
+            "flippedShares": "የተገለበጠ ማጋራቶች",
+            "insufficientKusd": "በቂ ያልሆነ {symbol} ቀሪ ሂሳብ",
+            "insufficientXor": "ለኔትወርክ ክፍያ በቂ ያልሆነ XOR",
+            "invalidAmount": "ትክክለኛ መጠን ያስገቡ",
+            "lpSharesOut": "LP ያካፍላል",
+            "noChainMarket": "ገበያ በሰንሰለት አይሸጥም።",
+            "quoteFailed": "ጥቅስን ማደስ አልተቻለም።",
+            "refreshingQuote": "የሚያድስ ጥቅስ...",
+            "selectMarket": "ለመገበያየት ንቁ ገበያ ይምረጡ።",
+            "sharesAmount": "ማጋራቶች",
+            "sharesOut": "ያጋራል።",
+            "slippage": "መንሸራተት %",
+            "subtitle": "ጥቅሶች፣ ክፍያዎች፣ የመንሸራተቻ ጥበቃ እና የኪስ ቦርሳ ማስገባት የSORA ጊዜን ይጠቀማሉ።",
+            "title": "የንግድ ትኬት",
+            "split": "Split"
+        },
+        "units": {
+            "bytes": "ባይት",
+            "shares": "ማጋራቶች"
+        },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
+        "officialSite": "Open Polkamarkt.com",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X",
+            "downloadPng": "Download PNG"
+        }
     },
     "pool": {
         "addLiquidity": "ፈሳሽነት ይጨምሩ",
@@ -1690,13 +1956,13 @@
         "validatorsList": {
             "commission": "ኮሚሽን",
             "commissionTooltip": "ኮሚሽኑ በአክሲዮን ሂደት ውስጥ አረጋጋጮች ለአገልግሎታቸው የሚከፍሉትን ክፍያ ያመለክታል። ይህ ክፍያ፣ በመቶኛ የተገለጸው፣ ከመከፋፈሉ በፊት በእጩ ተወዳዳሪዎች ከተገኙት የአክሲዮን ሽልማቶች ተቀንሷል። አረጋጋጮች በማንኛውም ጊዜ የኮሚሽን ዋጋቸውን ማስተካከል እንደሚችሉ ልብ ማለት ያስፈልጋል",
-            "deselectAll": "Deselect all",
+            "deselectAll": "ሁሉንም አይምረጡ",
             "name": "ስም",
             "noNominatedValidators": "ምንም የተሾሙ ማረጋገጫዎች የሉዎትም።",
             "noValidators": "የተገለጸውን ማጣሪያ የሚያረኩ አረጋጋጮች የሉም",
             "return": "ተመለስ",
             "search": "ፈልግ...",
-            "selectAll": "Select all",
+            "selectAll": "ሁሉንም ይምረጡ",
             "staked": "የተቆለፈ",
             "stakedTooltip": "ጠቅላላ XOR ከዚህ አረጋጋጭ ጋር፣የአረጋጋጭው የራሱ ድርሻ እና በእጩነት የተመረጠ ድርሻን ጨምሮ"
         },
@@ -1737,7 +2003,7 @@
     },
     "tooltips": {
         "accounts": "መለያዎች በኔትወርኩ ላይ የተጠቃሚዎችን ንብረቶች የሚይዙ ዲጂታል አድራሻዎች ናቸው። እያንዳንዱ መለያ ከልዩ የህዝብ አድራሻ እና ተጠቃሚው ንብረታቸውን እንዲደርስ እና እንዲያስተዳድር ከሚፈቅድ የግል ቁልፍ ጋር የተቆራኘ ነው።",
-        "activeAccounts": "Unique accounts that participated in transactions during the selected period.",
+        "activeAccounts": "በተመረጠው ጊዜ ውስጥ በግብይቶች ውስጥ የተሳተፉ ልዩ መለያዎች።",
         "bridgeTransactions": "{from} ወደ {to} ድልድይ ድልድይ በመጠቀም ንብረቶችን በ{from} እና {to} አውታረ መረቦች መካከል የማስተላለፊያ ሂደትን ያመለክታል። ድልድዩ የሁለቱን ኔትወርኮች መስተጋብር ይፈቅዳል፣ተጠቃሚዎች ያለችግር በመካከላቸው ንብረቶችን እንዲያንቀሳቅሱ ያስችላቸዋል።",
         "fees": "በ{Sora} blockchain ላይ ያሉ ክፍያዎች በኔትወርኩ ላይ ግብይቶችን ለማስፈጸም የሚከፈሉትን ክፍያዎች ያመለክታሉ። እነዚህ ክፍያዎች የሚከፈሉት የ{Sora} አውታረ መረብ ተወላጅ በሆነው በXOR ነው። የክፍያው መጠን የሚወሰነው በግብይቱ ውስብስብነት እና መጠን ነው።",
         "roi": "{ROI} ማለት በኢንቨስትመንት መመለስ ማለት ነው። በመዋዕለ ንዋይ ላይ የተገኘውን ትርፍ ለዚያ ኢንቬስትመንት ወጭ እኩል በመቶኛ በማካፈል ይሰላል።",

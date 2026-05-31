@@ -44,11 +44,15 @@ describe('WalletAssets template', () => {
 
   it('keeps account asset rows on compact wallet-specific scaling', async () => {
     const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
+    const assetValueStyleBlock =
+      source.match(/&-value\s*\{[\s\S]*?\.formatted-amount__decimal\s*\{[\s\S]*?\n      \}/)?.[0] ?? '';
 
     expect(source).toContain('--s-asset-item-height--fiat: 76px;');
     expect(source).toContain('--s-asset-item-height--fiat: 74px;');
-    expect(source).toContain('padding: 0 12px 0 34px;');
-    expect(source).toContain('padding: 0 10px;');
+    expect(source).toContain('height: auto;');
+    expect(source).toContain('min-height: var(--s-asset-item-height--fiat);');
+    expect(source).toContain('padding: 8px 12px 8px 34px;');
+    expect(source).toContain('padding: 8px 10px;');
     expect(source).toContain('&-dashes');
     expect(source).toContain('width: 42px;');
     expect(source).toContain(':fiat-font-size-rate="FontSizeRate.SMALL"');
@@ -56,8 +60,13 @@ describe('WalletAssets template', () => {
     expect(source).toContain('font-size: var(--s-font-size-small);');
     expect(source).toContain('font-size: var(--s-font-size-extra-small);');
     expect(source).toContain('letter-spacing: 0;');
-    expect(source).toContain('text-overflow: ellipsis;');
-    expect(source).toContain('white-space: nowrap;');
+    expect(source).toContain('overflow-wrap: anywhere;');
+    expect(source).toContain('text-overflow: clip;');
+    expect(source).toContain('white-space: normal;');
+    expect(assetValueStyleBlock).toContain('.formatted-amount__decimal');
+    expect(assetValueStyleBlock).toContain('display: inline-block;');
+    expect(assetValueStyleBlock).toContain('white-space: nowrap;');
+    expect(source).not.toContain('@include formatted-amount-tooltip;');
     expect(source).toContain('.wallet-assets__button.send,');
     expect(source).toContain('.wallet-assets :deep(.pin)');
     expect(source).not.toContain('v-button class="wallet-assets-dashes"');
@@ -109,6 +118,21 @@ describe('WalletAssets template', () => {
 
     expect(assetListItem).not.toContain('word-break: break-word');
     expect(tokenAddress).not.toContain('word-break: break-word');
+  });
+
+  it('keeps wallet asset IDs visible when names are truncated', async () => {
+    const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
+    const assetInfoStyleBlock = source.match(/&-info\s*\{[\s\S]*?\.token-address__value\s*\{[\s\S]*?\n      \}/)?.[0] ?? '';
+
+    expect(assetInfoStyleBlock).toContain('display: flex;');
+    expect(assetInfoStyleBlock).toContain('align-items: baseline;');
+    expect(assetInfoStyleBlock).toContain('min-width: 0;');
+    expect(assetInfoStyleBlock).toContain('.token-address__name');
+    expect(assetInfoStyleBlock).toContain('flex: 1 1 auto;');
+    expect(assetInfoStyleBlock).toContain('text-overflow: ellipsis;');
+    expect(assetInfoStyleBlock).toContain('.token-address__value');
+    expect(assetInfoStyleBlock).toContain('flex: 0 0 auto;');
+    expect(assetInfoStyleBlock).toContain('min-width: max-content;');
   });
 
   it('keeps wallet row pin controls keyboard accessible and named', async () => {

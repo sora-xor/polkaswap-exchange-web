@@ -20,6 +20,7 @@ type RouteTarget = {
 const routeTargets: RouteTarget[] = [
   { target: '/swap', acceptedHashes: ['#/swap'] },
   { target: '/trade', acceptedHashes: ['#/trade'] },
+  { target: '/polkamarkt', acceptedHashes: ['#/polkamarkt'] },
   { target: '/rewards', acceptedHashes: ['#/rewards', '#/points'] },
   { target: '/pool', acceptedHashes: ['#/pool'] },
   { target: '/staking', acceptedHashes: ['#/staking'] },
