@@ -1,9 +1,11 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import { mountSetup } from '@stubs/mountSetup';
+import SFloatInput from '@/lib/soramitsu-ui/components/Input/SFloatInput.vue';
 
 const isXorSufficientForNextTx = vi.hoisted(() => vi.fn(() => false));
 const navigate = vi.hoisted(() => vi.fn());
@@ -26,6 +28,12 @@ vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     ...walletStoreMock,
     navigate,
+  }),
+}));
+
+vi.mock('@/composables/useTranslation', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
   }),
 }));
 
@@ -90,6 +98,29 @@ const createAsset = (address: string, symbol: string, transferable = '1000000000
   balance: { transferable },
 });
 
+const SCardStub = defineComponent({
+  name: 'SCardStub',
+  template: '<section class="s-card-stub"><header><slot name="header" /></header><main><slot /></main></section>',
+});
+
+const SButtonStub = defineComponent({
+  name: 'SButtonStub',
+  template: '<button type="button" @click="$emit(\'click\', $event)"><slot /></button>',
+});
+
+const AddressBookInputStub = defineComponent({
+  name: 'AddressBookInput',
+  props: {
+    modelValue: {
+      type: String,
+      default: '',
+    },
+  },
+  emits: ['update:modelValue', 'update:name'],
+  template:
+    '<input class="address-book-input-stub" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
+});
+
 describe('Wallet WalletSend', () => {
   beforeEach(() => {
     const xorAsset = createAsset(XOR.address, 'XOR');
@@ -142,6 +173,59 @@ describe('Wallet WalletSend', () => {
     await state.handleMaxClick();
 
     expect(state.amount.value).toBe('5');
+  });
+
+  it('keeps the amount input focused across successive model updates', async () => {
+    const wrapper = mount(WalletSend as any, {
+      attachTo: document.body,
+      global: {
+        components: {
+          's-float-input': SFloatInput,
+        },
+        directives: {
+          loading: () => undefined,
+        },
+        stubs: {
+          's-card': SCardStub,
+          's-button': SButtonStub,
+          's-tooltip': { template: '<span><slot /></span>' },
+          's-icon': true,
+          's-select': true,
+          's-date-picker': true,
+          AddressBookInput: AddressBookInputStub,
+          FormattedAmount: true,
+          FormattedAmountWithFiatValue: true,
+          TokenLogo: true,
+          WalletFee: true,
+        },
+      },
+    });
+    const { element } = wrapper;
+    const amountInput = element.querySelector<HTMLInputElement>('.wallet-send-input input.el-input__inner');
+
+    expect(amountInput).toBeTruthy();
+
+    amountInput!.focus();
+    expect(document.activeElement).toBe(amountInput);
+
+    amountInput!.value = '1';
+    amountInput!.dispatchEvent(new Event('input', { bubbles: true }));
+    await wrapper.vm.$nextTick();
+
+    expect(document.activeElement).toBe(amountInput);
+
+    amountInput!.value = '12';
+    amountInput!.dispatchEvent(new Event('input', { bubbles: true }));
+    await wrapper.vm.$nextTick();
+
+    expect(document.activeElement).toBe(amountInput);
+
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    await wrapper.vm.$nextTick();
+
+    expect(document.activeElement).toBe(amountInput);
+
+    wrapper.unmount();
   });
 
   it('passes vesting periods through the current select options contract', () => {

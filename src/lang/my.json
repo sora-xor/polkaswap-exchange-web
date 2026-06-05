@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "ကန့်သတ်မှာယူမှုကို ပယ်ဖျက်၍မရပါ။",
             "OrderBookCancelLimitOrders": "ကန့်သတ်မှာယူမှုများကို ပယ်ဖျက်၍မရပါ။",
             "OrderBookPlaceLimitOrder": "{amount} {symbol} တွင် {price} {symbol2} ၏ ကန့်သတ်အမိန့်ကို မအောင်မြင်ပါ။",
-            "PolkamarktAddLiquidity": "Polkamarkt တွင် {amount} {symbol} ငွေဖြစ်လွယ်မှုကို ထည့်၍မရပါ",
             "PolkamarktBuy": "Polkamarkt တွင် {amount} {symbol} ကို ဝယ်ယူရန် မအောင်မြင်ပါ။",
             "PolkamarktClaimCreatorFees": "Polkamarkt ဖန်တီးသူ အခကြေးငွေကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt ဖန်တီးသူ၏ ငွေဖြစ်လွယ်မှုကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
-            "PolkamarktClaimLiquidity": "Polkamarkt LP အကြွင်းအကျန်ကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
             "PolkamarktClaimMarket": "Polkamarkt ပေးချေမှုကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
             "PolkamarktClaimMarkets": "Polkamarkt ပေးချေမှုများကို တောင်းဆိုရန် မအောင်မြင်ပါ။",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "Polkamarkt အခြေအနေ ဖန်တီး၍မရပါ။",
             "PolkamarktCreateMarket": "Polkamarkt စျေးကွက်ကို {amount} {symbol} ဖြင့် ဖန်တီး၍မရပါ။",
-            "PolkamarktFlip": "Polkamarkt တွင် {amount} {symbol} ကိုလှန်၍မရပါ",
             "PolkamarktSell": "Polkamarkt တွင် {amount} {symbol} ကို ရောင်းချရန် မအောင်မြင်ပါ။",
             "ReferralReserveXor": "{amount} XOR ချည်နှောင်ရန် မအောင်မြင်ပါ။",
             "ReferralSetInvitedUser": "{role} {address} သတ်မှတ်ရန် မအောင်မြင်ပါ",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "ကန့်သတ်မှာယူမှုကို ပယ်ဖျက်လိုက်ပါပြီ။",
             "OrderBookCancelLimitOrders": "ကန့်သတ်အော်ဒါများကို ပယ်ဖျက်လိုက်ပါပြီ။",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} တွင် နေရာချထားသည်",
-            "PolkamarktAddLiquidity": "Polkamarkt သို့ {amount} {symbol} ငွေဖြစ်လွယ်မှုကို ထည့်ခဲ့သည်။",
             "PolkamarktBuy": "Polkamarkt တွင် {amount} {symbol} ကို ဝယ်သည်။",
             "PolkamarktClaimCreatorFees": "Polkamarkt ဖန်တီးသူ အခကြေးငွေကို တောင်းဆိုထားသည်။",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt သည် ဖန်တီးသူဖြစ်လွယ်သည်ဟု ဆိုထားသည်။",
-            "PolkamarktClaimLiquidity": "Polkamarkt LP အကြွင်းအကျန်များကို အရေးဆိုထားသည်။",
             "PolkamarktClaimMarket": "Polkamarkt ပေးချေမှုကို တောင်းဆိုထားသည်။",
             "PolkamarktClaimMarkets": "Polkamarkt ဆုကြေးငွေများကို တောင်းဆိုထားသည်။",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Polkamarkt အခြေအနေ ဖန်တီးထားသည်။",
             "PolkamarktCreateMarket": "Polkamarkt စျေးကွက် {amount} {symbol} ဖြင့် ဖန်တီးထားသည်",
-            "PolkamarktFlip": "Polkamarkt တွင် {amount} {symbol} ကို ပြန်လှန်ထားသည်။",
             "PolkamarktSell": "Polkamarkt တွင် {amount} {symbol} ရောင်းချခဲ့သည်။",
             "ReferralReserveXor": "ချည်နှောင်ထားသော {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ကို အောင်မြင်စွာသတ်မှတ်ထားသည်။",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "မှာယူမှုကို ပယ်ဖျက်ပါ။",
         "OrderBookCancelLimitOrders": "မှာယူမှုများကို ပယ်ဖျက်ပါ။",
         "OrderBookPlaceLimitOrder": "Order တင်ပါ။",
-        "PolkamarktAddLiquidity": "Polkamarkt Liquidity ကိုထည့်ပါ။",
         "PolkamarktBuy": "Polkamarkt ရှယ်ယာများကို ဝယ်ယူပါ။",
         "PolkamarktClaimCreatorFees": "Polkamarkt ဖန်တီးရှင်အခကြေးငွေကို တောင်းဆိုပါ။",
-        "PolkamarktClaimCreatorLiquidity": "Polkamarkt Creator Liquidity ကို တောင်းဆိုပါ။",
-        "PolkamarktClaimLiquidity": "Polkamarkt LP လက်ကျန်ကို တောင်းဆိုပါ။",
         "PolkamarktClaimMarket": "Polkamarkt ပေးချေမှုကို တောင်းဆိုပါ။",
         "PolkamarktClaimMarkets": "Polkamarkt ပေးချေမှုများကို တောင်းဆိုပါ။",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "Polkamarkt အခြေအနေ ဖန်တီးပါ။",
         "PolkamarktCreateMarket": "Polkamarkt စျေးကွက်ကိုဖန်တီးပါ။",
-        "PolkamarktFlip": "Polkamarkt အနေအထားကိုလှန်ပါ။",
         "PolkamarktSell": "Polkamarkt ရှယ်ယာများကိုရောင်းပါ။",
         "ReferralReserveXor": "ဘွန်း XOR",
         "ReferralSetInvitedUser": "{role} သတ်မှတ်ရန်",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "ဝယ်ပါ။",
             "claimCreatorFees": "ဖန်တီးသူအခကြေးငွေကို တောင်းဆိုပါ။",
-            "claimCreatorLiquidity": "ငွေဖြစ်လွယ်မှုကို ဖန်တီးသူကို တောင်းဆိုပါ။",
-            "claimLpResidual": "LP လက်ကျန်ကို တောင်းဆိုပါ။",
             "claimTraderPayout": "ငွေပေးချေမှုကို ကုန်သည်ထံ တောင်းဆိုပါ။",
             "createMarket": "စျေးကွက်ဖန်တီးပါ။",
-            "flip": "လှန်ပါ။",
-            "liquidity": "ငွေဖြစ်လွယ်မှုထည့်ပါ။",
-            "sell": "ရောင်း"
+            "sell": "ရောင်း",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "အမျိုးအစား",
             "closeBlock": "ဘလောက်ပိတ်",
+            "creatorSeed": "ဖန်တီးသူ စတင်တန်ဖိုး",
             "creationFee": "ဖန်တီးမှုအခကြေးငွေ",
             "deadline": "ကုန်သွယ်မှုနောက်ဆုံးရက်",
-            "marketFailed": "အခြေအနေများကို ဖန်တီးထားသော်လည်း စျေးကွက်ဖန်တီးမှု မအောင်မြင်ပါ။ သိမ်းဆည်းထားသော အခြေအနေဖြင့် စျေးကွက်ဖန်တီးမှုကို ပြန်လည်ကြိုးစားပါ။",
+            "marketFailed": "ဈေးကွက် ဖန်တီးမှု မအောင်မြင်ပါ။",
             "metadataTooLong": "မေးခွန်း၊ oracle နှင့် ဖြေရှင်းချက် မက်တာဒေတာသည် 512 bytes အတွင်း ကိုက်ညီရပါမည်။",
             "question": "စျေးကွက်မေးခွန်း",
             "questionPlaceholder": "ရွေးချယ်ထားသော နောက်ဆုံးရက်တွင် ပွဲက YES သို့ ဖြေရှင်းမည်လား။",
             "questionTooShort": "မေးခွန်းသည် အနည်းဆုံး 32 bytes ရှိရမည်။",
             "retryMessage": "အခြေအနေ {id} ကို ဖန်တီးခဲ့သည်။ စျေးကွက်ဖန်တီးမှု အဆင့်ကိုသာ ပြန်စမ်းကြည့်ပါ။",
             "retrySubmit": "စျေးကွက်ဖန်တီးမှုကို ပြန်စမ်းကြည့်ပါ။",
-            "seedLiquidity": "အစေ့ဖြစ်လွယ်ခြင်း။",
-            "seedTooSmall": "မျိုးစေ့များ၏ ငွေဖြစ်လွယ်မှုသည် အနည်းဆုံး {amount} {symbol} ဖြစ်ရပါမည်။",
-            "submit": "အခြေအနေနှင့်စျေးကွက်ဖန်တီးပါ။",
-            "title": "Polkamarkt စျေးကွက်ကိုဖန်တီးပါ။"
+            "submit": "ဈေးကွက် ဖန်တီးရန်",
+            "title": "Polkamarkt စျေးကွက်ကိုဖန်တီးပါ။",
+            "dpmNote": "ဈေးကွက်အသစ်များသည် LP စတင်ငွေမလိုဘဲ virtual depth နှင့် pro-rata payout ပါသော DPM curve ကို အသုံးပြုသည်။"
         },
         "details": {
             "awaitingSettlement": "အပြီးသတ်မှုကို စောင့်ဆိုင်းနေသည်။",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "pallet အခြေအနေ၊ oracle အသေးစိတ်များနှင့် ဖြေရှင်းမှုအထောက်အထားများကိုကြည့်ရှုရန် စျေးကွက်ကိုရွေးချယ်ပါ။",
+            "orderBook": "Order book",
             "openResolutionSource": "Open Source လင့်ခ်",
             "oracle": "ကယ်လ်",
             "pool": "Liquidity ရေကန်",
-            "settlement": "ဖြေရှင်းမှုအသေးစိတ်"
+            "settlement": "ဖြေရှင်းမှုအသေးစိတ်",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "Polkamarkt အကောင့်လုပ်ဆောင်ချက်ကို ဖွင့်၍မရပါ။",
             "loadMarkets": "Polkamarkt စျေးကွက်များကို ဖွင့်၍မရပါ။"
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "အထောက်အထား ပိတ်ဆို့ခြင်း။",
             "evidenceHash": "သက်သေပြချက်",
             "evidenceUri": "URI အထောက်အထား",
-            "lpContributed": "LP မှ ပံ့ပိုးကူညီခဲ့ပါသည်။",
-            "lpShares": "LP ရှယ်ယာများ",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "အရံမရှိပါ။",
             "oracle": "ကယ်လ်",
             "poolCollateral": "ရေကူးကန် စရံ",
             "resolutionOutcome": "ဆုံးဖြတ်ချက်ရလဒ်",
             "resolutionSource": "ဆုံးဖြတ်ချက်အရင်းအမြစ်",
-            "yesReserve": "YES စရံ"
+            "yesReserve": "YES စရံ",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "လှုပ်လှုပ်ရှားရှား",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "ဝယ်ပါ။",
             "claim": "ပြောနေပါတယ်။",
-            "flip": "လှန်ပါ။",
-            "liquidity": "LP",
-            "sell": "ရောင်း"
+            "sell": "ရောင်း",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "ကုန်သည် {trader} / LP {lp}",
-            "connect": "ဖန်တီးထားသောစျေးကွက်များ၊ LP ရှယ်ယာများ၊ ပေးချေမှုများနှင့် လတ်တလောကုန်သွယ်မှုများကိုကြည့်ရှုရန် အကောင့်တစ်ခုချိတ်ဆက်ပါ။",
+            "claimsSummary": "ကုန်သည် {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "စျေးကွက်များဖန်တီးခဲ့သည်။",
             "empty": "Polkamarkt ရာထူးများ သို့မဟုတ် ဤအကောင့်အတွက် ဖန်တီးထားသော စျေးကွက်များ မရှိသေးပါ။",
             "loading": "Polkamarkt အကောင့်လုပ်ဆောင်ချက်ကို ဖွင့်နေသည်...",
             "market": "စျေးကွက် {id}",
-            "positions": "LP နှင့် trader ရာထူးများ",
+            "positions": "Trader positions",
             "recentTrades": "လတ်တလော ကုန်သွယ်မှုများ",
-            "sharesSummary": "ဟုတ်သည် {yes} / NO {no} / LP {lp}",
-            "subtitle": "ဖန်တီးထားသော စျေးကွက်များ၊ LP ရှယ်ယာများ၊ ကုန်သည်မှ ပေးချေမှုများ၊ ဖန်တီးသူ အခကြေးငွေများနှင့် ကျန်ရှိသော LP တောင်းဆိုမှုများ။",
-            "title": "ကျွန်ုပ်၏စျေးကွက်များ / LP"
+            "sharesSummary": "ဟုတ်သည် {yes} / NO {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "လက်ရှိ စစ်ထုတ်မှုများနှင့် ကိုက်ညီသော စျေးကွက်မရှိပါ။",
         "notIndexed": "ညွှန်းမထားပါ။",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "မဟုတ်ဘူး",
             "yes": "ဟုတ်သည်။"
         },
-        "pageSubtitle": "တက်ကြွသောခန့်မှန်းစျေးကွက်များ၊ မျိုးစေ့စျေးကွက်အသစ်များကိုရောင်းဝယ်ဖောက်ကားပြီး LP နှင့် Polkaswap ပိုက်ဆံအိတ်စီးဆင်းမှုမှတောင်းဆိုနိုင်သောလက်ကျန်များကိုစီမံပါ။",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "လှုပ်လှုပ်ရှားရှား"
+            "active": "လှုပ်လှုပ်ရှားရှား",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "၀.၀",
             "claimable": "အခိုင်အမာ",
             "claimableFailed": "တောင်းဆိုနိုင်သော လက်ကျန်များကို မဖတ်နိုင်ပါ။",
             "claimStatus": "အရေးဆိုမှု အခြေအနေ",
-            "collateralAmount": "ပမာဏ ({symbol})",
             "collateralOut": "ဒါကလည်း ထွက်လာတယ်။",
             "enterAmount": "ပမာဏတစ်ခုထည့်ပါ။",
-            "flippedShares": "ပြန်လှန်ရှယ်ယာများ",
             "insufficientKusd": "လက်ကျန် {symbol} မလုံလောက်ပါ။",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "ကွန်ရက်အခကြေးငွေအတွက် XOR မလုံလောက်ပါ။",
-            "invalidAmount": "မှန်ကန်သောပမာဏကို ထည့်ပါ။",
-            "lpSharesOut": "LP က ရှယ်ယာထုတ်တယ်။",
             "noChainMarket": "စျေးကွက်သည် ကွင်းဆက်တွင် အရောင်းအဝယ်မဖြစ်ပါ။",
+            "orderShares": "Shares",
             "quoteFailed": "ကိုးကားချက်ကို ပြန်လည်စတင်၍မရပါ။",
             "refreshingQuote": "ပြန်လည်ဆန်းသစ်ထားသောကိုးကား...",
             "selectMarket": "အရောင်းအ၀ယ်ပြုလုပ်ရန် တက်ကြွသောစျေးကွက်ကို ရွေးချယ်ပါ။",
             "sharesAmount": "ရှယ်ယာများ",
             "sharesOut": "မျှဝေသည်။",
             "slippage": "ချော်မှု %",
-            "subtitle": "စျေးနူန်းများ၊ အခကြေးငွေများ၊ ချော်လဲခြင်းများကို အကာအကွယ်ပေးခြင်းနှင့် ပိုက်ဆံအိတ်တင်သွင်းခြင်းတို့သည် SORA runtime ကို အသုံးပြုပါသည်။",
+            "takerFee": "Taker fee",
             "title": "ကုန်သွယ်မှုလက်မှတ်",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "အာမခံငွေ ထည့်ရန် ({symbol})",
+            "dpmSubtitle": "ဈေးကွက် မပိတ်မီ DPM curve ဖြင့် YES သို့မဟုတ် NO ကို ဝယ်/ရောင်းနိုင်သည်။",
+            "impliedProbabilityShort": "ခန့်မှန်း {value}",
+            "quoteUnavailable": "Quote မရရှိနိုင်ပါ",
+            "sharesToSell": "ရောင်းမည့် shares",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "ဘိုက်",
             "shares": "ရှယ်ယာများ"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

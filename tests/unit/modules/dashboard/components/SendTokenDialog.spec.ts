@@ -61,7 +61,11 @@ const formattedAmountMocks = vi.hoisted(() => {
   };
 });
 
-const isMaxButtonAvailableMock = vi.hoisted(() => vi.fn(() => true));
+const utilsMocks = vi.hoisted(() => ({
+  getMaxValue: vi.fn(() => '10'),
+  hasInsufficientBalance: vi.fn((_asset: unknown, amount: string | number) => Number(amount) > 10),
+  isMaxButtonAvailable: vi.fn(() => true),
+}));
 const tokenInputFocusMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
@@ -177,7 +181,9 @@ vi.mock('@/composables/useFormattedAmount', () => ({
 }));
 
 vi.mock('@/utils', () => ({
-  isMaxButtonAvailable: isMaxButtonAvailableMock,
+  getMaxValue: utilsMocks.getMaxValue,
+  hasInsufficientBalance: utilsMocks.hasInsufficientBalance,
+  isMaxButtonAvailable: utilsMocks.isMaxButtonAvailable,
 }));
 
 let transferMock: ReturnType<typeof vi.fn>;
@@ -240,7 +246,11 @@ beforeEach(() => {
   transactionState.loading.value = false;
   storeState.networkFees.XorlessTransfer = '1';
   storeState.accountXor = { balance: { transferable: '10' } };
-  isMaxButtonAvailableMock.mockClear();
+  utilsMocks.getMaxValue.mockClear().mockReturnValue('10');
+  utilsMocks.hasInsufficientBalance
+    .mockClear()
+    .mockImplementation((_asset: unknown, amount: string | number) => Number(amount) > 10);
+  utilsMocks.isMaxButtonAvailable.mockClear().mockReturnValue(true);
   tokenInputFocusMock.mockClear();
 });
 
@@ -287,6 +297,48 @@ describe('SendTokenDialog.vue', () => {
     expect(transactionState.withNotifications).not.toHaveBeenCalled();
     expect(alertMock).toHaveBeenCalledWith('insufficient-TKN', { title: 'errorText' });
     expect(exposed.isVisible.value).toBe(true);
+  });
+
+  it('fills MAX from the fee-adjusted sendable value', () => {
+    utilsMocks.getMaxValue.mockReturnValue('8.999999');
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.handleMaxValue();
+
+    expect(utilsMocks.getMaxValue).toHaveBeenCalledWith(
+      expect.objectContaining({ balance: { transferable: '10' } }),
+      '1'
+    );
+    expect(exposed.value.value).toBe('8.999999');
+  });
+
+  it('treats amounts above the fee-adjusted sendable value as insufficient', () => {
+    utilsMocks.hasInsufficientBalance.mockImplementation(
+      (_asset: unknown, amount: string | number, fee: string) => fee === '1' && Number(amount) > 8.999999
+    );
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '9';
+
+    expect(exposed.isInsufficientBalance.value).toBe(true);
+    expect(exposed.disabled.value).toBe(true);
+    expect(utilsMocks.hasInsufficientBalance).toHaveBeenCalledWith(
+      expect.objectContaining({ balance: { transferable: '10' } }),
+      '9',
+      '1'
+    );
+  });
+
+  it('uses the fee-adjusted sendable value for the 100 percent slider position', () => {
+    utilsMocks.getMaxValue.mockReturnValue('8.999999');
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.handlePercentChange(100);
+
+    expect(exposed.value.value).toBe('8.999999');
   });
 
   it('rejects invalid comment characters', () => {

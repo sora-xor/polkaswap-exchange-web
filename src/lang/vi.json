@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn",
             "OrderBookCancelLimitOrders": "Không thể hủy lệnh giới hạn",
             "OrderBookPlaceLimitOrder": "Không đặt được lệnh giới hạn {amount} {symbol} ở {price} {symbol2}",
-            "PolkamarktAddLiquidity": "Không thể thêm tính thanh khoản {amount} {symbol} vào Polkamarkt",
             "PolkamarktBuy": "Không mua được {amount} {symbol} trên Polkamarkt",
             "PolkamarktClaimCreatorFees": "Không thể yêu cầu phí người tạo Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "Không thể yêu cầu thanh khoản của người sáng tạo Polkamarkt",
-            "PolkamarktClaimLiquidity": "Không thể yêu cầu phần còn lại của Polkamarkt LP",
             "PolkamarktClaimMarket": "Không thể yêu cầu thanh toán Polkamarkt",
             "PolkamarktClaimMarkets": "Không thể yêu cầu thanh toán Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "Không tạo được điều kiện Polkamarkt",
             "PolkamarktCreateMarket": "Không tạo được thị trường Polkamarkt với {amount} {symbol}",
-            "PolkamarktFlip": "Không lật được {amount} {symbol} trên Polkamarkt",
             "PolkamarktSell": "Không bán được {amount} {symbol} trên Polkamarkt",
             "ReferralReserveXor": "Không thể liên kết {amount} XOR",
             "ReferralSetInvitedUser": "Thất bại trong việc đặt {role} {address}",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "Lệnh giới hạn bị hủy",
             "OrderBookCancelLimitOrders": "Lệnh giới hạn bị hủy",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ở mức {price} {symbol2} đã đặt",
-            "PolkamarktAddLiquidity": "Đã thêm tính thanh khoản {amount} {symbol} vào Polkamarkt",
             "PolkamarktBuy": "Đã mua {amount} {symbol} trên Polkamarkt",
             "PolkamarktClaimCreatorFees": "Đã yêu cầu phí người tạo Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "Đã yêu cầu thanh khoản của người sáng tạo Polkamarkt",
-            "PolkamarktClaimLiquidity": "Đã xác nhận phần còn lại của Polkamarkt LP",
             "PolkamarktClaimMarket": "Đã yêu cầu thanh toán Polkamarkt",
             "PolkamarktClaimMarkets": "Đã yêu cầu thanh toán Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Đã tạo điều kiện Polkamarkt",
             "PolkamarktCreateMarket": "Thị trường Polkamarkt được tạo bằng {amount} {symbol}",
-            "PolkamarktFlip": "Đã lật {amount} {symbol} trên Polkamarkt",
             "PolkamarktSell": "Đã bán {amount} {symbol} trên Polkamarkt",
             "ReferralReserveXor": "Ngoại quan {amount} XOR",
             "ReferralSetInvitedUser": "Thiết lập {role} {address} thành công",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "Hủy đơn hàng",
         "OrderBookCancelLimitOrders": "Hủy đơn hàng",
         "OrderBookPlaceLimitOrder": "Đặt hàng",
-        "PolkamarktAddLiquidity": "Thêm thanh khoản Polkamarkt",
         "PolkamarktBuy": "Mua cổ phiếu Polkamarkt",
         "PolkamarktClaimCreatorFees": "Yêu cầu phí người sáng tạo Polkamarkt",
-        "PolkamarktClaimCreatorLiquidity": "Yêu cầu tính thanh khoản của Polkamarkt Creator",
-        "PolkamarktClaimLiquidity": "Yêu cầu dư lượng Polkamarkt LP",
         "PolkamarktClaimMarket": "Yêu cầu thanh toán Polkamarkt",
         "PolkamarktClaimMarkets": "Yêu cầu thanh toán Polkamarkt",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "Tạo điều kiện Polkamarkt",
         "PolkamarktCreateMarket": "Tạo thị trường Polkamarkt",
-        "PolkamarktFlip": "Lật vị trí Polkamarkt",
         "PolkamarktSell": "Bán cổ phiếu Polkamarkt",
         "ReferralReserveXor": "Trái phiếu XOR",
         "ReferralSetInvitedUser": "Thiết lập {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "Mua",
             "claimCreatorFees": "Yêu cầu phí của người sáng tạo",
-            "claimCreatorLiquidity": "Yêu cầu tính thanh khoản của người sáng tạo",
-            "claimLpResidual": "Yêu cầu LP còn lại",
             "claimTraderPayout": "Yêu cầu thanh toán của nhà giao dịch",
             "createMarket": "Tạo thị trường",
-            "flip": "Lật",
-            "liquidity": "Thêm thanh khoản",
-            "sell": "Bán"
+            "sell": "Bán",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "Danh mục",
             "closeBlock": "Đóng khối",
+            "creatorSeed": "Creator seed",
             "creationFee": "Phí tạo",
             "deadline": "Thời hạn giao dịch",
-            "marketFailed": "Điều kiện đã được tạo ra nhưng việc tạo lập thị trường không thành công. Thử lại việc tạo thị trường với điều kiện đã lưu.",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "Siêu dữ liệu câu hỏi, lời tiên tri và độ phân giải phải nằm trong phạm vi 512 byte.",
             "question": "Câu hỏi thị trường",
             "questionPlaceholder": "Sự kiện có chuyển sang CÓ theo thời hạn đã chọn không?",
             "questionTooShort": "Câu hỏi phải có ít nhất 32 byte.",
             "retryMessage": "Điều kiện {id} đã được tạo. Chỉ thử lại bước tạo thị trường.",
             "retrySubmit": "Thử lại việc tạo thị trường",
-            "seedLiquidity": "Thanh khoản hạt giống",
-            "seedTooSmall": "Tính thanh khoản của hạt giống ít nhất phải là {amount} {symbol}.",
-            "submit": "Tạo điều kiện và thị trường",
-            "title": "Tạo thị trường Polkamarkt"
+            "submit": "Create market",
+            "title": "Tạo thị trường Polkamarkt",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "Đang chờ quyết toán",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "Chọn một thị trường để xem trạng thái pallet, chi tiết oracle và bằng chứng thanh toán.",
+            "orderBook": "Order book",
             "openResolutionSource": "Liên kết nguồn mở",
             "oracle": "Lời tiên tri",
             "pool": "Nhóm thanh khoản",
-            "settlement": "Chi tiết quyết toán"
+            "settlement": "Chi tiết quyết toán",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "Không thể tải hoạt động tài khoản Polkamarkt.",
             "loadMarkets": "Không thể tải thị trường Polkamarkt."
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "Khối bằng chứng",
             "evidenceHash": "Băm bằng chứng",
             "evidenceUri": "URI bằng chứng",
-            "lpContributed": "LP đóng góp",
-            "lpShares": "cổ phiếu LP",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "KHÔNG dự trữ",
             "oracle": "Lời tiên tri",
             "poolCollateral": "Tài sản thế chấp nhóm",
             "resolutionOutcome": "Kết quả giải quyết",
             "resolutionSource": "Nguồn độ phân giải",
-            "yesReserve": "CÓ dự trữ"
+            "yesReserve": "CÓ dự trữ",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "Đang hoạt động",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "Mua",
             "claim": "Yêu cầu",
-            "flip": "Lật",
-            "liquidity": "LP",
-            "sell": "Bán"
+            "sell": "Bán",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "Nhà giao dịch {trader} / LP {lp}",
-            "connect": "Kết nối tài khoản để xem các thị trường đã tạo, cổ phiếu LP, khoản thanh toán và giao dịch gần đây.",
+            "claimsSummary": "Nhà giao dịch {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "Thị trường được tạo",
             "empty": "Chưa có vị trí Polkamarkt hoặc thị trường nào được tạo cho tài khoản này.",
             "loading": "Đang tải hoạt động tài khoản Polkamarkt...",
             "market": "Chợ {id}",
-            "positions": "Vị trí LP và nhà giao dịch",
+            "positions": "Trader positions",
             "recentTrades": "Giao dịch gần đây",
-            "sharesSummary": "CÓ {yes} / KHÔNG {no} / LP {lp}",
-            "subtitle": "Thị trường được tạo, cổ phiếu LP, khoản thanh toán của nhà giao dịch, phí của người sáng tạo và các yêu cầu LP còn lại.",
-            "title": "Thị trường của tôi / LP"
+            "sharesSummary": "CÓ {yes} / KHÔNG {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "Không có thị trường nào phù hợp với các bộ lọc hiện tại.",
         "notIndexed": "Không được lập chỉ mục",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "KHÔNG",
             "yes": "CÓ"
         },
-        "pageSubtitle": "Giao dịch trên các thị trường dự đoán đang hoạt động, tạo dựng thị trường mới và quản lý LP cũng như số dư có thể yêu cầu từ luồng ví Polkaswap.",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "Đang hoạt động"
+            "active": "Đang hoạt động",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0,0",
             "claimable": "Có thể yêu cầu",
             "claimableFailed": "Không thể đọc số dư có thể yêu cầu.",
             "claimStatus": "Trạng thái yêu cầu",
-            "collateralAmount": "Số tiền ({symbol})",
             "collateralOut": "Tài sản thế chấp",
             "enterAmount": "Nhập số tiền",
-            "flippedShares": "Cổ phiếu đảo ngược",
             "insufficientKusd": "Số dư {symbol} không đủ",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "Không đủ XOR cho phí mạng",
-            "invalidAmount": "Nhập số tiền hợp lệ",
-            "lpSharesOut": "LP chia sẻ hết",
             "noChainMarket": "Thị trường không thể giao dịch trên chuỗi",
+            "orderShares": "Shares",
             "quoteFailed": "Không thể làm mới báo giá.",
             "refreshingQuote": "Báo giá đang làm mới...",
             "selectMarket": "Chọn một thị trường đang hoạt động để giao dịch.",
             "sharesAmount": "Chia sẻ",
             "sharesOut": "Chia sẻ ra",
             "slippage": "% trượt giá",
-            "subtitle": "Báo giá, phí, chống trượt giá và gửi ví sử dụng thời gian chạy SORA.",
+            "takerFee": "Taker fee",
             "title": "Vé giao dịch",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "byte",
             "shares": "cổ phiếu"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

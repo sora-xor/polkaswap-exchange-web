@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "取消限价单失败",
             "OrderBookCancelLimitOrders": "取消限价单失败",
             "OrderBookPlaceLimitOrder": "未能以{price} } {symbol2}下达{amount} {symbol}限价单",
-            "PolkamarktAddLiquidity": "无法向 Polkamarkt 添加 {amount} {symbol} 流动性",
             "PolkamarktBuy": "无法在 Polkamarkt 上购买 {amount} {symbol}",
             "PolkamarktClaimCreatorFees": "未能领取 Polkamarkt 创建者费用",
-            "PolkamarktClaimCreatorLiquidity": "未能申领 Polkamarkt 创建者流动性",
-            "PolkamarktClaimLiquidity": "未能领取 Polkamarkt LP 剩余金额",
             "PolkamarktClaimMarket": "未能领取 Polkamarkt 付款",
             "PolkamarktClaimMarkets": "未能领取 Polkamarkt 付款",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "无法创建 Polkamarkt 条件",
             "PolkamarktCreateMarket": "无法使用 {amount} {symbol} 创建 Polkamarkt 市场",
-            "PolkamarktFlip": "无法在 Polkamarkt 上翻转 {amount} {symbol}",
             "PolkamarktSell": "未能在 Polkamarkt 上出售 {amount} {symbol}",
             "ReferralReserveXor": "未能绑定{amount} XOR",
             "ReferralSetInvitedUser": "设置 {role} {address} 失败",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "限价订单已取消",
             "OrderBookCancelLimitOrders": "限价订单已取消",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol}以{price} {symbol2}放置",
-            "PolkamarktAddLiquidity": "为 Polkamarkt 添加了 {amount} {symbol} 流动性",
             "PolkamarktBuy": "在 Polkamarkt 上购买了 {amount} {symbol}",
             "PolkamarktClaimCreatorFees": "Polkamarkt 创作者已索要费用",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt 创造者声称拥有流动性",
-            "PolkamarktClaimLiquidity": "Polkamarkt LP 剩余索赔",
             "PolkamarktClaimMarket": "Polkamarkt 已领取付款",
             "PolkamarktClaimMarkets": "Polkamarkt 已领取付款",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Polkamarkt 条件已创建",
             "PolkamarktCreateMarket": "使用 {amount} {symbol} 创建的 Polkamarkt 市场",
-            "PolkamarktFlip": "在 Polkamarkt 上翻转 {amount} {symbol}",
             "PolkamarktSell": "在 Polkamarkt 上已售出 {amount} {symbol}",
             "ReferralReserveXor": "保税{amount}异或",
             "ReferralSetInvitedUser": "{role} {address} 设置成功",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "取消订单",
         "OrderBookCancelLimitOrders": "取消订单",
         "OrderBookPlaceLimitOrder": "下订单",
-        "PolkamarktAddLiquidity": "添加 Polkamarkt 流动性",
         "PolkamarktBuy": "购买 Polkamarkt 股票",
         "PolkamarktClaimCreatorFees": "索取 Polkamarkt 创建者费用",
-        "PolkamarktClaimCreatorLiquidity": "索取 Polkamarkt Creator 流动性",
-        "PolkamarktClaimLiquidity": "索取 Polkamarkt LP 剩余部分",
         "PolkamarktClaimMarket": "领取 Polkamarkt 付款",
         "PolkamarktClaimMarkets": "领取 Polkamarkt 付款",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "创建 Polkamarkt 条件",
         "PolkamarktCreateMarket": "创建 Polkamarkt 市场",
-        "PolkamarktFlip": "翻转 Polkamarkt 头寸",
         "PolkamarktSell": "出售 Polkamarkt 股票",
         "ReferralReserveXor": "绑定XOR",
         "ReferralSetInvitedUser": "设置 {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "购买",
             "claimCreatorFees": "索取创作者费用",
-            "claimCreatorLiquidity": "索赔创建者流动性",
-            "claimLpResidual": "索赔LP剩余",
             "claimTraderPayout": "要求交易者付款",
             "createMarket": "创造市场",
-            "flip": "翻转",
-            "liquidity": "增加流动性",
-            "sell": "出售"
+            "sell": "出售",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "类别",
             "closeBlock": "关闭区块",
+            "creatorSeed": "Creator seed",
             "creationFee": "创作费",
             "deadline": "交易截止日期",
-            "marketFailed": "条件创造了，但市场创造失败了。使用保存的条件重试市场创建。",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "问题、预言和解决方案元数据必须在 512 字节以内。",
             "question": "市场问题",
             "questionPlaceholder": "该事件会在选定的截止日期前解决为“是”吗？",
             "questionTooShort": "问题必须至少为 32 字节。",
             "retryMessage": "条件 {id} 已创建。仅重试市场创建步骤。",
             "retrySubmit": "重试市场创建",
-            "seedLiquidity": "种子流动性",
-            "seedTooSmall": "种子流动性必须至少为 {amount} {symbol}。",
-            "submit": "创造条件和市场",
-            "title": "创建 Polkamarkt 市场"
+            "submit": "Create market",
+            "title": "创建 Polkamarkt 市场",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "等待最终确定",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "选择一个市场以查看托盘状态、预言机详细信息和结算证据。",
+            "orderBook": "Order book",
             "openResolutionSource": "开源链接",
             "oracle": "甲骨文",
             "pool": "流动性池",
-            "settlement": "结算详情"
+            "settlement": "结算详情",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "无法加载 Polkamarkt 帐户活动。",
             "loadMarkets": "无法加载 Polkamarkt 市场。"
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "证据块",
             "evidenceHash": "证据哈希",
             "evidenceUri": "证据 URI",
-            "lpContributed": "LP 贡献",
-            "lpShares": "有限合伙人股份",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "无预留",
             "oracle": "甲骨文",
             "poolCollateral": "池抵押品",
             "resolutionOutcome": "解决结果",
             "resolutionSource": "分辨率来源",
-            "yesReserve": "是的储备"
+            "yesReserve": "是的储备",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "活跃",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "购买",
             "claim": "索赔",
-            "flip": "翻转",
-            "liquidity": "LP",
-            "sell": "出售"
+            "sell": "出售",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "交易员 {trader} / 有限合伙人 {lp}",
-            "connect": "连接账户以查看创建的市场、有限合伙人股票、支出和最近的交易。",
+            "claimsSummary": "交易员 {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "创造市场",
             "empty": "该账户尚未有 Polkamarkt 头寸或创建市场。",
             "loading": "正在加载 Polkamarkt 账户活动...",
             "market": "市场{id}",
-            "positions": "有限合伙人和交易员头寸",
+            "positions": "Trader positions",
             "recentTrades": "最近的交易",
-            "sharesSummary": "是 {yes} / 否 {no} / LP {lp}",
-            "subtitle": "创建市场、有限合伙人份额、交易者支出、创建者费用和剩余有限合伙人债权。",
-            "title": "我的市场 / LP"
+            "sharesSummary": "是 {yes} / 否 {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "没有市场符合当前的过滤条件。",
         "notIndexed": "未编入索引",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "否",
             "yes": "是的"
         },
-        "pageSubtitle": "交易活跃的预测市场，培育新市场，并管理 Polkaswap 钱包流中的 LP 和可索赔余额。",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "活跃"
+            "active": "活跃",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0.0",
             "claimable": "可索赔",
             "claimableFailed": "无法读取可索赔余额。",
             "claimStatus": "索赔状态",
-            "collateralAmount": "金额 ({symbol})",
             "collateralOut": "抵押品出",
             "enterAmount": "输入金额",
-            "flippedShares": "翻转股票",
             "insufficientKusd": "{symbol} 余额不足",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "网络费用异或不足",
-            "invalidAmount": "输入有效金额",
-            "lpSharesOut": "LP 出股",
             "noChainMarket": "市场不可在链上交易",
+            "orderShares": "Shares",
             "quoteFailed": "无法刷新报价。",
             "refreshingQuote": "刷新报价...",
             "selectMarket": "选择一个活跃的市场进行交易。",
             "sharesAmount": "股份",
             "sharesOut": "分享出去",
             "slippage": "滑点%",
-            "subtitle": "报价、费用、滑点保护和钱包提交使用 SORA 运行时。",
+            "takerFee": "Taker fee",
             "title": "贸易票",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "字节",
             "shares": "股份"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

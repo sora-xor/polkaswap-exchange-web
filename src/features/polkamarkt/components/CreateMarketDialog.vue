@@ -3,7 +3,11 @@
     <form class="create-market" @submit.prevent="submit">
       <label class="create-field">
         <span>{{ t('polkamarkt.create.question') }}</span>
-        <textarea v-model="question" class="polkamarkt-textarea" :placeholder="t('polkamarkt.create.questionPlaceholder')" />
+        <textarea
+          v-model="question"
+          class="polkamarkt-textarea"
+          :placeholder="t('polkamarkt.create.questionPlaceholder')"
+        />
         <small>{{ questionBytes }} / {{ maxMetadataBytes }} {{ t('polkamarkt.units.bytes') }}</small>
       </label>
 
@@ -48,7 +52,12 @@
               </button>
             </div>
           </div>
-          <input v-if="deadlineInputMode === 'date'" v-model="deadline" class="polkamarkt-input" type="datetime-local" step="6" />
+          <input
+            v-if="deadlineInputMode === 'date'"
+            v-model="deadline"
+            class="polkamarkt-input"
+            type="datetime-local"
+          />
           <input
             v-else
             v-model="closeBlockInput"
@@ -61,12 +70,11 @@
         </div>
       </div>
 
-      <label class="create-field">
-        <span>{{ t('polkamarkt.create.seedLiquidity') }}</span>
-        <input v-model="seedLiquidity" class="polkamarkt-input" inputmode="decimal" autocomplete="off" />
-      </label>
-
       <div class="create-market__preview">
+        <div>
+          <span>{{ t('polkamarkt.create.creatorSeed') }}</span>
+          <strong>0 {{ collateralSymbol }}</strong>
+        </div>
         <div>
           <span>{{ linkedDeadlinePreviewLabel }}</span>
           <strong>{{ linkedDeadlinePreviewValue }}</strong>
@@ -81,12 +89,16 @@
         </div>
       </div>
 
-      <p v-if="retryConditionId !== null" class="create-market__retry">
-        {{ t('polkamarkt.create.retryMessage', { id: retryConditionId }) }}
-      </p>
+      <p class="create-market__note">{{ t('polkamarkt.create.dpmNote') }}</p>
       <p v-if="error" class="create-market__error">{{ error }}</p>
 
-      <s-button type="primary" class="create-market__button" native-type="submit" :disabled="disabled" :loading="loading">
+      <s-button
+        type="primary"
+        class="create-market__button"
+        native-type="submit"
+        :disabled="disabled"
+        :loading="loading"
+      >
         {{ actionLabel }}
       </s-button>
     </form>
@@ -109,9 +121,7 @@ import {
   POLKAMARKT_CREATION_FEE_KUSD,
   POLKAMARKT_DEFAULT_ORACLE,
   POLKAMARKT_DEFAULT_RESOLUTION_SOURCE,
-  POLKAMARKT_DEFAULT_SEED_LIQUIDITY,
   POLKAMARKT_MAX_METADATA_BYTES,
-  POLKAMARKT_MIN_SEED_LIQUIDITY,
   type MarketCategory,
 } from '../consts';
 import { formatPolkamarktCodec, isPositiveCodec, parsePolkamarktAmount } from '../lib/amounts';
@@ -119,6 +129,7 @@ import {
   calculateApproximateCloseDate,
   calculateCloseBlockFromBlockInput,
   calculateCloseBlockFromDate,
+  formatApproximateCloseDate,
   formatDateTimeLocalInput,
   metadataByteLength,
   validateMarketMetadata,
@@ -154,14 +165,12 @@ const creationFee = POLKAMARKT_CREATION_FEE_KUSD;
 const maxMetadataBytes = POLKAMARKT_MAX_METADATA_BYTES;
 const question = ref('');
 const category = ref<MarketCategory>('Crypto');
-const seedLiquidity = ref(POLKAMARKT_DEFAULT_SEED_LIQUIDITY);
 const deadline = ref(defaultDeadlineInput());
 const deadlineInputMode = ref<'date' | 'block'>('date');
 const closeBlockInput = ref('');
 const networkFeeTotal = ref<CodecString | null>(null);
 const networkFeeLoading = ref(false);
 const error = ref('');
-const retryConditionId = ref<number | null>(null);
 
 const isVisible = computed({
   get: () => props.visible,
@@ -192,7 +201,7 @@ const linkedDeadlinePreviewLabel = computed(() =>
 const linkedDeadlinePreviewValue = computed(() => {
   if (deadlineInputMode.value === 'date') return closeBlock.value.toLocaleString();
 
-  return linkedDeadlineDate.value?.toLocaleString() ?? t('polkamarkt.notIndexed');
+  return linkedDeadlineDate.value ? formatApproximateCloseDate(linkedDeadlineDate.value) : t('polkamarkt.notIndexed');
 });
 const networkFeeFormatted = computed(() => {
   if (networkFeeLoading.value) return t('calculatingText');
@@ -200,16 +209,11 @@ const networkFeeFormatted = computed(() => {
   return `${formatCodec(networkFeeTotal.value)} ${xorSymbol}`;
 });
 const questionBytes = computed(() => metadataByteLength(question.value.trim()));
-const seedCodec = computed(() => {
-  try {
-    return parsePolkamarktAmount(seedLiquidity.value || '0');
-  } catch {
-    return '0';
-  }
-});
 const creationFeeCodec = computed(() => parsePolkamarktAmount(creationFee));
-const accountKusdBalance = computed(() => walletStore.accountAssetsAddressTable?.[KUSD.address]?.balance?.transferable ?? '0');
-const requiredKusd = computed(() => (BigInt(seedCodec.value || '0') + BigInt(creationFeeCodec.value || '0')).toString());
+const accountKusdBalance = computed(
+  () => walletStore.accountAssetsAddressTable?.[KUSD.address]?.balance?.transferable ?? '0'
+);
+const requiredKusd = computed(() => creationFeeCodec.value);
 const hasEnoughKusd = computed(() => BigInt(accountKusdBalance.value || '0') >= BigInt(requiredKusd.value || '0'));
 const metadataErrors = computed(() =>
   validateMarketMetadata(question.value, POLKAMARKT_DEFAULT_ORACLE, POLKAMARKT_DEFAULT_RESOLUTION_SOURCE)
@@ -218,9 +222,6 @@ const metadataErrors = computed(() =>
 const disabledReason = computed(() => {
   if (metadataErrors.value.includes('questionTooShort')) return t('polkamarkt.create.questionTooShort');
   if (metadataErrors.value.includes('metadataTooLong')) return t('polkamarkt.create.metadataTooLong');
-  if (BigInt(seedCodec.value || '0') < BigInt(parsePolkamarktAmount(POLKAMARKT_MIN_SEED_LIQUIDITY))) {
-    return t('polkamarkt.create.seedTooSmall', { amount: POLKAMARKT_MIN_SEED_LIQUIDITY, symbol: collateralSymbol });
-  }
   if (!hasEnoughKusd.value) return t('polkamarkt.ticket.insufficientKusd', { symbol: collateralSymbol });
   return '';
 });
@@ -229,7 +230,7 @@ const disabled = computed(() => loading.value || (walletStore.isLoggedIn && Bool
 const actionLabel = computed(() => {
   if (!walletStore.isLoggedIn) return t('connectWalletText');
   if (disabledReason.value) return disabledReason.value;
-  return retryConditionId.value === null ? t('polkamarkt.create.submit') : t('polkamarkt.create.retrySubmit');
+  return t('polkamarkt.create.submit');
 });
 
 function defaultDeadlineInput(): string {
@@ -261,7 +262,7 @@ function normalizeCloseBlockInput(): void {
 }
 
 async function refreshFees(): Promise<void> {
-  if (!props.visible || BigInt(seedCodec.value || '0') <= 0n) {
+  if (!props.visible) {
     networkFeeLoading.value = false;
     networkFeeTotal.value = null;
     return;
@@ -275,7 +276,6 @@ async function refreshFees(): Promise<void> {
       resolutionSource: POLKAMARKT_DEFAULT_RESOLUTION_SOURCE,
       category: category.value,
       closeBlock: closeBlock.value,
-      seedLiquidity: seedCodec.value,
     });
     networkFeeTotal.value = isPositiveCodec(estimate.totalFee) ? estimate.totalFee : null;
   } catch {
@@ -295,56 +295,40 @@ async function submit(): Promise<void> {
 
   let marketId: number | undefined;
   await withNotifications(async () => {
-    const conditionId =
-      retryConditionId.value ??
-      (
-        await api.polkamarkt.createCondition({
-          question: question.value.trim(),
-          oracle: POLKAMARKT_DEFAULT_ORACLE,
-          resolutionSource: POLKAMARKT_DEFAULT_RESOLUTION_SOURCE,
-          category: category.value,
-        })
-      ).conditionId;
-
-    retryConditionId.value = conditionId;
-
     try {
       const market = await api.polkamarkt.createMarket({
-        conditionId,
+        question: question.value.trim(),
+        oracle: POLKAMARKT_DEFAULT_ORACLE,
+        resolutionSource: POLKAMARKT_DEFAULT_RESOLUTION_SOURCE,
+        category: category.value,
         closeBlock: closeBlock.value,
-        seedLiquidity: seedCodec.value,
       });
       marketId = market.marketId;
-      retryConditionId.value = null;
     } catch (err) {
       error.value = err instanceof Error ? err.message : t('polkamarkt.create.marketFailed');
       throw err;
     }
   });
 
-  if (retryConditionId.value === null) {
-    isVisible.value = false;
-    resetForm();
-    emit('created', marketId);
-  }
+  isVisible.value = false;
+  resetForm();
+  emit('created', marketId);
 }
 
 function resetForm(): void {
   question.value = '';
   category.value = 'Crypto';
-  seedLiquidity.value = POLKAMARKT_DEFAULT_SEED_LIQUIDITY;
   deadline.value = defaultDeadlineInput();
   deadlineInputMode.value = 'date';
   closeBlockInput.value = '';
   networkFeeTotal.value = null;
   networkFeeLoading.value = false;
   error.value = '';
-  retryConditionId.value = null;
 }
 
 let feeTimer: ReturnType<typeof setTimeout> | undefined;
 watch(
-  [() => props.visible, question, category, seedLiquidity, closeBlock],
+  [() => props.visible, question, category, closeBlock],
   () => {
     clearTimeout(feeTimer);
     feeTimer = setTimeout(() => void refreshFees(), 300);
@@ -376,7 +360,7 @@ watch(currentBlock, () => {
 
   &__preview {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: $inner-spacing-mini;
 
     @include tablet(true) {
@@ -443,6 +427,12 @@ watch(currentBlock, () => {
 
   &__retry {
     color: var(--s-color-status-warning);
+    margin: 0;
+  }
+
+  &__note {
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-small);
     margin: 0;
   }
 }

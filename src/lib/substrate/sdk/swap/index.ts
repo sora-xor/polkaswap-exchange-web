@@ -1,5 +1,5 @@
 import { assert } from '@polkadot/util';
-import { combineLatest, map, distinctUntilChanged, Observable, startWith, catchError, of } from 'rxjs';
+import { combineLatest, map, distinctUntilChanged, Observable, startWith, catchError, of, filter } from 'rxjs';
 import { NumberLike, FPNumber, CodecString } from '@sora-substrate/math';
 import {
   quote,
@@ -684,8 +684,9 @@ export class SwapModule<T> {
     sources: LiquiditySourceTypes[] = []
   ): Observable<SwapQuoteData> | null {
     const observables: Observable<SwapQuoteData>[] = [];
+    const publicDexes = this.root.dex.publicDexes.length ? this.root.dex.publicDexes : [{ dexId: DexId.XOR }];
 
-    for (const { dexId } of this.root.dex.publicDexes) {
+    for (const { dexId } of publicDexes) {
       const swapQuoteDataObservable = this.getSwapQuoteObservable(
         firstAssetAddress,
         secondAssetAddress,
@@ -711,6 +712,7 @@ export class SwapModule<T> {
     );
 
     return combineLatest(seededObservables).pipe(
+      filter((swapQuoteData) => swapQuoteData.some(Boolean)),
       map((swapQuoteData) => {
         const activeSwapQuotes = swapQuoteData.filter((entry): entry is SwapQuoteData => !!entry);
         const isAvailable = activeSwapQuotes.some(({ isAvailable }) => !!isAvailable);

@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem",
             "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem",
             "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol2}",
-            "PolkamarktAddLiquidity": "Nie udało się dodać płynności {amount} {symbol} do Polkamarkt",
             "PolkamarktBuy": "Nie udało się kupić {amount} {symbol} na Polkamarkt",
             "PolkamarktClaimCreatorFees": "Nie udało się pobrać opłat dla twórców Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "Nie udało się uzyskać płynności twórcy Polkamarkt",
-            "PolkamarktClaimLiquidity": "Nie udało się odebrać pozostałości Polkamarkt LP",
             "PolkamarktClaimMarket": "Nie udało się odebrać wypłaty Polkamarkt",
             "PolkamarktClaimMarkets": "Nie udało się odebrać wypłat Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "Nie udało się utworzyć warunku Polkamarkt",
             "PolkamarktCreateMarket": "Nie udało się utworzyć rynku Polkamarkt z {amount} {symbol}",
-            "PolkamarktFlip": "Nie udało się odwrócić {amount} {symbol} na Polkamarkt",
             "PolkamarktSell": "Nie udało się sprzedać {amount} {symbol} na Polkamarkt",
             "ReferralReserveXor": "Nie udało się połączyć {amount} XOR",
             "ReferralSetInvitedUser": "Nie udało się utworzyć {role} {address}",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "Zlecenie limitowane anulowane",
             "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} po {price} {symbol2}",
-            "PolkamarktAddLiquidity": "Dodano płynność {amount} {symbol} do Polkamarkt",
             "PolkamarktBuy": "Kupiłem {amount} {symbol} na Polkamarkt",
             "PolkamarktClaimCreatorFees": "Zgłoszono opłaty dla twórców Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "Zgłoszono płynność twórcy Polkamarkt",
-            "PolkamarktClaimLiquidity": "Zgłoszono resztę Polkamarkt LP",
             "PolkamarktClaimMarket": "Zgłoszono wypłatę w Polkamarkt",
             "PolkamarktClaimMarkets": "Odebrano wypłaty w Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Utworzono warunek Polkamarkt",
             "PolkamarktCreateMarket": "Rynek Polkamarkt stworzony z {amount} {symbol}",
-            "PolkamarktFlip": "Odwrócono {amount} {symbol} na Polkamarkt",
             "PolkamarktSell": "Sprzedane {amount} {symbol} na Polkamarkt",
             "ReferralReserveXor": "Związany {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} został utworzony z powodzeniem",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "Anuluj zamówienie",
         "OrderBookCancelLimitOrders": "Anuluj zamówienia",
         "OrderBookPlaceLimitOrder": "Złożyć zamówienie",
-        "PolkamarktAddLiquidity": "Dodaj płynność Polkamarkt",
         "PolkamarktBuy": "Kup akcje Polkamarkt",
         "PolkamarktClaimCreatorFees": "Odbierz opłaty dla twórców Polkamarkt",
-        "PolkamarktClaimCreatorLiquidity": "Uzyskaj płynność kreatora Polkamarkt",
-        "PolkamarktClaimLiquidity": "Odbierz resztę Polkamarkt LP",
         "PolkamarktClaimMarket": "Odbierz wypłatę w Polkamarkt",
         "PolkamarktClaimMarkets": "Odbierz wypłaty Polkamarkt",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "Utwórz warunek Polkamarkt",
         "PolkamarktCreateMarket": "Utwórz rynek Polkamarkt",
-        "PolkamarktFlip": "Odwróć pozycję Polkamarkt",
         "PolkamarktSell": "Sprzedaj akcje Polkamarkt",
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralSetInvitedUser": "Utwórz {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "Kup",
             "claimCreatorFees": "Żądaj opłat dla twórców",
-            "claimCreatorLiquidity": "Zdobądź płynność twórcy",
-            "claimLpResidual": "Złóż wniosek o resztę LP",
             "claimTraderPayout": "Żądaj wypłaty dla handlowca",
             "createMarket": "Stwórz rynek",
-            "flip": "Odwróć",
-            "liquidity": "Dodaj płynność",
-            "sell": "Sprzedaj"
+            "sell": "Sprzedaj",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "Kategoria",
             "closeBlock": "Zamknij blok",
+            "creatorSeed": "Creator seed",
             "creationFee": "Opłata za utworzenie",
             "deadline": "Termin handlu",
-            "marketFailed": "Stworzono warunek, ale utworzenie rynku nie powiodło się. Spróbuj ponownie utworzyć rynek z zapisanym warunkiem.",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "Metadane pytania, wyroczni i rozwiązania muszą mieścić się w 512 bajtach.",
             "question": "Pytanie rynkowe",
             "questionPlaceholder": "Czy wydarzenie zakończy się na TAK w wybranym terminie?",
             "questionTooShort": "Pytanie musi mieć co najmniej 32 bajty.",
             "retryMessage": "Warunek {id} został utworzony. Spróbuj ponownie tylko krok tworzenia rynku.",
             "retrySubmit": "Spróbuj ponownie utworzyć rynek",
-            "seedLiquidity": "Płynność nasion",
-            "seedTooSmall": "Płynność nasion musi wynosić co najmniej {amount} {symbol}.",
-            "submit": "Stwórz warunki i rynek",
-            "title": "Utwórz rynek Polkamarkt"
+            "submit": "Create market",
+            "title": "Utwórz rynek Polkamarkt",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "Oczekiwanie na finalizację",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "Wybierz rynek, aby wyświetlić stan palet, szczegóły wyroczni i dowody rozliczeń.",
+            "orderBook": "Order book",
             "openResolutionSource": "Link do otwartego źródła",
             "oracle": "Wyrocznia",
             "pool": "Pula płynności",
-            "settlement": "Szczegóły rozliczenia"
+            "settlement": "Szczegóły rozliczenia",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "Nie można załadować aktywności na koncie Polkamarkt.",
             "loadMarkets": "Nie można załadować rynków Polkamarkt."
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "Blok dowodów",
             "evidenceHash": "Hash dowodu",
             "evidenceUri": "URI dowodu",
-            "lpContributed": "LP przyczynił się",
-            "lpShares": "Akcje PL",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "BEZ rezerwy",
             "oracle": "Wyrocznia",
             "poolCollateral": "Zabezpieczenie basenu",
             "resolutionOutcome": "Wynik rozwiązania",
             "resolutionSource": "Źródło rozdzielczości",
-            "yesReserve": "TAK rezerwa"
+            "yesReserve": "TAK rezerwa",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "Aktywny",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "Kup",
             "claim": "Roszczenie",
-            "flip": "Odwróć",
-            "liquidity": "płyta długogrająca",
-            "sell": "Sprzedaj"
+            "sell": "Sprzedaj",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "Trader {trader} / LP {lp}",
-            "connect": "Połącz konto, aby zobaczyć utworzone rynki, akcje LP, wypłaty i ostatnie transakcje.",
+            "claimsSummary": "Trader {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "Stworzone rynki",
             "empty": "Nie ma jeszcze pozycji Polkamarkt ani nie utworzono rynków dla tego konta.",
             "loading": "Ładowanie aktywności na koncie Polkamarkt...",
             "market": "Rynek {id}",
-            "positions": "Pozycje LP i traderów",
+            "positions": "Trader positions",
             "recentTrades": "Ostatnie transakcje",
-            "sharesSummary": "TAK {yes} / NIE {no} / LP {lp}",
-            "subtitle": "Utworzone rynki, akcje LP, wypłaty dla handlowców, opłaty dla twórców i pozostałe roszczenia LP.",
-            "title": "Moje rynki / LP"
+            "sharesSummary": "TAK {yes} / NIE {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "Żaden rynek nie pasuje do bieżących filtrów.",
         "notIndexed": "Nieindeksowane",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "NIE",
             "yes": "TAK"
         },
-        "pageSubtitle": "Handluj aktywnymi rynkami prognostycznymi, zasiewaj nowe rynki i zarządzaj LP i saldami do odzyskania z przepływu portfela Polkaswap.",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "Aktywny"
+            "active": "Aktywny",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0,0",
             "claimable": "Możliwość roszczenia",
             "claimableFailed": "Nie można odczytać sald do roszczeń.",
             "claimStatus": "Stan roszczenia",
-            "collateralAmount": "Kwota ({symbol})",
             "collateralOut": "Zabezpieczenie wyjęte",
             "enterAmount": "Wpisz kwotę",
-            "flippedShares": "Odwrócone akcje",
             "insufficientKusd": "Niewystarczające saldo {symbol}",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "Niewystarczający XOR dla opłaty sieciowej",
-            "invalidAmount": "Wprowadź prawidłową kwotę",
-            "lpSharesOut": "LP udostępnia",
             "noChainMarket": "Rynkiem nie można handlować w łańcuchu",
+            "orderShares": "Shares",
             "quoteFailed": "Nie można odświeżyć wyceny.",
             "refreshingQuote": "Odświeżający cytat...",
             "selectMarket": "Wybierz aktywny rynek, na którym chcesz handlować.",
             "sharesAmount": "Akcje",
             "sharesOut": "Udostępnia",
             "slippage": "Poślizg %",
-            "subtitle": "Wyceny, opłaty, ochrona przed poślizgiem i przesyłanie portfela korzystają ze środowiska wykonawczego SORA.",
+            "takerFee": "Taker fee",
             "title": "Bilet handlowy",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "bajty",
             "shares": "akcje"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

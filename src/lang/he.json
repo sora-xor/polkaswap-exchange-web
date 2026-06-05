@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "נכשל בביטול הזמנת הגבלה",
             "OrderBookCancelLimitOrders": "נכשל בביטול הגבלת הזמנות",
             "OrderBookPlaceLimitOrder": "ביצוע הזמנה מוגבלת של {amount} {symbol} ב{price} {symbol2} נכשל.",
-            "PolkamarktAddLiquidity": "הוספת נזילות {amount} {symbol} ל-Polkamarkt נכשלה",
             "PolkamarktBuy": "קניית {amount} {symbol} ב-Polkamarkt נכשלה",
             "PolkamarktClaimCreatorFees": "לא ניתן לתבוע עמלות ליוצרים של Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "נכשל לתבוע נזילות של יוצר Polkamarkt",
-            "PolkamarktClaimLiquidity": "נכשלו לתבוע את שאריות Polkamarkt LP",
             "PolkamarktClaimMarket": "נכשל בדרישת תשלום Polkamarkt",
             "PolkamarktClaimMarkets": "נכשל בדרישת תשלומי Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "יצירת מצב Polkamarkt נכשלה",
             "PolkamarktCreateMarket": "יצירת שוק פולקמרקט נכשלה עם {amount} {symbol}",
-            "PolkamarktFlip": "הפיכת {amount} {symbol} ב-Polkamarkt נכשלה",
             "PolkamarktSell": "מכירת {amount} {symbol} ב-Polkamarkt נכשלה",
             "ReferralReserveXor": "נכשל חיבור {amount} XOR",
             "ReferralSetInvitedUser": "נכשל ההגדרה של {role} {address}",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "הגבלת הזמנה מבוטלת",
             "OrderBookCancelLimitOrders": "הגבל את ההזמנות שבוטלו",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ב{price} {symbol2} ממוקם",
-            "PolkamarktAddLiquidity": "נוספה נזילות {amount} {symbol} ל-Polkamarkt",
             "PolkamarktBuy": "קנה {amount} {symbol} ב-Polkamarkt",
             "PolkamarktClaimCreatorFees": "תבעו דמי יוצר של Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "יוצר Polkamarkt טען נזילות",
-            "PolkamarktClaimLiquidity": "שארית Polkamarkt LP נתבע",
             "PolkamarktClaimMarket": "נתבע תשלום של Polkamarkt",
             "PolkamarktClaimMarkets": "תשלומי Polkamarkt נתבעו",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "נוצר מצב Polkamarkt",
             "PolkamarktCreateMarket": "שוק פולקמרקט נוצר עם {amount} {symbol}",
-            "PolkamarktFlip": "היפוך {amount} {symbol} ב-Polkamarkt",
             "PolkamarktSell": "נמכר {amount} {symbol} ב-Polkamarkt",
             "ReferralReserveXor": "מלוכד {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} הוגדר בהצלחה",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "בטל את ההזמנה",
         "OrderBookCancelLimitOrders": "בטל הזמנות",
         "OrderBookPlaceLimitOrder": "הצב הזמנה",
-        "PolkamarktAddLiquidity": "הוסף פולקמרקט נזילות",
         "PolkamarktBuy": "קנה מניות Polkamarkt",
         "PolkamarktClaimCreatorFees": "תבע דמי יוצר של Polkamarkt",
-        "PolkamarktClaimCreatorLiquidity": "תבע את נזילות היוצר של Polkamarkt",
-        "PolkamarktClaimLiquidity": "תביעת שארית Polkamarkt LP",
         "PolkamarktClaimMarket": "תבע תשלום של Polkamarkt",
         "PolkamarktClaimMarkets": "תבע תשלומי Polkamarkt",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "צור מצב Polkamarkt",
         "PolkamarktCreateMarket": "צור שוק פולקמרקט",
-        "PolkamarktFlip": "Flip Polkamarkt עמדת",
         "PolkamarktSell": "למכור מניות פולקמרקט",
         "ReferralReserveXor": "בונד Xor",
         "ReferralSetInvitedUser": "הגדר {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "קנה",
             "claimCreatorFees": "תבע דמי יוצר",
-            "claimCreatorLiquidity": "תבע נזילות יוצר",
-            "claimLpResidual": "טען שארית LP",
             "claimTraderPayout": "תבע תשלום לסוחר",
             "createMarket": "ליצור שוק",
-            "flip": "הפוך",
-            "liquidity": "הוסף נזילות",
-            "sell": "למכור"
+            "sell": "למכור",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "קטגוריה",
             "closeBlock": "סגור בלוק",
+            "creatorSeed": "Creator seed",
             "creationFee": "דמי יצירה",
             "deadline": "מועד אחרון למסחר",
-            "marketFailed": "התנאי נוצר, אך יצירת השוק נכשלה. נסה שוב ליצור שוק עם התנאי השמור.",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "מטא נתונים של שאלות, אורקל ורזולוציה חייבים להתאים ל-512 בתים.",
             "question": "שאלת שוק",
             "questionPlaceholder": "האם האירוע ייפתר ל-YES עד למועד הנבחר?",
             "questionTooShort": "השאלה חייבת להיות לפחות 32 בתים.",
             "retryMessage": "התנאי {id} נוצר. נסה שוב רק את שלב יצירת השוק.",
             "retrySubmit": "נסה שוב ליצור שוק",
-            "seedLiquidity": "נזילות זרעים",
-            "seedTooSmall": "נזילות הזרע חייבת להיות לפחות {amount} {symbol}.",
-            "submit": "צור מצב ושווק",
-            "title": "צור שוק פולקמרקט"
+            "submit": "Create market",
+            "title": "צור שוק פולקמרקט",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "ממתין לסיום",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "בחר שוק כדי להציג מצב משטחים, פרטי אורקל וראיות להסדר.",
+            "orderBook": "Order book",
             "openResolutionSource": "קישור קוד פתוח",
             "oracle": "אורקל",
             "pool": "בריכת נזילות",
-            "settlement": "פרטי ההסדר"
+            "settlement": "פרטי ההסדר",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "לא ניתן לטעון את פעילות חשבון Polkamarkt.",
             "loadMarkets": "לא ניתן לטעון את שווקי Polkamarkt."
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "חסימת ראיות",
             "evidenceHash": "חשיש של ראיות",
             "evidenceUri": "URI של עדות",
-            "lpContributed": "LP תרם",
-            "lpShares": "מניות LP",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "אין מילואים",
             "oracle": "אורקל",
             "poolCollateral": "בטחונות פול",
             "resolutionOutcome": "תוצאה של רזולוציה",
             "resolutionSource": "מקור הרזולוציה",
-            "yesReserve": "YES מילואים"
+            "yesReserve": "YES מילואים",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "פעיל",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "קנה",
             "claim": "תביעה",
-            "flip": "הפוך",
-            "liquidity": "LP",
-            "sell": "למכור"
+            "sell": "למכור",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "סוחר {trader} / LP {lp}",
-            "connect": "חבר חשבון כדי לראות שווקים שנוצרו, מניות LP, תשלומים ועסקאות אחרונות.",
+            "claimsSummary": "סוחר {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "יצרו שווקים",
             "empty": "אין עדיין פוזיציות של Polkamarkt או שווקים שנוצרו עבור חשבון זה.",
             "loading": "טוען פעילות חשבון Polkamarkt...",
             "market": "שוק {id}",
-            "positions": "LP ועמדות סוחרים",
+            "positions": "Trader positions",
             "recentTrades": "עסקאות אחרונות",
-            "sharesSummary": "כן {yes} / לא {no} / LP {lp}",
-            "subtitle": "נוצרו שווקים, מניות LP, תשלומי סוחרים, עמלות יוצר ותביעות LP שיוריות.",
-            "title": "השווקים שלי / LP"
+            "sharesSummary": "כן {yes} / לא {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "אין שווקים שתואמים למסננים הנוכחיים.",
         "notIndexed": "לא באינדקס",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "לא",
             "yes": "כן"
         },
-        "pageSubtitle": "סחר בשווקי חיזוי פעילים, פתח שווקים חדשים וניהול יתרות LP ויתרות ניתנות לתביעה מתזרים ארנק Polkaswap.",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "פעיל"
+            "active": "פעיל",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0.0",
             "claimable": "ניתן לתביעה",
             "claimableFailed": "אין אפשרות לקרוא יתרות שניתן לתבוע.",
             "claimStatus": "סטטוס תביעה",
-            "collateralAmount": "כמות ({symbol})",
             "collateralOut": "בטחונות החוצה",
             "enterAmount": "הזן סכום",
-            "flippedShares": "היפוך מניות",
             "insufficientKusd": "יתרת {symbol} לא מספקת",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR לא מספיק עבור עמלת רשת",
-            "invalidAmount": "הזן סכום חוקי",
-            "lpSharesOut": "LP משתפת",
             "noChainMarket": "השוק אינו סחיר ברשת",
+            "orderShares": "Shares",
             "quoteFailed": "לא ניתן לרענן הצעת מחיר.",
             "refreshingQuote": "ציטוט מרענן...",
             "selectMarket": "בחר שוק פעיל למסחר.",
             "sharesAmount": "מניות",
             "sharesOut": "משתף החוצה",
             "slippage": "% החלקה",
-            "subtitle": "הצעות מחיר, עמלות, הגנה מפני החלקה והגשת ארנק משתמשים בזמן הריצה של SORA.",
+            "takerFee": "Taker fee",
             "title": "כרטיס סחר",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "בתים",
             "shares": "מניות"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

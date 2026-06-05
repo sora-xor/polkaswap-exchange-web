@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "ล้มเหลวในการยกเลิกคำสั่ง จำกัด",
             "OrderBookCancelLimitOrders": "ไม่สามารถยกเลิกคำสั่งซื้อ จำกัด ได้",
             "OrderBookPlaceLimitOrder": "ไม่สามารถวางลำดับจำกัดของ {amount} {symbol} ที่ {price} {symbol2}",
-            "PolkamarktAddLiquidity": "ไม่สามารถเพิ่ม {amount} {symbol} สภาพคล่องให้กับ Polkamarkt",
             "PolkamarktBuy": "ไม่สามารถซื้อ {amount} {symbol} บน Polkamarkt",
             "PolkamarktClaimCreatorFees": "ไม่สามารถเรียกร้องค่าธรรมเนียมผู้สร้าง Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "ไม่สามารถเรียกร้องสภาพคล่องของผู้สร้าง Polkamarkt",
-            "PolkamarktClaimLiquidity": "ไม่สามารถอ้างสิทธิ์คงเหลือของ Polkamarkt LP ได้",
             "PolkamarktClaimMarket": "ไม่สามารถเรียกร้องการจ่ายเงินของ Polkamarkt",
             "PolkamarktClaimMarkets": "ไม่สามารถเรียกร้องการจ่ายเงินของ Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "ไม่สามารถสร้างเงื่อนไข Polkamarkt",
             "PolkamarktCreateMarket": "ไม่สามารถสร้างตลาด Polkamarkt ด้วย {amount} {symbol}",
-            "PolkamarktFlip": "ไม่สามารถพลิก {amount} {symbol} บน Polkamarkt",
             "PolkamarktSell": "ไม่สามารถขาย {amount} {symbol} บน Polkamarkt",
             "ReferralReserveXor": "ไม่สามารถผูกมัด {amount} XOR",
             "ReferralSetInvitedUser": "ไม่สามารถตั้งค่า {role} {address}",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "ยกเลิกคำสั่งซื้อ จำกัด",
             "OrderBookCancelLimitOrders": "จำกัด คำสั่งซื้อ",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ที่ {price} {symbol2}",
-            "PolkamarktAddLiquidity": "เพิ่ม {amount} {symbol} สภาพคล่องให้กับ Polkamarkt",
             "PolkamarktBuy": "ซื้อ {amount} {symbol} จาก Polkamarkt",
             "PolkamarktClaimCreatorFees": "อ้างสิทธิ์ค่าธรรมเนียมผู้สร้าง Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "สภาพคล่องของผู้สร้าง Polkamarkt อ้างสิทธิ์แล้ว",
-            "PolkamarktClaimLiquidity": "อ้างสิทธิ์คงเหลือของ Polkamarkt LP",
             "PolkamarktClaimMarket": "อ้างสิทธิ์การจ่ายเงินของ Polkamarkt",
             "PolkamarktClaimMarkets": "อ้างสิทธิ์การจ่ายเงินของ Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "สร้างเงื่อนไข Polkamarkt แล้ว",
             "PolkamarktCreateMarket": "ตลาด Polkamarkt สร้างขึ้นด้วย {amount} {symbol}",
-            "PolkamarktFlip": "พลิก {amount} {symbol} บน Polkamarkt",
             "PolkamarktSell": "ขาย {amount} {symbol} บน Polkamarkt",
             "ReferralReserveXor": "ผูกมัด {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ได้รับการตั้งค่าให้สำเร็จ",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "ยกเลิกคำสั่งซื้อ",
         "OrderBookCancelLimitOrders": "ยกเลิกคำสั่งซื้อ",
         "OrderBookPlaceLimitOrder": "สั่งซื้อ",
-        "PolkamarktAddLiquidity": "เพิ่มสภาพคล่อง Polkamarkt",
         "PolkamarktBuy": "ซื้อหุ้น Polkamarkt",
         "PolkamarktClaimCreatorFees": "อ้างสิทธิ์ค่าธรรมเนียมผู้สร้าง Polkamarkt",
-        "PolkamarktClaimCreatorLiquidity": "รับสภาพคล่องของผู้สร้าง Polkamarkt",
-        "PolkamarktClaimLiquidity": "เคลม Polkamarkt LP Residual",
         "PolkamarktClaimMarket": "เรียกร้องการจ่ายเงิน Polkamarkt",
         "PolkamarktClaimMarkets": "เรียกร้องการจ่ายเงิน Polkamarkt",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "สร้างเงื่อนไข Polkamarkt",
         "PolkamarktCreateMarket": "สร้างตลาด Polkamarkt",
-        "PolkamarktFlip": "พลิกตำแหน่ง Polkamarkt",
         "PolkamarktSell": "ขายหุ้น Polkamarkt",
         "ReferralReserveXor": "พันธบัตร XOR",
         "ReferralSetInvitedUser": "ตั้ง {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "ซื้อ",
             "claimCreatorFees": "เรียกร้องค่าธรรมเนียมผู้สร้าง",
-            "claimCreatorLiquidity": "เรียกร้องสภาพคล่องของผู้สร้าง",
-            "claimLpResidual": "เคลม LP คงเหลือ",
             "claimTraderPayout": "เรียกร้องการจ่ายเงินของเทรดเดอร์",
             "createMarket": "สร้างตลาด",
-            "flip": "พลิก",
-            "liquidity": "เพิ่มสภาพคล่อง",
-            "sell": "ขาย"
+            "sell": "ขาย",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "หมวดหมู่",
             "closeBlock": "ปิดบล็อก",
+            "creatorSeed": "Creator seed",
             "creationFee": "ค่าธรรมเนียมการสร้าง",
             "deadline": "กำหนดเวลาการซื้อขาย",
-            "marketFailed": "สร้างเงื่อนไขแล้ว แต่การสร้างตลาดล้มเหลว ลองสร้างตลาดอีกครั้งด้วยเงื่อนไขที่บันทึกไว้",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "ข้อมูลเมตาของคำถาม oracle และการแก้ไขต้องมีขนาดไม่เกิน 512 ไบต์",
             "question": "คำถามตลาด",
             "questionPlaceholder": "กิจกรรมจะตกลงเป็น YES ภายในกำหนดเวลาที่เลือกหรือไม่",
             "questionTooShort": "คำถามต้องมีขนาดอย่างน้อย 32 ไบต์",
             "retryMessage": "สร้างเงื่อนไข {id} แล้ว ลองใหม่เฉพาะขั้นตอนการสร้างตลาด",
             "retrySubmit": "ลองสร้างตลาดอีกครั้ง",
-            "seedLiquidity": "สภาพคล่องของเมล็ด",
-            "seedTooSmall": "สภาพคล่องของเมล็ดต้องมีอย่างน้อย {amount} {symbol}",
-            "submit": "สร้างสภาพและตลาด",
-            "title": "สร้างตลาด Polkamarkt"
+            "submit": "Create market",
+            "title": "สร้างตลาด Polkamarkt",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "รอการสรุปผล",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "เลือกตลาดเพื่อดูสถานะของพาเลท รายละเอียด Oracle และหลักฐานการชำระบัญชี",
+            "orderBook": "Order book",
             "openResolutionSource": "ลิงค์โอเพ่นซอร์ส",
             "oracle": "ออราเคิล",
             "pool": "แหล่งรวมสภาพคล่อง",
-            "settlement": "รายละเอียดการชำระบัญชี"
+            "settlement": "รายละเอียดการชำระบัญชี",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "ไม่สามารถโหลดกิจกรรมบัญชี Polkamarkt",
             "loadMarkets": "ไม่สามารถโหลดตลาด Polkamarkt ได้"
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "บล็อกหลักฐาน",
             "evidenceHash": "แฮชหลักฐาน",
             "evidenceUri": "URI หลักฐาน",
-            "lpContributed": "ลพ.ร่วมบริจาค.",
-            "lpShares": "หุ้น แอล.พี",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "ไม่มีการสำรอง",
             "oracle": "ออราเคิล",
             "poolCollateral": "หลักประกันสระว่ายน้ำ",
             "resolutionOutcome": "ผลการแก้ปัญหา",
             "resolutionSource": "แหล่งความละเอียด",
-            "yesReserve": "ใช่ สำรอง"
+            "yesReserve": "ใช่ สำรอง",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "ใช้งานอยู่",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "ซื้อ",
             "claim": "การเรียกร้อง",
-            "flip": "พลิก",
-            "liquidity": "ห้างหุ้นส่วนจำกัด",
-            "sell": "ขาย"
+            "sell": "ขาย",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "เทรดเดอร์ {trader} / LP {lp}",
-            "connect": "เชื่อมต่อบัญชีเพื่อดูตลาดที่สร้างขึ้น หุ้น LP การจ่ายเงิน และการซื้อขายล่าสุด",
+            "claimsSummary": "เทรดเดอร์ {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "สร้างตลาด",
             "empty": "ยังไม่มีตำแหน่ง Polkamarkt หรือสร้างตลาดสำหรับบัญชีนี้",
             "loading": "กำลังโหลดกิจกรรมบัญชี Polkamarkt...",
             "market": "ตลาด {id}",
-            "positions": "ตำแหน่ง LP และเทรดเดอร์",
+            "positions": "Trader positions",
             "recentTrades": "การซื้อขายล่าสุด",
-            "sharesSummary": "ใช่ {yes} / ไม่ใช่ {no} / แผ่นเสียง {lp}",
-            "subtitle": "ตลาดที่สร้างขึ้น, หุ้น LP, การจ่ายเงินของเทรดเดอร์, ค่าธรรมเนียมผู้สร้าง และการเรียกร้อง LP ที่เหลือ",
-            "title": "ตลาดของฉัน / ห้างหุ้นส่วนจำกัด"
+            "sharesSummary": "ใช่ {yes} / ไม่ใช่ {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "ไม่มีตลาดที่ตรงกับตัวกรองปัจจุบัน",
         "notIndexed": "ไม่ได้รับการจัดทำดัชนี",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "ไม่",
             "yes": "ใช่"
         },
-        "pageSubtitle": "ซื้อขายตลาดการคาดการณ์ที่ใช้งานอยู่ สร้างตลาดใหม่ และจัดการ LP และยอดคงเหลือที่รับสิทธิ์ได้จากกระแสกระเป๋าเงิน Polkaswap",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "ใช้งานอยู่"
+            "active": "ใช้งานอยู่",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0.0",
             "claimable": "เรียกร้องได้",
             "claimableFailed": "ไม่สามารถอ่านยอดคงเหลือที่ขอรับสิทธิ์ได้",
             "claimStatus": "สถานะการเรียกร้อง",
-            "collateralAmount": "จำนวนเงิน ({symbol})",
             "collateralOut": "หลักประกันออก",
             "enterAmount": "ป้อนจำนวนเงิน",
-            "flippedShares": "หุ้นพลิก",
             "insufficientKusd": "ยอดคงเหลือ {symbol} ไม่เพียงพอ",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR ไม่เพียงพอสำหรับค่าธรรมเนียมเครือข่าย",
-            "invalidAmount": "ป้อนจำนวนเงินที่ถูกต้อง",
-            "lpSharesOut": "LP หุ้นออก",
             "noChainMarket": "ตลาดไม่สามารถซื้อขายแบบออนไลน์ได้",
+            "orderShares": "Shares",
             "quoteFailed": "ไม่สามารถรีเฟรชใบเสนอราคาได้",
             "refreshingQuote": "คำคมสดชื่น...",
             "selectMarket": "เลือกตลาดที่มีการซื้อขายเพื่อซื้อขาย",
             "sharesAmount": "หุ้น",
             "sharesOut": "หุ้นออก",
             "slippage": "สลิปเพจ %",
-            "subtitle": "การเสนอราคา ค่าธรรมเนียม การป้องกัน Slippage และการส่งกระเป๋าเงินใช้รันไทม์ SORA",
+            "takerFee": "Taker fee",
             "title": "ตั๋วการค้า",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "ไบต์",
             "shares": "หุ้น"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

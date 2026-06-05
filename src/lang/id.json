@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas",
             "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
             "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
-            "PolkamarktAddLiquidity": "Gagal menambah likuiditas {amount} {symbol} ke Polkamarkt",
             "PolkamarktBuy": "Gagal membeli {amount} {symbol} di Polkamarkt",
             "PolkamarktClaimCreatorFees": "Gagal mengklaim biaya pencipta Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "Gagal mengklaim likuiditas pencipta Polkamarkt",
-            "PolkamarktClaimLiquidity": "Gagal mengklaim sisa LP Polkamarkt",
             "PolkamarktClaimMarket": "Gagal mengklaim pembayaran Polkamarkt",
             "PolkamarktClaimMarkets": "Gagal mengklaim pembayaran Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "Gagal membuat kondisi Polkamarkt",
             "PolkamarktCreateMarket": "Gagal membuat pasar Polkamarkt dengan {amount} {symbol}",
-            "PolkamarktFlip": "Gagal membalik {amount} {symbol} di Polkamarkt",
             "PolkamarktSell": "Gagal menjual {amount} {symbol} di Polkamarkt",
             "ReferralReserveXor": "Gagal mengikat {amount} XOR",
             "ReferralSetInvitedUser": "Gagal menyetel {role} {address}",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "Batas pesanan dibatalkan",
             "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} pada {price} {symbol2} ditempatkan",
-            "PolkamarktAddLiquidity": "Menambahkan likuiditas {amount} {symbol} ke Polkamarkt",
             "PolkamarktBuy": "Membeli {amount} {symbol} di Polkamarkt",
             "PolkamarktClaimCreatorFees": "Biaya pencipta Polkamarkt diklaim",
-            "PolkamarktClaimCreatorLiquidity": "Likuiditas pencipta Polkamarkt diklaim",
-            "PolkamarktClaimLiquidity": "Residu LP Polkamarkt diklaim",
             "PolkamarktClaimMarket": "Pembayaran polkamarkt diklaim",
             "PolkamarktClaimMarkets": "Pembayaran Polkamarkt diklaim",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Kondisi polkamarkt tercipta",
             "PolkamarktCreateMarket": "Pasar Polkamarkt dibuat dengan {amount} {symbol}",
-            "PolkamarktFlip": "Membalik {amount} {symbol} di Polkamarkt",
             "PolkamarktSell": "Dijual {amount} {symbol} di Polkamarkt",
             "ReferralReserveXor": "Berikat {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} berhasil disetel",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "Batalkan pesanan",
         "OrderBookCancelLimitOrders": "Batalkan Pesanan",
         "OrderBookPlaceLimitOrder": "Tempatkan Pesanan",
-        "PolkamarktAddLiquidity": "Tambahkan Likuiditas Polkamarkt",
         "PolkamarktBuy": "Beli Saham Polkamarkt",
         "PolkamarktClaimCreatorFees": "Klaim Biaya Pencipta Polkamarkt",
-        "PolkamarktClaimCreatorLiquidity": "Klaim Likuiditas Pencipta Polkamarkt",
-        "PolkamarktClaimLiquidity": "Klaim Sisa LP Polkamarkt",
         "PolkamarktClaimMarket": "Klaim Pembayaran Polkamarkt",
         "PolkamarktClaimMarkets": "Klaim Pembayaran Polkamarkt",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "Buat Kondisi Polkamarkt",
         "PolkamarktCreateMarket": "Buat Pasar Polkamarkt",
-        "PolkamarktFlip": "Balik Posisi Polkamarkt",
         "PolkamarktSell": "Jual Saham Polkamarkt",
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralSetInvitedUser": "Tetapkan {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "Beli",
             "claimCreatorFees": "Klaim biaya pembuat",
-            "claimCreatorLiquidity": "Likuiditas pembuat klaim",
-            "claimLpResidual": "Klaim sisa LP",
             "claimTraderPayout": "Klaim pembayaran pedagang",
             "createMarket": "Ciptakan pasar",
-            "flip": "Balik",
-            "liquidity": "Tambahkan likuiditas",
-            "sell": "Jual"
+            "sell": "Jual",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "Kategori",
             "closeBlock": "Tutup blok",
+            "creatorSeed": "Creator seed",
             "creationFee": "Biaya pembuatan",
             "deadline": "Batas waktu perdagangan",
-            "marketFailed": "Kondisi telah tercipta, namun penciptaan pasar gagal. Coba lagi pembuatan pasar dengan kondisi tersimpan.",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "Metadata pertanyaan, oracle, dan resolusi harus sesuai dalam 512 byte.",
             "question": "Pertanyaan pasar",
             "questionPlaceholder": "Apakah acara tersebut akan berakhir menjadi YA pada tenggat waktu yang dipilih?",
             "questionTooShort": "Pertanyaan harus berukuran minimal 32 byte.",
             "retryMessage": "Kondisi {id} telah dibuat. Coba lagi hanya langkah penciptaan pasar.",
             "retrySubmit": "Coba lagi penciptaan pasar",
-            "seedLiquidity": "Likuiditas benih",
-            "seedTooSmall": "Likuiditas benih minimal harus {amount} {symbol}.",
-            "submit": "Ciptakan kondisi dan pasar",
-            "title": "Buat Pasar Polkamarkt"
+            "submit": "Create market",
+            "title": "Buat Pasar Polkamarkt",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "Menunggu finalisasi",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "Pilih pasar untuk melihat status palet, detail oracle, dan bukti penyelesaian.",
+            "orderBook": "Order book",
             "openResolutionSource": "Tautan sumber terbuka",
             "oracle": "Peramal",
             "pool": "Kumpulan likuiditas",
-            "settlement": "Detail penyelesaian"
+            "settlement": "Detail penyelesaian",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "Tidak dapat memuat aktivitas akun Polkamarkt.",
             "loadMarkets": "Tidak dapat memuat pasar Polkamarkt."
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "Blok bukti",
             "evidenceHash": "Bukti hash",
             "evidenceUri": "URI bukti",
-            "lpContributed": "LP berkontribusi",
-            "lpShares": "saham LP",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "TIDAK ADA cadangan",
             "oracle": "Peramal",
             "poolCollateral": "Jaminan kolam renang",
             "resolutionOutcome": "Hasil resolusi",
             "resolutionSource": "Sumber resolusi",
-            "yesReserve": "YA, cadangan"
+            "yesReserve": "YA, cadangan",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "Aktif",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "Beli",
             "claim": "Klaim",
-            "flip": "Balik",
-            "liquidity": "LP",
-            "sell": "Jual"
+            "sell": "Jual",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "Pedagang {trader} / LP {lp}",
-            "connect": "Hubungkan akun untuk melihat pasar yang dibuat, pembagian LP, pembayaran, dan perdagangan terkini.",
+            "claimsSummary": "Pedagang {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "Pasar yang diciptakan",
             "empty": "Belum ada posisi Polkamarkt atau pasar yang diciptakan untuk akun ini.",
             "loading": "Memuat aktivitas akun Polkamarkt...",
             "market": "Pasar {id}",
-            "positions": "Posisi LP dan trader",
+            "positions": "Trader positions",
             "recentTrades": "Perdagangan baru-baru ini",
-            "sharesSummary": "YA {yes} / TIDAK {no} / LP {lp}",
-            "subtitle": "Pasar yang diciptakan, saham LP, pembayaran pedagang, biaya pencipta, dan sisa klaim LP.",
-            "title": "Pasar Saya / LP"
+            "sharesSummary": "YA {yes} / TIDAK {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "Tidak ada pasar yang cocok dengan filter saat ini.",
         "notIndexed": "Tidak diindeks",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "TIDAK",
             "yes": "YA"
         },
-        "pageSubtitle": "Perdagangkan pasar prediksi aktif, sematkan pasar baru, dan kelola LP serta saldo yang dapat diklaim dari aliran dompet Polkaswap.",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "Aktif"
+            "active": "Aktif",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0,0",
             "claimable": "Dapat diklaim",
             "claimableFailed": "Tidak dapat membaca saldo yang dapat diklaim.",
             "claimStatus": "Status klaim",
-            "collateralAmount": "Jumlah ({symbol})",
             "collateralOut": "Jaminan keluar",
             "enterAmount": "Masukkan jumlah",
-            "flippedShares": "Membalik saham",
             "insufficientKusd": "Saldo {symbol} tidak mencukupi",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR tidak mencukupi untuk biaya jaringan",
-            "invalidAmount": "Masukkan jumlah yang valid",
-            "lpSharesOut": "LP membagikan",
             "noChainMarket": "Pasar tidak dapat diperdagangkan secara on-chain",
+            "orderShares": "Shares",
             "quoteFailed": "Tidak dapat menyegarkan kutipan.",
             "refreshingQuote": "Kutipan yang menyegarkan...",
             "selectMarket": "Pilih pasar aktif untuk diperdagangkan.",
             "sharesAmount": "Bagikan",
             "sharesOut": "Bagikan",
             "slippage": "% selip",
-            "subtitle": "Penawaran harga, biaya, perlindungan slippage, dan pengiriman dompet menggunakan runtime SORA.",
+            "takerFee": "Taker fee",
             "title": "Tiket perdagangan",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "byte",
             "shares": "saham"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

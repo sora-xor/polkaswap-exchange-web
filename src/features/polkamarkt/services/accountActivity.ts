@@ -19,14 +19,11 @@ const AccountActivityQuery = gql<AccountActivityResponse>`
           yesShares
           noShares
           netCollateralPaid
-          lpShares
-          lpCollateralContributed
           costBasisUsd
           marketValueUsd
           realizedPnlUsd
           unrealizedPnlUsd
           claimablePayoutUsd
-          lpClaimablePayoutUsd
           isCreator
           status
           updatedAt
@@ -51,7 +48,6 @@ const AccountActivityQuery = gql<AccountActivityResponse>`
           toOutcome
           collateralUsd
           collateralAmountUsd
-          collateralReinvestedUsd
           shares
           sharesAmount
           sharesIn
@@ -60,8 +56,6 @@ const AccountActivityQuery = gql<AccountActivityResponse>`
           executionPrice
           feeUsd
           feeAmountUsd
-          sellFeeUsd
-          buyFeeUsd
           realizedPnlUsd
           timestamp
           blockNumber
@@ -110,9 +104,7 @@ const readOutcome = (value: unknown): TicketOutcome | undefined => {
 
 const readSide = (value: unknown): AccountTrade['side'] => {
   const normalized = readString(value)?.toLowerCase();
-  return normalized === 'buy' || normalized === 'sell' || normalized === 'claim' || normalized === 'flip'
-    ? normalized
-    : undefined;
+  return normalized === 'buy' || normalized === 'sell' || normalized === 'claim' ? normalized : undefined;
 };
 
 const readTimestamp = (value: unknown): string | undefined => {
@@ -157,16 +149,11 @@ export function parseAccountPosition(record: Record<string, unknown>, index = 0)
     yesShares: readNumber(firstRecordValue(record, ['yesShares', 'yes_shares'])),
     noShares: readNumber(firstRecordValue(record, ['noShares', 'no_shares'])),
     netCollateralPaid: readNumber(firstRecordValue(record, ['netCollateralPaid', 'net_collateral_paid'])),
-    lpShares: readNumber(firstRecordValue(record, ['lpShares', 'lp_shares'])),
-    lpCollateralContributed: readNumber(
-      firstRecordValue(record, ['lpCollateralContributed', 'lp_collateral_contributed'])
-    ),
     costBasisUsd: readNumber(firstRecordValue(record, ['costBasisUsd', 'costBasisUSD'])),
     marketValueUsd: readNumber(firstRecordValue(record, ['marketValueUsd', 'marketValueUSD', 'currentValueUsd'])),
     realizedPnlUsd: readNumber(firstRecordValue(record, ['realizedPnlUsd', 'realizedPnlUSD'])),
     unrealizedPnlUsd: readNumber(firstRecordValue(record, ['unrealizedPnlUsd', 'unrealizedPnlUSD'])),
     claimablePayoutUsd: readNumber(firstRecordValue(record, ['claimablePayoutUsd', 'claimablePayoutUSD'])),
-    lpClaimablePayoutUsd: readNumber(firstRecordValue(record, ['lpClaimablePayoutUsd', 'lpClaimablePayoutUSD'])),
     isCreator: Boolean(record.isCreator),
     status: readString(record.status) ?? readString(market.status),
     updatedAt: readString(record.updatedAt) ?? readString(record.timestamp),
@@ -195,16 +182,11 @@ export function parseAccountTrade(record: Record<string, unknown>, index = 0): A
         'amountUsd',
       ])
     ),
-    collateralReinvestedUsd: readNumber(
-      firstRecordValue(record, ['collateralReinvestedUsd', 'collateralReinvestedUSD', 'collateral_reinvested_usd'])
-    ),
     shares: readNumber(firstRecordValue(record, ['shares', 'sharesAmount', 'shareAmount'])),
     sharesIn: readNumber(firstRecordValue(record, ['sharesIn', 'shares_in'])),
     sharesOut: readNumber(firstRecordValue(record, ['sharesOut', 'shares_out'])),
     price: readNumber(firstRecordValue(record, ['price', 'executionPrice', 'avgPrice'])),
     feeUsd: readNumber(firstRecordValue(record, ['feeUsd', 'feeUSD', 'feeAmountUsd'])),
-    sellFeeUsd: readNumber(firstRecordValue(record, ['sellFeeUsd', 'sellFeeUSD'])),
-    buyFeeUsd: readNumber(firstRecordValue(record, ['buyFeeUsd', 'buyFeeUSD'])),
     realizedPnlUsd: readNumber(firstRecordValue(record, ['realizedPnlUsd', 'realizedPnlUSD', 'pnlUsd'])),
     timestamp: readTimestamp(record.timestamp) ?? readTimestamp(record.createdAt),
     blockNumber,

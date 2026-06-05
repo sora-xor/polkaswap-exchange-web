@@ -25,7 +25,7 @@
           @click="$emit('select', market)"
         >
           <strong>{{ market.title }}</strong>
-          <span>{{ market.status || t('polkamarkt.status.active') }}</span>
+          <span>{{ marketStatusLabel(market) }}</span>
           <span>{{ t('polkamarkt.metrics.volume') }} {{ formatUsd(market.volume) }}</span>
         </button>
       </div>
@@ -61,6 +61,7 @@
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
+import { getMarketDisplayStatus } from '../lib/markets';
 
 import type { AccountPosition, AccountTrade, PolkamarktMarket } from '../types';
 
@@ -70,11 +71,13 @@ const props = withDefaults(
     positions: AccountPosition[];
     trades: AccountTrade[];
     account?: string;
+    currentBlock?: number;
     isLoggedIn?: boolean;
     loading?: boolean;
   }>(),
   {
     account: '',
+    currentBlock: 0,
     isLoggedIn: false,
     loading: false,
   }
@@ -97,21 +100,25 @@ const createdMarkets = computed(() => {
 const formatUsd = (value?: number): string =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(value ?? 0);
 
+function marketStatusLabel(market: PolkamarktMarket): string {
+  const status = getMarketDisplayStatus(market, props.currentBlock);
+  if (status?.toLowerCase() === 'closed') return t('polkamarkt.status.closed');
+  if (status?.toLowerCase() === 'early report locked') return t('polkamarkt.status.earlyReportLocked');
+  return status || t('polkamarkt.status.active');
+}
+
 function formatShares(position: AccountPosition): string {
   const yes = position.yesShares ?? 0;
   const no = position.noShares ?? 0;
-  const lp = position.lpShares ?? 0;
   return t('polkamarkt.my.sharesSummary', {
     yes: yes.toLocaleString(),
     no: no.toLocaleString(),
-    lp: lp.toLocaleString(),
   });
 }
 
 function formatClaims(position: AccountPosition): string {
   const trader = position.claimablePayoutUsd ?? 0;
-  const lp = position.lpClaimablePayoutUsd ?? 0;
-  return t('polkamarkt.my.claimsSummary', { trader: formatUsd(trader), lp: formatUsd(lp) });
+  return t('polkamarkt.my.claimsSummary', { trader: formatUsd(trader) });
 }
 </script>
 
@@ -154,7 +161,7 @@ function formatClaims(position: AccountPosition): string {
 
 .my-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: #{'minmax(0, 1fr)'} auto auto;
   gap: $inner-spacing-mini;
   align-items: center;
   border: 1px solid var(--s-color-base-border-secondary);

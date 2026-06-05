@@ -48,6 +48,21 @@ describe('TokenBalanceSubscriptions', () => {
     expect(updateBalance).toHaveBeenCalledWith(null);
   });
 
+  it('stores null subscriptions when the wallet API is not ready to create observables', () => {
+    getAssetBalanceObservableMock.mockImplementation(() => {
+      throw new TypeError("Cannot read properties of null (reading 'rx')");
+    });
+    const subscriptions = new TokenBalanceSubscriptions();
+    const updateBalance = vi.fn();
+
+    expect(() => subscriptions.add('xor', { updateBalance, token: { address: 'xor' } as any })).not.toThrow();
+
+    subscriptions.remove('xor');
+
+    expect(getAssetBalanceObservableMock).toHaveBeenCalledWith({ address: 'xor' });
+    expect(updateBalance).toHaveBeenCalledWith(null);
+  });
+
   it('subscribes to balances and unsubscribes/reset callbacks on remove and reset', () => {
     const firstUnsubscribe = vi.fn();
     const secondUnsubscribe = vi.fn();

@@ -32,13 +32,19 @@ describe('public env config', () => {
     expect(html).toContain('src="/src/assets/img/pswap-loader.svg"');
   });
 
-  it('exposes only the MOF #1 SORA websocket endpoint in production envs', async () => {
+  it('exposes only the healthy MOF SORA websocket endpoints in production envs', async () => {
     const envPaths = ['public/env.json', 'public/env.taira.json', 'env.json'];
     const expectedNodes = [
       {
         chain: 'SORA',
         name: 'SORA Parliament Ministry of Finance #1',
         address: 'wss://ws.mof.sora.org',
+      },
+      {
+        chain: 'SORA',
+        name: 'SORA Parliament Ministry of Finance #2',
+        address: 'wss://mof2.sora.org',
+        location: 'SG',
       },
     ];
 

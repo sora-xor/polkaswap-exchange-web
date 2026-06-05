@@ -20,13 +20,21 @@
         mandatory
         max-shown-options="8"
       />
-      <s-select
-        v-model="statusValue"
-        class="polkamarkt-select"
-        :label="t('polkamarkt.metrics.status')"
-        :options="statusOptions"
-        mandatory
-      />
+      <div class="polkamarkt-status-toggle" role="group" :aria-label="t('polkamarkt.metrics.status')">
+        <button
+          v-for="option in statusOptions"
+          :key="option.value"
+          type="button"
+          :class="[
+            'polkamarkt-status-toggle__option',
+            { 'polkamarkt-status-toggle__option--active': statusValue === option.value },
+          ]"
+          :aria-pressed="statusValue === option.value"
+          @click="statusValue = option.value"
+        >
+          {{ option.label }}
+        </button>
+      </div>
       <label class="polkamarkt-check">
         <input v-model="mineOnlyValue" type="checkbox" :disabled="!account" />
         <span>{{ t('polkamarkt.filters.mine') }}</span>
@@ -34,7 +42,18 @@
     </div>
 
     <div v-if="loading" class="polkamarkt-empty">{{ t('polkamarkt.loadingMarkets') }}</div>
-    <div v-else-if="!filteredMarkets.length" class="polkamarkt-empty">{{ t('polkamarkt.noMarkets') }}</div>
+    <div v-else-if="!filteredMarkets.length" class="polkamarkt-empty">
+      <span>{{ t('polkamarkt.noMarkets') }}</span>
+      <s-button
+        v-if="showClosedMarketShortcut"
+        class="polkamarkt-empty__action"
+        type="secondary"
+        size="small"
+        @click="browseClosedMarkets"
+      >
+        {{ closedMarketsLabel }}
+      </s-button>
+    </div>
 
     <div v-else class="polkamarkt-list__items">
       <button
@@ -46,7 +65,7 @@
       >
         <span class="market-card__meta">
           <span>{{ market.category }}</span>
-          <span>{{ market.status || t('polkamarkt.status.active') }}</span>
+          <span>{{ marketStatusLabel(market) }}</span>
         </span>
         <strong>{{ market.title }}</strong>
         <span class="market-card__stats">
@@ -63,7 +82,7 @@ import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { MARKET_CATEGORIES, type MarketCategory, type MarketStatusFilter } from '../consts';
-import { filterMarkets } from '../lib/markets';
+import { filterMarkets, getMarketDisplayStatus } from '../lib/markets';
 
 import type { PolkamarktMarket } from '../types';
 import type { SelectOption } from '@/lib/soramitsu-ui/components/Select/types';
@@ -77,6 +96,7 @@ const props = withDefaults(
     status?: MarketStatusFilter;
     account?: string;
     mineOnly?: boolean;
+    currentBlock?: number;
     loading?: boolean;
   }>(),
   {
@@ -86,6 +106,7 @@ const props = withDefaults(
     status: 'active',
     account: '',
     mineOnly: false,
+    currentBlock: 0,
     loading: false,
   }
 );
@@ -107,7 +128,7 @@ const categoryOptions = computed<SelectOption<MarketCategory | 'all'>[]>(() => [
 ]);
 const statusOptions = computed<SelectOption<MarketStatusFilter>[]>(() => [
   { label: t('polkamarkt.filters.active'), value: 'active' },
-  { label: t('polkamarkt.filters.finalized'), value: 'finalized' },
+  { label: t('polkamarkt.status.closed'), value: 'finalized' },
   { label: t('polkamarkt.filters.allStatuses'), value: 'all' },
 ]);
 
@@ -138,13 +159,29 @@ const filteredMarkets = computed(() =>
     status: props.status,
     account: props.account,
     mineOnly: props.mineOnly,
+    currentBlock: props.currentBlock,
   })
 );
+const showClosedMarketShortcut = computed(() => props.status === 'active' && !filteredMarkets.value.length);
+const closedMarketsLabel = computed(() => `${t('polkamarkt.status.closed')} ${t('polkamarkt.markets.title')}`);
+
+/** Switches the list to closed markets from the compact empty active state. */
+function browseClosedMarkets(): void {
+  emit('update:status', 'finalized');
+}
+
+function marketStatusLabel(market: PolkamarktMarket): string {
+  const status = getMarketDisplayStatus(market, props.currentBlock);
+  if (status?.toLowerCase() === 'closed') return t('polkamarkt.status.closed');
+  if (status?.toLowerCase() === 'early report locked') return t('polkamarkt.status.earlyReportLocked');
+  return status || t('polkamarkt.status.active');
+}
 
 const formatUsd = (value: number): string =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0);
 
-const formatProbability = (value?: number): string => (Number.isFinite(value) ? `${value}%` : t('polkamarkt.notIndexed'));
+const formatProbability = (value?: number): string =>
+  Number.isFinite(value) ? `${value}%` : t('polkamarkt.notIndexed');
 </script>
 
 <style lang="scss" scoped>
@@ -175,7 +212,7 @@ const formatProbability = (value?: number): string => (Number.isFinite(value) ? 
 
   &__filters {
     display: grid;
-    grid-template-columns: minmax(180px, 1fr) minmax(132px, 0.6fr) minmax(132px, 0.6fr) auto;
+    grid-template-columns: #{'minmax(180px, 1fr)'} #{'minmax(132px, 0.55fr)'} max-content auto;
     gap: $inner-spacing-mini;
     align-items: center;
 
@@ -199,6 +236,34 @@ const formatProbability = (value?: number): string => (Number.isFinite(value) ? 
   max-width: 100%;
 }
 
+.polkamarkt-status-toggle {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+  min-height: 40px;
+  padding: 3px;
+  border: 1px solid var(--s-color-base-border-secondary);
+  border-radius: var(--s-border-radius-mini);
+  background: var(--s-color-utility-body);
+
+  &__option {
+    min-height: 30px;
+    border: 0;
+    border-radius: calc(var(--s-border-radius-mini) - 4px);
+    background: transparent;
+    color: var(--s-color-base-content-secondary);
+    cursor: pointer;
+    font: inherit;
+    padding: 0 $inner-spacing-mini;
+    white-space: nowrap;
+
+    &--active {
+      background: var(--s-color-theme-accent);
+      color: var(--s-color-utility-surface);
+    }
+  }
+}
+
 .polkamarkt-input {
   border: 1px solid var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-mini);
@@ -218,11 +283,18 @@ const formatProbability = (value?: number): string => (Number.isFinite(value) ? 
 }
 
 .polkamarkt-empty {
+  display: grid;
+  gap: $inner-spacing-mini;
+  justify-items: center;
   border: 1px dashed var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-small);
   padding: $inner-spacing-big;
   color: var(--s-color-base-content-secondary);
   text-align: center;
+
+  &__action {
+    width: fit-content;
+  }
 }
 
 .market-card {

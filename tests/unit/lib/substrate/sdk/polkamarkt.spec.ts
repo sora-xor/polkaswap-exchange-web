@@ -15,14 +15,15 @@ function createRoot() {
     Object.assign({ name }, { paymentInfo: vi.fn().mockResolvedValue({ partialFee: '123' }) });
   const conditionTx = tx('condition');
   const marketTx = tx('market');
+  const batchTx = tx('batch');
   const buyTx = tx('buy');
   const sellTx = tx('sell');
-  const flipTx = tx('flip');
-  const liquidityTx = tx('liquidity');
+  const reportTx = tx('report');
   const claimTx = tx('claim');
   const history: Record<string, any> = {};
   const conditionTxId = '0xcondition';
   const marketTxId = '0xmarket';
+  const batchTxId = '0xbatch';
   const blockId = '0xblock';
   const phase = (index: number) => ({
     isApplyExtrinsic: true,
@@ -38,6 +39,18 @@ function createRoot() {
         polkamarkt: {
           nextConditionId: vi.fn().mockResolvedValue({ toString: () => '9' }),
           nextMarketId: vi.fn().mockResolvedValue({ toString: () => '14' }),
+          earlyResolutionReports: vi.fn().mockResolvedValue(
+            option({
+              reporter: 'cnReporter',
+              outcome: 'No',
+              bond: '100000000000000000000',
+              evidence: {
+                uri: [104, 116, 116, 112, 115, 58, 47, 47, 111, 112, 101, 110, 97, 105, 46, 99, 111, 109],
+                hash: [1, 2, 3],
+                atBlock: '123',
+              },
+            })
+          ),
         },
       },
       tx: {
@@ -46,10 +59,13 @@ function createRoot() {
           createMarket: vi.fn(() => marketTx),
           buy: vi.fn(() => buyTx),
           sell: vi.fn(() => sellTx),
-          flipPosition: vi.fn(() => flipTx),
-          addLiquidity: vi.fn(() => liquidityTx),
+          reportEarlyResolution: vi.fn(() => reportTx),
           claimMarket: vi.fn(() => claimTx),
           claimMarkets: vi.fn(() => claimTx),
+          claimCreatorFees: vi.fn(() => claimTx),
+        },
+        utility: {
+          batchAll: vi.fn(() => batchTx),
         },
       },
       rpc: {
@@ -74,6 +90,20 @@ function createRoot() {
               collateralOut: '118',
             })
           ),
+          marketState: vi.fn().mockResolvedValue(
+            option({
+              marketId: 7,
+              mechanism: 'DynamicPariMutuel',
+              virtualDepth: '100',
+              realYesShares: '20',
+              realNoShares: '10',
+              dpmCollateral: '50',
+              marginalYesPriceBps: 5600,
+              marginalNoPriceBps: 4400,
+              impliedYesProbabilityBps: 6400,
+              impliedNoProbabilityBps: 3600,
+            })
+          ),
           claimable: vi.fn().mockResolvedValue(
             option({
               marketId: 7,
@@ -84,20 +114,24 @@ function createRoot() {
               noShares: '0',
               netCollateralPaid: '100',
               traderPayout: '120',
+              claimablePayout: '120',
               creatorFees: '5',
-              creatorLiquidity: '6',
               isCreator: true,
             })
           ),
         },
       },
     },
-    getTransactionFee: vi.fn().mockResolvedValue('123'),
+    getTransactionFee: vi.fn(async (submittedTx) => (submittedTx === batchTx ? '345' : '123')),
     getHistory: vi.fn((id: string) => history[id] ?? null),
     system: {
       getExtrinsicsFromBlock: vi
         .fn()
-        .mockResolvedValue([{ hash: { toString: () => conditionTxId } }, { hash: { toString: () => marketTxId } }]),
+        .mockResolvedValue([
+          { hash: { toString: () => conditionTxId } },
+          { hash: { toString: () => marketTxId } },
+          { hash: { toString: () => batchTxId } },
+        ]),
       getBlockEvents: vi.fn().mockResolvedValue([
         {
           phase: phase(0),
@@ -112,13 +146,29 @@ function createRoot() {
           event: {
             section: 'polkamarkt',
             method: 'MarketCreated',
-            data: { toJSON: () => ({ market_id: '51', condition_id: '42' }) },
+            data: { toJSON: () => ({ market_id: '51', condition_id: '9' }) },
+          },
+        },
+        {
+          phase: phase(2),
+          event: {
+            section: 'polkamarkt',
+            method: 'ConditionCreated',
+            data: { toJSON: () => ({ condition_id: '9' }) },
+          },
+        },
+        {
+          phase: phase(2),
+          event: {
+            section: 'polkamarkt',
+            method: 'MarketCreated',
+            data: { toJSON: () => ({ market_id: '51', condition_id: '9' }) },
           },
         },
       ]),
     },
     submitExtrinsic: vi.fn(async (submittedTx, _pair, historyData) => {
-      const txId = submittedTx === conditionTx ? conditionTxId : marketTxId;
+      const txId = submittedTx === conditionTx ? conditionTxId : submittedTx === batchTx ? batchTxId : marketTxId;
       history[historyData.id] = {
         ...historyData,
         status: 'finalized',
@@ -133,10 +183,10 @@ function createRoot() {
     module: new PolkamarktModule(root),
     conditionTx,
     marketTx,
+    batchTx,
     buyTx,
     sellTx,
-    flipTx,
-    liquidityTx,
+    reportTx,
     claimTx,
   };
 }
@@ -161,7 +211,7 @@ describe('PolkamarktModule', () => {
     ).toBe(42);
   });
 
-  it('unwraps RPC option records and quote values', async () => {
+  it('unwraps RPC option records and DPM quote values', async () => {
     const { module } = createRoot();
 
     expect(rpcRecord(option({ marketId: 1 }))).toEqual({ marketId: 1 });
@@ -177,41 +227,91 @@ describe('PolkamarktModule', () => {
       outcome: 'No',
       collateralOut: '118',
     });
+    await expect(module.getMarketState(7)).resolves.toMatchObject({
+      marketId: 7,
+      mechanism: 'DynamicPariMutuel',
+      virtualDepth: '100',
+      dpmCollateral: '50',
+      marginalYesPriceBps: 5600,
+      impliedYesProbabilityBps: 6400,
+    });
   });
 
-  it('creates condition and market with finalized event ids and history metadata', async () => {
-    const { root, module, conditionTx, marketTx } = createRoot();
+  it('does not expose removed Polkamarkt CLOB or AMM entrypoints', () => {
+    const { module } = createRoot();
+    const api = module as unknown as Record<string, unknown>;
+
+    for (const method of [
+      'placeOrder',
+      'cancelOrder',
+      'addLiquidity',
+      'claimLiquidity',
+      'claimCreatorLiquidity',
+      'flipPosition',
+      'splitPosition',
+      'mergePositions',
+      'quoteOrder',
+      'quoteAddLiquidity',
+      'quoteFlip',
+    ]) {
+      expect(api[method]).toBeUndefined();
+    }
+  });
+
+  it('estimates and creates a DPM market in one atomic batch extrinsic', async () => {
+    const { root, module, conditionTx, marketTx, batchTx } = createRoot();
 
     await expect(
-      module.createCondition({
+      module.estimateMarketCreationFee({
         question: 'Will this market be created from Vue?',
         oracle: 'SORA governance',
         resolutionSource: 'Root',
         category: 'Crypto',
+        closeBlock: 10_000,
       })
-    ).resolves.toEqual({ conditionId: 42 });
-    expect(root.submitExtrinsic).toHaveBeenCalledWith(
-      conditionTx,
-      root.account.pair,
-      expect.objectContaining({
-        id: expect.any(String),
-        type: Operation.PolkamarktCreateCondition,
-      })
-    );
+    ).resolves.toEqual({ conditionFee: '123', marketFee: '123', totalFee: '345' });
+    expect(root.api.tx.polkamarkt.createMarket).toHaveBeenCalledWith(9, 10_000);
+    expect(root.api.tx.utility.batchAll).toHaveBeenCalledWith([conditionTx, marketTx]);
 
     await expect(
-      module.createMarket({ conditionId: 42, closeBlock: 10_000, seedLiquidity: '100000000000000000000' })
-    ).resolves.toMatchObject({ conditionId: 42, marketId: 51 });
-    expect(root.submitExtrinsic).toHaveBeenLastCalledWith(
-      marketTx,
+      module.createMarket({
+        question: 'Will this market be created from Vue?',
+        oracle: 'SORA governance',
+        resolutionSource: 'Root',
+        category: 'Crypto',
+        closeBlock: 10_000,
+      })
+    ).resolves.toEqual({ conditionId: 9, marketId: 51 });
+
+    expect(root.api.tx.polkamarkt.createMarket).toHaveBeenLastCalledWith(9, 10_000);
+    expect(root.api.tx.utility.batchAll).toHaveBeenLastCalledWith([conditionTx, marketTx]);
+    expect(root.submitExtrinsic).toHaveBeenCalledTimes(1);
+    expect(root.submitExtrinsic).toHaveBeenCalledWith(
+      batchTx,
       root.account.pair,
       expect.objectContaining({
-        id: expect.any(String),
         type: Operation.PolkamarktCreateMarket,
-        amount: '100',
+        amount: '0',
         symbol: 'KUSD',
       })
     );
+  });
+
+  it('rejects market creation before signing when the next condition id is unavailable', async () => {
+    const { root, module } = createRoot();
+    root.api.query.polkamarkt.nextConditionId.mockResolvedValueOnce(null);
+
+    await expect(
+      module.createMarket({
+        question: 'Will this market avoid unsafe retries?',
+        oracle: 'SORA governance',
+        resolutionSource: 'Root',
+        category: 'Crypto',
+        closeBlock: 10_000,
+      })
+    ).rejects.toThrow('Unable to read next Polkamarkt condition id before creating a market.');
+    expect(root.api.tx.utility.batchAll).not.toHaveBeenCalled();
+    expect(root.submitExtrinsic).not.toHaveBeenCalled();
   });
 
   it('fails condition creation when the finalized extrinsic has no condition-created event', async () => {
@@ -228,8 +328,8 @@ describe('PolkamarktModule', () => {
     ).rejects.toThrow('Finalized Polkamarkt transaction did not emit ConditionCreated.conditionId.');
   });
 
-  it('submits trade, liquidity, claim, and fee-estimate calls with runtime parameters', async () => {
-    const { root, module, buyTx, liquidityTx, claimTx } = createRoot();
+  it('submits DPM trades, reports, claims, and fee-estimate calls with runtime parameters', async () => {
+    const { root, module, buyTx, sellTx, reportTx, claimTx } = createRoot();
 
     await module.submitBuyTrade({ marketId: 7, outcome: 'Yes', collateralIn: '100', minSharesOut: '90' });
     expect(root.api.tx.polkamarkt.buy).toHaveBeenCalledWith(7, 'Yes', '100', '90');
@@ -239,12 +339,51 @@ describe('PolkamarktModule', () => {
       expect.objectContaining({ type: Operation.PolkamarktBuy })
     );
 
-    await module.addLiquidity({ marketId: 7, collateralAmount: '100', minLpShares: '1' });
-    expect(root.api.tx.polkamarkt.addLiquidity).toHaveBeenCalledWith(7, '100', '1');
+    await module.submitSellTrade({ marketId: 7, outcome: 'No', sharesIn: '80', minCollateralOut: '70' });
+    expect(root.api.tx.polkamarkt.sell).toHaveBeenCalledWith(7, 'No', '80', '70');
     expect(root.submitExtrinsic).toHaveBeenLastCalledWith(
-      liquidityTx,
+      sellTx,
       root.account.pair,
-      expect.objectContaining({ type: Operation.PolkamarktAddLiquidity })
+      expect.objectContaining({ type: Operation.PolkamarktSell })
+    );
+
+    await expect(
+      module.estimateReportEarlyResolutionNetworkFee({
+        marketId: 7,
+        outcome: 'Yes',
+        evidence: { uri: 'https://openai.com/release', hash: '0x'.padEnd(66, 'a') },
+      })
+    ).resolves.toBe('123');
+    expect(root.api.tx.polkamarkt.reportEarlyResolution).toHaveBeenCalledWith(
+      7,
+      'Yes',
+      expect.objectContaining({
+        uri: Array.from(new TextEncoder().encode('https://openai.com/release')),
+        hash: expect.any(Array),
+      })
+    );
+
+    await module.reportEarlyResolution({
+      marketId: 7,
+      outcome: 'No',
+      evidence: { uri: 'https://openai.com/news' },
+    });
+    expect(root.api.tx.polkamarkt.reportEarlyResolution).toHaveBeenLastCalledWith(
+      7,
+      'No',
+      expect.objectContaining({
+        uri: Array.from(new TextEncoder().encode('https://openai.com/news')),
+        hash: null,
+      })
+    );
+    expect(root.submitExtrinsic).toHaveBeenLastCalledWith(
+      reportTx,
+      root.account.pair,
+      expect.objectContaining({
+        type: Operation.PolkamarktReportEarlyResolution,
+        amount: '100',
+        symbol: 'KUSD',
+      })
     );
 
     await module.claimMarket(7);
@@ -255,12 +394,41 @@ describe('PolkamarktModule', () => {
       expect.objectContaining({ type: Operation.PolkamarktClaimMarket })
     );
 
+    await module.claimCreatorFees(7);
+    expect(root.api.tx.polkamarkt.claimCreatorFees).toHaveBeenCalledWith(7);
+
     await expect(
       module.estimateBuyTradeNetworkFee({ marketId: 7, outcome: 'Yes', collateralIn: '100', minSharesOut: '90' })
     ).resolves.toBe('123');
+    await expect(
+      module.estimateSellTradeNetworkFee({ marketId: 7, outcome: 'No', sharesIn: '80', minCollateralOut: '70' })
+    ).resolves.toBe('123');
   });
 
-  it('returns claimable trader, creator, and liquidity values', async () => {
+  it('rejects malformed early resolution evidence before fee estimation or submission', async () => {
+    const { root, module } = createRoot();
+
+    expect(() =>
+      module.estimateReportEarlyResolutionNetworkFee({
+        marketId: 7,
+        outcome: 'Yes',
+        evidence: { uri: '   ' },
+      })
+    ).toThrow('Evidence URI is required.');
+    expect(root.getTransactionFee).not.toHaveBeenCalled();
+    expect(root.api.tx.polkamarkt.reportEarlyResolution).not.toHaveBeenCalled();
+
+    expect(() =>
+      module.reportEarlyResolution({
+        marketId: 7,
+        outcome: 'No',
+        evidence: { uri: 'https://openai.com/news', hash: '0x1234' },
+      })
+    ).toThrow('Evidence hash must be a 32-byte hex value.');
+    expect(root.submitExtrinsic).not.toHaveBeenCalled();
+  });
+
+  it('returns claimable trader and creator fee values', async () => {
     const { module } = createRoot();
 
     await expect(module.getClaimableInfo('cnAccount', 7)).resolves.toMatchObject({
@@ -268,9 +436,19 @@ describe('PolkamarktModule', () => {
       account: 'cnAccount',
       resolutionOutcome: 'Yes',
       traderPayout: '120',
+      claimablePayout: '120',
       creatorFees: '5',
-      creatorLiquidity: '6',
       isCreator: true,
+    });
+
+    await expect(module.getEarlyResolutionReport(7)).resolves.toMatchObject({
+      marketId: 7,
+      reporter: 'cnReporter',
+      outcome: 'No',
+      bond: '100000000000000000000',
+      evidenceUri: 'https://openai.com',
+      evidenceHash: '0x010203',
+      evidenceBlock: 123,
     });
   });
 });

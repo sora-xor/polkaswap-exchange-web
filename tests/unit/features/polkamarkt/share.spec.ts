@@ -41,6 +41,10 @@ describe('polkamarkt share helpers', () => {
     expect(text).toContain(`Trade on Polkaswap: ${link}`);
   });
 
+  it('marks share snapshots as closed after the close block passes', () => {
+    expect(buildMarketShareSnapshot(market, market.closeBlock)).toContain('Geopolitics · Closed');
+  });
+
   it('builds Telegram and X intent URLs with encoded snapshot and link', () => {
     const link = buildPolkamarktTradeLink(market, 'https://polkaswap.io/#/polkamarkt');
     const snapshot = buildMarketShareSnapshot(market);

@@ -73,6 +73,49 @@ describe('wallet services/wallet', () => {
     expect(wallet.provider).toEqual({ sends: 'provider' });
   });
 
+  it('coalesces concurrent extension enable requests', async () => {
+    const signer = { signPayload: vi.fn() };
+    const get = vi.fn().mockResolvedValue([]);
+    const rawEnabledExtension = {
+      signer,
+      metadata: undefined,
+      provider: undefined,
+      accounts: {
+        get,
+        subscribe: vi.fn(),
+      },
+    };
+    let resolveEnable: (value: typeof rawEnabledExtension) => void = () => undefined;
+    const rawExtension = {
+      version: '1.2.3',
+      enable: vi.fn(
+        () =>
+          new Promise<typeof rawEnabledExtension>((resolve) => {
+            resolveEnable = resolve;
+          })
+      ),
+    };
+
+    window.injectedWeb3[walletInfo.extensionName] = rawExtension as any;
+
+    const wallet = new BaseDotSamaWallet(walletInfo, 'Polkaswap');
+    const enablePromise = wallet.enable();
+    const accountsPromise = wallet.getAccounts();
+
+    expect(rawExtension.enable).toHaveBeenCalledTimes(1);
+
+    resolveEnable(rawEnabledExtension);
+
+    await expect(enablePromise).resolves.toBeUndefined();
+    await expect(accountsPromise).resolves.toEqual([]);
+
+    await wallet.enable();
+
+    expect(rawExtension.enable).toHaveBeenCalledTimes(1);
+    expect(wallet.signer).toBe(signer);
+    expect(get).toHaveBeenCalledTimes(1);
+  });
+
   it('returns null subscriptions and accounts when the extension cannot be enabled', async () => {
     const wallet = new BaseDotSamaWallet(walletInfo);
     const callback = vi.fn();

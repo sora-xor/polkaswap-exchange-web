@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
             "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit",
             "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol2}",
-            "PolkamarktAddLiquidity": "Nepodařilo se přidat {amount} {symbol} likviditu do Polkamarktu",
             "PolkamarktBuy": "Nepodařilo se zakoupit {amount} {symbol} na Polkamarkt",
             "PolkamarktClaimCreatorFees": "Nepodařilo se uplatnit poplatky za tvůrce Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "Nepodařilo se získat likviditu tvůrců Polkamarkt",
-            "PolkamarktClaimLiquidity": "Nepodařilo se nárokovat zbytky Polkamarkt LP",
             "PolkamarktClaimMarket": "Nepodařilo se požádat o výplatu Polkamarkt",
             "PolkamarktClaimMarkets": "Nepodařilo se nárokovat výplaty Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "Nepodařilo se vytvořit podmínku Polkamarkt",
             "PolkamarktCreateMarket": "Nepodařilo se vytvořit trh Polkamarkt s {amount} {symbol}",
-            "PolkamarktFlip": "Nepodařilo se převrátit {amount} {symbol} na Polkamarkt",
             "PolkamarktSell": "Nepodařilo se prodat {amount} {symbol} na Polkamarkt",
             "ReferralReserveXor": "Nepodařilo se spojit {amount} XOR",
             "ReferralSetInvitedUser": "Nepodařilo se nastavit {role} {address}",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "Limitní objednávka zrušena",
             "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} za {price} {symbol2} umístěno",
-            "PolkamarktAddLiquidity": "Přidána likvidita {amount} {symbol} Polkamarktu",
             "PolkamarktBuy": "Zakoupeno {amount} {symbol} na Polkamarktu",
             "PolkamarktClaimCreatorFees": "Byly požadovány poplatky za tvůrce Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "Požadována likvidita tvůrců Polkamarktu",
-            "PolkamarktClaimLiquidity": "Nárokován zbytek Polkamarkt LP",
             "PolkamarktClaimMarket": "Byla požadována výplata Polkamarkt",
             "PolkamarktClaimMarkets": "Byly požadovány výplaty Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Podmínka Polkamarkt vytvořena",
             "PolkamarktCreateMarket": "Trh Polkamarkt vytvořen s {amount} {symbol}",
-            "PolkamarktFlip": "Překlopeno {amount} {symbol} na Polkamarkt",
             "PolkamarktSell": "Prodáno {amount} {symbol} na Polkamarkt",
             "ReferralReserveXor": "Vázané {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} bylo úspěšně nastaveno",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "Zrušit objednávku",
         "OrderBookCancelLimitOrders": "Zrušit objednávky",
         "OrderBookPlaceLimitOrder": "Objednejte si",
-        "PolkamarktAddLiquidity": "Přidejte Polkamarkt Liquidity",
         "PolkamarktBuy": "Kupte si akcie Polkamarkt",
         "PolkamarktClaimCreatorFees": "Uplatněte nárok na poplatky pro autory Polkamarkt",
-        "PolkamarktClaimCreatorLiquidity": "Nárokujte si likviditu tvůrců Polkamarkt",
-        "PolkamarktClaimLiquidity": "Nárokujte Polkamarkt LP Residual",
         "PolkamarktClaimMarket": "Vyžádejte si výplatu Polkamarkt",
         "PolkamarktClaimMarkets": "Nárokujte si výplaty Polkamarkt",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "Vytvořte podmínku Polkamarkt",
         "PolkamarktCreateMarket": "Vytvořte Polkamarkt Market",
-        "PolkamarktFlip": "Flip Polkamarkt Position",
         "PolkamarktSell": "Prodej akcií Polkamarkt",
         "ReferralReserveXor": "Vázat XOR",
         "ReferralSetInvitedUser": "Nastavit {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "Koupit",
             "claimCreatorFees": "Poplatky za tvůrce nároku",
-            "claimCreatorLiquidity": "Likvidita tvůrce nároku",
-            "claimLpResidual": "Nárokovat zbytky LP",
             "claimTraderPayout": "Nárokujte si výplatu obchodníka",
             "createMarket": "Vytvořit trh",
-            "flip": "Překlopit",
-            "liquidity": "Přidejte likviditu",
-            "sell": "prodat"
+            "sell": "prodat",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "Kategorie",
             "closeBlock": "Zavřít blok",
+            "creatorSeed": "Vklad tvurce",
             "creationFee": "Poplatek za vytvoření",
             "deadline": "Termín obchodování",
-            "marketFailed": "Podmínka byla vytvořena, ale vytvoření trhu selhalo. Opakujte vytvoření trhu s uloženou podmínkou.",
+            "marketFailed": "Vytvoreni trhu selhalo.",
             "metadataTooLong": "Metadata otázek, věštců a řešení se musí vejít do 512 bajtů.",
             "question": "Otázka trhu",
             "questionPlaceholder": "Vyřeší se akce na ANO do zvoleného termínu?",
             "questionTooShort": "Otázka musí mít alespoň 32 bajtů.",
             "retryMessage": "Podmínka {id} byla vytvořena. Opakujte pouze krok vytvoření trhu.",
             "retrySubmit": "Opakujte vytvoření trhu",
-            "seedLiquidity": "Seedová likvidita",
-            "seedTooSmall": "Likvidita seedu musí být alespoň {amount} {symbol}.",
-            "submit": "Vytvořte podmínky a trh",
-            "title": "Vytvořte Polkamarkt Market"
+            "submit": "Vytvorit trh",
+            "title": "Vytvořte Polkamarkt Market",
+            "dpmNote": "Nove trhy pouzivaji dynamickou pari-mutuel krivku bez LP vkladu, s virtualni pocatecni hloubkou a pomernym vyporadanim."
         },
         "details": {
             "awaitingSettlement": "Čeká se na finalizaci",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "Vyberte trh pro zobrazení stavu palet, podrobností o orákulu a důkazů o vypořádání.",
+            "orderBook": "Order book",
             "openResolutionSource": "Odkaz na otevřený zdroj",
             "oracle": "Oracle",
             "pool": "Bazén likvidity",
-            "settlement": "Podrobnosti o vypořádání"
+            "settlement": "Podrobnosti o vypořádání",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "Aktivitu účtu Polkamarkt nelze načíst.",
             "loadMarkets": "Nelze načíst trhy Polkamarkt."
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "Důkazní blok",
             "evidenceHash": "Hash důkazů",
             "evidenceUri": "URI důkazu",
-            "lpContributed": "LP přispěl",
-            "lpShares": "akcie LP",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "ŽÁDNÁ rezerva",
             "oracle": "Oracle",
             "poolCollateral": "Zajištění bazénu",
             "resolutionOutcome": "Výsledek řešení",
             "resolutionSource": "Zdroj rozlišení",
-            "yesReserve": "ANO rezerva"
+            "yesReserve": "ANO rezerva",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "Aktivní",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "Koupit",
             "claim": "Nárokovat",
-            "flip": "Překlopit",
-            "liquidity": "LP",
-            "sell": "prodat"
+            "sell": "prodat",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "Obchodník {trader} / LP {lp}",
-            "connect": "Připojte účet, abyste viděli vytvořené trhy, akcie LP, výplaty a nedávné obchody.",
+            "claimsSummary": "Obchodník {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "Vytvořené trhy",
             "empty": "Pro tento účet zatím nejsou žádné pozice Polkamarktu ani vytvořené trhy.",
             "loading": "Načítání aktivity účtu Polkamarkt...",
             "market": "Trh {id}",
-            "positions": "LP a pozice obchodníků",
+            "positions": "Trader positions",
             "recentTrades": "Nedávné obchody",
-            "sharesSummary": "ANO {yes} / NE {no} / LP {lp}",
-            "subtitle": "Vytvořené trhy, akcie LP, výplaty obchodníků, poplatky za tvůrce a zbytkové nároky na LP.",
-            "title": "Moje trhy / LP"
+            "sharesSummary": "ANO {yes} / NE {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "Aktuálním filtrům neodpovídají žádné trhy.",
         "notIndexed": "Není indexováno",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "NE",
             "yes": "ANO"
         },
-        "pageSubtitle": "Obchodujte s aktivními prediktivními trhy, zakládejte nové trhy a spravujte LP a nárokovatelné zůstatky z toku peněženky Polkaswap.",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "Aktivní"
+            "active": "Aktivní",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0,0",
             "claimable": "Nárokovatelné",
             "claimableFailed": "Nelze přečíst nárokovatelné zůstatky.",
             "claimStatus": "Stav reklamace",
-            "collateralAmount": "Částka ({symbol})",
             "collateralOut": "Kolaterál ven",
             "enterAmount": "Zadejte částku",
-            "flippedShares": "Převrácené akcie",
             "insufficientKusd": "Nedostatečný zůstatek {symbol}",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "Nedostatečný XOR pro síťový poplatek",
-            "invalidAmount": "Zadejte platnou částku",
-            "lpSharesOut": "LP sdílí",
             "noChainMarket": "Trh není obchodovatelný v řetězci",
+            "orderShares": "Shares",
             "quoteFailed": "Cenu nelze obnovit.",
             "refreshingQuote": "Obnovující se citát...",
             "selectMarket": "Vyberte aktivní trh k obchodování.",
             "sharesAmount": "akcie",
             "sharesOut": "Sdílí se",
             "slippage": "Skluz %",
-            "subtitle": "Cenové nabídky, poplatky, ochrana proti skluzu a odeslání peněženky používají běhové prostředí SORA.",
+            "takerFee": "Taker fee",
             "title": "Obchodní lístek",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Kolateral dovnitr ({symbol})",
+            "dpmSubtitle": "Kupujte nebo prodavejte YES a NO pres DPM krivku pred uzavrenim trhu.",
+            "impliedProbabilityShort": "Implikovano {value}",
+            "quoteUnavailable": "Kotace neni dostupna",
+            "sharesToSell": "Akcie k prodeji",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "bajtů",
             "shares": "akcií"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

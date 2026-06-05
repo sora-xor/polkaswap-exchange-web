@@ -41,4 +41,41 @@ describe('BaseApi static network fee extrinsics', () => {
     expect(remarkPayload).toMatch(/^0x[0-9a-f]+$/);
     expect((remarkPayload.length - 2) / 2).toBe(439);
   });
+
+  it('estimates Polkamarkt market creation fees with the atomic condition and market batch', () => {
+    const conditionTx = { type: 'condition' };
+    const marketTx = { type: 'market' };
+    const batchTx = { type: 'batch' };
+
+    const api = {
+      tx: {
+        polkamarkt: {
+          createConditionWithDetails: vi.fn(() => conditionTx),
+          createMarket: vi.fn(() => marketTx),
+        },
+        utility: {
+          batchAll: vi.fn(() => batchTx),
+        },
+      },
+    };
+
+    const baseApi = new BaseApi();
+    baseApi.setConnection({ api } as never);
+
+    const extrinsic = (baseApi as unknown as BaseApiWithPrivateFeeFactory).getEmptyExtrinsic(
+      Operation.PolkamarktCreateMarket
+    );
+
+    expect(extrinsic).toBe(batchTx);
+    expect(api.tx.polkamarkt.createConditionWithDetails).toHaveBeenCalledWith(
+      expect.objectContaining({
+        question: expect.any(Array),
+        oracle: expect.any(Array),
+        resolutionSource: expect.any(Array),
+      }),
+      expect.objectContaining({ category: expect.any(Array), tags: [], metadataUri: [] })
+    );
+    expect(api.tx.polkamarkt.createMarket).toHaveBeenCalledWith(0, 7200);
+    expect(api.tx.utility.batchAll).toHaveBeenCalledWith([conditionTx, marketTx]);
+  });
 });

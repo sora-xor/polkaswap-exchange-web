@@ -10,22 +10,23 @@ import type { HistoryItem } from '../types';
 import type { CodecString } from '@sora-substrate/math';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type {
-  AddLiquidityParams,
   BuyQuote,
   ClaimableInfo,
   CreateConditionParams,
   CreateConditionResult,
   CreateMarketParams,
   CreateMarketResult,
+  EarlyResolutionReport,
+  EvidenceParams,
   EstimateMarketCreationFeeParams,
-  FlipPositionParams,
-  FlipQuote,
-  LiquidityQuote,
   MarketActionResult,
   MarketCreationFeeEstimate,
+  MarketState,
   PolkamarktConditionDetailsInput,
   PolkamarktConditionInput,
+  PolkamarktEvidenceInput,
   PolkamarktOutcome,
+  ReportEarlyResolutionParams,
   RuntimeBytes,
   SellQuote,
   SubmitBuyTradeParams,
@@ -33,7 +34,7 @@ import type {
 } from './types';
 
 type DynamicTxFactory = (...params: unknown[]) => SubmittableExtrinsic<'promise'>;
-type DynamicStorageQuery = () => Promise<{ toString(): string }>;
+type DynamicStorageQuery = (...params: unknown[]) => Promise<unknown>;
 type RawRpcPrimitive = string | number | boolean | null;
 type RpcCodec = {
   isSome?: boolean;
@@ -69,6 +70,7 @@ const RAW_RPC_TIMEOUT_MS = 10_000;
 const FINALIZED_HISTORY_TIMEOUT_MS = 30_000;
 const FINALIZED_HISTORY_POLL_MS = 250;
 const ZERO_CODEC = '0';
+const EARLY_REPORT_BOND_CODEC = new FPNumber('100', KUSD.decimals).toCodecString();
 let rawRpcId = 0;
 
 /**
@@ -80,6 +82,27 @@ export const textBytes = (value: string): RuntimeBytes => Array.from(stringToU8a
  * Converts optional UTF-8 text to runtime bytes, returning an empty vector for blank values.
  */
 export const optionalTextBytes = (value?: string): RuntimeBytes => (value?.trim() ? textBytes(value.trim()) : []);
+
+const optionalHashBytes = (value?: string): RuntimeBytes | null => {
+  const normalized = value?.trim().replace(/^0x/i, '');
+  if (!normalized) return null;
+  if (!/^[0-9a-fA-F]{64}$/.test(normalized)) {
+    throw new Error('Evidence hash must be a 32-byte hex value.');
+  }
+  return normalized.match(/.{2}/g)!.map((byte) => Number.parseInt(byte, 16));
+};
+
+const buildEvidenceInput = ({ uri, hash }: EvidenceParams): PolkamarktEvidenceInput => {
+  const trimmedUri = uri.trim();
+  if (!trimmedUri) {
+    throw new Error('Evidence URI is required.');
+  }
+
+  return {
+    uri: textBytes(trimmedUri),
+    hash: optionalHashBytes(hash),
+  };
+};
 
 /**
  * Parses runtime numeric codecs, event payloads, and GraphQL-ish strings into safe non-negative integers.
@@ -209,6 +232,58 @@ const rpcOutcome = (value: unknown): PolkamarktOutcome => {
 const rpcOptionalOutcome = (value: unknown): PolkamarktOutcome | undefined =>
   value === null || value === undefined ? undefined : rpcOutcome(value);
 
+const normalizedKey = (value: string): string => value.replace(/_/g, '').toLowerCase();
+
+const recordValue = (record: Record<string, unknown>, ...keys: string[]): unknown => {
+  for (const key of keys) {
+    if (record[key] !== undefined && record[key] !== null) return record[key];
+
+    const target = normalizedKey(key);
+    const actualKey = Object.keys(record).find((candidate) => normalizedKey(candidate) === target);
+    if (actualKey && record[actualKey] !== undefined && record[actualKey] !== null) return record[actualKey];
+  }
+
+  return undefined;
+};
+
+const bytesValueToArray = (value: unknown): number[] => {
+  const normalized = unwrapRpcOption(value);
+  if (Array.isArray(normalized)) {
+    return normalized.map((item) => Number(item)).filter((item) => Number.isInteger(item) && item >= 0 && item <= 255);
+  }
+  if (normalized instanceof Uint8Array) {
+    return Array.from(normalized);
+  }
+  if (typeof normalized === 'string') {
+    const text = normalized.trim();
+    if (/^0x[0-9a-fA-F]*$/.test(text)) {
+      return (
+        text
+          .slice(2)
+          .match(/.{1,2}/g)
+          ?.map((byte) => Number.parseInt(byte, 16)) ?? []
+      );
+    }
+    return Array.from(stringToU8a(text));
+  }
+  if (normalized && typeof normalized === 'object' && 'toString' in normalized) {
+    return bytesValueToArray(String(normalized));
+  }
+  return [];
+};
+
+const bytesValueToText = (value: unknown): string | undefined => {
+  const bytes = bytesValueToArray(value);
+  if (!bytes.length) return undefined;
+  const decoded = new TextDecoder().decode(new Uint8Array(bytes)).trim();
+  return decoded && !decoded.includes('\uFFFD') ? decoded : undefined;
+};
+
+const bytesValueToHex = (value: unknown): string | undefined => {
+  const bytes = bytesValueToArray(value);
+  return bytes.length ? `0x${bytes.map((byte) => byte.toString(16).padStart(2, '0')).join('')}` : undefined;
+};
+
 const rawRpcParamJson = (value: RawRpcPrimitive): string => {
   if (typeof value === 'number') {
     if (!Number.isFinite(value)) throw new Error('RPC numeric parameters must be finite.');
@@ -293,9 +368,6 @@ const rawJsonRpc = async (endpoint: string, method: string, params: RawRpcPrimit
 const codecToNatural = (value: CodecString, decimals = KUSD.decimals): string =>
   FPNumber.fromCodecValue(value || ZERO_CODEC, decimals).toString();
 
-const addCodecStrings = (...values: CodecString[]): CodecString =>
-  values.reduce((sum, value) => (BigInt(sum || ZERO_CODEC) + BigInt(value || ZERO_CODEC)).toString(), ZERO_CODEC);
-
 const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 const uniqueHistoryId = (operation: Operation): string =>
@@ -368,6 +440,39 @@ export class PolkamarktModule<T> {
     };
   }
 
+  private buildConditionCreationTx(params: CreateConditionParams): SubmittableExtrinsic<'promise'> {
+    const createConditionWithDetails =
+      this.txApi.create_condition_with_details ?? this.txApi.createConditionWithDetails;
+    const createCondition = this.txApi.create_condition ?? this.txApi.createCondition;
+    if (!(createConditionWithDetails || createCondition)) {
+      throw new Error('Connected runtime does not expose polkamarkt.create_condition.');
+    }
+
+    const conditionInput = this.buildConditionInput(params);
+    const conditionDetails = this.buildConditionDetailsInput(params.category);
+
+    return createConditionWithDetails
+      ? createConditionWithDetails(conditionInput, conditionDetails)
+      : createCondition!(conditionInput);
+  }
+
+  private async buildMarketCreationBatchTx(params: CreateMarketParams): Promise<{
+    conditionTx: SubmittableExtrinsic<'promise'>;
+    marketTx: SubmittableExtrinsic<'promise'>;
+    batchTx: SubmittableExtrinsic<'promise'>;
+  }> {
+    const conditionId = await this.readNextConditionId();
+    if (conditionId === undefined) {
+      throw new Error('Unable to read next Polkamarkt condition id before creating a market.');
+    }
+
+    const conditionTx = this.buildConditionCreationTx(params);
+    const marketTx = this.getTxFactory('create_market', 'createMarket')(conditionId, params.closeBlock);
+    const batchTx = this.root.api.tx.utility.batchAll([conditionTx, marketTx]);
+
+    return { conditionTx, marketTx, batchTx };
+  }
+
   /**
    * Waits for the known creation history row to be finalized before reading its finalized block events.
    */
@@ -404,6 +509,18 @@ export class PolkamarktModule<T> {
     return events.filter((record) => eventPhaseIndex(record) === txIndex);
   }
 
+  private async submitCreationAndReadEvents(
+    tx: SubmittableExtrinsic<'promise'>,
+    historyData: HistoryItem
+  ): Promise<RuntimeEventRecord[]> {
+    const historyId = uniqueHistoryId(historyData.type as Operation);
+
+    await this.root.submitExtrinsic(tx, this.root.account!.pair, { ...historyData, id: historyId });
+
+    const history = await this.waitForFinalizedHistory(historyId);
+    return this.finalizedExtrinsicEvents(history);
+  }
+
   /**
    * Submits a creation transaction and derives the runtime id from its finalized Polkamarkt event.
    */
@@ -413,12 +530,7 @@ export class PolkamarktModule<T> {
     eventMethod: string,
     eventField: string
   ): Promise<number> {
-    const historyId = uniqueHistoryId(historyData.type as Operation);
-
-    await this.root.submitExtrinsic(tx, this.root.account!.pair, { ...historyData, id: historyId });
-
-    const history = await this.waitForFinalizedHistory(historyId);
-    const events = await this.finalizedExtrinsicEvents(history);
+    const events = await this.submitCreationAndReadEvents(tx, historyData);
     const eventId = eventNumber(events, eventMethod, eventField);
     if (eventId === undefined) {
       throw new Error(`Finalized Polkamarkt transaction did not emit ${eventMethod}.${eventField}.`);
@@ -458,40 +570,20 @@ export class PolkamarktModule<T> {
   }
 
   /**
-   * Estimates network fees for the two Polkamarkt market-creation transactions.
+   * Estimates network fees for atomically creating a condition and its DPM market.
    */
   public async estimateMarketCreationFee(params: EstimateMarketCreationFeeParams): Promise<MarketCreationFeeEstimate> {
     assert(Number.isSafeInteger(params.closeBlock) && params.closeBlock > 0, 'Close block must be a positive integer.');
-    assert(BigInt(params.seedLiquidity || ZERO_CODEC) > 0n, 'Seed liquidity must be greater than zero.');
 
-    const createConditionWithDetails =
-      this.txApi.create_condition_with_details ?? this.txApi.createConditionWithDetails;
-    const createCondition = this.txApi.create_condition ?? this.txApi.createCondition;
-    if (!(createConditionWithDetails || createCondition)) {
-      throw new Error('Connected runtime does not expose polkamarkt.create_condition.');
-    }
-
-    const conditionId = (await this.readNextConditionId()) ?? 0;
-    const conditionInput = this.buildConditionInput(params);
-    const conditionDetails = this.buildConditionDetailsInput(params.category);
-    const conditionTx = createConditionWithDetails
-      ? createConditionWithDetails(conditionInput, conditionDetails)
-      : createCondition!(conditionInput);
-    const marketTx = this.getTxFactory('create_market', 'createMarket')(
-      conditionId,
-      params.closeBlock,
-      params.seedLiquidity
-    );
-
-    const [conditionFee, marketFee] = await Promise.all([
-      this.root.getTransactionFee(conditionTx),
-      this.root.getTransactionFee(marketTx),
-    ]);
+    const { conditionTx, marketTx, batchTx } = await this.buildMarketCreationBatchTx(params);
+    const conditionFee = await this.root.getTransactionFee(conditionTx);
+    const marketFee = await this.root.getTransactionFee(marketTx);
+    const totalFee = await this.root.getTransactionFee(batchTx);
 
     return {
       conditionFee,
       marketFee,
-      totalFee: addCodecStrings(conditionFee, marketFee),
+      totalFee,
     };
   }
 
@@ -502,21 +594,8 @@ export class PolkamarktModule<T> {
   public async createCondition(params: CreateConditionParams): Promise<CreateConditionResult> {
     assert(this.root.account, Messages.connectWallet);
 
-    const createConditionWithDetails =
-      this.txApi.create_condition_with_details ?? this.txApi.createConditionWithDetails;
-    const createCondition = this.txApi.create_condition ?? this.txApi.createCondition;
-    if (!(createConditionWithDetails || createCondition)) {
-      throw new Error('Connected runtime does not expose polkamarkt.create_condition.');
-    }
-
-    const conditionInput = this.buildConditionInput(params);
-    const conditionDetails = this.buildConditionDetailsInput(params.category);
-    const tx = createConditionWithDetails
-      ? createConditionWithDetails(conditionInput, conditionDetails)
-      : createCondition!(conditionInput);
-
     const conditionId = await this.submitCreationAndReadEventId(
-      tx,
+      this.buildConditionCreationTx(params),
       { type: Operation.PolkamarktCreateCondition },
       'ConditionCreated',
       'conditionId'
@@ -526,37 +605,34 @@ export class PolkamarktModule<T> {
   }
 
   /**
-   * Creates a tradable Polkamarkt market for an existing condition.
+   * Creates a condition and its DPM Polkamarkt market in one atomic extrinsic.
    */
   public async createMarket(params: CreateMarketParams): Promise<CreateMarketResult> {
     assert(this.root.account, Messages.connectWallet);
-    assert(Number.isSafeInteger(params.conditionId) && params.conditionId >= 0, 'Condition ID must be non-negative.');
     assert(Number.isSafeInteger(params.closeBlock) && params.closeBlock > 0, 'Close block must be a positive integer.');
-    assert(BigInt(params.seedLiquidity || ZERO_CODEC) > 0n, 'Seed liquidity must be greater than zero.');
 
-    const tx = this.getTxFactory('create_market', 'createMarket')(
-      params.conditionId,
-      params.closeBlock,
-      params.seedLiquidity
-    );
+    const { batchTx } = await this.buildMarketCreationBatchTx(params);
+    const events = await this.submitCreationAndReadEvents(batchTx, {
+      type: Operation.PolkamarktCreateMarket,
+      amount: ZERO_CODEC,
+      symbol: KUSD.symbol,
+      assetAddress: KUSD.address,
+      decimals: KUSD.decimals,
+    });
 
-    const marketId = await this.submitCreationAndReadEventId(
-      tx,
-      {
-        type: Operation.PolkamarktCreateMarket,
-        amount: codecToNatural(params.seedLiquidity),
-        symbol: KUSD.symbol,
-        assetAddress: KUSD.address,
-        decimals: KUSD.decimals,
-      },
-      'MarketCreated',
-      'marketId'
-    );
+    const conditionId = eventNumber(events, 'ConditionCreated', 'conditionId');
+    if (conditionId === undefined) {
+      throw new Error('Finalized Polkamarkt transaction did not emit ConditionCreated.conditionId.');
+    }
+
+    const marketId = eventNumber(events, 'MarketCreated', 'marketId');
+    if (marketId === undefined) {
+      throw new Error('Finalized Polkamarkt transaction did not emit MarketCreated.marketId.');
+    }
 
     return {
-      conditionId: params.conditionId,
+      conditionId,
       marketId,
-      seedLiquidity: params.seedLiquidity,
     };
   }
 
@@ -595,45 +671,33 @@ export class PolkamarktModule<T> {
     );
   }
 
-  public flipPosition(params: FlipPositionParams): Promise<T> {
-    assert(this.root.account, Messages.connectWallet);
-    assert(BigInt(params.sharesIn || ZERO_CODEC) > 0n, 'Shares to flip must be greater than zero.');
-
-    return this.root.submitExtrinsic(
-      this.getTxFactory('flip_position', 'flipPosition')(
-        params.marketId,
-        params.fromOutcome,
-        params.sharesIn,
-        params.minCollateralOut,
-        params.minSharesOut
-      ),
-      this.root.account.pair,
-      {
-        type: Operation.PolkamarktFlip,
-        amount: codecToNatural(params.sharesIn),
-        symbol: 'shares',
-        decimals: KUSD.decimals,
-        payload: { marketId: params.marketId, outcome: params.fromOutcome },
-      } as HistoryItem
+  private earlyReportTx(params: ReportEarlyResolutionParams): SubmittableExtrinsic<'promise'> {
+    return this.getTxFactory('report_early_resolution', 'reportEarlyResolution')(
+      params.marketId,
+      params.outcome,
+      buildEvidenceInput(params.evidence)
     );
   }
 
-  public addLiquidity(params: AddLiquidityParams): Promise<T> {
-    assert(this.root.account, Messages.connectWallet);
-    assert(BigInt(params.collateralAmount || ZERO_CODEC) > 0n, 'Liquidity amount must be greater than zero.');
+  public estimateReportEarlyResolutionNetworkFee(params: ReportEarlyResolutionParams): Promise<CodecString> {
+    return this.root.getTransactionFee(this.earlyReportTx(params));
+  }
 
-    return this.root.submitExtrinsic(
-      this.getTxFactory('add_liquidity', 'addLiquidity')(params.marketId, params.collateralAmount, params.minLpShares),
-      this.root.account.pair,
-      {
-        type: Operation.PolkamarktAddLiquidity,
-        amount: codecToNatural(params.collateralAmount),
-        symbol: KUSD.symbol,
-        assetAddress: KUSD.address,
-        decimals: KUSD.decimals,
-        payload: { marketId: params.marketId },
-      } as HistoryItem
-    );
+  public reportEarlyResolution(params: ReportEarlyResolutionParams): Promise<T> {
+    assert(this.root.account, Messages.connectWallet);
+
+    return this.root.submitExtrinsic(this.earlyReportTx(params), this.root.account.pair, {
+      type: Operation.PolkamarktReportEarlyResolution,
+      amount: codecToNatural(EARLY_REPORT_BOND_CODEC),
+      symbol: KUSD.symbol,
+      assetAddress: KUSD.address,
+      decimals: KUSD.decimals,
+      payload: {
+        marketId: params.marketId,
+        outcome: params.outcome,
+        evidenceUri: params.evidence.uri.trim(),
+      },
+    } as HistoryItem);
   }
 
   public async quoteBuyTrade(params: Pick<SubmitBuyTradeParams, 'marketId' | 'outcome' | 'collateralIn'>) {
@@ -672,47 +736,24 @@ export class PolkamarktModule<T> {
     } satisfies SellQuote;
   }
 
-  public async quoteAddLiquidity(params: Pick<AddLiquidityParams, 'marketId' | 'collateralAmount'>) {
-    const rpc = this.rpcApi.quoteAddLiquidity;
+  public async getMarketState(marketId: number): Promise<MarketState | null> {
+    const rpc = this.rpcApi.marketState;
     const record = rpcRecord(
-      rpc
-        ? await rpc(params.marketId, params.collateralAmount)
-        : await rawJsonRpc(this.endpoint, 'polkamarkt_quoteAddLiquidity', [params.marketId, params.collateralAmount])
+      rpc ? await rpc(marketId) : await rawJsonRpc(this.endpoint, 'polkamarkt_marketState', [marketId])
     );
     if (!Object.keys(record).length) return null;
     return {
       marketId: rpcNumber(record, 'marketId'),
-      collateralIn: rpcCodecString(record, 'collateralIn'),
-      lpSharesOut: rpcCodecString(record, 'lpSharesOut'),
-      poolCollateral: rpcCodecString(record, 'poolCollateral'),
-      totalLpShares: rpcCodecString(record, 'totalLpShares'),
-    } satisfies LiquidityQuote;
-  }
-
-  public async quoteFlipPosition(params: Pick<FlipPositionParams, 'marketId' | 'fromOutcome' | 'sharesIn'>) {
-    const rpc = this.rpcApi.quoteFlipPosition;
-    const record = rpcRecord(
-      rpc
-        ? await rpc(params.marketId, params.fromOutcome, params.sharesIn)
-        : await rawJsonRpc(this.endpoint, 'polkamarkt_quoteFlipPosition', [
-            params.marketId,
-            params.fromOutcome,
-            params.sharesIn,
-          ])
-    );
-    if (!Object.keys(record).length) return null;
-    return {
-      marketId: rpcNumber(record, 'marketId'),
-      fromOutcome: rpcOutcome(record.fromOutcome),
-      toOutcome: rpcOutcome(record.toOutcome),
-      sharesIn: rpcCodecString(record, 'sharesIn'),
-      grossCollateralOut: rpcCodecString(record, 'grossCollateralOut'),
-      sellFeeAmount: rpcCodecString(record, 'sellFeeAmount'),
-      collateralReinvested: rpcCodecString(record, 'collateralReinvested'),
-      buyFeeAmount: rpcCodecString(record, 'buyFeeAmount'),
-      pricingCollateral: rpcCodecString(record, 'pricingCollateral'),
-      sharesOut: rpcCodecString(record, 'sharesOut'),
-    } satisfies FlipQuote;
+      mechanism: String(record.mechanism ?? ''),
+      virtualDepth: rpcCodecString(record, 'virtualDepth'),
+      realYesShares: rpcCodecString(record, 'realYesShares'),
+      realNoShares: rpcCodecString(record, 'realNoShares'),
+      dpmCollateral: rpcCodecString(record, 'dpmCollateral'),
+      marginalYesPriceBps: rpcNumber(record, 'marginalYesPriceBps'),
+      marginalNoPriceBps: rpcNumber(record, 'marginalNoPriceBps'),
+      impliedYesProbabilityBps: rpcNumber(record, 'impliedYesProbabilityBps'),
+      impliedNoProbabilityBps: rpcNumber(record, 'impliedNoProbabilityBps'),
+    };
   }
 
   public async getClaimableInfo(account: string, marketId: number) {
@@ -730,10 +771,35 @@ export class PolkamarktModule<T> {
       noShares: rpcCodecString(record, 'noShares'),
       netCollateralPaid: rpcCodecString(record, 'netCollateralPaid'),
       traderPayout: rpcCodecString(record, 'traderPayout'),
+      claimablePayout: rpcCodecString(record, 'claimablePayout'),
       creatorFees: rpcCodecString(record, 'creatorFees'),
-      creatorLiquidity: rpcCodecString(record, 'creatorLiquidity'),
       isCreator: Boolean(record.isCreator),
     } satisfies ClaimableInfo;
+  }
+
+  public async getEarlyResolutionReport(marketId: number): Promise<EarlyResolutionReport | null> {
+    const storage = (this.root.api.query.polkamarkt ?? {}) as Record<string, DynamicStorageQuery | undefined>;
+    const query = storage.earlyResolutionReports ?? storage.early_resolution_reports;
+    if (!query) return null;
+
+    const record = rpcRecord(await query(marketId));
+    if (!Object.keys(record).length) return null;
+
+    const evidenceValue = recordValue(record, 'evidence');
+    const evidence =
+      evidenceValue && typeof evidenceValue === 'object' && !Array.isArray(evidenceValue)
+        ? (evidenceValue as Record<string, unknown>)
+        : {};
+
+    return {
+      marketId,
+      reporter: String(recordValue(record, 'reporter') ?? ''),
+      outcome: rpcOutcome(recordValue(record, 'outcome')),
+      bond: rpcCodecString(record, 'bond'),
+      evidenceUri: bytesValueToText(recordValue(evidence, 'uri')),
+      evidenceHash: bytesValueToHex(recordValue(evidence, 'hash')),
+      evidenceBlock: parseRuntimeNumber(recordValue(evidence, 'atBlock', 'at_block')),
+    };
   }
 
   public estimateBuyTradeNetworkFee(params: SubmitBuyTradeParams): Promise<CodecString> {
@@ -748,39 +814,13 @@ export class PolkamarktModule<T> {
     );
   }
 
-  public estimateFlipNetworkFee(params: FlipPositionParams): Promise<CodecString> {
-    return this.root.getTransactionFee(
-      this.getTxFactory('flip_position', 'flipPosition')(
-        params.marketId,
-        params.fromOutcome,
-        params.sharesIn,
-        params.minCollateralOut,
-        params.minSharesOut
-      )
-    );
-  }
-
-  public estimateAddLiquidityNetworkFee(params: AddLiquidityParams): Promise<CodecString> {
-    return this.root.getTransactionFee(
-      this.getTxFactory('add_liquidity', 'addLiquidity')(params.marketId, params.collateralAmount, params.minLpShares)
-    );
-  }
-
   private marketActionTx(
     marketId: number,
-    action: 'claim_market' | 'claim_creator_fees' | 'claim_creator_liquidity' | 'claim_liquidity',
-    lpShares: CodecString = ZERO_CODEC
+    action: 'claim_market' | 'claim_creator_fees'
   ): SubmittableExtrinsic<'promise'> {
-    const camelCaseAction =
-      action === 'claim_market'
-        ? 'claimMarket'
-        : action === 'claim_creator_fees'
-          ? 'claimCreatorFees'
-          : action === 'claim_creator_liquidity'
-            ? 'claimCreatorLiquidity'
-            : 'claimLiquidity';
+    const camelCaseAction = action === 'claim_market' ? 'claimMarket' : 'claimCreatorFees';
     const txFactory = this.getTxFactory(action, camelCaseAction);
-    return action === 'claim_liquidity' ? txFactory(marketId, lpShares) : txFactory(marketId);
+    return txFactory(marketId);
   }
 
   public estimateClaimMarketNetworkFee(marketId: number): Promise<CodecString> {
@@ -791,22 +831,13 @@ export class PolkamarktModule<T> {
     return this.root.getTransactionFee(this.marketActionTx(marketId, 'claim_creator_fees'));
   }
 
-  public estimateClaimCreatorLiquidityNetworkFee(marketId: number): Promise<CodecString> {
-    return this.root.getTransactionFee(this.marketActionTx(marketId, 'claim_creator_liquidity'));
-  }
-
-  public estimateClaimLiquidityNetworkFee(marketId: number, lpShares: CodecString = ZERO_CODEC): Promise<CodecString> {
-    return this.root.getTransactionFee(this.marketActionTx(marketId, 'claim_liquidity', lpShares));
-  }
-
   private submitMarketAction(
     marketId: number,
-    action: 'claim_market' | 'claim_creator_fees' | 'claim_creator_liquidity' | 'claim_liquidity',
-    operation: Operation,
-    lpShares: CodecString = ZERO_CODEC
+    action: 'claim_market' | 'claim_creator_fees',
+    operation: Operation
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
-    return this.root.submitExtrinsic(this.marketActionTx(marketId, action, lpShares), this.root.account.pair, {
+    return this.root.submitExtrinsic(this.marketActionTx(marketId, action), this.root.account.pair, {
       type: operation,
       payload: { marketId },
     } as HistoryItem);
@@ -839,14 +870,6 @@ export class PolkamarktModule<T> {
 
   public claimCreatorFees(marketId: number): Promise<T> {
     return this.submitMarketAction(marketId, 'claim_creator_fees', Operation.PolkamarktClaimCreatorFees);
-  }
-
-  public claimCreatorLiquidity(marketId: number): Promise<T> {
-    return this.submitMarketAction(marketId, 'claim_creator_liquidity', Operation.PolkamarktClaimCreatorLiquidity);
-  }
-
-  public claimLiquidity(marketId: number, lpShares: CodecString = ZERO_CODEC): Promise<T> {
-    return this.submitMarketAction(marketId, 'claim_liquidity', Operation.PolkamarktClaimLiquidity, lpShares);
   }
 }
 

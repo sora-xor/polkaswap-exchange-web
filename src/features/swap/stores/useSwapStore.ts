@@ -75,6 +75,7 @@ const buildInitialState = (): SwapState => {
     distribution: [],
     isPathAvailable: false,
     isAvailable: false,
+    quoteError: false,
     liquiditySources: [],
     swapQuote: null,
     selectedDexId: DexId.XOR,
@@ -105,6 +106,7 @@ export const useSwapStore = defineStore('swap', () => {
   const distribution = ref(initialState.distribution);
   const isPathAvailable = ref(initialState.isPathAvailable);
   const isAvailable = ref(initialState.isAvailable);
+  const quoteError = ref(initialState.quoteError);
   const liquiditySources = ref(initialState.liquiditySources);
   const swapQuote = ref(initialState.swapQuote);
   const selectedDexId = ref(initialState.selectedDexId);
@@ -248,6 +250,7 @@ export const useSwapStore = defineStore('swap', () => {
       swapQuote.value = null;
       isAvailable.value = false;
       isPathAvailable.value = false;
+      quoteError.value = false;
       liquiditySources.value = [];
       return;
     }
@@ -260,6 +263,10 @@ export const useSwapStore = defineStore('swap', () => {
       isPathAvailable.value = payload.isPathAvailable ?? false;
     }
     liquiditySources.value = nextLiquiditySources;
+  }
+
+  function setQuoteError(flag = false) {
+    quoteError.value = flag;
   }
 
   function setPathAvailability(flag = false) {
@@ -372,6 +379,9 @@ export const useSwapStore = defineStore('swap', () => {
         case 'isAvailable':
           isAvailable.value = next.isAvailable;
           break;
+        case 'quoteError':
+          quoteError.value = next.quoteError;
+          break;
         case 'liquiditySources':
           liquiditySources.value = next.liquiditySources;
           break;
@@ -409,6 +419,7 @@ export const useSwapStore = defineStore('swap', () => {
       distribution,
       isPathAvailable,
       isAvailable,
+      quoteError,
       liquiditySources,
       swapQuote,
       selectedDexId,
@@ -437,6 +448,7 @@ export const useSwapStore = defineStore('swap', () => {
       setRoute,
       setDistribution,
       setSubscriptionPayload,
+      setQuoteError,
       setPathAvailability,
       setLiquiditySource,
       selectDexId,

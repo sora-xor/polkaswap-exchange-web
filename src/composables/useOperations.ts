@@ -37,8 +37,7 @@ const amountBasedOperations = [
   Operation.PolkamarktCreateMarket,
   Operation.PolkamarktBuy,
   Operation.PolkamarktSell,
-  Operation.PolkamarktFlip,
-  Operation.PolkamarktAddLiquidity,
+  Operation.PolkamarktReportEarlyResolution,
 ];
 
 const orderBookOperations = [

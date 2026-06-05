@@ -150,7 +150,7 @@ const polkamarktWorkflow = [
   { key: 'route', code: '#/polkamarkt' },
   { key: 'markets', code: 'markets + marketSnapshots' },
   { key: 'trade', code: 'Buy / Sell / Flip / LP / Claim' },
-  { key: 'create', code: 'createCondition -> createMarket' },
+  { key: 'create', code: 'batchAll(createCondition, createMarket)' },
   { key: 'positions', code: 'My Markets / LP' },
 ] as const;
 

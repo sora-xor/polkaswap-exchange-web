@@ -16,23 +16,30 @@ export interface PolkamarktMarket {
   probability?: number;
   trending?: boolean;
   status?: string;
+  mechanism?: 'DynamicPariMutuel' | 'MigratedLegacy' | string;
   collateralAsset?: string;
-  seedLiquidity?: number;
+  virtualDepth?: number;
+  dpmCollateral?: number;
+  realYesShares?: number;
+  realNoShares?: number;
+  marginalYesPriceBps?: number;
+  marginalNoPriceBps?: number;
+  impliedYesProbabilityBps?: number;
+  impliedNoProbabilityBps?: number;
   creatorFees?: number;
-  liquidityShares?: number;
-  liquidityCollateralContributed?: number;
   resolutionOutcome?: string;
   resolutionEvidenceUri?: string;
   resolutionEvidenceHash?: string;
   resolutionEvidenceBlock?: number;
+  earlyResolutionOutcome?: TicketOutcome | string;
+  earlyResolutionReporter?: string;
+  earlyResolutionBond?: number;
+  earlyResolutionEvidenceUri?: string;
+  earlyResolutionEvidenceHash?: string;
+  earlyResolutionEvidenceBlock?: number;
   cancellationEvidenceUri?: string;
   cancellationEvidenceHash?: string;
   cancellationEvidenceBlock?: number;
-  pool?: {
-    collateral?: number;
-    yes?: number;
-    no?: number;
-  };
 }
 
 export interface MarketHistoryPoint {
@@ -48,7 +55,7 @@ export interface MarketHistoryPoint {
   status?: string;
 }
 
-export type TradeMode = 'buy' | 'sell' | 'flip' | 'liquidity' | 'claim';
+export type TradeMode = 'buy' | 'sell' | 'claim' | 'report';
 export type TicketOutcome = 'YES' | 'NO';
 
 export interface AccountPosition {
@@ -60,14 +67,11 @@ export interface AccountPosition {
   yesShares?: number;
   noShares?: number;
   netCollateralPaid?: number;
-  lpShares?: number;
-  lpCollateralContributed?: number;
   costBasisUsd?: number;
   marketValueUsd?: number;
   realizedPnlUsd?: number;
   unrealizedPnlUsd?: number;
   claimablePayoutUsd?: number;
-  lpClaimablePayoutUsd?: number;
   isCreator?: boolean;
   status?: string;
   updatedAt?: string;
@@ -77,19 +81,16 @@ export interface AccountTrade {
   id: string;
   marketId?: number;
   marketTitle?: string;
-  side?: 'buy' | 'sell' | 'claim' | 'flip';
+  side?: 'buy' | 'sell' | 'claim';
   outcome?: TicketOutcome;
   fromOutcome?: TicketOutcome;
   toOutcome?: TicketOutcome;
   collateralUsd?: number;
-  collateralReinvestedUsd?: number;
   shares?: number;
   sharesIn?: number;
   sharesOut?: number;
   price?: number;
   feeUsd?: number;
-  sellFeeUsd?: number;
-  buyFeeUsd?: number;
   realizedPnlUsd?: number;
   timestamp?: string;
   blockNumber?: number;

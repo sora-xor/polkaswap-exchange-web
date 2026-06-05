@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "Шектеу тәртібінен бас тарту сәтсіз аяқталды",
             "OrderBookCancelLimitOrders": "Тапсырыстарды болдырмау сәтсіз аяқталды",
             "OrderBookPlaceLimitOrder": "{amount} {symbol} шекті тапсырысты {price} {symbol2} кезінде қою мүмкін болмады",
-            "PolkamarktAddLiquidity": "Polkamarkt-қа {amount} {symbol} өтімділік қосылмады",
             "PolkamarktBuy": "Polkamarkt сайтында {amount} {symbol} сатып алынбады",
             "PolkamarktClaimCreatorFees": "Polkamarkt авторларының алымдарын талап ету мүмкін болмады",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt жасаушының өтімділігін талап ету мүмкін болмады",
-            "PolkamarktClaimLiquidity": "Polkamarkt LP қалдығын талап ету мүмкін болмады",
             "PolkamarktClaimMarket": "Polkamarkt төлемін талап ету мүмкін болмады",
             "PolkamarktClaimMarkets": "Polkamarkt төлемдерін талап ету мүмкін болмады",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "Полкамаркт шартын жасау сәтсіз аяқталды",
             "PolkamarktCreateMarket": "{amount} {symbol} арқылы Polkamarkt нарығын жасау мүмкін болмады",
-            "PolkamarktFlip": "Polkamarkt сайтында {amount} {symbol} аударылмады",
             "PolkamarktSell": "Polkamarkt сайтында {amount} {symbol} сатылмады",
             "ReferralReserveXor": "{amount} XOR байланыстыру сәтсіз аяқталды",
             "ReferralSetInvitedUser": "{role} {address} орнатылмады",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "Шектеу тәртібі жойылды",
             "OrderBookCancelLimitOrders": "Тапсырыс шектеулі",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol}, {price} {symbol2} орналастырылды",
-            "PolkamarktAddLiquidity": "Polkamarkt-қа {amount} {symbol} өтімділік қосылды",
             "PolkamarktBuy": "Polkamarkt сайтында {amount} {symbol} сатып алдым",
             "PolkamarktClaimCreatorFees": "Polkamarkt авторларының алымдары талап етілді",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt жасаушының өтімділігі талап етілді",
-            "PolkamarktClaimLiquidity": "Полкамаркт LP қалдығы талап етілді",
             "PolkamarktClaimMarket": "Polkamarkt төлемі талап етілді",
             "PolkamarktClaimMarkets": "Polkamarkt төлемдері талап етілді",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Полкамаркт жағдайы жасалды",
             "PolkamarktCreateMarket": "Polkamarkt нарығы {amount} {symbol} арқылы жасалған",
-            "PolkamarktFlip": "Polkamarkt сайтында {amount} {symbol} аударылды",
             "PolkamarktSell": "Polkamarkt сайтында {amount} {symbol} сатылды",
             "ReferralReserveXor": "Байланысты {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} сәтті орнатылды",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "Тапсырысты болдырмау",
         "OrderBookCancelLimitOrders": "Тапсырыстарды болдырмау",
         "OrderBookPlaceLimitOrder": "Тапсырыс беру",
-        "PolkamarktAddLiquidity": "Polkamarkt өтімділігін қосыңыз",
         "PolkamarktBuy": "Polkamarkt акцияларын сатып алыңыз",
         "PolkamarktClaimCreatorFees": "Polkamarkt авторларының ақысын талап ету",
-        "PolkamarktClaimCreatorLiquidity": "Polkamarkt Creator өтімділігін талап ету",
-        "PolkamarktClaimLiquidity": "Polkamarkt LP қалдығын талап етіңіз",
         "PolkamarktClaimMarket": "Polkamarkt төлемін талап ету",
         "PolkamarktClaimMarkets": "Polkamarkt төлемдерін талап ету",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "Polkamarkt шартын жасаңыз",
         "PolkamarktCreateMarket": "Полкамаркт нарығын жасаңыз",
-        "PolkamarktFlip": "Flip Polkamarkt Position",
         "PolkamarktSell": "Polkamarkt акцияларын сатыңыз",
         "ReferralReserveXor": "XOR облигациялары",
         "ReferralSetInvitedUser": "{role} орнату",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "Сатып алу",
             "claimCreatorFees": "Авторлық алымдарды талап ету",
-            "claimCreatorLiquidity": "Шағым жасаушының өтімділігі",
-            "claimLpResidual": "LP қалдығын талап ету",
             "claimTraderPayout": "Трейдер төлемін талап етіңіз",
             "createMarket": "Нарық құру",
-            "flip": "Төңкеру",
-            "liquidity": "Өтімділікті қосыңыз",
-            "sell": "Сату"
+            "sell": "Сату",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "Санат",
             "closeBlock": "Блокты жабу",
+            "creatorSeed": "Creator seed",
             "creationFee": "Шығару ақысы",
             "deadline": "Сауда мерзімі",
-            "marketFailed": "Жағдай жасалды, бірақ нарық құру сәтсіз аяқталды. Сақталған шартпен нарық құруды қайталап көріңіз.",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "Сұрақ, oracle және ажыратымдылық метадеректері 512 байтқа сәйкес келуі керек.",
             "question": "Нарықтық сұрақ",
             "questionPlaceholder": "Таңдалған мерзімде оқиға ИӘ деп шешіле ме?",
             "questionTooShort": "Сұрақ кемінде 32 байт болуы керек.",
             "retryMessage": "{id} шарты жасалды. Тек нарық құру қадамын қайталап көріңіз.",
             "retrySubmit": "Нарық құруды қайталап көріңіз",
-            "seedLiquidity": "Тұқымның өтімділігі",
-            "seedTooSmall": "Тұқымның өтімділігі кемінде {amount} {symbol} болуы керек.",
-            "submit": "Жағдай мен нарықты құру",
-            "title": "Полкамаркт нарығын жасаңыз"
+            "submit": "Create market",
+            "title": "Полкамаркт нарығын жасаңыз",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "Аяқтауды күтуде",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "Паллет күйін, oracle мәліметтерін және есеп айырысу дәлелдерін көру үшін нарықты таңдаңыз.",
+            "orderBook": "Order book",
             "openResolutionSource": "Ашық бастапқы сілтеме",
             "oracle": "Oracle",
             "pool": "Өтімділік пулы",
-            "settlement": "Есеп айырысу мәліметтері"
+            "settlement": "Есеп айырысу мәліметтері",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "Polkamarkt есептік жазбасының әрекетін жүктеу мүмкін емес.",
             "loadMarkets": "Polkamarkt нарықтарын жүктеу мүмкін емес."
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "Дәлелдер блогы",
             "evidenceHash": "Дәлелдеу хэш",
             "evidenceUri": "Дәлелдеу URI",
-            "lpContributed": "LP үлес қосты",
-            "lpShares": "LP акциялары",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "Резерв ЖОҚ",
             "oracle": "Oracle",
             "poolCollateral": "Бассейн кепілі",
             "resolutionOutcome": "Шешім нәтижесі",
             "resolutionSource": "Ажыратымдылық көзі",
-            "yesReserve": "ИӘ резерв"
+            "yesReserve": "ИӘ резерв",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "Белсенді",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "Сатып алу",
             "claim": "Шағым",
-            "flip": "Төңкеру",
-            "liquidity": "LP",
-            "sell": "Сату"
+            "sell": "Сату",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "Трейдер {trader} / LP {lp}",
-            "connect": "Жасалған нарықтарды, LP акцияларын, төлемдерді және соңғы саудаларды көру үшін тіркелгіні қосыңыз.",
+            "claimsSummary": "Трейдер {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "Нарықтар құрылды",
             "empty": "Бұл тіркелгі үшін әлі Polkamarkt позициялары немесе нарықтар жасалған жоқ.",
             "loading": "Polkamarkt есептік жазбасының әрекеті жүктелуде...",
             "market": "Нарық {id}",
-            "positions": "LP және трейдер позициялары",
+            "positions": "Trader positions",
             "recentTrades": "Соңғы саудалар",
-            "sharesSummary": "ИӘ {yes} / ЖОҚ {no} / LP {lp}",
-            "subtitle": "Жасалған нарықтар, LP акциялары, трейдер төлемдері, жасаушылар алымдары және қалдық LP шағымдары.",
-            "title": "Менің нарықтарым / LP"
+            "sharesSummary": "ИӘ {yes} / ЖОҚ {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "Ағымдағы сүзгілерге сәйкес келетін нарықтар жоқ.",
         "notIndexed": "Индекстелмеген",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "ЖОҚ",
             "yes": "ИӘ"
         },
-        "pageSubtitle": "Белсенді болжау нарықтарымен сауда жасаңыз, жаңа нарықтар ашыңыз және Polkaswap әмиян ағынынан LP және талап етілетін баланстарды басқарыңыз.",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "Белсенді"
+            "active": "Белсенді",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0,0",
             "claimable": "Талап қоюға болады",
             "claimableFailed": "Шағымды баланстарды оқу мүмкін емес.",
             "claimStatus": "Шағым мәртебесі",
-            "collateralAmount": "Сома ({symbol})",
             "collateralOut": "Кепіл шығару",
             "enterAmount": "Соманы енгізіңіз",
-            "flippedShares": "Төңкерілген акциялар",
             "insufficientKusd": "{symbol} теңгерім жеткіліксіз",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "Желілік төлем үшін XOR жеткіліксіз",
-            "invalidAmount": "Жарамды соманы енгізіңіз",
-            "lpSharesOut": "LP бөліседі",
             "noChainMarket": "Нарық желіде сатылмайды",
+            "orderShares": "Shares",
             "quoteFailed": "Дәйексөзді жаңарту мүмкін емес.",
             "refreshingQuote": "Дәйексөз жаңартылуда...",
             "selectMarket": "Сауда үшін белсенді нарықты таңдаңыз.",
             "sharesAmount": "Акциялар",
             "sharesOut": "Бөліседі",
             "slippage": "Сырғанау %",
-            "subtitle": "Баға ұсыныстары, алымдар, сырғып кетуден қорғау және әмиянды жіберу SORA жұмыс уақытын пайдаланады.",
+            "takerFee": "Taker fee",
             "title": "Сауда билеті",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "байт",
             "shares": "акциялар"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

@@ -29,15 +29,19 @@ export class TokenBalanceSubscriptions {
       return;
     }
 
-    const observable = getBalanceObservable.call(api.assets, token);
-    if (!observable || typeof observable.subscribe !== 'function') {
+    try {
+      const observable = getBalanceObservable.call(api.assets, token);
+      if (!observable || typeof observable.subscribe !== 'function') {
+        this.subscriptions.set(key, { updateBalance, subscription: null });
+        return;
+      }
+
+      const subscription = observable.subscribe((balance) => updateBalance(balance));
+
+      this.subscriptions.set(key, { updateBalance, subscription });
+    } catch {
       this.subscriptions.set(key, { updateBalance, subscription: null });
-      return;
     }
-
-    const subscription = observable.subscribe((balance) => updateBalance(balance));
-
-    this.subscriptions.set(key, { updateBalance, subscription });
   }
 
   remove(key: string): void {

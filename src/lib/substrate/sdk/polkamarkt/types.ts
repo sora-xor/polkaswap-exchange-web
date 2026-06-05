@@ -24,7 +24,6 @@ export interface EstimateMarketCreationFeeParams {
   resolutionSource: string;
   category?: string;
   closeBlock: number;
-  seedLiquidity: CodecString;
 }
 
 export interface MarketCreationFeeEstimate {
@@ -44,16 +43,13 @@ export interface CreateConditionResult {
   conditionId: number;
 }
 
-export interface CreateMarketParams {
-  conditionId: number;
+export interface CreateMarketParams extends CreateConditionParams {
   closeBlock: number;
-  seedLiquidity: CodecString;
 }
 
 export interface CreateMarketResult {
-  conditionId: number;
+  conditionId?: number;
   marketId?: number;
-  seedLiquidity: CodecString;
 }
 
 export interface SubmitBuyTradeParams {
@@ -70,18 +66,20 @@ export interface SubmitSellTradeParams {
   minCollateralOut: CodecString;
 }
 
-export interface FlipPositionParams {
-  marketId: number;
-  fromOutcome: PolkamarktOutcome;
-  sharesIn: CodecString;
-  minCollateralOut: CodecString;
-  minSharesOut: CodecString;
+export interface PolkamarktEvidenceInput {
+  uri: RuntimeBytes;
+  hash: null | RuntimeBytes;
 }
 
-export interface AddLiquidityParams {
+export interface EvidenceParams {
+  uri: string;
+  hash?: string;
+}
+
+export interface ReportEarlyResolutionParams {
   marketId: number;
-  collateralAmount: CodecString;
-  minLpShares: CodecString;
+  outcome: PolkamarktOutcome;
+  evidence: EvidenceParams;
 }
 
 export interface BuyQuote {
@@ -102,25 +100,17 @@ export interface SellQuote {
   collateralOut: CodecString;
 }
 
-export interface LiquidityQuote {
+export interface MarketState {
   marketId: number;
-  collateralIn: CodecString;
-  lpSharesOut: CodecString;
-  poolCollateral: CodecString;
-  totalLpShares: CodecString;
-}
-
-export interface FlipQuote {
-  marketId: number;
-  fromOutcome: PolkamarktOutcome;
-  toOutcome: PolkamarktOutcome;
-  sharesIn: CodecString;
-  grossCollateralOut: CodecString;
-  sellFeeAmount: CodecString;
-  collateralReinvested: CodecString;
-  buyFeeAmount: CodecString;
-  pricingCollateral: CodecString;
-  sharesOut: CodecString;
+  mechanism: string;
+  virtualDepth: CodecString;
+  realYesShares: CodecString;
+  realNoShares: CodecString;
+  dpmCollateral: CodecString;
+  marginalYesPriceBps: number;
+  marginalNoPriceBps: number;
+  impliedYesProbabilityBps: number;
+  impliedNoProbabilityBps: number;
 }
 
 export interface ClaimableInfo {
@@ -132,17 +122,22 @@ export interface ClaimableInfo {
   noShares: CodecString;
   netCollateralPaid: CodecString;
   traderPayout: CodecString;
+  claimablePayout: CodecString;
   creatorFees: CodecString;
-  creatorLiquidity: CodecString;
   isCreator: boolean;
+}
+
+export interface EarlyResolutionReport {
+  marketId: number;
+  reporter: string;
+  outcome: PolkamarktOutcome;
+  bond: CodecString;
+  evidenceUri?: string;
+  evidenceHash?: string;
+  evidenceBlock?: number;
 }
 
 export interface MarketActionResult {
   marketId: number;
-  action:
-    | 'claim_market'
-    | 'claim_markets'
-    | 'claim_creator_fees'
-    | 'claim_creator_liquidity'
-    | 'claim_liquidity';
+  action: 'claim_market' | 'claim_markets' | 'claim_creator_fees' | 'report_early_resolution';
 }

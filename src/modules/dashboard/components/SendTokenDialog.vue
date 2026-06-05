@@ -82,7 +82,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
-import { isMaxButtonAvailable } from '@/utils';
+import { getMaxValue, hasInsufficientBalance, isMaxButtonAvailable } from '@/utils';
 
 import type TokenInputComponent from '@/components/shared/Input/TokenInput.vue';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
@@ -110,7 +110,7 @@ const props = withDefaults(
 
 const { t } = useTranslation();
 const { loading, withNotifications } = useTransaction();
-const { Zero, getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
+const { getFPNumber, getFPNumberFromCodec, formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 const settingsStore = useSettingsStore();
 const assetsStore = useAssetsStore();
 
@@ -137,20 +137,24 @@ const tokenSymbol = computed(() => asset.value?.symbol ?? '');
 const title = computed(() => `Send ${tokenSymbol.value}`);
 const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
 
-const fpBalance = computed(() => getFPNumberFromCodec(balance.value, tokenDecimals.value));
 const assetWithBalance = computed<Nullable<AccountAsset>>(() => {
   if (!asset.value) return null;
   return { ...asset.value, balance: { transferable: balance.value } } as unknown as AccountAsset;
 });
+/** Fee-adjusted maximum users can enter; XOR sends reserve the XOR network fee. */
+const maxSendValue = computed(() => {
+  if (!assetWithBalance.value) return ZeroStringValue;
+  return getMaxValue(assetWithBalance.value, networkFee.value);
+});
+const fpMaxSendValue = computed(() => getFPNumber(maxSendValue.value, tokenDecimals.value));
 
 const trimmedAddress = computed(() => address.value.trim());
 const emptyAddress = computed(() => trimmedAddress.value.length === 0);
 const validAddress = computed(() => !emptyAddress.value && api.validateAddress(trimmedAddress.value));
 const emptyValue = computed(() => !Number(value.value));
 const isInsufficientBalance = computed(() => {
-  if (!value.value) return false;
-  const amount = getFPNumber(value.value, tokenDecimals.value);
-  return fpBalance.value.sub(amount).isLtZero();
+  if (!value.value || !assetWithBalance.value) return false;
+  return hasInsufficientBalance(assetWithBalance.value, value.value, networkFee.value);
 });
 const isInsufficientXorForFee = computed(() => xorBalance.value.sub(fpNetworkFee.value).isLtZero());
 
@@ -161,8 +165,11 @@ const isMaxAvailable = computed(() => {
 
 const valuePercent = computed(() => {
   if (!value.value) return 0;
-  if (fpBalance.value.isZero()) return 0;
-  const percent = getFPNumber(value.value, tokenDecimals.value).div(fpBalance.value).mul(HundredNumber).toNumber(0);
+  if (fpMaxSendValue.value.isZero()) return 0;
+  const percent = getFPNumber(value.value, tokenDecimals.value)
+    .div(fpMaxSendValue.value)
+    .mul(HundredNumber)
+    .toNumber(0);
   return percent > HundredNumber ? HundredNumber : percent;
 });
 
@@ -198,12 +205,12 @@ const handleAfterOpen = () => {
 };
 
 const handlePercentChange = (percent: number) => {
-  const amount = fpBalance.value.mul(percent / HundredNumber);
+  const amount = fpMaxSendValue.value.mul(percent / HundredNumber);
   value.value = amount.toString();
 };
 
 const handleMaxValue = () => {
-  value.value = fpBalance.value.toString();
+  value.value = maxSendValue.value;
 };
 
 const handleCommentInput = (event: KeyboardEvent) => {

@@ -104,6 +104,7 @@ export const Operation = {
   SwapAndSend: 'SwapAndSend',
   Transfer: 'Transfer',
   VestedTransfer: 'VestedTransfer',
+  XorlessTransfer: 'XorlessTransfer',
   XorEvmTransfer: 'XorEvmTransfer',
   SwapTransferBatch: 'SwapTransferBatch',
   Mint: 'Mint',
@@ -118,6 +119,7 @@ export const Operation = {
   SubstrateIncoming: 'SubstrateIncoming',
   BorrowVaultDebt: 'BorrowVaultDebt',
   RepayVaultDebt: 'RepayVaultDebt',
+  PolkamarktReportEarlyResolution: 'PolkamarktReportEarlyResolution',
   RegisterAsset: 'RegisterAsset',
 };
 export const TransactionStatus = {

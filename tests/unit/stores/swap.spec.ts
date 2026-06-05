@@ -236,6 +236,23 @@ describe('swap store', () => {
     expect(store.isPathAvailable).toBe(false);
   });
 
+  it('tracks and resets quote calculation failures', () => {
+    const store = useSwapStore();
+
+    store.setQuoteError(true);
+
+    expect(store.quoteError).toBe(true);
+
+    store.setSubscriptionPayload();
+
+    expect(store.quoteError).toBe(false);
+
+    store.setQuoteError(true);
+    store.reset();
+
+    expect(store.quoteError).toBe(false);
+  });
+
   it('persists the loss warning flag', () => {
     const store = useSwapStore();
     const setSpy = vi.spyOn(settingsStorage, 'set');

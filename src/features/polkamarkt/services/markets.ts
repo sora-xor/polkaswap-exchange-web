@@ -3,8 +3,14 @@ import { gql } from '@urql/core';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 
 import { normalizeMarketCategory, normalizeMarketOracle, parseBlockInput, parseProbability } from '../lib/markets';
+import {
+  fetchReadOnlyRuntimePolkamarktMarkets,
+  fetchRuntimePolkamarktMarkets,
+  mergePolkamarktMarkets,
+} from './runtimeMarkets';
 
 import type { PolkamarktMarket } from '../types';
+import type { ApiPromise } from '@polkadot/api';
 
 type MarketPayload =
   | Array<Record<string, unknown>>
@@ -14,6 +20,12 @@ type MarketPayload =
 
 type MarketsResponse = {
   markets?: MarketPayload;
+};
+
+type FetchPolkamarktMarketsOptions = {
+  api?: ApiPromise | null;
+  endpoint?: string;
+  limit?: number;
 };
 
 const MarketsQuery = gql<MarketsResponse>`
@@ -32,16 +44,19 @@ const MarketsQuery = gql<MarketsResponse>`
           resolutionSource
           closeBlock
           status
+          mechanism
           collateralAsset
-          seedLiquidity
+          virtualDepth
+          dpmCollateral
+          realYesShares
+          realNoShares
+          marginalYesPriceBps
+          marginalNoPriceBps
+          impliedYesProbabilityBps
+          impliedNoProbabilityBps
           creatorFees
           liquidityUsd: liquidityUSD
           volumeUsd: volumeUSD
-          poolCollateral: collateral
-          poolYes: yesShares
-          poolNo: noShares
-          liquidityShares
-          liquidityCollateralContributed
           resolutionOutcome
           resolutionEvidenceUri
           resolutionEvidenceHash
@@ -73,13 +88,10 @@ const LegacyMarketsQuery = gql<MarketsResponse>`
           resolutionSource
           closeBlock
           status
+          mechanism
           collateralAsset
-          seedLiquidity
           liquidityUsd: liquidityUSD
           volumeUsd: volumeUSD
-          poolCollateral: collateral
-          poolYes: yesShares
-          poolNo: noShares
           resolutionOutcome
           probability
           priceYes
@@ -139,28 +151,35 @@ export function parseMarket(input: Record<string, unknown>): PolkamarktMarket | 
     oracle: normalizeMarketOracle(parseString(input.oracle)),
     resolutionSource: parseString(input.resolutionSource),
     closeBlock: parseBlockInput(input.closeBlock),
-    liquidity: coerceNumber(input.liquidityUsd ?? input.liquidityUSD ?? input.liquidity ?? input.seedLiquidity),
+    liquidity: coerceNumber(input.liquidityUsd ?? input.liquidityUSD ?? input.liquidity ?? input.dpmCollateral),
     volume: coerceNumber(input.volumeUsd ?? input.volumeUSD ?? input.volume ?? input.marketVolume),
     probability: parseProbability(input.probability ?? input.priceYes),
     trending: Boolean(input.trending ?? false),
     status: parseString(input.status),
+    mechanism: parseString(input.mechanism),
     collateralAsset: parseString(input.collateralAsset),
-    seedLiquidity: positiveNumber(input.seedLiquidity),
+    virtualDepth: positiveNumber(input.virtualDepth),
+    dpmCollateral: positiveNumber(input.dpmCollateral),
+    realYesShares: positiveNumber(input.realYesShares),
+    realNoShares: positiveNumber(input.realNoShares),
+    marginalYesPriceBps: nonNegativeNumber(input.marginalYesPriceBps),
+    marginalNoPriceBps: nonNegativeNumber(input.marginalNoPriceBps),
+    impliedYesProbabilityBps: nonNegativeNumber(input.impliedYesProbabilityBps),
+    impliedNoProbabilityBps: nonNegativeNumber(input.impliedNoProbabilityBps),
     creatorFees: nonNegativeNumber(input.creatorFees),
-    liquidityShares: positiveNumber(input.liquidityShares),
-    liquidityCollateralContributed: positiveNumber(input.liquidityCollateralContributed),
     resolutionOutcome: parseString(input.resolutionOutcome),
     resolutionEvidenceUri: parseString(input.resolutionEvidenceUri),
     resolutionEvidenceHash: parseString(input.resolutionEvidenceHash),
     resolutionEvidenceBlock: positiveNumber(input.resolutionEvidenceBlock),
+    earlyResolutionOutcome: parseString(input.earlyResolutionOutcome),
+    earlyResolutionReporter: parseString(input.earlyResolutionReporter),
+    earlyResolutionBond: positiveNumber(input.earlyResolutionBond),
+    earlyResolutionEvidenceUri: parseString(input.earlyResolutionEvidenceUri),
+    earlyResolutionEvidenceHash: parseString(input.earlyResolutionEvidenceHash),
+    earlyResolutionEvidenceBlock: positiveNumber(input.earlyResolutionEvidenceBlock),
     cancellationEvidenceUri: parseString(input.cancellationEvidenceUri),
     cancellationEvidenceHash: parseString(input.cancellationEvidenceHash),
     cancellationEvidenceBlock: positiveNumber(input.cancellationEvidenceBlock),
-    pool: {
-      collateral: positiveNumber(input.poolCollateral),
-      yes: positiveNumber(input.poolYes),
-      no: positiveNumber(input.poolNo),
-    },
   };
 }
 
@@ -179,10 +198,45 @@ async function requestMarkets(query: typeof MarketsQuery, limit: number): Promis
 }
 
 /**
- * Loads Polkamarkt markets from the active Polkaswap indexer with a legacy schema fallback.
+ * Loads Polkamarkt markets from the active Polkaswap indexer and appends direct runtime markets
+ * that have not been indexed yet.
  */
-export async function fetchPolkamarktMarkets(limit = 48): Promise<PolkamarktMarket[]> {
-  const markets = await requestMarkets(MarketsQuery, limit);
-  if (markets.length) return markets;
-  return requestMarkets(LegacyMarketsQuery, limit);
+export async function fetchPolkamarktMarkets(
+  options: FetchPolkamarktMarketsOptions | number = 48
+): Promise<PolkamarktMarket[]> {
+  const { api, endpoint, limit } =
+    typeof options === 'number' ? { api: undefined, endpoint: undefined, limit: options } : { limit: 48, ...options };
+  let indexedMarkets: PolkamarktMarket[] = [];
+  let indexerError: unknown;
+
+  try {
+    indexedMarkets = await requestMarkets(MarketsQuery, limit);
+    if (!indexedMarkets.length) {
+      indexedMarkets = await requestMarkets(LegacyMarketsQuery, limit);
+    }
+  } catch (error) {
+    indexerError = error;
+  }
+
+  let runtimeMarkets: PolkamarktMarket[] = [];
+  if (api) {
+    try {
+      runtimeMarkets = await fetchRuntimePolkamarktMarkets(api);
+    } catch (error) {
+      console.warn('Polkamarkt runtime markets are unavailable.', error);
+    }
+  }
+  if (!runtimeMarkets.length && endpoint) {
+    try {
+      runtimeMarkets = await fetchReadOnlyRuntimePolkamarktMarkets(endpoint);
+    } catch (error) {
+      console.warn('Read-only Polkamarkt runtime markets are unavailable.', error);
+    }
+  }
+
+  if (indexerError && !indexedMarkets.length && !runtimeMarkets.length) {
+    throw indexerError;
+  }
+
+  return mergePolkamarktMarkets(indexedMarkets, runtimeMarkets);
 }

@@ -24,6 +24,40 @@ const createQuoteData = (dexId: number, amount: string): SwapQuoteData => ({
 });
 
 describe('SwapModule.getDexesSwapQuoteObservable', () => {
+  it('uses the default XOR DEX when public DEX metadata is not populated yet', async () => {
+    const defaultDexQuote$ = new Subject<SwapQuoteData>();
+    const swap = new SwapModule({
+      dex: {
+        publicDexes: [],
+      },
+    } as any);
+
+    const getSwapQuoteObservableMock = vi
+      .spyOn(swap, 'getSwapQuoteObservable')
+      .mockImplementation((_firstAssetAddress, _secondAssetAddress, _sources, dexId) => {
+        return dexId === DexId.XOR ? defaultDexQuote$ : null;
+      });
+
+    const observable = swap.getDexesSwapQuoteObservable('asset-a', 'asset-b');
+    expect(observable).not.toBeNull();
+
+    let latest!: SwapQuoteData;
+    const subscription = observable!.subscribe((data) => {
+      latest = data;
+    });
+
+    defaultDexQuote$.next(createQuoteData(DexId.XOR, '1000000000000000000'));
+    await Promise.resolve();
+
+    const quoteResult = latest.quote('asset-a', 'asset-b', '1', false);
+    expect(quoteResult.dexId).toBe(DexId.XOR);
+    expect((quoteResult.result as any).amount).toBe('1000000000000000000');
+    expect(getSwapQuoteObservableMock).toHaveBeenCalledWith('asset-a', 'asset-b', [], DexId.XOR);
+
+    subscription.unsubscribe();
+    defaultDexQuote$.complete();
+  });
+
   it('does not block active DEX quotes when another DEX stream is silent', async () => {
     const activeDexQuote$ = new Subject<SwapQuoteData>();
     const silentDexQuote$ = new Subject<SwapQuoteData>();
@@ -43,24 +77,21 @@ describe('SwapModule.getDexesSwapQuoteObservable', () => {
     const observable = swap.getDexesSwapQuoteObservable('asset-a', 'asset-b');
     expect(observable).not.toBeNull();
 
-    let latest!: SwapQuoteData;
+    let latest: SwapQuoteData | undefined;
     const subscription = observable!.subscribe((data) => {
       latest = data;
     });
 
-    // Before active stream emits, fallback quote should resolve to an empty result.
-    const fallbackResult = latest.quote('asset-a', 'asset-b', '1', false);
-    expect(fallbackResult.dexId).toBe(DexId.XOR);
-    expect((fallbackResult.result as any).amount).toBe(0);
+    expect(latest).toBeUndefined();
 
     activeDexQuote$.next(createQuoteData(DexId.XOR, '1000000000000000000'));
     await Promise.resolve();
 
-    const quoteResult = latest.quote('asset-a', 'asset-b', '1', false);
+    const quoteResult = latest!.quote('asset-a', 'asset-b', '1', false);
     expect(quoteResult.dexId).toBe(DexId.XOR);
     expect((quoteResult.result as any).amount).toBe('1000000000000000000');
-    expect(latest.isAvailable).toBe(true);
-    expect(latest.liquiditySources).toEqual([LiquiditySourceTypes.Default]);
+    expect(latest!.isAvailable).toBe(true);
+    expect(latest!.liquiditySources).toEqual([LiquiditySourceTypes.Default]);
 
     expect(getSwapQuoteObservableMock).toHaveBeenCalledTimes(2);
 

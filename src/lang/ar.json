@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "فشل إلغاء أمر الحد",
             "OrderBookCancelLimitOrders": "فشل في إلغاء أوامر الحد",
             "OrderBookPlaceLimitOrder": "فشل في تقديم طلب محدد بقيمة {amount} {symbol} عند {price} {symbol2}",
-            "PolkamarktAddLiquidity": "فشل في إضافة {amount} {symbol} السيولة إلى Polkamarkt",
             "PolkamarktBuy": "فشل شراء {amount} {symbol} على Polkamarkt",
             "PolkamarktClaimCreatorFees": "تعذّرت المطالبة برسوم منشئ محتوى Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "فشل في المطالبة بسيولة منشئ Polkamarkt",
-            "PolkamarktClaimLiquidity": "فشلت المطالبة بالمتبقي من Polkamarkt LP",
             "PolkamarktClaimMarket": "تعذّرت المطالبة بدفع تعويضات Polkamarkt",
             "PolkamarktClaimMarkets": "فشل في المطالبة بدفعات Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "فشل إنشاء شرط Polkamarkt",
             "PolkamarktCreateMarket": "فشل إنشاء سوق Polkamarkt باستخدام {amount} {symbol}",
-            "PolkamarktFlip": "فشل في قلب {amount} {symbol} على Polkamarkt",
             "PolkamarktSell": "فشل بيع {amount} {symbol} على Polkamarkt",
             "ReferralReserveXor": "فشل الارتباط {amount} XOR",
             "ReferralSetInvitedUser": "فشل في الضبط {role} {address}",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "تم إلغاء أمر الحد",
             "OrderBookCancelLimitOrders": "الحد من أوامر إلغاء",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} في {price} {symbol2} تم وضعها",
-            "PolkamarktAddLiquidity": "تمت إضافة {amount} {symbol} السيولة إلى Polkamarkt",
             "PolkamarktBuy": "تم شراؤه {amount} {symbol} من Polkamarkt",
             "PolkamarktClaimCreatorFees": "تمت المطالبة برسوم منشئ محتوى Polkamarkt",
-            "PolkamarktClaimCreatorLiquidity": "تمت المطالبة بسيولة منشئ Polkamarkt",
-            "PolkamarktClaimLiquidity": "تمت المطالبة بالمتبقي من Polkamarkt LP",
             "PolkamarktClaimMarket": "تمت المطالبة بدفع تعويضات Polkamarkt",
             "PolkamarktClaimMarkets": "تمت المطالبة بدفعات Polkamarkt",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "تم إنشاء حالة Polkamarkt",
             "PolkamarktCreateMarket": "تم إنشاء سوق Polkamarkt باستخدام {amount} {symbol}",
-            "PolkamarktFlip": "انقلبت {amount} {symbol} على Polkamarkt",
             "PolkamarktSell": "تم بيعه {amount} {symbol} في Polkamarkt",
             "ReferralReserveXor": "المستعبدين {amount} XOR",
             "ReferralSetInvitedUser": "تم ضبط {role} {address} بنجاح",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "إلغاء الطلب",
         "OrderBookCancelLimitOrders": "إلغاء الطلبات",
         "OrderBookPlaceLimitOrder": "ترتيب مكان",
-        "PolkamarktAddLiquidity": "أضف سيولة Polkamarkt",
         "PolkamarktBuy": "شراء أسهم بولكاماركت",
         "PolkamarktClaimCreatorFees": "المطالبة برسوم Polkamarkt Creator",
-        "PolkamarktClaimCreatorLiquidity": "المطالبة بسيولة Polkamarkt Creator",
-        "PolkamarktClaimLiquidity": "المطالبة بالمتبقي من Polkamarkt LP",
         "PolkamarktClaimMarket": "المطالبة بدفع تعويضات Polkamarkt",
         "PolkamarktClaimMarkets": "المطالبة بدفعات Polkamarkt",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "إنشاء حالة Polkamarkt",
         "PolkamarktCreateMarket": "إنشاء سوق بولكاماركت",
-        "PolkamarktFlip": "اقلب موضع Polkamarkt",
         "PolkamarktSell": "بيع أسهم Polkamarkt",
         "ReferralReserveXor": "بوند xor",
         "ReferralSetInvitedUser": "تعيين {role}",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "يشتري",
             "claimCreatorFees": "المطالبة برسوم المنشئ",
-            "claimCreatorLiquidity": "المطالبة بالسيولة الخالقة",
-            "claimLpResidual": "المطالبة بـ LP المتبقية",
             "claimTraderPayout": "المطالبة بدفع تعويضات التاجر",
             "createMarket": "إنشاء السوق",
-            "flip": "الوجه",
-            "liquidity": "أضف السيولة",
-            "sell": "بيع"
+            "sell": "بيع",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "الفئة",
             "closeBlock": "إغلاق الكتلة",
+            "creatorSeed": "Creator seed",
             "creationFee": "رسوم الإنشاء",
             "deadline": "الموعد النهائي للتداول",
-            "marketFailed": "لقد تم إنشاء الظروف، ولكن فشل إنشاء السوق. أعد محاولة إنشاء السوق بالشرط المحفوظ.",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "يجب أن تتناسب البيانات التعريفية للأسئلة والأوراكل والحل مع 512 بايت.",
             "question": "سؤال السوق",
             "questionPlaceholder": "هل سيصل الحدث إلى \"نعم\" بحلول الموعد النهائي المحدد؟",
             "questionTooShort": "يجب أن يكون حجم السؤال 32 بايت على الأقل.",
             "retryMessage": "تم إنشاء الحالة {id}. أعد محاولة خطوة إنشاء السوق فقط.",
             "retrySubmit": "أعد محاولة إنشاء السوق",
-            "seedLiquidity": "سيولة البذور",
-            "seedTooSmall": "يجب أن تكون سيولة البذور على الأقل {amount} {symbol}.",
-            "submit": "خلق الحالة والسوق",
-            "title": "إنشاء سوق بولكاماركت"
+            "submit": "Create market",
+            "title": "إنشاء سوق بولكاماركت",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "في انتظار الانتهاء",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "حدد السوق لعرض حالة منصة التحميل وتفاصيل أوراكل وأدلة التسوية.",
+            "orderBook": "Order book",
             "openResolutionSource": "رابط مفتوح المصدر",
             "oracle": "أوراكل",
             "pool": "تجمع السيولة",
-            "settlement": "تفاصيل التسوية"
+            "settlement": "تفاصيل التسوية",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "غير قادر على تحميل نشاط حساب Polkamarkt.",
             "loadMarkets": "غير قادر على تحميل أسواق Polkamarkt."
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "كتلة الأدلة",
             "evidenceHash": "تجزئة الأدلة",
             "evidenceUri": "معرف الموارد المنتظم (URI) للأدلة",
-            "lpContributed": "ساهم ليرة لبنانية",
-            "lpShares": "أسهم LP",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "لا احتياطي",
             "oracle": "أوراكل",
             "poolCollateral": "ضمانات المسبح",
             "resolutionOutcome": "نتيجة القرار",
             "resolutionSource": "مصدر القرار",
-            "yesReserve": "نعم احتياطي"
+            "yesReserve": "نعم احتياطي",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "نشط",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "شراء",
             "claim": "المطالبة",
-            "flip": "الوجه",
-            "liquidity": "ليرة لبنانية",
-            "sell": "بيع"
+            "sell": "بيع",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "التاجر {trader} / ليرة لبنانية {lp}",
-            "connect": "قم بتوصيل حساب لرؤية الأسواق التي تم إنشاؤها، وأسهم LP، والدفعات، والتداولات الأخيرة.",
+            "claimsSummary": "التاجر {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "الأسواق التي تم إنشاؤها",
             "empty": "لا توجد مراكز Polkamarkt أو أسواق تم إنشاؤها لهذا الحساب حتى الآن.",
             "loading": "جارٍ تحميل نشاط حساب Polkamarkt...",
             "market": "السوق {id}",
-            "positions": "مواقف LP والتاجر",
+            "positions": "Trader positions",
             "recentTrades": "الصفقات الأخيرة",
-            "sharesSummary": "نعم {yes} / لا {no} / LP {lp}",
-            "subtitle": "الأسواق التي تم إنشاؤها، وأسهم LP، ودفعات المتداولين، ورسوم المنشئ، ومطالبات LP المتبقية.",
-            "title": "أسواقي / إل بي"
+            "sharesSummary": "نعم {yes} / لا {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "لا توجد أسواق تتطابق مع المرشحات الحالية.",
         "notIndexed": "غير مفهرسة",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "لا",
             "yes": "نعم"
         },
-        "pageSubtitle": "تداول في أسواق التنبؤ النشطة، وأنشئ أسواقًا جديدة، وقم بإدارة LP والأرصدة القابلة للمطالبة من تدفق محفظة Polkaswap.",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "نشط"
+            "active": "نشط",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0.0",
             "claimable": "يمكن المطالبة به",
             "claimableFailed": "غير قادر على قراءة الأرصدة المطالب بها.",
             "claimStatus": "حالة المطالبة",
-            "collateralAmount": "المبلغ ({symbol})",
             "collateralOut": "ضمانات خارج",
             "enterAmount": "أدخل المبلغ",
-            "flippedShares": "الاسهم المقلوبة",
             "insufficientKusd": "رصيد {symbol} غير كافٍ",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR غير كافية لرسوم الشبكة",
-            "invalidAmount": "أدخل مبلغًا صالحًا",
-            "lpSharesOut": "أسهم LP خارج",
             "noChainMarket": "السوق غير قابل للتداول عبر السلسلة",
+            "orderShares": "Shares",
             "quoteFailed": "غير قادر على تحديث الاقتباس.",
             "refreshingQuote": "اقتباس متجدد...",
             "selectMarket": "حدد سوقًا نشطًا للتداول.",
             "sharesAmount": "أسهم",
             "sharesOut": "شارك خارجا",
             "slippage": "نسبة الانزلاق",
-            "subtitle": "تستخدم عروض الأسعار والرسوم والحماية من الانزلاق وتقديم المحفظة وقت تشغيل SORA.",
+            "takerFee": "Taker fee",
             "title": "تذكرة التجارة",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "بايت",
             "shares": "أسهم"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

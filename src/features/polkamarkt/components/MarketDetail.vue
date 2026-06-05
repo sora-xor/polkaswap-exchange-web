@@ -11,13 +11,9 @@
         <p>{{ market.description }}</p>
       </header>
 
-      <market-outcome-chart
-        :market="market"
-        :points="history"
-        :loading="historyLoading"
-      >
+      <market-outcome-chart :market="market" :points="history" :loading="historyLoading">
         <template #actions>
-          <market-share-widget compact :market="market" :history="history" />
+          <market-share-widget compact :market="market" :history="history" :current-block="currentBlock" />
         </template>
       </market-outcome-chart>
 
@@ -40,65 +36,116 @@
         </div>
         <div class="metric">
           <span>{{ t('polkamarkt.metrics.closeBlock') }}</span>
-          <strong>{{ market.closeBlock ? Number(market.closeBlock).toLocaleString() : t('polkamarkt.notIndexed') }}</strong>
+          <strong>{{
+            market.closeBlock ? Number(market.closeBlock).toLocaleString() : t('polkamarkt.notIndexed')
+          }}</strong>
           <small v-if="closeDate">{{ closeDate }}</small>
         </div>
         <div class="metric">
           <span>{{ t('polkamarkt.metrics.status') }}</span>
-          <strong>{{ market.status || t('polkamarkt.status.active') }}</strong>
+          <strong>{{ marketStatus }}</strong>
         </div>
       </div>
 
       <div class="market-detail__sections">
-        <section>
+        <section class="market-detail__section">
           <h3>{{ t('polkamarkt.details.oracle') }}</h3>
-          <dl>
-            <div>
+          <dl class="market-detail__facts">
+            <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.oracle') }}</dt>
               <dd>{{ market.oracle || t('polkamarkt.notIndexed') }}</dd>
             </div>
-            <div>
+            <div class="market-detail__fact market-detail__fact--wide">
               <dt>{{ t('polkamarkt.fields.resolutionSource') }}</dt>
               <dd>
-                <a v-if="isUrl(market.resolutionSource)" :href="market.resolutionSource" target="_blank" rel="noreferrer">
+                <a
+                  v-if="isUrl(market.resolutionSource)"
+                  :href="market.resolutionSource"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {{ t('polkamarkt.details.openResolutionSource') }}
                 </a>
                 <template v-else>{{ market.resolutionSource || t('polkamarkt.notIndexed') }}</template>
               </dd>
             </div>
-            <div>
+            <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.conditionId') }}</dt>
               <dd>{{ formatOptionalNumber(market.conditionId) }}</dd>
             </div>
-            <div>
+            <div class="market-detail__fact market-detail__fact--wide market-detail__fact--code">
               <dt>{{ t('polkamarkt.fields.collateralAsset') }}</dt>
               <dd>{{ market.collateralAsset || collateralSymbol }}</dd>
             </div>
           </dl>
         </section>
 
-        <section>
-          <h3>{{ t('polkamarkt.details.pool') }}</h3>
-          <dl>
-            <div>
+        <section v-if="market.earlyResolutionOutcome" class="market-detail__section">
+          <h3>{{ t('polkamarkt.details.earlyResolutionReport') }}</h3>
+          <dl class="market-detail__facts">
+            <div class="market-detail__fact">
+              <dt>{{ t('polkamarkt.fields.reportedOutcome') }}</dt>
+              <dd>{{ market.earlyResolutionOutcome }}</dd>
+            </div>
+            <div class="market-detail__fact">
+              <dt>{{ t('polkamarkt.fields.bond') }}</dt>
+              <dd>{{ formatStateAmount(market.earlyResolutionBond, collateralSymbol) }}</dd>
+            </div>
+            <div class="market-detail__fact market-detail__fact--wide">
+              <dt>{{ t('polkamarkt.fields.evidenceUri') }}</dt>
+              <dd>
+                <a
+                  v-if="isUrl(market.earlyResolutionEvidenceUri)"
+                  :href="market.earlyResolutionEvidenceUri"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {{ market.earlyResolutionEvidenceUri }}
+                </a>
+                <template v-else>{{ market.earlyResolutionEvidenceUri || t('polkamarkt.notIndexed') }}</template>
+              </dd>
+            </div>
+            <div class="market-detail__fact market-detail__fact--wide market-detail__fact--code">
+              <dt>{{ t('polkamarkt.fields.evidenceHash') }}</dt>
+              <dd>{{ market.earlyResolutionEvidenceHash || t('polkamarkt.notIndexed') }}</dd>
+            </div>
+            <div class="market-detail__fact">
+              <dt>{{ t('polkamarkt.fields.evidenceBlock') }}</dt>
+              <dd>{{ formatOptionalNumber(market.earlyResolutionEvidenceBlock) }}</dd>
+            </div>
+            <div class="market-detail__fact market-detail__fact--wide market-detail__fact--code">
+              <dt>{{ t('polkamarkt.fields.reporter') }}</dt>
+              <dd>{{ market.earlyResolutionReporter || t('polkamarkt.notIndexed') }}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="market-detail__section">
+          <h3>{{ t('polkamarkt.fields.mechanism') }}</h3>
+          <dl class="market-detail__facts">
+            <div class="market-detail__fact">
+              <dt>{{ t('polkamarkt.fields.mechanism') }}</dt>
+              <dd>{{ market.mechanism || 'DynamicPariMutuel' }}</dd>
+            </div>
+            <div class="market-detail__fact">
+              <dt>{{ t('polkamarkt.fields.creatorSeed') }}</dt>
+              <dd>{{ formatStateAmount(market.virtualDepth, t('polkamarkt.units.shares')) }}</dd>
+            </div>
+            <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.poolCollateral') }}</dt>
-              <dd>{{ formatPoolAmount(market.pool?.collateral, collateralSymbol) }}</dd>
+              <dd>{{ formatStateAmount(market.dpmCollateral, collateralSymbol) }}</dd>
             </div>
-            <div>
+            <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.yesReserve') }}</dt>
-              <dd>{{ formatPoolAmount(market.pool?.yes, t('polkamarkt.units.shares')) }}</dd>
+              <dd>{{ formatStateAmount(market.realYesShares, t('polkamarkt.units.shares')) }}</dd>
             </div>
-            <div>
+            <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.noReserve') }}</dt>
-              <dd>{{ formatPoolAmount(market.pool?.no, t('polkamarkt.units.shares')) }}</dd>
+              <dd>{{ formatStateAmount(market.realNoShares, t('polkamarkt.units.shares')) }}</dd>
             </div>
-            <div>
-              <dt>{{ t('polkamarkt.fields.lpShares') }}</dt>
-              <dd>{{ formatPoolAmount(market.liquidityShares, t('polkamarkt.units.shares')) }}</dd>
-            </div>
-            <div>
-              <dt>{{ t('polkamarkt.fields.lpContributed') }}</dt>
-              <dd>{{ formatPoolAmount(market.liquidityCollateralContributed, collateralSymbol) }}</dd>
+            <div class="market-detail__fact market-detail__fact--wide">
+              <dt>{{ t('polkamarkt.fields.backing') }}</dt>
+              <dd>{{ t('polkamarkt.details.completeSetBacking') }}</dd>
             </div>
           </dl>
         </section>
@@ -112,7 +159,12 @@ import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { POLKAMARKT_COLLATERAL_ASSET } from '../consts';
-import { calculateApproximateCloseDate, yesNoPricesFromProbability } from '../lib/markets';
+import {
+  calculateApproximateCloseDate,
+  formatApproximateCloseDate,
+  getMarketDisplayStatus,
+  yesNoPricesFromProbability,
+} from '../lib/markets';
 import MarketOutcomeChart from './MarketOutcomeChart.vue';
 import MarketShareWidget from './MarketShareWidget.vue';
 
@@ -129,9 +181,15 @@ const { t } = useTranslation();
 const collateralSymbol = POLKAMARKT_COLLATERAL_ASSET.symbol;
 
 const prices = computed(() => yesNoPricesFromProbability(props.market?.probability));
+const marketStatus = computed(() => {
+  const status = getMarketDisplayStatus(props.market, props.currentBlock);
+  if (status?.toLowerCase() === 'closed') return t('polkamarkt.status.closed');
+  if (status?.toLowerCase() === 'early report locked') return t('polkamarkt.status.earlyReportLocked');
+  return status || t('polkamarkt.status.active');
+});
 const closeDate = computed(() => {
   const date = calculateApproximateCloseDate(props.currentBlock ?? 0, props.market?.closeBlock);
-  return date ? date.toLocaleString() : '';
+  return date ? formatApproximateCloseDate(date) : '';
 });
 const isUrl = (value?: string): boolean => /^https?:\/\//i.test(value ?? '');
 
@@ -144,7 +202,7 @@ const formatPrice = (value?: number): string =>
 const formatOptionalNumber = (value?: number): string =>
   Number.isFinite(value) ? Number(value).toLocaleString() : t('polkamarkt.notIndexed');
 
-const formatPoolAmount = (value?: number, unit = ''): string =>
+const formatStateAmount = (value?: number, unit = ''): string =>
   Number.isFinite(value)
     ? `${new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(value ?? 0)} ${unit}`.trim()
     : t('polkamarkt.notIndexed');
@@ -194,43 +252,56 @@ const formatPoolAmount = (value?: number, unit = ''): string =>
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, #{'minmax(0, 1fr)'});
     gap: $inner-spacing-mini;
     margin-bottom: $inner-spacing-big;
 
     @include tablet(true) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
     }
   }
 
   &__sections {
     display: grid;
-    gap: $inner-spacing-medium;
+    grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 340px), 1fr)'});
+    gap: $inner-spacing-medium $inner-spacing-big;
 
-    section {
-      border-top: 1px solid var(--s-color-base-border-secondary);
-      padding-top: $inner-spacing-medium;
+    @include tablet(true) {
+      gap: $inner-spacing-medium;
     }
+  }
+
+  &__section {
+    display: grid;
+    gap: $inner-spacing-mini;
+    min-width: 0;
+    border-top: 1px solid var(--s-color-base-border-secondary);
+    padding-top: $inner-spacing-medium;
 
     h3 {
-      margin: 0 0 $inner-spacing-mini;
+      margin: 0;
       font-size: var(--s-heading6-font-size);
     }
+  }
 
-    dl {
-      display: grid;
-      gap: $inner-spacing-small;
-      margin: 0;
-    }
+  &__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 150px), 1fr)'});
+    gap: $inner-spacing-small $inner-spacing-medium;
+    margin: 0;
+  }
 
-    div {
-      display: grid;
-      grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1fr);
-      gap: $inner-spacing-mini;
-      min-width: 0;
+  &__fact {
+    display: flex;
+    flex-direction: column;
+    gap: $inner-spacing-tiny;
+    min-width: 0;
+
+    &--wide {
+      grid-column: span 2;
 
       @include tablet(true) {
-        grid-template-columns: 1fr;
+        grid-column: span 1;
       }
     }
 
@@ -244,6 +315,12 @@ const formatPoolAmount = (value?: number, unit = ''): string =>
       min-width: 0;
       overflow-wrap: anywhere;
       font-weight: 600;
+    }
+
+    &--code dd {
+      font-family: var(--s-font-family-mono, monospace);
+      font-size: var(--s-font-size-mini);
+      line-height: 1.45;
     }
 
     a {

@@ -1,5 +1,5 @@
 import { POLKAMARKT_COLLATERAL_ASSET } from '../consts';
-import { yesNoPricesFromProbability } from './markets';
+import { getMarketDisplayStatus, yesNoPricesFromProbability } from './markets';
 
 import type { PolkamarktMarket } from '../types';
 
@@ -7,14 +7,17 @@ export type MarketShareTarget = 'telegram' | 'x';
 
 const POLKASWAP_URL = 'https://polkaswap.io/';
 
-const formatPercent = (value?: number): string => (Number.isFinite(value) ? `${Math.round(value ?? 0)}%` : 'Not indexed');
+const formatPercent = (value?: number): string =>
+  Number.isFinite(value) ? `${Math.round(value ?? 0)}%` : 'Not indexed';
 
 const formatPrice = (value?: number): string =>
   Number.isFinite(value) ? `${(value ?? 0).toFixed(2)} ${POLKAMARKT_COLLATERAL_ASSET.symbol}` : 'Not indexed';
 
 const formatUsd = (value?: number): string =>
   Number.isFinite(value)
-    ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value ?? 0)
+    ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(
+        value ?? 0
+      )
     : 'Not indexed';
 
 const formatBlock = (value?: number): string =>
@@ -35,14 +38,17 @@ export function buildPolkamarktTradeLink(market: Pick<PolkamarktMarket, 'chainId
 /**
  * Creates a compact text snapshot suitable for Telegram, social media, and chat apps.
  */
-export function buildMarketShareSnapshot(market: PolkamarktMarket): string {
+export function buildMarketShareSnapshot(market: PolkamarktMarket, currentBlock?: number): string {
   const prices = yesNoPricesFromProbability(market.probability);
-  const yesPercent = Number.isFinite(market.probability) ? Math.max(0, Math.min(100, Math.round(market.probability ?? 0))) : undefined;
+  const yesPercent = Number.isFinite(market.probability)
+    ? Math.max(0, Math.min(100, Math.round(market.probability ?? 0)))
+    : undefined;
   const noPercent = yesPercent === undefined ? undefined : 100 - yesPercent;
+  const status = getMarketDisplayStatus(market, currentBlock) ?? 'Active';
 
   return [
     market.title,
-    `${market.category} · ${market.status || 'Active'}`,
+    `${market.category} · ${status}`,
     `YES ${formatPercent(yesPercent)} (${formatPrice(prices.yes)}) · NO ${formatPercent(noPercent)} (${formatPrice(prices.no)})`,
     `Liquidity ${formatUsd(market.liquidity)} · Volume ${formatUsd(market.volume)}`,
     `Close block ${formatBlock(market.closeBlock)}`,
@@ -52,8 +58,8 @@ export function buildMarketShareSnapshot(market: PolkamarktMarket): string {
 /**
  * Adds the Polkaswap trade URL to the snapshot for copy and native share flows.
  */
-export function buildMarketShareText(market: PolkamarktMarket, tradeLink: string): string {
-  return `${buildMarketShareSnapshot(market)}\nTrade on Polkaswap: ${tradeLink}`;
+export function buildMarketShareText(market: PolkamarktMarket, tradeLink: string, currentBlock?: number): string {
+  return `${buildMarketShareSnapshot(market, currentBlock)}\nTrade on Polkaswap: ${tradeLink}`;
 }
 
 /**

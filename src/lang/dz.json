@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "ཚད་འཛིན་གོ་རིམ་ཆ་མེད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
             "OrderBookCancelLimitOrders": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་གཏང་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
             "OrderBookPlaceLimitOrder": "{amount} {symbol} ལུ་ {price} {symbol2} ལུ་ ཚད་འཛིན་གོ་རིམ་བཙུགས་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
-            "PolkamarktAddLiquidity": "པོལ་ཀ་མར་ཀཊི་ལུ་ {amount} {symbol} དངུལ་ཆུ་ཁ་སྐོང་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
             "PolkamarktBuy": "པོལ་ཀ་མར་ཀཊི་ནང་ {amount} {symbol} ཉོ་མ་ཚུགས།",
             "PolkamarktClaimCreatorFees": "པོལ་ཀ་མཱརཀ་ཊི་བཟོ་མིའི་འཐུས་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
-            "PolkamarktClaimCreatorLiquidity": "པོལ་ཀ་མཱརཀ་ཊི་བཟོ་མི་ དངུལ་གྱི་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
-            "PolkamarktClaimLiquidity": "པོལ་ཀ་མརཀ་ཊི་ཨེལ་པི་ལྷག་ལུས་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
             "PolkamarktClaimMarket": "པོལ་ཀ་མཱརཀ་ཊི་གི་དངུལ་ཕོགས་ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
             "PolkamarktClaimMarkets": "པོལ་ཀ་མཱརཀ་ཊི་གི་དངུལ་ཕོགས་ཚུ་ ཐོབ་བརྗོད་བཀོད་མ་ཚུགས།",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "པོལ་ཀ་མཱརཀཊི་གནས་སྟངས་གསར་བསྐྲུན་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
             "PolkamarktCreateMarket": "{amount} {symbol} དང་གཅིག་ཁར་ པོལ་ཀ་མར་ཀཊི་ཚོང་ལམ་གསར་བསྐྲུན་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
-            "PolkamarktFlip": "པོལ་ཀ་མར་ཀཊི་གུ་ {amount} {symbol} ཕིལིཔ་འབད་ནི་ལུ་འཐུས་ཤོར་བྱུང་ཡོདཔ།",
             "PolkamarktSell": "པོལ་ཀ་མར་ཀཊི་གུ་ {amount} {symbol} བཙོང་མ་ཚུགས།",
             "ReferralReserveXor": "བོནཌི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ། {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} གཞི་སྒྲིག་འབད་ནི་ལུ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་བཏང་ཡོདཔ།",
             "OrderBookCancelLimitOrders": "ཚད་འཛིན་བཀའ་རྒྱ་ཆ་མེད་བཏང་ཡོདཔ།",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} བཞག་ཡོད།",
-            "PolkamarktAddLiquidity": "{amount} {symbol} པཱོལ་ཀ་མཱརཀ་ཊི་ལུ་ཁ་སྐོང་འབད་ཡོདཔ།",
             "PolkamarktBuy": "{amount} {symbol} པོལ་ཀ་མར་ཀཊ་ནང་ལས་ཉོས།",
             "PolkamarktClaimCreatorFees": "Polkamarkt བཟོ་མིའི་འཐུས་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt བཟོ་མི་ དངུལ་གྱི་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
-            "PolkamarktClaimLiquidity": "པོལ་ཀ་མཱརཀ་ཊི་ཨེལ་པི་ལྷག་ལུས་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
             "PolkamarktClaimMarket": "པོལ་ཀ་མཱརཀ་ཊི་གིས་ དངུལ་སྤྲོད་ལེན་འབད་ཡོདཔ།",
             "PolkamarktClaimMarkets": "པོལ་ཀ་མཱརཀ་ཊི་གི་དངུལ་ཕོགས་ཐོབ་བརྗོད་བཀོད་ཡོདཔ།",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Polkamarkt གནས་སྟངས་གསར་བསྐྲུན་འབད་ཡོདཔ།",
             "PolkamarktCreateMarket": "{amount} {symbol} དང་ཅིག་ཁར་ པོལ་ཀ་མར་ཀཊ་ཁྲོམ་ར་བཟོ་ཡོདཔ།",
-            "PolkamarktFlip": "ཕོལ་ཀ་མརཀ་ཊི་ནང་ {amount} {symbol} གཡོག་བཀོལ་ཡོདཔ།",
             "PolkamarktSell": "{amount} {symbol} པོལ་ཀ་མཱརཀ་ཊི་ནང་བཙོང་ཡོདཔ།",
             "ReferralReserveXor": "བོན་ཌི་ {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} མཐར་འཁྱོལ་ཅན་སྦེ་གཞི་སྒྲིག་འབད་ཡོདཔ།",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "བཀའ་རྒྱ་ཆ་མེད་གཏང་།",
         "OrderBookCancelLimitOrders": "བཀའ་རྒྱ་ཆ་མེད་གཏང་།",
         "OrderBookPlaceLimitOrder": "བཀོད་སྒྲིག་འབད་ནི།",
-        "PolkamarktAddLiquidity": "པོལ་ཀ་མཱརཀ་ཊི་ མ་དངུལ་ཁ་སྐོང་རྐྱབས།",
         "PolkamarktBuy": "པོལ་ཀ་མཱརཀ་ཊི་གི་བགོ་བཤའ་ཉོ།",
         "PolkamarktClaimCreatorFees": "ཐོབ་བརྗོད་ Polkamarkt བཟོ་མིའི་འཐུས་ཚུ།",
-        "PolkamarktClaimCreatorLiquidity": "ཐོབ་བརྗོད་ Polkamarkt བཟོ་མཁན་གྱི་དངུལ་འབབ།",
-        "PolkamarktClaimLiquidity": "ཐོབ་བརྗོད་ པོལ་ཀ་མཱརཀ་ཊི་ཨེལ་པི་ལྷག་ལུས།",
         "PolkamarktClaimMarket": "ཐོབ་བརྗོད་ པོལ་ཀ་མར་ཀཊ་ དངུལ་སྤྲོད།",
         "PolkamarktClaimMarkets": "ཐོབ་བརྗོད་ པོལ་ཀ་མར་ཀཊ་ དངུལ་སྤྲོད་ཚུ།",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "པོལ་ཀ་མར་ཀཊི་གནས་སྟངས་གསར་བསྐྲུན་འབད།",
         "PolkamarktCreateMarket": "པོལ་ཀ་མཱརཀ་ཊི་ཚོང་ཁང་བཟོ།",
-        "PolkamarktFlip": "ཕིལིཔ་པོལ་ཀ་མར་ཀཊ་གནས་རིམ།",
         "PolkamarktSell": "པོལ་ཀ་མཱརཀ་ཊི་གི་བགོ་བཤའ་བཙོང་།",
         "ReferralReserveXor": "བོནཌི་ཨེགསི་ཨོ་ཨར།",
         "ReferralSetInvitedUser": "{role} གཞི་སྒྲིག།",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "ཉོ།",
             "claimCreatorFees": "གསར་བསྐྲུན་པའི་འཐུས་ཐོབ་བརྗོད་བཀོད།",
-            "claimCreatorLiquidity": "ཐོབ་བརྗོད་བཟོ་མི་ དངུལ་འགྱུར།",
-            "claimLpResidual": "ཐོབ་བརྗོད་ཨེལ་པི་ལྷག་ལུགས།",
             "claimTraderPayout": "ཚོང་པ་སྤྲོད་ལེན་ཐོབ་བརྗོད་བཀོད།",
             "createMarket": "ཁྲོམ་ར་བཟོ་ནི།",
-            "flip": "གཡོ་སྒྱུར།",
-            "liquidity": "དངུལ་འབབ་ཁ་སྐོང་རྐྱབས།",
-            "sell": "བཙོངས།"
+            "sell": "བཙོངས།",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "དབྱེ་རིམ།",
             "closeBlock": "སྡེབ་ཚན་ཁ་བསྡམས།",
+            "creatorSeed": "Creator seed",
             "creationFee": "གསར་བསྐྲུན་འཐུས།",
             "deadline": "ཚོང་འབྲེལ་དུས་ཚོད།",
-            "marketFailed": "གནས་སྟངས་བཟོ་ཡོད་རུང་ ཁྲོམ་ར་བཟོ་མ་ཚུགས། སྲུང་བཞག་འབད་ཡོད་པའི་གནས་སྟངས་དང་གཅིག་ཁར་ ཁྲོམ་གསར་བསྐྲུན་འབད་ནི་ལུ་ ལོག་འབད་རྩོལ་བསྐྱེད།",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "དྲི་བ་དང་ཨོ་རཱ་ཀཱལ་ དེ་ལས་ ཐག་གཅད་མེ་ཊ་ཌེ་ཊ་ཚུ་ བཱའིཊི་༥༡༢ ནང་འཁོད་ལུ་ཚུད་དགོ།",
             "question": "ཁྲོམ་རའི་དྲི་བ།",
             "questionPlaceholder": "སེལ་འཐུ་འབད་ཡོད་པའི་དུས་ཚོད་ནང་ བྱུང་ལས་འདི་ ཨིན་ ལུ་ཐག་བཅད་འོང་ག?",
             "questionTooShort": "དྲི་བ་འདི་ ཉུང་མཐའ་ བཱའིཊིསི་ ༣༢ འོང་དགོ།",
             "retryMessage": "གནས་སྟངས་ {id} གསར་བསྐྲུན་འབད་ཡོདཔ་ཨིན། ཁྲོམ་གསར་བསྐྲུན་གྱི་གོ་རིམ་རྐྱངམ་ཅིག་ལོག་འབད་རྩོལ་བསྐྱེད།",
             "retrySubmit": "ཚོང་ལམ་གསར་བསྐྲུན་འབད་ནིའི་དཔའ་བཅམ།",
-            "seedLiquidity": "ས་བོན་གྱི་དངུལ་འགྱུར།",
-            "seedTooSmall": "སོན་གྱི་ ཆུ་ཚད་འདི་ ཉུང་མཐའ་ {amount} {symbol} འོང་དགོ།",
-            "submit": "ཆ་རྐྱེན་དང་ཁྲོམ་ར་བསྐྲུན་པ།",
-            "title": "པོལ་ཀ་མཱརཀ་ཊི་ཚོང་ཁང་བཟོ།"
+            "submit": "Create market",
+            "title": "པོལ་ཀ་མཱརཀ་ཊི་ཚོང་ཁང་བཟོ།",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "མཐའ་དཔྱད་ལུ་སྒུག་དོ།",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "པེ་ལེཊི་གནས་སྟངས་དང་ ཨོ་རཱ་ཀཱལ་ཁ་གསལ་ དེ་ལས་ གཞིས་ཆགས་སྒྲུབ་བྱེད་ཚུ་བལྟ་ནི་ལུ་ ཁྲོམ་སེལ་འཐུ་འབད།",
+            "orderBook": "Order book",
             "openResolutionSource": "ཁ་ཕྱེ་ཐོན་ཁུངས་འབྲེལ་མཐུད།",
             "oracle": "ཨོ་རེ་ཀཱལ།",
             "pool": "དངུལ་འཛིན་ཆུ་རྫིང་།",
-            "settlement": "གཞིས་ཆགས་ཁ་གསལ།"
+            "settlement": "གཞིས་ཆགས་ཁ་གསལ།",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "པོལ་ཀ་མཱརཀཊི་རྩིས་ཐོའི་ལས་སྣ་མངོན་གསལ་འབད་མི་ཚུགས།",
             "loadMarkets": "པོལ་ཀ་མར་ཀཊི་ཚོང་ལམ་ཚུ་མངོན་གསལ་འབད་མ་ཚུགས།"
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "བདེན་དཔང་བཀག་སྡོམ།",
             "evidenceHash": "སྒྲུབ་བྱེད་ཧ་ཤི།",
             "evidenceUri": "སྒྲུབ་བྱེད་ཡུ་ཨར་ཨའི་།",
-            "lpContributed": "LP ཕན་འདེབས་བྱས།",
-            "lpShares": "LP བགོ་བཤའ།",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "གསོག་འཇོག་མེད།",
             "oracle": "ཨོ་རེ་ཀཱལ།",
             "poolCollateral": "ཆུ་རྫིང་གི་འགན་འཁྲི།",
             "resolutionOutcome": "གྲོས་ཆོད་གྲུབ་འབྲས།",
             "resolutionSource": "ཐག་གཅོད་འབྱུང་ཁུངས།",
-            "yesReserve": "ཨིན་ གསོག་འཇོག།"
+            "yesReserve": "ཨིན་ གསོག་འཇོག།",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "ཤུགས་ལྡན་ཅན།",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "ཉོ།",
             "claim": "ཐོབ་བཤད།",
-            "flip": "གཡོ་སྒྱུར།",
-            "liquidity": "LP",
-            "sell": "བཙོངས།"
+            "sell": "བཙོངས།",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "Trader {trader} / LP {lp}",
-            "connect": "གསར་བསྐྲུན་འབད་ཡོད་པའི་ཚོང་འབྲེལ་དང་ ཨེལ་པི་བགོ་བཤའ་ དངུལ་ཕོགས་ཚུ་ དེ་ལས་ འཕྲལ་གྱི་ཚོང་འབྲེལ་ཚུ་བལྟ་ནི་ལུ་ རྩིས་ཐོ་ཅིག་མཐུད།",
+            "claimsSummary": "Trader {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "ཁྲོམ་ར་བཟོ་ཡོདཔ།",
             "empty": "རྩིས་ཐོ་འདི་གི་དོན་ལུ་ ད་ལྟོ་ཡང་ Polkamarkt གི་གནས་རིམ་དང་ ཡང་ན་ ཚོང་འབྲེལ་ཚུ་གསར་བསྐྲུན་འབད་མ་ཚུགས།",
             "loading": "པོལ་ཀ་མར་ཀཊི་རྩིས་ཐོའི་ལས་སྣ་མངོན་གསལ་འབད་དོ།",
             "market": "ཁྲོམ་ར་ {id}",
-            "positions": "LP དང་ཚོང་པའི་གནས་ཚུལ།",
+            "positions": "Trader positions",
             "recentTrades": "འཕྲལ་གྱི་ཚོང་འབྲེལ་ཚུ།",
-            "sharesSummary": "YES {yes} / NO {no} / LP {lp}",
-            "subtitle": "བཟོ་ཡོད་པའི་ཚོང་ཁང་དང་ ཨེལ་པི་བགོ་བཤའ་ ཚོང་པ་གི་དངུལ་ཕོགས་ བཟོ་མིའི་འཐུས་ དེ་ལས་ ལྷག་ལུས་ཨེལ་པི་ཐོབ་བརྗོད་ཚུ།",
-            "title": "ངའི་ཁྲོམ་ར། / LP"
+            "sharesSummary": "YES {yes} / NO {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "ད་ལྟོའི་ཚགས་མ་ཚུ་དང་མཐུན་སྒྲིག་འབད་མི་ཚོང་ལམ་ཚུ་མེད།",
         "notIndexed": "ཟུར་ཐོ་མ་བཟོ།",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "NO",
             "yes": "ཨིན་"
         },
-        "pageSubtitle": "ཚོང་འབྲེལ་གྱི་སྔོན་དཔག་ཚོང་འབྲེལ་དང་ ཚོང་འབྲེལ་གསརཔ་ དེ་ལས་ LP དང་ Polkaswap wallet flow ལས་ ཐོབ་བརྗོད་བཀོད་ཚུགས་པའི་ ལྷག་ལུས་ཚུ་ འཛིན་སྐྱོང་འཐབ་ནི།",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "ཤུགས་ལྡན་ཅན།"
+            "active": "ཤུགས་ལྡན་ཅན།",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "༠.༠",
             "claimable": "ཐོབ་བརྗོད་འབད་བཏུབ།",
             "claimableFailed": "ཐོབ་བརྗོད་བཀོད་བཏུབ་པའི་ལྷག་ལུས་ཚུ་ལྷག་མ་ཚུགས།",
             "claimStatus": "ཐོབ་བརྗོད་ཀྱི་གནས་ཚད།",
-            "collateralAmount": "Amount ({symbol})",
             "collateralOut": "གཏའ་མ་ཕྱིར་འཐེན།",
             "enterAmount": "དངུལ་བསྡོམས་བཙུགས།",
-            "flippedShares": "བགོ་བཤའ་བསྒྱིར་ཡོདཔ།",
             "insufficientKusd": "{symbol} ལྷག་ལུས་མི་འདང་བ།",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "ཡོངས་འབྲེལ་འཐུས་དོན་ལུ་ ཨེགསི་ཨོ་ཨར་ལངམ་མེདཔ།",
-            "invalidAmount": "ནུས་ཅན་དངུལ་བསྡོམས་བཙུགས།",
-            "lpSharesOut": "LP བགོ་བཤའ་བཏོན་ཡོདཔ།",
             "noChainMarket": "ཁྲོམ་འདི་ རིམ་སྒྲིག་ཐོག་ལུ་ ཚོང་འབྲེལ་འཐབ་མི་ཚུགས།",
+            "orderShares": "Shares",
             "quoteFailed": "འདྲེན་ཚིག་གསར་བསྐྲུན་འབད་མི་ཚུགས།",
             "refreshingQuote": "བསྐྱར་གསོའི་ཚིག་བཅད་...",
             "selectMarket": "ཚོང་འབྲེལ་འཐབ་ནིའི་དོན་ལུ་ ཤུགས་ལྡན་ཚོང་ལམ་ཅིག་སེལ་འཐུ་འབད།",
             "sharesAmount": "བགོ་བཤའ།",
             "sharesOut": "བགོ་བཤའ་རྐྱབ་ཡོདཔ།",
             "slippage": "བཤུད་ % .",
-            "subtitle": "ཚིག་བརྗོད་དང་འཐུས་ བཤུད་འགོག་སྲུང་སྐྱོབ་ དེ་ལས་ དངུལ་ཁུག་ཕུལ་ནི་ཚུ་ སོ་ར་རཱན་ཊའིམ་ལག་ལེན་འཐབ་ཨིན།",
+            "takerFee": "Taker fee",
             "title": "ཚོང་འབྲེལ་འཛིན་བྱང་།",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "བཱའིཊ།",
             "shares": "བགོ་བཤའ།"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

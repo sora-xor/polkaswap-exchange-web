@@ -4,7 +4,12 @@
       <div>
         <h1>{{ t('pageTitle.Polkamarkt') }}</h1>
         <p>{{ t('polkamarkt.pageSubtitle') }}</p>
-        <a class="polkamarkt__external-link" href="https://polkamarkt.com" target="_blank" rel="nofollow noopener noreferrer">
+        <a
+          class="polkamarkt__external-link"
+          href="https://polkamarkt.com"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+        >
           {{ t('polkamarkt.officialSite') }}
         </a>
         <p class="polkamarkt__disclaimer">{{ t('polkamarkt.disclaimer') }}</p>
@@ -19,7 +24,7 @@
       </div>
     </section>
 
-    <section class="polkamarkt__layout">
+    <section :class="['polkamarkt__layout', { 'polkamarkt__layout--list-only': !shouldShowMarketWorkspace }]">
       <market-list
         v-model:search="search"
         v-model:category="category"
@@ -28,12 +33,13 @@
         :markets="markets"
         :selected-id="selectedMarket?.id"
         :account="accountAddress"
+        :current-block="currentBlock"
         :loading="marketsLoading"
         @select="selectMarket"
         @refresh="refreshMarkets"
       />
 
-      <div class="polkamarkt__workspace">
+      <div v-if="shouldShowMarketWorkspace" class="polkamarkt__workspace">
         <market-detail
           :market="selectedMarket"
           :history="marketHistory"
@@ -43,16 +49,19 @@
         <trade-ticket
           :market="selectedMarket"
           :account-position="selectedPosition"
+          :current-block="currentBlock"
           @submitted="handleTransactionSubmitted"
         />
       </div>
     </section>
 
     <my-positions-panel
+      v-if="shouldShowAccountActivity"
       :markets="markets"
       :positions="positions"
       :trades="trades"
       :account="accountAddress"
+      :current-block="currentBlock"
       :is-logged-in="isConnected"
       :loading="activityLoading"
       @connect="connectSoraWallet"
@@ -80,12 +89,14 @@ import MarketDetail from '../components/MarketDetail.vue';
 import MarketList from '../components/MarketList.vue';
 import MyPositionsPanel from '../components/MyPositionsPanel.vue';
 import TradeTicket from '../components/TradeTicket.vue';
+import { filterMarkets } from '../lib/markets';
 import { fetchPolkamarktAccountActivity } from '../services/accountActivity';
 import { fetchPolkamarktMarketHistory } from '../services/marketHistory';
 import { fetchPolkamarktMarkets } from '../services/markets';
 
 import type { AccountPosition, AccountTrade, MarketHistoryPoint, PolkamarktMarket } from '../types';
 import type { MarketCategory, MarketStatusFilter } from '../consts';
+import type { ApiPromise } from '@polkadot/api';
 
 defineOptions({
   name: 'PolkamarktPage',
@@ -96,6 +107,7 @@ const router = useRouter();
 const route = useRoute();
 const settingsStore = useSettingsStore();
 const { isLoggedIn, soraAddress, connectSoraWallet } = useInternalConnect();
+const POLKAMARKT_RUNTIME_ENDPOINT_FALLBACK = 'wss://ws.mof.sora.org';
 
 const markets = ref<PolkamarktMarket[]>([]);
 const marketsLoading = ref(false);
@@ -117,21 +129,48 @@ type MaybeValue<T> = T | { value: T };
 
 const isConnectedSource = isLoggedIn as unknown as MaybeValue<boolean>;
 const accountAddressSource = soraAddress as unknown as MaybeValue<string | undefined>;
-const isConnected = computed(() => Boolean(typeof isConnectedSource === 'object' ? isConnectedSource.value : isConnectedSource));
+const isConnected = computed(() =>
+  Boolean(typeof isConnectedSource === 'object' ? isConnectedSource.value : isConnectedSource)
+);
 const accountAddress = computed(() =>
-  String(typeof accountAddressSource === 'object' ? accountAddressSource.value ?? '' : accountAddressSource ?? '')
+  String(typeof accountAddressSource === 'object' ? (accountAddressSource.value ?? '') : (accountAddressSource ?? ''))
 );
 const currentBlock = computed(() => Number(settingsStore.blockNumber ?? 0));
+const runtimeApi = computed(() => (settingsStore.appConnection?.connection?.api ?? null) as ApiPromise | null);
+const runtimeEndpoint = computed(() =>
+  String(
+    settingsStore.appConnection?.connection?.endpoint ||
+      settingsStore.appConnection?.node?.address ||
+      settingsStore.appConnection?.defaultNodes?.[0]?.address ||
+      POLKAMARKT_RUNTIME_ENDPOINT_FALLBACK
+  )
+);
 const polkaswapIndexerEndpoint = computed(() =>
   String(settingsStore.indexers?.[IndexerType.POLKASWAP]?.endpoint ?? '')
 );
+const filteredMarkets = computed(() =>
+  filterMarkets(markets.value, {
+    search: search.value,
+    category: category.value,
+    status: status.value,
+    account: accountAddress.value,
+    mineOnly: mineOnly.value,
+    currentBlock: currentBlock.value,
+  })
+);
 const selectedMarket = computed(() => {
   if (!markets.value.length) return undefined;
+
   const id = selectedMarketId.value || String(route.params.marketId ?? '');
-  const selected =
-    markets.value.find((market) => String(market.chainId ?? market.id) === id || market.id === id) ?? markets.value[0];
-  return selected;
+  if (id) {
+    const routedMarket = markets.value.find((market) => String(market.chainId ?? market.id) === id || market.id === id);
+    if (routedMarket) return routedMarket;
+  }
+
+  return filteredMarkets.value[0];
 });
+const shouldShowMarketWorkspace = computed(() => Boolean(selectedMarket.value));
+const shouldShowAccountActivity = computed(() => shouldShowMarketWorkspace.value || status.value !== 'active');
 
 const selectedPosition = computed(() => {
   const marketId = selectedMarket.value?.chainId;
@@ -140,17 +179,21 @@ const selectedPosition = computed(() => {
 });
 
 let marketHistoryRequestId = 0;
+let refreshedRuntimeMarkets = false;
 
 async function refreshMarkets(): Promise<void> {
   marketsLoading.value = true;
   marketsError.value = '';
   try {
-    markets.value = await fetchPolkamarktMarkets();
+    markets.value = await fetchPolkamarktMarkets({ api: runtimeApi.value, endpoint: runtimeEndpoint.value });
+    if (runtimeApi.value || runtimeEndpoint.value) {
+      refreshedRuntimeMarkets = true;
+    }
     if (!selectedMarketId.value && route.params.marketId) {
       selectedMarketId.value = String(route.params.marketId);
     }
-    if (!selectedMarketId.value && markets.value[0]) {
-      selectedMarketId.value = String(markets.value[0].chainId ?? markets.value[0].id);
+    if (!selectedMarketId.value && filteredMarkets.value[0]) {
+      selectedMarketId.value = String(filteredMarkets.value[0].chainId ?? filteredMarkets.value[0].id);
     }
   } catch (err) {
     marketsError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadMarkets');
@@ -247,6 +290,12 @@ watch(polkaswapIndexerEndpoint, (endpoint, previousEndpoint) => {
   void refreshMarkets();
 });
 
+watch(currentBlock, (block) => {
+  if (block <= 0 || refreshedRuntimeMarkets || !(runtimeApi.value || runtimeEndpoint.value)) return;
+
+  void refreshMarkets();
+});
+
 onMounted(() => {
   void refreshMarkets();
 });
@@ -325,18 +374,22 @@ defineExpose({
 
   &__layout {
     display: grid;
-    grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1fr);
+    grid-template-columns: #{'minmax(300px, 0.42fr)'} #{'minmax(0, 1fr)'};
     gap: $inner-spacing-big;
     align-items: flex-start;
 
     @include desktop(true) {
       grid-template-columns: 1fr;
     }
+
+    &--list-only {
+      grid-template-columns: #{'minmax(0, 720px)'};
+    }
   }
 
   &__workspace {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    grid-template-columns: #{'minmax(0, 1fr)'} #{'minmax(280px, 360px)'};
     gap: $inner-spacing-big;
     align-items: flex-start;
 

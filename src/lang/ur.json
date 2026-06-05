@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "حد آرڈر منسوخ کرنے میں ناکام",
             "OrderBookCancelLimitOrders": "حد کے احکامات منسوخ کرنے میں ناکام",
             "OrderBookPlaceLimitOrder": "{price} {symbol2} پر {amount} {symbol} کا حد آرڈر دینے میں ناکام",
-            "PolkamarktAddLiquidity": "Polkamarkt میں {amount} {symbol} لیکویڈیٹی شامل کرنے میں ناکام",
             "PolkamarktBuy": "Polkamarkt پر {amount} {symbol} خریدنے میں ناکام",
             "PolkamarktClaimCreatorFees": "Polkamarkt تخلیق کار کی فیس کا دعوی کرنے میں ناکام",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt تخلیق کار لیکویڈیٹی کا دعوی کرنے میں ناکام",
-            "PolkamarktClaimLiquidity": "Polkamarkt LP بقایا کا دعوی کرنے میں ناکام",
             "PolkamarktClaimMarket": "Polkamarkt ادائیگی کا دعوی کرنے میں ناکام",
             "PolkamarktClaimMarkets": "Polkamarkt ادائیگیوں کا دعوی کرنے میں ناکام",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "Polkamarkt کی حالت بنانے میں ناکام",
             "PolkamarktCreateMarket": "{amount} {symbol} کے ساتھ Polkamarkt مارکیٹ بنانے میں ناکام",
-            "PolkamarktFlip": "Polkamarkt پر {amount} {symbol} کو پلٹنے میں ناکام",
             "PolkamarktSell": "Polkamarkt پر {amount} {symbol} فروخت کرنے میں ناکام",
             "ReferralReserveXor": "{amount} XOR بانڈ کرنے میں ناکام",
             "ReferralSetInvitedUser": "{role} {address} سیٹ کرنے میں ناکام",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "حد آرڈر منسوخ",
             "OrderBookCancelLimitOrders": "حدود کے احکامات منسوخ کردیئے گئے",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} {price} {symbol2} پر رکھا گیا",
-            "PolkamarktAddLiquidity": "Polkamarkt میں {amount} {symbol} لیکویڈیٹی شامل کی گئی۔",
             "PolkamarktBuy": "Polkamarkt پر {amount} {symbol} خریدا۔",
             "PolkamarktClaimCreatorFees": "Polkamarkt کے تخلیق کار کی فیس کا دعوی کیا گیا ہے۔",
-            "PolkamarktClaimCreatorLiquidity": "Polkamarkt تخلیق کار لیکویڈیٹی کا دعویٰ کیا گیا۔",
-            "PolkamarktClaimLiquidity": "Polkamarkt LP بقایا دعوی کیا",
             "PolkamarktClaimMarket": "پولکا مارکٹ کی ادائیگی کا دعوی کیا گیا۔",
             "PolkamarktClaimMarkets": "پولکا مارکٹ کی ادائیگیوں کا دعوی کیا گیا۔",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Polkamarkt کی حالت بنائی گئی۔",
             "PolkamarktCreateMarket": "Polkamarkt مارکیٹ {amount} {symbol} کے ساتھ بنائی گئی",
-            "PolkamarktFlip": "Polkamarkt پر {amount} {symbol} کو پلٹایا",
             "PolkamarktSell": "Polkamarkt پر {amount} {symbol} فروخت ہوا۔",
             "ReferralReserveXor": "بانڈڈ {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} کامیابی سے سیٹ ہو گیا ہے۔",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "آرڈر منسوخ کریں",
         "OrderBookCancelLimitOrders": "احکامات منسوخ کریں",
         "OrderBookPlaceLimitOrder": "جگہ کا آرڈر",
-        "PolkamarktAddLiquidity": "Polkamarkt لیکویڈیٹی شامل کریں۔",
         "PolkamarktBuy": "Polkamarkt کے حصص خریدیں۔",
         "PolkamarktClaimCreatorFees": "Polkamarkt تخلیق کار کی فیس کا دعوی کریں۔",
-        "PolkamarktClaimCreatorLiquidity": "پولکا مارکٹ تخلیق کار لیکویڈیٹی کا دعوی کریں۔",
-        "PolkamarktClaimLiquidity": "Polkamarkt LP بقایا کا دعوی کریں۔",
         "PolkamarktClaimMarket": "Polkamarkt ادائیگی کا دعوی کریں۔",
         "PolkamarktClaimMarkets": "Polkamarkt ادائیگیوں کا دعوی کریں۔",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "Polkamarkt کی حالت بنائیں",
         "PolkamarktCreateMarket": "پولکا مارکٹ مارکیٹ بنائیں",
-        "PolkamarktFlip": "Polkamarkt پوزیشن پلٹائیں",
         "PolkamarktSell": "Polkamarkt کے حصص فروخت کریں۔",
         "ReferralReserveXor": "بانڈ ژور",
         "ReferralSetInvitedUser": "{role} سیٹ کریں",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "خریدیں۔",
             "claimCreatorFees": "تخلیق کار کی فیس کا دعوی کریں۔",
-            "claimCreatorLiquidity": "خالق کی لیکویڈیٹی کا دعوی کریں۔",
-            "claimLpResidual": "LP بقایا کا دعوی کریں۔",
             "claimTraderPayout": "تاجر کی ادائیگی کا دعوی کریں۔",
             "createMarket": "مارکیٹ بنائیں",
-            "flip": "پلٹائیں",
-            "liquidity": "لیکویڈیٹی شامل کریں۔",
-            "sell": "بیچنا"
+            "sell": "بیچنا",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "زمرہ",
             "closeBlock": "بلاک بند کریں۔",
+            "creatorSeed": "Creator seed",
             "creationFee": "تخلیق کی فیس",
             "deadline": "ٹریڈنگ کی آخری تاریخ",
-            "marketFailed": "حالت تو بنائی گئی لیکن مارکیٹ بنانے میں ناکام رہا۔ محفوظ شدہ حالت کے ساتھ مارکیٹ بنانے کی دوبارہ کوشش کریں۔",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "سوال، اوریکل، اور ریزولوشن میٹا ڈیٹا کا 512 بائٹس کے اندر فٹ ہونا ضروری ہے۔",
             "question": "مارکیٹ کا سوال",
             "questionPlaceholder": "کیا ایونٹ منتخب آخری تاریخ تک ہاں میں حل ہو جائے گا؟",
             "questionTooShort": "سوال کم از کم 32 بائٹس کا ہونا چاہیے۔",
             "retryMessage": "حالت {id} بنائی گئی تھی۔ صرف مارکیٹ بنانے کے مرحلے پر دوبارہ کوشش کریں۔",
             "retrySubmit": "مارکیٹ بنانے کی دوبارہ کوشش کریں۔",
-            "seedLiquidity": "بیج کی لیکویڈیٹی",
-            "seedTooSmall": "بیج کی لیکویڈیٹی کم از کم {amount} {symbol} ہونی چاہئے۔",
-            "submit": "حالت اور مارکیٹ بنائیں",
-            "title": "پولکا مارکٹ مارکیٹ بنائیں"
+            "submit": "Create market",
+            "title": "پولکا مارکٹ مارکیٹ بنائیں",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "حتمی ہونے کا انتظار ہے۔",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "پیلیٹ کی حالت، اوریکل کی تفصیلات، اور تصفیہ کے ثبوت دیکھنے کے لیے مارکیٹ کا انتخاب کریں۔",
+            "orderBook": "Order book",
             "openResolutionSource": "اوپن سورس لنک",
             "oracle": "اوریکل",
             "pool": "لیکویڈیٹی پول",
-            "settlement": "تصفیہ کی تفصیلات"
+            "settlement": "تصفیہ کی تفصیلات",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "Polkamarkt اکاؤنٹ کی سرگرمی لوڈ کرنے سے قاصر ہے۔",
             "loadMarkets": "Polkamarkt مارکیٹوں کو لوڈ کرنے سے قاصر ہے۔"
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "ثبوت بلاک",
             "evidenceHash": "ثبوت ہیش",
             "evidenceUri": "ثبوت URI",
-            "lpContributed": "ایل پی نے تعاون کیا۔",
-            "lpShares": "ایل پی کے حصص",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "کوئی ریزرو نہیں۔",
             "oracle": "اوریکل",
             "poolCollateral": "پول کولیٹرل",
             "resolutionOutcome": "قرارداد کا نتیجہ",
             "resolutionSource": "حل کا ذریعہ",
-            "yesReserve": "ہاں ریزرو"
+            "yesReserve": "ہاں ریزرو",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "فعال",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "خریدیں۔",
             "claim": "دعویٰ",
-            "flip": "پلٹائیں",
-            "liquidity": "ایل پی",
-            "sell": "بیچنا"
+            "sell": "بیچنا",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "تاجر {trader} / LP {lp}",
-            "connect": "تخلیق شدہ مارکیٹس، LP شیئرز، ادائیگیوں اور حالیہ تجارتوں کو دیکھنے کے لیے ایک اکاؤنٹ مربوط کریں۔",
+            "claimsSummary": "تاجر {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "منڈیاں بنائیں",
             "empty": "اس اکاؤنٹ کے لیے ابھی تک پولکا مارکٹ کی کوئی پوزیشن یا مارکیٹ نہیں بنائی گئی ہے۔",
             "loading": "Polkamarkt اکاؤنٹ کی سرگرمی لوڈ ہو رہی ہے...",
             "market": "مارکیٹ {id}",
-            "positions": "ایل پی اور ٹریڈر کے عہدے",
+            "positions": "Trader positions",
             "recentTrades": "حالیہ تجارت",
-            "sharesSummary": "ہاں {yes} / نہیں {no} / LP {lp}",
-            "subtitle": "تخلیق کردہ مارکیٹس، LP حصص، تاجر کی ادائیگی، تخلیق کار کی فیس، اور بقایا LP دعوے۔",
-            "title": "میری مارکیٹس / ایل پی"
+            "sharesSummary": "ہاں {yes} / نہیں {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "کوئی مارکیٹ موجودہ فلٹرز سے مماثل نہیں ہے۔",
         "notIndexed": "انڈیکس نہیں کیا گیا۔",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "NO",
             "yes": "جی ہاں"
         },
-        "pageSubtitle": "فعال پیشن گوئی کی منڈیوں، بیجوں کی نئی منڈیوں کی تجارت کریں، اور پولکاسواپ والیٹ کے بہاؤ سے ایل پی اور قابل دعوی بیلنس کا انتظام کریں۔",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "فعال"
+            "active": "فعال",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0.0",
             "claimable": "قابلِ دعویٰ",
             "claimableFailed": "قابل دعوی بیلنس پڑھنے سے قاصر ہے۔",
             "claimStatus": "دعوی کی حیثیت",
-            "collateralAmount": "رقم ({symbol})",
             "collateralOut": "کولیٹرل آؤٹ",
             "enterAmount": "ایک رقم درج کریں۔",
-            "flippedShares": "پلٹ گئے حصص",
             "insufficientKusd": "ناکافی {symbol} بیلنس",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "نیٹ ورک فیس کے لیے ناکافی XOR",
-            "invalidAmount": "ایک درست رقم درج کریں۔",
-            "lpSharesOut": "ایل پی شیئر کرتا ہے۔",
             "noChainMarket": "مارکیٹ چین پر تجارت کے قابل نہیں ہے۔",
+            "orderShares": "Shares",
             "quoteFailed": "اقتباس کو ریفریش کرنے سے قاصر۔",
             "refreshingQuote": "ریفریشنگ اقتباس...",
             "selectMarket": "تجارت کے لیے ایک فعال مارکیٹ کا انتخاب کریں۔",
             "sharesAmount": "شیئرز",
             "sharesOut": "شیئر کرتا ہے۔",
             "slippage": "پھسلن %",
-            "subtitle": "قیمتیں، فیس، slippage تحفظ، اور والیٹ جمع کرانے کے لیے SORA رن ٹائم استعمال کیا جاتا ہے۔",
+            "takerFee": "Taker fee",
             "title": "تجارتی ٹکٹ",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "بائٹس",
             "shares": "شیئرز"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

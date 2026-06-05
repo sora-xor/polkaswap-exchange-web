@@ -20,6 +20,7 @@ export type SwapState = {
   distribution: readonly Distribution[][];
   isPathAvailable: boolean;
   isAvailable: boolean;
+  quoteError: boolean;
   liquiditySources: LiquiditySourceTypes[];
   swapQuote: Nullable<SwapQuote>;
   selectedDexId: number;

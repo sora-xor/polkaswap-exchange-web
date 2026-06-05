@@ -17,9 +17,13 @@ import {
   calculateCloseBlockFromBlockInput,
   calculateMinimumCloseBlock,
   filterMarkets,
+  formatApproximateCloseDate,
   formatDateTimeLocalInput,
+  getMarketDisplayStatus,
   isActiveMarket,
   isClaimableMarketStatus,
+  isFinalizedMarket,
+  isMarketClosedByBlock,
   metadataByteLength,
   normalizeMarketCategory,
   normalizeMarketOracle,
@@ -32,7 +36,8 @@ import {
   marketRuntimeId,
   parseMarketHistoryPoint,
 } from '@/features/polkamarkt/services/marketHistory';
-import { parseMarket } from '@/features/polkamarkt/services/markets';
+import { fetchPolkamarktMarkets, parseMarket } from '@/features/polkamarkt/services/markets';
+import { mergePolkamarktMarkets, parseRuntimePolkamarktMarket } from '@/features/polkamarkt/services/runtimeMarkets';
 
 import type { PolkamarktMarket } from '@/features/polkamarkt/types';
 
@@ -93,18 +98,205 @@ describe('polkamarkt market helpers', () => {
     expect(parseMarket({ id: 'bad' })).toBeNull();
   });
 
+  it('parses runtime markets and merges chain-only markets after indexed data', async () => {
+    const runtimeStorage = {
+      conditions: vi.fn().mockResolvedValue({
+        question: 'Will GPT 5.6 ship before the market deadline?',
+        oracle: 'SORA Council and Technical Committee',
+        resolutionSource: 'Weekly SORA governance resolution batch',
+      }),
+      conditionDetails: vi.fn().mockResolvedValue({ category: 'AI' }),
+      marketDpmCollateral: vi.fn().mockResolvedValue('0'),
+      marketPositionTotals: vi.fn().mockResolvedValue({ totalYesShares: '0', totalNoShares: '1000000000000000000' }),
+      marketVolume: vi.fn().mockResolvedValue('0'),
+      marketCreatorFees: vi.fn().mockResolvedValue('0'),
+    };
+    const runtimeMarket = await parseRuntimePolkamarktMarket(runtimeStorage, 1, {
+      conditionId: 2,
+      creator: 'cnCreator',
+      closeBlock: '26,590,569',
+      status: 'Open',
+      mechanism: 'DynamicPariMutuel',
+    });
+
+    expect(runtimeMarket).toMatchObject({
+      id: '1',
+      chainId: 1,
+      conditionId: 2,
+      category: 'AI',
+      oracle: 'SORA On-Chain Governance',
+      title: 'Will GPT 5.6 ship before the market deadline?',
+      closeBlock: 26590569,
+      status: 'Open',
+    });
+    expect(runtimeMarket?.probability).toBe(0);
+
+    const indexedMarket = baseMarket({ id: 'indexed-0', chainId: 0, volume: 5 });
+    expect(mergePolkamarktMarkets([indexedMarket], [runtimeMarket as PolkamarktMarket])).toEqual([
+      indexedMarket,
+      runtimeMarket,
+    ]);
+    expect(
+      mergePolkamarktMarkets([indexedMarket], [{ ...(runtimeMarket as PolkamarktMarket), chainId: 0, id: '0' }])
+    ).toEqual([indexedMarket]);
+  });
+
+  it('decodes pending early resolution reports from runtime storage', async () => {
+    const runtimeStorage = {
+      conditions: vi.fn().mockResolvedValue({
+        question: 'Will GPT 5.6 ship before the market deadline?',
+        oracle: 'SORA On-Chain Governance',
+        resolutionSource: 'Weekly SORA governance resolution batch',
+      }),
+      conditionDetails: vi.fn().mockResolvedValue({ category: 'AI' }),
+      marketDpmCollateral: vi.fn().mockResolvedValue('0'),
+      marketPositionTotals: vi.fn().mockResolvedValue({ totalYesShares: '0', totalNoShares: '0' }),
+      marketVolume: vi.fn().mockResolvedValue('0'),
+      marketCreatorFees: vi.fn().mockResolvedValue('0'),
+      earlyResolutionReports: vi.fn().mockResolvedValue({
+        reporter: 'cnReporter',
+        outcome: 'Yes',
+        bond: '100000000000000000000',
+        evidence: {
+          uri: [104, 116, 116, 112, 115, 58, 47, 47, 111, 112, 101, 110, 97, 105, 46, 99, 111, 109],
+          hash: [1, 2, 3],
+          atBlock: '321',
+        },
+      }),
+    };
+
+    const runtimeMarket = await parseRuntimePolkamarktMarket(runtimeStorage, 2, {
+      conditionId: 2,
+      creator: 'cnCreator',
+      closeBlock: '26,590,569',
+      status: 'Locked',
+      mechanism: 'DynamicPariMutuel',
+    });
+
+    expect(runtimeMarket).toMatchObject({
+      earlyResolutionOutcome: 'YES',
+      earlyResolutionReporter: 'cnReporter',
+      earlyResolutionBond: 100,
+      earlyResolutionEvidenceUri: 'https://openai.com',
+      earlyResolutionEvidenceHash: '0x010203',
+      earlyResolutionEvidenceBlock: 321,
+    });
+    expect(getMarketDisplayStatus(runtimeMarket as PolkamarktMarket, 100)).toBe('Early report locked');
+    expect(isActiveMarket(runtimeMarket as PolkamarktMarket, 100)).toBe(false);
+    expect(
+      mergePolkamarktMarkets([baseMarket({ chainId: 2, status: 'Open' })], [runtimeMarket as PolkamarktMarket])
+    ).toMatchObject([
+      {
+        chainId: 2,
+        status: 'Locked',
+        earlyResolutionOutcome: 'YES',
+        earlyResolutionEvidenceUri: 'https://openai.com',
+      },
+    ]);
+  });
+
+  it('appends runtime markets when the indexer has not caught up', async () => {
+    indexerRequestMock.mockResolvedValueOnce({
+      markets: {
+        edges: [
+          {
+            node: {
+              id: 'indexed-0',
+              marketId: 0,
+              title: 'Indexed market',
+              category: 'Crypto',
+              liquidityUSD: '100',
+              volumeUSD: '10',
+              status: 'Open',
+            },
+          },
+        ],
+      },
+    });
+
+    const api = {
+      query: {
+        polkamarkt: {
+          markets: {
+            entries: vi.fn().mockResolvedValue([
+              [
+                { args: [1] },
+                {
+                  conditionId: 2,
+                  creator: 'cnCreator',
+                  closeBlock: 26590569,
+                  status: 'Open',
+                },
+              ],
+            ]),
+          },
+          conditions: vi.fn().mockResolvedValue({
+            question: 'Will GPT 5.6 ship before the market deadline?',
+            oracle: 'SORA On-Chain Governance',
+            resolutionSource: 'Weekly SORA governance resolution batch',
+          }),
+          conditionDetails: vi.fn().mockResolvedValue({ category: 'AI' }),
+          marketDpmCollateral: vi.fn().mockResolvedValue('0'),
+          marketPositionTotals: vi.fn().mockResolvedValue({ totalYesShares: '0', totalNoShares: '0' }),
+          marketVolume: vi.fn().mockResolvedValue('0'),
+          marketCreatorFees: vi.fn().mockResolvedValue('0'),
+        },
+      },
+    };
+
+    await expect(fetchPolkamarktMarkets({ api: api as never })).resolves.toMatchObject([
+      { chainId: 0, title: 'Indexed market' },
+      { chainId: 1, title: 'Will GPT 5.6 ship before the market deadline?' },
+    ]);
+  });
+
   it('filters active, finalized, search, category, and account-owned markets', () => {
     const markets = [
       baseMarket({ creator: 'cnAlice' }),
-      baseMarket({ id: '2', chainId: 2, category: 'Sports', status: 'Resolved', creator: 'cnBob', title: 'Sports result' }),
+      baseMarket({
+        id: '2',
+        chainId: 2,
+        category: 'Sports',
+        status: 'Resolved',
+        creator: 'cnBob',
+        title: 'Sports result',
+      }),
+      baseMarket({ id: '3', chainId: 3, closeBlock: 100, creator: 'cnCarol', title: 'Closed by block' }),
+      baseMarket({
+        id: '4',
+        chainId: 4,
+        status: 'Open',
+        title: 'Stale indexed early report',
+        earlyResolutionOutcome: 'YES',
+      }),
+      baseMarket({
+        id: '5',
+        chainId: 5,
+        status: 'Resolved',
+        title: 'Settled result',
+        earlyResolutionOutcome: 'YES',
+      }),
     ];
 
     expect(isActiveMarket(markets[0])).toBe(true);
     expect(isActiveMarket(markets[1])).toBe(false);
-    expect(filterMarkets(markets, { status: 'active' })).toEqual([markets[0]]);
-    expect(filterMarkets(markets, { status: 'finalized' })).toEqual([markets[1]]);
+    expect(isMarketClosedByBlock(markets[2], 100)).toBe(true);
+    expect(isActiveMarket(markets[2], 101)).toBe(false);
+    expect(isFinalizedMarket(markets[2], 101)).toBe(true);
+    expect(getMarketDisplayStatus(markets[2], 101)).toBe('Closed');
+    expect(getMarketDisplayStatus(markets[3], 101)).toBe('Early report locked');
+    expect(isActiveMarket(markets[3], 101)).toBe(false);
+    expect(getMarketDisplayStatus(markets[4], 101)).toBe('Resolved');
+    expect(filterMarkets(markets, { status: 'active', currentBlock: 101 })).toEqual([markets[0]]);
+    expect(filterMarkets(markets, { status: 'finalized', currentBlock: 101 })).toEqual([
+      markets[1],
+      markets[2],
+      markets[4],
+    ]);
     expect(filterMarkets(markets, { status: 'all', category: 'Sports' })).toEqual([markets[1]]);
     expect(filterMarkets(markets, { status: 'all', search: 'ship' })).toEqual([markets[0]]);
+    expect(filterMarkets(markets, { status: 'all', search: 'closed', currentBlock: 101 })).toEqual([markets[2]]);
+    expect(filterMarkets(markets, { status: 'all', search: 'early report', currentBlock: 101 })).toEqual([markets[3]]);
     expect(filterMarkets(markets, { status: 'all', account: 'cnalice', mineOnly: true })).toEqual([markets[0]]);
   });
 
@@ -123,7 +315,9 @@ describe('polkamarkt market helpers', () => {
 
       expect(metadataByteLength('market')).toBe(6);
       expect(validateMarketMetadata('short', 'oracle', 'source')).toContain('questionTooShort');
-      expect(validateMarketMetadata('Will this question be long enough for the pallet?', 'oracle', 'source')).toEqual([]);
+      expect(validateMarketMetadata('Will this question be long enough for the pallet?', 'oracle', 'source')).toEqual(
+        []
+      );
 
       const deadline = new Date('2026-05-31T00:01:00Z');
       expect(calculateCloseBlockFromDate(100, deadline)).toBe(7300);
@@ -136,8 +330,27 @@ describe('polkamarkt market helpers', () => {
   });
 
   it('formats linked close-block dates for datetime-local controls', () => {
-    expect(formatDateTimeLocalInput(new Date(2026, 4, 31, 12, 34))).toBe('2026-05-31T12:34:00');
+    expect(formatDateTimeLocalInput(new Date(2026, 4, 31, 12, 34, 56))).toBe('2026-05-31T12:34');
     expect(formatDateTimeLocalInput(new Date('invalid'))).toBe('');
+  });
+
+  it('formats approximate close-block dates with timezone and no second precision', () => {
+    const date = new Date(2026, 4, 31, 12, 34, 56);
+    const offsetMinutes = -date.getTimezoneOffset();
+    const offsetSign = offsetMinutes >= 0 ? '+' : '-';
+    const absoluteOffsetMinutes = Math.abs(offsetMinutes);
+    const pad = (value: number): string => String(value).padStart(2, '0');
+    const expectedOffset = `UTC${offsetSign}${pad(Math.floor(absoluteOffsetMinutes / 60))}:${pad(
+      absoluteOffsetMinutes % 60
+    )}`;
+
+    expect(formatApproximateCloseDate(date)).toBe(
+      `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${pad(date.getHours())}:${pad(
+        date.getMinutes()
+      )} ${expectedOffset}`
+    );
+    expect(formatApproximateCloseDate(date)).not.toMatch(/\d{2}:\d{2}:\d{2}/);
+    expect(formatApproximateCloseDate(new Date('invalid'))).toBe('');
   });
 
   it('normalizes probability values from ratio or percentage fields', () => {

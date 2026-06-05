@@ -15,6 +15,12 @@ import type { PolkamarktMarket } from '../types';
 export const isMarketCategory = (value: string): value is MarketCategory =>
   (MARKET_CATEGORIES as readonly string[]).includes(value);
 
+const CLOSED_MARKET_STATUS = 'Closed';
+const EARLY_REPORT_LOCKED_STATUS = 'Early report locked';
+const OPEN_MARKET_STATUSES = ['open', 'active', 'live'] as const;
+const FINALIZED_MARKET_STATUSES = ['resolved', 'cancelled', 'canceled', 'finalized', 'closed'] as const;
+const SETTLED_MARKET_STATUSES = ['resolved', 'cancelled', 'canceled', 'finalized'] as const;
+
 /**
  * Normalizes free-form indexed category text into the Polkamarkt category set.
  */
@@ -40,16 +46,63 @@ export function normalizeMarketOracle(value?: string): string | undefined {
   return GOVERNANCE_ORACLE_ALIASES.has(normalized) ? POLKAMARKT_DEFAULT_ORACLE : trimmed;
 }
 
-export const isActiveMarket = (market: PolkamarktMarket): boolean => {
+const normalizedBlockNumber = (value: unknown): number | undefined => {
+  const block = Number(value);
+  if (!Number.isFinite(block)) return undefined;
+  const normalized = Math.trunc(block);
+  return Number.isSafeInteger(normalized) && normalized > 0 ? normalized : undefined;
+};
+
+/**
+ * Detects markets whose trading deadline has passed even when the indexer still reports them as open.
+ */
+export function isMarketClosedByBlock(
+  market: Pick<PolkamarktMarket, 'closeBlock'> | undefined,
+  currentBlock?: number
+): boolean {
+  const closeBlock = normalizedBlockNumber(market?.closeBlock);
+  const block = normalizedBlockNumber(currentBlock);
+  return closeBlock !== undefined && block !== undefined && block >= closeBlock;
+}
+
+/**
+ * Returns the market status the UI should present after applying block-derived closure state.
+ */
+export function getMarketDisplayStatus(
+  market: PolkamarktMarket | undefined,
+  currentBlock?: number
+): string | undefined {
+  const status = market?.status?.trim();
+  const normalizedStatus = status?.toLowerCase() ?? '';
+
+  if (market?.earlyResolutionOutcome && !SETTLED_MARKET_STATUSES.some((item) => normalizedStatus.includes(item))) {
+    return EARLY_REPORT_LOCKED_STATUS;
+  }
+
+  if (
+    market &&
+    isMarketClosedByBlock(market, currentBlock) &&
+    (!normalizedStatus || OPEN_MARKET_STATUSES.some((item) => normalizedStatus.includes(item)))
+  ) {
+    return CLOSED_MARKET_STATUS;
+  }
+
+  return status || undefined;
+}
+
+export const isActiveMarket = (market: PolkamarktMarket, currentBlock?: number): boolean => {
+  if (market.earlyResolutionOutcome) return false;
+  if (isMarketClosedByBlock(market, currentBlock)) return false;
+
   const status = market.status?.toLowerCase();
   if (!status) return Boolean(market.chainId !== undefined && market.liquidity > 0);
 
-  return ['open', 'active', 'live'].some((item) => status.includes(item)) && !isFinalizedMarket(market);
+  return OPEN_MARKET_STATUSES.some((item) => status.includes(item)) && !isFinalizedMarket(market, currentBlock);
 };
 
-export const isFinalizedMarket = (market: PolkamarktMarket): boolean => {
+export const isFinalizedMarket = (market: PolkamarktMarket, currentBlock?: number): boolean => {
   const status = market.status?.toLowerCase() ?? '';
-  return ['resolved', 'cancelled', 'canceled', 'finalized', 'closed'].some((item) => status.includes(item));
+  return FINALIZED_MARKET_STATUSES.some((item) => status.includes(item)) || isMarketClosedByBlock(market, currentBlock);
 };
 
 export const isClaimableMarketStatus = (status?: string | null): boolean => {
@@ -65,25 +118,33 @@ export function filterMarkets(
     status,
     account,
     mineOnly = false,
+    currentBlock,
   }: {
     search?: string;
     category?: MarketCategory | 'all';
     status?: MarketStatusFilter;
     account?: string;
     mineOnly?: boolean;
+    currentBlock?: number;
   }
 ): PolkamarktMarket[] {
   const normalizedSearch = search?.trim().toLowerCase() ?? '';
   const normalizedAccount = account?.toLowerCase() ?? '';
 
   return markets.filter((market) => {
-    if (status === 'active' && !isActiveMarket(market)) return false;
-    if (status === 'finalized' && !isFinalizedMarket(market)) return false;
+    if (status === 'active' && !isActiveMarket(market, currentBlock)) return false;
+    if (status === 'finalized' && !isFinalizedMarket(market, currentBlock)) return false;
     if (category && category !== 'all' && market.category !== category) return false;
     if (mineOnly && (!normalizedAccount || market.creator?.toLowerCase() !== normalizedAccount)) return false;
     if (!normalizedSearch) return true;
 
-    return [market.title, market.description, market.category, market.status, market.creator]
+    return [
+      market.title,
+      market.description,
+      market.category,
+      getMarketDisplayStatus(market, currentBlock),
+      market.creator,
+    ]
       .filter(Boolean)
       .some((value) => String(value).toLowerCase().includes(normalizedSearch));
   });
@@ -144,14 +205,35 @@ export function calculateApproximateCloseDate(currentBlock: number, closeBlock?:
 }
 
 /**
- * Formats a Date for a datetime-local input while preserving block-time precision.
+ * Formats an approximate block-derived close date with the local UTC offset and minute precision.
+ */
+export function formatApproximateCloseDate(date: Date): string {
+  const timestamp = date.getTime();
+  if (!Number.isFinite(timestamp)) return '';
+
+  const offsetMinutes = -date.getTimezoneOffset();
+  const offsetSign = offsetMinutes >= 0 ? '+' : '-';
+  const absoluteOffsetMinutes = Math.abs(offsetMinutes);
+  const offsetHours = Math.floor(absoluteOffsetMinutes / 60);
+  const offsetRemainderMinutes = absoluteOffsetMinutes % 60;
+  const pad = (value: number): string => String(value).padStart(2, '0');
+
+  return [
+    `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`,
+    `${pad(date.getHours())}:${pad(date.getMinutes())}`,
+    `UTC${offsetSign}${pad(offsetHours)}:${pad(offsetRemainderMinutes)}`,
+  ].join(' ');
+}
+
+/**
+ * Formats a Date for a datetime-local input at minute precision.
  */
 export function formatDateTimeLocalInput(date: Date): string {
   const timestamp = date.getTime();
   if (!Number.isFinite(timestamp)) return '';
 
   const offset = date.getTimezoneOffset();
-  return new Date(timestamp - offset * 60_000).toISOString().slice(0, 19);
+  return new Date(timestamp - offset * 60_000).toISOString().slice(0, 16);
 }
 
 export function parseBlockInput(value: unknown): number | undefined {

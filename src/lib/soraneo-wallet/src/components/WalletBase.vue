@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 
@@ -141,10 +141,6 @@ const handleBackClick = () => {
 const handleCloseClick = () => {
   emit('close');
 };
-
-onMounted(() => {
-  setFocusToHeader();
-});
 
 defineExpose({
   setFocusToHeader,

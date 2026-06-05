@@ -90,6 +90,9 @@
         <template v-else-if="areZeroAmounts">
           {{ t('buttons.enterAmount') }}
         </template>
+        <template v-else-if="hasQuoteError">
+          {{ t('swap.errorFetching') }}
+        </template>
         <template v-else-if="isInsufficientLiquidity">
           {{ t('swap.insufficientLiquidity') }}
         </template>
@@ -249,6 +252,7 @@ const debugEnabled = computed(() => Boolean(settingsStore.debugEnabled));
 const nodeIsConnected = computed(() => Boolean(settingsStore.nodeIsConnected));
 const swapMarketAlgorithm = computed(() => swapStore.swapMarketAlgorithm);
 const isPathAvailable = computed(() => swapStore.isPathAvailable);
+const hasQuote = computed(() => Boolean(swapStore.swapQuote));
 const allowLossPopup = computed(() => swapStore.allowLossPopup);
 const isExchangeB = computed(() => swapStore.isExchangeB);
 const selectedDexId = computed(() => swapStore.selectedDexId);
@@ -285,6 +289,16 @@ const isMaxSwapAvailable = computed(() => {
 const isInsufficientLiquidity = computed(
   () => isPathAvailable.value && preparedForSwap.value && !areZeroAmounts.value && hasZeroAmount.value
 );
+const hasQuoteError = computed(
+  () =>
+    swapStore.quoteError ||
+    (isPathAvailable.value &&
+      preparedForSwap.value &&
+      !areZeroAmounts.value &&
+      !quoteLoading.value &&
+      !pathAvailabilityLoading.value &&
+      !hasQuote.value)
+);
 const isPairNotCreated = computed(
   () => nodeIsConnected.value && areTokensSelected.value && !pathAvailabilityLoading.value && !isPathAvailable.value
 );
@@ -310,6 +324,8 @@ const isConfirmSwapDisabled = computed(
     !areTokensSelected.value ||
     !isPathAvailable.value ||
     areZeroAmounts.value ||
+    !hasQuote.value ||
+    hasQuoteError.value ||
     isInsufficientLiquidity.value ||
     isInsufficientBalance.value ||
     isInsufficientXorForFee.value
@@ -364,6 +380,7 @@ async function runRecountSwapValues() {
   const quote = swapStore.swapQuote;
 
   if (!areTokensSelected.value || asZeroValue(value) || !quote) {
+    swapStore.setQuoteError(false);
     swapStore.setAmountWithoutImpact();
     swapStore.setLiquidityProviderFee();
     swapStore.setRewards();
@@ -405,6 +422,7 @@ async function runRecountSwapValues() {
       });
     }
 
+    swapStore.setQuoteError(false);
     setOppositeValue(getFPNumberFromCodec(amount, oppositeToken.decimals).toString());
     swapStore.setAmountWithoutImpact(amountWithoutImpact as string);
     swapStore.setLiquidityProviderFee(fee as CodecString);
@@ -414,6 +432,7 @@ async function runRecountSwapValues() {
     swapStore.selectDexId(dexId as DexId);
   } catch (error) {
     console.error(error);
+    swapStore.setQuoteError(true);
     resetOppositeValue();
   }
 }
@@ -470,24 +489,36 @@ async function updateSwapPathAvailability() {
 
 async function refreshSwapQuotesConfiguration() {
   try {
+    await api.dex.update();
     await api.swap.update();
   } catch (error) {
-    console.warn('[swap] api.swap.update skipped', error);
+    console.warn('[swap] quote configuration refresh skipped', error);
   }
 }
 
 async function subscribeOnQuote() {
   resetQuoteSubscription();
 
-  if (!areTokensSelected.value) {
+  if (!areTokensSelected.value || !nodeIsConnected.value) {
     quoteLoading.value = false;
+    swapStore.setQuoteError(false);
     swapStore.setSubscriptionPayload();
+    swapStore.setPathAvailability(false);
     await runRecountSwapValues();
     return;
   }
 
   quoteLoading.value = true;
+  swapStore.setSubscriptionPayload();
+  swapStore.setQuoteError(false);
   swapStore.setPathAvailability(false);
+  if (!areZeroAmounts.value) {
+    if (isExchangeB.value) {
+      resetFieldFrom();
+    } else {
+      resetFieldTo();
+    }
+  }
   void updateSwapPathAvailability();
 
   const observableQuote = api.swap.getDexesSwapQuoteObservable(
@@ -496,8 +527,11 @@ async function subscribeOnQuote() {
   );
 
   if (observableQuote) {
+    let hasQuoteEmission = false;
+
     quoteSubscription.value = observableQuote.subscribe({
       next: (quoteData: SwapQuoteData) => {
+        hasQuoteEmission = true;
         const { quote, isAvailable, liquiditySources } = quoteData;
         swapStore.setSubscriptionPayload({ quote, isAvailable, liquiditySources });
         recountSwapValues();
@@ -507,16 +541,21 @@ async function subscribeOnQuote() {
         console.error('[swap] quote subscription failed', error);
         const currentPathAvailability = swapStore.isPathAvailable;
         swapStore.setSubscriptionPayload();
+        swapStore.setQuoteError(true);
         swapStore.setPathAvailability(currentPathAvailability);
         quoteLoading.value = false;
         void runRecountSwapValues();
       },
       complete: () => {
+        if (!hasQuoteEmission) {
+          swapStore.setQuoteError(true);
+        }
         quoteLoading.value = false;
       },
     });
   } else {
     swapStore.setSubscriptionPayload();
+    swapStore.setQuoteError(false);
     quoteLoading.value = false;
     await runRecountSwapValues();
   }
@@ -536,6 +575,7 @@ function resetSwapSubscriptions() {
   swapStore.resetSubscriptions();
   resetQuoteSubscription();
   quoteLoading.value = false;
+  swapStore.setQuoteError(false);
   swapStore.setSubscriptionPayload();
   void runRecountSwapValues();
 }

@@ -40,11 +40,13 @@ const quoteSubscribeMock = vi.fn(() => ({ unsubscribe: vi.fn() }));
 const getDexesSwapQuoteObservableMock = vi.fn(() => ({ subscribe: quoteSubscribeMock }));
 const checkSwapMock = vi.fn(async () => false);
 const swapUpdateMock = vi.fn(async () => undefined);
+const dexUpdateMock = vi.fn(async () => undefined);
 
 const swapStoreMock = reactive({
   swapQuote: null as null,
   isPathAvailable: false,
   isAvailable: false,
+  quoteError: false,
   isExchangeB: false,
   priceImpact: '0',
   selectedDexId: 0,
@@ -71,6 +73,7 @@ const swapStoreMock = reactive({
         swapStoreMock.swapQuote = null;
         swapStoreMock.isAvailable = false;
         swapStoreMock.isPathAvailable = false;
+        swapStoreMock.quoteError = false;
         swapStoreMock.liquiditySources = [];
         return;
       }
@@ -86,6 +89,9 @@ const swapStoreMock = reactive({
   ),
   setPathAvailability: vi.fn((flag = false) => {
     swapStoreMock.isPathAvailable = flag;
+  }),
+  setQuoteError: vi.fn((flag = false) => {
+    swapStoreMock.quoteError = flag;
   }),
   setExchangeB: vi.fn((flag: boolean) => {
     swapStoreMock.isExchangeB = flag;
@@ -184,6 +190,7 @@ vi.mock('@tests/stubs/walletRuntime', () => ({
     },
     dex: {
       publicDexes: [],
+      update: dexUpdateMock,
     },
   },
   WALLET_CONSTS: {},
@@ -408,17 +415,24 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     setFromValueMock.mockClear();
     setToValueMock.mockClear();
     getDexesSwapQuoteObservableMock.mockClear();
+    getDexesSwapQuoteObservableMock.mockImplementation(() => ({ subscribe: quoteSubscribeMock }));
     quoteSubscribeMock.mockClear();
     checkSwapMock.mockClear();
+    checkSwapMock.mockResolvedValue(false);
     swapUpdateMock.mockClear();
+    swapUpdateMock.mockResolvedValue(undefined);
+    dexUpdateMock.mockClear();
+    dexUpdateMock.mockResolvedValue(undefined);
     swapStoreMock.setSubscriptionPayload.mockClear();
     swapStoreMock.setPathAvailability.mockClear();
+    swapStoreMock.setQuoteError.mockClear();
     swapStoreMock.updateSubscriptions.mockClear();
     swapStoreMock.resetSubscriptions.mockClear();
     swapStoreMock.reset.mockClear();
     swapStoreMock.swapQuote = null;
     swapStoreMock.isPathAvailable = false;
     swapStoreMock.isAvailable = false;
+    swapStoreMock.quoteError = false;
     swapStoreMock.isExchangeB = false;
     swapStoreMock.priceImpact = '0';
     swapStoreMock.liquiditySources = [];
@@ -449,6 +463,7 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     const wrapper = await mountWidget();
     await flushPromises();
 
+    expect(dexUpdateMock).toHaveBeenCalledTimes(1);
     expect(swapUpdateMock).toHaveBeenCalledTimes(1);
     expect(getDexesSwapQuoteObservableMock).not.toHaveBeenCalled();
 
@@ -573,6 +588,117 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
 
     wrapper.unmount();
     activeDexQuote$.complete();
+  });
+
+  it('shows quote errors instead of mislabeling failed quote math as insufficient liquidity', async () => {
+    isLoggedInRef.value = true;
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+    fromValueRef.value = '1';
+    toValueRef.value = '10';
+    checkSwapMock.mockResolvedValue(true);
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    swapStoreMock.swapQuote = (() => {
+      throw new Error('quote failed');
+    }) as SwapQuoteData['quote'];
+    swapStoreMock.isPathAvailable = true;
+
+    await (wrapper.vm as any).handleInputFieldFrom('2');
+    await flushPromises();
+
+    const confirmButton = wrapper.get('[data-test-name="confirmSwap"]');
+
+    expect(swapStoreMock.setQuoteError).toHaveBeenLastCalledWith(true);
+    expect(setToValueMock).toHaveBeenLastCalledWith('');
+    expect(confirmButton.text()).toBe('swap.errorFetching');
+    expect(confirmButton.text()).not.toContain('swap.insufficientLiquidity');
+
+    consoleErrorSpy.mockRestore();
+    wrapper.unmount();
+  });
+
+  it('clears stale quotes and opposite amounts while loading a new token pair', async () => {
+    isLoggedInRef.value = true;
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+    fromValueRef.value = '1';
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    toValueRef.value = '10';
+    swapStoreMock.swapQuote = (() => ({
+      dexId: DexId.XOR,
+      result: {
+        amount: '10',
+        amountWithoutImpact: '10',
+        fee: '0',
+        rewards: [],
+        route: [],
+        distribution: [],
+      },
+    })) as SwapQuoteData['quote'];
+    swapStoreMock.isPathAvailable = true;
+    swapStoreMock.setSubscriptionPayload.mockClear();
+    setToValueMock.mockClear();
+
+    tokenToRef.value = {
+      address: '0xnext',
+      symbol: 'NEXT',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+
+    await nextTick();
+    await flushPromises();
+
+    expect(swapStoreMock.setSubscriptionPayload).toHaveBeenCalledWith();
+    expect(swapStoreMock.swapQuote).toBeNull();
+    expect(setToValueMock).toHaveBeenLastCalledWith('');
+
+    wrapper.unmount();
+  });
+
+  it('shows quote errors when a quote stream completes without data', async () => {
+    isLoggedInRef.value = true;
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+    fromValueRef.value = '1';
+    toValueRef.value = '10';
+    checkSwapMock.mockResolvedValue(true);
+    getDexesSwapQuoteObservableMock.mockImplementationOnce(() => ({
+      subscribe: ({ complete }: { complete?: () => void }) => {
+        complete?.();
+        return { unsubscribe: vi.fn() };
+      },
+    }));
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    const confirmButton = wrapper.get('[data-test-name="confirmSwap"]');
+
+    expect(swapStoreMock.setQuoteError).toHaveBeenLastCalledWith(true);
+    expect(confirmButton.text()).toBe('swap.errorFetching');
+    expect(confirmButton.attributes('disabled')).toBeDefined();
+
+    wrapper.unmount();
   });
 
   it('renders network fee info line with tooltip metadata for swap details', async () => {
@@ -722,8 +848,41 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     await nextTick();
     await flushPromises();
 
+    expect(dexUpdateMock).toHaveBeenCalledTimes(1);
+    expect(swapUpdateMock).toHaveBeenCalledTimes(1);
     expect(getDexesSwapQuoteObservableMock).toHaveBeenCalledWith('0xfrom', '0xto');
     expect(checkSwapMock).toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('does not start quote streams when tokens change while the node is disconnected', async () => {
+    isLoggedInRef.value = true;
+    nodeIsConnectedRef.value = false;
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    getDexesSwapQuoteObservableMock.mockClear();
+    checkSwapMock.mockClear();
+    swapStoreMock.setSubscriptionPayload.mockClear();
+    swapStoreMock.setPathAvailability.mockClear();
+
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+
+    await nextTick();
+    await flushPromises();
+
+    expect(getDexesSwapQuoteObservableMock).not.toHaveBeenCalled();
+    expect(checkSwapMock).not.toHaveBeenCalled();
+    expect(swapStoreMock.setSubscriptionPayload).toHaveBeenCalled();
+    expect(swapStoreMock.setPathAvailability).toHaveBeenLastCalledWith(false);
+    expect(wrapper.find('[data-test-name="swapPairStatus"]').exists()).toBe(false);
 
     wrapper.unmount();
   });

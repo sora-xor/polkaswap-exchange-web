@@ -19,7 +19,7 @@
       </header>
 
       <div class="market-share__snapshot">
-        <span class="market-share__meta">{{ market.category }} · {{ market.status || t('polkamarkt.status.active') }}</span>
+        <span class="market-share__meta">{{ market.category }} · {{ marketStatus }}</span>
         <strong>{{ market.title }}</strong>
 
         <div class="market-share__outcomes">
@@ -44,9 +44,7 @@
           <span class="market-share__chart-pill market-share__chart-pill--yes">
             {{ t('polkamarkt.outcomes.yes') }} {{ yesPercent }}
           </span>
-          <span class="market-share__chart-pill">
-            {{ t('polkamarkt.outcomes.no') }} {{ noPercent }}
-          </span>
+          <span class="market-share__chart-pill"> {{ t('polkamarkt.outcomes.no') }} {{ noPercent }} </span>
         </div>
 
         <div class="market-share__chart" data-testid="market-share-chart">
@@ -127,19 +125,40 @@
       <button v-if="!compact" type="button" data-testid="market-share-copy" @click="copySnapshot">
         {{ copied ? t('polkamarkt.share.copied') : t('polkamarkt.share.copySummary') }}
       </button>
-      <button type="button" data-testid="market-share-native" @click="shareNative">
-        {{ t('polkamarkt.share.native') }}
+      <button type="button" :disabled="sharing" data-testid="market-share-native" @click="shareImage">
+        {{ sharing ? t('polkamarkt.share.preparing') : t('polkamarkt.share.shareImage') }}
       </button>
-      <button type="button" data-testid="market-share-png" @click="downloadPng">
+      <button type="button" :disabled="sharing" data-testid="market-share-png" @click="downloadPng">
         {{ t('polkamarkt.share.downloadPng') }}
       </button>
-      <a :href="telegramUrl" target="_blank" rel="nofollow noopener noreferrer">
+      <a
+        :href="telegramUrl"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+        data-testid="market-share-telegram"
+        :aria-disabled="sharing ? 'true' : undefined"
+        @click.prevent="sharePlatform('telegram')"
+      >
         {{ t('social.telegram') }}
       </a>
-      <a :href="xUrl" target="_blank" rel="nofollow noopener noreferrer">
+      <a
+        :href="xUrl"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+        data-testid="market-share-x"
+        :aria-disabled="sharing ? 'true' : undefined"
+        @click.prevent="sharePlatform('x')"
+      >
         {{ t('polkamarkt.share.x') }}
       </a>
     </div>
+    <p
+      v-if="shareStatus"
+      :class="['market-share__status', `market-share__status--${shareStatusTone}`]"
+      data-testid="market-share-status"
+    >
+      {{ shareStatus }}
+    </p>
   </section>
 </template>
 
@@ -149,8 +168,13 @@ import { computed, ref } from 'vue';
 import polkamarktLogoUrl from '@/assets/img/polkamarkt/pm_logo.svg?url';
 import { useTranslation } from '@/composables/useTranslation';
 import { POLKAMARKT_COLLATERAL_ASSET } from '../consts';
-import { yesNoPricesFromProbability } from '../lib/markets';
-import { buildMarketShareSnapshot, buildMarketShareText, buildMarketShareUrl, buildPolkamarktTradeLink } from '../lib/share';
+import { getMarketDisplayStatus, yesNoPricesFromProbability } from '../lib/markets';
+import {
+  buildMarketShareSnapshot,
+  buildMarketShareText,
+  buildMarketShareUrl,
+  buildPolkamarktTradeLink,
+} from '../lib/share';
 
 import type { MarketHistoryPoint, PolkamarktMarket } from '../types';
 
@@ -159,22 +183,36 @@ const props = defineProps<{
   history?: MarketHistoryPoint[];
   baseUrl?: string;
   compact?: boolean;
+  currentBlock?: number;
 }>();
 
 const { t } = useTranslation();
 const copied = ref(false);
+const sharing = ref(false);
+const shareStatus = ref('');
+const shareStatusTone = ref<'success' | 'error'>('success');
 
 const currentHref = computed(() => props.baseUrl ?? (typeof window === 'undefined' ? '' : window.location.href));
 const tradeLink = computed(() => (props.market ? buildPolkamarktTradeLink(props.market, currentHref.value) : ''));
 const prices = computed(() => yesNoPricesFromProbability(props.market?.probability));
+const marketStatus = computed(() => {
+  const status = getMarketDisplayStatus(props.market, props.currentBlock);
+  if (status?.toLowerCase() === 'closed') return t('polkamarkt.status.closed');
+  if (status?.toLowerCase() === 'early report locked') return t('polkamarkt.status.earlyReportLocked');
+  return status || t('polkamarkt.status.active');
+});
 const yesSplit = computed(() =>
-  Number.isFinite(props.market?.probability) ? Math.max(0, Math.min(100, Math.round(props.market?.probability ?? 0))) : undefined
+  Number.isFinite(props.market?.probability)
+    ? Math.max(0, Math.min(100, Math.round(props.market?.probability ?? 0)))
+    : undefined
 );
 const noSplit = computed(() => (yesSplit.value === undefined ? undefined : 100 - yesSplit.value));
 const yesSplitWidth = computed(() => `${yesSplit.value ?? 50}%`);
 const noSplitWidth = computed(() => `${noSplit.value ?? 50}%`);
-const snapshot = computed(() => (props.market ? buildMarketShareSnapshot(props.market) : ''));
-const shareText = computed(() => (props.market ? buildMarketShareText(props.market, tradeLink.value) : ''));
+const snapshot = computed(() => (props.market ? buildMarketShareSnapshot(props.market, props.currentBlock) : ''));
+const shareText = computed(() =>
+  props.market ? buildMarketShareText(props.market, tradeLink.value, props.currentBlock) : ''
+);
 const telegramUrl = computed(() => buildMarketShareUrl('telegram', snapshot.value, tradeLink.value));
 const xUrl = computed(() => buildMarketShareUrl('x', snapshot.value, tradeLink.value));
 
@@ -184,13 +222,19 @@ const CHART_WIDTH = 640;
 const CHART_HEIGHT = 180;
 const CHART_PADDING = 24;
 const chartGridValues = [25, 50, 75] as const;
+type PlatformShareTarget = 'telegram' | 'x';
+type NativeFileShareResult = 'shared' | 'aborted' | 'unsupported';
 
 const formatPercent = (value?: number): string => (Number.isFinite(value) ? `${value}%` : t('polkamarkt.notIndexed'));
 const formatPrice = (value?: number): string =>
-  Number.isFinite(value) ? `${(value ?? 0).toFixed(2)} ${POLKAMARKT_COLLATERAL_ASSET.symbol}` : t('polkamarkt.notIndexed');
+  Number.isFinite(value)
+    ? `${(value ?? 0).toFixed(2)} ${POLKAMARKT_COLLATERAL_ASSET.symbol}`
+    : t('polkamarkt.notIndexed');
 const formatUsd = (value?: number): string =>
   Number.isFinite(value)
-    ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value ?? 0)
+    ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(
+        value ?? 0
+      )
     : t('polkamarkt.notIndexed');
 
 const yesPercent = computed(() => formatPercent(yesSplit.value));
@@ -200,12 +244,16 @@ const noPrice = computed(() => formatPrice(prices.value.no));
 const liquidity = computed(() => formatUsd(props.market?.liquidity));
 const volume = computed(() => formatUsd(props.market?.volume));
 const closeBlock = computed(() =>
-  Number.isFinite(props.market?.closeBlock) ? Number(props.market?.closeBlock).toLocaleString() : t('polkamarkt.notIndexed')
+  Number.isFinite(props.market?.closeBlock)
+    ? Number(props.market?.closeBlock).toLocaleString()
+    : t('polkamarkt.notIndexed')
 );
 const splitLabel = computed(
   () => `${t('polkamarkt.outcomes.yes')} ${yesPercent.value}, ${t('polkamarkt.outcomes.no')} ${noPercent.value}`
 );
-const imageFileName = computed(() => `polkamarkt-market-${props.market?.chainId ?? props.market?.id ?? 'snapshot'}.png`);
+const imageFileName = computed(
+  () => `polkamarkt-market-${props.market?.chainId ?? props.market?.id ?? 'snapshot'}.png`
+);
 
 const chartPoints = computed(() => {
   const source =
@@ -262,7 +310,9 @@ function buildChartPath(coordinates: Array<{ x: number; y: number }>): string {
     return `M ${CHART_PADDING} ${point.y} L ${CHART_WIDTH - CHART_PADDING} ${point.y}`;
   }
 
-  return coordinates.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(' ');
+  return coordinates
+    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+    .join(' ');
 }
 
 const chartPath = computed(() => buildChartPath(chartCoordinates.value));
@@ -297,32 +347,86 @@ async function copySnapshot(): Promise<void> {
   }, 1_500);
 }
 
-async function shareNative(): Promise<void> {
-  if (typeof navigator !== 'undefined' && navigator.share && props.market) {
-    const pngBlob = await createPngBlob();
-    const pngFile = new File([pngBlob], imageFileName.value, { type: 'image/png' });
-    if (navigator.canShare?.({ files: [pngFile] })) {
-      await navigator.share({
-        title: props.market.title,
-        text: snapshot.value,
-        url: tradeLink.value,
-        files: [pngFile],
-      });
-      return;
-    }
+function setShareStatus(message: string, tone: 'success' | 'error' = 'success'): void {
+  shareStatus.value = message;
+  shareStatusTone.value = tone;
+}
 
+async function runShareAction(action: () => Promise<void>): Promise<void> {
+  if (sharing.value) return;
+
+  sharing.value = true;
+  shareStatus.value = '';
+  try {
+    await action();
+  } catch {
+    setShareStatus(t('polkamarkt.share.imageFailed'), 'error');
+  } finally {
+    sharing.value = false;
+  }
+}
+
+function canShareFile(file: File): boolean {
+  if (typeof navigator === 'undefined') return false;
+
+  try {
+    return Boolean(navigator.canShare?.({ files: [file] }));
+  } catch {
+    return false;
+  }
+}
+
+function isShareAbort(error: unknown): boolean {
+  return error instanceof DOMException && error.name === 'AbortError';
+}
+
+async function tryNativeFileShare(file: File): Promise<NativeFileShareResult> {
+  if (typeof navigator === 'undefined' || !navigator.share || !props.market || !canShareFile(file))
+    return 'unsupported';
+
+  try {
     await navigator.share({
       title: props.market.title,
       text: snapshot.value,
       url: tradeLink.value,
+      files: [file],
     });
+    return 'shared';
+  } catch (error) {
+    return isShareAbort(error) ? 'aborted' : 'unsupported';
+  }
+}
+
+async function writeImageClipboard(blob: Blob): Promise<boolean> {
+  if (typeof navigator === 'undefined' || !navigator.clipboard?.write || typeof ClipboardItem === 'undefined')
+    return false;
+
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function prepareImageFallback(blob: Blob): Promise<void> {
+  if (await writeImageClipboard(blob)) {
+    setShareStatus(t('polkamarkt.share.imageCopied'));
     return;
   }
 
-  await copySnapshot();
+  downloadBlob(blob);
+  setShareStatus(t('polkamarkt.share.imageDownloaded'));
 }
 
-function roundedRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
+function roundedRect(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number
+): void {
   context.beginPath();
   context.moveTo(x + radius, y);
   context.lineTo(x + width - radius, y);
@@ -481,7 +585,13 @@ function loadPolkamarktLogoImage(): Promise<HTMLImageElement | undefined> {
   return logoImagePromise;
 }
 
-function drawLogoMark(context: CanvasRenderingContext2D, image: HTMLImageElement | undefined, x: number, y: number, size: number): void {
+function drawLogoMark(
+  context: CanvasRenderingContext2D,
+  image: HTMLImageElement | undefined,
+  x: number,
+  y: number,
+  size: number
+): void {
   context.fillStyle = '#f7edf4';
   roundedRect(context, x, y, size, size, 26);
   context.fill();
@@ -524,7 +634,13 @@ function drawCanvasLine(
   context.stroke();
 }
 
-function drawCanvasTrendChart(context: CanvasRenderingContext2D, left: number, top: number, width: number, height: number): void {
+function drawCanvasTrendChart(
+  context: CanvasRenderingContext2D,
+  left: number,
+  top: number,
+  width: number,
+  height: number
+): void {
   context.fillStyle = '#2f104a';
   roundedRect(context, left, top, width, height, 24);
   context.fill();
@@ -553,13 +669,25 @@ function drawCanvasTrendChart(context: CanvasRenderingContext2D, left: number, t
   if (currentNo) {
     context.fillStyle = '#f7edf4';
     context.beginPath();
-    context.arc(left + 20 + (currentNo.x / CHART_WIDTH) * (width - 100), top + 12 + (currentNo.y / CHART_HEIGHT) * (height - 24), 10, 0, Math.PI * 2);
+    context.arc(
+      left + 20 + (currentNo.x / CHART_WIDTH) * (width - 100),
+      top + 12 + (currentNo.y / CHART_HEIGHT) * (height - 24),
+      10,
+      0,
+      Math.PI * 2
+    );
     context.fill();
   }
   if (currentYes) {
     context.fillStyle = '#f8087b';
     context.beginPath();
-    context.arc(left + 20 + (currentYes.x / CHART_WIDTH) * (width - 100), top + 12 + (currentYes.y / CHART_HEIGHT) * (height - 24), 12, 0, Math.PI * 2);
+    context.arc(
+      left + 20 + (currentYes.x / CHART_WIDTH) * (width - 100),
+      top + 12 + (currentYes.y / CHART_HEIGHT) * (height - 24),
+      12,
+      0,
+      Math.PI * 2
+    );
     context.fill();
   }
 }
@@ -604,16 +732,10 @@ async function drawShareImage(context: CanvasRenderingContext2D): Promise<void> 
   drawFittedText(context, t('polkamarkt.share.kicker').toUpperCase(), brandX, 132, 340, 800, 22, 16);
 
   context.fillStyle = '#f7edf4';
-  roundedRect(context, 1008, 70, 244, 58, 29);
-  context.fill();
-  context.fillStyle = '#2f104a';
-  drawFittedText(context, t('polkamarkt.share.tradeLink'), 1036, 107, 188, 800, 22, 16);
-
-  context.fillStyle = '#f7edf4';
   const titleBottom = drawFittedWrappedText(context, props.market.title, 72, 218, 828, 800, 40, 30, 44, 3);
 
   context.fillStyle = '#d8c7d9';
-  drawFittedText(context, `${props.market.category} · ${props.market.status || 'Active'}`, 72, titleBottom + 18, 828, 600, 24, 16);
+  drawFittedText(context, `${props.market.category} · ${marketStatus.value}`, 72, titleBottom + 18, 828, 600, 24, 16);
 
   const graphLabelY = Math.max(titleBottom + 58, 342);
   const graphTop = graphLabelY + 18;
@@ -621,11 +743,29 @@ async function drawShareImage(context: CanvasRenderingContext2D): Promise<void> 
   const graphWidth = 828;
   const graphHeight = 214;
   context.fillStyle = '#d8c7d9';
-  drawFittedText(context, `${t('polkamarkt.outcomes.yes')} / ${t('polkamarkt.outcomes.no')}`, graphLeft, graphLabelY, graphWidth, 700, 24, 16);
+  drawFittedText(
+    context,
+    `${t('polkamarkt.outcomes.yes')} / ${t('polkamarkt.outcomes.no')}`,
+    graphLeft,
+    graphLabelY,
+    graphWidth,
+    700,
+    24,
+    16
+  );
   drawCanvasTrendChart(context, graphLeft, graphTop, graphWidth, graphHeight);
 
   const sideLeft = 940;
-  drawOutcomeCard(context, sideLeft, 176, 312, t('polkamarkt.outcomes.yes'), yesPercent.value, yesPrice.value, '#f8087b');
+  drawOutcomeCard(
+    context,
+    sideLeft,
+    176,
+    312,
+    t('polkamarkt.outcomes.yes'),
+    yesPercent.value,
+    yesPrice.value,
+    '#f8087b'
+  );
   drawOutcomeCard(context, sideLeft, 312, 312, t('polkamarkt.outcomes.no'), noPercent.value, noPrice.value, '#704480');
 
   context.fillStyle = '#3a1557';
@@ -661,8 +801,11 @@ async function createPngBlob(): Promise<Blob> {
   });
 }
 
-async function downloadPng(): Promise<void> {
-  const blob = await createPngBlob();
+function createPngFile(blob: Blob): File {
+  return new File([blob], imageFileName.value, { type: 'image/png' });
+}
+
+function downloadBlob(blob: Blob): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
@@ -671,6 +814,48 @@ async function downloadPng(): Promise<void> {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
+
+async function downloadPng(): Promise<void> {
+  await runShareAction(async () => {
+    const blob = await createPngBlob();
+    downloadBlob(blob);
+    setShareStatus(t('polkamarkt.share.imageDownloaded'));
+  });
+}
+
+function openPlatformShare(target: PlatformShareTarget): void {
+  const url = target === 'telegram' ? telegramUrl.value : xUrl.value;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+async function sharePlatform(target: PlatformShareTarget): Promise<void> {
+  await runShareAction(async () => {
+    const blob = await createPngBlob();
+    const nativeResult = await tryNativeFileShare(createPngFile(blob));
+    if (nativeResult === 'shared') {
+      setShareStatus(t('polkamarkt.share.imageShared'));
+      return;
+    }
+    if (nativeResult === 'aborted') return;
+
+    await prepareImageFallback(blob);
+    openPlatformShare(target);
+  });
+}
+
+async function shareImage(): Promise<void> {
+  await runShareAction(async () => {
+    const blob = await createPngBlob();
+    const nativeResult = await tryNativeFileShare(createPngFile(blob));
+    if (nativeResult === 'shared') {
+      setShareStatus(t('polkamarkt.share.imageShared'));
+      return;
+    }
+    if (nativeResult === 'aborted') return;
+
+    await prepareImageFallback(blob);
+  });
 }
 </script>
 
@@ -944,6 +1129,24 @@ async function downloadPng(): Promise<void> {
         border-color: var(--s-color-theme-accent);
         color: var(--s-color-theme-accent);
       }
+
+      &:disabled,
+      &[aria-disabled='true'] {
+        cursor: progress;
+        opacity: 0.62;
+      }
+    }
+  }
+
+  &__status {
+    margin: $inner-spacing-tiny 0 0;
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-mini);
+    font-weight: 600;
+    line-height: var(--s-line-height-small);
+
+    &--error {
+      color: var(--s-color-status-error);
     }
   }
 

@@ -96,7 +96,12 @@ describe('For Agents route', () => {
     expect(forAgentsPageSource).toContain('forAgents.polkamarkt.items.${item.key}.title');
     expect(forAgentsPageSource).toContain('forAgents.polkamarkt.items.${item.key}.description');
 
-    ['#/polkamarkt', 'markets + marketSnapshots', 'Buy / Sell / Flip / LP / Claim'].forEach((code) => {
+    [
+      '#/polkamarkt',
+      'markets + marketSnapshots',
+      'Buy / Sell / Flip / LP / Claim',
+      'batchAll(createCondition, createMarket)',
+    ].forEach((code) => {
       expect(forAgentsPageSource).toContain(`code: '${code}'`);
     });
   });

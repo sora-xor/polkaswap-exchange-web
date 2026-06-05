@@ -668,7 +668,7 @@
         "polkamarkt": {
             "items": {
                 "create": {
-                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, seed liquidity, fee preview, and retry after condition creation.",
+                    "description": "Use the create-market wizard for question metadata, category, deadline or close block, fee preview, and retry after condition creation. New markets are seedless.",
                     "title": "Create markets"
                 },
                 "markets": {
@@ -676,7 +676,7 @@
                     "title": "Read markets"
                 },
                 "positions": {
-                    "description": "Use My Markets / LP to inspect created markets, LP shares, claimable trader payouts, creator fees, creator liquidity, and LP residual claims.",
+                    "description": "Use My Markets to inspect created markets, open YES/NO positions, claimable trader payouts, creator fees, and resolved claims.",
                     "title": "Manage positions"
                 },
                 "route": {
@@ -684,11 +684,11 @@
                     "title": "Open the route"
                 },
                 "trade": {
-                    "description": "The trade ticket handles Buy, Sell, Flip, LP, and Claim modes with live runtime quotes, slippage protection, network fees, balance checks, and wallet submission.",
+                    "description": "The trade ticket handles limit orders, open orders, split/merge complete sets, cancel, and claim modes with live runtime quotes, network fees, balance checks, and wallet submission.",
                     "title": "Trade and claim"
                 }
             },
-            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO trading, market creation, LP management, and claims.",
+            "text": "Polkamarkt runs as a native Polkaswap route. Agents can reuse the same readiness, wallet, indexer, and node checks, then drive the route for market discovery, YES/NO limit-order trading, seedless market creation, open-order management, split/merge, cancellation, and claims.",
             "title": "Polkamarkt"
         },
         "primary": {
@@ -1053,16 +1053,13 @@
             "OrderBookCancelLimitOrder": "ገደብ ማዘዙን መሰረዝ አልተሳካም።",
             "OrderBookCancelLimitOrders": "ገደብ ትዕዛዞችን መሰረዝ አልተሳካም።",
             "OrderBookPlaceLimitOrder": "በ{price} {symbol2} ላይ የ{amount} {symbol} ገደብ ማዘዝ አልተሳካም",
-            "PolkamarktAddLiquidity": "{amount} {symbol} ፈሳሽ ወደ ፖልካማርት ማከል አልተሳካም።",
             "PolkamarktBuy": "በፖልካማርት ላይ {amount} {symbol} መግዛት አልተሳካም።",
             "PolkamarktClaimCreatorFees": "የPolkamarkt ፈጣሪ ክፍያዎችን መጠየቅ አልተሳካም።",
-            "PolkamarktClaimCreatorLiquidity": "የPolkamarkt ፈጣሪ ፈሳሽነት ይገባኛል ማለት አልተሳካም።",
-            "PolkamarktClaimLiquidity": "የPolkamarkt LP ቀሪ የይገባኛል ጥያቄ አልተሳካም።",
             "PolkamarktClaimMarket": "የPolkamarkt ክፍያ መጠየቅ አልተሳካም።",
             "PolkamarktClaimMarkets": "የPolkamarkt ክፍያዎችን መጠየቅ አልተሳካም።",
+            "PolkamarktReportEarlyResolution": "Failed to report early resolution on Polkamarkt",
             "PolkamarktCreateCondition": "የPolkamarkt ሁኔታን መፍጠር አልተሳካም።",
             "PolkamarktCreateMarket": "በ{amount} {symbol} የPolkamarkt ገበያ መፍጠር አልተሳካም",
-            "PolkamarktFlip": "በፖልካማርት ላይ {amount} {symbol} መገልበጥ አልተሳካም።",
             "PolkamarktSell": "በፖልካማርት ላይ {amount} {symbol} መሸጥ አልተሳካም።",
             "ReferralReserveXor": "{amount} XOR ማስያዝ አልተሳካም።",
             "ReferralSetInvitedUser": "{role} {address} ማዘጋጀት አልተሳካም",
@@ -1115,16 +1112,13 @@
             "OrderBookCancelLimitOrder": "የገደብ ትዕዛዝ ተሰርዟል።",
             "OrderBookCancelLimitOrders": "የትእዛዝ ገደብ ተሰርዟል።",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} በ{price} {symbol2} ተቀምጧል",
-            "PolkamarktAddLiquidity": "ወደ ፖልካማርት {amount} {symbol} ፈሳሽ ታክሏል።",
             "PolkamarktBuy": "በፖልካማርት ላይ {amount} {symbol} ገዛ",
             "PolkamarktClaimCreatorFees": "የPolkamarkt ፈጣሪ ክፍያዎች ተጠይቀዋል።",
-            "PolkamarktClaimCreatorLiquidity": "የፖልካማርት ፈጣሪ ፈሳሽነት ይገባኛል ብሏል።",
-            "PolkamarktClaimLiquidity": "የPolkamarkt LP ቀሪ የይገባኛል ጥያቄ አቅርቧል",
             "PolkamarktClaimMarket": "የPolkamarkt ክፍያ ተጠይቀዋል።",
             "PolkamarktClaimMarkets": "የPolkamarkt ክፍያዎች ተጠይቀዋል።",
+            "PolkamarktReportEarlyResolution": "Early resolution reported on Polkamarkt",
             "PolkamarktCreateCondition": "Polkamarkt ሁኔታ ተፈጥሯል።",
             "PolkamarktCreateMarket": "የፖልካማርት ገበያ በ{amount} {symbol} ተፈጠረ",
-            "PolkamarktFlip": "በፖልካማርት ላይ {amount} {symbol} ተገልብጧል",
             "PolkamarktSell": "በፖልካማርት ላይ {amount} {symbol} ተሽጧል",
             "ReferralReserveXor": "የታሰረ {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} በተሳካ ሁኔታ ተቀናብሯል።",
@@ -1158,16 +1152,13 @@
         "OrderBookCancelLimitOrder": "ትእዛዝ ሰርዝ",
         "OrderBookCancelLimitOrders": "ትዕዛዞችን ሰርዝ",
         "OrderBookPlaceLimitOrder": "የቦታ ማዘዣ",
-        "PolkamarktAddLiquidity": "Polkamarkt ፈሳሽ አክል",
         "PolkamarktBuy": "የPolkamarkt ማጋራቶችን ይግዙ",
         "PolkamarktClaimCreatorFees": "የPolkamarkt ፈጣሪ ክፍያዎችን ይጠይቁ",
-        "PolkamarktClaimCreatorLiquidity": "የPolkamarkt ፈጣሪ ፈሳሽነት ይገባኛል።",
-        "PolkamarktClaimLiquidity": "የይገባኛል ጥያቄ Polkamarkt LP ቀሪ",
         "PolkamarktClaimMarket": "የPolkamarkt ክፍያ የይገባኛል ጥያቄ",
         "PolkamarktClaimMarkets": "የPolkamarkt ክፍያዎችን ይጠይቁ",
+        "PolkamarktReportEarlyResolution": "Report Polkamarkt Early Resolution",
         "PolkamarktCreateCondition": "የPolkamarkt ሁኔታን ይፍጠሩ",
         "PolkamarktCreateMarket": "የPolkamarkt ገበያ ፍጠር",
-        "PolkamarktFlip": "የPolkamarkt አቀማመጥን ይግለጡ",
         "PolkamarktSell": "የPolkamarkt ማጋራቶችን ይሽጡ",
         "ReferralReserveXor": "ቦንድ XOR",
         "ReferralSetInvitedUser": "{role} አዘጋጅ",
@@ -1452,39 +1443,40 @@
         "actions": {
             "buy": "ይግዙ",
             "claimCreatorFees": "የፈጣሪ ክፍያዎችን ይጠይቁ",
-            "claimCreatorLiquidity": "የይገባኛል ጥያቄ ፈጣሪ ፈሳሽ",
-            "claimLpResidual": "የይገባኛል ጥያቄ LP ቀሪ",
             "claimTraderPayout": "የይገባኛል ጥያቄ ነጋዴ ክፍያ",
             "createMarket": "ገበያ ፍጠር",
-            "flip": "ገልብጥ",
-            "liquidity": "ፈሳሽነት ይጨምሩ",
-            "sell": "መሸጥ"
+            "sell": "መሸጥ",
+            "reportEarlyResolution": "Report early resolution"
         },
         "create": {
             "category": "ምድብ",
             "closeBlock": "ብሎክ ዝጋ",
+            "creatorSeed": "Creator seed",
             "creationFee": "የፍጥረት ክፍያ",
             "deadline": "የግብይት ቀነ-ገደብ",
-            "marketFailed": "ሁኔታ ተፈጥሯል, ነገር ግን የገበያ ፈጠራ አልተሳካም. በተቀመጠው ሁኔታ የገበያ መፍጠርን እንደገና ይሞክሩ።",
+            "marketFailed": "Market creation failed.",
             "metadataTooLong": "ጥያቄ፣ ንግግር እና ጥራት ዲበ ዳታ በ512 ባይት ውስጥ መመጣጠን አለባቸው።",
             "question": "የገበያ ጥያቄ",
             "questionPlaceholder": "ክስተቱ በተመረጠው የጊዜ ገደብ ወደ አዎ መፍትሄ ያገኛል?",
             "questionTooShort": "ጥያቄ ቢያንስ 32 ባይት መሆን አለበት።",
             "retryMessage": "ሁኔታ {id} ተፈጥሯል። የገበያ ፈጠራ ደረጃን ብቻ እንደገና ይሞክሩ።",
             "retrySubmit": "የገበያ ፈጠራን እንደገና ይሞክሩ",
-            "seedLiquidity": "የዘር ፈሳሽነት",
-            "seedTooSmall": "የዘር ፈሳሽነት ቢያንስ {amount} {symbol} መሆን አለበት።",
-            "submit": "ሁኔታ እና ገበያ ይፍጠሩ",
-            "title": "የPolkamarkt ገበያ ፍጠር"
+            "submit": "Create market",
+            "title": "የPolkamarkt ገበያ ፍጠር",
+            "dpmNote": "New markets use a Dynamic Pari-Mutuel curve with no LP seed, virtual starting depth, and pro-rata settlement payouts."
         },
         "details": {
             "awaitingSettlement": "ማጠናቀቅን በመጠባበቅ ላይ",
+            "completeSetBacking": "1 YES + 1 NO is backed by 1 KUSD.",
             "empty": "የፓሌት ሁኔታን፣ የቃል ዝርዝሮችን እና የሰፈራ ማስረጃዎችን ለማየት ገበያ ይምረጡ።",
+            "orderBook": "Order book",
             "openResolutionSource": "ምንጭ አገናኝ ክፈት",
             "oracle": "ኦራክል",
             "pool": "ፈሳሽ ገንዳ",
-            "settlement": "የሰፈራ ዝርዝሮች"
+            "settlement": "የሰፈራ ዝርዝሮች",
+            "earlyResolutionReport": "Early resolution report"
         },
+        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
         "errors": {
             "loadActivity": "የPolkamarkt መለያ እንቅስቃሴን መጫን አልተቻለም።",
             "loadMarkets": "የPolkamarkt ገበያዎችን መጫን አልተቻለም።"
@@ -1495,14 +1487,18 @@
             "evidenceBlock": "የማስረጃ እገዳ",
             "evidenceHash": "ማስረጃ ሃሽ",
             "evidenceUri": "ማስረጃ URI",
-            "lpContributed": "LP አበርክቷል።",
-            "lpShares": "LP ማጋራቶች",
+            "backing": "Backing",
+            "creatorSeed": "Creator seed",
+            "mechanism": "Mechanism",
             "noReserve": "ምንም መጠባበቂያ የለም",
             "oracle": "ኦራክል",
             "poolCollateral": "ገንዳ መያዣ",
             "resolutionOutcome": "የመፍትሄው ውጤት",
             "resolutionSource": "የመፍትሄ ምንጭ",
-            "yesReserve": "አዎ ተጠባባቂ"
+            "yesReserve": "አዎ ተጠባባቂ",
+            "bond": "Bond",
+            "reportedOutcome": "Reported outcome",
+            "reporter": "Reporter"
         },
         "filters": {
             "active": "ንቁ",
@@ -1529,72 +1525,90 @@
         "modes": {
             "buy": "ይግዙ",
             "claim": "የይገባኛል ጥያቄ",
-            "flip": "ገልብጥ",
-            "liquidity": "ኤል.ፒ",
-            "sell": "መሸጥ"
+            "sell": "መሸጥ",
+            "report": "Report"
         },
         "my": {
-            "claimsSummary": "ነጋዴ {trader} / LP {lp}",
-            "connect": "የተፈጠሩ ገበያዎችን፣ LP ማጋራቶችን፣ ክፍያዎችን እና የቅርብ ጊዜ ልውውጦችን ለማየት መለያ ያገናኙ።",
+            "claimsSummary": "ነጋዴ {trader}",
+            "connect": "Connect an account to see created markets, YES/NO positions, payouts, and recent trades.",
             "createdMarkets": "ገበያዎች ፈጥረዋል።",
             "empty": "ለዚህ መለያ እስካሁን ምንም የPolkamarkt ቦታዎች አልተፈጠረም።",
             "loading": "የPolkamarkt መለያ እንቅስቃሴን በመጫን ላይ...",
             "market": "ገበያ {id}",
-            "positions": "LP እና የነጋዴ ቦታዎች",
+            "positions": "Trader positions",
             "recentTrades": "የቅርብ ጊዜ ግብይቶች",
-            "sharesSummary": "አዎ {yes} / አይ {no} / LP {lp}",
-            "subtitle": "Created markets, LP shares, trader payouts, creator fees, and residual LP claims.",
-            "title": "የእኔ ገበያዎች / ኤል.ፒ"
+            "sharesSummary": "አዎ {yes} / አይ {no}",
+            "subtitle": "Created markets, YES/NO positions, trader payouts, and creator fees.",
+            "title": "My Markets"
         },
         "noMarkets": "ምንም ገበያዎች ከአሁኑ ማጣሪያዎች ጋር አይዛመዱም።",
         "notIndexed": "በመረጃ ጠቋሚ አልተጠቆመም።",
+        "officialSite": "Open Polkamarkt.com",
         "outcomes": {
             "no": "አይ",
             "yes": "አዎ"
         },
-        "pageSubtitle": "ንቁ የትንበያ ገበያዎችን ይገበያዩ፣ አዳዲስ ገበያዎችን ዘርግተው፣ እና LP እና ይገባኛል የሚሉ ሚዛኖችን ከPolkaswap የኪስ ቦርሳ ፍሰት ያስተዳድሩ።",
+        "pageSubtitle": "Trade active prediction markets with on-chain limit orders, create seedless markets, and manage claimable balances from the Polkaswap wallet flow.",
+        "share": {
+            "copied": "Copied",
+            "copySummary": "Copy summary",
+            "downloadPng": "Download PNG",
+            "imageCopied": "PNG copied. Paste it into Telegram or X.",
+            "imageDownloaded": "PNG downloaded. Attach it in Telegram or X.",
+            "imageFailed": "Unable to prepare PNG. Try downloading it.",
+            "imageShared": "Share sheet opened with PNG attached.",
+            "kicker": "Market snapshot",
+            "native": "Share",
+            "preparing": "Preparing PNG...",
+            "shareImage": "Share image",
+            "title": "Share this market",
+            "tradeLink": "Trade link",
+            "x": "X"
+        },
         "status": {
-            "active": "ንቁ"
+            "active": "ንቁ",
+            "closed": "Closed",
+            "earlyReportLocked": "Early report locked"
         },
         "ticket": {
             "amountPlaceholder": "0.0",
             "claimable": "ሊጠየቅ የሚችል",
             "claimableFailed": "ይገባኛል የሚሉ ሒሳቦችን ማንበብ አልተቻለም።",
             "claimStatus": "የይገባኛል ጥያቄ ሁኔታ",
-            "collateralAmount": "መጠን ({symbol})",
             "collateralOut": "ማስያዣ ወጥቷል።",
             "enterAmount": "መጠን ያስገቡ",
-            "flippedShares": "የተገለበጠ ማጋራቶች",
             "insufficientKusd": "በቂ ያልሆነ {symbol} ቀሪ ሂሳብ",
+            "insufficientShares": "Insufficient shares",
             "insufficientXor": "ለኔትወርክ ክፍያ በቂ ያልሆነ XOR",
-            "invalidAmount": "ትክክለኛ መጠን ያስገቡ",
-            "lpSharesOut": "LP ያካፍላል",
             "noChainMarket": "ገበያ በሰንሰለት አይሸጥም።",
+            "orderShares": "Shares",
             "quoteFailed": "ጥቅስን ማደስ አልተቻለም።",
             "refreshingQuote": "የሚያድስ ጥቅስ...",
             "selectMarket": "ለመገበያየት ንቁ ገበያ ይምረጡ።",
             "sharesAmount": "ማጋራቶች",
             "sharesOut": "ያጋራል።",
             "slippage": "መንሸራተት %",
-            "subtitle": "ጥቅሶች፣ ክፍያዎች፣ የመንሸራተቻ ጥበቃ እና የኪስ ቦርሳ ማስገባት የSORA ጊዜን ይጠቀማሉ።",
+            "takerFee": "Taker fee",
             "title": "የንግድ ትኬት",
-            "split": "Split"
+            "walletNo": "Your NO",
+            "walletYes": "Your YES",
+            "collateralIn": "Collateral in ({symbol})",
+            "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
+            "impliedProbabilityShort": "Implied {value}",
+            "quoteUnavailable": "Quote unavailable",
+            "sharesToSell": "Shares to sell",
+            "earlyReportAlreadyExists": "Early resolution already reported",
+            "earlyReportFeeFailed": "Unable to estimate early report fee.",
+            "earlyReportPending": "Early resolution report pending",
+            "enterEvidenceUri": "Enter evidence URI",
+            "evidenceHash": "Evidence hash",
+            "evidenceUri": "Evidence URI",
+            "invalidEvidenceHash": "Evidence hash must be a 32-byte hex value",
+            "reportBond": "Report bond"
         },
         "units": {
             "bytes": "ባይት",
             "shares": "ማጋራቶች"
-        },
-        "disclaimer": "Polkamarkt in Polkaswap is a visualizer for on-chain Polkamarkt data and is not investment advice.",
-        "officialSite": "Open Polkamarkt.com",
-        "share": {
-            "copied": "Copied",
-            "copySummary": "Copy summary",
-            "kicker": "Market snapshot",
-            "native": "Share",
-            "title": "Share this market",
-            "tradeLink": "Trade link",
-            "x": "X",
-            "downloadPng": "Download PNG"
         }
     },
     "pool": {

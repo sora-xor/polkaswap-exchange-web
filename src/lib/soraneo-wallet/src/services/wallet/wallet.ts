@@ -28,6 +28,7 @@ export class BaseDotSamaWallet implements Wallet {
   _signer: Signer | undefined;
   _metadata: InjectedMetadata | undefined;
   _provider: InjectedProvider | undefined;
+  private enablePromise: Promise<void> | null = null;
 
   constructor({ extensionName, chromeUrl, mozillaUrl, logo, title }: WalletInfo, dAppName = 'dApp Connect') {
     this.extensionName = extensionName;
@@ -79,11 +80,7 @@ export class BaseDotSamaWallet implements Wallet {
     return injectedWindow?.injectedWeb3?.[this.extensionName];
   }
 
-  /**
-   * Requests access to the extension and caches the normalized response so
-   * subsequent calls do not re-trigger the permission prompt.
-   */
-  enable = async () => {
+  private enableOnce = async (): Promise<void> => {
     if (!this.installed) {
       return;
     }
@@ -111,6 +108,22 @@ export class BaseDotSamaWallet implements Wallet {
     this._signer = extension?.signer as unknown as Signer;
     this._metadata = extension?.metadata;
     this._provider = extension?.provider;
+  };
+
+  /**
+   * Requests access to the extension and caches the normalized response so
+   * concurrent and subsequent calls do not re-trigger provider setup.
+   */
+  enable = async (): Promise<void> => {
+    if (this._extension) {
+      return;
+    }
+
+    this.enablePromise ??= this.enableOnce().finally(() => {
+      this.enablePromise = null;
+    });
+
+    await this.enablePromise;
   };
 
   /**
