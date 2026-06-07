@@ -127,6 +127,33 @@
         </div>
       </div>
 
+      <div v-if="isDpm" class="trade-ticket__curve-helper" data-testid="pricing-curve-ticket-helper">
+        <button
+          type="button"
+          class="trade-ticket__curve-toggle"
+          data-testid="pricing-curve-toggle"
+          :aria-expanded="pricingCurveHelperOpen"
+          :aria-controls="PRICING_CURVE_HELPER_ID"
+          @click="pricingCurveHelperOpen = !pricingCurveHelperOpen"
+        >
+          <span>{{ t('polkamarkt.curve.howPricesMove') }}</span>
+          <span aria-hidden="true">{{ pricingCurveHelperOpen ? '-' : '+' }}</span>
+        </button>
+
+        <div v-if="pricingCurveHelperOpen" :id="PRICING_CURVE_HELPER_ID" class="trade-ticket__curve-panel">
+          <pricing-curve-position-chart :market="market" compact />
+          <section class="trade-ticket__curve-explainer">
+            <h3>{{ t('polkamarkt.curve.howPricesMove') }}</h3>
+            <ol>
+              <li v-for="(step, index) in pricingCurveSteps" :key="step">
+                <span>{{ index + 1 }}</span>
+                <p>{{ step }}</p>
+              </li>
+            </ol>
+          </section>
+        </div>
+      </div>
+
       <p v-if="error" class="trade-ticket__error">{{ error }}</p>
       <p v-else-if="quoteLoading" class="trade-ticket__hint">{{ t('polkamarkt.ticket.refreshingQuote') }}</p>
 
@@ -172,6 +199,8 @@ import {
   isFinalizedMarket,
   yesNoPricesFromProbability,
 } from '../lib/markets';
+import { isDpmMarket } from '../lib/pricingCurve';
+import PricingCurvePositionChart from './PricingCurvePositionChart.vue';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountPosition, PolkamarktMarket, TicketOutcome, TradeMode } from '../types';
@@ -196,6 +225,7 @@ type MaybeValue<T> = T | { value: T };
 
 const ZERO_CODEC = '0';
 const EARLY_REPORT_BOND_CODEC = parsePolkamarktAmount('100');
+const PRICING_CURVE_HELPER_ID = 'polkamarkt-pricing-curve-helper';
 const dpmBaseModes: TradeMode[] = ['buy', 'sell', 'report'];
 const mode = ref<TradeMode>('buy');
 const outcome = ref<TicketOutcome>('YES');
@@ -204,9 +234,11 @@ const collateralAmount = ref('');
 const slippage = ref('0.5');
 const reportEvidenceUri = ref('');
 const reportEvidenceHash = ref('');
+const pricingCurveHelperOpen = ref(false);
 const quoteLoading = ref(false);
 const error = ref('');
 const dpmQuote = ref<BuyQuote | SellQuote | null>(null);
+const dpmQuoteKey = ref<string | null>(null);
 const claimable = ref<ClaimableInfo | null>(null);
 const networkFee = ref<CodecString | null>(null);
 
@@ -224,6 +256,7 @@ const marketId = computed(() => props.market?.chainId);
 const runtimeOutcome = computed<PolkamarktOutcome>(() => (outcome.value === 'YES' ? 'Yes' : 'No'));
 const isTradeMode = computed(() => mode.value === 'buy' || mode.value === 'sell');
 const isReportMode = computed(() => mode.value === 'report');
+const isDpm = computed(() => isDpmMarket(props.market));
 const prices = computed(() => yesNoPricesFromProbability(props.market?.probability));
 const marketStatus = computed(() => {
   const status = getMarketDisplayStatus(props.market, props.currentBlock);
@@ -296,6 +329,27 @@ const hasEnoughXor = computed(() => {
   const balance = accountXor.value?.balance?.transferable ?? '0';
   return BigInt(balance) >= fee;
 });
+const pricingCurveSteps = computed(() => [
+  t('polkamarkt.curve.steps.buy'),
+  t('polkamarkt.curve.steps.moveQuote'),
+  t('polkamarkt.curve.steps.sellBack'),
+  t('polkamarkt.curve.steps.claim'),
+]);
+
+/**
+ * Identifies the exact user inputs that made the currently displayed DPM quote safe to submit.
+ */
+function currentDpmQuoteKey(): string | null {
+  if (!isTradeMode.value || (!marketId.value && marketId.value !== 0)) return null;
+  const amount = dpmInputCodec.value;
+  if (!isPositiveCodec(amount)) return null;
+  return [marketId.value, mode.value, runtimeOutcome.value, amount, slippage.value.trim()].join(':');
+}
+
+const activeDpmQuote = computed(() => {
+  const key = currentDpmQuoteKey();
+  return key && dpmQuoteKey.value === key ? dpmQuote.value : null;
+});
 
 const disabledReason = computed(() => {
   if (!marketId.value && marketId.value !== 0) return t('polkamarkt.ticket.noChainMarket');
@@ -308,7 +362,7 @@ const disabledReason = computed(() => {
   if (isReportMode.value && !reportEvidence.value.uri) return t('polkamarkt.ticket.enterEvidenceUri');
   if (isReportMode.value && !isReportHashValid.value) return t('polkamarkt.ticket.invalidEvidenceHash');
   if (isTradeMode.value && !isPositiveCodec(dpmInputCodec.value)) return t('polkamarkt.ticket.enterAmount');
-  if (isTradeMode.value && isPositiveCodec(dpmInputCodec.value) && !dpmQuote.value && !quoteLoading.value)
+  if (isTradeMode.value && isPositiveCodec(dpmInputCodec.value) && !activeDpmQuote.value && !quoteLoading.value)
     return t('polkamarkt.ticket.quoteUnavailable');
   if (!hasEnoughKusd.value) return t('polkamarkt.ticket.insufficientKusd', { symbol: collateralSymbol });
   if (!hasEnoughShares.value) return t('polkamarkt.ticket.insufficientShares');
@@ -332,13 +386,15 @@ const quotePrimaryLabel = computed(() => {
 });
 const quotePrimaryValue = computed(() => {
   if (mode.value === 'buy') {
-    return dpmQuote.value && 'sharesOut' in dpmQuote.value
-      ? `${formatCodec(dpmQuote.value.sharesOut)} ${t('polkamarkt.units.shares')}`
+    const quote = activeDpmQuote.value;
+    return quote && 'sharesOut' in quote
+      ? `${formatCodec(quote.sharesOut)} ${t('polkamarkt.units.shares')}`
       : unavailableValue(t('polkamarkt.ticket.sharesOut'));
   }
   if (mode.value === 'sell') {
-    return dpmQuote.value && 'collateralOut' in dpmQuote.value
-      ? `${formatCodec(dpmQuote.value.collateralOut)} ${collateralSymbol}`
+    const quote = activeDpmQuote.value;
+    return quote && 'collateralOut' in quote
+      ? `${formatCodec(quote.collateralOut)} ${collateralSymbol}`
       : unavailableValue(t('polkamarkt.ticket.collateralOut'));
   }
   if (isReportMode.value) return `100 ${collateralSymbol}`;
@@ -346,8 +402,8 @@ const quotePrimaryValue = computed(() => {
 });
 const takerFeeFormatted = computed(() => {
   if (!isTradeMode.value) return '-';
-  return dpmQuote.value
-    ? `${formatCodec(dpmQuote.value.feeAmount)} ${collateralSymbol}`
+  return activeDpmQuote.value
+    ? `${formatCodec(activeDpmQuote.value.feeAmount)} ${collateralSymbol}`
     : unavailableValue(t('polkamarkt.ticket.takerFee'));
 });
 const networkFeeFormatted = computed(() => {
@@ -367,6 +423,18 @@ const canClaimCreatorFees = computed(
 
 let refreshTimer: ReturnType<typeof setTimeout> | undefined;
 let refreshRequestId = 0;
+
+/**
+ * Clears stale quote-derived values and cancels in-flight quote updates after input changes.
+ */
+function invalidateDpmQuote(): void {
+  refreshRequestId += 1;
+  quoteLoading.value = false;
+  dpmQuote.value = null;
+  dpmQuoteKey.value = null;
+  networkFee.value = null;
+  error.value = '';
+}
 
 function parseAmount(value: string): CodecString {
   try {
@@ -425,6 +493,7 @@ async function refreshClaimable(estimateNetworkFee = false): Promise<void> {
 async function refreshQuote(): Promise<void> {
   const requestId = ++refreshRequestId;
   dpmQuote.value = null;
+  dpmQuoteKey.value = null;
   networkFee.value = null;
   error.value = '';
 
@@ -465,7 +534,9 @@ async function refreshQuote(): Promise<void> {
 
   if (isTradeMode.value) {
     const amount = dpmInputCodec.value;
+    const quoteKey = currentDpmQuoteKey();
     if (!isPositiveCodec(amount)) return;
+    if (!quoteKey) return;
 
     quoteLoading.value = true;
     try {
@@ -477,6 +548,7 @@ async function refreshQuote(): Promise<void> {
         });
         if (requestId !== refreshRequestId) return;
         dpmQuote.value = nextQuote;
+        dpmQuoteKey.value = nextQuote ? quoteKey : null;
         if (!nextQuote) return;
 
         const fee = await api.polkamarkt.estimateBuyTradeNetworkFee({
@@ -494,6 +566,7 @@ async function refreshQuote(): Promise<void> {
         });
         if (requestId !== refreshRequestId) return;
         dpmQuote.value = nextQuote;
+        dpmQuoteKey.value = nextQuote ? quoteKey : null;
         if (!nextQuote) return;
 
         const fee = await api.polkamarkt.estimateSellTradeNetworkFee({
@@ -521,22 +594,33 @@ async function submit(): Promise<void> {
   }
   if (submitDisabled.value || (!marketId.value && marketId.value !== 0)) return;
 
+  const buyQuote =
+    mode.value === 'buy' && activeDpmQuote.value && 'sharesOut' in activeDpmQuote.value
+      ? activeDpmQuote.value
+      : null;
+  const sellQuote =
+    mode.value === 'sell' && activeDpmQuote.value && 'collateralOut' in activeDpmQuote.value
+      ? activeDpmQuote.value
+      : null;
+  if ((mode.value === 'buy' && !buyQuote) || (mode.value === 'sell' && !sellQuote)) {
+    error.value = t('polkamarkt.ticket.quoteUnavailable');
+    return;
+  }
+
   await withNotifications(async () => {
     if (mode.value === 'buy') {
-      const quote = dpmQuote.value && 'sharesOut' in dpmQuote.value ? dpmQuote.value : null;
       await api.polkamarkt.submitBuyTrade({
         marketId: marketId.value!,
         outcome: runtimeOutcome.value,
         collateralIn: collateralCodec.value,
-        minSharesOut: quote ? applySlippageMinimum(quote.sharesOut, slippage.value) : ZERO_CODEC,
+        minSharesOut: applySlippageMinimum(buyQuote!.sharesOut, slippage.value),
       });
     } else if (mode.value === 'sell') {
-      const quote = dpmQuote.value && 'collateralOut' in dpmQuote.value ? dpmQuote.value : null;
       await api.polkamarkt.submitSellTrade({
         marketId: marketId.value!,
         outcome: runtimeOutcome.value,
         sharesIn: sharesCodec.value,
-        minCollateralOut: quote ? applySlippageMinimum(quote.collateralOut, slippage.value) : ZERO_CODEC,
+        minCollateralOut: applySlippageMinimum(sellQuote!.collateralOut, slippage.value),
       });
     } else if (mode.value === 'report') {
       await api.polkamarkt.reportEarlyResolution({
@@ -610,6 +694,7 @@ watch(
     accountAddress,
   ],
   () => {
+    invalidateDpmQuote();
     clearTimeout(refreshTimer);
     refreshTimer = setTimeout(() => void refreshQuote(), 250);
   },
@@ -623,10 +708,9 @@ watch(
     collateralAmount.value = '';
     reportEvidenceUri.value = '';
     reportEvidenceHash.value = '';
-    dpmQuote.value = null;
+    pricingCurveHelperOpen.value = false;
+    invalidateDpmQuote();
     claimable.value = null;
-    networkFee.value = null;
-    error.value = '';
   }
 );
 </script>
@@ -749,6 +833,104 @@ watch(
       display: block;
       margin-top: 2px;
       overflow-wrap: anywhere;
+    }
+  }
+
+  &__curve-helper {
+    display: grid;
+    gap: $inner-spacing-small;
+    min-width: 0;
+    border: 1px solid var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-mini);
+    background: var(--s-color-utility-body);
+    padding: $inner-spacing-small;
+  }
+
+  &__curve-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $inner-spacing-small;
+    min-height: 34px;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--s-color-base-content-primary);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    padding: 0;
+    text-align: left;
+
+    span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    span:last-child {
+      flex: 0 0 auto;
+      color: var(--s-color-theme-accent);
+      font-size: var(--s-heading5-font-size);
+    }
+  }
+
+  &__curve-panel {
+    display: grid;
+    gap: $inner-spacing-small;
+    min-width: 0;
+  }
+
+  &__curve-explainer {
+    display: grid;
+    gap: $inner-spacing-small;
+    min-width: 0;
+
+    h3 {
+      margin: 0;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      line-height: var(--s-line-height-mini);
+      text-transform: uppercase;
+    }
+
+    ol {
+      display: grid;
+      gap: $inner-spacing-tiny;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      display: flex;
+      gap: $inner-spacing-small;
+      min-width: 0;
+      border: 1px solid var(--s-color-base-border-secondary);
+      border-radius: var(--s-border-radius-mini);
+      background: var(--s-color-utility-surface);
+      padding: $inner-spacing-small;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-small);
+      line-height: var(--s-line-height-small);
+
+      span {
+        display: inline-flex;
+        flex: 0 0 22px;
+        width: 22px;
+        height: 22px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--s-color-theme-accent);
+        border-radius: 50%;
+        color: var(--s-color-theme-accent);
+        font-size: var(--s-font-size-mini);
+        font-weight: 700;
+      }
+
+      p {
+        margin: 0;
+        min-width: 0;
+      }
     }
   }
 

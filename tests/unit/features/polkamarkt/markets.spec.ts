@@ -31,6 +31,11 @@ import {
   validateMarketMetadata,
 } from '@/features/polkamarkt/lib/markets';
 import {
+  getPricingCurvePosition,
+  isDpmMarket,
+  pricingCurveSharePrice,
+} from '@/features/polkamarkt/lib/pricingCurve';
+import {
   fetchPolkamarktMarketHistory,
   marketHistoryFallback,
   marketRuntimeId,
@@ -69,6 +74,56 @@ describe('polkamarkt market helpers', () => {
     expect(normalizeMarketOracle('SORA governance')).toBe('SORA On-Chain Governance');
     expect(normalizeMarketOracle('Maritime desk')).toBe('Maritime desk');
     expect(normalizeMarketOracle('')).toBeUndefined();
+  });
+
+  it('derives DPM curve demand from virtual and real share reserves', () => {
+    const position = getPricingCurvePosition(
+      baseMarket({
+        mechanism: 'DynamicPariMutuel',
+        virtualDepth: 100,
+        realYesShares: 150,
+        realNoShares: 50,
+        dpmCollateral: 275,
+      })
+    );
+
+    expect(isDpmMarket(baseMarket({ mechanism: 'DynamicPariMutuel' }))).toBe(true);
+    expect(position.yesDemand).toBeCloseTo(62.5);
+    expect(position.noDemand).toBeCloseTo(37.5);
+    expect(position.yesQuote).toBeCloseTo(pricingCurveSharePrice(0.625));
+    expect(position.noQuote).toBeCloseTo(pricingCurveSharePrice(0.375));
+    expect(position.collateral).toBe(275);
+  });
+
+  it('prefers indexed DPM bps quotes over derived curve quotes', () => {
+    const position = getPricingCurvePosition(
+      baseMarket({
+        mechanism: 'DynamicPariMutuel',
+        probability: 60,
+        impliedYesProbabilityBps: 6250,
+        marginalYesPriceBps: 5100,
+        marginalNoPriceBps: 4900,
+      })
+    );
+
+    expect(position.yesDemand).toBeCloseTo(62.5);
+    expect(position.yesQuote).toBe(0.51);
+    expect(position.noQuote).toBe(0.49);
+  });
+
+  it('falls back safely for partial or non-DPM curve state', () => {
+    expect(isDpmMarket(baseMarket({ mechanism: 'MigratedLegacy', virtualDepth: 100 }))).toBe(false);
+    expect(getPricingCurvePosition(undefined)).toEqual({
+      yesDemand: undefined,
+      noDemand: undefined,
+      yesQuote: undefined,
+      noQuote: undefined,
+      collateral: undefined,
+    });
+
+    const position = getPricingCurvePosition(baseMarket({ mechanism: 'DynamicPariMutuel', probability: 70 }));
+    expect(position.yesDemand).toBe(70);
+    expect(position.yesQuote).toBeCloseTo(pricingCurveSharePrice(0.7));
   });
 
   it('parses current and legacy market records safely', () => {
@@ -248,6 +303,33 @@ describe('polkamarkt market helpers', () => {
       { chainId: 0, title: 'Indexed market' },
       { chainId: 1, title: 'Will GPT 5.6 ship before the market deadline?' },
     ]);
+  });
+
+  it('falls back to the legacy market query when the latest indexed schema is unavailable', async () => {
+    indexerRequestMock
+      .mockRejectedValueOnce(new Error('Cannot query field "dpmCollateral" on type "Market"'))
+      .mockResolvedValueOnce({
+        markets: {
+          edges: [
+            {
+              node: {
+                id: 'legacy-3',
+                marketId: 3,
+                title: 'Legacy indexed market',
+                category: 'Crypto',
+                liquidityUSD: '100',
+                volumeUSD: '10',
+                status: 'Open',
+              },
+            },
+          ],
+        },
+      });
+
+    await expect(fetchPolkamarktMarkets({ api: null })).resolves.toMatchObject([
+      { chainId: 3, title: 'Legacy indexed market' },
+    ]);
+    expect(indexerRequestMock).toHaveBeenCalledTimes(2);
   });
 
   it('filters active, finalized, search, category, and account-owned markets', () => {

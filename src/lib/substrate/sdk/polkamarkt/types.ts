@@ -122,7 +122,7 @@ export interface ClaimableInfo {
   noShares: CodecString;
   netCollateralPaid: CodecString;
   traderPayout: CodecString;
-  claimablePayout: CodecString;
+  claimablePayout?: CodecString;
   creatorFees: CodecString;
   isCreator: boolean;
 }

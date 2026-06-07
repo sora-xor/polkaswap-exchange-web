@@ -423,6 +423,12 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     swapUpdateMock.mockResolvedValue(undefined);
     dexUpdateMock.mockClear();
     dexUpdateMock.mockResolvedValue(undefined);
+    swapStoreMock.setAmountWithoutImpact.mockClear();
+    swapStoreMock.setLiquidityProviderFee.mockClear();
+    swapStoreMock.setRewards.mockClear();
+    swapStoreMock.setRoute.mockClear();
+    swapStoreMock.setDistribution.mockClear();
+    swapStoreMock.selectDexId.mockClear();
     swapStoreMock.setSubscriptionPayload.mockClear();
     swapStoreMock.setPathAvailability.mockClear();
     swapStoreMock.setQuoteError.mockClear();
@@ -480,6 +486,24 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     expect(getDexesSwapQuoteObservableMock).toHaveBeenCalledWith('0xfrom', '0xto');
     expect(quoteSubscribeMock).toHaveBeenCalledTimes(1);
 
+    wrapper.unmount();
+  });
+
+  it('still refreshes swap metadata when DEX metadata refresh fails', async () => {
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    dexUpdateMock.mockRejectedValueOnce(new Error('dex metadata unavailable'));
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    expect(dexUpdateMock).toHaveBeenCalledTimes(1);
+    expect(swapUpdateMock).toHaveBeenCalledTimes(1);
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      '[swap] quote configuration refresh partially failed',
+      expect.any(Array)
+    );
+
+    consoleWarnSpy.mockRestore();
     wrapper.unmount();
   });
 
@@ -652,6 +676,12 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     })) as SwapQuoteData['quote'];
     swapStoreMock.isPathAvailable = true;
     swapStoreMock.setSubscriptionPayload.mockClear();
+    swapStoreMock.setAmountWithoutImpact.mockClear();
+    swapStoreMock.setLiquidityProviderFee.mockClear();
+    swapStoreMock.setRewards.mockClear();
+    swapStoreMock.setRoute.mockClear();
+    swapStoreMock.setDistribution.mockClear();
+    swapStoreMock.selectDexId.mockClear();
     setToValueMock.mockClear();
 
     tokenToRef.value = {
@@ -667,6 +697,12 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     expect(swapStoreMock.setSubscriptionPayload).toHaveBeenCalledWith();
     expect(swapStoreMock.swapQuote).toBeNull();
     expect(setToValueMock).toHaveBeenLastCalledWith('');
+    expect(swapStoreMock.setAmountWithoutImpact).toHaveBeenCalledWith();
+    expect(swapStoreMock.setLiquidityProviderFee).toHaveBeenCalledWith();
+    expect(swapStoreMock.setRewards).toHaveBeenCalledWith();
+    expect(swapStoreMock.setRoute).toHaveBeenCalledWith();
+    expect(swapStoreMock.setDistribution).toHaveBeenCalledWith();
+    expect(swapStoreMock.selectDexId).toHaveBeenCalledWith();
 
     wrapper.unmount();
   });
@@ -854,6 +890,79 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     expect(checkSwapMock).toHaveBeenCalled();
 
     wrapper.unmount();
+  });
+
+  it('does not re-add subscriptions when the node disconnects during quote configuration refresh', async () => {
+    let resolveDexUpdate!: () => void;
+    let resolveSwapUpdate!: () => void;
+    dexUpdateMock.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveDexUpdate = resolve;
+      })
+    );
+    swapUpdateMock.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveSwapUpdate = resolve;
+      })
+    );
+
+    const wrapper = await mountWidget();
+    await nextTick();
+
+    expect(dexUpdateMock).toHaveBeenCalledTimes(1);
+
+    nodeIsConnectedRef.value = false;
+    await nextTick();
+    await flushPromises();
+
+    expect(swapStoreMock.resetSubscriptions).toHaveBeenCalled();
+
+    resolveDexUpdate();
+    await flushPromises();
+
+    expect(swapUpdateMock).toHaveBeenCalledTimes(1);
+
+    resolveSwapUpdate();
+    await flushPromises();
+
+    expect(swapStoreMock.updateSubscriptions).not.toHaveBeenCalled();
+    expect(getDexesSwapQuoteObservableMock).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('does not recreate subscriptions after unmounting during quote configuration refresh', async () => {
+    let resolveDexUpdate!: () => void;
+    let resolveSwapUpdate!: () => void;
+    dexUpdateMock.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveDexUpdate = resolve;
+      })
+    );
+    swapUpdateMock.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveSwapUpdate = resolve;
+      })
+    );
+
+    const wrapper = await mountWidget();
+    await nextTick();
+
+    expect(dexUpdateMock).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+
+    resolveDexUpdate();
+    await flushPromises();
+
+    expect(swapUpdateMock).toHaveBeenCalledTimes(1);
+
+    resolveSwapUpdate();
+    await flushPromises();
+
+    expect(swapStoreMock.updateSubscriptions).not.toHaveBeenCalled();
+    expect(getDexesSwapQuoteObservableMock).not.toHaveBeenCalled();
+    expect(swapStoreMock.reset).toHaveBeenCalled();
   });
 
   it('does not start quote streams when tokens change while the node is disconnected', async () => {

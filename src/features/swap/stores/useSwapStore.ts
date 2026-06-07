@@ -132,7 +132,10 @@ export const useSwapStore = defineStore('swap', () => {
     if (!marketAlgorithmsAvailable.value) return undefined;
 
     const settingsStore = useSettingsStore();
-    return settingsStore.liquiditySource;
+    const selectedAlgorithm = settingsStore.marketAlgorithm as MarketAlgorithms;
+    const nextAlgorithm = marketAlgorithms.value.includes(selectedAlgorithm) ? selectedAlgorithm : MarketAlgorithms.SMART;
+
+    return LiquiditySourceForMarketAlgorithm[nextAlgorithm];
   });
   const swapMarketAlgorithm = computed((): MarketAlgorithms => {
     const liquiditySource = swapLiquiditySource.value ?? '';

@@ -211,13 +211,37 @@ const formatProbability = (value?: number): string =>
   }
 
   &__filters {
-    display: grid;
-    grid-template-columns: #{'minmax(180px, 1fr)'} #{'minmax(132px, 0.55fr)'} max-content auto;
+    display: flex;
+    flex-wrap: wrap;
     gap: $inner-spacing-mini;
     align-items: center;
+    min-width: 0;
+
+    > .polkamarkt-input {
+      flex: 1 1 180px;
+    }
+
+    > .polkamarkt-select {
+      flex: 1 1 132px;
+    }
+
+    > .polkamarkt-status-toggle {
+      flex: 1 1 230px;
+    }
+
+    > .polkamarkt-check {
+      flex: 0 0 auto;
+    }
 
     @include tablet(true) {
-      grid-template-columns: 1fr;
+      align-items: stretch;
+
+      > .polkamarkt-input,
+      > .polkamarkt-select,
+      > .polkamarkt-status-toggle,
+      > .polkamarkt-check {
+        flex-basis: 100%;
+      }
     }
   }
 
@@ -241,12 +265,16 @@ const formatProbability = (value?: number): string =>
   gap: 2px;
   align-items: center;
   min-height: 40px;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
   padding: 3px;
   border: 1px solid var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-mini);
   background: var(--s-color-utility-body);
 
   &__option {
+    flex: 1 0 auto;
     min-height: 30px;
     border: 0;
     border-radius: calc(var(--s-border-radius-mini) - 4px);

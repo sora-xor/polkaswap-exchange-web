@@ -47,6 +47,8 @@
         </div>
       </div>
 
+      <pricing-curve-position-chart v-if="isDpm" :market="market" />
+
       <div class="market-detail__sections">
         <section class="market-detail__section">
           <h3>{{ t('polkamarkt.details.oracle') }}</h3>
@@ -165,8 +167,10 @@ import {
   getMarketDisplayStatus,
   yesNoPricesFromProbability,
 } from '../lib/markets';
+import { isDpmMarket } from '../lib/pricingCurve';
 import MarketOutcomeChart from './MarketOutcomeChart.vue';
 import MarketShareWidget from './MarketShareWidget.vue';
+import PricingCurvePositionChart from './PricingCurvePositionChart.vue';
 
 import type { MarketHistoryPoint, PolkamarktMarket } from '../types';
 
@@ -181,6 +185,7 @@ const { t } = useTranslation();
 const collateralSymbol = POLKAMARKT_COLLATERAL_ASSET.symbol;
 
 const prices = computed(() => yesNoPricesFromProbability(props.market?.probability));
+const isDpm = computed(() => isDpmMarket(props.market));
 const marketStatus = computed(() => {
   const status = getMarketDisplayStatus(props.market, props.currentBlock);
   if (status?.toLowerCase() === 'closed') return t('polkamarkt.status.closed');
@@ -238,7 +243,7 @@ const formatStateAmount = (value?: number, unit = ''): string =>
 
     h1 {
       margin: 0;
-      font-size: var(--s-heading2-font-size);
+      font-size: var(--s-heading3-font-size);
       line-height: 1.2;
       letter-spacing: 0;
     }
@@ -252,13 +257,9 @@ const formatStateAmount = (value?: number, unit = ''): string =>
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(3, #{'minmax(0, 1fr)'});
+    grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 160px), 1fr)'});
     gap: $inner-spacing-mini;
     margin-bottom: $inner-spacing-big;
-
-    @include tablet(true) {
-      grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
-    }
   }
 
   &__sections {

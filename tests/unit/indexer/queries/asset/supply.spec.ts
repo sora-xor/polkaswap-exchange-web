@@ -6,13 +6,8 @@ const getAssetSupplyMock = vi.hoisted(() => vi.fn());
 const waitForSoraNetworkFromEnvMock = vi.hoisted(() => vi.fn());
 const useSettingsStoreMock = vi.hoisted(() => vi.fn());
 const CODEC_SCALE = 10n ** 18n;
-const CHAIN_XOR_CODEC_SCALE = 10n ** 30n;
-const DEFAULT_CHAIN_XOR_SUPPLY = '12880123450000000000000000000000000000';
-const PRODUCTION_INDEXER_XOR_SUPPLY = '999000000000003130343037481135';
-const PRODUCTION_INDEXER_XOR_SUPPLY_OLDER = '999000000000003133126732426352';
-const PRODUCTION_CHAIN_XOR_SUPPLY = '999000000000003130299593070140378854';
 const codecFromNatural = (value: bigint): string => (value * CODEC_SCALE).toString();
-const chainXorCodecFromNatural = (value: bigint): string => (value * CHAIN_XOR_CODEC_SCALE).toString();
+const DEFAULT_CHAIN_XOR_SUPPLY = codecFromNatural(12_880_123n);
 
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
@@ -116,24 +111,24 @@ describe('fetchAssetSupplyData', () => {
     expect(data).toEqual([
       {
         timestamp: 1_700_000_000_000,
-        value: 12_880_123.45,
+        value: 12_880_123,
         mint: 12,
         burn: 3,
       },
       {
         timestamp: 1_699_996_400_000,
-        value: 12_880_123.45,
+        value: 12_880_123,
         mint: 0,
         burn: 0,
       },
     ]);
   });
 
-  it('normalizes oversized XOR supply snapshots written before the indexer fix', async () => {
+  it('decodes corrected XOR supply snapshots without token-specific scaling', async () => {
     fetchAllEntitiesMock.mockImplementationOnce(async (_query, _variables, parse) => [
       parse({
         timestamp: '1700000000',
-        supply: codecFromNatural(2_000_000_000_000_000n),
+        supply: codecFromNatural(2_000_000_000n),
         mint: '0',
         burn: '0',
       }),
@@ -155,11 +150,11 @@ describe('fetchAssetSupplyData', () => {
     expect(getAssetSupplyMock).not.toHaveBeenCalled();
   });
 
-  it('normalizes current production XOR supply snapshots to the post-denomination scale', async () => {
+  it('does not apply legacy XOR division to indexer snapshot supplies', async () => {
     fetchAllEntitiesMock.mockImplementationOnce(async (_query, _variables, parse) => [
       parse({
         timestamp: '1700000000',
-        supply: PRODUCTION_INDEXER_XOR_SUPPLY,
+        supply: codecFromNatural(999_000n),
         mint: '0',
         burn: '0',
       }),
@@ -172,23 +167,23 @@ describe('fetchAssetSupplyData', () => {
 
     expect(data).toHaveLength(1);
     expect(data[0]?.timestamp).toBe(1_700_000_000_000);
-    expect(data[0]?.value).toBeCloseTo(999_000.0000000031, 6);
+    expect(data[0]?.value).toBe(999_000);
     expect(data[0]?.mint).toBe(0);
     expect(data[0]?.burn).toBe(0);
     expect(getAssetSupplyMock).not.toHaveBeenCalled();
   });
 
-  it('scales current production XOR supply deltas from raw snapshot movement', async () => {
+  it('decodes each XOR snapshot supply independently without delta rescaling', async () => {
     fetchAllEntitiesMock.mockImplementationOnce(async (_query, _variables, parse) => [
       parse({
         timestamp: '1700003600',
-        supply: PRODUCTION_INDEXER_XOR_SUPPLY,
+        supply: codecFromNatural(999_000n),
         mint: '0',
         burn: '0',
       }),
       parse({
         timestamp: '1700000000',
-        supply: PRODUCTION_INDEXER_XOR_SUPPLY_OLDER,
+        supply: codecFromNatural(999_002n),
         mint: '0',
         burn: '2.8758563281',
       }),
@@ -200,31 +195,31 @@ describe('fetchAssetSupplyData', () => {
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
     expect(data).toHaveLength(2);
-    expect(data[0]?.value).toBeCloseTo(999_000.0000000031, 6);
-    expect(data[1]?.value).toBeCloseTo(999_002.7836949483, 6);
+    expect(data[0]?.value).toBe(999_000);
+    expect(data[1]?.value).toBe(999_002);
     expect(data[1]?.burn).toBeCloseTo(2.8758563, 7);
     expect(getAssetSupplyMock).not.toHaveBeenCalled();
   });
 
-  it('normalizes storage-scale XOR burn buckets without changing ordinary burn values', async () => {
+  it('does not rescale XOR burn buckets in the frontend', async () => {
     fetchAllEntitiesMock.mockImplementationOnce(async (_query, _variables, parse) => [
       parse({
         timestamp: '1780120812',
-        supply: '98899900000002231675376324363',
+        supply: codecFromNatural(988_999n),
         mint: '0',
-        burn: '900100000000000000.0942320589',
+        burn: '900100.0942320589',
       }),
       parse({
         timestamp: '1780119312',
-        supply: '998999900000002231940122740042',
+        supply: codecFromNatural(998_999n),
         mint: '0',
         burn: '0.0236330147',
       }),
       parse({
         timestamp: '1780119311',
-        supply: PRODUCTION_INDEXER_XOR_SUPPLY,
+        supply: codecFromNatural(999_000n),
         mint: '0',
-        burn: '100000000197.6598377033',
+        burn: '100000.1976598377',
       }),
     ]);
 
@@ -234,16 +229,16 @@ describe('fetchAssetSupplyData', () => {
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
     expect(data).toHaveLength(3);
-    expect(data[0]?.value).toBeCloseTo(98_899.9000000022, 6);
-    expect(data[0]?.burn).toBeCloseTo(900_100.0000000942, 6);
-    expect(data[1]?.value).toBeCloseTo(998_999.9000000022, 6);
+    expect(data[0]?.value).toBe(988_999);
+    expect(data[0]?.burn).toBeCloseTo(900_100.0942320589, 6);
+    expect(data[1]?.value).toBe(998_999);
     expect(data[1]?.burn).toBeCloseTo(0.0236330147, 6);
-    expect(data[2]?.burn).toBeCloseTo(100_000.0001976598, 6);
+    expect(data[2]?.burn).toBeCloseTo(100_000.1976598377, 6);
   });
 
-  it('decodes current XOR supply fallback values at chain precision', async () => {
+  it('decodes current XOR supply fallback values with ordinary codec precision', async () => {
     fetchAllEntitiesMock.mockResolvedValue([]);
-    getAssetSupplyMock.mockResolvedValue(chainXorCodecFromNatural(2_000_000_000n));
+    getAssetSupplyMock.mockResolvedValue(codecFromNatural(2_000_000_000n));
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
     const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
@@ -260,9 +255,9 @@ describe('fetchAssetSupplyData', () => {
     ]);
   });
 
-  it('normalizes current chain XOR supply fallback values to the post-denomination scale', async () => {
+  it('does not apply legacy XOR division to current supply fallback values', async () => {
     fetchAllEntitiesMock.mockResolvedValue([]);
-    getAssetSupplyMock.mockResolvedValue(PRODUCTION_CHAIN_XOR_SUPPLY);
+    getAssetSupplyMock.mockResolvedValue(codecFromNatural(999_000n));
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
     const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
@@ -272,7 +267,7 @@ describe('fetchAssetSupplyData', () => {
     expect(getAssetSupplyMock).toHaveBeenCalledWith(XOR.address);
     expect(data).toHaveLength(1);
     expect(data[0]?.timestamp).toBe(1_700_000_000_000);
-    expect(data[0]?.value).toBeCloseTo(999_000.0000000031, 6);
+    expect(data[0]?.value).toBe(999_000);
     expect(data[0]?.mint).toBe(0);
     expect(data[0]?.burn).toBe(0);
   });
@@ -288,7 +283,7 @@ describe('fetchAssetSupplyData', () => {
     expect(data).toEqual([
       {
         timestamp: 1_700_000_000_000,
-        value: 12_880_123.45,
+        value: 12_880_123,
         mint: 0,
         burn: 0,
       },

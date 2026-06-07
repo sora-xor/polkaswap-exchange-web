@@ -246,6 +246,14 @@ const recordValue = (record: Record<string, unknown>, ...keys: string[]): unknow
   return undefined;
 };
 
+/**
+ * Reads a balance-like RPC field without turning omitted legacy fields into zero.
+ */
+const rpcOptionalCodecString = (record: Record<string, unknown>, ...keys: string[]): CodecString | undefined => {
+  const value = recordValue(record, ...keys);
+  return value === undefined || value === null ? undefined : rpcCodecString({ value }, 'value');
+};
+
 const bytesValueToArray = (value: unknown): number[] => {
   const normalized = unwrapRpcOption(value);
   if (Array.isArray(normalized)) {
@@ -456,14 +464,14 @@ export class PolkamarktModule<T> {
       : createCondition!(conditionInput);
   }
 
-  private async buildMarketCreationBatchTx(params: CreateMarketParams): Promise<{
+  private async buildMarketCreationFeeEstimateTxs(params: CreateMarketParams): Promise<{
     conditionTx: SubmittableExtrinsic<'promise'>;
     marketTx: SubmittableExtrinsic<'promise'>;
     batchTx: SubmittableExtrinsic<'promise'>;
   }> {
     const conditionId = await this.readNextConditionId();
     if (conditionId === undefined) {
-      throw new Error('Unable to read next Polkamarkt condition id before creating a market.');
+      throw new Error('Unable to read next Polkamarkt condition id before estimating market creation fees.');
     }
 
     const conditionTx = this.buildConditionCreationTx(params);
@@ -540,7 +548,7 @@ export class PolkamarktModule<T> {
   }
 
   /**
-   * Reads the next condition id before submitting a condition creation transaction.
+   * Reads the next condition id from runtime storage.
    */
   public async readNextConditionId(): Promise<number | undefined> {
     const query = this.root.api.query.polkamarkt?.nextConditionId as DynamicStorageQuery | undefined;
@@ -570,12 +578,12 @@ export class PolkamarktModule<T> {
   }
 
   /**
-   * Estimates network fees for atomically creating a condition and its DPM market.
+   * Estimates network fees for creating a condition and its DPM market.
    */
   public async estimateMarketCreationFee(params: EstimateMarketCreationFeeParams): Promise<MarketCreationFeeEstimate> {
     assert(Number.isSafeInteger(params.closeBlock) && params.closeBlock > 0, 'Close block must be a positive integer.');
 
-    const { conditionTx, marketTx, batchTx } = await this.buildMarketCreationBatchTx(params);
+    const { conditionTx, marketTx, batchTx } = await this.buildMarketCreationFeeEstimateTxs(params);
     const conditionFee = await this.root.getTransactionFee(conditionTx);
     const marketFee = await this.root.getTransactionFee(marketTx);
     const totalFee = await this.root.getTransactionFee(batchTx);
@@ -605,25 +613,26 @@ export class PolkamarktModule<T> {
   }
 
   /**
-   * Creates a condition and its DPM Polkamarkt market in one atomic extrinsic.
+   * Creates a condition and then creates its DPM market with the finalized condition id.
    */
   public async createMarket(params: CreateMarketParams): Promise<CreateMarketResult> {
     assert(this.root.account, Messages.connectWallet);
     assert(Number.isSafeInteger(params.closeBlock) && params.closeBlock > 0, 'Close block must be a positive integer.');
 
-    const { batchTx } = await this.buildMarketCreationBatchTx(params);
-    const events = await this.submitCreationAndReadEvents(batchTx, {
+    const conditionId = await this.submitCreationAndReadEventId(
+      this.buildConditionCreationTx(params),
+      { type: Operation.PolkamarktCreateCondition },
+      'ConditionCreated',
+      'conditionId'
+    );
+    const marketTx = this.getTxFactory('create_market', 'createMarket')(conditionId, params.closeBlock);
+    const events = await this.submitCreationAndReadEvents(marketTx, {
       type: Operation.PolkamarktCreateMarket,
       amount: ZERO_CODEC,
       symbol: KUSD.symbol,
       assetAddress: KUSD.address,
       decimals: KUSD.decimals,
     });
-
-    const conditionId = eventNumber(events, 'ConditionCreated', 'conditionId');
-    if (conditionId === undefined) {
-      throw new Error('Finalized Polkamarkt transaction did not emit ConditionCreated.conditionId.');
-    }
 
     const marketId = eventNumber(events, 'MarketCreated', 'marketId');
     if (marketId === undefined) {
@@ -771,7 +780,7 @@ export class PolkamarktModule<T> {
       noShares: rpcCodecString(record, 'noShares'),
       netCollateralPaid: rpcCodecString(record, 'netCollateralPaid'),
       traderPayout: rpcCodecString(record, 'traderPayout'),
-      claimablePayout: rpcCodecString(record, 'claimablePayout'),
+      claimablePayout: rpcOptionalCodecString(record, 'claimablePayout', 'claimable_payout'),
       creatorFees: rpcCodecString(record, 'creatorFees'),
       isCreator: Boolean(record.isCreator),
     } satisfies ClaimableInfo;

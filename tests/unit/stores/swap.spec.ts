@@ -1,4 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -251,6 +252,33 @@ describe('swap store', () => {
     store.reset();
 
     expect(store.quoteError).toBe(false);
+  });
+
+  it('falls back to SMART when the persisted market algorithm is not available for the pair', () => {
+    const store = useSwapStore();
+    const settingsStore = useSettingsStore();
+
+    settingsStore.marketAlgorithm = MarketAlgorithms.XYK;
+    store.setSubscriptionPayload({
+      liquiditySources: [LiquiditySourceTypes.MulticollateralBondingCurvePool],
+    });
+
+    expect(store.marketAlgorithms).toEqual([MarketAlgorithms.SMART, MarketAlgorithms.TBC]);
+    expect(store.swapLiquiditySource).toBe(LiquiditySourceTypes.Default);
+    expect(store.swapMarketAlgorithm).toBe(MarketAlgorithms.SMART);
+  });
+
+  it('uses the selected market algorithm when it is available for the pair', () => {
+    const store = useSwapStore();
+    const settingsStore = useSettingsStore();
+
+    settingsStore.marketAlgorithm = MarketAlgorithms.TBC;
+    store.setSubscriptionPayload({
+      liquiditySources: [LiquiditySourceTypes.MulticollateralBondingCurvePool],
+    });
+
+    expect(store.swapLiquiditySource).toBe(LiquiditySourceTypes.MulticollateralBondingCurvePool);
+    expect(store.swapMarketAlgorithm).toBe(MarketAlgorithms.TBC);
   });
 
   it('persists the loss warning flag', () => {

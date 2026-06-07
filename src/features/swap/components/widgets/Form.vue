@@ -265,6 +265,7 @@ const quoteSubscription = ref<Subscription | null>(null);
 const quoteLoading = ref(false);
 const pathAvailabilityLoading = ref(false);
 const pathAvailabilityRequestId = ref(0);
+const isDisposed = ref(false);
 
 const delimiters = FPNumber.DELIMITERS_CONFIG;
 const xorSymbol = ` ${XOR.symbol}`;
@@ -488,11 +489,14 @@ async function updateSwapPathAvailability() {
 }
 
 async function refreshSwapQuotesConfiguration() {
-  try {
-    await api.dex.update();
-    await api.swap.update();
-  } catch (error) {
-    console.warn('[swap] quote configuration refresh skipped', error);
+  const results = await Promise.allSettled([api.dex.update(), api.swap.update()]);
+  const failures = results.filter((result): result is PromiseRejectedResult => result.status === 'rejected');
+
+  if (failures.length) {
+    console.warn(
+      '[swap] quote configuration refresh partially failed',
+      failures.map(({ reason }) => reason)
+    );
   }
 }
 
@@ -519,6 +523,7 @@ async function subscribeOnQuote() {
       resetFieldTo();
     }
   }
+  await runRecountSwapValues();
   void updateSwapPathAvailability();
 
   const observableQuote = api.swap.getDexesSwapQuoteObservable(
@@ -565,6 +570,8 @@ async function enableSwapSubscriptions(withApiRefresh = false) {
   if (withApiRefresh) {
     await refreshSwapQuotesConfiguration();
   }
+  if (isDisposed.value || !nodeIsConnected.value) return;
+
   swapStore.updateSubscriptions();
   await subscribeOnQuote();
 }
@@ -720,6 +727,7 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  isDisposed.value = true;
   resetSwapSubscriptions();
   swapStore.reset();
 });

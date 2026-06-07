@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { reactive } from 'vue';
 
 const beforeTransactionSign = vi.hoisted(() => vi.fn(async () => undefined));
 const useWalletStoreMock = vi.hoisted(() => vi.fn());
@@ -93,14 +94,14 @@ describe('useTransaction', () => {
     vi.clearAllMocks();
     delayMock.mockResolvedValue(undefined);
     api.historyList = [];
-    walletStore = {
+    walletStore = reactive({
       isWalletLoaded: true,
       shouldBalanceBeHidden: false,
       accountAssetsAddressTable: {},
       beforeTransactionSign,
       addActiveTransaction: vi.fn(),
       removeActiveTransactions: vi.fn(),
-    };
+    });
     useWalletStoreMock.mockReturnValue(walletStore);
   });
 
@@ -119,6 +120,16 @@ describe('useTransaction', () => {
     expect(handler).toHaveBeenCalledTimes(1);
     expect(walletStore.addActiveTransaction).toHaveBeenCalledWith('tx-1');
     expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+  });
+
+  it('returns the reactive hidden-balance flag used by wallet send max availability', () => {
+    const { shouldBalanceBeHidden } = useTransaction();
+
+    expect(shouldBalanceBeHidden.value).toBe(false);
+
+    walletStore.shouldBalanceBeHidden = true;
+
+    expect(shouldBalanceBeHidden.value).toBe(true);
   });
 
   it('shows submitted notification before waiting for wallet history', async () => {

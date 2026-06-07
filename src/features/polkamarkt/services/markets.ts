@@ -210,9 +210,19 @@ export async function fetchPolkamarktMarkets(
   let indexerError: unknown;
 
   try {
-    indexedMarkets = await requestMarkets(MarketsQuery, limit);
-    if (!indexedMarkets.length) {
-      indexedMarkets = await requestMarkets(LegacyMarketsQuery, limit);
+    let latestQueryError: unknown;
+    try {
+      indexedMarkets = await requestMarkets(MarketsQuery, limit);
+    } catch (error) {
+      latestQueryError = error;
+    }
+
+    if (latestQueryError || !indexedMarkets.length) {
+      try {
+        indexedMarkets = await requestMarkets(LegacyMarketsQuery, limit);
+      } catch (error) {
+        throw latestQueryError ?? error;
+      }
     }
   } catch (error) {
     indexerError = error;

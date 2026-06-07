@@ -138,7 +138,7 @@ function createRoot() {
           event: {
             section: 'polkamarkt',
             method: 'ConditionCreated',
-            data: { toJSON: () => ({ condition_id: '42' }) },
+            data: { toJSON: () => ({ condition_id: '9' }) },
           },
         },
         {
@@ -258,7 +258,7 @@ describe('PolkamarktModule', () => {
     }
   });
 
-  it('estimates and creates a DPM market in one atomic batch extrinsic', async () => {
+  it('estimates creation fees with a batch and creates a DPM market from the finalized condition id', async () => {
     const { root, module, conditionTx, marketTx, batchTx } = createRoot();
 
     await expect(
@@ -284,10 +284,19 @@ describe('PolkamarktModule', () => {
     ).resolves.toEqual({ conditionId: 9, marketId: 51 });
 
     expect(root.api.tx.polkamarkt.createMarket).toHaveBeenLastCalledWith(9, 10_000);
-    expect(root.api.tx.utility.batchAll).toHaveBeenLastCalledWith([conditionTx, marketTx]);
-    expect(root.submitExtrinsic).toHaveBeenCalledTimes(1);
-    expect(root.submitExtrinsic).toHaveBeenCalledWith(
-      batchTx,
+    expect(root.api.tx.utility.batchAll).toHaveBeenCalledTimes(1);
+    expect(root.submitExtrinsic).toHaveBeenCalledTimes(2);
+    expect(root.submitExtrinsic).toHaveBeenNthCalledWith(
+      1,
+      conditionTx,
+      root.account.pair,
+      expect.objectContaining({
+        type: Operation.PolkamarktCreateCondition,
+      })
+    );
+    expect(root.submitExtrinsic).toHaveBeenNthCalledWith(
+      2,
+      marketTx,
       root.account.pair,
       expect.objectContaining({
         type: Operation.PolkamarktCreateMarket,
@@ -297,10 +306,23 @@ describe('PolkamarktModule', () => {
     );
   });
 
-  it('rejects market creation before signing when the next condition id is unavailable', async () => {
+  it('only requires next condition id for fee estimation', async () => {
     const { root, module } = createRoot();
     root.api.query.polkamarkt.nextConditionId.mockResolvedValueOnce(null);
 
+    await expect(
+      module.estimateMarketCreationFee({
+        question: 'Will this market avoid unsafe retries?',
+        oracle: 'SORA governance',
+        resolutionSource: 'Root',
+        category: 'Crypto',
+        closeBlock: 10_000,
+      })
+    ).rejects.toThrow('Unable to read next Polkamarkt condition id before estimating market creation fees.');
+    expect(root.api.tx.utility.batchAll).not.toHaveBeenCalled();
+    expect(root.submitExtrinsic).not.toHaveBeenCalled();
+
+    root.api.query.polkamarkt.nextConditionId.mockClear();
     await expect(
       module.createMarket({
         question: 'Will this market avoid unsafe retries?',
@@ -309,9 +331,8 @@ describe('PolkamarktModule', () => {
         category: 'Crypto',
         closeBlock: 10_000,
       })
-    ).rejects.toThrow('Unable to read next Polkamarkt condition id before creating a market.');
-    expect(root.api.tx.utility.batchAll).not.toHaveBeenCalled();
-    expect(root.submitExtrinsic).not.toHaveBeenCalled();
+    ).resolves.toEqual({ conditionId: 9, marketId: 51 });
+    expect(root.api.query.polkamarkt.nextConditionId).not.toHaveBeenCalled();
   });
 
   it('fails condition creation when the finalized extrinsic has no condition-created event', async () => {
@@ -429,7 +450,7 @@ describe('PolkamarktModule', () => {
   });
 
   it('returns claimable trader and creator fee values', async () => {
-    const { module } = createRoot();
+    const { root, module } = createRoot();
 
     await expect(module.getClaimableInfo('cnAccount', 7)).resolves.toMatchObject({
       marketId: 7,
@@ -439,6 +460,25 @@ describe('PolkamarktModule', () => {
       claimablePayout: '120',
       creatorFees: '5',
       isCreator: true,
+    });
+
+    root.api.rpc.polkamarkt.claimable.mockResolvedValueOnce(
+      option({
+        marketId: 7,
+        account: 'cnAccount',
+        status: 'Resolved',
+        resolutionOutcome: 'Yes',
+        yesShares: '10',
+        noShares: '0',
+        netCollateralPaid: '100',
+        traderPayout: '120',
+        creatorFees: '5',
+        isCreator: true,
+      })
+    );
+    await expect(module.getClaimableInfo('cnAccount', 7)).resolves.toMatchObject({
+      traderPayout: '120',
+      claimablePayout: undefined,
     });
 
     await expect(module.getEarlyResolutionReport(7)).resolves.toMatchObject({

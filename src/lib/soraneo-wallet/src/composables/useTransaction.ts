@@ -99,6 +99,7 @@ export function useTransaction() {
     withApi,
     withChainApi,
     withParentLoading,
+    shouldBalanceBeHidden,
     handleChangeTransaction,
     withNotifications,
   };

@@ -13,6 +13,27 @@ vi.mock('@/utils/connection/evm/walletconnect', () => {
   };
 });
 
+const createProviderAnnouncement = (uuid: string) =>
+  new CustomEvent('eip6963:announceProvider', {
+    detail: {
+      info: {
+        rdns: `io.${uuid}`,
+        uuid,
+        name: `Provider ${uuid}`,
+        icon: `${uuid}.svg`,
+      },
+      provider: {
+        request: vi.fn(),
+      },
+    },
+  });
+
+const getRequestProviderDispatchCount = (dispatchEventSpy: ReturnType<typeof vi.spyOn>): number => {
+  return dispatchEventSpy.mock.calls.filter(([event]) => {
+    return (event as Event).type === 'eip6963:requestProvider';
+  }).length;
+};
+
 describe('connection/evm/providers', () => {
   const originalUserAgent = navigator.userAgent;
 
@@ -57,21 +78,45 @@ describe('connection/evm/providers', () => {
     await expect(providersModule.MetamaskProvider.getProvider()).resolves.toBe(metamaskProvider);
   });
 
-  it('registers EIP-6963 provider discovery listener, requests announcements, and cleans up', async () => {
+  it('shares EIP-6963 discovery, fans out announcements, and replays cached providers', async () => {
     const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
-    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
     const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent');
-    const onProviderAnnouncement = vi.fn();
+    const firstSubscriber = vi.fn();
+    const secondSubscriber = vi.fn();
     const providersModule = await import('@/utils/connection/evm/providers');
 
-    const cleanup = providersModule.getProvidersList(onProviderAnnouncement);
+    const cleanupFirst = providersModule.getProvidersList(firstSubscriber);
+    const cleanupSecond = providersModule.getProvidersList(secondSubscriber);
 
-    expect(addEventListenerSpy).toHaveBeenCalledWith('eip6963:announceProvider', onProviderAnnouncement);
-    expect(dispatchEventSpy).toHaveBeenCalledWith(expect.objectContaining({ type: 'eip6963:requestProvider' }));
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(addEventListenerSpy).toHaveBeenCalledWith('eip6963:announceProvider', expect.any(Function));
+    expect(getRequestProviderDispatchCount(dispatchEventSpy)).toBe(1);
 
-    cleanup();
+    const firstAnnouncement = createProviderAnnouncement('provider-1');
+    window.dispatchEvent(firstAnnouncement);
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('eip6963:announceProvider', onProviderAnnouncement);
+    expect(firstSubscriber).toHaveBeenCalledWith(firstAnnouncement);
+    expect(secondSubscriber).toHaveBeenCalledWith(firstAnnouncement);
+
+    cleanupFirst();
+
+    const secondAnnouncement = createProviderAnnouncement('provider-2');
+    window.dispatchEvent(secondAnnouncement);
+
+    expect(firstSubscriber).toHaveBeenCalledTimes(1);
+    expect(secondSubscriber).toHaveBeenCalledWith(secondAnnouncement);
+
+    cleanupSecond();
+
+    const lateSubscriber = vi.fn();
+    const cleanupLate = providersModule.getProvidersList(lateSubscriber);
+
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(getRequestProviderDispatchCount(dispatchEventSpy)).toBe(1);
+    expect(lateSubscriber).toHaveBeenNthCalledWith(1, firstAnnouncement);
+    expect(lateSubscriber).toHaveBeenNthCalledWith(2, secondAnnouncement);
+
+    cleanupLate();
   });
 
   it('uses Firefox extension URLs when provider metadata is loaded under a Firefox user agent', async () => {

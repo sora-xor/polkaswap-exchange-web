@@ -317,6 +317,7 @@ defineExpose({
   display: grid;
   gap: $inner-spacing-big;
   margin: 0 $inner-spacing-big $inner-spacing-big 0;
+  padding-bottom: calc(#{$inner-spacing-big} + 56px);
 
   @include tablet(true) {
     margin: 0 $inner-spacing-mini $inner-spacing-big;
@@ -374,7 +375,7 @@ defineExpose({
 
   &__layout {
     display: grid;
-    grid-template-columns: #{'minmax(300px, 0.42fr)'} #{'minmax(0, 1fr)'};
+    grid-template-columns: #{'minmax(280px, 320px)'} #{'minmax(0, 1fr)'};
     gap: $inner-spacing-big;
     align-items: flex-start;
 
@@ -393,7 +394,7 @@ defineExpose({
     gap: $inner-spacing-big;
     align-items: flex-start;
 
-    @include desktop(true) {
+    @include huge-desktop(true) {
       grid-template-columns: 1fr;
     }
   }

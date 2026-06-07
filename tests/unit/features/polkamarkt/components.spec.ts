@@ -10,6 +10,7 @@ import marketOutcomeChartSource from '@/features/polkamarkt/components/MarketOut
 import marketShareWidgetSource from '@/features/polkamarkt/components/MarketShareWidget.vue?raw';
 import myPositionsPanelSource from '@/features/polkamarkt/components/MyPositionsPanel.vue?raw';
 import polkamarktPageSource from '@/features/polkamarkt/pages/PolkamarktPage.vue?raw';
+import pricingCurvePositionChartSource from '@/features/polkamarkt/components/PricingCurvePositionChart.vue?raw';
 
 const mocks = vi.hoisted(() => ({
   route: { params: {} as Record<string, unknown> },
@@ -142,6 +143,11 @@ const market = {
   probability: 63,
   status: 'Open',
   closeBlock: 8000,
+  mechanism: 'DynamicPariMutuel',
+  virtualDepth: 100,
+  dpmCollateral: 100,
+  realYesShares: 26,
+  realNoShares: 74,
 } satisfies PolkamarktMarket;
 
 const sButtonStub = defineComponent({
@@ -367,6 +373,7 @@ describe('polkamarkt components', () => {
     expect(wrapper.text()).not.toContain('polkamarkt.details.settlement');
     expect(wrapper.text()).not.toContain('polkamarkt.fields.evidenceUri');
     expect(wrapper.find('[data-testid="market-history-chart"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="pricing-curve-position-chart"]').exists()).toBe(true);
     expect(wrapper.find('[data-testid="market-share-widget"]').exists()).toBe(false);
     expect(wrapper.find('[data-testid="market-share-actions"]').exists()).toBe(true);
     expect(wrapper.find('[data-testid="market-share-native"]').exists()).toBe(true);
@@ -398,18 +405,19 @@ describe('polkamarkt components', () => {
   });
 
   it('keeps market detail facts in responsive compact grids', () => {
-    expect(marketDetailSource).toContain("grid-template-columns: repeat(3, #{'minmax(0, 1fr)'})");
+    expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 160px), 1fr)'})");
     expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 340px), 1fr)'})");
     expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 150px), 1fr)'})");
     expect(marketDetailSource).toContain('market-detail__fact--wide');
   });
 
   it('escapes Polkamarkt CSS grid minmax functions from the Sass breakpoint helper', () => {
-    expect(polkamarktPageSource).toContain("grid-template-columns: #{'minmax(300px, 0.42fr)'} #{'minmax(0, 1fr)'}");
+    expect(polkamarktPageSource).toContain("grid-template-columns: #{'minmax(280px, 320px)'} #{'minmax(0, 1fr)'}");
     expect(polkamarktPageSource).toContain("grid-template-columns: #{'minmax(0, 1fr)'} #{'minmax(280px, 360px)'}");
-    expect(marketListSource).toContain(
-      "grid-template-columns: #{'minmax(180px, 1fr)'} #{'minmax(132px, 0.55fr)'} max-content auto"
-    );
+    expect(polkamarktPageSource).toContain('@include huge-desktop(true)');
+    expect(marketListSource).toContain('flex-wrap: wrap');
+    expect(marketListSource).toContain('> .polkamarkt-status-toggle');
+    expect(marketListSource).not.toContain('max-content auto');
     expect(createMarketDialogSource).toContain('grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))');
     expect(myPositionsPanelSource).toContain("grid-template-columns: #{'minmax(0, 1fr)'} auto auto");
   });
@@ -420,9 +428,11 @@ describe('polkamarkt components', () => {
     expect(marketOutcomeChartSource).not.toContain('<text');
     expect(marketShareWidgetSource).toContain('chartGridLabelStyle(value)');
     expect(marketShareWidgetSource).not.toContain('<text');
+    expect(pricingCurvePositionChartSource).toContain('data-testid="pricing-curve-position-chart"');
+    expect(pricingCurvePositionChartSource).toContain(':stroke="`url(#${yesGradientId})`"');
   });
 
-  it('renders DPM trade ticket modes without quoting before an amount is entered', () => {
+  it('renders DPM trade ticket modes and expands the curve helper without quoting before an amount is entered', async () => {
     const wrapper = mount(TradeTicket, {
       props: { market },
       global: { stubs: globalStubs },
@@ -439,6 +449,14 @@ describe('polkamarkt components', () => {
     expect(wrapper.find('.trade-ticket__tabs').text()).toContain('polkamarkt.modes.report');
     expect(wrapper.get('[data-testid="trade-ticket-outcome-yes"]').text()).toContain('0.63 KUSD');
     expect(wrapper.get('[data-testid="trade-ticket-outcome-no"]').text()).toContain('0.37 KUSD');
+    expect(wrapper.find('[data-testid="pricing-curve-position-chart"]').exists()).toBe(false);
+    expect(wrapper.get('[data-testid="pricing-curve-toggle"]').attributes('aria-expanded')).toBe('false');
+
+    await wrapper.get('[data-testid="pricing-curve-toggle"]').trigger('click');
+
+    expect(wrapper.get('[data-testid="pricing-curve-toggle"]').attributes('aria-expanded')).toBe('true');
+    expect(wrapper.find('[data-testid="pricing-curve-position-chart"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('polkamarkt.curve.steps.buy');
     expect(wrapper.find('[data-testid="polkamarkt-order-book"]').exists()).toBe(false);
     expect(mocks.api.polkamarkt.quoteBuyTrade).not.toHaveBeenCalled();
   });
@@ -497,6 +515,41 @@ describe('polkamarkt components', () => {
           minSharesOut: '1990000000000000000',
         })
       );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('clears stale DPM quotes synchronously before debounced refresh', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '0',
+        noShares: '0',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        claimablePayout: '0',
+        creatorFees: '0',
+        isCreator: false,
+      });
+
+      const wrapper = mount(TradeTicket, {
+        props: { market: { ...market, mechanism: 'DynamicPariMutuel' } },
+        global: { stubs: globalStubs },
+      });
+
+      await wrapper.get('.trade-field input').setValue('1');
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(mocks.api.polkamarkt.quoteBuyTrade).toHaveBeenCalledTimes(1));
+
+      await wrapper.get('.trade-field input').setValue('2');
+      await wrapper.get('.trade-ticket__submit').trigger('click');
+
+      expect(wrapper.text()).toContain('polkamarkt.ticket.quoteUnavailable');
+      expect(mocks.api.polkamarkt.submitBuyTrade).not.toHaveBeenCalled();
     } finally {
       vi.useRealTimers();
     }
