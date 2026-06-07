@@ -467,7 +467,6 @@ export class PolkamarktModule<T> {
   private async buildMarketCreationFeeEstimateTxs(params: CreateMarketParams): Promise<{
     conditionTx: SubmittableExtrinsic<'promise'>;
     marketTx: SubmittableExtrinsic<'promise'>;
-    batchTx: SubmittableExtrinsic<'promise'>;
   }> {
     const conditionId = await this.readNextConditionId();
     if (conditionId === undefined) {
@@ -476,9 +475,8 @@ export class PolkamarktModule<T> {
 
     const conditionTx = this.buildConditionCreationTx(params);
     const marketTx = this.getTxFactory('create_market', 'createMarket')(conditionId, params.closeBlock);
-    const batchTx = this.root.api.tx.utility.batchAll([conditionTx, marketTx]);
 
-    return { conditionTx, marketTx, batchTx };
+    return { conditionTx, marketTx };
   }
 
   /**
@@ -583,10 +581,10 @@ export class PolkamarktModule<T> {
   public async estimateMarketCreationFee(params: EstimateMarketCreationFeeParams): Promise<MarketCreationFeeEstimate> {
     assert(Number.isSafeInteger(params.closeBlock) && params.closeBlock > 0, 'Close block must be a positive integer.');
 
-    const { conditionTx, marketTx, batchTx } = await this.buildMarketCreationFeeEstimateTxs(params);
+    const { conditionTx, marketTx } = await this.buildMarketCreationFeeEstimateTxs(params);
     const conditionFee = await this.root.getTransactionFee(conditionTx);
     const marketFee = await this.root.getTransactionFee(marketTx);
-    const totalFee = await this.root.getTransactionFee(batchTx);
+    const totalFee = (BigInt(conditionFee) + BigInt(marketFee)).toString();
 
     return {
       conditionFee,

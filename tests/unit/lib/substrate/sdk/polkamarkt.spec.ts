@@ -258,7 +258,7 @@ describe('PolkamarktModule', () => {
     }
   });
 
-  it('estimates creation fees with a batch and creates a DPM market from the finalized condition id', async () => {
+  it('estimates creation fees for standalone submissions and creates a DPM market from the finalized condition id', async () => {
     const { root, module, conditionTx, marketTx, batchTx } = createRoot();
 
     await expect(
@@ -269,9 +269,12 @@ describe('PolkamarktModule', () => {
         category: 'Crypto',
         closeBlock: 10_000,
       })
-    ).resolves.toEqual({ conditionFee: '123', marketFee: '123', totalFee: '345' });
+    ).resolves.toEqual({ conditionFee: '123', marketFee: '123', totalFee: '246' });
     expect(root.api.tx.polkamarkt.createMarket).toHaveBeenCalledWith(9, 10_000);
-    expect(root.api.tx.utility.batchAll).toHaveBeenCalledWith([conditionTx, marketTx]);
+    expect(root.getTransactionFee).toHaveBeenCalledWith(conditionTx);
+    expect(root.getTransactionFee).toHaveBeenCalledWith(marketTx);
+    expect(root.getTransactionFee).not.toHaveBeenCalledWith(batchTx);
+    expect(root.api.tx.utility.batchAll).not.toHaveBeenCalled();
 
     await expect(
       module.createMarket({
@@ -284,7 +287,7 @@ describe('PolkamarktModule', () => {
     ).resolves.toEqual({ conditionId: 9, marketId: 51 });
 
     expect(root.api.tx.polkamarkt.createMarket).toHaveBeenLastCalledWith(9, 10_000);
-    expect(root.api.tx.utility.batchAll).toHaveBeenCalledTimes(1);
+    expect(root.api.tx.utility.batchAll).not.toHaveBeenCalled();
     expect(root.submitExtrinsic).toHaveBeenCalledTimes(2);
     expect(root.submitExtrinsic).toHaveBeenNthCalledWith(
       1,
