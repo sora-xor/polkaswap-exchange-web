@@ -73,7 +73,15 @@ const headlineHtml = computed(() => {
 .popup .el-dialog {
   width: min(660px, calc(100vw - 24px)) !important;
   max-width: min(660px, calc(100vw - 24px)) !important;
+  max-height: calc(100vh - (#{$basic-spacing-big} * 2)) !important;
+  max-height: calc(100dvh - (#{$basic-spacing-big} * 2)) !important;
   margin-top: clamp(16px, 22vh, 180px) !important;
+}
+
+@include tablet(true) {
+  .popup .el-dialog {
+    margin-top: 0 !important;
+  }
 }
 
 .popup-info {

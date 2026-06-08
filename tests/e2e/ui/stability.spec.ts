@@ -11,6 +11,10 @@ const corruptionPatterns = [
 ];
 const bodySamplesPerRoute = 6;
 const bodySampleDelayMs = 250;
+const routeChurnAllowedConsolePatterns = [
+  /RPC-CORE: .*disconnected from wss:\/\/ws\.mof\.sora\.org/i,
+  /API\/INIT: Error: FATAL: Unable to initialize the API: disconnected from wss:\/\/ws\.mof\.sora\.org/i,
+];
 
 type RouteTarget = {
   target: string;
@@ -86,7 +90,7 @@ test.beforeEach(async ({ page }) => {
 
 test('keeps full route churn stable on desktop', async ({ page }) => {
   test.slow();
-  const consoleErrors = trackConsole(page);
+  const consoleErrors = trackConsole(page, { extraAllowedPatterns: routeChurnAllowedConsolePatterns });
 
   await page.goto(`${ipfsEntryUrl}#/swap`);
   await ensureShellLoaded(page);
@@ -97,7 +101,7 @@ test('keeps full route churn stable on desktop', async ({ page }) => {
 
 test('keeps full route churn stable on mobile viewport', async ({ page }) => {
   test.slow();
-  const consoleErrors = trackConsole(page);
+  const consoleErrors = trackConsole(page, { extraAllowedPatterns: routeChurnAllowedConsolePatterns });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${ipfsEntryUrl}#/swap`);

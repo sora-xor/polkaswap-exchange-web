@@ -518,7 +518,7 @@ test('navigates to wallet from Connect account after closing settings overlay', 
 
   const settingsTrigger = page.locator('.app-header-menu .header-menu__button').first();
   const settingsOverlay = page.locator('.header-menu');
-  const connectAccountButton = page.getByRole('button', { name: /connect account/i }).first();
+  const connectAccountButton = page.locator('header.header .account-control').first();
 
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
@@ -991,6 +991,8 @@ test('covers the desktop sidebar when a dialog overlay is open', async ({ page }
   await expect(languageDialog).toBeVisible();
 
   const overlayCoverage = await page.evaluate(() => {
+    const blockingLayerSelector =
+      '.dialog-wrapper__overlay, .s-modal__overlay, .dialog-wrapper__modal, .s-modal__modal';
     const overlay = document.querySelector('.dialog-wrapper__overlay, .s-modal__overlay') as HTMLElement | null;
     const sidebar = document.querySelector('.app-sidebar') as HTMLElement | null;
     if (!overlay || !sidebar) return null;
@@ -1001,7 +1003,7 @@ test('covers the desktop sidebar when a dialog overlay is open', async ({ page }
     const topElement = document.elementFromPoint(sampleX, sampleY) as HTMLElement | null;
 
     return {
-      intercepted: Boolean(topElement?.closest('.dialog-wrapper__overlay, .s-modal__overlay')),
+      intercepted: Boolean(topElement?.closest(blockingLayerSelector)),
       overlayRect: overlay.getBoundingClientRect().toJSON(),
     };
   });

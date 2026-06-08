@@ -28,6 +28,15 @@ import {
   verifyRecursiveIpfsPin,
 } from '../../../../scripts/ipfs/publish';
 
+const getCspDirectiveValues = (csp: string, directive: string): string[] => {
+  const value = csp
+    .split(';')
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${directive} `));
+
+  return value ? value.split(/\s+/).slice(1) : [];
+};
+
 function createFsDeps(files: Record<string, string>) {
   return {
     existsSync: (target: string) => target in files,
@@ -503,13 +512,13 @@ describe('formatBunnyFilebaseCspRecommendation', () => {
   it('keeps the Filebase CSP override compatible with Google Drive wallet scripts', () => {
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://accounts.google.com');
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://apis.google.com');
+    expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://content.googleapis.com');
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://www.gstatic.com');
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain("connect-src 'self' https: wss:");
+    expect(getCspDirectiveValues(BUNNY_FILEBASE_CSP_HEADER, 'frame-src')).toContain('https://content.googleapis.com');
 
     expect(formatBunnyFilebaseCspRecommendation()).toBe(
-      ['Recommended Filebase origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join(
-        '\n'
-      )
+      ['Recommended Filebase origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join('\n')
     );
   });
 });

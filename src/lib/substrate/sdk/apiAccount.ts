@@ -69,6 +69,11 @@ export class WithConnectionApi {
     this.connection = connection;
   }
 
+  /** Safely returns the active API while the connection is still being attached. */
+  protected get maybeApi(): ApiPromise | undefined {
+    return this.connection?.api as ApiPromise | undefined;
+  }
+
   /** API instance for data requests. Should be used during the connection only */
   public get api(): ApiPromise {
     return this.connection.api as ApiPromise;
@@ -80,19 +85,19 @@ export class WithConnectionApi {
   }
 
   get connected(): boolean {
-    return !!this.api?.isConnected;
+    return !!this.maybeApi?.isConnected;
   }
 
   get chainSymbol(): string | undefined {
-    return this.api?.registry.chainTokens[0];
+    return this.maybeApi?.registry?.chainTokens?.[0];
   }
 
   get chainDecimals(): number | undefined {
-    return this.api?.registry.chainDecimals[0];
+    return this.maybeApi?.registry?.chainDecimals?.[0];
   }
 
   get chainSS58(): number | undefined {
-    return this.api?.registry.chainSS58;
+    return this.maybeApi?.registry?.chainSS58;
   }
 
   /**

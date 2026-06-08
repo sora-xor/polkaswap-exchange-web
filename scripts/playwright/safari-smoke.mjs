@@ -14,7 +14,7 @@ const outDir = path.join(process.cwd(), 'output/playwright/safari-smoke');
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const sanitizeRouteName = (route) => route.replace(/^#\//, '').replace(/[\/]/g, '-');
+const sanitizeRouteName = (route) => route.replace(/^#\//, '').replace(/\//g, '-');
 
 const waitForCountAtLeast = async (locator, minimum, timeout = 10_000, step = 200) => {
   const deadline = Date.now() + timeout;

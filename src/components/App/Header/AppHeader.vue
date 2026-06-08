@@ -111,7 +111,7 @@ const showRotatePhoneDialog = computed(() => {
 const showAccelerationAccessDialog = computed(
   () =>
     Boolean(settingsStore.rotatePhoneDialogVisibility) &&
-    !Boolean(settingsStore.isAccessRotationListener) &&
+    !settingsStore.isAccessRotationListener &&
     Boolean(settingsStore.isAccessAccelerometrEventDeclined)
 );
 

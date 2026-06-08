@@ -4,6 +4,15 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
+const getCspDirectiveValues = (csp: string, directive: string): string[] => {
+  const value = csp
+    .split(';')
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${directive} `));
+
+  return value ? value.split(/\s+/).slice(1) : [];
+};
+
 describe('public env config', () => {
   it('allows the local Polkaswap indexer through the static CSP', async () => {
     const html = await readFile(path.resolve(process.cwd(), 'index.html'), 'utf8');
@@ -20,7 +29,9 @@ describe('public env config', () => {
 
     expect(csp).toContain('https://accounts.google.com');
     expect(csp).toContain('https://apis.google.com');
+    expect(csp).toContain('https://content.googleapis.com');
     expect(csp).toContain('https://www.gstatic.com');
+    expect(getCspDirectiveValues(csp, 'frame-src')).toContain('https://content.googleapis.com');
   });
 
   it('renders the branded bootstrap loader before Vue mounts', async () => {
@@ -56,7 +67,9 @@ describe('public env config', () => {
 
       expect(parsed.DEFAULT_NETWORKS).toEqual(expectedNodes);
       expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain('wss://mof3.sora.org');
-      expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain('wss://sora.api.onfinality.io/public-ws');
+      expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain(
+        'wss://sora.api.onfinality.io/public-ws'
+      );
     }
   });
 

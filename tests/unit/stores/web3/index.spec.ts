@@ -291,12 +291,13 @@ describe('useWeb3Store', () => {
     const connector = {
       accountApi: {
         changeAccountName: changeAccountNameMock,
-        connection: { api: {} },
+        connection: { api: { registry: { chainSS58: 42 } } },
         formatAddress: vi.fn((address: string, withPrefix = true) =>
           withPrefix ? `fmt:${address}` : `raw:${address}`
         ),
       },
       network: {
+        connection: { api: { registry: { chainSS58: 42 } } },
         subNetworkConnection: {
           nodeIsConnected: true,
         },
@@ -322,5 +323,91 @@ describe('useWeb3Store', () => {
       name: 'Renamed',
       source: 'polkadot-js',
     });
+  });
+
+  it('redirects Sub account selection to node selection when the bridge network registry is missing', async () => {
+    const connector = {
+      accountApi: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+      },
+      network: {
+        connection: { api: {} },
+        subNetworkConnection: {
+          nodeIsConnected: true,
+        },
+      },
+    };
+
+    shared.bridgeStoreState.subBridgeConnector = connector;
+
+    const web3Store = useWeb3Store();
+
+    web3Store.setSubAccountDialogVisibility(true);
+    await web3Store.selectSubAccount({
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    } as any);
+
+    expect(shared.loginApiMock).not.toHaveBeenCalled();
+    expect(web3Store.subAccountDialogVisibility).toBe(false);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccount).toBeNull();
+  });
+
+  it('redirects Sub account selection to node selection when the account API registry is missing', async () => {
+    shared.bridgeStoreState.subBridgeConnector = {
+      accountApi: {
+        connection: { api: {} },
+      },
+      network: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+        subNetworkConnection: {
+          nodeIsConnected: true,
+        },
+      },
+    };
+
+    const web3Store = useWeb3Store();
+
+    web3Store.setSubAccountDialogVisibility(true);
+    await web3Store.selectSubAccount({
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    } as any);
+
+    expect(shared.loginApiMock).not.toHaveBeenCalled();
+    expect(web3Store.subAccountDialogVisibility).toBe(false);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccount).toBeNull();
+  });
+
+  it('redirects Sub account selection to node selection when the selected Sub node is disconnected', async () => {
+    shared.bridgeStoreState.subBridgeConnector = {
+      accountApi: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+      },
+      network: {
+        connection: { api: { registry: { chainSS58: 42 } } },
+        subNetworkConnection: {
+          nodeIsConnected: false,
+        },
+      },
+    };
+
+    const web3Store = useWeb3Store();
+
+    web3Store.setSubAccountDialogVisibility(true);
+    await web3Store.selectSubAccount({
+      address: '5SubAccount',
+      name: 'Liberland',
+      source: 'polkadot-js',
+    } as any);
+
+    expect(shared.loginApiMock).not.toHaveBeenCalled();
+    expect(web3Store.subAccountDialogVisibility).toBe(false);
+    expect(web3Store.selectSubNodeDialogVisibility).toBe(true);
+    expect(web3Store.subAccount).toBeNull();
   });
 });

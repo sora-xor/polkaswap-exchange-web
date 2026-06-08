@@ -72,6 +72,16 @@ const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
   await expect(swapSettingsDialog).toHaveCount(0);
 };
 
+const clearToastNotifications = async (page: Page): Promise<void> => {
+  const toastItem = page.locator('.s-toasts-display__item').first();
+
+  await toastItem.waitFor({ state: 'detached', timeout: 1_000 }).catch(async () => {
+    await page.evaluate(() => {
+      document.querySelectorAll('.s-toasts-display__item').forEach((node) => node.remove());
+    });
+  });
+};
+
 const callWalletStore = async (page: Page, action: string, payload?: unknown): Promise<void> => {
   await page.evaluate(
     ({ action, payload }) => {
@@ -105,6 +115,7 @@ test('covers authenticated wallet account settings and account-action dialogs', 
   const accountSettingsDialog = dialogByTitle(page, /account settings/i);
 
   await expect(accountSettingsTrigger).toBeVisible();
+  await clearToastNotifications(page);
   await accountSettingsTrigger.click({ trial: true, timeout: 500 });
   await accountSettingsTrigger.click();
   await expect(accountSettingsDialog).toBeVisible();

@@ -224,12 +224,32 @@ const getRegisteredTransactionAsset = (assetAddress: string): RegisteredAccountA
   return asset;
 };
 
-const chainAddress = (address: string, connector: SubNetworksConnector): string => {
-  const formatter = connector?.network?.formatAddress;
-  const isConnected = connector?.network?.subNetworkConnection?.nodeIsConnected;
+const hasSubApiRegistry = (apiInstance: unknown): boolean => {
+  return Boolean(apiInstance && typeof apiInstance === 'object' && (apiInstance as { registry?: unknown }).registry);
+};
 
-  if (isConnected && typeof formatter === 'function') {
-    return formatter(address);
+/**
+ * Checks that the selected Sub bridge network is ready for address formatting
+ * and balance queries, not just that the websocket marked itself connected.
+ */
+const isSubConnectorNetworkReady = (connector?: Nullable<SubNetworksConnector>): boolean => {
+  const network = connector?.network;
+
+  return Boolean(network?.subNetworkConnection?.nodeIsConnected && hasSubApiRegistry(network?.connection?.api));
+};
+
+const chainAddress = (address: string, connector: SubNetworksConnector): string => {
+  if (!address) return '';
+
+  const network = connector?.network;
+
+  if (isSubConnectorNetworkReady(connector) && typeof network?.formatAddress === 'function') {
+    try {
+      const formatted = network.formatAddress(address);
+      return typeof formatted === 'string' && formatted ? formatted : address;
+    } catch {
+      return address;
+    }
   }
 
   return address;
@@ -695,6 +715,15 @@ const useBridgeStoreBase = defineStore('bridge', {
 
       try {
         if (isSubBridge) {
+          if (!isSubConnectorNetworkReady(subConnector)) {
+            syncBalancesBatchCompat(this, {
+              sender: ZeroStringValue,
+              recipient: ZeroStringValue,
+              native: ZeroStringValue,
+            });
+            return;
+          }
+
           if (!isRegisteredAsset) {
             syncBalancesBatchCompat(this, {
               sender: ZeroStringValue,

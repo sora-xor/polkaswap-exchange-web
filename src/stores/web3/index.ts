@@ -204,7 +204,19 @@ const isSubBridgeConnectorReady = (connector?: Nullable<SubNetworksConnector>): 
     return false;
   }
 
-  return Boolean(connector?.accountApi?.connection?.api && connector?.network?.subNetworkConnection?.nodeIsConnected);
+  const accountApi = connector.accountApi?.connection?.api;
+  const network = connector.network;
+  const networkApi = network?.connection?.api;
+  const hasRegistry = (apiInstance: unknown): boolean =>
+    Boolean(apiInstance && typeof apiInstance === 'object' && (apiInstance as { registry?: unknown }).registry);
+
+  return Boolean(
+    accountApi &&
+    networkApi &&
+    hasRegistry(accountApi) &&
+    hasRegistry(networkApi) &&
+    network?.subNetworkConnection?.nodeIsConnected
+  );
 };
 
 const connectSubNetwork = async (store: Web3State & { $pinia: Pinia; selectedNetworkData: Nullable<NetworkData> }) => {

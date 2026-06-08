@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 
 const cryptoWaitReadyMock = vi.hoisted(() => vi.fn());
 const loadAllMock = vi.hoisted(() => vi.fn());
@@ -20,7 +21,7 @@ vi.mock('@polkadot/ui-keyring', () => ({
   },
 }));
 
-import { KeyringType, WithKeyring } from '@/lib/substrate/sdk/apiAccount';
+import { KeyringType, SoraPrefix, WithKeyring } from '@/lib/substrate/sdk/apiAccount';
 
 describe('WithKeyring.initKeyring', () => {
   beforeEach(() => {
@@ -77,5 +78,51 @@ describe('WithKeyring signer lifecycle', () => {
 
     expect(setSignerSpy).toHaveBeenCalledTimes(1);
     expect(setSignerSpy).toHaveBeenCalledWith(signer);
+  });
+});
+
+describe('WithKeyring chain metadata', () => {
+  it('formats with the SORA prefix while the connection registry is unavailable', () => {
+    const account = new WithKeyring();
+    const publicKey = new Uint8Array(32).fill(1);
+    const address = encodeAddress(publicKey, SoraPrefix);
+    const expectedAddress = encodeAddress(decodeAddress(address, false), SoraPrefix);
+
+    expect(account.connected).toBe(false);
+    expect(account.chainSymbol).toBeUndefined();
+    expect(account.chainDecimals).toBeUndefined();
+    expect(account.chainSS58).toBeUndefined();
+    expect(account.formatAddress(address)).toBe(expectedAddress);
+
+    account.setConnection({ api: { isConnected: true } } as any);
+
+    expect(account.connected).toBe(true);
+    expect(account.chainSymbol).toBeUndefined();
+    expect(account.chainDecimals).toBeUndefined();
+    expect(account.chainSS58).toBeUndefined();
+    expect(account.formatAddress(address)).toBe(expectedAddress);
+  });
+
+  it('uses chain-provided metadata when the connection registry is ready', () => {
+    const account = new WithKeyring();
+    const publicKey = new Uint8Array(32).fill(2);
+    const address = encodeAddress(publicKey, SoraPrefix);
+
+    account.setConnection({
+      api: {
+        isConnected: true,
+        registry: {
+          chainTokens: ['LLD'],
+          chainDecimals: [12],
+          chainSS58: 42,
+        },
+      },
+    } as any);
+
+    expect(account.connected).toBe(true);
+    expect(account.chainSymbol).toBe('LLD');
+    expect(account.chainDecimals).toBe(12);
+    expect(account.chainSS58).toBe(42);
+    expect(account.formatAddress(address)).toBe(encodeAddress(decodeAddress(address, false), 42));
   });
 });

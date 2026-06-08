@@ -38,6 +38,16 @@ const expectLocatorWithinViewport = async (page: Page, selector: string): Promis
   expect(metrics.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
 };
 
+const clearToastNotifications = async (page: Page): Promise<void> => {
+  const toastItem = page.locator('.s-toasts-display__item').first();
+
+  await toastItem.waitFor({ state: 'detached', timeout: 1_000 }).catch(async () => {
+    await page.evaluate(() => {
+      document.querySelectorAll('.s-toasts-display__item').forEach((node) => node.remove());
+    });
+  });
+};
+
 const openBridge = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/bridge`);
   await ensureAppLoaded(page);
@@ -163,6 +173,7 @@ test('restores bridge network selector trigger clickability immediately after cl
   await page.keyboard.press('Escape');
   await expect(networkDialog).toHaveCount(0);
 
+  await clearToastNotifications(page);
   await networkTrigger.click({ trial: true, timeout: 100 });
   await networkTrigger.click();
   await expect(networkDialog).toBeVisible();
@@ -206,6 +217,7 @@ test('restores bridge asset selector trigger clickability immediately after clos
   await page.keyboard.press('Escape');
   await expect(assetDialog).toHaveCount(0);
 
+  await clearToastNotifications(page);
   await assetTrigger.click({ trial: true, timeout: 100 });
   await assetTrigger.click();
   await expect(assetDialog).toBeVisible();
@@ -251,6 +263,7 @@ test('restores bridge account connect trigger clickability immediately after clo
   await page.keyboard.press('Escape');
   await expect(connectDialog).toHaveCount(0);
 
+  await clearToastNotifications(page);
   await connectTrigger.click({ trial: true, timeout: 100 });
   await connectTrigger.click();
   await expect(connectDialog).toBeVisible();
@@ -360,6 +373,7 @@ test('does not leak bridge network dialog overlay after hash navigation to swap'
   const swapSettingsTrigger = page.locator('.el-button--settings').first();
   const swapSettingsDialog = page.locator('.market-algorithm').first();
   await expect(swapSettingsTrigger).toBeVisible();
+  await clearToastNotifications(page);
   await swapSettingsTrigger.click({ trial: true, timeout: 100 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();

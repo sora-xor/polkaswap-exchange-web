@@ -45,7 +45,7 @@ describe('WalletAssets template', () => {
   it('keeps account asset rows on compact wallet-specific scaling', async () => {
     const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
     const assetValueStyleBlock =
-      source.match(/&-value\s*\{[\s\S]*?\.formatted-amount__decimal\s*\{[\s\S]*?\n      \}/)?.[0] ?? '';
+      source.match(/&-value\s*\{[\s\S]*?\.formatted-amount__decimal\s*\{[\s\S]*?\n {6}\}/)?.[0] ?? '';
 
     expect(source).toContain('--s-asset-item-height--fiat: 76px;');
     expect(source).toContain('--s-asset-item-height--fiat: 74px;');
@@ -122,7 +122,8 @@ describe('WalletAssets template', () => {
 
   it('keeps wallet asset IDs visible when names are truncated', async () => {
     const source = (await import('@/lib/soraneo-wallet/src/components/WalletAssets.vue?raw')).default as string;
-    const assetInfoStyleBlock = source.match(/&-info\s*\{[\s\S]*?\.token-address__value\s*\{[\s\S]*?\n      \}/)?.[0] ?? '';
+    const assetInfoStyleBlock =
+      source.match(/&-info\s*\{[\s\S]*?\.token-address__value\s*\{[\s\S]*?\n {6}\}/)?.[0] ?? '';
 
     expect(assetInfoStyleBlock).toContain('display: flex;');
     expect(assetInfoStyleBlock).toContain('align-items: baseline;');
