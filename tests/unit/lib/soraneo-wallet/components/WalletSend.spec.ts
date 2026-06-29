@@ -79,6 +79,7 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useNetworkFeeWarning', () => ({
 
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
+    api: { isReady: Promise.resolve() },
     hasEnoughXor: vi.fn(() => true),
     assets: {
       getAssetBalanceObservable: vi.fn(() => ({ subscribe: vi.fn() })),

@@ -13,6 +13,7 @@ export type RuntimeEnvConfig = Partial<{
   EVM_NETWORKS_IDS: EvmNetwork[];
   SUB_NETWORKS: SubNetworkApps;
   POLKASWAP_INDEXER_ENDPOINT: string;
+  SORAMETRICS_API_ENDPOINT: string;
   FAUCET_URL: string;
   DEFAULT_NETWORKS: unknown[];
   CHAIN_GENESIS_HASH: string;

@@ -21,6 +21,13 @@ const OPEN_MARKET_STATUSES = ['open', 'active', 'live'] as const;
 const FINALIZED_MARKET_STATUSES = ['resolved', 'cancelled', 'canceled', 'finalized', 'closed'] as const;
 const SETTLED_MARKET_STATUSES = ['resolved', 'cancelled', 'canceled', 'finalized'] as const;
 
+export type HotPolkamarktMarketGroup = {
+  category: MarketCategory;
+  markets: PolkamarktMarket[];
+  totalLiquidity: number;
+  totalVolume: number;
+};
+
 /**
  * Normalizes free-form indexed category text into the Polkamarkt category set.
  */
@@ -148,6 +155,71 @@ export function filterMarkets(
       .filter(Boolean)
       .some((value) => String(value).toLowerCase().includes(normalizedSearch));
   });
+}
+
+function compareHotMarkets(left: PolkamarktMarket, right: PolkamarktMarket): number {
+  const trendingDiff = Number(Boolean(right.trending)) - Number(Boolean(left.trending));
+  if (trendingDiff !== 0) return trendingDiff;
+
+  const volumeDiff = (right.volume || 0) - (left.volume || 0);
+  if (volumeDiff !== 0) return volumeDiff;
+
+  const liquidityDiff = (right.liquidity || 0) - (left.liquidity || 0);
+  if (liquidityDiff !== 0) return liquidityDiff;
+
+  const titleDiff = left.title.localeCompare(right.title);
+  if (titleDiff !== 0) return titleDiff;
+
+  return left.id.localeCompare(right.id);
+}
+
+/**
+ * Returns active Polkamarkt markets ordered by the first-screen "hot" contract:
+ * explicit trending signal, then volume, liquidity, and stable text identifiers.
+ */
+export function rankHotPolkamarktMarkets(markets: PolkamarktMarket[], currentBlock?: number): PolkamarktMarket[] {
+  return markets.filter((market) => isActiveMarket(market, currentBlock)).sort(compareHotMarkets);
+}
+
+/**
+ * Groups the hottest active Polkamarkt markets by category while preserving hot-category order.
+ */
+export function groupHotMarketsByCategory(
+  markets: PolkamarktMarket[],
+  currentBlock?: number,
+  limit = Number.POSITIVE_INFINITY
+): HotPolkamarktMarketGroup[] {
+  const rankedMarkets = rankHotPolkamarktMarkets(markets, currentBlock).slice(0, limit);
+  const groups = new Map<MarketCategory, HotPolkamarktMarketGroup>();
+
+  for (const market of rankedMarkets) {
+    const group =
+      groups.get(market.category) ??
+      ({
+        category: market.category,
+        markets: [],
+        totalLiquidity: 0,
+        totalVolume: 0,
+      } satisfies HotPolkamarktMarketGroup);
+
+    group.markets.push(market);
+    group.totalLiquidity += market.liquidity || 0;
+    group.totalVolume += market.volume || 0;
+    groups.set(market.category, group);
+  }
+
+  return [...groups.values()];
+}
+
+/**
+ * Selects the capped set of cards that should load compact history sparklines.
+ */
+export function selectCardHistoryMarkets(
+  markets: PolkamarktMarket[],
+  currentBlock?: number,
+  limit = 12
+): PolkamarktMarket[] {
+  return rankHotPolkamarktMarkets(markets, currentBlock).slice(0, limit);
 }
 
 export function metadataByteLength(value: string): number {

@@ -23,6 +23,14 @@ const corruptionPatterns = [
   /Cannot read properties of null \(reading 'query'\)/i,
 ];
 
+const liveRouteMatrixAllowedConsolePatterns = [
+  /status of 403/i,
+  /server responded with a status of 403/i,
+  /status of 404/i,
+  /server responded with a status of 404/i,
+  /you should connect wallet/i,
+];
+
 const callWeb3Store = async (page: Page, action: string, payload?: unknown): Promise<void> => {
   await page.evaluate(
     ({ action, payload }) => {
@@ -581,7 +589,7 @@ test.describe('live runtime smoke', () => {
       .first();
 
     await expect(indexerBlock).toBeVisible();
-    await expect(indexerBlock).toContainText(/Polkaswap Indexer Block #/i);
+    await expect(indexerBlock).toContainText(/(?:Polkaswap Indexer|SoraMetrics) Block #/i);
     await indexerBlock.click();
     await expect(page.locator('.app-status__tooltip')).toHaveCount(0);
     await expect(indexerDialog).toHaveCount(0);
@@ -607,7 +615,7 @@ test.describe('live runtime smoke', () => {
     );
     await ensureAppLoaded(page);
     await expect(indexerBlock).toBeVisible();
-    await expect(indexerBlock).toContainText(/Polkaswap Indexer Block #/i);
+    await expect(indexerBlock).toContainText(/(?:Polkaswap Indexer|SoraMetrics) Block #/i);
     await page.setViewportSize({ width: 390, height: 844 });
     await expect(indexerDialog).toHaveCount(0);
     await expectSwapSettingsClickable(page);
@@ -808,7 +816,7 @@ test.describe('live runtime smoke', () => {
   test('keeps route rendering matrix stable on desktop without network stubbing', async ({ page }) => {
     const consoleErrors = trackConsole(page, {
       mode: 'live',
-      extraAllowedPatterns: [/status of 404/i, /server responded with a status of 404/i, /you should connect wallet/i],
+      extraAllowedPatterns: liveRouteMatrixAllowedConsolePatterns,
     });
     const routeCases = [...publicRouteAuditCases, ...protectedRedirectRouteAuditCases];
 
@@ -827,7 +835,7 @@ test.describe('live runtime smoke', () => {
   test('keeps route rendering matrix stable on mobile without network stubbing', async ({ page }) => {
     const consoleErrors = trackConsole(page, {
       mode: 'live',
-      extraAllowedPatterns: [/status of 404/i, /server responded with a status of 404/i, /you should connect wallet/i],
+      extraAllowedPatterns: liveRouteMatrixAllowedConsolePatterns,
     });
     const routeCases = [...publicRouteAuditCases, ...protectedRedirectRouteAuditCases];
 

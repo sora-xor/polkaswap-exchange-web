@@ -15,7 +15,7 @@ const walletStore = vi.hoisted(() => ({
   navigate,
 }));
 
-vi.mock('@/api', () => ({
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
     mst: {
       updateMultisigName,

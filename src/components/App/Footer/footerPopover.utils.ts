@@ -32,8 +32,8 @@ export function resolvePopoverLeft({
   viewportPadding = 8,
 }: ResolvePopoverLeftParams): number {
   const parsedLeft = Number.parseFloat(currentLeft);
-  const fallbackLeft = Number.isFinite(popoverLeft) ? popoverLeft : viewportPadding;
-  const baseLeft = Number.isFinite(parsedLeft) ? parsedLeft : fallbackLeft;
+  const initialLeft = Number.isFinite(popoverLeft) ? popoverLeft : viewportPadding;
+  const baseLeft = Number.isFinite(parsedLeft) ? parsedLeft : initialLeft;
 
   if (!Number.isFinite(viewportWidth) || viewportWidth <= 0) return Math.round(baseLeft);
 

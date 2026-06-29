@@ -84,36 +84,15 @@ export function marketRuntimeId(market?: PolkamarktMarket): number | undefined {
   return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : undefined;
 }
 
-export function marketHistoryFallback(market?: PolkamarktMarket): MarketHistoryPoint[] {
-  const probability = parseProbability(market?.probability);
-  if (!market || probability === undefined) return [];
-
-  return [
-    {
-      id: `current-${market.id}`,
-      marketId: marketRuntimeId(market),
-      probability,
-      priceYes: probability / 100,
-      priceNo: (100 - probability) / 100,
-      liquidityUSD: market.liquidity,
-      volumeUSD: market.volume,
-      status: market.status,
-    },
-  ];
-}
-
 /**
  * Loads indexed YES/NO probability snapshots for the selected Polkamarkt market.
- * A single current-probability point is returned when the indexer has not yet
- * recorded market snapshot history.
  */
 export async function fetchPolkamarktMarketHistory(
   market?: PolkamarktMarket,
   limit = 96
 ): Promise<MarketHistoryPoint[]> {
   const runtimeMarketId = marketRuntimeId(market);
-  const fallback = marketHistoryFallback(market);
-  if (runtimeMarketId === undefined) return fallback;
+  if (runtimeMarketId === undefined) return [];
 
   try {
     const polkaswapIndexer = getCurrentIndexer() as PolkaswapIndexer;
@@ -125,9 +104,9 @@ export async function fetchPolkamarktMarketHistory(
       .map(parseMarketHistoryPoint)
       .filter((point): point is MarketHistoryPoint => Boolean(point));
 
-    return points.length ? points : fallback;
+    return points;
   } catch (error) {
     console.warn('Polkamarkt market history is unavailable.', error);
-    return fallback;
+    return [];
   }
 }

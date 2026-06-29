@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Indexer",
-                "title": "{Sora} Network service selection",
-                "useCeres": "Use Polkaswap Indexer for fiat values"
+                "title": "{Sora} Network service selection"
             },
-            "indexerBlock": "Polkaswap Indexer Block #{block}",
+            "indexerBlock": "{source} Block #{block}",
             "label": "Statistics services",
             "title": {
                 "available": "Statistics available",
@@ -883,7 +882,6 @@
         "Pool": "Pool",
         "Rewards": "Rewards",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Card",
         "StakingContainer": "Staking",
         "Stats": "Statistics",
         "Swap": "Swap",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Complete {title}-related tasks in order to level up your skill",
         "rewardNextLvl": "Next level reward",
-        "soraCard": "Apply now",
         "title": "Your Points",
         "toEarnPoints": "To earn points",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Loading markets...",
         "markets": {
+            "groupCount": "{count} markets",
+            "groupTotals": "Volume {volume}",
+            "hotSubtitle": "{count} active markets ranked by volume and liquidity",
+            "hotTitle": "Hot active markets",
             "search": "Search markets",
             "subtitle": "{count} markets match the current filters",
-            "title": "Markets"
+            "title": "Markets",
+            "trending": "Trending"
         },
         "metrics": {
             "closeBlock": "Close block",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "YES {yes} and NO {no} probability history",
+            "loading": "Loading history"
+        },
         "status": {
             "active": "Active",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Share balances unavailable.",
+            "buyReceipt": "Buying {outcome} with {amount} {symbol}. Minimum shares: {shares}.",
             "claimable": "Claimable",
             "claimableFailed": "Unable to read claimable balances.",
+            "claimFeesReceipt": "Claiming creator fees.",
+            "claimMarketReceipt": "Claiming trader payout.",
             "claimStatus": "Claim status",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Collateral out",
+            "connectForBalances": "Connect account to see shares.",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Indexed position: YES {yes} / NO {no}",
             "insufficientKusd": "Insufficient {symbol} balance",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Insufficient XOR for network fee",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Unable to refresh quote.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Refreshing share balances...",
             "refreshingQuote": "Refreshing quote...",
             "reportBond": "Report bond",
+            "reportReceipt": "Reporting {outcome} early resolution.",
             "selectMarket": "Select an active market to trade.",
+            "sellReceipt": "Selling {shares} {outcome} shares. Minimum collateral: {amount} {symbol}.",
             "sharesAmount": "Shares",
             "sharesOut": "Shares out",
             "sharesToSell": "Shares to sell",
             "slippage": "Slippage %",
             "takerFee": "Taker fee",
             "title": "Trade ticket",
+            "transactionFailed": "Transaction failed.",
+            "transactionId": "Transaction {id}",
+            "txHint": {
+                "confirmed": "Balances are refreshing from runtime.",
+                "failed": "No balances were changed.",
+                "submitted": "Waiting for chain confirmation.",
+                "submitting": "Check your wallet to sign the transaction."
+            },
+            "txStatus": {
+                "confirmed": "Transaction confirmed",
+                "failed": "Transaction failed",
+                "submitted": "Transaction submitted",
+                "submitting": "Waiting for signature"
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

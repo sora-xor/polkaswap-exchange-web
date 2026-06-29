@@ -38,6 +38,19 @@ export class MstModule<T> {
   private lastPendingTxs: HistoryItem[] = [];
   private pendingTxsSubscription: Subscription | null = null;
 
+  /**
+   * Returns locally known multisig accounts when the wallet keyring has finished loading.
+   */
+  private getMultisigAccounts(): KeyringAddress[] {
+    const keyring = this.root.keyring as { getAddresses?: () => KeyringAddress[] } | undefined;
+
+    if (typeof keyring?.getAddresses !== 'function') {
+      return [];
+    }
+
+    return keyring.getAddresses().filter(({ meta }) => meta.isMultisig);
+  }
+
   getMSTName(): string {
     const addressMST = this.root.accountStorage?.get('MSTAddress') || this.root.account?.pair?.address || '';
     const multisigAccount = this.getMstAccount(addressMST);
@@ -68,12 +81,7 @@ export class MstModule<T> {
    * Get Multisig Account
    */
   public getMstAccount(address: string): KeyringAddress | undefined {
-    const keyring = this.root.keyring; // Access keyring via the getter
-    console.info('we are in getMstAccount');
-    console.info('the keyring', keyring);
-    const multisigAccounts = keyring.getAddresses().filter(({ meta }) => meta.isMultisig);
-    console.info('multisigAccounts', multisigAccounts);
-    console.info('just addresses', keyring.getAddresses());
+    const multisigAccounts = this.getMultisigAccounts();
     const multisigAccount = multisigAccounts.find((account) => {
       const accountAddress = this.root.formatAddress(account.address, false);
       const targetAddress = this.root.formatAddress(address, false);
@@ -456,7 +464,7 @@ export class MstModule<T> {
 
   private async getMultisigInfoByCallHash(callHash: string): Promise<any | null> {
     try {
-      const multisigAccounts = this.root.keyring.getAddresses().filter(({ meta }) => meta.isMultisig);
+      const multisigAccounts = this.getMultisigAccounts();
 
       for (const account of multisigAccounts) {
         const multisigAddress = account.address;

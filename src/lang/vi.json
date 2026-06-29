@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Người lập chỉ mục",
-                "title": "{Sora} Lựa chọn dịch vụ mạng",
-                "useCeres": "Sử dụng Polkaswap Indexer cho các giá trị fiat"
+                "title": "{Sora} Lựa chọn dịch vụ mạng"
             },
-            "indexerBlock": "Khối lập chỉ mục Polkaswap #{block}",
+            "indexerBlock": "Khối {source} #{block}",
             "label": "Dịch vụ thống kê",
             "title": {
                 "available": "thống kê có sẵn",
@@ -883,7 +882,6 @@
         "Pool": "Bể bơi",
         "Rewards": "Phần thưởng",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Thẻ",
         "StakingContainer": "Ký gửi (staking)",
         "Stats": "Thống kê",
         "Swap": "Đổi",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Hoàn thành các nhiệm vụ liên quan đến {title} để nâng cao kỹ năng của bạn",
         "rewardNextLvl": "Phần thưởng cấp độ tiếp theo",
-        "soraCard": "Nộp đơn ngay",
         "title": "Tiến trình điểm của bạn",
         "toEarnPoints": "Để kiếm điểm",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Đang tải thị trường...",
         "markets": {
+            "groupCount": "{count} Thị trường",
+            "groupTotals": "khối lượng: {volume}",
+            "hotSubtitle": "{count} Đang hoạt động Thị trường - khối lượng / Thanh khoản",
+            "hotTitle": "Đang hoạt động Thị trường",
             "search": "Tìm kiếm thị trường",
             "subtitle": "{count} thị trường phù hợp với các bộ lọc hiện tại",
-            "title": "Thị trường"
+            "title": "Thị trường",
+            "trending": "khối lượng"
         },
         "metrics": {
             "closeBlock": "Đóng khối",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "CÓ {yes} / KHÔNG {no}",
+            "loading": "Đang tải thị trường..."
+        },
         "status": {
             "active": "Đang hoạt động",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Mua {outcome} {amount} {symbol} {shares}",
             "claimable": "Có thể yêu cầu",
             "claimableFailed": "Không thể đọc số dư có thể yêu cầu.",
+            "claimFeesReceipt": "Yêu cầu phí của người sáng tạo",
+            "claimMarketReceipt": "Yêu cầu thanh toán của nhà giao dịch",
             "claimStatus": "Trạng thái yêu cầu",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Tài sản thế chấp",
+            "connectForBalances": "Kết nối tài khoản",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Số dư {symbol} không đủ",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Không đủ XOR cho phí mạng",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Không thể làm mới báo giá.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Báo giá đang làm mới...",
             "refreshingQuote": "Báo giá đang làm mới...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Chọn một thị trường đang hoạt động để giao dịch.",
+            "sellReceipt": "Bán {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Chia sẻ",
             "sharesOut": "Chia sẻ ra",
             "sharesToSell": "Shares to sell",
             "slippage": "% trượt giá",
             "takerFee": "Taker fee",
             "title": "Vé giao dịch",
+            "transactionFailed": "Giao dịch thất bại",
+            "transactionId": "ID giao dịch {id}",
+            "txHint": {
+                "confirmed": "Báo giá đang làm mới...",
+                "failed": "Giao dịch thất bại",
+                "submitted": "Giao dịch đã được gửi",
+                "submitting": "Đang chờ xử lý"
+            },
+            "txStatus": {
+                "confirmed": "Giao dịch đã được xác nhận",
+                "failed": "Giao dịch thất bại",
+                "submitted": "Giao dịch đã được gửi",
+                "submitting": "Đang chờ xử lý"
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

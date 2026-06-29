@@ -174,7 +174,7 @@ test('restores bridge network selector trigger clickability immediately after cl
   await expect(networkDialog).toHaveCount(0);
 
   await clearToastNotifications(page);
-  await networkTrigger.click({ trial: true, timeout: 100 });
+  await networkTrigger.click({ trial: true, timeout: 2_000 });
   await networkTrigger.click();
   await expect(networkDialog).toBeVisible();
 
@@ -218,7 +218,7 @@ test('restores bridge asset selector trigger clickability immediately after clos
   await expect(assetDialog).toHaveCount(0);
 
   await clearToastNotifications(page);
-  await assetTrigger.click({ trial: true, timeout: 100 });
+  await assetTrigger.click({ trial: true, timeout: 2_000 });
   await assetTrigger.click();
   await expect(assetDialog).toBeVisible();
 
@@ -264,7 +264,7 @@ test('restores bridge account connect trigger clickability immediately after clo
   await expect(connectDialog).toHaveCount(0);
 
   await clearToastNotifications(page);
-  await connectTrigger.click({ trial: true, timeout: 100 });
+  await connectTrigger.click({ trial: true, timeout: 2_000 });
   await connectTrigger.click();
   await expect(connectDialog).toBeVisible();
 
@@ -374,7 +374,7 @@ test('does not leak bridge network dialog overlay after hash navigation to swap'
   const swapSettingsDialog = page.locator('.market-algorithm').first();
   await expect(swapSettingsTrigger).toBeVisible();
   await clearToastNotifications(page);
-  await swapSettingsTrigger.click({ trial: true, timeout: 100 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 

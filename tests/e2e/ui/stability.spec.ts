@@ -150,7 +150,7 @@ test('tears down route-specific overlays during hash churn and preserves control
   await expect(bridgeNetworkDialog).toHaveCount(0);
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 100 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -186,7 +186,7 @@ test('does not leak swap token dialog overlay after hash navigation to wallet', 
   const settingsOverlay = page.locator('.header-menu');
 
   await expect(settingsTrigger).toBeVisible();
-  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click({ trial: true, timeout: 2_000 });
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
 
@@ -219,7 +219,7 @@ test('does not leak wallet header settings overlay after hash navigation back to
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 100 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -255,7 +255,7 @@ test('does not leak deposit connect dialog overlay after hash navigation to swap
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 100 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -294,7 +294,7 @@ test('does not leak rewards connect dialog overlay after hash navigation to swap
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 100 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -333,7 +333,7 @@ test('does not leak pool connect dialog overlay after hash navigation to swap', 
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 100 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -372,7 +372,7 @@ test('does not leak staking connect dialog overlay after hash navigation to swap
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 100 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 

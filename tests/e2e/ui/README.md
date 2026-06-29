@@ -7,6 +7,8 @@
   - Route-rendering focused runner: `yarn test:e2e:render`.
   - Live route-rendering focused runner: `yarn test:e2e:render:live`.
   - Playwright uses `yarn build --logLevel error` to keep build output compact during test runs.
+  - The preview-server startup timeout defaults to 180 seconds because startup includes the production build; override with `PS_PLAYWRIGHT_WEB_SERVER_TIMEOUT_MS=<ms>` when debugging slower machines.
+  - The preview server snapshots `dist/` into a temp directory before serving so concurrent builds cannot remove files mid-suite; set `PS_IPFS_TEST_SNAPSHOT_DIST=0` only when intentionally serving the mutable local `dist/`.
   - Request-level preview logs are disabled by default; set `PS_IPFS_TEST_LOG_REQUESTS=1` to enable verbose server request logging while debugging.
 
 - Additional smoke runners (CLI-first Playwright scripts):
@@ -21,10 +23,13 @@
   - Wallet matrix (multi-route + signing readiness): `yarn test:e2e:wallet:matrix`
     - Verifies `polkadot-js`, `fearless-wallet`, `subwallet-js`, and `talisman` across `#/swap`, `#/bridge`, `#/burn`, `#/trade/DAI/KUSD`, `#/wallet`, `#/stats`.
     - Includes provider-account checks plus signature-readiness (`signRaw`) checks after connection.
+    - Restores missing unpacked wallet extension fixtures from Chrome Web Store CRX packages before launching Chrome; run `yarn test:e2e:wallet:extensions` to prefetch them explicitly.
+    - Set `WALLET_MATRIX_SKIP_EXTENSION_ENSURE=1` only when debugging with manually managed `.playwright-cli/extensions/unpacked/*` fixtures.
     - Auto-starts the local IPFS preview server when the default local base URL is not already running.
     - Defaults to the local IPFS preview prefix (`/ipfs/polkaswap-e2e/`); override with `WALLET_MATRIX_PREFIX=''` for root-prefix checks.
     - Uses isolated runtime copies of the extension profiles by default; set `WALLET_MATRIX_RUNTIME_COPIES=0` to reuse the source profiles directly.
-    - Prefers the installed Chrome channel for persistent extension automation; override with `WALLET_MATRIX_CHANNEL=chromium` if needed.
+    - Uses Playwright's bundled Chromium channel for persistent extension automation; override with `WALLET_MATRIX_CHANNEL=chrome` only when the installed Chrome can load local unpacked wallet fixtures.
+    - Installs a deterministic in-page provider for each wallet key by default so empty local extension profiles do not block route/account/signing coverage; set `WALLET_MATRIX_DETERMINISTIC_PROVIDER=0` only when debugging real extension profile authorization.
   - Fresh-profile wallet matrix: `yarn test:e2e:wallet:matrix:fresh`
     - Runs the same wallet matrix using fresh copied extension profiles for deterministic reruns.
 
@@ -33,6 +38,16 @@
   - Does **not** install network stubs; validates core shell interactions, swap wallet connect-overlay teardown, authenticated wallet account-settings/account-action overlays with hash-churn teardown, footer node dialog parity (`Escape`/outside/hash/breakpoint/reopen), static footer indexer block rendering with post-click swap clickability, bridge provider/network/SORA-account/sub-account/sub-node hash-churn teardown plus bridge asset/sub-account decoupling with reopen checks and swap clickability against real runtime behavior, and live route-matrix rendering checks (public routes, protected-route redirects, and protected-route render paths with seeded auth state).
   - Uses strict browser console/page-error assertions; only known external infrastructure errors are ignored (`net::ERR_CERT_COMMON_NAME_INVALID`, transient websocket handshake failures such as `ERR_CONNECTION_RESET` + follow-up error events, CoinGecko CORS + related exchange-rate fetch failures) to avoid non-app noise.
   - This spec is skipped unless `PS_E2E_LIVE_NETWORK` is enabled.
+
+- Live signed minimum transfer: `PS_AGENT_SIGNER_E2E=1 PS_AGENT_SIGNER_USE_LOCAL_KEY=1 PS_AGENT_SIGNER_MNEMONIC_FILE=../sora-key.txt PS_AGENT_SIGNER_EXPECTED_ADDRESS=<cn...> PS_AGENT_SIGNER_MAX_FEE_XOR=0.15 yarn test:e2e tests/e2e/ui/agent-trading-signer.spec.ts --grep "local signer live transfer" --workers=1`
+  - Installs a Playwright-only Polkadot extension-compatible signer named `polkaswap-e2e-signer`.
+  - The mnemonic is read in Node memory only; the browser receives signing callbacks, not the mnemonic.
+  - Submits `0.000000000000000001` XOR through the wallet send UI back to the same derived SORA address; override with `PS_AGENT_SIGNER_TRANSFER_RECIPIENT=<cn...>` when needed.
+  - Aborts before signing when the derived address does not match `PS_AGENT_SIGNER_EXPECTED_ADDRESS`, the transfer cannot execute, the fee estimate is unavailable, or the estimated fee exceeds `PS_AGENT_SIGNER_MAX_FEE_XOR`.
+
+- Live Polkamarkt guarded buy: `PS_POLKAMARKT_LIVE=1 PS_POLKAMARKT_MARKET_ID=<id> PS_POLKAMARKT_OUTCOME=YES PS_POLKAMARKT_AMOUNT=<amount> PS_POLKAMARKT_MAX_FEE_XOR=<fee-cap> PS_POLKAMARKT_MAX_COLLATERAL_XOR=<amount-cap> PS_AGENT_SIGNER_MNEMONIC_FILE=../sora-key.txt PS_AGENT_SIGNER_EXPECTED_ADDRESS=<cn...> yarn test:e2e tests/e2e/ui/polkamarkt-live.spec.ts --workers=1`
+  - Skipped by default and intended only for explicit mainnet validation.
+  - Enforces the collateral cap before rendering, parses the ticket network fee and enforces the fee cap before submit, then confirms a finalized `PolkamarktBuy` history item for the requested market/outcome.
 
 - Root-prefix smoke: `yarn test:e2e:root`
   - Runs app/navigation/stability plus bridge-moonpay, wallet/bridge/footer overlay regression suites, and route-rendering matrix checks with `PS_IPFS_TEST_PREFIX=''`.

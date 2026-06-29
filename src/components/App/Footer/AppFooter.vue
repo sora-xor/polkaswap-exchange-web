@@ -140,10 +140,10 @@ const blockNumber = computed(() => settingsStore.blockNumber);
 const indexerType = computed(() => settingsStore.indexerType ?? IndexerType.POLKASWAP);
 const libraryTheme = computed(() => (settingsStore.libraryTheme as Theme | null) ?? Theme.LIGHT);
 
-const fallbackAppConnection = markRaw(new NodesConnection(settingsStorage, markRaw(connection)));
+const defaultAppConnection = markRaw(new NodesConnection(settingsStorage, markRaw(connection)));
 const appConnection = computed<NodesConnection>(() => {
   const connectionInstance = settingsStore.appConnection as NodesConnection | undefined;
-  return connectionInstance ?? fallbackAppConnection;
+  return connectionInstance ?? defaultAppConnection;
 });
 const selectNodeDialogVisibility = computed(() => Boolean(settingsStore.selectNodeDialogVisibility));
 
@@ -151,11 +151,13 @@ const indexersData = computed(
   () => (settingsStore.indexers as Record<IndexerType, IndexerState>) ?? ({} as Record<IndexerType, IndexerState>)
 );
 const indexerEndpoint = computed(() => indexersData.value[indexerType.value]?.endpoint ?? '');
+const sorametricsApiEndpoint = computed(() => settingsStore.sorametricsApiEndpoint ?? '');
 
 const isBrowserOnline = computed(() => settingsStore.isInternetConnectionEnabled);
 const isConnectionStable = computed(() => settingsStore.isInternetConnectionStable);
 const connectionSpeedMb = computed(() => settingsStore.internetConnectionSpeedMb);
 const latestIndexedBlock = ref<Nullable<number>>(null);
+const latestIndexedBlockSource = ref<'polkaswap' | 'sorametrics'>('polkaswap');
 const isIndexerBlockLoading = ref(false);
 let indexerBlockRefreshTimer: Nullable<ReturnType<typeof window.setInterval>> = null;
 let indexerBlockRequestId = 0;
@@ -235,15 +237,8 @@ const indexerStatus = computed(() => {
   return resolveIndexerStatus(indexerType.value, indexersData.value);
 });
 
-const fallbackIndexedBlock = computed(() => {
-  const block = Number(blockNumber.value);
-
-  return Number.isSafeInteger(block) && block > 0 ? block : null;
-});
-const displayedIndexedBlock = computed(() => latestIndexedBlock.value ?? fallbackIndexedBlock.value);
-
 const indexerBlockStatus = computed(() => {
-  if (displayedIndexedBlock.value !== null) {
+  if (latestIndexedBlock.value !== null) {
     return Status.SUCCESS;
   }
 
@@ -260,14 +255,20 @@ const indexerBlockStatus = computed(() => {
 });
 
 const isIndexerBlockInitialLoading = computed(
-  () => isIndexerBlockLoading.value && displayedIndexedBlock.value === null
+  () => isIndexerBlockLoading.value && latestIndexedBlock.value === null
 );
 const latestIndexedBlockFormatted = computed(() => {
-  if (displayedIndexedBlock.value === null) return '-';
-  return new FPNumber(displayedIndexedBlock.value).toLocaleString();
+  if (latestIndexedBlock.value === null) return '-';
+  return new FPNumber(latestIndexedBlock.value).toLocaleString();
 });
+const latestIndexedBlockSourceLabel = computed(() =>
+  latestIndexedBlockSource.value === 'sorametrics' ? 'SoraMetrics' : 'Polkaswap Indexer'
+);
 const indexerBlockText = computed(() =>
-  t('footer.statistics.indexerBlock', { block: latestIndexedBlockFormatted.value })
+  t('footer.statistics.indexerBlock', {
+    block: latestIndexedBlockFormatted.value,
+    source: latestIndexedBlockSourceLabel.value,
+  })
 );
 
 function setSelectNodeDialogVisibility(flag: boolean): void {
@@ -308,10 +309,11 @@ async function refreshLatestIndexedBlock(): Promise<void> {
 
   try {
     const { fetchLatestIndexedBlock } = await loadLatestIndexedBlockModule();
-    const block = await fetchLatestIndexedBlock();
+    const result = await fetchLatestIndexedBlock(sorametricsApiEndpoint.value);
     if (requestId !== indexerBlockRequestId) return;
-    if (block !== null) {
-      latestIndexedBlock.value = block;
+    if (result !== null) {
+      latestIndexedBlock.value = result.block;
+      latestIndexedBlockSource.value = result.source;
     }
   } catch (error) {
     console.warn('[footer] Latest Polkaswap indexer block is unavailable', error);
@@ -322,8 +324,9 @@ async function refreshLatestIndexedBlock(): Promise<void> {
   }
 }
 
-watch([indexerType, indexerEndpoint], () => {
+watch([indexerType, indexerEndpoint, sorametricsApiEndpoint], () => {
   latestIndexedBlock.value = null;
+  latestIndexedBlockSource.value = 'polkaswap';
   void refreshLatestIndexedBlock();
 });
 

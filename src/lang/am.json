@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "መረጃ ጠቋሚ",
-                "title": "{Sora} የአውታረ መረብ አገልግሎት ምርጫ",
-                "useCeres": "ለ fiat እሴቶች የፖልካስዋፕ መረጃ ጠቋሚን ይጠቀሙ"
+                "title": "{Sora} የአውታረ መረብ አገልግሎት ምርጫ"
             },
-            "indexerBlock": "የፖልካስዋፕ መረጃ ጠቋሚ አግድ #{block}",
+            "indexerBlock": "{source} አግድ #{block}",
             "label": "የስታቲስቲክስ አገልግሎቶች",
             "title": {
                 "available": "ስታቲስቲክስ ይገኛል።",
@@ -883,7 +882,6 @@
         "Pool": "ገንዳ",
         "Rewards": "ሽልማቶች",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} ካርድ",
         "StakingContainer": "መቆንጠጥ",
         "Stats": "ስታትስቲክስ",
         "Swap": "መለዋወጥ",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "ክህሎትዎን ለማሳደግ ከ{title} ጋር የተያያዙ ተግባሮችን አጠናቀቅ",
         "rewardNextLvl": "የቀጣይ ደረጃ ሽልማት",
-        "soraCard": "አሁን ያመልኩ",
         "title": "ነጥቦችዎ",
         "toEarnPoints": "ነጥቦች ለማግኘት",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "ገበያዎችን በመጫን ላይ...",
         "markets": {
+            "groupCount": "{count} ገበያዎች",
+            "groupTotals": "ድምጽ: {volume}",
+            "hotSubtitle": "{count} ንቁ ገበያዎች - ድምጽ / ፈሳሽነት",
+            "hotTitle": "ንቁ ገበያዎች",
             "search": "ገበያዎችን ፈልግ",
             "subtitle": "{count} ገበያዎች ከአሁኑ ማጣሪያዎች ጋር ይዛመዳሉ",
-            "title": "ገበያዎች"
+            "title": "ገበያዎች",
+            "trending": "ድምጽ"
         },
         "metrics": {
             "closeBlock": "ብሎክ ዝጋ",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "አዎ {yes} / አይ {no}",
+            "loading": "ገበያዎችን በመጫን ላይ..."
+        },
         "status": {
             "active": "ንቁ",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "ይግዙ {outcome} {amount} {symbol} {shares}",
             "claimable": "ሊጠየቅ የሚችል",
             "claimableFailed": "ይገባኛል የሚሉ ሒሳቦችን ማንበብ አልተቻለም።",
+            "claimFeesReceipt": "የፈጣሪ ክፍያዎችን ይጠይቁ",
+            "claimMarketReceipt": "የይገባኛል ጥያቄ ነጋዴ ክፍያ",
             "claimStatus": "የይገባኛል ጥያቄ ሁኔታ",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "ማስያዣ ወጥቷል።",
+            "connectForBalances": "መለያ አገናኝ",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "በቂ ያልሆነ {symbol} ቀሪ ሂሳብ",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "ለኔትወርክ ክፍያ በቂ ያልሆነ XOR",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "ጥቅስን ማደስ አልተቻለም።",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "የሚያድስ ጥቅስ...",
             "refreshingQuote": "የሚያድስ ጥቅስ...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "ለመገበያየት ንቁ ገበያ ይምረጡ።",
+            "sellReceipt": "መሸጥ {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "ማጋራቶች",
             "sharesOut": "ያጋራል።",
             "sharesToSell": "Shares to sell",
             "slippage": "መንሸራተት %",
             "takerFee": "Taker fee",
             "title": "የንግድ ትኬት",
+            "transactionFailed": "ግብይት አልተሳካም።",
+            "transactionId": "የግብይት መታወቂያ {id}",
+            "txHint": {
+                "confirmed": "የሚያድስ ጥቅስ...",
+                "failed": "ግብይት አልተሳካም።",
+                "submitted": "ግብይት ገብቷል።",
+                "submitting": "በመጠባበቅ ላይ..."
+            },
+            "txStatus": {
+                "confirmed": "ግብይት ተረጋግጧል",
+                "failed": "ግብይት አልተሳካም።",
+                "submitted": "ግብይት ገብቷል።",
+                "submitting": "በመጠባበቅ ላይ..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

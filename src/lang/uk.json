@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Індексатор:",
-                "title": "{Sora} Вибір мережевої послуги",
-                "useCeres": "Використовуйте Polkaswap Indexer для фіатних значень"
+                "title": "{Sora} Вибір мережевої послуги"
             },
-            "indexerBlock": "Блок індексатора Polkaswap #{block}",
+            "indexerBlock": "Блок {source} #{block}",
             "label": "Послуги статистики",
             "title": {
                 "available": "Статистика відсутня.",
@@ -883,7 +882,6 @@
         "Pool": "Пул",
         "Rewards": "Нагороди",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Картка",
         "StakingContainer": "Стейкінг",
         "Stats": "Статистика",
         "Swap": "Обмін",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Виконайте завдання, пов’язані з {title}, щоб підвищити рівень",
         "rewardNextLvl": "Винагорода за наступний рівень",
-        "soraCard": "Подати заявку",
         "title": "Ваші бали",
         "toEarnPoints": "Щоб заробляти бали",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Завантаження ринків...",
         "markets": {
+            "groupCount": "{count} Ринки",
+            "groupTotals": "Обсяг: {volume}",
+            "hotSubtitle": "{count} Активний Ринки - Обсяг / Ліквідність",
+            "hotTitle": "Активний Ринки",
             "search": "Пошукові ринки",
             "subtitle": "{count} ринки відповідають поточним фільтрам",
-            "title": "Ринки"
+            "title": "Ринки",
+            "trending": "Обсяг"
         },
         "metrics": {
             "closeBlock": "Закрити блок",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ТАК {yes} / НІ {no}",
+            "loading": "Завантаження ринків..."
+        },
         "status": {
             "active": "Активний",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "купити {outcome} {amount} {symbol} {shares}",
             "claimable": "Вимагається",
             "claimableFailed": "Неможливо прочитати залишки, на які можна претендувати.",
+            "claimFeesReceipt": "Вимагати комісію творця",
+            "claimMarketReceipt": "Вимагати виплату трейдера",
             "claimStatus": "Статус претензії",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Вихід застави",
+            "connectForBalances": "Підключити БЕЗКОШТОВНИЙ аккаунт",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Недостатній баланс {symbol}",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Недостатньо XOR для плати за мережу",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Не вдалося оновити цитату.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Оновлення цитати...",
             "refreshingQuote": "Оновлення цитати...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Виберіть активний ринок для торгівлі.",
+            "sellReceipt": "Продати {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "акції",
             "sharesOut": "Ділиться",
             "sharesToSell": "Shares to sell",
             "slippage": "Ковзання %",
             "takerFee": "Taker fee",
             "title": "Торговий квиток",
+            "transactionFailed": "Транзакція не вдалася",
+            "transactionId": "ID транзакції {id}",
+            "txHint": {
+                "confirmed": "Оновлення цитати...",
+                "failed": "Транзакція не вдалася",
+                "submitted": "Транзакцію надіслано",
+                "submitting": "Очікується..."
+            },
+            "txStatus": {
+                "confirmed": "Транзакцію підтверджено",
+                "failed": "Транзакція не вдалася",
+                "submitted": "Транзакцію надіслано",
+                "submitting": "Очікується..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Индексатор",
-                "title": "{Sora} Желі қызметін таңдау",
-                "useCeres": "Fiat мәндері үшін Polkaswap Indexer пайдаланыңыз"
+                "title": "{Sora} Желі қызметін таңдау"
             },
-            "indexerBlock": "Polkaswap индекстеу блогы №{block}",
+            "indexerBlock": "{source} блогы №{block}",
             "label": "Статистика қызметтері",
             "title": {
                 "available": "Статистика қол жетімді",
@@ -883,7 +882,6 @@
         "Pool": "Бассейн",
         "Rewards": "Марапаттар",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} картасы",
         "StakingContainer": "Сырғайту",
         "Stats": "Статистика",
         "Swap": "Айырбастау",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Біліктілікті арттыру үшін {title}-қа қатысты тапсырмаларды орындаңыз",
         "rewardNextLvl": "Келесі деңгей марапаты",
-        "soraCard": "Қазір өтініш беріңіз",
         "title": "Сіздің ұпайларыңыз",
         "toEarnPoints": "Ұпай жинау",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Базарлар жүктелуде...",
         "markets": {
+            "groupCount": "{count} Нарықтар",
+            "groupTotals": "Көлемі: {volume}",
+            "hotSubtitle": "{count} Белсенді Нарықтар - Көлемі / Өтімділік",
+            "hotTitle": "Белсенді Нарықтар",
             "search": "Нарықтарды іздеу",
             "subtitle": "{count} нарықтар ағымдағы сүзгілерге сәйкес келеді",
-            "title": "Нарықтар"
+            "title": "Нарықтар",
+            "trending": "Көлемі"
         },
         "metrics": {
             "closeBlock": "Блокты жабу",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ИӘ {yes} / ЖОҚ {no}",
+            "loading": "Базарлар жүктелуде..."
+        },
         "status": {
             "active": "Белсенді",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Сатып алу {outcome} {amount} {symbol} {shares}",
             "claimable": "Талап қоюға болады",
             "claimableFailed": "Шағымды баланстарды оқу мүмкін емес.",
+            "claimFeesReceipt": "Авторлық алымдарды талап ету",
+            "claimMarketReceipt": "Трейдер төлемін талап етіңіз",
             "claimStatus": "Шағым мәртебесі",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Кепіл шығару",
+            "connectForBalances": "Есептік жазбаны қосу",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "{symbol} теңгерім жеткіліксіз",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Желілік төлем үшін XOR жеткіліксіз",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Дәйексөзді жаңарту мүмкін емес.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Дәйексөз жаңартылуда...",
             "refreshingQuote": "Дәйексөз жаңартылуда...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Сауда үшін белсенді нарықты таңдаңыз.",
+            "sellReceipt": "Сату {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Акциялар",
             "sharesOut": "Бөліседі",
             "sharesToSell": "Shares to sell",
             "slippage": "Сырғанау %",
             "takerFee": "Taker fee",
             "title": "Сауда билеті",
+            "transactionFailed": "Мәміле сәтсіз аяқталды",
+            "transactionId": "Транзакция идентификаторы {id}",
+            "txHint": {
+                "confirmed": "Дәйексөз жаңартылуда...",
+                "failed": "Мәміле сәтсіз аяқталды",
+                "submitted": "Мәміле жіберілді",
+                "submitting": "Күтуде"
+            },
+            "txStatus": {
+                "confirmed": "Мәміле расталды",
+                "failed": "Мәміле сәтсіз аяқталды",
+                "submitted": "Мәміле жіберілді",
+                "submitting": "Күтуде"
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

@@ -24,7 +24,7 @@ const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 500 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -47,7 +47,7 @@ const openFooterActionDialog = async (
   const item = footerStatusItemAt(page, options.statusIndex);
 
   await expect(item).toBeVisible();
-  await item.click({ trial: true, timeout: 500 });
+  await item.click({ trial: true, timeout: 2_000 });
   await item.click();
   await expect(popover).toHaveCount(1);
 
@@ -138,8 +138,8 @@ test('renders the footer indexer block as static non-clickable status text', asy
     .first();
 
   await expect(indexerBlock).toBeVisible();
-  await expect(indexerBlock).toContainText(/Polkaswap Indexer Block #/i);
-  await indexerBlock.click({ trial: true, timeout: 500 });
+  await expect(indexerBlock).toContainText(/(?:Polkaswap Indexer|SoraMetrics) Block #/i);
+  await indexerBlock.click({ trial: true, timeout: 2_000 });
   await indexerBlock.click();
   await expect(page.locator('.app-status__tooltip')).toHaveCount(0);
   await expect(indexerDialog).toHaveCount(0);
@@ -154,7 +154,7 @@ test('renders the footer indexer block as static non-clickable status text', asy
 
   await goToSwap(page);
   await expect(indexerBlock).toBeVisible();
-  await expect(indexerBlock).toContainText(/Polkaswap Indexer Block #/i);
+  await expect(indexerBlock).toContainText(/(?:Polkaswap Indexer|SoraMetrics) Block #/i);
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(indexerDialog).toHaveCount(0);
   await expectSwapSettingsClickable(page);

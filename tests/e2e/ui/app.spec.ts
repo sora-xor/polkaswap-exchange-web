@@ -65,19 +65,28 @@ test('redirects the root hash route to the swap page shell', async ({ page }) =>
 
 test('mounts the app shell before a delayed initial swap route chunk resolves', async ({ page }) => {
   const consoleErrors = trackConsole(page);
+  const shellMountTimeoutMs = 10_000;
+  let releaseDelayedRouteChunk = (): void => {};
+  const delayedRouteChunk = new Promise<void>((resolve) => {
+    releaseDelayedRouteChunk = resolve;
+  });
 
   await page.route(/\/assets\/Swap-[^/]+\.js(?:\?.*)?$/, async (route) => {
-    await page.waitForTimeout(8_000);
+    await delayedRouteChunk;
     await route.continue();
   });
 
   await page.goto(`${ipfsEntryUrl}#/`, { waitUntil: 'commit' });
 
-  await expect(page.locator('.header')).toBeVisible({ timeout: 3_000 });
-  await expect(page.locator('.app-menu')).toBeVisible({ timeout: 3_000 });
-  await expect
-    .poll(async () => page.evaluate(() => document.querySelector('#app')?.childElementCount ?? 0))
-    .toBeGreaterThan(0);
+  try {
+    await expect(page.locator('.header')).toBeVisible({ timeout: shellMountTimeoutMs });
+    await expect(page.locator('.app-menu')).toBeVisible({ timeout: shellMountTimeoutMs });
+    await expect
+      .poll(async () => page.evaluate(() => document.querySelector('#app')?.childElementCount ?? 0))
+      .toBeGreaterThan(0);
+  } finally {
+    releaseDelayedRouteChunk();
+  }
 
   await ensureAppLoaded(page);
   await page.waitForFunction(
@@ -95,7 +104,9 @@ test('loads the full app from a direct ipfs index file URL', async ({ page }) =>
   const consoleErrors = trackConsole(page);
 
   await page.goto(`${ipfsBasePath}/index.html`);
-  await page.waitForTimeout(500);
+  await ensureAppLoaded(page);
+  await expect(page.locator('.header')).toBeVisible();
+  await expect(page.locator('.app-menu')).toBeVisible();
 
   const checks = await page.evaluate(() => ({
     isOfflineShell: window.__PS_IPFS_CHECK__ === true,

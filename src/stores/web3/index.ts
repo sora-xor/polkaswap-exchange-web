@@ -36,6 +36,33 @@ type EthersUtilModule = typeof import('@/utils/ethers-util');
 type SubNetworksConnectorModule = typeof import('@/utils/bridge/sub/classes/adapter');
 const ASSET_NOT_REGISTERED_ERROR = 'Asset is not registered';
 
+type EvmProviderDiscoverySubscription = {
+  refCount: number;
+  unsubscribe: VoidFunction;
+};
+
+const evmProviderDiscoverySubscriptions = new WeakMap<object, EvmProviderDiscoverySubscription>();
+
+const releaseEvmProviderDiscoverySubscription = (
+  store: object,
+  subscription: EvmProviderDiscoverySubscription
+): void => {
+  const currentSubscription = evmProviderDiscoverySubscriptions.get(store);
+
+  if (currentSubscription !== subscription) {
+    return;
+  }
+
+  subscription.refCount -= 1;
+
+  if (subscription.refCount > 0) {
+    return;
+  }
+
+  evmProviderDiscoverySubscriptions.delete(store);
+  subscription.unsubscribe();
+};
+
 export type {
   AvailableNetwork,
   EthBridgeContractsAddresses,
@@ -474,18 +501,47 @@ export const useWeb3Store = defineStore('web3-legacy', {
       }
     },
     async subscribeOnEvmProviders(): Promise<VoidFunction | undefined> {
-      return getProvidersList((event) => {
-        if (this.evmProviders.map((provider) => provider.uuid).includes(event.detail.info.uuid)) {
-          return;
-        }
+      const existingSubscription = evmProviderDiscoverySubscriptions.get(this);
 
-        const { info, provider } = event.detail;
-        web3Mutations.addEvmProvider(this, {
-          ...info,
-          installed: true,
-          getProvider: async () => provider,
-        });
-      });
+      if (existingSubscription) {
+        existingSubscription.refCount += 1;
+
+        let released = false;
+
+        return () => {
+          if (released) return;
+
+          released = true;
+          releaseEvmProviderDiscoverySubscription(this, existingSubscription);
+        };
+      }
+
+      const subscription: EvmProviderDiscoverySubscription = {
+        refCount: 1,
+        unsubscribe: getProvidersList((event) => {
+          if (this.evmProviders.some((provider) => provider.uuid === event.detail.info.uuid)) {
+            return;
+          }
+
+          const { info, provider } = event.detail;
+          web3Mutations.addEvmProvider(this, {
+            ...info,
+            installed: true,
+            getProvider: async () => provider,
+          });
+        }),
+      };
+
+      evmProviderDiscoverySubscriptions.set(this, subscription);
+
+      let released = false;
+
+      return () => {
+        if (released) return;
+
+        released = true;
+        releaseEvmProviderDiscoverySubscription(this, subscription);
+      };
     },
     async getSupportedApps(): Promise<void> {
       let supportedApps = {

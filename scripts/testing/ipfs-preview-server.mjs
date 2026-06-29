@@ -5,15 +5,16 @@
  * of the production bundle without relying on an actual IPFS daemon.
  */
 import { createReadStream } from 'node:fs';
-import { access, stat } from 'node:fs/promises';
+import { access, cp, mkdtemp, rm, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizePrefix, parseArgs, shouldServeHealth, toBooleanFlag } from './ipfs-preview-config.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..', '..');
-const distDir = path.join(projectRoot, 'dist');
+const sourceDistDir = path.join(projectRoot, 'dist');
 
 const args = parseArgs(process.argv.slice(2));
 
@@ -21,6 +22,7 @@ const host = args.host ?? process.env.PS_IPFS_TEST_HOST ?? '127.0.0.1';
 const port = Number(args.port ?? process.env.PS_IPFS_TEST_PORT ?? '4173');
 const prefix = normalizePrefix(args.prefix ?? process.env.PS_IPFS_TEST_PREFIX);
 const logRequests = toBooleanFlag(args['log-requests'] ?? process.env.PS_IPFS_TEST_LOG_REQUESTS, false);
+const snapshotDist = toBooleanFlag(args['snapshot-dist'] ?? process.env.PS_IPFS_TEST_SNAPSHOT_DIST, true);
 
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -55,11 +57,26 @@ async function fileExists(candidate) {
   }
 }
 
+async function createDistSnapshot() {
+  const snapshotDir = await mkdtemp(path.join(os.tmpdir(), 'polkaswap-ipfs-preview-'));
+  await cp(sourceDistDir, snapshotDir, { recursive: true, force: true });
+  return snapshotDir;
+}
+
+const sourceIndexPath = path.join(sourceDistDir, 'index.html');
+const hasSourceIndex = await fileExists(sourceIndexPath);
+
+if (!hasSourceIndex) {
+  console.error('[ipfs-preview] dist/index.html not found. Run `yarn build` before starting the server.');
+  process.exit(1);
+}
+
+const distDir = snapshotDist ? await createDistSnapshot() : sourceDistDir;
 const indexPath = enforceDistPath('index.html');
 const hasIndex = await fileExists(indexPath);
 
 if (!hasIndex) {
-  console.error('[ipfs-preview] dist/index.html not found. Run `yarn build` before starting the server.');
+  console.error('[ipfs-preview] snapshot index.html not found.');
   process.exit(1);
 }
 
@@ -175,13 +192,27 @@ const server = createServer(async (req, res) => {
 
 server.listen(port, host, () => {
   console.log(`[ipfs-preview] Serving dist from ${distDir}`);
+  if (snapshotDist) {
+    console.log(`[ipfs-preview] Snapshot source ${sourceDistDir}`);
+  }
   console.log(`[ipfs-preview] Available at http://${host}:${port}${prefix}`);
 });
 
-const shutdown = () =>
-  server.close(() => {
+let shuttingDown = false;
+
+const cleanupSnapshot = async () => {
+  if (!snapshotDist) return;
+  await rm(distDir, { recursive: true, force: true });
+};
+
+const shutdown = () => {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  server.close(async () => {
+    await cleanupSnapshot();
     process.exit(0);
   });
+};
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);

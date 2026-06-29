@@ -493,12 +493,12 @@ export function mergePolkamarktMarkets(
   });
   const indexedRuntimeIds = new Set(indexedMarkets.map(marketRuntimeKey).filter((id): id is string => Boolean(id)));
   const indexedIds = new Set(indexedMarkets.map((market) => market.id));
-  const fallbackMarkets = runtimeMarkets.filter((market) => {
+  const runtimeOnlyMarkets = runtimeMarkets.filter((market) => {
     const runtimeKey = marketRuntimeKey(market);
     return (runtimeKey === undefined || !indexedRuntimeIds.has(runtimeKey)) && !indexedIds.has(market.id);
   });
 
-  return [...enrichedIndexedMarkets, ...fallbackMarkets].sort((left, right) => {
+  return [...enrichedIndexedMarkets, ...runtimeOnlyMarkets].sort((left, right) => {
     if (left.volume !== right.volume) return right.volume - left.volume;
     return (right.chainId ?? -1) - (left.chainId ?? -1);
   });

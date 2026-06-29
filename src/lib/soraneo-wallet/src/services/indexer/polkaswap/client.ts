@@ -9,10 +9,6 @@ import type { ExplorerClient } from '../explorer/base';
 export type { Client, OperationResult, TypedDocumentNode, AnyVariables } from '@urql/core';
 
 const shouldDisableSubscriptionWs = (url: URL): boolean => {
-  if (url.hostname === 'api.polkaswap.network' && url.pathname.startsWith('/sq/')) {
-    return true;
-  }
-
   // The Polkaswap-owned indexer exposes websocket subscriptions, but each
   // subscription currently consumes a Postgres LISTEN session. Price data is
   // already fetched by query, so avoid long-lived browser subscriptions here.

@@ -60,14 +60,41 @@ const appEvmProviders = ref<AppEIPProvider[]>(web3Store.appEvmProviders);
 const recommendedWallets = [PredefinedProvider.Fearless];
 
 let unsubscribeProviders: Nullable<VoidFunction> = null;
+let providersSubscriptionVersion = 0;
+let providersSubscriptionPendingVersion: Nullable<number> = null;
+let isDisposed = false;
+
+const unsubscribeCurrentProviders = (): void => {
+  unsubscribeProviders?.();
+  unsubscribeProviders = null;
+};
 
 const updateProviders = async (nextVisible: boolean) => {
+  if (isDisposed) return;
+
   if (nextVisible) {
-    unsubscribeProviders = await subscribeOnEvmProviders();
-  } else {
-    unsubscribeProviders?.();
-    unsubscribeProviders = null;
+    if (unsubscribeProviders || providersSubscriptionPendingVersion !== null) return;
+
+    const subscriptionVersion = providersSubscriptionVersion;
+    providersSubscriptionPendingVersion = subscriptionVersion;
+    const unsubscribe = await subscribeOnEvmProviders();
+
+    if (providersSubscriptionPendingVersion === subscriptionVersion) {
+      providersSubscriptionPendingVersion = null;
+    }
+
+    if (subscriptionVersion !== providersSubscriptionVersion || !visible.value || unsubscribeProviders) {
+      unsubscribe?.();
+      if (visible.value && !isDisposed) void updateProviders(true);
+      return;
+    }
+
+    unsubscribeProviders = unsubscribe ?? null;
+    return;
   }
+
+  providersSubscriptionVersion += 1;
+  unsubscribeCurrentProviders();
 };
 
 watch(
@@ -86,7 +113,9 @@ watch(
 );
 
 onScopeDispose(() => {
-  unsubscribeProviders?.();
+  isDisposed = true;
+  providersSubscriptionVersion += 1;
+  unsubscribeCurrentProviders();
 });
 
 const wallets = computed<EvmWalletInfo[]>(() =>

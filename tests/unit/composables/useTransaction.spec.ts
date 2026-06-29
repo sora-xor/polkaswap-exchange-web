@@ -35,15 +35,25 @@ vi.mock('@/composables/useTranslation', () => ({
 
 type HistoryEntry = { id: string; startTime: string };
 const historyList = vi.hoisted(() => [] as HistoryEntry[]);
+const apiMock = vi.hoisted(() => ({
+  api: { isReady: Promise.resolve() },
+  historyList,
+  swap: { isALT: false },
+}));
+const connectionMock = vi.hoisted(() => ({
+  endpoint: 'wss://sora.example',
+}));
 const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
 
 vi.mock('@tests/stubs/walletRuntime', () => ({
-  api: {
-    historyList,
-    swap: { isALT: false },
-  },
+  api: apiMock,
   useNotification: () => notificationMock,
   WALLET_CONSTS: {},
+}));
+
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: apiMock,
+  connection: connectionMock,
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/util', async () => {
@@ -87,13 +97,57 @@ describe('useTransaction', () => {
       (api.historyList as Array<{ id: string; startTime: string }>).push({ id: 'tx-1', startTime: time.toString() });
     });
 
-    await withNotifications(handler);
+    const result = await withNotifications(handler);
 
     expect(handler).toHaveBeenCalledTimes(1);
     expect(withAppNotification).toHaveBeenCalledTimes(1);
     expect(beforeTransactionSign).toHaveBeenCalledWith(api);
     expect(addActiveTx).toHaveBeenCalledWith('tx-1');
     expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+    expect(result).toEqual({
+      submitted: true,
+      submittedAt: expect.any(Number),
+      transaction: { id: 'tx-1', startTime: expect.any(String) },
+    });
+  });
+
+  it('returns a submitted timeout result when wallet history never appears', async () => {
+    const { loading, withNotifications } = useTransaction();
+
+    const result = await withNotifications(vi.fn(async () => undefined));
+
+    expect(result).toEqual({
+      submitted: true,
+      submittedAt: expect.any(Number),
+      historyTimedOut: true,
+    });
+    expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+    expect(addActiveTx).not.toHaveBeenCalled();
+    expect(delayMock).toHaveBeenCalled();
+    expect(loading.value).toBe(false);
+  });
+
+  it('returns an unsubmitted result when the wrapped handler fails', async () => {
+    const error = new Error('wallet rejected');
+    withAppNotification.mockImplementationOnce(async (handler: () => Promise<void> | void) => {
+      try {
+        await handler?.();
+      } catch (err) {
+        showAppNotification('wallet rejected', 'error');
+        throw err;
+      }
+    });
+
+    const { withNotifications } = useTransaction();
+    const result = await withNotifications(
+      vi.fn(async () => {
+        throw error;
+      })
+    );
+
+    expect(result).toEqual({ submitted: false, error });
+    expect(showAppNotification).toHaveBeenCalledWith('wallet rejected', 'error');
+    expect(addActiveTx).not.toHaveBeenCalled();
   });
 
   it('shows submitted notification before waiting for wallet history', async () => {

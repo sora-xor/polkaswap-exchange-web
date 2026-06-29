@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Индексатор",
-                "title": "Выбор сервисов {Sora} сети",
-                "useCeres": "Используйте индексатор Polkaswap для фиатных ценностей"
+                "title": "Выбор сервисов {Sora} сети"
             },
-            "indexerBlock": "Блок индексатора Polkaswap №{block}",
+            "indexerBlock": "Блок {source} №{block}",
             "label": "Сервисы статистики",
             "title": {
                 "available": "Статистика доступна",
@@ -883,7 +882,6 @@
         "Pool": "Пул",
         "Rewards": "Награды",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} карта",
         "StakingContainer": "Стейкинг",
         "Stats": "Статистика",
         "Swap": "Обмен",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Выполните задачи, связанные с {title}, чтобы повысить свои навыки",
         "rewardNextLvl": "Награда за следующий уровень",
-        "soraCard": "Подать заявку сейчас",
         "title": "Ваш прогресс в очках",
         "toEarnPoints": "Чтобы заработать очки",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Загрузка рынков...",
         "markets": {
+            "groupCount": "{count} Рынки",
+            "groupTotals": "Объем: {volume}",
+            "hotSubtitle": "{count} Активный Рынки - Объем / Ликвидность",
+            "hotTitle": "Активный Рынки",
             "search": "Поиск рынков",
             "subtitle": "{count} рынков соответствуют текущим фильтрам",
-            "title": "Рынки"
+            "title": "Рынки",
+            "trending": "Объем"
         },
         "metrics": {
             "closeBlock": "Закрыть блок",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ДА {yes} / НЕТ {no}",
+            "loading": "Загрузка рынков..."
+        },
         "status": {
             "active": "Активный",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Купить {outcome} {amount} {symbol} {shares}",
             "claimable": "Заявленный",
             "claimableFailed": "Невозможно прочитать заявленные балансы.",
+            "claimFeesReceipt": "Заявить комиссию создателю",
+            "claimMarketReceipt": "Требовать выплаты трейдеру",
             "claimStatus": "Статус заявки",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Выдача залога",
+            "connectForBalances": "Подключить аккаунт",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Недостаточный баланс {symbol}",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Недостаточно XOR для сетевой платы",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Не удалось обновить цитату.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Свежая цитата...",
             "refreshingQuote": "Свежая цитата...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Выберите активный рынок для торговли.",
+            "sellReceipt": "Продать {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Акции",
             "sharesOut": "Делится",
             "sharesToSell": "Shares to sell",
             "slippage": "Проскальзывание %",
             "takerFee": "Taker fee",
             "title": "Торговый билет",
+            "transactionFailed": "Транзакция не удалась",
+            "transactionId": "ID транзакции {id}",
+            "txHint": {
+                "confirmed": "Свежая цитата...",
+                "failed": "Транзакция не удалась",
+                "submitted": "Транзакция отправлена",
+                "submitting": "В обработке..."
+            },
+            "txStatus": {
+                "confirmed": "Транзакция подтверждена",
+                "failed": "Транзакция не удалась",
+                "submitted": "Транзакция отправлена",
+                "submitting": "В обработке..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

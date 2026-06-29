@@ -2,8 +2,8 @@
   <section class="polkamarkt-list">
     <header class="polkamarkt-list__header">
       <div>
-        <h2>{{ t('polkamarkt.markets.title') }}</h2>
-        <p>{{ t('polkamarkt.markets.subtitle', { count: filteredMarkets.length }) }}</p>
+        <h2>{{ headingLabel }}</h2>
+        <p>{{ subtitleText }}</p>
       </div>
       <s-button type="secondary" size="small" :loading="loading" @click="$emit('refresh')">
         {{ t('connection.action.refresh') }}
@@ -55,24 +55,42 @@
       </s-button>
     </div>
 
-    <div v-else class="polkamarkt-list__items">
-      <button
-        v-for="market in filteredMarkets"
-        :key="market.id"
-        type="button"
-        :class="['market-card', { 'market-card--selected': market.id === selectedId }]"
-        @click="$emit('select', market)"
-      >
-        <span class="market-card__meta">
-          <span>{{ market.category }}</span>
-          <span>{{ marketStatusLabel(market) }}</span>
-        </span>
-        <strong>{{ market.title }}</strong>
-        <span class="market-card__stats">
-          <span>{{ t('polkamarkt.metrics.yesProbability') }} {{ formatProbability(market.probability) }}</span>
-          <span>{{ t('polkamarkt.metrics.liquidity') }} {{ formatUsd(market.liquidity) }}</span>
-        </span>
-      </button>
+    <div v-else class="polkamarkt-list__groups" data-testid="polkamarkt-market-groups">
+      <section v-for="group in groupedMarkets" :key="group.category" class="polkamarkt-market-group">
+        <header class="polkamarkt-market-group__header">
+          <div>
+            <h3>{{ group.category }}</h3>
+            <p>{{ t('polkamarkt.markets.groupTotals', { volume: formatUsd(group.totalVolume) }) }}</p>
+          </div>
+          <span>{{ t('polkamarkt.markets.groupCount', { count: group.markets.length }) }}</span>
+        </header>
+
+        <div class="polkamarkt-market-group__cards">
+          <button
+            v-for="market in group.markets"
+            :key="market.id"
+            type="button"
+            :class="['market-card', { 'market-card--selected': market.id === selectedId }]"
+            @click="$emit('select', market)"
+          >
+            <span class="market-card__meta">
+              <span>{{ market.category }}</span>
+              <span>{{ marketStatusLabel(market) }}</span>
+              <span v-if="market.trending">{{ t('polkamarkt.markets.trending') }}</span>
+            </span>
+            <strong>{{ market.title }}</strong>
+            <market-probability-sparkline
+              :market="market"
+              :points="historyForMarket(market)"
+              :loading="historyLoadingForMarket(market)"
+            />
+            <span class="market-card__stats">
+              <span>{{ t('polkamarkt.metrics.volume') }} {{ formatUsd(market.volume) }}</span>
+              <span>{{ t('polkamarkt.metrics.liquidity') }} {{ formatUsd(market.liquidity) }}</span>
+            </span>
+          </button>
+        </div>
+      </section>
     </div>
   </section>
 </template>
@@ -82,10 +100,18 @@ import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { MARKET_CATEGORIES, type MarketCategory, type MarketStatusFilter } from '../consts';
-import { filterMarkets, getMarketDisplayStatus } from '../lib/markets';
+import { filterMarkets, getMarketDisplayStatus, groupHotMarketsByCategory } from '../lib/markets';
+import MarketProbabilitySparkline from './MarketProbabilitySparkline.vue';
 
-import type { PolkamarktMarket } from '../types';
+import type { MarketHistoryPoint, PolkamarktMarket } from '../types';
 import type { SelectOption } from '@/lib/soramitsu-ui/components/Select/types';
+
+type DisplayMarketGroup = {
+  category: MarketCategory;
+  markets: PolkamarktMarket[];
+  totalLiquidity: number;
+  totalVolume: number;
+};
 
 const props = withDefaults(
   defineProps<{
@@ -98,6 +124,8 @@ const props = withDefaults(
     mineOnly?: boolean;
     currentBlock?: number;
     loading?: boolean;
+    historiesByMarketId?: Record<string, MarketHistoryPoint[]>;
+    historiesLoading?: boolean;
   }>(),
   {
     selectedId: '',
@@ -108,6 +136,8 @@ const props = withDefaults(
     mineOnly: false,
     currentBlock: 0,
     loading: false,
+    historiesByMarketId: () => ({}),
+    historiesLoading: false,
   }
 );
 
@@ -162,12 +192,61 @@ const filteredMarkets = computed(() =>
     currentBlock: props.currentBlock,
   })
 );
+const groupedMarkets = computed<DisplayMarketGroup[]>(() => {
+  if (props.status === 'active') {
+    return groupHotMarketsByCategory(filteredMarkets.value, props.currentBlock);
+  }
+
+  return groupFilteredMarkets(filteredMarkets.value);
+});
 const showClosedMarketShortcut = computed(() => props.status === 'active' && !filteredMarkets.value.length);
 const closedMarketsLabel = computed(() => `${t('polkamarkt.status.closed')} ${t('polkamarkt.markets.title')}`);
+const headingLabel = computed(() =>
+  props.status === 'active' ? t('polkamarkt.markets.hotTitle') : t('polkamarkt.markets.title')
+);
+const subtitleText = computed(() =>
+  props.status === 'active'
+    ? t('polkamarkt.markets.hotSubtitle', { count: filteredMarkets.value.length })
+    : t('polkamarkt.markets.subtitle', { count: filteredMarkets.value.length })
+);
 
 /** Switches the list to closed markets from the compact empty active state. */
 function browseClosedMarkets(): void {
   emit('update:status', 'finalized');
+}
+
+function groupFilteredMarkets(markets: PolkamarktMarket[]): DisplayMarketGroup[] {
+  const groups = new Map<MarketCategory, DisplayMarketGroup>();
+
+  for (const market of markets) {
+    const group =
+      groups.get(market.category) ??
+      ({
+        category: market.category,
+        markets: [],
+        totalLiquidity: 0,
+        totalVolume: 0,
+      } satisfies DisplayMarketGroup);
+
+    group.markets.push(market);
+    group.totalLiquidity += market.liquidity || 0;
+    group.totalVolume += market.volume || 0;
+    groups.set(market.category, group);
+  }
+
+  return [...groups.values()];
+}
+
+function marketHistoryKey(market: PolkamarktMarket): string {
+  return String(market.chainId ?? market.id);
+}
+
+function historyForMarket(market: PolkamarktMarket): MarketHistoryPoint[] {
+  return props.historiesByMarketId[marketHistoryKey(market)] ?? [];
+}
+
+function historyLoadingForMarket(market: PolkamarktMarket): boolean {
+  return Boolean(props.historiesLoading && !historyForMarket(market).length);
 }
 
 function marketStatusLabel(market: PolkamarktMarket): string {
@@ -179,9 +258,6 @@ function marketStatusLabel(market: PolkamarktMarket): string {
 
 const formatUsd = (value: number): string =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0);
-
-const formatProbability = (value?: number): string =>
-  Number.isFinite(value) ? `${value}%` : t('polkamarkt.notIndexed');
 </script>
 
 <style lang="scss" scoped>
@@ -245,10 +321,10 @@ const formatProbability = (value?: number): string =>
     }
   }
 
-  &__items {
-    display: flex;
-    flex-direction: column;
-    gap: $inner-spacing-mini;
+  &__groups {
+    display: grid;
+    gap: $inner-spacing-medium;
+    min-width: 0;
   }
 }
 
@@ -325,11 +401,54 @@ const formatProbability = (value?: number): string =>
   }
 }
 
+.polkamarkt-market-group {
+  display: grid;
+  gap: $inner-spacing-small;
+  min-width: 0;
+
+  &__header {
+    display: flex;
+    gap: $inner-spacing-small;
+    align-items: flex-end;
+    justify-content: space-between;
+    min-width: 0;
+    border-bottom: 1px solid var(--s-color-base-border-secondary);
+    padding-bottom: $inner-spacing-mini;
+
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h3 {
+      font-size: var(--s-heading5-font-size);
+      line-height: var(--s-line-height-medium);
+    }
+
+    p,
+    span {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-small);
+    }
+
+    > span {
+      flex: 0 0 auto;
+    }
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 260px), 1fr)'});
+    gap: $inner-spacing-small;
+    min-width: 0;
+  }
+}
+
 .market-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: $inner-spacing-small;
   width: 100%;
+  min-width: 0;
   border: 1px solid var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-small);
   background: var(--s-color-utility-surface);
@@ -345,8 +464,11 @@ const formatProbability = (value?: number): string =>
   }
 
   strong {
+    display: block;
+    min-width: 0;
     font-size: var(--s-font-size-big);
     line-height: var(--s-line-height-medium);
+    overflow-wrap: anywhere;
   }
 
   &__meta,

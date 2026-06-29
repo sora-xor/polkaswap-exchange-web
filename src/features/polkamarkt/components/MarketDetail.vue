@@ -47,11 +47,18 @@
         </div>
       </div>
 
-      <pricing-curve-position-chart v-if="isDpm" :market="market" />
-
       <div class="market-detail__sections">
-        <section class="market-detail__section">
-          <h3>{{ t('polkamarkt.details.oracle') }}</h3>
+        <details v-if="isDpm" class="market-detail__section">
+          <summary>
+            <h3>{{ t('polkamarkt.curve.title') }}</h3>
+          </summary>
+          <pricing-curve-position-chart :market="market" />
+        </details>
+
+        <details class="market-detail__section">
+          <summary>
+            <h3>{{ t('polkamarkt.details.oracle') }}</h3>
+          </summary>
           <dl class="market-detail__facts">
             <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.oracle') }}</dt>
@@ -80,10 +87,12 @@
               <dd>{{ market.collateralAsset || collateralSymbol }}</dd>
             </div>
           </dl>
-        </section>
+        </details>
 
-        <section v-if="market.earlyResolutionOutcome" class="market-detail__section">
-          <h3>{{ t('polkamarkt.details.earlyResolutionReport') }}</h3>
+        <details v-if="market.earlyResolutionOutcome" class="market-detail__section">
+          <summary>
+            <h3>{{ t('polkamarkt.details.earlyResolutionReport') }}</h3>
+          </summary>
           <dl class="market-detail__facts">
             <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.reportedOutcome') }}</dt>
@@ -120,10 +129,12 @@
               <dd>{{ market.earlyResolutionReporter || t('polkamarkt.notIndexed') }}</dd>
             </div>
           </dl>
-        </section>
+        </details>
 
-        <section class="market-detail__section">
-          <h3>{{ t('polkamarkt.fields.mechanism') }}</h3>
+        <details class="market-detail__section">
+          <summary>
+            <h3>{{ t('polkamarkt.fields.mechanism') }}</h3>
+          </summary>
           <dl class="market-detail__facts">
             <div class="market-detail__fact">
               <dt>{{ t('polkamarkt.fields.mechanism') }}</dt>
@@ -150,7 +161,7 @@
               <dd>{{ t('polkamarkt.details.completeSetBacking') }}</dd>
             </div>
           </dl>
-        </section>
+        </details>
       </div>
     </template>
   </section>
@@ -278,6 +289,33 @@ const formatStateAmount = (value?: number, unit = ''): string =>
     min-width: 0;
     border-top: 1px solid var(--s-color-base-border-secondary);
     padding-top: $inner-spacing-medium;
+
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $inner-spacing-small;
+      min-width: 0;
+      cursor: pointer;
+      list-style: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &::after {
+        content: '+';
+        flex: 0 0 auto;
+        color: var(--s-color-theme-accent);
+        font-size: var(--s-heading5-font-size);
+        font-weight: 700;
+        line-height: 1;
+      }
+    }
+
+    &[open] summary::after {
+      content: '-';
+    }
 
     h3 {
       margin: 0;

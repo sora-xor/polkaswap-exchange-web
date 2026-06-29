@@ -36,6 +36,7 @@ export function initialState(): SettingsState {
         status: ConnectionStatus.Loading,
       },
     },
+    sorametricsApiEndpoint: '',
     isWalletLoaded: false,
     permissions: {
       addAssets: true,

@@ -42,7 +42,7 @@ export function resolveWalletConnectProjectId(apiKeys: WalletApiKeys): string | 
 }
 
 /**
- * Builds NFT.Storage options from marketplace UCAN credentials or fallback API keys.
+ * Builds NFT.Storage options from marketplace UCAN credentials or runtime API keys.
  */
 export function resolveNftStorageOptions(
   apiKeys: WalletApiKeys,

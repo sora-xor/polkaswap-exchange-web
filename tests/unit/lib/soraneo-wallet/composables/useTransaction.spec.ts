@@ -8,10 +8,11 @@ const withAppNotificationMock = vi.hoisted(() => vi.fn(async (handler: () => Pro
 const getOperationMessageMock = vi.hoisted(() => vi.fn(() => 'operation-message'));
 const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
 const api = vi.hoisted(() => ({
+  api: { isReady: Promise.resolve() },
   historyList: [] as Array<{ id: string; startTime: string }>,
 }));
 
-vi.mock('@/api', () => ({
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api,
 }));
 
@@ -114,12 +115,33 @@ describe('useTransaction', () => {
     });
 
     const { withNotifications } = useTransaction();
-    await withNotifications(handler);
+    const result = await withNotifications(handler);
 
     expect(beforeTransactionSign).toHaveBeenCalledWith(api);
     expect(handler).toHaveBeenCalledTimes(1);
     expect(walletStore.addActiveTransaction).toHaveBeenCalledWith('tx-1');
     expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+    expect(result).toEqual({
+      submitted: true,
+      submittedAt: expect.any(Number),
+      transaction: { id: 'tx-1', startTime: expect.any(String) },
+    });
+  });
+
+  it('returns a submitted timeout result when wallet history never appears', async () => {
+    const { loading, withNotifications } = useTransaction();
+
+    const result = await withNotifications(vi.fn(async () => undefined));
+
+    expect(result).toEqual({
+      submitted: true,
+      submittedAt: expect.any(Number),
+      historyTimedOut: true,
+    });
+    expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText', 'info');
+    expect(walletStore.addActiveTransaction).not.toHaveBeenCalled();
+    expect(delayMock).toHaveBeenCalled();
+    expect(loading.value).toBe(false);
   });
 
   it('returns the reactive hidden-balance flag used by wallet send max availability', () => {

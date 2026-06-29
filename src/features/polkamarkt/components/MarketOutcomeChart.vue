@@ -131,7 +131,6 @@
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
-import { marketHistoryFallback } from '../services/marketHistory';
 
 import type { MarketHistoryPoint, PolkamarktMarket, TicketOutcome } from '../types';
 
@@ -209,8 +208,7 @@ const formatPointDate = (point?: MarketHistoryPoint): string => {
 };
 
 const sortedPoints = computed(() => {
-  const points = props.points?.length ? props.points : marketHistoryFallback(props.market);
-  return [...points]
+  return [...(props.points ?? [])]
     .filter((point) => Number.isFinite(point.probability))
     .sort((left, right) => {
       const timestampDiff = (left.timestamp ?? 0) - (right.timestamp ?? 0);

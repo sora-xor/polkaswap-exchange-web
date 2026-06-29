@@ -4,6 +4,7 @@ const apiMock = vi.hoisted(() => ({
   validateAddress: vi.fn(),
   formatAddress: vi.fn(),
   getAccountOnChainIdentity: vi.fn(),
+  connected: true,
 }));
 
 const connectionMock = vi.hoisted(() => ({
@@ -55,6 +56,7 @@ describe('wallet util helpers', () => {
     vi.restoreAllMocks();
     apiMock.validateAddress.mockReturnValue(true);
     apiMock.formatAddress.mockImplementation((address: string, withPrefix = true) => `${address}:${withPrefix}`);
+    apiMock.connected = true;
   });
 
   afterEach(() => {
@@ -73,12 +75,8 @@ describe('wallet util helpers', () => {
       'https://sorametrics.org/sorav2?tab=balance&address=addr%2Fwith%20space'
     );
     expect(getSorametricsBlockLink(123)).toBe('https://sorametrics.org/sorav2?tab=extrinsics&block=123');
-    expect(getSorametricsTransactionLink('0xabc')).toBe(
-      'https://sorametrics.org/sorav2?tab=extrinsics&q=0xabc'
-    );
-    expect(getSorametricsTransactionLink('42-1')).toBe(
-      'https://sorametrics.org/sorav2?tab=extrinsics&q=42-1'
-    );
+    expect(getSorametricsTransactionLink('0xabc')).toBe('https://sorametrics.org/sorav2?tab=extrinsics&q=0xabc');
+    expect(getSorametricsTransactionLink('42-1')).toBe('https://sorametrics.org/sorav2?tab=extrinsics&q=42-1');
   });
 
   it('resolves document readiness immediately when the page is already complete', async () => {
@@ -146,6 +144,16 @@ describe('wallet util helpers', () => {
     apiMock.validateAddress.mockReturnValueOnce(true);
     apiMock.getAccountOnChainIdentity.mockResolvedValueOnce(null);
     await expect(getAccountIdentity('addr')).resolves.toBeNull();
+
+    apiMock.validateAddress.mockReturnValueOnce(true);
+    apiMock.getAccountOnChainIdentity.mockRejectedValueOnce(new Error('identity pallet unavailable'));
+    await expect(getAccountIdentity('addr')).resolves.toBeNull();
+
+    apiMock.validateAddress.mockReturnValueOnce(true);
+    apiMock.getAccountOnChainIdentity.mockClear();
+    apiMock.connected = false;
+    await expect(getAccountIdentity('addr')).resolves.toBeNull();
+    expect(apiMock.getAccountOnChainIdentity).not.toHaveBeenCalled();
   });
 
   it('includes Sorametrics only for production explorer links', () => {

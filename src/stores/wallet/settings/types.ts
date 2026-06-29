@@ -14,6 +14,7 @@ export type SettingsState = {
   isWalletLoaded: boolean;
   indexerType: IndexerType;
   indexers: Record<IndexerType, IndexerState>;
+  sorametricsApiEndpoint: string;
   permissions: WalletPermissions;
   filters: WalletAssetFilters;
   allowFeePopup: boolean;

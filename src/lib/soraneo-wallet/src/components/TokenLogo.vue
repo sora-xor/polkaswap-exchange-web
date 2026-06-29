@@ -8,12 +8,12 @@
 <script lang="ts" setup>
 import { computed, type CSSProperties } from 'vue';
 
-import { api } from '@/api';
 import { LogoSize } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 import type { WhitelistIdsBySymbol } from '@/types/common';
 import { buildCssUrl, sanitizeIconSource } from '@/util/image';
 
+import { api } from '../api';
 import NftTokenLogo from './NftTokenLogo.vue';
 
 import type { AccountAsset, Asset, Whitelist, WhitelistItem } from '@sora-substrate/sdk/build/assets/types';

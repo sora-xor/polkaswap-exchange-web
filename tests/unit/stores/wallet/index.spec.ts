@@ -8,6 +8,7 @@ import { NFTStorage } from 'nft.storage';
 import { AppWallet, SoraNetwork } from '@/lib/soraneo-wallet/src/consts';
 import { NFT_BLACK_LIST_URL, WHITE_LIST_URL } from '@/lib/soraneo-wallet/src/util';
 import { Operation, TransactionStatus } from '@sora-substrate/sdk';
+import { FPNumber } from '@sora-substrate/math';
 import type { WALLET_TYPES } from '@tests/stubs/walletRuntime';
 
 const loginAccountMock = vi.hoisted(() => vi.fn());
@@ -131,7 +132,6 @@ const walletRuntimeBridge = vi.hoisted(() => {
         blacklistArray: [],
         fiatPriceObject: {},
         fiatPriceSubscription: null,
-        ceresFiatValuesUsage: false,
         availableWallets: [],
         addressKeyMapping: {},
         addressPassphraseMapping: {},
@@ -154,6 +154,7 @@ const walletRuntimeBridge = vi.hoisted(() => {
         indexers: {
           polkaswap: { endpoint: '', status: 'available' },
         },
+        sorametricsApiEndpoint: '',
         isWalletLoaded: false,
         permissions: {
           addAssets: true,
@@ -481,9 +482,6 @@ describe('wallet store actions', () => {
           break;
         case 'wallet/account/resetAlertSubscription':
           account.alertSubject = null;
-          break;
-        case 'wallet/account/setCeresFiatValuesUsage':
-          account.ceresFiatValuesUsage = Boolean(payload);
           break;
         case 'wallet/account/setPasswordTimeout':
           account.accountPasswordTimeout = Number(payload);
@@ -2026,6 +2024,38 @@ describe('wallet store actions', () => {
     expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
     expect(walletStore.indexerType).toBe('polkaswap');
     expect(unlockPair).toHaveBeenCalledWith('secret');
+  });
+
+  it('clears fiat prices when the configured indexer price refresh fails', async () => {
+    const walletStore = useWalletStore();
+
+    walletStore.accountState.fiatPriceObject = Object.freeze({ xor: 'old-price' });
+    getFiatPriceObjectMock.mockResolvedValueOnce(null);
+
+    await walletStore.subscribeOnFiatPrice();
+
+    expect(walletStore.fiatPriceObject).toEqual({});
+    expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('uses configured Sorametrics prices when the Polkaswap indexer price refresh fails', async () => {
+    const walletStore = useWalletStore();
+
+    getFiatPriceObjectMock.mockRejectedValueOnce(new Error('502'));
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ data: [{ assetId: 'xor', price: 4.5 }] }),
+    });
+
+    await walletStore.setSorametricsApiEndpoint(' https://sorametrics.test/// ');
+    await walletStore.subscribeOnFiatPrice();
+
+    expect(walletStore.sorametricsApiEndpoint).toBe('https://sorametrics.test');
+    expect(walletStore.fiatPriceObject).toEqual({ xor: new FPNumber('4.5').toCodecString() });
+    expect(fetchMock).toHaveBeenCalledWith('https://sorametrics.test/tokens', {
+      headers: { Accept: 'application/json' },
+    });
+    expect(createFiatPriceSubscriptionMock).toHaveBeenCalledTimes(1);
   });
 
   it('updates local mutation-backed state without a legacy runtime bridge', () => {

@@ -57,6 +57,7 @@ import { fetchActiveAccounts, fetchData } from '@/indexer/queries/network/stats'
 import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
+import { createStatsRange } from '@/features/misc/components/stats/range';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { Nullable } from '@/types/common';
@@ -199,15 +200,13 @@ const updateData = async () => {
       try {
         const { type, count } = filter.value;
         const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
-        const aTime = now - seconds * count;
-        const bTime = aTime - seconds * count;
+        const { from, to, previousFrom, previousTo } = createStatsRange(Date.now(), seconds, count);
 
         const [current, previous, currentActiveAccounts, previousActiveAccounts] = await Promise.all([
-          fetchData(now, aTime, type),
-          fetchData(aTime, bTime, type),
-          fetchActiveAccountsOrZero(now, aTime),
-          fetchActiveAccountsOrZero(aTime, bTime),
+          fetchData(from, to, type),
+          fetchData(previousFrom, previousTo, type),
+          fetchActiveAccountsOrZero(from, to),
+          fetchActiveAccountsOrZero(previousFrom, previousTo),
         ]);
 
         currData.value = Object.freeze(groupData(current, currentActiveAccounts));

@@ -19,7 +19,6 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 
-import { api } from '@/api';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
@@ -27,6 +26,7 @@ import { useWalletStore } from '@/stores/wallet';
 import type { AccountIdentity, PolkadotJsAccount } from '@/types/common';
 import { formatAccountAddress, getAccountIdentity } from '@/util';
 
+import { api } from '../../api';
 import FormattedAddress from '../shared/FormattedAddress.vue';
 
 import AccountCard from './AccountCard.vue';

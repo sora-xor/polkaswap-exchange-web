@@ -334,6 +334,7 @@ describe('SelectToken', () => {
     walletStoreMock.assets = assets;
     walletStoreMock.accountAssets = accountAssets;
     walletStoreMock.whitelist = whitelist;
+    walletStoreMock.pinnedAssets = [];
 
     ({ default: SelectToken } = await import('@/components/shared/SelectAsset/SelectToken.vue'));
     ({ default: STabs } = await import('@/lib/soramitsu-ui/components/Tabs/STabsPanel.vue'));
@@ -452,6 +453,15 @@ describe('SelectToken', () => {
     await nextTick();
 
     expect(getRenderedAssetAddresses(wrapper)).toEqual(['custom-address']);
+  });
+
+  it('keeps pinned assets first after filtering the assets tab', async () => {
+    walletStoreMock.pinnedAssets = ['xor-address'];
+    const wrapper = mountComponent();
+
+    await waitForAssetsListHydration();
+
+    expect(getRenderedAssetAddresses(wrapper).slice(0, 2)).toEqual(['xor-address', 'val-address']);
   });
 
   it('does not render the empty asset list until whitelist-backed assets are ready', async () => {

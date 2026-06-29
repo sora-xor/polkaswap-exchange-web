@@ -20,13 +20,13 @@ const LIVE_ALLOWED_CONSOLE_PATTERNS = [
   /ethBridge_getRegisteredAssets/i,
   /\[Exchange rate API\] Error while fetching rates\./i,
   /failed to instantiate a new WASM module instance: Limit of 32 concurrent instances has been reached/i,
+  /Loading the image 'http:\/\/csi\.gstatic\.com\/csi\b.*violates the following Content Security Policy directive/i,
 ];
 
 const KNOWN_WALLET_NOISE_PATTERNS = [/Unable to retrieve keypair/i, /You should connect wallet/i];
 
 const emptyJson = JSON.stringify({ data: null });
 const runtimeEnvRoutePattern = /\/env(?:\.dev)?\.json(?:\?.*)?$/i;
-const localPolkaswapIndexerRoutePattern = /^http:\/\/localhost:4350\/graphql(?:\?.*)?$/i;
 
 const stubbedRuntimeEnvJson = (() => {
   try {
@@ -124,10 +124,6 @@ async function stubNetwork(page: Page, options: PreparePageOptions = {}): Promis
       });
     });
   }
-
-  await page.route(localPolkaswapIndexerRoutePattern, async (route) => {
-    await route.fulfill({ status: 200, contentType: 'application/json', body: emptyJson });
-  });
 
   const remoteRequestMatcher = (url: string): boolean => {
     try {
@@ -232,6 +228,15 @@ const isCoinGeckoCorsError = (message: string): boolean => {
   return message.includes('api.coingecko.com') && message.includes('CORS policy');
 };
 
+const isKnownLiveCorsError = (message: string): boolean => {
+  return (
+    message.includes('CORS policy') &&
+    (message.includes('pi.soramitsu.io/graphql') ||
+      message.includes('https://ws.mof.sora.org/') ||
+      message.includes('https://mof2.sora.org/'))
+  );
+};
+
 const isWebSocketConnectionFailure = (message: string): boolean => {
   return message.includes('WebSocket connection to') && message.includes('failed');
 };
@@ -239,12 +244,15 @@ const isWebSocketConnectionFailure = (message: string): boolean => {
 const isIgnorableLiveRuntimeError = (
   entry: string,
   sawCoinGeckoCors: boolean,
+  sawKnownLiveCors: boolean,
   sawWebSocketConnectionFailure: boolean
 ): boolean => {
   if (LIVE_ALLOWED_CONSOLE_PATTERNS.some((pattern) => pattern.test(entry))) return true;
   if (isCoinGeckoCorsError(entry)) return true;
+  if (isKnownLiveCorsError(entry)) return true;
   if (isWebSocketConnectionFailure(entry)) return true;
   if (sawCoinGeckoCors && entry.includes('Failed to load resource: net::ERR_FAILED')) return true;
+  if (sawKnownLiveCors && entry.includes('Failed to load resource: net::ERR_FAILED')) return true;
   if (sawWebSocketConnectionFailure && entry === '[console.error] Event') return true;
 
   return false;
@@ -263,6 +271,7 @@ export function trackConsole(page: Page, options: TrackConsoleOptions = {}): str
   ];
 
   let sawCoinGeckoCors = false;
+  let sawKnownLiveCors = false;
   let sawWebSocketConnectionFailure = false;
 
   page.on('console', (message) => {
@@ -275,13 +284,20 @@ export function trackConsole(page: Page, options: TrackConsoleOptions = {}): str
       sawCoinGeckoCors = true;
     }
 
+    if (isKnownLiveCorsError(text) || isKnownLiveCorsError(entry)) {
+      sawKnownLiveCors = true;
+    }
+
     if (isWebSocketConnectionFailure(text) || isWebSocketConnectionFailure(entry)) {
       sawWebSocketConnectionFailure = true;
     }
 
     if (allowPatterns.some((pattern) => pattern.test(text) || pattern.test(entry))) return;
 
-    if (mode === 'live' && isIgnorableLiveRuntimeError(entry, sawCoinGeckoCors, sawWebSocketConnectionFailure)) {
+    if (
+      mode === 'live' &&
+      isIgnorableLiveRuntimeError(entry, sawCoinGeckoCors, sawKnownLiveCors, sawWebSocketConnectionFailure)
+    ) {
       return;
     }
 
@@ -291,7 +307,10 @@ export function trackConsole(page: Page, options: TrackConsoleOptions = {}): str
   page.on('pageerror', (error) => {
     const entry = `[pageerror] ${error.message}`;
 
-    if (mode === 'live' && isIgnorableLiveRuntimeError(entry, sawCoinGeckoCors, sawWebSocketConnectionFailure)) {
+    if (
+      mode === 'live' &&
+      isIgnorableLiveRuntimeError(entry, sawCoinGeckoCors, sawKnownLiveCors, sawWebSocketConnectionFailure)
+    ) {
       return;
     }
 

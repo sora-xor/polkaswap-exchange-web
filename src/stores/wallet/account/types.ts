@@ -44,7 +44,6 @@ export type AccountState = {
   blacklistArray: Readonly<Blacklist>;
   fiatPriceObject: Readonly<FiatPriceObject>;
   fiatPriceSubscription: Nullable<VoidFunction>;
-  ceresFiatValuesUsage: boolean;
   availableWallets: Array<Wallet>;
   addressKeyMapping: AddressKeyMapping;
   addressPassphraseMapping: AddressKeyMapping;

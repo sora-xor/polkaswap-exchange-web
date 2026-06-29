@@ -119,6 +119,29 @@ describe('connection/evm/providers', () => {
     cleanupLate();
   });
 
+  it('does not dispatch duplicate provider requests when discovery is re-entered synchronously', async () => {
+    const dispatchEventSpy = vi.spyOn(window, 'dispatchEvent');
+    const firstSubscriber = vi.fn();
+    const reentrantSubscriber = vi.fn();
+    const providersModule = await import('@/utils/connection/evm/providers');
+    let reentered = false;
+
+    dispatchEventSpy.mockImplementation((event: Event) => {
+      if (event.type === 'eip6963:requestProvider' && !reentered) {
+        reentered = true;
+        providersModule.getProvidersList(reentrantSubscriber)();
+      }
+
+      return true;
+    });
+
+    const cleanup = providersModule.getProvidersList(firstSubscriber);
+
+    expect(getRequestProviderDispatchCount(dispatchEventSpy)).toBe(1);
+
+    cleanup();
+  });
+
   it('uses Firefox extension URLs when provider metadata is loaded under a Firefox user agent', async () => {
     Object.defineProperty(navigator, 'userAgent', {
       configurable: true,

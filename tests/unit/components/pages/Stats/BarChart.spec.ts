@@ -175,7 +175,7 @@ describe('BarChart', () => {
     await nextTick();
     expect(fetchDataMock).toHaveBeenCalledTimes(2);
 
-    settingsStoreMock.state.indexerEndpoint = 'http://localhost:4350/graphql';
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
     await nextTick();
     await nextTick();
 

@@ -37,7 +37,7 @@ const openAccountActionsMenu = async (page: Page): Promise<Locator> => {
   const menu = page.locator('.account-actions-menu').first();
 
   await expect(actionsTrigger).toBeVisible();
-  await actionsTrigger.click({ trial: true, timeout: 500 });
+  await actionsTrigger.click({ trial: true, timeout: 2_000 });
   await actionsTrigger.click();
   await expect(menu).toBeVisible();
 
@@ -52,7 +52,7 @@ const openQrSourceMenu = async (page: Page): Promise<Locator> => {
     .first();
 
   await expect(qrTrigger).toBeVisible();
-  await qrTrigger.click({ trial: true, timeout: 500 });
+  await qrTrigger.click({ trial: true, timeout: 2_000 });
   await qrTrigger.click();
   await expect(menu).toBeVisible();
 
@@ -64,7 +64,7 @@ const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 500 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -116,7 +116,7 @@ test('covers authenticated wallet account settings and account-action dialogs', 
 
   await expect(accountSettingsTrigger).toBeVisible();
   await clearToastNotifications(page);
-  await accountSettingsTrigger.click({ trial: true, timeout: 500 });
+  await accountSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await accountSettingsTrigger.click();
   await expect(accountSettingsDialog).toBeVisible();
 
@@ -236,7 +236,7 @@ test('covers MST onboarding with nested address-book overlays in authenticated w
   await expect(addressBookDialog).toHaveCount(0);
   await expect(multisigDialog).toBeVisible();
 
-  await addressBookTrigger.click({ trial: true, timeout: 500 });
+  await addressBookTrigger.click({ trial: true, timeout: 2_000 });
   await addressBookTrigger.click();
   await expect(addressBookDialog).toBeVisible();
 

@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "ཟུར་ཐོ་བཟོ་མི།",
-                "title": "{Sora} ཡོངས་འབྲེལ་ཞབས་ཏོག་སེལ་འཐུ།",
-                "useCeres": "ཕིཊི་གནས་གོང་ཚུ་གི་དོན་ལུ་ པོལ་ཀསཝཔ་ཟུར་ཐོ་ལག་ལེན་འཐབ།"
+                "title": "{Sora} ཡོངས་འབྲེལ་ཞབས་ཏོག་སེལ་འཐུ།"
             },
-            "indexerBlock": "པོལ་ཀསཝཔ་ཟུར་ཐོ་བཀག་ཆ་ #{block}",
+            "indexerBlock": "{source} བཀག་ཆ་ #{block}",
             "label": "རྩིས་དཔྱད་ཞབས་ཏོག།",
             "title": {
                 "available": "གྲངས་གཞི་ཐོབ་ཡོད།",
@@ -883,7 +882,6 @@
         "Pool": "Pool",
         "Rewards": "བྱ་དགའ།",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} ཤོག་བྱང་།",
         "StakingContainer": "བཙུགས་ནི།",
         "Stats": "རྩིས་དཔྱད།",
         "Swap": "བརྗེ་རེས།",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "ཁྱེད་ཀྱི་ལས་ལམ་ཡར་འཐོན་བཟོ་ནི་ལུ་ {title} འབྲེལ་ལས་ཚུ་མཇུག་བསྡུས་",
         "rewardNextLvl": "རིམ་པ་ཤུལ་མའི་རྙོག་འདུག་",
-        "soraCard": "ད་ལྟོ་ཞུ་འབོད་",
         "title": "ཁྱེད་ཀྱི་སྐུགས་ཚད་",
         "toEarnPoints": "སྐུགས་ཚད་ཐོབ་ནིའི་དོན་ལུ་",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "ཁྲོམ་ཚུ་མངོན་གསལ་འབད་དོ་...",
         "markets": {
+            "groupCount": "{count} ཁྲོམ་ར།",
+            "groupTotals": "སྐད་ཤུགས།: {volume}",
+            "hotSubtitle": "{count} ཤུགས་ལྡན་ཅན། ཁྲོམ་ར། - སྐད་ཤུགས། / དངུལ་འབབ།",
+            "hotTitle": "ཤུགས་ལྡན་ཅན། ཁྲོམ་ར།",
             "search": "ཁྲོམ་ར་འཚོལ།",
             "subtitle": "{count} ཚོང་འབྲེལ་ཚུ་གིས་ ད་ལྟོའི་ཚགས་མ་ཚུ་དང་མཐུན་སྒྲིག་འབདཝ་ཨིན།",
-            "title": "ཁྲོམ་ར།"
+            "title": "ཁྲོམ་ར།",
+            "trending": "སྐད་ཤུགས།"
         },
         "metrics": {
             "closeBlock": "སྡེབ་ཚན་ཁ་བསྡམས།",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ཨིན་ {yes} / NO {no}",
+            "loading": "ཁྲོམ་ཚུ་མངོན་གསལ་འབད་དོ་..."
+        },
         "status": {
             "active": "ཤུགས་ལྡན་ཅན།",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "༠.༠",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "ཉོ། {outcome} {amount} {symbol} {shares}",
             "claimable": "ཐོབ་བརྗོད་འབད་བཏུབ།",
             "claimableFailed": "ཐོབ་བརྗོད་བཀོད་བཏུབ་པའི་ལྷག་ལུས་ཚུ་ལྷག་མ་ཚུགས།",
+            "claimFeesReceipt": "གསར་བསྐྲུན་པའི་འཐུས་ཐོབ་བརྗོད་བཀོད།",
+            "claimMarketReceipt": "ཚོང་པ་སྤྲོད་ལེན་ཐོབ་བརྗོད་བཀོད།",
             "claimStatus": "ཐོབ་བརྗོད་ཀྱི་གནས་ཚད།",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "གཏའ་མ་ཕྱིར་འཐེན།",
+            "connectForBalances": "རྩིས་ཐོ་མཐུད་",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "{symbol} ལྷག་ལུས་མི་འདང་བ།",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "ཡོངས་འབྲེལ་འཐུས་དོན་ལུ་ ཨེགསི་ཨོ་ཨར་ལངམ་མེདཔ།",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "འདྲེན་ཚིག་གསར་བསྐྲུན་འབད་མི་ཚུགས།",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "བསྐྱར་གསོའི་ཚིག་བཅད་...",
             "refreshingQuote": "བསྐྱར་གསོའི་ཚིག་བཅད་...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "ཚོང་འབྲེལ་འཐབ་ནིའི་དོན་ལུ་ ཤུགས་ལྡན་ཚོང་ལམ་ཅིག་སེལ་འཐུ་འབད།",
+            "sellReceipt": "བཙོངས། {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "བགོ་བཤའ།",
             "sharesOut": "བགོ་བཤའ་རྐྱབ་ཡོདཔ།",
             "sharesToSell": "Shares to sell",
             "slippage": "བཤུད་ % .",
             "takerFee": "Taker fee",
             "title": "ཚོང་འབྲེལ་འཛིན་བྱང་།",
+            "transactionFailed": "ཚོང་འབྲེལ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+            "transactionId": "ཚོང་འབྲེལ་ཨའི་ཌི། {id}",
+            "txHint": {
+                "confirmed": "བསྐྱར་གསོའི་ཚིག་བཅད་...",
+                "failed": "ཚོང་འབྲེལ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+                "submitted": "ཚོང་འབྲེལ་ཕུལ་ཡོདཔ།",
+                "submitting": "བསྣར་བཞག་ཡོདཔ..."
+            },
+            "txStatus": {
+                "confirmed": "ཚོང་འབྲེལ་ངེས་དཔྱད་འབད་ཡོདཔ།",
+                "failed": "ཚོང་འབྲེལ་འཐུས་ཤོར་འབྱུང་ཡོདཔ།",
+                "submitted": "ཚོང་འབྲེལ་ཕུལ་ཡོདཔ།",
+                "submitting": "བསྣར་བཞག་ཡོདཔ..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

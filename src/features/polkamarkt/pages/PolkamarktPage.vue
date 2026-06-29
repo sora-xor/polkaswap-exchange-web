@@ -24,7 +24,7 @@
       </div>
     </section>
 
-    <section :class="['polkamarkt__layout', { 'polkamarkt__layout--list-only': !shouldShowMarketWorkspace }]">
+    <section class="polkamarkt__market-discovery">
       <market-list
         v-model:search="search"
         v-model:category="category"
@@ -35,24 +35,26 @@
         :account="accountAddress"
         :current-block="currentBlock"
         :loading="marketsLoading"
+        :histories-by-market-id="cardHistoriesByMarketId"
+        :histories-loading="cardHistoriesLoading"
         @select="selectMarket"
         @refresh="refreshMarkets"
       />
+    </section>
 
-      <div v-if="shouldShowMarketWorkspace" class="polkamarkt__workspace">
-        <market-detail
-          :market="selectedMarket"
-          :history="marketHistory"
-          :history-loading="marketHistoryLoading"
-          :current-block="currentBlock"
-        />
-        <trade-ticket
-          :market="selectedMarket"
-          :account-position="selectedPosition"
-          :current-block="currentBlock"
-          @submitted="handleTransactionSubmitted"
-        />
-      </div>
+    <section v-if="shouldShowMarketWorkspace" class="polkamarkt__workspace">
+      <market-detail
+        :market="selectedMarket"
+        :history="marketHistory"
+        :history-loading="marketHistoryLoading"
+        :current-block="currentBlock"
+      />
+      <trade-ticket
+        :market="selectedMarket"
+        :account-position="selectedPosition"
+        :current-block="currentBlock"
+        @submitted="handleTransactionSubmitted"
+      />
     </section>
 
     <my-positions-panel
@@ -89,7 +91,7 @@ import MarketDetail from '../components/MarketDetail.vue';
 import MarketList from '../components/MarketList.vue';
 import MyPositionsPanel from '../components/MyPositionsPanel.vue';
 import TradeTicket from '../components/TradeTicket.vue';
-import { filterMarkets } from '../lib/markets';
+import { filterMarkets, selectCardHistoryMarkets } from '../lib/markets';
 import { fetchPolkamarktAccountActivity } from '../services/accountActivity';
 import { fetchPolkamarktMarketHistory } from '../services/marketHistory';
 import { fetchPolkamarktMarkets } from '../services/markets';
@@ -118,6 +120,8 @@ const positions = ref<AccountPosition[]>([]);
 const trades = ref<AccountTrade[]>([]);
 const marketHistory = ref<MarketHistoryPoint[]>([]);
 const marketHistoryLoading = ref(false);
+const cardHistoriesByMarketId = ref<Record<string, MarketHistoryPoint[]>>({});
+const cardHistoriesLoading = ref(false);
 const selectedMarketId = ref('');
 const search = ref('');
 const category = ref<MarketCategory | 'all'>('all');
@@ -171,6 +175,8 @@ const selectedMarket = computed(() => {
 });
 const shouldShowMarketWorkspace = computed(() => Boolean(selectedMarket.value));
 const shouldShowAccountActivity = computed(() => shouldShowMarketWorkspace.value || status.value !== 'active');
+const cardHistoryMarkets = computed(() => selectCardHistoryMarkets(markets.value, currentBlock.value));
+const cardHistoryMarketIds = computed(() => cardHistoryMarkets.value.map(marketHistoryKey).join('|'));
 
 const selectedPosition = computed(() => {
   const marketId = selectedMarket.value?.chainId;
@@ -179,6 +185,7 @@ const selectedPosition = computed(() => {
 });
 
 let marketHistoryRequestId = 0;
+let cardHistoryRequestId = 0;
 let refreshedRuntimeMarkets = false;
 
 async function refreshMarkets(): Promise<void> {
@@ -247,6 +254,46 @@ async function refreshMarketHistory(market = selectedMarket.value): Promise<void
   }
 }
 
+async function refreshCardHistories(): Promise<void> {
+  const requestId = ++cardHistoryRequestId;
+  const candidates = cardHistoryMarkets.value;
+
+  if (!candidates.length) {
+    cardHistoriesLoading.value = false;
+    return;
+  }
+
+  const missingCandidates = candidates.filter((market) => !cardHistoriesByMarketId.value[marketHistoryKey(market)]);
+  if (!missingCandidates.length) {
+    cardHistoriesLoading.value = false;
+    return;
+  }
+
+  cardHistoriesLoading.value = true;
+  try {
+    const entries = await Promise.all(
+      missingCandidates.map(
+        async (market) => [marketHistoryKey(market), await fetchPolkamarktMarketHistory(market, 24)] as const
+      )
+    );
+
+    if (requestId === cardHistoryRequestId) {
+      cardHistoriesByMarketId.value = {
+        ...cardHistoriesByMarketId.value,
+        ...Object.fromEntries(entries),
+      };
+    }
+  } finally {
+    if (requestId === cardHistoryRequestId) {
+      cardHistoriesLoading.value = false;
+    }
+  }
+}
+
+function marketHistoryKey(market: PolkamarktMarket): string {
+  return String(market.chainId ?? market.id);
+}
+
 function selectMarket(market: PolkamarktMarket): void {
   const id = String(market.chainId ?? market.id);
   selectedMarketId.value = id;
@@ -284,9 +331,12 @@ watch([isConnected, accountAddress], () => void refreshActivity(), { immediate: 
 
 watch(selectedMarket, (market) => void refreshMarketHistory(market), { immediate: true });
 
+watch(cardHistoryMarketIds, () => void refreshCardHistories(), { immediate: true });
+
 watch(polkaswapIndexerEndpoint, (endpoint, previousEndpoint) => {
   if (!endpoint || endpoint === previousEndpoint) return;
 
+  cardHistoriesByMarketId.value = {};
   void refreshMarkets();
 });
 
@@ -304,11 +354,13 @@ defineExpose({
   markets,
   selectedMarket,
   marketHistory,
+  cardHistoriesByMarketId,
   positions,
   trades,
   refreshMarkets,
   refreshActivity,
   refreshMarketHistory,
+  refreshCardHistories,
 });
 </script>
 
@@ -373,24 +425,13 @@ defineExpose({
     justify-content: flex-end;
   }
 
-  &__layout {
-    display: grid;
-    grid-template-columns: #{'minmax(280px, 320px)'} #{'minmax(0, 1fr)'};
-    gap: $inner-spacing-big;
-    align-items: flex-start;
-
-    @include desktop(true) {
-      grid-template-columns: 1fr;
-    }
-
-    &--list-only {
-      grid-template-columns: #{'minmax(0, 720px)'};
-    }
+  &__market-discovery {
+    min-width: 0;
   }
 
   &__workspace {
     display: grid;
-    grid-template-columns: #{'minmax(0, 1fr)'} #{'minmax(280px, 360px)'};
+    grid-template-columns: #{'minmax(0, 1fr)'} #{'minmax(280px, 380px)'};
     gap: $inner-spacing-big;
     align-items: flex-start;
 

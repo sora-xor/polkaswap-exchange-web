@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "𓉐𓏤",
-                "title": "{Sora} 𓈖𓏏 𓅱𓂋 𓎛𓂋",
-                "useCeres": "𓄿𓎛 𓎛𓂋 𓉐𓏤 𓅱𓂋 𓋴𓏏𓊪 𓂋𓏤𓈖"
+                "title": "{Sora} 𓈖𓏏 𓅱𓂋 𓎛𓂋"
             },
-            "indexerBlock": "𓎛𓂋 𓉐𓏤 𓄿𓎛 #{block}",
+            "indexerBlock": "{source} 𓎛𓂋 #{block}",
             "label": "𓎼𓈖𓎛𓏏 𓋴𓏏𓊪",
             "title": {
                 "available": "𓎼𓈖𓎛𓏏 𓄿𓎛",
@@ -883,7 +882,6 @@
         "Pool": "𓈖𓅱",
         "Rewards": "𓏏𓐍𓋴",
         "Sccp": "𓉐𓏤",
-        "SoraCard": "{Sora} 𓎛𓂋",
         "StakingContainer": "𓏏𓎟𓆑",
         "Stats": "𓎼𓈖𓎛𓏏",
         "Swap": "𓈖𓋴𓏏",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "𓅱𓂋 {title}-𓄿𓎛 𓎛𓂋 𓄿𓎛 𓂋𓏤𓈖 𓅱𓂋 𓂋𓏤𓈖 𓉐𓏤 𓅱𓂋 𓅱𓂋",
         "rewardNextLvl": "𓄿𓎛 𓂋𓏤𓈖 𓏏𓐍𓋴",
-        "soraCard": "𓎛𓂋 𓋴𓏏𓊪",
         "title": "𓅱𓂋 𓅱𓂋",
         "toEarnPoints": "𓅱𓂋 𓋴𓏏𓊪 𓅱𓂋",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "𓎛𓂋 𓄿𓏏 𓉐𓏤...",
         "markets": {
+            "groupCount": "{count} 𓉐𓏤",
+            "groupTotals": "𓎛𓂋: {volume}",
+            "hotSubtitle": "{count} 𓋴𓏏𓊪 𓉐𓏤 - 𓎛𓂋 / 𓈖𓅱𓇋",
+            "hotTitle": "𓋴𓏏𓊪 𓉐𓏤",
             "search": "𓋴𓈖𓈖 𓉐𓏤",
             "subtitle": "{count} 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓅱𓂋",
-            "title": "𓉐𓏤"
+            "title": "𓉐𓏤",
+            "trending": "𓎛𓂋"
         },
         "metrics": {
             "closeBlock": "𓈎𓏏 𓄿𓎛",
@@ -1590,6 +1592,10 @@
             "tradeLink": "𓋴𓏏𓊪 𓋴𓏏𓊪",
             "x": "𓂋𓏤𓈖"
         },
+        "sparkline": {
+            "ariaLabel": "𓉐𓏤 {yes} / 𓅱𓂋 {no}",
+            "loading": "𓎛𓂋 𓄿𓏏 𓉐𓏤..."
+        },
         "status": {
             "active": "𓋴𓏏𓊪",
             "closed": "𓎛𓂋",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "𓂋𓏤𓈖 𓈖𓂝",
+            "buyReceipt": "𓎛𓂋 {outcome} {amount} {symbol}. 𓂋𓏤𓈖 {shares}.",
             "claimable": "𓋴𓏏𓊪",
             "claimableFailed": "𓉐𓏤 𓅱𓂋 𓎛𓂋 𓋴𓏏𓊪 𓉐𓏤.",
+            "claimFeesReceipt": "𓋴𓏏𓊪 𓎛𓈖",
+            "claimMarketReceipt": "𓋴𓏏𓊪 𓅱𓂋",
             "claimStatus": "𓋴𓏏𓏭 𓂋𓏤𓈖",
             "collateralIn": "𓉐𓏤 𓄿𓎛 ({symbol})",
             "collateralOut": "𓉐𓏤 𓋴𓏏𓊪",
+            "connectForBalances": "𓋴𓂋 𓂋𓏤𓈖 𓋴𓏏𓊪",
             "dpmSubtitle": "𓎛𓂋 𓅱𓂋 𓂋𓏤𓈖 𓉐𓏤 𓉐𓏤 𓅱𓂋 𓅱𓂋 𓄿𓎛 𓉐𓏤 𓄿𓎛 𓄿𓎛 𓄿𓎛 𓈖𓂝 𓉐𓏤.",
             "earlyReportAlreadyExists": "𓉐𓏤 𓂋𓏤𓈖 𓎛𓂋 𓅱𓂋",
             "earlyReportFeeFailed": "𓉐𓏤 𓅱𓂋 𓂋𓏤𓈖 𓉐𓏤 𓎛𓂋 𓎛𓈖.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "𓄿𓎛 𓋴𓏏𓊪",
             "evidenceUri": "𓄿𓎛 𓂋𓏤𓈖",
             "impliedProbabilityShort": "𓋴𓏏𓊪 {value}",
+            "indexedPosition": "𓂋𓏤𓈖: 𓅱𓂋 𓉐𓏤 {yes} / 𓅱𓂋 𓅱𓂋 {no}",
             "insufficientKusd": "𓄿𓎛 {symbol} 𓎛𓂋",
             "insufficientShares": "𓄿𓎛 𓂋𓏤𓈖",
             "insufficientXor": "𓄿𓎛 𓅱𓂋 𓅱𓂋 𓈖𓏏 𓎛𓈖",
@@ -1619,15 +1631,32 @@
             "orderShares": "𓂋𓏤𓈖",
             "quoteFailed": "𓉐𓏤 𓅱𓂋 𓅱𓂋 𓋴𓏏𓊪.",
             "quoteUnavailable": "𓋴𓏏𓊪 𓂋𓏤𓈖",
+            "refreshingBalances": "𓂋𓏤𓈖 𓋴𓏏𓊪...",
             "refreshingQuote": "𓉐𓏤 𓋴𓏏𓊪...",
             "reportBond": "𓎛𓂋 𓉐𓏤",
+            "reportReceipt": "𓂋𓏤𓈖 {outcome} 𓎛𓂋.",
             "selectMarket": "𓋴𓐍 𓄿𓎛 𓋴𓏏𓊪 𓈖𓂝 𓅱𓂋 𓋴𓏏𓊪.",
+            "sellReceipt": "𓅱𓂋 {shares} {outcome} 𓂋𓏤𓈖. 𓉐𓏤 {amount} {symbol}.",
             "sharesAmount": "𓂋𓏤𓈖",
             "sharesOut": "𓂋𓏤𓈖 𓋴𓏏𓊪",
             "sharesToSell": "𓂋𓏤𓈖 𓅱𓂋 𓂋𓏤𓈖",
             "slippage": "𓅓𓈖𓂋 %",
             "takerFee": "𓅱𓂋 𓎛𓈖",
             "title": "𓋴𓏏𓊪 𓎛𓂋",
+            "transactionFailed": "𓈖𓂧𓂋 𓎛𓂋.",
+            "transactionId": "𓈖𓂧𓂋 {id}",
+            "txHint": {
+                "confirmed": "𓂋𓏤𓈖 𓋴𓏏𓊪.",
+                "failed": "𓂋𓏤𓈖 𓈖𓂝.",
+                "submitted": "𓈖𓂧𓂋 𓅱𓂋.",
+                "submitting": "𓋴𓂋 𓈖𓂧𓂋."
+            },
+            "txStatus": {
+                "confirmed": "𓈖𓂧𓂋 𓋴𓏏𓊪",
+                "failed": "𓈖𓂧𓂋 𓎛𓂋",
+                "submitted": "𓈖𓂧𓂋 𓅱𓂋",
+                "submitting": "𓋴𓏏𓊪 𓅱𓂋"
+            },
             "walletNo": "𓅱𓂋 𓅱𓂋",
             "walletYes": "𓅱𓂋 𓉐𓏤"
         },

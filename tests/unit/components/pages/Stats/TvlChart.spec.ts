@@ -199,6 +199,29 @@ describe('TvlChart', () => {
     expect(wrapper.find('.price-change-stub').exists()).toBe(true);
   });
 
+  it('requests TVL through the current second so the latest indexer bucket is included', async () => {
+    const dateNowSpy = vi.spyOn(Date, 'now').mockReturnValue(1_782_755_207_999);
+    fetchDataMock.mockResolvedValueOnce([]);
+
+    try {
+      mount(TvlChart, {
+        global: {
+          stubs: {
+            VChart: true,
+            'v-chart': true,
+          },
+        },
+      });
+
+      await nextTick();
+      await nextTick();
+
+      expect(fetchDataMock).toHaveBeenCalledWith(1_782_755_207, 1_782_668_807, 'day');
+    } finally {
+      dateNowSpy.mockRestore();
+    }
+  });
+
   it('refreshes unresolved TVL data when the indexer endpoint becomes available', async () => {
     fetchDataMock.mockResolvedValue([]);
 
@@ -215,7 +238,7 @@ describe('TvlChart', () => {
     await nextTick();
     expect(fetchDataMock).toHaveBeenCalledTimes(1);
 
-    settingsStoreMock.state.indexerEndpoint = 'http://localhost:4350/graphql';
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
     await nextTick();
     await nextTick();
 

@@ -44,6 +44,7 @@ import { fetchData } from '@/indexer/queries/network/volume';
 import VChart from '@/lib/echarts/component';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
+import { createStatsRange } from '@/features/misc/components/stats/range';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { Nullable } from '@/types/common';
@@ -195,16 +196,14 @@ const updateData = async () => {
       try {
         const { type, count } = filter.value;
         const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
-        const aTime = now - seconds * count;
-        const bTime = aTime - seconds * count;
+        const { from, to, previousFrom, previousTo } = createStatsRange(Date.now(), seconds, count);
 
         const [curr, prev] = await Promise.all([
-          fetchData(props.fees, now, aTime, type),
-          fetchData(props.fees, aTime, bTime, type),
+          fetchData(props.fees, from, to, type),
+          fetchData(props.fees, previousFrom, previousTo, type),
         ]);
 
-        data.value = Object.freeze(normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000));
+        data.value = Object.freeze(normalizeData(curr, seconds * 1000, from * 1000, to * 1000));
         prevData.value = Object.freeze(prev);
 
         isFetchingError.value = false;

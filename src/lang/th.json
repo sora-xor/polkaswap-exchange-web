@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "ผู้ทำดัชนี",
-                "title": "{Sora} การเลือกบริการเครือข่าย",
-                "useCeres": "ใช้ Polkaswap Indexer สำหรับค่าคำสั่ง"
+                "title": "{Sora} การเลือกบริการเครือข่าย"
             },
-            "indexerBlock": "บล็อกดัชนี Polkaswap #{block}",
+            "indexerBlock": "บล็อก {source} #{block}",
             "label": "บริการสถิติ",
             "title": {
                 "available": "สถิติที่มีอยู่",
@@ -883,7 +882,6 @@
         "Pool": "สระน้ำ",
         "Rewards": "รางวัล",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} การ์ด",
         "StakingContainer": "การปักหลัก",
         "Stats": "สถิติ",
         "Swap": "แลกเปลี่ยน",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "ทำภารกิจที่เกี่ยวข้องกับ {title} ให้สำเร็จเพื่อยกระดับทักษะของคุณ",
         "rewardNextLvl": "รางวัลระดับถัดไป",
-        "soraCard": "สมัครเลย",
         "title": "คะแนนของคุณ",
         "toEarnPoints": "เพื่อรับคะแนน",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "กำลังโหลดตลาด...",
         "markets": {
+            "groupCount": "{count} ตลาด",
+            "groupTotals": "ปริมาณ: {volume}",
+            "hotSubtitle": "{count} ใช้งานอยู่ ตลาด - ปริมาณ / สภาพคล่อง",
+            "hotTitle": "ใช้งานอยู่ ตลาด",
             "search": "ค้นหาตลาด",
             "subtitle": "{count} ตลาดตรงกับตัวกรองปัจจุบัน",
-            "title": "ตลาด"
+            "title": "ตลาด",
+            "trending": "ปริมาณ"
         },
         "metrics": {
             "closeBlock": "ปิดบล็อก",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ใช่ {yes} / ไม่ {no}",
+            "loading": "กำลังโหลดตลาด..."
+        },
         "status": {
             "active": "ใช้งานอยู่",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "ซื้อ {outcome} {amount} {symbol} {shares}",
             "claimable": "เรียกร้องได้",
             "claimableFailed": "ไม่สามารถอ่านยอดคงเหลือที่ขอรับสิทธิ์ได้",
+            "claimFeesReceipt": "เรียกร้องค่าธรรมเนียมผู้สร้าง",
+            "claimMarketReceipt": "เรียกร้องการจ่ายเงินของเทรดเดอร์",
             "claimStatus": "สถานะการเรียกร้อง",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "หลักประกันออก",
+            "connectForBalances": "เชื่อมต่อบัญชี",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "ยอดคงเหลือ {symbol} ไม่เพียงพอ",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR ไม่เพียงพอสำหรับค่าธรรมเนียมเครือข่าย",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "ไม่สามารถรีเฟรชใบเสนอราคาได้",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "คำคมสดชื่น...",
             "refreshingQuote": "คำคมสดชื่น...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "เลือกตลาดที่มีการซื้อขายเพื่อซื้อขาย",
+            "sellReceipt": "ขาย {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "หุ้น",
             "sharesOut": "หุ้นออก",
             "sharesToSell": "Shares to sell",
             "slippage": "สลิปเพจ %",
             "takerFee": "Taker fee",
             "title": "ตั๋วการค้า",
+            "transactionFailed": "การทำธุรกรรมล้มเหลว",
+            "transactionId": "รหัสธุรกรรม {id}",
+            "txHint": {
+                "confirmed": "คำคมสดชื่น...",
+                "failed": "การทำธุรกรรมล้มเหลว",
+                "submitted": "มีการส่งธุรกรรม",
+                "submitting": "รอดำเนินการ..."
+            },
+            "txStatus": {
+                "confirmed": "ได้รับการยืนยันการทำธุรกรรม",
+                "failed": "การทำธุรกรรมล้มเหลว",
+                "submitted": "มีการส่งธุรกรรม",
+                "submitting": "รอดำเนินการ..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

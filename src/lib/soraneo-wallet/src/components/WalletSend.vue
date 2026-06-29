@@ -412,6 +412,30 @@ export default {
       assetBalanceSubscription.value = null;
     };
 
+    const waitForWalletApiReady = async (): Promise<boolean> => {
+      for (let attempt = 0; attempt < 80; attempt += 1) {
+        try {
+          await api.api.isReady;
+          return true;
+        } catch {
+          await delay(250);
+        }
+      }
+
+      return false;
+    };
+
+    const subscribeToRouteAssetBalance = async (): Promise<void> => {
+      if (!(await waitForWalletApiReady()) || !assetParams.value || accountAsset.value) {
+        return;
+      }
+
+      resetAssetBalanceSubscription();
+      assetBalanceSubscription.value = api.assets.getAssetBalanceObservable(assetParams.value).subscribe((balance) => {
+        assetBalance.value = balance;
+      });
+    };
+
     const fetchNetworkFee = async (): Promise<void> => {
       const percent = +vestingPercentage.value;
 
@@ -530,11 +554,9 @@ export default {
 
       if (!accountAsset.value) {
         resetAssetBalanceSubscription();
-        assetBalanceSubscription.value = api.assets
-          .getAssetBalanceObservable(assetParams.value)
-          .subscribe((balance) => {
-            assetBalance.value = balance;
-          });
+        assetBalance.value = (assetParams.value as AccountAsset).balance ?? null;
+
+        void subscribeToRouteAssetBalance();
       }
 
       fee.value = getFPNumberFromCodec(networkFees.value.Transfer);

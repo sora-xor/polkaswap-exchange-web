@@ -35,7 +35,6 @@ export function initialState(): AccountState {
     blacklistArray: [],
     fiatPriceObject: {},
     fiatPriceSubscription: null,
-    ceresFiatValuesUsage: false,
     availableWallets: [],
     isDesktop: isElectron(),
     addressKeyMapping: {},

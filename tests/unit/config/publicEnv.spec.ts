@@ -34,6 +34,15 @@ describe('public env config', () => {
     expect(getCspDirectiveValues(csp, 'frame-src')).toContain('https://content.googleapis.com');
   });
 
+  it('allows browser wallet extension page bridges through the static CSP', async () => {
+    const html = await readFile(path.resolve(process.cwd(), 'index.html'), 'utf8');
+    const csp = html.match(/http-equiv="Content-Security-Policy"\s+content="([^"]+)"/)?.[1] ?? '';
+    const scriptSources = getCspDirectiveValues(csp, 'script-src');
+
+    expect(scriptSources).toContain('chrome-extension:');
+    expect(scriptSources).toContain('moz-extension:');
+  });
+
   it('renders the branded bootstrap loader before Vue mounts', async () => {
     const html = await readFile(path.resolve(process.cwd(), 'index.html'), 'utf8');
 
@@ -84,9 +93,10 @@ describe('public env config', () => {
 
   it('keeps the production env pointed at the hosted Polkaswap indexer', async () => {
     const raw = await readFile(path.resolve(process.cwd(), 'public/env.json'), 'utf8');
-    const parsed = JSON.parse(raw) as { POLKASWAP_INDEXER_ENDPOINT?: string };
+    const parsed = JSON.parse(raw) as { POLKASWAP_INDEXER_ENDPOINT?: string; SORAMETRICS_API_ENDPOINT?: string };
 
     expect(parsed.POLKASWAP_INDEXER_ENDPOINT).toBe('https://pi.soramitsu.io/graphql');
+    expect(parsed.SORAMETRICS_API_ENDPOINT).toBe('https://sorametrics.org');
   });
 
   it('keeps the task-based point system enabled in production envs', async () => {
@@ -97,6 +107,17 @@ describe('public env config', () => {
       const parsed = JSON.parse(raw) as { FEATURE_FLAGS?: { pointSystemV2?: boolean } };
 
       expect(parsed.FEATURE_FLAGS?.pointSystemV2).toBe(true);
+    }
+  });
+
+  it('does not expose the retired Sora Card feature flag in shipped envs', async () => {
+    const envPaths = ['public/env.json', 'public/env.dev.json', 'public/env.taira.json', 'env.json'];
+
+    for (const envPath of envPaths) {
+      const raw = await readFile(path.resolve(process.cwd(), envPath), 'utf8');
+      const parsed = JSON.parse(raw) as { FEATURE_FLAGS?: Record<string, unknown> };
+
+      expect(parsed.FEATURE_FLAGS).not.toHaveProperty('soraCard');
     }
   });
 });

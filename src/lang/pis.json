@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "wakaot",
-                "title": "{Sora} netwok luksavve raonem",
-                "useCeres": "gohed raonem wakaot luksavve falom stakaon"
+                "title": "{Sora} netwok luksavve raonem"
             },
-            "indexerBlock": "raonem wakaot gohed #{block}",
+            "indexerBlock": "{source} gohed #{block}",
             "label": "namba falom",
             "title": {
                 "available": "namba gohed",
@@ -883,7 +882,6 @@
         "Pool": "pul",
         "Rewards": "Praes",
         "Sccp": "wakaot",
-        "SoraCard": "{Sora} raonem",
         "StakingContainer": "Putim olketa token",
         "Stats": "Namba anitok",
         "Swap": "Senis",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "luksavve {title}-gohed raonem gohed stakaon luksavve stakaon wakaot luksavve luksavve",
         "rewardNextLvl": "gohed stakaon praes",
-        "soraCard": "raonem falom",
         "title": "luksavve luksavve",
         "toEarnPoints": "luksavve falom luksavve",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "weit wakaot...",
         "markets": {
+            "groupCount": "{count} wakaot",
+            "groupTotals": "raonem: {volume}",
+            "hotSubtitle": "{count} falom wakaot - raonem / likwiditi",
+            "hotTitle": "falom wakaot",
             "search": "faenem wakaot",
             "subtitle": "{count} wakaot gohed gohed gohed luksavve",
-            "title": "wakaot"
+            "title": "wakaot",
+            "trending": "raonem"
         },
         "metrics": {
             "closeBlock": "klos gohed",
@@ -1590,6 +1592,10 @@
             "tradeLink": "falom falom",
             "x": "stakaon"
         },
+        "sparkline": {
+            "ariaLabel": "wakaot {yes} / luksavve {no}",
+            "loading": "weit wakaot..."
+        },
         "status": {
             "active": "falom",
             "closed": "raonem",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "gohed stakaon",
+            "buyReceipt": "raonem {outcome} {amount} {symbol} {shares}",
             "claimable": "falom",
             "claimableFailed": "wakaot luksavve raonem falom wakaot.",
+            "claimFeesReceipt": "tekem stakaon wakaot",
+            "claimMarketReceipt": "tekem falom raonem",
             "claimStatus": "tekem stakaon",
             "collateralIn": "wakaot gohed ({symbol})",
             "collateralOut": "wakaot falom",
+            "connectForBalances": "Konekem akaon",
             "dpmSubtitle": "raonem luksavve stakaon wakaot wakaot luksavve luksavve gohed wakaot gohed gohed gohed maket wakaot.",
             "earlyReportAlreadyExists": "wakaot stakaon raonem luksavve",
             "earlyReportFeeFailed": "wakaot luksavve stakaon wakaot raonem fi.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "gohed falom",
             "evidenceUri": "gohed stakaon",
             "impliedProbabilityShort": "falom {value}",
+            "indexedPosition": "falom falom {yes} / {no}",
             "insufficientKusd": "gohed {symbol} balans",
             "insufficientShares": "gohed stakaon",
             "insufficientXor": "gohed luksavve luksavve netwok fi",
@@ -1619,15 +1631,32 @@
             "orderShares": "stakaon",
             "quoteFailed": "wakaot luksavve luksavve falom.",
             "quoteUnavailable": "falom stakaon",
+            "refreshingBalances": "wakaot falom...",
             "refreshingQuote": "wakaot falom...",
             "reportBond": "raonem wakaot",
+            "reportReceipt": "raonem wakaot stakaon {outcome}",
             "selectMarket": "jusum gohed falom maket luksavve falom.",
+            "sellReceipt": "stakaon {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "stakaon",
             "sharesOut": "stakaon falom",
             "sharesToSell": "stakaon luksavve stakaon",
             "slippage": "slipis %",
             "takerFee": "luksavve fi",
             "title": "falom raonem",
+            "transactionFailed": "transaksen wakaot",
+            "transactionId": "transaksen wakaot {id}",
+            "txHint": {
+                "confirmed": "wakaot falom...",
+                "failed": "transaksen wakaot",
+                "submitted": "transaksen wakaot luksavve",
+                "submitting": "luksavve..."
+            },
+            "txStatus": {
+                "confirmed": "transaksen luksavve",
+                "failed": "transaksen wakaot",
+                "submitted": "transaksen wakaot luksavve",
+                "submitting": "luksavve..."
+            },
             "walletNo": "luksavve luksavve",
             "walletYes": "luksavve wakaot"
         },

@@ -332,11 +332,6 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.Stats,
     href: '#/stats',
   },
-  // {
-  //   icon: 'music-eject-24',
-  //   title: PageNames.SoraCard,
-  //   href: '/#/card',
-  // },
   {
     icon: SidebarIcon.AssetOwner,
     title: PageNames.AssetOwnerContainer,

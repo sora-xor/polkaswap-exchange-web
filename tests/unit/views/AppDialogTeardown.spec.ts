@@ -61,6 +61,7 @@ const createStoreMocks = () => {
       settings: {
         setSoraNetwork: vi.fn(),
         setIndexerEndpoint: vi.fn(),
+        setSorametricsApiEndpoint: vi.fn(),
       },
       transactions: {
         setSignTxDialogVisibility: vi.fn(),
@@ -371,6 +372,7 @@ vi.mock('@/stores/wallet', () => {
         },
         setSoraNetwork: root.commit.wallet.settings.setSoraNetwork,
         setIndexerEndpoint: root.commit.wallet.settings.setIndexerEndpoint,
+        setSorametricsApiEndpoint: root.commit.wallet.settings.setSorametricsApiEndpoint,
         setSignTxDialogVisibility: root.commit.wallet.transactions.setSignTxDialogVisibility,
         setApiKeys,
         subscribeOnExchangeRatesApi,

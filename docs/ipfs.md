@@ -4,7 +4,7 @@ This guide documents how to prepare Polkaswap for an IPFS release, publish the b
 
 ## 1. Prerequisites
 
-- Node.js 24 (see `.nvmrc`) and Yarn 4.x.
+- Node.js 26 (see `.nvmrc`) and Yarn 4.x.
 - The `ipfs` CLI installed and available on your `$PATH`. Follow the [IPFS command-line quick start](https://docs.ipfs.tech/how-to/command-line-quick-start/).
 - Local access to the vendored workspace sources committed in this repository (for example `src/lib/soramitsu-ui` and `src/lib/soraneo-wallet`).
 - Production/testnet environment configs under `public/env.json` and `public/env.dev.json`.
@@ -107,13 +107,16 @@ that replaces Filebase's restrictive CSP:
 - Description: `SetPolkaswapCSP`
 - Action: `Cache Origin Set Response Header`, with header name
   `Content-Security-Policy`
-- Header value: `default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data: https:; worker-src 'self' blob:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self';`
+- Header value: `default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' chrome-extension: moz-extension: https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data: https:; worker-src 'self' blob:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self';`
 - Condition: `Request URL` matches the stable hostname, for example
   `*://polkaswap.io/*`
 
 The Google Drive wallet dynamically loads Google Identity and Google API
 scripts, so the Filebase override must allow `accounts.google.com`,
 `apis.google.com`, and `www.gstatic.com`.
+Substrate wallet extensions inject their page bridge through browser extension
+URLs, so `script-src` must also allow `chrome-extension:` and
+`moz-extension:`.
 
 ## 4. Verifying a CID (`ipfs:check`)
 

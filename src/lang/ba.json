@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Индексатор",
-                "title": "{Sora} Селтәр хеҙмәтен һайлау",
-                "useCeres": "Фиат ҡиммәттәре өсөн Polkaswap индексаторын ҡулланығыҙ"
+                "title": "{Sora} Селтәр хеҙмәтен һайлау"
             },
-            "indexerBlock": "Полкасвап индексаторы блогы #{block}",
+            "indexerBlock": "{source} блогы #{block}",
             "label": "Статистика хеҙмәттәре",
             "title": {
                 "available": "Статистика бар",
@@ -883,7 +882,6 @@
         "Pool": "Бассейн",
         "Rewards": "Бүләктәр",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Карта",
         "StakingContainer": "Ставка",
         "Stats": "Статистика",
         "Swap": "Алмаштырыу",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Һеҙҙең оҫталыҡты күтәреү өсөн {title} менән бәйле бурыстарҙы үтәгеҙ",
         "rewardNextLvl": "Киләһе кимәлдәге бүләк",
-        "soraCard": "Хәҙер үк ғариза бирегеҙ",
         "title": "Һеҙҙең мәрәйҙәр",
         "toEarnPoints": "Мәрәйҙәр йыйыу өсөн .",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Баҙарҙарҙы тейәү...",
         "markets": {
+            "groupCount": "{count} Баҙарҙар",
+            "groupTotals": "Күләм: {volume}",
+            "hotSubtitle": "{count} Әүҙем Баҙарҙар - Күләм / Ликвидлыҡ",
+            "hotTitle": "Әүҙем Баҙарҙар",
             "search": "Баҙарҙарҙы эҙләү",
             "subtitle": "{count} баҙарҙары ағымдағы фильтрҙарға тап килә",
-            "title": "Баҙарҙар"
+            "title": "Баҙарҙар",
+            "trending": "Күләм"
         },
         "metrics": {
             "closeBlock": "Ябыҡ блок",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ЭЙЕ {yes} / ЮҠ {no}",
+            "loading": "Баҙарҙарҙы тейәү..."
+        },
         "status": {
             "active": "Әүҙем",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Һатып алырға {outcome} {amount} {symbol} {shares}",
             "claimable": "Дәғүә итеүсе",
             "claimableFailed": "Дәғүә ителгән баланстарҙы уҡый алмай.",
+            "claimFeesReceipt": "Дәғүә ижадсы өсөн түләүҙәр",
+            "claimMarketReceipt": "Дәғүә сауҙагәр түләү",
             "claimStatus": "Дәғүә статусы",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Залог сығарып",
+            "connectForBalances": "Хисап яҙмаһын тоташтырыу",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Етерлек булмаған {symbol} баланс",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Селтәр хаҡы өсөн XOR етерлек түгел",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Цитатаны яңыртып булмай.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Яңыртыусы цитата...",
             "refreshingQuote": "Яңыртыусы цитата...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Сауҙа итеү өсөн әүҙем баҙар һайлағыҙ.",
+            "sellReceipt": "Һатыу {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Акциялар",
             "sharesOut": "Акциялар сығарып",
             "sharesToSell": "Shares to sell",
             "slippage": "Тайып китеү %",
             "takerFee": "Taker fee",
             "title": "Сауҙа билеты",
+            "transactionFailed": "Транзакция уңышһыҙлыҡҡа осраны",
+            "transactionId": "Транзакция идентификаторы {id}",
+            "txHint": {
+                "confirmed": "Яңыртыусы цитата...",
+                "failed": "Транзакция уңышһыҙлыҡҡа осраны",
+                "submitted": "Транзакция тапшырылды",
+                "submitting": "Көтөп тора..."
+            },
+            "txStatus": {
+                "confirmed": "Транзакция раҫланды",
+                "failed": "Транзакция уңышһыҙлыҡҡа осраны",
+                "submitted": "Транзакция тапшырылды",
+                "submitting": "Көтөп тора..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

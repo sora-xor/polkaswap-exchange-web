@@ -8,7 +8,7 @@ This repository is a Node.js + Vue (Vite) project that compiles into a static si
 
 ## Project Basics
 
-- Runtime: Node 24 (see `.nvmrc` and `package.json` engines).
+- Runtime: Node 26 (see `.nvmrc` and `package.json` engines).
 - Package manager: Yarn 4.x (Berry, pinned via `.yarnrc.yml` `yarnPath` and `.yarn/releases`).
 - `npm install` is not supported (the repo uses Yarn's `patch:` protocol for dependencies).
 - Build: `yarn build` produces static assets (dist/) suitable for IPFS hosting.

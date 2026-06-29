@@ -13,8 +13,9 @@ const settingsStoreMock = vi.hoisted(() => ({
   isWalletLoaded: false,
 }));
 
-vi.mock('@/api', () => ({
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
+    connected: false,
     mst: {
       getMstAddress: getMstAddressMock,
       getMstAccount: getMstAccountMock,

@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "indexador",
-                "title": "{Sora} Selección de servicio de red",
-                "useCeres": "Utilice el indexador de Polkaswap para valores fiduciarios"
+                "title": "{Sora} Selección de servicio de red"
             },
-            "indexerBlock": "Bloque indexador de Polkaswap #{block}",
+            "indexerBlock": "Bloque de {source} #{block}",
             "label": "Servicios de estadísticas",
             "title": {
                 "available": "Estadísticas disponibles",
@@ -883,7 +882,6 @@
         "Pool": "Fondo común",
         "Rewards": "Recompensas",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Tarjeta",
         "StakingContainer": "Estacar",
         "Stats": "Estadísticas",
         "Swap": "Intercambio",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Completa tareas relacionadas con {title} para mejorar tu habilidad",
         "rewardNextLvl": "Recompensa del siguiente nivel",
-        "soraCard": "Aplicar ahora",
         "title": "Tu Progreso de Puntos",
         "toEarnPoints": "Para ganar puntos",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Cargando mercados...",
         "markets": {
+            "groupCount": "{count} Mercados",
+            "groupTotals": "Volumen: {volume}",
+            "hotSubtitle": "{count} Activo Mercados - Volumen / Liquidez",
+            "hotTitle": "Activo Mercados",
             "search": "Buscar mercados",
             "subtitle": "{count} mercados coinciden con los filtros actuales",
-            "title": "Mercados"
+            "title": "Mercados",
+            "trending": "Volumen"
         },
         "metrics": {
             "closeBlock": "Cerrar bloque",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "SI {yes} / NO {no}",
+            "loading": "Cargando mercados..."
+        },
         "status": {
             "active": "Activo",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "comprar {outcome} {amount} {symbol} {shares}",
             "claimable": "Reclamable",
             "claimableFailed": "No se pueden leer los saldos reclamables.",
+            "claimFeesReceipt": "Reclamar tarifas de creador",
+            "claimMarketReceipt": "Reclamar pago del comerciante",
             "claimStatus": "Estado del reclamo",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "garantía fuera",
+            "connectForBalances": "Conectar cuenta",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Saldo {symbol} insuficiente",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR insuficiente para la tarifa de red",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "No se puede actualizar la cotización.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Cita refrescante...",
             "refreshingQuote": "Cita refrescante...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Seleccione un mercado activo para operar.",
+            "sellReceipt": "Vender {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Acciones",
             "sharesOut": "comparte",
             "sharesToSell": "Shares to sell",
             "slippage": "% de deslizamiento",
             "takerFee": "Taker fee",
             "title": "billete comercial",
+            "transactionFailed": "Transacción fallida",
+            "transactionId": "ID de transacción {id}",
+            "txHint": {
+                "confirmed": "Cita refrescante...",
+                "failed": "Transacción fallida",
+                "submitted": "La transacción fue enviada",
+                "submitting": "Pendiente..."
+            },
+            "txStatus": {
+                "confirmed": "Transacción confirmada",
+                "failed": "Transacción fallida",
+                "submitted": "La transacción fue enviada",
+                "submitting": "Pendiente..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

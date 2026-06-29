@@ -270,7 +270,6 @@ test('High-risk user-facing translation keys are localized', () => {
     'burnPage.soraV3XorAmountTitle',
     'burnPage.ssTokensLabel',
     'fiatDisclaimer',
-    'footer.statistics.dialog.useCeres',
     'footer.statistics.indexerBlock',
     'sccp.amountLabel',
     'sccp.assetLabel',

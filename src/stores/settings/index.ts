@@ -46,7 +46,7 @@ const resolveConnectionDownlink = (): number => {
   return typeof connectionLike?.downlink === 'number' ? (connectionLike.downlink as number) : 0;
 };
 
-const fallbackWalletFilters: WalletAssetFilters = {
+const defaultWalletFilters: WalletAssetFilters = {
   option: 'All' as WalletAssetFilters['option'],
   verifiedOnly: false,
   zeroBalance: false,
@@ -118,6 +118,15 @@ const updateIntlArtifacts = (state: SettingsState): void => {
     state.displayRegions = null;
     state.percentFormat = null;
   }
+};
+
+/** Returns true for retired Sora Card marketing placements that must not render in the UI. */
+const isSoraCardMarketingAd = (ad: Ad): boolean => {
+  const title = ad.title?.toLowerCase() ?? '';
+  const link = ad.link?.toLowerCase() ?? '';
+  const img = ad.img?.toLowerCase() ?? '';
+
+  return /sora\s*card/.test(title) || link.includes('soracard.com') || img.includes('/marketing/card.png');
 };
 
 /**
@@ -218,7 +227,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     filters(): WalletAssetFilters {
       const walletStore = useWalletStore();
-      return walletStore.filters ?? fallbackWalletFilters;
+      return walletStore.filters ?? defaultWalletFilters;
     },
     assetsFilter(): FilterOptions {
       const walletStore = useWalletStore();
@@ -243,6 +252,10 @@ export const useSettingsStore = defineStore('settings', {
     indexerType(): Nullable<IndexerType> {
       const walletStore = useWalletStore();
       return walletStore.indexerType as Nullable<IndexerType>;
+    },
+    sorametricsApiEndpoint(): string {
+      const walletStore = useWalletStore();
+      return walletStore.sorametricsApiEndpoint as string;
     },
   },
   actions: {
@@ -448,25 +461,27 @@ export const useSettingsStore = defineStore('settings', {
         const marketingConfigUrl = resolveVersionedStaticAssetUrl('marketing.json');
         const { data } = await axiosInstance.get<Array<Ad>>(marketingConfigUrl);
         const normalizedAds = Array.isArray(data)
-          ? data.map((ad) => {
-              const normalized = { ...ad };
+          ? data
+              .filter((ad) => !isSoraCardMarketingAd(ad))
+              .map((ad) => {
+                const normalized = { ...ad };
 
-              if (ad?.img) {
-                normalized.img = resolveVersionedStaticAssetUrl(ad.img);
-              }
-
-              if (typeof ad?.link === 'string') {
-                if (/^\/#\//.test(ad.link)) {
-                  normalized.link = `#${ad.link.slice(2)}`;
-                } else if (/^#\//.test(ad.link)) {
-                  normalized.link = ad.link;
-                } else if (/^\/(?!\/)/.test(ad.link)) {
-                  normalized.link = resolveStaticAssetUrl(ad.link);
+                if (ad?.img) {
+                  normalized.img = resolveVersionedStaticAssetUrl(ad.img);
                 }
-              }
 
-              return normalized;
-            })
+                if (typeof ad?.link === 'string') {
+                  if (/^\/#\//.test(ad.link)) {
+                    normalized.link = `#${ad.link.slice(2)}`;
+                  } else if (/^#\//.test(ad.link)) {
+                    normalized.link = ad.link;
+                  } else if (/^\/(?!\/)/.test(ad.link)) {
+                    normalized.link = resolveStaticAssetUrl(ad.link);
+                  }
+                }
+
+                return normalized;
+              })
           : [];
 
         this.setAdsArray(normalizedAds);

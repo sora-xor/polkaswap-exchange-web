@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Индексер",
-                "title": "{Sora} Избор мрежне услуге",
-                "useCeres": "Користите Полкасвап индекс за фиат вредности"
+                "title": "{Sora} Избор мрежне услуге"
             },
-            "indexerBlock": "Полкасвап индексни блок #{block}",
+            "indexerBlock": "{source} блок #{block}",
             "label": "Статистичке службе",
             "title": {
                 "available": "Доступна статистика",
@@ -883,7 +882,6 @@
         "Pool": "Пул",
         "Rewards": "Награде",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} картица",
         "StakingContainer": "Стeкинг",
         "Stats": "Статистикa",
         "Swap": "Замените",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Завршите задатке везане за {title} да бисте унапредили своје вештине",
         "rewardNextLvl": "Награда за следећи ниво",
-        "soraCard": "Пријавите се сада",
         "title": "Vaš napredak poena",
         "toEarnPoints": "Za zarađivanje poena",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Учитавање тржишта...",
         "markets": {
+            "groupCount": "{count} Тржишта",
+            "groupTotals": "Волуме: {volume}",
+            "hotSubtitle": "{count} Ацтиве Тржишта - Волуме / Ликвидност",
+            "hotTitle": "Ацтиве Тржишта",
             "search": "Претражите тржишта",
             "subtitle": "{count} тржишта одговарају тренутним филтерима",
-            "title": "Тржишта"
+            "title": "Тржишта",
+            "trending": "Волуме"
         },
         "metrics": {
             "closeBlock": "Затвори блок",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ДА {yes} / НО {no}",
+            "loading": "Учитавање тржишта..."
+        },
         "status": {
             "active": "Ацтиве",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Купи {outcome} {amount} {symbol} {shares}",
             "claimable": "Захтевано",
             "claimableFailed": "Није могуће прочитати потраживања.",
+            "claimFeesReceipt": "Захтевајте накнаде за креаторе",
+            "claimMarketReceipt": "Исплата трговца потраживањем",
             "claimStatus": "Статус потраживања",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Цоллатерал оут",
+            "connectForBalances": "Повежите рачун",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Недовољно стање {symbol}",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Недовољно КСОР за мрежну накнаду",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Није могуће освежити цитат.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Освежавајући цитат...",
             "refreshingQuote": "Освежавајући цитат...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Изаберите активно тржиште за трговину.",
+            "sellReceipt": "Селл {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Дионице",
             "sharesOut": "Схарес оут",
             "sharesToSell": "Shares to sell",
             "slippage": "% проклизавања",
             "takerFee": "Taker fee",
             "title": "Трговинска карта",
+            "transactionFailed": "Трансакција није успела",
+            "transactionId": "ИД трансакције {id}",
+            "txHint": {
+                "confirmed": "Освежавајући цитат...",
+                "failed": "Трансакција није успела",
+                "submitted": "Трансакција је послата",
+                "submitting": "У току..."
+            },
+            "txStatus": {
+                "confirmed": "Трансакција потврђена",
+                "failed": "Трансакција није успела",
+                "submitted": "Трансакција је послата",
+                "submitting": "У току..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

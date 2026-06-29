@@ -244,7 +244,7 @@ describe('useWeb3Store', () => {
     }
   });
 
-  it('subscribes on discovered EVM providers without duplicating providers', async () => {
+  it('subscribes on discovered EVM providers without duplicating providers or discovery listeners', async () => {
     const unsubscribe = vi.fn();
     const web3Store = useWeb3Store();
     let callback!: (event: {
@@ -260,6 +260,7 @@ describe('useWeb3Store', () => {
     });
 
     const result = await web3Store.subscribeOnEvmProviders();
+    const secondResult = await web3Store.subscribeOnEvmProviders();
 
     callback({
       detail: {
@@ -274,7 +275,17 @@ describe('useWeb3Store', () => {
       },
     });
 
-    expect(result).toBe(unsubscribe);
+    expect(shared.getProvidersListMock).toHaveBeenCalledTimes(1);
+    expect(unsubscribe).not.toHaveBeenCalled();
+
+    result?.();
+    result?.();
+
+    expect(unsubscribe).not.toHaveBeenCalled();
+
+    secondResult?.();
+
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
     expect(web3Store.evmProviders).toHaveLength(1);
     expect(web3Store.evmProviders[0]).toEqual(
       expect.objectContaining({

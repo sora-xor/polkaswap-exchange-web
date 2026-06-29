@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Indexeerder",
-                "title": "{Sora} Netwerkserviceselectie",
-                "useCeres": "Gebruik Polkaswap Indexer voor fiatwaarden"
+                "title": "{Sora} Netwerkserviceselectie"
             },
-            "indexerBlock": "Polkaswap-indexerblok #{block}",
+            "indexerBlock": "{source}-blok #{block}",
             "label": "Statistische diensten",
             "title": {
                 "available": "Statistieken beschikbaar",
@@ -883,7 +882,6 @@
         "Pool": "Zwembad",
         "Rewards": "Beloningen",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Kaart",
         "StakingContainer": "Uitzetten",
         "Stats": "Stats",
         "Swap": "Verwisselen",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Voltooi taken met betrekking tot {title} om je vaardigheid te verbeteren",
         "rewardNextLvl": "Volgende niveaubeloning",
-        "soraCard": "Solliciteer nu",
         "title": "Uw puntenvoortgang",
         "toEarnPoints": "Om punten te verdienen",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Markten laden...",
         "markets": {
+            "groupCount": "{count} Markten",
+            "groupTotals": "Volume: {volume}",
+            "hotSubtitle": "{count} Actief Markten - Volume / Liquiditeit",
+            "hotTitle": "Actief Markten",
             "search": "Zoek markten",
             "subtitle": "{count} markten komen overeen met de huidige filters",
-            "title": "Markten"
+            "title": "Markten",
+            "trending": "Volume"
         },
         "metrics": {
             "closeBlock": "Sluit blok",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "JA {yes} / NEE {no}",
+            "loading": "Markten laden..."
+        },
         "status": {
             "active": "Actief",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Koop {outcome} {amount} {symbol} {shares}",
             "claimable": "Opeisbaar",
             "claimableFailed": "Kan claimbare saldi niet lezen.",
+            "claimFeesReceipt": "Claim makerkosten",
+            "claimMarketReceipt": "Claim de uitbetaling van een handelaar",
             "claimStatus": "Claimstatus",
             "collateralIn": "Onderpand in ({symbol})",
             "collateralOut": "Onderpand eruit",
+            "connectForBalances": "Account aansluiten",
             "dpmSubtitle": "Koop of verkoop YES en NO via de DPM-curve voordat de markt sluit.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Geimpliceerd {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Onvoldoende {symbol} saldo",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Onvoldoende XOR voor netwerkkosten",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Kan offerte niet vernieuwen.",
             "quoteUnavailable": "Quote niet beschikbaar",
+            "refreshingBalances": "Verfrissend citaat...",
             "refreshingQuote": "Verfrissend citaat...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Selecteer een actieve markt om in te handelen.",
+            "sellReceipt": "Verkopen {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Aandelen",
             "sharesOut": "Aandelen uit",
             "sharesToSell": "Aandelen verkopen",
             "slippage": "Slippercentage",
             "takerFee": "Taker fee",
             "title": "Handelskaartje",
+            "transactionFailed": "Transactie mislukt",
+            "transactionId": "Transactie ID {id}",
+            "txHint": {
+                "confirmed": "Verfrissend citaat...",
+                "failed": "Transactie mislukt",
+                "submitted": "Transactie ingediend",
+                "submitting": "Hangende..."
+            },
+            "txStatus": {
+                "confirmed": "Transactie bevestigd",
+                "failed": "Transactie mislukt",
+                "submitted": "Transactie ingediend",
+                "submitting": "Hangende..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

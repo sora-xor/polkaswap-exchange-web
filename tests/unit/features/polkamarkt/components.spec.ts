@@ -1,12 +1,13 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 
 import type { PolkamarktMarket } from '@/features/polkamarkt/types';
 import createMarketDialogSource from '@/features/polkamarkt/components/CreateMarketDialog.vue?raw';
 import marketDetailSource from '@/features/polkamarkt/components/MarketDetail.vue?raw';
 import marketListSource from '@/features/polkamarkt/components/MarketList.vue?raw';
 import marketOutcomeChartSource from '@/features/polkamarkt/components/MarketOutcomeChart.vue?raw';
+import marketProbabilitySparklineSource from '@/features/polkamarkt/components/MarketProbabilitySparkline.vue?raw';
 import marketShareWidgetSource from '@/features/polkamarkt/components/MarketShareWidget.vue?raw';
 import myPositionsPanelSource from '@/features/polkamarkt/components/MyPositionsPanel.vue?raw';
 import polkamarktPageSource from '@/features/polkamarkt/pages/PolkamarktPage.vue?raw';
@@ -20,6 +21,7 @@ const mocks = vi.hoisted(() => ({
   fetchActivity: vi.fn(),
   walletStore: {
     isLoggedIn: true,
+    history: {} as Record<string, unknown>,
     accountAssetsAddressTable: {
       '0x02000c0000000000000000000000000000000000000000000000000000000000': {
         balance: { transferable: '1000000000000000000000' },
@@ -31,7 +33,10 @@ const mocks = vi.hoisted(() => ({
   },
   settingsStore: { blockNumber: 100, appConnection: { connection: { api: null } } },
   connectSoraWallet: vi.fn(),
-  withNotifications: vi.fn(async (handler: () => Promise<void>) => handler()),
+  withNotifications: vi.fn(async (handler: () => Promise<void>) => {
+    await handler();
+    return { submitted: true, transaction: { id: 'tx-polkamarkt', status: 'inblock' } };
+  }),
   api: {
     polkamarkt: {
       estimateMarketCreationFee: vi.fn().mockResolvedValue({ totalFee: '1', conditionFee: '1', marketFee: '0' }),
@@ -79,6 +84,12 @@ vi.mock('@/composables/useTransaction', () => ({
   useTransaction: () => ({ loading: { value: false }, withNotifications: mocks.withNotifications }),
 }));
 
+vi.mock('@/composables/useNotification', () => ({
+  useNotification: () => ({
+    getErrorMessage: (error: unknown) => (error instanceof Error ? error.message : 'unknownErrorText'),
+  }),
+}));
+
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => mocks.walletStore,
 }));
@@ -97,16 +108,6 @@ vi.mock('@/features/polkamarkt/services/markets', () => ({
 
 vi.mock('@/features/polkamarkt/services/marketHistory', () => ({
   fetchPolkamarktMarketHistory: mocks.fetchHistory,
-  marketHistoryFallback: (market?: PolkamarktMarket) =>
-    market?.probability === undefined
-      ? []
-      : [
-          {
-            id: `current-${market.id}`,
-            marketId: market.chainId,
-            probability: market.probability,
-          },
-        ],
 }));
 
 vi.mock('@/features/polkamarkt/services/accountActivity', () => ({
@@ -123,9 +124,11 @@ vi.mock('@/lib/soraneo-wallet/src/components/DialogBase.vue', () => ({
 }));
 
 import { KUSD, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { Operation } from '@/lib/substrate/sdk/types';
 import CreateMarketDialog from '@/features/polkamarkt/components/CreateMarketDialog.vue';
 import MarketDetail from '@/features/polkamarkt/components/MarketDetail.vue';
 import MarketList from '@/features/polkamarkt/components/MarketList.vue';
+import MarketProbabilitySparkline from '@/features/polkamarkt/components/MarketProbabilitySparkline.vue';
 import MarketShareWidget from '@/features/polkamarkt/components/MarketShareWidget.vue';
 import MyPositionsPanel from '@/features/polkamarkt/components/MyPositionsPanel.vue';
 import TradeTicket from '@/features/polkamarkt/components/TradeTicket.vue';
@@ -288,6 +291,11 @@ describe('polkamarkt components', () => {
     mocks.api.polkamarkt.estimateClaimMarketNetworkFee.mockClear().mockResolvedValue('1');
     mocks.api.polkamarkt.createCondition.mockClear();
     mocks.api.polkamarkt.createMarket.mockClear();
+    mocks.walletStore.history = reactive({});
+    mocks.withNotifications.mockReset().mockImplementation(async (handler: () => Promise<void>) => {
+      await handler();
+      return { submitted: true, transaction: { id: 'tx-polkamarkt', status: 'inblock' } };
+    });
   });
 
   it('renders and filters active market list items', async () => {
@@ -299,6 +307,39 @@ describe('polkamarkt components', () => {
     expect(wrapper.text()).toContain(market.title);
     await wrapper.find('.market-card').trigger('click');
     expect(wrapper.emitted('select')?.[0]?.[0]).toEqual(market);
+  });
+
+  it('renders hot markets grouped by category with probability sparklines', () => {
+    const aiMarket = {
+      ...market,
+      id: 'm-2',
+      chainId: 2,
+      category: 'AI' as const,
+      liquidity: 800,
+      title: 'Will AI markets heat up?',
+      volume: 900,
+    };
+    const closedMarket = { ...market, id: 'm-3', chainId: 3, closeBlock: 99, title: 'Closed hidden market' };
+    const wrapper = mount(MarketList, {
+      props: {
+        currentBlock: 100,
+        historiesByMarketId: {
+          '2': [
+            { id: 'h1', marketId: 2, probability: 42, timestamp: 1 },
+            { id: 'h2', marketId: 2, probability: 51, timestamp: 2 },
+          ],
+        },
+        markets: [market, aiMarket, closedMarket],
+        status: 'active',
+      },
+      global: { stubs: globalStubs },
+    });
+
+    expect(wrapper.findAll('.polkamarkt-market-group__header h3').map((item) => item.text())).toEqual(['AI', 'Crypto']);
+    expect(wrapper.text()).toContain('polkamarkt.markets.hotTitle');
+    expect(wrapper.text()).toContain(aiMarket.title);
+    expect(wrapper.text()).not.toContain(closedMarket.title);
+    expect(wrapper.findAll('[data-testid="market-card-sparkline-line-yes"]')).toHaveLength(1);
   });
 
   it('shows past-close-block markets as closed and removes them from the active filter', async () => {
@@ -387,7 +428,7 @@ describe('polkamarkt components', () => {
     expect(wrapper.find('[data-testid="market-history-label-no"]').text()).toContain('NO 37%');
     expect(wrapper.find('svg [data-testid="market-history-label-yes"]').exists()).toBe(false);
     expect(wrapper.get('[data-testid="market-history-label-yes"]').element.tagName).toBe('SPAN');
-    expect(wrapper.findAll('.market-detail__section')).toHaveLength(2);
+    expect(wrapper.findAll('.market-detail__section')).toHaveLength(3);
     expect(wrapper.findAll('.market-detail__facts')).toHaveLength(2);
     expect(wrapper.findAll('.market-detail__fact')).toHaveLength(10);
     expect(wrapper.findAll('.market-detail__fact--wide')).toHaveLength(3);
@@ -409,14 +450,16 @@ describe('polkamarkt components', () => {
     expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 340px), 1fr)'})");
     expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 150px), 1fr)'})");
     expect(marketDetailSource).toContain('market-detail__fact--wide');
+    expect(marketDetailSource).toContain('<details class="market-detail__section">');
   });
 
   it('escapes Polkamarkt CSS grid minmax functions from the Sass breakpoint helper', () => {
-    expect(polkamarktPageSource).toContain("grid-template-columns: #{'minmax(280px, 320px)'} #{'minmax(0, 1fr)'}");
-    expect(polkamarktPageSource).toContain("grid-template-columns: #{'minmax(0, 1fr)'} #{'minmax(280px, 360px)'}");
+    expect(polkamarktPageSource).toContain('class="polkamarkt__market-discovery"');
+    expect(polkamarktPageSource).toContain("grid-template-columns: #{'minmax(0, 1fr)'} #{'minmax(280px, 380px)'}");
     expect(polkamarktPageSource).toContain('@include huge-desktop(true)');
     expect(marketListSource).toContain('flex-wrap: wrap');
     expect(marketListSource).toContain('> .polkamarkt-status-toggle');
+    expect(marketListSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 260px), 1fr)'})");
     expect(marketListSource).not.toContain('max-content auto');
     expect(createMarketDialogSource).toContain('grid-template-columns: repeat(auto-fit, minmax(120px, 1fr))');
     expect(myPositionsPanelSource).toContain("grid-template-columns: #{'minmax(0, 1fr)'} auto auto");
@@ -430,6 +473,30 @@ describe('polkamarkt components', () => {
     expect(marketShareWidgetSource).not.toContain('<text');
     expect(pricingCurvePositionChartSource).toContain('data-testid="pricing-curve-position-chart"');
     expect(pricingCurvePositionChartSource).toContain(':stroke="`url(#${yesGradientId})`"');
+    expect(marketProbabilitySparklineSource).toContain('data-testid="market-card-sparkline"');
+    expect(marketProbabilitySparklineSource).not.toContain(`marketHistory${'Fallback'}`);
+  });
+
+  it('renders compact probability sparklines from indexed history and market probability labels', () => {
+    const historyWrapper = mount(MarketProbabilitySparkline, {
+      props: {
+        market,
+        points: [
+          { id: 'h1', marketId: 1, probability: 60, timestamp: 1 },
+          { id: 'h2', marketId: 1, probability: 70, timestamp: 2 },
+        ],
+      },
+    });
+    const noHistoryWrapper = mount(MarketProbabilitySparkline, {
+      props: { market },
+    });
+
+    expect(historyWrapper.get('[data-testid="market-card-sparkline-line-yes"]').exists()).toBe(true);
+    expect(historyWrapper.get('[data-testid="market-card-sparkline-line-no"]').exists()).toBe(true);
+    expect(historyWrapper.text()).toContain('polkamarkt.outcomes.yes 70%');
+    expect(historyWrapper.text()).toContain('polkamarkt.outcomes.no 30%');
+    expect(noHistoryWrapper.text()).toContain('polkamarkt.outcomes.yes 63%');
+    expect(noHistoryWrapper.find('[data-testid="market-card-sparkline-line-yes"]').exists()).toBe(false);
   });
 
   it('renders DPM trade ticket modes and expands the curve helper without quoting before an amount is entered', async () => {
@@ -449,6 +516,9 @@ describe('polkamarkt components', () => {
     expect(wrapper.find('.trade-ticket__tabs').text()).toContain('polkamarkt.modes.report');
     expect(wrapper.get('[data-testid="trade-ticket-outcome-yes"]').text()).toContain('0.63 KUSD');
     expect(wrapper.get('[data-testid="trade-ticket-outcome-no"]').text()).toContain('0.37 KUSD');
+    expect(wrapper.get('[data-testid="trade-ticket-outcome-yes"]').text()).toContain(
+      'polkamarkt.ticket.impliedProbabilityShort {"value":"-"}'
+    );
     expect(wrapper.find('[data-testid="pricing-curve-position-chart"]').exists()).toBe(false);
     expect(wrapper.get('[data-testid="pricing-curve-toggle"]').attributes('aria-expanded')).toBe('false');
 
@@ -515,6 +585,237 @@ describe('polkamarkt components', () => {
           minSharesOut: '1990000000000000000',
         })
       );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('keeps a submitted Polkamarkt receipt visible until wallet history confirms the transaction', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '0',
+        noShares: '0',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        claimablePayout: '0',
+        creatorFees: '0',
+        isCreator: false,
+      });
+      mocks.withNotifications.mockImplementationOnce(async (handler: () => Promise<void>) => {
+        await handler();
+        return { submitted: true, transaction: { id: 'tx-pending', status: 'broadcast' } };
+      });
+
+      const wrapper = mount(TradeTicket, {
+        props: { market: { ...market, mechanism: 'DynamicPariMutuel' } },
+        global: { stubs: globalStubs },
+      });
+
+      const amountInput = wrapper.get<HTMLInputElement>('.trade-field input');
+      await amountInput.setValue('1');
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(mocks.api.polkamarkt.quoteBuyTrade).toHaveBeenCalled());
+
+      await wrapper.get('.trade-ticket__submit').trigger('click');
+
+      await vi.waitFor(() =>
+        expect(wrapper.get('[data-testid="polkamarkt-ticket-receipt"]').text()).toContain(
+          'polkamarkt.ticket.txStatus.submitted'
+        )
+      );
+      expect(wrapper.get<HTMLInputElement>('.trade-field input').element.value).toBe('1');
+      expect(wrapper.emitted('submitted')).toBeUndefined();
+
+      mocks.walletStore.history['tx-pending'] = { id: 'tx-pending', status: 'inblock' };
+
+      await vi.waitFor(() =>
+        expect(wrapper.get('[data-testid="polkamarkt-ticket-receipt"]').text()).toContain(
+          'polkamarkt.ticket.txStatus.confirmed'
+        )
+      );
+      expect(wrapper.get<HTMLInputElement>('.trade-field input').element.value).toBe('');
+      expect(wrapper.emitted('submitted')).toHaveLength(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('recovers a timed-out Polkamarkt receipt when wallet history arrives later', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '0',
+        noShares: '0',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        claimablePayout: '0',
+        creatorFees: '0',
+        isCreator: false,
+      });
+      mocks.withNotifications.mockImplementationOnce(async (handler: () => Promise<void>) => {
+        await handler();
+        return { submitted: true, submittedAt: 1_000, historyTimedOut: true };
+      });
+
+      const wrapper = mount(TradeTicket, {
+        props: { market: { ...market, mechanism: 'DynamicPariMutuel' } },
+        global: { stubs: globalStubs },
+      });
+
+      const amountInput = wrapper.get<HTMLInputElement>('.trade-field input');
+      await amountInput.setValue('1');
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(mocks.api.polkamarkt.quoteBuyTrade).toHaveBeenCalled());
+
+      await wrapper.get('.trade-ticket__submit').trigger('click');
+
+      await vi.waitFor(() =>
+        expect(wrapper.get('[data-testid="polkamarkt-ticket-receipt"]').text()).toContain(
+          'polkamarkt.ticket.txStatus.submitted'
+        )
+      );
+      expect(wrapper.get<HTMLInputElement>('.trade-field input').element.value).toBe('1');
+      expect(wrapper.emitted('submitted')).toBeUndefined();
+
+      mocks.walletStore.history['unrelated-after-timeout'] = {
+        id: 'unrelated-after-timeout',
+        startTime: '1001',
+        status: 'inblock',
+        type: Operation.Transfer,
+        payload: { marketId: 1 },
+      };
+      await wrapper.vm.$nextTick();
+
+      expect(wrapper.get('[data-testid="polkamarkt-ticket-receipt"]').text()).toContain(
+        'polkamarkt.ticket.txStatus.submitted'
+      );
+      expect(wrapper.get<HTMLInputElement>('.trade-field input').element.value).toBe('1');
+      expect(wrapper.emitted('submitted')).toBeUndefined();
+
+      mocks.walletStore.history['tx-after-timeout'] = {
+        id: 'tx-after-timeout',
+        startTime: '1002',
+        status: 'inblock',
+        type: Operation.PolkamarktBuy,
+        payload: { marketId: 1, outcome: 'Yes' },
+      };
+
+      await vi.waitFor(() =>
+        expect(wrapper.get('[data-testid="polkamarkt-ticket-receipt"]').text()).toContain(
+          'polkamarkt.ticket.txStatus.confirmed'
+        )
+      );
+      expect(wrapper.get<HTMLInputElement>('.trade-field input').element.value).toBe('');
+      expect(wrapper.emitted('submitted')).toHaveLength(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('keeps Polkamarkt inputs visible when submission is rejected before a transaction is created', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '0',
+        noShares: '0',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        claimablePayout: '0',
+        creatorFees: '0',
+        isCreator: false,
+      });
+      mocks.withNotifications.mockImplementationOnce(async () => ({
+        submitted: false,
+        error: new Error('wallet rejected'),
+      }));
+
+      const wrapper = mount(TradeTicket, {
+        props: { market: { ...market, mechanism: 'DynamicPariMutuel' } },
+        global: { stubs: globalStubs },
+      });
+
+      await wrapper.get<HTMLInputElement>('.trade-field input').setValue('1');
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(mocks.api.polkamarkt.quoteBuyTrade).toHaveBeenCalled());
+
+      await wrapper.get('.trade-ticket__submit').trigger('click');
+
+      await vi.waitFor(() =>
+        expect(wrapper.get('[data-testid="polkamarkt-ticket-receipt"]').text()).toContain('wallet rejected')
+      );
+      expect(wrapper.get<HTMLInputElement>('.trade-field input').element.value).toBe('1');
+      expect(wrapper.emitted('submitted')).toBeUndefined();
+      expect(mocks.api.polkamarkt.submitBuyTrade).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('renders runtime share balances with indexer positions as secondary context', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue({
+        marketId: 1,
+        account: 'cnAccount',
+        status: 'Open',
+        yesShares: '3000000000000000000',
+        noShares: '1000000000000000000',
+        netCollateralPaid: '0',
+        traderPayout: '0',
+        claimablePayout: '0',
+        creatorFees: '0',
+        isCreator: false,
+      });
+
+      const wrapper = mount(TradeTicket, {
+        props: {
+          market: { ...market, mechanism: 'DynamicPariMutuel' },
+          accountPosition: { id: 'p1', marketId: 1, marketTitle: market.title, yesShares: 2, noShares: 0 },
+        },
+        global: { stubs: globalStubs },
+      });
+
+      await vi.advanceTimersByTimeAsync(301);
+      await vi.waitFor(() => expect(mocks.api.polkamarkt.getClaimableInfo).toHaveBeenCalled());
+
+      const balances = wrapper.get('.trade-ticket__balances').text();
+      expect(balances).toContain('3');
+      expect(balances).toContain('1');
+      expect(balances).toContain('polkamarkt.ticket.indexedPosition');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('blocks Polkamarkt sells with a clear message when runtime share balances are unavailable', async () => {
+    vi.useFakeTimers();
+    try {
+      mocks.api.polkamarkt.getClaimableInfo.mockResolvedValue(null);
+
+      const wrapper = mount(TradeTicket, {
+        props: { market: { ...market, mechanism: 'DynamicPariMutuel' } },
+        global: { stubs: globalStubs },
+      });
+      const sellTab = wrapper
+        .findAll('.trade-ticket__tabs button')
+        .find((button) => button.text().includes('polkamarkt.modes.sell'));
+      await sellTab?.trigger('click');
+      await wrapper.get('.trade-field input').setValue('1');
+      await vi.advanceTimersByTimeAsync(301);
+
+      expect(wrapper.text()).toContain('polkamarkt.ticket.balanceUnavailable');
+      expect(wrapper.get('.trade-ticket__submit').attributes('disabled')).toBeDefined();
+      expect(mocks.api.polkamarkt.quoteSellTrade).not.toHaveBeenCalled();
     } finally {
       vi.useRealTimers();
     }
@@ -1179,7 +1480,7 @@ describe('polkamarkt components', () => {
 
     await vi.waitFor(() => expect(mocks.fetchMarkets).toHaveBeenCalled());
 
-    expect(wrapper.find('.polkamarkt__layout--list-only').exists()).toBe(true);
+    expect(wrapper.find('.polkamarkt__workspace').exists()).toBe(false);
     expect(wrapper.find('.market-detail-stub').exists()).toBe(false);
     expect(wrapper.find('.trade-ticket-stub').exists()).toBe(false);
     expect(wrapper.find('.my-positions-stub').exists()).toBe(false);
@@ -1208,6 +1509,6 @@ describe('polkamarkt components', () => {
 
     await vi.waitFor(() => expect(wrapper.find('.market-detail-stub').text()).toContain('Direct closed route market'));
 
-    expect(wrapper.find('.polkamarkt__layout--list-only').exists()).toBe(false);
+    expect(wrapper.find('.polkamarkt__workspace').exists()).toBe(true);
   });
 });

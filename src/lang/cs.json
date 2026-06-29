@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Indexátor:",
-                "title": "{Sora} Výběr síťové služby",
-                "useCeres": "Pro hodnoty fiat použijte Polkaswap Indexer"
+                "title": "{Sora} Výběr síťové služby"
             },
-            "indexerBlock": "Blok Polkaswap Indexer #{block}",
+            "indexerBlock": "Blok {source} #{block}",
             "label": "Statistické služby",
             "title": {
                 "available": "Dostupné statistiky",
@@ -883,7 +882,6 @@
         "Pool": "Bazén",
         "Rewards": "Odměny",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Karta",
         "StakingContainer": "Stakování",
         "Stats": "Statistiky",
         "Swap": "Výměna",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Splňte úkoly související s {title}, abyste zvýšili svou dovednost",
         "rewardNextLvl": "Odměna za další úroveň",
-        "soraCard": "Požádejte nyní",
         "title": "Váš pokrok s body",
         "toEarnPoints": "Pro získání bodů",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Načítání trhů...",
         "markets": {
+            "groupCount": "{count} trhy",
+            "groupTotals": "Hlasitost: {volume}",
+            "hotSubtitle": "{count} Aktivní trhy - Hlasitost / Likvidita",
+            "hotTitle": "Aktivní trhy",
             "search": "Prohledejte trhy",
             "subtitle": "Aktuálním filtrům odpovídá {count} trhy",
-            "title": "trhy"
+            "title": "trhy",
+            "trending": "Hlasitost"
         },
         "metrics": {
             "closeBlock": "Zavřít blok",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ANO {yes} / NE {no}",
+            "loading": "Načítání trhů..."
+        },
         "status": {
             "active": "Aktivní",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Koupit {outcome} {amount} {symbol} {shares}",
             "claimable": "Nárokovatelné",
             "claimableFailed": "Nelze přečíst nárokovatelné zůstatky.",
+            "claimFeesReceipt": "Poplatky za tvůrce nároku",
+            "claimMarketReceipt": "Nárokujte si výplatu obchodníka",
             "claimStatus": "Stav reklamace",
             "collateralIn": "Kolateral dovnitr ({symbol})",
             "collateralOut": "Kolaterál ven",
+            "connectForBalances": "Připojit účet",
             "dpmSubtitle": "Kupujte nebo prodavejte YES a NO pres DPM krivku pred uzavrenim trhu.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implikovano {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Nedostatečný zůstatek {symbol}",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Nedostatečný XOR pro síťový poplatek",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Cenu nelze obnovit.",
             "quoteUnavailable": "Kotace neni dostupna",
+            "refreshingBalances": "Obnovující se citát...",
             "refreshingQuote": "Obnovující se citát...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Vyberte aktivní trh k obchodování.",
+            "sellReceipt": "prodat {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "akcie",
             "sharesOut": "Sdílí se",
             "sharesToSell": "Akcie k prodeji",
             "slippage": "Skluz %",
             "takerFee": "Taker fee",
             "title": "Obchodní lístek",
+            "transactionFailed": "Transakce se nezdařila",
+            "transactionId": "Id transakce {id}",
+            "txHint": {
+                "confirmed": "Obnovující se citát...",
+                "failed": "Transakce se nezdařila",
+                "submitted": "Transakce byla odeslána",
+                "submitting": "Čekající..."
+            },
+            "txStatus": {
+                "confirmed": "Transakce potvrzena",
+                "failed": "Transakce se nezdařila",
+                "submitted": "Transakce byla odeslána",
+                "submitting": "Čekající..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

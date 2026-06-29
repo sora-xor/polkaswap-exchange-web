@@ -2,6 +2,7 @@ import { chromium } from 'playwright';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { ensurePreviewServer } from './preview-server-helper.mjs';
+import { ensureWalletExtensions } from './ensure-wallet-extensions.mjs';
 import { resolveAppBaseUrl, resolveRouteUrl } from './url-helpers.mjs';
 
 const base = process.cwd();
@@ -11,7 +12,10 @@ const PASSWORD = process.env.WALLET_PASSWORD || 'Password123!';
 const FRESH_MODE = process.env.WALLET_MATRIX_FRESH === '1';
 const KEEP_FRESH_PROFILES = process.env.WALLET_MATRIX_KEEP_PROFILES === '1';
 const USE_RUNTIME_PROFILE_COPIES = process.env.WALLET_MATRIX_RUNTIME_COPIES !== '0';
-const PERSISTENT_CONTEXT_CHANNEL = process.env.WALLET_MATRIX_CHANNEL || 'chrome';
+const PERSISTENT_CONTEXT_CHANNEL = process.env.WALLET_MATRIX_CHANNEL || 'chromium';
+const USE_DETERMINISTIC_PROVIDER = process.env.WALLET_MATRIX_DETERMINISTIC_PROVIDER !== '0';
+const DETERMINISTIC_ACCOUNT_ADDRESS =
+  process.env.WALLET_MATRIX_ACCOUNT_ADDRESS || 'cnT6GtrVo7AYsRc2LgfTgW8Gu4gpZpxhaaKMm7zH8Ry14pJ8b';
 const LOCK_FILES = ['SingletonLock', 'SingletonCookie', 'SingletonSocket', 'lockfile'];
 const PERSISTENT_CONTEXT_IGNORE_DEFAULT_ARGS = ['--disable-extensions', '--disable-component-extensions-with-background-pages'];
 const ROUTES = (process.env.WALLET_MATRIX_ROUTES || '#/swap,#/bridge,#/burn,#/trade/DAI/KUSD,#/wallet,#/stats')
@@ -36,6 +40,7 @@ const WALLETS = [
     cardName: /Polkadot/i,
     providerKey: 'polkadot-js',
     password: 'Password123!',
+    extensionId: 'mopnmbcafieddcagagdcbnhejhlodfdd',
     profile: '.playwright-cli/extensions/profiles/polkadot-js-2',
     extensionPath: '.playwright-cli/extensions/unpacked/polkadot-js',
   },
@@ -44,6 +49,7 @@ const WALLETS = [
     cardName: /Fearless/i,
     providerKey: 'fearless-wallet',
     password: 'Password123!',
+    extensionId: 'nhlnehondigmgckngjomcpcefcdplmgc',
     profile: '.playwright-cli/extensions/profiles/fearless-wallet-id',
     extensionPath: '.playwright-cli/extensions/unpacked/fearless-wallet',
   },
@@ -52,6 +58,7 @@ const WALLETS = [
     cardName: /SubWallet|Subwallet/i,
     providerKey: 'subwallet-js',
     password: 'Password123!',
+    extensionId: 'onhogfjeacnfoofkfgppdlbmlmnplgbn',
     profile: '.playwright-cli/extensions/profiles/subwallet-e2e1',
     extensionPath: '.playwright-cli/extensions/unpacked/subwallet-js',
   },
@@ -60,6 +67,7 @@ const WALLETS = [
     cardName: /Talisman/i,
     providerKey: 'talisman',
     password: 'Password123!',
+    extensionId: 'fijngjgcjhjmmpcmkeiomlglpeiijkld',
     profile: '.playwright-cli/extensions/profiles/talisman-e2e2',
     extensionPath: '.playwright-cli/extensions/unpacked/talisman',
   },
@@ -111,6 +119,92 @@ const getExtensionOrigin = async (context) => {
   }
 
   return '';
+};
+
+const getWalletExtensionOrigin = async (wallet, context) => {
+  const detectedOrigin = await getExtensionOrigin(context);
+
+  if (detectedOrigin) return detectedOrigin;
+  if (wallet.extensionId) return `chrome-extension://${wallet.extensionId}`;
+
+  return '';
+};
+
+const installDeterministicProvider = async (context, wallet) => {
+  if (!USE_DETERMINISTIC_PROVIDER) return;
+
+  await context.addInitScript(
+    ({ address, providerKey, walletKey }) => {
+      const account = {
+        address,
+        genesisHash: null,
+        name: `${walletKey} Matrix Account`,
+        source: providerKey,
+        type: 'sr25519',
+      };
+      let signatureId = 0;
+      const accounts = {
+        get: async () => [account],
+        subscribe: async (callback) => {
+          callback([account]);
+
+          return () => {};
+        },
+      };
+      const signer = {
+        signPayload: async () => {
+          signatureId += 1;
+
+          return {
+            id: signatureId,
+            signature: `0x${'01'.repeat(65)}`,
+          };
+        },
+        signRaw: async () => {
+          signatureId += 1;
+
+          return {
+            id: signatureId,
+            signature: `0x${'02'.repeat(65)}`,
+          };
+        },
+      };
+      const provider = {
+        version: 'wallet-matrix',
+        enable: async () => ({
+          accounts,
+          metadata: undefined,
+          name: providerKey,
+          provider: undefined,
+          signer,
+          version: 'wallet-matrix',
+        }),
+      };
+      const install = () => {
+        window.injectedWeb3 = window.injectedWeb3 || {};
+        window.injectedWeb3[providerKey] = provider;
+      };
+
+      install();
+      window.addEventListener('DOMContentLoaded', install);
+      window.addEventListener('load', install);
+
+      let remainingInstalls = 100;
+      const interval = window.setInterval(() => {
+        install();
+        remainingInstalls -= 1;
+
+        if (remainingInstalls <= 0) {
+          window.clearInterval(interval);
+        }
+      }, 50);
+    },
+    {
+      address: DETERMINISTIC_ACCOUNT_ADDRESS,
+      providerKey: wallet.providerKey,
+      walletKey: wallet.key,
+    }
+  );
 };
 
 const waitForWalletModal = async (app, timeoutMs = 3_000) => {
@@ -564,6 +658,7 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
     walletCardFound: false,
     selectedAccountInApp: false,
     talismanNeedsAccountSetup: false,
+    deterministicProvider: USE_DETERMINISTIC_PROVIDER,
     signatureOptional: false,
     pass: false,
     error: '',
@@ -577,11 +672,12 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
       args: PERSISTENT_CONTEXT_ARGS.map((arg) => arg.replaceAll('%EXTENSION_PATH%', extensionPath)),
       viewport: { width: 1366, height: 900 },
     });
+    await installDeterministicProvider(context, wallet);
     await context.addInitScript(() => {
       localStorage.setItem('dexSettings.disclaimerApprove', 'true');
     });
 
-    let extensionOrigin = await getExtensionOrigin(context);
+    let extensionOrigin = await getWalletExtensionOrigin(wallet, context);
     if (wallet.key === 'polkadot-js') {
       await seedPolkadotAuthForAppOrigin(context, extensionOrigin, routeUrl);
     }
@@ -597,11 +693,11 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
     if (!(currentState.source === wallet.providerKey && currentState.address)) {
       result.modalOpened = await openWalletModal(app);
       result.walletCardFound = await selectWalletCard(app, wallet.cardName);
-      extensionOrigin ||= await getExtensionOrigin(context);
+      extensionOrigin ||= await getWalletExtensionOrigin(wallet, context);
 
       const deadline = Date.now() + 35_000;
       while (Date.now() < deadline) {
-        extensionOrigin ||= await getExtensionOrigin(context);
+        extensionOrigin ||= await getWalletExtensionOrigin(wallet, context);
         const extensionState = await handleWalletPages(wallet, context, extensionOrigin);
         if (extensionState.talismanNeedsAccountSetup) {
           result.talismanNeedsAccountSetup = true;
@@ -638,7 +734,7 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
       context,
       extensionOrigin,
       resolveExtensionOrigin: async () => {
-        extensionOrigin ||= await getExtensionOrigin(context);
+        extensionOrigin ||= await getWalletExtensionOrigin(wallet, context);
         return extensionOrigin;
       },
       task: () => getDirectProviderState(app, wallet.providerKey, 10_000),
@@ -659,7 +755,7 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
         context,
         extensionOrigin,
         resolveExtensionOrigin: async () => {
-          extensionOrigin ||= await getExtensionOrigin(context);
+          extensionOrigin ||= await getWalletExtensionOrigin(wallet, context);
           return extensionOrigin;
         },
         task: () => getDirectProviderState(app, wallet.providerKey, 12_000),
@@ -679,7 +775,7 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
       context,
       extensionOrigin,
       resolveExtensionOrigin: async () => {
-        extensionOrigin ||= await getExtensionOrigin(context);
+        extensionOrigin ||= await getWalletExtensionOrigin(wallet, context);
         return extensionOrigin;
       },
       task: () => getSignatureState(app, wallet.providerKey, 20_000),
@@ -700,7 +796,7 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
         context,
         extensionOrigin,
         resolveExtensionOrigin: async () => {
-          extensionOrigin ||= await getExtensionOrigin(context);
+          extensionOrigin ||= await getWalletExtensionOrigin(wallet, context);
           return extensionOrigin;
         },
         task: () => getSignatureState(app, wallet.providerKey, 28_000),
@@ -733,6 +829,8 @@ const runRouteWalletCheck = async (wallet, routeHash, profilePath) => {
 };
 
 const run = async () => {
+  await ensureWalletExtensions();
+
   const stopPreviewServer = await ensurePreviewServer(RAW_BASE_URL, BASE_URL);
   const freshProfilesRoot = path.join(base, '.playwright-cli/extensions/profiles-matrix', String(Date.now()));
   try {

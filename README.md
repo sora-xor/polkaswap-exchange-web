@@ -4,7 +4,7 @@ Polkaswap Exchange Web is the Vue 3 + TypeScript client for the SORA network. It
 
 ## Requirements
 
-- Node 24.x (see `.nvmrc` and the `package.json` engine field). Use `nvm`, `fnm`, or another version manager to match the toolchain before installing dependencies.
+- Node 26.x (see `.nvmrc` and the `package.json` engine field). Use `nvm`, `fnm`, or another version manager to match the toolchain before installing dependencies.
 - Yarn 4.x (Berry). The repo pins the exact release via `.yarn/releases` and `.yarnrc.yml` (`yarnPath`); use `corepack` (bundled with Node) if needed.
 - `npm install` is not supported (the repo uses Yarn's `patch:` protocol for dependencies).
 - Modern browsers with WebAssembly enabled for runtime usage.
@@ -15,7 +15,8 @@ The IPFS bundle reads runtime configuration from `public/env.json`. Two keys are
 
 - `BASE_API_URL` — points to the target runtime (production, staging, etc.).
 - `DEFAULT_NETWORKS` — array of nodes that appear in the network selector. The first entry must be a trusted SORAMITSU node because its `genesisHash` is used to validate custom connections.
-- `POLKASWAP_INDEXER_ENDPOINT` — GraphQL endpoint for Polkaswap statistics and indexed history. Local browser origins keep a configured endpoint such as `https://pi.soramitsu.io/graphql`; only an empty value falls back to the sibling `../polkaswap-indexer` endpoint (`http://localhost:4350/graphql`) for focused local-indexer testing.
+- `POLKASWAP_INDEXER_ENDPOINT` — GraphQL endpoint for Polkaswap statistics and indexed history. Empty values disable indexer-backed features until an explicit endpoint is configured.
+- `SORAMETRICS_API_ENDPOINT` — optional Sorametrics REST API endpoint used for fiat prices and latest block display when the configured Polkaswap GraphQL indexer is unavailable. It is not a GraphQL replacement endpoint.
 
 ```json
 {

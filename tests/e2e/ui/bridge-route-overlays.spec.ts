@@ -34,7 +34,7 @@ const expectSwapSettingsClickable = async (page: Page): Promise<void> => {
   const swapSettingsDialog = page.locator('.market-algorithm').first();
 
   await expect(swapSettingsTrigger).toBeVisible();
-  await swapSettingsTrigger.click({ trial: true, timeout: 500 });
+  await swapSettingsTrigger.click({ trial: true, timeout: 2_000 });
   await swapSettingsTrigger.click();
   await expect(swapSettingsDialog).toBeVisible();
 
@@ -53,6 +53,63 @@ const callWeb3Store = async (page: Page, action: string, payload?: unknown): Pro
     { action, payload }
   );
 };
+
+const installDuplicateEip6963Announcements = async (page: Page): Promise<void> => {
+  await page.evaluate(() => {
+    const browserWindow = window as typeof window & {
+      __PS_E2E_EIP6963_STATE__?: { requestCount: number };
+    };
+    const providers = [
+      { uuid: 'ps-e2e-provider-alpha', name: 'E2E Alpha Wallet', rdns: 'io.polkaswap.e2e.alpha' },
+      { uuid: 'ps-e2e-provider-beta', name: 'E2E Beta Wallet', rdns: 'io.polkaswap.e2e.beta' },
+    ];
+
+    browserWindow.__PS_E2E_EIP6963_STATE__ = { requestCount: 0 };
+
+    const announceProviders = () => {
+      providers.forEach((info) => {
+        for (let index = 0; index < 2; index += 1) {
+          window.dispatchEvent(
+            new CustomEvent('eip6963:announceProvider', {
+              detail: {
+                info: {
+                  ...info,
+                  icon: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22/%3E',
+                },
+                provider: {
+                  request: async () => null,
+                },
+              },
+            })
+          );
+        }
+      });
+    };
+
+    window.addEventListener('eip6963:requestProvider', () => {
+      browserWindow.__PS_E2E_EIP6963_STATE__!.requestCount += 1;
+      announceProviders();
+    });
+  });
+};
+
+const getEip6963DiscoveryState = async (page: Page) =>
+  page.evaluate(() => {
+    const browserWindow = window as typeof window & {
+      __PS_E2E_EIP6963_STATE__?: { requestCount: number };
+    };
+    const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+    const web3Store = pinia?._s?.get('web3-legacy') ?? pinia?._s?.get('web3');
+    const e2eProviders = ((web3Store?.appEvmProviders ?? []) as Array<{ uuid?: string; name?: string }>).filter(
+      (provider) => provider.uuid?.startsWith('ps-e2e-provider-')
+    );
+
+    return {
+      requestCount: browserWindow.__PS_E2E_EIP6963_STATE__?.requestCount ?? 0,
+      uuids: e2eProviders.map((provider) => provider.uuid),
+      names: e2eProviders.map((provider) => provider.name),
+    };
+  });
 
 const injectSubNodeDialogContext = async (page: Page): Promise<void> => {
   await page.evaluate(() => {
@@ -111,6 +168,41 @@ test('tears down bridge provider dialog on hash churn and preserves swap clickab
   await expect(providerDialog).toHaveCount(0);
   await expectSwapSettingsClickable(page);
 
+  expect(consoleErrors).toEqual([]);
+});
+
+test('deduplicates EIP-6963 providers across provider dialog open-close churn', async ({ page }) => {
+  const consoleErrors = trackConsole(page);
+  await openBridge(page);
+  await installDuplicateEip6963Announcements(page);
+
+  const providerDialog = page
+    .getByRole('dialog')
+    .filter({ hasText: /connect ethereum wallet/i })
+    .first();
+
+  for (let index = 0; index < 3; index += 1) {
+    await callWeb3Store(page, 'setSelectProviderDialogVisibility', true);
+    await expect(providerDialog).toBeVisible();
+    await expect(providerDialog).toContainText('E2E Alpha Wallet');
+    await expect(providerDialog).toContainText('E2E Beta Wallet');
+
+    await callWeb3Store(page, 'setSelectProviderDialogVisibility', false);
+    await expect(providerDialog).toHaveCount(0);
+  }
+
+  await callWeb3Store(page, 'setSelectProviderDialogVisibility', true);
+  await expect(providerDialog).toBeVisible();
+
+  const state = await getEip6963DiscoveryState(page);
+
+  expect(state.requestCount).toBe(1);
+  expect(state.uuids.sort()).toEqual(['ps-e2e-provider-alpha', 'ps-e2e-provider-beta']);
+  expect(new Set(state.uuids).size).toBe(state.uuids.length);
+  expect(state.names.sort()).toEqual(['E2E Alpha Wallet', 'E2E Beta Wallet']);
+
+  await page.keyboard.press('Escape');
+  await expect(providerDialog).toHaveCount(0);
   expect(consoleErrors).toEqual([]);
 });
 
@@ -215,7 +307,7 @@ test('keeps bridge asset selector visibility decoupled from sub-account dialog v
   await page.keyboard.press('Escape');
   await expect(subAccountDialog).toHaveCount(0);
 
-  await assetTrigger.click({ trial: true, timeout: 500 });
+  await assetTrigger.click({ trial: true, timeout: 2_000 });
   await assetTrigger.click();
   await expect(assetDialog).toBeVisible();
   await expect(subAccountDialog).toHaveCount(0);

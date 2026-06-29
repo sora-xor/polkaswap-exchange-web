@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Pengindeks",
-                "title": "{Sora} Pemilihan layanan jaringan",
-                "useCeres": "Gunakan Pengindeks Polkaswap untuk nilai fiat"
+                "title": "{Sora} Pemilihan layanan jaringan"
             },
-            "indexerBlock": "Blok Pengindeks Polkaswap #{block}",
+            "indexerBlock": "Blok {source} #{block}",
             "label": "Layanan statistik",
             "title": {
                 "available": "Statistik tersedia",
@@ -883,7 +882,6 @@
         "Pool": "Kolam renang",
         "Rewards": "Hadiah",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Kartu",
         "StakingContainer": "Mempertaruhkan",
         "Stats": "Statistik",
         "Swap": "Tukar",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Selesaikan tugas terkait {title} untuk meningkatkan keterampilan Anda",
         "rewardNextLvl": "Hadiah level berikutnya",
-        "soraCard": "Daftar sekarang",
         "title": "Kemajuan Poin Anda",
         "toEarnPoints": "Untuk mendapatkan poin",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Memuat pasar...",
         "markets": {
+            "groupCount": "{count} Pasar",
+            "groupTotals": "Volume: {volume}",
+            "hotSubtitle": "{count} Aktif Pasar - Volume / Likuiditas",
+            "hotTitle": "Aktif Pasar",
             "search": "Cari pasar",
             "subtitle": "Pasar {count} cocok dengan filter saat ini",
-            "title": "Pasar"
+            "title": "Pasar",
+            "trending": "Volume"
         },
         "metrics": {
             "closeBlock": "Tutup blok",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "YA {yes} / TIDAK {no}",
+            "loading": "Memuat pasar..."
+        },
         "status": {
             "active": "Aktif",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0,0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Beli {outcome} {amount} {symbol} {shares}",
             "claimable": "Dapat diklaim",
             "claimableFailed": "Tidak dapat membaca saldo yang dapat diklaim.",
+            "claimFeesReceipt": "Klaim biaya pembuat",
+            "claimMarketReceipt": "Klaim pembayaran pedagang",
             "claimStatus": "Status klaim",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Jaminan keluar",
+            "connectForBalances": "Hubungkan akun",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "Saldo {symbol} tidak mencukupi",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR tidak mencukupi untuk biaya jaringan",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Tidak dapat menyegarkan kutipan.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Kutipan yang menyegarkan...",
             "refreshingQuote": "Kutipan yang menyegarkan...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Pilih pasar aktif untuk diperdagangkan.",
+            "sellReceipt": "Jual {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Bagikan",
             "sharesOut": "Bagikan",
             "sharesToSell": "Shares to sell",
             "slippage": "% selip",
             "takerFee": "Taker fee",
             "title": "Tiket perdagangan",
+            "transactionFailed": "Transaksi gagal",
+            "transactionId": "Id transaksi {id}",
+            "txHint": {
+                "confirmed": "Kutipan yang menyegarkan...",
+                "failed": "Transaksi gagal",
+                "submitted": "Transaksi dikirim",
+                "submitting": "Tertunda..."
+            },
+            "txStatus": {
+                "confirmed": "Transaksi dikonfirmasi",
+                "failed": "Transaksi gagal",
+                "submitted": "Transaksi dikirim",
+                "submitting": "Tertunda..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

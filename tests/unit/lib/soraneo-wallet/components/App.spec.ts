@@ -8,7 +8,6 @@ const setFiatCurrency = vi.hoisted(() => vi.fn());
 vi.mock('@/stores/wallet', () => ({
   useWalletStore: () => ({
     assetsToNotifyQueue: [],
-    ceresFiatValuesUsage: false,
     indexerType: 'polkaswap',
     currency: 'XOR',
     currencies: [{ key: 'USD' }],
@@ -23,7 +22,6 @@ vi.mock('@/stores/wallet', () => ({
     setFiatCurrency,
     setIsDesktop: vi.fn(),
     setSignTxDialogVisibility: vi.fn(),
-    useCeresApiForFiatValues: vi.fn(),
     notifyOnDeposit: vi.fn(),
     selectIndexer,
     setApiKeys: vi.fn(),

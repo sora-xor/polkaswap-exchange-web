@@ -781,6 +781,7 @@ export function useAppShell() {
         indexer: IndexerType.POLKASWAP,
         endpoint: polkaswapIndexerEndpoint,
       });
+      await walletStore.setSorametricsApiEndpoint(data.SORAMETRICS_API_ENDPOINT ?? '');
 
       if (data.FAUCET_URL) {
         settingsStore.setFaucetUrl(data.FAUCET_URL);

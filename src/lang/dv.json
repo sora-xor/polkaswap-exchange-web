@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "އިންޑެކްސަރ އެވެ",
-                "title": "{Sora} ނެޓްވޯކް ޚިދުމަތް ހޮވުން",
-                "useCeres": "ފިއަޓް ވެލިއުތަކަށް ޕޮލްކާސްވޮޕް އިންޑެކްސަރ ބޭނުންކުރުން"
+                "title": "{Sora} ނެޓްވޯކް ޚިދުމަތް ހޮވުން"
             },
-            "indexerBlock": "ޕޮލްކަސްވޮޕް އިންޑެކްސަރ ބްލޮކް #{block}",
+            "indexerBlock": "{source} ބްލޮކް #{block}",
             "label": "ތަފާސްހިސާބުތަކުގެ ހިދުމަތް",
             "title": {
                 "available": "ތަފާސްހިސާބުތައް ލިބެން ހުރެއެވެ",
@@ -883,7 +882,6 @@
         "Pool": "ޕޫލް އެވެ",
         "Rewards": "އިނާމު",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} ކާޑު",
         "StakingContainer": "ސްޓޭކިންގ",
         "Stats": "ތަފާސްހިސާބު",
         "Swap": "ސްވޮޕް ކުރާށެވެ",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "ސްކިލް ލެވެލް ކުރާނެއްގޮތް {title} އަށް ބަލައި ޓާސްކްތައް ނިމާލަ",
         "rewardNextLvl": "ކުރިޔަށް ލެވެލް ރިވޯޑް",
-        "soraCard": "މިހާރު އެޕްލައި ކުރޭ",
         "title": "ތިބާގެ ޕޮއިންޓްސް",
         "toEarnPoints": "ޕޮއިންޓް ލިބޭން ފައިސާއިން",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "ލޯޑިންގ މާކެޓްތަކުގައި...",
         "markets": {
+            "groupCount": "{count} މާކެޓްތަކެވެ",
+            "groupTotals": "ވޮލިއުމް: {volume}",
+            "hotSubtitle": "{count} އެކްޓިވް މާކެޓްތަކެވެ - ވޮލިއުމް / ލިކުއިޑިޓީ އެވެ",
+            "hotTitle": "އެކްޓިވް މާކެޓްތަކެވެ",
             "search": "މާކެޓްތައް ހޯދުން",
             "subtitle": "{count} މާކެޓްތައް މިހާރު ހުރި ފިލްޓަރުތަކާ އެއްގޮތްވެއެވެ",
-            "title": "މާކެޓްތަކެވެ"
+            "title": "މާކެޓްތަކެވެ",
+            "trending": "ވޮލިއުމް"
         },
         "metrics": {
             "closeBlock": "ބްލޮކް ބަންދުކުރުން",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "އާދެ {yes} / ނ {no}",
+            "loading": "ލޯޑިންގ މާކެޓްތަކުގައި..."
+        },
         "status": {
             "active": "އެކްޓިވް",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0 އެވެ",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "ގަންނަން {outcome} {amount} {symbol} {shares}",
             "claimable": "ކްލޭމް ކުރެވޭނެއެވެ",
             "claimableFailed": "ކްލޭމް ކުރެވޭ ބެލެންސްތައް ކިޔަން ނުކުޅެދިފައިވުން.",
+            "claimFeesReceipt": "ކްލޭމް ކްރިއޭޓަރ ފީސް",
+            "claimMarketReceipt": "ކްލޭމް ޓްރޭޑަރ ޕޭއައުޓް",
             "claimStatus": "ކްލޭމް ސްޓޭޓަސް",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "ކޮލެޓަރަލް އައުޓް",
+            "connectForBalances": "އެކައުންޓް ގުޅުވާށެވެ",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "އެކަށީގެންވާ __ޕީއެޗް{symbol} ބެލެންސް ނުވުން",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "ނެޓްވޯކް ފީއަށް އެކަށީގެންވާ އެކްސްއޯއާރު ނުލިބުން",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "ކޯޓް ރިފްރެޝް ކުރަން ނުކުޅެދިއްޖެއެވެ.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "ތާޒާ ކޯޓެއް...",
             "refreshingQuote": "ތާޒާ ކޯޓެއް...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "ވިޔަފާރި ކުރުމަށް ހަރަކާތްތެރި މާކެޓެއް ހޮވުން.",
+            "sellReceipt": "ވިއްކާ {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "ހިއްސާ...",
             "sharesOut": "ހިއްސާ އައުޓް",
             "sharesToSell": "Shares to sell",
             "slippage": "ސްލިޕްޕޭޖް % .",
             "takerFee": "Taker fee",
             "title": "ޓްރޭޑް ޓިކެޓެވެ",
+            "transactionFailed": "މުއާމަލާތް ނާކާމިޔާބުވިއެވެ",
+            "transactionId": "ޓްރާންސެކްޝަން އައިޑީ {id}",
+            "txHint": {
+                "confirmed": "ތާޒާ ކޯޓެއް...",
+                "failed": "މުއާމަލާތް ނާކާމިޔާބުވިއެވެ",
+                "submitted": "މުއާމަލާތް ހުށަހެޅިއެވެ",
+                "submitting": "ޕެންޑިންގ..."
+            },
+            "txStatus": {
+                "confirmed": "މުއާމަލާތް ކަށަވަރުވެއްޖެއެވެ",
+                "failed": "މުއާމަލާތް ނާކާމިޔާބުވިއެވެ",
+                "submitted": "މުއާމަލާތް ހުށަހެޅިއެވެ",
+                "submitting": "ޕެންޑިންގ..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

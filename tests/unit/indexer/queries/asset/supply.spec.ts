@@ -2,20 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const fetchAllEntitiesMock = vi.hoisted(() => vi.fn());
 const getCurrentIndexerMock = vi.hoisted(() => vi.fn());
-const getAssetSupplyMock = vi.hoisted(() => vi.fn());
 const waitForSoraNetworkFromEnvMock = vi.hoisted(() => vi.fn());
 const useSettingsStoreMock = vi.hoisted(() => vi.fn());
 const CODEC_SCALE = 10n ** 18n;
 const codecFromNatural = (value: bigint): string => (value * CODEC_SCALE).toString();
-const DEFAULT_CHAIN_XOR_SUPPLY = codecFromNatural(12_880_123n);
-
-vi.mock('@/lib/soraneo-wallet/src/api', () => ({
-  api: {
-    assets: {
-      getAssetSupply: getAssetSupplyMock,
-    },
-  },
-}));
 
 vi.mock('@/lib/soraneo-wallet/src/services/indexer', () => ({
   getCurrentIndexer: getCurrentIndexerMock,
@@ -40,7 +30,6 @@ describe('fetchAssetSupplyData', () => {
         burn: 0,
       },
     ]);
-    getAssetSupplyMock.mockResolvedValue(DEFAULT_CHAIN_XOR_SUPPLY);
     getCurrentIndexerMock.mockReturnValue({
       type: 'polkaswap',
       services: {
@@ -68,10 +57,9 @@ describe('fetchAssetSupplyData', () => {
       },
     ]);
     expect(waitForSoraNetworkFromEnvMock).not.toHaveBeenCalled();
-    expect(getAssetSupplyMock).not.toHaveBeenCalled();
   });
 
-  it('falls back to env resolution when the settings store is unavailable', async () => {
+  it('uses env resolution when the settings store is unavailable', async () => {
     useSettingsStoreMock.mockImplementation(() => {
       throw new Error('pinia unavailable');
     });
@@ -86,7 +74,7 @@ describe('fetchAssetSupplyData', () => {
     expect(data[0]?.value).toBeCloseTo(100 - 33449609.3779);
   });
 
-  it('uses current chain supply when indexer snapshots contain only zero supply values', async () => {
+  it('keeps zero supply values returned by the indexer', async () => {
     fetchAllEntitiesMock.mockResolvedValue([
       {
         timestamp: 1_700_000_000_000,
@@ -107,17 +95,16 @@ describe('fetchAssetSupplyData', () => {
 
     const data = await fetchAssetSupplyData(XOR.address, Date.now(), Date.now() - 1_000, 'daily' as any);
 
-    expect(getAssetSupplyMock).toHaveBeenCalledWith(XOR.address);
     expect(data).toEqual([
       {
         timestamp: 1_700_000_000_000,
-        value: 12_880_123,
+        value: 0,
         mint: 12,
         burn: 3,
       },
       {
         timestamp: 1_699_996_400_000,
-        value: 12_880_123,
+        value: 0,
         mint: 0,
         burn: 0,
       },
@@ -147,7 +134,6 @@ describe('fetchAssetSupplyData', () => {
         burn: 0,
       },
     ]);
-    expect(getAssetSupplyMock).not.toHaveBeenCalled();
   });
 
   it('does not apply legacy XOR division to indexer snapshot supplies', async () => {
@@ -170,7 +156,6 @@ describe('fetchAssetSupplyData', () => {
     expect(data[0]?.value).toBe(999_000);
     expect(data[0]?.mint).toBe(0);
     expect(data[0]?.burn).toBe(0);
-    expect(getAssetSupplyMock).not.toHaveBeenCalled();
   });
 
   it('decodes each XOR snapshot supply independently without delta rescaling', async () => {
@@ -198,7 +183,6 @@ describe('fetchAssetSupplyData', () => {
     expect(data[0]?.value).toBe(999_000);
     expect(data[1]?.value).toBe(999_002);
     expect(data[1]?.burn).toBeCloseTo(2.8758563, 7);
-    expect(getAssetSupplyMock).not.toHaveBeenCalled();
   });
 
   it('does not rescale XOR burn buckets in the frontend', async () => {
@@ -236,43 +220,7 @@ describe('fetchAssetSupplyData', () => {
     expect(data[2]?.burn).toBeCloseTo(100_000.1976598377, 6);
   });
 
-  it('decodes current XOR supply fallback values with ordinary codec precision', async () => {
-    fetchAllEntitiesMock.mockResolvedValue([]);
-    getAssetSupplyMock.mockResolvedValue(codecFromNatural(2_000_000_000n));
-
-    const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
-
-    const data = await fetchAssetSupplyData(XOR.address, 1_700_000_000, 1_699_996_400, 'daily' as any);
-
-    expect(data).toEqual([
-      {
-        timestamp: 1_700_000_000_000,
-        value: 2_000_000_000,
-        mint: 0,
-        burn: 0,
-      },
-    ]);
-  });
-
-  it('does not apply legacy XOR division to current supply fallback values', async () => {
-    fetchAllEntitiesMock.mockResolvedValue([]);
-    getAssetSupplyMock.mockResolvedValue(codecFromNatural(999_000n));
-
-    const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
-    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
-
-    const data = await fetchAssetSupplyData(XOR.address, 1_700_000_000, 1_699_996_400, 'daily' as any);
-
-    expect(getAssetSupplyMock).toHaveBeenCalledWith(XOR.address);
-    expect(data).toHaveLength(1);
-    expect(data[0]?.timestamp).toBe(1_700_000_000_000);
-    expect(data[0]?.value).toBe(999_000);
-    expect(data[0]?.mint).toBe(0);
-    expect(data[0]?.burn).toBe(0);
-  });
-
-  it('adds a current supply point when the indexer returns no supply snapshots', async () => {
+  it('returns an empty series when the indexer returns no supply snapshots', async () => {
     fetchAllEntitiesMock.mockResolvedValue([]);
 
     const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
@@ -280,13 +228,6 @@ describe('fetchAssetSupplyData', () => {
 
     const data = await fetchAssetSupplyData(XOR.address, 1_700_000_000, 1_699_996_400, 'daily' as any);
 
-    expect(data).toEqual([
-      {
-        timestamp: 1_700_000_000_000,
-        value: 12_880_123,
-        mint: 0,
-        burn: 0,
-      },
-    ]);
+    expect(data).toEqual([]);
   });
 });

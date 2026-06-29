@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Индексацияче",
-                "title": "{Sora} Челтәр хезмәтен сайлау",
-                "useCeres": "Фиат кыйммәтләре өчен Polkaswap Indexer кулланыгыз"
+                "title": "{Sora} Челтәр хезмәтен сайлау"
             },
-            "indexerBlock": "Polkaswap Indexer блогы #{block}",
+            "indexerBlock": "{source} блогы #{block}",
             "label": "Статистика хезмәтләре",
             "title": {
                 "available": "Статистика бар",
@@ -883,7 +882,6 @@
         "Pool": "Бассейн",
         "Rewards": "Бүләкләр",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} Карта",
         "StakingContainer": "Штак",
         "Stats": "Статистика",
         "Swap": "Своп",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Сезнең осталыгыгызны күтәрү өчен {title} белән бәйле биремнәрне тәмамлагыз",
         "rewardNextLvl": "Киләсе дәрәҗә бүләк",
-        "soraCard": "Хәзер кулланыгыз",
         "title": "Сезнең фикерләр",
         "toEarnPoints": "Нокталар табу",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Базарларны йөкләү ...",
         "markets": {
+            "groupCount": "{count} Базарлар",
+            "groupTotals": "Том: {volume}",
+            "hotSubtitle": "{count} Актив Базарлар - Том / Ликвидлык",
+            "hotTitle": "Актив Базарлар",
             "search": "Базарларны эзләү",
             "subtitle": "{count} базарлары хәзерге фильтрларга туры килә",
-            "title": "Базарлар"
+            "title": "Базарлар",
+            "trending": "Том"
         },
         "metrics": {
             "closeBlock": "Блокны ябу",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "Әйе {yes} / NOК {no}",
+            "loading": "Базарларны йөкләү ..."
+        },
         "status": {
             "active": "Актив",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Сатып ал {outcome} {amount} {symbol} {shares}",
             "claimable": "Игътибарлы",
             "claimableFailed": "Игътибарлы балансны укый алмый.",
+            "claimFeesReceipt": "Иҗат түләүләрен таләп итегез",
+            "claimMarketReceipt": "Сәүдәгәрнең түләвен таләп итегез",
             "claimStatus": "Дәгъва статусы",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "Залог",
+            "connectForBalances": "Конференция счеты",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "{symbol} балансы җитми",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Челтәр өчен түләү өчен XOR җитми",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Oteитатаны яңартып булмый.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "Яңартучы цитата ...",
             "refreshingQuote": "Яңартучы цитата ...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Сәүдә итү өчен актив базар сайлагыз.",
+            "sellReceipt": "Сату {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Акцияләр",
             "sharesOut": "Акцияләр",
             "sharesToSell": "Shares to sell",
             "slippage": "Слайд%",
             "takerFee": "Taker fee",
             "title": "Сәүдә билеты",
+            "transactionFailed": "Транзакция уңышсыз",
+            "transactionId": "Транзакция ID {id}",
+            "txHint": {
+                "confirmed": "Яңартучы цитата ...",
+                "failed": "Транзакция уңышсыз",
+                "submitted": "Транзакция тапшырылды",
+                "submitting": "Көтелгән ..."
+            },
+            "txStatus": {
+                "confirmed": "Транзакция расланды",
+                "failed": "Транзакция уңышсыз",
+                "submitted": "Транзакция тапшырылды",
+                "submitting": "Көтелгән ..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

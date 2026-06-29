@@ -63,8 +63,7 @@ const getSorametricsLink = (params: Record<string, string>): string => {
   return `${SORAMETRICS_EXPLORER_URL.replace(/\/+$/, '')}?${query}`;
 };
 
-export const getSorametricsAccountLink = (address: string): string =>
-  getSorametricsLink({ tab: 'balance', address });
+export const getSorametricsAccountLink = (address: string): string => getSorametricsLink({ tab: 'balance', address });
 
 export const getSorametricsBlockLink = (block: string | number): string =>
   getSorametricsLink({ tab: 'extrinsics', block: String(block) });
@@ -118,8 +117,9 @@ export const getAccountIdentity = async (
   chainApi: WithConnectionApi = api
 ): Promise<AccountIdentity | null> => {
   if (!validateAddress(address)) return null;
+  if (!chainApi.connected) return null;
 
-  const identity = await chainApi.getAccountOnChainIdentity(address);
+  const identity = await chainApi.getAccountOnChainIdentity(address).catch(() => null);
 
   if (!identity) return null;
 

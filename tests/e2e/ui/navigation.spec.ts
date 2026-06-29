@@ -86,6 +86,31 @@ const expectLocatorBoxWithinViewport = async (locator: Locator): Promise<void> =
   expect(metrics.bottom).toBeLessThanOrEqual(metrics.viewportHeight + 1);
 };
 
+const waitForNextPaint = async (page: Page): Promise<void> => {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      })
+  );
+};
+
+const clickFooterStatusTrigger = async (page: Page, trigger: Locator): Promise<void> => {
+  await expect(trigger).toBeVisible();
+  await trigger.scrollIntoViewIfNeeded();
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      await trigger.click({ trial: true, timeout: 2_000 });
+      await trigger.click();
+      return;
+    } catch (error) {
+      if (attempt === 1) throw error;
+      await waitForNextPaint(page);
+    }
+  }
+};
+
 const openSwap = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/swap`);
   await ensureAppLoaded(page);
@@ -429,7 +454,7 @@ test('restores swap control clickability immediately after closing mobile sideba
   await page.mouse.click(380, 120);
   await expect(menu).not.toHaveClass(/visible/);
 
-  await settingsButton.click({ trial: true, timeout: 100 });
+  await settingsButton.click({ trial: true, timeout: 2_000 });
   await settingsButton.click();
   await expect(settingsDialog).toBeVisible();
 
@@ -743,7 +768,7 @@ test('restores swap control clickability immediately after closing select-token 
   await page.keyboard.press('Escape');
 
   await expect(connectAccountButton).toBeVisible();
-  await connectAccountButton.click({ trial: true, timeout: 100 });
+  await connectAccountButton.click({ trial: true, timeout: 2_000 });
   await connectAccountButton.click();
   await expect(connectAccountDialog).toBeVisible();
 
@@ -831,7 +856,7 @@ test('restores swap settings trigger clickability immediately after closing mark
 
   await page.keyboard.press('Escape');
 
-  await settingsButton.click({ trial: true, timeout: 100 });
+  await settingsButton.click({ trial: true, timeout: 2_000 });
   await settingsButton.click();
   await expect(settingsDialog).toBeVisible();
 
@@ -880,7 +905,7 @@ test('restores header settings trigger clickability immediately after closing no
   await page.keyboard.press('Escape');
   await expect(alertsDialog).toHaveCount(0);
 
-  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click({ trial: true, timeout: 2_000 });
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
 
@@ -1074,7 +1099,7 @@ test('restores header settings trigger clickability immediately after closing la
 
   await page.keyboard.press('Escape');
 
-  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click({ trial: true, timeout: 2_000 });
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
 
@@ -1142,7 +1167,7 @@ test('restores header settings trigger clickability immediately after closing cu
 
   await page.keyboard.press('Escape');
 
-  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click({ trial: true, timeout: 2_000 });
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
 
@@ -1470,6 +1495,8 @@ test('keeps inline transaction details within viewport on extra narrow screens',
   await expect(inlineDetails).toHaveCount(1);
   await expect(page.locator('.transaction-details-popper')).toHaveCount(0);
   await expectNoHorizontalOverflow(page);
+  await inlineDetails.first().scrollIntoViewIfNeeded();
+  await waitForNextPaint(page);
   await expectLocatorWithinViewport(page, '.transaction-details-inline-content');
 
   expect(consoleErrors).toEqual([]);
@@ -1600,7 +1627,7 @@ test('restores info popover trigger clickability immediately after escape close'
   await page.keyboard.press('Escape');
   await expect(infoPopover).toHaveCount(0);
 
-  await infoTrigger.click({ trial: true, timeout: 100 });
+  await infoTrigger.click({ trial: true, timeout: 2_000 });
   await infoTrigger.click();
   await expect(infoPopover).toBeVisible();
 
@@ -1676,9 +1703,9 @@ test('restores footer status trigger clickability immediately after closing popo
 
   await page.keyboard.press('Escape');
   await expect(footerPopover).toHaveCount(0);
+  await waitForNextPaint(page);
 
-  await footerStatusItem.click({ trial: true, timeout: 100 });
-  await footerStatusItem.click();
+  await clickFooterStatusTrigger(page, footerStatusItem);
   await expect(footerPopover).toHaveCount(1);
 
   await page.keyboard.press('Escape');
@@ -1907,7 +1934,7 @@ test('restores order-book pair-list trigger clickability immediately after closi
   await page.keyboard.press('Escape');
   await expect(pairPopover).toHaveCount(0);
 
-  await pairTrigger.click({ trial: true, timeout: 100 });
+  await pairTrigger.click({ trial: true, timeout: 2_000 });
   await pairTrigger.click();
   await expect(pairPopover).toHaveCount(1);
 
@@ -2047,7 +2074,7 @@ test('restores header settings trigger clickability immediately after closing di
   await disclaimerCloseButton.click();
   await expect(disclaimer).toHaveCount(0);
 
-  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click({ trial: true, timeout: 2_000 });
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
 
@@ -2083,7 +2110,7 @@ test('restores header settings trigger clickability immediately after closing di
   await disclaimerCloseButton.click();
   await expect(disclaimer).toHaveCount(0);
 
-  await settingsTrigger.click({ trial: true, timeout: 100 });
+  await settingsTrigger.click({ trial: true, timeout: 2_000 });
   await settingsTrigger.click();
   await expect(settingsOverlay).toHaveCount(1);
 

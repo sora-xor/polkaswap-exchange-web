@@ -74,7 +74,7 @@ import { runtimeStorage, settingsStorage, storage } from '@/lib/soraneo-wallet/s
 import { isAppStorageSource, loginApi, logoutApi, updateApiSigner } from '@/lib/soraneo-wallet/src/util/account';
 import { sanitizeNftBlacklistPayload, sanitizeWhitelistPayload } from '@/lib/soraneo-wallet/src/util/security';
 import type { ExternalHistoryParams } from '@/lib/soraneo-wallet/src/types/history';
-import { resolveFallbackIndexer, resolvePreferredIndexer } from '@/stores/wallet/utils/indexers';
+import { resolvePreferredIndexer } from '@/stores/wallet/utils/indexers';
 import type { Book, Nullable } from '@/types/common';
 import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
 import type { TransactionSignVisibilityController } from '@/lib/soraneo-wallet/src/util';
@@ -104,6 +104,7 @@ type AlertsServiceModule = typeof import('@/lib/soraneo-wallet/src/services/aler
 type CurrencyServiceModule = typeof import('@/lib/soraneo-wallet/src/services/currency');
 type GoogleServicesModule = typeof import('@/lib/soraneo-wallet/src/services/google');
 type IndexerServicesModule = typeof import('@/lib/soraneo-wallet/src/services/indexer');
+type SorametricsServiceModule = typeof import('@/services/sorametrics');
 type RxjsModule = typeof import('rxjs');
 type CurrentIndexer = ReturnType<IndexerServicesModule['getCurrentIndexer']>;
 
@@ -121,6 +122,7 @@ let alertsServiceModulePromise: Promise<AlertsServiceModule> | null = null;
 let currencyServiceModulePromise: Promise<CurrencyServiceModule> | null = null;
 let googleServicesModulePromise: Promise<GoogleServicesModule> | null = null;
 let rxjsModulePromise: Promise<RxjsModule> | null = null;
+let sorametricsServiceModulePromise: Promise<SorametricsServiceModule> | null = null;
 
 /**
  * Loads browser notification alert code only when alert subscriptions or
@@ -168,6 +170,14 @@ const loadIndexerServices = (): Promise<IndexerServicesModule> => {
 };
 
 /**
+ * Loads Sorametrics REST helpers only when the explicit alternative endpoint is configured.
+ */
+const loadSorametricsServices = (): Promise<SorametricsServiceModule> => {
+  sorametricsServiceModulePromise ??= import('@/services/sorametrics');
+  return sorametricsServiceModulePromise;
+};
+
+/**
  * Resolves the active indexer descriptor from the lazily loaded service module.
  */
 const getCurrentIndexerService = async (): Promise<CurrentIndexer> => {
@@ -175,7 +185,7 @@ const getCurrentIndexerService = async (): Promise<CurrentIndexer> => {
   return getCurrentIndexer();
 };
 
-const fallbackFilters: WalletAssetFilters = {
+const defaultFilters: WalletAssetFilters = {
   option: 'All',
   verifiedOnly: false,
   zeroBalance: false,
@@ -237,7 +247,6 @@ export const useWalletStore = defineStore('wallet', () => {
   const isMST = computed(() => Boolean(accountState.value.isMST));
   const isMstAccount = computed(() => Boolean(accountState.value.isMST));
   const isMstAddressExist = computed(() => Boolean(accountState.value.isMstAddressExist));
-  const ceresFiatValuesUsage = computed(() => Boolean(accountState.value.ceresFiatValuesUsage));
   const blacklist = computed(() => accountState.value.blacklistArray ?? []);
   const shouldBalanceBeHidden = computed(() => Boolean(settingsState.value.shouldBalanceBeHidden));
   const apiKeys = computed(() => ({ ...(settingsState.value.apiKeys ?? {}) }) as Record<string, string>);
@@ -258,13 +267,14 @@ export const useWalletStore = defineStore('wallet', () => {
   const isWalletLoaded = computed(() => Boolean(settingsState.value.isWalletLoaded));
   const allowFeePopup = computed(() => Boolean(settingsState.value.allowFeePopup));
   const permissions = computed(() => settingsState.value.permissions);
-  const filters = computed(() => (settingsState.value.filters as WalletAssetFilters) ?? fallbackFilters);
+  const filters = computed(() => (settingsState.value.filters as WalletAssetFilters) ?? defaultFilters);
   const assetsFilter = computed(() => (settingsState.value.assetsFilter as FilterOptions) ?? ('All' as FilterOptions));
   const currencies = computed(() => (settingsState.value.currencies ?? []) as CurrencyFields[]);
   const alerts = computed(() => (settingsState.value.alerts ?? []) as Alert[]);
   const allowTopUpAlert = computed(() => Boolean(settingsState.value.allowTopUpAlert));
   const indexers = computed(() => (settingsState.value.indexers ?? {}) as Record<string, IndexerState>);
   const indexerType = computed(() => (settingsState.value.indexerType as Nullable<string>) ?? null);
+  const sorametricsApiEndpoint = computed(() => settingsState.value.sorametricsApiEndpoint ?? '');
   const nftStorage = computed(() => settingsState.value.nftStorage ?? null);
   const activeTransactions = computed<HistoryItem[]>(() =>
     transactionsState.value.activeTxsIds
@@ -684,8 +694,23 @@ export const useWalletStore = defineStore('wallet', () => {
   };
 
   const getFiatPriceObjectUsingIndexer = async (): Promise<void> => {
-    const indexer = await getCurrentIndexerService();
-    const data = await indexer.services.explorer.price.getFiatPriceObject();
+    let data: Nullable<FiatPriceObject> = null;
+
+    try {
+      const indexer = await getCurrentIndexerService();
+      data = await indexer.services.explorer.price.getFiatPriceObject();
+    } catch (error) {
+      console.warn('[wallet] Polkaswap indexer fiat prices are unavailable.', error);
+    }
+
+    if (!data && settingsState.value.sorametricsApiEndpoint) {
+      try {
+        const { fetchSorametricsTokenPrices } = await loadSorametricsServices();
+        data = await fetchSorametricsTokenPrices(settingsState.value.sorametricsApiEndpoint);
+      } catch (error) {
+        console.warn('[wallet] Sorametrics fiat prices are unavailable.', error);
+      }
+    }
 
     if (data) {
       setFiatPriceObject(data);
@@ -728,16 +753,6 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const subscribeOnFiatPrice = async (): Promise<void> => {
     await useFiatValuesFromIndexer();
-  };
-
-  const setCeresFiatValuesUsage = (): void => {
-    accountState.value.ceresFiatValuesUsage = false;
-    settingsStorage.set('ceresFiatValues', false);
-  };
-
-  const useCeresApiForFiatValues = async (_flag = false): Promise<void> => {
-    setCeresFiatValuesUsage();
-    await subscribeOnFiatPrice();
   };
 
   const subscribeOnAlerts = async (): Promise<void> => {
@@ -885,6 +900,11 @@ export const useWalletStore = defineStore('wallet', () => {
       endpoint: payload.endpoint,
       status: (!payload.endpoint ? 'unavailable' : current.status) as IndexerState['status'],
     };
+  };
+
+  const setSorametricsApiEndpoint = (endpoint: unknown): void => {
+    settingsState.value.sorametricsApiEndpoint =
+      typeof endpoint === 'string' ? endpoint.trim().replace(/\/+$/, '') : '';
   };
 
   const setIsDesktop = (flag: boolean): void => {
@@ -1157,15 +1177,6 @@ export const useWalletStore = defineStore('wallet', () => {
       };
     }
 
-    if (payload.status !== 'unavailable' || settingsState.value.indexerType !== payload.indexer) {
-      return;
-    }
-
-    const nextIndexer = resolveFallbackIndexer(settingsState.value.indexerType, settingsState.value.indexers);
-
-    if (nextIndexer) {
-      await selectIndexer(nextIndexer);
-    }
   };
 
   const resetIndexerSubscriptions = async (): Promise<void> => {
@@ -1547,7 +1558,6 @@ export const useWalletStore = defineStore('wallet', () => {
     isMST,
     isMstAccount,
     isMstAddressExist,
-    ceresFiatValuesUsage,
     blacklist,
     shouldBalanceBeHidden,
     apiKeys,
@@ -1570,6 +1580,7 @@ export const useWalletStore = defineStore('wallet', () => {
     allowTopUpAlert,
     indexers,
     indexerType,
+    sorametricsApiEndpoint,
     nftStorage,
     activeTransactions,
     history,
@@ -1595,6 +1606,7 @@ export const useWalletStore = defineStore('wallet', () => {
     setConfirmTxDialogDisabled,
     setSoraNetwork,
     setIndexerEndpoint,
+    setSorametricsApiEndpoint,
     setIsDesktop,
     navigate,
     prepareWalletEntryNavigation,
@@ -1655,7 +1667,6 @@ export const useWalletStore = defineStore('wallet', () => {
     resetAccountAssetsSubscription,
     subscribeOnFiatPrice,
     resetFiatPriceSubscription,
-    useCeresApiForFiatValues,
     subscribeOnAlerts,
     resetAlertsSubscription,
     subscribeOnBlockNumber,

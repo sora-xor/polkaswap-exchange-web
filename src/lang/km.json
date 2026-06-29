@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "អ្នកលក្ខិ",
-                "title": "{Sora} ការជ្រើសរើសសេវាកម្មបណ្តាញ",
-                "useCeres": "ប្រើសន្ទស្សន៍ Polkaswap សម្រាប់តម្លៃ fiat"
+                "title": "{Sora} ការជ្រើសរើសសេវាកម្មបណ្តាញ"
             },
-            "indexerBlock": "ប្លុកសន្ទស្សន៍ Polkaswap #{block}",
+            "indexerBlock": "ប្លុក {source} #{block}",
             "label": "សេវាកម្មស្ថិតិ",
             "title": {
                 "available": "ស្ថិតិដែលមាន",
@@ -883,7 +882,6 @@
         "Pool": "អាងតឹក",
         "Rewards": "រង្វាន់",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} កាត",
         "StakingContainer": "ការចាប់យក",
         "Stats": "ស្ថិតិ",
         "Swap": "ប្ដូរផល",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "បំពេញកិច្ចការដែលទាក់ទងនឹង {title} ដើម្បីបង្កើនជំនាញរបស់អ្នក។",
         "rewardNextLvl": "រង្វាន់បន្ទាប់",
-        "soraCard": "ដាក់ពាក្យឥឡូវនេះ",
         "title": "ចំណុចរបស់អ្នក",
         "toEarnPoints": "ដើម្បីរកពិន្ទុ",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "កំពុងផ្ទុកទីផ្សារ...",
         "markets": {
+            "groupCount": "{count} ទីផ្សារ",
+            "groupTotals": "កម្រិតសំឡេង: {volume}",
+            "hotSubtitle": "{count} សកម្ម ទីផ្សារ - កម្រិតសំឡេង / សាច់ប្រាក់",
+            "hotTitle": "សកម្ម ទីផ្សារ",
             "search": "ស្វែងរកទីផ្សារ",
             "subtitle": "ទីផ្សារ {count} ត្រូវគ្នានឹងតម្រងបច្ចុប្បន្ន",
-            "title": "ទីផ្សារ"
+            "title": "ទីផ្សារ",
+            "trending": "កម្រិតសំឡេង"
         },
         "metrics": {
             "closeBlock": "បិទប្លុក",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "បាទ {yes} / ទេ {no}",
+            "loading": "កំពុងផ្ទុកទីផ្សារ..."
+        },
         "status": {
             "active": "សកម្ម",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "ទិញ {outcome} {amount} {symbol} {shares}",
             "claimable": "អាចទាមទារបាន។",
             "claimableFailed": "មិនអាចអានសមតុល្យដែលអាចទាមទារបានទេ។",
+            "claimFeesReceipt": "ទាមទារថ្លៃអ្នកបង្កើត",
+            "claimMarketReceipt": "ទាមទារការទូទាត់របស់ឈ្មួញ",
             "claimStatus": "ស្ថានភាពទាមទារ",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "វត្ថុបញ្ចាំចេញ",
+            "connectForBalances": "ភ្ជាប់គណនី",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "សមតុល្យ {symbol} មិនគ្រប់គ្រាន់",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR មិនគ្រប់គ្រាន់សម្រាប់ថ្លៃបណ្តាញ",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "មិនអាចផ្ទុកសម្រង់ឡើងវិញបានទេ។",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "សម្រង់សម្រង់ថ្មី...",
             "refreshingQuote": "សម្រង់សម្រង់ថ្មី...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "ជ្រើសរើសទីផ្សារសកម្មដើម្បីធ្វើពាណិជ្ជកម្ម។",
+            "sellReceipt": "លក់ {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "ភាគហ៊ុន",
             "sharesOut": "ចែករំលែក",
             "sharesToSell": "Shares to sell",
             "slippage": "រអិល %",
             "takerFee": "Taker fee",
             "title": "សំបុត្រពាណិជ្ជកម្ម",
+            "transactionFailed": "ប្រតិបត្តិការបានបរាជ័យ",
+            "transactionId": "លេខសម្គាល់ប្រតិបត្តិការ {id}",
+            "txHint": {
+                "confirmed": "សម្រង់សម្រង់ថ្មី...",
+                "failed": "ប្រតិបត្តិការបានបរាជ័យ",
+                "submitted": "ប្រតិបត្តិការត្រូវបានដាក់ស្នើ",
+                "submitting": "ពេលរង់ចាំ ..."
+            },
+            "txStatus": {
+                "confirmed": "ប្រតិបត្តិការបានបញ្ជាក់",
+                "failed": "ប្រតិបត្តិការបានបរាជ័យ",
+                "submitted": "ប្រតិបត្តិការត្រូវបានដាក់ស្នើ",
+                "submitting": "ពេលរង់ចាំ ..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

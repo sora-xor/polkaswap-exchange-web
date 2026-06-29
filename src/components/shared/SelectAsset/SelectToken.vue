@@ -69,6 +69,7 @@ import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 
 import SelectAssetList from '@/components/shared/SelectAsset/List.vue';
+import { filterAssetsByQuery as filterAssetsBySearchQuery } from '@/composables/useAssetSearch';
 import { useTranslation } from '@/composables/useTranslation';
 import { useLoading } from '@/composables/useLoading';
 import { ObjectInit } from '@/consts';
@@ -260,10 +261,10 @@ const selectedAssetsFilter = computed<FilterOptions>(
 
 const nonWhitelistAssets = computed(() => getNonWhitelistDivisibleAssets(assets.value, whitelist.value));
 const nonWhitelistAccountAssets = computed(() => getNonWhitelistDivisibleAssets(accountAssets.value, whitelist.value));
+const mainSourceAddressSet = computed(() => new Set(getSupportedPoolBaseAssetIds()));
 
 const mainLPSources = computed(() => {
-  const mainSourceAddresses = getSupportedPoolBaseAssetIds();
-  return assets.value.filter((asset) => mainSourceAddresses.includes(asset.address));
+  return assets.value.filter((asset) => mainSourceAddressSet.value.has(asset.address));
 });
 
 /**
@@ -305,22 +306,6 @@ const sortByBalance = (a: AccountAsset | RegisteredAccountAsset, b: AccountAsset
   return aEmpty && !bEmpty ? 1 : -1;
 };
 
-const filterAssetsByQuery =
-  (items: SelectableAsset[], isRegisteredAssets = false) =>
-  (queryValue: string): SelectableAsset[] => {
-    if (!queryValue) return items;
-
-    const searchValue = queryValue.toLowerCase().trim();
-    const addressField = isRegisteredAssets ? 'externalAddress' : 'address';
-
-    return items.filter((asset) => {
-      const name = asset.name?.toLowerCase?.();
-      const symbol = asset.symbol?.toLowerCase?.();
-      const address = (asset as any)[addressField]?.toLowerCase?.();
-      return name?.includes?.(searchValue) || symbol?.includes?.(searchValue) || address === searchValue;
-    });
-  };
-
 const getAssetsWithoutBalances = (items: Asset[], excludeAddress?: string): Asset[] => {
   return items.filter((asset) => asset.address !== excludeAddress).sort(sortAssets);
 };
@@ -336,13 +321,17 @@ const whitelistAssetsList = computed<SelectableAsset[]>(() => {
   return getAssetsWithBalances(addresses, excludeAddress).sort(sortByBalance);
 });
 
-const filteredWhitelistTokens = computed(() => {
-  const filtered = filterAssetsByQuery(whitelistAssetsList.value)(searchQuery.value);
-  const pinnedOrderMap = new Map(pinnedAssetsAddresses.value.map((address, index) => [address, index]));
+const pinnedOrderMap = computed(() => new Map(pinnedAssetsAddresses.value.map((address, index) => [address, index])));
 
-  return [...filtered].sort((a, b) => {
-    const aIndex = pinnedOrderMap.get(a.address);
-    const bIndex = pinnedOrderMap.get(b.address);
+const filteredWhitelistTokens = computed(() => {
+  const filtered = filterAssetsBySearchQuery(whitelistAssetsList.value, searchQuery.value);
+  const orderMap = pinnedOrderMap.value;
+
+  if (!orderMap.size) return filtered;
+
+  return filtered.sort((a, b) => {
+    const aIndex = orderMap.get(a.address);
+    const bIndex = orderMap.get(b.address);
 
     if (aIndex !== undefined && bIndex !== undefined) return aIndex - bIndex;
     if (aIndex !== undefined) return -1;

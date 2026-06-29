@@ -116,7 +116,6 @@ export type SettingsStorageKey =
   | 'bridgeType'
   | 'book'
   | 'indexerType'
-  | 'ceresFiatValues'
   | 'currency'
   | 'fiatExchangeRates'
   | 'signTxDialogDisabled'

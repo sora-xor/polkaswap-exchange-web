@@ -36,6 +36,10 @@ import type {
 type DynamicTxFactory = (...params: unknown[]) => SubmittableExtrinsic<'promise'>;
 type DynamicStorageQuery = (...params: unknown[]) => Promise<unknown>;
 type RawRpcPrimitive = string | number | boolean | null;
+type RawRpcInteger = {
+  rawInteger: string;
+};
+type RawRpcParam = RawRpcPrimitive | RawRpcInteger;
 type RpcCodec = {
   isSome?: boolean;
   unwrap?: () => unknown;
@@ -71,6 +75,7 @@ const FINALIZED_HISTORY_TIMEOUT_MS = 30_000;
 const FINALIZED_HISTORY_POLL_MS = 250;
 const ZERO_CODEC = '0';
 const EARLY_REPORT_BOND_CODEC = new FPNumber('100', KUSD.decimals).toCodecString();
+const RAW_RPC_INTEGER_PATTERN = /^(0|[1-9]\d*)$/;
 let rawRpcId = 0;
 
 /**
@@ -292,7 +297,20 @@ const bytesValueToHex = (value: unknown): string | undefined => {
   return bytes.length ? `0x${bytes.map((byte) => byte.toString(16).padStart(2, '0')).join('')}` : undefined;
 };
 
-const rawRpcParamJson = (value: RawRpcPrimitive): string => {
+const rawRpcInteger = (value: CodecString): RawRpcInteger => {
+  const normalized = String(value ?? '').trim();
+  if (!RAW_RPC_INTEGER_PATTERN.test(normalized)) {
+    throw new Error('RPC integer parameters must be non-negative integer codec strings.');
+  }
+  return { rawInteger: normalized };
+};
+
+const isRawRpcInteger = (value: RawRpcParam): value is RawRpcInteger =>
+  Boolean(value) && typeof value === 'object' && 'rawInteger' in value;
+
+const rawRpcParamJson = (value: RawRpcParam): string => {
+  if (isRawRpcInteger(value)) return value.rawInteger;
+
   if (typeof value === 'number') {
     if (!Number.isFinite(value)) throw new Error('RPC numeric parameters must be finite.');
     return String(value);
@@ -300,7 +318,7 @@ const rawRpcParamJson = (value: RawRpcPrimitive): string => {
   return JSON.stringify(value);
 };
 
-const rawRpcPayload = (id: number, method: string, params: RawRpcPrimitive[]): string =>
+const rawRpcPayload = (id: number, method: string, params: RawRpcParam[]): string =>
   `{"jsonrpc":"2.0","id":${id},"method":${JSON.stringify(method)},"params":[${params.map(rawRpcParamJson).join(',')}]}`;
 
 const rawRpcError = (method: string, error: RawRpcResponse['error']): Error => {
@@ -309,7 +327,7 @@ const rawRpcError = (method: string, error: RawRpcResponse['error']): Error => {
   return new Error(`${method} failed: ${message}${data}`);
 };
 
-const rawJsonRpc = async (endpoint: string, method: string, params: RawRpcPrimitive[]): Promise<unknown> => {
+const rawJsonRpc = async (endpoint: string, method: string, params: RawRpcParam[]): Promise<unknown> => {
   if (!endpoint) throw new Error('SORA RPC endpoint is unavailable.');
 
   const id = ++rawRpcId;
@@ -709,11 +727,30 @@ export class PolkamarktModule<T> {
 
   public async quoteBuyTrade(params: Pick<SubmitBuyTradeParams, 'marketId' | 'outcome' | 'collateralIn'>) {
     const rpc = this.rpcApi.quoteBuy;
-    const record = rpcRecord(
-      rpc
-        ? await rpc(params.marketId, params.outcome, params.collateralIn)
-        : await rawJsonRpc(this.endpoint, 'polkamarkt_quoteBuy', [params.marketId, params.outcome, params.collateralIn])
-    );
+    let response: unknown;
+
+    if (this.endpoint) {
+      try {
+        response = await rawJsonRpc(this.endpoint, 'polkamarkt_quoteBuy', [
+          params.marketId,
+          params.outcome,
+          rawRpcInteger(params.collateralIn),
+        ]);
+      } catch (error) {
+        if (!rpc) throw error;
+        response = await rpc(params.marketId, params.outcome, params.collateralIn);
+      }
+    } else if (rpc) {
+      response = await rpc(params.marketId, params.outcome, params.collateralIn);
+    } else {
+      response = await rawJsonRpc(this.endpoint, 'polkamarkt_quoteBuy', [
+        params.marketId,
+        params.outcome,
+        rawRpcInteger(params.collateralIn),
+      ]);
+    }
+
+    const record = rpcRecord(response);
     if (!Object.keys(record).length) return null;
     return {
       marketId: rpcNumber(record, 'marketId'),
@@ -727,11 +764,30 @@ export class PolkamarktModule<T> {
 
   public async quoteSellTrade(params: Pick<SubmitSellTradeParams, 'marketId' | 'outcome' | 'sharesIn'>) {
     const rpc = this.rpcApi.quoteSell;
-    const record = rpcRecord(
-      rpc
-        ? await rpc(params.marketId, params.outcome, params.sharesIn)
-        : await rawJsonRpc(this.endpoint, 'polkamarkt_quoteSell', [params.marketId, params.outcome, params.sharesIn])
-    );
+    let response: unknown;
+
+    if (this.endpoint) {
+      try {
+        response = await rawJsonRpc(this.endpoint, 'polkamarkt_quoteSell', [
+          params.marketId,
+          params.outcome,
+          rawRpcInteger(params.sharesIn),
+        ]);
+      } catch (error) {
+        if (!rpc) throw error;
+        response = await rpc(params.marketId, params.outcome, params.sharesIn);
+      }
+    } else if (rpc) {
+      response = await rpc(params.marketId, params.outcome, params.sharesIn);
+    } else {
+      response = await rawJsonRpc(this.endpoint, 'polkamarkt_quoteSell', [
+        params.marketId,
+        params.outcome,
+        rawRpcInteger(params.sharesIn),
+      ]);
+    }
+
+    const record = rpcRecord(response);
     if (!Object.keys(record).length) return null;
     return {
       marketId: rpcNumber(record, 'marketId'),

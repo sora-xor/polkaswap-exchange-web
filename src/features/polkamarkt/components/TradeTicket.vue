@@ -98,12 +98,16 @@
       <div class="trade-ticket__balances">
         <div>
           <span>{{ t('polkamarkt.ticket.walletYes') }}</span>
-          <strong>{{ formatCodec(claimable?.yesShares) }}</strong>
+          <strong>{{ yesSharesDisplay }}</strong>
         </div>
         <div>
           <span>{{ t('polkamarkt.ticket.walletNo') }}</span>
-          <strong>{{ formatCodec(claimable?.noShares) }}</strong>
+          <strong>{{ noSharesDisplay }}</strong>
         </div>
+        <p v-if="shareBalanceStatus" class="trade-ticket__balance-status">{{ shareBalanceStatus }}</p>
+        <p v-if="indexedPositionSummary" class="trade-ticket__balance-status trade-ticket__balance-status--secondary">
+          {{ indexedPositionSummary }}
+        </p>
       </div>
 
       <div class="trade-ticket__quote">
@@ -125,6 +129,19 @@
             >{{ formatCodec(claimable?.claimablePayout ?? claimable?.traderPayout) }} {{ collateralSymbol }}</strong
           >
         </div>
+      </div>
+
+      <div
+        v-if="receipt"
+        :class="['trade-ticket__receipt', `trade-ticket__receipt--${receipt.status}`]"
+        data-testid="polkamarkt-ticket-receipt"
+      >
+        <span>{{ receiptStatusLabel }}</span>
+        <strong>{{ receiptSummary }}</strong>
+        <p>{{ receiptHint }}</p>
+        <small v-if="receipt.transactionId">
+          {{ t('polkamarkt.ticket.transactionId', { id: receipt.transactionId }) }}
+        </small>
       </div>
 
       <div v-if="isDpm" class="trade-ticket__curve-helper" data-testid="pricing-curve-ticket-helper">
@@ -187,10 +204,12 @@
 import { computed, ref, watch } from 'vue';
 
 import { useInternalConnect } from '@/composables/useInternalConnect';
+import { useNotification } from '@/composables/useNotification';
 import { useTransaction } from '@/composables/useTransaction';
 import { useTranslation } from '@/composables/useTranslation';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { KUSD, XOR } from '@/lib/substrate/sdk/assets/consts';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk/types';
 import { useWalletStore } from '@/stores/wallet';
 import { applySlippageMinimum, formatPolkamarktCodec, isPositiveCodec, parsePolkamarktAmount } from '../lib/amounts';
 import {
@@ -205,6 +224,7 @@ import PricingCurvePositionChart from './PricingCurvePositionChart.vue';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountPosition, PolkamarktMarket, TicketOutcome, TradeMode } from '../types';
 import type { BuyQuote, ClaimableInfo, PolkamarktOutcome, SellQuote } from '@/lib/substrate/sdk/polkamarkt';
+import type { HistoryItem } from '@/lib/substrate/sdk/types';
 
 const props = defineProps<{
   market?: PolkamarktMarket;
@@ -220,8 +240,24 @@ const { t } = useTranslation();
 const walletStore = useWalletStore();
 const { isLoggedIn, soraAddress, connectSoraWallet } = useInternalConnect();
 const { loading, withNotifications } = useTransaction();
+const { getErrorMessage } = useNotification();
 
 type MaybeValue<T> = T | { value: T };
+type TicketReceiptStatus = 'submitting' | 'submitted' | 'confirmed' | 'failed';
+type TicketReceiptAction = TradeMode | 'claimMarket' | 'claimCreatorFees';
+type TicketReceipt = {
+  status: TicketReceiptStatus;
+  action: TicketReceiptAction;
+  outcome?: TicketOutcome;
+  amount?: string;
+  amountSymbol?: string;
+  output?: string;
+  outputSymbol?: string;
+  submittedAt?: number;
+  historyId?: string;
+  transactionId?: string;
+  error?: string;
+};
 
 const ZERO_CODEC = '0';
 const EARLY_REPORT_BOND_CODEC = parsePolkamarktAmount('100');
@@ -240,7 +276,10 @@ const error = ref('');
 const dpmQuote = ref<BuyQuote | SellQuote | null>(null);
 const dpmQuoteKey = ref<string | null>(null);
 const claimable = ref<ClaimableInfo | null>(null);
+const claimableLoading = ref(false);
+const claimableError = ref('');
 const networkFee = ref<CodecString | null>(null);
+const receipt = ref<TicketReceipt | null>(null);
 
 const isConnectedSource = isLoggedIn as unknown as MaybeValue<boolean>;
 const accountAddressSource = soraAddress as unknown as MaybeValue<string | undefined>;
@@ -251,6 +290,23 @@ const isLoading = computed(() => Boolean(typeof loading === 'object' ? loading.v
 const accountAddress = computed(() =>
   String(typeof accountAddressSource === 'object' ? (accountAddressSource.value ?? '') : (accountAddressSource ?? ''))
 );
+const receiptTransaction = computed<HistoryItem | undefined>(() => {
+  const history = (walletStore.history ?? {}) as Record<string, HistoryItem>;
+  const currentReceipt = receipt.value;
+  const historyId = currentReceipt?.historyId;
+  if (historyId) return history[historyId];
+
+  const submittedAt = currentReceipt?.submittedAt;
+  if (!currentReceipt || !submittedAt || currentReceipt.status !== 'submitted') return undefined;
+
+  return Object.values(history)
+    .filter(
+      (transaction) =>
+        Number(transaction?.startTime ?? 0) > submittedAt &&
+        isMatchingPolkamarktReceiptTransaction(transaction, currentReceipt)
+    )
+    .sort((left, right) => Number(left.startTime ?? 0) - Number(right.startTime ?? 0))[0];
+});
 const collateralSymbol = KUSD.symbol;
 const marketId = computed(() => props.market?.chainId);
 const runtimeOutcome = computed<PolkamarktOutcome>(() => (outcome.value === 'YES' ? 'Yes' : 'No'));
@@ -270,15 +326,8 @@ const yesPriceFormatted = computed(() =>
 const noPriceFormatted = computed(() =>
   formatOutcomePrice(dpmSharePrice(props.market?.marginalNoPriceBps) ?? prices.value.no)
 );
-const yesProbabilityFormatted = computed(() =>
-  formatProbabilityBps(props.market?.impliedYesProbabilityBps, props.market?.probability)
-);
-const noProbabilityFormatted = computed(() =>
-  formatProbabilityBps(
-    props.market?.impliedNoProbabilityBps,
-    props.market?.probability === undefined ? undefined : 100 - props.market.probability
-  )
-);
+const yesProbabilityFormatted = computed(() => formatProbabilityBps(props.market?.impliedYesProbabilityBps));
+const noProbabilityFormatted = computed(() => formatProbabilityBps(props.market?.impliedNoProbabilityBps));
 const accountKusd = computed(() => walletStore.accountAssetsAddressTable?.[KUSD.address]);
 const accountXor = computed(() => walletStore.accountAssetsAddressTable?.[XOR.address]);
 const sharesCodec = computed(() => parseAmount(shares.value));
@@ -306,6 +355,24 @@ const isTradingFinalized = computed(() =>
 const selectedShares = computed(
   () => (outcome.value === 'YES' ? claimable.value?.yesShares : claimable.value?.noShares) ?? '0'
 );
+const yesSharesDisplay = computed(() => formatShareBalance(claimable.value?.yesShares));
+const noSharesDisplay = computed(() => formatShareBalance(claimable.value?.noShares));
+const shareBalanceStatus = computed(() => {
+  if (!isConnected.value) return t('polkamarkt.ticket.connectForBalances');
+  if (claimableLoading.value) return t('polkamarkt.ticket.refreshingBalances');
+  if (claimableError.value) return claimableError.value;
+  if (!claimable.value) return t('polkamarkt.ticket.balanceUnavailable');
+  return '';
+});
+const indexedPositionSummary = computed(() => {
+  const position = props.accountPosition;
+  if (!position) return '';
+
+  return t('polkamarkt.ticket.indexedPosition', {
+    yes: formatIndexedShareAmount(position.yesShares ?? 0),
+    no: formatIndexedShareAmount(position.noShares ?? 0),
+  });
+});
 const buyEscrow = computed(() => collateralCodec.value);
 const requiredKusd = computed(() => {
   if (mode.value === 'buy') return buyEscrow.value;
@@ -335,6 +402,44 @@ const pricingCurveSteps = computed(() => [
   t('polkamarkt.curve.steps.sellBack'),
   t('polkamarkt.curve.steps.claim'),
 ]);
+const receiptStatusLabel = computed(() =>
+  receipt.value ? t(`polkamarkt.ticket.txStatus.${receipt.value.status}`) : ''
+);
+const receiptSummary = computed(() => {
+  const currentReceipt = receipt.value;
+  if (!currentReceipt) return '';
+
+  if (currentReceipt.error) return currentReceipt.error;
+
+  if (currentReceipt.action === 'buy') {
+    return t('polkamarkt.ticket.buyReceipt', {
+      outcome: outcomeText(currentReceipt.outcome),
+      amount: currentReceipt.amount,
+      symbol: currentReceipt.amountSymbol,
+      shares: currentReceipt.output,
+    });
+  }
+
+  if (currentReceipt.action === 'sell') {
+    return t('polkamarkt.ticket.sellReceipt', {
+      outcome: outcomeText(currentReceipt.outcome),
+      shares: currentReceipt.amount,
+      amount: currentReceipt.output,
+      symbol: currentReceipt.outputSymbol,
+    });
+  }
+
+  if (currentReceipt.action === 'report') {
+    return t('polkamarkt.ticket.reportReceipt', { outcome: outcomeText(currentReceipt.outcome) });
+  }
+
+  if (currentReceipt.action === 'claimCreatorFees') {
+    return t('polkamarkt.ticket.claimFeesReceipt');
+  }
+
+  return t('polkamarkt.ticket.claimMarketReceipt');
+});
+const receiptHint = computed(() => (receipt.value ? t(`polkamarkt.ticket.txHint.${receipt.value.status}`) : ''));
 
 /**
  * Identifies the exact user inputs that made the currently displayed DPM quote safe to submit.
@@ -362,6 +467,9 @@ const disabledReason = computed(() => {
   if (isReportMode.value && !reportEvidence.value.uri) return t('polkamarkt.ticket.enterEvidenceUri');
   if (isReportMode.value && !isReportHashValid.value) return t('polkamarkt.ticket.invalidEvidenceHash');
   if (isTradeMode.value && !isPositiveCodec(dpmInputCodec.value)) return t('polkamarkt.ticket.enterAmount');
+  if (mode.value === 'sell' && claimableLoading.value) return t('polkamarkt.ticket.refreshingBalances');
+  if (mode.value === 'sell' && (!claimable.value || claimableError.value))
+    return t('polkamarkt.ticket.balanceUnavailable');
   if (isTradeMode.value && isPositiveCodec(dpmInputCodec.value) && !activeDpmQuote.value && !quoteLoading.value)
     return t('polkamarkt.ticket.quoteUnavailable');
   if (!hasEnoughKusd.value) return t('polkamarkt.ticket.insufficientKusd', { symbol: collateralSymbol });
@@ -423,6 +531,7 @@ const canClaimCreatorFees = computed(
 
 let refreshTimer: ReturnType<typeof setTimeout> | undefined;
 let refreshRequestId = 0;
+let claimableRequestId = 0;
 
 /**
  * Clears stale quote-derived values and cancels in-flight quote updates after input changes.
@@ -456,9 +565,8 @@ function dpmSharePrice(value?: number): number | undefined {
   return Number.isFinite(value) ? Math.max(0, Number(value) / 10_000) : undefined;
 }
 
-function formatProbabilityBps(value?: number, fallbackPercent?: number): string {
+function formatProbabilityBps(value?: number): string {
   if (Number.isFinite(value)) return `${(Number(value) / 100).toFixed(2)}%`;
-  if (Number.isFinite(fallbackPercent)) return `${Number(fallbackPercent).toFixed(2)}%`;
   return '-';
 }
 
@@ -470,23 +578,229 @@ function modeLabel(value: TradeMode): string {
   return t(`polkamarkt.modes.${value}`);
 }
 
+/**
+ * Formats the selected binary outcome for transaction receipts.
+ */
+function outcomeText(value?: TicketOutcome): string {
+  if (value === 'NO') return t('polkamarkt.outcomes.no');
+  return t('polkamarkt.outcomes.yes');
+}
+
+function runtimeOutcomeFromTicket(value?: TicketOutcome): PolkamarktOutcome {
+  return value === 'NO' ? 'No' : 'Yes';
+}
+
+function receiptOperation(action: TicketReceiptAction): Operation {
+  switch (action) {
+    case 'buy':
+      return Operation.PolkamarktBuy;
+    case 'sell':
+      return Operation.PolkamarktSell;
+    case 'report':
+      return Operation.PolkamarktReportEarlyResolution;
+    case 'claimCreatorFees':
+      return Operation.PolkamarktClaimCreatorFees;
+    case 'claimMarket':
+      return Operation.PolkamarktClaimMarket;
+  }
+}
+
+function historyPayload(transaction: HistoryItem): Record<string, unknown> {
+  const payload = (transaction as { payload?: unknown }).payload;
+  return payload && typeof payload === 'object' && !Array.isArray(payload) ? (payload as Record<string, unknown>) : {};
+}
+
+/**
+ * Narrows timeout recovery to the Polkamarkt transaction that matches this receipt.
+ */
+function isMatchingPolkamarktReceiptTransaction(transaction: HistoryItem, receiptState: TicketReceipt): boolean {
+  if ((transaction as { type?: Operation }).type !== receiptOperation(receiptState.action)) return false;
+
+  const payload = historyPayload(transaction);
+  if (Number(payload.marketId) !== marketId.value) return false;
+
+  if (receiptState.action === 'buy' || receiptState.action === 'sell' || receiptState.action === 'report') {
+    return String(payload.outcome ?? '').toLowerCase() === runtimeOutcomeFromTicket(receiptState.outcome).toLowerCase();
+  }
+
+  return true;
+}
+
+/**
+ * Renders runtime share balances without implying zero when data is unavailable.
+ */
+function formatShareBalance(value?: CodecString): string {
+  if (!isConnected.value) return '-';
+  if (claimableLoading.value) return '...';
+  if (!claimable.value || claimableError.value) return '-';
+  return formatCodec(value);
+}
+
+/**
+ * Formats indexer-provided share amounts used as secondary position context.
+ */
+function formatIndexedShareAmount(value: number): string {
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(value || 0);
+}
+
+/**
+ * Produces a compact transaction identifier for the inline receipt.
+ */
+function receiptTransactionId(transaction?: HistoryItem): string | undefined {
+  const id = String(transaction?.txId ?? transaction?.id ?? '').trim();
+  if (!id) return undefined;
+  return id.length > 18 ? `${id.slice(0, 10)}...${id.slice(-6)}` : id;
+}
+
+/**
+ * Maps wallet history statuses to the smaller status set shown by the trade ticket.
+ */
+function receiptStatusFromTransaction(transaction?: HistoryItem): TicketReceiptStatus {
+  const status = transaction?.status as TransactionStatus | undefined;
+  const failedStatuses = [TransactionStatus.Error, TransactionStatus.Invalid, TransactionStatus.Usurped];
+  const confirmedStatuses = [TransactionStatus.InBlock, TransactionStatus.Finalized];
+
+  if (status && failedStatuses.includes(status)) {
+    return 'failed';
+  }
+
+  if (status && confirmedStatuses.includes(status)) {
+    return 'confirmed';
+  }
+
+  return 'submitted';
+}
+
+/**
+ * Builds a receipt for buy, sell, and report actions before wallet signing starts.
+ */
+function buildTradeReceipt(
+  action: Extract<TradeMode, 'buy' | 'sell' | 'report'>,
+  status: TicketReceiptStatus,
+  options: Partial<TicketReceipt> = {}
+): TicketReceipt {
+  return {
+    status,
+    action,
+    outcome: outcome.value,
+    ...options,
+  };
+}
+
+/**
+ * Builds a receipt for claim actions before wallet signing starts.
+ */
+function buildClaimReceipt(action: 'market' | 'fees', status: TicketReceiptStatus): TicketReceipt {
+  return {
+    status,
+    action: action === 'market' ? 'claimMarket' : 'claimCreatorFees',
+  };
+}
+
+/**
+ * Attaches wallet history identity and current status to an existing receipt.
+ */
+function withSubmittedTransaction(receiptState: TicketReceipt, transaction?: HistoryItem): TicketReceipt {
+  return {
+    ...receiptState,
+    status: receiptStatusFromTransaction(transaction),
+    submittedAt: receiptState.submittedAt,
+    historyId: String(transaction?.id ?? receiptState.historyId ?? '').trim() || undefined,
+    transactionId: receiptTransactionId(transaction) ?? receiptState.transactionId,
+  };
+}
+
+/**
+ * Marks a receipt as failed and normalizes the displayed error message.
+ */
+function withFailedReceipt(receiptState: TicketReceipt, error?: unknown): TicketReceipt {
+  return {
+    ...receiptState,
+    status: 'failed',
+    error: error ? getErrorMessage(error) : t('polkamarkt.ticket.transactionFailed'),
+  };
+}
+
+/**
+ * Clears only the fields that belong to the confirmed action.
+ */
+function clearInputsForReceipt(receiptState: TicketReceipt): void {
+  if (receiptState.action === 'buy') {
+    collateralAmount.value = '';
+  } else if (receiptState.action === 'sell') {
+    shares.value = '';
+  } else if (receiptState.action === 'report') {
+    reportEvidenceUri.value = '';
+    reportEvidenceHash.value = '';
+  }
+}
+
+let confirmedReceiptHistoryId: string | undefined;
+
+/**
+ * Refreshes market/account data once a submitted transaction reaches an accepted chain state.
+ */
+async function handleConfirmedReceipt(receiptState: TicketReceipt): Promise<void> {
+  const receiptKey = receiptState.historyId ?? receiptState.transactionId ?? String(receiptState.submittedAt ?? '');
+  if (receiptKey && confirmedReceiptHistoryId === receiptKey) return;
+
+  confirmedReceiptHistoryId = receiptKey;
+  clearInputsForReceipt(receiptState);
+  emit('submitted');
+  await refreshQuote();
+}
+
+/**
+ * Keeps the inline receipt in sync with the wallet history item for the submitted transaction.
+ */
+function syncReceiptWithTransaction(transaction?: HistoryItem): void {
+  if (!receipt.value || !transaction) return;
+
+  const nextReceipt = withSubmittedTransaction(receipt.value, transaction);
+  receipt.value = nextReceipt;
+
+  if (nextReceipt.status === 'confirmed') {
+    void handleConfirmedReceipt(nextReceipt);
+  } else if (nextReceipt.status === 'failed') {
+    receipt.value = withFailedReceipt(nextReceipt);
+  }
+}
+
 async function refreshClaimable(estimateNetworkFee = false): Promise<void> {
+  const requestId = ++claimableRequestId;
+
   if (!isConnected.value || !accountAddress.value || (!marketId.value && marketId.value !== 0)) {
     claimable.value = null;
+    claimableError.value = '';
+    claimableLoading.value = false;
     return;
   }
 
+  claimableLoading.value = true;
+  claimableError.value = '';
   if (estimateNetworkFee) quoteLoading.value = true;
   try {
-    claimable.value = await api.polkamarkt.getClaimableInfo(accountAddress.value, marketId.value);
+    const nextClaimable = await api.polkamarkt.getClaimableInfo(accountAddress.value, marketId.value);
+    if (requestId !== claimableRequestId) return;
+
+    claimable.value = nextClaimable;
+    claimableError.value = nextClaimable ? '' : t('polkamarkt.ticket.balanceUnavailable');
+
     if (estimateNetworkFee) {
       const fee = await api.polkamarkt.estimateClaimMarketNetworkFee(marketId.value);
-      networkFee.value = isPositiveCodec(fee) ? fee : null;
+      if (requestId === claimableRequestId) networkFee.value = isPositiveCodec(fee) ? fee : null;
     }
   } catch (err) {
-    if (estimateNetworkFee) error.value = err instanceof Error ? err.message : t('polkamarkt.ticket.claimableFailed');
+    if (requestId !== claimableRequestId) return;
+
+    claimable.value = null;
+    claimableError.value = err instanceof Error ? err.message : t('polkamarkt.ticket.balanceUnavailable');
+    if (estimateNetworkFee) error.value = claimableError.value || t('polkamarkt.ticket.claimableFailed');
   } finally {
-    if (estimateNetworkFee) quoteLoading.value = false;
+    if (requestId === claimableRequestId) {
+      claimableLoading.value = false;
+      if (estimateNetworkFee) quoteLoading.value = false;
+    }
   }
 }
 
@@ -499,15 +813,16 @@ async function refreshQuote(): Promise<void> {
 
   if (!marketId.value && marketId.value !== 0) return;
 
-  try {
-    await refreshClaimable(false);
-  } catch {
-    // Claimable reads are best effort; trade submission remains authoritative.
-  }
-
   if (mode.value === 'claim') {
     await refreshClaimable(true);
     return;
+  }
+
+  if (mode.value === 'sell') {
+    await refreshClaimable(false);
+    if (!claimable.value || claimableError.value) return;
+  } else if (!claimable.value && isConnected.value && accountAddress.value) {
+    void refreshClaimable(false);
   }
 
   if (isTradingFinalized.value || hasPendingEarlyReport.value) return;
@@ -595,9 +910,7 @@ async function submit(): Promise<void> {
   if (submitDisabled.value || (!marketId.value && marketId.value !== 0)) return;
 
   const buyQuote =
-    mode.value === 'buy' && activeDpmQuote.value && 'sharesOut' in activeDpmQuote.value
-      ? activeDpmQuote.value
-      : null;
+    mode.value === 'buy' && activeDpmQuote.value && 'sharesOut' in activeDpmQuote.value ? activeDpmQuote.value : null;
   const sellQuote =
     mode.value === 'sell' && activeDpmQuote.value && 'collateralOut' in activeDpmQuote.value
       ? activeDpmQuote.value
@@ -607,7 +920,27 @@ async function submit(): Promise<void> {
     return;
   }
 
-  await withNotifications(async () => {
+  const pendingReceipt =
+    mode.value === 'buy'
+      ? buildTradeReceipt('buy', 'submitting', {
+          amount: formatCodec(collateralCodec.value),
+          amountSymbol: collateralSymbol,
+          output: formatCodec(applySlippageMinimum(buyQuote!.sharesOut, slippage.value)),
+          outputSymbol: t('polkamarkt.units.shares'),
+        })
+      : mode.value === 'sell'
+        ? buildTradeReceipt('sell', 'submitting', {
+            amount: formatCodec(sharesCodec.value),
+            amountSymbol: t('polkamarkt.units.shares'),
+            output: formatCodec(applySlippageMinimum(sellQuote!.collateralOut, slippage.value)),
+            outputSymbol: collateralSymbol,
+          })
+        : buildTradeReceipt('report', 'submitting');
+
+  receipt.value = pendingReceipt;
+  confirmedReceiptHistoryId = undefined;
+
+  const result = await withNotifications(async () => {
     if (mode.value === 'buy') {
       await api.polkamarkt.submitBuyTrade({
         marketId: marketId.value!,
@@ -631,12 +964,20 @@ async function submit(): Promise<void> {
     }
   });
 
-  shares.value = '';
-  collateralAmount.value = '';
-  reportEvidenceUri.value = '';
-  reportEvidenceHash.value = '';
-  emit('submitted');
-  await refreshQuote();
+  if (!result.submitted) {
+    receipt.value = withFailedReceipt(pendingReceipt, result.error);
+    return;
+  }
+
+  const submittedReceipt = withSubmittedTransaction(
+    { ...pendingReceipt, submittedAt: result.submittedAt },
+    result.transaction
+  );
+  receipt.value = submittedReceipt;
+
+  if (submittedReceipt.status === 'confirmed') {
+    await handleConfirmedReceipt(submittedReceipt);
+  }
 }
 
 async function submitClaim(action: 'market' | 'fees'): Promise<void> {
@@ -646,7 +987,11 @@ async function submitClaim(action: 'market' | 'fees'): Promise<void> {
   }
   if (!isClaimModeAvailable.value || (!marketId.value && marketId.value !== 0)) return;
 
-  await withNotifications(async () => {
+  const pendingReceipt = buildClaimReceipt(action, 'submitting');
+  receipt.value = pendingReceipt;
+  confirmedReceiptHistoryId = undefined;
+
+  const result = await withNotifications(async () => {
     if (action === 'market') {
       await api.polkamarkt.claimMarket(marketId.value!);
     } else {
@@ -654,8 +999,20 @@ async function submitClaim(action: 'market' | 'fees'): Promise<void> {
     }
   });
 
-  emit('submitted');
-  await refreshQuote();
+  if (!result.submitted) {
+    receipt.value = withFailedReceipt(pendingReceipt, result.error);
+    return;
+  }
+
+  const submittedReceipt = withSubmittedTransaction(
+    { ...pendingReceipt, submittedAt: result.submittedAt },
+    result.transaction
+  );
+  receipt.value = submittedReceipt;
+
+  if (submittedReceipt.status === 'confirmed') {
+    await handleConfirmedReceipt(submittedReceipt);
+  }
 }
 
 watch(
@@ -701,6 +1058,8 @@ watch(
   { immediate: true }
 );
 
+watch(receiptTransaction, (transaction) => syncReceiptWithTransaction(transaction), { deep: true });
+
 watch(
   () => props.market?.id,
   () => {
@@ -711,6 +1070,10 @@ watch(
     pricingCurveHelperOpen.value = false;
     invalidateDpmQuote();
     claimable.value = null;
+    claimableError.value = '';
+    claimableLoading.value = false;
+    receipt.value = null;
+    confirmedReceiptHistoryId = undefined;
   }
 );
 </script>
@@ -833,6 +1196,58 @@ watch(
       display: block;
       margin-top: 2px;
       overflow-wrap: anywhere;
+    }
+  }
+
+  &__balance-status {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-mini);
+
+    &--secondary {
+      color: var(--s-color-theme-accent);
+    }
+  }
+
+  &__receipt {
+    display: grid;
+    gap: $inner-spacing-tiny;
+    border: 1px solid var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-mini);
+    background: var(--s-color-utility-body);
+    padding: $inner-spacing-small;
+
+    span {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      font-weight: 700;
+      line-height: var(--s-line-height-mini);
+      text-transform: uppercase;
+    }
+
+    strong,
+    p,
+    small {
+      margin: 0;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    p,
+    small {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-small);
+      line-height: var(--s-line-height-small);
+    }
+
+    &--confirmed {
+      border-color: var(--s-color-status-success);
+    }
+
+    &--failed {
+      border-color: var(--s-color-status-error);
     }
   }
 

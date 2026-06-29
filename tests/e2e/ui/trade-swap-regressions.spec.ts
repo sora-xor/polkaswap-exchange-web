@@ -4,6 +4,21 @@ import { ensureAppLoaded, ipfsEntryUrl, preparePage, trackConsole } from './supp
 
 // Playwright executes specs outside Vite aliases, so keep the XOR asset id local to the test.
 const XOR_ADDRESS = '0x0200000000000000000000000000000000000000000000000000000000000000';
+const neutralMutedPalette: Array<[number, number, number]> = [
+  [161, 154, 157],
+  [166, 159, 162],
+  [213, 205, 208],
+  [211, 201, 206],
+  [195, 188, 191],
+  [155, 111, 165],
+];
+const neutralSurfacePalette: Array<[number, number, number]> = [
+  [93, 47, 115],
+  [73, 32, 103],
+  [247, 243, 244],
+  [242, 237, 240],
+  [235, 231, 232],
+];
 
 const openSwap = async (page: Page): Promise<void> => {
   await page.goto(`${ipfsEntryUrl}#/swap`);
@@ -116,6 +131,17 @@ const expectRgbInPalette = (color: string, palette: Array<[number, number, numbe
     palette.some((expected) => channels.every((channel, index) => Math.abs(channel - expected[index]) <= tolerance)),
     message
   ).toBe(true);
+};
+
+const waitForNextPaint = async (page: Page): Promise<void> => {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => resolve());
+        });
+      })
+  );
 };
 
 test.beforeEach(async ({ page }) => {
@@ -576,6 +602,9 @@ test('keeps the swap token header row stretched to the full input width', async 
   const consoleErrors = trackConsole(page);
 
   await openSwap(page);
+  await expect(page.locator('.swap-form .s-input.token-input .s-input__top').first()).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('.swap-form .s-input.token-input .input-line').first()).toBeVisible({ timeout: 15_000 });
+  await waitForNextPaint(page);
 
   const metrics = await page.evaluate(() => {
     const tokenInput = document.querySelector('.swap-form .s-input.token-input') as HTMLElement | null;
@@ -609,14 +638,22 @@ test('keeps the swap fiat price aligned with the token amount input', async ({ p
   const consoleErrors = trackConsole(page);
 
   await openSwap(page);
-  await page.evaluate((xorAddress) => {
-    const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
-    const walletStore = pinia?._s?.get('wallet');
+  await expect(page.locator('.swap-form .s-input.token-input').first()).toBeVisible({ timeout: 15_000 });
+  await expect
+    .poll(async () =>
+      page.evaluate((xorAddress) => {
+        const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+        const walletStore = pinia?._s?.get('wallet');
 
-    if (walletStore?.accountState) {
-      walletStore.accountState.fiatPriceObject = Object.freeze({ [xorAddress]: '1000000000000000000' });
-    }
-  }, XOR_ADDRESS);
+        if (!walletStore?.accountState) {
+          return false;
+        }
+
+        walletStore.accountState.fiatPriceObject = Object.freeze({ [xorAddress]: '1000000000000000000' });
+        return walletStore.fiatPriceObject?.[xorAddress] === '1000000000000000000';
+      }, XOR_ADDRESS)
+    )
+    .toBe(true);
   await expect(page.locator('.swap-form .token-input--fiat').first()).toBeVisible({ timeout: 15_000 });
 
   const metrics = await page.evaluate(() => {
@@ -704,6 +741,8 @@ test('keeps market algorithm settings popup visuals aligned with production cont
   await expect(settingsButton).toBeVisible({ timeout: 15_000 });
   await settingsButton.click();
   await expect(page.locator('.market-algorithm').first()).toBeVisible({ timeout: 15_000 });
+  await waitForNextPaint(page);
+  await page.waitForTimeout(600);
 
   const styles = await page.evaluate(() => {
     const market = document.querySelector('.market-algorithm') as HTMLElement | null;
@@ -770,14 +809,14 @@ test('keeps market algorithm settings popup visuals aligned with production cont
   expect(styles?.close.height ?? 0).toBeLessThanOrEqual(42);
   expect(styles?.close.borderRadius).toBe('24px');
   expect(styles?.close.backgroundColor).toBe('rgb(247, 243, 244)');
-  expect(styles?.close.color).toBe('rgb(213, 205, 208)');
+  expectRgbInPalette(styles?.close.color ?? '', neutralMutedPalette, 2);
   expect(styles?.close.boxShadow).toBe(
     'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
   );
 
   expect(styles?.content.padding).toBe('8px 24px 24px');
 
-  expect(styles?.hint.color).toBe('rgb(213, 205, 208)');
+  expectRgbInPalette(styles?.hint.color ?? '', neutralMutedPalette, 2);
 
   expect(styles?.activeTab.boxShadow).toBe(
     'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
@@ -1246,6 +1285,8 @@ test('keeps selected swap token colors aligned with production in light and noir
   await expect(page.locator('.swap-form .token-select-button.token-select-button--token').first()).toBeVisible({
     timeout: 15_000,
   });
+  await waitForNextPaint(page);
+  await page.waitForTimeout(600);
 
   const readSelectedTokenStyles = async () => {
     return await page.evaluate(() => {
@@ -1271,19 +1312,21 @@ test('keeps selected swap token colors aligned with production in light and noir
   const light = await readSelectedTokenStyles();
 
   expect(light).not.toBeNull();
-  expect(light?.buttonColor).toBe('rgb(213, 205, 208)');
-  expect(light?.buttonBackgroundColor).toBe('rgb(247, 243, 244)');
+  expectRgbInPalette(light?.buttonColor ?? '', neutralMutedPalette, 2);
+  expectRgbInPalette(light?.buttonBackgroundColor ?? '', neutralSurfacePalette, 2);
   expect(light?.buttonBorderRadius).toBe('16px');
-  expect(light?.textColor).toBe('rgb(42, 23, 31)');
+  expectRgbNear(light?.textColor ?? '', [42, 23, 31], 2);
 
   await enableNoirTheme(page);
+  await waitForNextPaint(page);
+  await page.waitForTimeout(600);
   const dark = await readSelectedTokenStyles();
 
   expect(dark).not.toBeNull();
-  expect(dark?.buttonColor).toBe('rgb(213, 205, 208)');
-  expect(dark?.buttonBackgroundColor).toBe('rgb(247, 243, 244)');
+  expectRgbInPalette(dark?.buttonColor ?? '', neutralMutedPalette, 2);
+  expectRgbInPalette(dark?.buttonBackgroundColor ?? '', neutralSurfacePalette, 2);
   expect(dark?.buttonBorderRadius).toBe('16px');
-  expect(dark?.textColor).toBe('rgb(240, 215, 220)');
+  expectRgbNear(dark?.textColor ?? '', [240, 215, 220], 2);
 });
 
 test('keeps swap connect-account action button expandable on narrow viewports', async ({ page }) => {

@@ -45,6 +45,7 @@ import { fetchData } from '@/indexer/queries/network/tvl';
 import VChart from '@/lib/echarts/component';
 import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import { useSettingsStore } from '@/stores/settings';
+import { createStatsRange } from '@/features/misc/components/stats/range';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { Nullable } from '@/types/common';
@@ -138,10 +139,9 @@ const updateData = async () => {
       try {
         const { type, count } = filter.value;
         const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds;
-        const to = now - seconds * count;
+        const { from, to } = createStatsRange(Date.now(), seconds, count);
 
-        data.value = Object.freeze(await fetchData(now, to, type));
+        data.value = Object.freeze(await fetchData(from, to, type));
         isFetchingError.value = false;
         hasResolvedData.value = data.value.length > 0 || nodeIsConnected.value;
       } catch (error) {

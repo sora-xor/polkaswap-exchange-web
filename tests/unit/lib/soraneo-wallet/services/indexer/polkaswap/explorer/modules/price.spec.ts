@@ -18,17 +18,40 @@ describe('PolkaswapPriceModule', () => {
     vi.clearAllMocks();
   });
 
-  it('merges fiat price chunks and returns null when the query has no results', async () => {
+  it('merges fiat price chunks from the snapshot query', async () => {
     const root = {
-      fetchAllEntities: vi
-        .fn()
-        .mockResolvedValueOnce([{ xor: '1.23' }, { val: '0.45' }])
-        .mockResolvedValueOnce(null),
+      fetchAllEntities: vi.fn().mockResolvedValueOnce([{ xor: '1.23' }, { val: '0.45' }]),
+      request: vi.fn(),
     } as any;
     const module = new PolkaswapPriceModule(root);
 
     await expect(module.getFiatPriceObject()).resolves.toEqual({ xor: '1.23', val: '0.45' });
     expect(root.fetchAllEntities).toHaveBeenNthCalledWith(1, expect.anything(), {}, mocks.parseAssetFiatPriceMock);
+    expect(root.request).not.toHaveBeenCalled();
+  });
+
+  it('uses the latest price stream when the snapshot query has no prices', async () => {
+    const root = {
+      fetchAllEntities: vi.fn().mockResolvedValue(null),
+      request: vi.fn().mockResolvedValue({ data: { raw: 'payload' } }),
+    } as any;
+    const module = new PolkaswapPriceModule(root);
+
+    mocks.parsePriceStreamUpdateMock.mockReturnValueOnce({ xor: 'codec:1.23' });
+
+    await expect(module.getFiatPriceObject()).resolves.toEqual({ xor: 'codec:1.23' });
+    expect(root.request).toHaveBeenCalledWith(expect.anything());
+    expect(mocks.parsePriceStreamUpdateMock).toHaveBeenCalledWith({ raw: 'payload' });
+  });
+
+  it('returns null when both the snapshot and stream payloads have no prices', async () => {
+    const root = {
+      fetchAllEntities: vi.fn().mockResolvedValue([]),
+      request: vi.fn().mockResolvedValue({ data: { raw: 'payload' } }),
+    } as any;
+    const module = new PolkaswapPriceModule(root);
+
+    mocks.parsePriceStreamUpdateMock.mockReturnValueOnce({});
 
     await expect(module.getFiatPriceObject()).resolves.toBeNull();
   });
@@ -45,7 +68,7 @@ describe('PolkaswapPriceModule', () => {
     } as any;
     const module = new PolkaswapPriceModule(root);
 
-    mocks.parsePriceStreamUpdateMock.mockReturnValue({ xor: 'codec:1.23' });
+    mocks.parsePriceStreamUpdateMock.mockReturnValueOnce({ xor: 'codec:1.23' });
 
     await expect(module.getFiatPriceUpdates()).resolves.toEqual({ xor: 'codec:1.23' });
     expect(mocks.parsePriceStreamUpdateMock).toHaveBeenCalledWith({ raw: 'payload' });

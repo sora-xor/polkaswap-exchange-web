@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "Индексжүүлэгч",
-                "title": "{Sora} Сүлжээний үйлчилгээний сонголт",
-                "useCeres": "Fiat утгын хувьд Polkaswap Indexer ашиглана уу"
+                "title": "{Sora} Сүлжээний үйлчилгээний сонголт"
             },
-            "indexerBlock": "Polkaswap Indexer блок #{block}",
+            "indexerBlock": "{source} блок #{block}",
             "label": "Статистикийн үйлчилгээ",
             "title": {
                 "available": "Статистик мэдээлэл байна",
@@ -883,7 +882,6 @@
         "Pool": "Усан сан",
         "Rewards": "Шагнал",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} карт",
         "StakingContainer": "Бооцоо тавих",
         "Stats": "Статистик",
         "Swap": "Солих",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "Ур чадвараа дээшлүүлэхийн тулд {title}-тэй холбоотой даалгавруудыг гүйцэтгээрэй",
         "rewardNextLvl": "Дараагийн түвшний шагнал",
-        "soraCard": "Одоо өргөдөл гаргана уу",
         "title": "Таны оноо",
         "toEarnPoints": "Оноо авахын тулд",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "Зах зээлүүдийг ачаалж байна...",
         "markets": {
+            "groupCount": "{count} Зах зээлүүд",
+            "groupTotals": "Эзлэхүүн: {volume}",
+            "hotSubtitle": "{count} Идэвхтэй Зах зээлүүд - Эзлэхүүн / Хөрвөх чадвар",
+            "hotTitle": "Идэвхтэй Зах зээлүүд",
             "search": "Зах зээл хайх",
             "subtitle": "{count} зах зээл нь одоогийн шүүлтүүртэй таарч байна",
-            "title": "Зах зээлүүд"
+            "title": "Зах зээлүүд",
+            "trending": "Эзлэхүүн"
         },
         "metrics": {
             "closeBlock": "Блокыг хаах",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ТИЙМ {yes} / ҮГҮЙ {no}",
+            "loading": "Зах зээлүүдийг ачаалж байна..."
+        },
         "status": {
             "active": "Идэвхтэй",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "Худалдан авах {outcome} {amount} {symbol} {shares}",
             "claimable": "Нэхэмжлэх боломжтой",
             "claimableFailed": "Нэхэмжлэлийн үлдэгдлийг унших боломжгүй.",
+            "claimFeesReceipt": "Зохиогчийн хураамжийг нэхэмжлэх",
+            "claimMarketReceipt": "Худалдаачдын төлбөрийг нэхэмжлэх",
             "claimStatus": "Нэхэмжлэлийн статус",
             "collateralIn": "Барьцаа оруулах ({symbol})",
             "collateralOut": "Барьцаа хөрөнгө гарна",
+            "connectForBalances": "Бүртгэлийг холбоно уу",
             "dpmSubtitle": "Зах зээл хаагдахаас өмнө DPM муруйгаар YES эсвэл NO худалдаж, зарах боломжтой.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Далд {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "{symbol} үлдэгдэл хангалтгүй",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "Сүлжээний төлбөрт XOR хангалтгүй",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "Ишлэлийг сэргээх боломжгүй.",
             "quoteUnavailable": "Үнийн санал боломжгүй",
+            "refreshingBalances": "Ишлэлийг сэргээж байна...",
             "refreshingQuote": "Ишлэлийг сэргээж байна...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "Худалдаа хийх идэвхтэй зах зээлийг сонго.",
+            "sellReceipt": "Зарна {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "Хувьцаа",
             "sharesOut": "Хувьцаа гаргадаг",
             "sharesToSell": "Зарах хувьцаа",
             "slippage": "Гулсалт %",
             "takerFee": "Taker fee",
             "title": "Худалдааны тасалбар",
+            "transactionFailed": "Гүйлгээ амжилтгүй боллоо",
+            "transactionId": "Гүйлгээний дугаар {id}",
+            "txHint": {
+                "confirmed": "Ишлэлийг сэргээж байна...",
+                "failed": "Гүйлгээ амжилтгүй боллоо",
+                "submitted": "Гүйлгээ илгээсэн",
+                "submitting": "Хүлээгдэж байна..."
+            },
+            "txStatus": {
+                "confirmed": "Гүйлгээ баталгаажсан",
+                "failed": "Гүйлгээ амжилтгүй боллоо",
+                "submitted": "Гүйлгээ илгээсэн",
+                "submitting": "Хүлээгдэж байна..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

@@ -6,7 +6,7 @@
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
   },
   "engines": {
-    "node": ">=24"
+    "node": ">=26 <27"
   },
   "license": "Apache-2.0",
   "private": true,
@@ -61,6 +61,7 @@
     "agent:runner": "node ./examples/agent-runner/agent-runner.mjs",
     "test:e2e:swap:smoke": "node ./scripts/playwright/swap-smoke.mjs",
     "test:e2e:safari:smoke": "node ./scripts/playwright/safari-smoke.mjs",
+    "test:e2e:wallet:extensions": "node ./scripts/playwright/ensure-wallet-extensions.mjs",
     "test:e2e:wallet:matrix": "node ./scripts/playwright/wallet-matrix.mjs",
     "test:e2e:wallet:matrix:fresh": "WALLET_MATRIX_FRESH=1 node ./scripts/playwright/wallet-matrix.mjs"
   },
@@ -130,7 +131,7 @@
     "@types/electron-devtools-installer": "^4.0.0",
     "@types/jsdom": "^27.0.0",
     "@types/lodash": "^4.17.24",
-    "@types/node": "24.12.0",
+    "@types/node": "26.0.1",
     "@types/telegram-web-app": "^9.5.0",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vitest/coverage-v8": "4.1.0",

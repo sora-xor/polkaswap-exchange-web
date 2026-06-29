@@ -516,6 +516,8 @@ describe('formatBunnyFilebaseCspRecommendation', () => {
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://www.gstatic.com');
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain("connect-src 'self' https: wss:");
     expect(getCspDirectiveValues(BUNNY_FILEBASE_CSP_HEADER, 'frame-src')).toContain('https://content.googleapis.com');
+    expect(getCspDirectiveValues(BUNNY_FILEBASE_CSP_HEADER, 'script-src')).toContain('chrome-extension:');
+    expect(getCspDirectiveValues(BUNNY_FILEBASE_CSP_HEADER, 'script-src')).toContain('moz-extension:');
 
     expect(formatBunnyFilebaseCspRecommendation()).toBe(
       ['Recommended Filebase origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join('\n')

@@ -27,7 +27,7 @@ export function resolveWhitelist(
 
 /**
  * Converts the stored whitelist catalog into the SDK's symbol-indexed lookup
- * shape while preserving the wallet store's empty-object fallback contract.
+ * shape while preserving the wallet store's empty-object default contract.
  */
 export function resolveWhitelistIdsBySymbol(
   whitelistArray: ReadonlyArray<WhitelistArrayItem> = [],

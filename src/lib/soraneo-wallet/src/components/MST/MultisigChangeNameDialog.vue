@@ -19,12 +19,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
 
-import { api } from '@/api';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useTranslation } from '@/composables/useTranslation';
 import { RouteNames } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 
+import { api } from '../../api';
 import DialogBase from '../DialogBase.vue';
 
 import MstForgetDialog from './MstForgetDialog.vue';

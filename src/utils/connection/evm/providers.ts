@@ -55,8 +55,8 @@ const requestProviderDiscovery = (): void => {
 
   // Notify EIP-6963 wallets once per page session. Repeated requests can make
   // some extension content scripts re-open liveness streams.
-  window.dispatchEvent(new Event('eip6963:requestProvider'));
   providerDiscoveryRequested = true;
+  window.dispatchEvent(new Event('eip6963:requestProvider'));
 };
 
 const replayProviderAnnouncements = (subscriber: ProviderAnnouncementHandler): void => {

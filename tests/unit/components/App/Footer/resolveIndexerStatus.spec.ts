@@ -29,7 +29,7 @@ describe('resolveIndexerStatus', () => {
     expect(result).toBe('available');
   });
 
-  it('falls back to available when selected status is missing', () => {
+  it('keeps loading when selected status is missing and another indexer is available', () => {
     const result = resolveIndexerStatus(
       'polkaswap' as any,
       {
@@ -38,10 +38,10 @@ describe('resolveIndexerStatus', () => {
       } as any
     );
 
-    expect(result).toBe('available');
+    expect(result).toBe('loading');
   });
 
-  it('falls back to unavailable when no indexer is available', () => {
+  it('keeps loading when selected status is missing and another indexer is unavailable', () => {
     const result = resolveIndexerStatus(
       'polkaswap' as any,
       {
@@ -50,7 +50,7 @@ describe('resolveIndexerStatus', () => {
       } as any
     );
 
-    expect(result).toBe('unavailable');
+    expect(result).toBe('loading');
   });
 
   it('returns loading when no indexer has status information', () => {

@@ -3042,14 +3042,6 @@
       "lineText": "const selectIndexer = store.dispatch?.wallet?.settings?.selectIndexer;"
     },
     {
-      "file": "src/components/App/Footer/StatisticsDialog.vue",
-      "domain": "components/App",
-      "line": 79,
-      "column": 25,
-      "type": "dispatch",
-      "lineText": "const toggleCeres = store.dispatch?.wallet?.account?.useCeresApiForFiatValues;"
-    },
-    {
       "file": "src/components/App/Header/AppHeader.vue",
       "domain": "components/App",
       "line": 83,
@@ -8424,14 +8416,6 @@
       "column": 51,
       "type": "state",
       "lineText": "return accessLegacyStore((store) => Boolean(store.state.wallet.account.isMST), false);"
-    },
-    {
-      "file": "src/stores/wallet/index.ts",
-      "domain": "pinia/wallet",
-      "line": 120,
-      "column": 51,
-      "type": "state",
-      "lineText": "return accessLegacyStore((store) => Boolean(store.state.wallet.account.ceresFiatValuesUsage), false);"
     },
     {
       "file": "src/stores/wallet/index.ts",

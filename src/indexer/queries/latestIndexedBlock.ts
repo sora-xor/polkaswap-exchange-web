@@ -19,6 +19,11 @@ type IndexerStreamBlockResponse = {
 };
 
 type LatestIndexedBlockResponse = Pick<ConnectionQueryResponseData<LatestIndexedBlockEntity>, 'edges'>;
+export type LatestIndexedBlockSource = 'polkaswap' | 'sorametrics';
+export type LatestIndexedBlockResult = {
+  block: number;
+  source: LatestIndexedBlockSource;
+};
 
 const PolkaswapIndexerStreamBlockQuery = gql<IndexerStreamBlockResponse>`
   query PolkaswapIndexerStreamBlockQuery {
@@ -61,9 +66,9 @@ function parseIndexerStreamBlock(response: Nullable<IndexerStreamBlockResponse>)
 }
 
 /**
- * Fetches the most recent block height that the active Polkaswap indexer has indexed.
+ * Fetches the most recent block height from the active Polkaswap indexer.
  */
-export async function fetchLatestIndexedBlock(): Promise<Nullable<number>> {
+async function fetchPolkaswapLatestIndexedBlock(): Promise<Nullable<number>> {
   const explorer = (getCurrentIndexer() as PolkaswapIndexer).services.explorer;
   const streamResponse = await explorer.request(PolkaswapIndexerStreamBlockQuery);
   const streamBlock = parseIndexerStreamBlock(streamResponse);
@@ -71,4 +76,30 @@ export async function fetchLatestIndexedBlock(): Promise<Nullable<number>> {
 
   const response = await explorer.fetchEntities(PolkaswapLatestIndexedBlockQuery);
   return parseLatestIndexedBlock(response);
+}
+
+/**
+ * Fetches the latest indexed block, using Sorametrics only when explicitly configured.
+ */
+export async function fetchLatestIndexedBlock(
+  sorametricsApiEndpoint = ''
+): Promise<Nullable<LatestIndexedBlockResult>> {
+  let indexerError: unknown = null;
+
+  try {
+    const block = await fetchPolkaswapLatestIndexedBlock();
+    if (block !== null) return { block, source: 'polkaswap' };
+  } catch (error) {
+    indexerError = error;
+  }
+
+  if (sorametricsApiEndpoint) {
+    const { fetchSorametricsLatestBlock } = await import('@/services/sorametrics');
+    const block = await fetchSorametricsLatestBlock(sorametricsApiEndpoint);
+    if (block !== null) return { block, source: 'sorametrics' };
+  }
+
+  if (indexerError) throw indexerError;
+
+  return null;
 }

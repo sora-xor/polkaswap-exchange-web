@@ -199,7 +199,7 @@ describe('settings store actions', () => {
     expect(settingsStore.language).toBe('ru');
   });
 
-  it('normalises marketing asset paths when fetching ads config', async () => {
+  it('normalises marketing asset paths and filters retired Sora Card ads when fetching ads config', async () => {
     const settingsStore = useSettingsStore();
     const mockResponse = {
       data: [
@@ -207,6 +207,21 @@ describe('settings store actions', () => {
           title: 'Banner',
           img: '/marketing/banner.png',
           link: '/#/swap',
+        },
+        {
+          title: 'GET SORA CARD',
+          img: '/marketing/another.png',
+          link: 'https://example.com/card',
+        },
+        {
+          title: 'Retired product',
+          img: '/marketing/another.png',
+          link: 'https://soracard.com',
+        },
+        {
+          title: 'Retired image',
+          img: '/marketing/card.png',
+          link: 'https://example.com/retired',
         },
       ],
     };
@@ -217,6 +232,7 @@ describe('settings store actions', () => {
 
     expect(axiosGetSpy).toHaveBeenCalledWith(expect.stringContaining('marketing.json'));
     expect(settingsStore.adsArray).toHaveLength(1);
+    expect(settingsStore.adsArray.map((ad) => ad.title)).toEqual(['Banner']);
     expect(settingsStore.adsArray[0]?.img).toBe(resolveVersionedStaticAssetUrl('/marketing/banner.png'));
     expect(settingsStore.adsArray[0]?.link).toBe('#/swap');
   });

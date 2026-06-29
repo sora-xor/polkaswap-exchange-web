@@ -15,6 +15,23 @@ import { useTranslation } from './useTranslation';
 import type { AsyncFnWithoutArgs } from './useNotification';
 
 /**
+ * Describes whether the wallet flow actually created a transaction history item.
+ */
+export interface TransactionNotificationResult {
+  submitted: boolean;
+  submittedAt?: number;
+  transaction?: HistoryItem;
+  historyTimedOut?: boolean;
+  error?: unknown;
+}
+
+const TRANSACTION_HISTORY_LOOKUP_TIMEOUT_MS = 15_000;
+const TRANSACTION_HISTORY_LOOKUP_POLL_MS = 50;
+const TRANSACTION_HISTORY_LOOKUP_ATTEMPTS = Math.ceil(
+  TRANSACTION_HISTORY_LOOKUP_TIMEOUT_MS / TRANSACTION_HISTORY_LOOKUP_POLL_MS
+);
+
+/**
  * Lightweight transaction helper extracted from the wallet's
  * `TransactionMixin`.
  */
@@ -32,13 +49,20 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
   const removeActiveTransactions = walletStore.removeActiveTransactions;
   const accountAssetsAddressTable = computed(() => walletStore.accountAssetsAddressTable);
 
-  const getLastTransaction = async (time: number): Promise<HistoryItem> => {
-    const tx = findLast((item: HistoryItem) => Number(item.startTime) > time, api.historyList);
-    if (!tx) {
-      await delay();
-      return await getLastTransaction(time);
+  const findLastTransaction = (time: number): HistoryItem | undefined =>
+    findLast((item: HistoryItem) => Number(item.startTime) > time, api.historyList);
+
+  const waitForLastTransaction = async (time: number): Promise<HistoryItem | undefined> => {
+    const tx = findLastTransaction(time);
+    if (tx) return tx;
+
+    for (let attempt = 0; attempt < TRANSACTION_HISTORY_LOOKUP_ATTEMPTS; attempt += 1) {
+      await delay(TRANSACTION_HISTORY_LOOKUP_POLL_MS);
+      const nextTx = findLastTransaction(time);
+      if (nextTx) return nextTx;
     }
-    return tx;
+
+    return undefined;
   };
 
   const handleChangeTransaction = (value: Nullable<HistoryItem>, oldValue: Nullable<HistoryItem>): void => {
@@ -81,17 +105,31 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
     removeActiveTransactions([value.id as string]);
   };
 
-  const withNotifications = async (handler: AsyncFnWithoutArgs): Promise<void> => {
-    await withLoading(async () => {
-      await notification.withAppNotification(async () => {
-        await walletStore.beforeTransactionSign(api);
-        const time = Date.now();
-        await handler();
-        notification.showAppNotification(t('transactionSubmittedText'), 'info');
-        const tx = await getLastTransaction(time);
-        addActiveTransaction(tx.id as string);
-      });
+  const withNotifications = async (handler: AsyncFnWithoutArgs): Promise<TransactionNotificationResult> => {
+    let result: TransactionNotificationResult = { submitted: false };
+
+    await withChainApi(api, async () => {
+      await notification
+        .withAppNotification(async () => {
+          await walletStore.beforeTransactionSign(api);
+          const time = Date.now();
+          await handler();
+          notification.showAppNotification(t('transactionSubmittedText'), 'info');
+          const tx = await waitForLastTransaction(time);
+
+          if (tx) {
+            addActiveTransaction(tx.id as string);
+            result = { submitted: true, submittedAt: time, transaction: tx };
+          } else {
+            result = { submitted: true, submittedAt: time, historyTimedOut: true };
+          }
+        }, true)
+        .catch((error: unknown) => {
+          result = { submitted: false, error };
+        });
     });
+
+    return result;
   };
 
   return {

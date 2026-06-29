@@ -225,10 +225,9 @@ export default {
       dialog: {
         indexer: 'Indexer',
         title: '{Sora} Network service selection',
-        useCeres: 'Use Polkaswap Indexer for fiat values',
       },
       label: 'Statistics services',
-      indexerBlock: 'Polkaswap Indexer Block #{block}',
+      indexerBlock: '{source} Block #{block}',
       title: {
         available: 'Statistics available',
         loading: 'Statistics loading',
@@ -613,7 +612,6 @@ export default {
     relatedTasks: 'Complete {title}-related tasks in order to level up your skill',
     yourLevel: 'Your level',
     rewardNextLvl: 'Next level reward',
-    soraCard: 'Apply now',
     complete: 'Completed | Complete',
     progress: 'Progress',
     yourTasks: 'Your Tasks',

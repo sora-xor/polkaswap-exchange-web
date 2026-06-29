@@ -32,7 +32,7 @@ function createRoot() {
 
   const root = {
     account: { pair: { address: 'cnAccount' } },
-    connection: { endpoint: 'wss://example.invalid' },
+    connection: { endpoint: '' },
     chainDecimals: 18,
     api: {
       query: {
@@ -235,6 +235,86 @@ describe('PolkamarktModule', () => {
       marginalYesPriceBps: 5600,
       impliedYesProbabilityBps: 6400,
     });
+  });
+
+  it('serializes raw quote balance parameters as unquoted codec integers', async () => {
+    const sentPayloads: string[] = [];
+    const previousWebSocket = globalThis.WebSocket;
+    const { root, module } = createRoot();
+
+    root.connection.endpoint = 'wss://quote.example';
+
+    class MockWebSocket {
+      public onopen?: () => void;
+      public onerror?: () => void;
+      public onmessage?: (event: { data: string }) => void;
+
+      public constructor(public readonly url: string) {
+        queueMicrotask(() => this.onopen?.());
+      }
+
+      public send(payload: string): void {
+        sentPayloads.push(payload);
+        const request = JSON.parse(payload) as { id: number; method: string };
+        const result =
+          request.method === 'polkamarkt_quoteSell'
+            ? {
+                marketId: 7,
+                outcome: 'No',
+                sharesIn: '2000000000000000000',
+                grossCollateralOut: '120',
+                feeAmount: '2',
+                collateralOut: '118',
+              }
+            : {
+                marketId: 7,
+                outcome: 'Yes',
+                collateralIn: '1000000000000000000',
+                feeAmount: '1',
+                pricingCollateral: '99',
+                sharesOut: '180',
+              };
+
+        queueMicrotask(() =>
+          this.onmessage?.({
+            data: JSON.stringify({
+              jsonrpc: '2.0',
+              id: request.id,
+              result,
+            }),
+          })
+        );
+      }
+
+      public close(): void {}
+    }
+
+    globalThis.WebSocket = MockWebSocket as unknown as typeof WebSocket;
+
+    try {
+      await expect(
+        module.quoteBuyTrade({ marketId: 7, outcome: 'Yes', collateralIn: '1000000000000000000' })
+      ).resolves.toMatchObject({
+        marketId: 7,
+        collateralIn: '1000000000000000000',
+        sharesOut: '180',
+      });
+      await expect(
+        module.quoteSellTrade({ marketId: 7, outcome: 'No', sharesIn: '2000000000000000000' })
+      ).resolves.toMatchObject({
+        marketId: 7,
+        outcome: 'No',
+        sharesIn: '2000000000000000000',
+      });
+    } finally {
+      globalThis.WebSocket = previousWebSocket;
+    }
+
+    expect(sentPayloads).toHaveLength(2);
+    expect(sentPayloads[0]).toContain('"params":[7,"Yes",1000000000000000000]');
+    expect(sentPayloads[1]).toContain('"params":[7,"No",2000000000000000000]');
+    expect(root.api.rpc.polkamarkt.quoteBuy).not.toHaveBeenCalled();
+    expect(root.api.rpc.polkamarkt.quoteSell).not.toHaveBeenCalled();
   });
 
   it('does not expose removed Polkamarkt CLOB or AMM entrypoints', () => {

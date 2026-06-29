@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "အညွှန်း",
-                "title": "{Sora} ကွန်ရက်ဝန်ဆောင်မှု ရွေးချယ်မှု",
-                "useCeres": "Fiat တန်ဖိုးများအတွက် Polkaswap Indexer ကိုသုံးပါ။"
+                "title": "{Sora} ကွန်ရက်ဝန်ဆောင်မှု ရွေးချယ်မှု"
             },
-            "indexerBlock": "Polkaswap Indexer ဘလောက် #{block}",
+            "indexerBlock": "{source} ဘလောက် #{block}",
             "label": "စာရင်းအင်းဝန်ဆောင်မှုများ",
             "title": {
                 "available": "စာရင်းအင်းများ ရရှိနိုင်သည်။",
@@ -883,7 +882,6 @@
         "Pool": "ရေကူးကန်",
         "Rewards": "ဆုလာဘ်",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora} ကတ်",
         "StakingContainer": "လောင်းကြေးထပ်",
         "Stats": "စာရင်းအင်းများ",
         "Swap": "လဲလှယ်ပါ။",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "သင်၏ကျွမ်းကျင်မှုကို အဆင့်မြှင့်တင်ရန်အတွက် {title} နှင့်ပတ်သက်သည့် အလုပ်များကို ပြီးအောင်လုပ်ပါ။",
         "rewardNextLvl": "နောက်အဆင့်ဆု",
-        "soraCard": "ယခုလျှောက်ထားပါ။",
         "title": "သင်၏အမှတ်များ",
         "toEarnPoints": "အမှတ်များ ရယူရန်",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "စျေးကွက်များကို ဖွင့်နေသည်...",
         "markets": {
+            "groupCount": "{count} စျေးကွက်များ",
+            "groupTotals": "အတွဲ: {volume}",
+            "hotSubtitle": "{count} လှုပ်လှုပ်ရှားရှား စျေးကွက်များ - အတွဲ / ငွေဖြစ်လွယ်ခြင်း။",
+            "hotTitle": "လှုပ်လှုပ်ရှားရှား စျေးကွက်များ",
             "search": "စျေးကွက်ရှာဖွေပါ။",
             "subtitle": "{count} စျေးကွက်များသည် လက်ရှိ စစ်ထုတ်မှုများနှင့် ကိုက်ညီပါသည်။",
-            "title": "စျေးကွက်များ"
+            "title": "စျေးကွက်များ",
+            "trending": "အတွဲ"
         },
         "metrics": {
             "closeBlock": "ဘလောက်ပိတ်",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "ဟုတ်သည်။ {yes} / မဟုတ်ဘူး {no}",
+            "loading": "စျေးကွက်များကို ဖွင့်နေသည်..."
+        },
         "status": {
             "active": "လှုပ်လှုပ်ရှားရှား",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "၀.၀",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "ဝယ်ပါ။ {outcome} {amount} {symbol} {shares}",
             "claimable": "အခိုင်အမာ",
             "claimableFailed": "တောင်းဆိုနိုင်သော လက်ကျန်များကို မဖတ်နိုင်ပါ။",
+            "claimFeesReceipt": "ဖန်တီးသူအခကြေးငွေကို တောင်းဆိုပါ။",
+            "claimMarketReceipt": "ငွေပေးချေမှုကို ကုန်သည်ထံ တောင်းဆိုပါ။",
             "claimStatus": "အရေးဆိုမှု အခြေအနေ",
             "collateralIn": "အာမခံငွေ ထည့်ရန် ({symbol})",
             "collateralOut": "ဒါကလည်း ထွက်လာတယ်။",
+            "connectForBalances": "အကောင့်ချိတ်ဆက်ပါ။",
             "dpmSubtitle": "ဈေးကွက် မပိတ်မီ DPM curve ဖြင့် YES သို့မဟုတ် NO ကို ဝယ်/ရောင်းနိုင်သည်။",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "ခန့်မှန်း {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "လက်ကျန် {symbol} မလုံလောက်ပါ။",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "ကွန်ရက်အခကြေးငွေအတွက် XOR မလုံလောက်ပါ။",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "ကိုးကားချက်ကို ပြန်လည်စတင်၍မရပါ။",
             "quoteUnavailable": "Quote မရရှိနိုင်ပါ",
+            "refreshingBalances": "ပြန်လည်ဆန်းသစ်ထားသောကိုးကား...",
             "refreshingQuote": "ပြန်လည်ဆန်းသစ်ထားသောကိုးကား...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "အရောင်းအ၀ယ်ပြုလုပ်ရန် တက်ကြွသောစျေးကွက်ကို ရွေးချယ်ပါ။",
+            "sellReceipt": "ရောင်း {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "ရှယ်ယာများ",
             "sharesOut": "မျှဝေသည်။",
             "sharesToSell": "ရောင်းမည့် shares",
             "slippage": "ချော်မှု %",
             "takerFee": "Taker fee",
             "title": "ကုန်သွယ်မှုလက်မှတ်",
+            "transactionFailed": "ငွေပေးငွေယူ မအောင်မြင်ပါ။",
+            "transactionId": "ငွေပေးငွေယူ ID {id}",
+            "txHint": {
+                "confirmed": "ပြန်လည်ဆန်းသစ်ထားသောကိုးကား...",
+                "failed": "ငွေပေးငွေယူ မအောင်မြင်ပါ။",
+                "submitted": "ငွေလွှဲပို့ခဲ့သည်။",
+                "submitting": "စောင့်ဆိုင်းနေသည်..."
+            },
+            "txStatus": {
+                "confirmed": "ငွေလွှဲခြင်းကို အတည်ပြုခဲ့သည်။",
+                "failed": "ငွေပေးငွေယူ မအောင်မြင်ပါ။",
+                "submitted": "ငွေလွှဲပို့ခဲ့သည်။",
+                "submitting": "စောင့်ဆိုင်းနေသည်..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

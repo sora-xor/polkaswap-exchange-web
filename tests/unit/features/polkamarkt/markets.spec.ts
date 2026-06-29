@@ -20,6 +20,7 @@ import {
   formatApproximateCloseDate,
   formatDateTimeLocalInput,
   getMarketDisplayStatus,
+  groupHotMarketsByCategory,
   isActiveMarket,
   isClaimableMarketStatus,
   isFinalizedMarket,
@@ -28,6 +29,8 @@ import {
   normalizeMarketCategory,
   normalizeMarketOracle,
   parseProbability,
+  rankHotPolkamarktMarkets,
+  selectCardHistoryMarkets,
   validateMarketMetadata,
 } from '@/features/polkamarkt/lib/markets';
 import {
@@ -37,7 +40,6 @@ import {
 } from '@/features/polkamarkt/lib/pricingCurve';
 import {
   fetchPolkamarktMarketHistory,
-  marketHistoryFallback,
   marketRuntimeId,
   parseMarketHistoryPoint,
 } from '@/features/polkamarkt/services/marketHistory';
@@ -74,6 +76,65 @@ describe('polkamarkt market helpers', () => {
     expect(normalizeMarketOracle('SORA governance')).toBe('SORA On-Chain Governance');
     expect(normalizeMarketOracle('Maritime desk')).toBe('Maritime desk');
     expect(normalizeMarketOracle('')).toBeUndefined();
+  });
+
+  it('ranks, groups, and caps hot active markets deterministically', () => {
+    const trendingMarket = baseMarket({
+      id: '3',
+      chainId: 3,
+      category: 'AI',
+      liquidity: 20,
+      title: 'Will AI volume lead?',
+      trending: true,
+      volume: 50,
+    });
+    const volumeMarket = baseMarket({
+      id: '2',
+      chainId: 2,
+      category: 'Crypto',
+      liquidity: 200,
+      title: 'Will crypto lead?',
+      volume: 500,
+    });
+    const liquidMarket = baseMarket({
+      id: '4',
+      chainId: 4,
+      category: 'Crypto',
+      liquidity: 300,
+      title: 'Will liquidity decide?',
+      volume: 50,
+    });
+    const closedMarket = baseMarket({
+      id: '5',
+      chainId: 5,
+      closeBlock: 99,
+      liquidity: 1000,
+      title: 'Closed high-volume market',
+      volume: 1000,
+    });
+    const lockedMarket = baseMarket({
+      id: '6',
+      chainId: 6,
+      earlyResolutionOutcome: 'YES',
+      liquidity: 1000,
+      title: 'Locked high-volume market',
+      volume: 1000,
+    });
+
+    expect(
+      rankHotPolkamarktMarkets([liquidMarket, closedMarket, volumeMarket, lockedMarket, trendingMarket], 100).map(
+        (item) => item.id
+      )
+    ).toEqual(['3', '2', '4']);
+
+    expect(groupHotMarketsByCategory([liquidMarket, volumeMarket, trendingMarket], 100)).toMatchObject([
+      { category: 'AI', markets: [{ id: '3' }], totalVolume: 50 },
+      { category: 'Crypto', markets: [{ id: '2' }, { id: '4' }], totalVolume: 550 },
+    ]);
+
+    expect(selectCardHistoryMarkets([liquidMarket, volumeMarket, trendingMarket], 100, 2).map((item) => item.id)).toEqual(
+      ['3', '2']
+    );
   });
 
   it('derives DPM curve demand from virtual and real share reserves', () => {
@@ -441,7 +502,7 @@ describe('polkamarkt market helpers', () => {
     expect(parseProbability('bad')).toBeUndefined();
   });
 
-  it('parses indexed market history and falls back to the current probability', async () => {
+  it('parses indexed market history without synthesizing missing snapshots', async () => {
     expect(
       parseMarketHistoryPoint({
         id: 'market-7-BLOCK-10',
@@ -469,15 +530,6 @@ describe('polkamarkt market helpers', () => {
 
     expect(parseMarketHistoryPoint({ id: 'bad' })).toBeNull();
     expect(marketRuntimeId(baseMarket({ id: '42', chainId: undefined }))).toBe(42);
-    expect(marketHistoryFallback(baseMarket({ probability: 63 }))).toMatchObject([
-      {
-        id: 'current-1',
-        marketId: 1,
-        probability: 63,
-        priceYes: 0.63,
-        priceNo: 0.37,
-      },
-    ]);
 
     indexerRequestMock.mockResolvedValueOnce({
       marketSnapshots: {
@@ -506,11 +558,6 @@ describe('polkamarkt market helpers', () => {
     expect(indexerRequestMock).toHaveBeenCalledWith(expect.anything(), { marketId: 1, limit: 96 });
 
     indexerRequestMock.mockResolvedValueOnce({ marketSnapshots: { edges: [] } });
-    await expect(fetchPolkamarktMarketHistory(baseMarket({ probability: 51 }))).resolves.toMatchObject([
-      {
-        id: 'current-1',
-        probability: 51,
-      },
-    ]);
+    await expect(fetchPolkamarktMarketHistory(baseMarket({ probability: 51 }))).resolves.toEqual([]);
   });
 });

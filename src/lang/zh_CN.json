@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "索引器",
-                "title": "{Sora}网络服务选择",
-                "useCeres": "使用 Polkaswap Indexer 获取法币值"
+                "title": "{Sora}网络服务选择"
             },
-            "indexerBlock": "Polkaswap 索引器区块#{block}",
+            "indexerBlock": "{source} 区块#{block}",
             "label": "统计服务",
             "title": {
                 "available": "可用的统计数据",
@@ -883,7 +882,6 @@
         "Pool": "流动池",
         "Rewards": "奖励",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "{Sora}卡",
         "StakingContainer": "质押",
         "Stats": "统计数据",
         "Swap": "兑换",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "完成与 {title} 相关的任务以提升您的技能",
         "rewardNextLvl": "下一级奖励",
-        "soraCard": "立即申请",
         "title": "您的积分进度",
         "toEarnPoints": "获得积分",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "正在加载市场...",
         "markets": {
+            "groupCount": "{count} 市场",
+            "groupTotals": "体积: {volume}",
+            "hotSubtitle": "{count} 活跃 市场 - 体积 / 流动性",
+            "hotTitle": "活跃 市场",
             "search": "搜索市场",
             "subtitle": "{count} 市场符合当前过滤条件",
-            "title": "市场"
+            "title": "市场",
+            "trending": "体积"
         },
         "metrics": {
             "closeBlock": "关闭区块",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "是的 {yes} / 否 {no}",
+            "loading": "正在加载市场..."
+        },
         "status": {
             "active": "活跃",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "购买 {outcome} {amount} {symbol} {shares}",
             "claimable": "可索赔",
             "claimableFailed": "无法读取可索赔余额。",
+            "claimFeesReceipt": "索取创作者费用",
+            "claimMarketReceipt": "要求交易者付款",
             "claimStatus": "索赔状态",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "抵押品出",
+            "connectForBalances": "连接账户",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "{symbol} 余额不足",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "网络费用异或不足",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "无法刷新报价。",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "刷新报价...",
             "refreshingQuote": "刷新报价...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "选择一个活跃的市场进行交易。",
+            "sellReceipt": "出售 {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "股份",
             "sharesOut": "分享出去",
             "sharesToSell": "Shares to sell",
             "slippage": "滑点%",
             "takerFee": "Taker fee",
             "title": "贸易票",
+            "transactionFailed": "交易失败",
+            "transactionId": "交易ID {id}",
+            "txHint": {
+                "confirmed": "刷新报价...",
+                "failed": "交易失败",
+                "submitted": "交易已提交",
+                "submitting": "等待确认..."
+            },
+            "txStatus": {
+                "confirmed": "交易已确认",
+                "failed": "交易失败",
+                "submitted": "交易已提交",
+                "submitting": "等待确认..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

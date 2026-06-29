@@ -613,10 +613,9 @@
             },
             "dialog": {
                 "indexer": "فهرس",
-                "title": "{Sora} اختيار خدمة الشبكة",
-                "useCeres": "استخدم Polkaswap Indexer للقيم الورقية"
+                "title": "{Sora} اختيار خدمة الشبكة"
             },
-            "indexerBlock": "كتلة مفهرس Polkaswap # {block}",
+            "indexerBlock": "كتلة {source} #{block}",
             "label": "خدمات الإحصاء",
             "title": {
                 "available": "الإحصائيات المتاحة",
@@ -883,7 +882,6 @@
         "Pool": "المجمّع",
         "Rewards": "المكافآت",
         "Sccp": "@:pageTitle.Sccp",
-        "SoraCard": "بطاقة {Sora}",
         "StakingContainer": "التحصيص",
         "Stats": "الإحصاءات",
         "Swap": "المبادلة",
@@ -1403,7 +1401,6 @@
         },
         "relatedTasks": "أكمل المهام ذات الصلة بـ {title} من أجل رفع مستوى مهارتك",
         "rewardNextLvl": "مكافأة المستوى التالي",
-        "soraCard": "تقدم الآن",
         "title": "نقاطك",
         "toEarnPoints": "لتحقيق النقاط",
         "tokenHold": {
@@ -1534,9 +1531,14 @@
         },
         "loadingMarkets": "جارٍ تحميل الأسواق...",
         "markets": {
+            "groupCount": "{count} الأسواق",
+            "groupTotals": "الحجم: {volume}",
+            "hotSubtitle": "{count} نشط الأسواق - الحجم / السيولة",
+            "hotTitle": "نشط الأسواق",
             "search": "أسواق البحث",
             "subtitle": "{count} تتطابق الأسواق مع المرشحات الحالية",
-            "title": "الأسواق"
+            "title": "الأسواق",
+            "trending": "الحجم"
         },
         "metrics": {
             "closeBlock": "إغلاق الكتلة",
@@ -1590,6 +1592,10 @@
             "tradeLink": "Trade link",
             "x": "X"
         },
+        "sparkline": {
+            "ariaLabel": "نعم {yes} / لا {no}",
+            "loading": "جارٍ تحميل الأسواق..."
+        },
         "status": {
             "active": "نشط",
             "closed": "Closed",
@@ -1597,11 +1603,16 @@
         },
         "ticket": {
             "amountPlaceholder": "0.0",
+            "balanceUnavailable": "Insufficient shares",
+            "buyReceipt": "يشتري {outcome} {amount} {symbol} {shares}",
             "claimable": "يمكن المطالبة به",
             "claimableFailed": "غير قادر على قراءة الأرصدة المطالب بها.",
+            "claimFeesReceipt": "المطالبة برسوم المنشئ",
+            "claimMarketReceipt": "المطالبة بدفع تعويضات التاجر",
             "claimStatus": "حالة المطالبة",
             "collateralIn": "Collateral in ({symbol})",
             "collateralOut": "ضمانات خارج",
+            "connectForBalances": "اتصال حساب",
             "dpmSubtitle": "Buy or sell YES and NO through the DPM curve before the market closes.",
             "earlyReportAlreadyExists": "Early resolution already reported",
             "earlyReportFeeFailed": "Unable to estimate early report fee.",
@@ -1611,6 +1622,7 @@
             "evidenceHash": "Evidence hash",
             "evidenceUri": "Evidence URI",
             "impliedProbabilityShort": "Implied {value}",
+            "indexedPosition": "Trader positions {yes} / {no}",
             "insufficientKusd": "رصيد {symbol} غير كافٍ",
             "insufficientShares": "Insufficient shares",
             "insufficientXor": "XOR غير كافية لرسوم الشبكة",
@@ -1619,15 +1631,32 @@
             "orderShares": "Shares",
             "quoteFailed": "غير قادر على تحديث الاقتباس.",
             "quoteUnavailable": "Quote unavailable",
+            "refreshingBalances": "اقتباس متجدد...",
             "refreshingQuote": "اقتباس متجدد...",
             "reportBond": "Report bond",
+            "reportReceipt": "Report early resolution {outcome}",
             "selectMarket": "حدد سوقًا نشطًا للتداول.",
+            "sellReceipt": "بيع {shares} {outcome} {amount} {symbol}",
             "sharesAmount": "أسهم",
             "sharesOut": "شارك خارجا",
             "sharesToSell": "Shares to sell",
             "slippage": "نسبة الانزلاق",
             "takerFee": "Taker fee",
             "title": "تذكرة التجارة",
+            "transactionFailed": "فشلت المعاملة",
+            "transactionId": "معرف المعاملة {id}",
+            "txHint": {
+                "confirmed": "اقتباس متجدد...",
+                "failed": "فشلت المعاملة",
+                "submitted": "تم تقديم المعاملة",
+                "submitting": "قيد الانتظار..."
+            },
+            "txStatus": {
+                "confirmed": "أكد المعاملة",
+                "failed": "فشلت المعاملة",
+                "submitted": "تم تقديم المعاملة",
+                "submitting": "قيد الانتظار..."
+            },
             "walletNo": "Your NO",
             "walletYes": "Your YES"
         },

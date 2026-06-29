@@ -46,7 +46,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { api } from '@/api';
 import { useDialogVisibility } from '@/composables/useDialog';
 import { useNotification } from '@/composables/useNotification';
 import { useTranslation } from '@/composables/useTranslation';
@@ -54,6 +53,7 @@ import { RouteNames } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
 import type { MSTData } from '@/types/mst';
 
+import { api } from '../../api';
 import DialogBase from '../DialogBase.vue';
 
 defineOptions({ name: 'MultisigCreateDialog' });
