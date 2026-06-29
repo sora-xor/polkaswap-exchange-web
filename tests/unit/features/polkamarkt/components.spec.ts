@@ -12,10 +12,12 @@ import marketShareWidgetSource from '@/features/polkamarkt/components/MarketShar
 import myPositionsPanelSource from '@/features/polkamarkt/components/MyPositionsPanel.vue?raw';
 import polkamarktPageSource from '@/features/polkamarkt/pages/PolkamarktPage.vue?raw';
 import pricingCurvePositionChartSource from '@/features/polkamarkt/components/PricingCurvePositionChart.vue?raw';
+import { PageNames } from '@/consts';
 
 const mocks = vi.hoisted(() => ({
   route: { params: {} as Record<string, unknown> },
   routerPush: vi.fn(),
+  routerReplace: vi.fn(),
   fetchMarkets: vi.fn(),
   fetchHistory: vi.fn(),
   fetchActivity: vi.fn(),
@@ -60,7 +62,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('vue-router', () => ({
   useRoute: () => mocks.route,
-  useRouter: () => ({ push: mocks.routerPush }),
+  useRouter: () => ({ push: mocks.routerPush, replace: mocks.routerReplace }),
 }));
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -178,9 +180,15 @@ const sSelectStub = {
   `,
 };
 
+const sIconStub = {
+  props: ['name', 'size'],
+  template: '<i class="s-icon-stub" :data-name="name" :data-size="size"></i>',
+};
+
 const globalStubs = {
   's-button': sButtonStub,
   's-select': sSelectStub,
+  's-icon': sIconStub,
 };
 
 function mockShareCanvas(): {
@@ -230,6 +238,7 @@ describe('polkamarkt components', () => {
   beforeEach(() => {
     mocks.route.params = {};
     mocks.routerPush.mockReset();
+    mocks.routerReplace.mockReset();
     mocks.fetchMarkets.mockReset().mockResolvedValue([market]);
     mocks.fetchHistory.mockReset().mockResolvedValue([
       { id: 'h1', marketId: 1, timestamp: 1780229164, probability: 60 },
@@ -449,6 +458,8 @@ describe('polkamarkt components', () => {
     expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 160px), 1fr)'})");
     expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 340px), 1fr)'})");
     expect(marketDetailSource).toContain("grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 150px), 1fr)'})");
+    expect(marketDetailSource).toContain('align-items: start;');
+    expect(marketDetailSource).toContain('align-self: start;');
     expect(marketDetailSource).toContain('market-detail__fact--wide');
     expect(marketDetailSource).toContain('<details class="market-detail__section">');
   });
@@ -1444,6 +1455,7 @@ describe('polkamarkt components', () => {
       global: {
         stubs: {
           's-button': sButtonStub,
+          's-icon': sIconStub,
           MarketList: true,
           MarketDetail: true,
           TradeTicket: true,
@@ -1454,12 +1466,74 @@ describe('polkamarkt components', () => {
     });
 
     await vi.waitFor(() => expect(mocks.fetchMarkets).toHaveBeenCalled());
-    await vi.waitFor(() => expect(mocks.fetchHistory).toHaveBeenCalledWith(expect.objectContaining({ id: market.id })));
+    await vi.waitFor(() =>
+      expect(mocks.fetchHistory).toHaveBeenCalledWith(expect.objectContaining({ id: market.id }), 24)
+    );
     await vi.waitFor(() => expect(mocks.fetchActivity).toHaveBeenCalledWith('cnAccount'));
     expect(wrapper.text()).toContain('pageTitle.Polkamarkt');
     expect(wrapper.text()).toContain('polkamarkt.disclaimer');
+    expect(wrapper.find('.polkamarkt__market-discovery').exists()).toBe(true);
+    expect(wrapper.find('.polkamarkt__workspace').exists()).toBe(false);
+    expect(
+      mocks.fetchHistory.mock.calls.some(([requested, limit]) => requested?.id === market.id && limit === undefined)
+    ).toBe(false);
     expect(wrapper.get('.polkamarkt__external-link').attributes('href')).toBe('https://polkamarkt.com');
     expect(wrapper.get('.polkamarkt__external-link').attributes('rel')).toContain('noopener');
+  });
+
+  it('opens selected markets as a detail route and returns to the board', async () => {
+    const marketListStub = defineComponent({
+      props: ['markets'],
+      emits: ['select'],
+      template: `
+        <section class="market-list-stub">
+          <span class="market-list-count-stub">{{ markets.length }}</span>
+          <button
+            class="market-list-select-stub"
+            type="button"
+            :disabled="!markets.length"
+            @click="$emit('select', markets[0])"
+          >
+            Select market
+          </button>
+        </section>
+      `,
+    });
+
+    const wrapper = mount(PolkamarktPage, {
+      global: {
+        stubs: {
+          's-button': sButtonStub,
+          's-icon': sIconStub,
+          MarketList: marketListStub,
+          MarketDetail: defineComponent({
+            props: ['market'],
+            template: '<section class="market-detail-stub">{{ market?.title }}</section>',
+          }),
+          TradeTicket: defineComponent({ props: ['market'], template: '<aside class="trade-ticket-stub" />' }),
+          MyPositionsPanel: defineComponent({ template: '<section class="my-positions-stub" />' }),
+          CreateMarketDialog: true,
+        },
+      },
+    });
+
+    await vi.waitFor(() => expect(mocks.fetchMarkets).toHaveBeenCalled());
+    await vi.waitFor(() => expect(wrapper.find('.market-list-count-stub').text()).toBe('1'));
+    expect(wrapper.find('.polkamarkt__market-discovery').exists()).toBe(true);
+    expect(wrapper.find('.polkamarkt__workspace').exists()).toBe(false);
+
+    await wrapper.get('.market-list-select-stub').trigger('click');
+
+    expect(mocks.routerPush).toHaveBeenCalledWith({ name: PageNames.Polkamarkt, params: { marketId: '1' } });
+    await vi.waitFor(() => expect(wrapper.find('.market-detail-stub').text()).toContain(market.title));
+    expect(wrapper.find('.polkamarkt__market-discovery').exists()).toBe(false);
+    expect(wrapper.find('.polkamarkt__workspace').exists()).toBe(true);
+
+    await wrapper.get('.polkamarkt__back').trigger('click');
+
+    expect(mocks.routerReplace).toHaveBeenCalledWith({ name: PageNames.Polkamarkt });
+    expect(wrapper.find('.polkamarkt__market-discovery').exists()).toBe(true);
+    expect(wrapper.find('.polkamarkt__workspace').exists()).toBe(false);
   });
 
   it('collapses market workspace clutter when the active filter is empty', async () => {
@@ -1469,6 +1543,7 @@ describe('polkamarkt components', () => {
       global: {
         stubs: {
           's-button': sButtonStub,
+          's-icon': sIconStub,
           MarketList: true,
           MarketDetail: defineComponent({ template: '<section class="market-detail-stub" />' }),
           TradeTicket: defineComponent({ template: '<aside class="trade-ticket-stub" />' }),
@@ -1495,6 +1570,7 @@ describe('polkamarkt components', () => {
       global: {
         stubs: {
           's-button': sButtonStub,
+          's-icon': sIconStub,
           MarketList: true,
           MarketDetail: defineComponent({
             props: ['market'],
@@ -1510,5 +1586,6 @@ describe('polkamarkt components', () => {
     await vi.waitFor(() => expect(wrapper.find('.market-detail-stub').text()).toContain('Direct closed route market'));
 
     expect(wrapper.find('.polkamarkt__workspace').exists()).toBe(true);
+    expect(wrapper.find('.polkamarkt__market-discovery').exists()).toBe(false);
   });
 });

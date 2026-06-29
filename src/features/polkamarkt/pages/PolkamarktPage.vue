@@ -24,7 +24,7 @@
       </div>
     </section>
 
-    <section class="polkamarkt__market-discovery">
+    <section v-if="shouldShowMarketBoard" class="polkamarkt__market-discovery">
       <market-list
         v-model:search="search"
         v-model:category="category"
@@ -42,19 +42,40 @@
       />
     </section>
 
-    <section v-if="shouldShowMarketWorkspace" class="polkamarkt__workspace">
-      <market-detail
-        :market="selectedMarket"
-        :history="marketHistory"
-        :history-loading="marketHistoryLoading"
-        :current-block="currentBlock"
-      />
-      <trade-ticket
-        :market="selectedMarket"
-        :account-position="selectedPosition"
-        :current-block="currentBlock"
-        @submitted="handleTransactionSubmitted"
-      />
+    <section v-else class="polkamarkt__detail">
+      <s-button
+        class="polkamarkt__back"
+        type="action"
+        size="small"
+        alternative
+        :tooltip="t('backText')"
+        :aria-label="t('backText')"
+        @click="returnToMarketBoard"
+      >
+        <s-icon name="arrows-chevron-left-rounded-24" size="24"></s-icon>
+      </s-button>
+
+      <p v-if="marketsLoading && !selectedMarket" class="polkamarkt__detail-state">
+        {{ t('polkamarkt.loadingMarkets') }}
+      </p>
+      <p v-else-if="!selectedMarket" class="polkamarkt__detail-state">
+        {{ t('polkamarkt.noMarkets') }}
+      </p>
+
+      <section v-else class="polkamarkt__workspace">
+        <market-detail
+          :market="selectedMarket"
+          :history="marketHistory"
+          :history-loading="marketHistoryLoading"
+          :current-block="currentBlock"
+        />
+        <trade-ticket
+          :market="selectedMarket"
+          :account-position="selectedPosition"
+          :current-block="currentBlock"
+          @submitted="handleTransactionSubmitted"
+        />
+      </section>
     </section>
 
     <my-positions-panel
@@ -171,8 +192,9 @@ const selectedMarket = computed(() => {
     if (routedMarket) return routedMarket;
   }
 
-  return filteredMarkets.value[0];
+  return undefined;
 });
+const shouldShowMarketBoard = computed(() => !selectedMarketId.value);
 const shouldShowMarketWorkspace = computed(() => Boolean(selectedMarket.value));
 const shouldShowAccountActivity = computed(() => shouldShowMarketWorkspace.value || status.value !== 'active');
 const cardHistoryMarkets = computed(() => selectCardHistoryMarkets(markets.value, currentBlock.value));
@@ -198,9 +220,6 @@ async function refreshMarkets(): Promise<void> {
     }
     if (!selectedMarketId.value && route.params.marketId) {
       selectedMarketId.value = String(route.params.marketId);
-    }
-    if (!selectedMarketId.value && filteredMarkets.value[0]) {
-      selectedMarketId.value = String(filteredMarkets.value[0].chainId ?? filteredMarkets.value[0].id);
     }
   } catch (err) {
     marketsError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadMarkets');
@@ -300,6 +319,11 @@ function selectMarket(market: PolkamarktMarket): void {
   router.push({ name: PageNames.Polkamarkt, params: { marketId: id } });
 }
 
+function returnToMarketBoard(): void {
+  selectedMarketId.value = '';
+  router.replace({ name: PageNames.Polkamarkt });
+}
+
 function selectPositionMarket(position: AccountPosition): void {
   const market = markets.value.find((item) => item.chainId === position.marketId);
   if (market) {
@@ -353,6 +377,7 @@ onMounted(() => {
 defineExpose({
   markets,
   selectedMarket,
+  shouldShowMarketBoard,
   marketHistory,
   cardHistoriesByMarketId,
   positions,
@@ -427,6 +452,32 @@ defineExpose({
 
   &__market-discovery {
     min-width: 0;
+  }
+
+  &__detail {
+    display: grid;
+    gap: $inner-spacing-medium;
+    min-width: 0;
+
+    @include tablet(true) {
+      padding-top: $header-height;
+    }
+  }
+
+  &__back {
+    justify-self: flex-start;
+  }
+
+  &__detail-state {
+    display: grid;
+    min-height: 220px;
+    place-items: center;
+    border: 1px dashed var(--s-color-base-border-secondary);
+    border-radius: var(--s-border-radius-small);
+    color: var(--s-color-base-content-secondary);
+    margin: 0;
+    padding: $inner-spacing-big;
+    text-align: center;
   }
 
   &__workspace {

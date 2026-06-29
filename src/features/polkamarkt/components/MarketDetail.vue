@@ -276,6 +276,7 @@ const formatStateAmount = (value?: number, unit = ''): string =>
   &__sections {
     display: grid;
     grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 340px), 1fr)'});
+    align-items: start;
     gap: $inner-spacing-medium $inner-spacing-big;
 
     @include tablet(true) {
@@ -285,6 +286,7 @@ const formatStateAmount = (value?: number, unit = ''): string =>
 
   &__section {
     display: grid;
+    align-self: start;
     gap: $inner-spacing-mini;
     min-width: 0;
     border-top: 1px solid var(--s-color-base-border-secondary);
