@@ -1,4 +1,5 @@
 export { installPolkaswapAgentApi } from './install';
+export { registerPolkaswapWebMcpTools } from './webmcp';
 export { createAgentTradingDependencies, createPolkaswapAgentApi } from './service';
 export { PolkaswapAgentError, isAgentError, normalizeAgentError } from './errors';
 export type {
@@ -14,7 +15,13 @@ export type {
   AgentClearStateRequest,
   AgentErrorCode,
   AgentErrorShape,
+  AgentExecuteAddLiquidityRequest,
+  AgentExecutePreparedRequest,
+  AgentExecuteRemoveLiquidityRequest,
+  AgentExecuteSwapRequest,
+  AgentExecuteTransferRequest,
   AgentExportedIdempotencyRecord,
+  AgentFeeCeiling,
   AgentFeeEstimate,
   AgentIdempotencyRecord,
   AgentImportStateRequest,
@@ -30,8 +37,13 @@ export type {
   AgentPoolInfo,
   AgentPoolInfoRequest,
   AgentPolicyAssessment,
+  AgentPreparedBase,
+  AgentPreparedCall,
   AgentPreparedAddLiquidity,
+  AgentPreparedEnvelope,
+  AgentPreparedNetwork,
   AgentPreparedRemoveLiquidity,
+  AgentPreparedSigner,
   AgentPreparedSwap,
   AgentPreparedTransfer,
   AgentRecoverTransactionRequest,
@@ -49,9 +61,12 @@ export type {
   AgentStatusSubscriptionRequest,
   AgentStateExport,
   AgentStateImportResult,
+  AgentIntentAction,
+  AgentIntentRevalidation,
   AgentSwapExecution,
   AgentSwapAssessmentRequest,
   AgentSwapQuote,
+  AgentSwapPlan,
   AgentSwapRequest,
   AgentTransactionListener,
   AgentTransactionRef,

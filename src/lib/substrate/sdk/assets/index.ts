@@ -833,14 +833,21 @@ export class AssetsModule<T> {
    * @param asset Asset object
    * @param toAddress Account address
    * @param amount Amount value
+   * @param historyId optional deterministic local history id for direct hash tracking
    * @deprecated
    */
-  public simpleTransfer(asset: Asset | AccountAsset, toAddress: string, amount: NumberLike): Promise<T> {
+  public simpleTransfer(
+    asset: Asset | AccountAsset,
+    toAddress: string,
+    amount: NumberLike,
+    historyId?: string
+  ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
     const assetAddress = asset.address;
     const formattedToAddress = toAddress.startsWith('cn') ? toAddress : this.root.formatAddress(toAddress);
 
     const historyItem: History = {
+      ...(historyId ? { id: historyId } : {}),
       type: Operation.Transfer,
       symbol: asset.symbol,
       to: formattedToAddress,

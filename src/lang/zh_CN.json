@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} 维基"
     },
     "forAgents": {
-        "apiContext": "应用程序启动后安装在页面上下文中。它使用与用户界面相同的节点、钱包、索引器和 SDK 路径。",
+        "apiContext": "规划在公链数据上自主运行。钱包身份、余额和签名者状态不属于公共工具。",
         "contract": {
-            "idempotent": "使用稳定的 clientOrderId 并在重试之前恢复不确定的提交。",
-            "noCustody": "该页面永远不会收到私钥；签名保留在所选钱包中。",
-            "prepareFirst": "状态更改调用必须在执行*之前经过准备*。",
-            "samePage": "就绪事件后在 Polkaswap 页面上下文中运行。"
+            "idempotent": "当交换参数或市场发生变化时重新规划，无需页面批准步骤。",
+            "noCustody": "规划不需要连接帐户、余额或钱包权限。",
+            "prepareFirst": "未签署的计划不是可执行的意图或支出许可。",
+            "samePage": "直接在此页面或通过本地 MCP 桥调用工具。"
         },
         "discoveryText": "首先获取清单。它链接了此静态构建附带的版本化参考、模式文件、示例、错误目录和帮助程序客户端。",
         "discoveryTitle": "发现",
-        "entrypointsLabel": "代理 API 入口点",
+        "entrypointsLabel": "代理规划和发现入口点",
         "eyebrow": "自动化",
         "flow": {
             "execute": "仅在政策批准后执行，并具有准备好的意图和稳定的客户订单 ID。",
@@ -652,17 +652,23 @@
             "resolve": "在重复执行之前将资产符号解析为地址。",
             "wallet": "需要签名时选择钱包提供商和帐户。"
         },
-        "flowTitle": "安全执行循环",
-        "lead": "Polkaswap 为打开静态应用程序的代理运行者公开了浏览器本机自动化 API。",
+        "flowTitle": "自主规划",
+        "lead": "直接通过代理工具发现市场、比较报价并制定未签署的掉期计划。无需点击页面或钱包连接。",
         "links": {
             "client": "JavaScript 帮助客户端",
             "errors": "错误目录",
             "examples": "示例",
             "manifest": "发现清单",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "代理游乐场",
             "reference": "完整 API 参考",
             "schema": "JSON 模式",
             "types": "TypeScript 定义"
+        },
+        "mcp": {
+            "boundary": "签名永远不会在公共 WebMCP 中注册，并且本地桥不包含签名者。计划不能花费资金；无人值守执行需要单独的私人签名者和强制限制，但此处未提供。",
+            "text": "顶层页面显示发现、报价和独立于钱包的计划。座席可以直接调用和重复这些工具；这些工具无法请求钱包访问或提交交易。",
+            "title": "自主规划·只读"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "从清单开始"
             },
             "playground": {
-                "description": "针对状态、资产、报价和预览的手动同源探测。",
-                "title": "打开游乐场"
+                "description": "请求路线、滑点范围、预估费用和未签署的交换计划，无需连接钱包或等待页面批准。使用可选的游乐场来检查结果；工具调用不需要它。",
+                "title": "通过一个工具请求计划一次交换"
             },
             "reference": {
                 "description": "可读的方法图、示例、签名规则和恢复说明。",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "以保持重试幂等。",
-        "signingTextBefore": "该页面从不获取私钥。状态改变方法使用选定的钱包签名者并要求运行者传递返回的",
+        "signingTextBefore": "使用专用浏览器配置文件运行一次 Node 26 stdio 桥。标准 MCP 客户端随后可以发现市场、请求报价并重新计划，而无需页面交互。该桥公开相同的只读工具，并且不包含签名者。",
         "signingTextMiddle": "加上一个稳定的",
-        "signingTitle": "签字及保管",
-        "startTitle": "从这里开始",
+        "signingTitle": "本地 MCP · 相同的规划工具",
+        "startTitle": "打开可选检查器",
         "title": "对于代理商"
     },
     "forText": "给",

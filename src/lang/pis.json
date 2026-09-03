@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} stakaon"
     },
     "forAgents": {
-        "apiContext": "raonem stakaon gohed gohed gohed gohed stakaon gohed wakaot wakaot. gohed raonem gohed falom nod, walet, wakaot, wakaot falom gohed raonem gohed luksavve luksavve.",
+        "apiContext": "Planning runs autonomously on public chain data. Wallet identities, balances, and signer state stay outside the public tools.",
         "contract": {
-            "idempotent": "gohed wakaot wakaot falom wakaot raonem luksavve gohed gohed stakaon.",
-            "noCustody": "gohed gohed stakaon stakaon wakaot raonem; gohed raonem falom gohed gohed walet.",
-            "prepareFirst": "gohed wakaot gohed stakaon luksavve wakaot* gohed wakaot*.",
-            "samePage": "gohed falom gohed raonem gohed gohed stakaon gohed wakaot falom."
+            "idempotent": "Replan as swap parameters or markets change, without a page approval step.",
+            "noCustody": "Planning needs no connected account, balances, or wallet permission.",
+            "prepareFirst": "An unsigned plan is not an executable intent or permission to spend.",
+            "samePage": "Call tools directly on this page or through the local MCP bridge."
         },
         "discoveryText": "falom gohed wakaot falom. gohed wakaot gohed gohed luksavve, luksavve wakaot, luksavve, rong wakaot, wakaot stakaon gohed gohed falom raonem falom raonem.",
         "discoveryTitle": "raonem",
-        "entrypointsLabel": "gohed stakaon wakaot",
+        "entrypointsLabel": "Agent planning and discovery entrypoints",
         "eyebrow": "wakaot",
         "flow": {
             "execute": "wakaot raonem stakaon stakaon gohed, falom gohed wakaot falom wakaot wakaot wakaot gohed stakaon wakaot.",
@@ -652,17 +652,23 @@
             "resolve": "stakaon aset gohed luksavve falom gohed stakaon stakaon.",
             "wallet": "jusum wakaot walet luksavve wakaot akaon falom gohed raonem luksavve."
         },
-        "flowTitle": "gohed stakaon raonem",
-        "lead": "raonem luksavve wakaot raonem wakaot stakaon luksavve gohed gohed gohed falom gohed falom wakaot.",
+        "flowTitle": "Autonomous planning",
+        "lead": "Discover markets, compare quotes, and build unsigned swap plans directly from agent tools. No page clicks or wallet connection needed.",
         "links": {
             "client": "wakaot stakaon gohed",
             "errors": "rong wakaot",
             "examples": "luksavve",
             "manifest": "raonem wakaot",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "gohed wakaot",
             "reference": "luksavve stakaon luksavve",
             "schema": "falom luksavve",
             "types": "luksavve raonem"
+        },
+        "mcp": {
+            "boundary": "Signing is never registered with public WebMCP, and the local bridge does not include a signer. Plans cannot spend funds; unattended execution requires a separate private signer and enforced limits that are not shipped here.",
+            "text": "The top-level page exposes discovery, quotes, and wallet-independent planning. Agents can call and repeat these tools directly; the tools cannot request wallet access or submit transactions.",
+            "title": "Autonomous planning · read-only"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "falom falom gohed wakaot"
             },
             "playground": {
-                "description": "falom luksavve falom luksavve stakaon, aset, luksavve, wakaot wakaot.",
-                "title": "falom gohed wakaot"
+                "description": "Request routes, slippage bounds, estimated fees, and an unsigned swap plan without connecting a wallet or waiting for a page approval. Use the optional playground to inspect results; tool calls do not need it.",
+                "title": "Plan a swap with one tool request"
             },
             "reference": {
                 "description": "raonem luksavve raonem, luksavve, gohed wakaot, wakaot luksavve wakaot.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "luksavve wakaot falom gohed.",
-        "signingTextBefore": "gohed gohed stakaon raonem wakaot raonem. gohed raonem gohed gohed gohed walet falom wakaot luksavve gohed falom luksavve wakaot gohed luksavve",
+        "signingTextBefore": "Run the Node 26 stdio bridge once with a dedicated browser profile. Standard MCP clients can then discover markets, request quotes, and replan without page interactions. The bridge exposes the same read-only tools and does not include a signer.",
         "signingTextMiddle": "raonem wakaot wakaot",
-        "signingTitle": "gohed wakaot wakaot",
-        "startTitle": "falom falom",
+        "signingTitle": "Local MCP · same planning tools",
+        "startTitle": "Open optional inspector",
         "title": "luksavve raonem"
     },
     "forText": "luksavve",

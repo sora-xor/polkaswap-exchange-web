@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} Wiki"
     },
     "forAgents": {
-        "apiContext": "se instala en el contexto de la página después de que se inicia la aplicación. Utiliza el mismo nodo, billetera, indexador y ruta SDK que la interfaz de usuario.",
+        "apiContext": "La planificación se ejecuta de forma autónoma en datos de la cadena pública. Las identidades de billetera, los saldos y el estado del firmante permanecen fuera de las herramientas públicas.",
         "contract": {
-            "idempotent": "Utilice un clientOrderId estable y recupere los envíos inciertos antes de volver a intentarlo.",
-            "noCustody": "La página nunca recibe claves privadas; la firma permanece en la billetera seleccionada.",
-            "prepareFirst": "Las llamadas de cambio de estado deben pasar por preparación* antes de ejecutar*.",
-            "samePage": "Ejecute dentro del contexto de la página Polkaswap después del evento listo."
+            "idempotent": "Vuelva a planificar a medida que cambien los parámetros de intercambio o los mercados, sin un paso de aprobación de la página.",
+            "noCustody": "La planificación no necesita cuentas conectadas, saldos ni permisos de billetera.",
+            "prepareFirst": "Un plan sin firmar no es una intención ejecutable ni un permiso para gastar.",
+            "samePage": "Llame a las herramientas directamente en esta página o a través del puente MCP local."
         },
         "discoveryText": "Primero busca el manifiesto. Vincula la referencia versionada, los archivos de esquema, los ejemplos, el catálogo de errores y el cliente auxiliar incluido con esta compilación estática.",
         "discoveryTitle": "Descubrimiento",
-        "entrypointsLabel": "Puntos de entrada de la API del agente",
+        "entrypointsLabel": "Puntos de entrada de descubrimiento y planificación de agentes",
         "eyebrow": "Automatización",
         "flow": {
             "execute": "Ejecute solo después de la aprobación de la política, con la intención preparada y una identificación de orden de cliente estable.",
@@ -652,17 +652,23 @@
             "resolve": "Resuelva los símbolos de activos en direcciones antes de la ejecución repetida.",
             "wallet": "Seleccione un proveedor de billetera y una cuenta cuando sea necesario firmar."
         },
-        "flowTitle": "Bucle de ejecución segura",
-        "lead": "Polkaswap expone una API de automatización nativa del navegador para los corredores de agentes que abren la aplicación estática.",
+        "flowTitle": "Planificación autónoma",
+        "lead": "Descubra mercados, compare cotizaciones y cree planes de intercambio sin firmar directamente desde las herramientas del agente. No se necesitan clics en la página ni conexión a la billetera.",
         "links": {
             "client": "Cliente auxiliar de JavaScript",
             "errors": "Catálogo de errores",
             "examples": "Ejemplos",
             "manifest": "Manifiesto de descubrimiento",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Zona de juegos para agentes",
             "reference": "Referencia API completa",
             "schema": "esquema JSON",
             "types": "Definiciones de TypeScript"
+        },
+        "mcp": {
+            "boundary": "La firma nunca se registra en el WebMCP público y el puente local no incluye un firmante. Los planes no pueden gastar fondos; La ejecución desatendida requiere un firmante privado independiente y límites obligatorios que no se incluyen aquí.",
+            "text": "La página de nivel superior expone descubrimientos, cotizaciones y planificación independiente de la billetera. Los agentes pueden llamar y repetir estas herramientas directamente; las herramientas no pueden solicitar acceso a la billetera ni enviar transacciones.",
+            "title": "Planificación autónoma · solo lectura"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Comience con el manifiesto"
             },
             "playground": {
-                "description": "Sondeo manual del mismo origen para estado, activos, cotizaciones y vistas previas.",
-                "title": "Abre el patio de recreo"
+                "description": "Solicite rutas, límites de deslizamiento, tarifas estimadas y un plan de intercambio sin firmar sin conectar una billetera ni esperar la aprobación de una página. Utilice el patio de juegos opcional para inspeccionar los resultados; las llamadas a herramientas no lo necesitan.",
+                "title": "Planifique un intercambio con una solicitud de herramienta"
             },
             "reference": {
                 "description": "Mapa de métodos legible, ejemplos, reglas de firma y notas de recuperación.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "para mantener los reintentos idempotentes.",
-        "signingTextBefore": "La página nunca acepta claves privadas. Los métodos de cambio de estado utilizan el firmante de billetera seleccionado y requieren que el corredor pase el mensaje devuelto.",
+        "signingTextBefore": "Ejecute el puente stdio del Nodo 26 una vez con un perfil de navegador dedicado. Los clientes de MCP estándar pueden descubrir mercados, solicitar cotizaciones y replanificar sin interacciones con la página. El puente expone las mismas herramientas de solo lectura y no incluye un firmante.",
         "signingTextMiddle": "más un establo",
-        "signingTitle": "Firma y custodia",
-        "startTitle": "Empieza aquí",
+        "signingTitle": "MCP local · mismas herramientas de planificación",
+        "startTitle": "Abrir inspector opcional",
         "title": "Para agentes"
     },
     "forText": "por",

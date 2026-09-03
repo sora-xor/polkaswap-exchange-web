@@ -12,8 +12,13 @@ Polkaswap exposes a same-page browser API for automation agents that open the st
 - Error catalog: `.well-known/polkaswap-agent.errors.json`
 - Optional client: `.well-known/polkaswap-agent-client.js`
 - Static playground: `agent-playground.html`
+- WebMCP catalogue: `.well-known/polkaswap-mcp-tools.json`
 
-There is no middleware, hosted server, cross-origin command channel, URL command mode, or delegated custody layer. Agents must use the wallet/signing environment already available in the page.
+There is no hosted middleware, cross-origin command channel, URL command mode, or delegated custody layer. The top-level app and playground register a strict public, read-only, account-redacted WebMCP catalogue when supported. The source repository also provides a user-run Node 26 stdio MCP bridge with the same profile.
+
+The nine-tool MCP catalogue exposes public status, asset metadata, swap quotes/routes, unsigned swap planning, and pool information. It never exposes balances, positions, account history, executable preparation, wallet connection, signing, execution, transfers, liquidity mutation, or state import/export. Private keys are never accepted by the page or MCP arguments.
+
+Call `planSwap` (MCP `polkaswap_plan_swap`) for autonomous, wallet-independent planning: wait for the node, resolve canonical assets, obtain a fresh quote and public fees/warnings, and return unsigned SDK-call metadata in one request. No prior quote or account permission is required. `quoteTimeoutMs` bounds both the node-readiness wait and the subsequent quote wait separately. Plans always have `mode: 'unsigned'`, `canExecute: false`, and `requiresWallet: false`; no signer, balances, `intentId`, or envelope is returned or persisted. The preview is **not a SCALE transaction or signing authorization**. Plans include `network`, `plannedAt`, and a five-minute `expiresAt`; request a fresh plan when expired. For assets outside the canonical catalogue, use explicit addresses instead of wallet-only symbols.
 
 ## Start Here
 
@@ -23,10 +28,10 @@ There is no middleware, hosted server, cross-origin command channel, URL command
 4. Wait for `window.PolkaswapAgent` or the `polkaswap-agent-ready` event.
 5. Call `ready({ requireNode: true })`.
 6. Verify `status().agent.mode === true`.
-7. Connect/select a wallet only through `refreshWallets`, `walletAccounts`, and `connectWallet`.
+7. Plan autonomously with `planSwap`; connect/select a wallet only when signing is needed, through `refreshWallets`, `walletAccounts`, and `connectWallet`.
 8. Resolve symbols to asset addresses before repeated execution.
-9. Use `prepare*` before every state-changing `execute*` call.
-10. Execute with the returned `intentId` and a stable `clientOrderId`.
+9. Treat every quote `quoteDigest` as non-executable; use `prepare*` to create a single-use intent envelope.
+10. Execute with exactly `{ intentId, clientOrderId }`.
 11. Recover uncertain submissions before retrying.
 
 ```ts
@@ -66,45 +71,46 @@ These breadcrumbs use relative URLs so the same static bundle works from root do
 
 ## Methods
 
-| Goal | Method |
-| --- | --- |
-| Check v1 metadata and limits | `capabilities()` |
-| Wait for readiness | `ready({ requireNode?, requireWallet?, timeoutMs? })` |
-| Inspect current agent mode, node, wallet, and settings | `status()` |
-| Discover wallet providers | `refreshWallets()` |
-| List accounts for a provider | `walletAccounts({ source })` |
-| Select a wallet account | `connectWallet({ source, address? })` |
-| Search tradable assets | `assets({ query?, includeBalances? })` |
-| Resolve a symbol or address | `resolveAsset({ asset, includeBalance? })` |
-| List common route assets | `commonAssets({ query?, includeBalances? })` |
-| Read a swap quote | `quoteSwap({ assetIn, assetOut, amount, side?, slippageTolerance?, liquiditySource?, dexId?, quoteTimeoutMs? })` |
-| Prepare a swap | `prepareSwap({ assetIn, assetOut, amount, side?, slippageTolerance?, liquiditySource?, dexId?, quoteTimeoutMs? })` |
-| Prepare and apply swap policy | `assessSwap({ assetIn, assetOut, amount, policy?, maxPriceImpact?, requireCanExecute?, allowWarnings? })` |
-| Execute a swap | `executeSwap({ assetIn, assetOut, amount, side?, slippageTolerance?, liquiditySource?, dexId?, quoteTimeoutMs?, intentId?, clientOrderId? })` |
-| Prepare a transfer | `prepareTransfer({ asset, to, amount, intentId?, clientOrderId? })` |
-| Execute a transfer | `executeTransfer({ asset, to, amount, intentId?, clientOrderId? })` |
-| Inspect a pool | `poolInfo({ assetA, assetB })` |
-| List LP positions | `liquidityPositions({ assetA?, assetB?, timeoutMs? })` |
-| Quote LP add | `quoteAddLiquidity({ assetA, assetB, amountA?, amountB?, slippageTolerance?, allowPoolCreation? })` |
-| Prepare LP add | `prepareAddLiquidity({ assetA, assetB, amountA?, amountB?, slippageTolerance?, allowPoolCreation? })` |
-| Execute LP add | `executeAddLiquidity({ assetA, assetB, amountA?, amountB?, slippageTolerance?, allowPoolCreation?, intentId?, clientOrderId? })` |
-| Quote LP removal | `quoteRemoveLiquidity({ assetA, assetB, liquidityAmount?, percent?, slippageTolerance?, timeoutMs? })` |
-| Prepare LP removal | `prepareRemoveLiquidity({ assetA, assetB, liquidityAmount?, percent?, slippageTolerance?, timeoutMs? })` |
-| Execute LP removal | `executeRemoveLiquidity({ assetA, assetB, liquidityAmount?, percent?, slippageTolerance?, timeoutMs?, intentId?, clientOrderId? })` |
-| Compute max transferable amount | `maxTransferAmount({ asset })` |
-| Compute max swap input | `maxSwapInput({ assetIn, assetOut? })` |
-| Compute max LP add | `maxAddLiquidity({ assetA, assetB })` |
-| Compute max LP removal | `maxRemoveLiquidity({ assetA, assetB, timeoutMs? })` |
-| Check local transaction state | `transactionStatus({ id?, txId? })` |
-| Lookup local, indexer, or chain state | `lookupTransaction({ id?, txId?, lookup?, blockHash?, blockHeight? })` |
-| Recover interrupted idempotent state | `recoverTransaction({ clientOrderId?, intentId?, id?, txId?, lookup?, blockHash?, blockHeight?, limit? })` |
-| Wait for transaction status | `waitForTransaction({ id?, txId?, lookup?, blockHash?, blockHeight?, timeoutMs?, status? })` |
-| Read recent local page history | `recentTransactions({ type?, asset?, limit? })` |
-| Subscribe to transaction updates | `subscribeTransactions({ source?, address?, type?, asset?, limit?, pollMs?, includeExisting? }, listener)` |
-| Subscribe to status updates | `subscribeStatus({ pollMs?, emitImmediately? }, listener)` |
-| Export idempotency records | `exportState({ redacted? })` |
-| Import idempotency records | `importState({ state, merge? })` |
-| Clear idempotency records | `clearState({ clientOrderId? })` |
+| Goal                                                   | Method                                                                                                             |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Check v1 metadata and limits                           | `capabilities()`                                                                                                   |
+| Wait for readiness                                     | `ready({ requireNode?, requireWallet?, timeoutMs? })`                                                              |
+| Inspect current agent mode, node, wallet, and settings | `status()`                                                                                                         |
+| Discover wallet providers                              | `refreshWallets()`                                                                                                 |
+| List accounts for a provider                           | `walletAccounts({ source })`                                                                                       |
+| Select a wallet account                                | `connectWallet({ source, address? })`                                                                              |
+| Search tradable assets                                 | `assets({ query?, includeBalances? })`                                                                             |
+| Resolve a symbol or address                            | `resolveAsset({ asset, includeBalance? })`                                                                         |
+| List common route assets                               | `commonAssets({ query?, includeBalances? })`                                                                       |
+| Read a swap quote                                      | `quoteSwap({ assetIn, assetOut, amount, side?, slippageTolerance?, liquiditySource?, dexId?, quoteTimeoutMs? })`   |
+| Plan autonomously without wallet access                | `planSwap({ assetIn, assetOut, amount, side?, slippageTolerance?, liquiditySource?, dexId?, quoteTimeoutMs? })`    |
+| Prepare a swap                                         | `prepareSwap({ assetIn, assetOut, amount, side?, slippageTolerance?, liquiditySource?, dexId?, quoteTimeoutMs? })` |
+| Prepare and apply swap policy                          | `assessSwap({ assetIn, assetOut, amount, policy?, maxPriceImpact?, requireCanExecute?, allowWarnings? })`          |
+| Execute a prepared swap                                | `executeSwap({ intentId, clientOrderId })`                                                                         |
+| Prepare a transfer                                     | `prepareTransfer({ asset, to, amount })`                                                                           |
+| Execute a prepared transfer                            | `executeTransfer({ intentId, clientOrderId })`                                                                     |
+| Inspect a pool                                         | `poolInfo({ assetA, assetB })`                                                                                     |
+| List LP positions                                      | `liquidityPositions({ assetA?, assetB?, timeoutMs? })`                                                             |
+| Quote LP add                                           | `quoteAddLiquidity({ assetA, assetB, amountA?, amountB?, slippageTolerance?, allowPoolCreation? })`                |
+| Prepare LP add                                         | `prepareAddLiquidity({ assetA, assetB, amountA?, amountB?, slippageTolerance?, allowPoolCreation? })`              |
+| Execute prepared LP add                                | `executeAddLiquidity({ intentId, clientOrderId })`                                                                 |
+| Quote LP removal                                       | `quoteRemoveLiquidity({ assetA, assetB, liquidityAmount?, percent?, slippageTolerance?, timeoutMs? })`             |
+| Prepare LP removal                                     | `prepareRemoveLiquidity({ assetA, assetB, liquidityAmount?, percent?, slippageTolerance?, timeoutMs? })`           |
+| Execute prepared LP removal                            | `executeRemoveLiquidity({ intentId, clientOrderId })`                                                              |
+| Compute max transferable amount                        | `maxTransferAmount({ asset })`                                                                                     |
+| Compute max swap input                                 | `maxSwapInput({ assetIn, assetOut? })`                                                                             |
+| Compute max LP add                                     | `maxAddLiquidity({ assetA, assetB })`                                                                              |
+| Compute max LP removal                                 | `maxRemoveLiquidity({ assetA, assetB, timeoutMs? })`                                                               |
+| Check local transaction state                          | `transactionStatus({ id?, txId? })`                                                                                |
+| Lookup local, indexer, or chain state                  | `lookupTransaction({ id?, txId?, lookup?, blockHash?, blockHeight? })`                                             |
+| Recover interrupted idempotent state                   | `recoverTransaction({ clientOrderId?, intentId?, id?, txId?, lookup?, blockHash?, blockHeight?, limit? })`         |
+| Wait for transaction status                            | `waitForTransaction({ id?, txId?, lookup?, blockHash?, blockHeight?, timeoutMs?, status? })`                       |
+| Read recent local page history                         | `recentTransactions({ type?, asset?, limit? })`                                                                    |
+| Subscribe to transaction updates                       | `subscribeTransactions({ source?, address?, type?, asset?, limit?, pollMs?, includeExisting? }, listener)`         |
+| Subscribe to status updates                            | `subscribeStatus({ pollMs?, emitImmediately? }, listener)`                                                         |
+| Export idempotency records                             | `exportState({ redacted? })`                                                                                       |
+| Import idempotency records                             | `importState({ state, merge? })`                                                                                   |
+| Clear idempotency records                              | `clearState({ clientOrderId? })`                                                                                   |
 
 ## Defaults
 
@@ -129,11 +135,6 @@ if (!prepared.canExecute || prepared.warnings.some((warning) => warning.severity
 }
 
 await agent.executeSwap({
-  assetIn: { address: prepared.quote.assetIn.address },
-  assetOut: { address: prepared.quote.assetOut.address },
-  amount: prepared.quote.amountIn,
-  side: prepared.quote.request.side,
-  slippageTolerance: prepared.quote.request.slippageTolerance,
   intentId: prepared.intentId,
   clientOrderId: 'agent-run-001',
 });
@@ -152,9 +153,6 @@ const prepared = await agent.prepareTransfer({
 
 if (prepared.canExecute) {
   await agent.executeTransfer({
-    asset: { address: prepared.asset.address },
-    to: prepared.to,
-    amount: prepared.amount,
     intentId: prepared.intentId,
     clientOrderId: 'agent-transfer-001',
   });
@@ -172,10 +170,6 @@ const prepared = await agent.prepareAddLiquidity({
 
 if (prepared.canExecute) {
   await agent.executeAddLiquidity({
-    assetA: { address: prepared.quote.pool.assetA.address },
-    assetB: { address: prepared.quote.pool.assetB.address },
-    amountA: prepared.quote.amountA,
-    amountB: prepared.quote.amountB,
     intentId: prepared.intentId,
     clientOrderId: 'agent-lp-add-001',
   });
@@ -186,7 +180,9 @@ Liquidity methods accept the pair in either order. Pool creation is disabled unl
 
 ## State And Recovery
 
-`prepare*` responses include `canExecute`, `fees`, `requiredBalances`, `warnings`, `preview`, and a stable `intentId`. Passing that `intentId` to the matching `execute*` call protects the agent from signing a stale quote or changed normalized intent. A mismatch throws `INTENT_MISMATCH`.
+`quote*` responses include a non-executable `quoteDigest`. `prepare*` responses include `canExecute`, `fees`, `requiredBalances`, `warnings`, `preview`, an immutable `envelope`, its current `revalidation`, and a single-use `intentId`. The envelope binds its nonce, network/runtime, signer, normalized request, quote and call digests, fee ceilings, and time/block expiry. An unavailable or invalid fee estimate returns critical `FEE_UNAVAILABLE` and forces `canExecute: false`.
+
+Execute methods accept exactly `intentId` and `clientOrderId`. Unknown, expired, used, tampered, or context-mismatched intents fail before signing.
 
 Pass a stable `clientOrderId` to execute calls to make retries idempotent. Duplicate retries return the original result; reusing the id for another intent throws `IDEMPOTENCY_CONFLICT`.
 
@@ -202,22 +198,27 @@ Errors are thrown as `PolkaswapAgentError` with a stable `code` and optional `de
 
 Generic runners can load `.well-known/polkaswap-agent.errors.json` for machine-readable retry guidance.
 
-| Code | Action |
-| --- | --- |
-| `NODE_NOT_READY` | Wait, reload, or switch endpoint before retrying. |
-| `WALLET_NOT_CONNECTED` | Connect/select wallet and call `ready({ requireWallet: true })`. |
-| `WALLET_ACCOUNT_NOT_FOUND` | Refresh accounts and choose a valid address. |
-| `ASSET_NOT_FOUND` | Search assets or use a known address. |
-| `ASSET_AMBIGUOUS` | Retry with `{ address }`. |
-| `INVALID_AMOUNT` | Rebuild with a decimal string amount. |
-| `INVALID_SLIPPAGE` | Stay within `capabilities().limits.slippageTolerance`. |
-| `INVALID_PERCENT` | Stay within `capabilities().limits.percent`. |
-| `PATH_UNAVAILABLE` | Try another pair, source, DEX, or amount. |
-| `QUOTE_TIMEOUT` | Retry with a longer `quoteTimeoutMs` or different route. |
-| `POOL_UNAVAILABLE` | Call `poolInfo` before LP operations. |
-| `INTENT_MISMATCH` | Re-run the matching `prepare*` call. |
-| `IDEMPOTENCY_CONFLICT` | Recover existing state; do not reuse the id. |
-| `SIGNING_CANCELLED` | Treat as cancellation and recover before retrying. |
+| Code                                    | Action                                                                 |
+| --------------------------------------- | ---------------------------------------------------------------------- |
+| `NODE_NOT_READY`                        | Wait, reload, or switch endpoint before retrying.                      |
+| `WALLET_NOT_CONNECTED`                  | Connect/select wallet and call `ready({ requireWallet: true })`.       |
+| `WALLET_ACCOUNT_NOT_FOUND`              | Refresh accounts and choose a valid address.                           |
+| `ASSET_NOT_FOUND`                       | Search assets or use a known address.                                  |
+| `ASSET_AMBIGUOUS`                       | Retry with `{ address }`.                                              |
+| `INVALID_AMOUNT`                        | Rebuild with a decimal string amount.                                  |
+| `INVALID_SLIPPAGE`                      | Stay within `capabilities().limits.slippageTolerance`.                 |
+| `INVALID_PERCENT`                       | Stay within `capabilities().limits.percent`.                           |
+| `PATH_UNAVAILABLE`                      | Try another pair, source, DEX, or amount.                              |
+| `QUOTE_TIMEOUT`                         | Retry with a longer `quoteTimeoutMs` or different route.               |
+| `POOL_UNAVAILABLE`                      | Call `poolInfo` before LP operations.                                  |
+| `NETWORK_CONTEXT_UNAVAILABLE`           | Wait for complete node identity and block context, then prepare again. |
+| `INTENT_REQUIRED` or `INTENT_NOT_FOUND` | Call the matching `prepare*` method and use its identifier.            |
+| `INTENT_EXPIRED`                        | Prepare and review a fresh envelope.                                   |
+| `INTENT_ALREADY_USED`                   | Recover the existing submission or prepare a new intent.               |
+| `INTENT_INTEGRITY_FAILED`               | Discard the invalid envelope and do not sign it.                       |
+| `INTENT_MISMATCH`                       | Re-run the matching `prepare*` call.                                   |
+| `IDEMPOTENCY_CONFLICT`                  | Recover existing state; do not reuse the id.                           |
+| `SIGNING_CANCELLED`                     | Treat as cancellation and recover before retrying.                     |
 
 ## Optional Client
 

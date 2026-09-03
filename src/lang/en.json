@@ -632,17 +632,17 @@
         "sorawiki": "{Sora} Wiki"
     },
     "forAgents": {
-        "apiContext": "is installed in the page context after the app boots. It uses the same node, wallet, indexer, and SDK path as the user interface.",
+        "apiContext": "Planning runs autonomously on public chain data. Wallet identities, balances, and signer state stay outside the public tools.",
         "contract": {
-            "idempotent": "Use a stable clientOrderId and recover uncertain submissions before retrying.",
-            "noCustody": "The page never receives private keys; signing stays with the selected wallet.",
-            "prepareFirst": "State-changing calls must go through prepare* before execute*.",
-            "samePage": "Run inside the Polkaswap page context after the ready event."
+            "idempotent": "Replan as swap parameters or markets change, without a page approval step.",
+            "noCustody": "Planning needs no connected account, balances, or wallet permission.",
+            "prepareFirst": "An unsigned plan is not an executable intent or permission to spend.",
+            "samePage": "Call tools directly on this page or through the local MCP bridge."
         },
-        "discoveryText": "Fetch the manifest first. It links the versioned reference, schema files, examples, error catalog, and helper client shipped with this static build.",
-        "discoveryTitle": "Discovery",
-        "entrypointsLabel": "Agent API entrypoints",
-        "eyebrow": "Automation",
+        "discoveryText": "The manifest links the versioned reference, schemas, examples, error catalogue, helper client, and exact WebMCP tool catalogue included in this static build.",
+        "discoveryTitle": "Reference bundle",
+        "entrypointsLabel": "Agent planning and discovery entrypoints",
+        "eyebrow": "WebMCP · local bridge",
         "flow": {
             "execute": "Execute only after policy approval, with the prepared intent and a stable client order id.",
             "open": "Open Polkaswap in a real browser page.",
@@ -652,17 +652,23 @@
             "resolve": "Resolve asset symbols to addresses before repeated execution.",
             "wallet": "Select a wallet provider and account when signing is needed."
         },
-        "flowTitle": "Safe execution loop",
-        "lead": "Polkaswap exposes a browser-native automation API for agent runners that open the static app.",
+        "flowTitle": "Autonomous planning",
+        "lead": "Discover markets, compare quotes, and build unsigned swap plans directly from agent tools. No page clicks or wallet connection needed.",
         "links": {
             "client": "JavaScript helper client",
             "errors": "Error catalog",
             "examples": "Examples",
             "manifest": "Discovery manifest",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Agent playground",
             "reference": "Full API reference",
             "schema": "JSON schema",
             "types": "TypeScript definitions"
+        },
+        "mcp": {
+            "boundary": "Signing is never registered with public WebMCP, and the local bridge does not include a signer. Plans cannot spend funds; unattended execution requires a separate private signer and enforced limits that are not shipped here.",
+            "text": "The top-level page exposes discovery, quotes, and wallet-independent planning. Agents can call and repeat these tools directly; the tools cannot request wallet access or submit transactions.",
+            "title": "Autonomous planning · read-only"
         },
         "polkamarkt": {
             "items": {
@@ -692,24 +698,24 @@
         },
         "primary": {
             "manifest": {
-                "description": "Canonical discovery document for generic runners.",
+                "description": "Canonical, versioned discovery document for generic runners.",
                 "title": "Start with the manifest"
             },
             "playground": {
-                "description": "Manual same-origin probe for status, assets, quotes, and previews.",
-                "title": "Open the playground"
+                "description": "Request routes, slippage bounds, estimated fees, and an unsigned swap plan without connecting a wallet or waiting for a page approval. Use the optional playground to inspect results; tool calls do not need it.",
+                "title": "Plan a swap with one tool request"
             },
             "reference": {
-                "description": "Readable method map, examples, signing rules, and recovery notes.",
+                "description": "Readable method map, schemas, privacy guarantees, and version notes.",
                 "title": "Read the API reference"
             }
         },
         "signingTextAfter": "to keep retries idempotent.",
-        "signingTextBefore": "The page never takes private keys. State-changing methods use the selected wallet signer and require the runner to pass the returned",
+        "signingTextBefore": "Run the Node 26 stdio bridge once with a dedicated browser profile. Standard MCP clients can then discover markets, request quotes, and replan without page interactions. The bridge exposes the same read-only tools and does not include a signer.",
         "signingTextMiddle": "plus a stable",
-        "signingTitle": "Signing and custody",
-        "startTitle": "Start here",
-        "title": "For Agents"
+        "signingTitle": "Local MCP · same planning tools",
+        "startTitle": "Open optional inspector",
+        "title": "Polkaswap for agents"
     },
     "forText": "for",
     "hashiBridgeText": "{Hashi} bridge",

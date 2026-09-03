@@ -27,7 +27,9 @@ const envMocks = vi.hoisted(() => ({
 }));
 
 const agentTradingMocks = vi.hoisted(() => ({
+  agent: { version: 'v1' },
   installPolkaswapAgentApi: vi.fn(),
+  registerPolkaswapWebMcpTools: vi.fn(() => Promise.resolve(async () => undefined)),
 }));
 
 const securityMocks = vi.hoisted(() => ({
@@ -49,11 +51,21 @@ const errorHandlerMocks = vi.hoisted(() => ({
   installVueErrorHandler: vi.fn(),
 }));
 
-const routerMocks = vi.hoisted(() => ({
-  router: {
-    isReady: vi.fn(() => Promise.resolve()),
-  },
+const documentTitleMocks = vi.hoisted(() => ({
+  updateDocumentTitle: vi.fn(() => Promise.resolve()),
 }));
+
+const routerMocks = vi.hoisted(() => {
+  const currentRoute = { value: { name: 'Swap' as string | undefined } };
+
+  return {
+    currentRoute,
+    router: {
+      currentRoute,
+      isReady: vi.fn(() => Promise.resolve()),
+    },
+  };
+});
 
 const shellMocks = vi.hoisted(() => {
   const AppShell = { name: 'AsyncAppShellStub' };
@@ -95,6 +107,7 @@ vi.mock('@/utils/offlineShell', () => ({
 
 vi.mock('@/features/agent-trading', () => ({
   installPolkaswapAgentApi: agentTradingMocks.installPolkaswapAgentApi,
+  registerPolkaswapWebMcpTools: agentTradingMocks.registerPolkaswapWebMcpTools,
 }));
 
 vi.mock('@/security/w3mMessageGuard', () => ({
@@ -117,7 +130,7 @@ vi.mock('@/utils/vueErrorHandler', () => ({
 }));
 
 vi.mock('@/utils/documentTitle', () => ({
-  updateDocumentTitle: vi.fn(),
+  updateDocumentTitle: documentTitleMocks.updateDocumentTitle,
 }));
 
 vi.mock('@/shared/ui/async', () => ({
@@ -148,6 +161,10 @@ describe('app bootstrap', () => {
     envMocks.shouldRenderOfflineShell.mockReturnValue(false);
     envMocks.renderOfflineShell.mockReturnValue(false);
     routerMocks.router.isReady.mockReturnValue(Promise.resolve());
+    routerMocks.currentRoute.value = { name: 'Swap' };
+    documentTitleMocks.updateDocumentTitle.mockImplementation(() => Promise.resolve());
+    agentTradingMocks.installPolkaswapAgentApi.mockReturnValue(agentTradingMocks.agent);
+    agentTradingMocks.registerPolkaswapWebMcpTools.mockResolvedValue(async () => undefined);
 
     window.history.replaceState({}, '', '/');
     delete (window as Window & typeof globalThis & { __PS_BUILD_VARIANT__?: string }).__PS_BUILD_VARIANT__;
@@ -178,6 +195,78 @@ describe('app bootstrap', () => {
     expect(pluginMocks.installRuntimePlugins).toHaveBeenCalledWith(appMocks.app, { pinia: pluginMocks.pinia });
     expect(pluginMocks.setI18nLocale).toHaveBeenCalledWith('en');
     expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledWith({ pinia: pluginMocks.pinia });
+    expect(agentTradingMocks.registerPolkaswapWebMcpTools).toHaveBeenCalledWith(agentTradingMocks.agent);
+  });
+
+  it('does not block the application runtime on an optional pending WebMCP registrar', async () => {
+    agentTradingMocks.registerPolkaswapWebMcpTools.mockReturnValue(new Promise(() => undefined));
+
+    await expect(prepareAppRuntime(appMocks.app as any)).resolves.toMatchObject({ router: routerMocks.router });
+
+    expect(agentTradingMocks.installPolkaswapAgentApi).toHaveBeenCalledTimes(1);
+    expect(agentTradingMocks.registerPolkaswapWebMcpTools).toHaveBeenCalledTimes(1);
+  });
+
+  it('emits sanitized diagnostics when optional agent installation fails', async () => {
+    const details: unknown[] = [];
+    const listener = (event: Event) => details.push((event as CustomEvent).detail);
+    window.addEventListener('polkaswap-agent-install-failed', listener);
+    agentTradingMocks.registerPolkaswapWebMcpTools.mockRejectedValueOnce(
+      new Error('private endpoint wss://node.invalid and wallet address')
+    );
+
+    await prepareAppRuntime(appMocks.app as any);
+    await vi.waitFor(() => expect(details).toHaveLength(1));
+    window.removeEventListener('polkaswap-agent-install-failed', listener);
+
+    expect(details).toEqual([{ stage: 'webmcp', code: 'WEBMCP_INSTALL_FAILED' }]);
+    expect(JSON.stringify(details)).not.toContain('node.invalid');
+  });
+
+  it('distinguishes API installation failures without exposing error details', async () => {
+    const details: unknown[] = [];
+    const listener = (event: Event) => details.push((event as CustomEvent).detail);
+    window.addEventListener('polkaswap-agent-install-failed', listener);
+    agentTradingMocks.installPolkaswapAgentApi.mockImplementationOnce(() => {
+      throw new Error('secret signer details');
+    });
+
+    await expect(prepareAppRuntime(appMocks.app as any)).resolves.toMatchObject({ router: routerMocks.router });
+    window.removeEventListener('polkaswap-agent-install-failed', listener);
+
+    expect(details).toEqual([{ stage: 'agent-api', code: 'AGENT_API_INSTALL_FAILED' }]);
+    expect(JSON.stringify(details)).not.toContain('secret signer');
+  });
+
+  it('refreshes the routed title after initial navigation is ready', async () => {
+    let resolveRouter!: () => void;
+    routerMocks.currentRoute.value = { name: undefined };
+    documentTitleMocks.updateDocumentTitle.mockImplementation(async () => {
+      const routeName = routerMocks.currentRoute.value.name;
+
+      document.title = routeName ? `${routeName} - Polkaswap` : 'Polkaswap generic title';
+    });
+    routerMocks.router.isReady.mockReturnValue(
+      new Promise<void>((resolve) => {
+        resolveRouter = resolve;
+      })
+    );
+
+    await mountApp();
+
+    expect(appMocks.app.mount).toHaveBeenCalledWith('#app');
+    expect(documentTitleMocks.updateDocumentTitle).toHaveBeenCalledTimes(1);
+    expect(document.title).toBe('Polkaswap generic title');
+
+    routerMocks.currentRoute.value = { name: 'Swap' };
+    resolveRouter();
+    await vi.waitFor(() => expect(documentTitleMocks.updateDocumentTitle).toHaveBeenCalledTimes(2));
+
+    expect(documentTitleMocks.updateDocumentTitle).toHaveBeenNthCalledWith(2);
+    expect(document.title).toBe('Swap - Polkaswap');
+    expect(appMocks.app.mount.mock.invocationCallOrder[0]).toBeLessThan(
+      documentTitleMocks.updateDocumentTitle.mock.invocationCallOrder[1]
+    );
   });
 
   it('renders the offline shell and skips mounting when the runtime is offline', async () => {

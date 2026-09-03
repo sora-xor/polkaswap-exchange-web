@@ -3,170 +3,306 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Polkaswap Agent API Playground</title>
-    <style>
-      :root {
-        color-scheme: light;
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
-
-      body {
-        background: #f6f7fb;
-        color: #101828;
-        margin: 0;
-      }
-
-      main {
-        box-sizing: border-box;
-        display: grid;
-        gap: 16px;
-        grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
-        min-height: 100vh;
-        padding: 20px;
-      }
-
-      section,
-      pre {
-        background: #fff;
-        border: 1px solid #d9deea;
-        border-radius: 8px;
-        box-shadow: 0 1px 2px rgb(16 24 40 / 6%);
-      }
-
-      section {
-        padding: 16px;
-      }
-
-      h1 {
-        font-size: 20px;
-        line-height: 1.2;
-        margin: 0 0 6px;
-      }
-
-      p {
-        color: #475467;
-        font-size: 13px;
-        line-height: 1.5;
-        margin: 0 0 14px;
-      }
-
-      label {
-        display: grid;
-        font-size: 12px;
-        font-weight: 650;
-        gap: 6px;
-        margin-top: 12px;
-      }
-
-      input,
-      select,
-      button {
-        border: 1px solid #c9d1df;
-        border-radius: 6px;
-        box-sizing: border-box;
-        font: inherit;
-        min-height: 36px;
-      }
-
-      input,
-      select {
-        background: #fff;
-        padding: 6px 8px;
-        width: 100%;
-      }
-
-      button {
-        background: #17324d;
-        color: #fff;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 650;
-        padding: 7px 10px;
-      }
-
-      button.secondary {
-        background: #fff;
-        color: #17324d;
-      }
-
-      .buttons {
-        display: grid;
-        gap: 8px;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin-top: 16px;
-      }
-
-      pre {
-        margin: 0;
-        min-height: 360px;
-        overflow: auto;
-        padding: 14px;
-        white-space: pre-wrap;
-      }
-
-      iframe {
-        border: 1px solid #d9deea;
-        border-radius: 8px;
-        height: 240px;
-        width: 100%;
-      }
-
-      @media (max-width: 860px) {
-        main {
-          grid-template-columns: 1fr;
-          padding: 12px;
-        }
-      }
-    </style>
+    <meta
+      name="description"
+      content="Let agents resolve assets, quote routes, and build wallet-free swap plans through WebMCP or local MCP."
+    />
+    <title>Polkaswap Agent Swap Playground</title>
+    <link rel="stylesheet" href="./agent-playground.css" />
   </head>
   <body>
-    <main>
-      <section>
-        <h1>Polkaswap Agent API Playground</h1>
-        <p>
-          Same-origin helper for inspecting <code>window.PolkaswapAgent</code>. It loads the app below and calls the
-          agent API inside that frame. This page does not execute swaps.
+    <header class="page-header">
+      <div class="page-header__copy">
+        <a class="brand" href="./#/swap" aria-label="Open Polkaswap">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span>Polkaswap</span>
+        </a>
+        <p class="eyebrow">Browser-native tools</p>
+        <h1>Agent Swap Playground</h1>
+        <p class="page-header__lead">
+          Agents resolve assets, quote routes, and build unsigned swap plans without approval clicks. Planning runs
+          automatically as inputs change; signing is separate.
         </p>
+      </div>
+      <nav class="header-links" aria-label="Agent resources">
+        <a href="./#/for-agents">For Agents</a>
+        <a href="./.well-known/polkaswap-agent.md">API reference</a>
+      </nav>
+    </header>
 
-        <iframe id="app-frame" title="Polkaswap app frame"></iframe>
+    <section class="safety-strip" aria-label="Safety boundaries">
+      <span>Autonomous planning</span>
+      <span>No wallet required</span>
+      <span>No signing or submission</span>
+    </section>
 
-        <label>
-          Input asset symbol
-          <input id="asset-in" autocomplete="off" value="XOR" />
-        </label>
+    <section class="status-rail" aria-label="Playground status">
+      <div class="status-item" data-status-key="api">
+        <span class="status-item__signal" aria-hidden="true"></span>
+        <span class="status-item__label">Agent API</span>
+        <strong id="status-api">Loading</strong>
+      </div>
+      <div class="status-item" data-status-key="node">
+        <span class="status-item__signal" aria-hidden="true"></span>
+        <span class="status-item__label">SORA node</span>
+        <strong id="status-node">Waiting</strong>
+      </div>
+      <div class="status-item" data-status-key="wallet">
+        <span class="status-item__signal" aria-hidden="true"></span>
+        <span class="status-item__label">Wallet</span>
+        <strong id="status-wallet">Not checked</strong>
+      </div>
+      <div class="status-item" data-status-key="webmcp">
+        <span class="status-item__signal" aria-hidden="true"></span>
+        <span class="status-item__label">WebMCP</span>
+        <strong id="status-webmcp">Detecting</strong>
+      </div>
+      <div class="status-item" data-status-key="network">
+        <span class="status-item__signal" aria-hidden="true"></span>
+        <span class="status-item__label">Network</span>
+        <strong id="status-network">SORA</strong>
+      </div>
+    </section>
 
-        <label>
-          Output asset symbol
-          <input id="asset-out" autocomplete="off" value="PSWAP" />
-        </label>
-
-        <label>
-          Amount
-          <input id="amount" autocomplete="off" inputmode="decimal" value="1" />
-        </label>
-
-        <label>
-          Side
-          <select id="side">
-            <option value="input">input</option>
-            <option value="output">output</option>
-          </select>
-        </label>
-
-        <div class="buttons">
-          <button id="connect" type="button">Connect</button>
-          <button id="status" class="secondary" type="button">Status</button>
-          <button id="resolve" class="secondary" type="button">Resolve</button>
-          <button id="quote" type="button">Quote</button>
-          <button id="prepare" type="button">Prepare</button>
-          <button id="clear" class="secondary" type="button">Clear</button>
+    <main class="playground-shell">
+      <section class="request-workspace" aria-labelledby="request-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 · Request</p>
+            <h2 id="request-title">Define the swap</h2>
+          </div>
+          <button id="check-node" class="text-button" type="button">Check node</button>
         </div>
+
+        <div class="asset-field">
+          <label for="asset-in-search">From asset</label>
+          <div class="asset-combobox" data-asset-picker="in">
+            <input
+              id="asset-in-search"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="asset-in-options"
+              aria-expanded="false"
+              autocomplete="off"
+              spellcheck="false"
+              value="XOR"
+            />
+            <span class="asset-combobox__caret" aria-hidden="true">⌄</span>
+            <ul id="asset-in-options" class="asset-options" role="listbox" hidden></ul>
+          </div>
+          <p id="asset-in-meta" class="field-meta">Resolving canonical asset…</p>
+        </div>
+
+        <button id="flip-assets" class="flip-button" type="button" aria-label="Swap selected assets">⇅</button>
+
+        <div class="asset-field">
+          <label for="asset-out-search">To asset</label>
+          <div class="asset-combobox" data-asset-picker="out">
+            <input
+              id="asset-out-search"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="asset-out-options"
+              aria-expanded="false"
+              autocomplete="off"
+              spellcheck="false"
+              value="PSWAP"
+            />
+            <span class="asset-combobox__caret" aria-hidden="true">⌄</span>
+            <ul id="asset-out-options" class="asset-options" role="listbox" hidden></ul>
+          </div>
+          <p id="asset-out-meta" class="field-meta">Resolving canonical asset…</p>
+        </div>
+
+        <fieldset class="mode-control">
+          <legend>Amount mode</legend>
+          <label>
+            <input type="radio" name="swap-mode" value="input" checked />
+            <span>Spend exactly</span>
+          </label>
+          <label>
+            <input type="radio" name="swap-mode" value="output" />
+            <span>Receive exactly</span>
+          </label>
+        </fieldset>
+
+        <label id="amount-label" class="field-label" for="amount">Amount to spend</label>
+        <div class="amount-field">
+          <input id="amount" autocomplete="off" inputmode="decimal" value="1" />
+          <span id="amount-symbol">XOR</span>
+        </div>
+        <p id="form-error" class="field-error" role="alert" hidden></p>
+
+        <details class="advanced-settings">
+          <summary>Advanced settings</summary>
+          <div class="advanced-settings__grid">
+            <label>
+              Slippage tolerance
+              <span class="input-suffix">
+                <input id="slippage" inputmode="decimal" value="0.5" />
+                <span>%</span>
+              </span>
+            </label>
+            <label>
+              DEX
+              <input id="dex-id" autocomplete="off" value="best" />
+            </label>
+            <label>
+              Liquidity source
+              <select id="liquidity-source">
+                <option value="">All available</option>
+                <option value="XYKPool">XYK pool</option>
+                <option value="XSTPool">XST pool</option>
+                <option value="MulticollateralBondingCurvePool">Bonding curve</option>
+                <option value="OrderBook">Order book</option>
+              </select>
+            </label>
+            <label>
+              Quote timeout
+              <select id="quote-timeout">
+                <option value="15000">15 seconds</option>
+                <option value="30000">30 seconds</option>
+                <option value="60000">60 seconds</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <label class="privacy-control" for="auto-plan">
+          <input id="auto-plan" type="checkbox" checked />
+          <span>
+            <strong>Plan automatically</strong>
+            <small>Re-plan on input changes and expiry while this page is visible. No per-call approval.</small>
+          </span>
+        </label>
+        <p id="autonomy-status" class="autonomy-status" role="status">Waiting for the agent API.</p>
+
+        <div class="request-actions">
+          <button id="plan" class="primary-action" type="button">Plan swap</button>
+          <button id="quote" class="secondary-action" type="button">Quote only</button>
+        </div>
+        <p class="action-note">
+          Call <code>polkaswap_plan_swap</code> directly through WebMCP or local MCP. Form clicks are optional.
+        </p>
+        <details class="wallet-preparation">
+          <summary>Wallet-bound preparation · optional</summary>
+          <label class="privacy-control" for="wallet-data-opt-in">
+            <input id="wallet-data-opt-in" type="checkbox" />
+            <span>
+              <strong>Allow wallet data for this session</strong>
+              <small
+                >Enables balance-aware preparation. Account addresses stay redacted. Not needed for planning.</small
+              >
+            </span>
+          </label>
+          <button id="prepare" class="secondary-action" type="button" disabled>Prepare unsigned swap</button>
+          <p class="action-note">Preparation refreshes the quote itself. It never signs or submits a transaction.</p>
+        </details>
       </section>
 
-      <pre id="output" aria-live="polite">Loading Polkaswap frame...</pre>
+      <section class="review-workspace" aria-labelledby="review-title">
+        <div class="section-heading review-heading">
+          <div>
+            <p class="eyebrow">02 · Results</p>
+            <h2 id="review-title">Agent results</h2>
+          </div>
+          <span id="review-freshness" class="freshness-label">No quote yet</span>
+        </div>
+
+        <div class="tab-list" role="tablist" aria-label="Playground output">
+          <button id="tab-summary" role="tab" aria-selected="true" aria-controls="panel-summary" type="button">
+            Summary
+          </button>
+          <button id="tab-call" role="tab" aria-selected="false" aria-controls="panel-call" type="button">
+            Agent call
+          </button>
+          <button id="tab-raw" role="tab" aria-selected="false" aria-controls="panel-raw" type="button">
+            Raw JSON
+          </button>
+          <button id="tab-history" role="tab" aria-selected="false" aria-controls="panel-history" type="button">
+            History <span id="history-count">0</span>
+          </button>
+          <button id="tab-contract" role="tab" aria-selected="false" aria-controls="panel-contract" type="button">
+            API contract
+          </button>
+        </div>
+
+        <div id="panel-summary" class="tab-panel" role="tabpanel" aria-labelledby="tab-summary">
+          <div id="summary-output" class="empty-state" aria-live="polite">
+            <span class="empty-state__mark" aria-hidden="true">↗</span>
+            <h3>Planning starts automatically</h3>
+            <p>Set the pair and amount. Route, bounds, fees, and unsigned call arguments appear here.</p>
+          </div>
+        </div>
+
+        <div id="panel-call" class="tab-panel" role="tabpanel" aria-labelledby="tab-call" hidden>
+          <div id="call-output" class="empty-state">
+            <h3>No invocation yet</h3>
+            <p>Canonical arguments and call duration will appear after the first request.</p>
+          </div>
+        </div>
+
+        <div id="panel-raw" class="tab-panel" role="tabpanel" aria-labelledby="tab-raw" hidden>
+          <div class="panel-toolbar">
+            <span>Sanitized response</span>
+            <button id="copy-raw" class="text-button" type="button" disabled>Copy JSON</button>
+          </div>
+          <pre id="raw-output">No response yet.</pre>
+        </div>
+
+        <div id="panel-history" class="tab-panel" role="tabpanel" aria-labelledby="tab-history" hidden>
+          <div class="panel-toolbar">
+            <span>Session-only call trace</span>
+            <button id="clear-history" class="text-button" type="button" disabled>Clear history</button>
+          </div>
+          <ol id="history-output" class="history-list">
+            <li class="empty-history">No calls in this session.</li>
+          </ol>
+        </div>
+
+        <div id="panel-contract" class="tab-panel" role="tabpanel" aria-labelledby="tab-contract" hidden>
+          <div class="contract-intro">
+            <div>
+              <h3>Registered browser tools</h3>
+              <p>Actual names, descriptions, schemas, and annotations loaded from this build.</p>
+            </div>
+            <a href="./.well-known/polkaswap-mcp-tools.json">Open catalogue</a>
+          </div>
+          <div id="contract-output" class="tool-list" aria-live="polite">Loading tool catalogue…</div>
+        </div>
+      </section>
     </main>
 
+    <section class="diagnostics" aria-labelledby="diagnostics-title">
+      <div class="diagnostics__header">
+        <div>
+          <p class="eyebrow">03 · Verify</p>
+          <h2 id="diagnostics-title">Diagnostics and provenance</h2>
+        </div>
+        <button id="refresh-diagnostics" class="text-button" type="button">Refresh</button>
+      </div>
+      <div class="provenance-grid">
+        <div><span>Polkaswap build</span><strong id="provenance-build">Detecting…</strong></div>
+        <div><span>IPFS root</span><strong id="provenance-ipfs">Detecting…</strong></div>
+        <div><span>Agent API</span><strong id="provenance-api">Detecting…</strong></div>
+        <div><span>Schema SHA-256</span><strong id="provenance-schema">Detecting…</strong></div>
+        <div><span>SORA genesis</span><strong id="provenance-genesis">Unavailable</strong></div>
+        <div><span>Runtime</span><strong id="provenance-runtime">Unavailable</strong></div>
+      </div>
+      <div id="diagnostic-message" class="diagnostic-message" role="status">
+        The embedded Polkaswap application is starting.
+      </div>
+    </section>
+
+    <iframe
+      id="app-frame"
+      class="engine-frame"
+      title="Polkaswap application engine"
+      tabindex="-1"
+      aria-hidden="true"
+    ></iframe>
+
     <script src="./agent-playground.js" defer></script>
+    <script src="./agent-playground-webmcp.js" defer></script>
   </body>
 </html>

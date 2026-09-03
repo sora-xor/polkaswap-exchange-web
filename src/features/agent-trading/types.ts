@@ -15,6 +15,7 @@ export const AGENT_METHODS = [
   'resolveAsset',
   'commonAssets',
   'quoteSwap',
+  'planSwap',
   'prepareSwap',
   'assessSwap',
   'executeSwap',
@@ -50,6 +51,7 @@ export const AGENT_CAPABILITIES = [
   'asset-discovery',
   'asset-resolution',
   'swap-quote',
+  'swap-plan',
   'swap-prepare',
   'swap-risk-assessment',
   'swap-execute',
@@ -88,6 +90,11 @@ export type AgentErrorCode =
   | 'INVALID_CLIENT_ORDER_ID'
   | 'INVALID_DEX_ID'
   | 'IDEMPOTENCY_CONFLICT'
+  | 'INTENT_ALREADY_USED'
+  | 'INTENT_EXPIRED'
+  | 'INTENT_INTEGRITY_FAILED'
+  | 'INTENT_NOT_FOUND'
+  | 'INTENT_REQUIRED'
   | 'INTENT_MISMATCH'
   | 'INVALID_LIQUIDITY_SOURCE'
   | 'INVALID_PERCENT'
@@ -99,6 +106,7 @@ export type AgentErrorCode =
   | 'INVALID_TRANSACTION_ID'
   | 'INVALID_WALLET_SOURCE'
   | 'NODE_NOT_READY'
+  | 'NETWORK_CONTEXT_UNAVAILABLE'
   | 'PATH_UNAVAILABLE'
   | 'POOL_UNAVAILABLE'
   | 'QUOTE_TIMEOUT'
@@ -135,26 +143,21 @@ export type AgentAssetRef = {
   symbol?: string;
 };
 
-export interface AgentIntentRequest {
-  intentId?: string;
-  clientOrderId?: string;
-}
-
-export interface AgentSwapRequest extends AgentIntentRequest {
+export interface AgentSwapRequest {
   assetIn: AgentAssetRef;
   assetOut: AgentAssetRef;
-  amount: string | number;
+  amount: string;
   side?: AgentSwapSide;
-  slippageTolerance?: string | number;
+  slippageTolerance?: string;
   liquiditySource?: LiquiditySourceTypes | string;
   dexId?: AgentDexId | string;
   quoteTimeoutMs?: number;
 }
 
-export interface AgentTransferRequest extends AgentIntentRequest {
+export interface AgentTransferRequest {
   asset: AgentAssetRef;
   to: string;
-  amount: string | number;
+  amount: string;
 }
 
 export interface AgentResolveAssetRequest {
@@ -173,23 +176,36 @@ export interface AgentLiquidityPositionsRequest {
   timeoutMs?: number;
 }
 
-export interface AgentAddLiquidityRequest extends AgentIntentRequest {
+export interface AgentAddLiquidityRequest {
   assetA: AgentAssetRef;
   assetB: AgentAssetRef;
-  amountA?: string | number;
-  amountB?: string | number;
-  slippageTolerance?: string | number;
+  amountA?: string;
+  amountB?: string;
+  slippageTolerance?: string;
   allowPoolCreation?: boolean;
 }
 
-export interface AgentRemoveLiquidityRequest extends AgentIntentRequest {
+export interface AgentRemoveLiquidityRequest {
   assetA: AgentAssetRef;
   assetB: AgentAssetRef;
-  liquidityAmount?: string | number;
-  percent?: string | number;
-  slippageTolerance?: string | number;
+  liquidityAmount?: string;
+  percent?: string;
+  slippageTolerance?: string;
   timeoutMs?: number;
 }
+
+export interface AgentExecutePreparedRequest {
+  intentId: string;
+  clientOrderId: string;
+}
+
+export interface AgentExecuteSwapRequest extends AgentExecutePreparedRequest {}
+
+export interface AgentExecuteTransferRequest extends AgentExecutePreparedRequest {}
+
+export interface AgentExecuteAddLiquidityRequest extends AgentExecutePreparedRequest {}
+
+export interface AgentExecuteRemoveLiquidityRequest extends AgentExecutePreparedRequest {}
 
 export interface AgentMaxAmountRequest {
   asset: AgentAssetRef;
@@ -269,6 +285,8 @@ export interface AgentNodeStatus {
   connected: boolean;
   endpoint: string;
   blockNumber: number;
+  genesisHash: string;
+  runtimeSpecVersion: number;
 }
 
 export interface AgentWalletProviderStatus {
@@ -348,6 +366,7 @@ export type AgentWarningSeverity = 'info' | 'warning' | 'critical';
 
 export interface AgentWarning {
   code:
+    | 'FEE_UNAVAILABLE'
     | 'HIGH_PRICE_IMPACT'
     | 'INSUFFICIENT_BALANCE'
     | 'LOW_LIQUIDITY'
@@ -404,7 +423,7 @@ export interface AgentResolvedSwapRequest {
 }
 
 export interface AgentSwapQuote {
-  intentId: string;
+  quoteDigest: string;
   request: {
     amount: string;
     side: AgentSwapSide;
@@ -440,8 +459,10 @@ export interface AgentSwapQuote {
 }
 
 export interface AgentSwapExecution {
+  intentId: string;
   quote: AgentSwapQuote;
   transaction: AgentTransactionRef | null;
+  revalidation: AgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
@@ -460,6 +481,7 @@ export interface AgentTransferExecution {
   amount: string;
   amountMeta: AgentAssetAmount;
   transaction: AgentTransactionRef | null;
+  revalidation: AgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
@@ -495,7 +517,7 @@ export interface AgentLiquidityPosition {
 }
 
 export interface AgentAddLiquidityQuote {
-  intentId: string;
+  quoteDigest: string;
   pool: AgentPoolInfo;
   createsPool: boolean;
   amountA: string;
@@ -519,14 +541,16 @@ export interface AgentAddLiquidityQuote {
 }
 
 export interface AgentAddLiquidityExecution {
+  intentId: string;
   quote: AgentAddLiquidityQuote;
   transaction: AgentTransactionRef | null;
+  revalidation: AgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
 
 export interface AgentRemoveLiquidityQuote {
-  intentId: string;
+  quoteDigest: string;
   pool: AgentPoolInfo;
   liquidityAmount: string;
   liquidityAmountCodec: string;
@@ -550,8 +574,10 @@ export interface AgentRemoveLiquidityQuote {
 }
 
 export interface AgentRemoveLiquidityExecution {
+  intentId: string;
   quote: AgentRemoveLiquidityQuote;
   transaction: AgentTransactionRef | null;
+  revalidation: AgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
@@ -577,10 +603,65 @@ export interface AgentCallPreview {
   summary: string;
 }
 
+export type AgentIntentAction = 'swap' | 'transfer' | 'add-liquidity' | 'remove-liquidity';
+
+export interface AgentPreparedNetwork {
+  genesisHash: string;
+  runtimeSpecVersion: number;
+}
+
+export interface AgentPreparedSigner {
+  address: string;
+  source: string;
+}
+
+export interface AgentPreparedCall {
+  operation: string;
+  sdkCall: string;
+  encoding: 'polkaswap-sdk-call-v1';
+  /** Hex-encoded canonical SDK invocation, not a SCALE extrinsic. */
+  encodedCall: string;
+  args: Record<string, unknown>;
+}
+
+export interface AgentFeeCeiling {
+  assetAddress: string;
+  amountCodec: string;
+}
+
+/** Immutable, versioned authorization material produced only by a prepare method. */
+export interface AgentPreparedEnvelope {
+  schemaVersion: 1;
+  action: AgentIntentAction;
+  nonce: string;
+  network: AgentPreparedNetwork;
+  signer: AgentPreparedSigner;
+  preparedAt: number;
+  expiresAt: number;
+  preparedAtBlock: number;
+  expiresAtBlock: number;
+  request: Record<string, unknown>;
+  quote: Record<string, unknown>;
+  quoteDigest: string;
+  call: AgentPreparedCall;
+  callDigest: string;
+  feeCeilings: AgentFeeCeiling[];
+  intentId: string;
+}
+
+export interface AgentIntentRevalidation {
+  valid: boolean;
+  requiresReapproval: boolean;
+  reasons: string[];
+  checkedAt: number;
+  currentBlock: number;
+  currentNetwork: AgentPreparedNetwork;
+}
+
 export interface AgentIdempotencyRecord {
   clientOrderId: string;
   intentId: string;
-  action: 'swap' | 'transfer' | 'add-liquidity' | 'remove-liquidity';
+  action: AgentIntentAction;
   status: 'pending' | 'submitted';
   createdAt: number;
   updatedAt: number;
@@ -617,8 +698,13 @@ export interface AgentStateImportResult {
   records: AgentExportedIdempotencyRecord[];
 }
 
-export interface AgentPreparedSwap {
+export interface AgentPreparedBase {
   intentId: string;
+  envelope: AgentPreparedEnvelope;
+  revalidation: AgentIntentRevalidation;
+}
+
+export interface AgentPreparedSwap extends AgentPreparedBase {
   canExecute: boolean;
   quote: AgentSwapQuote;
   preview: AgentCallPreview;
@@ -627,8 +713,21 @@ export interface AgentPreparedSwap {
   warnings: AgentWarning[];
 }
 
-export interface AgentPreparedTransfer {
-  intentId: string;
+/** Account-independent SDK-call planning metadata, never a signing authorization or SCALE extrinsic. */
+export interface AgentSwapPlan {
+  mode: 'unsigned';
+  canExecute: false;
+  requiresWallet: false;
+  quote: AgentSwapQuote;
+  preview: Omit<AgentCallPreview, 'signer'>;
+  fees: AgentFeeEstimate[];
+  warnings: AgentWarning[];
+  plannedAt: number;
+  expiresAt: number;
+  network: AgentPreparedNetwork & { blockNumber: number };
+}
+
+export interface AgentPreparedTransfer extends AgentPreparedBase {
   canExecute: boolean;
   asset: AgentAsset;
   to: string;
@@ -640,8 +739,7 @@ export interface AgentPreparedTransfer {
   warnings: AgentWarning[];
 }
 
-export interface AgentPreparedAddLiquidity {
-  intentId: string;
+export interface AgentPreparedAddLiquidity extends AgentPreparedBase {
   canExecute: boolean;
   quote: AgentAddLiquidityQuote;
   preview: AgentCallPreview;
@@ -650,8 +748,7 @@ export interface AgentPreparedAddLiquidity {
   warnings: AgentWarning[];
 }
 
-export interface AgentPreparedRemoveLiquidity {
-  intentId: string;
+export interface AgentPreparedRemoveLiquidity extends AgentPreparedBase {
   canExecute: boolean;
   quote: AgentRemoveLiquidityQuote;
   preview: AgentCallPreview;
@@ -689,14 +786,14 @@ export interface AgentMaxRemoveLiquidity {
 }
 
 export interface AgentRiskPolicy {
-  maxPriceImpact?: string | number;
+  maxPriceImpact?: string;
   requireCanExecute?: boolean;
   allowWarnings?: AgentWarning['code'][];
 }
 
 export interface AgentSwapAssessmentRequest extends AgentSwapRequest {
   policy?: AgentRiskPolicy;
-  maxPriceImpact?: string | number;
+  maxPriceImpact?: string;
   requireCanExecute?: boolean;
   allowWarnings?: AgentWarning['code'][];
 }
@@ -724,19 +821,21 @@ export interface PolkaswapAgentApi {
   resolveAsset(request: AgentResolveAssetRequest): Promise<AgentResolvedAsset>;
   commonAssets(request?: AgentAssetsRequest): Promise<AgentResolvedAsset[]>;
   quoteSwap(request: AgentSwapRequest): Promise<AgentSwapQuote>;
+  /** Plan without reading account data, persisting an intent, or requesting a signature. */
+  planSwap(request: AgentSwapRequest): Promise<AgentSwapPlan>;
   prepareSwap(request: AgentSwapRequest): Promise<AgentPreparedSwap>;
   assessSwap(request: AgentSwapAssessmentRequest): Promise<AgentPolicyAssessment>;
-  executeSwap(request: AgentSwapRequest): Promise<AgentSwapExecution>;
+  executeSwap(request: AgentExecuteSwapRequest): Promise<AgentSwapExecution>;
   prepareTransfer(request: AgentTransferRequest): Promise<AgentPreparedTransfer>;
-  executeTransfer(request: AgentTransferRequest): Promise<AgentTransferExecution>;
+  executeTransfer(request: AgentExecuteTransferRequest): Promise<AgentTransferExecution>;
   poolInfo(request: AgentPoolInfoRequest): Promise<AgentPoolInfo>;
   liquidityPositions(request?: AgentLiquidityPositionsRequest): Promise<AgentLiquidityPosition[]>;
   quoteAddLiquidity(request: AgentAddLiquidityRequest): Promise<AgentAddLiquidityQuote>;
   prepareAddLiquidity(request: AgentAddLiquidityRequest): Promise<AgentPreparedAddLiquidity>;
-  executeAddLiquidity(request: AgentAddLiquidityRequest): Promise<AgentAddLiquidityExecution>;
+  executeAddLiquidity(request: AgentExecuteAddLiquidityRequest): Promise<AgentAddLiquidityExecution>;
   quoteRemoveLiquidity(request: AgentRemoveLiquidityRequest): Promise<AgentRemoveLiquidityQuote>;
   prepareRemoveLiquidity(request: AgentRemoveLiquidityRequest): Promise<AgentPreparedRemoveLiquidity>;
-  executeRemoveLiquidity(request: AgentRemoveLiquidityRequest): Promise<AgentRemoveLiquidityExecution>;
+  executeRemoveLiquidity(request: AgentExecuteRemoveLiquidityRequest): Promise<AgentRemoveLiquidityExecution>;
   maxTransferAmount(request: AgentMaxAmountRequest): Promise<AgentMaxAmount>;
   maxSwapInput(request: AgentMaxSwapInputRequest): Promise<AgentMaxAmount>;
   maxAddLiquidity(request: AgentMaxAddLiquidityRequest): Promise<AgentMaxAddLiquidity>;

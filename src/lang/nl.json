@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} Wiki"
     },
     "forAgents": {
-        "apiContext": "wordt geïnstalleerd in de paginacontext nadat de app is opgestart. Het gebruikt hetzelfde knooppunt, dezelfde portemonnee, indexer en SDK-pad als de gebruikersinterface.",
+        "apiContext": "De planning draait autonoom op publieke ketendata. Wallet-identiteiten, saldi en ondertekenaarstatus blijven buiten de openbare tools.",
         "contract": {
-            "idempotent": "Gebruik een stabiele clientOrderId en herstel onzekere inzendingen voordat u het opnieuw probeert.",
-            "noCustody": "De pagina ontvangt nooit privésleutels; het ondertekenen blijft bij de geselecteerde portemonnee.",
-            "prepareFirst": "Aanroepen die de status wijzigen, moeten voorbereiding* ondergaan voordat ze worden uitgevoerd*.",
-            "samePage": "Voer het uit binnen de Polkaswap-paginacontext na de ready-gebeurtenis."
+            "idempotent": "Plan opnieuw als swapparameters of markten veranderen, zonder een pagina-goedkeuringsstap.",
+            "noCustody": "Voor planning is geen verbonden account, saldo of portemonnee-toestemming nodig.",
+            "prepareFirst": "Een niet-ondertekend plan is geen uitvoerbare intentie of toestemming om geld uit te geven.",
+            "samePage": "Bel tools rechtstreeks op deze pagina of via de lokale MCP-bridge."
         },
         "discoveryText": "Haal eerst het manifest op. Het koppelt de versiereferentie, schemabestanden, voorbeelden, foutencatalogus en helperclient die bij deze statische build worden geleverd.",
         "discoveryTitle": "Ontdekking",
-        "entrypointsLabel": "Agent-API-ingangspunten",
+        "entrypointsLabel": "Toegangspunten voor agentplanning en ontdekking",
         "eyebrow": "Automatisering",
         "flow": {
             "execute": "Alleen uitvoeren na goedkeuring van het beleid, met de voorbereide intentie en een stabiele klantorder-ID.",
@@ -652,17 +652,23 @@
             "resolve": "Herstel activasymbolen naar adressen vóór herhaalde uitvoering.",
             "wallet": "Selecteer een portemonneeprovider en account wanneer ondertekenen nodig is."
         },
-        "flowTitle": "Veilige uitvoeringslus",
-        "lead": "Polkaswap stelt een browser-native automatiserings-API beschikbaar voor agentrunners die de statische app openen.",
+        "flowTitle": "Autonome planning",
+        "lead": "Ontdek markten, vergelijk offertes en bouw niet-ondertekende ruilplannen rechtstreeks vanuit agenttools. Geen paginaklikken of portemonnee-verbinding nodig.",
         "links": {
             "client": "JavaScript-helperclient",
             "errors": "Foutcatalogus",
             "examples": "Voorbeelden",
             "manifest": "Ontdekkingsmanifest",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Agentenspeelplaats",
             "reference": "Volledige API-referentie",
             "schema": "JSON-schema",
             "types": "TypeScript-definities"
+        },
+        "mcp": {
+            "boundary": "Ondertekening wordt nooit geregistreerd bij de openbare WebMCP en de lokale bridge bevat geen ondertekenaar. Plannen kunnen geen geld uitgeven; onbeheerde uitvoering vereist een afzonderlijke privé-ondertekenaar en afgedwongen limieten die hier niet worden vermeld.",
+            "text": "De pagina op het hoogste niveau toont ontdekkingen, offertes en portemonnee-onafhankelijke planning. Agenten kunnen deze tools rechtstreeks oproepen en herhalen; de tools kunnen geen portemonneetoegang aanvragen of transacties indienen.",
+            "title": "Autonome planning · alleen-lezen"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Begin met het manifest"
             },
             "playground": {
-                "description": "Handmatig onderzoek van dezelfde oorsprong voor status, activa, offertes en voorbeelden.",
-                "title": "Open de speeltuin"
+                "description": "Vraag routes, sliplimieten, geschatte kosten en een niet-ondertekend ruilplan aan zonder een portemonnee aan te sluiten of te wachten op goedkeuring van een pagina. Gebruik de optionele speeltuin om de resultaten te bekijken; tooloproepen hebben dit niet nodig.",
+                "title": "Plan een ruil met één gereedschapsaanvraag"
             },
             "reference": {
                 "description": "Leesbare methodekaart, voorbeelden, ondertekeningsregels en herstelnotities.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "om nieuwe pogingen idempotent te houden.",
-        "signingTextBefore": "De pagina gebruikt nooit privésleutels. Bij staatsveranderende methoden wordt gebruik gemaakt van de geselecteerde portemonnee-ondertekenaar en wordt vereist dat de loper de geretourneerde passeert",
+        "signingTextBefore": "Voer de Node 26 stdio-bridge één keer uit met een speciaal browserprofiel. Standaard MCP-clients kunnen vervolgens markten ontdekken, offertes aanvragen en opnieuw plannen zonder pagina-interacties. De bridge maakt gebruik van dezelfde alleen-lezen-tools en bevat geen ondertekenaar.",
         "signingTextMiddle": "plus een stal",
-        "signingTitle": "Ondertekening en bewaring",
-        "startTitle": "Begin hier",
+        "signingTitle": "Lokale MCP · dezelfde planningstools",
+        "startTitle": "Open optionele inspecteur",
         "title": "Voor agenten"
     },
     "forText": "voor",

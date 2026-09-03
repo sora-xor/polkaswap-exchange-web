@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} Wiki"
     },
     "forAgents": {
-        "apiContext": "je nainstalován v kontextu stránky po spuštění aplikace. Používá stejný uzel, peněženku, indexátor a cestu SDK jako uživatelské rozhraní.",
+        "apiContext": "Plánování probíhá autonomně na datech veřejného řetězce. Identity peněženky, zůstatky a stav podpisu zůstávají mimo veřejné nástroje.",
         "contract": {
-            "idempotent": "Použijte stabilní clientOrderId a před dalším pokusem obnovte nejisté odeslání.",
-            "noCustody": "Stránka nikdy neobdrží soukromé klíče; podpis zůstane u vybrané peněženky.",
-            "prepareFirst": "Volání měnící stav musí projít přípravou* před provedením*.",
-            "samePage": "Spusťte v kontextu stránky Polkaswap po události ready."
+            "idempotent": "Přeplánujte, když se změní parametry swapu nebo trhy, bez kroku schvalování stránky.",
+            "noCustody": "Plánování nepotřebuje žádný připojený účet, zůstatky nebo oprávnění k peněžence.",
+            "prepareFirst": "Nepodepsaný plán není proveditelným záměrem nebo povolením k utrácení.",
+            "samePage": "Volejte nástroje přímo na této stránce nebo prostřednictvím místního mostu MCP."
         },
         "discoveryText": "Nejprve si vyzvedněte manifest. Propojuje verzovanou referenci, soubory schémat, příklady, katalog chyb a pomocného klienta dodávané s tímto statickým sestavením.",
         "discoveryTitle": "Objevování",
-        "entrypointsLabel": "Vstupní body API agenta",
+        "entrypointsLabel": "Agent plánování a objevování vstupních bodů",
         "eyebrow": "automatizace",
         "flow": {
             "execute": "Proveďte pouze po schválení zásad, s připraveným záměrem a stabilním ID objednávky klienta.",
@@ -652,17 +652,23 @@
             "resolve": "Před opakovaným spuštěním rozložte symboly aktiv na adresy.",
             "wallet": "Když je potřeba podpis, vyberte poskytovatele peněženky a účet."
         },
-        "flowTitle": "Bezpečná prováděcí smyčka",
-        "lead": "Polkaswap odhaluje nativní automatizační API prohlížeče pro agenty, kteří otevírají statickou aplikaci.",
+        "flowTitle": "Autonomní plánování",
+        "lead": "Objevujte trhy, porovnávejte nabídky a sestavujte nepodepsané swapové plány přímo z nástrojů agentů. Není potřeba žádná kliknutí na stránku ani připojení k peněžence.",
         "links": {
             "client": "Pomocný klient JavaScriptu",
             "errors": "Katalog chyb",
             "examples": "Příklady",
             "manifest": "Objevovací manifest",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Agentské hřiště",
             "reference": "Úplná reference API",
             "schema": "schéma JSON",
             "types": "Definice TypeScript"
+        },
+        "mcp": {
+            "boundary": "Podepisování není nikdy registrováno u veřejného WebMCP a místní most nezahrnuje podepisovatele. Plány nemohou utrácet finanční prostředky; bezobslužné provedení vyžaduje samostatného soukromého podpisovatele a vynucené limity, které zde nejsou dodávány.",
+            "text": "Stránka nejvyšší úrovně odhaluje objevování, nabídky a plánování nezávislé na peněžence. Agenti mohou tyto nástroje volat a opakovat přímo; nástroje nemohou vyžadovat přístup k peněžence nebo odesílat transakce.",
+            "title": "Autonomní plánování · pouze pro čtení"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Začněte manifestem"
             },
             "playground": {
-                "description": "Manuální sonda stejného původu pro stav, aktiva, nabídky a náhledy.",
-                "title": "Otevřete hřiště"
+                "description": "Vyžádejte si trasy, hranice skluzu, odhadované poplatky a nepodepsaný swapový plán bez připojení peněženky nebo čekání na schválení stránky. Použijte volitelné hřiště ke kontrole výsledků; volání nástrojů to nepotřebují.",
+                "title": "Naplánujte si výměnu s jedním požadavkem na nástroj"
             },
             "reference": {
                 "description": "Čitelná mapa metod, příklady, pravidla podepisování a poznámky k obnově.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "udržet pokusy idempotentní.",
-        "signingTextBefore": "Stránka nikdy nebere soukromé klíče. Metody změny stavu používají vybraného signatáře peněženky a vyžadují, aby běžec předal vrácené",
+        "signingTextBefore": "Spusťte Node 26 stdio bridge jednou s vyhrazeným profilem prohlížeče. Standardní klienti MCP pak mohou objevovat trhy, žádat o nabídky a přeplánovat bez interakce se stránkami. Most odhaluje stejné nástroje pouze pro čtení a neobsahuje podepisovatele.",
         "signingTextMiddle": "plus stáj",
-        "signingTitle": "Podepisování a úschova",
-        "startTitle": "Začněte zde",
+        "signingTitle": "Místní MCP · stejné plánovací nástroje",
+        "startTitle": "Otevřete volitelný inspektor",
         "title": "Pro agenty"
     },
     "forText": "za",

@@ -6,3 +6,4 @@ Allow: /
 # LLM summary: llms.txt
 # Agent quickstart: agents.txt
 # Browser global after app load: window.PolkaswapAgent
+# Top-level WebMCP catalogue: .well-known/polkaswap-mcp-tools.json

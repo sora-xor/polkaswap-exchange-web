@@ -513,17 +513,28 @@ test.describe('agent trading signer profile', () => {
 
       if (!shouldExecuteSwap) return;
 
+      const prepared = await page.evaluate(
+        async ({ assetIn, assetOut, amount }) =>
+          window.PolkaswapAgent.prepareSwap({
+            assetIn: { address: assetIn.address },
+            assetOut: { address: assetOut.address },
+            amount,
+            quoteTimeoutMs: 20_000,
+          }),
+        { assetIn: quote.assetIn, assetOut: quote.assetOut, amount: quote.amountIn }
+      );
+      expect(prepared.canExecute).toBe(true);
+
+      // Keep one idempotency key tied to this exact single-use preparation.
       const execution = await runWithWalletPopupHandling(
         context,
         page.evaluate(
-          async ({ assetIn, assetOut, amount }) =>
+          async ({ intentId, clientOrderId }) =>
             window.PolkaswapAgent.executeSwap({
-              assetIn: { address: assetIn.address },
-              assetOut: { address: assetOut.address },
-              amount,
-              quoteTimeoutMs: 20_000,
+              intentId,
+              clientOrderId,
             }),
-          { assetIn: quote.assetIn, assetOut: quote.assetOut, amount: quote.amountIn }
+          { intentId: prepared.intentId, clientOrderId: `signer-e2e:${prepared.intentId}` }
         )
       );
 

@@ -540,13 +540,15 @@ export class PoolXykModule<T> {
    * @param firstAmount
    * @param secondAmount // TODO: add a case when 'B' should be calculated automatically
    * @param slippageTolerance Slippage tolerance coefficient (in %)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   public add(
     firstAsset: Asset | AccountAsset,
     secondAsset: Asset | AccountAsset,
     firstAmount: NumberLike,
     secondAmount: NumberLike,
-    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent
+    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -572,6 +574,7 @@ export class PoolXykModule<T> {
       (this.root.api.tx.poolXYK as any).depositLiquidity(...params.args),
       this.root.account.pair,
       {
+        ...(historyId ? { id: historyId } : {}),
         type: Operation.AddLiquidity,
         symbol: firstAsset.symbol,
         assetAddress: firstAsset.address,
@@ -633,13 +636,15 @@ export class PoolXykModule<T> {
    * @param firstAmount
    * @param secondAmount
    * @param slippageTolerance Slippage tolerance coefficient (in %)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   public async create(
     firstAsset: Asset | AccountAsset,
     secondAsset: Asset | AccountAsset,
     firstAmount: NumberLike,
     secondAmount: NumberLike,
-    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent
+    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -661,6 +666,7 @@ export class PoolXykModule<T> {
     this.root.assets.addAccountAsset(secondAsset.address);
 
     return this.root.submitExtrinsic(this.root.api.tx.utility.batchAll(transactions), this.root.account.pair, {
+      ...(historyId ? { id: historyId } : {}),
       type: Operation.CreatePair,
       symbol: firstAsset.symbol,
       assetAddress: firstAsset.address,
@@ -718,6 +724,7 @@ export class PoolXykModule<T> {
    * @param secondTotal getReserves()[1]
    * @param totalSupply Total supply coefficient, estimateTokensRetrieved()[2]
    * @param slippageTolerance Slippage tolerance coefficient (in %)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   public remove(
     firstAsset: Asset | AccountAsset,
@@ -726,7 +733,8 @@ export class PoolXykModule<T> {
     firstTotal: CodecString,
     secondTotal: CodecString,
     totalSupply: CodecString,
-    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent
+    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -743,6 +751,7 @@ export class PoolXykModule<T> {
       (this.root.api.tx.poolXYK as any).withdrawLiquidity(...params.args),
       this.root.account.pair,
       {
+        ...(historyId ? { id: historyId } : {}),
         type: Operation.RemoveLiquidity,
         symbol: firstAsset.symbol,
         assetAddress: firstAsset.address,

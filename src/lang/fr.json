@@ -632,16 +632,16 @@
         "sorawiki": "Wiki {Sora}"
     },
     "forAgents": {
-        "apiContext": "est installé dans le contexte de la page après le démarrage de l'application. Il utilise le même nœud, portefeuille, indexeur et chemin SDK que l'interface utilisateur.",
+        "apiContext": "La planification s'exécute de manière autonome sur les données de la chaîne publique. Les identités de portefeuille, les soldes et l'état du signataire restent en dehors des outils publics.",
         "contract": {
-            "idempotent": "Utilisez un clientOrderId stable et récupérez les soumissions incertaines avant de réessayer.",
-            "noCustody": "La page ne reçoit jamais de clés privées ; la signature reste avec le portefeuille sélectionné.",
-            "prepareFirst": "Les appels de changement d'état doivent passer par prepare* avant d'exécuter*.",
-            "samePage": "Exécuté dans le contexte de la page Polkaswap après l'événement ready."
+            "idempotent": "Replanifiez à mesure que les paramètres de swap ou les marchés changent, sans étape d'approbation de la page.",
+            "noCustody": "La planification ne nécessite aucun compte connecté, aucun solde ou autorisation de portefeuille.",
+            "prepareFirst": "Un plan non signé ne constitue pas une intention exécutable ou une autorisation de dépenser.",
+            "samePage": "Appelez les outils directement sur cette page ou via le pont MCP local."
         },
         "discoveryText": "Récupérez d’abord le manifeste. Il relie la référence versionnée, les fichiers de schéma, les exemples, le catalogue d'erreurs et le client d'assistance livré avec cette version statique.",
         "discoveryTitle": "Découverte",
-        "entrypointsLabel": "Points d'entrée de l'API de l'agent",
+        "entrypointsLabel": "Points d'entrée de planification et de découverte des agents",
         "eyebrow": "Automation",
         "flow": {
             "execute": "Exécutez uniquement après l'approbation de la politique, avec l'intention préparée et un identifiant de commande client stable.",
@@ -652,17 +652,23 @@
             "resolve": "Résolvez les symboles d’actifs en adresses avant une exécution répétée.",
             "wallet": "Sélectionnez un fournisseur de portefeuille et un compte lorsque la signature est nécessaire."
         },
-        "flowTitle": "Boucle d'exécution sécurisée",
-        "lead": "Polkaswap expose une API d'automatisation native du navigateur pour les exécuteurs d'agents qui ouvrent l'application statique.",
+        "flowTitle": "Planification autonome",
+        "lead": "Découvrez les marchés, comparez les cotations et créez des plans de swap non signés directement à partir des outils d'agent. Aucun clic sur la page ni connexion au portefeuille n'est nécessaire.",
         "links": {
             "client": "Client d'assistance JavaScript",
             "errors": "Catalogue d'erreurs",
             "examples": "Exemples",
             "manifest": "Manifeste de découverte",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Terrain de jeu des agents",
             "reference": "Référence complète de l'API",
             "schema": "Schéma JSON",
             "types": "Définitions TypeScript"
+        },
+        "mcp": {
+            "boundary": "La signature n'est jamais enregistrée auprès du WebMCP public et le pont local n'inclut pas de signataire. Les régimes ne peuvent pas dépenser de fonds ; l'exécution sans surveillance nécessite un signataire privé distinct et des limites appliquées qui ne sont pas fournies ici.",
+            "text": "La page de niveau supérieur expose la découverte, les devis et la planification indépendante du portefeuille. Les agents peuvent appeler et répéter ces outils directement ; les outils ne peuvent pas demander l'accès au portefeuille ni soumettre de transactions.",
+            "title": "Planification autonome · lecture seule"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Commencez par le manifeste"
             },
             "playground": {
-                "description": "Sonde manuelle de même origine pour le statut, les actifs, les devis et les aperçus.",
-                "title": "Ouvrir le terrain de jeu"
+                "description": "Demandez des itinéraires, des limites de glissement, des frais estimés et un plan d'échange non signé sans connecter de portefeuille ni attendre l'approbation d'une page. Utilisez le terrain de jeu en option pour inspecter les résultats ; les appels d’outils n’en ont pas besoin.",
+                "title": "Planifier un échange avec une seule demande d'outil"
             },
             "reference": {
                 "description": "Carte des méthodes lisible, exemples, règles de signature et notes de récupération.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "pour garder les tentatives idempotentes.",
-        "signingTextBefore": "La page ne prend jamais de clés privées. Les méthodes de changement d'état utilisent le signataire du portefeuille sélectionné et exigent que le coureur transmette le message renvoyé.",
+        "signingTextBefore": "Exécutez le pont stdio Node 26 une fois avec un profil de navigateur dédié. Les clients MCP standard peuvent ensuite découvrir des marchés, demander des devis et replanifier sans interactions de page. Le pont expose les mêmes outils en lecture seule et n'inclut pas de signataire.",
         "signingTextMiddle": "plus une écurie",
-        "signingTitle": "Signature et garde",
-        "startTitle": "Commencez ici",
+        "signingTitle": "MCP local · mêmes outils de planification",
+        "startTitle": "Ouvrir l'inspecteur facultatif",
         "title": "Pour les mandataires"
     },
     "forText": "pour",

@@ -632,16 +632,16 @@
         "sorawiki": "{Sora}Wiki"
     },
     "forAgents": {
-        "apiContext": "viene installato nel contesto della pagina dopo l'avvio dell'app. Utilizza lo stesso nodo, portafoglio, indicizzatore e percorso SDK dell'interfaccia utente.",
+        "apiContext": "La pianificazione viene eseguita in modo autonomo sui dati della catena pubblica. Le identità del portafoglio, i saldi e lo stato del firmatario rimangono al di fuori degli strumenti pubblici.",
         "contract": {
-            "idempotent": "Utilizza un clientOrderId stabile e recupera gli invii incerti prima di riprovare.",
-            "noCustody": "La pagina non riceve mai chiavi private; la firma rimane nel portafoglio selezionato.",
-            "prepareFirst": "Le chiamate di cambio di stato devono passare attraverso la preparazione* prima dell'esecuzione*.",
-            "samePage": "Esegui all'interno del contesto della pagina Polkaswap dopo l'evento ready."
+            "idempotent": "Ripianifica quando i parametri di swap o i mercati cambiano, senza una fase di approvazione della pagina.",
+            "noCustody": "La pianificazione non richiede account, saldi o autorizzazioni di portafoglio collegati.",
+            "prepareFirst": "Un piano non firmato non è un intento eseguibile o un'autorizzazione a spendere.",
+            "samePage": "Chiama gli strumenti direttamente su questa pagina o tramite il bridge MCP locale."
         },
         "discoveryText": "Prima recupera il manifest. Collega il riferimento con versione, i file di schema, gli esempi, il catalogo degli errori e il client di supporto fornito con questa build statica.",
         "discoveryTitle": "Scoperta",
-        "entrypointsLabel": "Punti di ingresso dell'API dell'agente",
+        "entrypointsLabel": "Pianificazione degli agenti e punti di ingresso per il rilevamento",
         "eyebrow": "Automazione",
         "flow": {
             "execute": "Eseguirlo solo dopo l'approvazione della politica, con l'intento preparato e un ID ordine cliente stabile.",
@@ -652,17 +652,23 @@
             "resolve": "Risolvi i simboli delle risorse negli indirizzi prima dell'esecuzione ripetuta.",
             "wallet": "Seleziona un fornitore di portafoglio e un account quando è necessaria la firma."
         },
-        "flowTitle": "Ciclo di esecuzione sicura",
-        "lead": "Polkaswap espone un'API di automazione nativa del browser per i runner di agenti che aprono l'app statica.",
+        "flowTitle": "Pianificazione autonoma",
+        "lead": "Scopri i mercati, confronta le quotazioni e crea piani di swap non firmati direttamente dagli strumenti degli agenti. Non sono necessari clic sulla pagina o connessione al portafoglio.",
         "links": {
             "client": "Client di supporto JavaScript",
             "errors": "Catalogo degli errori",
             "examples": "Esempi",
             "manifest": "Manifesto della scoperta",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Parco giochi dell'agente",
             "reference": "Riferimento API completo",
             "schema": "Schema JSON",
             "types": "Definizioni di TypeScript"
+        },
+        "mcp": {
+            "boundary": "La firma non viene mai registrata con WebMCP pubblico e il bridge locale non include un firmatario. I piani non possono spendere fondi; l'esecuzione automatica richiede un firmatario privato separato e limiti applicati che non vengono forniti qui.",
+            "text": "La pagina di livello superiore espone la scoperta, le quotazioni e la pianificazione indipendente dal portafoglio. Gli agenti possono chiamare e ripetere direttamente questi strumenti; gli strumenti non possono richiedere l'accesso al portafoglio o inviare transazioni.",
+            "title": "Pianificazione autonoma · sola lettura"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Cominciamo dal manifesto"
             },
             "playground": {
-                "description": "Sonda manuale della stessa origine per stato, risorse, preventivi e anteprime.",
-                "title": "Apri il parco giochi"
+                "description": "Richiedi percorsi, limiti di slittamento, commissioni stimate e un piano di swap non firmato senza collegare un portafoglio o attendere l'approvazione della pagina. Utilizza il parco giochi opzionale per controllare i risultati; le chiamate agli strumenti non ne hanno bisogno.",
+                "title": "Pianifica uno scambio con una richiesta di strumento"
             },
             "reference": {
                 "description": "Mappa dei metodi leggibile, esempi, regole di firma e note di ripristino.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "per mantenere i tentativi idempotenti.",
-        "signingTextBefore": "La pagina non accetta mai chiavi private. I metodi di cambio di stato utilizzano il firmatario del portafoglio selezionato e richiedono che il corridore passi il reso",
+        "signingTextBefore": "Esegui il bridge stdio Node 26 una volta con un profilo browser dedicato. I clienti MCP standard possono quindi scoprire mercati, richiedere preventivi e ripianificare senza interazioni con la pagina. Il bridge espone gli stessi strumenti di sola lettura e non include un firmatario.",
         "signingTextMiddle": "più una stalla",
-        "signingTitle": "Firma e custodia",
-        "startTitle": "Inizia qui",
+        "signingTitle": "MCP locale · stessi strumenti di pianificazione",
+        "startTitle": "Apri la finestra di ispezione opzionale",
         "title": "Per gli agenti"
     },
     "forText": "per",

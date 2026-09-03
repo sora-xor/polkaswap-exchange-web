@@ -632,16 +632,16 @@
         "sorawiki": "Wiki {Sora}"
     },
     "forAgents": {
-        "apiContext": "jest instalowany w kontekście strony po uruchomieniu aplikacji. Używa tego samego węzła, portfela, indeksatora i ścieżki SDK, co interfejs użytkownika.",
+        "apiContext": "Planowanie działa autonomicznie na danych z łańcucha publicznego. Tożsamości portfela, salda i stan osoby podpisującej pozostają poza narzędziami publicznymi.",
         "contract": {
-            "idempotent": "Użyj stabilnego ClientOrderId i odzyskaj niepewne przesłania przed ponowną próbą.",
-            "noCustody": "Strona nigdy nie otrzymuje kluczy prywatnych; podpisanie pozostaje przy wybranym portfelu.",
-            "prepareFirst": "Wywołania zmieniające stan muszą przejść proces przygotowania* przed wykonaniem*.",
-            "samePage": "Uruchom w kontekście strony Polkaswap po zdarzeniu Ready."
+            "idempotent": "Planuj ponownie w przypadku zmiany parametrów swapu lub rynków, bez etapu zatwierdzania strony.",
+            "noCustody": "Planowanie nie wymaga podłączonego konta, salda ani pozwolenia na portfel.",
+            "prepareFirst": "Niepodpisany plan nie stanowi wykonalnego zamiaru ani pozwolenia na wydatki.",
+            "samePage": "Wywołuj narzędzia bezpośrednio na tej stronie lub za pośrednictwem lokalnego mostu MCP."
         },
         "discoveryText": "Najpierw pobierz manifest. Łączy wersjonowane odniesienia, pliki schematu, przykłady, katalog błędów i klienta pomocniczego dostarczonego z tą statyczną kompilacją.",
         "discoveryTitle": "Odkrycie",
-        "entrypointsLabel": "Punkty wejścia API agenta",
+        "entrypointsLabel": "Punkty wejścia do planowania agentów i wykrywania",
         "eyebrow": "Automatyzacja",
         "flow": {
             "execute": "Wykonaj dopiero po zatwierdzeniu polisy, z przygotowanym zamiarem i stabilnym identyfikatorem zamówienia klienta.",
@@ -652,17 +652,23 @@
             "resolve": "Przypisz symbole zasobów do adresów przed ponownym wykonaniem.",
             "wallet": "Wybierz dostawcę portfela i konto, jeśli wymagane jest podpisanie."
         },
-        "flowTitle": "Bezpieczna pętla wykonawcza",
-        "lead": "Polkaswap udostępnia natywny dla przeglądarki interfejs API automatyzacji dla agentów uruchamiających, którzy otwierają aplikację statyczną.",
+        "flowTitle": "Autonomiczne planowanie",
+        "lead": "Odkrywaj rynki, porównuj oferty i twórz plany niepodpisanych swapów bezpośrednio z narzędzi agenta. Nie są potrzebne żadne kliknięcia strony ani połączenie z portfelem.",
         "links": {
             "client": "Klient pomocniczy JavaScript",
             "errors": "Katalog błędów",
             "examples": "Przykłady",
             "manifest": "Manifest odkrycia",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Plac zabaw dla agentów",
             "reference": "Pełne odniesienie do API",
             "schema": "Schemat JSON-a",
             "types": "Definicje TypeScriptu"
+        },
+        "mcp": {
+            "boundary": "Podpisywanie nigdy nie jest rejestrowane w publicznym WebMCP, a most lokalny nie zawiera osoby podpisującej. Plany nie mogą wydawać środków; wykonanie nienadzorowane wymaga oddzielnego prywatnego podpisującego i wymuszonych limitów, które nie są tutaj dostarczane.",
+            "text": "Strona najwyższego poziomu udostępnia odkrywanie, wyceny i planowanie niezależne od portfela. Agenci mogą bezpośrednio wywoływać i powtarzać te narzędzia; narzędzia nie mogą żądać dostępu do portfela ani przesyłać transakcji.",
+            "title": "Planowanie autonomiczne · Tylko do odczytu"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Zacznij od manifestu"
             },
             "playground": {
-                "description": "Ręczna sonda tego samego pochodzenia pod kątem statusu, zasobów, ofert i podglądów.",
-                "title": "Otwórz plac zabaw"
+                "description": "Żądaj tras, ograniczeń poślizgu, szacunkowych opłat i niepodpisanego planu wymiany bez podłączania portfela lub czekania na zatwierdzenie strony. Skorzystaj z opcjonalnego placu zabaw, aby sprawdzić wyniki; wywołania narzędzi tego nie potrzebują.",
+                "title": "Zaplanuj wymianę za pomocą jednego żądania narzędzia"
             },
             "reference": {
                 "description": "Czytelna mapa metod, przykłady, zasady podpisywania i uwagi dotyczące odzyskiwania.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "aby utrzymać idempotentność ponownych prób.",
-        "signingTextBefore": "Strona nigdy nie pobiera kluczy prywatnych. Metody zmiany stanu korzystają z wybranego podpisu portfela i wymagają od biegacza przekazania zwróconego",
+        "signingTextBefore": "Uruchom raz most stdio Node 26 z dedykowanym profilem przeglądarki. Standardowi klienci MCP mogą następnie odkrywać rynki, prosić o wyceny i zmieniać plany bez interakcji ze stronami. Most udostępnia te same narzędzia tylko do odczytu i nie zawiera osoby podpisującej.",
         "signingTextMiddle": "plus stajnia",
-        "signingTitle": "Podpisanie i opieka",
-        "startTitle": "Zacznij tutaj",
+        "signingTitle": "Lokalny MCP · te same narzędzia planowania",
+        "startTitle": "Otwórz opcjonalnego inspektora",
         "title": "Dla agentów"
     },
     "forText": "za",

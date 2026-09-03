@@ -1,0 +1,433 @@
+[
+  {
+    "name": "polkaswap_capabilities",
+    "title": "Polkaswap capabilities",
+    "description": "Read public PolkaswapAgent runtime, limits, defaults, security metadata, and account-redacted node status. This tool cannot prepare or execute an intent.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_status",
+    "title": "Polkaswap status",
+    "description": "Read account-redacted Polkaswap agent, SORA node, and slippage-setting status without exposing wallet identity or provider data.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_ready",
+    "title": "Wait for SORA node readiness",
+    "description": "Wait for SORA node readiness with a bounded timeout and return account-redacted status. This cannot inspect or require a wallet.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requireNode": {
+          "type": "boolean"
+        },
+        "timeoutMs": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 120000
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_assets",
+    "title": "Search Polkaswap assets",
+    "description": "List or search public Polkaswap asset metadata by a bounded text query. Wallet balances are always excluded.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "query": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_resolve_asset",
+    "title": "Resolve a Polkaswap asset",
+    "description": "Resolve an asset address or symbol to public canonical Polkaswap metadata. Wallet balances are always excluded.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset"],
+      "properties": {
+        "asset": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          },
+          "anyOf": [
+            {
+              "required": ["address"]
+            },
+            {
+              "required": ["symbol"]
+            }
+          ]
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_common_assets",
+    "title": "List common route assets",
+    "description": "List or search public canonical assets commonly used as Polkaswap route endpoints. Wallet balances are always excluded.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "query": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_quote_swap",
+    "title": "Quote a Polkaswap swap",
+    "description": "Read an account-independent swap quote, quoteDigest, route, distribution, liquidity sources, price impact, and bounds. This cannot create an executable intent.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetIn", "assetOut", "amount"],
+      "properties": {
+        "assetIn": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          },
+          "anyOf": [
+            {
+              "required": ["address"]
+            },
+            {
+              "required": ["symbol"]
+            }
+          ]
+        },
+        "assetOut": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          },
+          "anyOf": [
+            {
+              "required": ["address"]
+            },
+            {
+              "required": ["symbol"]
+            }
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 91,
+          "pattern": "^(?:0|[1-9][0-9]{0,59})(?:\\.[0-9]{1,30})?$"
+        },
+        "side": {
+          "type": "string",
+          "enum": ["input", "output"]
+        },
+        "slippageTolerance": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 91,
+          "pattern": "^(?:0|[1-9][0-9]{0,59})(?:\\.[0-9]{1,30})?$"
+        },
+        "liquiditySource": {
+          "type": "string",
+          "enum": ["", "XYKPool", "XSTPool", "MulticollateralBondingCurvePool", "OrderBook"]
+        },
+        "dexId": {
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "best"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535
+            }
+          ]
+        },
+        "quoteTimeoutMs": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 120000
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_plan_swap",
+    "title": "Plan an unsigned Polkaswap swap",
+    "description": "Autonomously quote a swap and return its unsigned call preview, route, bounds, fee estimates, warnings, network, and expiry. No wallet connection, account data, approval click, executable intent, signature, or submission is involved. Replan expired market data; a plan is never authorization to execute.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetIn", "assetOut", "amount"],
+      "properties": {
+        "assetIn": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          },
+          "anyOf": [
+            {
+              "required": ["address"]
+            },
+            {
+              "required": ["symbol"]
+            }
+          ]
+        },
+        "assetOut": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          },
+          "anyOf": [
+            {
+              "required": ["address"]
+            },
+            {
+              "required": ["symbol"]
+            }
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 91,
+          "pattern": "^(?:0|[1-9][0-9]{0,59})(?:\\.[0-9]{1,30})?$"
+        },
+        "side": {
+          "type": "string",
+          "enum": ["input", "output"]
+        },
+        "slippageTolerance": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 91,
+          "pattern": "^(?:0|[1-9][0-9]{0,59})(?:\\.[0-9]{1,30})?$"
+        },
+        "liquiditySource": {
+          "type": "string",
+          "enum": ["", "XYKPool", "XSTPool", "MulticollateralBondingCurvePool", "OrderBook"]
+        },
+        "dexId": {
+          "oneOf": [
+            {
+              "type": "string",
+              "const": "best"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535
+            }
+          ]
+        },
+        "quoteTimeoutMs": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 120000
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "polkaswap_pool_info",
+    "title": "Read Polkaswap pool information",
+    "description": "Resolve an asset pair and read public XYK pool reserves, supply, prices, and pool-token metadata without wallet balances.",
+    "inputSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetA", "assetB"],
+      "properties": {
+        "assetA": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          },
+          "anyOf": [
+            {
+              "required": ["address"]
+            },
+            {
+              "required": ["symbol"]
+            }
+          ]
+        },
+        "assetB": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          },
+          "anyOf": [
+            {
+              "required": ["address"]
+            },
+            {
+              "required": ["symbol"]
+            }
+          ]
+        }
+      }
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  }
+]

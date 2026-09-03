@@ -808,6 +808,7 @@ export class SwapModule<T> {
    * @param slippageTolerance Slippage tolerance coefficient (in %)
    * @param isExchangeB Exchange A if `isExchangeB=false` else Exchange B. `false` by default
    * @param dexId dex id to detect base asset (XOR or XSTUSD)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   // prettier-ignore
   public execute( // NOSONAR
@@ -818,7 +819,8 @@ export class SwapModule<T> {
     slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
     isExchangeB = false,
     liquiditySource = LiquiditySourceTypes.Default,
-    dexId = DexId.XOR
+    dexId = DexId.XOR,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -839,6 +841,7 @@ export class SwapModule<T> {
       (this.root.api.tx.liquidityProxy as any).swap(...params.args),
       this.root.account.pair,
       {
+        ...(historyId ? { id: historyId } : {}),
         symbol: assetA.symbol,
         assetAddress: assetA.address,
         amount: `${amountA}`,

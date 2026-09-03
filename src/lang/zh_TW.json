@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} 維基"
     },
     "forAgents": {
-        "apiContext": "應用程式啟動後安裝在頁面上下文中。它使用與使用者介面相同的節點、錢包、索引器和 SDK 路徑。",
+        "apiContext": "規劃在公鏈資料上自主運作。錢包身分、餘額和簽署者狀態不屬於公共工具。",
         "contract": {
-            "idempotent": "使用穩定的 clientOrderId 並在重試之前恢復不確定的提交。",
-            "noCustody": "該頁面永遠不會收到私鑰；簽名保留在所選錢包中。",
-            "prepareFirst": "狀態變更呼叫必須在執行*之前經過準備*。",
-            "samePage": "就緒事件後在 Polkaswap 頁面上下文中運行。"
+            "idempotent": "當交換參數或市場發生變化時重新規劃，無需頁面批准步驟。",
+            "noCustody": "規劃不需要連接帳戶、餘額或錢包權限。",
+            "prepareFirst": "未簽署的計劃不是可執行的意圖或支出許可。",
+            "samePage": "直接在此頁面或透過本地 MCP 橋呼叫工具。"
         },
         "discoveryText": "首先取得清單。它連結了此靜態建置附帶的版本化參考、模式檔案、範例、錯誤目錄和幫助程式用戶端。",
         "discoveryTitle": "發現",
-        "entrypointsLabel": "代理 API 入口點",
+        "entrypointsLabel": "代理規劃和發現入口點",
         "eyebrow": "自動化",
         "flow": {
             "execute": "僅在政策批准後執行，並具有準備好的意圖和穩定的客戶訂單 ID。",
@@ -652,17 +652,23 @@
             "resolve": "在重複執行之前將資產符號解析為位址。",
             "wallet": "需要簽名時選擇錢包提供者和帳戶。"
         },
-        "flowTitle": "安全執行循環",
-        "lead": "Polkaswap 為開啟靜態應用程式的代理程式運行者公開了瀏覽器本機自動化 API。",
+        "flowTitle": "自主規劃",
+        "lead": "直接透過代理工具發現市場、比較報價並制定未簽署的掉期計劃。無需點擊頁面或錢包連接。",
         "links": {
             "client": "JavaScript 幫助客戶端",
             "errors": "錯誤目錄",
             "examples": "範例",
             "manifest": "發現清單",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "代理遊樂場",
             "reference": "完整 API 參考",
             "schema": "JSON 模式",
             "types": "TypeScript 定義"
+        },
+        "mcp": {
+            "boundary": "簽名永遠不會在公共 WebMCP 中註冊，且本地橋不包含簽署者。計劃不能花費資金；無人執行需要單獨的私人簽名者和強制限制，但此處未提供。",
+            "text": "頂層頁面顯示發現、報價和獨立於錢包的計劃。座席可以直接呼叫和重複這些工具；這些工具無法要求錢包存取或提交交易。",
+            "title": "自主規劃·唯讀"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "從清單開始"
             },
             "playground": {
-                "description": "針對狀態、資產、報價和預覽的手動同源探測。",
-                "title": "打開遊樂場"
+                "description": "請求路線、滑點範圍、預估費用和未簽署的交換計劃，無需連接錢包或等待頁面批准。使用可選的遊樂場來檢查結果；工具呼叫不需要它。",
+                "title": "透過一個工具請求計劃一次交換"
             },
             "reference": {
                 "description": "可讀的方法圖、範例、簽名規則和復原說明。",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "以保持重試冪等。",
-        "signingTextBefore": "該頁面從不獲取私鑰。狀態改變方法使用選定的錢包簽署者並要求運行者傳遞返回的",
+        "signingTextBefore": "使用專用瀏覽器設定檔運行一次 Node 26 stdio 橋。標準 MCP 用戶端隨後可以發現市場、請求報價並重新規劃，而無需頁面互動。該橋公開相同的唯讀工具，且不包含簽名者。",
         "signingTextMiddle": "加上一個穩定的",
-        "signingTitle": "簽名及保管",
-        "startTitle": "從這裡開始",
+        "signingTitle": "本地 MCP · 相同的規劃工具",
+        "startTitle": "開啟可選檢查器",
         "title": "對於代理商"
     },
     "forText": "於",

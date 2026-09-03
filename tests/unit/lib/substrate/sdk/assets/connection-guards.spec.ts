@@ -878,3 +878,36 @@ describe('AssetsModule connection guards', () => {
     expect(assetsModule.accountAssets[0].balance).toEqual(invalidZeroSnapshot);
   });
 });
+
+describe('AssetsModule execution history', () => {
+  it('uses a caller-provided history id for direct transaction tracking', async () => {
+    const pair = { address: 'signer-address' };
+    const submitExtrinsic = vi.fn().mockResolvedValue(undefined);
+    const transferExtrinsic = { kind: 'transfer' };
+    const assetsModule = new AssetsModule({
+      account: { pair },
+      api: {
+        tx: {
+          assets: {
+            transfer: vi.fn(() => transferExtrinsic),
+          },
+        },
+      },
+      formatAddress: (address: string) => address,
+      submitExtrinsic,
+    } as never);
+
+    await assetsModule.simpleTransfer(
+      { address: 'asset-a', symbol: 'A', decimals: 18 } as never,
+      'recipient-address',
+      '1',
+      'intent-1'
+    );
+
+    expect(submitExtrinsic).toHaveBeenCalledWith(
+      transferExtrinsic,
+      pair,
+      expect.objectContaining({ id: 'intent-1', type: expect.anything() })
+    );
+  });
+});

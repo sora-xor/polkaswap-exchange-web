@@ -11,6 +11,7 @@
   "examples": "./polkaswap-agent.examples.json",
   "errorCatalog": "./polkaswap-agent.errors.json",
   "client": "./polkaswap-agent-client.js",
+  "mcpTools": "./polkaswap-mcp-tools.json",
   "repositoryDocs": "https://github.com/sora-xor/polkaswap-exchange-web/blob/develop/docs/agent-trading.md",
   "breadcrumbs": {
     "llms": "../llms.txt",
@@ -26,23 +27,58 @@
   "developerTools": {
     "playground": "../agent-playground.html",
     "exampleRunner": "https://github.com/sora-xor/polkaswap-exchange-web/tree/develop/examples/agent-runner",
-    "exampleRunnerCommand": "yarn agent:runner"
+    "exampleRunnerCommand": "yarn agent:runner",
+    "localMcp": "https://github.com/sora-xor/polkaswap-exchange-web/tree/develop/examples/agent-mcp",
+    "localMcpCommand": "yarn agent:mcp --profile-dir /absolute/path/to/a/dedicated/profile"
+  },
+  "mcp": {
+    "web": {
+      "registration": "document.modelContext.registerTool",
+      "topLevelOnly": true
+    },
+    "local": {
+      "runtime": "node-26",
+      "transport": "stdio",
+      "browserModes": ["persistent-profile", "loopback-cdp"]
+    },
+    "toolCatalogue": "./polkaswap-mcp-tools.json",
+    "executionToolsEnabled": false,
+    "privateKeysAccepted": false,
+    "profile": "public-swap-readonly",
+    "tools": [
+      "polkaswap_capabilities",
+      "polkaswap_status",
+      "polkaswap_ready",
+      "polkaswap_assets",
+      "polkaswap_resolve_asset",
+      "polkaswap_common_assets",
+      "polkaswap_quote_swap",
+      "polkaswap_plan_swap",
+      "polkaswap_pool_info"
+    ],
+    "accountDataExposed": false,
+    "preparationToolsEnabled": false,
+    "planningToolsEnabled": true
   },
   "learningPath": [
     "Require version v1.",
     "Open the app in a browser with ?polkaswap-agent=1 before the hash route, then wait for window.PolkaswapAgent or polkaswap-agent-ready.",
-    "Call ready({ requireNode: true }) before quotes, prepares, or execution.",
+    "Call planSwap for a one-call node-ready planning workflow, or call ready({ requireNode: true }) before separate quotes, prepares, or execution.",
     "Use refreshWallets, walletAccounts, and connectWallet to select a signer through the page wallet system.",
-    "Resolve asset symbols to addresses once, then use addresses for repeated execution.",
-    "Use quote* methods for read-only exploration and prepare* methods before every signature.",
+    "Resolve asset symbols to addresses once, then use addresses for repeated operations.",
+    "Use quote* methods or planSwap for autonomous read-only exploration; plans and quoteDigest are non-executable and require no wallet.",
+    "Call the matching prepare* method to create a fresh, single-use intent envelope.",
     "Execute only when canExecute is true and runner policy accepts warnings.",
-    "Pass the returned intentId and a stable clientOrderId to every execute* call.",
-    "Persist exportState() after signer handoff and recover uncertain submissions before retrying."
+    "Pass exactly the returned intentId and a stable clientOrderId to every execute* call.",
+    "Recover uncertain submissions before preparing another intent."
   ],
   "stateChangingPattern": {
     "prepareFirst": true,
+    "quoteDigestIsExecutable": false,
     "executeRequiresIntentId": true,
-    "executeShouldUseClientOrderId": true,
+    "executeRequiresClientOrderId": true,
+    "executeAcceptsEconomicFields": false,
+    "preparedIntentsSingleUse": true,
     "recoveryBeforeRetry": true,
     "privateKeysAcceptedByPage": false
   },
@@ -51,11 +87,11 @@
     "ready({ requireNode: true }) succeeded",
     "wallet account is selected when the operation requires signing",
     "assets are canonical addresses",
-    "prepare* returned canExecute true",
-    "critical warnings are rejected unless the runner policy explicitly allows them",
-    "execute request includes intentId",
-    "execute request includes a stable clientOrderId",
-    "exportState() is persisted after signer handoff"
+    "quote* returned a non-executable quoteDigest",
+    "prepare* returned canExecute true, envelope, revalidation, and intentId",
+    "critical warnings are rejected unless runner policy explicitly allows them",
+    "execute request contains exactly intentId and a stable clientOrderId",
+    "uncertain submissions are recovered before any new preparation"
   ],
   "capabilities": [
     "status",
@@ -64,6 +100,7 @@
     "asset-discovery",
     "asset-resolution",
     "swap-quote",
+    "swap-plan",
     "swap-prepare",
     "swap-risk-assessment",
     "swap-execute",
@@ -99,6 +136,7 @@
     "resolveAsset",
     "commonAssets",
     "quoteSwap",
+    "planSwap",
     "prepareSwap",
     "assessSwap",
     "executeSwap",
@@ -128,7 +166,129 @@
     "clearState"
   ],
   "methodMetadata": {
-    "stateChanging": ["executeSwap", "executeTransfer", "executeAddLiquidity", "executeRemoveLiquidity"],
+    "effects": {
+      "read": [
+        "capabilities",
+        "ready",
+        "status",
+        "walletAccounts",
+        "assets",
+        "resolveAsset",
+        "commonAssets",
+        "quoteSwap",
+        "planSwap",
+        "poolInfo",
+        "liquidityPositions",
+        "quoteAddLiquidity",
+        "quoteRemoveLiquidity",
+        "maxTransferAmount",
+        "maxSwapInput",
+        "maxAddLiquidity",
+        "maxRemoveLiquidity",
+        "transactionStatus",
+        "lookupTransaction",
+        "waitForTransaction",
+        "recentTransactions",
+        "exportState"
+      ],
+      "wallet-session": ["refreshWallets", "connectWallet"],
+      "local-state": [
+        "prepareSwap",
+        "assessSwap",
+        "prepareTransfer",
+        "prepareAddLiquidity",
+        "prepareRemoveLiquidity",
+        "recoverTransaction",
+        "importState",
+        "clearState"
+      ],
+      "subscription": ["subscribeTransactions", "subscribeStatus"],
+      "chain-write": ["executeSwap", "executeTransfer", "executeAddLiquidity", "executeRemoveLiquidity"]
+    },
+    "privacy": {
+      "public": ["quoteSwap", "planSwap", "poolInfo", "quoteAddLiquidity"],
+      "conditional-account": [
+        "capabilities",
+        "ready",
+        "status",
+        "assets",
+        "resolveAsset",
+        "commonAssets",
+        "quoteRemoveLiquidity",
+        "lookupTransaction",
+        "waitForTransaction"
+      ],
+      "account": [
+        "refreshWallets",
+        "walletAccounts",
+        "connectWallet",
+        "prepareSwap",
+        "assessSwap",
+        "executeSwap",
+        "prepareTransfer",
+        "executeTransfer",
+        "liquidityPositions",
+        "prepareAddLiquidity",
+        "executeAddLiquidity",
+        "prepareRemoveLiquidity",
+        "executeRemoveLiquidity",
+        "maxTransferAmount",
+        "maxSwapInput",
+        "maxAddLiquidity",
+        "maxRemoveLiquidity",
+        "transactionStatus",
+        "recoverTransaction",
+        "recentTransactions",
+        "subscribeTransactions",
+        "subscribeStatus",
+        "exportState",
+        "importState",
+        "clearState"
+      ]
+    },
+    "readOnly": [
+      "capabilities",
+      "ready",
+      "status",
+      "walletAccounts",
+      "assets",
+      "resolveAsset",
+      "commonAssets",
+      "quoteSwap",
+      "planSwap",
+      "poolInfo",
+      "liquidityPositions",
+      "quoteAddLiquidity",
+      "quoteRemoveLiquidity",
+      "maxTransferAmount",
+      "maxSwapInput",
+      "maxAddLiquidity",
+      "maxRemoveLiquidity",
+      "transactionStatus",
+      "lookupTransaction",
+      "waitForTransaction",
+      "recentTransactions",
+      "exportState"
+    ],
+    "stateChanging": [
+      "refreshWallets",
+      "connectWallet",
+      "prepareSwap",
+      "assessSwap",
+      "executeSwap",
+      "prepareTransfer",
+      "executeTransfer",
+      "prepareAddLiquidity",
+      "executeAddLiquidity",
+      "prepareRemoveLiquidity",
+      "executeRemoveLiquidity",
+      "recoverTransaction",
+      "subscribeTransactions",
+      "subscribeStatus",
+      "importState",
+      "clearState"
+    ],
+    "chainWriting": ["executeSwap", "executeTransfer", "executeAddLiquidity", "executeRemoveLiquidity"],
     "requiresWallet": [
       "executeSwap",
       "executeTransfer",
@@ -140,9 +300,15 @@
       "maxAddLiquidity",
       "maxRemoveLiquidity"
     ],
-    "requiresUserApproval": ["connectWallet"],
-    "acceptsIntentId": ["executeSwap", "executeTransfer", "executeAddLiquidity", "executeRemoveLiquidity"],
-    "acceptsClientOrderId": ["executeSwap", "executeTransfer", "executeAddLiquidity", "executeRemoveLiquidity"],
+    "requiresUserApproval": [
+      "connectWallet",
+      "executeSwap",
+      "executeTransfer",
+      "executeAddLiquidity",
+      "executeRemoveLiquidity"
+    ],
+    "requiresIntentId": ["executeSwap", "executeTransfer", "executeAddLiquidity", "executeRemoveLiquidity"],
+    "requiresClientOrderId": ["executeSwap", "executeTransfer", "executeAddLiquidity", "executeRemoveLiquidity"],
     "quoteOnly": ["quoteSwap", "quoteAddLiquidity", "quoteRemoveLiquidity"],
     "prepareBeforeExecute": {
       "executeSwap": "prepareSwap",
@@ -159,8 +325,16 @@
     "slippageTolerance": "current app setting"
   },
   "limits": {
-    "slippageTolerance": { "min": "0.01", "max": "10", "unit": "percent" },
-    "percent": { "min": "0.01", "max": "100", "unit": "percent" },
+    "slippageTolerance": {
+      "min": "0.01",
+      "max": "10",
+      "unit": "percent"
+    },
+    "percent": {
+      "min": "0.01",
+      "max": "100",
+      "unit": "percent"
+    },
     "defaultReadyTimeoutMs": 30000,
     "defaultQuoteTimeoutMs": 15000
   },
@@ -170,25 +344,37 @@
     "postMessage": false,
     "urlCommands": false,
     "custody": "caller-provided-wallet",
-    "signing": "existing-page-wallet-flow"
+    "signing": "existing-page-wallet-flow",
+    "webMcp": "public-swap-readonly-account-redacted",
+    "localMcp": "stdio-public-swap-readonly-account-redacted",
+    "autonomousMcpExecution": false
   },
   "intentProtection": {
-    "quoteMethodsReturnIntentId": true,
-    "prepareMethodsReturnIntentId": true,
-    "executeMethodsAcceptIntentId": true,
-    "executeMethodsAcceptClientOrderId": true,
-    "staleIntentError": "INTENT_MISMATCH"
+    "quoteMethodsReturnQuoteDigest": true,
+    "quoteDigestIsExecutable": false,
+    "prepareMethodsReturnSingleUseIntentId": true,
+    "prepareMethodsReturnEnvelope": true,
+    "executeMethodsRequireIntentId": true,
+    "executeMethodsRequireClientOrderId": true,
+    "executeInputFields": ["intentId", "clientOrderId"],
+    "intentIdPattern": "^polkaswap:(swap|transfer|add-liquidity|remove-liquidity):sha256:[0-9a-f]{64}$",
+    "staleIntentErrors": ["INTENT_EXPIRED", "INTENT_INTEGRITY_FAILED", "INTENT_MISMATCH"]
   },
   "errors": [
     "AGENT_API_UNAVAILABLE",
     "ASSET_AMBIGUOUS",
     "ASSET_NOT_FOUND",
     "INVALID_AMOUNT",
-    "INVALID_AGENT_STATE",
     "INVALID_ASSET_REF",
+    "INVALID_AGENT_STATE",
     "INVALID_CLIENT_ORDER_ID",
     "INVALID_DEX_ID",
     "IDEMPOTENCY_CONFLICT",
+    "INTENT_ALREADY_USED",
+    "INTENT_EXPIRED",
+    "INTENT_INTEGRITY_FAILED",
+    "INTENT_NOT_FOUND",
+    "INTENT_REQUIRED",
     "INTENT_MISMATCH",
     "INVALID_LIQUIDITY_SOURCE",
     "INVALID_PERCENT",
@@ -200,6 +386,7 @@
     "INVALID_TRANSACTION_ID",
     "INVALID_WALLET_SOURCE",
     "NODE_NOT_READY",
+    "NETWORK_CONTEXT_UNAVAILABLE",
     "PATH_UNAVAILABLE",
     "POOL_UNAVAILABLE",
     "QUOTE_TIMEOUT",

@@ -17,6 +17,14 @@ import { isAgentAutomationSession, POLKASWAP_AGENT_QUERY_PARAM } from '@/utils/a
 import { collectAssets, resolveAssetRef, toAgentAsset, type AgentAssetContext } from './assets';
 import { agentError, normalizeAgentError } from './errors';
 import {
+  AGENT_INTENT_ID_PATTERN,
+  AGENT_INTENT_SCHEMA_VERSION,
+  canonicalizeAgentIntent,
+  createAgentDigest,
+  createAgentIntentId,
+  createAgentIntentNonce,
+} from './intent';
+import {
   normalizeDexId,
   normalizeLiquiditySource,
   normalizeNaturalAmount,
@@ -44,9 +52,15 @@ import {
   type AgentDexId,
   type AgentExportedIdempotencyRecord,
   type AgentExportStateRequest,
+  type AgentExecuteAddLiquidityRequest,
+  type AgentExecuteRemoveLiquidityRequest,
+  type AgentExecuteSwapRequest,
+  type AgentExecuteTransferRequest,
   type AgentFeeEstimate,
   type AgentIdempotencyRecord,
   type AgentImportStateRequest,
+  type AgentIntentAction,
+  type AgentIntentRevalidation,
   type AgentLiquidityPosition,
   type AgentLiquidityPositionsRequest,
   type AgentMaxAddLiquidity,
@@ -60,6 +74,8 @@ import {
   type AgentPoolInfoRequest,
   type AgentPolicyAssessment,
   type AgentPreparedAddLiquidity,
+  type AgentPreparedCall,
+  type AgentPreparedEnvelope,
   type AgentPreparedRemoveLiquidity,
   type AgentPreparedSwap,
   type AgentPreparedTransfer,
@@ -81,6 +97,7 @@ import {
   type AgentStateImportResult,
   type AgentSwapAssessmentRequest,
   type AgentSwapExecution,
+  type AgentSwapPlan,
   type AgentSwapQuote,
   type AgentSwapRequest,
   type AgentTransactionListener,
@@ -169,6 +186,20 @@ type InternalRemoveLiquidityQuote = {
 
 type AgentExecutionAction = AgentIdempotencyRecord['action'];
 
+type AgentPreparedResult =
+  | AgentPreparedSwap
+  | AgentPreparedTransfer
+  | AgentPreparedAddLiquidity
+  | AgentPreparedRemoveLiquidity;
+
+type StoredPreparedIntent = {
+  action: AgentIntentAction;
+  status: 'prepared' | 'pending' | 'submitted';
+  prepared: AgentPreparedResult;
+  clientOrderId?: string;
+  updatedAt: number;
+};
+
 type StoredIdempotencyRecord<TResult = unknown> = AgentExportedIdempotencyRecord & {
   result?: TResult;
 };
@@ -201,11 +232,13 @@ type ChainApi = {
 const SWAP_PATH_DEX_IDS = [DexId.XOR, DexId.XSTUSD, DexId.KUSD, DexId.VXOR] as const;
 const HISTORY_ELEMENTS_ORDER_BY_NEWEST = ['TIMESTAMP_DESC', 'ID_DESC'] as const;
 const READY_POLL_MS = 100;
-const TRANSACTION_LOOKUP_ATTEMPTS = 25;
-const TRANSACTION_LOOKUP_POLL_MS = 100;
 const ZERO_CODEC = '0';
 const CLIENT_ORDER_ID_PATTERN = /^[a-zA-Z0-9._:-]{1,128}$/;
 const IDEMPOTENCY_STORAGE_KEY = 'polkaswap.agent.idempotency.v1';
+const PREPARED_INTENT_STORAGE_KEY = 'polkaswap.agent.prepared.v1';
+const PREPARED_INTENT_TTL_MS = 5 * 60 * 1_000;
+const PREPARED_INTENT_VALID_BLOCKS = 20;
+const MAX_STORED_PREPARED_INTENTS = 50;
 const COMMON_ASSET_SYMBOLS = ['XOR', 'VAL', 'PSWAP', 'XSTUSD', 'XST', 'KUSD'] as const;
 
 const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
@@ -291,10 +324,10 @@ const safeRatio = (numerator: string, denominator: string): string => {
   return new FPNumber(numerator).div(denominatorFp).toString();
 };
 
+// Used only for local change detection and fallback de-duplication. Financial
+// intent identifiers are produced by createAgentIntentId with SHA-256.
 const stableStringify = (value: unknown): string => {
-  if (Array.isArray(value)) {
-    return `[${value.map(stableStringify).join(',')}]`;
-  }
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
   if (value && typeof value === 'object') {
     return `{${Object.entries(value as Record<string, unknown>)
       .filter(([, entry]) => entry !== undefined)
@@ -304,18 +337,6 @@ const stableStringify = (value: unknown): string => {
   }
   return JSON.stringify(value);
 };
-
-const stableHash = (value: string): string => {
-  let hash = 0x811c9dc5;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 0x01000193);
-  }
-  return (hash >>> 0).toString(16).padStart(8, '0');
-};
-
-const createIntentId = (action: string, payload: unknown): string =>
-  `polkaswap:${action}:${stableHash(stableStringify(payload))}`;
 
 const isQuoteDataAvailable = (data: SwapQuoteData | undefined): data is SwapQuoteData =>
   Boolean(data?.quote && data.isAvailable);
@@ -329,12 +350,97 @@ export function createPolkaswapAgentApi(
   const deps = dependencies;
   const walletProviderAccountCounts = new Map<string, number>();
   const idempotencyRecords = new Map<string, StoredIdempotencyRecord>();
+  const preparedIntents = new Map<string, StoredPreparedIntent>();
+  const executionLocks = new Map<string, Promise<void>>();
 
   const cloneSerializable = <T>(value: T): T => {
     try {
       return JSON.parse(JSON.stringify(value)) as T;
     } catch {
       return value;
+    }
+  };
+
+  const readStoredPreparedMap = (): Record<string, StoredPreparedIntent> => {
+    if (typeof window === 'undefined') return {};
+
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(PREPARED_INTENT_STORAGE_KEY) || '{}');
+      return parsed && typeof parsed === 'object' ? (parsed as Record<string, StoredPreparedIntent>) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const writeStoredPreparedMap = (records: Record<string, StoredPreparedIntent>): void => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const newest = Object.entries(records)
+        .sort(([, left], [, right]) => Number(right?.updatedAt ?? 0) - Number(left?.updatedAt ?? 0))
+        .slice(0, MAX_STORED_PREPARED_INTENTS);
+      if (newest.length === 0) {
+        window.localStorage.removeItem(PREPARED_INTENT_STORAGE_KEY);
+      } else {
+        window.localStorage.setItem(PREPARED_INTENT_STORAGE_KEY, JSON.stringify(Object.fromEntries(newest)));
+      }
+    } catch {
+      // The in-memory registry still preserves the same-page preparation boundary.
+    }
+  };
+
+  const normalizeStoredPreparedIntent = (record: StoredPreparedIntent | undefined): StoredPreparedIntent | null => {
+    const envelope = record?.prepared?.envelope;
+    if (!record || !envelope || !AGENT_INTENT_ID_PATTERN.test(envelope.intentId)) return null;
+    if (envelope.intentId !== record.prepared.intentId || envelope.action !== record.action) return null;
+    if (!['prepared', 'pending', 'submitted'].includes(record.status)) return null;
+    if (record.clientOrderId && !CLIENT_ORDER_ID_PATTERN.test(record.clientOrderId)) return null;
+
+    return cloneSerializable(record);
+  };
+
+  const persistPreparedIntent = (record: StoredPreparedIntent): void => {
+    const normalized = normalizeStoredPreparedIntent(record);
+    if (!normalized) return;
+
+    const intentId = normalized.prepared.intentId;
+    preparedIntents.set(intentId, normalized);
+    writeStoredPreparedMap({ ...readStoredPreparedMap(), [intentId]: normalized });
+  };
+
+  const loadPreparedIntent = (intentId: string): StoredPreparedIntent | null => {
+    const memory = normalizeStoredPreparedIntent(preparedIntents.get(intentId));
+    const stored = normalizeStoredPreparedIntent(readStoredPreparedMap()[intentId]);
+    const newest = stored && (!memory || stored.updatedAt >= memory.updatedAt) ? stored : memory;
+    if (newest) preparedIntents.set(intentId, newest);
+    return newest;
+  };
+
+  const clearPreparedIntents = (): void => {
+    preparedIntents.clear();
+    writeStoredPreparedMap({});
+  };
+
+  const withExecutionLock = async <T>(intentId: string, task: () => Promise<T>): Promise<T> => {
+    const browserLocks = typeof navigator !== 'undefined' ? navigator.locks : undefined;
+    if (browserLocks?.request) {
+      return browserLocks.request(`polkaswap-agent:${intentId}`, { mode: 'exclusive' }, task);
+    }
+
+    const previous = executionLocks.get(intentId) ?? Promise.resolve();
+    let release!: () => void;
+    const current = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const queued = previous.then(() => current);
+    executionLocks.set(intentId, queued);
+    await previous;
+
+    try {
+      return await task();
+    } finally {
+      release();
+      if (executionLocks.get(intentId) === queued) executionLocks.delete(intentId);
     }
   };
 
@@ -439,11 +545,6 @@ export function createPolkaswapAgentApi(
     writeStoredIdempotencyMap(records);
   };
 
-  const clearAllIdempotencyRecords = (): void => {
-    idempotencyRecords.clear();
-    writeStoredIdempotencyMap({});
-  };
-
   const toPublicIdempotencyRecord = (record: StoredIdempotencyRecord): AgentIdempotencyRecord => {
     const { result: _result, ...publicRecord } = record;
     return publicRecord;
@@ -488,9 +589,8 @@ export function createPolkaswapAgentApi(
       });
     }
 
-    if (request.merge === false) {
-      clearAllIdempotencyRecords();
-    }
+    // Imported state is additive only. A portable snapshot must never erase
+    // local pending/submitted tombstones and reopen a consumed intent.
 
     let imported = 0;
     let skipped = 0;
@@ -514,11 +614,22 @@ export function createPolkaswapAgentApi(
   const clearState = (request: AgentClearStateRequest = {}): AgentStateExport => {
     const clientOrderId = normalizeClientOrderId(request.clientOrderId);
     if (clientOrderId) {
-      clearIdempotencyRecord(clientOrderId);
+      const record = loadIdempotencyRecord(clientOrderId);
+      if (record) {
+        const prepared = loadPreparedIntent(record.intentId);
+        if (prepared?.status === 'prepared') {
+          const records = readStoredPreparedMap();
+          preparedIntents.delete(record.intentId);
+          delete records[record.intentId];
+          writeStoredPreparedMap(records);
+        }
+      }
     } else {
-      clearAllIdempotencyRecords();
+      clearPreparedIntents();
     }
 
+    // Submission tombstones are deliberately durable. Clearing them would let
+    // a consumed intent be replayed with a different local state snapshot.
     return exportState();
   };
 
@@ -640,14 +751,41 @@ export function createPolkaswapAgentApi(
     };
   };
 
-  const createAssetContext = (): AgentAssetContext => {
+  const createAssetContext = (publicOnly = false): AgentAssetContext => {
     const settingsStore = deps.getSettingsStore();
 
     return {
-      walletStore: deps.getWalletStore(),
+      walletStore: publicOnly ? {} : deps.getWalletStore(),
       assetsStore: deps.getAssetsStore(),
       api: deps.api,
       nodeReady: Boolean(settingsStore.nodeIsConnected),
+    };
+  };
+
+  const getPreparedNetwork = (): { genesisHash: string; runtimeSpecVersion: number } => {
+    const sdk = deps.api as unknown as {
+      connection?: { api?: { genesisHash?: unknown; runtimeVersion?: { specVersion?: unknown } } };
+      api?: { genesisHash?: unknown; runtimeVersion?: { specVersion?: unknown } };
+      system?: { specVersion?: number };
+    };
+    const chainApi = sdk.connection?.api ?? sdk.api;
+    const toText = (value: unknown): string => {
+      if (typeof value === 'string') return value;
+      if (value && typeof (value as { toString?: unknown }).toString === 'function') {
+        return (value as { toString: () => string }).toString();
+      }
+      return '';
+    };
+    const toNumber = (value: unknown): number => {
+      if (value && typeof (value as { toNumber?: unknown }).toNumber === 'function') {
+        return (value as { toNumber: () => number }).toNumber();
+      }
+      return Number(value ?? 0);
+    };
+
+    return {
+      genesisHash: toText(chainApi?.genesisHash),
+      runtimeSpecVersion: toNumber(sdk.system?.specVersion ?? chainApi?.runtimeVersion?.specVersion),
     };
   };
 
@@ -669,6 +807,7 @@ export function createPolkaswapAgentApi(
         connected: Boolean(settingsStore.nodeIsConnected),
         endpoint: appConnection?.connection?.endpoint ?? appConnection?.node?.address ?? '',
         blockNumber: Number(settingsStore.blockNumber ?? 0),
+        ...getPreparedNetwork(),
       },
       wallet: {
         loaded: Boolean(settingsStore.isWalletLoaded ?? walletStore.isWalletLoaded),
@@ -697,7 +836,7 @@ export function createPolkaswapAgentApi(
       sdkCall,
       stateChanging: true,
       signer: {
-        address: status.wallet.address,
+        address: deps.api.accountPair?.address ?? status.wallet.address,
         source: status.wallet.source,
         connected: status.wallet.connected,
       },
@@ -707,7 +846,7 @@ export function createPolkaswapAgentApi(
   };
 
   const ensureNodeReady = () => {
-    if (!getStatus().node.connected) {
+    if (!deps.getSettingsStore().nodeIsConnected) {
       throw agentError('NODE_NOT_READY', 'Polkaswap is not connected to a SORA node.');
     }
   };
@@ -837,7 +976,7 @@ export function createPolkaswapAgentApi(
     toAssetAmount(asset, getNaturalFromCodec(codec, asset.decimals), codec);
 
   const getXorAsset = (): Asset => {
-    const fromStore = createAssetContext().assetsStore.assetDataByAddress(XOR.address);
+    const fromStore = deps.getAssetsStore().assetDataByAddress(XOR.address);
     return (fromStore ?? XOR) as Asset;
   };
 
@@ -895,7 +1034,9 @@ export function createPolkaswapAgentApi(
   };
 
   const getFeeEstimate = (operation: Operation): AgentFeeEstimate => {
-    const feeCodec = `${deps.getWalletStore().networkFees?.[operation] ?? '0'}`;
+    const rawFeeCodec = `${deps.getWalletStore().networkFees?.[operation] ?? ''}`;
+    const feeAvailable = /^\d+$/.test(rawFeeCodec) && BigInt(rawFeeCodec) > 0n;
+    const feeCodec = feeAvailable ? rawFeeCodec : ZERO_CODEC;
     const feeAsset = getXorAsset();
 
     return {
@@ -903,7 +1044,7 @@ export function createPolkaswapAgentApi(
       asset: toAgentAsset(feeAsset),
       amount: getNaturalFromCodec(feeCodec, feeAsset.decimals),
       amountCodec: feeCodec,
-      source: feeCodec === '0' ? 'unavailable' : 'static',
+      source: feeAvailable ? 'static' : 'unavailable',
     };
   };
 
@@ -978,6 +1119,19 @@ export function createPolkaswapAgentApi(
           },
         ];
 
+  const getFeeWarnings = (fees: AgentFeeEstimate[]): AgentWarning[] =>
+    fees
+      .filter((fee) => fee.source === 'unavailable')
+      .map((fee) => ({
+        code: 'FEE_UNAVAILABLE',
+        severity: 'critical',
+        message: 'The network fee estimate is unavailable; execution is disabled until it is known.',
+        details: {
+          operation: fee.operation,
+          asset: fee.asset,
+        },
+      }));
+
   const getHighPriceImpactWarnings = (quote: AgentSwapQuote): AgentWarning[] => {
     const impact = new FPNumber(`${quote.priceImpact ?? '0'}`.replace('-', ''));
     if (FPNumber.lt(impact, new FPNumber('5'))) return [];
@@ -992,13 +1146,253 @@ export function createPolkaswapAgentApi(
     ];
   };
 
-  const assertIntent = (provided: string | undefined, expected: string): void => {
-    if (provided && provided !== expected) {
-      throw agentError('INTENT_MISMATCH', 'Provided intentId does not match the current normalized intent.', {
-        provided,
-        expected,
+  const normalizeExecutionIdentifiers = (
+    request: Partial<{ intentId: string; clientOrderId: string }>
+  ): { intentId: string; clientOrderId: string } => {
+    const intentId = request?.intentId?.trim();
+    if (!intentId) {
+      throw agentError('INTENT_REQUIRED', 'A prepared intentId is required before execution.');
+    }
+
+    const clientOrderId = normalizeClientOrderId(request?.clientOrderId);
+    if (!clientOrderId) {
+      throw agentError('INVALID_CLIENT_ORDER_ID', 'A stable clientOrderId is required before execution.');
+    }
+
+    if (!AGENT_INTENT_ID_PATTERN.test(intentId)) {
+      throw agentError('INTENT_MISMATCH', 'intentId is not a valid prepared Polkaswap intent identifier.', {
+        intentId,
+        requiresReapproval: true,
       });
     }
+
+    return { intentId, clientOrderId };
+  };
+
+  const deepFreeze = <T>(value: T): T => {
+    if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+      Object.values(value as Record<string, unknown>).forEach(deepFreeze);
+      Object.freeze(value);
+    }
+    return value;
+  };
+
+  const createValidRevalidation = (): AgentIntentRevalidation => ({
+    valid: true,
+    requiresReapproval: false,
+    reasons: [],
+    checkedAt: deps.now(),
+    currentBlock: getStatus().node.blockNumber,
+    currentNetwork: getPreparedNetwork(),
+  });
+
+  const registerPreparedIntent = async <T extends Record<string, unknown>>(
+    action: AgentIntentAction,
+    normalizedRequest: Record<string, unknown>,
+    quote: Record<string, unknown>,
+    preview: AgentCallPreview,
+    fees: AgentFeeEstimate[],
+    preparedFields: T
+  ): Promise<T & { intentId: string; envelope: AgentPreparedEnvelope; revalidation: AgentIntentRevalidation }> => {
+    const status = getStatus();
+    const network = getPreparedNetwork();
+    if (
+      !status.node.connected ||
+      !network.genesisHash ||
+      network.runtimeSpecVersion <= 0 ||
+      status.node.blockNumber < 0
+    ) {
+      throw agentError(
+        'NETWORK_CONTEXT_UNAVAILABLE',
+        'A connected node with genesis hash, runtime version, and block number is required to prepare an intent.',
+        { network, blockNumber: status.node.blockNumber }
+      );
+    }
+
+    const { quoteDigest: suppliedQuoteDigest, ...quotePayload } = quote;
+    const quoteDigest = await createAgentDigest(`${action}.quote`, quotePayload);
+    if (suppliedQuoteDigest && suppliedQuoteDigest !== quoteDigest) {
+      throw agentError('INTENT_INTEGRITY_FAILED', 'The quote changed before intent preparation.');
+    }
+
+    const canonicalCall = {
+      operation: preview.operation,
+      sdkCall: preview.sdkCall,
+      encoding: 'polkaswap-sdk-call-v1',
+      args: cloneSerializable(preview.args),
+    };
+    const encodedCall = Array.from(new TextEncoder().encode(canonicalizeAgentIntent(canonicalCall)), (byte) =>
+      byte.toString(16).padStart(2, '0')
+    ).join('');
+    const call: AgentPreparedCall = {
+      ...canonicalCall,
+      encodedCall: `0x${encodedCall}`,
+    };
+    const callDigest = await createAgentDigest(`${action}.call`, call);
+    const preparedAt = deps.now();
+    const preparedAtBlock = status.node.blockNumber;
+    const envelopeWithoutId = {
+      schemaVersion: AGENT_INTENT_SCHEMA_VERSION as 1,
+      action,
+      nonce: createAgentIntentNonce(),
+      network,
+      signer: {
+        address: preview.signer.address,
+        source: preview.signer.source,
+      },
+      preparedAt,
+      expiresAt: preparedAt + PREPARED_INTENT_TTL_MS,
+      preparedAtBlock,
+      expiresAtBlock: preparedAtBlock + PREPARED_INTENT_VALID_BLOCKS,
+      request: cloneSerializable(normalizedRequest),
+      quote: cloneSerializable(quotePayload),
+      quoteDigest,
+      call,
+      callDigest,
+      feeCeilings: fees.map((fee) => ({
+        assetAddress: fee.asset.address,
+        amountCodec: fee.amountCodec,
+      })),
+    };
+    const intentId = await createAgentIntentId(action, envelopeWithoutId);
+    const envelope: AgentPreparedEnvelope = { ...envelopeWithoutId, intentId };
+    const prepared = cloneSerializable({
+      ...preparedFields,
+      intentId,
+      envelope,
+      revalidation: createValidRevalidation(),
+    }) as T & { intentId: string; envelope: AgentPreparedEnvelope; revalidation: AgentIntentRevalidation };
+
+    persistPreparedIntent({
+      action,
+      status: 'prepared',
+      prepared: prepared as unknown as AgentPreparedResult,
+      updatedAt: deps.now(),
+    });
+    return deepFreeze(cloneSerializable(prepared));
+  };
+
+  const revalidatePreparedIntent = async (record: StoredPreparedIntent): Promise<AgentIntentRevalidation> => {
+    const { prepared } = record;
+    const { envelope } = prepared;
+    const currentNetwork = getPreparedNetwork();
+    const currentBlock = getStatus().node.blockNumber;
+    const reasons: string[] = [];
+    const { intentId: _intentId, ...envelopeWithoutId } = envelope;
+
+    const [quoteDigest, callDigest, intentId] = await Promise.all([
+      createAgentDigest(`${record.action}.quote`, envelope.quote),
+      createAgentDigest(`${record.action}.call`, envelope.call),
+      createAgentIntentId(record.action, envelopeWithoutId),
+    ]);
+
+    if (quoteDigest !== envelope.quoteDigest) reasons.push('quote-digest-mismatch');
+    if (callDigest !== envelope.callDigest) reasons.push('call-digest-mismatch');
+    if (intentId !== envelope.intentId || envelope.intentId !== prepared.intentId)
+      reasons.push('intent-digest-mismatch');
+    if (currentNetwork.genesisHash !== envelope.network.genesisHash) reasons.push('genesis-hash-changed');
+    if (currentNetwork.runtimeSpecVersion !== envelope.network.runtimeSpecVersion)
+      reasons.push('runtime-version-changed');
+    if (deps.now() > envelope.expiresAt) reasons.push('time-expired');
+    if (currentBlock > envelope.expiresAtBlock) reasons.push('block-expired');
+    if (currentBlock < envelope.preparedAtBlock) reasons.push('block-regressed');
+    const allowedCalls: Record<AgentIntentAction, string[]> = {
+      swap: ['api.swap.execute'],
+      transfer: ['api.assets.simpleTransfer'],
+      'add-liquidity': ['api.poolXyk.add', 'api.poolXyk.create'],
+      'remove-liquidity': ['api.poolXyk.remove'],
+    };
+    if (!allowedCalls[record.action].includes(envelope.call.sdkCall)) reasons.push('unexpected-sdk-call');
+
+    const status = getStatus();
+    const currentSignerAddress = deps.api.accountPair?.address ?? status.wallet.address;
+    if (
+      !envelope.signer.address ||
+      !envelope.signer.source ||
+      currentSignerAddress !== envelope.signer.address ||
+      status.wallet.source !== envelope.signer.source
+    ) {
+      reasons.push('signer-changed');
+    }
+
+    const currentFee = getFeeEstimate(envelope.call.operation as Operation);
+    const feeCeiling = envelope.feeCeilings.find((ceiling) => ceiling.assetAddress === currentFee.asset.address);
+    if (currentFee.source === 'unavailable') {
+      reasons.push('fee-revalidation-unavailable');
+    } else if (!feeCeiling) {
+      reasons.push('fee-ceiling-exceeded');
+    } else if (!/^\d+$/.test(feeCeiling.amountCodec)) {
+      reasons.push('fee-ceiling-invalid');
+    } else if (BigInt(currentFee.amountCodec) > BigInt(feeCeiling.amountCodec)) {
+      reasons.push('fee-ceiling-exceeded');
+    }
+
+    for (const balance of prepared.requiredBalances ?? []) {
+      const asset = await resolveAssetRef(createAssetContext(), { address: balance.asset.address }, 'requiredBalance');
+      const poolPosition =
+        balance.reason === 'pool-token'
+          ? deps.api.poolXyk.accountLiquidity?.find((position) => position.address === balance.asset.address)
+          : undefined;
+      const available = poolPosition?.balance ?? (await getAvailableBalanceCodec(asset as Asset));
+      if (FPNumber.lt(FPNumber.fromCodecValue(available, asset.decimals), new FPNumber(balance.required))) {
+        reasons.push(`insufficient-balance:${balance.asset.address}`);
+      }
+    }
+
+    if (!prepared.canExecute) reasons.push('prepared-not-executable');
+
+    return {
+      valid: reasons.length === 0,
+      requiresReapproval: reasons.length > 0,
+      reasons: [...new Set(reasons)],
+      checkedAt: deps.now(),
+      currentBlock,
+      currentNetwork,
+    };
+  };
+
+  const getPreparedForExecution = async (
+    action: AgentIntentAction,
+    intentId: string,
+    clientOrderId: string
+  ): Promise<{ record: StoredPreparedIntent; revalidation: AgentIntentRevalidation }> => {
+    const record = loadPreparedIntent(intentId);
+    if (!record) {
+      throw agentError('INTENT_NOT_FOUND', 'No prepare-issued intent exists for this intentId.', {
+        intentId,
+        requiresReapproval: true,
+      });
+    }
+    if (record.action !== action) {
+      throw agentError('INTENT_MISMATCH', 'Prepared intent belongs to a different operation.', {
+        intentId,
+        expectedAction: action,
+        actualAction: record.action,
+        requiresReapproval: true,
+      });
+    }
+    if (record.status !== 'prepared') {
+      throw agentError('INTENT_ALREADY_USED', 'Prepared intents are single-use.', {
+        intentId,
+        status: record.status,
+        clientOrderId: record.clientOrderId,
+      });
+    }
+
+    const revalidation = await revalidatePreparedIntent(record);
+    if (!revalidation.valid) {
+      const expired = revalidation.reasons.includes('time-expired') || revalidation.reasons.includes('block-expired');
+      const integrity = revalidation.reasons.some(
+        (reason) => reason.endsWith('digest-mismatch') || reason === 'fee-ceiling-invalid'
+      );
+      throw agentError(
+        integrity ? 'INTENT_INTEGRITY_FAILED' : expired ? 'INTENT_EXPIRED' : 'INTENT_MISMATCH',
+        'Prepared intent no longer matches the reviewed execution context; prepare it again.',
+        revalidation
+      );
+    }
+
+    return { record, revalidation };
   };
 
   const canExecuteWith = (warnings: AgentWarning[], requiredBalances: AgentRequiredBalance[]): boolean =>
@@ -1496,23 +1890,6 @@ export function createPolkaswapAgentApi(
     }
   };
 
-  const findLatestTransaction = async (
-    startTime: number,
-    predicate: (item: HistoryItem) => boolean
-  ): Promise<HistoryItem | null> => {
-    for (let attempt = 0; attempt < TRANSACTION_LOOKUP_ATTEMPTS; attempt += 1) {
-      const match = [...deps.api.historyList]
-        .filter((item) => Number(item.startTime ?? 0) >= startTime && predicate(item))
-        .sort((a, b) => Number(b.startTime ?? 0) - Number(a.startTime ?? 0))[0];
-
-      if (match) return match;
-
-      await deps.delay(TRANSACTION_LOOKUP_POLL_MS);
-    }
-
-    return null;
-  };
-
   const normalizeRecipientAddress = (address: unknown): string => {
     const recipient = `${address ?? ''}`.trim();
     if (!recipient) {
@@ -1776,15 +2153,6 @@ export function createPolkaswapAgentApi(
     const shareOfPool = resultingSupply.isZero()
       ? '0'
       : new FPNumber(mintedLiquidity).div(resultingSupply).mul(new FPNumber('100')).toString();
-    const intentId = createIntentId('add-liquidity', {
-      assetA: state.pair.assetA.address,
-      assetB: state.pair.assetB.address,
-      amountA,
-      amountB,
-      createsPool: !state.exists,
-      slippageTolerance,
-      mintedLiquidityCodec,
-    });
     const poolCreationWarnings: AgentWarning[] = !state.exists
       ? [
           {
@@ -1796,30 +2164,35 @@ export function createPolkaswapAgentApi(
         ]
       : [];
 
+    const quotePayload = {
+      pool: toAgentPoolInfo(state),
+      createsPool: !state.exists,
+      amountA,
+      amountB,
+      amountACodec,
+      amountBCodec,
+      amountAMeta: toAssetAmount(state.pair.assetA, amountA, amountACodec),
+      amountBMeta: toAssetAmount(state.pair.assetB, amountB, amountBCodec),
+      minAmountA,
+      minAmountB,
+      minAmountACodec: getCodecFromNatural(minAmountA, state.pair.assetA.decimals),
+      minAmountBCodec: getCodecFromNatural(minAmountB, state.pair.assetB.decimals),
+      minAmountAMeta: toAssetAmount(state.pair.assetA, minAmountA),
+      minAmountBMeta: toAssetAmount(state.pair.assetB, minAmountB),
+      mintedLiquidity,
+      mintedLiquidityCodec,
+      mintedLiquidityMeta: state.poolToken ? toAssetAmountFromCodec(state.poolToken, mintedLiquidityCodec) : null,
+      shareOfPool,
+      slippageTolerance,
+      warnings: poolCreationWarnings,
+    };
+    const quoteDigest = await createAgentDigest('add-liquidity.quote', quotePayload);
+
     return {
       state,
       quote: {
-        intentId,
-        pool: toAgentPoolInfo(state),
-        createsPool: !state.exists,
-        amountA,
-        amountB,
-        amountACodec,
-        amountBCodec,
-        amountAMeta: toAssetAmount(state.pair.assetA, amountA, amountACodec),
-        amountBMeta: toAssetAmount(state.pair.assetB, amountB, amountBCodec),
-        minAmountA,
-        minAmountB,
-        minAmountACodec: getCodecFromNatural(minAmountA, state.pair.assetA.decimals),
-        minAmountBCodec: getCodecFromNatural(minAmountB, state.pair.assetB.decimals),
-        minAmountAMeta: toAssetAmount(state.pair.assetA, minAmountA),
-        minAmountBMeta: toAssetAmount(state.pair.assetB, minAmountB),
-        mintedLiquidity,
-        mintedLiquidityCodec,
-        mintedLiquidityMeta: state.poolToken ? toAssetAmountFromCodec(state.poolToken, mintedLiquidityCodec) : null,
-        shareOfPool,
-        slippageTolerance,
-        warnings: poolCreationWarnings,
+        quoteDigest,
+        ...quotePayload,
       },
     };
   };
@@ -1903,40 +2276,35 @@ export function createPolkaswapAgentApi(
       throw agentError('POOL_UNAVAILABLE', 'Pool total supply is zero.');
     }
     const shareOfPool = new FPNumber(liquidityAmount).div(totalSupplyFp).mul(new FPNumber('100')).toString();
-    const intentId = createIntentId('remove-liquidity', {
-      assetA: state.pair.assetA.address,
-      assetB: state.pair.assetB.address,
+    const quotePayload = {
+      pool: toAgentPoolInfo(state),
       liquidityAmount,
       liquidityAmountCodec,
-      slippageTolerance,
+      liquidityAmountMeta: state.poolToken ? toAssetAmountFromCodec(state.poolToken, liquidityAmountCodec) : null,
+      percentOfPosition: requestedPercent,
+      amountA,
+      amountB,
       amountACodec,
       amountBCodec,
-    });
+      amountAMeta: toAssetAmountFromCodec(state.pair.assetA, amountACodec),
+      amountBMeta: toAssetAmountFromCodec(state.pair.assetB, amountBCodec),
+      minAmountA,
+      minAmountB,
+      minAmountACodec: getCodecFromNatural(minAmountA, state.pair.assetA.decimals),
+      minAmountBCodec: getCodecFromNatural(minAmountB, state.pair.assetB.decimals),
+      minAmountAMeta: toAssetAmount(state.pair.assetA, minAmountA),
+      minAmountBMeta: toAssetAmount(state.pair.assetB, minAmountB),
+      shareOfPool,
+      slippageTolerance,
+      warnings: [],
+    };
+    const quoteDigest = await createAgentDigest('remove-liquidity.quote', quotePayload);
 
     return {
       state,
       quote: {
-        intentId,
-        pool: toAgentPoolInfo(state),
-        liquidityAmount,
-        liquidityAmountCodec,
-        liquidityAmountMeta: state.poolToken ? toAssetAmountFromCodec(state.poolToken, liquidityAmountCodec) : null,
-        percentOfPosition: requestedPercent,
-        amountA,
-        amountB,
-        amountACodec,
-        amountBCodec,
-        amountAMeta: toAssetAmountFromCodec(state.pair.assetA, amountACodec),
-        amountBMeta: toAssetAmountFromCodec(state.pair.assetB, amountBCodec),
-        minAmountA,
-        minAmountB,
-        minAmountACodec: getCodecFromNatural(minAmountA, state.pair.assetA.decimals),
-        minAmountBCodec: getCodecFromNatural(minAmountB, state.pair.assetB.decimals),
-        minAmountAMeta: toAssetAmount(state.pair.assetA, minAmountA),
-        minAmountBMeta: toAssetAmount(state.pair.assetB, minAmountB),
-        shareOfPool,
-        slippageTolerance,
-        warnings: [],
+        quoteDigest,
+        ...quotePayload,
       },
     };
   };
@@ -1958,28 +2326,47 @@ export function createPolkaswapAgentApi(
         { asset: state.pair.assetB, amountCodec: quote.amountBCodec, reason: 'liquidity-asset-b' },
         { asset: getXorAsset(), amountCodec: fee.amountCodec, reason: 'network-fee' },
       ]);
-      const warnings = [...getWalletWarnings(), ...quote.warnings, ...getInsufficientBalanceWarnings(requiredBalances)];
+      const warnings = [
+        ...getWalletWarnings(),
+        ...getFeeWarnings([fee]),
+        ...quote.warnings,
+        ...getInsufficientBalanceWarnings(requiredBalances),
+      ];
+      const preview = createCallPreview(
+        quote.createsPool ? Operation.CreatePair : Operation.AddLiquidity,
+        quote.createsPool ? 'api.poolXyk.create' : 'api.poolXyk.add',
+        {
+          assetA: state.pair.assetA.address,
+          assetB: state.pair.assetB.address,
+          amountA: quote.amountA,
+          amountB: quote.amountB,
+          slippageTolerance: quote.slippageTolerance,
+        },
+        `${quote.createsPool ? 'Create pool and add' : 'Add'} ${quote.amountA} ${state.pair.assetA.symbol} and ${quote.amountB} ${state.pair.assetB.symbol}`
+      );
 
-      return {
-        intentId: quote.intentId,
-        canExecute: canExecuteWith(warnings, requiredBalances),
-        quote,
-        preview: createCallPreview(
-          quote.createsPool ? Operation.CreatePair : Operation.AddLiquidity,
-          quote.createsPool ? 'api.poolXyk.create' : 'api.poolXyk.add',
-          {
-            assetA: state.pair.assetA.address,
-            assetB: state.pair.assetB.address,
-            amountA: quote.amountA,
-            amountB: quote.amountB,
-            slippageTolerance: quote.slippageTolerance,
-          },
-          `${quote.createsPool ? 'Create pool and add' : 'Add'} ${quote.amountA} ${state.pair.assetA.symbol} and ${quote.amountB} ${state.pair.assetB.symbol}`
-        ),
-        fees: [fee],
-        requiredBalances,
-        warnings,
-      };
+      return await registerPreparedIntent(
+        'add-liquidity',
+        {
+          assetA: state.pair.assetA.address,
+          assetB: state.pair.assetB.address,
+          amountA: quote.amountA,
+          amountB: quote.amountB,
+          slippageTolerance: quote.slippageTolerance,
+          createsPool: quote.createsPool,
+        },
+        quote as unknown as Record<string, unknown>,
+        preview,
+        [fee],
+        {
+          canExecute: canExecuteWith(warnings, requiredBalances),
+          quote,
+          preview,
+          fees: [fee],
+          requiredBalances,
+          warnings,
+        }
+      );
     } catch (error) {
       throw normalizeAgentError(error);
     }
@@ -2025,43 +2412,64 @@ export function createPolkaswapAgentApi(
           : [];
       const warnings = [
         ...getWalletWarnings(),
+        ...getFeeWarnings([fee]),
         ...quote.warnings,
         ...positionWarnings,
         ...getInsufficientBalanceWarnings(requiredBalances),
       ];
 
-      return {
-        intentId: quote.intentId,
-        canExecute: canExecuteWith(warnings, requiredBalances),
-        quote,
-        preview: createCallPreview(
-          Operation.RemoveLiquidity,
-          'api.poolXyk.remove',
-          {
-            assetA: state.pair.storageAssetA.address,
-            assetB: state.pair.storageAssetB.address,
-            liquidityAmount: quote.liquidityAmount,
-            reserveA: state.storageReserveACodec,
-            reserveB: state.storageReserveBCodec,
-            totalSupply: state.totalSupplyCodec,
-            slippageTolerance: quote.slippageTolerance,
-          },
-          `Remove ${quote.liquidityAmount} ${state.poolToken?.symbol ?? 'LP'} from ${state.pair.assetA.symbol}/${state.pair.assetB.symbol}`
-        ),
-        fees: [fee],
-        requiredBalances,
-        warnings,
-      };
+      const preview = createCallPreview(
+        Operation.RemoveLiquidity,
+        'api.poolXyk.remove',
+        {
+          assetA: state.pair.storageAssetA.address,
+          assetB: state.pair.storageAssetB.address,
+          liquidityAmount: quote.liquidityAmount,
+          reserveA: state.storageReserveACodec,
+          reserveB: state.storageReserveBCodec,
+          totalSupply: state.totalSupplyCodec,
+          slippageTolerance: quote.slippageTolerance,
+        },
+        `Remove ${quote.liquidityAmount} ${state.poolToken?.symbol ?? 'LP'} from ${state.pair.assetA.symbol}/${state.pair.assetB.symbol}`
+      );
+
+      return await registerPreparedIntent(
+        'remove-liquidity',
+        {
+          assetA: state.pair.assetA.address,
+          assetB: state.pair.assetB.address,
+          liquidityAmount: quote.liquidityAmount,
+          liquidityAmountCodec: quote.liquidityAmountCodec,
+          percent: quote.percentOfPosition,
+          minAmountA: quote.minAmountA,
+          minAmountB: quote.minAmountB,
+          slippageTolerance: quote.slippageTolerance,
+        },
+        quote as unknown as Record<string, unknown>,
+        preview,
+        [fee],
+        {
+          canExecute: canExecuteWith(warnings, requiredBalances),
+          quote,
+          preview,
+          fees: [fee],
+          requiredBalances,
+          warnings,
+        }
+      );
     } catch (error) {
       throw normalizeAgentError(error);
     }
   };
 
-  const resolveSwapRequest = async (request: AgentSwapRequest): Promise<AgentResolvedSwapRequest> => {
+  const resolveSwapRequest = async (
+    request: AgentSwapRequest,
+    publicOnly = false
+  ): Promise<AgentResolvedSwapRequest> => {
     ensureNodeReady();
 
     const settingsStore = deps.getSettingsStore();
-    const context = createAssetContext();
+    const context = createAssetContext(publicOnly);
     const [assetIn, assetOut] = await Promise.all([
       resolveAssetRef(context, request.assetIn, 'assetIn'),
       resolveAssetRef(context, request.assetOut, 'assetOut'),
@@ -2172,8 +2580,8 @@ export function createPolkaswapAgentApi(
     }
   };
 
-  const buildQuote = async (request: AgentSwapRequest): Promise<InternalQuoteResult> => {
-    const resolved = await resolveSwapRequest(request);
+  const buildQuote = async (request: AgentSwapRequest, publicOnly = false): Promise<InternalQuoteResult> => {
+    const resolved = await resolveSwapRequest(request, publicOnly);
 
     try {
       await deps.api.swap.update();
@@ -2190,6 +2598,20 @@ export function createPolkaswapAgentApi(
     const { quoteData, dexId, result } = await getSwapQuoteData(resolved);
     const calculatedAsset = resolved.isExchangeB ? resolved.assetIn : resolved.assetOut;
     const { amount, amountWithoutImpact, fee, rewards, route, distribution } = result;
+    // The local quote engine represents split-route amounts as FPNumber instances.
+    // Project them to natural-unit strings before hashing or returning the quote:
+    // FPNumber has enumerable method aliases and is deliberately rejected by the
+    // canonical JSON encoder used for cryptographic digests.
+    const serializedDistribution = (distribution ?? []).map((path) =>
+      path.map(({ market, income, outcome, fee: distributionFee, input, output }) => ({
+        market,
+        income: income.toString(),
+        outcome: outcome.toString(),
+        fee: distributionFee.toString(),
+        input,
+        output,
+      }))
+    );
     const amountCodec = `${amount ?? '0'}`;
     const amountWithoutImpactCodec = `${amountWithoutImpact ?? '0'}`;
     const calculatedAmount = getNaturalFromCodec(amountCodec, calculatedAsset.decimals);
@@ -2213,57 +2635,49 @@ export function createPolkaswapAgentApi(
       amountWithoutImpactCodec,
       resolved.isExchangeB
     );
-    const intentId = createIntentId('swap', {
-      assetIn: resolved.assetIn.address,
-      assetOut: resolved.assetOut.address,
-      amount: resolved.amount,
-      amountIn,
-      amountOut,
-      dexId,
-      side: resolved.side,
-      slippageTolerance: resolved.slippageTolerance,
-      liquiditySource: resolved.liquiditySource ?? LiquiditySourceTypes.Default,
-      minMaxCodec,
-    });
     const minMaxAsset = resolved.isExchangeB ? resolved.assetIn : resolved.assetOut;
     const minMaxMeta = toAssetAmountFromCodec(minMaxAsset, minMaxCodec);
+    const quotePayload = {
+      request: {
+        amount: resolved.amount,
+        side: resolved.side,
+        slippageTolerance: resolved.slippageTolerance,
+        liquiditySource: resolved.liquiditySource,
+        dexId: resolved.dexId,
+      },
+      assetIn: toAgentAsset(resolved.assetIn),
+      assetOut: toAgentAsset(resolved.assetOut),
+      dexId,
+      amountIn,
+      amountOut,
+      amountWithoutImpact: getNaturalFromCodec(amountWithoutImpactCodec, calculatedAsset.decimals),
+      amountInMeta: toAssetAmount(resolved.assetIn, amountIn),
+      amountOutMeta: toAssetAmount(resolved.assetOut, amountOut),
+      amountWithoutImpactMeta: toAssetAmountFromCodec(calculatedAsset, amountWithoutImpactCodec),
+      minAmountOut: resolved.isExchangeB ? undefined : minMaxNatural,
+      maxAmountIn: resolved.isExchangeB ? minMaxNatural : undefined,
+      minAmountOutMeta: resolved.isExchangeB ? undefined : minMaxMeta,
+      maxAmountInMeta: resolved.isExchangeB ? minMaxMeta : undefined,
+      minMaxCodec,
+      priceImpact,
+      liquidityProviderFee: fee,
+      rewards,
+      route: Array.isArray(route) ? route.map(String) : [],
+      distribution: serializedDistribution,
+      liquiditySources: quoteData.liquiditySources,
+      raw: {
+        amount: amountCodec,
+        amountWithoutImpact: amountWithoutImpactCodec,
+        fee,
+      },
+    };
+    const quoteDigest = await createAgentDigest('swap.quote', quotePayload);
 
     return {
       resolved,
       quote: {
-        intentId,
-        request: {
-          amount: resolved.amount,
-          side: resolved.side,
-          slippageTolerance: resolved.slippageTolerance,
-          liquiditySource: resolved.liquiditySource,
-          dexId: resolved.dexId,
-        },
-        assetIn: toAgentAsset(resolved.assetIn),
-        assetOut: toAgentAsset(resolved.assetOut),
-        dexId,
-        amountIn,
-        amountOut,
-        amountWithoutImpact: getNaturalFromCodec(amountWithoutImpactCodec, calculatedAsset.decimals),
-        amountInMeta: toAssetAmount(resolved.assetIn, amountIn),
-        amountOutMeta: toAssetAmount(resolved.assetOut, amountOut),
-        amountWithoutImpactMeta: toAssetAmountFromCodec(calculatedAsset, amountWithoutImpactCodec),
-        minAmountOut: resolved.isExchangeB ? undefined : minMaxNatural,
-        maxAmountIn: resolved.isExchangeB ? minMaxNatural : undefined,
-        minAmountOutMeta: resolved.isExchangeB ? undefined : minMaxMeta,
-        maxAmountInMeta: resolved.isExchangeB ? minMaxMeta : undefined,
-        minMaxCodec,
-        priceImpact,
-        liquidityProviderFee: fee,
-        rewards,
-        route: Array.isArray(route) ? route.map(String) : [],
-        distribution,
-        liquiditySources: quoteData.liquiditySources,
-        raw: {
-          amount: amountCodec,
-          amountWithoutImpact: amountWithoutImpactCodec,
-          fee,
-        },
+        quoteDigest,
+        ...quotePayload,
       },
     };
   };
@@ -2293,6 +2707,111 @@ export function createPolkaswapAgentApi(
     }
   };
 
+  /**
+   * Resolve and quote a swap into public SDK-call metadata without signer or balance access.
+   * This never issues/persists an executable intent and is not an encoded SCALE transaction.
+   */
+  const planSwap = async (request: AgentSwapRequest): Promise<AgentSwapPlan> => {
+    try {
+      const readinessTimeoutMs = normalizeTimeoutMs(request.quoteTimeoutMs);
+      const readinessDeadline = deps.now() + readinessTimeoutMs;
+      let waitedMs = 0;
+      while (!deps.getSettingsStore().nodeIsConnected) {
+        const remainingMs = Math.min(readinessTimeoutMs - waitedMs, readinessDeadline - deps.now());
+        if (remainingMs <= 0) {
+          throw agentError('NODE_NOT_READY', 'Timed out waiting for a SORA node connection.');
+        }
+        const waitMs = Math.min(READY_POLL_MS, remainingMs);
+        await deps.delay(waitMs);
+        waitedMs += waitMs;
+      }
+      const settingsStore = deps.getSettingsStore();
+      const initialNetwork = getPreparedNetwork();
+      const initialBlock = settingsStore.blockNumber;
+      if (
+        !settingsStore.nodeIsConnected ||
+        !initialNetwork.genesisHash ||
+        !Number.isSafeInteger(initialNetwork.runtimeSpecVersion) ||
+        initialNetwork.runtimeSpecVersion <= 0 ||
+        !Number.isSafeInteger(initialBlock) ||
+        initialBlock < 0
+      ) {
+        throw agentError(
+          'NETWORK_CONTEXT_UNAVAILABLE',
+          'A connected node with valid chain context is required to plan a swap.'
+        );
+      }
+
+      // SDK metadata lookup, warm-up, and path checks can also stall before the
+      // observable's own timeout begins. Bound the entire public quote phase.
+      let quoteTimer: ReturnType<typeof globalThis.setTimeout> | undefined;
+      let quoteResult: InternalQuoteResult;
+      try {
+        quoteResult = await Promise.race([
+          buildQuote(request, true),
+          new Promise<never>((_resolve, reject) => {
+            quoteTimer = globalThis.setTimeout(() => {
+              reject(
+                agentError('QUOTE_TIMEOUT', 'Timed out planning the swap quote.', { timeoutMs: readinessTimeoutMs })
+              );
+            }, readinessTimeoutMs);
+          }),
+        ]);
+      } finally {
+        if (quoteTimer !== undefined) globalThis.clearTimeout(quoteTimer);
+      }
+      // Promise.race retains rejection handlers on the uncancellable SDK work,
+      // so late results are discarded and late failures cannot be unhandled.
+      const { quote, resolved } = quoteResult;
+      const network = { ...getPreparedNetwork(), blockNumber: deps.getSettingsStore().blockNumber };
+      if (
+        !deps.getSettingsStore().nodeIsConnected ||
+        network.genesisHash !== initialNetwork.genesisHash ||
+        network.runtimeSpecVersion !== initialNetwork.runtimeSpecVersion ||
+        !Number.isSafeInteger(network.blockNumber) ||
+        network.blockNumber < initialBlock
+      ) {
+        throw agentError(
+          'NETWORK_CONTEXT_UNAVAILABLE',
+          'The chain context changed while planning; request a new plan.'
+        );
+      }
+      const fee = getFeeEstimate(Operation.Swap);
+      const plannedAt = deps.now();
+      return deepFreeze(
+        cloneSerializable<AgentSwapPlan>({
+          mode: 'unsigned',
+          canExecute: false,
+          requiresWallet: false,
+          quote,
+          preview: {
+            operation: Operation.Swap,
+            sdkCall: 'api.swap.execute',
+            stateChanging: true,
+            args: {
+              assetIn: resolved.assetIn.address,
+              assetOut: resolved.assetOut.address,
+              amountIn: quote.amountIn,
+              amountOut: quote.amountOut,
+              slippageTolerance: resolved.slippageTolerance,
+              isExchangeB: resolved.isExchangeB,
+              liquiditySource: resolved.liquiditySource ?? LiquiditySourceTypes.Default,
+              dexId: quote.dexId,
+            },
+            summary: `Swap ${quote.amountIn} ${resolved.assetIn.symbol} for ${quote.amountOut} ${resolved.assetOut.symbol}`,
+          },
+          fees: [fee],
+          warnings: [...getFeeWarnings([fee]), ...getHighPriceImpactWarnings(quote)],
+          plannedAt,
+          expiresAt: plannedAt + PREPARED_INTENT_TTL_MS,
+          network,
+        })
+      );
+    } catch (error) {
+      throw normalizeAgentError(error);
+    }
+  };
+
   const prepareSwap = async (request: AgentSwapRequest): Promise<AgentPreparedSwap> => {
     try {
       const { quote, resolved } = await buildQuote(request);
@@ -2307,19 +2826,41 @@ export function createPolkaswapAgentApi(
       ]);
       const warnings = [
         ...getWalletWarnings(),
+        ...getFeeWarnings([fee]),
         ...getInsufficientBalanceWarnings(requiredBalances),
         ...getHighPriceImpactWarnings(quote),
       ];
+      const preview = createSwapPreview(resolved, quote);
 
-      return {
-        intentId: quote.intentId,
-        canExecute: canExecuteWith(warnings, requiredBalances),
-        quote,
-        preview: createSwapPreview(resolved, quote),
-        fees: [fee],
-        requiredBalances,
-        warnings,
-      };
+      return await registerPreparedIntent(
+        'swap',
+        {
+          assetIn: resolved.assetIn.address,
+          assetOut: resolved.assetOut.address,
+          amount: resolved.amount,
+          side: resolved.side,
+          amountIn: quote.amountIn,
+          amountOut: quote.amountOut,
+          minAmountOut: quote.minAmountOut,
+          maxAmountIn: quote.maxAmountIn,
+          slippageTolerance: resolved.slippageTolerance,
+          liquiditySource: resolved.liquiditySource ?? LiquiditySourceTypes.Default,
+          dexId: quote.dexId,
+          requestedDexId: resolved.dexId,
+          route: quote.route,
+        },
+        quote as unknown as Record<string, unknown>,
+        preview,
+        [fee],
+        {
+          canExecute: canExecuteWith(warnings, requiredBalances),
+          quote,
+          preview,
+          fees: [fee],
+          requiredBalances,
+          warnings,
+        }
+      );
     } catch (error) {
       throw normalizeAgentError(error);
     }
@@ -2378,76 +2919,211 @@ export function createPolkaswapAgentApi(
     }
   };
 
-  const findLatestSwapTransaction = async (
-    startTime: number,
-    resolved: AgentResolvedSwapRequest,
-    quote: AgentSwapQuote
-  ): Promise<HistoryItem | null> => {
-    return findLatestTransaction(startTime, (item) => {
-      if (item.type !== Operation.Swap) return false;
+  const hasMaterialQuoteChange = async (record: StoredPreparedIntent): Promise<boolean> => {
+    const request = record.prepared.envelope.request;
 
-      return (
-        item.assetAddress === resolved.assetIn.address &&
-        item.asset2Address === resolved.assetOut.address &&
-        `${item.amount ?? ''}` === quote.amountIn &&
-        `${item.amount2 ?? ''}` === quote.amountOut &&
-        `${item.liquiditySource ?? LiquiditySourceTypes.Default}` ===
-          `${resolved.liquiditySource ?? LiquiditySourceTypes.Default}`
-      );
-    });
+    if (record.action === 'swap') {
+      const fresh = await buildQuote({
+        assetIn: { address: `${request.assetIn ?? ''}` },
+        assetOut: { address: `${request.assetOut ?? ''}` },
+        amount: `${request.amount ?? ''}`,
+        side: request.side as AgentSwapRequest['side'],
+        slippageTolerance: `${request.slippageTolerance ?? ''}`,
+        liquiditySource: `${request.liquiditySource ?? ''}`,
+        dexId: `${request.requestedDexId ?? 'best'}`,
+      });
+      return fresh.quote.quoteDigest !== record.prepared.envelope.quoteDigest;
+    }
+
+    if (record.action === 'add-liquidity') {
+      const fresh = await buildAddLiquidityQuote({
+        assetA: { address: `${request.assetA ?? ''}` },
+        assetB: { address: `${request.assetB ?? ''}` },
+        amountA: `${request.amountA ?? ''}`,
+        amountB: `${request.amountB ?? ''}`,
+        slippageTolerance: `${request.slippageTolerance ?? ''}`,
+        allowPoolCreation: Boolean(request.createsPool),
+      });
+      return fresh.quote.quoteDigest !== record.prepared.envelope.quoteDigest;
+    }
+
+    if (record.action === 'remove-liquidity') {
+      const fresh = await buildRemoveLiquidityQuote({
+        assetA: { address: `${request.assetA ?? ''}` },
+        assetB: { address: `${request.assetB ?? ''}` },
+        liquidityAmount: request.percent === undefined ? `${request.liquidityAmount ?? ''}` : undefined,
+        percent: request.percent === undefined ? undefined : `${request.percent}`,
+        slippageTolerance: `${request.slippageTolerance ?? ''}`,
+      });
+      return fresh.quote.quoteDigest !== record.prepared.envelope.quoteDigest;
+    }
+
+    return false;
   };
 
-  const executeSwap = async (request: AgentSwapRequest): Promise<AgentSwapExecution> => {
-    let clientOrderId: string | undefined;
-    let idempotencyPending = false;
-    let signerAccepted = false;
+  const executePrepared = async <TResult extends { transaction: AgentTransactionRef | null }>(
+    action: AgentIntentAction,
+    request: { intentId: string; clientOrderId: string },
+    submit: (prepared: AgentPreparedResult, revalidation: AgentIntentRevalidation) => Promise<TResult>
+  ): Promise<TResult> => {
+    // Identifier validation deliberately precedes every node, wallet, quote, and signer access.
+    const identifiers = normalizeExecutionIdentifiers(request);
 
+    return withExecutionLock(`client-order:${identifiers.clientOrderId}`, () =>
+      withExecutionLock(`intent:${identifiers.intentId}`, async () => {
+        const existing = getIdempotencyResult<TResult>(action, identifiers.clientOrderId, identifiers.intentId);
+        if (existing) return existing;
+
+        ensureNodeReady();
+        ensureWalletReady();
+        const { record, revalidation } = await getPreparedForExecution(
+          action,
+          identifiers.intentId,
+          identifiers.clientOrderId
+        );
+        let materialQuoteChanged = false;
+        try {
+          materialQuoteChanged = await hasMaterialQuoteChange(record);
+        } catch {
+          throw agentError('INTENT_MISMATCH', 'The prepared quote could not be revalidated; prepare a new intent.', {
+            ...revalidation,
+            valid: false,
+            requiresReapproval: true,
+            reasons: [...revalidation.reasons, 'market-revalidation-failed'],
+          });
+        }
+        if (materialQuoteChanged) {
+          const changed: AgentIntentRevalidation = {
+            ...revalidation,
+            valid: false,
+            requiresReapproval: true,
+            reasons: [...revalidation.reasons, 'market-quote-changed'],
+          };
+          throw agentError(
+            'INTENT_MISMATCH',
+            'The reviewed quote or route changed before execution; prepare a new intent.',
+            changed
+          );
+        }
+        const pendingRecord: StoredPreparedIntent = {
+          ...record,
+          status: 'pending',
+          clientOrderId: identifiers.clientOrderId,
+          updatedAt: deps.now(),
+        };
+        persistPreparedIntent(pendingRecord);
+        markIdempotencyPending(action, identifiers.clientOrderId, identifiers.intentId, record.prepared.preview);
+
+        let signerAccepted = false;
+        try {
+          await deps.getWalletStore().beforeTransactionSign(deps.api as never);
+          signerAccepted = true;
+          const result = await submit(record.prepared, revalidation);
+          const completed = completeIdempotency(action, identifiers.clientOrderId, identifiers.intentId, result);
+          persistPreparedIntent({
+            ...pendingRecord,
+            status: 'submitted',
+            prepared: { ...record.prepared, revalidation } as AgentPreparedResult,
+            updatedAt: deps.now(),
+          });
+          return completed;
+        } catch (error) {
+          if (!signerAccepted) {
+            clearIdempotencyRecord(identifiers.clientOrderId);
+            persistPreparedIntent({
+              ...record,
+              status: 'prepared',
+              clientOrderId: undefined,
+              updatedAt: deps.now(),
+            });
+          } else {
+            const signedHistory = deps.api.getHistory(identifiers.intentId);
+            const pending = loadIdempotencyRecord(identifiers.clientOrderId);
+            if (signedHistory && pending) {
+              persistIdempotencyRecord({
+                ...pending,
+                updatedAt: deps.now(),
+                transaction: toTransactionRef(signedHistory),
+              });
+            }
+          }
+          // Once signing has been accepted, keep the durable pending tombstone: a
+          // rejected response may still represent an uncertain chain submission.
+          throw normalizeAgentError(error);
+        }
+      })
+    );
+  };
+
+  const readCallString = (prepared: AgentPreparedResult, key: string, allowEmpty = false): string => {
+    const value = prepared.envelope.call.args[key];
+    if (typeof value !== 'string' || (!allowEmpty && !value)) {
+      throw agentError('INTENT_INTEGRITY_FAILED', `Prepared call argument "${key}" is invalid.`, {
+        key,
+        requiresReapproval: true,
+      });
+    }
+    return value;
+  };
+
+  const readCallNumber = (prepared: AgentPreparedResult, key: string): number => {
+    const value = prepared.envelope.call.args[key];
+    if (typeof value !== 'number' || !Number.isInteger(value) || value < 0) {
+      throw agentError('INTENT_INTEGRITY_FAILED', `Prepared call argument "${key}" is invalid.`, {
+        key,
+        requiresReapproval: true,
+      });
+    }
+    return value;
+  };
+
+  const readCallBoolean = (prepared: AgentPreparedResult, key: string): boolean => {
+    const value = prepared.envelope.call.args[key];
+    if (typeof value !== 'boolean') {
+      throw agentError('INTENT_INTEGRITY_FAILED', `Prepared call argument "${key}" is invalid.`, {
+        key,
+        requiresReapproval: true,
+      });
+    }
+    return value;
+  };
+
+  const executeSwap = async (request: AgentExecuteSwapRequest): Promise<AgentSwapExecution> => {
     try {
-      ensureWalletReady();
+      return await executePrepared('swap', request, async (prepared, revalidation) => {
+        const swap = prepared as AgentPreparedSwap;
+        const [assetIn, assetOut] = await Promise.all([
+          resolveAssetRef(createAssetContext(), { address: readCallString(prepared, 'assetIn') }, 'assetIn'),
+          resolveAssetRef(createAssetContext(), { address: readCallString(prepared, 'assetOut') }, 'assetOut'),
+        ]);
+        const amountIn = readCallString(prepared, 'amountIn');
+        const amountOut = readCallString(prepared, 'amountOut');
+        const slippageTolerance = readCallString(prepared, 'slippageTolerance');
+        const isExchangeB = readCallBoolean(prepared, 'isExchangeB');
+        const liquiditySource =
+          normalizeLiquiditySource(readCallString(prepared, 'liquiditySource', true)) ?? LiquiditySourceTypes.Default;
+        const dexId = readCallNumber(prepared, 'dexId');
+        await deps.api.swap.execute(
+          assetIn,
+          assetOut,
+          amountIn,
+          amountOut,
+          slippageTolerance,
+          isExchangeB,
+          liquiditySource,
+          dexId,
+          prepared.intentId
+        );
+        const history = deps.api.getHistory(prepared.intentId);
 
-      const { quote, resolved } = await buildQuote(request);
-      const preview = createSwapPreview(resolved, quote);
-      clientOrderId = normalizeClientOrderId(request.clientOrderId);
-      const existingResult = getIdempotencyResult<AgentSwapExecution>(
-        'swap',
-        clientOrderId,
-        request.intentId ?? quote.intentId
-      );
-      if (existingResult) return existingResult;
-
-      assertIntent(request.intentId, quote.intentId);
-      markIdempotencyPending('swap', clientOrderId, quote.intentId, preview);
-      idempotencyPending = Boolean(clientOrderId);
-
-      try {
-        await deps.getWalletStore().beforeTransactionSign(deps.api as never);
-        signerAccepted = true;
-      } catch (error) {
-        if (clientOrderId) clearIdempotencyRecord(clientOrderId);
-        idempotencyPending = false;
-        throw normalizeAgentError(error);
-      }
-
-      const startTime = deps.now();
-      await deps.api.swap.execute(
-        resolved.assetIn,
-        resolved.assetOut,
-        quote.amountIn,
-        quote.amountOut,
-        resolved.slippageTolerance,
-        resolved.isExchangeB,
-        resolved.liquiditySource ?? LiquiditySourceTypes.Default,
-        quote.dexId
-      );
-
-      const history = await findLatestSwapTransaction(startTime, resolved, quote);
-
-      return completeIdempotency('swap', clientOrderId, quote.intentId, {
-        quote,
-        transaction: toTransactionRef(history),
+        return {
+          intentId: prepared.intentId,
+          quote: swap.quote,
+          transaction: toTransactionRef(history),
+          revalidation,
+        };
       });
     } catch (error) {
-      if (clientOrderId && idempotencyPending && !signerAccepted) clearIdempotencyRecord(clientOrderId);
       throw normalizeAgentError(error);
     }
   };
@@ -2462,54 +3138,15 @@ export function createPolkaswapAgentApi(
       const to = normalizeRecipientAddress(request.to);
       const fee = getFeeEstimate(Operation.Transfer);
       const amountCodec = getCodecFromNatural(amount, asset.decimals);
-      const intentId = createIntentId('transfer', { asset: asset.address, to, amount, amountCodec });
       const requiredBalances = await mergeRequiredBalances([
         { asset: asset as Asset, amountCodec, reason: 'transfer-amount' },
         { asset: getXorAsset(), amountCodec: fee.amountCodec, reason: 'network-fee' },
       ]);
-      const warnings = [...getWalletWarnings(), ...getInsufficientBalanceWarnings(requiredBalances)];
-
-      return {
-        intentId,
-        canExecute: canExecuteWith(warnings, requiredBalances),
-        asset: toAgentAsset(asset),
-        to,
-        amount,
-        amountMeta: toAssetAmount(asset as Asset, amount, amountCodec),
-        preview: createCallPreview(
-          Operation.Transfer,
-          'api.assets.simpleTransfer',
-          {
-            asset: asset.address,
-            to,
-            amount,
-          },
-          `Transfer ${amount} ${asset.symbol} to ${to}`
-        ),
-        fees: [fee],
-        requiredBalances,
-        warnings,
-      };
-    } catch (error) {
-      throw normalizeAgentError(error);
-    }
-  };
-
-  const executeTransfer = async (request: AgentTransferRequest): Promise<AgentTransferExecution> => {
-    let clientOrderId: string | undefined;
-    let idempotencyPending = false;
-    let signerAccepted = false;
-
-    try {
-      ensureNodeReady();
-      ensureWalletReady();
-
-      const context = createAssetContext();
-      const asset = await resolveAssetRef(context, request.asset, 'asset');
-      const amount = normalizeNaturalAmount(request.amount);
-      const to = normalizeRecipientAddress(request.to);
-      const amountCodec = getCodecFromNatural(amount, asset.decimals);
-      const intentId = createIntentId('transfer', { asset: asset.address, to, amount, amountCodec });
+      const warnings = [
+        ...getWalletWarnings(),
+        ...getFeeWarnings([fee]),
+        ...getInsufficientBalanceWarnings(requiredBalances),
+      ];
       const preview = createCallPreview(
         Operation.Transfer,
         'api.assets.simpleTransfer',
@@ -2520,206 +3157,124 @@ export function createPolkaswapAgentApi(
         },
         `Transfer ${amount} ${asset.symbol} to ${to}`
       );
-      clientOrderId = normalizeClientOrderId(request.clientOrderId);
-      const existingResult = getIdempotencyResult<AgentTransferExecution>(
-        'transfer',
-        clientOrderId,
-        request.intentId ?? intentId
-      );
-      if (existingResult) return existingResult;
+      const transferQuote = {
+        asset: toAgentAsset(asset),
+        to,
+        amount,
+        amountCodec,
+      };
 
-      assertIntent(request.intentId, intentId);
-      markIdempotencyPending('transfer', clientOrderId, intentId, preview);
-      idempotencyPending = Boolean(clientOrderId);
-
-      try {
-        await deps.getWalletStore().beforeTransactionSign(deps.api as never);
-        signerAccepted = true;
-      } catch (error) {
-        if (clientOrderId) clearIdempotencyRecord(clientOrderId);
-        idempotencyPending = false;
-        throw normalizeAgentError(error);
-      }
-
-      const startTime = deps.now();
-      await deps.api.assets.simpleTransfer(asset, to, amount);
-      const history = await findLatestTransaction(
-        startTime,
-        (item) =>
-          item.type === Operation.Transfer && item.assetAddress === asset.address && `${item.amount ?? ''}` === amount
-      );
-
-      return completeIdempotency('transfer', clientOrderId, intentId, {
-        intentId,
+      return await registerPreparedIntent('transfer', transferQuote, transferQuote, preview, [fee], {
+        canExecute: canExecuteWith(warnings, requiredBalances),
         asset: toAgentAsset(asset),
         to,
         amount,
         amountMeta: toAssetAmount(asset as Asset, amount, amountCodec),
-        transaction: toTransactionRef(history),
+        preview,
+        fees: [fee],
+        requiredBalances,
+        warnings,
       });
     } catch (error) {
-      if (clientOrderId && idempotencyPending && !signerAccepted) clearIdempotencyRecord(clientOrderId);
       throw normalizeAgentError(error);
     }
   };
 
-  const executeAddLiquidity = async (request: AgentAddLiquidityRequest): Promise<AgentAddLiquidityExecution> => {
-    let clientOrderId: string | undefined;
-    let idempotencyPending = false;
-    let signerAccepted = false;
-
+  const executeTransfer = async (request: AgentExecuteTransferRequest): Promise<AgentTransferExecution> => {
     try {
-      ensureWalletReady();
-
-      const { quote, state } = await buildAddLiquidityQuote(request);
-      const preview = createCallPreview(
-        quote.createsPool ? Operation.CreatePair : Operation.AddLiquidity,
-        quote.createsPool ? 'api.poolXyk.create' : 'api.poolXyk.add',
-        {
-          assetA: state.pair.assetA.address,
-          assetB: state.pair.assetB.address,
-          amountA: quote.amountA,
-          amountB: quote.amountB,
-          slippageTolerance: quote.slippageTolerance,
-        },
-        `${quote.createsPool ? 'Create pool and add' : 'Add'} ${quote.amountA} ${state.pair.assetA.symbol} and ${quote.amountB} ${state.pair.assetB.symbol}`
-      );
-      clientOrderId = normalizeClientOrderId(request.clientOrderId);
-      const existingResult = getIdempotencyResult<AgentAddLiquidityExecution>(
-        'add-liquidity',
-        clientOrderId,
-        request.intentId ?? quote.intentId
-      );
-      if (existingResult) return existingResult;
-
-      assertIntent(request.intentId, quote.intentId);
-      markIdempotencyPending('add-liquidity', clientOrderId, quote.intentId, preview);
-      idempotencyPending = Boolean(clientOrderId);
-
-      try {
-        await deps.getWalletStore().beforeTransactionSign(deps.api as never);
-        signerAccepted = true;
-      } catch (error) {
-        if (clientOrderId) clearIdempotencyRecord(clientOrderId);
-        idempotencyPending = false;
-        throw normalizeAgentError(error);
-      }
-
-      const startTime = deps.now();
-      if (quote.createsPool) {
-        await deps.api.poolXyk.create(
-          state.pair.assetA,
-          state.pair.assetB,
-          quote.amountA,
-          quote.amountB,
-          quote.slippageTolerance
+      return await executePrepared('transfer', request, async (prepared, revalidation) => {
+        const transfer = prepared as AgentPreparedTransfer;
+        const asset = await resolveAssetRef(
+          createAssetContext(),
+          { address: readCallString(prepared, 'asset') },
+          'asset'
         );
-      } else {
-        await deps.api.poolXyk.add(
-          state.pair.assetA,
-          state.pair.assetB,
-          quote.amountA,
-          quote.amountB,
-          quote.slippageTolerance
-        );
-      }
+        const to = readCallString(prepared, 'to');
+        const amount = readCallString(prepared, 'amount');
+        await deps.api.assets.simpleTransfer(asset, to, amount, prepared.intentId);
+        const history = deps.api.getHistory(prepared.intentId);
 
-      const expectedOperation = quote.createsPool ? Operation.CreatePair : Operation.AddLiquidity;
-      const history = await findLatestTransaction(
-        startTime,
-        (item) =>
-          item.type === expectedOperation &&
-          item.assetAddress === state.pair.assetA.address &&
-          item.asset2Address === state.pair.assetB.address &&
-          `${item.amount ?? ''}` === quote.amountA &&
-          `${item.amount2 ?? ''}` === quote.amountB
-      );
-
-      return completeIdempotency('add-liquidity', clientOrderId, quote.intentId, {
-        quote,
-        transaction: toTransactionRef(history),
+        return {
+          intentId: prepared.intentId,
+          asset: transfer.asset,
+          to: transfer.to,
+          amount: transfer.amount,
+          amountMeta: transfer.amountMeta,
+          transaction: toTransactionRef(history),
+          revalidation,
+        };
       });
     } catch (error) {
-      if (clientOrderId && idempotencyPending && !signerAccepted) clearIdempotencyRecord(clientOrderId);
+      throw normalizeAgentError(error);
+    }
+  };
+
+  const executeAddLiquidity = async (request: AgentExecuteAddLiquidityRequest): Promise<AgentAddLiquidityExecution> => {
+    try {
+      return await executePrepared('add-liquidity', request, async (prepared, revalidation) => {
+        const liquidity = prepared as AgentPreparedAddLiquidity;
+        const [assetA, assetB] = await Promise.all([
+          resolveAssetRef(createAssetContext(), { address: readCallString(prepared, 'assetA') }, 'assetA'),
+          resolveAssetRef(createAssetContext(), { address: readCallString(prepared, 'assetB') }, 'assetB'),
+        ]);
+        const amountA = readCallString(prepared, 'amountA');
+        const amountB = readCallString(prepared, 'amountB');
+        const slippageTolerance = readCallString(prepared, 'slippageTolerance');
+        const createsPool = prepared.envelope.call.sdkCall === 'api.poolXyk.create';
+        if (createsPool) {
+          await deps.api.poolXyk.create(assetA, assetB, amountA, amountB, slippageTolerance, prepared.intentId);
+        } else {
+          await deps.api.poolXyk.add(assetA, assetB, amountA, amountB, slippageTolerance, prepared.intentId);
+        }
+        const history = deps.api.getHistory(prepared.intentId);
+
+        return {
+          intentId: prepared.intentId,
+          quote: liquidity.quote,
+          transaction: toTransactionRef(history),
+          revalidation,
+        };
+      });
+    } catch (error) {
       throw normalizeAgentError(error);
     }
   };
 
   const executeRemoveLiquidity = async (
-    request: AgentRemoveLiquidityRequest
+    request: AgentExecuteRemoveLiquidityRequest
   ): Promise<AgentRemoveLiquidityExecution> => {
-    let clientOrderId: string | undefined;
-    let idempotencyPending = false;
-    let signerAccepted = false;
-
     try {
-      ensureWalletReady();
+      return await executePrepared('remove-liquidity', request, async (prepared, revalidation) => {
+        const liquidity = prepared as AgentPreparedRemoveLiquidity;
+        const [assetA, assetB] = await Promise.all([
+          resolveAssetRef(createAssetContext(), { address: readCallString(prepared, 'assetA') }, 'assetA'),
+          resolveAssetRef(createAssetContext(), { address: readCallString(prepared, 'assetB') }, 'assetB'),
+        ]);
+        const liquidityAmount = readCallString(prepared, 'liquidityAmount');
+        const reserveA = readCallString(prepared, 'reserveA');
+        const reserveB = readCallString(prepared, 'reserveB');
+        const totalSupply = readCallString(prepared, 'totalSupply');
+        const slippageTolerance = readCallString(prepared, 'slippageTolerance');
+        await deps.api.poolXyk.remove(
+          assetA,
+          assetB,
+          liquidityAmount,
+          reserveA,
+          reserveB,
+          totalSupply,
+          slippageTolerance,
+          prepared.intentId
+        );
+        const history = deps.api.getHistory(prepared.intentId);
 
-      const { quote, state } = await buildRemoveLiquidityQuote(request);
-      const preview = createCallPreview(
-        Operation.RemoveLiquidity,
-        'api.poolXyk.remove',
-        {
-          assetA: state.pair.storageAssetA.address,
-          assetB: state.pair.storageAssetB.address,
-          liquidityAmount: quote.liquidityAmount,
-          reserveA: state.storageReserveACodec,
-          reserveB: state.storageReserveBCodec,
-          totalSupply: state.totalSupplyCodec,
-          slippageTolerance: quote.slippageTolerance,
-        },
-        `Remove ${quote.liquidityAmount} ${state.poolToken?.symbol ?? 'LP'} from ${state.pair.assetA.symbol}/${state.pair.assetB.symbol}`
-      );
-      clientOrderId = normalizeClientOrderId(request.clientOrderId);
-      const existingResult = getIdempotencyResult<AgentRemoveLiquidityExecution>(
-        'remove-liquidity',
-        clientOrderId,
-        request.intentId ?? quote.intentId
-      );
-      if (existingResult) return existingResult;
-
-      assertIntent(request.intentId, quote.intentId);
-      markIdempotencyPending('remove-liquidity', clientOrderId, quote.intentId, preview);
-      idempotencyPending = Boolean(clientOrderId);
-
-      try {
-        await deps.getWalletStore().beforeTransactionSign(deps.api as never);
-        signerAccepted = true;
-      } catch (error) {
-        if (clientOrderId) clearIdempotencyRecord(clientOrderId);
-        idempotencyPending = false;
-        throw normalizeAgentError(error);
-      }
-
-      const startTime = deps.now();
-      await deps.api.poolXyk.remove(
-        state.pair.storageAssetA,
-        state.pair.storageAssetB,
-        quote.liquidityAmount,
-        state.storageReserveACodec,
-        state.storageReserveBCodec,
-        state.totalSupplyCodec,
-        quote.slippageTolerance
-      );
-
-      const storageAmountA = state.pair.isStorageReversed ? quote.amountB : quote.amountA;
-      const storageAmountB = state.pair.isStorageReversed ? quote.amountA : quote.amountB;
-      const history = await findLatestTransaction(
-        startTime,
-        (item) =>
-          item.type === Operation.RemoveLiquidity &&
-          item.assetAddress === state.pair.storageAssetA.address &&
-          item.asset2Address === state.pair.storageAssetB.address &&
-          `${item.amount ?? ''}` === storageAmountA &&
-          `${item.amount2 ?? ''}` === storageAmountB
-      );
-
-      return completeIdempotency('remove-liquidity', clientOrderId, quote.intentId, {
-        quote,
-        transaction: toTransactionRef(history),
+        return {
+          intentId: prepared.intentId,
+          quote: liquidity.quote,
+          transaction: toTransactionRef(history),
+          revalidation,
+        };
       });
     } catch (error) {
-      if (clientOrderId && idempotencyPending && !signerAccepted) clearIdempotencyRecord(clientOrderId);
       throw normalizeAgentError(error);
     }
   };
@@ -2730,7 +3285,7 @@ export function createPolkaswapAgentApi(
     const fee = getFeeEstimate(operation);
     const available = await getAvailableAssetAmount(asset);
     let maxAmount = FPNumber.fromCodecValue(available.codec, asset.decimals);
-    const warnings: AgentWarning[] = [];
+    const warnings: AgentWarning[] = [...getFeeWarnings([fee])];
 
     if (asset.address === getXorAsset().address) {
       const feeAmount = FPNumber.fromCodecValue(fee.amountCodec, asset.decimals);
@@ -2976,7 +3531,7 @@ export function createPolkaswapAgentApi(
   };
 
   const getTransactionIdentity = (transaction: HistoryItem): string =>
-    `${transaction.id ?? transaction.txId ?? stableHash(stableStringify(transaction))}`;
+    `${transaction.id ?? transaction.txId ?? `snapshot:${stableStringify(transaction)}`}`;
 
   const subscribeTransactions = async (
     request: AgentTransactionSubscriptionRequest,
@@ -3135,6 +3690,7 @@ export function createPolkaswapAgentApi(
     resolveAsset,
     commonAssets,
     quoteSwap,
+    planSwap,
     prepareSwap,
     assessSwap,
     executeSwap,

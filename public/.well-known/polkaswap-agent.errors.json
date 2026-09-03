@@ -22,15 +22,15 @@
       "safeToRetrySameRequest": false,
       "action": "Rebuild the request with a positive decimal string amount."
     },
-    "INVALID_AGENT_STATE": {
-      "retry": "after-state-reset",
-      "safeToRetrySameRequest": false,
-      "action": "Import only v1 state or clear local agent state before retrying."
-    },
     "INVALID_ASSET_REF": {
       "retry": "after-input-change",
       "safeToRetrySameRequest": false,
       "action": "Pass either { address } or an unambiguous { symbol }."
+    },
+    "INVALID_AGENT_STATE": {
+      "retry": "after-state-reset",
+      "safeToRetrySameRequest": false,
+      "action": "Import only v1 state or clear local agent state before retrying."
     },
     "INVALID_CLIENT_ORDER_ID": {
       "retry": "after-input-change",
@@ -46,6 +46,31 @@
       "retry": "after-recovery",
       "safeToRetrySameRequest": false,
       "action": "Call transactionStatus or recoverTransaction for the existing clientOrderId; do not reuse it for a different intent."
+    },
+    "INTENT_ALREADY_USED": {
+      "retry": "after-recovery",
+      "safeToRetrySameRequest": false,
+      "action": "Treat the prepared intent as consumed. Recover the existing submission or run prepare* again for a new intent."
+    },
+    "INTENT_EXPIRED": {
+      "retry": "after-prepare",
+      "safeToRetrySameRequest": false,
+      "action": "Run the matching prepare* method again and review the fresh envelope before execution."
+    },
+    "INTENT_INTEGRITY_FAILED": {
+      "retry": "after-prepare",
+      "safeToRetrySameRequest": false,
+      "action": "Discard the invalid prepared envelope, run prepare* again, and do not sign the rejected call."
+    },
+    "INTENT_NOT_FOUND": {
+      "retry": "after-prepare",
+      "safeToRetrySameRequest": false,
+      "action": "Use an intentId returned by the matching prepare* method in this browser profile."
+    },
+    "INTENT_REQUIRED": {
+      "retry": "after-prepare",
+      "safeToRetrySameRequest": false,
+      "action": "Run the matching prepare* method and pass its intentId to execute*."
     },
     "INTENT_MISMATCH": {
       "retry": "after-prepare",
@@ -101,6 +126,11 @@
       "retry": "after-node-ready",
       "safeToRetrySameRequest": true,
       "action": "Call ready({ requireNode: true }) again after reconnecting, reloading, or switching endpoint."
+    },
+    "NETWORK_CONTEXT_UNAVAILABLE": {
+      "retry": "after-node-ready",
+      "safeToRetrySameRequest": true,
+      "action": "Wait for a connected node with genesis hash, runtime version, and block number before preparing."
     },
     "PATH_UNAVAILABLE": {
       "retry": "after-route-change",

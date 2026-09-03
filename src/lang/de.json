@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} Wiki"
     },
     "forAgents": {
-        "apiContext": "wird nach dem Start der App im Seitenkontext installiert. Es verwendet denselben Knoten, dieselbe Brieftasche, denselben Indexer und denselben SDK-Pfad wie die Benutzeroberfläche.",
+        "apiContext": "Die Planung läuft autonom auf Daten der öffentlichen Kette. Wallet-Identitäten, Guthaben und Unterzeichnerstatus bleiben außerhalb der öffentlichen Tools.",
         "contract": {
-            "idempotent": "Verwenden Sie eine stabile clientOrderId und stellen Sie unsichere Übermittlungen wieder her, bevor Sie es erneut versuchen.",
-            "noCustody": "Die Seite erhält niemals private Schlüssel; Das Signieren bleibt bei der ausgewählten Wallet.",
-            "prepareFirst": "Statusändernde Aufrufe müssen vor der Ausführung* die Vorbereitung* durchlaufen.",
-            "samePage": "Nach dem Ready-Ereignis im Polkaswap-Seitenkontext ausführen."
+            "idempotent": "Planen Sie neu, wenn sich Swap-Parameter oder Märkte ändern, ohne dass ein Seitengenehmigungsschritt erforderlich ist.",
+            "noCustody": "Für die Planung sind keine verbundenen Konten, Guthaben oder Wallet-Berechtigungen erforderlich.",
+            "prepareFirst": "Ein nicht unterzeichneter Plan stellt keine ausführbare Absicht oder Erlaubnis zur Ausgabe dar.",
+            "samePage": "Rufen Sie Tools direkt auf dieser Seite oder über die lokale MCP-Bridge auf."
         },
         "discoveryText": "Rufen Sie zuerst das Manifest ab. Es verknüpft die versionierte Referenz, die Schemadateien, Beispiele, den Fehlerkatalog und den Hilfsclient, die mit diesem statischen Build geliefert werden.",
         "discoveryTitle": "Entdeckung",
-        "entrypointsLabel": "Agent-API-Einstiegspunkte",
+        "entrypointsLabel": "Einstiegspunkte für Agentenplanung und -erkennung",
         "eyebrow": "Automatisierung",
         "flow": {
             "execute": "Nur nach Genehmigung der Richtlinie, mit der vorbereiteten Absicht und einer stabilen Kundenauftrags-ID ausführen.",
@@ -652,17 +652,23 @@
             "resolve": "Lösen Sie Asset-Symbole vor der wiederholten Ausführung in Adressen auf.",
             "wallet": "Wählen Sie einen Wallet-Anbieter und ein Konto aus, wenn eine Signatur erforderlich ist."
         },
-        "flowTitle": "Sichere Ausführungsschleife",
-        "lead": "Polkaswap stellt eine browsernative Automatisierungs-API für Agent-Runner bereit, die die statische App öffnen.",
+        "flowTitle": "Autonome Planung",
+        "lead": "Entdecken Sie Märkte, vergleichen Sie Angebote und erstellen Sie nicht unterzeichnete Swap-Pläne direkt über Agenten-Tools. Keine Seitenklicks oder Wallet-Verbindung erforderlich.",
         "links": {
             "client": "JavaScript-Hilfsclient",
             "errors": "Fehlerkatalog",
             "examples": "Beispiele",
             "manifest": "Discovery-Manifest",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Agentenspielplatz",
             "reference": "Vollständige API-Referenz",
             "schema": "JSON-Schema",
             "types": "TypeScript-Definitionen"
+        },
+        "mcp": {
+            "boundary": "Das Signieren wird niemals beim öffentlichen WebMCP registriert und die lokale Bridge enthält keinen Unterzeichner. Pläne können keine Mittel ausgeben; Für die unbeaufsichtigte Ausführung sind ein separater privater Unterzeichner und erzwungene Grenzwerte erforderlich, die hier nicht mitgeliefert werden.",
+            "text": "Auf der obersten Seite werden Entdeckungen, Angebote und eine Wallet-unabhängige Planung angezeigt. Agenten können diese Tools direkt aufrufen und wiederholen; Die Tools können keinen Wallet-Zugriff anfordern oder Transaktionen übermitteln.",
+            "title": "Autonome Planung · schreibgeschützt"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Beginnen Sie mit dem Manifest"
             },
             "playground": {
-                "description": "Manuelle Same-Origin-Prüfung für Status, Vermögenswerte, Angebote und Vorschauen.",
-                "title": "Öffne den Spielplatz"
+                "description": "Fordern Sie Routen, Slippage-Grenzen, geschätzte Gebühren und einen nicht unterzeichneten Swap-Plan an, ohne eine Wallet anzuschließen oder auf eine Seitengenehmigung zu warten. Nutzen Sie den optionalen Spielplatz, um die Ergebnisse zu überprüfen. Werkzeugaufrufe benötigen es nicht.",
+                "title": "Planen Sie einen Tausch mit einer Werkzeuganfrage"
             },
             "reference": {
                 "description": "Lesbare Methodenübersicht, Beispiele, Signaturregeln und Wiederherstellungshinweise.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "um Wiederholungsversuche idempotent zu halten.",
-        "signingTextBefore": "Die Seite akzeptiert niemals private Schlüssel. Methoden zur Zustandsänderung verwenden den ausgewählten Wallet-Signer und erfordern, dass der Runner den zurückgegebenen Wert weitergibt",
+        "signingTextBefore": "Führen Sie die Node 26 stdio Bridge einmal mit einem dedizierten Browserprofil aus. Standard-MCP-Kunden können dann ohne Seiteninteraktionen Märkte entdecken, Angebote anfordern und neu planen. Die Bridge stellt dieselben schreibgeschützten Tools bereit und enthält keinen Unterzeichner.",
         "signingTextMiddle": "plus einen Stall",
-        "signingTitle": "Unterzeichnung und Verwahrung",
-        "startTitle": "Beginnen Sie hier",
+        "signingTitle": "Lokales MCP · gleiche Planungstools",
+        "startTitle": "Öffnen Sie den optionalen Inspektor",
         "title": "Für Agenten"
     },
     "forText": "für",

@@ -30,37 +30,42 @@
     {
       "name": "Quote exact-input swap",
       "goal": "Explore a route without preparing signer state.",
-      "code": "const quote = await agent.quoteSwap({ assetIn, assetOut, amount: '1', side: 'input', dexId: 'best', quoteTimeoutMs: 15000 });\nconsole.log(quote.amountIn, quote.amountOut, quote.minAmountOut);"
+      "code": "const quote = await agent.quoteSwap({ assetIn, assetOut, amount: '1', side: 'input', dexId: 'best', quoteTimeoutMs: 15000 });\nconsole.log(quote.quoteDigest, quote.amountIn, quote.amountOut, quote.minAmountOut);"
+    },
+    {
+      "name": "Plan autonomously without a wallet",
+      "goal": "Resolve, quote, and inspect public SDK-call metadata in one call. No prior quote, wallet permission, executable intent, or persisted authorization is required.",
+      "code": "const plan = await agent.planSwap({ assetIn: { symbol: 'XOR' }, assetOut: { symbol: 'PSWAP' }, amount: '1', side: 'input', dexId: 'best' });\nif (plan.canExecute !== false || plan.requiresWallet !== false) throw new Error('Unexpected plan scope');\nconsole.log(plan.quote.quoteDigest, plan.preview.args, plan.fees, plan.warnings, plan.expiresAt);\n// This is SDK-call metadata, not a SCALE transaction or signing authorization."
     },
     {
       "name": "Prepare then execute exact-input swap",
-      "goal": "Spend exactly the input amount and protect output with slippage.",
-      "code": "const prepared = await agent.prepareSwap({ assetIn, assetOut, amount: '1', side: 'input' });\nif (!prepared.canExecute || prepared.warnings.some((warning) => warning.severity === 'critical')) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeSwap({ assetIn, assetOut, amount: prepared.quote.amountIn, side: prepared.quote.request.side, slippageTolerance: prepared.quote.request.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-swap-input-001' });"
+      "goal": "Spend exactly the input amount and protect output with slippage. Execution passes only the prepared intent and idempotency key.",
+      "code": "const prepared = await agent.prepareSwap({ assetIn, assetOut, amount: '1', side: 'input' });\nif (!prepared.canExecute || !prepared.revalidation.valid || prepared.warnings.some((warning) => warning.severity === 'critical')) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeSwap({ intentId: prepared.intentId, clientOrderId: 'agent-swap-input-001' });"
     },
     {
       "name": "Prepare then execute exact-output swap",
-      "goal": "Receive exactly the output amount and protect maximum input spend.",
-      "code": "const prepared = await agent.prepareSwap({ assetIn, assetOut, amount: '100', side: 'output' });\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeSwap({ assetIn, assetOut, amount: prepared.quote.request.amount, side: 'output', slippageTolerance: prepared.quote.request.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-swap-output-001' });"
+      "goal": "Receive exactly the output amount and protect maximum input spend. Execution passes only the prepared intent and idempotency key.",
+      "code": "const prepared = await agent.prepareSwap({ assetIn, assetOut, amount: '100', side: 'output' });\nif (!prepared.canExecute || !prepared.revalidation.valid) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeSwap({ intentId: prepared.intentId, clientOrderId: 'agent-swap-output-001' });"
     },
     {
       "name": "Assess swap against runner policy",
-      "goal": "Make an explicit no-signing approval decision before execution.",
-      "code": "const assessment = await agent.assessSwap({ assetIn, assetOut, amount: '1', maxPriceImpact: '3', requireCanExecute: true });\nif (!assessment.approved) throw new Error(assessment.reasons.map((reason) => reason.code).join(', '));\nawait agent.executeSwap({ assetIn, assetOut, amount: assessment.prepared.quote.amountIn, intentId: assessment.prepared.intentId, clientOrderId: 'agent-policy-swap-001' });"
+      "goal": "Make an explicit no-signing approval decision before execution. Execution passes only the prepared intent and idempotency key.",
+      "code": "const assessment = await agent.assessSwap({ assetIn, assetOut, amount: '1', maxPriceImpact: '3', requireCanExecute: true });\nif (!assessment.approved) throw new Error(assessment.reasons.map((reason) => reason.code).join(', '));\nawait agent.executeSwap({ intentId: assessment.prepared.intentId, clientOrderId: 'agent-policy-swap-001' });"
     },
     {
       "name": "Prepare then execute transfer",
-      "goal": "Transfer through the same prepare, intent, and idempotency flow.",
-      "code": "const prepared = await agent.prepareTransfer({ asset: assetIn, to: 'cn...', amount: '0.1' });\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeTransfer({ asset: { address: prepared.asset.address }, to: prepared.to, amount: prepared.amount, intentId: prepared.intentId, clientOrderId: 'agent-transfer-001' });"
+      "goal": "Transfer through the same prepare, intent, and idempotency flow. Execution passes only the prepared intent and idempotency key.",
+      "code": "const prepared = await agent.prepareTransfer({ asset: assetIn, to: 'cn...', amount: '0.1' });\nif (!prepared.canExecute || !prepared.revalidation.valid) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeTransfer({ intentId: prepared.intentId, clientOrderId: 'agent-transfer-001' });"
     },
     {
       "name": "Prepare then execute add liquidity",
-      "goal": "Add liquidity without enabling pool creation by accident.",
-      "code": "const prepared = await agent.prepareAddLiquidity({ assetA: assetIn, assetB: assetOut, amountA: '1' });\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeAddLiquidity({ assetA: { address: prepared.quote.pool.assetA.address }, assetB: { address: prepared.quote.pool.assetB.address }, amountA: prepared.quote.amountA, amountB: prepared.quote.amountB, slippageTolerance: prepared.quote.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-lp-add-001' });"
+      "goal": "Add liquidity without enabling pool creation by accident. Execution passes only the prepared intent and idempotency key.",
+      "code": "const prepared = await agent.prepareAddLiquidity({ assetA: assetIn, assetB: assetOut, amountA: '1' });\nif (!prepared.canExecute || !prepared.revalidation.valid) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeAddLiquidity({ intentId: prepared.intentId, clientOrderId: 'agent-lp-add-001' });"
     },
     {
       "name": "Prepare then execute remove liquidity by percent",
-      "goal": "Withdraw a position-relative LP amount.",
-      "code": "const positions = await agent.liquidityPositions({ assetA: assetIn, assetB: assetOut });\nif (!positions.length) throw new Error('NO_LIQUIDITY_POSITION');\nconst request = { assetA: assetIn, assetB: assetOut, percent: '25' };\nconst prepared = await agent.prepareRemoveLiquidity(request);\nif (!prepared.canExecute) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeRemoveLiquidity({ ...request, slippageTolerance: prepared.quote.slippageTolerance, intentId: prepared.intentId, clientOrderId: 'agent-lp-remove-001' });"
+      "goal": "Withdraw a position-relative LP amount. Execution passes only the prepared intent and idempotency key.",
+      "code": "const positions = await agent.liquidityPositions({ assetA: assetIn, assetB: assetOut });\nif (!positions.length) throw new Error('NO_LIQUIDITY_POSITION');\nconst request = { assetA: assetIn, assetB: assetOut, percent: '25' };\nconst prepared = await agent.prepareRemoveLiquidity(request);\nif (!prepared.canExecute || !prepared.revalidation.valid) throw new Error(prepared.warnings.map((warning) => warning.code).join(', ') || 'NOT_EXECUTABLE');\nawait agent.executeRemoveLiquidity({ intentId: prepared.intentId, clientOrderId: 'agent-lp-remove-001' });"
     },
     {
       "name": "Plan with max helpers",

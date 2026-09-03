@@ -659,10 +659,16 @@
             "errors": "𒌋 𒊹𒌷",
             "examples": "𒁕𒀭",
             "manifest": "𒌷𒊭 𒊹𒌷",
+            "mcpTools": "𒅆𒀀 𒁕𒀭",
             "playground": "𒉌𒁺 𒊹𒌷",
             "reference": "𒁕𒀭 𒀭𒆠 𒁕𒀭",
             "schema": "𒅆𒀀 𒁕𒀭",
             "types": "𒁕𒀭 𒌷𒊭"
+        },
+        "mcp": {
+            "boundary": "𒉌𒁺 𒉌𒁺 𒀭𒆠 𒀭𒆠 𒊹𒌷 𒌷𒊭; 𒉌𒁺 𒌷𒊭 𒅆𒀀 𒉌𒁺 𒉌𒁺 𒃻𒋃.",
+            "text": "𒌷𒊭 𒁕𒀭 𒊹𒌷 𒌷𒊭 𒊹𒌷 𒀭𒆠 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒅆𒀀 𒉌𒁺 𒅆𒀀 𒊹𒌷.",
+            "title": "𒊹𒌷 𒅆𒀀"
         },
         "polkamarkt": {
             "items": {

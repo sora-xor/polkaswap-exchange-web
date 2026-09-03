@@ -45,17 +45,22 @@ async function waitForPreviewHealth(healthUrl, timeoutMs = 15_000) {
   throw lastError ?? new Error(`Timed out waiting for preview server at ${healthUrl}`);
 }
 
+/**
+ * Start or reuse a loopback HTTP preview. Remote static deployments have no
+ * preview health endpoint; their availability is checked by browser navigation.
+ * Both URLs must be loopback before allowing this helper to spawn a server.
+ */
 export async function ensurePreviewServer(rawBaseUrl, appBaseUrl) {
+  if (!canAutoStartPreviewServer(rawBaseUrl) || !canAutoStartPreviewServer(appBaseUrl)) {
+    return async () => {};
+  }
+
   const { host, port, prefix, healthUrl } = resolvePreviewServerConfig(appBaseUrl);
 
   try {
     await waitForPreviewHealth(healthUrl, 1_500);
     return async () => {};
-  } catch (error) {
-    if (!canAutoStartPreviewServer(rawBaseUrl)) {
-      throw error;
-    }
-
+  } catch {
     const child = spawn(process.execPath, [previewServerScript, '--host', host, '--port', port, '--prefix', prefix], {
       cwd: process.cwd(),
       stdio: 'ignore',

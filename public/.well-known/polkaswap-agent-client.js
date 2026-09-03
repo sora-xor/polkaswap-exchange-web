@@ -1,5 +1,6 @@
 (function attachPolkaswapAgentClient(global) {
   const READY_EVENT = 'polkaswap-agent-ready';
+  const CLIENT_ORDER_ID_PATTERN = /^[a-zA-Z0-9._:-]{1,128}$/;
 
   function createClient(api) {
     if (!api) {
@@ -7,6 +8,13 @@
     }
 
     async function prepareAndExecute(request, options, prepare, execute, label) {
+      const clientOrderId = options && typeof options.clientOrderId === 'string' ? options.clientOrderId.trim() : '';
+      if (!CLIENT_ORDER_ID_PATTERN.test(clientOrderId)) {
+        const error = new Error(`A stable clientOrderId is required to execute ${label}.`);
+        error.code = 'INVALID_CLIENT_ORDER_ID';
+        throw error;
+      }
+
       const prepared = await prepare(request);
       if (!prepared.canExecute) {
         const error = new Error(`Prepared ${label} is not executable.`);
@@ -15,9 +23,8 @@
       }
 
       return execute({
-        ...request,
         intentId: prepared.intentId,
-        clientOrderId: options.clientOrderId || request.clientOrderId,
+        clientOrderId,
       });
     }
 
@@ -25,20 +32,14 @@
       api,
       version: api.version,
       ready: (options) => api.ready(options),
-      prepareAndExecuteSwap: (request, options = {}) =>
+      prepareAndExecuteSwap: (request, options) =>
         prepareAndExecute(request, options, api.prepareSwap, api.executeSwap, 'swap'),
-      prepareAndExecuteTransfer: (request, options = {}) =>
+      prepareAndExecuteTransfer: (request, options) =>
         prepareAndExecute(request, options, api.prepareTransfer, api.executeTransfer, 'transfer'),
-      prepareAndExecuteAddLiquidity: (request, options = {}) =>
+      prepareAndExecuteAddLiquidity: (request, options) =>
         prepareAndExecute(request, options, api.prepareAddLiquidity, api.executeAddLiquidity, 'add-liquidity'),
-      prepareAndExecuteRemoveLiquidity: (request, options = {}) =>
-        prepareAndExecute(
-          request,
-          options,
-          api.prepareRemoveLiquidity,
-          api.executeRemoveLiquidity,
-          'remove-liquidity'
-        ),
+      prepareAndExecuteRemoveLiquidity: (request, options) =>
+        prepareAndExecute(request, options, api.prepareRemoveLiquidity, api.executeRemoveLiquidity, 'remove-liquidity'),
       waitForTransaction: (request) => api.waitForTransaction(request),
     });
   }

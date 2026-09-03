@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} Wiki"
     },
     "forAgents": {
-        "apiContext": "dipasang dalam konteks halaman setelah aplikasi melakukan booting. Ia menggunakan node, dompet, pengindeks, dan jalur SDK yang sama dengan antarmuka pengguna.",
+        "apiContext": "Perencanaan berjalan secara mandiri pada data rantai publik. Identitas dompet, saldo, dan status penandatangan tetap berada di luar alat publik.",
         "contract": {
-            "idempotent": "Gunakan clientOrderId yang stabil dan pulihkan pengiriman yang tidak pasti sebelum mencoba lagi.",
-            "noCustody": "Halaman tersebut tidak pernah menerima kunci pribadi; penandatanganan tetap dengan dompet yang dipilih.",
-            "prepareFirst": "Panggilan perubahan status harus melalui persiapan* sebelum dieksekusi*.",
-            "samePage": "Jalankan di dalam konteks halaman Polkaswap setelah acara siap."
+            "idempotent": "Rencanakan ulang seiring perubahan parameter swap atau pasar, tanpa langkah persetujuan halaman.",
+            "noCustody": "Perencanaan tidak memerlukan izin akun, saldo, atau dompet yang terhubung.",
+            "prepareFirst": "Rencana yang tidak ditandatangani bukanlah maksud yang dapat dilaksanakan atau izin untuk dibelanjakan.",
+            "samePage": "Panggil alat langsung di halaman ini atau melalui jembatan MCP lokal."
         },
         "discoveryText": "Ambil manifesnya terlebih dahulu. Ini menghubungkan referensi berversi, file skema, contoh, katalog kesalahan, dan klien pembantu yang dikirimkan dengan build statis ini.",
         "discoveryTitle": "Penemuan",
-        "entrypointsLabel": "Titik masuk API Agen",
+        "entrypointsLabel": "Perencanaan agen dan titik masuk penemuan",
         "eyebrow": "Otomatisasi",
         "flow": {
             "execute": "Jalankan hanya setelah persetujuan kebijakan, dengan maksud yang telah disiapkan dan id pesanan klien yang stabil.",
@@ -652,17 +652,23 @@
             "resolve": "Selesaikan simbol aset ke alamat sebelum eksekusi berulang.",
             "wallet": "Pilih penyedia dompet dan akun saat penandatanganan diperlukan."
         },
-        "flowTitle": "Loop eksekusi yang aman",
-        "lead": "Polkaswap memperlihatkan API otomatisasi asli browser untuk pelari agen yang membuka aplikasi statis.",
+        "flowTitle": "Perencanaan otonom",
+        "lead": "Temukan pasar, bandingkan harga, dan buat rencana pertukaran tanpa tanda tangan langsung dari alat agen. Tidak diperlukan klik halaman atau koneksi dompet.",
         "links": {
             "client": "Klien pembantu JavaScript",
             "errors": "Katalog kesalahan",
             "examples": "Contoh",
             "manifest": "Manifes penemuan",
+            "mcpTools": "Katalog alat WebMCP",
             "playground": "Taman bermain agen",
             "reference": "Referensi API lengkap",
             "schema": "Skema JSON",
             "types": "Definisi TypeScript"
+        },
+        "mcp": {
+            "boundary": "Penandatanganan tidak pernah didaftarkan di WebMCP publik, dan jembatan lokal tidak menyertakan penandatangan. Rencana tidak bisa menghabiskan dana; eksekusi tanpa pengawasan memerlukan penanda tangan pribadi terpisah dan batasan yang diterapkan yang tidak dikirimkan di sini.",
+            "text": "Halaman tingkat atas memperlihatkan penemuan, kutipan, dan perencanaan yang tidak bergantung pada dompet. Agen dapat menghubungi dan mengulangi alat ini secara langsung; alat ini tidak dapat meminta akses dompet atau mengirimkan transaksi.",
+            "title": "Perencanaan otonom · hanya baca"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Mulailah dengan manifes"
             },
             "playground": {
-                "description": "Pemeriksaan manual asal yang sama untuk status, aset, kuotasi, dan pratinjau.",
-                "title": "Buka taman bermain"
+                "description": "Minta rute, batas slippage, perkiraan biaya, dan rencana swap yang tidak ditandatangani tanpa menghubungkan dompet atau menunggu persetujuan halaman. Gunakan taman bermain opsional untuk memeriksa hasil; panggilan alat tidak memerlukannya.",
+                "title": "Rencanakan pertukaran dengan satu permintaan alat"
             },
             "reference": {
                 "description": "Peta metode yang dapat dibaca, contoh, aturan penandatanganan, dan catatan pemulihan.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "untuk menjaga percobaan ulang idempoten.",
-        "signingTextBefore": "Halaman ini tidak pernah mengambil kunci pribadi. Metode pengubahan status menggunakan penandatangan dompet yang dipilih dan mengharuskan pelari untuk meneruskan pengembaliannya",
+        "signingTextBefore": "Jalankan jembatan stdio Node 26 satu kali dengan profil browser khusus. Klien MCP standar kemudian dapat menemukan pasar, meminta penawaran harga, dan merencanakan ulang tanpa interaksi halaman. Bridge memperlihatkan alat read-only yang sama dan tidak menyertakan penanda tangan.",
         "signingTextMiddle": "ditambah kandang",
-        "signingTitle": "Penandatanganan dan hak asuh",
-        "startTitle": "Mulai di sini",
+        "signingTitle": "MCP lokal · alat perencanaan yang sama",
+        "startTitle": "Buka inspektur opsional",
         "title": "Untuk Agen"
     },
     "forText": "untuk",

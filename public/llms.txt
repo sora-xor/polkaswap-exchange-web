@@ -12,11 +12,14 @@ Polkaswap is a static IPFS-hosted browser app for swaps, transfers, and liquidit
 - Error catalog: `.well-known/polkaswap-agent.errors.json`
 - Optional same-page helper client: `.well-known/polkaswap-agent-client.js`
 - Static playground: `agent-playground.html`
+- WebMCP catalogue: `.well-known/polkaswap-mcp-tools.json`
 - Browser global: `window.PolkaswapAgent`
 - Ready event: `polkaswap-agent-ready`
 - Version: `v1`
 
 Agents should open the app in a real browser page with `?polkaswap-agent=1` before the hash route, wait for `window.PolkaswapAgent`, call `ready({ requireNode: true })`, and use `prepare*` before every `execute*` operation. The transient agent flag suppresses the first-launch disclaimer modal without persisting disclaimer approval. Signing is handled only through the wallet/signer available in the page; the app does not accept private keys, provide custody, expose a hosted API, or provide cross-origin command execution.
+
+The top-level app and playground expose a strict nine-tool, account-redacted, read-only WebMCP catalogue. Generic clients can run the repository's local Node 26 stdio bridge with `yarn agent:mcp --profile-dir /absolute/path/to/a/dedicated/profile`. `polkaswap_plan_swap` (same-page `planSwap`) autonomously resolves assets and returns a quote, public fees/warnings, and unsigned SDK-call metadata without a wallet or prior quote. Plans always return `canExecute: false` and `requiresWallet: false`; they are not SCALE transactions and create no executable intent. Neither MCP surface exposes balances, wallet identity, positions, history, executable preparation, execution, transfers, liquidity mutation, wallet connection, or private-key arguments.
 
 ## Recommended Agent Flow
 
@@ -26,7 +29,7 @@ Agents should open the app in a real browser page with `?polkaswap-agent=1` befo
 4. Open the app with `?polkaswap-agent=1` and wait for `window.PolkaswapAgent` or `polkaswap-agent-ready`.
 5. Connect a wallet through `refreshWallets`, `walletAccounts`, and `connectWallet` when signing is needed.
 6. Resolve asset symbols to addresses before repeated execution.
-7. Call `quote*` for read-only exploration and `prepare*` before signing.
+7. Call `planSwap` for autonomous wallet-independent planning, `quote*` for a quote alone, and `prepare*` before signing.
 8. Execute only with the returned `intentId` and a stable `clientOrderId`.
 9. Use `transactionStatus`, `lookupTransaction`, and `recoverTransaction` before retrying uncertain submissions.
 

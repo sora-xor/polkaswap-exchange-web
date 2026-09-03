@@ -632,16 +632,16 @@
         "sorawiki": "{Sora} Wiki"
     },
     "forAgents": {
-        "apiContext": "được cài đặt trong ngữ cảnh trang sau khi ứng dụng khởi động. Nó sử dụng cùng một nút, ví, bộ chỉ mục và đường dẫn SDK làm giao diện người dùng.",
+        "apiContext": "Việc lập kế hoạch chạy tự động trên dữ liệu chuỗi công khai. Danh tính ví, số dư và trạng thái người ký nằm ngoài các công cụ công cộng.",
         "contract": {
-            "idempotent": "Sử dụng clientOrderId ổn định và khôi phục các nội dung gửi không chắc chắn trước khi thử lại.",
-            "noCustody": "Trang này không bao giờ nhận được khóa riêng; việc ký kết vẫn giữ nguyên ví đã chọn.",
-            "prepareFirst": "Cuộc gọi thay đổi trạng thái phải trải qua quá trình chuẩn bị* trước khi thực hiện*.",
-            "samePage": "Chạy bên trong bối cảnh trang Polkaswap sau sự kiện sẵn sàng."
+            "idempotent": "Lập kế hoạch lại khi các tham số hoán đổi hoặc thị trường thay đổi mà không cần bước phê duyệt trang.",
+            "noCustody": "Lập kế hoạch không cần kết nối tài khoản, số dư hoặc quyền ví.",
+            "prepareFirst": "Kế hoạch chưa được ký không phải là ý định thực thi hoặc quyền chi tiêu.",
+            "samePage": "Gọi các công cụ trực tiếp trên trang này hoặc thông qua cầu nối MCP địa phương."
         },
         "discoveryText": "Tìm nạp bảng kê khai đầu tiên. Nó liên kết tham chiếu đã được phiên bản, tệp lược đồ, ví dụ, danh mục lỗi và ứng dụng khách trợ giúp được cung cấp cùng với bản dựng tĩnh này.",
         "discoveryTitle": "khám phá",
-        "entrypointsLabel": "Điểm truy cập API tác nhân",
+        "entrypointsLabel": "Điểm vào của việc lập kế hoạch và khám phá đại lý",
         "eyebrow": "Tự động hóa",
         "flow": {
             "execute": "Chỉ thực hiện sau khi phê duyệt chính sách, với mục đích đã chuẩn bị sẵn và id đơn hàng khách hàng ổn định.",
@@ -652,17 +652,23 @@
             "resolve": "Phân giải các ký hiệu nội dung thành địa chỉ trước khi thực hiện lặp lại.",
             "wallet": "Chọn nhà cung cấp ví và tài khoản khi cần ký."
         },
-        "flowTitle": "Vòng thực thi an toàn",
-        "lead": "Polkaswap hiển thị API tự động hóa gốc của trình duyệt dành cho người chạy tác nhân mở ứng dụng tĩnh.",
+        "flowTitle": "Quy hoạch tự chủ",
+        "lead": "Khám phá thị trường, so sánh báo giá và xây dựng kế hoạch hoán đổi không dấu trực tiếp từ các công cụ đại lý. Không cần nhấp chuột vào trang hoặc kết nối ví.",
         "links": {
             "client": "Ứng dụng khách trợ giúp JavaScript",
             "errors": "Danh mục lỗi",
             "examples": "Ví dụ",
             "manifest": "Bản kê khai khám phá",
+            "mcpTools": "WebMCP tool catalogue",
             "playground": "Sân chơi đại lý",
             "reference": "Tham chiếu API đầy đủ",
             "schema": "Lược đồ JSON",
             "types": "Định nghĩa TypeScript"
+        },
+        "mcp": {
+            "boundary": "Việc ký tên không bao giờ được đăng ký với WebMCP công khai và cầu nối cục bộ không bao gồm người ký. Các kế hoạch không thể tiêu tiền; việc thực thi không giám sát yêu cầu một người ký riêng và các giới hạn được thực thi không được gửi ở đây.",
+            "text": "Trang cấp cao nhất hiển thị khả năng khám phá, báo giá và lập kế hoạch độc lập với ví. Đại lý có thể gọi và lặp lại các công cụ này một cách trực tiếp; các công cụ không thể yêu cầu quyền truy cập ví hoặc gửi giao dịch.",
+            "title": "Lập kế hoạch tự động · chỉ đọc"
         },
         "polkamarkt": {
             "items": {
@@ -696,8 +702,8 @@
                 "title": "Bắt đầu với bảng kê khai"
             },
             "playground": {
-                "description": "Thăm dò cùng nguồn gốc thủ công để biết trạng thái, nội dung, báo giá và bản xem trước.",
-                "title": "Mở sân chơi"
+                "description": "Các lộ trình yêu cầu, giới hạn trượt giá, phí ước tính và gói hoán đổi chưa được ký mà không cần kết nối ví hoặc chờ phê duyệt trang. Sử dụng sân chơi tùy chọn để kiểm tra kết quả; cuộc gọi công cụ không cần nó.",
+                "title": "Lập kế hoạch trao đổi với một yêu cầu công cụ"
             },
             "reference": {
                 "description": "Bản đồ phương pháp có thể đọc được, ví dụ, quy tắc ký và ghi chú khôi phục.",
@@ -705,10 +711,10 @@
             }
         },
         "signingTextAfter": "để giữ cho số lần thử bình thường.",
-        "signingTextBefore": "Trang này không bao giờ lấy khóa riêng. Các phương thức thay đổi trạng thái sử dụng người ký ví đã chọn và yêu cầu người chạy vượt qua số tiền được trả về",
+        "signingTextBefore": "Chạy cầu nối stdio Node 26 một lần với cấu hình trình duyệt chuyên dụng. Sau đó, khách hàng MCP tiêu chuẩn có thể khám phá thị trường, yêu cầu báo giá và lập kế hoạch lại mà không cần tương tác với trang. Cây cầu hiển thị các công cụ chỉ đọc tương tự và không bao gồm người ký.",
         "signingTextMiddle": "cộng với sự ổn định",
-        "signingTitle": "Ký kết và giám hộ",
-        "startTitle": "Bắt đầu ở đây",
+        "signingTitle": "MCP địa phương · các công cụ lập kế hoạch tương tự",
+        "startTitle": "Mở thanh tra tùy chọn",
         "title": "Dành cho đại lý"
     },
     "forText": "cho",
