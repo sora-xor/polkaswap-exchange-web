@@ -438,7 +438,7 @@
             "insufficientBalance": "Ce portefeuille ne contient pas assez de XOR natif pour couvrir le paiement et les frais de réseau."
         },
         "newOrder": "Enregistrez le reçu et démarrez une nouvelle commande",
-        "refundedBody": "Votre remboursement est terminé. Les frais SORA du virement ont été déduits des XOR remboursés. Les frais de réseau payés lors de la commande initiale n’ont pas été remboursés.",
+        "refundedBody": "Votre remboursement est terminé. Consultez les détails de la transaction de remboursement ci-dessous. Les frais de réseau payés lors de la commande initiale n’ont pas été remboursés.",
         "legacyRefundBody": "Si votre thé ne peut pas être acheté ou expédié, nous renvoyons l'intégralité des XOR reçus pour la commande, frais d'expédition compris, dans le portefeuille qui a payé. Le magasin couvre les frais de transaction de remboursement. Nous vous tiendrons au courant pendant que votre remboursement est en attente.",
         "legacyRefundedBody": "Votre remboursement est complet. La totalité des XOR reçus, frais d'expédition compris, a été renvoyée dans le portefeuille qui a payé. Le magasin a pris en charge les frais de transaction de remboursement.",
         "refundGross": "Montant avant frais",

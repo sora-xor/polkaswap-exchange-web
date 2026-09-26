@@ -243,8 +243,19 @@ describe('community Store page', () => {
     await flushPromises();
     expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.legacyRefundedBody);
     shared.context!.order.value.refundPolicy = { version: 2, mode: 'net-network-fee' };
+    shared.context!.order.value.refund = {
+      grossAmountCodec: '100000000000000000',
+      amountCodec: '100000000000000000',
+      feeExempt: true,
+      deductedFeeCodec: '0',
+      feeCorrectionCodec: '0',
+      transactionHash: `0x${'b'.repeat(64)}`,
+    };
     await flushPromises();
     expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.refundedBody);
+    expect(wrapper.get('.store-receipt__intro').text()).toContain('See the refund transaction details below.');
+    expect(wrapper.get('.store-receipt__intro').text()).not.toContain('was deducted');
+    expect(wrapper.get('[data-testid="store-refund-breakdown"]').text()).toContain('SORA fee deducted0 XOR');
     expect(wrapper.get('.store-receipt__intro').text()).toContain(
       'Network fees paid with the original order were not refunded.'
     );

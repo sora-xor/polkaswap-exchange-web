@@ -136,7 +136,7 @@
     "feeChanged": "The network fee changed. Review it and press Send XOR again.",
     "insufficientBalance": "Not enough native XOR in this wallet to cover the payment and network fee."
   },
-  "refundedBody": "Your refund is complete. The SORA fee for sending the refund was deducted from the XOR returned. Network fees paid with the original order were not refunded.",
+  "refundedBody": "Your refund is complete. See the refund transaction details below. Network fees paid with the original order were not refunded.",
   "legacyRefundBody": "If your tea cannot be sourced or shipped, we return the full XOR received for the order, including shipping, to the wallet that paid. The store covers the refund transaction fee. We’ll keep you updated while your refund is pending.",
   "legacyRefundedBody": "Your refund is complete. The full XOR received, including shipping, was returned to the wallet that paid. The store covered the refund transaction fee.",
   "refundGross": "Amount before fees",

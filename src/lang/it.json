@@ -438,7 +438,7 @@
             "insufficientBalance": "Questo portafoglio non contiene abbastanza XOR nativo per coprire il pagamento e la commissione di rete."
         },
         "newOrder": "Salva la ricevuta e avvia un nuovo ordine",
-        "refundedBody": "Il rimborso è completo. La commissione SORA per inviarlo è stata detratta dagli XOR restituiti. Le commissioni di rete pagate con l’ordine originale non sono state rimborsate.",
+        "refundedBody": "Il rimborso è completo. Consulta i dettagli della transazione di rimborso qui sotto. Le commissioni di rete pagate con l’ordine originale non sono state rimborsate.",
         "legacyRefundBody": "Se il tuo tè non può essere acquistato o spedito, restituiamo l'intero XOR ricevuto per l'ordine, inclusa la spedizione, nel portafoglio che ha pagato. Il negozio copre la commissione sulla transazione di rimborso. Ti terremo aggiornato mentre il tuo rimborso è in sospeso.",
         "legacyRefundedBody": "Il tuo rimborso è completo. L'intero XOR ricevuto, inclusa la spedizione, è stato restituito al portafoglio che ha effettuato il pagamento. Il negozio ha coperto la commissione sulla transazione di rimborso.",
         "refundGross": "Importo prima delle commissioni",

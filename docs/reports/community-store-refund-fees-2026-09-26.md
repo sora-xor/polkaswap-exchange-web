@@ -6,6 +6,8 @@ Sora Pay 0.2.0 snapshots the policy on each new order. Existing orders retain th
 
 Receipts show the amount before fees, estimated or deducted fee, amount returned after finalization, and any correction still owed. Pending transfers do not claim that XOR has already been returned. All 31 locale catalogs retain the old wording for historical receipts and include the new policy and amount labels.
 
+**Completion-copy follow-up — 27 September:** completed version 2 receipts now point to the transaction breakdown instead of always saying that a fee was deducted. This also describes a completed fee-exempt correction accurately when the latest deduction is zero. Public, pending and historical refund terms are unchanged. The focused unit assertion and all six refund-recovery browser cases passed: ordinary net refunds, historical full refunds and fee-exempt corrections in both installed Chrome and WebKit. All 54 Store tests, 13 translation checks, scoped lint and the production build passed; the build took 18.86 seconds and still has `relayUrl:null`. Logs: `/tmp/community-store-neutral-refund-{store-tests,translations,lint,build,browser}.log`. This copy update did not change the Sora Pay archive, relay or any real order.
+
 ## Verified release
 
 - Toolkit source: `6ed1bf0`, strict TypeScript build and **140 offline tests passed**.

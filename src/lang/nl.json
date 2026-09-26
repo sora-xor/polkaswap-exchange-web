@@ -438,7 +438,7 @@
             "insufficientBalance": "Deze wallet bevat niet genoeg native XOR voor de betaling en de netwerkkosten."
         },
         "newOrder": "Bewaar de kassabon en start een nieuwe bestelling",
-        "refundedBody": "Je terugbetaling is afgerond. De SORA-kosten voor de terugbetaling zijn afgetrokken van de teruggestorte XOR. Netwerkkosten van de oorspronkelijke bestelling zijn niet terugbetaald.",
+        "refundedBody": "Je terugbetaling is afgerond. Bekijk hieronder de details van de terugbetalingstransactie. Netwerkkosten van de oorspronkelijke bestelling zijn niet terugbetaald.",
         "legacyRefundBody": "Als uw thee niet kan worden gekocht of verzonden, sturen we de volledige XOR die we voor de bestelling hebben ontvangen, inclusief verzendkosten, terug naar de portemonnee waarmee is betaald. De winkel betaalt de transactiekosten voor terugbetaling. We houden u op de hoogte terwijl uw terugbetaling in behandeling is.",
         "legacyRefundedBody": "Uw terugbetaling is voltooid. De volledige ontvangen XOR, inclusief verzendkosten, werd teruggestuurd naar de portemonnee waarmee betaald werd. De winkel betaalde de transactiekosten voor terugbetaling.",
         "refundGross": "Bedrag vóór kosten",

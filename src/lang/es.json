@@ -438,7 +438,7 @@
             "insufficientBalance": "Esta billetera no tiene suficiente XOR nativo para cubrir el pago y la comisión de red."
         },
         "newOrder": "Guardar recibo e iniciar un nuevo pedido",
-        "refundedBody": "Tu reembolso se ha completado. La comisión de SORA por enviarlo se descontó de los XOR devueltos. No se reembolsaron las comisiones de red pagadas con el pedido original.",
+        "refundedBody": "Tu reembolso se ha completado. Consulta los detalles de la transacción de reembolso a continuación. No se reembolsaron las comisiones de red pagadas con el pedido original.",
         "legacyRefundBody": "Si su té no se puede obtener ni enviar, devolvemos el XOR completo recibido para el pedido, incluido el envío, a la billetera que pagó. La tienda cubre la tarifa de transacción de reembolso. Lo mantendremos informado mientras su reembolso esté pendiente.",
         "legacyRefundedBody": "Su reembolso está completo. El XOR completo recibido, incluido el envío, se devolvió a la billetera que pagó. La tienda cubrió la tarifa de transacción del reembolso.",
         "refundGross": "Importe antes de comisiones",

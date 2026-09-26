@@ -438,7 +438,7 @@
             "insufficientBalance": "In dieser Wallet ist nicht genügend natives XOR für die Zahlung und die Netzwerkgebühr vorhanden."
         },
         "newOrder": "Quittung speichern und neue Bestellung starten",
-        "refundedBody": "Deine Erstattung ist abgeschlossen. Die SORA-Gebühr für die Rücküberweisung wurde von den zurückgezahlten XOR abgezogen. Netzwerkgebühren der ursprünglichen Bestellung wurden nicht erstattet.",
+        "refundedBody": "Deine Erstattung ist abgeschlossen. Die Details zur Rücküberweisung findest du unten. Netzwerkgebühren der ursprünglichen Bestellung wurden nicht erstattet.",
         "legacyRefundBody": "Wenn Ihr Tee nicht beschafft oder versendet werden kann, erstatten wir den gesamten XOR, den wir für die Bestellung erhalten haben, einschließlich Versand, an das Konto, das bezahlt hat. Das Geschäft übernimmt die Transaktionsgebühr für die Rückerstattung. Wir halten Sie auf dem Laufenden, während Ihre Rückerstattung aussteht.",
         "legacyRefundedBody": "Ihre Rückerstattung ist abgeschlossen. Der gesamte erhaltene Betrag in Höhe von XOR, einschließlich Versand, wurde dem bezahlten Wallet gutgeschrieben. Das Geschäft hat die Transaktionsgebühr für die Rückerstattung übernommen.",
         "refundGross": "Betrag vor Gebühren",

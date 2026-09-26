@@ -438,7 +438,7 @@
             "insufficientBalance": "XOR native di dompet ini tidak cukup untuk membayar pembayaran dan biaya jaringan."
         },
         "newOrder": "Simpan tanda terima & mulai pesanan baru",
-        "refundedBody": "Pengembalian dana Anda selesai. Biaya SORA untuk mengirimnya telah dipotong dari XOR yang dikembalikan. Biaya jaringan yang dibayar saat pesanan awal tidak dikembalikan.",
+        "refundedBody": "Pengembalian dana Anda selesai. Lihat detail transaksi pengembalian dana di bawah ini. Biaya jaringan yang dibayar saat pesanan awal tidak dikembalikan.",
         "legacyRefundBody": "Jika teh Anda tidak dapat diambil atau dikirim, kami mengembalikan XOR penuh yang diterima untuk pesanan, termasuk pengiriman, ke dompet yang membayar. Toko menanggung biaya transaksi pengembalian dana. Kami akan terus mengabari Anda selagi pengembalian dana Anda tertunda.",
         "legacyRefundedBody": "Pengembalian dana Anda selesai. XOR lengkap yang diterima, termasuk ongkos kirim, dikembalikan ke dompet yang membayar. Toko menanggung biaya transaksi pengembalian dana.",
         "refundGross": "Jumlah sebelum biaya",

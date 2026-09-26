@@ -382,7 +382,7 @@
         "refreshOrder": "Check order status",
         "refundBody": "If we can’t source or ship your tea, we refund the XOR received, including shipping, less the SORA fee for sending the refund. Network fees paid with the original order are not refundable. We’ll keep you updated while your refund is pending.",
         "refunded": "Your XOR has been refunded",
-        "refundedBody": "Your refund is complete. The SORA fee for sending the refund was deducted from the XOR returned. Network fees paid with the original order were not refunded.",
+        "refundedBody": "Your refund is complete. See the refund transaction details below. Network fees paid with the original order were not refunded.",
         "refundEstimatedFee": "Estimated SORA fee",
         "refundFee": "SORA fee deducted",
         "refundGross": "Amount before fees",

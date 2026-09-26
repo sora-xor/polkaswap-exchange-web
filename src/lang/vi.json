@@ -438,7 +438,7 @@
             "insufficientBalance": "Ví này không có đủ XOR gốc để thanh toán và trả phí mạng."
         },
         "newOrder": "Lưu biên lai và bắt đầu đơn hàng mới",
-        "refundedBody": "Khoản hoàn tiền đã hoàn tất. Phí SORA để gửi khoản hoàn tiền đã được trừ khỏi số XOR trả lại. Phí mạng đã trả khi đặt hàng ban đầu không được hoàn lại.",
+        "refundedBody": "Khoản hoàn tiền đã hoàn tất. Xem chi tiết giao dịch hoàn tiền bên dưới. Phí mạng đã trả khi đặt hàng ban đầu không được hoàn lại.",
         "legacyRefundBody": "Nếu trà của bạn không thể tìm được nguồn gốc hoặc vận chuyển, chúng tôi sẽ trả lại toàn bộ XOR đã nhận được cho đơn hàng, bao gồm cả phí vận chuyển, vào ví đã thanh toán. Cửa hàng bao gồm phí giao dịch hoàn trả. Chúng tôi sẽ cập nhật cho bạn trong khi khoản tiền hoàn lại của bạn đang chờ xử lý.",
         "legacyRefundedBody": "Việc hoàn tiền của bạn đã hoàn tất. Toàn bộ XOR nhận được, bao gồm cả phí vận chuyển, đã được trả lại vào ví đã thanh toán. Cửa hàng đã bao trả phí giao dịch hoàn tiền.",
         "refundGross": "Số tiền trước phí",

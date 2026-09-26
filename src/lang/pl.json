@@ -438,7 +438,7 @@
             "insufficientBalance": "W tym portfelu nie ma wystarczającej ilości natywnego XOR na płatność i opłatę sieciową."
         },
         "newOrder": "Zapisz potwierdzenie i rozpocznij nowe zamówienie",
-        "refundedBody": "Zwrot został zakończony. Opłata SORA za jego przesłanie została odjęta od zwróconych XOR. Opłaty sieciowe zapłacone przy pierwotnym zamówieniu nie zostały zwrócone.",
+        "refundedBody": "Zwrot został zakończony. Szczegóły transakcji zwrotu znajdziesz poniżej. Opłaty sieciowe zapłacone przy pierwotnym zamówieniu nie zostały zwrócone.",
         "legacyRefundBody": "Jeśli Twoja herbata nie może zostać pobrana ani wysłana, zwracamy pełną kwotę XOR otrzymaną za zamówienie, łącznie z wysyłką, do portfela, który zapłacił. Sklep pokrywa opłatę transakcyjną zwrotu środków. Będziemy Cię na bieżąco informować o oczekiwaniu na zwrot pieniędzy.",
         "legacyRefundedBody": "Twój zwrot środków został zakończony. Całość otrzymanej kwoty XOR, łącznie z wysyłką, została zwrócona do portfela, który zapłacił. Sklep pokrył opłatę transakcyjną zwrotu środków.",
         "refundGross": "Kwota przed opłatami",

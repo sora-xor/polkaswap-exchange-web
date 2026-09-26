@@ -438,7 +438,7 @@
             "insufficientBalance": "V této peněžence není dostatek nativního XOR na platbu a síťový poplatek."
         },
         "newOrder": "Uložte účtenku a začněte novou objednávku",
-        "refundedBody": "Vrácení je dokončeno. Od vrácených XOR byl odečten poplatek sítě SORA za odeslání refundace. Síťové poplatky zaplacené při původní objednávce nebyly vráceny.",
+        "refundedBody": "Vrácení je dokončeno. Podrobnosti o transakci vrácení najdete níže. Síťové poplatky zaplacené při původní objednávce nebyly vráceny.",
         "legacyRefundBody": "Pokud váš čaj nelze získat nebo odeslat, vrátíme celé XOR obdržené za objednávku, včetně dopravy, do peněženky, která zaplatila. Obchod hradí poplatek za vrácení peněz. Během čekání na vrácení peněz vás budeme informovat.",
         "legacyRefundedBody": "Vaše refundace je dokončena. Celá přijatá částka XOR včetně dopravy byla vrácena do peněženky, která zaplatila. Obchod uhradil poplatek za vrácení peněz.",
         "refundGross": "Částka před poplatky",
