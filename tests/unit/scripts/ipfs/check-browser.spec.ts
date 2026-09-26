@@ -93,7 +93,7 @@ describe('check-browser helpers', () => {
     expect(filtered).toEqual([{ level: 'error', message: 'Critical failure' }]);
   });
 
-  it('ignores optional endpoint CORS/load console errors', () => {
+  it('reports optional endpoint CORS/load console errors', () => {
     const messages = [
       {
         level: 'error',
@@ -115,13 +115,7 @@ describe('check-browser helpers', () => {
 
     const filtered = checkBrowser.filterConsoleMessages(messages);
 
-    expect(filtered).toEqual([
-      {
-        level: 'error',
-        message: 'Unexpected application error',
-        location: { url: 'http://127.0.0.1:41733/ipfs/polkaswap-e2e/' },
-      },
-    ]);
+    expect(filtered).toEqual(messages);
   });
 
   it('waits for content by polling selector metrics', async () => {
@@ -139,6 +133,55 @@ describe('check-browser helpers', () => {
     expect(content).toEqual({ textLength: 10, htmlLength: 24 });
     expect(page.$eval).toHaveBeenCalledTimes(3);
     expect(page.waitForTimeout).toHaveBeenCalledTimes(2);
+  });
+
+  it('requires the mounted Swap route rather than the static app loader', () => {
+    const swap = checkBrowser.routeReadiness('https://polkaswap.io/#/swap');
+
+    expect(swap).toEqual({
+      name: 'swap',
+      title: 'Swap - Polkaswap',
+      selector: '.swap-container [data-widget-id="swapForm"]',
+    });
+    expect(
+      checkBrowser.hydrationIssue(
+        { title: swap.title, hasAppContent: true, hasBootstrapLoader: true, hasRouteUi: false },
+        swap
+      )
+    ).toContain('bootstrap loader');
+    expect(
+      checkBrowser.hydrationIssue(
+        { title: 'Polkaswap', hasAppContent: true, hasBootstrapLoader: false, hasRouteUi: true },
+        swap
+      )
+    ).toContain('Expected swap title');
+    expect(
+      checkBrowser.hydrationIssue(
+        { title: swap.title, hasAppContent: true, hasBootstrapLoader: false, hasRouteUi: false },
+        swap
+      )
+    ).toContain('swap UI did not render');
+  });
+
+  it('polls until the mounted route appears and rejects a loader at the deadline', async () => {
+    const readiness = checkBrowser.routeReadiness('https://polkaswap.io/#/swap');
+    const loader = { title: 'Polkaswap', hasAppContent: true, hasBootstrapLoader: true, hasRouteUi: false };
+    const mounted = {
+      title: 'Swap - Polkaswap',
+      hasAppContent: true,
+      hasBootstrapLoader: false,
+      hasRouteUi: true,
+    };
+    const page = {
+      evaluate: vi.fn().mockResolvedValueOnce(loader).mockResolvedValueOnce(mounted),
+      waitForTimeout: vi.fn().mockResolvedValue(undefined),
+    };
+
+    expect(await checkBrowser.waitForHydratedUi(page, '#app', readiness, 1000)).toEqual(mounted);
+    expect(page.waitForTimeout).toHaveBeenCalledTimes(1);
+    expect(
+      await checkBrowser.waitForHydratedUi({ evaluate: vi.fn().mockResolvedValue(loader) }, '#app', readiness, 0)
+    ).toEqual(loader);
   });
 
   it('ensures screenshot directory is created recursively', async () => {
@@ -252,7 +295,7 @@ describe('check-browser helpers', () => {
     ).toBeNull();
   });
 
-  it('ignores optional endpoint failed requests', () => {
+  it('reports optional endpoint failed requests', () => {
     const failedRequests = [
       { url: 'https://api.coingecko.com/api/v3/simple/price?ids=dai', errorText: 'net::ERR_FAILED' },
       { url: 'https://example.com/api/critical', status: 500 },
@@ -260,6 +303,180 @@ describe('check-browser helpers', () => {
 
     const filtered = checkBrowser.filterFailedRequests(failedRequests);
 
-    expect(filtered).toEqual([{ url: 'https://example.com/api/critical', status: 500 }]);
+    expect(filtered).toEqual(failedRequests);
+  });
+
+  it('accepts an empty failed-request collection', () => {
+    expect(checkBrowser.filterFailedRequests([])).toEqual([]);
+    expect(checkBrowser.filterFailedRequests(undefined)).toEqual([]);
+  });
+});
+
+describe('check-browser deployment result', () => {
+  it.each([{ failure: 'cors' }, { failure: 'network' }, { failure: 'none' }])(
+    'fails on $failure errors while accepting a clean run',
+    async ({ failure }) => {
+      const originalArgv = process.argv;
+      const originalExitCode = process.exitCode;
+      const originalLauncher = checkBrowser.BROWSER_LAUNCHERS.webkit;
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+      const endpoint = 'https://api.coingecko.com/api/v3/simple/price?ids=dai';
+      const listeners: Record<string, (...args: unknown[]) => void> = {};
+      const close = vi.fn().mockResolvedValue(undefined);
+      const page = {
+        on: vi.fn((event: string, listener: (...args: unknown[]) => void) => {
+          listeners[event] = listener;
+        }),
+        goto: vi.fn(async () => {
+          if (failure === 'cors') {
+            listeners.console({
+              type: () => 'error',
+              text: () => `Access to fetch at '${endpoint}' has been blocked by CORS policy`,
+              location: () => ({ url: 'https://polkaswap.io/' }),
+            });
+          } else if (failure === 'network') {
+            listeners.requestfailed({
+              failure: () => ({ errorText: 'net::ERR_FAILED' }),
+              url: () => endpoint,
+              method: () => 'GET',
+            });
+          }
+          return {
+            url: () => 'https://polkaswap.io/',
+            status: () => 200,
+            headers: () => ({ 'cache-control': 'no-store' }),
+          };
+        }),
+        $eval: vi
+          .fn()
+          .mockResolvedValueOnce({ textLength: 15, htmlLength: 35 })
+          .mockResolvedValueOnce('<div id="app">Connect account</div>'),
+        evaluate: vi.fn().mockResolvedValue({
+          title: 'Polkaswap',
+          hasAppContent: true,
+          hasBootstrapLoader: false,
+          hasRouteUi: true,
+        }),
+        locator: vi.fn(() => ({ innerText: vi.fn().mockResolvedValue('Connect account') })),
+        close,
+      };
+      const context = { addInitScript: vi.fn(), newPage: vi.fn().mockResolvedValue(page), close };
+      checkBrowser.BROWSER_LAUNCHERS.webkit = vi.fn().mockResolvedValue({
+        version: () => 'test',
+        newContext: vi.fn().mockResolvedValue(context),
+        close,
+      });
+      process.argv = [
+        'node',
+        'check-browser.js',
+        '--url=https://polkaswap.io/',
+        '--browser=webkit',
+        '--no-spawn-gateway',
+        '--settle-ms=0',
+      ];
+      process.exitCode = 0;
+      try {
+        await checkBrowser.run();
+        if (failure === 'none') {
+          expect(process.exitCode).toBe(0);
+          expect(logSpy).toHaveBeenCalledWith('IPFS check passed.');
+          expect(errorSpy).not.toHaveBeenCalled();
+        } else {
+          expect(process.exitCode).toBe(1);
+          expect(errorSpy).toHaveBeenCalledWith(
+            'IPFS check failed:',
+            expect.stringContaining(failure === 'cors' ? '1 console error(s)' : '1 failed network request(s)')
+          );
+          expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining(endpoint));
+          expect(logSpy).not.toHaveBeenCalledWith('IPFS check passed.');
+        }
+      } finally {
+        process.argv = originalArgv;
+        process.exitCode = originalExitCode;
+        checkBrowser.BROWSER_LAUNCHERS.webkit = originalLauncher;
+        errorSpy.mockRestore();
+        logSpy.mockRestore();
+      }
+    }
+  );
+
+  it('captures the final hydrated Swap DOM and fails if the route falls back to its loader', async () => {
+    const originalArgv = process.argv;
+    const originalExitCode = process.exitCode;
+    const originalLauncher = checkBrowser.BROWSER_LAUNCHERS.webkit;
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const mounted = {
+      title: 'Swap - Polkaswap',
+      hasAppContent: true,
+      hasBootstrapLoader: false,
+      hasRouteUi: true,
+    };
+    const loader = {
+      title: 'Polkaswap',
+      hasAppContent: true,
+      hasBootstrapLoader: true,
+      hasRouteUi: false,
+    };
+    const close = vi.fn().mockResolvedValue(undefined);
+    const page = {
+      on: vi.fn(),
+      goto: vi.fn().mockResolvedValue({
+        url: () => 'https://polkaswap.io/',
+        status: () => 200,
+        headers: () => ({ 'cache-control': 'no-store' }),
+      }),
+      evaluate: vi.fn().mockResolvedValueOnce(loader).mockResolvedValueOnce(mounted).mockResolvedValueOnce(mounted),
+      waitForTimeout: vi.fn().mockResolvedValue(undefined),
+      $eval: vi
+        .fn()
+        .mockResolvedValueOnce({ textLength: 15, htmlLength: 65 })
+        .mockResolvedValueOnce('<div id="app"><div class="swap-container">Connect account</div></div>'),
+      locator: vi.fn(() => ({ innerText: vi.fn().mockResolvedValue('Connect account Network Fee') })),
+      close,
+    };
+    const context = { addInitScript: vi.fn(), newPage: vi.fn().mockResolvedValue(page), close };
+    checkBrowser.BROWSER_LAUNCHERS.webkit = vi.fn().mockResolvedValue({
+      version: () => 'test',
+      newContext: vi.fn().mockResolvedValue(context),
+      close,
+    });
+    process.argv = [
+      'node',
+      'check-browser.js',
+      '--url=https://polkaswap.io/#/swap',
+      '--browser=webkit',
+      '--no-spawn-gateway',
+      '--settle-ms=0',
+    ];
+    process.exitCode = 0;
+
+    try {
+      await checkBrowser.run();
+      expect(process.exitCode).toBe(0);
+      expect(page.waitForTimeout).toHaveBeenCalledTimes(1);
+      expect(page.$eval).toHaveBeenCalledTimes(2);
+      const summary = JSON.parse(logSpy.mock.calls.find((call) => String(call[0]).startsWith('{'))?.[0] as string);
+      expect(summary.hydration).toEqual(mounted);
+      expect(summary.domSnapshot).toContain('swap-container');
+      expect(summary.bodyTextSamples.at(-1)).toContain('Network Fee');
+
+      page.evaluate.mockReset().mockResolvedValueOnce(mounted).mockResolvedValueOnce(loader);
+      page.$eval
+        .mockReset()
+        .mockResolvedValueOnce({ textLength: 15, htmlLength: 35 })
+        .mockResolvedValueOnce('<div id="app"><div class="app-bootstrap-loader"></div></div>');
+      process.exitCode = 0;
+      await checkBrowser.run();
+      expect(process.exitCode).toBe(1);
+      expect(errorSpy).toHaveBeenCalledWith('IPFS check failed:', expect.stringContaining('bootstrap loader'));
+    } finally {
+      process.argv = originalArgv;
+      process.exitCode = originalExitCode;
+      checkBrowser.BROWSER_LAUNCHERS.webkit = originalLauncher;
+      errorSpy.mockRestore();
+      logSpy.mockRestore();
+    }
   });
 });

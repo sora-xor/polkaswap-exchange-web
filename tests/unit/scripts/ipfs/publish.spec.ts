@@ -8,15 +8,16 @@ import {
   collectMissingOutputs,
   createBunnyOriginHostHeader,
   createBunnyOriginUrl,
-  createDwebGatewayUrl,
-  createDwebSubdomainOriginUrl,
+  createPublicGatewayUrl,
   createLocalGatewayUrl,
   formatBunnyFilebaseCspRecommendation,
   formatStaticSiteCacheHeaderRecommendations,
   hasVueMajorVersion,
   isNoSpaceLeftError,
   isPermissionError,
+  logGatewayUrls,
   multiaddrToGatewayBaseUrl,
+  normalizePublicGatewayBaseUrl,
   pinIpfsCidRecursively,
   publishDirectoryToIpfs,
   resolveGatewayBaseUrlFromRepo,
@@ -27,6 +28,9 @@ import {
   toCidV1Base32,
   verifyRecursiveIpfsPin,
 } from '../../../../scripts/ipfs/publish';
+
+const PUBLISHED_CID = 'Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF';
+const PUBLISHED_CID_V1 = 'bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y';
 
 const getCspDirectiveValues = (csp: string, directive: string): string[] => {
   const value = csp
@@ -439,19 +443,54 @@ describe('swapEnvConfigForProduction', () => {
   });
 });
 
-describe('createDwebGatewayUrl', () => {
-  it('builds a direct CIDv1 dweb subdomain link for a CIDv0 value', () => {
-    expect(createDwebGatewayUrl('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
-      'https://bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link/index.html'
+describe('createPublicGatewayUrl', () => {
+  it('builds a managed static gateway link for a CIDv0 value', () => {
+    expect(createPublicGatewayUrl(PUBLISHED_CID)).toBe(`https://mof.sora.org/ipfs/${PUBLISHED_CID_V1}/index.html`);
+  });
+
+  it('uses the custom static gateway for the public link', () => {
+    expect(createPublicGatewayUrl(PUBLISHED_CID, 'https://gateway.example.com/ipfs/')).toBe(
+      `https://gateway.example.com/ipfs/${PUBLISHED_CID_V1}/index.html`
     );
   });
 });
 
-describe('createDwebSubdomainOriginUrl', () => {
-  it('builds the Bunny-safe dweb origin URL without a path-to-subdomain redirect', () => {
-    expect(createDwebSubdomainOriginUrl('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
-      'https://bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link'
-    );
+describe('normalizePublicGatewayBaseUrl', () => {
+  it.each(['https://gateway.example.com', 'https://gateway.example.com/', 'https://gateway.example.com/ipfs/'])(
+    'normalizes %s without duplicating the IPFS path',
+    (baseUrl) => {
+      expect(normalizePublicGatewayBaseUrl(baseUrl)).toBe('https://gateway.example.com/ipfs');
+    }
+  );
+
+  it.each([
+    'https://ipfs.io',
+    'https://gateway.ipfs.io',
+    'https://gatewaychanges.ipfs.io',
+    'https://dweb.link',
+    `https://${PUBLISHED_CID_V1}.ipfs.dweb.link`,
+    'https://inbrowser.link',
+    `https://${PUBLISHED_CID_V1}.ipfs.inbrowser.link`,
+    'https://IPFS.IO./ipfs',
+    'https://cf-ipfs.com',
+    `https://${PUBLISHED_CID_V1}.ipfs.cf-ipfs.com`,
+    'https://cloudflare-ipfs.com',
+    `https://${PUBLISHED_CID_V1}.ipfs.cloudflare-ipfs.com`,
+  ])('rejects retiring and service-worker gateway %s', (baseUrl) => {
+    expect(() => normalizePublicGatewayBaseUrl(baseUrl)).toThrow(/Retiring or browser-only/);
+  });
+
+  it.each([
+    'not a URL',
+    'http://gateway.example.com',
+    'ftp://gateway.example.com',
+    'https://user:secret@gateway.example.com',
+    'https://gateway.example.com?token=secret',
+    'https://gateway.example.com/#/ipfs',
+    `https://gateway.example.com/ipfs/${PUBLISHED_CID_V1}`,
+    'https://gateway.example.com/ipfs/ipfs',
+  ])('rejects unsafe or already-bound gateway %s', (baseUrl) => {
+    expect(() => normalizePublicGatewayBaseUrl(baseUrl)).toThrow(/public IPFS gateway/);
   });
 });
 
@@ -470,25 +509,57 @@ describe('toCidV1Base32', () => {
 });
 
 describe('createBunnyOriginUrl', () => {
-  it('builds a dweb subdomain origin URL for Bunny by default', () => {
-    expect(createBunnyOriginUrl('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
-      'https://bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link'
-    );
+  it('builds a managed static origin URL with CIDv1 for Bunny by default', () => {
+    expect(createBunnyOriginUrl(PUBLISHED_CID)).toBe(`https://mof.sora.org/ipfs/${PUBLISHED_CID_V1}`);
   });
 
   it('normalizes a custom gateway base URL before appending the CID', () => {
-    expect(createBunnyOriginUrl('QmExampleCid', 'https://gateway.example.com/')).toBe(
-      'https://gateway.example.com/ipfs/QmExampleCid'
+    expect(createBunnyOriginUrl(PUBLISHED_CID, 'https://gateway.example.com/')).toBe(
+      `https://gateway.example.com/ipfs/${PUBLISHED_CID_V1}`
     );
+  });
+
+  it('rejects CIDs containing a path instead of interpolating them into the origin', () => {
+    expect(() => createBunnyOriginUrl(`${PUBLISHED_CID_V1}/../other`)).toThrow(/IPFS CID/);
   });
 });
 
 describe('createBunnyOriginHostHeader', () => {
-  it('extracts the dweb hostname Bunny should send as the origin Host header', () => {
-    expect(createBunnyOriginHostHeader('Qma3EurUCyN1apyvk2sTFPxpssEYxQKjNNdaMpBhGZ3wMF')).toBe(
-      'bafybeifn2z3chs3574g2we5orcfmw2kw5eexlyelkw5ncqtyxvb7lfhs3y.ipfs.dweb.link'
+  it('extracts the managed origin hostname Bunny should send', () => {
+    expect(createBunnyOriginHostHeader(PUBLISHED_CID)).toBe('mof.sora.org');
+  });
+
+  it('keeps custom gateway hosts and ports consistent with the origin URL', () => {
+    expect(createBunnyOriginHostHeader(PUBLISHED_CID, 'https://gateway.example.com:8443/ipfs')).toBe(
+      'gateway.example.com:8443'
     );
   });
+});
+
+describe('logGatewayUrls', () => {
+  it.each([
+    { label: 'Production', override: undefined, host: 'mof.sora.org' },
+    { label: 'Testnet', override: 'https://gateway.example.com/ipfs/', host: 'gateway.example.com' },
+  ])(
+    'prints matching $label gateway and Bunny settings without retiring gateway links',
+    ({ label, override, host }) => {
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      try {
+        logGatewayUrls(PUBLISHED_CID, label, 'http://127.0.0.1:8080', override);
+
+        expect(logSpy).toHaveBeenCalledWith(`${label} CIDv1:`, PUBLISHED_CID_V1);
+        expect(logSpy).toHaveBeenCalledWith(
+          `${label} public gateway:`,
+          `https://${host}/ipfs/${PUBLISHED_CID_V1}/index.html`
+        );
+        expect(logSpy).toHaveBeenCalledWith(`${label} Bunny origin URL:`, `https://${host}/ipfs/${PUBLISHED_CID_V1}`);
+        expect(logSpy).toHaveBeenCalledWith(`${label} Bunny origin host header:`, host);
+        expect(logSpy.mock.calls.flat().join('\n')).not.toMatch(/ipfs\.io|dweb\.link|inbrowser\.link/);
+      } finally {
+        logSpy.mockRestore();
+      }
+    }
+  );
 });
 
 describe('formatStaticSiteCacheHeaderRecommendations', () => {
@@ -509,18 +580,18 @@ describe('formatStaticSiteCacheHeaderRecommendations', () => {
 });
 
 describe('formatBunnyFilebaseCspRecommendation', () => {
-  it('keeps the Filebase CSP override compatible with Google Drive wallet scripts', () => {
+  it('keeps the static origin CSP override compatible with Google Drive wallet scripts', () => {
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://accounts.google.com');
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://apis.google.com');
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://content.googleapis.com');
     expect(BUNNY_FILEBASE_CSP_HEADER).toContain('https://www.gstatic.com');
-    expect(BUNNY_FILEBASE_CSP_HEADER).toContain("connect-src 'self' https: wss:");
+    expect(BUNNY_FILEBASE_CSP_HEADER).toContain("connect-src 'self' https: wss: http://127.0.0.1:39847;");
     expect(getCspDirectiveValues(BUNNY_FILEBASE_CSP_HEADER, 'frame-src')).toContain('https://content.googleapis.com');
     expect(getCspDirectiveValues(BUNNY_FILEBASE_CSP_HEADER, 'script-src')).toContain('chrome-extension:');
     expect(getCspDirectiveValues(BUNNY_FILEBASE_CSP_HEADER, 'script-src')).toContain('moz-extension:');
 
     expect(formatBunnyFilebaseCspRecommendation()).toBe(
-      ['Recommended Filebase origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join('\n')
+      ['Recommended static origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join('\n')
     );
   });
 });

@@ -23,6 +23,7 @@
     "prepreview": "yarn build",
     "preview": "vite preview",
     "ipfs:publish": "tsx ./scripts/ipfs/publish.ts",
+    "ipfs:purge:bunny": "node ./scripts/ipfs/purge-bunny.mjs",
     "sorafs:package": "tsx ./scripts/sorafs/deploy.ts package",
     "sorafs:proposal": "tsx ./scripts/sorafs/deploy.ts proposal",
     "sorafs:publish": "tsx ./scripts/sorafs/deploy.ts publish",

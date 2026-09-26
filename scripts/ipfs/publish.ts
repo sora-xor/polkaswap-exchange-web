@@ -7,6 +7,14 @@ const DIST_DIR = join(process.cwd(), 'dist');
 const PROD_ENV_CONFIG_FILENAME = 'env.json';
 const TESTNET_ENV_CONFIG_FILENAME = 'env.dev.json';
 const DEFAULT_LOCAL_GATEWAY_BASE_URL = 'http://127.0.0.1:8080';
+const DEFAULT_PUBLIC_GATEWAY_BASE_URL = 'https://mof.sora.org';
+const UNSUPPORTED_PUBLIC_GATEWAY_DOMAINS = [
+  'ipfs.io',
+  'dweb.link',
+  'inbrowser.link',
+  'cf-ipfs.com',
+  'cloudflare-ipfs.com',
+];
 
 export const STATIC_SITE_CACHE_HEADERS = [
   { path: '/', header: 'Cache-Control: no-store' },
@@ -18,9 +26,9 @@ export const STATIC_SITE_CACHE_HEADERS = [
   { path: '/assets/*', header: 'Cache-Control: public, max-age=31536000, immutable' },
 ] as const;
 
-/** CSP override for Bunny pull zones that use Filebase as an IPFS origin. */
+/** CSP override for Bunny pull zones using a static IPFS gateway origin. */
 export const BUNNY_FILEBASE_CSP_HEADER =
-  "default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' chrome-extension: moz-extension: https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; connect-src 'self' https: wss:; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data: https:; worker-src 'self' blob:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://content.googleapis.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self';";
+  "default-src 'self'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' chrome-extension: moz-extension: https://telegram.org https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com; connect-src 'self' https: wss: http://127.0.0.1:39847; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data: https:; worker-src 'self' blob:; frame-src 'self' https://buy.moonpay.com https://buy-staging.moonpay.com https://secure.walletconnect.org https://secure.walletconnect.com https://verify.walletconnect.org https://verify.walletconnect.com https://accounts.google.com https://content.googleapis.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self';";
 
 interface WorkspaceRepository {
   name: string;
@@ -795,40 +803,57 @@ export function toCidV1Base32(cid: string): string {
 }
 
 /**
- * Creates a direct dweb.link subdomain origin for a published IPFS CID without a cross-host redirect.
+ * Validates an HTTPS static gateway root or `/ipfs` base without credentials or a bound CID.
+ * Retiring public gateways and browser-only service-worker gateways cannot serve as CDN origins.
  */
-export function createDwebSubdomainOriginUrl(cid: string): string {
-  return `https://${toCidV1Base32(cid)}.ipfs.dweb.link`;
+export function normalizePublicGatewayBaseUrl(gatewayBaseUrl = DEFAULT_PUBLIC_GATEWAY_BASE_URL): string {
+  let gateway: URL;
+  try {
+    gateway = new URL(gatewayBaseUrl);
+  } catch {
+    throw new Error('The public IPFS gateway must be an absolute HTTPS URL.');
+  }
+
+  if (gateway.protocol !== 'https:' || gateway.username || gateway.password || gateway.search || gateway.hash) {
+    throw new Error('The public IPFS gateway must use HTTPS without credentials, query parameters, or a fragment.');
+  }
+
+  const hostname = gateway.hostname.replace(/\.+$/, '');
+  if (UNSUPPORTED_PUBLIC_GATEWAY_DOMAINS.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`))) {
+    throw new Error('Retiring or browser-only IPFS gateways cannot be used as a public gateway or Bunny origin.');
+  }
+
+  const pathname = gateway.pathname.replace(/\/+$/, '');
+  if (pathname !== '' && pathname !== '/ipfs') {
+    throw new Error('The public IPFS gateway URL must be a gateway root or /ipfs base without a CID.');
+  }
+
+  return `${gateway.origin}/ipfs`;
 }
 
 /**
- * Creates a public dweb.link URL for a published IPFS CID without a path-to-subdomain redirect.
+ * Creates a public static-gateway link for a published CID using the same gateway as Bunny.
  */
-export function createDwebGatewayUrl(cid: string): string {
-  return `${createDwebSubdomainOriginUrl(cid)}/index.html`;
+export function createPublicGatewayUrl(cid: string, gatewayBaseUrl?: string): string {
+  return `${createBunnyOriginUrl(cid, gatewayBaseUrl)}/index.html`;
 }
 
 /**
  * Creates the URL to use as a Bunny pull-zone origin.
  *
- * By default, this uses the CIDv1 dweb.link subdomain form so Bunny can fetch
- * assets without following a path-to-subdomain redirect. Pass a custom gateway
- * base only for legacy/private gateway origins that intentionally use
- * `/ipfs/<cid>` paths.
+ * The managed MOF gateway is the default. Its node must retain the published
+ * DAG before switching Bunny. Custom maintained gateways must serve static files
+ * directly at `/ipfs/<cid>` and pass the documented no-redirect asset checks.
  */
 export function createBunnyOriginUrl(cid: string, gatewayBaseUrl?: string): string {
-  if (!gatewayBaseUrl) {
-    return createDwebSubdomainOriginUrl(cid);
-  }
-
-  return `${gatewayBaseUrl.replace(/\/+$/, '')}/ipfs/${cid}`;
+  return `${normalizePublicGatewayBaseUrl(gatewayBaseUrl)}/${toCidV1Base32(cid)}`;
 }
 
 /**
- * Creates the Host header Bunny should send to the dweb.link origin.
+ * Creates the Host header matching the selected static gateway, including an explicit port.
  */
-export function createBunnyOriginHostHeader(cid: string): string {
-  return new URL(createBunnyOriginUrl(cid)).hostname;
+export function createBunnyOriginHostHeader(cid: string, gatewayBaseUrl?: string): string {
+  return new URL(createBunnyOriginUrl(cid, gatewayBaseUrl)).host;
 }
 
 /**
@@ -849,26 +874,32 @@ export function formatStaticSiteCacheHeaderRecommendations(): string {
 }
 
 /**
- * Formats the CSP that Bunny should apply when it replaces restrictive Filebase gateway headers.
+ * Formats the CSP that Bunny should apply when it replaces restrictive static IPFS gateway headers.
  */
 export function formatBunnyFilebaseCspRecommendation(): string {
-  return ['Recommended Filebase origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join(
+  return ['Recommended static origin CSP header:', `  Content-Security-Policy: ${BUNNY_FILEBASE_CSP_HEADER}`].join(
     '\n'
   );
 }
 
-function logGatewayUrls(cid: string, label: string, localGatewayBaseUrl: string): void {
-  const url = `https://ipfs.io/ipfs/${cid}/index.html`;
+/** Logs matching static gateway and Bunny settings, plus a local-node link for each published build. */
+export function logGatewayUrls(
+  cid: string,
+  label: string,
+  localGatewayBaseUrl: string,
+  publicGatewayBaseUrl?: string
+): void {
   console.log(`\n${label} CID:`, cid);
-  console.log(`${label} gateway (ipfs.io):`, url);
-  console.log(`${label} dweb link:`, createDwebGatewayUrl(cid));
-  console.log(`${label} Bunny origin URL:`, createBunnyOriginUrl(cid));
-  console.log(`${label} Bunny origin host header:`, createBunnyOriginHostHeader(cid));
+  console.log(`${label} CIDv1:`, toCidV1Base32(cid));
+  console.log(`${label} public gateway:`, createPublicGatewayUrl(cid, publicGatewayBaseUrl));
+  console.log(`${label} Bunny origin URL:`, createBunnyOriginUrl(cid, publicGatewayBaseUrl));
+  console.log(`${label} Bunny origin host header:`, createBunnyOriginHostHeader(cid, publicGatewayBaseUrl));
   console.log(`${label} Bunny origin request header:`, 'Sec-Fetch-Dest: empty');
   console.log(`${label} local gateway:`, createLocalGatewayUrl(cid, localGatewayBaseUrl));
 }
 
 function main(): void {
+  const publicGatewayBaseUrl = normalizePublicGatewayBaseUrl(process.env.IPFS_PUBLIC_GATEWAY_URL);
   console.log('Checking IPFS CLI availability...');
   ensureIpfsCli();
 
@@ -883,7 +914,7 @@ function main(): void {
 
   console.log('Publishing production `dist/` to IPFS...');
   const productionCid = publishDirectoryToIpfs(DIST_DIR);
-  logGatewayUrls(productionCid, 'Production', resolveLocalGatewayBaseUrl());
+  logGatewayUrls(productionCid, 'Production', resolveLocalGatewayBaseUrl(), publicGatewayBaseUrl);
   console.log(`\n${formatStaticSiteCacheHeaderRecommendations()}`);
   console.log(`\n${formatBunnyFilebaseCspRecommendation()}`);
 
@@ -892,7 +923,7 @@ function main(): void {
   try {
     console.log('Publishing testnet build to IPFS...');
     const testnetCid = publishDirectoryToIpfs(testnetDistPath);
-    logGatewayUrls(testnetCid, 'Testnet', resolveLocalGatewayBaseUrl());
+    logGatewayUrls(testnetCid, 'Testnet', resolveLocalGatewayBaseUrl(), publicGatewayBaseUrl);
   } finally {
     cleanup();
   }
