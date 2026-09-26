@@ -1,5 +1,7 @@
 # Community Store launch handoff — 25 September 2026
 
+Current isolated frontend validation is recorded in the [26 September report](community-store-isolated-validation-2026-09-26.md). The launch requirements below remain open.
+
 The implementation, privately enabled MOF relay, postal-code fix, controlled restart, private Telegram delivery and encrypted backup restores are verified. **Public checkout remains blocked and the frontend relay URL remains null.** Launch still requires sustained enabled-service capacity and real order, payment, fulfillment and refund rehearsals. The goal is not complete. The archive prerequisite has been resolved from existing approved infrastructure.
 
 The current MOF deployment has an explicitly configured, verified archive at `wss://mof2.sora.org`, while `wss://ws.mof.sora.org` remains the primary finality and canonical-hash authority. Both local and MOF-host probes recovered state 1,024 blocks behind the primary and resumed a persisted scan cursor after restarting the temporary database. The approved OVH source was already documented in this repository; no new endpoint approval or user-supplied URL is needed. Those historical recovery probes did not enable customer checkout.
