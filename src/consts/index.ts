@@ -10,6 +10,7 @@ import invert from 'lodash/fp/invert';
 
 import { PageNames } from './navigation';
 import polkamarktLogoUrl from '@/assets/img/polkamarkt/pm_logo.svg?url';
+import storeBagIconUrl from '@/lib/soramitsu-ui/icons/icomoon/shopping-bag-24.svg?url&no-inline';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
@@ -246,6 +247,7 @@ export interface SidebarMenuItemLink extends SidebarMenuItem {
 /** Sidebar icon names must stay aligned with the live polkaswap.io menu. */
 export const SidebarIcon = {
   Swap: 'arrows-swap-90-24',
+  Store: 'shopping-bag-24',
   Trade: 'music-CD-24',
   Polkamarkt: 'various-lightbulb-24',
   Rewards: 'basic-circle-star-24',
@@ -263,8 +265,15 @@ export const SidebarIcon = {
 } as const;
 
 export const PolkamarktLogo = polkamarktLogoUrl;
+export const StoreBagIcon = storeBagIconUrl;
 
 const MainMenu: Array<SidebarMenuItemLink> = [
+  {
+    icon: SidebarIcon.Store,
+    iconSrc: StoreBagIcon,
+    title: PageNames.Store,
+    href: '#/store',
+  },
   {
     icon: SidebarIcon.Swap,
     title: PageNames.Swap,

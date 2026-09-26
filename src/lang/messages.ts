@@ -1,6 +1,7 @@
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 
 import walletEn from '@/lib/soraneo-wallet/src/lang/en';
+import communityStoreMessages from '@/features/store/messages.en.json';
 import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
@@ -13,6 +14,7 @@ import { VaultPageNames } from '../modules/vault/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '../types/tabs';
 
 export default {
+  communityStore: communityStoreMessages,
   // Wallet project keys
   ...walletEn,
   // {AppName} project keys
@@ -95,6 +97,7 @@ export default {
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {
+    [PageNames.Store]: 'Store',
     [PageNames.Swap]: 'Swap',
     [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
@@ -117,6 +120,7 @@ export default {
     [VaultPageNames.VaultDetails]: 'Position Details',
   },
   mainMenu: {
+    [PageNames.Store]: 'Store',
     [PageNames.Swap]: 'Swap',
     [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',

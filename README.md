@@ -91,6 +91,8 @@ yarn install
 
 ## Testing
 
+The XOR-only Community Store at `/#/store` uses the versioned Sora Pay package and a separate private merchant relay. See [Community Store](docs/community-store.md) for pricing, product assets, recovery, fulfillment and launch requirements. The IPFS bundle keeps browsing available while its relay is unconfigured.
+
 Vitest is configured via `vitest.config.mjs` with projects for unit suites and i18n checks. Add or update unit tests under `tests/unit/**` whenever you introduce a new function, composable, or store action. Useful commands:
 
 - `yarn test:unit` — runs every unit suite. Target a single file via `vitest run --config vitest.config.mjs --project unit path/to/spec`.

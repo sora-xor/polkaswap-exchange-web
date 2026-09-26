@@ -8,6 +8,7 @@ import { poolRoutes } from '@/features/pool/routes';
 import { referralRoutes } from '@/features/referrals/routes';
 import { rewardsRoutes } from '@/features/rewards/routes';
 import { swapRoutes } from '@/features/swap/routes';
+import { storeRoutes } from '@/features/store/routes';
 import { stakingRoutes } from '@/features/staking/routes';
 import { vaultRoutes } from '@/features/vault/routes';
 import { walletRoutes } from '@/features/wallet/routes';
@@ -31,5 +32,6 @@ export const routes: RouteRecordRaw[] = [
   ...vaultRoutes,
   ...dashboardRoutes,
   ...polkamarktRoutes,
+  ...storeRoutes,
   ...miscRoutes,
 ];

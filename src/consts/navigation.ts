@@ -1,5 +1,6 @@
 export enum PageNames {
   Swap = 'Swap',
+  Store = 'Store',
   Pool = 'Pool',
   Stats = 'Stats',
   Wallet = 'Wallet',

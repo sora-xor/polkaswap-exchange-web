@@ -3832,6 +3832,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sora/sora-pay@file:./vendor/sora-pay/sora-pay-0.1.0.tgz::locator=polkaswap-exchange-web%40workspace%3A.":
+  version: 0.1.0
+  resolution: "@sora/sora-pay@file:./vendor/sora-pay/sora-pay-0.1.0.tgz#./vendor/sora-pay/sora-pay-0.1.0.tgz::hash=334ddd&locator=polkaswap-exchange-web%40workspace%3A."
+  dependencies:
+    "@polkadot/api": "npm:16.5.4"
+    "@polkadot/util": "npm:14.0.2"
+    "@polkadot/util-crypto": "npm:14.0.2"
+    nodemailer: "npm:7.0.13"
+  checksum: 10c0/3002e5cae0aca3f5c00f9372e0c6e27a99f7c2804ef0429e7060a8f05c915eb9196fbfc60c96f5f4694885230dfe56ea7851f7a490db499004192bc844872e24
+  languageName: node
+  linkType: hard
+
 "@standard-schema/spec@npm:^1.1.0":
   version: 1.1.0
   resolution: "@standard-schema/spec@npm:1.1.0"
@@ -11212,6 +11224,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:7.0.13":
+  version: 7.0.13
+  resolution: "nodemailer@npm:7.0.13"
+  checksum: 10c0/b26aa5b9fa4a033bbc1e1c16ef75ee2a9c8641fd290c00a8361d6a251b3c1b8bad545a23efa627f59cb266340a448891ea8aa49d8a9307c767b8505219d95079
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^7.2.1":
   version: 7.2.1
   resolution: "nopt@npm:7.2.1"
@@ -11886,6 +11905,7 @@ __metadata:
     "@polkadot/ui-shared": "npm:3.16.4"
     "@polkadot/util": "npm:14.0.2"
     "@polkadot/util-crypto": "npm:14.0.2"
+    "@sora/sora-pay": "file:./vendor/sora-pay/sora-pay-0.1.0.tgz"
     "@types/electron-devtools-installer": "npm:^4.0.0"
     "@types/jsdom": "npm:^27.0.0"
     "@types/lodash": "npm:^4.17.24"
