@@ -80,3 +80,27 @@ The diagnostic run with always-on tracing additionally exhausted fixture teardow
 - The original failing reproduction is retained at `output/playwright/store-original-timings.json`; diagnostic fixture timings are in `output/playwright/store-isolated-fixed-timings.json`. Existing successful assertions were preserved, and only changed or previously failed cases were rerun.
 
 Scoped ESLint and `git diff --check` also pass (`/tmp/community-store-root-cause-spec-lint.log`). These remain deterministic mock-wallet/relay browser checks. They do not establish a real payment, mobile-wallet signature or shipment. No production application source or built assets changed during this test repair.
+
+
+## Scheduled backup follow-through — 12:42 UTC
+
+The original background repair run was followed by **nine subsequent completed hourly-job backups** over roughly nine hours. All ten retained encrypted archives were rechecked for matching hashes, byte sizes and owner-only file permissions. Their recorded restores passed SQLite integrity, original-database-key and encrypted-record verification. Every snapshot contained one order, zero payments and zero notification jobs; the saved next-block cursor advanced by **5,224 blocks**.
+
+The latest backup verified at **12:37:14 UTC**: restore **3.808 seconds**, database verification **0.661 seconds**. Across all ten, the maxima were **10.269 seconds** and **8.585 seconds**, within the original 60-second limits. The loaded hourly LaunchAgent reported its last exit code as zero and was idle after completion. This inspection triggered no new backup or database restore and changed no service or order.
+
+Toolkit evidence: `output/private-rehearsal/backup-followthrough-2026-09-26T1242Z.json`. These are retained-archive checks and recorded restore results, not a new live fulfillment test. The operator Mac remains a dependency of this backup schedule.
+
+
+## Read-only relay observation — 12:47 UTC
+
+A diagnostic review found that the previous observer's catalog GET could call the relay's order-expiry update. A separate observer now invokes the pinned audit only in read-only SQLite mode and limits HTTP checks to health and an unauthenticated nonexistent order. It never requests the catalog or private queue. Eight offline tests cover those boundaries and nonempty aggregate counts. The next-block cursor lag calculation is also corrected: `max(0, finalizedHeight - nextBlockCursor + 1)`, so a caught-up scanner reports zero rather than minus one. Historical observer files remain intact as evidence and must not be reused for read-only checks once orders exist.
+
+The new observer passed against MOF at **12:47:32–12:47:47 UTC**. Relay PID **26903** remained the same as the earlier observation and had run for **21 hours 18 minutes**. Both samples were caught up, with **zero finalized blocks pending**, **one order, zero payments and zero notification jobs**, valid merchant identity/key and SQLite integrity, ready loopback health, rejected unauthenticated order access and the unchanged public checkout gate. The existing RPC, IPFS and nginx process identities were unchanged across the samples.
+
+Relay RSS was **283,296 KiB** and sampled process CPU **0–0.5%**; host memory reported **36% free**. Shared-volume available space was approximately **8.55 GB**, down from **10.88 GB** in the 00:54 observation. These readings neither identify the disk consumer nor establish a linear growth rate or production load capacity. Do not delete unrelated node data or release pins to make room. The remaining launch capacity review must account for release storage and real pilot workload.
+
+Toolkit evidence: `output/private-rehearsal/enabled-readonly-observation-2026-09-26T1248Z.json`, observer `observe-enabled-readonly.py` (SHA-256 `5b323bceb86640d05066006882c93973a45633b1f480f82f09e98498ebb06d27`) and eight offline tests in `test_observe_enabled_readonly.py`. No order, relay configuration, wallet, signing lease, notification, public origin or cache was changed by the observation.
+
+A separate bounded directory-size check measured the entire relay installation at **437,756 KiB allocated** (about **427.5 MiB**). The database, WAL and shared-memory files were approximately **44 KiB**, **3.93 MiB** and **32 KiB** in logical size. Shared-volume free space at that sample was **8.54 GB**. The check inspected only sizes within the relay installation and did not read customer records or traverse other services. Evidence: `output/private-rehearsal/relay-storage-footprint-2026-09-26.json`.
+
+The existing 2 GiB provisioning guard and backup-export reserve are operation-specific checks, not a documented pilot storage budget. The two-log rotation policy and off-host backup retention do not cap shared-host growth. Current measurements support the observed private operation; establishing an operational storage reserve and response threshold remains part of the public-launch capacity review.
