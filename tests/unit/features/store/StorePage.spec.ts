@@ -170,6 +170,24 @@ describe('community Store page', () => {
     expect(shared.context!.createPayment).not.toHaveBeenCalled();
   });
 
+  it('shows one refund terms paragraph, replacing the fallback when the merchant policy is available', async () => {
+    const wrapper = render();
+    const refundTerms = wrapper.get('#store-terms > div:nth-child(2)');
+    expect(refundTerms.findAll('p')).toHaveLength(1);
+    expect(refundTerms.get('p').text()).toBe(messages.refundBody);
+
+    openStore();
+    await flushPromises();
+    expect(refundTerms.findAll('p')).toHaveLength(1);
+    expect(refundTerms.get('p').text()).toBe(exampleCatalog.merchant.cancellationPolicy);
+    expect(refundTerms.text()).not.toContain(messages.refundBody);
+
+    shared.context!.catalog.value = null;
+    await flushPromises();
+    expect(refundTerms.findAll('p')).toHaveLength(1);
+    expect(refundTerms.get('p').text()).toBe(messages.refundBody);
+  });
+
   it('keeps public support in the community Telegram group even with older relay contacts and a saved receipt', () => {
     openStore();
     shared.context!.catalog.value!.merchant.supportEmail = 'takemiya@sora.org';

@@ -362,8 +362,7 @@
       </div>
       <div>
         <h3>{{ t('communityStore.refundTitle') }}</h3>
-        <p>{{ t('communityStore.refundBody') }}</p>
-        <p v-if="catalog">{{ catalog.merchant.cancellationPolicy }}</p>
+        <p>{{ catalog?.merchant.cancellationPolicy || t('communityStore.refundBody') }}</p>
       </div>
       <div>
         <h3>{{ t('communityStore.operatorTitle') }}</h3>
