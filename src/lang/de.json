@@ -332,7 +332,7 @@
         "shippingTitle": "Versand aus Japan",
         "shippingBody": "Freiwillige beschaffen Ihren Tee in Japan und versenden ihn versiegelt an unterstützte Bestimmungsorte, an denen der Versand legal ist. Lieferoptionen und Gebühren werden vor der Zahlung angezeigt. Zoll- und Einfuhrbestimmungen hängen von Ihrem Zielort ab.",
         "refundTitle": "Rückerstattungen",
-        "refundBody": "Wenn Ihr Tee nicht beschafft oder versendet werden kann, erstatten wir den gesamten XOR, den wir für die Bestellung erhalten haben, einschließlich Versand, an das Konto, das bezahlt hat. Das Geschäft übernimmt die Transaktionsgebühr für die Rückerstattung. Wir halten Sie auf dem Laufenden, während Ihre Rückerstattung aussteht.",
+        "refundBody": "Wenn wir deinen Tee nicht beschaffen oder versenden können, erstatten wir die erhaltenen XOR einschließlich Versand abzüglich der SORA-Gebühr für die Rücküberweisung. Netzwerkgebühren der ursprünglichen Bestellung werden nicht erstattet. Wir halten dich über die ausstehende Erstattung auf dem Laufenden.",
         "operatorTitle": "Wer betreibt den Shop?",
         "operatorPending": "Betrieben von Community Volunteers.",
         "checkoutTitle": "Lieferdetails",
@@ -438,7 +438,14 @@
             "insufficientBalance": "In dieser Wallet ist nicht genügend natives XOR für die Zahlung und die Netzwerkgebühr vorhanden."
         },
         "newOrder": "Quittung speichern und neue Bestellung starten",
-        "refundedBody": "Ihre Rückerstattung ist abgeschlossen. Der gesamte erhaltene Betrag in Höhe von XOR, einschließlich Versand, wurde dem bezahlten Wallet gutgeschrieben. Das Geschäft hat die Transaktionsgebühr für die Rückerstattung übernommen."
+        "refundedBody": "Deine Erstattung ist abgeschlossen. Die SORA-Gebühr für die Rücküberweisung wurde von den zurückgezahlten XOR abgezogen. Netzwerkgebühren der ursprünglichen Bestellung wurden nicht erstattet.",
+        "legacyRefundBody": "Wenn Ihr Tee nicht beschafft oder versendet werden kann, erstatten wir den gesamten XOR, den wir für die Bestellung erhalten haben, einschließlich Versand, an das Konto, das bezahlt hat. Das Geschäft übernimmt die Transaktionsgebühr für die Rückerstattung. Wir halten Sie auf dem Laufenden, während Ihre Rückerstattung aussteht.",
+        "legacyRefundedBody": "Ihre Rückerstattung ist abgeschlossen. Der gesamte erhaltene Betrag in Höhe von XOR, einschließlich Versand, wurde dem bezahlten Wallet gutgeschrieben. Das Geschäft hat die Transaktionsgebühr für die Rückerstattung übernommen.",
+        "refundGross": "Betrag vor Gebühren",
+        "refundEstimatedFee": "Geschätzte SORA-Gebühr",
+        "refundFee": "Abgezogene SORA-Gebühr",
+        "refundNet": "Zurückgezahlte XOR",
+        "refundRemainder": "Noch zu erstatten"
     },
     "confirmNextTxFailure": {
         "button": "Ja, ich verstehe das Risiko",

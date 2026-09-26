@@ -332,7 +332,7 @@
         "shippingTitle": "Odesíláme z Japonska",
         "shippingBody": "Dobrovolníci odebírají váš čaj v Japonsku a odesílají jej zapečetěný do podporovaných destinací, kde je doprava legální. Možnosti doručení a poplatky se zobrazí před platbou. Celní a dovozní požadavky závisí na vaší destinaci.",
         "refundTitle": "Vrácení platby",
-        "refundBody": "Pokud váš čaj nelze získat nebo odeslat, vrátíme celé XOR obdržené za objednávku, včetně dopravy, do peněženky, která zaplatila. Obchod hradí poplatek za vrácení peněz. Během čekání na vrácení peněz vás budeme informovat.",
+        "refundBody": "Pokud váš čaj nemůžeme obstarat nebo odeslat, vrátíme přijaté XOR včetně dopravy po odečtení poplatku sítě SORA za odeslání refundace. Síťové poplatky zaplacené při původní objednávce se nevracejí. O průběhu vrácení vás budeme informovat.",
         "operatorTitle": "Kdo provozuje obchod",
         "operatorPending": "Provozuje Community Volunteers.",
         "checkoutTitle": "Podrobnosti o doručení",
@@ -438,7 +438,14 @@
             "insufficientBalance": "V této peněžence není dostatek nativního XOR na platbu a síťový poplatek."
         },
         "newOrder": "Uložte účtenku a začněte novou objednávku",
-        "refundedBody": "Vaše refundace je dokončena. Celá přijatá částka XOR včetně dopravy byla vrácena do peněženky, která zaplatila. Obchod uhradil poplatek za vrácení peněz."
+        "refundedBody": "Vrácení je dokončeno. Od vrácených XOR byl odečten poplatek sítě SORA za odeslání refundace. Síťové poplatky zaplacené při původní objednávce nebyly vráceny.",
+        "legacyRefundBody": "Pokud váš čaj nelze získat nebo odeslat, vrátíme celé XOR obdržené za objednávku, včetně dopravy, do peněženky, která zaplatila. Obchod hradí poplatek za vrácení peněz. Během čekání na vrácení peněz vás budeme informovat.",
+        "legacyRefundedBody": "Vaše refundace je dokončena. Celá přijatá částka XOR včetně dopravy byla vrácena do peněženky, která zaplatila. Obchod uhradil poplatek za vrácení peněz.",
+        "refundGross": "Částka před poplatky",
+        "refundEstimatedFee": "Odhadovaný poplatek SORA",
+        "refundFee": "Odečtený poplatek SORA",
+        "refundNet": "Vrácené XOR",
+        "refundRemainder": "Zbývá vrátit"
     },
     "confirmNextTxFailure": {
         "button": "Ano, chápu riziko",

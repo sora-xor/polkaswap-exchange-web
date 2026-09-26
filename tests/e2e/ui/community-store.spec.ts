@@ -23,6 +23,8 @@ const NATIVE_XOR_ASSET_ID = '0x0200000000000000000000000000000000000000000000000
 const unitXor = '1.759225';
 const shippingXor = '3.694371';
 const totalXor = '5.453596';
+const refundFeeCodec = '100026012589707326';
+const netRefundXor = '5.353569987410292674';
 
 /** Use a complete, release-matching merchant fixture, with no real relay or signing calls. */
 function catalogFixture() {
@@ -37,8 +39,10 @@ function catalogFixture() {
       dispatchPolicy: 'Tea is sourced after ordering.',
       customsPolicy: 'Destination import rules apply.',
       privacyPolicy: 'Private fulfillment only.',
-      cancellationPolicy: 'Unfulfillable orders receive the full XOR refund.',
+      cancellationPolicy:
+        'If an order cannot be shipped, we refund the XOR received, including shipping, minus the SORA network fee for sending the refund. Your original payment’s network fee is non-refundable.',
     },
+    refundPolicy: { version: 2, mode: 'net-network-fee' },
     pricing: { kind: 'exact-xor', version: 'fixed-xor-1' },
     product: {
       id: 'sencha-100g',
@@ -78,6 +82,8 @@ function orderFixture() {
     recoveryToken,
     status: 'awaiting_payment',
     notificationStatus: 'pending',
+    refundPolicy: { version: 2, mode: 'net-network-fee' },
+    refundFeeCorrectionCodec: '0',
     paymentRequest: {
       version: 1,
       merchant: { id: merchantId, name: 'Polkaswap Community Store' },
@@ -90,6 +96,68 @@ function orderFixture() {
       denomination: '1',
       reference: `sp_${'a'.repeat(32)}`,
       expiresAt: new Date(Date.now() + 30 * 60_000).toISOString(),
+    },
+  };
+}
+
+/** Finalized synthetic evidence exercises receipt validation without any wallet or chain operation. */
+function refundedOrderFixture(legacy: boolean) {
+  const order = orderFixture();
+  const amountCodec = legacy
+    ? order.paymentRequest.amountCodec
+    : (BigInt(order.paymentRequest.amountCodec) - BigInt(refundFeeCodec)).toString();
+  const reference = `sp_${'b'.repeat(32)}`;
+  const request = {
+    ...order.paymentRequest,
+    payer: order.paymentRequest.recipient,
+    recipient: order.paymentRequest.payer,
+    amountCodec,
+    reference,
+  };
+  const receipt = {
+    status: 'finalized',
+    request,
+    evidence: {
+      ...request,
+      transactionHash: `0x${'c'.repeat(64)}`,
+      blockHash: `0x${'d'.repeat(64)}`,
+      blockNumber: '101',
+      eventIndex: 3,
+      successful: true,
+      finalized: true,
+      finalizedAt: new Date().toISOString(),
+      networkFee: { payer: request.payer, assetId: request.assetId, amountCodec: refundFeeCodec, eventIndex: 4 },
+    },
+  };
+  return {
+    ...order,
+    // Historical responses lack both a policy snapshot and the newer fee accounting fields.
+    refundPolicy: legacy ? undefined : order.refundPolicy,
+    status: 'refunded',
+    notificationStatus: 'delivered',
+    paymentPending: false,
+    refund: {
+      reference,
+      recipient: request.recipient,
+      amountCodec,
+      status: 'finalized',
+      receipt,
+      ...(legacy
+        ? {}
+        : {
+            grossAmountCodec: order.paymentRequest.amountCodec,
+            feeExempt: false,
+            feeQuote: {
+              amountCodec,
+              feeCodec: refundFeeCodec,
+              blockHash: `0x${'e'.repeat(64)}`,
+              blockNumber: '100',
+              expiresAt: order.paymentRequest.expiresAt,
+            },
+            actualFeeCodec: refundFeeCodec,
+            deductedFeeCodec: refundFeeCodec,
+            feeCorrectionCodec: '0',
+          }),
     },
   };
 }
@@ -310,6 +378,81 @@ for (const browserName of ['chromium', 'webkit'] as const) {
       await expectNoOverflow(page);
       expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
     });
+
+    for (const legacy of [false, true]) {
+      test(
+        legacy
+          ? 'legacy refund recovery retains full-refund terms under the current catalog'
+          : 'private refund recovery shows verified gross, SORA fee, and net XOR',
+        async ({ page }) => {
+          await mkdir(output, { recursive: true });
+          page.setDefaultTimeout(10_000);
+          await prepareStore(page, true);
+          const errors = trackConsole(page);
+          const recovered = refundedOrderFixture(legacy);
+          const recoveryRequests: Array<{ method: string; authorization: string; url: string }> = [];
+          const mutations: string[] = [];
+          page.on('request', (request) => {
+            if (request.url().startsWith(`${relayOrigin}/v1/orders`) && request.method() === 'POST')
+              mutations.push(request.url());
+          });
+          await page.route(`${relayOrigin}/v1/orders/${orderId}`, async (route) => {
+            if (route.request().method() === 'OPTIONS') {
+              await fulfillJson(route, {});
+              return;
+            }
+            recoveryRequests.push({
+              method: route.request().method(),
+              authorization: route.request().headers().authorization ?? '',
+              url: route.request().url(),
+            });
+            await fulfillJson(route, recovered);
+          });
+          await page.goto(`${ipfsEntryUrl}#/store`);
+          await ensureAppLoaded(page);
+          await expect(page.getByTestId('store-checkout')).toBeEnabled();
+          await page.getByLabel('Order ID', { exact: true }).fill(orderId);
+          await page.getByLabel('Private recovery code', { exact: true }).fill(recoveryToken);
+          await page.getByRole('button', { name: 'Recover order', exact: true }).click();
+          const receipt = page.getByTestId('store-receipt');
+          await expect(receipt.getByRole('heading', { name: 'Your XOR has been refunded', exact: true })).toBeVisible();
+          const breakdown = page.getByTestId('store-refund-breakdown');
+          await expect(breakdown.locator('div').filter({ hasText: 'Amount before fees' }).locator('dd')).toHaveText(
+            `${totalXor} XOR`
+          );
+          await expect(breakdown.locator('div').filter({ hasText: 'SORA fee deducted' }).locator('dd')).toHaveText(
+            legacy ? '0 XOR' : '0.100026012589707326 XOR'
+          );
+          await expect(breakdown.locator('div').filter({ hasText: 'XOR returned' }).locator('dd')).toHaveText(
+            `${legacy ? totalXor : netRefundXor} XOR`
+          );
+          await expect(breakdown).not.toContainText('Refund still due');
+          await expect(receipt).toContainText(
+            legacy
+              ? 'The store covered the refund transaction fee.'
+              : 'The SORA fee for sending the refund was deducted from the XOR returned.'
+          );
+          if (!legacy)
+            await expect(receipt).toContainText('Network fees paid with the original order were not refunded.');
+          await expect(receipt).toContainText(recovered.refund.receipt.evidence.transactionHash);
+          await expect(page.locator('sora-pay')).toHaveCount(0);
+          expect(recoveryRequests.length).toBeGreaterThan(0);
+          for (const request of recoveryRequests) {
+            expect(request.method).toBe('GET');
+            expect(request.authorization).toBe(`Bearer ${recoveryToken}`);
+            expect(request.url).not.toContain(recoveryToken);
+          }
+          expect(page.url()).not.toContain(recoveryToken);
+          expect(mutations).toEqual([]);
+          await expectNoOverflow(page);
+          await receipt.scrollIntoViewIfNeeded();
+          await receipt.screenshot({
+            path: path.join(output, `${browserName}-${legacy ? 'legacy' : 'net'}-refund-recovery.png`),
+          });
+          expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
+        }
+      );
+    }
 
     // This independent fresh-context layout check must not share the desktop flow's timeout.
     test.describe('mobile checkout', () => {

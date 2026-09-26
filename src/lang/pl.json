@@ -332,7 +332,7 @@
         "shippingTitle": "Wysyłka z Japonii",
         "shippingBody": "Wolontariusze pozyskują Twoją herbatę w Japonii i wysyłają ją zapieczętowaną do obsługiwanych miejsc, gdzie wysyłka jest legalna. Opcje dostawy i opłaty pojawiają się przed dokonaniem płatności. Wymagania celne i importowe zależą od miejsca docelowego.",
         "refundTitle": "Zwroty płatności",
-        "refundBody": "Jeśli Twoja herbata nie może zostać pobrana ani wysłana, zwracamy pełną kwotę XOR otrzymaną za zamówienie, łącznie z wysyłką, do portfela, który zapłacił. Sklep pokrywa opłatę transakcyjną zwrotu środków. Będziemy Cię na bieżąco informować o oczekiwaniu na zwrot pieniędzy.",
+        "refundBody": "Jeśli nie możemy kupić lub wysłać Twojej herbaty, zwrócimy otrzymane XOR, w tym koszt wysyłki, pomniejszone o opłatę SORA za przesłanie zwrotu. Opłaty sieciowe zapłacone przy pierwotnym zamówieniu nie podlegają zwrotowi. Będziemy informować Cię o postępach do czasu zakończenia zwrotu.",
         "operatorTitle": "Kto prowadzi sklep",
         "operatorPending": "Prowadzony przez Community Volunteers.",
         "checkoutTitle": "Szczegóły dostawy",
@@ -438,7 +438,14 @@
             "insufficientBalance": "W tym portfelu nie ma wystarczającej ilości natywnego XOR na płatność i opłatę sieciową."
         },
         "newOrder": "Zapisz potwierdzenie i rozpocznij nowe zamówienie",
-        "refundedBody": "Twój zwrot środków został zakończony. Całość otrzymanej kwoty XOR, łącznie z wysyłką, została zwrócona do portfela, który zapłacił. Sklep pokrył opłatę transakcyjną zwrotu środków."
+        "refundedBody": "Zwrot został zakończony. Opłata SORA za jego przesłanie została odjęta od zwróconych XOR. Opłaty sieciowe zapłacone przy pierwotnym zamówieniu nie zostały zwrócone.",
+        "legacyRefundBody": "Jeśli Twoja herbata nie może zostać pobrana ani wysłana, zwracamy pełną kwotę XOR otrzymaną za zamówienie, łącznie z wysyłką, do portfela, który zapłacił. Sklep pokrywa opłatę transakcyjną zwrotu środków. Będziemy Cię na bieżąco informować o oczekiwaniu na zwrot pieniędzy.",
+        "legacyRefundedBody": "Twój zwrot środków został zakończony. Całość otrzymanej kwoty XOR, łącznie z wysyłką, została zwrócona do portfela, który zapłacił. Sklep pokrył opłatę transakcyjną zwrotu środków.",
+        "refundGross": "Kwota przed opłatami",
+        "refundEstimatedFee": "Szacowana opłata SORA",
+        "refundFee": "Odjęta opłata SORA",
+        "refundNet": "Zwrócone XOR",
+        "refundRemainder": "Pozostało do zwrotu"
     },
     "confirmNextTxFailure": {
         "button": "Tak, rozumiem ryzyko.",

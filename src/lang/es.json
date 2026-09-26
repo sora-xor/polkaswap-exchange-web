@@ -332,7 +332,7 @@
         "shippingTitle": "Envíos desde Japón",
         "shippingBody": "Los voluntarios obtienen su té en Japón y lo envían sellado a destinos admitidos donde el envío es legal. Las opciones de entrega y los cargos aparecen antes del pago. Los requisitos aduaneros y de importación dependen de su destino.",
         "refundTitle": "Reembolsos",
-        "refundBody": "Si su té no se puede obtener ni enviar, devolvemos el XOR completo recibido para el pedido, incluido el envío, a la billetera que pagó. La tienda cubre la tarifa de transacción de reembolso. Lo mantendremos informado mientras su reembolso esté pendiente.",
+        "refundBody": "Si no podemos conseguir o enviar tu té, devolveremos los XOR recibidos, incluido el envío, menos la comisión de SORA por enviar el reembolso. Las comisiones de red pagadas con el pedido original no son reembolsables. Te mantendremos al tanto mientras el reembolso esté pendiente.",
         "operatorTitle": "Quién gestiona la tienda",
         "operatorPending": "Operado por Community Volunteers.",
         "checkoutTitle": "Detalles de entrega",
@@ -438,7 +438,14 @@
             "insufficientBalance": "Esta billetera no tiene suficiente XOR nativo para cubrir el pago y la comisión de red."
         },
         "newOrder": "Guardar recibo e iniciar un nuevo pedido",
-        "refundedBody": "Su reembolso está completo. El XOR completo recibido, incluido el envío, se devolvió a la billetera que pagó. La tienda cubrió la tarifa de transacción del reembolso."
+        "refundedBody": "Tu reembolso se ha completado. La comisión de SORA por enviarlo se descontó de los XOR devueltos. No se reembolsaron las comisiones de red pagadas con el pedido original.",
+        "legacyRefundBody": "Si su té no se puede obtener ni enviar, devolvemos el XOR completo recibido para el pedido, incluido el envío, a la billetera que pagó. La tienda cubre la tarifa de transacción de reembolso. Lo mantendremos informado mientras su reembolso esté pendiente.",
+        "legacyRefundedBody": "Su reembolso está completo. El XOR completo recibido, incluido el envío, se devolvió a la billetera que pagó. La tienda cubrió la tarifa de transacción del reembolso.",
+        "refundGross": "Importe antes de comisiones",
+        "refundEstimatedFee": "Comisión estimada de SORA",
+        "refundFee": "Comisión de SORA descontada",
+        "refundNet": "XOR devueltos",
+        "refundRemainder": "Reembolso aún pendiente"
     },
     "confirmNextTxFailure": {
         "button": "Si, entiendo el riesgo",

@@ -272,6 +272,20 @@
               <dd>{{ fromCodec(order.paymentRequest.amountCodec, order.paymentRequest.decimals) }} XOR</dd>
             </div>
           </dl>
+          <p
+            v-if="!['refund_pending', 'refunded'].includes(status)"
+            class="store-note"
+            data-testid="store-order-refund-policy"
+          >
+            {{ t(orderRefundPolicyKey) }}
+          </p>
+          <p v-if="refundFigures.length" class="store-note">{{ t('communityStore.refundTransaction') }}</p>
+          <dl v-if="refundFigures.length" class="store-receipt__details" data-testid="store-refund-breakdown">
+            <div v-for="figure in refundFigures" :key="figure.label">
+              <dt>{{ t(figure.label) }}</dt>
+              <dd>{{ fromCodec(figure.amount, order.paymentRequest.decimals) }} XOR</dd>
+            </div>
+          </dl>
           <details class="store-recovery-code">
             <summary>{{ t('communityStore.recoveryToken') }}</summary>
             <code>{{ order.recoveryToken }}</code>
@@ -528,12 +542,48 @@ const statusKey = computed(
       review: 'communityStore.review',
     })[status.value] || 'communityStore.statusUnknown'
 );
+const orderRefundPolicyKey = computed(() =>
+  order.value?.refundPolicy?.mode === 'net-network-fee'
+    ? 'communityStore.refundBody'
+    : 'communityStore.legacyRefundBody'
+);
+/** Each breakdown describes the latest transfer; corrections use the relay's outstanding total. */
+const refundFigures = computed(() => {
+  const figures: Array<{ label: string; amount: string }> = [];
+  const refund = order.value?.refund;
+  if (refund) {
+    figures.push({ label: 'communityStore.refundGross', amount: refund.grossAmountCodec });
+    const fee = refund.deductedFeeCodec ?? (refund.feeExempt ? '0' : refund.feeQuote?.feeCodec);
+    if (fee !== undefined)
+      figures.push({
+        label:
+          refund.deductedFeeCodec !== undefined || refund.feeExempt
+            ? 'communityStore.refundFee'
+            : 'communityStore.refundEstimatedFee',
+        amount: fee,
+      });
+    if (refund.amountCodec !== undefined)
+      figures.push({
+        label: refund.transactionHash ? 'communityStore.refundNet' : 'amountText',
+        amount: refund.amountCodec,
+      });
+  }
+  const correction = order.value?.refundFeeCorrectionCodec;
+  if (correction && BigInt(correction) > 0n)
+    figures.push({ label: 'communityStore.refundRemainder', amount: correction });
+  return figures;
+});
 const statusDescription = computed(() => {
   if (status.value === 'expired') return t('communityStore.expiredBody');
   if (status.value === 'review') return t('communityStore.reviewBody');
   if (status.value === 'payment_pending') return t('communityStore.paymentPendingBody');
-  if (status.value === 'refund_pending') return t('communityStore.refundBody');
-  if (status.value === 'refunded') return t('communityStore.refundedBody');
+  if (status.value === 'refund_pending') return t(orderRefundPolicyKey.value);
+  if (status.value === 'refunded')
+    return t(
+      order.value?.refundPolicy?.mode === 'net-network-fee'
+        ? 'communityStore.refundedBody'
+        : 'communityStore.legacyRefundedBody'
+    );
   if (status.value === 'paid' || status.value === 'shipping_review') return t('communityStore.paidBody');
   return '';
 });
@@ -602,6 +652,9 @@ function downloadReceipt(): void {
     recoveryToken: order.value.recoveryToken,
     paymentRequest: order.value.paymentRequest,
     status: status.value,
+    refundPolicy: order.value.refundPolicy ?? { version: 1, mode: 'full' },
+    refund: order.value.refund,
+    refundFeeCorrectionCodec: order.value.refundFeeCorrectionCodec ?? '0',
   };
   const url = URL.createObjectURL(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }));
   const link = document.createElement('a');

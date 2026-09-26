@@ -332,7 +332,7 @@
         "shippingTitle": "從日本出貨",
         "shippingBody": "志工在日本採購您的茶葉，並將其密封運送到合法運輸的受支持目的地。付款前會顯示送貨選項和費用。海關和進口要求取決於您的目的地。",
         "refundTitle": "退款",
-        "refundBody": "如果您的茶葉無法購買或運輸，我們會將訂單收到的全部 XOR（包括運費）退回至付款錢包。商店承擔退款交易費用。在您的退款待處理期間，我們會及時通知您最新情況。",
+        "refundBody": "如果我們無法採購或寄送您的茶葉，我們會退還已收到的 XOR（含運費），扣除發送退款的 SORA 網路手續費。原訂單付款時的網路手續費不予退還。退款處理期間，我們會向您更新進度。",
         "operatorTitle": "商店經營者",
         "operatorPending": "由 Community Volunteers 營運。",
         "checkoutTitle": "交貨詳情",
@@ -438,7 +438,14 @@
             "insufficientBalance": "此錢包中的原生 XOR 不足以支付款項和網路費用。"
         },
         "newOrder": "儲存收據並開始新訂單",
-        "refundedBody": "您的退款已完成。收到的全部 XOR（包括運費）已退回至付款錢包。商店承担了退款交易费用。"
+        "refundedBody": "您的退款已完成。發送退款的 SORA 網路手續費已從退還的 XOR 中扣除。原訂單付款時的網路手續費未予退還。",
+        "legacyRefundBody": "如果您的茶葉無法購買或運輸，我們會將訂單收到的全部 XOR（包括運費）退回至付款錢包。商店承擔退款交易費用。在您的退款待處理期間，我們會及時通知您最新情況。",
+        "legacyRefundedBody": "您的退款已完成。收到的全部 XOR（包括運費）已退回至付款錢包。商店承担了退款交易费用。",
+        "refundGross": "扣費前金額",
+        "refundEstimatedFee": "預估 SORA 手續費",
+        "refundFee": "已扣 SORA 手續費",
+        "refundNet": "退還的 XOR",
+        "refundRemainder": "仍待退還金額"
     },
     "confirmNextTxFailure": {
         "button": "是的，我了解風險",

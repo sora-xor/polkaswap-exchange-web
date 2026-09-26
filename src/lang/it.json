@@ -332,7 +332,7 @@
         "shippingTitle": "Spedizioni dal Giappone",
         "shippingBody": "I volontari acquistano il tè in Giappone e lo spediscono sigillato alle destinazioni supportate dove la spedizione è legale. Le opzioni e le spese di consegna vengono visualizzate prima del pagamento. I requisiti doganali e di importazione dipendono dalla destinazione.",
         "refundTitle": "Rimborsi",
-        "refundBody": "Se il tuo tè non può essere acquistato o spedito, restituiamo l'intero XOR ricevuto per l'ordine, inclusa la spedizione, nel portafoglio che ha pagato. Il negozio copre la commissione sulla transazione di rimborso. Ti terremo aggiornato mentre il tuo rimborso è in sospeso.",
+        "refundBody": "Se non possiamo procurarci o spedire il tuo tè, rimborsiamo gli XOR ricevuti, spedizione inclusa, meno la commissione SORA per inviare il rimborso. Le commissioni di rete pagate con l’ordine originale non sono rimborsabili. Ti terremo aggiornato finché il rimborso sarà in sospeso.",
         "operatorTitle": "Chi gestisce il negozio",
         "operatorPending": "Gestito da Community Volunteers.",
         "checkoutTitle": "Dettagli di consegna",
@@ -438,7 +438,14 @@
             "insufficientBalance": "Questo portafoglio non contiene abbastanza XOR nativo per coprire il pagamento e la commissione di rete."
         },
         "newOrder": "Salva la ricevuta e avvia un nuovo ordine",
-        "refundedBody": "Il tuo rimborso è completo. L'intero XOR ricevuto, inclusa la spedizione, è stato restituito al portafoglio che ha effettuato il pagamento. Il negozio ha coperto la commissione sulla transazione di rimborso."
+        "refundedBody": "Il rimborso è completo. La commissione SORA per inviarlo è stata detratta dagli XOR restituiti. Le commissioni di rete pagate con l’ordine originale non sono state rimborsate.",
+        "legacyRefundBody": "Se il tuo tè non può essere acquistato o spedito, restituiamo l'intero XOR ricevuto per l'ordine, inclusa la spedizione, nel portafoglio che ha pagato. Il negozio copre la commissione sulla transazione di rimborso. Ti terremo aggiornato mentre il tuo rimborso è in sospeso.",
+        "legacyRefundedBody": "Il tuo rimborso è completo. L'intero XOR ricevuto, inclusa la spedizione, è stato restituito al portafoglio che ha effettuato il pagamento. Il negozio ha coperto la commissione sulla transazione di rimborso.",
+        "refundGross": "Importo prima delle commissioni",
+        "refundEstimatedFee": "Commissione SORA stimata",
+        "refundFee": "Commissione SORA detratta",
+        "refundNet": "XOR restituiti",
+        "refundRemainder": "Rimborso ancora dovuto"
     },
     "confirmNextTxFailure": {
         "button": "Sì, capisco il rischio",

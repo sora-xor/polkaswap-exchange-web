@@ -30,7 +30,7 @@
   "shippingTitle": "Shipping from Japan",
   "shippingBody": "Volunteers source your tea in Japan and dispatch it sealed to supported destinations where shipping is legal. Delivery options and charges appear before payment. Customs and import requirements depend on your destination.",
   "refundTitle": "Refunds",
-  "refundBody": "If your tea cannot be sourced or shipped, we return the full XOR received for the order, including shipping, to the wallet that paid. The store covers the refund transaction fee. We’ll keep you updated while your refund is pending.",
+  "refundBody": "If we can’t source or ship your tea, we refund the XOR received, including shipping, less the SORA fee for sending the refund. Network fees paid with the original order are not refundable. We’ll keep you updated while your refund is pending.",
   "operatorTitle": "Who runs the store",
   "operatorPending": "Operated by Community Volunteers.",
   "checkoutTitle": "Delivery details",
@@ -133,7 +133,15 @@
     "uncertain": "Payment status is uncertain. Check the saved order before taking any further payment action.",
     "finalized": "Payment verified in a finalized block.",
     "error": "Payment unavailable. Check your wallet, network, balance and quote expiry.",
-    "feeChanged": "The network fee changed. Review it and press Send XOR again."
+    "feeChanged": "The network fee changed. Review it and press Send XOR again.",
+    "insufficientBalance": "Not enough native XOR in this wallet to cover the payment and network fee."
   },
-  "refundedBody": "Your refund is complete. The full XOR received, including shipping, was returned to the wallet that paid. The store covered the refund transaction fee."
+  "refundedBody": "Your refund is complete. The SORA fee for sending the refund was deducted from the XOR returned. Network fees paid with the original order were not refunded.",
+  "legacyRefundBody": "If your tea cannot be sourced or shipped, we return the full XOR received for the order, including shipping, to the wallet that paid. The store covers the refund transaction fee. We’ll keep you updated while your refund is pending.",
+  "legacyRefundedBody": "Your refund is complete. The full XOR received, including shipping, was returned to the wallet that paid. The store covered the refund transaction fee.",
+  "refundGross": "Amount before fees",
+  "refundEstimatedFee": "Estimated SORA fee",
+  "refundFee": "SORA fee deducted",
+  "refundNet": "XOR returned",
+  "refundRemainder": "Refund still due"
 }

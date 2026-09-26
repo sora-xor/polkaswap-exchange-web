@@ -230,6 +230,90 @@ describe('community Store page', () => {
     expect(wrapper.get('.store-receipt__intro').text()).not.toContain('pending');
   });
 
+  it('keeps saved legacy refund terms despite a newer catalog and uses the saved new policy for new orders', async () => {
+    openStore();
+    shared.context!.catalog.value!.refundPolicy = { version: 2, mode: 'net-network-fee' };
+    shared.context!.order.value = structuredClone(exampleOrder);
+    const wrapper = render();
+    expect(wrapper.get('[data-testid="store-order-refund-policy"]').text()).toBe(messages.legacyRefundBody);
+    shared.context!.status.value = 'refund_pending';
+    await flushPromises();
+    expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.legacyRefundBody);
+    shared.context!.status.value = 'refunded';
+    await flushPromises();
+    expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.legacyRefundedBody);
+    shared.context!.order.value.refundPolicy = { version: 2, mode: 'net-network-fee' };
+    await flushPromises();
+    expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.refundedBody);
+    expect(wrapper.get('.store-receipt__intro').text()).toContain(
+      'Network fees paid with the original order were not refunded.'
+    );
+    shared.context!.status.value = 'refund_pending';
+    await flushPromises();
+    expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.refundBody);
+  });
+
+  it('shows exact draft, quoted, finalized and fee-exempt correction amounts without claiming a draft amount', async () => {
+    shared.context!.order.value = {
+      ...structuredClone(exampleOrder),
+      refundPolicy: { version: 2, mode: 'net-network-fee' },
+      refund: { grossAmountCodec: '2000000000000000000', feeExempt: false },
+    };
+    shared.context!.status.value = 'refund_pending';
+    const wrapper = render();
+    const breakdown = () => wrapper.get('[data-testid="store-refund-breakdown"]');
+    expect(
+      breakdown()
+        .findAll('dd')
+        .map((row) => row.text())
+    ).toEqual(['2 XOR']);
+    shared.context!.order.value.refund = {
+      grossAmountCodec: '2000000000000000000',
+      amountCodec: '1900000000000000000',
+      feeExempt: false,
+      feeQuote: {
+        amountCodec: '1900000000000000000',
+        feeCodec: '100000000000000000',
+        blockHash: `0x${'a'.repeat(64)}`,
+        blockNumber: '1',
+        expiresAt: '2026-09-26T00:00:00Z',
+      },
+    };
+    await flushPromises();
+    expect(breakdown().text()).toContain(messages.refundEstimatedFee);
+    expect(breakdown().text()).not.toContain(messages.refundNet);
+    expect(
+      breakdown()
+        .findAll('dd')
+        .map((row) => row.text())
+    ).toEqual(['2 XOR', '0.1 XOR', '1.9 XOR']);
+    shared.context!.order.value.refund.transactionHash = `0x${'b'.repeat(64)}`;
+    shared.context!.order.value.refund.deductedFeeCodec = '80000000000000000';
+    shared.context!.order.value.refund.feeCorrectionCodec = '20000000000000000';
+    shared.context!.order.value.refundFeeCorrectionCodec = '20000000000000000';
+    await flushPromises();
+    expect(breakdown().text()).toContain(messages.refundFee);
+    expect(breakdown().text()).toContain(messages.refundNet);
+    expect(
+      breakdown()
+        .findAll('dd')
+        .map((row) => row.text())
+    ).toEqual(['2 XOR', '0.08 XOR', '1.9 XOR', '0.02 XOR']);
+    shared.context!.order.value.refund = {
+      grossAmountCodec: '20000000000000000',
+      amountCodec: '20000000000000000',
+      feeExempt: true,
+    };
+    shared.context!.order.value.refundFeeCorrectionCodec = '0';
+    await flushPromises();
+    expect(
+      breakdown()
+        .findAll('dd')
+        .map((row) => row.text())
+    ).toEqual(['0.02 XOR', '0 XOR', '0.02 XOR']);
+    expect(breakdown().text()).not.toContain(messages.refundRemainder);
+  });
+
   it('supports source-on-demand quantities and caps only the configured parcel weight', async () => {
     openStore();
     const wrapper = render();

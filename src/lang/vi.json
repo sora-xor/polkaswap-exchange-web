@@ -332,7 +332,7 @@
         "shippingTitle": "Gửi hàng từ Nhật Bản",
         "shippingBody": "Các tình nguyện viên sẽ tìm nguồn trà của bạn ở Nhật Bản và gửi nó đến những địa điểm được hỗ trợ nơi việc vận chuyển là hợp pháp. Các tùy chọn giao hàng và phí xuất hiện trước khi thanh toán. Các yêu cầu về hải quan và nhập khẩu tùy thuộc vào điểm đến của bạn.",
         "refundTitle": "Hoàn tiền",
-        "refundBody": "Nếu trà của bạn không thể tìm được nguồn gốc hoặc vận chuyển, chúng tôi sẽ trả lại toàn bộ XOR đã nhận được cho đơn hàng, bao gồm cả phí vận chuyển, vào ví đã thanh toán. Cửa hàng bao gồm phí giao dịch hoàn trả. Chúng tôi sẽ cập nhật cho bạn trong khi khoản tiền hoàn lại của bạn đang chờ xử lý.",
+        "refundBody": "Nếu không thể mua hoặc gửi trà cho bạn, chúng tôi hoàn lại số XOR đã nhận, gồm cả phí vận chuyển, sau khi trừ phí SORA để gửi khoản hoàn tiền. Phí mạng đã trả khi đặt hàng ban đầu không được hoàn lại. Chúng tôi sẽ cập nhật cho bạn trong thời gian chờ hoàn tiền.",
         "operatorTitle": "Đơn vị vận hành cửa hàng",
         "operatorPending": "Điều hành bởi Community Volunteers.",
         "checkoutTitle": "Chi tiết giao hàng",
@@ -438,7 +438,14 @@
             "insufficientBalance": "Ví này không có đủ XOR gốc để thanh toán và trả phí mạng."
         },
         "newOrder": "Lưu biên lai và bắt đầu đơn hàng mới",
-        "refundedBody": "Việc hoàn tiền của bạn đã hoàn tất. Toàn bộ XOR nhận được, bao gồm cả phí vận chuyển, đã được trả lại vào ví đã thanh toán. Cửa hàng đã bao trả phí giao dịch hoàn tiền."
+        "refundedBody": "Khoản hoàn tiền đã hoàn tất. Phí SORA để gửi khoản hoàn tiền đã được trừ khỏi số XOR trả lại. Phí mạng đã trả khi đặt hàng ban đầu không được hoàn lại.",
+        "legacyRefundBody": "Nếu trà của bạn không thể tìm được nguồn gốc hoặc vận chuyển, chúng tôi sẽ trả lại toàn bộ XOR đã nhận được cho đơn hàng, bao gồm cả phí vận chuyển, vào ví đã thanh toán. Cửa hàng bao gồm phí giao dịch hoàn trả. Chúng tôi sẽ cập nhật cho bạn trong khi khoản tiền hoàn lại của bạn đang chờ xử lý.",
+        "legacyRefundedBody": "Việc hoàn tiền của bạn đã hoàn tất. Toàn bộ XOR nhận được, bao gồm cả phí vận chuyển, đã được trả lại vào ví đã thanh toán. Cửa hàng đã bao trả phí giao dịch hoàn tiền.",
+        "refundGross": "Số tiền trước phí",
+        "refundEstimatedFee": "Phí SORA ước tính",
+        "refundFee": "Phí SORA đã trừ",
+        "refundNet": "XOR đã trả lại",
+        "refundRemainder": "Số tiền còn phải hoàn"
     },
     "confirmNextTxFailure": {
         "button": "Vâng, tôi hiểu về rủi ro",

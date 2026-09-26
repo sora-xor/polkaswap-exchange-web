@@ -89,7 +89,7 @@
     "@polkadot/ui-shared": "3.16.4",
     "@polkadot/util": "14.0.2",
     "@polkadot/util-crypto": "14.0.2",
-    "@sora/sora-pay": "file:./vendor/sora-pay/sora-pay-0.1.1.tgz",
+    "@sora/sora-pay": "file:./vendor/sora-pay/sora-pay-0.2.0.tgz",
     "@urql/core": "6.0.1",
     "@vueuse/core": "14.2.1",
     "@walletconnect/ethereum-provider": "2.23.8",

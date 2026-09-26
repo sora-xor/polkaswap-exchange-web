@@ -1,5 +1,8 @@
 import type { PaymentRequest, PaymentReceipt } from '@sora/sora-pay/core';
 
+/** Saved order terms remain authoritative after the merchant changes its refund policy. */
+export type CommunityRefundPolicy = { version: 1; mode: 'full' } | { version: 2; mode: 'net-network-fee' };
+
 /** Public, release-pinned identity. Empty values deliberately disable checkout. */
 export interface CommunityStoreConfig {
   version: 1;
@@ -12,6 +15,7 @@ export interface CommunityStoreConfig {
 export interface CommunityStoreCatalog {
   version: string;
   enabled: boolean;
+  refundPolicy?: CommunityRefundPolicy;
   merchant: {
     id: string;
     name: string;
@@ -83,7 +87,18 @@ export interface CommunityStoreOrder {
   status: CommunityOrderStatus;
   notificationStatus: string;
   paymentPending?: boolean;
+  refundPolicy?: CommunityRefundPolicy;
+  refundFeeCorrectionCodec?: string;
   receipt?: PaymentReceipt;
   tracking?: string;
-  refund?: { amountCodec: string; transactionHash?: string; reason?: string };
+  refund?: {
+    grossAmountCodec: string;
+    amountCodec?: string;
+    feeExempt: boolean;
+    feeQuote?: { amountCodec: string; feeCodec: string; blockHash: string; blockNumber: string; expiresAt: string };
+    actualFeeCodec?: string;
+    deductedFeeCodec?: string;
+    feeCorrectionCodec?: string;
+    transactionHash?: string;
+  };
 }

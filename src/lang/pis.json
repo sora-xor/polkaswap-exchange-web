@@ -377,7 +377,7 @@
         "recoveryToken": "wakaot luksavve gohed",
         "refresh": "luksavve",
         "refreshOrder": "falom stakaon stakaon",
-        "refundBody": "luksavve luksavve raonem gohed gohed gohed luksavve gohed, falom raonem gohed luksavve luksavve luksavve luksavve gohed stakaon, wakaot raonem, luksavve gohed walet gohed raonem. gohed gohed raonem gohed stakaon transaksen fi. falom’stakaon wakaot luksavve wakaot gohed luksavve stakaon raonem luksavve.",
+        "refundBody": "luksavve falom falom’falom ples hem kam long luksavve raonem luksavve raonem, falom stakaon gohed luksavve luksavve, wakaot raonem, wakaot gohed wakaot fi luksavve falom gohed stakaon. netwok wakaot raonem falom gohed wakaot stakaon falom gohed raonem. falom’stakaon wakaot luksavve wakaot gohed luksavve stakaon raonem luksavve.",
         "refunded": "luksavve luksavve raonem falom luksavve",
         "refundPending": "luksavve luksavve stakaon raonem luksavve",
         "refundTitle": "Givim bak peimen",
@@ -438,7 +438,14 @@
             "uncertain": "raonem stakaon raonem luksavve. falom gohed wakaot stakaon gohed stakaon raonem falom raonem falom."
         },
         "newOrder": "gohed stakaon & falom wakaot falom stakaon",
-        "refundedBody": "luksavve stakaon raonem luksavve. gohed luksavve luksavve luksavve, wakaot raonem, wakaot luksavve luksavve gohed walet gohed raonem. gohed gohed raonem gohed stakaon transaksen fi."
+        "refundedBody": "luksavve stakaon raonem luksavve. gohed wakaot fi luksavve falom gohed stakaon wakaot raonem raonem gohed luksavve luksavve. netwok wakaot raonem falom gohed wakaot stakaon gohed gohed luksavve.",
+        "legacyRefundBody": "luksavve luksavve raonem gohed gohed gohed luksavve gohed, falom raonem gohed luksavve luksavve luksavve luksavve gohed stakaon, wakaot raonem, luksavve gohed walet gohed raonem. gohed gohed raonem gohed stakaon transaksen fi. falom’stakaon wakaot luksavve wakaot gohed luksavve stakaon raonem luksavve.",
+        "legacyRefundedBody": "luksavve stakaon raonem luksavve. gohed luksavve luksavve luksavve, wakaot raonem, wakaot luksavve luksavve gohed walet gohed raonem. gohed gohed raonem gohed stakaon transaksen fi.",
+        "refundGross": "hamas gohed wakaot",
+        "refundEstimatedFee": "stakaon wakaot fi",
+        "refundFee": "wakaot fi raonem",
+        "refundNet": "luksavve luksavve",
+        "refundRemainder": "stakaon stakaon falom"
     },
     "confirmNextTxFailure": {
         "button": "wakaot, luksavve stakaon gohed gohed",

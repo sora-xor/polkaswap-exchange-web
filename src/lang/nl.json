@@ -332,7 +332,7 @@
         "shippingTitle": "Verzending vanuit Japan",
         "shippingBody": "Vrijwilligers kopen uw thee in Japan en verzenden deze verzegeld naar ondersteunde bestemmingen waar verzending legaal is. Bezorgopties en kosten verschijnen vóór betaling. Douane- en importvereisten zijn afhankelijk van uw bestemming.",
         "refundTitle": "Terugbetalingen",
-        "refundBody": "Als uw thee niet kan worden gekocht of verzonden, sturen we de volledige XOR die we voor de bestelling hebben ontvangen, inclusief verzendkosten, terug naar de portemonnee waarmee is betaald. De winkel betaalt de transactiekosten voor terugbetaling. We houden u op de hoogte terwijl uw terugbetaling in behandeling is.",
+        "refundBody": "Als we je thee niet kunnen inkopen of verzenden, betalen we de ontvangen XOR terug, inclusief verzendkosten, minus de SORA-kosten voor de terugbetaling. Netwerkkosten van de oorspronkelijke bestelling worden niet terugbetaald. We houden je op de hoogte zolang je terugbetaling nog in behandeling is.",
         "operatorTitle": "Wie beheert de winkel?",
         "operatorPending": "Beheerd door Community Volunteers.",
         "checkoutTitle": "Leveringsgegevens",
@@ -438,7 +438,14 @@
             "insufficientBalance": "Deze wallet bevat niet genoeg native XOR voor de betaling en de netwerkkosten."
         },
         "newOrder": "Bewaar de kassabon en start een nieuwe bestelling",
-        "refundedBody": "Uw terugbetaling is voltooid. De volledige ontvangen XOR, inclusief verzendkosten, werd teruggestuurd naar de portemonnee waarmee betaald werd. De winkel betaalde de transactiekosten voor terugbetaling."
+        "refundedBody": "Je terugbetaling is afgerond. De SORA-kosten voor de terugbetaling zijn afgetrokken van de teruggestorte XOR. Netwerkkosten van de oorspronkelijke bestelling zijn niet terugbetaald.",
+        "legacyRefundBody": "Als uw thee niet kan worden gekocht of verzonden, sturen we de volledige XOR die we voor de bestelling hebben ontvangen, inclusief verzendkosten, terug naar de portemonnee waarmee is betaald. De winkel betaalt de transactiekosten voor terugbetaling. We houden u op de hoogte terwijl uw terugbetaling in behandeling is.",
+        "legacyRefundedBody": "Uw terugbetaling is voltooid. De volledige ontvangen XOR, inclusief verzendkosten, werd teruggestuurd naar de portemonnee waarmee betaald werd. De winkel betaalde de transactiekosten voor terugbetaling.",
+        "refundGross": "Bedrag vóór kosten",
+        "refundEstimatedFee": "Geschatte SORA-kosten",
+        "refundFee": "Afgetrokken SORA-kosten",
+        "refundNet": "Terugbetaalde XOR",
+        "refundRemainder": "Nog terug te betalen"
     },
     "confirmNextTxFailure": {
         "button": "Ja, ik begrijp het risico",

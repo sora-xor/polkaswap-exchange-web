@@ -332,7 +332,7 @@
         "shippingTitle": "Expédition depuis le Japon",
         "shippingBody": "Les bénévoles achètent votre thé au Japon et l'expédient scellé vers des destinations prises en charge où l'expédition est légale. Les options et frais de livraison apparaissent avant le paiement. Les exigences douanières et d’importation dépendent de votre destination.",
         "refundTitle": "Remboursements",
-        "refundBody": "Si votre thé ne peut pas être acheté ou expédié, nous renvoyons l'intégralité des XOR reçus pour la commande, frais d'expédition compris, dans le portefeuille qui a payé. Le magasin couvre les frais de transaction de remboursement. Nous vous tiendrons au courant pendant que votre remboursement est en attente.",
+        "refundBody": "Si nous ne pouvons pas nous procurer votre thé ou l’expédier, nous remboursons les XOR reçus, frais de livraison compris, moins les frais SORA du virement de remboursement. Les frais de réseau payés lors de la commande initiale ne sont pas remboursables. Nous vous tiendrons au courant tant que le remboursement est en attente.",
         "operatorTitle": "Qui gère la boutique ?",
         "operatorPending": "Géré par Community Volunteers.",
         "checkoutTitle": "Détails de livraison",
@@ -438,7 +438,14 @@
             "insufficientBalance": "Ce portefeuille ne contient pas assez de XOR natif pour couvrir le paiement et les frais de réseau."
         },
         "newOrder": "Enregistrez le reçu et démarrez une nouvelle commande",
-        "refundedBody": "Votre remboursement est complet. La totalité des XOR reçus, frais d'expédition compris, a été renvoyée dans le portefeuille qui a payé. Le magasin a pris en charge les frais de transaction de remboursement."
+        "refundedBody": "Votre remboursement est terminé. Les frais SORA du virement ont été déduits des XOR remboursés. Les frais de réseau payés lors de la commande initiale n’ont pas été remboursés.",
+        "legacyRefundBody": "Si votre thé ne peut pas être acheté ou expédié, nous renvoyons l'intégralité des XOR reçus pour la commande, frais d'expédition compris, dans le portefeuille qui a payé. Le magasin couvre les frais de transaction de remboursement. Nous vous tiendrons au courant pendant que votre remboursement est en attente.",
+        "legacyRefundedBody": "Votre remboursement est complet. La totalité des XOR reçus, frais d'expédition compris, a été renvoyée dans le portefeuille qui a payé. Le magasin a pris en charge les frais de transaction de remboursement.",
+        "refundGross": "Montant avant frais",
+        "refundEstimatedFee": "Frais SORA estimés",
+        "refundFee": "Frais SORA déduits",
+        "refundNet": "XOR remboursés",
+        "refundRemainder": "Reste à rembourser"
     },
     "confirmNextTxFailure": {
         "button": "Oui, je comprends le risque",

@@ -332,7 +332,7 @@
         "shippingTitle": "Pengiriman dari Jepang",
         "shippingBody": "Relawan mengambil teh Anda dari Jepang dan mengirimkannya dalam keadaan tersegel ke tujuan yang didukung dan pengirimannya legal. Opsi pengiriman dan biaya muncul sebelum pembayaran. Persyaratan bea cukai dan impor bergantung pada tujuan Anda.",
         "refundTitle": "Pengembalian dana",
-        "refundBody": "Jika teh Anda tidak dapat diambil atau dikirim, kami mengembalikan XOR penuh yang diterima untuk pesanan, termasuk pengiriman, ke dompet yang membayar. Toko menanggung biaya transaksi pengembalian dana. Kami akan terus mengabari Anda selagi pengembalian dana Anda tertunda.",
+        "refundBody": "Jika kami tidak dapat membeli atau mengirim teh Anda, kami mengembalikan XOR yang diterima, termasuk ongkos kirim, dikurangi biaya SORA untuk mengirim pengembalian dana. Biaya jaringan yang dibayar saat pesanan awal tidak dapat dikembalikan. Kami akan memberi kabar selama pengembalian dana masih diproses.",
         "operatorTitle": "Pengelola toko",
         "operatorPending": "Dioperasikan oleh Community Volunteers.",
         "checkoutTitle": "Detail pengiriman",
@@ -438,7 +438,14 @@
             "insufficientBalance": "XOR native di dompet ini tidak cukup untuk membayar pembayaran dan biaya jaringan."
         },
         "newOrder": "Simpan tanda terima & mulai pesanan baru",
-        "refundedBody": "Pengembalian dana Anda selesai. XOR lengkap yang diterima, termasuk ongkos kirim, dikembalikan ke dompet yang membayar. Toko menanggung biaya transaksi pengembalian dana."
+        "refundedBody": "Pengembalian dana Anda selesai. Biaya SORA untuk mengirimnya telah dipotong dari XOR yang dikembalikan. Biaya jaringan yang dibayar saat pesanan awal tidak dikembalikan.",
+        "legacyRefundBody": "Jika teh Anda tidak dapat diambil atau dikirim, kami mengembalikan XOR penuh yang diterima untuk pesanan, termasuk pengiriman, ke dompet yang membayar. Toko menanggung biaya transaksi pengembalian dana. Kami akan terus mengabari Anda selagi pengembalian dana Anda tertunda.",
+        "legacyRefundedBody": "Pengembalian dana Anda selesai. XOR lengkap yang diterima, termasuk ongkos kirim, dikembalikan ke dompet yang membayar. Toko menanggung biaya transaksi pengembalian dana.",
+        "refundGross": "Jumlah sebelum biaya",
+        "refundEstimatedFee": "Perkiraan biaya SORA",
+        "refundFee": "Biaya SORA yang dipotong",
+        "refundNet": "XOR yang dikembalikan",
+        "refundRemainder": "Sisa pengembalian dana"
     },
     "confirmNextTxFailure": {
         "button": "Ya, saya mengerti risikonya",

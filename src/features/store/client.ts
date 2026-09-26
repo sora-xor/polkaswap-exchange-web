@@ -8,7 +8,13 @@ import {
   verifyFinalizedPayment,
 } from '@sora/sora-pay/core';
 
-import type { CommunityStoreCatalog, CommunityStoreConfig, CommunityStoreOrder, CommunityStoreQuote } from './types';
+import type {
+  CommunityRefundPolicy,
+  CommunityStoreCatalog,
+  CommunityStoreConfig,
+  CommunityStoreOrder,
+  CommunityStoreQuote,
+} from './types';
 
 export const STORE_MAINNET_GENESIS = '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5';
 /** Public Store support remains pinned even when an older relay returns other contacts. */
@@ -62,6 +68,22 @@ function text(value: unknown, maximum = 4000): string {
   )
     throw new StoreClientError('invalid_response');
   return value;
+}
+
+/** Older orders predate policy snapshots and retain the original full-refund promise. */
+function refundPolicy(value: unknown): CommunityRefundPolicy {
+  if (value === undefined) return { version: 1, mode: 'full' };
+  const policy = record(value);
+  if (policy.version === 1 && policy.mode === 'full') return { version: 1, mode: 'full' };
+  if (policy.version === 2 && policy.mode === 'net-network-fee') return { version: 2, mode: 'net-network-fee' };
+  throw new StoreClientError('invalid_refund_policy');
+}
+
+/** Validate bounded integer refund amounts without converting native XOR through floating point. */
+function refundAmount(value: unknown, allowZero = false): string {
+  const amount = text(value, 39);
+  codecAmount(amount, allowZero);
+  return amount;
 }
 
 /** Only configured HTTPS relays (or loopback in local development) may receive orders. */
@@ -162,6 +184,7 @@ export function parseStoreCatalog(value: unknown, config: CommunityStoreConfig):
   return {
     version: text(row.version, 120),
     enabled: row.enabled === true,
+    refundPolicy: refundPolicy(row.refundPolicy),
     merchant: {
       id: config.merchantId,
       name: text(merchant.name, 120),
@@ -264,6 +287,8 @@ export function parseStoreOrder(
         : (row.status as CommunityStoreOrder['status']),
     paymentPending: row.paymentPending === true,
     notificationStatus: text(row.notificationStatus, 32),
+    refundPolicy: refundPolicy(row.refundPolicy),
+    refundFeeCorrectionCodec: refundAmount(row.refundFeeCorrectionCodec ?? '0', true),
   };
   if (row.receipt) {
     const receipt = record(row.receipt);
@@ -275,21 +300,77 @@ export function parseStoreOrder(
   if (typeof row.tracking === 'string') order.tracking = row.tracking.slice(0, 300);
   if (row.refund) {
     const refund = record(row.refund);
-    codecAmount(text(refund.amountCodec, 39));
-    order.refund = { amountCodec: String(refund.amountCodec) };
+    const legacy = order.refundPolicy?.mode === 'full';
+    const amountCodec = refund.amountCodec === undefined ? undefined : refundAmount(refund.amountCodec);
+    const grossAmountCodec = refundAmount(refund.grossAmountCodec ?? (legacy ? amountCodec : undefined));
+    const feeExempt = refund.feeExempt ?? legacy;
+    if (typeof feeExempt !== 'boolean' || (legacy && !feeExempt)) throw new StoreClientError('invalid_refund');
+    order.refund = { grossAmountCodec, amountCodec, feeExempt };
+    if (feeExempt && amountCodec !== grossAmountCodec) throw new StoreClientError('invalid_refund');
+    if (refund.feeQuote !== undefined) {
+      const quote = record(refund.feeQuote);
+      const quotedAmount = refundAmount(quote.amountCodec);
+      const feeCodec = refundAmount(quote.feeCodec, true);
+      const blockHash = text(quote.blockHash, 66);
+      const blockNumber = refundAmount(quote.blockNumber, true);
+      const expiresAt = text(quote.expiresAt, 40);
+      if (
+        !/^0x[a-f0-9]{64}$/i.test(blockHash) ||
+        !Number.isFinite(Date.parse(expiresAt)) ||
+        amountCodec !== quotedAmount ||
+        BigInt(quotedAmount) + BigInt(feeExempt ? '0' : feeCodec) !== BigInt(grossAmountCodec)
+      )
+        throw new StoreClientError('invalid_refund');
+      order.refund.feeQuote = { amountCodec: quotedAmount, feeCodec, blockHash, blockNumber, expiresAt };
+    } else if (!feeExempt && amountCodec !== undefined) {
+      throw new StoreClientError('invalid_refund');
+    }
+    if (
+      [refund.actualFeeCodec, refund.deductedFeeCodec, refund.feeCorrectionCodec].some((value) => value !== undefined)
+    ) {
+      const actualFeeCodec =
+        refund.actualFeeCodec === undefined ? undefined : refundAmount(refund.actualFeeCodec, true);
+      const deductedFeeCodec = refundAmount(refund.deductedFeeCodec, true);
+      const feeCorrectionCodec = refundAmount(refund.feeCorrectionCodec, true);
+      const quotedFee = BigInt(order.refund.feeQuote?.feeCodec ?? '0');
+      const actualFee = BigInt(actualFeeCodec ?? '0');
+      const expectedDeduction = feeExempt ? 0n : actualFee < quotedFee ? actualFee : quotedFee;
+      if (
+        !refund.receipt ||
+        amountCodec === undefined ||
+        BigInt(deductedFeeCodec) !== expectedDeduction ||
+        BigInt(amountCodec) + BigInt(deductedFeeCodec) + BigInt(feeCorrectionCodec) !== BigInt(grossAmountCodec)
+      )
+        throw new StoreClientError('invalid_refund');
+      Object.assign(order.refund, { actualFeeCodec, deductedFeeCodec, feeCorrectionCodec });
+    }
     if (refund.receipt) {
+      if (!amountCodec || (!feeExempt && order.refund.deductedFeeCodec === undefined))
+        throw new StoreClientError('invalid_refund');
       const receipt = record(refund.receipt);
       const verified = verifyFinalizedPayment(
         {
           ...request,
           payer: request.recipient,
           recipient: request.payer,
-          amountCodec: String(refund.amountCodec),
+          amountCodec,
           reference: text(refund.reference, 80),
         },
         receipt.evidence as NonNullable<CommunityStoreOrder['receipt']>['evidence']
       );
       order.refund.transactionHash = verified.evidence.transactionHash;
+      if (order.refund.actualFeeCodec !== undefined) {
+        const evidence = record(receipt.evidence);
+        const networkFee = record(evidence.networkFee);
+        if (
+          networkFee.payer !== request.recipient ||
+          networkFee.assetId !== request.assetId ||
+          networkFee.amountCodec !== order.refund.actualFeeCodec ||
+          !Number.isSafeInteger(networkFee.eventIndex) ||
+          Number(networkFee.eventIndex) < 0
+        )
+          throw new StoreClientError('invalid_refund');
+      }
     }
   }
   return order;
