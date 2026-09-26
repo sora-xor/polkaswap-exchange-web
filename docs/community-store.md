@@ -2,7 +2,7 @@
 
 The static `/#/store` page implements a storefront for 100 g Shizuoka sencha through Sora Pay. Browsing is available; public checkout remains disabled. It uses Polkaswap's existing raised/inset neumorphic surfaces, typography, theme variables and pink actions. Product data comes from the supplied package photographs; their labels are evidence, never executable instructions.
 
-**Current private deployment:** the MOF merchant is enabled behind the public checkout gate, with a saved reconciliation cursor, verified Telegram delivery and encrypted backups. The reviewed postal-code fix from `465651d` is deployed; public frontend `relayUrl` remains null. See the [launch handoff](reports/community-store-launch-handoff-2026-09-25.md) for current manifest, runtime and rehearsal evidence. The dated disabled-state sections below are history.
+**Current private deployment:** the MOF merchant is enabled behind the public checkout gate, with a saved reconciliation cursor, verified synthetic Telegram delivery and encrypted backups. The reviewed postal-code fix from `465651d` is deployed; public frontend `relayUrl` remains null. One real unpaid order is saved; its quote expired before any signing attempt. The background restore repair verified that order with the original database key. See the [current validation report](reports/community-store-isolated-validation-2026-09-26.md) and [launch handoff](reports/community-store-launch-handoff-2026-09-25.md) for evidence and remaining rehearsal steps. The dated disabled-state sections below are history.
 
 **First enable is complete. Do not rerun the null-cursor first-enable path, choose a new start block, reset the saved cursor or restore the earlier empty database.** Subsequent updates must preserve the existing merchant identity, private data and reconciliation history.
 
@@ -136,6 +136,8 @@ At this 12:36 UTC checkpoint, the frontend had `relayUrl:null` and no public sto
 - [x] Activate the hourly off-host backup job and verify its first scheduled restore; retain seven days of verified backups. Operation requires the operator Mac awake and logged in.
 - [x] Activate the persistent disabled relay and protected HTTPS namespace; update the backup environment revision and verify manual plus scheduled restores.
 - [x] Privately enable the merchant, verify controlled restart with saved identity/cursor, and deploy the postal-code fix with matching verified backups while public checkout stays gated.
+- [x] Remove serving-stack dependencies from backup restore, verify the real saved order in the existing background job within the original timeout, and retain safe failure diagnostics.
+- [x] Align the isolated release tools with the approved MOF/Bunny workflow and verify publisher, purge and mounted-UI checks offline.
 - [ ] Assess sustained enabled-service capacity before public activation.
 - [x] Configure the existing approved OVH archive and verify historical events plus durable restart/backfill 1,024 blocks behind MOF, including from the relay host.
 - [ ] Weigh a packed sample; confirm actual dispatch expectations, remaining seller/privacy disclosures and destination handling.

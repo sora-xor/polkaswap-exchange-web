@@ -1,7 +1,7 @@
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-import { expect, test, type Page, type Route } from '@playwright/test';
+import { expect, test as base, type Page, type Route } from '@playwright/test';
 
 import {
   ensureAppLoaded,
@@ -137,27 +137,29 @@ async function expectCommunitySupport(page: Page): Promise<void> {
 }
 
 for (const browserName of ['chromium', 'webkit'] as const) {
+  const test = base.extend({
+    browserName: [browserName, { scope: 'worker' }],
+    channel: [browserName === 'chromium' ? process.env.PS_STORE_CHROMIUM_CHANNEL : undefined, { scope: 'worker' }],
+  });
   test.describe(`Community Store ${browserName}`, () => {
-    test('prelaunch browsing, photo evidence, native surfaces, and mobile layout', async ({ playwright, baseURL }) => {
-      const browser = await playwright[browserName].launch(
-        browserName === 'chromium' && process.env.PS_STORE_CHROMIUM_CHANNEL
-          ? { channel: process.env.PS_STORE_CHROMIUM_CHANNEL }
-          : {}
-      );
-      try {
-        await mkdir(output, { recursive: true });
-        for (const size of [
-          { name: 'desktop', width: 1440, height: 960 },
-          { name: 'mobile', width: 390, height: 844 },
-        ]) {
-          const context = await browser.newContext({
-            baseURL,
-            viewport: size,
-            screen: size,
-            isMobile: size.name === 'mobile',
-            reducedMotion: 'reduce',
-          });
-          const page = await context.newPage();
+    test.use({
+      viewport: { width: 1440, height: 960 },
+      reducedMotion: 'reduce',
+    });
+
+    for (const size of [
+      { name: 'desktop', width: 1440, height: 960 },
+      { name: 'mobile', width: 390, height: 844 },
+    ]) {
+      test.describe(`${size.name} prelaunch`, () => {
+        test.use({
+          viewport: { width: size.width, height: size.height },
+          screen: { width: size.width, height: size.height },
+          isMobile: size.name === 'mobile',
+        });
+
+        test('browsing, photo evidence, native surfaces, and layout', async ({ page }) => {
+          await mkdir(output, { recursive: true });
           page.setDefaultTimeout(10_000);
           await prepareStore(page, false);
           const errors = trackConsole(page);
@@ -202,151 +204,132 @@ for (const browserName of ['chromium', 'webkit'] as const) {
           await expectCommunitySupport(page);
           expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
           expect(failed).toEqual([]);
-          await context.close();
+        });
+      });
+    }
+
+    // Use managed fixtures so browser startup and trace capture belong to Playwright.
+    test('private order is saved before payment, receipt downloads, and recovery uses a header', async ({ page }) => {
+      await mkdir(output, { recursive: true });
+      page.setDefaultTimeout(10_000);
+      await prepareStore(page, true, true);
+      const errors = trackConsole(page);
+      const order = orderFixture();
+      let creationBody: Record<string, unknown> | null = null;
+      let releaseCreation!: () => void;
+      const saveBarrier = new Promise<void>((resolve) => {
+        releaseCreation = resolve;
+      });
+      let recoveryAuthorization = '';
+      await page.route(`${relayOrigin}/v1/orders`, async (route) => {
+        if (route.request().method() === 'OPTIONS') {
+          await fulfillJson(route, {});
+          return;
         }
-      } finally {
-        await browser.close();
-      }
+        creationBody = route.request().postDataJSON();
+        await saveBarrier;
+        await fulfillJson(route, order);
+      });
+      await page.route(`${relayOrigin}/v1/orders/${orderId}`, async (route) => {
+        if (route.request().method() === 'OPTIONS') {
+          await fulfillJson(route, {});
+          return;
+        }
+        recoveryAuthorization = route.request().headers().authorization ?? '';
+        await fulfillJson(route, {
+          ...order,
+          status: 'shipped',
+          notificationStatus: 'delivered',
+          tracking: 'EMS-MOCK-123',
+        });
+      });
+      await page.goto(`${ipfsEntryUrl}#/store`);
+      await ensureAppLoaded(page);
+      await expect(page.getByTestId('store-checkout')).toBeEnabled();
+      await expectCommunitySupport(page);
+      await expect(page.locator('.store-price__amount')).toHaveText(`${unitXor} XOR`);
+      await expect(page.getByTestId('community-store')).not.toContainText(
+        /US\$|\bUSD\b|\bJPY\b|¥|5\.37|MUFG|Price version/
+      );
+      await page.getByTestId('store-checkout').click();
+      await page.getByRole('combobox', { name: 'Destination country', exact: true }).selectOption('AU');
+      await page.getByLabel('Recipient’s full name').fill('E2E Customer');
+      await page.getByLabel('Street address', { exact: true }).fill('Private delivery street 123');
+      await page.getByLabel('City', { exact: true }).fill('Sydney');
+      await page.getByLabel('Postal code', { exact: true }).fill('2000');
+      await page.getByLabel('Email address', { exact: true }).fill('customer@example.test');
+      await page.locator('.store-consent input').check();
+      await expect(page.locator('.store-totals__total')).toContainText(`${totalXor} XOR`);
+      await expect(page.locator('sora-pay')).toHaveCount(0);
+      await page.getByTestId('store-save-order').click();
+      await expect.poll(() => creationBody).not.toBeNull();
+      await expect(page.locator('sora-pay')).toHaveCount(0);
+      expect(creationBody?.['address']).toEqual({
+        name: 'E2E Customer',
+        country: 'AU',
+        line1: 'Private delivery street 123',
+        city: 'Sydney',
+        postalCode: '2000',
+      });
+      releaseCreation();
+      await expect(page.getByTestId('store-receipt')).toBeVisible();
+      await expectCommunitySupport(page);
+      await expect(page.locator('sora-pay')).toHaveCount(1);
+      await expect(page.locator('sora-pay')).toContainText(`${totalXor} XOR`);
+      await expect(page.locator('sora-pay')).not.toContainText('Private delivery street');
+      expect(await page.evaluate(() => sessionStorage.getItem('polkaswap:community-store:recovery:v1'))).not.toContain(
+        'Private delivery street'
+      );
+      const downloadPromise = page.waitForEvent('download');
+      await page.getByTestId('store-download-receipt').click();
+      const receipt = await downloadPromise;
+      expect(receipt.suggestedFilename()).toBe(`polkaswap-order-${orderId}.json`);
+      await receipt.saveAs(path.join(output, `${browserName}-mock-receipt.json`));
+      await page.screenshot({ path: path.join(output, `${browserName}-checkout.png`), fullPage: true });
+      const saved = await page.evaluate(() => sessionStorage.getItem('polkaswap:community-store:recovery:v1'));
+      expect(saved).toContain(recoveryToken);
+      await page.evaluate(() => sessionStorage.removeItem('polkaswap:community-store:recovery:v1'));
+      await page.reload();
+      await ensureAppLoaded(page);
+      await expect(page.getByTestId('store-checkout')).toBeEnabled();
+      await page.getByLabel('Order ID', { exact: true }).fill(orderId);
+      await page.getByLabel('Private recovery code', { exact: true }).fill(recoveryToken);
+      await page.getByRole('button', { name: 'Recover order', exact: true }).click();
+      await expect(page.getByRole('heading', { name: 'Your tea is on its way', exact: true })).toBeVisible();
+      await expect(page.getByText('EMS-MOCK-123', { exact: true })).toBeVisible();
+      await expectCommunitySupport(page);
+      expect(recoveryAuthorization).toBe(`Bearer ${recoveryToken}`);
+      expect(page.url()).not.toContain(recoveryToken);
+      await expect(page.locator('sora-pay')).toHaveCount(0);
+      const repeatReceipt = page.waitForEvent('download');
+      await page.getByTestId('store-new-order').click();
+      expect((await repeatReceipt).suggestedFilename()).toBe(`polkaswap-order-${orderId}.json`);
+      await expect(page.getByRole('heading', { name: 'Delivery details', exact: true })).toBeVisible();
+      await expect(page.locator('.store-consent input')).not.toBeChecked();
+      await expect(page.locator('sora-pay')).toHaveCount(0);
+      await expectNoOverflow(page);
+      expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
     });
 
-    test('private order is saved before payment, receipt downloads, and recovery uses a header', async ({
-      playwright,
-      baseURL,
-    }) => {
-      const browser = await playwright[browserName].launch(
-        browserName === 'chromium' && process.env.PS_STORE_CHROMIUM_CHANNEL
-          ? { channel: process.env.PS_STORE_CHROMIUM_CHANNEL }
-          : {}
-      );
-      try {
-        const context = await browser.newContext({
-          baseURL,
-          viewport: { width: 1440, height: 960 },
-          reducedMotion: 'reduce',
-        });
-        const page = await context.newPage();
+    // This independent fresh-context layout check must not share the desktop flow's timeout.
+    test.describe('mobile checkout', () => {
+      test.use({ viewport: { width: 390, height: 844 }, screen: { width: 390, height: 844 }, isMobile: true });
+
+      test('delivery form shows exact totals without horizontal overflow', async ({ page }) => {
+        await mkdir(output, { recursive: true });
         page.setDefaultTimeout(10_000);
         await prepareStore(page, true, true);
-        const errors = trackConsole(page);
-        const order = orderFixture();
-        let creationBody: Record<string, unknown> | null = null;
-        let releaseCreation!: () => void;
-        const saveBarrier = new Promise<void>((resolve) => {
-          releaseCreation = resolve;
-        });
-        let recoveryAuthorization = '';
-        await page.route(`${relayOrigin}/v1/orders`, async (route) => {
-          if (route.request().method() === 'OPTIONS') {
-            await fulfillJson(route, {});
-            return;
-          }
-          creationBody = route.request().postDataJSON();
-          await saveBarrier;
-          await fulfillJson(route, order);
-        });
-        await page.route(`${relayOrigin}/v1/orders/${orderId}`, async (route) => {
-          if (route.request().method() === 'OPTIONS') {
-            await fulfillJson(route, {});
-            return;
-          }
-          recoveryAuthorization = route.request().headers().authorization ?? '';
-          await fulfillJson(route, {
-            ...order,
-            status: 'shipped',
-            notificationStatus: 'delivered',
-            tracking: 'EMS-MOCK-123',
-          });
-        });
         await page.goto(`${ipfsEntryUrl}#/store`);
         await ensureAppLoaded(page);
-        await expect(page.getByTestId('store-checkout')).toBeEnabled();
-        await expectCommunitySupport(page);
-        await expect(page.locator('.store-price__amount')).toHaveText(`${unitXor} XOR`);
-        await expect(page.getByTestId('community-store')).not.toContainText(
-          /US\$|\bUSD\b|\bJPY\b|¥|5\.37|MUFG|Price version/
-        );
         await page.getByTestId('store-checkout').click();
         await page.getByRole('combobox', { name: 'Destination country', exact: true }).selectOption('AU');
-        await page.getByLabel('Recipient’s full name').fill('E2E Customer');
-        await page.getByLabel('Street address', { exact: true }).fill('Private delivery street 123');
-        await page.getByLabel('City', { exact: true }).fill('Sydney');
-        await page.getByLabel('Postal code', { exact: true }).fill('2000');
-        await page.getByLabel('Email address', { exact: true }).fill('customer@example.test');
         await page.locator('.store-consent input').check();
+        await page.getByTestId('store-save-order').scrollIntoViewIfNeeded();
+        await expect(page.getByTestId('store-save-order')).toBeEnabled();
         await expect(page.locator('.store-totals__total')).toContainText(`${totalXor} XOR`);
-        await expect(page.locator('sora-pay')).toHaveCount(0);
-        await page.getByTestId('store-save-order').click();
-        await expect.poll(() => creationBody).not.toBeNull();
-        await expect(page.locator('sora-pay')).toHaveCount(0);
-        expect(creationBody?.['address']).toEqual({
-          name: 'E2E Customer',
-          country: 'AU',
-          line1: 'Private delivery street 123',
-          city: 'Sydney',
-          postalCode: '2000',
-        });
-        releaseCreation();
-        await expect(page.getByTestId('store-receipt')).toBeVisible();
-        await expectCommunitySupport(page);
-        await expect(page.locator('sora-pay')).toHaveCount(1);
-        await expect(page.locator('sora-pay')).toContainText(`${totalXor} XOR`);
-        await expect(page.locator('sora-pay')).not.toContainText('Private delivery street');
-        expect(
-          await page.evaluate(() => sessionStorage.getItem('polkaswap:community-store:recovery:v1'))
-        ).not.toContain('Private delivery street');
-        const downloadPromise = page.waitForEvent('download');
-        await page.getByTestId('store-download-receipt').click();
-        const receipt = await downloadPromise;
-        expect(receipt.suggestedFilename()).toBe(`polkaswap-order-${orderId}.json`);
-        await receipt.saveAs(path.join(output, `${browserName}-mock-receipt.json`));
-        await page.screenshot({ path: path.join(output, `${browserName}-checkout.png`), fullPage: true });
-        const saved = await page.evaluate(() => sessionStorage.getItem('polkaswap:community-store:recovery:v1'));
-        expect(saved).toContain(recoveryToken);
-        await page.evaluate(() => sessionStorage.removeItem('polkaswap:community-store:recovery:v1'));
-        await page.reload();
-        await expect(page.getByTestId('store-checkout')).toBeEnabled();
-        await page.getByLabel('Order ID', { exact: true }).fill(orderId);
-        await page.getByLabel('Private recovery code', { exact: true }).fill(recoveryToken);
-        await page.getByRole('button', { name: 'Recover order', exact: true }).click();
-        await expect(page.getByRole('heading', { name: 'Your tea is on its way', exact: true })).toBeVisible();
-        await expect(page.getByText('EMS-MOCK-123', { exact: true })).toBeVisible();
-        await expectCommunitySupport(page);
-        expect(recoveryAuthorization).toBe(`Bearer ${recoveryToken}`);
-        expect(page.url()).not.toContain(recoveryToken);
-        await expect(page.locator('sora-pay')).toHaveCount(0);
-        const repeatReceipt = page.waitForEvent('download');
-        await page.getByTestId('store-new-order').click();
-        expect((await repeatReceipt).suggestedFilename()).toBe(`polkaswap-order-${orderId}.json`);
-        await expect(page.getByRole('heading', { name: 'Delivery details', exact: true })).toBeVisible();
-        await expect(page.locator('.store-consent input')).not.toBeChecked();
-        await expect(page.locator('sora-pay')).toHaveCount(0);
         await expectNoOverflow(page);
-        expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
-        await context.close();
-
-        const mobileContext = await browser.newContext({
-          baseURL,
-          viewport: { width: 390, height: 844 },
-          screen: { width: 390, height: 844 },
-          isMobile: true,
-          reducedMotion: 'reduce',
-        });
-        const mobilePage = await mobileContext.newPage();
-        await prepareStore(mobilePage, true, true);
-        await mobilePage.goto(`${ipfsEntryUrl}#/store`);
-        await ensureAppLoaded(mobilePage);
-        await mobilePage.getByTestId('store-checkout').click();
-        await mobilePage.getByRole('combobox', { name: 'Destination country', exact: true }).selectOption('AU');
-        await mobilePage.locator('.store-consent input').check();
-        await mobilePage.getByTestId('store-save-order').scrollIntoViewIfNeeded();
-        await expect(mobilePage.getByTestId('store-save-order')).toBeEnabled();
-        await expect(mobilePage.locator('.store-totals__total')).toContainText(`${totalXor} XOR`);
-        await expectNoOverflow(mobilePage);
-        await mobilePage.screenshot({ path: path.join(output, `${browserName}-mobile-delivery.png`), fullPage: true });
-        await mobileContext.close();
-      } finally {
-        await browser.close();
-      }
+        await page.screenshot({ path: path.join(output, `${browserName}-mobile-delivery.png`), fullPage: true });
+      });
     });
   });
 }
