@@ -1,8 +1,13 @@
 import { Operation, TransactionStatus, type HistoryItem } from '@/lib/substrate/sdk/types';
-import findLast from 'lodash/fp/findLast';
 import { computed } from 'vue';
 
 import { api } from '@/lib/soraneo-wallet/src/api';
+import {
+  beginTransactionHistoryLookup,
+  claimTransactionHistoryEntry,
+  finishTransactionHistoryLookup,
+  type TransactionHistoryLookup,
+} from '@/lib/soraneo-wallet/src/composables/transactionHistory';
 import { delay } from '@/lib/soraneo-wallet/src/util';
 import pinia from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
@@ -49,16 +54,16 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
   const removeActiveTransactions = walletStore.removeActiveTransactions;
   const accountAssetsAddressTable = computed(() => walletStore.accountAssetsAddressTable);
 
-  const findLastTransaction = (time: number): HistoryItem | undefined =>
-    findLast((item: HistoryItem) => Number(item.startTime) > time, api.historyList);
+  const claimLastTransaction = (lookup: TransactionHistoryLookup): HistoryItem | undefined =>
+    claimTransactionHistoryEntry(lookup, api.historyList);
 
-  const waitForLastTransaction = async (time: number): Promise<HistoryItem | undefined> => {
-    const tx = findLastTransaction(time);
+  const waitForLastTransaction = async (lookup: TransactionHistoryLookup): Promise<HistoryItem | undefined> => {
+    const tx = claimLastTransaction(lookup);
     if (tx) return tx;
 
     for (let attempt = 0; attempt < TRANSACTION_HISTORY_LOOKUP_ATTEMPTS; attempt += 1) {
       await delay(TRANSACTION_HISTORY_LOOKUP_POLL_MS);
-      const nextTx = findLastTransaction(time);
+      const nextTx = claimLastTransaction(lookup);
       if (nextTx) return nextTx;
     }
 
@@ -113,15 +118,21 @@ export function useTransaction(options?: Parameters<typeof useLoading>[0]) {
         .withAppNotification(async () => {
           await walletStore.beforeTransactionSign(api);
           const time = Date.now();
-          await handler();
-          notification.showAppNotification(t('transactionSubmittedText'), 'info');
-          const tx = await waitForLastTransaction(time);
+          const historyLookup = beginTransactionHistoryLookup(api, api.historyList, time);
 
-          if (tx) {
-            addActiveTransaction(tx.id as string);
-            result = { submitted: true, submittedAt: time, transaction: tx };
-          } else {
-            result = { submitted: true, submittedAt: time, historyTimedOut: true };
+          try {
+            await handler();
+            notification.showAppNotification(t('transactionSubmittedText'), 'info');
+            const tx = await waitForLastTransaction(historyLookup);
+
+            if (tx) {
+              addActiveTransaction(tx.id as string);
+              result = { submitted: true, submittedAt: time, transaction: tx };
+            } else {
+              result = { submitted: true, submittedAt: time, historyTimedOut: true };
+            }
+          } finally {
+            finishTransactionHistoryLookup(historyLookup);
           }
         }, true)
         .catch((error: unknown) => {

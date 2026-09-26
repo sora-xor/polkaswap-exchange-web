@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { reactive } from 'vue';
 
 const beforeTransactionSign = vi.hoisted(() => vi.fn(async () => undefined));
@@ -6,7 +6,7 @@ const useWalletStoreMock = vi.hoisted(() => vi.fn());
 const showAppNotificationMock = vi.hoisted(() => vi.fn());
 const withAppNotificationMock = vi.hoisted(() => vi.fn(async (handler: () => Promise<void>) => await handler()));
 const getOperationMessageMock = vi.hoisted(() => vi.fn(() => 'operation-message'));
-const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
+const delayMock = vi.hoisted(() => vi.fn(async (): Promise<void> => undefined));
 const api = vi.hoisted(() => ({
   api: { isReady: Promise.resolve() },
   historyList: [] as Array<{ id: string; startTime: string }>,
@@ -106,11 +106,17 @@ describe('useTransaction', () => {
     useWalletStoreMock.mockReturnValue(walletStore);
   });
 
-  it('resolves the wallet store from Pinia and tracks submitted transactions', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('resolves the wallet store and tracks same-millisecond history insertion', async () => {
+    const now = 1_700_000_000_000;
+    vi.spyOn(Date, 'now').mockReturnValue(now);
     const handler = vi.fn(async () => {
       api.historyList.push({
         id: 'tx-1',
-        startTime: String(Date.now() + 1),
+        startTime: String(now),
       });
     });
 
@@ -123,9 +129,57 @@ describe('useTransaction', () => {
     expect(showAppNotificationMock).toHaveBeenCalledWith('transactionSubmittedText', 'info');
     expect(result).toEqual({
       submitted: true,
-      submittedAt: expect.any(Number),
-      transaction: { id: 'tx-1', startTime: expect.any(String) },
+      submittedAt: now,
+      transaction: { id: 'tx-1', startTime: String(now) },
     });
+  });
+
+  it('reserves distinct history items for concurrent submissions', async () => {
+    const now = 1_700_000_000_000;
+    vi.spyOn(Date, 'now').mockReturnValue(now);
+    let resolveFirst!: () => void;
+    let resolveSecond!: () => void;
+    let releaseHistoryPoll: (() => void) | undefined;
+    delayMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          releaseHistoryPoll = resolve;
+        })
+    );
+
+    const { withNotifications: firstWithNotifications } = useTransaction();
+    const { withNotifications: secondWithNotifications } = useTransaction();
+    const firstResult = firstWithNotifications(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveFirst = resolve;
+        })
+    );
+    const secondResult = secondWithNotifications(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSecond = resolve;
+        })
+    );
+
+    for (let attempt = 0; attempt < 20 && (!resolveFirst || !resolveSecond); attempt += 1) {
+      await Promise.resolve();
+    }
+
+    api.historyList.push({ id: 'tx-1', startTime: String(now + 1) });
+    resolveFirst();
+    resolveSecond();
+
+    for (let attempt = 0; attempt < 20 && !releaseHistoryPoll; attempt += 1) {
+      await Promise.resolve();
+    }
+
+    api.historyList.push({ id: 'tx-2', startTime: String(now + 1) });
+    releaseHistoryPoll?.();
+
+    const results = await Promise.all([firstResult, secondResult]);
+    expect(results.map((result) => result.transaction?.id).sort()).toEqual(['tx-1', 'tx-2']);
+    expect(walletStore.addActiveTransaction.mock.calls.map(([id]: [string]) => id).sort()).toEqual(['tx-1', 'tx-2']);
   });
 
   it('returns a submitted timeout result when wallet history never appears', async () => {

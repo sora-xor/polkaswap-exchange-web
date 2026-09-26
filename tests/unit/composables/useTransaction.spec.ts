@@ -1,5 +1,5 @@
 import { Operation, TransactionStatus } from '@/lib/substrate/sdk/types';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useTransaction } from '@/composables/useTransaction';
 import { api } from '@/lib/soraneo-wallet/src/api';
@@ -43,7 +43,7 @@ const apiMock = vi.hoisted(() => ({
 const connectionMock = vi.hoisted(() => ({
   endpoint: 'wss://sora.example',
 }));
-const delayMock = vi.hoisted(() => vi.fn(async () => undefined));
+const delayMock = vi.hoisted(() => vi.fn(async (): Promise<void> => undefined));
 
 vi.mock('@tests/stubs/walletRuntime', () => ({
   api: apiMock,
@@ -85,16 +85,24 @@ describe('useTransaction', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     delayMock.mockResolvedValue(undefined);
-    (api.historyList as Array<{ id: string; startTime: string }>).length = 0;
+    (api.historyList as unknown as Array<{ id: string; startTime: string }>).length = 0;
     getOperationMessage.mockClear();
   });
 
-  it('wraps handlers with wallet notification flow', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('tracks a history item inserted in the same millisecond as submission', async () => {
+    const now = 1_700_000_000_000;
+    vi.spyOn(Date, 'now').mockReturnValue(now);
     const { withNotifications } = useTransaction();
 
     const handler = vi.fn(async () => {
-      const time = Date.now() + 5;
-      (api.historyList as Array<{ id: string; startTime: string }>).push({ id: 'tx-1', startTime: time.toString() });
+      (api.historyList as unknown as Array<{ id: string; startTime: string }>).push({
+        id: 'tx-1',
+        startTime: String(now),
+      });
     });
 
     const result = await withNotifications(handler);
@@ -106,9 +114,63 @@ describe('useTransaction', () => {
     expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText', 'info');
     expect(result).toEqual({
       submitted: true,
-      submittedAt: expect.any(Number),
-      transaction: { id: 'tx-1', startTime: expect.any(String) },
+      submittedAt: now,
+      transaction: { id: 'tx-1', startTime: String(now) },
     });
+  });
+
+  it('reserves distinct history items for concurrent submissions', async () => {
+    const now = 1_700_000_000_000;
+    vi.spyOn(Date, 'now').mockReturnValue(now);
+    let resolveFirst!: () => void;
+    let resolveSecond!: () => void;
+    let releaseHistoryPoll: (() => void) | undefined;
+    delayMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          releaseHistoryPoll = resolve;
+        })
+    );
+
+    const { withNotifications: firstWithNotifications } = useTransaction();
+    const { withNotifications: secondWithNotifications } = useTransaction();
+    const firstResult = firstWithNotifications(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveFirst = resolve;
+        })
+    );
+    const secondResult = secondWithNotifications(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSecond = resolve;
+        })
+    );
+
+    for (let attempt = 0; attempt < 20 && (!resolveFirst || !resolveSecond); attempt += 1) {
+      await Promise.resolve();
+    }
+
+    (api.historyList as unknown as Array<{ id: string; startTime: string }>).push({
+      id: 'tx-1',
+      startTime: String(now + 1),
+    });
+    resolveFirst();
+    resolveSecond();
+
+    for (let attempt = 0; attempt < 20 && !releaseHistoryPoll; attempt += 1) {
+      await Promise.resolve();
+    }
+
+    (api.historyList as unknown as Array<{ id: string; startTime: string }>).push({
+      id: 'tx-2',
+      startTime: String(now + 1),
+    });
+    releaseHistoryPoll?.();
+
+    const results = await Promise.all([firstResult, secondResult]);
+    expect(results.map((result) => result.transaction?.id).sort()).toEqual(['tx-1', 'tx-2']);
+    expect(addActiveTx.mock.calls.map(([id]) => id).sort()).toEqual(['tx-1', 'tx-2']);
   });
 
   it('returns a submitted timeout result when wallet history never appears', async () => {
@@ -169,7 +231,7 @@ describe('useTransaction', () => {
     expect(showAppNotification).toHaveBeenCalledWith('transactionSubmittedText', 'info');
     expect(addActiveTx).not.toHaveBeenCalled();
 
-    (api.historyList as Array<{ id: string; startTime: string }>).push({
+    (api.historyList as unknown as Array<{ id: string; startTime: string }>).push({
       id: 'tx-delayed',
       startTime: String(Date.now() + 5),
     });
