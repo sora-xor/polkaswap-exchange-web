@@ -422,6 +422,7 @@
             "expires": "𓋴𓏏𓊪 𓂋𓏤𓈖",
             "fee": "𓂋𓏤𓈖 𓈖𓏏 𓎛𓈖",
             "feeChanged": "𓄿𓎛 𓈖𓏏 𓎛𓈖 𓎛𓂋. 𓎛𓂋 𓄿𓎛 𓉐𓏤 𓉐𓏤 𓋴𓂋𓂝 𓅱𓂋 𓋴𓏏𓊪.",
+            "insufficientBalance": "𓄿𓎛 𓎛𓂋",
             "finalized": "𓎛𓂋 𓋴𓏏𓊪 𓄿𓎛 𓉐𓏤 𓎛𓂋 𓄿𓎛.",
             "idle": "𓋴𓂋 𓅱𓂋 𓎟𓏏𓊪 𓅱𓂋 𓎛𓂋 𓄿𓎛 𓎛𓈖.",
             "merchant": "𓋴𓏏𓊪",

@@ -434,7 +434,8 @@
             "uncertain": "De betalingsstatus is onzeker. Controleer de opgeslagen bestelling voordat u verdere betalingsacties onderneemt.",
             "finalized": "Betaling geverifieerd in een definitief blok.",
             "error": "Betaling niet beschikbaar. Controleer uw portemonnee, netwerk, saldo en vervaldatum van uw offertes.",
-            "feeChanged": "De netwerkkosten zijn gewijzigd. Controleer het en druk nogmaals op Verzenden XOR."
+            "feeChanged": "De netwerkkosten zijn gewijzigd. Controleer het en druk nogmaals op Verzenden XOR.",
+            "insufficientBalance": "Deze wallet bevat niet genoeg native XOR voor de betaling en de netwerkkosten."
         },
         "newOrder": "Bewaar de kassabon en start een nieuwe bestelling",
         "refundedBody": "Uw terugbetaling is voltooid. De volledige ontvangen XOR, inclusief verzendkosten, werd teruggestuurd naar de portemonnee waarmee betaald werd. De winkel betaalde de transactiekosten voor terugbetaling."

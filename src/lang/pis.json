@@ -422,6 +422,7 @@
             "expires": "falom stakaon",
             "fee": "stakaon netwok fi",
             "feeChanged": "gohed netwok fi raonem. raonem gohed wakaot wakaot salem go luksavve falom.",
+            "insufficientBalance": "Iu no garem inaf XOR insaed long disfala walet fo peimen an netwok fi.",
             "finalized": "raonem falom gohed wakaot raonem gohed.",
             "idle": "konekem luksavve walet luksavve raonem gohed fi.",
             "merchant": "falom",

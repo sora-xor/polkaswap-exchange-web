@@ -434,7 +434,8 @@
             "uncertain": "Lo stato del pagamento è incerto. Controlla l'ordine salvato prima di intraprendere qualsiasi ulteriore azione di pagamento.",
             "finalized": "Pagamento verificato in un blocco finalizzato.",
             "error": "Pagamento non disponibile. Controlla il tuo portafoglio, la rete, il saldo e la scadenza del preventivo.",
-            "feeChanged": "La tariffa di rete è cambiata. Rivedilo e premi nuovamente Invia XOR."
+            "feeChanged": "La tariffa di rete è cambiata. Rivedilo e premi nuovamente Invia XOR.",
+            "insufficientBalance": "Questo portafoglio non contiene abbastanza XOR nativo per coprire il pagamento e la commissione di rete."
         },
         "newOrder": "Salva la ricevuta e avvia un nuovo ordine",
         "refundedBody": "Il tuo rimborso è completo. L'intero XOR ricevuto, inclusa la spedizione, è stato restituito al portafoglio che ha effettuato il pagamento. Il negozio ha coperto la commissione sulla transazione di rimborso."

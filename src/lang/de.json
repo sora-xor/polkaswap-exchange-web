@@ -434,7 +434,8 @@
             "uncertain": "Der Zahlungsstatus ist ungewiss. Überprüfen Sie die gespeicherte Bestellung, bevor Sie weitere Zahlungsmaßnahmen ergreifen.",
             "finalized": "Zahlung in einem finalisierten Block verifiziert.",
             "error": "Zahlung nicht möglich. Überprüfen Sie Ihre Wallet, Ihr Netzwerk, Ihr Guthaben und den Ablauf des Angebots.",
-            "feeChanged": "Die Netzgebühr hat sich geändert. Überprüfen Sie es und klicken Sie erneut auf „Senden XOR“."
+            "feeChanged": "Die Netzgebühr hat sich geändert. Überprüfen Sie es und klicken Sie erneut auf „Senden XOR“.",
+            "insufficientBalance": "In dieser Wallet ist nicht genügend natives XOR für die Zahlung und die Netzwerkgebühr vorhanden."
         },
         "newOrder": "Quittung speichern und neue Bestellung starten",
         "refundedBody": "Ihre Rückerstattung ist abgeschlossen. Der gesamte erhaltene Betrag in Höhe von XOR, einschließlich Versand, wurde dem bezahlten Wallet gutgeschrieben. Das Geschäft hat die Transaktionsgebühr für die Rückerstattung übernommen."

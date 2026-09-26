@@ -434,7 +434,8 @@
             "uncertain": "Stav platby je nejistý. Před provedením jakékoli další platební akce zkontrolujte uloženou objednávku.",
             "finalized": "Platba ověřena v dokončeném bloku.",
             "error": "Platba není k dispozici. Zkontrolujte svou peněženku, síť, zůstatek a vypršení platnosti nabídky.",
-            "feeChanged": "Síťový poplatek se změnil. Zkontrolujte jej a znovu stiskněte Odeslat XOR."
+            "feeChanged": "Síťový poplatek se změnil. Zkontrolujte jej a znovu stiskněte Odeslat XOR.",
+            "insufficientBalance": "V této peněžence není dostatek nativního XOR na platbu a síťový poplatek."
         },
         "newOrder": "Uložte účtenku a začněte novou objednávku",
         "refundedBody": "Vaše refundace je dokončena. Celá přijatá částka XOR včetně dopravy byla vrácena do peněženky, která zaplatila. Obchod uhradil poplatek za vrácení peněz."

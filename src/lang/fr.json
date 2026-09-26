@@ -434,7 +434,8 @@
             "uncertain": "Le statut de paiement est incertain. Vérifiez la commande enregistrée avant d'effectuer toute autre action de paiement.",
             "finalized": "Paiement vérifié dans un bloc finalisé.",
             "error": "Paiement indisponible. Vérifiez votre portefeuille, votre réseau, votre solde et l'expiration de votre devis.",
-            "feeChanged": "Les frais de réseau ont changé. Vérifiez-le et appuyez à nouveau sur Envoyer XOR."
+            "feeChanged": "Les frais de réseau ont changé. Vérifiez-le et appuyez à nouveau sur Envoyer XOR.",
+            "insufficientBalance": "Ce portefeuille ne contient pas assez de XOR natif pour couvrir le paiement et les frais de réseau."
         },
         "newOrder": "Enregistrez le reçu et démarrez une nouvelle commande",
         "refundedBody": "Votre remboursement est complet. La totalité des XOR reçus, frais d'expédition compris, a été renvoyée dans le portefeuille qui a payé. Le magasin a pris en charge les frais de transaction de remboursement."

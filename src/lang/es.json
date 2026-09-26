@@ -434,7 +434,8 @@
             "uncertain": "El estado del pago es incierto. Verifique el pedido guardado antes de realizar cualquier otra acción de pago.",
             "finalized": "Pago verificado en un bloque finalizado.",
             "error": "Pago no disponible. Verifique su billetera, red, saldo y vencimiento de cotización.",
-            "feeChanged": "La tarifa de la red cambió. Revíselo y presione Enviar XOR nuevamente."
+            "feeChanged": "La tarifa de la red cambió. Revíselo y presione Enviar XOR nuevamente.",
+            "insufficientBalance": "Esta billetera no tiene suficiente XOR nativo para cubrir el pago y la comisión de red."
         },
         "newOrder": "Guardar recibo e iniciar un nuevo pedido",
         "refundedBody": "Su reembolso está completo. El XOR completo recibido, incluido el envío, se devolvió a la billetera que pagó. La tienda cubrió la tarifa de transacción del reembolso."

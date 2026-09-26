@@ -434,7 +434,8 @@
             "uncertain": "Tình trạng thanh toán không chắc chắn. Kiểm tra đơn hàng đã lưu trước khi thực hiện bất kỳ hành động thanh toán nào khác.",
             "finalized": "Thanh toán được xác minh trong một khối cuối cùng.",
             "error": "Thanh toán không có sẵn. Kiểm tra ví, mạng, số dư và báo giá hết hạn của bạn.",
-            "feeChanged": "Phí mạng đã thay đổi. Xem lại và nhấn Gửi XOR lần nữa."
+            "feeChanged": "Phí mạng đã thay đổi. Xem lại và nhấn Gửi XOR lần nữa.",
+            "insufficientBalance": "Ví này không có đủ XOR gốc để thanh toán và trả phí mạng."
         },
         "newOrder": "Lưu biên lai và bắt đầu đơn hàng mới",
         "refundedBody": "Việc hoàn tiền của bạn đã hoàn tất. Toàn bộ XOR nhận được, bao gồm cả phí vận chuyển, đã được trả lại vào ví đã thanh toán. Cửa hàng đã bao trả phí giao dịch hoàn tiền."

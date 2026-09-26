@@ -434,7 +434,8 @@
             "uncertain": "Status pembayaran tidak pasti. Periksa pesanan yang disimpan sebelum mengambil tindakan pembayaran lebih lanjut.",
             "finalized": "Pembayaran diverifikasi di blok yang diselesaikan.",
             "error": "Pembayaran tidak tersedia. Periksa dompet, jaringan, saldo, dan masa berlaku penawaran Anda.",
-            "feeChanged": "Biaya jaringan berubah. Tinjau dan tekan Kirim XOR lagi."
+            "feeChanged": "Biaya jaringan berubah. Tinjau dan tekan Kirim XOR lagi.",
+            "insufficientBalance": "XOR native di dompet ini tidak cukup untuk membayar pembayaran dan biaya jaringan."
         },
         "newOrder": "Simpan tanda terima & mulai pesanan baru",
         "refundedBody": "Pengembalian dana Anda selesai. XOR lengkap yang diterima, termasuk ongkos kirim, dikembalikan ke dompet yang membayar. Toko menanggung biaya transaksi pengembalian dana."

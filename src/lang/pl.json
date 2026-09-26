@@ -434,7 +434,8 @@
             "uncertain": "Status płatności jest niepewny. Przed podjęciem dalszych działań płatniczych sprawdź zapisane zamówienie.",
             "finalized": "Płatność weryfikowana w sfinalizowanym bloku.",
             "error": "Płatność niedostępna. Sprawdź swój portfel, sieć, saldo i wygaśnięcie oferty.",
-            "feeChanged": "Zmieniła się opłata sieciowa. Przejrzyj go i ponownie naciśnij Wyślij XOR."
+            "feeChanged": "Zmieniła się opłata sieciowa. Przejrzyj go i ponownie naciśnij Wyślij XOR.",
+            "insufficientBalance": "W tym portfelu nie ma wystarczającej ilości natywnego XOR na płatność i opłatę sieciową."
         },
         "newOrder": "Zapisz potwierdzenie i rozpocznij nowe zamówienie",
         "refundedBody": "Twój zwrot środków został zakończony. Całość otrzymanej kwoty XOR, łącznie z wysyłką, została zwrócona do portfela, który zapłacił. Sklep pokrył opłatę transakcyjną zwrotu środków."

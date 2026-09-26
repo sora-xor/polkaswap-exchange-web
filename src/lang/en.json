@@ -424,6 +424,7 @@
             "expires": "Quote expires",
             "fee": "Estimated network fee",
             "feeChanged": "The network fee changed. Review it and press Send XOR again.",
+            "insufficientBalance": "Not enough native XOR in this wallet to cover the payment and network fee.",
             "finalized": "Payment verified in a finalized block.",
             "idle": "Connect your wallet to review the fee.",
             "merchant": "Merchant",
