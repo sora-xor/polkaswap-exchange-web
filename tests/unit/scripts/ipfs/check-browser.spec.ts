@@ -1,5 +1,6 @@
 import { describe, expect, it, beforeAll, beforeEach, afterEach, afterAll, vi } from 'vitest';
 import path from 'path';
+import { JSDOM } from 'jsdom';
 
 const fsMock = vi.hoisted(() => {
   const existsSyncMock = vi.fn();
@@ -141,7 +142,7 @@ describe('check-browser helpers', () => {
     expect(swap).toEqual({
       name: 'swap',
       title: 'Swap - Polkaswap',
-      selector: '.swap-container [data-widget-id="swapForm"]',
+      selector: '.swap-container .swap-form',
     });
     expect(
       checkBrowser.hydrationIssue(
@@ -161,6 +162,45 @@ describe('check-browser helpers', () => {
         swap
       )
     ).toContain('swap UI did not render');
+  });
+
+  it('recognizes the mounted form through the current grid wrappers without widget ID attributes', async () => {
+    const dom = new JSDOM(`
+      <title>Swap - Polkaswap</title>
+      <div id="app">
+        <div class="vue-grid-layout widgets-grid swap-container">
+          <div><div class="vue-grid-item">
+            <div class="swap-widget"><div class="base-widget-content">
+              <div class="swap-form"><input data-test-name="swapFrom"><button>Connect account</button></div>
+            </div></div>
+          </div></div>
+        </div>
+      </div>
+    `);
+    const readiness = checkBrowser.routeReadiness('https://polkaswap.io/#/swap');
+    const page = {
+      evaluate: async (callback: (args: unknown) => unknown, args: unknown) => callback(args),
+    };
+    vi.stubGlobal('document', dom.window.document);
+    try {
+      expect(document.querySelector('[data-widget-id="swapForm"]')).toBeNull();
+      const mounted = await checkBrowser.inspectHydratedUi(page, '#app', readiness);
+      expect(mounted).toEqual({
+        title: 'Swap - Polkaswap',
+        hasAppContent: true,
+        hasBootstrapLoader: false,
+        hasRouteUi: true,
+      });
+      expect(checkBrowser.hydrationIssue(mounted, readiness)).toBeNull();
+
+      document.querySelector('.swap-form')?.remove();
+      const emptyGrid = await checkBrowser.inspectHydratedUi(page, '#app', readiness);
+      expect(emptyGrid.hasRouteUi).toBe(false);
+      expect(checkBrowser.hydrationIssue(emptyGrid, readiness)).toContain('swap UI did not render');
+    } finally {
+      vi.unstubAllGlobals();
+      dom.window.close();
+    }
   });
 
   it('polls until the mounted route appears and rejects a loader at the deadline', async () => {

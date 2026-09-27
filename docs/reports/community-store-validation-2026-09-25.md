@@ -1,5 +1,38 @@
 # Community Store validation — 2026-09-25
 
+## Current Taiwan desktop pilot — 27 September 2026
+
+This section supersedes the current-state claims in the dated September 25 checkpoints below. Frontend source is `04064a63bb26f10875c32ff6eb59cebe7f5da997`. The package/runtime remains Sora Pay **0.2.2**; source HEAD `2a2bf5da87d7a83d6f7fa9a6f760c9cf8af9cd70` does not introduce a new personal-use API. The fixed one-bag Taiwan total is **3.459809 XOR** plus the wallet fee. Checkout has one ordinary order-terms checkbox and no personal-use confirmation or hidden consent.
+
+| Check | Current result |
+| --- | --- |
+| Full repository unit suite | **777 files / 3,709 tests passed**, exit `0`, **456.53 seconds**, Node 26.10.0 and pinned Yarn 4.10.3. `/tmp/community-store-taiwan-final-unit.log`. |
+| Focused Store suite | **59 tests / 7 suites passed**, 6.07 seconds. `/tmp/community-store-taiwan-store-tests.log`. |
+| Locale consistency | **13 checks / 4 suites passed**, 1.18 seconds. All 31 catalogs contain the desktop advisory; no personal-use confirmation key remains. `/tmp/community-store-taiwan-translations.log`. |
+| Production build and browser checks | Fresh build plus **20 Chromium/WebKit cases passed** in the combined 1.2-minute runner. Includes Taiwan ordinary checkout, prelaunch desktop/mobile layout, private recovery, and legacy/current/agreed/manually reconciled refund receipts. `/tmp/community-store-taiwan-production-browser.log`. |
+| Subsequent browser-checker regressions | **29 focused tests passed** after the 3,709-test source checkpoint. No new full-suite run at the later checker commit is implied. |
+| Targeted lint and diff whitespace | Passed. `/tmp/community-store-taiwan-lint.log`. |
+| Static asset boundary | Built assets contain no personal-use API/attestation fields or private relay runtime artifacts. `/tmp/community-store-taiwan-build-evidence.json`. |
+| IPFS/MOF | Production `bafybeibfifc6u7rt6iuzhnxiuyidm4ly3fobkhcb45xl7faz537yn532ve` and testnet `bafybeieqqrmhlxslqzbbv7dvtbsnn4pu6lyqdfwclqdpuvntgnhxak3gye` published; both roots pinned and verified on MOF. |
+| Real rehearsal | Internal payment, Telegram notification and finalized refund verified; shipment rehearsal operator-confirmed complete. Preserve the existing completed order; no further refund is needed. |
+| Public rollout | Taiwan merchant transition and all 12 open-ingress route checks pass. Bunny saved/purged; current production CID/root verified, 134 assets warmed200, and official live Swap WebKit passed with zero request/console failures. Live Chrome verified the Taiwan-only option and exact total; fresh-context Store WebKit mounted the real Store after 30 seconds with the new CID and zero request/console failures. All nine public API checks and saved-receipt recovery pass. |
+
+The local browser snapshot used `index-Cj0seoEJ.js`, `style-C5TN3-5-.css` and index SHA-256 `ec4cc473b9e48af4d6b5bbc64bc060caafeeb55d36952f8cd53598b332cc9404`. These are the verified local candidate artifacts; the publisher’s rebuilt index is recorded separately below. Screenshots are under `output/playwright/community-store/`, including both `*-taiwan-pilot-checkout.png` files.
+
+The merchant update succeeded in attempt `acc98fa435694e91b1bc96cb8e186684`, with manifest `8254e153976f3553492492efae923e2a9e1d71c25d44a6e94face5822f40c414` and merchant hash `5311ee0470c10299b9ddd765d031b77d949d4909fbf3ec11e786a00eb89049b5`. Sora Pay 0.2.2 ran as relay PID **2166**. Existing **2 orders / 2 payments / 4 outbox rows** were preserved while the cursor advanced **27,801,553 → 27,801,555**. Manual restore `20260927T132642Z-5a9d41beba634f61be8be60637f611ca` and distinct scheduled restore `20260927T132648Z-2af5be13aea449c3a66e1875131996fa` passed. The preceding preflight audit issue was resolved; it is not a remaining launch gate.
+
+Ingress opening attempt `6fca6a95728f49689b7f232826124e71` passed all **12 route checks**, including exact customer CORS/no-store behavior, public operator denial and private health. Existing relay, SORA node, IPFS service and nginx master identities were preserved. The only changed nginx file was the admission map. Evidence: `/Users/takemiyamakoto/dev/sora-pay/output/pilot-ingress/opened.json`.
+
+The successful import used the actual **23,197,038-byte production CAR** and **23,195,046-byte testnet CAR**. Both root/content checks and all **282 recursive pins** passed, preserving all 280 prior pins. Final available capacity after recorded allowances was **64,286,426,728 bytes**, above the existing 10 GiB reserve. Evidence is under `/Users/takemiyamakoto/dev/sora-pay/output/pilot-ipfs-replication/`: `replication-result.json`, `release.json`, `bunny-update.json` and `live-webkit-swap-final-summary.json`.
+
+Published/live index SHA-256: `729b971eebaa5cd02420e8e02f280be17f28069dff9f10b399a7f52e78fb711e`. The local test snapshot hash above intentionally differs from the publisher’s rebuilt index.
+
+Live browser and recovery evidence is under `/Users/takemiyamakoto/dev/sora-pay/output/pilot-ipfs-replication/`: `live-chrome-store.json`, `live-webkit-store-final-summary.json`, `live-webkit-store-final.png` and `live-receipt-recovery.json`. Chrome reached **Store - Polkaswap**, with Taiwan as the only country, tea **1.759225 XOR**, shipping **1.700584 XOR** and total **3.459809 XOR** plus wallet fee. Its delivery form had one ordinary terms checkbox and no personal-use confirmation. Store WebKit verified the mounted Store and clean network/console in a fresh context; its checker captured the initial generic title, so no Store-specific title assertion is claimed for WebKit. No customer details, new orders or payments were submitted by these checks.
+
+The existing receipt recovered over public HTTPS with status **200**, order **refunded**, notification **delivered**, `no-store`, exact `https://polkaswap.io` CORS and a private token carried only in a header. The order was not modified. All **nine public API checks** passed without credentials or valid-order creation; the catalog exposes only Taiwan across 18 bands, fixed `exact-xor` pricing and Telegram support. Evidence: `/Users/takemiyamakoto/dev/sora-pay/output/pilot-ingress/public-open-verification.json`. **The Taiwan desktop pilot is live.**
+
+## Historical scope and evidence — 25 September 2026
+
 Scope: Polkaswap static Store feature, native-wallet adapter, vendored Sora Pay 0.1.0 and separate private relay. Private Telegram configuration and synthetic delivery through the deployed adapter passed. No real order, purchase, refund or shipment was executed. The MOF relay has passed private enabled startup, the postal-code fix, a controlled restart with saved cursor/identity continuity, and new encrypted backup restores. Public customer routes remain blocked and frontend `relayUrl:null`; this is not a public checkout deployment.
 
 ## Enabled postal-code fix verified — 15:30 UTC

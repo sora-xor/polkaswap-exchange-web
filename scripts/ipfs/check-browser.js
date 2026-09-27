@@ -267,7 +267,7 @@ function routeReadiness(targetUrl) {
     return {
       name: 'swap',
       title: 'Swap - Polkaswap',
-      selector: '.swap-container [data-widget-id="swapForm"]',
+      selector: '.swap-container .swap-form',
     };
   }
   return { name: 'app', title: null, selector: null };
