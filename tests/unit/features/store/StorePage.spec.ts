@@ -397,6 +397,7 @@ describe('community Store page', () => {
     expect(increase.attributes('disabled')).toBeDefined();
     expect(wrapper.text()).not.toContain('bags available');
     await wrapper.get('[data-testid="store-checkout"]').trigger('click');
+    expect(wrapper.find('#store-personal-use').exists()).toBe(false);
     expect(wrapper.get('#store-contact').attributes('type')).toBe('email');
     expect(wrapper.text()).toContain('Email address');
     expect(wrapper.find('#store-name').exists()).toBe(true);
@@ -451,6 +452,30 @@ describe('community Store page', () => {
     expect(shared.context!.createOrder).not.toHaveBeenCalled();
     expect(wrapper.text()).toContain('Check your delivery and contact details');
     expect(wrapper.get('[data-testid="store-save-order"]').attributes('disabled')).toBeDefined();
+  });
+
+  it('uses only the ordinary order terms under the merchant personal-use policy', async () => {
+    openStore();
+    shared.context!.catalog.value!.merchant.customsPolicy = 'Taiwan pilot: personal orders only.';
+    shared.context!.isConnected.value = true;
+    const wrapper = render();
+    expect(wrapper.text()).toContain('For this pilot, order with a SORA wallet in a desktop browser.');
+    expect(wrapper.text()).toContain('Taiwan pilot: personal orders only.');
+    await wrapper.get('[data-testid="store-checkout"]').trigger('click');
+    await wrapper.get('#store-country').setValue('JP');
+    await wrapper.get('#store-name').setValue('Customer Example');
+    await wrapper.get('#store-address1').setValue('Private street 123');
+    await wrapper.get('#store-city').setValue('Tokyo');
+    await wrapper.get('#store-postal').setValue('100-0001');
+    await wrapper.get('#store-contact').setValue('customer@example.org');
+    expect(wrapper.find('#store-personal-use').exists()).toBe(false);
+    expect(wrapper.findAll('input[type="checkbox"]')).toHaveLength(1);
+    await wrapper.get('input[type="checkbox"]').setValue(true);
+    expect(wrapper.get('[data-testid="store-save-order"]').attributes('disabled')).toBeUndefined();
+    await wrapper.get('.store-checkout__grid').trigger('submit');
+    await flushPromises();
+    expect(shared.context!.createOrder).toHaveBeenCalledOnce();
+    expect(shared.context!.createOrder.mock.calls[0][0]).not.toHaveProperty('personalUseAccepted');
   });
 
   it('shows no payment widget or premature notification while a submitted transfer is being confirmed', async () => {

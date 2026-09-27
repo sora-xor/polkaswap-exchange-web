@@ -14,7 +14,7 @@ describe('published Community Store configuration', () => {
       version: 1,
       merchantId: 'polkaswap-community-store',
       recipient: 'cnWUWKLZmNjQXGzYAF7YuRSiW1pKTRTzu4fmcYmWQX6UMGQUZ',
-      relayUrl: null,
+      relayUrl: 'https://mof.sora.org/sora-pay',
     });
   });
 });

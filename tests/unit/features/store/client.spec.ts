@@ -73,6 +73,17 @@ function catalog(): CommunityStoreCatalog {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('community store trust and quote boundary', () => {
+  it('derives the Taiwan parcel limit from published bands without an inventory cap', () => {
+    const sample = catalog();
+    sample.shipping = [{ id: 'tw6000', countries: ['TW'], maxGrams: 6000, priceXor: '1.700584', label: 'EMS' }];
+    expect(quoteStoreOrder(sample, 1, 'TW')?.totalXor).toBe('3.459809');
+    expect(quoteStoreOrder(sample, 49, 'TW')?.totalXor).toBe('87.902609');
+    expect(quoteStoreOrder(sample, 50, 'TW')).toBeNull();
+    expect(quoteStoreOrder(sample, 1, 'JP')).toBeNull();
+    sample.shipping[0].maxGrams = 6200;
+    expect(quoteStoreOrder(sample, 50, 'TW')).not.toBeNull();
+  });
+
   it('accepts an explicit fixed deduction without mistaking it for the finalized network fee', () => {
     const paymentRequest = {
       version: 1,

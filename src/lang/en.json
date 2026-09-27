@@ -301,6 +301,7 @@
     "collapseText": "Collapse",
     "comingSoonText": "Coming Soon",
     "communityStore": {
+    "desktopPilot": "For this pilot, order with a SORA wallet in a desktop browser.",
         "address1": "Street address",
         "address2": "Apartment, suite, etc. (optional)",
         "backPhoto": "Back of the sencha package with its ingredient and brewing label",

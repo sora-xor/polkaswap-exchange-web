@@ -63,6 +63,7 @@
         </p>
         <p class="store-note">{{ t('communityStore.sourcedOnDemand') }}</p>
         <p class="store-note">{{ t('communityStore.shippingSeparate') }}</p>
+        <p class="store-note">{{ t('communityStore.desktopPilot') }}</p>
       </div>
     </section>
 

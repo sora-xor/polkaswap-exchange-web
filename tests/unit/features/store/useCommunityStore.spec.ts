@@ -158,6 +158,7 @@ describe('private store checkout lifecycle', () => {
     expect(body.address).not.toHaveProperty('line2');
     expect(body.address).not.toHaveProperty('region');
     expect(body.address.name).toBe(input.shipping.name);
+    expect(body).not.toHaveProperty('personalUseAccepted');
     const stored = sessionStorage.getItem(storageKey)!;
     expect(stored).toContain('recoveryToken');
     for (const privateText of ['Private Customer', 'Private Street', 'customer@example.test'])

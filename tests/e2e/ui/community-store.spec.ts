@@ -27,7 +27,7 @@ const refundFeeCodec = '100026012589707326';
 const netRefundXor = '5.353569987410292674';
 
 /** Use a complete, release-matching merchant fixture, with no real relay or signing calls. */
-function catalogFixture() {
+function catalogFixture(taiwanPilot = false) {
   return {
     version: 'e2e-september-25',
     enabled: true,
@@ -37,7 +37,9 @@ function catalogFixture() {
       operatorName: 'Community Volunteers',
       supportTelegram: 'sora_xor',
       dispatchPolicy: 'Tea is sourced after ordering.',
-      customsPolicy: 'Destination import rules apply.',
+      customsPolicy: taiwanPilot
+        ? 'Taiwan pilot: personal orders only. Volunteers check customs requirements before dispatch.'
+        : 'Destination import rules apply.',
       privacyPolicy: 'Private fulfillment only.',
       cancellationPolicy:
         'If an order cannot be shipped, we refund the XOR received, including shipping, minus the SORA network fee for sending the refund. Your original payment’s network fee is non-refundable.',
@@ -54,9 +56,17 @@ function catalogFixture() {
       packagingGrams: 80,
       fulfillmentMode: 'on-demand',
     },
-    shipping: [
-      { id: 'ems-zone-3-500', countries: ['AU', 'DE'], maxGrams: 500, priceXor: shippingXor, label: 'Japan Post EMS' },
-    ],
+    shipping: taiwanPilot
+      ? [{ id: 'ems-tw-6000', countries: ['TW'], maxGrams: 6000, priceXor: '1.700584', label: 'Japan Post EMS' }]
+      : [
+          {
+            id: 'ems-zone-3-500',
+            countries: ['AU', 'DE'],
+            maxGrams: 500,
+            priceXor: shippingXor,
+            label: 'Japan Post EMS',
+          },
+        ],
     chain: { genesisHash: genesis, assetId: NATIVE_XOR_ASSET_ID, decimals: 18, denomination: '1', recipient },
   };
 }
@@ -198,7 +208,12 @@ function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt' | 'agreed' |
 }
 
 /** Retain the real shell and wallet state while preventing every external network operation. */
-async function prepareStore(page: Page, liveCatalog: boolean, authenticated = false): Promise<void> {
+async function prepareStore(
+  page: Page,
+  liveCatalog: boolean,
+  authenticated = false,
+  taiwanPilot = false
+): Promise<void> {
   await preparePage(page, { stubRuntimeEnv: true });
   await page.addInitScript(
     ({ state, loggedIn }) => {
@@ -215,7 +230,8 @@ async function prepareStore(page: Page, liveCatalog: boolean, authenticated = fa
   await page.route('**/community-store.json', (route) =>
     fulfillJson(route, { version: 1, merchantId, recipient, relayUrl: liveCatalog ? relayOrigin : null })
   );
-  if (liveCatalog) await page.route(`${relayOrigin}/v1/catalog`, (route) => fulfillJson(route, catalogFixture()));
+  if (liveCatalog)
+    await page.route(`${relayOrigin}/v1/catalog`, (route) => fulfillJson(route, catalogFixture(taiwanPilot)));
 }
 
 /** Check complete document width, not only the page's own rounded surface. */
@@ -411,6 +427,54 @@ for (const browserName of ['chromium', 'webkit'] as const) {
       await expect(page.locator('.store-consent input')).not.toBeChecked();
       await expect(page.locator('sora-pay')).toHaveCount(0);
       await expectNoOverflow(page);
+      expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
+    });
+
+    test('Taiwan desktop pilot saves an ordinary private order without customer attestation', async ({ page }) => {
+      await mkdir(output, { recursive: true });
+      page.setDefaultTimeout(10_000);
+      await prepareStore(page, true, true, true);
+      const errors = trackConsole(page);
+      let creationBody: Record<string, unknown> | null = null;
+      await page.route(`${relayOrigin}/v1/orders`, async (route) => {
+        if (route.request().method() === 'OPTIONS') {
+          await fulfillJson(route, {});
+          return;
+        }
+        creationBody = route.request().postDataJSON();
+        const order = orderFixture();
+        order.paymentRequest.amountCodec = '3459809000000000000';
+        await fulfillJson(route, order);
+      });
+      await page.goto(`${ipfsEntryUrl}#/store`);
+      await ensureAppLoaded(page);
+      await expect(page.getByTestId('community-store')).toContainText(
+        'For this pilot, order with a SORA wallet in a desktop browser.'
+      );
+      await page.getByTestId('store-checkout').click();
+      await page.getByRole('combobox', { name: 'Destination country', exact: true }).selectOption('TW');
+      await page.getByLabel('Recipient’s full name').fill('E2E Customer');
+      await page.getByLabel('Street address', { exact: true }).fill('Private delivery street 123');
+      await page.getByLabel('City', { exact: true }).fill('Taipei');
+      await page.getByLabel('Postal code', { exact: true }).fill('100');
+      await page.getByLabel('Email address', { exact: true }).fill('customer@example.test');
+      await expect(page.locator('.store-consent input')).toHaveCount(1);
+      await expect(page.locator('#store-personal-use')).toHaveCount(0);
+      await page.locator('.store-consent input').check();
+      expect(creationBody).toBeNull();
+      await expect(page.locator('.store-totals__total')).toContainText('3.459809 XOR');
+      await expect(page.getByTestId('store-save-order')).toBeEnabled();
+      await expectNoOverflow(page);
+      await page.screenshot({ path: path.join(output, `${browserName}-taiwan-pilot-checkout.png`), fullPage: true });
+      await page.getByTestId('store-save-order').click();
+      await expect(page.getByTestId('store-receipt')).toBeVisible();
+      expect(creationBody).not.toHaveProperty('personalUseAccepted');
+      expect(creationBody?.['address']).toMatchObject({ country: 'TW' });
+      expect(page.url()).not.toContain('personalUse');
+      await expect(page.locator('sora-pay')).not.toContainText(/personal consumption|Private delivery/);
+      expect(await page.evaluate(() => sessionStorage.getItem('polkaswap:community-store:recovery:v1'))).not.toContain(
+        'personalUse'
+      );
       expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
     });
 
