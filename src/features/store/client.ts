@@ -289,6 +289,7 @@ export function parseStoreOrder(
     notificationStatus: text(row.notificationStatus, 32),
     refundPolicy: refundPolicy(row.refundPolicy),
     refundFeeCorrectionCodec: refundAmount(row.refundFeeCorrectionCodec ?? '0', true),
+    refundAgreedDeductionsCodec: refundAmount(row.refundAgreedDeductionsCodec ?? '0', true),
   };
   if (row.receipt) {
     const receipt = record(row.receipt);
@@ -306,7 +307,28 @@ export function parseStoreOrder(
     const feeExempt = refund.feeExempt ?? legacy;
     if (typeof feeExempt !== 'boolean' || (legacy && !feeExempt)) throw new StoreClientError('invalid_refund');
     order.refund = { grossAmountCodec, amountCodec, feeExempt };
-    if (feeExempt && amountCodec !== grossAmountCodec) throw new StoreClientError('invalid_refund');
+    let agreedAmount = 0n;
+    if (refund.agreedDeduction !== undefined) {
+      const agreed = record(refund.agreedDeduction);
+      const deduction = refundAmount(agreed.amountCodec);
+      const consentId = text(agreed.consentId, 36);
+      const recordedAt = text(agreed.recordedAt, 24);
+      if (
+        !legacy ||
+        !feeExempt ||
+        agreed.version !== 1 ||
+        !/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(consentId) ||
+        !Number.isFinite(Date.parse(recordedAt)) ||
+        new Date(recordedAt).toISOString() !== recordedAt ||
+        BigInt(deduction) >= BigInt(grossAmountCodec) ||
+        refund.feeQuote !== undefined
+      )
+        throw new StoreClientError('invalid_refund');
+      agreedAmount = BigInt(deduction);
+      order.refund.agreedDeduction = { version: 1, amountCodec: deduction, consentId, recordedAt };
+    }
+    if (feeExempt && (amountCodec === undefined || BigInt(amountCodec) + agreedAmount !== BigInt(grossAmountCodec)))
+      throw new StoreClientError('invalid_refund');
     if (refund.feeQuote !== undefined) {
       const quote = record(refund.feeQuote);
       const quotedAmount = refundAmount(quote.amountCodec);
@@ -339,13 +361,19 @@ export function parseStoreOrder(
         !refund.receipt ||
         amountCodec === undefined ||
         BigInt(deductedFeeCodec) !== expectedDeduction ||
-        BigInt(amountCodec) + BigInt(deductedFeeCodec) + BigInt(feeCorrectionCodec) !== BigInt(grossAmountCodec)
+        (agreedAmount > 0n && feeCorrectionCodec !== '0') ||
+        BigInt(amountCodec) + BigInt(deductedFeeCodec) + BigInt(feeCorrectionCodec) + agreedAmount !==
+          BigInt(grossAmountCodec)
       )
         throw new StoreClientError('invalid_refund');
       Object.assign(order.refund, { actualFeeCodec, deductedFeeCodec, feeCorrectionCodec });
     }
     if (refund.receipt) {
-      if (!amountCodec || (!feeExempt && order.refund.deductedFeeCodec === undefined))
+      if (
+        !amountCodec ||
+        ((!feeExempt || agreedAmount > 0n) && order.refund.deductedFeeCodec === undefined) ||
+        BigInt(order.refundAgreedDeductionsCodec ?? '0') < agreedAmount
+      )
         throw new StoreClientError('invalid_refund');
       const receipt = record(refund.receipt);
       const verified = verifyFinalizedPayment(
@@ -372,6 +400,8 @@ export function parseStoreOrder(
           throw new StoreClientError('invalid_refund');
       }
     }
+    if (agreedAmount > 0n && order.status === 'refunded' && !order.refund.transactionHash)
+      throw new StoreClientError('invalid_refund');
   }
   return order;
 }

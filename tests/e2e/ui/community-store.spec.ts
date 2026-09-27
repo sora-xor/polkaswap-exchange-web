@@ -101,15 +101,18 @@ function orderFixture() {
 }
 
 /** Finalized synthetic evidence exercises receipt validation without any wallet or chain operation. */
-function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt') {
+function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt' | 'agreed') {
   const legacy = kind === 'legacy';
   const feeExempt = kind === 'fee-exempt';
+  const agreed = kind === 'agreed';
   const order = orderFixture();
-  const amountCodec = feeExempt
-    ? refundFeeCodec
-    : legacy
-      ? order.paymentRequest.amountCodec
-      : (BigInt(order.paymentRequest.amountCodec) - BigInt(refundFeeCodec)).toString();
+  const amountCodec = agreed
+    ? '5343596000000000000'
+    : feeExempt
+      ? refundFeeCodec
+      : legacy
+        ? order.paymentRequest.amountCodec
+        : (BigInt(order.paymentRequest.amountCodec) - BigInt(refundFeeCodec)).toString();
   const reference = `sp_${'b'.repeat(32)}`;
   const request = {
     ...order.paymentRequest,
@@ -136,7 +139,8 @@ function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt') {
   return {
     ...order,
     // Historical responses lack both a policy snapshot and the newer fee accounting fields.
-    refundPolicy: legacy ? undefined : order.refundPolicy,
+    refundPolicy: legacy ? undefined : agreed ? { version: 1, mode: 'full' } : order.refundPolicy,
+    refundAgreedDeductionsCodec: agreed ? '110000000000000000' : '0',
     status: 'refunded',
     notificationStatus: 'delivered',
     paymentPending: false,
@@ -148,12 +152,23 @@ function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt') {
       receipt,
       ...(legacy
         ? {}
-        : feeExempt
+        : feeExempt || agreed
           ? {
-              grossAmountCodec: amountCodec,
+              grossAmountCodec: agreed ? order.paymentRequest.amountCodec : amountCodec,
               feeExempt: true,
               deductedFeeCodec: '0',
               feeCorrectionCodec: '0',
+              ...(agreed
+                ? {
+                    agreedDeduction: {
+                      version: 1,
+                      amountCodec: '110000000000000000',
+                      consentId: '145ae310-481d-48bd-8a69-c2bbf5b6fb06',
+                      recordedAt: '2026-09-27T00:00:00.000Z',
+                    },
+                    actualFeeCodec: refundFeeCodec,
+                  }
+                : {}),
             }
           : {
               grossAmountCodec: order.paymentRequest.amountCodec,
@@ -390,15 +405,18 @@ for (const browserName of ['chromium', 'webkit'] as const) {
       expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
     });
 
-    for (const kind of ['net', 'legacy', 'fee-exempt'] as const) {
+    for (const kind of ['net', 'legacy', 'fee-exempt', 'agreed'] as const) {
       const legacy = kind === 'legacy';
       const feeExempt = kind === 'fee-exempt';
+      const agreed = kind === 'agreed';
       test(
-        legacy
-          ? 'legacy refund recovery retains full-refund terms under the current catalog'
-          : feeExempt
-            ? 'completed v2 correction recovery does not claim a network fee was deducted'
-            : 'private refund recovery shows verified gross, SORA fee, and net XOR',
+        agreed
+          ? 'agreed refund recovery separates the fixed deduction from the actual SORA network fee'
+          : legacy
+            ? 'legacy refund recovery retains full-refund terms under the current catalog'
+            : feeExempt
+              ? 'completed v2 correction recovery does not claim a network fee was deducted'
+              : 'private refund recovery shows verified gross, SORA fee, and net XOR',
         async ({ page }) => {
           await mkdir(output, { recursive: true });
           page.setDefaultTimeout(10_000);
@@ -435,11 +453,25 @@ for (const browserName of ['chromium', 'webkit'] as const) {
           await expect(breakdown.locator('div').filter({ hasText: 'Amount before fees' }).locator('dd')).toHaveText(
             `${feeExempt ? '0.100026012589707326' : totalXor} XOR`
           );
-          await expect(breakdown.locator('div').filter({ hasText: 'SORA fee deducted' }).locator('dd')).toHaveText(
-            legacy || feeExempt ? '0 XOR' : '0.100026012589707326 XOR'
-          );
+          if (agreed) {
+            await expect(breakdown.locator('div').filter({ hasText: 'Agreed deduction' }).locator('dd')).toHaveText(
+              '0.11 XOR'
+            );
+            await expect(
+              breakdown.locator('div').filter({ hasText: 'Actual SORA network fee' }).locator('dd')
+            ).toHaveText('0.100026012589707326 XOR');
+            await expect(breakdown).not.toContainText('SORA fee deducted');
+            await expect(receipt).toContainText(
+              'For this refund, you agreed to a 0.11 XOR deduction. The transfer amount below includes that deduction.'
+            );
+            await expect(receipt).not.toContainText('The full XOR received');
+          } else {
+            await expect(breakdown.locator('div').filter({ hasText: 'SORA fee deducted' }).locator('dd')).toHaveText(
+              legacy || feeExempt ? '0 XOR' : '0.100026012589707326 XOR'
+            );
+          }
           await expect(breakdown.locator('div').filter({ hasText: 'XOR returned' }).locator('dd')).toHaveText(
-            `${feeExempt ? '0.100026012589707326' : legacy ? totalXor : netRefundXor} XOR`
+            `${agreed ? '5.343596' : feeExempt ? '0.100026012589707326' : legacy ? totalXor : netRefundXor} XOR`
           );
           await expect(breakdown).not.toContainText('Refund still due');
           await expect(receipt).toContainText(

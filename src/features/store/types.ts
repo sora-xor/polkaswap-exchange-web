@@ -89,12 +89,14 @@ export interface CommunityStoreOrder {
   paymentPending?: boolean;
   refundPolicy?: CommunityRefundPolicy;
   refundFeeCorrectionCodec?: string;
+  refundAgreedDeductionsCodec?: string;
   receipt?: PaymentReceipt;
   tracking?: string;
   refund?: {
     grossAmountCodec: string;
     amountCodec?: string;
     feeExempt: boolean;
+    agreedDeduction?: { version: 1; amountCodec: string; consentId: string; recordedAt: string };
     feeQuote?: { amountCodec: string; feeCodec: string; blockHash: string; blockNumber: string; expiresAt: string };
     actualFeeCodec?: string;
     deductedFeeCodec?: string;

@@ -273,11 +273,14 @@
             </div>
           </dl>
           <p
-            v-if="!['refund_pending', 'refunded'].includes(status)"
+            v-if="
+              !['refund_pending', 'refunded'].includes(status) ||
+              (status === 'refunded' && order.refund?.agreedDeduction)
+            "
             class="store-note"
             data-testid="store-order-refund-policy"
           >
-            {{ t(orderRefundPolicyKey) }}
+            {{ orderRefundPolicyText }}
           </p>
           <p v-if="refundFigures.length" class="store-note">{{ t('communityStore.refundTransaction') }}</p>
           <dl v-if="refundFigures.length" class="store-receipt__details" data-testid="store-refund-breakdown">
@@ -542,11 +545,16 @@ const statusKey = computed(
       review: 'communityStore.review',
     })[status.value] || 'communityStore.statusUnknown'
 );
-const orderRefundPolicyKey = computed(() =>
-  order.value?.refundPolicy?.mode === 'net-network-fee'
-    ? 'communityStore.refundBody'
-    : 'communityStore.legacyRefundBody'
-);
+const orderRefundPolicyText = computed(() => {
+  const saved = order.value;
+  if (saved?.refund?.agreedDeduction)
+    return t('communityStore.refundAmendedBody', {
+      amount: fromCodec(saved.refund.agreedDeduction.amountCodec, saved.paymentRequest.decimals),
+    });
+  return t(
+    saved?.refundPolicy?.mode === 'net-network-fee' ? 'communityStore.refundBody' : 'communityStore.legacyRefundBody'
+  );
+});
 /** Each breakdown describes the latest transfer; corrections use the relay's outstanding total. */
 const refundFigures = computed(() => {
   const figures: Array<{ label: string; amount: string }> = [];
@@ -554,7 +562,11 @@ const refundFigures = computed(() => {
   if (refund) {
     figures.push({ label: 'communityStore.refundGross', amount: refund.grossAmountCodec });
     const fee = refund.deductedFeeCodec ?? (refund.feeExempt ? '0' : refund.feeQuote?.feeCodec);
-    if (fee !== undefined)
+    if (refund.agreedDeduction) {
+      figures.push({ label: 'communityStore.refundAgreedDeduction', amount: refund.agreedDeduction.amountCodec });
+      if (refund.actualFeeCodec !== undefined)
+        figures.push({ label: 'communityStore.refundActualFee', amount: refund.actualFeeCodec });
+    } else if (fee !== undefined)
       figures.push({
         label:
           refund.deductedFeeCodec !== undefined || refund.feeExempt
@@ -577,10 +589,12 @@ const statusDescription = computed(() => {
   if (status.value === 'expired') return t('communityStore.expiredBody');
   if (status.value === 'review') return t('communityStore.reviewBody');
   if (status.value === 'payment_pending') return t('communityStore.paymentPendingBody');
-  if (status.value === 'refund_pending') return t(orderRefundPolicyKey.value);
+  if (status.value === 'refund_pending') return orderRefundPolicyText.value;
   if (status.value === 'refunded')
     return t(
-      order.value?.refundPolicy?.mode === 'net-network-fee'
+      order.value?.refund?.agreedDeduction ||
+        BigInt(order.value?.refundAgreedDeductionsCodec ?? '0') > 0n ||
+        order.value?.refundPolicy?.mode === 'net-network-fee'
         ? 'communityStore.refundedBody'
         : 'communityStore.legacyRefundedBody'
     );
@@ -655,6 +669,7 @@ function downloadReceipt(): void {
     refundPolicy: order.value.refundPolicy ?? { version: 1, mode: 'full' },
     refund: order.value.refund,
     refundFeeCorrectionCodec: order.value.refundFeeCorrectionCodec ?? '0',
+    refundAgreedDeductionsCodec: order.value.refundAgreedDeductionsCodec ?? '0',
   };
   const url = URL.createObjectURL(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }));
   const link = document.createElement('a');

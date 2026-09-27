@@ -143,5 +143,8 @@
   "refundEstimatedFee": "Estimated SORA fee",
   "refundFee": "SORA fee deducted",
   "refundNet": "XOR returned",
-  "refundRemainder": "Refund still due"
+  "refundRemainder": "Refund still due",
+  "refundAgreedDeduction": "Agreed deduction",
+  "refundActualFee": "Actual SORA network fee",
+  "refundAmendedBody": "For this refund, you agreed to a {amount} XOR deduction. The transfer amount below includes that deduction."
 }

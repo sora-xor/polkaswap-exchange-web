@@ -73,6 +73,129 @@ function catalog(): CommunityStoreCatalog {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('community store trust and quote boundary', () => {
+  it('accepts an explicit fixed deduction without mistaking it for the finalized network fee', () => {
+    const paymentRequest = {
+      version: 1,
+      merchant: { id: config.merchantId, name: 'Store' },
+      chainGenesisHash: STORE_MAINNET_GENESIS,
+      assetId: catalog().chain.assetId,
+      recipient,
+      payer,
+      amountCodec: '5453596000000000000',
+      decimals: 18,
+      denomination: '1000000',
+      reference: `sp_${'a'.repeat(32)}`,
+      expiresAt: '2026-09-25T09:00:00.000Z',
+    };
+    const agreedDeduction = {
+      version: 1,
+      amountCodec: '110000000000000000',
+      consentId: '145ae310-481d-48bd-8a69-c2bbf5b6fb06',
+      recordedAt: '2026-09-27T00:00:00.000Z',
+    };
+    const pending = {
+      orderId: 'order_123456789',
+      status: 'refund_pending',
+      notificationStatus: 'delivered',
+      paymentRequest,
+      refundPolicy: { version: 1, mode: 'full' },
+      refund: {
+        grossAmountCodec: paymentRequest.amountCodec,
+        amountCodec: '5343596000000000000',
+        feeExempt: true,
+        agreedDeduction,
+        reference: `sp_${'b'.repeat(32)}`,
+      },
+    };
+    expect(parseStoreOrder(pending, config, 'x'.repeat(43))).toMatchObject({
+      refundPolicy: pending.refundPolicy,
+      refundAgreedDeductionsCodec: '0',
+      refund: { agreedDeduction, amountCodec: '5343596000000000000' },
+    });
+    expect(parseStoreOrder(pending, config, 'x'.repeat(43)).refund?.transactionHash).toBeUndefined();
+    expect(() => parseStoreOrder({ ...pending, status: 'refunded' }, config, 'x'.repeat(43))).toThrow();
+    for (const agreed of [
+      { ...agreedDeduction, version: 2 },
+      { ...agreedDeduction, amountCodec: '0' },
+      { ...agreedDeduction, amountCodec: paymentRequest.amountCodec },
+      { ...agreedDeduction, consentId: 'unverified-note' },
+      { ...agreedDeduction, recordedAt: 'September 27, 2026' },
+    ])
+      expect(() =>
+        parseStoreOrder({ ...pending, refund: { ...pending.refund, agreedDeduction: agreed } }, config, 'x'.repeat(43))
+      ).toThrow();
+    for (const refund of [
+      { ...pending.refund, amountCodec: '5353596000000000000' },
+      { ...pending.refund, agreedDeduction: undefined },
+      { ...pending.refund, feeExempt: false },
+      { ...pending.refund, feeQuote: {} },
+    ])
+      expect(() => parseStoreOrder({ ...pending, refund }, config, 'x'.repeat(43))).toThrow();
+    expect(() =>
+      parseStoreOrder({ ...pending, refundPolicy: { version: 2, mode: 'net-network-fee' } }, config, 'x'.repeat(43))
+    ).toThrow();
+    const actualFeeCodec = '100025900000000000';
+    const evidence = {
+      chainGenesisHash: paymentRequest.chainGenesisHash,
+      assetId: paymentRequest.assetId,
+      payer: recipient,
+      recipient: payer,
+      amountCodec: pending.refund.amountCodec,
+      reference: pending.refund.reference,
+      transactionHash: `0x${'c'.repeat(64)}`,
+      blockHash: `0x${'d'.repeat(64)}`,
+      blockNumber: '1234',
+      eventIndex: 2,
+      successful: true,
+      finalized: true,
+      finalizedAt: '2026-09-27T00:05:00.000Z',
+      networkFee: { payer: recipient, assetId: paymentRequest.assetId, amountCodec: actualFeeCodec, eventIndex: 3 },
+    };
+    const finalized = {
+      ...pending,
+      status: 'refunded',
+      refundAgreedDeductionsCodec: agreedDeduction.amountCodec,
+      refund: {
+        ...pending.refund,
+        actualFeeCodec,
+        deductedFeeCodec: '0',
+        feeCorrectionCodec: '0',
+        receipt: { evidence },
+      },
+    };
+    expect(parseStoreOrder(finalized, config, 'x'.repeat(43)).refund).toMatchObject({
+      amountCodec: '5343596000000000000',
+      actualFeeCodec,
+      deductedFeeCodec: '0',
+      feeCorrectionCodec: '0',
+      agreedDeduction,
+      transactionHash: evidence.transactionHash,
+    });
+    expect(() => parseStoreOrder({ ...finalized, refundAgreedDeductionsCodec: '0' }, config, 'x'.repeat(43))).toThrow();
+    for (const change of [
+      { deductedFeeCodec: agreedDeduction.amountCodec },
+      { actualFeeCodec: agreedDeduction.amountCodec },
+      { feeCorrectionCodec: '9974100000000000' },
+      { receipt: { evidence: { ...evidence, finalized: false } } },
+    ])
+      expect(() =>
+        parseStoreOrder({ ...finalized, refund: { ...finalized.refund, ...change } }, config, 'x'.repeat(43))
+      ).toThrow();
+    const unproven = {
+      ...finalized,
+      refund: {
+        ...finalized.refund,
+        actualFeeCodec: undefined,
+        receipt: { evidence: { ...evidence, networkFee: undefined } },
+      },
+    };
+    expect(parseStoreOrder(unproven, config, 'x'.repeat(43)).refund).toMatchObject({
+      amountCodec: pending.refund.amountCodec,
+      deductedFeeCodec: '0',
+      feeCorrectionCodec: '0',
+    });
+  });
+
   it('validates versioned refund policies and treats older catalogs as full-refund policies', () => {
     expect(parseStoreCatalog(catalog(), config).refundPolicy).toEqual({ version: 1, mode: 'full' });
     expect(

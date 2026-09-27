@@ -264,6 +264,68 @@ describe('community Store page', () => {
     expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.refundBody);
   });
 
+  it('shows an agreed deduction independently of the actual fee and waits for finalized refund evidence', async () => {
+    shared.context!.order.value = {
+      ...structuredClone(exampleOrder),
+      paymentRequest: { ...exampleOrder.paymentRequest, amountCodec: '5453596000000000000' },
+      refundPolicy: { version: 1, mode: 'full' },
+      refund: {
+        grossAmountCodec: '5453596000000000000',
+        amountCodec: '5343596000000000000',
+        feeExempt: true,
+        agreedDeduction: {
+          version: 1,
+          amountCodec: '110000000000000000',
+          consentId: '145ae310-481d-48bd-8a69-c2bbf5b6fb06',
+          recordedAt: '2026-09-27T00:00:00.000Z',
+        },
+      },
+    };
+    shared.context!.status.value = 'refund_pending';
+    const wrapper = render();
+    const breakdown = () => wrapper.get('[data-testid="store-refund-breakdown"]');
+    expect(wrapper.get('.store-receipt__intro').text()).toBe(
+      'For this refund, you agreed to a 0.11 XOR deduction. The transfer amount below includes that deduction.'
+    );
+    expect(wrapper.get('.store-receipt__intro').text()).not.toContain('complete');
+    expect(breakdown().text()).toContain(messages.refundAgreedDeduction);
+    expect(breakdown().text()).not.toContain(messages.refundActualFee);
+    expect(breakdown().text()).not.toContain(messages.refundNet);
+    expect(
+      breakdown()
+        .findAll('dd')
+        .map((row) => row.text())
+    ).toEqual(['5.453596 XOR', '0.11 XOR', '5.343596 XOR']);
+    Object.assign(shared.context!.order.value.refund!, {
+      transactionHash: `0x${'b'.repeat(64)}`,
+      actualFeeCodec: '100025900000000000',
+      deductedFeeCodec: '0',
+      feeCorrectionCodec: '0',
+    });
+    shared.context!.status.value = 'refunded';
+    await flushPromises();
+    expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.refundedBody);
+    expect(wrapper.get('[data-testid="store-order-refund-policy"]').text()).toContain('agreed to a 0.11 XOR deduction');
+    expect(breakdown().text()).toContain(messages.refundActualFee);
+    expect(breakdown().text()).toContain(messages.refundNet);
+    expect(breakdown().text()).not.toContain(messages.refundFee);
+    expect(
+      breakdown()
+        .findAll('dd')
+        .map((row) => row.text())
+    ).toEqual(['5.453596 XOR', '0.11 XOR', '0.1000259 XOR', '5.343596 XOR']);
+    expect(wrapper.get('[data-testid="store-receipt"]').text()).not.toContain('The full XOR received');
+    shared.context!.order.value.refund = {
+      grossAmountCodec: '100000000000000000',
+      amountCodec: '100000000000000000',
+      feeExempt: true,
+      transactionHash: `0x${'c'.repeat(64)}`,
+    };
+    shared.context!.order.value.refundAgreedDeductionsCodec = '110000000000000000';
+    await flushPromises();
+    expect(wrapper.get('.store-receipt__intro').text()).toBe(messages.refundedBody);
+  });
+
   it('shows exact draft, quoted, finalized and fee-exempt correction amounts without claiming a draft amount', async () => {
     shared.context!.order.value = {
       ...structuredClone(exampleOrder),

@@ -6,6 +6,8 @@ Before preparing an artifact, the operator privately fetches the authenticated o
 
 Version 1 orders (including missing policy snapshots) keep their original full-XOR terms and require a separately funded refund fee. For version 2, prepare a fresh trusted relay quote and sign its exact net amount; never subtract the original payment’s network fee or charge a correction transfer again. A draft without `amountCodec` cannot be signed. Use the relay’s finalized fee evidence and correction obligation to reconcile the quote; the local signer does not establish final refund completion.
 
+A separate, explicit customer agreement may amend an unsigned version 1 refund without rewriting the original policy. Its saved `agreedDeduction` records the deduction, consent identifier and timestamp. For the agreed example, 5.453596 XOR less 0.11 XOR gives an exact transfer of 5.343596 XOR. This agreed deduction is not the actual SORA network fee: finalized fee evidence is displayed separately and never subtracted again. A lower or unavailable actual fee does not create an automatic correction for this fixed agreement. The receipt shows the agreed transfer amount while pending and labels it returned only after finalized evidence; public checkout and standard refund policies are unchanged.
+
 The handoff must be a regular, single-link, current-user-owned **0600** file directly under `/Users/takemiyamakoto/dev/sora-pay/private` (**0700**, canonical non-symlink directory), named `refund-rehearsal-<lowercase-id>.json`. Exact shape:
 
 ```text
