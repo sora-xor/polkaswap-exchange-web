@@ -160,7 +160,17 @@ describe('community store trust and quote boundary', () => {
         actualFeeCodec,
         deductedFeeCodec: '0',
         feeCorrectionCodec: '0',
-        receipt: { evidence },
+        receipt: {
+          status: 'finalized',
+          request: {
+            ...paymentRequest,
+            payer: recipient,
+            recipient: payer,
+            amountCodec: pending.refund.amountCodec,
+            reference: pending.refund.reference,
+          },
+          evidence,
+        },
       },
     };
     expect(parseStoreOrder(finalized, config, 'x'.repeat(43)).refund).toMatchObject({
@@ -176,7 +186,7 @@ describe('community store trust and quote boundary', () => {
       { deductedFeeCodec: agreedDeduction.amountCodec },
       { actualFeeCodec: agreedDeduction.amountCodec },
       { feeCorrectionCodec: '9974100000000000' },
-      { receipt: { evidence: { ...evidence, finalized: false } } },
+      { receipt: { ...finalized.refund.receipt, evidence: { ...evidence, finalized: false } } },
     ])
       expect(() =>
         parseStoreOrder({ ...finalized, refund: { ...finalized.refund, ...change } }, config, 'x'.repeat(43))
@@ -186,7 +196,7 @@ describe('community store trust and quote boundary', () => {
       refund: {
         ...finalized.refund,
         actualFeeCodec: undefined,
-        receipt: { evidence: { ...evidence, networkFee: undefined } },
+        receipt: { ...finalized.refund.receipt, evidence: { ...evidence, networkFee: undefined } },
       },
     };
     expect(parseStoreOrder(unproven, config, 'x'.repeat(43)).refund).toMatchObject({
@@ -208,6 +218,112 @@ describe('community store trust and quote boundary', () => {
       { version: 3, mode: 'full' },
     ])
       expect(() => parseStoreCatalog({ ...catalog(), refundPolicy: policy }, config)).toThrow('invalid_');
+  });
+
+  it('preserves a separately bound manual refund with a null on-chain reference and rejects implicit matching', () => {
+    const paymentRequest = {
+      version: 1,
+      merchant: { id: config.merchantId, name: 'Store' },
+      chainGenesisHash: STORE_MAINNET_GENESIS,
+      assetId: catalog().chain.assetId,
+      recipient,
+      payer,
+      amountCodec: '5453596000000000000',
+      decimals: 18,
+      denomination: '1000000',
+      reference: `sp_${'a'.repeat(32)}`,
+      expiresAt: '2026-09-25T09:00:00.000Z',
+    };
+    const request = {
+      ...paymentRequest,
+      payer: recipient,
+      recipient: payer,
+      amountCodec: '5343596000000000000',
+      reference: `sp_${'b'.repeat(32)}`,
+    };
+    const actualFeeCodec = '100025900000000000';
+    const receipt = {
+      status: 'finalized',
+      request,
+      evidence: {
+        ...request,
+        reference: null,
+        transferKind: 'assets-transfer',
+        transactionHash: `0x${'c'.repeat(64)}`,
+        blockHash: `0x${'d'.repeat(64)}`,
+        blockNumber: '1234',
+        eventIndex: 2,
+        successful: true,
+        finalized: true,
+        finalizedAt: '2026-09-27T00:05:00.000Z',
+        networkFee: { payer: recipient, assetId: request.assetId, amountCodec: actualFeeCodec, eventIndex: 3 },
+      },
+      reconciliation: {
+        version: 1,
+        kind: 'operator-bound',
+        expectedReference: request.reference,
+        recordedAt: '2026-09-27T00:06:00.000Z',
+      },
+    };
+    const payload = {
+      orderId: 'order_123456789',
+      status: 'refunded',
+      notificationStatus: 'delivered',
+      paymentRequest,
+      refundPolicy: { version: 1, mode: 'full' },
+      refundAgreedDeductionsCodec: '110000000000000000',
+      refund: {
+        grossAmountCodec: paymentRequest.amountCodec,
+        amountCodec: request.amountCodec,
+        feeExempt: true,
+        agreedDeduction: {
+          version: 1,
+          amountCodec: '110000000000000000',
+          consentId: '145ae310-481d-48bd-8a69-c2bbf5b6fb06',
+          recordedAt: '2026-09-27T00:00:00.000Z',
+        },
+        actualFeeCodec,
+        deductedFeeCodec: '0',
+        feeCorrectionCodec: '0',
+        reference: request.reference,
+        receipt,
+      },
+    };
+    const parsed = parseStoreOrder(payload, config, 'x'.repeat(43));
+    expect(parsed.refund).toMatchObject({
+      amountCodec: '5343596000000000000',
+      actualFeeCodec,
+      transactionHash: receipt.evidence.transactionHash,
+      receipt: {
+        request: { reference: request.reference },
+        evidence: { reference: null, transferKind: 'assets-transfer' },
+        reconciliation: receipt.reconciliation,
+      },
+    });
+    expect(parsed.refund?.receipt).not.toBe(receipt);
+    for (const changed of [
+      { ...receipt, reconciliation: undefined },
+      { ...receipt, reconciliation: { ...receipt.reconciliation, expectedReference: paymentRequest.reference } },
+      { ...receipt, reconciliation: { ...receipt.reconciliation, recordedAt: '2026-09-27T00:04:00.000Z' } },
+      { ...receipt, request: { ...request, amountCodec: paymentRequest.amountCodec } },
+      { ...receipt, request: { ...request, reference: paymentRequest.reference } },
+      { ...receipt, evidence: { ...receipt.evidence, reference: request.reference } },
+      { ...receipt, evidence: { ...receipt.evidence, transferKind: 'xorless-transfer' } },
+      { ...receipt, evidence: { ...receipt.evidence, amountCodec: paymentRequest.amountCodec } },
+      { ...receipt, evidence: { ...receipt.evidence, recipient } },
+      { ...receipt, evidence: { ...receipt.evidence, finalized: false } },
+    ])
+      expect(() =>
+        parseStoreOrder({ ...payload, refund: { ...payload.refund, receipt: changed } }, config, 'x'.repeat(43))
+      ).toThrow();
+    expect(() => parseStoreOrder({ ...payload, receipt }, config, 'x'.repeat(43))).toThrow();
+    expect(() =>
+      parseStoreOrder(
+        { ...payload, refund: { ...payload.refund, actualFeeCodec: '110000000000000000' } },
+        config,
+        'x'.repeat(43)
+      )
+    ).toThrow();
   });
 
   it('accepts Telegram-only merchant support while rejecting missing or malformed contacts', () => {
@@ -388,7 +504,11 @@ describe('community store trust and quote boundary', () => {
         amountCodec: request.amountCodec,
         reference: refundReference,
         transactionHash: `0x${'e'.repeat(64)}`,
-        receipt: { evidence },
+        receipt: {
+          status: 'finalized',
+          request: { ...request, payer: recipient, recipient: payer, reference: refundReference },
+          evidence,
+        },
       },
     };
     expect(parseStoreOrder(payload, config, 'x'.repeat(43)).refund).toEqual({
@@ -396,6 +516,7 @@ describe('community store trust and quote boundary', () => {
       amountCodec: request.amountCodec,
       feeExempt: true,
       transactionHash: evidence.transactionHash,
+      receipt: payload.refund.receipt,
     });
     for (const change of [
       { payer },
@@ -409,7 +530,10 @@ describe('community store trust and quote boundary', () => {
     ]) {
       expect(() =>
         parseStoreOrder(
-          { ...payload, refund: { ...payload.refund, receipt: { evidence: { ...evidence, ...change } } } },
+          {
+            ...payload,
+            refund: { ...payload.refund, receipt: { ...payload.refund.receipt, evidence: { ...evidence, ...change } } },
+          },
           config,
           'x'.repeat(43)
         )
@@ -447,6 +571,8 @@ describe('community store trust and quote boundary', () => {
         deductedFeeCodec: '80000000000000000',
         feeCorrectionCodec: '20000000000000000',
         receipt: {
+          status: 'finalized',
+          request: { ...payload.refund.receipt.request, amountCodec: net.refund.amountCodec },
           evidence: {
             ...evidence,
             amountCodec: net.refund.amountCodec,
@@ -483,7 +609,7 @@ describe('community store trust and quote boundary', () => {
         actualFeeCodec: undefined,
         deductedFeeCodec: '0',
         feeCorrectionCodec: '100000000000000000',
-        receipt: { evidence: { ...evidence, amountCodec: net.refund.amountCodec } },
+        receipt: { ...finalized.refund.receipt, evidence: { ...evidence, amountCodec: net.refund.amountCodec } },
       },
     };
     expect(parseStoreOrder(unprovenFee, config, 'x'.repeat(43)).refund?.deductedFeeCodec).toBe('0');

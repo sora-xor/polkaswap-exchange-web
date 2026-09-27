@@ -6,6 +6,7 @@ import {
   toCodec,
   validatePaymentRequest,
   verifyFinalizedPayment,
+  verifyFinalizedRefund,
 } from '@sora/sora-pay/core';
 
 import type {
@@ -375,8 +376,7 @@ export function parseStoreOrder(
         BigInt(order.refundAgreedDeductionsCodec ?? '0') < agreedAmount
       )
         throw new StoreClientError('invalid_refund');
-      const receipt = record(refund.receipt);
-      const verified = verifyFinalizedPayment(
+      const verified = verifyFinalizedRefund(
         {
           ...request,
           payer: request.recipient,
@@ -384,12 +384,12 @@ export function parseStoreOrder(
           amountCodec,
           reference: text(refund.reference, 80),
         },
-        receipt.evidence as NonNullable<CommunityStoreOrder['receipt']>['evidence']
+        refund.receipt
       );
+      order.refund.receipt = verified;
       order.refund.transactionHash = verified.evidence.transactionHash;
       if (order.refund.actualFeeCodec !== undefined) {
-        const evidence = record(receipt.evidence);
-        const networkFee = record(evidence.networkFee);
+        const networkFee = record(verified.evidence.networkFee);
         if (
           networkFee.payer !== request.recipient ||
           networkFee.assetId !== request.assetId ||

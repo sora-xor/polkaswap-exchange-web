@@ -1,4 +1,4 @@
-import type { PaymentRequest, PaymentReceipt } from '@sora/sora-pay/core';
+import type { PaymentRequest, PaymentReceipt, RefundReceipt } from '@sora/sora-pay/core';
 
 /** Saved order terms remain authoritative after the merchant changes its refund policy. */
 export type CommunityRefundPolicy = { version: 1; mode: 'full' } | { version: 2; mode: 'net-network-fee' };
@@ -101,6 +101,7 @@ export interface CommunityStoreOrder {
     actualFeeCodec?: string;
     deductedFeeCodec?: string;
     feeCorrectionCodec?: string;
+    receipt?: RefundReceipt;
     transactionHash?: string;
   };
 }

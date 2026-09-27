@@ -1,4 +1,4 @@
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { expect, test as base, type Page, type Route } from '@playwright/test';
@@ -101,10 +101,11 @@ function orderFixture() {
 }
 
 /** Finalized synthetic evidence exercises receipt validation without any wallet or chain operation. */
-function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt' | 'agreed') {
+function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt' | 'agreed' | 'manual') {
   const legacy = kind === 'legacy';
   const feeExempt = kind === 'fee-exempt';
-  const agreed = kind === 'agreed';
+  const manual = kind === 'manual';
+  const agreed = kind === 'agreed' || manual;
   const order = orderFixture();
   const amountCodec = agreed
     ? '5343596000000000000'
@@ -121,20 +122,28 @@ function refundedOrderFixture(kind: 'net' | 'legacy' | 'fee-exempt' | 'agreed') 
     amountCodec,
     reference,
   };
+  const finalizedAt = new Date().toISOString();
   const receipt = {
     status: 'finalized',
     request,
     evidence: {
       ...request,
+      reference: manual ? null : reference,
+      ...(manual ? { transferKind: 'assets-transfer' } : {}),
       transactionHash: `0x${'c'.repeat(64)}`,
       blockHash: `0x${'d'.repeat(64)}`,
       blockNumber: '101',
       eventIndex: 3,
       successful: true,
       finalized: true,
-      finalizedAt: new Date().toISOString(),
+      finalizedAt,
       networkFee: { payer: request.payer, assetId: request.assetId, amountCodec: refundFeeCodec, eventIndex: 4 },
     },
+    ...(manual
+      ? {
+          reconciliation: { version: 1, kind: 'operator-bound', expectedReference: reference, recordedAt: finalizedAt },
+        }
+      : {}),
   };
   return {
     ...order,
@@ -405,18 +414,21 @@ for (const browserName of ['chromium', 'webkit'] as const) {
       expect(filterKnownWalletConsoleNoise(errors)).toEqual([]);
     });
 
-    for (const kind of ['net', 'legacy', 'fee-exempt', 'agreed'] as const) {
+    for (const kind of ['net', 'legacy', 'fee-exempt', 'agreed', 'manual'] as const) {
       const legacy = kind === 'legacy';
       const feeExempt = kind === 'fee-exempt';
-      const agreed = kind === 'agreed';
+      const manual = kind === 'manual';
+      const agreed = kind === 'agreed' || manual;
       test(
-        agreed
-          ? 'agreed refund recovery separates the fixed deduction from the actual SORA network fee'
-          : legacy
-            ? 'legacy refund recovery retains full-refund terms under the current catalog'
-            : feeExempt
-              ? 'completed v2 correction recovery does not claim a network fee was deducted'
-              : 'private refund recovery shows verified gross, SORA fee, and net XOR',
+        manual
+          ? 'manually reconciled refund recovery preserves the absent on-chain reference'
+          : agreed
+            ? 'agreed refund recovery separates the fixed deduction from the actual SORA network fee'
+            : legacy
+              ? 'legacy refund recovery retains full-refund terms under the current catalog'
+              : feeExempt
+                ? 'completed v2 correction recovery does not claim a network fee was deducted'
+                : 'private refund recovery shows verified gross, SORA fee, and net XOR',
         async ({ page }) => {
           await mkdir(output, { recursive: true });
           page.setDefaultTimeout(10_000);
@@ -481,6 +493,22 @@ for (const browserName of ['chromium', 'webkit'] as const) {
           if (!legacy)
             await expect(receipt).toContainText('Network fees paid with the original order were not refunded.');
           await expect(receipt).toContainText(recovered.refund.receipt.evidence.transactionHash);
+          if (manual) {
+            const downloadPromise = page.waitForEvent('download');
+            await page.getByTestId('store-download-receipt').click();
+            const downloaded = await downloadPromise;
+            const savedPath = path.join(output, `${browserName}-manual-refund-receipt.json`);
+            await downloaded.saveAs(savedPath);
+            const saved = JSON.parse(await readFile(savedPath, 'utf8'));
+            expect(saved.refund.receipt.evidence.reference).toBeNull();
+            expect(saved.refund.receipt.evidence.transferKind).toBe('assets-transfer');
+            expect(saved.refund.receipt.request.reference).toBe(recovered.refund.reference);
+            expect(saved.refund.receipt.reconciliation).toMatchObject({
+              version: 1,
+              kind: 'operator-bound',
+              expectedReference: recovered.refund.reference,
+            });
+          }
           await expect(page.locator('sora-pay')).toHaveCount(0);
           expect(recoveryRequests.length).toBeGreaterThan(0);
           for (const request of recoveryRequests) {
