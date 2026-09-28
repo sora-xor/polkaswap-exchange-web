@@ -1,4 +1,5 @@
 import { toDwebLink } from '@/utils/ipfs';
+import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 
 /**
  * Normalizes image URLs added after mount so static IPFS deployments keep
@@ -10,6 +11,11 @@ export function createIpfsImageNormalizer() {
   const normalizeImage = (el: HTMLImageElement): void => {
     try {
       const current = el.getAttribute('src') || '';
+      const source = new URL(current, window.location.href);
+      const bundledAssets = new URL(resolveStaticAssetUrl('assets/'), window.location.href);
+      // Vite resolves imported images to absolute URLs. Keep files within this
+      // deployment's asset directory on its current gateway and origin.
+      if (source.origin === bundledAssets.origin && source.pathname.startsWith(bundledAssets.pathname)) return;
       const normalized = toDwebLink(current);
       if (normalized && normalized !== current) {
         el.setAttribute('src', normalized);

@@ -1,0 +1,5 @@
+# Future pilot only: include once in nginx's http context.
+# Install reviewed open OR paused map bytes at this exact stable path.
+# No glob or optional include: a missing file/variable must fail nginx -t.
+include /opt/homebrew/etc/nginx/snippets/sora-pay-admission-map.conf;
+limit_req_zone $binary_remote_addr zone=sora_pay_public:10m rate=2r/s;

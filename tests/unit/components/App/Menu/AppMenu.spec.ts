@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
-import { PageNames, PolkamarktLogo } from '@/consts';
+import { PageNames, PolkamarktLogo, StoreBagIcon } from '@/consts';
 
 const {
   routeMock,
@@ -185,6 +185,7 @@ describe('AppMenu', () => {
       .filter((item) => item.href?.startsWith('#/'));
 
     const expectedRouteItems = [
+      { href: '#/store', icon: 'shopping-bag-24', iconSrc: StoreBagIcon },
       { href: '#/swap', icon: 'arrows-swap-90-24' },
       { href: '#/trade', icon: 'music-CD-24' },
       { href: '#/polkamarkt', icon: 'various-lightbulb-24', iconSrc: PolkamarktLogo },

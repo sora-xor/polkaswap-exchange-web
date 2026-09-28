@@ -102,11 +102,14 @@ export function toAssetId(asset: CommonPrimitivesAssetId32) {
  * @param data Account Data for ORML tokens or for PalletBalances
  * @param assetDecimals Asset decimals, 18 is used by default
  * @param bondedData Required only for XOR tokens in SORA network
+ * @param balanceKind Native modern Balances freezes cover free + reserved;
+ * ORML tokens and legacy native miscFrozen/feeFrozen freeze free funds only.
  */
 export function formatBalance(
   data: PalletBalancesAccountData | OrmlTokensAccountData,
   assetDecimals?: number,
-  bondedData?: Option<u128>
+  bondedData?: Option<u128>,
+  balanceKind: 'native' | 'token' = 'token'
 ): AccountBalance {
   const free = new FPNumber(data.free || 0, assetDecimals);
   const reserved = new FPNumber(data.reserved || 0, assetDecimals);
@@ -116,13 +119,24 @@ export function formatBalance(
   const feeFrozen = new FPNumber((data as PalletBalancesAccountData).feeFrozen || 0, assetDecimals);
   const frozenDeprecated = miscFrozen.max(feeFrozen);
   // [Substrate 5: PalletBalancesAccountData] & OrmlTokensAccountData
-  const frozenCurrent = new FPNumber((data as OrmlTokensAccountData).frozen || 0, assetDecimals);
+  const frozenCurrentData = (data as OrmlTokensAccountData).frozen;
+  const frozenCurrent = new FPNumber(frozenCurrentData || 0, assetDecimals);
   const frozen = frozenCurrent.max(frozenDeprecated);
-  const transferable = free.sub(frozen);
+  // Modern Balances discounts reserved funds from its total-balance freeze;
+  // legacy freezes still apply to free funds when both field shapes are present.
+  const frozenFree =
+    balanceKind === 'native' && frozenCurrentData !== undefined
+      ? frozenCurrent.sub(reserved).max(FPNumber.ZERO).max(frozenDeprecated)
+      : frozen;
+  const transferable = free.sub(frozenFree).max(FPNumber.ZERO);
   // [SORA] bondedData can be NaN, it can be checked by isEmpty===true
   const bonded = new FPNumber(!bondedData || bondedData.isEmpty ? 0 : bondedData, assetDecimals);
-  // [SORA]
-  const locked = reserved.add(frozen).add(bonded);
+  // Only the owned portion of free funds can be unavailable. Counting the
+  // whole freeze threshold would inflate locked and total when frozen > free.
+  const nonTransferableFree = free.sub(transferable);
+  // [SORA] Reserved and referral-bonded funds are owned but unavailable.
+  const locked = nonTransferableFree.add(reserved).add(bonded);
+  const total = free.add(reserved).add(bonded);
 
   return {
     free: free.toCodecString(),
@@ -130,7 +144,7 @@ export function formatBalance(
     frozen: frozen.toCodecString(),
     bonded: bonded.toCodecString(),
     locked: locked.toCodecString(),
-    total: transferable.add(locked).toCodecString(),
+    total: total.toCodecString(),
     transferable: transferable.toCodecString(),
   };
 }
@@ -175,7 +189,7 @@ export async function getAssetBalance(
       api.query.system.account(accountAddress),
       api.query.referrals.referrerBalances(accountAddress),
     ]);
-    return formatBalance(accountInfo.data, assetDecimals, bondedBalance);
+    return formatBalance(accountInfo.data, assetDecimals, bondedBalance, 'native');
   }
   const accountData = await api.query.tokens.accounts(accountAddress, assetAddress);
   return formatBalance(accountData, assetDecimals);
@@ -498,7 +512,7 @@ export class AssetsModule<T> {
       const bondedBalance = this.root.apiRx.query.referrals.referrerBalances(accountAddress);
 
       return combineLatest([accountInfo, bondedBalance]).pipe(
-        map((result) => formatBalance(result[0].data, asset.decimals, result[1]))
+        map((result) => formatBalance(result[0].data, asset.decimals, result[1], 'native'))
       );
     }
     return this.root.apiRx.query.tokens
@@ -739,7 +753,9 @@ export class AssetsModule<T> {
   public subscribeOnAssetTransferableBalance(assetId: string, accountId: string): Observable<string> {
     const observable =
       assetId === XOR.address
-        ? this.root.apiRx.query.system.account(accountId).pipe(map((info) => formatBalance(info.data)))
+        ? this.root.apiRx.query.system
+            .account(accountId)
+            .pipe(map((info) => formatBalance(info.data, undefined, undefined, 'native')))
         : this.root.apiRx.query.tokens.accounts(accountId, assetId).pipe(map((info) => formatBalance(info)));
 
     return observable.pipe(map((accountBalance) => accountBalance.transferable));

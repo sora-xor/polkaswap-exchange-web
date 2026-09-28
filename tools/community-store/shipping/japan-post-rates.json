@@ -1,0 +1,3824 @@
+{
+  "reviewedAt": "2026-09-27",
+  "bands": [
+    {
+      "zone": 1,
+      "maxGrams": 500,
+      "priceJpy": "1450",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 500,
+      "priceJpy": "1900",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 500,
+      "priceJpy": "3150",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 500,
+      "priceJpy": "3900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 500,
+      "priceJpy": "3600",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 600,
+      "priceJpy": "1600",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 600,
+      "priceJpy": "2150",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 600,
+      "priceJpy": "3400",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 600,
+      "priceJpy": "4180",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 600,
+      "priceJpy": "3900",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 700,
+      "priceJpy": "1750",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 700,
+      "priceJpy": "2400",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 700,
+      "priceJpy": "3650",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 700,
+      "priceJpy": "4460",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 700,
+      "priceJpy": "4200",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 800,
+      "priceJpy": "1900",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 800,
+      "priceJpy": "2650",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 800,
+      "priceJpy": "3900",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 800,
+      "priceJpy": "4740",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 800,
+      "priceJpy": "4500",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 900,
+      "priceJpy": "2050",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 900,
+      "priceJpy": "2900",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 900,
+      "priceJpy": "4150",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 900,
+      "priceJpy": "5020",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 900,
+      "priceJpy": "4800",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 1000,
+      "priceJpy": "2200",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 1000,
+      "priceJpy": "3150",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 1000,
+      "priceJpy": "4400",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 1000,
+      "priceJpy": "5300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 1000,
+      "priceJpy": "5100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 1250,
+      "priceJpy": "2500",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 1250,
+      "priceJpy": "3500",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 1250,
+      "priceJpy": "5000",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 1250,
+      "priceJpy": "5990",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 1250,
+      "priceJpy": "5850",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 1500,
+      "priceJpy": "2800",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 1500,
+      "priceJpy": "3850",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 1500,
+      "priceJpy": "5550",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 1500,
+      "priceJpy": "6600",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 1500,
+      "priceJpy": "6600",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 1750,
+      "priceJpy": "3100",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 1750,
+      "priceJpy": "4200",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 1750,
+      "priceJpy": "6150",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 1750,
+      "priceJpy": "7290",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 1750,
+      "priceJpy": "7350",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 2000,
+      "priceJpy": "3400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 2000,
+      "priceJpy": "4550",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 2000,
+      "priceJpy": "6700",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 2000,
+      "priceJpy": "7900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 2000,
+      "priceJpy": "8100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 2500,
+      "priceJpy": "3900",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 2500,
+      "priceJpy": "5150",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 2500,
+      "priceJpy": "7750",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 2500,
+      "priceJpy": "9100",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 2500,
+      "priceJpy": "9600",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 3000,
+      "priceJpy": "4400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 3000,
+      "priceJpy": "5750",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 3000,
+      "priceJpy": "8800",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 3000,
+      "priceJpy": "10300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 3000,
+      "priceJpy": "11100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 3500,
+      "priceJpy": "4900",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 3500,
+      "priceJpy": "6350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 3500,
+      "priceJpy": "9850",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 3500,
+      "priceJpy": "11500",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 3500,
+      "priceJpy": "12600",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 4000,
+      "priceJpy": "5400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 4000,
+      "priceJpy": "6950",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 4000,
+      "priceJpy": "10900",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 4000,
+      "priceJpy": "12700",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 4000,
+      "priceJpy": "14100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 4500,
+      "priceJpy": "5900",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 4500,
+      "priceJpy": "7550",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 4500,
+      "priceJpy": "11950",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 4500,
+      "priceJpy": "13900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 4500,
+      "priceJpy": "15600",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 5000,
+      "priceJpy": "6400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 5000,
+      "priceJpy": "8150",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 5000,
+      "priceJpy": "13000",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 5000,
+      "priceJpy": "15100",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 5000,
+      "priceJpy": "17100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 5500,
+      "priceJpy": "6900",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 5500,
+      "priceJpy": "8750",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 5500,
+      "priceJpy": "14050",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 5500,
+      "priceJpy": "16300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 5500,
+      "priceJpy": "18600",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 6000,
+      "priceJpy": "7400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 6000,
+      "priceJpy": "9350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 6000,
+      "priceJpy": "15100",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 6000,
+      "priceJpy": "17500",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 6000,
+      "priceJpy": "20100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 7000,
+      "priceJpy": "8200",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 7000,
+      "priceJpy": "10350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 7000,
+      "priceJpy": "17200",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 7000,
+      "priceJpy": "19900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 7000,
+      "priceJpy": "22500",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 8000,
+      "priceJpy": "9000",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 8000,
+      "priceJpy": "11350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 8000,
+      "priceJpy": "19300",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 8000,
+      "priceJpy": "22300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 8000,
+      "priceJpy": "24900",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 9000,
+      "priceJpy": "9800",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 9000,
+      "priceJpy": "12350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 9000,
+      "priceJpy": "21400",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 9000,
+      "priceJpy": "24700",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 9000,
+      "priceJpy": "27300",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 10000,
+      "priceJpy": "10600",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 10000,
+      "priceJpy": "13350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 10000,
+      "priceJpy": "23500",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 10000,
+      "priceJpy": "27100",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 10000,
+      "priceJpy": "29700",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 11000,
+      "priceJpy": "11400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 11000,
+      "priceJpy": "14350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 11000,
+      "priceJpy": "25600",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 11000,
+      "priceJpy": "29500",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 11000,
+      "priceJpy": "32100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 12000,
+      "priceJpy": "12200",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 12000,
+      "priceJpy": "15350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 12000,
+      "priceJpy": "27700",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 12000,
+      "priceJpy": "31900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 12000,
+      "priceJpy": "34500",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 13000,
+      "priceJpy": "13000",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 13000,
+      "priceJpy": "16350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 13000,
+      "priceJpy": "29800",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 13000,
+      "priceJpy": "34300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 13000,
+      "priceJpy": "36900",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 14000,
+      "priceJpy": "13800",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 14000,
+      "priceJpy": "17350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 14000,
+      "priceJpy": "31900",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 14000,
+      "priceJpy": "36700",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 14000,
+      "priceJpy": "39300",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 15000,
+      "priceJpy": "14600",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 15000,
+      "priceJpy": "18350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 15000,
+      "priceJpy": "34000",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 15000,
+      "priceJpy": "39100",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 15000,
+      "priceJpy": "41700",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 16000,
+      "priceJpy": "15400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 16000,
+      "priceJpy": "19350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 16000,
+      "priceJpy": "36100",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 16000,
+      "priceJpy": "41500",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 16000,
+      "priceJpy": "44100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 17000,
+      "priceJpy": "16200",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 17000,
+      "priceJpy": "20350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 17000,
+      "priceJpy": "38200",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 17000,
+      "priceJpy": "43900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 17000,
+      "priceJpy": "46500",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 18000,
+      "priceJpy": "17000",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 18000,
+      "priceJpy": "21350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 18000,
+      "priceJpy": "40300",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 18000,
+      "priceJpy": "46300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 18000,
+      "priceJpy": "48900",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 19000,
+      "priceJpy": "17800",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 19000,
+      "priceJpy": "22350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 19000,
+      "priceJpy": "42400",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 19000,
+      "priceJpy": "48700",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 19000,
+      "priceJpy": "51300",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 20000,
+      "priceJpy": "18600",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 20000,
+      "priceJpy": "23350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 20000,
+      "priceJpy": "44500",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 20000,
+      "priceJpy": "51100",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 20000,
+      "priceJpy": "53700",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 21000,
+      "priceJpy": "19400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 21000,
+      "priceJpy": "24350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 21000,
+      "priceJpy": "46600",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 21000,
+      "priceJpy": "53500",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 21000,
+      "priceJpy": "56100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 22000,
+      "priceJpy": "20200",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 22000,
+      "priceJpy": "25350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 22000,
+      "priceJpy": "48700",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 22000,
+      "priceJpy": "55900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 22000,
+      "priceJpy": "58500",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 23000,
+      "priceJpy": "21000",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 23000,
+      "priceJpy": "26350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 23000,
+      "priceJpy": "50800",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 23000,
+      "priceJpy": "58300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 23000,
+      "priceJpy": "60900",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 24000,
+      "priceJpy": "21800",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 24000,
+      "priceJpy": "27350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 24000,
+      "priceJpy": "52900",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 24000,
+      "priceJpy": "60700",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 24000,
+      "priceJpy": "63300",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 25000,
+      "priceJpy": "22600",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 25000,
+      "priceJpy": "28350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 25000,
+      "priceJpy": "55000",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 25000,
+      "priceJpy": "63100",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 25000,
+      "priceJpy": "65700",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 26000,
+      "priceJpy": "23400",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 26000,
+      "priceJpy": "29350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 26000,
+      "priceJpy": "57100",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 26000,
+      "priceJpy": "65500",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 26000,
+      "priceJpy": "68100",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 27000,
+      "priceJpy": "24200",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 27000,
+      "priceJpy": "30350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 27000,
+      "priceJpy": "59200",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 27000,
+      "priceJpy": "67900",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 27000,
+      "priceJpy": "70500",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 28000,
+      "priceJpy": "25000",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 28000,
+      "priceJpy": "31350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 28000,
+      "priceJpy": "61300",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 28000,
+      "priceJpy": "70300",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 28000,
+      "priceJpy": "72900",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 29000,
+      "priceJpy": "25800",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 29000,
+      "priceJpy": "32350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 29000,
+      "priceJpy": "63400",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 29000,
+      "priceJpy": "72700",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 29000,
+      "priceJpy": "75300",
+      "service": "ems"
+    },
+    {
+      "zone": 1,
+      "maxGrams": 30000,
+      "priceJpy": "26600",
+      "service": "ems"
+    },
+    {
+      "zone": 2,
+      "maxGrams": 30000,
+      "priceJpy": "33350",
+      "service": "ems"
+    },
+    {
+      "zone": 3,
+      "maxGrams": 30000,
+      "priceJpy": "65500",
+      "service": "ems"
+    },
+    {
+      "zone": 4,
+      "maxGrams": 30000,
+      "priceJpy": "75100",
+      "service": "ems"
+    },
+    {
+      "zone": 5,
+      "maxGrams": 30000,
+      "priceJpy": "77700",
+      "service": "ems"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 1000,
+      "priceJpy": "2050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 2000,
+      "priceJpy": "2750"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 3000,
+      "priceJpy": "3450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 4000,
+      "priceJpy": "4150"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 5000,
+      "priceJpy": "4850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 6000,
+      "priceJpy": "5550"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 7000,
+      "priceJpy": "6250"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 8000,
+      "priceJpy": "6950"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 9000,
+      "priceJpy": "7650"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 10000,
+      "priceJpy": "8350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 11000,
+      "priceJpy": "8850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 12000,
+      "priceJpy": "9350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 13000,
+      "priceJpy": "9850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 14000,
+      "priceJpy": "10350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 15000,
+      "priceJpy": "10850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 16000,
+      "priceJpy": "11350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 17000,
+      "priceJpy": "11850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 18000,
+      "priceJpy": "12350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 19000,
+      "priceJpy": "12850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 20000,
+      "priceJpy": "13350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 21000,
+      "priceJpy": "13850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 22000,
+      "priceJpy": "14350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 23000,
+      "priceJpy": "14850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 24000,
+      "priceJpy": "15350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 25000,
+      "priceJpy": "15850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 26000,
+      "priceJpy": "16350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 27000,
+      "priceJpy": "16850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 28000,
+      "priceJpy": "17350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 29000,
+      "priceJpy": "17850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 1,
+      "maxGrams": 30000,
+      "priceJpy": "18350"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 1000,
+      "priceJpy": "1800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 2000,
+      "priceJpy": "2200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 3000,
+      "priceJpy": "2600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 4000,
+      "priceJpy": "3000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 5000,
+      "priceJpy": "3400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 6000,
+      "priceJpy": "3800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 7000,
+      "priceJpy": "4200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 8000,
+      "priceJpy": "4600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 9000,
+      "priceJpy": "5000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 10000,
+      "priceJpy": "5400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 11000,
+      "priceJpy": "5800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 12000,
+      "priceJpy": "6200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 13000,
+      "priceJpy": "6600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 14000,
+      "priceJpy": "7000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 15000,
+      "priceJpy": "7400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 16000,
+      "priceJpy": "7800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 17000,
+      "priceJpy": "8200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 18000,
+      "priceJpy": "8600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 19000,
+      "priceJpy": "9000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 20000,
+      "priceJpy": "9400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 21000,
+      "priceJpy": "9800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 22000,
+      "priceJpy": "10200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 23000,
+      "priceJpy": "10600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 24000,
+      "priceJpy": "11000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 25000,
+      "priceJpy": "11400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 26000,
+      "priceJpy": "11800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 27000,
+      "priceJpy": "12200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 28000,
+      "priceJpy": "12600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 29000,
+      "priceJpy": "13000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 1,
+      "maxGrams": 30000,
+      "priceJpy": "13400"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 100,
+      "priceJpy": "350"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 200,
+      "priceJpy": "450"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 300,
+      "priceJpy": "550"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 400,
+      "priceJpy": "650"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 500,
+      "priceJpy": "750"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 600,
+      "priceJpy": "850"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 700,
+      "priceJpy": "950"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 800,
+      "priceJpy": "1050"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 900,
+      "priceJpy": "1150"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1000,
+      "priceJpy": "1250"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1100,
+      "priceJpy": "1350"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1200,
+      "priceJpy": "1450"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1300,
+      "priceJpy": "1550"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1400,
+      "priceJpy": "1650"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1500,
+      "priceJpy": "1750"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1600,
+      "priceJpy": "1850"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1700,
+      "priceJpy": "1950"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1800,
+      "priceJpy": "2050"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 1900,
+      "priceJpy": "2150"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 1,
+      "maxGrams": 2000,
+      "priceJpy": "2250"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 1,
+      "maxGrams": 100,
+      "priceJpy": "480"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 1,
+      "maxGrams": 250,
+      "priceJpy": "600"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 1,
+      "maxGrams": 500,
+      "priceJpy": "800"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 1,
+      "maxGrams": 1000,
+      "priceJpy": "1300"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 1,
+      "maxGrams": 2000,
+      "priceJpy": "2200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 1000,
+      "priceJpy": "2500"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 2000,
+      "priceJpy": "3700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 3000,
+      "priceJpy": "4900"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 4000,
+      "priceJpy": "6100"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 5000,
+      "priceJpy": "7300"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 6000,
+      "priceJpy": "8500"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 7000,
+      "priceJpy": "9700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 8000,
+      "priceJpy": "10900"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 9000,
+      "priceJpy": "12100"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 10000,
+      "priceJpy": "13300"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 11000,
+      "priceJpy": "13950"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 12000,
+      "priceJpy": "14600"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 13000,
+      "priceJpy": "15250"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 14000,
+      "priceJpy": "15900"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 15000,
+      "priceJpy": "16550"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 16000,
+      "priceJpy": "17200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 17000,
+      "priceJpy": "17850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 18000,
+      "priceJpy": "18500"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 19000,
+      "priceJpy": "19150"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 20000,
+      "priceJpy": "19800"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 21000,
+      "priceJpy": "20450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 22000,
+      "priceJpy": "21100"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 23000,
+      "priceJpy": "21750"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 24000,
+      "priceJpy": "22400"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 25000,
+      "priceJpy": "23050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 26000,
+      "priceJpy": "23700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 27000,
+      "priceJpy": "24350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 28000,
+      "priceJpy": "25000"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 29000,
+      "priceJpy": "25650"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 2,
+      "maxGrams": 30000,
+      "priceJpy": "26300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 1000,
+      "priceJpy": "2100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 2000,
+      "priceJpy": "2600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 3000,
+      "priceJpy": "3100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 4000,
+      "priceJpy": "3600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 5000,
+      "priceJpy": "4100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 6000,
+      "priceJpy": "4600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 7000,
+      "priceJpy": "5100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 8000,
+      "priceJpy": "5600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 9000,
+      "priceJpy": "6100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 10000,
+      "priceJpy": "6600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 11000,
+      "priceJpy": "7000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 12000,
+      "priceJpy": "7400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 13000,
+      "priceJpy": "7800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 14000,
+      "priceJpy": "8200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 15000,
+      "priceJpy": "8600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 16000,
+      "priceJpy": "9000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 17000,
+      "priceJpy": "9400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 18000,
+      "priceJpy": "9800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 19000,
+      "priceJpy": "10200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 20000,
+      "priceJpy": "10600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 21000,
+      "priceJpy": "11000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 22000,
+      "priceJpy": "11400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 23000,
+      "priceJpy": "11800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 24000,
+      "priceJpy": "12200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 25000,
+      "priceJpy": "12600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 26000,
+      "priceJpy": "13000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 27000,
+      "priceJpy": "13400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 28000,
+      "priceJpy": "13800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 29000,
+      "priceJpy": "14200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 2,
+      "maxGrams": 30000,
+      "priceJpy": "14600"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 100,
+      "priceJpy": "380"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 200,
+      "priceJpy": "500"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 300,
+      "priceJpy": "620"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 400,
+      "priceJpy": "740"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 500,
+      "priceJpy": "860"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 600,
+      "priceJpy": "980"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 700,
+      "priceJpy": "1100"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 800,
+      "priceJpy": "1220"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 900,
+      "priceJpy": "1340"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1000,
+      "priceJpy": "1460"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1100,
+      "priceJpy": "1580"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1200,
+      "priceJpy": "1700"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1300,
+      "priceJpy": "1820"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1400,
+      "priceJpy": "1940"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1500,
+      "priceJpy": "2060"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1600,
+      "priceJpy": "2180"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1700,
+      "priceJpy": "2300"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1800,
+      "priceJpy": "2420"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 1900,
+      "priceJpy": "2540"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 2,
+      "maxGrams": 2000,
+      "priceJpy": "2660"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 2,
+      "maxGrams": 100,
+      "priceJpy": "480"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 2,
+      "maxGrams": 250,
+      "priceJpy": "600"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 2,
+      "maxGrams": 500,
+      "priceJpy": "800"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 2,
+      "maxGrams": 1000,
+      "priceJpy": "1300"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 2,
+      "maxGrams": 2000,
+      "priceJpy": "2200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 1000,
+      "priceJpy": "3850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 2000,
+      "priceJpy": "6000"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 3000,
+      "priceJpy": "8150"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 4000,
+      "priceJpy": "10300"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 5000,
+      "priceJpy": "12450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 6000,
+      "priceJpy": "14600"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 7000,
+      "priceJpy": "16750"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 8000,
+      "priceJpy": "18900"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 9000,
+      "priceJpy": "21050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 10000,
+      "priceJpy": "23200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 11000,
+      "priceJpy": "24800"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 12000,
+      "priceJpy": "26400"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 13000,
+      "priceJpy": "28000"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 14000,
+      "priceJpy": "29600"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 15000,
+      "priceJpy": "31200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 16000,
+      "priceJpy": "32800"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 17000,
+      "priceJpy": "34400"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 18000,
+      "priceJpy": "36000"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 19000,
+      "priceJpy": "37600"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 20000,
+      "priceJpy": "39200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 21000,
+      "priceJpy": "40800"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 22000,
+      "priceJpy": "42400"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 23000,
+      "priceJpy": "44000"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 24000,
+      "priceJpy": "45600"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 25000,
+      "priceJpy": "47200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 26000,
+      "priceJpy": "48800"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 27000,
+      "priceJpy": "50400"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 28000,
+      "priceJpy": "52000"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 29000,
+      "priceJpy": "53600"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 3,
+      "maxGrams": 30000,
+      "priceJpy": "55200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 1000,
+      "priceJpy": "2500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 2000,
+      "priceJpy": "3100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 3000,
+      "priceJpy": "3700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 4000,
+      "priceJpy": "4300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 5000,
+      "priceJpy": "4900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 6000,
+      "priceJpy": "5500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 7000,
+      "priceJpy": "6100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 8000,
+      "priceJpy": "6700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 9000,
+      "priceJpy": "7300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 10000,
+      "priceJpy": "7900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 11000,
+      "priceJpy": "8300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 12000,
+      "priceJpy": "8700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 13000,
+      "priceJpy": "9100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 14000,
+      "priceJpy": "9500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 15000,
+      "priceJpy": "9900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 16000,
+      "priceJpy": "10300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 17000,
+      "priceJpy": "10700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 18000,
+      "priceJpy": "11100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 19000,
+      "priceJpy": "11500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 20000,
+      "priceJpy": "11900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 21000,
+      "priceJpy": "12300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 22000,
+      "priceJpy": "12700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 23000,
+      "priceJpy": "13100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 24000,
+      "priceJpy": "13500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 25000,
+      "priceJpy": "13900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 26000,
+      "priceJpy": "14300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 27000,
+      "priceJpy": "14700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 28000,
+      "priceJpy": "15100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 29000,
+      "priceJpy": "15500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 3,
+      "maxGrams": 30000,
+      "priceJpy": "15900"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 100,
+      "priceJpy": "510"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 200,
+      "priceJpy": "690"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 300,
+      "priceJpy": "870"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 400,
+      "priceJpy": "1050"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 500,
+      "priceJpy": "1230"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 600,
+      "priceJpy": "1410"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 700,
+      "priceJpy": "1590"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 800,
+      "priceJpy": "1770"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 900,
+      "priceJpy": "1950"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1000,
+      "priceJpy": "2130"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1100,
+      "priceJpy": "2310"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1200,
+      "priceJpy": "2490"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1300,
+      "priceJpy": "2670"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1400,
+      "priceJpy": "2850"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1500,
+      "priceJpy": "3030"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1600,
+      "priceJpy": "3210"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1700,
+      "priceJpy": "3390"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1800,
+      "priceJpy": "3570"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 1900,
+      "priceJpy": "3750"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 3,
+      "maxGrams": 2000,
+      "priceJpy": "3930"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 3,
+      "maxGrams": 100,
+      "priceJpy": "480"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 3,
+      "maxGrams": 250,
+      "priceJpy": "600"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 3,
+      "maxGrams": 500,
+      "priceJpy": "800"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 3,
+      "maxGrams": 1000,
+      "priceJpy": "1300"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 3,
+      "maxGrams": 2000,
+      "priceJpy": "2200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 1000,
+      "priceJpy": "4200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 2000,
+      "priceJpy": "6700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 3000,
+      "priceJpy": "9200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 4000,
+      "priceJpy": "11700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 5000,
+      "priceJpy": "14200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 6000,
+      "priceJpy": "16700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 7000,
+      "priceJpy": "19200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 8000,
+      "priceJpy": "21700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 9000,
+      "priceJpy": "24200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 10000,
+      "priceJpy": "26700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 11000,
+      "priceJpy": "28700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 12000,
+      "priceJpy": "30700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 13000,
+      "priceJpy": "32700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 14000,
+      "priceJpy": "34700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 15000,
+      "priceJpy": "36700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 16000,
+      "priceJpy": "38700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 17000,
+      "priceJpy": "40700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 18000,
+      "priceJpy": "42700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 19000,
+      "priceJpy": "44700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 20000,
+      "priceJpy": "46700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 21000,
+      "priceJpy": "48700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 22000,
+      "priceJpy": "50700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 23000,
+      "priceJpy": "52700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 24000,
+      "priceJpy": "54700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 25000,
+      "priceJpy": "56700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 26000,
+      "priceJpy": "58700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 27000,
+      "priceJpy": "60700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 28000,
+      "priceJpy": "62700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 29000,
+      "priceJpy": "64700"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 4,
+      "maxGrams": 30000,
+      "priceJpy": "66700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 1000,
+      "priceJpy": "2600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 2000,
+      "priceJpy": "3300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 3000,
+      "priceJpy": "4000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 4000,
+      "priceJpy": "4700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 5000,
+      "priceJpy": "5400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 6000,
+      "priceJpy": "6100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 7000,
+      "priceJpy": "6800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 8000,
+      "priceJpy": "7500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 9000,
+      "priceJpy": "8200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 10000,
+      "priceJpy": "8900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 11000,
+      "priceJpy": "9500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 12000,
+      "priceJpy": "10100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 13000,
+      "priceJpy": "10700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 14000,
+      "priceJpy": "11300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 15000,
+      "priceJpy": "11900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 16000,
+      "priceJpy": "12500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 17000,
+      "priceJpy": "13100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 18000,
+      "priceJpy": "13700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 19000,
+      "priceJpy": "14300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 20000,
+      "priceJpy": "14900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 21000,
+      "priceJpy": "15500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 22000,
+      "priceJpy": "16100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 23000,
+      "priceJpy": "16700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 24000,
+      "priceJpy": "17300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 25000,
+      "priceJpy": "17900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 26000,
+      "priceJpy": "18500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 27000,
+      "priceJpy": "19100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 28000,
+      "priceJpy": "19700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 29000,
+      "priceJpy": "20300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 4,
+      "maxGrams": 30000,
+      "priceJpy": "20900"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 100,
+      "priceJpy": "830"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 200,
+      "priceJpy": "1040"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 300,
+      "priceJpy": "1250"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 400,
+      "priceJpy": "1460"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 500,
+      "priceJpy": "1670"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 600,
+      "priceJpy": "1880"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 700,
+      "priceJpy": "2090"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 800,
+      "priceJpy": "2300"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 900,
+      "priceJpy": "2510"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1000,
+      "priceJpy": "2720"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1100,
+      "priceJpy": "2930"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1200,
+      "priceJpy": "3140"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1300,
+      "priceJpy": "3350"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1400,
+      "priceJpy": "3560"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1500,
+      "priceJpy": "3770"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1600,
+      "priceJpy": "3980"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1700,
+      "priceJpy": "4190"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1800,
+      "priceJpy": "4400"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 1900,
+      "priceJpy": "4610"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 4,
+      "maxGrams": 2000,
+      "priceJpy": "4820"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 4,
+      "maxGrams": 100,
+      "priceJpy": "480"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 4,
+      "maxGrams": 250,
+      "priceJpy": "600"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 4,
+      "maxGrams": 500,
+      "priceJpy": "800"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 4,
+      "maxGrams": 1000,
+      "priceJpy": "1300"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 4,
+      "maxGrams": 2000,
+      "priceJpy": "2200"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 1000,
+      "priceJpy": "4550"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 2000,
+      "priceJpy": "7250"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 3000,
+      "priceJpy": "9950"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 4000,
+      "priceJpy": "12650"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 5000,
+      "priceJpy": "15350"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 6000,
+      "priceJpy": "18050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 7000,
+      "priceJpy": "20750"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 8000,
+      "priceJpy": "23450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 9000,
+      "priceJpy": "26150"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 10000,
+      "priceJpy": "28850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 11000,
+      "priceJpy": "30650"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 12000,
+      "priceJpy": "32450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 13000,
+      "priceJpy": "34250"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 14000,
+      "priceJpy": "36050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 15000,
+      "priceJpy": "37850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 16000,
+      "priceJpy": "39650"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 17000,
+      "priceJpy": "41450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 18000,
+      "priceJpy": "43250"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 19000,
+      "priceJpy": "45050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 20000,
+      "priceJpy": "46850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 21000,
+      "priceJpy": "48650"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 22000,
+      "priceJpy": "50450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 23000,
+      "priceJpy": "52250"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 24000,
+      "priceJpy": "54050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 25000,
+      "priceJpy": "55850"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 26000,
+      "priceJpy": "57650"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 27000,
+      "priceJpy": "59450"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 28000,
+      "priceJpy": "61250"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 29000,
+      "priceJpy": "63050"
+    },
+    {
+      "service": "parcel-air",
+      "zone": 5,
+      "maxGrams": 30000,
+      "priceJpy": "64850"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 1000,
+      "priceJpy": "2700"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 2000,
+      "priceJpy": "3400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 3000,
+      "priceJpy": "4100"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 4000,
+      "priceJpy": "4800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 5000,
+      "priceJpy": "5500"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 6000,
+      "priceJpy": "6200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 7000,
+      "priceJpy": "6900"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 8000,
+      "priceJpy": "7600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 9000,
+      "priceJpy": "8300"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 10000,
+      "priceJpy": "9000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 11000,
+      "priceJpy": "9600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 12000,
+      "priceJpy": "10200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 13000,
+      "priceJpy": "10800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 14000,
+      "priceJpy": "11400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 15000,
+      "priceJpy": "12000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 16000,
+      "priceJpy": "12600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 17000,
+      "priceJpy": "13200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 18000,
+      "priceJpy": "13800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 19000,
+      "priceJpy": "14400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 20000,
+      "priceJpy": "15000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 21000,
+      "priceJpy": "15600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 22000,
+      "priceJpy": "16200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 23000,
+      "priceJpy": "16800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 24000,
+      "priceJpy": "17400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 25000,
+      "priceJpy": "18000"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 26000,
+      "priceJpy": "18600"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 27000,
+      "priceJpy": "19200"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 28000,
+      "priceJpy": "19800"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 29000,
+      "priceJpy": "20400"
+    },
+    {
+      "service": "parcel-surface",
+      "zone": 5,
+      "maxGrams": 30000,
+      "priceJpy": "21000"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 100,
+      "priceJpy": "550"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 200,
+      "priceJpy": "810"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 300,
+      "priceJpy": "1070"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 400,
+      "priceJpy": "1330"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 500,
+      "priceJpy": "1590"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 600,
+      "priceJpy": "1850"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 700,
+      "priceJpy": "2110"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 800,
+      "priceJpy": "2370"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 900,
+      "priceJpy": "2630"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1000,
+      "priceJpy": "2890"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1100,
+      "priceJpy": "3150"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1200,
+      "priceJpy": "3410"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1300,
+      "priceJpy": "3670"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1400,
+      "priceJpy": "3930"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1500,
+      "priceJpy": "4190"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1600,
+      "priceJpy": "4450"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1700,
+      "priceJpy": "4710"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1800,
+      "priceJpy": "4970"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 1900,
+      "priceJpy": "5230"
+    },
+    {
+      "service": "small-packet-air",
+      "zone": 5,
+      "maxGrams": 2000,
+      "priceJpy": "5490"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 5,
+      "maxGrams": 100,
+      "priceJpy": "480"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 5,
+      "maxGrams": 250,
+      "priceJpy": "600"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 5,
+      "maxGrams": 500,
+      "priceJpy": "800"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 5,
+      "maxGrams": 1000,
+      "priceJpy": "1300"
+    },
+    {
+      "service": "small-packet-surface",
+      "zone": 5,
+      "maxGrams": 2000,
+      "priceJpy": "2200"
+    }
+  ],
+  "sources": {
+    "ems": {
+      "url": "https://www.post.japanpost.jp/send/oversea/charge/list-ems/all_en.html",
+      "fetchedAt": "2026-09-27T14:17:15.913Z",
+      "sha256": "e2652a5fa340a3d2d9e495437fa3e220b7eeaa9fcc1e61265df1a74d33dee0ee",
+      "lastModified": "Thu, 04 Jun 2026 06:58:11 GMT"
+    },
+    "parcels": "https://www.post.japanpost.jp/send/oversea/charge/index_en.html"
+  }
+}

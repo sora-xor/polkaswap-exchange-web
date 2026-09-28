@@ -27,7 +27,6 @@ const IGNORED_CONSOLE_PATTERNS = [
   /Error:\s*Connection Timeout/i,
   /\[Exchange rate API\] Error while fetching rates\./i,
 ];
-const OPTIONAL_ENDPOINT_PATTERNS = [/api\.coingecko\.com\/api\/v3\/simple\/price/i];
 const CORRUPTED_UI_PATTERNS = [
   /\[object Promise\]/i,
   /\bNaN\b/,
@@ -225,7 +224,7 @@ async function spawnIpfsGateway({ ipfsPath, enableGateway }) {
   });
 }
 
-async function waitForContent(page, selector) {
+async function waitForContent(page, selector, timeoutMs = LOAD_TIMEOUT) {
   const readMetrics = async () => {
     try {
       return await page.$eval(selector, (el) => {
@@ -244,7 +243,7 @@ async function waitForContent(page, selector) {
     }
   };
 
-  const timeoutAt = Date.now() + LOAD_TIMEOUT;
+  const timeoutAt = Date.now() + timeoutMs;
 
   while (Date.now() < timeoutAt) {
     const metrics = await readMetrics();
@@ -253,6 +252,67 @@ async function waitForContent(page, selector) {
   }
 
   return readMetrics();
+}
+
+/** The route title and mounted feature provide a stronger signal than nonempty bootstrap HTML. */
+function routeReadiness(targetUrl) {
+  let routePath;
+  try {
+    routePath = new URL(targetUrl).hash.replace(/^#/, '').split('?')[0];
+  } catch {
+    return { name: 'app', title: null, selector: null };
+  }
+
+  if (/^\/swap(?:\/|$)/.test(routePath)) {
+    return {
+      name: 'swap',
+      title: 'Swap - Polkaswap',
+      selector: '.swap-container .swap-form',
+    };
+  }
+  return { name: 'app', title: null, selector: null };
+}
+
+/** Inspect the live DOM so a server-rendered bootstrap loader cannot pass as a mounted route. */
+async function inspectHydratedUi(page, appSelector, readiness) {
+  try {
+    return await page.evaluate(
+      ({ appSelector, routeSelector }) => {
+        const app = document.querySelector(appSelector);
+        return {
+          title: document.title,
+          hasAppContent: Boolean(app?.children.length),
+          hasBootstrapLoader: Boolean(app?.querySelector('.app-bootstrap-loader')),
+          hasRouteUi: routeSelector ? Boolean(app?.querySelector(routeSelector)) : Boolean(app?.children.length),
+        };
+      },
+      { appSelector, routeSelector: readiness.selector }
+    );
+  } catch {
+    return null;
+  }
+}
+
+/** Return the first unmet route condition, including an accurate final-state failure reason. */
+function hydrationIssue(state, readiness) {
+  if (!state?.hasAppContent) return 'App content did not render anything under the target selector.';
+  if (state.hasBootstrapLoader) return 'App remained on the bootstrap loader.';
+  if (readiness.title && state.title !== readiness.title) {
+    return `Expected ${readiness.name} title "${readiness.title}"; received "${state.title}".`;
+  }
+  if (!state.hasRouteUi) return `${readiness.name} UI did not render after the bootstrap loader.`;
+  return null;
+}
+
+/** Wait for the actual route before beginning the final settle and screenshot capture. */
+async function waitForHydratedUi(page, appSelector, readiness, timeoutMs = LOAD_TIMEOUT) {
+  const timeoutAt = Date.now() + timeoutMs;
+  let state = await inspectHydratedUi(page, appSelector, readiness);
+  while (hydrationIssue(state, readiness) && Date.now() < timeoutAt) {
+    await page.waitForTimeout(CONTENT_POLL_INTERVAL_MS);
+    state = await inspectHydratedUi(page, appSelector, readiness);
+  }
+  return state;
 }
 
 async function captureOfflineShell(page, selector) {
@@ -273,29 +333,17 @@ async function captureOfflineShell(page, selector) {
   }, selector);
 }
 
+/** Keeps browser CORS failures visible even when the affected API is optional. */
 function filterConsoleMessages(messages) {
   return messages.filter((msg) => {
     if (msg.level !== 'error') return false;
-    const locationUrl = msg.location?.url || '';
-    const endpointInLocation = OPTIONAL_ENDPOINT_PATTERNS.some((pattern) => pattern.test(locationUrl));
-    const endpointInMessage = OPTIONAL_ENDPOINT_PATTERNS.some((pattern) => pattern.test(msg.message));
-    if (
-      (endpointInLocation || endpointInMessage) &&
-      /has been blocked by CORS policy|Failed to load resource: net::ERR_FAILED/i.test(msg.message)
-    ) {
-      return false;
-    }
     return !IGNORED_CONSOLE_PATTERNS.some((pattern) => pattern.test(msg.message));
   });
 }
 
+/** Every captured failed request must contribute to deployment validation. */
 function filterFailedRequests(requests) {
-  if (!Array.isArray(requests) || !requests.length) return [];
-
-  return requests.filter((request) => {
-    const url = request?.url || '';
-    return !OPTIONAL_ENDPOINT_PATTERNS.some((pattern) => pattern.test(url));
-  });
+  return Array.isArray(requests) ? requests : [];
 }
 
 async function ensureDirectory(filePath) {
@@ -461,6 +509,7 @@ async function run() {
     console: [],
     failedRequests: [],
     content: null,
+    hydration: null,
     offlineShell: null,
     domSnapshot: null,
     screenshotPath: null,
@@ -583,7 +632,27 @@ async function run() {
       };
     }
 
-    status.content = await waitForContent(page, selector);
+    const readiness = routeReadiness(targetUrl);
+    await waitForHydratedUi(page, selector, readiness);
+
+    if (settleMs > 0) {
+      let waitedMs = 0;
+      while (waitedMs < settleMs) {
+        const step = Math.min(sampleIntervalMs, settleMs - waitedMs);
+        await page.waitForTimeout(step);
+        waitedMs += step;
+        try {
+          status.bodyTextSamples.push(await page.locator('body').innerText());
+        } catch {
+          status.bodyTextSamples.push(null);
+        }
+      }
+    }
+
+    // The final sample, DOM snapshot, and screenshot must describe the settled route,
+    // not the static loader that exists immediately after DOMContentLoaded.
+    status.hydration = await inspectHydratedUi(page, selector, readiness);
+    status.content = await waitForContent(page, selector, 0);
 
     try {
       status.domSnapshot = await page.$eval(selector, (el) => el.outerHTML);
@@ -623,20 +692,6 @@ async function run() {
     } else if (args['screenshot-base64']) {
       status.screenshot = await page.screenshot({ encoding: 'base64', fullPage: true });
     }
-
-    if (settleMs > 0) {
-      let waitedMs = 0;
-      while (waitedMs < settleMs) {
-        const step = Math.min(sampleIntervalMs, settleMs - waitedMs);
-        await page.waitForTimeout(step);
-        waitedMs += step;
-        try {
-          status.bodyTextSamples.push(await page.locator('body').innerText());
-        } catch {
-          status.bodyTextSamples.push(null);
-        }
-      }
-    }
   } catch (error) {
     status.error = status.error || error.message || String(error);
   } finally {
@@ -662,9 +717,8 @@ async function run() {
     issues.push(status.error);
   }
 
-  if (!status.content || (status.content.textLength === 0 && status.content.htmlLength === 0)) {
-    issues.push('App content did not render anything under the target selector.');
-  }
+  const finalHydrationIssue = hydrationIssue(status.hydration, routeReadiness(status.targetUrl));
+  if (finalHydrationIssue) issues.push(finalHydrationIssue);
 
   if (consoleErrors.length) {
     issues.push(`${consoleErrors.length} console error(s) detected.`);
@@ -686,6 +740,7 @@ async function run() {
     launchErrors: status.launchErrors,
     gateway: status.gateway,
     content: status.content,
+    hydration: status.hydration,
     offlineShell: status.offlineShell,
     consoleErrors,
     failedRequests: failed,
@@ -737,6 +792,10 @@ module.exports = {
   resolveIpfsPath,
   spawnIpfsGateway,
   waitForContent,
+  routeReadiness,
+  inspectHydratedUi,
+  hydrationIssue,
+  waitForHydratedUi,
   captureOfflineShell,
   filterConsoleMessages,
   filterFailedRequests,

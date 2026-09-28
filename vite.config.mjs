@@ -9,6 +9,7 @@ import dynamicImport from 'vite-plugin-dynamic-import';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgLoader from 'vite-svg-loader';
 import { compatAutoImportPlugin } from './scripts/build/compatAutoImportPlugin.mjs';
+import { storeRehearsalPlugin } from './scripts/build/storeRehearsalPlugin.mjs';
 
 const isTest = !!process.env.VITEST;
 const projectArgIndex = process.argv.findIndex((arg) => arg === '--project');
@@ -225,6 +226,7 @@ if (isTest) {
 export default defineConfig({
   base: './',
   plugins: [
+    storeRehearsalPlugin(),
     vue(),
     dynamicImport(),
     svgLoader(),

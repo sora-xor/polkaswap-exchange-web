@@ -48,8 +48,15 @@ describe('App shell source', () => {
     expect(appShellSource).toContain('margin-left: 0;');
   });
 
-  it('keeps Polkamarkt wide desktop content out from under the sidebar', () => {
-    expect(appShellSource).toMatch(/\.app-main--swap,\s*\.app-main--polkamarkt,\s*\.app-main--vaults,/);
+  it('keeps Store and Polkamarkt wide desktop content out from under the sidebar', () => {
+    const desktopSidebarRule = appShellSource.match(
+      /@include desktop\s*\{\s*([^{}]+)\{\s*&\.app-main\s*\{\s*\.app-menu\s*\{\s*&:not\(\.collapsed\)\s*\{[^{}]*position:\s*relative;/
+    );
+
+    expect(desktopSidebarRule).not.toBeNull();
+    expect(desktopSidebarRule?.[1].split(',').map((selector) => selector.trim())).toEqual(
+      expect.arrayContaining(['.app-main--swap', '.app-main--store', '.app-main--polkamarkt', '.app-main--vaults'])
+    );
   });
 
   it('renders the desktop menu logo through the named AppMenu head slot', () => {

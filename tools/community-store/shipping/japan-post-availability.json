@@ -1,0 +1,2656 @@
+{
+  "version": "japan-post-mail-56e0347bc69ba79d",
+  "fetchedAt": "2026-09-27T14:17:15.913Z",
+  "availabilityUpdatedLabel": "Updated on September 2",
+  "countries": [
+    {
+      "code": "CN",
+      "name": "China",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "US",
+      "name": "United States of America",
+      "services": {
+        "ems": "restricted",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "KR",
+      "name": "Republic of Korea",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "PH",
+      "name": "Philippines",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TW",
+      "name": "Taiwan",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "HK",
+      "name": "Hong Kong",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "AU",
+      "name": "Australia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TH",
+      "name": "Thailand",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GB",
+      "name": "United Kingdom of Great Britain and Northern Ireland",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SG",
+      "name": "Singapore",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "IS",
+      "name": "Iceland",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "IE",
+      "name": "Ireland",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "AZ",
+      "name": "Azerbaijan",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": null,
+      "name": "Ascension",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AF",
+      "name": "Afghanistan",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AE",
+      "name": "United Arab Emirates",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "DZ",
+      "name": "Algeria",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "AR",
+      "name": "Argentina",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AW",
+      "name": "Aruba",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "AL",
+      "name": "Albania",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "AM",
+      "name": "Armenia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AI",
+      "name": "Anguilla",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AO",
+      "name": "Angola",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AG",
+      "name": "Antigua and Barbuda",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AD",
+      "name": "Andorra",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "YE",
+      "name": "Yemen",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "IL",
+      "name": "Israel",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "IT",
+      "name": "Italy",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "IQ",
+      "name": "Iraq",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "IR",
+      "name": "Iran",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "IN",
+      "name": "India",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "ID",
+      "name": "Indonesia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": null,
+      "name": "Wake Island",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "UG",
+      "name": "Uganda",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "UA",
+      "name": "Ukraine",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "UZ",
+      "name": "Uzbekistan",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "UY",
+      "name": "Uruguay",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "unavailable",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "VG",
+      "name": "British Virgin Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "EC",
+      "name": "Ecuador",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "EG",
+      "name": "Egypt",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "EE",
+      "name": "Estonia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "SZ",
+      "name": "Eswatini",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "ET",
+      "name": "Ethiopia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "ER",
+      "name": "Eritrea",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SV",
+      "name": "El Salvador",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "AT",
+      "name": "Austria",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "OM",
+      "name": "Oman",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "NL",
+      "name": "Netherlands",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BQ",
+      "name": "Bonaire, Saba and Sint Eustatius",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GH",
+      "name": "Ghana",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CV",
+      "name": "Cape Verde",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GG",
+      "name": "Guernsey",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GY",
+      "name": "Guyana",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "KZ",
+      "name": "Kazakhstan",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "QA",
+      "name": "Qatar",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GP",
+      "name": "Guadeloupe",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CA",
+      "name": "Canada",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GA",
+      "name": "Gabon",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CM",
+      "name": "Cameroon",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GM",
+      "name": "Gambia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "KH",
+      "name": "Cambodia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "KP",
+      "name": "North Korea",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MK",
+      "name": "North Macedonia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MP",
+      "name": "Northern Mariana Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "GN",
+      "name": "Guinea",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GW",
+      "name": "Guinea-Bissau",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CY",
+      "name": "Cyprus",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CU",
+      "name": "Cuba",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CW",
+      "name": "Curacao",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "unavailable",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GR",
+      "name": "Greece",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "KI",
+      "name": "Kiribati",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "unavailable",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "KG",
+      "name": "Kyrgyz",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GT",
+      "name": "Guatemala",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GU",
+      "name": "Guam",
+      "services": {
+        "ems": "restricted",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "KW",
+      "name": "Kuwait",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CK",
+      "name": "Cook Islands",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GL",
+      "name": "Greenland",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CX",
+      "name": "Christmas Island",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "GD",
+      "name": "Grenada",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "HR",
+      "name": "Croatia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "KY",
+      "name": "Cayman Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "KE",
+      "name": "Kenya",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CI",
+      "name": "Ivory Coast",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CC",
+      "name": "Cocos (Keeling) Islands",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CR",
+      "name": "Costa Rica",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "XK",
+      "name": "Kosovo",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "KM",
+      "name": "Comoros Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CO",
+      "name": "Colombia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CG",
+      "name": "Congo",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CD",
+      "name": "The Democratic Republic of the Congo",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": null,
+      "name": "Saipan",
+      "services": {
+        "ems": "restricted",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "SA",
+      "name": "Saudi Arabia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "WS",
+      "name": "Independent State of Samoa",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "ST",
+      "name": "Sao Tome and Principe",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "ZM",
+      "name": "Zambia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "PM",
+      "name": "St. Pierre and Miquelon",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SM",
+      "name": "San Marino",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SL",
+      "name": "Sierra Leone",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "DJ",
+      "name": "Djibouti",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GI",
+      "name": "Gibraltar",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "JE",
+      "name": "Jersey",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "JM",
+      "name": "Jamaica",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GE",
+      "name": "Georgia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SY",
+      "name": "Syria",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "SX",
+      "name": "Saint Maarten",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "ZW",
+      "name": "Zimbabwe",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CH",
+      "name": "Switzerland",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SE",
+      "name": "Sweden",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SD",
+      "name": "Sudan",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "ES",
+      "name": "Spain",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SR",
+      "name": "Suriname",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "LK",
+      "name": "Sri Lanka",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "SK",
+      "name": "Slovakia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SI",
+      "name": "Slovenia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SC",
+      "name": "Seychelles",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GQ",
+      "name": "Equatorial Guinea",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "SN",
+      "name": "Senegal",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "RS",
+      "name": "Serbia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SH",
+      "name": "St. Helena",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "KN",
+      "name": "Saint Christopher and Nevis",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "VC",
+      "name": "Saint Vincent",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "LC",
+      "name": "Saint Lucia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "SO",
+      "name": "Somalia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "SB",
+      "name": "Solomon Islands",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TC",
+      "name": "Turks and Caicos",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "TJ",
+      "name": "Tajikistan",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "TZ",
+      "name": "Tanzania (United Rep.)",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CZ",
+      "name": "Czech Republic",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TD",
+      "name": "Chad",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "CF",
+      "name": "Central Africa",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TN",
+      "name": "Tunisia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "CL",
+      "name": "Chile",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "TV",
+      "name": "Tuvalu",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "DK",
+      "name": "Denmark",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "DE",
+      "name": "Germany",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TG",
+      "name": "Togo",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "DM",
+      "name": "Dominica",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "DO",
+      "name": "Dominican Republic",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": null,
+      "name": "Tristan da Cunha",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "TT",
+      "name": "Trinidad and Tobago",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TM",
+      "name": "Turkmenistan",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "TR",
+      "name": "Turkey",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "TO",
+      "name": "Tonga",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "NG",
+      "name": "Nigeria",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "NR",
+      "name": "Nauru",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "NA",
+      "name": "Namibia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "TF",
+      "name": "French Southern and Antarctic Territories",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "NI",
+      "name": "Nicaragua",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "NE",
+      "name": "Niger",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "NC",
+      "name": "New Caledonia",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "NZ",
+      "name": "New Zealand",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "NP",
+      "name": "Nepal",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "NF",
+      "name": "Norfolk Island",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "NO",
+      "name": "Norway",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BM",
+      "name": "Bermuda",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BH",
+      "name": "Bahrain",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "unavailable",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "unavailable"
+      }
+    },
+    {
+      "code": "HT",
+      "name": "Haiti",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "PK",
+      "name": "Pakistan",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "VA",
+      "name": "Vatican",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "PA",
+      "name": "Panama",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "VU",
+      "name": "Vanuatu",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BS",
+      "name": "Bahamas",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "PG",
+      "name": "Papua New Guinea",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "PW",
+      "name": "Palau",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "PY",
+      "name": "Paraguay",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BB",
+      "name": "Barbados",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "HU",
+      "name": "Hungary",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BD",
+      "name": "Bangladesh",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "TL",
+      "name": "East Timor",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "PN",
+      "name": "Pitcairn",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "FJ",
+      "name": "Fiji",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "FI",
+      "name": "Finland",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BT",
+      "name": "Bhutan",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "PR",
+      "name": "Puerto Rico",
+      "services": {
+        "ems": "restricted",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "FO",
+      "name": "Faroe Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "FK",
+      "name": "Falkland",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "GF",
+      "name": "French Guiana",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "PF",
+      "name": "French Polynesia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BR",
+      "name": "Brazil",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "FR",
+      "name": "France",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BG",
+      "name": "Bulgaria",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BF",
+      "name": "Burkina Faso",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BN",
+      "name": "Brunei",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BI",
+      "name": "Burundi",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "VI",
+      "name": "Virgin Islands",
+      "services": {
+        "ems": "restricted",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "AS",
+      "name": "American Samoa",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "VN",
+      "name": "Viet Nam",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BJ",
+      "name": "Benin",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "VE",
+      "name": "Venezuela",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BY",
+      "name": "Belarus",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BZ",
+      "name": "Belize",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "PE",
+      "name": "Peru",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BE",
+      "name": "Belgium",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "PL",
+      "name": "Poland",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "BA",
+      "name": "Bosnia and Herzegovina",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": null,
+      "name": "North Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BW",
+      "name": "Botswana",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "BO",
+      "name": "Bolivia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "PT",
+      "name": "Portugal",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "HN",
+      "name": "Honduras",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MH",
+      "name": "Marshall Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "MO",
+      "name": "Macao",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MG",
+      "name": "Madagascar",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MW",
+      "name": "Malawi",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "ML",
+      "name": "Mali",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MT",
+      "name": "Malta",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MQ",
+      "name": "Martinique",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MY",
+      "name": "Malaysia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "IM",
+      "name": "Isle of Man",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "FM",
+      "name": "Federated States of Micronesia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": null,
+      "name": "Midway Islands",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "restricted",
+        "parcel-surface": "restricted",
+        "small-packet-air": "restricted",
+        "small-packet-surface": "restricted"
+      }
+    },
+    {
+      "code": "ZA",
+      "name": "South Africa",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "SS",
+      "name": "South Sudan",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MM",
+      "name": "Myanmar",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MX",
+      "name": "Mexico",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MU",
+      "name": "Mauritius",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MR",
+      "name": "Mauritania",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MZ",
+      "name": "Mozambique",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MC",
+      "name": "Monaco",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MV",
+      "name": "Maldives",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MD",
+      "name": "Moldova",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "accepted",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MA",
+      "name": "Morocco",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "MN",
+      "name": "Mongolia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "ME",
+      "name": "Montenegro",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "MS",
+      "name": "Montserrat",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "JO",
+      "name": "Jordan",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "LA",
+      "name": "Lao People's Democratic Republic",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "LV",
+      "name": "Latvia",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "LT",
+      "name": "Lithuania",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "LY",
+      "name": "Libya",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "LI",
+      "name": "Liechtenstein",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "LR",
+      "name": "Liberia",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "RO",
+      "name": "Romania",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "LU",
+      "name": "Luxembourg",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "RW",
+      "name": "Rwanda",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "LS",
+      "name": "Lesotho",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "LB",
+      "name": "Lebanon",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "suspended",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "RE",
+      "name": "Reunion",
+      "services": {
+        "ems": "accepted",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "accepted"
+      }
+    },
+    {
+      "code": "RU",
+      "name": "Russian Federation",
+      "services": {
+        "ems": "suspended",
+        "parcel-air": "suspended",
+        "parcel-surface": "suspended",
+        "small-packet-air": "suspended",
+        "small-packet-surface": "suspended"
+      }
+    },
+    {
+      "code": "WF",
+      "name": "Wallis and Futuna",
+      "services": {
+        "ems": "unavailable",
+        "parcel-air": "accepted",
+        "parcel-surface": "accepted",
+        "small-packet-air": "accepted",
+        "small-packet-surface": "suspended"
+      }
+    }
+  ],
+  "sources": {
+    "availability": {
+      "url": "https://www.post.japanpost.jp/service/send/oversea/information/overview_en.html",
+      "fetchedAt": "2026-09-27T14:17:15.913Z",
+      "sha256": "523df62f65150eeb2791c66fd60c34c2f58faaaa04a265e05736c2f7250f0e2d",
+      "lastModified": "Tue, 01 Sep 2026 04:11:26 GMT"
+    },
+    "restrictionsUrl": "https://www.post.japanpost.jp/service/send/oversea/information/overview_en.pdf"
+  }
+}
