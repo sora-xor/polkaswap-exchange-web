@@ -1,0 +1,93 @@
+# Future pilot only. This is not a replacement for today's catalog-only gate.
+# Include inside the existing HTTPS server_name mof.sora.org block, adjacent
+# to its IPFS include. Requires nginx >= 1.29.3 and the pilot http include.
+# Keep the relay on loopback; explicitly enable its trusted-proxy setting only
+# after this overwriting header configuration is installed and verified.
+# Health stays on loopback. No server-level directives affect other paths.
+
+location = /sora-pay {
+    access_log off;
+    error_log /dev/null crit;
+    add_header_inherit off;
+    expires off;
+    add_header Cache-Control "no-store" always;
+    return 404;
+}
+
+# Avoid nginx's automatic slash redirect for a proxy location ending in /.
+location = /sora-pay/v1 {
+    access_log off;
+    error_log /dev/null crit;
+    add_header_inherit off;
+    expires off;
+    add_header Cache-Control "no-store" always;
+    return 404;
+}
+
+location = /sora-pay/v1/operator {
+    access_log off;
+    error_log /dev/null crit;
+    add_header_inherit off;
+    expires off;
+    add_header Cache-Control "no-store" always;
+    return 403;
+}
+
+location ^~ /sora-pay/v1/operator/ {
+    access_log off;
+    error_log /dev/null crit;
+    add_header_inherit off;
+    expires off;
+    add_header Cache-Control "no-store" always;
+    return 403;
+}
+
+location ^~ /sora-pay/v1/ {
+    access_log off;
+    error_log /dev/null crit;
+    add_header_inherit on;
+    expires off;
+    proxy_hide_header Cache-Control;
+    add_header Cache-Control "no-store" always;
+
+    include /opt/homebrew/etc/nginx/snippets/sora-pay-admission-guard.conf;
+
+    limit_req zone=sora_pay_public burst=20 nodelay;
+    limit_req_status 429;
+    client_max_body_size 16k;
+    client_body_buffer_size 16k;
+    client_body_timeout 25s;
+
+    # Replace only the matched /sora-pay/v1/ prefix; preserve the endpoint suffix.
+    proxy_pass http://127.0.0.1:39848/v1/;
+    proxy_http_version 1.1;
+    proxy_connect_timeout 25s;
+    proxy_send_timeout 25s;
+    proxy_read_timeout 25s;
+    send_timeout 25s;
+    proxy_request_buffering off;
+    proxy_buffering off;
+    proxy_cache off;
+    proxy_store off;
+    proxy_intercept_errors off;
+    proxy_next_upstream off;
+    proxy_redirect off;
+
+    proxy_set_header Host $host;
+    proxy_set_header Connection "";
+    proxy_set_header X-Forwarded-For "";
+    proxy_set_header X-Real-IP "";
+    proxy_set_header Forwarded "";
+    proxy_set_header X-Sora-Pay-Client-IP $remote_addr;
+    # Relay alone emits exact-origin CORS headers; never add or reflect them here.
+}
+
+# Reserve the namespace so unknown paths cannot reach the existing root proxy.
+location ^~ /sora-pay/ {
+    access_log off;
+    error_log /dev/null crit;
+    add_header_inherit off;
+    expires off;
+    add_header Cache-Control "no-store" always;
+    return 404;
+}

@@ -1,0 +1,56 @@
+{
+  "enabled": false,
+  "storageResumeFreeBytes": "10737418240",
+  "storageMinimumFreeBytes": "5368709120",
+  "refundPolicy": { "version": 2, "mode": "net-network-fee" },
+  "fulfillmentMode": "on-demand",
+  "version": "polkaswap-tea-pilot-1",
+  "merchant": {
+    "id": "polkaswap-community-store",
+    "name": "Polkaswap Community Store",
+    "operatorName": "Community Volunteers",
+    "supportTelegram": "sora_xor",
+    "dispatchPolicy": "Volunteers purchase sealed tea after payment and confirm shipping availability before dispatch. Contact support for dispatch estimates.",
+    "customsPolicy": "Delivery is offered only where lawful and carrier service is available. The customer is responsible for destination import duties and taxes disclosed before checkout.",
+    "privacyPolicy": "Delivery details are encrypted in the private relay. They are sent to the private volunteer notification destination. Delivery details and contact are deleted 30 days after shipment or refund, or 24 hours after an unpaid quote expires. Chain payments remain public. Ask support about privacy requests.",
+    "cancellationPolicy": "If an order cannot be shipped, we refund the XOR received, including shipping, minus the SORA network fee for sending the refund. Your original payment’s network fee is non-refundable. Refunds go to the verified paying wallet. Contact support to cancel before dispatch; refund processing has no fixed deadline."
+  },
+  "pricing": {
+    "version": "polkaswap-xor-prices-2026-09-25",
+    "jpyPerUsd": "158.78",
+    "usdPerXor": "5.37",
+    "fxSource": "https://www.bk.mufg.jp/gdocs/kinri/kinri_data_utf8.js",
+    "fxDate": "2026-09-25",
+    "mode": "launch-fixed",
+    "kind": "exact-xor"
+  },
+  "product": {
+    "id": "shizuoka-organic-sencha-100g",
+    "name": "Shizuoka Organic Sencha",
+    "grams": 100,
+    "packedGrams": 120,
+    "packagingGrams": 80,
+    "priceJpy": "1500",
+    "priceXor": "1.759225"
+  },
+  "shipping": [],
+  "chain": {
+    "genesisHash": "",
+    "assetId": "0x0200000000000000000000000000000000000000000000000000000000000000",
+    "decimals": 18,
+    "denomination": "",
+    "recipient": "cnWUWKLZmNjQXGzYAF7YuRSiW1pKTRTzu4fmcYmWQX6UMGQUZ",
+    "rpcUrl": "wss://ws.mof.sora.org",
+    "startBlock": -1
+  },
+  "allowedOrigins": [
+    "https://polkaswap.io"
+  ],
+  "retentionDays": 30,
+  "reviewEveryPaidOrder": true,
+  "blockedCountries": ["IN"],
+  "approvedShippingCountries": [],
+  "providers": {
+    "shipping": "japan-post-ems"
+  }
+}

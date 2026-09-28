@@ -1,0 +1,27 @@
+{
+  "name": "@polkaswap/community-store-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Polkaswap Community Store catalog and fulfillment configuration tools",
+  "engines": {
+    "node": ">=26 <27"
+  },
+  "packageManager": "yarn@4.10.3",
+  "scripts": {
+    "test": "node --test tests/*.test.ts",
+    "catalog:build": "node build-catalog.mjs"
+  },
+  "dependencies": {
+    "@sora/sora-pay": "file:../../vendor/sora-pay/sora-pay-0.2.5.tgz"
+  },
+  "resolutions": {
+    "@polkadot/keyring": "14.0.2",
+    "@polkadot/util": "14.0.2",
+    "@polkadot/util-crypto": "14.0.2",
+    "@polkadot/wasm-crypto": "7.5.4",
+    "@polkadot/wasm-bridge": "7.5.4",
+    "@polkadot/wasm-crypto-wasm": "7.5.4",
+    "@polkadot/wasm-util": "7.5.4"
+  }
+}

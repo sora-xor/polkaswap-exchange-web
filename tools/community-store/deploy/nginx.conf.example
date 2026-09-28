@@ -1,0 +1,26 @@
+# After installing this overwriting header config, explicitly set SORA_PAY_TRUST_LOOPBACK_PROXY=1.
+# Keep the Node listener bound to loopback. Without opt-in it ignores all forwarded IP headers.
+# Include in approved HTTPS host only. Existing MOF RPC and IPFS locations stay intact.
+# Put limit_req_zone in the nginx http block, not inside a server/location block.
+# limit_req_zone $binary_remote_addr zone=sora_pay:10m rate=2r/s;
+location /v1/ {
+    limit_req zone=sora_pay burst=20 nodelay;
+    client_max_body_size 16k;
+    proxy_pass http://127.0.0.1:39848;
+    proxy_http_version 1.1;
+    proxy_read_timeout 25s;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For "";
+    # Overwrite any caller-supplied header; never forward $http_x_sora_pay_client_ip.
+    proxy_set_header X-Sora-Pay-Client-IP $remote_addr;
+    access_log off;
+    # Never log request bodies, Authorization headers, or private order URLs.
+}
+# Restrict operator access to an approved VPN CIDR in the actual deployment.
+location /v1/operator/ {
+    proxy_set_header X-Sora-Pay-Client-IP $remote_addr;
+    proxy_set_header X-Forwarded-For "";
+    deny all; # Replace with explicit approved VPN allow CIDR, then retain deny all.
+    proxy_pass http://127.0.0.1:39848;
+    access_log off;
+}
