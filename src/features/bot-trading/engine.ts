@@ -144,6 +144,18 @@ function mean(candles: BotCandle[], window: number): FPNumber {
 }
 
 /**
+ * Whether a rules strategy has already consumed the latest completed close in `candles`.
+ * `evaluateStrategy` can then only hold, so a scheduler may skip such evaluations until a newer close arrives.
+ */
+export function ruleCloseConsumed(bot: BotDefinition, candles: BotCandle[], now: number): boolean {
+  const consumed = bot.state.lastRuleObservationAt;
+  if (bot.strategy.kind !== 'rules' || consumed === undefined || !Number.isSafeInteger(consumed) || consumed < 0)
+    return false;
+  const latest = availableCandles(candles, now).at(-1);
+  return latest !== undefined && latest.timestamp <= consumed;
+}
+
+/**
  * Evaluate one deterministic signal. `close` is assetOut's price in assetIn.
  * The caller updates lastTradeAt only after a fill; proposals never imply execution.
  */

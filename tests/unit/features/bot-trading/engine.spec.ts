@@ -8,6 +8,7 @@ import {
   parseBotPrice,
   portfolioPerformance,
   requiredStrategyCandles,
+  ruleCloseConsumed,
   runBacktest,
   validateStrategy,
   valuePortfolio,
@@ -170,6 +171,19 @@ describe('bot strategy evaluation', () => {
     const next = evaluateStrategy({ ...bot, state: duplicate.state }, candles(['1', '2', '3', '4']), 4000);
     expect(next.proposal.action).toBe('buy');
     expect(next.state.lastRuleObservationAt).toBe(4000);
+  });
+
+  it('reports a consumed rule close exactly when an evaluation could only hold', () => {
+    const bot = rulesBot();
+    expect(ruleCloseConsumed(bot, candles(['1', '2', '3']), 3000)).toBe(false);
+    const consumed = { ...bot, state: evaluateStrategy(bot, candles(['1', '2', '3']), 3000).state };
+    expect(ruleCloseConsumed(consumed, candles(['1', '2', '3']), 3500)).toBe(true);
+    expect(evaluateStrategy(consumed, candles(['1', '2', '3']), 3500).proposal.reason).toBe('bots.events.noSignal');
+    // A newer close counts only once it has completed at `now`.
+    expect(ruleCloseConsumed(consumed, candles(['1', '2', '3', '4']), 3999)).toBe(true);
+    expect(ruleCloseConsumed(consumed, candles(['1', '2', '3', '4']), 4000)).toBe(false);
+    const dca = { ...consumed, strategy: { ...consumed.strategy, kind: 'dca' as const } };
+    expect(ruleCloseConsumed(dca, candles(['1', '2', '3']), 3500)).toBe(false);
   });
 
   it('consumes rule closes blocked by cooldown and never retries that close after the interval', () => {

@@ -3,6 +3,7 @@ import { generateQuantCandidates, type QuantMarketResult } from '@/features/bot-
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createBotTradingController,
+  equitySpacingMs,
   createBotDefinition,
   createPaperBotFromTemplate,
   checkedStudiedDiscoveryLimits,
@@ -2839,16 +2840,36 @@ describe('public eligibility accepted no-pair recovery', () => {
 });
 
 describe('long-running session memory bounds', () => {
-  it('keeps activity, equity and chart observations bounded however long a session runs', async () => {
+  /** A paper bot whose price (2) never reaches its buy trigger (1), so every evaluation holds. */
+  const holdingBot = (sessionDurationMs = 86_400_000) => {
     const bot = botFixture();
-    // The price (2) never reaches the buy trigger, so every one-minute evaluation records a hold and an equity point.
     bot.strategy = { ...bot.strategy, kind: 'threshold', threshold: '1', direction: 'below' };
-    bot.policy.sessionDurationMs = 86_400_000;
+    bot.policy.sessionDurationMs = sessionDurationMs;
+    return bot;
+  };
+
+  it('spaces equity points so that the cap spans the configured session', () => {
+    expect(equitySpacingMs(3_600_000)).toBe(60_000);
+    expect(equitySpacingMs(86_400_000)).toBe(86_400);
+    expect(equitySpacingMs(14 * 86_400_000)).toBe(1_209_600);
+    expect(equitySpacingMs(0)).toBe(60_000);
+    expect(equitySpacingMs(Number.NaN)).toBe(60_000);
+  });
+
+  it('keeps activity, equity and chart observations bounded however long a session runs', async () => {
+    const bot = holdingBot();
+    bot.activity = Array.from({ length: 200 }, (_, index) => ({
+      id: `trade-${index}`,
+      timestamp: 200 - index,
+      kind: 'trade' as const,
+      message: 'bots.events.buy',
+    }));
+    bot.equity = Array.from({ length: 1000 }, (_, index) => ({ timestamp: index + 1, value: '100', benchmark: '100' }));
     const h = make(bot);
     await h.controller.initialize();
     await h.controller.selectBot('bot-1');
     await h.controller.startBot('bot-1');
-    for (let minute = 0; minute < 1050; minute++) {
+    for (let minute = 0; minute < 200; minute++) {
       h.advance(60_000);
       await h.controller.tick();
     }
@@ -2856,12 +2877,108 @@ describe('long-running session memory bounds', () => {
     expect(saved.status).toBe('running');
     expect(saved.portfolio.trades).toBe(0);
     expect(saved.activity).toHaveLength(200);
-    expect(saved.activity[0]).toMatchObject({ kind: 'hold', timestamp: h.deps.now() });
+    // 200 quiet evaluations share one refreshed entry instead of evicting the trade history.
+    expect(saved.activity.filter((item) => item.kind === 'hold')).toEqual([
+      expect.objectContaining({ timestamp: h.deps.now() }),
+    ]);
+    expect(saved.activity.some((item) => item.id === 'trade-0')).toBe(true);
     expect(saved.equity).toHaveLength(1000);
+    // The first point anchors the displayed P&L beyond the cap.
+    expect(saved.equity[0]).toEqual(bot.equity[0]);
     expect(saved.equity.at(-1)?.timestamp).toBe(h.deps.now());
     // 120 live observations plus at most the one loaded history candle that precedes them.
     expect(h.controller.chartCandles.value.length).toBeGreaterThanOrEqual(120);
     expect(h.controller.chartCandles.value.length).toBeLessThanOrEqual(121);
     expect(h.controller.chartCandles.value.at(-1)?.timestamp).toBe(h.deps.now());
+  });
+
+  it('keeps one refreshed equity point per spacing window from the first valuation on', async () => {
+    const h = make(holdingBot());
+    await h.controller.startBot('bot-1');
+    const first = h.deps.now() + 60_000;
+    for (let minute = 0; minute < 180; minute++) {
+      h.advance(60_000);
+      await h.controller.tick();
+    }
+    const equity = h.saved()[0].equity;
+    expect(equity[0].timestamp).toBe(first);
+    expect(equity.at(-1)?.timestamp).toBe(h.deps.now());
+    const windows = equity.slice(1).map((point) => Math.floor(point.timestamp / equitySpacingMs(86_400_000)));
+    expect(windows.every((window, index) => index === 0 || window > windows[index - 1])).toBe(true);
+    // Three hours of one-minute valuations in 86.4-second windows: about 125 points, not 180.
+    expect(equity.length).toBeGreaterThanOrEqual(125);
+    expect(equity.length).toBeLessThanOrEqual(128);
+  });
+
+  it('merges repeated holds but keeps each trade in the activity log', async () => {
+    const h = make(holdingBot());
+    await h.controller.startBot('bot-1');
+    const quiet = async (minutes: number) => {
+      for (let minute = 0; minute < minutes; minute++) {
+        h.advance(60_000);
+        await h.controller.tick();
+      }
+    };
+    await quiet(10);
+    h.deps.market.mockImplementation(async () => ({ timestamp: h.deps.now(), close: '0.5' }));
+    await quiet(1);
+    h.deps.market.mockImplementation(async () => ({ timestamp: h.deps.now(), close: '2' }));
+    await quiet(10);
+    const { activity, portfolio } = h.saved()[0];
+    expect(portfolio.trades).toBe(1);
+    expect(activity.slice(0, 3).map((item) => item.kind)).toEqual(['hold', 'trade', 'hold']);
+    expect(activity.filter((item) => item.kind === 'hold')).toHaveLength(2);
+    expect(activity[0].timestamp).toBe(h.deps.now());
+  });
+
+  it('quotes an hourly rules bot at most once a minute and acts on a new close at once', async () => {
+    const bot = botFixture();
+    bot.strategy = {
+      ...bot.strategy,
+      kind: 'rules',
+      intervalMs: 6_000,
+      rules: {
+        version: 1,
+        entry: { operator: 'all', conditions: [{ kind: 'trend', window: 2, direction: 'above' }] },
+        exit: null,
+      },
+    };
+    const h = make(bot);
+    // Start 5 minutes before an hour boundary; the next close (rising, so the entry matches) completes at 3,600,000.
+    h.advance(3_300_000 - h.deps.now());
+    // A scheduler tick after the jump, as a running page would have; starting after a silent gap is refused.
+    await h.controller.tick();
+    h.deps.history.mockImplementation(async () => ({
+      candles: [
+        { timestamp: 1_000_000, close: '1' },
+        { timestamp: 2_000_000, close: '1' },
+        ...(h.deps.now() >= 3_600_000 ? [{ timestamp: 3_600_000, close: '3' }] : []),
+      ],
+      missing: 0,
+      denominationVerified: true,
+    }));
+    h.deps.market.mockImplementation(async () => ({ timestamp: h.deps.now(), close: '1' }));
+    await h.controller.startBot('bot-1');
+    let block = 100;
+    const blocks = async (count: number) => {
+      for (let index = 0; index < count; index++) {
+        h.advance(6_000);
+        await h.controller.tick(block++);
+      }
+    };
+    await blocks(49);
+    // 49 blocks (4.9 minutes) on an already consumed close: one quote a minute, not one per block.
+    expect(h.deps.market.mock.calls.length).toBeLessThanOrEqual(5);
+    expect(h.saved()[0].portfolio.trades).toBe(0);
+    const quotesBefore = h.deps.market.mock.calls.length;
+    await blocks(2);
+    // The first block of the new hour refreshes history, sees the new close and trades on it.
+    expect(h.saved()[0].state.lastRuleObservationAt).toBe(3_600_000);
+    expect(h.saved()[0].portfolio.trades).toBe(1);
+    expect(h.deps.market.mock.calls.length).toBe(quotesBefore + 1);
+    await blocks(30);
+    expect(h.deps.market.mock.calls.length).toBeLessThanOrEqual(quotesBefore + 4);
+    expect(h.saved()[0].portfolio.trades).toBe(1);
+    expect(h.saved()[0].status).toBe('running');
   });
 });

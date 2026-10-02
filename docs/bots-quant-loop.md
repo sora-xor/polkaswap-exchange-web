@@ -92,7 +92,12 @@ The page is built to stay open for a multi-day session:
 - **Calm mode.** Ambient motion (the iridescent rim, light sweep and drift, glass float, pulses) runs on arrival. After 60 seconds without pointer, keyboard, wheel, touch or scroll input, the page sets `--quant-motion: paused`. Every infinite animation reads that variable through `animation-play-state`, and the mesh stops scheduling animation frames. Any interaction wakes it.
 - **Live signals.** They refresh a few minutes after each completed hour and never overlap. A tab that was throttled in the background catches up when it becomes visible again.
 - **Cleanup.** Timers, observers and listeners are released on unmount.
-- **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries. `controller.spec.ts` (*long-running session memory bounds*) runs a paper session through 1,050 one-minute evaluations and checks every cap.
+- **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries. `controller.spec.ts` (*long-running session memory bounds*) checks every cap.
+- **Hourly cadence.** Quant bots are checked on every finalized block, but their rules act only on a new completed hourly close.
+  - Between closes, the engine skips the block and quotes and revalues the bot at most once a minute. Previously it quoted every six seconds, about 600 quotes an hour.
+  - The first block that brings a new close is evaluated immediately.
+  - Repeated "no signal" holds share one activity entry, so trades stay visible for days.
+  - Equity points are spaced by session length: about every 20 minutes for 14 days, every 10 minutes for 7 days. The 1,000-point chart and its Net P&L therefore cover the whole session.
 - **Bounded RPC bookkeeping.** Each evaluation quotes through a short-lived storage subscription. Unpatched `@polkadot/rpc-provider` kept every notification that arrived after such an unsubscribe for the life of the connection, about 0.5 MB per hour with a bot running. The patched provider drops them (see the README's install notes).
 
 Every bot is **capacity-limited** to the researched shape:

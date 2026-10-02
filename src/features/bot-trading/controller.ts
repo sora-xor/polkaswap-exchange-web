@@ -15,6 +15,7 @@ import {
   evaluateStrategy,
   parseBotPrice,
   requiredStrategyCandles,
+  ruleCloseConsumed,
   runBacktest,
   valuePortfolio,
 } from './engine';
@@ -78,6 +79,18 @@ import type {
   BotResearchSnapshot,
   StrategyConfig,
 } from './types';
+
+/** Equity points kept per bot. Their spacing grows with the session length so the chart spans the session. */
+export const EQUITY_POINTS = 1000;
+/** Between new hourly closes, a rules bot is quoted and revalued at most this often. */
+export const REVALUE_INTERVAL_MS = 60_000;
+
+/** One equity point per minute, or wider for long sessions so that `EQUITY_POINTS` cover the whole session. */
+export function equitySpacingMs(sessionDurationMs: number): number {
+  return Number.isSafeInteger(sessionDurationMs) && sessionDurationMs > 0
+    ? Math.max(REVALUE_INTERVAL_MS, Math.ceil(sessionDurationMs / EQUITY_POINTS))
+    : REVALUE_INTERVAL_MS;
+}
 
 export interface BotDraft {
   name: string;
@@ -640,6 +653,8 @@ export function createBotTradingController(deps: ControllerDependencies) {
   const observations = new Map<string, BotCandle[]>();
   // Session-local scheduling evidence never changes stored execution/receipt timestamps.
   const cadence = new Map<string, { evaluated?: number; filled?: number; checkedAt?: number }>();
+  // When each running session last quoted and recorded its value.
+  const valuedAt = new Map<string, number>();
   let latestFinalizedBlock: number | undefined;
   const nodeContext = () => {
     const node = deps.agent.status().node;
@@ -745,6 +760,12 @@ export function createBotTradingController(deps: ControllerDependencies) {
     return rememberGoal(bot);
   };
   const event = (bot: BotDefinition, message: string, kind: 'status' | 'error' | 'hold' | 'trade' = 'status') => {
+    const latest = bot.activity[0];
+    // A repeated hold refreshes its entry, so days of quiet evaluations cannot push trades out of the bounded log.
+    if (kind === 'hold' && latest?.kind === 'hold' && latest.message === message) {
+      latest.timestamp = deps.now();
+      return;
+    }
     bot.activity.unshift({ id: crypto.randomUUID(), timestamp: deps.now(), kind, message });
     bot.activity = bot.activity.slice(0, 200);
   };
@@ -752,6 +773,7 @@ export function createBotTradingController(deps: ControllerDependencies) {
     sessions.delete(id);
     goalSessions.delete(id);
     cadence.delete(id);
+    valuedAt.delete(id);
     sessionVersions.set(id, (sessionVersions.get(id) ?? 0) + 1);
     syncActiveIds();
     let stopped: Promise<void>;
@@ -847,12 +869,27 @@ export function createBotTradingController(deps: ControllerDependencies) {
     return { candle, candles };
   };
   const addEquity = (bot: BotDefinition, candle: BotCandle) => {
-    bot.equity.push({
+    const point = {
       timestamp: deps.now(),
       value: valuePortfolio(bot, candle),
       benchmark: valuePortfolio(bot, candle, bot.portfolio.initial),
-    });
-    bot.equity = bot.equity.slice(-1000);
+    };
+    valuedAt.set(bot.id, point.timestamp);
+    const spacing = equitySpacingMs(bot.policy.sessionDurationMs);
+    const last = bot.equity.at(-1);
+    // After the first point, each spacing window keeps only its latest valuation.
+    if (bot.equity.length > 1 && last && Math.floor(last.timestamp / spacing) === Math.floor(point.timestamp / spacing))
+      bot.equity[bot.equity.length - 1] = point;
+    else bot.equity.push(point);
+    // The first point anchors the displayed P&L, so it outlives the cap.
+    if (bot.equity.length > EQUITY_POINTS) bot.equity = [bot.equity[0], ...bot.equity.slice(-(EQUITY_POINTS - 1))];
+  };
+  /** The hourly history cached for the current hour, or undefined when the next read would refresh it. */
+  const currentHourHistory = (id: string, now: number): BotHistory | undefined => {
+    const cached = histories.get(id);
+    return cached && Math.floor(now / 3_600_000) === Math.floor(cached.loadedAt / 3_600_000)
+      ? cached.history
+      : undefined;
   };
   const campaignMarkAt = new Map<string, number>();
   /** A campaign clock advances only from newly observed canonical finalized state. */
@@ -1004,6 +1041,18 @@ export function createBotTradingController(deps: ControllerDependencies) {
             lastBlock.filled !== undefined;
           const fillDue = !blockFill || block! - lastBlock.filled! >= bot.strategy.intervalMs / 6000;
           if (!fillDue && bot.strategy.kind === 'ai') continue;
+          // Hourly rules act only on a new completed close. Until this hour's history brings one, an evaluation
+          // can only hold, so quote and revalue at most once a minute rather than on every block.
+          const hourlyHistory =
+            !goalEpisodes && bot.strategy.kind === 'rules' ? currentHourHistory(id, now) : undefined;
+          const lastValued = valuedAt.get(id);
+          if (
+            hourlyHistory &&
+            lastValued !== undefined &&
+            now - lastValued < REVALUE_INTERVAL_MS &&
+            ruleCloseConsumed(bot, hourlyHistory.candles, now)
+          )
+            continue;
           const livePriceSignal =
             !goalEpisodes && bot.strategy.kind === 'sma' && bot.strategy.signalTiming === 'live-price';
           // A cold history request may take longer than a quote's lifetime. Price the forming hour afterwards.
