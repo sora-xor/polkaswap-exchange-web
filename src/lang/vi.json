@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "Giá đang lệch {value} so với trung bình {window} giờ, đã vượt ngưỡng kích hoạt {threshold}. Đây là lúc bot mua vào.",
+                "title": "{symbol} đang ở vùng mua"
+            },
             "botName": "Bot thu hoạch thanh khoản {symbol}",
+            "cadence": {
+                "every": "Khoảng {days} ngày có một cơ hội",
+                "holdDays": "vị thế được đóng trong {min}–{max} ngày",
+                "holdHours": "vị thế được đóng trong {min}–{max} giờ",
+                "last": "gần nhất vào {date}"
+            },
             "capacity": "Giới hạn quy mô có chủ đích: ngân sách 10 XOR, dự phòng phí 2 XOR và {amount} XOR mỗi lệnh, vì các pool này có thanh khoản mỏng.",
             "consent": {
                 "budget": "Ngân sách {amount} XOR",
+                "cadenceDays": "Giao dịch diễn ra thưa thớt: trong các kiểm định mù, khoảng {days} ngày mới có một cơ hội, và việc đóng một vị thế có thể mất tới {hold} ngày. Hãy giữ thẻ này mở trong suốt phiên.",
+                "cadenceHours": "Giao dịch diễn ra thưa thớt: trong các kiểm định mù, khoảng {days} ngày mới có một cơ hội, và việc đóng một vị thế có thể mất tới {hold} giờ. Hãy giữ thẻ này mở trong suốt phiên.",
                 "evidence": "Kết quả kiểm định cuốn chiếu {return}% · sụt giảm tối đa {drawdown}% · {trades} giao dịch. Kết quả giả định, đã trừ mọi khoản phí; không phải cam kết lợi nhuận.",
                 "eyebrow": "Xem nhanh để xác nhận",
                 "getXor": "Mua XOR",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR mỗi lệnh",
                 "reserve": "Dự phòng phí {amount} XOR",
                 "session": "Phiên {hours} giờ",
+                "sessionDays": "Phiên {count} ngày",
                 "stepConfirm": "Đánh dấu vào ô rồi bắt đầu. Bot chỉ có thể ký giao dịch hoán đổi trong các giới hạn này.",
                 "stepPassword": "Nhập mật khẩu ví",
                 "stepWallet": "Phê duyệt từng giao dịch hoán đổi trong ví",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "Biến động {window} giờ cao hơn {value}%",
                 "momentumBelow": "Biến động {window} giờ thấp hơn {value}%",
                 "sell": "Bán khi"
+            },
+            "session": {
+                "label": "Thời lượng phiên",
+                "option": "{count} ngày"
             },
             "signal": {
                 "entry": "Vùng mua",

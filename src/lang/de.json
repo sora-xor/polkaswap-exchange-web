@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "Der Kurs weicht um {value} vom {window}-Stunden-Mittel ab und liegt damit jenseits der Auslöseschwelle von {threshold}. Genau dann kauft der Bot.",
+                "title": "{symbol} ist in der Kaufzone"
+            },
             "botName": "{symbol}-Liquiditätssammler",
+            "cadence": {
+                "every": "Etwa alle {days} Tage eine Chance",
+                "holdDays": "Positionen werden in {min}–{max} Tagen aufgelöst",
+                "holdHours": "Positionen werden in {min}–{max} Stunden aufgelöst",
+                "last": "zuletzt am {date}"
+            },
             "capacity": "Bewusst begrenzte Kapazität: Budget von 10 XOR, Gebührenreserve von 2 XOR und {amount} XOR pro Order, da diese Pools wenig Liquidität haben.",
             "consent": {
                 "budget": "Handelsbudget {amount} XOR",
+                "cadenceDays": "Trades sind selten: In blinden Tests ergab sich etwa alle {days} Tage eine Chance, und es kann bis zu {hold} Tage dauern, bis eine Position aufgelöst ist. Diesen Tab während der gesamten Sitzung offen lassen.",
+                "cadenceHours": "Trades sind selten: In blinden Tests ergab sich etwa alle {days} Tage eine Chance, und es kann bis zu {hold} Stunden dauern, bis eine Position aufgelöst ist. Diesen Tab während der gesamten Sitzung offen lassen.",
                 "evidence": "Walk-forward-Ergebnis {return}% · maximaler Rückgang {drawdown}% · {trades} Trades. Hypothetisch und nach allen Gebühren; kein Gewinnversprechen.",
                 "eyebrow": "Alles auf einen Blick",
                 "getXor": "XOR holen",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR pro Order",
                 "reserve": "Gebührenreserve {amount} XOR",
                 "session": "Sitzung {hours} Std.",
+                "sessionDays": "{count}-tägige Sitzung",
                 "stepConfirm": "Häkchen setzen und starten. Der Bot kann Swaps nur innerhalb dieser Limits signieren.",
                 "stepPassword": "Wallet-Passwort eingeben",
                 "stepWallet": "Jeden Swap in der Wallet bestätigen",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window}-h-Änderung über {value}%",
                 "momentumBelow": "{window}-h-Änderung unter {value}%",
                 "sell": "Verkaufen, wenn"
+            },
+            "session": {
+                "label": "Sitzung",
+                "option": "{count} T."
             },
             "signal": {
                 "entry": "Kaufzone",

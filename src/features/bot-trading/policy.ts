@@ -66,15 +66,26 @@ export function assertSession(bot: BotDefinition, session: BotSession, status: A
   }
 }
 
+/** Longest standard session, and the longest reviewed campaign or extended session. */
+export const SESSION_MAX_MS = 24 * 60 * 60_000;
+export const EXTENDED_SESSION_MAX_MS = 14 * 24 * 60 * 60_000;
+
 /** Validate percentages, nonzero ceilings, token pair, and bounded session lifetime at consent. */
 export function validatePolicy(bot: BotDefinition): void {
+  // Extended sessions are reserved for reviewed rule strategies outside discovery campaigns.
+  if (
+    bot.extendedSession !== undefined &&
+    (bot.extendedSession !== true || bot.strategy.kind !== 'rules' || bot.discoveryCampaignId)
+  )
+    throw new Error('bots.errors.policy');
   if (
     !bot.account ||
     !bot.network ||
     bot.assetIn.address === bot.assetOut.address ||
     !Number.isSafeInteger(bot.policy.sessionDurationMs) ||
     bot.policy.sessionDurationMs < 60_000 ||
-    bot.policy.sessionDurationMs > (bot.discoveryCampaignId ? 14 * 24 : 24) * 60 * 60_000
+    bot.policy.sessionDurationMs >
+      (bot.discoveryCampaignId || bot.extendedSession ? EXTENDED_SESSION_MAX_MS : SESSION_MAX_MS)
   )
     throw new Error('bots.errors.policy');
   if (codec(bot.portfolio.xorDeficitCodec ?? '0') > 0n) throw new Error('bots.errors.balance');

@@ -63,6 +63,12 @@ function market(asset: BotAsset, status: QuantMarketResult['status'], returnPerc
               { timestamp: start + 50 * 86_400_000, value: '12', price: '0.00007' },
               { timestamp: start + 100 * 86_400_000, value: '14.349', price: '0.00008' },
             ],
+            cadence: {
+              episodes: 5,
+              daysPerEpisode: 20.2,
+              holdHours: { min: 26, max: 164 },
+              lastEntryAt: start + 91 * 86_400_000,
+            },
             fills: [
               {
                 timestamp: start + 86_400_000,
@@ -300,5 +306,59 @@ describe('QuantCommandCenter', () => {
     expect(wrapper.find('form').exists()).toBe(false);
     expect(wrapper.find('.autopilot-primary').exists()).toBe(false);
     wrapper.findAll('button').forEach((button) => expect(button.attributes('type')).toBe('button'));
+  });
+});
+
+describe('QuantCommandCenter long sessions', () => {
+  it('lets the user pick a session of up to 14 days and carries it into the review', async () => {
+    const wrapper = render();
+    expect(wrapper.get('[data-testid="quant-session-PSWAP-7"]').attributes('aria-checked')).toBe('true');
+    await wrapper.get('[data-testid="quant-session-PSWAP-14"]').trigger('click');
+    expect(wrapper.get('[data-testid="quant-session-DAI-14"]').attributes('aria-checked')).toBe('true');
+    await wrapper.get('[data-testid="quant-live-PSWAP"]').trigger('click');
+    await flushPromises();
+    const [payload] = wrapper.emitted('live')![0] as [QuantDeployPayload];
+    expect(payload.sessionDurationMs).toBe(14 * 86_400_000);
+    expect(payload.cadence).toMatchObject({ episodes: 5, daysPerEpisode: 20.2 });
+  });
+
+  it('sets expectations for rare, multi-day trades', () => {
+    const text = render().get('[data-testid="quant-cadence-PSWAP"]').text();
+    expect(text).toContain('bots.quant.cadence.every {"days":20.2}');
+    expect(text).toContain('bots.quant.cadence.holdDays {"min":1,"max":7}');
+    expect(text).toContain('bots.quant.cadence.last');
+  });
+
+  it('highlights a market whose live rule is in the buy zone', async () => {
+    const wrapper = render();
+    const banner = wrapper.get('[data-testid="quant-banner"]');
+    expect(banner.text()).toContain('bots.quant.banner.title {"symbol":"PSWAP"}');
+    expect(banner.text()).toContain('"value":"-18.4%"');
+    await wrapper.get('[data-testid="quant-banner-live"]').trigger('click');
+    await flushPromises();
+    expect(wrapper.emitted('live')).toHaveLength(1);
+    setLoop({ signals: ref({}) });
+    expect(render().find('[data-testid="quant-banner"]').exists()).toBe(false);
+  });
+
+  it('settles ambient motion after a quiet minute and wakes on interaction', async () => {
+    vi.useFakeTimers();
+    try {
+      const wrapper = render();
+      const root = wrapper.get('[data-testid="quant-center"]');
+      expect(root.classes()).not.toContain('quant--calm');
+      vi.advanceTimersByTime(60_000);
+      await wrapper.vm.$nextTick();
+      expect(root.classes()).toContain('quant--calm');
+      expect(root.attributes('style')).toContain('--quant-motion: paused');
+      expect(wrapper.getComponent({ name: 'QuantMesh' }).props('paused')).toBe(true);
+      document.dispatchEvent(new Event('pointerdown'));
+      await wrapper.vm.$nextTick();
+      expect(root.classes()).not.toContain('quant--calm');
+      expect(root.attributes('style')).toContain('--quant-motion: running');
+      wrapper.unmount();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

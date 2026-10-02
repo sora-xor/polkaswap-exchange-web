@@ -38,7 +38,8 @@ function market(status: QuantMarketResult['status'] = 'deploy'): QuantMarketResu
       drawdownPercent: '33.72',
       trades: 37,
       priceChangePercent: '60.04',
-      equity: [],
+      equity: [{ timestamp: Date.UTC(2026, 8, 19), value: '14.349', price: '0.00005' }],
+      cadence: { episodes: 5, daysPerEpisode: 20.2, holdHours: { min: 26, max: 164 }, lastEntryAt: 1 },
       fills: [
         {
           timestamp: Date.UTC(2026, 5, 11),
@@ -111,9 +112,17 @@ describe('quant deployment templates', () => {
     expect(bot.portfolio.initial[XOR.address]).toBe(toCodec('10', 18));
     expect(bot.policy.feeBudgetCodec).toBe(toCodec('2', 18));
     expect(bot.policy.maxTradeCodec[XOR.address]).toBe(toCodec('3', 18));
+    // Output sells are capped at the research capital valued at the latest archived close.
+    expect(bot.policy.maxTradeCodec[TOKEN.address]).toBe(toCodec('200000', 18));
     // The largest researched impact was 14.06%: rounded up plus one point of headroom.
     expect(bot.policy.maxPriceImpactPercent).toBe('16');
     expect(bot.policy.slippagePercent).toBe('0.5');
+  });
+
+  it('requires a priced walk-forward close to cap output sells', () => {
+    const unpriced = market();
+    unpriced.walkForward!.equity = [];
+    expect(() => createQuantBot(unpriced, ASSETS, 'x', 1)).toThrow('bots.errors.history');
   });
 
   it('refuses markets that are not deployable', () => {

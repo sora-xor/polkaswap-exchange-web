@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "Cena odbiega o {value} od średniej {window}-godzinnej i przekroczyła próg wyzwalający {threshold}. Właśnie wtedy bot kupuje.",
+                "title": "{symbol} jest w strefie kupna"
+            },
             "botName": "Zbieracz płynności {symbol}",
+            "cadence": {
+                "every": "Okazje średnio w {days}-dniowych odstępach",
+                "holdDays": "pozycje zamykane w ciągu {min}–{max} dni",
+                "holdHours": "pozycje zamykane w ciągu {min}–{max} godz.",
+                "last": "ostatnio {date}"
+            },
             "capacity": "Skala celowo ograniczona: budżet 10 XOR, rezerwa na opłaty 2 XOR i {amount} XOR na zlecenie, ponieważ te pule mają niską płynność.",
             "consent": {
                 "budget": "Budżet {amount} XOR",
+                "cadenceDays": "Transakcje są rzadkie: w ślepych testach okazje pojawiały się średnio w {days}-dniowych odstępach, a zamknięcie pozycji może potrwać do {hold} dni. Pozostaw tę kartę otwartą przez całą sesję.",
+                "cadenceHours": "Transakcje są rzadkie: w ślepych testach okazje pojawiały się średnio w {days}-dniowych odstępach, a zamknięcie pozycji może potrwać do {hold} godz. Pozostaw tę kartę otwartą przez całą sesję.",
                 "evidence": "Wynik walidacji kroczącej {return}% · maks. obsunięcie {drawdown}% · transakcje: {trades}. Wynik hipotetyczny, po wszystkich opłatach; to nie jest obietnica zysku.",
                 "eyebrow": "Szybki przegląd",
                 "getXor": "Zdobądź XOR",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR na zlecenie",
                 "reserve": "Rezerwa na opłaty {amount} XOR",
                 "session": "Sesja {hours} godz.",
+                "sessionDays": "{count}-dniowa sesja",
                 "stepConfirm": "Zaznacz pole i rozpocznij. Bot może podpisywać wymiany tylko w tych limitach.",
                 "stepPassword": "Wpisz hasło do portfela",
                 "stepWallet": "Zatwierdzaj każdą wymianę w portfelu",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "Zmiana {window}-godzinna powyżej {value}%",
                 "momentumBelow": "Zmiana {window}-godzinna poniżej {value}%",
                 "sell": "Sprzedaj, gdy"
+            },
+            "session": {
+                "label": "Sesja",
+                "option": "{count} d"
             },
             "signal": {
                 "entry": "Strefa kupna",

@@ -151,6 +151,11 @@ export interface BotDefinition {
   id: string;
   /** Fixed reviewed membership; individual Start/Edit cannot grant this bot trading authority. */
   discoveryCampaignId?: string;
+  /**
+   * Set only by a reviewed Quant Loop live start: its researched positions take days to unwind,
+   * so the user may grant a signing session of up to 14 days. The tab must stay open throughout.
+   */
+  extendedSession?: true;
   name: string;
   mode: BotMode;
   status: BotStatus;

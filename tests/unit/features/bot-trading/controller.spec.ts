@@ -1,3 +1,5 @@
+import { createQuantBot } from '@/features/bot-trading/quant-deploy';
+import { generateQuantCandidates, type QuantMarketResult } from '@/features/bot-trading/quant-loop';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createBotTradingController,
@@ -1307,6 +1309,120 @@ describe('browser bot orchestration', () => {
     return snapshot;
   }
   const studyIdentity = { genesisHash: 'genesis', denominator: '1' };
+
+  it('turns a Quant Loop template into a valid paper bot and live draft', async () => {
+    const h = make();
+    h.deps.market.mockResolvedValue({ timestamp: 1_000_000, close: '0.02' });
+    const candidate = generateQuantCandidates().find((item) => item.id === 'reversion:48/15/10:3')!;
+    const market = {
+      asset: { address: VAL.address, symbol: VAL.symbol, decimals: VAL.decimals },
+      status: 'deploy',
+      medianXorDepth: 29,
+      folds: [],
+      walkForward: {
+        startAt: 0,
+        endAt: 1,
+        returnPercent: '43.49',
+        drawdownPercent: '33.72',
+        trades: 37,
+        priceChangePercent: '60.04',
+        equity: [{ timestamp: 1, value: '10', price: '0.02' }],
+        fills: [],
+        cadence: { episodes: 1, daysPerEpisode: 20, holdHours: { min: 26, max: 164 }, lastEntryAt: 0 },
+      },
+      final: {
+        candidate,
+        robust: 1,
+        train: { returnPercent: '1', drawdownPercent: '1', trades: 1, maxImpactPercent: '14.06' },
+      },
+    } as QuantMarketResult;
+    const template = createQuantBot(market, [XOR, VAL], 'VAL liquidity harvester', 1);
+    const research = { ...liveStudy(), validation: 'walk-forward' as const, trainPercent: 50, folds: 4 };
+    await h.controller.createPaperBot(template, { research });
+    const paper = h.saved().at(-1)!;
+    expect(paper).toMatchObject({ mode: 'paper', status: 'idle', name: 'VAL liquidity harvester' });
+    expect(paper.strategy.rules).toEqual(candidate.rules);
+    expect(paper.policy.maxPriceImpactPercent).toBe('16');
+    const draft = await h.controller.prepareLiveBot(template, research, studyIdentity, {
+      sessionDurationMs: 7 * 86_400_000,
+    });
+    expect(draft).toMatchObject({ mode: 'live', extendedSession: true });
+    expect(draft.policy.sessionDurationMs).toBe(7 * 86_400_000);
+    expect(draft.policy.maxTradeCodec[VAL.address]).toBe(toCodec('500', VAL.decimals));
+    expect(h.live.authorize).not.toHaveBeenCalled();
+  });
+
+  describe('extended live sessions', () => {
+    const DAY = 86_400_000;
+    /** A reviewed walk-forward rule study, as the Quant Loop produces it. */
+    function walkForward() {
+      const template = createTestedPlaygroundBot({ ...PLAYGROUND_DEFAULT_SETTINGS, preset: 'dca' }, [XOR, VAL], 1);
+      template.strategy = {
+        ...template.strategy,
+        kind: 'rules',
+        threshold: '',
+        rules: {
+          version: 1,
+          entry: {
+            operator: 'all',
+            conditions: [{ kind: 'deviation', window: 48, direction: 'below', threshold: '-15' }],
+          },
+          exit: {
+            operator: 'all',
+            conditions: [{ kind: 'deviation', window: 48, direction: 'above', threshold: '10' }],
+          },
+        },
+      };
+      return {
+        template,
+        research: { ...liveStudy(), validation: 'walk-forward' as const, trainPercent: 50, folds: 4 },
+      };
+    }
+
+    it.each([1, 3, 7, 14])('grants a reviewed walk-forward rule study a %s-day session', async (days) => {
+      const h = make();
+      h.deps.market.mockResolvedValue({ timestamp: 1_000_000, close: '0.02' });
+      const { template, research } = walkForward();
+      const prepared = await h.controller.prepareLiveBot(template, research, studyIdentity, {
+        sessionDurationMs: days * DAY,
+      });
+      expect(prepared.policy.sessionDurationMs).toBe(days * DAY);
+      if (days > 1) expect(prepared.extendedSession).toBe(true);
+      else expect(prepared).not.toHaveProperty('extendedSession');
+      await h.controller.saveLiveBot(prepared);
+      expect(h.saved().at(-1)!.policy.sessionDurationMs).toBe(days * DAY);
+      expect(h.live.authorize).not.toHaveBeenCalled();
+    });
+
+    it('keeps the one-day default and rejects sessions outside the reviewed bounds', async () => {
+      const h = make();
+      h.deps.market.mockResolvedValue({ timestamp: 1_000_000, close: '0.02' });
+      const { template, research } = walkForward();
+      const standard = await h.controller.prepareLiveBot(template, research, studyIdentity);
+      expect(standard.policy.sessionDurationMs).toBe(DAY);
+      expect(standard).not.toHaveProperty('extendedSession');
+      for (const sessionDurationMs of [15 * DAY, 30 * 60_000, 1.5, Number.NaN]) {
+        await expect(
+          h.controller.prepareLiveBot(template, research, studyIdentity, { sessionDurationMs })
+        ).rejects.toThrow('bots.errors.policy');
+      }
+      // Longer than a day needs both a rule strategy and walk-forward evidence.
+      const threshold = createTestedPlaygroundBot(
+        { ...PLAYGROUND_DEFAULT_SETTINGS, preset: 'threshold' },
+        [XOR, VAL],
+        1
+      );
+      await expect(
+        h.controller.prepareLiveBot(threshold, research, studyIdentity, { sessionDurationMs: 7 * DAY })
+      ).rejects.toThrow('bots.errors.policy');
+      await expect(
+        h.controller.prepareLiveBot(template, { ...research, validation: 'holdout' }, studyIdentity, {
+          sessionDurationMs: 7 * DAY,
+        })
+      ).rejects.toThrow('bots.errors.policy');
+      expect(h.live.authorize).not.toHaveBeenCalled();
+    });
+  });
 
   it.each(['threshold', 'sma'] as const)(
     'prepares a precise unsaved %s live draft with original capital and no simulated authority',

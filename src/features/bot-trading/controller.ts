@@ -40,7 +40,14 @@ import {
 } from './discovery';
 import { createPlaygroundHistoryLoader } from './playground-history';
 import { compareResearchResult, createResearchBot, runResearch } from './research';
-import { assertQuote, pendingOrder, proposalInput, validatePolicy } from './policy';
+import {
+  assertQuote,
+  pendingOrder,
+  proposalInput,
+  validatePolicy,
+  SESSION_MAX_MS,
+  EXTENDED_SESSION_MAX_MS,
+} from './policy';
 import {
   createBotStorage,
   type BotStorage,
@@ -1906,9 +1913,20 @@ export function createBotTradingController(deps: ControllerDependencies) {
     prepareLiveBot: (
       template: BotDefinition,
       research: BotResearchSnapshot,
-      denomination: NonNullable<BotHistory['identity']>
+      denomination: NonNullable<BotHistory['identity']>,
+      options: { sessionDurationMs?: number } = {}
     ) =>
       guard(async () => {
+        // Longer than a day is reserved for walk-forward rule studies, whose positions take days to unwind.
+        const sessionDurationMs = options.sessionDurationMs ?? 24 * 60 * 60_000;
+        const extended = sessionDurationMs > SESSION_MAX_MS;
+        if (
+          !Number.isSafeInteger(sessionDurationMs) ||
+          sessionDurationMs < 60 * 60_000 ||
+          sessionDurationMs > EXTENDED_SESSION_MAX_MS ||
+          (extended && (template.strategy.kind !== 'rules' || research?.validation !== 'walk-forward'))
+        )
+          throw new Error('bots.errors.policy');
         if (!research || research.source === 'demo' || template.strategy.kind === 'ai')
           throw new Error('bots.errors.config');
         const bot = createPaperBotFromTemplate(template, assets.value, deps.now());
@@ -1950,7 +1968,8 @@ export function createBotTradingController(deps: ControllerDependencies) {
             bot.assetOut.decimals
           );
         }
-        bot.policy.sessionDurationMs = 24 * 60 * 60_000;
+        bot.policy.sessionDurationMs = sessionDurationMs;
+        if (extended) bot.extendedSession = true;
         bot.mode = 'live';
         bot.account = ready.wallet.address;
         bot.network = ready.node.genesisHash;

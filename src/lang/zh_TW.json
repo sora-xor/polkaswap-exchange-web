@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "價格相對 {window} 小時均值偏離 {value}，已越過 {threshold} 的觸發線。機器人正是在這時買入。",
+                "title": "{symbol} 已進入買入區間"
+            },
             "botName": "{symbol} 流動性捕獲機器人",
+            "cadence": {
+                "every": "約每 {days} 天出現一次機會",
+                "holdDays": "部位於 {min}–{max} 天內平倉",
+                "holdHours": "部位於 {min}–{max} 小時內平倉",
+                "last": "最近一次：{date}"
+            },
             "capacity": "規模刻意設限：預算 10 XOR、手續費儲備 2 XOR、每筆訂單 {amount} XOR，因為這些資金池深度較淺。",
             "consent": {
                 "budget": "預算 {amount} XOR",
+                "cadenceDays": "交易並不頻繁：盲測中約每 {days} 天出現一次機會，單一部位最長可能需要 {hold} 天才能平倉。請在整個工作階段期間保持此分頁開啟。",
+                "cadenceHours": "交易並不頻繁：盲測中約每 {days} 天出現一次機會，單一部位最長可能需要 {hold} 小時才能平倉。請在整個工作階段期間保持此分頁開啟。",
                 "evidence": "滾動驗證結果 {return}% · 最大回撤 {drawdown}% · {trades} 筆交易。皆為假設結果，已扣除全部費用；不構成獲利承諾。",
                 "eyebrow": "一覽核對",
                 "getXor": "取得 XOR",
@@ -1188,6 +1200,7 @@
                 "order": "每筆訂單 {amount} XOR",
                 "reserve": "手續費儲備 {amount} XOR",
                 "session": "{hours} 小時工作階段",
+                "sessionDays": "{count} 天工作階段",
                 "stepConfirm": "勾選同意後即可啟動。機器人只能在這些限額內簽署兌換。",
                 "stepPassword": "輸入錢包密碼",
                 "stepWallet": "在錢包中核准每筆兌換",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window} 小時漲跌幅高於 {value}%",
                 "momentumBelow": "{window} 小時漲跌幅低於 {value}%",
                 "sell": "符合以下條件時賣出"
+            },
+            "session": {
+                "label": "工作階段長度",
+                "option": "{count}天"
             },
             "signal": {
                 "entry": "買入區間",

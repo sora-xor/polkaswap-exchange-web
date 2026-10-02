@@ -66,6 +66,34 @@ The gauge shows the current distance from the rule's mean against the buy and se
 - **Paper trade** saves an idle paper bot through the existing research save path, keeping the same rules and provenance.
 - **Swap XOR → token** sets the Swap store pair and opens `#/swap/XOR/<token>`, so the user can trade manually.
 
+### Session length and expectations
+
+The strategies trade rarely and hold positions for days. In the reference run:
+
+- PSWAP had 5 trading episodes in 101 blind days, about one every 20 days. Positions stayed open 26–164 hours.
+- DAI had 2 episodes, with positions open 9–21 hours.
+
+Each live-ready card shows this cadence ("about one opportunity every N days · positions unwind in X–Y days · last on DATE"), and the consent summary repeats it.
+
+The card lets the user choose a live session of 1, 3, 7 or 14 days; the default is 7. Sessions longer than a day are reserved for reviewed walk-forward rule studies:
+
+- `prepareLiveBot(template, research, denomination, { sessionDurationMs })` rejects anything outside one hour to 14 days. It also rejects more than a day unless the strategy is `rules` and the research validation is `walk-forward`.
+- When an extended session is granted, the bot is marked with `extendedSession: true`.
+- `validatePolicy` allows up to 14 days only for marked bots outside discovery campaigns. Every other bot keeps the one-day cap.
+
+The tab must stay open for the whole session, as for every browser-run bot.
+
+When a live-ready market's exact rule is in its buy zone, a banner at the top of the command center offers **Go live** and **Swap** for that moment.
+
+### Long-running pages
+
+The page is built to stay open for a multi-day session:
+
+- **Calm mode.** Ambient motion (the iridescent rim, light sweep and drift, glass float, pulses) runs on arrival. After 60 seconds without pointer, keyboard, wheel, touch or scroll input, the page sets `--quant-motion: paused`. Every infinite animation reads that variable through `animation-play-state`, and the mesh stops scheduling animation frames. Any interaction wakes it.
+- **Live signals.** They refresh a few minutes after each completed hour and never overlap. A tab that was throttled in the background catches up when it becomes visible again.
+- **Cleanup.** Timers, observers and listeners are released on unmount.
+- **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries.
+
 Every bot is **capacity-limited** to the researched shape:
 
 - 10 XOR budget, including a 2 XOR fee reserve;

@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "Harga berjarak {value} dari rata-rata {window} jam, melewati pemicu {threshold}. Inilah saat bot membeli.",
+                "title": "{symbol} sedang berada di zona beli"
+            },
             "botName": "Bot pemanen likuiditas {symbol}",
+            "cadence": {
+                "every": "Sekitar satu peluang setiap {days} hari",
+                "holdDays": "posisi ditutup dalam {min}–{max} hari",
+                "holdHours": "posisi ditutup dalam {min}–{max} jam",
+                "last": "terakhir pada {date}"
+            },
             "capacity": "Kapasitas sengaja dibatasi: anggaran 10 XOR, cadangan biaya 2 XOR, dan {amount} XOR per pesanan, karena likuiditas pool ini tipis.",
             "consent": {
                 "budget": "Anggaran {amount} XOR",
+                "cadenceDays": "Transaksi jarang terjadi: dalam uji buta, ada sekitar satu peluang setiap {days} hari, dan menutup sebuah posisi bisa memakan waktu hingga {hold} hari. Biarkan tab ini terbuka sepanjang sesi.",
+                "cadenceHours": "Transaksi jarang terjadi: dalam uji buta, ada sekitar satu peluang setiap {days} hari, dan menutup sebuah posisi bisa memakan waktu hingga {hold} jam. Biarkan tab ini terbuka sepanjang sesi.",
                 "evidence": "Hasil uji walk-forward {return}% · penurunan maksimum {drawdown}% · {trades} transaksi. Bersifat hipotetis dan sudah dipotong semua biaya; bukan janji keuntungan.",
                 "eyebrow": "Tinjauan sekilas",
                 "getXor": "Dapatkan XOR",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR per pesanan",
                 "reserve": "Cadangan biaya {amount} XOR",
                 "session": "Sesi {hours} jam",
+                "sessionDays": "Sesi {count} hari",
                 "stepConfirm": "Centang kotak, lalu mulai. Bot hanya dapat menandatangani swap dalam batas ini.",
                 "stepPassword": "Masukkan kata sandi dompet",
                 "stepWallet": "Setujui setiap swap di dompet Anda",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "Perubahan {window} jam di atas {value}%",
                 "momentumBelow": "Perubahan {window} jam di bawah {value}%",
                 "sell": "Jual saat"
+            },
+            "session": {
+                "label": "Durasi sesi",
+                "option": "{count} hari"
             },
             "signal": {
                 "entry": "Zona beli",

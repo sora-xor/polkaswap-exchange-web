@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { assertPreparedContext } from '@/features/bot-trading/policy';
+import {
+  assertPreparedContext,
+  EXTENDED_SESSION_MAX_MS,
+  SESSION_MAX_MS,
+  validatePolicy,
+} from '@/features/bot-trading/policy';
 import type { AgentPreparedSwap } from '@/features/agent-trading/types';
 import { executionBot, executionStatus } from './execution-fixtures';
 
@@ -102,5 +107,56 @@ describe('last-boundary prepared swap context', () => {
     h.bot.network = h.status.node.genesisHash;
     h.bot.account = 'other-account';
     expect(() => assertPreparedContext(h.bot, h.prepared, h.status, 2000)).toThrow('bots.errors.intent');
+  });
+});
+
+describe('session lifetime policy', () => {
+  /** A rule bot with a valid live policy; only the session fields vary. */
+  function ruleBot() {
+    const bot = executionBot();
+    bot.strategy = {
+      ...bot.strategy,
+      kind: 'rules',
+      rules: {
+        version: 1,
+        entry: {
+          operator: 'all',
+          conditions: [{ kind: 'deviation', window: 48, direction: 'below', threshold: '-15' }],
+        },
+        exit: null,
+      },
+    };
+    return bot;
+  }
+
+  it('caps standard sessions at one day', () => {
+    const bot = ruleBot();
+    bot.policy.sessionDurationMs = SESSION_MAX_MS;
+    expect(() => validatePolicy(bot)).not.toThrow();
+    bot.policy.sessionDurationMs = SESSION_MAX_MS + 1;
+    expect(() => validatePolicy(bot)).toThrow('bots.errors.policy');
+  });
+
+  it('allows a reviewed extended rule session up to 14 days and no further', () => {
+    const bot = ruleBot();
+    bot.extendedSession = true;
+    bot.policy.sessionDurationMs = EXTENDED_SESSION_MAX_MS;
+    expect(() => validatePolicy(bot)).not.toThrow();
+    bot.policy.sessionDurationMs = EXTENDED_SESSION_MAX_MS + 1;
+    expect(() => validatePolicy(bot)).toThrow('bots.errors.policy');
+  });
+
+  it('rejects extended sessions on non-rule strategies, campaigns or malformed markers', () => {
+    const threshold = executionBot();
+    threshold.extendedSession = true;
+    threshold.policy.sessionDurationMs = 7 * 86_400_000;
+    expect(() => validatePolicy(threshold)).toThrow('bots.errors.policy');
+    const campaign = ruleBot();
+    campaign.extendedSession = true;
+    campaign.discoveryCampaignId = 'campaign';
+    expect(() => validatePolicy(campaign)).toThrow('bots.errors.policy');
+    const malformed = ruleBot();
+    (malformed as { extendedSession?: unknown }).extendedSession = 'yes';
+    expect(() => validatePolicy(malformed)).toThrow('bots.errors.policy');
   });
 });

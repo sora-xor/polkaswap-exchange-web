@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "Cena se od {window}hodinového průměru odchyluje o {value} a překročila spouštěcí práh {threshold}. Právě tehdy bot nakupuje.",
+                "title": "{symbol} je v nákupní zóně"
+            },
             "botName": "Sběrač likvidity {symbol}",
+            "cadence": {
+                "every": "Příležitosti zhruba v {days}denních odstupech",
+                "holdDays": "pozice se uzavírají během {min}–{max} dní",
+                "holdHours": "pozice se uzavírají během {min}–{max} h",
+                "last": "naposledy {date}"
+            },
             "capacity": "Kapacita je záměrně omezená: rozpočet 10 XOR, rezerva na poplatky 2 XOR a {amount} XOR na příkaz, protože tyto pooly mají nízkou likviditu.",
             "consent": {
                 "budget": "Rozpočet {amount} XOR",
+                "cadenceDays": "Obchody jsou vzácné: při testování naslepo se příležitosti objevovaly zhruba v {days}denních odstupech a uzavření pozice může trvat až do {hold} dní. Nechte tuto kartu otevřenou po celou dobu relace.",
+                "cadenceHours": "Obchody jsou vzácné: při testování naslepo se příležitosti objevovaly zhruba v {days}denních odstupech a uzavření pozice může trvat až {hold} h. Nechte tuto kartu otevřenou po celou dobu relace.",
                 "evidence": "Výsledek postupného testování {return}% · max. propad {drawdown}% · obchody: {trades}. Hypotetický výsledek po všech poplatcích; nejde o příslib zisku.",
                 "eyebrow": "Přehled na první pohled",
                 "getXor": "Získat XOR",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR na příkaz",
                 "reserve": "Rezerva na poplatky {amount} XOR",
                 "session": "Relace na {hours} h",
+                "sessionDays": "{count}denní relace",
                 "stepConfirm": "Zaškrtněte políčko a spusťte. Bot může podepisovat směny jen v rámci těchto limitů.",
                 "stepPassword": "Zadejte heslo peněženky",
                 "stepWallet": "Schvalujte každou směnu ve své peněžence",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window}hodinová změna nad {value}%",
                 "momentumBelow": "{window}hodinová změna pod {value}%",
                 "sell": "Prodat, když"
+            },
+            "session": {
+                "label": "Relace",
+                "option": "{count} d"
             },
             "signal": {
                 "entry": "Nákupní zóna",

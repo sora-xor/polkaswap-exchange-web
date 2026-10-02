@@ -3,13 +3,15 @@
  * contracts. Nothing here signs, saves or starts a bot: the page passes these values
  * to the established paper flow or to the live funding review and consent dialog.
  */
+import { FPNumber } from '@/lib/substrate/math';
 import { XOR } from '@/lib/substrate/sdk/assets/consts';
-import { requiredStrategyCandles } from './engine';
+import { toCodec } from './amounts';
+import { decimalRatio, parseBotPrice, requiredStrategyCandles } from './engine';
 import { PLAYGROUND_DEFAULT_SETTINGS } from './playground';
 import { QUANT_CAPITAL_XOR, QUANT_FEE_BUDGET_XOR, QUANT_FOLDS, QUANT_TRAIN_PERCENT } from './quant-loop';
 import { createResearchBot, type ResearchSettings } from './research';
 import { evaluateStrategyRules } from './strategy-rules';
-import type { QuantCandidate, QuantLoopResult, QuantMarketResult } from './quant-loop';
+import type { QuantCadence, QuantCandidate, QuantLoopResult, QuantMarketResult } from './quant-loop';
 import type { ResearchFeeSnapshot } from './research-fees';
 import type { BotAsset, BotCandle, BotDefinition, BotHistory, BotResearchSnapshot, StrategyConfig } from './types';
 
@@ -19,12 +21,19 @@ const HOUR = 3_600_000;
 /** Live impact ceilings never exceed this, even when the archive saw larger fills. */
 const MAX_IMPACT_CEILING = 20;
 
+/** Session lengths a user may grant a Quant Loop bot, in days. */
+export const QUANT_SESSION_DAYS = [1, 3, 7, 14] as const;
+
 /** Everything the page needs to open the existing paper or live review for a selection. */
 export interface QuantDeployPayload {
   bot: BotDefinition;
   settings: ResearchSettings;
   research: BotResearchSnapshot;
   denomination: NonNullable<BotHistory['identity']>;
+  /** User-chosen live session; the review rejects anything outside one hour to 14 days. */
+  sessionDurationMs: number;
+  /** Blind-test trading frequency and holding time, shown before consent. */
+  cadence: QuantCadence;
 }
 
 /** Live signal states shown on a market card. */
@@ -110,6 +119,14 @@ export function createQuantBot(
   );
   bot.name = name.slice(0, 80);
   bot.policy.maxPriceImpactPercent = quantImpactCeiling(market);
+  // Like a Lab study, cap output sells at the research capital valued at the latest archived close.
+  // Paper and live preparation replace this with the same cap at the current quote.
+  const close = market.walkForward?.equity.at(-1)?.price;
+  if (!close) throw new Error('bots.errors.history');
+  bot.policy.maxTradeCodec[bot.assetOut.address] = toCodec(
+    decimalRatio(new FPNumber(QUANT_CAPITAL_XOR, 36), parseBotPrice(close)).value.toFixed(bot.assetOut.decimals, 0),
+    bot.assetOut.decimals
+  );
   return bot;
 }
 

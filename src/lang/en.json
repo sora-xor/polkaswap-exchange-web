@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "Price is {value} from its {window}-hour mean, past the {threshold} trigger. This is when the bot buys.",
+                "title": "{symbol} is in the buy zone"
+            },
             "botName": "{symbol} liquidity harvester",
+            "cadence": {
+                "every": "About one opportunity every {days} days",
+                "holdDays": "positions unwind in {min}–{max} days",
+                "holdHours": "positions unwind in {min}–{max} hours",
+                "last": "last on {date}"
+            },
             "capacity": "Capacity-limited by design: 10 XOR budget, 2 XOR fee reserve and {amount} XOR per order, because these pools are thin.",
             "consent": {
                 "budget": "Budget {amount} XOR",
+                "cadenceDays": "Trades are rare: about one opportunity every {days} days in blind tests, and a position can take up to {hold} days to unwind. Keep this tab open for the whole session.",
+                "cadenceHours": "Trades are rare: about one opportunity every {days} days in blind tests, and a position can take up to {hold} hours to unwind. Keep this tab open for the whole session.",
                 "evidence": "Walk-forward result {return}% · max drawdown {drawdown}% · {trades} trades. Hypothetical and after all fees; not a promise of profit.",
                 "eyebrow": "One-glance review",
                 "getXor": "Get XOR",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR per order",
                 "reserve": "Fee reserve {amount} XOR",
                 "session": "{hours} h session",
+                "sessionDays": "{count}-day session",
                 "stepConfirm": "Tick the box and start. The bot can only sign swaps inside these limits.",
                 "stepPassword": "Enter your wallet password",
                 "stepWallet": "Approve each swap in your wallet",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window}h change above {value}%",
                 "momentumBelow": "{window}h change below {value}%",
                 "sell": "Sell when"
+            },
+            "session": {
+                "label": "Session",
+                "option": "{count}d"
             },
             "signal": {
                 "entry": "Buy zone",

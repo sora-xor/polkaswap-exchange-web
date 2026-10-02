@@ -8,6 +8,7 @@ import {
   generateQuantCandidates,
   parseQuantArchive,
   prefixSums,
+  quantCadence,
   quantSignalAt,
   replayQuantCandidate,
   runQuantLoop,
@@ -247,5 +248,45 @@ describe('real archive regression', () => {
       expect(market.walkForward!.startAt).toBeGreaterThan(result.archive.startAt);
     }
     expect(result.counts.killed + result.counts.robust).toBe(result.counts.candidates * result.counts.markets);
+  });
+});
+
+describe('quantCadence', () => {
+  const fill = (hour: number, side: 'buy' | 'sell') => ({
+    timestamp: START + hour * HOUR,
+    side,
+    input: '1',
+    output: '1',
+    fee: '0.1',
+    price: '1',
+    pnlPercent: '0.00',
+    impactPercent: '1.00',
+  });
+
+  it('counts episodes from flat entries and measures each holding span', () => {
+    const fills = [
+      fill(10, 'buy'),
+      fill(11, 'buy'),
+      fill(40, 'sell'),
+      fill(200, 'buy'),
+      fill(209, 'sell'),
+      fill(210, 'sell'),
+    ];
+    const cadence = quantCadence(fills, START, START + 20 * 24 * HOUR);
+    expect(cadence).toEqual({
+      episodes: 2,
+      daysPerEpisode: 10,
+      holdHours: { min: 10, max: 30 },
+      lastEntryAt: START + 200 * HOUR,
+    });
+  });
+
+  it('reports no cadence for markets that never traded', () => {
+    expect(quantCadence([], START, START + 10 * HOUR)).toEqual({
+      episodes: 0,
+      daysPerEpisode: null,
+      holdHours: null,
+      lastEntryAt: null,
+    });
   });
 });

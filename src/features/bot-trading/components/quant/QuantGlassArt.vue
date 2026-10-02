@@ -148,6 +148,7 @@ const url = (name: string) => `url(#${id(name)})`;
 @media (prefers-reduced-motion: no-preference) {
   .tile {
     animation: glass-float 7s ease-in-out infinite;
+    animation-play-state: var(--quant-motion, running);
   }
   .tile-2 {
     animation-delay: -2.3s;

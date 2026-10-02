@@ -1,5 +1,12 @@
 <template>
-  <section class="quant" data-testid="quant-center" :aria-busy="running" :aria-labelledby="titleId">
+  <section
+    class="quant"
+    :class="{ 'quant--calm': calm }"
+    :style="{ '--quant-motion': calm ? 'paused' : 'running' }"
+    data-testid="quant-center"
+    :aria-busy="running"
+    :aria-labelledby="titleId"
+  >
     <div class="quant-light" aria-hidden="true" />
 
     <header class="quant-hero quant-glass quant-iridescent quant-reveal" style="--reveal-order: 0">
@@ -70,6 +77,47 @@
     >
       <span :style="{ transform: `scaleX(${Math.max(0.02, progressFraction)})` }" />
     </div>
+
+    <section
+      v-if="hotMarket"
+      class="quant-banner quant-glass quant-iridescent quant-reveal"
+      style="--reveal-order: 1"
+      data-testid="quant-banner"
+      role="status"
+    >
+      <span class="quant-banner-dot" aria-hidden="true" />
+      <div class="quant-banner-copy">
+        <strong>{{ t('bots.quant.banner.title', { symbol: hotMarket.asset.symbol }) }}</strong>
+        <span v-if="gaugeFor(hotMarket)">
+          {{
+            t('bots.quant.banner.detail', {
+              value: gaugeFor(hotMarket)!.text,
+              window: gaugeFor(hotMarket)!.window,
+              threshold: `${gaugeFor(hotMarket)!.threshold}%`,
+            })
+          }}
+        </span>
+      </div>
+      <div class="quant-actions">
+        <button
+          type="button"
+          class="quant-primary"
+          data-testid="quant-banner-live"
+          :disabled="busy || !!preparing"
+          @click="prepare(hotMarket, 'live')"
+        >
+          {{ t('bots.quant.goLive') }}
+        </button>
+        <button
+          type="button"
+          class="quant-link"
+          data-testid="quant-banner-swap"
+          @click="emit('swap', hotMarket.asset.address)"
+        >
+          {{ t('bots.quant.swap', { symbol: hotMarket.asset.symbol }) }} ↗
+        </button>
+      </div>
+    </section>
 
     <section
       class="quant-panel quant-glass quant-radar quant-reveal"
@@ -160,6 +208,27 @@
             <p class="quant-note">
               {{ t('bots.quant.capacity', { amount: market.final?.candidate.amount ?? '2' }) }}
             </p>
+            <p
+              v-if="market.walkForward?.cadence?.daysPerEpisode"
+              class="quant-note quant-cadence"
+              :data-testid="`quant-cadence-${market.asset.symbol}`"
+            >
+              {{ cadenceText(market) }}
+            </p>
+            <div class="quant-session" role="radiogroup" :aria-label="t('bots.quant.session.label')">
+              <span class="quant-session-label">{{ t('bots.quant.session.label') }}</span>
+              <button
+                v-for="days in QUANT_SESSION_DAYS"
+                :key="days"
+                type="button"
+                role="radio"
+                :aria-checked="sessionDays === days"
+                :data-testid="`quant-session-${market.asset.symbol}-${days}`"
+                @click="sessionDays = days"
+              >
+                {{ t('bots.quant.session.option', { count: days }) }}
+              </button>
+            </div>
             <p v-if="prepareError && prepareError.symbol === market.asset.symbol" class="quant-error" role="alert">
               {{ t(prepareError.message) }}
             </p>
@@ -240,6 +309,7 @@
           <span>{{ meshSummary }}</span>
         </header>
         <QuantMesh
+          :paused="calm"
           :nodes="result?.mesh ?? []"
           :families="families"
           :running="running"
@@ -332,6 +402,7 @@ import {
   quantDenomination,
   quantResearchSettings,
   quantResearchSnapshot,
+  QUANT_SESSION_DAYS,
   type QuantDeployPayload,
 } from '@/features/bot-trading/quant-deploy';
 import { useCountUp } from '@/features/bot-trading/useCountUp';
@@ -375,6 +446,35 @@ const prepareError = ref<{ symbol: string; message: string } | null>(null);
 const selectedAddress = ref('');
 const capital = QUANT_CAPITAL_XOR;
 const candidateCount = generateQuantCandidates().length;
+/** Live session length chosen before review; the default covers the typical PSWAP unwind. */
+const sessionDays = ref<(typeof QUANT_SESSION_DAYS)[number]>(7);
+
+/**
+ * Ambient motion is for arrival. After a minute without interaction the page settles:
+ * infinite CSS animations pause and the mesh stops drawing frames, so a tab left open
+ * for a multi-day bot session costs no continuous rendering. Any interaction wakes it.
+ */
+const IDLE_MS = 60_000;
+const calm = ref(false);
+let idleTimer: ReturnType<typeof setTimeout> | undefined;
+let lastWake = 0;
+const WAKE_EVENTS = ['pointermove', 'pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'] as const;
+function wake(): void {
+  const now = Date.now();
+  if (!calm.value && now - lastWake < 500) return;
+  lastWake = now;
+  calm.value = false;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => (calm.value = true), IDLE_MS);
+}
+onMounted(() => {
+  wake();
+  WAKE_EVENTS.forEach((type) => document.addEventListener(type, wake, { passive: true, capture: true }));
+});
+onBeforeUnmount(() => {
+  clearTimeout(idleTimer);
+  WAKE_EVENTS.forEach((type) => document.removeEventListener(type, wake, { capture: true }));
+});
 
 /** The app language as an Intl locale; unsupported or custom tags fall back to the browser default. */
 const locale = computed(() => {
@@ -576,6 +676,23 @@ const latticeSummary = computed(() => {
 });
 
 const signalFor = (market: QuantMarketResult) => loop.signals.value[market.asset.symbol];
+/** The strongest live-ready market whose exact rule is in its buy zone right now. */
+const hotMarket = computed(() => deployMarkets.value.find((market) => signalFor(market)?.state === 'entry') ?? null);
+/** Frequency and holding time from the blind folds, so users expect rare, multi-day trades. */
+function cadenceText(market: QuantMarketResult): string {
+  const cadence = market.walkForward?.cadence;
+  if (!cadence?.daysPerEpisode || !cadence.holdHours) return '';
+  const hold =
+    cadence.holdHours.max >= 48
+      ? t('bots.quant.cadence.holdDays', {
+          min: Math.max(1, Math.round(cadence.holdHours.min / 24)),
+          max: Math.ceil(cadence.holdHours.max / 24),
+        })
+      : t('bots.quant.cadence.holdHours', { min: cadence.holdHours.min, max: cadence.holdHours.max });
+  const parts = [t('bots.quant.cadence.every', { days: cadence.daysPerEpisode }), hold];
+  if (cadence.lastEntryAt) parts.push(t('bots.quant.cadence.last', { date: formatDate(cadence.lastEntryAt) }));
+  return parts.join(' · ');
+}
 function signalSource(market: QuantMarketResult): string {
   const signal = signalFor(market);
   if (!signal?.observedAt) return '';
@@ -640,6 +757,8 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
       settings: quantResearchSettings(market, fees),
       research: quantResearchSnapshot(current, market, fees, Date.now()),
       denomination: quantDenomination(current),
+      sessionDurationMs: sessionDays.value * 86_400_000,
+      cadence: market.walkForward!.cadence,
     };
     if (mode === 'live') emit('live', payload);
     else emit('paper', payload);
@@ -824,6 +943,7 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   .quant-pulse.fees,
   .quant-pulse.running {
     animation: quant-pulse 1.4s ease-in-out infinite;
+    animation-play-state: var(--quant-motion, running);
   }
 }
 @keyframes quant-pulse {
@@ -1269,6 +1389,95 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   color: var(--q-muted);
 }
 
+.quant-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+  padding: 18px 22px;
+  border-radius: 24px;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--q-pink) 18%, var(--q-surface)),
+    color-mix(in srgb, var(--q-violet) 10%, var(--q-surface))
+  );
+  box-shadow:
+    var(--q-raised),
+    0 0 36px color-mix(in srgb, var(--q-pink) 28%, transparent);
+  .quant-actions {
+    margin-inline-start: auto;
+  }
+}
+.quant-banner-dot {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--q-pink);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--q-pink) 22%, transparent);
+}
+.quant-banner-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 260px;
+  strong {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  span {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--q-muted);
+  }
+}
+.quant-cadence {
+  color: var(--q-ink);
+  font-weight: 600;
+}
+.quant-session {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--q-recess);
+  box-shadow: var(--q-inset);
+  button {
+    min-height: 32px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--q-muted);
+    background: transparent;
+    cursor: pointer;
+    &[aria-checked='true'] {
+      color: var(--q-ink);
+      background: var(--q-surface);
+      box-shadow: var(--q-raised);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--s-color-focus-ring, #ab0555);
+      outline-offset: 2px;
+    }
+  }
+}
+.quant-session-label {
+  padding-inline: 8px 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--q-muted);
+}
+
 /* ---------------------------------------------------------------------------------
  * Motion: entrance choreography, living light and live research feedback.
  * Every animation is opt-in for users without a reduced-motion preference.
@@ -1385,25 +1594,34 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .quant-banner-dot {
+    animation: quant-blink 1.2s ease-in-out infinite;
+    animation-play-state: var(--quant-motion, running);
+  }
   .quant-reveal {
     animation: quant-reveal 820ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     animation-delay: calc(var(--reveal-order, 0) * 110ms);
   }
   .quant-iridescent::after {
     animation: quant-rim 14s linear infinite;
+    animation-play-state: var(--quant-motion, running);
   }
   .quant-hero::before {
     animation: quant-sweep 7.5s cubic-bezier(0.45, 0, 0.2, 1) 0.6s infinite;
+    animation-play-state: var(--quant-motion, running);
   }
   .quant-light {
     animation: quant-drift 22s ease-in-out infinite alternate;
+    animation-play-state: var(--quant-motion, running);
   }
   .quant-live-dot {
     animation: quant-blink 1.6s ease-in-out infinite;
+    animation-play-state: var(--quant-motion, running);
   }
   .quant-gradient {
     background-size: 220% 100%;
     animation: quant-shine 6s ease-in-out infinite;
+    animation-play-state: var(--quant-motion, running);
   }
   .quant-pipeline.running .quant-stage.active::after {
     content: '';
@@ -1418,6 +1636,7 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     );
     background-size: 220% 100%;
     animation: quant-scan 1.3s linear infinite;
+    animation-play-state: var(--quant-motion, running);
     pointer-events: none;
   }
   .quant-check {
@@ -1425,10 +1644,12 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   }
   .quant-skeleton span {
     animation: quant-scan 1.6s linear infinite;
+    animation-play-state: var(--quant-motion, running);
   }
   .quant-market--deploy .quant-badge.deploy {
     background-size: 200% 100%;
     animation: quant-shine 3.2s ease-in-out infinite;
+    animation-play-state: var(--quant-motion, running);
   }
 }
 @keyframes quant-reveal {

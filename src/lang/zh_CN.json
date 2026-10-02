@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "价格相对 {window} 小时均值偏离 {value}，已越过 {threshold} 的触发线。机器人正是在这时买入。",
+                "title": "{symbol} 已进入买入区间"
+            },
             "botName": "{symbol} 流动性捕获机器人",
+            "cadence": {
+                "every": "约每 {days} 天出现一次机会",
+                "holdDays": "持仓 {min}–{max} 天内平仓",
+                "holdHours": "持仓 {min}–{max} 小时内平仓",
+                "last": "最近一次：{date}"
+            },
             "capacity": "规模有意设限：预算 10 XOR、手续费储备 2 XOR、每笔订单 {amount} XOR，因为这些资金池深度较浅。",
             "consent": {
                 "budget": "预算 {amount} XOR",
+                "cadenceDays": "交易并不频繁：盲测中约每 {days} 天出现一次机会，一笔持仓最长可能需要 {hold} 天才能平仓。请在整个会话期间保持此标签页打开。",
+                "cadenceHours": "交易并不频繁：盲测中约每 {days} 天出现一次机会，一笔持仓最长可能需要 {hold} 小时才能平仓。请在整个会话期间保持此标签页打开。",
                 "evidence": "滚动验证结果 {return}% · 最大回撤 {drawdown}% · {trades} 笔交易。均为假设结果，已扣除全部费用；不构成盈利承诺。",
                 "eyebrow": "一览核对",
                 "getXor": "获取 XOR",
@@ -1188,6 +1200,7 @@
                 "order": "每笔订单 {amount} XOR",
                 "reserve": "手续费储备 {amount} XOR",
                 "session": "{hours} 小时会话",
+                "sessionDays": "{count} 天会话",
                 "stepConfirm": "勾选同意后即可启动。机器人只能在这些限额内签署兑换。",
                 "stepPassword": "输入钱包密码",
                 "stepWallet": "在钱包中批准每笔兑换",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window} 小时涨跌幅高于 {value}%",
                 "momentumBelow": "{window} 小时涨跌幅低于 {value}%",
                 "sell": "满足以下条件时卖出"
+            },
+            "session": {
+                "label": "会话时长",
+                "option": "{count}天"
             },
             "signal": {
                 "entry": "买入区间",

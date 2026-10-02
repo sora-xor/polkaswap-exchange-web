@@ -870,9 +870,15 @@
                   }}
                 </li>
                 <li>{{ t('bots.quant.consent.impact', { value: reviewBot.policy.maxPriceImpactPercent }) }}</li>
-                <li>
+                <li data-testid="quant-consent-session">
                   {{
-                    t('bots.quant.consent.session', { hours: Math.round(reviewBot.policy.sessionDurationMs / 3600000) })
+                    reviewBot.policy.sessionDurationMs >= 86400000
+                      ? t('bots.quant.consent.sessionDays', {
+                          count: Math.round(reviewBot.policy.sessionDurationMs / 86400000),
+                        })
+                      : t('bots.quant.consent.session', {
+                          hours: Math.round(reviewBot.policy.sessionDurationMs / 3600000),
+                        })
                   }}
                 </li>
               </ul>
@@ -883,6 +889,23 @@
                     drawdown: startIntent.research.drawdownPercent,
                     trades: startIntent.research.trades,
                   })
+                }}
+              </p>
+              <p
+                v-if="startIntent.quant.cadence?.daysPerEpisode && startIntent.quant.cadence.holdHours"
+                class="quant-consent-evidence"
+                data-testid="quant-consent-cadence"
+              >
+                {{
+                  startIntent.quant.cadence.holdHours.max >= 48
+                    ? t('bots.quant.consent.cadenceDays', {
+                        days: startIntent.quant.cadence.daysPerEpisode,
+                        hold: Math.ceil(startIntent.quant.cadence.holdHours.max / 24),
+                      })
+                    : t('bots.quant.consent.cadenceHours', {
+                        days: startIntent.quant.cadence.daysPerEpisode,
+                        hold: startIntent.quant.cadence.holdHours.max,
+                      })
                 }}
               </p>
               <ol class="quant-consent-steps">
@@ -1485,7 +1508,9 @@ interface ResearchStartIntent {
   identity?: string;
   savedId?: string;
   /** Present for Quant Loop selections; drives the one-glance consent summary. */
-  quant?: { symbol: string };
+  quant?: { symbol: string; cadence: QuantDeployPayload['cadence'] };
+  /** Reviewed session length; omitted keeps the standard one-day research start. */
+  sessionDurationMs?: number;
 }
 const startIntent = ref<ResearchStartIntent | null>(null);
 const startPreparing = ref(false);
@@ -1531,7 +1556,8 @@ async function startFromResearch(
   bot: BotDefinition,
   _settings: PlaygroundSettings,
   research?: BotResearchSnapshot,
-  denomination?: NonNullable<BotHistory['identity']>
+  denomination?: NonNullable<BotHistory['identity']>,
+  sessionDurationMs?: number
 ): Promise<void> {
   if (busy.value || startIntent.value || startSubmitting.value) return;
   if (!research || !denomination) {
@@ -1544,6 +1570,7 @@ async function startFromResearch(
     research: JSON.parse(JSON.stringify(research)) as BotResearchSnapshot,
     network: readNetworkIdentity(),
     denomination: { ...denomination },
+    ...(sessionDurationMs !== undefined ? { sessionDurationMs } : {}),
   };
   if (walletConnected.value) await prepareResearchStart(version);
   else if (!(await run(connectSoraWallet)) && version === startIntentVersion) cancelStartIntent();
@@ -1552,9 +1579,15 @@ async function startFromResearch(
 /** A Quant Loop selection enters the same wallet, funding and consent review as any researched bot. */
 async function startQuant(payload: QuantDeployPayload): Promise<void> {
   // The intent is created synchronously, before any wallet or review await.
-  const pending = startFromResearch(payload.bot, payload.settings, payload.research, payload.denomination);
+  const pending = startFromResearch(
+    payload.bot,
+    payload.settings,
+    payload.research,
+    payload.denomination,
+    payload.sessionDurationMs
+  );
   if (startIntent.value && startIntent.value.template.assetOut.address === payload.bot.assetOut.address)
-    startIntent.value.quant = { symbol: payload.bot.assetOut.symbol };
+    startIntent.value.quant = { symbol: payload.bot.assetOut.symbol, cadence: payload.cadence };
   await pending;
 }
 /** Paper trading keeps the selected rules and research provenance without any signing authority. */
@@ -1590,7 +1623,11 @@ async function prepareResearchStart(version = startIntentVersion): Promise<void>
   startPreparing.value = true;
   const identity = readConnectionIdentity();
   await run(async () => {
-    const draft = await prepareLiveBot(intent.template, intent.research, intent.denomination);
+    const draft = await (intent.sessionDurationMs === undefined
+      ? prepareLiveBot(intent.template, intent.research, intent.denomination)
+      : prepareLiveBot(intent.template, intent.research, intent.denomination, {
+          sessionDurationMs: intent.sessionDurationMs,
+        }));
     if (version !== startIntentVersion || identity !== readConnectionIdentity()) {
       discardLiveReview(draft.id);
       return;

@@ -175,6 +175,7 @@ function arc(from: number, to: number): string {
 @media (prefers-reduced-motion: no-preference) {
   .gauge--entry .gauge-knob-glow {
     animation: gauge-pulse 1.8s ease-in-out infinite;
+    animation-play-state: var(--quant-motion, running);
     transform-box: fill-box;
     transform-origin: center;
   }

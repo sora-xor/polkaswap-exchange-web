@@ -1177,10 +1177,22 @@
             "openai": "𒌋𒉺𒂊𒈾𒀀𒄿"
         },
         "quant": {
+            "banner": {
+                "detail": "𒃲 𒌷𒊭 {value} 𒌷𒊭 𒌷𒊭 {window}-𒀭𒆠 𒉌𒁺, 𒅆𒀀 𒉌𒁺 {threshold} 𒌷𒊭. 𒌷𒊭 𒌷𒊭 𒅆𒀀 𒉌𒁺 𒉌𒁺 𒊹𒌷.",
+                "title": "{symbol} 𒌷𒊭 𒉌𒁺 𒉌𒁺 𒌷𒊭 𒅆𒀀"
+            },
             "botName": "{symbol} 𒀀 𒅎 𒅆𒀀",
+            "cadence": {
+                "every": "𒉌𒁺 𒅆𒀀 𒉌𒁺 𒊹𒌷 {days} 𒊹𒌷",
+                "holdDays": "𒅆𒀀 𒁕𒀭 𒉌𒁺 {min}–{max} 𒊹𒌷",
+                "holdHours": "𒅆𒀀 𒁕𒀭 𒉌𒁺 {min}–{max} 𒊹𒌷",
+                "last": "𒅆𒀀 𒉌𒁺 {date}"
+            },
             "capacity": "𒊹𒌷 𒊹𒌷 𒅆𒀀: 10 𒁕𒀭 𒉌𒁺, 2 𒁕𒀭 𒈠𒄦 𒀭𒆠 𒊹𒌷 {amount} 𒁕𒀭 𒁕𒀭 𒀭𒆠, 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒉌𒁺.",
             "consent": {
                 "budget": "𒉌𒁺 {amount} 𒁕𒀭",
+                "cadenceDays": "𒁕𒀭 𒅆𒀀 𒅆𒀀: 𒉌𒁺 𒅆𒀀 𒉌𒁺 𒊹𒌷 {days} 𒊹𒌷 𒉌𒁺 𒊹𒌷 𒊹𒌷, 𒊹𒌷 𒊹𒌷 𒆳 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒁕𒀭 {hold} 𒊹𒌷 𒁕𒀭 𒁕𒀭. 𒊹𒌷 𒌷𒊭 𒉌𒁺 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒀭𒆠.",
+                "cadenceHours": "𒁕𒀭 𒅆𒀀 𒅆𒀀: 𒉌𒁺 𒅆𒀀 𒉌𒁺 𒊹𒌷 {days} 𒊹𒌷 𒉌𒁺 𒊹𒌷 𒊹𒌷, 𒊹𒌷 𒊹𒌷 𒆳 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒁕𒀭 {hold} 𒊹𒌷 𒁕𒀭 𒁕𒀭. 𒊹𒌷 𒌷𒊭 𒉌𒁺 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒀭𒆠.",
                 "evidence": "𒉌𒁺 𒊹𒌷 {return}% · 𒃲 𒌷𒊭 {drawdown}% · {trades} 𒁕𒀭. 𒌷𒊭 𒊹𒌷 𒀭𒆠 𒀀𒇉 𒊹𒌷; 𒉌𒁺 𒊹𒌷 𒊹𒌷 𒁕𒀭 𒌷𒊭.",
                 "eyebrow": "𒉌𒁺 𒌷𒊭",
                 "getXor": "𒅆𒀀 𒁕𒀭",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} 𒁕𒀭 𒁕𒀭 𒀭𒆠",
                 "reserve": "𒈠𒄦 𒀭𒆠 {amount} 𒁕𒀭",
                 "session": "{hours} 𒅆𒀀 𒀭𒆠",
+                "sessionDays": "{count}-𒌷𒊭 𒀭𒆠",
                 "stepConfirm": "𒉌𒁺 𒉌𒁺 𒁕𒀭 𒊹𒌷 𒅆𒀀. 𒉌𒁺 𒉌𒁺 𒅆𒀀 𒌷𒊭 𒁹 𒌷𒊭 𒅆𒀀 𒉌𒁺 𒀭𒆠.",
                 "stepPassword": "𒀭𒆠 𒁕𒀭 𒃻𒋃 𒁕𒀭",
                 "stepWallet": "𒉌𒁺 𒉌𒁺 𒁮𒃲 𒉌𒁺 𒁕𒀭 𒃻𒋃",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window}𒅆𒀀 𒅆𒀀 𒉌𒁺 {value}%",
                 "momentumBelow": "{window}𒅆𒀀 𒅆𒀀 𒉌𒁺 {value}%",
                 "sell": "𒀭𒆠 𒅆𒀀"
+            },
+            "session": {
+                "label": "𒀭𒆠",
+                "option": "{count}𒌷𒊭"
             },
             "signal": {
                 "entry": "𒌷𒊭 𒅆𒀀",

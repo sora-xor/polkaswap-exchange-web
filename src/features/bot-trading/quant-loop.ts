@@ -139,6 +139,37 @@ export interface QuantFold {
   priceChangePercent: string;
 }
 
+/**
+ * A trading episode starts with a buy while flat (after a sell or at the start) and ends
+ * with the last fill before the next episode. Durations are whole hours between fills.
+ */
+export interface QuantCadence {
+  episodes: number;
+  /** Blind days per episode; null when no episode occurred. */
+  daysPerEpisode: number | null;
+  holdHours: { min: number; max: number } | null;
+  lastEntryAt: number | null;
+}
+
+/** Summarise trading episodes from chronological fills over a span of blind days. */
+export function quantCadence(fills: readonly QuantFill[], startAt: number, endAt: number): QuantCadence {
+  const episodes: { start: number; end: number }[] = [];
+  let previous: QuantFill['side'] = 'sell';
+  for (const fill of fills) {
+    if (fill.side === 'buy' && previous === 'sell') episodes.push({ start: fill.timestamp, end: fill.timestamp });
+    else if (episodes.length) episodes[episodes.length - 1].end = fill.timestamp;
+    previous = fill.side;
+  }
+  const days = Math.max(0, endAt - startAt) / 86_400_000;
+  const holds = episodes.map((episode) => Math.round((episode.end - episode.start) / 3_600_000));
+  return {
+    episodes: episodes.length,
+    daysPerEpisode: episodes.length ? Math.round((days / episodes.length) * 10) / 10 : null,
+    holdHours: holds.length ? { min: Math.min(...holds), max: Math.max(...holds) } : null,
+    lastEntryAt: episodes.length ? episodes[episodes.length - 1].start : null,
+  };
+}
+
 export interface QuantMarketResult {
   asset: BotAsset;
   status: 'deploy' | 'watch' | 'thin';
@@ -154,6 +185,8 @@ export interface QuantMarketResult {
     priceChangePercent: string;
     equity: QuantEquityPoint[];
     fills: QuantFill[];
+    /** How often the strategy traded and how long positions stayed open, from the blind folds. */
+    cadence: QuantCadence;
   } | null;
   /** Latest selection over all hours; deployable only when status is `deploy`. */
   final: {
@@ -1050,6 +1083,7 @@ export async function runQuantLoop(
         price: natural(market.closeUnits[(point.timestamp - firstHour) / 3_600_000], 36),
       })),
       fills,
+      cadence: quantCadence(fills, market.timestamps[initial], market.timestamps[hours - 1]),
     };
     let final: QuantMarketResult['final'] = null;
     if (latest.candidate) {

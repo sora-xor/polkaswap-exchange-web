@@ -154,3 +154,43 @@ describe('useQuantLoop', () => {
     expect(api().result.value).toBeNull();
   });
 });
+
+describe('useQuantLoop live signal refresh', () => {
+  it('re-evaluates after each completed hour without overlapping requests, and stops on unmount', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    try {
+      vi.setSystemTime(START + 1700 * HOUR + 10 * 60_000);
+      let release: (() => void) | undefined;
+      const loadHistory = vi.fn(
+        () =>
+          new Promise<never>((_resolve, reject) => {
+            release = () => reject(new Error('bots.errors.history'));
+          })
+      );
+      const { wrapper, api } = harness({ loadHistory, now: () => Date.now() });
+      const started = api().start();
+      await vi.waitFor(() => expect(loadHistory).toHaveBeenCalledTimes(1));
+      release!();
+      await started;
+      expect(api().signals.value.PSWAP.source).toBe('archive');
+      // A second call while a refresh is in flight shares it instead of stacking requests.
+      const first = api().refreshSignals();
+      const second = api().refreshSignals();
+      expect(second).toBe(first);
+      release!();
+      await first;
+      const calls = loadHistory.mock.calls.length;
+      // The next refresh runs after the next completed hour plus the indexer delay.
+      await vi.advanceTimersByTimeAsync(55 * 60_000);
+      await vi.waitFor(() => expect(loadHistory.mock.calls.length).toBeGreaterThan(calls));
+      release!();
+      await vi.advanceTimersByTimeAsync(0);
+      wrapper.unmount();
+      const afterUnmount = loadHistory.mock.calls.length;
+      await vi.advanceTimersByTimeAsync(3 * HOUR);
+      expect(loadHistory.mock.calls.length).toBe(afterUnmount);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});

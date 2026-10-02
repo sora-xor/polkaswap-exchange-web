@@ -1177,10 +1177,22 @@
             "openai": "falom"
         },
         "quant": {
+            "banner": {
+                "detail": "praes raonem {value} raonem raonem {window}-stakaon gohed, falom gohed {threshold} raonem. raonem raonem falom gohed gohed wakaot.",
+                "title": "{symbol} raonem gohed gohed raonem falom"
+            },
             "botName": "{symbol} likwiditi falom",
+            "cadence": {
+                "every": "gohed falom gohed wakaot {days} wakaot",
+                "holdDays": "falom luksavve gohed {min}–{max} wakaot",
+                "holdHours": "falom luksavve gohed {min}–{max} wakaot",
+                "last": "falom gohed {date}"
+            },
             "capacity": "wakaot wakaot falom: 10 luksavve gohed, 2 luksavve fi stakaon wakaot {amount} luksavve luksavve stakaon, falom gohed wakaot falom gohed.",
             "consent": {
                 "budget": "gohed {amount} luksavve",
+                "cadenceDays": "luksavve falom falom: gohed falom gohed wakaot {days} wakaot gohed wakaot wakaot, wakaot wakaot ples falom gohed wakaot luksavve {hold} wakaot luksavve luksavve. wakaot raonem gohed falom luksavve gohed gohed stakaon.",
+                "cadenceHours": "luksavve falom falom: gohed falom gohed wakaot {days} wakaot gohed wakaot wakaot, wakaot wakaot ples falom gohed wakaot luksavve {hold} wakaot luksavve luksavve. wakaot raonem gohed falom luksavve gohed gohed stakaon.",
                 "evidence": "gohed wakaot {return}% · maks raonem {drawdown}% · {trades} luksavve. raonem wakaot stakaon evri wakaot; gohed wakaot wakaot luksavve raonem.",
                 "eyebrow": "gohed raonem",
                 "getXor": "falom luksavve",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} luksavve luksavve stakaon",
                 "reserve": "fi stakaon {amount} luksavve",
                 "session": "{hours} falom stakaon",
+                "sessionDays": "{count}-raonem stakaon",
                 "stepConfirm": "gohed gohed luksavve wakaot falom. gohed gohed falom raonem saen raonem falom gohed stakaon.",
                 "stepPassword": "stakaon luksavve walet luksavve",
                 "stepWallet": "gohed gohed senis gohed luksavve walet",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window}falom falom gohed {value}%",
                 "momentumBelow": "{window}falom falom gohed {value}%",
                 "sell": "stakaon falom"
+            },
+            "session": {
+                "label": "stakaon",
+                "option": "{count}raonem"
             },
             "signal": {
                 "entry": "raonem falom",

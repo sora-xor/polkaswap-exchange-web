@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "El precio está a {value} de su media de {window} horas, más allá del umbral de activación de {threshold}. Este es el momento en que el bot compra.",
+                "title": "{symbol} está en la zona de compra"
+            },
             "botName": "Recolector de liquidez {symbol}",
+            "cadence": {
+                "every": "Aproximadamente una oportunidad cada {days} días",
+                "holdDays": "las posiciones se deshacen en {min}–{max} días",
+                "holdHours": "las posiciones se deshacen en {min}–{max} horas",
+                "last": "la más reciente, el {date}"
+            },
             "capacity": "Capacidad limitada a propósito: presupuesto de 10 XOR, reserva de 2 XOR para comisiones y {amount} XOR por orden, porque estos pools tienen poca liquidez.",
             "consent": {
                 "budget": "Presupuesto de {amount} XOR",
+                "cadenceDays": "Las operaciones son poco frecuentes: en las pruebas a ciegas hubo aproximadamente una oportunidad cada {days} días, y deshacer una posición puede llevar hasta {hold} días. Mantén esta pestaña abierta durante toda la sesión.",
+                "cadenceHours": "Las operaciones son poco frecuentes: en las pruebas a ciegas hubo aproximadamente una oportunidad cada {days} días, y deshacer una posición puede llevar hasta {hold} horas. Mantén esta pestaña abierta durante toda la sesión.",
                 "evidence": "Resultado en validación progresiva {return}% · caída máxima {drawdown}% · {trades} operaciones. Hipotético y después de todas las comisiones; no es una promesa de beneficios.",
                 "eyebrow": "Resumen de un vistazo",
                 "getXor": "Obtener XOR",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR por orden",
                 "reserve": "Reserva para comisiones de {amount} XOR",
                 "session": "Sesión de {hours} h",
+                "sessionDays": "Sesión de {count} d",
                 "stepConfirm": "Marca la casilla y empieza. El bot solo puede firmar intercambios dentro de estos límites.",
                 "stepPassword": "Introduce la contraseña de tu cartera",
                 "stepWallet": "Aprueba cada intercambio en tu cartera",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "Variación en {window} h por encima de {value}%",
                 "momentumBelow": "Variación en {window} h por debajo de {value}%",
                 "sell": "Vender cuando"
+            },
+            "session": {
+                "label": "Sesión",
+                "option": "{count} d"
             },
             "signal": {
                 "entry": "Zona de compra",

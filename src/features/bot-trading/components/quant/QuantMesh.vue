@@ -39,6 +39,8 @@ const props = defineProps<{
   /** Real search progress, 0..1. */
   progress: number;
   caption: string;
+  /** Idle pages draw one static frame instead of animating continuously. */
+  paused?: boolean;
 }>();
 
 const root = ref<HTMLElement | null>(null);
@@ -315,7 +317,8 @@ function withAlpha(color: string, alpha: number): string {
 function loop(time: number): void {
   frame = 0;
   draw(time);
-  if (!reduced && visible && document.visibilityState === 'visible') frame = requestAnimationFrame(loop);
+  if (!reduced && !props.paused && visible && document.visibilityState === 'visible')
+    frame = requestAnimationFrame(loop);
 }
 function schedule(): void {
   if (!frame) frame = requestAnimationFrame(loop);
@@ -361,7 +364,7 @@ watch(
   }
 );
 watch(
-  () => [props.running, props.progress],
+  () => [props.running, props.progress, props.paused],
   () => schedule()
 );
 

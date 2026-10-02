@@ -1690,7 +1690,12 @@ describe('BotsPage', () => {
           },
         },
       };
-      template.policy = { ...template.policy, maxPriceImpactPercent: '16', feeBudgetCodec: '2000000000000000000' };
+      template.policy = {
+        ...template.policy,
+        maxPriceImpactPercent: '16',
+        feeBudgetCodec: '2000000000000000000',
+        sessionDurationMs: 7 * 86_400_000,
+      };
       template.portfolio = {
         initial: { xor: '10000000000000000000', val: '0' },
         holdings: { xor: '10000000000000000000', val: '0' },
@@ -1714,7 +1719,14 @@ describe('BotsPage', () => {
         networkFeeXor: '0.1',
         swapFeePercent: '0.6',
       };
-      return { bot: template, settings: {}, research, denomination: { genesisHash: 'genesis', denominator: '1' } };
+      return {
+        bot: template,
+        settings: {},
+        research,
+        denomination: { genesisHash: 'genesis', denominator: '1' },
+        sessionDurationMs: 7 * 86_400_000,
+        cadence: { episodes: 5, daysPerEpisode: 20.2, holdHours: { min: 26, max: 164 }, lastEntryAt: 1 },
+      };
     }
 
     it('renders the research above the AI goal flow with the real fee and history loaders', async () => {
@@ -1741,7 +1753,9 @@ describe('BotsPage', () => {
       const payload = quantPayload();
       wrapper.getComponent({ name: 'QuantCommandCenter' }).vm.$emit('live', payload);
       await flushPromises();
-      expect(state.prepareLiveBot).toHaveBeenCalledWith(payload.bot, payload.research, payload.denomination);
+      expect(state.prepareLiveBot).toHaveBeenCalledWith(payload.bot, payload.research, payload.denomination, {
+        sessionDurationMs: 7 * 86_400_000,
+      });
       const summary = wrapper.get('[data-testid="quant-consent"]');
       expect(summary.text()).toContain('bots.quant.consent.title {"symbol":"VAL"}');
       expect(summary.text()).toContain('bots.quant.consent.budget {"amount":"10"}');
@@ -1749,6 +1763,12 @@ describe('BotsPage', () => {
       expect(summary.text()).toContain('bots.quant.consent.reserve {"amount":"2"}');
       expect(summary.text()).toContain('bots.quant.consent.impact {"value":"16"}');
       expect(summary.text()).toContain('"return":"43.49","drawdown":"33.72","trades":37');
+      expect(wrapper.get('[data-testid="quant-consent-session"]').text()).toBe(
+        'bots.quant.consent.sessionDays {"count":7}'
+      );
+      expect(wrapper.get('[data-testid="quant-consent-cadence"]').text()).toBe(
+        'bots.quant.consent.cadenceDays {"days":20.2,"hold":7}'
+      );
       expect(wrapper.get('[data-testid="review-limits"]').isVisible()).toBe(true);
       expect(wrapper.find('[data-testid="quant-get-xor"]').exists()).toBe(false);
       expect(wrapper.find('[data-testid="wallet-password"]').exists()).toBe(true);

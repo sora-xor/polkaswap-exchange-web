@@ -40,6 +40,9 @@ export interface QuantLoopDependencies {
 }
 
 const MAX_ARCHIVE_BYTES = 24 * 1024 * 1024;
+const HOUR = 3_600_000;
+/** Indexer publication delay after an hourly close. */
+const SIGNAL_DELAY_MS = 4 * 60_000;
 /** About two minutes of patience while a public node reconnects. */
 const FEE_ATTEMPTS = 30;
 const FEE_RETRY_MS = 4_000;
@@ -96,6 +99,10 @@ export function useQuantLoop(assets: Ref<BotAsset[]>, deps: QuantLoopDependencie
   let archive: QuantArchive | null = null;
   let generation = 0;
   let worker: Worker | null = null;
+  // Live signals follow completed hours for as long as the page stays open.
+  let signalTimer: ReturnType<typeof setTimeout> | undefined;
+  let signalsAt = 0;
+  let refreshing: Promise<void> | null = null;
 
   const stale = (version: number) => version !== generation;
 
@@ -177,7 +184,35 @@ export function useQuantLoop(assets: Ref<BotAsset[]>, deps: QuantLoopDependencie
   }
 
   /** Evaluate each selected rule on the latest closes; archived closes are a labelled fallback. */
-  async function refreshSignals(version = generation): Promise<void> {
+  function refreshSignals(version = generation): Promise<void> {
+    // Never overlap requests: a slow node must not stack refreshes during a long session.
+    refreshing ??= evaluateSignals(version).finally(() => {
+      refreshing = null;
+      signalsAt = now();
+    });
+    return refreshing;
+  }
+
+  /** Re-evaluate shortly after each completed hour, once the indexer has published its close. */
+  function scheduleSignals(): void {
+    clearTimeout(signalTimer);
+    const at = now();
+    const next = Math.floor(at / HOUR) * HOUR + HOUR + SIGNAL_DELAY_MS;
+    signalTimer = setTimeout(
+      () => {
+        void refreshSignals().finally(scheduleSignals);
+      },
+      Math.max(60_000, next - at)
+    );
+  }
+
+  /** Throttled background tabs may miss an hour; catch up as soon as the page is visible again. */
+  function onVisibility(): void {
+    if (document.visibilityState === 'visible' && status.value === 'done' && now() - signalsAt >= HOUR)
+      void refreshSignals();
+  }
+
+  async function evaluateSignals(version: number): Promise<void> {
     const current = result.value;
     if (!current || !archive) return;
     const next: Record<string, QuantSignal> = {};
@@ -244,6 +279,7 @@ export function useQuantLoop(assets: Ref<BotAsset[]>, deps: QuantLoopDependencie
       result.value = computed;
       status.value = 'done';
       await refreshSignals(version);
+      if (!stale(version)) scheduleSignals();
     } catch (reason) {
       if (stale(version)) return;
       status.value = 'error';
@@ -259,7 +295,10 @@ export function useQuantLoop(assets: Ref<BotAsset[]>, deps: QuantLoopDependencie
     generation++;
     worker?.terminate();
     worker = null;
+    clearTimeout(signalTimer);
+    document.removeEventListener('visibilitychange', onVisibility);
   }
+  document.addEventListener('visibilitychange', onVisibility);
 
   // Newly eligible assets can enable live signals for markets that fell back to the archive.
   watch(

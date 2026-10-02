@@ -1177,10 +1177,22 @@
             "openai": "OpenAI"
         },
         "quant": {
+            "banner": {
+                "detail": "De koers wijkt {value} af van het {window}-uursgemiddelde en ligt voorbij de triggerdrempel van {threshold}. Dit is het moment waarop de bot koopt.",
+                "title": "{symbol} bevindt zich in de koopzone"
+            },
             "botName": "{symbol}-liquiditeitsoogster",
+            "cadence": {
+                "every": "Ongeveer om de {days} dagen een kans",
+                "holdDays": "posities worden in {min}–{max} dagen afgebouwd",
+                "holdHours": "posities worden in {min}–{max} uur afgebouwd",
+                "last": "meest recent op {date}"
+            },
             "capacity": "Bewust beperkte capaciteit: budget van 10 XOR, kostenreserve van 2 XOR en {amount} XOR per transactie, omdat deze pools weinig liquiditeit hebben.",
             "consent": {
                 "budget": "Budget van {amount} XOR",
+                "cadenceDays": "Transacties zijn zeldzaam: in blinde tests deed zich ongeveer om de {days} dagen een kans voor, en het afbouwen van een positie kan tot {hold} dagen duren. Houd dit tabblad de hele sessie open.",
+                "cadenceHours": "Transacties zijn zeldzaam: in blinde tests deed zich ongeveer om de {days} dagen een kans voor, en het afbouwen van een positie kan tot {hold} uur duren. Houd dit tabblad de hele sessie open.",
                 "evidence": "Resultaat voortschrijdende validatie {return}% · maximale terugval {drawdown}% · {trades} transacties. Hypothetisch en na alle kosten; geen winstbelofte.",
                 "eyebrow": "In één oogopslag",
                 "getXor": "XOR verkrijgen",
@@ -1188,6 +1200,7 @@
                 "order": "{amount} XOR per transactie",
                 "reserve": "Kostenreserve {amount} XOR",
                 "session": "Sessie van {hours} u",
+                "sessionDays": "{count}-daagse sessie",
                 "stepConfirm": "Vink het vakje aan en start. De bot kan alleen swaps binnen deze limieten ondertekenen.",
                 "stepPassword": "Voer je walletwachtwoord in",
                 "stepWallet": "Keur elke swap goed in je wallet",
@@ -1257,6 +1270,10 @@
                 "momentumAbove": "{window}-uursverandering boven {value}%",
                 "momentumBelow": "{window}-uursverandering onder {value}%",
                 "sell": "Verkoop wanneer"
+            },
+            "session": {
+                "label": "Sessie",
+                "option": "{count} d"
             },
             "signal": {
                 "entry": "Koopzone",
