@@ -88,7 +88,7 @@
     "@polkadot/api": "16.5.4",
     "@polkadot/keyring": "14.0.2",
     "@polkadot/networks": "14.0.2",
-    "@polkadot/rpc-provider": "16.5.4",
+    "@polkadot/rpc-provider": "patch:@polkadot/rpc-provider@npm:16.5.4#./.yarn/patches/@polkadot-rpc-provider-npm-16.5.4-e11da04616.patch",
     "@polkadot/ui-keyring": "3.16.4",
     "@polkadot/ui-settings": "3.16.4",
     "@polkadot/ui-shared": "3.16.4",
@@ -192,7 +192,8 @@
     "@polkadot/wasm-crypto": "7.5.4",
     "@polkadot/wasm-bridge": "7.5.4",
     "@polkadot/wasm-crypto-wasm": "7.5.4",
-    "@polkadot/wasm-util": "7.5.4"
+    "@polkadot/wasm-util": "7.5.4",
+    "@polkadot/rpc-provider": "patch:@polkadot/rpc-provider@npm:16.5.4#./.yarn/patches/@polkadot-rpc-provider-npm-16.5.4-e11da04616.patch"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

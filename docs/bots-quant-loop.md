@@ -93,6 +93,7 @@ The page is built to stay open for a multi-day session:
 - **Live signals.** They refresh a few minutes after each completed hour and never overlap. A tab that was throttled in the background catches up when it becomes visible again.
 - **Cleanup.** Timers, observers and listeners are released on unmount.
 - **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries. `controller.spec.ts` (*long-running session memory bounds*) runs a paper session through 1,050 one-minute evaluations and checks every cap.
+- **Bounded RPC bookkeeping.** Each evaluation quotes through a short-lived storage subscription. Unpatched `@polkadot/rpc-provider` kept every notification that arrived after such an unsubscribe for the life of the connection, about 0.5 MB per hour with a bot running. The patched provider drops them (see the README's install notes).
 
 Every bot is **capacity-limited** to the researched shape:
 
