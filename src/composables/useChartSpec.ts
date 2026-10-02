@@ -9,12 +9,10 @@ const LABEL_PADDING = 4;
 const AXIS_OFFSET = 8;
 const AXIS_LABEL_CSS = {
   fontFamily: 'Sora',
-  fontSize: 10,
-  fontWeight: 300,
-  lineHeigth: 1.5,
+  fontSize: 12,
+  fontWeight: 400,
+  lineHeight: 1.5,
 };
-
-const capitalize = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1);
 
 type ChartOptions = Record<string, unknown>;
 
@@ -69,12 +67,12 @@ export function useChartSpec() {
         hideOverlap: true,
         rich: {
           monthStyle: {
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: 'bold',
             marginTop: 10,
           },
           dateStyle: {
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: 'bold',
           },
         },
@@ -92,7 +90,7 @@ export function useChartSpec() {
           color: palette.color.base.onAccent,
           fontSize: 11,
           fontWeight: 400,
-          lineHeigth: 1.5,
+          lineHeight: 1.5,
           formatter: ({ value }: { value: number }) => formatDate(+value, 'LLL'),
         },
       },
@@ -108,6 +106,7 @@ export function useChartSpec() {
       offset: AXIS_OFFSET,
       scale: true,
       axisLabel: {
+        color: palette.color.base.content.secondary,
         ...AXIS_LABEL_CSS,
         hideOverlap: true,
         margin: 0,

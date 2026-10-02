@@ -1,4 +1,4 @@
-import { onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, ref, shallowRef } from 'vue';
 
 import { copyToClipboard, delay } from '@/util';
 
@@ -9,22 +9,33 @@ type CopyEvent = PointerEvent | MouseEvent | undefined;
 export function useCopyAddress() {
   const { t } = useTranslation();
 
-  const targetElement = ref<EventTarget | null>(null);
+  const targetElement = shallowRef<EventTarget | null>(null);
   const wasAddressCopied = ref(false);
+  let active = true;
 
-  const handleMouseleaveListener = async () => {
-    await delay(500);
-    wasAddressCopied.value = false;
-
-    const element = targetElement.value;
-    if (element instanceof HTMLElement) {
-      element.removeEventListener('mouseleave', handleMouseleaveListener);
+  const removeMouseleaveListener = (target = targetElement.value): void => {
+    if (target instanceof HTMLElement) {
+      target.removeEventListener('mouseleave', handleMouseleaveListener);
     }
 
-    targetElement.value = null;
+    if (targetElement.value === target) {
+      targetElement.value = null;
+    }
+  };
+
+  const handleMouseleaveListener = async (event?: Event) => {
+    const element = event?.currentTarget ?? targetElement.value;
+    await delay(500);
+    removeMouseleaveListener(element);
+
+    if (!active || targetElement.value) return;
+
+    wasAddressCopied.value = false;
   };
 
   const handleCopyAddress = async (address: string, event?: CopyEvent) => {
+    removeMouseleaveListener();
+
     if (event) {
       event.stopImmediatePropagation();
       const element = event.target as EventTarget | null;
@@ -48,10 +59,8 @@ export function useCopyAddress() {
   };
 
   onBeforeUnmount(() => {
-    const element = targetElement.value;
-    if (element instanceof HTMLElement) {
-      element.removeEventListener('mouseleave', handleMouseleaveListener);
-    }
+    active = false;
+    removeMouseleaveListener();
   });
 
   return {

@@ -87,6 +87,7 @@ const disconnectExternalNetworkMock = vi.hoisted(() => vi.fn());
 const disconnectEvmMock = vi.hoisted(() => vi.fn());
 const disconnectSubMock = vi.hoisted(() => vi.fn());
 const changeNetworkMock = vi.hoisted(() => vi.fn());
+const connectSelectedSubNetworkMock = vi.hoisted(() => vi.fn(async () => undefined));
 const provider = vi.hoisted(
   () =>
     ({
@@ -120,12 +121,11 @@ const fearlessProvider = vi.hoisted(
 const bridgeStorePiniaMock = vi.hoisted(() => ({
   isSubBridge: false,
   isSubAccountType: true,
-  connector: {
-    network: {
-      subNetworkConnection: {
-        nodeIsConnected: true,
-      },
-    },
+  subNetworkConnectionState: {
+    network: 'network',
+    connection: null,
+    connecting: false,
+    ready: true,
   },
 }));
 
@@ -138,6 +138,7 @@ const web3StorePiniaMock = vi.hoisted(() => ({
   networkType: 'type',
   setSubAccountDialogVisibility: vi.fn(),
   setSelectSubNodeDialogVisibility: vi.fn(),
+  connectSelectedSubNetwork: connectSelectedSubNetworkMock,
   disconnectExternalNetwork: disconnectExternalNetworkMock,
   resetEvmProviderConnection: disconnectEvmMock,
   resetSubAccount: disconnectSubMock,
@@ -182,6 +183,8 @@ beforeEach(() => {
   disconnectEvmMock.mockReset();
   disconnectSubMock.mockReset();
   changeNetworkMock.mockReset();
+  connectSelectedSubNetworkMock.mockReset();
+  connectSelectedSubNetworkMock.mockResolvedValue(undefined);
   web3StorePiniaMock.setSubAccountDialogVisibility.mockReset();
   web3StorePiniaMock.setSelectSubNodeDialogVisibility.mockReset();
   provider.getProvider.mockReset();
@@ -196,12 +199,11 @@ beforeEach(() => {
   walletStorageMock.remove.mockClear();
   bridgeStorePiniaMock.isSubBridge = false;
   bridgeStorePiniaMock.isSubAccountType = true;
-  bridgeStorePiniaMock.connector = {
-    network: {
-      subNetworkConnection: {
-        nodeIsConnected: true,
-      },
-    },
+  bridgeStorePiniaMock.subNetworkConnectionState = {
+    network: 'network',
+    connection: null,
+    connecting: false,
+    ready: true,
   };
   web3StorePiniaMock.appEvmProviders = [provider];
   web3StorePiniaMock.evmProvider = provider;
@@ -310,12 +312,46 @@ describe('useWalletConnect', () => {
 
   it('opens the node selector instead of the sub-account dialog when the sub bridge is not ready', () => {
     bridgeStorePiniaMock.isSubBridge = true;
-    bridgeStorePiniaMock.connector = {
-      network: {
-        subNetworkConnection: {
-          nodeIsConnected: false,
-        },
-      },
+    bridgeStorePiniaMock.subNetworkConnectionState = {
+      network: 'network',
+      connection: null,
+      connecting: false,
+      ready: false,
+    };
+
+    const wrapper = createHarness();
+    const { wallet } = wrapper.vm as { wallet: ReturnType<typeof useWalletConnect> };
+
+    wallet.connectSubWallet();
+
+    expect(web3StorePiniaMock.setSelectSubNodeDialogVisibility).toHaveBeenCalledWith(true);
+    expect(connectSelectedSubNetworkMock).toHaveBeenCalledTimes(1);
+    expect(web3StorePiniaMock.setSubAccountDialogVisibility).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('opens the Sub account dialog when the selected connector is ready', () => {
+    bridgeStorePiniaMock.isSubBridge = true;
+
+    const wrapper = createHarness();
+    const { wallet } = wrapper.vm as { wallet: ReturnType<typeof useWalletConnect> };
+
+    wallet.connectSubWallet();
+
+    expect(web3StorePiniaMock.setSubAccountDialogVisibility).toHaveBeenCalledWith(true);
+    expect(web3StorePiniaMock.setSelectSubNodeDialogVisibility).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('opens the node selector when readiness belongs to a previously selected Sub network', () => {
+    bridgeStorePiniaMock.isSubBridge = true;
+    bridgeStorePiniaMock.subNetworkConnectionState = {
+      network: 'previous-network',
+      connection: null,
+      connecting: false,
+      ready: true,
     };
 
     const wrapper = createHarness();

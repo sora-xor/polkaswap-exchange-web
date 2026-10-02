@@ -222,6 +222,41 @@ describe('BarChart', () => {
     }
   });
 
+  it('keeps data from the latest endpoint refresh when an older request resolves last', async () => {
+    const timestamp = Date.now() - 60 * 60 * 1000;
+    let resolveOldRequest!: (value: Array<{ timestamp: number; value: FPNumber }>) => void;
+    let resolveNewRequest!: (value: Array<{ timestamp: number; value: FPNumber }>) => void;
+    const oldRequest = new Promise<Array<{ timestamp: number; value: FPNumber }>>((resolve) => {
+      resolveOldRequest = resolve;
+    });
+    const newRequest = new Promise<Array<{ timestamp: number; value: FPNumber }>>((resolve) => {
+      resolveNewRequest = resolve;
+    });
+    fetchDataMock
+      .mockImplementationOnce(() => oldRequest)
+      .mockResolvedValueOnce([])
+      .mockImplementationOnce(() => newRequest)
+      .mockResolvedValueOnce([]);
+
+    const wrapper = mount(BarChart, { props: { fees: true } });
+    await nextTick();
+
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(4);
+
+    resolveNewRequest([{ timestamp, value: new FPNumber(22) }]);
+    await flushPromises();
+    resolveOldRequest([{ timestamp, value: new FPNumber(11) }]);
+    await flushPromises();
+
+    const option = wrapper.findComponent({ name: 'VChartStub' }).props('option') as {
+      dataset: { source: Array<[number, number]> };
+    };
+    expect(option.dataset.source).toContainEqual([timestamp, 22]);
+    expect(option.dataset.source).not.toContainEqual([timestamp, 11]);
+  });
+
   it('uses direct shared imports instead of the central lazy registry', () => {
     expect(barChartSource).not.toContain('lazyComponent(');
     expect(barChartSource).not.toContain('Components.');

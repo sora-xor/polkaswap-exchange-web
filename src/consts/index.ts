@@ -9,6 +9,8 @@ import {
 import invert from 'lodash/fp/invert';
 
 import { PageNames } from './navigation';
+import botsIconUrl from '@/assets/img/navigation/bots.svg?url&no-inline';
+import storeBagIconUrl from '@/assets/img/navigation/store.svg?url&no-inline';
 import polkamarktLogoUrl from '@/assets/img/polkamarkt/pm_logo.svg?url';
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
@@ -246,7 +248,9 @@ export interface SidebarMenuItemLink extends SidebarMenuItem {
 /** Sidebar icon names must stay aligned with the live polkaswap.io menu. */
 export const SidebarIcon = {
   Swap: 'arrows-swap-90-24',
+  Store: 'shopping-bag-24',
   Trade: 'music-CD-24',
+  Bots: 'software-terminal-24',
   Polkamarkt: 'various-lightbulb-24',
   Rewards: 'basic-circle-star-24',
   Pool: 'basic-drop-24',
@@ -263,17 +267,37 @@ export const SidebarIcon = {
 } as const;
 
 export const PolkamarktLogo = polkamarktLogoUrl;
+/** Custom sidebar artwork, served as external SVG masks for IPFS and CSP compatibility. */
+export const BotsIcon = botsIconUrl;
+export const StoreBagIcon = storeBagIconUrl;
 
 const MainMenu: Array<SidebarMenuItemLink> = [
+  {
+    icon: SidebarIcon.Store,
+    iconSrc: StoreBagIcon,
+    title: PageNames.Store,
+    href: '#/store',
+  },
   {
     icon: SidebarIcon.Swap,
     title: PageNames.Swap,
     href: '#/swap',
   },
   {
+    icon: SidebarIcon.Account,
+    title: PageNames.BuyXor,
+    href: '#/buy-xor',
+  },
+  {
     icon: SidebarIcon.Trade,
     title: PageNames.OrderBook,
     href: '#/trade',
+  },
+  {
+    icon: SidebarIcon.Bots,
+    iconSrc: BotsIcon,
+    title: PageNames.Bots,
+    href: '#/bots',
   },
   {
     icon: SidebarIcon.Polkamarkt,
@@ -384,6 +408,33 @@ export const FaucetLink: SidebarMenuItemLink = {
 };
 
 export const SidebarMenuGroups = [...MainMenu, ...OtherPagesMenu];
+
+/** Visible navigation sections keep Swap first and preserve the flat route catalog. */
+export const SidebarMenuSections: ReadonlyArray<{ id: string; titleKey?: string; pages: readonly string[] }> = [
+  {
+    id: 'primary',
+    pages: [
+      PageNames.Swap,
+      PageNames.BuyXor,
+      PageNames.OrderBook,
+      PageNames.Bots,
+      PageNames.Polkamarkt,
+      PageNames.Bridge,
+      PageNames.Store,
+    ],
+  },
+  {
+    id: 'account',
+    titleKey: 'ux.navigation.account',
+    pages: [PageNames.Wallet, PageNames.Burn, PageNames.AssetOwnerContainer],
+  },
+  {
+    id: 'earn',
+    titleKey: 'ux.navigation.earn',
+    pages: [PoolPageNames.Pool, PageNames.StakingContainer, PageNames.Rewards, VaultPageNames.VaultsContainer],
+  },
+  { id: 'explore', titleKey: 'ux.navigation.explore', pages: [PageNames.ExploreContainer, PageNames.Stats] },
+];
 
 export const PoolChildPages = [PageNames.AddLiquidity];
 export const RewardsChildPages = [

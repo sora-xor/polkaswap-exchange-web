@@ -446,9 +446,14 @@ export const usePoolStore = defineStore('pool-legacy', {
         return;
       }
 
-      this.addLiquidity.firstTokenValue = new SDKFPNumber(value)
-        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA))
-        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB))
+      const firstToken = this.addLiquidityFirstToken;
+      const secondToken = this.addLiquiditySecondToken;
+
+      if (!(firstToken && secondToken)) return;
+
+      this.addLiquidity.firstTokenValue = new SDKFPNumber(value, secondToken.decimals)
+        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA, firstToken.decimals))
+        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB, secondToken.decimals))
         .toString();
     },
     updateAddLiquiditySecondTokenValue(): void {
@@ -461,9 +466,14 @@ export const usePoolStore = defineStore('pool-legacy', {
         return;
       }
 
-      this.addLiquidity.secondTokenValue = new SDKFPNumber(value)
-        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB))
-        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA))
+      const firstToken = this.addLiquidityFirstToken;
+      const secondToken = this.addLiquiditySecondToken;
+
+      if (!(firstToken && secondToken)) return;
+
+      this.addLiquidity.secondTokenValue = new SDKFPNumber(value, firstToken.decimals)
+        .mul(SDKFPNumber.fromCodecValue(this.addLiquidityReserveB, secondToken.decimals))
+        .div(SDKFPNumber.fromCodecValue(this.addLiquidityReserveA, firstToken.decimals))
         .toString();
     },
     updateAddLiquidityValues(): void {

@@ -1,0 +1,187 @@
+[
+  {
+    "code": "BL",
+    "name": "Saint Barthélemy",
+    "status": "not_verified",
+    "rule": "The current territorial Environment Code, consolidated after 12 March 2026, restricts living specimens under Article 32-17; its plant annex concerns living plants, fruiting bodies and propagules. That invasive-species restriction does not establish a permit duty for manufactured, non-living sencha. Separate national plant-health controls still apply through Code rural L272-11-1. The inherited national certificate schedules do not list finished tea; the unresolved issue is the separate local restriction. Organic Law 2007-223 Article 18 IX preserves applicable pre-2007 provisions and substitutes the new territorial references. This supplies a continuity basis for inherited national schedules, whose finished-tea list-based treatment does not itself require a new tea-specific ruling.",
+    "personalMailApplicability": "The continuity of national scheduled rules does not by itself resolve any inherited local personal-import restriction. The exact scope of the 1996 Guadeloupe order for a paid private postal purchase remains unverified.",
+    "quantityLimit": null,
+    "authority": "Saint Barthélemy territorial government/ATE; French Code rural and plant-health authority",
+    "evidenceUrls": [
+      "https://www.agencedelenvironnement.fr/en/page/Identify-invasive-exotic-species",
+      "https://www.agencedelenvironnement.fr/en/page/promoting-native-flora",
+      "https://www.agencedelenvironnement.fr/en/formulaire/2",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.comstbarth.fr/votre-collectivite/codes-et-reglements",
+      "https://www.comstbarth.fr/in/rest/annotationSVC/DownloadAttachment/attach_cmsUpload_5e4c7f67-7625-45cc-a980-855c9a10ceff",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/",
+      "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070633/LEGISCTA000006135517/2026-06-26/",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf"
+    ],
+    "remainingQuestion": "Actual scope and continued application of Guadeloupe Order 96-323, rather than absence of a newly issued tea-specific national schedule.",
+    "researchAttempts": [
+      "Reviewed ATE territorial invasive-plant rules, native-flora guidance and plant authorization forms; no processed-tea or personal-post provision found.",
+      "Second review searched 2025/2026 local tea exclusions. The 2025 ministry overseas instruction explicitly excludes Saint Barthélemy/Saint Martin regulations from its analysis; it does not extend a mainland exemption.",
+      "Retrieved the official 199-page Environment Code via the territorial website’s March 2026 consolidation link. Read Articles 32-1 to 32-28 and the Article 32-17 plant annex: the invasive-species prohibition concerns living specimens. Separately read current Code rural L272-1, L272-3 and L272-11-1. Environmental scope is now clear but does not establish the applicable national agricultural import schedule; no inferred blanket tea ban or clearance.",
+      "2026-09-30 bounded independent French-territory peer review: Organic Law 2007-223 Article 18 IX expressly retains non-contrary pre-existing legislative and regulatory provisions and substitutes territorial references. This supplies a continuity chain for the national 1990/2006 rules after detachment from Guadeloupe, reinforced by current Code rural L272-11-1. The complete applicable national certificate schedules do not list finished tea; the 2026 Environment Code living-specimen rule does not cover non-living finished tea. However, the same continuity mechanism can preserve an applicable Guadeloupe local 1996 restriction. Its original territorial and channel scope has not been recovered."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Actual scope and continued application of Guadeloupe Order 96-323, rather than absence of a newly issued tea-specific national schedule.",
+    "permitFreeSources": [
+      "https://www.agencedelenvironnement.fr/en/page/Identify-invasive-exotic-species",
+      "https://www.agencedelenvironnement.fr/en/page/promoting-native-flora",
+      "https://www.agencedelenvironnement.fr/en/formulaire/2",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.comstbarth.fr/votre-collectivite/codes-et-reglements",
+      "https://www.comstbarth.fr/in/rest/annotationSVC/DownloadAttachment/attach_cmsUpload_5e4c7f67-7625-45cc-a980-855c9a10ceff",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/",
+      "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070633/LEGISCTA000006135517/2026-06-26/",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf"
+    ]
+  },
+  {
+    "code": "GF",
+    "name": "French Guiana",
+    "status": "not_verified",
+    "rule": "Guyane Order R03-2021-04-26-00003 Article 1 prohibits personal introduction/importation from all origins in any quantity using the 1990 Article 1 definitions. It is not limited to goods in the national certificate schedules. Article 2 permits derogation only following prior study. Whether steaming/manufacturing removes retail sencha from the unprocessed/simply-prepared product definition remains unresolved.",
+    "personalMailApplicability": "The order covers personal introduction/importation broadly, not merely a passenger allowance; no postal exemption established.",
+    "quantityLimit": null,
+    "authority": "Guyane prefecture/DGTM; French Ministry of Agriculture",
+    "evidenceUrls": [
+      "https://www.guyane.gouv.fr/content/download/18708/131303/file/recueil-r03-2021-109-recueil-des-actes-administratifs.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://politique.pappers.fr/commune/document/0987289975315402799780b56d718d4c"
+    ],
+    "remainingQuestion": "Whether manufacture by steaming and drying goes beyond the incorporated unprocessed/simply-prepared definition; a legal processing exclusion or authoritative general-category interpretation would settle it, without needing a bespoke tea permit.",
+    "researchAttempts": [
+      "Read the 1990 overseas rule and 2025 ministry instruction retaining pre-2019 law pending an overseas decree. Located the official 2021 personal-import order; the official PDF was inaccessible, so checked its reproduced legal text (articles 1–2) against the official indexed title and number. No 2025/2026 processed-tea exemption found.",
+      "2026-09-30 bounded independent French-territory peer review: Rechecked the reproduced operative Article 1 of Order R03-2021-04-26-00003 against its official title/index. It applies the 1990 Article 1 definitions to personal imports from all origins in any quantity; it does not limit itself to Annex IV certificate-listed goods. Article 2 requires prior study for a derogation. Consequently the national exhaustive schedule cannot itself clear this personal import. Direct official PDF retrieval again closed the connection; the operative wording remains a legal-text reproduction, not an independently downloaded official copy."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Whether manufacture by steaming and drying goes beyond the incorporated unprocessed/simply-prepared definition; a legal processing exclusion or authoritative general-category interpretation would settle it, without needing a bespoke tea permit.",
+    "permitFreeSources": [
+      "https://www.guyane.gouv.fr/content/download/18708/131303/file/recueil-r03-2021-109-recueil-des-actes-administratifs.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://politique.pappers.fr/commune/document/0987289975315402799780b56d718d4c"
+    ]
+  },
+  {
+    "code": "GP",
+    "name": "Guadeloupe",
+    "status": "not_verified",
+    "rule": "The 3 September 1990 overseas plant-health order limits certificate requirements to Annex IV commodities; its special dried-tea condition is Réunion-only. Finished tea is absent from the relevant Antilles schedule and from the complete Directive 2000/29 Annex V B incorporated by the current 24 May 2006 order (Arts 8 and 25 limit importer registration/certificates to listed goods). This supports no scheduled national tea-certificate requirement. A separate Guadeloupe order 96-323 of 16 April 1996 remains unresolved: current DAAF guidance describes an incoming passenger-channel ban, whereas an official environment report summarizes a restriction outside commercial channels. The actual local order was not recovered, so its scope for purchased personal postal manufactured tea is not established.",
+    "personalMailApplicability": "These destinations are separate from the EU plant-health territory. Neither metropolitan EU clearance nor a passenger allowance proves this personal postal route.",
+    "quantityLimit": null,
+    "authority": "French Ministry of Agriculture; local DAAF",
+    "evidenceUrls": [
+      "https://daaf.guadeloupe.agriculture.gouv.fr/controle-des-importations-de-denrees-animales-et-vegetales-en-guadeloupe-a128.html",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006076933/",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf",
+      "https://www.legislation.gov.uk/eudr/2000/29/pdfs/eudr_20000029_2019-09-01_en.pdf?view=extent",
+      "https://daaf.guadeloupe.agriculture.gouv.fr/l-envoi-de-vegetaux-de-la-guadeloupe-vers-la-france-et-les-autres-pays-de-l-a1199.html",
+      "https://www.guadeloupe.developpement-durable.gouv.fr/IMG/pdf/Diagnostic_sur_les_invasions_biologiques_aux_antilles_francaises_2011.pdf"
+    ],
+    "remainingQuestion": "Actual local Order 96-323, especially scope, definitions and postal coverage.",
+    "researchAttempts": [
+      "Read the 1990 overseas plant-health order and its territory-specific dried-tea entry; reviewed local DAAF guidance. The Réunion-only condition does not settle this territory’s current manufactured-tea scope.",
+      "Second review checked local import-control guidance and the 2025 ministry instruction retaining pre-2019 overseas law. The March 2025 tea exemption found concerns VAT only and cannot establish phytosanitary clearance.",
+      "2026-09-30 independent scope review: checked the complete 2006 incorporated Directive 2000/29 Annex V B (official UK 1 September 2019 consolidation, printedpp190–200); no finished tea, HS0902 or Camellia leaf entry. Saved consolidated 2006 order and full directive. Identified Guadeloupe local arrêté96-32316April1996 through ANSES/current DAAF and official environment report Table21p70. DAAF updated25March2026 describes passenger restrictions, while report summarizes outside-commercial-channel scope. Exact-order/date/number and official publication searches did not recover the order text. No postal prohibition or waiver inferred from those summaries; remaining gap narrowed to actual local-order scope.",
+      "30 September bounded legal-scope peer review: The complete national 1990 Annex IV and incorporated 2006 Annex V B already support absence of a scheduled tea certificate. A tea-specific authority ruling is not needed for that list-based conclusion. The remaining barrier is the unrecovered local Order 96-323 of 16 April 1996: current official sources describe passenger or outside-commercial-channel restrictions differently, and neither establishes the scope for a paid private postal order."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The complete national 1990 Annex IV and incorporated 2006 Annex V B already support absence of a scheduled tea certificate. A tea-specific authority ruling is not needed for that list-based conclusion. The remaining barrier is the unrecovered local Order 96-323 of 16 April 1996: current official sources describe passenger or outside-commercial-channel restrictions differently, and neither establishes the scope for a paid private postal order. Remaining gap: Actual local Order 96-323, especially scope, definitions and postal coverage.",
+    "permitFreeSources": [
+      "https://daaf.guadeloupe.agriculture.gouv.fr/controle-des-importations-de-denrees-animales-et-vegetales-en-guadeloupe-a128.html",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006076933/",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf",
+      "https://www.legislation.gov.uk/eudr/2000/29/pdfs/eudr_20000029_2019-09-01_en.pdf?view=extent",
+      "https://daaf.guadeloupe.agriculture.gouv.fr/l-envoi-de-vegetaux-de-la-guadeloupe-vers-la-france-et-les-autres-pays-de-l-a1199.html",
+      "https://www.guadeloupe.developpement-durable.gouv.fr/IMG/pdf/Diagnostic_sur_les_invasions_biologiques_aux_antilles_francaises_2011.pdf"
+    ]
+  },
+  {
+    "code": "MF",
+    "name": "Saint Martin (French part)",
+    "status": "not_verified",
+    "rule": "Saint Martin is outside the EU plant-health territory. A Dutch NPPO country sheet lists specific dried plant goods needing certification, but does not list tea and dates its substantive rules to 2012; that cannot verify the present Japanese postal route. Current Code rural L273-6-2 expressly applies the overseas plant-health framework in L271-5 to L271-8 to Saint Martin; this confirms the governing framework. The unresolved question concerns the separate local restriction, not absence of a finished-tea line in the national certificate schedules. Organic Law 2007-223 Article 18 IX preserves applicable pre-2007 provisions and substitutes the new territorial references. This supplies a continuity basis for inherited national schedules, whose finished-tea list-based treatment does not itself require a new tea-specific ruling.",
+    "personalMailApplicability": "The continuity of national scheduled rules does not by itself resolve any inherited local personal-import restriction. The exact scope of the 1996 Guadeloupe order for a paid private postal purchase remains unverified.",
+    "quantityLimit": null,
+    "authority": "Netherlands NVWA country requirements for Saint Martin; French plant-health law",
+    "evidenceUrls": [
+      "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/saint-martin-diverse-producten-exporteisen/Saint-Martin_Diverse_producten_exporteisen_1.0.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/",
+      "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+      "https://www.legifrance.gouv.fr/contenu/Media/files/autour-de-la-loi/guide-de-legistique/2025_10_06_fiche_3.6.7_saint-martin.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf"
+    ],
+    "remainingQuestion": "Actual scope and continued application of Guadeloupe Order 96-323; the old NVWA sheet alone does not answer that local-law issue.",
+    "researchAttempts": [
+      "Reviewed the full NVWA Saint Martin country sheet, including its 2012/2013 revision history and third-country plant-product list; searched French local import guidance. Current tea-specific scope remains unverified.",
+      "Second review searched 2025/2026 local tea exclusions. The 2025 ministry overseas instruction explicitly excludes Saint Barthélemy/Saint Martin regulations from its analysis; it does not extend a mainland exemption.",
+      "Read current Code rural L273-1 to L273-7, including L273-6-2’s express extension of the overseas plant-health framework. This strengthens the legal-framework evidence but is not a tea-specific schedule or a personal-post exemption.",
+      "2026-09-30 bounded independent French-territory peer review: Organic Law 2007-223 Article 18 IX supplies express continuity and territorial-reference substitution for pre-existing Guadeloupe rules; the official October 2025 Guide de legistique confirms this rule for Saint-Martin. Current Code rural L273-6-2 additionally applies the overseas framework. This is a legal chain for using inherited national schedules, not a mainland-EU substitution. Those list-based rules do not require a tea-specific permission simply because the territory changed status. The same continuity can preserve the local 1996 Guadeloupe restriction, whose original territory/channel scope remains unrecovered."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Actual scope and continued application of Guadeloupe Order 96-323; the old NVWA sheet alone does not answer that local-law issue.",
+    "permitFreeSources": [
+      "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/saint-martin-diverse-producten-exporteisen/Saint-Martin_Diverse_producten_exporteisen_1.0.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+      "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/",
+      "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+      "https://www.legifrance.gouv.fr/contenu/Media/files/autour-de-la-loi/guide-de-legistique/2025_10_06_fiche_3.6.7_saint-martin.pdf",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf"
+    ]
+  },
+  {
+    "code": "MQ",
+    "name": "Martinique",
+    "status": "not_verified",
+    "rule": "Martinique DAAF expressly cites the 22 November 2004 order prohibiting personal plant-product imports from all origins, using the 1990 definition of unprocessed or simply prepared material. The effect on factory-steamed/dried sencha is not explicitly resolved; the Réunion-specific dried-tea rule is not applied here.",
+    "personalMailApplicability": "The local rule concerns personal introductions/imports generally; no manufactured-tea postal exception established.",
+    "quantityLimit": null,
+    "authority": "Martinique DAAF; French Ministry of Agriculture",
+    "evidenceUrls": [
+      "https://daaf.martinique.agriculture.gouv.fr/quels-sont-les-vegetaux-soumis-a-un-contole-au-pec-lors-de-leur-introduction-a373.html",
+      "https://daaf.martinique.agriculture.gouv.fr/importation-des-vegetaux-et-produits-vegetaux-a362.html",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement"
+    ],
+    "remainingQuestion": "Actual Order 043448 of 22 November 2004 and any binding processing exclusion relevant to steamed/dried manufactured tea. Do not demand a tea-specific ruling if a general category provision resolves the same question.",
+    "researchAttempts": [
+      "Reviewed the DAAF controlled-goods FAQ expressly citing the 2004 personal-import ban, the 1990 product definition and the ministry’s 2025 transitional-law instruction. Searched current local processing exclusions without finding a finished-tea ruling.",
+      "2026-09-30 bounded independent French-territory peer review: Current DAAF guidance expressly describes the 22 November 2004 local restriction as applying to personal introductions/imports using the 1990 Article 1 product definition, not merely the national certificate schedule. National-list absence therefore does not settle the separate ban. The original local order was not recovered."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Actual Order 043448 of 22 November 2004 and any binding processing exclusion relevant to steamed/dried manufactured tea. Do not demand a tea-specific ruling if a general category provision resolves the same question.",
+    "permitFreeSources": [
+      "https://daaf.martinique.agriculture.gouv.fr/quels-sont-les-vegetaux-soumis-a-un-contole-au-pec-lors-de-leur-introduction-a373.html",
+      "https://daaf.martinique.agriculture.gouv.fr/importation-des-vegetaux-et-produits-vegetaux-a362.html",
+      "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+      "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement"
+    ]
+  }
+]

@@ -1,0 +1,2028 @@
+                                              (i)
+No. 10 of 2024.              Plant
+                             Plant Protection Act, 2024. – 10.             Saint Christopher
+                                                                           and Nevis.
+
+
+                                 Arrangement of Sections
+                                          PART I
+                                       PRELIMINARY
+1.   Short title and commencement.
+2.   Interpretation.
+3.   Application of Act to plants, plant products and regulated articles in free circulation.
+                                        PART II
+                                    ADMINISTRATION
+4. Powers of the Minister.
+5. Establishment and designation of the NPPO.
+6. Functions of the NPPO.
+7. Delegation of functions of the NPPO.
+8. Appointment of phytosanitary inspectors.
+9. Investigative powers of phytosanitary inspectors.
+10. Designation of official and national reference laboratories.
+11. Plant protection coordination mechanisms.
+12. Phytosanitary Emergency Fund.
+13. Phytosanitary Emergency Fund Committee.
+14. Audit and reporting.
+15. Principles for the approval and implementation of phytosanitary measures.
+                                           PART III
+                                          IMPORTS
+16. Import permit.
+17. Restrictions on importation.
+18. Inspection for importation.
+19. Phytosanitary actions on imports.
+20. Release of imports.
+21. Restriction of certain imports.
+22. Plant quarantine stations and other facilities.
+23. Arrival Notification.
+                                 PART IV
+     EXPORTS, RE-EXPORTS, TRANSHIPMENT AND CONSIGNMENTS IN TRANSIT
+24. Export.
+25. Re-export.
+26. Transhipment and consignments in transit.
+                                        PART V
+                                    CONTROL OF PESTS
+27. Phytosanitary control measures.
+28. Declaration of regulated pests.
+29. Duty of occupier to notify NPPO.
+                                              (ii)
+                             Plant Protection Act, 2024 – 10.
+
+
+                                      PART V
+                                CONTROL OF PESTS cont'd
+
+30. Declaration of provisional quarantine.
+31. Declaration of quarantine.
+32. Procedure when quarantine pest is on premises.
+33. Duration of quarantine notice.
+34. Declaration of phytosanitary emergency.
+35. Lifting of quarantine.
+36. Declaration of pest free area or area of low pest prevalence.
+37. Pest free places of production and pest free production sites.
+38. Duty to report pests.
+39. Emergency Response Plans.
+                               PART VI
+ TREATMENT OF GOODS IN FREE CIRCULATION IN THE ECONOMIC UNION AREA
+40. Treatment of plants, plant products and other regulated articles circulating within the
+    Economic Union Area.
+41. Phytosanitary (Economic Union) certificate.
+42. Network of Agriculture Health and Food Safety competent authorities.
+43. Application of Common Procedures, Principles and Risk Management System to facilitate
+    the Free Circulation of Goods in the Economic Union Area.
+44. Information sharing.
+45. Plants, plant products or other regulated articles not permitted to circulate freely in the
+    Economic Union Area.
+                                         PART VII
+                                      ENFORCEMENT
+
+46. Enforcement powers of a phytosanitary inspector.
+47. Storage or removal of affected items.
+48. Confiscation and disposal of plants, plant products and other regulated articles.
+49. Offences.
+50. Criminal penalties.
+51. Procedure for offences.
+52. Revocation or suspension of permits and other authorisations.
+53. Forfeiture.
+54. Fixed penalty offences.
+55. Evidence.
+56. Offences by officials and penalties.
+57. Good faith defence.
+58. Compensation.
+                                         (iii)
+                           Plant Protection Act, 2024 – 10.
+
+
+                                     PART VIII
+                                  MISCELLANEOUS
+59. Service of notice.
+60. Documents.
+61. Registration of Plant Growing establishments.
+62. Duty to Assist and Cooperate.
+63. Right of Appeal.
+64. Presumptions.
+65. Consent of the NIA.
+66. Regulations.
+67. Repeal and Savings.
+68. Act to bind Crown.
+
+Schedule 1
+Schedule 2
+Schedule 3
+Schedule 4
+Schedule 5
+                                              1
+No. 10 of 2024.               PlantProtection
+                             Plant  ProtectionAct,
+                                               Act,2024
+                                                    2024.– 10.               Saint Christopher
+                                                                             and Nevis.
+
+
+
+
+                                                           I assent,
+
+
+                  LS                                       MARCELLA ALTHEA LIBURD
+                                                           Governor-General.
+                                                           5th June, 2024.
+
+
+               SAINT CHRISTOPHER AND NEVIS
+                                   No. 10 of 2024
+
+     AN ACT to to prevent the entry and establishment of, and to control the spread of
+plant pests; to protect plant resources; to facilitate the movement of plants and plant
+products into and within Saint Christopher and Nevis; and to regulate other matters connected
+thereto.
+               [Published 20th June 2024, Official Gazette No. 18 of 2024.]
+     BE IT ENACTED by the King’s Most Excellent Majesty, by and with the advice and
+consent of the National Assembly of Saint Christopher and Nevis, and by the authority of
+the same as follows:
+1. Short Title.
+     This Act may be cited as the Plant Protection Act and shall come into force upon
+publication except for Part VI - TREATMENT OF GOODS IN FREE CIRCULATION IN THE
+ECONOMIC UNION AREA, which shall come into force on a date that the Minister may by
+Order appoint.
+2.   Interpretation.
+     In this Act, unless the context otherwise requires—
+         “affected” means infected or infested with a pest;
+          “area” means an officially defined whole or part of Saint Christopher and Nevis
+             and includes a place or site of production;
+         “area of low pest prevalence” means an area, whether all of Saint Christopher and
+             Nevis or part of Saint Christopher and Nevis, as prescribed, in which a specific
+             pest occurs at low levels and which is subject to effective surveillance, control
+             or eradication measures;
+          “beneficial organism” means any organism (including fungi, bacteria, viruses,
+             virus-like organisms and invertebrate or other animals) which is declared by
+             the Minister by notice published in the Gazette to be beneficial to flora or
+             agricultural production;
+                                      2
+                     Plant Protection Act, 2024 – 10.
+
+
+buffer zone” means an area surrounding or adjacent to an area officially delimited
+    for phytosanitary purposes to minimise the probability of spread of the target
+    pest into or out of the delimited area, and subject to phytosanitary or other
+    control measures, if appropriate;
+“CAHFSA” means the Caribbean Agricultural Health and Food Safety Agency
+   established by Agreement among member states of the Caribbean Community
+   in Dominica on March 12, 2010, as continued by the Revised CAHFSA
+   Agreement signed on February 25, 2011;
+“Chief Plant Quarantine Officer” or “CPQO”, means the Chief Plant Quarantine
+   Officer referred to in section 5;
+“Competent Authority” means –
+    (a) the National Plant Protection Organisation established under section 5; or
+    (b) a public authority or public officer of any other country charged with the
+        duty of administering the laws of that country with respect to the
+        importation, exportation and quarantine of plants; or
+    (c) for the treatment of goods in free circulation in the Economic Union Area
+        under Part VII, any regional body designated by the Organisation of Eastern
+        Caribbean States to regulate matters relating to the importation and
+        movement of plants, plant products, and related items;
+“confiscate” means to take a consignment into official custody for phytosanitary
+    reasons, and “confiscation” shall have a corresponding meaning;
+“consignment” means a quantity of plants, plant products or other regulated articles
+    being moved to or from Saint Christopher and Nevis and covered, when required,
+    by a single phytosanitary certificate;
+“Constitution” means the Saint Christopher and Nevis Constitution Order as set
+   out in the Fourth Schedule of the West Indies Act, Cap. 1.01 of the laws;
+“contain” means to apply phytosanitary measures in and around an affected area
+    to prevent the spread of a pest and containment shall have a corresponding
+    meaning;
+“container” means a box, bag, wrapper, covering or other receptacle in which any
+    plant, plant products or other regulated articles has been or is being transported;
+“contamination” means presence in a commodity, storage place, conveyance or
+    container of pests or other regulated articles not constituting an infestation;
+“control” means the suppression, containment or eradication of a pest population;
+“court” means the Magistrates’ Court or the High Court;
+“conveyance” means any vessel, aircraft, train, motor vehicle, cart, container, animal
+    or other thing that can be used to transport a plant, plant product, pest, beneficial
+    organism or other regulated article from one place to another;
+“Customs Act” means the Customs Act, Cap. 20.04 of the laws;
+                                    3
+                    Plant Protection Act, 2024 – 10.
+
+
+“customs officer” means a person designated as such under the Customs Act;
+“detain” means to keep a consignment in official custody or confinement for
+   phytosanitary reasons, and “detention” shall have a corresponding meaning;
+“Director of Audit” means the Director of Audit designated under section 82 of the
+    Constitution;
+“disinfect” means to sterilize, especially to destroy bacteria or fungus;
+“disinfest” means physical or chemical process to destroy or remove small
+    undesirable insects, rodents or other animal forms;
+“dispatch” means the movement of goods from one part of the Economic Union
+    Area to any other part of the Economic Union Area;
+“Economic Union” means the Eastern Caribbean Economic Union established
+   pursuant to Article 1 of the Protocol of the Eastern Caribbean Economic Union
+   of the Revised Treaty of Basseterre;
+“Economic Union Area” refers to the collective territorial jurisdictions of OECS
+   Protocol Member States;
+“Economic Union Protocol” means the Protocol to the Revised Treaty of
+   Basseterre entitled the Protocol of Eastern Caribbean Economic Union;
+“endangered area” means an area where ecological factors favour the establishment
+    of a pest whose presence in the area will result in economically important loss;
+“entry”—
+    (a) in relation to a pest, means the movement of a pest into an area where it is
+        not yet present, or present but not widely distributed and being officially
+        controlled;
+    (b) in relation to a consignment, means the movement of the consignment
+        through a point of entry into an area;
+“eradicate” means to apply phytosanitary measures to eliminate a pest from an
+    area, and “eradication” shall have a corresponding meaning;
+“establishment” means the perpetuation, for the foreseeable future, of a pest within
+    an area after entry;
+“export” means to take goods or cause goods to be taken outside Saint Christopher
+    and Nevis, to a third party country;
+“exporter” means any person who, whether as owner, consignor, consignee, agent
+    or broker, is in possession of, or in any way entitled to the custody or control
+    of any plant, plant product or regulated article exported from or to be exported
+    from Saint Christopher and Nevis;
+“free circulation” refers to the unhindered movement of goods within the Economic
+    Union Area, after these goods have entered into the Economic Union Area and
+    adhered to all applicable import formalities at the first point of entry of the
+    Economic Union Area, and “circulate freely” shall have a corresponding
+                                    4
+                    Plant Protection Act, 2024 – 10.
+
+
+    meaning. Goods in free circulation may still be subjected to applicable internal
+    taxes;
+ “germplasm” means a plant intended for use in breeding or conservation
+    programmes;
+“goods” includes any tangible property, including personal property, livestock,
+    conveyances, stores, baggage, documents (including in electronic form),
+    currency and mail and packets imported by post, and includes prohibited or
+    restricted goods. Plants, plant products and other regulated articles shall also
+    be considered as goods;
+“import” means to bring goods or cause goods to be brought into Saint Christopher
+   and Nevis from a third party country;
+“import permit” means an import permit issued under section 16;
+“importer” means anyone who, whether as owner, consignor, consignee, agent,
+   broker or otherwise, is in possession of or in any way entitled to the custody of
+   any plant, plant product, pest, beneficial organism or other regulated article
+   landed or likely to be landed in Saint Christopher and Nevis or any other part of
+   the Economic Union Area, from a third party country;
+“infestation” means presence of a living pest and “infested” shall have a
+    corresponding meaning;
+“inspection” means official visual examination of a plant, plant product or other
+    regulated article to determine if pests are present or to determine compliance
+    with phytosanitary regulations;
+“invasive alien species” means plants, animals, pathogens and other organisms
+    that are not native to an ecosystem and which may cause economic or
+    environmental harm or adversely affect human, plant or animal health;
+“IPPC” means the New Revised Text of the International Plant Protection Convention
+    approved by the Food and Agricultural Organisation Conference at its
+    29th session in November 1997, and entered into force in October 2005, as may
+    be amended from time to time;
+“IPPC Secretariat” means the Secretariat of the Commission on Phytosanitary
+   Measures established under the International Plant Protection Convention;
+“ISO/IEC 17025” means the standard containing general requirements for the
+   competence of testing and calibration laboratories issued by the International
+   Organisation for Standardization;
+“law enforcement officer” includes a police officer;
+“Minister” means the Minister responsible for agriculture;
+“Ministry” means the Ministry responsible for agriculture;
+“National Plant Protection Organisation” or “NPPO” means the Government unit,
+   department or office designated by the Minister under section 5, to discharge
+   the functions specified in the IPPC;
+                                    5
+                    Plant Protection Act, 2024 – 10.
+
+
+“OECS Member State” refers to a State or territory that possesses Associate
+  membership or full membership in the Organisation of Eastern Caribbean States
+  as contained in Schedule 1(A);
+“OECS Protocol Member State” refers to a State or territory that possesses
+   membership in the Organisation of Eastern Caribbean States and is party to the
+   Economic Union Protocol as contained in Schedule 1(B);
+“occupier”, in relation to any land or building, means a person in actual occupation
+    thereof;
+“official” means established, authorized or performed by the NPPO or by the
+    Minister;
+“official control” means the enforcement of mandatory phytosanitary regulations
+     and the application of mandatory phytosanitary procedures with the objective
+     of eradication or containment of quarantine pests or for the management of
+     regulated non-quarantine pests;
+“outbreak” means an isolated pest population, detected and expected to survive
+    for the immediate future;
+“owner” in relation to anything, includes any person having for the time being the
+   possession, custody or control thereof;
+“packaging” means any material used to pack, contain or keep a plant, plant
+   product or other regulated article;
+“person” means a natural person or a body corporate;
+“pest” means any species, strain or biotype of any plant, animal or pathogenic
+    agent injurious to a plant or plant product and includes—
+    (a) regulated quarantine pests;
+    (b) regulated non-quarantine pests; and
+    (c) non-regulated pests.
+“pest free area” means an area in which a specific pest does not occur as
+   demonstrated by scientific evidence and in which, where appropriate, this
+   condition is being officially maintained;
+“pest free place of production” means a place of production in which a specific pest
+    is absent as demonstrated by scientific evidence and in which, where
+    appropriate, this condition is being officially maintained for a defined period;
+“pest free production site” means a production site in which a specific pest is
+    absent, as demonstrated by scientific evidence, and in which, where appropriate,
+    this condition is being officially maintained for a defined period;
+“pest risk analysis” means the process of evaluating biological or other scientific
+    and economic evidence to determine whether a pest should be regulated and
+    the strength of any phytosanitary measures to be taken against it;
+“phytosanitary action” means an official operation such as inspection, testing,
+   surveillance or treatment, undertaken to implement phytosanitary measures;
+                                     6
+                     Plant Protection Act, 2024 – 10.
+
+
+“phytosanitary certificate” means an official paper document or its official electronic
+    equivalent, consistent with the model certificate of the IPPC attesting that a
+    consignment meets phytosanitary import requirements and issued under
+    section 24 (2) (a);
+“phytosanitary inspector” means a person appointed under section 8;
+“phytosanitary measure” means any legislation, regulation or official procedure
+   having the purpose of preventing the introduction or spread of quarantine
+   pests, or limiting the economic impact of regulated non-quarantine pests;
+“phytosanitary procedure” means any official method for implementing
+   phytosanitary measures including the performance of inspections, tests,
+   surveillance or treatments in connection with regulated pests;
+‘phytosanitary security” means the maintenance of the integrity of a consignment
+    and prevention of its infestation and contamination by regulated pests, through
+    the application of appropriate phytosanitary measures;
+“place of production” means any premises or collection of fields operated as a
+    single production or farming unit;
+“plant” means any living plant and the parts thereof, including a seed or germplasm;
+“plant product” means
+    (a) any un-manufactured material of plant origin, including grain; and
+    (b) a manufactured product which, by its nature or that of its processing, may
+        create a risk for the introduction and spread of a pest;
+“point of entry” means any port of entry designated as such under the Customs
+   Act;
+“pre-clearance” means phytosanitary certification or clearance in the country of
+    origin, performed by or under the regular supervision of the NPPO of the
+    country of destination;
+“premises” means any land, building or other structure or conveyance, or any
+    marine area;
+“prescribed” means prescribed by this Act or any regulations made under this Act;
+“production site” means a defined part of a place of production that is managed as
+    a separate unit for phytosanitary purposes;
+“quarantine” means official confinement of plants, plant products or other regulated
+   articles, pests, beneficial organisms, for inspection, testing, treatment,
+   surveillance, observation or research;
+“quarantine area” means an area where a quarantine pest is present and is being
+   officially controlled;
+“quarantine pest” means a pest of potential economic importance to the area
+   endangered thereby and not yet present there, or present but not widely
+                                    7
+                    Plant Protection Act, 2024 – 10.
+
+
+    distributed and being officially controlled, and declared as such by any Order
+    of the Minister;
+“quarantine station” means an official station for holding plants or plant products
+   or other regulated articles, including beneficial organisms, in quarantine;
+“re-export” means a consignment that has been imported into Saint Christopher
+    and Nevis and from which it is then exported, and includes a case where the
+    consignment may be stored, split up, combined with other consignments or
+    have its packing changed;
+“regular business hours” means the normal working hours of Government offices
+   in Saint Christopher and Nevis;
+“regulated article” means any plant, plant product, storage place, packaging,
+    conveyance, container, soil and any other organism, object or material capable
+    of harbouring or spreading pests, deemed to require phytosanitary measures,
+    particularly where international transportation is involved, and includes a
+    beneficial organism;
+“regulated non-quarantine pest” means any pest which is not a quarantine pest
+    and whose presence in a plant for planting affects the intended use of the plant
+    with an economically unacceptable impact and which is therefore regulated in
+    Saint Christopher and Nevis and declared as such by Order of the Minister;
+“regulated pest” means a quarantine pest or a regulated non-quarantine pest;
+“Revised Treaty of Basseterre” refers to the Revised Treaty of Basseterre
+   establishing the Organisation of Eastern Caribbean Economic Union signed
+   on June 18, 2010 in Gros Islet, Saint Lucia;
+“risk analysis” means a process composed of hazard identification, risk
+    assessment, risk management and risk communication in accordance with
+    internationally accepted procedures and standards;
+“risk assessment” means the processes of identifying and estimating the risks
+    associated with the importation, exportation and dispatch of a commodity and
+    evaluating the biological and economic consequences of those risks;
+“seize” means to take official custody of a consignment for phytosanitary reasons
+    and “seizure” shall have a corresponding meaning;
+“sell” includes to offer, advertise, keep, store, display, transmit, consign, convey
+     or deliver for sale, or to exchange or to dispose of to any person in any manner
+     whether for a consideration or otherwise, and “sold”, “selling” and “sale” shall
+     have corresponding meanings;
+“soil” means material wholly or partly derived from the upper layer of the earth’s
+    crust which is capable of sustaining plant life and which contains solid organic
+    substances such as parts of a plant, humus, peat or bark, but excluding any
+    medium which is sterile, composed entirely of unused peat or otherwise incapable
+    of harbouring or transmitting pests;
+                                             8
+                               Plant Protection Act, 2024 – 10.
+
+
+         “SPS Agreement” means the Agreement on the Application of Sanitary and
+            Phytosanitary Measures entered into force with the establishment of the World
+            Trade Organisation on January 1, 1995, as may be amended from time to time;
+         “staff” includes the Chief Plant Quarantine Officer of the NPPO;
+         “suppression” means the application of phytosanitary measures in an infested
+             area to reduce a pest population;
+         “surveillance” means an official process which collects and records data on pest
+             occurrence or absence by survey, monitoring or other procedures;
+         “third party country” means a country other than an OECS Protocol Member
+             State;
+         “this Act” means this Act and any schedules, regulations, orders or notices made
+             under it;
+         “transhipment” means the customs procedure under which imported goods are
+             transferred under customs control from the importing means of conveyance to
+             the exporting means of conveyance within one customs area office, which is
+             the area of both importation and exportation and “tranship” shall have a
+             corresponding meaning;
+         “transit” means the customs procedure under which imported goods are transferred
+             under customs control from the point of entry to another port for exportation,
+             and also refers to the action of transferring imported goods under customs
+             control from the point of entry to another port for exportation;
+         “treatment” means an officially authorized procedure for the killing or removal of
+             pests or rendering pests infertile or for devitalization.
+         “unhindered movement of goods” refers to the ability of goods to move within the
+             Economic Union Area with no intervention by customs authorities;
+         “un-manifested” has the same meaning as in the Customs Act, Cap. 20.04;
+
+3.   Application of Act to plants, plant products and other regulated articles in free
+     circulation.
+     For the purpose of the dispatch of any plants, plant products and other regulated
+articles in free circulation from St. Christopher and Nevis to another OECS Protocol Member
+State, the provisions of this Act apply with the necessary modification to the plants, plant
+products and other regulated articles, as those provisions apply to the movement of any
+plants, plant products and other regulated articles from one part to another part of
+St. Christopher and Nevis.
+                                          PART II
+                                    ADMINISTRATION
+4.   Powers of the Minister.
+     (1) The Minister shall have primary responsibility for the administration of this Act.
+                                               9
+                              Plant Protection Act, 2024 – 10.
+
+
+     (2) The Minister may, in consultation with relevant public authorities —
+         (a) designate the Ministry, department, unit or office that will serve as the National
+             Plant Protection Organization;
+         (b) designate official laboratories and national reference laboratories and
+             quarantine stations for the purposes of this Act;
+         (c) declare a quarantine area and a pest free area;
+         (d) liaise with other OECS Member States’ Ministers, as necessary, to advance
+             the implementation of the Eastern Caribbean Economic Union and the
+             provisions of Part VI; and
+5.   Establishment and designation of the NPPO.
+    (1) There is hereby established a National Plant Protection Organisation in the Ministry
+which shall be headed by the Chief Plant Quarantine Officer.
+    (2) The Chief Plant Quarantine Officer shall be a public officer appointed in accordance
+with the provisions of section 78 of the Constitution.
+     (3) The Minister shall designate a Government unit, department or office to serve as
+the National Plant Protection Organisation, and shall transmit the name of that unit, department
+or office to the IPPC Secretariat.
+     (4) The Public Service Commission may appoint individuals from time to time to serve
+as officers of the National Plant Protection Organisation.
+6.   Functions of the NPPO.
+     (1) The functions of the National Plant Protection Organisation shall include—
+         (a) preventing and controlling the entry and establishment of regulated pests and
+             the spread of regulated pests, including invasive alien species of agricultural
+             concern;
+         (b) issuing import permits and phytosanitary certificates for export, re-export, transit,
+             transhipment or dispatch and any other official documentation as required by
+             this Act;
+         (c) carrying out surveillance of any growing plant, including areas under cultivation
+             and wild flora, and of any plant and plant product in storage or in transport, for
+             the purpose of reporting the occurrence, outbreak and spread of pests, and of
+             controlling those pests;
+         (d) in collaboration with CAHFSA and the competent authorities for plant
+             protection in OECS Protocol Member States, developing a list of regulated
+             pests and a list of regulated articles;
+         (e) inspecting and testing any consignment of a plant and plant product and,
+             where appropriate, inspecting any other regulated article, for the purpose of
+             preventing the introduction and spread of pests;
+         (f) requiring phytosanitary action as conditions or prohibitions of import of plants
+             and plant products and other regulated articles;
+                                    10
+                    Plant Protection Act, 2024 – 10.
+
+
+(g) conducting pre-clearance inspections where requested;
+(h) disinfesting or disinfecting consignments of any plant, plant product and other
+    regulated article;
+(i) protecting endangered areas, and designating, maintaining and surveying pest
+    free areas, pest free places of production and pest free production sites, and
+    areas or places of production of low pest prevalence;
+(j) conducting pest risks analyses and determining acceptable risk levels;
+(k) making determinations of quarantine areas, pest free areas and endangered
+    areas and buffer zones;
+(l) developing pest diagnostics, investigative and analytical capabilities and
+    establishing official laboratories for testing;
+(m) notifying phytosanitary measures to other countries in accordance with
+    international obligations and providing information to other countries
+    concerning phytosanitary measures applied, either through pest risk analysis
+    or by reference to applicable international standards, and providing information
+    regarding the phytosanitary status of an area or Saint Christopher and Nevis;
+(n) notifying trading partners of relevant instances of non-compliance with import
+    requirements that may be prescribed;
+(o) ensuring the phytosanitary security of consignments after certification and
+    before export;
+(p) establishing auditing and trace-back procedures for any plant, plant product
+    and other regulated article for phytosanitary certification;
+(q) establishing minimum qualifications for and overseeing training and
+    development of phytosanitary inspectors and other NPPO staff;
+(r) distributing information regarding regulated pests and the means of their
+    prevention and control;
+(s) preparing, approving, reviewing and enforcing phytosanitary measures and
+    legislation, and providing the same for public comment;
+(t) representing Saint Christopher and Nevis in bilateral, regional and international
+    forums related to phytosanitary matters;
+(u) establishing and implementing certification programmes for planting material
+    and plant products and plant-growing establishments;
+(v) establishing procedures for the approval of any quarantine station, official
+    laboratory or any other person or institution from the public or private sector
+    involved in the implementation of phytosanitary functions;
+(w) distributing information on procedures and processes to ensure appropriate
+    levels of protection of plant, plant product and other regulated articles;
+(x) implementation of the provisions of the IPPC and SPS Agreement, where relevant
+    for Saint Christopher and Nevis;
+                                              11
+                              Plant Protection Act, 2024 – 10.
+
+
+         (y) developing an alert system for notifying CAHFSA and the IPPC of the entry,
+              establishment and spread of regulated pests and invasive alien species and of
+              the NPPO’s activities to combat the entry, establishment and spread;
+         (z) the enforcement of this Act, as well as of any other legislation relating to plant
+             protection as the Minister may direct; and
+         (aa) any other function that the Minister considers necessary for the purposes of
+              this Act.
+7.   Delegation of functions of the NPPO.
+    (1) Subject to subsection (4), the functions of the NPPO may be delegated in writing, to
+any duly qualified individual or public or private entity to perform any functions of the NPPO
+under this Act.
+    (2) The procedures for making a delegation under this section shall be prescribed by
+regulations.
+     (3) The written agreement between the Authority and the individual, private or public
+entity to which a function has been delegated under this section shall detail the terms and
+conditions of such delegation, including at least the following—
+         (a) the scope of any delegated functions to be performed including the duration
+             and the geographic area to be covered by such services;
+         (b) remuneration arrangements, where the delegate is a private individual or private
+             entity;
+         (c) the means of supervision by the Authority;
+         (d) the minimum qualifications required to perform the delegated function; and
+         (e) the conditions of withdrawal of the delegation.
+     (4) The NPPO shall not delegate any of the following functions—
+         (a) issuing of permits and certificates;
+         (b) notifying phytosanitary measures to other countries and providing information
+             to other countries concerning phytosanitary measures applied;
+         (c) liaising with trading partners in relation to compliance issues;
+         (d) implementing the provisions of the IPPC and SPS Agreement;
+         (e) developing of an alert system;
+         (f) the NPPO’s enforcement duties under this Act;
+         (g) advising of the Minister in the exercise of his powers under section 4 (2);
+         (h) approval of phytosanitary measures or requirements; and
+         (i) other functions as may be prescribed by regulations.
+8.   Appointment of phytosanitary inspectors.
+     The Public Service Commission may appoint or designate any officer of the NPPO with
+the prescribed qualifications to carry out the duties assigned to a phytosanitary inspector
+under this Act.
+                                             12
+                             Plant Protection Act, 2024 – 10.
+
+
+9.   Investigative powers of a phytosanitary inspector
+    (1) For the purposes of investigating any matter in the discharge of his or her functions
+under this Act, a phytosanitary inspector may—
+         (a) enter and inspect or search any area or premises for the purpose of examining
+             any plants, plant products or regulated articles under cultivation, in storage,
+             on display or in transport to report the presence of regulated pests, and for that
+             purpose, may—
+             (i) demand any information or documentation regarding any plants, plant
+                 products or regulated articles from the owner or person in charge of such
+                 area or premises, including official documents;
+             (ii) take samples in the prescribed manner of any plant, plant product or other
+                  regulated article and submit it to an official laboratory for testing;
+             (iii) weigh, count, measure, mark, open, take photographs, read any values of
+                   any instruments and take samples in the prescribed manner of anything
+                   on the premises or in a conveyance and submit it to an official laboratory
+                   for analysis, or secure or prohibit access to the same;
+             (iv) inspect any operation, process or system used or carried out on such
+                  premises;
+         (b) stop and search any conveyance, on land or at sea, in which plants, plant
+             products or other regulated articles are being or are suspected of being
+             transported, packed, packaged, stored or sold;
+         (c) stop and search any person, where the phytosanitary inspector has reasonable
+             grounds to believe an offence under this Act has been or is being committed;
+         (d) conduct inquiries upon suspicion that the provisions of this Act have been or
+             are being violated.
+    (2) A phytosanitary inspector may only exercise the powers in subsection (1) with the
+consent of the owner or person in charge of any area or premises, or in the absence of such
+consent, on the basis of a warrant issued by a magistrate.
+     (3) A phytosanitary inspector exercising his or her powers under this section—
+         (a) shall identify himself or herself as a phytosanitary inspector by showing his or
+             her identification card or other proof of his or her appointment or designation
+             as a phytosanitary inspector;
+         (b) may request the presence and assistance of a law enforcement officer as he or
+             she considers necessary.
+10. Designation of official and national reference laboratories.
+     (1) For the purposes of this Act, the Minister shall designate any diagnostic, research
+or other laboratory to be an official laboratory or a national reference laboratory.
+    (2) A laboratory designated under subsection (1) (a) shall meet the requirements
+prescribed in ISO/IEC17025.
+                                              13
+                              Plant Protection Act, 2024 – 10.
+
+
+    (3) The functions of a national reference laboratory shall be to—
+         (a) serve as a reference laboratory for comparative testing in the case of conflicting
+             laboratory test results or in the case of contested results and ensure an
+             appropriate follow-up of such comparative testing;
+         (b) collaborate with official laboratories in their area of competence;
+         (c) ensure the dissemination to official laboratories of information relating to testing
+             procedures in relation to food safety;
+         (d) provide scientific and technical assistance to the NPPO for the implementation
+             of this Act; and
+         (e ) carry out such other duties as may be set out in regulations under this Act.
+11. Plant protection coordination mechanisms.
+    The NPPO may establish ad-hoc or permanent committees to foster coordination among
+public entities or between public and private entities or for the purposes of scientific advice,
+as necessary, on phytosanitary matters.
+12. Phytosanitary Emergency Fund.
+    (1) There is established a Phytosanitary Emergency Fund (hereinafter the “Fund”)
+which shall be a special fund within the meaning of the Finance Administration Act.
+    (2) There shall be paid into the Fund—
+         (a) all monies voted by the National Assembly for the purposes of dealing with
+             phytosanitary emergency measures under this Act;
+         (b) donations, grants, awards and endowments by regional and international bodies
+             intended for the purpose of phytosanitary emergencies; and
+         (c) any other donation which shall be pre-approved by the Minister.
+    (3) The resources of the Fund shall be made available to the NPPO on declaration of a
+phytosanitary emergency under section 34, in accordance with section 13 (4).
+    (4) The NPPO shall keep record of all expenditure from resources made available to it
+under subsection (3) and, within three months of revocation of the status of phytosanitary
+emergency, present to the Phytosanitary Emergency Fund Committee, an account of all
+expenditure in relation to the phytosanitary emergency in question.
+13. Phytosanitary Emergency Fund Committee.
+   (1) There is established a Phytosanitary Emergency Fund Committee (hereinafter the
+“Committee”) which shall have responsibility for the administration of the Fund.
+    (2) The Committee shall comprise—
+         (a) the Permanent Secretary in the Ministry responsible for agriculture, who shall
+             be the chairperson;
+         (b) the Senior Finance Officer in the Ministry responsible for finance;
+         (c) National Disaster Coordinator;
+                                              14
+                             Plant Protection Act, 2024 – 10.
+
+
+         (d) The Director of Agriculture; and
+         (e) Director of Disaster Management.
+    (3) The Committee shall convene—
+         (a) immediately upon the declaration of a phytosanitary emergency under
+             section 34;
+         (b) at such other times as the Committee may consider appropriate, for matters
+             relating to the administration of the Fund.
+    (4) The Committee shall authorise expenditure from the Fund under section 12(3) upon
+presentation to the Committee by the NPPO of—
+         (a) an emergency response plan; and
+         (b) a provisional budget detailing the quantum of funds required and how the
+             funds are to be allocated.
+    (5) Except as provided in this section, the Committee shall regulate its own procedure.
+14. Audit and reporting.
+     (1) The Committee shall prepare and keep proper accounting records of all transactions
+in relation to the Fund.
+    (2) The Committee shall—
+         (a) cause the Fund to be audited annually by the Director of Audit; and
+         (b) as soon as possible after the end of each financial year, but not later than
+             4 months, submit to the Minister, a report containing—
+              (i) a detailed account of all transactions and activities in relation to the Fund
+                  during the financial year; and
+              (ii) a statement of the audited accounts certified by the Director of Audit; and
+              (iii) any further relevant information respecting the Fund and the results of
+                    any emergency operations financed from the Fund.
+     (3) The Minister shall cause a copy of the report in subsection (5) (b) to be laid before
+Parliament within 3 months of receipt of the report.
+15. Principles for the approval and implementation of phytosanitary measures.
+    The phytosanitary measures approved by the NPPO under this Act shall take into
+consideration the following principles—
+         (a) harmonisation with international standards;
+         (b) risk analysis or risk assessment and science-based actions; and
+         (c) being least-trade restrictive, necessary and proportional to the risk.
+                                              15
+                              Plant Protection Act, 2024 – 10.
+
+
+                                          PART III
+                                         IMPORTS
+16. Import permit.
+     (1) Any person intending to import a plant, plant product or other regulated article
+shall require an import permit issued by the NPPO.
+    (2) Where an import permit is required, an importer shall apply to the NPPO for an
+import permit in such manner as may be prescribed by regulations and accompanied by the
+prescribed fee.
+     (3) In evaluating an application for an import permit, the NPPO shall apply existing
+international standards, conduct a pest risk analysis or risk assessment, and shall—
+         (a) approve the application where it meets prescribed requirements; and issue an
+             import permit in the form set out in Schedule 2; or
+         (b) deny the application where it fails to meet prescribed requirements
+informing the applicant in writing of the decision.
+     (4) The NPPO may review, modify or revoke an import permit for a plant, plant product
+or other regulated article at any time by written notice in the following circumstances—
+         (a) where the type or quantity of the plant, plant product or other regulated article
+             has changed;
+         (b) where there is a change in pest status of the country of export;
+         (c) where the country of origin has changed; or
+         (d) where the import permit has expired.
+17. Restrictions on importation.
+     (1) A plant, plant product or other regulated article may be imported only at a point of
+entry.
+    (2) A person shall not import a plant, plant product or other regulated article except—
+         (a) by virtue of an import permit where required, granted under section 16;
+         (b) where accompanied by:
+              (i) a phytosanitary certificate issued by the country of export and
+              (ii) any other documentation that may be prescribed; and for the purposes of
+                   this section, the phytosanitary certificate must be an original or certified
+                   copy or electronic copy in the prescribed format; and
+         (c) where all prescribed requirements are satisfied.
+     (3) An import of a plant, plant product or other regulated article that does not comply
+with the phytosanitary requirements established by the NPPO shall be prohibited from entry
+into Saint Christopher and Nevis.
+    (4) Phytosanitary requirements and phytosanitary measures issued by the NPPO shall
+be based on pest risk analysis or otherwise be based on existing international standards.
+                                              16
+                              Plant Protection Act, 2024 – 10.
+
+
+     (5) As conditions change or as new facts become available, where, in the view of the
+NPPO, the change in conditions or new facts warrant a change in circumstances, the NPPO
+shall, without undue delay, modify or revoke phytosanitary requirements and phytosanitary
+measures as well as prohibitions.
+    (6) The NPPO may negotiate bilateral and multilateral agreements for the evaluation
+and possible acceptance of alternative phytosanitary measures proposed by an exporting
+country’s Competent Authority as being equivalent to the phytosanitary measures required
+under this Act.
+     (7) The NPPO shall communicate to the Minister, the phytosanitary requirements,
+measures and prohibitions under this Act for publication in the Gazette and at ports of
+entry.
+    (8) Any person arriving in Saint Christopher and Nevis and bringing any plant, plant
+product or other regulated article shall declare the same to the customs officer upon arrival.
+     (9) Any unclaimed or un-manifested plant, plant product or other regulated article
+shall be detained.
+18. Inspection for importation.
+    (1) Any plant, plant product or other regulated article imported into Saint Christopher
+and Nevis, shall be subject to inspection by a phytosanitary inspector at the point of entry.
+   (2) Notwithstanding subsection (1), a plant, plant product or other regulated article
+may be inspected by a phytosanitary inspector—
+         (a) at a quarantine station or other approved facility; or
+         (b) at any other location—
+              (i) on application by an importer, and
+              (ii) if the container has been sealed and marked as prescribed.
+     (3) An inspection carried out under subsection (1) or (2) is subject to the payment of
+the prescribed fee.
+    (4) An inspection referred to in subsection (1) or (2) shall be carried out during regular
+business hours, except where the plant, plant product or other regulated article is in transit
+or extremely perishable or where its entry has otherwise been delayed, in which case, on
+application by the importer and on payment of the prescribed fee, the NPPO may agree to an
+inspection being carried out at another time.
+    (5) The NPPO may establish specific modalities as agreed through bilateral or other
+agreements, to carry out pre-shipment inspections in the country of origin.
+19. Phytosanitary actions on imports.
+    (1) On an inspection carried out in accordance with section 18, where the phytosanitary
+inspector determines that the imported plant, plant product or other regulated article—
+         (a) is not accompanied by the prescribed documentation, or
+         (b) presents any risk for the introduction or spread of pests,
+                                               17
+                               Plant Protection Act, 2024 – 10.
+
+
+the phytosanitary inspector shall inform the CPQO in a written report and detain the item and
+immediately issue a written notice to the importer that part or all of the imported plant, plant
+product or other regulated article may be subject, within the time period specified in the
+notice, to—
+              (i) detention until the receipt of relevant documentation within a reasonable
+                  time;
+              (ii) testing;
+              (iii) phytosanitary treatment in order to remove the risk;
+              (iv) removal to a quarantine station or other approved facility;
+              (v) sorting or re-configuring;
+              (vi) re-exportation;
+              (vii) re-shipment to the country of origin;
+              (viii) confiscation;
+
+              (ix) destruction; or
+              (x) any other conditions prescribed by the Minister.
+     (2) The grounds for rejecting a phytosanitary certificate or for requesting additional
+information shall be as prescribed by regulation.
+     (3) The phytosanitary inspector may forego advance notice and carry out any of the
+actions listed under subsection (1) where in his or her opinion destruction of the imported
+plant, plant product or other regulated article is urgently required or the giving of notice is
+impracticable.
+     (4) The phytosanitary inspector shall provide reasons in writing to the NPPO and to
+the importer for any action taken in implementation of this section.
+     (5) Where, after its entry into Saint Christopher and Nevis or after treatment, any
+imported plant, plant product or other regulated article remains unclaimed for a period of time
+as may be prescribed, the NPPO may take action to destroy the imported plant, plant product
+or other regulated article.
+     (6) The costs and responsibility for any action taken under subsection (1), (3) or (5)
+shall be borne by the importer and legal proceedings may be instituted for that purpose.
+    (7) Where any action is taken under subsection (1), (3) or (5), the method used to
+calculate costs charged shall be in accordance with the prescribed procedure.
+     (8) The NPPO shall notify the IPPC or the Competent Authority in the country of export
+of instances of interception, emergency actions and non-compliance where required.
+     (9) The NPPO and its officers shall not be liable for the confiscation, destruction or
+disposal of any plant, plant product or other regulated article carried out in accordance with
+this section.
+                                               18
+                              Plant Protection Act, 2024 – 10.
+
+
+20. Release of imports.
+     On an inspection carried out under section 18, where the phytosanitary inspector
+determines that the imported plant, plant product or other regulated article does not present
+any risk for the importation and spread of pests, and otherwise complies with the requirements
+of this Act, he or she shall immediately release the consignment for processing by the
+St. Kitts and Nevis Customs and Excise Department by written notice as set out in the
+prescribed form to be served on the importer.
+21. Restriction of certain imports.
+   In order to protect plant resources, human and animal health or the environment, the
+NPPO may—
+         (a) allow the entry into Saint Christopher and Nevis of any plant, plant product or
+             other regulated article for scientific or experimental purposes or in the case of
+             a natural disaster for humanitarian purposes, subject to such terms and
+             conditions that the NPPO, considers appropriate;
+         (b) where temporary measures are necessary, prohibit or restrict the entry of any
+             plant, plant products or other regulated article;
+         (c) take any other necessary action to prevent the introduction or spread of a
+             quarantine pest or a regulated non-quarantine pest.
+22. Plant quarantine stations and other facilities.
+    (1) The NPPO shall—
+         (a) recommend to the Minister the designation of certain places as plant quarantine
+             stations where a plant, plant product or other regulated article may be kept for
+             phytosanitary observation, research, inspection, testing, treatment, detention
+             or destruction;
+         (b) require that imported material be kept or cultivated at a plant quarantine station,
+             or at any other location identified by the NPPO, and kept under the NPPO’s
+             supervision for such time as the NPPO considers necessary;
+         (c) recommend to the Minister the designation of certain places for the purpose of
+             inspection and the approval of facilities owned and operated by public or
+             private third parties to be used for inspections.
+     (2) Upon the recommendation of the NPPO pursuant to subsection (1), the Minister
+shall by Order, designate places as quarantine stations or places for the purposes of inspection,
+as the case may be.
+23. Arrival Notification.
+     (1) An employee of the St. Kitts and Nevis Postal Service or an official of the St. Kitts
+and Nevis Customs Authority, St. Kitts and Nevis Air and Sea Ports Authority, the Royal
+Saint Christopher and Nevis Police Force, or St. Kitts and Nevis Defence Force, Coast Guard,
+or a public health inspector who has knowledge of the arrival or importation of any plant,
+plant product or other regulated article, shall, in the absence of a phytosanitary inspector—
+         (a) as soon as practicable, notify the arrival or importation to the NPPO;
+                                              19
+                              Plant Protection Act, 2024 – 10.
+
+
+         (b) detain the plant, plant product or other regulated article for inspection by a
+             phytosanitary inspector; and
+         (c) not release or dispose of the plant, plant product or other regulated article
+             unless so authorised by a phytosanitary inspector.
+    (2) A detention carried out under subsection (1) shall be deemed to be an action taken
+by or on delegation from the NPPO.
+    (3) The NPPO shall take custody of any item detained under subsection (1) within
+3 business days of its detention.
+
+
+                                          PART IV
+  EXPORTS, RE-EXPORTS, TRANSHIPMENT AND CONSIGNMENTS IN TRANSIT
+24. Export
+     (1) Where an importing country requires the issuance of a phytosanitary certificate,
+treatment or testing before authorising the import of a plant, plant product or other regulated
+article from Saint Christopher and Nevis, the exporter in Saint Christopher and Nevis shall—
+         (a) apply to the NPPO for a phytosanitary certificate on form 3 as set out in
+             Schedule 3
+              (i) at least two days before; but
+              (ii) no more than 5 days in advance
+              of the intended day of exportation;
+         (b) provide to the NPPO all documentation that is prescribed including the intended
+             date of export;
+         (c) make the consignment available for inspection; and
+         (d) pay the prescribed fees.
+    (2) The NPPO shall, on application by an exporter under subsection (1), inspect the
+consignment without undue delay and shall—
+         (a) issue a phytosanitary certificate, in the form prescribed in Schedule 3, where
+             the consignment—
+              (i) meets the documentary and other phytosanitary import requirements of
+                  the country to which the consignment is to be exported; and
+              (ii) satisfies any other requirements for export specified by the NPPO or under
+                   any applicable enactment; or
+         (b) deny the issue of a phytosanitary certificate where the requirements specified
+             in paragraph (a) have not been met.
+   (3) The phytosanitary certificate referred to in subsection (1) shall be issued by the
+NPPO within 72 hours of the intended day of export.
+                                              20
+                              Plant Protection Act, 2024 – 10.
+
+
+     (4) After the issuance of a phytosanitary certificate under subsection (2)(a), the exporter
+shall export the consignment in compliance with any conditions required by the NPPO in
+order to maintain the phytosanitary security and physical integrity of a consignment.
+25. Re-export.
+     (1) Where a consignment of plants, plant products or other regulated articles is imported
+and the exporter is desirous of re-exporting that consignment or any part of that consignment,
+the exporter shall—
+         (a) apply to the NPPO for a re-export phytosanitary certificate
+              (i) at least two days before; but
+              (ii) no more than 5 days in advance
+              of the intended day of re-exportation;
+         (b) provide all prescribed documentation including the intended day of
+             re-exportation;
+         (c) make the consignment available for phytosanitary inspection; and
+         (d) pay the prescribed fee.
+    (2) Upon receipt of an application by a re-exporter in subsection (1), the NPPO shall
+carry out a phytosanitary inspection of the consignment.
+    (3) Where the inspection reveals that the consignment is not infested and that the
+documents comply with the phytosanitary requirements of the country of destination, the
+NPPO shall issue a re-export phytosanitary certificate in the form prescribed in Schedule 4.
+   (4) A re-export phytosanitary certificate under subsection (3) shall be issued by the
+NPPO within 72 hours of the intended day of export.
+     (5) Notwithstanding the provisions of subsections (1) and (4), no applications for
+re-exportation shall be processed on the intended day of exportation.
+    (6) After the issuance of a re-export phytosanitary certificate under subsection (3), the
+exporter shall re-export the consignment in compliance with any conditions required by the
+NPPO for maintaining the phytosanitary security and physical integrity of the consignment.
+     (7) All original or certified copies of documentation and phytosanitary certificates
+from the country of origin shall accompany consignments to be re-exported under this
+section.
+    (8) Where a consignment for re-export has, in Saint Christopher and Nevis—
+         (a) been exposed to infestation or contamination;
+         (b) lost its phytosanitary security or physical integrity; or
+         (c) been processed to change its nature,
+the NPPO shall issue a phytosanitary certificate which indicates the country of origin and
+includes the original documentation.
+                                             21
+                              Plant Protection Act, 2024 – 10.
+
+
+26. Transhipment and consignments in transit.
+     (1) Any person wishing to transit or tranship a consignment of plants, plant products
+or other regulated articles through Saint Christopher and Nevis shall apply to the NPPO in
+the prescribed form accompanied by the prescribed fee for transit authorisation or
+transhipment authorisation, as the case may be.
+     (2) In evaluating an application for transit authorisation or transhipment authorisation,
+the NPPO shall apply the prescribed standards, conduct the relevant risk assessment, and
+shall—
+         (a) approve the application where it meets prescribed requirements and issue the
+             authorisation; or
+         (b) deny the application where it fails to meet prescribed requirements, informing
+             the applicant in writing of the reasons for the decision.
+     (3) Phytosanitary requirements shall not apply to a consignment in transit or being
+transhipped through Saint Christopher and Nevis if—
+         (a) the consignment has been packed so as not to permit any risk of the spread of
+             regulated pests that might be present in the consignment;
+         (b) the consignment and the accompanying documents comply with the
+             phytosanitary requirements of the country of destination; and
+         (c) the consignment is accompanied by the phytosanitary certificate of the country
+             of origin.
+     (4) The Minister may make regulations prescribing procedures for transhipment and
+transit of plants, plant products or other regulated articles.
+                                          PART V
+                                  CONTROL OF PESTS
+27. Phytosanitary control measures.
+     (1) Any area or premises that is infested or suspected to be infested by a regulated
+pest, as well as any pest free area, pest free place of production, pest free production site,
+area of low pest prevalence or buffer zone may be subject to the following phytosanitary
+actions—
+         (a) treatment or disposal of plants, plant products or other regulated articles,
+             including the treatment of conveyances whether or not they have been found
+             to be infested, in order to limit the spread of the quarantine pest, keep the area
+             free from a specific pest or keep the level of a pest low, as the case may be;
+         (b) mandatory pest control treatment;
+         (c) prohibition or restriction of the movement of any plant, plant product or other
+             regulated article within, from or to the area or zone;
+         (d) prohibition of planting or replanting specific plants in a specified location; or
+         (e) any other phytosanitary action which the NPPO deems necessary.
+                                               22
+                              Plant Protection Act, 2024 – 10.
+
+
+    (2) In applying phytosanitary control measures under subsection (1) the NPPO shall
+be guided by IPPC protocols and apply any control measures proportionally, taking into
+account the following
+         (a) nature of the site;
+         (b) area or zone where the control measures are being applied; and
+         (c) the severity of the threat posed by the pest present in the site, area or zone.
+28. Declaration of regulated pests.
+    (1) The Minister may, on the advice of the NPPO, by Order published in the Gazette,
+declare a pest to be a regulated pest, based on pest risk analysis.
+    (2) The NPPO shall maintain and periodically review and submit to the Minister for
+approval, the list of regulated pests and shall communicate the list of regulated pests and
+any subsequent amendments to the same, to the Minister for approval and to the IPPC
+Secretariat.
+     (3) The NPPO shall, upon request by international or regional organisations or other
+national plant protection organisations, provide the list of regulated pests.
+29. Duty of occupier or owner to notify NPPO.
+     (1) The occupier or owner of any premises, who has knowledge of or suspects the
+presence of a regulated pest thereon, shall immediately notify the NPPO or an extension
+officer.
+     (2) Where the notification in subsection (1) is given to an extension officer, the extension
+officer to whom notice is given, shall immediately convey the information to the NPPO.
+30. Declaration of provisional quarantine.
+    (1) Where a phytosanitary inspector reasonably believes that a quarantine pest may
+be present in any area or premises, he or she may—
+         (a) enter into such area or premises in accordance with section 45;
+         (b) inspect any plants, plant products or other regulated articles;
+         (c) take such samples as he or she may consider necessary to verify the presence
+             of the quarantine pest;
+         (d) take any other action under section 45 as the phytosanitary inspector believes
+             is required;
+         (e) declare such area or premises to be under provisional quarantine.
+    (2) Upon a declaration made under subsection (1)(e), the NPPO—
+         (a) may take emergency phytosanitary measures; and
+         (b) shall within the prescribed period either—
+              (i) advise the Minister in accordance with section 31; or
+              (ii) revoke the declaration of provisional quarantine.
+    (3) A phytosanitary inspector exercising his or her powers under this section may
+request the presence and assistance of a police officer as he or she considers necessary.
+                                             23
+                             Plant Protection Act, 2024 – 10.
+
+
+31. Declaration of quarantine.
+     (1) Upon confirmation of the presence of a quarantine pest under section 30, the
+Minister shall, on the advice of the NPPO and in consultation with the Ministers responsible
+for health and the environment —
+         (a) declare any premises or area that is affected, or reasonably suspected of
+             being affected with any quarantine pest to be under quarantine;
+         (b) prescribe measures for the treatment or disposal of a plant, plant product or
+             other regulated article, and the treatment of a conveyance whether or not it
+             has been found to be infested, in order to limit the spread of any quarantine
+             pest;
+         (c) prescribe the period of quarantine;
+         (d) declare a buffer zone in relation to the quarantine area; and
+         (e) specify any conditions for subsequent renewals of the declaration.
+32. Procedure when quarantine pest is on premises.
+    (1) Where the NPPO reasonably suspects that a quarantine pest may be present on
+any premises, the NPPO may—
+         (a) instruct a phytosanitary inspector to—
+             (i) enter the premises,
+             (ii) inspect any plant, plant product or other regulated article on the premises,
+                  and
+             (iii) take any sample as he or she may consider necessary; and
+         (b) require, by notice in writing, the owner or occupier of the premises, and where
+             the NPPO deems it appropriate, the owner or occupier of any premises in the
+             vicinity, to take within a specified period such measures on his or her premises
+             that the NPPO considers appropriate to eradicate, contain or restrict the spread
+             of the pest.
+     (2) Where an owner or occupier of premises fails to comply with any term of a notice
+issued under subsection (1), the NPPO may direct a phytosanitary inspector or other
+authorised person to enter the premises in question in order to carry out the requirements
+of the notice and, where necessary, destroy the plant, plant product or other regulated
+article in order to eradicate, contain or restrict the spread of the pest.
+    (3) The owner of the plant, plant product or other regulated article shall be liable to
+pay the costs for any action taken under subsection (2).
+     (4) Notwithstanding subsection (3), Saint Christopher and Nevis shall pay the costs
+for actions taken under subsection (2), if the NPPO is satisfied that the actions qualify
+under any ground of food security or other public good as prescribed by regulations,
+without prejudice to the right of Saint Christopher and Nevis to recover the costs from the
+owner as a civil debt.
+                                              24
+                              Plant Protection Act, 2024 – 10.
+
+
+     (5) Where the NPPO takes any action under subsection (2) the method used to calculate
+the costs shall be as prescribed.
+     (6) Saint Christopher and Nevis and the NPPO shall not be liable for the destruction or
+disposal of any plant, plant product or other regulated article carried out in accordance with
+this section.
+    (7) A phytosanitary inspector exercising his or her powers under this section may
+request the presence and assistance of a police officer as he or she considers necessary.
+33. Duration of quarantine notice.
+     (1) Any notice issued under section 32 (1) (b) shall remain in force until a phytosanitary
+inspector gives the owner or occupier of the premises a certificate in writing that the premises
+or area is free from pests.
+     (2) A person shall not remove, or allow or cause to be removed any plant, plant product
+or other regulated article from the premises or area under quarantine in the period for which
+a notice under section 32 (1) (b) is in force.
+34. Declaration of phytosanitary emergency.
+    (1) The Minister may, where there is a grave threat to plant resources or food security
+and on the advice of the NPPO, declare a phytosanitary emergency on the basis of risk
+analysis and upon evidence obtained from—
+         (a) an inspection or surveillance carried out under this Act; or
+         (b) an analysis of a sample taken under section 30(1) (c) or section 32(1)(a)(iii).
+    (2) A phytosanitary emergency declaration under this section shall—
+         (a) enable the application of phytosanitary measures and responses by the NPPO
+             in the manner specified in a phytosanitary emergency plan;
+         (b) be time-bound and subject to periodic review and evaluation as shall be
+             prescribed by regulation and in the phytosanitary emergency plan.
+35. Lifting of quarantine.
+     (1) The NPPO shall regularly review the situation in respect of any quarantine area and
+as soon as the NPPO determines that—
+         (a) the relevant quarantine pest is no longer present; or
+         (b) it is no longer appropriate for the quarantine to be maintained in respect of part
+             or all of the area or premises;
+         the NPPO shall—
+              (i) advise the Minister to revoke the declaration of quarantine; and
+              (ii) upon revocation by the Minister, shall serve written notice on every owner
+                   or occupier of the area or premises of the revocation of the declaration of
+                   quarantine.
+                                              25
+                              Plant Protection Act, 2024 – 10.
+
+
+36. Declaration of pest free area or area of low pest prevalence.
+   (1) The Minister may, on the recommendation of the NPPO declare a pest free area if the
+NPPO is satisfied that—
+         (a) a pest is not present in the area;
+         (b) phytosanitary measures have been implemented to keep the area, place or site
+             free of the pest; and
+         (c) a surveillance system has been instituted to verify that the area, place or site
+             remains free of the pest;
+    (2) The Minister may, on the recommendation of the NPPO declare an area of low pest
+prevalence where the NPPO is satisfied that—
+         (a) a pest is present at low levels in the area;
+         (b) phytosanitary measures have been implemented to keep the pest levels low;
+             and
+         (c) a surveillance system has been instituted to verify that the pest levels remain
+             low.
+37. Pest free places of production and pest free production sites.
+   The NPPO may declare a place of production or production site pest free where the
+NPPO is satisfied that—
+         (a) a pest is not present in the area;
+         (b) phytosanitary measures have been implemented to keep the place or site free
+             of the pests; and
+         (c) a surveillance system has been instituted to verify that the place or site remains
+             free of the pests.
+38. Duty to report pests.
+     (1) Public and private entities, researchers, universities, and other persons that identify
+the occurrence of a new pest or a regulated pest, shall immediately report this occurrence to
+the NPPO.
+    (2) An entity, researcher, university or other person in subsection (1), shall not publish,
+advertise or otherwise alert the public of the identification of a new pest or regulated pest,
+without first having obtained the written permission of the Chief Plant Protection Officer.
+39. Emergency Response Plans.
+    (1) Subject to the provisions of the IPPC, the NPPO shall develop emergency and
+contingency plans.
+     (2) Where the NPPO develops an emergency plan, the following considerations shall
+be taken into account and included as part of the plan
+         (a) the use and availability of different pest and disease control strategies;
+         (b) the implications of the use of different control strategies and the most
+             appropriate strategy given different circumstances or pest and disease outbreak
+             scenarios.
+                                               26
+                              Plant Protection Act, 2024 – 10.
+
+
+     (3) Where the NPPO develops a contingency plan, the following considerations shall
+be taken into account and included as part of the plan
+         (a) the administrative and logistic organisation of the institutions and persons
+             responsible for responding to pest and disease outbreaks;
+         (b) a clear command structure for response deployment; and
+         (c) the specific measures needed to address risks to human or plant health.
+     (4) Where the NPPO develops a plan in accordance with the provisions of
+subsections (2) or (3), the development of those plans shall take into account at least the
+following—
+         (a) the capacity for response of the NPPO;
+         (b) the geographical, ecological and epidemiological environments;
+         (c) production and marketing practices;
+         (d) other factors considered necessary to control, stop the spread of, or eradicate
+             the plant pest and disease.
+     (5) In the development of an emergency plan or a contingency plan, the NPPO shall
+collaborate with the following
+         (a) the National Emergency Management Agency;
+         (b) the Ministry of Health;
+         (c) the Department of the Environment;
+         (d) the Ministry of Trade;
+         (e) law enforcement; and
+         (f) any other relevant public authorities, private sector entities and regional and
+             international authorities with a role in emergency response.
+                                           PART VI
+TREATMENT OF GOODS IN FREE CIRCULATION IN THE ECONOMIC UNIONAREA
+40. Treatment of plants, plant products or other regulated articles circulating within the
+    Economic Union Area.
+    (1) Where plants, plant products or other regulated articles—
+         (a) have been found compliant with all applicable import requirements under this
+             Act and any other relevant enactments at the first point of entry in the Economic
+             Union Area, including payment of any applicable customs duties or other
+             charges having equivalent effect; and
+         (b) have not benefited from a partial or total drawback of such duties or other
+             charges,
+such plants, plant products or other regulated articles may circulate freely within the territory
+of first entry and the Economic Union Area.
+                                              27
+                              Plant Protection Act, 2024 – 10.
+
+
+      (2) Where a plant, plant product or other regulated article is dispatched from an OECS
+Protocol Member State to Saint Christopher and Nevis, the plant, plant product or other
+regulated article may, on arrival in Saint Christopher and Nevis, be subject to inspection in
+accordance with the procedures under section 18, unless the plant, plant product or other
+regulated article is accompanied by a Phytosanitary (Economic Union) certificate from the
+competent authority of the OECS Protocol Member State of dispatch, issued within 7 days of
+its arrival in Saint Christopher and Nevis.
+   (3) Notwithstanding subsection 2, all plants, plant products and other regulated articles
+may be subject to inspection.
+41. Phytosanitary (Economic Union) certificate.
+     (1) A person who intends to dispatch a plant, plant product or other regulated article
+from Saint Christopher and Nevis may submit the plant, plant product or other regulated
+article for examination by the NPPO.
+    (2) Where, upon examination, a phytosanitary inspector—
+         (a) is satisfied that the plant, plant product or other regulated article is free of any
+             risk for the spread of disease, the phytosanitary inspector shall issue a
+             Phytosanitary (Economic Union) certificate in a form prescribed in regulations,
+             upon payment of the prescribed fee;
+         (b) is not satisfied that the plant, plant product or other regulated article is free of
+             any risk for the spread of pest or other threat—
+             (i) subject the plant, plant product or other regulated article to appropriate
+                 phytosanitary treatment in order to remove the risk; or
+             (ii) deny issuance of the phytosanitary certificate, giving reasons in writing.
+    (3) For the purposes of issuing a Phytosanitary (Economic Union) certificate, the
+phytosanitary inspector may—
+         (a) carry out inspection, approval and certification procedures;
+         (b) carry out tests, or other phytosanitary procedures; and
+         (c) send advance notice to the receiving OECS Protocol Member State.
+42. Network of Agriculture Health and Food Safety competent authorities.
+    (1) The NPPO shall liaise with the competent authorities for agriculture, health and
+food safety in Saint Christopher and Nevis and OECS Protocol Member States to form a
+network for the purpose of—
+         (a) developing an agriculture, health and food safety risk management system for
+             the Economic Union Area;
+         (b) making recommendations for adoption by OECS Protocol Member States of
+             agriculture, health and food safety regulations, standards, guidelines and
+             protocols in keeping with international requirements;
+         (c) promoting the harmonisation of sanitary and phytosanitary standards in the
+             Economic Union Area;
+                                             28
+                             Plant Protection Act, 2024 – 10.
+
+
+         (d) making recommendations for the modernisation of the agriculture, health and
+             food sectors in OECS Protocol Member States;
+         (e) developing and maintaining a database in respect of key aspects of agriculture,
+             health and food safety in the Economic Union Area;
+         (f) sharing with Competent Authorities and other relevant agencies, statistics and
+             other relevant information required under this Act, from the database in
+             paragraph (e); and
+         (g) ensuring that sanitary and phytosanitary measures are implemented in a
+             transparent and non-discriminatory manner.
+     (3) Subject to the national mandate of Saint Christopher and Nevis in relation to plant
+protection, the NPPO, as part of the network of competent authorities in subsection (1) shall,
+in relation to phytosanitary matters
+         (a) liaise with;
+         (b) consider advice;
+         (c) implement such recommendations from CAHFSA as it considers relevant and
+             enforceable.
+43. Application of Common Procedures, Principles and Risk Management System to
+    facilitate the Free Circulation of Goods in the Economic Union Area.
+    (1) The NPPO shall collaborate with CAHFSA for the purposes of developing and
+implementing a common Risk Management System, which shall include—
+         (a) a common Risk Classification Matrix;
+         (b) common Risk Procedures;
+         (c) common Inspection Procedures;
+         (d) common Import Requirements and Procedures in respect of certification,
+             licensing and import permits;
+         (e) a common Pest List;
+         (f) a common List of Prohibited Products for Importation; and
+         (g) a common List of Restricted Products for Importation.
+    (2) The Common Risk Management System shall be approved by the Minister before
+implementation.
+44. Information Sharing.
+    The NPPO may retrieve, update, and share relevant information required under this Act
+through —
+         (a) the OECS Customs Information System; and
+         (b) any alert system developed for use regionally or internationally that is
+             accessible to OECS Protocol Member States.
+                                              29
+                              Plant Protection Act, 2024 – 10.
+
+
+45. Plants, plant products and other regulated articles not permitted to circulate freely in
+    the Economic Union Area
+    The Minister may, in consultation with the NPPO and with relevant Ministers of the
+other OECS Protocol Member States, prescribe a list of plants, plant products and other
+regulated articles that are not permitted to circulate freely within the Economic Union area.
+                                           PART VII
+                                       ENFORCEMENT
+46. Enforcement powers of a phytosanitary inspector.
+     (1) Where a phytosanitary inspector, has exercised an investigative power under
+section 9, and has reasonable grounds to believe that a pest or other threat exists in an area
+or premises, including a dwelling house, or that this Act is being or has been contravened,
+the phytosanitary inspector may, without warrant or the consent of the owner or occupier—
+         (a) enter the area or premises and—
+              (i) seize any plant, plant product, regulated article, object, book, statement or
+                  document which appears to provide proof of a contravention of any
+                  provision of this Act providing a signed receipt in the prescribed form
+                  which shall be countersigned immediately by the owner or person in
+                  charge;
+              (ii) examine, make copies of or take extracts from any book, statement or other
+                   document found at such area or premises that the phytosanitary inspector
+                   reasonably believes contains any information relevant to this Act, and
+                   demand from the owner or any person in charge an explanation of any
+                   entry in it, and where such record or document is kept by means of computer
+                   to have access to it or any associated apparatus or material;
+              (iii) take phytosanitary action such as but not limited to treatment, disposal,
+                    reshipment, or confinement of plants, plant products or other regulated
+                    articles in such area or on such premises.
+          (b) stop the distribution, sale or use of any plant, plant product or other regulated
+              article, and seize the same, which he or she has reason to believe is being
+              distributed, sold or used in contravention of this Act, for a prescribed period.
+         (c) seize, destroy, detain, treat or otherwise dispose of any plants, plant products
+             or other regulated articles, or order that any such action be taken, at the expense
+             of the owner.
+     (2) Any phytosanitary inspector who causes any plant or other regulated article to be
+seized, detained, treated, disposed of or destroyed under this Act shall immediately serve a
+written notice on the owner with a description of the action taken and the reasons for so
+doing.
+    (3) A phytosanitary inspector exercising his or her powers under this section may
+request the presence and assistance of a law enforcement officer as he or she considers
+necessary.
+                                               30
+                              Plant Protection Act, 2024 – 10.
+
+
+    (4) A phytosanitary inspector may carry out an inspection in the territory of an exporting
+country as a pre-clearance inspection, at the invitation or with the agreement of the exporting
+country.
+    (5) In carrying out any duty under this section, a phytosanitary inspector shall identify
+himself or herself as a phytosanitary inspector by showing his or her identification card or
+other proof of his or her appointment or designation as a phytosanitary inspector.
+47. Storage or removal of affected items.
+    Where a phytosanitary inspector has seized or detained a plant, plant product or other
+regulated article under this Act—
+         (a) the phytosanitary inspector, or
+         (b) any other person designated by the Chief Plant Protection Officer may—
+              (i) store, treat, quarantine or dispose of the plant, plant product or other
+                  regulated article at the place where it was seized or detained, or move it to
+                  any other place for storage, treatment, quarantine or disposal;
+              (ii) require the owner or the person in charge of the plant, plant product or
+                   other regulated article to store, treat, dispose of, export or move it to any
+                   other place within a specified time.
+    (2) A phytosanitary inspector who seizes or detains a plant, plant product or other
+regulated article —
+         (a) shall, as soon as is practicable, issue a written notice to the owner or person in
+             charge of the plant, plant product or other regulated article, advising of the
+             reasons for its seizure or detention; or
+         (b) may forego advising the owner or person in charge of the reasons for the
+             seizure or detention if—
+              (i) it is impractical, at the time, to give the reasons for the seizure or detention;
+                  or
+              (ii) the situation requires emergency action in which case written notice shall
+                   be provided to the owner or person in charge within 14 calendar days after
+                   the action has been carried out.
+48. Confiscation and disposal of plants, plant products and other regulated articles.
+    (1) A phytosanitary inspector may confiscate and dispose of in the prescribed manner—
+         (a) any plant, plant product or other regulated article that—
+              (i) after its entry into Saint Christopher and Nevis, remains unclaimed for a
+                  prescribed time;
+              (ii) is imported un-manifested; or
+         (b) anything that the phytosanitary inspector reasonably believes contains or
+             harbours a regulated pest.
+     (2) A phytosanitary inspector who confiscates a plant, plant product or other regulated
+article —
+                                              31
+                              Plant Protection Act, 2024 – 10.
+
+
+         (a) shall, as soon as is practicable, issue a written notice to the owner or person in
+             charge, advising of the reasons for its confiscation; or
+         (b) may forego advising the owner or person in charge of the plant, plant product
+             or other regulated article or pest of the reasons for the confiscation if—
+             (i) it is impractical, at the time, to give the reasons for the confiscation; or
+             (ii) the situation requires emergency action in which case written notice shall
+                  be provided to the owner or person in charge within 14 calendar days after
+                  the action has been carried out.
+49. Offences.
+   (1) A person commits an offence if he or she, either personally or indirectly through an
+employee or agent—
+         (a) knowingly grows, sells, offers for sale, transports or distributes in any manner
+             any plant, plant product or other regulated article that is infested by a quarantine
+             pest;
+         (b) improperly influences or attempts to improperly influence a phytosanitary
+             officer in the exercise of his or her official functions under this Act;
+         (c) assaults, resists, intimidates, threatens, abuses in any manner whatsoever, or
+             obstructs or interferes with a phytosanitary inspector in the execution of his or
+             her duties;
+         (d) tampers with any sample taken pursuant to this Act or breaks any seal or alters
+             any markings made by a phytosanitary inspector without permission;
+         (e) fails to provide access, samples or information to a phytosanitary inspector
+             upon lawful request by the phytosanitary inspector;
+         (f) fails to comply with any order or direction lawfully made or given under this
+             Act;
+         (g) imports any plant, plant product or other regulated article at a port that is not a
+             point of entry;
+         (h) imports any plant, plant product or other regulated article except in accordance
+             with Part III and any other requirement that is prescribed by regulations;
+         (i) intentionally permits, introduces or causes the introduction or spread of a
+             quarantine pest;
+         (j) exports any plant, plant product or other regulated article except in accordance
+             with Part IV;
+         (k) fails to safeguard the phytosanitary security of a consignment after the issuance
+             of a phytosanitary certificate under section 24 or a re-export phytosanitary
+             certificate under section 25;
+         (l) fails to allow a search or inspection or the taking of any sample authorised
+             under this Act;
+                                              32
+                              Plant Protection Act, 2024 – 10.
+
+
+         (m) breaks the seal on a sealed container containing a plant, plant product or other
+             regulated article except in the presence of a phytosanitary inspector;
+         (n) knowingly or recklessly provides information which is false, for the purpose of
+             obtaining any document under this Act;
+         (o) alters, forges, defaces or destroys any document issued under this Act;
+         (p) subject to paragraph (t), submits any written material for publication referring
+             to the occurrence of a quarantine pest in Saint Christopher and Nevis without
+             prior communication of the existence of the pest to the NPPO;
+         (q) impersonates a phytosanitary inspector;
+         (r) removes, or allows or causes to be removed any plant, plant product or other
+             regulated article from any premises or area under quarantine;
+         (s) publishes, advertises or otherwise alerts the public of the identification of a
+             new pest or regulated pest, without the written authorisation of the CPQO; or
+         (t) fails to give to the NPPO any notification required under this Act.
+     (2) Where an offence under this Act has been committed by a body corporate or other
+entity and is proved to have been committed with the consent or connivance of, or to be
+attributable to any neglect or default on the part of, any director, manager, secretary or other
+similar officer of the body corporate or other entity, or any person who is purporting to act in
+any such capacity, such director, manager, secretary or other officer as well as the body
+corporate or other entity is guilty of that offence.
+   (3) A person who commits an offence by virtue of subsection (2) shall be liable to the
+same extent as a person who commits the offence under subsection (1).
+50. Criminal penalties.
+     (1) A person who commits an offence under this Act is liable—
+         (a) in the case of an individual
+              (i) in the case of a first offence, on summary conviction, to a fine not exceeding
+                  twenty-five thousand dollars or to imprisonment for a term not exceeding
+                  two years or to both such fine and imprisonment;
+              (ii) in the case of a second or a subsequent offence, to a fine not exceeding
+                   one hundred thousand dollars or to imprisonment for a term not exceeding
+                   five years or to both such fine and imprisonment.
+          (b) in the case of a body corporate or other entity and subject to the provisions of
+              section 49(2);
+              (i) on summary conviction, to a fine not exceeding fifty thousand dollars;
+              (ii) on indictment to a fine not exceeding two hundred and fifty thousand
+                   dollars ;
+    (2) Notwithstanding the provisions of subsection (1), the Court may, in addition to
+any other penalty, take into account the nature and extent of the damage caused by a
+person who contravenes the provisions of this Act and the cost of rectifying any damages
+caused by that person.
+                                               33
+                               Plant Protection Act, 2024 – 10.
+
+
+51. Procedure for offences.
+    Where the CPQO reasonably believes that a person has contravened any of the
+provisions of this Act, he or she shall report the matter to the Royal Saint Christopher and
+Nevis Police Force.
+52. Revocation or suspension of permits and other authorisations.
+    (1) The NPPO may suspend or revoke any permit, certificate or other authorization it
+has issued under this Act.
+     (2) Where the NPPO proposes to suspend or revoke a permit, certificate or other
+authorization under subsection (1) it shall issue a written notice to the holder of the permit,
+certificate or other authorisation, giving at least 7 business days’ notice of —
+         (a) its intention to do so;
+         (b) the terms of the suspension or revocation, as the case may be; and
+         (c ) the grounds upon which the suspension or revocation is proposed to be
+              made,
+and before taking the action proposed, the NPPO shall consider any representations made
+by or on behalf of the holder of the permit, certificate or other authorisation before the
+expiration of the notice.
+     (3) Notwithstanding subsection (2), the NPPO shall take immediate action to suspend
+or revoke a permit, certificate or other authorisation, where there is a risk to public health, or
+of the spread of a regulated pest or other serious risk requiring immediate action.
+53. Forfeiture.
+    (1) Where a person is convicted of an offence under this Act, the court may, on its
+own motion or at the request of a party to the proceedings, in addition to any penalty
+imposed, order that any plant, plant product or other thing in respect of which the offence
+was committed or which was used in connection thereof, be forfeited to the Crown or
+otherwise disposed of as the Court may direct.
+    (2) Where the owner or person in charge of a plant, plant product or other thing is
+convicted of an offence under this Act and a fine is imposed, the plant, plant product or
+other thing —
+         (a) may be detained until the fine is paid; or
+         (b) may be sold in satisfaction of the fine.
+     (3) Where the court does not order the forfeiture of a plant, plant product or other
+thing, the plant, plant product, or other thing, or any proceeds realized from its disposal shall
+be returned to the owner or person in charge at the time of its seizure.
+54. Fixed penalty offences.
+    (1) The penalties listed in Schedule 5 are designated fixed penalty offences for the
+purposes of this Act.
+    (2) The Minister may make regulations prescribing the penalties for fixed penalty
+offences which shall in no case exceed 10% of the maximum penalty.
+                                              34
+                              Plant Protection Act, 2024 – 10.
+
+
+    (3) Where on any occasion a phytosanitary inspector finds a person who the
+phytosanitary inspector has reason to believe is committing, or has committed, a fixed penalty
+offence, he or she may serve on that person a fixed penalty notice in the prescribed form.
+    (4) Where a phytosanitary inspector has served a fixed penalty notice upon a person,
+the phytosanitary inspector shall–
+         (a) inform the person that he or she has committed an offence under the Act; and
+         (b) notify the person that, if he or she does not wish to be prosecuted for the
+             alleged offence in court, he or she may pay to the clerk of the Magistrate’s
+             Court in the district in which the offence was committed the fixed penalty
+             prescribed for the offence in the fixed penalty notice within the time specified.
+     (5) A person upon whom a fixed penalty notice is served may decline to be dealt with
+under this section and where he or she fails to pay the fixed penalty within the time specified
+in the fixed penalty notice, or within such further time as may be allowed in a particular case,
+his or her conduct constitutes a declination to be dealt with under this section.
+     (6) A phytosanitary inspector shall serve a fixed penalty notice upon a person alleged
+to have committed a fixed penalty offence and shall send a duplicate of the fixed penalty
+notice to the Magistrate’s Court of the district in which the offence is alleged to have been
+committed.
+     (7) Where the fixed penalty is not paid within the time specified in the fixed penalty
+notice, the duplicate sent to the Magistrate’s Court under subsection (5) shall constitute a
+complaint laid before the Magistrate to institute proceedings in accordance with the provisions
+of the Magistrate’s Code of Procedure Act, Cap. 3.17.
+    (8) A fixed penalty notice shall be signed by the phytosanitary inspector and shall
+specify the following–
+         (a) the date, time and place of service of the fixed penalty notice;
+         (b) the section of this Act creating the offence alleged, and such particulars of the
+             offence as are required under this Act;
+         (c) the amount of the fixed penalty;
+         (d) the time within which the fixed penalty may be paid which shall in no case
+             exceed 21 business days; and
+          (e) the clerk of the Magistrate’s Court to whom, and the address at or to which, the
+              fixed penalty may be paid or remitted.
+    (9) Where a fixed penalty is not paid within the time specified, proceedings in respect of
+the offence specified in the fixed penalty notice shall thereafter proceed in the manner
+prescribed by the Magistrate’s Code of Procedure Act.
+    (10) A person upon whom a fixed penalty notice is served may pay the fixed penalty in
+accordance with the fixed penalty notice.
+    (11) Where the fixed penalty is paid in accordance with the fixed penalty notice, no
+person shall then be liable to be convicted for the offence for which the fixed penalty notice
+was served and the complaint laid before the Magistrate shall be null and void.
+                                              35
+                              Plant Protection Act, 2024 – 10.
+
+
+    (12) In any proceedings for a fixed penalty offence, a certificate that payment of the fixed
+penalty was or was not made to the clerk of the Magistrate’s Court by the date specified in
+the certificate shall, if the certificate purports to be signed by such clerk, be sufficient
+evidence of the facts stated, unless the contrary is proved.
+55. Evidence.
+     (1) In any prosecution for an offence under this Act, a declaration, certificate, report or
+other document of the NPPO or a laboratory analyst, phytosanitary inspector or police
+officer, purporting to have been signed on behalf of the NPPO or the laboratory analyst,
+phytosanitary inspector or police officer, is, in the absence of evidence to the contrary, proof
+of the matters asserted in it.
+    (2) In any prosecution for an offence under this Act, a copy of an extract from any
+record or other document made by the NPPO, a laboratory analyst, a phytosanitary inspector
+or police officer under this Act, that is certified as a true copy or extract, is admissible in
+evidence.
+56. Offences by officials and penalty.
+   (1) A laboratory analyst, a phytosanitary inspector or other NPPO staff, and any
+employee or official under section 23 (1) who —
+         (a) in connection with any official duty, directly or indirectly requests or accepts
+             any payment, gratuity, reward or benefit that is not prescribed under this Act,
+         (b) agrees to do, abstains from doing, permits, conceals or connives at any act or
+             thing which is contrary to the proper execution of official duties under this Act,
+             or other enactment;
+         (c) discloses any information acquired in the performance of his or her official
+             duties relating to any person, firm or business, except in accordance with this
+             Act or when required to do so by his or her supervisor in the course of official
+             duties, or where ordered to do so by any court; or
+         (d) otherwise abuses his or her powers granted under this Act,
+commits an offence and is liable on summary conviction to a fine not exceeding twenty five
+thousand dollars, or to imprisonment for a term not exceeding two years, or to both such fine
+and imprisonment.
+     (2) Upon conviction for an offence under subsection (1) the person convicted shall be
+liable to dismissal and may be determined ineligible for reappointment and shall be subject to
+such other penalty applicable to public officers.
+57. Good faith defence.
+     No staff of the NPPO and no laboratory analyst, official or reference laboratory or any
+government employee, official or entity shall be liable to suit for damages or to prosecution
+in respect of anything done in good faith in the performance of official functions under this
+Act.
+                                             36
+                             Plant Protection Act, 2024 – 10.
+
+
+58. Compensation.
+    (1) The Minister may, on the recommendation of the NPPO, out of money voted for that
+purpose by Parliament, order compensation to be paid in respect of—
+         (a) the treatment required of premises for the purposes of this Act; or
+         (b) the prohibition or restriction imposed under this Act on the use of premises.
+    (2) Compensation is not payable to a person who commits an offence under this Act
+and claims compensation in respect of any premises or thing by means of or in relation to
+which the offence was committed.
+
+                                       PART VIII
+                                    MISCELLANEOUS
+59. Service of notice.
+    A notice or other document to be served on a person under this Act may be served—
+         (a) by leaving the notice or other document with that person;
+         (b) by delivering it or sending it in a prepaid letter addressed to that person at his
+             or her usual or last known place of abode or business;
+         (c) in the case of a body corporate, by delivering it to their registered or principal
+             office or by sending it in a prepaid letter addressed to that office; or
+         (d) in the case of a document to be served on the owner or occupier of any
+             premises, if the owner or occupier cannot be found, by affixing the document in
+             a conspicuous place on the premises.
+60. Documents.
+    (1) A document required to be furnished to the Minister or a phytosanitary inspector
+under this Act or any regulation or order made thereunder may be furnished in electronic
+form.
+     (2) Where a document referred to in subsection (1) is furnished in electronic form, an
+original hard copy of the document must be furnished to the Minister or a phytosanitary
+inspector within a reasonable period after the document is furnished in electronic form.
+61. Registration of Plant-Growing Establishments.
+    (1) The NPPO shall register all plant-growing establishments, including
+         (a) nurseries;
+         (b) green houses;
+         (c) screen houses;
+         (d) hydroponic operations,
+         (e) farms;
+         (f) and any other establishment that grows plants
+and maintain a database of such establishments.
+                                             37
+                              Plant Protection Act, 2024 – 10.
+
+
+     (2) Pursuant to the provisions of subsection (1), every plant-growing establishment
+shall be inspected at least twice annually by a phytosanitary inspector, and at such other
+times as the NPPO may consider necessary.
+62. Duty to Assist and Cooperate.
+     For the purpose of aiding phytosanitary inspectors in the performance of their functions
+and exercise of their powers under this Act, the NPPO may request the following authorities
+and agencies or their officers to provide assistance as the occasion may arise
+         (a) the Customs and Excise Department;
+         (b) St. Christopher Air and Sea Ports Authority;
+         (c) the Nevis Air and Sea Ports Authority
+         (d) the Post Office;
+         (e) public health officers;
+         (f) environmental officers;
+         (g) members of the Royal St. Christopher and Nevis Police Force;
+         (h) the St. Kitts and Nevis Defence Force;
+63. Right of Appeal.
+     (1) Any person aggrieved by an action or decision of a phytosanitary inspector or the
+NPPO may, within fourteen business days from the date of the action or decision, appeal in
+writing to the Minister.
+    (2) The Minister shall issue his or her decision in writing, within twenty eight business
+days of the receipt of an appeal under subsection (1).
+    (3) A person who is dissatisfied with the decision of the Minister may appeal to the
+High Court within 21 calendar days of receipt of service by the person of the decision of the
+Minister.
+     (4) An appeal under subsection (3) shall be in such form and manner as prescribed by
+the Court.
+64. Presumptions
+     In any legal proceedings under this Act, any laboratory tests purporting to be signed by
+the director or head of an official laboratory or by a laboratory analyst shall be accepted as
+prima facie evidence of the facts stated therein, provided that—
+         (a) the party against whom it is produced may require the attendance of the
+             laboratory analyst who performed the laboratory tests, for purpose of cross-
+             examination;
+         (b) no such laboratory tests shall be admissible in evidence unless the party
+             intending to produce it has, before the trial, given the party against whom it is
+             intended to be produced reasonable notice of such intention together with a
+             copy of the certificate.
+                                             38
+                             Plant Protection Act, 2024 – 10.
+
+
+65. Consent of the NIA.
+     Pursuant to the provisions of sections 37(1) and 37(2) of the Constitution, the Nevis
+Island Administration consents to the application of the provisions of this Act to the island
+of Nevis.
+66. Regulations.
+    (1) The Minister may, on the advice of the NPPO, make regulations, orders or notices
+which he or she considers appropriate to give effect to the provisions of this Act.
+    (2) In particular and without prejudice to the generality of subsection (1), regulations,
+orders or notices made under subsection (1) may provide for the following—
+         (a) the list of regulated pests;
+         (b) procedures for implementation of phytosanitary measures and emergency
+             phytosanitary measures, including procedures to be followed by a phytosanitary
+             inspector in the exercise of his or her duties under this Act;
+         (c) surveillance, inspection, sampling, testing, treatment, confinement at quarantine
+             stations, transport, reshipment and destruction;
+         (d) the declaration and implementation of provisional quarantine and quarantine;
+         (e) the establishment, membership, mandate and operating procedures of any
+             committees set up under this Act;
+         (f) implementation of certification programmes;
+         (g) registration of all plant-growing establishments, including nurseries, green
+             houses, screen houses, hydroponic operations and farms and maintenance of
+             a database of such establishments;
+         (h) the procedure by which an area of low pest prevalence, pest free area, pest free
+             place of production, or pest free production site, endangered area or buffer
+             zone may be declared;
+         (i) the qualifications of phytosanitary inspectors;
+         (j) the level of fees and costs for inspection and analysis or any other official
+             actions taken under this Act;
+         (k) the forms to be used for the purposes of this Act, including applications,
+             permits, certificates, authorisations, written notices and receipts for articles
+             seized, confiscated and disposed of;
+         (l) conditions for the import of any plant, plant product or other regulated article;
+         (m) the designation of the ports of entry that are appropriate for the import and
+             export of any plant, plant product and other regulated article;
+         (n) the circumstances under which phytosanitary requirements for import may be
+             modified based on pest risk analysis;
+         (o) procedures and guidelines for pre-clearance inspections;
+         (p) the manner and criteria for the issuance of permits and certificates and
+             authorisations under this Act;
+                                    39
+                     Plant Protection Act, 2024 – 10.
+
+
+(q) the procedures by which an importer may apply for inspection to take place at
+    any location other than the point of entry, or outside of regular business hours,
+    and pay any applicable fees;
+(r) the manner in which containers must be sealed, marked and transported if they
+    are to be inspected at their final destination rather than at the point of entry;
+(s) the way in which any plant, plant product and other regulated article must be
+    stored or transported;
+(t) the procedures to be adopted for the treatment of any plant, plant product or
+    other regulated article;
+(u) the location, management and functioning of any plant quarantine station
+    established under this Act;
+(v) the requirements for the control and care of any plant, plant product and other
+    regulated article kept or maintained at a plant quarantine station;
+(w) the manner in which a phytosanitary inspector shall arrange for the destruction,
+    removal, uprooting or treatment of any plant, plant product or other regulated
+    article within an area or location declared as under quarantine;
+(x) regulating goods in transit;
+(y) regulating wood packaging materials;
+(z) the period within, and conditions under which, it shall not be lawful to plant or
+    re-plant anything in all or part of an area declared as under quarantine;
+(aa) the manner in which any sample being transported or in storage must be taken,
+     marked and retained under this Act;
+(bb) the operating procedures of any official laboratories designated under this
+     Act;
+(cc) conditions and procedures for the export of any plant, plant product or other
+     regulated article;
+(dd) operating procedures for the inspection of any plant, plant product or other
+     regulated article, and any physical structure or premises containing such a
+     product or article, for purposes of export;
+(ee) the offences subject to the fixed penalty procedure outlined in section 53 and
+     the fixed penalties attached to such offences;
+(ff) determination or scale of fees to be charged;
+(gg) guidelines, policy directives or protocols promoting cooperation between
+     relevant departments relating to plant protection;
+(hh) procedures for the seizure, confiscation, disposal and destruction of any plants,
+     plant products and other regulated articles;
+(ii) reporting requirements for the emergency fund;
+(jj) additional measures to be taken for the purpose of preventing the introduction
+     or spread of a pest.
+                                           40
+                            Plant Protection Act, 2024 – 10.
+
+
+        (kk) phytosanitary measures to be applied for specific areas, sites or zones where
+             pests may be present or have been diagnosed;
+        (ll) standards for transhipment and transhipping of plants, plant products and
+             other regulated articles.
+67. Repeal and Savings.
+    (1) The Plant Protection Act, Cap. 14.09 is hereby repealed.
+    (2) An order issued by the Minister may revoke or modify any permit, certificate or
+authorisation granted, by authority of the legislation referred to in subsection (1).
+68. Act to bind Crown.
+    This Act binds the Crown.
+
+                                    SCHEDULE 1A
+                                OECS MEMBER STATES
+                                       (Section 2)
+
+Anguilla
+Antigua and Barbuda
+British Virgin Islands
+Commonwealth of Dominica
+Grenada
+Guadeloupe
+Martinique
+Montserrat
+St. Christopher and Nevis
+Saint Lucia
+Saint Vincent and the Grenadines
+
+                                    SCHEDULE 1B
+                          OECS PROTOCOL MEMBER STATES
+                                   (Section 2)
+
+Antigua and Barbuda
+Commonwealth of Dominica
+Grenada
+Montserrat
+St. Christopher and Nevis
+Saint Lucia
+Saint Vincent and the Grenadines
+                                            41
+                             Plant Protection Act, 2024 – 10.
+
+
+                                      SCHEDULE 2
+                                       Import permit
+                                        (Section 16)
+
+
+Import Permit
+
+Place of issue :
+
+National Plant Protection Organisation of Saint Christopher and Nevis
+
+IMPORT PERMIT COAT OF ARMS (Permit Number) ____/____ /____Date: DD / MM / YY
+
+Under the provisions of the Plant Protection Act 2023, permission is hereby granted to
+
+(Name of Importer)
+_________________________________________________________
+
+(Address of Importer)
+_________________________________________________________
+
+_________________________________________________________
+
+…to import into Saint Christopher and Nevis from
+
+(Country of Origin)…………………………………(Place of Production)………………………
+
+the following commodities:
+
+(Commodity-Common and Scientific name) (Quantity) (Commodity Code)
+
+subject to the undermentioned conditions:
+
+(i) The importation must be accompanied by a phytosanitary certificate issued by the
+    National Plant Protection Organisation
+
+Organization of the exporting country stating that the plant, plant product or regulated
+article is free from
+
+quarantine pests specified by [ ] (Schedules 1 and 2).
+
+(ii) The consignment may be subject to fumigation on landing.
+
+(iii) The consignment shall be free of soil and weed seeds.
+
+(iv) The consignment shall be liable to examination by a [Plant Quarantine Inspector] on
+arrival.
+                                            42
+                             Plant Protection Act, 2024 – 10.
+
+
+(v) Additional requirement(s):
+…………………………………………………………………………………...................................
+
+………………………………………………………………………………………………………………..
+
+…………………………………………………………………………………………….................................
+
+(Stamp of Plant Protection The consignment is expected to arrive on _____/_____/______
+
+Organisation) D M Y
+
+Given under my hand on the …….…day of ………………………..20…….
+
+Authorized Officer
+
+(Name ) (Signature)
+
+This permit is valid for sixty (60) days from the date of issue and covers one consignment
+only
+                                      SCHEDULE 3
+                                 Phytosanitary Certificate
+                                       (section 24)
+
+
+(For Export)
+
+ORIGINAL
+
+National Plant Protection Organisation of Saint Christopher and Nevis PHYTOSANITARY
+CERTIFICATE
+
+To: National Plant Protection Organization(s) of
+
+COAT OF ARMS
+
+Place of Issue Date of Issue Date of Inspection
+
+    1.   DESCRIPTION OF CONSIGNMENT
+
+Name and Address of exporter
+
+Name and Address of consignee
+
+Declared means of conveyance
+
+Declared point of entry
+                                               43
+                               Plant Protection Act, 2024 – 10.
+
+
+Place of Origin Total no. of packages Distinguishing marks
+
+Article
+
+Code Scientific name and common name of plants Quantity Description Weight (Kg) Declared
+
+This is to certify that the plants, plant products or regulated articles described herein have
+been inspected, treated and/or tested according to official procedures and are considered
+free from quarantine pests specified by the importing country and to conform with the
+current phytosanitary requirements of the importing country, including those for regulated
+non-quarantine pests. They are deemed to be practically free from other pests.
+
+II. ADDITIONAL DECLARATION
+
+III. DISINFESTATION AND/OR DISINFECTION TREATMENT Authorized officer
+
+Treatment
+
+Chemical (active ingredient) Duration and temperature
+
+Concentration Date of treatment
+
+Additional Information
+
+Name Signature Stamp of Plant Protection Service
+
+Liability shall not attach with respect to this certificate against the National Plant Protection
+Organisation or any of its officers or representatives (Plant Protection Act 2023, Section…..)
+
+
+                                            SCHEDULE 4
+
+
+                                 Re-export Phytosanitary Certificate
+
+
+                                              (section 25)
+
+Phytosanitary Certificate for Re-Export
+
+National Plant Protection Organisation of [ ] PHYTOSANITARY CERTIFICATE
+
+To National Plant Protection Organization(s) of COAT OF ARMS Place of Issue Date of
+Issue Date of Inspection
+
+1.DESCRIPTION OF CONSIGNMENT
+Name and Address of exporter
+                                              44
+                              Plant Protection Act, 2024 – 10.
+
+
+Name and Address of consignee
+Declared means of conveyance
+Declared point of entry
+Place of Origin Description Total no. of packages Distinguishing marks
+Regulated
+Article/Commodity
+Code Regulated Article/[Commodity](name of produce ; scientific and common name of
+plants) Quantity Weight(kilogram) Declared
+
+This is to certify that the plants, plant products or other regulated articles described above
+were imported into[           ]
+from_____________________________ covered by Phytosanitary Certificate
+No._____________________ , original certified true copy of which is attached to this
+certificate; that they are packed repacked in original new containers that based on the
+original phytosanitary certificate and additional inspection they are considered to conform
+with the currentphytosanitary requirements of the importing country, and that during storage
+in [ ], the consignment has not been subjected to the risk of infestation or infection
+
+II. ADDITIONAL DECLARATION
+
+III. DISINFESTATION AND/OR DISINFECTION TREATMENT Authorized officer
+
+Treatment
+Chemical (active ingredient) Duration and temperature
+Concentration Date of treatment
+Additional Information
+Name Signature Stamp of Plant Protection Service
+No liability with respect to this certificate shall attach to the Plant Protection Organisation
+or to any of its officers or representatives (Plant Protection Act [20 ], Section…..)
+                                            45
+                             Plant Protection Act, 2024 – 10.
+
+
+                                      SCHEDULE 5
+                                 Fixed penalty offences
+                                      (section 54)
+                                   Notice to Offender
+
+                     Plant Protection [Act/Ordinance], 200[ ], No. [ ]
+NOTICE NUMBER:                   TIME:
+DATE:                         DESCRIPTION OF IMPORT/ EXPORT COMMODITIES
+PLACE:                         NAME OF REGISTERED OWNER:
+
+I, the undersigned Plant Protection Officer/Inspector, believe on reasonable grounds that
+Name of person/importer /exporter]
+has committed the following offence with the following fixed penalty:
+                                 46
+                  Plant Protection Act, 2024 – 10.
+
+
+                                                     LANEIN BLANCHETTE
+                                                            Speaker
+
+
+
+Passed by the National Assembly this 2nd day of May, 2024.
+
+
+
+                                                    TREVLYN STAPLETON
+                                               Clerk of the National Assembly
+
+
+
+
+                         GOVERNMENT PRINTERY
+                            ST. KITTS, W. I.
+

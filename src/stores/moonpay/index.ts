@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { watch } from 'vue';
 
 import { FPNumber } from '@sora-substrate/sdk';
 import { ethers } from 'ethers';
@@ -20,6 +21,8 @@ import type { Nullable, FnWithoutArgs } from '@/types/common';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 
 const POLLING_INTERVAL = 15_000;
+// Request ownership stays in memory and is never part of persisted provider state.
+const transactionRequests = new WeakMap<object, { stop: FnWithoutArgs }>();
 
 const initialState = (): MoonpayState => ({
   api: new MoonpayApi(),
@@ -39,6 +42,8 @@ export const useMoonpayStore = defineStore('moonpay', {
   state: (): MoonpayState => initialState(),
   actions: {
     reset(): void {
+      transactionRequests.get(this)?.stop();
+      transactionRequests.delete(this);
       this.$patch(initialState());
     },
     setAccountRecord(moonpayId: string, externalHash: string): void {
@@ -67,6 +72,7 @@ export const useMoonpayStore = defineStore('moonpay', {
       this.bridgeTransactionData = data;
       this.startBridgeButtonVisibility = startBridgeButtonVisibility;
     },
+    /** Commits only the response belonging to the same logged-in account and provider configuration. */
     async getTransactions(clearTransactions = false): Promise<void> {
       const walletStore = useWalletStore();
 
@@ -76,16 +82,46 @@ export const useMoonpayStore = defineStore('moonpay', {
         this.transactions = [];
       }
       this.transactionsFetching = true;
+      const api = this.api;
+      const address = walletStore.address;
+      const publicKey = api.publicKey;
+      const network = api.soraNetwork;
+      const request = { stop: () => {} };
+      transactionRequests.set(this, request);
+      const isCurrent = () =>
+        transactionRequests.get(this) === request &&
+        walletStore.isLoggedIn &&
+        walletStore.address === address &&
+        this.api === api &&
+        api.publicKey === publicKey &&
+        api.soraNetwork === network;
+      request.stop = watch(
+        () => [walletStore.isLoggedIn, walletStore.address, this.api, this.api.publicKey, this.api.soraNetwork],
+        () => {
+          if (transactionRequests.get(this) !== request) return;
+          transactionRequests.delete(this);
+          this.transactionsFetching = false;
+          this.transactions = [];
+          request.stop();
+        },
+        { flush: 'sync' }
+      );
 
       try {
-        const transactions = await this.api.getTransactionsByExtId(walletStore.address);
+        const transactions = await api.getTransactionsByExtId(address);
+        if (!isCurrent()) return;
         this.transactions = Array.isArray(transactions) ? transactions : [];
         console.info('Moonpay: user transactions request');
       } catch (error) {
+        if (!isCurrent()) return;
         console.error(error);
         this.transactions = [];
       } finally {
-        this.transactionsFetching = false;
+        request.stop();
+        if (transactionRequests.get(this) === request) {
+          transactionRequests.delete(this);
+          this.transactionsFetching = false;
+        }
       }
     },
     async getCurrencies(): Promise<void> {

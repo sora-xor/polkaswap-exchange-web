@@ -65,6 +65,7 @@ export default class BaseExplorer {
     return true;
   }
 
+  /** Return only error-free query data, retrying network failures without exposing partial responses. */
   public async request<T>(query: TypedDocumentNode<T>, variables: AnyVariables = {}) {
     for (let attempt = 0; attempt <= REQUEST_RETRY_LIMIT; attempt += 1) {
       if (!this.initClient()) return null;
@@ -75,7 +76,7 @@ export default class BaseExplorer {
 
       if (!isNetworkError || isLastAttempt) {
         this.handlePayloadStatus(payload);
-        return payload.data;
+        return payload.error ? undefined : payload.data;
       }
 
       this.resetClient();

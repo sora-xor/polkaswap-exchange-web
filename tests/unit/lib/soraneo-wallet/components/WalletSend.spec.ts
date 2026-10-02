@@ -80,6 +80,7 @@ vi.mock('@/lib/soraneo-wallet/src/composables/useNetworkFeeWarning', () => ({
 vi.mock('@/lib/soraneo-wallet/src/api', () => ({
   api: {
     api: { isReady: Promise.resolve() },
+    validateAddress: vi.fn(() => true),
     hasEnoughXor: vi.fn(() => true),
     assets: {
       getAssetBalanceObservable: vi.fn(() => ({ subscribe: vi.fn() })),
@@ -175,6 +176,38 @@ describe('Wallet WalletSend', () => {
 
     expect(state.amount.value).toBe('5');
   });
+
+  it('rejects negative transfer amounts even when their magnitude is below the balance', () => {
+    const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+
+    state.address.value = 'cnRXua6zs8TaE87BQFL6uWVbT2g6GXsUjwk6PTvL6UHcHDCvo';
+    state.amount.value = '-0.5';
+
+    expect(state.sendButtonDisabled.value).toBe(true);
+  });
+
+  it.each(['-1', '101', 'NaN', 'Infinity'])(
+    'blocks invalid vesting percentage %s instead of falling back to an immediate transfer',
+    async (invalidPercentage) => {
+      const daiAsset = createAsset('0xdai', 'DAI');
+      currentRouteParams.value = { asset: daiAsset };
+      walletStoreMock.accountAssets = [daiAsset];
+      const { state } = mountSetup(WalletSend as any, {}, { emit: vi.fn() });
+
+      state.address.value = 'cnRXua6zs8TaE87BQFL6uWVbT2g6GXsUjwk6PTvL6UHcHDCvo';
+      state.amount.value = '1';
+      state.withVesting.value = true;
+      state.vestingPercentage.value = invalidPercentage;
+
+      expect(state.sendButtonDisabled.value).toBe(true);
+      expect(state.sendButtonDisabledText.value).toBe('walletSend.enterVestingPercentage');
+
+      await state.handleConfirm();
+
+      expect(walletStoreMock.vestedTransfer).not.toHaveBeenCalled();
+      expect(walletStoreMock.transfer).not.toHaveBeenCalled();
+    }
+  );
 
   it('keeps the amount input focused across successive model updates', async () => {
     const wrapper = mount(WalletSend as any, {

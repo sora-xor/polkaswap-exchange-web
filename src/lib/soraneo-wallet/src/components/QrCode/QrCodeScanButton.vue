@@ -221,6 +221,8 @@ async function handleFileInput(event: Event): Promise<void> {
         resolve(null);
       }
     });
+    fileReader.addEventListener('error', () => resolve(null));
+    fileReader.addEventListener('abort', () => resolve(null));
 
     fileReader.readAsDataURL(file);
   });

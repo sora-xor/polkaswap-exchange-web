@@ -4,10 +4,10 @@ import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 
 import { describe, expect, it } from 'vitest';
 
-import { buildVitestArgs, resolveYarnEntry } from '../../../../scripts/testing/run-vitest-unit.mjs';
+import { buildVitestArgs, buildVitestRuns, resolveYarnEntry } from '../../../../scripts/testing/run-vitest-unit.mjs';
 
 describe('run-vitest-unit', () => {
-  it('builds a deterministic unit Vitest command by default', () => {
+  it('builds a deterministic app-unit Vitest command by default', () => {
     expect(buildVitestArgs([])).toEqual([
       'vitest',
       'run',
@@ -18,6 +18,22 @@ describe('run-vitest-unit', () => {
       '--reporter=dot',
       '--max-workers=1',
     ]);
+  });
+
+  it('runs app and script unit projects in isolated Vitest processes', () => {
+    const runs = buildVitestRuns([]);
+
+    expect(runs).toHaveLength(2);
+    expect(runs[0]).toContain('unit');
+    expect(runs[1]).toContain('unit-scripts');
+    expect(runs[0]).not.toContain('unit-scripts');
+  });
+
+  it('allows the other isolated project to be empty when a test filter is forwarded', () => {
+    const runs = buildVitestRuns(['tests/unit/composables/useLoading.spec.ts']);
+
+    expect(runs[0]).toContain('--pass-with-no-tests');
+    expect(runs[1]).toContain('--pass-with-no-tests');
   });
 
   it('preserves explicit reporter and project arguments', () => {

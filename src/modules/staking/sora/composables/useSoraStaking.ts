@@ -11,6 +11,7 @@ import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import { formatDecimalPlaces, getAssetBalance, hasInsufficientXorForFee } from '@/utils';
 
+import type { NumberLike } from '@sora-substrate/math';
 import type { NetworkFeesObject, CodecString } from '@sora-substrate/sdk';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type {
@@ -33,7 +34,7 @@ export function useSoraStaking() {
 
   const stakingInfo = computed(() => stakingStore.stakingInfo as Nullable<MyStakingInfo>);
   const newStakeValidatorsMode = computed(() => stakingStore.newStakeValidatorsMode);
-  const minNominatorBond = computed(() => stakingStore.minNominatorBond as number);
+  const minNominatorBond = computed<CodecString>(() => asCodec(stakingStore.minNominatorBond));
   const unbondPeriod = computed(() => stakingStore.unbondPeriod as number);
   const stakeAmount = computed({
     get: () => stakingStore.stakeAmount,
@@ -168,9 +169,9 @@ export function useSoraStaking() {
   );
 
   const minNominatorBondFormatted = computed(() => {
-    return Number(minNominatorBond.value) === 0
+    return minNominatorBond.value === ZeroStringValue
       ? '0'
-      : formatCodecNumber(`${minNominatorBond.value}`, stakingAsset.value?.decimals);
+      : formatCodecNumber(minNominatorBond.value, stakingAsset.value?.decimals);
   });
 
   const maxApy = computed(
@@ -190,7 +191,7 @@ export function useSoraStaking() {
   const getNominateNetworkFee = () => stakingStore.getNominateNetworkFee();
   const bondExtra = () => stakingStore.bondExtra();
   const unbond = () => stakingStore.unbond();
-  const withdraw = (value: number) => stakingStore.withdraw(value);
+  const withdraw = (value: NumberLike) => stakingStore.withdraw(value);
   const payout = (args: { payouts: Payouts; payee?: string }) => stakingStore.payout(args);
   const getPayoutNetworkFee = (args: { payouts: Payouts; payee?: string }) => stakingStore.getPayoutNetworkFee(args);
   const getPendingRewards = () => stakingStore.getPendingRewards();

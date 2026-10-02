@@ -9,6 +9,7 @@ import type { NetworkData } from '@/types/bridge';
 import type { AppEIPProvider } from '@/types/evm/provider';
 import { PredefinedProvider } from '@/utils/connection/evm/providers';
 import { settingsStorage } from '@/utils/storage';
+import { parseStoredJson } from '@/utils/storageParsing';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
@@ -378,12 +379,13 @@ async function revokeWalletAccounts(): Promise<void> {
   } catch {}
 }
 
+/** Requests wallet asset tracking with IPFS logos resolved through the maintained gateway. */
 async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
   try {
     let logo = image;
     try {
-      const { toDwebLink } = await import('@/utils/ipfs');
-      logo = toDwebLink(image) ?? image;
+      const { toIpfsGatewayUrl } = await import('@/utils/ipfs');
+      logo = toIpfsGatewayUrl(image) ?? image;
     } catch {}
     await ethereumProvider.request({
       method: 'wallet_watchAsset',
@@ -393,7 +395,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
           address, // The address that the token is at.
           symbol, // A ticker symbol or shorthand, up to 5 chars.
           decimals, // The number of decimals in the token
-          image: logo, // A string url of the token logo (normalized to dweb.link if IPFS)
+          image: logo, // A string url of the token logo (normalized to the maintained gateway if IPFS)
         },
       },
     });
@@ -535,7 +537,12 @@ function isNativeEvmTokenAddress(address: string): boolean {
 function getSelectedNetwork(): Nullable<BridgeNetworkId> {
   const network = settingsStorage.get('evmNetwork');
 
-  return network ? JSON.parse(network) : null;
+  return parseStoredJson(
+    network,
+    null as Nullable<BridgeNetworkId>,
+    (value): value is BridgeNetworkId =>
+      typeof value === 'string' || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0)
+  );
 }
 
 function storeSelectedNetwork(network: BridgeNetworkId) {

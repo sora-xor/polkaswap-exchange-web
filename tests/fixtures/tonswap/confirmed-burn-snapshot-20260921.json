@@ -1,0 +1,40 @@
+{
+  "capturedAt": "2026-09-21T02:16:48.060Z",
+  "requestDurationMs": 1992,
+  "bestBlock": 27721152,
+  "finalizedBlock": 27721150,
+  "payload": {
+    "data": {
+      "_health": {
+        "ok": true,
+        "workerReady": true,
+        "workerLatestFinalizedBlock": 27721150,
+        "workerLatestIndexedBlock": 27721150,
+        "workerLag": 0,
+        "workerLastError": null
+      },
+      "tonswapBurnSnapshot": {
+        "genesisHash": "0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5",
+        "startBlock": 27720478,
+        "indexedThroughBlock": 27721150,
+        "checkpointBlock": 27721150,
+        "checkpointTimestamp": 1789956984,
+        "nodes": [
+          {
+            "address": "cnTdP4jfCs6tEHoFTVvCUZtQqxjKXzQwYCNucDCkDsFrc9w6F",
+            "amount": "2",
+            "assetId": "0x0200000000000000000000000000000000000000000000000000000000000000",
+            "blockHeight": 27721093,
+            "campaign": "tonswap",
+            "extrinsicIndex": 1,
+            "txHash": "0x0e302df6e88e4c0a6f208df146a3bab41f1d3d39de0198f6653f2b8dc0749896"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "psc2.eyJ2IjoyLCJzIjoiN0dVdmVlMUJ6THdaYW5yMWoxb1loQ0NDUG9WTS1icm9QNXRhSFhDMWI1SSIsImYiOiJpZCIsImQiOiJhc2MiLCJuIjpmYWxzZSwiayI6IjB4ZmQ2YTI2YTY2MDdhMzgwOGJiM2Y2OTI1NDk2ODUzMWM1MDRlNWZjYWEyZjliYjhlZTVlMjQ5MmNlZmQ2YWY1ZCIsImkiOiIweGZkNmEyNmE2NjA3YTM4MDhiYjNmNjkyNTQ5Njg1MzFjNTA0ZTVmY2FhMmY5YmI4ZWU1ZTI0OTJjZWZkNmFmNWQifQ"
+        }
+      }
+    }
+  }
+}

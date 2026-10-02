@@ -8,10 +8,14 @@ import { setI18nLocale } from '@/lang';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { createSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
+import type { BurnForStats } from '@/features/misc/lib/burnCampaigns';
 
 const validSoraNexusAccount = 'sorauﾛ1NﾗhBUd2BﾂｦﾄiﾔﾆﾂﾇKSﾃaﾘﾒﾓQﾗrﾒoﾘﾅnｳﾘbQｳQJﾆLJ5HSE';
 
 const connectWalletMock = vi.fn();
+const loggedInRef = ref(true);
+const accountDialogVisibleRef = ref(false);
+const soraAddressRefs: Array<{ value: string }> = [];
 const waitForNetworkMock = vi.fn().mockResolvedValue('prod');
 const fetchBurnDataMock = vi.fn().mockResolvedValue([]);
 const walletApiMock = vi.hoisted(() => ({
@@ -62,11 +66,17 @@ vi.mock('@/composables/useLoading', () => ({
 }));
 
 vi.mock('@/composables/useInternalConnect', () => ({
-  useInternalConnect: () => ({
-    soraAddress: ref('alice'),
-    isLoggedIn: ref(true),
-    connectSoraWallet: connectWalletMock,
-  }),
+  useInternalConnect: () => {
+    const soraAddress = ref('alice');
+    soraAddressRefs.push(soraAddress);
+
+    return {
+      soraAddress,
+      isLoggedIn: loggedInRef,
+      isSoraAccountDialogVisible: accountDialogVisibleRef,
+      connectSoraWallet: connectWalletMock,
+    };
+  },
 }));
 
 vi.mock('@/composables/useFormattedAmount', () => ({
@@ -105,7 +115,13 @@ describe('Burn.vue', () => {
   });
   const clearIntervalSpy = vi.spyOn(global, 'clearInterval').mockImplementation(() => {});
   const baseStubs = {
-    BurnDialog: { template: '<div />' },
+    BurnDialog: {
+      props: ['initialNexusRecipient'],
+      template: '<div class="burn-dialog-stub" :data-recipient="initialNexusRecipient" />',
+    },
+    TonswapBurnCampaign: { template: '<div class="tonswap-campaign-stub" />' },
+    SoraNexusAccountGenerator: { name: 'SoraNexusAccountGenerator', template: '<div class="nexus-generator-stub" />' },
+    BurnLogoFire: { props: ['variant'], template: '<div class="fire-stub" :data-variant="variant" />' },
     GenericPageHeader: { template: '<div><slot /></div>' },
     ExternalLink: { template: '<a><slot /></a>' },
     InfoLine: {
@@ -125,11 +141,15 @@ describe('Burn.vue', () => {
 
   beforeEach(async () => {
     await setI18nLocale(Language.EN);
+    loggedInRef.value = true;
+    accountDialogVisibleRef.value = false;
+    connectWalletMock.mockReset();
     settingsStoreMock.blockNumber = 25_900_000;
     settingsStoreMock.soraNetwork = 'Prod';
     loadingRef.value = false;
     fetchBurnDataMock.mockResolvedValue([]);
     waitForNetworkMock.mockResolvedValue('prod');
+    soraAddressRefs.length = 0;
     walletApiMock.historyList.length = 0;
     walletApiMock.connection.api.rpc.chain.getHeader.mockReset();
   });
@@ -138,7 +158,7 @@ describe('Burn.vue', () => {
     vi.clearAllMocks();
   });
 
-  it('renders only SOLSWAP campaign and opens its burn dialog', async () => {
+  it('renders SOLSWAP beside the independent TONSWAP campaign and opens its burn dialog', async () => {
     const wrapper = mount(BurnPage, {
       global: {
         stubs: {
@@ -153,13 +173,17 @@ describe('Burn.vue', () => {
     await flushPromises();
 
     const vm = wrapper.vm as unknown as Record<string, any>;
-    const burnLogo = wrapper.find('img.campaign-logo[alt="SOLSWAP logo"]');
+    const burnLogo = wrapper.find('.campaign-fire[data-variant="sora"]');
 
     expect(vm.campaigns).toHaveLength(1);
     expect(vm.campaigns[0].id).toBe('solswap');
     expect(vm.campaigns[0].link).toBe('https://t.me/solswap_io');
     expect(burnLogo.exists()).toBe(true);
-    expect(wrapper.findAll('img.campaign-logo')).toHaveLength(1);
+    expect(wrapper.findAll('.campaign-fire')).toHaveLength(1);
+    expect(wrapper.find('.tonswap-campaign-stub').exists()).toBe(true);
+    const campaignColumns = wrapper.findAll('.burn-column');
+    expect(campaignColumns[0]!.find('.nexus-generator-stub').exists()).toBe(false);
+    expect(campaignColumns[1]!.find('.nexus-generator-stub').exists()).toBe(true);
 
     vm.handleBurnClick('solswap');
 
@@ -169,6 +193,100 @@ describe('Burn.vue', () => {
     expect(vm.selectedMax).toBe(100_000_000);
     expect(vm.selectedMin).toBe(1);
     expect(vm.selectedRequiresNexusRecipient).toBe(true);
+  });
+
+  it('uses a verified generator address only for the selected SOLSWAP burn', async () => {
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+
+    wrapper.findComponent({ name: 'SoraNexusAccountGenerator' }).vm.$emit('useAddress', validSoraNexusAccount);
+    await nextTick();
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+    expect(vm.burnDialogVisible).toBe(true);
+    expect(wrapper.find('.burn-dialog-stub').attributes('data-recipient')).toBe(validSoraNexusAccount);
+
+    vm.handleBurnClick('solswap');
+    await nextTick();
+    expect(wrapper.find('.burn-dialog-stub').attributes('data-recipient')).toBe('');
+  });
+
+  it('resumes a generated SOLSWAP burn after wallet connection completes', async () => {
+    loggedInRef.value = false;
+    connectWalletMock.mockImplementation(() => {
+      accountDialogVisibleRef.value = true;
+      return Promise.resolve();
+    });
+
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    const vm = wrapper.vm as unknown as Record<string, any>;
+
+    wrapper.findComponent({ name: 'SoraNexusAccountGenerator' }).vm.$emit('useAddress', validSoraNexusAccount);
+    await nextTick();
+    expect(connectWalletMock).toHaveBeenCalledTimes(1);
+    expect(vm.burnDialogVisible).toBe(false);
+
+    loggedInRef.value = true;
+    await nextTick();
+    expect(vm.burnDialogVisible).toBe(false);
+
+    accountDialogVisibleRef.value = false;
+    await nextTick();
+    expect(vm.burnDialogVisible).toBe(true);
+    expect(wrapper.find('.burn-dialog-stub').attributes('data-recipient')).toBe(validSoraNexusAccount);
+  });
+
+  it('forgets a pending generated recipient when wallet connection is cancelled', async () => {
+    loggedInRef.value = false;
+    connectWalletMock.mockImplementation(() => {
+      accountDialogVisibleRef.value = true;
+      return Promise.resolve();
+    });
+
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+    const vm = wrapper.vm as unknown as Record<string, any>;
+
+    wrapper.findComponent({ name: 'SoraNexusAccountGenerator' }).vm.$emit('useAddress', validSoraNexusAccount);
+    await nextTick();
+    accountDialogVisibleRef.value = false;
+    await nextTick();
+
+    expect(vm.burnDialogVisible).toBe(false);
+    loggedInRef.value = true;
+    await nextTick();
+    expect(vm.burnDialogVisible).toBe(false);
+    expect(wrapper.find('.burn-dialog-stub').attributes('data-recipient')).toBe('');
+  });
+
+  it('forgets a pending generated recipient when wallet connection fails before opening', async () => {
+    loggedInRef.value = false;
+    connectWalletMock.mockRejectedValueOnce(new Error('Wallet connection unavailable'));
+
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+
+    wrapper.findComponent({ name: 'SoraNexusAccountGenerator' }).vm.$emit('useAddress', validSoraNexusAccount);
+    await flushPromises();
+
+    loggedInRef.value = true;
+    await nextTick();
+    expect((wrapper.vm as unknown as Record<string, any>).burnDialogVisible).toBe(false);
+    expect(wrapper.find('.burn-dialog-stub').attributes('data-recipient')).toBe('');
+  });
+
+  it('ignores an invalid generated recipient before opening the burn or wallet connection', async () => {
+    loggedInRef.value = false;
+    const wrapper = mount(BurnPage, { global: { stubs: baseStubs } });
+    await flushPromises();
+
+    wrapper.findComponent({ name: 'SoraNexusAccountGenerator' }).vm.$emit('useAddress', 'not-a-nexus-address');
+    await nextTick();
+
+    expect(connectWalletMock).not.toHaveBeenCalled();
+    expect((wrapper.vm as unknown as Record<string, any>).burnDialogVisible).toBe(false);
+    expect(wrapper.find('.burn-dialog-stub').attributes('data-recipient')).toBe('');
   });
 
   it('marks campaigns as ended when block height exceeds range', async () => {
@@ -190,6 +308,10 @@ describe('Burn.vue', () => {
 
     expect(vm.ended.solswap).toBe(true);
     expect(vm.timeLeftFormatted.solswap).toBe('0D 0H 0M');
+
+    wrapper.findComponent({ name: 'SoraNexusAccountGenerator' }).vm.$emit('useAddress', validSoraNexusAccount);
+    await nextTick();
+    expect(vm.burnDialogVisible).toBe(false);
 
     wrapper.unmount();
     expect(clearIntervalSpy).toHaveBeenCalled();
@@ -515,5 +637,108 @@ describe('Burn.vue', () => {
     expect(text).not.toContain('Reserve KARMA');
     expect(text).not.toContain('Reserve KEN');
     expect(text).not.toContain('0.0 XOR');
+  });
+
+  it('keeps the latest account statistics when the previous account resolves last', async () => {
+    let resolvePreviousBurns!: (burns: BurnForStats[]) => void;
+    let resolveCurrentBurns!: (burns: BurnForStats[]) => void;
+    const previousBurns = new Promise<BurnForStats[]>((resolve) => {
+      resolvePreviousBurns = resolve;
+    });
+    const currentBurns = new Promise<BurnForStats[]>((resolve) => {
+      resolveCurrentBurns = resolve;
+    });
+
+    intervalSpy.mockImplementationOnce(() => 1 as unknown as number);
+    fetchBurnDataMock.mockImplementation((_start: number, _end: number, account?: string) => {
+      const requestAddress = account || soraAddressRefs.at(-1)?.value;
+
+      return requestAddress === 'bob' ? currentBurns : previousBurns;
+    });
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    await vi.waitFor(() => expect(fetchBurnDataMock).toHaveBeenCalledTimes(2));
+
+    const soraAddress = soraAddressRefs.at(-1);
+    expect(soraAddress).toBeDefined();
+    if (!soraAddress) throw new Error('Burn page account ref was not created');
+
+    soraAddress.value = 'bob';
+    await nextTick();
+    await vi.waitFor(() => expect(fetchBurnDataMock).toHaveBeenCalledTimes(4));
+
+    resolveCurrentBurns([
+      {
+        blockHeight: 25_900_000,
+        amount: new FPNumber(20),
+        address: 'bob',
+        txHash: '0xbob',
+      },
+    ]);
+    await flushPromises();
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+    expect(vm.totalXorBurned.solswap.toString()).toBe('20');
+    expect(vm.accountXorBurned.solswap.toString()).toBe('20');
+
+    resolvePreviousBurns([
+      {
+        blockHeight: 25_900_000,
+        amount: new FPNumber(10),
+        address: 'alice',
+        txHash: '0xalice',
+      },
+    ]);
+    await flushPromises();
+
+    expect(vm.totalXorBurned.solswap.toString()).toBe('20');
+    expect(vm.accountXorBurned.solswap.toString()).toBe('20');
+
+    wrapper.unmount();
+  });
+
+  it('does not commit an in-flight statistics request or install its interval after unmount', async () => {
+    let resolveBurns!: (burns: BurnForStats[]) => void;
+    const burns = new Promise<BurnForStats[]>((resolve) => {
+      resolveBurns = resolve;
+    });
+    fetchBurnDataMock.mockReturnValue(burns);
+    intervalSpy.mockClear();
+
+    const wrapper = mount(BurnPage, {
+      global: {
+        stubs: {
+          ...baseStubs,
+        },
+      },
+    });
+
+    await vi.waitFor(() => expect(fetchBurnDataMock).toHaveBeenCalledTimes(2));
+
+    const vm = wrapper.vm as unknown as Record<string, any>;
+    const totalXorBurned = vm.totalXorBurned;
+    const accountXorBurned = vm.accountXorBurned;
+    wrapper.unmount();
+
+    resolveBurns([
+      {
+        blockHeight: 25_900_000,
+        amount: new FPNumber(10),
+        address: 'alice',
+        txHash: '0xlate',
+      },
+    ]);
+    await flushPromises();
+
+    expect(totalXorBurned.solswap.toString()).toBe('0');
+    expect(accountXorBurned.solswap.toString()).toBe('0');
+    expect(intervalSpy).not.toHaveBeenCalled();
   });
 });

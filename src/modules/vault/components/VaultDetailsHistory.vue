@@ -5,7 +5,7 @@
     </template>
     <template v-if="hasItems">
       <div class="details-history__items s-flex-column" v-loading="loadingState">
-        <div v-for="(item, index) in items" :key="index" class="history-item s-flex-column">
+        <div v-for="item in items" :key="item.id" class="history-item s-flex-column">
           <div class="history-item-info s-flex">
             <div class="history-item-operation ch3" :data-type="item.type">{{ getTitle(item.type) }}</div>
             <div class="history-item-title p4">{{ getOperationMessage(item) }}</div>
@@ -64,6 +64,9 @@ const currentPage = ref(1);
 const totalCount = ref(0);
 const rawItems = ref<readonly VaultEvent[]>([]);
 const intervalId = ref<Nullable<ReturnType<typeof setInterval>>>(null);
+let requestGeneration = 0;
+let activePollGeneration: Nullable<number> = null;
+let isUnmounted = false;
 
 const { t, formatDate } = useTranslation();
 const { loading, withLoading } = useLoading();
@@ -86,13 +89,6 @@ const dataVariables = computed(() => ({
   offset: offset.value,
 }));
 
-const intervalTimestamp = computed(() => Math.floor((rawItems.value[0]?.timestamp ?? Date.now()) / 1000));
-
-const updateVariables = computed(() => ({
-  id: props.id,
-  fromTimestamp: intervalTimestamp.value,
-}));
-
 const visibleItems = computed(() => {
   const currentFetchPage = fetchPage.value;
   const offsetWithinFetch = fetchAmount * (currentFetchPage - 1);
@@ -111,38 +107,70 @@ function resetDataSubscription(): void {
 }
 
 function resetData(): void {
+  requestGeneration += 1;
+  activePollGeneration = null;
   rawItems.value = [];
   totalCount.value = 0;
   resetDataSubscription();
 }
 
+/** Returns whether an async response still belongs to the mounted component's active data request. */
+const isCurrentRequest = (generation: number): boolean => !isUnmounted && generation === requestGeneration;
+
+/**
+ * Refreshes the first page from an authoritative snapshot while preventing overlapping polls.
+ * A full first-page refresh avoids timestamp cursor gaps and keeps the indexer's total count authoritative.
+ */
+async function applyPollingData(generation: number): Promise<void> {
+  if (!isCurrentRequest(generation) || activePollGeneration === generation) return;
+
+  activePollGeneration = generation;
+
+  try {
+    const { items: fetchedItems, totalCount: count } = await fetchVaultEvents({
+      id: props.id,
+      first: fetchAmount,
+      offset: 0,
+    });
+
+    if (!isCurrentRequest(generation)) return;
+
+    rawItems.value = Object.freeze(fetchedItems) as VaultEvent[];
+    totalCount.value = count;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    if (activePollGeneration === generation) {
+      activePollGeneration = null;
+    }
+  }
+}
+
 async function applyPageData(): Promise<void> {
+  resetDataSubscription();
+  activePollGeneration = null;
+  const generation = ++requestGeneration;
+
   if (!props.id) {
-    resetData();
+    rawItems.value = [];
+    totalCount.value = 0;
     return;
   }
 
   await withLoading(async () => {
     const { items: fetchedItems, totalCount: count } = await fetchVaultEvents(dataVariables.value);
+
+    if (!isCurrentRequest(generation)) return;
+
     rawItems.value = Object.freeze(fetchedItems) as VaultEvent[];
     totalCount.value = count;
   });
 
-  resetDataSubscription();
+  if (!isCurrentRequest(generation)) return;
 
   if (fetchPage.value === 1 && hasItems.value) {
-    intervalId.value = setInterval(async () => {
-      try {
-        const { items: updates, totalCount: newTotal } = await fetchVaultEvents(updateVariables.value);
-        if (updates.length) {
-          rawItems.value = Object.freeze([...updates, ...rawItems.value].slice(0, fetchAmount)) as VaultEvent[];
-        }
-        if (newTotal) {
-          totalCount.value = totalCount.value + newTotal;
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    intervalId.value = setInterval(() => {
+      void applyPollingData(generation);
     }, updateInterval);
   }
 }
@@ -170,6 +198,9 @@ watch(lastPage, (value) => {
 });
 
 onBeforeUnmount(() => {
+  isUnmounted = true;
+  requestGeneration += 1;
+  activePollGeneration = null;
   resetDataSubscription();
 });
 

@@ -99,6 +99,54 @@ describe('EvmBridgeOutgoingReducer', () => {
     expect(updateTransaction.mock.calls.map(([id]) => id)).not.toContain('0xsora-hash');
     expect(updateTransaction).toHaveBeenCalledWith(tx.id, expect.objectContaining({ endTime: expect.any(Number) }));
   });
+
+  it('unsubscribes transaction details when managed tracking is canceled', async () => {
+    const tx = { ...createTransaction(), hash: '0xsora-hash' };
+    const transactions = new Map<string, TestEvmHistory>([[tx.id, tx]]);
+    const unsubscribe = vi.fn();
+    const controller = new AbortController();
+    const reducer = new EvmBridgeOutgoingReducer({
+      addAsset: vi.fn(async () => undefined),
+      getAssetByAddress: vi.fn(() => ({ address: 'asset-1' })),
+      getTransaction: vi.fn((id: string) => {
+        const current = transactions.get(id);
+        if (!current) throw new Error(`missing transaction ${id}`);
+        return current;
+      }),
+      updateTransaction: vi.fn((id: string, params: Partial<TestEvmHistory>) => {
+        const current = transactions.get(id);
+        if (!current) throw new Error(`missing transaction ${id}`);
+        transactions.set(id, { ...current, ...params });
+      }),
+      updateHistory: vi.fn(),
+      showNotification: vi.fn(),
+      getActiveTransaction: vi.fn(() => transactions.get(tx.id) ?? null),
+      addTransactionToProgress: vi.fn(),
+      removeTransactionFromProgress: vi.fn(),
+      beforeTransactionSign: vi.fn(async () => undefined),
+      boundaryStates: {
+        [Operation.EvmOutgoing]: {
+          done: BridgeTxStatus.Done,
+          failed: [BridgeTxStatus.Failed],
+        },
+      },
+      removeTransactionByHash: vi.fn(),
+    } as any);
+
+    reducerMocks.evmBridgeApi.subscribeOnTransactionDetails.mockReturnValue(
+      new Observable(() => unsubscribe) as Observable<{ status: BridgeTxStatus }>
+    );
+
+    const processing = reducer.changeState(tx as any, controller.signal);
+    const expectation = expect(processing).rejects.toMatchObject({ name: 'AbortError' });
+
+    await vi.waitFor(() => expect(reducerMocks.evmBridgeApi.subscribeOnTransactionDetails).toHaveBeenCalled());
+    controller.abort();
+
+    await expectation;
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(transactions.get(tx.id)?.transactionState).toBe(BridgeTxStatus.Pending);
+  });
 });
 
 const createTransaction = (): TestEvmHistory => ({

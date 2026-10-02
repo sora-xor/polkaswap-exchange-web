@@ -1,0 +1,18 @@
+{
+  "reviewedAt": "2026-09-30",
+  "code": "PF",
+  "reviewType": "Independent peer review requested by parent after Americas pass; no main-array edit",
+  "source": "https://www.service-public.pf/biosecurite/accueil/particuliers/apporter-ou-faire-venir-en-pf-particulier/jarrive-en-polynesie-francaise/",
+  "sourceUpdated": "2026-08-05",
+  "recommendedDecision": "supported",
+  "qualification": "Conditional, explicit processing/scope inference for actual steam-manufactured plain sencha; not a tea-specific ruling.",
+  "reasons": [
+    "The current DBS page expressly addresses private senders/recipients and postal parcels. The plant-food subsections therefore are not confined to passenger baggage.",
+    "It expressly waives both import permit and phytosanitary certificate for plant food that underwent cooking; canned food is an example, not a mandatory package form. Industrial, commercial or other cooking is covered.",
+    "Actual steam manufacture of sencha reasonably supplies the cooking/thermal-process condition; mere drying or raw/herbal leaves should not be included by this inference.",
+    "Camellia is absent from the enumerated prohibited cooked species. The animal-food 10 kg limit is not a plant-food limit.",
+    "The currently maintained page cites Order324CM of16March2026, rather than the superseded740CM. Full Annex5 remains inaccessible and was not read; this is reliance on the current authority’s own operative guidance.",
+    "The page states it is a non-exhaustive summary. Preserve that source limitation and normal declaration/inspection duties."
+  ],
+  "reviewedWebReaderLines": "33;45–63;177–189;296–301"
+}

@@ -98,6 +98,7 @@ import { useTranslation } from '@/composables/useTranslation';
 import { useAssetsStore } from '@/stores/assets';
 import { useWalletStore } from '@/stores/wallet';
 import { getAssetBalance } from '@/utils';
+import { normalizeHashHref } from '@/utils/hashHref';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/sdk';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -138,7 +139,7 @@ const { showAppAlert } = useNotification();
 const walletStore = useWalletStore();
 const assetsStore = useAssetsStore();
 
-const swapLink = '/#/swap/XOR/KUSD';
+const swapLink = normalizeHashHref('/#/swap/XOR/KUSD');
 const xorSymbol = XOR.symbol;
 
 const networkFees = computed(() => walletStore.networkFees as NetworkFeesObject | undefined);
@@ -216,18 +217,20 @@ const handleCloseVault = async () => {
   }
 
   try {
-    await withNotifications(async () => {
+    const result = await withNotifications(async () => {
       if (!(vault.value && lockedAsset.value && debtAsset.value)) {
         throw new Error('[api.kensetsu.closeVault]: vault or asset is null');
       }
       await api.kensetsu.closeVault(vault.value, lockedAsset.value, debtAsset.value);
     });
+
+    if (!result.submitted) return;
+
+    isVisible.value = false;
+    emit('confirm');
   } catch (error) {
     console.error(error);
   }
-
-  isVisible.value = false;
-  emit('confirm');
 };
 
 const openSwap = () => {

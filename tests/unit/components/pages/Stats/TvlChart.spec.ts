@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -70,6 +70,7 @@ vi.mock('@/composables/useChartSpec', () => ({
 vi.mock('@/lib/echarts/component', () => ({
   default: defineComponent({
     name: 'VChartStub',
+    props: ['option'],
     template: '<div class="v-chart-stub"></div>',
   }),
 }));
@@ -243,6 +244,35 @@ describe('TvlChart', () => {
     await nextTick();
 
     expect(fetchDataMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps data from the latest endpoint refresh when an older request resolves last', async () => {
+    let resolveOldRequest!: (value: Array<{ timestamp: number; value: number }>) => void;
+    let resolveNewRequest!: (value: Array<{ timestamp: number; value: number }>) => void;
+    const oldRequest = new Promise<Array<{ timestamp: number; value: number }>>((resolve) => {
+      resolveOldRequest = resolve;
+    });
+    const newRequest = new Promise<Array<{ timestamp: number; value: number }>>((resolve) => {
+      resolveNewRequest = resolve;
+    });
+    fetchDataMock.mockImplementationOnce(() => oldRequest).mockImplementationOnce(() => newRequest);
+
+    const wrapper = mount(TvlChart);
+    await nextTick();
+
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(2);
+
+    resolveNewRequest([{ timestamp: 2, value: 22 }]);
+    await flushPromises();
+    resolveOldRequest([{ timestamp: 1, value: 11 }]);
+    await flushPromises();
+
+    const option = wrapper.findComponent({ name: 'VChartStub' }).props('option') as {
+      dataset: { source: Array<[number, number]> };
+    };
+    expect(option.dataset.source).toEqual([[2, 22]]);
   });
 
   it('uses direct shared imports instead of the central lazy registry', () => {

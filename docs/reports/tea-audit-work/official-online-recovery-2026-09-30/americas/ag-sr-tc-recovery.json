@@ -1,0 +1,26 @@
+[
+  {
+    "file": "ag-act2012-fao.pdf",
+    "url": "https://faolex.fao.org/docs/pdf/ant126404.pdf",
+    "status": 200,
+    "bytes": 2400098
+  },
+  {
+    "file": "sr-act2020-alternate.pdf",
+    "url": "https://www.dna.sr/media/k4hdogeh/sb-2020-78.pdf",
+    "status": 200,
+    "bytes": 2980299
+  },
+  {
+    "file": "sr-media-phytosan.json",
+    "url": "https://gov.sr/wp-json/wp/v2/media?search=fytosanitaire&per_page=100",
+    "status": 200,
+    "bytes": 2,
+    "media": []
+  },
+  {
+    "file": "tc-residents.html",
+    "url": "https://www.agriculture.gov.tc/residents",
+    "error": "HTTPSConnectionPool(host='www.agriculture.gov.tc', port=443): Max retries exceeded with url: /residents (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.agriculture.gov.tc'. (_ssl.c:1082)\")))"
+  }
+]

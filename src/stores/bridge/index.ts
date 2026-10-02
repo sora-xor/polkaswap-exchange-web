@@ -1,10 +1,10 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { getAssetBalance } from '@sora-substrate/sdk/build/assets';
-import { DAI } from '@sora-substrate/sdk/build/assets/consts';
+import { DAI, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeTxDirection, BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
-import { SubAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { SubAssetKind, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { DexId } from '@sora-substrate/sdk/build/dex/consts';
 import { defineStore } from 'pinia';
 import { combineLatest } from 'rxjs';
@@ -23,7 +23,11 @@ import {
   calculateBridgeSendAmount,
   isPositiveFiniteBridgeAmount,
 } from '@/stores/bridge/amounts';
-import { buildBridgeHistoryRecord, findBridgeHistoryTransaction } from '@/stores/bridge/historyRecord';
+import {
+  buildBridgeHistoryRecord,
+  findBridgeHistoryTransaction,
+  findBridgeHistoryTransactionEntry,
+} from '@/stores/bridge/historyRecord';
 import { useAssetsStore } from '@/stores/assets';
 import { buildInitialBridgeState } from '@/stores/bridge/state';
 import { resolveBridgeExternalNetworkType, resolveBridgeOperation } from '@/stores/bridge/network';
@@ -74,7 +78,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import { useWeb3Store } from '@/stores/web3';
 import type { Nullable } from '@/types/common';
-import { BridgeTransactionSignDialogMode } from '@/utils/bridge/common/types';
+import { BridgeTransactionSignDialogMode, type RecordEvmSubmission } from '@/utils/bridge/common/types';
 import { isDenominatedAsset, isWaitingForAction, waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import ethBridge from '@/utils/bridge/eth';
@@ -95,16 +99,25 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { updateEvmBridgeHistory } from '@/utils/bridge/evm/classes/history';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector, type SubNetworkConnectionState } from '@/utils/bridge/sub/classes/adapter';
 import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
+import { isDisplayOnlyRecoveredSubBridgeHistory } from '@/utils/bridge/sub/reconciliation';
+import { withCrossTabEvmSubmissionLock } from '@/utils/bridge/eth/submissionLock';
 import { getBuildVariant, trackEvent } from '@/utils/telemetry';
 import { resolveRealtimeConnectionCap } from '@/utils/realtimeConnectionCap';
+import {
+  assertTonswapBridgeQuote,
+  hasTonswapBridgeFundingTag,
+  tonswapBridgeSigningIdentity,
+  getTonswapBridgeFundingPurpose,
+} from '@/features/misc/lib/tonswapBridgeLiquidity';
 
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
 import type { SubNetwork } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/types';
+import type { TransactionRequest, TransactionResponse } from 'ethers';
 import type { Subscription } from 'rxjs';
 
 type BridgeApiLike = {
@@ -114,6 +127,175 @@ type BridgeApiLike = {
   getLockedAssets?: (...params: unknown[]) => Promise<CodecString>;
   getNetworkFee?: (...params: unknown[]) => Promise<CodecString>;
 };
+
+type BridgeRefreshScope =
+  | 'balances'
+  | 'externalMinBalance'
+  | 'externalLockedBalance'
+  | 'externalNetworkFee'
+  | 'soraNetworkFee'
+  | 'feesAndLockedFunds'
+  | 'incomingMinLimit'
+  | 'outgoingMinLimit'
+  | 'outgoingMaxLimit';
+
+type BridgeSelectionStoreLike = Pick<BridgeState, 'form'> & {
+  asset: Nullable<RegisteredAccountAsset>;
+};
+
+type BridgeRefreshGuard = {
+  (): boolean;
+  isLatest: () => boolean;
+};
+
+type BridgeHistorySourceStoreLike = Pick<BridgeState, 'form'> & {
+  networkHistoryId: Nullable<BridgeNetworkId>;
+  subNetworkConnectionState?: SubNetworkConnectionState;
+};
+
+type BridgeHistoryRequest = {
+  id: number;
+  source: string;
+  controller: AbortController;
+};
+
+type BridgeHistoryRequestState = {
+  nextId: number;
+  latestId: number;
+  activeByNetwork: Map<BridgeNetworkId, BridgeHistoryRequest>;
+};
+
+type BridgeHistoryRequestGuard = {
+  isCurrent: () => boolean;
+  signal: AbortSignal;
+  finish: () => boolean;
+};
+
+const bridgeRefreshEpochs = new WeakMap<object, Partial<Record<BridgeRefreshScope, number>>>();
+const bridgeHistoryRequestStates = new WeakMap<object, BridgeHistoryRequestState>();
+type BridgeTransactionTask = { promise: Promise<void>; controller: AbortController };
+const bridgeTransactionTasks = new WeakMap<object, Map<string, BridgeTransactionTask>>();
+
+/**
+ * Captures the stable bridge selection fields that determine which asset and
+ * network an asynchronous refresh belongs to.
+ */
+const getBridgeSelectionSignature = (store: BridgeSelectionStoreLike, extra: unknown[] = []): string => {
+  const web3Store = useWeb3Store();
+  const asset = store.asset;
+
+  return JSON.stringify([
+    store.form.assetAddress,
+    store.form.isSoraToEvm,
+    asset?.address,
+    asset?.externalAddress,
+    asset?.decimals,
+    asset?.externalDecimals,
+    web3Store.networkType,
+    web3Store.networkSelected,
+    ...extra,
+  ]);
+};
+
+/**
+ * Starts a scoped refresh and returns a guard that accepts only the latest
+ * request while its captured asset/network selection remains active.
+ */
+const beginBridgeRefresh = (
+  store: object,
+  scope: BridgeRefreshScope,
+  getSelectionSignature: () => string
+): BridgeRefreshGuard => {
+  const epochs = bridgeRefreshEpochs.get(store) ?? {};
+  const requestId = (epochs[scope] ?? 0) + 1;
+  const selectionSignature = getSelectionSignature();
+
+  epochs[scope] = requestId;
+  bridgeRefreshEpochs.set(store, epochs);
+
+  const isLatest = () => epochs[scope] === requestId;
+  const guard = (() => isLatest() && getSelectionSignature() === selectionSignature) as BridgeRefreshGuard;
+  guard.isLatest = isLatest;
+
+  return guard;
+};
+
+/**
+ * Identifies the account, direction, and external network whose bridge history
+ * is currently visible.
+ */
+const getBridgeHistorySourceSignature = (store: BridgeHistorySourceStoreLike): string => {
+  const assetsStore = useAssetsStore();
+  const walletStore = useWalletStore();
+  const web3Store = useWeb3Store();
+  const isSubBridge = web3Store.networkType === BridgeNetworkType.Sub;
+  const registeredAssetAddresses = isSubBridge ? Object.keys(assetsStore.registeredAssets ?? {}).sort() : [];
+
+  return JSON.stringify([
+    store.networkHistoryId,
+    web3Store.networkType,
+    web3Store.networkSelected,
+    walletStore.address,
+    walletStore.sorametricsApiEndpoint,
+    web3Store.evmAddress,
+    web3Store.subAddress,
+    store.form.isSoraToEvm,
+    isSubBridge ? assetsStore.registeredAssetsFetching : undefined,
+    registeredAssetAddresses,
+    isSubBridge ? store.subNetworkConnectionState?.ready : undefined,
+  ]);
+};
+
+/**
+ * Starts an external-history request while coalescing only an identical active
+ * source. New account/direction requests may supersede an older request for
+ * the same network without allowing the older request to clear their loader.
+ */
+const beginBridgeHistoryRequest = (
+  store: object & BridgeHistorySourceStoreLike,
+  networkHistoryId: BridgeNetworkId
+): Nullable<BridgeHistoryRequestGuard> => {
+  const state =
+    bridgeHistoryRequestStates.get(store) ??
+    ({
+      nextId: 0,
+      latestId: 0,
+      activeByNetwork: new Map<BridgeNetworkId, BridgeHistoryRequest>(),
+    } satisfies BridgeHistoryRequestState);
+  const source = getBridgeHistorySourceSignature(store);
+  const activeRequest = state.activeByNetwork.get(networkHistoryId);
+
+  if (activeRequest?.source === source && state.latestId === activeRequest.id) {
+    return null;
+  }
+
+  const request: BridgeHistoryRequest = {
+    id: ++state.nextId,
+    source,
+    controller: new AbortController(),
+  };
+
+  state.activeByNetwork.forEach((active) => active.controller.abort());
+  state.activeByNetwork.clear();
+
+  state.latestId = request.id;
+  state.activeByNetwork.set(networkHistoryId, request);
+  bridgeHistoryRequestStates.set(store, state);
+
+  return {
+    isCurrent: () => state.latestId === request.id && getBridgeHistorySourceSignature(store) === request.source,
+    signal: request.controller.signal,
+    finish: () => {
+      if (state.activeByNetwork.get(networkHistoryId)?.id !== request.id) {
+        return false;
+      }
+
+      state.activeByNetwork.delete(networkHistoryId);
+      return true;
+    },
+  };
+};
+
 const dataPlaneClient = getDataPlaneClient();
 
 const Direction =
@@ -224,8 +406,137 @@ const getRegisteredTransactionAsset = (assetAddress: string): RegisteredAccountA
   return asset;
 };
 
-const hasSubApiRegistry = (apiInstance: unknown): boolean => {
-  return Boolean(apiInstance && typeof apiInstance === 'object' && (apiInstance as { registry?: unknown }).registry);
+type EvmBridgeTransactionSigner = {
+  getAddress: () => Promise<string>;
+  getNonce: (blockTag: 'pending') => Promise<number>;
+  sendTransaction: (request: TransactionRequest) => Promise<TransactionResponse>;
+};
+
+type EvmBridgeContractMethod = {
+  populateTransaction: (...args: unknown[]) => Promise<TransactionRequest>;
+};
+
+const EVM_SUBMISSION_ALREADY_RECORDED = 'BRIDGE_EVM_SUBMISSION_ALREADY_RECORDED';
+
+type ExistingEvmSubmission = 'pending' | TransactionResponse | null;
+
+/** Returns the latest durable broadcast state while the origin-wide lock is held. */
+const getExistingEvmSubmission = (id: string): ExistingEvmSubmission => {
+  const transaction = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
+
+  if (typeof transaction?.externalHash === 'string' && transaction.externalHash) {
+    return { hash: transaction.externalHash } as TransactionResponse;
+  }
+
+  const payload = isRecord(transaction?.payload) ? transaction.payload : null;
+
+  return payload && Object.prototype.hasOwnProperty.call(payload, 'evmSubmission') ? 'pending' : null;
+};
+
+/** Builds a stable, origin-local lock name without exposing private account data. */
+const getEvmSubmissionLockName = (id: string, network: BridgeNetworkId): string => {
+  return `polkaswap:eth-bridge:evm-submit:${String(network)}:${id}`;
+};
+
+/** Converts an EVM request value to a non-negative, lossless decimal string. */
+const normalizeEvmSubmissionValue = (value: TransactionRequest['value']): string => {
+  if (value == null) return ZeroStringValue;
+  if (typeof value === 'number' && (!Number.isSafeInteger(value) || value < 0)) {
+    throw new Error('[Bridge]: EVM transaction value must be a non-negative safe integer');
+  }
+
+  try {
+    const normalized = BigInt(value as string | number | bigint);
+
+    if (normalized < 0n) throw new Error('negative value');
+
+    return normalized.toString();
+  } catch {
+    throw new Error('[Bridge]: EVM transaction value is invalid');
+  }
+};
+
+/**
+ * Populates and pins the exact bridge request before broadcast so recovery can
+ * find a transaction even when the wallet broadcasts but its RPC reply is lost.
+ */
+const sendPreparedEvmBridgeTransaction = async (
+  contract: unknown,
+  method: string,
+  args: unknown[],
+  recordSubmission: RecordEvmSubmission | undefined,
+  lockName: string,
+  getExistingSubmission: () => ExistingEvmSubmission,
+  submissionGuard?: { chainId: number; validate: (signerAddress: string) => Promise<void> }
+): Promise<TransactionResponse> => {
+  if (!contract || typeof contract !== 'object') {
+    throw new Error('[Bridge]: EVM bridge contract is unavailable');
+  }
+
+  const contractRecord = contract as Record<string, unknown> & { runner?: unknown };
+  const contractMethod = contractRecord[method] as Nullable<EvmBridgeContractMethod>;
+  const signer = contractRecord.runner as Nullable<EvmBridgeTransactionSigner>;
+
+  if (typeof contractMethod?.populateTransaction !== 'function') {
+    throw new Error(`[Bridge]: EVM bridge method "${method}" cannot prepare a transaction`);
+  }
+  if (
+    typeof signer?.getAddress !== 'function' ||
+    typeof signer.getNonce !== 'function' ||
+    typeof signer.sendTransaction !== 'function'
+  ) {
+    throw new Error('[Bridge]: EVM bridge contract is not connected to a signer');
+  }
+
+  if (typeof recordSubmission !== 'function') {
+    throw new Error('[Bridge]: Durable EVM submission recording is unavailable');
+  }
+
+  return await withCrossTabEvmSubmissionLock(lockName, async () => {
+    const existingSubmission = getExistingSubmission();
+
+    if (existingSubmission === 'pending') {
+      throw Object.assign(new Error('[Bridge]: EVM submission is already being reconciled in another tab'), {
+        code: EVM_SUBMISSION_ALREADY_RECORDED,
+      });
+    }
+    if (existingSubmission) return existingSubmission;
+
+    const populatedRequest = await contractMethod.populateTransaction(...args);
+    const [from, nonce] = await Promise.all([signer.getAddress(), signer.getNonce('pending')]);
+
+    if (!Number.isSafeInteger(nonce) || nonce < 0) {
+      throw new Error('[Bridge]: EVM pending nonce is invalid');
+    }
+    if (typeof from !== 'string' || !from.trim()) {
+      throw new Error('[Bridge]: EVM signer address is invalid');
+    }
+    if (typeof populatedRequest.to !== 'string' || !populatedRequest.to.trim()) {
+      throw new Error('[Bridge]: EVM bridge transaction recipient is invalid');
+    }
+    if (typeof populatedRequest.data !== 'string' || !populatedRequest.data) {
+      throw new Error('[Bridge]: EVM bridge transaction data is invalid');
+    }
+    await submissionGuard?.validate(from);
+
+    const preparedRequest: TransactionRequest = {
+      ...populatedRequest,
+      from,
+      nonce,
+      ...(submissionGuard ? { chainId: submissionGuard.chainId } : {}),
+    };
+
+    recordSubmission({
+      from: from.toLowerCase(),
+      to: populatedRequest.to.toLowerCase(),
+      nonce,
+      data: populatedRequest.data,
+      value: normalizeEvmSubmissionValue(populatedRequest.value),
+      startTimestamp: Date.now(),
+    });
+
+    return await signer.sendTransaction(preparedRequest);
+  });
 };
 
 /**
@@ -233,9 +544,7 @@ const hasSubApiRegistry = (apiInstance: unknown): boolean => {
  * and balance queries, not just that the websocket marked itself connected.
  */
 const isSubConnectorNetworkReady = (connector?: Nullable<SubNetworksConnector>): boolean => {
-  const network = connector?.network;
-
-  return Boolean(network?.subNetworkConnection?.nodeIsConnected && hasSubApiRegistry(network?.connection?.api));
+  return connector?.connectionState?.ready ?? false;
 };
 
 const chainAddress = (address: string, connector: SubNetworksConnector): string => {
@@ -263,6 +572,146 @@ const resolveBridgeApi = (): BridgeApiLike => {
       return evmBridgeApi as BridgeApiLike;
     default:
       return ethBridgeApi as BridgeApiLike;
+  }
+};
+
+/**
+ * Finds a transaction independently of the network currently selected in the
+ * bridge form. This is required when users reopen persisted history after
+ * switching to another bridge family.
+ */
+const resolvePersistedBridgeTransaction = (
+  internalHistory: Record<string, IBridgeTransaction>,
+  id: string
+): Nullable<IBridgeTransaction> => {
+  const histories = [ethBridgeApi.history, evmBridgeApi.history, subBridgeApi.history, internalHistory];
+
+  for (const history of histories) {
+    const transaction = findBridgeHistoryTransaction(history ?? {}, id);
+
+    if (transaction) return transaction;
+  }
+
+  return null;
+};
+
+/**
+ * Finds the freshest persisted bridge row and retains its actual storage key.
+ * Pinned pages can belong to a bridge family other than the one selected in
+ * the form, so the selected API alone is not an authoritative refresh source.
+ */
+const resolvePersistedBridgeTransactionEntry = (id: string) => {
+  for (const history of [ethBridgeApi.history, evmBridgeApi.history, subBridgeApi.history]) {
+    const entry = findBridgeHistoryTransactionEntry(history ?? {}, id);
+
+    if (entry) return entry;
+  }
+
+  return null;
+};
+
+/** Resolves the reducer family from the operation persisted on the transaction. */
+const resolveBridgeTransactionHandler = (transaction: IBridgeTransaction) => {
+  switch (transaction.type) {
+    case Operation.EthBridgeIncoming:
+    case Operation.EthBridgeOutgoing:
+      return ethBridge;
+    case Operation.EvmIncoming:
+    case Operation.EvmOutgoing:
+      return evmBridge;
+    case Operation.SubstrateIncoming:
+    case Operation.SubstrateOutgoing:
+      return subBridge;
+  }
+
+  throw new Error(`[Bridge]: Unsupported transaction operation: "${transaction.type}"`);
+};
+
+/**
+ * Coalesces concurrent handling requests for one canonical transaction id.
+ * The entry is removed after settlement so an explicit later retry can run.
+ */
+const runBridgeTransactionOnce = async (
+  store: object,
+  id: string,
+  handler: { handleTransaction: (transactionId: string, signal?: AbortSignal) => Promise<void> }
+): Promise<void> => {
+  const tasks = bridgeTransactionTasks.get(store) ?? new Map<string, BridgeTransactionTask>();
+  const activeTask = tasks.get(id);
+
+  if (activeTask) {
+    await activeTask.promise;
+    return;
+  }
+
+  const controller = new AbortController();
+  const walletStore = useWalletStore();
+  const ownerAddress = walletStore.address;
+  const stopAccountIdentityWatch = walletStore.$subscribe(
+    () => {
+      if (walletStore.address !== ownerAddress) {
+        controller.abort();
+      }
+    },
+    { detached: true, flush: 'sync' }
+  );
+  const task = Promise.resolve()
+    .then(() => handler.handleTransaction(id, controller.signal))
+    .catch((error) => {
+      if (error instanceof Error && error.name === 'AbortError') return;
+      throw error;
+    });
+
+  tasks.set(id, { promise: task, controller });
+  bridgeTransactionTasks.set(store, tasks);
+
+  try {
+    await task;
+  } finally {
+    stopAccountIdentityWatch();
+    if (tasks.get(id)?.promise === task) {
+      tasks.delete(id);
+    }
+    if (!tasks.size) {
+      bridgeTransactionTasks.delete(store);
+    }
+  }
+};
+
+/** Cancels one managed bridge tracker and waits for its cleanup to finish. */
+const cancelBridgeTransactionTask = async (store: object, id: string): Promise<void> => {
+  const task = bridgeTransactionTasks.get(store)?.get(id);
+
+  if (!task) return;
+
+  task.controller.abort();
+  await task.promise.catch(() => undefined);
+};
+
+/** Cancels all managed bridge trackers and waits for their guarded cleanup. */
+const cancelAllBridgeTransactionTasks = async (store: object): Promise<void> => {
+  const tasks = [...(bridgeTransactionTasks.get(store)?.values() ?? [])];
+
+  tasks.forEach(({ controller }) => controller.abort());
+  await Promise.allSettled(tasks.map(({ promise }) => promise));
+};
+
+/** Invalidates account-derived refreshes so old results cannot commit after an identity change. */
+const invalidateAccountBoundBridgeRequests = (store: object): void => {
+  const refreshEpochs = bridgeRefreshEpochs.get(store);
+
+  if (refreshEpochs) {
+    (Object.keys(refreshEpochs) as BridgeRefreshScope[]).forEach((scope) => {
+      refreshEpochs[scope] = (refreshEpochs[scope] ?? 0) + 1;
+    });
+  }
+
+  const historyRequests = bridgeHistoryRequestStates.get(store);
+
+  if (historyRequests) {
+    historyRequests.activeByNetwork.forEach((request) => request.controller.abort());
+    historyRequests.latestId = ++historyRequests.nextId;
+    historyRequests.activeByNetwork.clear();
   }
 };
 
@@ -295,6 +744,7 @@ const createExternalHistoryContext = (store: BridgeStateStoreLike) => {
         settings: {
           apiKeys: walletStore.apiKeys,
           networkFees: walletStore.networkFees,
+          sorametricsApiEndpoint: walletStore.sorametricsApiEndpoint,
         },
       },
       assets: {
@@ -397,6 +847,13 @@ const useBridgeStoreBase = defineStore('bridge', {
       const subNetworkId = networkSelected as SubNetwork;
 
       return subBridgeApi.isStandalone(subNetworkId) ? subNetworkId : subBridgeApi.getRelayChain(subNetworkId);
+    },
+    /**
+     * Reactive identity for the account, direction, and network shown by the
+     * bridge history page.
+     */
+    historySourceKey(): string {
+      return getBridgeHistorySourceSignature(this);
     },
     nativeToken(): Nullable<RegisteredAccountAsset> {
       const walletStore = useWalletStore();
@@ -519,6 +976,13 @@ const useBridgeStoreBase = defineStore('bridge', {
     },
     subBridgeConnector(state): SubNetworksConnector {
       return state.connector;
+    },
+    /**
+     * Exposes reactive connection readiness without proxying the Polkadot API
+     * objects owned by the raw bridge connector.
+     */
+    subNetworkConnectionState(state): SubNetworkConnectionState {
+      return state.connector.connectionState;
     },
   },
   actions: {
@@ -667,6 +1131,20 @@ const useBridgeStoreBase = defineStore('bridge', {
         {}
       );
 
+      const pinnedIds = new Set(
+        [
+          this.history.id,
+          ...Object.keys(this.history.inProgressIds),
+          ...Object.keys(this.history.waitingForApprove),
+        ].filter(Boolean)
+      );
+
+      pinnedIds.forEach((id) => {
+        const entry = resolvePersistedBridgeTransactionEntry(id);
+
+        if (entry) history[entry.key] = entry.transaction;
+      });
+
       syncInternalHistoryCompat(this, history);
     },
     /**
@@ -677,30 +1155,49 @@ const useBridgeStoreBase = defineStore('bridge', {
       const web3Store = useWeb3Store();
       const networkHistoryId = this.networkHistoryId;
 
-      if (!networkHistoryId || this.history.loading[networkHistoryId]) {
+      if (!networkHistoryId) {
         return;
       }
+
+      const request = beginBridgeHistoryRequest(this, networkHistoryId);
+
+      if (!request) return;
 
       syncHistoryLoadingCompat(this, networkHistoryId, true);
 
       try {
         const context = createExternalHistoryContext(this);
+        const updateInternalHistory = async () => {
+          if (!request.isCurrent()) return;
+
+          await this.updateInternalHistory();
+        };
 
         if (web3Store.networkType === BridgeNetworkType.Eth) {
           const updateHistory = updateEthBridgeHistory(context as never);
-          await updateHistory(clearHistory, () => this.updateInternalHistory());
+          await updateHistory(clearHistory, updateInternalHistory);
         } else if (web3Store.networkType === BridgeNetworkType.Sub) {
           const updateHistory = updateSubBridgeHistory(context as never);
-          await updateHistory(clearHistory, () => this.updateInternalHistory());
+          await updateHistory(clearHistory, updateInternalHistory, request.isCurrent, request.signal);
         } else if (web3Store.networkType === BridgeNetworkType.Evm) {
           const updateHistory = updateEvmBridgeHistory(context as never);
-          await updateHistory(clearHistory, () => this.updateInternalHistory());
+          await updateHistory(clearHistory, updateInternalHistory);
         }
       } finally {
-        syncHistoryLoadingCompat(this, networkHistoryId, false);
+        if (request.finish()) {
+          syncHistoryLoadingCompat(this, networkHistoryId, false);
+        }
       }
     },
     async updateExternalBalance(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'balances', () =>
+        getBridgeSelectionSignature(this, [
+          this.sender,
+          this.recipient,
+          this.nativeToken?.address,
+          this.nativeToken?.externalAddress,
+        ])
+      );
       const sender = this.sender;
       const recipient = this.recipient;
       const asset = this.asset;
@@ -709,53 +1206,65 @@ const useBridgeStoreBase = defineStore('bridge', {
       const isRegisteredAsset = this.isRegisteredAsset;
       const isSoraToEvm = this.form.isSoraToEvm;
       const subConnector = this.connector;
-      const spender = isSubBridge ? sender : isSoraToEvm ? recipient : sender;
+      const soraAccount = isSoraToEvm ? sender : recipient;
+      const externalAccount = isSoraToEvm ? recipient : sender;
 
       syncBalancesFetchingCompat(this, true);
 
       try {
         if (isSubBridge) {
           if (!isSubConnectorNetworkReady(subConnector)) {
-            syncBalancesBatchCompat(this, {
-              sender: ZeroStringValue,
-              recipient: ZeroStringValue,
-              native: ZeroStringValue,
-            });
+            if (isCurrentRequest()) {
+              syncBalancesBatchCompat(this, {
+                sender: ZeroStringValue,
+                recipient: ZeroStringValue,
+                native: ZeroStringValue,
+              });
+            }
             return;
           }
 
           if (!isRegisteredAsset) {
-            syncBalancesBatchCompat(this, {
-              sender: ZeroStringValue,
-              recipient: ZeroStringValue,
-              native: ZeroStringValue,
-            });
+            if (isCurrentRequest()) {
+              syncBalancesBatchCompat(this, {
+                sender: ZeroStringValue,
+                recipient: ZeroStringValue,
+                native: ZeroStringValue,
+              });
+            }
             return;
           }
 
+          const soraBalancePromise = getAccountBridgeBalance(soraAccount, asset, true, true, subConnector);
+          let externalBalance = ZeroStringValue;
+          let nativeBalance = ZeroStringValue;
+
           try {
             const balances = await subConnector.network.getTokenBalancesBatch([
-              { accountAddress: sender, asset },
-              { accountAddress: recipient, asset },
-              { accountAddress: spender, asset: nativeToken },
+              { accountAddress: externalAccount, asset },
+              { accountAddress: externalAccount, asset: nativeToken },
             ]);
 
             if (!Array.isArray(balances)) {
               throw new Error('Invalid Sub bridge balance batch response');
             }
 
-            syncBalancesBatchCompat(this, {
-              sender: normalizeBridgeBalance(balances[0]),
-              recipient: normalizeBridgeBalance(balances[1]),
-              native: normalizeBridgeBalance(balances[2]),
-            });
+            externalBalance = normalizeBridgeBalance(balances[0]);
+            nativeBalance = normalizeBridgeBalance(balances[1]);
           } catch {
-            const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
-              getAccountBridgeBalance(sender, asset, isSoraToEvm, true, subConnector),
-              getAccountBridgeBalance(recipient, asset, !isSoraToEvm, true, subConnector),
-              getAccountBridgeBalance(spender, nativeToken, false, true, subConnector),
-            ]);
+            if (!isCurrentRequest()) return;
 
+            [externalBalance, nativeBalance] = await Promise.all([
+              getAccountBridgeBalance(externalAccount, asset, false, true, subConnector),
+              getAccountBridgeBalance(externalAccount, nativeToken, false, true, subConnector),
+            ]);
+          }
+
+          const soraBalance = await soraBalancePromise;
+          const senderBalance = isSoraToEvm ? soraBalance : externalBalance;
+          const recipientBalance = isSoraToEvm ? externalBalance : soraBalance;
+
+          if (isCurrentRequest()) {
             syncBalancesBatchCompat(this, {
               sender: senderBalance,
               recipient: recipientBalance,
@@ -766,39 +1275,49 @@ const useBridgeStoreBase = defineStore('bridge', {
           return;
         }
 
-        const soraAccount = isSoraToEvm ? sender : recipient;
-        const externalAccount = isSoraToEvm ? recipient : sender;
         const [soraBalance, externalBalance, nativeBalance] = await Promise.all([
           getAccountBridgeBalance(soraAccount, asset, true, false, subConnector),
           getEvmBridgeAssetBalance(externalAccount, asset, isRegisteredAsset, subConnector),
-          getAccountBridgeBalance(spender, nativeToken, false, false, subConnector),
+          getAccountBridgeBalance(externalAccount, nativeToken, false, false, subConnector),
         ]);
         const senderBalance = isSoraToEvm ? soraBalance : externalBalance;
         const recipientBalance = isSoraToEvm ? externalBalance : soraBalance;
 
-        syncBalancesBatchCompat(this, {
-          sender: senderBalance,
-          recipient: recipientBalance,
-          native: nativeBalance,
-        });
+        if (isCurrentRequest()) {
+          syncBalancesBatchCompat(this, {
+            sender: senderBalance,
+            recipient: recipientBalance,
+            native: nativeBalance,
+          });
+        }
       } finally {
-        syncBalancesFetchingCompat(this, false);
+        if (isCurrentRequest.isLatest()) {
+          syncBalancesFetchingCompat(this, false);
+        }
       }
     },
     async updateExternalMinBalance(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'externalMinBalance', () => getBridgeSelectionSignature(this));
+      const asset = this.asset;
+      const shouldFetchMinBalance = this.isSubBridge && asset && !this.form.isSoraToEvm;
       let minBalance = ZeroStringValue;
 
       try {
-        if (this.isSubBridge && this.asset && !this.form.isSoraToEvm) {
-          minBalance = await this.connector.network.getAssetMinDeposit(this.asset);
+        if (shouldFetchMinBalance) {
+          minBalance = await this.connector.network.getAssetMinDeposit(asset);
         }
       } catch {
         minBalance = ZeroStringValue;
       }
 
-      syncExternalMinBalanceCompat(this, minBalance);
+      if (isCurrentRequest()) {
+        syncExternalMinBalanceCompat(this, minBalance);
+      }
     },
     async updateExternalLockedBalance(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'externalLockedBalance', () =>
+        getBridgeSelectionSignature(this)
+      );
       const asset = this.asset;
       const web3Store = useWeb3Store();
 
@@ -819,11 +1338,15 @@ const useBridgeStoreBase = defineStore('bridge', {
               FPNumber.fromCodecValue(bridgeValue, externalDecimals)
             );
 
-            syncAssetLockedBalanceCompat(this, balance);
+            if (isCurrentRequest()) {
+              syncAssetLockedBalanceCompat(this, balance);
+            }
             return;
           }
 
-          syncAssetLockedBalanceCompat(this, null);
+          if (isCurrentRequest()) {
+            syncAssetLockedBalanceCompat(this, null);
+          }
           return;
         }
 
@@ -831,7 +1354,7 @@ const useBridgeStoreBase = defineStore('bridge', {
           const bridgeApi = resolveBridgeApi();
           const value = await bridgeApi.getLockedAssets?.(web3Store.networkSelected as never, asset.address);
 
-          if (value !== undefined) {
+          if (value !== undefined && isCurrentRequest()) {
             syncAssetLockedBalanceCompat(this, FPNumber.fromCodecValue(value, asset.decimals));
             return;
           }
@@ -840,15 +1363,20 @@ const useBridgeStoreBase = defineStore('bridge', {
         // Clear stale financial state when provider data cannot be trusted.
       }
 
-      syncAssetLockedBalanceCompat(this, null);
+      if (isCurrentRequest()) {
+        syncAssetLockedBalanceCompat(this, null);
+      }
     },
     async updateExternalNetworkFee(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'externalNetworkFee', () =>
+        getBridgeSelectionSignature(this, [this.sender, this.recipient])
+      );
       const asset = this.asset;
       let fee = ZeroStringValue;
 
       try {
         if (this.isSubBridge) {
-          if (asset && this.isRegisteredAsset && this.sender && this.recipient) {
+          if (!this.form.isSoraToEvm && asset && this.isRegisteredAsset && this.sender && this.recipient) {
             fee = await this.connector.network.getNetworkFee(asset, this.sender, this.recipient);
           }
         } else {
@@ -873,7 +1401,7 @@ const useBridgeStoreBase = defineStore('bridge', {
             fee = await getEthNetworkFee(
               asset,
               bridgeRegisteredAsset.kind,
-              web3Store.contractAddress(KnownEthBridgeAsset.Other),
+              web3Store.contractAddress,
               value,
               this.form.isSoraToEvm,
               walletStore.address,
@@ -885,7 +1413,9 @@ const useBridgeStoreBase = defineStore('bridge', {
         fee = ZeroStringValue;
       }
 
-      syncExternalNetworkFeeCompat(this, fee);
+      if (isCurrentRequest()) {
+        syncExternalNetworkFeeCompat(this, fee);
+      }
     },
     async updateExternalTransferFee(): Promise<void> {
       const asset = this.asset;
@@ -901,6 +1431,7 @@ const useBridgeStoreBase = defineStore('bridge', {
       syncExternalTransferFeeCompat(this, fee);
     },
     async updateSoraNetworkFee(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'soraNetworkFee', () => getBridgeSelectionSignature(this));
       const asset = this.asset;
       const web3Store = useWeb3Store();
       const walletStore = useWalletStore();
@@ -919,9 +1450,14 @@ const useBridgeStoreBase = defineStore('bridge', {
         fee = ZeroStringValue;
       }
 
-      syncSoraNetworkFeeCompat(this, fee);
+      if (isCurrentRequest()) {
+        syncSoraNetworkFeeCompat(this, fee);
+      }
     },
     async updateFeesAndLockedFunds(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'feesAndLockedFunds', () =>
+        getBridgeSelectionSignature(this, [this.sender, this.recipient])
+      );
       syncFeesAndLockedFundsFetchingCompat(this, true);
 
       try {
@@ -932,36 +1468,55 @@ const useBridgeStoreBase = defineStore('bridge', {
           this.updateSoraNetworkFee(),
         ]);
       } finally {
-        syncFeesAndLockedFundsFetchingCompat(this, false);
+        if (isCurrentRequest.isLatest()) {
+          syncFeesAndLockedFundsFetchingCompat(this, false);
+        }
       }
     },
     async updateIncomingMinLimit(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'incomingMinLimit', () => getBridgeSelectionSignature(this));
+      const asset = this.asset;
+      const isRegisteredAsset = this.isRegisteredAsset;
+      const isSubBridge = this.isSubBridge;
+      const soraParachain = this.connector.soraParachain;
       let minLimit = FPNumber.ZERO;
 
-      if (this.isSubBridge && this.asset && this.isRegisteredAsset && this.connector.soraParachain) {
+      if (isSubBridge && asset && isRegisteredAsset && soraParachain) {
         try {
-          const value = await this.connector.soraParachain.getAssetMinimumAmount(this.asset.address);
-          minLimit = FPNumber.fromCodecValue(value, this.asset.externalDecimals);
+          const value = await soraParachain.getAssetMinimumAmount(asset.address);
+          minLimit = FPNumber.fromCodecValue(value, asset.externalDecimals);
         } catch (error) {
-          console.error(error);
+          if (isCurrentRequest()) {
+            console.error(error);
+          }
         }
       }
 
-      syncIncomingMinLimitCompat(this, minLimit);
+      if (isCurrentRequest()) {
+        syncIncomingMinLimitCompat(this, minLimit);
+      }
     },
     async updateOutgoingMinLimit(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'outgoingMinLimit', () => getBridgeSelectionSignature(this));
+      const asset = this.asset;
+      const isRegisteredAsset = this.isRegisteredAsset;
+      const isSubBridge = this.isSubBridge;
       let minLimit = FPNumber.ZERO;
 
-      if (this.isSubBridge && this.asset && this.isRegisteredAsset) {
+      if (isSubBridge && asset && isRegisteredAsset) {
         try {
-          const value = await this.connector.network.getAssetMinDeposit(this.asset);
-          minLimit = FPNumber.fromCodecValue(value, this.asset.externalDecimals);
+          const value = await this.connector.network.getAssetMinDeposit(asset);
+          minLimit = FPNumber.fromCodecValue(value, asset.externalDecimals);
         } catch (error) {
-          console.error(error);
+          if (isCurrentRequest()) {
+            console.error(error);
+          }
         }
       }
 
-      syncOutgoingMinLimitCompat(this, minLimit);
+      if (isCurrentRequest()) {
+        syncOutgoingMinLimitCompat(this, minLimit);
+      }
     },
     async getEthBridgeHistoryInstance(): Promise<unknown> {
       const web3Store = useWeb3Store();
@@ -982,7 +1537,7 @@ const useBridgeStoreBase = defineStore('bridge', {
         },
       } as never);
     },
-    async signEthBridgeOutgoingEvm(id: string): Promise<unknown> {
+    async signEthBridgeOutgoingEvm(id: string, recordSubmission?: RecordEvmSubmission): Promise<unknown> {
       const web3Store = useWeb3Store();
       const tx = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
 
@@ -999,14 +1554,20 @@ const useBridgeStoreBase = defineStore('bridge', {
         throw new Error('Change evm network in wallet');
       }
 
-      const amount = isDenominatedAsset(asset.address) ? tx.amount2 || tx.amount : tx.amount;
-      assertPositiveBridgeTransactionAmount(amount);
-
       const request = await waitForApprovedRequest(tx);
+
+      if (tx.hash && request.hash.toLowerCase() !== tx.hash.toLowerCase()) {
+        throw new Error('[Bridge]: Approved Ethereum bridge request does not match the transaction');
+      }
 
       if (!ethersUtil.addressesAreEqual(web3Store.evmAddress, request.to)) {
         throw new Error(`Change account in ethereum wallet to ${request.to}`);
       }
+
+      // Peer signatures cover the destination codec amount, including any
+      // chain-side denomination. Repair stale estimates before wallet review.
+      const amount = FPNumber.fromCodecValue(request.amount, asset.externalDecimals).toString();
+      assertPositiveBridgeTransactionAmount(amount);
 
       const { contract, method, args } = await getOutgoingEvmTransactionData({
         asset,
@@ -1016,9 +1577,20 @@ const useBridgeStoreBase = defineStore('bridge', {
         request,
       });
 
-      return await contract[method](...args);
+      const currentTransaction = (ethBridgeApi.getHistory(tx.id) as Nullable<EthHistory>) ?? tx;
+      ethBridgeApi.saveHistory({ ...currentTransaction, amount2: amount });
+      await this.updateInternalHistory();
+
+      return await sendPreparedEvmBridgeTransaction(
+        contract,
+        method,
+        args,
+        recordSubmission,
+        getEvmSubmissionLockName(tx.id, tx.externalNetwork),
+        () => getExistingEvmSubmission(tx.id)
+      );
     },
-    async signEthBridgeIncomingEvm(id: string): Promise<unknown> {
+    async signEthBridgeIncomingEvm(id: string, recordSubmission?: RecordEvmSubmission): Promise<unknown> {
       const walletStore = useWalletStore();
       const web3Store = useWeb3Store();
       const tx = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
@@ -1032,13 +1604,92 @@ const useBridgeStoreBase = defineStore('bridge', {
 
       const asset = getRegisteredTransactionAsset(tx.assetAddress);
 
-      const evmAccount = web3Store.evmAddress;
-      const isEvmAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
-
-      if (!isEvmAccountConnected) throw new Error('Connect account in ethereum wallet');
-      if (!web3Store.isValidNetwork) throw new Error('Change evm network in wallet');
-
+      // ETH history keeps from=SORA and to=Ethereum in both transfer directions.
+      if (!tx.from) throw new Error('TX from cannot be empty!');
+      const evmAccount = tx.to;
+      const recipient = tx.from;
+      const network = tx.externalNetwork;
       const contractAddress = web3Store.contractAddress(KnownEthBridgeAsset.Other) as string;
+      const guidedFunding = hasTonswapBridgeFundingTag(tx);
+      const signingIdentity = tonswapBridgeSigningIdentity(tx);
+
+      /** An approval may take minutes; never reuse it with a changed sender, chain or SORA destination. */
+      const assertSigningContext = async (signerAddress = evmAccount): Promise<void> => {
+        const chain = api.connection?.api;
+        const chainGenesis = chain?.genesisHash?.toString() ?? '';
+        const readFundingFees = () => ({
+          swapFeeCodec: useSettingsStore().networkFees?.[Operation.Swap],
+          ...(getTonswapBridgeFundingPurpose(tx) !== 'xor'
+            ? { burnFeeCodec: useSettingsStore().networkFees?.[Operation.BurnWithRemark] }
+            : {}),
+          slippageTolerance: String(useSettingsStore().slippageTolerance ?? '2'),
+        });
+        const fundingFees = JSON.stringify(readFundingFees());
+        const quoteExpiresAt = guidedFunding
+          ? await assertTonswapBridgeQuote(tx, {
+              readState: () => ({
+                connected: !!chain?.isConnected && api.connection?.api === chain,
+                genesis: chain?.genesisHash?.toString() ?? '',
+                fees: readFundingFees(),
+              }),
+              quote: async (amountCodec) => {
+                if (!chain?.isConnected) throw new Error('Unavailable network');
+                const result = (
+                  await chain.rpc.liquidityProxy.quote(
+                    0,
+                    DAI.address,
+                    XOR.address,
+                    amountCodec,
+                    'WithDesiredInput',
+                    ['XYKPool', 'OrderBook'],
+                    'AllowSelected'
+                  )
+                ).unwrap();
+                return { amount: result.amount.toString(), amountWithoutImpact: result.amountWithoutImpact.toString() };
+              },
+            })
+          : null;
+        const [isConnected, providedNetwork] = await Promise.all([
+          ethersUtil.checkAccountIsConnected(evmAccount),
+          ethersUtil.getEvmNetworkId(),
+        ]);
+        if (!isConnected) throw new Error('Connect account in ethereum wallet');
+        if (
+          !Number.isSafeInteger(network) ||
+          !network ||
+          !web3Store.isValidNetwork ||
+          providedNetwork !== network ||
+          web3Store.networkType !== BridgeNetworkType.Eth ||
+          web3Store.networkSelected !== network ||
+          web3Store.ethBridgeEvmNetwork !== network
+        )
+          throw new Error('Change evm network in wallet');
+        if (
+          !ethersUtil.addressesAreEqual(web3Store.evmAddress, evmAccount) ||
+          !ethersUtil.addressesAreEqual(signerAddress, evmAccount) ||
+          !ethersUtil.addressesAreEqual(tx.to, evmAccount)
+        )
+          throw new Error('[Bridge]: Ethereum account changed; review the transfer again');
+        if (walletStore.address !== recipient || tx.from !== recipient)
+          throw new Error('[Bridge]: SORA recipient changed; review the transfer again');
+        if (web3Store.contractAddress(KnownEthBridgeAsset.Other) !== contractAddress)
+          throw new Error('[Bridge]: Ethereum bridge configuration changed; review the transfer again');
+        if (
+          guidedFunding &&
+          (quoteExpiresAt === null ||
+            quoteExpiresAt <= Date.now() ||
+            !chain?.isConnected ||
+            api.connection?.api !== chain ||
+            chain.genesisHash?.toString() !== chainGenesis ||
+            JSON.stringify(readFundingFees()) !== fundingFees ||
+            tonswapBridgeSigningIdentity(tx) !== signingIdentity ||
+            tonswapBridgeSigningIdentity((ethBridgeApi.getHistory(id) as Nullable<EthHistory>) ?? {}) !==
+              signingIdentity)
+        )
+          throw new Error('GET_TS_BRIDGE_CONTEXT_CHANGED');
+      };
+
+      await assertSigningContext();
       const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
 
       if (!!allowance && FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(tx.amount))) {
@@ -1046,13 +1697,12 @@ const useBridgeStoreBase = defineStore('bridge', {
 
         let approvalTx: unknown;
         try {
-          if (!web3Store.isValidNetwork) {
-            throw new Error('Change evm network in wallet');
-          }
-
           const tokenInstance = await ethersUtil.getTokenContract(asset.externalAddress);
-          const methodArgs = [contractAddress, MaxUint256];
-          approvalTx = await tokenInstance.approve(...methodArgs);
+          await assertSigningContext();
+          approvalTx = await tokenInstance.approve(contractAddress, MaxUint256, {
+            from: evmAccount,
+            chainId: network,
+          });
         } finally {
           syncWaitingForApproveCompat(this, tx.id, false);
         }
@@ -1060,14 +1710,23 @@ const useBridgeStoreBase = defineStore('bridge', {
         await waitForEvmTransactionMined(approvalTx as never);
       }
 
+      await assertSigningContext();
       const { contract, method, args } = await getIncomingEvmTransactionData({
         asset,
         value: tx.amount,
-        recipient: walletStore.address,
+        recipient,
         getContractAddress: web3Store.contractAddress,
       });
 
-      return await contract[method](...args);
+      return await sendPreparedEvmBridgeTransaction(
+        contract,
+        method,
+        args,
+        recordSubmission,
+        getEvmSubmissionLockName(tx.id, tx.externalNetwork),
+        () => getExistingEvmSubmission(tx.id),
+        { chainId: network!, validate: assertSigningContext }
+      );
     },
     async subscribeOnBlockUpdates(): Promise<void> {
       const runtime = getBridgeRealtimeState(this);
@@ -1149,6 +1808,7 @@ const useBridgeStoreBase = defineStore('bridge', {
       syncBlockUpdatesSubscriptionCompat(this, subscription);
     },
     async updateOutgoingMaxLimit(): Promise<void> {
+      const isCurrentRequest = beginBridgeRefresh(this, 'outgoingMaxLimit', () => getBridgeSelectionSignature(this));
       const limitAsset = this.form.assetAddress;
 
       syncOutgoingMaxLimitSubscriptionCompat(this, null);
@@ -1156,28 +1816,37 @@ const useBridgeStoreBase = defineStore('bridge', {
       if (!limitAsset) return;
 
       const hasOutgoingLimit = await api.bridgeProxy.isAssetTransferLimited(limitAsset);
-      if (!hasOutgoingLimit) return;
+      if (!hasOutgoingLimit || !isCurrentRequest()) return;
 
       const referenceAsset = DAI.address;
       const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool, LiquiditySourceTypes.OrderBook];
       const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
       const quoteObservable = api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
 
-      if (!quoteObservable) return;
+      if (!quoteObservable || !isCurrentRequest()) return;
 
-      let subscription!: Subscription;
+      let subscription: Subscription | undefined;
 
       await new Promise<void>((resolve) => {
         subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, { quote }]) => {
-          syncOutgoingMaxLimitCompat(
-            this,
-            calculateBridgeOutgoingMaxLimit(limitAsset, referenceAsset, usdLimit, quote)
-          );
+          if (isCurrentRequest()) {
+            syncOutgoingMaxLimitCompat(
+              this,
+              calculateBridgeOutgoingMaxLimit(limitAsset, referenceAsset, usdLimit, quote)
+            );
+          } else {
+            subscription?.unsubscribe();
+          }
           resolve();
         });
       });
 
-      syncOutgoingMaxLimitSubscriptionCompat(this, subscription);
+      if (!isCurrentRequest()) {
+        subscription?.unsubscribe();
+        return;
+      }
+
+      syncOutgoingMaxLimitSubscriptionCompat(this, subscription ?? null);
     },
     async resetBridgeForm(): Promise<void> {
       await this.setAssetAddress();
@@ -1304,24 +1973,32 @@ const useBridgeStoreBase = defineStore('bridge', {
       return historyItem;
     },
     /**
-     * Hands off transaction handling to the legacy bridge action handler.
+     * Hands off transaction handling according to the persisted operation and
+     * coalesces rapid repeated requests for the same transfer.
      */
     async handleBridgeTransaction(id: string): Promise<void> {
-      const web3Store = useWeb3Store();
+      const transaction = resolvePersistedBridgeTransaction(this.history.internal, id);
 
-      if (web3Store.networkType === BridgeNetworkType.Eth) {
-        await ethBridge.handleTransaction(id);
+      if (!transaction) {
+        throw new Error(`[Bridge]: Transaction not found: "${id}"`);
+      }
+
+      const transactionId = typeof transaction.id === 'string' && transaction.id ? transaction.id : id;
+
+      // Account-indexed bridge settlements are immutable display records. They
+      // have no source-chain signing evidence and must never enter a reducer.
+      if (
+        transaction.type === Operation.SubstrateIncoming &&
+        transaction.externalNetworkType === BridgeNetworkType.Sub &&
+        transaction.externalNetwork === SubNetworkId.Liberland &&
+        isDisplayOnlyRecoveredSubBridgeHistory(transaction)
+      ) {
         return;
       }
 
-      if (web3Store.networkType === BridgeNetworkType.Evm) {
-        await evmBridge.handleTransaction(id);
-        return;
-      }
+      const handler = resolveBridgeTransactionHandler(transaction);
 
-      if (web3Store.networkType === BridgeNetworkType.Sub) {
-        await subBridge.handleTransaction(id);
-      }
+      await runBridgeTransactionOnce(this, transactionId, handler);
     },
     /**
      * Removes a transaction from history, mirroring legacy behaviour.
@@ -1339,6 +2016,10 @@ const useBridgeStoreBase = defineStore('bridge', {
 
       if (!item) {
         return;
+      }
+
+      if (force) {
+        await cancelBridgeTransactionTask(this, item.id || id);
       }
 
       const inProgress = this.history.inProgressIds[id];
@@ -1375,9 +2056,31 @@ const useBridgeStoreBase = defineStore('bridge', {
       });
     },
     reset(): void {
+      void cancelAllBridgeTransactionTasks(this);
       const initialState = buildInitialBridgeState();
 
       this.$patch(initialState);
+    },
+    /**
+     * Cancels account-owned tracking before wallet identity changes without
+     * tearing down bridge network subscriptions or the reusable connector.
+     */
+    async cancelAccountBoundTasks(): Promise<void> {
+      const cancellation = cancelAllBridgeTransactionTasks(this);
+      const initialState = buildInitialBridgeState();
+
+      invalidateAccountBoundBridgeRequests(this);
+      this.balances = initialState.balances;
+      this.fees = initialState.fees;
+      this.flags = initialState.flags;
+      this.history.id = initialState.history.id;
+      this.history.internal = initialState.history.internal;
+      this.history.loading = initialState.history.loading;
+      this.history.waitingForApprove = initialState.history.waitingForApprove;
+      this.history.inProgressIds = initialState.history.inProgressIds;
+      this.history.notificationData = initialState.history.notificationData;
+
+      await cancellation;
     },
   },
 });

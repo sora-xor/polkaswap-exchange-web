@@ -107,6 +107,7 @@ import {
   getCurrency,
   getTextWidth,
 } from '@/utils';
+import { createCoalescedAsyncTask } from '@/utils/asyncTask';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { PageInfo } from '@/lib/soraneo-wallet/src/services/indexer/types';
@@ -173,7 +174,7 @@ const AXIS_LABEL_CSS = {
   fontFamily: 'Sora',
   fontSize: 10,
   fontWeight: 300,
-  lineHeigth: 1.5,
+  lineHeight: 1.5,
 };
 
 const SYNC_INTERVAL = 6 * 1000;
@@ -269,6 +270,7 @@ let snapshotBuffer: Record<string, readonly SnapshotItem[]> = {};
 let pageInfos: Record<string, Partial<PageInfo>> = {};
 const priceUpdateRequestId = ref(0);
 let priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
+let priceUpdateSubscriptionGeneration = 0;
 
 const baseAsset = computed(() => props.baseAsset ?? null);
 const quoteAsset = computed(() => props.quoteAsset ?? null);
@@ -569,6 +571,7 @@ const filterSnapshotsBySelectedWindow = (items: readonly SnapshotItem[]): Snapsh
 };
 
 const clearData = (saveReversedState = false, clearBuffer = false): void => {
+  priceUpdateRequestId.value += 1;
   snapshotBuffer = clearBuffer ? {} : (pick(entities.value, snapshotBuffer) as typeof snapshotBuffer);
   pageInfos = clearBuffer ? {} : (pick(entities.value, pageInfos) as typeof pageInfos);
 
@@ -675,9 +678,7 @@ const getHistoricalPrices = async (): Promise<void> => {
   }
 
   const addresses = [...entities.value];
-  const requestId = Date.now();
-
-  priceUpdateRequestId.value = requestId;
+  const requestId = ++priceUpdateRequestId.value;
   await withApi(async () => {
     try {
       const snapshots = await Promise.all(addresses.map((address) => fetchData(address)));
@@ -714,6 +715,8 @@ const getHistoricalPrices = async (): Promise<void> => {
       updateDataset([...dataset.value, ...datasetChunk]);
       isFetchingError.value = false;
     } catch (error) {
+      if (!(requestIsAllowed(addresses) && priceUpdateRequestId.value === requestId)) return;
+
       isFetchingError.value = true;
       console.error(error);
     }
@@ -724,7 +727,7 @@ const fetchAndHandleUpdate = async (entitiesSnapshot: string[]): Promise<void> =
   if (!requestIsAllowed(entitiesSnapshot)) return;
 
   const lastUpdates = await fetchDataLastUpdates(entitiesSnapshot);
-  if (!lastUpdates) return;
+  if (!lastUpdates || !requestIsAllowed(entitiesSnapshot)) return;
 
   const datasetClone = [...dataset.value];
   const lastItem = datasetClone[0];
@@ -764,17 +767,28 @@ const subscribeToPriceUpdates = async (): Promise<void> => {
   if (!entities.value.length || !chartRequestAvailable.value) return;
 
   const entitiesSnapshot = [...entities.value];
-  priceUpdateSubscription = await getPriceUpdatesSubscription(entitiesSnapshot);
+  const generation = priceUpdateSubscriptionGeneration;
+  const subscription = await getPriceUpdatesSubscription(entitiesSnapshot);
+
+  if (generation !== priceUpdateSubscriptionGeneration || !requestIsAllowed(entitiesSnapshot)) {
+    subscription?.();
+    return;
+  }
+
+  priceUpdateSubscription = subscription;
 };
 
 const unsubscribeFromPriceUpdates = (): void => {
+  priceUpdateSubscriptionGeneration += 1;
+
   if (priceUpdateSubscription) {
     priceUpdateSubscription();
   }
   priceUpdateSubscription = null;
 };
 
-const updatePrices = debouncedInputHandler(getHistoricalPrices, 250, { leading: false });
+const runHistoricalPrices = createCoalescedAsyncTask(getHistoricalPrices);
+const updatePrices = debouncedInputHandler(runHistoricalPrices, 250, { leading: false });
 const resetAndUpdatePrices = async (saveReversedState = false, clearBuffer = false): Promise<void> => {
   clearData(saveReversedState, clearBuffer);
   await updatePrices();

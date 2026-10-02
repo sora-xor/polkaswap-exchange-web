@@ -51,34 +51,40 @@ describe('polkaswap createExplorerClient', () => {
     );
   });
 
-  it('skips websocket subscription exchange for the Polkaswap-owned indexer', () => {
-    const client = createExplorerClient('https://pi.soramitsu.io/graphql');
+  it.each(['https://mof.sora.org/graphql', 'https://pi.soramitsu.io/graphql'])(
+    'preserves HTTP-only queries for the Polkaswap-owned indexer at %s',
+    (endpoint) => {
+      const client = createExplorerClient(endpoint);
 
-    expect(mocks.createWsClientMock).not.toHaveBeenCalled();
-    expect(mocks.subscriptionExchangeMock).not.toHaveBeenCalled();
-    expect(client.supportsSubscriptions).toBe(false);
-  });
+      expect(mocks.createWsClientMock).not.toHaveBeenCalled();
+      expect(mocks.subscriptionExchangeMock).not.toHaveBeenCalled();
+      expect(client.supportsSubscriptions).toBe(false);
+    }
+  );
 
-  it('configures graphql-ws subscriptions for supported endpoints', () => {
-    const client = createExplorerClient('https://indexer.example.com/graphql');
+  it.each(['https://indexer.example.com/graphql', 'https://mof.sora.org/another-indexer/graphql'])(
+    'preserves graphql-ws subscriptions for custom endpoints: %s',
+    (endpoint) => {
+      const client = createExplorerClient(endpoint);
 
-    expect(mocks.createWsClientMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        url: 'wss://indexer.example.com/graphql',
-        lazy: expect.any(Boolean),
-        retryAttempts: expect.any(Number),
-        shouldRetry: expect.any(Function),
-      })
-    );
-    expect(mocks.subscriptionExchangeMock).toHaveBeenCalledOnce();
-    expect(client.supportsSubscriptions).toBe(true);
+      expect(mocks.createWsClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          url: endpoint.replace(/^https:/, 'wss:'),
+          lazy: expect.any(Boolean),
+          retryAttempts: expect.any(Number),
+          shouldRetry: expect.any(Function),
+        })
+      );
+      expect(mocks.subscriptionExchangeMock).toHaveBeenCalledOnce();
+      expect(client.supportsSubscriptions).toBe(true);
 
-    const exchangeOptions = mocks.subscriptionExchangeMock.mock.calls[0]?.[0];
-    const subscription = exchangeOptions.forwardSubscription({ query: 'subscription test' });
-    const subscriptionHandle = subscription.subscribe(mocks.sink);
+      const exchangeOptions = mocks.subscriptionExchangeMock.mock.calls[0]?.[0];
+      const subscription = exchangeOptions.forwardSubscription({ query: 'subscription test' });
+      const subscriptionHandle = subscription.subscribe(mocks.sink);
 
-    expect(subscriptionHandle).toEqual({ unsubscribe: mocks.disposeMock });
-  });
+      expect(subscriptionHandle).toEqual({ unsubscribe: mocks.disposeMock });
+    }
+  );
 
   it('converts plain http endpoints to ws subscriptions', () => {
     createExplorerClient('http://indexer.example.com/graphql');

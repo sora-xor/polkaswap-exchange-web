@@ -1,0 +1,533 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<head>
+  <base href="https://www.ofoq.gov.bh/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>Bahrain Horizons - Customs Single Window for Trade نافذة  الجمارك الموحدة للتجارة</title>
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/error.css" type="text/css">
+  <style type="text/css">
+    .tk-myriad-pro {
+      font-family: "myriad-pro", "Arial";
+    }
+    .rollover, a:hover {
+      color: #333;
+    }
+    .central-divs {
+      max-width: 840px;
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+    }
+    .updated {
+      color: #FF0000;
+      font-size: 0.10em;
+      font-weight: bold;
+      /*background-color: rgba(255, 0, 0, 0.1);*/
+      padding: 1px 2px;
+      /*border-radius: 4px;*/
+      position: absolute;
+      top: 0;
+      left: 0;
+      vertical-align: super;
+      transform: translateY(-50%);
+    }
+    hr {
+      border: 0;
+      border-bottom: 1px solid #ddd;
+      margin: 15px 0px;
+    }
+    a:link, a:visited, a:active {
+      color: #000;
+      transition: 0.2s;
+    }
+    a:hover {
+      color: #3C7EA6;
+    }
+    .padding {
+      padding: 0px 10px;
+    }
+
+    /* Modern Announcement Styles */
+    .announcements-container {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+      padding: 20px !important;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+
+    .announcements-title {
+      font-family: "myriad-pro", "Arial";
+      font-size: 24px;
+      color: #333;
+      margin: 0 0 20px 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #2c7ea2;
+      font-weight: 600;
+    }
+
+    .announcement-item {
+      background-color: white;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      padding: 6px 15px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border-left: 4px solid #2c7ea2;
+    }
+    .announcement-item > div {
+      margin-bottom: 4px !important; /* reduce from 8px */
+    }
+
+    .announcement-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .announcement-link {
+      display: block;
+      color: #3C7EA6 !important;
+      font-weight: 500;
+      text-decoration: none !important;
+      line-height: 1.5;
+    }
+
+    .announcement-link:hover {
+      color: #000 !important;
+    }
+
+    /* Language separation styles - Two column layout */
+    .announcement-link {
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+      padding-top: 8px; /* Space for the updated tag */
+    }
+
+    .text-en {
+      width: 50%;
+      font-weight: 500;
+      padding-right: 10px;
+      box-sizing: border-box;
+    }
+
+    .text-ar {
+      display: block;
+      width: 100%;
+      direction: rtl;
+      text-align: right;
+      font-family: Tahoma, Geneva, sans-serif;
+      font-size: 0.95em;
+      box-sizing: border-box;
+    }
+
+    /* Media query for smaller screens */
+    @media (max-width: 768px) {
+      .text-en, .text-ar {
+        width: 100%;
+        margin-bottom: 4px;
+      }
+      .text-ar {
+        margin-top: 4px;
+      }
+    }
+
+    /* File type indicators */
+    .file-indicator {
+      display: inline-block;
+      font-size: 0.35em;
+      padding: 1px 2px;
+      border-radius: 1px;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+
+    /* Position file indicators to the right (end) for Arabic text */
+    .text-ar .file-indicator {
+      margin-left: 8px;
+      margin-right: 0;
+    }
+
+    .file-pdf {
+      background-color: rgba(66, 133, 244, 0.1);
+      color: #4285f4;
+    }
+
+    .file-zip {
+      background-color: rgba(251, 188, 5, 0.1);
+      color: #fbbc05;
+    }
+
+    .file-link {
+      background-color: rgba(66, 133, 244, 0.1);
+      color: #4285f4;
+    }
+
+    @media (max-width: 900px) {
+      .central-divs {
+        max-width: 100%;
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .innerdiv {
+        width: 100% !important;
+        min-width: 0 !important;
+        padding-top: 40px !important;
+      }
+      .announcements-container {
+        padding: 15px !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .innerdiv {
+        padding-top: 20px !important;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      body {
+        font-size: 13px;
+      }
+      .announcements-title {
+        font-size: 20px;
+      }
+      .announcement-item {
+        padding: 10px;
+      }
+    }
+  </style>
+  <link href="css/yxt3hht-d.css" rel="stylesheet">
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+
+<body>
+<div class="div-background">
+  <div class="innerdiv">
+    <div style="float:left;"><img src="images/bahrain-horizons-eng.png" width="420" height="78"></div>
+    <div style="float:right;"><img src="images/bahrain-horizons-arab.png" width="330" height="78"></div>
+    <div style="clear:both;"></div>
+    <div style="float:left; margin-top:40px;"><img src="images/ministry_logo_new.png" width="87" height="94"><img src="images/customs-logo.png" width="87" height="94"></div>
+    <div style="float:right;  margin-top:60px; margin-right: 5px;"><a href="twm3_https.jnlp"><img src="images/open-window.png" width="246" height="35" border="0"></a>
+      <div style="margin-top: 15px;">
+        <a style="font-size: 14px; color: white;" href="twm3_https.jnlp"></a></div> </div>
+  </div>
+</div>
+<div style="background-color:#222; height:70px;" class="central-divs">
+  <div style="float:left; padding-top:24px; padding-left:27px;"><a href="http://www.webbfontaine.com" target="_blank" rel="noopener noreferrer"><img height="25" src="images/wf-logo.png"></a></div>
+  <div style="float:right; padding-top:19px; padding-right:27px;"><a href="http://www.webbfontaine.com/products/tradeworldmanager/" target="_blank" rel="noopener noreferrer"><img height="32" src="images/twm-logo.png"></a></div>
+</div>
+<div class="central-divs announcements-container" style="font-size:14px; padding-top:15px; padding-bottom: 15px;">
+  <h2 class="announcements-title">Announcements</h2>
+  <div class="padding">
+
+   <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/Nicotine-Pouches-BH6-2025.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Decision No. (54) of 2025 Regarding the Adoption of the National Technical Regulation for Nicotine Pouches (BH6:2025)<span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/Nicotine-Pouches-BH6-2025.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">القرار رقم 54لسنة 2025 بشأن اعتماد اللائحة الفنية الوطنية للأكياس النيكوتين (BH6:2025)<span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <span class="updated">New</span>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/Circular_Importation_Used_Rags.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Circular Regarding the Importation of Used Rags <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/Circular_Importation_Used_Rags.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">ﺖﻌﻤﻴﻣ ﺐﺷﺄﻧ ﺎﺴﺘﻳﺭﺍﺩ ﺍﻸﻘﻤﺷﺓ ﺎﻠﻤﺴﺘﻌﻤﻟﺓ <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <span class="updated">New</span>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/FisheriesProtection_Development_Directorate_Requirement.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Fisheries Protection & Development Directorate Requirement <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/FisheriesProtection_Development_Directorate_Requirement.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">متطلبات استيراد وتصدير الأسماك والثروة البحرية لادارة حماية وتنمية المخزون السمكي <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <span class="updated">New</span>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/NewCustomsDeclarationPrintAnnouncement.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">New Customs Declaration Print <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/NewCustomsDeclarationPrintAnnouncement.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">تعميم طباعة البيان المطور <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <span class="updated">New</span>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/SCE_Waste_Control_Unit.zip" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">SCE - Waste Management Department <span class="file-indicator file-zip">ZIP</span></span>
+        </a>
+        <a href="pdf/SCE_Waste_Control_Unit.zip" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">المجلس الاعلى للبيئة - قسم إدارة المخلفات <span class="file-indicator file-zip">ZIP</span></span>
+        </a>
+        <span class="updated">Important Announcement</span>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/Ministry_of_Municipalities_Affair_and_Agriculture.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Ministry of Municipalities Affair and Agriculture <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/Ministry_of_Municipalities_Affair_and_Agriculture.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">وزارة شئون البلديات و الزراعة-قسم المحاجر والرقابة البيطرية <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/VeterinaryQuarantineSectionLocalAnimalProduction.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Local Animal Production - Veterinary Quarantine Section <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/VeterinaryQuarantineSectionLocalAnimalProduction.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">إدارة الإنتاج الحيواني المحلي -قسم المحاجر البيطرية <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/Medical Device Importation OFOQ Guideline-Version11.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Medical Device Importation Approval OFOQ - NHRA <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <span class="updated">Updated June 14, 2023</span>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/Ministerial_Order_No_14_2022.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Guidelines for Ministerial Order No. (14) of 2022 prohibiting the manufacture, import or circulation of single-use plastic bags whose thickness is less than 35 microns <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/Ministerial_Order_No_14_2022.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">الدليل الإرشادي للقرار رقم (14) لسنة 2022 بمنع تصنيع أو استيراد أو تداول الأكياس البلاستيكية ذات الاستخدام الواحد التي يقل سمكها عن 35 ميكرون <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/PROD_REG_TES_METRO.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">List of products regulated by Testing and Metrology Directorate at the Ministry of Industry and Commerce <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/PROD_REG_TES_METRO.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">قائمة المنتجات المقيدة لدى إدارة الفحص والمقاييس بوزارة الصناعة والتجارة <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <span class="text-en" style="width: 50%; box-sizing: border-box; padding-right: 10px; color: #000;">Pre-importing License for Special Food Guideline-Public Health Directorate-Nutrition Section</span>
+        <span class="text-ar" style="width: 50%; box-sizing: border-box; color: #000;">الدليل الإرشادي للترخيص المسبق لاستيراد الأغذية الخاصة ومافي حكمها- إدارة الصحة العامة- قسم التغذية</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; margin-top: 5px;">
+        <div style="width: 50%; padding-right: 10px; box-sizing: border-box; color: #000;">
+          <a href="pdf/License_SpecialFood_Guideline.pdf" target="_blank" rel="noopener noreferrer" class="announcement-link" style="margin-bottom: 5px;">
+            <span class="text-en" style="margin: 0; width: 100%;">English Version <span class="file-indicator file-pdf">PDF</span></span>
+          </a>
+        </div>
+        <div style="width: 50%; box-sizing: border-box;">
+          <a href="pdf/License_SpecialFood_Guideline_AR.pdf" target="_blank" rel="noopener noreferrer" class="announcement-link">
+            <span class="text-ar" style="margin: 0; width: 100%;">النسخة العربية <span class="file-indicator file-pdf">PDF</span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <span class="updated">Updated April 04, 2024</span>
+        <span class="text-en" style="width: 50%; box-sizing: border-box; padding-right: 10px; color: #000;">Food Importers Guide to the Kingdom of Bahrain</span>
+        <span class="text-ar" style="width: 50%; box-sizing: border-box; color: #000;">دليل مستوردي الأغذية لمملكة البحرين</span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; margin-top: 5px;">
+        <div style="width: 50%; padding-right: 10px; box-sizing: border-box;">
+          <a href="pdf/FoodImportersGuide_2024_EN.pdf" target="_blank" rel="noopener noreferrer" class="announcement-link" style="margin-bottom: 5px;">
+            <span class="text-en" style="margin: 0; width: 100%;">English Version <span class="file-indicator file-pdf">PDF</span></span>
+          </a>
+        </div>
+        <div style="width: 50%; box-sizing: border-box;">
+          <a href="pdf/FoodImportersGuide_2024_AR.pdf" target="_blank" rel="noopener noreferrer" class="announcement-link">
+            <span class="text-ar" style="margin: 0; width: 100%;">النسخة العربية <span class="file-indicator file-pdf">PDF</span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/SteelReinforcementUpdated.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">National mandatory requirements for releasing steel reinforcement products (carbon steel bars) according to the MOIC MO No. 15 for year 2021 Ministry of Industry, commerce and Tourism Testing and Metrology Directorate <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/SteelReinforcementUpdated.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">المتطلبات الإلزامية الوطنية للإفساح عن منتجات حديد التسليح (قضبان الصلب الكربوني) بحسب قرار وزير الصناعة والتجارة والسياحة رقم (15) وزارة الصناعة والتجارة والسياحة إدارة المواصفات والمقاييس <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/ElectricVehicle_Updated.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">National mandatory requirements for releasing Electric vehicles <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/ElectricVehicle_Updated.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">المتطلبات الإلزامية الوطنية للإفساح عن منتجات المركبات الكهربائية بحسب قرار وزير الصناعة والتجارة والسياحة رقم 16 لعام 2021 <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/Cosmetics_Detergent2021.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Procedure for issuing pre-approval license for cosmetics/personal care products and Detergents & disinfectants <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/Cosmetics_Detergent2021.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">إجراءات الترخيص المسبق للمواد الاستهلاكية الخاضعة لرقابة سلامة المواد الاستهلاكية / قسم صحة البيئة / وزارة الصحة <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/steps-license-info-egov-auth.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Steps for issuing pre-approval license for Information & eGovernment Authority -Directorate of Wireless Licensing, Frequencies & Monitoring <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/steps-license-info-egov-auth.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">خطوات ومتطلبات الترخيص المسبق لهيئة المعلومات والحكومة الالكترونية إدارة التراخيص اللاسلكية والترددات والرقابة <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/NationalOil.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Procedure for Issuing Pre-approval License for National Oil & Gas Authority <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/NationalOil.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">إجراءات الترخيص المسبق لهيئة النفط والغاز <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/LicensePersonalCareProductsDetergentsDisinfectants.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Procedure for issuing pre-approval license (for endangered species of Wild Fauna and Flora) <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/LicensePersonalCareProductsDetergentsDisinfectants.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">اجراءات الترخيص المسبق في نافذة الجمارك الموحدة للتجارة ( أفق البحرين) للكائنات الفطرية المهددة بالانقراض من المجموعات الحيوانية والنباتية <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/PlateNumberEntry.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Instructions for Correctly Inputting License Plate Numbers <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/PlateNumberEntry.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">تعليمات للإدخال بيانات ارقام الشاحنات بالطريقة الصحيحة <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/NBRAnnouncement.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">National Bureau for Revenue (NBR) Announcement <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/NBRAnnouncement.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">تعميم الجهاز الوطني للإيرادات <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/epayment.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">E-Payment <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/epayment.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">الدفع الإلكتروني <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/LicenseGuide.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">OFOQ E-License Guideline <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/LicenseGuide.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">طريقة تقديم الترخيص الالكتروني في نظام أفق <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="announcement-item">
+      <div style="margin-bottom: 8px; position: relative; display: flex; flex-wrap: wrap;">
+        <a href="pdf/SAD_AbandonmentFee.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box; padding-right: 10px;">
+          <span class="text-en">Follow up abandoned assessed Declarations which stay more than 10 days in OFOQ system <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+        <a href="pdf/SAD_AbandonmentFee.pdf" target="_blank" rel="noopener noreferrer" style="width: 50%; box-sizing: border-box;">
+          <span class="text-ar">متابعة البيانات المصفاة والمهملة التي تبقى لأكثر من 10 أيام في نظام أفق <span class="file-indicator file-pdf">PDF</span></span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="central-divs">
+  <hr>
+  <div class="padding" style="float:left;padding-top:5px;width:auto;"><a href="pdf/OFOQ_Customs_webpage-EN.pdf" target="_blank" rel="noopener noreferrer"><strong>First time user ?</strong> Please click here to get instructions</a><br>
+    To request OFOQ user fill this <a href="pdf/RequestForm.pdf">form</a> and <br>
+    send it to <a href mailto="customs.licensing@customs.gov.bh">customs.licensing@customs.gov.bh</a><br>
+
+    help phone number: <br>+97317359970<br>+97317389346<br>+97317359842<br>
+    email: <a href="mailto:ofoqsupport@customs.gov.bh">ofoqsupport@customs.gov.bh</a></div>
+  <div class="padding" style="float:right; text-align:right; padding-top:5px;"> <a href="pdf/OFOQ_Customs_webpage-AR.pdf" target="_blank" rel="noopener noreferrer"><span style=" font-family:Tahoma, Geneva, sans-serif;" lang="AR-LB" xml:lang="AR-LB"> <strong>هل تستعمل الموقع للمرة الاولى؟</strong> اضغط هنا لتحصل على ارشادات الاستعمال</span></a><br>
+    <a href mailto="customs.licensing@customs.gov.bh">customs.licensing@customs.gov.bh</a> لطلب حساب على نظام أفق فضلًا املئ هذه <a href="pdf/RequestForm.pdf">الاستمارة</a> وارسلها إلى <br>
+    <span dir="rtl"><span style=" font-family:Tahoma, Geneva, sans-serif;" lang="AR-LB" xml:lang="AR-LB">هاتف للمساعدة: </span><span dir="ltr"><br>+97317359970<br>+97317389346<br>+97317359842</span><span style=" font-family:Tahoma, Geneva, sans-serif;" lang="AR-LB" xml:lang="AR-LB"><br>
+    بريد الكتروني: </span><a rel="nofollow" mailto="mailto:ofoqsupport@customs.gov.bh" target="_blank" rel="noopener noreferrer" href="mailto:ofoqsupport@customs.gov.bh"><span dir="ltr">ofoqsupport@customs.gov.bh</span></a></span> </div>
+</div>
+<div style="clear: both;" class="central-divs">
+
+</div>
+<div class="central-divs">
+  <hr>
+  <div class="padding" style="float:left; padding-top:5px; width:auto;">
+    <a class="tooltip" style="float:left; tex-align:left; position:absolute; padding-top:5px; width:auto;" href="http://www.facebook.com/BahrainOFOQ">
+      <iframe style="overflow: hidden; border: 0px none; width: 90px; height: 24px; float: left;" src="https://www.facebook.com/plugins/like.php?href=https://www.facebook.com/BahrainOFOQ&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;font=arial&amp;layout=button_count"></iframe>
+      <span>Like us on facebook</span> </a> </div>
+  <div class="padding" style="float:right; padding-top: 7px;"><a href="scripts/deletecache.bat" target="_blank" rel="noopener noreferrer">Download Delete Cache</a></div>
+</div>
+</body>
+</html>

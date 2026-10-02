@@ -1,10 +1,11 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { LiberlandAssetType, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import { ZeroStringValue } from '@/consts';
+import type { BridgeRegisteredAsset } from '@/stores/assets/types';
 import type { Nullable } from '@/types/common';
 import type { useAssetsStore as UseAssetsStore } from '@/stores/assets';
 
@@ -469,6 +470,81 @@ describe('useAssetsStore bridge fetchers', () => {
     ]);
     expect(subRegisteredAssetsMock).toHaveBeenCalledWith(SubNetworkId.Liberland);
   });
+
+  it('keeps native LLD and omits malformed Liberland registry asset ids', async () => {
+    const invalidToString = {
+      toString: () => {
+        throw new Error('malformed codec');
+      },
+    };
+    const subPayload = {
+      '0xNative': {
+        address: LiberlandAssetType.LLD,
+        decimals: 12,
+        assetKind: 'native',
+      },
+      '0xValid': {
+        address: { [LiberlandAssetType.Asset]: 42 },
+        decimals: 12,
+        assetKind: 'asset',
+      },
+      '0xMax': {
+        address: { [LiberlandAssetType.Asset]: 4_294_967_295 },
+        decimals: 12,
+        assetKind: 'asset',
+      },
+      '0xMissing': {
+        address: undefined,
+        decimals: 12,
+        assetKind: 'asset',
+      },
+      '0xMalformed': {
+        address: { [LiberlandAssetType.Asset]: 'not-a-number' },
+        decimals: 12,
+        assetKind: 'asset',
+      },
+      '0xUnsafe': {
+        address: { [LiberlandAssetType.Asset]: 4_294_967_296 },
+        decimals: 12,
+        assetKind: 'asset',
+      },
+      '0xThrowing': {
+        address: { [LiberlandAssetType.Asset]: invalidToString },
+        decimals: 12,
+        assetKind: 'asset',
+      },
+    };
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = SubNetworkId.Liberland;
+    subRegisteredAssetsMock.mockResolvedValue(subPayload);
+
+    const store = useAssetsStore();
+    const result = await store.fetchRegisteredAssetsFromNetwork();
+
+    expect(result).toEqual([
+      {
+        '0xNative': {
+          address: '',
+          decimals: 12,
+          kind: 'native',
+        },
+      },
+      {
+        '0xValid': {
+          address: '42',
+          decimals: 12,
+          kind: 'asset',
+        },
+      },
+      {
+        '0xMax': {
+          address: '4294967295',
+          decimals: 12,
+          kind: 'asset',
+        },
+      },
+    ]);
+  });
 });
 
 describe('useAssetsStore actions', () => {
@@ -484,9 +560,6 @@ describe('useAssetsStore actions', () => {
       },
     ];
     const fetchSpy = vi.spyOn(store, 'fetchRegisteredAssetsFromNetwork').mockResolvedValue(mockedResponse);
-    const updateSpy = vi.spyOn(store, 'updateRegisteredAssets').mockImplementation(async function (this: typeof store) {
-      this.setRegisteredAssets(this.registeredAssets);
-    });
 
     const promise = store.getRegisteredAssets();
     expect(store.registeredAssetsFetching).toBe(true);
@@ -494,13 +567,76 @@ describe('useAssetsStore actions', () => {
     await promise;
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
-    expect(updateSpy).toHaveBeenCalledTimes(1);
     expect(store.registeredAssets).toEqual({
       '0x01': {
         address: '0xExternal',
         decimals: 18,
         kind: 'evm',
       },
+    });
+    expect(store.registeredAssetsFetching).toBe(false);
+  });
+
+  it('does not let an obsolete registry response clear a newer request loader or commit stale assets', async () => {
+    const store = useAssetsStore();
+    let resolveLiberland: ((value: Record<string, BridgeRegisteredAsset>[]) => void) | undefined;
+    let resolveEvm: ((value: Record<string, BridgeRegisteredAsset>[]) => void) | undefined;
+    const liberlandResponse = new Promise<Record<string, BridgeRegisteredAsset>[]>((resolve) => {
+      resolveLiberland = resolve;
+    });
+    const evmResponse = new Promise<Record<string, BridgeRegisteredAsset>[]>((resolve) => {
+      resolveEvm = resolve;
+    });
+    vi.spyOn(store, 'fetchRegisteredAssetsFromNetwork')
+      .mockReturnValueOnce(liberlandResponse)
+      .mockReturnValueOnce(evmResponse);
+
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = SubNetworkId.Liberland;
+    const obsoleteRequest = store.getRegisteredAssets();
+
+    web3StoreMock.networkType = BridgeNetworkType.Evm;
+    web3StoreMock.networkSelected = 'moonriver';
+    const currentRequest = store.getRegisteredAssets();
+
+    resolveLiberland?.([{ oldAsset: { address: '42', decimals: 12, kind: 'sub' } }]);
+    await obsoleteRequest;
+
+    expect(store.registeredAssets).toEqual({});
+    expect(store.registeredAssetsFetching).toBe(true);
+
+    resolveEvm?.([{ currentAsset: { address: '0xCurrent', decimals: 18, kind: 'evm' } }]);
+    await currentRequest;
+
+    expect(store.registeredAssets).toEqual({
+      currentAsset: { address: '0xCurrent', decimals: 18, kind: 'evm' },
+    });
+    expect(store.registeredAssetsFetching).toBe(false);
+  });
+
+  it('keeps the current registry when an older network request finishes last', async () => {
+    const store = useAssetsStore();
+    let resolveLiberland: ((value: Record<string, BridgeRegisteredAsset>[]) => void) | undefined;
+    const liberlandResponse = new Promise<Record<string, BridgeRegisteredAsset>[]>((resolve) => {
+      resolveLiberland = resolve;
+    });
+    vi.spyOn(store, 'fetchRegisteredAssetsFromNetwork')
+      .mockReturnValueOnce(liberlandResponse)
+      .mockResolvedValueOnce([{ currentAsset: { address: '0xCurrent', decimals: 18, kind: 'evm' } }]);
+
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = SubNetworkId.Liberland;
+    const obsoleteRequest = store.getRegisteredAssets();
+
+    web3StoreMock.networkType = BridgeNetworkType.Evm;
+    web3StoreMock.networkSelected = 'moonriver';
+    await store.getRegisteredAssets();
+
+    resolveLiberland?.([{ oldAsset: { address: '42', decimals: 12, kind: 'sub' } }]);
+    await obsoleteRequest;
+
+    expect(store.registeredAssets).toEqual({
+      currentAsset: { address: '0xCurrent', decimals: 18, kind: 'evm' },
     });
     expect(store.registeredAssetsFetching).toBe(false);
   });
@@ -545,6 +681,59 @@ describe('useAssetsStore actions', () => {
       address: '0xResolved',
       decimals: 18,
       kind: 'evm',
+    });
+    expect(store.registeredAssetsFetching).toBe(false);
+  });
+
+  it('keeps a newer registry when an older metadata update finishes last', async () => {
+    const store = useAssetsStore();
+    let resolveObsoleteAddress: ((address: string) => void) | undefined;
+    const obsoleteAddress = new Promise<string>((resolve) => {
+      resolveObsoleteAddress = resolve;
+    });
+
+    web3StoreMock.networkType = BridgeNetworkType.Eth;
+    web3StoreMock.networkSelected = EvmNetworkId.EthereumMainnet;
+    store.setRegisteredAssets({
+      obsoleteAsset: {
+        address: '',
+        decimals: 0,
+        kind: 'evm',
+      },
+    });
+    web3StoreMock.getEvmTokenAddressByAssetId.mockReturnValueOnce(obsoleteAddress).mockResolvedValueOnce('0xCurrent');
+    getTokenDecimalsMock.mockResolvedValue(18);
+
+    const obsoleteRequest = store.updateRegisteredAssets();
+
+    web3StoreMock.networkType = BridgeNetworkType.Evm;
+    web3StoreMock.networkSelected = EvmNetworkId.EthereumSepolia;
+    store.setRegisteredAssets({
+      currentAsset: {
+        address: '',
+        decimals: 0,
+        kind: 'evm',
+      },
+    });
+    await store.updateRegisteredAssets();
+
+    expect(store.registeredAssets).toEqual({
+      currentAsset: {
+        address: '0xCurrent',
+        decimals: 18,
+        kind: 'evm',
+      },
+    });
+
+    resolveObsoleteAddress?.('0xObsolete');
+    await obsoleteRequest;
+
+    expect(store.registeredAssets).toEqual({
+      currentAsset: {
+        address: '0xCurrent',
+        decimals: 18,
+        kind: 'evm',
+      },
     });
     expect(store.registeredAssetsFetching).toBe(false);
   });

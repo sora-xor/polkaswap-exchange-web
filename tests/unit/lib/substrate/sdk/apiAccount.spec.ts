@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 
+import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
+import type { ISubmittableResult } from '@polkadot/types/types';
+
 const cryptoWaitReadyMock = vi.hoisted(() => vi.fn());
 const loadAllMock = vi.hoisted(() => vi.fn());
 
@@ -21,7 +24,8 @@ vi.mock('@polkadot/ui-keyring', () => ({
   },
 }));
 
-import { KeyringType, SoraPrefix, WithKeyring } from '@/lib/substrate/sdk/apiAccount';
+import { ApiAccount, KeyringType, SoraPrefix, WithKeyring } from '@/lib/substrate/sdk/apiAccount';
+import { Operation, TransactionStatus } from '@/lib/substrate/sdk/types';
 
 describe('WithKeyring.initKeyring', () => {
   beforeEach(() => {
@@ -124,5 +128,152 @@ describe('WithKeyring chain metadata', () => {
     expect(account.chainDecimals).toBe(12);
     expect(account.chainSS58).toBe(42);
     expect(account.formatAddress(address)).toBe(encodeAddress(decodeAddress(address, false), 42));
+  });
+});
+
+describe('ApiAccount extrinsic history', () => {
+  it('preserves signed incoming bridge evidence after an ambiguous send error', async () => {
+    const account = new ApiAccount();
+    const sender = encodeAddress(new Uint8Array(32).fill(3), SoraPrefix);
+    const txHash = `0x${'ab'.repeat(32)}`;
+    const extrinsic = {
+      hash: { toString: () => txHash },
+      send: vi.fn().mockRejectedValue(new Error('RPC: connection closed')),
+    };
+    const getHeader = vi.fn().mockResolvedValue({ number: { toNumber: () => 123_456 } });
+
+    vi.spyOn(account, 'signExtrinsic').mockResolvedValue(extrinsic as any);
+
+    await expect(
+      account.submitApiExtrinsic(
+        { rpc: { chain: { getHeader } } } as any,
+        extrinsic as unknown as SubmittableExtrinsic<'promise'>,
+        { address: sender } as any,
+        undefined,
+        {
+          id: 'liberland-incoming-1',
+          from: sender,
+          type: Operation.SubstrateIncoming,
+          payload: { bridgeNetwork: 'Liberland' },
+        }
+      )
+    ).rejects.toThrow('connection closed');
+
+    expect(getHeader).toHaveBeenCalledTimes(1);
+    expect(account.getHistory('liberland-incoming-1')).toEqual(
+      expect.objectContaining({
+        txId: txHash,
+        status: TransactionStatus.Error,
+        payload: {
+          bridgeNetwork: 'Liberland',
+          startBlock: 123_456,
+          submissionState: 'unknown',
+        },
+      })
+    );
+  });
+
+  it('preserves a signed Ethereum bridge hash after an ambiguous send error', async () => {
+    const account = new ApiAccount();
+    const sender = encodeAddress(new Uint8Array(32).fill(4), SoraPrefix);
+    const txHash = `0x${'cd'.repeat(32)}`;
+    const extrinsic = {
+      hash: { toString: () => txHash },
+      send: vi.fn().mockRejectedValue(new Error('RPC: response lost')),
+    };
+
+    vi.spyOn(account, 'signExtrinsic').mockResolvedValue(extrinsic as any);
+
+    await expect(
+      account.submitApiExtrinsic(
+        { rpc: { chain: { getHeader: vi.fn() } } } as any,
+        extrinsic as unknown as SubmittableExtrinsic<'promise'>,
+        { address: sender } as any,
+        undefined,
+        {
+          id: 'ethereum-outgoing-1',
+          from: sender,
+          type: Operation.EthBridgeOutgoing,
+        }
+      )
+    ).rejects.toThrow('response lost');
+
+    expect(account.getHistory('ethereum-outgoing-1')).toEqual(
+      expect.objectContaining({
+        txId: txHash,
+        status: TransactionStatus.Error,
+      })
+    );
+  });
+
+  it.each([
+    ['purchase-swap:ts:11111111-2222-3333-4444-555555555555', true],
+    ['purchase-swap:xor:11111111-2222-3333-4444-555555555555', true],
+    ['ordinary-swap', false],
+    ['purchase-swap:xor:invalid', false],
+    ['purchase-swap:other:11111111-2222-3333-4444-555555555555', false],
+  ])('retains only reviewed purchase swap hashes after response loss: %s', async (id, preservesHash) => {
+    const account = new ApiAccount();
+    const sender = encodeAddress(new Uint8Array(32).fill(4), SoraPrefix);
+    const txHash = `0x${'de'.repeat(32)}`;
+    const extrinsic = {
+      hash: { toString: () => txHash },
+      send: vi.fn().mockRejectedValue(new Error('RPC: response lost')),
+    };
+    vi.spyOn(account, 'signExtrinsic').mockResolvedValue(extrinsic as any);
+
+    await expect(
+      account.submitApiExtrinsic(
+        { rpc: { chain: { getHeader: vi.fn() } } } as any,
+        extrinsic as unknown as SubmittableExtrinsic<'promise'>,
+        { address: sender } as any,
+        undefined,
+        { id, from: sender, type: Operation.Swap }
+      )
+    ).rejects.toThrow('response lost');
+
+    const history = account.getHistory(id);
+    expect(history?.txId).toBe(preservesHash ? txHash : undefined);
+    expect(history?.status).toBe(TransactionStatus.Error);
+    expect(history?.blockId).toBeUndefined();
+  });
+
+  it('persists the finalized block hash when no in-block status was observed', async () => {
+    const account = new ApiAccount();
+    const unsubscribe = vi.fn();
+    let statusCallback!: (result: ISubmittableResult) => void;
+    const extrinsic = {
+      send: vi.fn(async (callback: typeof statusCallback) => {
+        statusCallback = callback;
+        return unsubscribe;
+      }),
+    };
+    const saveHistorySpy = vi.spyOn(account, 'saveHistory').mockImplementation(() => undefined);
+
+    await account.sendExtrinsic(extrinsic as unknown as SubmittableExtrinsic<'promise'>, {
+      id: 'tx-1',
+      from: 'sender',
+      type: Operation.SubstrateIncoming,
+    });
+
+    statusCallback({
+      events: [],
+      status: {
+        asFinalized: { toString: () => '0xfinalized-block' },
+        isFinalized: true,
+        isInBlock: false,
+        toJSON: () => ({ finalized: '0xfinalized-block' }),
+      },
+      txIndex: 0,
+    } as unknown as ISubmittableResult);
+
+    expect(saveHistorySpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        blockId: '0xfinalized-block',
+        id: 'tx-1',
+        status: TransactionStatus.Finalized,
+      })
+    );
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 });

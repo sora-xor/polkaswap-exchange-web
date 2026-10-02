@@ -1,8 +1,10 @@
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { shallowRef, toRaw, type ShallowRef } from 'vue';
 
 import type { Node, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
+import { parseStoredJson } from '@/utils/storageParsing';
 
 import type { Connection } from '@sora-substrate/connection';
 import type { Storage } from '@sora-substrate/sdk';
@@ -21,6 +23,55 @@ const NODE_SELECTION_MODE_STORAGE_KEY = 'nodeSelectionMode';
 type NodeSelectionMode = 'auto' | 'manual';
 
 const isNodeSelectionMode = (value: string): value is NodeSelectionMode => value === 'auto' || value === 'manual';
+
+const isNode = (value: unknown): value is Node => {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+
+  const candidate = value as Partial<Node>;
+  return (
+    typeof candidate.chain === 'string' &&
+    typeof candidate.name === 'string' &&
+    typeof candidate.address === 'string' &&
+    candidate.address.length > 0 &&
+    (candidate.location === undefined || typeof candidate.location === 'string')
+  );
+};
+
+const isNodeList = (value: unknown): value is Node[] => Array.isArray(value) && value.every(isNode);
+
+const isNodeLatencies = (value: unknown): value is Record<string, number> =>
+  typeof value === 'object' &&
+  value !== null &&
+  !Array.isArray(value) &&
+  Object.values(value).every((latency) => typeof latency === 'number' && Number.isFinite(latency) && latency >= 0);
+
+const statusRevisions = new WeakMap<object, ShallowRef<number>>();
+
+const getStatusRevision = (connection: object): ShallowRef<number> => {
+  const revision = statusRevisions.get(toRaw(connection));
+
+  if (!revision) {
+    throw new Error('NodesConnection status revision is not initialized');
+  }
+
+  return revision;
+};
+
+/**
+ * Lightweight reactive state exposed by a raw {@link NodesConnection}.
+ *
+ * The connection and SDK storage instances must not be proxied by Vue, so UI
+ * consumers should observe this immutable snapshot instead of their internals.
+ */
+export interface NodesConnectionStatus {
+  readonly node: Nullable<Node>;
+  readonly nodeList: readonly Node[];
+  readonly customNodes: readonly Node[];
+  readonly defaultNodes: readonly Node[];
+  readonly nodeAddressConnecting: string;
+  readonly connectionAllowance: boolean;
+  readonly connected: boolean;
+}
 
 export class NodesConnection {
   // Feature flags can be toggled at runtime, e.g. from App.vue after env is loaded
@@ -51,8 +102,10 @@ export class NodesConnection {
   protected connectionLockTimeout: Nullable<NodeJS.Timeout> = null;
   protected reconnectTimer: Nullable<NodeJS.Timeout> = null;
   protected connectPromise: Nullable<Promise<void>> = null;
+  private connectionRequestRevision = 0;
 
   constructor(storage: Storage, connection: Connection, network = SubNetworkId.Mainnet) {
+    statusRevisions.set(this, shallowRef(0));
     this.network = network;
 
     // It is necessary to remove Vue reactivity from instances of "Connection" and "Storage" classes.
@@ -87,17 +140,46 @@ export class NodesConnection {
     return !(this.nodeAddressConnecting && this.connectionLocked);
   }
 
+  /**
+   * Returns an immutable status snapshot while tracking the private revision
+   * ref. A fresh object ensures computed consumers observe every transition.
+   */
+  public get status(): NodesConnectionStatus {
+    // Keep the ref outside the class instance: Vue may proxy NodesConnection
+    // and would otherwise unwrap a ref-valued field before `.value` is read.
+    void getStatusRevision(this).value;
+
+    return Object.freeze({
+      node: this.node,
+      nodeList: Object.freeze(this.nodeList),
+      customNodes: this.customNodes,
+      defaultNodes: this.defaultNodes,
+      nodeAddressConnecting: this.nodeAddressConnecting,
+      connectionAllowance: this.connectionAllowance,
+      connected: this.nodeIsConnected,
+    });
+  }
+
+  /**
+   * Invalidates reactive status consumers after raw runtime state changes.
+   */
+  protected touchStatus(): void {
+    getStatusRevision(this).value += 1;
+  }
+
   protected initData(): void {
     const node = this.storage.get('node');
     const nodes = this.storage.get('customNodes');
     const lat = this.storage.get('nodeLatencies');
-    const selectedNode = node ? (JSON.parse(node) as Node) : null;
-    const customNodes = nodes ? (JSON.parse(nodes) as Node[]) : [];
+    const selectedNode = parseStoredJson(node, null as Nullable<Node>, (value): value is Nullable<Node> =>
+      isNode(value)
+    );
+    const customNodes = parseStoredJson(nodes, [] as Node[], isNodeList);
 
     this.setCustomNodes(customNodes);
     this.setNodeSelectionMode(this.resolveInitialNodeSelectionMode(selectedNode, customNodes));
     this.setNode(selectedNode);
-    this.nodeLatencies = lat ? JSON.parse(lat) : {};
+    this.nodeLatencies = parseStoredJson(lat, {} as Record<string, number>, isNodeLatencies);
   }
 
   protected addCustomNode(node: Node): void {
@@ -112,6 +194,7 @@ export class NodesConnection {
       this.storage.remove('node');
       this.node = null;
     }
+    this.touchStatus();
   }
 
   /**
@@ -137,6 +220,7 @@ export class NodesConnection {
   setCustomNodes(nodes: Node[]): void {
     this.storage.set('customNodes', JSON.stringify(nodes));
     this.customNodes = Object.freeze([...nodes]);
+    this.touchStatus();
   }
 
   removeCustomNode(node: Node): void {
@@ -151,6 +235,7 @@ export class NodesConnection {
   setDefaultNodes(nodes: Nullable<Array<Node>> = []): void {
     const normalizedNodes = Array.isArray(nodes) ? nodes : [];
     this.defaultNodes = Object.freeze([...normalizedNodes]);
+    this.touchStatus();
 
     const { node, defaultNodes } = this;
 
@@ -266,6 +351,7 @@ export class NodesConnection {
       return ta - tb;
     });
     this.defaultNodes = Object.freeze(sorted);
+    this.touchStatus();
   }
 
   protected getFastestDefaultNode(): Nullable<Node> {
@@ -311,8 +397,12 @@ export class NodesConnection {
   }
 
   protected lockConnection(): void {
+    if (this.connectionLockTimeout) {
+      clearTimeout(this.connectionLockTimeout);
+    }
     this.connectionLocked = true;
     this.connectionLockTimeout = setTimeout(this.unlockConnection.bind(this), LOCK_TIMEOUT);
+    this.touchStatus();
   }
 
   protected unlockConnection(): void {
@@ -321,6 +411,7 @@ export class NodesConnection {
     }
     this.connectionLockTimeout = null;
     this.connectionLocked = false;
+    this.touchStatus();
   }
 
   protected clearReconnectTimer(): void {
@@ -328,6 +419,7 @@ export class NodesConnection {
       clearTimeout(this.reconnectTimer);
     }
     this.reconnectTimer = null;
+    this.touchStatus();
   }
 
   protected registerActiveConnection(): void {
@@ -354,6 +446,7 @@ export class NodesConnection {
 
     if (!this.connection.api) {
       this.unregisterActiveConnection();
+      this.touchStatus();
       return;
     }
 
@@ -365,22 +458,116 @@ export class NodesConnection {
     } finally {
       // Keep global cap bookkeeping consistent even if close() rejects.
       this.unregisterActiveConnection();
+      this.touchStatus();
     }
   }
 
-  public async connect(options: ConnectToNodeOptions = {}): Promise<void> {
-    if (this.connectPromise) {
-      return this.connectPromise;
+  /**
+   * Cancels the complete connection lifecycle and waits for its active request
+   * to observe cancellation.
+   *
+   * `closeConnection` remains a transport-only operation because connection
+   * attempts use it internally when switching endpoints. Adapter teardown must
+   * additionally invalidate the request revision; otherwise the cancelled
+   * request can interpret the close as a node failure and connect a fallback.
+   */
+  public async stopConnection(): Promise<void> {
+    const activePromise = this.connectPromise;
+    ++this.connectionRequestRevision;
+
+    this.clearReconnectTimer();
+    this.lastReconnectDelayMs = 0;
+    this.reconnectAttempt = 0;
+    this.nodeAddressConnecting = '';
+    this.unlockConnection();
+
+    let closeError: unknown;
+
+    try {
+      // The underlying Connection explicitly rejects a pending open when
+      // closed, allowing the captured request to settle without a timeout.
+      await this.closeConnection();
+    } catch (error) {
+      closeError = error;
     }
 
-    this.connectPromise = this.connectInternal(options).finally(() => {
-      this.connectPromise = null;
+    await activePromise?.catch(() => undefined);
+
+    // A stale callback may have touched activity state while the transport was
+    // closing. Teardown always leaves the adapter observably idle.
+    this.clearReconnectTimer();
+    this.lastReconnectDelayMs = 0;
+    this.reconnectAttempt = 0;
+    this.nodeAddressConnecting = '';
+    this.unlockConnection();
+    this.touchStatus();
+
+    if (closeError !== undefined) {
+      throw closeError;
+    }
+  }
+
+  private startConnection(options: ConnectToNodeOptions, requestRevision: number): Promise<void> {
+    const promise = this.connectInternal(options, requestRevision).finally(() => {
+      if (this.connectPromise === promise) {
+        this.connectPromise = null;
+      }
     });
 
-    return this.connectPromise;
+    this.connectPromise = promise;
+    return promise;
   }
 
-  protected async connectInternal(options: ConnectToNodeOptions = {}): Promise<void> {
+  /**
+   * Connects to a node while allowing an explicit user selection to supersede
+   * an in-flight automatic or reconnect attempt.
+   */
+  public connect(options: ConnectToNodeOptions = {}): Promise<void> {
+    const isManualSelection = Boolean(options.manualSelection && options.node?.address);
+    const activePromise = this.connectPromise;
+
+    if (!activePromise) {
+      const requestRevision = ++this.connectionRequestRevision;
+      return this.startConnection(options, requestRevision);
+    }
+
+    if (!isManualSelection) {
+      return activePromise;
+    }
+
+    const requestRevision = ++this.connectionRequestRevision;
+    this.nodeAddressConnecting = options.node?.address ?? '';
+    this.touchStatus();
+
+    const manualPromise = (async () => {
+      try {
+        await this.closeConnection();
+      } catch (error) {
+        console.warn(`[${this.network}] Failed to cancel the previous node connection`, error);
+      }
+
+      // The stale request observes the revision change and exits without
+      // fallback or state commits after its transport has been cancelled.
+      await activePromise.catch(() => undefined);
+
+      if (requestRevision !== this.connectionRequestRevision) return;
+      await this.startConnection(options, requestRevision);
+    })().finally(() => {
+      if (this.connectPromise === manualPromise) {
+        this.connectPromise = null;
+      }
+    });
+
+    this.connectPromise = manualPromise;
+    return manualPromise;
+  }
+
+  protected async connectInternal(
+    options: ConnectToNodeOptions = {},
+    requestRevision = this.connectionRequestRevision
+  ): Promise<void> {
+    if (requestRevision !== this.connectionRequestRevision) return;
+
     const { node, onError, currentNodeIndex = 0, attempt = 0, manualSelection = false, ...restOptions } = options;
 
     if (!node && currentNodeIndex === 0) {
@@ -420,7 +607,9 @@ export class NodesConnection {
 
     try {
       this.lockConnection();
-      await this.connectNode({ node: requestedNode, onError, ...restOptions });
+      await this.connectNode({ node: requestedNode, onError, ...restOptions }, requestRevision);
+
+      if (requestRevision !== this.connectionRequestRevision) return;
 
       if (manualSelection && node && this.node?.address === node.address) {
         this.setNodeSelectionMode('manual');
@@ -428,6 +617,8 @@ export class NodesConnection {
         this.setNodeSelectionMode('auto');
       }
     } catch (error) {
+      if (requestRevision !== this.connectionRequestRevision) return;
+
       onError?.(error, requestedNode);
 
       // if connection failed to node in state, reset node in state
@@ -473,10 +664,14 @@ export class NodesConnection {
               console.warn(`[${this.network}] Reconnect attempt failed`, retryError);
             });
           }, delay);
+          this.touchStatus();
           return;
         } else {
           // Avoid connectPromise self-recursion when immediate fallback is needed.
-          await this.connectInternal({ onError, currentNodeIndex: nextIndex, attempt: nextAttempt, ...restOptions });
+          await this.connectInternal(
+            { onError, currentNodeIndex: nextIndex, attempt: nextAttempt, ...restOptions },
+            requestRevision
+          );
           return;
         }
       }
@@ -485,7 +680,10 @@ export class NodesConnection {
     }
   }
 
-  protected async connectNode(options: ConnectToNodeOptions = {}): Promise<void> {
+  protected async connectNode(
+    options: ConnectToNodeOptions = {},
+    requestRevision = this.connectionRequestRevision
+  ): Promise<void> {
     const { node, connectionOptions = {}, onError, onDisconnect, onReconnect, onConnect } = options;
 
     const endpoint = node?.address ?? '';
@@ -496,9 +694,12 @@ export class NodesConnection {
     };
     const isReconnection = !connectionOpenOptions.once;
     const connectingNodeChanged = () => endpoint !== this.nodeAddressConnecting;
+    const connectionRequestChanged = () => requestRevision !== this.connectionRequestRevision;
 
     const connectionOnDisconnected = async () => {
       await this.closeConnection();
+
+      if (connectionRequestChanged()) return;
 
       if (typeof onDisconnect === 'function') {
         onDisconnect(node as Node);
@@ -526,18 +727,27 @@ export class NodesConnection {
       }
 
       this.nodeAddressConnecting = endpoint;
+      this.touchStatus();
 
       console.info(`[${this.network}] Connection request to node`, endpoint);
 
       this.guardConnectionCap();
       await this.closeConnection();
 
+      if (connectionRequestChanged()) return;
+
       await this.connection.open(endpoint, {
         ...connectionOpenOptions,
         eventListeners: [['ready', connectionOnReady]],
       });
 
-      if (connectingNodeChanged()) return;
+      if (connectionRequestChanged() || connectingNodeChanged()) {
+        if (this.connection.endpoint === endpoint) {
+          await this.closeConnection();
+        }
+        this.touchStatus();
+        return;
+      }
 
       console.info(`[${this.network}] Connected to node`, this.connection.endpoint);
 
@@ -576,8 +786,11 @@ export class NodesConnection {
       this.registerActiveConnection();
       this.setNode(node);
       this.nodeAddressConnecting = '';
+      this.touchStatus();
       this.unlockConnection();
     } catch (error) {
+      if (connectionRequestChanged()) return;
+
       console.error(error);
       const err =
         error instanceof AppHandledError
@@ -590,6 +803,7 @@ export class NodesConnection {
       if (!connectingNodeChanged()) {
         this.nodeAddressConnecting = '';
       }
+      this.touchStatus();
       throw err;
     }
   }

@@ -55,6 +55,7 @@ export function formatRequest(request: EthBridgeRequestsOffchainRequest, status:
   return formattedItem;
 }
 
+/** Preserves every signed transfer field without applying display denomination. */
 export function formatApprovedRequest(
   request: OutgoingRequestEncoded,
   proofs: Vec<SignatureParams>
@@ -65,10 +66,13 @@ export function formatApprovedRequest(
   formattedItem.hash = transferRequest.txHash.toString();
   formattedItem.from = transferRequest.from.toString();
   formattedItem.to = transferRequest.to.toString();
-  formattedItem.amount = new FPNumber(transferRequest.amount).toCodecString();
+  formattedItem.amount = transferRequest.amount.toString();
   formattedItem.currencyType = transferRequest.currencyId.isAssetId
     ? EthCurrencyType.AssetId
     : EthCurrencyType.TokenAddress;
+  formattedItem.currencyId = transferRequest.currencyId.isAssetId
+    ? transferRequest.currencyId.asAssetId.toString()
+    : transferRequest.currencyId.asTokenAddress.toString();
 
   formattedItem.r = [];
   formattedItem.s = [];

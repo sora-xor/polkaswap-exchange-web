@@ -103,9 +103,52 @@ describe('order book update subscription query', () => {
     expect(indexerMocks.createEntitySubscription).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ['malformed JSON', 'not-json'],
+    ['object instead of an array', '{}'],
+    ['invalid array entries', '[null,"bad"]'],
+  ])('keeps order-book stats available when recent deals contain %s', async (_case, lastDeals) => {
+    const unsubscribe = vi.fn();
+    const handler = vi.fn();
+    indexerMocks.request.mockResolvedValue({ data: createOrderBookEntity({ lastDeals }) });
+    indexerMocks.createEntitySubscription.mockReturnValue(unsubscribe);
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
 
+    await expect(subscribeOnOrderBookUpdates('0-base-quote', handler, vi.fn())).resolves.toBe(unsubscribe);
 
+    expect(handler).toHaveBeenCalledWith(expect.objectContaining({ deals: [] }));
+    expect(indexerMocks.createEntitySubscription).toHaveBeenCalledTimes(1);
   });
+
+  it('normalizes invalid financial values and drops deals with unsafe timestamps', async () => {
+    const handler = vi.fn();
+    indexerMocks.request.mockResolvedValue({
+      data: createOrderBookEntity({
+        price: '-1',
+        priceChangeDay: Number.POSITIVE_INFINITY,
+        volumeDayUSD: 'NaN',
+        lastDeals: JSON.stringify([
+          { price: '2', amount: '3', isBuy: true, timestamp: -1 },
+          { price: 'Infinity', amount: '-4', isBuy: false, timestamp: 1_700 },
+          { price: '5', amount: '6', isBuy: true, timestamp: Number.MAX_SAFE_INTEGER },
+        ]),
+      }),
+    });
+    indexerMocks.createEntitySubscription.mockReturnValue(vi.fn());
+    indexerMocks.currentIndexer = createIndexer('polkaswap');
+
+    await subscribeOnOrderBookUpdates('0-base-quote', handler, vi.fn());
+
+    const update = handler.mock.calls[0]?.[0];
+    expect(update.stats.price.toString()).toBe('0');
+    expect(update.stats.priceChange.toString()).toBe('0');
+    expect(update.stats.volume.toString()).toBe('0');
+    expect(update.deals).toHaveLength(1);
+    expect(update.deals[0].price.toString()).toBe('0');
+    expect(update.deals[0].amount.toString()).toBe('0');
+    expect(update.deals[0].timestamp).toBe(1_700_000);
+  });
+});
 
 const createIndexer = (type: unknown) => ({
   type,

@@ -1,0 +1,439 @@
+Primary: https://assets.ippc.int/static/media/files/reportingobligation/2016/11/30/Plant_Health_Ordinance_2012l_2.pdf
+
+“consignment” means a quantity of regulated articles being moved
+    from one country to another and covered, when required, by a
+    single phytosanitary certificate;
+“country” includes a territory;
+“CPPO” means the Chief Plant Protection Officer;
+“contained”, in relation to a plant pest risk, means eliminated or
+    reduced to an acceptable level;
+“container”, in relation to a regulated article, means a receptacle,
+    bag, package, cage or other thing capable of holding plants
+    during a journey by one or several means of transport;
+“decontaminate” means to reduce the pathogens on the surface of a
+    plant, plant product or other item, whether by irradiation or
+    any other means;
+“Department” means the Department of Agriculture;
+“detain” means to keep a consignment in official custody or
+     confinement for phytosanitary reasons, and “detention” has a
+     corresponding meaning;
+“Director” means the Director of Agriculture;
+“disinfestation” means the utilization of any approved substance or
+     process designed to prevent, eliminate or reduce any pest or
+     micro-organism with which an article or area may be infested;
+“disposal”, in relation to a regulated article, means Destruction by
+     burying or burning or any other means; “dispose of” includes
+     “destroy”;
+“enforcement action” means action to enforce phytosanitary
+     measures in order to contain a plant pest risk;
+“enforcement notice” means a notice issued by a plant inspector
+     under section 11;
+“export” as a verb, means to send an item to another country by
+    any means, and “exportation” and related terms have a
+    corresponding meaning;
+“germplasm” means a plant intended for use in breeding or
+    conservation programmes;
+“health hazard” means a biological, chemical or physical agent in,
+     or a condition of, a regulated article with the potential to
+     cause an adverse health effect in plants or humans;
+“importer” means anyone who, whether as owner, consignor,
+    consignee, agent, broker or otherwise, is in possession of or in
+    any way entitled to the custody of any plant, plant product,
+    pest, beneficial organism or other regulated article landed or
+    likely to be landed in the Islands from another country;
+“infested”, in relation to an article or area, means that a plant pest
+     is present in the article or area;
+
+
+                                  5
+“international phytosanitary certificate” has the meaning given that
+     term by section 37;
+“IPPC” means the International Plant Protection Convention;
+“IPPC Secretariat” means the Secretariat of the Commission on
+    Phytosanitary Measures established under the IPPC;
+“island” means any island comprising the Turks and Caicos
+     Islands;
+“ISPM” means the International Sanitary and Phytosanitary
+    Measures;
+“Minister” means the Minister responsible for the Department;
+“outbreak” means the occurrence of a plant pest, detected and
+     expected to survive for the immediate future;
+“phytosanitary certificate” means a certificate in the approved
+    form, or to the same effect, issued by the Service and stating
+    the plant health status of a regulated article for purposes of
+    export;
+“phytosanitary measure” means any action taken or ordered to be
+    taken in accordance with this Ordinance for the purpose of
+    plant pest control on the basis of plant pest risk assessment;
+“plant” includes a seed, germplasm and part of a plant;
+“plant establishment” means premises or an area in which plants
+     are commercially grown, kept or destroyed;
+“plant health status” means the status of a country, zone or
+     regulated article with respect to plant pests;
+“plant import conditions” means the phytosanitary requirements
+     for the importation of regulated articles published under
+     section 36;
+“plant inspector” means the CPPO, every plant protection officer
+     and any person assigned to serve as a plant inspector under
+     section 6;
+“plant movement permit” means a permit for the movement of
+     plants in, into or from a zone, issued under section 28;
+“plant pest” means any species, strain or biotype of any plant,
+     animal or pathogenic agent injurious to plants or plant
+     products;
+“plant pest control” means the elimination, or reduction to an
+     acceptable level, of a plant pest risk or health hazard resulting
+     from a plant pest;
+“plant pest emergency” means a plant pest emergency declared
+     under section 20;
+“plant pest risk” means the risk of a health hazard existing or
+     developing as a result of the presence of a plant pest in a
+     regulated article;
+
+
+
+
+                                  6
+“plant pest risk analysis” means the process of evaluating
+     biological or other scientific and economic evidence to
+     determine whether a pest should be regulated and the strength
+     of any phytosanitary measures to be taken against it;
+“plant pest risk assessment”, in relation to an activity involving a
+     regulated article, means the process of identifying and
+     estimating the plant pest risk associated with the activity and
+     evaluating the biological and economic consequences of that
+     risk in accordance with internationally accepted procedures
+     and standards;
+“plant pest zone” means a zone designated as a plant pest zone
+     under section 22;
+“plant pest-free zone” means a zone so designated under section
+     24;
+“plant product” means—
+          (a) any non-manufactured material of plant origin
+              (including grain); and
+          (b) any manufactured product which, by its nature or
+              that of its processing, may create a risk for the
+              introduction and spread of a pest;
+“plant protection officer” means a person who is appointed as a
+     plant protection officer in the public service;
+“plant-related item” includes packaging, and any container,
+     equipment, or other appliance used for or on plants, and any
+     object or material capable of harboring or spreading plant
+     pests;
+“port” means a port or airport prescribed or appointed under the
+     Customs Ordinance (Cap.19.04);
+“premises” includes a building, tent or other structure, whether
+    permanent or otherwise, the land on which it is situated and
+    any adjoining land employed in connection with it;
+“quarantine plant pest” means a plant pest declared by order under
+    section 18 to be a quarantine plant pest;
+“quarantine station or area” means a facility for the holding of
+    regulated articles for phytosanitary observation, research,
+    inspection, testing, treatment, detention or destruction;
+“regulated article” means—
+          (a) any plant, plant product, storage equipment,
+              packaging, vehicle, container or soil; and
+          (b) any other organism, object or material capable of
+              harbouring or spreading pests;
+          (c) any other article that the Director by notice in the
+              Gazette, on the advice of the CPPO, declares to be a
+              regulated article for the purposes of this Ordinance;
+
+
+
+
+                                 7
+                   “sell” means offer, advertise, keep, store, display, transmit,
+                        consign, convey or deliver for sale, or exchange or dispose of
+                        to any person in any manner whether for a consideration or
+                        otherwise, and “sold”, “selling” and “sale” have
+                        corresponding meanings;
+                   “serious plant pest” means the risk of introduction into or spread in
+                        the Islands of any quarantine plant pest that would constitute
+                        a serious threat to plant, animal, human or environmental
+                        health;
+                   “Service” means the Turks and Caicos Islands Plant Protection
+                       Service established by section 4(1);
+                   “surveillance” means an official process which collects and
+                        records data on pest occurrence or absence by survey,
+                        monitoring or other procedures;
+                   “surveillance zone” means a zone so designated under section 24;
+                   “vehicle” means any vessel, aircraft, conveyance, cart, container,
+                       animal or other thing on land or at sea or in the air that can
+                       convey a regulated article from one place to another;
+                   “vessel” includes any marine vehicle;
+                   “WTO SPS Agreement” means the World Trade Organisation
+                      Agreement on the Application of Sanitary and Phytosanitary
+                      Measures;
+                   “zone” means a plant pest zone, a plant pest-free zone, a buffer
+                       zone or a surveillance zone.
+
+Scope and status      3. (1) This Ordinance is intended to prevent the introduction
+of the Ordinance
+                   and spread of plant pests, to protect and promote plant health, to
+                   control the movement of plants and products into, from and within
+                   the Islands, and to regulate related matters.
+                           (2) This Ordinance provides for the issuance in accordance
+                   with international standards and obligations of phytosanitary
+                   certificates for all regulated articles for which a phytosanitary
+                   certificate is required.
+                        (3) This Ordinance is in addition to and does not derogate
+                   from any enactment relating to food safety, human health,
+                   immigration, customs control or plant health and movements.
+
+                                                 PART 2
+                                            ADMINISTRATION
+Turks and Caicos      4. (1) There is to be a Turks and Caicos Islands Plant
+Islands Plant
+Protection         Protection Service within the Department of Agriculture.
+Service
+                          (2) The Service is to consist of the Chief Plant Protection
+                   Officer and such other plant protection officers and other staff as
+                   are assigned to it.
+
+
+
+
+                                                    8
+       (3) The CPPO is to be the head of the Service and the
+National Plant Protection Officer for purposes of the international
+obligations of the Government in relation to plant protection
+matters.
+       (4) The CPPO may delegate any of his functions under this
+Ordinance to a plant inspector or plant protection officer, except
+for his power of delegation, and a reference to ‘the Service’
+includes a plant inspector or plant protection officer performing a
+function of the Service on the authority of the CPPO.
+      (5) The CPPO is answerable to the Director for the
+performance of his functions and those of the Service under this
+Ordinance and for the efficient operation of the Service.
+
+    5. (1) The functions of the Service include, but are not limited   Functions of the
+                                                                       Service
+to, the following—
+          (a) implement the IPPC, ISPM and the WTO SPS
+              Agreement;
+          (b) carry out surveillance of any ornamental and
+              growing plants, including areas under cultivation
+              and wild flora, and of any plant and plant product in
+              storage or in transport, for the purpose of reporting
+              the occurrence, outbreak and spread of quarantine
+              pests, and of controlling those pests;
+          (c) inspect any consignment of a plant and plant
+              product and, if appropriate, inspecting any other
+              regulated article, for the purpose of preventing the
+              introduction and spread of quarantine pests;
+          (d) disinfest consignments of any plant, plant product
+              or other regulated article;
+          (e) designate, maintain and survey pest-free areas;
+          (f) conduct plant pest risk analyses as required;
+          (g) decide on and publish the phytosanitary measures to
+              be applied in the Islands, on the basis of plant pest
+              risk assessment and by reference to applicable
+              international standards;
+          (h) provide information to other countries concerning
+              the phytosanitary measures applied in the Islands,
+              in accordance with international obligations;
+          (i) ensure the phytosanitary security of consignments
+              after certification and before export;
+          (j) establish auditing and trace-back procedures for
+              regulated articles for the purpose of phytosanitary
+              certification;
+          (k) publish information regarding quarantine pests and
+              the means of their prevention and control;
+          (l) review and enforce phytosanitary import conditions
+              and other necessary legislation;
+
+
+                                 9
+                              (m) provide information regarding import and export
+                                  regulations in force, and technical requirements for
+                                  any regulated article, on the request of any
+                                  interested international, regional or other national
+                                  plant protection organisation;
+                              (n) set up an early detection system for plant pests and
+                                  pathogen outbreaks as provided by section 19;
+                              (o) devise and publish a plant pest emergency plan in
+                                  accordance with section 22;
+                              (p) designate plant quarantine stations and areas and
+                                  manage such stations and areas in accordance with
+                                  Part 4;
+                              (q) establish and publish phytosanitary requirements
+                                  for the import, export and movement of regulated
+                                  articles, on the basis of the IPPC standards and in
+                                  consultation with other competent authorities;
+                              (r) administer the system of permits for the import of
+                                  regulated articles in accordance with section 35;
+                              (s) issue phytosanitary certificates for the export of
+                                  regulated articles in accordance with section 43;
+                              (t) represent the Islands in bilateral, regional and
+                                  international fora relating to phytosanitary matters;
+                              (u) notify the IPPC of outbreaks of plant pests and fulfil
+                                  other international reporting requirements in
+                                  relation to plant pests;
+                              (v) carry out communication, training and public
+                                  awareness campaigns on plant health matters;
+                              (w) issue permits required by or under this Ordinance;
+                              (x) collect fees as required by or under this Ordinance;
+                                  and
+                              (y) advise the Minister on the development of
+                                  regulations needed to implement this Ordinance;
+                              (z) perform other functions assigned to it by the
+                                  Director for the purposes of this Ordinance.
+                          (2) The Service must at least once a year, and more often if
+                   required in writing by the Director, give a written report to the
+                   Director on the performance of its functions under this Ordinance.
+
+
+
+34. (1) A plant, plant product or other regulated article may be
+                     imported into the Islands only at a port.
+                           (2) No regulated article may be imported into the Islands
+                     unless—
+                                (a) a plant import permit has been issued under this
+                                    Part;
+                                (b) the regulated article meets the plant import
+                                    conditions of the permit and of or under this
+                                    Ordinance;
+                                (c) the regulated article is accompanied by any other
+                                    documentation required by or under this Ordinance
+                                    or any other written law to accompany imports.
+                            (3) A person who imports, or attempts to import, a
+                     regulated article in contravention of this section commits an
+                     offence.
+                     Penalty: A fine of $50,000 and imprisonment for 2 years, or both.
+                            (4) The Minister may make regulations—
+                                (a) providing for cleansing and disinfection and
+                                    subjection to quarantine of vehicles used for the
+                                    transportation of plants to the Islands;
+                                (b) regulating the examination, inspection, seizure and
+                                    detention of any regulated article prior to its being
+                                    landed in the Islands.
+                             (5) The requirements of or under this Part are in addition to
+                     any other requirements relating to the import or export of regulated
+                     articles.
+
+Plant import            35. (1) A person who wishes to import any regulated article
+permits
+                     into the Islands must apply to the Service for a plant import permit
+                     in a form approved by the CPPO and must pay the prescribed fee.
+
+
+
+
+                                                      28
+       (2) An application for a plant import permit must be
+submitted in writing to the Service before the importation and
+must include—
+           (a) the proposed date of entry;
+           (b) the port of entry;
+           (c) the country of origin and any country of transit;
+           (d) the name of the species or item to be imported and
+               the quantity;
+           (e) the means of transport;
+           (f) proof of ownership or custodianship of plants;
+           (g) the final destination in the Islands;
+           (h) evidence that an international phytosanitary
+               certificate has been issued in respect of the article in
+               the exporting country; and
+           (i) any other information prescribed or that the CPPO
+               requires in writing in any particular case.
+      (3) On receipt of an application made in accordance with
+subsection (2), the Service may issue to the applicant a plant
+import permit in a form approved by the CPPO.
+      (4) Every plant import permit is issued subject to the plant
+import conditions and if those conditions are not met, the permit is
+deemed to be cancelled.
+       (5) A plant import permit may include a requirement that a
+regulated article be placed in quarantine for a period and subject to
+conditions specified in the permit.
+
+   36. (1) The Director must, from time to time, publish the plant        Plant import
+                                                                          conditions
+import conditions for the importation of regulated articles into the
+Islands.
+       (2) Plant import conditions are the phytosanitary
+requirements that must be met before a regulated article is
+imported and it is the duty of the importer to inform himself of the
+conditions and to comply with them.
+      (3) Plant import conditions may include a requirement for
+the tagging or other identification of plants that have been
+imported.
+       (4) Plant import conditions must be based on international
+standards and science-based plant pest risk assessment conducted
+in accordance with the IPPC standards and other established
+international standards and with other requirements of or under
+this Ordinance.
+      (5) The plant import conditions must be regularly updated
+and made public.
+
+
+
+
+                                    29
+
+
+Primary: https://agc.gov.tc/agc/component/edocman/25-of-2024-plant-health-regulations-2024/fdocument?Itemid=9999
+
+Phytosanitary measures
+   13. (1) In order to perform its function under section 5(1)(q)
+of the Ordinance, the Service shall—
+          (a) develop and publish phytosanitary measures that
+              are equivalent to those of reciprocating countries;
+          (b) work collaboratively with reciprocating countries
+              to ensure that all phytosanitary measures are
+              harmonious;
+          (c) notify reciprocating countries and other
+              stakeholders immediately of any revision made to
+              its phytosanitary measures that will affect the
+              established import/export system; and
+          (d) ensure that all phytosanitary measures are in
+              congruence with ISPM principles for the
+              protection of plants and the application of
+              phytosanitary measures in international trade.
+
+
+
+
+                               8
+      (2) In order to perform its function under section 5(1)(s) of
+the Ordinance, the Service shall do as regulation 30(1) requires.
+
+Labelling and packaging
+  34. (1) A regulated article shall be packaged separately from
+any unregulated article, and shall be labelled as such.
+      (2) Anything that enters the Islands that—
+           (a) is a plant pest;
+           (b) is or could be infested; or
+           (c) constitutes or could constitute a biological obstacle
+               to the control of a plant pest enters the Islands,
+
+
+
+
+                                  23
+shall be marked on its container or accompanying invoice so as to
+identify the person importing the thing, the foreign exporter of
+the thing and, if applicable, the permit number or the
+phytosanitary certificate number.
+      (3) Anything referred to in subregulation (2) shall be
+packaged in a container in a manner that prevents the thing from
+becoming infested or spreading a plant pest or a biological
+obstacle to the control of a plant pest.
+      (4) Any plant or plant product imported under a waiver or
+exemption granted by an import condition or by regulations under
+section 59 of the Ordinance shall be clearly marked as such.
+      (5) If, under these Regulations, a certificate is required to
+state that a regulated article has been subjected to any
+examination or test, it is valid only if it states the dates on which
+the examination was carried out, the test was commenced, and
+reactions were taken.
+      (6) Any regulated article that is to be exported shall be
+packaged, contained and moved in such a manner as to prevent
+the article from spreading an animal disease.
+       (7) The scientific names of all regulated articles in a
+consignment shall be stated on the international sanitary
+certificate.
+      (8) This regulation does not preclude additional labelling
+requirements being imposed by import conditions.
+

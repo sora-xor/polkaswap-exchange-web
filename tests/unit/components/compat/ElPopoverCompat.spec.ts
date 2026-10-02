@@ -308,8 +308,15 @@ describe('SPopoverPanel', () => {
     expect(overlayTarget.textContent).toContain('Popover content');
   });
 
-  it('repositions a visible popover when observed content size changes', async () => {
+  it('coalesces observed content changes outside resize delivery and retains the mounted observer', async () => {
     const resizeCallbacks: Array<() => void> = [];
+    const frames = new Map<number, FrameRequestCallback>();
+    let nextFrame = 0;
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      frames.set(++nextFrame, callback);
+      return nextFrame;
+    });
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id));
 
     class ResizeObserverMock {
       constructor(callback: () => void) {
@@ -372,12 +379,55 @@ describe('SPopoverPanel', () => {
     (wrapper.vm as { updatePopper: () => void }).updatePopper();
     await nextTick();
     expect(popover.style.left).toBe('215px');
+    expect(resizeCallbacks).toHaveLength(1);
 
     popoverWidth = 1400;
     resizeCallbacks.at(0)?.();
+    resizeCallbacks.at(0)?.();
+    await nextTick();
+    expect(popover.style.left).toBe('215px');
+    expect(frames.size).toBe(1);
+    const pending = [...frames.values()];
+    frames.clear();
+    pending.forEach((callback) => callback(16));
     await nextTick();
 
     expect(popover.style.left).toBe('8px');
+    expect(resizeCallbacks).toHaveLength(1);
+
+    resizeCallbacks.at(0)?.();
+    expect(frames.size).toBe(1);
+    wrapper.unmount();
+    expect(frames.size).toBe(0);
+  });
+
+  it('does not observe the same popover again after an explicit position update', async () => {
+    const observe = vi.fn();
+    const disconnect = vi.fn();
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe = observe;
+        disconnect = disconnect;
+      }
+    );
+    const wrapper = mount(SPopoverPanel, {
+      attachTo: document.body,
+      props: { trigger: 'click' },
+      slots: {
+        reference: '<button class="trigger">Open</button>',
+        default: '<div class="popover-content">Popover content</div>',
+      },
+    });
+    await wrapper.get('.trigger').trigger('click');
+    await nextTick();
+    expect(observe).toHaveBeenCalledTimes(1);
+    (wrapper.vm as { updatePopper: () => void }).updatePopper();
+    await nextTick();
+    expect(observe).toHaveBeenCalledTimes(1);
+    expect(disconnect).not.toHaveBeenCalled();
+    wrapper.unmount();
+    expect(disconnect).toHaveBeenCalledTimes(1);
   });
 
   it('applies temporary slide-in class for header menu poppers on open', async () => {

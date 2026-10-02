@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -126,13 +126,18 @@ vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => shared.settingsStore,
 }));
 
-vi.mock('@/utils/subscriptions', () => ({
-  TokenBalanceSubscriptions: class {
-    add = shared.balanceAdd;
-    remove = shared.balanceRemove;
-    resetSubscriptions = shared.balanceReset;
-  },
-}));
+vi.mock('@/utils/subscriptions', async () => {
+  const actual = await vi.importActual<typeof import('@/utils/subscriptions')>('@/utils/subscriptions');
+
+  return {
+    ...actual,
+    TokenBalanceSubscriptions: class {
+      add = shared.balanceAdd;
+      remove = shared.balanceRemove;
+      resetSubscriptions = shared.balanceReset;
+    },
+  };
+});
 
 vi.mock('@/indexer/queries/orderBook/orderBooks', () => ({
   fetchOrderBooks: shared.fetchOrderBooks,
@@ -406,5 +411,37 @@ describe('useOrderBookStore', () => {
     expect(shared.asksUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.bidsUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.userOrdersUnsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not install or apply a late subscription from an older request', async () => {
+    const store = useOrderBookStore();
+    const firstUpdates = new Subject<any>();
+    const secondUpdates = new Subject<any>();
+
+    store.setCurrentOrderBook({ base: 'base-1', quote: 'quote-1', dexId: 7 } as any);
+    store.setUserLimitOrders([
+      { id: 101, status: 'initial' },
+      { id: 202, status: 'initial' },
+    ] as any);
+    shared.subscribeOnLimitOrder.mockReturnValueOnce(firstUpdates).mockReturnValueOnce(secondUpdates);
+
+    const firstRequest = store.subscribeOnLimitOrders([101]);
+    const secondRequest = store.subscribeOnLimitOrders([202]);
+
+    secondUpdates.next({ id: 202, status: 'current' });
+    await secondRequest;
+    const currentSubscription = store.pagedUserLimitOrdersSubscription;
+
+    firstUpdates.next({ id: 101, status: 'stale' });
+    await firstRequest;
+
+    expect(store.pagedUserLimitOrdersSubscription).toBe(currentSubscription);
+    expect(store.userLimitOrders).toEqual([
+      expect.objectContaining({ id: 101, status: 'initial' }),
+      expect.objectContaining({ id: 202, status: 'current' }),
+    ]);
+    expect(firstUpdates.observed).toBe(false);
+
+    store.resetPagedUserLimitOrdersSubscription();
   });
 });

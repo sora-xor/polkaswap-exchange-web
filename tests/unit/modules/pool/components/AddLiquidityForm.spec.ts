@@ -23,6 +23,7 @@ const waitOnFeeWarningConfirmationMock = vi.fn(() => Promise.resolve());
 
 const withNotificationsMock = vi.fn(async (handler: () => Promise<void> | void) => {
   await handler();
+  return { submitted: true };
 });
 
 let addLiquidityMock: ReturnType<typeof vi.fn>;
@@ -211,11 +212,14 @@ const AddLiquidityForm = defineComponent({
     const isXorSufficientForNextOperation = () => isXorSufficientForNextTxMock({ type: Operation.AddLiquidity });
 
     const depositLiquidity = async () => {
-      await withNotificationsMock(async () => {
+      const result = await withNotificationsMock(async () => {
         await addLiquidityMock();
         emit('back');
       });
-      confirmDialogVisible.value = false;
+
+      if (result.submitted) {
+        confirmDialogVisible.value = false;
+      }
     };
 
     const confirmOrExecute = async (handler: () => Promise<void> | void) => {
@@ -353,6 +357,18 @@ describe('AddLiquidityForm.vue', () => {
 
     expect(addLiquidityMock).toHaveBeenCalledTimes(1);
     expect((wrapper.vm as any).confirmDialogVisible).toBe(false);
+  });
+
+  it('keeps the confirmation dialog open when deposit submission is rejected', async () => {
+    storeState.wallet.transactions.isConfirmTxDialogDisabled = false;
+    withNotificationsMock.mockResolvedValueOnce({ submitted: false });
+    const wrapper = mountComponent();
+    await (wrapper.vm as any).handleAddLiquidity();
+
+    await (wrapper.vm as any).depositLiquidity();
+
+    expect(addLiquidityMock).not.toHaveBeenCalled();
+    expect((wrapper.vm as any).confirmDialogVisible).toBe(true);
   });
 
   it('shows fee warning when popup is allowed and XOR is insufficient', async () => {

@@ -461,7 +461,7 @@ describe('general utility helpers', () => {
     expect(attempts).toBe(3);
   });
 
-  it('copies text to the clipboard and logs synchronous clipboard failures', async () => {
+  it('copies text to the clipboard and logs synchronous or asynchronous clipboard failures', async () => {
     const writeText = vi.fn();
     const restore = overrideNavigator({ clipboard: { writeText } as unknown as Clipboard });
 
@@ -477,6 +477,12 @@ describe('general utility helpers', () => {
 
       await expect(copyToClipboard('next')).resolves.toBeUndefined();
       expect(consoleError).toHaveBeenCalledWith('Could not copy text: ', error);
+
+      const rejectedError = new Error('clipboard permission rejected');
+      writeText.mockRejectedValueOnce(rejectedError);
+
+      await expect(copyToClipboard('rejected')).resolves.toBeUndefined();
+      expect(consoleError).toHaveBeenCalledWith('Could not copy text: ', rejectedError);
     } finally {
       restore();
     }

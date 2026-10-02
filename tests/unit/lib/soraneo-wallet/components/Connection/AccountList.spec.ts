@@ -66,4 +66,20 @@ describe('Wallet AccountListStep', () => {
     expect(state.accountDeleteVisibility.value).toBe(false);
     expect(deleteAccount).toHaveBeenCalledWith('address-2');
   });
+
+  it('keeps delete confirmation enabled when its preference is corrupt', () => {
+    vi.spyOn(settingsStorage, 'get').mockReturnValue('{');
+    const state = (AccountListStep as any).setup(
+      { chainApi: {} },
+      { attrs: {}, emit: vi.fn(), expose: vi.fn(), slots: {} }
+    );
+
+    expect(() =>
+      state.handleAccountAction(AccountActionTypes.Delete, {
+        address: 'address-3',
+        source: AppWallet.Sora,
+      })
+    ).not.toThrow();
+    expect(state.accountDeleteVisibility.value).toBe(true);
+  });
 });

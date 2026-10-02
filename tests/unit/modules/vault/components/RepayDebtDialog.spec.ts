@@ -4,12 +4,18 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { h } from 'vue';
 
 const repayVaultDebtMock = vi.hoisted(() => vi.fn());
-const withNotificationsMock = vi.hoisted(() => vi.fn(async (handler: () => Promise<void> | void) => await handler()));
+const withNotificationsMock = vi.hoisted(() =>
+  vi.fn(async (handler: () => Promise<void> | void) => {
+    await handler();
+    return { submitted: true };
+  })
+);
 const showAppAlertMock = vi.hoisted(() => vi.fn());
 
 const storeState = vi.hoisted(() => ({
   networkFees: {
     CreateVault: '0',
+    RepayVaultDebt: '0',
   },
   xor: {
     balance: { transferable: '0' },
@@ -187,12 +193,14 @@ const mountComponent = (overrides: Record<string, unknown> = {}) =>
 describe('RepayDebtDialog.vue', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    storeState.networkFees.CreateVault = FPNumber.fromNatural(0.01).codec;
+    storeState.networkFees.CreateVault = FPNumber.fromNatural(500).codec;
+    storeState.networkFees.RepayVaultDebt = FPNumber.fromNatural(0.01).codec;
     storeState.xor.balance.transferable = FPNumber.fromNatural(100).codec;
   });
 
   it('displays alert when XOR balance is insufficient for fees', async () => {
-    storeState.networkFees.CreateVault = FPNumber.fromNatural(500).codec;
+    storeState.networkFees.CreateVault = FPNumber.fromNatural(0.01).codec;
+    storeState.networkFees.RepayVaultDebt = FPNumber.fromNatural(500).codec;
     storeState.xor.balance.transferable = FPNumber.fromNatural(1).codec;
 
     const wrapper = mountComponent();

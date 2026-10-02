@@ -25,13 +25,17 @@ describe('App shell source', () => {
   });
 
   it('loads dormant shell overlays through an async boundary', () => {
-    expect(appShellSource).toContain("const AppShellOverlays = createAsyncComponent(() => import('./AppShellOverlays.vue'));");
+    expect(appShellSource).toContain(
+      "const AppShellOverlays = createAsyncComponent(() => import('./AppShellOverlays.vue'));"
+    );
     expect(appShellSource).not.toContain("import AppShellOverlays from './AppShellOverlays.vue';");
   });
 
   it('keeps RTL locale direction explicit without forcing the shell back to LTR', () => {
     expect(useAppShellSource).toContain("import { getLocaleDirection } from '@/lang/direction';");
-    expect(useAppShellSource).toContain('const localeDirection = computed(() => getLocaleDirection(settingsStore.language as string));');
+    expect(useAppShellSource).toContain(
+      'const localeDirection = computed(() => getLocaleDirection(settingsStore.language as string));'
+    );
     expect(useAppShellSource).toContain('`locale-${localeDirection.value}`');
     expect(useAppShellSource).toContain('localeDirection,');
     expect(appShellSource).toContain(':dir="localeDirection"');
@@ -43,13 +47,19 @@ describe('App shell source', () => {
 
   it('mirrors the app sidebar side and collapsed content offset for RTL documents', () => {
     expect(appShellSource).toContain("html[dir='rtl'] {");
-    expect(appShellSource).toContain('flex-direction: row-reverse;');
+    expect(appShellSource).toContain('flex-direction: row;');
+    expect(appShellSource).not.toContain('flex-direction: row-reverse;');
     expect(appShellSource).toContain('margin-right: 74px;');
     expect(appShellSource).toContain('margin-left: 0;');
   });
 
-  it('keeps Polkamarkt wide desktop content out from under the sidebar', () => {
-    expect(appShellSource).toMatch(/\.app-main--swap,\s*\.app-main--polkamarkt,\s*\.app-main--vaults,/);
+  it('keeps Bots and Polkamarkt wide desktop content out from under the sidebar', () => {
+    const desktopLayout = appShellSource.match(
+      /@include desktop\s*\{\s*([^{}]+)\{\s*&\.app-main\s*\{\s*\.app-menu\s*\{/
+    );
+    expect(desktopLayout?.[1].split(',').map((selector) => selector.trim())).toEqual(
+      expect.arrayContaining(['.app-main--swap', '.app-main--bots', '.app-main--polkamarkt', '.app-main--vaults'])
+    );
   });
 
   it('renders the desktop menu logo through the named AppMenu head slot', () => {
@@ -78,7 +88,9 @@ describe('App shell source', () => {
     expect(appShellLayoutSource).toContain(
       "const AppDisclaimer = createAsyncComponent(() => import('@/components/App/Header/AppDisclaimer.vue'));"
     );
-    expect(appShellLayoutSource).not.toContain("import AppDisclaimer from '@/components/App/Header/AppDisclaimer.vue';");
+    expect(appShellLayoutSource).not.toContain(
+      "import AppDisclaimer from '@/components/App/Header/AppDisclaimer.vue';"
+    );
   });
 
   it('loads the header through an async boundary', () => {

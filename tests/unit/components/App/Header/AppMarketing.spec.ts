@@ -11,6 +11,8 @@ vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => settingsStoreMock,
 }));
 
+vi.mock('@/composables/useTranslation', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
+
 import AppMarketing from '@/components/App/Header/AppMarketing.vue';
 
 const mountComponent = () =>
@@ -58,6 +60,24 @@ describe('AppMarketing', () => {
     expect(wrapper.text()).toContain('NOW IN TELEGRAM');
     expect(wrapper.find('.marketing-prev').exists()).toBe(false);
     expect(wrapper.find('.marketing-next').exists()).toBe(false);
+  });
+
+  it('leaves announcements still until the user browses them and wraps both directions', async () => {
+    settingsStoreMock.adsArray = [
+      { title: 'A', img: '/a.png', link: 'https://example.com/a' },
+      { title: 'B', img: '/b.png', link: '#/bridge' },
+    ];
+    const wrapper = mountComponent();
+    await vi.advanceTimersByTimeAsync(180_000);
+    expect(wrapper.find('.marketing-card').text()).toBe('A');
+    await wrapper.find('.marketing-next').trigger('click');
+    expect(wrapper.find('.marketing-card').attributes('href')).toBe('#/bridge');
+    expect(wrapper.find('.marketing-card').attributes('target')).toBe('_self');
+    await wrapper.find('.marketing-next').trigger('click');
+    expect(wrapper.find('.marketing-card').text()).toBe('A');
+    await wrapper.find('.marketing-prev').trigger('click');
+    expect(wrapper.find('.marketing-card').text()).toBe('B');
+    expect(wrapper.find('.marketing-prev').attributes('aria-label')).toBeTruthy();
   });
 
   it('shows navigation controls when multiple ads are available', async () => {

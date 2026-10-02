@@ -1,0 +1,16 @@
+{
+  "reviewedAt": "2026-09-30",
+  "mainArraysEdited": false,
+  "outcomeChangeProposals": [
+    "TO: unresolved -> not_supported; status permit_required; current Act25(1) broad plant-material duty, explicit inference and Reg26 caveat"
+  ],
+  "sourceOnlyUpdates": [
+    "KI: unresolved retained; mandatory regard to ISPM is not self-executing processing exemption"
+  ],
+  "files": [
+    "review.json",
+    "ki-source-only-full-row-proposal.json",
+    "to-outcome-full-row-proposal.json"
+  ],
+  "noAuthorityContacts": true
+}

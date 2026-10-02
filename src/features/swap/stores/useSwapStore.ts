@@ -16,18 +16,11 @@ import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 import type { SwapState } from '@/stores/types/swap';
 import { settingsStorage } from '@/utils/storage';
+import { parseStoredBoolean } from '@/utils/storageParsing';
 
 import type { Distribution, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/sdk';
 import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-
-let balanceSubscriptionApi: ReturnType<typeof useSwapBalanceSubscriptions> | null = null;
-const getBalanceSubscriptionApi = () => {
-  if (!balanceSubscriptionApi) {
-    balanceSubscriptionApi = useSwapBalanceSubscriptions();
-  }
-  return balanceSubscriptionApi;
-};
 
 const preservedResetKeys = new Set<keyof SwapState>(['tokenFromAddress', 'tokenToAddress']);
 
@@ -37,14 +30,14 @@ const resolveToken = (address: Nullable<string>): Nullable<RegisteredAccountAsse
   return assetsStore.assetDataByAddress(address) as Nullable<RegisteredAccountAsset>;
 };
 
+/** Keeps a cleared or failed live balance unknown instead of restoring a cached wallet balance. */
 const applyBalance = (
   token: Nullable<RegisteredAccountAsset>,
   balance: Nullable<AccountBalance>
 ): Nullable<RegisteredAccountAsset> => {
   if (!token) return null;
-  if (!balance) return token;
 
-  return { ...token, balance } as RegisteredAccountAsset;
+  return { ...token, balance: balance ?? undefined } as RegisteredAccountAsset;
 };
 
 const resolveTokenWithBalance = (
@@ -79,7 +72,7 @@ const buildInitialState = (): SwapState => {
     liquiditySources: [],
     swapQuote: null,
     selectedDexId: DexId.XOR,
-    allowLossPopup: allowLossPopup ? Boolean(JSON.parse(allowLossPopup)) : true,
+    allowLossPopup: parseStoredBoolean(allowLossPopup, true),
   };
 };
 
@@ -89,6 +82,15 @@ const buildInitialState = (): SwapState => {
  */
 export const useSwapStore = defineStore('swap', () => {
   const initialState = buildInitialState();
+  let balanceSubscriptionApi: ReturnType<typeof useSwapBalanceSubscriptions> | null = null;
+
+  /** Keeps balance streams and the captured wallet scoped to this swap store instance. */
+  const getBalanceSubscriptionApi = () => {
+    if (!balanceSubscriptionApi) {
+      balanceSubscriptionApi = useSwapBalanceSubscriptions();
+    }
+    return balanceSubscriptionApi;
+  };
 
   const tokenFromAddress = ref(initialState.tokenFromAddress);
   const tokenFromBalance = ref(initialState.tokenFromBalance);

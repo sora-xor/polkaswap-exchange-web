@@ -14,10 +14,12 @@ import useBridgeCoreSource from '@/composables/useBridgeCore.ts?raw';
 vi.mock('pinia', async (importOriginal) => await importOriginal<typeof import('pinia')>());
 
 const routerPush = vi.hoisted(() => vi.fn());
+const routerQuery = vi.hoisted(() => ({ value: { query: {} as Record<string, unknown> } }));
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: routerPush,
+    currentRoute: routerQuery,
   }),
 }));
 
@@ -378,5 +380,14 @@ describe('useBridgeCore', () => {
   it('uses vue-router instead of the legacy router singleton', () => {
     expect(useBridgeCoreSource).toContain("import { useRouter } from 'vue-router';");
     expect(useBridgeCoreSource).not.toContain("from '@/router'");
+  });
+  it('preserves an explicit Buy XOR return through history and back without adding a burn campaign', async () => {
+    const { useBridgeCore } = await import('@/composables/useBridgeCore');
+    routerQuery.value.query = { buyXor: '1', asset: 'DAI' };
+    const view = useBridgeCore();
+    view.handleViewTransactionsHistory();
+    expect(routerPush).toHaveBeenLastCalledWith({ name: PageNames.BridgeTransactionsHistory, query: { buyXor: '1' } });
+    view.navigateToBridge();
+    expect(routerPush).toHaveBeenLastCalledWith({ path: '/bridge', query: { buyXor: '1', asset: 'DAI' } });
   });
 });

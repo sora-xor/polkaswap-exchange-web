@@ -27,8 +27,10 @@
             :default-active="currentPath"
             @select="handleSelect"
           >
-            <s-menu-item-group v-for="item in sidebarMenuItems" :key="item.index || item.title">
+            <s-menu-item-group v-for="section in sidebarMenuSections" :key="section.id" :data-section="section.id">
+              <li v-if="section.titleKey" class="menu-section-title" role="presentation">{{ t(section.titleKey) }}</li>
               <s-menu-item
+                v-for="item in section.items"
                 v-button
                 :key="item.title"
                 :index="item.index || item.title"
@@ -47,9 +49,8 @@
                   @click.prevent="preventAnchorNavigation"
                 ></app-sidebar-item-content>
               </s-menu-item>
-            </s-menu-item-group>
-            <s-menu-item-group>
               <app-sidebar-item-content
+                v-if="section.id === 'explore'"
                 v-button
                 class="menu-item menu-item--bottom el-menu-item s-flex"
                 icon="finance-PSWAP-24"
@@ -111,6 +112,7 @@ import {
   RewardsChildPages,
   ExploreChildPages,
   SidebarMenuGroups,
+  SidebarMenuSections,
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
@@ -200,6 +202,14 @@ const sidebarMenuItems = computed(() => {
   return menuItems;
 });
 
+/** Group visible destinations without changing route identifiers or feature gates. */
+const sidebarMenuSections = computed(() =>
+  SidebarMenuSections.map((section) => ({
+    ...section,
+    items: section.pages.flatMap((page) => sidebarMenuItems.value.filter((item) => item.title === page)),
+  })).filter((section) => section.items.length || section.id === 'explore')
+);
+
 const collapseIcon = computed(() => {
   if (isRtl.value) {
     return collapsed.value ? 'arrows-chevron-left-24' : 'arrows-chevron-right-24';
@@ -207,8 +217,8 @@ const collapseIcon = computed(() => {
 
   return collapsed.value ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
 });
-const collapseTooltip = computed(() => (collapsed.value ? 'Expand' : 'Collapse'));
-const mainMenuActiveColor = computed(() => 'var(--s-color-theme-accent)');
+const collapseTooltip = computed(() => t(collapsed.value ? 'ux.navigation.expand' : 'ux.navigation.collapse'));
+const mainMenuActiveColor = computed(() => 'var(--s-color-action-text)');
 
 function collapseMenu(): void {
   settingsStore.setMenuCollapsed(!collapsed.value);
@@ -330,6 +340,23 @@ onBeforeUnmount(() => {
   }
 }
 
+.menu-section-title {
+  padding: 14px 16px 6px;
+  margin-top: 8px;
+  border-top: 1px solid var(--s-color-base-border-secondary);
+  font-size: 11px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--s-color-base-content-secondary);
+  overflow-wrap: anywhere;
+  list-style: none;
+}
+
+.app-menu.collapsed:not(:hover):not(:focus-within) .menu-section-title {
+  font-size: 0;
+  padding-block: 6px;
+}
+
 .menu.el-menu {
   .el-menu-item-group__title {
     display: none;
@@ -341,7 +368,7 @@ onBeforeUnmount(() => {
 
   .el-menu-item {
     .icon-container {
-      box-shadow: var(--s-shadow-element-pressed);
+      box-shadow: none;
 
       > i[class*='s-icon-'] {
         font-size: 28px !important;
@@ -362,7 +389,7 @@ onBeforeUnmount(() => {
     }
 
     &.marketing .icon-container > i {
-      color: var(--s-color-theme-accent);
+      color: var(--s-color-action-text);
     }
 
     &.is-disabled {
@@ -380,7 +407,7 @@ onBeforeUnmount(() => {
           color: var(--s-color-base-content-secondary) !important;
         }
         &.marketing i {
-          color: var(--s-color-theme-accent-focused) !important;
+          color: var(--s-color-action-text) !important;
         }
       }
     }
@@ -395,7 +422,7 @@ onBeforeUnmount(() => {
     }
     &.is-active {
       i {
-        color: var(--s-color-theme-accent) !important;
+        color: var(--s-color-action-text) !important;
       }
       span {
         font-weight: 400;
@@ -678,9 +705,9 @@ onBeforeUnmount(() => {
     }
 
     &.marketing {
-      color: var(--s-color-theme-accent);
+      color: var(--s-color-action-text);
       &:hover {
-        color: var(--s-color-theme-accent-focused);
+        color: var(--s-color-action-text);
       }
     }
   }

@@ -294,7 +294,7 @@ async function submit(): Promise<void> {
   if (disabled.value) return;
 
   let marketId: number | undefined;
-  await withNotifications(async () => {
+  const result = await withNotifications(async () => {
     try {
       const market = await api.polkamarkt.createMarket({
         question: question.value.trim(),
@@ -309,6 +309,8 @@ async function submit(): Promise<void> {
       throw err;
     }
   });
+
+  if (!result.submitted) return;
 
   isVisible.value = false;
   resetForm();

@@ -43,7 +43,7 @@ $base-class: '.status-action-badge';
   }
 
   #{$base-class}__value {
-    color: var(--s-color-theme-accent);
+    color: var(--s-color-action-text);
     text-overflow: ellipsis;
     white-space: nowrap;
   }

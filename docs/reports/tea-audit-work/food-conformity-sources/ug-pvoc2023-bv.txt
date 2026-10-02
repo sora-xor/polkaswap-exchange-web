@@ -1,0 +1,416 @@
+BUREAU VERITAS – Government Services
+
+               DATA SHEET - UGANDA
+     PRE-EXPORT VERIFICATION OF CONFORMITY TO
+                STANDARDS – PVOC
+
+ 1. Regulation
+
+ Authority:                   Uganda National Bureau of Standards (UNBS)
+ Notification:                Pre-Export Verification of Conformity to Standards as per the UNBS Act cap 327 and the
+                              Import Clearance Inspection Regulations
+ Starting date:               1st June 2013
+ Renewal date:                24th February 2023
+ Appointed company(ies):      Bureau Veritas and other companies as stated on UNBS web site
+ Scope of the regulation:     Conformity assessment of goods exported to the Republic of Uganda
+ Assessment based on:                  Documentary review
+                                       Control testing if necessary
+                                       Physical inspection
+                                       Facilitation procedures
+                                       Conclusion of the assessment
+ Remark:                      N/A
+
+
+
+ 2. Products subject
+
+ Subjected goods:                •    Group I - Toys
+                                 •    Group II – Electrical & electronics including solar equipment
+                                 •    Group III – Automotive products and inputs
+                                 •    Group IV – Chemical products (including cosmetics, fertilizers, petroleum based
+                                      products…)
+                                  • Group V – Mechanical material and gas appliances
+                                  • Group VI – Textile, leather, plastic and rubber products
+                                  • Group VII - Furniture (wood and metal articles)
+                                  • Group VIII – Paper and stationery
+                                  • Group IX – Safety (Personal Protective Equipment)
+                                  • Group X – Food and food products
+                                  • Group XI – Used products
+                              For more details, please refer to the Products List available on UNBS website:
+                              https://www.unbs.go.ug//content.php?src=categories-of-goods-covered-under-
+                              pvoc&content
+ Second-hand goods:           Specific requirements (used tyres are forbidden)
+ Prohibited goods (*):        See annex 1
+ Counterfeited goods:         Not allowed
+ Exempted goods:                    •     A consignment whose Free on Board (FOB) value does not exceed US$ 2000,
+                                          except for used motor vehicles.
+                                    •     Consignments of commodities profiled as low risk.
+                                    •     Consignments of imports by importers profiled as low risk and registered as
+                                          Authorised Economic Operators (AEO).
+                                    •     Government project specific commodities whose procurement has an inbuilt or
+                                          demonstrated quality assurance system that guarantees conformity to national
+                                          standards.
+                                    •     Raw materials and direct inputs used in the manufacturing process, including
+                                          packaging material imported for use in a manufacturing process and not for sale.
+                                    •     Diplomatic cargo.
+                                    •     Personal effects of returning residents and expatriates.
+
+
+
+  UGANDA (PVOC) – 07/2023 –
+  Rev. 11.1
+   Page 1 / 7                    http://verigates.bureauveritas.com
+                                                                                                      BUREAU VERITAS
+
+
+                                                 – DATA SHEET –
+
+                                     •  Commodities manufactured in or originating from a Partner State of the East
+                                        African Community.
+                                    • Industrial machinery and accessories; including spare parts for a manufacturing
+                                        process and not for re-sale.
+                                    • Farm machinery, agro processing equipment and spare parts not for resale.
+                                    • Mining equipment and spares not for resale.
+                                    • Branded or engraved hospitality and tourism industry equipment; excluding
+                                        vehicles.
+                                    • Classified military, police, prisons and State House cargo.
+                                    • Religious books and literature such as Bibles, Qurans and other related printed
+                                        matter.
+                                    • Energy meters and water meters
+                               For more details, please refer to the Products List available on UNBS website:
+                               https://www.unbs.go.ug//attachments/menus/16/THE%20UNBS%20(INSPECTION%20&%
+                               20CLEARANCE)%20REGULATION%202022.pdf, & Letter BO/PVOC/020 issued by
+                               UNBS on March 9th 2023.
+
+                               Although the categories of goods presented above are exempt from PVoC, the
+                               exporter/importer will require a letter of exemption directly from UNBS or related Uganda
+                               governmental authority at point of clearance.
+Restricted goods:              See annex 2
+Minimum value subject to the   USD 2,000 - Goods with FOB value <2000 USD may be shipped without PVoC certificate.
+programme:                     However, they will be subject to destination inspection by UNBS.
+
+
+3. Technical requirement
+
+Conformity requirements:
+                               Compliance of goods to applicable compulsory Uganda standards shall be demonstrated
+                               with test reports issued by an ISO 17025 accredited laboratories or a UNBS recognized
+                               laboratory.
+National deviations:                 •   Type of plugs and sockets: 3 squared pins (BS 1363). Other kind of plugs could
+                                         be accepted if provided with a compliant plug adapter (male part being compliant
+                                         to BS 1363)
+                                     •   Voltage: products connected to the mains shall be rated for 220V or 230V or
+                                         240V
+                                     •   Frequency: products connected to the mains shall be rated for 50Hz (not
+                                         applicable to lamps).
+                                     •   Country of origin marked on the product or primary packaging
+                                     •   Inspection of fishing gear: In addition to the applicable compulsory Uganda
+                                         standards, the “Fish (Fishing) Rules, 2010, Statutory Instruments N0.33,
+                                         particularly, Part II – Prohibited Nets and Fishing with Nets – Clause 3, 4, 6, 7
+                                         and 19 shall be applied.
+                                     •   Inspection of new Tyres: In addition to the applicable compulsory Uganda
+                                         standards, the guideline as per 24th January 2023 shall be applied
+Labelling requirements :             •   The marking shall be at least in English
+                                     •   All imports with a marked limited shelf life shall have at least:
+                                         - seventy five per cent (75%) remaining shelf life from the date of expected
+                                         arrival in Uganda, if food products
+                                         - fifty per cent (50%) remaining shelf life from the date of expected arrival in
+                                         Uganda, if non-food products
+Other specific requirements:   N/A
+
+
+
+
+ UGANDA (PVOC) – 07/2023 –
+ Rev. 11.1
+  Page 2 / 7                      http://verigates.bureauveritas.com
+                                                                                                        BUREAU VERITAS
+
+
+                                               – DATA SHEET –
+
+4. Application
+
+Applicant:                   Exporter or importer
+Application name:            - Application request submitted by the exporter/importer through the UeSW (Uganda
+                             Electronic Single Window): https://singlewindow.go.ug/stp/#/register
+                             Note: Watch the following link to know how to apply for the PVoC Certificate via the UeSW:
+                             https://www.youtube.com/watch?v=IpNPwNW006U
+                             and
+                             - Request For a Certificate (Request possible on https://verigates.bureauveritas.com) to a
+                             Bureau Veritas local contact.
+Required documents:              •    Final/proforma invoice (including Importer TIN code)
+                                 •    Packing list
+                                 •    Transport document (Bill of Lading/Air Way Bill/ CMR…), if available
+                                 •    Test reports traceable to the shipped goods provided by exporters, as per
+                                      compulsory Uganda standards
+                                 •    Product declaration form (product designation, brand, model, quantity, size,
+                                      batch number, HS code (EAC CET), production and expiry dates where
+                                      applicable…)
+Required information:        Declared FOB value
+Application office(s):       Bureau        Veritas    offices    (see    contacts    list          on      Verigates       :
+                             https://verigates.bureauveritas.com/programmes/uganda )
+
+
+5. Control testing requirements
+
+Applicable cases:            Test report not available or not acceptable
+Laboratory criteria:         ISO 17025 accredited laboratory
+Testing:                     According to applicable compulsory Uganda standards
+
+
+6. Physical inspection requirements
+
+Scope of inspection:         Review of markings as per applicable compulsory Uganda standard(s) and identification
+                             of products
+Destination inspection:      Not allowed
+Remote inspection:           Not allowed
+Witness of loading and           -    Mandatory for all products processed under route A & D (Full Container Load -
+Sealing:                              FCL)
+                                 -    Mandatory for specific high risky products (see below TABLE 1) processed under
+                                      route B (Full Container Load - FCL)
+                                 -    Upon request and wherever feasible for all other cases
+
+                             Note: in case of Less than Container Load - LCL and Loose cargo, the shipped goods
+                             shall be individually identified with a stamp or a sticker for all products processed under
+                             route A, D & B (for specific high risky products).
+
+                                              TABLE 1 (specific high risky products under route B)
+                             Product Description                             Country of Origin
+                             Electricals including extension cables,         China, India, South Africa and United Arab
+                             sockets,      switches,    bulbs       (CFL,    Emirates
+                             incandescent, fluorescent), juice blenders,
+                             electric irons, shaving machines, electric
+                             cables, generators, lead acid batteries, and
+                             primary batteries
+
+
+
+ UGANDA (PVOC) – 07/2023 –
+ Rev. 11.1
+  Page 3 / 7                    http://verigates.bureauveritas.com
+                                                                                                           BUREAU VERITAS
+
+
+                                                     – DATA SHEET –
+
+                                   Solar panels, solar kits and solar batteries    China, India and United Arab Emirates
+                                   Cosmetics                                       China, India, South Africa, United Arab
+                                                                                   Emirates, and West Africa
+                                   Farm    implements     including        hoes,   China, and United Arab Emirates
+                                   machetes, Axes and sickles
+                                   Toilet paper                                    China, India, and United Arab Emirates
+                                   Toothpaste                                      China, India, and United Arab Emirates
+                                   Reinforcement bars                              China and United Arab Emirates
+                                   Baby diapers                                    China, Egypt, and UAE
+                                   Sanitary towels                                 China, Egypt, and UAE
+                                   Cement                                          China and United Arab Emirates
+Sampling:                          In case of control testing (see section 5 as above)
+Type of report issued:             Inspection report (IR)
+
+
+7. Facilitation procedures
+
+•     Route B - Product Registration - for goods already registered by Bureau Veritas
+•     Route C - Manufacturing Licensing - for goods already licensed by Bureau Veritas
+•     Route D - for consolidated cargo imported by registered consolidators with UNBS
+The following products are however not eligible for registration under Routes B and C (i.e. are subject to certification under
+Route A only);
+            -   Sugar
+            -   Cereals and pulses such as Rice, wheat, beans, Maize etc
+            -   Fertilizers
+            -   Animal and Fishery products (fresh and frozen- not further processed)
+            -   Fresh Dairy Products
+            -   Fresh horticultural products
+            -   Used or second hand good
+
+8. Conclusion of the Assessment
+
+      •    Certificate of Conformity (CoC)
+      •    Non Conformity Report (NCR)
+
+9. Fees
+
+Paid by Exporter
+(Ad Valorem fee as a percentage of the declared FOB value)
+Route A:                    0.50% of FOB
+Route B:                    0.45% of FOB
+Route C:                    0.25% of FOB
+Route D:                    0.50% of FOB
+
+Minimum fee: 235 USD, maximum fee: 3,000 USD
+
+
+
+
+    UGANDA (PVOC) – 07/2023 –
+    Rev. 11.1
+    Page 4 / 7                        http://verigates.bureauveritas.com
+                                                                                                                       BUREAU VERITAS
+
+
+                                                          – DATA SHEET –
+
+
+The above fees cover the documentary verification and the physical inspection of goods but do not include:
+     •    Testing: to be quoted on case by case basis
+     •    Re-inspection due to vain inspection;
+     •    Containers sealing: to be quoted on a case by case basis;
+     •    Cost incurred by the seller in presenting the goods for inspection and/or testing
+     •    Other fees not mentioned above
+
+
+10. Contact (*)
+See contact sheet for details on Verigates: https://verigates.bureauveritas.com/programmes/uganda
+Plot 59, Cementers Plaza, 3rd Floor-Office-B, Luthuli Avenue, Bugolobi – Kampala
+P.O. Box 104427-Uganda.
+Phone: +256 708 280 002/0/3/4/5 – Fax : +256 902 971 000 - email: pvoc.uganda@bureauveritas.com
+
+11. Other relevant information
+
+https://verigates.bureauveritas.com/programmes/uganda
+
+
+
+
+(*) Updated information
+
+The information contained herein is for the purpose of facilitating Pre-Shipment Inspection and does not relieve Exporters or Importers from
+their obligations in respect of compliance with the import regulations of the country of importation. Although every effort has been made to
+ensure the correctness of the information, as at the date of issuance of this data sheet, Bureau Veritas does not accept any responsibility for
+errors or omissions and, furthermore, the information may subsequently be subject to change as may be announced by the Authorities in
+the country of importation. Consequently, Exporters are advised to check with Bureau Veritas, prior to shipment of the goods, if there is any
+doubt concerning the issuance of a Certificate of Conformity.
+
+
+
+  UGANDA (PVOC) – 07/2023 –
+  Rev. 11.1
+  Page 5 / 7                              http://verigates.bureauveritas.com
+                                                                                                        BUREAU VERITAS
+
+
+                                                      – DATA SHEET –
+
+                               Annex 1: List of prohibited goods (*)
+  Schedule (Part A) of the East African Customs Management Act, the Finance Act and its amendments
+(https://www.eac.int/documents/category/eac-customs-management-act), Letter BO/PVOC/020 issued by
+             UNBS on March 9th 2023 & THE FISH(FISHING) RULES 2010, S.I NO.33 of 2010
+
+
+   1.   All goods the importation of which is for the time being prohibited under this Act or by any written law for the time
+        being in force in the partner state.
+
+   2.   False money and counterfeit currency notes and coins and any money not being of the established standard in
+        weight and fineness.
+
+   3.   Pornographic material in all kinds of media, indecent or obscene printed paintings, books, cards, lithographs or
+        other engravings and any other indecent or obscene articles.
+
+   4.   Matches in the manufacture of which white phosphorous has been employed.
+
+   5.   Any article made without proper authority with the Armorial Ensigns or court of Arms of a partner state or having
+        such Ensigns or Arms so closely resembling them as to be calculated to deceive.
+
+   6.   Distilled beverages containing essential oils or chemical products which are injurious to health, including thijone,
+        star arise, benzoic aldehyde, salicyclic ester, hyssop and absinthe. Provided that nothing in this paragraph
+        contained shall apply to “Anise and Anisette” liquors containing not more that 0.1 per centum of oil of anise and
+        distillates from either pimpinella anisum or the star arise allicium verum.
+
+   7.   Narcotic drugs under international control.
+
+   8.   Hazardous wastes and their disposal as provided for under the base conventions.
+
+   9.   All soaps and cosmetic products containing mercury.
+
+   10. Used tyres for light commercial vehicles and passenger cars.
+
+   11. The following Agricultural and Industrial Chemicals:
+              a. Agricultural Chemicals:
+                        2.4-T                      Aldrin                    Caplafol
+                        Chlordirneform             Chlorobexilate            DDT
+                        Dieldrin                   1.2-Dibroacethanel        Flouroacelamide
+                        HCH                        Hiplanchlor               Hoscachlorobenzene
+                        Lindone                   Mercury compounds         Monocrolophs (certain formulations)
+                        Methamidophos              Phospharrmion             Methyl-parathion / Parathion
+              b. Industrial Chemicals:
+                        Crocidolite                                   Polychlorominated biphenyls (PBB)
+                        Polychlorinted Biphenyls (PCB)                Polychlorinated Terphyenyls (PCT)
+                        Tris (2.3 dibromopropyl) phosphate            Methylbromide (to be phased out in accordance with
+                                                                      the Montreal protocol by 2007)
+              c. Counterfeit goods of all kinds.
+              d. Plastic articles of Jess than 30 microns for the conveyance or packing of goods.
+   12. All cosmetics containing restricted and prohibited components such as Hydroquinone, Mercury… as per applicable
+       compulsory Uganda standards requirements for cosmetic products.
+
+   13. All alcoholic products whose packaging is less than 200 ml
+
+   14. Below types and specifications of fishing nets Monofilament fishing net:
+           a. Gill nets: the length of which when stretched is greater than one hundred yards or the depth of which is
+               greater than thirty meshes
+           b. seine nets, cast-nets, monofilament nets and trawl-nets.
+
+
+
+
+ UGANDA (PVOC) – 07/2023 –
+ Rev. 11.1
+ Page 6 / 7                         http://verigates.bureauveritas.com
+                                                                                                         BUREAU VERITAS
+
+
+                                                  – DATA SHEET –
+
+                                 Annex 2: List of restricted goods
+Schedule (Part B) of the East African Customs Management Act, the Finance Act and its amendments
+              (https://www.eac.int/documents/category/eac-customs-management-act)
+
+  1.   All goods the importation of which is for the time being regulated under this Act by any written law for the time being
+       in force in the Partner State.
+  2.   Postal franking machines except and in accordance with the terms of a written permit granted by a competent
+       authority of the partner state.
+  3.   Traps capable of killing or capturing any game animal except and in accordance with the terms of a written permit
+       granted by the partner state.
+  4.   Unwrought precious metal or precious stones.
+  5.   Arms and ammunitions specified under chapter 93 of the Customs Nomenclature.
+  6.   Ossein and bones treated with acid.
+  7.   Other bones and horns- cores, unworked defatted, simply prepared (but not cut to shape) degelatinized, powder
+       and waste of these products.
+  8.   Ivory, elephant unworked or simply prepared but not cut to shape.
+  9.   Teeth, hippopotamus unworked or simply prepared but not cut to shape.
+  10. Horns, rhinoceros, unworked or simply prepared but not cut to shape.
+  11. Other ivory unworked or simply prepared but not cut to shape.
+  12. Ivory powder and waste.
+  13. Tortoise shell, whalebone and whalebone hair, horns, antlers, hoovers, nail, claws and beaks, unworked or simply
+      prepared but not cut to shape powder and waste or these products.
+  14. Coral and similar materials, unworked, or simply prepared but not otherwise worked shells of molasses,
+      crustaceans or echinoderms and cattle-bone, unworked or simply prepared but not cut to shape powder and waste
+      thereof.
+  15. Natural sponges of animal origin.
+  16. Spent (irradiated) fuel elements (cartridges) of nuclear reactors.
+  17. Worked ivory and articles of ivory.
+  18. Bone, tortoise shell, horn, antlers, coral, mother-of pearl and other animal carves.
+  19. Ozone Depleting Substances under the Montreal Protocol (1987) and the Vienna Convention (1985).
+  20. Genetically modified products.
+  21. Non indigenous species of fish or egg of progeny.
+  22. Endangered Species of World Flora and Fauna and their products in accordance with CITES March 1973 and
+      amendments thereof.
+  23. Commercial casings (second hand tyres).
+  24. All psychotropic drugs under international control.
+  25. Historical artefacts.
+  26. Goods specified under chapter 36 of the Customs Nomenclature (for example, percuassion caps, detonators,
+      signalling flares).
+  27. Parts of guns and ammunitions, of base metals (Section XV of the Harmonised Commodity Description and Coding
+      System), or similar goods of plastic under chapter 39 of Customs Nomenclature.
+  28. Armoured fighting vehicles under heading No 8710 of the customs Nomenclature.
+  29. Telescope sights or other optical devices suitable for use with arms, unless mounted on a firearm or presented with
+      the firearm on which they are designed to be mounted under Chapter 90 of the Cu11fpms Nomenclature.
+  30. Bows, arrows, fencing foils or toys under Chapter 95 of the Customs Nomenclature.
+  31. Collector's pieces or antiques of guns and ammunition under heading No. 9705 or 9706 of the Customs
+      Nomenclature.
+
+
+UGANDA (PVOC) – 07/2023 –
+Rev. 11.1
+Page 7 / 7                         http://verigates.bureauveritas.com
+

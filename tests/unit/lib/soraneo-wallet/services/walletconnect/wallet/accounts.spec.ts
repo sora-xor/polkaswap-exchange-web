@@ -49,4 +49,34 @@ describe('walletconnect/wallet/accounts', () => {
     expect(clearIntervalSpy).toHaveBeenCalledTimes(1);
     expect(callback).not.toHaveBeenCalled();
   });
+
+  it('shares one poll loop while keeping subscriber teardown independent', async () => {
+    const provider = {
+      getAccounts: vi.fn().mockReturnValue(['alice']),
+    } as any;
+    const accounts = new WcAccounts(provider);
+    const firstCallback = vi.fn();
+    const secondCallback = vi.fn();
+
+    const unsubscribeFirst = accounts.subscribe(firstCallback);
+    const unsubscribeSecond = accounts.subscribe(secondCallback);
+
+    expect(vi.getTimerCount()).toBe(1);
+
+    await vi.advanceTimersByTimeAsync(60_000);
+
+    expect(firstCallback).toHaveBeenCalledTimes(1);
+    expect(secondCallback).toHaveBeenCalledTimes(1);
+
+    unsubscribeFirst();
+    await vi.advanceTimersByTimeAsync(60_000);
+
+    expect(firstCallback).toHaveBeenCalledTimes(1);
+    expect(secondCallback).toHaveBeenCalledTimes(2);
+    expect(vi.getTimerCount()).toBe(1);
+
+    unsubscribeSecond();
+
+    expect(vi.getTimerCount()).toBe(0);
+  });
 });

@@ -13,13 +13,7 @@ describe('Polkaswap historyElementsFilter', () => {
       })
     ).toEqual({
       and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
+        { address: { equalTo: 'sora-address' } },
         {
           or: [
             {
@@ -32,17 +26,9 @@ describe('Polkaswap historyElementsFilter', () => {
     });
   });
 
-  it('matches account history by signer, dataFrom, or dataTo for the local indexer', () => {
+  it('uses the indexed account owner field required by the public history query plan', () => {
     expect(historyElementsFilter({ address: 'sora-address' })).toEqual({
-      and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
-      ],
+      and: [{ address: { equalTo: 'sora-address' } }],
     });
   });
 
@@ -73,13 +59,7 @@ describe('Polkaswap historyElementsFilter', () => {
       })
     ).toEqual({
       and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
+        { address: { equalTo: 'sora-address' } },
         { dataAssets: { contains: '0xasset' } },
         {
           or: [
@@ -104,13 +84,7 @@ describe('Polkaswap historyElementsFilter', () => {
       })
     ).toEqual({
       and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
+        { address: { equalTo: 'sora-address' } },
         {
           or: [
             {
@@ -206,15 +180,7 @@ describe('Polkaswap historyElementsFilter', () => {
         },
       })
     ).toEqual({
-      and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
-      ],
+      and: [{ address: { equalTo: 'sora-address' } }],
     });
   });
 
@@ -278,13 +244,7 @@ describe('Polkaswap historyElementsFilter', () => {
       })
     ).toEqual({
       and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
+        { address: { equalTo: 'sora-address' } },
         {
           or: [
             {
@@ -309,13 +269,7 @@ describe('Polkaswap historyElementsFilter', () => {
       })
     ).toEqual({
       and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
+        { address: { equalTo: 'sora-address' } },
         {
           or: [
             {
@@ -339,15 +293,7 @@ describe('Polkaswap historyElementsFilter', () => {
         operations: ['UnsupportedOperation' as Operation],
       })
     ).toEqual({
-      and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
-      ],
+      and: [{ address: { equalTo: 'sora-address' } }],
     });
   });
 
@@ -359,13 +305,7 @@ describe('Polkaswap historyElementsFilter', () => {
       })
     ).toEqual({
       and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
+        { address: { equalTo: 'sora-address' } },
         {
           or: [
             {
@@ -388,15 +328,7 @@ describe('Polkaswap historyElementsFilter', () => {
         },
       })
     ).toEqual({
-      and: [
-        {
-          or: [
-            { address: { equalTo: 'sora-address' } },
-            { dataFrom: { equalTo: 'sora-address' } },
-            { dataTo: { equalTo: 'sora-address' } },
-          ],
-        },
-      ],
+      and: [{ address: { equalTo: 'sora-address' } }],
     });
   });
 

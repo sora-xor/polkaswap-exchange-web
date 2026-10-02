@@ -1,0 +1,50 @@
+[
+  {
+    "name": "af-lawdb",
+    "url": "https://laws.moj.gov.af/ShowLawPersian.aspx",
+    "status": "000",
+    "error": "curl: (28) Failed to connect to laws.moj.gov.af port 443 after 10002 ms: Timeout was reached\n",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/af-lawdb.html",
+    "retrievedAt": "2026-09-30T06:34:46.981155+00:00"
+  },
+  {
+    "name": "iq-import-requirements",
+    "url": "https://www.cosqc.gov.iq/service/service-completion/imported-products-requirements",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/iq-import-requirements.html",
+    "retrievedAt": "2026-09-30T06:34:39.698806+00:00",
+    "bytes": 37945,
+    "sha256": "5a31f749ef1f5e8957e9254eb7be9c55fb479fb9bdca8545ee92f277d44e6c6a"
+  },
+  {
+    "name": "mv-dv-downloads",
+    "url": "https://agriculture.gov.mv/dv/downloads",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/mv-dv-downloads.html",
+    "retrievedAt": "2026-09-30T06:34:37.271455+00:00",
+    "bytes": 47993,
+    "sha256": "564e304109349950895f23833eabd34a734898f8489632f26d20a91f2b515290"
+  },
+  {
+    "name": "mv-dv-publications",
+    "url": "https://agriculture.gov.mv/dv/publications",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/mv-dv-publications.html",
+    "retrievedAt": "2026-09-30T06:34:37.267396+00:00",
+    "bytes": 48165,
+    "sha256": "e465020aee48e895db84d9ec863ca721c1b2021aa6a24e518e01a9ae899ce385"
+  },
+  {
+    "name": "om-reg2010-recovery",
+    "url": "https://qanoon.om/p/2010/mrmwr20100002/",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/om-reg2010-recovery.html",
+    "retrievedAt": "2026-09-30T06:34:39.463834+00:00",
+    "bytes": 107942,
+    "sha256": "ca16a7f93ecbf999b62395c413897ce612779e5d00df9be115921ceb9473043e"
+  }
+]

@@ -1,0 +1,353 @@
+Dubai Customs Transition from 8-digit
+        to 12-digit HS Code
+ - Adoption of Integrated Customs Tariff Nomenclature –
+         01        Introduction to Transition
+
+
+              02       Reasons for Transitions
+
+
+
+               03       Benefits for Transition
+Agenda
+
+               04        Unaffected Customs Regime
+
+
+              05      Implementation Phases
+
+                   Preparing Stakeholders – Tools, Resources &
+         06
+                   Facilitations
+What is HS Code?
+Harmonized System that is used to classify
+goods and determine customs procedures &
+duty rates. Previously, items consisted of 8-
+Digit HS codes and are updated by adding 4
+numbers to convert to 12-Digit HS codes.
+
+Integrated Customs Tariff
+Includes:
+o Customs HS codes
+o Customs duty rate
+o Free Trade Agreements
+o Anti-Dumping rate
+o Value Added Tax & Excise Tax
+o Local & Federal Restriction and Prohibition
+  Controlling Authorities
+Integrated Customs Tariff
+    Reasons for Transitions
+GCC has published the Tariff Integrated Schedule based
+on Harmonized Commodity Description and Coding
+System of the WCO (2022), updating the GCC HS Codes
+from 8-digits to 12-digits
+
+
+Based on Cabinet Resolution No. (119) of 2024 in regards
+to approval of the integrated customs tariff
+nomenclature based on Harmonized Commodity
+Description and Coding System of the GCC states.
+
+
+Staring August 2025, a new 12-digit harmonized system
+will be implemented to enhance accuracy, reduce
+potential discrepancies, and promote standardization of
+customs procedures.
+               Benefits of Transition to GCC HS Code
+While challenges such as misidentification, classification errors, and increased complexity are anticipated, the
+benefits of alignment with the GCC mandate make this transition essential.
+
+
+
+
+Standardize customs processes                                Support stakeholders in adapting to
+across the GCC to enable policy-                              the GCC-wide 12-digit system for
+         level alignment                                     smoother cross-border operations.
+
+This is why the implementation is being carried out in a phased, transitional manner, to minimize disruptions and
+support gradual adaptation.
+             Trade Flows Exempted from 12-Digit HS Codes
+                   (exempted from application of integrated customs tariff)
+
+
+
+Declaration types included in                           Declaration types exempted from
+     12-Digit classification                                   12-Digit classification
+
+                                                           Free Zone Transit IN/OUT to Other than
+ GCC Trade
+                                                           GCC/between Dubai Free Zones
+
+ Imports to Mainland                                      Transshipments
+
+ Temporary Flows                                          Transit Trade
+
+                                                           Transfer within Free Zones
+
+                                                          Local Exports to Rest of World
+
+
+                                                  For exempted trade flows, 8-digit codes continue to apply
+                     Why are these exceptions created?
+
+
+
+   Allow operational flexibility      Avoid complicated procedures   Reduce administration and
+during the initial transition phase        and transit delays        financial burdens on traders
+
+
+
+
+Safeguard International Trade &       Ensure minimal disruption to    Not targeting local market
+ Maintain Dubai’s position as a
+                                        international trade flows
+   leading global logistics hub
+Implementation phases
+                                                                             04
+                                                    03
+                            02
+       01
+                                                                           Temporary Flows
+                                                                           February 2027 - onwards
+                                                     RoW Import
+                                                   August 2026 - onwards
+                          FZ & CW to Local
+     GCC Trade           February 2026 - onwards
+
+ August 2025 - onwards
+                                                                                      Why a phased approach?
+ Gradual, low-risk application
+ Strategic plan to allow gradual implementation based on type of trade in order to
+ reduce disruptions, facilitate implementation, monitor the impacts and enable
+ direct improvements.
+What does this mean to
+        you?
+                 Items at 12-digit HS code level
+                             From 7809 to 13450 HS codes
+
+
+
+
+Newly Inserted HS codes          Sub-Divided HS codes            Unchanged HS codes
+   New codes added to            Expand an existing section to     Zeros added with no
+ cover items that were not        include specific products in      modification to the
+   previously classified               precise process                   content
+
+          951                              6518                         5981
+           HS Codes                         HS Codes                     HS Codes
+     Unchanged HS codes
+
+                Smart phone devices
+
+
+     85171300
+
+     85171300 0000
+
+Zeros added to comply with 12-digit integrated customs
+                 tariff nomenclature
+     Unchanged HS codes
+
+                        Sunglasses
+
+
+     90041000
+
+     90041000 0000
+
+Zeros added to comply with 12-digit integrated customs
+                 tariff nomenclature
+     Unchanged HS codes
+
+                           Igniters
+
+
+     36035000
+
+     36035000 0000
+
+Zeros added to comply with 12-digit integrated customs
+                 tariff nomenclature
+     Unchanged HS codes
+
+                     Big Eye Tunas
+
+
+     03023400
+
+     03023400 0000
+
+Zeros added to comply with 12-digit integrated customs
+                 tariff nomenclature
+  Sub-headings                           84201000   0001
+                                         Paper Polishing Machines
+
+
+
+                                         84201000 0002
+                                     2
+84 20 10 00                              Textile Polishing Machines
+
+   Calendaring or other rolling
+machines, other than for metals or       84201000 0003
+              glass                  3
+                                         Leather Polishing Machines
+
+
+                                         84201000 0004
+                                     4
+                                         Plastic Polishing Machines
+Sub-headings
+
+                                     71 03 91 00 00 01
+                                     Rubies
+
+71 03 91 00
+Rubies, sapphires and emeralds       71 03 91 00 00 02
+                                 2
+                                     Sapphires
+
+
+
+                                     71 03 91 00 00 03
+                                 3
+                                     Emeralds
+Sub-headings
+
+                     90 05 10 00 00 01
+                     Night Vision Binoculars
+
+90 05 10 00
+    Binoculars       90 05 10 00 00 02
+                 2
+                     Other Binoculars
+   NEWLY Inserted HS Codes
+                    Oryx
+
+
+
+
+Live African Oryx          Live Arabian Oryx
+
+01029012 0000              01029011 0000
+Dubai Customs’ Preparations
+
+
+         Tools & Resources                              Operational Support
+
+
+      Al Munassiq:                                     Extended Operating Hours & Live
+      AI Built IN Application HS code classification   Support: Available daily from 8 am to 6 pm
+
+                                                       Reclassification Service:
+      Correlation Table:
+                                                       Ask Dubai Customs to provide the correct
+      8-to-12-digit code mapping
+                                                       classification
+
+
+      Trader Guidebook:                                Workshops:
+      Transition reference guide with FAQs             Weekly orientation sessions for traders
+Dubai Customs’ Preparations
+Tools and Resources
+
+         Tools & Resources
+
+
+      Al Munassiq:
+      AI Built IN Application HS code classification
+
+
+      Correlation Table:
+      8-to-12-digit code mapping
+
+
+
+      Trader Guidebook:
+      Transition reference guide with FAQs
+      Dubai Customs’ Preparations
+      Tools and Resources
+  Tool                    Al Munassiq                                              Correlation Table                                             Trader Guidebook
+
+
+
+Support
+Provided
+             Digital app providing AI enabled classification of goods,    Table mapping the old HS codes to the new 12-digit codes,     Manual guiding traders through key changes & steps needed
+                                    including:                                                   including:                                              for a smooth transition :
+
+                                                                            Units of           Customs Duty         Required permits
+              HS Codes              Duty Rate              Restrictions                                               (if applicable)        Step-by-step Declaration Guide     Key FAQs
+                                                                          measurement              Rate
+
+
+
+
+Service           Available in Apple Store, Google                                 Available at DC Website                                        Available at DC Website
+Channel                   Play & Website
+
+
+  Duration                                                                           Available indefinitely
+Dubai Customs’ Preparations
+Operational Support
+
+                               Operational Support
+
+
+                              Extended Operating Hours & Live
+                              Support: Available daily from 8am to 6pm
+
+                              Reclassification Service:
+                              Ask Dubai Customs to provide the correct
+                              classification
+
+
+                              Workshops:
+                              Weekly orientation sessions for traders
+      Dubai Customs’ Preparations
+      Operational Support
+
+  Tool
+             Extended Operating Hours                  Reclassification Service                      Workshops
+             Live support for traders regarding all
+Support         questions related to the 12-digit       Submit goods descriptions and       Attend weekly workshops to learn
+               classification service by the Tariff    receive a Dubai Customs verified       more about the transition and
+Provided          department daily between            classification within 1 working day    available tools for your support
+                           8am – 6pm
+
+Service                                                                                     • Microsoft Teams
+                       Phone: 8001886                   Dubai Customs Online Services
+Channel                                                                                     • Dubai Logistics Academy
+
+
+
+  Duration
+              Extended hours available until year
+                                                            Available Indefinitely                   weekly sessions
+                            end
+Customs declarations processed under suspended
+duties condition prior to the release of the Customs
+Notice in regards to the Integrated Customs Tariff
+              will be dealt accordingly:
+
+  Declarations re-exported to GCC countries: 12-digits
+  Declarations imported to the local market: 12-digits
+Declarations re-exported to free zones and RoW: 8-digits
+Support and Communication
+
+ 1 Dubai Customs official page
+   www.dubaicustoms.ae
+
+
+ 2   Online services available on Dubai Trade platform
+     www.dubaitrade.ae
+
+     Contact Client Happiness Department
+3    Phone: 8001886
+     Email: 1886@dubaicustoms.ae
+
+
+4    Upcoming awareness workshops to raise readiness and
+     compliance level
+Thank YOU
+

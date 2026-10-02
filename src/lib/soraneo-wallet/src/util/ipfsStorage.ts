@@ -1,6 +1,8 @@
+import { IPFS_GATEWAY_BASE_URL, toIpfsGatewayUrl } from '@/utils/ipfs';
+
 /** Convenience helpers for constructing and consuming wallet IPFS endpoints. */
 export class IpfsStorage {
-  static IPFS_GATEWAY = 'https://ipfs.io/ipfs/';
+  static IPFS_GATEWAY = `${IPFS_GATEWAY_BASE_URL}/ipfs/`;
   static UCAN_TOKEN_HOST_PROVIDER = 'https://ucan.polkaswap2.io/ucan.json';
 
   /** Retrieves dynamically issued UCAN tokens for authenticated storage operations. */
@@ -9,8 +11,13 @@ export class IpfsStorage {
     return response.json();
   }
 
-  /** Prefixes IPFS paths with the configured public gateway. */
+  /** Resolves safe bare content paths, returning an empty image URL for malformed chain content. */
   static constructFullIpfsUrl(path: string): string {
+    if (typeof path !== 'string') return '';
+    const nativeUrl = `ipfs://${path}`;
+    if (!/^[a-z0-9][a-z0-9._-]*(?:[/?#]|$)/i.test(path) || toIpfsGatewayUrl(nativeUrl) === nativeUrl) {
+      return '';
+    }
     return this.IPFS_GATEWAY + path;
   }
 
@@ -52,11 +59,16 @@ export class IpfsStorage {
   static fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onload = () => {
-        if (reader.result !== null) resolve(reader.result.toString() || '');
+        if (typeof reader.result === 'string' && reader.result) {
+          resolve(reader.result);
+        } else {
+          reject(new Error('FileReader returned an invalid data URL'));
+        }
       };
       reader.onerror = (e) => reject(e);
+      reader.onabort = () => reject(new Error('File read aborted'));
+      reader.readAsDataURL(file);
     });
   }
 
@@ -64,9 +76,10 @@ export class IpfsStorage {
   static fileToBuffer(file: File): Promise<string | ArrayBuffer | null> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (e) => reject(e);
+      reader.onabort = () => reject(new Error('File read aborted'));
+      reader.readAsArrayBuffer(file);
     });
   }
 }

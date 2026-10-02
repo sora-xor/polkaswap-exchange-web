@@ -7,43 +7,51 @@
     :focus-trap="isSwapPage"
     :show-overlay="isSwapPage"
     :root-class="modalRootClass"
+    :labelled-by="titleId"
     modal-class="disclaimer-modal__dialog"
     :close-on-overlay-click="isSwapPage && userDisclaimerApprove"
     :close-on-esc="userDisclaimerApprove"
   >
     <div class="disclaimer">
       <div class="disclaimer__header">
-        <div class="disclaimer__header-title">{{ t('disclaimerTitle') }}</div>
-        <s-icon
-          v-button
+        <h2 :id="titleId" class="disclaimer__header-title">{{ t('disclaimerTitle') }}</h2>
+        <s-button
           v-if="userDisclaimerApprove"
           class="disclaimer__header-close-btn"
-          size="28px"
-          name="basic-clear-X-xs-24"
+          type="action"
+          icon="basic-clear-X-xs-24"
+          :aria-label="t('closeText')"
           @click="handleClose"
-        ></s-icon>
+        ></s-button>
       </div>
-      <s-scrollbar ref="scrollbarRef">
-        <div class="disclaimer__text">
-          <p v-html="disclaimerContent"></p>
-          <p class="disclaimer__text-fiat" ref="endLine">{{ t('fiatDisclaimer') }}</p>
+      <div class="disclaimer__text" tabindex="0" role="region" :aria-label="t('disclaimerSummary.fullTerms')">
+        <div class="disclaimer__summary">
+          <h3>{{ t('disclaimerSummary.title') }}</h3>
+          <ul>
+            <li>{{ t('disclaimerSummary.responsibility') }}</li>
+            <li>{{ t('disclaimerSummary.alpha') }}</li>
+            <li>{{ t('disclaimerSummary.risk') }}</li>
+          </ul>
         </div>
-      </s-scrollbar>
-      <s-button
-        v-if="!userDisclaimerApprove"
-        type="primary"
-        @click="handleAccept"
-        class="disclaimer__accept-btn"
-        :disabled="!isActiveAcceptBtn"
-      >
-        {{ btnText }}
-      </s-button>
+        <h3>{{ t('disclaimerSummary.fullTerms') }}</h3>
+        <div v-html="disclaimerContent"></div>
+        <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
+      </div>
+      <div v-if="!userDisclaimerApprove" class="disclaimer__footer">
+        <label class="disclaimer__acknowledgement">
+          <input v-model="acknowledged" type="checkbox" />
+          <span>{{ t('disclaimerSummary.acknowledgement') }}</span>
+        </label>
+        <s-button type="primary" @click="handleAccept" class="disclaimer__accept-btn" :disabled="!acknowledged">
+          {{ t('acceptText') }}
+        </s-button>
+      </div>
     </div>
   </s-modal>
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, computed, nextTick } from 'vue';
+import { ref, computed, useId, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -51,7 +59,6 @@ import { Links, PageNames } from '@/consts';
 import { SModal } from '@/lib/soramitsu-ui/components/Modal';
 import { useSettingsStore } from '@/stores/settings';
 import { escapeHtml, sanitizeHtml } from '@/utils/sanitize';
-import { delay } from '@/utils/timing';
 import { resolveDisclaimerVisibilityOnRouteChange } from '@/views/utils/resolveDisclaimerVisibilityOnRouteChange';
 
 defineOptions({ name: 'AppDisclaimer' });
@@ -60,12 +67,8 @@ const { t } = useTranslation();
 const route = useRoute();
 const settingsStore = useSettingsStore();
 
-const isActiveAcceptBtn = ref(false);
-const endLine = ref<HTMLElement | null>(null);
-const scrollbarRef = ref<unknown>(null);
-let observer: Nullable<IntersectionObserver> = null;
-let scrollContainer: Nullable<HTMLElement> = null;
-let handleScroll: Nullable<() => void> = null;
+const acknowledged = ref(false);
+const titleId = `disclaimer-title-${useId()}`;
 
 const userDisclaimerApprove = computed(() => settingsStore.userDisclaimerApprove);
 const isSwapPage = computed(() => route.name === PageNames.Swap);
@@ -86,8 +89,7 @@ const disclaimerVisibility = computed({
   },
 });
 
-const btnText = computed(() => (isActiveAcceptBtn.value ? t('acceptText') : t('acceptOnScrollText')));
-
+/** Builds a safe external document link for the existing full legal notice. */
 function generateDisclaimerLink(href: string, content: string): string {
   const safeContent = escapeHtml(content);
   const safeHref = escapeHtml(href);
@@ -118,109 +120,20 @@ const disclaimerContent = computed(() => {
   });
 });
 
-async function makeAcceptBtnActive(ms = 1_000): Promise<void> {
-  if (isActiveAcceptBtn.value) return;
-  await delay(ms);
-  isActiveAcceptBtn.value = true;
-}
-
-function resolveScrollContainer(): Nullable<HTMLElement> {
-  const candidate = scrollbarRef.value as HTMLElement | { wrap?: unknown; $el?: unknown } | null;
-
-  if (!candidate) return null;
-
-  const wrapped = (candidate as { wrap?: unknown }).wrap;
-  if (wrapped instanceof HTMLElement) {
-    return wrapped;
-  }
-
-  const root = candidate instanceof HTMLElement ? candidate : (candidate as { $el?: unknown }).$el;
-  if (!(root instanceof HTMLElement)) return null;
-
-  return root.querySelector('.el-scrollbar__wrap') ?? root;
-}
-
-function isEndLineVisible(container: HTMLElement): boolean {
-  const target = endLine.value;
-  if (!target) return false;
-
-  const containerRect = container.getBoundingClientRect();
-  const targetRect = target.getBoundingClientRect();
-
-  return targetRect.bottom <= containerRect.bottom + 1;
-}
-
-function activateOnScrollEnd(container: HTMLElement): void {
-  if (isActiveAcceptBtn.value) return;
-  if (!isEndLineVisible(container)) return;
-  void makeAcceptBtnActive(300);
-}
-
-function setupScrollListener(): void {
-  const container = scrollContainer;
-  if (!container) return;
-
-  handleScroll = () => activateOnScrollEnd(container);
-  container.addEventListener('scroll', handleScroll, { passive: true });
-  activateOnScrollEnd(container);
-}
-
-function cleanupScrollListener(): void {
-  if (scrollContainer && handleScroll) {
-    scrollContainer.removeEventListener('scroll', handleScroll);
-  }
-  handleScroll = null;
-  scrollContainer = null;
-}
-
-function setupScrollObserver(): void {
-  scrollContainer = resolveScrollContainer();
-  setupScrollListener();
-
-  try {
-    observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          void makeAcceptBtnActive(300);
-        }
-      },
-      {
-        root: scrollContainer,
-        threshold: 0.95,
-      }
-    );
-  } catch {
-    void makeAcceptBtnActive(2_000);
-    return;
-  }
-
-  if (endLine.value) {
-    observer.observe(endLine.value);
-  } else {
-    if (!scrollContainer) {
-      void makeAcceptBtnActive(2_000);
-    }
-  }
-}
-
+/** Persists acceptance only after the user explicitly acknowledges the terms. */
 function handleAccept(): void {
+  if (!acknowledged.value) return;
   settingsStore.setUserDisclaimerApprove();
   settingsStore.setDisclaimerDialogVisibility(false);
 }
 
+/** Closes the notice after a previous acceptance has been recorded. */
 function handleClose(): void {
   settingsStore.setDisclaimerDialogVisibility(false);
 }
 
-onMounted(async () => {
-  await nextTick();
-  setupScrollObserver();
-});
-
-onBeforeUnmount(() => {
-  observer?.disconnect();
-  observer = null;
-  cleanupScrollListener();
+watch(disclaimerVisibility, (visible) => {
+  if (!visible) acknowledged.value = false;
 });
 </script>
 
@@ -241,127 +154,120 @@ onBeforeUnmount(() => {
   background-color: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-dialog);
-  width: 24%;
-  min-width: 335px;
-  max-width: 550px;
-  max-height: calc(100% - (#{$inner-spacing-small} * 2));
-  padding: $basic-spacing 6px 12px 20px;
+  width: 100%;
+  min-width: 0;
+  max-width: 640px;
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   position: relative;
+  color: var(--s-color-base-content-primary);
 
   &__header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: $inner-spacing-mini;
+    flex-shrink: 0;
+    gap: 16px;
+    margin-bottom: 16px;
 
     &-title {
+      margin: 0;
       font-weight: 600;
-      font-size: var(--s-font-size-small);
-      display: flex;
-      align-items: center;
+      font-size: 20px;
+      line-height: 1.4;
     }
 
     &-close-btn {
-      margin-right: $inner-spacing-small;
-      color: var(--s-color-base-content-tertiary);
-      transition: var(--s-transition-default);
-
-      &:hover {
-        color: var(--s-color-base-content-secondary);
-        cursor: pointer;
-      }
+      flex-shrink: 0;
+      color: var(--s-color-base-content-secondary);
     }
   }
 
   &__text {
-    border-radius: var(--s-border-radius-medium);
-    padding: 0 $basic-spacing 10px 0;
-    font-size: var(--s-font-size-extra-mini);
-    font-weight: 300;
-    height: 260px;
-    line-height: var(--s-line-height-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    color: var(--s-color-base-content-secondary);
-    margin-bottom: -12px;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 12px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--s-color-base-content-primary);
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 12px;
+    }
 
     &-fiat {
-      margin-top: $basic-spacing;
+      margin-top: 16px;
+    }
+  }
+
+  &__summary {
+    margin-bottom: 24px;
+
+    ul {
+      margin: 0;
+      padding-left: 24px;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-shrink: 0;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid var(--s-color-base-border-secondary);
+  }
+
+  &__acknowledgement {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+
+    input {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      margin: 1px 0 0;
+      accent-color: var(--s-color-theme-accent);
     }
   }
 
   &__accept-btn {
-    margin-top: $basic-spacing;
     width: 100%;
-    min-height: 42px;
-    height: 42px;
-    display: inline-block !important;
-    position: static !important;
-    padding: 5px 13px !important;
-    font-size: var(--s-font-size-small) !important;
-    font-weight: 500 !important;
-    line-height: 14px !important;
-    text-transform: uppercase !important;
-    text-align: center !important;
-
-    :deep(.s-button__text) {
-      text-transform: uppercase;
-      font-size: var(--s-font-size-small);
-      font-weight: 500;
-      line-height: 14px;
-    }
-
-    &.is-disabled,
-    &:disabled {
-      border: 2px solid var(--s-color-base-background-hover) !important;
-      background: var(--s-color-utility-surface) !important;
-      color: var(--s-color-base-content-tertiary) !important;
-      box-shadow:
-        1px 1px 5px 0px var(--s-shadow-color-light),
-        -5px -5px 5px 0px inset rgba(255, 255, 255, 0.5),
-        1px 1px 10px 0px inset var(--s-shadow-color-dark) !important;
-    }
+    min-height: 44px;
+    flex-shrink: 0;
   }
 
-  @include desktop(true) {
-    width: auto;
-    min-width: 0;
-    max-width: calc(100% - (#{$inner-spacing-small} * 2));
-    padding: $basic-spacing $inner-spacing-mini $inner-spacing-small;
-
-    &__text {
-      height: clamp(160px, 33vh, 240px);
-    }
-  }
-
-  @include tablet(true) {
-    position: relative;
-    top: unset;
-    left: unset;
-    right: unset;
-    width: 100%;
-    min-width: 0;
-    max-width: none;
-    max-height: none;
-    z-index: auto;
-
-    &__text {
-      height: clamp(140px, 34dvh, 220px);
-    }
+  @media (max-width: 640px) {
+    padding: 20px 16px;
   }
 }
 
 :global(.disclaimer-modal) {
   justify-content: center;
   align-items: center;
-  padding: $inner-spacing-medium;
+  padding: 16px;
 }
 
 :global(.s-modal__root.disclaimer-modal--nonblocking) {
   justify-content: flex-end !important;
   align-items: flex-start !important;
-  padding-top: $inner-spacing-small !important;
+  padding-top: 16px !important;
   padding-right: 0 !important;
   pointer-events: none;
 }
@@ -373,10 +279,9 @@ onBeforeUnmount(() => {
 
 :global(.s-modal__root.disclaimer-modal--nonblocking .disclaimer) {
   pointer-events: auto;
-  width: 280px;
-  min-width: 280px;
-  max-width: 280px;
-  margin-right: $inner-spacing-small;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  margin-right: 16px;
 }
 
 :global(.disclaimer-modal__dialog) {
@@ -384,23 +289,5 @@ onBeforeUnmount(() => {
   max-width: 100%;
   display: flex;
   justify-content: center;
-}
-
-@include tablet(true) {
-  :global(.disclaimer-modal) {
-    padding: $inner-spacing-medium;
-  }
-
-  :global(.disclaimer-modal__dialog) {
-    justify-content: center;
-  }
-}
-</style>
-
-<style lang="scss">
-.disclaimer {
-  .el-scrollbar__bar.is-vertical {
-    opacity: 1;
-  }
 }
 </style>

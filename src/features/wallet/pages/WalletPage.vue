@@ -1,12 +1,14 @@
 <template>
-  <sora-wallet
-    v-loading="parentLoading"
-    class="container container--wallet"
-    @close="handleClose"
-    @swap="handleSwap"
-    @liquidity="handleLiquidity"
-    @bridge="handleBridge"
-  ></sora-wallet>
+  <div class="wallet-page">
+    <sora-wallet
+      v-loading="parentLoading"
+      class="container container--wallet"
+      @close="handleClose"
+      @swap="handleSwap"
+      @liquidity="handleLiquidity"
+      @bridge="handleBridge"
+    ></sora-wallet>
+  </div>
 </template>
 
 <script lang="ts" setup>

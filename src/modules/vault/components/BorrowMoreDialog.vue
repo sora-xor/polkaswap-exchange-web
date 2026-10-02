@@ -141,7 +141,7 @@ const slippageTolerance = computed(() => settingsStore.slippageTolerance);
 const accountXor = computed(() => assetsStore.xor as Nullable<AccountAsset>);
 const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
 
-const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.CreateVault] ?? ZeroStringValue);
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.BorrowVaultDebt] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
 const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
 
@@ -240,17 +240,19 @@ const handleBorrowMore = async () => {
   }
 
   try {
-    await withNotifications(async () => {
+    const result = await withNotifications(async () => {
       if (!(props.vault && props.debtAsset)) {
         throw new Error('[api.kensetsu.borrow]: vault is null');
       }
       await api.kensetsu.borrow(props.vault, borrowValue.value, props.debtAsset, slippageTolerance.value);
     });
+
+    if (!result.submitted) return;
+
+    isVisible.value = false;
     emit('confirm');
   } catch (error) {
     console.error(error);
-  } finally {
-    isVisible.value = false;
   }
 };
 

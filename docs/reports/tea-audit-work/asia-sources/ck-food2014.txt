@@ -1,0 +1,1430 @@
+                                           [
+
+
+
+                            Food Regulations 2014
+
+
+
+His Excellency Tom Marsters                                Queen’s Representative
+
+                          Order in Executive Council
+At Avarua, Rarotonga this                         day of                      2014
+
+                                       Present:
+
+     His Excellency the Queen’s Representative in Executive Council
+Pursuant to section 38 of the Food Act 1992-1993, His Excellency the Queen’s
+Representative, acting on the advice and with the consent of the Executive Council,
+makes the following regulations—
+
+
+                                       Contents
+
+1       Title
+2       Commencement
+3       Interpretation
+4       Objectives of these regulations
+5       Application of these regulations
+                                         Part 1
+                                General food standards
+6       Application of Codex Standards
+7       General limits on contaminants
+8       Specific limits on chemical contaminants
+9       Pesticide residues
+10      Veterinary drug residues
+11      Microbiological criteria
+12      Food additives
+13      Nutrient supplements
+                                         Part 2
+                    High risk food and food of regulatory interest
+14      High risk food
+15      Food of regulatory interest
+16      Notification of intention to import listed food
+
+
+
+                                                                                  1
+                                Food Regulations 2014
+
+
+17    Notification of intention to produce or manufacture food
+                                        Part 3
+                      Importation of food and food products
+18    Personal importation of food
+19    General requirements applying to imported food
+20    Re-labelling of rejected imported food
+21    Selling non-complying food
+22    Power to exempt imported food
+23    Product identity
+24    Health or sanitary certification for imported food
+25    Analytical certificates
+26    Food subject to physical checks
+27    Release of food after physical checks
+28    Rejection and destruction
+                                        Part 4
+                         Labelling, packaging and claims
+29    Labelling requirements for pre-packaged foods
+30    Requirements for products shipped to outer islands
+31    Requirements relating to labelling of nutrient content
+32    Prohibited claims in relation to food products
+33    Claims of nutrient and health benefits
+34    Packaging
+                                        Part 5
+                              Food product standards
+35    Commodity standards
+                                        Part 6
+             Food safety and hygiene obligations of food businesses
+36    Application of this Part (no application to fish processing premises)
+37    Good hygienic practices
+38    Food safety and hygiene standards
+                                        Part 7
+     Marketing of food and non-alcoholic beverages to children and infants
+39    Criteria to determine whether marketing and sales restrictions are to apply
+40    Controls on advertising and promotion of designated products
+                                        Part 8
+                         Offences against these regulations
+41    Offences and penalties
+42    Additional penalty if injury, harm or damage arises from a breach
+43    Offences by corporations
+                                      Schedule 1
+              Maximum permitted levels of chemical contaminants
+                                      Schedule 2
+           Maximum limits on microbiological contaminants in foods
+                                      Schedule 3
+                  Table of conditions for nutrient content claims
+
+
+
+
+2
+                              Food Regulations 2014
+
+
+
+                                Regulations
+
+1   Title
+    These regulations are the Food Regulations 2014.
+
+2   Commencement
+    These regulations come into force on the day after the date on which these
+    regulations are made in accordance with Article 13 of the Constitution.
+
+3   Interpretation
+    In these regulations, unless the context otherwise requires—
+    the Act means the Food Act 1992-1993 (as amended), and includes any Act
+    which may replace that law from time to time
+    advertisement means—
+    (a) any written or spoken word:
+    (b) any symbolic, pictorial representation or design:
+    (c) any other form of representation or expression published—
+          which is used or apparently used to directly or indirectly promote the
+          sale, consumption or disposal of any food
+    authorised officer means any authorised officer appointed under the Act or
+    the Ministry of Health Act 2013
+    approved standard means any standard, guideline, operating procedures or
+    code of practice applied to food from time to time in accordance with section
+    16 of the Ministry of Health Act 2013
+    broadcast means any transmission of programmes, whether or not encrypted,
+    by radio waves or other means of telecommunication for reception by the
+    public
+    child means a person below the age of 18 years
+    child care facility means any premises, whether operated by the public or
+    private sector, used to provide care for children
+    children’s activity means any cultural, educational, sporting or recreational
+    activity, where children are likely to make up 30 % or more of the audience
+    clean means clean to touch and free of extraneous visible matter and
+    objectionable odour
+    Codex Alimentarius means the standards, codes of practice, guidelines and
+    other texts developed and maintained by the Codex Alimentarius Commission
+    from time to time
+    Commission means the Codex Alimentarius Commission established in 1963
+    by the Food and Agriculture Organization of the United Nations, and the
+    World Health Organisation
+    Competent Authority means either—
+    (a)     the Ministry – where the reference is to the competent authority of the
+            Cook Islands; or
+    (b)     the official authority of any other country lawfully empowered to act in
+            that capacity – where the reference is to the competent authority of any
+            country other than the Cook Islands
+    contaminant means any biological or chemical agent, foreign matter or other
+    substances that may compromise food safety or suitability
+
+
+
+
+                                                                                  3
+                               Food Regulations 2014
+
+
+    contamination means the introduction or occurrence of a contaminant in food
+    date of minimum durability (“best before”) means the date which signifies
+    the end of the period under any stated storage conditions during which the
+    product will remain fully marketable and will retain any specific qualities for
+    which tacit or express claims have been made
+    designated products means any foods (including non-alcoholic beverages)
+    that are designated by written Order made by the Minister as being a product
+    the consumption of which might be detrimental to a healthy and balanced
+    nutritious diet
+    designated product brand name means—
+    (a) the name of a designated product, or a range of products that includes
+          one or more designated products:
+    (b) any brand name of a designated product, or a range of products that
+          includes one or more designated products:
+    (c) any name, word or mark that so resembles any brand name of any
+          designated product, that it is likely to be taken as, or confused with, that
+          brand name:
+    (d) any name of a manufacturer or distributor of one or more designated
+          products:
+    (e) any emblem, picture or symbol by which a designated product or a range
+          of products that includes one or more designated products, or a
+          manufacturer, importer or distributor of a designated product is
+          identified:
+    (f) any other words or images, including the whole or a part of a brand
+          name, or combination of words and images, that are closely associated
+          with a designated product or a range of products that includes one or
+          more designated products
+    Director means the Director of Public Health (including any person acting
+    with the delegated authority of the Director), and where no person is currently
+    in the office of Director, or if the Director is unable to perform the roles of that
+    office, it includes the Secretary of Health
+    equipment includes any machine, appliance, utensil or instrument used in
+    relation to the handling of food and includes equipment used for the cleaning
+    of food premises
+    food has the meaning given to it in the Act, and includes all of the following—
+    (a) any confectionary or chewing substance, including ice and ice-cream:
+    (b) salt and spices, whether used as ingredients or otherwise:
+    (c) water which is bottled for human consumption or which is added to food:
+    (d) any other substance declared to be a food under an approved standard
+    food business means any premises—
+    (a) in or at which food is manufactured, prepared, packed, stored, or
+          handled, for sale; or
+    (b) in or from which food is sold; or
+    (c) that is used in connection with any other food business
+    food business proprietor means any person who is the legal or equitable
+    owner of the business or any person having an interest in the business
+    food handler means any person who handles packaged or unpackaged food,
+    food equipment and utensils, or who handles surfaces likely to come into
+    contact with food, for any food business
+    food handling operation means any activity involving the handling of food
+
+
+4
+                           Food Regulations 2014
+
+
+food safety means assurance that food will not cause harm to the consumer
+when it is prepared or eaten according to its intended use
+food safety programme means a programme, prepared in accordance with the
+Recommended International Code of Practice - General Principles of Food
+Hygiene published by the Codex Alimentarius Commission
+HACCP means Hazard Analysis and Critical Control Point which identifies,
+evaluates, and controls hazards which are significant for food safety; as
+defined by the Codex Alimentarius
+handling in relation to food, includes the making, manufacturing, producing,
+harvesting, slaughtering, collecting, extracting, processing, storing,
+transporting, delivering, preparing, treating, preserving, packing, cooking,
+thawing, serving or displaying of food
+hazard means a biological, chemical or physical agent in, or condition of,
+food that has the potential to cause an adverse health effect in humans, and
+includes any effect of radiation on food
+incidental constituent means any extraneous substance, toxic substance,
+pesticide, or animal remedy that is contained or present in or on any food; but
+does not include any preservative, antioxidant, colouring substance, artificial
+sweetener, flavouring, food conditioner, anti-caking agent, gaseous packing
+agent, propellant, or vitamin, or any mineral other than copper, zinc, selenium,
+and fluorine
+infant means a person not more than 12 months of age
+infant formula means a breast-milk substitute specially manufactured to
+satisfy, by itself, the nutritional requirements of infants during the first months
+of life up to the introduction of appropriate complementary feeding
+label means any tag, brand, mark, pictorial or other descriptive matter, written,
+printed, stencilled, marked, embossed or impressed on, or attached to, a
+container of food
+labelling includes any written, printed or graphic matter that is present on the
+label, accompanies the food, or is displayed near the food, including that for
+the purpose of promoting its sale or disposal
+listed food means any food that is either on the High Risk Food List or Food
+of Regulatory Interest List under Part 2
+nutrient means any substance normally consumed as a constituent of food ,
+and includes proteins, carbohydrates, fats, fibre, sodium, vitamins and
+minerals
+Nutrition Claim means any representation which states, suggests or implies
+that a food has particular nutritional properties (including its energy value, the
+content of protein, fat and carbohydrates, and the content of vitamins and
+minerals)
+pests include birds, rodents, insects and arachnids
+premises includes—
+(a) any building or tent or other structure (permanent or temporary), the land
+       on which it is situated, and any adjoining land used in connection with it:
+(b) any vehicle or vessel:
+(c) any place, including a street, open space, or place of public resort, used
+       in the production, preparation, preservation, packaging or storage of any
+       food; and
+(d) any other place or area declared in writing by the Director to be premises
+       under the Act
+
+
+                                                                                 5
+                                Food Regulations 2014
+
+
+      premium means a good, service, prize, gift, voucher, competition entry,
+      product give-away or product sample offered or supplied without charge and
+      includes a discount or the use of a loyalty card or scheme
+      pre-packaged food means packaged or made up in advance in a container,
+      ready for offer to the consumer or for catering purposes
+      promote means to use any form of communication to the public or a section
+      of the public in relation to any—
+      (a) goods or services:
+      (b) brand of goods or services; or
+      (c) person who provides goods or services
+      publish means—
+      (a) insert in any newspaper or other periodical publication:
+      (b) send to any person, by post, by way of the internet or otherwise:
+      (c) deliver to any person or leave upon premises in the occupation of any
+            person:
+      (d) broadcast:
+      (e) include in any film or video recording:
+      (f) include in any disk for use with a computer:
+      (g) disseminate by means of any electronic medium:
+      (h) distribute by any means:
+      (i) display by way of a sign, notice, poster, or other means; or
+      (j) bring to the notice of the public, whether in the Cook Islands or outside
+            of the Cook Islands, in any other manner
+      school premises means premises that are—
+      (a) used to operate a school; or
+      (b) facilities, grounds, structures or other premises, controlled and managed
+            by the school, and used principally for—
+            (i) the enjoyment, recreation or relaxation of the children attending the
+                  school; or
+            (ii) cultural or sporting activities, or both, involving or undertaken for
+                  the benefit of the children attending the school
+      street foods and take-away meals means ready-to-eat foods (raw or cooked)
+      prepared or sold by vendors, and by hawkers in streets, markets and other
+      similar public places
+      street food stall means a place where street food is prepared, displayed,
+      served or sold to the public (and includes carts, tables, tents, benches, baskets,
+      chairs, vehicles with or without wheels and any other structure where any
+      street foods and take-away meals are displayed for sale)
+      use-by date (recommended last consumption date, expiration date) means
+      the date which signifies the end of the estimated period under any specific
+      storage conditions, after which the product is not likely to have the quality
+      attributes normally expected by the consumers, and after this date the food
+      shall not be regarded as marketable.
+(2)   The definitions referred to in sub-regulation (1) apply to any approved
+      standards, rules, operating procedures, guidelines or codes of practice applied
+      under the authority of section 16 of the Ministry of Health Act 2013 in support
+      of these regulations.
+
+4     Objectives of these regulations
+      The objectives of these regulations include all of the following—
+
+
+6
+                                Food Regulations 2014
+
+
+      (a)   to protect the health of the public from unsafe food:
+      (b)   to provide food that is fit for purpose:
+      (c)   to protect consumers from deception and food of unacceptable and poor
+            quality, by establishing minimum standards for food products.
+
+5     Application of these regulations
+(1)   These regulations apply to all of the following food products—
+      (a) food products which are imported into the Cook Islands:
+      (b) food products which are produced, sold or prepared for sale in the Cook
+            Islands; and
+      (c) food products which are exported from the Cook Islands.
+(2)   These regulations do not apply to fish prepared for export pursuant to the Food
+      (Fish Export Processing) Regulations 2006.
+
+                                   Part 1
+                           General food standards
+6     Application of Codex Standards
+(1)   The Codex Alimentarius is adopted and forms part of these regulations,
+      together with any future amendments made to the Codex Alimentarius from
+      time to time by the Commission.
+(2)   If there is a conflict between these regulations and any provision of the Codex
+      Alimentarius, these regulations prevail.
+(3)   If the provisions of the Codex Alimentarius refer to national laws or customs,
+      a standard may be made under section 16 of the Ministry Act 2013 to apply
+      any such requirement.
+(4)   If no standard has been applied to any product, the relevant Codex Standard is
+      deemed to be the relevant Standard which must be complied with.
+
+7     General limits on contaminants
+(1)   Food must not contain incidental constituents at levels that make the food
+      potentially unsafe for human consumption.
+(2)   Despite the generality of sub-regulation (1), the maximum levels of
+      contaminants that are permitted in food are those limits specified by the Codex
+      Alimentarius, unless a different limit is specified by these regulations, or any
+      applicable standard.
+
+8     Specific limits on chemical contaminants
+(1)   Without affecting to the general requirement relating to contaminants outlined
+      in regulation 7, the limits on chemical contaminants specified in Schedule 1
+      apply to all food products imported into and produced and processed in Cook
+      Islands for consumption.
+(2)   A food product is deemed to be non-compliant with these regulations if any
+      one sample unit contains a chemical contaminant that exceeds the level
+      applied under sub-regulation (1).
+
+9     Pesticide residues
+(1)   The maximum levels of pesticide residues in food must not exceed the limits
+      specified by the Codex Alimentarius.
+
+
+
+                                                                                    7
+                                 Food Regulations 2014
+
+
+(2)   A food product is deemed to be non-compliant with these Regulations if any
+      one sample unit contains a residue that exceeds the relevant level specified by
+      the Codex Alimentarius.
+
+10    Veterinary drug residues
+(1)   The maximum levels of veterinary drug residues in food must not exceed the
+      limits specified by the Codex Alimentarius.
+(2)   A food product is deemed to be non-compliant with these regulations if any
+      one sample unit contains a residue that exceeds the relevant level specified by
+      the Codex Alimentarius.
+
+11    Microbiological criteria
+(1)   All food products for sale must comply with the microbiological criteria
+      established by the Codex Alimentarius and as specified in Schedule 2 of these
+      regulations.
+(2)   The requirements of sub-regulation (1) apply to food products at all the
+      following times—
+      (a) prior to import:
+      (b) at the point of import:
+      (c) at the end of processing and at the point of sale.
+(3)   Food importers are responsible for ensuring that food imported into Cook
+      Islands complies with the microbiological criteria applied under sub-regulation
+      (1) prior to importation, and if required by an authorised officer, at the point of
+      import.
+(4)   Food businesses processing food are responsible for ensuring that food
+      produced complies with the microbiological criteria applied under sub-
+      regulation (1).
+
+12    Food additives
+(1)   Food additives must not be used in any food imported or sold in Cook Islands,
+      unless permitted by these regulations or any applicable standard.
+(2)   Unless otherwise prescribed in these regulations or any applicable standard,
+      the additives permitted for use in a food product are those additives permitted
+      for use under the Codex General Standard on Food Additives, and the
+      maximum level of each permitted additive in the final product is the maximum
+      level that is permitted for use in the applicable standard.
+(3)   If no Codex Standard or other applicable standard exists for additives to be
+      used in a food, the processor or importer must be able to demonstrate to the
+      satisfaction of the Director, the safety of the additives to be used for a
+      particular product, prior to the importation or processing of the product.
+(4)   Food business operators (including processors and importers) must ensure that
+      additives present in their food comply with the requirements of the Codex
+      Alimentarius, unless otherwise prescribed in these regulations or an applicable
+      standard.
+
+13    Nutrient supplements
+(1)   Nutrient supplements must not be imported, manufactured, advertised for sale
+      or sold by any person unless it is a permitted nutrient supplement under the
+      Codex Alimentarius, or otherwise prescribed by these regulations or any
+      applicable standard.
+
+
+
+8
+                                Food Regulations 2014
+
+
+(2)   A person must not import, manufacture, advertise for sale or sell any food in
+      which—
+      (a) any nutrient supplement other than a permitted nutrient supplement is
+           present; or
+      (b) any permitted nutrient supplement at a concentration above the
+           maximum permitted by the Codex Alimentarius (or by these regulations
+           or any other applicable standard) is present.
+
+                                Part 2
+             High risk food and food of regulatory interest
+14    High risk food
+(1)   The Director has authority to specify any food or category of food as being of
+      high risk by the publication of a High Risk Food List from time to time.
+(2)   A list approved under sub-regulation (1), and any amendment to the List, takes
+      effect upon its approval by the Director.
+(3)   A list approved under sub-regulation (1), and any amendment to the List, is to
+      be published or circulated in any manner approved by the Director.
+
+15    Food of regulatory interest
+(1)   The Director has authority to specify any food or category of food as being of
+      regulatory interest by the publication of a List of such foods from time to time.
+(2)   Action may be taken under sub-regulation (1) on any of the following
+      grounds—
+      (a) the food has a history of non-compliance:
+      (b) that is required to be fortified:
+      (c) the food is being targeted to reduce the population's exposure to fat,
+            sugar or sodium in priority foods:
+      (d) the Director reasonably suspects that the food could otherwise pose a
+            public health risk.
+
+16    Notification of intention to import listed food
+(1)   A person who intends to import food for sale that is either on the High Risk
+      Food List or Food of Regulatory Interest List must give prior notification to
+      the Ministry of his or her intention to import food at least 30 days prior to the
+      food being imported into Cook Islands.
+(2)   A notification under this regulation must be given in writing and can be sent
+      by email, fax or other documented means, but it is the responsibility of the
+      notifier to ensure that the notification is received by the Ministry, and that it
+      contains all of the information that the Ministry requires.
+(3)   Along with the notice of intent to import specified in sub-regulation (1), the
+      importer must provide copies of the invoices, manifestoes and other
+      documentation associated with the product to be imported.
+(4)   An authorised officer has authority to carry out any inspection and sampling
+      that the officer requires.
+(5)   After inspecting and sampling, and reviewing relevant documentation
+      (including export certifications provided by competent authorities overseas),
+      the authorised officer has authority to permit the proposed importation, or
+      decline it and make appropriate arrangements for the disposal of the food.
+
+
+
+                                                                                     9
+                                Food Regulations 2014
+
+
+(6)   Information related to the proposed importation of food is to be shared with
+      the Customs Service and other relevant government Ministries and agencies.
+
+17    Notification of intention to produce or manufacture food
+(1)   A person who intends to produce or manufacture food for sale must notify the
+      Ministry of his or her intention to do so.
+(2)   A notification under this regulation must be given in writing and can be sent
+      by email, fax or other documented means, but it is the responsibility of the
+      notifier to ensure that the notification is received by the Ministry, and that it
+      contains all of the information that the Ministry requires.
+(3)   An authorised officer has authority to carry out any inspection and sampling
+      that the officer requires to determine if the Act or Regulations is being
+      complied with and to identify and assess whether there is any potential impact
+      to the public from the consumption of such food.
+
+                                 Part 3
+                 Importation of food and food products
+18    Personal importation of food
+(1)   Subject to the specific requirements and restrictions under this regulation,
+      foods imported into Cook Islands for personal consumption by the person who
+      brings the food into Cook Islands, or the person’s family, are exempt from
+      regulatory control.
+(2)   Personal imports of chilled and frozen meat and chilled and frozen fish must
+      not exceed 10 kg in total per person.
+(3)   Personal imports of meat products, dairy products, fishery products (including
+      processed dried, cooked, cured or smoked fish, and any lobsters and prawns)
+      must not exceed 10kg in total per person and must comply with all of the
+      following—
+      (a) the product does not require refrigeration before consumption, or is
+            otherwise appropriately packaged for transport:
+      (b) the product is in commercially branded packaging; and
+      (c) the packaging is unbroken unless in current use.
+(4)   Personal imports of powdered infant formula and infant food must not exceed
+      5 kg in total per person.
+(5)   Personal imports of all other foods must not exceed 5 kg in total per person.
+(6)   If the food will be personally consumed by the importer or consumed by
+      family members of the importer, and if it complies with the quantities outlined
+      in sub-regulations (2)-(5), an authorised officer must not hold the product for
+      further assessment.
+(7)   A person who intends to import food for personal or family use in greater
+      quantities than is permitted by this regulation, may apply to the Director for
+      approval to do so.
+(8)   When considering whether to approve an application under sub-regulation (7)
+      the Director is authorised to consider any or all of the following matters—
+      (a) the type and nature of food to be imported:
+      (b) the proposed quantity of food to be imported and whether this seems a
+            reasonable quantity for its intended use:
+      (c) any potential health risk to the public from the importation and
+            consumption of the food:
+
+
+10
+                                 Food Regulations 2014
+
+
+      (d)   the suitability of the controls and safeguards that the importer will
+            implement to ensure there is no harm to public health from the
+            importation and consumption of the food:
+      (e) any other factors the Director considers relevant.
+(9)   The Director has authority to impose any conditions that the Director’s
+      considers to be necessary or desirable to safeguard public health when
+      granting an application under sub-regulation (7).
+
+19    General requirements applying to imported food
+(1)   Subject to regulation 18 and to sub-regulation (3) of this regulation, no person
+      may import any food or food ingredient that does not comply with the
+      requirements of the Act, and with these regulations and any applicable
+      standards.
+(2)   The importer has the onus of demonstrating compliance under sub-regulation
+      (1).
+(3)   Subject to sub-regulation (4), if any food that is imported is a raw or semi-
+      processed food that requires further processing, and the original packaging is
+      required to be removed for processing before the food is sold in the Cook
+      Islands, the food may be repacked, reprocessed, re-constituted or
+      reconditioned after importation to ensure compliance with this regulation.
+(4)   A person who intends to import food with the intention to repackage,
+      reprocess or recondition food must first obtain a permit from the Director, and
+      such a permit is valid for a period determined by the Director, and is subject to
+      any conditions imposed by the Director in relation to the importation or
+      reprocessing of the food.
+(5)   Without limiting the power of the Director to impose any condition in relation
+      to a permit issued under sub-regulation (4), the Director may direct an
+      importer to—
+      (a) perform re-labelling or reprocessing operations in a designated area or
+            under the supervision of an authorised officer, or in a manner approved
+            by the Director:
+      (b) pay a fee or deposit a security or any other guarantee determined by the
+            Director:
+      (c) include any other information on the label of the food that the Director
+            considers necessary to protect public health and safety.
+(6)   A person who fails to comply with this regulation or any conditions applying
+      to a permit issued under this regulation breaches these regulations.
+
+20    Re-labelling of rejected imported food
+(1)   If food is rejected under this Part but an authorised officer considers it suitable
+      for re-labelling, the importer must re-label the food in accordance with the
+      requirements of these regulations if the importation is to be permitted.
+(2)   If authority is given under sub-regulation (1) to re-label food, the authorised
+      officer must advise the importer of the need to detain the product until the re-
+      labelling has been completed, and provide the importer with a copy of the
+      detention report.
+(3)   It is the responsibility of the importer to ensure that the food is detained in
+      compliance with any requirements imposed by the authorised officer.
+
+
+
+
+                                                                                      11
+                                Food Regulations 2014
+
+
+(4)   Detention of a product to which this regulation applies may take place in an
+      agreed location pending the receiving of proof that the product has been re-
+      labelled appropriately.
+(5)   If food to which regulation applies is not re-labelled within 1 month from the
+      date of its detention, the food must be re-exported by the importer, or
+      destroyed in accordance with any requirements imposed by the authorised
+      officer.
+(6)   If food to which this regulation applies is to be re-exported, the importer or
+      other person in charge of the food must inform the Competent Authority of the
+      proposed importing country of the reason for re-export, and must secure
+      approval from the relevant Competent Authority for such action to be taken.
+(7)   If food to which this regulation applies is to be re-exported, the importer must
+      ensure the food is not exported without all necessary documentary evidence
+      that the Competent Authority of the proposed importing country has approved
+      the re-import.
+(8)   If food to which this regulation applies is not re-exported as directed by the
+      authorised officer, it must be sent for destruction by crushing and burial; or by
+      incineration; or by other suitable means determined by the authorised officer.
+(9)   All costs associated with the storage or disposal of food to which this
+      regulation applies are the responsibility of the importer, and the importer is
+      liable for any loss or damage suffered by any person as a result of the failure
+      to properly store or dispose of any food to which this regulation applies.
+
+21    Selling non-complying food
+      A person who attempts to sell any food before making necessary changes to
+      comply with the Act or these regulations breaches these regulations.
+
+22    Power to exempt imported food
+      The Director may by written order, exempt any food or any class of food from
+      any or all of the provisions of this Part.
+
+23    Product identity
+(1)   Upon arrival of imported food into Cook Islands, authorised officers have
+      authority to inspect the documents accompanying the food to confirm the
+      specific product identity.
+(2)   The importer of food must ensure that complete documentation is made
+      available to an authorised officer to confirm all of the following matters—
+      (a) the name of the importer:
+      (b) a clear and accurate description of the food:
+      (c) details of quantity and weight:
+      (c) the serial number of the container:
+      (d) the exporting country and the name or registration number of the
+            relevant processing factory in that country:
+      (e) any other information or details which the Director requires from time to
+            time, or which the authorised officer requires in any particular case.
+(3)   An authorised officer also authority to verify by any appropriate means, that
+      the product, health marks, stamps and other necessary product and or package
+      information conforms to the declaration on the health certificates for the
+      products, and with any accompanying documentation.
+
+
+
+
+12
+                                Food Regulations 2014
+
+
+24    Health or sanitary certification for imported food
+(1)   Authorised officers have authority to subsequently inspect any health or
+      sanitary certification that accompanies imported food to determine all or any
+      of the following—
+      (a) that it is from a recognised competent authority and is signed:
+      (b) that it is relevant to the specific product being imported:
+      (c) that the certification is in English and in the required format:
+      (d) that the certification contains a statement of the controls in place at the
+            food business – for example, good hygienic practice; good
+            manufacturing practice; and a HACCP programme (or equivalent
+            programme) is implemented and audited:
+      (e) that the certification confirms that an audit or inspection has been
+            undertaken in a reasonable timeframe prior to product being distributed
+            from the premises.
+(2)   If a certificate does not meet the requirements of sub-regulation (1) an
+      authorised officer is empowered to take all necessary action to ensure that the
+      food is detained until the importer can provide satisfactory documentation.
+(3)   If no satisfactory documentation can be provided by the importer in a timely
+      manner the product must be re-exported, or rejected and destroyed, by or at the
+      cost of the importer.
+(4)   If the product is likely to deteriorate while being detained, it must be rejected
+      and destroyed in a manner approved by an authorised officer.
+
+25    Analytical certificates
+(1)   Authorised officers have authority to inspect food analysis certificates to
+      determine all or any of the following—
+      (a) that the certification covers the microbiological, chemical or physical
+             parameters required by these regulations:
+      (b) that the certification is in English and in the required format:
+      (c) that testing was conducted by an accredited or approved laboratory:
+      (d) that the test methodology is defined on the certificate and approved by
+             the Ministry.
+(2)   If the certificate does not meet the requirements of sub-regulation (1) an
+      authorised officer is empowered to take all necessary action to ensure that the
+      food is detained until the importer can provide satisfactory documentation, or
+      until the food is analysed.
+(3)   If no satisfactory documentation can be provided by the importer in a timely
+      manner the product must be re-exported, or rejected and destroyed, by or at the
+      cost of the importer.
+(4)   If the product is likely to deteriorate while being detained, it must be rejected
+      and destroyed in a manner approved by an authorised officer.
+
+26    Food subject to physical checks
+(1)   If, after documentary and identity checks, there is a need to hold the products
+      for physical checks, the authorised officer has authority to notify the importer
+      and Customs in writing of the intent to physically examine the product.
+
+
+
+
+                                                                                    13
+                                 Food Regulations 2014
+
+
+(2)   If it is necessary to conduct a physical check and it is not possible to do so in a
+      timely manner while in the Customs controlled area, the authorised officer has
+      authority to require the importer to move the product to another location
+      within Cook Islands, and for it to be held without further distribution until a
+      permit for the importation has been issued.
+(3)   The authorised officer has authority to apply any appropriate device or thing to
+      the container or product to ensure that it is not further distributed before
+      examination.
+(4)   When physical checks are carried out they may include any physical
+      observation or test appropriate to assess compliance with the Act, and with
+      these regulations or any applicable standard.
+
+27    Release of food after physical checks
+      Products which have been detained and subjected to physical checks may only
+      be released from detention and permitted to be sold if an authorised officer
+      issues an importation permit.
+
+28    Rejection and destruction
+(1)   If an authorised officer is of the opinion that a food product which is being
+      imported does not meet the requirements of the Act, or of these Regulations or
+      any applicable standard, the officer has authority to prohibit the importation.
+(2)   The relevant invoice and manifest in respect of that article must be marked
+      “REJECTED”, and an authorised officer will issue a notice of rejection of
+      article for import.
+(3)   The rejection notice will be delivered to a Customs officer who must take all
+      necessary action to prevent the importation of the food product.
+(4)   If food is rejected in accordance with this regulation, the authorised officer has
+      all necessary authority to ensure that the product is destroyed by crushing and
+      burial, or by other suitable means.
+(5)   All costs incurred or associated with the destruction of rejected food products
+      are to be met by the importer.
+
+                                   Part 4
+                      Labelling, packaging and claims
+29    Labelling requirements for pre-packaged foods
+(1)   A pre-packaged food offered for sale in, or imported into, Cook Islands must
+      comply with all applicable standards applied in accordance with section 16 of
+      the Act in relation to the content of the labels of such products, and the type
+      presentation of such labelling.
+(2)   All labelling required under these regulations and any approved standards
+      must be in the English language.
+(3)   Pre-packaged food must not be described or presented on any label or in any
+      labelling in a manner that is false, misleading or deceptive, or which is likely
+      to create an erroneous impression regarding its character in any respect.
+(4)   Pre-packaged food must not be described or presented on any label or in any
+      labelling by words, or by pictorial or other devices, which refer to or are
+      suggestive (directly or indirectly), of any other product with which such food
+      might be confused, or in such a manner as to lead the purchaser or consumer
+      to suppose that the food is connected with such other product.
+
+
+14
+                                Food Regulations 2014
+
+
+30    Requirements for products shipped to outer islands
+      All pre-packaged food products shipped from Rarotonga to any outer island
+      must have at least 6 months shelf-life before the products pass the date mark
+      printed on the product.
+
+31    Requirements relating to labelling of nutrient content
+(1)   All pre-packaged food produced, processed, packed, distributed, or imported
+      must comply with all approved standards for nutrient content labelling applied
+      in accordance with section 16 of the Ministry of Health Act 2013.
+(2)   The Director may give a written exemption to small scale or home-based food
+      businesses producing pre-packaged food products for sale at markets or road
+      side stalls or through other similar arrangements, from having to comply with
+      the nutrient content labelling requirements.
+(3)   Approved standards applied under this regulation may exempt foods produced
+      for immediate consumption by restaurants, school tuckshops, vendors of street
+      foods and take-away meals, or may apply specific standards in relation to such
+      foods.
+
+32    Prohibited claims in relation to food products
+      All of the following claims made on food labelling or in any other manner
+      which applies to the sale or offering for sale of food are prohibited—
+      (a) a claim that a food will provide an adequate source of all essential
+           nutrients, (except in the case of well-defined products for which a Codex
+           Standard permits such a claims to be made):
+      (b) a claim which states or implies that a balanced diet or ordinary foods
+           cannot supply adequate amounts of all nutrients:
+      (c) a claim which encourages or condones excessive consumption of any
+           food, or which contradicts good dietary practice:
+      (d) any claim which cannot be substantiated on the basis of sound scientific
+           evidence:
+      (e) nutrition claims and health claims relating to foods for infants and young
+           children except (except if such claims are permissible under standards,
+           rules, guidelines or codes of practice made under section 16 of the
+           Ministry of Health Act):
+      (f) a claim as to the suitability of a food for use in the prevention,
+           alleviation, treatment or cure of a disease, disorder or particular
+           physiological condition, (except if the claim is in accordance with the
+           provisions of Codex Standards or guidelines, and complies with any
+           standards, rules, guidelines or codes of practice made under section 16 of
+           the Ministry of Health Act):
+      (g) a claim which could give rise to doubt about the safety of similar food,
+           or which could arouse or exploit fear in the consumer:
+      (h) a claim that a food has obtained an increased or special nutritive value by
+           means of the addition of nutrients, such as vitamins, minerals and amino
+           acids is only permitted if such an addition has been made on the basis of
+           nutritional considerations according to the Codex General Principles for
+           the Addition of Essential Nutrients to Foods:
+      (i) a claim of religious or ritual preparation, (including that the food is Halal
+           and Kosher), if the food does not conform to the requirements of the
+           appropriate religious or ritual authorities:
+
+
+
+                                                                                    15
+                                Food Regulations 2014
+
+
+      (j)   a claim relating to the absence of beef or pork (or their derivatives), or
+            lard or added alcohol, is prohibited if the food does not normally contain
+            such ingredient:
+      (k)   a claim which highlights the absence or non-addition of particular
+            substances to food if either of the following apply—
+            (i) the substance is one which consumers would not normally expect
+                  to find in the food:
+            (ii) the substance has been substituted by another, giving the food
+                  equivalent characteristics (unless the nature of the substitution is
+                  clearly stated with equal prominence).
+
+33    Claims of nutrient and health benefits
+(1)   The only nutrition claims relating to food which are permitted are those
+      relating to energy, protein, carbohydrates, fats (and components of fats), fibre,
+      sodium, and vitamins and minerals for which Nutrient Reference Values have
+      been laid down in the Codex Alimentarius (unless otherwise permitted by
+      standards, rules, guidelines or codes of practice made under section 16 of the
+      Ministry of Health Act).
+(2)   If a nutrient content claim that is listed in Schedule 3 is made, the claim must
+      be consistent with the requirements of that Schedule.
+(3)   Nutrient comparative claims are only permitted if both of the following
+      apply—
+      (a) the comparison is to the same or similar food:
+      (b) a statement of the amount of difference in the energy value or nutrient
+            content is given.
+(4)   Claims as to the health benefits of foods are only permitted if all of the
+      following conditions are met—
+      (a) proof of the claim must be sufficient to substantiate the type of claimed
+            effect, and supported by appropriate scientific review of the relevant
+            data:
+      (b) claims must consist of information on the physiological role of the
+            nutrient, or relate to an accepted diet-health relationship and associated
+            composition information:
+      (c) the claimed benefit must arise from the consumption of a reasonable
+            quantity of the food or food constituent in the context of a healthy diet:
+      (d) a validated method to quantify the food constituent that forms the basis
+            of the claim must be available:
+      (e) all of the following information must appear on the label or labelling of
+            the food bearing a health claims—
+            (i) a nutrient declaration at least complying with the nutrition labelling
+                  requirements specified by the Codex Alimentarius:
+            (ii) a statement of the quantity of any nutrient or other constituent of
+                  the food that is the subject of the claim:
+            (iii) the target group of consumers, if appropriate:
+            (iv) how to use the food to obtain the claimed benefit, and other
+                  lifestyle factors or other dietary sources, if appropriate:
+            (v) advice to vulnerable groups on how to use or to avoid using the
+                  food, if appropriate:
+            (vi) the maximum safe intake of the food or constituent, if necessary:
+
+
+
+
+16
+                                 Food Regulations 2014
+
+
+              (vii) how the food or food constituent fits within the context of the total
+                     diet:
+              (viii) a statement on the importance of maintaining a healthy diet.
+(5)    A determination by the Director as to the appropriateness or necessity of any
+       matter referred to in sub-regulation (4)(e) is definitive, and the appropriate
+       requirements must be complied with if the Director so determines.
+(6)    A claim which relates to dietary guidelines or “healthy diets” is only permitted
+       if all of the following apply—
+       (a) if the claim is consistent with any national dietary guidelines applicable
+              to the Cook Islands:
+       (b) if the claim is not based on a selective consideration of one or more
+              aspects of the food:
+       (c) if the food is not described as “healthy” or represented in a manner that
+              implies that a food in and of itself will impart good or improved health.
+(7)    A claim to the effect that a food is a good source of a vitamin or mineral is
+       only permitted if the food contains no less than 25% of the recommended daily
+       intake of that vitamin or mineral.
+(8)    A claim regarding a food being fortified is only permitted if the food has been
+       approved by the Director as being suitable for such, and must not include food
+       considered by the Director to be high in sugars, fat or salt, (with the exception
+       of fortified salt itself).
+
+34     Packaging
+(1)    Materials and processes used for packaging and wrappings, must not be a
+       source of contamination to the food.
+(2)    The guideline levels provided for in the Codex Guideline for vinyl chloride
+       monomer and acrylonitrile permitted in food and packaging in Cook Islands
+       apply to food packaging and wrapping in Cook Islands.
+(3)    Packaging and wrapping must be stored in such a manner that they are not
+       exposed to a risk of contamination.
+(4)    Packaging used for the protection of food for sale cannot be re-used for food
+       or feed unless the Director approves such re-use after inspecting both the
+       accuracy of the labelling and the cleaning and disinfection processes applied to
+       the second hand packaging.
+(5)    Cartons used to package eggs must not be reused.
+(6)    When food business operators retail raw meat and poultry direct to consumers,
+       such meat and poultry must be packaged so that the packaging prevents
+       contamination of the meat and poultry and prevents the meat and poultry from
+       contaminating other food.
+(7)    Packages referred to in sub-regulation (6) must be labelled in accordance with
+       the mandatory labelling requirements of these regulations, and any applicable
+       standards.
+(8)    Butcher shops and retailers need not package meat and poultry for display for
+       sale provided that such meat and poultry are not potentially subject to
+       consumer handling.
+(9)    When selling meat and poultry direct to consumers butchers must package the
+       food in packaging that prevents contamination of the meat and poultry, and
+       prevents the meat and poultry from contaminating other food.
+(10)   Packaging referred to in sub-regulation (9) is exempt from other mandatory
+       labelling requirements.
+
+
+                                                                                      17
+                                Food Regulations 2014
+
+
+
+                                   Part 5
+                           Food product standards
+35    Commodity standards
+(1)   A person who produces, processes, harvests, handles, keeps, distributes,
+      displays for sale, sells or imports into or exports from the Cook Islands a food
+      must comply with all applicable standards, operating procedures and codes of
+      conduct approved under section 16 of the Ministry of Health Act 2013.
+(2)   Standards, operating procedures and codes of conduct may be applied under
+      sub-regulation (1) to all or any of the following—
+      (a) meat and meat products:
+      (b) poultry, poultry products and eggs:
+      (c) fish and fisheries products:
+      (d) cereal and cereal products:
+      (e) salt:
+      (f) canned vegetables:
+      (g) any other type of food or food product.
+
+                               Part 6
+        Food safety and hygiene obligations of food businesses
+36    Application of this Part (no application to fish processing premises)
+      This Part applies to all food businesses operating in the Cook Islands with the
+      exception of premises subject to the Food (Fish Export Processing)
+      Regulations 2006.
+
+37    Good hygienic practices
+(1)   All food business operators must take all practicable measures to process only
+      safe and suitable food, and must ensure that good hygienic practices as
+      prescribed in this Part are applied at all stages of producing, manufacturing,
+      harvesting, receiving, processing, handling, transporting, storing, displaying,
+      selling, distributing and importing any food under their control.
+(2)   When processing food, food business operators must comply with both of the
+      following—
+      (a) they must take all necessary steps to prevent the likelihood of food being
+            contaminated:
+      (b) if a process step is needed to reduce any pathogens that may be present
+            in the food to safe levels – they must use a process step that has been
+            proven to achieve the microbiological safety of the food.
+(3)   The following apply to hawkers, vendors of street foods and take-away foods,
+      street and market food stalls and any charity and community food business
+      operations that prepare, handle, harvests, store or display food for sale or sell
+      food—
+      (a) they are responsible for ensuring the food provided for sale is safe and
+            has been prepared or harvested under hygienic conditions using good
+            hygienic practices:
+      (b) they can be exempted in writing by the Director, from having to comply
+            with any of the food safety requirements of these regulations, if they can
+            satisfy the Director that—
+
+
+
+18
+                                 Food Regulations 2014
+
+
+            (i)     they are using some other approved hygienic practice to
+                    safeguard the food; and
+            (ii)    there is no risk to the health of the public from being so
+                    exempted:
+      (c)   they must permit an authorised officer to inspect the place or places in
+            which the food was or is being prepared, handled, harvested, displayed
+            or offered for sale, so as to enable the authorised officer to ascertain the
+            hygienic state of the place, (including any domestic places or residential
+            premises where food has been or is being prepared).
+
+38    Food safety and hygiene standards
+(1)   A person who operate or work in any food business must comply with all
+      applicable standards, operating procedures and codes of conduct approved
+      under section 16 of the Ministry of Health Act 2013.
+(2)   Standards, operating procedures and codes of conduct may be applied under
+      sub-regulation (1) to all or any of the following—
+      (a) any health related requirements for places and facilities of food
+            businesses, including the location of places and equipment, matters
+            relating to design and layout, internal structures and fittings, and
+            maintenance of premises and equipment:
+      (b) equipment and containers used in relation to food preparation, processing
+            or packaging:
+      (c) cooking equipment (including associated exhaust systems), including the
+            maintenance and sanitising of specific equipment:
+      (d) water quality (including ice):
+      (e) drainage and waste disposal:
+      (f) cleaning facilities, equipment and processes:
+      (g) personnel hygiene facilities and toilets:
+      (h) air quality and ventilation:
+      (i) lighting:
+      (j) storage:
+      (k) cleaning, disinfection, pest control and the control of animals:
+      (l) vehicles, vessels, conveyances and bulk containers used in relation to
+            food:
+      (m) time and temperature control (including temperature measuring devises):
+      (n) microbiological cross-contamination:
+      (o) physical contamination:
+      (p) restrictions of prohibitions relating to the re-service of food, and to single
+            use items:
+      (q) interference with food packaging:
+      (r) restrictions as to exposure of food:
+      (s) raw materials and ingredients for food:
+      (t) regulation of food workers, including their health status, and matters
+            related to personal cleanliness, hygiene, personal behaviour, mandatory
+            food handler training:
+      (u) recall procedures.
+
+
+
+
+                                                                                     19
+                                  Food Regulations 2014
+
+
+
+                                 Part 7
+      Marketing of food and non-alcoholic beverages to children and
+                                infants
+39      Criteria to determine whether marketing and sales restrictions are to
+        apply
+(1)     Subject to the restrictions imposed by this Part, the Director has authority to
+        determine that a food product or non-alcoholic beverage is a “designated
+        product” for the purposes of this Part, if nutritional content (including the
+        presence of saturated fat, trans-fatty acids, free sugar and salt) of the product
+        or beverage makes the consumption of that food or beverage detrimental to the
+        health of children or infants, and that it is only suitable for occasional
+        consumption.
+(2)     The Director has authority to publish criteria for deciding whether the content
+        of a designated product is detrimental to the health of children or infants.
+(3)     The matters which the Director can take into account in deciding the criteria
+        under sub-regulation (2) include any or all of the following—
+        (a) the nutritional content of products or beverages:
+        (b) the presence of food additives in products or beverages:
+        (c) production techniques used for products or beverages:
+        (d) any other matters that the Secretary or Director considers appropriate.
+(4)     The Director may adopt criteria developed by national or international
+        organisations for the purpose of sub-regulation (2).
+(5)     In the light of any new evidence, the Director has authority to publish criteria
+        from time to time revised.
+
+40      Controls on advertising and promotion of designated products
+(1)     A person commits an offence against these regulations if he or she does any of
+        the following—
+        (a) publishes or arranges for any other person to publish any advertisement:
+        (b) arranges or undertakes any promotion of designated products—
+              which undermines the education of children as to the importance of
+              healthy and balanced nutritious diet.
+(2)     A person commits an offence against these regulations if he or she does any of
+        the following—
+        (a) publishes or arranges for the publication of an advertisement for a
+              designated product, or a designated product brand name to children:
+        (b) undertakes or arranges for a promotion of a designated product or
+              designated product brand name to children:
+        (c) publishes or arranges for the publication of any advertisement for infant
+              formulas:
+        (d) undertakes or arranges for a promotion of any infant formula.
+(3)     For the purposes of this regulation, an advertisement or promotion is deemed
+        to be “to children” if any of the following apply—
+        (a) it is likely to appeal to children:
+        (b) it is organised or published at any time, place, situation or in a medium
+              where the percentage of children in the audience, or as likely recipients
+              of the advertisement or promotion, is likely to exceed 30%.
+(4)     To determine whether sub-regulation (3)(a) applies, the factors that may be
+        taken into account include any or all of the following—
+
+
+20
+                                Food Regulations 2014
+
+
+      (a)   the nature of the designated products:
+      (b)   the themes, content, presentation and design of the advertisement or
+            promotion:
+      (c) the age of any people participating in the advertisement or involved in
+            the promotion:
+      (d) any images, graphics, language, sounds, music, objects, animals,
+            personalities, characters, activities, games or sport in the advertisement
+            or promotion.
+(5)   A person commits an offence against these regulations if he or she does any of
+      the following—
+      (a) arranges for, permits or authorises any child or infant to appear or be
+            used in any advertisement or promotion for any designated product, or in
+            association with a designated product brand name:
+      (b) arranges for, permits, or authorises the use of any person or character
+            well known or likely to appeal to children for the purpose of advertising
+            or promoting a designated product or designated product brand name:
+      (c) arranges for, permits or authorises the use of any game or any internet
+            site or other electronic or communication medium intended to appeal to
+            children for the purpose of advertising a designated product or
+            designated product brand name:
+      (d) broadcasts any advertisement or promotion for a designated product
+            between 6 am and 9 pm on any day of the week:
+      (e) uses, arranges for, permits or authorises the advertising or promotion of
+            any designated product or any designated product brand name, at any
+            settings where children or infants are likely to gather (including schools,
+            playgrounds, day care centres and wellness clinics):
+      (f) uses a designated product brand name in relation to any of the
+            following—
+            (i) on any article or thing intended for sale to or supply or use by
+                  children or infants, other than on the package or container of a
+                  designated product:
+            (ii) for the purpose of advertising or promoting any article or thing
+                  that is not a designated product, any service, activity or event or a
+                  scholarship, fellowship or any other educational benefit:
+      (g) uses or permits to be used, any designated product or designated product
+            brand name in association with any children’s or infants activities:
+      (h) supplies or offers a premium, for the purpose or effect of promoting a
+            designated product, to children or infants:
+      (i) packs a designated product, or causes, permits or authorises the
+            packaging of a designated product, in a manner which is directed to
+            children or infants:
+      (j) displays, or permits, authorises or arranges for the display of any
+            advertisement or promotion for a designated product within 200 metres
+            of the entrance to a school, health facility or child care facility, or any
+            other setting where children or infants are likely to gather.
+
+
+
+
+                                                                                    21
+                              Food Regulations 2014
+
+
+
+                                Part 8
+                   Offences against these regulations
+41   Offences and penalties
+     Subject to regulation 42, a person who commits an offence against these
+     regulations, or who breaches any obligation or requirement applying under
+     these regulations or any approved standard, or under any licence or permit
+     issued under the regulations, is liable upon conviction to a fine not exceeding
+     $5,000.
+
+42   Additional penalty if injury, harm or damage arises from a breach
+     If any offence against these regulations, or any breach of any obligation or
+     requirement applying under them, results in any injury or harm to any person,
+     or damage to any property, then upon conviction the person is liable to a fine
+     not exceeding $50,000.
+
+43   Offences by corporations
+     If an offence against these regulations, or any breach of an obligation or
+     requirement under them, is committed by a company or corporate body, then
+     in addition to proceedings being taken against the company, any director,
+     manager or person associated with the company may be prosecuted under
+     these regulations if any of the following apply—
+     (a) that person knew of the circumstances amounting to the offence or
+           breach:
+     (b) that person ought to have known of the circumstances amounting to the
+           offence or breach:
+     (c) that person was responsible for any matter within the company or
+           corporate body, which if done properly, would have prevented or
+           avoided the offence or breach, or would have minimised the
+           consequences of it:
+     (d) that person acted in any way so as to cover up the circumstances which
+           amounted to the offence or breach.
+
+
+
+
+22
+                                Food Regulations 2014
+
+
+                                                                                 r 8(1)
+
+                            Schedule 1
+           Maximum permitted levels of chemical contaminants
+
+(1)    Maximum permitted levels of arsenic in edible fats and oils, named animal
+       fats, named vegetable oils, olive oils and olive pumice oils, and fats spreads
+       and blended spreads shall be 0.1 mg/Kg.
+(2)    Maximum permitted levels of arsenic in salt shall be 0.5 mg/Kg.
+(3)    Maximum permitted levels of cadmium in salt shall be 0.5 mg/Kg.
+(4)    Maximum permitted levels of cadmium in fish and fisheries products shall be
+       as prescribed below:
+
+                                                                    Max level
+ Product
+                                                                    (mg/Kg)
+ Muscle meat of fish, excluding those listed below                       0.05
+ Muscle meat of: bonito (Sarda sarda), horse mackerel or scad
+ (Trachurus, trachurus), sardine (Sardina pilcardus), sardinops
+                                                                           0.1
+ (Sardinops species), spotted seabass (Dicentrarchus punctatus),
+ tuna (Thunnus species and Euthynnys species)
+ Crustaceans, excluding brown meat of crab and excluding head
+ and thorax meat of lobster and similar large crustaceans                  0.5
+ (Nephropidae and Palinuridae)
+ Cephalopods (without viscera)                                             1.0
+
+(5)    Maximum permitted levels of copper in anhydrous milkfat, milkfat, anhydrous
+       butteroil and butteroil and ghee shall be 0.05 mg/Kg.
+(6)    Maximum permitted levels of copper in edible animal fats not elsewhere
+       specified shall be 0.4 mg/Kg.
+(7)    Maximum permitted levels of copper in salt shall be 2.0 mg/Kg.
+(8)    Maximum permitted levels of iron in anhydrous milkfat, milkfat, anhydrous
+       butteroil and butteroil and ghee shall be 0.2 mg/Kg
+(9)    Maximum permitted levels of lead in edible fats and oils shall be 0.2 mg/Kg
+       unless otherwise stated as with the named animal fats and vegetable oils and
+       olive oils and olive pumice oils.
+(10)   Maximum permitted levels of lead in named animal fats, named vegetable oils,
+       olive oils and olive pumice oils, and fats spreads and blended spreads shall be
+       0.1 mg/Kg.
+(11)   Maximum permitted levels of lead in canned corned beef, canned luncheon
+       meat and sugars shall be 0.5 mg/Kg;
+(12)   Maximum permitted levels of lead in salt shall be 2 mg/Kg.
+(13)   Maximum permitted levels of lead in infant formula shall be 0.02mg/Kg.
+(14)   Maximum permitted levels of lead in fish and fisheries products shall be as
+       prescribed below:
+
+
+
+
+                                                                                    23
+                                 Food Regulations 2014
+
+
+
+
+                                                                    Max Level
+ Product
+                                                                    (mg/Kg)
+ Muscle meat of fish, excluding those listed below.                 0.2
+ Muscle meat of: bonito (Sarda sarda), horse mackerel or scad
+ (Trachurus, trachurus), sardine (Sardina pilcardus), sardinops
+                                                                    0.4
+ (Sardinops species), spotted seabass (Dicentrarchus punctatus),
+ tuna (Thunnus species and Euthynnys species)
+ Crustaceans, excluding brown meat of crab                          0.5
+ Cephalopods (without viscera)                                      1.0
+
+(15)   Maximum permitted levels of total mercury in Sharks (all species), Tuna
+       (Thunnus spp,), Little tuna (Euthynnus spp,), Bonito (Sarda spp,), Plain
+       bonito     (Orcynopsis unicolor), Swordfish         (Xiphias gladius), Sailfish
+       (Istiophorus platypterus), Marlin (Makaira spp,), Bass (Dicentrarchus labrax),
+       Portuguese dogfish       (Centroscymnes coelolepis), Rays,          (Raja spp,),
+       Anglerfish (Lophius spp,), Emperor or Orange roughy (Hoplostethus
+       atlanticus), Bonito (Sarda sarda), Grenadier (Coryphaenoides rupestris), Plain
+       bonito (Orcynopsis unicolor), Snake mackerel or Butterfish (Lepidocybium
+       flavobrunneum, Ruvettus pretiosus, Gempylus serpens) shall be 1.0 mg/Kg.
+(16)   Maximum permitted levels of total mercury in all other species of fish other
+       than those described in subsection (16) above shall be 0.5 mg/Kg
+(17)   Maximum permitted levels of mercury in salt shall be 0.1 mg/Kg.
+(18)   Maximum permitted levels of tin in canned corned beef and canned luncheon
+       meat shall be 50 mg/Kg unless it is in tinplate containers when the maximum
+       permitted shall be 200 mg/Kg.
+(19)   Maximum permitted levels of 3-chloro-1,2-propanediol in acid hydrolyzed
+       foods such as, but not limited to, soy sauce and fish sauce shall be 0.2mg/Kg.
+(20)   Maximum permitted levels of 1,3-dichloro-2-propanol in acid hydrolyzed
+       foods such as, but not limited to, soy sauce and fish sauce shall be 5µg/Kg.
+(21)   Smoked fish may contain formaldehyde incidentally absorbed in the
+       processing in a proportion not exceeding 5 mg/Kg.
+(22)   While not being permitted to be purposefully added to food, in recognition that
+       some foods may become contaminated accidentally, the maximum permitted
+       levels for melamine in food are 1mg/Kg in food for infants up to 3 years and
+       2.5mg/Kg for all other food.
+(23)   While not being permitted to be purposefully added to animal feed, in
+       recognition that some feed may become contaminated accidentally, the
+       maximum permitted levels for melamine in feed for food animals is 2.5mg/Kg.
+(24)   Mycotoxins shall not be at levels above those permitted by the Codex
+       Alimentarius
+(25)   Smoked meat may contain formaldehyde incidentally absorbed in the
+       processing in a proportion not exceeding 5 mg/Kg.
+
+
+
+
+24
+                                   Food Regulations 2014
+
+
+
+
+                                                                               r 11(1)
+
+                            Schedule 2
+       Maximum limits on microbiological contaminants in foods
+
+Food                           Where          Microorganism or         n c m    M
+                               criterion      microbial
+                               applies        toxin/sample unit
+                                              size
+Milk powder, cream             Products prior Salmonella/25 g          5 0 0
+powder, and whey powder        to import, at
+Powdered infant formula        point of       Bacillus cereus/25g      5 0 102/g
+products                       import, and at Coagulase-positive       5 1 0/g 10/g
+                               the point of   staphylococci/25g
+                               sale
+                                              Salmonella/25 g          5 0 0
+Egg products                                    Salmonella/25 g        5 0 0
+Packaged natural mineral                        Escherichia coli/250   2 0 0
+water                                           ml
+                                                Total                  2 0 0
+                                                coliforms/100mL
+Packaged water and                              Escherichia coli/250   2 0 0
+packaged waters defined                         ml
+by origin other than natural                    Total                  2 0 0
+mineral water                                   coliforms/100mL
+Packaged ice for human                          Escherichia coli/100   2 0 0
+consumption                                     ml
+Ice cream                                       Escherichia            2 0 0
+                                                coli/100g
+                                                Salmonella/25g         5 0 0
+Meat products intended to                       Salmonella/10 g        5 0 0
+be eaten cooked sampled
+prior to cooking, including
+minced meat and meat
+preparations made from
+poultry meat and other
+species
+Turkey tails and other                          Salmonella/10 g        5 0 0
+poultry tail products ,
+intended to be eaten
+cooked, sampled prior to
+cooking
+
+
+
+
+                                                                                   25
+                                          Food Regulations 2014
+
+
+
+
+Ready-to-eat meat not elsewhere                Salmonella/25 g           5   0 0
+addressed                                      Escherichia coli/100g     2   0 0
+Ready-to-eat cooked crustaceans                Staphylococcal            5   0 0
+including crabs, lobster, shrimp               enterotoxins/25g
+and prawns                                     Salmonella/25 g           5 0 0
+Bivalve molluscs intended to be                Escherichia coli/100g     11 0 230
+eaten raw                                                                     MPN/
+                                                                              100g
+                                               Salmonella/25 g           5 0 0
+Pre-cut fruit and vegetables (ready-           Escherichia coli/25g      2 1 0             10
+to-eat)                                        Salmonella/25 g           5 0 0
+Ready-to-eat spices                            Salmonella/25 g           5 0 0
+Battered and otherwise heavily                 Staphylococcal            5 0 0
+handled food prior to or after                 enterotoxins/25g
+cooking
+                                               Coagulase-positive        5   1 0/g         10/g
+                                               staphylococci/25g
+
+Marine fish (other than bivalve                Vibrio parahaemolyticus 5 0 0
+molluscs) to be eaten raw                      Escherichia coli/100g   12 0 230
+                                                                            MPN/
+                                                                            100g
+Where –
+“n” means the minimum number of sample units which shall be examined from a lot of food;
+“c” means the maximum allowable number of sample units with microbiological levels above m;
+“M” means the level that if exceeded in any one sample would cause the lot to be rejected as not
+meeting these Regulations.
+
+
+
+
+1
+    pooled from a minimum of 10 animals
+2
+    pooled from a minimum of 10 samples
+
+
+26
+               Food Regulations 2014
+
+
+                                                  r 33(2)
+
+                  Schedule 3
+Table of conditions for nutrient content claims
+
+
+
+
+                                                      27
+                                 Food Regulations 2014
+
+
+
+
+                                                          _________________________
+                                                         Clerk of the Executive Council
+
+
+
+             These regulations are administered by the Ministry of Health.
+     These regulations were made on the              day of                  2015.
+
+
+
+
+28
+

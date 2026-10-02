@@ -1,6 +1,6 @@
-import { config } from '@vue/test-utils';
+import { config, enableAutoUnmount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import { vi } from 'vitest';
+import { afterEach, vi } from 'vitest';
 import { mockWalletRuntime } from '@tests/stubs/mockWalletRuntime';
 
 const fallbackWalletConsts = {
@@ -25,6 +25,8 @@ const ensureWalletRuntime = (module: Record<string, unknown>) => {
 };
 
 const walletOverrideCache = new WeakMap<Function, Promise<Record<string, unknown>>>();
+
+enableAutoUnmount(afterEach);
 
 async function resolveWalletRuntime() {
   const override = (globalThis as Record<string, any>).__WALLET_RUNTIME_OVERRIDE;

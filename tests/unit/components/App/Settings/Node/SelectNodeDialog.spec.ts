@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, nextTick } from 'vue';
+import { defineComponent, h, markRaw, nextTick, ref } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/composables/useTranslation', () => ({
@@ -53,23 +53,50 @@ const DialogBaseStub = defineComponent({
 
 const SelectNodeStub = defineComponent({
   name: 'SelectNodeStub',
+  emits: ['update:value'],
   props: {
+    value: {
+      type: String,
+      default: '',
+    },
+    nodeAddressConnecting: {
+      type: String,
+      default: '',
+    },
+    nodes: {
+      type: Array,
+      default: () => [],
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     viewNode: {
       type: Function,
       default: undefined,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     return () =>
-      h(
-        'button',
-        {
-          class: 'open-node-info',
-          onClick: () =>
-            (props.viewNode as undefined | ((node?: { address: string }) => void))?.({ address: 'wss://2' }),
-        },
-        'open-node-info'
-      );
+      h('div', {}, [
+        h(
+          'button',
+          {
+            class: 'open-node-info',
+            onClick: () =>
+              (props.viewNode as undefined | ((node?: { address: string }) => void))?.({ address: 'wss://2' }),
+          },
+          'open-node-info'
+        ),
+        h(
+          'button',
+          {
+            class: 'select-first-node',
+            onClick: () => emit('update:value', (props.nodes as Array<{ address: string }>)[0]?.address ?? ''),
+          },
+          'select-first-node'
+        ),
+      ]);
   },
 });
 
@@ -135,20 +162,33 @@ const GenericPageHeaderStub = defineComponent({
   },
 });
 
-const createConnectionMock = () => ({
-  nodeList: [
+const createConnectionMock = () => {
+  const nodeList = [
     { address: 'wss://1', name: 'Node 1', chain: 'SORA' },
     { address: 'wss://2', name: 'Node 2', chain: 'SORA' },
-  ],
-  customNodes: [],
-  defaultNodes: [{ address: 'wss://1', name: 'Node 1', chain: 'SORA' }],
-  node: { address: 'wss://1' },
-  nodeAddressConnecting: '',
-  connectionAllowance: true,
-  connect: vi.fn().mockResolvedValue(undefined),
-  updateCustomNode: vi.fn(),
-  removeCustomNode: vi.fn(),
-});
+  ];
+  const defaultNodes = [{ address: 'wss://1', name: 'Node 1', chain: 'SORA' }];
+  const customNodes: Array<{ address: string; name: string; chain: string }> = [];
+  const statusState = ref({
+    nodeList,
+    customNodes,
+    defaultNodes,
+    node: { address: 'wss://1' } as { address: string } | null,
+    nodeAddressConnecting: '',
+    connectionAllowance: true,
+    connected: true,
+  });
+
+  return markRaw({
+    statusState,
+    get status() {
+      return statusState.value;
+    },
+    connect: vi.fn().mockResolvedValue(undefined),
+    updateCustomNode: vi.fn(),
+    removeCustomNode: vi.fn(),
+  });
+};
 
 describe('SelectNodeDialog', () => {
   it('applies dialog card classes for both list and add-node views', async () => {
@@ -184,6 +224,75 @@ describe('SelectNodeDialog', () => {
 
   it('marks dialog-driven node changes as manual selections', () => {
     expect(selectNodeDialogSource).toContain('manualSelection: true');
+  });
+
+  it('reacts to connection status snapshots without proxying the connection instance', async () => {
+    const connection = createConnectionMock();
+    const wrapper = mount(SelectNodeDialog, {
+      props: {
+        connection: connection as any,
+        visibility: true,
+        setVisibility: vi.fn(),
+      },
+      global: {
+        stubs: {
+          DialogBase: DialogBaseStub,
+          SelectNode: SelectNodeStub,
+          NodeInfo: NodeInfoStub,
+        },
+      },
+    });
+
+    const selectNode = wrapper.getComponent(SelectNodeStub);
+    expect(selectNode.props('value')).toBe('wss://1');
+    expect(selectNode.props('nodeAddressConnecting')).toBe('');
+    expect(selectNode.props('disabled')).toBe(false);
+
+    connection.statusState.value = {
+      ...connection.statusState.value,
+      node: null,
+      nodeAddressConnecting: 'wss://2',
+      connectionAllowance: false,
+      connected: false,
+    };
+    await nextTick();
+
+    expect(selectNode.props('value')).toBe('');
+    expect(selectNode.props('nodeAddressConnecting')).toBe('wss://2');
+    expect(selectNode.props('disabled')).toBe(true);
+  });
+
+  it('allows reconnecting a persisted node that is not actually connected', async () => {
+    const connection = createConnectionMock();
+    connection.statusState.value = {
+      ...connection.statusState.value,
+      connected: false,
+    };
+    const wrapper = mount(SelectNodeDialog, {
+      props: {
+        connection: connection as any,
+        visibility: true,
+        setVisibility: vi.fn(),
+      },
+      global: {
+        stubs: {
+          DialogBase: DialogBaseStub,
+          SelectNode: SelectNodeStub,
+          NodeInfo: NodeInfoStub,
+        },
+      },
+    });
+
+    expect(wrapper.getComponent(SelectNodeStub).props('value')).toBe('');
+
+    await wrapper.get('.select-first-node').trigger('click');
+
+    expect(connection.connect).toHaveBeenCalledWith(
+      expect.objectContaining({
+        node: expect.objectContaining({ address: 'wss://1' }),
+        manualSelection: true,
+      })
+    );
   });
 
   it('renders node options as selectable rows instead of exposed radio controls', () => {

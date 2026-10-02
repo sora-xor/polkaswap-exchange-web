@@ -1,0 +1,176 @@
+[
+  {
+    "file": "ippc-legislation.html",
+    "url": "https://www.ippc.int/en/countries/all/legislation/",
+    "status": 200,
+    "bytes": 422005,
+    "rows": [
+      "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/plant-protection-legislation/\"> Plant Protection Legislation</a></td> <td data-sort=\"1198108800\">20 Dec 2007</td> <td data-sort=\"1551739388\">04 Mar 2019 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/plant-pest-and-disease-eradication-act/\"> Plant Pest and Disease Eradication Act</a></td> <td data-sort=\"1132185600\">17 Nov 2005</td> <td data-sort=\"1132218060\">17 Nov 2005 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/regulations/\"> Regulations</a></td> <td data-sort=\"1132185600\">17 Nov 2005</td> <td data-sort=\"1243846860\">01 Jun 2009 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/legislation-2/\"> Legislation</a></td> <td data-sort=\"1132185600\">17 Nov 2005</td> <td data-sort=\"1132218060\">17 Nov 2005 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2012/12/antigua-and-barbuda-phytosanitary-measuresrequirements-and-prohibitions/\"> Antigua and Barbuda Phytosanitary measures,requirements and prohibitions</a></td> <td data-sort=\"1132444800\">20 Nov 2005</td> <td data-sort=\"1132218060\">17 Nov 2005 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/saint-vincent-and-the-grenadines/\">Saint Vincent and the Grenadines</a></td> <td> <a href=\"/en/countries/saint-vincent-and-the-grenadines/reportingobligation/2012/12/ammended-plant-protection-act/\"> Ammended Plant protection Act</a></td> <td data-sort=\"1111276800\">20 Mar 2005</td> <td data-sort=\"1132131660\">16 Nov 2005 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2014/05/httplawsgovagacts2012a2012-1pdf/\"> http://laws.gov.ag/acts/2012/a2012-1.pdf</a></td> <td data-sort=\"1400083200\">14 May 2014</td> <td data-sort=\"1400058060\">14 May 2014 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2014/05/import-permit-application-form/\"> Import Permit Application Form</a></td> <td data-sort=\"1400083200\">14 May 2014</td> <td data-sort=\"1400058060\">14 May 2014 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2014/05/import-export-guide/\"> Import Export Guide</a></td> <td data-sort=\"1400083200\">14 May 2014</td> <td data-sort=\"1400058060\">14 May 2014 </td> </tr>",
+      "<tr> <td><a href=\"/en/countries/dominican-republic/\">Dominican Republic</a></td> <td> <a href=\"/en/countries/dominican-republic/reportingobligation/2024/10/medidas-para-impedir-entrada-de-la-marchitez-de-las-musaceas-res-ma-2019-43/\"> MEDIDAS PARA IMPEDIR ENTRADA DE LA MARCHITEZ DE LAS MUSACEAS - RES-MA-2019-43</a></td> <td data-sort=\"1729274178\">18 Oct 2024</td> <td data-sort=\"1729274178\">18 Oct 2024 </td> </tr>"
+    ]
+  },
+  {
+    "file": "ag-media-import.json",
+    "url": "https://agriculture.gov.ag/wp-json/wp/v2/media?search=import&per_page=100",
+    "status": 200,
+    "bytes": 29564,
+    "items": [
+      {
+        "title": {
+          "rendered": "World Bee Day Importance of Bees"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2026/05/World-Bee-Day-Importance-of-Bees.jpg"
+      },
+      {
+        "title": {
+          "rendered": "import export information &#038; guide"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/import-export-information-guide.pdf"
+      },
+      {
+        "title": {
+          "rendered": "Import Status of Plant Commodities and Regulated Items PLANT PROTECTION ANTIGUA AND BARBUDA ver. 27082020"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-ver.-27082020.pdf"
+      },
+      {
+        "title": {
+          "rendered": "IMPORT PERMIT APPLICATION FORM form[1]"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/IMPORT-PERMIT-APPLICATION-FORM-form1.pdf"
+      },
+      {
+        "title": {
+          "rendered": "Resvised may 21 2021 import requirment UK"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2022/03/Resvised-may-21-2021-import-requirment-UK.docx"
+      },
+      {
+        "title": {
+          "rendered": "Plant Protection Import Guidelines ver 17062021"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2021/09/Plant-Protection-Import-Guidelines-ver-17062021.pdf"
+      },
+      {
+        "title": {
+          "rendered": "Antigua &#038; Barbuda Keeps Close Watch Over Poultry Imports From Brazil"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2017/05/Brazil-Poultry.pdf"
+      },
+      {
+        "title": {
+          "rendered": "Importation of Pesticides and Toxic Chemicals"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/Importation-of-Pesticides-and-Toxic-Chemicals.docx"
+      },
+      {
+        "title": {
+          "rendered": "Import Plant Commodities and Regulated Items PLANT PROTECTION ANTIGUA AND BARBUDA"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-02122016.pdf"
+      },
+      {
+        "title": {
+          "rendered": "IMPORT PERMIT APPLICATION FORM form[1]"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/IMPORT-PERMIT-APPLICATION-FORM-form1-1.pdf"
+      },
+      {
+        "title": {
+          "rendered": "IMPORT PERMIT APPLICATION FORM form[1]"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/IMPORT-PERMIT-APPLICATION-FORM-form1.pdf"
+      },
+      {
+        "title": {
+          "rendered": "License to Import Application Form"
+        },
+        "url": "https://agriculture.gov.ag/wp-content/uploads/2016/11/Application-for-import-license.pdf"
+      }
+    ]
+  },
+  {
+    "file": "bb-plantpage.html",
+    "url": "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+    "status": 200,
+    "bytes": 95331,
+    "links": [
+      {
+        "label": "Report It!",
+        "url": "/report"
+      },
+      {
+        "label": "Plant Protection Department",
+        "url": "/Departments/Plant-Protection"
+      },
+      {
+        "label": "Legal Framework",
+        "url": "/Downloads/"
+      },
+      {
+        "label": "Regulations",
+        "url": "/Resources/Regulations"
+      },
+      {
+        "label": "Plant Protection Department",
+        "url": "/Departments/Plant-Protection"
+      },
+      {
+        "label": "Legal Framework",
+        "url": "/Downloads/"
+      },
+      {
+        "label": "Regulations",
+        "url": "/Resources/Regulations"
+      }
+    ]
+  },
+  {
+    "file": "vg-lawindex.html",
+    "url": "https://laws.gov.vg/revised-laws",
+    "status": 200,
+    "bytes": 59914,
+    "links": [
+      {
+        "label": "",
+        "url": "/"
+      },
+      {
+        "label": "Revised Laws",
+        "url": "/revised-laws"
+      },
+      {
+        "label": "All",
+        "url": "/revised-laws"
+      },
+      {
+        "label": "Revised Year",
+        "url": "?title=&amp;order=field_year&amp;sort=asc"
+      },
+      {
+        "label": "Cinematographs Regulations",
+        "url": "/laws/cinematographs-regulations"
+      },
+      {
+        "label": "Eastern Caribbean Supreme Court Civil  Procedure Rules (Revised Edition) 2023- Practice Direction 8",
+        "url": "/laws/eastern-caribbean-supreme-court-civil-procedure-rules-revised-edition-2023-practice-direction"
+      },
+      {
+        "label": "Eastern Caribbean Supreme Court Civil Procedure Rules, Revised Edition 2023",
+        "url": "/laws/eastern-caribbean-supreme-court-civil-procedure-rules-revised-edition-2023"
+      },
+      {
+        "label": "Fumigation of Plants Act",
+        "url": "/laws/fumigation-plants-act"
+      }
+    ]
+  }
+]

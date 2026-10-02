@@ -2,6 +2,7 @@ import { ValidatorsListMode } from '@/modules/staking/sora/consts';
 import { ValidatorsFilter } from '@/modules/staking/sora/types';
 
 import type { FPNumber } from '@sora-substrate/math';
+import type { CodecString } from '@sora-substrate/sdk';
 import type {
   ValidatorInfo,
   StashNominatorsInfo,
@@ -31,7 +32,7 @@ export type StakingState = {
   validatorsInfo: readonly ValidatorInfo[];
   selectedValidators: readonly ValidatorInfo[];
   pendingRewards: Nullable<NominatorReward>;
-  minNominatorBond: Nullable<number>;
+  minNominatorBond: Nullable<CodecString>;
   unbondPeriod: Nullable<number>;
   maxNominations: Nullable<number>;
   historyDepth: Nullable<number>;

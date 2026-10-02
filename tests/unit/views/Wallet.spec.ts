@@ -26,6 +26,8 @@ const walletStoreMock = reactive<{
   navigate: navigateMock,
 });
 
+vi.mock('@/composables/useTranslation', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
+
 vi.mock('@/stores/wallet', () => ({
   __esModule: true,
   useWalletStore: () => walletStoreMock,
@@ -70,6 +72,7 @@ describe('Wallet view route syncing', () => {
     mount(WalletView, {
       global: {
         stubs: {
+          RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
           'sora-wallet': {
             name: 'SoraWalletStub',
             template: '<div class="sora-wallet-stub"></div>',
@@ -96,6 +99,14 @@ describe('Wallet view route syncing', () => {
     walletStoreMock.isLoggedIn = false;
     walletStoreMock.whitelist = {};
     walletStoreMock.whitelistIdsBySymbol = {};
+  });
+
+  it('keeps the wallet visible without duplicating the shared Buy XOR entry', () => {
+    const wrapper = mountWalletView();
+    expect(wrapper.find('[data-test-name="walletBuyXor"]').exists()).toBe(false);
+    expect(wrapper.find('.wallet-buy-entry').exists()).toBe(false);
+    expect(wrapper.get('.sora-wallet-stub').isVisible()).toBe(true);
+    expect(pushMock).not.toHaveBeenCalled();
   });
 
   it('forces wallet connection route check on mount', () => {

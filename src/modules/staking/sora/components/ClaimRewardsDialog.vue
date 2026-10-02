@@ -69,11 +69,15 @@ import { useTranslation } from '@/composables/useTranslation';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTransaction } from '@/composables/useTransaction';
+import { ZeroStringValue } from '@/consts';
 import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStaking';
 import WalletComponentDialogBase from '@/lib/soraneo-wallet/src/components/DialogBase.vue';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import WalletComponentTokenLogo from '@/lib/soraneo-wallet/src/components/TokenLogo.vue';
 import WalletComponentFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
+import { hasInsufficientXorForFee } from '@/utils';
+
+import type { CodecString } from '@sora-substrate/sdk';
 
 const props = defineProps<{
   parentLoading?: boolean;
@@ -86,7 +90,7 @@ const emit = defineEmits<{
 
 const isVisible = defineModel<boolean>('visible', { default: false });
 const { t } = useTranslation();
-const { getFiatAmountByCodecString } = useFormattedAmount();
+const { formatCodecNumber, getFiatAmountByCodecString } = useFormattedAmount();
 
 const {
   payee,
@@ -98,7 +102,6 @@ const {
   rewardedFundsFormatted,
   rewardAsset,
   xor,
-  isInsufficientXorForFee,
   payout,
   getPayoutNetworkFee,
   getPendingRewards,
@@ -112,7 +115,7 @@ const TokenLogo = WalletComponentTokenLogo;
 const FormattedAmountWithFiatValue = WalletComponentFormattedAmountWithFiatValue;
 
 const rewardsDestination = ref('');
-const payoutNetworkFee = ref<string | null>(null);
+const payoutNetworkFee = ref<CodecString | null>(null);
 
 const closeDialog = (): void => {
   emit('close');
@@ -143,16 +146,22 @@ const payeeOverride = computed(() =>
   rewardsDestination.value && rewardsDestination.value !== payeeAddress.value ? rewardsDestination.value : undefined
 );
 
-const networkFee = computed(() => payoutNetworkFee.value ?? '0');
-const networkFeeFormatted = computed(() => networkFee.value);
-const networkFeeFiat = computed(() =>
-  xor.value ? getFiatAmountByCodecString(networkFee.value as any, xor.value) : null
-);
+const networkFee = computed<CodecString>(() => payoutNetworkFee.value ?? ZeroStringValue);
+const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
+const networkFeeFiat = computed(() => (xor.value ? getFiatAmountByCodecString(networkFee.value, xor.value) : null));
 
 const valueFundsEmpty = computed(() => rewardedFunds.value.isZero());
 const isInsufficientBalance = computed(() => false);
+const isPayoutFeeUnavailable = computed(() => payoutNetworkFee.value === null && payouts.value.length > 0);
+const isInsufficientXorForFee = computed(() =>
+  xor.value ? hasInsufficientXorForFee(xor.value, networkFee.value) : false
+);
 const confirmDisabled = computed(
-  () => isInsufficientXorForFee.value || valueFundsEmpty.value || isInsufficientBalance.value
+  () =>
+    isPayoutFeeUnavailable.value ||
+    isInsufficientXorForFee.value ||
+    valueFundsEmpty.value ||
+    isInsufficientBalance.value
 );
 const buttonLoading = computed(() => Boolean(props.parentLoading) || loading.value);
 
@@ -169,11 +178,12 @@ const updatePayoutFee = async () => {
   if (!isVisible.value) return;
 
   if (!payouts.value.length) {
-    payoutNetworkFee.value = '0';
+    payoutNetworkFee.value = ZeroStringValue;
     return;
   }
 
   const currentId = ++feeRequestId;
+  payoutNetworkFee.value = null;
   try {
     const fee = await getPayoutNetworkFee({
       payouts: payouts.value,

@@ -98,6 +98,7 @@
         :fiat-value="txSoraNetworkFeeFiatValue"
       ></info-line>
       <info-line
+        v-if="!isDisplayOnlyRecoveredHistory"
         is-formatted
         :label="
           getNetworkText(
@@ -139,9 +140,22 @@
         </div>
       </div>
 
+      <div
+        v-if="showTrackingRecovery"
+        class="transaction-recovery"
+        :class="{ 'transaction-recovery--active': resumeRequested }"
+        data-testid="bridge-tracking-recovery"
+        role="status"
+        aria-live="polite"
+      >
+        <strong class="transaction-recovery__title">{{ trackingRecoveryTitle }}</strong>
+        <span v-if="trackingRecoveryError" class="transaction-recovery__error">{{ trackingRecoveryError }}</span>
+        <span class="transaction-recovery__description">{{ trackingRecoveryDescription }}</span>
+      </div>
+
       <template v-if="!txIsFinilized">
-        <s-button v-if="isAnotherEvmAddress" type="primary" @click="connectEvmWallet">
-          <template v-if="!externalAccount">
+        <s-button v-if="isAnotherExternalAddress" type="primary" @click="connectExternalWallet">
+          <template v-if="!currentExternalAccount">
             {{ t('connectWalletText') }}
           </template>
           <template v-else>
@@ -150,11 +164,21 @@
         </s-button>
 
         <s-button
+          v-else-if="isExternalNetworkUnavailable && bridgeTransaction.isEvmTxType.value"
+          type="primary"
+          class="s-typograhy-button--big"
+          :disabled="networkChangeRequested"
+          @click="changeExternalNetwork"
+        >
+          {{ t('changeNetworkText') }}
+        </s-button>
+
+        <s-button
           v-else
           type="primary"
           class="s-typograhy-button--big"
           :disabled="confirmationButtonDisabled"
-          @click="handleTransaction"
+          @click="handlePrimaryAction"
         >
           <template v-if="confirmationBlocksLeft">
             {{ t('bridgeTransaction.blocksLeft', { count: confirmationBlocksLeft }) }}
@@ -163,7 +187,8 @@
             t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
           }}</template>
           <template v-else-if="isTxPending">{{ transactionPendingText }}</template>
-          <template v-else-if="!(isOutgoing || isValidNetwork)">{{ t('changeNetworkText') }}</template>
+          <template v-else-if="canResumeTracking">{{ t('bridgeTransaction.recovery.resume') }}</template>
+          <template v-else-if="isExternalNetworkUnavailable">{{ t('changeNetworkText') }}</template>
           <template v-else-if="isInsufficientBalance">{{
             t('insufficientBalanceText', { tokenSymbol: assetSymbol })
           }}</template>
@@ -188,18 +213,29 @@
         </div>
       </template>
     </div>
-    <s-button v-if="txIsFinilized" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
+    <s-button
+      v-if="txIsFinilized && !isTerminalBridgeRecovery && !requiresManualBridgeRecovery"
+      class="s-typography-button--large"
+      type="secondary"
+      @click="navigateToBridge"
+    >
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { Operation } from '@sora-substrate/sdk';
 import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { computed, onBeforeUnmount, onMounted } from 'vue';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
+import {
+  getTonswapBridgeFundingPurpose,
+  tonswapBridgeFailureTranslation,
+} from '@/features/misc/lib/tonswapBridgeLiquidity';
+import { getTsFundingQuery } from '@/features/misc/lib/getTsFlow';
 
 import { useBridgeCore } from '@/composables/useBridgeCore';
 import { useBridgeTransaction } from '@/composables/useBridgeTransaction';
@@ -208,14 +244,17 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
 import { useTranslation } from '@/composables/useTranslation';
 import { useWeb3Connection } from '@/composables/useWeb3Connection';
-import { type ExplorerLink, PageNames, ZeroStringValue } from '@/consts';
+import { type ExplorerLink, PageNames, TranslationConsts, ZeroStringValue } from '@/consts';
 import { resolveBridgeBackLocation } from '@/features/bridge/services/navigationHistory';
 import {
   buildBridgeAddressAriaLabel,
   isBridgeWaitingForSoraConfirmation,
+  requiresBridgeExternalAccountMatch,
+  requiresBridgeExternalNetworkMatch,
   resolveBridgePendingNetworkName,
 } from '@/features/bridge/pages/bridgeTransactionPage.utils';
 import { useBridgeStore } from '@/stores/bridge';
+import { useWeb3Store } from '@/stores/web3';
 import {
   formatAddress,
   hasInsufficientBalance,
@@ -223,7 +262,15 @@ import {
   hasInsufficientXorForFee,
 } from '@/utils';
 import { isUnsignedTx } from '@/utils/bridge/common/utils';
+import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import {
+  isDisplayOnlyRecoveredSubBridgeHistory,
+  SubBridgeAuthoritativeStatus,
+  SubBridgeReconciliationErrorCode,
+  type SubBridgeRecoveryPayload,
+} from '@/utils/bridge/sub/reconciliation';
+import { hasSubBridgeIncomingSubmissionEvidence, hasSubBridgeIncomingTrackingEvidence } from '@/utils/bridge/sub/utils';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -252,6 +299,10 @@ type AddressLinkData = LinkData & {
   ariaLabel: string;
 };
 
+type BridgeTransactionWithFailure = IBridgeTransaction & {
+  errorMessage?: unknown;
+};
+
 defineOptions({
   name: 'BridgeTransactionPage',
   inheritAttrs: false,
@@ -266,8 +317,9 @@ const { formatStringValue, formatCodecNumber, getFiatAmountByString, getFiatAmou
   useFormattedAmount();
 const { withParentLoading } = useLoading();
 const router = useRouter();
-const { connectEvmWallet } = useWeb3Connection();
+const { connectEvmWallet, connectSubWallet, ensureEvmNetwork } = useWeb3Connection();
 const bridgeStore = useBridgeStore();
+const web3Store = useWeb3Store();
 const { waitingForApprove, inProgressIds } = storeToRefs(bridgeStore);
 const bridgeCore = useBridgeCore();
 const {
@@ -286,6 +338,7 @@ const {
 } = bridgeCore;
 
 const tx = computed(() => bridgeStore.activeTransaction as Nullable<IBridgeTransaction>);
+const fundingPurpose = computed(() => getTonswapBridgeFundingPurpose(tx.value ?? {}));
 const bridgeTransaction = useBridgeTransaction(tx);
 const getNetworkIcon = bridgeTransaction.formatter.getNetworkIcon;
 const getNetworkText = bridgeTransaction.getNetworkText;
@@ -293,7 +346,9 @@ const isOutgoing = bridgeTransaction.isOutgoing;
 const externalNetworkId = bridgeTransaction.externalNetworkId;
 
 const externalBlockNumber = computed(() => bridgeStore.fees.externalBlockNumber);
-const externalAccount = bridgeTransaction.txExternalAccount;
+const resumeRequested = ref(false);
+const transactionRequested = ref(false);
+const networkChangeRequested = ref(false);
 
 const txIsUnsigned = computed(() => (tx.value?.id ? isUnsignedTx(tx.value) : false));
 const txTrackingIds = computed(() => {
@@ -325,7 +380,14 @@ const amountFormatted = computed(() =>
   amount.value && asset.value ? formatStringValue(amount.value, asset.value.decimals) : ''
 );
 const amountReceivedFormatted = computed(() =>
-  amountReceived.value && asset.value ? formatStringValue(amountReceived.value, asset.value.decimals) : ''
+  amountReceived.value && asset.value
+    ? formatStringValue(
+        amountReceived.value,
+        bridgeTransaction.isOutgoing.value
+          ? (asset.value.externalDecimals ?? asset.value.decimals)
+          : asset.value.decimals
+      )
+    : ''
 );
 
 const assetSymbol = computed(() => asset.value?.symbol ?? '');
@@ -377,9 +439,108 @@ const isTxFailed = computed(() => bridgeTransaction.formatter.isFailedState(tx.v
 const isTxCompleted = computed(() => bridgeTransaction.formatter.isSuccessState(tx.value));
 const isTxWaiting = computed(() => bridgeTransaction.formatter.isWaitingForActionState(tx.value));
 const isTxPending = computed(() => !isTxFailed.value && !isTxCompleted.value);
-const hasRetry = computed(() => isTxFailed.value && (txIsUnsigned.value || bridgeTransaction.isEvmTxType.value));
-const txIsFinilized = computed(() => !isTxPending.value && !isTxWaiting.value && !hasRetry.value);
+const bridgeRecoveryStatus = computed(
+  () => ((tx.value as SubHistory | null)?.payload as SubBridgeRecoveryPayload | undefined)?.bridgeRecoveryStatus
+);
+const isDisplayOnlyRecoveredHistory = computed(() =>
+  isDisplayOnlyRecoveredSubBridgeHistory(tx.value as SubHistory | null)
+);
+const isTerminalBridgeRecovery = computed(
+  () =>
+    bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Failed ||
+    bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Refunded
+);
+const isStandaloneIncomingSubBridge = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    bridgeTransaction.externalNetworkType.value === BridgeNetworkType.Sub &&
+    transaction?.type === Operation.SubstrateIncoming &&
+    subBridgeApi.isStandalone(transaction.externalNetwork as SubNetwork)
+  );
+});
+const hasRecordedSubBridgeAttempt = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    isTxFailed.value &&
+    isStandaloneIncomingSubBridge.value &&
+    transaction &&
+    hasSubBridgeIncomingSubmissionEvidence(transaction)
+  );
+});
+const requiresManualBridgeRecovery = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    hasRecordedSubBridgeAttempt.value &&
+    !isTerminalBridgeRecovery.value &&
+    transaction &&
+    !hasSubBridgeIncomingTrackingEvidence(transaction)
+  );
+});
+const canResumeTracking = computed(() => {
+  const transaction = tx.value as SubHistory | null;
+
+  return Boolean(
+    hasRecordedSubBridgeAttempt.value &&
+    !isTerminalBridgeRecovery.value &&
+    transaction &&
+    hasSubBridgeIncomingTrackingEvidence(transaction)
+  );
+});
+const hasRetry = computed(
+  () =>
+    !isDisplayOnlyRecoveredHistory.value &&
+    isTxFailed.value &&
+    (txIsUnsigned.value || bridgeTransaction.isEvmTxType.value)
+);
+const txIsFinilized = computed(
+  () => !isTxPending.value && !isTxWaiting.value && !canResumeTracking.value && !hasRetry.value
+);
 const isSoraConfirmationPending = computed(() => isBridgeWaitingForSoraConfirmation(txState.value));
+const showTrackingRecovery = computed(
+  () =>
+    canResumeTracking.value ||
+    requiresManualBridgeRecovery.value ||
+    isTerminalBridgeRecovery.value ||
+    (resumeRequested.value && !isTxCompleted.value)
+);
+const trackingRecoveryTitle = computed(() => {
+  if (resumeRequested.value) return t('bridgeTransaction.recovery.resumingTitle');
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Refunded) {
+    return t('bridgeTransaction.recovery.refundedTitle');
+  }
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Failed) {
+    return t('bridgeTransaction.recovery.rejectedTitle');
+  }
+  if (requiresManualBridgeRecovery.value) return t('bridgeTransaction.recovery.manualTitle');
+
+  return t('bridgeTransaction.recovery.failedTitle');
+});
+const trackingRecoveryDescription = computed(() => {
+  if (resumeRequested.value) return t('bridgeTransaction.recovery.resumingDescription');
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Refunded) {
+    return t('bridgeTransaction.recovery.refundedDescription');
+  }
+  if (bridgeRecoveryStatus.value === SubBridgeAuthoritativeStatus.Failed) {
+    return t('bridgeTransaction.recovery.rejectedDescription');
+  }
+  if (requiresManualBridgeRecovery.value) return t('bridgeTransaction.recovery.manualDescription');
+
+  return t('bridgeTransaction.recovery.failedDescription');
+});
+const trackingRecoveryError = computed(() => {
+  if (resumeRequested.value || isTerminalBridgeRecovery.value || requiresManualBridgeRecovery.value) return '';
+
+  const errorMessage = (tx.value as BridgeTransactionWithFailure | null)?.errorMessage;
+  const fundingErrorKey = tonswapBridgeFailureTranslation(errorMessage, fundingPurpose.value ?? 'ts');
+  if (fundingErrorKey) return t(fundingErrorKey);
+
+  if (Object.values(SubBridgeReconciliationErrorCode).some((code) => code === errorMessage)) return '';
+
+  return typeof errorMessage === 'string' ? errorMessage.trim() : '';
+});
 
 const headerIconClasses = computed(() => {
   const iconClass = 'header-icon';
@@ -401,6 +562,9 @@ const headerIconClasses = computed(() => {
 const transactionStatus = computed(() => {
   if (txIsUnsigned.value || isTxWaiting.value || isSoraConfirmationPending.value) {
     return t('bridgeTransaction.statuses.waitingForConfirmation');
+  }
+  if (canResumeTracking.value || requiresManualBridgeRecovery.value) {
+    return t('bridgeTransaction.statuses.trackingInterrupted');
   }
   if (isTxFailed.value) {
     return t('bridgeTransaction.statuses.failed');
@@ -451,23 +615,57 @@ const isInsufficientEvmNativeTokenForFee = computed(() => {
 
 const txExternalAccount = computed(() => bridgeTransaction.txExternalAccount.value ?? '');
 
-const isAnotherEvmAddress = computed(() => {
-  if (!bridgeTransaction.isEvmTxType.value) return false;
-  if (!txExternalAccount.value || !externalAccount.value) return false;
-  return txExternalAccount.value.toLowerCase() !== externalAccount.value.toLowerCase();
-});
+const isSubTransaction = computed(() => bridgeTransaction.externalNetworkType.value === BridgeNetworkType.Sub);
+const usesSubstrateExternalAccount = computed(() => {
+  const network = externalNetworkId.value;
 
-const confirmationButtonDisabled = computed(
+  return Boolean(isSubTransaction.value && network && !subBridgeApi.isEvmAccount(network as SubNetwork));
+});
+const currentExternalAccount = computed(() =>
+  usesSubstrateExternalAccount.value ? (web3Store.subAddress ?? '') : (web3Store.evmAddress ?? '')
+);
+const shouldMatchExternalAccount = computed(() =>
+  requiresBridgeExternalAccountMatch({
+    isEvmTransaction: bridgeTransaction.isEvmTxType.value,
+    isSubTransaction: isSubTransaction.value,
+    isOutgoing: bridgeTransaction.isOutgoing.value,
+    isUnsigned: txIsUnsigned.value,
+  })
+);
+const isAnotherExternalAddress = computed(() => {
+  if (!shouldMatchExternalAccount.value) return false;
+
+  return !areBridgeExternalAccountsEqual(txExternalAccount.value, currentExternalAccount.value);
+});
+const isExternalNetworkUnavailable = computed(
   () =>
-    !(bridgeTransaction.isOutgoing.value || isValidNetwork.value) ||
-    isAnotherEvmAddress.value ||
+    !isValidNetwork.value &&
+    requiresBridgeExternalNetworkMatch({
+      isEvmTransaction: bridgeTransaction.isEvmTxType.value,
+      isOutgoing: bridgeTransaction.isOutgoing.value,
+      isUnsigned: txIsUnsigned.value,
+      transactionState: txState.value,
+    })
+);
+
+const confirmationButtonDisabled = computed(() => {
+  if (canResumeTracking.value) {
+    return txInProcess.value || transactionRequested.value || resumeRequested.value;
+  }
+
+  return (
+    txInProcess.value ||
+    transactionRequested.value ||
+    isExternalNetworkUnavailable.value ||
+    isAnotherExternalAddress.value ||
     isInsufficientBalance.value ||
     isGreaterThanMaxAmount.value ||
     isLowerThanMinAmount.value ||
     isInsufficientXorForFee.value ||
     isInsufficientEvmNativeTokenForFee.value ||
     isTxPending.value
-);
+  );
+});
 
 const externalNetworkName = computed(() => {
   const type = bridgeTransaction.externalNetworkType.value;
@@ -480,14 +678,12 @@ const txPendingNetworkName = computed(() =>
   resolveBridgePendingNetworkName({
     transactionState: txState.value,
     isOutgoing: bridgeTransaction.isOutgoing.value,
-    internalNetworkName: bridgeTransaction.TranslationConsts.Sora,
+    internalNetworkName: TranslationConsts?.Sora ?? 'SORA',
     externalNetworkName: externalNetworkName.value,
   })
 );
 
-const transactionPendingText = computed(() =>
-  t('bridgeTransaction.pending', { network: txPendingNetworkName.value })
-);
+const transactionPendingText = computed(() => t('bridgeTransaction.pending', { network: txPendingNetworkName.value }));
 
 const parachainExplorerLinks = computed(() => {
   const type = bridgeTransaction.externalNetworkType.value;
@@ -522,10 +718,35 @@ const confirmationBlocksLeft = computed(() => {
 const failedClass = computed(() => (isTxFailed.value && !isTxWaiting.value ? 'info-line--error' : ''));
 
 const txInternalHash = computed(() => {
-  if (!bridgeTransaction.isOutgoing.value) return bridgeTransaction.txSoraHash.value;
+  if (!bridgeTransaction.isOutgoing.value) {
+    return (
+      bridgeTransaction.txSoraHash.value ||
+      (isDisplayOnlyRecoveredHistory.value ? ((tx.value as SubHistory | null)?.txId ?? '') : '')
+    );
+  }
   return (
     bridgeTransaction.txSoraHash.value || bridgeTransaction.txInternalBlockId.value || bridgeTransaction.txSoraId.value
   );
+});
+
+/** Keeps the signed source hash visible when an ambiguous incoming attempt has not yet populated `externalHash`. */
+const txExternalSourceHash = computed(() => {
+  if (bridgeTransaction.txExternalHash.value) return bridgeTransaction.txExternalHash.value;
+  if (!hasRecordedSubBridgeAttempt.value) return '';
+
+  return (tx.value as SubHistory | null)?.txId ?? '';
+});
+
+const txExternalSourceExplorerLinks = computed(() => {
+  if (bridgeTransaction.externalExplorerLinks.value.length) return bridgeTransaction.externalExplorerLinks.value;
+
+  const value = txExternalSourceHash.value;
+  const networkType = bridgeTransaction.externalNetworkType.value;
+  const networkId = bridgeTransaction.externalNetworkId.value;
+
+  if (!(value && networkType && networkId)) return [];
+
+  return bridgeTransaction.formatter.getNetworkExplorerLinks({ networkType, networkId, value });
 });
 
 const parachainLinks = computed(() => parachainExplorerLinks.value);
@@ -559,9 +780,9 @@ const transactionLinks = computed(() => {
   const internal = getLinkData(txInternalHash.value, bridgeTransaction.internalExplorerLinks.value, txHashName);
   const parachain = getLinkData(txParachainBlockId.value, parachainLinks.value, txBlockName, parachainNetworkId.value);
   const external = getLinkData(
-    bridgeTransaction.txExternalHash.value ?? bridgeTransaction.txExternalBlockId.value,
-    bridgeTransaction.externalExplorerLinks.value,
-    bridgeTransaction.txExternalHash.value ? txHashName : txBlockName,
+    txExternalSourceHash.value || bridgeTransaction.txExternalBlockId.value,
+    txExternalSourceExplorerLinks.value,
+    txExternalSourceHash.value ? txHashName : txBlockName,
     bridgeTransaction.externalNetworkId.value
   );
 
@@ -603,17 +824,90 @@ function getLinkData(
   };
 }
 
-function handleTransaction(withAutoStart = true): void {
-  if (!(withAutoStart && tx.value?.id)) return;
+/** Starts at most one run of the selected persisted transaction after wallet guards pass. */
+function handleTransaction(withAutoStart = true, onSettled?: () => void): void {
+  if (!(withAutoStart && tx.value?.id) || txInProcess.value || transactionRequested.value) return;
+  if (!canResumeTracking.value && (isAnotherExternalAddress.value || isExternalNetworkUnavailable.value)) return;
 
   const id = tx.value.id;
+  transactionRequested.value = true;
 
-  void bridgeStore.handleBridgeTransaction(id).catch((error) => {
-    console.error('[BridgeTransactionPage]: bridge transaction processing failed', error);
+  void bridgeStore
+    .handleBridgeTransaction(id)
+    .catch((error) => {
+      console.error('[BridgeTransactionPage]: bridge transaction processing failed', error);
+    })
+    .finally(() => {
+      transactionRequested.value = false;
+      onSettled?.();
+    });
+}
+
+/**
+ * Restarts the status check for an incoming Substrate transfer with durable
+ * attempt evidence. The bridge recovery path only uses the saved identifiers;
+ * it never signs or submits a transfer from this action.
+ */
+function handlePrimaryAction(): void {
+  if (isDisplayOnlyRecoveredHistory.value) return;
+  if (confirmationButtonDisabled.value) return;
+  if (canResumeTracking.value && (resumeRequested.value || txInProcess.value)) return;
+
+  if (!canResumeTracking.value) {
+    handleTransaction();
+    return;
+  }
+
+  resumeRequested.value = true;
+  handleTransaction(true, () => {
+    if (isTxFailed.value) resumeRequested.value = false;
   });
 }
 
+/** Requests only a wallet network change; confirmation still uses the saved bridge row. */
+async function changeExternalNetwork(): Promise<void> {
+  if (networkChangeRequested.value || !isExternalNetworkUnavailable.value) return;
+
+  networkChangeRequested.value = true;
+  try {
+    await ensureEvmNetwork();
+  } catch {
+    // A declined wallet request leaves the network action available to retry.
+  } finally {
+    networkChangeRequested.value = false;
+  }
+}
+
+// A restored pending row may have mounted before the destination wallet was
+// reconnected. Continue that same row once its wallet requirements are met.
+watch(
+  [isAnotherExternalAddress, isExternalNetworkUnavailable],
+  ([accountUnavailable, networkUnavailable], [wasAccountUnavailable, wasNetworkUnavailable]) => {
+    if (
+      !accountUnavailable &&
+      !networkUnavailable &&
+      (wasAccountUnavailable || wasNetworkUnavailable) &&
+      isTxPending.value
+    ) {
+      handleTransaction();
+    }
+  }
+);
+
+async function connectExternalWallet(): Promise<void> {
+  if (usesSubstrateExternalAccount.value) {
+    connectSubWallet();
+    return;
+  }
+
+  await connectEvmWallet();
+}
+
 function handleBack(): void {
+  if (fundingPurpose.value) {
+    void router.push({ path: '/bridge/history', query: getTsFundingQuery(fundingPurpose.value) });
+    return;
+  }
   const backLocation = resolveBridgeBackLocation();
   if (backLocation) {
     router.push(backLocation);
@@ -662,7 +956,11 @@ onMounted(async () => {
   }
 
   await withParentLoading(() => {
-    const withAutoStart = !txInProcess.value && isTxPending.value;
+    const withAutoStart =
+      !isDisplayOnlyRecoveredHistory.value &&
+      !txInProcess.value &&
+      isTxPending.value &&
+      !isAnotherExternalAddress.value;
     handleTransaction(withAutoStart);
   });
 });
@@ -671,7 +969,9 @@ onBeforeUnmount(async () => {
   if (!tx.value) return;
   if (txInProcess.value) return;
 
-  if (txIsUnsigned.value) {
+  // Only discard a pristine draft. Failed rows may contain the sole forensic
+  // record of an ambiguous wallet/RPC attempt and must survive navigation.
+  if (txIsUnsigned.value && !isTxFailed.value) {
     const historyCopy = { ...tx.value };
     await bridgeStore.removeHistory({ tx: historyCopy, force: true });
   }
@@ -838,6 +1138,13 @@ $header-font-size: var(--s-heading3-font-size);
   .transaction-content .transaction-address.s-input {
     background-color: var(--s-color-base-on-accent);
   }
+
+  // Dark-theme status background tokens intentionally collapse to their
+  // foreground colors. Use the on-accent token so recovery guidance remains
+  // readable instead of rendering pink-on-pink or orange-on-orange.
+  .transaction-content .transaction-recovery {
+    color: var(--s-color-base-on-accent);
+  }
 }
 </style>
 
@@ -883,22 +1190,31 @@ $network-title-max-width: 250px;
       line-height: 1;
     }
   }
-  &-error {
+  &-recovery {
+    background-color: var(--s-color-status-error-background);
+    border-radius: var(--s-border-radius-small);
     color: var(--s-color-status-error);
     display: flex;
     flex-flow: column nowrap;
-    padding: 0 $inner-spacing-tiny;
+    gap: $inner-spacing-tiny;
+    padding: $inner-spacing-medium;
     margin-bottom: $inner-spacing-medium;
     line-height: var(--s-line-height-mini);
     text-align: left;
 
-    &__title {
-      margin-bottom: $inner-spacing-tiny;
-      text-transform: uppercase;
-      font-weight: 300;
+    &--active {
+      background-color: var(--s-color-status-warning-background);
+      color: var(--s-color-status-warning);
     }
-    &__value {
+    &__title {
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    &__description {
       font-weight: 400;
+    }
+    &__error {
+      font-weight: 600;
     }
   }
   &-approval-text {

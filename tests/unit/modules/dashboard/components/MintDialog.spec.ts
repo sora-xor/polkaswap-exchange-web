@@ -17,6 +17,7 @@ const transactionMocks = vi.hoisted(() => ({
   loading: { value: false },
   withNotifications: vi.fn(async (handler: () => unknown | Promise<unknown>) => {
     await handler();
+    return { submitted: true };
   }),
 }));
 
@@ -193,6 +194,10 @@ beforeEach(() => {
   mintMock.mockClear();
   validateAddressMock.mockClear();
   transactionState.withNotifications.mockClear();
+  transactionState.withNotifications.mockImplementation(async (handler: () => unknown | Promise<unknown>) => {
+    await handler();
+    return { submitted: true };
+  });
   transactionState.loading.value = false;
   storeState.networkFees.Mint = '1';
   storeState.accountXor = { balance: { transferable: '10' } };
@@ -224,6 +229,22 @@ describe('MintDialog.vue', () => {
     );
     expect(exposed.isVisible.value).toBe(false);
     expect(wrapper.emitted()['update:visible']).toBeTruthy();
+  });
+
+  it('keeps the mint form open when wallet submission is rejected', async () => {
+    transactionState.withNotifications.mockResolvedValueOnce({ submitted: false, error: new Error('rejected') });
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+    exposed.value.value = '5';
+    exposed.address.value = 'valid-address';
+
+    await exposed.handleMint();
+
+    expect(mintMock).not.toHaveBeenCalled();
+    expect(exposed.isVisible.value).toBe(true);
+    expect(exposed.value.value).toBe('5');
+    expect(exposed.address.value).toBe('valid-address');
+    expect(wrapper.emitted()['update:visible']).toBeUndefined();
   });
 
   it('clears form values via reset helper', () => {

@@ -1,0 +1,27 @@
+{
+  "code": "SL",
+  "status": "not_verified",
+  "rule": "The 1976 Plant Phytosanitary (Import Restriction) Notice expressly extends vegetative material, seeds and fruit to dried, frozen and chilled goods, but excludes goods described as cooked, or pickled and imported in bottles or cans. The actual printed item 64 contains the awkward wording \"and mentioned herein\" and requires certificates; it must not be silently rewritten as \"not mentioned\". The tea entry names vegetative material and seeds, not finished retail sencha. For this steamed product, whether the cooking exception applies and how the container qualification operates remain unresolved. The 2025 WTO review confirms the 1974 rules as amended in 1976 remain the operative starting point.",
+  "personalMailApplicability": "No automatic personal-post exemption was established. The unresolved issue is the statutory product/processing exception for steamed tea, not the small weight alone.",
+  "quantityLimit": null,
+  "authority": "Sierra Leone gazetted plant-import regulations",
+  "evidenceUrls": [
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+    "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf",
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-12-no-13.pdf"
+  ],
+  "remainingQuestion": "Does manufactured steamed/dried sencha qualify as cooked material excluded from the Notice, and does the bottle/can qualification attach to cooked goods as well as pickled goods? What rule is applied to sealed retail pouches in private post?",
+  "researchAttempts": [
+    "Reviewed the gazetted tea entry and searched newer plant-quarantine legislation and processed-tea/personal-post guidance.",
+    "30 September: read WTO 2025 report paragraphs 3.88–3.94, distinguishing current rules from a proposed replacement. Retrieved indexed primary notice text including its dried-material/cooked-bottled-or-canned distinction and catch-all item 64; the original PDF download was unavailable (403), so ambiguous OCR of item 64 was not used as a conclusive new rule. The full 1974 rules and an authoritative manufactured-tea interpretation were not retrieved.",
+    "Downloaded the 19 February 1976 Gazette directly and visually verified printed pages 252 and 254 (PDF pages 12 and 14), after browser retrieval failures. Item 64 literally prints \"and mentioned herein\"; the unusual wording is not an OCR error. Verified the cooking/pickling/container exception in the introductory paragraph. Because sencha is steamed before drying, did not collapse the analysis to the explicit dried category or assume that every cooked product must be bottled. Rechecked 2025 WTO review sections 3.88–3.94 for current legal context."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "The Notice clearly covers dried plant material, but it also contains a cooked-product exception that may matter to steamed sencha. The actual catch-all wording and tea propagation entry do not conclusively resolve this manufactured product. A no-document route is unverified; this is not a determination that finished tea is prohibited or that a certificate is certainly required.",
+  "permitFreeSources": [
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+    "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf",
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-12-no-13.pdf"
+  ]
+}

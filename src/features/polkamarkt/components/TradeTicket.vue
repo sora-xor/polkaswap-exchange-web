@@ -6,7 +6,7 @@
       <p v-else>{{ t('polkamarkt.ticket.dpmSubtitle') }}</p>
     </header>
 
-    <div class="trade-ticket__tabs" role="tablist">
+    <div class="trade-ticket__tabs" role="group" :aria-label="t('polkamarkt.ticket.title')">
       <button
         v-for="item in modes"
         :key="item"
@@ -30,7 +30,9 @@
         >
           <strong>{{ t('polkamarkt.outcomes.yes') }}</strong>
           <span>{{ yesPriceFormatted }}</span>
-          <small>{{ t('polkamarkt.ticket.impliedProbabilityShort', { value: yesProbabilityFormatted }) }}</small>
+          <small v-if="yesProbabilityFormatted !== '-'">
+            {{ t('polkamarkt.ticket.impliedProbabilityShort', { value: yesProbabilityFormatted }) }}
+          </small>
         </button>
         <button
           type="button"
@@ -41,7 +43,9 @@
         >
           <strong>{{ t('polkamarkt.outcomes.no') }}</strong>
           <span>{{ noPriceFormatted }}</span>
-          <small>{{ t('polkamarkt.ticket.impliedProbabilityShort', { value: noProbabilityFormatted }) }}</small>
+          <small v-if="noProbabilityFormatted !== '-'">
+            {{ t('polkamarkt.ticket.impliedProbabilityShort', { value: noProbabilityFormatted }) }}
+          </small>
         </button>
       </div>
 
@@ -66,10 +70,19 @@
             :placeholder="t('polkamarkt.ticket.amountPlaceholder')"
           />
         </label>
-        <label class="trade-field">
-          <span>{{ t('polkamarkt.ticket.slippage') }}</span>
-          <input v-model="slippage" class="polkamarkt-input" inputmode="decimal" autocomplete="off" />
-        </label>
+        <details class="trade-ticket__settings" data-testid="trade-settings">
+          <summary>{{ t('polkamarkt.ticket.settings') }}</summary>
+          <label class="trade-field">
+            <span>{{ t('polkamarkt.ticket.slippage') }}</span>
+            <input
+              v-model="slippage"
+              class="polkamarkt-input"
+              inputmode="decimal"
+              autocomplete="off"
+              :aria-invalid="!isSlippageValid"
+            />
+          </label>
+        </details>
       </div>
 
       <div v-if="isReportMode" class="trade-ticket__form">
@@ -95,33 +108,25 @@
         </label>
       </div>
 
-      <div class="trade-ticket__balances">
-        <div>
-          <span>{{ t('polkamarkt.ticket.walletYes') }}</span>
-          <strong>{{ yesSharesDisplay }}</strong>
-        </div>
-        <div>
-          <span>{{ t('polkamarkt.ticket.walletNo') }}</span>
-          <strong>{{ noSharesDisplay }}</strong>
-        </div>
-        <p v-if="shareBalanceStatus" class="trade-ticket__balance-status">{{ shareBalanceStatus }}</p>
-        <p v-if="indexedPositionSummary" class="trade-ticket__balance-status trade-ticket__balance-status--secondary">
-          {{ indexedPositionSummary }}
-        </p>
-      </div>
-
       <div class="trade-ticket__quote">
-        <div>
+        <div class="trade-ticket__quote-primary">
           <span>{{ quotePrimaryLabel }}</span>
           <strong>{{ quotePrimaryValue }}</strong>
         </div>
-        <div>
+        <div v-if="isTradeMode">
           <span>{{ t('polkamarkt.ticket.takerFee') }}</span>
           <strong>{{ takerFeeFormatted }}</strong>
         </div>
         <div>
-          <span>{{ t('networkFeeText') }}</span>
+          <span>
+            {{ t('networkFeeText') }}
+            <template v-if="mode === 'claim'"> · {{ t('polkamarkt.actions.claimTraderPayout') }}</template>
+          </span>
           <strong>{{ networkFeeFormatted }}</strong>
+        </div>
+        <div v-if="mode === 'claim' && isPositiveCodec(claimable?.creatorFees)">
+          <span>{{ t('networkFeeText') }} · {{ t('polkamarkt.actions.claimCreatorFees') }}</span>
+          <strong>{{ creatorClaimNetworkFeeFormatted }}</strong>
         </div>
         <div v-if="mode === 'claim'">
           <span>{{ t('polkamarkt.ticket.claimable') }}</span>
@@ -144,44 +149,43 @@
         </small>
       </div>
 
-      <div v-if="isDpm" class="trade-ticket__curve-helper" data-testid="pricing-curve-ticket-helper">
-        <button
-          type="button"
-          class="trade-ticket__curve-toggle"
-          data-testid="pricing-curve-toggle"
-          :aria-expanded="pricingCurveHelperOpen"
-          :aria-controls="PRICING_CURVE_HELPER_ID"
-          @click="pricingCurveHelperOpen = !pricingCurveHelperOpen"
-        >
-          <span>{{ t('polkamarkt.curve.howPricesMove') }}</span>
-          <span aria-hidden="true">{{ pricingCurveHelperOpen ? '-' : '+' }}</span>
-        </button>
-
-        <div v-if="pricingCurveHelperOpen" :id="PRICING_CURVE_HELPER_ID" class="trade-ticket__curve-panel">
-          <pricing-curve-position-chart :market="market" compact />
-          <section class="trade-ticket__curve-explainer">
-            <h3>{{ t('polkamarkt.curve.howPricesMove') }}</h3>
-            <ol>
-              <li v-for="(step, index) in pricingCurveSteps" :key="step">
-                <span>{{ index + 1 }}</span>
-                <p>{{ step }}</p>
-              </li>
-            </ol>
-          </section>
-        </div>
-      </div>
-
       <p v-if="error" class="trade-ticket__error">{{ error }}</p>
       <p v-else-if="quoteLoading" class="trade-ticket__hint">{{ t('polkamarkt.ticket.refreshingQuote') }}</p>
 
       <template v-if="mode === 'claim'">
         <div class="trade-ticket__claim-grid">
-          <s-button type="primary" :disabled="!canClaimTrader" :loading="isLoading" @click="submitClaim('market')">
-            {{ t('polkamarkt.actions.claimTraderPayout') }}
-          </s-button>
-          <s-button type="secondary" :disabled="!canClaimCreatorFees" :loading="isLoading" @click="submitClaim('fees')">
-            {{ t('polkamarkt.actions.claimCreatorFees') }}
-          </s-button>
+          <div>
+            <s-button
+              type="primary"
+              :disabled="!canClaimTrader || isLoading"
+              :loading="isLoading"
+              @click="submitClaim('market')"
+            >
+              {{ t('polkamarkt.actions.claimTraderPayout') }}
+            </s-button>
+            <p
+              v-if="isPositiveCodec(claimable?.claimablePayout ?? claimable?.traderPayout) && networkFeeReason"
+              class="trade-ticket__hint"
+            >
+              {{ networkFeeReason }}
+            </p>
+          </div>
+          <div>
+            <s-button
+              type="secondary"
+              :disabled="!canClaimCreatorFees || isLoading"
+              :loading="isLoading"
+              @click="submitClaim('fees')"
+            >
+              {{ t('polkamarkt.actions.claimCreatorFees') }}
+            </s-button>
+            <p
+              v-if="isPositiveCodec(claimable?.creatorFees) && creatorClaimNetworkFeeReason"
+              class="trade-ticket__hint"
+            >
+              {{ creatorClaimNetworkFeeReason }}
+            </p>
+          </div>
         </div>
       </template>
 
@@ -196,12 +200,45 @@
       >
         {{ submitLabel }}
       </s-button>
+
+      <div v-if="isDpm" class="trade-ticket__curve-helper" data-testid="pricing-curve-ticket-helper">
+        <pricing-curve-position-chart :market="market" compact />
+        <details class="trade-ticket__curve-panel">
+          <summary>{{ t('polkamarkt.curve.howPricesMove') }}</summary>
+          <section class="trade-ticket__curve-explainer">
+            <ol>
+              <li v-for="(step, index) in pricingCurveSteps" :key="step">
+                <span>{{ index + 1 }}</span>
+                <p>{{ step }}</p>
+              </li>
+            </ol>
+          </section>
+        </details>
+      </div>
+
+      <details class="trade-ticket__holdings" :open="mode === 'sell' || mode === 'claim'">
+        <summary>{{ t('polkamarkt.ticket.yourShares') }}</summary>
+        <div class="trade-ticket__balances">
+          <div>
+            <span>{{ t('polkamarkt.ticket.walletYes') }}</span>
+            <strong>{{ yesSharesDisplay }}</strong>
+          </div>
+          <div>
+            <span>{{ t('polkamarkt.ticket.walletNo') }}</span>
+            <strong>{{ noSharesDisplay }}</strong>
+          </div>
+          <p v-if="shareBalanceStatus" class="trade-ticket__balance-status">{{ shareBalanceStatus }}</p>
+          <p v-if="indexedPositionSummary" class="trade-ticket__balance-status trade-ticket__balance-status--secondary">
+            {{ indexedPositionSummary }}
+          </p>
+        </div>
+      </details>
     </template>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useNotification } from '@/composables/useNotification';
@@ -211,7 +248,13 @@ import { api } from '@/lib/soraneo-wallet/src/api';
 import { KUSD, XOR } from '@/lib/substrate/sdk/assets/consts';
 import { Operation, TransactionStatus } from '@/lib/substrate/sdk/types';
 import { useWalletStore } from '@/stores/wallet';
-import { applySlippageMinimum, formatPolkamarktCodec, isPositiveCodec, parsePolkamarktAmount } from '../lib/amounts';
+import {
+  applySlippageMinimum,
+  formatPolkamarktCodec,
+  isPositiveCodec,
+  isValidPolkamarktSlippage,
+  parsePolkamarktAmount,
+} from '../lib/amounts';
 import {
   getMarketDisplayStatus,
   isClaimableMarketStatus,
@@ -260,8 +303,8 @@ type TicketReceipt = {
 };
 
 const ZERO_CODEC = '0';
+const EMPTY_ESTIMATE = '—';
 const EARLY_REPORT_BOND_CODEC = parsePolkamarktAmount('100');
-const PRICING_CURVE_HELPER_ID = 'polkamarkt-pricing-curve-helper';
 const dpmBaseModes: TradeMode[] = ['buy', 'sell', 'report'];
 const mode = ref<TradeMode>('buy');
 const outcome = ref<TicketOutcome>('YES');
@@ -270,7 +313,6 @@ const collateralAmount = ref('');
 const slippage = ref('0.5');
 const reportEvidenceUri = ref('');
 const reportEvidenceHash = ref('');
-const pricingCurveHelperOpen = ref(false);
 const quoteLoading = ref(false);
 const error = ref('');
 const dpmQuote = ref<BuyQuote | SellQuote | null>(null);
@@ -279,6 +321,7 @@ const claimable = ref<ClaimableInfo | null>(null);
 const claimableLoading = ref(false);
 const claimableError = ref('');
 const networkFee = ref<CodecString | null>(null);
+const creatorClaimNetworkFee = ref<CodecString | null>(null);
 const receipt = ref<TicketReceipt | null>(null);
 
 const isConnectedSource = isLoggedIn as unknown as MaybeValue<boolean>;
@@ -290,6 +333,7 @@ const isLoading = computed(() => Boolean(typeof loading === 'object' ? loading.v
 const accountAddress = computed(() =>
   String(typeof accountAddressSource === 'object' ? (accountAddressSource.value ?? '') : (accountAddressSource ?? ''))
 );
+const soraNetwork = computed(() => walletStore.soraNetwork);
 const receiptTransaction = computed<HistoryItem | undefined>(() => {
   const history = (walletStore.history ?? {}) as Record<string, HistoryItem>;
   const currentReceipt = receipt.value;
@@ -333,6 +377,7 @@ const accountXor = computed(() => walletStore.accountAssetsAddressTable?.[XOR.ad
 const sharesCodec = computed(() => parseAmount(shares.value));
 const collateralCodec = computed(() => parseAmount(collateralAmount.value));
 const dpmInputCodec = computed(() => (mode.value === 'buy' ? collateralCodec.value : sharesCodec.value));
+const isSlippageValid = computed(() => isValidPolkamarktSlippage(slippage.value));
 const hasPendingEarlyReport = computed(() => Boolean(props.market?.earlyResolutionOutcome));
 const reportEvidence = computed(() => ({
   uri: reportEvidenceUri.value.trim(),
@@ -390,12 +435,18 @@ const hasEnoughShares = computed(() => {
   const available = selectedShares.value;
   return BigInt(available || '0') >= BigInt(sharesCodec.value || '0');
 });
-const hasEnoughXor = computed(() => {
-  const fee = BigInt(networkFee.value || '0');
-  if (fee <= 0n) return true;
-  const balance = accountXor.value?.balance?.transferable ?? '0';
-  return BigInt(balance) >= fee;
-});
+/** Distinguishes an unavailable estimate from an exact, known XOR shortfall. */
+function getNetworkFeeReason(fee: CodecString | null): string {
+  if (!isPositiveCodec(fee)) return unavailableValue(t('networkFeeText'));
+  try {
+    const balance = BigInt(accountXor.value?.balance?.transferable ?? '0');
+    return balance >= BigInt(fee!) ? '' : t('polkamarkt.ticket.insufficientXor');
+  } catch {
+    return unavailableValue(XOR.symbol);
+  }
+}
+const networkFeeReason = computed(() => getNetworkFeeReason(networkFee.value));
+const creatorClaimNetworkFeeReason = computed(() => getNetworkFeeReason(creatorClaimNetworkFee.value));
 const pricingCurveSteps = computed(() => [
   t('polkamarkt.curve.steps.buy'),
   t('polkamarkt.curve.steps.moveQuote'),
@@ -446,6 +497,7 @@ const receiptHint = computed(() => (receipt.value ? t(`polkamarkt.ticket.txHint.
  */
 function currentDpmQuoteKey(): string | null {
   if (!isTradeMode.value || (!marketId.value && marketId.value !== 0)) return null;
+  if (!isSlippageValid.value) return null;
   const amount = dpmInputCodec.value;
   if (!isPositiveCodec(amount)) return null;
   return [marketId.value, mode.value, runtimeOutcome.value, amount, slippage.value.trim()].join(':');
@@ -466,6 +518,7 @@ const disabledReason = computed(() => {
   if (isTradingFinalized.value) return marketStatus.value;
   if (isReportMode.value && !reportEvidence.value.uri) return t('polkamarkt.ticket.enterEvidenceUri');
   if (isReportMode.value && !isReportHashValid.value) return t('polkamarkt.ticket.invalidEvidenceHash');
+  if (isTradeMode.value && !isSlippageValid.value) return t('dexSettings.slippageToleranceValidation.error');
   if (isTradeMode.value && !isPositiveCodec(dpmInputCodec.value)) return t('polkamarkt.ticket.enterAmount');
   if (mode.value === 'sell' && claimableLoading.value) return t('polkamarkt.ticket.refreshingBalances');
   if (mode.value === 'sell' && (!claimable.value || claimableError.value))
@@ -474,7 +527,7 @@ const disabledReason = computed(() => {
     return t('polkamarkt.ticket.quoteUnavailable');
   if (!hasEnoughKusd.value) return t('polkamarkt.ticket.insufficientKusd', { symbol: collateralSymbol });
   if (!hasEnoughShares.value) return t('polkamarkt.ticket.insufficientShares');
-  if (!hasEnoughXor.value) return t('polkamarkt.ticket.insufficientXor');
+  if (networkFeeReason.value) return networkFeeReason.value;
   if (error.value) return error.value;
   return '';
 });
@@ -497,41 +550,90 @@ const quotePrimaryValue = computed(() => {
     const quote = activeDpmQuote.value;
     return quote && 'sharesOut' in quote
       ? `${formatCodec(quote.sharesOut)} ${t('polkamarkt.units.shares')}`
-      : unavailableValue(t('polkamarkt.ticket.sharesOut'));
+      : EMPTY_ESTIMATE;
   }
   if (mode.value === 'sell') {
     const quote = activeDpmQuote.value;
     return quote && 'collateralOut' in quote
       ? `${formatCodec(quote.collateralOut)} ${collateralSymbol}`
-      : unavailableValue(t('polkamarkt.ticket.collateralOut'));
+      : EMPTY_ESTIMATE;
   }
   if (isReportMode.value) return `100 ${collateralSymbol}`;
   return claimable.value?.status || t('polkamarkt.notIndexed');
 });
 const takerFeeFormatted = computed(() => {
   if (!isTradeMode.value) return '-';
-  return activeDpmQuote.value
-    ? `${formatCodec(activeDpmQuote.value.feeAmount)} ${collateralSymbol}`
-    : unavailableValue(t('polkamarkt.ticket.takerFee'));
+  return activeDpmQuote.value ? `${formatCodec(activeDpmQuote.value.feeAmount)} ${collateralSymbol}` : EMPTY_ESTIMATE;
 });
-const networkFeeFormatted = computed(() => {
+/** Formats each claim action's own estimate without displaying missing fees as zero. */
+function formatNetworkFee(fee: CodecString | null): string {
   if (quoteLoading.value) return t('calculatingText');
-  if (!networkFee.value) return t('polkamarkt.notIndexed');
-  return `${formatCodec(networkFee.value)} ${XOR.symbol}`;
-});
+  if (!isPositiveCodec(fee)) return EMPTY_ESTIMATE;
+  return `${formatCodec(fee!)} ${XOR.symbol}`;
+}
+const networkFeeFormatted = computed(() => formatNetworkFee(networkFee.value));
+const creatorClaimNetworkFeeFormatted = computed(() => formatNetworkFee(creatorClaimNetworkFee.value));
 const canClaimTrader = computed(
   () =>
     isClaimModeAvailable.value &&
     isConnected.value &&
+    !claimableLoading.value &&
+    !claimableError.value &&
+    !networkFeeReason.value &&
     isPositiveCodec(claimable.value?.claimablePayout ?? claimable.value?.traderPayout)
 );
 const canClaimCreatorFees = computed(
-  () => isClaimModeAvailable.value && isConnected.value && isPositiveCodec(claimable.value?.creatorFees)
+  () =>
+    isClaimModeAvailable.value &&
+    isConnected.value &&
+    !claimableLoading.value &&
+    !claimableError.value &&
+    !creatorClaimNetworkFeeReason.value &&
+    isPositiveCodec(claimable.value?.creatorFees)
 );
 
 let refreshTimer: ReturnType<typeof setTimeout> | undefined;
 let refreshRequestId = 0;
 let claimableRequestId = 0;
+let isDisposed = false;
+
+/** Captures account, market, quote and input terms before asynchronous wallet preparation. */
+function captureSubmissionTerms() {
+  return {
+    account: accountAddress.value,
+    network: soraNetwork.value,
+    marketId: marketId.value,
+    mode: mode.value,
+    outcome: runtimeOutcome.value,
+    collateralIn: collateralCodec.value,
+    sharesIn: sharesCodec.value,
+    slippage: slippage.value.trim(),
+    evidence: { ...reportEvidence.value },
+    quote: activeDpmQuote.value ? { ...activeDpmQuote.value } : null,
+    fee: networkFee.value,
+    creatorClaimFee: creatorClaimNetworkFee.value,
+    generation: refreshRequestId,
+  };
+}
+
+/** Rejects changed terms or depleted funds immediately before entering the signing API. */
+function assertCurrentSubmission(
+  terms: ReturnType<typeof captureSubmissionTerms>,
+  claimAction?: 'market' | 'fees'
+): void {
+  const unavailable = claimAction
+    ? !(claimAction === 'market' ? canClaimTrader.value : canClaimCreatorFees.value)
+    : Boolean(disabledReason.value) || quoteLoading.value;
+  if (
+    isDisposed ||
+    !isConnected.value ||
+    !terms.account ||
+    unavailable ||
+    JSON.stringify(terms) !== JSON.stringify(captureSubmissionTerms())
+  ) {
+    throw new Error(t('polkamarkt.ticket.quoteUnavailable'));
+  }
+}
 
 /**
  * Clears stale quote-derived values and cancels in-flight quote updates after input changes.
@@ -542,6 +644,7 @@ function invalidateDpmQuote(): void {
   dpmQuote.value = null;
   dpmQuoteKey.value = null;
   networkFee.value = null;
+  creatorClaimNetworkFee.value = null;
   error.value = '';
 }
 
@@ -787,8 +890,18 @@ async function refreshClaimable(estimateNetworkFee = false): Promise<void> {
     claimableError.value = nextClaimable ? '' : t('polkamarkt.ticket.balanceUnavailable');
 
     if (estimateNetworkFee) {
-      const fee = await api.polkamarkt.estimateClaimMarketNetworkFee(marketId.value);
-      if (requestId === claimableRequestId) networkFee.value = isPositiveCodec(fee) ? fee : null;
+      const claimMarketId = marketId.value;
+      // Runtime action discovery can throw before returning a promise; isolate each estimate.
+      const [traderFee, creatorFee] = await Promise.allSettled([
+        Promise.resolve().then(() => api.polkamarkt.estimateClaimMarketNetworkFee(claimMarketId)),
+        Promise.resolve().then(() => api.polkamarkt.estimateClaimCreatorFeesNetworkFee(claimMarketId)),
+      ]);
+      if (requestId === claimableRequestId) {
+        networkFee.value =
+          traderFee.status === 'fulfilled' && isPositiveCodec(traderFee.value) ? traderFee.value : null;
+        creatorClaimNetworkFee.value =
+          creatorFee.status === 'fulfilled' && isPositiveCodec(creatorFee.value) ? creatorFee.value : null;
+      }
     }
   } catch (err) {
     if (requestId !== claimableRequestId) return;
@@ -809,6 +922,7 @@ async function refreshQuote(): Promise<void> {
   dpmQuote.value = null;
   dpmQuoteKey.value = null;
   networkFee.value = null;
+  creatorClaimNetworkFee.value = null;
   error.value = '';
 
   if (!marketId.value && marketId.value !== 0) return;
@@ -820,6 +934,7 @@ async function refreshQuote(): Promise<void> {
 
   if (mode.value === 'sell') {
     await refreshClaimable(false);
+    if (requestId !== refreshRequestId) return;
     if (!claimable.value || claimableError.value) return;
   } else if (!claimable.value && isConnected.value && accountAddress.value) {
     void refreshClaimable(false);
@@ -902,6 +1017,7 @@ async function refreshQuote(): Promise<void> {
   }
 }
 
+/** Submits reviewed trade/report terms only while their account, quote and funds remain current. */
 async function submit(): Promise<void> {
   if (!isConnected.value) {
     connectSoraWallet();
@@ -919,6 +1035,7 @@ async function submit(): Promise<void> {
     error.value = t('polkamarkt.ticket.quoteUnavailable');
     return;
   }
+  const terms = captureSubmissionTerms();
 
   const pendingReceipt =
     mode.value === 'buy'
@@ -941,28 +1058,37 @@ async function submit(): Promise<void> {
   confirmedReceiptHistoryId = undefined;
 
   const result = await withNotifications(async () => {
-    if (mode.value === 'buy') {
+    assertCurrentSubmission(terms);
+    if (terms.mode === 'buy') {
       await api.polkamarkt.submitBuyTrade({
-        marketId: marketId.value!,
-        outcome: runtimeOutcome.value,
-        collateralIn: collateralCodec.value,
-        minSharesOut: applySlippageMinimum(buyQuote!.sharesOut, slippage.value),
+        marketId: terms.marketId!,
+        outcome: terms.outcome,
+        collateralIn: terms.collateralIn,
+        minSharesOut: applySlippageMinimum(buyQuote!.sharesOut, terms.slippage),
       });
-    } else if (mode.value === 'sell') {
+    } else if (terms.mode === 'sell') {
       await api.polkamarkt.submitSellTrade({
-        marketId: marketId.value!,
-        outcome: runtimeOutcome.value,
-        sharesIn: sharesCodec.value,
-        minCollateralOut: applySlippageMinimum(sellQuote!.collateralOut, slippage.value),
+        marketId: terms.marketId!,
+        outcome: terms.outcome,
+        sharesIn: terms.sharesIn,
+        minCollateralOut: applySlippageMinimum(sellQuote!.collateralOut, terms.slippage),
       });
-    } else if (mode.value === 'report') {
+    } else if (terms.mode === 'report') {
       await api.polkamarkt.reportEarlyResolution({
-        marketId: marketId.value!,
-        outcome: runtimeOutcome.value,
-        evidence: reportEvidence.value,
+        marketId: terms.marketId!,
+        outcome: terms.outcome,
+        evidence: terms.evidence,
       });
     }
   });
+
+  if (
+    isDisposed ||
+    terms.account !== accountAddress.value ||
+    terms.marketId !== marketId.value ||
+    terms.network !== soraNetwork.value
+  )
+    return;
 
   if (!result.submitted) {
     receipt.value = withFailedReceipt(pendingReceipt, result.error);
@@ -980,24 +1106,36 @@ async function submit(): Promise<void> {
   }
 }
 
+/** Keeps claims bound to the account and market that initiated wallet preparation. */
 async function submitClaim(action: 'market' | 'fees'): Promise<void> {
   if (!isConnected.value) {
     connectSoraWallet();
     return;
   }
   if (!isClaimModeAvailable.value || (!marketId.value && marketId.value !== 0)) return;
+  if (isLoading.value || !(action === 'market' ? canClaimTrader.value : canClaimCreatorFees.value)) return;
+  const terms = captureSubmissionTerms();
 
   const pendingReceipt = buildClaimReceipt(action, 'submitting');
   receipt.value = pendingReceipt;
   confirmedReceiptHistoryId = undefined;
 
   const result = await withNotifications(async () => {
+    assertCurrentSubmission(terms, action);
     if (action === 'market') {
-      await api.polkamarkt.claimMarket(marketId.value!);
+      await api.polkamarkt.claimMarket(terms.marketId!);
     } else {
-      await api.polkamarkt.claimCreatorFees(marketId.value!);
+      await api.polkamarkt.claimCreatorFees(terms.marketId!);
     }
   });
+
+  if (
+    isDisposed ||
+    terms.account !== accountAddress.value ||
+    terms.marketId !== marketId.value ||
+    terms.network !== soraNetwork.value
+  )
+    return;
 
   if (!result.submitted) {
     receipt.value = withFailedReceipt(pendingReceipt, result.error);
@@ -1037,6 +1175,21 @@ watch(
   { immediate: true }
 );
 
+// Invalidate the owner before debounced reads can reuse or publish another account's funds.
+watch(
+  [accountAddress, marketId, isConnected, soraNetwork],
+  () => {
+    invalidateDpmQuote();
+    claimableRequestId += 1;
+    claimable.value = null;
+    claimableError.value = '';
+    claimableLoading.value = false;
+    receipt.value = null;
+    confirmedReceiptHistoryId = undefined;
+  },
+  { flush: 'sync' }
+);
+
 watch(
   [
     marketId,
@@ -1049,6 +1202,7 @@ watch(
     reportEvidenceHash,
     isConnected,
     accountAddress,
+    soraNetwork,
   ],
   () => {
     invalidateDpmQuote();
@@ -1067,7 +1221,6 @@ watch(
     collateralAmount.value = '';
     reportEvidenceUri.value = '';
     reportEvidenceHash.value = '';
-    pricingCurveHelperOpen.value = false;
     invalidateDpmQuote();
     claimable.value = null;
     claimableError.value = '';
@@ -1076,6 +1229,13 @@ watch(
     confirmedReceiptHistoryId = undefined;
   }
 );
+
+onBeforeUnmount(() => {
+  isDisposed = true;
+  refreshRequestId += 1;
+  claimableRequestId += 1;
+  clearTimeout(refreshTimer);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -1084,10 +1244,9 @@ watch(
   flex-direction: column;
   gap: $inner-spacing-medium;
   border: 1px solid var(--s-color-base-border-secondary);
-  border-radius: var(--s-border-radius-mini);
+  border-radius: 20px;
   background: var(--s-color-utility-surface);
   padding: $inner-spacing-medium;
-  box-shadow: var(--s-shadow-element);
 
   &__header {
     h2 {
@@ -1130,22 +1289,17 @@ watch(
         background: var(--s-color-theme-accent);
         color: var(--s-color-base-on-accent);
       }
-    }
-  }
 
-  &__outcomes,
-  &__form,
-  &__balances,
-  &__quote {
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-border-radius-mini);
-    background: var(--s-color-utility-body);
-    padding: $inner-spacing-small;
+      &:focus-visible {
+        outline: 2px solid var(--s-color-theme-accent);
+        outline-offset: 2px;
+      }
+    }
   }
 
   &__outcomes {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
     gap: $inner-spacing-mini;
 
     button {
@@ -1158,12 +1312,24 @@ watch(
       color: var(--s-color-base-content-primary);
       cursor: pointer;
       padding: $inner-spacing-small;
-      text-align: left;
+      text-align: start;
+      transition:
+        border-color 160ms ease,
+        background-color 160ms ease;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
 
       &.active {
         border-color: var(--s-color-theme-accent);
         background: var(--s-color-theme-accent);
         color: var(--s-color-base-on-accent);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--s-color-theme-accent);
+        outline-offset: 2px;
       }
 
       small {
@@ -1180,10 +1346,35 @@ watch(
     gap: $inner-spacing-small;
   }
 
-  &__balances,
-  &__quote {
+  &__settings,
+  &__holdings,
+  &__curve-panel {
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-small);
+
+    summary {
+      cursor: pointer;
+      min-height: 44px;
+      align-content: center;
+
+      &:focus-visible {
+        outline: 2px solid var(--s-color-theme-accent);
+        outline-offset: 2px;
+      }
+    }
+
+    &[open] summary {
+      margin-bottom: $inner-spacing-mini;
+    }
+  }
+
+  &__settings .trade-field {
+    max-width: 180px;
+  }
+
+  &__balances {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, #{'minmax(120px, 1fr)'});
     gap: $inner-spacing-small;
 
     span {
@@ -1196,6 +1387,40 @@ watch(
       display: block;
       margin-top: 2px;
       overflow-wrap: anywhere;
+    }
+  }
+
+  &__quote {
+    display: grid;
+    gap: $inner-spacing-mini;
+    border-top: 1px solid var(--s-color-base-border-secondary);
+    padding-top: $inner-spacing-small;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: $inner-spacing-mini;
+      font-size: var(--s-font-size-small);
+    }
+
+    span {
+      color: var(--s-color-base-content-secondary);
+    }
+
+    strong {
+      text-align: end;
+      overflow-wrap: anywhere;
+      font-weight: 500;
+    }
+
+    .trade-ticket__quote-primary {
+      margin-bottom: $inner-spacing-mini;
+
+      strong {
+        font-size: var(--s-heading5-font-size);
+        font-weight: 700;
+      }
     }
   }
 
@@ -1255,43 +1480,11 @@ watch(
     display: grid;
     gap: $inner-spacing-small;
     min-width: 0;
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: var(--s-border-radius-mini);
-    background: var(--s-color-utility-body);
-    padding: $inner-spacing-small;
-  }
-
-  &__curve-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: $inner-spacing-small;
-    min-height: 34px;
-    width: 100%;
-    border: 0;
-    background: transparent;
-    color: var(--s-color-base-content-primary);
-    cursor: pointer;
-    font: inherit;
-    font-weight: 700;
-    padding: 0;
-    text-align: left;
-
-    span {
-      min-width: 0;
-      overflow-wrap: anywhere;
-    }
-
-    span:last-child {
-      flex: 0 0 auto;
-      color: var(--s-color-theme-accent);
-      font-size: var(--s-heading5-font-size);
-    }
+    border-top: 1px solid var(--s-color-base-border-secondary);
+    padding-top: $inner-spacing-mini;
   }
 
   &__curve-panel {
-    display: grid;
-    gap: $inner-spacing-small;
     min-width: 0;
   }
 
@@ -1385,7 +1578,7 @@ watch(
 }
 
 .polkamarkt-input {
-  min-height: 40px;
+  min-height: 48px;
   border: 1px solid var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-mini);
   background: var(--s-color-utility-surface);

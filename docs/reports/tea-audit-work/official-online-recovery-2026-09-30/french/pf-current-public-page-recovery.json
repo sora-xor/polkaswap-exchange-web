@@ -1,0 +1,18 @@
+[
+  {
+    "url": "https://www.service-public.pf/biosecurite/accueil/particuliers/apporter-ou-faire-venir-en-pf-particulier/jarrive-en-polynesie-francaise/",
+    "status": 200,
+    "file": "pf-arrival2026.html",
+    "bytes": 219665,
+    "sha256": "ca8b4aca25c5d2ef870a23691a996b8500d8fe7d8fa6d26da4aaf714c9d6ec85",
+    "contentType": "text/html; charset=UTF-8"
+  },
+  {
+    "url": "https://www.service-public.pf/biosecurite/wp-content/uploads/sites/43/2026/03/Ar-324-CM.png",
+    "status": 200,
+    "file": "pf-order324-image.png",
+    "bytes": 655633,
+    "sha256": "7ba742646fa7301e102ce306c43a107d57f9074ad445222f9d7b2ee1fabc3bfa",
+    "contentType": "image/png"
+  }
+]

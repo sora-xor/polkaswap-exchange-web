@@ -43,7 +43,8 @@ const subBridge: SubBridge = new Bridge({
   addAsset: (assetAddress: string) => resolveWalletStore().addAsset(assetAddress),
   getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => (resolveBridgeStore().getHistoryTransaction(id) || getTransaction(id)) as SubHistory,
+  getTransaction: (id: string) =>
+    getTransaction(id, resolveBridgeStore().getHistoryTransaction(id) as SubHistory | null),
   updateTransaction,
   // ui integration
   showNotification: (tx: SubHistory) => resolveBridgeStore().setNotificationData(tx),

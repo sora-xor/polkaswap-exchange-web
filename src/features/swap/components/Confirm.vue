@@ -5,6 +5,9 @@
     :append-to-body="appendToBody"
     :modal-append-to-body="appendToBody"
     custom-class="dialog--confirm-swap"
+    :show-close-button="!submitting"
+    :close-on-esc="!submitting"
+    :close-on-click-modal="!submitting"
   >
     <div class="tokens">
       <div class="tokens-info-container">
@@ -29,13 +32,27 @@
       v-html="swapMessageHtml"
     ></p>
     <s-divider></s-divider>
-    <swap-transaction-details full expanded></swap-transaction-details>
+    <swap-transaction-details :review="review" full expanded></swap-transaction-details>
     <template #footer>
+      <div v-if="statusMessage" class="swap-review-status" role="status" aria-live="polite">
+        <p>{{ statusMessage }}</p>
+        <s-button v-if="!readiness.ready && readiness.retryable" size="small" @click="emit('retry')">{{
+          t('ux.swap.retryQuote')
+        }}</s-button>
+        <s-button
+          v-if="!readiness.ready && readiness.reason === 'reviewChanged'"
+          size="small"
+          @click="emit('refresh')"
+          >{{ t('ux.swap.reviewLatest') }}</s-button
+        >
+        <s-button v-if="canFundFee" size="small" @click="emit('fund-fee')">{{ t('ux.swap.receiveXor') }}</s-button>
+      </div>
       <account-confirmation-option with-hint class="confirmation-option"></account-confirmation-option>
       <s-button
         type="primary"
         class="s-typography-button--large"
-        :disabled="isInsufficientBalance"
+        :disabled="!readiness.ready || submitting"
+        :loading="submitting"
         @click="handleConfirm"
       >
         {{ t('confirmText') }}
@@ -49,8 +66,8 @@ import { computed } from 'vue';
 
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
-import { useSwapAmounts } from '@/features/swap/composables/useSwapAmounts';
-import { useSwapStore } from '@/features/swap/stores/useSwapStore';
+import type { SwapReadiness } from '../services/readiness';
+import type { SwapReview } from '../types/review';
 import { createAsyncComponent } from '@/shared/ui/async';
 import { sanitizeHtml } from '@/utils/sanitize';
 
@@ -70,30 +87,39 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    isInsufficientBalance?: boolean;
+    review?: SwapReview | null;
+    readiness?: SwapReadiness;
+    submitting?: boolean;
+    statusMessage?: string;
+    canFundFee?: boolean;
     appendToBody?: boolean;
   }>(),
   {
-    isInsufficientBalance: false,
+    review: null,
+    readiness: () => ({ ready: false, reason: 'checking', retryable: false }),
+    submitting: false,
+    statusMessage: '',
+    canFundFee: false,
     appendToBody: false,
   }
 );
 
 const emit = defineEmits<{
-  (event: 'confirm'): void;
+  (event: 'confirm' | 'retry' | 'refresh' | 'fund-fee'): void;
 }>();
 
 const { t } = useTranslation();
 const { formatStringValue, formatCodecNumber } = useFormattedAmount();
-const { tokenFrom, tokenTo, fromValue, toValue } = useSwapAmounts();
-const swapStore = useSwapStore();
+const tokenFrom = computed(() => props.review?.tokenFrom);
+const tokenTo = computed(() => props.review?.tokenTo);
+const fromValue = computed(() => props.review?.fromValue || '');
+const toValue = computed(() => props.review?.toValue || '');
 
 const visible = defineModel<boolean>('visible', { required: true });
 
 const appendToBody = computed(() => props.appendToBody);
-const isInsufficientBalance = computed(() => props.isInsufficientBalance);
-const isExchangeB = computed(() => swapStore.isExchangeB);
-const minMaxReceived = computed(() => swapStore.minMaxReceived as CodecString);
+const isExchangeB = computed(() => props.review?.isExchangeB || false);
+const minMaxReceived = computed(() => (props.review?.minMaxReceived || '0') as CodecString);
 
 const decimalsFrom = computed(() => tokenFrom.value?.decimals);
 const decimalsTo = computed(() => tokenTo.value?.decimals);
@@ -118,8 +144,8 @@ const swapMessageHtml = computed(() => {
 });
 
 const handleConfirm = () => {
+  if (!props.readiness.ready || props.submitting) return;
   emit('confirm');
-  visible.value = false;
 };
 </script>
 
@@ -194,7 +220,7 @@ const handleConfirm = () => {
 .sora-theme-provider[data-theme='light'] .dialog--confirm-swap .dialog-card__close.el-button,
 .sora-theme-provider[design-system-theme='light'] .dialog--confirm-swap .dialog-card__close.el-button {
   background-color: rgb(247, 243, 244);
-  color: rgb(213, 205, 208);
+  color: var(--s-color-base-content-secondary);
   box-shadow:
     rgb(255, 255, 255) -5px -5px 10px 0px,
     rgba(0, 0, 0, 0.1) 1px 1px 10px 0px,
@@ -224,7 +250,7 @@ const handleConfirm = () => {
 .sora-theme-provider[data-theme='dark'] .dialog--confirm-swap .dialog-card__close.el-button,
 .sora-theme-provider[design-system-theme='dark'] .dialog--confirm-swap .dialog-card__close.el-button {
   background-color: rgb(93, 47, 115);
-  color: rgb(155, 111, 165);
+  color: var(--s-color-base-content-secondary);
   box-shadow:
     rgba(155, 111, 165, 0.25) -5px -5px 10px 0px,
     rgb(73, 32, 103) 2px 2px 15px 0px,
@@ -276,5 +302,27 @@ const handleConfirm = () => {
 }
 .confirmation-option {
   margin-bottom: 16px;
+}
+</style>
+
+<style scoped>
+.swap-review-status {
+  margin-bottom: 16px;
+  color: var(--s-color-base-content-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.swap-review-status p {
+  margin-bottom: 12px;
+}
+</style>
+
+<style scoped>
+.tokens-info-container {
+  min-width: 0;
+}
+.token-value {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 </style>

@@ -38,7 +38,7 @@ const shared = vi.hoisted(() => {
   }));
   const getValidatorsInfo = vi.fn(async () => [{ address: 'validator-1', apy: '10' }]);
   const getNominatorsReward = vi.fn(async () => [{ era: 1 }]);
-  const getMinNominatorBond = vi.fn(async () => 1);
+  const getMinNominatorBond = vi.fn(async () => '1');
   const getUnbondPeriod = vi.fn(() => 7);
   const getMaxNominations = vi.fn(() => 16);
   const getHistoryDepth = vi.fn(() => 84);
@@ -226,7 +226,7 @@ describe('staking store', () => {
     store.selectValidators([{ address: 'validator-2', apy: '11' }] as any);
     store.setStakingInfo({ totalStake: '10' } as any);
     store.setTotalNominators(99);
-    store.setMinNominatorBond(1);
+    store.setMinNominatorBond('1');
     store.setUnbondPeriod(7);
     store.setMaxNominations(16);
     store.setHistoryDepth(84);
@@ -253,7 +253,7 @@ describe('staking store', () => {
     expect(store.selectedValidators).toEqual([{ address: 'validator-2', apy: '11' }]);
     expect(store.stakingInfo).toEqual({ totalStake: '10' });
     expect(store.totalNominators).toBe(99);
-    expect(store.minNominatorBond).toBe(1);
+    expect(store.minNominatorBond).toBe('1');
     expect(store.unbondPeriod).toBe(7);
     expect(store.maxNominations).toBe(16);
     expect(store.historyDepth).toBe(84);
@@ -312,6 +312,15 @@ describe('staking store', () => {
     expect(shared.getPayoutNetworkFee).toHaveBeenCalledWith({ payouts, payee: 'payee-1' });
   });
 
+  it('preserves withdrawal history amounts above the safe integer limit', async () => {
+    const store = useStakingStore();
+    const preciseAmount = '9007199254740993';
+
+    await store.withdraw(preciseAmount);
+
+    expect(shared.withdrawUnbonded).toHaveBeenCalledWith({ value: preciseAmount });
+  });
+
   it('loads staking snapshots and manages live subscriptions locally', async () => {
     const store = useStakingStore();
 
@@ -346,7 +355,7 @@ describe('staking store', () => {
     });
     expect(store.validatorsInfo).toEqual([{ address: 'validator-1', apy: '10' }]);
     expect(store.pendingRewards).toEqual([{ era: 1 }]);
-    expect(store.minNominatorBond).toBe(1);
+    expect(store.minNominatorBond).toBe('1');
     expect(store.unbondPeriod).toBe(7);
     expect(store.maxNominations).toBe(16);
     expect(store.historyDepth).toBe(84);
@@ -358,6 +367,13 @@ describe('staking store', () => {
     expect(store.payee).toBe('payee-1');
     expect(store.nominations).toEqual({ targets: ['validator-1'] });
     expect(store.accountLedger).toEqual({ active: '5' });
+    expect(store.activeEraUpdates?.unsubscribe).toBe(shared.activeEraUnsubscribe);
+    expect(store.currentEraUpdates?.unsubscribe).toBe(shared.currentEraUnsubscribe);
+    expect(store.currentEraTotalStakeUpdates?.unsubscribe).toBe(shared.totalStakeUnsubscribe);
+    expect(store.controllerUpdates?.unsubscribe).toBe(shared.controllerUnsubscribe);
+    expect(store.payeeUpdates?.unsubscribe).toBe(shared.payeeUnsubscribe);
+    expect(store.nominationsUpdates?.unsubscribe).toBe(shared.nominationsUnsubscribe);
+    expect(store.accountLedgerUpdates?.unsubscribe).toBe(shared.accountLedgerUnsubscribe);
     expect(shared.activeEraUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.currentEraUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.totalStakeUnsubscribe).toHaveBeenCalledTimes(1);
@@ -365,6 +381,39 @@ describe('staking store', () => {
     expect(shared.payeeUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.nominationsUnsubscribe).toHaveBeenCalledTimes(1);
     expect(shared.accountLedgerUnsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('times out and unsubscribes when a staking stream never emits', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const subscribe = vi.fn(() => ({ unsubscribe }));
+    shared.getActiveEraObservable.mockReturnValueOnce({ subscribe });
+    const store = useStakingStore();
+
+    try {
+      const pending = store.subscribeOnActiveEra();
+      await Promise.resolve();
+      await Promise.resolve();
+      expect(subscribe).toHaveBeenCalledTimes(1);
+
+      await vi.advanceTimersByTimeAsync(8_000);
+      await pending;
+
+      expect(unsubscribe).toHaveBeenCalledTimes(1);
+      expect(store.activeEraUpdates).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('preserves a minimum nominator bond above the JavaScript safe integer range', async () => {
+    const minNominatorBond = '1000000000000000000000000000000';
+    shared.getMinNominatorBond.mockResolvedValueOnce(minNominatorBond);
+    const store = useStakingStore();
+
+    await store.getMinNominatorBond();
+
+    expect(store.minNominatorBond).toBe(minNominatorBond);
   });
 
   it('loads validator info from the indexer before waiting for chain RPC readiness', async () => {

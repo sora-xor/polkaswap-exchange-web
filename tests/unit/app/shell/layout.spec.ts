@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { defineComponent, nextTick, ref } from 'vue';
+import { defineComponent, nextTick, reactive, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const appClasses = ref(['app-main', 'app-main--swap']);
@@ -9,6 +9,9 @@ const loading = ref(true);
 const menuVisibility = ref(true);
 const pageLoading = ref(true);
 const routeParentLoading = ref(false);
+const route = reactive<{ path: string; query: Record<string, unknown> }>({ path: '/swap', query: {} });
+
+vi.mock('vue-router', () => ({ useRoute: () => route }));
 
 const goTo = vi.fn();
 const goToSwap = vi.fn();
@@ -42,7 +45,7 @@ vi.mock('@/shared/ui/async', () => {
       if (source.includes('AppHeader')) {
         return defineComponent({
           name: 'AppHeaderStub',
-          props: ['loading'],
+          props: ['loading', 'checkout'],
           emits: ['toggle-menu'],
           template: '<button class="app-header-stub" @click="$emit(\'toggle-menu\')" />',
         });
@@ -93,6 +96,8 @@ beforeEach(async () => {
   menuVisibility.value = true;
   pageLoading.value = true;
   routeParentLoading.value = false;
+  route.path = '/swap';
+  route.query = {};
   goTo.mockClear();
   goToSwap.mockClear();
   handleAppMenuClick.mockClear();
@@ -130,6 +135,53 @@ describe('AppShellLayout', () => {
     expect(wrapper.findComponent({ name: 'RouterViewStub' }).props('parentLoading')).toBe(false);
     expect(wrapper.findComponent({ name: 'AppDisclaimerStub' }).exists()).toBe(true);
     expect(wrapper.find('.app-main--swap').exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'AppHeaderStub' }).props('checkout')).toBe(false);
+    expect(wrapper.findComponent({ name: 'AppFooterStub' }).exists()).toBe(true);
+    expect(wrapper.find('.app-main--checkout').exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it.each([
+    { path: '/get-ts', query: {} },
+    { path: '/bridge', query: { campaign: 'tonswap', getTs: '1' } },
+    { path: '/bridge/transaction/123', query: { campaign: 'tonswap', getTs: '1' } },
+  ])('keeps the routed content while hiding global navigation during checkout at $path', async (target) => {
+    route.path = target.path;
+    route.query = target.query;
+    const wrapper = mount(AppShellLayout, {
+      global: {
+        stubs: {
+          'router-view': defineComponent({
+            name: 'RouterViewStub',
+            props: ['parentLoading'],
+            template: '<div class="router-view-stub" />',
+          }),
+          's-scrollbar': defineComponent({
+            name: 'SScrollbarStub',
+            template: '<div class="s-scrollbar-stub"><slot /></div>',
+          }),
+        },
+      },
+    });
+    await vi.dynamicImportSettled();
+    await nextTick();
+
+    expect(wrapper.findComponent({ name: 'AppHeaderStub' }).props('checkout')).toBe(true);
+    expect(wrapper.findComponent({ name: 'AppMenuStub' }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: 'AppFooterStub' }).exists()).toBe(false);
+    expect(wrapper.find('.app-main--checkout').exists()).toBe(true);
+    expect(wrapper.findComponent({ name: 'RouterViewStub' }).props('parentLoading')).toBe(false);
+    expect(wrapper.findComponent({ name: 'AppDisclaimerStub' }).exists()).toBe(true);
+
+    // Changing only the route must restore the regular shell without a remount.
+    route.path = '/bridge';
+    route.query = { campaign: 'tonswap' };
+    await nextTick();
+    expect(wrapper.findComponent({ name: 'AppHeaderStub' }).props('checkout')).toBe(false);
+    expect(wrapper.findComponent({ name: 'AppMenuStub' }).props('visible')).toBe(true);
+    expect(wrapper.findComponent({ name: 'AppFooterStub' }).exists()).toBe(true);
+    expect(wrapper.find('.app-main--checkout').exists()).toBe(false);
+    wrapper.unmount();
   });
 
   it('routes layout interactions back through the shell context', async () => {
@@ -158,5 +210,6 @@ describe('AppShellLayout', () => {
     expect(openProductDialog).toHaveBeenCalledWith('soraMobile');
     expect(handleAppMenuClick).toHaveBeenCalledTimes(1);
     expect(goToSwap).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
   });
 });

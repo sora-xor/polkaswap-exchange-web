@@ -11,6 +11,7 @@ interface BridgeNextActionState {
   isAssetSelected: boolean;
   isAssetSelectionAvailable: boolean;
   isTxConfirmDisabled: boolean;
+  fundingPreparationBlocked?: boolean;
 }
 
 type BridgeNextButtonDisabledState = BridgeNextActionState;
@@ -22,6 +23,7 @@ type BridgeNextButtonDisabledState = BridgeNextActionState;
 export const resolveBridgeNextAction = (state: BridgeNextActionState): BridgeNextAction => {
   if (!state.areAccountsConnected) return BridgeNextAction.Ignore;
   if (!state.isValidNetwork) return BridgeNextAction.ChangeNetwork;
+  if (state.fundingPreparationBlocked) return BridgeNextAction.Ignore;
   if (!state.isAssetSelected && state.isAssetSelectionAvailable) return BridgeNextAction.SelectAsset;
   if (!state.isAssetSelected) return BridgeNextAction.Ignore;
   if (state.isTxConfirmDisabled) return BridgeNextAction.Ignore;
@@ -35,6 +37,7 @@ export const resolveBridgeNextAction = (state: BridgeNextActionState): BridgeNex
 export const isBridgeNextButtonDisabled = (state: BridgeNextButtonDisabledState): boolean => {
   if (!state.areAccountsConnected) return true;
   if (!state.isValidNetwork) return false;
+  if (state.fundingPreparationBlocked) return true;
   if (!state.isAssetSelected) return !state.isAssetSelectionAvailable;
   return state.isTxConfirmDisabled;
 };

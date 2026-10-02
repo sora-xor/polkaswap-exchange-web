@@ -1,0 +1,1011 @@
+ Import & Export Procedures
+          Manual
+                                 St. Kitts /Nevis
+                                       Claude A Paul
+                                        1/31/2012
+
+
+
+
+This report is presented as part the fulfillment of the terms of reference for contract no.
+LOA No. 7790527
+Contents
+Introduction .................................................................................................................................................. 5
+
+Glossary ......................................................................................................................................................... 6
+
+Import Procedures ........................................................................................................................................ 8
+
+   Arrival of Goods (Part IV of the Customs Act)........................................................................................... 8
+
+   Discharge / Storage of cargo ..................................................................................................................... 8
+
+       Vessels................................................................................................................................................... 8
+
+       Aircraft .................................................................................................................................................. 9
+
+       Transfers ............................................................................................................................................... 9
+
+   Entry (Declaration) Processing .................................................................................................................. 9
+
+   Payments................................................................................................................................................. 10
+
+   Verification / Marking off........................................................................................................................ 10
+
+   Cargo Inspection and Release ................................................................................................................. 11
+
+       Commercial Cargo ............................................................................................................................... 11
+
+       Non-commercial Cargo ....................................................................................................................... 11
+
+   Containerised Cargo (FCLs) ..................................................................................................................... 12
+
+   Private Bonds .......................................................................................................................................... 13
+
+   Final Release from Port Facilities ............................................................................................................ 13
+
+   Courier /Express Parcel Operations ........................................................................................................ 13
+
+       Non-commercial.................................................................................................................................. 14
+
+       Commercial ......................................................................................................................................... 14
+
+   Parcel Post............................................................................................................................................... 15
+
+   Special Regimes....................................................................................................................................... 15
+                                                                        2
+       Provisional /Deposit Entry Procedure {Section 27(4)} ........................................................................ 15
+
+       Perfect/Certified Entry Procedure ...................................................................................................... 16
+
+   Duty Concessions .................................................................................................................................... 17
+
+   Returning Nationals/Residents ............................................................................................................... 17
+
+   Pre Releases ............................................................................................................................................ 18
+
+   Prohibitions & Restrictions ..................................................................................................................... 19
+
+   Customs Duties and Other Charges ........................................................................................................ 19
+
+       Import Duty ......................................................................................................................................... 19
+
+       Value Added Tax ................................................................................................................................. 19
+
+       Examples of Zero-Rated Items ............................................................................................................ 19
+
+       Excise Tax (Excise Act #4 of 2010) ....................................................................................................... 20
+
+       Environmental Levy (Act No 3 of 2001 & SR&O 12 of 2005) .............................................................. 20
+
+Export Procedures....................................................................................................................................... 21
+
+       Preparing Export Documents .............................................................................................................. 21
+
+       Declaration Processing ........................................................................................................................ 21
+
+       Procedures at Port .............................................................................................................................. 21
+
+   Temporary Exports.................................................................................................................................. 22
+
+Other Agency Requirements ....................................................................................................................... 23
+
+   Port Authority – St. Kitts and Nevis ........................................................................................................ 23
+
+       Storage of Cargo.................................................................................................................................. 23
+
+       St. Kitts ................................................................................................................................................ 23
+
+       Nevis.................................................................................................................................................... 23
+
+   Plant Quarantine - Imports ..................................................................................................................... 23
+
+       Exports ................................................................................................................................................ 24
+
+       Animal Quarantine .............................................................................................................................. 24
+
+                                                                                3
+Supply Office - Ministry of Trade ........................................................................................................ 25
+
+Pesticide and Toxic Chemical Control ................................................................................................. 25
+
+
+
+
+                                                                  4
+Introduction
+
+
+  This manual is intended to provide a clear and concise explanation of the procedures to be followed
+  by persons involved in importing and exporting goods into and out of St. Kitts and Nevis. It will
+  outline the steps to be followed in order to comply with the numerous administrative and statutory
+  requirements of the various government departments which exercise control over the movement of
+  goods through the various ports of entry. The manual also includes a series of illustrations that map
+  out the processes of the various agencies in a simplified user friendly format.
+
+  The procedural requirements of the major stakeholders involved in trade is presented in a logical
+  sequence and is written in simple language which focuses on the trader’s perspective of the
+  processes. Great care is taken to use terms which are commonly known and to avoid the use of
+  jargon used within the respective agencies. References are made to the legislative instruments or
+  statues which authorise the use the measures and a glossary is included to explain some of the
+  technical terms which cannot be avoided.
+
+  Users of this manual must be mindful that the procedures represented here are intended as a
+  general guide and should not be used as the authoritative source for making commercial decisions.
+  All legal matters should be considered within the context of the provisions of the relevant legislation
+  or based on independent professional advice.
+
+
+  The technical assistance and resources necessary to accomplish this task was made possible by
+  International Finance Cooperation (IFC) - the private sector arm of the World Bank Group. This
+  initiative is intended to contribute towards improving the institutional and regulatory framework in
+  which trade transactions are conducted by the private sector within St. Kitts and Nevis.
+
+
+
+
+                                                   5
+Glossary
+Air Waybill - (AWB) is a contract between the shipper and airline that states the terms and conditions of
+transportation.
+
+Agent - Any person authorized in writing to act on behalf of the master of a vessel or commander of an
+aircraft to perform such acts required by any customs or any other related enactment.
+
+Bill of lading – (BL) A document issued by a carrier, or its agent, to the shipper as a contract of
+carriage of goods. It is also a receipt for cargo accepted for transportation, and must be
+presented for taking delivery at the destination. It provides relevant information pertaining to
+goods including the description, marks and numbers, cubic measurement, weight and any amount paid
+or payable in respect of the carriage of the goods by sea.
+
+Bill of sight - refers to a provisional declaration made to customs in situations where the importer is
+unable to produce the proper invoice in respect of the goods. A proper or perfect declaration is
+normally required within a specified period based on the proper invoices. (Sec 27 of the Customs Act)
+
+C 101 - An administrative document submitted with customs declarations in situations where
+the goods are to be cleared under a duty concession or exemptions or cleared under the
+suspense regime. It must be approved by the Administration section of the Customs
+Department prior to the finalisation of the customs entry..
+
+Cargo Manifest – A listing of cargo consignments carried on board an aircraft or ship which is used by
+agents as part of the ship’s declaration or arrival in or departure from a port.
+
+Classification - A process of putting goods into classes or categories that is most suitable based on its
+description. This is done by applying a description coded system according to the CET.
+
+Certificate of Origin - (CO) is a document attesting that goods in a particular export shipment
+are wholly obtained, produced, manufactured or processed in a particular country (country of
+origin). A CARICOM Certificate of Origin is issued for any qualifying goods traded between
+member states
+
+Common External Tariff - (CET) Uniform duty rate (customs duty) adopted by a common
+market or trading pact group to be assessed on imports from countries outside that market or
+group. CARICOM States apply a CET on non-qualifying goods and on goods which originate from
+outside of member states.
+
+Customs Procedure Code- (CPC) is used for both imports and exports to identify the nature of the
+movement of the goods. It is used within the context of a Single Administrative Document to distinguish
+
+                                                   6
+the regime under which they goods are entered. The current list of Customs Procedure Codes can be
+found on the St. Kitts Customs website
+
+Customs value – the value of imported goods as appraised by the customs and used as the basis for
+assessing the amount of import duty and other taxes. The most-preferred method is transaction-value
+which is based on the price paid by a buyer to a seller and may include other costs incurred by the
+buyer, such as the freight, packing costs, license fee or royalty, and any other sum(s) that accrue to the
+seller.
+
+Customs Warehouse - Any place approved by the comptroller of customs for the deposit of goods for
+the security thereof.
+
+Gate Pass - The final document issued in the process of clearing cargo. It is issued after the
+consignees have honoured all their obligations, financial and otherwise to the Customs and Port
+Authority and signifies that the consignment may be removed from the compound. It includes
+the name and address of the consignee along with a brief description of the goods, the vessel’s
+date of arrival as well as the registration number of removal vehicle ( truck etc.) and driver's
+signature.
+
+
+HS Classification - The Harmonized System Codes (HS Code) is a standard issued by the World
+Customs Organization (WCO) to unify the classification of the goods. These are six digit codes
+for identifying different products across the world. The Common External Tariff (CET) used by
+member states of CARICOM is based on the HS Cde with additional digits and further sub
+divisions (sub heads) to distinguish goods which are of importance to regional trade.
+
+Import license - An authorizing certificate issued by the competent authority granting an importer
+permission to import restricted goods into the federation.
+
+Invoice – A commercial document issued by a seller to the buyer, indicating the products, quantities,
+and agreed prices for products or services the seller has provided the buyer. An invoice is required by
+customs to determine true value of the imported goods, for assessment of duties and taxes.
+
+Transit shed - an approved place situated within a Customs port or airport and used for the temporary
+storage of cargo unloaded from an aircraft or ship. Transit sheds are operated by the Port Authority in
+St. Kitts and Nevis
+
+Warehousing - This is a procedure under which an importer or agent imports goods and stores them
+under customs supervision or direction pending disposal either for home consumption or for export.
+Warehousing is part of the Suspense Regime of the Customs Procedure Codes which permits the release
+of goods from a transit shed and defers the payment of duty while in storage at a customs warehouse.
+                                                  7
+Import Procedures
+     The Customs ( Control & Management ) Act Cap 20:04 includes many provisions which authorise
+     Customs Officers to exercise control over goods and conveyances in which goods are imported.
+     Similarly other governmental agencies administer laws that impact on the movement of goods
+     across the borders. The procedures outlined below are based on the Customs Act and other
+     related legislation. Importers, brokers, agents and other persons involved in the importation of
+     goods are expected to comply with those administrative and regulatory requirements:
+
+     Arrival of Goods (Part IV of the Customs Act)
+        Goods are imported into St. Kitts /Nevis either by air or sea and the means of conveyance
+         (aircraft or vessels) are subject to control by two agencies – Customs and the Port Authority.
+
+        Aircrafts submit the cargo manifest to Customs and Port Authority upon arrival as part of
+         the general declaration
+
+        In the case of a vessel the Master or Agent gives notice to Customs and Port Authority at
+         least one working prior to arrival. An advance copy of the cargo manifest is also provided to
+         the Port Authority at that time.
+
+        Vessels are boarded upon arrival by Customs and a Vessel Report (including a cargo
+         Manifest) is submitted to Customs before the discharge of cargo.
+
+     Discharge / Storage of cargo
+     Vessels
+        Cargo is discharged from the vessel and a proper account (tally) is taken by the Port
+         Authority and the Agent
+
+        Goods are generally imported in returnable containers which may be either FCL or LCL
+
+        FCL containers will be stored Container Storage Area pending release by Customs
+
+        LCL Containers are unstuffed and the goods stored in one of the transit sheds (warehouses)
+         pending release by Customs.
+
+        Commercial cargo is normally stored in Transit Shed no. 1 while non-commercial cargo is
+         usually stored in shed no.2
+
+        Cargo is placed in marked locations for easy retrieval and subsequent inspection by Customs
+
+        The importer is notified by or seeks information about the arrival of his/her package(s) from
+         the local representative or agent of the shipping line.
+
+
+                                                 8
+Aircraft
+   Cargo discharged from an aircraft is tallied against the cargo manifest by representatives of
+    the agent and the Port Authority
+
+   All cargo is stored in the Air Cargo Shed pending release by Customs
+
+   Goods are placed in marked locations for easy retrieval and subsequent inspection by
+    Customs.
+
+   The importer is notified by or seeks information about the arrival of his/her package(s) from
+    the local representative or agent of the aircraft.
+
+Transfers
+   Cargo consignments may also be transferred between St. Kitts and Nevis under customs
+    control if duty has not been paid.
+
+   A customs entry (C100) using suspense regime (CPC-S711) along with an Application for
+    Relief of Duty and taxes (C101) Form must be presented to the Administration Section of
+    Customs for approval.
+
+   After approval the documents are lodged at the Customs Long Room for checking and
+    verification.
+
+   After finalisation the customs entry must be stamped out by the Customs Cashier
+
+   Port charges must also be paid to the Port Cashier
+
+   The Customs entry is taken to the warehouse office for marking off and verification of marks
+    and numbers.
+
+   The documents are brought to the Terminal Office where the boarding officer will supervise
+    the loading of the consignment and sign the certificate of shipment.
+
+   A boat pass will be issued to the vessel for permission to depart to the Port of entry in Nevis.
+
+   Upon arrival in Nevis, the vessel will offload the consignment which will be stored at the
+    transit shed pending release.
+
+Entry (Declaration) Processing
+A Customs entry or declaration is required for all consignments imported into St. Kitts/Nevis.
+
+    Customs entries can be submitted electronically but in addition at least three hard copies
+     of the entry forms (C100) must be presented with the relevant invoices, air waybill /bill of
+     lading and other supporting documents attached.
+
+
+                                             9
+       An importer may also be required to submit an Importer’s Declaration Form if the invoice is
+        unsigned or deemed insufficient by Customs.
+
+       A Bill of Sight may also be used in instances where invoices are unavailable and the
+        Comptroller permits the goods to be inspected and valued for duty purposes.
+
+       The hard copies of the customs entries must be taken to the Supply Office for processing
+        and approval before being lodged at Customs. The entries are stamped as evidence of
+        compliance.
+
+       At the time of first presentation of the entry to Customs the importer or authorised
+        Customs broker must sign the Lodgement Register.
+
+       The verification of the Customs entry involves comparing the electronic declaration with
+        the paper declaration to ensure that the items are properly classified, the value for duty
+        purposes is correct, the relevant duties and taxes are accurately computed and that all
+        other regulatory requirements are complied with.
+
+       Any discrepancies observed during the verification process are queried and the entry
+        returned to the importer or broker for correction. The queried entry is accompanied by a
+        Query Form which explains the discrepancy to the importer.
+
+       After adjusting the Customs entry the importer or broker returns the corrected document
+        to the Long Room and makes a notation on the Query Form to indicate the action taken to
+        adjust the entry.
+
+       The entry is finalised by Customs and an Assessment Notice is generated with the details of
+        the Customs duty to be paid.
+
+Payments
+       The Assessment Notice and Customs entries are collected by the importer or broker and
+        taken to the Customs Cashier for payment of the Customs duty.
+
+       The Customs Cashier issues a receipt for the duties paid and retains the duplicate copy of
+        the Customs entry. The original copy of the Customs entry will be used by Customs during
+        the cargo delivery process.
+
+     The charges due to the Port Authority must also be paid to the Port Cashier and a receipt is
+      issued. This is a multi-function document which will be used by Customs to authorise
+      release and then as a Gate Pass on final release from the Port Authority.
+
+Verification / Marking off
+       After payment of the Customs declaration and port Charges, the importer takes the
+        original copy of the paid Customs entry to the Warehouse Officer for processing.
+                                             10
+    The original copy is submitted to the Warehouse Office for marking off (accounting for the
+     consignment on the cargo manifest) prior to further checks and verification by Customs
+     Officers at the Transit shed where the goods are stored.
+
+    The consignment is checked against the cargo manifest and documents returned to the
+     importer or broker.
+
+Cargo Inspection and Release
+ Commercial Cargo
+    The importer proceeds to the transit shed No 1 and requests that the Port Official locate
+     the consignment for Customs inspection.
+
+    The goods are located and brought to the Customs Examination Area for verification by
+     Customs.
+
+    The contents of the packages are inspected by a Customs Officer to ensure conformity
+     with the Customs entry and the attached invoices.
+
+    If there are discrepancies the Customs Officer will point out the differences to the
+     importer and instruct the importer or broker of any actions to be taken.
+
+    When there are no discrepancies or the entry is corrected, the Customs Officer can sign
+     the release order to authorise the Port Authority to deliver the consignment to the
+     importer or broker
+
+    The Port Authority Officer scrutinises the documents and ensures that any rent and other
+     charges due to the Port Authority have been paid.
+
+
+
+ Non-commercial Cargo
+    Non-commercial cargo is treated differently mainly because the goods usually need to be
+     inspected and valued for duty purposes before the Customs entry can be completed.
+
+    The shipping agent provides the importer with a copy of the bill of lading, Customs entry
+     (C100) with header section completed, and other documents.
+
+    The importer proceeds to the Transit shed and makes a request to the Port official for the
+     goods to be located and brought to the Customs examination area.
+
+    The goods are inspected and valued by the Customs Officer. The Customs Officer
+     completes the Customs entry by inserting the Customs value and HS Classification in the
+     appropriate parts of the Customs entry form (C100).
+
+                                         11
+    This form is taken to the Long Room for finalising and determining the amount of Customs
+     duty to be paid.
+
+    The entry is finalised and an Assessment Notice generated with the details of the Customs
+     duty to be paid.
+
+    The Assessment Notice and Customs entries are collected by the importer or broker and
+     taken to the Customs Cashier for payment of the Customs duty.
+
+    The Customs Cashier issues a receipt and retains the duplicate copy of the Customs entry.
+
+    The port charges must then be paid to the Port Authority cashier who issues a receipt.
+
+    The original copy is taken back to the warehouse office for marking off.
+
+    Customs authorises release of the consignment on the receipt issued by the Port cashier
+
+Containerised Cargo (FCLs)
+Cargo imported in full container loads (FCL) may be released from the Port under Customs
+control for inspection at the importer’s premises.
+
+     After processing, payment and verification of the customs entry as outlined previously,
+     the documents are taken to Terminal office to book an appointment for inspection of the
+     FCL on importer’s premises.
+
+    A booking is valid for 24 hours during which time an Officer is assigned to inspect the FCL.
+
+    Customs verifies that the documentation is in order and releases the FCL by signing and
+     stamping the relevant section of the Port Authority Form.
+
+    The release is taken to Port Operations Office where the gate pass is issued.
+
+    The importer provides transportation for the Officer to proceed to the place of inspection
+     at the agreed time.
+
+    The container is opened and the contents of the FCL are removed under the supervision of
+     the Customs Officer who must verify that the declaration is correct.
+
+    If there are discrepancies, the importer will be advised accordingly about the action to be
+     taken.
+
+    The Officer will record the findings on the reverse side of the Customs entry and finalise
+     the transaction.
+
+
+
+                                           12
+     The importer/agent must countersign the notation made by the Officer as verification of
+      account taken
+
+Private Bonds
+     A Customs entry using the appropriate CPC for warehousing (S7) is prepared along with
+      the Bill of lading, invoices and a C101 form attached.
+
+     The entry and C101 must be first taken to the Audit and Administration Sections for
+      certification and approval.
+
+     After the approval stage the Customs entry is lodged and processed in the Long Room.
+
+     If the consignment includes aerated beverages e.g. beer, sodas, stout, etc in bottles or
+      cans, the levy must be paid to Customs.
+
+     Also the port charges must be paid to the Port Authority Cashier and the Receipt Voucher
+      issued.
+
+     The entry is then taken to the Warehouse Office for marking off.
+
+     Finally the entry for warehousing may be taken to the transit shed where the cargo is
+      stored or to the Terminal Office if it is a full Container Load (FCL).
+
+     As is done with commercial cargo in FCLs outlined above , prior arrangements should be
+      made at the Terminal Office for a Customs Officer to accompany goods intended to be
+      warehoused.
+
+  Final Release from Port Facilities
+     After release by Customs the importer returns to the Port Official at the transit shed for
+      final release.
+
+     The Port authority issues a gate pass and inserts the particulars of the vehicle transporting
+      the cargo out of the port facility.
+
+     A final check of the cargo is made at the Port Gate to verify that the cargo on the vehicle
+      corresponds to the particulars on the Gate Pass
+
+Courier /Express Parcel Operations
+There are two facilities dedicated to the clearance of courier or express parcels imported into or
+exported from St. Kitts. The Ralphford James Merchant Courier Facility (Bird Rock) is a one stop
+clearance facility managed entirely by Customs for the storage and release of courier (express)
+packages imported or exported through DHL, N.R. Sales, UPS, E-Zone and KVK . FEDEX operates
+
+
+                                           13
+a similar one stop facility with a full customs service to secure and expedite the delivery of their
+express parcels.
+
+     The importer is notified by or seeks information about the arrival of his/her package(s)
+      from the local representative or agent of the Courier Company.
+
+     The importer will visit the office of the courier company to collect the documentation and
+      pay any freight charges that may be due.
+
+     The agent will inform the importer that his goods are located at the FEDEX or RJM Courier
+      Facility.
+
+     The importer or his broker must visit the Customs Office at FEDEX or RJM Courier Facility
+      to clear the package(s).
+
+     The following documents are required for the clearance of goods from those facilities:
+
+        Air Waybill or Freight bill with the freight amount and the name of the
+         consignee/importer included.
+
+        An invoice or payment receipt reflecting the true value paid for goods.
+
+        A valid picture ID eg: Passport, Drivers Licence etc.
+
+        A letter granting permission to clear the goods if the importer is not present.
+
+  Non-commercial
+     For non-commercial goods, the Customs Officer will inspect the contents of the package(s)
+      and determine the value of goods for duty purposes based on the invoice presented or
+      contained in the package.
+
+     Upon payment of the assessed Customs duty, a payment receipt is issued and release
+      authorised.
+
+     At the time of release of the packages, the importer /broker is required to sign a “Receipt
+      for the Released Goods Form” which is retained by Customs.
+
+  Commercial
+     In the case of commercial goods the importer is required to present a proper Customs
+      entry (declaration) in respect of the goods.
+
+     The declaration is verified by Customs and then the importer must pay the Customs duty
+      due on the goods.
+
+     The contents of the parcels may also be inspected by Customs prior to being released.
+
+                                            14
+     The importer or broker required to sign a “Receipt for the Released Goods Form” which is
+      retained by Customs.
+
+Parcel Post
+     An importer is notified about the arrival of a parcel at the Post office by means of Parcel
+      Notice sent by the Postal Authorities. The notice will contain a parcel(s) number(s) and will
+      inform the importer of the times for Customs inspection.
+
+     The importer or his broker must visit Parcel Post section at the GPO to clear the
+      package(s).
+
+     The following documents are required for the clearance of goods from those facilities:
+
+         Air Waybill or Freight bill with the freight amount and the name of the
+          consignee/importer included.
+
+         An invoice or payment receipt reflecting the true value paid for goods.
+
+         A valid picture ID e.g.: Passport, Drivers Licence etc.
+
+         A letter granting permission to clear the goods if the importer is not present.
+
+       If the goods are of a non-commercial nature the Customs Officer will inspect the
+        contents of the package(s) and determine the value of goods for duty purposes.
+
+     The particulars are noted on the reverse side of the Parcel Post notice and handed over to
+      the Postal Officer for payment.
+
+     After payment the parcel is released and the importer must also sign to acknowledge
+      receipt.
+
+     Commercial goods require a Customs entry to be presented for verification by Customs
+      and payment of the relevant duties and taxes prior to release.
+
+Special Regimes
+ Provisional /Deposit Entry Procedure {Section 27(4)}
+ This procedure is utilised when an importer wishes to expedite the clearing of his goods but is
+ unable for whatever reason to immediately present a proper entry and allow it to go through
+ the normal verification processes.
+
+ This can be due to late arrival of invoices, the complexity of the entry preparation and the
+ urgency of the goods required. It is at this stage a Deposit or provisional entry is used to
+
+                                            15
+facilitate the expeditious release of cargo. The amount to be deposited usually exceeds the
+provisionally assessed Customs duty. This is to secure any additional duty that may be
+payable at the time of the proper and final assessment.
+
+The Importer is required to present the proper or perfect entry for verification within a
+stipulated time (usually three (3) months) after which a refund of any sum in excess of the
+duty payable is refunded. The Supervisor of the Warehouse Office is responsible for
+processing deposit entries.
+
+    The importer makes a request to clear goods on deposit to the Comptroller of Customs
+     when it is not possible to submit a proper entry
+
+    If granted the importer is presents the provisional entry along with invoices, agent stamp,
+     bill of lading, licences, other required documents.
+
+    The Supervisor - Warehouse Office assesses the entry and determines the amount to be
+     deposited
+
+    An “A-Form” will contain the deposit amount along with the shipment particulars (Rot#,
+     BOL, Vessel Name, Description of goods, including container type, etc.
+
+    The deposit entry is then processed by an entry processing clerk
+
+    The deposit entry and A-form is then taken to the cashier for payment of the deposit
+
+    The A-Form and the entry is taken to the station where the goods are stored for
+     finalisation and release
+
+Perfect/Certified Entry Procedure
+The purpose of the perfect entry is to make a proper assessment of goods that were
+provisionally cleared by deposit. It must be presented to Customs within three months or such
+period as the Comptroller may otherwise permit under Sec 27 (5).
+ The Importer will produce a proper entry to Warehouse Office for verification and
+    certification.
+
+
+
+
+                                           16
+  This declaration should contain all the documents relating to the importation of the goods
+    cleared by the deposit entry.
+
+  If for some reason goods were legitimately over-landed, invoices for these goods must be
+    produced.
+
+  If during the examination from the deposit entry goods were short-shipped or damaged, a
+    credit note should be attached to the perfect entry and be accounted for in the
+    calculations.
+
+  The entry is “Verified” and “Certified” by the respective Officers with their signatures and
+    date affixed.
+
+  The entries shall then be delivered to the Long Room for final processing.
+
+  If the amount deposited exceeds the duty payable then the excess is refunded.
+
+Duty Concessions
+Goods may be exempted from the normal customs duties and taxes based on legislation or
+under special circumstances through decisions of Cabinet. Cabinet decisions are conveyed to
+Customs through the Ministry of Finance.
+
+       The Customs entry for a consignment to be cleared under a concession must be
+        accompanied by an Application for Relief of Duty and taxes (C101) Form.
+
+       These documents are submitted to the Administration Section of Customs for
+        verification of the authority and reason for the concession and approval.
+
+       After approval the documents must follow the various stages for processing, payment,
+        verification and release outlined previously for a normal transaction.
+
+Returning Nationals/Residents
+A Returning National (RN) is entitled to duty free concessions on a range of household and
+personal effects including a motor vehicle on condition that they have resided outside of St.
+Kitts/Nevis for 10 years.
+
+   The eligibility of the individual to qualify for the concession is determined through an
+    interview conducted by the staff of the Secretariat for Returning Nationals
+
+   The RN is required to complete an application form if the requirements are met.
+
+                                         17
+   The application must be certified by the Administrator of the Secretariat for Returning
+    National s before the returning national proceeds to Customs to clear the goods.
+
+   The RN must obtain a copy of the bill of lading, Customs entry (C100) with header section
+    completed, and other documents from the shipping agent.
+
+   These documents and a copy of the C101 form to the Administrative Section at Customs
+    HQ for approval of the concession.
+
+   After the approval the RN goes to the Transit shed and makes a request to the Port official
+    for the goods to be located and brought to the Customs examination area.
+
+   The goods are inspected and valued by the Customs Officer. The Customs Officer
+    completes the Customs entry by inserting the Customs value and HS Classification in the
+    appropriate parts of the Customs entry form (C100).
+
+   The entry is taken to the Customs Long Room where it is finalised and an Assessment
+    Notice generated with the details of the Customs duty to be paid.
+
+   The Assessment Notice and Customs entries are collected by the importer or broker and
+    taken to the Customs Cashier for payment of the Customs duty.
+
+   Any port charges due are paid to the Port cashier
+
+Pre Releases
+In special circumstances Customs may allow certain goods to be pre-released provided that the
+importer agrees to meet certain stipulated conditions. Pre-releases may be granted for
+perishables, precious goods, inventory for factories and goods import for government purposes.
+Other requests are dealt with on a case by case basis at the discretion of the Comptroller.
+
+       A request for pre-release must be made by the broker using the Pre-release form- (
+        C104).
+
+       The Station Supervisor is authorised to approve certain requests for pre-releases
+        relating to perishables, precious items and goods required for manufacturing.
+
+       All other pre-releases must be authorised by the Administration Section before the
+        consignment can be delivered from customs control.
+
+       The customs entry in respect of the transaction must be finalised within one week of the
+        date of the release.
+
+
+
+
+                                          18
+Prohibitions & Restrictions
+
+         The fourth Schedule of the Customs Act contains the lists of prohibited and restricted
+         imports and exports. A prohibited item may not be imported into or exported from St.
+         Kitts/Nevis, while a restricted item may be imported or exported only under the conditions
+         specified in the relevant list.
+
+Customs Duties and Other Charges
+      Customs is responsible for the collection import duty and other related charges on goods
+      imported into St. Kitts /Nevis.
+
+      Import Duty
+      The Customs Tariff provides the range of import duties payable on goods according to their
+      classification under the Harmonised Commodity Description Code System (HS 2007)
+
+      Value Added Tax
+      Value Added Tax (VAT) is a tax that is charged on most goods and services that VAT-registered
+      businesses provide in the Federation. It is also charged on goods and some services that are
+      imported from countries outside the Federation, and brought into St. Kitts and Nevis.
+
+      There are three rates of VAT, depending on the goods or services the business provides. The
+      rates are:
+
+            standard - 17 per cent
+            reduced - 10per cent (hotel accommodation and restaurants)
+
+            zero - 0 per cent
+
+      A detailed explanation of the method of calculating and applying VAT on imports in available on
+      the St.Kitts Customs Website: http://www.skncustoms.com/pdfs/VAT%20System.pdf
+
+         Examples of Zero-Rated Items
+         These are examples of goods and services that are zero-rated, depending on the product
+         itself and the circumstances of the sale:
+
+            flour
+            sugar
+
+            milk (not condensed, chocolate, cream or soy)
+
+            rice (white & brown)
+
+            oats
+
+            bread
+
+
+                                                19
+Excise Tax (Excise Act #4 of 2010)
+
+Excise Tax is payable on certain goods imported into St. Kitts /Nevis and manufactured by
+registered manufacturers. It that regard is considered as a non-discriminatory tax which is
+applicable at the rates and on a range of goods specified in the First Schedule to the Excise
+Act. These goods include aerated and other beverages, beer, wine, spirits, tobacco products,
+motor cycles, firearms and petroleum products.
+
+Environmental Levy (Act No 3 of 2001 & SR&O 12 of 2005)
+
+An environmental levy is payable on used vehicles imported in St. Kitts /Nevis. The current
+rates of environment levy are as follows:
+ 4 years or more after the date of manufacture - $5000 EC
+ 2 years or more but less than 4 years after the date of manufacture - $3500 EC
+
+ less than 2 years - $1000 EC
+
+
+
+
+                                       20
+Export Procedures
+     Preparing Export Documents
+      An exporter will determine the carrier to be used for shipping goods to destination.
+
+        An export declaration must be prepared with particulars of the goods and supporting
+         documentation.
+
+        The air waybill /bill of lading must be prepared by the agent prior to departure of the
+         aircraft/vessel.
+
+
+     Declaration Processing
+      The export declaration (entry) is presented electronically or physically taken to the Customs
+
+         office where the goods are to be exported for processing.
+        The declaration is verified and finalised.
+
+        The finalised document must then be taken to the Customs Cashier for “Stamping Out”.
+
+        Any Port charges are paid to the Port Cashier who issues a receipt.
+
+        The documentation is taken to the Warehousing Officer for record keeping and filing.
+
+
+     Procedures at Port
+      The documents and goods to be exported taken to the Port Authority at the Port of
+
+         departure.
+        Prior to loading the Customs boarding Officer will inspect the goods and compare with the
+         export documents
+
+        If satisfied the Customs Officer will sign the reverse side of the export entry as part of the
+         certificate of shipment.
+
+        The Master / Commander or other responsible Officer of the aircraft/vessel also signs the
+         documents to certify that the goods were received on board.
+
+        An outward manifest with particulars of the cargo being shipped is prepared before the
+         aircraft/vessel departs from Port.
+
+
+
+                                                  21
+    Temporary Exports
+    Items may be exported on a temporary basis usually for repairs or when previously imported
+    goods are damaged and are being shipped out to be replaced on warranty usually through the
+    courier companies or the parcel post section of the GPO.
+
+       A Temporary Export Form is completed by the Customs Officer who inspects the item at the
+        time of export.
+
+       The Officer records a description of the item and takes particular care in noting the brand
+        name, the serial and model numbers.
+
+       The exporter is provided with a copy of the completed Temporary Export Form which he
+        must present to Customs when the goods are re-imported.
+
+       The items will be placed in a package and handed over to the respective agent of the
+        shipping company or the postal authorities for finalisation and payment of charges /fees
+        prior to shipment.
+
+       Duty is normally due on the cost of repairs, so supporting documents will be necessary to
+        assist Customs in determining the proper value of the repairs upon return.
+
+   Damaged goods exported under warranty will not be liable to Customs duty upon re-
+    importation, provided that the replacement is identical to the damaged item returned to the
+    supplier.
+
+
+
+
+                                              22
+Other Agency Requirements
+
+Port Authority – St. Kitts and Nevis
+The Port authorities of St. Kitts and Nevis work alongside Customs in both jurisdictions and provide
+complementary services in safeguarding the revenue due on imported goods and protecting the interest
+of state. Port Authority is responsible for the storage of goods in the transit sheds at the air and sea
+ports of the Federation. There are also responsible for the control of aircraft and ships arriving at or
+departing from the approved ports of entry.
+
+Storage of Cargo
+Cargo stored at the Port are subjected to the payment of storage fees after the allowable grace
+period have passed. The Authority allows a five (5) days grace period exclusive of Saturdays,
+Sundays and legal holidays (Public Holidays) before applying any storage fees. However, the
+Authority may, in its discretion extend the free time allowances when necessary.
+St. Kitts
+
+St. Christopher Air & Sea Ports Authority exercises control over both the Golden Rock Airport
+and Basseterre Cargo Port.
+
+For full details on storage charges at the port in St. Kitts click on the link below:
+http://www.scaspa.com/useful_information_storage_cargo.asp
+
+Nevis
+
+Nevis Air & Sea Ports Authority maintains control over the Vance W. Amory International
+Airport, the Long Point Seaport, and the Charlestown Ferry Terminal.)
+
+For full details on storage charges at the port in Nevis click on the link below:
+
+http://www.nevisports.com/statutory-rules-and-orders.asp
+
+Plant Quarantine - Imports
+           All consignments of plants, plant products or cut flowers require an import before importation
+            into the Federation.
+
+           The importer must provide a copy of the order to the Plant Quarantine section of the
+            Department of Agriculture where it is stamped and signed.
+
+           A fee of EC$5.00 is payable for the import permit when it is issued.
+
+           A copy of the stamped order and the import permit is taken to the Department of Trade ( supply
+            Office) where an application is made for an Import Licence.
+
+                                                       23
+         Upon approval of the import licence the goods may be imported.
+
+         The consignment must be accompanied by a phyto- sanitary Certificate from the country of
+          origin
+
+         The department of Agriculture must be notified of the time of arrival of the goods.
+
+         The consignment will be inspected upon arrival by a Plant Quarantine Officer who will advise
+          Customs to release the goods if it conforms to the quarantine requirements.
+
+Exports
+         Exporter informs the Department of Agriculture of the intention to export.
+
+         All products must be brought to the Department for inspection.
+
+         Inspection is carried out by a Plant Quarantine Officer
+
+         If in conformity a Phyto-sanitary Certificate is issued upon payment of EC$5.00.
+
+         The packages must be sealed for shipment and delivered to the port of departure/export.
+
+         Export documents are prepared and the other formalities complied with prior to export
+
+Animal Quarantine
+         All consignments require an import permit from the Veterinary Division before importation into
+          the Federation
+
+         The importer must present a signed copy of a health certificate with an official stamp from the
+          exporting country for all poultry and meat products.
+
+         Fish and other sea food products are referred to the Marine resources Department for approval.
+
+         A fee of EC$50.00 is payable for the import permit when it is issued.
+
+         A copy of the import permit is taken to the Department of Trade (Supply Office) where an
+          application is made for an Import Licence.
+
+         Upon approval of the import licence the goods may be imported.
+
+         The consignment must be accompanied by a valid Health Certificate from the country of origin
+
+         The department of Agriculture must be notified of the time of arrival of the goods.
+
+         The consignment will be inspected upon arrival by a Veterinary Officer who will advise Customs
+          to release the goods if it conforms to the quarantine requirements.
+
+
+                                                      24
+    The import procedures for live animals including dogs, cats, horses and livestock are more
+    technically oriented and specific to the nature of the importation.
+
+Supply Office - Ministry of Trade
+    The Supply Office is an agency of the Ministry of Trade responsible in part for bulk importation of
+    rice, sugar, flour, milk, and wire for making fish pots, etc. and for issuing import licences. All entries
+    for goods except foodstuff and household effects must be stamped by the Supply Officer before
+    being lodged at Customs. In some cases a licence is issued particularly for plant and animal products.
+
+       The importer or Broker takes the completed Customs entry to the supply office.
+
+       The entry is scrutinized and stamped and returned to the importer /Broker
+
+       The importer or Broker lodges the customs entry at Customs.
+
+       In instances where an import licence must be issued, the importer/broker completes an
+        application form and the actual licence is granted.
+
+       In both instances a fee of $1.00 is payable
+
+Pesticide and Toxic Chemical Control
+    The Pesticides and Toxic Chemicals Act (Cap 9.18) provides for the regulation and control of the
+    importation, storage, manufacture, sale, transportation, disposal, and use of controlled products.
+    A “controlled product” includes a pesticide, toxic chemical, or any substance or product specified in
+    the Second Schedule to this Act.
+
+      An application to import a controlled product must be made in advance to the Pesticides Board
+       and using the prescribed form
+      A fee of $50.00 is payable for granting or renewal of an import licence.
+      A licence issued under this section shall be signed by the Registrar or the Chairperson and shall
+       contain the following information:
+             The trade name of the controlled product and the physical form in which it shall be
+               imported, stored, sold, or used;
+             The registration number of the controlled product;
+             The conditions attached to the licence that is granted; and
+             Other requirements and information as the Board may consider necessary.
+
+      All imported controlled products must be accompanied by documentation which clearly state:
+             the common name of the active ingredient of the controlled product;
+             the percentage of the active ingredient;
+             the hazard class of the controlled product formulation;
+             any other hazard associated with the cargo; and
+             remedial action to be taken in case of emergency
+                                                      25
+   The importer must provide these documents to the Port Authority at least 48 hours prior to
+    importation so that safe and appropriate methods for handling, transporting and storing of the
+    controlled products can be made.
+
+   A customs entry is required for processing, payment, verification and release by Customs and
+    Port Authority in the normal manner.
+
+
+
+
+                                             26
+

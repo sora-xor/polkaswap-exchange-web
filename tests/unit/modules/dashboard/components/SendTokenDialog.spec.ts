@@ -20,6 +20,7 @@ const transactionMocks = vi.hoisted(() => ({
   loading: { value: false },
   withNotifications: vi.fn(async (handler: () => unknown | Promise<unknown>) => {
     await handler();
+    return { submitted: true };
   }),
 }));
 
@@ -48,6 +49,9 @@ const formattedAmountMocks = vi.hoisted(() => {
       },
       isZero() {
         return value === 0;
+      },
+      isFinity() {
+        return Number.isFinite(value);
       },
     };
   };
@@ -243,6 +247,10 @@ beforeEach(() => {
   transferMock.mockClear();
   validateAddressMock.mockClear();
   transactionState.withNotifications.mockClear();
+  transactionState.withNotifications.mockImplementation(async (handler: () => unknown | Promise<unknown>) => {
+    await handler();
+    return { submitted: true };
+  });
   transactionState.loading.value = false;
   storeState.networkFees.XorlessTransfer = '1';
   storeState.accountXor = { balance: { transferable: '10' } };
@@ -280,6 +288,35 @@ describe('SendTokenDialog.vue', () => {
     );
     expect(exposed.isVisible.value).toBe(false);
     expect(wrapper.emitted()['update:visible']).toBeTruthy();
+  });
+
+  it('rejects negative amounts before unsigned-chain encoding', async () => {
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '-1';
+    exposed.address.value = 'valid-address';
+
+    expect(exposed.invalidValue.value).toBe(true);
+    expect(exposed.disabled.value).toBe(true);
+
+    await exposed.handleSend();
+
+    expect(transactionState.withNotifications).not.toHaveBeenCalled();
+    expect(transferMock).not.toHaveBeenCalled();
+  });
+
+  it('keeps the form open when the transaction is rejected', async () => {
+    transactionState.withNotifications.mockResolvedValueOnce({ submitted: false, error: new Error('rejected') });
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.value.value = '5';
+    exposed.address.value = 'valid-address';
+
+    await exposed.handleSend();
+
+    expect(exposed.isVisible.value).toBe(true);
   });
 
   it('shows alert when balance is insufficient', async () => {

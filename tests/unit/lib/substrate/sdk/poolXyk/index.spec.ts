@@ -13,6 +13,8 @@ vi.mock('@/lib/substrate/sdk/poolXyk/account', () => ({
 
 import { PoolXykModule } from '@/lib/substrate/sdk/poolXyk';
 
+import type { Asset } from '@/lib/substrate/sdk/assets/types';
+
 const assetId = (code: string) => ({
   code: {
     toString: () => code,
@@ -129,5 +131,95 @@ describe('substrate sdk poolXyk account liquidity subscriptions', () => {
     expect(poolXyk.accountLiquidity.map(({ firstAddress, secondAddress }) => [firstAddress, secondAddress])).toEqual([
       ['base', 'quote-b'],
     ]);
+  });
+
+  it('estimates minted pool tokens using each reserve asset precision', () => {
+    const poolXyk = createPoolXykModule();
+    const firstAsset: Asset = {
+      address: 'base',
+      symbol: 'BASE',
+      name: 'Base',
+      decimals: 12,
+      isMintable: false,
+    };
+    const secondAsset: Asset = {
+      address: 'quote',
+      symbol: 'QUOTE',
+      name: 'Quote',
+      decimals: 18,
+      isMintable: false,
+    };
+
+    const [minted, totalSupply] = poolXyk.estimatePoolTokensMinted(
+      firstAsset,
+      secondAsset,
+      '0.5',
+      '1',
+      '1000000000000',
+      '1000000000000000000',
+      '100000000000000000000'
+    );
+
+    expect(minted).toBe('50000000000000000000');
+    expect(totalSupply).toBe('100000000000000000000');
+  });
+});
+
+describe('PoolXykModule execution history', () => {
+  const firstAsset = { address: 'base', symbol: 'BASE', decimals: 18 } as Asset;
+  const secondAsset = { address: 'quote', symbol: 'QUOTE', decimals: 18 } as Asset;
+
+  const createExecutionModule = () => {
+    const pair = { address: 'signer-address' };
+    const submitExtrinsic = vi.fn().mockResolvedValue(undefined);
+    const depositExtrinsic = { kind: 'deposit' };
+    const withdrawExtrinsic = { kind: 'withdraw' };
+    const poolXyk = new PoolXykModule({
+      account: { pair },
+      api: {
+        tx: {
+          poolXYK: {
+            depositLiquidity: vi.fn(() => depositExtrinsic),
+            withdrawLiquidity: vi.fn(() => withdrawExtrinsic),
+          },
+        },
+      },
+      assets: { addAccountAsset: vi.fn() },
+      submitExtrinsic,
+    } as never);
+
+    vi.spyOn(poolXyk as any, 'arrangeAssetsForParams').mockReturnValue([firstAsset, secondAsset, '1', '2', 0]);
+    vi.spyOn(poolXyk as any, 'calcAddTxParams').mockReturnValue({ args: ['add-call'] });
+    vi.spyOn(poolXyk as any, 'calcRemoveTxParams').mockReturnValue({
+      args: ['remove-call'],
+      amountA: '1',
+      amountB: '2',
+    });
+
+    return { poolXyk, pair, submitExtrinsic, depositExtrinsic, withdrawExtrinsic };
+  };
+
+  it('uses a caller-provided history id when adding liquidity', async () => {
+    const { poolXyk, pair, submitExtrinsic, depositExtrinsic } = createExecutionModule();
+
+    await poolXyk.add(firstAsset, secondAsset, '1', '2', '0.5', 'intent-add');
+
+    expect(submitExtrinsic).toHaveBeenCalledWith(
+      depositExtrinsic,
+      pair,
+      expect.objectContaining({ id: 'intent-add', type: expect.anything() })
+    );
+  });
+
+  it('uses a caller-provided history id when removing liquidity', async () => {
+    const { poolXyk, pair, submitExtrinsic, withdrawExtrinsic } = createExecutionModule();
+
+    await poolXyk.remove(firstAsset, secondAsset, '1', '10', '20', '30', '0.5', 'intent-remove');
+
+    expect(submitExtrinsic).toHaveBeenCalledWith(
+      withdrawExtrinsic,
+      pair,
+      expect.objectContaining({ id: 'intent-remove', type: expect.anything() })
+    );
   });
 });

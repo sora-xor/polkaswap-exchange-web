@@ -6,6 +6,8 @@
     wrapper-class="account-select-dialog"
   >
     <connection-view
+      v-if="visible"
+      :initial-wallet="preferredSoraWallet"
       :chain-api="chainApi"
       :account="soraAccount"
       :login-account="login"
@@ -20,6 +22,7 @@
 <script setup lang="ts">
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { computed } from 'vue';
+import { preferredSoraWallet } from '@/composables/useInternalConnect';
 
 import type { PolkadotJsAccount } from '@/lib/soraneo-wallet/src/types/common';
 import { useWalletStore } from '@/stores/wallet';
@@ -68,6 +71,9 @@ function closeView(): void {
   font-family: var(--s-font-family-default, 'Sora, sans-serif');
 
   .dialog-card {
+    // Long provider lists must scroll inside the viewport instead of centering the close button above it.
+    max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
     background: transparent;
     box-shadow: none !important;
     border-radius: 0;
@@ -80,8 +86,11 @@ function closeView(): void {
 
   .dialog-card__content {
     padding: 0;
+    min-height: 0;
     max-height: none;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .dialog-card__content > .el-card.base {

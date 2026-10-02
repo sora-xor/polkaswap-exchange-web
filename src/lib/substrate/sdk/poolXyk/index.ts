@@ -273,18 +273,19 @@ export class PoolXykModule<T> {
     secondTotal: CodecString,
     totalSupply: CodecString
   ): Array<CodecString> {
-    const decimals = Math.max(firstAsset.decimals, secondAsset.decimals);
-    const aIn = new FPNumber(firstAmount, decimals);
-    const bIn = new FPNumber(secondAmount, decimals);
-    const a = FPNumber.fromCodecValue(firstTotal, decimals);
-    const b = FPNumber.fromCodecValue(secondTotal, decimals);
+    const aIn = new FPNumber(firstAmount, firstAsset.decimals);
+    const bIn = new FPNumber(secondAmount, secondAsset.decimals);
+    const a = FPNumber.fromCodecValue(firstTotal, firstAsset.decimals);
+    const b = FPNumber.fromCodecValue(secondTotal, secondAsset.decimals);
+    const poolToken = this.getInfo(firstAsset.address, secondAsset.address);
+    const poolTokenDecimals = poolToken?.decimals ?? FPNumber.DEFAULT_PRECISION;
     if (a.isZero() && b.isZero()) {
       const inaccuracy = new FPNumber('0.000000000000001');
-      return [aIn.mul(bIn).sqrt().sub(inaccuracy).toCodecString()];
+      const minted = aIn.mul(bIn).sqrt().sub(inaccuracy);
+      return [new FPNumber(minted.toString(), poolTokenDecimals).toCodecString()];
     }
-    const poolToken = this.getInfo(firstAsset.address, secondAsset.address);
-    const pts = FPNumber.fromCodecValue(totalSupply, poolToken?.decimals);
-    const result = FPNumber.min(aIn.mul(pts).div(a), bIn.mul(pts).div(b));
+    const pts = FPNumber.fromCodecValue(totalSupply, poolTokenDecimals);
+    const result = FPNumber.min(pts.mul(aIn).div(a), pts.mul(bIn).div(b));
     return [result.toCodecString(), pts.toCodecString()];
   }
 
@@ -540,13 +541,15 @@ export class PoolXykModule<T> {
    * @param firstAmount
    * @param secondAmount // TODO: add a case when 'B' should be calculated automatically
    * @param slippageTolerance Slippage tolerance coefficient (in %)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   public add(
     firstAsset: Asset | AccountAsset,
     secondAsset: Asset | AccountAsset,
     firstAmount: NumberLike,
     secondAmount: NumberLike,
-    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent
+    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -572,6 +575,7 @@ export class PoolXykModule<T> {
       (this.root.api.tx.poolXYK as any).depositLiquidity(...params.args),
       this.root.account.pair,
       {
+        ...(historyId ? { id: historyId } : {}),
         type: Operation.AddLiquidity,
         symbol: firstAsset.symbol,
         assetAddress: firstAsset.address,
@@ -633,13 +637,15 @@ export class PoolXykModule<T> {
    * @param firstAmount
    * @param secondAmount
    * @param slippageTolerance Slippage tolerance coefficient (in %)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   public async create(
     firstAsset: Asset | AccountAsset,
     secondAsset: Asset | AccountAsset,
     firstAmount: NumberLike,
     secondAmount: NumberLike,
-    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent
+    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -661,6 +667,7 @@ export class PoolXykModule<T> {
     this.root.assets.addAccountAsset(secondAsset.address);
 
     return this.root.submitExtrinsic(this.root.api.tx.utility.batchAll(transactions), this.root.account.pair, {
+      ...(historyId ? { id: historyId } : {}),
       type: Operation.CreatePair,
       symbol: firstAsset.symbol,
       assetAddress: firstAsset.address,
@@ -718,6 +725,7 @@ export class PoolXykModule<T> {
    * @param secondTotal getReserves()[1]
    * @param totalSupply Total supply coefficient, estimateTokensRetrieved()[2]
    * @param slippageTolerance Slippage tolerance coefficient (in %)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   public remove(
     firstAsset: Asset | AccountAsset,
@@ -726,7 +734,8 @@ export class PoolXykModule<T> {
     firstTotal: CodecString,
     secondTotal: CodecString,
     totalSupply: CodecString,
-    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent
+    slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -743,6 +752,7 @@ export class PoolXykModule<T> {
       (this.root.api.tx.poolXYK as any).withdrawLiquidity(...params.args),
       this.root.account.pair,
       {
+        ...(historyId ? { id: historyId } : {}),
         type: Operation.RemoveLiquidity,
         symbol: firstAsset.symbol,
         assetAddress: firstAsset.address,

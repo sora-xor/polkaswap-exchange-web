@@ -1,6 +1,7 @@
 import { nextTick, ref } from 'vue';
 
 import { useWalletStore } from '@/stores/wallet';
+import { parseStoredBoolean } from '@/utils/storageParsing';
 
 import { api } from '../api';
 import { AppWallet, AccountActionTypes } from '../consts';
@@ -45,7 +46,7 @@ export function useAccountActions() {
         break;
       case AccountActionTypes.Delete: {
         const storageValue = settingsStorage.get('allowAccountDeletePopup');
-        const popupVisibility = storageValue ? Boolean(JSON.parse(storageValue)) : true;
+        const popupVisibility = parseStoredBoolean(storageValue, true);
 
         if (popupVisibility) {
           accountDeleteVisibility.value = true;

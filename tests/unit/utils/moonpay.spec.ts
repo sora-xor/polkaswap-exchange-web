@@ -75,6 +75,15 @@ describe('MoonpayApi', () => {
     expect(new MoonpayApi().accountRecords).toEqual({});
   });
 
+  it('returns empty account records for corrupt or schema-incompatible storage', () => {
+    const moonpay = new MoonpayApi();
+
+    for (const records of ['{', '[]', '{"sora":1}']) {
+      moonpayMocks.accountStorage.get.mockReturnValueOnce(records);
+      expect(moonpay.accountRecords).toEqual({});
+    }
+  });
+
   it('fetches transactions and currencies with required params', async () => {
     const moonpay = new MoonpayApi();
     moonpay.publicKey = 'public-key';

@@ -1,7 +1,7 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { FPNumber } from '@sora-substrate/sdk';
 import { computed, ref } from 'vue';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const loginState = ref(false);
 const connectSpy = vi.fn();
@@ -181,6 +181,10 @@ describe('PointSystem.vue', () => {
     assetsStoreMock.assetDataByAddress.mockReset();
   });
 
+  afterEach(() => {
+    window.history.replaceState({}, '', '/');
+  });
+
   it('offers wallet connection controls while logged out', async () => {
     const wrapper = buildWrapper();
 
@@ -193,6 +197,26 @@ describe('PointSystem.vue', () => {
 
     expect(connectSpy).toHaveBeenCalledTimes(1);
     expect((wrapper.vm as any).bridgeData).toHaveLength(0);
+  });
+
+  it('keeps legacy card backgrounds inside an IPFS path gateway', async () => {
+    window.history.replaceState({}, '', '/ipfs/bafy-test/#/points');
+    loginState.value = true;
+    fetchBurnXorDataMock.mockResolvedValue([]);
+    fetchBridgeDataMock.mockResolvedValue([]);
+    fetchCountMock.mockResolvedValue(0);
+
+    const wrapper = buildWrapper();
+    await flushPromises();
+
+    expect(wrapper.find('.points__card-bridge').attributes('style')).toContain(
+      '/ipfs/bafy-test/points/dark/bridge.png'
+    );
+    expect(wrapper.find('.points__card-referrals').attributes('style')).toContain(
+      '/ipfs/bafy-test/points/dark/referrals.png'
+    );
+
+    wrapper.unmount();
   });
 
   it('fetches point metrics when the wallet logs in', async () => {

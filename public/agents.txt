@@ -1,6 +1,6 @@
 # Polkaswap Agent Discovery
 
-This static app supports browser-native automation through `window.PolkaswapAgent`.
+This static app supports browser-native automation through `window.PolkaswapAgent` and top-level WebMCP site tools.
 
 Start here:
 
@@ -10,15 +10,21 @@ The manifest links the v1 API docs, TypeScript declarations, JSON schema, error 
 
 For manual inspection from a deployed build, open `agent-playground.html`.
 
+For generic local MCP clients, the source repository ships a user-run Node 26 stdio bridge:
+
+- `yarn agent:mcp --profile-dir /absolute/path/to/a/dedicated/profile`
+
 Important constraints:
 
 - Same-page JavaScript only.
-- No hosted API or middleware.
-- No MCP server.
+- No hosted API, centralized middleware, or hosted MCP server.
+- The WebMCP and local MCP catalogues expose exactly nine account-redacted, read-only public-data tools, including polkaswap_plan_swap.
 - No URL command mode.
 - No `postMessage` command bridge.
 - No private-key custody in the page.
 - Wallet signing must come from the runner's chosen injected wallet or signer.
+- MCP arguments never accept private keys, wallet identity, or balance opt-ins; executable preparation and execution tools remain disabled.
+- Call planSwap (polkaswap_plan_swap over MCP) to resolve assets, quote, and get unsigned SDK-call metadata without a wallet or prior quote. Plans are nonauthorizing, not SCALE transactions, and persist no intent.
 
 Minimum flow:
 

@@ -502,8 +502,33 @@ describe('walletconnect utils', () => {
 
     expect(baseConnect).not.toHaveBeenCalled();
     expect(provider.session).toEqual({ topic: 'restored' });
-    expect(unsubscribe).not.toHaveBeenCalled();
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
     expect(provider.signer.abortPairingAttempt).not.toHaveBeenCalled();
+  });
+
+  it('connect safely handles a modal that reports closure synchronously', async () => {
+    const { WcEthereumProvider } = await import('@/utils/connection/evm/walletconnect');
+    const provider = new WcEthereumProvider() as any;
+    const unsubscribe = vi.fn();
+    provider.namespace = 'eip155';
+    provider.modal = {
+      subscribeModal: vi.fn((callback: (state: { open: boolean }) => void) => {
+        callback({ open: false });
+        return unsubscribe;
+      }),
+    };
+    provider.signer = {
+      session: undefined,
+      abortPairingAttempt: vi.fn(),
+      disconnect: vi.fn(),
+    };
+    provider.restoreAppSession = vi.fn();
+
+    await expect(provider.connect()).rejects.toThrow('Connection request reset. Please try again.');
+
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(provider.signer.abortPairingAttempt).toHaveBeenCalledTimes(1);
+    expect(provider.restoreAppSession).not.toHaveBeenCalled();
   });
 
   it('connect stores signer session after a successful base provider connection', async () => {
@@ -530,6 +555,7 @@ describe('walletconnect utils', () => {
 
     expect(baseConnect).toHaveBeenCalledWith({ chains: [137] });
     expect(provider.session).toBe(connectedSession);
+    expect(provider.modal.subscribeModal.mock.results[0]?.value).toHaveBeenCalledTimes(1);
   });
 
   it('connect disconnects the signer and rethrows when base provider connect fails', async () => {

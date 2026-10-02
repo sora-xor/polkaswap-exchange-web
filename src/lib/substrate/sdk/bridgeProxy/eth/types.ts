@@ -25,7 +25,9 @@ export type EthAsset = {
 /** Outgoing transfers */
 export type EthApprovedRequest = {
   currencyType: EthCurrencyType;
-  /** [DEPRECATED] Amount is not used and will be removed */
+  /** Exact currency identifier covered by the peer signatures. */
+  currencyId: string;
+  /** Exact destination codec amount covered by the peer signatures. */
   amount: CodecString;
   from: string;
   to: string;

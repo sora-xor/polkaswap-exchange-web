@@ -6,6 +6,7 @@ export type VaultStatus = keyof typeof VaultStatuses;
 export type VaultEventType = keyof typeof VaultEventTypes;
 
 export type VaultEvent = {
+  id: string;
   amount: Nullable<FPNumber>;
   timestamp: number;
   type: VaultEventType;

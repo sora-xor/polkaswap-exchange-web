@@ -2,11 +2,17 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
+import { isJsonRecord, parseIndexerJson } from '@/utils/indexerParsing';
+
 import type {
   PolkaswapPoolXYKEntity,
   PolkaswapSubscriptionPayload,
 } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
-import type { ConnectionQueryResponse, PoolApyObject, UpdatesStream } from '@/lib/soraneo-wallet/src/services/indexer/types';
+import type {
+  ConnectionQueryResponse,
+  PoolApyObject,
+  UpdatesStream,
+} from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 const PolkaswapApyQuery = gql<ConnectionQueryResponse<PolkaswapPoolXYKEntity>>`
   query PolkaswapApyQuery($after: Cursor = "", $first: Int = 100) {
@@ -61,10 +67,12 @@ const PolkaswapApyStreamSubscription = gql<PolkaswapSubscriptionPayload<UpdatesS
 `;
 
 const parseApyStreamUpdate = (entity: UpdatesStream): PoolApyObject => {
-  const data = entity?.data ? JSON.parse(entity.data) : {};
+  const data = parseIndexerJson(entity?.data, {}, isJsonRecord);
 
   return Object.entries(data).reduce((acc, [id, apy]) => {
-    const strategicBonusApyFPNumber = formatStringNumber(apy as string);
+    if (apy !== null && typeof apy !== 'string') return acc;
+
+    const strategicBonusApyFPNumber = formatStringNumber(apy);
     const isStrategicBonusApyFinity = strategicBonusApyFPNumber.isFinity();
     if (isStrategicBonusApyFinity) {
       acc[id] = strategicBonusApyFPNumber.toCodecString();

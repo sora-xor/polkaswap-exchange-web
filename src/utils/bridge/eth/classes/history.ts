@@ -2,8 +2,6 @@ import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import { ethers, EtherscanProvider } from 'ethers';
-import first from 'lodash/fp/first';
-import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
 import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
@@ -13,6 +11,8 @@ import type { EthBridgeContractsAddresses } from '@/stores/web3';
 import { getEvmTransactionReceiptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
+import { getOutgoingClaimStatus, type OutgoingClaimStatus } from '@/utils/bridge/eth/claimStatus';
+import ethersUtil from '@/utils/ethers-util';
 
 import type { NetworkFeesObject } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -53,6 +53,15 @@ const getType = (module: string) => {
   return module === POLKASWAP_TYPES.ModuleNames.BridgeMultisig
     ? Operation.EthBridgeIncoming
     : Operation.EthBridgeOutgoing;
+};
+
+const MAX_SYNC_TIMESTAMP_FUTURE_SKEW_SECONDS = 5 * 60;
+
+const normalizeSyncTimestamp = (timestamp: unknown, fallback = 0): number => {
+  const value = Number(timestamp);
+  const latestPlausibleTimestamp = Math.floor(Date.now() / 1000) + MAX_SYNC_TIMESTAMP_FUTURE_SKEW_SECONDS;
+
+  return Number.isSafeInteger(value) && value > 0 && value <= latestPlausibleTimestamp ? value : fallback;
 };
 
 // [WARNING]: api.query.ethBridge storage usage
@@ -155,7 +164,83 @@ type DecodedIncomingRequest = {
   recipient: string;
 };
 
+/** Immutable evidence captured before an EVM bridge transaction is broadcast. */
+export type EthBridgeEvmSubmissionFingerprint = {
+  from: string;
+  to: string;
+  nonce: string | number | bigint;
+  data: string;
+  value: string | number | bigint;
+  /** Local bridge start time in Unix milliseconds. */
+  startTimestamp: number;
+};
+
 const ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY = 'ethBridgeHistoryFullSyncTimestamp';
+const EVM_SUBMISSION_CLOCK_SKEW_MS = 5 * 60 * 1_000;
+
+/** Normalizes an EVM address without allowing malformed provider data to throw. */
+const normalizeEvmAddress = (value: unknown): string | null => {
+  if (typeof value !== 'string') return null;
+
+  try {
+    return ethers.getAddress(value.trim()).toLowerCase();
+  } catch {
+    return null;
+  }
+};
+
+/** Normalizes exact EVM calldata while retaining byte-for-byte equality. */
+const normalizeEvmCalldata = (value: unknown): string | null => {
+  if (typeof value !== 'string') return null;
+
+  const data = value.trim();
+
+  return /^0x(?:[0-9a-f]{2})*$/i.test(data) ? data.toLowerCase() : null;
+};
+
+/** Normalizes decimal, hexadecimal, bigint, and ethers BigNumberish integer values. */
+const normalizeEvmInteger = (value: unknown): string | null => {
+  if (typeof value === 'bigint') return value >= 0n ? value.toString() : null;
+
+  if (typeof value === 'number') {
+    return Number.isSafeInteger(value) && value >= 0 ? BigInt(value).toString() : null;
+  }
+
+  if (typeof value === 'string') {
+    const integer = value.trim();
+
+    if (!/^(?:0x[0-9a-f]+|[0-9]+)$/i.test(integer)) return null;
+
+    try {
+      return BigInt(integer).toString();
+    } catch {
+      return null;
+    }
+  }
+
+  if (value && typeof value === 'object') {
+    try {
+      const serialized = (value as { toString?: () => string }).toString?.();
+
+      return typeof serialized === 'string' ? normalizeEvmInteger(serialized) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+};
+
+/** Converts provider timestamps expressed in seconds or milliseconds to Unix milliseconds. */
+const normalizeProviderTimestampMs = (value: unknown): number | null => {
+  const normalized = normalizeEvmInteger(value);
+  if (normalized === null) return null;
+
+  const timestamp = BigInt(normalized);
+  const milliseconds = timestamp < 1_000_000_000_000n ? timestamp * 1_000n : timestamp;
+
+  return milliseconds > 0n && milliseconds <= BigInt(Number.MAX_SAFE_INTEGER) ? Number(milliseconds) : null;
+};
 
 /** Sorts merged indexer pages in the same newest-first order requested from GraphQL. */
 const sortHistoryElements = (historyElements: HistoryElement[]): HistoryElement[] => {
@@ -230,7 +315,9 @@ const decodeIncomingRequest = (historyElement: HistoryElement): Nullable<Decoded
 
     if (!transfer || typeof transfer !== 'object') return null;
 
-    const requestHash = String(transfer.txHash ?? transfer.tx_hash ?? loadTransaction.hash ?? loadTransaction.hash_ ?? '');
+    const requestHash = String(
+      transfer.txHash ?? transfer.tx_hash ?? loadTransaction.hash ?? loadTransaction.hash_ ?? ''
+    );
     const amountCodec = String(transfer.amount ?? '');
     const assetAddress = normalizeAssetAddress(transfer.assetId ?? transfer.asset_id);
     const sidechainAddress = String(transfer.from ?? '');
@@ -303,19 +390,19 @@ export class EthBridgeHistory {
   }
 
   public get historySyncTimestamp(): number {
-    return +(ethBridgeApi.accountStorage?.get('ethBridgeHistorySyncTimestamp') || 0);
+    return normalizeSyncTimestamp(ethBridgeApi.accountStorage?.get('ethBridgeHistorySyncTimestamp'));
   }
 
   public set historySyncTimestamp(timestamp: number) {
-    ethBridgeApi.accountStorage?.set('ethBridgeHistorySyncTimestamp', timestamp);
+    ethBridgeApi.accountStorage?.set('ethBridgeHistorySyncTimestamp', normalizeSyncTimestamp(timestamp));
   }
 
   public get fullHistorySyncTimestamp(): number {
-    return +(ethBridgeApi.accountStorage?.get(ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY) || 0);
+    return normalizeSyncTimestamp(ethBridgeApi.accountStorage?.get(ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY));
   }
 
   public set fullHistorySyncTimestamp(timestamp: number) {
-    ethBridgeApi.accountStorage?.set(ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY, timestamp);
+    ethBridgeApi.accountStorage?.set(ETH_BRIDGE_HISTORY_FULL_SYNC_TIMESTAMP_KEY, normalizeSyncTimestamp(timestamp));
   }
 
   public async init(contracts: EthBridgeContractsAddresses, evmId: number): Promise<void> {
@@ -325,7 +412,9 @@ export class EthBridgeHistory {
   }
 
   private async getEthStartBlock(timestampMs: number): Promise<number> {
-    const timestamp = Math.round(timestampMs / 1000); // in seconds
+    // Etherscan timestamps are second-granular. Rounding up can skip a
+    // transaction broadcast later in the same second as the persisted start.
+    const timestamp = Math.floor(timestampMs / 1000);
 
     if (!this.ethStartBlock[timestamp]) {
       this.ethStartBlock[timestamp] = +(await this.etherscanInstance.fetch('block', {
@@ -348,6 +437,56 @@ export class EthBridgeHistory {
     return Date.now();
   }
 
+  /** Fetches and filters account history without consulting the local provider cache. */
+  private async fetchEthAccountTransactions(
+    address: string,
+    contracts?: string[],
+    fromTimestamp?: number
+  ): Promise<EthTransactionsMap> {
+    const normalizedContracts = contracts?.map(normalizeEvmAddress).filter((value): value is string => !!value);
+    const ethStartBlock = fromTimestamp ? await this.getEthStartBlock(fromTimestamp) : undefined;
+    const response = await this.etherscanInstance.getHistory(address, ethStartBlock);
+    const history = Array.isArray(response) ? response : [];
+
+    return history.reduce<EthTransactionsMap>((buffer, transaction) => {
+      if (!transaction || typeof transaction !== 'object') return buffer;
+
+      const hash = (transaction as { hash?: unknown }).hash;
+      const to = normalizeEvmAddress((transaction as { to?: unknown }).to);
+
+      if (typeof hash !== 'string' || !hash) return buffer;
+      if (contracts && (!to || !normalizedContracts?.includes(to))) return buffer;
+
+      buffer[hash] = transaction as ethers.TransactionResponse;
+
+      return buffer;
+    }, {});
+  }
+
+  /** Resolves a provider timestamp, falling back to the block for ethers transaction shapes. */
+  private async getEthTransactionTimestampMs(transaction: ethers.TransactionResponse): Promise<number | null> {
+    const providerTransaction = transaction as ethers.TransactionResponse & {
+      timeStamp?: unknown;
+      timestamp?: unknown;
+    };
+    const directTimestamp = normalizeProviderTimestampMs(
+      providerTransaction.timeStamp ?? providerTransaction.timestamp
+    );
+
+    if (directTimestamp !== null) return directTimestamp;
+
+    const blockNumber = normalizeEvmInteger(providerTransaction.blockNumber);
+    if (blockNumber === null || BigInt(blockNumber) > BigInt(Number.MAX_SAFE_INTEGER)) return null;
+
+    try {
+      const block = await this.etherscanInstance.getBlock(Number(blockNumber));
+
+      return normalizeProviderTimestampMs(block?.timestamp);
+    } catch {
+      return null;
+    }
+  }
+
   public async getEthAccountTransactions(
     address: string,
     contracts?: string[],
@@ -356,29 +495,70 @@ export class EthBridgeHistory {
     const key = address.toLowerCase();
 
     if (!this.ethAccountTransactionsMap[key]) {
-      const contractsToLower = (contracts || []).map((contract) => contract.toLowerCase());
-      const ethStartBlock = fromTimestamp ? await this.getEthStartBlock(fromTimestamp) : undefined;
-      const history = await this.etherscanInstance.getHistory(address, ethStartBlock);
-      const filtered = history.reduce<EthTransactionsMap>((buffer, tx) => {
-        if (!contracts || (!!tx.to && contractsToLower.includes(tx.to.toLowerCase()))) {
-          buffer[tx.hash] = tx;
-        }
-
-        return buffer;
-      }, {});
-
-      this.ethAccountTransactionsMap[key] = filtered;
+      this.ethAccountTransactionsMap[key] = await this.fetchEthAccountTransactions(address, contracts, fromTimestamp);
     }
 
     return this.ethAccountTransactionsMap[key];
   }
 
-  private getFromTimestamp(historyElements: HistoryElement[]) {
-    const historyElement = last(
-      historyElements.filter((item) => item.module !== POLKASWAP_TYPES.ModuleNames.BridgeMultisig)
-    ) as Nullable<HistoryElement>;
+  /**
+   * Force-refreshes Etherscan history and finds a prior EVM submission using
+   * immutable pre-broadcast evidence. Every field must match; the timestamp is
+   * a lower bound with five minutes of clock/block skew so a valid broadcast is
+   * not missed. This lookup deliberately bypasses cached empty account history.
+   */
+  public async findEthTxBySubmissionFingerprint(
+    fingerprint: EthBridgeEvmSubmissionFingerprint
+  ): Promise<ethers.TransactionResponse | null> {
+    const from = normalizeEvmAddress(fingerprint.from);
+    const to = normalizeEvmAddress(fingerprint.to);
+    const nonce = normalizeEvmInteger(fingerprint.nonce);
+    const data = normalizeEvmCalldata(fingerprint.data);
+    const value = normalizeEvmInteger(fingerprint.value);
+    const startTimestamp = normalizeProviderTimestampMs(fingerprint.startTimestamp);
 
-    return historyElement?.timestamp ? historyElement.timestamp * 1000 : Date.now();
+    if (!(from && to && nonce !== null && data && value !== null && startTimestamp !== null)) return null;
+
+    const earliestTimestamp = Math.max(0, Math.floor(startTimestamp / 1_000) * 1_000 - EVM_SUBMISSION_CLOCK_SKEW_MS);
+    const transactions = await this.fetchEthAccountTransactions(fingerprint.from, [fingerprint.to], earliestTimestamp);
+    this.ethAccountTransactionsMap[from] = transactions;
+
+    for (const transaction of Object.values(transactions)) {
+      const providerTransaction = transaction as ethers.TransactionResponse & {
+        input?: unknown;
+      };
+      const transactionFrom = normalizeEvmAddress(providerTransaction.from);
+      const transactionTo = normalizeEvmAddress(providerTransaction.to);
+      const transactionNonce = normalizeEvmInteger(providerTransaction.nonce);
+      const transactionData = normalizeEvmCalldata(providerTransaction.input ?? providerTransaction.data);
+      const transactionValue = normalizeEvmInteger(providerTransaction.value);
+
+      if (
+        transactionFrom !== from ||
+        transactionTo !== to ||
+        transactionNonce !== nonce ||
+        transactionData !== data ||
+        transactionValue !== value
+      ) {
+        continue;
+      }
+
+      const transactionTimestamp = await this.getEthTransactionTimestampMs(transaction);
+
+      if (transactionTimestamp !== null && transactionTimestamp >= earliestTimestamp) return transaction;
+    }
+
+    return null;
+  }
+
+  private getFromTimestamp(historyElements: HistoryElement[]) {
+    const timestamp = [...historyElements]
+      .reverse()
+      .filter((item) => item.module !== POLKASWAP_TYPES.ModuleNames.BridgeMultisig)
+      .map((item) => normalizeSyncTimestamp(item.timestamp))
+      .find(Boolean);
+
+    return timestamp ? timestamp * 1000 : Date.now();
   }
 
   public async findEthTxBySoraHash(
@@ -388,14 +568,41 @@ export class EthBridgeHistory {
   ): Promise<ethers.TransactionResponse | null> {
     if (!(accountAddress && hash)) return null;
     const contracts = Object.values(this.contracts);
-    const transactions = await this.getEthAccountTransactions(accountAddress, contracts, fromTimestamp);
+    let claimStatus: OutgoingClaimStatus = 'inconclusive';
+    // A successful read from the correct chain can establish that this claim
+    // remains unsigned even when the explorer is unavailable. No wallet
+    // connection or signature is requested by these provider reads.
+    try {
+      claimStatus = await getOutgoingClaimStatus(
+        ethersUtil.getEthersInstance(),
+        this.externalNetwork,
+        contracts,
+        accountAddress,
+        hash
+      );
+      if (claimStatus === 'unclaimed') {
+        return null;
+      }
+    } catch {
+      // A disconnected wallet, wrong network, or failed RPC is inconclusive.
+    }
 
-    for (const tx of Object.values(transactions)) {
+    // A cached empty result (or old failed claim) must not hide a newer claim.
+    const transactions = await this.fetchEthAccountTransactions(accountAddress, contracts, fromTimestamp);
+    this.ethAccountTransactionsMap[accountAddress.toLowerCase()] = transactions;
+
+    let failedTransaction: ethers.TransactionResponse | null = null;
+
+    for (const tx of Object.values(transactions).reverse()) {
       try {
-        const data = (tx as any).input; // 'data' is named as 'input'
+        const data = (tx as ethers.TransactionResponse & { input?: string }).input ?? tx.data;
         const decodedInput = BRIDGE_INTERFACE.parseTransaction({ data });
 
         if (decodedInput?.args.getValue('txHash')?.toLowerCase() === hash.toLowerCase()) {
+          if (Number((tx as ethers.TransactionResponse & { isError?: string }).isError ?? 0) !== 0) {
+            failedTransaction ??= tx;
+            continue;
+          }
           return tx;
         }
       } catch (err) {
@@ -404,7 +611,10 @@ export class EthBridgeHistory {
       }
     }
 
-    return null;
+    if (claimStatus === 'consumed' || claimStatus === 'pending') {
+      throw new Error('[Bridge]: Ethereum claim settlement is awaiting transaction history');
+    }
+    return failedTransaction;
   }
 
   public async findEthTxByEthereumHash(hash: string): Promise<ethers.TransactionResponse | null> {
@@ -499,15 +709,14 @@ export class EthBridgeHistory {
       const isOutgoing = isOutgoingTransaction({ type });
       const { id: txId, blockHash: blockId, blockHeight } = historyElement;
       const historyElementData = getHistoryElementData(historyElement, isOutgoing, assetDataByAddress);
+      const syncTimestamp = normalizeSyncTimestamp(historyElement.timestamp);
 
-      if (!historyElementData) continue;
+      if (!historyElementData || !syncTimestamp) continue;
       if (!isOutgoing && historyElementData.recipient !== address) continue;
 
       matchedHistory = true;
 
       const { requestHash, amount, assetAddress, sidechainAddress } = historyElementData;
-      const syncTimestamp = historyElement.timestamp ?? 0;
-
       const localHistoryItem = currentHistory.find((item: EthHistory) =>
         isLocalHistoryItem(item, txId, isOutgoing, requestHash)
       );
@@ -523,11 +732,33 @@ export class EthBridgeHistory {
       const asset = assetDataByAddress(assetAddress);
       const symbol = asset?.symbol;
       const soraNetworkFee = getSoraNetworkFee(isOutgoing, networkFees);
-      const soraTimestamp = historyElement.timestamp * 1000;
+      const soraTimestamp = syncTimestamp * 1000;
       const soraPartCompleted = await isSoraPartCompleted(isOutgoing, soraHash);
-      const ethereumTx = isOutgoing
-        ? await this.findEthTxBySoraHash(sidechainAddress, soraHash, fromTimestamp)
-        : await this.findEthTxByEthereumHash(requestHash);
+      let ethereumTx: ethers.TransactionResponse | null;
+
+      try {
+        ethereumTx = isOutgoing
+          ? await this.findEthTxBySoraHash(sidechainAddress, soraHash, fromTimestamp)
+          : await this.findEthTxByEthereumHash(requestHash);
+      } catch (error) {
+        if (!isOutgoing) throw error;
+        // Preserve existing broadcast evidence. New SORA rows can still be
+        // restored and opened; the reducer checks for an Ethereum submission
+        // again before offering a signature.
+        if (localHistoryItem) continue;
+        ethereumTx = null;
+      }
+
+      // A missing explorer row or unused claim cannot erase a known broadcast
+      // hash: another RPC may not have seen that pending transaction yet.
+      if (!ethereumTx && localHistoryItem?.externalHash) continue;
+      if (
+        localHistoryItem?.externalHash &&
+        ethereumTx?.hash !== localHistoryItem.externalHash &&
+        Number((ethereumTx as (ethers.TransactionResponse & { isError?: string }) | null)?.isError ?? 0) !== 0
+      ) {
+        continue;
+      }
 
       const externalHash = getEvmTxHash(ethereumTx);
       const recieptData = await getReceiptData(externalHash);

@@ -1,0 +1,65 @@
+{
+  "code": "KI",
+  "name": "Kiribati",
+  "status": "not_verified",
+  "rule": "Biosecurity Act 2011 section 2 unconditionally includes products manufactured wholly or partly from plants within plant products, and all plant products within regulated articles. Finished sencha therefore falls within statutory scope (application to this product is an inference). Sections 25–26 make permits/certificates conditional on the applicable import specification; section 27 requires an advance written specification application only where no specification already exists. Section 31 exemptions require advance written requests and apply to a single importation. Food Regulations 2014 section 56 separately exempts personal-consumption food up to 10 kg per person from food-law requirements, not the Biosecurity Act. Section 26(2)(c) limits specifications to reasonably necessary risk measures, while section 26(3) requires a risk assessment and regard to SPS/international standards but permits precaution. These are rules for making the operative specification, not a self-executing exemption for processed tea.",
+  "personalMailApplicability": "The Act establishes postal holding areas, and MELAD names incoming mail. The requirements therefore cannot be dismissed because the recipient consumes the tea personally.",
+  "quantityLimit": null,
+  "authority": "Kiribati MELAD Biosecurity and Plant Health; Biosecurity Act 2011",
+  "evidenceUrls": [
+    "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+    "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+    "https://www.melad.gov.ki/images/ald/applications/application_1.pdf",
+    "https://faolex.fao.org/docs/pdf/kir233800.pdf",
+    "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/ki/ki038en.html",
+    "https://agriculture.melad.gov.ki/",
+    "https://www.fao.org/gm-platform/browse-information/country-details/kiribati/en",
+    "https://faolex.fao.org/docs/pdf/kir51665.pdf",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf"
+  ],
+  "remainingQuestion": "The existing section 26 specification or compatible saved legacy instrument applicable to factory-sealed manufactured Camellia tea: does it permit ordinary postal arrival clearance alone, or impose special permits/certificates? The Act’s mandatory consideration of international standards does not itself answer that question; if no specification exists, section 27 requires advance written application.",
+  "researchAttempts": [
+    "Read MELAD incoming-mail and import-permit services.",
+    "Downloaded Biosecurity Act 2011 and read the plant-product definition, sections 24–28 and the written-exemption mechanism in section 31.",
+    "Searched the authority for tea and processed-food import specifications; no tea-specific determination found.",
+    "Read Food Regulations and Standards 2014 sections 56–57: personal-consumption exemption up to 10 kg per person and ordinary food identification/inspection provisions. Kept this separate from plant biosecurity.",
+    "Checked the agriculture ministry’s newer website and Kiribati’s FAO country submission, which allocates prepacked processed-food inspection to Health; neither publishes a legal tea-specific biosecurity waiver.",
+    "Continued exact tea/Camellia/import-specification searches; no published applicable specification or written exemption found.",
+    "30 September independent scope reread: Act PDF pp.17–18 confirms unqualified manufactured-product and regulated-article definitions; pp.41–46 confirms conditional permit/certificate provisions and the no-existing-specification trigger for advance application. Section 80, p.91, provides for an office-based public register, so unsuccessful online searches cannot prove absence of a specification. Rechecked MELAD service text and the national FAO submission allocating processed/prepackaged food to Health; neither supplies the missing tea specification or a biosecurity waiver.",
+    "30 September independent food-document review: reread Food Regulations and Standards 2014 sections 53–64 in the FAO-hosted enacted text. Section 56 expressly exempts personal-consumption imports up to 10 kg from food-legislation requirements; section 57 permits identity-document checks for personal food. Sections 58–59 assess accompanying sanitary/analysis certificates and section 64 provides an inspector-issued arrival release permit. These provisions do not establish an advance foreign certificate or special registration obligation for every 100 g personal parcel; ordinary identity/arrival clearance is distinct from special advance paperwork. The existing biosecurity-specification gap remains unresolved. Saved text as pacific-food-sources/ki-food2014.*.",
+    "30 September bounded remaining-scope review: Biosecurity Act 2011 section 107(2)–(4) preserves compatible old subsidiary rules, treating relevant import-treatment provisions as section 26 specifications. The 1976 Plants Ordinance itself was repealed; its sections 6 and 14 depend on notices/permits and its two schedules are forms/export fees, not an applicable tea specification. The missing existing specification therefore may be a saved older instrument, not necessarily a new 2011 publication. No such operative tea notice was recovered.",
+    "30 September definition/ISPM review: read full Act sections 2, 9, 24–31, 80 and 107 against the verified ISPM 32 Category 1 tea example. Section 26(3)(b) requires regard to international standards; it does not replace the import-specification mechanism or exclude manufactured plant products from section 2. ISPM 32 does not itself establish whether the existing Kiribati specification permits this parcel without special paperwork. No new request to inaccessible agriculture routes was made. Retained unresolved without adding a hypothetical food-law blocker."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "Manufactured tea is within the Act’s unqualified plant-product/regulated-article definitions, but that alone does not establish a permit or certificate: sections 25–26 expressly condition those documents on commodity specifications. Failure to locate a specification online is not proof that none exists; section 80 makes the register available at the Director’s office and Island Council offices. Section 27 would require an unacceptable advance application only if there is no existing specification. Routine arrival clearance/inspection is not treated as a special-paperwork blocker. The published personal-food concession does not settle the missing biosecurity specification.",
+  "permitFreeSources": [
+    "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+    "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+    "https://www.melad.gov.ki/images/ald/applications/application_1.pdf",
+    "https://faolex.fao.org/docs/pdf/kir233800.pdf",
+    "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/ki/ki038en.html",
+    "https://agriculture.melad.gov.ki/",
+    "https://www.fao.org/gm-platform/browse-information/country-details/kiribati/en",
+    "https://faolex.fao.org/docs/pdf/kir51665.pdf",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf"
+  ],
+  "permitFreeReviewedAt": "2026-09-30",
+  "paperworkType": "unresolved_existing_biosecurity_specification",
+  "requiredDocument": "Depends on the existing section 26 specification. A written advance specification application is mandatory under section 27 only if no specification exists; an exemption request under section 31 is special advance paperwork. Ordinary section 24 arrival clearance/inspection alone would be compatible with the store constraint.",
+  "foodImportReview": "No independent blanket special-document obligation established for the described private 100 g postal food order; this does not establish agricultural clearance.",
+  "urls": [
+    "https://agriculture.melad.gov.ki/",
+    "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+    "https://kiribati.tradeportal.org/procedure/119/step/141",
+    "https://kiribati.tradeportal.org/objective/1?l=en"
+  ],
+  "files": [
+    "ki-agriculture.html",
+    "ki-tradefood.html"
+  ],
+  "finding": "No outcome change. ISPM 32 Category 1 tea is relevant technical evidence for the Director’s mandatory risk assessment, but Kiribati expressly includes manufactured plant products and makes the operative specification decisive. No automatic general processing exemption is established by the Act alone.",
+  "remainingGap": "The existing section 26 specification or compatible saved legacy instrument applicable to factory-sealed manufactured Camellia tea: does it permit ordinary postal arrival clearance alone, or impose special permits/certificates? The Act’s mandatory consideration of international standards does not itself answer that question; if no specification exists, section 27 requires advance written application.",
+  "outcome": "unresolved",
+  "decisionChanged": false
+}

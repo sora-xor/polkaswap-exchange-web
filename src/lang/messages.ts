@@ -1,6 +1,12 @@
 import { RewardingEvents } from '@sora-substrate/sdk/build/rewards/consts';
 
 import walletEn from '@/lib/soraneo-wallet/src/lang/en';
+import communityStoreMessages from '@/features/store/messages.en.json';
+import buyXorMessages from '@/features/misc/buyXor.en.json';
+import cardReadinessMessages from '@/features/misc/getTsCardReadiness.en.json';
+import purchasePreviewMessages from '@/features/misc/getTsPreview.en.json';
+import purchaseJourneyMessages from '@/features/misc/getTsJourney.en.json';
+import purchaseOnboardingMessages from '@/features/misc/getTsOnboarding.en.json';
 import { Theme } from '@/consts/theme';
 
 import { MoonpayNotifications } from '@/features/deposit/components/moonpay/consts';
@@ -13,6 +19,361 @@ import { VaultPageNames } from '../modules/vault/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '../types/tabs';
 
 export default {
+  buyXor: buyXorMessages.buyXor,
+  communityStore: communityStoreMessages,
+  getTs: {
+    journey: purchaseJourneyMessages.getTs.journey,
+    onboarding: purchaseOnboardingMessages.getTs.onboarding,
+    cardResumeDescription:
+      'You opened card checkout earlier. Check its status and the ETH in your receiving wallet before continuing or starting another purchase.',
+    cardReviewAgain: 'Review a new card purchase',
+    cardReview: cardReadinessMessages.getTs.cardReview,
+    alreadyHaveEth: 'I already have ETH — continue to conversion',
+    back: 'Back',
+    balancesDescription: 'Current spendable balances. These show readiness, not completed purchases or transfers.',
+    balancesLoading: 'Balances are unavailable until the wallet is connected and synchronized.',
+    balancesTitle: 'Funds in this SORA wallet',
+    bridgeDescription: 'Review the transfer amount, both wallets and network fees. Your plan is filled in for you.',
+    bridgeHistory: 'View bridge history',
+    bridgePreparationError:
+      'This funding route could not be prepared. Check your network and wallet connection, then return to Get TS to try again.',
+    bridgeProgress: {
+      failed: 'The transfer needs attention. Open its history to review recovery or claim actions.',
+      idle: 'No transfer is tracked yet.',
+      pending: 'Transfer submitted. Waiting for confirmation on SORA…',
+      received: 'Transfer confirmed on SORA.',
+      unavailable:
+        'We cannot verify this transfer yet. Keep the same wallets connected and check your transfer history.',
+    },
+    bridgeReturn:
+      'Return here after the bridge. Continue when DAI appears in this SORA wallet; a balance does not prove which transaction funded it.',
+    bridgeTitle: 'Transfer DAI to SORA',
+    burnDescription:
+      'Check the final amount and claim estimate below. Burning destroys XOR permanently; TS is claimed later.',
+    burnTitle: 'Review your burn and future TS claim',
+    cardBuy: 'Open MoonPay for ETH',
+    cardCompleted:
+      'MoonPay reports this purchase completed. Confirm the ETH in the receiving Ethereum wallet, then review the conversion to DAI below.',
+    cardDescription:
+      'Your planned amount is carried into MoonPay. Review the provider’s final amount and use the Ethereum address below.',
+    cardDestination: 'Ethereum receiving address — copy into MoonPay',
+    cardDestinationNote: 'Use this Ethereum address at checkout. Your SORA claim wallet is a different address.',
+    cardEligibility:
+      'MoonPay checks your region, identity, payment method and limits. Its final quote may differ; keep ETH for later network fees.',
+    cardPlanRequired: 'Return to your plan to check a supported purchase amount before opening MoonPay.',
+    cardQuoteRequired: 'A fresh acceptable liquidity check is required before opening the card purchase.',
+    cardRouteNotice:
+      'Your card buys ETH through MoonPay. You then convert and transfer funds to SORA before burning XOR.',
+    cardTitle: 'Buy ETH with your card',
+    cardUnavailable:
+      'Card purchasing is not configured here. Choose another starting point or use your existing Ethereum funds.',
+    changeSource: 'Change starting point',
+    changeWallet: 'Change wallet',
+    checkStatus: 'Check status',
+    claimNotice:
+      'TS is reserved for a future claim. Claims are planned for TONSWAP launch; no date is confirmed. Burning XOR is irreversible.',
+    claimWallet: 'SORA claim wallet',
+    connected: 'Connected',
+    connectEthereum: 'Connect Ethereum wallet',
+    connectionFailed: 'Wallet connection was not completed. Try again when ready.',
+    connectSora: 'Connect or create SORA wallet',
+    connectTonFirst: 'Connect your TON wallet',
+    continuePlan: 'Continue to wallets',
+    continueSwap: 'Continue to XOR',
+    conversion: {
+      amount: 'Amount ({symbol})',
+      bridgeReserve: 'ETH to keep for the later bridge (estimate)',
+      bridgeReserveNote:
+        'This ETH stays in your wallet for the later DAI approval and bridge. The check includes a gas margin and is repeated before conversion; future network fees can still change.',
+      budgetEstimated:
+        'This suggested amount keeps ETH for conversion and bridge fees. We check the final costs again before wallet review.',
+      calculatingBudget: 'Calculating available ETH…',
+      changeTon: 'Change TON wallet',
+      connectTon: 'Connect TON wallet',
+      continueEthereum: 'I have ETH on Ethereum — convert to DAI',
+      destination: 'Receive on Ethereum mainnet in',
+      details: 'Fees and route details',
+      errors: {
+        gas: 'Keep more ETH for the conversion and later bridge network fees, or lower the conversion amount.',
+        noRoute: 'The provider has no route for this amount right now. No transaction was requested.',
+        quote: 'The conversion quote could not be verified. Check the wallet network and retry.',
+        refresh:
+          'The quote expired during wallet review. Wait for the updated quote, then review again. Any confirmed approval remains on Ethereum.',
+        transaction: 'The conversion was not confirmed. Check your wallet and transaction history before retrying.',
+        wallet: 'The wallet connection or network change was not completed. Try again when ready.',
+        walletChanged: 'The wallet account or network changed. Get a new quote for the account you intend to use.',
+      },
+      ethereumTitle: 'Prepare your funds',
+      expired: 'This quote expired. Wait for updated terms before reviewing it again.',
+      feeNote:
+        'Native currency sent includes any native input and attached provider charges. Listed provider fees may be included in the input or output. Wallet network fees are additional; review them before signing.',
+      gas: 'Keep ETH for conversion and bridge network fees. Do not convert your entire ETH balance.',
+      haveDai: 'Already have DAI on Ethereum? Continue to the bridge review below.',
+      impact: 'Conversion price impact',
+      minimum: 'Minimum received',
+      nativeAttachment: 'Native currency sent with transaction',
+      nativeTon: 'Starting with native TON? Swap TON to USDT on TON first. Keep TON for transaction fees.',
+      nativeTonHelp: 'Starting with TON instead of USDT?',
+      openProvider: 'Continue in Symbiosis',
+      payWith: 'Pay with',
+      providerFee: 'Provider fee',
+      providerStep:
+        'This conversion currently requires the provider’s app. Select the same networks, tokens, amount, and Ethereum recipient there, then review its current quote.',
+      quote: 'Get conversion quote',
+      quoting: 'Getting quote…',
+      receive: 'Estimated received',
+      reviewWallet: 'Review in wallet',
+      signing: 'Waiting for wallet and confirmation…',
+      submitted:
+        'Transaction submitted. Wait for confirmation and verify the receiving wallet balance before continuing.',
+      switchEthereum: 'Switch wallet to Ethereum mainnet',
+      tonLiquidity: 'This DAI plan is checked separately. The TON transfer does not guarantee a DAI or XOR amount.',
+      tonMainnet: 'Connect a TON mainnet account to continue.',
+      tonRoute:
+        'Convert USDT on TON to ETH on Ethereum mainnet, then convert part of the ETH to DAI. Keep the rest for Ethereum network fees.',
+      tonTitle: 'Continue from TON',
+      useAvailableEth: 'Use available ETH after fees',
+      viewTransaction: 'View transaction',
+    },
+    conversionConfirmed: 'DAI received on Ethereum',
+    conversionEth: 'ETH was received. Convert it to DAI on Ethereum before using the guided bridge.',
+    conversionReady: 'Your confirmed conversion received {asset}. Next, review the transfer to your SORA wallet.',
+    copyAddress: 'Copy address',
+    createClaimWallet: 'Create or connect your claim wallet',
+    createGoogleWallet: 'Create SORA wallet with Google',
+    editPlan: 'Edit plan',
+    ethereumPurpose:
+      'Use an Ethereum mainnet wallet you control. It holds your funds during conversion and transfer to SORA.',
+    ethereumWallet: 'Ethereum wallet',
+    existingBalanceNote: 'These are current balances. They do not confirm a particular purchase, transfer or swap.',
+    existingEthereumDai: 'Already have DAI on Ethereum?',
+    existingEthereumDaiNote: 'You can skip conversion and review a transfer of your existing DAI.',
+    existingSoraFunds: 'Already have funds on SORA?',
+    exitCheckout: 'Exit to Polkaswap',
+    fundDescription:
+      'Check the available route and fees before moving funds. Keep enough ETH on Ethereum for conversion and bridge fees.',
+    fundTitle: 'Prepare your Ethereum funds',
+    goBridge: 'Review the DAI bridge',
+    googleAvailable: 'Google wallet is available in the SORA account chooser; a browser extension is optional.',
+    googleExplanation:
+      'An encrypted backup is stored in your Google Drive. You still create wallet credentials and keep your recovery information.',
+    guide: 'Campaign guide',
+    indicativeQuote:
+      'This liquidity check is indicative. Prices and liquidity may change before your later swap; it does not guarantee a future quote.',
+    initialEstimate: 'Initial estimate · refreshed before the burn',
+    liquidity: {
+      allowed:
+        'This estimate meets the price-impact limit and leaves XOR after estimated swap and burn fees. Rates and fees can change.',
+      amount: 'Intended swap amount (DAI)',
+      blocked:
+        'The price impact exceeds 5%. Do not fund this amount for this route. Wait for better liquidity or use existing XOR.',
+      check: 'Check live quote',
+      checking: 'Checking XOR availability…',
+      description: 'We check liquidity and fees automatically for the DAI amount you plan to use.',
+      details: 'XOR estimate details',
+      expired: 'This estimate expired. It will refresh before the next review.',
+      feeReserve: 'Estimated swap and marked burn fees: {fees} XOR. Conservative amount left to burn: {burnable} XOR.',
+      feesInsufficient:
+        'This amount would not leave XOR to burn after the swap and burn fees. Increase the DAI amount and check again; it must also stay within the 5% price-impact limit.',
+      feesUnavailable: 'Waiting for current swap and burn fees from SORA mainnet.',
+      quote: '{amount} DAI → approximately {xor} XOR. Price impact: {impact}%.',
+      ready: 'About {xor} XOR available to burn after fees',
+      title: 'XOR estimate',
+      unavailable: 'We could not check SORA mainnet. Reconnect; the estimate will retry automatically.',
+    },
+    mainnetRequired: 'Switch Polkaswap to SORA mainnet to use this campaign.',
+    noDai: 'Wait for DAI to arrive in this SORA wallet, or return to funding.',
+    noXor: 'Acquire XOR in this SORA wallet to continue. The burn also needs an XOR network fee.',
+    openBridge: 'Open bridge review',
+    phases: {
+      actions: 'Complete',
+      plan: 'Your plan',
+      wallets: 'Wallets',
+    },
+    preview: {
+      ...purchasePreviewMessages.getTs.preview,
+      findAmount: 'Find a smaller amount',
+      findingAmount: 'Checking smaller amounts…',
+      useAmount: 'Use {amount} {asset}',
+      suggestedAmount: 'A smaller route is available for {amount} {asset}. Select it to refresh the estimate.',
+      noSuggestedAmount: 'No smaller route could be confirmed. Try another amount or check again later.',
+      useMinimum: 'Set budget to {amount} USD',
+    },
+    recovery: 'Secure your wallet recovery information. Never give it to support or paste it into a payment provider.',
+    replacementTitle: 'Sped up this transaction?',
+    replacementDescription:
+      'Paste the replacement transaction hash from your Ethereum wallet. We verify the same conversion and its receipt before updating your progress. This does not submit another transaction.',
+    refreshProgress: 'Check transfer status',
+    required: 'Required',
+    resumeDescription:
+      'Return to your saved step after funding. Review balances and transaction status before continuing.',
+    resumeTitle: 'Continue getting TS',
+    retry: 'Try again',
+    return: 'Return to Get TS',
+    reviewSwapAgain: 'Review swap again',
+    routeDetails: 'Route and requirements',
+    routes: {
+      card: 'Card → ETH on Ethereum → DAI → transfer to SORA → XOR → burn for a future TS claim. Requires Ethereum and SORA wallets. MoonPay controls eligibility, identity checks, minimums and final fees.',
+      ethereum:
+        'ETH or USDT on Ethereum mainnet → DAI → transfer to SORA → XOR → burn for a future TS claim. Existing Ethereum DAI skips conversion. Keep ETH for network fees.',
+      sora: 'DAI in your SORA wallet → XOR → review the burn → receive a future TS claim record. Swap and burn fees are included in the estimate.',
+      ton: 'Native TON first needs an external TON-to-USDT swap. USDT on TON → ETH on Ethereum through Symbiosis → DAI → transfer to SORA → XOR → burn. The provider handles the TON transfer and its recovery. Keep TON and ETH for network fees.',
+      xor: 'XOR in your SORA wallet → review the burn → receive a future TS claim record. Keep XOR for the network fee.',
+    },
+    separateReviews:
+      'You review and approve each transaction. Network confirmations and provider checks take time; each next action appears when it is ready.',
+    soraWallet: 'SORA wallet',
+    sourceDescription:
+      'Choose the funds you want to use. Every purchase, conversion, bridge, swap, and burn requires your approval.',
+    sourceLabels: {
+      card: 'Buy ETH, then continue',
+      ethereum: 'ETH, USDT or DAI',
+      ton: 'External steps required',
+    },
+    sources: {
+      card: {
+        description:
+          'Buy ETH through MoonPay, convert to DAI, then bridge to SORA. Provider eligibility and fees apply.',
+        title: 'Card',
+      },
+      ethereum: {
+        description: 'Use supported funds on Ethereum mainnet, convert to DAI, then bridge to SORA.',
+        title: 'Ethereum',
+      },
+      sora: {
+        description: 'Connect your SORA wallet and swap DAI to XOR before the burn.',
+        title: 'I have DAI on SORA',
+      },
+      ton: {
+        description: 'Use USDT on TON to check a conversion to Ethereum. Swap native TON to TON USDT first.',
+        title: 'TON',
+      },
+      xor: {
+        description: 'Connect the SORA wallet that will own your future claim and review the burn.',
+        title: 'I already have XOR on SORA',
+      },
+    },
+    sourceTitle: 'How would you like to pay?',
+    stepCount: 'Step {current} of {total}',
+    steps: {
+      bridge: 'Bridge',
+      burn: 'Burn',
+      fund: 'Fund',
+      source: 'Start',
+      swap: 'Get XOR',
+      wallets: 'Wallets',
+    },
+    stepsLabel: 'Get TS steps',
+    subtitle: 'Plan an XOR burn for a future TS claim.',
+    swapDescription:
+      'Your DAI amount is filled in. Review the latest quote and keep the reserved XOR for the burn fee.',
+    swapFailed: 'The swap pair could not be prepared. Check the network and try again.',
+    swapImpactBlocked:
+      'This route exceeds the {limit}% price-impact limit. Do not fund this amount until liquidity improves or a better route is available.',
+    swapLoading: 'Preparing the DAI / XOR pair…',
+    swapProgress: {
+      failed: 'The swap failed on chain. Review your wallet history before trying again.',
+      pending: 'Swap submitted. Waiting for final confirmation…',
+      received: 'Swap confirmed. Your XOR is ready for the burn review.',
+      unavailable: 'We cannot verify this swap yet. Check your wallet history before starting another transaction.',
+    },
+    swapSubmitted: 'Swap submitted. Waiting for its confirmation before continuing.',
+    swapTitle: 'Acquire XOR',
+    title: 'Get TS',
+    tonEthereumPurpose:
+      'The current TON route sends ETH to an Ethereum mainnet wallet you control before transferring DAI to SORA.',
+    tonRouteNotice:
+      'This route uses external apps and requires TON, Ethereum and SORA wallets. Review the steps before connecting.',
+    tonWallet: 'TON wallet',
+    tonWalletLater: 'Connect your TON wallet in the next step when checking the conversion route.',
+    tonWalletPurpose: 'Use the TON mainnet wallet holding the TON or USDT you plan to spend.',
+    transferDetails: 'Transfer details and recovery',
+    useAnotherSoraWallet: 'I already have a SORA wallet',
+    useDai: 'Use existing SORA DAI',
+    useExistingBalance: 'Use funds already in this wallet',
+    useXor: 'Review burn with existing XOR',
+    waitForXor: 'Waiting for spendable XOR in this SORA wallet.',
+    walletAddresses: 'Review or change connected wallets',
+    walletHistory: 'Wallet transaction history',
+    walletsContinue: 'Continue to next action',
+    walletsDescription: 'Your SORA wallet signs the burn and owns the future TS claim. Keep access to it.',
+    walletsIntroduction: 'Connect your payment wallet first. Your SORA account will own the future TS claim.',
+    walletsReady: 'Your wallets are connected. Review the next action to continue.',
+    walletsRequired: 'Connect the required wallets to continue.',
+    walletsTitle: 'Set up your wallets',
+    yourPlan: 'Your plan',
+    conversionProgress: {
+      pending: 'Conversion submitted. Waiting for Ethereum confirmation…',
+      received: 'DAI received on Ethereum. Review the transfer to SORA next.',
+      failed: 'The Ethereum conversion failed. Review the transaction before trying again.',
+      unavailable:
+        'We could not verify this conversion for the connected wallet. Check the transaction or try checking again.',
+    },
+  },
+  ux: {
+    navigation: {
+      earn: 'Earn & borrow',
+      account: 'Account & tools',
+      explore: 'Explore',
+      expand: 'Expand navigation',
+      collapse: 'Collapse navigation',
+    },
+    announcements: {
+      label: 'Announcements',
+      previous: 'Previous announcement',
+      next: 'Next announcement',
+    },
+    layout: {
+      desktopEditing: 'Arrange widgets on a larger screen.',
+    },
+    swap: {
+      reverseTokens: 'Reverse token direction',
+      sellAmount: 'Amount to sell, {symbol}',
+      receiveAmount: 'Amount to receive, {symbol}',
+      retryQuote: 'Retry quote',
+      feesDetails: 'Fees and trade details',
+      useMaximum: 'Use maximum available',
+      receiveXor: 'Receive XOR',
+      receiveInstructions:
+        'Send XOR on the SORA network to this account. Your swap will stay here while you add funds.',
+      receiveQr: 'SORA account address QR code',
+      copyAddress: 'Copy address',
+      copied: 'Address copied',
+      copyFailed: 'Could not copy the address. You can select and copy it above.',
+      accountUnavailable: 'Your account or network is unavailable. Reconnect before continuing.',
+      backToSwap: 'Back to swap',
+      feeShortfall: 'You need {amount} more XOR to cover this swap’s network fee.',
+      feeShortfallHidden: 'More XOR is needed to cover this swap’s network fee.',
+      outputFeeShortfall:
+        'The XOR received must cover the remaining network fee and leave a positive amount. Increase the swap amount or add XOR.',
+      reviewLatest: 'Review updated quote',
+      submissionFailed: 'The swap was not submitted. Your amounts are saved. Review the current quote and try again.',
+      status: {
+        disconnected: 'The node is disconnected. Quotes will resume when the connection returns.',
+        checking: 'Checking the route and fetching a quote…',
+        pathError: 'We could not check this pair’s swap routes. Please retry.',
+        noRoute: 'No swap route is currently available for this pair.',
+        quoteError: 'The quote is unavailable right now. Please retry.',
+        insufficientLiquidity: 'There is not enough liquidity for this amount. Try a smaller amount.',
+        checkingFee: 'Checking your XOR balance and network fee…',
+        reviewChanged: 'The quote or account has changed. Review the updated terms before confirming.',
+      },
+    },
+  },
+  amountInput: {
+    amount: 'Token',
+    label: '{field} {token} amount',
+    fiatLabel: '{field} amount in {currency}',
+    exactAmount: 'Exact amount',
+  },
+  disclaimerSummary: {
+    title: 'Before you continue',
+    responsibility: 'You are responsible for following the laws that apply to your use of Polkaswap.',
+    alpha: 'Polkaswap is alpha software. Some functions may not work as intended.',
+    risk: 'Using Polkaswap involves risk, including the loss of tokens.',
+    fullTerms: 'Full terms',
+    acknowledgement: 'I have read and understand the risks and the full terms above.',
+  },
   // Wallet project keys
   ...walletEn,
   // {AppName} project keys
@@ -78,6 +439,173 @@ export default {
   noDataText: 'No data',
   noir: 'Noir',
   burnPage: {
+    nexusGenerator: {
+      title: 'Create a SORA Nexus address for SOLSWAP',
+      intro:
+        'This address receives SORA Nexus XOR reserved by your SOLSWAP burn. It is separate from the SORA Network wallet that signs the burn.',
+      formatWarning:
+        'Easy Wallets cannot restore this SORA Nexus account yet. Save all 24 words in order and the exact address. A wallet using another recovery method may show a different address. Assets sent here may be inaccessible until compatible recovery is available.',
+      recoveryWarningTitle: 'Before you create a recipient',
+      generate: 'Create SOLSWAP recipient',
+      generateAgain: 'Create another recipient',
+      step: 'Step {step} of 3',
+      backupTitle: 'Write down 24 recovery words',
+      backupInstruction:
+        'Write these 24 English words exactly as shown, in order. Keep them private and offline. Anyone with these words can control this account.',
+      backupCheck: 'I wrote down all 24 words in order and checked their spelling.',
+      continue: 'Continue',
+      verifyTitle: 'Spot-check your backup',
+      verifyInstruction:
+        'Enter the three requested words from your written backup. This spot-check does not verify every word.',
+      wordNumber: 'Word {number}',
+      mismatch: 'The words do not match. Check your paper backup and try again.',
+      showWords: 'Review words',
+      finish: 'Finish backup',
+      addressLabel: 'Your SORA Nexus address',
+      addressInstruction:
+        'Keep this exact public address with your recovery words. This page does not restore the account after you leave.',
+      continueToAddress: 'Continue to address',
+      addressBackupTitle: 'Save your SORA Nexus address',
+      addressBackupInstruction:
+        'Copy this public address and save it with your 24-word backup. Check it carefully: this page cannot restore the address after you leave.',
+      addressBackupCheck: 'I saved this address with my 24 recovery words.',
+      copyAddress: 'Copy address',
+      addressCopied: 'Address copied',
+      copyFailed: 'Could not copy the address. Select and copy it manually.',
+      useForBurn: 'Use for SOLSWAP burn',
+      discard: 'Discard this account',
+      discardTitle: 'Discard this unfinished account?',
+      discardWarning:
+        'The words and address will be removed from this page. You cannot recover them here after closing.',
+      keepBackingUp: 'Keep backing up',
+      confirmDiscard: 'Discard words and address',
+      campaignEnded:
+        'The SOLSWAP burn campaign has ended. You can still copy this address, but you cannot use it for a burn here.',
+      generationFailed: 'Could not generate an address. Please try again.',
+    },
+    nexusRecipientRecoveryWarning:
+      'Burning XOR is irreversible. Confirm this exact SORA Nexus address matches your saved address; the address recorded in the transaction cannot be changed afterward. Easy Wallets cannot restore addresses created here yet.',
+    nexusRecipientRecoveryCheck:
+      'I saved and checked this Nexus address and understand I need compatible software to access it.',
+    confirmNexusRecovery: 'Confirm Nexus access',
+    tonswap: {
+      onboarding: {
+        title: 'New to XOR? Start here',
+        description:
+          'Choose how you want to fund your SORA wallet, then return to review your XOR burn and estimated TS reservation.',
+        startingPoint: 'What are you starting with?',
+        options: {
+          xor: 'I have XOR on SORA',
+          sora: 'I have other tokens on SORA',
+          exchange: 'I have funds on an exchange',
+          newWallet: 'I need a SORA wallet',
+        },
+        guidance: {
+          xor: 'Review how much XOR you want to burn. Your future TS claim belongs to the SORA wallet that signs the burn.',
+          sora: 'Choose a supported token to swap into XOR. When the received XOR covers the swap fee with some left over, that fee can come from the swap output even if your current XOR balance is zero. Check the quote and keep enough XOR for the separate burn fee.',
+          exchange:
+            'Check whether your exchange currently supports XOR withdrawals on the SORA network. The transfer tool fills in your connected SORA address; review the exchange, network, withdrawal limits and fees before sending.',
+          newWallet:
+            'Open the wallet chooser to create or connect a SORA account. After connecting, explore the available funding options. Card purchases, where supported, use a separate EVM wallet and bridge and may require ETH for fees. This does not deliver TS directly.',
+        },
+        googleAvailable:
+          'The Google wallet option can create a SORA account without installing a browser extension. It still requires a wallet password and recovery backup.',
+        backup:
+          'Keep your recovery phrase and wallet password safe. You will need access to the same SORA wallet to claim TS at launch. Never share your recovery phrase with support.',
+        keepFees:
+          'Fund the XOR you plan to burn plus its network fee. Review all swap, bridge or withdrawal fees before proceeding. Burning reserves a future TS claim; it does not deliver TS immediately.',
+        connect: 'Create or connect a wallet',
+        actions: {
+          review: 'Review XOR burn',
+          swap: 'Get XOR with a swap',
+          exchange: 'Check exchange transfer options',
+          funding: 'Explore funding options',
+        },
+      },
+      journey: {
+        terms: 'Campaign details and claim terms',
+        preview: 'Preview your TS allocation',
+        amount: 'XOR you want to burn',
+        estimated: 'Estimated TS reserved',
+        total: 'XOR needed, including burn fee',
+        estimateNotice: 'This is an estimate, not a guaranteed allocation. Earlier finalized burns can change it.',
+        getStarted: 'Need XOR or a wallet?',
+        saveReceipt: 'Save reservation receipt',
+        receiptNotice: 'Keep access to the signing SORA wallet. This public receipt alone cannot authorize a claim.',
+        receiptError: 'The receipt could not be downloaded. Try again. Your burn record is unchanged.',
+        resumeTitle: 'Get XOR for your TS reservation',
+        resumeDescription: 'Complete funding, then return to review your burn. Keep enough XOR for its network fee.',
+        savedAmount: 'Your planned burn: {amount} XOR',
+        return: 'Return to TS campaign',
+        dismiss: 'Dismiss guide',
+      },
+      curve: {
+        title: 'Earlier burns earn more TS',
+        description: 'The reward rate falls with every XOR burned. Burn earlier to reserve more TS per XOR.',
+        current: 'Current rate',
+        start: 'At the start',
+        end: 'At the cap',
+        burned: 'XOR burned',
+        chartLabel: 'TS per XOR decreases linearly from 50 to 5 as {cap} XOR is burned.',
+        currentPoint: 'You are here',
+        progress: '{percent}% of cap',
+      },
+      title: 'Burn XOR for Tonswap',
+      description:
+        'Reserve TS by burning XOR. The reward rate decreases linearly from 50 to 5 TS per XOR as the campaign fills. This burn does not move XOR to SORA Nexus.',
+      claimNotice: 'TS will be claimable on tonswap.org at launch.',
+      visit: 'Visit Tonswap',
+      startBlock: 'Starting block',
+      rateRange: 'Reward rate range',
+      cap: 'Rewarded XOR cap',
+      currentRate: 'Current TS per XOR',
+      rewardedBurns: 'XOR burned for rewards',
+      remaining: 'XOR remaining before the cap',
+      totalReserved: 'Total TS reserved',
+      yourBurns: 'Your XOR burned',
+      yourReserved: 'Your TS reserved',
+      burn: 'Burn XOR for TS',
+      capReached: 'Reward cap reached',
+      retry: 'Retry campaign data',
+      claimDetails: 'Your burn history',
+      walletNotice: 'Your TS claim is linked to this SORA wallet. Keep access to it and your transaction hash.',
+      burnRecord: 'Block {block}: {xor} XOR burned · {ts} TS reserved',
+      excessRecord: '{xor} XOR above the cap earns no TS.',
+      amount: 'XOR to burn',
+      estimatedReward: 'Estimated TS reward',
+      estimateUnavailable:
+        'Reward estimate unavailable. You can still burn XOR; any TS reward will be calculated from finalized burns.',
+      burnWarning:
+        'Burning is irreversible. Rewards follow finalized transaction order, up to 1,753,357 XOR. Other burns may change your estimate; any amount above the cap earns no TS.',
+      confirmBurn: 'Burn XOR',
+      connectionUnavailable: 'Connect to the SORA network before burning.',
+      mainnetOnly: 'This campaign is available on SORA mainnet.',
+      unavailable:
+        'Campaign data is unavailable. You can still burn XOR; your TS reward will be calculated after finalization.',
+      dataReady: 'Campaign data verified',
+      dataReconnecting:
+        'Campaign data is unavailable. You can still burn XOR; your TS reward will be calculated after finalization.',
+      dataStale: 'Showing the last verified data. Burns remain available; reward estimates may change.',
+      refreshData: 'Refresh campaign data',
+      loading: 'Loading finalized campaign burns…',
+      notStarted: 'The campaign starts at block 27,720,478.',
+      invalidAmount: 'Enter a positive XOR amount with at most 18 decimal places.',
+      exceedsRemaining: 'Your burn exceeds the remaining reward cap. Any excess XOR is still burned and earns no TS.',
+      feeUnavailable: 'Waiting for the burn transaction fee.',
+      excludedAccount: 'SORA Trust burns do not earn TS. You can still burn XOR.',
+      accountChanged: 'Your account or amount changed. Reopen the burn dialog and review the quote.',
+      quoteChanged: 'The campaign allocation changed. Review the updated reward before confirming again.',
+      submitFailed: 'The burn was not submitted. Review the current quote and try again.',
+      submitted: 'Burn submitted. Reserved TS appears after the transaction is finalized and indexed.',
+      waitingConfirmation: 'Waiting for block confirmation.',
+      included: 'Burn included in a block. Waiting for final confirmation.',
+      confirmed: 'Burn confirmed. Updating your reserved TS.',
+      rewardsUpdated: 'Your reserved TS is updated.',
+      indexingDelayed:
+        'Confirmation or indexing is taking longer than expected. Your transaction is still being tracked. You do not need to submit this burn again.',
+      pendingBurnAmount: 'Burn amount: {xor} XOR',
+      retryStatus: 'Refresh burn status',
+    },
     copySoraNetworkTxHash: 'Copy SORA Network tx hash',
     enterNexusRecipient: 'ENTER SORA NEXUS ACCOUNT',
     invalidNexusRecipient: 'INVALID SORA NEXUS ACCOUNT',
@@ -95,6 +623,9 @@ export default {
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {
+    [PageNames.BuyXor]: 'Buy XOR',
+    [PageNames.Store]: 'Store',
+    GetTs: 'Get TS',
     [PageNames.Swap]: 'Swap',
     [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
@@ -117,6 +648,8 @@ export default {
     [VaultPageNames.VaultDetails]: 'Position Details',
   },
   mainMenu: {
+    [PageNames.BuyXor]: '@:pageTitle.BuyXor',
+    [PageNames.Store]: 'Store',
     [PageNames.Swap]: 'Swap',
     [PoolPageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
@@ -337,6 +870,7 @@ export default {
     strategicBonusApy: 'Strategic Bonus APY',
   },
   bridge: {
+    connectNetworkWallet: 'Connect {network} wallet',
     title: 'Bridge',
     info: 'Convert tokens between the {Sora} and {Ethereum} networks.',
     next: 'Next',

@@ -1,0 +1,83 @@
+{
+  "code": "ET",
+  "reviewedAt": "2026-09-30",
+  "agriculturalDecision": "conditional_support",
+  "overallPermitFreeDecision": "pending_root_independent_food_review",
+  "basis": "Explicit combined domestic-law and manufacturing interpretation; not an individual Ethiopian tea ruling and not direct incorporation of all ISPM32 examples as binding classifications.",
+  "currentPrimarySource": {
+    "url": "https://justice.gov.et/wp-content/uploads/2026/09/አዋጅ-ቁጥር-1400-2018-1.pdf",
+    "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43311.pdf",
+    "pages": 34,
+    "enacted": "2026-05-07",
+    "effective": "2026-05-07",
+    "uploaded": "2026-09-23",
+    "dateNote": "September media upload is not enactment.",
+    "sha256": "745c049aca6134f276e9883ef334a8d3ba864d67e176e57a3b5ebd765829428c"
+  },
+  "provisions": [
+    {
+      "rule": "2026 Article2(1–2), Gazette19604–19605/PDF2–3",
+      "finding": "Plant means living plants/parts. Plant product means processed or natural plant-based product exposed to pest-introduction/distribution risk because of its nature or processing. The risk phrase qualifies the class; processed origin alone is insufficient."
+    },
+    {
+      "rule": "2026 Article2(7–10), Gazette19606/PDF4",
+      "finding": "Other regulated articles are pest-capable objects deemed to require quarantine measures. Wood packaging excludes paper products. Commodity and consignment definitions remain limited to plants, plant products and other regulated articles."
+    },
+    {
+      "rule": "2026 Article2(21),3 and18",
+      "finding": "Post-harvest pests and prevention during processing/storage are recognized. These general surveillance/control provisions do not independently require an import permit for every clean manufactured food. They preserve action against actual postprocessing contamination."
+    },
+    {
+      "rule": "2026 Article4(1–4), Gazette19616/PDF14",
+      "finding": "Scientific/PRA basis, import permits and release authorization attach to the defined plant/plant-product/regulated-article classes. Article4(4) addresses the restricted list, rather than bringing all nonregulated manufactured products within the law. The awkward English4(2) calls its origin-related document an import permit; no silent relabelling as a phytosanitary certificate is needed for the excluded-class inference."
+    },
+    {
+      "rule": "2026 Article4(7), Gazette19617/PDF15",
+      "finding": "Wood packaging has independent treatment/logo conditions. The scenario should use clean factory retail packing and paper/cardboard/plastic outer packaging without wood, soil, straw or raw plant filler."
+    },
+    {
+      "rule": "2026 Article20(1,17), Gazette19628/19631/PDF26/29",
+      "finding": "The authority must discharge IPPC obligations under national law; delegated measures must accord with this Proclamation and relevant international phytosanitary standards. This is operative standards context, not mere international membership, but neither clause creates automatic direct adoption of every illustrative ISPM category."
+    },
+    {
+      "rule": "2026 Articles21–24",
+      "finding": "Inspectors may inspect defined goods, suspend suspect consignments, collect samples and act on regulated pests. Ordinary truthful customs declaration and arrival inspection remain. No independent all-food import duty appears here."
+    },
+    {
+      "rule": "2026 Articles25–28, Gazette19636/PDF34",
+      "finding": "Repeals Decree56/1971; disapplies inconsistent laws/customary practices; expressly continues Regulation4/1992 until replacement; effective on Gazette publication7May2026."
+    },
+    {
+      "rule": "1992 Regulation Articles2(7,9),3–7 andScheduleI item11",
+      "finding": "Plants include plant products and borrow the1971definition. Article3 subjects infestation-liable goods to quarantine. Articles4/6 impose permits/phyto on ScheduleI goods. Item11 names Camellia sinensis without raw/dried/manufactured specification. It is not confined on its face to planting material; some other entries expressly exclude seeds and ScheduleIII includes consumption imports. Its research/transit waiver is not a personal exemption."
+    },
+    {
+      "rule": "1971 Decree Article2(9), originalGazette261/PDF2",
+      "finding": "Original EAA scan visually verified: leaves and products in natural, dried or manufactured state were included without a risk qualification. That definition is materially broader than2026Article2(2)."
+    }
+  ],
+  "interpretation": {
+    "application": "Actual industrial steaming, rolling and drying produces manufactured sencha; current-linked ISPM32 Appendix2 tea Category1 is commodity-specific technical evidence that pre-existing plant-pest risks are eliminated by processing. The appendix is illustrative/nonprescriptive and does not itself waive a domestic law. It supports applying the actual2026risk-qualified domestic definition to clean sealed tea.",
+    "continuity": "Read Articles25(2) and26 together: compatible1992requirements continue for regulated Camellia plants/products, while the former1971unqualified manufactured-product breadth cannot override the new higher-law risk definition. The saved1992Article3 already conditions quarantine on infestation liability. ScheduleI lists a species, not expressly processed or dried tea as a distinct regulated commodity. It therefore need not be treated as a contrary determination that every manufactured derivative poses risk.",
+    "counterargument": "The1992definition incorporates the old broad manufactured scope, and ScheduleI expressly names Camellia. Article26continuation is unqualified in its sentence. A contrary reading could preserve that whole species category temporarily. The proposed interpretation rejects that blanket breadth because it would nullify the new Article2risk limitation and Article25(2)inconsistency rule; the schedule still has ample compatible operation for live/raw/risk-capable Camellia. This legal-scope inference must remain plainly labelled.",
+    "limits": "ISPM32does not address storage pests or postprocessing contamination. Clean new packaging, absence of pests/raw plant additives and ordinary inspection are conditions. No personal-use quantitative exemption is asserted."
+  },
+  "sources": [
+    "https://justice.gov.et/wp-content/uploads/2026/09/አዋጅ-ቁጥር-1400-2018-1.pdf",
+    "https://faolex.fao.org/docs/pdf/eth4524.pdf",
+    "https://eaa.gov.et/wp-content/uploads/2025/01/plant-protection-decree-561971.pdf",
+    "https://www.ippc.int/en/publications/587/",
+    "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf"
+  ],
+  "sourceFiles": [
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43311.pdf",
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43311.txt",
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-english-column.txt",
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-reg4-1992.pdf",
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-reg4-1992.txt",
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-decree56-1971.pdf",
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-decree56-p2.png",
+    "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-current-p3.png"
+  ],
+  "mainArraysEdited": false
+}

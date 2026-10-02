@@ -1,0 +1,32 @@
+[
+  {
+    "name": "qa-restricted-goods",
+    "url": "https://customs.gov.qa/Arabic/Tariff/Pages/Restricted-Goods.aspx",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/qa-restricted-goods.html",
+    "retrievedAt": "2026-09-30T06:29:55.098134+00:00",
+    "bytes": 5644008,
+    "sha256": "3b34c8f4cc9f143c80da24f21435170aff7c2904ea9d1fa14f950ae0e0a56966"
+  },
+  {
+    "name": "qa-food-guide",
+    "url": "https://www.customs.gov.qa/Arabic/Procedures/Guide-to-Clearance-of-Imported-Goods/Pages/Chapter1.aspx",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/qa-food-guide.html",
+    "retrievedAt": "2026-09-30T06:29:53.238449+00:00",
+    "bytes": 828553,
+    "sha256": "86435f8af643194e2ba0d7584ded54aef742e6d3d8c57c44bac544b9b4e3357c"
+  },
+  {
+    "name": "jo-operations2025",
+    "url": "https://www.moa.gov.jo/ebv4.0/root_storage/ar/eb_list_page/%D8%AF%D9%84%D9%8A%D9%84_%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_2025.pdf",
+    "status": "200",
+    "error": "curl: (28) Operation timed out after 35001 milliseconds with 9554471 out of 11840698 bytes received\n",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/jo-operations2025.pdf",
+    "retrievedAt": "2026-09-30T06:30:25.382828+00:00",
+    "bytes": 9554471,
+    "sha256": "be0b733a76f99cd8020a77ad0d17ecf22b9641cc09ac2188fa2e0f3ab3ee68f6"
+  }
+]

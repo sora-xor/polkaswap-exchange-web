@@ -1,0 +1,147 @@
+[
+  {
+    "file": "ae-cabinet123-annex-page.html",
+    "bytes": 5517,
+    "sha256": "413a4dbe462266f4b2f3caf45cdd032ce178e066fa6eed4bde4559e6995832de"
+  },
+  {
+    "file": "ae-cabinet123-download.pdf",
+    "bytes": 5517,
+    "sha256": "5dd6ef5800c4694c6e438ce2c79c69fed4225d13bacb1267e4ecbc08a274fc29"
+  },
+  {
+    "file": "ae-cabinet123-secondary-mirror.pdf",
+    "bytes": 625352,
+    "sha256": "269b3858dbaf77b9873bebe9c5c7045295a6e458821ee5d1d05de7fc322278a8"
+  },
+  {
+    "file": "ae-cabinet123-secondary-mirror.provenance.json",
+    "bytes": 611,
+    "sha256": "38fb62fc13dd985131559ed1a1ba45b74cf6fd74144eb86a1f24ea4553644660"
+  },
+  {
+    "file": "ae-cabinet123-secondary-mirror.txt",
+    "bytes": 145911,
+    "sha256": "91b5c24316fedf2511408b76e3e2f9d204ea47cfccd8159c473849296c8ce26c"
+  },
+  {
+    "file": "ae-current-law.html",
+    "bytes": 5517,
+    "sha256": "33904574b2f98c9c8ef8e4dfadfea954eb29112060501791091d102ddc67aeb3"
+  },
+  {
+    "file": "ae-dm-law-page.html",
+    "bytes": 56228,
+    "sha256": "29f4eec6b847e241dd112876f48752399db756006c67ba5cb48c09df38dc2e6c"
+  },
+  {
+    "file": "ae-dubai-restricted-page.html",
+    "bytes": 780,
+    "sha256": "6798667b44d5a5efc697a91fe72340612a25ecd98ed7d05692c0cac433abac64"
+  },
+  {
+    "file": "ae-dubai-restricted.pdf",
+    "bytes": 379627,
+    "sha256": "6ff6d032f685b8d0f50a70c5e7462a20fcb3a6ec26281e6577b24449093be03a"
+  },
+  {
+    "file": "ae-dubai-restricted.txt",
+    "bytes": 37604,
+    "sha256": "ca19bae00091ed43f7be816610cfa32af1064f5868696e110538faab7d743ae5"
+  },
+  {
+    "file": "ae-icp-tariff.html",
+    "bytes": 586941,
+    "sha256": "594c790109f4bfac69669ba930a1516a622bb97782d2f5ffe61528452ce3f34c"
+  },
+  {
+    "file": "ae-law2025-dm-ar.pdf",
+    "bytes": 250134,
+    "sha256": "1a32ee66209d53f4a961a7919c0547fef6848a4b834ff22243191b7e2bd053b9"
+  },
+  {
+    "file": "ae-law2025-dm-ar.txt",
+    "bytes": 59020,
+    "sha256": "37a29d17586c10b98614385432fa472149f373478abed039a25619c7ad0f09f9"
+  },
+  {
+    "file": "ae-law2025-jki.pdf",
+    "bytes": 329716,
+    "sha256": "dd81c9e5336af78f8744263aa7ca849f968052ca0899b758adce97ecf7c487e7"
+  },
+  {
+    "file": "ae-law2025-jki.txt",
+    "bytes": 34150,
+    "sha256": "525acb4fc9d9fc7d44888f1f3529fbe5c2a9134a2e7a96080a586a401a588673"
+  },
+  {
+    "file": "ae-regs2003-jki.pdf",
+    "bytes": 254529,
+    "sha256": "560e076a5d1faea9a1b35479582bdec751e8d25d30afa2904c0ee3df76b21c93"
+  },
+  {
+    "file": "ae-regs2003-jki.txt",
+    "bytes": 33895,
+    "sha256": "389c2c304bff5a2d84c7c664639fd5860cf71f56bc1082980c1ef95de6b85db9"
+  },
+  {
+    "file": "ae-sharjah-visible-lookup.json",
+    "bytes": 1175,
+    "sha256": "e047f62b84a9cd0ea7c8bb4824562f470f1ed1b1c7ca48766c5cd0b199dd4d0f"
+  },
+  {
+    "file": "bh-gazette3800A-normalized.txt",
+    "bytes": 4668340,
+    "sha256": "4eb83d8ca208f6d7726307b522b4329278d566a709a4d87c034e0dd16a515579"
+  },
+  {
+    "file": "bh-gazette3800A-page66.png",
+    "bytes": 172244,
+    "sha256": "5d788733035d4e13aa43085193c6863b183bea77331e14498cfcd42118300eb5"
+  },
+  {
+    "file": "bh-gazette3800A.pdf",
+    "bytes": 8164988,
+    "sha256": "7fc2c652d4b25e9f96b530270bda45bf4fb5ca59aae1a1a5ea82e1d8ee9f6915"
+  },
+  {
+    "file": "bh-gazette3800A.txt",
+    "bytes": 5881846,
+    "sha256": "c24c100f2541cb7a3bbbb03cf8166b2b6c25d21d8bc854c610ff8227e982b271"
+  },
+  {
+    "file": "bh-tariff-old.html",
+    "bytes": 118,
+    "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4"
+  },
+  {
+    "file": "fourth-provenance.json",
+    "bytes": 1293,
+    "sha256": "0a80ab63623f013e2d75cf289acf581c638cc1a55f4d7c84f246ebf34b728160"
+  },
+  {
+    "file": "initial-provenance.json",
+    "bytes": 1423,
+    "sha256": "58c21e2fde7712257236cd002280dba88444e981333347afdfe6232c766647d1"
+  },
+  {
+    "file": "second-provenance.json",
+    "bytes": 1467,
+    "sha256": "b78ba28431ec606aa6b635858ba3d57dd67652f597206ba5c0b36558b7511c9d"
+  },
+  {
+    "file": "source-only-proposals.json",
+    "bytes": 5757,
+    "sha256": "e5bd3064494d950dcf6c01ebc4b982ab53e522e46089a64fb6fc84e767af7083"
+  },
+  {
+    "file": "source-pass-result.json",
+    "bytes": 2883,
+    "sha256": "32be4f47e40ee409a7e99c94aaddce9b7c5db074e272920ebb0c36e61ea5b9db"
+  },
+  {
+    "file": "third-provenance.json",
+    "bytes": 1157,
+    "sha256": "4f3f72c6baedbd6715b5683f15f9694e6a678f34f3bbb2b42567253450a43bbd"
+  }
+]

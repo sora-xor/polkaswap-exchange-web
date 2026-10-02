@@ -13,10 +13,6 @@ type BuildDataVariablesContext = {
   fetchPage: number;
 };
 
-type BuildUpdateVariablesContext = {
-  intervalTimestamp: number;
-};
-
 type UseIndexerDataFetchOptions<T> = {
   parentLoading?: Ref<boolean> | (() => boolean);
   pageAmount?: number;
@@ -25,8 +21,11 @@ type UseIndexerDataFetchOptions<T> = {
   requestData: (variables: FetchVariables) => Promise<{ items: T[]; totalCount: number }>;
   getItemTimestamp: (item: Nullable<T>) => number;
   buildDataVariables: (context: BuildDataVariablesContext) => FetchVariables;
-  buildUpdateVariables: (context: BuildUpdateVariablesContext) => FetchVariables;
 };
+
+/** Normalizes untrusted indexer pagination totals for safe page arithmetic. */
+const normalizeTotalCount = (value: unknown): number =>
+  typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 ? value : 0;
 
 /**
  * Composition-friendly port of `IndexerDataFetchMixin`.
@@ -63,20 +62,27 @@ export function useIndexerDataFetch<T>(options: UseIndexerDataFetchOptions<T>) {
   });
 
   let interval: Nullable<ReturnType<typeof setInterval>> = null;
+  let latestDataRequest = 0;
+  let snapshotUpdateInFlight = false;
   const updateItems = debouncedInputHandler(
-    async () => {
-      await updateData();
+    async (requestId: number) => {
+      await updateData(requestId);
     },
     250,
     { leading: false }
   );
+
+  const scheduleDataUpdate = () => {
+    const requestId = ++latestDataRequest;
+    updateItems(requestId);
+  };
 
   const resetItems = () => {
     items.value = Object.freeze([]);
     totalCount.value = 0;
   };
 
-  const fetchData = async () => {
+  const fetchData = async (requestId: number) => {
     await loadingApi.withLoading(async () => {
       await loadingApi.withParentLoading(async () => {
         const variables = options.buildDataVariables({
@@ -84,21 +90,39 @@ export function useIndexerDataFetch<T>(options: UseIndexerDataFetchOptions<T>) {
           fetchPage: fetchPage.value,
         });
         const { items: fetchedItems, totalCount: totalItems } = await options.requestData(variables);
-        items.value = Object.freeze([...fetchedItems]);
-        totalCount.value = totalItems;
+
+        if (requestId !== latestDataRequest) return;
+
+        items.value = Object.freeze(Array.isArray(fetchedItems) ? [...fetchedItems] : []);
+        totalCount.value = normalizeTotalCount(totalItems);
       });
     });
   };
 
+  /**
+   * Refreshes the authoritative first-page snapshot without overlapping polls.
+   * A snapshot avoids timestamp-cursor gaps for empty histories and late items
+   * that share the newest indexed second.
+   */
   const fetchDataUpdates = async () => {
-    if (!intervalTimestamp.value) return;
+    if (snapshotUpdateInFlight) return;
 
-    const variables = options.buildUpdateVariables({ intervalTimestamp: intervalTimestamp.value });
-    const { items: fetchedItems, totalCount: totalItems } = await options.requestData(variables);
-    if (!fetchedItems.length) return;
+    snapshotUpdateInFlight = true;
+    const requestId = latestDataRequest;
 
-    items.value = Object.freeze([...fetchedItems, ...items.value].slice(0, safeFetchAmount.value));
-    totalCount.value = totalCount.value + totalItems;
+    try {
+      const variables = options.buildDataVariables({
+        fetchAmount: safeFetchAmount.value,
+        fetchPage: 1,
+      });
+      const { items: fetchedItems, totalCount: totalItems } = await options.requestData(variables);
+      if (requestId !== latestDataRequest) return;
+
+      items.value = Object.freeze(Array.isArray(fetchedItems) ? [...fetchedItems] : []);
+      totalCount.value = normalizeTotalCount(totalItems);
+    } finally {
+      snapshotUpdateInFlight = false;
+    }
   };
 
   const resetDataSubscription = () => {
@@ -117,9 +141,11 @@ export function useIndexerDataFetch<T>(options: UseIndexerDataFetchOptions<T>) {
     }, updateInterval);
   };
 
-  const updateData = async () => {
+  const updateData = async (requestId: number) => {
     resetDataSubscription();
-    await fetchData();
+    await fetchData(requestId);
+
+    if (requestId !== latestDataRequest) return;
 
     if (fetchPage.value === 1) {
       subscribeOnData();
@@ -129,7 +155,7 @@ export function useIndexerDataFetch<T>(options: UseIndexerDataFetchOptions<T>) {
   watch(
     fetchPage,
     () => {
-      updateItems();
+      scheduleDataUpdate();
     },
     { immediate: true }
   );
@@ -138,7 +164,7 @@ export function useIndexerDataFetch<T>(options: UseIndexerDataFetchOptions<T>) {
     if (!isEqual(current)(previous)) {
       currentPage.value = 1;
       resetItems();
-      updateItems();
+      scheduleDataUpdate();
     }
   };
 
@@ -163,6 +189,8 @@ export function useIndexerDataFetch<T>(options: UseIndexerDataFetchOptions<T>) {
   };
 
   onBeforeUnmount(() => {
+    latestDataRequest += 1;
+    updateItems.cancel?.();
     resetDataSubscription();
   });
 

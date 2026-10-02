@@ -1,0 +1,92 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": [
+    "GP",
+    "GF",
+    "MQ",
+    "BL",
+    "MF"
+  ],
+  "mainArraysEdited": false,
+  "conclusion": "No decision changes. Explicit domestic definition evidence is favorable; current statutory longstop and current ministry old-framework implementation conflict remains material alongside separate local measures.",
+  "files": [
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/current-statute-web-reader.json",
+      "bytes": 27412,
+      "sha256": "661669fb9210bc6952d72cda53fa1aeaeb44775481612a37a606a4d381089007",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/definition-web-reader.json",
+      "bytes": 32373,
+      "sha256": "776f7191fb11f1e5a9dbafb34b1147fbf88f713251f5091342a924ee91420af3",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/eu-current-recovery-web-reader.json",
+      "bytes": 27510,
+      "sha256": "e15540aed1366eb518c5d6420751666aa23761b0bf4d444e8eb2093ec5213fde",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/eu-recovery.json",
+      "bytes": 346,
+      "sha256": "1d7dcb6c8a79cb5310c2b808886465a49ca9b6b7b52be335f0c7e4cadd549195",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/eu2016-2031-fr.html",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contentStatus": "FAILED retrieval: empty challenge response"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/eu2016-current-en.pdf",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contentStatus": "FAILED retrieval: empty challenge response"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/eu2016-original-fr.pdf",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contentStatus": "FAILED retrieval: empty challenge response"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/instruction-web-reader.json",
+      "bytes": 33522,
+      "sha256": "3d33f5da1592a78e8715f7b0d63eaeaf9321f6071006d009656c6ceb84dc5c0a",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/l271-7.html",
+      "bytes": 5673,
+      "sha256": "765a91ed0ba540a50da1c5a0f0dafc3ab482c91738f8cd7af80822c355e3d6d8",
+      "contentStatus": "FAILED retrieval: Cloudflare challenge/error, not legal text"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/peer-conclusions.json",
+      "bytes": 13025,
+      "sha256": "b4f01c2a4329630d765a63bcdca5b9469a08b4fe8a330c0837045cb6046b1898",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/rows-reviewed-snapshot.json",
+      "bytes": 21995,
+      "sha256": "9582c9e251fdba9462f7e364af16bbef33f348e87f3d4ff02b44715c95470b49",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/source-recovery.json",
+      "bytes": 972,
+      "sha256": "260d506b281bd800aa87a23bfd41886c3b4edf3f9e1fea2f117696753665d61a",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    },
+    {
+      "path": "/Users/takemiyamakoto/dev/polkaswap-exchange-web/docs/reports/tea-audit-work/french-definition-review/supporting-web-reader.json",
+      "bytes": 30005,
+      "sha256": "16d4b42fa78911a21cde40dbde2d13ef13c38345dbff4491cd682f09ec4d75fb",
+      "contentStatus": "valid JSON; see per-record retrieval provenance"
+    }
+  ]
+}

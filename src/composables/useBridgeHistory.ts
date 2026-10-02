@@ -1,5 +1,7 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { getTsFundingQuery, parseGetTsFundingPurpose } from '@/features/misc/lib/getTsFlow';
+import { getTonswapBridgeFundingPurpose } from '@/features/misc/lib/tonswapBridgeLiquidity';
 
 import { useLoading } from '@/composables/useLoading';
 import { PageNames } from '@/consts';
@@ -31,6 +33,7 @@ export function useBridgeHistory<T extends IBridgeTransaction>(options: UseBridg
   const loadingApi = useLoading({ parentLoading: options.parentLoading });
 
   const networkHistoryId = computed(() => bridgeStore.networkHistoryId as Nullable<BridgeNetworkId>);
+  const historySourceKey = computed(() => bridgeStore.historySourceKey);
   const history = computed(() => bridgeStore.historyRecord as Record<string, T>);
   const networkHistoryLoading = computed(() =>
     Boolean(networkHistoryId.value && bridgeStore.historyLoading[networkHistoryId.value])
@@ -69,11 +72,19 @@ export function useBridgeHistory<T extends IBridgeTransaction>(options: UseBridg
     await bridgeStore.updateExternalHistory(clearHistory);
   };
 
-  const navigateToBridgeTransaction = () => {
-    router.push({ name: PageNames.BridgeTransaction });
+  const navigateToBridgeTransaction = (transaction?: T) => {
+    const purpose = transaction
+      ? getTonswapBridgeFundingPurpose(transaction)
+      : parseGetTsFundingPurpose(router.currentRoute?.value?.query ?? {});
+    router.push({ name: PageNames.BridgeTransaction, ...(purpose ? { query: getTsFundingQuery(purpose) } : {}) });
   };
 
   const handleBack = () => {
+    const purpose = parseGetTsFundingPurpose(router.currentRoute?.value?.query ?? {});
+    if (purpose) {
+      router.push({ name: PageNames.Bridge, query: { ...getTsFundingQuery(purpose), asset: 'DAI' } });
+      return;
+    }
     const backLocation = resolveBridgeBackLocation();
 
     if (backLocation) {
@@ -97,13 +108,14 @@ export function useBridgeHistory<T extends IBridgeTransaction>(options: UseBridg
       setSoraToEvm(isOutgoingTransaction(tx));
       await setAssetAddress(tx.assetAddress);
       setHistoryId(tx.id);
-      navigateToBridgeTransaction();
+      navigateToBridgeTransaction(history.value[id]);
     });
   };
 
   return {
     ...loadingApi,
     history,
+    historySourceKey,
     networkHistoryLoading,
     networkFees,
     setSoraToEvm,

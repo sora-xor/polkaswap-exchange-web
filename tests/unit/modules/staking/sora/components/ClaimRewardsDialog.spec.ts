@@ -14,10 +14,20 @@ const pendingRewardsRef = ref([
 ]);
 const rewardedFundsRef = ref(new FPNumber('1000000000000000000'));
 const rewardAssetRef = ref({ symbol: 'VAL', decimals: 18, address: 'val-address' });
-const xorRef = ref({ symbol: 'XOR', decimals: 18, address: 'xor-address' });
+const xorRef = ref({
+  symbol: 'XOR',
+  decimals: 18,
+  address: 'xor-address',
+  balance: { transferable: FPNumber.fromNatural(100).codec },
+});
+const staticBondFeeRef = ref(FPNumber.fromNatural(0.1).codec);
+const staticBondInsufficientRef = computed(() =>
+  FPNumber.fromCodecValue(xorRef.value.balance.transferable).lt(FPNumber.fromCodecValue(staticBondFeeRef.value))
+);
 const payoutMock = vi.fn();
 const getPayoutNetworkFeeMock = vi.fn();
 const getPendingRewardsMock = vi.fn();
+const formatCodecNumberMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
   __esModule: true,
@@ -31,7 +41,7 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
     rewardedFundsFormatted: computed(() => '100'),
     rewardAsset: computed(() => rewardAssetRef.value),
     xor: computed(() => xorRef.value),
-    isInsufficientXorForFee: computed(() => false),
+    isInsufficientXorForFee: staticBondInsufficientRef,
     payout: payoutMock,
     getPayoutNetworkFee: getPayoutNetworkFeeMock,
     getPendingRewards: getPendingRewardsMock,
@@ -52,6 +62,7 @@ vi.mock('@/composables/useFormattedAmount', () => ({
   __esModule: true,
   useFormattedAmount: () => ({
     getFiatAmountByCodecString: () => '10',
+    formatCodecNumber: formatCodecNumberMock,
   }),
 }));
 
@@ -130,6 +141,12 @@ const mountComponent = (overrides: Partial<{ visible: boolean }> = {}) =>
           template:
             '<input class="s-input-stub" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
         },
+        's-button': {
+          name: 'SButtonStub',
+          props: ['disabled', 'loading'],
+          emits: ['click'],
+          template: '<button class="s-button-stub" :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
+        },
       },
     },
   });
@@ -148,8 +165,15 @@ describe('ClaimRewardsDialog.vue', () => {
     ];
     rewardedFundsRef.value = new FPNumber('1000000000000000000');
     rewardAssetRef.value = { symbol: 'VAL', decimals: 18, address: 'val-address' };
-    xorRef.value = { symbol: 'XOR', decimals: 18, address: 'xor-address' };
-    getPayoutNetworkFeeMock.mockResolvedValue('123');
+    xorRef.value = {
+      symbol: 'XOR',
+      decimals: 18,
+      address: 'xor-address',
+      balance: { transferable: FPNumber.fromNatural(100).codec },
+    };
+    staticBondFeeRef.value = FPNumber.fromNatural(0.1).codec;
+    getPayoutNetworkFeeMock.mockResolvedValue(FPNumber.fromNatural(2).codec);
+    formatCodecNumberMock.mockImplementation((value: string) => FPNumber.fromCodecValue(value).toString());
   });
 
   it('initialises rewards destination and fetches payout fee', async () => {
@@ -177,6 +201,26 @@ describe('ClaimRewardsDialog.vue', () => {
       payouts: [{ era: 11, validators: ['validator-1', 'validator-2'] }],
       payee: 'custom-address',
     });
+
+    wrapper.unmount();
+  });
+
+  it('gates and formats the claim with the calculated payout fee instead of the static bond fee', async () => {
+    const payoutFee = FPNumber.fromNatural(2).codec;
+    xorRef.value.balance.transferable = FPNumber.fromNatural(1).codec;
+    const wrapper = mountComponent();
+    await flushPromises();
+
+    expect(staticBondInsufficientRef.value).toBe(false);
+    expect(wrapper.findComponent({ name: 'SButtonStub' }).props('disabled')).toBe(true);
+    expect(formatCodecNumberMock).toHaveBeenLastCalledWith(payoutFee);
+
+    const feeLine = wrapper.findComponent(InfoLineStub);
+    expect(feeLine.props('value')).toBe('2');
+    expect(feeLine.props('assetSymbol')).toBe('XOR');
+
+    await wrapper.vm.handleConfirm();
+    expect(payoutMock).not.toHaveBeenCalled();
 
     wrapper.unmount();
   });

@@ -1,6 +1,7 @@
 import { timer } from 'rxjs';
 
 import notificationService from '@/services/notification';
+import { fetchCurrencyRates, isCurrencySnapshotCurrent } from '@/services/currency/rates';
 import { useSettingsStore } from '@/stores/settings';
 import { settingsStorage } from '@/utils/storage';
 import { API_ENDPOINT } from '@/lib/soraneo-wallet/src/consts/currencies';
@@ -11,6 +12,7 @@ const INTERVAL = 15; // minutes between refreshes
 const ONE_MINUTE = 60_000;
 const exchangeRateUpdateInterval = timer(0, ONE_MINUTE * 0.25); // polling interval (15s)
 const TIMESTAMP_FIELD = 'timestamp';
+const MAX_CACHED_AGE_MS = 3 * 24 * 60 * ONE_MINUTE;
 let hasShownFiatFallbackNotification = false;
 
 const getWalletSettingsStore = () => {
@@ -39,7 +41,20 @@ const parseCachedRates = (rawRates: unknown): CachedExchangeRates | null => {
 const hasRateValues = (rates: CachedExchangeRates | null): rates is CachedExchangeRates => {
   if (!rates) return false;
 
-  return Object.entries(rates).some(([key, value]) => key !== TIMESTAMP_FIELD && Number.isFinite(value));
+  return Object.entries(rates).some(
+    ([key, value]) => key !== TIMESTAMP_FIELD && key !== 'sourceTimestamp' && Number.isFinite(value)
+  );
+};
+
+/** Keep fallback prices bounded without pretending a failed refresh updated them. */
+const isFreshCachedTimestamp = (timestamp: unknown, now: number, maxAgeMs = INTERVAL * ONE_MINUTE): boolean => {
+  return (
+    typeof timestamp === 'number' &&
+    Number.isFinite(timestamp) &&
+    timestamp > 0 &&
+    timestamp <= now &&
+    now - timestamp < maxAgeMs
+  );
 };
 
 export class CurrencyExchangeRateService {
@@ -47,35 +62,24 @@ export class CurrencyExchangeRateService {
 
   private static async getRates(): Promise<CachedExchangeRates> {
     const cachedRates = parseCachedRates(settingsStorage.get('fiatExchangeRates'));
-    const hasCachedRates = hasRateValues(cachedRates);
-    const cachedTimestamp = hasCachedRates ? Number(cachedRates.timestamp ?? 0) : 0;
+    const now = Date.now();
+    const hasCachedRates =
+      hasRateValues(cachedRates) &&
+      isFreshCachedTimestamp(cachedRates.timestamp, now, MAX_CACHED_AGE_MS) &&
+      (cachedRates.sourceTimestamp === undefined || isCurrencySnapshotCurrent(cachedRates.sourceTimestamp, now));
 
-    if (hasCachedRates && cachedTimestamp > 0) {
-      const deltaTime = Math.floor((Date.now() - cachedTimestamp) / ONE_MINUTE);
-      if (deltaTime < INTERVAL) {
-        return cachedRates;
-      }
-    }
-
-    if (hasCachedRates) {
-      getWalletSettingsStore()?.updateFiatExchangeRates({ ...cachedRates, timestamp: Date.now() });
+    if (hasCachedRates && isFreshCachedTimestamp(cachedRates.timestamp, now)) {
+      return cachedRates;
     }
 
     try {
-      const exchangeRatesApi = await fetch(CurrencyExchangeRateService.apiEndpoint, { cache: 'no-store' });
-      const data = (await exchangeRatesApi.json())?.dai;
-      const fetchedRates = typeof data === 'object' && data ? (data as CachedExchangeRates) : null;
-
-      if (!hasRateValues(fetchedRates)) {
-        throw new Error('Exchange rate API returned an invalid payload');
-      }
-
+      const fetchedRates = await fetchCurrencyRates();
       hasShownFiatFallbackNotification = false;
       return { ...fetchedRates, timestamp: Date.now() };
     } catch (error) {
       if (hasCachedRates) {
         console.warn('[Exchange rate API] Error while fetching rates, using cached values.');
-        return { ...cachedRates, timestamp: Date.now() };
+        return cachedRates;
       }
 
       console.error('[Exchange rate API] Error while fetching rates.');

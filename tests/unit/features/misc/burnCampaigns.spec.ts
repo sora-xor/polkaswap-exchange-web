@@ -194,4 +194,26 @@ describe('burn campaign helpers', () => {
     expect(normalizeSoraAddress(hexAddress)).toBe(hexAddress);
     expect(isSameSoraAddress(hexAddress, normalizeSoraAddress(hexAddress))).toBe(true);
   });
+  it('never grants SOLSWAP or Nexus rewards for a tagged TONSWAP burn', () => {
+    const tsBurn = burn({
+      campaign: 'tonswap',
+      amount: new FPNumber(5),
+      blockHeight: SOLSWAP_NEXUS_START_BLOCK + 1,
+      txHash: '0xton',
+      nexusRecipient: validSoraAddress,
+    });
+    const result = calculateBurnCampaignStatistics({
+      campaigns: [createBurnCampaigns().solswap],
+      accountAddress: 'alice',
+      globalBurns: [tsBurn],
+      accountBurns: [tsBurn],
+    });
+    expect(result.overallTotals.solswap.toString()).toBe('0');
+    expect(result.accountReservedTotals.solswap.toString()).toBe('0');
+    expect(result.overallNexusReservedTotals.solswap.toString()).toBe('0');
+    expect(result.accountClaimRows.solswap).toEqual([]);
+    expect(
+      dedupeBurnEntries([burn({ txHash: 'same' }), burn({ txHash: 'same', campaign: 'tonswap' })])[0].campaign
+    ).toBe('tonswap');
+  });
 });

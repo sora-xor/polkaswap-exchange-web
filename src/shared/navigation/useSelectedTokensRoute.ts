@@ -1,6 +1,7 @@
 import { DAI, KUSD, XSTUSD, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, ref } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
+import type { LocationQuery } from 'vue-router';
 import routeWhitelistBySymbol from '@/consts/routeWhitelistBySymbol.json';
 
 import type { AssetsTable, WhitelistIdsBySymbol } from '@/lib/soraneo-wallet/src/types/common';
@@ -25,7 +26,10 @@ const CORE_ROUTE_ADDRESSES_BY_SYMBOL: Record<string, string> = {
 };
 const BUNDLED_ROUTE_ADDRESSES_BY_SYMBOL = Object.freeze(routeWhitelistBySymbol as Record<string, string>);
 
-type TokensChangeHandler = (params: { firstAddress: string; secondAddress: string }) => Promise<void> | void;
+type TokensChangeHandler = (
+  params: { firstAddress: string; secondAddress: string },
+  query: LocationQuery
+) => Promise<void> | void;
 
 type Params = { first?: string; second?: string };
 
@@ -194,7 +198,11 @@ export function useSelectedTokensRoute(onTokensChange: TokensChangeHandler) {
     if (route.params.first === first && route.params.second === second) return;
 
     wasRedirected.value = true;
-    router.replace({ name: route.name as string, params: { first, second } });
+    router.replace({
+      name: route.name as string,
+      params: { first, second },
+      ...(route.query?.campaign === 'tonswap' ? { query: { campaign: 'tonswap' } } : {}),
+    });
   };
 
   onBeforeRouteUpdate(async (to, _from, next) => {
@@ -216,7 +224,7 @@ export function useSelectedTokensRoute(onTokensChange: TokensChangeHandler) {
       return;
     }
 
-    await onTokensChange({ firstAddress, secondAddress });
+    await onTokensChange({ firstAddress, secondAddress }, to.query ?? {});
     next();
   });
 

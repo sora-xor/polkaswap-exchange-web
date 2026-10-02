@@ -1,13 +1,26 @@
 import { FPNumber, Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { decodeAddress } from '@polkadot/util-crypto';
+import { hexToU8a } from '@polkadot/util';
 import { api } from '@/lib/soraneo-wallet/src/api';
 
 import { ZeroStringValue } from '@/consts';
 import { getCurrentIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
+import {
+  fetchSorametricsLiberlandBridgeHistory,
+  type SorametricsLiberlandBridgeCandidate,
+} from '@/services/sorametrics';
+import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
 import { getBlockEventsByTxIndex } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import {
+  isDisplayOnlyRecoveredSubBridgeHistory,
+  isSubBridgeTerminalFailureStatus,
+  SUB_BRIDGE_DISPLAY_ONLY_HISTORY_RECOVERY,
+  type SubBridgeRecoveryPayload,
+} from '@/utils/bridge/sub/reconciliation';
 import {
   getDepositedBalance,
   getMessageAcceptedNonces,
@@ -33,11 +46,174 @@ type BridgeActionContext<TRootState = any, TRootGetters = any> = {
   rootGetters: TRootGetters;
 };
 
-const hasFinishedState = (item: Nullable<SubHistory>) => {
-  if (!item) return false;
+type IsCurrentBridgeHistoryRequest = () => boolean;
 
-  return [BridgeTxStatus.Done, BridgeTxStatus.Failed].includes(item.transactionState as BridgeTxStatus);
+type LiberlandSettlementHistoryElement = HistoryElement & {
+  data: Record<string, unknown>;
 };
+
+const LIBERLAND_SETTLEMENT_HYDRATION_CHUNK_SIZE = 100;
+const LIBERLAND_V1_PAYLOAD_LENGTH = 118;
+const LIBERLAND_V1_SENTINEL = [0x04, 0x00, 0x00] as const;
+const LIBERLAND_V1_SENDER_VARIANT = 2;
+const LIBERLAND_V1_RECIPIENT_VARIANT = 1;
+const LIBERLAND_V1_BALANCE_VARIANT = 0;
+const LIBERLAND_SETTLEMENT_TIMESTAMP_TOLERANCE_MS = 15 * 60 * 1_000;
+const SUBSTRATE_HASH_PATTERN = /^0x[0-9a-f]{64}$/i;
+const POSITIVE_DECIMAL_PATTERN = /^(?:0|[1-9]\d*)(?:\.\d+)?$/;
+const currentBridgeHistoryRequest: IsCurrentBridgeHistoryRequest = () => true;
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+
+const normalizePositiveInteger = (value: unknown): number | null => {
+  const normalized = typeof value === 'string' && /^\d+$/.test(value) ? Number(value) : value;
+
+  return typeof normalized === 'number' && Number.isSafeInteger(normalized) && normalized > 0 ? normalized : null;
+};
+
+const normalizeSubstrateHash = (value: unknown): string => {
+  const normalized = typeof value === 'string' ? value.trim().toLowerCase() : '';
+
+  return SUBSTRATE_HASH_PATTERN.test(normalized) ? normalized : '';
+};
+
+const normalizePositiveAmount = (value: unknown): string | null => {
+  if (typeof value !== 'string' || value.length > 128 || !POSITIVE_DECIMAL_PATTERN.test(value)) return null;
+
+  const amount = new FPNumber(value);
+
+  if (!amount.isFinity() || !FPNumber.gt(amount, FPNumber.ZERO)) return null;
+
+  return amount.toString();
+};
+
+const normalizeNonNegativeCodecAmount = (value: unknown): string | null => {
+  if (typeof value !== 'string' || value.length > 128 || !/^\d+$/.test(value)) return null;
+
+  try {
+    return BigInt(value).toString();
+  } catch {
+    return null;
+  }
+};
+
+const isAccountId32 = (value: unknown): value is string => {
+  if (typeof value !== 'string' || !value.trim()) return false;
+
+  try {
+    return decodeAddress(value.trim(), false).length === 32;
+  } catch {
+    return false;
+  }
+};
+
+const bytesEqual = (left: Uint8Array, right: Uint8Array): boolean =>
+  left.length === right.length && left.every((byte, index) => byte === right[index]);
+
+const decodeLittleEndianU128 = (bytes: Uint8Array): bigint => {
+  let value = 0n;
+
+  for (let index = bytes.length - 1; index >= 0; index -= 1) {
+    value = (value << 8n) | BigInt(bytes[index]);
+  }
+
+  return value;
+};
+
+/**
+ * Verifies the archived Liberland inbound v1 message layout against the
+ * account-scoped candidate and the registered asset denomination.
+ */
+const matchesLiberlandV1Message = (
+  payload: unknown,
+  candidate: SorametricsLiberlandBridgeCandidate,
+  asset: RegisteredAccountAsset
+): boolean => {
+  if (typeof payload !== 'string' || !/^0x(?:[0-9a-fA-F]{2}){118}$/.test(payload)) return false;
+
+  const externalDecimals = asset.externalDecimals;
+
+  if (!Number.isSafeInteger(externalDecimals) || externalDecimals < 0 || externalDecimals > 38) return false;
+
+  try {
+    const bytes = hexToU8a(payload);
+
+    if (bytes.length !== LIBERLAND_V1_PAYLOAD_LENGTH) return false;
+    if (!LIBERLAND_V1_SENTINEL.every((byte, index) => bytes[index] === byte)) return false;
+    if (
+      bytes[35] !== LIBERLAND_V1_SENDER_VARIANT ||
+      bytes[68] !== LIBERLAND_V1_RECIPIENT_VARIANT ||
+      bytes[101] !== LIBERLAND_V1_BALANCE_VARIANT
+    ) {
+      return false;
+    }
+
+    const assetId = hexToU8a(candidate.assetAddress);
+    const sender = decodeAddress(candidate.sender, false);
+    const recipient = decodeAddress(candidate.recipient, false);
+
+    if (!(assetId.length === 32 && sender.length === 32 && recipient.length === 32)) return false;
+    if (!bytesEqual(bytes.slice(3, 35), assetId)) return false;
+    if (!bytesEqual(bytes.slice(36, 68), sender)) return false;
+    if (!bytesEqual(bytes.slice(69, 101), recipient)) return false;
+
+    const amountCodec = decodeLittleEndianU128(bytes.slice(102, 118)).toString();
+    const candidateAmount = new FPNumber(candidate.amount, externalDecimals);
+    const expectedCodec = candidateAmount.toCodecString();
+    const roundTripAmount = FPNumber.fromCodecValue(expectedCodec, externalDecimals);
+
+    return (
+      candidateAmount.isFinity() &&
+      roundTripAmount.isFinity() &&
+      FPNumber.gt(candidateAmount, FPNumber.ZERO) &&
+      expectedCodec === amountCodec &&
+      roundTripAmount.toString() === candidate.amount
+    );
+  } catch {
+    return false;
+  }
+};
+
+/** Requires one and only one known v1 settlement message to match the candidate. */
+export const hasExactlyOneMatchingLiberlandMessage = (
+  data: Record<string, unknown>,
+  candidate: SorametricsLiberlandBridgeCandidate,
+  asset: RegisteredAccountAsset
+): boolean => {
+  const commitment = data.commitment;
+  if (!isRecord(commitment) || !isRecord(commitment.sub) || !Array.isArray(commitment.sub.messages)) return false;
+
+  const messages = commitment.sub.messages;
+  if (!messages.length || messages.length > 100) return false;
+
+  let matches = 0;
+
+  for (const message of messages) {
+    if (!isRecord(message) || typeof message.payload !== 'string') return false;
+    if (matchesLiberlandV1Message(message.payload, candidate, asset)) matches += 1;
+    if (matches > 1) return false;
+  }
+
+  return matches === 1;
+};
+
+/**
+ * Keeps authoritative local outcomes terminal while allowing an ordinary local
+ * Failed tracking state to be repaired by completed remote history.
+ */
+const hasCompletedState = (item: Nullable<SubHistory>) => {
+  if (!item) return false;
+  const recoveryStatus = (item.payload as SubBridgeRecoveryPayload | undefined)?.bridgeRecoveryStatus;
+
+  // A fully parsed indexer/runtime row may enrich and replace the conservative
+  // account-indexed settlement placeholder.
+  if (item.transactionState === BridgeTxStatus.Done) return !isDisplayOnlyRecoveredSubBridgeHistory(item);
+
+  return recoveryStatus ? isSubBridgeTerminalFailureStatus(recoveryStatus) : false;
+};
+
+const isDisplayOnlyHistoryItem = (item: Nullable<SubHistory>): boolean => isDisplayOnlyRecoveredSubBridgeHistory(item);
 
 const SubBridgeOperations = [Operation.SubstrateOutgoing, Operation.SubstrateIncoming];
 
@@ -165,9 +341,7 @@ export class SubBridgeHistory extends SubNetworksConnector {
 
       const edges = Array.isArray(response.edges) ? response.edges : [];
       const nextAfter = response.pageInfo?.endCursor ?? '';
-      const historyNodes = edges
-        .map((edge) => edge?.node)
-        .filter((node): node is HistoryElement => Boolean(node));
+      const historyNodes = edges.map((edge) => edge?.node).filter((node): node is HistoryElement => Boolean(node));
 
       hasNext = !!response.pageInfo?.hasNextPage && !!nextAfter && nextAfter !== after;
       history.push(...historyNodes);
@@ -179,17 +353,13 @@ export class SubBridgeHistory extends SubNetworksConnector {
 
   public async clearHistory(
     network: SubNetwork,
-    inProgressIds: Record<string, boolean>,
-    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
+    _inProgressIds: Record<string, boolean>,
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs,
+    isCurrent: IsCurrentBridgeHistoryRequest = currentBridgeHistoryRequest
   ): Promise<void> {
-    // don't remove history, what in progress and from another network
-    const ids = Object.entries(subBridgeApi.history).reduce<string[]>((acc, [id, item]) => {
-      if (!(id in inProgressIds) && (item as SubHistory).externalNetwork === network) {
-        acc.push(id);
-      }
-      return acc;
-    }, []);
-    subBridgeApi.removeHistory(...ids);
+    // "Restore history" must be lossless: RPC/indexer failures must not erase
+    // valid local bridge records before an authoritative replacement exists.
+    if (!isCurrent()) return;
     this.setHistorySyncTimestamp(network, 0);
     await notifyUpdate(updateCallback);
   }
@@ -200,49 +370,108 @@ export class SubBridgeHistory extends SubNetworksConnector {
     assets: string[],
     inProgressIds: Record<string, boolean>,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
-    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs,
+    sorametricsApiEndpoint = '',
+    isCurrent: IsCurrentBridgeHistoryRequest = currentBridgeHistoryRequest,
+    signal?: AbortSignal
   ): Promise<void> {
     try {
-      await this.updateAccountHistoryFromIndexer(
-        network,
-        address,
-        assets,
-        inProgressIds,
-        assetDataByAddress,
-        updateCallback
-      );
+      if (!isCurrent()) return;
 
-      const transactions = await subBridgeApi.getUserTransactions(address, network);
+      try {
+        await this.updateAccountHistoryFromIndexer(
+          network,
+          address,
+          assets,
+          inProgressIds,
+          assetDataByAddress,
+          updateCallback,
+          isCurrent
+        );
+      } catch (error) {
+        // The SORA runtime is authoritative for live bridge requests. An
+        // indexer outage must not prevent those transactions from restoring.
+        console.info('[SubBridgeHistory] Indexer history restore failed', error);
+      }
 
-      if (!transactions.length) return;
+      if (!isCurrent()) return;
+
+      let transactions: BridgeTransactionData[] = [];
+
+      try {
+        transactions = await subBridgeApi.getUserTransactions(address, network);
+      } catch (error) {
+        // Completed Liberland transfers can still be recovered from the two
+        // bounded public indexes when bridgeProxy storage is unavailable.
+        console.info('[SubBridgeHistory] Runtime history restore failed', error);
+      }
+
+      if (!isCurrent()) return;
 
       const currentHistory = subBridgeApi.historyList as SubHistory[];
 
       for (const tx of transactions) {
         const { soraHash: id, soraAssetAddress } = tx;
 
-        if (!assets.includes(soraAssetAddress)) continue;
+        // An empty registry means asset discovery is still loading (or its RPC
+        // failed), not that every on-chain bridge transaction is hidden.
+        if (assets.length && !assets.includes(soraAssetAddress)) continue;
 
         const localHistoryItem = currentHistory.find((item) => item.hash === id);
 
         // don't restore transaction what is in process in app
         if ((localHistoryItem?.id as string) in inProgressIds) continue;
-        if (hasFinishedState(localHistoryItem)) continue;
+        if (hasCompletedState(localHistoryItem)) continue;
 
         await this.start();
 
         const historyItemData = await this.txDataToHistory(tx, assetDataByAddress);
 
         if (!historyItemData) continue;
+        if (!isCurrent()) return;
+
+        const displayOnlyHistoryItem = currentHistory.find(
+          (item) =>
+            matchesNetwork(item, network) && isDisplayOnlyHistoryItem(item) && isSameHistoryItem(item, historyItemData)
+        );
+        const historyItemToUpdate = localHistoryItem ?? displayOnlyHistoryItem;
 
         // update or create local history item
-        if (localHistoryItem) {
-          subBridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as SubHistory);
+        if (historyItemToUpdate) {
+          const nextHistoryItem = { ...historyItemToUpdate, ...historyItemData } as SubHistory;
+
+          subBridgeApi.saveHistory(nextHistoryItem);
+
+          if (displayOnlyHistoryItem?.id && displayOnlyHistoryItem.id !== nextHistoryItem.id) {
+            if (!isCurrent()) return;
+            subBridgeApi.removeHistory(displayOnlyHistoryItem.id);
+          }
         } else {
           subBridgeApi.generateHistoryItem(historyItemData);
         }
 
         await notifyUpdate(updateCallback);
+      }
+
+      if (!isCurrent()) return;
+
+      if (network === SubNetworkId.Liberland && sorametricsApiEndpoint && address) {
+        try {
+          await this.updateLiberlandHistoryFromSorametrics(
+            address,
+            assets,
+            inProgressIds,
+            assetDataByAddress,
+            sorametricsApiEndpoint,
+            updateCallback,
+            isCurrent,
+            signal
+          );
+        } catch (error) {
+          // This fallback is additive. Discovery or hydration failures must
+          // never remove local or runtime-restored bridge history.
+          console.info('[SubBridgeHistory] Sorametrics history restore failed', error);
+        }
       }
     } finally {
       this.stop();
@@ -255,18 +484,22 @@ export class SubBridgeHistory extends SubNetworksConnector {
     assets: string[],
     inProgressIds: Record<string, boolean>,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
-    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs,
+    isCurrent: IsCurrentBridgeHistoryRequest = currentBridgeHistoryRequest
   ): Promise<void> {
-    if (!address) return;
+    if (!address || !isCurrent()) return;
 
     // Always ask for the full account range. Historical bridge rows can be
     // backfilled after a wallet has already synced, so timestamp cursors would
     // permanently hide older Liberland transactions.
     const historyElements = await this.fetchHistoryElements(address, 0);
-    if (!historyElements.length) return;
+    if (!historyElements.length || !isCurrent()) return;
 
     const currentHistory = [...(subBridgeApi.historyList as SubHistory[])];
-    const historySyncTimestampUpdated = getLatestHistoryTimestamp(historyElements, this.getHistorySyncTimestamp(network));
+    const historySyncTimestampUpdated = getLatestHistoryTimestamp(
+      historyElements,
+      this.getHistorySyncTimestamp(network)
+    );
 
     for (const historyElement of historyElements) {
       let historyItem: Nullable<SubHistory>;
@@ -279,15 +512,19 @@ export class SubBridgeHistory extends SubNetworksConnector {
         continue;
       }
 
+      if (!isCurrent()) return;
+
       if (!historyItem?.id) continue;
       if (![Operation.SubstrateIncoming, Operation.SubstrateOutgoing].includes(historyItem.type)) continue;
       if (!matchesNetwork(historyItem, network)) continue;
       if (!hasVisibleAsset(assets, historyItem)) continue;
 
-      const localHistoryItem = currentHistory.find((item) => matchesNetwork(item, network) && isSameHistoryItem(item, historyItem));
+      const localHistoryItem = currentHistory.find(
+        (item) => matchesNetwork(item, network) && isSameHistoryItem(item, historyItem)
+      );
 
       if ((localHistoryItem?.id as string) in inProgressIds) continue;
-      if (hasFinishedState(localHistoryItem)) continue;
+      if (hasCompletedState(localHistoryItem)) continue;
 
       const asset = assetDataByAddress(historyItem.assetAddress);
       const nextHistoryItem: SubHistory = {
@@ -300,12 +537,272 @@ export class SubBridgeHistory extends SubNetworksConnector {
         ...(asset?.symbol && !historyItem.symbol ? { symbol: asset.symbol } : {}),
       };
 
+      if (!isCurrent()) return;
       subBridgeApi.saveHistory(nextHistoryItem);
       currentHistory.push(nextHistoryItem);
       await notifyUpdate(updateCallback);
     }
 
+    if (!isCurrent()) return;
     this.setHistorySyncTimestamp(network, historySyncTimestampUpdated);
+  }
+
+  /**
+   * Hydrates Sorametrics discovery candidates by exact settlement extrinsic ID.
+   * No address or operation filter is added because inbound settlement calls are
+   * signed by the bridge relayer rather than by the recipient account.
+   */
+  private async fetchLiberlandSettlementHistoryElements(
+    candidates: SorametricsLiberlandBridgeCandidate[],
+    isCurrent: IsCurrentBridgeHistoryRequest
+  ): Promise<Map<string, LiberlandSettlementHistoryElement>> {
+    const candidateHashes = candidates.map(({ hash }) => normalizeSubstrateHash(hash)).filter(Boolean);
+    const hydrated = new Map<string, LiberlandSettlementHistoryElement>();
+    const ambiguous = new Set<string>();
+    const indexer = getCurrentIndexer();
+
+    for (let offset = 0; offset < candidateHashes.length; offset += LIBERLAND_SETTLEMENT_HYDRATION_CHUNK_SIZE) {
+      if (!isCurrent()) return new Map();
+
+      const ids = candidateHashes.slice(offset, offset + LIBERLAND_SETTLEMENT_HYDRATION_CHUNK_SIZE);
+      const chunkHashes = new Set(ids);
+      const filter = indexer.historyElementsFilter({ ids });
+      const response: unknown = await indexer.services.explorer.account.getHistoryPaged({
+        filter,
+        first: ids.length,
+      });
+
+      if (!isCurrent()) return new Map();
+      if (!isRecord(response) || !Array.isArray(response.edges)) {
+        throw new Error('Malformed Polkaswap settlement history response.');
+      }
+      if (response.edges.length > ids.length) {
+        throw new Error('Polkaswap settlement history response exceeded its exact-ID bound.');
+      }
+      if (isRecord(response.pageInfo) && response.pageInfo.hasNextPage === true) {
+        throw new Error('Polkaswap settlement history response was unexpectedly paginated.');
+      }
+      if (
+        response.totalCount !== undefined &&
+        (!Number.isSafeInteger(response.totalCount) || response.totalCount !== response.edges.length)
+      ) {
+        throw new Error('Polkaswap settlement history response has inconsistent totals.');
+      }
+
+      for (const edge of response.edges) {
+        if (!isRecord(edge) || !isRecord(edge.node)) {
+          throw new Error('Malformed Polkaswap settlement history row.');
+        }
+
+        const historyElement = edge.node as LiberlandSettlementHistoryElement;
+        const hash = normalizeSubstrateHash(historyElement.id);
+
+        if (!hash || !chunkHashes.has(hash)) {
+          throw new Error('Polkaswap settlement history returned an unexpected transaction ID.');
+        }
+        if (hydrated.has(hash)) {
+          ambiguous.add(hash);
+          continue;
+        }
+
+        hydrated.set(hash, historyElement);
+      }
+    }
+
+    ambiguous.forEach((hash) => hydrated.delete(hash));
+
+    return hydrated;
+  }
+
+  /** Accepts only the successful Liberland inbound settlement call for a discovery candidate. */
+  private isVerifiedLiberlandSettlement(
+    historyElement: LiberlandSettlementHistoryElement,
+    candidate: SorametricsLiberlandBridgeCandidate,
+    asset: RegisteredAccountAsset
+  ): boolean {
+    const hash = normalizeSubstrateHash(historyElement.id);
+    const blockId = normalizeSubstrateHash(historyElement.blockHash);
+    const blockHeight = normalizePositiveInteger(historyElement.blockHeight);
+    const timestamp = normalizePositiveInteger(historyElement.timestamp);
+    const execution = historyElement.execution;
+    const timestampMs = timestamp ? timestamp * 1_000 : 0;
+
+    return Boolean(
+      hash &&
+      hash === normalizeSubstrateHash(candidate.hash) &&
+      blockId &&
+      blockHeight === candidate.block &&
+      timestamp &&
+      Number.isSafeInteger(timestampMs) &&
+      Math.abs(candidate.timestamp - timestampMs) <= LIBERLAND_SETTLEMENT_TIMESTAMP_TOLERANCE_MS &&
+      historyElement.module === 'substrateBridgeInboundChannel' &&
+      historyElement.method === 'submit' &&
+      isRecord(execution) &&
+      execution.success === true &&
+      (execution.error === undefined || execution.error === null) &&
+      isRecord(historyElement.data) &&
+      historyElement.data.networkId === SubNetworkId.Liberland &&
+      hasExactlyOneMatchingLiberlandMessage(historyElement.data, candidate, asset)
+    );
+  }
+
+  /**
+   * Restores display-only completed Liberland deposits discovered by the
+   * account-scoped Sorametrics endpoint and proven by an exact indexer row.
+   */
+  private async updateLiberlandHistoryFromSorametrics(
+    address: string,
+    assets: string[],
+    inProgressIds: Record<string, boolean>,
+    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
+    sorametricsApiEndpoint: string,
+    updateCallback: FnWithoutArgs | AsyncFnWithoutArgs | undefined,
+    isCurrent: IsCurrentBridgeHistoryRequest,
+    signal?: AbortSignal
+  ): Promise<void> {
+    if (!isCurrent()) return;
+
+    const discovered = await fetchSorametricsLiberlandBridgeHistory(sorametricsApiEndpoint, address, { signal });
+
+    if (!discovered.length || !isCurrent()) return;
+
+    // Defend again at the merge boundary: exact duplicates are harmless, but a
+    // conflicting duplicate hash is ambiguous and must never be displayed.
+    const candidates = new Map<string, SorametricsLiberlandBridgeCandidate>();
+    const ambiguous = new Set<string>();
+
+    for (const candidate of discovered) {
+      const hash = normalizeSubstrateHash(candidate.hash);
+
+      if (!hash || !areBridgeExternalAccountsEqual(candidate.recipient, address)) continue;
+
+      const existing = candidates.get(hash);
+      if (!existing) {
+        candidates.set(hash, candidate);
+        continue;
+      }
+
+      const isExactDuplicate =
+        existing.block === candidate.block &&
+        existing.timestamp === candidate.timestamp &&
+        existing.recipient === candidate.recipient &&
+        existing.sender === candidate.sender &&
+        existing.assetAddress === candidate.assetAddress &&
+        existing.amount === candidate.amount;
+
+      if (!isExactDuplicate) ambiguous.add(hash);
+    }
+
+    ambiguous.forEach((hash) => candidates.delete(hash));
+    if (!candidates.size || !isCurrent()) return;
+
+    const hydrated = await this.fetchLiberlandSettlementHistoryElements([...candidates.values()], isCurrent);
+
+    if (!isCurrent()) return;
+
+    const currentHistory = [...(subBridgeApi.historyList as SubHistory[])];
+
+    for (const [hash, candidate] of candidates) {
+      const historyElement = hydrated.get(hash);
+
+      if (!historyElement) continue;
+
+      const amount = normalizePositiveAmount(candidate.amount);
+      const visibleAssetAddress = assets.find(
+        (assetAddress) => assetAddress.toLowerCase() === candidate.assetAddress.toLowerCase()
+      );
+
+      // Unlike runtime restoration, this display-only fallback requires a
+      // fully registered and currently visible asset before persisting a row.
+      if (!amount || !visibleAssetAddress) continue;
+
+      const asset = assetDataByAddress(visibleAssetAddress);
+
+      if (!asset || asset.address.toLowerCase() !== candidate.assetAddress.toLowerCase()) continue;
+      if (!this.isVerifiedLiberlandSettlement(historyElement, candidate, asset)) continue;
+      if (!isAccountId32(candidate.sender)) continue;
+
+      let formattedSender: string;
+
+      try {
+        formattedSender = this.network.formatAddress(candidate.sender);
+      } catch {
+        continue;
+      }
+
+      const localHistoryItem = currentHistory.find((item) => {
+        if (!matchesNetwork(item, SubNetworkId.Liberland)) return false;
+
+        return [item.id, item.txId, item.hash].some((value) => normalizeSubstrateHash(value) === hash);
+      });
+      const localId = typeof localHistoryItem?.id === 'string' ? localHistoryItem.id : '';
+
+      if ((localId && localId in inProgressIds) || hash in inProgressIds) continue;
+      if (hasCompletedState(localHistoryItem)) continue;
+
+      const timestamp = normalizePositiveInteger(historyElement.timestamp);
+      const blockHeight = normalizePositiveInteger(historyElement.blockHeight);
+      const blockId = normalizeSubstrateHash(historyElement.blockHash);
+
+      const timestampMs = timestamp ? timestamp * 1_000 : 0;
+
+      if (!(timestamp && Number.isSafeInteger(timestampMs) && blockHeight && blockId)) continue;
+
+      const nextHistoryItem: SubHistory = {
+        ...localHistoryItem,
+        id: hash,
+        txId: hash,
+        hash: undefined,
+        externalHash: undefined,
+        blockId,
+        blockHeight,
+        externalBlockId: undefined,
+        externalBlockHeight: undefined,
+        externalEventIndex: undefined,
+        parachainBlockId: undefined,
+        parachainBlockHeight: undefined,
+        parachainHash: undefined,
+        parachainEventIndex: undefined,
+        relaychainBlockId: undefined,
+        relaychainBlockHeight: undefined,
+        relaychainHash: undefined,
+        relaychainEventIndex: undefined,
+        type: Operation.SubstrateIncoming,
+        status: TransactionStatus.Finalized,
+        transactionState: BridgeTxStatus.Done,
+        externalNetwork: SubNetworkId.Liberland,
+        externalNetworkType: BridgeNetworkType.Sub,
+        assetAddress: asset.address,
+        symbol: asset.symbol,
+        amount,
+        amount2: amount,
+        from: address,
+        to: formattedSender,
+        startTime: timestampMs,
+        endTime: timestampMs,
+        soraNetworkFee: normalizeNonNegativeCodecAmount(historyElement.networkFee) ?? ZeroStringValue,
+        externalNetworkFee: ZeroStringValue,
+        externalTransferFee: ZeroStringValue,
+        errorMessage: undefined,
+        payload: {
+          subBridgeHistoryRecovery: SUB_BRIDGE_DISPLAY_ONLY_HISTORY_RECOVERY,
+        },
+      };
+
+      // Account/network switches invalidate the result before it can touch
+      // shared account storage, not merely before the Pinia refresh callback.
+      if (!isCurrent()) return;
+
+      subBridgeApi.saveHistory(nextHistoryItem);
+
+      if (localId && localId !== hash) {
+        if (!isCurrent()) return;
+        subBridgeApi.removeHistory(localId);
+      }
+
+      currentHistory.push(nextHistoryItem);
+      await notifyUpdate(updateCallback);
+    }
   }
 
   private async txDataToHistory(
@@ -834,12 +1331,18 @@ export class SubBridgeHistory extends SubNetworksConnector {
  */
 export const updateSubBridgeHistory =
   (context: BridgeActionContext) =>
-  async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
+  async (
+    clearHistory = false,
+    updateCallback?: VoidFunction,
+    isCurrent: IsCurrentBridgeHistoryRequest = currentBridgeHistoryRequest,
+    signal?: AbortSignal
+  ): Promise<void> => {
     try {
       const { rootState, rootGetters } = context;
       const {
         wallet: {
           account: { address },
+          settings: { sorametricsApiEndpoint = '' },
         },
         assets: { registeredAssets },
         web3: { networkSelected },
@@ -856,7 +1359,7 @@ export const updateSubBridgeHistory =
       await subBridgeHistory.init(network, subBridgeConnector);
 
       if (clearHistory) {
-        await subBridgeHistory.clearHistory(network, inProgressIds, updateCallback);
+        await subBridgeHistory.clearHistory(network, inProgressIds, updateCallback, isCurrent);
       }
 
       await subBridgeHistory.updateAccountHistory(
@@ -865,7 +1368,10 @@ export const updateSubBridgeHistory =
         assets,
         inProgressIds,
         assetDataByAddress,
-        updateCallback
+        updateCallback,
+        sorametricsApiEndpoint,
+        isCurrent,
+        signal
       );
     } catch (error) {
       console.error(error);

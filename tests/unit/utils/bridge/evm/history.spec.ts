@@ -561,17 +561,20 @@ describe('EvmBridgeHistory', () => {
     });
   });
 
-  it('normalizes corrupt sync timestamps before querying the indexer', async () => {
-    evmBridgeApiMock.state.storage.evmBridgeHistorySyncTimestamp = 'not-a-number';
+  it.each(['not-a-number', String(Date.now()), String(Number.MAX_SAFE_INTEGER)])(
+    'normalizes an invalid sync timestamp before querying the indexer: %s',
+    async (timestamp) => {
+      evmBridgeApiMock.state.storage.evmBridgeHistorySyncTimestamp = timestamp;
 
-    await new EvmBridgeHistory().updateAccountHistory('sora-address', 111, {});
+      await new EvmBridgeHistory().updateAccountHistory('sora-address', 111, {});
 
-    expect(historyElementsFilterMock).toHaveBeenCalledWith({
-      address: 'sora-address',
-      operations: [Operation.EvmOutgoing, Operation.EvmIncoming],
-      timestamp: 0,
-    });
-  });
+      expect(historyElementsFilterMock).toHaveBeenCalledWith({
+        address: 'sora-address',
+        operations: [Operation.EvmOutgoing, Operation.EvmIncoming],
+        timestamp: 0,
+      });
+    }
+  );
 
   it('wires the bridge action context into account history restoration', async () => {
     const updateHistorySpy = vi.spyOn(EvmBridgeHistory.prototype, 'updateAccountHistory').mockResolvedValue(undefined);

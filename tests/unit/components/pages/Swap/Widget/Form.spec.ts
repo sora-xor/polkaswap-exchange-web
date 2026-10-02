@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
 import { Subject } from 'rxjs';
 import { computed, defineComponent, h, nextTick, reactive, ref } from 'vue';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import { DexId } from '@/lib/substrate/sdk/dex/consts';
@@ -33,6 +33,29 @@ const setToValueMock = vi.fn((value: string) => {
 const isLoggedInRef = ref(false);
 const isSoraAccountDialogVisibleRef = ref(false);
 const nodeIsConnectedRef = ref(true);
+const windowWidthRef = ref(390);
+const walletState = reactive({ address: 'sora-account', shouldBalanceBeHidden: false });
+const feeRef = ref('0');
+const debugEnabledRef = ref(false);
+const getResultRpcMock = vi.fn();
+const xorBalanceRef = ref('0');
+const confirmVisibleRef = ref(false);
+const beforeExecuteMock = vi.fn(async () => {});
+const executeSwapMock = vi.fn(async (..._args: unknown[]) => {});
+const exactHistoryMock = vi.fn();
+const rememberSwapDraftMock = vi.fn(() => true);
+const trackSwapSubmissionMock = vi.fn(() => true);
+const abandonSwapDraftMock = vi.fn();
+vi.mock('@/features/misc/composables/useGetTsPlan', () => ({
+  useGetTsPlan: () => ({
+    rememberSwapDraft: rememberSwapDraftMock,
+    trackSwapSubmission: trackSwapSubmissionMock,
+    abandonSwapDraft: abandonSwapDraftMock,
+  }),
+}));
+let submittedTransaction: { txId?: string; id?: string } | undefined;
+let deferRecount = false;
+const queuedRecounts: Array<() => Promise<void>> = [];
 const connectSoraWalletMock = vi.fn(() => {
   isSoraAccountDialogVisibleRef.value = true;
 });
@@ -49,7 +72,14 @@ const swapStoreMock = reactive({
   quoteError: false,
   isExchangeB: false,
   priceImpact: '0',
+  amountWithoutImpact: '1000000000000000000',
   selectedDexId: 0,
+  minMaxReceived: '9',
+  liquidityProviderFee: '0',
+  price: '10',
+  priceReversed: '0.1',
+  route: [] as string[],
+  rewards: [],
   allowLossPopup: true,
   swapLiquiditySource: undefined,
   swapMarketAlgorithm: 'SMART',
@@ -181,12 +211,14 @@ const SwapLossWarningDialogStub = defineComponent({
 
 vi.mock('@tests/stubs/walletRuntime', () => ({
   api: {
+    getHistory: exactHistoryMock,
+    api: { genesisHash: { toString: () => 'sora-genesis' } },
     swap: {
       update: swapUpdateMock,
-      execute: vi.fn(),
+      execute: executeSwapMock,
       getDexesSwapQuoteObservable: getDexesSwapQuoteObservableMock,
       checkSwap: checkSwapMock,
-      getResultRpc: vi.fn(),
+      getResultRpc: getResultRpcMock,
     },
     dex: {
       publicDexes: [],
@@ -234,13 +266,15 @@ vi.mock('@/features/swap/stores/useSwapStore', () => ({
   useSwapStore: () => swapStoreMock,
 }));
 
+vi.mock('@/stores/wallet', () => ({ useWalletStore: () => walletState }));
+
 vi.mock('@/stores/assets', () => ({
   useAssetsStore: () => ({
     assetDataByAddress: (address: string) => ({
       address,
       symbol: address.toUpperCase(),
       decimals: 18,
-      balance: { transferable: '0' },
+      balance: { transferable: xorBalanceRef.value },
     }),
   }),
 }));
@@ -255,8 +289,10 @@ vi.mock('@/composables/useInternalConnect', () => ({
 
 vi.mock('@/composables/useConfirmDialog', () => ({
   useConfirmDialog: () => ({
-    confirmDialogVisible: ref(false),
-    confirmOrExecute: vi.fn(),
+    confirmDialogVisible: confirmVisibleRef,
+    confirmOrExecute: () => {
+      confirmVisibleRef.value = true;
+    },
   }),
 }));
 
@@ -279,7 +315,13 @@ vi.mock('@/composables/useTransaction', () => ({
       await handler();
     },
     withNotifications: async (handler: () => Promise<void>) => {
-      await handler();
+      try {
+        await beforeExecuteMock();
+        await handler();
+        return { submitted: true, transaction: submittedTransaction };
+      } catch (error) {
+        return { submitted: false, error };
+      }
     },
   }),
 }));
@@ -302,11 +344,18 @@ vi.mock('@/composables/useTranslation', () => ({
 
 vi.mock('@/stores/settings', () => ({
   useSettingsStore: () => ({
+    get windowWidth() {
+      return windowWidthRef.value;
+    },
     networkFees: {
-      Swap: '0',
+      get Swap() {
+        return feeRef.value;
+      },
     },
     slippageTolerance: '0.1',
-    debugEnabled: false,
+    get debugEnabled() {
+      return debugEnabledRef.value;
+    },
     get nodeIsConnected() {
       return nodeIsConnectedRef.value;
     },
@@ -318,7 +367,13 @@ vi.mock('@/stores/settings', () => ({
 
 vi.mock('@/utils', () => ({
   asZeroValue: (value: string) => !value || Number(value) === 0,
-  debouncedInputHandler: (handler: () => Promise<void>) => handler,
+  debouncedInputHandler: (handler: () => Promise<void>) => () => {
+    if (deferRecount) {
+      queuedRecounts.push(handler);
+      return;
+    }
+    return handler();
+  },
   getMaxValue: () => '0',
   hasInsufficientBalance: () => false,
   hasInsufficientXorForFee: () => false,
@@ -336,13 +391,17 @@ vi.mock('@/utils/swap', () => ({
   getVisibleSwapTokenBalance: () => null,
 }));
 
-const mountWidget = async () => {
+const mountWidget = async (
+  props: { fixedPair?: boolean; maxPriceImpact?: string; purchasePurpose?: 'ts' | 'xor' } = {}
+) => {
   const module = await import('@/features/swap/components/widgets/Form.vue');
   return mount(module.default, {
+    props,
     global: {
       stubs: {
         BaseWidget: createPassthroughStub('BaseWidgetStub'),
         SwapSettings: createPassthroughStub('SwapSettingsStub'),
+        ReceiveXorDialog: createPassthroughStub('ReceiveXorDialogStub'),
         SwapConfirm: createPassthroughStub('SwapConfirmStub'),
         SwapStatusActionBadge: createPassthroughStub('SwapStatusActionBadgeStub'),
         SwapTransactionDetails: createPassthroughStub('SwapTransactionDetailsStub'),
@@ -399,7 +458,27 @@ const createDexQuoteData = (amount: string): SwapQuoteData => ({
 });
 
 describe('SwapFormWidget quote subscription lifecycle', () => {
+  afterEach(() => vi.useRealTimers());
   beforeEach(() => {
+    windowWidthRef.value = 390;
+    debugEnabledRef.value = false;
+    getResultRpcMock.mockReset();
+    deferRecount = false;
+    queuedRecounts.length = 0;
+    feeRef.value = '0';
+    xorBalanceRef.value = '0';
+    walletState.address = 'sora-account';
+    walletState.shouldBalanceBeHidden = false;
+    confirmVisibleRef.value = false;
+    beforeExecuteMock.mockReset();
+    beforeExecuteMock.mockResolvedValue(undefined);
+    executeSwapMock.mockReset();
+    executeSwapMock.mockResolvedValue(undefined);
+    exactHistoryMock.mockReset();
+    rememberSwapDraftMock.mockReset().mockReturnValue(true);
+    trackSwapSubmissionMock.mockClear();
+    abandonSwapDraftMock.mockClear();
+    submittedTransaction = undefined;
     tokenFromRef.value = {
       address: '0xfrom',
       symbol: 'FROM',
@@ -441,6 +520,7 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     swapStoreMock.quoteError = false;
     swapStoreMock.isExchangeB = false;
     swapStoreMock.priceImpact = '0';
+    swapStoreMock.amountWithoutImpact = '1000000000000000000';
     swapStoreMock.liquiditySources = [];
     isLoggedInRef.value = false;
     isSoraAccountDialogVisibleRef.value = false;
@@ -642,7 +722,8 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
 
     expect(swapStoreMock.setQuoteError).toHaveBeenLastCalledWith(true);
     expect(setToValueMock).toHaveBeenLastCalledWith('');
-    expect(confirmButton.text()).toBe('swap.errorFetching');
+    expect(confirmButton.text()).toBe('exchange.Swap');
+    expect(wrapper.get('[data-test-name="swapStatus"]').text()).toContain('ux.swap.status.quoteError');
     expect(confirmButton.text()).not.toContain('swap.insufficientLiquidity');
 
     consoleErrorSpy.mockRestore();
@@ -731,7 +812,8 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     const confirmButton = wrapper.get('[data-test-name="confirmSwap"]');
 
     expect(swapStoreMock.setQuoteError).toHaveBeenLastCalledWith(true);
-    expect(confirmButton.text()).toBe('swap.errorFetching');
+    expect(confirmButton.text()).toBe('exchange.Swap');
+    expect(wrapper.get('[data-test-name="swapStatus"]').text()).toContain('ux.swap.status.quoteError');
     expect(confirmButton.attributes('disabled')).toBeDefined();
 
     wrapper.unmount();
@@ -743,16 +825,41 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
 
     expect(wrapper.find('.swap-details').attributes('inline')).toBeDefined();
 
-    const feeInfoLine = wrapper.find('.swap-details-info-line.info-line-stub');
-
-    expect(feeInfoLine.exists()).toBe(true);
-    expect(feeInfoLine.attributes('data-label')).toBe('networkFeeText');
-    expect(feeInfoLine.attributes('data-label-tooltip')).toBe('networkFeeTooltipText');
+    expect(wrapper.get('.swap-details').text()).toContain('ux.swap.feesDetails');
+    expect(wrapper.get('[data-test-name="swapProtection"]').html()).toContain('swap.minReceived');
+    expect(wrapper.get('[data-test-name="swapProtection"]').html()).toContain('swap.priceImpact');
 
     wrapper.unmount();
   });
 
-  it('renders the receive badge and loss warning from the store price impact', async () => {
+  it('keeps desktop details expanded across quote changes and restores disclosure at 1024px', async () => {
+    windowWidthRef.value = 1440;
+    const wrapper = await mountWidget();
+    await flushPromises();
+
+    for (const width of [1440, 1025]) {
+      windowWidthRef.value = width;
+      await nextTick();
+      expect(wrapper.get('.swap-details').attributes('expanded')).toBe('true');
+      expect(wrapper.get('.swap-details-title').text()).toBe('ux.swap.feesDetails');
+    }
+    nodeIsConnectedRef.value = false;
+    await nextTick();
+    expect(wrapper.get('.swap-details').attributes('expanded')).toBe('true');
+
+    for (const width of [1024, 768, 390]) {
+      windowWidthRef.value = width;
+      await nextTick();
+      expect(wrapper.get('.swap-details').attributes('expanded')).toBe('false');
+      expect(wrapper.find('.swap-details-title').exists()).toBe(false);
+    }
+    windowWidthRef.value = 1025;
+    await nextTick();
+    expect(wrapper.get('.swap-details').attributes('expanded')).toBe('true');
+    wrapper.unmount();
+  });
+
+  it('names the price impact and keeps unquoted protection values unavailable', async () => {
     tokenToRef.value = {
       address: '0xto',
       symbol: 'TO',
@@ -764,11 +871,9 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     const wrapper = await mountWidget();
     await flushPromises();
 
-    const badge = wrapper.get('.price-difference__value');
-
-    expect(badge.attributes('data-value')).toBe('-1.90');
-    expect(badge.attributes('data-badge')).toBe('true');
-    expect(badge.get('.formatted-amount-stub').attributes('data-value')).toBe('-1.90');
+    expect(wrapper.get('[data-test-name="swapProtection"]').html()).toContain('swap.priceImpact');
+    expect(wrapper.find('.price-difference__value').exists()).toBe(false);
+    expect(wrapper.get('[data-test-name="swapProtection"]').text()).toContain('—');
     expect(wrapper.get('.swap-loss-warning-dialog-stub').attributes('data-value')).toBe('-1.90');
 
     wrapper.unmount();
@@ -808,10 +913,10 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     await flushPromises();
 
     const confirmButton = wrapper.get('[data-test-name="confirmSwap"]');
-    const pairStatus = wrapper.get('[data-test-name="swapPairStatus"]');
+    const pairStatus = wrapper.get('[data-test-name="swapStatus"]');
 
     expect(confirmButton.text()).toBe('buttons.enterAmount');
-    expect(pairStatus.text()).toContain('pairIsNotCreated');
+    expect(pairStatus.text()).toContain('ux.swap.status.noRoute');
     expect(confirmButton.text()).not.toContain('pairIsNotCreated');
 
     wrapper.unmount();
@@ -859,6 +964,51 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
 
     expect(swapStoreMock.updateSubscriptions).toHaveBeenCalledTimes(1);
     expect(swapStoreMock.resetSubscriptions).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it('refreshes both swap balance subscriptions when switching between logged-in accounts', async () => {
+    isLoggedInRef.value = true;
+    tokenToRef.value = {
+      address: '0xto',
+      symbol: 'TO',
+      decimals: 18,
+      balance: { transferable: '0' },
+    } as AccountAsset;
+
+    const wrapper = await mountWidget();
+    await flushPromises();
+    swapStoreMock.updateSubscriptions.mockClear();
+
+    walletState.address = 'second-sora-account';
+    await nextTick();
+    await flushPromises();
+
+    expect(isLoggedInRef.value).toBe(true);
+    expect(swapStoreMock.updateSubscriptions).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
+  it('defers account-switch balance subscriptions until the node reconnects', async () => {
+    isLoggedInRef.value = true;
+    nodeIsConnectedRef.value = false;
+    const wrapper = await mountWidget();
+    await flushPromises();
+    swapStoreMock.updateSubscriptions.mockClear();
+
+    walletState.address = 'second-sora-account';
+    await nextTick();
+    await flushPromises();
+
+    expect(swapStoreMock.updateSubscriptions).not.toHaveBeenCalled();
+
+    nodeIsConnectedRef.value = true;
+    await nextTick();
+    await flushPromises();
+
+    expect(swapStoreMock.updateSubscriptions).toHaveBeenCalledTimes(1);
 
     wrapper.unmount();
   });
@@ -994,5 +1144,339 @@ describe('SwapFormWidget quote subscription lifecycle', () => {
     expect(wrapper.find('[data-test-name="swapPairStatus"]').exists()).toBe(false);
 
     wrapper.unmount();
+  });
+  async function mountReady(
+    props: { fixedPair?: boolean; maxPriceImpact?: string; purchasePurpose?: 'ts' | 'xor' } = {}
+  ) {
+    isLoggedInRef.value = true;
+    tokenToRef.value = { address: '0xto', symbol: 'TO', decimals: 18, balance: { transferable: '0' } } as AccountAsset;
+    fromValueRef.value = '2';
+    checkSwapMock.mockResolvedValue(true);
+    const stream = new Subject<SwapQuoteData>();
+    getDexesSwapQuoteObservableMock.mockImplementation(() => stream);
+    const wrapper = await mountWidget(props);
+    await flushPromises();
+    stream.next(createDexQuoteData('20'));
+    await flushPromises();
+    return { wrapper, stream };
+  }
+
+  it('shows a recoverable path failure instead of claiming that the pair does not exist', async () => {
+    tokenToRef.value = { address: '0xto', symbol: 'TO', decimals: 18 } as AccountAsset;
+    checkSwapMock.mockRejectedValue(new Error('offline'));
+    const wrapper = await mountWidget();
+    await flushPromises();
+    expect(wrapper.get('[data-test-name="swapStatus"]').text()).toContain('ux.swap.status.pathError');
+    expect(wrapper.text()).toContain('ux.swap.retryQuote');
+    expect(wrapper.text()).not.toContain('ux.swap.status.noRoute');
+  });
+
+  it('times out an initial quote after 15 seconds and clears the timer on unmount', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    tokenToRef.value = { address: '0xto', symbol: 'TO', decimals: 18 } as AccountAsset;
+    fromValueRef.value = '3';
+    checkSwapMock.mockResolvedValue(true);
+    const wrapper = await mountWidget();
+    await flushPromises();
+    await vi.advanceTimersByTimeAsync(15_000);
+    expect(wrapper.get('[data-test-name="swapStatus"]').text()).toContain('ux.swap.status.quoteError');
+    expect(fromValueRef.value).toBe('3');
+    wrapper.unmount();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('times out hung route checks as service errors', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    tokenToRef.value = { address: '0xto', symbol: 'TO', decimals: 18 } as AccountAsset;
+    checkSwapMock.mockImplementation(() => new Promise(() => {}));
+    const wrapper = await mountWidget();
+    await flushPromises();
+    await vi.advanceTimersByTimeAsync(15_000);
+    expect(wrapper.get('[data-test-name="swapStatus"]').text()).toContain('ux.swap.status.pathError');
+    wrapper.unmount();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('retries once and preserves an exact-output draft', async () => {
+    const { wrapper, stream } = await mountReady();
+    swapStoreMock.isExchangeB = true;
+    toValueRef.value = '7';
+    stream.error(new Error('quote offline'));
+    await flushPromises();
+    const nextStream = new Subject<SwapQuoteData>();
+    getDexesSwapQuoteObservableMock.mockImplementation(() => nextStream);
+    const before = getDexesSwapQuoteObservableMock.mock.calls.length;
+    const first = (wrapper.vm as any).retryQuote();
+    const second = (wrapper.vm as any).retryQuote();
+    await Promise.all([first, second]);
+    expect(getDexesSwapQuoteObservableMock).toHaveBeenCalledTimes(before + 1);
+    expect(toValueRef.value).toBe('7');
+    expect(swapStoreMock.isExchangeB).toBe(true);
+    nextStream.next(createDexQuoteData('70'));
+    await flushPromises();
+    expect(fromValueRef.value).toBe('70');
+    expect(wrapper.get('[data-test-name="confirmSwap"]').attributes('disabled')).toBeUndefined();
+  });
+
+  it('ignores late stream callbacks from a superseded token pair', async () => {
+    const callbacks: Array<{ next: (value: SwapQuoteData) => void }> = [];
+    getDexesSwapQuoteObservableMock.mockImplementation(() => ({
+      subscribe: (observer: any) => {
+        callbacks.push(observer);
+        return { unsubscribe: vi.fn() };
+      },
+    }));
+    tokenToRef.value = { address: '0xto', symbol: 'TO', decimals: 18 } as AccountAsset;
+    fromValueRef.value = '2';
+    checkSwapMock.mockResolvedValue(true);
+    const wrapper = await mountWidget();
+    await flushPromises();
+    tokenToRef.value = { address: '0xnew', symbol: 'NEW', decimals: 18 } as AccountAsset;
+    await flushPromises();
+    callbacks[1].next(createDexQuoteData('200'));
+    await flushPromises();
+    callbacks[0].next(createDexQuoteData('999'));
+    await flushPromises();
+    expect(toValueRef.value).toBe('200');
+    wrapper.unmount();
+  });
+
+  it('retains review after wallet rejection and closes only after submission succeeds', async () => {
+    const { wrapper } = await mountReady();
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    expect(confirmVisibleRef.value).toBe(true);
+    executeSwapMock.mockRejectedValueOnce(new Error('User rejected'));
+    await (wrapper.vm as any).exchangeTokens();
+    expect(confirmVisibleRef.value).toBe(true);
+    expect(fromValueRef.value).toBe('2');
+    expect((wrapper.vm as any).submissionError).toBe('ux.swap.submissionFailed');
+    expect(wrapper.emitted('submitted')).toBeUndefined();
+    const transactionHash = `0x${'ab'.repeat(32)}`;
+    submittedTransaction = { txId: transactionHash, id: 'local-history-id' };
+    await (wrapper.vm as any).exchangeTokens();
+    expect(confirmVisibleRef.value).toBe(false);
+    expect(fromValueRef.value).toBe('');
+    expect(executeSwapMock).toHaveBeenCalledTimes(2);
+    expect(wrapper.emitted('submitted')).toEqual([[{ expectedXor: '19.98', transactionHash }]]);
+  });
+
+  it('omits an unsigned history ID from the submitted event', async () => {
+    const { wrapper } = await mountReady();
+    submittedTransaction = { id: 'local-history-id' };
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    await (wrapper.vm as any).exchangeTokens();
+    expect(wrapper.emitted('submitted')).toEqual([[{ expectedXor: '19.98' }]]);
+    expect(executeSwapMock.mock.calls[0]).toHaveLength(8);
+  });
+  it('persists one reviewed purchase row before signing and ignores unrelated notification history', async () => {
+    const { wrapper } = await mountReady({ purchasePurpose: 'xor' });
+    const transactionHash = `0x${'ab'.repeat(32)}`;
+    submittedTransaction = { txId: `0x${'cd'.repeat(32)}` };
+    executeSwapMock.mockImplementationOnce(async (...args) => {
+      expect(rememberSwapDraftMock).toHaveBeenCalledWith(
+        expect.objectContaining({ id: args[8], amount: '2' }),
+        'sora-genesis'
+      );
+      exactHistoryMock.mockReturnValue({ id: args[8], txId: transactionHash });
+    });
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    await (wrapper.vm as any).exchangeTokens();
+    expect(executeSwapMock.mock.calls[0][8]).toMatch(/^purchase-swap:xor:/);
+    expect(wrapper.emitted('submitted')).toEqual([[{ expectedXor: '19.98', transactionHash }]]);
+    expect(wrapper.emitted('preparing')).toEqual([[true], [false]]);
+    expect(trackSwapSubmissionMock).toHaveBeenCalledWith(
+      expect.objectContaining({ txId: transactionHash }),
+      'sora-account',
+      'sora-genesis'
+    );
+  });
+  it('retains a no-hash purchase draft after history timeout, but clears it after definite unsigned rejection', async () => {
+    const { wrapper } = await mountReady({ purchasePurpose: 'xor' });
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    await (wrapper.vm as any).exchangeTokens();
+    expect(wrapper.emitted('submitted')).toEqual([[{ expectedXor: '19.98' }]]);
+    expect(abandonSwapDraftMock).not.toHaveBeenCalled();
+    wrapper.unmount();
+    const second = await mountReady({ purchasePurpose: 'xor' });
+    (second.wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    executeSwapMock.mockRejectedValueOnce(new Error('User rejected'));
+    await (second.wrapper.vm as any).exchangeTokens();
+    expect(abandonSwapDraftMock).toHaveBeenCalledWith(expect.stringMatching(/^purchase-swap:xor:/));
+  });
+  it('does not sign a purchase without a durable draft or overwrite an unresolved one', async () => {
+    const { wrapper } = await mountReady({ purchasePurpose: 'xor' });
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    rememberSwapDraftMock.mockReturnValue(false);
+    await (wrapper.vm as any).exchangeTokens();
+    expect(executeSwapMock).not.toHaveBeenCalled();
+    expect(wrapper.emitted('submitted')).toBeUndefined();
+  });
+
+  it('blocks a changed account during wallet preparation and does not double-submit', async () => {
+    const { wrapper } = await mountReady();
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    let release!: () => void;
+    beforeExecuteMock.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          release = resolve;
+        })
+    );
+    const pending = (wrapper.vm as any).exchangeTokens();
+    await (wrapper.vm as any).exchangeTokens();
+    walletState.address = 'different-account';
+    release();
+    await pending;
+    expect(executeSwapMock).not.toHaveBeenCalled();
+    expect(beforeExecuteMock).toHaveBeenCalledTimes(1);
+    expect(confirmVisibleRef.value).toBe(true);
+    expect(fromValueRef.value).toBe('2');
+  });
+
+  it('requires explicit review of updated quote terms and never executes unseen amounts', async () => {
+    const { wrapper, stream } = await mountReady();
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    const captured = (wrapper.vm as any).review;
+    stream.next(createDexQuoteData('21'));
+    await flushPromises();
+    expect(captured.toValue).toBe('20');
+    expect((wrapper.vm as any).confirmationReadiness.reason).toBe('reviewChanged');
+    await (wrapper.vm as any).exchangeTokens();
+    expect(executeSwapMock).not.toHaveBeenCalled();
+    (wrapper.vm as any).refreshReview();
+    await (wrapper.vm as any).exchangeTokens();
+    expect(executeSwapMock.mock.calls[0][3]).toBe('21');
+  });
+
+  it('opens native funding in place and respects hidden balances', async () => {
+    const { wrapper } = await mountReady();
+    feeRef.value = '100';
+    await nextTick();
+    expect(wrapper.text()).toContain('ux.swap.feeShortfall');
+    const fundButton = wrapper.findAll('button').find((button) => button.text() === 'ux.swap.receiveXor');
+    await fundButton!.trigger('click');
+    expect((wrapper.vm as any).showReceiveXor).toBe(true);
+    expect(fromValueRef.value).toBe('2');
+    walletState.shouldBalanceBeHidden = true;
+    await nextTick();
+    expect(wrapper.text()).toContain('ux.swap.feeShortfallHidden');
+    expect(wrapper.text()).not.toContain('ux.swap.useMaximum');
+  });
+
+  it('blocks review synchronously during a debounced amount edit', async () => {
+    const { wrapper } = await mountReady();
+    deferRecount = true;
+    await (wrapper.vm as any).handleInputFieldFrom('3');
+    expect((wrapper.vm as any).readiness.reason).toBe('checking');
+    expect((wrapper.vm as any).validTradeDetails).toBe(false);
+    (wrapper.vm as any).handleConfirm();
+    expect(confirmVisibleRef.value).toBe(false);
+    expect(executeSwapMock).not.toHaveBeenCalled();
+    await queuedRecounts.shift()!();
+    expect((wrapper.vm as any).readiness.ready).toBe(true);
+  });
+
+  it('blocks confirmation until a fresh stream quote has committed its derived amounts', async () => {
+    const { wrapper, stream } = await mountReady();
+    (wrapper.vm as any).handleConfirm();
+    deferRecount = true;
+    stream.next(createDexQuoteData('22'));
+    expect((wrapper.vm as any).confirmationReadiness.reason).toBe('checking');
+    await (wrapper.vm as any).exchangeTokens();
+    expect(executeSwapMock).not.toHaveBeenCalled();
+    expect((wrapper.vm as any).review.toValue).toBe('20');
+    await queuedRecounts.shift()!();
+    expect((wrapper.vm as any).confirmationReadiness.reason).toBe('reviewChanged');
+    expect(toValueRef.value).toBe('22');
+  });
+  it('ignores an older calculation failure after a newer quote succeeds', async () => {
+    const { wrapper, stream } = await mountReady();
+    debugEnabledRef.value = true;
+    const tableSpy = vi.spyOn(console, 'table').mockImplementation(() => {});
+    let rejectOld!: (error: Error) => void;
+    let resolveNew!: (value: { amount: string }) => void;
+    getResultRpcMock.mockImplementationOnce(
+      () =>
+        new Promise((_resolve, reject) => {
+          rejectOld = reject;
+        })
+    );
+    getResultRpcMock.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveNew = resolve;
+        })
+    );
+    stream.next(createDexQuoteData('30'));
+    stream.next(createDexQuoteData('40'));
+    resolveNew({ amount: '40' });
+    await flushPromises();
+    rejectOld(new Error('Old calculation failed'));
+    await flushPromises();
+    expect(toValueRef.value).toBe('40');
+    expect(swapStoreMock.quoteError).toBe(false);
+    expect((wrapper.vm as any).readiness.ready).toBe(true);
+    tableSpy.mockRestore();
+  });
+
+  it('locks the guided pair and blocks excessive impact before review', async () => {
+    const { wrapper } = await mountReady({ fixedPair: true, maxPriceImpact: '5' });
+    expect(wrapper.get('[data-test-name="swapFrom"]').attributes('is-select-available')).toBe('false');
+    expect(wrapper.get('[data-test-name="switchToken"]').attributes('disabled')).toBeDefined();
+    swapStoreMock.priceImpact = '-5.01';
+    await nextTick();
+    expect(wrapper.get('[data-test-name="confirmSwap"]').attributes('disabled')).toBeDefined();
+    (wrapper.vm as any).handleConfirm();
+    expect(confirmVisibleRef.value).toBe(false);
+    expect(wrapper.text()).toContain('getTs.swapImpactBlocked');
+    wrapper.unmount();
+  });
+
+  it('blocks a guided swap when no positive baseline supports the displayed impact', async () => {
+    const { wrapper } = await mountReady({ maxPriceImpact: '5' });
+    swapStoreMock.amountWithoutImpact = '';
+    await nextTick();
+    expect(wrapper.get('[data-test-name="confirmSwap"]').attributes('disabled')).toBeDefined();
+    (wrapper.vm as any).handleConfirm();
+    expect(confirmVisibleRef.value).toBe(false);
+    wrapper.unmount();
+  });
+
+  it('rechecks the optional impact limit after asynchronous wallet preparation', async () => {
+    const { wrapper } = await mountReady({ maxPriceImpact: '5' });
+    (wrapper.vm as any).handleConfirm();
+    await flushPromises();
+    expect(confirmVisibleRef.value).toBe(true);
+    beforeExecuteMock.mockImplementationOnce(async () => {
+      swapStoreMock.priceImpact = '-6';
+    });
+    await (wrapper.vm as any).exchangeTokens();
+    expect(executeSwapMock).not.toHaveBeenCalled();
+    expect(confirmVisibleRef.value).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('keeps exact-input mode when child inputs emit their unchanged empty initial values', async () => {
+    const wrapper = await mountWidget();
+    await (wrapper.vm as any).handleInputFieldFrom('');
+    await (wrapper.vm as any).handleInputFieldTo('');
+    expect(swapStoreMock.isExchangeB).toBe(false);
+    expect(wrapper.get('[data-test-name="swapProtection"]').html()).toContain('swap.minReceived');
+    expect(wrapper.get('[data-test-name="swapProtection"]').html()).not.toContain('swap.maxSold');
+  });
+  it('does not erase an entered amount when focusing an empty receive field', async () => {
+    const wrapper = await mountWidget();
+    fromValueRef.value = '4';
+    (wrapper.vm as any).handleFocusField(true);
+    expect(fromValueRef.value).toBe('4');
+    expect(swapStoreMock.isExchangeB).toBe(false);
   });
 });

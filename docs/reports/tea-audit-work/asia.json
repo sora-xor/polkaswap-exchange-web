@@ -1,0 +1,1945 @@
+[
+  {
+    "code": "AF",
+    "name": "Afghanistan",
+    "status": "not_verified",
+    "rule": "Agricultural classification of finished sencha remains unresolved. Independently, the enacted 2025 Food/Medicine Anti-Smuggling Law, Articles 22–23, prohibits food import without licence or official permission and expressly covers companies and persons. The no-special-document route is excluded by a conservative inference from that unqualified rule; this is not a blanket tea prohibition.",
+    "personalMailApplicability": "Articles 22–23 contain no business, resale, minimum-quantity or mode-of-carriage limit; Article 4 includes unlicensed importers and Article 23 names official and unofficial routes. Applying those provisions to a personal purchased postal parcel is an explicit conservative legal-scope inference. Article 21(1)’s separate trade-licence plus Health-permit duty is expressly commercial and is not treated as universal.",
+    "quantityLimit": null,
+    "authority": "Afghanistan Ministry of Agriculture, Irrigation and Livestock; Japan MAFF destination directory",
+    "evidenceUrls": [
+      "https://www.mail.gov.af/en/law-documents",
+      "https://www.maff.go.jp/pps/j/search/ekuni/as/afghanistan/index.html",
+      "https://faolex.fao.org/docs/pdf/afg183835.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/af3-2019-2516pqreg_de.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/einfuhrbestimmungen-pflanzengesundheit-afghanistan-1-187.html",
+      "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/afghanistan-diverse-producten-exporteisen/afghanistan-diverse-producten-exporteisen-1-3.pdf",
+      "https://www.moj.gov.af/dr/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%AC%D9%84%D9%88%DA%AF%DB%8C%D8%B1%DB%8C-%D8%A7%D8%B2-%D9%82%D8%A7%DA%86%D8%A7%D9%82-%D9%85%D9%88%D8%A7%D8%AF-%D8%BA%D8%B0%D8%A7%DB%8C%DB%8C%D8%8C-%D8%A7%D8%AF%D9%88%DB%8C%D9%87-%D9%88-%D9%85%D8%AD%D8%B5%D9%88%D9%84%D8%A7%D8%AA-%D8%B5%D8%AD%DB%8C-%D8%AA%D9%88%D8%B4%DB%8C%D8%AD-%D9%88-%D8%AF%D8%B1-%D8%AC%D8%B1%DB%8C%D8%AF%D9%87-%D8%B1%D8%B3%D9%85%DB%8C-%D9%86%D8%B4%D8%B1-%DA%AF%D8%B1%D8%AF%DB%8C%D8%AF",
+      "https://www.afda.gov.af/dr/node/1732",
+      "http://laws.moj.gov.af/uploadedfiles/OG_01472.pdf",
+      "http://laws.moj.gov.af/ShowLawPersian.aspx",
+      "https://moj.gov.af/dr/node/4263"
+    ],
+    "remainingQuestion": "No unresolved question prevents the conservative no-special-document exclusion under the independent unqualified 2025 food-permission provisions. A published personal-food exemption or authoritative narrower application of Articles 22–23 could change it. Agricultural classification of finished sencha and current applicability of older agricultural provisions remain unresolved; no agricultural approval/prohibition is inferred from the food law.",
+    "researchAttempts": [
+      "Checked the MAFF Afghanistan NPPO directory and followed the agriculture authority.",
+      "Read the MAIL law directory; plant quarantine law and regulation entries have no usable linked texts.",
+      "Searched official sources for tea, postal/personal use and plant quarantine in English and Dari; no current tea-specific rule established.",
+      "Obtained the enacted 21 January 2017 Gazette 1243 law from FAOLEX; visually checked Article 3(7), PDF page 10, because embedded-text encoding is damaged. Its manufactured-product definition depends on pest risk.",
+      "Read the German NPPO-hosted translation of the 2019 regulation, Articles 6, 9 and 22. The named up-to-2-kg personal permit exemption does not include tea.",
+      "Checked the Dutch NPPO miscellaneous-product sheet revised February 2026; it has no tea classification and expressly does not establish unspecified products’ certification status. Did not convert a general regulated-product rule into a tea-specific prohibition.",
+      "30 September independent primary-law check: visually read 2017 Act Article 11 on PDF p.32 (printed p.30). It permits the authority to exempt certain importers for pest-risk analysis/personal use; it does not itself exempt every personal import. The 2019 regulation expressly covers trade or other purposes and consumption, but incorporates the Act’s pest-risk-qualified manufactured-product definition. Retained unresolved because that risk classification remains genuinely undecided.",
+      "30 September bounded independent-food follow-up: Read the Justice Ministry official indexed publication notice for the 2025 anti-smuggling law, Gazette 1472 (34 articles), and AFDA January 2026 implementation news. The notice expressly qualifies trade/import licences by importing for trade; it does not settle the scope of its separate document-processing clause for a private food parcel. Direct official article retrieval timed out and the public Gazette PDF was not recovered from the available links/search results. Retained unresolved instead of assuming either a commercial licence for every personal parcel or an unverified personal exemption.",
+      "30 September fresh official online recovery: HTTPS legal-database access failed, but the exact HTTP link published by Justice worked. Submitted only the public food-law text search and public download control; no login or contact. Retrieved Gazette 1472 (86 pages,1,447,130 bytes), verified direct official PDF hash identical, extracted all text and visually checked key Articles 4,21–22. Reviewed definition 2(13), scope 4, Customs 8, transport 18, commercial-specific 21, general 22–23 and commencement/repeal 34. Saved fullPDF, text, searchHTML, provenance, key-page renders and careful scope comparison in official-online-recovery-2026-09-30/asia/. Proposed no-doc exclusion on the separately unqualified 22–23, explicitly retaining 21’s commercial caveat; agricultural status remains not_verified."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The recovered full operative 2025 law supplies an independent food-permission barrier. Article 22(1) prohibits importing food without licence or official permission;22(2) and 23(1) expressly reach companies and persons, with 23 covering official and unofficial routes. Article 2(13) defines official permission as a Health/Agriculture registered proforma/product-registration certificate, distinct from ordinary Customs declarations. Applying the unqualified 22–23 rule to a 100 g personal parcel is a stated conservative scope inference. Article 21(1) separately limits its dual trading-licence and Health-permit clause to commercial purposes; no express personal-food waiver from 22–23 was found. Agricultural processed-product classification remains unverified.",
+    "permitFreeSources": [
+      "https://www.mail.gov.af/en/law-documents",
+      "https://www.maff.go.jp/pps/j/search/ekuni/as/afghanistan/index.html",
+      "https://faolex.fao.org/docs/pdf/afg183835.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/af3-2019-2516pqreg_de.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/einfuhrbestimmungen-pflanzengesundheit-afghanistan-1-187.html",
+      "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/afghanistan-diverse-producten-exporteisen/afghanistan-diverse-producten-exporteisen-1-3.pdf",
+      "https://www.moj.gov.af/dr/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%AC%D9%84%D9%88%DA%AF%DB%8C%D8%B1%DB%8C-%D8%A7%D8%B2-%D9%82%D8%A7%DA%86%D8%A7%D9%82-%D9%85%D9%88%D8%A7%D8%AF-%D8%BA%D8%B0%D8%A7%DB%8C%DB%8C%D8%8C-%D8%A7%D8%AF%D9%88%DB%8C%D9%87-%D9%88-%D9%85%D8%AD%D8%B5%D9%88%D9%84%D8%A7%D8%AA-%D8%B5%D8%AD%DB%8C-%D8%AA%D9%88%D8%B4%DB%8C%D8%AD-%D9%88-%D8%AF%D8%B1-%D8%AC%D8%B1%DB%8C%D8%AF%D9%87-%D8%B1%D8%B3%D9%85%DB%8C-%D9%86%D8%B4%D8%B1-%DA%AF%D8%B1%D8%AF%DB%8C%D8%AF",
+      "https://www.afda.gov.af/dr/node/1732",
+      "http://laws.moj.gov.af/uploadedfiles/OG_01472.pdf",
+      "http://laws.moj.gov.af/ShowLawPersian.aspx",
+      "https://moj.gov.af/dr/node/4263"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "official_food_import_permission_legal_scope_inference",
+    "requiredDocument": "Food import licence or official Health/Agriculture permission under 2025 Law Articles 22–23 (personal-post scope inferred from unqualified rule). This is not the ordinary postal customs declaration. Agricultural permit/phytosanitary requirements remain dependent on unresolved manufactured-tea classification.",
+    "foodImportReview": "Recovered the full 86-page Official Gazette 1472 from the official Justice Ministry database via its published HTTP route and verified a direct identical PDF. Record 18596 is marked in force. Article 2(13) defines permission as a registered proforma/product-registration certificate issued by Health/Agriculture;4 includes unlicensed importers;22 prohibits food import without licence/official permission;23 expressly reaches companies and persons and official/unofficial routes. Articles 22–23 have no commercial-purpose qualifier. Article 21(1) separately uses for commercial purposes, which is preserved as a limitation on that clause and not omitted. The following traveller concession concerns prescription medicines. No automatic personal-food/postal waiver was identified. On an explicit conservative legal-scope inference the separate official-permission rule excludes the no-special-documents route, without resolving agricultural tea classification. The official database marks the 2016 Food Safety Law repealed; that law is not the basis of this decision."
+  },
+  {
+    "code": "AM",
+    "name": "Armenia",
+    "status": "allowed",
+    "rule": "The EAEU unified quarantine list expressly excludes green tea packaged for the consumer from the HS 0902 plant quarantine list. Original 100 g retail packs meet the packaging description.",
+    "personalMailApplicability": "Commodity-level exclusion applies to personal postal tea as well as other imports; no phytosanitary certificate under that list.",
+    "quantityLimit": null,
+    "authority": "Eurasian Economic Commission",
+    "evidenceUrls": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "AU",
+    "name": "Australia",
+    "status": "allowed",
+    "rule": "Plain Camellia sinensis green tea from any country is allowed in new, unopened, clean packaging free of live insects and contamination. No biosecurity import permit or mandatory arrival inspection. The 1 kg herbal-blend condition is not the plain-tea rule.",
+    "personalMailApplicability": "DAFF explicitly covers mailing and ordering online. Accurately describe dried green tea on the postal declaration.",
+    "quantityLimit": null,
+    "authority": "Australian Department of Agriculture, Fisheries and Forestry",
+    "evidenceUrls": [
+      "https://www.agriculture.gov.au/travelling/bringing-mailing-goods",
+      "https://www.agriculture.gov.au/import/goods/plant-products/importing-plant-products-for-human-consumption",
+      "https://www.agriculture.gov.au/travelling/bringing-mailing-goods/mail"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.agriculture.gov.au/travelling/bringing-mailing-goods",
+      "https://www.agriculture.gov.au/import/goods/plant-products/importing-plant-products-for-human-consumption",
+      "https://www.agriculture.gov.au/travelling/bringing-mailing-goods/mail"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "AZ",
+    "name": "Azerbaijan",
+    "status": "allowed",
+    "rule": "Cabinet Decision 231, section 2.2.9, excludes retail-packaged green tea from the low-risk phytosanitary-control list. The Food Safety Agency certificate rules apply to listed regulated goods.",
+    "personalMailApplicability": "The retail packaging exclusion is not limited to accompanied baggage. General postal customs and food-safety procedures remain separate.",
+    "quantityLimit": null,
+    "authority": "Azerbaijan Food Safety Agency",
+    "evidenceUrls": [
+      "https://afsa.gov.az/storage/pages/10846/231-baytarliq-fitosanitar-ve-sanitariya-nezaretine-aid-mallarin-vahid-siyahisinin-tesdiq-edilmesi-barede.pdf",
+      "https://afsa.gov.az/storage/pages/829/phytosanitary-import-requirement-eng.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://afsa.gov.az/storage/pages/10846/231-baytarliq-fitosanitar-ve-sanitariya-nezaretine-aid-mallarin-vahid-siyahisinin-tesdiq-edilmesi-barede.pdf",
+      "https://afsa.gov.az/storage/pages/829/phytosanitary-import-requirement-eng.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "BD",
+    "name": "Bangladesh",
+    "status": "permit_required",
+    "rule": "Bangladesh Customs tea-specific HS09021000 requirements identify DAE plant quarantine import permit,7days prior notification, origin-country phytosanitary certificate and quarantine release. A Tea Board import licence is also listed.",
+    "personalMailApplicability": "Commodity-specific import requirements cover retail green tea; no exemption for a personal postal100g consignment was located. Do not substitute traveller duty relief for quarantine permission.",
+    "quantityLimit": null,
+    "authority": "Bangladesh Department of Agricultural Extension Plant Quarantine Wing; Bangladesh Customs",
+    "evidenceUrls": [
+      "https://hub.bangladeshcustoms.gov.bd/operative-tariff/details/09021000/import"
+    ],
+    "remainingQuestion": "Obtain DAE confirmation/permit and Japanese phytosanitary certificate before dispatch, and confirm whether the personal consignment also needs the listed Tea Board licence.",
+    "researchAttempts": [
+      "Read the official tariff-linked import conditions for retail green tea, not only the general plant definition.",
+      "Searched for a personal postal agricultural exemption and found none in the retrieved official material."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://hub.bangladeshcustoms.gov.bd/operative-tariff/details/09021000/import"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "BN",
+    "name": "Brunei",
+    "status": "permit_required",
+    "rule": "MAFF postal green-tea matrix marks PQ*11: plant import permit and phytosanitary certificate. Footnote 11 states that some cases are outside plant quarantine and need neither document, without identifying this product as exempt. The BDFA personal processed-food route is separate.",
+    "personalMailApplicability": "The official guide expressly covers individuals, courier services and forwarding companies importing for personal consumption.",
+    "quantityLimit": {
+      "netGrams": 5000,
+      "inclusive": true,
+      "kind": "personal_food",
+      "scope": "All food in one personal import",
+      "text": "Total personal food allowance: 5 kg and BND100; also at most 5 retail pieces of each item. For these 100 g pouches that means 500 g of this tea item. Exceeding a condition requires personal food-import approval, separate from agricultural clearance.",
+      "maxRetailPiecesPerItem": 5,
+      "netGramsPerTeaItem": 500
+    },
+    "authority": "Brunei Darussalam Food Authority; Royal Customs and Excise",
+    "evidenceUrls": [
+      "https://bdfa.gov.bn/wp-content/uploads/2023/07/BDFA-Guidelines-for-Personal-Importation-of-Processed-Food-Products-Jul-2023.pdf",
+      "https://www.customs.gov.bn/ref-rced-prohibited-restricted-controlled-items/",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "remainingQuestion": "Confirm whether this sealed manufactured sencha is outside plant quarantine under footnote 11; otherwise obtain plant import permission and Japanese phytosanitary certification. Food personal-import approval is separately needed when small-consignment conditions are exceeded.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://bdfa.gov.bn/wp-content/uploads/2023/07/BDFA-Guidelines-for-Personal-Importation-of-Processed-Food-Products-Jul-2023.pdf",
+      "https://www.customs.gov.bn/ref-rced-prohibited-restricted-controlled-items/",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "BT",
+    "name": "Bhutan",
+    "status": "allowed",
+    "rule": "BFDA separates processed prepackaged foods from plants/plant products. Its SPS portal says the only currently regulated processed-food commodities are processed milk and seaweed; plain manufactured tea falls outside those categories.",
+    "personalMailApplicability": "Commodity classification is general; it is not a passenger-only exception. Retain original labelled packaging and declare the food.",
+    "quantityLimit": null,
+    "authority": "Bhutan Food and Drug Authority",
+    "evidenceUrls": [
+      "https://bfda.gov.bt/sps-information-portal/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://bfda.gov.bt/sps-information-portal/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "CC",
+    "name": "Cocos (Keeling) Islands",
+    "status": "allowed",
+    "rule": "The territory-specific Biosecurity Goods Determination section 6(3), excluded plant goods item 24, excludes processed black/green Camellia sinensis leaves for human consumption from the plant-goods permit division.",
+    "personalMailApplicability": "Exclusion concerns goods brought or imported into the territory, not a traveler-only allowance. Keep the product sealed, clean and accurately declared.",
+    "quantityLimit": null,
+    "authority": "Australian Federal Register of Legislation",
+    "evidenceUrls": [
+      "https://www.legislation.gov.au/F2016L01014/latest/text",
+      "https://www.legislation.gov.au/F2016L01014/2019-03-01/2019-03-01/text/original/pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.legislation.gov.au/F2016L01014/latest/text",
+      "https://www.legislation.gov.au/F2016L01014/2019-03-01/2019-03-01/text/original/pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "CK",
+    "name": "Cook Islands",
+    "status": "not_verified",
+    "rule": "The January 2021 biosecurity import specification currently linked by the official ministry Biosecurity page distinguishes PP29 dried herbs (all origins, no import permit or phytosanitary certificate, inspection) from PP23 dried plant material (all origins, import permit and fumigation/heat treatment). Other dried foods have their own separate entries; there is no blanket exemption for all dried retail foods. Tea is not named. Separately, Food Regulations 2014 regulation 18 provides a personal/family food-control exemption up to 5 kg per person for other foods; that food rule does not establish the applicable plant-biosecurity classification.",
+    "personalMailApplicability": "Both are commodity rules, but the appropriate classification for a personal mailed sencha pouch remains unconfirmed.",
+    "quantityLimit": null,
+    "authority": "Cook Islands Ministry of Agriculture Biosecurity",
+    "evidenceUrls": [
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+      "https://agriculture.gov.ck/biosecurity/",
+      "https://agriculture.gov.ck/wp-content/uploads/2020/04/Update-Import-Specification-27-April-2020.pdf",
+      "https://www.mpi.govt.nz/dmsdocument/632/direct/",
+      "https://cook-islands.tradeportal.org/media/Food-Regulations-2014.pdf",
+      "https://www.health.gov.ck/wp-content/uploads/2017/05/Food-Regulations-2014.pdf",
+      "https://agriculture.gov.ck/biosecurity/register-forms/",
+      "https://agriculture.gov.ck/biosecurity/importing/",
+      "https://www.health.gov.ck/food-regulations-2014/",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html",
+      "https://agriculture.gov.ck/biosecurity/bio-security-act/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2017/08/11/Cook_Islands_Biosecurity_Act_2008.pdf",
+      "https://www.ippc.int/en/countries/cook-islands/reportingobligation/2017/08/biosecurity-act-2008/",
+      "https://agriculture.gov.ck/wp-content/uploads/2019/11/Biosecurity-Act-2008.pdf"
+    ],
+    "remainingQuestion": "An applicable current specification or a general published meaning/category allocation that distinguishes PP29 dried herbs from PP23 dried plant material for manufactured infusion tea; alternatively an exhaustive register showing this type has no specification. No bespoke individual ruling is intrinsically necessary.",
+    "researchAttempts": [
+      "Read the official full import specification and compared PP23 with PP29.",
+      "Searched official agriculture guidance for tea/processed-food or personal-mail exemption; no tea-specific answer found.",
+      "Reviewed current MPI guidance dated 25 July 2025 and its section 1.2 New Zealand-origin scope; did not extend it to a Japan shipment.",
+      "Searched the agriculture authority and government trade portal for Camellia, manufactured tea and personal-post specifications; the PP23/PP29 classification remains missing. The trade-portal Food Regulations download returned HTTP 403 and is not relied on for a food exemption.",
+      "30 September independent scope reread: checked the complete 2020 biosecurity schedule, including PP23, PP26–29, PP31, PP33 and PP47–49. Specific dried fruit/herb/mushroom/vegetable concessions preclude inferring that every dried plant food automatically needs PP23 permission, but none names tea. Current ministry importing and electronic-register pages supply no additional tea or general processed-food waiver.",
+      "Retrieved the previously inaccessible Food Regulations 2014 from the official Ministry of Health host and read regulation 18, PDF pp.10–11. Other personal/family foods are limited to 5 kg, and larger quantities need Director approval. This is a food-control concession under the Ministry of Health framework; it is not a plant-biosecurity specification and does not expressly mention post. Source PDF/text saved as asia-sources/ck-food2014.*.",
+      "30 September independent food-document review: reread Food Regulations 2014 regulations 16, 18–19 and 23–25. Regulation 16 advance notification concerns listed high-risk/regulatory-interest food imported for sale; regulation 18 provides the personal/family concession, and regulation 19 expressly makes general requirements subject to it. Regulations 23–25 allow product-identity checks and assessment of accompanying health/analysis certificates, but do not independently mandate a foreign certificate for every small private tea parcel. A reprocessing permit under regulation 19(4) was not applied to a finished ready-for-retail pouch. These provisions do not remove the unresolved postal scope/plant-category questions.",
+      "30 September final Pacific commodity pass: retrieved the ministry Biosecurity landing page and its January 2021 import specification, a newer current-linked document than the previously reviewed April 2020 PDF. Read the complete table and visually checked PDF page 4: PP23 dried plant material from any origin requires an import permit, no phytosanitary certificate, inspection, and pre-export fumigation/heat treatment; PP29 dried herbs from any origin requires neither permit nor phytosanitary certificate, but inspection and the prohibited-species condition apply. The document does not name tea or Camellia and has no blanket manufactured/dried-food waiver. Its processed-food entries therefore preserve the same unresolved tea-category question. PDF, extracted text and table image saved in pacific-final-source-review/ck-import-specification2021.*. The separate Ports Authority page contains only general cargo/quarantine guidance, not a tea waiver.",
+      "30 September independent legal-scope peer review: reread saved current-linked January 2021 specification PP23/PP29 and Food Regulations 2014 regulations 5, 18 and 19. PP29 is an affirmative permit-and-certificate exemption, which must not be overridden merely by calling tea dried plant material. The schedule supplies no definition placing Camellia tea within dried herbs. Regulation 18 uses personal imports and consumption by importer/family, without an express baggage-only restriction; narrowed the remaining question to the separate biosecurity category rather than demanding that the food concession explicitly mention post. No decision change.",
+      "30 September finished-tea definition review: Camellia sencha is plainly a manufactured plant food and ISPM32 Category 1 tea supports low pest risk. It does not establish that the local Herbs (dried) heading uses a broad infusion-leaf meaning rather than the narrower culinary/botanical category. The Act supplies a concrete reason why low risk alone does not settle entry: specification selection remains legally relevant for manufactured plant products. No supported or excluded decision should be forced from tea being unnamed. See pacific-finished-tea-definition-review/review-notes.json.",
+      "Act section 2 has a processing exception within plant material: manufacture must render the item nonviable, pest/disease-free and incapable of carrying them. But plant product separately and expressly includes any product manufactured wholly or partly from plants; regulated article includes all plant products. Consequently the former definition alone does not remove finished tea from the Act or specification system.",
+      "30 September additional primary review: The Act covers manufactured plant products; the narrower plant-material definition is not an exemption from the separate plant-product limb. Sections 25–26 require permits/certificates only where the applicable specification requires them. Section 27 is an affirmative advance written-application duty only for a type not already the subject of a specification. Current ministry-published PP29 (dried herbs) is no-permit/no-PC; PP23 (dried plant material) requires a permit. Those are genuinely competing general categories for finished infusion leaves, not merely absent literal tea naming. Recovered the complete 73-page Act directly from the current ministry Act-page link. Its PDF text layer uses faulty font encoding, while previously saved official IPPC text confirms the relevant provisions. Public WordPress media searches for import and tea returned 403; no alternate specification was retrieved and no access bypass attempted."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Camellia sencha is plainly a manufactured plant food and ISPM32 Category 1 tea supports low pest risk. It does not establish that the local Herbs (dried) heading uses a broad infusion-leaf meaning rather than the narrower culinary/botanical category. The Act supplies a concrete reason why low risk alone does not settle entry: specification selection remains legally relevant for manufactured plant products. No supported or excluded decision should be forced from tea being unnamed.",
+    "permitFreeSources": [
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+      "https://agriculture.gov.ck/biosecurity/",
+      "https://agriculture.gov.ck/wp-content/uploads/2020/04/Update-Import-Specification-27-April-2020.pdf",
+      "https://www.mpi.govt.nz/dmsdocument/632/direct/",
+      "https://cook-islands.tradeportal.org/media/Food-Regulations-2014.pdf",
+      "https://www.health.gov.ck/wp-content/uploads/2017/05/Food-Regulations-2014.pdf",
+      "https://agriculture.gov.ck/biosecurity/register-forms/",
+      "https://agriculture.gov.ck/biosecurity/importing/",
+      "https://www.health.gov.ck/food-regulations-2014/",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html",
+      "https://agriculture.gov.ck/biosecurity/bio-security-act/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2017/08/11/Cook_Islands_Biosecurity_Act_2008.pdf",
+      "https://www.ippc.int/en/countries/cook-islands/reportingobligation/2017/08/biosecurity-act-2008/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "unresolved_product_classification",
+    "requiredDocument": "If PP29 applies: ordinary inspection with no permit/certificate. If PP23 applies: advance import permit and prescribed fumigation/heat treatment. Tea category remains unverified. Food regulation 18 requires Director approval above its personal-food quantity allowance.",
+    "foodImportReview": "No independent blanket special-document obligation established for the described private 100 g postal food order; this does not establish agricultural clearance.",
+    "urls": [
+      "https://agriculture.gov.ck/biosecurity/bio-security-act/",
+      "https://agriculture.gov.ck/wp-content/uploads/2019/11/Biosecurity-Act-2008.pdf",
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf"
+    ],
+    "files": [
+      "ck-biosecurity.html",
+      "ck-register.html"
+    ],
+    "finding": "The Act covers manufactured plant products; the narrower plant-material definition is not an exemption from the separate plant-product limb. Sections 25–26 require permits/certificates only where the applicable specification requires them. Section 27 is an affirmative advance written-application duty only for a type not already the subject of a specification. Current ministry-published PP29 (dried herbs) is no-permit/no-PC; PP23 (dried plant material) requires a permit. Those are genuinely competing general categories for finished infusion leaves, not merely absent literal tea naming.",
+    "remainingGap": "Applicable general scope of PP29 Herbs (dried), or another published specification covering manufactured infusion tea; if no specification applies, section 27 has an actual special-application route. Food regulation 18 personal/family allowance remains favorable and does not resolve biosecurity classification.",
+    "outcome": "unresolved",
+    "decisionChanged": false,
+    "proposedDecision": "Keep unresolved. Conservative exclusion cannot be justified merely because the researcher has not demonstrated the specification: that is a verification standard, not the statutory section 27 trigger. If the complete register demonstrates no applicable specification, section 27 would justify no-doc exclusion; if PP29 covers finished Camellia leaves, the no-document route may be supportable.",
+    "newSourceResult": "Recovered the complete 73-page Act directly from the current ministry Act-page link. Its PDF text layer uses faulty font encoding, while previously saved official IPPC text confirms the relevant provisions. Public WordPress media searches for import and tea returned 403; no alternate specification was retrieved and no access bypass attempted.",
+    "preciseRemainingEvidence": "An applicable current specification or a general published meaning/category allocation that distinguishes PP29 dried herbs from PP23 dried plant material for manufactured infusion tea; alternatively an exhaustive register showing this type has no specification. No bespoke individual ruling is intrinsically necessary.",
+    "contraryInterpretation": "A conservative operator could elect not to ship without demonstrated PP29 coverage. That is a business hold, not evidence that the law affirmatively requires every finished tea importer to make an application.",
+    "confidence": "High for conditional statutory trigger and table text; classification remains unresolved.",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/remaining-six-primary-review/ck-act2008-ministry.pdf",
+      "docs/reports/tea-audit-work/remaining-six-primary-review/ck-media-import-403.html",
+      "docs/reports/tea-audit-work/remaining-six-primary-review/ck-media-tea-403.html",
+      "docs/reports/tea-audit-work/pacific-final-source-review/ck-import-specification2021.pdf",
+      "docs/reports/tea-audit-work/pacific-finished-tea-definition-review/ck-act-official-web-extract.json",
+      "docs/reports/tea-audit-work/pacific-finished-tea-definition-review/ck-act-definitions-official-web-extract.json"
+    ],
+    "additionalOfficialReview": {
+      "code": "CK",
+      "outcome": "unresolved",
+      "decisionChanged": false,
+      "reviewedAt": "2026-09-30",
+      "finding": "The Act covers manufactured plant products; the narrower plant-material definition is not an exemption from the separate plant-product limb. Sections 25–26 require permits/certificates only where the applicable specification requires them. Section 27 is an affirmative advance written-application duty only for a type not already the subject of a specification. Current ministry-published PP29 (dried herbs) is no-permit/no-PC; PP23 (dried plant material) requires a permit. Those are genuinely competing general categories for finished infusion leaves, not merely absent literal tea naming.",
+      "proposedDecision": "Keep unresolved. Conservative exclusion cannot be justified merely because the researcher has not demonstrated the specification: that is a verification standard, not the statutory section 27 trigger. If the complete register demonstrates no applicable specification, section 27 would justify no-doc exclusion; if PP29 covers finished Camellia leaves, the no-document route may be supportable.",
+      "newSourceResult": "Recovered the complete 73-page Act directly from the current ministry Act-page link. Its PDF text layer uses faulty font encoding, while previously saved official IPPC text confirms the relevant provisions. Public WordPress media searches for import and tea returned 403; no alternate specification was retrieved and no access bypass attempted.",
+      "urls": [
+        "https://agriculture.gov.ck/biosecurity/bio-security-act/",
+        "https://agriculture.gov.ck/wp-content/uploads/2019/11/Biosecurity-Act-2008.pdf",
+        "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf"
+      ],
+      "preciseRemainingEvidence": "An applicable current specification or a general published meaning/category allocation that distinguishes PP29 dried herbs from PP23 dried plant material for manufactured infusion tea; alternatively an exhaustive register showing this type has no specification. No bespoke individual ruling is intrinsically necessary.",
+      "contraryInterpretation": "A conservative operator could elect not to ship without demonstrated PP29 coverage. That is a business hold, not evidence that the law affirmatively requires every finished tea importer to make an application.",
+      "confidence": "High for conditional statutory trigger and table text; classification remains unresolved.",
+      "sourceFiles": [
+        "remaining-six-primary-review/ck-act2008-ministry.pdf",
+        "remaining-six-primary-review/ck-media-import-403.html",
+        "remaining-six-primary-review/ck-media-tea-403.html",
+        "pacific-final-source-review/ck-import-specification2021.pdf",
+        "pacific-finished-tea-definition-review/ck-act-official-web-extract.json",
+        "pacific-finished-tea-definition-review/ck-act-definitions-official-web-extract.json"
+      ]
+    }
+  },
+  {
+    "code": "CX",
+    "name": "Christmas Island",
+    "status": "allowed",
+    "rule": "The territory-specific Biosecurity Goods Determination section 6(3), excluded plant goods item 24, excludes processed black/green Camellia sinensis leaves for human consumption from the plant-goods permit division.",
+    "personalMailApplicability": "Exclusion concerns goods brought or imported into the territory, not a traveler-only allowance. Keep the product sealed, clean and accurately declared.",
+    "quantityLimit": null,
+    "authority": "Australian Federal Register of Legislation",
+    "evidenceUrls": [
+      "https://www.legislation.gov.au/F2016L01015/latest/text",
+      "https://www.legislation.gov.au/F2016L01015/2019-03-01/2019-03-01/text/original/pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.legislation.gov.au/F2016L01015/latest/text",
+      "https://www.legislation.gov.au/F2016L01015/2019-03-01/2019-03-01/text/original/pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "FJ",
+    "name": "Fiji",
+    "status": "allowed",
+    "rule": "BAF lists tea among commercially prepared/labelled highly processed plant products permitted without an import permit. Declare all food; biosecurity assessment may occur.",
+    "personalMailApplicability": "Published import-permit exemption is commodity based and covers brought or imported goods.",
+    "quantityLimit": null,
+    "authority": "Biosecurity Authority of Fiji, official Fiji Trade Portal",
+    "evidenceUrls": [
+      "https://www.fijitradeportal.gov.fj/en-gb/search-measure/view/17"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.fijitradeportal.gov.fj/en-gb/search-measure/view/17"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "FM",
+    "name": "Micronesia",
+    "status": "conditional",
+    "rule": "Plant and Animal Quarantine Regulation 20(g)(i) exempts fully manufactured, hermetically sealed shelf-stable foods from import permits. Part IV, QP8 subjects stored dried foods to inspection/treatment if contaminated without imposing a phytosanitary certificate. DHS Food Safety Standards 2022, 8.4.1 and 8.4.5, exempt personal-consumption food from food-legislation requirements up to 2 kg total per person for other foods. The actual tea pouch must meet the hermetic-seal condition.",
+    "personalMailApplicability": "The exemption applies to importation generally; it is not limited to passenger baggage.",
+    "quantityLimit": {
+      "netGrams": 2000,
+      "text": "DHS Regulation No. 7 Food Safety Standards 2022, 8.4.5: other food for personal/family consumption, total per person; includes any other foods imported together.",
+      "kind": "food_personal",
+      "scope": "Total other foods per person",
+      "inclusive": true
+    },
+    "authority": "Federated States of Micronesia national regulations",
+    "evidenceUrls": [
+      "https://www.fsmlaw.org/fsm/regulations/pi_iii.htm",
+      "https://www.fsmlaw.org/fsm/regulations/piv_x.htm",
+      "https://fsmlaw.org/fsm/code/code2014/pdf/FSMCode2014Tit22Chap04.pdf",
+      "https://hsa.gov.fm/wp-content/uploads/2024/06/DHS-Regulation-7-Food-Safety-Standards_compressed.pdf"
+    ],
+    "remainingQuestion": "Confirm the actual manufacturer packaging is hermetically sealed; a loosely closed or resealable-only pouch is insufficient evidence.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope.",
+      "2026-09-30: Read national quarantine enabling law, complete Part IV QP8 dried-food schedule, and DHS Regulation No. 7 (2022) personal-food exemption 8.4.1–8.4.5. Verified the scanned food rule by OCR of page 57 (PDF page 59). Found a 2 kg personal-food limit absent from the earlier audit."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Supported for personal-consumption tea within the 2 kg total other-food allowance, in fully manufactured hermetically sealed shelf-stable packaging. The plant schedule imposes inspection but no certificate for stored dried food; the personal-food exemption removes separate food-document requirements. Ordinary declaration and postal/customs quarantine clearance remain.",
+    "permitFreeSources": [
+      "https://www.fsmlaw.org/fsm/regulations/pi_iii.htm",
+      "https://www.fsmlaw.org/fsm/regulations/piv_x.htm",
+      "https://fsmlaw.org/fsm/code/code2014/pdf/FSMCode2014Tit22Chap04.pdf",
+      "https://hsa.gov.fm/wp-content/uploads/2024/06/DHS-Regulation-7-Food-Safety-Standards_compressed.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "ordinary customs/biosecurity declaration and arrival inspection; no exporter certificate or advance import permit under the specified route",
+    "quantityLimitKg": 2,
+    "quantityLimitBasis": "DHS Food Safety Standards 2022, 8.4.5: total of all other personal-consumption foods per person; other food in the shipment shares the 2 kg allowance."
+  },
+  {
+    "code": "GE",
+    "name": "Georgia",
+    "status": "allowed",
+    "rule": "Annex1 of Decree463 lists the agricultural commodities subject to phytosanitary border quarantine. In chapter09 it lists only unroasted coffee090111; tea0902 is not listed. Finished retail tea therefore does not require a phytosanitary certificate under this commodity list.",
+    "personalMailApplicability": "The list governs imported commodities, including postal goods; no passenger exemption is needed for unlisted retail tea.",
+    "quantityLimit": null,
+    "authority": "Georgia National Food Agency; Government Decree463",
+    "evidenceUrls": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/06/17/annex_1_decree_N463_plants_products_needs_phyto_certificates.pdf",
+      "https://www.rs.ge/BorderCrossing-en?cat=9&tab=1"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/06/17/annex_1_decree_N463_plants_products_needs_phyto_certificates.pdf",
+      "https://www.rs.ge/BorderCrossing-en?cat=9&tab=1"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "HK",
+    "name": "Hong Kong",
+    "status": "allowed",
+    "rule": "AFCD exempts manufactured articles incorporating dried leaves from plant import licences and phytosanitary certificates. Finished steamed/dried packaged sencha fits this processed-product category; the separate tea-plant controls concern live plants.",
+    "personalMailApplicability": "General plant-import exemption applies irrespective of postal or passenger channel.",
+    "quantityLimit": null,
+    "authority": "Hong Kong Agriculture, Fisheries and Conservation Department",
+    "evidenceUrls": [
+      "https://www.afcd.gov.hk/english/quarantine/qua_plants/qua_plants_pq/qua_plants_pq_imp/qua_plants_pq_imp.html"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.afcd.gov.hk/english/quarantine/qua_plants/qua_plants_pq/qua_plants_pq_imp/qua_plants_pq_imp.html"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "ID",
+    "name": "Indonesia",
+    "status": "certificate_required",
+    "rule": "The 2025 amendment to the quarantine commodity list specifically provides K-9.3 for green tea leaves HS09021010 in ready-for-consumption packaging (tea bags are an example); ordinary leaf tea remains K-9.2. K-9.3 records goods not subject to quarantine measures. Report the parcel for the appropriate determination rather than treating all processed tea as automatically exempt. MAFF postal matrix still marks manufactured green tea Q (phytosanitary certificate), so the packaging-based exemption must be established before dispatch.",
+    "personalMailApplicability": "The commodity list applies to imports generally and has no personal-mail exclusion; retail packaging route is product-based.",
+    "quantityLimit": null,
+    "authority": "Badan Karantina Indonesia, Regulations1/2024,5/2025 and9/2024",
+    "evidenceUrls": [
+      "https://jdih.karantinaindonesia.go.id/repository/barantin-jdih/common/dokumen/Perba5.pdf",
+      "https://ngkt.mofa.gov.vn/wp-content/uploads/2024/09/QD-IQA-09.2024.pdf",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "remainingQuestion": "Confirm that the sealed loose-leaf sencha pouch qualifies as ready-for-consumption packaging for K-9.3; otherwise obtain the regular quarantine import documents. BPOM personal-food limits do not decide that classification.",
+    "researchAttempts": [
+      "Read the amended2025 import table p.245, avoiding the superseded2024 table.",
+      "Checked the K-9.3 form and legal document definition."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://jdih.karantinaindonesia.go.id/repository/barantin-jdih/common/dokumen/Perba5.pdf",
+      "https://ngkt.mofa.gov.vn/wp-content/uploads/2024/09/QD-IQA-09.2024.pdf",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "IL",
+    "name": "Israel",
+    "status": "allowed",
+    "rule": "The personal-import plant-protection requirement for chapter09 expressly excludes tea0902. The Economy Ministry tea personal-import guide says no import conditions within5kg per product and15kg per consignment.",
+    "personalMailApplicability": "The personal-import portal explicitly discusses ordering from overseas commercial websites and shipment methods.",
+    "quantityLimit": {
+      "netGrams": 5000,
+      "inclusive": true,
+      "kind": "personal_food",
+      "scope": "Per tea product in a personal shipment",
+      "text": "5kg per product;15kg total consignment. The portal tea example is090230; the agricultural exclusion independently covers all0902 including green tea."
+    },
+    "authority": "Israel Ministry of Economy and Industry; Israel Tax Authority Customs",
+    "evidenceUrls": [
+      "https://apps.economy.gov.il/Apps/PersonalImport/Product/Index/456",
+      "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/he/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=13789"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://apps.economy.gov.il/Apps/PersonalImport/Product/Index/456",
+      "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/he/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=13789"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "IN",
+    "name": "India",
+    "status": "certificate_required",
+    "rule": "Processed tea for consumption is covered by Schedule VII of the Plant Quarantine Order 2003: phytosanitary certificate, inspection and freedom from pests/soil/weed seeds; no plant import permit. Australian NPPO confirmation was reviewed July2026.",
+    "personalMailApplicability": "MAFF postal matrix dated21April2026 expressly marks Japanese manufactured green tea Q, requiring a phytosanitary certificate.",
+    "quantityLimit": null,
+    "authority": "India Directorate of Plant Protection, Quarantine & Storage; Australian DAFF Micor NPPO record",
+    "evidenceUrls": [
+      "https://micor.agriculture.gov.au/plants/india_in/camellia_sinensis",
+      "https://plantquarantineindia.nic.in/",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "remainingQuestion": "Arrange Japanese export phytosanitary certification and Indian postal quarantine clearance before dispatch.",
+    "researchAttempts": [
+      "Read tea-specific NPPO requirements, explicitly classified as processed plant product for consumption, reviewed21July2026.",
+      "Searched the Indian Order and personal postal exemptions; the personal food concession does not establish a phytosanitary waiver."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://micor.agriculture.gov.au/plants/india_in/camellia_sinensis",
+      "https://plantquarantineindia.nic.in/",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "JP",
+    "name": "Japan",
+    "status": "domestic",
+    "rule": "The shipment originates in Japan and stays in Japan; there is no international agricultural import requirement.",
+    "personalMailApplicability": "Domestic shipment.",
+    "quantityLimit": null,
+    "authority": "Japan Post",
+    "evidenceUrls": [
+      "https://www.post.japanpost.jp/service/letterpack/index_en.html"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.post.japanpost.jp/service/letterpack/index_en.html"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "KG",
+    "name": "Kyrgyzstan",
+    "status": "allowed",
+    "rule": "The EAEU unified quarantine list expressly excludes green tea packaged for the consumer from the HS 0902 plant quarantine list. Original 100 g retail packs meet the packaging description.",
+    "personalMailApplicability": "Commodity-level exclusion applies to personal postal tea as well as other imports; no phytosanitary certificate under that list.",
+    "quantityLimit": null,
+    "authority": "Eurasian Economic Commission",
+    "evidenceUrls": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "KH",
+    "name": "Cambodia",
+    "status": "conditional",
+    "rule": "Current Sub-Decree 370 (28 December 2023; effective 1 May 2024) sets the permit/certificate lists. Plain green leaf tea HS 09021010 / heading 0902 is absent from its annexes. Annex 5 additionally exempts noncommercial imports of customs value US$1,000 or less from Annex 3 exporter certificates. The 2025 Customs manual provides ordinary postal/e-commerce clearance for individuals; unrestricted goods arriving through Cambodia Post do not need prior GDCE approval. Prakas 263 C (16 September 2019), Article 3, expressly excludes personal-use food imports from its imported-food procedure; its annex also classifies processed tea as low-risk.",
+    "personalMailApplicability": "The Customs manual explicitly covers postal parcels and cross-border e-commerce purchases, including imports by individuals. Keep this reviewed route to personal consumption and parcel FOB value below US$1,000. Over US$50, the recipient supplies a simplified declaration, invoice/payment evidence and identification; this is ordinary customs clearance, not an agricultural certificate.",
+    "quantityLimit": null,
+    "authority": "Cambodia Royal Government / General Department of Customs and Excise; National Trade Repository",
+    "evidenceUrls": [
+      "https://tools.customs.gov.kh/documents/reader/16357/17170663763358226/THE%20ENFORCEMENT%20OF%20THE%20LIST%20OF%20PROHIBETED%20AND%20RESTRICTED%20GOODS",
+      "https://data.opendevelopmentcambodia.net/km/dataset/5d272c32-0dd8-4e60-99f3-d21c062ae247/resource/4477cddc-6fe1-4430-8fc6-1885b28de093/download/ennnn.pdf",
+      "https://tools.customs.gov.kh/documents/reader/17709/17373560374410226/Manual%20on%20Customs%20Procedures%20in%20Cambodia%20%28English%29",
+      "https://cambodiantr.gov.kh/en/commodity/leaves/",
+      "https://cambodiantr.gov.kh/en/document/?title=sub-decree-no-015-on-phytosanitary-inspection",
+      "https://cambodiantr.gov.kh/en/document/?title=prakas-no-346-phytosanitary-inspection",
+      "https://cambodiantr.gov.kh/en/search-commodity/",
+      "https://fia.maff.gov.kh/dfptq/wp-content/uploads/2024/02/MoC-No-263-C-Risk-levels-of-food-import.pdf",
+      "https://faolex.fao.org/docs/pdf/cam211050.pdf",
+      "https://www.ccfdg.gov.kh/en/laws-regulations/prakas/"
+    ],
+    "remainingQuestion": "No outstanding permit/certificate issue identified for the specified plain finished tea within the reviewed personal postal route. Any added herbs, untreated plant material or medicinal claims require a separate assessment.",
+    "researchAttempts": [
+      "Read Sub-Decree 15 Articles 2, 4 and 7–9, including the processed-product risk definition.",
+      "Checked Prakas 346 inspection measures and the official commodity repository.",
+      "Searched tea, green tea, HS090210 and exact retail-leaf tariff entries; no affirmative personal-postal classification established.",
+      "Traversed the official commodity lookup to HS 09021010 (green tea leaves, immediate packing up to 3 kg); its measures widget was empty, so it was not treated as proof of exemption.",
+      "Located current Sub-Decree 370 through JETRO and Customs; Customs download repeatedly timed out. Retrieved the complete 133-page government English text from the Open Development Cambodia document mirror, read Annexes 2, 3 and 5, and verified no heading 0902 entry.",
+      "Read the 2025 official Customs manual sections 2.1.3.5 and 2.3.2: individual postal/e-commerce clearance and no prior GDCE approval for unrestricted goods through Cambodia Post.",
+      "Verified Prakas 263 C Article 3 personal-use exemption and its processed-tea low-risk annex in the official MAFF-hosted English text indexed by search. Retrieved the CCF-hosted original Khmer document and the FAO-hosted English copy. The current CCF Prakas directory still lists this instrument."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Inference from the current complete commodity schedules: HS 0902 has no import-permit or exporting-country-certificate treatment. This is supported by the explicit personal-value exemption and the current individual postal clearance rules. Routine postal customs declarations, inspection and any taxes remain applicable. The separate food-control question is covered by Prakas 263 C Article 3, which exempts personal-use food imports from that procedure.",
+    "permitFreeSources": [
+      "https://tools.customs.gov.kh/documents/reader/16357/17170663763358226/THE%20ENFORCEMENT%20OF%20THE%20LIST%20OF%20PROHIBETED%20AND%20RESTRICTED%20GOODS",
+      "https://data.opendevelopmentcambodia.net/km/dataset/5d272c32-0dd8-4e60-99f3-d21c062ae247/resource/4477cddc-6fe1-4430-8fc6-1885b28de093/download/ennnn.pdf",
+      "https://tools.customs.gov.kh/documents/reader/17709/17373560374410226/Manual%20on%20Customs%20Procedures%20in%20Cambodia%20%28English%29",
+      "https://cambodiantr.gov.kh/en/commodity/leaves/",
+      "https://cambodiantr.gov.kh/en/document/?title=sub-decree-no-015-on-phytosanitary-inspection",
+      "https://cambodiantr.gov.kh/en/document/?title=prakas-no-346-phytosanitary-inspection",
+      "https://cambodiantr.gov.kh/en/search-commodity/",
+      "https://fia.maff.gov.kh/dfptq/wp-content/uploads/2024/02/MoC-No-263-C-Risk-levels-of-food-import.pdf",
+      "https://faolex.fao.org/docs/pdf/cam211050.pdf",
+      "https://www.ccfdg.gov.kh/en/laws-regulations/prakas/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "ordinary_postal_customs_declaration",
+    "requiredDocument": "CN22/CN23 and ordinary shipping invoice; above US$50 FOB, recipient simplified customs declaration with invoice/payment evidence and identification.",
+    "valueLimitUsd": 1000,
+    "valueLimitBasis": "Reviewed simplified postal route requires FOB value below US$1,000 (strictly less); Annex 5 certificate exemption separately uses customs value at or below US$1,000."
+  },
+  {
+    "code": "KI",
+    "name": "Kiribati",
+    "status": "not_verified",
+    "rule": "Biosecurity Act 2011 section 2 unconditionally includes products manufactured wholly or partly from plants within plant products, and all plant products within regulated articles. Finished sencha therefore falls within statutory scope (application to this product is an inference). Sections 25–26 make permits/certificates conditional on the applicable import specification; section 27 requires an advance written specification application only where no specification already exists. Section 31 exemptions require advance written requests and apply to a single importation. Food Regulations 2014 section 56 separately exempts personal-consumption food up to 10 kg per person from food-law requirements, not the Biosecurity Act. Section 26(2)(c) limits specifications to reasonably necessary risk measures, while section 26(3) requires a risk assessment and regard to SPS/international standards but permits precaution. These are rules for making the operative specification, not a self-executing exemption for processed tea.",
+    "personalMailApplicability": "The Act establishes postal holding areas, and MELAD names incoming mail. The requirements therefore cannot be dismissed because the recipient consumes the tea personally.",
+    "quantityLimit": null,
+    "authority": "Kiribati MELAD Biosecurity and Plant Health; Biosecurity Act 2011",
+    "evidenceUrls": [
+      "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+      "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+      "https://www.melad.gov.ki/images/ald/applications/application_1.pdf",
+      "https://faolex.fao.org/docs/pdf/kir233800.pdf",
+      "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/ki/ki038en.html",
+      "https://agriculture.melad.gov.ki/",
+      "https://www.fao.org/gm-platform/browse-information/country-details/kiribati/en",
+      "https://faolex.fao.org/docs/pdf/kir51665.pdf",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://kiribati.tradeportal.org/procedure/119/step/141"
+    ],
+    "remainingQuestion": "Current section 26 specification/saved earlier instrument covering finished plant-origin foods, or the relevant complete register showing none exists and thus triggering section 27. ISPM32 tea risk evidence is relevant to the Director’s section26 assessment but does not remove the Act’s unconditional manufactured-product scope.",
+    "researchAttempts": [
+      "Read MELAD incoming-mail and import-permit services.",
+      "Downloaded Biosecurity Act 2011 and read the plant-product definition, sections 24–28 and the written-exemption mechanism in section 31.",
+      "Searched the authority for tea and processed-food import specifications; no tea-specific determination found.",
+      "Read Food Regulations and Standards 2014 sections 56–57: personal-consumption exemption up to 10 kg per person and ordinary food identification/inspection provisions. Kept this separate from plant biosecurity.",
+      "Checked the agriculture ministry’s newer website and Kiribati’s FAO country submission, which allocates prepacked processed-food inspection to Health; neither publishes a legal tea-specific biosecurity waiver.",
+      "Continued exact tea/Camellia/import-specification searches; no published applicable specification or written exemption found.",
+      "30 September independent scope reread: Act PDF pp.17–18 confirms unqualified manufactured-product and regulated-article definitions; pp.41–46 confirms conditional permit/certificate provisions and the no-existing-specification trigger for advance application. Section 80, p.91, provides for an office-based public register, so unsuccessful online searches cannot prove absence of a specification. Rechecked MELAD service text and the national FAO submission allocating processed/prepackaged food to Health; neither supplies the missing tea specification or a biosecurity waiver.",
+      "30 September independent food-document review: reread Food Regulations and Standards 2014 sections 53–64 in the FAO-hosted enacted text. Section 56 expressly exempts personal-consumption imports up to 10 kg from food-legislation requirements; section 57 permits identity-document checks for personal food. Sections 58–59 assess accompanying sanitary/analysis certificates and section 64 provides an inspector-issued arrival release permit. These provisions do not establish an advance foreign certificate or special registration obligation for every 100 g personal parcel; ordinary identity/arrival clearance is distinct from special advance paperwork. The existing biosecurity-specification gap remains unresolved. Saved text as pacific-food-sources/ki-food2014.*.",
+      "30 September bounded remaining-scope review: Biosecurity Act 2011 section 107(2)–(4) preserves compatible old subsidiary rules, treating relevant import-treatment provisions as section 26 specifications. The 1976 Plants Ordinance itself was repealed; its sections 6 and 14 depend on notices/permits and its two schedules are forms/export fees, not an applicable tea specification. The missing existing specification therefore may be a saved older instrument, not necessarily a new 2011 publication. No such operative tea notice was recovered.",
+      "30 September definition/ISPM review: read full Act sections 2, 9, 24–31, 80 and 107 against the verified ISPM 32 Category 1 tea example. Section 26(3)(b) requires regard to international standards; it does not replace the import-specification mechanism or exclude manufactured plant products from section 2. ISPM 32 does not itself establish whether the existing Kiribati specification permits this parcel without special paperwork. No new request to inaccessible agriculture routes was made. Retained unresolved without adding a hypothetical food-law blocker.",
+      "30 September additional primary review: Biosecurity Act 2011 section 2 unconditionally includes manufactured plant products among regulated articles. Section 26 determines whether particular goods require a permit or PC, not a blanket permit rule. Section 27 expressly requires advance written application if the type has no specification. Sections 26(8), 79 and 80 provide a public register and office/Island Council inspection routes; electronic keeping is permissive. Compatible earlier instruments may survive through section 107. Re-read the full enacted statute including the public-register mechanism and current ministry incoming-mail/permit service page. The saved trade-portal procedure119/step141 is a meat workflow, not a general plant-food import specification. No public general processing exemption or complete online register was established; no repeated failed source routes pursued."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Manufactured tea is within the Act’s unqualified plant-product/regulated-article definitions, but that alone does not establish a permit or certificate: sections 25–26 expressly condition those documents on commodity specifications. Failure to locate a specification online is not proof that none exists; section 80 makes the register available at the Director’s office and Island Council offices. Section 27 would require an unacceptable advance application only if there is no existing specification. Routine arrival clearance/inspection is not treated as a special-paperwork blocker. The published personal-food concession does not settle the missing biosecurity specification.",
+    "permitFreeSources": [
+      "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+      "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+      "https://www.melad.gov.ki/images/ald/applications/application_1.pdf",
+      "https://faolex.fao.org/docs/pdf/kir233800.pdf",
+      "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/ki/ki038en.html",
+      "https://agriculture.melad.gov.ki/",
+      "https://www.fao.org/gm-platform/browse-information/country-details/kiribati/en",
+      "https://faolex.fao.org/docs/pdf/kir51665.pdf",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "unresolved_existing_biosecurity_specification",
+    "requiredDocument": "Depends on the existing section 26 specification. A written advance specification application is mandatory under section 27 only if no specification exists; an exemption request under section 31 is special advance paperwork. Ordinary section 24 arrival clearance/inspection alone would be compatible with the store constraint.",
+    "foodImportReview": "No independent blanket special-document obligation established for the described private 100 g postal food order; this does not establish agricultural clearance.",
+    "urls": [
+      "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+      "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+      "https://kiribati.tradeportal.org/procedure/119/step/141"
+    ],
+    "files": [
+      "ki-agriculture.html",
+      "ki-tradefood.html"
+    ],
+    "finding": "Biosecurity Act 2011 section 2 unconditionally includes manufactured plant products among regulated articles. Section 26 determines whether particular goods require a permit or PC, not a blanket permit rule. Section 27 expressly requires advance written application if the type has no specification. Sections 26(8), 79 and 80 provide a public register and office/Island Council inspection routes; electronic keeping is permissive. Compatible earlier instruments may survive through section 107.",
+    "remainingGap": "The existing section 26 specification or compatible saved legacy instrument applicable to factory-sealed manufactured Camellia tea: does it permit ordinary postal arrival clearance alone, or impose special permits/certificates? The Act’s mandatory consideration of international standards does not itself answer that question; if no specification exists, section 27 requires advance written application.",
+    "outcome": "unresolved",
+    "decisionChanged": false,
+    "proposedDecision": "Keep unresolved. Strong proof that tea is within the Act and that section 27 is mandatory when triggered does not prove its no-existing-specification condition. The register need not be published online. An actual existing specification or exhaustive register is the missing fact.",
+    "newSourceResult": "Re-read the full enacted statute including the public-register mechanism and current ministry incoming-mail/permit service page. The saved trade-portal procedure119/step141 is a meat workflow, not a general plant-food import specification. No public general processing exemption or complete online register was established; no repeated failed source routes pursued.",
+    "preciseRemainingEvidence": "Current section 26 specification/saved earlier instrument covering finished plant-origin foods, or the relevant complete register showing none exists and thus triggering section 27. ISPM32 tea risk evidence is relevant to the Director’s section26 assessment but does not remove the Act’s unconditional manufactured-product scope.",
+    "contraryInterpretation": "An application is necessary if the product truly has no specification; the no-permit store then cannot use that route. The evidence does not demonstrate the premise, and no online result is insufficient for it.",
+    "confidence": "High for scope and conditional duty; unknown actual specification.",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/ki-to-definition-review/ki-act2011.pdf",
+      "docs/reports/tea-audit-work/ki-to-definition-review/ki-act2011.txt",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/ki-tradefood.html",
+      "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/ki-tradefood-links.json"
+    ],
+    "additionalOfficialReview": {
+      "code": "KI",
+      "outcome": "unresolved",
+      "decisionChanged": false,
+      "reviewedAt": "2026-09-30",
+      "finding": "Biosecurity Act 2011 section 2 unconditionally includes manufactured plant products among regulated articles. Section 26 determines whether particular goods require a permit or PC, not a blanket permit rule. Section 27 expressly requires advance written application if the type has no specification. Sections 26(8), 79 and 80 provide a public register and office/Island Council inspection routes; electronic keeping is permissive. Compatible earlier instruments may survive through section 107.",
+      "proposedDecision": "Keep unresolved. Strong proof that tea is within the Act and that section 27 is mandatory when triggered does not prove its no-existing-specification condition. The register need not be published online. An actual existing specification or exhaustive register is the missing fact.",
+      "newSourceResult": "Re-read the full enacted statute including the public-register mechanism and current ministry incoming-mail/permit service page. The saved trade-portal procedure119/step141 is a meat workflow, not a general plant-food import specification. No public general processing exemption or complete online register was established; no repeated failed source routes pursued.",
+      "urls": [
+        "https://www.melad.gov.ki/index.php?Itemid=380&id=43&option=com_quix&view=page",
+        "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+        "https://kiribati.tradeportal.org/procedure/119/step/141"
+      ],
+      "preciseRemainingEvidence": "Current section 26 specification/saved earlier instrument covering finished plant-origin foods, or the relevant complete register showing none exists and thus triggering section 27. ISPM32 tea risk evidence is relevant to the Director’s section26 assessment but does not remove the Act’s unconditional manufactured-product scope.",
+      "contraryInterpretation": "An application is necessary if the product truly has no specification; the no-permit store then cannot use that route. The evidence does not demonstrate the premise, and no online result is insufficient for it.",
+      "confidence": "High for scope and conditional duty; unknown actual specification.",
+      "sourceFiles": [
+        "ki-to-definition-review/ki-act2011.pdf",
+        "ki-to-definition-review/ki-act2011.txt",
+        "official-online-recovery-2026-09-30/asia/ki-tradefood.html",
+        "official-online-recovery-2026-09-30/asia/ki-tradefood-links.json"
+      ]
+    }
+  },
+  {
+    "code": "KR",
+    "name": "South Korea",
+    "status": "allowed",
+    "rule": "QIA 2026 plant-quarantine compilation, page 330, exempts dried or steam-treated retail tea sealed in polypropylene, foil, cans or equivalent packaging under processed products unable to harbor pests. Verify the manufacturer pouch is equivalent sealed packaging.",
+    "personalMailApplicability": "This is a commodity exemption, not a baggage concession. Postal customs personal-use thresholds still apply.",
+    "quantityLimit": {
+      "netGrams": 5000,
+      "text": "Separate Korea Customs personal-use agricultural-product clearance threshold, not a phytosanitary exemption limit.",
+      "kind": "personal_food",
+      "scope": "Personal-use agricultural product threshold under Customs simplified clearance",
+      "inclusive": true
+    },
+    "authority": "Korean Animal and Plant Quarantine Agency",
+    "evidenceUrls": [
+      "https://ebook.qia.go.kr/src/viewer/main.php?category=1&host=main&page=330&search=AI&site=20260107_101021",
+      "https://customs.go.kr/kcs/cm/cntnts/cntntsView.do?cntntsId=2807&mi=8457"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://ebook.qia.go.kr/src/viewer/main.php?category=1&host=main&page=330&search=AI&site=20260107_101021",
+      "https://customs.go.kr/kcs/cm/cntnts/cntntsView.do?cntntsId=2807&mi=8457"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "KZ",
+    "name": "Kazakhstan",
+    "status": "allowed",
+    "rule": "The EAEU unified quarantine list expressly excludes green tea packaged for the consumer from the HS 0902 plant quarantine list. Original 100 g retail packs meet the packaging description.",
+    "personalMailApplicability": "Commodity-level exclusion applies to personal postal tea as well as other imports; no phytosanitary certificate under that list.",
+    "quantityLimit": null,
+    "authority": "Eurasian Economic Commission",
+    "evidenceUrls": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "LA",
+    "name": "Laos",
+    "status": "permit_required",
+    "rule": "The official tariff links retail green tea leaves (HS 0902101000) to plant-quarantine inspection. Decision 2985/MAF (2019), Articles 6 and 14–15, requires a phytosanitary certificate and advance phytosanitary import permit or approval; the application deadline is at least 15 days before arrival. Designated entry and inspection also apply.",
+    "personalMailApplicability": "Article 4 applies to any person, and Article 6(7) explicitly covers post and air freight. No personal-quantity exemption for this tea was found.",
+    "quantityLimit": null,
+    "authority": "Lao Department of Agriculture / Ministry of Agriculture and Forestry; Lao Trade Portal",
+    "evidenceUrls": [
+      "https://www.laotradeportal.gov.la/en-gb/site/commodity/0902101000",
+      "https://www.laotradeportal.gov.la/en-gb/search-measure/view/392",
+      "https://www.laotradeportal.gov.la/upload/files/Legal_1591864816.pdf"
+    ],
+    "remainingQuestion": "Confirm whether this shipment uses Article 14 import permit or Article 15 import approval, and obtain the appropriate advance authorization before sending.",
+    "researchAttempts": [
+      "Read the exact HS 0902101000 tariff page and its agricultural inspection measure.",
+      "Read Decision 2985/MAF Articles 4, 6, 14–15 and 19–22, including explicit postal scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://www.laotradeportal.gov.la/en-gb/site/commodity/0902101000",
+      "https://www.laotradeportal.gov.la/en-gb/search-measure/view/392",
+      "https://www.laotradeportal.gov.la/upload/files/Legal_1591864816.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "LK",
+    "name": "Sri Lanka",
+    "status": "permit_required",
+    "rule": "MAFF postal matrix marks manufactured green tea PQ*11: import permit and phytosanitary certificate, with an unspecified exception for goods outside plant quarantine. Sri Lanka NPQS specifically routes tea through Sri Lanka Tea Board clearance before issuing plant import permission.",
+    "personalMailApplicability": "The MAFF evidence is explicitly postal; a personal food allowance has not been shown to waive this quarantine route.",
+    "quantityLimit": null,
+    "authority": "Sri Lanka Department of Agriculture NPQS; Sri Lanka Tea Board; Japan MAFF",
+    "evidenceUrls": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://doa.gov.lk/npqs-services-import/"
+    ],
+    "remainingQuestion": "Obtain NPQS confirmation whether this manufactured sealed sencha is outside plant quarantine; otherwise secure the import permit and Japanese phytosanitary certificate.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://doa.gov.lk/npqs-services-import/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "MH",
+    "name": "Marshall Islands",
+    "status": "conditional",
+    "rule": "Quarantine Regulation 20(g)(i) exempts fully manufactured, hermetically sealed shelf-stable foods from import permits. Part IV QP8 subjects stored dried foods to inspection and treatment if contaminated; its certificate provisions concern fresh produce, propagating plants and seeds, not stored manufactured tea. The Food Safety Act 2010 registers food-business premises, while ordinary personal recipients are not food businesses. The actual pouch must meet the hermetic-seal condition.",
+    "personalMailApplicability": "The exemption applies to importation generally; it is not limited to passenger baggage.",
+    "quantityLimit": null,
+    "authority": "Marshall Islands Plant and Animal Quarantine Regulations",
+    "evidenceUrls": [
+      "https://rmicourts.org/wp-content/uploads/2020/05/Plant-and-Animal-Quarantine-Regulations.pdf",
+      "https://rminitijela.com/wp-content/uploads/2025/01/1966-0004_2.pdf",
+      "https://rminitijela.com/wp-content/uploads/2025/01/2010-0037_1.pdf"
+    ],
+    "remainingQuestion": "Confirm the actual manufacturer packaging is hermetically sealed; a loosely closed or resealable-only pouch is insufficient evidence.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope.",
+      "2026-09-30: Read the complete 2000 quarantine regulations, including QP8 stored dried foods and certificate clauses, the official Animal and Plant Inspection Act and Food Safety Act 2010. Distinguished food-business premises registration from a private recipient importing food for consumption."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Supported for fully manufactured shelf-stable tea in an unopened hermetically sealed retail pouch, declared for personal use. QP8 requires inspection rather than a phytosanitary certificate for stored dried foods. The reviewed enabling law and food law do not add a personal-recipient licence or general health-certificate requirement.",
+    "permitFreeSources": [
+      "https://rmicourts.org/wp-content/uploads/2020/05/Plant-and-Animal-Quarantine-Regulations.pdf",
+      "https://rminitijela.com/wp-content/uploads/2025/01/1966-0004_2.pdf",
+      "https://rminitijela.com/wp-content/uploads/2025/01/2010-0037_1.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "ordinary customs/biosecurity declaration and arrival inspection; no exporter certificate or advance import permit under the specified route"
+  },
+  {
+    "code": "MM",
+    "name": "Myanmar",
+    "status": "permit_required",
+    "rule": "The official tariff record for retail green tea leaves0902101000 attaches Department of Agriculture import-certificate, inspection and certification requirements under the Plant Pest Quarantine Law; this is a tea-specific commodity application.",
+    "personalMailApplicability": "The statutory import requirements apply to a person importing the commodity; no personal postal agricultural waiver was found.",
+    "quantityLimit": null,
+    "authority": "Myanmar Department of Agriculture; Ministry of Commerce National Trade Portal",
+    "evidenceUrls": [
+      "https://www.myanmartradeportal.gov.mm/en/commodity-search/view/18952"
+    ],
+    "remainingQuestion": "Obtain the agricultural import certificate before posting and follow its Japan-origin phytosanitary conditions.",
+    "researchAttempts": [
+      "Read the actual0902101000 import-measures record, separating its import rules from the adjacent export-only phytosanitary procedures.",
+      "Searched for a processed retail-tea/personal postal exemption; none verified."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://www.myanmartradeportal.gov.mm/en/commodity-search/view/18952"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "MN",
+    "name": "Mongolia",
+    "status": "permit_required",
+    "rule": "Ministerial Order A/161 of 9 April 2025 explicitly lists retail green leaf tea HS09021020 among plant products requiring an import notification. The quarantine law article18 specifically subjects postal plant-product consignments to notification, inspection and article10.1.1 documentation.",
+    "personalMailApplicability": "Article18 expressly covers postal consignments; article17.3 processed-product relief concerns passenger baggage only.",
+    "quantityLimit": null,
+    "authority": "Mongolia Ministry of Food, Agriculture and Light Industry",
+    "evidenceUrls": [
+      "https://legalinfo.mn/mn/detail?lawId=17431290249552",
+      "https://legalinfo.mn/mn/detail?lawId=17431290285722&showType=1",
+      "https://legalinfo.mn/mn/detail/38"
+    ],
+    "remainingQuestion": "Recipient must obtain the import notification and confirm the accompanying Japanese phytosanitary documentation before shipping.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://legalinfo.mn/mn/detail?lawId=17431290249552",
+      "https://legalinfo.mn/mn/detail?lawId=17431290285722&showType=1",
+      "https://legalinfo.mn/mn/detail/38"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "MO",
+    "name": "Macao",
+    "status": "allowed",
+    "rule": "Finished tea (HS 0902) is outside the sanitary/phytosanitary control list in Annex III of Chief Executive Order 209/2021 and the agricultural licensing categories in Annex II, Table B. Customs applies those same lists to mail.",
+    "personalMailApplicability": "The Customs postal page expressly applies the import and quarantine lists to mailed goods. The passenger personal-use allowance was not used.",
+    "quantityLimit": null,
+    "authority": "Macao Customs; Municipal Affairs Bureau; official gazette",
+    "evidenceUrls": [
+      "https://www.customs.gov.mo/cn/customs_declaration_item8.html",
+      "https://www.customs.gov.mo/cn/customs_declaration_item3.html",
+      "https://bo.dsaj.gov.mo/bo/i/2021/52/despce.asp",
+      "https://images.bo.dsaj.gov.mo//bo/i/2021/52/despce-209-2021-pt-an.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read current customs postal and sanitary/phytosanitary guidance.",
+      "Retrieved and inspected all 16 pages of the gazetted Portuguese Annex, including Annex III on page 16 and Annex II Table B. Tea is not listed.",
+      "Checked the amendments identified by the official gazette and current customs page; the listed changes concern other goods."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.customs.gov.mo/cn/customs_declaration_item8.html",
+      "https://www.customs.gov.mo/cn/customs_declaration_item3.html",
+      "https://bo.dsaj.gov.mo/bo/i/2021/52/despce.asp",
+      "https://images.bo.dsaj.gov.mo//bo/i/2021/52/despce-209-2021-pt-an.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "MV",
+    "name": "Maldives",
+    "status": "conditional",
+    "rule": "The Attorney General’s current consolidated Plant Protection Act 12/2011, section 36, defines plants as living plants/parts (including seeds) and distinguishes unchanged/unmanufactured plant material, including grain, from manufactured products whose manner of manufacture leaves a risk of introducing or spreading pests. Sections 19 and 22 require certificates and permits for those defined controlled goods. Section 20(b) ties phytosanitary measures to applicable international standards or technical justification. Applied to the specified factory-made sencha (steamed, repeatedly rolled/pressed with hot air, dried and finished), these domestic category boundaries support a no-special-phytosanitary-document conclusion: it is a manufactured food, not living or merely raw dried plant material, and ISPM 32 section 2 Category 1 / Appendix 2 expressly identifies tea as an example of manufacture that removes plant-pest risk. This is a reasoned application of Maldivian statutory scope, not a claim that ISPM membership itself creates a waiver. The December 2025 and March 2026 ministry instructions govern covered plants/products and do not expressly expand section 36 to all finished food. Separately, MFDA-FCD STAN6-2021 Rev.1 November 2025 permits personal processed food up to 5 kg/5 litres with intact identifiable packaging; its special advance postal form is for breast-milk substitutes, not tea. Section 37 of the 2011 Act expressly repeals Plant Quarantine Regulation 2008, so its old packed-food language is not relied upon as current authority.",
+    "personalMailApplicability": "General commodity-scope interpretation applies equally to postal imports. Act section 25(b) expressly names post and courier services when handling covered plants/products/regulated articles; it does not make an otherwise outside-scope finished food a controlled commodity. This conclusion does not borrow a passenger allowance. The separate current MFDA standard governs the recipient’s noncommercial food use, including small parcels.",
+    "quantityLimit": {
+      "netGrams": 5000,
+      "max100gBags": 50,
+      "text": "MFDA-FCD STAN6-2021 Rev.1 November 2025, section 4.1, printed page 4: personal processed foods must not exceed 5 kg NET WEIGHT (5 litres for liquids). The dry tea limit uses net grams.",
+      "kind": "food_personal",
+      "scope": "Processed-food category collectively; allowance is not stated per tea variety. Category-wide aggregation in one consignment is the conservative application; the text does not explicitly define a parcel/time interval.",
+      "inclusive": true
+    },
+    "authority": "Maldives Ministry of Agriculture and Animal Welfare, Plant Protection Section; Ministry of Health",
+    "evidenceUrls": [
+      "https://agriculture.gov.mv/en/announcements/important-notice-for-plant-importers",
+      "https://agriculture.gov.mv/en/downloads",
+      "https://health.gov.mv/en/downloads/standard-for-importing-food-item-for-personal-use",
+      "https://health.gov.mv/en/publications/viyafaari-beynun-fiyavai-ehenihen-beynumah-dhivehiraaajeah-kaaboathakethi-inpoatkurumugai-amalukuranvee-gothuge-mingandu",
+      "https://health.gov.mv/storage/uploads/XqP12zoB/xafwwjjj.pdf",
+      "https://agriculture.gov.mv/en/mandate-1",
+      "https://www.ippc.int/en/countries/maldives/reportingobligation/4",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2025/06/12/Plant_Protection_Act.pdf",
+      "https://faolex.fao.org/docs/pdf/mdv88996.pdf",
+      "https://www.wto.org/english/tratop_e/tpr_e/s461_e.pdf",
+      "https://aos.egov.mv",
+      "https://mvlaw.gov.mv/dv/legislations/201/consolidations/238",
+      "https://mvlaw.gov.mv/storage/uploads/6nL8gRnQ/dsemrcxg.pdf",
+      "https://mvlaw.gov.mv/dv/legislations/201/consolidations/238/pdf",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the current December 2025 phytosanitary importer notice.",
+      "Checked the agriculture ministry downloads and searched for tea/processed-food classifications.",
+      "Located the personal-food import standard but did not treat food quantities as a phytosanitary waiver.",
+      "Located the current revised noncommercial-food standard, published 7 January 2026, but official PDF requests returned HTTP 403; did not rely on the older personal-food download as current.",
+      "Checked the ministry mandate (Plant Protection Act 2011/12), current notices and commodity searches. Coconut-palm/nursery permit instructions are not evidence for manufactured tea. No applicable tea exemption located.",
+      "Retried the revised MFDA PDF through web research: all 8 pages became readable despite direct HTTP still returning 403. Read sections 1, 4, 6.2 and 9: processed-food limit 5 kg/5 litres, packaging/identity and personal-use evidence; the advance postal clearance in 6.2 is specific to breast-milk substitutes and was not misapplied to tea.",
+      "30 September independent food-rule closure check: the existing review already read current MFDA-FCD STAN6-2021 Rev.1 November 2025 (published January 2026), including its processed-food 5 kg/5 litre personal allowance and the breast-milk-substitute-specific postal form. New attempts to reopen the current Ministry publication/PDF returned inaccessible tool responses and supplied no contrary rule. Did not apply commercial food licensing or the breast-milk-substitute clearance form to ordinary tea. Retained the prior current-standard findings and the separate unresolved agricultural classification.",
+      "30 September bounded remaining-scope review: Located the NPPO-filed 2011 Plant Protection Act uploaded to IPPC on 12 June 2025. Web-indexed Dhivehi text was readable; direct PDF download returned 403 and screenshot retrieval failed. A provisional reading of articles 19–22 and the definitions does not establish a finished-tea exemption; it is not an official English translation. The older English Plant Quarantine Regulation distinguishes planting material from dried/packed food, but cannot independently settle the later Act and current notice. WTO 2024 paragraph 3.101 identifies Agriculture Online System as a requirements source; its public URL redirects to a login and exposes no commodity conditions. No sign-in or account creation attempted.",
+      "30 September fresh official-source recovery: government law-index embedded data exposed current consolidation 201/238 and original PDF. Recovered the complete HTML/structured text with an ordinary User-Agent request, generated PDF, and original PDF via its normal download query. The original Dhivehi Act was read with unofficial English paraphrases, and the relevant original definition page visually checked. Section 36 risk-qualified manufacture, section 20(b) international-standard/technical-justification basis, section 25 express postal handling and section 37 repeal are now fully available. No new contrary specific tea condition was located. The IPPC global index separately lists a Plant Protection Regulation uploaded June 2025, but its report page returns a navigation shell without the report/attachment; this unavailable listing is not treated as an operative contrary rule or affirmative exemption.",
+      "Re-read and downloaded original current MFDA8-page standard. Printed p4§4.1 expressly uses net weight and not exceeding5kg/5L; category-wide aggregate wording does not define a per-parcel/time interval or confer a per-variety allowance. Sections1.10 and1.11 concern recipient identity and limited whole-unit rounding; no numerical uplift used. Added quantityLimitKg5 with precise legal-net versus conservative-store-gross distinction.",
+      "30 September original current eight-page MFDA PDF recovered and section 4.1 visually checked: explicit inclusive 5 kg NET WEIGHT. Corrected the report to 5000 net grams and 50 exact 100 g pouches; the earlier suggested 41 gross-weight bag sizing is not the legal food limit. The provision does not grant 5 kg separately for each tea variety; category-wide consignment aggregation is expressly labelled an interpretation."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Supported by the domestic section 36 living/unmanufactured/risk-qualified manufactured-product boundary applied to fully manufactured sencha, with ISPM 32 tea Category 1 as technical evidence and the current MFDA personal-food allowance. This is an interpretive conclusion from published general law, not an express Maldives tea-specific ruling or a personal exemption from controls on raw plant material.",
+    "permitFreeSources": [
+      "https://agriculture.gov.mv/en/announcements/important-notice-for-plant-importers",
+      "https://agriculture.gov.mv/en/downloads",
+      "https://health.gov.mv/en/downloads/standard-for-importing-food-item-for-personal-use",
+      "https://health.gov.mv/en/publications/viyafaari-beynun-fiyavai-ehenihen-beynumah-dhivehiraaajeah-kaaboathakethi-inpoatkurumugai-amalukuranvee-gothuge-mingandu",
+      "https://health.gov.mv/storage/uploads/XqP12zoB/xafwwjjj.pdf",
+      "https://agriculture.gov.mv/en/mandate-1",
+      "https://www.ippc.int/en/countries/maldives/reportingobligation/4",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2025/06/12/Plant_Protection_Act.pdf",
+      "https://faolex.fao.org/docs/pdf/mdv88996.pdf",
+      "https://www.wto.org/english/tratop_e/tpr_e/s461_e.pdf",
+      "https://aos.egov.mv",
+      "https://mvlaw.gov.mv/dv/legislations/201/consolidations/238",
+      "https://mvlaw.gov.mv/storage/uploads/6nL8gRnQ/dsemrcxg.pdf",
+      "https://mvlaw.gov.mv/dv/legislations/201/consolidations/238/pdf",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "ordinary_declaration_and_inspection",
+    "requiredDocument": "Ordinary postal/customs declaration and any routine arrival food inspection; no separate plant permit or phytosanitary certificate under the stated general-category interpretation.",
+    "foodImportReview": "Current MFDA personal-food conditions verified: 5 kg/5 litres of processed food, intact identifiable packaging, and personal-use evidence if requested; the advance postal breast-milk-substitute form does not apply to tea.",
+    "urls": [
+      "https://agriculture.gov.mv/dv/publications/dhivehiraaajeah-gasgahaagehsaai-gahugebaithakaai-dhireythakethi-etherekurumugai-samaalukandheynvee-kanthahthah",
+      "https://agriculture.gov.mv/en/announcements/important-notice-for-plant-importers",
+      "https://agriculture.gov.mv/storage/24YEn3qe/bujmhspe.pdf"
+    ],
+    "files": [
+      "mv-guidance2026.html",
+      "mv-guidance2026.txt",
+      "mv-dec2025-notice.pdf"
+    ],
+    "finding": "Recovered complete current Attorney General consolidation, all statutory sections and the original 25-page PDF. Confirmed section 36 definitions, sections 19–22 import controls, section 25 postal handling and section 37 express repeal of the 2008 regulation. Original printed page 24 was visually checked against the structured official text.",
+    "remainingGap": null,
+    "outcome": "supported",
+    "decisionChanged": true,
+    "interpretationCaveat": "Source law is official Dhivehi; English descriptions are the reviewer’s paraphrase, not an official translation. Supported is conditional on the recorded manufacture, pure tea content, clean sealed retail packing, absence of soil/seeds/raw untreated additions or raw-wood packing, and genuinely private consumption. Ordinary inspection and enforcement against contaminated goods remain available. Sections 19/22 would require unavailable special documents if the product instead met the controlled definitions. No claim of a regulator-specific advance tea approval is made.",
+    "sourceFiles": [
+      "asia-six-recovery/mv-pg/mv-law2011-current.html",
+      "asia-six-recovery/mv-pg/mv-law2011-current.json",
+      "asia-six-recovery/mv-pg/mv-law2011-current-sections.txt",
+      "asia-six-recovery/mv-pg/mv-original.pdf",
+      "asia-six-recovery/mv-pg/mv-original.txt",
+      "asia-six-recovery/mv-pg/mv-original-page24.png",
+      "asia-six-recovery/mv-pg/mv-food2025.pdf",
+      "asia-six-recovery/mv-pg/mv-food2025.txt",
+      "asia-six-recovery/mv-pg/mv-food2025-page4.png"
+    ],
+    "quantityLimitKg": 5,
+    "quantityLimitBasis": "Explicit net-weight threshold in original Dhivehi section 4.1, independently read and visually checked. Fifty 100 g pouches = 5 kg net. Packaging is not included in this MFDA net limit. Other processed foods share the category allowance under the stated aggregate interpretation.",
+    "quantitySourceReview": {
+      "sourceUrl": "https://health.gov.mv/storage/uploads/XqP12zoB/xafwwjjj.pdf",
+      "sourceFile": "mv-food2025.pdf",
+      "section": "4.1, printed page4",
+      "weightType": "net",
+      "netGrams": 5000,
+      "inclusive": true,
+      "aggregation": "Processed-food category; no per-product or per-variety allowance stated. Section4.1 does not expressly define parcel/time interval. Category-wide aggregation for the consignment is conservative application.",
+      "otherProvisions": {
+        "1.10": "Personal food imported in intended person’s name; company-name imports treated as commercial.",
+        "1.11": "Limited rounding to a whole product unit where meeting the standard quantity requires at least half that final unit. No uplift used in store policy.",
+        "2.1": "Fruit/vegetable category separately and expressly total together on one occasion; do not silently copy its exact words into4.1.",
+        "4.2": "Package must not be damaged/leaking and label must identify food."
+      },
+      "translation": "Reviewer paraphrase of official Dhivehi; net-weight loanword is explicit.",
+      "sha256": "096dabb1d52121982459917d971e279027e1c5a2110333a36455e201fe51deec"
+    }
+  },
+  {
+    "code": "MY",
+    "name": "Malaysia",
+    "status": "permit_required",
+    "rule": "The tea-specific row in Customs (Prohibition of Imports) Order 2023, pp.124–125, subjects green tea leaves HS0902101000 to MAQIS inspection/approval in Peninsular Malaysia and Labuan; Sabah/Sarawak additionally require a Department of Agriculture import permit. The general processed-plant exclusion does not erase this specific tea row.",
+    "personalMailApplicability": "Commodity import rule is not confined to commercial consignments or baggage; no personal-post tea exemption was located.",
+    "quantityLimit": null,
+    "authority": "Royal Malaysian Customs; MAQIS; Sabah/Sarawak Agriculture Departments",
+    "evidenceUrls": [
+      "https://ezhs.customs.gov.my/public-prob-import",
+      "https://lom.agc.gov.my/act-view.php?type=pua&no=P.U.%20(A)%20117/2023",
+      "https://www.customs.gov.my/en/pg/Customs%20Order/PU%28A%29%20117-%20Perintah%20Kastam%20%28Larangan%20Mengenai%20Import%29%202023.pdf"
+    ],
+    "remainingQuestion": "Confirm destination state and arrange MAQIS clearance; for Sabah/Sarawak obtain the permit and its phytosanitary conditions before posting.",
+    "researchAttempts": [
+      "Read 2023 gazette pp.124–125 and compared the tea-specific row with the adjacent processed-plant exclusion.",
+      "Checked Customs individual import guidance and tariff HS explorer."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://ezhs.customs.gov.my/public-prob-import",
+      "https://lom.agc.gov.my/act-view.php?type=pua&no=P.U.%20(A)%20117/2023",
+      "https://www.customs.gov.my/en/pg/Customs%20Order/PU%28A%29%20117-%20Perintah%20Kastam%20%28Larangan%20Mengenai%20Import%29%202023.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "NC",
+    "name": "New Caledonia",
+    "status": "conditional",
+    "rule": "DAVAR personal-import list allows dried plants including green tea without citrus or seeds, exempt from import permit and sanitary/phytosanitary certificates. Original unopened commercial label must show product, origin, manufacturer, weight and ingredients.",
+    "personalMailApplicability": "The exemption expressly includes personal postal shipments, capped at 5 kg. Declare for arrival inspection.",
+    "quantityLimit": {
+      "netGrams": 5000,
+      "text": "Personal postal shipment limit in DAVAR exemption list.",
+      "kind": "agricultural_exemption",
+      "scope": "Tea in a personal postal shipment",
+      "inclusive": true
+    },
+    "authority": "New Caledonia DAVAR",
+    "evidenceUrls": [
+      "https://davar.gouv.nc/sites/default/files/atoms/files/import_-_liste_de_certains_produits_importes_par_les_particuliers_et_passagers_debarquant_exemptes_de_permis_et_certificats_sanitaires.pdf",
+      "https://douane.gouv.nc/particuliers/colis-postaux"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The authority explicitly exempts qualifying green tea in personal postal shipments up to 5 kg from permits and phytosanitary/sanitary certificates; declare it and keep the original sealed label. No advance special agricultural document is required.",
+    "permitFreeSources": [
+      "https://davar.gouv.nc/sites/default/files/atoms/files/import_-_liste_de_certains_produits_importes_par_les_particuliers_et_passagers_debarquant_exemptes_de_permis_et_certificats_sanitaires.pdf",
+      "https://douane.gouv.nc/particuliers/colis-postaux"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "NF",
+    "name": "Norfolk Island",
+    "status": "allowed",
+    "rule": "The territory-specific Biosecurity Goods Determination section 6(3), excluded plant goods item 24, excludes processed black/green Camellia sinensis leaves for human consumption from the plant-goods permit division.",
+    "personalMailApplicability": "Exclusion concerns goods brought or imported into the territory, not a traveler-only allowance. Keep the product sealed, clean and accurately declared.",
+    "quantityLimit": null,
+    "authority": "Australian Federal Register of Legislation",
+    "evidenceUrls": [
+      "https://www.legislation.gov.au/F2016L01061/latest/text",
+      "https://www.legislation.gov.au/F2016L01061/2019-09-25/2019-09-25/text/original/pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.legislation.gov.au/F2016L01061/latest/text",
+      "https://www.legislation.gov.au/F2016L01061/2019-09-25/2019-09-25/text/original/pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "NP",
+    "name": "Nepal",
+    "status": "allowed",
+    "rule": "Nepal's National Phytosanitary Standard on Categorization of Commodities explicitly lists tea in Appendix 2, Category 1. Table 2 states that Category 1 products require neither phytosanitary measures nor a phytosanitary certificate. This covers manufactured tea rather than tea plants or raw leaf material.",
+    "personalMailApplicability": "The exemption is based on the commodity and processing category, with no passenger-only or commercial-only limitation; it therefore applies to finished tea sent by post for consumption.",
+    "quantityLimit": null,
+    "authority": "Nepal National Plant Protection Organization, National Phytosanitary Standard 32",
+    "evidenceUrls": [
+      "https://npponepal.gov.np/progressfiles/National-Phytosanitary-standard-on-catagorization-of-commoditites_1678005489-1701161369.pdf",
+      "https://www.npponepal.gov.np/progressfiles/NSPM-32-catagorization-of-commoditite_1632652996-1701164306.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Compared the explicit TEPC tea exemption with its cited obsolete legislation.",
+      "Read the current NPPO processing-risk standard category1/category2 distinction and searched for tea-specific classification.",
+      "2026-09-30: Retrieved the official indexed Appendix 2, which explicitly lists Tea in Category 1, and Table 2, which states no phytosanitary measures or certificate. This resolves the earlier processing-classification gap."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Tea is expressly Category 1 in Nepal NPPO Appendix 2; Table 2 requires no phytosanitary measures or certificate. No permit or special agricultural approval is needed for this manufactured-tea category.",
+    "permitFreeSources": [
+      "https://npponepal.gov.np/progressfiles/National-Phytosanitary-standard-on-catagorization-of-commoditites_1678005489-1701161369.pdf",
+      "https://www.npponepal.gov.np/progressfiles/NSPM-32-catagorization-of-commoditite_1632652996-1701164306.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "NR",
+    "name": "Nauru",
+    "status": "certificate_required",
+    "rule": "Agricultural Quarantine Act 1999, section 16(1), requires a health certificate for all plants and plant material entering other than in passenger baggage. Section 2 defines plant material to include items manufactured wholly or partly from plants. For plants, the health certificate is a phytosanitary certificate. Regulation 19(3)(a) exempts hermetically sealed manufactured shelf-stable food from an import permit, but does not waive the Act’s separate postal certificate requirement.",
+    "personalMailApplicability": "Section 16(1) explicitly covers imports other than passenger baggage, including postal tea sent to a private consumer.",
+    "quantityLimit": null,
+    "authority": "Nauru Agricultural Quarantine Regulations",
+    "evidenceUrls": [
+      "https://justice.gov.nr/wp-content/uploads/2023/12/Agricultural-Quarantine-Act-1999-Service-22.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope.",
+      "2026-09-30: Read the complete official service-22 consolidation, including Act section 2 plant-material/health-certificate definitions and section 16(1), alongside Regulation 19(3)(a). This resolves the previous permit-exemption-only assessment: postal imports retain a separate statutory phytosanitary-certificate requirement."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "A phytosanitary certificate is required for postal plant material by section 16(1), even where the hermetically sealed manufactured-food permit exemption applies. The store cannot meet that separate certificate requirement.",
+    "permitFreeSources": [
+      "https://justice.gov.nr/wp-content/uploads/2023/12/Agricultural-Quarantine-Act-1999-Service-22.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "NZ",
+    "name": "New Zealand",
+    "status": "allowed",
+    "rule": "The 9 April 2025 Stored Plant Products Import Health Standard expressly lists dried Camellia sinensis tea with no certification or inspection requirements. Keep commercially packed tea clean and identifiable.",
+    "personalMailApplicability": "Commodity standard applies to imports; MPI also provides guidance expressly covering bringing and posting food.",
+    "quantityLimit": null,
+    "authority": "New Zealand Ministry for Primary Industries",
+    "evidenceUrls": [
+      "https://www.mpi.govt.nz/dmsdocument/1663/direct",
+      "https://www.mpi.govt.nz/bring-send-to-nz/bringing-and-posting-items-to-nz/check-if-you-can-bring-or-send-an-item-to-nz/bringing-food-to-nz"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.mpi.govt.nz/dmsdocument/1663/direct",
+      "https://www.mpi.govt.nz/bring-send-to-nz/bringing-and-posting-items-to-nz/check-if-you-can-bring-or-send-an-item-to-nz/bringing-food-to-nz"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "PF",
+    "name": "French Polynesia",
+    "status": "conditional",
+    "rule": "DBS’s current private-import guidance, updated 5 August 2026 and citing Order 324 CM, expressly covers postal parcels. It waives both import permits and phytosanitary certificates for plant food that has undergone cooking, whether commercially/industrially prepared or otherwise. Camellia is absent from its listed prohibited cooked species. Applying that provision to the stated steam-manufactured sencha is an explicit processing inference. The authority’s reform notice confirms use of ISPM 32; the standard illustrates tea as Category 1. Full Annex 5 was not independently retrieved, so this finding rests on current DBS guidance, not the repealed 1996 order.",
+    "personalMailApplicability": "The current DBS page expressly includes post. Declare the tea accurately, keep it commercially sealed and labelled, and allow arrival inspection. This assessment depends on actual steaming during manufacture; it does not cover merely dried raw leaves or herbal mixtures.",
+    "quantityLimit": null,
+    "authority": "French Polynesia Direction de la biosécurité",
+    "evidenceUrls": [
+      "https://www.service-public.pf/biosecurite/accueil/particuliers/apporter-ou-faire-venir-en-pf-particulier/jarrive-en-polynesie-francaise/",
+      "https://www.service-public.pf/biosecurite/18-03-2026-nouvelle-reglementation-concernant/",
+      "https://www.ippc.int/en/publications/587/",
+      "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+      "https://www.service-public.pf/biosecurite/accueil/professionnels-2/importer-en-polynesie-francaise-2/denrees-alimentaires/denrees-stockees-dorigine-vegetale-refonte/produits-transformes-dorigine-vegetale/",
+      "https://lexpol.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+      "https://www.service-public.pf/biosecurite/accueil/reglementation-dbs/",
+      "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read DBS announcement identifying repeal and replacement of740CM.",
+      "Attempted the official Lexpol324CM link through browser research and direct HTTP; connection timed out.",
+      "Searched the official site and indexed gazette for324CM annex5 or a current tea exemption; not located.",
+      "Rechecked the March 2026 authority announcement and the stored/processed-food annex description.",
+      "Tried both official Lexpol hosts through browser research and direct HTTP; repeated connection timeouts prevented retrieving the full replacement order. Searched official gazette/authority mirrors without locating Annex 5.",
+      "Did not treat low-risk examples in the reform announcement or the obsolete 740 CM processed-food page as a tea-specific permission.",
+      "Final targeted source-recovery pass: the current DBS regulatory index independently lists Order 324 CM (16 March 2026) and links to Lexpol text 1037079 with a shorter query string. The index provides no separate downloadable copy or Annex 5 attachment. Both the index and the reform announcement therefore lead to the same inaccessible official text.",
+      "Tried the current Lexpol publication through web retrieval, direct public HTTP retrieval and a normal Chrome research tab. Web retrieval failed, the direct article request timed out, and the host-root lookup also returned a name-resolution failure. The browser navigation timed out without displaying the regulation. The public DBS WordPress media search returned HTTP 503. These are access failures, not a finding of prohibition.",
+      "Targeted government publication/attachment searches (DBS, service-public.pf, Lexpol, Presidency and Assembly) returned the reform summary and obsolete Order 740 material, but no current Annex 5 text. Annex 5 remains the exact missing public source; no outcome change was made.",
+      "30 September fresh official online recovery: downloaded the current private arrival/postal DBS guidance (219,665-byte HTTP200 HTML), updated5August2026 and expressly citing324CM. Read its post coverage, cooked-food exemption and cooked-species prohibitions. Independent peer review agrees that actual steam-manufactured sencha can reasonably satisfy the general cooking provision. Saved original HTML, SHA256 provenance and peer analysis; full324Annex5 remains unread. The earlier lack of a tea-specific current annex does not prevent use of this current general processing rule."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Current postal guidance supplies a published general cooked-plant-food exemption. Actual steam-manufactured pure sencha reasonably falls within it; that is a stated inference, supported by the authority’s current ISPM 32 framework. No special permit or foreign phytosanitary certificate is required under this published route. Ordinary declaration and arrival clearance remain.",
+    "permitFreeSources": [
+      "https://www.service-public.pf/biosecurite/accueil/particuliers/apporter-ou-faire-venir-en-pf-particulier/jarrive-en-polynesie-francaise/",
+      "https://www.service-public.pf/biosecurite/18-03-2026-nouvelle-reglementation-concernant/",
+      "https://www.ippc.int/en/publications/587/",
+      "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+      "https://www.service-public.pf/biosecurite/accueil/professionnels-2/importer-en-polynesie-francaise-2/denrees-alimentaires/denrees-stockees-dorigine-vegetale-refonte/produits-transformes-dorigine-vegetale/",
+      "https://lexpol.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+      "https://www.service-public.pf/biosecurite/accueil/reglementation-dbs/",
+      "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "Ordinary customs declaration and routine arrival inspection/clearance under the published cooked-food route.",
+    "requiredDocument": "No special permit or phytosanitary certificate under the stated cooked-plant-food route; accurate declaration and original labelled packaging."
+  },
+  {
+    "code": "PG",
+    "name": "Papua New Guinea",
+    "status": "not_verified",
+    "rule": "PNG’s current official authorities apply agricultural biosecurity import controls, but no current official commodity condition for sealed manufactured Camellia sinensis tea in personal post was located. The government confirms the Biosecurity Bill’s passage in June 2025 and current NPPO sources use PNG Biosecurity Authority. An old IPPC draft and unrelated tea-tree mulch conditions cannot establish this product’s current requirements. Separately, Food Sanitation Act 1991 section 30 limits advance food-import notification to imports for sale or business purposes; section 31 inspection does not establish a mandatory foreign certificate for this private parcel.",
+    "personalMailApplicability": "The evidence does not verify a personal-postal exemption or identify an applicable processed-tea permit/certificate condition.",
+    "quantityLimit": null,
+    "authority": "PNG Biosecurity Authority / NAQIA; PNG Customs; Japan MAFF directory",
+    "evidenceUrls": [
+      "https://www.maff.go.jp/pps/j/search/ekuni/oc/papua_new_guinea/index.html",
+      "http://www.naqia.gov.pg",
+      "https://customs.gov.pg/trade/infogeneral",
+      "https://www.pmnec.gov.pg/pm-marape-hails-83-0-passage-of-biosecurity-bill-2025-as-a-definingmoment-for-pngs-agricultural-future-sovereignty-and-trade/",
+      "https://www.ippc.int/static/media/files/reportingobligation/2017/08/11/PNG_Draft_Biosecurity_Bill.pdf",
+      "https://www.customs.gov.pg/pdf/pages/prohibited_imports.pdf",
+      "https://iccc.gov.pg/wp-content/uploads/2023/07/Food-Sanitation-Act-1991.pdf",
+      "https://customs.gov.pg/pdf/pages/prohibited_imports.pdf",
+      "https://facilitation.nto.gov.pg/pngba/",
+      "https://facilitation.nto.gov.pg/download/national-agriculture-quarantine-and-inspection-authority-act-1997/",
+      "https://parliament.gov.pg/bills-legislations/",
+      "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills",
+      "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=Biosecurity",
+      "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=bio",
+      "https://parliament.gov.pg/wp-json/parliament-pg/v1/get-bills?textSearch=2025",
+      "https://www.aiib.org/en/projects/details/2026/_download/papua-new-guinea/draft_P001062_PNG-Environmental-and-Social-Matrix.pdf",
+      "https://www.naqia.gov.pg/",
+      "https://www.gpo.gov.pg/"
+    ],
+    "remainingQuestion": "Enacted Biosecurity Act2025 definitions, entry-duty and transition provisions plus any preserved/current commodity specification or exemption for finished manufactured tea; no need for a tea-specific administrative letter if the general operative scope settles it.",
+    "researchAttempts": [
+      "Checked the Japan MAFF NPPO directory and the linked PNG quarantine authority.",
+      "Searched the authority, Customs and MICOR for Camellia sinensis, tea, processed foods and personal imports.",
+      "Rejected tea-tree mulch guidance (Melaleuca alternifolia) as an unrelated product and did not use Customs tariff treatment as agricultural clearance.",
+      "Checked the Prime Minister’s official June 2025 Biosecurity Bill passage announcement and current NPPO references; did not treat the 2017-uploaded draft as enacted law.",
+      "Checked the postal prohibited/restricted list and PNG Customs references; food labelling provisions do not settle tea’s agricultural status.",
+      "Rejected MPI guidance about small personal food quantities presented on an arrival card because it concerns passenger/animal-food imports rather than a mailed tea parcel. Repeated official tea/Camellia/processed-food searches did not locate current commodity conditions.",
+      "30 September independent food-law review: obtained the ICCC-hosted enacted Food Sanitation Act 1991. Section 30, printed p.17, limits advance import notification to food imported for sale or business purposes; section 31 provides examination of imported food. Sections 33–35 license prescribed businesses, not every private consumer. The current Customs food entry identifies labelling compliance under the 2007 Regulation, not a blanket private-parcel health/free-sale certificate. No independent mandatory special food document for this private sencha parcel was established, so the agricultural commodity gap remains unresolved. Saved primary Act as pacific-food-sources/pg-food1991.*.",
+      "30 September bounded remaining-scope review: Retrieved the official National Trade Office PNGBA page and inspected its download links. It names the new authority but links the 1997 NAQIA Act; some displayed Act dates/titles are internally inconsistent. It supplies neither the enacted 2025 law nor a current Japanese tea specification. The 2017 draft was not substituted for enacted law.",
+      "Read the current PG row and previous tariff/food/source access trail. Recovered the newly migrated official Parliament page and public JavaScript. Followed its documented wp-json/parliament-pg/v1/get-bills endpoint and exact textSearch filter. Saved unfiltered and filtered official responses without authentication. Biosecurity/bio searches returned zero while a 2025 title search returned 39 records. Did not retry the already failed 509 tariff paths or apply business-food registration to a private parcel.",
+      "30 September additional primary review: New 2026 AIIB official project matrix confirms the Biosecurity Act2025 and reports implementing regulations and related instruments still under preparation, with completion targeted for end2026. It refers to disposal/destruction authority under the new Act and, transitionally, older animal/plant laws. This is institutional transition evidence, not the enacted import definition/tea requirement. Saved full AIIB matrix and text. Current NPPO-linked NAQIA HTTPS request fails because the certificate is expired; the government printer public home request returned406. The previously recovered live Parliament search remains negative for biosecurity despite returning other certified2025 acts; it was not re-queried. Targeted commencement/act-number search supplied no operative instrument."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "No current official rule establishes ordinary-post-only admission for this finished tea. The unresolved issue is the specific classification or current source identified below; this is not a finding that all tea is prohibited. The missing source is PNG Biosecurity Authority’s current commodity specification/exemption for finished Japanese Camellia sinensis tea in personal postal parcels, including whether a recipient import permit or origin phytosanitary certificate is required.",
+    "permitFreeSources": [
+      "https://www.maff.go.jp/pps/j/search/ekuni/oc/papua_new_guinea/index.html",
+      "http://www.naqia.gov.pg",
+      "https://customs.gov.pg/trade/infogeneral",
+      "https://www.pmnec.gov.pg/pm-marape-hails-83-0-passage-of-biosecurity-bill-2025-as-a-definingmoment-for-pngs-agricultural-future-sovereignty-and-trade/",
+      "https://www.ippc.int/static/media/files/reportingobligation/2017/08/11/PNG_Draft_Biosecurity_Bill.pdf",
+      "https://www.customs.gov.pg/pdf/pages/prohibited_imports.pdf",
+      "https://iccc.gov.pg/wp-content/uploads/2023/07/Food-Sanitation-Act-1991.pdf",
+      "https://customs.gov.pg/pdf/pages/prohibited_imports.pdf",
+      "https://facilitation.nto.gov.pg/pngba/",
+      "https://facilitation.nto.gov.pg/download/national-agriculture-quarantine-and-inspection-authority-act-1997/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "unresolved_product_classification",
+    "requiredDocument": "Unresolved: no defensible tea-specific determination of whether special import documents are required; ordinary postal/customs declarations alone are not yet verified.",
+    "foodImportReview": "No independent blanket special-document obligation established for the described private 100 g postal food order; this does not establish agricultural clearance.",
+    "urls": [
+      "https://www.aiib.org/en/projects/details/2026/_download/papua-new-guinea/draft_P001062_PNG-Environmental-and-Social-Matrix.pdf",
+      "https://www.naqia.gov.pg/",
+      "https://www.gpo.gov.pg/"
+    ],
+    "files": [
+      "pg-tariff-currentupload.pdf",
+      "pg-prohibited-reg1973.pdf"
+    ],
+    "finding": "New 2026 AIIB official project matrix confirms the Biosecurity Act2025 and reports implementing regulations and related instruments still under preparation, with completion targeted for end2026. It refers to disposal/destruction authority under the new Act and, transitionally, older animal/plant laws. This is institutional transition evidence, not the enacted import definition/tea requirement.",
+    "remainingGap": "Full operative current commodity-control schedule and 2025 Biosecurity transition text sufficient to assess finished tea. No approval inferred from an unverified missing Qr marker.",
+    "fileWarning": "Named PDF-extension files contain logged error HTML, not operative PDFs; see route-results provenance.",
+    "outcome": "unresolved",
+    "decisionChanged": false,
+    "newFinding": "Recovered the official Parliament’s new public legislation application and its public REST search. Its unfiltered index contains 550 records, including certified 2025 enactments. The documented application filter textSearch=Biosecurity, and broader textSearch=bio, returned zero records; textSearch=2025 returned 39, proving that the text filter operates. The date-year filter is based on administrative bill_date and cannot establish a complete legislative year. This source recovery does not supply the enacted Biosecurity Act text or commencement; a zero search result is not proof that it was not enacted. No legislative or tea-document outcome changes follow.",
+    "sourceFiles": [
+      "asia-six-recovery/mv-pg/pg-parliament-index.html",
+      "asia-six-recovery/mv-pg/pg-parliament-public.js",
+      "asia-six-recovery/mv-pg/pg-bills.json",
+      "asia-six-recovery/mv-pg/pg-biosecurity-filter.json",
+      "asia-six-recovery/mv-pg/pg-bio-search.json",
+      "asia-six-recovery/mv-pg/pg-bills2025-title.json",
+      "docs/reports/tea-audit-work/remaining-six-primary-review/pg-aiib2026-transition.pdf",
+      "docs/reports/tea-audit-work/remaining-six-primary-review/pg-aiib2026-transition.txt",
+      "docs/reports/tea-audit-work/remaining-six-primary-review/pg-aiib-provenance.json",
+      "docs/reports/tea-audit-work/remaining-six-primary-review/pg-gazette-home.html",
+      "docs/reports/tea-audit-work/asia-six-recovery/mv-pg/pg-source-only-patch.json"
+    ],
+    "newSourceResult": "Saved full AIIB matrix and text. Current NPPO-linked NAQIA HTTPS request fails because the certificate is expired; the government printer public home request returned406. The previously recovered live Parliament search remains negative for biosecurity despite returning other certified2025 acts; it was not re-queried. Targeted commencement/act-number search supplied no operative instrument.",
+    "preciseRemainingEvidence": "Enacted Biosecurity Act2025 definitions, entry-duty and transition provisions plus any preserved/current commodity specification or exemption for finished manufactured tea; no need for a tea-specific administrative letter if the general operative scope settles it.",
+    "contraryInterpretation": "Older broad import-permit guidance might continue, but the AIIB transition reference is about disposal/destruction and cannot prove all old import controls remain unchanged. The 2017 draft is not enacted text.",
+    "confidence": "High that the new material does not establish clearance; no inferred prohibition.",
+    "additionalOfficialReview": {
+      "code": "PG",
+      "outcome": "unresolved",
+      "decisionChanged": false,
+      "reviewedAt": "2026-09-30",
+      "finding": "New 2026 AIIB official project matrix confirms the Biosecurity Act2025 and reports implementing regulations and related instruments still under preparation, with completion targeted for end2026. It refers to disposal/destruction authority under the new Act and, transitionally, older animal/plant laws. This is institutional transition evidence, not the enacted import definition/tea requirement.",
+      "newSourceResult": "Saved full AIIB matrix and text. Current NPPO-linked NAQIA HTTPS request fails because the certificate is expired; the government printer public home request returned406. The previously recovered live Parliament search remains negative for biosecurity despite returning other certified2025 acts; it was not re-queried. Targeted commencement/act-number search supplied no operative instrument.",
+      "urls": [
+        "https://www.aiib.org/en/projects/details/2026/_download/papua-new-guinea/draft_P001062_PNG-Environmental-and-Social-Matrix.pdf",
+        "https://www.naqia.gov.pg/",
+        "https://www.gpo.gov.pg/"
+      ],
+      "preciseRemainingEvidence": "Enacted Biosecurity Act2025 definitions, entry-duty and transition provisions plus any preserved/current commodity specification or exemption for finished manufactured tea; no need for a tea-specific administrative letter if the general operative scope settles it.",
+      "contraryInterpretation": "Older broad import-permit guidance might continue, but the AIIB transition reference is about disposal/destruction and cannot prove all old import controls remain unchanged. The 2017 draft is not enacted text.",
+      "confidence": "High that the new material does not establish clearance; no inferred prohibition.",
+      "sourceFiles": [
+        "remaining-six-primary-review/pg-aiib2026-transition.pdf",
+        "remaining-six-primary-review/pg-aiib2026-transition.txt",
+        "remaining-six-primary-review/pg-aiib-provenance.json",
+        "remaining-six-primary-review/pg-gazette-home.html",
+        "asia-six-recovery/mv-pg/pg-source-only-patch.json"
+      ]
+    }
+  },
+  {
+    "code": "PH",
+    "name": "Philippines",
+    "status": "allowed",
+    "rule": "MAFF postal matrix dated21April2026 explicitly marks manufactured green tea for the Philippines as exportable without a phytosanitary certificate; no plant import permit marker is present.",
+    "personalMailApplicability": "This is expressly Japanese postal manufactured-green-tea guidance, rather than a baggage concession.",
+    "quantityLimit": null,
+    "authority": "Japan MAFF Plant Protection Station; Philippine Bureau of Plant Industry",
+    "evidenceUrls": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "remainingQuestion": "Observe any separate FDA personal processed-food quantity limits and declare the parcel accurately.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "PK",
+    "name": "Pakistan",
+    "status": "permit_required",
+    "rule": "MAFF postal matrix marks manufactured green tea PQ*11: plant import permit and phytosanitary certificate, with an unspecified exception for goods outside plant quarantine. Pakistan DPP conditions recorded by DAFF also treat processed tea for consumption as certificate controlled.",
+    "personalMailApplicability": "Exact Japanese postal green-tea matrix; DAFF Australian endorsement is not assumed applicable to Japan.",
+    "quantityLimit": null,
+    "authority": "Pakistan Department of Plant Protection; Japan MAFF",
+    "evidenceUrls": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://micor.agriculture.gov.au/plants/pakistan_pk/tea"
+    ],
+    "remainingQuestion": "Recipient must confirm this retail-tea exemption or obtain DPP import permission specifying Japan-origin phytosanitary conditions before posting.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://micor.agriculture.gov.au/plants/pakistan_pk/tea"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "PN",
+    "name": "Pitcairn",
+    "status": "permit_required",
+    "rule": "Biosecurity Ordinance2024 section4(3) includes all plant products, and Schedule1 expressly includes products manufactured wholly or partly from plants. Section16(10) requires an import permit where no commodity specification applies. No published tea specification or exemption was located.",
+    "personalMailApplicability": "The rule covers imported goods and manufactured plant products regardless of personal use; the permit application precedes departure from the origin.",
+    "quantityLimit": null,
+    "authority": "Pitcairn Governor; Chief Biosecurity Officer",
+    "evidenceUrls": [
+      "https://www.government.pn/laws",
+      "https://www.government.pn/s/2024-03-03_Biosecurity_Ordinance_signed_and_dated_with_legal_report-fpka.pdf"
+    ],
+    "remainingQuestion": "Obtain the Chief Biosecurity Officer permit or the applicable published tea specification/exemption before dispatch.",
+    "researchAttempts": [
+      "Downloaded and OCR-read2024Ordinance §§4,12–17 and Schedule1 definition, rather than relying on superseded quarantine rules.",
+      "Searched the government law directory and public biosecurity guidance for processed tea specifications; none located."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://www.government.pn/laws",
+      "https://www.government.pn/s/2024-03-03_Biosecurity_Ordinance_signed_and_dated_with_legal_report-fpka.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "PW",
+    "name": "Palau",
+    "status": "conditional",
+    "rule": "Quarantine Regulation 2.14(g)(i) exempts fully manufactured hermetically sealed shelf-stable food from an import permit; Part IV QP8 imposes inspection of stored dried food without a phytosanitary-certificate requirement. Biosecurity Act 2014 (enacted 2016), section 84, preserves these regulations. Sections 20–22 retain arrival clearance and inspection; current Customs guidance says personal postal imports are processed by Customs. The actual retail pouch must be hermetically sealed.",
+    "personalMailApplicability": "Product-based import exemption, not a passenger-only allowance.",
+    "quantityLimit": null,
+    "authority": "Palau Bureau of Agriculture/Bureau of Customs and Border Protection",
+    "evidenceUrls": [
+      "https://www.palaugov.pw/wp-content/uploads/2015/03/Plant-Animal-Quarantines-and-Regulation-with-Amendments.pdf",
+      "https://bcbp.pw/?page_id=166",
+      "https://faolex.fao.org/docs/pdf/pau155748.pdf",
+      "https://bcbp.pw/?page_id=3153"
+    ],
+    "remainingQuestion": "Verify the actual retail pouch is hermetically sealed and shelf-stable; a merely resealable bag does not establish this exemption.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope.",
+      "2026-09-30: Read the full 2016 Biosecurity Act: sections 20–22 govern clearance and commodity-specific certificates, and section 84 explicitly preserves the earlier quarantine regulations. Checked Part IV QP8 and current Customs procedure, which expressly places personal postal clearance with Customs."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Supported under the manufactured-food exemption when the pouch is hermetically sealed and shelf-stable. No phytosanitary certificate is specified for stored dried food. The recipient may need routine biosecurity/customs arrival clearance; this is not a requirement to obtain an exporter certificate or advance import permit.",
+    "permitFreeSources": [
+      "https://www.palaugov.pw/wp-content/uploads/2015/03/Plant-Animal-Quarantines-and-Regulation-with-Amendments.pdf",
+      "https://bcbp.pw/?page_id=166",
+      "https://faolex.fao.org/docs/pdf/pau155748.pdf",
+      "https://bcbp.pw/?page_id=3153"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "ordinary customs/biosecurity declaration and arrival inspection; no exporter certificate or advance import permit under the specified route"
+  },
+  {
+    "code": "SB",
+    "name": "Solomon Islands",
+    "status": "conditional",
+    "rule": "Biosecurity Solomon Islands allows personal consignments of thoroughly dried, non-propagable plant parts for consumption up to 1 kg per product type. Botanical labelling and freedom from seeds, live insects, soil and quarantine-risk material are required; arrival inspection applies.",
+    "personalMailApplicability": "The same FAQ explicitly applies biosecurity rules to internet/mail-order purchases and international mail/courier parcels. Use the published 1 kg dried-plant route rather than assume that steaming qualifies for a separate cooked-food exception.",
+    "quantityLimit": {
+      "netGrams": 1000,
+      "text": "Personal dried-plant products, per product type; larger shipments require commercial conditions.",
+      "kind": "agricultural_personal",
+      "scope": "Dried plant product, per product type",
+      "inclusive": true
+    },
+    "authority": "Biosecurity Solomon Islands",
+    "evidenceUrls": [
+      "https://www.biosecurity.gov.sb/Importers/faq-importers-and-arrivals",
+      "https://www.biosecurity.gov.sb/Portals/93/Content/Documents/Resources/Biosecurity%20Regulations%202015.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope.",
+      "2026-09-30: Re-read the full official FAQ specific personal-herb/dried-plant conditions alongside the general plant rules and 2015 regulations. The specific <=1 kg route prescribes inspection and release on compliance, without permit/certificate documentation; the same FAQ expressly covers mail-order and courier purchases. Kept the 1 kg limit and botanical labelling condition."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Supported within the published personal dried-plant route: at most 1 kg per product type, fully dried and non-propagable, botanically labelled and free of seeds, insects, soil and other quarantine material. The authority lists arrival inspection and release upon satisfying these conditions, without requiring a permit or phytosanitary certificate for that personal route. This is an inference from the complete specific conditions, not a general exemption for all plant products.",
+    "permitFreeSources": [
+      "https://www.biosecurity.gov.sb/Importers/faq-importers-and-arrivals",
+      "https://www.biosecurity.gov.sb/Portals/93/Content/Documents/Resources/Biosecurity%20Regulations%202015.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "ordinary customs/biosecurity declaration and arrival inspection; no exporter certificate or advance import permit under the specified route",
+    "quantityLimitKg": 1,
+    "quantityLimitBasis": "Personal dried-plant product per product type; >1 kg requires commercial import conditions."
+  },
+  {
+    "code": "SG",
+    "name": "Singapore",
+    "status": "allowed",
+    "rule": "SFA explicitly classifies retail green tea leaves09021010 as processed food. Personal postal processed food is permitted within a combined5kg/5L and S$100 limit; plant-growing permits are not the route for this finished food.",
+    "personalMailApplicability": "SFA clearance-of-detained-food-parcels guidance expressly applies the private-consumption limits to parcels.",
+    "quantityLimit": {
+      "netGrams": 5000,
+      "inclusive": true,
+      "kind": "personal_food",
+      "scope": "Combined processed foods in one personal import",
+      "text": "5kg/5L total and S$100 total value; quantity above the limit requires the appropriate food import licence/permit."
+    },
+    "authority": "Singapore Food Agency",
+    "evidenceUrls": [
+      "https://www.sfa.gov.sg/docs/default-source/tools-and-resources/product-codes-for-tradenet/product-code-for-processed-food-and-food-appliances.pdf",
+      "https://www.sfa.gov.sg/docs/default-source/food-import-and-export/clearance-of-detained-food-parcels.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.sfa.gov.sg/docs/default-source/tools-and-resources/product-codes-for-tradenet/product-code-for-processed-food-and-food-appliances.pdf",
+      "https://www.sfa.gov.sg/docs/default-source/food-import-and-export/clearance-of-detained-food-parcels.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "TH",
+    "name": "Thailand",
+    "status": "certificate_required",
+    "rule": "MAFF postal matrix dated21April2026 specifically marks manufactured green tea for Thailand Q: phytosanitary certificate required. Thai2007 notification lists dried Camellia sinensis leaves as restricted articles. Its preserved-food exception is not treated as an established waiver for this postal sencha product.",
+    "personalMailApplicability": "Exact Japanese postal manufactured-green-tea row; FDA personal-food tea quantity remains1kg and does not waive quarantine.",
+    "quantityLimit": {
+      "netGrams": 1000,
+      "inclusive": true,
+      "kind": "personal_food",
+      "scope": "Tea for personal import",
+      "text": "FDA personal-use tea quantity; does not itself waive agricultural documentation."
+    },
+    "authority": "Thailand Department of Agriculture; Thai FDA",
+    "evidenceUrls": [
+      "https://bangkokherbarium.doa.go.th/lawTh/EN2550.pdf",
+      "https://www.ippc.int/en/countries/thailand/reportingobligation/2017/03/notification-of-ministry-of-agriculture-and-cooperatives-plants-and-carriers-from-certain-sources-as-restricted-articles-3/",
+      "https://logistics.fda.moph.go.th/media.php?id=678157204414668800&name=personal+use-en.pdf",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "remainingQuestion": "Arrange Japanese phytosanitary certification before posting unless Thai DOA provides an explicit processing-based exemption for this product.",
+    "researchAttempts": [
+      "Read the actual2007 notification: dried tea is restricted, while preserved foods are expressly excepted.",
+      "Checked the separate Thai FDA personal postal food quantity guidance."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://bangkokherbarium.doa.go.th/lawTh/EN2550.pdf",
+      "https://www.ippc.int/en/countries/thailand/reportingobligation/2017/03/notification-of-ministry-of-agriculture-and-cooperatives-plants-and-carriers-from-certain-sources-as-restricted-articles-3/",
+      "https://logistics.fda.moph.go.th/media.php?id=678157204414668800&name=personal+use-en.pdf",
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "TJ",
+    "name": "Tajikistan",
+    "status": "certificate_required",
+    "rule": "Government Resolution 375 of 23 June 2020, Annex 1 item 37, expressly lists tea with or without flavouring (HS 0902) as regulated material, without a retail-packaging exclusion. Law 1567 of 2019 as amended in June 2024, Article 13(1), requires the exporting authority’s phytosanitary certificate for imported regulated material. The earlier uncertainty about manufactured tea classification is resolved by that commodity list.",
+    "personalMailApplicability": "Article 13 applies to importation of regulated material, not only commercial imports. The HS 0902 listing has no small-package or personal-use exclusion. A personal postal shipment is therefore within the published certificate rule; no postal exemption was found.",
+    "quantityLimit": null,
+    "authority": "Tajikistan National Center of Legislation; plant quarantine authority",
+    "evidenceUrls": [
+      "https://ncz.tj/node/1341",
+      "https://www.maff.go.jp/pps/j/search/ekuni/eu/tajikistan/index.html",
+      "https://tajtrade.tj/media/%E2%84%96375%20%D0%9F%D0%9F%D0%A0%D0%A2%20%D0%9F%D0%B5%D1%80%D0%B5%D1%87%D0%B5%D0%BD%D1%8C%20%D0%BF%D0%BE%D0%B4%D0%BA%D0%B0%D1%80%D0%B0%D0%BD%D1%82%D0%B8%D1%80%D0%BD%D1%8B%D0%B9%20%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D0%BE%D0%B2.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Located the official consolidated 2019 law including the June 2024 amendment.",
+      "Read Articles 1, 9 and 13–16, distinguishing the regulated-material risk definition from all plant-derived foods.",
+      "Searched the official trade portal and legal sources for tea/HS0902 and a personal-mail exemption; none verified.",
+      "2026-09-30: Located and read Resolution 375 of 23 June 2020 from the official Tajik trade portal. Its Annex 1 item 37 lists HS 0902 tea without retail-packaging exclusion; it expressly repealed the old 2010 commodity list. Re-read Article 13(1) of the consolidated 2019 law and corrected the earlier inaccurate Article 9 reference."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The current official regulated-material list expressly includes finished tea under HS 0902, and Article 13(1) requires a phytosanitary certificate on import. The store cannot satisfy that certificate requirement.",
+    "permitFreeSources": [
+      "https://ncz.tj/node/1341",
+      "https://www.maff.go.jp/pps/j/search/ekuni/eu/tajikistan/index.html",
+      "https://tajtrade.tj/media/%E2%84%96375%20%D0%9F%D0%9F%D0%A0%D0%A2%20%D0%9F%D0%B5%D1%80%D0%B5%D1%87%D0%B5%D0%BD%D1%8C%20%D0%BF%D0%BE%D0%B4%D0%BA%D0%B0%D1%80%D0%B0%D0%BD%D1%82%D0%B8%D1%80%D0%BD%D1%8B%D0%B9%20%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D0%BE%D0%B2.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "phytosanitary certificate issued by exporting-country plant authority"
+  },
+  {
+    "code": "TO",
+    "name": "Tonga",
+    "status": "permit_required",
+    "rule": "Current official Plant Quarantine Act (2020 Revised Edition), section 2, defines plant material as all materials of plant origin; manufactured items are excluded only from the separate definition of plant. Section 25(1) makes importing any plant, plant material or other regulated article unlawful until a written permit is issued under prescribed regulations. Applying this unqualified plant-material scope to finished steamed/dried sencha is a legal-scope inference. Section 17 was repealed in 1995 and is not a current permit provision. Regulation 26 specifically requires permits with conditions for manufactured material assessed by the Director as a potential serious exotic-pest carrier, but contains no express general permit waiver for other manufactured material; regulations 23–25 contain narrower preserved fruit/vegetable and dried-flower provisions. ISPM 32’s Category 1 tea example is technical evidence, not an automatic domestic statutory waiver. Food Act 2020 import definitions concern commercial purposes and do not independently establish a private-food certificate duty.",
+    "personalMailApplicability": "The Act defines import by any conveyance, applies to any person, authorizes examination/opening of mail in sections 11–12, and expressly requires Customs/Post Office holding and notification for regulated incoming mail in section 29. There is no personal-consumption or 100 g exception in the reviewed permit provision.",
+    "quantityLimit": null,
+    "authority": "Tonga Attorney General’s Office; Ministry of Agriculture, Food and Forests",
+    "evidenceUrls": [
+      "https://maff.gov.to/qqmd/",
+      "https://www.mpi.govt.nz/dmsdocument/697/direct",
+      "https://micor.agriculture.gov.au/plants/tonga_to/herb-and-species---dried",
+      "https://faolex.fao.org/docs/pdf/ton80201.pdf",
+      "https://faolex.fao.org/docs/pdf/ton49222.pdf",
+      "https://maff.gov.to/legislation/",
+      "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/2020/2020-0073/FoodAct2020_1.pdf",
+      "https://maff.gov.to/division/food/",
+      "https://www.wto.org/english/tratop_e/tpr_e/s409_e.pdf",
+      "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/1981/1981-0024/PlantQuarantineAct_3.pdf",
+      "https://ago.gov.to/cms/legislation/current-revised-edition/by-title.html?view=acts_alpha",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf"
+    ],
+    "remainingQuestion": "No additional source is needed for the conservative no-permit store exclusion under section 25(1). A published automatic permit waiver for manufactured retail tea, or authoritative legal construction that regulation 26 exhaustively displaces section 25(1) for such material, would change it. The reviewed text contains neither; the interpretive caveat is preserved rather than presenting a tea-specific ruling.",
+    "researchAttempts": [
+      "Read Tonga MAFF Quarantine Division guidance and legislation links.",
+      "Compared MPI Tonga import conditions with current Australian MICOR dried-herb conditions; origin and product coverage differ.",
+      "Searched for tea-specific conditions and personal-postal exemption; not verified.",
+      "Obtained the NPPO-submitted 1995 regulations via FAOLEX and read regulations 16, 17, 21, 23, 25 and 26. Manufactured plant material is governed by a risk determination, not a blanket exemption or automatic blanket permit rule.",
+      "Read the Plant Quarantine Act definition: plant excludes manufactured items, but plant material includes all materials of plant origin. This makes the specific regulation 26 determination essential.",
+      "Rechecked MPI’s February 2024 Tonga conditions and section 1.2 origin scope. Its removed herbal-teabag entries and Australia’s named dried-herb conditions do not establish Japanese Camellia tea conditions.",
+      "30 September independent food-law review: retrieved the current Attorney General-hosted Food Act 2020 (Act 3 of 2020). Section 2, printed p.9, defines both import and importer by commercial purposes. Section 51, printed p.30, requires prescribed documents and presentation for inspection, but must be read with those definitions. Section 19 concerns information the Authority obtains from Customs, not an independent requirement that every private consumer procure each named certificate. The WTO 2021 review paragraph 3.65 broadly describes food-import permits/certificates, but does not establish private-post scope and was not used to override the enacted definitions. The current MAFF Food Division still cites the 2020 Act. No independent private-consumption certificate obligation established; saved official Act in pacific-food-sources/to-food2020-government.*.",
+      "30 September bounded remaining-scope review: Reread saved regulations 23–26: preserved fruit/vegetable and dried-flower provisions are specific categories; regulation 26 depends on the Director's assessment of manufactured plant material as a serious exotic-pest carrier. Those concessions do not expressly determine Camellia tea, and no new applicable specification was recovered.",
+      "30 September fresh official-text recovery: used AGO Current Revised Edition title form (submit4=P, point-in-time 2026-09-30) to recover PlantQuarantineAct_3.pdf, identified as current 2020 Revised Edition, commenced 4 December 2020. Section 17 is repealed by Act10/1995. Read current sections 2, 3, 11–12, 18, 23–29 and endnotes with complete 1995 Regulations 21–29. Current section 25(1) expressly covers any plant material; section 2 defines that category as all material of plant origin. Unlike regulation 23(4), regulation 26 never expressly permits low-risk manufactured goods without a permit. Proposed conservative exclusion using this current broad duty and preserving the interpretive caveat. No general mandatory ISPM-processing exemption appears; IPPC reference in Act2 concerns certificate format. Do not use the old section17 or presume a processed-tea phytosanitary certificate duty from current section25(2)."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "Conservative exclusion under the current parent Act’s affirmative permit duty: section 25(1), read with the unqualified section 2 plant-material definition, covers processed tea by legal-scope inference. Regulation 26’s risk-qualified requirement is acknowledged, but it does not expressly say manufactured goods outside that assessment may enter without permit, unlike the express no-permit concessions in regulation 23. No applicable automatic tea/general-manufactured-food permit waiver was found. This is a special import-permit barrier under the store constraint, not a finding that tea is prohibited or an unsupported demand for a foreign certificate.",
+    "permitFreeSources": [
+      "https://maff.gov.to/qqmd/",
+      "https://www.mpi.govt.nz/dmsdocument/697/direct",
+      "https://micor.agriculture.gov.au/plants/tonga_to/herb-and-species---dried",
+      "https://faolex.fao.org/docs/pdf/ton80201.pdf",
+      "https://faolex.fao.org/docs/pdf/ton49222.pdf",
+      "https://maff.gov.to/legislation/",
+      "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/2020/2020-0073/FoodAct2020_1.pdf",
+      "https://maff.gov.to/division/food/",
+      "https://www.wto.org/english/tratop_e/tpr_e/s409_e.pdf",
+      "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/1981/1981-0024/PlantQuarantineAct_3.pdf",
+      "https://ago.gov.to/cms/legislation/current-revised-edition/by-title.html?view=acts_alpha",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "advance_import_permit",
+    "requiredDocument": "Written plant-material import permit under Plant Quarantine Act section 25(1), applying its broad material-of-plant-origin scope to finished sencha by inference. The decision does not rely on construing section 25(2)’s living plants and plant material wording as a processed-tea certificate requirement. Ordinary Customs/arrival inspection paperwork is not the blocker.",
+    "foodImportReview": "No independent blanket special-document obligation established for the described private 100 g postal food order; this does not establish agricultural clearance.",
+    "urls": [
+      "https://maff.gov.to/qqmd/"
+    ],
+    "files": [
+      "to-quarantine.html",
+      "to-quarantine-www.html"
+    ],
+    "finding": "New official current consolidated Act recovered. Prior Act PDF predated repeal of section 17. Section 25(1) remains a broad affirmative plant-material permit duty. Proposed conservative not_supported decision, with regulation 26 interpretation caveat retained.",
+    "remainingGap": "No-permit store decision closed conservatively from broad current statute; no tea-specific authority ruling claimed. A contrary applicable automatic exemption would warrant revision.",
+    "outcome": "not_supported",
+    "decisionChanged": true,
+    "legalInterpretation": "Broad parent-Act duty controls unless a specific exemption applies. Regulation 26 states a positive permit requirement for risk-assessed manufactured material, not an express negative exemption for the rest. This is an interpretation of complete published operative text; it is not a tea-specific national classification.",
+    "certificateRequirementEstablished": false
+  },
+  {
+    "code": "TV",
+    "name": "Tuvalu",
+    "status": "allowed",
+    "rule": "Biosecurity Regulations section 3 explicitly exempts tea for human consumption from the plant import prohibition. Declare identifiable commercially packaged tea.",
+    "personalMailApplicability": "The exemption is for importation of goods, without a baggage-only limitation.",
+    "quantityLimit": null,
+    "authority": "Tuvalu legislation, Biosecurity Regulations 2022 revised edition",
+    "evidenceUrls": [
+      "https://tuvalu-legislation.tv/cms/images/LEGISLATION/SUBORDINATE/2017/2017-0024A/2017-0024A_1.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://tuvalu-legislation.tv/cms/images/LEGISLATION/SUBORDINATE/2017/2017-0024A/2017-0024A_1.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "TW",
+    "name": "Taiwan",
+    "status": "allowed",
+    "rule": "Taiwan agriculture guidance identifies green, black and roasted tea as non-quarantine processed plant products. The international-post guidance expressly lists these teas as exempt commodities.",
+    "personalMailApplicability": "Applies to international postal packages; current APHIA guidance likewise exempts completely processed/roasted tea.",
+    "quantityLimit": {
+      "netGrams": 6000,
+      "maxValue": 1000,
+      "currency": "USD",
+      "text": "Separate TFDA personal food inspection exemption; tea origin-document exception also uses 6 kg.",
+      "kind": "personal_food",
+      "scope": "Per customs declaration line item for personal food imports",
+      "inclusive": true
+    },
+    "authority": "Taiwan Ministry of Agriculture and APHIA",
+    "evidenceUrls": [
+      "https://www.moa.gov.tw/ws.php?id=6108&print=Y",
+      "https://www.aphia.gov.tw/UserFiles/file/123/123.pdf",
+      "https://www.fda.gov.tw/tc/faqContent.aspx?id=1114"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://www.moa.gov.tw/ws.php?id=6108&print=Y",
+      "https://www.aphia.gov.tw/UserFiles/file/123/123.pdf",
+      "https://www.fda.gov.tw/tc/faqContent.aspx?id=1114"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "UZ",
+    "name": "Uzbekistan",
+    "status": "allowed",
+    "rule": "The current quarantine-controlled list under Cabinet Resolution65 retains bulk green/black tea codes090220/090240 but does not list retail green tea090210. The 100g sealed retail product therefore falls outside that listed quarantine-permit scope.",
+    "personalMailApplicability": "Commodity-code exclusion is not limited to passengers; applies to the audited retail postal product.",
+    "quantityLimit": null,
+    "authority": "Uzbekistan Cabinet of Ministers; LexUZ official legislation database",
+    "evidenceUrls": [
+      "https://lex.uz/docs/-3540097"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the current consolidated Resolution65 list and checked both090210 and all0902 entries; do not apply the remaining bulk-tea codes to100g retail pouches."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://lex.uz/docs/-3540097"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "VN",
+    "name": "Vietnam",
+    "status": "certificate_required",
+    "rule": "MAFF postal matrix dated21April2026 specifically marks manufactured green tea for Vietnam Q: Japanese phytosanitary certificate required. Vietnam NPPO conditions recorded by DAFF likewise require a certificate for processed tea for consumption, without an import permit.",
+    "personalMailApplicability": "Exact Japanese manufactured-green-tea postal row, not a passenger allowance.",
+    "quantityLimit": null,
+    "authority": "Japan MAFF Plant Protection Station; Vietnam Plant Production and Protection Department",
+    "evidenceUrls": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://micor.agriculture.gov.au/plants/vietnam_vn/tea"
+    ],
+    "remainingQuestion": "Arrange Japanese export phytosanitary inspection/certificate before posting.",
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The evidenced default route requires a permit, certificate or special regulatory clearance. Do not ship under the no-special-documents constraint unless an applicable exemption is affirmatively established.",
+    "permitFreeSources": [
+      "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702",
+      "https://micor.agriculture.gov.au/plants/vietnam_vn/tea"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "VU",
+    "name": "Vanuatu",
+    "status": "allowed",
+    "rule": "Plant Import Specification Appendix 1.1 allows commercially packaged/labelled cooked or dried plant foods from any country without import permit or phytosanitary certificate. Arrival inspection and any required treatment remain.",
+    "personalMailApplicability": "Applies to imported plant products generally, including personal parcels.",
+    "quantityLimit": null,
+    "authority": "Biosecurity Vanuatu",
+    "evidenceUrls": [
+      "https://biosecurity.gov.vu/images/Legislation/Acts/Plant-import-Specification.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://biosecurity.gov.vu/images/Legislation/Acts/Plant-import-Specification.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "WF",
+    "name": "Wallis and Futuna",
+    "status": "not_verified",
+    "rule": "The 2026 French aviation information publication, GEN 1.4.2 for Wallis and Futuna, expressly covers goods and mail. It requires phytosanitary certificates for unmanufactured plant products and exempts loose/bulk tea from the import permit only. It does not establish whether steamed/dried tea in a sealed retail pouch falls within that tea category or outside the unmanufactured-product definition. The traveller processed-food concessions are not a postal exemption.",
+    "personalMailApplicability": "The published simplified conditions are expressly for arriving travellers. The 100 g tea customs allowance is not evidence of postal agricultural permission.",
+    "quantityLimit": null,
+    "authority": "Wallis and Futuna SIVAP; territorial administration",
+    "evidenceUrls": [
+      "https://www.wallis-et-futuna.gouv.fr/Demarches/Formalites-SIVAP-Service-de-l-Inspection-Veterinaire-Alimentaire-et-Phytosanitaire",
+      "https://www.wallis-et-futuna.gouv.fr/content/download/12308/78812/file/MAJ%2010-2022_InformationVoyageursVersWF_versionV3FR%20avec%20formalit%C3%A9s%20entr%C3%A9e.pdf",
+      "https://www.wallis-et-futuna.gouv.fr/Demarches/Formalites-douanieres",
+      "https://www.sia.aviation-civile.gouv.fr/media/dvd/eAIP_16_APR_2026/PAC-N/AIRAC-2026-01-22/pdf/FR-GEN-1.4-fr-FR.pdf",
+      "https://www.wallis-et-futuna.gouv.fr/Actualites/Mise-a-jour-de-la-fiche-phytosanitaire-d-entree-sur-le-territoire-de-Wallis-et-Futuna/%28theme%29/31",
+      "https://www.sia.aviation-civile.gouv.fr/documents/download/f/d/15026343/",
+      "https://www.sia.aviation-civile.gouv.fr/media/dvd/eAIP_19_MAR_2026/PAC-N/AIRAC-2026-01-22/pdf/FR-GEN-1.4-fr-FR.pdf",
+      "https://brb.sprep.org/sites/default/files/2025-03/Phase4-Rapport-final-revue-de-reglementation-mai-2022.pdf",
+      "https://www.wallis-et-futuna.gouv.fr/contenu/telechargement/14584/119835/file/JOWF%20N%C2%B0%20714%20du%2031%20mai%202025%20.pdf",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+    ],
+    "remainingQuestion": "Current binding certificate scope and relation between the specific tea-in-bulk provision and unmanufactured-product definition; full current territorial plant-health consolidation or a published general manufactured-food postal rule. No contrary certificate exemption was established.",
+    "researchAttempts": [
+      "Read SIVAP import/declaration guidance and the referenced local phytosanitary regime.",
+      "Read the official traveller sheet and distinguished its exemptions from postal imports.",
+      "Searched for tea-specific postal and processed-food conditions; no applicable affirmative rule found.",
+      "Read indexed official 2026 AIP GEN 1.4-4, section 1.4.2, which explicitly covers goods and mail. Its tea-in-bulk exception removes only the permit, not the certificate; finished retail tea’s classification remains ambiguous.",
+      "Checked the phytosanitary arrival-form update effective January 2026; it is expressly handed to airline passengers and provides no postal certificate exemption.",
+      "Searched for current local Order 93-275 amendments or a retail-tea postal clarification; no applicable published clarification was located.",
+      "30 September bounded legal-scope peer review: The current accessible AIP section includes mail. Its French wording covers living plants/parts and non-manufactured plant products, then expressly exempts tea in bulk from the import permit alone. It does not waive the phytosanitary certificate for that category. A sealed retail pouch does not by itself prove that loose tea is outside the tea-in-bulk expression; conversely, the specific tea exception makes it unsafe to infer that every manufactured tea is entirely outside scope. The retail/manufactured distinction remains unresolved in this text. Traveller sheets use an arrival declaration and cannot independently supply a postal waiver.",
+      "30 September independent definition review recovered SPREP 2022 full comparative report; existing-law column reproduces 95-245 Arts2–3 and default prior-permit waiver but no certificate waiver. Proposed new biosafety sections were not treated as enacted. Official Gazette 714, May 2025 indexedtext calls further import/export sections future proposals. Actual sencha manufacture and ISPM32 are favorable factual evidence; specific tea-in-bulk permit-only entry still prevents clean postal certificate exclusion. See wf-pm-definition-review/review-notes.json."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Sencha’s processing and ISPM32 support the factual manufactured/nonliving classification. However, the explicit loose/bulk tea permit-only provision makes WF different from a jurisdiction with only a generic risk definition. A sealed retail pouch does not prove loose leaves are outside the tea-in-bulk expression. Traveller allowances do not settle mail. Current binding certificate scope and relation between the specific tea-in-bulk provision and unmanufactured-product definition; full current territorial plant-health consolidation or a published general manufactured-food postal rule. No contrary certificate exemption was established.",
+    "permitFreeSources": [
+      "https://www.wallis-et-futuna.gouv.fr/Demarches/Formalites-SIVAP-Service-de-l-Inspection-Veterinaire-Alimentaire-et-Phytosanitaire",
+      "https://www.wallis-et-futuna.gouv.fr/content/download/12308/78812/file/MAJ%2010-2022_InformationVoyageursVersWF_versionV3FR%20avec%20formalit%C3%A9s%20entr%C3%A9e.pdf",
+      "https://www.wallis-et-futuna.gouv.fr/Demarches/Formalites-douanieres",
+      "https://www.sia.aviation-civile.gouv.fr/media/dvd/eAIP_16_APR_2026/PAC-N/AIRAC-2026-01-22/pdf/FR-GEN-1.4-fr-FR.pdf",
+      "https://www.wallis-et-futuna.gouv.fr/Actualites/Mise-a-jour-de-la-fiche-phytosanitaire-d-entree-sur-le-territoire-de-Wallis-et-Futuna/%28theme%29/31",
+      "https://www.sia.aviation-civile.gouv.fr/documents/download/f/d/15026343/",
+      "https://www.sia.aviation-civile.gouv.fr/media/dvd/eAIP_19_MAR_2026/PAC-N/AIRAC-2026-01-22/pdf/FR-GEN-1.4-fr-FR.pdf",
+      "https://brb.sprep.org/sites/default/files/2025-03/Phase4-Rapport-final-revue-de-reglementation-mai-2022.pdf",
+      "https://www.wallis-et-futuna.gouv.fr/contenu/telechargement/14584/119835/file/JOWF%20N%C2%B0%20714%20du%2031%20mai%202025%20.pdf",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "unresolved_product_classification",
+    "requiredDocument": "Unresolved: applicable plant-product scope and certificate/authorization treatment are not settled by the recovered current sources; ordinary postal/customs declarations alone are not yet verified."
+  },
+  {
+    "code": "WS",
+    "name": "Samoa",
+    "status": "allowed",
+    "rule": "Samoa MAF explicitly lists processed packet tea among goods permitted without an import permit. Keep original sealed packets; declare for biosecurity assessment.",
+    "personalMailApplicability": "MAF import guidance states a general goods exemption, not a quantity concession limited to travelers.",
+    "quantityLimit": null,
+    "authority": "Samoa Ministry of Agriculture and Fisheries",
+    "evidenceUrls": [
+      "https://maf.gov.ws/biosecurity/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the cited official rule and checked its product and import-channel scope."
+    ],
+    "reviewedAt": "2026-09-29",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The cited agricultural rule supports this finished retail tea without an import permit, phytosanitary certificate or special agricultural approval; ordinary postal/customs declarations and the stated product/quantity conditions remain.",
+    "permitFreeSources": [
+      "https://maf.gov.ws/biosecurity/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

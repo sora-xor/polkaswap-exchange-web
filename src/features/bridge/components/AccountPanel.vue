@@ -30,7 +30,7 @@
     type="primary"
     @click="handleConnect"
   >
-    {{ t('connectWalletText') }}
+    {{ networkName ? t('bridge.connectNetworkWallet', { network: networkName }) : t('connectWalletText') }}
   </s-button>
 </template>
 
@@ -52,12 +52,15 @@ const props = withDefaults(
     name?: string;
     tooltip?: string;
     icon?: string;
+    /** Human-readable chain name for the disconnected wallet action. */
+    networkName?: string;
   }>(),
   {
     address: '',
     name: '',
     tooltip: '',
     icon: '',
+    networkName: '',
   }
 );
 
@@ -100,13 +103,21 @@ function handleDisconnect(): void {
     -1px -1px 5px 0px var(--s-shadow-color-light);
 
   :deep(.s-button__text) {
+    display: block;
+    width: 100%;
+    min-width: 0;
     overflow: visible;
     text-overflow: clip;
-    font-size: 22px !important;
-    line-height: 22px !important;
-    letter-spacing: -0.6px;
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
     font-variation-settings: 'wght' 700;
   }
+
+  height: auto !important;
+  min-height: 44px;
+  white-space: normal !important;
 }
 
 .account-panel {

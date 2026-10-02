@@ -136,16 +136,16 @@ const resetForm = () => {
 };
 
 /**
- * Mints additional supply for the owned asset and closes the dialog afterwards.
+ * Mints additional supply and closes the dialog only after transaction submission.
  */
 const handleMint = async () => {
   if (disabled.value || !asset.value) return;
 
-  try {
-    await withNotifications(async () => {
-      await api.assets.mint(asset.value, value.value, trimmedAddress.value);
-    });
-  } finally {
+  const result = await withNotifications(async () => {
+    await api.assets.mint(asset.value, value.value, trimmedAddress.value);
+  });
+
+  if (result.submitted) {
     isVisible.value = false;
   }
 };

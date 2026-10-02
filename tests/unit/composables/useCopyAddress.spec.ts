@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { mountSetup } from '@stubs/mountSetup';
+
 const translationMocks = vi.hoisted(() => ({
   t: vi.fn((key: string, params?: { value?: string }) => (params?.value ? `${key}:${params.value}` : key)),
 }));
@@ -42,7 +44,7 @@ describe('useCopyAddress', () => {
       target,
     } as unknown as PointerEvent;
 
-    const { copyTooltip, handleCopyAddress } = useCopyAddress();
+    const { copyTooltip, handleCopyAddress } = setupCopyAddress();
 
     expect(copyTooltip()).toBe('assets.receive');
     expect(copyTooltip('XOR')).toBe('copyWithValue:XOR');
@@ -56,7 +58,7 @@ describe('useCopyAddress', () => {
     expect(copyTooltip()).toBe('assets.copied');
     expect(copyTooltip('XOR')).toBe('copiedWithValue:XOR');
 
-    await mouseleaveHandler?.();
+    await mouseleaveHandler?.({ currentTarget: target } as unknown as Event);
 
     expect(utilsMocks.delay).toHaveBeenCalledWith(500);
     expect(target.removeEventListener).toHaveBeenCalledWith('mouseleave', mouseleaveHandler);
@@ -70,7 +72,7 @@ describe('useCopyAddress', () => {
       target: null,
     } as unknown as MouseEvent;
 
-    const { copyTooltip, handleCopyAddress } = useCopyAddress();
+    const { copyTooltip, handleCopyAddress } = setupCopyAddress();
 
     await handleCopyAddress('val-address', event);
 
@@ -78,4 +80,44 @@ describe('useCopyAddress', () => {
     expect(utilsMocks.copyToClipboard).toHaveBeenCalledWith('val-address');
     expect(copyTooltip('VAL')).toBe('copiedWithValue:VAL');
   });
+
+  it('removes the previous target listener when copy moves to another element', async () => {
+    const first = document.createElement('button');
+    const second = document.createElement('button');
+    const firstAdd = vi.spyOn(first, 'addEventListener');
+    const firstRemove = vi.spyOn(first, 'removeEventListener');
+    const { handleCopyAddress } = setupCopyAddress();
+
+    await handleCopyAddress('first', {
+      stopImmediatePropagation: vi.fn(),
+      target: first,
+    } as unknown as PointerEvent);
+    const firstListener = firstAdd.mock.calls.find(([type]) => type === 'mouseleave')?.[1];
+
+    await handleCopyAddress('second', {
+      stopImmediatePropagation: vi.fn(),
+      target: second,
+    } as unknown as PointerEvent);
+
+    expect(firstRemove).toHaveBeenCalledWith('mouseleave', firstListener);
+  });
+
+  it('removes the tracked listener when the host component unmounts', async () => {
+    const { state, unmount } = mountSetup({ setup: () => useCopyAddress() }, {});
+    const target = document.createElement('button');
+    const addEventListenerSpy = vi.spyOn(target, 'addEventListener');
+    const removeEventListenerSpy = vi.spyOn(target, 'removeEventListener');
+
+    await state.handleCopyAddress('component-address', {
+      stopImmediatePropagation: vi.fn(),
+      target,
+    } as unknown as PointerEvent);
+    const listener = addEventListenerSpy.mock.calls.find(([type]) => type === 'mouseleave')?.[1];
+
+    unmount();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('mouseleave', listener);
+  });
 });
+
+const setupCopyAddress = () => mountSetup({ setup: () => useCopyAddress() }, {}).state;

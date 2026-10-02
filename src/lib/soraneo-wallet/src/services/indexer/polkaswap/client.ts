@@ -12,7 +12,7 @@ const shouldDisableSubscriptionWs = (url: URL): boolean => {
   // The Polkaswap-owned indexer exposes websocket subscriptions, but each
   // subscription currently consumes a Postgres LISTEN session. Price data is
   // already fetched by query, so avoid long-lived browser subscriptions here.
-  return url.hostname === 'pi.soramitsu.io';
+  return url.hostname === 'pi.soramitsu.io' || (url.hostname === 'mof.sora.org' && url.pathname === '/graphql');
 };
 
 const resolveSubscriptionWsUrl = (url: string): string | null => {

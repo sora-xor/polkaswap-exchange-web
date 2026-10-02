@@ -1,5 +1,5 @@
 import { createAgentTradingDependencies, createPolkaswapAgentApi, type AgentTradingDependencies } from './service';
-import { POLKASWAP_AGENT_READY_EVENT, type PolkaswapAgentApi } from './types';
+import { POLKASWAP_AGENT_API_VERSION, POLKASWAP_AGENT_READY_EVENT, type PolkaswapAgentApi } from './types';
 
 import type { Pinia } from 'pinia';
 
@@ -23,14 +23,19 @@ declare global {
  * agents that inject scripts after opening the static IPFS-hosted app.
  */
 export function installPolkaswapAgentApi(options: InstallPolkaswapAgentApiOptions = {}): PolkaswapAgentApi {
-  if (typeof window !== 'undefined' && window.PolkaswapAgent) {
+  if (
+    typeof window !== 'undefined' &&
+    window.PolkaswapAgent?.version === POLKASWAP_AGENT_API_VERSION &&
+    Object.isFrozen(window.PolkaswapAgent)
+  ) {
     return window.PolkaswapAgent;
   }
 
-  const api =
+  const api = Object.freeze(
     options.dependencies !== undefined
       ? createPolkaswapAgentApi(options.dependencies)
-      : createPolkaswapAgentApi(createAgentTradingDependencies(options.pinia));
+      : createPolkaswapAgentApi(createAgentTradingDependencies(options.pinia))
+  );
 
   if (typeof window === 'undefined') {
     return api;

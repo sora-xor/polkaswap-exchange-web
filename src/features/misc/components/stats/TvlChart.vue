@@ -64,6 +64,7 @@ const filters = NETWORK_STATS_FILTERS;
 const filter = ref<SnapshotFilter>(filters[0]);
 const data = ref<readonly { timestamp: number; value: number }[]>([]);
 const isFetchingError = ref(false);
+let updateRequestId = 0;
 
 const settingsStore = useSettingsStore();
 const { exchangeRate, currencySymbol } = storeToRefs(settingsStore);
@@ -134,6 +135,8 @@ const changeFilter = (next: SnapshotFilter) => {
 };
 
 const updateData = async () => {
+  const requestId = ++updateRequestId;
+
   await withLoading(async () => {
     await withParentLoading(async () => {
       try {
@@ -141,10 +144,16 @@ const updateData = async () => {
         const seconds = SECONDS_IN_TYPE[type];
         const { from, to } = createStatsRange(Date.now(), seconds, count);
 
-        data.value = Object.freeze(await fetchData(from, to, type));
+        const nextData = await fetchData(from, to, type);
+
+        if (requestId !== updateRequestId) return;
+
+        data.value = Object.freeze(nextData);
         isFetchingError.value = false;
         hasResolvedData.value = data.value.length > 0 || nodeIsConnected.value;
       } catch (error) {
+        if (requestId !== updateRequestId) return;
+
         console.error(error);
         isFetchingError.value = true;
         hasResolvedData.value = nodeIsConnected.value;
@@ -176,6 +185,7 @@ onMounted(() => {
 
 if (getCurrentScope()) {
   onScopeDispose(() => {
+    updateRequestId += 1;
     chart.value = null;
     hasResolvedData.value = false;
   });

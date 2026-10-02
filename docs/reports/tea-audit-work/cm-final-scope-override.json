@@ -1,0 +1,32 @@
+{
+  "code": "CM",
+  "status": "permit_required",
+  "rule": "Law 2003/003 article 9(1) requires a phytosanitary certificate for imports of plants and plant products; article 9(2) separately regulates when an import permit is needed. Decree 2005/0771 article 3 limits prior import permits to designated high-risk products; its article 8 specifically regulates origin certification for those high-risk goods but does not expressly waive the statutory certificate duty for other plant products. The later Joint Order of 4 March 2019, Annex I, expressly lists tea leaves and, separately, manufactured products within phytosanitary import/export inspection categories, includes parcel-carrier/courier platforms, and defines a shipment by coverage under one phytosanitary certificate. Treat the scoped identifiable dried sencha leaves as the listed tea-leaf commodity under article 9. This is an explicit scope inference: the tea-leaf entry does not itself say dried or steamed, and no Japan/sencha-specific ruling was found.",
+  "personalMailApplicability": "The 2019 implementing inspection schedule expressly includes parcel carriers and couriers. No personal-use waiver of the article 9 certificate duty was established. The professional-importer registration requirements in the separate commercial e-Force permit workflow are not imposed here on the private recipient.",
+  "quantityLimit": null,
+  "authority": "Cameroon NPPO laws filed with IPPC",
+  "evidenceUrls": [
+    "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137602168132_Law_Relating_To_Phytosanitary_Protection_2013062711-18En.doc",
+    "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137678445097_Decret_sur_la_quarantain_vegetale_2014042319-21Fr.doc",
+    "https://www.minader.cm/wp-content/uploads/2023/10/final_RECUEIL-ANGLAIS-SIGNE-11-10-23.pdf",
+    "https://faolex.fao.org/docs/pdf/cmr126426.pdf",
+    "https://www.minader.cm/wp-content/uploads/2023/10/Final_RECUEIL-FRANCAIS-SIGNE-2-09-10-23-1.pdf"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read product definitions and sections 3 and 9; examined implementing decree and searched processed-tea exemptions.",
+    "Read the 2023 MINADER compendium: Law 2003/003 pp143–144; Decree 2005/0771 pp154–155; Joint Order of 4 March 2019 pp173–177 including tea leaves, manufactured products and courier/post platforms. Searched the ministerial/NPPO high-risk commodity list and tea-specific determinations. Excluded an inspection fee listing as conclusive evidence of an import certificate requirement.",
+    "Final independent scope comparison: read Law 2003/003 articles 3 and 9 on printed pages 143–144 of the official 2023 MINADER compendium; Decree 2005/0771 articles 3 and 8 on pages 154–155; Joint Order 4 March 2019 Annex I on pages 176–177. Distinguished the statute's general certificate obligation from high-risk prior licensing. Reassessed the tea-leaf and manufactured-product listings together with the statutory duty, rather than treating an inspection fee alone as a requirement. The listing says tea leaves, not expressly dried/steamed tea; retained that inferential limit.",
+    "Read the GUCE announcement about the December 2024 MINADER permit digitization meeting and 2025 pilot. It describes the commercial operator application workflow but supplies no tea risk list or private-post exemption; it is not used as the basis for requiring a private recipient to register as a professional importer."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "not_supported",
+  "permitFreeReason": "Exclude under the no-certificate constraint by applying the express tea-leaf inclusion in the 2019 phytosanitary schedule together with Law 2003/003 article 9(1), which requires certification of imported plant products. The fee schedule alone is not the legal basis for the certificate duty. Applying its tea-leaf item to steamed/dried retail sencha is a stated inference, not a published product ruling. This finding does not assert that an import permit is always required or that Japan-origin tea is designated high risk.",
+  "permitFreeSources": [
+    "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137602168132_Law_Relating_To_Phytosanitary_Protection_2013062711-18En.doc",
+    "https://assets.ippc.int/static/media/files/reportingobligation/2015/03/30/1137678445097_Decret_sur_la_quarantain_vegetale_2014042319-21Fr.doc",
+    "https://www.minader.cm/wp-content/uploads/2023/10/final_RECUEIL-ANGLAIS-SIGNE-11-10-23.pdf",
+    "https://faolex.fao.org/docs/pdf/cmr126426.pdf",
+    "https://www.minader.cm/wp-content/uploads/2023/10/Final_RECUEIL-FRANCAIS-SIGNE-2-09-10-23-1.pdf"
+  ]
+}

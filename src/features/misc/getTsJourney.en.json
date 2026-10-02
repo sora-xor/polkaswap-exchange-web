@@ -1,0 +1,40 @@
+{
+  "getTs": {
+    "journey": {
+      "purchase": "Purchase",
+      "title": "Purchase progress",
+      "details": "Steps and transaction history",
+      "checkAll": "Refresh transaction status",
+      "checking": "Checking transactions…",
+      "checkFailed": "Some statuses could not refresh. Use the transaction links below.",
+      "noPayment": "Connecting wallets does not start a purchase.",
+      "cardHistory": "Card purchase history",
+      "conversionHistory": "Ethereum transaction",
+      "bridgeHistory": "Transfer history",
+      "swapHistory": "Wallet history",
+      "review": "Review this step",
+      "cardNote": "Card status is reported by MoonPay. Check ETH in your receiving wallet before converting.",
+      "tonNote": "Check the TON transfer in the external app before continuing with funds on Ethereum.",
+      "burnNote": "A submitted burn is not a TS delivery. Review its receipt and future claim record below.",
+      "stages": {
+        "card": "Pay by card",
+        "ton": "TON to Ethereum",
+        "conversion": "Convert to DAI",
+        "bridge": "Transfer to SORA",
+        "swap": "Swap to XOR",
+        "burn": "Burn for a TS claim"
+      },
+      "status": {
+        "next": "Not started",
+        "current": "Current step",
+        "pending": "Awaiting confirmation",
+        "confirmed": "Confirmed",
+        "failed": "Needs attention",
+        "unavailable": "Not verified yet",
+        "check": "Check transaction status",
+        "reported": "Reported complete by provider",
+        "existing": "Using existing funds"
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ import getOr from 'lodash/fp/getOr';
 
 import { resolveGlobalPinia } from '@/plugins/pinia';
 import { useWalletStore } from '@/stores/wallet';
+import { isJsonRecord, parseIndexerJson } from '@/utils/indexerParsing';
 
 import { api } from '../../api';
 import { ObjectInit } from '../../consts';
@@ -476,7 +477,9 @@ const normalizeEvmNetwork = (value: unknown): number | undefined => {
   }
 
   if (value && typeof value === 'object' && !Array.isArray(value)) {
-    return normalizeEvmNetwork(firstString(value as Record<string, unknown>, ['EVM', 'Evm', 'evm', 'EVMLegacy', 'evmLegacy']));
+    return normalizeEvmNetwork(
+      firstString(value as Record<string, unknown>, ['EVM', 'Evm', 'evm', 'EVMLegacy', 'evmLegacy'])
+    );
   }
 
   return undefined;
@@ -666,7 +669,7 @@ const parseSwapTransferBatch = async (transaction: HistoryElement, payload: Hist
   payload.payload.actualFee = data.actualFee;
   payload.payload.maxInputAmount = data.maxInputAmount;
   payload.payload.receivers = [];
-  payload.payload.comment = data.comment ? JSON.parse(data.comment) : null;
+  payload.payload.comment = parseIndexerJson(data.comment, null, isJsonRecord);
 
   for (const receiver of data.receivers) {
     const asset = await getAssetByAddress(receiver.assetId);

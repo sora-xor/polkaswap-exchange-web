@@ -59,6 +59,7 @@ type TransactionModule = typeof import('@/composables/useTransaction');
 type TransactionComposable = ReturnType<TransactionModule['useTransaction']>;
 type WalletApiModule = typeof import('@/lib/soraneo-wallet/src/api');
 type WalletBootstrapModule = typeof import('@/lib/soraneo-wallet/src/bootstrap');
+type BridgeStoreModule = typeof import('@/stores/bridge');
 type DataPlaneClient = ReturnType<RealtimeModule['getDataPlaneClient']>;
 
 let apiModulePromise: Promise<ApiModule> | null = null;
@@ -71,6 +72,7 @@ let telegramModulePromise: Promise<TelegramModule> | null = null;
 let transactionModulePromise: Promise<TransactionModule> | null = null;
 let walletApiModulePromise: Promise<WalletApiModule> | null = null;
 let walletBootstrapModulePromise: Promise<WalletBootstrapModule> | null = null;
+let bridgeStoreModulePromise: Promise<BridgeStoreModule> | null = null;
 
 const loadApiModule = (): Promise<ApiModule> => {
   apiModulePromise ??= import('@/api');
@@ -129,6 +131,12 @@ const loadTransactionModule = (): Promise<TransactionModule> => {
 const loadWalletApiModule = (): Promise<WalletApiModule> => {
   walletApiModulePromise ??= import('@/lib/soraneo-wallet/src/api');
   return walletApiModulePromise;
+};
+
+/** Loads bridge state only when an established SORA account identity changes. */
+const loadBridgeStoreModule = (): Promise<BridgeStoreModule> => {
+  bridgeStoreModulePromise ??= import('@/stores/bridge');
+  return bridgeStoreModulePromise;
 };
 
 const loadWalletBootstrapModule = (): Promise<WalletBootstrapModule> => {
@@ -661,11 +669,21 @@ export function useAppShell() {
     { immediate: true }
   );
 
-  watch(accountAddress, (newAddress, oldAddress) => {
-    if (newAddress !== oldAddress) {
-      showNotificationMST.value = false;
-    }
-  });
+  watch(
+    accountAddress,
+    (newAddress, oldAddress) => {
+      if (newAddress !== oldAddress) {
+        showNotificationMST.value = false;
+
+        if (oldAddress) {
+          void loadBridgeStoreModule()
+            .then(({ useBridgeStore }) => useBridgeStore().cancelAccountBoundTasks())
+            .catch((error) => console.warn('[bootstrap] bridge account-bound tracking cleanup skipped', error));
+        }
+      }
+    },
+    { flush: 'sync' }
+  );
 
   watch(
     isSignTxDialogVisible,

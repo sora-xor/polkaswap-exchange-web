@@ -171,13 +171,15 @@ const handleBurn = async () => {
   if (!asset.value) return;
 
   try {
-    await withNotifications(async () => {
+    const result = await withNotifications(async () => {
       await api.assets.burn(asset.value, value.value);
     });
+
+    if (result.submitted) {
+      isVisible.value = false;
+    }
   } catch (error) {
     console.error(error);
-  } finally {
-    isVisible.value = false;
   }
 };
 

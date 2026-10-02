@@ -164,6 +164,7 @@ import { computed, ref, watch } from 'vue';
 import { SortDirection } from '@soramitsu-ui/ui/types';
 import { useExploreTable } from '@/composables/useExploreTable';
 import { useLoading } from '@/composables/useLoading';
+import { createCoalescedAsyncTask } from '@/utils/asyncTask';
 import { useTranslation } from '@/composables/useTranslation';
 import { TranslationConsts } from '@/consts';
 import {
@@ -262,16 +263,14 @@ const {
 const isLoggedIn = computed(() => walletStore.isLoggedIn);
 const whitelistSignature = computed(() => whitelistAssets.value.map((asset) => asset.address).join(';'));
 
-const updateExploreData = async (): Promise<void> => {
-  if (loading.value) return;
-
+const updateExploreData = createCoalescedAsyncTask(async () => {
   await withLoading(async () => {
     await withParentLoading(async () => {
       const data = await fetchPoolsData(allowedAssets.value);
       poolsData.value = Object.freeze(data ?? []);
     });
   });
-};
+});
 
 watch(
   () => whitelistSignature.value,

@@ -198,6 +198,7 @@ export function useRadiosRegistration({
     const tabindex = computed(() => (isTabbable.value ? 0 : -1));
 
     function check() {
+      if (isDisabled.value) return;
       model.value = valueRef.value;
     }
 

@@ -1,0 +1,25 @@
+HTTP/2 302 
+date: Wed, 30 Sep 2026 03:53:25 GMT
+location: https://aos.egov.mv/Identity/Account/Login?ReturnUrl=%2F
+server: cloudflare
+strict-transport-security: max-age=7776000; includeSubDomains
+x-powered-by: ASP.NET
+cf-cache-status: DYNAMIC
+cf-ray: a43047c328fb758d-NRT
+
+HTTP/2 200 
+date: Wed, 30 Sep 2026 03:53:26 GMT
+content-type: text/html; charset=utf-8
+cache-control: no-cache,no-store
+pragma: no-cache
+expires: Thu, 01 Jan 1970 00:00:00 GMT
+server: cloudflare
+strict-transport-security: max-age=7776000; includeSubDomains
+set-cookie: Identity.External=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; secure; samesite=lax; httponly
+set-cookie: .AspNetCore.Antiforgery.mLyquWLPu8E=CfDJ8CpinUJK7vlMld_paV8eKw2asF1bdqLxWsjScbsJzPTgl5RVSt153q-3WNXn_cZ_Ke5aVJERO5dk8nyPjpJ2YtiOzJGxCAJdCKW3I8-aGbNriONrBwMdcrns2P-QrRPxB77kzqk9VO9yXXuTTOhgb4U; path=/; samesite=strict; httponly
+set-cookie: .AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly
+x-frame-options: SAMEORIGIN
+x-powered-by: ASP.NET
+cf-cache-status: DYNAMIC
+cf-ray: a43047cde823758d-NRT
+

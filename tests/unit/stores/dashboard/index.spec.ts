@@ -112,4 +112,29 @@ describe('dashboard store', () => {
     expect(store.ownedAssetIds).toEqual([]);
     expect(store.ownedAssetIdsInterval).toBeNull();
   });
+
+  it('does not restore assets or polling when reset interrupts subscription startup', async () => {
+    vi.useFakeTimers();
+    let resolveOwnedAssetIds!: (assetIds: string[]) => void;
+    shared.getOwnedAssetIds.mockImplementationOnce(
+      () =>
+        new Promise<string[]>((resolve) => {
+          resolveOwnedAssetIds = resolve;
+        })
+    );
+    const store = useDashboardStore();
+
+    const subscription = store.subscribeOnOwnedAssets();
+    await Promise.resolve();
+    await store.reset();
+    resolveOwnedAssetIds(['0x02']);
+    await subscription;
+
+    expect(store.ownedAssetIds).toEqual([]);
+    expect(store.ownedAssetIdsInterval).toBeNull();
+
+    vi.advanceTimersByTime(120000);
+    await Promise.resolve();
+    expect(shared.getOwnedAssetIds).toHaveBeenCalledTimes(1);
+  });
 });

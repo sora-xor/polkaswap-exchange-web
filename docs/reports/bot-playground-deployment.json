@@ -1,0 +1,138 @@
+{
+  "status": "deployed-verified",
+  "production": {
+    "cid": "QmRUxHWo6Vhju3XjDNhREQbVWMDnDo5kedUhoYeghfpm1f",
+    "cidV1": "bafybeibowokjwybnotv2gmco7352qkombxagnh6ys2xzqport2435rq4jy",
+    "origin": "https://mof.sora.org/ipfs/bafybeibowokjwybnotv2gmco7352qkombxagnh6ys2xzqport2435rq4jy",
+    "hostHeader": "mof.sora.org"
+  },
+  "testnet": {
+    "cid": "QmPvmtLV7HtBVr3f6SBG2FK8qLARooqBm2V2jJozUU7xd3",
+    "cidV1": "bafybeiaxtggh3vxlkpgflzmvphikwace5jlhxhs72ttfcycf4lus23uquy"
+  },
+  "previousProductionCidV1": "bafybeibebtd3umenxx4zwwzx6oyihiefja4p652uwoeocbkwr73djrlpom",
+  "replication": "Both DAGs imported, recursively pinned, and all remote pins verified ok.",
+  "originChecks": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 4529,
+      "sha256": "3223e0a073e6d1797ddd765cf653522a194fcb34a1ac0cdf5f100b5d68388c51",
+      "contentType": "Content-Type: text/html"
+    },
+    {
+      "path": "assets/index-Df9uXBAW.js",
+      "status": 200,
+      "bytes": 138599,
+      "sha256": "7a98ab9aaf7332c3d45fa7cd82ad978ff53eec474f95cb8e93b51323c4934de6",
+      "contentType": "Content-Type: text/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/style-Cjo_xfe3.css",
+      "status": 200,
+      "bytes": 685829,
+      "sha256": "1efc1ac65a9aeb553938db6a1d6766f83c3fdc11f8862e4a2eb4578304fec09b",
+      "contentType": "Content-Type: text/css; charset=utf-8"
+    },
+    {
+      "path": "assets/BotsPage-CjOxUgZP.js",
+      "status": 200,
+      "bytes": 102857,
+      "sha256": "454117bf7df8e655eea47a47a8c6260e677769fbc13d76b8efd5ded7b70e76fc",
+      "contentType": "Content-Type: text/javascript; charset=utf-8"
+    }
+  ],
+  "cdnSaved": true,
+  "cdnPurged": true,
+  "liveWebkitVerified": true,
+  "validation": {
+    "applicationTests": 4741,
+    "scriptTests": 270,
+    "totalTests": 5011,
+    "finalControllerCacheRegressionTests": 32,
+    "translationTests": 13,
+    "staticBuild": "passed",
+    "unitLog": "/tmp/bot-playground-unit-full.log",
+    "browserMatrix": {
+      "passed": 14,
+      "failed": 0,
+      "flaky": 0,
+      "skipped": 0,
+      "browsers": [
+        "chromium",
+        "webkit"
+      ],
+      "hosting": [
+        "root",
+        "ipfs-prefixed"
+      ],
+      "viewports": [
+        "1440x960",
+        "390x844"
+      ],
+      "animatedPreviewMilliseconds": {
+        "min": 1141,
+        "max": 1158,
+        "measurements": 16
+      },
+      "reducedMotionMilliseconds": {
+        "min": 11,
+        "max": 17,
+        "measurements": 8
+      }
+    }
+  },
+  "cdnVerification": {
+    "zoneId": 5860217,
+    "zone": "polkaswap",
+    "method": "Authenticated Bunny Safari UI",
+    "originSave": "Observed notification: Pull Zone configuration was updated. Origin settings successfully updated",
+    "purge": "Confirmed full Pull Zone purge with an empty search tag; dialog closed and the next live root request returned CDN-cache MISS with the new production CID.",
+    "liveRootStatus": 200,
+    "liveRootCidV1": "bafybeibowokjwybnotv2gmco7352qkombxagnh6ys2xzqport2435rq4jy",
+    "htmlCacheControl": "no-cache",
+    "verifyOriginSsl": true,
+    "forwardHostHeader": false,
+    "followRedirects": true,
+    "smartCache": true,
+    "cacheErrorResponses": false,
+    "edgeRules": ["RawDwebOriginHeaders", "SetPolkaswapCSP"],
+    "rootEvidence": "/tmp/playground-live-final.headers",
+    "indexEvidence": "/tmp/playground-live-index.headers"
+  },
+  "warmup": {
+    "assets": 265,
+    "exactBytes": true,
+    "result": "passed",
+    "evidence": "/tmp/bot-playground-production-warm.log"
+  },
+  "officialWebkit": {
+    "result": "passed",
+    "browserVersion": "26.0",
+    "failedRequests": 0,
+    "consoleErrors": 0,
+    "settleMilliseconds": 30000,
+    "evidence": "/tmp/bot-playground-production-official-webkit.log"
+  },
+  "supplementalWebkit": {
+    "result": "passed",
+    "cases": [
+      { "route": "swap", "viewport": "1440x1000", "title": "Swap - Polkaswap", "failedRequests": 0, "consoleErrors": 0 },
+      { "route": "bots", "viewport": "1440x1000", "title": "Bots - Polkaswap", "failedRequests": 0, "consoleErrors": 0, "chartIntersection": 1, "runIntersection": 1 },
+      { "route": "bots", "viewport": "390x844", "title": "Bots - Polkaswap", "failedRequests": 0, "consoleErrors": 0, "chartIntersection": 1, "runIntersection": 1 }
+    ],
+    "allCasesServeExpectedCid": true,
+    "httpErrors": 0,
+    "pageErrors": 0,
+    "pendingScripts": 0,
+    "walletActionsPerformed": false,
+    "evidence": "/tmp/polkaswap-bots-production-webkit/summary.json"
+  },
+  "resume": {
+    "warmMetadata": "/tmp/polkaswap-bots-warm-metadata.json",
+    "warmer": "/tmp/polkaswap-bots-warm-production.mjs",
+    "finalWebkit": "/tmp/polkaswap-bots-final-webkit.cjs",
+    "officialWebkit": "IPFS_CHECK_SETTLE_MS=30000 node scripts/ipfs/check-browser.js --url 'https://polkaswap.io/#/swap' --no-spawn-gateway --browser=webkit",
+    "sequence": "Completed: origin settings and edge rules verified, save-success notification observed, full-zone purge submitted, live root and index verified, 265 assets warmed sequentially with exact-byte checks, and official plus supplemental WebKit checks passed."
+  }
+}

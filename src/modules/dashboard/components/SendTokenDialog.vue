@@ -48,7 +48,7 @@
         <template v-else-if="!validAddress">
           {{ t('walletSend.badAddress') }}
         </template>
-        <template v-else-if="emptyValue">
+        <template v-else-if="invalidValue">
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
@@ -151,7 +151,16 @@ const fpMaxSendValue = computed(() => getFPNumber(maxSendValue.value, tokenDecim
 const trimmedAddress = computed(() => address.value.trim());
 const emptyAddress = computed(() => trimmedAddress.value.length === 0);
 const validAddress = computed(() => !emptyAddress.value && api.validateAddress(trimmedAddress.value));
-const emptyValue = computed(() => !Number(value.value));
+const invalidValue = computed(() => {
+  if (!value.value) return true;
+
+  try {
+    const amount = getFPNumber(value.value, tokenDecimals.value);
+    return !amount.isFinity() || amount.isZero() || amount.isLtZero();
+  } catch {
+    return true;
+  }
+});
 const isInsufficientBalance = computed(() => {
   if (!value.value || !assetWithBalance.value) return false;
   return hasInsufficientBalance(assetWithBalance.value, value.value, networkFee.value);
@@ -177,7 +186,7 @@ const disabled = computed(
   () =>
     loading.value ||
     isInsufficientXorForFee.value ||
-    emptyValue.value ||
+    invalidValue.value ||
     !validAddress.value ||
     isInsufficientBalance.value
 );
@@ -230,16 +239,14 @@ const handleSend = async () => {
 
   if (!asset.value || disabled.value) return;
 
-  try {
-    await withNotifications(async () => {
-      await api.assets.transfer(asset.value, trimmedAddressValue, value.value, {
-        feeType: 'xor',
-        comment: trimmedComment,
-      });
+  const result = await withNotifications(async () => {
+    await api.assets.transfer(asset.value, trimmedAddressValue, value.value, {
+      feeType: 'xor',
+      comment: trimmedComment,
     });
-  } catch (error) {
-    console.error(error);
-  } finally {
+  });
+
+  if (result.submitted) {
     isVisible.value = false;
   }
 };
@@ -261,6 +268,7 @@ defineExpose({
   address,
   comment,
   disabled,
+  invalidValue,
   isInsufficientBalance,
   isInsufficientXorForFee,
   handleSend,

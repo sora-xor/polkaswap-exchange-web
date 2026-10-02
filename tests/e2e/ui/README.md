@@ -88,3 +88,41 @@
   - SORA Wallet mobile popup remains within viewport bounds on narrow screens.
   - Layout overflow guard checks that `documentElement.scrollWidth` and `body.scrollWidth` stay within viewport width across desktop/mobile interaction states.
   - Narrow-screen (320px) sidebar open state remains within viewport bounds.
+
+### Bot trading workspace
+
+`bots.spec.ts` launches both Chromium and WebKit against the real production bundle and browser IndexedDB. All remote requests and WebSockets use the existing offline runtime stubs. The root-hosting cases mount the same built assets at `/`; the other cases retain the IPFS prefix.
+
+```sh
+PS_PLAYWRIGHT_REUSE_SERVER=1 PS_IPFS_TEST_PORT=41744 PS_IPFS_TEST_PREFIX=/ipfs/polkaswap-bots-e2e yarn playwright test tests/e2e/ui/bots.spec.ts --workers=1 --reporter=line
+```
+
+For that reuse command, first build and start the preview in a separate terminal:
+
+```sh
+yarn build --logLevel error
+node scripts/testing/ipfs-preview-server.mjs --host 127.0.0.1 --port 41744 --prefix /ipfs/polkaswap-bots-e2e
+```
+
+The preview snapshots `dist`, so restart it after rebuilding. Without an existing preview, `yarn playwright test tests/e2e/ui/bots.spec.ts --workers=1` uses the normal Playwright build/server lifecycle.
+
+The four cases verify precise paper allocations, desktop column layout, portrait mobile layout, live consent with a disconnected wallet, password nonpersistence, reload and second-tab behavior without automatic signing. Screenshots are written to `output/playwright/bots/` without changing existing visual baselines. Portrait screenshots use a fresh mobile context with the persisted IndexedDB state; resizing desktop WebKit alone leaves a landscape screen orientation. Execution, quote/provider failure, allocation races, and signing boundaries are covered by the feature unit suites; these offline UI cases do not submit real trades or call AI providers.
+
+`bot-storage-browser.spec.ts` bundles the actual storage module into memory with the existing esbuild dependency. Two browser tabs exercise real IndexedDB transaction collisions, pre-broadcast hash persistence, unresolved-order blocking, idempotent settlement, and reload persistence. A separate check verifies native Web Locks contention with the production account/network key convention; it does not exercise the private signer adapter. Run both bot browser suites with:
+
+```sh
+yarn playwright test tests/e2e/ui/bots.spec.ts tests/e2e/ui/bot-storage-browser.spec.ts --workers=1
+```
+
+## Real historical backtesting
+
+`bots-playground.spec.ts` checks the built workspace in Chromium and WebKit, desktop/mobile, and root/IPFS hosting with unavailable chain services. It asserts no generated results, no CSV/sample controls, the March 1, 2026 UTC start, read-only fees, token selection, and disabled creation when proof is missing.
+
+`bots-real-history-live.spec.ts` is an explicit read-only network check against the real bundled archive and live SORA fees. It verifies every candidate, synchronized profit/fee replay, chronological validation, and creation/reload of an idle paper bot in an isolated browser context. It performs no wallet connection, signing, model call, or swap submission.
+
+```sh
+PS_PLAYWRIGHT_REUSE_SERVER=1 yarn exec playwright test tests/e2e/ui/bots-playground.spec.ts --workers=2
+PS_E2E_LIVE_NETWORK=1 PS_PLAYWRIGHT_REUSE_SERVER=1 yarn exec playwright test tests/e2e/ui/bots-real-history-live.spec.ts --workers=1
+```
+
+Build and restart the preview first. The live suite records its real-data screenshots, replay and observed fee provenance under `output/playwright/bots-real-history/`. Earlier `bots-playground` sample recordings are obsolete and must not be presented as real market evidence.

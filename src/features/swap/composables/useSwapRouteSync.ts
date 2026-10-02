@@ -6,6 +6,7 @@ import { useSelectedTokensRoute } from '@/shared/navigation/useSelectedTokensRou
 import { useSwapAmounts } from './useSwapAmounts';
 import { isSwapBackNavigationFromOrderBook, resolveHistoryBackLocation } from '../services/navigationHistory';
 import { normalizeSwapRouteTokens } from '../services/normalizeSwapRouteTokens';
+import { getTonswapAcquisitionPair } from '../services/tonswapFunding';
 
 import type { AccountAsset } from '@sora-substrate/sdk/build/assets/types';
 
@@ -34,10 +35,28 @@ export function useSwapRouteSync(withApi: WithApi) {
     await setTokenToAddress(normalizedPair.secondAddress);
   };
 
-  const { firstRouteAddress, secondRouteAddress, isValidRoute, parseCurrentRoute, updateRouteAfterSelectTokens } =
-    useSelectedTokensRoute(async ({ firstAddress, secondAddress }) => {
-      await syncSwapRoutePair(firstAddress, secondAddress);
-    });
+  const {
+    route,
+    firstRouteAddress,
+    secondRouteAddress,
+    isValidRoute,
+    parseCurrentRoute,
+    updateRouteAfterSelectTokens,
+  } = useSelectedTokensRoute(async ({ firstAddress, secondAddress }, query) => {
+    const acquisitionPair = getTonswapAcquisitionPair(query, firstAddress, secondAddress);
+    if (acquisitionPair) {
+      const wasReady = isRouteWriteReady.value;
+      isRouteWriteReady.value = false;
+      try {
+        await setTokenFromAddress(acquisitionPair.firstAddress);
+        await setTokenToAddress(acquisitionPair.secondAddress);
+      } finally {
+        isRouteWriteReady.value = wasReady;
+      }
+      return;
+    }
+    await syncSwapRoutePair(firstAddress, secondAddress);
+  });
 
   const routeTokenFrom = computed(() =>
     firstRouteAddress.value ? (assetsStore.assetDataByAddress(firstRouteAddress.value) as Nullable<AccountAsset>) : null
@@ -69,8 +88,16 @@ export function useSwapRouteSync(withApi: WithApi) {
       await withApi(async () => {
         parseCurrentRoute();
         const navigatedFromOrderBook = isSwapBackNavigationFromOrderBook(resolveHistoryBackLocation());
+        const acquisitionPair = getTonswapAcquisitionPair(
+          route?.query,
+          firstRouteAddress.value,
+          secondRouteAddress.value
+        );
 
-        if (tokenFrom.value && tokenTo.value && !navigatedFromOrderBook) {
+        if (acquisitionPair) {
+          await setTokenFromAddress(acquisitionPair.firstAddress);
+          await setTokenToAddress(acquisitionPair.secondAddress);
+        } else if (tokenFrom.value && tokenTo.value && !navigatedFromOrderBook) {
           updateRouteAfterSelectTokens(tokenFrom.value as AccountAsset, tokenTo.value as AccountAsset);
         } else if (isValidRoute.value && firstRouteAddress.value && secondRouteAddress.value) {
           await syncSwapRoutePair(firstRouteAddress.value, secondRouteAddress.value);

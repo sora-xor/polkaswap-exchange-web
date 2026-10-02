@@ -15,6 +15,7 @@ const transactionMocks = vi.hoisted(() => ({
   loading: { value: false },
   withNotifications: vi.fn(async (handler: () => unknown | Promise<unknown>) => {
     await handler();
+    return { submitted: true };
   }),
 }));
 
@@ -249,6 +250,21 @@ describe('CreateTokenDialog.vue', () => {
     expect(formMocks.registerAsset).toHaveBeenCalledTimes(1);
     expect(exposed.isVisible.value).toBe(false);
     expect(wrapper.emitted()['update:visible']).toBeTruthy();
+  });
+
+  it('keeps the dialog open when asset registration is not submitted', async () => {
+    wrapperTransactionState.withNotifications.mockImplementationOnce(async (handler) => {
+      await handler();
+      return { submitted: false };
+    });
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    await exposed.handleCreate();
+
+    expect(formMocks.registerAsset).toHaveBeenCalledTimes(1);
+    expect(exposed.isVisible.value).toBe(true);
+    expect(wrapper.emitted()['update:visible']).toBeUndefined();
   });
 
   // Visibility sync covered implicitly via parent usage; no direct assertion required here.

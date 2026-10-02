@@ -1,0 +1,96 @@
+[
+  {
+    "code": "RE",
+    "status": "not_verified",
+    "rule": "The 2025 local import order's annex controls tea under HS 0902 only as fresh leaves. However, the still-published national 1990 overseas order has a Réunion-specific dried-tea condition involving origin and Exobasidium vexans. The local repeal provision does not clearly repeal that national condition.",
+    "personalMailApplicability": "Fresh-plant postal prohibitions alone cannot decide dried tea; the relationship between the two legal instruments must be resolved.",
+    "quantityLimit": null,
+    "authority": "Réunion DAAF; Legifrance",
+    "evidenceUrls": [
+      "https://daaf.reunion.agriculture.gouv.fr/conditions-requises-pour-importer-des-vegetaux-a-la-reunion-a-compter-du-14-a3881.html",
+      "https://daaf.reunion.agriculture.gouv.fr/IMG/pdf/ap_salim_2025_8_d_avec_annexe.pdf",
+      "https://daaf.reunion.agriculture.gouv.fr/IMG/pdf/annexev.pdf",
+      "https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000343648/LEGISCTA000021087043/",
+      "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000021240384/2026-05-04",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=2542&reporeid=140",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=1240&reporeid=140",
+      "https://gd.eppo.int/taxon/EXOBVE/distribution/JP"
+    ],
+    "remainingQuestion": "Is there an authoritative current exemption specifically displacing the national 1990 dried-tea country-freedom condition for manufactured Japanese tea? No such exemption was found; retain exclusion under the no-special-document operating policy.",
+    "researchAttempts": [
+      "Read 2025 order, article 11 repeal and Annex V, December amendment, and national Annex VI; retained the unresolved legal overlap rather than assuming repeal.",
+      "Read German NPPO full translations of both orders: 2025 article 5 preserves other existing provisions, article 9 substitutes compliance for an import authorization but permits individual derogations only on application, and article 11 repeals only the 2011 local instrument. Verified exact national dried-tea row in Annex VI B(4), printed p. 67, and the EPPO Japan pest-distribution page. Preserved the separate agricultural-status uncertainty while recording a no-special-document exclusion."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The still-published national 1990 Annex VI B(4) expressly requires an official finding that the production country of dried tea is free from Exobasidium vexans. Japan is listed by EPPO as present. The 2025 local order cites that national order, preserves other existing provisions in article 5, and article 11 repeals only the 2011 local order. Its fresh-leaf-only documentary schedule is therefore insufficient evidence that the national dried-tea condition vanished. Without a verified overriding exception, the no-certificate route is not supported.",
+    "permitFreeSources": [
+      "https://daaf.reunion.agriculture.gouv.fr/conditions-requises-pour-importer-des-vegetaux-a-la-reunion-a-compter-du-14-a3881.html",
+      "https://daaf.reunion.agriculture.gouv.fr/IMG/pdf/ap_salim_2025_8_d_avec_annexe.pdf",
+      "https://daaf.reunion.agriculture.gouv.fr/IMG/pdf/annexev.pdf",
+      "https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000343648/LEGISCTA000021087043/",
+      "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000021240384/2026-05-04",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=2542&reporeid=140",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=1240&reporeid=140",
+      "https://gd.eppo.int/taxon/EXOBVE/distribution/JP"
+    ]
+  },
+  {
+    "code": "TF",
+    "status": "not_verified",
+    "rule": "The 2025 TAAF postal guide prohibits dried/dehydrated vegetation, including examples of artisanal herbal teas, and requires permitted foods to be sealed with a food inventory and biosecurity labelling. It does not clearly state whether industrially manufactured Camellia tea is outside the restriction.",
+    "personalMailApplicability": "This is postal-specific guidance, but its dried-vegetation scope needs a determination for factory-sealed sencha.",
+    "quantityLimit": null,
+    "authority": "French Southern and Antarctic Lands administration",
+    "evidenceUrls": [
+      "https://taaf.fr/content/uploads/2025/09/Guide-hivernant-2025-MAJ-290925.pdf",
+      "https://taaf.fr/content/uploads/2023/09/Livret-Biosecurite.pdf"
+    ],
+    "remainingQuestion": "Does the dried-vegetation restriction exclude commercially steamed and sealed Camellia tea; what station-specific permission is needed?",
+    "researchAttempts": [
+      "Read postal and biosecurity guides, including food packaging/inventory instructions; did not treat the herbal-tea example as definitive for manufactured sencha.",
+      "Downloaded and read the full 2023 biosecurity handbook pp. 9–10: express authorization for introduction of plants and a postal prohibition naming dried/dehydrated vegetation. Cross-checked the 2025 guide’s postal page 47 and its artisanal-tea examples; retained unresolved for manufactured sencha rather than inferring either universal permission or prohibition."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "TAAF’s biosecurity handbook explicitly includes dried/dehydrated vegetation among prohibited postal contents; its newer 2025 postal guide gives artisanal herbal teas/spices as examples. These texts do not establish whether sealed industrially steamed/dried Camellia tea is exempt. Without an affirmative manufactured-tea exemption, ordinary-post-only eligibility cannot be verified; do not describe every retail tea as conclusively prohibited.",
+    "permitFreeSources": [
+      "https://taaf.fr/content/uploads/2025/09/Guide-hivernant-2025-MAJ-290925.pdf",
+      "https://taaf.fr/content/uploads/2023/09/Livret-Biosecurite.pdf"
+    ]
+  },
+  {
+    "code": "YT",
+    "status": "not_verified",
+    "rule": "Mayotte Order 2025-DAAF-0230 excludes dried tea from the Camellia species prohibition; its chapter 09 documentary schedule names unroasted coffee and fresh pepper, not ordinary tea. That does not establish postal admissibility. The separate 2019-1092 postal order describes fresh plant material, including refrigerated or dry material and plant parts; current public guidance does not expressly resolve manufactured tea. The latest 2026 consolidation also needs verification.",
+    "personalMailApplicability": "Sealed steamed/dried food tea needs a DAAF determination that it falls outside the separate postal restriction. A dry-tea exception in the general import schedule is insufficient by itself.",
+    "quantityLimit": null,
+    "authority": "Mayotte DAAF / Prefecture",
+    "evidenceUrls": [
+      "https://daaf.mayotte.agriculture.gouv.fr/IMG/pdf/ap-2025-daaf-0230_importation_vegetaux_signe.pdf",
+      "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Quoi-mettre-dans-nos-valises-cet-ete",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/yt_2019-1092_post-gepaeck_fr.pdf",
+      "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-aout-2025-a733.html",
+      "https://daaf.mayotte.agriculture.gouv.fr/IMG/pdf/arrete_no2025-daaf-535_modifiant_l_arrete_2025-daaf-0230.pdf",
+      "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-2026-a775.html",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=3229&reporeid=140"
+    ],
+    "remainingQuestion": "Does sealed steamed/dried Camellia sinensis food tea fall outside the postal restriction in Order 2019-1092? Does amendment 2026-DAAF-236 or the current consolidated 2025-DAAF-0230 order alter its classification or documentary requirements?",
+    "researchAttempts": [
+      "Reviewed the 2025 base order and dry-tea exception, 2019 postal order and July 2026 public guidance. Checked the current official import index updated 3 June 2026. Amendment 2025-DAAF-535 only temporarily relaxed fresh-fruit conditions through 31 December 2025; amendment 2026-DAAF-003 concerns fresh vegetables. Retrieval of amendment 2026-DAAF-236 and the current consolidation failed. The conflicting postal wording leaves finished-tea applicability unresolved; this is not a finding that tea is prohibited.",
+      "Re-read the primary 2019 postal order from the German NPPO mirror: Article 1 says fresh material including refrigerated or dry material and plant parts, Article 3 research derogation is not a private-consumer waiver. Checked current DAAF June 2026 index and May 2026 amendment index; attempted both official pages and amendment retrieval repeatedly, without success."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The general import schedule excludes dried tea from the Camellia ban and does not list tea in its documentary requirements, but the separate postal ban explicitly includes dry plant material. No authoritative interpretation excluding manufactured sencha from that postal wording was found. Current 2026 amendments/consolidation are indexed by DAAF but repeated direct retrieval failed. This is an unresolved postal-classification question, not a proven tea ban.",
+    "permitFreeSources": [
+      "https://daaf.mayotte.agriculture.gouv.fr/IMG/pdf/ap-2025-daaf-0230_importation_vegetaux_signe.pdf",
+      "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Quoi-mettre-dans-nos-valises-cet-ete",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/yt_2019-1092_post-gepaeck_fr.pdf",
+      "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-aout-2025-a733.html",
+      "https://daaf.mayotte.agriculture.gouv.fr/IMG/pdf/arrete_no2025-daaf-535_modifiant_l_arrete_2025-daaf-0230.pdf",
+      "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-2026-a775.html",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=3229&reporeid=140"
+    ]
+  }
+]

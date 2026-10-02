@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+<!-- CSRF Token -->
+<meta name="csrf-token" content="ubgBIsEiBsikyJ5gz4MEgV7IPhif2mHBwo0GhUKo">
+
+<title>الجهاز المركزي للتقييس والسيطرة النوعية</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<!-- Favicons -->
+<link href="https://cosqc.gov.iq//img/logo.svg" rel="icon">
+<link href="https://cosqc.gov.iq//img/logo.svg" rel="apple-touch-icon">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="https://cosqc.gov.iq//vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+<link href="https://cosqc.gov.iq//vendor/bootstrap-icons/bootstrap-icons.css?v=1790750079" rel="stylesheet">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link href="https://cosqc.gov.iq//vendor/aos/aos.css" rel="stylesheet">
+<link href="https://cosqc.gov.iq//vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+<link href="https://cosqc.gov.iq//vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Main CSS File -->
+<link href="https://cosqc.gov.iq//css/commonstyle.css?v=1790750079" rel="stylesheet">
+<link href="https://cosqc.gov.iq//css/main.css?v=1790750079" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="https://cosqc.gov.iq//css/custom.css?v=1790750079" rel="stylesheet">
+
+<!-- Force Cairo Font + Fix Icons -->
+<style>
+    body {
+        font-family: 'Cairo', sans-serif !important;
+    }
+
+    .bi::before,
+    [class^="bi-"]::before,
+    [class*=" bi-"]::before {
+        font-family: "bootstrap-icons" !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        font-variant: normal !important;
+        text-transform: none !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .stats .stats-item i.bi {
+        font-family: "bootstrap-icons" !important;
+        font-style: normal !important;
+        font-size: 44px !important;
+        line-height: 1 !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 62px;
+        height: 62px;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0;
+    }
+
+    .stats .color-blue {
+        color: #0d6efd !important;
+    }
+
+    .stats .color-orange {
+        color: #ee6c20 !important;
+    }
+
+    .stats .color-green {
+        color: #15be56 !important;
+    }
+
+    .stats .color-pink {
+        color: #bb0852 !important;
+    }
+</style></head>
+<body class="index-page align-ar">
+    <style>
+    /* === WHITE HEADER === */
+    #header {
+        background-color: #ffffff !important;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15) !important;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .top-header .btn.text-light {
+        color: #333333 !important;
+    }
+
+    .mobile-nav-toggle {
+        color: #062146 !important;
+    }
+
+    .sitename {
+        color: #062146 !important;
+    }
+
+    #navmenu>div {
+        background-color: #ffffff !important;
+    }
+
+    #navmenu>div>ul {
+        background-color: #ffffff !important;
+    }
+
+    #navmenu>div>ul>li>a {
+        color: #062146 !important;
+    }
+
+    #navmenu>div>ul>li>a:hover {
+        color: #1a8ccc !important;
+    }
+
+    #navmenu .dropdown>ul {
+        background-color: #ffffff !important;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-height: 430px;
+        overflow-y: auto;
+        min-width: 260px;
+    }
+
+    #navmenu .dropdown>ul a {
+        color: #062146 !important;
+        background-color: transparent !important;
+        display: block;
+        padding: 10px 15px;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    #navmenu .dropdown>ul a:hover {
+        background-color: #062146 !important;
+        color: #ffffff !important;
+    }
+
+    .index-page .header .navmenu .dropdown ul li a,
+    .index-page .header .navmenu .listing-dropdown ul li a {
+        color: #062146 !important;
+    }
+
+    .index-page .header .navmenu .dropdown ul li a:hover,
+    .index-page .header .navmenu .listing-dropdown ul li a:hover {
+        background-color: #062146 !important;
+        color: #ffffff !important;
+    }
+
+    .navmenu a,
+    .navmenu a:focus {
+        color: #062146 !important;
+    }
+
+    .navmenu a:hover,
+    .navmenu .active,
+    .navmenu .active:focus {
+        color: #ffffff !important;
+    }
+
+    .navmenu .dropdown ul {
+        background-color: #ffffff !important;
+    }
+
+    .navmenu .dropdown ul a {
+        color: #062146 !important;
+    }
+
+    .navmenu .dropdown>.dropdown-active {
+        background-color: #ffffff !important;
+        color: #062146 !important;
+    }
+
+    #navmenu>div>ul>li.active>a,
+    #navmenu>div>ul>li>a.active,
+    #navmenu>div>ul>li.dropdown-active>a,
+    #navmenu>div>ul>li>a:focus,
+    #navmenu>div>ul>li.dropdown>a.dropdown-active,
+    #navmenu .nav-menu-list>li>a.dropdown-active,
+    #navmenu a[aria-expanded="true"],
+    #navmenu li.show>a,
+    #navmenu li.show>a:focus,
+    #navmenu .dropdown.show>a,
+    #navmenu .dropdown-toggle.show {
+        background-color: #ffffff !important;
+        color: #062146 !important;
+        border-radius: 4px;
+    }
+
+    #navmenu .dropdown>a::after,
+    #navmenu .dropdown>a i,
+    #navmenu>div>ul>li.dropdown>a i.bi-chevron-down,
+    #navmenu>div>ul>li.dropdown>a .dropdown-indicator {
+        color: #062146 !important;
+        border-top-color: #062146 !important;
+    }
+
+    #navmenu>div>ul>li.dropdown>a {
+        color: #062146 !important;
+    }
+
+    .toggle-dropdown {
+        fill: #062146 !important;
+    }
+
+    .toggle-dropdown path {
+        stroke: #062146 !important;
+        fill: none !important;
+    }
+
+    @media (max-width: 767px) {
+        .ministry-title-center {
+            display: none !important;
+        }
+
+        #navmenu .dropdown>ul {
+            max-height: none;
+            overflow-y: visible;
+            min-width: auto;
+        }
+
+        #navmenu .dropdown>ul a {
+            color: #ffffff !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .top-header-adaptive {
+            min-height: 85px !important;
+        }
+    }
+</style>
+
+<header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl">
+
+        <div class="top-header top-header-adaptive pb-3 position-relative d-flex align-items-center justify-content-between">
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+
+            <div class="topheaderleft">
+                                    <a class="main-menu profile py-1 btn btn-sm" href="https://www.cosqc.gov.iq/user/signin" title="تسجيل الدخول">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="#0d6eaa">
+                            <circle cx="8" cy="5" r="3.5" />
+                            <path d="M1.5 14.5C1.5 11.5 4 9.5 8 9.5s6.5 2 6.5 5z" />
+                        </svg>
+                    </a>
+                
+                <a href="https://www.cosqc.gov.iq/setlanguage/en"
+                    class="btn ms-2 btn-sm" style="color:#062146;">
+                    En <i class="fa fa-globe"></i>
+                </a>
+
+                <div class="btn btn-danger ms-2 btn-sm">
+                    <i class="bi bi-tools fs-small d-lg-none d-block"></i>
+                    <span class="d-none d-lg-block">
+                        <i class="bi bi-tools fs-small"></i> &nbsp; تحت الإنشاء
+                    </span>
+                </div>
+            </div>
+
+            <div class="d-none d-md-flex align-items-center justify-content-center"
+                style="position: absolute; left: 60%; transform: translateX(-50%); gap: 50px;">
+                <a href="https://www.cosqc.gov.iq" style="text-decoration:none;">
+                    <h1 class="sitename mb-0"
+                        style="font-size:24px; color:#062146; font-weight:700; margin:0; white-space:nowrap; transform: scaleX(1.15); display: inline-block;">
+                        الجهاز المركزي للتقييس والسيطرة النوعية
+                    </h1>
+                </a>
+
+                <a href="https://www.cosqc.gov.iq" class="main-menu logo d-flex align-items-center">
+                    <img src="https://cosqc.gov.iq/uploads/site/1769965768_logo.svg"
+                        alt="COSQC" style="height: 145px; width: auto;">
+                </a>
+            </div>
+
+            <a href="https://www.cosqc.gov.iq" class="main-menu logo d-flex d-md-none align-items-center ms-auto">
+                <img src="https://cosqc.gov.iq/uploads/site/1769965768_logo.svg"
+                    alt="COSQC" style="height: 80px; width: auto;">
+            </a>
+        </div>
+
+        <div class="d-md-none text-center py-2" style="border-top: 1px solid #eee;">
+            <a href="https://www.cosqc.gov.iq" style="text-decoration:none;">
+                <span style="font-size:24px; color:#062146; font-weight:700; line-height:1.4; display:block;">
+                    الجهاز المركزي للتقييس والسيطرة النوعية
+                </span>
+            </a>
+        </div>
+
+        <div class="position-relative d-flex align-items-center justify-content-between justify-content-lg-center">
+            <div style="width: 100%;">
+                <nav id="navmenu" class="navmenu me-auto" style="width: 100%; text-align:center;">
+                    <div style="background: #ffffff; border-radius:8px; padding:0 15px; display:inline-block; margin:0 auto; border:1px solid #e0e0e0;">
+
+                        <ul class="nav-ar nav-menu-list" style="justify-content:center; width:100%;">
+
+                            <li class="nav-home-btn">
+                                <a href="https://www.cosqc.gov.iq" class="px-2 py-3">
+                                    <i class="fa fa-home fs-6 ps-1"></i>
+                                </a>
+                            </li>
+
+                            <li class="dropdown">
+                                <a class="main-menu" href="#">
+                                    <svg class="toggle-dropdown" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:5px;">
+                                        <path d="M1.5 4.5l6.5 7 6.5-7" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>اتصل بنا</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="https://www.cosqc.gov.iq/contactus">لارسال شكوى او استفسار</a>
+                                        <a href="https://www.cosqc.gov.iq/departmentmails">بريد الاقسام</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a class="main-menu" href="http://home.gov-iq.net/cit/">
+                                    الحكومة الالكترونية
+                                </a>
+                            </li>
+
+                            <li class="dropdown">
+    <a class="main-menu" href="#">
+        <svg class="toggle-dropdown" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:5px;">
+            <path d="M1.5 4.5l6.5 7 6.5-7" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>اصدارات ومطبوعات</span>
+    </a>
+    <ul>
+        <li>
+            <a href="https://www.cosqc.gov.iq/publications/articles">المقالات</a>
+            <a href="https://www.cosqc.gov.iq/publications/studies">الدراسات والبحوث</a>
+        </li>
+    </ul>
+</li>
+                            
+<li class="dropdown">
+    <a class="main-menu" href="#">
+        <svg class="toggle-dropdown" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:5px;">
+            <path d="M1.5 4.5l6.5 7 6.5-7" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>خدمات الجهاز</span>
+    </a>
+
+    <ul>
+        <li>
+            <a href="https://www.cosqc.gov.iq/service/vehicle-service">خدمات المركبات</a>
+            <a href="https://www.cosqc.gov.iq/service/patents-search">البحث عن براءات الاختراع</a>
+            <a href="https://www.cosqc.gov.iq/vehicle">تقييم المطابقة للمركبات</a>
+            <a href="https://www.cosqc.gov.iq/service/awards">منح الشهادات</a>
+
+            <a href="https://www.cosqc.gov.iq/service/patent-electronic-services">الخدمات الإلكترونية لبراءات الاختراع</a>
+            <a href="https://www.cosqc.gov.iq/service/training-courses">الدورات التدريبية</a>
+            <a href="https://www.cosqc.gov.iq/service/patent-request/local">طلب براءة اختراع محلية</a>
+            <a href="https://www.cosqc.gov.iq/service/new-electronic-service">طلب براءة اختراع أجنبية PCT</a>
+            <a href="https://www.cosqc.gov.iq/service/patent-transfer">نقل ملكية براءة اختراع</a>
+            <a href="https://www.cosqc.gov.iq/service/patent-annual-renewal">التجديد السنوي لبراءة الاختراع</a>
+
+            <a href="https://www.cosqc.gov.iq/simple-service/translation_patent_certificate">ترجمة وختم شهادة براءة الاختراع</a>
+            <a href="https://www.cosqc.gov.iq/simple-service/patent_certificate_true_copy">صورة طبق الأصل لشهادة براءة الاختراع</a>
+            <a href="https://www.cosqc.gov.iq/simple-service/patent_grant_request">منح براءة اختراع للطلب</a>
+            <a href="https://www.cosqc.gov.iq/simple-service/industrial_model_publication">نشر النموذج الصناعي</a>
+            <a href="https://www.cosqc.gov.iq/simple-service/industrial_model_annual_renewal">تجديد الرسم السنوي للنموذج الصناعي</a>
+
+            <a href="https://www.cosqc.gov.iq/service/industrial-model-copy">صورة طبق الأصل للنموذج الصناعي</a>
+            <a href="https://www.cosqc.gov.iq/service/industrial-model-transfer">نقل ملكية نموذج صناعي</a>
+            <a href="https://www.cosqc.gov.iq/service/industrial-model-register">طلب تسجيل نموذج صناعي</a>
+
+            <a href="https://www.cosqc.gov.iq/simple-service/electronic_calibration">طلب معايرة إلكترونية</a>
+            <a href="https://www.cosqc.gov.iq/simple-service/certificate_grant_request">استمارة طلب منح شهادة</a>
+            <a href="https://www.cosqc.gov.iq/simple-service/quality_mark_request">طلب الحصول على علامة الجودة للمنتجات المستوردة</a>
+            <a href="https://www.cosqc.gov.iq/simple-service/local_quality_mark_request">طلب الحصول على علامة الجودة للمنتجات المحلية</a>
+
+            <a href="https://www.cosqc.gov.iq/service/service-completion">منح الاستثناءات من المواصفة القياسية العراقية</a>
+            <a href="https://www.cosqc.gov.iq/service/service-completion/standards-sale">بيع المواصفات القياسية العراقية</a>
+            <a href="https://www.cosqc.gov.iq/service/service-completion/imported-products-requirements">المتطلبات الفنية للمنتجات المستوردة</a>
+            <a href="https://www.cosqc.gov.iq/service/service-completion/local-factory-specifications">المواصفات المعملية للمصانع المحلية</a>
+            <a href="https://www.cosqc.gov.iq/service/service-completion/standards-consultations">الاستشارات والاستفسارات في مجال المواصفات</a>
+
+            <a href="https://www.cosqc.gov.iq/service/all">جميع الخدمات</a>
+        </li>
+    </ul>
+</li>
+                            <li class="dropdown">
+                                <a class="main-menu" href="#">
+                                    <svg class="toggle-dropdown" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:5px;">
+                                        <path d="M1.5 4.5l6.5 7 6.5-7" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>القوانين والانظمة</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="https://www.cosqc.gov.iq/laws/evidence">الادلة</a>
+                                        <a href="https://www.cosqc.gov.iq/laws/regulation">القوانين</a>
+                                        <a href="https://www.cosqc.gov.iq/laws/instructions">التعليمات</a>
+                                        <a href="https://wipolex.wipo.int/en/legislation/members/profile/IQ">المنظمة العالمية للملكية الفكريةWIPO</a>
+                                        <a href="https://www.cosqc.gov.iq/laws/letters-of-appreciation">كتب الشكر</a>
+                                        <a href="https://www.cosqc.gov.iq/laws/bonuses">المكافآت</a>
+                                        <a href="https://www.cosqc.gov.iq/laws/procurement">المشتريات</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a class="main-menu" href="#">
+                                    <svg class="toggle-dropdown" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:5px;">
+                                        <path d="M1.5 4.5l6.5 7 6.5-7" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>عن الجهاز</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <a href="https://www.cosqc.gov.iq/about/device">نبذة عن الجهاز</a>
+                                        <a href="https://www.cosqc.gov.iq/about/qualitypolicy">سياسة الجودة</a>
+                                        <a href="https://www.cosqc.gov.iq/about/annualreport">التقرير السنوي</a>
+                                        <a href="https://www.cosqc.gov.iq/about/orgstructure">الهيكل التنظيمي</a>
+                                        <a href="https://www.cosqc.gov.iq/about/missinvision">رسالتنا و قيمنا و رؤيتنا</a>
+                                        <a href="https://www.cosqc.gov.iq/about/cvs">السير الذاتية</a>
+                                        <a href="https://www.cosqc.gov.iq/about/reports-official">ايفادات السادة المسؤولين</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+
+                        <!-- Second Row: Service Items -->
+                        <ul class="nav-row-2 d-none d-xl-flex" style="justify-content:center; width:auto; padding:6px 0; list-style:none;">
+                            <li>
+                                <a href="http://iraqi-standards.org/">المواصفات</a>
+                            </li>
+                            <li>
+                                <a href="https://www.cosqc.gov.iq/service/grantcertificate">منح شهادات انظمة الجودة</a>
+                            </li>
+                            <li>
+                                <a href="https://www.cosqc.gov.iq/service/patent">مديرية براءات الاختراع والنماذج الصناعية</a>
+                            </li>
+                            <li>
+                                <a href="https://www.cosqc.gov.iq/service/grantcertificate">الفحوصات المختبرية</a>
+                            </li>
+                            <li>
+                                <a href="https://www.cosqc.gov.iq/service/scales">المعايرات الصناعية</a>
+                            </li>
+                            <li>
+                                <a href="https://www.cosqc.gov.iq/service/jewelry">المصوغات</a>
+                            </li>
+                            <li class="dropdown">
+    <a href="https://www.cosqc.gov.iq/about/media-center">
+        المركز الإعلامي
+        <svg class="toggle-dropdown" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" style="vertical-align:middle;margin-right:5px;">
+            <path d="M1.5 4.5l6.5 7 6.5-7" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </a>
+
+    <ul>
+        <li>
+            <a href="https://www.cosqc.gov.iq/publications/training">الخطة التدريبية</a>
+            <a href="#">نوعية المستهلك</a>
+            <a href="#">ايفادات السادة المسؤولين</a>
+            <a href="#">مكتبة الصور</a>
+            <a href="#">مكتبة الفيديو</a>
+            <a href="#">بروشور</a>
+            <a href="#">COSQCاضف تطبيق</a>
+            <a href="#">ارشيف الاخبار</a>
+        </li>
+    </ul>
+</li>
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>    <main class="main language-ar">
+                            <div class="page-title">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+              <h1>
+                تسجيل الدخول
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li>
+                <a href="https://www.cosqc.gov.iq">
+                    الصفحة الرئيسية
+                </a>
+            </li>
+            <li class="current">
+                تسجيل الدخول
+            </li>
+          </ol>
+        </div>
+      </nav>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="row gy-5">
+                <div class="col-lg-6 text-end ms-auto me-auto">
+                    <div class="card">
+                        <form class="card-body" action="" method="post">
+                                                        <input type="hidden" name="_token" value="ubgBIsEiBsikyJ5gz4MEgV7IPhif2mHBwo0GhUKo">                            <div class="row p-5">
+                                <div class="col-md-12">
+                                    <div class="pb-2">
+                                        <label class="pb-1" for="mobile">
+                                            رقم التليفون
+                                        </label>
+                                        <input type="tel" name="mobile" id="mobile" class="form-control text-end" value="" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="py-4">
+                                        <label class="pb-1" for="password">
+                                            الرمز السري
+                                        </label>
+                                        <input type="password" name="password" id="password" class="form-control text-end" value="" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary">
+                                        ارسال
+                                    </button>
+                                    <br><hr>
+                                     <a href="https://www.cosqc.gov.iq/user/signup" class="ms-1">
+                                        ليس لديك حساب؟ سجل الآن
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+    <footer id="footer" class="footer bg-light pt-0 mp-lg-5" style="background-image: url('https://cosqc.gov.iq/uploads/site/1769965768_bg-footer.png')">
+
+    <style>
+        .footer-map-section {
+            margin-top: 30px;
+        }
+
+        .footer-map-card {
+            position: relative;
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 16px;
+            box-shadow: 0 18px 45px rgba(15, 61, 115, 0.16);
+            border: 1px solid rgba(15, 61, 115, 0.10);
+            overflow: hidden;
+        }
+
+        .footer-map-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 14px;
+            direction: rtl;
+        }
+
+        .footer-map-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-map-icon {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #0f3d73, #0d6efd);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.25);
+            font-size: 21px;
+        }
+
+        .footer-map-title {
+            margin: 0;
+            color: #0f3d73;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .footer-map-subtitle {
+            margin: 2px 0 0;
+            color: #6c757d;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .footer-map-open {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            background: #0f3d73;
+            color: #ffffff !important;
+            padding: 9px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.3s ease;
+        }
+
+        .footer-map-open:hover {
+            background: #0d6efd;
+            color: #ffffff !important;
+            transform: translateY(-2px);
+        }
+
+        .footer-map-frame-wrap {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(15, 61, 115, 0.12);
+            background: #eef4fb;
+        }
+
+        .footer-map-frame-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            filter: saturate(1.05) contrast(1.02);
+        }
+
+        .footer-map-badge {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.94);
+            color: #0f3d73;
+            border-radius: 50px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 28px rgba(15, 61, 115, 0.16);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        @media (max-width: 767px) {
+            .footer-map-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .footer-map-open {
+                width: 100%;
+            }
+
+            .footer-map-frame-wrap {
+                height: 260px;
+            }
+        }
+    </style>
+
+    <div class="container footer-top">
+      <div class="row gy-4 pt-0 pt-lg-5">
+
+        <div class="col-lg-3 col-md-12">
+          <h4>
+            تابعنا على المواقع التالية
+          </h4>
+          <div class="footer-contact">
+            <p>
+              عنوان 1
+            </p>
+            <p>
+              عنوان 2
+            </p>
+                          <p>
+                عنوان 3
+              </p>
+                                                              <strong class="mt-3"> :الهاتف</strong>
+              <P>
+                <a href="tel:+123"><span>+123</span></a>
+              </P>
+                                                              <strong> :البريد</strong>
+              <p>
+                <a href="mailto:info@cosqc.com"><span>info@cosqc.com</span></a>
+              </p>
+                                              </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>
+            بعض خدمات الجهاز
+          </h4>
+          <ul>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                المواصفات
+              </a>
+            </li>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                مديرية براءات الاختراع و النماذج الصناعية
+              </a>
+            </li>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                المقاييس
+              </a>
+            </li>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                الموصغات
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>
+            من نحن
+          </h4>
+          <ul>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                نبذة عن الجهاز
+              </a>
+            </li>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                سياسة الجودة
+              </a>
+            </li>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                رسالتنا و قيمنا و رؤيتنا
+              </a>
+            </li>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                التقرير السنوي
+              </a>
+            </li>
+            <li>
+              <i class="bi bi-chevron-right"></i> <a href="#">
+                الهيكل التنظيمي
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-3 footer-about">
+          <a href="https://www.cosqc.gov.iq" class="d-flex align-items-center">
+            <span class="sitename">
+              الجهاز المركزي للتقييس والسيطرة النوعية
+              <img src="https://cosqc.gov.iq/uploads/site/1769965768_logo-footer.svg" alt="الجهاز المركزي للتقييس والسيطرة النوعية">
+            </span>
+          </a>
+          <p class="py-3">
+            الجهاز المركزي للتقييس والسيطرة النوعية
+          </p>
+          <p class="border-top pt-3">
+            التواصل الاجتماعي
+          </p>
+          <div class="social-links d-flex justify-content-end">
+                          <a href="https://www.youtube.com/@cosqciraq5861?app=desktop">
+                <i class="bi bi-youtube"></i>
+              </a>
+                                      <a href="https://www.facebook.com/COSQC.IQ/">
+                <i class="bi bi-facebook"></i>
+              </a>
+                                      <a href="https://www.instagram.com/cosqc.gov.iq/">
+                <i class="bi bi-instagram"></i>
+              </a>
+                                      <a href="https://t.me/cosqc19">
+                <i class="bi bi-telegram"></i>
+              </a>
+                      </div>
+        </div>
+
+      </div>
+
+      
+      <div class="row footer-map-section">
+        <div class="col-12">
+          <div class="footer-map-card">
+
+            <div class="footer-map-header">
+                <div class="footer-map-info">
+                    <div class="footer-map-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="footer-map-title">
+                            موقع الجهاز المركزي للتقييس والسيطرة النوعية
+                        </h4>
+                        <p class="footer-map-subtitle">
+                        </p>
+                    </div>
+                </div>
+
+                <a class="footer-map-open"
+                   href="https://www.google.com/maps?q=33.2763369,44.3869114"
+                   target="_blank"
+                   rel="noopener">
+                    <i class="bi bi-map"></i>
+                    فتح الموقع في Google Maps
+                </a>
+            </div>
+
+            <div class="footer-map-frame-wrap">
+                <iframe
+                    src="https://maps.google.com/maps?q=33.2763369,44.3869114&z=16&output=embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    allowfullscreen>
+                </iframe>
+
+                <div class="footer-map-badge">
+                    <i class="bi bi-pin-map-fill"></i>
+                    الجهاز المركزي للتقييس والسيطرة النوعية
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container copyright text-center mt-4">
+        <p><span>2026</span> <strong class="px-1 sitename">جميع الحقوق © محفوظة للجهاز المركزي للتقييس والسيطرة النوعية</strong></p>
+    </div>
+
+</footer>    <!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><svg
+        xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="white">
+        <path d="M2 11l6-7 6 7" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"
+            stroke-linejoin="round" />
+    </svg></a>
+
+<!-- Vendor JS Files -->
+<script src="https://cosqc.gov.iq//vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cosqc.gov.iq//vendor/php-email-form/validate.js"></script>
+<script src="https://cosqc.gov.iq//vendor/aos/aos.js"></script>
+<script src="https://cosqc.gov.iq//vendor/glightbox/js/glightbox.min.js"></script>
+<script src="https://cosqc.gov.iq//vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="https://cosqc.gov.iq//vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="https://cosqc.gov.iq//vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="https://cosqc.gov.iq//vendor/swiper/swiper-bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- Main JS File -->
+<script src="https://cosqc.gov.iq//js/main.js"></script>    </body>
+</html>

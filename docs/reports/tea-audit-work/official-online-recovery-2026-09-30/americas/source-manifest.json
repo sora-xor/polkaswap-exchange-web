@@ -1,0 +1,1723 @@
+{
+  "reviewedAt": "2026-09-30",
+  "files": [
+    {
+      "file": "ag-act2012-fao.pdf",
+      "bytes": 2400098,
+      "sha256": "6f42ee4255a07db7731121f67296d9b2a11be71798e5e958f10db2e3775e94ab",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://faolex.fao.org/docs/pdf/ant126404.pdf",
+          "status": 200,
+          "provenanceFile": "ag-sr-tc-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-act2012-fao.pdf.txt",
+      "bytes": 65994,
+      "sha256": "87476b367822a02d596d876b1fd05778ded485f099f03a9164e254039e906563"
+    },
+    {
+      "file": "ag-act2012.pdf",
+      "bytes": 13629983,
+      "sha256": "3c2f0756fbfdd2cfc8482905d68601b07f5116eb3eaa758c2c4997d25395aff0",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://laws.gov.ag/wp-content/uploads/2019/02/a2012-18.pdf",
+          "status": 200,
+          "provenanceFile": "ag-vg-law-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-act2012.pdf.txt",
+      "bytes": 33,
+      "sha256": "405f2530037ff38a87dd78abe3f8ca1b88a5fcc1720cdcaf8f80ec319b15265d"
+    },
+    {
+      "file": "ag-bb-recovery.json",
+      "bytes": 14060,
+      "sha256": "32b53de77bd671993b01034994db7a33dcfe75894b80dfc7e62e69f82d196079"
+    },
+    {
+      "file": "ag-guide-dating.json",
+      "bytes": 333,
+      "sha256": "d20706eadb6a32cdb2b18c73ece0d40486712dc559ba2d07481d958127b4ea12"
+    },
+    {
+      "file": "ag-guide2022.pdf",
+      "bytes": 118465,
+      "sha256": "b458ead36bd6ad1adc38ccad884c60b5c48b969343ee94df5387dd00bc341197",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/import-export-information-guide.pdf",
+          "status": 200,
+          "provenanceFile": "ag-bb-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-guide2022.pdf.txt",
+      "bytes": 3138,
+      "sha256": "afbcfa0915bfc0250032d118c3f68c231a4696a71828584435aed7d80dc611ba"
+    },
+    {
+      "file": "ag-guidelines2021.pdf",
+      "bytes": 99701,
+      "sha256": "d3746ce3dc1ed85c0a3424398c8316eafef7c158ed9e15ba8fd5f4076c562e12",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2021/09/Plant-Protection-Import-Guidelines-ver-17062021.pdf",
+          "status": 200,
+          "provenanceFile": "ag-bb-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-guidelines2021.pdf.txt",
+      "bytes": 2810,
+      "sha256": "14e819f338098f9ecf088f6cc00978024b3ef9ddd3a5d013f59be9e377592c30"
+    },
+    {
+      "file": "ag-health-current.html",
+      "bytes": 226,
+      "sha256": "80a265bed528211aa708dcd58f7a95db36eeb7f873c6fe4ddab0b3a1dc0973a4",
+      "retrievals": [
+        {
+          "url": "https://health.gov.ag/laws-regulations/",
+          "status": 406,
+          "provenanceFile": "final-source-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-ippc-guide2014.html",
+      "bytes": 75421,
+      "sha256": "d2f558f59f5e739def4bb26943f60cc220e9b422aab0dd7f7c6a95dcf66b9984"
+    },
+    {
+      "file": "ag-ippc-guide2014.pdf",
+      "bytes": 31557,
+      "sha256": "1b893d759d4c67596e0b6700acc45bf21101da2bcc16304a1b5978a3516df692",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://assets.ippc.int/static/media/files/reportingobligation/2014/05/14/import_export_information_guide.pdf",
+          "status": 200,
+          "provenanceFile": "ag-guide-dating.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-ippc-guide2014.pdf.txt",
+      "bytes": 3140,
+      "sha256": "bfc8875763c3b98c46d49824b16722333f4b96b0a88e63ad9c0c9f9a76cf1a13"
+    },
+    {
+      "file": "ag-ippc-measures.html",
+      "bytes": 76025,
+      "sha256": "c5673b9d4461ce5fc0a5ba6aee9a73b56496a07b40afd19770342cefec6e00a9",
+      "retrievals": [
+        {
+          "url": "https://www.ippc.int/en/countries/antigua-and-barbuda/reportingobligation/2012/12/antigua-and-barbuda-phytosanitary-measuresrequirements-and-prohibitions/",
+          "status": 200,
+          "provenanceFile": "ag-bb-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-ippc-requirements2005.doc",
+      "bytes": 41984,
+      "sha256": "16ae5d65ee78dc3c8f0397bd9f594a2799a3299e14dacb3bfa149499ca772ee3",
+      "retrievals": [
+        {
+          "url": "https://assets.ippc.int/static/media/files/reportingobligation/2015/02/20/1132168197201_Phytosanitary_restrictions_requirements-818119572_2013042321-17En.doc",
+          "status": 200,
+          "provenanceFile": "cw-sx-ag-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-ippc-requirements2005.doc.txt",
+      "bytes": 1136,
+      "sha256": "4cde2dc36a705a37c394c034c25c8ca66b2765aef3d84d2222b231d61927621f"
+    },
+    {
+      "file": "ag-ippc2012act.html",
+      "bytes": 75465,
+      "sha256": "0075ba24d60f95250b8112e42bcd23448462346f3b99f55e67f2f3fa739e9977",
+      "retrievals": [
+        {
+          "url": "https://www.ippc.int/en/countries/antigua-and-barbuda/reportingobligation/2014/05/httplawsgovagacts2012a2012-1pdf/",
+          "status": 200,
+          "provenanceFile": "law-continuation-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-media-import.json",
+      "bytes": 29564,
+      "sha256": "2fa3c2a225a8582ce7f67fbbc557bf3bc775eb5acf9161df1a09005cc59f6cf9",
+      "retrievals": [
+        {
+          "url": "https://agriculture.gov.ag/wp-json/wp/v2/media?search=import&per_page=100",
+          "status": 200,
+          "provenanceFile": "index-recovery-results.json"
+        }
+      ]
+    },
+    {
+      "file": "ag-sr-proposed-overrides.json",
+      "bytes": 18705,
+      "sha256": "66d2cf9ffd96c6cbdef060b59be87817f8ee7d9a0289ce95d695a260ffa7f89c"
+    },
+    {
+      "file": "ag-sr-tc-recovery.json",
+      "bytes": 897,
+      "sha256": "f1371a150a3f6d0b8d4025f747cbdf812731c39655b5d28e45229f377d84e0c9"
+    },
+    {
+      "file": "ag-vg-law-recovery.json",
+      "bytes": 498,
+      "sha256": "ae66b91defe235006331853b660fd6c9818d4674d9e29afc9e894dc4aba46af3"
+    },
+    {
+      "file": "bb-act2023-gazette.html",
+      "bytes": 416234,
+      "sha256": "97c69588d7ca6ac2f7135d64015738af6b65d420000abd2524faca536f5d48a4",
+      "retrievals": [
+        {
+          "url": "https://governmentprintery.gov.bb/gazette-february-20-2023-part-a-clviii-no-19/",
+          "status": 200,
+          "provenanceFile": "bb-law2023-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bb-act2023-gazette.txt",
+      "bytes": 360129,
+      "sha256": "bf1e9677e5bfecf0e09cfd8126c70d053bed94bc06f2a69803a7378803d80341"
+    },
+    {
+      "file": "bb-act2023-normalized.txt",
+      "bytes": 112608,
+      "sha256": "9411bd1b139e61d47fbf18c902be2972c4bda7f28eb8e5be85a57ee43e36a6c8"
+    },
+    {
+      "file": "bb-downloads.html",
+      "bytes": 36622,
+      "sha256": "486b647ab9816f0cb0eecc18758228fc4f4684193d9d332ea5c2de588d8439c1",
+      "retrievals": [
+        {
+          "url": "https://agriculture.gov.bb/Downloads/",
+          "status": 200,
+          "provenanceFile": "ag-bb-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bb-gazetteindex2023.html",
+      "bytes": 258592,
+      "sha256": "35aab49135b24d15db6fa439ac0eddae17b623e685e19d5d46b280384260c483"
+    },
+    {
+      "file": "bb-ippc-regs.html",
+      "bytes": 75080,
+      "sha256": "91a3ab30f0d6dd2e09d12148cc2bf4940a37e57df4196a6471b17066664fa90b",
+      "retrievals": [
+        {
+          "url": "https://www.ippc.int/en/countries/barbados/reportingobligation/2012/12/regulations/",
+          "status": 200,
+          "provenanceFile": "ag-bb-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bb-law2023-recovery.json",
+      "bytes": 3081,
+      "sha256": "f463b4490e87583c461cdf000e41d511200c6587e9aa933c5cf7028aca509880"
+    },
+    {
+      "file": "bb-plant-posts.json",
+      "bytes": 29790901,
+      "sha256": "e38b99ad24332e223d7040f40de8c7f7d4d708333597e8a8b2717bfde88e6d13",
+      "retrievals": [
+        {
+          "url": "https://governmentprintery.gov.bb/wp-json/wp/v2/posts?search=Plant%20Protection&per_page=100",
+          "status": 200,
+          "provenanceFile": "bb-law2023-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bb-plantpage.html",
+      "bytes": 95331,
+      "sha256": "ca3c722315a147c75af982415c0ab1cc218ce8bc556b1b875a423b8953673228",
+      "retrievals": [
+        {
+          "url": "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+          "status": 200,
+          "provenanceFile": "index-recovery-results.json"
+        }
+      ]
+    },
+    {
+      "file": "bb-post-2582.txt",
+      "bytes": 91546,
+      "sha256": "0929d88051bedf83128d99a8b1ce268bae97d24016439dff95880d32a078fa99"
+    },
+    {
+      "file": "bb-post-2649.json",
+      "bytes": 155891,
+      "sha256": "e0ef5927df8d251376055ee8f5d18ca82389e945cbe7f92b8e9bc32561bef3b5"
+    },
+    {
+      "file": "bb-post-2649.txt",
+      "bytes": 118071,
+      "sha256": "89a30a5afa0e7e25479f8ea07bb0d67a66a86ef695961413871cc1959a20d9d0"
+    },
+    {
+      "file": "bb-post-3171.txt",
+      "bytes": 218040,
+      "sha256": "2b72513dc5c91ce9ac50ad72f591b2857238f988e9f510242a44a8bd036cd7cf"
+    },
+    {
+      "file": "bb-post-3265.txt",
+      "bytes": 197962,
+      "sha256": "0b6cfdc5bc65138ab588c7b92a27652437550264e6bdfae86f5c615c5e6a45ea"
+    },
+    {
+      "file": "bb-post-3273.json",
+      "bytes": 5939,
+      "sha256": "1d85bd1d5c998e90cfa3e69433f1e239ffc57960b637c1d4f5befa49caf51b02",
+      "retrievals": [
+        {
+          "url": "https://governmentprintery.gov.bb/gazette-may-29-2024-part-a-vol-clix-no-56-with-s-is-nos-1-2/",
+          "status": 200,
+          "provenanceFile": "bb-law2023-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bb-post-3273.txt",
+      "bytes": 1900,
+      "sha256": "69df541870d0453605f03c4e595db461b98001e3f1df65dff23fe02a3822bdd1"
+    },
+    {
+      "file": "bb-proposed-override.json",
+      "bytes": 8127,
+      "sha256": "84f124b1dfec2edde0c437b989af026a6d7c4347aff56ccd1b338d982562ad5d"
+    },
+    {
+      "file": "bb-regulations.html",
+      "bytes": 24323,
+      "sha256": "59d65f1f51a3976f3eaa3e84f597db956ba6bf5b6711e3eafbc75353859f97f1",
+      "retrievals": [
+        {
+          "url": "https://agriculture.gov.bb/Resources/Regulations",
+          "status": 200,
+          "provenanceFile": "ag-bb-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bq-law-explanation.html",
+      "bytes": 206405,
+      "sha256": "aae03f0163a87919b9450a6b76e136eeefff59981699d01d4a4ed84766ee76e0",
+      "retrievals": [
+        {
+          "url": "https://zoek.officielebekendmakingen.nl/kst-31957-7.html",
+          "status": 200,
+          "provenanceFile": "initial-downloads.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-appeal2022.pdf",
+      "bytes": 532746,
+      "sha256": "94199770e1f0412631852cbd6fc82d168a3fc01f96f5fdf6276f15c396ab8e58",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://www.courtofappeal.org.bs/download/042371500.pdf",
+          "status": 200,
+          "provenanceFile": "law-continuation-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-appeal2022.pdf.txt",
+      "bytes": 61518,
+      "sha256": "0a3c2497ee547ff8337c442e41bdb11c6f1c45bb5fdd6413bf7aa19a406b92b8"
+    },
+    {
+      "file": "bs-customs2011.pdf",
+      "bytes": 4531012,
+      "sha256": "11d9135e41d77427cf4a12d56aeb9650f6d5bf9c1e9adab716542c6aef3cd47f",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/2011/2011-0030/2011-0030.pdf",
+          "status": 200,
+          "provenanceFile": "bs-law-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-customs2011.pdf.txt",
+      "bytes": 1346411,
+      "sha256": "64ca574f9c8a0009f97c10f99dfab59698fbb175ab71ff2d06b03f8cc60a3ea6"
+    },
+    {
+      "file": "bs-customsamend2013.pdf",
+      "bytes": 553963,
+      "sha256": "6424c31a95a06d338307409456210ab20e68899d085f802858ed264810c17a28",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/AMENDING/2013/2013-0023/2013-0023.pdf",
+          "status": 200,
+          "provenanceFile": "law-continuation-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-customsamend2013.pdf.txt",
+      "bytes": 45371,
+      "sha256": "6c1ceb2dbfdb634ede41f7539c19cbca37eded614f99f260f65da22ebaa64aca"
+    },
+    {
+      "file": "bs-food1985.pdf",
+      "bytes": 79,
+      "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9",
+      "validPdfHeader": false,
+      "retrievals": [
+        {
+          "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1985/1985-0001/1985-0001_1.pdf",
+          "status": 503,
+          "provenanceFile": "bs-law-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-foodconditions.html",
+      "bytes": 5647,
+      "sha256": "6715b968b9568182281c389ac8e459ec547dc52c356ed7d51185ce078a3cab32",
+      "retrievals": [
+        {
+          "url": "https://bahfsabahamas.com/sectors/international/food-import-conditions",
+          "status": 403,
+          "provenanceFile": "initial-downloads.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-importcontrol1972-fao.pdf",
+      "bytes": 130448,
+      "sha256": "00153375bc51de55a14d70dffb50d5d9959074d36dc94d36dc62b341b0fbde2f",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://faolex.fao.org/docs/pdf/bha112362.pdf",
+          "status": 200,
+          "provenanceFile": "bs-law-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-importcontrol1972-fao.pdf.txt",
+      "bytes": 4551,
+      "sha256": "f81b85c42fff2ee9f1b647e762022047c4c857d80005c2dd985e339b0232145d"
+    },
+    {
+      "file": "bs-importcontrol1972.pdf",
+      "bytes": 79,
+      "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9",
+      "validPdfHeader": false,
+      "retrievals": [
+        {
+          "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1972/1972-0050/1972-0050.pdf",
+          "status": 503,
+          "provenanceFile": "initial-downloads.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-importgeneral1957.pdf",
+      "bytes": 79,
+      "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9",
+      "validPdfHeader": false,
+      "retrievals": [
+        {
+          "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1957/1957-0197/1957-0197.pdf",
+          "status": 503,
+          "provenanceFile": "bs-law-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-interpretation1976.pdf",
+      "bytes": 215478,
+      "sha256": "608f558a4c722dc8823e97992124b27d7deaab73c8f70eb669d465c1c13029bd",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1976/1976-0020/1976-0020_1.pdf",
+          "status": 200,
+          "provenanceFile": "law-continuation-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-interpretation1976.pdf.txt",
+      "bytes": 95156,
+      "sha256": "d1ad468dc11de4977c1010a9d725647a838ef9d5cea63f733df4fa8cb7b71b49"
+    },
+    {
+      "file": "bs-law-recovery.json",
+      "bytes": 1137,
+      "sha256": "79014999b3d795f532ec756b4e0cc92b610ddd214b5056b1ddd19ab94f676fdb"
+    },
+    {
+      "file": "bs-lawindex.html",
+      "bytes": 816959,
+      "sha256": "791b320b8558f62221b07d9ad542c64358bb85b42b6d04b74bdee5719f5dd7d3",
+      "retrievals": [
+        {
+          "url": "https://laws.bahamas.gov.bs/cms/legislation/index/by-category.html",
+          "status": 200,
+          "provenanceFile": "initial-downloads.json"
+        }
+      ]
+    },
+    {
+      "file": "bs-proposed-override.json",
+      "bytes": 10008,
+      "sha256": "bf06d952203df4a8ea72359a0176c47cda0d212d35beecf2577ebd0a7936a6f9"
+    },
+    {
+      "file": "cw-ftac2024.pdf",
+      "bytes": 9691272,
+      "sha256": "fa1c749c9575eae29396895c5b1d5ed39f71935e8cd139cc419d2553d370c611",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://ftac.cw/wp-content/uploads/2024/11/Rapport-levensmiddelen-FTAC.pdf",
+          "status": 200,
+          "provenanceFile": "cw-sx-ag-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "cw-ftac2024.pdf.txt",
+      "bytes": 305611,
+      "sha256": "182e0b807689fe7ee79b9e110e174e72621f82eedcde0cb7b845e3c6cf63940c"
+    },
+    {
+      "file": "cw-nvwa-diverse2013.pdf",
+      "bytes": 24447,
+      "sha256": "60bbc3e35f8634314a7fdec085992f880c3158eb617171701e9879802bae8231",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/cura-ao-diverse-producten-exporteisen/Curacao_Diverse_producten_exporteisen_1.1.pdf",
+          "status": 200,
+          "provenanceFile": "cw-sx-ag-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "cw-nvwa-diverse2013.pdf.txt",
+      "bytes": 1785,
+      "sha256": "5b2ca9531ea34ba3ff4a9a01d1f234062b5111ba6c9959855e490c432f66bd4a"
+    },
+    {
+      "file": "cw-sx-ag-recovery.json",
+      "bytes": 4714,
+      "sha256": "c5ddede6c337840a1b4bb52a13760f3c63ecc74e7b94c8bd699fd73752cf9b73"
+    },
+    {
+      "file": "evidence-only-overrides.json",
+      "bytes": 37475,
+      "sha256": "200af3544cbe6882e411f885a33f5ce081377950011bfefaf7f832406a26353f"
+    },
+    {
+      "file": "final-index-recovery.json",
+      "bytes": 14304,
+      "sha256": "29ec4d2aa290efa62be1ad91a02a196044ad3cb1afea12aefd6d94b4c124cb13"
+    },
+    {
+      "file": "final-source-recovery.json",
+      "bytes": 574,
+      "sha256": "6a32dae2a38edbe45d44f1cf640290a98434418eea0492c180f6952700fed101"
+    },
+    {
+      "file": "index-recovery-results.json",
+      "bytes": 8721,
+      "sha256": "2c57cf1edbce0c09c219a1ac808e223f1aee92d7a5c255497f72abef2613bfcb"
+    },
+    {
+      "file": "initial-downloads.json",
+      "bytes": 1009,
+      "sha256": "147e6511c45a78a29ef5eae782de20fcfcd1a35e77c7f515466ae2c3061bac9a"
+    },
+    {
+      "file": "ippc-legislation.html",
+      "bytes": 422005,
+      "sha256": "7375b14bb8c8ba6b3e710c3ff209975ca476e9e76ff46ec40a3d55f267420aab",
+      "retrievals": [
+        {
+          "url": "https://www.ippc.int/en/countries/all/legislation/",
+          "status": 200,
+          "provenanceFile": "index-recovery-results.json"
+        }
+      ]
+    },
+    {
+      "file": "ispm32-current-ru.txt",
+      "bytes": 82963,
+      "sha256": "bd8a799f6e36e834f7289b31f1fb01af9c2b530147c4711fad0398080ed6aafd"
+    },
+    {
+      "file": "ispm32-current.pdf",
+      "bytes": 239,
+      "sha256": "ab768623070128ccef048c88def86155dbe776c3d8db423cc8fa89432673d8a8",
+      "validPdfHeader": false,
+      "retrievals": [
+        {
+          "url": "https://www.fao.org/3/cb2571en/cb2571en.pdf",
+          "status": 403,
+          "provenanceFile": "ispm32-provenance.json"
+        }
+      ]
+    },
+    {
+      "file": "ispm32-en2015-appendix2.png",
+      "bytes": 505419,
+      "sha256": "4852ff6a4e4d8be43fb8e06a6b691cc7ce955b6c1ba446a54a9b90a82db9f1be"
+    },
+    {
+      "file": "ispm32-provenance.json",
+      "bytes": 274,
+      "sha256": "7f61950497052ee9cde69951909e8f2ae481676ae0bb04d0f69d46c643bb9f62"
+    },
+    {
+      "file": "ispm32-publication.html",
+      "bytes": 78876,
+      "sha256": "7a26b5142e15aba1cdd7ea956fdb991ee07430cdb2050e44f560039c66cb6a81"
+    },
+    {
+      "file": "ispm32-slovenia-en2015.pdf",
+      "bytes": 1076273,
+      "sha256": "3cf959befd338aaf0d40edb72207faa58b6bfe14df091fd32d244d3ca32558c5",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+          "status": 200,
+          "provenanceFile": "final-source-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "ispm32-slovenia-en2015.pdf.txt",
+      "bytes": 39996,
+      "sha256": "22a2ebde6759e17dfc7bb43adf81f3dfd5a32b1844798223ce50b4ffa546cec4"
+    },
+    {
+      "file": "kn-media-import.json",
+      "bytes": 181986,
+      "sha256": "8f87899d8ea9b5e790a9cacc7c529e2a110cb9bbcf7d4f6661dc46ba2fcb89b6",
+      "retrievals": [
+        {
+          "url": "https://www.sknis.gov.kn/wp-json/wp/v2/media?search=import&per_page=100",
+          "status": 200,
+          "provenanceFile": "final-index-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "kn-plantposter2024.jpeg",
+      "bytes": 124732,
+      "sha256": "63e31c3781a10da9c145543036a6fffb8ae5cdfb0c79226714df939cbca53dfc",
+      "retrievals": [
+        {
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2024/03/PLANT-IMPORT-REQUIREMENTS-POSTER-1024x731-1.jpeg",
+          "status": 200,
+          "provenanceFile": "kn-poster-provenance.json"
+        }
+      ]
+    },
+    {
+      "file": "kn-poster-provenance.json",
+      "bytes": 268,
+      "sha256": "63a29544cbf77a2effe59834a7ceb0850c9c7ef65c7b85baed8e74ecee38f1a3"
+    },
+    {
+      "file": "law-continuation-recovery.json",
+      "bytes": 2256,
+      "sha256": "a42db9aacec1c345a7ddfa71bd52c8e61826e48532d3c1b8c38a17d934c42464"
+    },
+    {
+      "file": "pass-result.json",
+      "bytes": 12019,
+      "sha256": "ca67da864865e921f631467da9cbb18dec7ce998d192c89935d5cdeec1737e83"
+    },
+    {
+      "file": "sr-act2020-alternate.pdf",
+      "bytes": 2980299,
+      "sha256": "e7e47447ed0da5866e9d241c3cf26f04e5238c67e76e0dfcf3164baab8c43737",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://www.dna.sr/media/k4hdogeh/sb-2020-78.pdf",
+          "status": 200,
+          "provenanceFile": "ag-sr-tc-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "sr-act2020-alternate.pdf.txt",
+      "bytes": 76421,
+      "sha256": "804df299d3d42dbaff3ea041790ed4cef80f7042b325d4894c454d7682fdda97"
+    },
+    {
+      "file": "sr-media-invoer.json",
+      "bytes": 26408,
+      "sha256": "e8d78e3258a895c289587fbca6d1ba21eeb16220c989830ba0cc55663443df57",
+      "retrievals": [
+        {
+          "url": "https://gov.sr/wp-json/wp/v2/media?search=invoer&per_page=100",
+          "status": 200,
+          "provenanceFile": "final-index-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "sr-media-phytosan.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "retrievals": [
+        {
+          "url": "https://gov.sr/wp-json/wp/v2/media?search=fytosanitaire&per_page=100",
+          "status": 200,
+          "provenanceFile": "ag-sr-tc-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "sx-lvv.html",
+      "bytes": 44605,
+      "sha256": "c14322cb5446e5a9d5c235dba438618074ab66480e9c3ec6efa1119e89bc527e",
+      "retrievals": [
+        {
+          "url": "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+          "status": 200,
+          "provenanceFile": "cw-sx-ag-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "vc-import-agencies.html",
+      "bytes": 22397,
+      "sha256": "88ae82821974e30f88da74bf5f0fa301d60021812c1c9db81e549f92aa02ccb0",
+      "retrievals": [
+        {
+          "url": "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/618-agencies-involved-in-import-procedures",
+          "status": 200,
+          "provenanceFile": "final-index-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "vg-fumigation.html",
+      "bytes": 29687,
+      "sha256": "d89f479753fc4a765e33db2421b2df6855136382fbf7e937bd5f33e80c2e60f1",
+      "retrievals": [
+        {
+          "url": "https://laws.gov.vg/laws/fumigation-plants-act",
+          "status": 200,
+          "provenanceFile": "law-continuation-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "vg-fumigation.pdf",
+      "bytes": 182607,
+      "sha256": "2445fe89f8acddcbfad51545fea284fde91201771d040b5d5edc507276dfedf5",
+      "validPdfHeader": true,
+      "retrievals": [
+        {
+          "url": "https://laws.gov.vg/sites/default/files/2025-10/Fumigation%20of%20Plants%20Act.pdf",
+          "status": 200,
+          "provenanceFile": "ag-vg-law-recovery.json"
+        }
+      ]
+    },
+    {
+      "file": "vg-fumigation.pdf.txt",
+      "bytes": 7857,
+      "sha256": "5bd127c5270b21662240412a445447c4959eb7246560f001d8e74ded11be8aa6"
+    },
+    {
+      "file": "vg-lawindex.html",
+      "bytes": 59914,
+      "sha256": "7feccf661b396a51071bb0f1cb0d2a7a0cb925539dd1218154a66ee5cd393e9f",
+      "retrievals": [
+        {
+          "url": "https://laws.gov.vg/revised-laws",
+          "status": 200,
+          "provenanceFile": "index-recovery-results.json"
+        }
+      ]
+    },
+    {
+      "file": "pf-peer-review.json",
+      "bytes": 1649,
+      "sha256": "ac4c879fdf1bdf40a3a17aa8b517c65384f65a2b58be24f99e99fce162f08d95"
+    }
+  ],
+  "retrievalRecords": [
+    {
+      "file": "bs-importcontrol1972.pdf",
+      "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1972/1972-0050/1972-0050.pdf",
+      "status": 503,
+      "bytes": 79,
+      "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9",
+      "provenanceFile": "initial-downloads.json"
+    },
+    {
+      "file": "bs-lawindex.html",
+      "url": "https://laws.bahamas.gov.bs/cms/legislation/index/by-category.html",
+      "status": 200,
+      "bytes": 816959,
+      "sha256": "791b320b8558f62221b07d9ad542c64358bb85b42b6d04b74bdee5719f5dd7d3",
+      "provenanceFile": "initial-downloads.json"
+    },
+    {
+      "file": "bs-foodconditions.html",
+      "url": "https://bahfsabahamas.com/sectors/international/food-import-conditions",
+      "status": 403,
+      "bytes": 5647,
+      "sha256": "6715b968b9568182281c389ac8e459ec547dc52c356ed7d51185ce078a3cab32",
+      "provenanceFile": "initial-downloads.json"
+    },
+    {
+      "file": "bq-law-explanation.html",
+      "url": "https://zoek.officielebekendmakingen.nl/kst-31957-7.html",
+      "status": 200,
+      "bytes": 206405,
+      "sha256": "aae03f0163a87919b9450a6b76e136eeefff59981699d01d4a4ed84766ee76e0",
+      "provenanceFile": "initial-downloads.json"
+    },
+    {
+      "file": "ippc-legislation.html",
+      "url": "https://www.ippc.int/en/countries/all/legislation/",
+      "status": 200,
+      "bytes": 422005,
+      "rows": [
+        "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/plant-protection-legislation/\"> Plant Protection Legislation</a></td> <td data-sort=\"1198108800\">20 Dec 2007</td> <td data-sort=\"1551739388\">04 Mar 2019 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/plant-pest-and-disease-eradication-act/\"> Plant Pest and Disease Eradication Act</a></td> <td data-sort=\"1132185600\">17 Nov 2005</td> <td data-sort=\"1132218060\">17 Nov 2005 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/regulations/\"> Regulations</a></td> <td data-sort=\"1132185600\">17 Nov 2005</td> <td data-sort=\"1243846860\">01 Jun 2009 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/barbados/\">Barbados</a></td> <td> <a href=\"/en/countries/barbados/reportingobligation/2012/12/legislation-2/\"> Legislation</a></td> <td data-sort=\"1132185600\">17 Nov 2005</td> <td data-sort=\"1132218060\">17 Nov 2005 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2012/12/antigua-and-barbuda-phytosanitary-measuresrequirements-and-prohibitions/\"> Antigua and Barbuda Phytosanitary measures,requirements and prohibitions</a></td> <td data-sort=\"1132444800\">20 Nov 2005</td> <td data-sort=\"1132218060\">17 Nov 2005 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/saint-vincent-and-the-grenadines/\">Saint Vincent and the Grenadines</a></td> <td> <a href=\"/en/countries/saint-vincent-and-the-grenadines/reportingobligation/2012/12/ammended-plant-protection-act/\"> Ammended Plant protection Act</a></td> <td data-sort=\"1111276800\">20 Mar 2005</td> <td data-sort=\"1132131660\">16 Nov 2005 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2014/05/httplawsgovagacts2012a2012-1pdf/\"> http://laws.gov.ag/acts/2012/a2012-1.pdf</a></td> <td data-sort=\"1400083200\">14 May 2014</td> <td data-sort=\"1400058060\">14 May 2014 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2014/05/import-permit-application-form/\"> Import Permit Application Form</a></td> <td data-sort=\"1400083200\">14 May 2014</td> <td data-sort=\"1400058060\">14 May 2014 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/antigua-and-barbuda/\">Antigua and Barbuda</a></td> <td> <a href=\"/en/countries/antigua-and-barbuda/reportingobligation/2014/05/import-export-guide/\"> Import Export Guide</a></td> <td data-sort=\"1400083200\">14 May 2014</td> <td data-sort=\"1400058060\">14 May 2014 </td> </tr>",
+        "<tr> <td><a href=\"/en/countries/dominican-republic/\">Dominican Republic</a></td> <td> <a href=\"/en/countries/dominican-republic/reportingobligation/2024/10/medidas-para-impedir-entrada-de-la-marchitez-de-las-musaceas-res-ma-2019-43/\"> MEDIDAS PARA IMPEDIR ENTRADA DE LA MARCHITEZ DE LAS MUSACEAS - RES-MA-2019-43</a></td> <td data-sort=\"1729274178\">18 Oct 2024</td> <td data-sort=\"1729274178\">18 Oct 2024 </td> </tr>"
+      ],
+      "provenanceFile": "index-recovery-results.json"
+    },
+    {
+      "file": "ag-media-import.json",
+      "url": "https://agriculture.gov.ag/wp-json/wp/v2/media?search=import&per_page=100",
+      "status": 200,
+      "bytes": 29564,
+      "items": [
+        {
+          "title": {
+            "rendered": "World Bee Day Importance of Bees"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2026/05/World-Bee-Day-Importance-of-Bees.jpg"
+        },
+        {
+          "title": {
+            "rendered": "import export information &#038; guide"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/import-export-information-guide.pdf"
+        },
+        {
+          "title": {
+            "rendered": "Import Status of Plant Commodities and Regulated Items PLANT PROTECTION ANTIGUA AND BARBUDA ver. 27082020"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-ver.-27082020.pdf"
+        },
+        {
+          "title": {
+            "rendered": "IMPORT PERMIT APPLICATION FORM form[1]"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/IMPORT-PERMIT-APPLICATION-FORM-form1.pdf"
+        },
+        {
+          "title": {
+            "rendered": "Resvised may 21 2021 import requirment UK"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2022/03/Resvised-may-21-2021-import-requirment-UK.docx"
+        },
+        {
+          "title": {
+            "rendered": "Plant Protection Import Guidelines ver 17062021"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2021/09/Plant-Protection-Import-Guidelines-ver-17062021.pdf"
+        },
+        {
+          "title": {
+            "rendered": "Antigua &#038; Barbuda Keeps Close Watch Over Poultry Imports From Brazil"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2017/05/Brazil-Poultry.pdf"
+        },
+        {
+          "title": {
+            "rendered": "Importation of Pesticides and Toxic Chemicals"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/Importation-of-Pesticides-and-Toxic-Chemicals.docx"
+        },
+        {
+          "title": {
+            "rendered": "Import Plant Commodities and Regulated Items PLANT PROTECTION ANTIGUA AND BARBUDA"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-02122016.pdf"
+        },
+        {
+          "title": {
+            "rendered": "IMPORT PERMIT APPLICATION FORM form[1]"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/IMPORT-PERMIT-APPLICATION-FORM-form1-1.pdf"
+        },
+        {
+          "title": {
+            "rendered": "IMPORT PERMIT APPLICATION FORM form[1]"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2017/02/IMPORT-PERMIT-APPLICATION-FORM-form1.pdf"
+        },
+        {
+          "title": {
+            "rendered": "License to Import Application Form"
+          },
+          "url": "https://agriculture.gov.ag/wp-content/uploads/2016/11/Application-for-import-license.pdf"
+        }
+      ],
+      "provenanceFile": "index-recovery-results.json"
+    },
+    {
+      "file": "bb-plantpage.html",
+      "url": "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+      "status": 200,
+      "bytes": 95331,
+      "links": [
+        {
+          "label": "Report It!",
+          "url": "/report"
+        },
+        {
+          "label": "Plant Protection Department",
+          "url": "/Departments/Plant-Protection"
+        },
+        {
+          "label": "Legal Framework",
+          "url": "/Downloads/"
+        },
+        {
+          "label": "Regulations",
+          "url": "/Resources/Regulations"
+        },
+        {
+          "label": "Plant Protection Department",
+          "url": "/Departments/Plant-Protection"
+        },
+        {
+          "label": "Legal Framework",
+          "url": "/Downloads/"
+        },
+        {
+          "label": "Regulations",
+          "url": "/Resources/Regulations"
+        }
+      ],
+      "provenanceFile": "index-recovery-results.json"
+    },
+    {
+      "file": "vg-lawindex.html",
+      "url": "https://laws.gov.vg/revised-laws",
+      "status": 200,
+      "bytes": 59914,
+      "links": [
+        {
+          "label": "",
+          "url": "/"
+        },
+        {
+          "label": "Revised Laws",
+          "url": "/revised-laws"
+        },
+        {
+          "label": "All",
+          "url": "/revised-laws"
+        },
+        {
+          "label": "Revised Year",
+          "url": "?title=&amp;order=field_year&amp;sort=asc"
+        },
+        {
+          "label": "Cinematographs Regulations",
+          "url": "/laws/cinematographs-regulations"
+        },
+        {
+          "label": "Eastern Caribbean Supreme Court Civil  Procedure Rules (Revised Edition) 2023- Practice Direction 8",
+          "url": "/laws/eastern-caribbean-supreme-court-civil-procedure-rules-revised-edition-2023-practice-direction"
+        },
+        {
+          "label": "Eastern Caribbean Supreme Court Civil Procedure Rules, Revised Edition 2023",
+          "url": "/laws/eastern-caribbean-supreme-court-civil-procedure-rules-revised-edition-2023"
+        },
+        {
+          "label": "Fumigation of Plants Act",
+          "url": "/laws/fumigation-plants-act"
+        }
+      ],
+      "provenanceFile": "index-recovery-results.json"
+    },
+    {
+      "file": "bb-regulations.html",
+      "url": "https://agriculture.gov.bb/Resources/Regulations",
+      "status": 200,
+      "bytes": 24323,
+      "links": [],
+      "provenanceFile": "ag-bb-recovery.json"
+    },
+    {
+      "file": "bb-downloads.html",
+      "url": "https://agriculture.gov.bb/Downloads/",
+      "status": 200,
+      "bytes": 36622,
+      "links": [
+        {
+          "label": "Agricultural Aids  Adobe PDF Document, 385.3 KB",
+          "url": "/attachments/Agricultural Aids.pdf"
+        },
+        {
+          "label": "Agricultural Development Fund Act CAP. 252B  Adobe PDF Document, 23.6 KB",
+          "url": "/attachments/Agricultural Development Fund Act CAP. 252B.pdf"
+        },
+        {
+          "label": "Amendment to Animal and Diseases Act  Adobe PDF Document, 10.2 KB",
+          "url": "/attachments/Amendment to Animal and Diseases Act_1.pdf"
+        },
+        {
+          "label": "Animals (Diseases and Importation Control) Regulations 1961  Adobe PDF Document, 405.5 KB",
+          "url": "/attachments/Animals (Diseases and Importation Control) Regulations 1961.pdf"
+        },
+        {
+          "label": "Animals (Diseases and Importation) Act, Cap 253  Adobe PDF Document, 1.5 MB",
+          "url": "/attachments/Animals (Diseases and Importation) Act, Cap 253.pdf"
+        },
+        {
+          "label": "Animals (Diseases) (Anthrax) Regulations, 1951  Adobe PDF Document, 526.8 KB",
+          "url": "/attachments/Animals (Diseases) (Anthrax) Regulations, 1951.pdf"
+        },
+        {
+          "label": "Animals (Diseases) (Epizootic Abortion) Regulations 1951  Adobe PDF Document, 147.1 KB",
+          "url": "/attachments/Animals (Diseases) (Epizootic Abortion) Regulations 1951.pdf"
+        },
+        {
+          "label": "Animals (Diseases) (Foot and Mouth) Regulations 1952  Adobe PDF Document, 233.2 KB",
+          "url": "/attachments/Animals (Diseases) (Foot and Mouth) Regulations 1952.pdf"
+        },
+        {
+          "label": "Animals (Diseases) (Rabies) Regulations 1951  Adobe PDF Document, 619.2 KB",
+          "url": "/attachments/Animals (Diseases) (Rabies) Regulations 1951.pdf"
+        },
+        {
+          "label": "Animals (Diseases) (Swine Fever) Regulations, 1951  Adobe PDF Document, 414.9 KB",
+          "url": "/attachments/Animals (Diseases) (Swine Fever) Regulations, 1951.pdf"
+        },
+        {
+          "label": "Barbados Agricultural Development and Marketing Corporation Act CAP.254  Adobe PDF Document, 824.7 KB",
+          "url": "/attachments/Barbados Agricultural Development and Marketing Corporation Act CAP.254.pdf"
+        },
+        {
+          "label": "Barbados Agricultural Management Co. Ltd. (Sugar Bonds Guarantee) Act CAP. 255  Adobe PDF Document, 179 KB",
+          "url": "/attachments/Barbados Agricultural Management Co. Ltd. (Sugar Bonds Guarantee) Act CAP. 255.pdf"
+        },
+        {
+          "label": "Barbados Caribbean Meteorological Organization Act  1977-50 CAP. 15C (1)  Adobe PDF Document, 388 KB",
+          "url": "/attachments/Barbados Caribbean Meteorological Organization Act  1977-50 CAP. 15C (1).pdf"
+        },
+        {
+          "label": "CITES Act  Adobe PDF Document, 189.5 KB",
+          "url": "/attachments/CITES Act_1.pdf"
+        },
+        {
+          "label": "Cultivation of Trees Act CAP. 390  Adobe PDF Document, 318.6 KB",
+          "url": "/attachments/Cultivation of Trees Act CAP. 390.pdf"
+        },
+        {
+          "label": "Dairy Industry (Regulation and Control) Act CAP. 261  Adobe PDF Document, 1.1 MB",
+          "url": "/attachments/Dairy Industry (Regulation and Control) Act CAP. 260.pdf"
+        },
+        {
+          "label": "Emergency Management CAP. 160A  Adobe PDF Document, 70.5 KB",
+          "url": "/attachments/Emergency Management CAP. 160A.pdf"
+        },
+        {
+          "label": "Livestock (Control of Strays) CAP. 139A  Adobe PDF Document, 418.1 KB",
+          "url": "/attachments/Livestock (Control of Strays) CAP. 139A.pdf"
+        },
+        {
+          "label": "Markets and Slaughterhouses Regulations CAP. 265  Adobe PDF Document, 170.3 KB",
+          "url": "/attachments/Markets and Slaughterhouses Regulations CAP. 265.pdf"
+        },
+        {
+          "label": "Markets and Slaughterhouses Regulations Establishment Order CAP. 265  Adobe PDF Document, 310.4 KB",
+          "url": "/attachments/Markets and Slaughterhouses Regulations Establishment Order CAP. 265.pdf"
+        },
+        {
+          "label": "Pesticide Control Act 1974  Adobe PDF Document, 725.8 KB",
+          "url": "/attachments/Pesticide Control Act 1974.pdf"
+        },
+        {
+          "label": "Pesticide Control Labelling Regulation 1976 CP395-A  Adobe PDF Document, 238.1 KB",
+          "url": "/attachments/Pesticide Control Labelling Regulation 1976 CP395-A.pdf"
+        },
+        {
+          "label": "Pesticide Control Regulation 1974 CP395-B  Adobe PDF Document, 514.3 KB",
+          "url": "/attachments/Pesticide Control Regulation 1974 CP395-B_1.pdf"
+        },
+        {
+          "label": "Pesticides Act CAP 395  Adobe PDF Document, 682 KB",
+          "url": "/attachments/Pesticides Act CAP 395_1.pdf"
+        },
+        {
+          "label": "Plant Pest and Disease Eradication CAP266A  Adobe PDF Document, 343.5 KB",
+          "url": "/attachments/Plant Pest and Disease Eradication CAP266A_1.pdf"
+        },
+        {
+          "label": "Plant Protection Act CAP268  Adobe PDF Document, 58.6 KB",
+          "url": "/attachments/Plant Protection Act CAP268_1.pdf"
+        },
+        {
+          "label": "Prevention of Cruelty to Animals Act  Adobe PDF Document, 8.2 MB",
+          "url": "/attachments/Prevention of Cruelty to Animals Act.pdf"
+        },
+        {
+          "label": "Protection of Agricultural Products and Livestock Act, 2017  Adobe PDF Document, 33.6 KB",
+          "url": "/attachments/Protection of Agricultural Products and Livestock Act, 2017.pdf"
+        },
+        {
+          "label": "Protection of Agricultural Products and Livestock Regulations, 2017  Adobe PDF Document, 59.5 KB",
+          "url": "/attachments/Protection of Agricultural Products and Livestock Regulations, 2017.pdf"
+        },
+        {
+          "label": "Protection of New Plant Varieties CAP267  Adobe PDF Document, 64.8 KB",
+          "url": "/attachments/Plant Protection of New Varieties CAP267_1.pdf"
+        },
+        {
+          "label": "Protection of New Plant Varieties Order, 2001 (S.I. No. 134 of 2001)  Adobe PDF Document, 38.7 KB",
+          "url": "/attachments/Protection of New Plant Varieties Act.pdf"
+        },
+        {
+          "label": "Registered Sugar Factories Smoke Control Act CAP. 355  Adobe PDF Document, 1.2 MB",
+          "url": "/attachments/Registered Sugar Factories Smoke Control Act CAP. 355_1.pdf"
+        },
+        {
+          "label": "Soil Conservation Scotland District CAP 396  Adobe PDF Document, 3 MB",
+          "url": "/attachments/Soil Conservation Scotland District CAP 396.pdf"
+        },
+        {
+          "label": "Trees (Preservation) Act CAP. 397  Adobe PDF Document, 310.8 KB",
+          "url": "/attachments/Trees (Preservation) Act CAP. 397.pdf"
+        }
+      ],
+      "provenanceFile": "ag-bb-recovery.json"
+    },
+    {
+      "file": "ag-guide2022.pdf",
+      "url": "https://agriculture.gov.ag/wp-content/uploads/2022/06/import-export-information-guide.pdf",
+      "status": 200,
+      "bytes": 118465,
+      "text": "     PLANT PROTECTION TRADE REGULATION INFORMATION\n                                         Antigua and Barbuda\n\n\n                               he Plant Protection Unit, Department of Agriculture, operates\n                             under the legal mandate of the Plant Protection Act No. 18 of 2012.\n                             The Unit is therefore responsible for all activities designed to\n                             prevent the introduction and/or spread of quarantine pests and to\n                             ensure their official control in the event that these pests enter the\n                             country. In order to achieve these goals, technical personnel are\n                             required to carry out inspections at the ports of entry, ensure\n                             regulations are adhered to and issue documents when relevant.\n\n           An IMPORT PERMIT is issued for the importation of regulated articles, including:\n                All planting material (including seeds, plant cuttings, live plants)\n                Cut flowers and ornamentals (including floral blooms and greenery)\n                Unprocessed plant products or other regulated items\n                Plants, plant products and other regulated items not previously imported or not\n                imported for a period exceeding two years.\n                Plant growth media (including soil, soil substitutes, mulches, potting mixes)\n\n           Import permits must be obtained from the Plant Protection Unit prior to placing orders for\n           consignments of regulated articles and such permit must be presented to the exporter upon\n           placement of such orders. Since a pest risk assessment may be required, it is advised that\n           importers make application for each import permit at least one week prior to placement of\n           orders for same. Some commodities may require chemical or their treatment prior to\n           shipment and will not be permitted entry without the required pre-export treatments.\n\n\nEvery inbound consignment of regulated and non-regulated items of plant origin must be\naccompanied by a PHYTOSANITARY CERTIFICATE stating, where required by an Import\nPermit, any necessary treatment – chemical or otherwise. Upon inspection, consignments which\nare determined by Plant Quarantine Inspectors not to be in compliance with import requirements\nwill be refused entry OR confiscated and/or destroyed at the importer’s expense.\n\nLike Antigua and Barbuda, most countries regulate commodities of plants and plant products\nentering such countries. As such, a Phytosanitary Certificate must also be sought from the Plant\nProtection Unit for such outbound consignments. The certificates will be issued once the Plant\nQuarantine Inspector, upon inspection, is satisfied that the consignment meets all known\nrequirements of the country of import.\n\n\n\n                           FOR FURTHER INFORMATION, PLEASE CONTACT THE PLANT\n                         PROTECTION UNIT AT (268)562-2776, (268)764-1255, (268)462-6776/7 OR\n                                      PLANTPROTECTION@AB.GOV.AG\n\f",
+      "provenanceFile": "ag-bb-recovery.json"
+    },
+    {
+      "file": "ag-guidelines2021.pdf",
+      "url": "https://agriculture.gov.ag/wp-content/uploads/2021/09/Plant-Protection-Import-Guidelines-ver-17062021.pdf",
+      "status": 200,
+      "bytes": 99701,
+      "text": "         PLANT PROTECTION IMPORTATION GUIDELINES\n\nAn IMPORT PERMIT must be obtained for all regulated plant commodities, in\nany quantity. The permit should be obtained ahead of export of commodities\nfrom the country of export, using the following steps:\n\n   1. An application for an Import Permit MUST be submitted to Plant Protection\n      at least two (2) weeks before the shipping date.\n\n   2. The application should comprise three (3) hard copies of a printed\n      invoice/order form/purchase order, etc. and one (1) completed Plant\n      Protection Import Permit Application Form. [The Application Form can be\n      provided via email or in hard copy from Plant Protection].\n\n   3. Plants for planting pose the highest level of pest risk. All plants for\n      planting therefore MUST have a valid import permit along with other\n      required documentation as stated on the permit issued for the\n      consignment. Consignments that do not comply WILL BE CONFISCATED.\n\n   4. Permits are valid for one (1) consignment only, and expire 60 days from\n      the date of issue.\n\nAll inbound consignments of regulated plant commodities must be accompanied\nby a valid PHYTOSANITARY CERTIFICATE issued by the Plant Protection\nOrganisation of the country of export upon presentation of the Import Permit\nand the commodities to be exported to Antigua and Barbuda.\n\nThe following provides examples of commodity categories that require an Import\nPermit:\n   1. Plants intended for planting –\n         - Cuttings\n         - Seeds\n         - Tubers for planting\n         - In vitro plants (that is, tissue culture plants)\n         - Micropropagative plant material\n         - Live plants\n   2. Plant commodities that have not been processed and are intended for\n      consumption, processing, and other purposes other than propagation –\n         - Fresh fruits & vegetables\n         - Cut flowers\n         - Wood & wood products/items\n   3. Plant commodities that have been processed but remain capable of being\n      infested with some quarantine pests –\n         - Chipped wood\n         - Chopped fruit, nuts, grains & vegetables\n         - Crushed herbs & nuts\n         - Dehydrated fruit & vegetables\n         - Fibres\n         - Painted wood\n         - Peeled or shelled fruits, vegetables, grains & nuts\n         - Polished rice & cocoa beans\n         - Graded, sorted, washed or brushed &/or waxed fruit & vegetables\n         - Chilled fruits & vegetables\n   4. Plant growth media (e.g., soil, soil substitutes, mulches, potting mixes),\n      aggregates, sand, etc.\n\n\n\nIssued by:                                       Date: June 17, 2021\n             Dr. Janil Gore-Francis\n             Chief Plant Protection Officer\n\n\n\n                                                                                   1\n\f",
+      "provenanceFile": "ag-bb-recovery.json"
+    },
+    {
+      "file": "bb-ippc-regs.html",
+      "url": "https://www.ippc.int/en/countries/barbados/reportingobligation/2012/12/regulations/",
+      "status": 200,
+      "bytes": 75080,
+      "links": [],
+      "provenanceFile": "ag-bb-recovery.json"
+    },
+    {
+      "file": "ag-ippc-measures.html",
+      "url": "https://www.ippc.int/en/countries/antigua-and-barbuda/reportingobligation/2012/12/antigua-and-barbuda-phytosanitary-measuresrequirements-and-prohibitions/",
+      "status": 200,
+      "bytes": 76025,
+      "links": [
+        {
+          "label": "En",
+          "url": "https://assets.ippc.int/static/media/files/reportingobligation/2015/02/20/1132168197201_Phytosanitary_restrictions_requirements-818119572_2013042321-17En.doc"
+        }
+      ],
+      "provenanceFile": "ag-bb-recovery.json"
+    },
+    {
+      "file": "ag-act2012.pdf",
+      "url": "https://laws.gov.ag/wp-content/uploads/2019/02/a2012-18.pdf",
+      "status": 200,
+      "bytes": 13629983,
+      "sha256": "3c2f0756fbfdd2cfc8482905d68601b07f5116eb3eaa758c2c4997d25395aff0",
+      "provenanceFile": "ag-vg-law-recovery.json"
+    },
+    {
+      "file": "vg-fumigation.pdf",
+      "url": "https://laws.gov.vg/sites/default/files/2025-10/Fumigation%20of%20Plants%20Act.pdf",
+      "status": 200,
+      "bytes": 182607,
+      "sha256": "2445fe89f8acddcbfad51545fea284fde91201771d040b5d5edc507276dfedf5",
+      "provenanceFile": "ag-vg-law-recovery.json"
+    },
+    {
+      "file": "cw-nvwa-diverse2013.pdf",
+      "url": "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/cura-ao-diverse-producten-exporteisen/Curacao_Diverse_producten_exporteisen_1.1.pdf",
+      "status": 200,
+      "bytes": 24447,
+      "provenanceFile": "cw-sx-ag-recovery.json"
+    },
+    {
+      "file": "cw-ftac2024.pdf",
+      "url": "https://ftac.cw/wp-content/uploads/2024/11/Rapport-levensmiddelen-FTAC.pdf",
+      "status": 200,
+      "bytes": 9691272,
+      "provenanceFile": "cw-sx-ag-recovery.json"
+    },
+    {
+      "file": "sx-lvv.html",
+      "url": "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+      "status": 200,
+      "bytes": 44605,
+      "relevantLinks": [
+        "\t\t\t<div id=\"ctl00_PlaceHolderMain_ctl02_label\" style='display:none'>Page Content</div><div id=\"ctl00_PlaceHolderMain_ctl02__ControlWrapper_RichHtmlField\" class=\"ms-rtestate-field\" style=\"display:inline\" aria-labelledby=\"ctl00_PlaceHolderMain_ctl02_label\"><p>​<br></p><table cellspacing=\"0\" width=\"100%\" class=\"ms-rteTable-default\"><tbody><tr style=\"text-align&#58;center;\"><td class=\"ms-rteTable-default\" style=\"width&#58;33.3333%;\"><div>​<img src=\"/Ministries/Departments/PublishingImages/Pages/Forms/AllItems/AgriLive.png\" alt=\"AgriLive.png\" style=\"margin&#58;5px;width&#58;300px;height&#58;182px;\" /></div><div>Agriculture and Livestock<br></div></td><td class=\"ms-rteTable-default\" style=\"width&#58;33.3333%;\"><div>​<img src=\"/Ministries/Departments/PublishingImages/Pages/Forms/AllItems/Fisheries.png\" alt=\"Fisheries.png\" style=\"margin&#58;5px;width&#58;300px;height&#58;182px;\" /></div><div>Fisheries<br></div></td><td class=\"ms-rteTable-default\" style=\"width&#58;33.3333%;\"><div><img src=\"/Ministries/Departments/PublishingImages/Pages/Forms/AllItems/ConImport.png\" alt=\"ConImport.png\" style=\"margin&#58;5px;width&#58;300px;height&#58;182px;\" />&#160;</div><div>Import and Export Conditions​</div></td></tr><tr><td class=\"ms-rteTable-default\" style=\"text-align&#58;center;\"><div>​<img src=\"/Ministries/Departments/PublishingImages/Pages/Forms/AllItems/ApImport.png\" alt=\"ApImport.png\" style=\"margin&#58;5px;width&#58;300px;height&#58;182px;\" /></div><div>Application Process<br></div></td><td class=\"ms-rteTable-default\" style=\"text-align&#58;center;\"><div>​<img src=\"/Ministries/Departments/PublishingImages/Pages/Forms/AllItems/Veterinary%20Clinics.png\" alt=\"Veterinary Clinics.png\" style=\"margin&#58;5px;width&#58;300px;height&#58;182px;\" /></div><div>Sint Maarten Veterinary Clinics<br></div></td><td class=\"ms-rteTable-default\">​​​<br></td></tr></tbody></table><p><br></p><div>Unit LVV is a sub-section of Section Economic Control charged with the responsibility of monitoring the importation and exportation of small (-domesticated) animals, and the importation of plants and plant produce; to safeguard the local flora and fauna on Sint Maarten from contamination and invasion of foreign plants and animals that would disturb our ecosystem.&#160; On this page, you can find the conditions and application forms for import and export of small (domesticated) animals.&#160;&#160;</div><div><br><br><br></div><p><br></p></div>"
+      ],
+      "provenanceFile": "cw-sx-ag-recovery.json"
+    },
+    {
+      "file": "ag-ippc-requirements2005.doc",
+      "url": "https://assets.ippc.int/static/media/files/reportingobligation/2015/02/20/1132168197201_Phytosanitary_restrictions_requirements-818119572_2013042321-17En.doc",
+      "status": 200,
+      "bytes": 41984,
+      "text": "\tCommodities and their Import Requirements\n\n\nCommodity\n           Import Requirements\n\f\nAll planting material, plant cuttings, live plants, cut flowers and ornamentals, other unprocessed plant products or other regulated item as indicated in Regulations to the Act\nImport Permit from Antigua and Barbuda to be obtained prior to placement of order and presentation of permit to exporter upon ordering of consignment\n\n\nPhytosanitary certificate from exporting country to accompany shipment\n\n\nQuarantine Inspector to inspect consignment before shipment can be released\n\n\nChemical or other treatment as required and stipulated on Import Permit\n\n\nFreedom from soil\n\n\nImport Permit to be obtained for each individual consignment\n\n\nPayment of relevant fees\n\n\n\nPlants, plant products and other regulated items not previously imported, importedfrom a new country or not imported for a period exceeding two years\nPest Risk Assessment to be carried out by Risk Assessment team prior to issuance of import permit\n\n\n\nPlant products not otherwise specified\nObtain clearance from Plant Protection \n\n\n\n\n\n\n\n\n\n\n\n\n\n\f\n\n\n\f\n\n\n\n\n\n\n\n\n\n\n PAGE  1\n\n\n\n PAGE  3\n\n\n\n",
+      "provenanceFile": "cw-sx-ag-recovery.json"
+    },
+    {
+      "file": "ag-act2012-fao.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/ant126404.pdf",
+      "status": 200,
+      "bytes": 2400098,
+      "provenanceFile": "ag-sr-tc-recovery.json"
+    },
+    {
+      "file": "sr-act2020-alternate.pdf",
+      "url": "https://www.dna.sr/media/k4hdogeh/sb-2020-78.pdf",
+      "status": 200,
+      "bytes": 2980299,
+      "provenanceFile": "ag-sr-tc-recovery.json"
+    },
+    {
+      "file": "sr-media-phytosan.json",
+      "url": "https://gov.sr/wp-json/wp/v2/media?search=fytosanitaire&per_page=100",
+      "status": 200,
+      "bytes": 2,
+      "media": [],
+      "provenanceFile": "ag-sr-tc-recovery.json"
+    },
+    {
+      "file": "tc-residents.html",
+      "url": "https://www.agriculture.gov.tc/residents",
+      "error": "HTTPSConnectionPool(host='www.agriculture.gov.tc', port=443): Max retries exceeded with url: /residents (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.agriculture.gov.tc'. (_ssl.c:1082)\")))",
+      "provenanceFile": "ag-sr-tc-recovery.json"
+    },
+    {
+      "file": "kn-media-import.json",
+      "url": "https://www.sknis.gov.kn/wp-json/wp/v2/media?search=import&per_page=100",
+      "status": 200,
+      "bytes": 181986,
+      "media": [
+        {
+          "date": "2025-12-29T10:04:54",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/12/Important-Announcement-1.jpg",
+          "title": {
+            "rendered": "Important Announcement (1)"
+          }
+        },
+        {
+          "date": "2025-11-12T10:00:05",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/11/Important-Announcement.jpg",
+          "title": {
+            "rendered": "Important Announcement"
+          }
+        },
+        {
+          "date": "2025-02-21T11:06:06",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/02/log_file_2025-02-21__15-06-062741080164.txt",
+          "title": {
+            "rendered": "One Click Demo Import &#8211; log_file_2025-02-21__15-06-062741080164"
+          }
+        },
+        {
+          "date": "2025-02-21T10:40:54",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/02/log_file_2025-02-21__14-40-542401767163.txt",
+          "title": {
+            "rendered": "One Click Demo Import &#8211; log_file_2025-02-21__14-40-542401767163"
+          }
+        },
+        {
+          "date": "2025-02-20T15:48:56",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/02/log_file_2025-02-20__19-48-562726909301.txt",
+          "title": {
+            "rendered": "One Click Demo Import &#8211; log_file_2025-02-20__19-48-562726909301"
+          }
+        },
+        {
+          "date": "2025-02-20T15:45:57",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/02/log_file_2025-02-20__19-45-571691948852.txt",
+          "title": {
+            "rendered": "One Click Demo Import &#8211; log_file_2025-02-20__19-45-571691948852"
+          }
+        },
+        {
+          "date": "2025-02-20T15:39:52",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/02/log_file_2025-02-20__19-39-521699754973.txt",
+          "title": {
+            "rendered": "One Click Demo Import &#8211; log_file_2025-02-20__19-39-521699754973"
+          }
+        },
+        {
+          "date": "2025-02-20T15:35:14",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2025/02/log_file_2025-02-20__19-35-141982917331.txt",
+          "title": {
+            "rendered": "One Click Demo Import &#8211; log_file_2025-02-20__19-35-141982917331"
+          }
+        },
+        {
+          "date": "2024-07-15T20:23:59",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2024/07/25-2-2.jpg",
+          "title": {
+            "rendered": "Business tycoons highlight first China International Import Expo opening"
+          }
+        },
+        {
+          "date": "2024-05-13T09:06:44",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2024/05/Ministry-Important-Notice-Image-1-1-1.jpeg",
+          "title": {
+            "rendered": "Ministry-Important-Notice-Image-1-1 (1)"
+          }
+        },
+        {
+          "date": "2024-03-13T08:08:04",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2024/03/PLANT-IMPORT-REQUIREMENTS-POSTER-1024x731-1.jpeg",
+          "title": {
+            "rendered": "PLANT-IMPORT-REQUIREMENTS-POSTER-1024&#215;731"
+          }
+        },
+        {
+          "date": "2023-12-21T08:49:33",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2023/12/Bulletin-list-of-countried-approved-for-Meat-Importation--scaled.jpg",
+          "title": {
+            "rendered": "Bulletin-list-of-countried-approved-for-Meat-Importation-"
+          }
+        },
+        {
+          "date": "2023-10-27T16:32:11",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2023/10/important-announcement.png",
+          "title": {
+            "rendered": "important-announcement"
+          }
+        },
+        {
+          "date": "2023-06-01T15:11:49",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2023/06/Slider-Image-The-Importance-of-External-Auditing.png",
+          "title": {
+            "rendered": "Slider Image &#8211; The Importance of External Auditing"
+          }
+        },
+        {
+          "date": "2023-05-22T11:54:01",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2023/05/Important-Notice.jpg",
+          "title": {
+            "rendered": "Important Notice"
+          }
+        },
+        {
+          "date": "2023-04-24T08:39:51",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2023/04/IMPORTANT-NOTICE-IMAGE-1.jpeg",
+          "title": {
+            "rendered": "IMPORTANT NOTICE IMAGE (1)"
+          }
+        },
+        {
+          "date": "2023-03-22T16:01:34",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2023/03/unnamed-65.jpg",
+          "title": {
+            "rendered": "SCHOOL CHILDREN VISITING THE WATER TREATMENT PLANT LEARN ABOUT THE IMPORTANCE OF CONSERVING WATER"
+          }
+        },
+        {
+          "date": "2023-02-17T20:24:34",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2023/02/Africa-Export-Import-Bank-Bill-2023.doc",
+          "title": {
+            "rendered": "Africa-Export-Import-Bank-Bill-2023"
+          }
+        },
+        {
+          "date": "2022-10-26T09:58:02",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2022/10/unnamed-52.jpg",
+          "title": {
+            "rendered": "Important Notice"
+          }
+        },
+        {
+          "date": "2022-05-30T21:44:53",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2022/05/Ministry-Important-Notice-Image-1-1.jpeg",
+          "title": {
+            "rendered": "Agriculture Only"
+          }
+        },
+        {
+          "date": "2022-05-25T10:01:07",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2022/05/Ministry-Important-Notice-Image-1.jpeg",
+          "title": {
+            "rendered": "6"
+          }
+        },
+        {
+          "date": "2022-02-17T08:07:08",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2022/02/Ministry-Important-Notice-Image-11.jpeg",
+          "title": {
+            "rendered": "6"
+          }
+        },
+        {
+          "date": "2022-01-17T17:45:40",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2022/01/Ministry-Important-Notice-Image-1.jpeg",
+          "title": {
+            "rendered": "6"
+          }
+        },
+        {
+          "date": "2021-02-11T15:48:10",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2021/02/Important-Notice.jpeg-1024x724-1.png",
+          "title": {
+            "rendered": "Important-Notice.jpeg-1024&#215;724"
+          }
+        },
+        {
+          "date": "2019-10-09T21:18:05",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2019/10/unnamed-19.jpg",
+          "title": {
+            "rendered": "Basseterre, St. Kitts, October 09, 2019 (SKNIS): Several disaster stakeholders from St. Kitts and Nevis are currently attending a three-day (October 09-11) training workshop aimed at sharpening their skills to respond to disasters in the federation’s territorial waters.   Participants are drawn from the: National Emergency Management Agency (NEMA); St. Kitts-Nevis Coast Guard Unit; St. Kitts-Nevis Fire and Rescue Services (SKNFRS); St. Kitts-Nevis Red Cross Society; Her Majesty’s Customs and Excise Department; the Emergency Medical Services (EMS), and the United States Navy Ship (USNS) Comfort.   “It is one that brings all of our national stakeholders together who have responsibility for responding to any threat or impact of a natural hazard or man-made disaster,” said Claricia Langley-Stevens, Deputy National Disaster Coordinator for NEMA. “We thought it was important to grab hold of the opportunity while the Comfort was visiting, to be able to expose primarily Fire and Rescue Services and the St. Kitts-Nevis Defence Force, particularly the Coast Guard, to some of the training exercises.”   Over the four days, participants will engage in several events including shipboard firefighting, rescue swimming, and deep water diving. On October 09, the training began with classroom setting presentation where navy rescue swimmers introduced their techniques and procedures from water rescues to officers of the SKNFRS and the Coast Guard Unit. They then journeyed to Frigate Bay to practice some of the procedures in shallow waters. A diving exercise with Coast Guard personnel, as well as a fire and rescue drill onboard the USNS Comfort are scheduled for October 10.   The training culminates with a demonstration on Friday, October 11 near the pier on the Bay Road in Basseterre.   “We will take all those lessons learned throughout the week and we will do a search and rescue demonstration. We are going to demonstrate search and rescue from a helicopter and the Coast Guard is going to demonstrate a rescue as well,” said Lieutenant Commander, John Rashap, Officer in charge of the Helicopter Detachment onboard USNS Comfort. “There is also a part of the search and rescue demo that is very important… at the start of the demonstration, we are going to activate EMS. So it is exercising some domestic services for St. Kitts and Nevis and it is to exercise these services in the event of a natural disaster.”   Mrs. Langley Stevens noted that Friday’s event will be a true test of the past two days.   “Friday we are going to be able to bring our lessons learned and best practices together in a scenario to be able to demonstrate that if something does occur in the St. Kitts and Nevis waters that our officers would have deeper knowledge and practical capabilities, as well as knowing the right type of equipment to be able to get the job done,” she said.   Lieutenant Commander Reshap commended the participants for their level of cooperation, noting that it was great.  He said the exchange between the staff onboard the USNS Comfort and all the agencies involved is one that should be commended, and applauded the agency representatives for their level of professionalism.   The training, which is described as a mutually beneficial exercise, is supported by the USNS Comfort, NEMA and by extension the Government of St. Kitts and Nevis.  "
+          }
+        },
+        {
+          "date": "2019-04-10T11:54:59",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2019/04/33533407-important-notice-grunge-rubber-stamp-on-white-vector-illustration.jpg",
+          "title": {
+            "rendered": "Important notice stamp"
+          }
+        },
+        {
+          "date": "2019-04-10T11:52:09",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2019/04/34534430-important-notice-grunge-rubber-stamp-on-white-background-vector-illustration.jpg",
+          "title": {
+            "rendered": "34534430-important-notice-grunge-rubber-stamp-on-white-background-vector-illustration"
+          }
+        },
+        {
+          "date": "2018-05-25T11:37:08",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2018/05/COMMISSIONER-ACKNOWLEDGES-IMPORTANT-ROLE-OF-NEVIS-DIVISION-e1527262639396.jpg",
+          "title": {
+            "rendered": "COMMISSIONER ACKNOWLEDGES IMPORTANT ROLE OF NEVIS DIVISION"
+          }
+        },
+        {
+          "date": "2017-09-08T10:20:56",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2017/09/important-post-it-hi-1.png",
+          "title": {
+            "rendered": "important-post-it-hi"
+          }
+        },
+        {
+          "date": "2017-09-04T13:23:50",
+          "url": "https://www.sknis.gov.kn/wp-content/uploads/2017/09/important-post-it-hi.png",
+          "title": {
+            "rendered": "important-post-it-hi"
+          }
+        }
+      ],
+      "provenanceFile": "final-index-recovery.json"
+    },
+    {
+      "file": "sr-media-invoer.json",
+      "url": "https://gov.sr/wp-json/wp/v2/media?search=invoer&per_page=100",
+      "status": 200,
+      "bytes": 26408,
+      "media": [
+        {
+          "date": "2026-09-29T22:22:44",
+          "url": "https://gov.sr/wp-content/uploads/2026/09/Herinvoering-Visum-voor-Mexico-en-Boliva.pdf",
+          "title": {
+            "rendered": "Herinvoering Visum voor Mexico en Boliva"
+          }
+        },
+        {
+          "date": "2026-08-14T12:49:41",
+          "url": "https://gov.sr/wp-content/uploads/2026/08/Procedure-voor-de-invoer-van-planten-en-plantaardige-producten.jpg",
+          "title": {
+            "rendered": "Procedure voor de invoer van planten en plantaardige producten"
+          }
+        },
+        {
+          "date": "2025-12-05T11:22:15",
+          "url": "https://gov.sr/wp-content/uploads/2025/12/LVV-Bekendmaking-Veeteelt-invoer-procedure-05.12.25-Final.jpg",
+          "title": {
+            "rendered": "LVV Bekendmaking Veeteelt invoer procedure 05.12.25 Final"
+          }
+        },
+        {
+          "date": "2023-09-26T00:13:25",
+          "url": "https://gov.sr/wp-content/uploads/2023/09/S.B.-2023-no.-128-RESOLUTIE-van-30-augustus-2023-no.-815623-invoering-flexibele-werktijdenregeling.pdf",
+          "title": {
+            "rendered": "S.B. 2023 no. 128; RESOLUTIE van 30 augustus 2023 no. 815623, invoering flexibele werktijdenregeling"
+          }
+        },
+        {
+          "date": "2023-01-18T09:03:54",
+          "url": "https://gov.sr/wp-content/uploads/2023/01/EZ-Susan-Bansropansingh-OD-Invoer-Uitvoer-en-Deviezen-Controle.jpg",
+          "title": {
+            "rendered": "EZ Susan Bansropansingh OD Invoer, Uitvoer en Deviezen Controle"
+          }
+        },
+        {
+          "date": "2022-05-10T16:49:24",
+          "url": "https://gov.sr/wp-content/uploads/2022/05/wet-tarief-van-invoerrechten.pdf",
+          "title": {
+            "rendered": "wet-tarief-van-invoerrechten"
+          }
+        }
+      ],
+      "provenanceFile": "final-index-recovery.json"
+    },
+    {
+      "file": "tc-residents-bare.html",
+      "url": "https://agriculture.gov.tc/residents",
+      "error": "HTTPSConnectionPool(host='agriculture.gov.tc', port=443): Max retries exceeded with url: /residents (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'agriculture.gov.tc'. (_ssl.c:1082)\")))",
+      "provenanceFile": "final-index-recovery.json"
+    },
+    {
+      "file": "vc-import-agencies.html",
+      "url": "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/618-agencies-involved-in-import-procedures",
+      "status": 200,
+      "bytes": 22397,
+      "links": [
+        "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/618-agencies-involved-in-import-procedures",
+        "/foreign/index.php/import-export-guide-content/603-imports-page",
+        "/foreign/index.php/import-export-guide"
+      ],
+      "provenanceFile": "final-index-recovery.json"
+    },
+    {
+      "file": "bs-customs2011.pdf",
+      "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/2011/2011-0030/2011-0030.pdf",
+      "status": 200,
+      "bytes": 4531012,
+      "sha256": "11d9135e41d77427cf4a12d56aeb9650f6d5bf9c1e9adab716542c6aef3cd47f",
+      "savedText": "bs-customs2011.pdf.txt",
+      "provenanceFile": "bs-law-recovery.json"
+    },
+    {
+      "file": "bs-importcontrol1972-fao.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/bha112362.pdf",
+      "status": 200,
+      "bytes": 130448,
+      "sha256": "00153375bc51de55a14d70dffb50d5d9959074d36dc94d36dc62b341b0fbde2f",
+      "savedText": "bs-importcontrol1972-fao.pdf.txt",
+      "provenanceFile": "bs-law-recovery.json"
+    },
+    {
+      "file": "bs-importgeneral1957.pdf",
+      "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1957/1957-0197/1957-0197.pdf",
+      "status": 503,
+      "bytes": 79,
+      "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9",
+      "provenanceFile": "bs-law-recovery.json"
+    },
+    {
+      "file": "bs-food1985.pdf",
+      "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1985/1985-0001/1985-0001_1.pdf",
+      "status": 503,
+      "bytes": 79,
+      "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9",
+      "provenanceFile": "bs-law-recovery.json"
+    },
+    {
+      "file": "bs-interpretation1976.pdf",
+      "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/PRINCIPAL/1976/1976-0020/1976-0020_1.pdf",
+      "status": 200,
+      "bytes": 215478,
+      "sha256": "608f558a4c722dc8823e97992124b27d7deaab73c8f70eb669d465c1c13029bd",
+      "validPDF": true,
+      "provenanceFile": "law-continuation-recovery.json"
+    },
+    {
+      "file": "bs-customsamend2013.pdf",
+      "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/AMENDING/2013/2013-0023/2013-0023.pdf",
+      "status": 200,
+      "bytes": 553963,
+      "sha256": "6424c31a95a06d338307409456210ab20e68899d085f802858ed264810c17a28",
+      "validPDF": true,
+      "provenanceFile": "law-continuation-recovery.json"
+    },
+    {
+      "file": "bs-appeal2022.pdf",
+      "url": "https://www.courtofappeal.org.bs/download/042371500.pdf",
+      "status": 200,
+      "bytes": 532746,
+      "sha256": "94199770e1f0412631852cbd6fc82d168a3fc01f96f5fdf6276f15c396ab8e58",
+      "validPDF": true,
+      "provenanceFile": "law-continuation-recovery.json"
+    },
+    {
+      "file": "ag-ippc2012act.html",
+      "url": "https://www.ippc.int/en/countries/antigua-and-barbuda/reportingobligation/2014/05/httplawsgovagacts2012a2012-1pdf/",
+      "status": 200,
+      "bytes": 75465,
+      "sha256": "0075ba24d60f95250b8112e42bcd23448462346f3b99f55e67f2f3fa739e9977",
+      "links": [
+        "/static/css/2023/timeline.16b53cc33aaa562f8f41a495bf720289.js.download",
+        "/en/accounts/login/?next=/en/countries/antigua-and-barbuda/reportingobligation/2014/05/httplawsgovagacts2012a2012-1pdf/",
+        "/en/strategic-objectives/plant-health-environmental-protection/the-impacts-of-climate-change-on-plant-health/",
+        "/en/strategic-objectives/plant-health-environmental-protection/the-impacts-of-climate-change-on-plant-health/climate-change-impacts-on-plant-pests-technical-factsheets/",
+        "/about/core-activities/standards-setting/development-standards/searchable-pdf-database"
+      ],
+      "provenanceFile": "law-continuation-recovery.json"
+    },
+    {
+      "file": "vg-fumigation.html",
+      "url": "https://laws.gov.vg/laws/fumigation-plants-act",
+      "status": 200,
+      "bytes": 29687,
+      "sha256": "d89f479753fc4a765e33db2421b2df6855136382fbf7e937bd5f33e80c2e60f1",
+      "links": [
+        "/libraries/pdf.js/web/viewer.html?file=https%3A%2F%2Flaws.gov.vg%2Fsites%2Fdefault%2Ffiles%2F2025-10%2FFumigation%2520of%2520Plants%2520Act.pdf",
+        "https://laws.gov.vg/sites/default/files/2025-10/Fumigation%20of%20Plants%20Act.pdf"
+      ],
+      "provenanceFile": "law-continuation-recovery.json"
+    },
+    {
+      "url": "https://www.sknis.gov.kn/wp-content/uploads/2024/03/PLANT-IMPORT-REQUIREMENTS-POSTER-1024x731-1.jpeg",
+      "file": "kn-plantposter2024.jpeg",
+      "status": 200,
+      "bytes": 124732,
+      "sha256": "63e31c3781a10da9c145543036a6fffb8ae5cdfb0c79226714df939cbca53dfc",
+      "provenanceFile": "kn-poster-provenance.json"
+    },
+    {
+      "url": "https://www.fao.org/3/cb2571en/cb2571en.pdf",
+      "finalUrl": "https://openknowledge.fao.org/3/cb2571en/cb2571en.pdf",
+      "status": 403,
+      "bytes": 239,
+      "file": "ispm32-current.pdf",
+      "sha256": "ab768623070128ccef048c88def86155dbe776c3d8db423cc8fa89432673d8a8",
+      "provenanceFile": "ispm32-provenance.json"
+    },
+    {
+      "url": "https://assets.ippc.int/static/media/files/reportingobligation/2014/05/14/import_export_information_guide.pdf",
+      "status": 200,
+      "file": "ag-ippc-guide2014.pdf",
+      "sha256": "1b893d759d4c67596e0b6700acc45bf21101da2bcc16304a1b5978a3516df692",
+      "sameBytesAs2022Upload": false,
+      "sameNormalizedTextAs2022Upload": false,
+      "provenanceFile": "ag-guide-dating.json"
+    },
+    {
+      "file": "ag-health-current.html",
+      "url": "https://health.gov.ag/laws-regulations/",
+      "status": 406,
+      "bytes": 226,
+      "sha256": "80a265bed528211aa708dcd58f7a95db36eeb7f873c6fe4ddab0b3a1dc0973a4",
+      "provenanceFile": "final-source-recovery.json"
+    },
+    {
+      "file": "ispm32-slovenia-en2015.pdf",
+      "url": "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "status": 200,
+      "bytes": 1076273,
+      "sha256": "3cf959befd338aaf0d40edb72207faa58b6bfe14df091fd32d244d3ca32558c5",
+      "provenanceFile": "final-source-recovery.json"
+    },
+    {
+      "url": "https://governmentprintery.gov.bb/wp-json/wp/v2/posts?search=Plant%20Protection&per_page=100",
+      "file": "bb-plant-posts.json",
+      "status": 200,
+      "note": "100 returned posts ordered newest first through August 2022; exact phrase occurrences inspected in full content, including enacted Act and commencement.",
+      "bytes": 29790901,
+      "sha256": "e38b99ad24332e223d7040f40de8c7f7d4d708333597e8a8b2717bfde88e6d13",
+      "provenanceFile": "bb-law2023-recovery.json"
+    },
+    {
+      "url": "https://governmentprintery.gov.bb/gazette-february-20-2023-part-a-clviii-no-19/",
+      "file": "bb-act2023-gazette.html",
+      "status": 200,
+      "publicationDate": "2023-02-20",
+      "assentDate": "2023-02-16",
+      "note": "Full enacted Act 2023–2; independently persisted public post2649 JSON/text. This is the enacted text, not the 24 January 2023 bill in FAOLEX bar220617.pdf.",
+      "bytes": 416234,
+      "sha256": "97c69588d7ca6ac2f7135d64015738af6b65d420000abd2524faca536f5d48a4",
+      "provenanceFile": "bb-law2023-recovery.json"
+    },
+    {
+      "url": "https://governmentprintery.gov.bb/gazette-may-29-2024-part-a-vol-clix-no-56-with-s-is-nos-1-2/",
+      "file": "bb-post-3273.json",
+      "status": 200,
+      "publicationDate": "2024-05-29",
+      "note": "SI 2024/23 dated28 May 2024 proclaims PlantProtectionAct 2023 operative29 May 2024; adjacentSI 22 is animal law, kept distinct.",
+      "bytes": 5939,
+      "sha256": "1d85bd1d5c998e90cfa3e69433f1e239ffc57960b637c1d4f5befa49caf51b02",
+      "provenanceFile": "bb-law2023-recovery.json"
+    },
+    {
+      "url": "https://barbadosparliament-laws.com/en/showdoc/cs/2023_2",
+      "status": 404,
+      "note": "Link from official proclamation is unavailable; enacted text independently available in Gazette.",
+      "provenanceFile": "bb-law2023-recovery.json"
+    }
+  ],
+  "sharedCurrentSource": {
+    "file": "../french/ispm32-current-ru.pdf",
+    "url": "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+    "linkingPage": "https://www.ippc.int/en/publications/587/"
+  },
+  "failureHandling": "Non-PDF error responses and HTTP failures are retained only as retrieval evidence, not legal texts. See pass-result importantSourceLimits. Research JSON outputs are not official sources."
+}

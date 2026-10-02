@@ -215,6 +215,33 @@ describe('wallet util/account', () => {
     await expect(parseAccountJson(new File(['{}'], 'account.json'))).rejects.toBe(failure);
   });
 
+  it('rejects malformed and non-object account JSON without leaving the import pending', async () => {
+    const { parseAccountJson } = await loadAccountModule();
+
+    const createReader = (result: string) =>
+      class {
+        public result: string | null = null;
+        public onload: null | (() => void) = null;
+        public onerror: null | ((error: Error) => void) = null;
+
+        readAsText(): void {
+          queueMicrotask(() => {
+            this.result = result;
+            this.onload?.();
+          });
+        }
+      };
+
+    vi.stubGlobal('FileReader', createReader('{'));
+    await expect(parseAccountJson(new File(['{'], 'account.json'))).rejects.toBeInstanceOf(SyntaxError);
+
+    vi.stubGlobal('FileReader', createReader('[]'));
+    await expect(parseAccountJson(new File(['[]'], 'account.json'))).rejects.toThrow('Invalid account JSON file');
+
+    vi.stubGlobal('FileReader', createReader('null'));
+    await expect(parseAccountJson(new File(['null'], 'account.json'))).rejects.toThrow('Invalid account JSON file');
+  });
+
   it('exports, verifies, restores, and deletes account json through the SDK api', async () => {
     const { exportAccount, exportAccountJson, restoreAccount, deleteAccount, verifyAccountJson } =
       await loadAccountModule();

@@ -1,0 +1,57 @@
+[
+  {
+    "file": "tristan-island-council-bylaws.pdf",
+    "textFile": "tristan-island-council-bylaws.txt",
+    "sourceUrl": "https://www.sainthelena.gov.sh/documents/Island-Council-TdaC-Ordinance",
+    "retrievedAt": "2026-09-30",
+    "sha256": "2d60e68a21e2e46316a9157e226d591e6814c38e504009fabe4715f1b7d6fcfa",
+    "note": "Agriculture by-laws pp61–64 concern land/livestock management. Public Health by-law12 p69 permits inspection/seizure of unfit food. No special-document duty for imported retail tea located."
+  },
+  {
+    "file": "tristan-applied-sh-laws.pdf",
+    "textFile": "tristan-applied-sh-laws.txt",
+    "sourceUrl": "https://www.sainthelena.gov.sh/documents/Tristan-da-Cunha-Applied-SH-Laws-List-Updated-010418",
+    "retrievedAt": "2026-09-30",
+    "sha256": "51df9ef52ba8d89bbdfe24b26a4896c38196016fd8f45bae593f33985b9cc2b1",
+    "note": "Government non-authoritative application list: St Helena Plants Protection Ordinance does not apply; Food Safety Ordinance2016 and2017subsidiaryrules apply. List subject to local-suitability interpretation."
+  },
+  {
+    "file": "tristan-application-law.pdf",
+    "textFile": "tristan-application-law.txt",
+    "sourceUrl": "https://www.sainthelena.gov.sh/documents/app-of-sh-law-to-tdc-ord-updated-180620/",
+    "retrievedAt": "2026-09-30",
+    "sha256": "d865f49d717b2317c9b0de855aed0f1a0ab79f93a29264e5c5afe80b6dde71c9",
+    "note": "Sections2–3 apply St Helena laws extant1January2018 with local suitability, modification and inconsistent-local-law exclusions."
+  },
+  {
+    "file": "sh-food-safety2016.pdf",
+    "textFile": "sh-food-safety2016.txt",
+    "sourceUrl": "https://www.sainthelena.gov.sh/documents/food-safety-ordinance-corrected-2.pdf",
+    "retrievedAt": "2026-09-30",
+    "sha256": "7a24eeefe407a5db4c82370d5f8e61b0202237899291c1cda25166d84c2ff67e",
+    "note": "General Food Hygiene Regulations2017 reg4(3)–(4), printedp56, requires advance3daynotice from food business operators; not a demonstrated private recipient obligation. Food business definition includes nonprofit but does not itself classify private consumption recipient as business."
+  },
+  {
+    "file": "sh-laws.html",
+    "sourceUrl": "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+    "retrievedAt": "2026-09-30",
+    "note": "Current index recovered; Biosecurity link resolves to Ascension2020 document, not Tristan2021. Do not treat that redirected document as Tristan law."
+  },
+  {
+    "file": "sh-gazette.html",
+    "sourceUrl": "https://www.sainthelena.gov.sh/gazette/",
+    "retrievedAt": "2026-09-30",
+    "note": "Current complete Gazette index HTML recovered, including2026 listings. No indexed title for a Tristan2021Biosecurity commencement found; index review does not prove no order exists."
+  },
+  {
+    "file": "sh-biosecurity2025.html",
+    "sourceUrl": "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php",
+    "retrievedAt": "2026-09-30",
+    "note": "2025 government visiting-vessel cargo/contamination measures do not establish a manufactured-tea postal import specification."
+  },
+  {
+    "sourceUrl": "https://www.sainthelena.gov.sh/wp-content/uploads/2022/01/Biosecurity-Ordinance.pdf",
+    "retrievedAt": "2026-09-30",
+    "access": "Direct GET404; search-index copy still returns Tristan2021 and not-in-force headnote. Prior cached source not treated as proof of current commencement."
+  }
+]

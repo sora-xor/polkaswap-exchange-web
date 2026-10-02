@@ -1,0 +1,23 @@
+[
+  {
+    "url": "https://gazettes.africa/gazettes/sl/",
+    "status": 200,
+    "path": "docs/reports/tea-audit-work/africa-scope-resolution/sl/index-0.html",
+    "final_url": "https://gazettes.africa/gazettes/sl/",
+    "bytes": 78151
+  },
+  {
+    "url": "https://archive.gazettes.africa/archive/sl/1974/",
+    "status": 404,
+    "path": "docs/reports/tea-audit-work/africa-scope-resolution/sl/index-1.html",
+    "final_url": "https://archive.gazettes.africa/archive/sl/1974/",
+    "bytes": 28088
+  },
+  {
+    "url": "https://sierralii.gov.sl/legislation/1974/",
+    "status": 404,
+    "path": "docs/reports/tea-audit-work/africa-scope-resolution/sl/index-2.html",
+    "final_url": "https://sierralii.gov.sl/legislation/1974/",
+    "bytes": 13665
+  }
+]

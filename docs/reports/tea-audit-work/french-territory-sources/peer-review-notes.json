@@ -1,0 +1,61 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Independent bounded review of GP GF MQ BL MF PM YT; no decisions changed; main arrays untouched.",
+  "countryFindings": {
+    "GP": {
+      "decision": "unresolved",
+      "finding": "The complete national 1990 Annex IV and incorporated 2006 Annex V B already support absence of a scheduled tea certificate. A tea-specific authority ruling is not needed for that list-based conclusion. The remaining barrier is the unrecovered local Order 96-323 of 16 April 1996: current official sources describe passenger or outside-commercial-channel restrictions differently, and neither establishes the scope for a paid private postal order.",
+      "sourceGap": "Actual local Order 96-323, especially scope, definitions and postal coverage."
+    },
+    "GF": {
+      "decision": "unresolved",
+      "finding": "Rechecked the reproduced operative Article 1 of Order R03-2021-04-26-00003 against its official title/index. It applies the 1990 Article 1 definitions to personal imports from all origins in any quantity; it does not limit itself to Annex IV certificate-listed goods. Article 2 requires prior study for a derogation. Consequently the national exhaustive schedule cannot itself clear this personal import. Direct official PDF retrieval again closed the connection; the operative wording remains a legal-text reproduction, not an independently downloaded official copy.",
+      "sourceGap": "Whether manufacture by steaming and drying goes beyond the incorporated unprocessed/simply-prepared definition; a legal processing exclusion or authoritative general-category interpretation would settle it, without needing a bespoke tea permit.",
+      "sources": [
+        "https://www.guyane.gouv.fr/content/download/18708/131303/file/recueil-r03-2021-109-recueil-des-actes-administratifs.pdf",
+        "https://politique.pappers.fr/commune/document/0987289975315402799780b56d718d4c"
+      ]
+    },
+    "MQ": {
+      "decision": "unresolved",
+      "finding": "Current DAAF guidance expressly describes the 22 November 2004 local restriction as applying to personal introductions/imports using the 1990 Article 1 product definition, not merely the national certificate schedule. National-list absence therefore does not settle the separate ban. The original local order was not recovered.",
+      "sourceGap": "Actual Order 043448 of 22 November 2004 and any binding processing exclusion relevant to steamed/dried manufactured tea. Do not demand a tea-specific ruling if a general category provision resolves the same question.",
+      "sources": [
+        "https://daaf.martinique.agriculture.gouv.fr/quels-sont-les-vegetaux-soumis-a-un-contole-au-pec-lors-de-leur-introduction-a373.html",
+        "https://daaf.martinique.agriculture.gouv.fr/importation-des-vegetaux-et-produits-vegetaux-a362.html"
+      ]
+    },
+    "BL": {
+      "decision": "unresolved",
+      "finding": "Organic Law 2007-223 Article 18 IX expressly retains non-contrary pre-existing legislative and regulatory provisions and substitutes territorial references. This supplies a continuity chain for the national 1990/2006 rules after detachment from Guadeloupe, reinforced by current Code rural L272-11-1. The complete applicable national certificate schedules do not list finished tea; the 2026 Environment Code living-specimen rule does not cover non-living finished tea. However, the same continuity mechanism can preserve an applicable Guadeloupe local 1996 restriction. Its original territorial and channel scope has not been recovered.",
+      "sourceGap": "Actual scope and continued application of Guadeloupe Order 96-323, rather than absence of a newly issued tea-specific national schedule.",
+      "sources": [
+        "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+        "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070633/LEGISCTA000006135517/2026-06-26/"
+      ]
+    },
+    "MF": {
+      "decision": "unresolved",
+      "finding": "Organic Law 2007-223 Article 18 IX supplies express continuity and territorial-reference substitution for pre-existing Guadeloupe rules; the official October 2025 Guide de legistique confirms this rule for Saint-Martin. Current Code rural L273-6-2 additionally applies the overseas framework. This is a legal chain for using inherited national schedules, not a mainland-EU substitution. Those list-based rules do not require a tea-specific permission simply because the territory changed status. The same continuity can preserve the local 1996 Guadeloupe restriction, whose original territory/channel scope remains unrecovered.",
+      "sourceGap": "Actual scope and continued application of Guadeloupe Order 96-323; the old NVWA sheet alone does not answer that local-law issue.",
+      "sources": [
+        "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+        "https://www.legifrance.gouv.fr/contenu/Media/files/autour-de-la-loi/guide-de-legistique/2025_10_06_fiche_3.6.7_saint-martin.pdf"
+      ]
+    },
+    "PM": {
+      "decision": "unresolved",
+      "finding": "Independently retrieved the complete current Code rural D274-26 to D274-31. D274-29 imposes certification on covered plants/plant products generally rather than only an exhaustive commodity list. D274-27/28 have the authorization/application route; D274-26-1 registration is professional only and is not the basis for a private exclusion. D274-30 exempts private imports from Newfoundland, which does not cover a direct Japan parcel. The local 2009 text reproduced in the official 2010 environment report defines products by no/simple processing and explicitly covers postal and express consignments. Thus there is a genuine processing-definition issue, not a missing tea line in an exhaustive schedule.",
+      "sourceGap": "Applicable processing definition or exclusion resolving steamed/dried sencha under this separate local regime.",
+      "sources": [
+        "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000032694023/2026-06-17",
+        "https://www.saint-pierre-et-miquelon.developpement-durable.gouv.fr/IMG/pdf/2010_espececs-exotiques-envahissantes_frag_iles.pdf"
+      ]
+    },
+    "YT": {
+      "decision": "unresolved",
+      "finding": "Existing 2025 schedule is genuinely favorable to dried tea, but the binding 2019 postal restriction remains separate and the current 2026-DAAF-236 amendment/consolidation has not been retrieved. A general processed-product postal exclusion could settle the category; a bespoke sencha ruling is not intrinsically required. No repeated retrieval of exhausted YT routes was attempted in this peer review.",
+      "sourceGap": "Current 2026 amended annex and exact reconciliation of the 2019 postal text with the DAAF unprocessed-product description."
+    }
+  }
+}

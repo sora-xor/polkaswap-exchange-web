@@ -1,20 +1,34 @@
-import { FPNumber } from '@sora-substrate/sdk';
+import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { api } from '@/lib/soraneo-wallet/src/api';
-import { combineLatest } from 'rxjs';
+import { combineLatest, firstValueFrom, from, timeout, TimeoutError } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';
 import { conditionalAwait } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
+import { areBridgeExternalAccountsEqual } from '@/utils/bridge/common/account';
 import { BridgeTransactionSignDialogMode, type IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import {
+  getSubBridgeFailureCode,
+  isDisplayOnlyRecoveredSubBridgeHistory,
+  isSubBridgeTerminalFailureStatus,
+  reconcileSubBridgeRequest,
+  SubBridgeAuthoritativeStatus,
+  SubBridgeReconciliationErrorCode,
+  type SubBridgeRecoveryPayload,
+  type SubBridgeRequestReconciliation,
+} from '@/utils/bridge/sub/reconciliation';
 import { SubTransferType } from '@/utils/bridge/sub/types';
+import ethersUtil from '@/utils/ethers-util';
 import {
   getBridgeProxyHash,
   getDepositedBalance,
   getMessageAcceptedNonces,
+  getSoraBridgeProviderHash,
+  hasSubBridgeIncomingSubmissionEvidence,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
   isSoraBridgeAppBurned,
@@ -26,14 +40,96 @@ import {
   isQueueMessage,
 } from '@/utils/bridge/sub/utils';
 
-import type { ApiRx } from '@polkadot/api';
+import type { ApiPromise, ApiRx } from '@polkadot/api';
 import type { IBridgeTransaction } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
+import type { Nullable } from '@/types/common';
 
 type SubBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {
   getSubBridgeConnector: () => SubNetworksConnector;
+};
+
+type RestoredSubstrateTransactionBlock = {
+  blockId: string;
+  blockHeight: number;
+};
+
+const SUBSTRATE_TRANSACTION_HASH_PATTERN = /^0x[0-9a-f]{64}$/i;
+const SUBSTRATE_TRANSACTION_BLOCK_LOOKBACK = 2;
+const SUBSTRATE_TRANSACTION_BLOCK_LOOKAHEAD = 64;
+/** Maximum time allowed for the bounded historical source-block scan. */
+export const SUBSTRATE_TRANSACTION_RECOVERY_TIMEOUT_MS = 2 * 60 * 1_000;
+
+const isValidSubstrateBlockHeight = (value: number): boolean => Number.isSafeInteger(value) && value > 0;
+/** Maximum period without a SORA bridge request update before tracking can be resumed manually. */
+export const SORA_BRIDGE_DETAILS_TIMEOUT_MS = 10 * 60 * 1_000;
+
+/** Performs the sequential RPC scan used by the bounded public recovery helper. */
+const scanSubstrateTransactionBlock = async (
+  transactionHash: string,
+  startBlockHeight: number,
+  chainApi: ApiPromise
+): Promise<RestoredSubstrateTransactionBlock | null> => {
+  const normalizedTransactionHash = transactionHash.trim().toLowerCase();
+
+  if (!SUBSTRATE_TRANSACTION_HASH_PATTERN.test(normalizedTransactionHash)) {
+    throw new Error(`Invalid Substrate transaction hash: "${transactionHash}"`);
+  }
+  if (!isValidSubstrateBlockHeight(startBlockHeight)) {
+    throw new Error(`Invalid Substrate transaction start block: "${startBlockHeight}"`);
+  }
+
+  const latestBlockHeight = await api.system.getBlockNumber(undefined, chainApi);
+
+  if (!isValidSubstrateBlockHeight(latestBlockHeight)) {
+    throw new Error(`Invalid latest Substrate block height: "${latestBlockHeight}"`);
+  }
+
+  const firstBlockHeight = Math.max(0, startBlockHeight - SUBSTRATE_TRANSACTION_BLOCK_LOOKBACK);
+  const lastBlockHeight = Math.min(latestBlockHeight, startBlockHeight + SUBSTRATE_TRANSACTION_BLOCK_LOOKAHEAD);
+
+  for (let blockHeight = firstBlockHeight; blockHeight <= lastBlockHeight; blockHeight += 1) {
+    const blockId = await api.system.getBlockHash(blockHeight, chainApi);
+    const extrinsics = await api.system.getExtrinsicsFromBlock(blockId, chainApi);
+    const transactionFound = extrinsics.some(
+      (extrinsic) => extrinsic.hash.toString().toLowerCase() === normalizedTransactionHash
+    );
+
+    if (transactionFound) {
+      return { blockId, blockHeight };
+    }
+  }
+
+  return null;
+};
+
+/**
+ * Finds a submitted Substrate extrinsic in the small block window surrounding
+ * the height captured immediately after submission.
+ *
+ * Both the block window and elapsed time are bounded: this is a recovery path
+ * for a missed status callback, not an unbounded chain indexer.
+ */
+export const findSubstrateTransactionBlock = async (
+  transactionHash: string,
+  startBlockHeight: number,
+  chainApi: ApiPromise
+): Promise<RestoredSubstrateTransactionBlock | null> => {
+  try {
+    return await firstValueFrom(
+      from(scanSubstrateTransactionBlock(transactionHash, startBlockHeight, chainApi)).pipe(
+        timeout(SUBSTRATE_TRANSACTION_RECOVERY_TIMEOUT_MS)
+      )
+    );
+  } catch (error) {
+    if (error instanceof TimeoutError) {
+      throw new Error(SubBridgeReconciliationErrorCode.TrackingTimeout);
+    }
+
+    throw error;
+  }
 };
 
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
@@ -48,7 +144,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     this.getSubBridgeConnector = options.getSubBridgeConnector;
   }
 
-  initConnector(id: string): void {
+  async initConnector(id: string): Promise<void> {
     const { externalNetwork } = this.getTransaction(id);
 
     if (!externalNetwork) throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork" is not defined`);
@@ -56,30 +152,38 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     this.transferType = determineTransferType(externalNetwork);
 
     this.connector = new SubNetworksConnector();
-    this.connector.init(externalNetwork, this.getSubBridgeConnector());
+    await this.connector.init(externalNetwork, this.getSubBridgeConnector());
   }
 
   async closeConnector(): Promise<void> {
-    await this.connector.stop();
+    await this.connector?.stop();
+  }
+
+  /** Stops account-bound Substrate connections as soon as tracking is canceled. */
+  protected override async onTrackingAbort(): Promise<void> {
+    await this.closeConnector();
   }
 
   async getHashesByBlockNumber(blockHeight: number, apiRx: ApiRx) {
     let blockId = '';
 
     if (Number.isFinite(blockHeight)) {
-      let subscription!: Subscription;
+      let subscription: Subscription | undefined;
 
       try {
-        await new Promise<void>((resolve) => {
-          subscription = api.system.getBlockHashObservable(blockHeight, apiRx).subscribe((hash) => {
-            if (hash) {
-              blockId = hash;
-              resolve();
-            }
+        await new Promise<void>((resolve, reject) => {
+          subscription = api.system.getBlockHashObservable(blockHeight, apiRx).subscribe({
+            next: (hash) => {
+              if (hash) {
+                blockId = hash;
+                resolve();
+              }
+            },
+            error: reject,
           });
         });
       } finally {
-        subscription.unsubscribe();
+        subscription?.unsubscribe();
       }
     }
 
@@ -95,6 +199,10 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   }
 
   async saveStartBlock(id: string): Promise<void> {
+    const savedStartBlock = Number(this.getTransaction(id).payload?.startBlock);
+
+    if (isValidSubstrateBlockHeight(savedStartBlock)) return;
+
     const adapter =
       this.transferType === SubTransferType.Standalone ? this.connector.network : this.connector.soraParachain;
 
@@ -102,46 +210,137 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
     await adapter.connect();
     // get current sora parachain block number
-    const startBlock = await adapter.getBlockNumber();
+    const startBlock = Number(await adapter.getBlockNumber());
+
+    if (!isValidSubstrateBlockHeight(startBlock)) {
+      throw new Error(`[${this.constructor.name}]: Unable to determine a valid source start block`);
+    }
     // update history data
     this.updateTransactionPayload(id, { startBlock });
   }
 
   async waitForTxBlockAndStatus(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+    const sourceTransactionHash = [tx.externalHash, tx.txId].find((value) => typeof value === 'string' && value.trim());
+    const isSignedStandaloneIncoming =
+      tx.type === Operation.SubstrateIncoming &&
+      this.transferType === SubTransferType.Standalone &&
+      Boolean(sourceTransactionHash);
+
+    if (isSignedStandaloneIncoming) {
+      if (tx.blockId || tx.externalBlockId) return;
+      if (await this.restoreTransactionBlockId(id)) return;
+
+      await this.waitForTransactionBlockId(id);
+      return;
+    }
+
     await this.waitForTransactionStatus(id);
+    const updatedTx = this.getTransaction(id);
+
+    if (updatedTx.blockId || updatedTx.externalBlockId) return;
+    if (await this.restoreTransactionBlockId(id)) return;
+
     await this.waitForTransactionBlockId(id);
+  }
+
+  /** Restores a missed Liberland in-block callback without re-signing the burn. */
+  protected override async restoreTransactionBlockId(id: string): Promise<boolean> {
+    const tx = this.getTransaction(id);
+
+    if (tx.blockId || tx.externalBlockId) return true;
+    if (tx.type !== Operation.SubstrateIncoming || this.transferType !== SubTransferType.Standalone) return false;
+
+    const transactionHash =
+      [tx.txId, tx.externalHash].find((value) => typeof value === 'string' && value.trim())?.trim() ?? '';
+    const startBlockHeight = Number(tx.payload?.startBlock);
+
+    if (!transactionHash) {
+      throw new Error(`[${this.constructor.name}]: Transaction hash is unavailable for block restoration`);
+    }
+    if (!isValidSubstrateBlockHeight(startBlockHeight)) {
+      throw new Error(`[${this.constructor.name}]: Start block is unavailable for transaction "${transactionHash}"`);
+    }
+
+    const adapter = this.connector.network;
+
+    if (!adapter) throw new Error(`[${this.constructor.name}]: External network adapter is unavailable`);
+
+    await adapter.connect();
+
+    const restoredBlock = await findSubstrateTransactionBlock(transactionHash, startBlockHeight, adapter.api);
+
+    if (!restoredBlock) return false;
+
+    this.updateTransactionParams(id, restoredBlock);
+    return true;
   }
 }
 
 export class SubBridgeIncomingReducer extends SubBridgeReducer {
+  private readonly pendingProcesses = new Map<string, Promise<void>>();
+  /**
+   * Incoming jobs share reducer-level connector, asset, and transfer fields, so
+   * different transaction IDs must not execute their state machines together.
+   */
+  private pendingProcessQueue: Promise<void> = Promise.resolve();
+
   async changeState(transaction: SubHistory): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
+    if (isDisplayOnlyRecoveredSubBridgeHistory(transaction)) return;
 
     switch (transaction.transactionState) {
       case BridgeTxStatus.Pending: {
-        return await this.handleState(transaction.id, {
-          nextState: BridgeTxStatus.Done,
-          rejectState: BridgeTxStatus.Failed,
-          handler: async (id: string) => {
-            try {
-              this.beforeSubmit(id);
-              this.initConnector(id);
-              this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+        const existingProcess = this.pendingProcesses.get(transaction.id);
 
-              await this.checkTxId(id);
-              await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
+        if (existingProcess) return await existingProcess;
 
-              await this.waitForSoraInboundMessageNonce(id);
-              await this.waitSoraBlockByHash(id);
-              await this.onComplete(id);
-            } finally {
-              this.closeConnector();
-            }
-          },
-        });
+        const runProcess = () =>
+          this.handleState(transaction.id, {
+            nextState: BridgeTxStatus.Done,
+            rejectState: BridgeTxStatus.Failed,
+            handler: async (id: string) => {
+              try {
+                this.beforeSubmit(id);
+                await this.initConnector(id);
+                this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+
+                await this.checkTxId(id);
+
+                if (this.transferType === SubTransferType.Standalone && !this.getTransaction(id).hash) {
+                  await this.updateTxIncomingData(id);
+                } else if (this.transferType !== SubTransferType.Standalone) {
+                  await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
+                }
+
+                await this.waitForSoraInboundMessageNonce(id);
+                await this.waitSoraBlockByHash(id);
+                await this.onComplete(id);
+              } finally {
+                await this.closeConnector();
+              }
+            },
+          });
+        const process = this.pendingProcessQueue.then(runProcess, runProcess);
+
+        this.pendingProcessQueue = process.catch(() => undefined);
+
+        this.pendingProcesses.set(transaction.id, process);
+
+        try {
+          return await process;
+        } finally {
+          if (this.pendingProcesses.get(transaction.id) === process) {
+            this.pendingProcesses.delete(transaction.id);
+          }
+        }
       }
 
       case BridgeTxStatus.Failed: {
+        const recoveryStatus = (transaction.payload as SubBridgeRecoveryPayload | undefined)?.bridgeRecoveryStatus;
+
+        if (recoveryStatus && isSubBridgeTerminalFailureStatus(recoveryStatus)) return;
+
         return await this.handleState(transaction.id, {
           nextState: BridgeTxStatus.Pending,
           rejectState: BridgeTxStatus.Failed,
@@ -150,13 +349,33 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     }
   }
 
+  /** Resolves the account that would sign the unsigned external transfer. */
+  private async getCurrentExternalSigner(tx: SubHistory): Promise<string> {
+    if (subBridgeApi.isEvmAccount(tx.externalNetwork as SubNetwork)) {
+      try {
+        return await ethersUtil.getAccount();
+      } catch {
+        return '';
+      }
+    }
+
+    return this.connector.accountApi?.address ?? '';
+  }
+
   private async checkTxId(id: string): Promise<void> {
     const tx = this.getTransaction(id);
     const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
 
     this.asset = { ...asset };
 
-    if (tx.txId) return;
+    if (hasSubBridgeIncomingSubmissionEvidence(tx)) return;
+
+    const currentExternalSigner = await this.getCurrentExternalSigner(tx);
+
+    if (!areBridgeExternalAccountsEqual(tx.to, currentExternalSigner)) {
+      throw new Error(`Change account in external wallet to ${String(tx.to ?? '')}`);
+    }
+
     // transaction not signed
     await this.beforeSign(id, this.connector.accountApi, BridgeTransactionSignDialogMode.Bridge);
     // open connections
@@ -170,14 +389,24 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   private async updateTxSigningData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (!(tx.externalBlockId && tx.externalHash && tx.externalBlockHeight)) {
+    if (!(tx.externalBlockId && tx.externalHash && Number.isSafeInteger(Number(tx.externalBlockHeight)))) {
       const adapter = this.connector.network;
 
       await adapter.connect();
 
-      const externalHash = tx.txId as string;
-      const externalBlockId = tx.blockId as string;
-      const externalBlockHeight = await api.system.getBlockNumber(externalBlockId, adapter.api);
+      const externalHash =
+        [tx.externalHash, tx.txId].find((value) => typeof value === 'string' && value.trim())?.trim() ?? '';
+      const externalBlockId =
+        [tx.externalBlockId, tx.blockId].find((value) => typeof value === 'string' && value.trim())?.trim() ?? '';
+
+      if (!(externalHash && externalBlockId)) {
+        throw new Error(`[${this.constructor.name}]: External transaction block data is unavailable`);
+      }
+
+      const savedBlockHeight = Number(tx.externalBlockHeight ?? tx.blockHeight);
+      const externalBlockHeight = Number.isSafeInteger(savedBlockHeight)
+        ? savedBlockHeight
+        : await api.system.getBlockNumber(externalBlockId, adapter.api);
 
       this.updateTransactionParams(id, {
         externalHash,
@@ -196,7 +425,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const blockHash = tx.externalBlockId as string;
     const transactionHash = tx.externalHash as string;
+
+    if (!(blockHash && transactionHash)) {
+      throw new Error(`[${this.constructor.name}]: External transaction block data is unavailable`);
+    }
+
     const transactionEvents = await getTransactionEvents(blockHash, transactionHash, adapter.api);
+
+    if (this.transferType === SubTransferType.Standalone) {
+      this.restoreStandaloneIncomingSourceEvents(id, transactionEvents, adapter);
+    }
 
     const feeEvent = transactionEvents.find((e) => isTransactionFeePaid(e));
 
@@ -212,6 +450,58 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       if (!xcmEvent?.event?.data?.[0]?.isComplete) {
         throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
       }
+    }
+  }
+
+  /**
+   * Verifies and restores all tracking identifiers from the finalized source
+   * extrinsic. Reading its historical events avoids waiting for live events
+   * that cannot be replayed after a reload.
+   */
+  private restoreStandaloneIncomingSourceEvents(id: string, transactionEvents: any[], adapter: any): void {
+    const tx = this.getTransaction(id);
+    const sentAmount = new FPNumber(tx.amount as string, this.asset.externalDecimals).toCodecString();
+    const burnEventIndex = transactionEvents.findIndex((event) =>
+      isSoraBridgeAppBurned(event, this.asset, tx.to as string, tx.from as string, sentAmount, adapter)
+    );
+
+    if (burnEventIndex === -1) {
+      throw new Error(SubBridgeReconciliationErrorCode.SourceEventsIncomplete);
+    }
+
+    const burnEvent = transactionEvents[burnEventIndex];
+    let hash = '';
+    let batchNonce: number | undefined;
+    let messageNonce: number | undefined;
+
+    try {
+      hash = getSoraBridgeProviderHash(transactionEvents);
+    } catch {
+      // Some runtimes expose only the accepted message nonces. The live SORA
+      // watcher can still discover the request hash from those coordinates.
+    }
+
+    try {
+      // Liberland emits MessageAccepted before Burned in the same extrinsic.
+      // Searching only from the Burned event forward loses the nonces during
+      // recovery, even though the source burn and SORA request both succeeded.
+      [batchNonce, messageNonce] = getMessageAcceptedNonces(transactionEvents);
+    } catch {
+      // A SORA request hash is already sufficient for authoritative storage
+      // reconciliation, so missing auxiliary nonces must not discard it.
+    }
+
+    const hasMessageCoordinates = Number.isFinite(batchNonce) && Number.isFinite(messageNonce);
+
+    if (!hash && !hasMessageCoordinates) {
+      throw new Error(SubBridgeReconciliationErrorCode.SourceEventsIncomplete);
+    }
+    const amount2 = FPNumber.fromCodecValue(burnEvent.event.data[4].toString(), this.asset.externalDecimals).toString();
+
+    this.updateTransactionParams(id, { ...(hash ? { hash } : {}), amount2 });
+
+    if (hasMessageCoordinates) {
+      this.updateTransactionPayload(id, { batchNonce, messageNonce });
     }
   }
 
@@ -243,7 +533,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const sender = tx.to as string;
     const recipient = tx.from as string;
 
-    let subscription!: Subscription;
+    let subscription: Subscription | undefined;
     let messageNonce!: number;
     let batchNonce!: number;
     let recipientAmount!: string;
@@ -256,8 +546,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         const eventsObservable = api.system.getEventsObservable(adapter.apiRx);
         const blockNumberObservable = api.system.getBlockNumberObservable(adapter.apiRx);
 
-        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
-          ([eventsVec, blockHeight]) => {
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe({
+          next: ([eventsVec, blockHeight]) => {
             try {
               if (blockHeight > startBlockHeight + 10) {
                 throw new Error(
@@ -299,11 +589,12 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             } catch (error) {
               reject(error);
             }
-          }
-        );
+          },
+          error: reject,
+        });
       });
     } finally {
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
 
       if (!isFirstStep) {
         // run non blocking process promise
@@ -337,7 +628,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     if (!Number.isFinite(tx.payload?.messageNonce))
       throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
-    let subscription!: Subscription;
+    let subscription: Subscription | undefined;
     let soraHash!: string;
     let amount!: string;
     let eventIndex!: number;
@@ -346,29 +637,32 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = api.system.getEventsObservable(subBridgeApi.apiRx);
 
-        subscription = eventsObservable.subscribe((eventsVec) => {
-          try {
-            const events = [...eventsVec.toArray()].reverse();
-            const substrateDispatchEventIndex = events.findIndex((e) =>
-              isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e)
-            );
+        subscription = eventsObservable.subscribe({
+          next: (eventsVec) => {
+            try {
+              const events = [...eventsVec.toArray()].reverse();
+              const substrateDispatchEventIndex = events.findIndex((e) =>
+                isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e)
+              );
 
-            if (substrateDispatchEventIndex === -1) return;
+              if (substrateDispatchEventIndex === -1) return;
 
-            const foundedEvents = events.slice(substrateDispatchEventIndex);
+              const foundedEvents = events.slice(substrateDispatchEventIndex);
 
-            soraHash = getBridgeProxyHash(foundedEvents);
+              soraHash = getBridgeProxyHash(foundedEvents);
 
-            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.from as string, subBridgeApi);
+              [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.from as string, subBridgeApi);
 
-            resolve();
-          } catch (error) {
-            reject(error);
-          }
+              resolve();
+            } catch (error) {
+              reject(error);
+            }
+          },
+          error: reject,
         });
       });
     } finally {
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
     }
 
     const amount2 = FPNumber.fromCodecValue(amount, this.asset.decimals).toString();
@@ -384,29 +678,128 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       throw new Error(`[${this.constructor.name}] Lost transaction params`);
     }
 
-    let subscription!: Subscription;
-    let soraBlockNumber!: number;
+    let subscription: Subscription | undefined;
+    const reconciliation = await this.reconcileSoraRequest(from, externalNetwork, hash);
+    let soraBlockNumber = this.getCompletedSoraBlock(id, reconciliation);
 
-    try {
-      await new Promise<void>((resolve) => {
-        subscription = subBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash).subscribe((data) => {
-          if (data?.endBlock) {
-            soraBlockNumber = data.endBlock;
-            resolve();
-          }
+    if (soraBlockNumber === null) {
+      const transactionDetailsObservable = subBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash);
+
+      if (!transactionDetailsObservable) {
+        throw new Error(`[${this.constructor.name}]: Unable to observe SORA bridge transaction details`);
+      }
+
+      try {
+        await new Promise<void>((resolve, reject) => {
+          let settled = false;
+          let reconciliationQueue = Promise.resolve();
+
+          const rejectOnce = (error: unknown): void => {
+            if (settled) return;
+
+            settled = true;
+            reject(error instanceof TimeoutError ? new Error(SubBridgeReconciliationErrorCode.TrackingTimeout) : error);
+          };
+
+          subscription = transactionDetailsObservable.pipe(timeout(SORA_BRIDGE_DETAILS_TIMEOUT_MS)).subscribe({
+            next: (data) => {
+              if (!data || settled) return;
+
+              reconciliationQueue = reconciliationQueue
+                .then(async () => {
+                  if (settled) return;
+
+                  const nextReconciliation = await this.reconcileSoraRequest(from, externalNetwork, hash, data);
+
+                  if (settled) return;
+
+                  const completedBlock = this.getCompletedSoraBlock(id, nextReconciliation);
+
+                  if (completedBlock === null) return;
+
+                  settled = true;
+                  soraBlockNumber = completedBlock;
+                  resolve();
+                })
+                .catch(rejectOnce);
+            },
+            error: rejectOnce,
+            complete: () => {
+              void reconciliationQueue.then(() => {
+                if (!settled) rejectOnce(new Error(SubBridgeReconciliationErrorCode.TrackingTimeout));
+              });
+            },
+          });
         });
-      });
-    } finally {
-      subscription.unsubscribe();
+      } finally {
+        subscription?.unsubscribe();
+      }
     }
 
-    const soraBlockHash = await api.system.getBlockHash(soraBlockNumber, subBridgeApi.api);
+    const finalizedSoraBlockNumber = Number(soraBlockNumber);
+
+    if (!Number.isSafeInteger(finalizedSoraBlockNumber) || finalizedSoraBlockNumber <= 0) {
+      throw new Error(SubBridgeReconciliationErrorCode.InvalidEndBlock);
+    }
+
+    const soraBlockHash = await api.system.getBlockHash(finalizedSoraBlockNumber, subBridgeApi.api);
 
     this.updateTransactionParams(id, {
       txId: '',
       blockId: soraBlockHash,
-      blockHeight: soraBlockNumber,
+      blockHeight: finalizedSoraBlockNumber,
     });
+  }
+
+  /** Bounds every direct SORA storage lookup so a stalled RPC cannot leave recovery permanently in progress. */
+  private async reconcileSoraRequest(
+    accountAddress: string,
+    externalNetwork: SubNetwork,
+    hash: string,
+    fallbackTransaction?: SubBridgeRequestReconciliation['transaction']
+  ): Promise<Nullable<SubBridgeRequestReconciliation>> {
+    try {
+      return await firstValueFrom(
+        from(reconcileSubBridgeRequest(accountAddress, externalNetwork, hash, fallbackTransaction)).pipe(
+          timeout(SORA_BRIDGE_DETAILS_TIMEOUT_MS)
+        )
+      );
+    } catch (error) {
+      if (error instanceof TimeoutError) {
+        throw new Error(SubBridgeReconciliationErrorCode.TrackingTimeout);
+      }
+
+      throw error;
+    }
+  }
+
+  /**
+   * Returns the SORA completion block only for an authoritative Done request.
+   * Failed and Refunded requests stop recovery with guidance that never asks
+   * the user to repeat the source burn.
+   */
+  private getCompletedSoraBlock(
+    id: string,
+    reconciliation: Nullable<SubBridgeRequestReconciliation>
+  ): Nullable<number> {
+    if (!reconciliation) return null;
+
+    if (isSubBridgeTerminalFailureStatus(reconciliation.status)) {
+      this.updateTransactionPayload(id, { bridgeRecoveryStatus: reconciliation.status });
+      throw new Error(getSubBridgeFailureCode(reconciliation.status));
+    }
+
+    if (reconciliation.status !== SubBridgeAuthoritativeStatus.Done) return null;
+
+    const blockHeight = reconciliation.endBlock;
+
+    if (blockHeight === null || !Number.isSafeInteger(blockHeight) || blockHeight <= 0) {
+      throw new Error(SubBridgeReconciliationErrorCode.InvalidEndBlock);
+    }
+
+    this.updateTransactionPayload(id, { bridgeRecoveryStatus: reconciliation.status });
+
+    return blockHeight;
   }
 }
 
@@ -422,7 +815,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           handler: async (id: string) => {
             try {
               this.beforeSubmit(id);
-              this.initConnector(id);
+              await this.initConnector(id);
               this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
               await this.checkTxId(id);
@@ -434,7 +827,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               await this.onComplete(id);
             } finally {
-              this.closeConnector();
+              await this.closeConnector();
             }
           },
         });
@@ -506,7 +899,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     if (!Number.isFinite(tx.payload?.messageNonce))
       throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
-    let subscription!: Subscription;
+    let subscription: Subscription | undefined;
     let messageHash!: string;
     let blockNumber!: number;
     let amountReceived!: string;
@@ -524,8 +917,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         const eventsObservable = api.system.getEventsObservable(adapter.apiRx);
         const blockNumberObservable = api.system.getBlockNumberObservable(adapter.apiRx);
 
-        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
-          ([eventsVec, blockHeight]) => {
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe({
+          next: ([eventsVec, blockHeight]) => {
             try {
               const events = [...eventsVec.toArray()].reverse();
               const substrateDispatchEventIndex = events.findIndex((e) =>
@@ -553,11 +946,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             } catch (error) {
               reject(error);
             }
-          }
-        );
+          },
+          error: reject,
+        });
       });
     } finally {
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
 
       const updateBlockData = () =>
         this.getHashesByBlockNumber(blockNumber, adapter.apiRx)
@@ -593,7 +987,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (!messageHash) throw new Error(`[${this.constructor.name}]: Transaction payload messageHash cannot be empty`);
 
-    let subscription!: Subscription;
+    let subscription: Subscription | undefined;
     let blockNumber!: number;
     let amount!: string;
     let externalEventIndex!: number;
@@ -607,8 +1001,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         const eventsObservable = api.system.getEventsObservable(adapter.apiRx);
         const blockNumberObservable = api.system.getBlockNumberObservable(adapter.apiRx);
 
-        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
-          ([eventsVec, blockHeight]) => {
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe({
+          next: ([eventsVec, blockHeight]) => {
             // when received message is equal to sended
             let isReliableMessage = false;
 
@@ -640,11 +1034,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                 reject(error);
               }
             }
-          }
-        );
+          },
+          error: reject,
+        });
       });
     } finally {
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
 
       // run blocking process promise
       await this.getHashesByBlockNumber(blockNumber, adapter.apiRx)

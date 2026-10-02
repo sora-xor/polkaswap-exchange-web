@@ -1,211 +1,115 @@
 <template>
-  <div v-if="adsArray.length" class="marketing s-flex">
-    <span v-if="hasMultipleAds" v-button class="marketing-prev" @click="prev">
+  <nav v-if="currentAd" class="marketing s-flex" :aria-label="t('ux.announcements.label')">
+    <button
+      v-if="hasMultipleAds"
+      type="button"
+      class="marketing-prev"
+      :aria-label="t('ux.announcements.previous')"
+      @click="move(-1)"
+    >
       <s-icon name="arrows-chevron-left-rounded-24"></s-icon>
-    </span>
-    <transition-group tag="div" class="marketing-slider" :name="transitionName">
-      <template v-for="(ad, index) in adsArray">
-        <div v-if="currentIndex === index" :key="ad.title">
-          <a
-            class="marketing-card"
-            dir="ltr"
-            rel="nofollow noopener"
-            :target="getTarget(ad.link)"
-            :style="getStyles(ad)"
-            :href="getHref(ad.link)"
-          >
-            <span class="marketing-text">
-              {{ ad.title }}
-              <s-icon class="marketing-suffix" name="arrows-arrow-top-right-24" size="16px"></s-icon>
-            </span>
-            <span class="marketing-image"></span>
-          </a>
-        </div>
-      </template>
-    </transition-group>
-    <span v-if="hasMultipleAds" v-button class="marketing-next" @click="next">
+    </button>
+    <a
+      class="marketing-card"
+      dir="ltr"
+      rel="nofollow noopener"
+      :target="isInternalHashHref(currentAd.link) ? '_self' : '_blank'"
+      :href="normalizeHashHref(currentAd.link)"
+    >
+      <span class="marketing-text">{{ currentAd.title }}</span>
+      <s-icon name="arrows-arrow-top-right-24" size="14px"></s-icon>
+    </a>
+    <button
+      v-if="hasMultipleAds"
+      type="button"
+      class="marketing-next"
+      :aria-label="t('ux.announcements.next')"
+      @click="move(1)"
+    >
       <s-icon name="arrows-chevron-right-rounded-24"></s-icon>
-    </span>
-  </div>
+    </button>
+  </nav>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed } from 'vue';
 
+import { useTranslation } from '@/composables/useTranslation';
 import { useSettingsStore } from '@/stores/settings';
 import { isInternalHashHref, normalizeHashHref } from '@/utils/hashHref';
 
 import type { Ad } from '@/stores/settings/types';
 
+/** Quiet, manually browsed announcements retain the configured destinations. */
 const settingsStore = useSettingsStore();
+const { t } = useTranslation();
 const adsArray = computed(() => (Array.isArray(settingsStore.adsArray) ? (settingsStore.adsArray as Ad[]) : []));
 const hasMultipleAds = computed(() => adsArray.value.length > 1);
-
 const currentIndex = ref(0);
-const transitionName = ref<'slide' | 'slideback'>('slide');
-let interval: Nullable<NodeJS.Timeout> = null;
+const currentAd = computed(() =>
+  adsArray.value.length ? adsArray.value[currentIndex.value % adsArray.value.length] : undefined
+);
 
-function getTarget(link: string): '_self' | '_blank' {
-  return isInternalHashHref(link) ? '_self' : '_blank';
+/** Wrap navigation without timers or changes to configured links. */
+function move(direction: number): void {
+  const count = adsArray.value.length;
+  if (!count) return;
+  currentIndex.value = (currentIndex.value + direction + count) % count;
 }
-
-function getHref(link: string): string {
-  return normalizeHashHref(link);
-}
-
-function getStyles(ad: Ad): Record<string, string> {
-  const styles: Record<string, string> = { backgroundImage: `url(${ad.img})` };
-  if (ad.backgroundColor) styles.backgroundColor = ad.backgroundColor;
-  if (ad.right) {
-    styles.backgroundPosition = `right ${ad.right} top`;
-    styles.paddingRight = '24px';
-  }
-  return styles;
-}
-
-function prev(): void {
-  if (!adsArray.value.length) return;
-  transitionName.value = 'slideback';
-  currentIndex.value = currentIndex.value <= 0 ? adsArray.value.length - 1 : currentIndex.value - 1;
-}
-
-function next(): void {
-  if (!adsArray.value.length) return;
-  transitionName.value = 'slide';
-  currentIndex.value = currentIndex.value >= adsArray.value.length - 1 ? 0 : currentIndex.value + 1;
-}
-
-onMounted(() => {
-  interval = setInterval(next, 60_000);
-});
-
-onBeforeUnmount(() => {
-  if (interval) {
-    clearInterval(interval);
-  }
-});
 </script>
 
 <style lang="scss" scoped>
-$marketing-width: 280px;
-$marketing-width-wide: 330px;
-
 .marketing {
-  position: relative;
-  width: $marketing-width;
+  width: clamp(220px, 23vw, 330px);
+  align-items: center;
+  gap: 4px;
+  color: var(--s-color-base-content-secondary);
 
   &-prev,
   &-next {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
+    flex: 0 0 32px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: inherit;
     cursor: pointer;
-    opacity: 0.3;
-
-    > i {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
-      color: var(--s-color-base-on-accent);
-    }
+    transition:
+      color 125ms ease,
+      background-color 125ms ease;
 
     &:hover {
-      opacity: 0.7;
+      color: var(--s-color-base-content-primary);
+      background: var(--s-color-base-background);
     }
-  }
-
-  &-prev {
-    left: 0;
-  }
-
-  &-next {
-    right: 0;
-  }
-
-  &-slider {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: var(--s-size-medium);
-    border-radius: var(--s-border-radius-medium);
   }
 
   &-card {
-    position: absolute;
     display: flex;
-    width: 100%;
-    height: var(--s-size-medium);
-    padding-right: 0;
-    padding-left: 24px;
-    border-radius: var(--s-border-radius-medium);
-    background-color: var(--s-color-theme-accent);
-    background-repeat: no-repeat;
-    background-position: right top;
-    background-size: contain;
-    color: var(--s-color-base-on-accent);
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+    min-height: 36px;
+    padding: 4px;
+    border-radius: 8px;
+    color: inherit;
     text-decoration: none;
-  }
 
-  &-text {
-    flex: 4;
-    align-self: center;
-    color: var(--s-color-base-on-accent);
-    white-space: pre-line;
-    text-transform: uppercase;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.36px;
-  }
-
-  &-suffix {
-    color: var(--s-color-base-on-accent);
-    font-weight: bold;
-
-    :deep(i.s-icon-arrows-arrow-top-right-24) {
-      font-size: 16px !important;
-      line-height: 16px !important;
+    &:hover {
+      color: var(--s-color-base-content-primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
   }
 
-  &-image {
-    flex: 1;
+  &-text {
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 500;
+    overflow-wrap: anywhere;
   }
-
-  @media (min-width: 1220px) {
-    width: $marketing-width-wide;
-  }
-}
-
-.slide-leave-active,
-.slide-enter-active {
-  transition: 1s;
-}
-
-.slide-enter {
-  transform: translate(100%, 0);
-}
-
-.slide-leave-to {
-  transform: translate(-100%, 0);
-}
-
-.slideback-leave-active,
-.slideback-enter-active {
-  transition: 1s;
-}
-
-.slideback-enter {
-  transform: translate(-100%, 0);
-}
-
-.slideback-leave-to {
-  transform: translate(100%, 0);
 }
 </style>

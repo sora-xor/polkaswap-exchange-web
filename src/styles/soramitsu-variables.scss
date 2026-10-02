@@ -59,7 +59,21 @@ $legacy-token-bridges: (
 );
 
 $legacy-static-vars: (
-  '--s-color-brand-day': #a19a9d,
+  '--s-color-brand-day': #6e6168,
+  '--s-color-focus-ring': #ab0555,
+  '--s-color-action-text': #ab0555,
+  // Separate legible control colors from the decorative brand pink.
+  '--s-color-action-fill': #bf065f,
+  '--s-color-action-fill-hover': #ab0555,
+  '--s-color-on-action': #ffffff,
+  '--s-color-action-disabled-fill': #ede4e7,
+  '--s-color-on-action-disabled': #796971,
+  '--s-color-status-success-text': #166e53,
+  '--s-color-status-warning-text': #805700,
+  '--s-color-status-error-text': #ab0555,
+  '--s-color-on-status-fill': #2f0a49,
+  '--s-color-control-border': #796971,
+  '--s-shadow-secondary': '0 2px 6px rgba(42, 23, 31, 0.06)',
   '--s-color-theme-secondary': #44e5b2,
   '--s-color-theme-secondary-hover': #24daa0,
   '--s-color-theme-secondary-pressed': #24daa0,
@@ -72,9 +86,9 @@ $legacy-static-vars: (
   '--s-color-base-border-primary--dark': #693d81,
   '--s-color-base-border-secondary--dark': #693d81,
   '--s-color-base-content-primary--dark': #f0d7dc,
-  '--s-color-base-content-secondary--dark': #c29ab7,
-  '--s-color-base-content-tertiary--dark': #9b6fa5,
-  '--s-color-base-content-quaternary--dark': #9b6fa5,
+  '--s-color-base-content-secondary--dark': #dcc2d4,
+  '--s-color-base-content-tertiary--dark': #ccb0cc,
+  '--s-color-base-content-quaternary--dark': #ccb0cc,
   '--s-color-base-disabled--dark': rgba(57, 16, 87, 0.5),
   '--s-color-base-on-accent--dark': #391057,
   '--s-color-button-tertiary-background': #faf4f8,
@@ -89,7 +103,8 @@ $legacy-static-vars: (
   '--s-color-button-tertiary-background-pressed--dark': #492067,
   '--s-color-button-tertiary-color--dark': #f0d7dc,
   '--s-color-button-tertiary-color-active--dark': #f24197,
-  '--s-shadow-element': '1px 1px 5px #fff, inset -5px -5px 5px rgba(255, 255, 255, 0.5), inset 1px 1px 10px rgba(0, 0, 0, 0.1)',
+  '--s-shadow-element':
+    '1px 1px 5px #fff, inset -5px -5px 5px rgba(255, 255, 255, 0.5), inset 1px 1px 10px rgba(0, 0, 0, 0.1)',
   '--s-shadow-element-pressed':
     '-5px -5px 10px #fff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8)',
   '--s-shadow-dialog':
@@ -129,7 +144,7 @@ $legacy-static-vars: (
   '--s-color-status-warning-background--dark': #eba332,
   '--s-color-status-error-background--dark': #f754a3,
   '--s-color-status-info-background--dark': #479aef,
-  '--s-color-fiat-value': rgba(71, 154, 239, 1),
+  '--s-color-fiat-value': #1f65a4,
   '--s-color-rewards': #c0e2ff,
   '--s-color-theme-accent--dark': #f24197,
   '--s-color-theme-accent-hover--dark': #f754a3,
@@ -213,6 +228,19 @@ $legacy-metrics: (
 );
 
 $legacy-dark-overrides: (
+  '--s-color-focus-ring': #ffa0cc,
+  '--s-color-action-text': #ffa0cc,
+  '--s-color-action-fill': #f24197,
+  '--s-color-action-fill-hover': #f754a3,
+  '--s-color-on-action': #2f0a49,
+  '--s-color-action-disabled-fill': #693d81,
+  '--s-color-on-action-disabled': #ccb0cc,
+  '--s-color-status-success-text': #83dbbe,
+  '--s-color-status-warning-text': #f5c778,
+  '--s-color-status-error-text': #ffa0cc,
+  '--s-color-on-status-fill': #2f0a49,
+  '--s-color-control-border': #ccb0cc,
+  '--s-shadow-secondary': '0 2px 6px rgba(41, 0, 71, 0.16)',
   '--s-color-theme-secondary': #24daa0,
   '--s-color-theme-secondary-hover': #44e5b2,
   '--s-color-theme-secondary-pressed': #44e5b2,
@@ -226,7 +254,7 @@ $legacy-dark-overrides: (
   '--s-color-status-warning-background': #eba332,
   '--s-color-status-error-background': #f754a3,
   '--s-color-status-info-background': #c6e2ff,
-  '--s-color-fiat-value': #479aef,
+  '--s-color-fiat-value': #8ac4ff,
   '--s-color-base-dark-background': #492067,
   '--s-color-base-disabled': rgba(57, 16, 87, 0.5),
   '--s-color-base-on-accent': #391057,
@@ -271,8 +299,8 @@ $polkaswap-light-token-overrides: (
       primary-pressed-background: $accent-pressed-background,
       primary-focused-background: $accent-focused-background,
       content-primary: #2a171f,
-      content-secondary: #a19a9d,
-      content-tertiary: #d5cdd0,
+      content-secondary: #6e6168,
+      content-tertiary: #796971,
       content-quaternary: #75787b,
       border-primary: #f7f3f4,
       border-secondary: #ede4e7,
@@ -298,9 +326,9 @@ $polkaswap-dark-token-overrides: (
       primary-focused: #f754a3,
       content-on-background-inverted: #391057,
       content-primary: #f0d7dc,
-      content-secondary: #c29ab7,
-      content-tertiary: #9b6fa5,
-      content-quaternary: #9b6fa5,
+      content-secondary: #dcc2d4,
+      content-tertiary: #ccb0cc,
+      content-quaternary: #ccb0cc,
       border-primary: #693d81,
       border-secondary: #693d81,
       disabled: #5d2f73,
@@ -390,8 +418,9 @@ $wallet-dark-token-overrides: (
 }
 
 html[lang='ur'] {
-  --s-font-family-default: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', 'Jameel Noori Nastaleeq', 'Nafees Nastaleeq',
-    'Segoe UI', Tahoma, Sora, sans-serif;
+  --s-font-family-default:
+    'Noto Nastaliq Urdu', 'Noto Naskh Arabic', 'Jameel Noori Nastaleeq', 'Nafees Nastaleeq', 'Segoe UI', Tahoma, Sora,
+    sans-serif;
   --s-font-family-mono: var(--s-font-family-default);
 }
 

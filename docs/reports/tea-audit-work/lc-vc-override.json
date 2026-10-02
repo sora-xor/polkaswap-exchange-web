@@ -1,0 +1,76 @@
+[
+  {
+    "code": "LC",
+    "name": "Saint Lucia",
+    "status": "not_verified",
+    "rule": "Saint Lucia’s current Revised Laws 2023, Plant Protection Regulations Schedule 3, expressly prohibits tea (Thea sinensis / Camellia spp.) parts other than vegetative propagation material and seed from all countries. The same schedule expressly exempts some processed commodities, including roasted coffee and milled rice; it gives no processed-tea exception. Applying the tea-leaf row to steamed/dried loose-leaf sencha is an explicit scope inference. The Act’s pest-capability definition and a 2010 project report’s discussion of cooked foods remain interpretation caveats, not verified sencha exemptions.",
+    "personalMailApplicability": "Act section 4 and regulation 12 expressly apply the plant rules to mail. No small personal-post exception to the tea schedule was found. Ordinary customs declaration and inspection do not remove a Schedule 3 restriction.",
+    "quantityLimit": null,
+    "authority": "Saint Lucia Attorney General and Plant Quarantine",
+    "evidenceUrls": [
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/schedule-3-01",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-7-01",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-2",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-12",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-16-01",
+      "https://www.govt.lc/media.govt.lc/www/resources/legislation/PlantProtectionAct.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/lc3-1995-66cons1995-71pqreg.pdf",
+      "https://caribbeaninvasives.org/wp-content/uploads/2012/09/NISS-Pathways-final-2010.pdf"
+    ],
+    "remainingQuestion": "To reverse this conservative exclusion, the NPPO would need a published determination that commercially steamed/dried Camellia leaves fall outside the Schedule 3 tea-parts prohibition and applicable permit/certificate controls. The existing cooking discussion does not identify sencha or override the specific schedule.",
+    "researchAttempts": [
+      "Read the Plant Protection Act product definition and regulations 12 (mail) and 16 (permit). The pest-carrying threshold leaves heat-processed retail tea classification unresolved.",
+      "Read the Attorney General’s current Revised Laws 2023 Schedule 3 tea row directly, and compared its express roasted-coffee and milled/polished/parboiled-rice exceptions. Verified the matching tea row on printed page 320 of the original regulations hosted by Germany’s NPPO. This is tea-specific adverse evidence, not a generic assumption about all plant products.",
+      "Read current regulation 7(5): processed fruits and vegetables made innocuous as pest carriers are enterable only if not otherwise prohibited, particularly by Schedule 3. Read regulation 17 linking the schedule to pest-risk crops, and mail regulation 12. The official 2005 consolidated PDF has placeholders instead of much of Schedule 3, so the current AG HTML and original SI text supply the tea row.",
+      "Read Saint Lucia National Invasive Species Strategy—Pathways (Guy Mathurin, September 2010), printed page 20: dried herbs are treated as minimally processed with required permits, whereas cooking/canning/pickling/baking can remove plant-health inspection. It does not establish which category steamed-and-dried sencha occupies and is not a commodity-specific legal exemption. Retained this limitation alongside the exact current tea schedule.",
+      "Targeted current ministry, Attorney General, tea/processed-food and personal-post searches found no published manufactured-tea or small-parcel override. Corrected the broken definition URL ending section-2-02 to section-2."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "Exclude from the no-special-document route on a conservative, explicit inference that intact steamed/dried tea leaves remain tea parts under the current Schedule 3 row. That row prohibits non-propagative tea parts from all countries, and regulation 7(5) preserves Schedule 3 restrictions despite food processing. This is not a claim that the NPPO has specifically ruled on packaged sencha: the Act’s pest-capability definition and the 2010 discussion of cooked foods are recorded caveats, but no published sencha exemption was established.",
+    "permitFreeSources": [
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/schedule-3-01",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-7-01",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-2",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-12",
+      "https://attorneygeneralchambers.com/laws-of-saint-lucia/plant-protection-act/section-16-01",
+      "https://www.govt.lc/media.govt.lc/www/resources/legislation/PlantProtectionAct.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/lc3-1995-66cons1995-71pqreg.pdf",
+      "https://caribbeaninvasives.org/wp-content/uploads/2012/09/NISS-Pathways-final-2010.pdf"
+    ],
+    "paperworkType": "Specific commodity restriction; manufactured-leaf scope inferred. Not a routine declaration issue.",
+    "requiredDocument": "No no-document entry route established for tea leaves under Schedule 3; no claim that obtaining a routine permit would override its prohibition.",
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "VC",
+    "name": "Saint Vincent",
+    "status": "not_verified",
+    "rule": "The linked Plant Protection Act is Act No. 16 of 2005 (assented 25 October 2005), not 2015. Section 2 includes manufactured products only where their nature or processing may create a pest-introduction/spread risk. Sections 10–11 provide import-permit and phytosanitary-document controls for designated articles; section 15 expressly covers postal interception. Ministry guidance includes personal-use plant material but does not classify finished sencha.",
+    "personalMailApplicability": "Section 15 expressly covers the Postal Corporation and private postal operators. The ministry’s September 2019 guidance includes personal-use plant parts in permit controls. Neither establishes whether sealed steamed/dried sencha is a regulated manufactured product, nor a small personal-post waiver.",
+    "quantityLimit": null,
+    "authority": "St Vincent and the Grenadines Plant Protection and Quarantine",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/stv160536.pdf",
+      "https://importlicensing.wto.org/content/plant-and-plant-products-2",
+      "https://agriculture.gov.vc/agriculture/images/stories/AgricInfo/Agrinfo_September_2019.pdf"
+    ],
+    "remainingQuestion": "Need the NPPO’s current risk classification and applicable section 10 controls for commercially steamed/dried Camellia leaves, or a published processed-food/personal-post exemption. General permit guidance does not answer the manufactured-product threshold in section 2.",
+    "researchAttempts": [
+      "Read the original Act PDF, including cover and section 1 confirming Act No. 16 of 2005, assented 25 October 2005. Corrected the previous 2015 citation. Section 2 defines plants as living plants, and manufactured plant products by potential pest risk; sections 10(2), 11 and 15 supply designation, permit and postal provisions.",
+      "Read the ministry’s AgriC Info September 2019, PDF page 14 (General Plant Quarantine Import Requirements), using OCR of the official PDF image. It requires permits for personal-use plant parts and plant products for processing/other purposes, with phytosanitary certification for the regulated consignment. It supplies no manufactured-tea or small personal-mail exception.",
+      "Rechecked the government-notified WTO import-licensing guidance and targeted official processed-food, tea and personal-import searches. No public commodity specification resolved whether finished sencha meets the Act’s manufactured-product risk threshold; kept unresolved rather than extending general plant guidance automatically."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need the NPPO’s current risk classification and applicable section 10 controls for commercially steamed/dried Camellia leaves, or a published processed-food/personal-post exemption. General permit guidance does not answer the manufactured-product threshold in section 2.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/stv160536.pdf",
+      "https://importlicensing.wto.org/content/plant-and-plant-products-2",
+      "https://agriculture.gov.vc/agriculture/images/stories/AgricInfo/Agrinfo_September_2019.pdf"
+    ],
+    "paperworkType": "Import permit and phytosanitary certificate if classified as regulated manufactured plant product.",
+    "requiredDocument": "Not determined for manufactured sencha; general controls require NPPO import permit and origin phytosanitary certificate. Postal reporting by carriers is separate ordinary clearance machinery.",
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

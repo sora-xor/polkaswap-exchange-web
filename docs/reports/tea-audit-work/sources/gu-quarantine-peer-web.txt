@@ -1,0 +1,469 @@
+Retrieved 2026-09-30 for independent scope peer review.
+
+F:\GAR2000\8gar10.96a.RTF (https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf)
+citeturn1690view0 [wordlim: 200] Crawled: last year; Content type: application/pdf; Number of pages: 13; Source: open({"ref_id":"turn1674view0","lineno":null}); Total lines: 535
+L0@P0: 8 GAR - FOOD AND AGRICULTURE
+L1@P0: DIV. 2 - PLANT INDUSTRY
+L2@P0: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 1
+L3@P0: DIVISION 2
+L4@P0: PLANT INDUSTRY
+L5@P0: (Department of Agriculture)
+L6@P0: Chapter 10. Importation of Plants and Plant Products.
+L7@P0: 11. Egg Shell Law Regulations.
+L8@P0: 12. Compensation to Farmers for Crop Damages.
+L9@P0: CHAPTER 10
+L10@P0: IMPORTATION OF PLANTS AND PLANT PRODUCTS
+L11@P0: §10100. Definition of Terms.
+L12@P0: §10101. Import Permits.
+L13@P0: §10102. Certificates.
+L14@P0: §10103. General Shipping Requirements.
+L15@P0: §10104. Plant Material Subject to Inspection and Disposal.
+L16@P0: §10105. Living Insects and Plant Diseases.
+L17@P0: §10106. European Corn Borer - Ostrinia Nubilalis.
+L18@P0: §10107. Citrus Virus Diseases.
+L19@P0: §10108. Oriental Fruit Fly - Dacus Dorsalis.
+L20@P0: §10109. Mediterranean Fruit Fly - Ceratitis Capitata.
+L21@P0: §10110. Mexican Fruit Fly - Anastrapha Ludens.
+L22@P0: §10111. Diseases and Insects of Onions.
+L23@P0: §10112. Coconut Disease and Insects.
+L24@P0: §10113. Banana Diseases and Insects.
+L25@P0: §10114. Sweet Potato Insects and Diseases.
+L26@P0: §10115. Taro for Planting and Propagation.
+L27@P0: §10116. Queensland Fruit Fly - Dacu Tryoni.
+L28@P0: §10117. Melonfly - Dacus Cucurbitae.
+L29@P0: §10118. Packing Materials.
+L30@P0: §10119. Construction Materials.
+L31@P0: §10120. Stored Dried Products.
+L32@P0: §10121. Enterable Fruits and Vegetables.
+L33@P0: §10122. Exceptions.
+L34@P0: §10123. Unlawful Acts.
+L35@P0: §10124. Penalties.
+L36@P0: NOTE: Rule-making authority cited for formulation of quarantine
+L37@P0: regulations on the importation of plants and plant products by the
+L38@P0: Department of Agriculture, 5 GCA §60108 and §61102.
+L39@P0: The original publication was made on February 15, 1975.
+L40@P0: §10100. Definitions of Terms. The following terms as
+L41@P0: used herein, except where the context otherwise
+L42@P0: requires, shall include both the singular and the plural
+L43@P0: and shall be construed, respectively, to mean:
+L44@P0: (a) Director - The Director of the Department of
+L45@P0-1: Agriculture, government of Government of Guam.8 GAR FOOD AND AGRICULTURE
+L46@P1: DIV. 2 - PLANT INDUSTRY
+L47@P1: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 2
+L48@P1: (b) Person - Any person, association, organization,
+L49@P1: partnership business trust, government agency or
+L50@P1: corporation.
+L51@P1: (c) Inspector or Agent - Government employee
+L52@P1: authorized by the Director to carry out any power
+L53@P1: granted by this title.
+L54@P1: (d) Host - Plant or animal or part thereof, soil,
+L55@P1: container, vehicles or other article known or suspected
+L56@P1: to be infested or contaminated with agricultural pests.
+L57@P1: (e) Crop - Plant and plant products collectively
+L58@P1: grown or cared for and used for food and other useful
+L59@P1: purposes.
+L60@P1: (f) Plant - All plants and plant parts, including
+L61@P1: fresh fruits and seeds.
+L62@P1: (g) Plant Products - Products of plant origin which
+L63@P1: have not been processed or which have only been
+L64@P1: processed to a minor extent.
+L65@P1: (h) Nursery Stock - Any plant for plant
+L66@P1: propagation or ornamentation.
+L67@P1: (i) Infested - Actually infested or infected with a
+L68@P1: pest or so exposed to infestation exists.
+L69@P1: (j) Pest - Any insect, fungus, bacteria or virus
+L70@P1: disease, nematode, parasitic plant or any other
+L71@P1: organism or thing injurious to plants or plant products
+L72@P1: including any stage of development of such organism
+L73@P1: or thing.
+L74@P1: (k) Regulated Article - Any plant pest or host
+L75@P1: designated as such by this regulation.
+L76@P1: §10101. Import Permits. Import permits are
+L77@P1: required for the importation of regulated articles.
+L78@P1: Persons interested in the importation of plants and
+L79@P1: plant products into the territory of Guam should
+L80@P1: contact: The Director, Department of Agriculture,
+L81@P1-2: Agana, Guam 96910.8 GAR - FOOD AND AGRICULTURE
+L82@P2: DIV. 2 - PLANT INDUSTRY
+L83@P2: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 3
+L84@P2: §10100.2. Certificates. (a) Phytosanitary
+L85@P2: certificates are required for the importation of:
+L86@P2: (1) Rooted plants and seedlings.
+L87@P2: (2) Cuttings and grafts of woody plants,
+L88@P2: ornamental plants and other horticultural plants.
+L89@P2: (3) Cut flowers.
+L90@P2: (4) Flower bulbs, corms, tubers rhizomes and
+L91@P2: other vegetative plant propagating materials.
+L92@P2: (5) Fresh fruits of regulated plants.
+L93@P2: (6) Seeds meant for propagation purposes.
+L94@P2: (7) Soil.
+L95@P2: (b) Phytosanitary certificates must have been
+L96@P2: issued by the Plant Protection Service of the country of
+L97@P2: origin of the plants.
+L98@P2: (c) The certificate must have been issued not more
+L99@P2: than fourteen (14) days before dispatch of the
+L100@P2: consignment and must be made up in the English
+L101@P2: language.
+L102@P2: (d) If the country from which a consignment is
+L103@P2: imported into the territory of Guam is not the country
+L104@P2: of origin, the consignment shall be accompanied by a
+L105@P2: phytosanitary certificate of the country of origin or an
+L106@P2: authenticated copy thereof, together with a declaration
+L107@P2: of re-export, issued by the country from where it was
+L108@P2: last dispatched; in case of importation of fruits the
+L109@P2: certificate may also have been issued by the country
+L110@P2: from which the consignment was last dispatched.
+L111@P2: §10103. General Shipping Requirements. Each
+L112@P2: shipment of plants into the territory of Guam must be
+L113@P2: marked to show name and address of shipper or
+L114@P2: owner, name of consignee, contents and the state and
+L115@P2: country where contents were grown. Any person
+L116@P2: transporting, receiving or importing into the territory
+L117@P2: of Guam any plants, plant products or soil, must have
+L118@P2-3: an import permit.8 GAR FOOD AND AGRICULTURE
+L119@P3: DIV. 2 - PLANT INDUSTRY
+L120@P3: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 4
+L121@P3: At the port of entry all shipments of plants will be
+L122@P3: examined and if the shipments are found infested with
+L123@P3: any pest liable to be detrimental to agriculture, the
+L124@P3: shipments will be destroyed, treated or processed at
+L125@P3: owner's expense. All plants shipped into the territory
+L126@P3: of Guam must be free of soil.
+L127@P3: §10104. Plant Material Subject to Inspection and
+L128@P3: Disposal. All florist's stock, trees, shrubs, vines,
+L129@P3: cuttings, grafts, scions, buds, fruits and seeds of fruit,
+L130@P3: forest and ornamental trees or shrubs and other plants
+L131@P3: and plant products in the raw or unmanufactured
+L132@P3: state, are subject to inspection upon arrival in Guam.
+L133@P3: §10105. Living Insects and Plant Diseases. It is
+L134@P3: prohibited to ship or transport any live insects, plant
+L135@P3: pathogenic agents and all other plant pests into the
+L136@P3: territory of Guam, unless such shipment or
+L137@P3: transportation is authorized prior to shipment under
+L138@P3: written permit and regulations of the Director of
+L139@P3: Agriculture, government of Guam or United States
+L140@P3: Department of Agriculture. Any unauthorized
+L141@P3: shipment shall be destroyed immediately unless it is
+L142@P3: determined by the inspecting officer that the nature of
+L143@P3: the contents is such that no damage can be caused to
+L144@P3: agriculture in the territory of Guam.
+L145@P3: §10106. European Corn Borer - Ostrinia
+L146@P3: Nubilalis. (a) Regulated Products. Corn, broomcorn,
+L147@P3: sorghums and Sudangrass plants and all parts thereof,
+L148@P3: including seed and shelled grain; stalks, ears, cobs,
+L149@P3: fragments and debris; beans in the pod beets; celery;
+L150@P3: peppers (fruit); endive; Swiss chard, rhubarb (cut or
+L151@P3: plants with roots); cut flowers and entire plants of
+L152@P3: aster, chrysanthemum, calendula, cosmos, hollyhock,
+L153@P3: marigold, zinnia, Japanese hop, dahlia (except tubers
+L154@P3: without stem), and gladiolus (except corms without
+L155@P3: stems).
+L156@P3: (b) Infested Area. Entire States of Alabama,
+L157@P3: Arkansas, Colorado, Connecticut, Delaware, Georgia,
+L158@P3: Illinois, Iowa, Indiana Kansas, Kentucky, Louisiana,
+L159@P3: Maine, Maryland, Massachusetts, Michigan,
+L160@P3: Minnesota, Mississippi, Missouri, Montana, Nebraska,
+L161@P3: New Hampshire, New Jersey, New York, North
+L162@P3: Carolina, North Dakota, Ohio, Oklahoma,
+L163@P3-4: Pennsylvania, Rhode Island, South Carolina, South8 GAR - FOOD AND AGRICULTURE
+L164@P4: DIV. 2 - PLANT INDUSTRY
+L165@P4: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 5
+L166@P4: Dakota, Tennessee, Vermont, Virginia, Wisconsin,
+L167@P4: Wyoming, and the District of Columbia. Countries
+L168@P4: include Canada, Guatemala, all countries in Europe
+L169@P4: and Asia, and Egypt in Africa.
+L170@P4: (c) Shipping Requirements. Regulated products
+L171@P4: must be certified as meeting the following
+L172@P4: requirements:
+L173@P4: (1) Shelled grain and seeds of corn, broomcorn,
+L174@P4: sorghums and Sudangrass grown in or shipped from
+L175@P4: the infested area must be free from plant fragments
+L176@P4: capable of harboring larvae of the borer; or must have
+L177@P4: been fumigated in a manner approved by the Director
+L178@P4: of Agriculture, government of Guam, or the U.S.
+L179@P4: Department of Agriculture. Fumigation certificates
+L180@P4: must include the date, dosage schedule and kind of
+L181@P4: fumigant used; otherwise the grain will be subject to
+L182@P4: inspection and possible rejection upon arrival.
+L183@P4: (2) Shelled grain or seed grown in and shipped
+L184@P4: from states or countries under quarantine but not in
+L185@P4: the infested area must be accompanied by state or
+L186@P4: country of origin certificates affirming that it was
+L187@P4: produced in a state or country where European corn
+L188@P4: borer is not known to exist and that its identity has
+L189@P4: been maintained to eliminate risk of contamination
+L190@P4: with regulated products from the infested area.
+L191@P4: Certificates must show the kind and quantity of
+L192@P4: commodity, and the name and address of the shipper
+L193@P4: or consignee.
+L194@P4: Certification is waived for shelled popcorn, seed
+L195@P4: for planting, and on individual shipments of one
+L196@P4: hundred (100) pounds or less, or comprised of
+L197@P4: packages of less than ten (10) pounds, subject to
+L198@P4: inspection and freedom from portions of plants
+L199@P4: capable of harboring the corn borer. Uncertified
+L200@P4: shipments, or certified shipments found to be
+L201@P4: contaminated with portions of plants capable of
+L202@P4: harboring the corn borer, are deemed to be in violation
+L203@P4: of these Regulations.
+L204@P4: (3) Stalks, ears, cobs or other parts of corn,
+L205@P4: broomcorn, sorghums and Sudangrass, as such or as
+L206@P4: packing or otherwise, from the infested area must
+L207@P4-5: have been sterilized or disinfected in a manner8 GAR FOOD AND AGRICULTURE
+L208@P5: DIV. 2 - PLANT INDUSTRY
+L209@P5: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 6
+L210@P5: approved by the Department of Agriculture,
+L211@P5: government of Guam or U.S. Department of
+L212@P5: Agriculture. Certification must show the date and full
+L213@P5: particulars of treatment given.
+L214@P5: (4) Stalks, ears, cobs or other parts of corn,
+L215@P5: broomcorn, sorghums and Sudangrass grown in and
+L216@P5: shipped from states or countries under quarantine but
+L217@P5: not in the infested area must be accompanied by state
+L218@P5: or country of origin certificates affirming that they
+L219@P5: were produced in a state or country where European
+L220@P5: corn borer is not known to exist and that their identity
+L221@P5: has been maintained to eliminate risk of
+L222@P5: contamination, during handling or storage, with
+L223@P5: regulated products from the infested area.
+L224@P5: (5) Vegetable and ornamental plants and plant
+L225@P5: products, beans in the pod; beets; celery; peppers
+L226@P5: (fruits); endive; Swiss chard; rhubarb (cut or plants
+L227@P5: with roots); cut flowers and entire plants of aster,
+L228@P5: chrysanthemum, calendula, cosmos, hollyhock,
+L229@P5: marigold, zinnia, Japanese hop, dahlia (except tubers
+L230@P5: without stems) and gladiolus (except corms without
+L231@P5: stems) produced in or shipped from the infested area
+L232@P5: must be accompanied by state or country of origin or
+L233@P5: U.S. Department of Agriculture certificates affirming
+L234@P5: that they were inspected, or that the greenhouse or
+L235@P5: growing grounds where they were produced were
+L236@P5: inspected and found free of European corn borer; or
+L237@P5: that they were fumigated in a manner approved by
+L238@P5: the Director of Agriculture, government of Guam or
+L239@P5: U.S. Department of Agriculture. Fumigation
+L240@P5: certificates must show the date and method of
+L241@P5: treatment. These special restrictions on the movement
+L242@P5: into the territory of Guam of the above regulated
+L243@P5: plants, plant products or cut flowers do not apply
+L244@P5: when produced in and shipped from any state or
+L245@P5: country not in the infested area.
+L246@P5: (d) Manufactured or Processed Products.
+L247@P5: Regulated products are exempt from the restrictions of
+L248@P5: the quarantine when so processed or manufactured as
+L249@P5: to eliminate infestation by the borer.
+L250@P5: §10107. Citrus Virus Diseases. Shipment into the
+L251@P5: territory of Guam of any and all kinds of citrus trees
+L252@P5-6: and parts thereof, including budwood and scions (but8 GAR - FOOD AND AGRICULTURE
+L253@P6: DIV. 2 - PLANT INDUSTRY
+L254@P6: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 7
+L255@P6: not seed) is prohibited, except that citrus nursery stock
+L256@P6: accompanied by an inspection certificate may be
+L257@P6: admitted when shipped from Washington, D.C. by the
+L258@P6: Agricultural Research Service, United States
+L259@P6: Department of Agriculture. This Regulation does not
+L260@P6: apply to citrus fruits.
+L261@P6: §10108. Oriental Fruit Fly - Dacus Dorsalis. (a)
+L262@P6: Infested Areas. Hawaii, Bonin Islands, Burma,
+L263@P6: Ceylon, India, Indonesia, Malaysia, Ryukyu Islands,
+L264@P6: Okinawa, Pakistan, Philippines, Thailand and Taiwan.
+L265@P6: (b) Hosts. Tomatoes, mangosteen, guava,
+L266@P6: Averrhoa carambola, Cananga odorata, Eugenia sp.,
+L267@P6: mangoes, pineapple, bell pepper, citrus fruits,
+L268@P6: bananas, green peppers, grapes, ponalog, avocado,
+L269@P6: papaya, figs, persimmons, loguats, bananas, Solanum
+L270@P6: sp., Carcinia sp. All fruits listed above and other fruits
+L271@P6: reported as hosts of oriental fruit fly are prohibited
+L272@P6: entry into the territory of Guam from the infested
+L273@P6: countries.
+L274@P6: §10109. Mediterranean Fruit Fly - Ceratitis
+L275@P6: Capitata. Mediterranean fruit fly infested areas are
+L276@P6: Europe, Mediterranean, Azores, Africa, Balearic
+L277@P6: Islands, Canary Islands, Bermuda, Seychelles, St.
+L278@P6: Helena, Central and South America, Mauritius,
+L279@P6: Western Australia and Hawaii. All fruits and
+L280@P6: vegetables except noncooking type bananas,
+L281@P6: pineapples, taro and coconuts are prohibited entry
+L282@P6: into the territory of Guam from the infested areas or
+L283@P6: countries.
+L284@P6: §10110. Mexican Fruit Fly - Anastrepha Ludens.
+L285@P6: Infested areas include Mexico, Central and Northern
+L286@P6: South America and Rio Grande Valley of Texas.
+L287@P6: All citrus fruits except lemons and sour limes,
+L288@P6: yellow chapote, sapodilla, cherimoya, custard apple,
+L289@P6: white sapote, rose apple (eugenia), jinicuil, plum,
+L290@P6: maney, mango, peach, guava, pomegranate, pear,
+L291@P6: apple, quince and avocado are prohibited entry into
+L292@P6: the territory of Guam from the infested areas or
+L293@P6: countries.
+L294@P6: §10111. Diseases and Insects of Onions. Green
+L295@P6-7: onions and Allium spp. from the countries infested8 GAR FOOD AND AGRICULTURE
+L296@P7: DIV. 2 - PLANT INDUSTRY
+L297@P7: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 8
+L298@P7: with leaf tip die back disease, Mycosphaerella
+L299@P7: schoenoprasi and the leaf miner of onions, are
+L300@P7: prohibited entry into the territory of Guam with tops.
+L301@P7: Infested countries include Japan, South Korea, Taiwan,
+L302@P7: Philippines, Thailand, Okinawa, Hawaii, Australia
+L303@P7: and New Zealand.
+L304@P7: §10112. Coconut Diseases and Insects.
+L305@P7: Importation of the planting material from the areas
+L306@P7: where the following diseases and others of obscure
+L307@P7: origin occur are prohibited importation into the
+L308@P7: territory of Guam: Red ring, lethal yellowing
+L309@P7: (Kaincope), cadang-cadang, kerals wilt, leaf scorch,
+L310@P7: little leaf and Malaysian wilt.
+L311@P7: Infested Areas. Red Ring: Trinidad, Tobago,
+L312@P7: Grenada, St. Vincent, Venezuela, Panama, Honduras,
+L313@P7: British Honduras, British Guiana and Brazil. Lethal
+L314@P7: yellowing: Jamaica, Cuba, Caymon Islands, Bahamas,
+L315@P7: Haiti, West Africa and Florida. Cadang-cadang:
+L316@P7: Philippine Islands. Kerala wilt: South India. Leaf
+L317@P7: scorch: Ceylon. Little leaf: Caribbean and Canyo.
+L318@P7: Malaysian wilt: Malaysia.
+L319@P7: The importation of all parts of coconut trees
+L320@P7: except coconuts without husks, are prohibited into the
+L321@P7: territory of Guam from the reported areas of the
+L322@P7: occurrence of the coconut hispid, Brontispa sp.
+L323@P7: Brontispa infested areas are French Polynesia,
+L324@P7: New Caledonia, New Hebrides, Territory of Papua
+L325@P7: and New Guinea, British Solomon Islands
+L326@P7: Protectorate, U.S. Trust Territory, Indonesia,
+L327@P7: Philippines and Mauritius.
+L328@P7: §10113. Banana Diseases and Insects. (a)
+L329@P7: Shipment into Guam of any and all kinds of Musa spp.
+L330@P7: (bananas and plantains) and Heliconia spp. plants or
+L331@P7: parts thereof, including rhizomes (but not fruit) is
+L332@P7: prohibited from any country except nursery stock
+L333@P7: from the United States which is certified by a State
+L334@P7: Department of Agriculture or U.S. Department of
+L335@P7: Agriculture as being free of banana scab moth
+L336@P7: (Nacoleia octasema), Panama disease (Fusarium
+L337@P7: oxysporum F. cubense), bacterial wilt (Pseudomonas
+L338@P7: solanacearum), burrowing nematode (Radopholus
+L339@P7-8: similis) and bunchy top virus disease.8 GAR - FOOD AND AGRICULTURE
+L340@P8: DIV. 2 - PLANT INDUSTRY
+L341@P8: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 9
+L342@P8: (b) Countries Infested with Panama Disease: Fiji,
+L343@P8: Territory of Papua and New Guinea, East, West,
+L344@P8: Central and Southern Africa, Canary Islands,
+L345@P8: Madagascar, Mauritius, Caribbean, Central and South
+L346@P8: America, Mexico, Florida, India, Pakistan, Burma,
+L347@P8: Ceylon, Indonesia, Malaysia, Thailand, Philippines,
+L348@P8: Australia, Hawaii and West Iran.
+L349@P8: (c) Bunchy Top: American Samoa, Fiji, U.S. Trust
+L350@P8: Territory, Ellice Islands, Tonga, Western Samoa,
+L351@P8: Wallis Island, New Caledonia, New Hebrides, Congo,
+L352@P8: Egypt, India, Pakistan, Ceylon, Malaysia, Hongkong,
+L353@P8: Taiwan, Bonin Islands, Philippines and Australia.
+L354@P8: (d) Bacterial Wilt: Central and South America,
+L355@P8: Trinidad, West Africa and Australia.
+L356@P8: (e) Burrowing Nematode: Fiji, Tonga, American
+L357@P8: Samoa, West Malaysia, Philippines, Taiwan, Australia,
+L358@P8: Hawaii, Central and South America, Caribbean,
+L359@P8: Florida, Louisiana, India and West Africa.
+L360@P8: (f) Banana Scab Moth: Java, Lesser Sunda Islands,
+L361@P8: North Queensland and everywhere in the South
+L362@P8: Pacific Commission area except the Cook Islands,
+L363@P8: French Polynesia, the Gilbert and Ellice Islands and
+L364@P8: the U.S. Trust Territory.
+L365@P8: §10114. Sweet Potato Insects and Diseases. The
+L366@P8: sweet potato borer, Omphisa anastomosalis is a
+L367@P8: serious pest of sweet potatoes. The larvae damage
+L368@P8: both roots and vines and may kill the plants. The entry
+L369@P8: of roots and vines of sweet potato, Ipomea batatus and
+L370@P8: Ipomea spp. are prohibited from China, Taiwan, India,
+L371@P8: Ceylon, Japan, Burma, Indonesia, Java, New Guinea,
+L372@P8: Thailand, Philippine Islands, Hawaii and Malaysia.
+L373@P8: In order to prevent the spread of sweet potato
+L374@P8: virus diseases and Southern blight caused by
+L375@P8: Pellicularia rolfsii (Sym. Sclerotium rolfsii) importation
+L376@P8: of sweet potato roots and vines for planting and
+L377@P8: propagation is prohibited except from the mainland
+L378@P8: United States when accompanied by a phytosanitary
+L379@P8: certificate issued by a state or the United States
+L380@P8-9: Department of Agriculture. The phytosanitary8 GAR FOOD AND AGRICULTURE
+L381@P9: DIV. 2 - PLANT INDUSTRY
+L382@P9: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 10
+L383@P9: certificate must state that the sweet potato material is
+L384@P9: free from Southern blight and virus diseases.
+L385@P9: §10115. Taro for Planting and Propagation. It is
+L386@P9: forbidden to import the root or stem portions of taro
+L387@P9: (Colocasia, Alocasia and Cyrtosperma spp.) for
+L388@P9: planting or propagation except from Hawaii and the
+L389@P9: mainland United States accompanied by a
+L390@P9: phytosanitary certificate issued by a state or the
+L391@P9: United States Department of Agriculture. The
+L392@P9: phytosanitary certificate must state that the taro is free
+L393@P9: from the Southern blight caused by Pellicularia rolfsii
+L394@P9: (Sym. Sclerotium rolfsii).
+L395@P9: §10116. Queensland Fruit Fly - Dacus Tryoni.
+L396@P9: The Queensland fruit fly infested areas in Australia
+L397@P9: are New South Wales, Queensland, South Australia
+L398@P9: and Victoria.
+L399@P9: Hosts. Papaya, sour orange, lemon, grapefruit,
+L400@P9: mandarin, orange, sweet orange, guava, cashew,
+L401@P9: cucumber, quince; persimmon, banana, leguat, fig,
+L402@P9: tomato, apple, mango, mulberry, apricot, peach, sour
+L403@P9: cherry, garden plum, nectarine, pear, grape and Rubus
+L404@P9: sp.
+L405@P9: All the fruits listed as hosts for the Queensland
+L406@P9: fruit fly are prohibited entry into the territory of Guam
+L407@P9: from the infested areas.
+L408@P9: §10117. Melonfly - Dacus Cucurbitae. Since the
+L409@P9: melonfly eradication and surveillance programs are
+L410@P9: operated in Guam, the host plant materials of the
+L411@P9: melonfly from infested countries are prohibited entry
+L412@P9: into Guam.
+L413@P9: Hosts. Memordica charantia, Luffa cylindrica and
+L414@P9: other plant materials belonging to the family
+L415@P9: cucurbitaceae, Citrullus vulgaris, Artocarpus
+L416@P9: heterophyllus, Baccaurea angulata, Psidium guajava,
+L417@P9: mango, Lageraria leucantha, Eugenia javanica,
+L418@P9: eggplant, beans, pepper, passion fruit and tomatoes.
+L419@P9: Infested countries and areas: Burma, Ceylon,
+L420@P9-10: China, Taiwan, India, Indonesia, Ryukyu Islands,8 GAR - FOOD AND AGRICULTURE
+L421@P10: DIV. 2 - PLANT INDUSTRY
+L422@P10: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 11
+L423@P10: Okinawa, Malaysia, Pakistan, Philippines, Thailand,
+L424@P10: Mauritius, Kenya, Tanzania, Hawaii and Australia.
+L425@P10: §10118. Packing Materials. It is prohibited to
+L426@P10: import into the territory of Guam all packing materials
+L427@P10: except wood, wood shavings, sawdust, processed
+L428@P10: fibers and materials not originating from plants and
+L429@P10: animals except that clean sphagnum moss may be
+L430@P10: used as living plant packing material for imports into
+L431@P10: the territory of Guam.
+L432@P10: §10119. Construction Materials. Unpeeled saw
+L433@P10: logs are prohibited entry into the territory of Guam.
+L434@P10: Peeled saw logs, lumber and wallboard are enterable
+L435@P10: into the territory of Guam only if examination by an
+L436@P10: inspector reveals that no termites or boring insects are
+L437@P10: present in the logs or lumber. Green and dry bamboo
+L438@P10: poles are prohibited entry into the territory of Guam
+L439@P10: except that dry bamboo poles and other bamboo
+L440@P10: products may be permitted entry into the territory of
+L441@P10: Guam if the bamboo has been chemically treated,
+L442@P10: shellacked, varnished, lacquered or painted.
+L443@P10: §10120. Stored Dried Products. Stored dried
+L444@P10: products of human food products and animal feeds
+L445@P10: are enterable into the territory of Guam except that
+L446@P10: they may be refused if they are found infested with
+L447@P10: storage pests and diseases.
+L448@P10: §10121. Enterable Fruits and Vegetables. (a)
+L449@P10: Hawaiian Islands: All fruits and vegetables other than
+L450@P10: the hosts of oriental fruit fly, melonfly and
+L451@P10: Mediterranean fruit fly.
+L452@P10: (b) Mariana Islands: All fruits and vegetables and
+L453@P10: coconuts without husk.
+L454@P10: (c) Bonin Islands and Volcano Islands: All leafy
+L455@P10: vegetables and root crops.
+L456@P10: (d) Caroline Islands: All fruits and vegetables
+L457@P10: except citrus fruits and coconut with husk.
+L458@P10: (e) Palau and Yap: All fruits and vegetables
+L459@P10-11: except taro and coconut with husks.8 GAR FOOD AND AGRICULTURE
+L460@P11: DIV. 2 - PLANT INDUSTRY
+L461@P11: CH. 10 - IMPORTATION OF PLANTS AND PLANT PRODUCTS - 1997 - P. 12
+L462@P11: (f) Other islands in Trust Territory: All
+L463@P11: vegetables and fruits and coconut without husk.
+

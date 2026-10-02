@@ -1,0 +1,25 @@
+[
+  {
+    "id": "yt-2026-page",
+    "url": "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-2026-a775.html",
+    "error": "<urlopen error timed out>"
+  },
+  {
+    "id": "pf-current-order",
+    "url": "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr",
+    "error": "<urlopen error timed out>"
+  },
+  {
+    "id": "pf-regulations",
+    "url": "https://www.service-public.pf/biosecurite/accueil/reglementation-dbs/",
+    "status": 200,
+    "finalUrl": "https://www.service-public.pf/biosecurite/accueil/reglementation-dbs/",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/french/pf-regulations.html",
+    "bytes": 171156
+  },
+  {
+    "id": "gp-current-guidance",
+    "url": "https://daaf.guadeloupe.agriculture.gouv.fr/controle-des-importations-de-denrees-animales-et-vegetales-en-guadeloupe-a128.html",
+    "error": "<urlopen error timed out>"
+  }
+]

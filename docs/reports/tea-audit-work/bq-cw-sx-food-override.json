@@ -1,0 +1,34 @@
+[
+  {
+    "code": "SX",
+    "name": "Saint Maarten",
+    "status": "not_verified",
+    "rule": "Sint Maarten LVV plant controls still do not classify manufactured sencha. Separately, current Landsbesluit publieke gezondheid (AB 2017 no.33), article 4(2), confines food import notification to commercial use. Article 4(3) confines origin health certificates to commercial imports of dairy, fish, poultry/meat and baby food; plain tea is not listed. Its official explanatory note distinguishes personal from commercial use by presentation, packaging and quantity, without a passenger-only limitation. This narrows the unresolved issue to the separate plant-health classification rather than imposing commercial food paperwork on a 100g private parcel.",
+    "personalMailApplicability": "The public-health notification/certificate duties are limited by intended commercial use, not by whether a seller was paid or by a traveler-only allowance. Treating a single 100g parcel intended for the recipient’s own consumption as personal follows the enacted scope and explanatory note. Independent LVV plant-product scope remains unverified.",
+    "quantityLimit": null,
+    "authority": "Sint Maarten LVV; Ministry of Public Health, Social Development and Labor; official local legislation register",
+    "evidenceUrls": [
+      "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+      "https://www.newgmc.com/index.php?download=466%3Aproduce-and-plant-produce-import-form&id=35%3Asops-a-ssops&option=com_phocadownload&view=category",
+      "https://lokaleregelgeving.overheid.nl/CVDR475613",
+      "https://www.sintmaartengov.org/Documents/Official%20Publications/AB%202017%2C%20no.%2033%20Landsbesluit%20publieke%20gezondheid.pdf"
+    ],
+    "remainingQuestion": "Need Sint Maarten LVV’s current classification of manufactured steamed/dried Camellia tea and any applicable plant import permit/phytosanitary conditions. The food-import notification and certificate duties in current Public Health Decree article 4 are not a separate barrier for this personal plain-tea parcel; Dutch/EU or French-island plant rules still cannot substitute for Sint Maarten’s own conditions.",
+    "researchAttempts": [
+      "Reviewed Sint Maarten LVV plant-import guidance and application material. No manufactured-tea or personal-mail entry identified.",
+      "2026-09-30: Retrieved the government’s complete AB 2017 no.33 Public Health Decree PDF and checked its current official register, which marks it effective 27 July 2018 to present. Read article 4(1)–(3), the import-notice form, and official explanatory note on PDF pages 39–41. Notification is limited to commercial consumption goods; health certification is additionally limited to listed animal foods/baby food. The note expressly distinguishes personal use based on presentation/quantity and repeats the commercial limit. A 2020 Inspectorate release reproduced by news outlets describes personal food up to 10 kg, but that secondary numerical threshold was not promoted into a primary-source quantity limit. Kept overall unresolved solely because independent LVV manufactured-tea classification remains missing."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need Sint Maarten LVV’s current classification of manufactured steamed/dried Camellia tea and any applicable plant import permit/phytosanitary conditions. The food-import notification and certificate duties in current Public Health Decree article 4 are not a separate barrier for this personal plain-tea parcel; Dutch/EU or French-island plant rules still cannot substitute for Sint Maarten’s own conditions.",
+    "permitFreeSources": [
+      "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+      "https://www.newgmc.com/index.php?download=466%3Aproduce-and-plant-produce-import-form&id=35%3Asops-a-ssops&option=com_phocadownload&view=category",
+      "https://lokaleregelgeving.overheid.nl/CVDR475613",
+      "https://www.sintmaartengov.org/Documents/Official%20Publications/AB%202017%2C%20no.%2033%20Landsbesluit%20publieke%20gezondheid.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "No personal plain-tea notice or origin-health certificate under Public Health Decree article 4; separate plant-health paperwork not determined.",
+    "requiredDocument": "No special food-import document established for this private tea parcel under article 4. Whether LVV requires a plant permit/phytosanitary certificate for manufactured sencha remains unresolved."
+  }
+]

@@ -8,7 +8,7 @@
       v-if="isNodeListView"
       v-model:value="connectedNodeAddressModel"
       :node-address-connecting="nodeAddressConnecting"
-      :nodes="connection.nodeList"
+      :nodes="connectionStatus.nodeList"
       :handle-node="handleNode"
       :view-node="navigateToNodeInfo"
       :disabled="!connectionAllowance"
@@ -79,16 +79,17 @@ const visibilityModel = computed({
 });
 
 const isMainnet = computed(() => props.network === SubNetworkId.Mainnet);
-const nodeAddressConnecting = computed(() => props.connection.nodeAddressConnecting);
-const connectionAllowance = computed(() => props.connection.connectionAllowance);
+const connectionStatus = computed(() => props.connection.status);
+const nodeAddressConnecting = computed(() => connectionStatus.value.nodeAddressConnecting);
+const connectionAllowance = computed(() => connectionStatus.value.connectionAllowance);
 
 const connectedNodeAddress = computed<string>(() => {
-  if (nodeAddressConnecting.value) return '';
-  return props.connection.node?.address ?? '';
+  if (nodeAddressConnecting.value || !connectionStatus.value.connected) return '';
+  return connectionStatus.value.node?.address ?? '';
 });
 
 const isSelectedNodeRemovable = computed(() =>
-  Boolean(props.connection.customNodes.find((node) => node.address === selectedNode.value.address))
+  Boolean(connectionStatus.value.customNodes.find((node) => node.address === selectedNode.value.address))
 );
 
 const isSelectedNodeConnected = computed(() =>
@@ -105,7 +106,8 @@ const getNodePermittedData = (node: Node): Node => pick(Object.keys(NodeModel))(
 const findInList = (list: readonly Node[], address: string): Node | undefined =>
   list.find((item) => item.address === address);
 
-const findNodeInListByAddress = (address: string): Node | undefined => findInList(props.connection.nodeList, address);
+const findNodeInListByAddress = (address: string): Node | undefined =>
+  findInList(connectionStatus.value.nodeList, address);
 
 const changeView = (view: 'NodeListView' | 'NodeInfoView') => {
   currentView.value = view;
@@ -124,7 +126,7 @@ const setCurrentNode = async (node: Node, isNewOrUpdatedNode = false) => {
   const nodeCopy = getNodePermittedData(node);
 
   if (isNewOrUpdatedNode) {
-    const defaultNode = findInList(props.connection.defaultNodes, nodeCopy.address);
+    const defaultNode = findInList(connectionStatus.value.defaultNodes, nodeCopy.address);
 
     if (defaultNode) {
       const error = new AppHandledError({
@@ -173,7 +175,7 @@ const removeNode = async (node: Node) => {
   handleBack();
 
   if (connectedNodeAddress.value === node.address) {
-    await setCurrentNode(props.connection.defaultNodes[0]);
+    await setCurrentNode(connectionStatus.value.defaultNodes[0]);
   }
 };
 

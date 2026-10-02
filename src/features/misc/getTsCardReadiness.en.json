@@ -1,0 +1,44 @@
+{
+  "getTs": {
+    "cardReview": {
+      "title": "Review before paying",
+      "description": "We check this budget against your wallets, current network costs and available liquidity.",
+      "checking": "Checking this budget, your receiving accounts, current gas and available liquidity…",
+      "readyXor": "For {usd} USD, the current estimate is {xor} XOR after the listed reserves.",
+      "readyTs": "For {usd} USD, the current estimate leaves {xor} XOR available to burn after the listed reserves.",
+      "charge": "You pay",
+      "delivery": "Estimated ETH delivered by the card provider",
+      "reserved": "ETH kept for estimated network costs",
+      "convert": "ETH available for conversion",
+      "bridge": "Conservative DAI amount for the bridge",
+      "details": "See the fee breakdown",
+      "provider": "Card provider fees included in the USD budget",
+      "conversionGas": "Conversion gas reserve",
+      "bridgeGas": "DAI approval and bridge gas reserve",
+      "conversionFee": "Conversion provider fee",
+      "bridgeFee": "Separate DAI bridge fee",
+      "nativeSwapFee": "SORA swap fee reserved from XOR output",
+      "nativeTsFees": "SORA swap and burn fees reserved from XOR output",
+      "existing": "Existing wallet ETH, excluded from this budget",
+      "reserveExplanation": "Network reserves use current fee data with a margin. They come from the card-funded ETH; this estimate does not require an existing ETH balance. Unused reserves remain in your Ethereum wallet.",
+      "bridgeExplanation": "The normal incoming DAI transfer has no separate DAI fee. Ethereum approval and transfer gas are reserved above; bridge timing and later fees can change.",
+      "limits": "This check expires after 30 seconds. Card availability, the final provider quote and later wallet reviews still apply. Card processing can outlast this estimate, so prices and fees will be checked again before each transaction; delivery is not guaranteed by this estimate.",
+      "refresh": "Refresh the cost check",
+      "errors": {
+        "wallet": "Connect the intended Ethereum and SORA accounts on mainnet, then refresh this check.",
+        "budget": "This card budget does not leave enough ETH after the estimated conversion and bridge costs. Review the amount before paying.",
+        "provider": "The card provider could not quote this exact USD budget. Refresh or review the amount before paying.",
+        "gas": "Current Ethereum network costs are unavailable. Refresh before paying.",
+        "simulation": "We could not simulate this conversion for your account. Refresh before paying; no transaction was sent.",
+        "bridge": "The incoming DAI bridge or its current cost check is unavailable. Refresh before paying.",
+        "conversion": "The ETH to DAI conversion cannot currently be verified within the 5% price-impact limit. Refresh before paying.",
+        "liquidity": "The remaining DAI cannot currently pass the native XOR liquidity and fee check. Review the amount or refresh before paying.",
+        "expired": "This cost check expired. Refresh before paying."
+      },
+      "netXor": "Estimated XOR after fees",
+      "netBurnable": "Estimated XOR available to burn",
+      "costsReserved": "Current estimated fees are reserved from this budget. Later fees or prices may change.",
+      "futureTs": "Estimated TS for a future claim"
+    }
+  }
+}

@@ -1,0 +1,506 @@
+                                  Federal Law No. (7) of 2025
+                               Regarding Agricultural Quarantine
+
+We, Mohamed bin Zayed Al Nahyan,                         President of the United Arab Emirates,
+− Having reviewed the Constitution;
+− Federal Law No. (1) of 1972 Regarding the Competences of the Ministries and the Powers
+  of the Ministers, as amended;
+− Federal Law No. (5) of 1979 Regarding Agricultural Quarantine, as amended;
+− Federal Decree by Law No. (28) of 2023 Regarding the Establishment of the Emirates Drug
+  Establishment; and
+− Upon the proposal of the Minister of Climate Change and Environment, the approval of
+  the Cabinet and the Federal National Council, and the ratification of the Federal Supreme
+  Council,
+Hereby promulgate the following Law:
+
+                                                 Article (1)
+                                                 Definitions
+For the purpose of implementing the provisions of this Decree by Law, the following terms
+and expressions shall have the meanings assigned to each of them, unless the context
+otherwise requires:
+ State                     : The United Arab Emirates.
+ Ministry                  : The Ministry of Climate Change and Environment.
+ Minister                  : The Minister of Climate Change and Environment.
+ Establishment             : The Emirates Drug Establishment.
+ Competent Authority       : The local authority concerned with agriculture in each
+                                Emirate.
+ Agricultural              : All activities aimed at preventing the introduction and
+ Quarantine                     spread of pests subject to Agricultural Quarantine, or at
+                                ensuring that they are subject to pest control.
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                     1
+Point of Entry                      :     All ports approved by the Competent Authority in the
+                                          State for the importation of consignments or for the entry
+                                          of passengers.
+Inspector                           :     The person licensed by the Competent Authorities in the
+                                          State to carry out inspection activities in accordance with
+                                          the legislation in force in the State.
+Agricultural                        :     Any plants, Plant products, or any other Articles Regulated
+Consignment                               by the Phytosanitary Regulations entering the State or
+                                          exported therefrom and transported from one country to
+                                          another, and which are covered, where appropriate, by a
+                                          single Phytosanitary Certificate. (An Agricultural
+                                          Consignment may consist of one or more commodities).
+Plants                              :     Live or dead plants or parts thereof, including seeds and
+                                          genetic material.
+Plant Products                      :     Unmanufactured materials of plant origin (including
+                                          grains) and manufactured materials which, by their
+                                          nature or method of processing, may pose a risk of the
+                                          introduction and spread of pests in the State.
+Phytosanitary                       :     Resolutions issued by the Ministry that prevent the
+Regulations                               introduction and spread of Quarantine Pests or limit the
+                                          economic impact of Non-Quarantine Pests Regulated by
+                                          the Phytosanitary Regulations.
+Article Regulated by                :     Any Plants, Plant Products, Storage Place, packaging
+the Phytosanitary                         facilities, Means of Transport, container, soil, or any
+Regulations                               organism or material capable of harboring pests or
+                                          facilitating their spread, and deemed to require
+                                          phytosanitary measures, particularly in international
+                                          transport.
+
+
+
+
+Federal Law of 2025 Regarding Agricultural Quarantine                                             2
+Pest                                :     Any species, strain, or biotype of plant or animal
+                                          organisms, or any pathogenic or harmful agent to Plants
+                                          or Plant Products.
+Quarantine Pest                     :     A pest of potential economic importance to the
+Regulated by the                          endangered area, which is not yet present therein, or is
+Phytosanitary                             present but not widely distributed and subject to official
+Regulations                               control, as determined by a decision issued by the
+                                          Minister.
+Non-Quarantine Pest                 :     A non-quarantine pest whose presence in plants intended
+Regulated by the                          for planting affects the intended use of those plants with
+Phytosanitary                             economically unacceptable impact and which has
+Regulations                               therefore been subjected to Phytosanitary Regulations
+                                          within the territory of the contracting (importing) State, as
+                                          determined by a decision issued by the Minister.
+Pest Regulated                      :     A Quarantine Pest or a Non-Quarantine Pest Subject to
+Phytosanitary                             Phytosanitary Regulations.
+Regulations
+Beneficial Organisms                :     Any organism, including fungi, bacteria, viruses, virus-like
+                                          organisms, and invertebrates, designated by a decision
+                                          issued by the Minister as beneficial to plant life or
+                                          agricultural production.
+Means of Transport                  :     Any vessel, aircraft, train, vehicle, handcart, container,
+                                          animal, or other conveyance used to transport Plants,
+                                          Plant Products, or articles regulated under the
+                                          Phytosanitary Regulations from one place to another.
+Container                           :     Any box, bag, or other item in which Plants or Plant
+                                          Products are placed, and which may carry pests during or
+                                          after transport.
+
+
+
+
+Federal Law of 2025 Regarding Agricultural Quarantine                                               3
+Importer                            :     Any natural or legal person, whether owner, consignor,
+                                          consignee, agent, broker, or any other person who owns
+                                          or has the right to import Plants, Plant Products, or other
+                                          Articles Regulated by the Phytosanitary Regulations from
+                                          another State.
+Packing Materials                   :     Any material used to package or contain Plants, Plant
+                                          Products, Beneficial Organisms, soil, or plant pests.
+Packaging Materials                 :     Any product used to support, protect, or transport a
+                                          commodity.
+Soil                                :     Material wholly or partially derived from the top layer of
+                                          the earth’s crust capable of nourishing plant growth.
+Survey                              :     A procedure conducted over a defined period to
+                                          determine the presence or absence of pests, or the
+                                          boundaries or characteristics of pest populations in an
+                                          area, Place of Production, or Site of Production.
+Monitoring                          :     A continuous process to verify the plant's health status.
+Surveillance                        :     A process of collecting and recording data on the presence
+                                          or absence of pests through Survey, Monitoring, or other
+                                          procedures.
+Inspection                          :     The official visual examination of Plants, Plant Products,
+                                          or other Articles Regulated by the Phytosanitary
+                                          Regulations to determine whether pests are present
+                                          and/or to determine compliance with Phytosanitary
+                                          Regulations.
+Phytosanitary                       :     An official paper or electronic document consistent with
+Certificate                               the certificate models of the International Plant
+                                          Protection Convention (IPPC), certifying that an
+                                          Agricultural Consignment meets the phytosanitary
+                                          import requirements and is free from pests regulated
+                                          under applicable Phytosanitary Regulations.
+
+Federal Law of 2025 Regarding Agricultural Quarantine                                             4
+Treatment                           :     An authorized procedure to kill, remove, or neutralize
+                                          pests.
+Eradication                         :     The application of phytosanitary measures to eliminate a
+                                          pest from a defined area.
+Containment                         :     The application of phytosanitary measures in and around
+                                          an infested area to prevent the spread of pests.
+Agricultural Land                   :     Farms, gardens, forests, rangelands, and any place where
+                                          Plants are cultivated.
+Transit Agricultural                :     Any Agricultural Consignment transiting through the
+Consignment                               ports of the State without being imported thereinto.
+Quarantine Center                   :     A location where Plants, Plant Products, or any Articles
+                                          Regulated by the Phytosanitary Regulations, including
+                                          Beneficial Organisms, are held to verify that they are free
+                                          from pests.
+Quarantine Area                     :     An area within which a pest subject to Agricultural
+                                          Quarantine is present and within which control measures
+                                          are applied.
+Pest Risk Analysis                  :     A process of evaluating biological and scientific evidence,
+(PRA)                                     and other economic factors to determine whether an
+                                          organism is a pest, and determine the level of
+                                          phytosanitary measures to be against it.
+Phytosanitary                       :     Any official procedures aimed at preventing the
+Measures                                  introduction and spread of pests regulated under
+                                          Phytosanitary Regulations, or at limiting the economic
+                                          impact of non-quarantine pests, including the issuance of
+                                          related decisions.
+Storage Place                       :     The area or site in which Plants, Plant Products, Beneficial
+                                          Organisms, or Articles Regulated by the Phytosanitary
+                                          Regulations are kept or stored.
+
+
+Federal Law of 2025 Regarding Agricultural Quarantine                                              5
+                                              Article (2)
+                                         Objectives of the Law
+This Law aims to:
+1. Prevent the introduction and spread of pests within the State.
+2. Protect the environment and plant resources in the State from all types of agricultural
+   pests.
+
+                                              Article (3)
+                                          Scope of Application
+The provisions of this Law shall apply to Plants, Plant Products, Beneficial Organisms, and
+other Articles Regulated by the Phytosanitary Regulations imported into the State, exported
+therefrom, and Transit Agricultural Consignments of the State, in the cases specified by this
+Law and its Executive Regulations.
+
+                                          Article (4)
+                                   Competences of the Ministry
+1. For the purposes of implementing this Law, the Ministry shall undertake the following
+   competences:
+   a. Determine Quarantine Pests and Non-Quarantine Pests Regulated by the
+       Phytosanitary Regulations by a decision issued by the Minister.
+   b. Regulate the importation of Plants, Plant Products, Beneficial Organisms, and other
+       articles regulated by the Phytosanitary Regulations.
+   c. Regulate the export and re-export of Plants, Plant Products, Beneficial Organisms, and
+       other articles regulated by the Phytosanitary Regulations to fulfil the requirements of
+       importing countries in accordance with their national regulations and/or international
+       agreements.
+   d. Prevent the entry of Quarantine Pests into the State.
+   e. Designate any site as a Quarantine Area.
+
+
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                    6
+   f. Adopt the necessary Phytosanitary Measures to prevent the introduction of
+      Quarantine Pests into the State and their spread within the State.
+   g. Apply quarantine procedures to an Agricultural Consignment after its entry into the
+      State where necessary.
+   h. Conduct Pest Risk Analysis.
+   i. Carry out periodic reviews of Phytosanitary Measures in line with international
+      standards.
+   j. Conduct Surveillance operations for pests present in the State.
+   k. Coordinate and cooperate with relevant international and regional plant protection
+      organizations to keep abreast of international developments in the field of plant
+      health.
+   l. Prepare and organize periodic training programs, seminars, conferences, and
+      workshops to review pest status and to guide and raise public awareness of the
+      importance of plant health through various media outlets.
+   m. Prepare a guideline, in coordination with the Competent Authority, concerning the
+      import, export, and re-export of Plants, Plant Products, Beneficial Organisms, and
+      articles regulated by the Phytosanitary Regulations, whether for trade or scientific
+      research purposes.
+   n. Recommend the establishment of Agricultural Quarantine Centers as needed.
+   o. Fulfil international obligations relating to pest reporting, and develop a system for
+      monitoring, reporting, and announcing agricultural pests in accordance with the
+      international standards for Phytosanitary Measures (ISPMs).
+   p. Publish information concerning pests regulated by the Phytosanitary Regulations and
+      methods for preventing their introduction, spread, and control.
+   q. Study and evaluate imported Plants to ensure that they do not cause adverse
+      environmental effects on natural biodiversity in the State.
+   r. Issue Phytosanitary Certificates.
+   s. Regulate the procedures and requirements of Transit Agricultural Consignments.
+   t. Perform any other functions assigned thereto pursuant to the provisions of this Law
+      or the regulations issued in implementation thereof.
+
+Federal Law of 2025 Regarding Agricultural Quarantine                                  7
+2. In exercising the competences referred to in Clause (1) of this Article, the Ministry shall
+   coordinate with the Establishment and the Competent Authority where required.
+
+                                       Article (5)
+                Import, Export, or Transit of Agricultural Consignments
+1. No Agricultural Consignment shall be imported into the State or exported therefrom
+   unless it has been inspected by the Ministry and verified to be in compliance with the
+   provisions of this Law, its Executive Regulations, and the resolutions issued in
+   implementation thereof.
+2. Every Agricultural Consignment imported into or transiting through the State shall be
+   accompanied by a Phytosanitary Certificate authenticated by the Competent Authorities
+   in the exporting country.
+3. Any person wishing to export or re-export an Agricultural Consignment that satisfies the
+   requirements of the importing country shall submit an application to the Ministry to
+   obtain a Phytosanitary Certificate, in accordance with the conditions and procedures
+   specified in the Executive Regulations of this Law.
+4. Imported consignments of honeybees shall be accompanied by a Phytosanitary Certificate
+   or a veterinary certificate authenticated by the Competent Authorities of the exporting
+   country, confirming that they are free from all bee pests.
+5. If it is established that an Agricultural Consignment or a Transit Agricultural Consignment
+   threatens to introduce or spread a pest within the State, or is non-compliant with the
+   provisions of this Law, its Executive Regulations, and the resolutions issued in
+   implementation thereof, or where the presence of pests or diseases is suspected therein,
+   the Ministry may take any of the following measures:
+   a. Reject the imported, exported, or transit Agricultural Consignment.
+   b. Order the return, treatment, or destruction of the Agricultural Consignment at the
+         expense of its owner, as the case may be, without the Ministry bearing any
+         compensation or costs.
+   c. Cancel any conditions prescribed based on the level of risk associated with certain
+         Agricultural Consignments.
+ Federal Law of 2025 Regarding Agricultural Quarantine                                    8
+    d. Any other measures specified in the Executive Regulations of this Law.
+
+                                  Article (6)
+     Disclosure of Articles Regulated by the Phytosanitary Regulations or
+                             Beneficial Organisms
+1. Any person or Importer entering the State in possession of Articles Regulated by the
+   Phytosanitary Regulations or Beneficial Organisms shall disclose the same to customs
+   officers at the Point of Entry.
+2. Any customs officer notified of, or becomes aware of, the arrival of Articles Regulated by
+   the Phytosanitary Regulations shall detain such articles and notify the Inspector.
+3. No regulated articles detained pursuant to clause (2) of this Article shall be released except
+   with the approval of the Ministry.
+
+                                                  Article (7)
+                                                  Inspection
+1. Agricultural Consignments that are imported, in transit, intended for export from the State,
+   or circulated within the State containing Articles Regulated by the Phytosanitary
+   Regulations, including Plants, Plant Products, Beneficial Organisms, and other materials,
+   shall be subject to Inspection.
+2. Agricultural Land, Plants, Plant Products, Beneficial Organisms, and other Articles
+   Regulated by the Phytosanitary Regulations, including those stored, shall be subject to
+   Inspection to verify the absence, outbreak, or spread of pests regulated by such
+   Regulations.
+3. It shall be verified that safe disposal is carried out in respect of waste from:
+   a. Means of Transport arriving in the State.
+   b. Sites for the treatment of imported Plants or Plant Products.
+
+
+
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                       9
+                               Article (8)
+     Measures Taken Upon Suspicion of the Presence of a Quarantine Pest
+1. In the event of suspicion of the presence of a Quarantine Pest in Agricultural Land or in a
+   Storage Place, the Ministry, or its delegate in cooperation with the Competent Authority,
+   shall take the following measures:
+   a. Enter Agricultural Land or the Storage Place.
+   b. Inspect Plants, Plant Products, Beneficial Organisms, or Articles Regulated by the
+       Phytosanitary Regulations.
+   c. Take the necessary samples.
+2. The Minister, or their delegate, in the event of suspicion of the presence of a Quarantine
+   Pest in Agricultural Land or in any other place, may:
+   a. Declare the suspected area a Quarantine Area and notify the owner or occupant in
+       writing or by any electronic means, as well as the owners and occupants of adjacent
+       lands and properties where necessary, and take appropriate measures in their lands to
+       Eradicate, Contain, or prevent the spread of the Quarantine Pest.
+   b. Prohibit or restrict the movement of persons, animals, Means of Transport, or any
+       Articles Regulated by the Phytosanitary Regulations from or to the Quarantine Area.
+3. Where the persons referred to in Paragraph (a) of Clause (2) fail to implement the
+   measures notified thereto, or where the seriousness of the situation requires the prompt
+   adoption of appropriate measures, the Minister may authorize any person they deem
+   appropriate to enter the land or place and implement the measures specified in the
+   notification, provided that an authorization from the Public Prosecution is obtained where
+   the place is a dwelling.
+
+                                                Article (9)
+                                          Lifting of Quarantine
+The Ministry, in coordination with the Competent Authority, shall continuously assess
+Quarantine Areas and lift quarantine upon the occurrence of either of the following:
+1. Elimination of the pest that necessitated the placing the area under quarantine.
+2. Absence of any need to maintain the affected area, wholly or partially, under quarantine.
+ Federal Law of 2025 Regarding Agricultural Quarantine                                   10
+All owners and occupants of the affected areas shall be notified in writing or by any electronic
+means of the lifting of quarantine, and such areas shall be subject to a periodic review.
+
+                                 Article (10)
+        Phytosanitary Measures for the Eradication of a Quarantine Pest
+Upon the incursion of any Quarantine Pest into the territory of the State, the Ministry, in
+coordination with the Establishment, shall adopt the necessary Phytosanitary Measures to
+eradicate it and prevent its spread to other endangered areas, and shall notify other countries
+of the adoption and lifting of such measures.
+
+                                        Article (11)
+                              Emergency or Unforeseen Problems
+1. In cases where emergency or unforeseen problems arise that may pose a significant threat
+   to plant health, the Ministry, in coordination with the Establishment, the Competent
+   Authority, and relevant authorities, may adopt immediate measures to limit or eliminate
+   the threat.
+2. Upon the cessation or mitigation of the threat, the Ministry shall amend or revoke the
+   measures adopted pursuant to clause (1) of this Article after coordination with the
+   Establishment, the Competent Authority, and the relevant authorities.
+
+                                        Article (12)
+                       Materials Prohibited from Entry into the State
+1. The following materials shall be prohibited from entry into the State without obtaining a
+   Permit from the Ministry or the Establishment, as the case may be:
+   a. Sand used in agriculture, natural agricultural Soil, or Soil accompanying Agricultural
+       Consignments.
+   b. Untreated and non-sterilized organic fertilizers.
+2. The Executive Regulations shall determine the conditions and procedures for obtaining
+   the Permit referred to in Clause (1) of this Article.
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                     11
+                                        Article (13)
+                         Designation of Quarantine Centers or Sites
+1. The Ministry, or its delegate, in the event of suspicion of Pests or Diseases in Plants, Plant
+   Products, or Beneficial Organisms, may take the following measures:
+   a. Designate certain sites as Quarantine Centers to place Plants, Plant Products, or
+      Beneficial Organisms under Surveillance, research, Inspection, testing, and detention.
+   b. Retain Plants, Plant Products, or Beneficial Organisms in any Quarantine Center or
+      officially designated site for an appropriate period.
+2. The Importer shall bear all costs arising from the implementation of the above provisions.
+
+                               Article (14)
+ Import of Beneficial Organisms or Articles Regulated by the Phytosanitary
+                               Regulations
+1. Without prejudice to the provisions of this Law, the Ministry, in coordination with the
+   Competent Authority, may prohibit or restrict the import, export, sale, cultivation,
+   propagation, or transport of any Beneficial Organisms or Articles Regulated by the
+   Phytosanitary Regulations, or any items capable of harboring a Pest or facilitating its
+   spread.
+2. Notwithstanding Clause (1) of this Article, the import of Plants, Plant Products, Pests,
+   Beneficial Organisms, Articles Regulated by the Phytosanitary Regulations, or other items
+   for scientific research, experimental purposes, and for governmental entities may be
+   permitted after obtaining the approval of the Ministry.
+
+                                   Article (15)
+           Controls Governing the Export of Agricultural Consignments
+1. An exported or re-exported Agricultural Consignment shall be securely placed in Packing
+   Materials or Packaging Materials for final export.
+
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                      12
+2. The Exporter shall not open the parcels prepared for export or any part thereof after
+   approval of their export or re-export.
+3. Any other controls specified in the Executive Regulations of this Law.
+
+                                  Article (16)
+       Time Period Required for the Export of Agricultural Consignments
+1. An Agricultural Consignment shall be exported or re-exported within (7) seven working
+   days from the date of issuance of the Phytosanitary Certificate for export or re-export.
+2. The Ministry may extend the period referred to in Clause (1) of this Article depending on
+   the type of Agricultural Consignment, storage conditions, and transport requirements.
+
+                                            Article (17)
+                                    Grievance Against Decisions
+Any person aggrieved by resolutions issued in implementation of the provisions of this Law
+may submit a grievance in accordance with the controls and procedures specified in the
+Executive Regulations.
+
+                                                 Article (18)
+                                                  Penalties
+The application of the penalties stipulated in this Law shall not prejudice any more severe
+penalty prescribed by any other law.
+
+                                                 Article (19)
+1. A fine of not less than (AED 50,000) fifty thousand dirhams and not exceeding (AED
+   500,000) five hundred thousand dirhams shall be imposed upon any person who:
+   a. Imports or introduces into the State Beneficial Organisms or Articles Regulated by the
+       Phytosanitary Regulations without disclosing them to customs officers at the Point of
+       Entry.
+
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                 13
+   b. Introduces sand used in agriculture, natural agricultural Soil, or Soil accompanying
+       Agricultural Consignments, or introduces untreated and non-sterilized organic
+       fertilizers, without obtaining a Permit from the Ministry or the Establishment, as the
+       case may be.
+   c. Imports, exports, sells, cultivates, propagates, or transports any Beneficial Organisms
+       or Articles Regulated by the Phytosanitary Regulations, or any items capable of
+       harboring a Pest or facilitating its spread, in respect of which a decision has been issued
+       by the Ministry prohibiting or restricting such acts.
+2. A fine of not less than (AED 30,000) thirty thousand dirhams and not exceeding (AED
+   100,000) one hundred thousand dirhams shall be imposed upon any person who:
+   a. Exports or re-exports an Agricultural Consignment without fulfilling phytosanitary
+       requirements and without obtaining a Phytosanitary Certificate from the Ministry.
+   b. Introduces into the State a Transit Agricultural Consignment without fulfilling
+       phytosanitary requirements.
+3. In all cases, the court shall order the confiscation of the seized items and shall mandate
+   the Ministry to dispose thereof.
+4. The penalty shall be doubled in the event of recidivism, and the deportation of a foreign
+   national shall be ordered.
+
+                                            Article (20)
+                                Initiation of Criminal Proceedings
+Criminal proceedings in respect of the offences stipulated in Article (19) of this Law shall not
+be initiated except upon a written request from the Ministry.
+
+                                        Article (21)
+                           Administrative Violations and Sanctions
+The administrative violations and sanctions for acts committed in contravention of the
+provisions of this Law and the resolutions issued in implementation thereof, as well as the
+mechanism for grievance thereagainst, shall be determined by a resolution issued by the
+
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                       14
+Cabinet upon the proposal of the Ministry and in coordination with the Establishment and
+the Competent Authority.
+
+                                               Article (22)
+                                          Judicial Enforcement
+The employees designated by a decision issued by the Minister of Justice, in agreement with
+the Minister or the Chairperson of the Board of Directors of the Establishment, shall have the
+capacity of judicial enforcement officers to establish violations of the provisions of this Law,
+its Executive Regulations, and the resolutions issued in implementation thereof.
+
+                                                 Article (23)
+                                                    Fees
+The fees prescribed for the implementation of the provisions of this Law shall be determined
+by a resolution issued by the Cabinet upon the proposal of the Minister, in coordination with
+the Establishment, and upon the presentation of the Minister of Finance.
+
+                                    Article (24)
+                 Delegation of Competences and Assignment of Tasks
+The Cabinet, upon the recommendation of the Minister, may approve the following:
+1. The delegation of certain competences of the Ministry provided for in this Law and its
+   Executive Regulations to any federal or local government authority.
+2. The assignment of certain tasks and services of the Ministry provided for in this Law and
+   its Executive Regulations to any other governmental or private entity.
+
+                                              Article (25)
+                                         Executive Regulations
+The Cabinet shall, upon the proposal of the Minister and after coordination with the
+Establishment and the Competent Authority, issue the Executive Regulations of this Law
+within (6) six months from the date of its entry into force.
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                     15
+                                           Article (26)
+                                     Implementation of the Law
+The Ministry shall implement the provisions of this Law and shall coordinate with the
+Establishment regarding Plant Products, Articles Regulated by the Phytosanitary Regulations,
+and Agricultural Consignments where such consignments consist of fertilizers of all types,
+plant growth regulators, or Soil conditioners.
+
+                                                 Article (27)
+                                                  Repeals
+1. Federal Law No. (5) of 1979 Regarding Agricultural Quarantine is hereby repealed, as well
+   as any provision that contradicts or conflicts with the provisions of this Law.
+2. The regulations and resolutions issued in implementation of Federal Law No. (5) of 1979
+   Regarding Agricultural Quarantine shall remain in force until the regulations and
+   resolutions necessary for the implementation of the provisions of this Law are issued,
+   insofar as they do not contradict its provisions.
+
+                                           Article (28)
+                                 Publication and Entry into Force
+This Law shall be published in the Official Gazette and shall enter into force (30) thirty days
+after the date of its publication.
+
+
+
+
+Mohamed bin Zayed Al Nahyan
+President of the United Arab Emirates
+
+Issued by us at the Presidential Palace in Abu Dhabi:
+On: 6 Rajab 1447 A.H.
+Corresponding to: 26 December 2025 A.D.
+
+ Federal Law of 2025 Regarding Agricultural Quarantine                                    16
+

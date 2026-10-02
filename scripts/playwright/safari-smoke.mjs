@@ -105,7 +105,7 @@ const run = async () => {
           }
         }
 
-        const customizeSettingsButton = page.locator('.customise-widget button').first();
+        const customizeSettingsButton = page.locator('.customise-button').first();
         if (!(await customizeSettingsButton.isVisible().catch(() => false))) {
           issues.push('swap customize-widget settings button not visible in safari check');
         }

@@ -1,0 +1,100 @@
+--- a/src/graphql/resolvers.ts
++++ b/src/graphql/resolvers.ts
+@@ -1735,31 +1735,47 @@
+   /** Reads a frozen finalized TS snapshot; coverage and rows deliberately bypass cache. */
+   const tonswapBurnSnapshotResolver = async (
+     parent: unknown,
+-    args: { first?: number | null; after?: string | null; atBlock?: number | null },
++    args: { first?: number | null; after?: string | null; atBlock?: number | null; allowStale?: boolean | null },
+     context: Context
+   ) => {
+-    const [health, coverageDocument, chainState] = await Promise.all([
+-      healthResolver(parent, {}, context),
+-      context.repository.get('updatesStreams', TONSWAP_COVERAGE_ID),
+-      context.repository.get('updatesStreams', 'chainState'),
+-    ]);
+-    const coverage = parseTonswapBurnCoverage(coverageDocument);
+-    let lastIndexedBlock: unknown;
+-    try {
+-      lastIndexedBlock = JSON.parse(String(chainState?.data.data ?? '')).lastIndexedBlock;
+-    } catch {
+-      lastIndexedBlock = undefined;
+-    }
+-    const now = Math.floor(Date.now() / 1_000);
+-    if (!health.ok || !coverage || health.workerLag === null || health.workerLag > 2 ||
+-      coverage.indexedThroughBlock !== health.workerLatestIndexedBlock ||
+-      coverage.indexedThroughBlock !== lastIndexedBlock ||
+-      chainState?.blockHeight !== lastIndexedBlock || chainState.data.block !== lastIndexedBlock ||
+-      now - coverage.blockTimestamp > 60 || coverage.blockTimestamp - now > 15) {
+-      throw new GraphQLError('Complete fresh finalized TONSWAP burn coverage is unavailable', {
+-        extensions: { code: 'TONSWAP_COVERAGE_UNAVAILABLE' },
+-      });
+-    }
++    // Coverage and the chain checkpoint commit atomically, but separate reads can
++    // straddle that commit. Retry once; never accept mismatched evidence.
++    const readProof = async () => {
++      const [health, coverageDocument, chainState] = await Promise.all([
++        healthResolver(parent, {}, context),
++        context.repository.get('updatesStreams', TONSWAP_COVERAGE_ID),
++        context.repository.get('updatesStreams', 'chainState'),
++      ]);
++      const coverage = parseTonswapBurnCoverage(coverageDocument);
++      let lastIndexedBlock: unknown;
++      try {
++        const state: unknown = JSON.parse(String(chainState?.data.data ?? ''));
++        if (state && typeof state === 'object' && !Array.isArray(state) &&
++          Object.keys(state).join(',') === 'lastIndexedBlock') {
++          lastIndexedBlock = (state as { lastIndexedBlock: unknown }).lastIndexedBlock;
++        }
++      } catch { /* Malformed checkpoint evidence cannot support even a historical snapshot. */ }
++      const coherent = health.repositoryReady && coverage !== null &&
++        chainState?.collection === 'updatesStreams' && chainState.id === 'chainState' &&
++        chainState.data.id === 'chainState' && typeof chainState.data.data === 'string' &&
++        Number.isSafeInteger(chainState.timestamp) && Number(chainState.timestamp) > 0 &&
++        coverage.indexedThroughBlock === lastIndexedBlock &&
++        chainState.blockHeight === lastIndexedBlock && chainState.data.block === lastIndexedBlock &&
++        coverage.blockTimestamp - Math.floor(Date.now() / 1_000) <= 15;
++      return { health, coverage, coherent };
++    };
++    let proof = await readProof();
++    if (!proof.coherent) proof = await readProof();
++    const { health, coverage } = proof;
++    const unavailable = () => new GraphQLError('Complete fresh finalized TONSWAP burn coverage is unavailable', {
++      extensions: { code: 'TONSWAP_COVERAGE_UNAVAILABLE' },
++    });
++    if (!proof.coherent || !coverage) throw unavailable();
++    const fresh = health.ok && health.workerLag !== null && health.workerLag <= 2 &&
++      coverage.indexedThroughBlock === health.workerLatestIndexedBlock &&
++      Math.floor(Date.now() / 1_000) - coverage.blockTimestamp <= 60;
++    // Historical display is opt-in; the default signing preflight still fails closed.
++    if (!fresh && args.allowStale !== true) throw unavailable();
+     const atBlock = args.atBlock ?? coverage.indexedThroughBlock;
+     if (!Number.isSafeInteger(atBlock) || atBlock < TONSWAP_START_BLOCK || atBlock > coverage.indexedThroughBlock ||
+       (args.after && args.atBlock === undefined)) throw badUserInput('A valid frozen campaign snapshot block is required');
+@@ -1770,6 +1786,7 @@
+       first: args.first ?? 100, after: args.after, orderBy: ['ID_ASC'],
+     }, context);
+     return {
++      fresh,
+       genesisHash: coverage.genesisHash,
+       startBlock: TONSWAP_START_BLOCK,
+       indexedThroughBlock: atBlock,
+--- a/src/graphql/schema.ts
++++ b/src/graphql/schema.ts
+@@ -746,6 +746,7 @@
+   }
+ 
+   type TonswapBurnSnapshotConnection {
++    fresh: Boolean!
+     genesisHash: String!
+     startBlock: Int!
+     indexedThroughBlock: Int!
+@@ -935,7 +936,7 @@
+     orderBookOrders(first: Int, after: Cursor, orderBy: [OrderBy!], filter: OrderBookOrderFilter): OrderBookOrderConnection!
+     orderBookSnapshots(first: Int, after: Cursor, orderBy: [OrderBy!], filter: OrderBookSnapshotFilter): OrderBookSnapshotConnection!
+     historyElements(first: Int, last: Int, offset: Int, before: Cursor, after: Cursor, orderBy: [HistoryElementsOrderBy!], filter: HistoryElementFilter): HistoryElementConnection!
+-    tonswapBurnSnapshot(first: Int, after: Cursor, atBlock: Int): TonswapBurnSnapshotConnection!
++    tonswapBurnSnapshot(first: Int, after: Cursor, atBlock: Int, allowStale: Boolean = false): TonswapBurnSnapshotConnection!
+     xorBurns(first: Int, after: Cursor, orderBy: [HistoryElementsOrderBy!], filter: XorBurnFilter): XorBurnConnection!
+     referrerRewards(first: Int, after: Cursor, orderBy: [OrderBy!], filter: ReferrerRewardFilter): ReferrerRewardConnection!
+     stakingStakers(first: Int, after: Cursor, orderBy: [OrderBy!], filter: AccountFilter): StakingStakerConnection!

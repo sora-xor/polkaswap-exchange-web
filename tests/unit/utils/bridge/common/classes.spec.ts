@@ -29,6 +29,7 @@ type TestTransaction = {
   endTime?: number;
   externalBlockId?: string;
   externalNetwork?: string;
+  errorMessage?: string;
   status?: string;
   to?: string;
 };
@@ -47,9 +48,45 @@ class NoopReducer extends BridgeReducer<TestTransaction> {
   }
 }
 
+class RestoringReducer extends NoopReducer {
+  public readonly restoreBlock = vi.fn(async () => true);
+
+  protected override async restoreTransactionBlockId(id: string): Promise<boolean> {
+    return await this.restoreBlock(id);
+  }
+}
+
+class DelayedMutationReducer extends BridgeReducer<TestTransaction> {
+  static instances: DelayedMutationReducer[] = [];
+  private readonly releases: VoidFunction[] = [];
+
+  constructor(options: any) {
+    super(options);
+    DelayedMutationReducer.instances.push(this);
+  }
+
+  continueNext(): void {
+    this.releases.shift()?.();
+  }
+
+  async changeState(transaction: TestTransaction): Promise<void> {
+    await new Promise<void>((resolve) => this.releases.push(resolve));
+    this.updateTransactionParams(transaction.id, { transactionState: 'done' });
+  }
+}
+
+class CleanupOnAbortReducer extends DelayedMutationReducer {
+  readonly cleanup = vi.fn(async () => undefined);
+
+  protected override async onTrackingAbort(): Promise<void> {
+    await this.cleanup();
+  }
+}
+
 describe('bridge base classes', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    DelayedMutationReducer.instances = [];
     bridgeClassMocks.delay.mockResolvedValue(undefined);
     bridgeClassMocks.isUnsignedTx.mockReturnValue(false);
   });
@@ -77,6 +114,7 @@ describe('bridge base classes', () => {
   it('updates the id returned by a successful state handler', async () => {
     const { options, updateTransaction, updateHistory } = createHarness();
     const reducer = new NoopReducer(options as any);
+    const sourceError = new Error('handler failed');
 
     await reducer.handleState('tx-1', {
       nextState: 'done',
@@ -93,6 +131,7 @@ describe('bridge base classes', () => {
   it('marks a transaction rejected when a state handler fails', async () => {
     const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(123_456);
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const sourceError = new Error('handler failed');
     const { options, removeTransactionFromProgress, updateTransaction } = createHarness({
       transactionState: 'pending',
     });
@@ -102,19 +141,100 @@ describe('bridge base classes', () => {
       nextState: 'done',
       rejectState: 'failed',
       handler: async () => {
-        throw new Error('handler failed');
+        throw sourceError;
       },
     });
 
     expect(updateTransaction).toHaveBeenCalledWith('tx-1', {
       transactionState: 'failed',
       endTime: 123_456,
+      errorMessage: 'handler failed',
     });
     expect(removeTransactionFromProgress).toHaveBeenCalledWith('tx-1');
-    expect(consoleErrorSpy).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith(sourceError);
 
     consoleErrorSpy.mockRestore();
     nowSpy.mockRestore();
+  });
+
+  it('cancels tracking without converting a pending transaction into a failure', async () => {
+    const { options, removeTransactionFromProgress, updateTransaction } = createHarness({
+      transactionState: 'pending',
+    });
+    const reducer = new NoopReducer(options as any);
+    const abortError = new Error('canceled');
+    abortError.name = 'AbortError';
+
+    await expect(
+      reducer.handleState('tx-1', {
+        nextState: 'done',
+        rejectState: 'failed',
+        handler: async () => {
+          throw abortError;
+        },
+      })
+    ).rejects.toBe(abortError);
+
+    expect(updateTransaction).not.toHaveBeenCalled();
+    expect(removeTransactionFromProgress).toHaveBeenCalledWith('tx-1');
+  });
+
+  it('settles cancellation promptly and blocks late provider callbacks from mutating history', async () => {
+    const { options, transaction, updateTransaction } = createHarness({ transactionState: 'pending' });
+    const reducer = new DelayedMutationReducer(options as any);
+    const controller = new AbortController();
+
+    const processing = reducer.process(transaction, controller.signal);
+    const expectation = expect(processing).rejects.toMatchObject({ name: 'AbortError' });
+
+    controller.abort();
+    await expectation;
+
+    reducer.continueNext();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(updateTransaction).not.toHaveBeenCalled();
+  });
+
+  it('releases reducer-specific providers when managed tracking is aborted', async () => {
+    const { options, transaction } = createHarness({ transactionState: 'pending' });
+    const reducer = new CleanupOnAbortReducer(options as any);
+    const controller = new AbortController();
+
+    const processing = reducer.process(transaction, controller.signal);
+    const expectation = expect(processing).rejects.toMatchObject({ name: 'AbortError' });
+
+    controller.abort();
+
+    await expectation;
+    expect(reducer.cleanup).toHaveBeenCalledTimes(1);
+  });
+
+  it('isolates a replacement run from an older canceled provider call that never settles', async () => {
+    const { options, transaction, updateTransaction } = createHarness({ transactionState: 'pending' });
+    const firstController = new AbortController();
+    const secondController = new AbortController();
+    const bridge = new Bridge({
+      ...options,
+      reducers: { [transaction.type]: DelayedMutationReducer },
+    } as any);
+
+    const firstRun = bridge.handleTransaction(transaction.id, firstController.signal);
+    const firstExpectation = expect(firstRun).rejects.toMatchObject({ name: 'AbortError' });
+    firstController.abort();
+    await firstExpectation;
+
+    const secondRun = bridge.handleTransaction(transaction.id, secondController.signal);
+    const firstReducer = DelayedMutationReducer.instances[0];
+    const secondReducer = DelayedMutationReducer.instances[1];
+
+    secondReducer.continueNext();
+    await secondRun;
+
+    expect(updateTransaction).toHaveBeenCalledTimes(1);
+    expect(updateTransaction).toHaveBeenCalledWith('tx-1', { transactionState: 'done' });
+    expect(firstReducer).not.toBe(secondReducer);
   });
 
   it('preserves the original end time when a handler fails from an already failed state', async () => {
@@ -122,6 +242,7 @@ describe('bridge base classes', () => {
     const { options, updateTransaction } = createHarness({
       transactionState: 'failed',
       endTime: 42,
+      errorMessage: 'still failed',
     });
     const reducer = new NoopReducer(options as any);
 
@@ -136,6 +257,7 @@ describe('bridge base classes', () => {
     expect(updateTransaction).toHaveBeenCalledWith('tx-1', {
       transactionState: 'failed',
       endTime: 42,
+      errorMessage: 'still failed',
     });
 
     consoleErrorSpy.mockRestore();
@@ -256,8 +378,7 @@ describe('bridge base classes', () => {
     expect(bridgeClassMocks.delay).toHaveBeenCalledWith(1_000);
   });
 
-  it('logs the restoration hint when block id waiting times out', async () => {
-    const consoleInfoSpy = vi.spyOn(console, 'info').mockImplementation(() => undefined);
+  it('fails explicitly when block id waiting and restoration both fail', async () => {
     const { options } = createHarness({ blockId: undefined, externalBlockId: undefined });
     bridgeClassMocks.delay.mockImplementation((_ms: number, rejectOnTimeout?: boolean) => {
       if (rejectOnTimeout === false) {
@@ -268,10 +389,25 @@ describe('bridge base classes', () => {
     });
     const reducer = new NoopReducer(options as any);
 
-    await reducer.waitForTransactionBlockId('tx-1');
+    await expect(reducer.waitForTransactionBlockId('tx-1')).rejects.toThrow(
+      '[NoopReducer]: Unable to restore a block for transaction "tx-1"'
+    );
+  });
 
-    expect(consoleInfoSpy).toHaveBeenCalledWith('[NoopReducer]: Implement "blockId" restoration by "txId"');
-    consoleInfoSpy.mockRestore();
+  it('uses reducer-specific restoration after block id waiting times out', async () => {
+    const { options } = createHarness({ blockId: undefined, externalBlockId: undefined });
+    bridgeClassMocks.delay.mockImplementation((_ms: number, rejectOnTimeout?: boolean) => {
+      if (rejectOnTimeout === false) {
+        return Promise.reject(new Error('timeout'));
+      }
+
+      return new Promise(() => undefined);
+    });
+    const reducer = new RestoringReducer(options as any);
+
+    await expect(reducer.waitForTransactionBlockId('tx-1')).resolves.toBeUndefined();
+
+    expect(reducer.restoreBlock).toHaveBeenCalledWith('tx-1');
   });
 
   it('dispatches bridge transactions to reducers by operation type', async () => {

@@ -1,0 +1,55 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": [
+    "CK",
+    "KI",
+    "PG",
+    "AE",
+    "IQ",
+    "JO"
+  ],
+  "mainArraysEdited": false,
+  "authorityContacts": false,
+  "proposedOutcomeChanges": [
+    {
+      "code": "IQ",
+      "proposal": "permit_required / not_supported",
+      "confidence": "moderate, plant-nature scope inference",
+      "file": "iq-proposed-excluded-full-row.json"
+    }
+  ],
+  "sourceRecoveries": [
+    {
+      "code": "JO",
+      "result": "Complete 13-page 2021 instructions gazette facsimile; missing source narrowed to designation/exception decisions."
+    },
+    {
+      "code": "IQ",
+      "result": "Original Arabic Gazette4273 and actual Ministry2020 consolidated English; plant-nature wording corrects prior overreliance on JKI biological-nature translation."
+    },
+    {
+      "code": "CK",
+      "result": "Full Act directly from ministry; specification media search returned access denied."
+    },
+    {
+      "code": "PG",
+      "result": "Current institutional transition report; no enacted complete law."
+    }
+  ],
+  "unchanged": [
+    "CK",
+    "KI",
+    "PG",
+    "AE",
+    "JO"
+  ],
+  "conclusion": "One conservative outcome proposal for independent root review; five unresolved cases retained on specific genuine source/scope gaps, not research exhaustion or lack of literal tea naming.",
+  "files": [
+    "iq-proposed-excluded-full-row.json",
+    "ae-source-only-proposal.json",
+    "ck-source-only-proposal.json",
+    "jo-source-only-proposal.json",
+    "ki-source-only-proposal.json",
+    "pg-source-only-proposal.json"
+  ]
+}

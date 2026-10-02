@@ -33,10 +33,13 @@ const normalizeTransactionState = (item: EvmHistory): BridgeTxStatus => {
   return item.status === TransactionStatus.Error ? BridgeTxStatus.Failed : BridgeTxStatus.Done;
 };
 
+const MAX_SYNC_TIMESTAMP_FUTURE_SKEW_SECONDS = 5 * 60;
+
 const normalizeSyncTimestamp = (timestamp: unknown, fallback = 0): number => {
   const value = Number(timestamp);
+  const latestPlausibleTimestamp = Math.floor(Date.now() / 1000) + MAX_SYNC_TIMESTAMP_FUTURE_SKEW_SECONDS;
 
-  return Number.isFinite(value) && value > 0 ? value : fallback;
+  return Number.isSafeInteger(value) && value > 0 && value <= latestPlausibleTimestamp ? value : fallback;
 };
 
 const getLatestHistoryTimestamp = (historyElements: HistoryElement[], fallback: number): number => {

@@ -38,4 +38,15 @@ describe('AddLiquidity Form source', () => {
     );
     expect(addLiquidityFormSource).toContain("import TokenInput from '@/components/shared/Input/TokenInput.vue';");
   });
+
+  it('guards confirmation dismissal with the transaction submission result', () => {
+    expect(addLiquidityFormSource).toContain('const result = await withNotifications(async () => {');
+    expect(addLiquidityFormSource).toContain('if (result.submitted) {\n    confirmDialogVisible.value = false;');
+  });
+
+  it('shows the fee for the current add-liquidity or create-pair operation', () => {
+    expect(addLiquidityFormSource).toContain(':fee="nextOperationFormattedFee"');
+    expect(addLiquidityFormSource).toContain('formatCodecNumber(networkFee.value)');
+    expect(addLiquidityFormSource).not.toContain('removeLiquidityFormattedFee');
+  });
 });

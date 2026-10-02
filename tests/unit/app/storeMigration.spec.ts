@@ -129,6 +129,9 @@ describe('app-level store migration', () => {
     expect(mainSource).not.toContain('await router.isReady()');
     expect(bootstrapSource).toContain('installStartupPlugins()');
     expect(bootstrapSource).toContain('installRuntimePlugins(app, { pinia })');
-    expect(bootstrapSource).toContain('void router.isReady().catch(');
+    expect(bootstrapSource).toContain('void router');
+    expect(bootstrapSource).toContain('.isReady()');
+    expect(bootstrapSource).toContain('.then(() => updateDocumentTitle())');
+    expect(bootstrapSource).toContain('.catch((error) =>');
   });
 });

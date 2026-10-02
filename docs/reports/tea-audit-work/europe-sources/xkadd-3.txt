@@ -1,0 +1,47 @@
+8433 400010 _|-- Téreja =
+8433 400090 |-- Té pérdorura FIT
+8433 5100 == Makine kortje shirje e kombinuar:
+8433 5100 10 Té reja =
+8433 5100 90 Té pérdorura FIT
+8433 5310 Nxjerrésit e patateve dhe korrésit e patateve:
+8433531010 _|---- Téreja =
+8433 531090 __|- pérdorura FIT
+8433 5330 ~~ - Makinat e nxjerrjes sé panxharit dhe ato t& korrjes sé
+
+panxharit:
+8433 5330 10 Té reja =
+8433 533090 __|- pérdorura FIT
+8433 5390 ~-- Té tjera:
+8433 5390 10 Té reja =
+8433 539090 __|- pérdorura FIT
+8436 8010 == Makineri pylitarie’
+8436 8010 10 Té reja =
+8436 8010 90 Té pérdorura FIT
+8701 9110 ~ = - Traktorét bujgésor dhe traktorét e pyjeve, me rrota:
+8701 9110 10 TE rinjé =
+8701 9110 90 Té pérdorur FIT
+8701 9210 ~-- Traktorét bujgésor dhe traktorét e pyjeve, me rrota:
+8701 9210 10 Té rinjé =
+8701 9210 90 Té pérdorur FIT,
+8701 9310 ~-- Traktorét bujgésor dhe traktorét e pyjeve, me rrota:
+8701 9310 10 TE rinjé =
+8701 9310 90 Té pérdorur FIT
+8701 9410 ~ = - Traktorét bujgésor dhe traktorét e pyjeve, me rrota:
+8701 941010 _|---- Té rinjé =
+8701 941090 _|---- Té pérdorur FIT
+8701 9510 ~-- Traktorét bujgésor dhe traktorét e pyjeve, me rrota:
+8701 951010 _|---- Tériné =
+8701 951090 _|--- - Té pérdorur FIT,
+9406 1000 - Prej druri:
+9406 1000 10 _|-- Serrat té reja =
+9406 100020 __|-- Serrat t& pérdorura FIT
+9406 1000 30__|-- Té tjera ~
+9406 1000.40 _|-- Té tjera t8 pérdorura FIT,
+
+(2) Norma zero kur pérputhen me kushtet e cekura né pjesén C té Aneksit 1 t8 ligjit Nr. 04/L-163 daté 31 janar 2014
+
+Drejtoria e Doganés, Veternik 1 Zona Industriale, 10.000 Prishtiné, Kosové.
+
+Tel & Fax (++ 381 38) 540 350 /540 836
+www.dogana-ks.org
+

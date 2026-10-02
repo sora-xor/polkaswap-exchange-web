@@ -1,0 +1,1057 @@
+STATUTORY INSTRUMENTS
+SUPPLEMENT No. 38                                             24th December, 2021
+
+                STATUTORY INSTRUMENTS SUPPLEMENT
+         to The Uganda Gazette No. 92 Volume CXIV, dated 24th December, 2021
+                Printed by UPPC, Entebbe, by Order of the Government.
+
+
+
+     S T A T U T O R Y                  I N S T R U M E N T S
+
+
+                                  2021 No. 68.
+
+         THE UGANDA NATIONAL BUREAU OF STANDARDS
+              (CERTIFICATION) REGULATIONS, 2021
+
+                   ARRANGEMENT OF REGULATIONS
+
+Regulation
+                              Part I—Preliminary
+
+    1.   Title
+    2.   Application of Regulations
+    3.   Interpretation
+
+                           Part II—Certification Process
+
+   4.    Application for permit to use certification mark
+   5.    Payment of certification fees
+   6.    Laboratory testing fees
+   7.    Audit
+   8.    Onsite report and recommendation report
+   9.    Corrective action following audit
+  10.    Evaluation and audit report
+  11.    Exemption from audit
+  12.    Commodity sampling and sample testing
+                                       1517
+Regulation
+
+  13.   Certification review
+  14.   Grant of permit to use certification mark
+  15.   Terms for use of permit
+  16.   Refusal to grant permit
+  17.   Permit not transferable
+  18.   Circumstances requiring new permit
+  19.   Liability of permit holder
+  20.   Surveillance audits
+  21.   Renewal of permit
+  22.   Register of certified commodities
+  23.   Application of certification mark
+  24.   Withdrawal, suspension and revocation of permit
+
+                         Part III—Miscellaneous
+
+  25.   Appeals
+  26.   Revocation of S.I. 327-1 and S.I. No.12 of 2018
+  27.   Saving of permits and continuance of applications
+
+SCHEDULES
+
+SCHEDULE 1 — CURRENCY POINT
+SCHEDULE 2 — FORMS
+SCHEDULE 3 — PERMIT FEES FOR CERTIFICATION MARK
+SCHEDULE 4 — CERTIFICATION MARK
+
+
+
+
+                                 1518
+       S T A T U T O R Y           I N S T R U M E N T S
+
+                              2021 No. 68.
+
+
+      The Uganda National Bureau of Standards (Certification)
+                       Regulations, 2021.
+
+     (Under sections 16, 18 and 43 of the Uganda National Bureau of
+                        Standards Act, Cap. 327)
+
+IN EXERCISE of the powers conferred upon the Minister responsible
+for commerce by section 43 of the Uganda National Bureau of Standards
+Act, and in consultation with the National Standards Council, these
+Regulations are made this 16th day of December, 2021.
+
+                          Part I—Preliminary
+
+1.   Title
+These Regulations may be cited as the Uganda National Bureau of
+Standards (Certification) Regulations, 2021.
+
+2.      Application Regulations
+        (1) These Regulations apply to—
+
+        (a)   manufacturers of commodities in respect of which
+              compulsory standard specifications have been declared;
+              and
+
+        (b)   manufacturers of commodities in respect of which
+              standard specifications have been declared, but which are
+              not compulsory.
+
+      (2) For the avoidance of doubt, these Regulations apply to
+goods in respect of which tax stamps are required to be affixed under
+the Tax Procedures Code Act, 2014.
+
+                                  1519
+3.    Interpretation
+In these Regulations, unless the context otherwise requires—
+
+     “Act” means the Uganda National Bureau of Standards Act,
+          Cap. 327;
+     “applicant” means a client applying for a permit to use the
+           certification mark;
+     “audit” means a systematic, independent and documented
+           process for obtaining objective evidence and evaluating
+           it objectively to determine the extent to which the audit
+           criteria are fulfilled;
+     “audit plan” means the description of activities and arrangements
+           for an audit;
+
+     “audit team” means one or more persons conducting an audit,
+           supported, if required, by a technical expert;
+
+     “auditor” means a person who conducts an audit under the Act
+           and these Regulations;
+     “authorised officer” means a person appointed by the council
+          or the director, with the approval of the council, for the
+          efficient performance of the functions of the bureau under
+          the Act;
+
+     “bureau” means the Uganda National Bureau of Standards
+          established under section 2 of the Act;
+
+     “certification” means a system that has its own rules of
+            procedure and management for carrying out certification
+            of conformity;
+
+     “certification agreement” means an undertaking by an applicant
+            to comply with certification requirements;
+     “certification mark” means a standards mark and a distinctive
+            mark;
+                              1520
+“certification requirements” means specified requirements,
+       including product requirements, which are fulfilled by
+       the applicant as a condition of establishing or maintaining
+       certification;
+
+“certification scheme” means a certification system related
+       to specified commodities, to which the same specified
+       requirements, specific rules and procedures apply;
+“commodity” means any article, product or thing which is or
+    will ultimately be the subject of trade or use;
+“compulsory standard specification” means a standard
+    specification declared under section 18 of the Act;
+“conformity” means the fulfilment of specified requirements;
+
+“conformity assessment” means a demonstration that specified
+     requirements relating to a product process, system, person
+     or body are fulfilled;
+
+“council” means the National Standards Council established
+     under section 4 of the Act;
+“currency point” has the value assigned to it in Schedule 1 to
+      these Regulations;
+
+“digital conformity mark” means a device-readable or app-
+      readable mark or code affixed or imprinted on a unit of
+      commodity of the category specified in Part II of Schedule
+      3 to these Regulations, embedding conformity-related data
+      pertaining to the unit of commodity on which it is affixed
+      or imprinted;
+
+“director” means the director of the bureau appointed under
+      section 11 of the Act;
+“lead auditor” means a member of the audit team who is
+     appointed as the leader of the audit team;
+                           1521
+“manufacture” means to make, produce, process, treat, assemble,
+    alter, modify, adapt or convert;
+
+“manufacturer” means any natural or legal person engaged in the
+    making, production, processing, treatment, assembling,
+    altering, modifying, adapting, converting or any other
+    operation in relation to a commodity;
+
+“non-conformity” means the failure to fulfil prescribed
+     requirements;
+
+“permit” means a permit issued under the Act and these
+     Regulations;
+
+“product requirement” means a requirement that relates directly
+     to a product, specified in standards or in other normative
+     documents identified by the certification scheme;  
+
+“standard” means a document, established by consensus and
+      approved by a body, that provides for common and
+      repeated use, rules, guidelines or characteristics for
+      activities or their results, aimed at the achievement of the
+      optimum degree of order in a given context and which is
+      based on the consolidated results of science, technology
+      and experience, and aimed at the promotion of optimum
+      community benefits;
+
+“surveillance audit” means a periodic evaluation of a quality
+     control system or commodity of a permit holder to
+     determine conformity with a relevant standard and with
+     the terms and conditions of the permit;
+
+“technical expert” means a person who provides specific
+      knowledge or expertise to an audit team;
+
+“testing laboratory” means a laboratory which measures,
+       examines, calibrates or otherwise determines the
+       characteristics or performance of commodities;
+                             1522
+      “unit” means a markable package and includes a bottle,
+            sachet container or other similar item used for packing
+            commodities.
+
+                   Part II—Certification Process
+
+4.    Application for permit to use certification mark
+      (1) A person who intends to manufacture any commodity in
+respect of which a standard specification is declared under section
+15 of the Act shall apply to the council or to a person acting under
+the authority of the council for a permit to use the standards mark as
+declared under section 16 of the Act or a distinctive mark as declared
+under section 18(1) (b) of the Act.
+
+     (2) An application for grant or renewal of a permit shall be in
+Form 1 set out in Schedule 2 to these Regulations.
+
+      (3) A separate application shall be made for each commodity
+and for each manufacturing facility or site.
+
+     (4) For the purposes of subregulation (3), a company
+making applications for several commodities shall differentiate each
+commodity for which certification is being sought by type, trademark,
+brand, variant or other characteristic.
+
+      (5) An authorised officer may require an applicant to submit
+additional information or to make alterations to the application as may
+be required.
+
+      (6) Where an application for a permit to use a certification
+mark meets the prescribed requirements, the applicant shall pay the
+fees specified in Schedule 3 to these Regulations in the manner set out
+in regulation 5.
+
+       (7) An application for a permit shall be valid for a period of
+nine months after which, if a permit has not been granted, the applicant
+shall submit a new application.
+                                 1523
+5.    Payment of certification fees
+      (1) The fees referred to in regulation 4 shall be paid in the
+following manner—
+
+      (a)   in respect of the category set out in Part I of Schedule 3
+            to these Regulations, pay the fees in full at the time of
+            application; and
+
+      (b)   in respect of the category set out in Part II, of Schedule 3
+            to these Regulations, pay the fees for the number of units
+            of the commodity to be produced by the applicant at the
+            time of application.
+
+     (2) The applicant may, in respect of the categories set out in
+Schedule 3 to these Regulations, pay fees for additional units of the
+commodities, while the permit is still valid.
+
+6.    Laboratory testing fees
+The applicant shall pay laboratory testing fees as may be billed by
+the bureau for tests carried out as part of the certification process in
+respect of two samples of each commodity.
+
+7.   Audit
+     (1) The bureau shall conduct an audit for each application
+submitted under these Regulations as part of the certification process.
+      (2) The audit shall be conducted by an audit team headed by a
+lead auditor.
+
+     (3) The audit team may be supported by technical experts
+from within or outside the bureau or by authorised officers.    
+
+       (4) The bureau shall inform the applicant of the team constituted
+for the audit and the date on which the audit shall be conducted.
+
+      (5) The lead auditor shall prepare an audit plan and share it with
+the audit team and the applicant, at least seven days before the audit.
+
+                                 1524
+       (6) The lead auditor shall ensure that the commodity and
+manufacturing facility are evaluated to ascertain conformity to the
+certification requirements.
+
+      (7) The lead auditor may assign a member of the audit team
+to evaluate particular aspects of the application.
+      (8) The applicant shall allow unhindered access by the audit
+team to the manufacturing facility and any other support facility
+of the commodity specified in the application, including access to
+relevant documentation related to production, quality and quantities
+of commodities to be certified.
+
+8.     Onsite report and recommendation report
+The audit team shall, on completion of the audit, prepare and present to
+the director an onsite and recommendation report to the applicant in the
+format specified in Form 2 set out in Schedule 2 to these Regulations.
+
+9.    Corrective action following audit
+      (1) Where any non-conformity is identified during the audit,
+the lead auditor shall issue a corrective action report to the applicant
+who shall acknowledge receipt of the report.
+
+      (2) The applicant shall undertake the corrective action
+indicated in the report within the agreed time and shall thereafter
+complete and submit the corrective action report to the bureau.
+
+10.   Evaluation and audit report
+      (1) The lead auditor shall complete an evaluation and audit
+report detailing the audit findings, commodity testing results, status of
+any non-conformances raised and recommendations.
+      (2) The evaluation and audit report shall be shared with
+the applicant and shall be subjected to review in accordance with
+regulation 13 to inform the certification decision.
+      (3) The evaluation and audit report shall be in Form 3 set out
+in Schedule 2 to these Regulations.
+                                 1525
+11.   Exemption from audit
+      (1) Notwithstanding any provision of these Regulations, an
+applicant shall not be required to undergo an audit—
+      (a)   where extension of certification scope is sought for
+            commodities related to those for which the applicant holds
+            a valid certification and production is undertaken in the
+            same premises and on the same production line; or
+      (b)   where an applicant holds a valid systems certification from
+            the bureau that is relevant to the safety and quality of the
+            commodity under consideration for certification.
+
+       (2) Where an applicant is exempted from an audit under
+subregulation (1), the lead auditor shall review the information
+submitted, including verification of raw materials, quality plans,
+labelling or marking and shall obtain and submit commodity samples
+for testing to inform the certification decision.
+
+      (3) For the avoidance of doubt, where an applicant exempted
+from an audit under subregulation (1) seeks an extension of certification
+scope for unrelated commodities, an audit shall be conducted.
+
+12.   Commodity sampling and sample testing
+      (1) Where samples are required for commodity evaluation,
+the applicant shall provide all reasonable facilities and assistance to
+the audit team or to an authorised officer to collect and take samples of
+the commodity in the presence of the applicant or a person authorised
+by the applicant.
+
+       (2) Commodity sampling, evaluation or testing may be done
+at the applicant’s manufacturing facility, warehouse or other storage
+facility, market or other location where the sample is available.
+
+      (3) Commodity sampling, evaluation and testing may be
+carried out by an auditor or authorised person using field testing
+equipment, in the presence of the applicant or a person authorised by
+the applicant.
+                                1526
+     (4) The cost of obtaining, transporting and testing of samples
+and any other expense incurred in connection with the commodity
+evaluation shall be borne by the applicant.
+
+       (5) Commodity testing shall be undertaken by the bureau or
+in a testing laboratory recognised by the bureau under the laboratory
+recognition scheme.
+
+      (6) Where the bureau does not have capacity for testing a
+commodity, the samples may be tested at the applicant’s facility using
+the applicant’s testing equipment by or under the supervision of the
+bureau and the testing shall be carried out using the relevant standard
+test methods for the commodity.
+
+      (7) The requirements against which the commodities are
+to be evaluated shall be those contained in the specified standards,
+product certification scheme and other documents as determined by
+the bureau.
+
+     (8) The bureau shall communicate to the applicant the results
+of commodity testing carried out under this regulation.
+
+13.   Certification review
+      (1) The audit team or an authorised officer shall prepare a
+detailed audit report of the findings of the audit and test results.
+
+      (2) The audit report shall be reviewed by an authorised person
+who was not a member of the audit team conducting the audit or
+commodity testing, who shall recommend to the council or to a person
+acting under the authority of the council, whether to grant or not to
+grant the permit.
+
+14.   Grant of permit to use certification mark
+      (1) The council or person acting under the authority of the
+council may grant a permit subject to such conditions as the council or
+that person may think fit to impose.
+
+                                 1527
+       (2) A permit shall be issued for each commodity for which
+certification has been applied for and granted.
+
+         (3)   A permit shall be valid for twelve months from the date of
+issue.
+
+      (4) For the purposes of this regulation, every brand or variant
+of a commodity shall be considered a commodity.
+
+15.      Terms for use of permit
+         (1) A permit holder shall—
+
+         (a)   establish and maintain, to the satisfaction of the bureau,
+               a system of controls, including inspection and testing of
+               commodities;
+
+         (b)   ensure that the commodity in respect of which a permit
+               has been granted conforms to the standard requirements at
+               all times; and
+
+         (c)   in case of suspension, withdrawal or cancellation of
+               a permit, discontinue its use and immediately stop the
+               manufacture, distribution or sale of the commodity
+               and withdraw all promotional and advertising material
+               containing any reference to that permit and the certification
+               mark.
+
+     (2) A permit holder shall, in addition to the requirements of
+subregulation (1)—
+
+         (a)   ensure that any record maintained in relation to the
+               manufacturing process is made available for evaluation
+               and review by an auditor or authorised officer and shall,
+               at the request of the auditor or authorised officer, allow
+               the removal of the record to the premises of the bureau for
+               further scrutiny; and
+
+                                    1528
+      (b)   allow an auditor or authorised officer access to the
+            premises where the commodity specified in the permit
+            is manufactured or held for the purpose of evaluating
+            materials, production processes, finished commodities,
+            quality assurance facilities and records.
+
+      (3) A permit holder in respect of a commodity of the category
+specified in Part II of Schedule 3 to these Regulations shall affix or
+imprint on every unit of the commodity a digital conformity mark
+before releasing the commodity from the factory or production site.
+
+16.  Refusal to grant permit
+     (1) The council or a person acting under the authority of the
+council may refuse to grant a permit where—
+
+      (a)   the commodity in respect of which an application has been
+            made does not conform to the standard specifications;
+
+      (b)   other certification requirements under these Regulations
+            have not been complied with;
+
+      (c)   the commodity in respect of which an application has been
+            made is banned by the Minister under section 24C of the
+            Act.
+      (2) The council or a person acting under the authority of the
+council, shall state the reasons for refusal in writing and notify the
+applicant of the refusal within fifteen working days after the decision.
+
+17. Permit not transferable
+A permit issued under these Regulations is not transferable.
+
+18.   Circumstances requiring new permit
+      (1) A permit holder shall apply for a new permit—
+
+      (a)   in the case of relocation of the manufacturing facility;
+                                 1529
+      (b)   where there is a change in the legal status of the company,
+            including a change in the names or ownership of the
+            company; or
+
+      (c)   where there  has been any modification in the commodity
+            or manufacturing process that affects the inherent
+            properties of the commodity.
+
+      (2) Where there is any change of location under subregulation
+(1) (a) or a modification under subregulation (1)(c), the permit holder
+shall notify the bureau within twenty-one working days after the
+change.
+
+19. Liability of permit holder
+A permit holder shall be responsible for the quality and safety of the
+commodity in respect of which the permit is granted and shall be liable
+for any damage or injury arising from the normal use of the commodity.
+
+20.   Surveillance audits
+      (1) The bureau may conduct surveillance audits or commodity
+sampling and testing at the manufacturing facility, warehouse or other
+storage facility, market or other location where the commodities are
+available, to ensure that systems and procedures already evaluated are
+being maintained.
+
+      (2) The bureau shall determine the frequency and extent of
+audits and may conduct surveillance audits without notice.
+
+      (3) The permit holder shall allow unhindered access by an
+audit team to the manufacturing facility, related ancillary services,
+including access to relevant documentation related to production and
+quality and quantities of certified commodities.
+
+      (4) A surveillance audit may also be conducted where there
+are complaints, modifications to a commodity, production process or
+key personnel in an organisation to assess the impact of the changes on
+the quality and safety of the commodities.
+                                 1530
+21.    Renewal of permit
+       (1) A permit holder shall apply to the council or to a person
+acting under the authority of the council for renewal of the permit, at
+least three months before the expiry of the permit.
+
+      (2) An application for renewal of a permit, shall be processed
+in the same manner as the initial application.
+
+      (3) The council may renew a permit without undertaking an
+audit in the following circumstances—
+      (a)   where the permit holder has demonstrated conformance to
+            the requirements within the certification year as verified
+            through surveillance audits or sampling and testing; or
+      (b)   where the permit holder holds a valid systems certification
+            from the bureau that is relevant to the safety and quality of
+            the commodity under consideration for certification.
+
+22.  Register of certified commodities
+     (1) The bureau shall maintain an up to date register of permit
+holders which shall include—
+      (a)   identification of the permit holder;
+      (b)   identification of the commodity;
+      (c)   the standard specification to which the commodity has
+            been certified;
+      (d)   the permit expiry date;
+      (e)   the permit number; and
+      (f)   any other information required by the bureau.
+
+      (2) The bureau shall publish the register maintained under
+subregulation (1) on its website or in a newspaper of national
+circulation.
+
+                                 1531
+     (3) The bureau shall update the register whenever a permit is
+renewed, suspended, withdrawn or cancelled.
+
+23.   Application of certification mark
+      (1) The certification mark set out in Schedule 4 to these
+Regulations shall only be applied to commodities in respect of which
+there is a valid permit.
+
+     (2) The certification mark shall not be applied to commodities
+manufactured in a facility other than a facility in respect of which an
+address is specified in the permit.
+       (3) The bureau may issue guidelines for the application of the
+certification mark on commodities.
+
+24.   Withdrawal, suspension and revocation of permit
+      (1) The council may, at any time, withdraw, suspend or revoke
+a permit for a specified period if it is satisfied that—
+
+      (a)   the commodity marked with the certification mark does
+            not conform to the standard specifications;
+      (b)   the permit holder has not complied with the conditions of
+            the permit;
+      (c)   the permit holder has not provided reasonable facilities to
+            the audit team;
+      (d)   there is misrepresentation of the commodity;
+
+      (e)   there are deceptive advertisements in respect of the
+            commodity;
+      (f)   the manufacturer obtained the permit unlawfully, including
+            through bribery or fraud;
+      (g)   the permit holder has been convicted of an offence under
+            the Act; and
+      (h)   the permit holder has contravened any of the provisions of
+            these Regulations.
+                                 1532
+      (2) The council shall, before making a decision to withdraw,
+suspend or revoke a permit, serve the permit holder with a written
+notice stating the grounds of the intended action.
+
+      (3) The permit holder shall, within fourteen days after receipt
+of the notice, provide a written explanation to the council stating why
+the permit should not be withdrawn, suspended or revoked.
+
+      (4) The council shall, where an explanation is submitted by
+the permit holder, consider the explanation and give the permit holder
+an opportunity to be heard as soon as possible.
+
+      (5)   The council may—
+
+      (a)   where no explanation is submitted by the permit holder
+            within the fourteen days referred to in subregulation (3);
+            or
+
+      (b)  where, in the opinion of the council the explanation
+           submitted is unsatisfactory,
+withdraw, suspend or revoke the permit.
+
+      (6) Where the council withdraws, suspends, or revokes a
+permit under subregulation (5), it shall, immediately, in writing,
+inform the permit holder of the withdrawal, suspension or revocation.
+
+      (7) Where a permit has been withdrawn, suspended or revoked
+or has not been renewed on the expiry of the period of its validity, the
+permit holder shall immediately discontinue the use of the permit and
+stop the manufacture, sale, export or distribution of the commodity in
+respect of which the permit relates.
+
+      (8) The council, may, where the permit holder has fulfilled all
+the conditions for which the suspension or withdrawal was made, lift
+the suspension or withdrawal.
+
+
+                                 1533
+     (9) The council or person acting under the authority of the
+council may cancel or terminate a permit, upon the request of the
+permit holder, where—
+
+      (a)   the production of the commodity has been terminated by
+            the manufacturer or other lawful authority; or
+
+      (b)   the manufacturer applies for cancellation of the permit.
+
+                      Part III—Miscellaneous
+
+25.   Appeals
+      (1) A person aggrieved by—
+      (a)   the refusal to issue a permit;
+
+      (b)   the attachment of any condition to a permit;
+
+      (c)   the variation of any conditions in a permit;
+      (d)   the withdrawal, suspension, revocation or cancellation of
+            a permit; or
+      (e)   a decision of the director to suspend production of a
+            commodity or close premises under section 24A of the
+            Act,
+may, within fourteen days of his or her being informed of that action,
+appeal in writing to the Minister through the director.
+
+      (2) The director shall, within fourteen days of being informed
+of the action, forward the appeal to the Minister with any comments as
+he or she may think fit.
+
+26. Revocation of S.I. 327-1 and S.I. 12 of 2018
+The following Regulations are revoked—
+
+      (a)   the Uganda National Bureau of Standards (Certification)
+            Regulations; and   
+                                1534
+      (b)   the Uganda National Bureau of Standards (Use of
+            Distinctive Mark) Regulations, 2018.
+
+27.  Saving of permits and continuance of applications
+     (1) Any permit issued under the Regulations revoked
+under regulation 26, and which is valid, immediately before the
+commencement of these Regulations shall have effect from the
+commencement of these Regulations, as if granted under these
+Regulations until it expires.
+
+     (2) Every application made under the Regulations revoked
+under regulation 26 and which is wholly or partly dealt with by the
+bureau on the commencement of these Regulations is to be continued
+and dealt with in all respects as if it had been made under these
+Regulations.
+
+
+
+
+                               1535
+                              SCHEDULE 1
+
+                                                               Regulation 3
+                          CURRENCY POINT
+
+A currency point is equivalent to twenty thousand shillings.
+
+
+
+
+                                   1536
+                                  SCHEDULE 2
+
+                                       FORMS
+
+                                                                         Regulation 4(2)
+                                      FORM 1
+
+                                                                    Document No: CERT/
+                  UGANDA NATIONAL BUREAU OF STANDARDS               PC/F02
+                          CERTIFICATION SCHEME                      Effective Date:
+                                                                    20/07/2018
+                                                                    Issue No:
+Document Title:          APPLICATION FORM FOR PERMIT                03             Rev. 01
+                           A.    APPLICANT’S INFORMATION
+Company Name
+Tax Identification Number (TIN)
+                                           Please attach Certificate of Registration of
+Business Registration
+                                           Business
+                                                          Manufacturing facility address
+Company Address           Office address
+                                                          (if different)
+
+District
+Physical address
+Postal address
+Email address
+Tel. contact(s)
+Personnel details
+                          Chief Executive                 Quality Control In-charge
+Name
+Designation/Title
+Mobile number
+Email address
+Number of employees       Males                 Females          Total
+Business owner (Tick)     Male                  Female           Disabled?
+Age of business owner     Below 25              25-35            Above 35
+Production capacity       Installed capacity:             Actual capacity:
+Projected       annual
+                          No. of commodity units:         SKU:
+production
+                                                          Value of exports (USD) per
+Annual turnover:
+                                                          year:
+
+                                           1537
+                               B: PRODUCT INFORMATION
+
+                                           Commodity
+The applicant is required to declare       name
+proof of ownership of the trademark
+                                           Brand name
+/brand name or provide a letter
+                                           (s)
+of consent from the owner of the
+trademark/ brand name.                     Commodity
+                                           standard
+I hereby declare that all information given in this application form is correct to the best of
+my knowledge.
+                        Signature
+
+A u t h o r i z e d     Name
+                                                                        Applicant’s stamp
+representative   of
+                        Designation
+the applicant
+                        Date
+
+
+
+
+                                           1538
+                                      FORM 2
+                                                                        Regulation 8
+
+                    UGANDA NATIONAL BUREAU OF                Document No: CERT/
+                           STANDARDS                         PC/F08
+                                                             Effective Date:
+                       CERTIFICATION SCHEME                  1/09/2016
+Document Title:     ON-SITE AND RECOMMENDATION               Issue No:
+                                                                            Rev. 00
+REPORT                                                           02
+                                                                        File No.
+Date of visit
+                                                               Permit   CERT/PC/
+Company name &                                                 No.
+physical address                                                        ………….
+
+
+Auditors
+
+Nature of assessment
+
+Commodity(s)
+
+Previous corrective actions where applicable
+
+Cleared / Not cleared. Comments
+
+Outcome of the visit/audit
+
+Audit findings
+No. of major non-
+                                       No. of minor non-conformances
+conformances
+Recommendation
+
+Signed                                 Signed
+                                       Management
+Lead auditor
+                                       representative
+
+
+
+
+                                         1539
+                                                                        Regulation 10 (3)
+                                        FORM 3
+
+                       UGANDA NATIONAL BUREAU OF
+                              STANDARDS                          Document No: CERT/
+                                                                 PC/F05
+                            CERTIFICATION SCHEME
+
+                      Effective Date: 05/01/2019
+
+Document Title:       EVALUATION/ AUDIT REPORT FOR
+                                                    Issue No:
+                               PRODUCT   CERTIFICA-           Rev. 00
+                                                    04
+                               TION
+   General Information
+                                                 Date of assessment:
+   Company Name                                                        Application No.
+
+   Company Address
+                                                                       PC/2019/……
+   Persons met                                           (Attach attendance list CERT/F06)
+   Audit team                                    Lead auditor:
+                      Auditor(s):
+   Name of commodity(ies) & brand(s)
+   Standard number and title
+   Confirm whether the company has a copy
+   of the relevant standard(s)
+   Is the product the same as that declared in
+   the application?
+   Is th eproduction facility the same as that
+   declared in the application?
+
+   Audit objectives
+
+   For automatic renewals (Scheme B), pro-
+   vide justification
+
+
+                                                            Findings—Provide evidence of
+                                                   Y   N
+                                                            conformity or non-conformity
+   Verification of Purchased Inputs/Raw
+   Materials
+   Are the raw materials the same as those
+   declared in the application? If not, state
+   additional raw materials and/or additives
+   not declared in the application
+
+                                          1540
+Are the raw materials confirmed the same
+as those declared in the product label (as
+applicable)?
+What records are maintained for incoming
+raw materials? (As a minimum, the list of
+raw materials, source and quantities)
+Is the storage of raw materials suitable
+and adequate?
+Production and Manufacturing Process
+Control
+Was the company in production on the
+day of the audit?
+Briefly outline the key production process
+steps
+Outline the production process controls
+(steps where monitoring is done, what is
+checked and the limits)
+What records are maintained for the
+production process controls?
+Measuring Equipment and Testing
+Facilities
+What measuring and testing equipment is
+being used?
+Is test and measuring equipment used
+calibrated or verified?
+
+
+                                                Y   N   Findings—Provide evidence of
+                                                        conformity or non-conformity
+Product Assessment
+Specify the key parameters being tested
+for the finished product
+What records are kept in relation to
+finished product assessment?
+Specify whether test results from in-
+house analysis of products conform to
+national standards
+Summarise results within past one year
+in table (Attach copies of test certificates)
+Are the non-conforming products clearly
+identified and segregated? Specify
+how the non-conforming products are
+handled?
+
+                                         1541
+Is the finished products storage suitable
+and adequate?
+Product Presentation
+Product packaging
+Describe the nature of packaging. Is
+product packaging appropriate for the
+intended use e.g., food grade material for
+food products, and proper storage and
+handling?
+Are the quantities declared the same as
+those verified on-site?
+Do the product labels and marks comply
+with the requirements of the relevant
+standards? (Attach filled labelling
+checklist). If non-conforming, verify
+stock and specify quantity.
+
+
+                                               Y   N   Findings—Provide evidence of
+                                                       conformity or non-conformity
+Product Facilities and GMPs
+Housekeeping
+Are the floors, walls and ceiling maintained
+clean? What cleaning chemicals are
+used for cleaning the premises? Is the
+equipment suitable and maintained
+clean? What cleaning chemicals are used
+for cleaning the equipment? Is there an
+established routine for cleaning both the
+equipment and premises?
+Personal Hygiene
+Are valid medical certificates maintained
+for personnel accessing production
+line, (where applicable)? Are personnel
+routinely inspected for hygiene? Is
+appropriate protective wear provided and
+being used? Are toilet facilities provided
+and maintained clean? Are hand washing
+facilities provided?
+Pest Prevention and control
+Specify how pest prevention and control
+is handled.
+
+
+
+
+                                        1542
+     Waste and waste disposal
+     Specify how solid and liquid waste
+     management is done?
+
+
+1       Summary of Independent Test Results
+        (Provide a summary of results within past one year)
+    Product & brand    Submission     Certification
+                                                      Pass/Fail    Testing Lab
+         name             Date         Number
+
+
+
+Were samples obtained for independent testing? Indicate sample numbers.
+Specify samples that were not picked, reason and follow up actions.
+
+2       Non-Conformances Raised (where applicable)
+        Confirm whether non-conformances arising out of the previous audit
+        were satisfactorily closed.
+        (Specify number of non-conformances raised, complete the table be-
+        low and attach CAR forms)
+
+                                                        Adequacy of corrective
+      Non-conformity            Corrective action
+                                                              actions
+
+
+
+3       Audit Conclusion
+
+4       Recommendation
+        Is product(s) recommended for certification? If no, specify reasons.
+
+5         Authentication:
+      Audit Team                    Name                    Signature
+Lead Auditor
+Auditor
+
+
+
+
+                                      1543
+                               SCHEDULE 3
+                                                                         Regulation 5
+
+          PERMIT FEES FOR CERTIFICATION MARK
+
+                                      PART I
+                     Category of           Amount
+     Type of Fee                                              Fees billed
+                     Enterprises           (UGX)
+
+                     Micro and small       Shs. 500,000
+                     enterprises           per year           Per permit issued to a
+                                                              commodity/product and
+                                                              per brand
+
+                                                              *This fees are exclusive
+     Certification                                            of calibration and pre-
+                     Medium and            1,000,000 per      package       verification
+1.   fees            large enterprises     year               costs, and such other
+                                                              incidental costs as may
+                                                              be associated with the
+                                                              certification process.
+                                         PART II
+                     Category of
+                     Commodities
+                                           Amount
+                     for Digital                              Fees billed
+                                           (UGX)
+                     Conformity
+     Type of Fee     Mark
+2.                                                            Fees computed on
+     Certification   1.Cosmetics                              the basis of annual
+                                            Shs.18 per unit
+     fees            2. Electricals                           production per unit
+                                           of commodity
+                     3. Construction                          *This fee is inclusive of
+                        materials                             conformity assessment
+                                                              and calibration fees.
+
+
+
+
+                                         1544
+    SCHEDULE 4
+
+                     Regulation 23
+
+CERTIFICATION MARK
+
+
+
+
+       1545
+Cross References
+
+Tax Procedures Code Act, 2014, Act 14 of 2014
+
+
+
+
+                                       HON. FRANCIS MWEBESA
+                       Minister of Trade, Industries and Cooperatives
+
+                                 1546
+1547
+1548
+

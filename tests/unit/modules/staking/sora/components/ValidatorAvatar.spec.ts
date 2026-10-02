@@ -2,11 +2,11 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { resolveValidatorAvatarUrl } from '@/modules/staking/sora/utils/validatorAvatar';
 
-const toDwebLinkMock = vi.fn((url: string) => `https://ipfs.example/${url}`);
+const toIpfsGatewayUrlMock = vi.fn((url: string) => `https://ipfs.example/${url}`);
 
 vi.mock('@/utils/ipfs', () => ({
   __esModule: true,
-  toDwebLink: (url: string) => toDwebLinkMock(url),
+  toIpfsGatewayUrl: (url: string) => toIpfsGatewayUrlMock(url),
 }));
 
 const createValidator = (image?: string) => ({
@@ -27,15 +27,15 @@ describe('ValidatorAvatar', () => {
     expect(resolveValidatorAvatarUrl(validator as any)).toBeNull();
   });
 
-  it('converts ipfs image to dweb link', () => {
+  it('converts IPFS images to maintained gateway links', () => {
     const validator = createValidator('ipfs://hash');
     expect(resolveValidatorAvatarUrl(validator as any)).toBe('https://ipfs.example/ipfs://hash');
-    expect(toDwebLinkMock).toHaveBeenCalledWith('ipfs://hash');
+    expect(toIpfsGatewayUrlMock).toHaveBeenCalledWith('ipfs://hash');
   });
 
   it('falls back to original url when conversion fails', () => {
     const error = new Error('boom');
-    toDwebLinkMock.mockImplementationOnce(() => {
+    toIpfsGatewayUrlMock.mockImplementationOnce(() => {
       throw error;
     });
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});

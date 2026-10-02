@@ -63,4 +63,16 @@ describe('useQrCodeParser', () => {
       params: { asset },
     });
   });
+
+  it('accepts blank or positive decimal amounts and rejects unsafe numeric forms', () => {
+    const state = useQrCodeParser();
+
+    expect(() => state.checkAmount()).not.toThrow();
+    expect(() => state.checkAmount('')).not.toThrow();
+    expect(() => state.checkAmount('000.0100')).not.toThrow();
+
+    for (const amount of ['0', '-1', '1e3', '1abc', ' 1', '1.', 'Infinity', 'NaN']) {
+      expect(() => state.checkAmount(amount)).toThrow(`[QR Code]: Invalid amount: ${amount}`);
+    }
+  });
 });

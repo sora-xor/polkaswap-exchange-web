@@ -97,6 +97,7 @@ const filter = ref<SnapshotFilter>(filters[0]);
 const currData = ref<Nullable<NetworkSnapshot>>(null);
 const prevData = ref<Nullable<NetworkSnapshot>>(null);
 const hasResolvedData = ref(false);
+let updateRequestId = 0;
 
 const parentLoading = computed(() => props.parentLoading);
 const { loading, withLoading, withParentLoading } = useLoading({ parentLoading });
@@ -195,6 +196,8 @@ const fetchActiveAccountsOrZero = async (from: number, to: number): Promise<FPNu
 };
 
 const updateData = async () => {
+  const requestId = ++updateRequestId;
+
   await withLoading(async () => {
     await withParentLoading(async () => {
       try {
@@ -209,6 +212,8 @@ const updateData = async () => {
           fetchActiveAccountsOrZero(previousFrom, previousTo),
         ]);
 
+        if (requestId !== updateRequestId) return;
+
         currData.value = Object.freeze(groupData(current, currentActiveAccounts));
         prevData.value = Object.freeze(groupData(previous, previousActiveAccounts));
         hasResolvedData.value =
@@ -218,6 +223,8 @@ const updateData = async () => {
           !previousActiveAccounts.isZero() ||
           nodeIsConnected.value;
       } catch (error) {
+        if (requestId !== updateRequestId) return;
+
         console.error(error);
         hasResolvedData.value = nodeIsConnected.value;
       }
@@ -253,6 +260,7 @@ onMounted(() => {
 
 if (getCurrentScope()) {
   onScopeDispose(() => {
+    updateRequestId += 1;
     currData.value = null;
     prevData.value = null;
     hasResolvedData.value = false;

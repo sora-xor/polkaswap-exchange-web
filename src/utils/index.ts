@@ -72,7 +72,7 @@ export async function waitForSoraNetworkFromEnv(): Promise<SoraNetwork> {
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
-    return navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(text);
   } catch (err) {
     console.error('Could not copy text: ', err);
   }

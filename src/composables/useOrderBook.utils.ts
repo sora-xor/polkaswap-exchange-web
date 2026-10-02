@@ -95,4 +95,4 @@ export async function runOrderBookSubscription(options: SubscriptionOptions): Pr
   });
 }
 
-export type { OrderBookPriceVolumeAggregated, OrderBookPriceVolume };
+export type { OrderBookPriceVolume };

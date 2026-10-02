@@ -30,6 +30,7 @@ describe('installPolkaswapAgentApi', () => {
     window.removeEventListener(POLKASWAP_AGENT_READY_EVENT, listener as EventListener);
 
     expect(window.PolkaswapAgent).toBe(api);
+    expect(Object.isFrozen(api)).toBe(true);
     expect(listener).toHaveBeenCalledTimes(1);
     expect(events[0].detail).toEqual({
       api,
@@ -48,5 +49,16 @@ describe('installPolkaswapAgentApi', () => {
 
     expect(second).toBe(first);
     expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it('replaces an untrusted pre-existing global instead of adopting it', () => {
+    const untrusted = { version: 'v1', executeSwap: vi.fn() } as unknown as typeof window.PolkaswapAgent;
+    window.PolkaswapAgent = untrusted;
+
+    const api = installPolkaswapAgentApi({ dependencies: createDependencies() });
+
+    expect(api).not.toBe(untrusted);
+    expect(window.PolkaswapAgent).toBe(api);
+    expect(Object.isFrozen(api)).toBe(true);
   });
 });

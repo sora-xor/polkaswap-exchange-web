@@ -122,6 +122,33 @@ describe('walletconnect provider modal guard', () => {
     expect(modal.openModal).toHaveBeenCalledWith({ uri: 'wc:test' });
     expect(modal.closeModal).toHaveBeenCalledTimes(1);
     expect((wc as unknown as { session?: unknown }).session).toBe(session);
+    expect(listeners).toHaveLength(0);
+  });
+
+  it('rejects and unsubscribes when the modal reports closure synchronously', async () => {
+    const { provider, client } = createClientStubs();
+    const unsubscribe = vi.fn();
+    const approval = vi.fn(() => new Promise<never>(() => undefined));
+    const modal = {
+      openModal: vi.fn(),
+      closeModal: vi.fn(async () => undefined),
+      subscribeModal: vi.fn((callback: (state: ModalState) => void) => {
+        callback({ open: false });
+        return unsubscribe;
+      }),
+    };
+
+    mocks.universalProviderInit.mockResolvedValue(provider);
+    mocks.ensureWalletConnectModal.mockResolvedValue(modal);
+    client.connect.mockResolvedValue({ uri: undefined, approval });
+
+    const wc = new TestWcProvider({ chains: ['0x01'] });
+
+    await expect(wc.connect()).rejects.toThrow('Connection request reset. Please try again.');
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(provider.abortPairingAttempt).toHaveBeenCalledTimes(1);
+    expect(approval).not.toHaveBeenCalled();
+    expect(modal.closeModal).toHaveBeenCalledTimes(1);
   });
 
   it('fails fast when the modal does not open', async () => {

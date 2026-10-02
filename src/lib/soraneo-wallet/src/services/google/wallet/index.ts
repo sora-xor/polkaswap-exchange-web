@@ -45,13 +45,13 @@ class GoogleDriveWallet implements InjectedWindowProvider {
   }
 
   /**
-   * Loads the Google clients before the user clicks the wallet row. This keeps
-   * the later token prompt inside the browser's click activation window.
+   * Preloads only generic OAuth clients so the later token prompt keeps click activation.
+   * Drive discovery and backup access remain deferred until the user chooses Google.
    */
   async prepare(): Promise<void> {
-    if (!GDriveStorage.hasKey || GDriveStorage.ready) return;
+    if (!GDriveStorage.hasKey || GDriveStorage.authReady) return;
 
-    await GDriveStorage.init();
+    await GDriveStorage.prepare();
   }
 }
 

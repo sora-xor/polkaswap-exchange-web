@@ -496,7 +496,7 @@ vi.mock('@/utils/device', () => ({
 }));
 
 vi.mock('@/utils/ipfs', () => ({
-  toDwebLink: (value: string) => value,
+  toIpfsGatewayUrl: (value: string) => value,
 }));
 
 vi.mock('@/utils/storage', () => ({

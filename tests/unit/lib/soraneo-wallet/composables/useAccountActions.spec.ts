@@ -131,6 +131,18 @@ describe('useAccountActions', () => {
     expect(actions.accountDeleteVisibility.value).toBe(false);
   });
 
+  it('keeps the delete confirmation enabled when its persisted flag is corrupt', async () => {
+    accountActionsMocks.settingsGetMock.mockReturnValue('{');
+    const { useAccountActions } = await loadAccountActions();
+    const actions = useAccountActions();
+    const account = { address: '0x2', source: AppWallet.PolkadotJS } as any;
+
+    expect(() => actions.handleAccountAction(AccountActionTypes.Delete, account)).not.toThrow();
+
+    expect(actions.accountDeleteVisibility.value).toBe(true);
+    expect(accountActionsMocks.deleteAccountMock).not.toHaveBeenCalled();
+  });
+
   it('renames Google Drive accounts and updates the connected wallet label', async () => {
     const { useAccountActions } = await loadAccountActions();
     const actions = useAccountActions();

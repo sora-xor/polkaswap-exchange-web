@@ -311,7 +311,8 @@ i.icon-divider {
 
 html[dir='rtl'] {
   .app-main {
-    flex-direction: row-reverse;
+    // A row already follows RTL; reversing it again puts the sidebar outside its mirrored controls.
+    flex-direction: row;
   }
 }
 
@@ -340,6 +341,9 @@ html[dir='rtl'] {
 
 @include desktop {
   .app-main--swap,
+  .app-main--burn,
+  .app-main--bots,
+  .app-main--store,
   .app-main--polkamarkt,
   .app-main--vaults,
   .app-main--vaultdetails,

@@ -1,0 +1,18 @@
+{
+  "mergedAt": "2026-09-30T07:50:41.951796+00:00",
+  "changes": [
+    {
+      "code": "ER",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "docs/reports/tea-audit-work/africa-scope-resolution/er-proposed-override.json"
+    },
+    {
+      "code": "GW",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "docs/reports/tea-audit-work/africa-scope-resolution/gw-proposed-override.json"
+    }
+  ],
+  "liveChangesMade": false
+}

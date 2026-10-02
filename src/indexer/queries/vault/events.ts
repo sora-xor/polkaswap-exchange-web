@@ -37,6 +37,7 @@ const polkaswapVaultEventsFilter = (vaultId: string | number, fromTimestamp?: nu
 
 const parseVaultEvents = (event: VaultEventBaseEntity): VaultEvent => {
   return {
+    id: event.id,
     amount: event.amount ? new FPNumber(event.amount) : null,
     timestamp: event.timestamp * 1000,
     type: event.type,

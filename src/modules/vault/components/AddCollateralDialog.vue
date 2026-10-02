@@ -280,17 +280,19 @@ const handleAddCollateral = async () => {
   }
 
   try {
-    await withNotifications(async () => {
+    const result = await withNotifications(async () => {
       if (!(props.vault && props.lockedAsset)) {
         throw new Error('[api.kensetsu.depositCollateral]: vault or asset is null');
       }
       await api.kensetsu.depositCollateral(props.vault, collateralValue.value, props.lockedAsset);
     });
+
+    if (!result.submitted) return;
+
+    isVisible.value = false;
     emit('confirm');
   } catch (error) {
     console.error(error);
-  } finally {
-    isVisible.value = false;
   }
 };
 

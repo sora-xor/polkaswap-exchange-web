@@ -1,11 +1,13 @@
 import { WithKeyring, Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { shallowRef } from 'vue';
 
 import type { Node } from '@/types/nodes';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 import { determineTransferType } from '@/utils/bridge/sub/utils';
+import type { NodesConnection } from '@/utils/connection';
 
 import { AcalaParachainAdapter } from './adapters/parachain/acala';
 import { AstarParachainAdapter } from './adapters/parachain/astar';
@@ -28,6 +30,24 @@ type PathNetworks = {
   standalone?: SubNetwork;
 };
 
+type PathAdapters = {
+  soraParachain?: SoraParachainAdapter;
+  relaychain?: RelaychainAdapter;
+  parachain?: ParachainAdapter<any>;
+  standalone?: SubAdapter;
+};
+
+export type SubNetworkConnectionState = Readonly<{
+  network: SubNetwork | null;
+  connection: NodesConnection | null;
+  connecting: boolean;
+  ready: boolean;
+}>;
+
+const hasApiRegistry = (apiInstance: unknown): boolean => {
+  return Boolean(apiInstance && typeof apiInstance === 'object' && (apiInstance as { registry?: unknown }).registry);
+};
+
 export class SubNetworksConnector {
   public soraParachain?: SoraParachainAdapter;
   public relaychain?: RelaychainAdapter;
@@ -39,6 +59,14 @@ export class SubNetworksConnector {
 
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
+  /**
+   * Keeps a small reactive invalidation signal beside the raw connector.
+   *
+   * The connector itself must stay out of Vue reactivity because it owns
+   * Polkadot API instances. Consumers observe `connectionState` instead.
+   */
+  private readonly connectionStateRevision = shallowRef(0);
+
   constructor() {
     this.accountApi = new WithKeyring();
   }
@@ -49,6 +77,34 @@ export class SubNetworksConnector {
 
   get network(): SubAdapter {
     return (this.parachain ?? this.relaychain ?? this.soraParachain ?? this.standalone) as SubAdapter;
+  }
+
+  /**
+   * Returns a reactive, immutable view of the selected Substrate connection.
+   *
+   * Reading both revision-backed status objects lets Vue invalidate consumers
+   * after a late adapter attachment and after subsequent node transitions,
+   * without proxying the connector, connection, or API instances.
+   */
+  get connectionState(): SubNetworkConnectionState {
+    void this.connectionStateRevision.value;
+
+    const adapter = this.network as SubAdapter | undefined;
+    const connection = adapter?.subNetworkConnection ?? null;
+    const nodeStatus = connection?.status;
+    const networkApi = adapter?.connection?.api;
+    const accountApi = this.accountApi?.connection?.api;
+
+    return Object.freeze({
+      network: this.destinationNetwork ?? null,
+      connection,
+      connecting: Boolean(nodeStatus?.nodeAddressConnecting),
+      ready: Boolean(nodeStatus?.connected && hasApiRegistry(networkApi) && hasApiRegistry(accountApi)),
+    });
+  }
+
+  private touchConnectionState(): void {
+    this.connectionStateRevision.value += 1;
   }
 
   protected getChains(network: SubNetwork): PathNetworks {
@@ -72,6 +128,17 @@ export class SubNetworksConnector {
     }
 
     return path;
+  }
+
+  /**
+   * Lists every chain connection required to open the selected destination.
+   *
+   * Parachain transfers also need their relay chain and the matching SORA
+   * parachain. Exposing this lightweight route lets startup recovery seed all
+   * node lists before any raw Polkadot API adapter is constructed.
+   */
+  public getRequiredNetworks(network: SubNetwork): SubNetwork[] {
+    return [...new Set(Object.values(this.getChains(network)).filter(Boolean) as SubNetwork[])];
   }
 
   protected getConnection<Adapter extends SubAdapter>(
@@ -163,17 +230,50 @@ export class SubNetworksConnector {
    * @param connector Existing bridge connector. Api connections will be reused, if networks matches
    */
   public async init(destination: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
-    const { soraParachain, relaychain, parachain, standalone } = this.getChains(destination);
-    this.destinationNetwork = destination;
-    // Create adapters
-    this.standalone = this.getConnection(standalone, connector?.standalone);
-    this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain);
-    this.relaychain = this.getConnection(relaychain, connector?.relaychain);
-    this.parachain = this.getConnection(parachain, connector?.parachain);
-    // Link destination network connection to accountApi
-    this.accountApi.setConnection(this.network.connection);
-    // Inject account & signer from connector to accountApi
-    this.setAccountFromApi(connector?.accountApi);
+    try {
+      const { soraParachain, relaychain, parachain, standalone } = this.getChains(destination);
+      // Assemble the complete route without publishing any partial state. A
+      // missing relay/SORA node list can throw halfway through this work.
+      const nextAdapters: PathAdapters = {
+        standalone: this.getConnection(standalone, connector?.standalone),
+        soraParachain: this.getConnection(soraParachain, connector?.soraParachain),
+        relaychain: this.getConnection(relaychain, connector?.relaychain),
+        parachain: this.getConnection(parachain, connector?.parachain),
+      };
+      const nextNetwork =
+        nextAdapters.parachain ?? nextAdapters.relaychain ?? nextAdapters.soraParachain ?? nextAdapters.standalone;
+
+      if (!nextNetwork || nextNetwork.subNetwork !== destination) {
+        throw new Error(`[${this.constructor.name}] Adapter for "${destination}" network was not initialized`);
+      }
+
+      const previousAccountConnection = this.accountApi.connection;
+      const previousAccount = this.accountApi.account;
+      const previousSigner = this.accountApi.signer;
+
+      try {
+        // Prepare the account API before atomically publishing the new route.
+        this.accountApi.setConnection(nextNetwork.connection);
+        this.setAccountFromApi(connector?.accountApi);
+      } catch (error) {
+        // WithKeyring fields are raw runtime state, so restoring them directly
+        // cannot trigger Vue observers or mask the original initialization error.
+        this.accountApi.connection = previousAccountConnection;
+        this.accountApi.account = previousAccount;
+        this.accountApi.signer = previousSigner;
+        throw error;
+      }
+
+      this.standalone = nextAdapters.standalone;
+      this.soraParachain = nextAdapters.soraParachain;
+      this.relaychain = nextAdapters.relaychain;
+      this.parachain = nextAdapters.parachain;
+      this.destinationNetwork = destination;
+    } finally {
+      // `init` commonly runs after a reactive getter has already observed an
+      // empty raw connector, so adapter attachment needs an explicit signal.
+      this.touchConnectionState();
+    }
   }
 
   /**

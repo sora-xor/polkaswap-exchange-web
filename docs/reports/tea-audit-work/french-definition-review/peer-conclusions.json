@@ -1,0 +1,130 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Bounded independent review of the L271-7/L251-2 domestic adoption of EU plant/product definitions for sealed 100 g Japanese steam-manufactured, rolled and dried Camellia sinensis tea in a purchased personal postal parcel. GP GF MQ BL MF. No main-array changes, contacts or applications.",
+  "conclusion": "The statutory bridge is real and supplies a substantially stronger argument than IPPC membership. Its text plus ISPM32's actual tea example can support the factual inference that finished sencha is a manufactured product without the relevant pre-processing pest risk. It does not conclusively settle the present no-document route in these five territories because the current official implementation position expressly retains the old framework, while the statute retains a contrary 14-April-2020 longstop, and separate local personal-import measures remain in issue. Preserve all five as unresolved with this precise conflict. Do not claim the new statute is definitely uncommenced, and do not demand a bespoke tea ruling as a matter of principle.",
+  "positiveLegalCase": [
+    "L271-7 1° reinstates an overseas L251-2: point 2 adopts the EU Article 2(1) living-plant definition; point 3 adopts the first sentence of Article 2(2), which limits manufactured plant products to those capable of spreading quarantine pests. This is express domestic adoption, not direct extrapolation of the EU territorial regime.",
+    "L272-11-1 and L273-6-2 extend the same statutory framework to Saint-Barthélemy and Saint-Martin. These provisions appear both in the original ordinance Article 5 V/VI and current Code rural.",
+    "Original and current consolidated Ordinance 2019-1110 Article 6 II preserve prior law until the overseas decree, but expressly no later than 14 April 2020. Légifrance displays L271-7 as in force from that date. The ordinance was subsequently ratified by Law 2023-171 Article 39. A blanket claim that the whole new framework remains legally uncommenced would ignore these provisions.",
+    "Current-linked ISPM32 Appendix 2 explicitly includes tea in Category 1. For the stated industrial steaming/rolling/drying, this is actual commodity evidence supporting the no-pre-processing-pest-risk inference; an individually issued classification is not intrinsically necessary. The appendix is reference-only/non-prescriptive, not a French territorial import exemption in its own right."
+  ],
+  "countervailingPrimaryEvidence": [
+    "DGAL/SDSPV/2026-165 dated 25 March 2026, immediately applicable and currently indexed in force, repeals DGAL/SDSPV/2025-102. Its foreword on printed page 4 explicitly states that the overseas decree is pending and pre-2019-1110 law continues under Article 6. It identifies the overseas provisions shown in light blue as future provisions applying after that decree. This is an administrative instruction for surveillance, not legislation capable of overriding the statutory longstop; nevertheless it is direct evidence of the Ministry's current operative interpretation.",
+    "DGAL/SIVEP instruction 2026-278, printed page 4, likewise says DROM plant-border checks use the pre-14-December-2019 entry-point list pending Code rural updates and implementing texts. This independently corroborates continuing old-framework implementation, although it does not itself classify tea or decide the definition's commencement.",
+    "The adopted overseas plant-product definition is expressly to be clarified by regulation. The retrieved sources do not establish the applicable regulatory clarification resolving how the retained 1990 simple-preparation definition and local orders operate with the newer definition.",
+    "Current national definitions do not by themselves constitute a blanket repeal of every older territorial measure. The actual legal scope and compatibility of a surviving local measure must still be considered. GF's reproduced 2021 order and MQ's current official guidance expressly use the 1990 definitions for personal introductions/imports; GP's 1996 order is unrecovered and official summaries disagree on passenger-only versus outside-commercial-channel scope.",
+    "The 1990 schedule's Réunion-specific dried-tea provision is a counterexample to treating every dried tea as necessarily outside the older plant-product definition. It does not establish that industrially steamed sencha is simple-preparation, and its Réunion requirement must not be extended to these five territories."
+  ],
+  "hierarchyAssessment": "The statute carries greater legal weight than the instruction. Accordingly, the instruction is not proof that Article 6's longstop vanished, nor authority to disregard higher law. Conversely, treating all retained local restrictions as already displaced would require resolving both the explicit regulatory-clarification clause and the concrete local scope, against a fresh current implementation instruction. This review records that unresolved legal/application conflict rather than certifying either side as controlling. The positive inference could be completed by a published general clarification, applicable processing rule, or actual local-order scope; a product-specific permit or authority letter is not inherently required.",
+  "countryFindings": {
+    "GP": {
+      "decision": "unresolved",
+      "nationalSchedule": "Existing complete national certificate schedules do not list finished tea; that conclusion remains supported without a tea-specific ruling.",
+      "persistentIssue": "Order 96-323 of 16 April 1996 has not been recovered. Official passenger-only and outside-commercial-channel summaries cannot establish whether the order covers a paid personal postal purchase or which processing definition it uses. The newer statutory argument is favorable, but current administrative reliance on old rules prevents treating the unrecovered local measure as definitely superseded."
+    },
+    "GF": {
+      "decision": "unresolved",
+      "persistentIssue": "Order R03-2021-04-26-00003 Article 1, read through the prior legal-text reproduction cross-checked with its official index, applies personal introductions/imports in any quantity and origin using 1990 Article 1 definitions. Article 2 requires a studied derogation. This is a concrete broad local measure, not a missing tea line in a certificate schedule. Newer risk-qualified statutory scope is a material counterargument, but the 2026 implementation position expressly retains old rules and the manufactured/simple-preparation compatibility remains unresolved. Official PDF retrieval remains unavailable."
+    },
+    "MQ": {
+      "decision": "unresolved",
+      "persistentIssue": "Current DAAF guidance invokes Order 043448 of 22 November 2004 for personal introductions/imports and the 1990 definitions. The actual local order is unrecovered. The newer risk-qualified statutory scope is a material counterargument, not a confirmed repeal or postal processing exemption."
+    },
+    "BL": {
+      "decision": "unresolved",
+      "persistentIssue": "L272-11-1 supplies the statutory bridge. Organic Law 2007-223 Article 18 IX preserves non-contrary pre-existing measures with territorial-reference substitution; this can preserve both favorable national lists and an applicable Guadeloupe 1996 order. The 2026 environmental code living-specimen restrictions do not cover finished nonliving tea. Remaining issue is actual inherited local-order scope and the published old/new implementation conflict, not absence of a new tea-specific schedule."
+    },
+    "MF": {
+      "decision": "unresolved",
+      "persistentIssue": "L273-6-2 supplies the statutory bridge. The same 2007 continuity law preserves non-contrary pre-existing measures. The inherited national scheduled treatment is favorable, but actual scope of any surviving Guadeloupe 1996 local restriction remains unverified; the old NVWA list cannot resolve that issue. Preserve the new statutory argument and current implementation conflict."
+    }
+  },
+  "sources": [
+    {
+      "id": "L271-7",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039329636",
+      "provisions": "1° (overseas L251-2 points 2–3); 7° (L251-12); 8° (L251-12-2)",
+      "retrieval": "Full web reader text accessible; direct HTTP request produced Cloudflare 403, saved as failed response."
+    },
+    {
+      "id": "ordinance-original",
+      "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000039297041",
+      "provisions": "Article 5 IV–VI; Article 6 II",
+      "retrieval": "Full official web reader text read."
+    },
+    {
+      "id": "ordinance-current",
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000039297041/2026-07-22",
+      "provisions": "Current Article 6 II; ratification note",
+      "retrieval": "Full official web reader text read. Shows latest data update 14 December 2019 and same 14-April-2020 longstop."
+    },
+    {
+      "id": "eu-definition",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/2031/oj?locale=fr",
+      "provisions": "Article 2(1) and first sentence 2(2)",
+      "retrieval": "Official indexed full provision recovered. Direct PDFs/HTML returned empty 202 challenges. 2025 consolidation also recovered in index; 6 July 2026 consolidation announced by current page but its full text retrieval failed. No claim that failed files contain a readable consolidated statute."
+    },
+    {
+      "id": "eu-2025",
+      "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A02016R2031-20250105",
+      "provisions": "Article 2",
+      "retrieval": "Official indexed provision text confirms same definitions."
+    },
+    {
+      "id": "instruction2026-165",
+      "url": "https://info.agriculture.gouv.fr/boagri/instruction-2026-165/telechargement",
+      "provisions": "Cover page and printed page 4",
+      "retrieval": "Official PDF index provides full relevant foreword and cover-page replacement statement. Direct PDF retrieval timed out; no successful downloaded PDF. Clearly retain indexed-excerpt provenance."
+    },
+    {
+      "id": "instruction-status",
+      "url": "https://info.agriculture.gouv.fr/boagri/supima/8b94ce04-a4a9-4f01-a12f-3fba8de8f85a",
+      "provisions": "Current instruction index",
+      "retrieval": "Official index lists 2026-165 in force, not abrogated/caduc; 2025-102 abrogated."
+    },
+    {
+      "id": "instruction-replacement",
+      "url": "https://info.agriculture.gouv.fr/boagri/instruction-2025-102",
+      "provisions": "Status/replacement metadata",
+      "retrieval": "Official indexed page expressly identifies repeal by 2026-165."
+    },
+    {
+      "id": "instruction2026-278",
+      "url": "https://info.agriculture.gouv.fr/boagri/instruction-2026-278/telechargement",
+      "provisions": "Printed page 4, regulatory context for border-post designation",
+      "retrieval": "Official indexed PDF excerpt. Not independently downloaded in this pass."
+    },
+    {
+      "id": "ispm-current-page",
+      "url": "https://www.ippc.int/en/publications/587/",
+      "provisions": "Current publication page (28 July 2025) links older standard language versions",
+      "retrieval": "Previously recovered official current publication link; current-linked Russian PDF and official Slovenian English NPPO copy retained locally."
+    },
+    {
+      "id": "ispm-current-ru",
+      "url": "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "provisions": "Appendix 2 Category 1 tea; normative Category 1 discussion",
+      "retrieval": "Existing current-linked PDF at official-online-recovery-2026-09-30/french/ispm32-current-ru.pdf. Page is current; standard itself is older, not newly enacted in 2025."
+    }
+  ],
+  "priorEvidenceFiles": [
+    "../french-territory-sources/peer-review-notes.json",
+    "../french-territory-sources/peer-review-source-provenance.json",
+    "../europe-sources/fr-dom1990.pdf",
+    "../europe-sources/fr-dom1990.txt",
+    "../french-territory-sources/gp-order2006-cons2019.pdf",
+    "../french-territory-sources/gp-directive2000-29-cons2019.pdf",
+    "../french-territory-sources/bl-environment-code-2026.pdf",
+    "../official-online-recovery-2026-09-30/french/ispm32-current-ru.pdf",
+    "../official-online-recovery-2026-09-30/americas/ispm32-slovenia-en2015.pdf"
+  ],
+  "requiredRecordCorrections": [
+    "Replace reliance on 2025-102 as a current instruction with its current successor 2026-165.",
+    "Do not state unqualifiedly that pre-2019 law remains legally in force: preserve the statute's 14-April-2020 longstop and conflicting current implementation statement.",
+    "Record express domestic adoption and actual Category 1 tea evidence as favorable combined-source evidence, rather than treating this as generic ISPM32 or IPPC-membership reliance.",
+    "Do not relabel any destination as excluded: no tea-specific prohibition was established by this review."
+  ],
+  "proposedDecisionChanges": [],
+  "mainArraysEdited": false
+}
+

@@ -1,7 +1,8 @@
 <template>
-  <app-header :loading="loading" @toggle-menu="toggleMenu"></app-header>
-  <div :class="appClasses">
+  <app-header :loading="loading" :checkout="checkout" @toggle-menu="toggleMenu"></app-header>
+  <div :class="[appClasses, { 'app-main--checkout': checkout }]">
     <app-menu
+      v-if="!checkout"
       :visible="menuVisibility"
       :on-select="goTo"
       @open-product-dialog="openProductDialog"
@@ -15,16 +16,20 @@
       <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
         <div class="app-content">
           <app-disclaimer v-if="effectiveDisclaimerVisibility"></app-disclaimer>
+          <tonswap-journey-notice />
           <router-view :parent-loading="routeParentLoading"></router-view>
         </div>
       </s-scrollbar>
     </div>
   </div>
-  <app-footer></app-footer>
+  <app-footer v-if="!checkout"></app-footer>
 </template>
 
 <script setup lang="ts">
 import { createAsyncComponent } from '@/shared/ui/async';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { isGetTsCheckoutRoute } from '@/features/misc/lib/getTsFlow';
 
 import { useAppShellContext } from './context';
 
@@ -33,6 +38,11 @@ const AppFooter = createAsyncComponent(() => import('@/components/App/Footer/App
 const AppHeader = createAsyncComponent(() => import('@/components/App/Header/AppHeader.vue'));
 const AppLogoButton = createAsyncComponent(() => import('@/components/App/Header/AppLogoButton.vue'));
 const AppMenu = createAsyncComponent(() => import('@/components/App/Menu/AppMenu.vue'));
+const TonswapJourneyNotice = createAsyncComponent(
+  () => import('@/features/misc/components/burn/TonswapJourneyNotice.vue')
+);
+const route = useRoute();
+const checkout = computed(() => isGetTsCheckoutRoute(route.path, route.query));
 
 const {
   appClasses,
@@ -98,6 +108,15 @@ const {
 
   @include large-mobile {
     display: none;
+  }
+}
+
+.app-main.app-main--checkout {
+  height: calc(100vh - #{$header-height});
+  height: calc(100dvh - #{$header-height});
+
+  .app-content {
+    padding: 0;
   }
 }
 </style>

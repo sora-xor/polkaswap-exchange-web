@@ -6,10 +6,40 @@
 
     <template v-else>
       <header class="market-detail__header">
-        <span>{{ market.category }}</span>
-        <h1>{{ market.title }}</h1>
-        <p>{{ market.description }}</p>
+        <div class="market-detail__context">
+          <span>{{ market.category }}</span>
+          <span>{{ marketStatus }}</span>
+        </div>
+        <h1>{{ getMarketQuestion(market.title) }}</h1>
       </header>
+
+      <details class="market-detail__rules" data-testid="market-rules">
+        <summary>{{ t('polkamarkt.details.rules') }}</summary>
+        <div class="market-detail__rules-content">
+          <p>{{ market.title }}</p>
+          <p v-if="market.description && market.description !== market.title">{{ market.description }}</p>
+        </div>
+      </details>
+
+      <pricing-curve-position-chart v-if="isDpm" :market="market" />
+
+      <dl class="market-detail__metrics">
+        <div class="market-detail__metric">
+          <dt>{{ t('polkamarkt.metrics.volume') }}</dt>
+          <dd>{{ formatUsd(market.volume) }}</dd>
+        </div>
+        <div class="market-detail__metric">
+          <dt>{{ t('polkamarkt.metrics.liquidity') }}</dt>
+          <dd>{{ formatUsd(market.liquidity) }}</dd>
+        </div>
+        <div class="market-detail__metric">
+          <dt>{{ t('polkamarkt.metrics.closeBlock') }}</dt>
+          <dd>
+            {{ market.closeBlock ? Number(market.closeBlock).toLocaleString() : t('polkamarkt.notIndexed') }}
+            <small v-if="closeDate">{{ closeDate }}</small>
+          </dd>
+        </div>
+      </dl>
 
       <market-outcome-chart :market="market" :points="history" :loading="historyLoading">
         <template #actions>
@@ -17,44 +47,7 @@
         </template>
       </market-outcome-chart>
 
-      <div class="market-detail__grid">
-        <div class="metric metric--accent">
-          <span>{{ t('polkamarkt.metrics.yesQuote') }}</span>
-          <strong>{{ formatPrice(prices.yes) }}</strong>
-        </div>
-        <div class="metric">
-          <span>{{ t('polkamarkt.metrics.noQuote') }}</span>
-          <strong>{{ formatPrice(prices.no) }}</strong>
-        </div>
-        <div class="metric">
-          <span>{{ t('polkamarkt.metrics.liquidity') }}</span>
-          <strong>{{ formatUsd(market.liquidity) }}</strong>
-        </div>
-        <div class="metric">
-          <span>{{ t('polkamarkt.metrics.volume') }}</span>
-          <strong>{{ formatUsd(market.volume) }}</strong>
-        </div>
-        <div class="metric">
-          <span>{{ t('polkamarkt.metrics.closeBlock') }}</span>
-          <strong>{{
-            market.closeBlock ? Number(market.closeBlock).toLocaleString() : t('polkamarkt.notIndexed')
-          }}</strong>
-          <small v-if="closeDate">{{ closeDate }}</small>
-        </div>
-        <div class="metric">
-          <span>{{ t('polkamarkt.metrics.status') }}</span>
-          <strong>{{ marketStatus }}</strong>
-        </div>
-      </div>
-
       <div class="market-detail__sections">
-        <details v-if="isDpm" class="market-detail__section">
-          <summary>
-            <h3>{{ t('polkamarkt.curve.title') }}</h3>
-          </summary>
-          <pricing-curve-position-chart :market="market" />
-        </details>
-
         <details class="market-detail__section">
           <summary>
             <h3>{{ t('polkamarkt.details.oracle') }}</h3>
@@ -168,17 +161,14 @@
 </template>
 
 <script setup lang="ts">
+/** Keeps the market question scannable while exposing the complete on-chain rules before trading. */
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { POLKAMARKT_COLLATERAL_ASSET } from '../consts';
-import {
-  calculateApproximateCloseDate,
-  formatApproximateCloseDate,
-  getMarketDisplayStatus,
-  yesNoPricesFromProbability,
-} from '../lib/markets';
+import { calculateApproximateCloseDate, formatApproximateCloseDate, getMarketDisplayStatus } from '../lib/markets';
 import { isDpmMarket } from '../lib/pricingCurve';
+import { getMarketQuestion } from '../lib/marketQuestion';
 import MarketOutcomeChart from './MarketOutcomeChart.vue';
 import MarketShareWidget from './MarketShareWidget.vue';
 import PricingCurvePositionChart from './PricingCurvePositionChart.vue';
@@ -195,7 +185,6 @@ const props = defineProps<{
 const { t } = useTranslation();
 const collateralSymbol = POLKAMARKT_COLLATERAL_ASSET.symbol;
 
-const prices = computed(() => yesNoPricesFromProbability(props.market?.probability));
 const isDpm = computed(() => isDpmMarket(props.market));
 const marketStatus = computed(() => {
   const status = getMarketDisplayStatus(props.market, props.currentBlock);
@@ -211,9 +200,6 @@ const isUrl = (value?: string): boolean => /^https?:\/\//i.test(value ?? '');
 
 const formatUsd = (value: number): string =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0);
-
-const formatPrice = (value?: number): string =>
-  Number.isFinite(value) ? `${(value ?? 0).toFixed(2)} ${collateralSymbol}` : t('polkamarkt.notIndexed');
 
 const formatOptionalNumber = (value?: number): string =>
   Number.isFinite(value) ? Number(value).toLocaleString() : t('polkamarkt.notIndexed');
@@ -243,34 +229,94 @@ const formatStateAmount = (value?: number, unit = ''): string =>
     display: flex;
     flex-direction: column;
     gap: $inner-spacing-mini;
-    margin-bottom: $inner-spacing-big;
-
-    span {
-      color: var(--s-color-theme-accent);
-      font-weight: 700;
-      font-size: var(--s-font-size-mini);
-      text-transform: uppercase;
-    }
+    margin-bottom: $inner-spacing-small;
 
     h1 {
       margin: 0;
       font-size: var(--s-heading3-font-size);
-      line-height: 1.2;
+      line-height: 1.35;
       letter-spacing: 0;
-    }
-
-    p {
-      margin: 0;
-      color: var(--s-color-base-content-secondary);
-      line-height: 1.7;
+      overflow-wrap: anywhere;
     }
   }
 
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, #{'minmax(min(100%, 160px), 1fr)'});
-    gap: $inner-spacing-mini;
+  &__context {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $inner-spacing-small;
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-mini);
+
+    span + span::before {
+      content: '\00b7';
+      margin-inline-end: $inner-spacing-small;
+    }
+  }
+
+  &__rules {
     margin-bottom: $inner-spacing-big;
+
+    summary {
+      width: fit-content;
+      min-height: 36px;
+      padding-block: $inner-spacing-mini;
+      color: var(--s-color-theme-accent);
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: var(--s-border-radius-mini);
+
+      &:focus-visible {
+        outline: 2px solid var(--s-color-theme-accent);
+        outline-offset: 4px;
+      }
+    }
+  }
+
+  &__rules-content {
+    max-width: 78ch;
+    margin-top: $inner-spacing-mini;
+    padding-inline-start: $inner-spacing-medium;
+    border-inline-start: 2px solid var(--s-color-base-border-secondary);
+    color: var(--s-color-base-content-secondary);
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+
+    p {
+      margin: 0;
+      white-space: pre-line;
+    }
+
+    p + p {
+      margin-top: $inner-spacing-small;
+    }
+  }
+
+  &__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $inner-spacing-medium $inner-spacing-big;
+    margin: $inner-spacing-medium 0 $inner-spacing-big;
+    padding-bottom: $inner-spacing-small;
+  }
+
+  &__metric {
+    min-width: 0;
+
+    dt,
+    small {
+      display: block;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      font-weight: 400;
+    }
+
+    dd {
+      margin: $inner-spacing-tiny 0 0;
+      font-weight: 600;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
   }
 
   &__sections {
@@ -367,33 +413,6 @@ const formatStateAmount = (value?: number, unit = ''): string =>
     a {
       color: var(--s-color-theme-accent);
     }
-  }
-}
-
-.metric {
-  min-width: 0;
-  border: 1px solid var(--s-color-base-border-secondary);
-  border-radius: var(--s-border-radius-small);
-  background: var(--s-color-utility-surface);
-  padding: $inner-spacing-medium;
-
-  span,
-  small {
-    display: block;
-    color: var(--s-color-base-content-secondary);
-    font-size: var(--s-font-size-mini);
-  }
-
-  strong {
-    display: block;
-    margin-top: $inner-spacing-tiny;
-    font-size: var(--s-heading5-font-size);
-    line-height: 1.25;
-    overflow-wrap: anywhere;
-  }
-
-  &--accent strong {
-    color: var(--s-color-theme-accent);
   }
 }
 </style>

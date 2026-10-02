@@ -1,0 +1,65 @@
+[
+  {
+    "file": "wf-sprep-review2022.pdf",
+    "url": "https://brb.sprep.org/sites/default/files/2025-03/Phase4-Rapport-final-revue-de-reglementation-mai-2022.pdf",
+    "bytes": 2556112,
+    "sha256": "95acea6aed6255d047576310670f939e909a118ef15665d3a977f4fc5a319f06"
+  },
+  {
+    "file": "fr-import-faq2024.pdf",
+    "url": "https://agriculture.gouv.fr/telecharger/129449",
+    "bytes": 1194928,
+    "sha256": "58f931013e591a97cdc4e8f146adaef20e823cfc0848cc413aa75e3152026387"
+  },
+  {
+    "file": "pm-ordinance2019.pdf",
+    "url": "https://faolex.fao.org/docs/pdf/Fra190723.pdf",
+    "bytes": 237270,
+    "sha256": "55bd6185ff43a2966a9e96a6ab94d07016f5204246c83487202e710cc26524f3"
+  },
+  {
+    "file": "wf-gazette2024-684.pdf",
+    "url": "https://www.wallis-et-futuna.gouv.fr/contenu/telechargement/13792/113537/file/JOWF%20N%C2%B0%20684%20du%2030%20avril%202024.pdf",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "file": "wf-gazette2025-714.pdf",
+    "url": "https://www.wallis-et-futuna.gouv.fr/contenu/telechargement/14584/119835/file/JOWF%20N%C2%B0%20714%20du%2031%20mai%202025%20.pdf",
+    "error": "Remote end closed connection without response"
+  },
+  {
+    "file": "maff-sencha-manufacture2022.pdf",
+    "url": "https://www.maff.go.jp/j/pr/aff/2204/pdf/aff2204-2.pdf",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "file": "pm-l27412-current.html",
+    "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039329664",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "file": "eu2016-2031-official.pdf",
+    "url": "https://agriculture.gouv.fr/telecharger/111725",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 2530589,
+    "sha256": "9ad13de3e891e78782f6032a409e29a4550b2a1d72f2730f5c6095b5ecec8c98"
+  },
+  {
+    "file": "pm-current-primary-web-extract.json",
+    "retrievedAt": "2026-09-30",
+    "method": "web tool full-page text extraction; direct local requests403",
+    "urls": [
+      "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039329664",
+      "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039329636"
+    ],
+    "sha256": "e4155249fc2019d3e3d74ee9c1d98d95739cd9deb94536a9d90dd7e5c912fc11"
+  },
+  {
+    "file": "../french-definition-review/instruction-web-reader.json",
+    "retrievedAt": "2026-09-30",
+    "method": "Peer-recovered official indexed PDF relevant page, independently read; full PDF direct retrieval timed out",
+    "url": "https://info.agriculture.gouv.fr/boagri/instruction-2026-165/telechargement",
+    "provision": "Printed p4, expressly includes Saint-Pierre-et-Miquelon"
+  }
+]

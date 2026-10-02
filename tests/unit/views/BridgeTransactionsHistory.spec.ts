@@ -53,6 +53,7 @@ const shared = (() => {
   const setHistoryPageMock = vi.fn();
   const historyPage = ref(1);
   const networkHistoryId = ref('network-1');
+  const historySourceKey = ref('network-1|sora-account-1|outgoing');
 
   const registeredAssets = reactive<Record<string, RegisteredAsset>>({});
   const assetsStore = reactive({
@@ -90,6 +91,7 @@ const shared = (() => {
     assetsStore,
     bridgeStoreMock,
     networkHistoryId,
+    historySourceKey,
     navigateToBridgeMock,
     getNetworkIconMock,
     isOutgoingTxMock,
@@ -126,6 +128,7 @@ beforeAll(async () => {
   vi.doMock('@/composables/useBridgeHistory', () => ({
     useBridgeHistory: () => ({
       history: shared.historyRef,
+      historySourceKey: shared.historySourceKey,
       networkHistoryLoading: shared.networkHistoryLoading,
       updateExternalHistory: shared.updateExternalHistoryMock,
       showHistory: shared.showHistoryMock,
@@ -228,6 +231,10 @@ const mountHistoryView = async () => {
 const resetEnvironment = () => {
   shared.historyRef.value = {};
   shared.networkHistoryLoading.value = false;
+  shared.assetsStore.registeredAssetsFetching = false;
+  Object.keys(shared.registeredAssets).forEach((address) => {
+    delete shared.registeredAssets[address];
+  });
   shared.registeredAssets['asset-1'] = {
     address: 'asset-1',
     decimals: 12,
@@ -237,7 +244,7 @@ const resetEnvironment = () => {
     decimals: 12,
   };
 
-  shared.bridgeStoreMock.updateBridgeHistory.mockClear();
+  shared.bridgeStoreMock.updateBridgeHistory.mockReset();
   shared.updateExternalHistoryMock.mockClear();
   shared.withLoadingMock.mockClear();
   shared.navigateToBridgeMock.mockClear();
@@ -246,6 +253,7 @@ const resetEnvironment = () => {
   shared.parentLoading.value = false;
   shared.historyPage.value = 1;
   shared.networkHistoryId.value = 'network-1';
+  shared.historySourceKey.value = 'network-1|sora-account-1|outgoing';
 };
 
 describe('BridgeTransactionsHistory.vue', () => {
@@ -342,6 +350,75 @@ describe('BridgeTransactionsHistory.vue', () => {
     expect(shared.updateExternalHistoryMock).toHaveBeenCalledWith(true);
     expect(shared.withLoadingMock).toHaveBeenCalled();
     expect(shared.parentLoading.value).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it('refreshes when the history account or direction changes on the same network', async () => {
+    const wrapper = await mountHistoryView();
+
+    expect(shared.bridgeStoreMock.updateBridgeHistory).toHaveBeenCalledTimes(1);
+
+    shared.historySourceKey.value = 'network-1|sora-account-2|outgoing';
+    await nextTick();
+    await nextTick();
+
+    expect(shared.networkHistoryId.value).toBe('network-1');
+    expect(shared.bridgeStoreMock.updateBridgeHistory).toHaveBeenCalledTimes(2);
+
+    shared.historySourceKey.value = 'network-1|sora-account-2|incoming';
+    await nextTick();
+    await nextTick();
+
+    expect(shared.bridgeStoreMock.updateBridgeHistory).toHaveBeenCalledTimes(3);
+
+    wrapper.unmount();
+  });
+
+  it('waits for bridge asset discovery and refreshes when it completes', async () => {
+    Object.keys(shared.registeredAssets).forEach((address) => {
+      delete shared.registeredAssets[address];
+    });
+    shared.assetsStore.registeredAssetsFetching = true;
+
+    const wrapper = await mountHistoryView();
+
+    expect(shared.bridgeStoreMock.updateBridgeHistory).not.toHaveBeenCalled();
+
+    shared.registeredAssets['lld-asset'] = {
+      address: '',
+      decimals: 12,
+    };
+    shared.assetsStore.registeredAssetsFetching = false;
+    await nextTick();
+    await nextTick();
+
+    expect(shared.bridgeStoreMock.updateBridgeHistory).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
+  it('ignores page updates from a previous history source that resolves last', async () => {
+    let resolvePreviousHistory!: () => void;
+    const previousHistory = new Promise<void>((resolve) => {
+      resolvePreviousHistory = resolve;
+    });
+    shared.bridgeStoreMock.updateBridgeHistory.mockReturnValueOnce(previousHistory).mockResolvedValueOnce(undefined);
+
+    const wrapper = await mountHistoryView();
+
+    shared.historySourceKey.value = 'network-1|sora-account-2|outgoing';
+    await vi.waitFor(() => {
+      expect(shared.bridgeStoreMock.updateBridgeHistory).toHaveBeenCalledTimes(2);
+      expect(shared.setHistoryPageMock).toHaveBeenCalledTimes(1);
+    });
+
+    resolvePreviousHistory();
+    await previousHistory;
+    await Promise.resolve();
+    await nextTick();
+
+    expect(shared.setHistoryPageMock).toHaveBeenCalledTimes(1);
 
     wrapper.unmount();
   });

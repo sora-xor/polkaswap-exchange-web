@@ -185,6 +185,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { SortDirection } from '@soramitsu-ui/ui/types';
 import { useExploreTable } from '@/composables/useExploreTable';
 import { useLoading } from '@/composables/useLoading';
+import { createCoalescedAsyncTask } from '@/utils/asyncTask';
 import { useTranslation } from '@/composables/useTranslation';
 import { TranslationConsts } from '@/consts';
 import { FontSizeRate, FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
@@ -428,9 +429,7 @@ const showPoolCalculator = base.showPoolCalculator;
 /**
  * Hydrates cached pool coefficients so APR/TVL rows render with fiat data.
  */
-const updateExploreData = async (): Promise<void> => {
-  if (loading.value) return;
-
+const updateExploreData = createCoalescedAsyncTask(async () => {
   await withLoading(async () => {
     await withParentLoading(async () => {
       const buffer: Record<string, PoolData> = {};
@@ -449,7 +448,7 @@ const updateExploreData = async (): Promise<void> => {
       poolsData.value = Object.freeze(buffer);
     });
   });
-};
+});
 
 /**
  * Fetches reserves/supply data for a Demeter pair (farms need pool math for APR).

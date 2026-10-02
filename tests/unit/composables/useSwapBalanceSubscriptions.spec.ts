@@ -5,6 +5,7 @@ const removeMock = vi.fn();
 const resetMock = vi.fn();
 const walletStoreState = vi.hoisted(() => ({
   isLoggedIn: true,
+  accountAssetsLoaded: true,
   accountAssetsAddressTable: {} as Record<string, { balance?: unknown }>,
 }));
 
@@ -31,6 +32,7 @@ beforeEach(() => {
   removeMock.mockClear();
   resetMock.mockClear();
   walletStoreState.isLoggedIn = true;
+  walletStoreState.accountAssetsLoaded = true;
   walletStoreState.accountAssetsAddressTable = {};
 });
 
@@ -75,5 +77,20 @@ describe('useSwapBalanceSubscriptions', () => {
     manager.resetSubscriptions();
 
     expect(resetMock).toHaveBeenCalled();
+  });
+
+  it('waits for a live balance instead of hydrating a previous account during wallet loading', () => {
+    const manager = useSwapBalanceSubscriptions();
+    const token = { address: '0x123' } as any;
+    const updateBalance = vi.fn();
+    walletStoreState.accountAssetsLoaded = false;
+    walletStoreState.accountAssetsAddressTable = {
+      '0x123': { balance: { transferable: '42000000000000000000' } },
+    };
+
+    manager.updateSubscription('from', token, updateBalance);
+
+    expect(updateBalance).not.toHaveBeenCalled();
+    expect(addMock).toHaveBeenCalledWith('from', { token, updateBalance });
   });
 });

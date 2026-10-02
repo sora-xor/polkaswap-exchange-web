@@ -1,0 +1,422 @@
+{
+  "checkedAt": "2026-09-30T04:01:06.092741+00:00",
+  "scope": [
+    "CG",
+    "ER",
+    "ET",
+    "GN",
+    "GQ",
+    "GW",
+    "KM",
+    "MZ",
+    "SL",
+    "TG",
+    "UG",
+    "BL",
+    "GF",
+    "GP",
+    "MF",
+    "MQ",
+    "PM",
+    "VA",
+    "YT"
+  ],
+  "purpose": "Bounded independent impasse audit, not a new generic search pass.",
+  "shipment": "Direct Japan personal postal purchase of100g sealed manufactured steamed/dried Camellia sinensis sencha. No permits, origin certificates, special registration, separate approval or advance notice; ordinary customs/post declarations and ordinary arrival inspection are allowed.",
+  "summary": {
+    "reviewed": 19,
+    "newlySupported": [],
+    "newlyExcluded": [],
+    "outcomeProgress": false,
+    "untriedConcreteOperativeSourceLeadsFound": 0,
+    "allReviewedCountriesRemainUnresolved": true,
+    "publicEvidenceImpasseInThisAssignedSubset": true
+  },
+  "interpretationCheck": {
+    "bespokeRulingRequired": false,
+    "principle": "An applicable exhaustive schedule, general processing rule or automatic personal/postal exemption can settle a country. The audit does not require a tea-specific permission merely because one has not been published.",
+    "testedFrenchCrossScheduleInference": "The1990 order includes a Réunion-specific dried-tea condition and separately exempts certain small noncommercial postal goods in Article14. Those provisions were checked as possible general-rule routes. They do not extend the Réunion-specific condition to other territories, establish a universal heat-processing classification, or displace later local personal-import prohibitions. The already-reviewed national list-based conclusion remains valid.",
+    "newPrimaryRetrieval": "No new operative source recovered. A targeted Légifrance recheck of the existing1990 provision used its indexed official text after the general consolidated URL was inaccessible. This did not change the evidence outcome."
+  },
+  "records": [
+    {
+      "code": "CG",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The authorized PCEC guide expressly exempts e-commerce post. The WTO description of plant-product authorizations does not define the covered manufactured products, so neither a conformity exclusion nor a plant-health approval follows.",
+      "missingExternalEvidence": "An operative Congo plant-health product definition/category or applicable commodity condition covering or excluding finished steamed/dried tea; its personal-post application.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://www.ippc.int/en/countries/congo/reportingobligation/4",
+        "https://www.wto.org/french/tratop_f/tpr_f/s445-03_f.pdf",
+        "https://www.cotecna.com/media/1tii4ifg/voc-congo-exporter-guide-french-translation.pdf",
+        "https://www.cotecna.com/media/pbegdzqc/voc-republic-of-congo-exporter-guide.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/food-conformity-second-sources/cg-pcec-guide2026.txt"
+    },
+    {
+      "code": "ER",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The current official report confirms the 2006 proclamation. Manufactured-product coverage is conditional on pest risk; packaging and manufacture alone do not establish the statutory exception. Arrival quality inspection is not an extra origin-document duty.",
+      "missingExternalEvidence": "A published national processing/risk-category rule, commodity condition or applicable personal-food provision. The 2026 food-policy workshop is drafting activity, not an operative rule.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://faolex.fao.org/docs/pdf/eri68047.pdf",
+        "https://shabait.com/2026/05/13/international-day-of-plant-health-observed-at-national-and-international-levels/",
+        "https://shabait.com/2025/05/29/encouraging-results-in-ensuring-health-of-agricultural-production/",
+        "https://www.ippc.int/en/countries/eritrea/reportingobligation/4",
+        "https://shabait.com/2026/07/12/workshop-on-developing-national-food-control-policy/",
+        "https://shabait.com/2010/03/26/maintaining-a-standard-of-products-to-secure-national-interests/"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/africa-scope-continuation-sources/review-notes.json"
+    },
+    {
+      "code": "ET",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The 2026 plant proclamation replaces the old starting point and retains a processed-product risk issue. The 2014 food directive expressly exempts personal food from competence licensing, while its company scope and separate shipment-document clause prevent either a private certificate requirement or waiver being inferred.",
+      "missingExternalEvidence": "An applicable processed-product category under Proclamation1400/2026 and current EFDA personal-food scope. Old commercial FAIRS guidance cannot fill either gap.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+        "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf",
+        "https://faolex.fao.org/docs/pdf/eth208821.pdf",
+        "https://justice.gov.et/en/law/food-and-medicine-administration-proclamation/",
+        "https://faolex.fao.org/docs/pdf/eth216290.pdf",
+        "https://eris.efda.gov.et/",
+        "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Ethiopia%27s+Food+Importers-Exporters+and+Wholesalers+Directive_Addis+Ababa_Ethiopia_12-1-2015.pdf",
+        "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=FAIRS+Country+Report+Annual_Addis+Ababa_Ethiopia_ET2025-0021.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/legal-scope-peer-review/et-peer-review.json"
+    },
+    {
+      "code": "GN",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The newly recovered signed 2024 order includes final-consumer use but has a transport limitation and an exception for non-sale/noncommercial articles. It therefore does not establish an unavoidable certificate duty for private air post. The existing plant-law risk limitation is separate.",
+      "missingExternalEvidence": "Current implementation resolving Articles3–5 of OrderA/2024/920 for paid private post, plus a national processing/risk classification or exemption. A company-only platform manual supplies neither.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://assets.ippc.int/static/media/files/reportingobligation/2021/11/29/Loi_Phytosanitaire_République_de_Guinée.pdf",
+        "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+        "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+        "https://service-public.gov.gn/ova_sev/delivrance-dun-permis-dimportation/",
+        "https://oncq-guinee.com/service/controle-des-denrees-alimentaires-a-limportation/",
+        "https://service-public.gov.gn/ova_sev/demande-dautorisation-dimportation-de-bien-ou-marchandise/",
+        "https://guineelex.com/lois/loi-l-2021-033-an",
+        "https://guineelex.com/decrets-arretes/decret-d-2021-237-prg-sgg",
+        "https://www.bniq.gov.gn/wp-content/uploads/2026/05/Arrete-A2024920MCIPMECABSGG-%E2%80%94-Inspection-et-quarantaine-des-produits-entrants-et-sortants.pdf",
+        "https://www.bniq.gov.gn/wp-content/uploads/2026/04/Inspection-et-Quarantaine-aux-entrees-et-sorties-en-Guinee-Plate-forme-de-Declaration-Manuel-dutilisation.pdf",
+        "https://www.bniq.gov.gn/documents/",
+        "https://www.bniq.gov.gn/20260212-2/"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/africa-scope-continuation-sources/review-notes.json"
+    },
+    {
+      "code": "GQ",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "Current official/NPPO and postal material does not disclose the operative finished-food plant-health coverage. Absence of a retrieved prohibition cannot prove permission.",
+      "missingExternalEvidence": "An applicable current national plant-product/food-import rule or schedule covering this commodity and personal postal route.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://www.ippc.int/en/countries/equatorial-guinea/",
+        "https://www.guineaecuatorialpress.com/index.php/noticias/decreto_por_el_que_se_adoptan_medidas_de_regulacion_comercial_en_las_fronteras_terrestres_entre_guinea_ecuatorial_camerun_y_gabon",
+        "https://www.guineaecuatorialpress.com/noticias/orden_por_la_que_se_aprueba_sistema_aduanero_automatizado_para_la_tramitacion_de_los_procedimientos_relativos_a_la_entrada_y_salida_de_mercancias",
+        "https://slpost.gov.lk/documents/ListOfProhibitedArticles2025-09-25.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/africa-scope-continuation-sources/review-notes.json"
+    },
+    {
+      "code": "GW",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The plant law includes unprocessed or simply prepared products but does not specify how factory steaming/drying is treated. The food-control decree delegates documentary duties to implementing regulation. Those enabling clauses are not a certificate requirement.",
+      "missingExternalEvidence": "An operative processing/category definition or applicable implementing food-import condition. No such current rule is identified in the examined public trail.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+        "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=GNB",
+        "https://www.wto.org/french/tratop_f/tpr_f/s362-04_f.pdf",
+        "https://faolex.fao.org/docs/pdf/gbs117287.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+    },
+    {
+      "code": "KM",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "Personal food is within the food law, but the examined certificate duties concern particular animal products and import businesses. The plant law makes manufactured coverage risk-dependent, and the foreign-trade law delegates technical-control lists.",
+      "missingExternalEvidence": "The adopted technical-control list/method or national risk/processing rule relevant to tea. Previously found blank-number/date drafts do not establish adoption.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://justice.gouv.km/wp-content/uploads/2025/03/decret-n-17-103pr-du-5-octobre-2917-promulguant-la-loi-n-17-004au-portant-protection-des-vegetaux-aux-comores.pdf",
+        "https://justice.gouv.km/texte/decret-n17-103-pr-du-5-octobre-2017-promulguant-la-loi-n17-004-au-portant-protection-des-vegetaux-aux-comores/",
+        "https://justice.gouv.km/wp-content/uploads/2025/03/loi-n-17-005au-du-10-juin-2017-portant-legislation-alimentaire-en-union-des-comores.pdf",
+        "https://douane.gov.km/produits%20interdits.php",
+        "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG1.pdf",
+        "https://www.wto.org/english/thewto_e/acc_e/com_e/WT_ACC_COM_37_LEG7.pdf",
+        "https://justice.gouv.km/texte/loi-n21%E2%80%90013-au-du-29-juin-2021-sur-le-commerce-exterieur-promulguee-par-le-decret-n22%E2%80%90004-pr-du-18-janvier-2022/",
+        "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json"
+    },
+    {
+      "code": "MZ",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "Enacted DM98/2023 Article4 expressly exempts postal parcels from PAC. It does not amend the independent plant law, whose manufactured-product scope is risk-dependent. Propagation conditions and empty portal results do not settle food tea.",
+      "missingExternalEvidence": "An operative plant-health processing category, personal-post exception or consumption commodity condition for Japan-origin finished tea.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://geoportal.agricultura.gov.mz/en/imp_req.html",
+        "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mz_2009-5cons2019_pqreg_en.pdf",
+        "https://faolex.fao.org/docs/pdf/moz221794.pdf",
+        "https://www.innoq.gov.mz/?download_id=1435&sdm_process_download=1",
+        "https://www.innoq.gov.mz/wp-content/uploads/2024/07/BROCHURA-PERGUNTAS-MAIS-FREQUENTE-PAC-MAR%C3%87O-2024.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/food-conformity-sources/mz-pac98-2023.txt"
+    },
+    {
+      "code": "SL",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The1976 Notice expressly covers dried material but contains a potentially relevant cooked-material exception and an ambiguous bottle/can qualification. Neither steaming-as-cooking nor automatic coverage can safely be assumed. The available food Bill is not the authenticated final2018 Act.",
+      "missingExternalEvidence": "An applicable published interpretation/category resolving the Notice exception for manufactured steamed tea, or the authenticated final food statute with an independently decisive private-import duty.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+        "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf",
+        "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-12-no-13.pdf",
+        "https://faolex.fao.org/docs/pdf/sie216530.pdf",
+        "https://www.parliament.gov.sl/uploads/bill_files/The%20Food%20and%20Feed%20Safety%20Authority%20Act%2C%202017.pdf",
+        "https://slsb.gov.sl/inspectorate-overview/",
+        "https://slsb.gov.sl/product-certification/",
+        "https://faolex.fao.org/docs/pdf/sie216504.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/sl-final-override.json"
+    },
+    {
+      "code": "TG",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The inspection fee schedule names tea, defeating a blanket processed-product exclusion. It does not itself create a permit/certificate duty. The2020 annual authorization procedure is framed around business/operator records, not a one-off private parcel.",
+      "missingExternalEvidence": "The delegated plant commodity-document conditions, or operative application/exemption of the annual declaration order to private postal purchases.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://togotrade.gouv.tg/media/LOI%20N%C2%B0%2096%20-%20007-%20PR%20relative%20%C3%A0%20la%20protection%20des%20v%C3%A9g%C3%A9taux.pdf",
+        "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/tg3-1998-099pqreg_fr.pdf",
+        "https://agriculture.gouv.tg/wp-content/uploads/2020/08/ARRETE-INTERMINISTERIEL-PORTANT-TARIFICATION-DES-PRESTATIONS-PAYANTES-A-LA-DIRECTION-DE-LA-PROTECTION-DES-VEGETAUX.pdf",
+        "https://agriculture.gouv.tg/wp-content/uploads/2020/08/FICHE-DE-DEMANDE-DU-PERMIS-DIMPORTATION-DES-VEGETAUX-ET-PRODUITS-VEGETAUX.pdf",
+        "https://faolex.fao.org/docs/pdf/tog238369.pdf",
+        "https://jo.gouv.tg/sites/default/files/JO/JOS_24_07_2020-65E%20ANNEE%2025TER.pdf",
+        "https://commerce.gouv.tg/wp-content/uploads/2025/02/Rapport_pays_SC_version_validee.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/food-conformity-second-sources/tg-sensitive2020.txt"
+    },
+    {
+      "code": "UG",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "Destination inspection under regulation7 is a real alternative to pre-export CoC. Regulation8 uses a customs declaration and makes an exemption letter conditional; the low-value letter route cannot be treated as the only lawful route. Independently the plant law leaves manufactured-product risk unresolved.",
+      "missingExternalEvidence": "Published private-post operation of regulation7/8 or a full readable operative text settling that route, plus a plant-health processing/risk classification. Prior official PDF403 attempts are already exhausted.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://faolex.fao.org/docs/pdf/uga158615.pdf",
+        "https://faolex.fao.org/docs/pdf/uga238074.pdf",
+        "https://ulii.org/en/akn/ug/act/si/2020/4/eng%402020-01-24",
+        "https://www.mtic.go.ug/export-and-import-procedures/permits-and-licences/",
+        "https://www.agriculture.go.ug/online-certification/",
+        "https://webstore.unbs.go.ug/store.php?preview=&src=4027",
+        "https://www.unbs.go.ug/attachments/menus/57/THE%20UNBS%20%28INSPECTION%20%26%20CLEARANCE%29%20REGULATION%202022.pdf",
+        "https://www.unbs.go.ug/attachments/menus/14/Portal.pdf",
+        "https://verigates.bureauveritas.com/sites/verigates/files/2023-07/UGANDA%20%28PVoC%29%20Datasheet%20Rev%2011.1.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/food-conformity-sources/ug-regulations2022-indexed-extract.txt"
+    },
+    {
+      "code": "BL",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The2026 Environment Code living-specimen rule excludes nonliving finished tea from that restriction. The2007 continuity law plus Code rural supplies the national-law chain; national certificate-list absence is already a valid conclusion. The same continuity can preserve the separate local restriction.",
+      "missingExternalEvidence": "Actual Order96-323 of16April1996 and its territorial/channel scope or a current instrument replacing it. An individual tea ruling is not inherently needed.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://www.agencedelenvironnement.fr/en/page/Identify-invasive-exotic-species",
+        "https://www.agencedelenvironnement.fr/en/page/promoting-native-flora",
+        "https://www.agencedelenvironnement.fr/en/formulaire/2",
+        "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+        "https://www.comstbarth.fr/votre-collectivite/codes-et-reglements",
+        "https://www.comstbarth.fr/in/rest/annotationSVC/DownloadAttachment/attach_cmsUpload_5e4c7f67-7625-45cc-a980-855c9a10ceff",
+        "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/",
+        "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+        "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070633/LEGISCTA000006135517/2026-06-26/",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+        "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/french-territory-sources/peer-review-notes.json"
+    },
+    {
+      "code": "GF",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The local2021 order incorporates the1990 product definition and prohibits personal imports generally; it is not confined to national certificate-listed commodities. Thus absence from the national schedule cannot defeat the local rule.",
+      "missingExternalEvidence": "A binding/general processing interpretation determining whether steamed/dried manufacture is beyond simple preparation; ideally the original official local order rather than the corroborated reproduction currently available.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://www.guyane.gouv.fr/content/download/18708/131303/file/recueil-r03-2021-109-recueil-des-actes-administratifs.pdf",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+        "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+        "https://politique.pappers.fr/commune/document/0987289975315402799780b56d718d4c"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/french-territory-sources/peer-review-notes.json"
+    },
+    {
+      "code": "GP",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "Complete national schedules already establish no scheduled tea certificate. Current official summaries differ between passenger-only and outside-commercial-channel restrictions, so they do not settle the separate local order for paid private post.",
+      "missingExternalEvidence": "Actual Order96-323 of16April1996, especially definitions and postal/noncommercial scope. Exact-number, archive and official publication searches are recorded as unsuccessful.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://daaf.guadeloupe.agriculture.gouv.fr/controle-des-importations-de-denrees-animales-et-vegetales-en-guadeloupe-a128.html",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+        "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+        "https://www.legifrance.gouv.fr/loda/id/LEGITEXT000006076933/",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+        "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf",
+        "https://www.legislation.gov.uk/eudr/2000/29/pdfs/eudr_20000029_2019-09-01_en.pdf?view=extent",
+        "https://daaf.guadeloupe.agriculture.gouv.fr/l-envoi-de-vegetaux-de-la-guadeloupe-vers-la-france-et-les-autres-pays-de-l-a1199.html",
+        "https://www.guadeloupe.developpement-durable.gouv.fr/IMG/pdf/Diagnostic_sur_les_invasions_biologiques_aux_antilles_francaises_2011.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/french-territory-sources/peer-review-notes.json"
+    },
+    {
+      "code": "MF",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The2007 continuity provision and current Code rural establish a valid inherited national-law chain. A new tea-specific national schedule is unnecessary. The old NVWA sheet cannot settle an inherited local ban.",
+      "missingExternalEvidence": "Actual scope and continued application of Order96-323, or a current replacing instrument.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/saint-martin-diverse-producten-exporteisen/Saint-Martin_Diverse_producten_exporteisen_1.0.pdf",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+        "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+        "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000006138326/",
+        "https://www.legifrance.gouv.fr/loda/article_lc/JORFARTI000002473946",
+        "https://www.legifrance.gouv.fr/contenu/Media/files/autour-de-la-loi/guide-de-legistique/2025_10_06_fiche_3.6.7_saint-martin.pdf",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000637300/2026-05-11",
+        "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/french-territory-sources/peer-review-notes.json"
+    },
+    {
+      "code": "MQ",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "Current DAAF guidance identifies the2004 personal-import ban using the1990 unprocessed/simple-preparation definition. National-list absence does not resolve that broader local ban.",
+      "missingExternalEvidence": "Actual Order043448 of22November2004 and any general processing exclusion relevant to steamed/dried tea. The original order has not been recovered.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://daaf.martinique.agriculture.gouv.fr/quels-sont-les-vegetaux-soumis-a-un-contole-au-pec-lors-de-leur-introduction-a373.html",
+        "https://daaf.martinique.agriculture.gouv.fr/importation-des-vegetaux-et-produits-vegetaux-a362.html",
+        "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000343648/",
+        "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/french-territory-sources/peer-review-notes.json"
+    },
+    {
+      "code": "PM",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "Code rural D274-27–29 applies authorization/certification to the defined class generally, not only named commodities. The local text expressly covers post. The Newfoundland personal exception is geographically inapplicable to direct Japan post.",
+      "missingExternalEvidence": "An applicable general processing definition/exclusion establishing whether steamed/dried manufacture lies within simple preparation. Professional registration is not the basis for a private exclusion.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000032693993",
+        "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000035419827",
+        "https://www.saint-pierre-et-miquelon.gouv.fr/contenu/telechargement/812/4383/file/Recueil%20administratif%20%20-%20Septembre%202009.pdf",
+        "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071367/LEGISCTA000032694023/2026-06-17",
+        "https://www.saint-pierre-et-miquelon.developpement-durable.gouv.fr/IMG/pdf/2010_espececs-exotiques-envahissantes_frag_iles.pdf"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/french-territory-sources/pm-report2010.txt"
+    },
+    {
+      "code": "VA",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "LawLXXI/2008 makes Italian law subsidiary and subject to reception. Its specified postal/public-health subjects and the customs-transit agreements do not establish application of the whole Italian/EU agricultural regime.",
+      "missingExternalEvidence": "An operative Vatican plant-health rule or receiving instrument covering the relevant Italian plant-health rule. Postal service availability and duty relief cannot substitute.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://www.postevaticane.va/script-php/poste/PHPposte-invioPacchi/index.php",
+        "https://guypost.gy/wp-content/uploads/2024/09/ListOfProhibitedArticles-updated.pdf",
+        "https://www.vaticanstate.va/phocadownload/laws-decrees/Supplementoleggiedisposizioni.pdf",
+        "https://www.vatican.va/roman_curia/secretariat_state/archivio/documents/rc_seg-st_19290211_patti-lateranensi_it.html",
+        "https://www.postevaticane.va/it/posta-raccomandata",
+        "https://www.vaticanstate.va/it/novita/1540-firmato-il-protocollo-di-collaborazione-doganale-tra-governatorato-e-agenzia-delle-dogane-e-dei-monopoli-della-repubblica-italiana.html",
+        "https://def.giustiziatributaria.gov.it/DocTribFrontend/getAttoNormativoDetail.do?ACTION=getArticolo&articolo=Articolo+1&codiceOrdinamento=200000100000000&id=%7B442FDF84-CF15-4F73-9BA4-4CA474515FCD%7D",
+        "https://www.ulsa.va/it/pubblicazioni/bollettini/bollettino-n--16---2008/atti-di-sua-santita-benedetto-xvi/leggi-sulle-fonti-del-diritto-1-ottobre-2008-n-lxxi.html"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/remaining-scope-review/source-pass-result.json"
+    },
+    {
+      "code": "YT",
+      "currentDecision": "unresolved",
+      "outcomeChange": false,
+      "generalRuleAssessment": "The2025 schedule is favorable to dried tea. A separate binding2019 postal restriction and the unavailable2026 amended schedule prevent reliance on that allowance alone. Current guidance describing unprocessed products is relevant but does not reconcile the texts.",
+      "missingExternalEvidence": "Current Order2026-DAAF-236/consolidated annex and the operative reconciliation of the2019 postal text with processed-product guidance. Direct, alternate official, archive and mirror routes already failed.",
+      "concreteSafeUntriedPrimarySource": null,
+      "whyNoAdditionalActionNow": "The recorded targeted source routes and peer reviews reveal no new specific operative-source location. Repeating generic legislation searches or previously failed URLs would not change the identified legal/evidentiary gap.",
+      "existingPrimaryOrOfficialUrls": [
+        "https://daaf.mayotte.agriculture.gouv.fr/IMG/pdf/ap-2025-daaf-0230_importation_vegetaux_signe.pdf",
+        "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2026/Quoi-mettre-dans-nos-valises-cet-ete",
+        "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/yt_2019-1092_post-gepaeck_fr.pdf",
+        "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-aout-2025-a733.html",
+        "https://daaf.mayotte.agriculture.gouv.fr/IMG/pdf/arrete_no2025-daaf-535_modifiant_l_arrete_2025-daaf-0230.pdf",
+        "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-2026-a775.html",
+        "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=3229&reporeid=140",
+        "https://daaf.mayotte.agriculture.gouv.fr/IMG/pdf/presentation_copsav_-_v_finale.pdf",
+        "https://www.mayotte.gouv.fr/Publications/Recueil-des-actes-administratifs-R.A.A/RAA-2026"
+      ],
+      "priorReview": "docs/reports/tea-audit-work/french-territory-sources/peer-review-notes.json"
+    }
+  ],
+  "snapshotSources": {
+    "docs/reports/tea-audit-work/last-source-pass.json": "68cd1ca923ba647f9d0968d3ea5cf74ac8f355b4e5af2957938c2ff2bb383b60",
+    "docs/reports/tea-audit-work/africa.json": "555bc117a6ba75a148813f585e7d52783e5b069b90c4edaa1a7d4fc7841a98e6",
+    "docs/reports/tea-audit-work/americas.json": "34fb3c666f619bfbd6dcfd7cb62bb2a19fcd49d0ba8925955b7fc44dd1034f49",
+    "docs/reports/tea-audit-work/europe.json": "b7460f1ac03a9f77d948732edd74ac5d22b7ca9957ce7328b4b1e37cf0dd3406",
+    "docs/reports/tea-audit-work/africa-scope-continuation-sources/review-notes.json": "308fa16fb1776fff0b4573784cbd7db0d46c587a018568e41744703510178cf8",
+    "docs/reports/tea-audit-work/french-territory-sources/peer-review-notes.json": "3bd24f5de5bedbf0a5a0e5c2c0a2f0b858625fa57d1c2a0e22372674136b4390",
+    "docs/reports/tea-audit-work/legal-scope-peer-review/et-peer-review.json": "e968f451b51cceabe4ecf009d0de4510781a806924ca8da76718ce8aabb577aa",
+    "docs/reports/tea-audit-work/remaining-scope-review/source-pass-result.json": "eb762fd818f530806fc3d03284c5067d44402d93c5499609cecca64b13a38d9e"
+  },
+  "consolidatedReport": {
+    "path": "docs/reports/tea-shipping-audit-2026-09-29.json",
+    "sha256": "09f5eea66f98f1a40fcaeabe774a7b4fabddfb16a1a2a073fb6874184714a023"
+  },
+  "newFollowupAuthorityContacts": false,
+  "mainArraysEdited": false,
+  "limitation": "This is a finding that the presently identified public evidence and source routes do not finish these countries, not proof that the rules do not exist or that tea is prohibited. A refined gap is not a completed country."
+}

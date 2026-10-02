@@ -54,8 +54,43 @@ vi.mock('@/components/shared/Widget/Base.vue', () => ({
 import { mount, shallowMount } from '@vue/test-utils';
 import CustomiseWidget from '@/components/shared/Widget/Customise.vue';
 import SSwitch from '@/lib/soramitsu-ui/components/Switch/SSwitch.vue';
+import SButton from '@/lib/soramitsu-ui/components/Button/SButton.vue';
 
 describe('CustomiseWidget', () => {
+  it('renders the same preferences in compact mode without a separate widget card', async () => {
+    const wrapper = mount(CustomiseWidget, {
+      props: {
+        compact: true,
+        modelValue: true,
+        widgets: { chart: true },
+        labels: { chart: 'Chart' },
+      },
+      slots: { default: '<button class="reset">Reset</button>' },
+      global: {
+        stubs: {
+          's-popover-panel': { template: '<div><slot name="reference" /><slot /></div>' },
+          's-button': SButton,
+          's-divider': { template: '<hr />' },
+          's-switch': true,
+        },
+      },
+    });
+
+    expect(wrapper.find('.base-widget-stub').exists()).toBe(false);
+    const trigger = wrapper.get('button.customise-button');
+    expect(trigger.attributes('aria-label')).toBe('customisePageText');
+    expect(trigger.attributes('title')).toBe('customisePageText');
+    expect(trigger.attributes('aria-expanded')).toBe('true');
+    expect(trigger.find('.s-button__icon').exists()).toBe(true);
+    expect(trigger.text()).toBe('');
+    await wrapper.setProps({ modelValue: false });
+    expect(trigger.attributes('aria-expanded')).toBe('false');
+    expect(wrapper.find('.reset').exists()).toBe(true);
+    await wrapper.get('.customise-option__label').trigger('click');
+    expect(wrapper.emitted('update:widgets')?.[0]?.[0]).toEqual({ chart: false });
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+  });
+
   it('emits widget flag updates when toggling switches', async () => {
     const wrapper = shallowMount(CustomiseWidget, {
       props: {

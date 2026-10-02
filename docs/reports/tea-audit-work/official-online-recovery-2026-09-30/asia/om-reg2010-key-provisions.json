@@ -1,0 +1,13 @@
+{
+  "sourceUrl": "https://www.nsg.gov.om/data/1bc7e394-9983-47c0-ac4e-a94673d0d197.pdf",
+  "indexUrl": "https://www.nsg.gov.om/royalDecrees",
+  "method": "Direct visual reading of all nine scanned pages, not automated Arabic OCR. Selected source renders preserved. Arabic key provision transcribed; English is an analyst translation.",
+  "gazette": "Official Gazette 903, 16 January 2010, printed pages 42–50; operative from following day.",
+  "article30Arabic": "على كل من يرغب في استيراد مواد غذائية أن يتقدم إلى الجهة المختصة بطلب الحصول على ترخيص قبل استيرادها، يبين فيه نوعها وبلد المنشأ وبلد التصدير والتاريخ المتوقع لوصولها ووسيلة النقل المستخدمة ومنفذ الدخول وفي حالة مخالفة ذلك يمنع دخولها ويعاد تصديرها مباشرة على نفقة المستورد.",
+  "article30Translation": "Every person wishing to import foodstuffs must apply to the competent authority for a licence before importing them, indicating their type, country of origin, country of export, expected arrival date, means of transport used and entry point. In case of noncompliance, entry is prevented and the goods are immediately re-exported at the importer’s expense.",
+  "article31": "Every imported food is registered in the imported-food database; this later has an express personal-use registration exemption under Decision 69/2024 Article 3(1), effective 1 January 2025.",
+  "article34": "Customs release follows competent border-authority approval; this routine release is distinct from the advance application expressly required by Article 30.",
+  "scope": "Article 30 says every person wishing to import food, without business, resale, mode-of-carriage or minimum-quantity qualification. Article 1 inherits Food Safety Law 84/2008 definitions; its food definition covers manufactured/unmanufactured plant or animal food for human use, including beverages. Food-establishment duties elsewhere are not used to extend the specific Article 30 duty. No personal carve-out appears in any of the nine pages.",
+  "amendment": "Decision 170/2025 adds Article 30 bis permitting pre-licence inspection of foreign food establishments. It expressly references the licence under Article 30, confirming that separate licence provision remains operative after the 69/2024 registration exemption. The discretionary foreign inspection is not treated as an automatic requirement for this parcel.",
+  "inference": "Conservative legal-scope inference: the unqualified pre-import licence in Article 30 encompasses this personal purchased tea. The identified personal-food registration exemption is not an exemption from the separate import licence. No blanket prohibition is claimed."
+}

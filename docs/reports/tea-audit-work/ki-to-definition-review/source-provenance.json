@@ -1,0 +1,47 @@
+[
+  {
+    "files": [
+      "to-current-act.pdf",
+      "to-current-act.txt"
+    ],
+    "url": "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/1981/1981-0024/PlantQuarantineAct_3.pdf",
+    "recoveredAt": "2026-09-30"
+  },
+  {
+    "files": [
+      "to-current-p.html",
+      "to-current-by-title.html"
+    ],
+    "url": "https://ago.gov.to/cms/legislation/current-revised-edition/by-title.html?view=acts_alpha",
+    "method": "Public search form POST submit4=P; pointintime=2026-09-30 00:00:00"
+  },
+  {
+    "files": [
+      "to-current-law-index.html"
+    ],
+    "url": "https://ago.gov.to/cms/legislation/index/index-by-category.html?view=index_by_category"
+  },
+  {
+    "files": [
+      "to-current-diseases-regulations.pdf",
+      "to-current-diseases-regulations.txt"
+    ],
+    "url": "https://ago.gov.to/cms/images/LEGISLATION/SUBORDINATE/1965/1965-0002/DiseasesofPlantsRegulations_3.pdf"
+  },
+  {
+    "files": [
+      "ki-act2011.pdf",
+      "ki-act2011.txt"
+    ],
+    "url": "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+    "method": "Copied previously recovered full primary sources from asia-sources; no repeated network retry"
+  },
+  {
+    "files": [
+      "to-regulations1995.pdf",
+      "to-regulations1995.txt"
+    ],
+    "url": "https://faolex.fao.org/docs/pdf/ton80201.pdf",
+    "method": "Copied prior full Gazette scan and OCR from asia-sources"
+  }
+]

@@ -109,12 +109,23 @@ export const subscribeToWalletAccounts = async (
 export const parseAccountJson = (file: File): Promise<KeyringPair$Json> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsText(file);
     reader.onload = () => {
-      const json = reader.result as string;
-      resolve(JSON.parse(json));
+      try {
+        if (typeof reader.result !== 'string') throw new Error('Invalid account JSON file');
+
+        const parsed: unknown = JSON.parse(reader.result);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+          throw new Error('Invalid account JSON file');
+        }
+
+        resolve(parsed as KeyringPair$Json);
+      } catch (error) {
+        reject(error);
+      }
     };
     reader.onerror = (e) => reject(e);
+    reader.onabort = () => reject(new Error('Account file read aborted'));
+    reader.readAsText(file);
   });
 };
 

@@ -1,0 +1,343 @@
+[
+  {
+    "key": "law-page",
+    "url": "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+    "checkedAt": "2026-09-30T07:52:04.665354+00:00",
+    "status": 200,
+    "contentType": "text/html; charset=UTF-8",
+    "finalUrl": "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+    "sha256": "bd5e94e1cdf5d58bc95675d9fbfc58febcea6103ddb7f54f4ba1e9ad09e87058",
+    "bytes": 263889,
+    "candidateLinks": [
+      "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+      "https:\\/\\/justice.gov.et\\/en\\/law\\/plant-protection-and-quarantine-proclamation-no-1400-2026\\/#breadcrumblist",
+      "https:\\/\\/justice.gov.et\\/en\\/law\\/plant-protection-and-quarantine-proclamation-no-1400-2026\\/#listItem",
+      "https:\\/\\/justice.gov.et\\/en\\/law\\/plant-protection-and-quarantine-proclamation-no-1400-2026\\/#organizationLogo",
+      "https:\\/\\/justice.gov.et\\/en\\/law\\/plant-protection-and-quarantine-proclamation-no-1400-2026\\/#authorImage",
+      "https:\\/\\/justice.gov.et\\/en\\/law\\/plant-protection-and-quarantine-proclamation-no-1400-2026\\/#webpage",
+      "https:\\/\\/justice.gov.et\\/en\\/law\\/plant-protection-and-quarantine-proclamation-no-1400-2026\\/",
+      "https://justice.gov.et/en/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fjustice.gov.et%2Fen%2Flaw%2Fplant-protection-and-quarantine-proclamation-no-1400-2026%2F",
+      "https://justice.gov.et/en/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fjustice.gov.et%2Fen%2Flaw%2Fplant-protection-and-quarantine-proclamation-no-1400-2026%2F&#038;format=xml",
+      "https://justice.gov.et/am/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1429-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1430-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1434-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/ደንብ-ቁጥር-593-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1425-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1426-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1417-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1418-2018.pdf",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1419-2018.pdf"
+    ]
+  },
+  {
+    "key": "wp-search",
+    "url": "https://justice.gov.et/wp-json/wp/v2/search?search=1400&per_page=30",
+    "checkedAt": "2026-09-30T07:52:04.666120+00:00",
+    "status": 200,
+    "contentType": "application/json; charset=UTF-8",
+    "finalUrl": "https://justice.gov.et/wp-json/wp/v2/search?search=1400&per_page=30",
+    "sha256": "6095f29f1d39a461efd6900f1377b3f020e733d854e0b26db82a2810e2e2b51c",
+    "bytes": 2559,
+    "candidateLinks": [
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/plant-protection-and-quarantine-proclamation-no-1400-2026\\/"
+    ],
+    "jsonSummary": [
+      {
+        "id": 43305,
+        "date": null,
+        "title": "የዕፅዋት ጥበቃና ኳራንቲን አዋጅ ቁጥር 1400/2018•PLANT PROTECTION AND QUARANTINE PROCLAMATION NO 1400/2026",
+        "url": "https://justice.gov.et/am/law/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018/",
+        "source_url": null,
+        "mime_type": null
+      },
+      {
+        "id": 43205,
+        "date": null,
+        "title": "የዕፅዋት ጥበቃና ኳራንቲን አዋጅ ቁጥር 1400/2018 • Plant Protection and Quarantine Proclamation No. 1400/2026",
+        "url": "https://justice.gov.et/am/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+        "source_url": null,
+        "mime_type": null
+      },
+      {
+        "id": 42816,
+        "date": null,
+        "title": "በኢ.ፌ.ዲ.ሪ. የወንጀል ሕግ ሥነ- ሥርዓትና የማስረጃ ሕግ አወጣጥ ሒደት ዉስጥ የሕዝብ ተወካዮች ምክር ቤት አባላት ለተጫወቱት ሚና ምስጋና ቀረበ•Members of the House of Peoples&#8217; Representatives Commended for Their Role in Drafting the FDRE Criminal Procedure and Evidence Law",
+        "url": "https://justice.gov.et/am/news/members-of-the-house-of-peoples-representatives-commended-for-their-role-in-drafting-the-fdre-criminal-procedure-and-evidence-law/",
+        "source_url": null,
+        "mime_type": null
+      }
+    ]
+  },
+  {
+    "key": "wp-media",
+    "url": "https://justice.gov.et/wp-json/wp/v2/media?search=1400&per_page=30",
+    "checkedAt": "2026-09-30T07:52:04.666691+00:00",
+    "status": 200,
+    "contentType": "application/json; charset=UTF-8",
+    "finalUrl": "https://justice.gov.et/wp-json/wp/v2/media?search=1400&per_page=30",
+    "sha256": "d43528a48b994b20617fcfe5b5fa1f8d569c268c85a429e3c3b891f80b6dae15",
+    "bytes": 316775,
+    "candidateLinks": [
+      "http:\\/\\/justice.gov.et\\/wp-content\\/uploads\\/2026\\/09\\/\\u12a0\\u12cb\\u1305-\\u1241\\u1325\\u122d-1400-2018-1.pdf",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\/",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\/\\",
+      "https:\\\\\\/\\\\\\/justice.gov.et\\\\\\/am\\\\\\/law\\\\\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\\\\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\\\\\/#breadcrumblist\\",
+      "https:\\\\\\/\\\\\\/justice.gov.et\\\\\\/am\\\\\\/law\\\\\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\\\\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\\\\\/#listItem\\",
+      "https:\\\\\\/\\\\\\/justice.gov.et\\\\\\/am\\\\\\/law\\\\\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\\\\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\\\\\/#itempage\\",
+      "https:\\\\\\/\\\\\\/justice.gov.et\\\\\\/am\\\\\\/law\\\\\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\\\\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\\\\\/\\",
+      "https:\\\\\\/\\\\\\/justice.gov.et\\\\\\/am\\\\\\/law\\\\\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\\\\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\\\\\/#organizationLogo\\",
+      "https:\\\\\\/\\\\\\/justice.gov.et\\\\\\/am\\\\\\/law\\\\\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\\\\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\\\\\/#authorImage\\",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\/#breadcrumblist",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\/#listItem",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\/#itempage",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\/#organizationLogo",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-4\\/#authorImage",
+      "https:\\/\\/justice.gov.et\\/wp-content\\/uploads\\/2026\\/09\\/\\u12a0\\u12cb\\u1305-\\u1241\\u1325\\u122d-1400-2018-1.pdf'",
+      "https:\\/\\/justice.gov.et\\/wp-content\\/uploads\\/2026\\/09\\/\\u12a0\\u12cb\\u1305-\\u1241\\u1325\\u122d-1400-2018-1.pdf",
+      "http:\\/\\/justice.gov.et\\/wp-content\\/uploads\\/2026\\/09\\/\\u12a0\\u12cb\\u1305-\\u1241\\u1325\\u122d-1400-2018.pdf",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-3\\/",
+      "https:\\/\\/justice.gov.et\\/am\\/law\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-3\\/\\",
+      "https:\\\\\\/\\\\\\/justice.gov.et\\\\\\/am\\\\\\/law\\\\\\/%e1%8b%a8%e1%8b%95%e1%8d%85%e1%8b%8b%e1%89%b5-%e1%8c%a5%e1%89%a0%e1%89%83%e1%8a%93-%e1%8a%b3%e1%88%ab%e1%8a%95%e1%89%b2%e1%8a%95-%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018\\\\\\/%e1%8a%a0%e1%8b%8b%e1%8c%85-%e1%89%81%e1%8c%a5%e1%88%ad-1400-2018-3\\\\\\/#breadcrumblist\\"
+    ],
+    "jsonSummary": [
+      {
+        "id": 43311,
+        "date": "2026-09-23T11:13:59",
+        "title": {
+          "rendered": "አዋጅ ቁጥር 1400-2018"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2026/09/አዋጅ-ቁጥር-1400-2018-1.pdf",
+        "mime_type": "application/pdf"
+      },
+      {
+        "id": 43310,
+        "date": "2026-09-23T11:12:50",
+        "title": {
+          "rendered": "አዋጅ ቁጥር 1400-2018"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2026/09/አዋጅ-ቁጥር-1400-2018.pdf",
+        "mime_type": "application/pdf"
+      },
+      {
+        "id": 43213,
+        "date": "2026-08-13T09:25:56",
+        "title": {
+          "rendered": "አዋጅ ቁጥር 1400-2018"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 43175,
+        "date": "2026-08-12T23:00:47",
+        "title": {
+          "rendered": "አዋጅ ቁጥር 1400-2018"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf",
+        "mime_type": "application/pdf"
+      },
+      {
+        "id": 33502,
+        "date": "2025-05-10T11:08:48",
+        "title": {
+          "rendered": "495319837_1114000940770647_4807493898593211781_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/05/495319837_1114000940770647_4807493898593211781_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 33501,
+        "date": "2025-05-10T11:08:47",
+        "title": {
+          "rendered": "495381693_1114001044103970_145357108200305131_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/05/495381693_1114001044103970_145357108200305131_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 31451,
+        "date": "2025-05-02T02:36:38",
+        "title": {
+          "rendered": "481981661_1062514002586008_1802852883492423641_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/05/481981661_1062514002586008_1802852883492423641_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 27507,
+        "date": "2025-04-19T21:29:21",
+        "title": {
+          "rendered": "481703727_1068019572035451_7867933140050365121_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/04/481703727_1068019572035451_7867933140050365121_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 26609,
+        "date": "2025-04-17T02:10:42",
+        "title": {
+          "rendered": "482242015_1068442451993163_5443046534140017366_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/04/482242015_1068442451993163_5443046534140017366_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 25687,
+        "date": "2025-04-13T17:24:45",
+        "title": {
+          "rendered": "484814032_1070535225117219_6831143896384140024_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/04/484814032_1070535225117219_6831143896384140024_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 25008,
+        "date": "2025-04-12T00:53:57",
+        "title": {
+          "rendered": "485018691_1073448794825862_6888140064315739113_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/04/485018691_1073448794825862_6888140064315739113_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 24588,
+        "date": "2025-04-11T12:32:06",
+        "title": {
+          "rendered": "485120749_1074873251350083_3455651525690140008_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/04/485120749_1074873251350083_3455651525690140008_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 23440,
+        "date": "2025-04-10T00:23:05",
+        "title": {
+          "rendered": "486778448_1078048511032557_9049414160485641400_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/04/486778448_1078048511032557_9049414160485641400_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 17896,
+        "date": "2025-03-31T15:17:31",
+        "title": {
+          "rendered": "487240340_1081620214008720_2544367691491676732_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/03/487240340_1081620214008720_2544367691491676732_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 17870,
+        "date": "2025-03-31T14:53:53",
+        "title": {
+          "rendered": "487696980_1081627514007990_6593232926153113102_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/03/487696980_1081627514007990_6593232926153113102_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 15089,
+        "date": "2025-03-21T22:30:00",
+        "title": {
+          "rendered": "476434654_1041900741314001_881069459702547098_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/03/476434654_1041900741314001_881069459702547098_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 14576,
+        "date": "2025-03-19T02:31:17",
+        "title": {
+          "rendered": "480665340_1056270216543720_8140055847886237294_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/03/480665340_1056270216543720_8140055847886237294_n.jpg",
+        "mime_type": "image/jpeg"
+      },
+      {
+        "id": 2196,
+        "date": "2025-01-22T16:17:01",
+        "title": {
+          "rendered": "396123415_643140071323727_4311252444121994310_n"
+        },
+        "url": null,
+        "source_url": "https://justice.gov.et/wp-content/uploads/2025/01/396123415_643140071323727_4311252444121994310_n.jpg",
+        "mime_type": "image/jpeg"
+      }
+    ]
+  },
+  {
+    "key": "wp-law-api",
+    "url": "https://justice.gov.et/wp-json/",
+    "checkedAt": "2026-09-30T07:52:04.666962+00:00",
+    "status": 200,
+    "contentType": "application/json; charset=UTF-8",
+    "finalUrl": "https://justice.gov.et/wp-json/",
+    "sha256": "1649241ae86f311779d880738a371b0f95483eff5e18c3b564bbe97fd83c4917",
+    "bytes": 1227854,
+    "candidateLinks": [],
+    "jsonSummary": {
+      "namespaces": [
+        "oembed/1.0",
+        "aioseo/v1",
+        "code-snippets/v1",
+        "docket-cache/v1",
+        "jet-engine/v1",
+        "elementor-one/v1",
+        "elementor/v1",
+        "elementor-pro/v1",
+        "objectcache/v1",
+        "jet-elements-api/v1",
+        "jet-engine/v2",
+        "croco/v1",
+        "jet-menu-api/v2",
+        "jet-popup/v2",
+        "jet-search/v1",
+        "jet-smart-filters-api/v1",
+        "jet-tabs-api/v1",
+        "jet-tricks-api/v1",
+        "jet-theme-core-api/v2",
+        "elementor/v1/documents",
+        "elementor-ai/v1",
+        "elementor/v1/feedback",
+        "hub-connector/v1",
+        "forminator/v1",
+        "wpmudev_pcs/v1",
+        "wp/v2",
+        "wp-site-health/v1",
+        "wp-block-editor/v1"
+      ],
+      "lawRoutes": [
+        "/wp/v2/law",
+        "/wp/v2/law/(?P<id>[\\d]+)",
+        "/wp/v2/law/(?P<parent>[\\d]+)/revisions",
+        "/wp/v2/law/(?P<parent>[\\d]+)/revisions/(?P<id>[\\d]+)",
+        "/wp/v2/law/(?P<id>[\\d]+)/autosaves",
+        "/wp/v2/law/(?P<parent>[\\d]+)/autosaves/(?P<id>[\\d]+)",
+        "/wp/v2/law-consolidation",
+        "/wp/v2/law-consolidation/(?P<id>[\\d]+)",
+        "/wp/v2/law-type",
+        "/wp/v2/law-type/(?P<id>[\\d]+)"
+      ]
+    }
+  }
+]

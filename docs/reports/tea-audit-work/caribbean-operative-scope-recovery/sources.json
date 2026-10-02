@@ -1,0 +1,107 @@
+[
+  {
+    "url": "https://www.sintmaartengov.org/Documents/Policies/Final%20Approved%20Agri%20Policy%202022.pdf",
+    "file": "sx-agpolicy2022.pdf",
+    "status": 200,
+    "sha256": "20180b4ebafa506acd2866471a12ae4f03e31eb5f5c614a56e7b3e75dd74b0f7",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "cw-economy-index2023.pdf",
+    "url": "https://gobiernu.cw/wp-content/uploads/2023/02/Klapper-P.B.-Hoofdstuk.-X-ECONOMISCHE-AANGELEGENHEDEN-Updated-tot-en-met-P.B.-2023-no.-28.pdf",
+    "status": 200,
+    "sha256": "ff06cef723f95961fd8a7af3319936a919c0d12015fb1b3663fd40954a57b767",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "cw-keyword-index2025.pdf",
+    "url": "https://gobiernu.cw/wp-content/uploads/2025/09/Klapper-P.B.-Gebruiksaanwijzingen.-Alfabetische-Trefwoorden-Updated-tm-2025-no.-128.pdf",
+    "status": 200,
+    "sha256": "4dc76975d7d5062fa65de568328055491c7bbb4f1f803e3c4e123ce23a915b77",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "cw-media-index.json",
+    "url": "https://gobiernu.cw/wp-json/wp/v2/media?search=ECONOMISCHE&per_page=100",
+    "status": 200,
+    "sha256": "569849c6091afc38fd4ea82fece86ace6cfe8cd9be174905ede3236923c2e3bf",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "cw-customs.html",
+    "url": "https://douane.cw/particulier/reizigersbagage/verboden-in-en-uit-te-voeren/",
+    "status": 200,
+    "sha256": "63028981de1bce9318666284fd339367f2f3cc4929fe9daf7ba9651516ae1481",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "sx-lvv.html",
+    "url": "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+    "status": 200,
+    "sha256": "e917641b3a2c9ea599f6e4fafa27ee7393fd1b402382d2b1ec5e1877cbff2008",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "na-transition2010.html",
+    "url": "https://zoek.officielebekendmakingen.nl/kst-31954-15.html",
+    "status": 200,
+    "sha256": "1c36b92a3fc663421f240f23aee4bfd5729a5c8bdba9acb3bfabaf3ede932e59",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "tc-borderforce2024.html",
+    "url": "https://borderforce.gov.tc/pets-food-plants",
+    "status": 200,
+    "sha256": "7824a7f7b02bb5cffe975aed1229777db53c093d294260ed54a02adcf9e8a791",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "cw-island-economy2025.pdf",
+    "url": "https://gobiernu.cw/wp-content/uploads/2025/10/Klapper-A.B.-Hoofdstuk-X-Economische-Aangelegenheden-Update-tot-en-met-P.B.-2025-no.-143.pdf",
+    "status": 200,
+    "sha256": "0ef645d917db12f3043bd2443aad71c69ef8933dd6a7d6a9e38d8a1c5f398349",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "file": "cw-country-economy2025.pdf",
+    "url": "https://gobiernu.cw/wp-content/uploads/2025/10/Klapper-P.B.-Hoofdstuk.-X-ECONOMISCHE-AANGELEGENHEDEN-Updated-tot-en-met-P.B.-2025-no.-149GT.pdf",
+    "status": 200,
+    "sha256": "9ae4f5f92ad97cd4d8ce7590c0b491044fe3cdc57f1fa771642ab0209f323b96",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "url": "https://laws.gov.vg/search/node?keys=Plant%20Protection",
+    "file": "vg-search.html",
+    "status": 200,
+    "sha256": "47c87a94219cf65236ed1f563dafb4dc5d5f46e3d56e446cfe86564cd3e8915a",
+    "retrieved": "2026-09-30"
+  },
+  {
+    "url": "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+    "existingFile": "caribbean-definition-peer-review/dm-fullact.pdf",
+    "sha256": "aef8c3f45f7fbf6ed0d8870a139d8d20ce04f3e1a459c7626c8583b37c9ea003",
+    "reviewed": "2026-09-30",
+    "note": "Already recovered full primary source; reread this pass, not newly downloaded."
+  },
+  {
+    "url": "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+    "existingFile": "sources/dm-regs.pdf",
+    "sha256": "e3459bb714f7a3c39313f48b15dad6dcd84e440eb4ee5b7740a2a77baa6033aa",
+    "reviewed": "2026-09-30",
+    "note": "Already recovered full primary source; reread this pass, not newly downloaded."
+  },
+  {
+    "url": "https://assets.ippc.int/static/media/files/reportingobligation/2016/11/30/Plant_Health_Ordinance_2012l_2.pdf",
+    "existingFile": "sources/tc-ordinance.pdf",
+    "sha256": "379c7aa66f0586c31d3dad1188a57570e031f58605f94763248b88743e530288",
+    "reviewed": "2026-09-30",
+    "note": "Already recovered full primary source; reread this pass, not newly downloaded."
+  },
+  {
+    "url": "https://agc.gov.tc/agc/component/edocman/25-of-2024-plant-health-regulations-2024/fdocument?Itemid=9999",
+    "existingFile": "sources/tc-reg2024.pdf",
+    "sha256": "a2aade23250ae4dd569fe8455b45327845fde81874305dd770a124cd20a7bc2c",
+    "reviewed": "2026-09-30",
+    "note": "Already recovered full primary source; reread this pass, not newly downloaded."
+  }
+]

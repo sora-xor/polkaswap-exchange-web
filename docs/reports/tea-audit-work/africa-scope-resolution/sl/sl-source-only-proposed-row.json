@@ -1,0 +1,65 @@
+{
+  "code": "SL",
+  "status": "not_verified",
+  "rule": "The 1976 Plant Phytosanitary (Import Restriction) Notice expressly extends vegetative material, seeds and fruit to dried, frozen and chilled goods, but excludes goods described as cooked, or pickled and imported in bottles or cans. The actual printed item 64 contains the awkward wording \"and mentioned herein\" and requires certificates; it must not be silently rewritten as \"not mentioned\". The tea entry names vegetative material and seeds, not finished retail sencha. For this steamed product, whether the cooking exception applies and how the container qualification operates remain unresolved. The 2025 WTO review confirms the 1974 rules as amended in 1976 remain the operative starting point. The official historical Cap 185 section 2 applies its broad definition of plant, including dead severed leaves, to rules made under it unless context otherwise requires. The 1976 exception is expressly for purposes of that Notice, issued under Rule 9; the full 1974 parent Rules were not recovered to establish their exceptions or its effect on an independent parent duty.",
+  "personalMailApplicability": "The retrieved business-registration/for-sale food-import provisions were not extended to the private end consumer. Final enacted operative wording and a personal-post implementation rule were not recovered.",
+  "quantityLimit": null,
+  "authority": "Sierra Leone gazetted plant-import regulations",
+  "evidenceUrls": [
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+    "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf",
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-12-no-13.pdf",
+    "https://faolex.fao.org/docs/pdf/sie216530.pdf",
+    "https://www.parliament.gov.sl/uploads/bill_files/The%20Food%20and%20Feed%20Safety%20Authority%20Act%2C%202017.pdf",
+    "https://slsb.gov.sl/inspectorate-overview/",
+    "https://slsb.gov.sl/product-certification/",
+    "https://faolex.fao.org/docs/pdf/sie216504.pdf",
+    "https://publications.lawreform.gov.sl/download_file/929dedee-5526-48c7-8e0e-f13f1a850535/349"
+  ],
+  "remainingQuestion": "Recover the complete operative P.N.66/1974, especially definitions, Rule 2 exceptions and Rule 9 scope, or an authoritative general rule that determines how the 1976 cooked-food exclusion affects the parent import duty. Then apply the cooking clause to industrial steaming and its container qualification. No bespoke tea ruling is required if those generic rules decide the question.",
+  "researchAttempts": [
+    "Reviewed the gazetted tea entry and searched newer plant-quarantine legislation and processed-tea/personal-post guidance.",
+    "30 September: read WTO 2025 report paragraphs 3.88–3.94, distinguishing current rules from a proposed replacement. Retrieved indexed primary notice text including its dried-material/cooked-bottled-or-canned distinction and catch-all item 64; the original PDF download was unavailable (403), so ambiguous OCR of item 64 was not used as a conclusive new rule. The full 1974 rules and an authoritative manufactured-tea interpretation were not retrieved.",
+    "Downloaded the 19 February 1976 Gazette directly and visually verified printed pages 252 and 254 (PDF pages 12 and 14), after browser retrieval failures. Item 64 literally prints \"and mentioned herein\"; the unusual wording is not an OCR error. Verified the cooking/pickling/container exception in the introductory paragraph. Because sencha is steamed before drying, did not collapse the analysis to the explicit dried category or assume that every cooked product must be bottled. Rechecked 2025 WTO review sections 3.88–3.94 for current legal context.",
+    "30 September independent food/conformity review: Read the complete public Food and Feed Safety bill, separating section 30 business registration and section 33 imports for domestic sale from a private postal order. Checked current SLSB inspection/product-certification descriptions, WTO 2025 implementation context and the later enacted Breast-Milk Substitutes Act reference to food-safety legislation. Did not treat the bill’s blank adoption metadata as proof that the food law never took effect, or extend commercial product-mark certification to every private shipment.",
+    "30 September common-definition review: The 1976 Notice has a real cooked-food exception, and a reading cooked OR (pickled and bottled/canned) is linguistically possible. The exception is expressly for purposes of this Notice issued under Rule 9 of the parent 1974 Rules. The full parent Rules were not recovered in this bounded exact search; the Notice alone cannot establish absence of an independent parent-rule permit duty. A secondary review quotes a broad parent Rule 2, but was used only as a retrieval lead, not as the legal conclusion. No operative ISPM definition bridge was recovered.",
+    "30 September 2026 parent-rule recovery: recovered the complete 7-page official Law Reform Commission Cap 185 compilation and read sections 2 and 3. Verified the Gazette 1974 index has 0 documents, the official Commission 1974 Instruments folder is empty, global phytosanitary search has no file, SierraLII all-legislation inventory has no 1974 year, and the actual IPPC legislation category has no reporting obligations. Exact indexed FAOLEX/title/number searches did not recoverPN 66. The RSPO partialRule 2 quotation remained a retrieval lead, not a verified full parent rule. New evidence supports a real parent-duty scope gap beyond the Notice container grammar; it does not establish a prohibition."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "The private food-law review does not establish a separate special-document duty. For agriculture, Cap 185 section 2 expressly includes dead severed leaves and applies to subsidiary rules unless context requires otherwise. The 1976 Notice cooking exception is limited to that Notice; without the complete 1974 Rules and Rule 9 context its effect on an independent permit duty remains unsettled. This is a specific legal-scope gap, not a requirement for a tea-specific exemption or personal agency ruling.",
+  "permitFreeSources": [
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+    "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf",
+    "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-12-no-13.pdf",
+    "https://faolex.fao.org/docs/pdf/sie216530.pdf",
+    "https://www.parliament.gov.sl/uploads/bill_files/The%20Food%20and%20Feed%20Safety%20Authority%20Act%2C%202017.pdf",
+    "https://slsb.gov.sl/inspectorate-overview/",
+    "https://slsb.gov.sl/product-certification/",
+    "https://faolex.fao.org/docs/pdf/sie216504.pdf",
+    "https://publications.lawreform.gov.sl/download_file/929dedee-5526-48c7-8e0e-f13f1a850535/349"
+  ],
+  "independentFoodConformityRule": "The publicly retrievable Food and Feed Safety Act 2017 text labels itself a Bill, with unfilled enactment metadata. Its section 30 importer registration is expressly for import/export businesses, and section 33 food-import requirements are framed around imports for sale within Sierra Leone. The text therefore does not establish a special certificate duty for this private purchaser. WTO 2025 reports adoption and later enacted legislation references the food-safety Act, so an unavailable final copy must not be described as proof that no law was enacted. Current SLSB material describes arrival inspection/testing, not a verified separate pre-import certificate duty for private tea parcels.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-sources/sl-food2017.pdf",
+    "docs/reports/tea-audit-work/food-conformity-sources/sl-food2017.txt"
+  ],
+  "foodConformityAccessNotes": "The downloadable FAO/Parliament 2017 text is explicitly a Bill, not a verified final promulgated version. WTO 2025 and the 2021 enacted cross-reference demonstrate that food-safety legislation exists, but do not establish an unqualified private-import document duty in the unavailable final text.",
+  "definitionReview": {
+    "code": "SL",
+    "outcome": "unresolved",
+    "finding": "The 1976 Notice has a real cooked-food exception, and a reading cooked OR (pickled and bottled/canned) is linguistically possible. The exception is expressly for purposes of this Notice issued under Rule 9 of the parent 1974 Rules. The full parent Rules were not recovered in this bounded exact search; the Notice alone cannot establish absence of an independent parent-rule permit duty. A secondary review quotes a broad parent Rule 2, but was used only as a retrieval lead, not as the legal conclusion. No operative ISPM definition bridge was recovered.",
+    "remainingEvidence": "The complete parent Plant Phytosanitary (Import) Rules, P.N.66/1974, including definitions, Rule 2 and interaction with Rule 9/1976 Notice, plus a defensible application of the cooked-food clause to steam-manufactured tea in pouches. This is a legal-text/scope gap, not a demand for a bespoke tea ruling.",
+    "sourceFiles": [
+      "docs/reports/tea-audit-work/africa-followup-sources/sl-gazette1976.pdf",
+      "docs/reports/tea-audit-work/africa-followup-sources/sl-gazette1976.txt",
+      "docs/reports/tea-audit-work/continued-africa-sources/sl-wto2025.pdf"
+    ],
+    "sources": [
+      "https://archive.gazettes.africa/archive/sl/1976/sl-government-gazette-dated-1976-02-19-no-14.pdf",
+      "https://www.wto.org/english/tratop_e/tpr_e/s470_e.pdf"
+    ],
+    "retrievalLeadOnly": "https://rspo.org/wp-content/uploads/2_Sierra-Leone-LCT-Review%20%281%29.pdf",
+    "reviewedAt": "2026-09-30"
+  }
+}

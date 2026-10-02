@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://justice.gov.et/wp-content/uploads/2026/09/አዋጅ-ቁጥር-1400-2018-1.pdf",
+    "id": 43311,
+    "checkedAt": "2026-09-30T07:53:50.621823+00:00",
+    "status": 200,
+    "bytes": 1139076,
+    "sha256": "745c049aca6134f276e9883ef334a8d3ba864d67e176e57a3b5ebd765829428c",
+    "isPdf": true,
+    "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43311.pdf"
+  },
+  {
+    "url": "https://justice.gov.et/wp-content/uploads/2026/09/አዋጅ-ቁጥር-1400-2018.pdf",
+    "id": 43310,
+    "checkedAt": "2026-09-30T07:53:50.669319+00:00",
+    "status": 200,
+    "bytes": 1139076,
+    "sha256": "745c049aca6134f276e9883ef334a8d3ba864d67e176e57a3b5ebd765829428c",
+    "isPdf": true,
+    "file": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-1400-43310.pdf"
+  }
+]

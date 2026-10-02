@@ -1,0 +1,62 @@
+{
+  "mergedAt": "2026-09-30T07:41:15.682008+00:00",
+  "changes": [
+    {
+      "code": "KM",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "africa-definition-review/km-proposed-override.json",
+      "peerReviewedAt": "2026-09-30"
+    },
+    {
+      "code": "MZ",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "africa-definition-review/mz-proposed-override.json",
+      "peerReviewedAt": "2026-09-30"
+    },
+    {
+      "code": "GU",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "pacific-finished-tea-definition-review/gu-proposed-supported-full-row.json",
+      "peerReviewedAt": "2026-09-30"
+    },
+    {
+      "code": "MP",
+      "before": "unresolved",
+      "after": "not_supported",
+      "proposal": "pacific-finished-tea-definition-review/mp-proposed-not-supported-full-row.json",
+      "peerReviewedAt": "2026-09-30"
+    },
+    {
+      "code": "TO",
+      "before": "unresolved",
+      "after": "not_supported",
+      "proposal": "ki-to-definition-review/to-outcome-full-row-proposal.json",
+      "peerReviewedAt": "2026-09-30"
+    },
+    {
+      "code": "CK",
+      "before": "unresolved",
+      "after": "unresolved",
+      "proposal": "pacific-finished-tea-definition-review/ck-source-only-full-row-override.json",
+      "peerReviewedAt": "2026-09-30"
+    },
+    {
+      "code": "KI",
+      "before": "unresolved",
+      "after": "unresolved",
+      "proposal": "ki-to-definition-review/ki-source-only-full-row-proposal.json",
+      "peerReviewedAt": "2026-09-30"
+    },
+    {
+      "code": "DM",
+      "before": "unresolved",
+      "after": "unresolved",
+      "proposal": "dominica-definition-review/source-only-full-row-proposal.json",
+      "peerReviewedAt": "2026-09-30"
+    }
+  ],
+  "review": "Root checked operative definitions, permit/admission interaction and current Tonga repeal; Mozambique original Gazette Article17 visually verified. Supported classifications are explicitly combined-source legal inferences. No shipping service changes."
+}

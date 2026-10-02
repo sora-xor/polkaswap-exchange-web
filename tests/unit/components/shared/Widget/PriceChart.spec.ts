@@ -220,12 +220,21 @@ vi.mock('@/composables/useLoading', async () => {
   const { ref } = await import('vue');
 
   return {
-    useLoading: () => ({
-      loading: ref(false),
-      withApi: async (callback: () => Promise<void> | void) => {
-        await callback();
-      },
-    }),
+    useLoading: () => {
+      const loading = ref(false);
+
+      return {
+        loading,
+        withApi: async (callback: () => Promise<void> | void) => {
+          loading.value = true;
+          try {
+            await callback();
+          } finally {
+            loading.value = false;
+          }
+        },
+      };
+    },
   };
 });
 
@@ -359,6 +368,87 @@ describe('PriceChartWidget', () => {
     expect(requestSubscription).toHaveBeenCalledTimes(1);
     expect(chartHarness.skeletonEmptyStates.at(-1)).toBe(false);
     expect(chartHarness.chartSources.at(-1)).toContainEqual([1_700_000_000_000, 2, 2, 1, 2.5, 10]);
+  });
+
+  it('disposes an async price subscription that resolves after unmount', async () => {
+    let resolveSubscription!: (unsubscribe: VoidFunction) => void;
+    const unsubscribe = vi.fn();
+    const requestSubscription = vi.fn(
+      () =>
+        new Promise<VoidFunction>((resolve) => {
+          resolveSubscription = resolve;
+        })
+    );
+    const requestMethod = vi.fn(async () => ({
+      pageInfo: { hasNextPage: false, endCursor: undefined },
+      edges: [{ cursor: 'initial', node: snapshot(1_700_000_000_000, [1, 2, 1, 3]) }],
+    }));
+
+    const wrapper = mount(PriceChartWidget, {
+      props: {
+        baseAsset: asset('xor', 'XOR'),
+        requestMethod,
+        requestSubscription,
+      },
+    });
+    wrappers.push(wrapper);
+
+    await vi.advanceTimersByTimeAsync(600);
+    await flushPromises();
+    expect(requestSubscription).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+    wrappers = wrappers.filter((item) => item !== wrapper);
+    resolveSubscription(unsubscribe);
+    await flushPromises();
+
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('runs a follow-up history request when the asset changes during a slow fetch', async () => {
+    let resolveFirstRequest!: (response: {
+      pageInfo: { hasNextPage: boolean; endCursor: undefined };
+      edges: Array<{ cursor: string; node: SnapshotItem }>;
+    }) => void;
+    const requestMethod = vi.fn((entityId: string) => {
+      if (entityId === 'first') {
+        return new Promise<{
+          pageInfo: { hasNextPage: boolean; endCursor: undefined };
+          edges: Array<{ cursor: string; node: SnapshotItem }>;
+        }>((resolve) => {
+          resolveFirstRequest = resolve;
+        });
+      }
+
+      return Promise.resolve({
+        pageInfo: { hasNextPage: false, endCursor: undefined },
+        edges: [{ cursor: 'second', node: snapshot(1_700_000_100_000, [4, 5, 3, 6]) }],
+      });
+    });
+
+    const wrapper = mount(PriceChartWidget, {
+      props: {
+        baseAsset: asset('first', 'FIRST'),
+        requestMethod,
+        requestSubscription: vi.fn(() => () => undefined),
+      },
+    });
+    wrappers.push(wrapper);
+
+    await vi.advanceTimersByTimeAsync(600);
+    expect(requestMethod).toHaveBeenCalledWith('first', 'DEFAULT', 48, undefined);
+
+    await wrapper.setProps({ baseAsset: asset('second', 'SECOND') });
+    await vi.advanceTimersByTimeAsync(600);
+
+    resolveFirstRequest({
+      pageInfo: { hasNextPage: false, endCursor: undefined },
+      edges: [{ cursor: 'first', node: snapshot(1_700_000_000_000, [1, 2, 1, 3]) }],
+    });
+    await flushChartDebounce();
+
+    expect(requestMethod).toHaveBeenCalledWith('second', 'DEFAULT', 48, undefined);
+    expect(chartHarness.chartSources.at(-1)).toEqual([[1_700_000_100_000, 4, 5, 3, 6, 10]]);
   });
 
   it('reloads chart data when the indexer endpoint becomes available after mount', async () => {

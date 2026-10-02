@@ -5,6 +5,11 @@ import type { ProviderInterfaceEmitCb } from '@polkadot/rpc-provider/types';
 
 type ConnectionEventListener = [ApiInterfaceEvents, ProviderInterfaceEmitCb];
 
+type ActiveConnectionRun = {
+  api: ApiPromise;
+  cancel: VoidFunction;
+};
+
 export interface ConnectionRunOptions {
   once?: boolean;
   timeout?: number;
@@ -18,15 +23,10 @@ const disconnectApi = async (api: ApiPromise, eventListeners: ConnectionEventLis
   eventListeners.forEach(([eventName, eventHandler]) => api.off(eventName, eventHandler));
 
   try {
-    // wait until the api connection is completed to check the "isConnected" flag
-    await api.isReadyOrError;
-  } catch {}
-
-  try {
-    // close the connection manually
-    if (api.isConnected) {
-      await api.disconnect();
-    }
+    // `disconnect()` is valid while the initial handshake is still pending.
+    // Waiting for `isReadyOrError` here made a manual node switch wait for the
+    // very connection it was trying to cancel, which could leave the UI inert.
+    await api.disconnect();
   } catch (error) {
     console.error(error);
   }
@@ -48,6 +48,7 @@ class Connection {
   private readonly apiOptions!: ApiOptions;
 
   private eventListeners: Array<[ApiInterfaceEvents, ProviderInterfaceEmitCb]> = [];
+  private activeRun: ActiveConnectionRun | null = null;
 
   constructor(apiPromise: typeof ApiPromise, wsProvider: typeof WsProvider, apiOptions: ApiOptions) {
     this.ApiPromise = apiPromise;
@@ -106,6 +107,18 @@ class Connection {
 
     if (timeout) connectionRequests.push(createConnectionTimeout(timeout));
 
+    let cancelRun!: (error: Error) => void;
+    const cancellationRequest = new Promise<never>((_resolve, reject) => {
+      cancelRun = reject;
+    });
+    const activeRun: ActiveConnectionRun = {
+      api: apiInstance,
+      cancel: () => cancelRun(new Error('Connection cancelled')),
+    };
+
+    this.activeRun = activeRun;
+    connectionRequests.push(cancellationRequest);
+
     try {
       eventListeners.forEach(([eventName, eventHandler]) => {
         this.addEventListener(eventName, eventHandler);
@@ -118,18 +131,37 @@ class Connection {
 
       await Promise.race(connectionRequests);
     } catch (error) {
-      this.stop();
+      await this.stop();
       throw error;
+    } finally {
+      if (this.activeRun === activeRun) {
+        this.activeRun = null;
+      }
     }
   }
 
   private async stop(): Promise<void> {
-    if (this.api) {
-      await disconnectApi(this.api, this.eventListeners);
+    const api = this.api;
+    const eventListeners = this.eventListeners;
+    const activeRun = this.activeRun;
+
+    if (activeRun?.api === api) {
+      // ApiPromise does not reject `isReadyOrError` when a pending provider is
+      // manually disconnected. Explicit cancellation lets callers switch
+      // nodes immediately instead of waiting for the connection timeout.
+      activeRun.cancel();
     }
-    this.api = null;
-    this.endpoint = '';
-    this.eventListeners = [];
+
+    if (api) {
+      await disconnectApi(api, eventListeners);
+    }
+
+    // Do not let cleanup from an older failed request erase a newer API.
+    if (this.api === api) {
+      this.api = null;
+      this.endpoint = '';
+      this.eventListeners = [];
+    }
   }
 
   public addEventListener(eventName: ApiInterfaceEvents, eventHandler: ProviderInterfaceEmitCb) {

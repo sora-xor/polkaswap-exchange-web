@@ -30,8 +30,12 @@ const assertOutgoingRequest = (request: EthApprovedRequest): void => {
     throw new Error(`[Bridge]: Unsupported Ethereum bridge currency type "${request.currencyType}"`);
   }
 
-  if (!(request.from && request.hash)) {
+  if (!(request.from && request.hash && request.to && request.currencyId)) {
     throw new Error('[Bridge]: Approved Ethereum bridge request is missing required fields');
+  }
+
+  if (!/^[1-9]\d*$/.test(request.amount) || BigInt(request.amount) >= 1n << 256n) {
+    throw new Error('[Bridge]: Approved Ethereum bridge request has an invalid amount');
   }
 
   const signatureLength = request.v?.length;
@@ -71,8 +75,30 @@ export const isWaitingForAction = (tx: EthHistory): boolean => {
   return tx.transactionState === ETH_BRIDGE_STATES.EVM_REJECTED && isUnsignedToPart(tx);
 };
 
-export const getTransaction = (id: string): EthHistory => {
-  const tx = ethBridgeApi.getHistory(id) as EthHistory;
+/**
+ * Finds the authoritative persisted Ethereum bridge row by its local id or any
+ * chain identifier that may become the canonical route id during recovery.
+ */
+export const findTransaction = (id: string): EthHistory | null => {
+  const history = (ethBridgeApi.history ?? {}) as Record<string, EthHistory>;
+  const keyedTransaction = (ethBridgeApi.getHistory(id) as EthHistory | null) ?? history[id];
+
+  if (keyedTransaction) return keyedTransaction;
+
+  return (
+    Object.values(history).find((item) => {
+      return item?.id === id || item?.hash === id || item?.txId === id || item?.externalHash === id;
+    }) ?? null
+  );
+};
+
+/**
+ * Loads persisted bridge state before falling back to a UI cache snapshot.
+ * SDK submission callbacks write tx/block/request identifiers directly to
+ * persisted history, while the Pinia snapshot can lag behind those callbacks.
+ */
+export const getTransaction = (id: string, cachedTransaction?: EthHistory | null): EthHistory => {
+  const tx = findTransaction(id) ?? cachedTransaction;
 
   if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
 
@@ -86,7 +112,7 @@ export const updateTransaction = async (id: string, params = {}) => {
 
 const failedRequestStatuses = [BridgeTxStatus.Failed, BridgeTxStatus.Frozen, BridgeTxStatus.Broken];
 const REQUEST_READY_POLL_INTERVAL_MS = 2_000;
-const REQUEST_READY_TIMEOUT_MS = 10 * 60_000;
+const INCOMING_REQUEST_MAX_POLL_INTERVAL_MS = 30_000;
 
 const assertRequestStatusIsNotFailed = (status: unknown): void => {
   if (failedRequestStatuses.includes(status as BridgeTxStatus)) {
@@ -102,6 +128,14 @@ const getApprovedRequestIfAvailable = async (hash: string): Promise<EthApprovedR
   }
 };
 
+const getRequestStatusIfAvailable = async (hash: string): Promise<BridgeTxStatus | null> => {
+  try {
+    return await ethBridgeApi.getRequestStatus(hash);
+  } catch {
+    return null;
+  }
+};
+
 const checkApprovedRequest = async (hash: string): Promise<EthApprovedRequest | null> => {
   const request = await getApprovedRequestIfAvailable(hash);
 
@@ -109,41 +143,90 @@ const checkApprovedRequest = async (hash: string): Promise<EthApprovedRequest | 
     return request;
   }
 
-  const status = await ethBridgeApi.getRequestStatus(hash);
+  const status = await getRequestStatusIfAvailable(hash);
 
   assertRequestStatusIsNotFailed(status);
 
   return null;
 };
 
-/** Waits until bridge peers have approved an outgoing SORA-to-EVM request. */
-const waitForApprovedRequestData = async (hash: string): Promise<EthApprovedRequest> => {
-  const approvedRequest = await checkApprovedRequest(hash);
+type IncomingSoraTransaction = { hash: string; blockId: string };
 
-  if (approvedRequest) {
-    return approvedRequest;
+const createBridgeTrackingAbortError = (): Error => {
+  const error = new Error('Bridge transaction tracking canceled');
+  error.name = 'AbortError';
+  return error;
+};
+
+const throwIfBridgeTrackingAborted = (signal?: AbortSignal): void => {
+  if (signal?.aborted) throw createBridgeTrackingAbortError();
+};
+
+/** Returns false for the zero-value H256 emitted by missing ValueQuery storage. */
+const isAvailableBridgeHash = (hash: unknown): hash is string => {
+  return typeof hash === 'string' && !!hash && !/^0x0*$/i.test(hash);
+};
+
+/**
+ * Resolves an Ethereum load request to its finalized SORA request and block.
+ * Missing mapping/status data is a transient indexing or RPC state, not a
+ * failed transfer, so callers can safely poll this read-only lookup.
+ */
+const getIncomingSoraTransactionIfAvailable = async (externalHash: string): Promise<IncomingSoraTransaction | null> => {
+  const loadStatus = await getRequestStatusIfAvailable(externalHash);
+  assertRequestStatusIsNotFailed(loadStatus);
+
+  let soraHash: string;
+
+  try {
+    soraHash = await ethBridgeApi.getSoraHashByEthereumHash(externalHash);
+  } catch {
+    return null;
   }
 
+  if (!isAvailableBridgeHash(soraHash)) return null;
+
+  const incomingStatus = await getRequestStatusIfAvailable(soraHash);
+  assertRequestStatusIsNotFailed(incomingStatus);
+
+  if (incomingStatus !== BridgeTxStatus.Done) return null;
+
+  try {
+    // Submission height belongs to the original load request (the Ethereum
+    // hash); `soraHash` identifies the finalized incoming request itself.
+    const blockId = await ethBridgeApi.getSoraBlockHashByRequestHash(externalHash);
+
+    return isAvailableBridgeHash(blockId) ? { hash: soraHash, blockId } : null;
+  } catch {
+    return null;
+  }
+};
+
+/** Waits until bridge peers have approved an outgoing SORA-to-EVM request. */
+const waitForApprovedRequestData = async (hash: string, signal?: AbortSignal): Promise<EthApprovedRequest> => {
+  throwIfBridgeTrackingAborted(signal);
   let subscription: Subscription | undefined;
-  let pollInterval: ReturnType<typeof setInterval> | undefined;
-  let timeout: ReturnType<typeof setTimeout> | undefined;
+  let pollTimer: ReturnType<typeof setTimeout> | undefined;
+  let abortHandler: (() => void) | undefined;
 
   try {
     return await new Promise<EthApprovedRequest>((resolve, reject) => {
       let settled = false;
+      let checking = false;
+      let rerunRequested = false;
 
       const settle = (callback: () => void): void => {
         if (settled) return;
         settled = true;
         callback();
       };
-
-      const checkApproval = async (): Promise<void> => {
-        const request = await checkApprovedRequest(hash);
-
-        if (request) {
-          settle(() => resolve(request));
-        }
+      const schedulePoll = (delayMs: number): void => {
+        if (settled) return;
+        if (pollTimer) clearTimeout(pollTimer);
+        pollTimer = setTimeout(() => {
+          pollTimer = undefined;
+          void pollApproval();
+        }, delayMs);
       };
       const handleStatus = (status: BridgeTxStatus | null): void => {
         try {
@@ -154,78 +237,187 @@ const waitForApprovedRequestData = async (hash: string): Promise<EthApprovedRequ
         }
 
         if (status === BridgeTxStatus.Ready) {
-          void checkApproval().catch((error) => settle(() => reject(error)));
+          void pollApproval();
         }
       };
       const pollApproval = async (): Promise<void> => {
+        if (settled) return;
+        if (signal?.aborted) {
+          settle(() => reject(createBridgeTrackingAbortError()));
+          return;
+        }
+        if (checking) {
+          rerunRequested = true;
+          return;
+        }
+
+        checking = true;
         try {
-          await checkApproval();
+          const request = await checkApprovedRequest(hash);
+          throwIfBridgeTrackingAborted(signal);
+
+          if (request) {
+            settle(() => resolve(request));
+          }
         } catch (error) {
           settle(() => reject(error));
+        } finally {
+          checking = false;
+
+          if (!settled) {
+            if (rerunRequested) {
+              rerunRequested = false;
+              schedulePoll(0);
+            } else {
+              schedulePoll(REQUEST_READY_POLL_INTERVAL_MS);
+            }
+          }
         }
       };
 
+      abortHandler = () => settle(() => reject(createBridgeTrackingAbortError()));
+      signal?.addEventListener('abort', abortHandler, { once: true });
+
+      if (signal?.aborted) {
+        abortHandler();
+        return;
+      }
+
+      try {
+        subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe({
+          next: handleStatus,
+          // Polling remains authoritative while the websocket reconnects.
+          error: () => void pollApproval(),
+        });
+      } catch {
+        // Direct storage polling also supports providers without subscriptions.
+      }
+
       void pollApproval();
-      subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe({
-        next: handleStatus,
-        error: (error) => settle(() => reject(error)),
-      });
-      pollInterval = setInterval(() => void pollApproval(), REQUEST_READY_POLL_INTERVAL_MS);
-      timeout = setTimeout(() => {
-        settle(() => reject(new Error(`[Bridge]: Transaction approval timed out, hash="${hash}"`)));
-      }, REQUEST_READY_TIMEOUT_MS);
     });
   } finally {
-    if (pollInterval) clearInterval(pollInterval);
-    if (timeout) clearTimeout(timeout);
+    if (pollTimer) clearTimeout(pollTimer);
+    if (abortHandler) signal?.removeEventListener('abort', abortHandler);
     subscription?.unsubscribe();
   }
 };
 
-export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprovedRequest> => {
+export const waitForApprovedRequest = async (tx: EthHistory, signal?: AbortSignal): Promise<EthApprovedRequest> => {
   const hash = tx.hash;
 
   if (!hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
-  const request = await waitForApprovedRequestData(hash);
+  const request = await waitForApprovedRequestData(hash, signal);
 
   if (!request) throw new Error(`[Bridge]: getApprovedRequest is empty, hash="${hash}"`);
 
   return request;
 };
 
-export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: string; blockId: string }> => {
+export const waitForIncomingRequest = async (
+  tx: EthHistory,
+  signal?: AbortSignal
+): Promise<{ hash: string; blockId: string }> => {
   if (!tx.externalHash) throw new Error('[Bridge]: externalHash cannot be empty!');
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
-  let subscription!: Subscription;
+  const externalHash = tx.externalHash;
+  throwIfBridgeTrackingAborted(signal);
 
-  await new Promise<void>((resolve, reject) => {
-    subscription = ethBridgeApi.subscribeOnRequest(tx.externalHash as string).subscribe((request) => {
-      if (request) {
-        switch (request.status) {
-          case BridgeTxStatus.Failed:
-          case BridgeTxStatus.Frozen:
-          case BridgeTxStatus.Broken:
-            reject(new Error('[Bridge]: Transaction was failed or canceled'));
-            break;
-          case BridgeTxStatus.Done:
-            resolve();
-            break;
+  let subscription: Subscription | undefined;
+  let pollTimer: ReturnType<typeof setTimeout> | undefined;
+  let abortHandler: (() => void) | undefined;
+
+  try {
+    return await new Promise<IncomingSoraTransaction>((resolve, reject) => {
+      let settled = false;
+      let checking = false;
+      let rerunRequested = false;
+      let nextPollDelay = REQUEST_READY_POLL_INTERVAL_MS;
+
+      const settle = (callback: () => void): void => {
+        if (settled) return;
+        settled = true;
+        callback();
+      };
+      const schedulePoll = (delayMs: number): void => {
+        if (settled) return;
+        if (pollTimer) clearTimeout(pollTimer);
+        pollTimer = setTimeout(() => {
+          pollTimer = undefined;
+          void pollIncomingRequest();
+        }, delayMs);
+      };
+      const pollIncomingRequest = async (): Promise<void> => {
+        if (settled) return;
+        if (signal?.aborted) {
+          settle(() => reject(createBridgeTrackingAbortError()));
+          return;
         }
+        if (checking) {
+          rerunRequested = true;
+          return;
+        }
+
+        checking = true;
+        try {
+          const transaction = await getIncomingSoraTransactionIfAvailable(externalHash);
+
+          if (transaction) {
+            settle(() => resolve(transaction));
+          }
+        } catch (error) {
+          settle(() => reject(error));
+        } finally {
+          checking = false;
+
+          if (!settled) {
+            if (rerunRequested) {
+              rerunRequested = false;
+              schedulePoll(0);
+            } else {
+              schedulePoll(nextPollDelay);
+              nextPollDelay = Math.min(nextPollDelay * 2, INCOMING_REQUEST_MAX_POLL_INTERVAL_MS);
+            }
+          }
+        }
+      };
+      const handleStatus = (status: BridgeTxStatus | null): void => {
+        try {
+          assertRequestStatusIsNotFailed(status);
+        } catch (error) {
+          settle(() => reject(error));
+          return;
+        }
+
+        nextPollDelay = REQUEST_READY_POLL_INTERVAL_MS;
+        void pollIncomingRequest();
+      };
+
+      abortHandler = () => settle(() => reject(createBridgeTrackingAbortError()));
+      signal?.addEventListener('abort', abortHandler, { once: true });
+
+      try {
+        subscription = ethBridgeApi.subscribeOnRequestStatus(externalHash).subscribe({
+          next: handleStatus,
+          // A websocket subscription failure is transient; serialized direct
+          // storage polling remains authoritative.
+          error: () => void pollIncomingRequest(),
+        });
+      } catch {
+        // Polling also covers providers that cannot subscribe during reconnects.
       }
+
+      void pollIncomingRequest();
     });
-  });
-
-  subscription.unsubscribe();
-
-  const soraHash = await ethBridgeApi.getSoraHashByEthereumHash(tx.externalHash as string);
-  const soraBlockHash = await ethBridgeApi.getSoraBlockHashByRequestHash(tx.externalHash as string);
-
-  return { hash: soraHash, blockId: soraBlockHash };
+  } finally {
+    if (pollTimer) clearTimeout(pollTimer);
+    if (abortHandler) signal?.removeEventListener('abort', abortHandler);
+    subscription?.unsubscribe();
+  }
 };
 
 export async function getIncomingEvmTransactionData({ asset, value, recipient, getContractAddress }: EthTxParams) {
@@ -257,6 +449,11 @@ export async function getIncomingEvmTransactionData({ asset, value, recipient, g
   };
 }
 
+/**
+ * Constructs a claim from the peer-signed payload. The caller must reconcile
+ * its displayed destination value from this proof before requesting a signature;
+ * stale denomination estimates must never replace the signed codec amount.
+ */
 export async function getOutgoingEvmTransactionData({
   asset,
   value,
@@ -274,22 +471,40 @@ export async function getOutgoingEvmTransactionData({
   const bridgeAsset: KnownEthBridgeAsset = useLegacyPeerMinting ? symbol : KnownEthBridgeAsset.Other;
   const bridgeContractMethod = isEthereumCurrency ? 'receiveByEthereumAssetAddress' : 'receiveBySidechainAssetId';
   const method = useLegacyPeerMinting ? 'mintTokensByPeers' : bridgeContractMethod;
-  const bridgeAssetAddress = useLegacyPeerMinting || isEthereumCurrency ? asset.externalAddress : asset.address;
+  const expectedCurrencyId = isEthereumCurrency ? asset.externalAddress : asset.address;
 
-  if (!bridgeAssetAddress) {
+  if (!expectedCurrencyId) {
     throw new Error('[Bridge]: Asset is missing required Ethereum bridge address data');
   }
 
-  const contractAddress = getContractAddress(bridgeAsset) as string;
+  if (request.currencyId.toLowerCase() !== expectedCurrencyId.toLowerCase()) {
+    throw new Error('[Bridge]: Approved Ethereum bridge currency does not match the selected asset');
+  }
+
+  if (request.to.toLowerCase() !== recipient.toLowerCase()) {
+    throw new Error('[Bridge]: Approved Ethereum bridge recipient does not match the transaction');
+  }
+
+  const expectedAmount = new FPNumber(value, asset.externalDecimals);
+  const fractionBeyondPrecision = value.split('.')[1]?.slice(asset.externalDecimals ?? FPNumber.DEFAULT_PRECISION);
+  if (
+    !/^\d+(?:\.\d+)?$/.test(value) ||
+    /[1-9]/.test(fractionBeyondPrecision ?? '') ||
+    !expectedAmount.isFinity() ||
+    expectedAmount.toCodecString() !== request.amount
+  ) {
+    throw new Error('[Bridge]: Approved Ethereum bridge amount does not match the displayed destination amount');
+  }
+
+  const contractAddress = getContractAddress(bridgeAsset);
+  if (!contractAddress) throw new Error('[Bridge]: Ethereum bridge contract address is unavailable');
   const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
   const contract = await ethersUtil.getContract(contractAddress, contractAbi);
 
-  const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
-
-  const args: Array<any> = [
-    bridgeAssetAddress, // address tokenAddress OR bytes32 assetId
-    amount, // uint256 amount
-    recipient, // address beneficiary
+  const args: Array<string | number[] | string[]> = [
+    request.currencyId, // address tokenAddress OR bytes32 assetId
+    request.amount, // uint256 amount
+    request.to, // address beneficiary
   ];
   args.push(
     ...(useLegacyPeerMinting

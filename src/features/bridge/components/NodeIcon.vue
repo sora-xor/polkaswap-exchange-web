@@ -34,8 +34,9 @@ const props = withDefaults(
 
 const { t } = useTranslation();
 
-const loading = computed(() => Boolean(props.connection?.nodeAddressConnecting));
-const connected = computed(() => Boolean(props.connection?.nodeIsConnected));
+const connectionStatus = computed(() => props.connection?.status);
+const loading = computed(() => Boolean(connectionStatus.value?.nodeAddressConnecting));
+const connected = computed(() => Boolean(connectionStatus.value?.connected));
 const icon = computed(() => (loading.value ? 'el-icon-loading' : 'globe-16'));
 const status = computed(() => {
   if (connected.value) return Status.SUCCESS;

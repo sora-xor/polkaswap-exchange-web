@@ -5,12 +5,8 @@
     data-testid="pricing-curve-position-chart"
   >
     <header class="pricing-curve__header">
-      <div>
-        <span class="pricing-curve__kicker">{{ t('polkamarkt.curve.kicker') }}</span>
-        <h3>{{ t('polkamarkt.curve.title') }}</h3>
-        <p>{{ t('polkamarkt.curve.subtitle') }}</p>
-      </div>
-      <span class="pricing-curve__badge">{{ t('polkamarkt.curve.stateBadge') }}</span>
+      <h3>{{ t('polkamarkt.curve.title') }}</h3>
+      <p>{{ t('polkamarkt.curve.subtitle') }}</p>
     </header>
 
     <div class="pricing-curve__plot">
@@ -108,7 +104,12 @@
         <text class="pricing-curve__axis-text" :x="CHART_PADDING_X" :y="DEMAND_CUE_LABEL_Y">
           {{ t('polkamarkt.curve.moreNoDemand') }}
         </text>
-        <text class="pricing-curve__axis-text" :x="CHART_WIDTH - CHART_PADDING_X" :y="DEMAND_CUE_LABEL_Y" text-anchor="end">
+        <text
+          class="pricing-curve__axis-text"
+          :x="CHART_WIDTH - CHART_PADDING_X"
+          :y="DEMAND_CUE_LABEL_Y"
+          text-anchor="end"
+        >
           {{ t('polkamarkt.curve.moreYesDemand') }}
         </text>
       </svg>
@@ -121,11 +122,12 @@
       </div>
     </dl>
 
-    <p class="pricing-curve__summary">{{ currentQuoteSummary }}</p>
+    <p v-if="!hasPosition" class="pricing-curve__summary">{{ t('polkamarkt.curve.unavailable') }}</p>
   </section>
 </template>
 
 <script setup lang="ts">
+/** @file Always-visible pricing curve for market details and trade tickets; compact only changes spacing. */
 import { computed } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
@@ -233,15 +235,6 @@ const curveMetrics = computed(() => [
     className: 'pricing-curve__metric--collateral',
   },
 ]);
-
-const currentQuoteSummary = computed(() =>
-  hasPosition.value
-    ? t('polkamarkt.curve.currentQuoteSummary', {
-        yes: formatQuote(position.value.yesQuote),
-        no: formatQuote(position.value.noQuote),
-      })
-    : t('polkamarkt.curve.unavailable')
-);
 </script>
 
 <style lang="scss" scoped>
@@ -255,25 +248,10 @@ const currentQuoteSummary = computed(() =>
   gap: $inner-spacing-medium;
   min-width: 0;
   margin-bottom: $inner-spacing-big;
-  padding: $inner-spacing-medium;
-  border: 1px solid var(--s-color-base-border-secondary);
-  border-radius: var(--s-border-radius-small);
-  background: var(--s-color-utility-surface);
 
   &--compact {
     gap: $inner-spacing-small;
     margin-bottom: 0;
-    padding: $inner-spacing-small;
-
-    .pricing-curve__header {
-      gap: $inner-spacing-mini;
-    }
-
-    .pricing-curve__header p,
-    .pricing-curve__badge,
-    .pricing-curve__summary {
-      display: none;
-    }
 
     .pricing-curve__metrics {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -281,14 +259,10 @@ const currentQuoteSummary = computed(() =>
   }
 
   &__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: $inner-spacing-medium;
     min-width: 0;
 
     h3 {
-      margin: $inner-spacing-tiny 0 0;
+      margin: 0;
       font-size: var(--s-heading5-font-size);
       line-height: var(--s-line-height-medium);
     }
@@ -301,23 +275,12 @@ const currentQuoteSummary = computed(() =>
     }
   }
 
-  &__kicker,
-  &__badge,
   &__metric dt {
     color: var(--s-color-base-content-secondary);
     font-size: var(--s-font-size-extra-mini);
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.25;
     letter-spacing: 0;
-    text-transform: uppercase;
-  }
-
-  &__badge {
-    flex: 0 0 auto;
-    min-height: 24px;
-    padding: 4px $inner-spacing-mini;
-    border: 1px solid var(--s-color-base-border-secondary);
-    border-radius: 999px;
   }
 
   &__plot {
@@ -434,10 +397,6 @@ const currentQuoteSummary = computed(() =>
 
     &--no dd {
       color: var(--curve-no);
-    }
-
-    &--collateral dd {
-      color: var(--s-color-status-info);
     }
   }
 

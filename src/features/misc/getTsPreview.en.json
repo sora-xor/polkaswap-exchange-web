@@ -1,0 +1,58 @@
+{
+  "getTs": {
+    "preview": {
+      "title": "Start with your amount",
+      "amount": "Amount to convert",
+      "xorBudget": "XOR budget, including the burn fee",
+      "cardBudget": "Card budget, including provider fees",
+      "asset": "Pay with",
+      "start": "Enter an amount to see an estimate before connecting a wallet.",
+      "loading": "Estimating your route and fees…",
+      "futureTs": "Estimated TS for a future claim",
+      "burnable": "From about {xor} XOR available to burn after the estimated SORA fees and a price buffer.",
+      "partialXor": "About {xor} XOR could remain to burn. The TS reward cannot currently be estimated.",
+      "additionalGas": "Ethereum conversion and bridge fees are not included. Keep extra ETH for gas. The conversion and bridge reviews check these costs; the card quote alone does not prove that every step is covered.",
+      "cardEth": "MoonPay currently estimates {eth} ETH delivered. Some ETH must be kept for gas, so the eventual TS amount will be lower if this purchase also funds those costs.",
+      "retry": "Try estimate again",
+      "details": "Route and estimate details",
+      "dai": "Estimated conversion output: {amount} DAI. Quoted minimum: {minimum} DAI. A fresh review is required before converting or bridging.",
+      "quotedFee": "provider fee; see final review",
+      "fee": {
+        "provider": "Provider fee",
+        "swap": "SORA swap fee",
+        "burn": "Marked XOR burn fee"
+      },
+      "impact": "Current DAI → XOR price impact: {impact}%. The route limit is 5%.",
+      "checkpoint": "Campaign reward calculated through finalized block {block}.",
+      "tonRoute": "TON USDT first uses a provider handoff to Ethereum ETH, then converts to DAI. TON gas and Ethereum gas are additional. Native TON must first be swapped to USDT on TON.",
+      "cardTerms": "MoonPay sets regional availability, eligibility, payment limits and final fees. This public card estimate does not reserve a rate or start a purchase.",
+      "method": "This is an indicative plan, refreshed every 30 seconds. SORA estimates include a conservative conversion/slippage buffer. Provider amounts, gas and campaign availability can change before the final review.",
+      "claim": "TS is reserved for a future claim by the same SORA signing wallet. TONSWAP mainnet has not launched; no launch date is promised. Burning XOR is irreversible.",
+      "reason": {
+        "invalid-amount": "Enter a positive amount with the supported number of decimals.",
+        "unsupported-asset": "This asset is not supported for the selected source.",
+        "card-provider": "The card provider could not return an estimate. You can prepare your wallets and review the provider's quote before paying.",
+        "card-minimum": "The provider returned a total of {minimum} USD, above your budget. Increase your budget only if you accept that amount; no purchase has started.",
+        "native-ton": "A direct native TON quote is not available. Swap TON to USDT on TON first, or prepare your wallets and use the guided route.",
+        "mainnet": "Waiting for a verified SORA mainnet connection. You can prepare your wallets while the estimate is unavailable.",
+        "fees-unavailable": "Current SORA fees are unavailable, so a net TS estimate would be incomplete.",
+        "fees-insufficient": "This amount would not leave XOR to burn after fees. Try a larger amount.",
+        "conversion-unavailable": "The provider could not quote this conversion. You can prepare your wallets, but review a working quote before funding.",
+        "conversion-impact": "The conversion exceeds the 5% price-impact limit. Try a smaller amount or wait for better liquidity.",
+        "liquidity-unavailable": "The DAI → XOR quote is unavailable. No token output has been assumed.",
+        "price-impact": "The DAI → XOR price impact exceeds 5%. Try a smaller amount or wait for better liquidity.",
+        "campaign-unavailable": "The current campaign totals could not be verified. A TS reward estimate will appear when fresh data is available.",
+        "cap-exceeded": "This amount exceeds the remaining campaign capacity. Reduce the amount before continuing.",
+        "expired": "The estimate expired while checking the route. Try again for current rates."
+      },
+      "beforeGasTs": "Indicative TS before Ethereum gas",
+      "youPay": "You pay",
+      "cardFeesIncluded": "Includes card provider fees.",
+      "receiveXor": "Estimated XOR received",
+      "receiveXorBeforeGas": "Estimated XOR before gas",
+      "remainingCosts": "Remaining costs",
+      "ethereumGasSummary": "Ethereum gas is not included yet. We check it after you connect your wallets.",
+      "tonGasSummary": "TON and Ethereum gas are not included yet. You will need both for this route."
+    }
+  }
+}

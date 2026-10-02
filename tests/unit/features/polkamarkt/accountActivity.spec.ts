@@ -59,4 +59,25 @@ describe('polkamarkt account activity service', () => {
       trades: [{ id: 't1', marketId: 7, side: 'buy', sharesOut: 2, timestamp: '2023-11-14T22:13:20.000Z' }],
     });
   });
+
+  it('drops malformed and out-of-range indexer timestamps without throwing', () => {
+    const activity = parseAccountActivity(
+      {
+        accountTrades: {
+          edges: [
+            { node: { id: 'overflow', timestamp: Number.MAX_VALUE } },
+            { node: { id: 'negative', timestamp: -1 } },
+            { node: { id: 'fallback', timestamp: 'not-a-date', createdAt: '2024-01-01T00:00:00Z' } },
+          ],
+        },
+      },
+      'cnAccount'
+    );
+
+    expect(activity.trades).toEqual([
+      expect.objectContaining({ id: 'overflow', timestamp: undefined }),
+      expect.objectContaining({ id: 'negative', timestamp: undefined }),
+      expect.objectContaining({ id: 'fallback', timestamp: '2024-01-01T00:00:00.000Z' }),
+    ]);
+  });
 });

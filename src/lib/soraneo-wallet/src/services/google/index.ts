@@ -29,6 +29,11 @@ class GoogleDriveStorage {
     return this.api.ready && this.oauth.ready;
   }
 
+  /** Only generic clients are needed to open a prompt from the wallet-row click. */
+  get authReady(): boolean {
+    return this.api.prepared && this.oauth.ready;
+  }
+
   /** Stores configuration for both the API client and the OAuth helper. */
   setOptions(apiKey: string, clientId: string) {
     this.api.setOptions({ apiKey, discoveryDocs: [DRIVE_DISCOVERY_DOC] });
@@ -40,10 +45,17 @@ class GoogleDriveStorage {
     await Promise.all([this.api, this.oauth].map((client) => client.init()));
   }
 
+  /** Prepare the click-safe OAuth client without loading Drive discovery or accessing backup data. */
+  async prepare(): Promise<void> {
+    await Promise.all([this.api.prepare(), this.oauth.init()]);
+  }
+
   /** Ensures we have a valid OAuth token or prompts the user to grant access. */
   async auth(): Promise<void> {
-    await this.init();
+    await this.prepare();
     await this.oauth.checkToken();
+    // GIS supplies its token to the prepared gapi.client; Drive discovery is needed only after Google was chosen.
+    await this.api.init();
   }
 
   /**
@@ -82,14 +94,12 @@ class GoogleDriveStorage {
     return files;
   }
 
-  /** Creates a new backup file and uploads its encrypted payload. */
+  /** Creates a complete encrypted backup in one request; failed writes never publish metadata alone. */
   async create({ json, name, description }: { json: string; description: string; name: string }) {
     await this.auth();
     await this.createBackupFolder();
     const metadata = { name, description, parents: [this.backupFolderId] };
-    const id = await this.api.createFile(metadata);
-
-    await this.update(id, { json, name, description });
+    await this.api.createBackupFile(json, metadata);
   }
 
   /** Overwrites an existing backup with the latest encrypted snapshot. */

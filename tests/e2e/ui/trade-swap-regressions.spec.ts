@@ -4,14 +4,6 @@ import { ensureAppLoaded, ipfsEntryUrl, preparePage, trackConsole } from './supp
 
 // Playwright executes specs outside Vite aliases, so keep the XOR asset id local to the test.
 const XOR_ADDRESS = '0x0200000000000000000000000000000000000000000000000000000000000000';
-const neutralMutedPalette: Array<[number, number, number]> = [
-  [161, 154, 157],
-  [166, 159, 162],
-  [213, 205, 208],
-  [211, 201, 206],
-  [195, 188, 191],
-  [155, 111, 165],
-];
 const neutralSurfacePalette: Array<[number, number, number]> = [
   [93, 47, 115],
   [73, 32, 103],
@@ -133,6 +125,23 @@ const expectRgbInPalette = (color: string, palette: Array<[number, number, numbe
   ).toBe(true);
 };
 
+/** Checks the rendered text or control contrast while allowing intentional theme palette changes. */
+const expectContrast = (foreground: string, background: string, minimum = 4.5): void => {
+  const luminance = (color: string): number => {
+    const channels = getRgbChannels(color)[0];
+    expect(channels, `Expected an opaque rendered RGB color, received ${color}`).toHaveLength(3);
+    const linear = channels.map((channel) => {
+      const value = channel / 255;
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    return linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
+  };
+  const first = luminance(foreground);
+  const second = luminance(background);
+  const ratio = (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+  expect(ratio, `${foreground} on ${background} should meet ${minimum}:1 contrast`).toBeGreaterThanOrEqual(minimum);
+};
+
 const waitForNextPaint = async (page: Page): Promise<void> => {
   await page.evaluate(
     () =>
@@ -145,78 +154,89 @@ const waitForNextPaint = async (page: Page): Promise<void> => {
 };
 
 test.beforeEach(async ({ page }) => {
-  await preparePage(page);
+  await preparePage(page, { stubRuntimeEnv: true });
 });
 
-test('keeps header marketing slider arrows vertically centered', async ({ page }) => {
+test('keeps manual announcement controls centered and keyboard operable', async ({ page }) => {
   const consoleErrors = trackConsole(page);
-
   await openSwap(page);
-
-  const cssRules = await page.evaluate(() => {
-    type StyleRule = {
-      selector: string;
-      display: string;
-      alignItems: string;
-      justifyContent?: string;
-      top?: string;
-      bottom?: string;
-      width?: string;
-      height?: string;
-      lineHeight?: string;
-    };
-
-    let controlsRule: StyleRule | null = null;
-    let iconsRule: StyleRule | null = null;
-
-    for (const sheet of Array.from(document.styleSheets)) {
-      let rules: CSSRuleList;
-      try {
-        rules = sheet.cssRules;
-      } catch {
-        continue;
-      }
-
-      for (const entry of Array.from(rules)) {
-        if (!(entry instanceof CSSStyleRule)) continue;
-
-        const selector = entry.selectorText || '';
-        const display = entry.style.getPropertyValue('display').trim();
-        const alignItems = entry.style.getPropertyValue('align-items').trim();
-        const justifyContent = entry.style.getPropertyValue('justify-content').trim();
-        const top = entry.style.getPropertyValue('top').trim();
-        const bottom = entry.style.getPropertyValue('bottom').trim();
-        const width = entry.style.getPropertyValue('width').trim();
-        const height = entry.style.getPropertyValue('height').trim();
-        const lineHeight = entry.style.getPropertyValue('line-height').trim();
-
-        const hasControlSelector = selector.includes('.marketing-prev') && selector.includes('.marketing-next');
-        if (!controlsRule && hasControlSelector && display === 'flex' && alignItems === 'center') {
-          controlsRule = { selector, display, alignItems, top, bottom };
-        }
-
-        const hasIconSelector =
-          selector.includes('.marketing-prev > i.s-icon-arrows-chevron-left-rounded-24') &&
-          selector.includes('.marketing-next > i.s-icon-arrows-chevron-right-rounded-24');
-        if (!iconsRule && hasIconSelector && display === 'inline-flex' && alignItems === 'center') {
-          iconsRule = { selector, display, alignItems, justifyContent, width, height, lineHeight };
-        }
-      }
-    }
-
-    return { controlsRule, iconsRule };
+  await page.evaluate(() => {
+    const pinia = (window as Record<string, any>).__PS_ACTIVE_PINIA__;
+    pinia?._s?.get('settings')?.setAdsArray([
+      { title: 'First announcement', img: '', link: '#/swap' },
+      { title: 'Second announcement', img: '', link: '#/trade' },
+    ]);
   });
 
-  expect(cssRules.controlsRule).not.toBeNull();
-  expect(cssRules.controlsRule?.top === '0' || cssRules.controlsRule?.top === '0px').toBe(true);
-  expect(cssRules.controlsRule?.bottom === '0' || cssRules.controlsRule?.bottom === '0px').toBe(true);
-  expect(cssRules.iconsRule).not.toBeNull();
-  expect(cssRules.iconsRule?.justifyContent).toBe('center');
-  expect(cssRules.iconsRule?.width).toBe('24px');
-  expect(cssRules.iconsRule?.height).toBe('24px');
-  expect(cssRules.iconsRule?.lineHeight).toBe('24px');
+  const announcements = page.getByRole('navigation', { name: 'Announcements' });
+  const previous = announcements.getByRole('button', { name: 'Previous announcement' });
+  const next = announcements.getByRole('button', { name: 'Next announcement' });
+  await expect(announcements.getByRole('link', { name: 'First announcement' })).toHaveAttribute('href', '#/swap');
+
+  const controls = await announcements.evaluate((nav) => {
+    const navRect = nav.getBoundingClientRect();
+    return Array.from(nav.querySelectorAll('button')).map((button) => {
+      const rect = button.getBoundingClientRect();
+      const iconRect = button.querySelector('i')?.getBoundingClientRect();
+      return {
+        width: rect.width,
+        height: rect.height,
+        centerDelta: Math.abs(rect.top + rect.height / 2 - navRect.top - navRect.height / 2),
+        iconCenterDelta: iconRect
+          ? Math.abs(iconRect.top + iconRect.height / 2 - rect.top - rect.height / 2)
+          : Number.POSITIVE_INFINITY,
+      };
+    });
+  });
+  expect(controls).toHaveLength(2);
+  for (const control of controls) {
+    expect(control.width).toBeGreaterThanOrEqual(32);
+    expect(control.height).toBeGreaterThanOrEqual(36);
+    expect(control.centerDelta).toBeLessThanOrEqual(1);
+    expect(control.iconCenterDelta).toBeLessThanOrEqual(2);
+  }
+
+  await next.click();
+  await expect(announcements.getByRole('link', { name: 'Second announcement' })).toHaveAttribute('href', '#/trade');
+  await previous.focus();
+  await page.keyboard.press('Enter');
+  await expect(announcements.getByRole('link', { name: 'First announcement' })).toBeVisible();
+  await previous.click();
+  await expect(announcements.getByRole('link', { name: 'Second announcement' })).toBeVisible();
   expect(consoleErrors).toEqual([]);
 });
+
+for (const width of [1025, 1200]) {
+  test(`keeps the desktop chart beside Swap at ${width}px without saving responsive geometry`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await openSwap(page);
+    const readSavedLayouts = () =>
+      page.evaluate(() =>
+        Object.fromEntries(Object.entries(localStorage).filter(([key]) => key.includes('swapGrid:v3')))
+      );
+    const saved = await readSavedLayouts();
+
+    await page.setViewportSize({ width, height: 1000 });
+    const form = page.locator('[data-widget-id="swapForm"]');
+    const chart = page.locator('[data-widget-id="swapChart"]');
+    await expect(form).toBeVisible();
+    await expect(chart).toBeVisible();
+    await expect(page.locator('.swap-chart-disclosure')).toHaveCount(0);
+    await expect
+      .poll(async () => {
+        const formBox = await form.boundingBox();
+        const chartBox = await chart.boundingBox();
+        if (!formBox || !chartBox) return false;
+        return (
+          formBox.x + formBox.width <= chartBox.x + 1 &&
+          Math.abs(formBox.y - chartBox.y) <= 1 &&
+          Math.abs(formBox.width - chartBox.width) <= 1
+        );
+      })
+      .toBe(true);
+    expect(await readSavedLayouts()).toEqual(saved);
+  });
+}
 
 test('keeps trade connect-account button labels fully visible', async ({ page }) => {
   const consoleErrors = trackConsole(page);
@@ -696,10 +716,10 @@ test('keeps the swap fiat price aligned with the token amount input', async ({ p
   expect(metrics?.fiatContentLeft).toBe(metrics?.amountLeft);
   expect(metrics?.fiatContentPaddingLeft).toBe('0px');
   expect(metrics?.fiatContentPaddingRight).toBe('0px');
-  expect(metrics?.fiatInputColor).toBe('rgb(71, 154, 239)');
-  expect(metrics?.fiatContentColor).toBe('rgb(71, 154, 239)');
-  expect(metrics?.fiatPrefixColor).toBe('rgb(71, 154, 239)');
-  expect(metrics?.fiatValueColor).toBe('rgb(71, 154, 239)');
+  expect(metrics?.fiatInputColor).toBe('rgb(31, 101, 164)');
+  expect(metrics?.fiatContentColor).toBe('rgb(31, 101, 164)');
+  expect(metrics?.fiatPrefixColor).toBe('rgb(31, 101, 164)');
+  expect(metrics?.fiatValueColor).toBe('rgb(31, 101, 164)');
   expect(consoleErrors).toEqual([]);
 });
 
@@ -809,14 +829,14 @@ test('keeps market algorithm settings popup visuals aligned with production cont
   expect(styles?.close.height ?? 0).toBeLessThanOrEqual(42);
   expect(styles?.close.borderRadius).toBe('24px');
   expect(styles?.close.backgroundColor).toBe('rgb(247, 243, 244)');
-  expectRgbInPalette(styles?.close.color ?? '', neutralMutedPalette, 2);
+  expectContrast(styles?.close.color ?? '', styles?.close.backgroundColor ?? '');
   expect(styles?.close.boxShadow).toBe(
     'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
   );
 
   expect(styles?.content.padding).toBe('8px 24px 24px');
 
-  expectRgbInPalette(styles?.hint.color ?? '', neutralMutedPalette, 2);
+  expectContrast(styles?.hint.color ?? '', styles?.dialog.backgroundColor ?? '');
 
   expect(styles?.activeTab.boxShadow).toBe(
     'rgb(255, 255, 255) -5px -5px 10px 0px, rgba(0, 0, 0, 0.1) 1px 1px 10px 0px, rgba(255, 255, 255, 0.8) 1px 1px 2px 0px inset'
@@ -927,9 +947,9 @@ test('keeps swap noir shadows and highlights aligned with production palette', a
   await expect
     .poll(async () => primaryAction.evaluate((node) => getComputedStyle(node).borderColor))
     .toBe('rgb(105, 61, 129)');
-  await expect
-    .poll(async () => primaryAction.evaluate((node) => getComputedStyle(node).color))
-    .toBe('rgb(57, 16, 87)');
+
+  // Theme variables switch immediately, while the enabled text color transitions for 125ms.
+  await expect(primaryAction).toHaveCSS('color', 'rgb(47, 10, 73)');
 
   const styles = await page.evaluate(() => {
     const primaryAction = document.querySelector('.swap-form .action-button') as HTMLElement | null;
@@ -969,10 +989,7 @@ test('keeps swap noir shadows and highlights aligned with production palette', a
     [237, 228, 231],
     [105, 61, 129],
   ]);
-  expectRgbInPalette(styles?.primaryAction.color ?? '', [
-    [255, 255, 255],
-    [57, 16, 87],
-  ]);
+  expectContrast(styles?.primaryAction.color ?? '', styles?.primaryAction.backgroundColor ?? '');
 
   await primaryAction.hover();
   await page.waitForTimeout(1_000);
@@ -990,13 +1007,14 @@ test('keeps swap noir shadows and highlights aligned with production palette', a
 
   expectRgbNear(hoverStyles.backgroundColor, [247, 84, 163]);
   expectRgbNear(hoverStyles.borderColor, [89, 45, 113]);
-  expectRgbNear(hoverStyles.color, [57, 16, 87]);
+  expectContrast(hoverStyles.color, hoverStyles.backgroundColor);
 
-  expect(styles?.tokenSelect.boxShadow).toContain('-5px -5px 10px');
-  expect(styles?.tokenSelect.boxShadow).toContain('inset');
+  expect(styles?.tokenSelect.boxShadow).toBe(
+    'rgba(155, 111, 165, 0.25) -5px -5px 10px 0px, rgb(73, 32, 103) 2px 2px 15px 0px, rgba(155, 111, 165, 0.25) 1px 1px 2px 0px inset'
+  );
   expectRgbNear(styles?.tokenSelect.backgroundColor ?? '', [93, 47, 115]);
   expect(styles?.tokenSelect.borderColor).toBe('rgba(0, 0, 0, 0)');
-  expectRgbNear(styles?.tokenSelect.color ?? '', [155, 111, 165]);
+  expectContrast(styles?.tokenSelect.color ?? '', styles?.tokenSelect.backgroundColor ?? '');
 });
 
 test('keeps Kensetsu noir search surface aligned with production palette', async ({ page }) => {
@@ -1095,7 +1113,7 @@ test('keeps pool empty state aligned with production in light and noir modes', a
   expect(light?.hasLegacyWrapper).toBe(false);
   expect(light?.wrapperText).toBe('Connect an account to view your liquidity.');
   expect(light?.card.backgroundColor).toBe('rgb(253, 247, 251)');
-  expect(light?.card.color).toBe('rgb(161, 154, 157)');
+  expectContrast(light?.card.color ?? '', light?.card.backgroundColor ?? '');
   expect(light?.card.borderColor).toBe('rgb(229, 231, 235)');
   expect(light?.card.borderRadius).toBe('24px');
   expect(light?.card.boxShadow).toBe(
@@ -1108,7 +1126,7 @@ test('keeps pool empty state aligned with production in light and noir modes', a
   expect(light?.card.width).toBe(416);
   expect(light?.card.height).toBe(61);
   expect(light?.button.text).toBe('Connect account');
-  expect(light?.button.backgroundColor).toBe('rgb(248, 8, 123)');
+  expectContrast(light?.button.color ?? '', light?.button.backgroundColor ?? '');
   expect(light?.button.color).toBe('rgb(255, 255, 255)');
   expect(light?.button.borderColor).toBe('rgb(229, 231, 235)');
   expect(light?.button.borderRadius).toBe('24px');
@@ -1127,7 +1145,7 @@ test('keeps pool empty state aligned with production in light and noir modes', a
 
   expect(dark).not.toBeNull();
   expect(dark?.card.backgroundColor).toBe('rgb(89, 45, 113)');
-  expect(dark?.card.color).toBe('rgb(194, 154, 183)');
+  expectContrast(dark?.card.color ?? '', dark?.card.backgroundColor ?? '');
   expect(dark?.card.borderColor).toBe('rgb(229, 231, 235)');
   expect(dark?.card.boxShadow).toBe(
     'rgba(155, 111, 165, 0.25) -5px -5px 10px 0px, rgb(73, 32, 103) 2px 2px 15px 0px, rgba(155, 111, 165, 0.25) 1px 1px 2px 0px inset'
@@ -1154,11 +1172,18 @@ test('keeps swap hover highlights aligned with production in light and noir mode
 
     return await locator.evaluate((node) => {
       const styles = getComputedStyle(node as HTMLElement);
+      let surface: Element | null = node;
+      let surfaceColor = styles.backgroundColor;
+      while (surface && surfaceColor === 'rgba(0, 0, 0, 0)') {
+        surface = surface.parentElement;
+        if (surface) surfaceColor = getComputedStyle(surface).backgroundColor;
+      }
       return {
         boxShadow: styles.boxShadow,
         backgroundColor: styles.backgroundColor,
         borderColor: styles.borderColor,
         color: styles.color,
+        surfaceColor,
       };
     });
   };
@@ -1171,7 +1196,7 @@ test('keeps swap hover highlights aligned with production in light and noir mode
   expect(lightPrimaryHover?.boxShadow).toBe(
     'rgba(255, 255, 255, 0.9) 1px 1px 5px 0px, rgb(255, 255, 255) -1px -1px 5px 0px, rgba(247, 84, 163, 0.16) 0px 0px 6.42111px 0px'
   );
-  expect(lightPrimaryHover?.backgroundColor).toBe('rgb(248, 32, 136)');
+  expectContrast(lightPrimaryHover?.color ?? '', lightPrimaryHover?.backgroundColor ?? '');
   expect(lightPrimaryHover?.borderColor).toBe('rgb(242, 234, 237)');
   expect(lightPrimaryHover?.color).toBe('rgb(255, 255, 255)');
 
@@ -1182,7 +1207,7 @@ test('keeps swap hover highlights aligned with production in light and noir mode
 
   expect(lightSettingsHover).not.toBeNull();
   expect(lightSettingsHover?.borderColor).toBe('rgba(0, 0, 0, 0)');
-  expect(lightSettingsHover?.color).toBe('rgb(213, 205, 208)');
+  expectContrast(lightSettingsHover?.color ?? '', lightSettingsHover?.surfaceColor ?? '', 3);
 
   await enableNoirTheme(page);
 
@@ -1192,7 +1217,7 @@ test('keeps swap hover highlights aligned with production in light and noir mode
 
   expect(darkPrimaryHover).not.toBeNull();
   expect(darkPrimaryHover?.backgroundColor).toBe('rgb(247, 84, 163)');
-  expect(darkPrimaryHover?.color).toBe('rgb(57, 16, 87)');
+  expectContrast(darkPrimaryHover?.color ?? '', darkPrimaryHover?.backgroundColor ?? '');
 
   expect(darkTokenHover).not.toBeNull();
   expect(darkTokenHover?.boxShadow).toBe(
@@ -1201,7 +1226,7 @@ test('keeps swap hover highlights aligned with production in light and noir mode
 
   expect(darkSettingsHover).not.toBeNull();
   expect(darkSettingsHover?.borderColor).toBe('rgba(0, 0, 0, 0)');
-  expect(darkSettingsHover?.color).toBe('rgb(155, 111, 165)');
+  expectContrast(darkSettingsHover?.color ?? '', darkSettingsHover?.surfaceColor ?? '', 3);
 });
 
 test('keeps swap token icon sizing aligned with production contract', async ({ page }) => {
@@ -1265,7 +1290,14 @@ test('keeps the choose-token trigger on the production button contract', async (
   expect(contract.textLineHeight).toBe('12px');
 });
 
-test('keeps swap network fee details accessible before token selection', async ({ page }) => {
+test('keeps narrow-screen swap network fee details accessible before token selection', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 1000 });
+  await page.addInitScript(() => {
+    Object.defineProperty(screen, 'orientation', {
+      configurable: true,
+      value: { type: 'portrait-primary', addEventListener() {}, removeEventListener() {} },
+    });
+  });
   await openSwap(page);
   await expect(page.locator('.transaction-details').first()).toBeVisible({ timeout: 15_000 });
 
@@ -1312,7 +1344,7 @@ test('keeps selected swap token colors aligned with production in light and noir
   const light = await readSelectedTokenStyles();
 
   expect(light).not.toBeNull();
-  expectRgbInPalette(light?.buttonColor ?? '', neutralMutedPalette, 2);
+  expectContrast(light?.buttonColor ?? '', light?.buttonBackgroundColor ?? '');
   expectRgbInPalette(light?.buttonBackgroundColor ?? '', neutralSurfacePalette, 2);
   expect(light?.buttonBorderRadius).toBe('16px');
   expectRgbNear(light?.textColor ?? '', [42, 23, 31], 2);
@@ -1323,7 +1355,7 @@ test('keeps selected swap token colors aligned with production in light and noir
   const dark = await readSelectedTokenStyles();
 
   expect(dark).not.toBeNull();
-  expectRgbInPalette(dark?.buttonColor ?? '', neutralMutedPalette, 2);
+  expectContrast(dark?.buttonColor ?? '', dark?.buttonBackgroundColor ?? '');
   expectRgbInPalette(dark?.buttonBackgroundColor ?? '', neutralSurfacePalette, 2);
   expect(dark?.buttonBorderRadius).toBe('16px');
   expectRgbNear(dark?.textColor ?? '', [240, 215, 220], 2);

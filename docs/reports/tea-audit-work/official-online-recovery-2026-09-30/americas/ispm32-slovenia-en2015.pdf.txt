@@ -1,0 +1,629 @@
+                                                                                                                   ISPM 32
+
+
+
+
+INTERNATIONAL STANDARD FOR PHYTOSANITARY MEASURES 32
+                                                                                                                    ENG
+
+
+
+
+                                                             Categorization of
+                                                       commodities according to
+                                                                 their pest risk
+
+
+
+
+                                                                              Produced by the Secretariat of the
+                                                               International Plant Protection Convention (IPPC)
+This page is intentionally left blank
+               INTERNATIONAL STANDARDS FOR
+                   PHYTOSANITARY MEASURES
+
+
+
+
+          ISPM 32
+
+Categorization of commodities
+ according to their pest risk
+
+
+
+
+                           Produced by the Secretariat of the
+                    International Plant Protection Convention
+                             Adopted 2009; published 2016
+
+
+
+
+                                                © FAO 2009
+FAO encourages the use, reproduction and dissemination of material in this
+information product. Except where otherwise indicated, material may be copied,
+downloaded and printed for private study, research and teaching purposes, or for
+use in non-commercial products or services, provided that appropriate
+acknowledgement of FAO as the source and copyright holder is given and that
+FAO’s endorsement of users’ views, products or services is not implied in any
+way.
+When this ISPM is reproduced, it should be mentioned that current adopted
+versions of ISPMs are available for download on www.ippc.int.
+All requests for translation and adaptation rights, and for resale and other
+commercial use rights should be made via www.fao.org/contact-us/licence-
+request or addressed to copyright@fao.org.
+FAO    information    products are             available on    the  FAO    website
+(www.fao.org/publications) and can             be purchased   through publications-
+sales@fao.org.
+The designations The designations employed and the presentation of material in
+this information product do not imply the expression of any opinion whatsoever on
+the part of the Food and Agriculture Organization of the United Nations (FAO)
+concerning the legal or development status of any country, territory, city or area or
+of its authorities, or concerning the delimitation of its frontiers or boundaries. The
+mention of specific companies or products of manufacturers, whether or not these
+have been patented, does not imply that these have been endorsed or
+recommended by FAO in preference to others of a similar nature that are not
+mentioned. The views expressed in this information product are those of the
+author(s) and do not necessarily reflect the views or policies of FAO.
+
+
+
+
+Publication history
+This is not an official part of the standard
+2004-04 ICPM-6 added topic Classification of commodities (2004-031)
+2004-04 SC approved Specification 18 Classification of commodities by
+   phytosanitary risk related to level of processing and intended use
+2005-02 EWG developed draft text
+2006-05 SC revised draft text and steward requested comments via email
+2007-05 SC revised draft text and approved for MC
+2007-06 Sent for MC
+2007-11 SC-7 revised draft text and requested further study and review by TPPT
+2008-05 SC-7 revised draft text and approved for MC
+2008-06 Sent for MC
+2008-11 SC revised draft text
+2009-03 CPM-4 adopted standard
+ISPM 32. 2009. Categorization of commodities according to their pest risk. Rome,
+   IPPC, FAO.
+
+
+2012-08 IPPC Secretariat corrected editorial errors in Annex 1.
+2015-07 IPPC Secretariat incorporated ink amendments and reformatted
+   standards following revoking of standards procedure from CPM-10 (2015).
+Publication history last modified: 2015-12.
+Categorization of commodities according to their pest risk                                                                                        ISPM 32
+
+
+
+CONTENTS
+
+Adoption ...................................................................................................................................................4
+
+INTRODUCTION ....................................................................................................................................4
+Scope ........................................................................................................................................................4
+References ................................................................................................................................................4
+Definitions ................................................................................................................................................4
+Outline of Requirements ..........................................................................................................................4
+
+BACKGROUND ......................................................................................................................................5
+
+REQUIREMENTS ...................................................................................................................................6
+1.     Elements of Categorization of Commodities according to their Pest Risk .......................................6
+       1.1      Method and degree of processing before export ...............................................................6
+       1.2      Intended use of the commodity .........................................................................................7
+2.     Commodity Categories .....................................................................................................................7
+ANNEX 1: Methods of commercial processing with resultant commodities that do not remain
+   capable of being infested with quarantine pests ...............................................................................9
+ANNEX 2: Methods of commercial processing with resultant commodities that remain capable of
+   being infested with quarantine pests ...............................................................................................11
+APPENDIX 1: Flow chart illustrating categorization of commodities according to their pest risk .......13
+APPENDIX 2: Examples of commodities within Category 1 ................................................................14
+
+
+
+
+International Plant Protection Convention                                                                                                       ISPM 32-3
+ISPM 32                                            Categorization of commodities according to their pest risk
+
+
+
+
+Adoption
+This standard was adopted by the Fourth Session of the Commission on Phytosanitary Measures in
+March–April 2009.
+
+
+INTRODUCTION
+
+Scope
+This standard provides criteria for national plant protection organizations (NPPOs) of importing
+countries on how to categorize commodities according to their pest risk when considering import
+requirements. This categorization should help in identifying whether further pest risk analysis is
+required and if phytosanitary certification is needed.
+The first stage of categorization is based on whether the commodity has been processed and, if so, the
+method and degree of processing to which the commodity has been subjected before export. The
+second stage of categorization of commodities is based on their intended use after import.
+Contaminating pests or storage pests that may become associated with the commodity after processing
+are not considered in this standard.
+
+
+References
+The present standard refers to International Standards for Phytosanitary Measures (ISPMs). ISPMs are
+available on the International Phytosanitary Portal (IPP) at https://www.ippc.int/core-
+activities/standards-setting/ispms.
+IPPC. 1997. International Plant Protection Convention. Rome, IPPC, FAO.
+
+Definitions
+Definitions of phytosanitary terms used in the present standard can be found in ISPM 5 (Glossary of
+phytosanitary terms).
+
+
+Outline of Requirements
+The concept of categorization of commodities according to their pest risk takes into account whether
+the product has been processed, and if so, the method and degree of processing to which it has been
+subjected and the commodity’s intended use and the consequent potential for the introduction and
+spread of regulated pests.
+This allows pest risks associated with specific commodities to be assigned to categories. The objective
+of such categorization is to provide importing countries with criteria to better identify the need for a
+pathway-initiated pest risk analysis (PRA) and to facilitate the decision-making process regarding the
+possible establishment of import requirements.
+Four categories are identified, which group commodities according to their level of pest risk (two for
+processed commodities, two for unprocessed commodities). Lists of the methods of processing and the
+associated resultant commodities are provided.
+
+
+
+
+ISPM 32-4                                                      International Plant Protection Convention
+Categorization of commodities according to their pest risk                                      ISPM 32
+
+
+
+
+BACKGROUND
+As a result of the method of processing to which some commodities moving in international trade have
+been subjected, the probability of entry of pests has been removed and so should not be regulated (i.e.
+phytosanitary measures and phytosanitary certificates are not required). Other commodities, after
+processing, may still present a pest risk and so may be subject to appropriate phytosanitary measures.
+Some intended uses of commodities (e.g. planting) result in a much higher probability of introducing
+pests than others (e.g. processing) (further information is contained in ISPM 11 (Pest risk analysis for
+quarantine pests), in relation to the probability of transfer to a suitable host).
+The concept of categorization of commodities according to their pest risk firstly takes into account if
+the commodity is processed or not and if so, the effect of the method and degree of processing to
+which a commodity has been subjected. Secondly, it takes into account the intended use and
+consequent potential as a pathway for introduction of regulated pests.
+The objective of this standard is to categorize commodities according to their pest risk to provide
+national plant protection organizations (NPPOs) of importing countries with criteria to identify more
+accurately whether there is a need for a pathway-initiated PRA and facilitate the decision-making
+process.
+Article VI.1(b) of the IPPC states: “Contracting parties may require phytosanitary measures for
+quarantine pests and regulated non-quarantine pests, provided that such measures are … limited to
+what is necessary to protect plant health and/or safeguard the intended use ….” This standard is based
+on the concepts of intended use of a commodity and the method and degree of its processing, which
+are also addressed in other ISPMs as outlined below.
+Method and degree of processing:
+-    ISPM 12 (Phytosanitary certificates). NPPOs of the importing countries should not require
+     phytosanitary certificates for plant products that have been processed to the point where they
+     have no potential for introducing regulated pests.
+-    ISPM 15 (Regulation of wood packaging material in international trade). Low risk articles are
+     exempted from the requirements in the standard due to the method and degree of processing.
+-    ISPM 23 (Guidelines for inspection). Inspection may be used to verify the degree of processing.
+Intended use:
+-     ISPM 11. The intended use is considered when analysing the probabilities of transfer of pests to
+      a suitable host and of their spread after establishment.
+-     ISPM 16 (Regulated non-quarantine pests: concept and application). Risk of economically
+      unacceptable impact varies with different pests, commodities and intended use.
+-     ISPM 21 (Pest risk analysis for regulated non-quarantine pests). Uses the concept of intended
+      use extensively.
+Method and degree of processing together with intended use:
+-    ISPM 12. Different phytosanitary requirements may apply to the different intended end uses or
+     degree of processing as indicated on the phytosanitary certificate.
+-    ISPM 20 (Guidelines for a phytosanitary import regulatory system). A commodity may be
+     classified by its degree of processing and/or its intended use.
+-    ISPM 23. The commodity type and intended use are taken into account to decide the use of
+     inspection as a phytosanitary measure.
+
+
+
+
+International Plant Protection Convention                                                     ISPM 32-5
+ISPM 32                                                  Categorization of commodities according to their pest risk
+
+
+
+REQUIREMENTS
+The use of the categories by NPPOs in determining any phytosanitary regulations should take into
+account, in particular, the principles of technical justification, pest risk analysis, managed risk,
+minimal impact, harmonization and sovereignty.
+When the import requirements for a commodity need to be determined, the importing country may
+categorize the commodity according to its pest risk. Such categorization may be used to distinguish
+between groups of commodities for which further analysis is required from those that do not have the
+potential to introduce and spread regulated pests. In order to categorize the commodity, the following
+should be considered:
+-     method and degree of processing
+-     intended use of the commodity.
+Having evaluated the method and degree of processing taking into account the intended use, the NPPO
+of the importing country makes a decision on the import requirements for the commodity.
+This standard does not apply to cases of deviation from intended use after import (e.g. grain for
+milling used as seed for sowing).
+
+
+1.     Elements of Categorization of Commodities according to their Pest Risk
+To identify a commodity’s associated pest risk, the method and degree of processing to which a
+commodity has been subjected should be considered. The method and degree of processing, by itself,
+could significantly change the nature of the commodity, so that it does not remain capable of being
+infested with pests. Such a commodity should not be required by an NPPO of an importing country to
+be accompanied by a phytosanitary certificate1.
+However, if, after processing, a commodity may remain capable of being infested with pests, the
+intended use should then be considered.
+
+1.1    Method and degree of processing before export
+The primary objective of the processes addressed in this standard is to modify a commodity for other
+than phytosanitary purposes, but processing may also have an effect on any associated pest, and hence
+affect the potential of the commodity to be infested with quarantine pests.
+In order to categorize a given commodity, NPPOs of the importing countries may require information
+on the method of processing undertaken from NPPOs of exporting countries. In some cases it is also
+necessary to know the degree of processing (e.g. temperature and heating duration) that affects the
+physical or chemical properties of the commodity.
+Based on the method and degree of processing, commodities can be broadly divided into three types as
+follows:
+-     processed to the point where the commodity does not remain capable of being infested with
+      quarantine pests
+-     processed to a point where the commodity remains capable of being infested with quarantine
+      pests
+-     not processed.
+
+1
+  The presence of contaminating pests, as defined in ISPM 5 (Glossary of phytosanitary terms), or infestation by
+other pests that may become associated with the commodity after processing (e.g. storage pests) is not
+considered in the pest risk categorization process outlined in this standard. However, it is important to note that
+the methods of processing described in this standard will, in most cases, render the commodity free of pests at
+the time of processing, but that some such commodities may have the capacity to become subsequently
+contaminated or infested. Common contaminating pests may be detected during inspection.
+
+ISPM 32-6                                                             International Plant Protection Convention
+Categorization of commodities according to their pest risk                                       ISPM 32
+
+
+
+If an assessment of the method and degree of processing concludes that a commodity does not remain
+capable of being infested with quarantine pests, there is no need to consider intended use and the
+commodity should not be regulated. However, if an assessment of the method and degree of
+processing concludes that a commodity remains capable of being infested with quarantine pests, the
+intended use should then be considered.
+For non-processed commodities the intended use should always be considered.
+
+1.2    Intended use of the commodity
+Intended use is defined as the declared purpose for which plants, plant products or other articles are
+imported, produced or used (ISPM 5). The intended use of a commodity may be for:
+-     planting
+-     consumption and other uses (e.g. crafts, decorative products, cut flowers)
+-     processing.
+The intended use may affect a commodity’s pest risk, as some intended uses may allow for the
+establishment or spread of regulated pests. Some intended uses of the commodity (e.g. planting) are
+associated with a higher probability of a regulated pest establishing than others (e.g. processing). This
+may result in the application of different phytosanitary measures for a commodity based on its
+intended use (e.g. soybean seed for sowing and soybean grain for human consumption). Any
+phytosanitary measures applied should be proportional to the pest risk identified.
+
+
+2.     Commodity Categories
+NPPOs may categorize a commodity by taking into account if it has been processed or not, the method
+and degree of processing and where appropriate the intended use.
+Each commodity category is described below, along with guidance on the need for phytosanitary
+measures.
+The analytical process outlined in this ISPM is illustrated in the flow chart of Appendix 1.
+Category 1. Commodities have been processed to the point where they do not remain capable of being
+infested with quarantine pests. Hence, no phytosanitary measures should be required and such a
+commodity should not be deemed to require phytosanitary certification with respect to pests that may
+have been present in the commodity before the process. Annex 1 provides examples of processes and
+the resultant commodities that can meet the criteria for Category 1. Furthermore, Appendix 2 provides
+some illustrative examples of commodities meeting the criteria for Category 1.
+Category 2. Commodities have been processed but remain capable of being infested with some
+quarantine pests. The intended use may be, for example, consumption or further processing. The
+NPPO of the importing country may determine that a PRA is necessary. Annex 2 provides examples
+of processes and the resultant commodities that can meet the criteria for Category 2.
+Although commodities in Category 2 have been processed, the processing method may not completely
+eliminate all quarantine pests. If it is determined that the method and degree of processing do not
+eliminate the pest risk of quarantine pests, consideration should then be given to the intended use of
+the commodity in order to evaluate the probability of establishment and spread of the quarantine pests.
+In this case, a PRA may be needed to determine this.
+To facilitate the categorization, exporting countries should, on request, provide detailed information
+on method or degree of processing (such as temperature, exposure time, size of particles) in order to
+assist importing countries in determining to which category the commodity should be assigned.
+
+
+
+International Plant Protection Convention                                                      ISPM 32-7
+ISPM 32                                            Categorization of commodities according to their pest risk
+
+
+
+In cases where the evaluation of the effect of the method and degree of processing has determined that
+the processed commodity presents no pest risk and therefore should not be subject to phytosanitary
+measures, the commodity should be reclassified into Category 1.
+Category 3. Commodities have not been processed and the intended use is for a purpose other than
+propagation, for example, consumption or processing. PRA is necessary to identify the pest risks
+related to this pathway.
+Examples of commodities in this category include some fresh fruits and vegetables for consumption
+and cut flowers.
+Because commodities in Categories 2 and 3 have the potential to introduce and spread quarantine
+pests, determining phytosanitary measures may be required based on the result of a PRA. The
+phytosanitary measures determined through a PRA may differ depending on the intended use of the
+commodity (e.g. consumption or processing).
+Category 4. Commodities have not been processed and the intended use is planting. PRA is necessary
+to identify the pest risks related to this pathway.
+Examples of commodities in this category include propagative material (e.g. cuttings, seeds, seed
+potatoes, plants in vitro, micropropagative plant material and other plants to be planted).
+Because commodities in this Category 4 are not processed and their intended use is for propagation or
+planting, their potential to introduce or spread regulated pests is higher than that for other intended
+uses.
+
+
+
+
+ISPM 32-8                                                      International Plant Protection Convention
+Categorization of commodities according to their pest risk - Annex 1                                        ISPM 32
+
+
+                                   This annex is a prescriptive part of the standard.
+
+
+ANNEX 1: Methods of commercial processing with resultant commodities that do not
+remain capable of being infested with quarantine pests
+COMMERCIAL                   DESCRIPTION                     EXAMPLE OF                   ADDITIONAL
+PROCESS                                                      RESULTANT                    INFORMATION
+                                                             COMMODITY
+Carbonization                Anoxic combustion of an         Charcoal
+                             organic material to
+                             charcoal
+Cooking (boiling, heating,   Preparing food items for        Cooked items                 Frequently involves
+microwaving, including       consumption by heating,                                      chemically transforming a
+rice parboiling)             primarily transforming the                                   food, thus changing its
+                             physical structure of items                                  flavour, texture,
+                                                                                          appearance, or nutritional
+                                                                                          properties
+Dyeing                       Colouring of textile fibres     Dyed vegetable fibres and
+                             and other materials by          textiles
+                             which the colour becomes
+                             an integral part of the fibre
+                             or material under the
+                             influence of pH and
+                             temperature changes plus
+                             interaction with chemical
+                             products
+Extraction                   Physical or chemical            Oils, alcohol, essences,     Normally done under high
+                             process to obtain specific      sugar                        temperature conditions
+                             components from plant-
+                             based raw materials,
+                             usually through mass-
+                             transfer operations
+Fermentation                 Anaerobic or anoxic             Wines, liquors, beer and     May be combined with
+                             process changing                other alcoholic beverages,   pasteurization
+                             food/plant material             fermented vegetables
+                             chemically, often involving
+                             micro-organisms
+                             (bacteria, moulds or
+                             yeasts) and e.g.
+                             converting sugars to
+                             alcohol or organic acids
+Malting                      A series of actions             Malted barley
+                             allowing the germination
+                             of cereal seeds to develop
+                             enzymatic activity to
+                             digest starchy materials
+                             into sugars and cessation
+                             of enzymatic activity by
+                             heating
+Multi-method processing       A combination of multiple      Plywood, particle board,
+                             types of processing such        wafer board
+                             as heating, high pressure
+Pasteurization               Thermal processing in           Pasteurized juices,          Often combined with
+                             order to kill undesirable or    alcoholic beverages          fermentation and followed
+                             harmful micro-organisms         (beer, wine)                 by refrigeration (at 4 °C)
+                                                                                          and proper packaging and
+                                                                                          handling. Process time
+                                                                                          and temperature depends
+                                                                                          on type of product.
+
+
+
+International Plant Protection Convention                                                                 ISPM 32-9
+ISPM 32                                        Categorization of commodities according to their pest risk - Annex 1
+
+
+
+COMMERCIAL                   DESCRIPTION                    EXAMPLE OF                  ADDITIONAL
+PROCESS                                                     RESULTANT                   INFORMATION
+                                                            COMMODITY
+Preservation in liquid       Process of preserving          Preserved fruits,           Proper conditions of pH,
+                             plant material in a suitable   vegetables, nuts, tubers,   salinity, etc. must be
+                             liquid medium (e.g. in         bulbs                       maintained
+                             syrup, brine, oil, vinegar
+                             or alcohol) of a particular
+                             pH, salinity, anaerobic or
+                             osmotic state
+Pureeing (including          Making homogenized and         Pureed items (fruits,       Normally combined with
+blending)                    spreadable fruit and/or        vegetables)                 pulping of fruits or
+                             vegetable tissues, e.g. by                                 vegetables and methods
+                             high-speed mixing,                                         to preserve the puree
+                             screening through a sieve                                  (e.g. pasteurization and
+                             or using a blender                                         packing)
+Roasting                     Process of drying and          Roasted peanuts, coffee
+                             browning foods by              and nuts
+                             exposure to dry heat
+Sterilization                Process of applying heat       Sterilized substrates,      Sterilization may not
+                             (vapours, dry heat or          juices                      change the condition of
+                             boiling water), irradiation                                the commodity in an
+                             or chemical treatments in                                  evident way, but
+                             order to destroy micro-                                    eliminates micro-
+                             organisms                                                  organisms
+Sterilization (industrial)   Thermal processing of          Canned vegetables,          Process time and
+                             foods that leads to shelf-     soups; UHT (ultra-high      Temperature for canned
+                             stable products in             temperature) juices         products depends on type
+                             containers by destruction                                  of product, treatment and
+                             of all pathogenic, toxin-                                  geometry of container.
+                             forming and spoilage                                       Aseptic processing and
+                             organisms                                                  packaging involves
+                                                                                        industrial sterilization of a
+                                                                                        flowing product and then
+                                                                                        packaging in sterile
+                                                                                        environment and
+                                                                                        package.
+Sugar infusing               Action of coating and          Crystallized fruit, fruit   Usually combined with
+                             infusing fruits with sugar     infused with sugar, nuts    pulping, boiling, drying
+                                                            coated with sugar
+Tenderizing                  Process to rehydrate           Tenderized fruits           Usually applied to a dried
+                             dried or dehydrated items                                  commodity. Can be
+                             by the application of                                      combined with sugar
+                             steam under pressure or                                    infusing.
+                             submerging in hot water
+
+
+
+
+ISPM 32-10                                                             International Plant Protection Convention
+Categorization of commodities according to their pest risk - Annex 2                                         ISPM 32
+
+
+                                   This annex is a prescriptive part of the standard.
+
+
+ANNEX 2: Methods of commercial processing with resultant commodities that remain
+capable of being infested with quarantine pests
+COMMERCIAL                   DESCRIPTION                     EXAMPLE OF                   ADDITIONAL
+PROCESS                                                      RESULTANT                    INFORMATION
+                                                             COMMODITY
+Chipping (of wood)           Wood reduced to small           Chipped wood                 The probability of
+                             pieces                                                       infestation is related to the
+                                                                                          species of wood, the
+                                                                                          presence of bark, and the
+                                                                                          size of the chips
+Chopping                     To cut into pieces              Chopped fruit, nuts,
+                                                             grains, vegetables
+Crushing                     Breaking plant material         Herbs, nuts                  Usually applied to dried
+                             into pieces by application                                   products
+                             of mechanical force
+Drying/dehydration (of       Removal of moisture for         Dehydrated fruit,
+fruits and vegetables)       preservation, or to             vegetables
+                             decrease weight or
+                             volume
+Painting (including          To coat with paint              Painted wood and canes,
+lacquering, varnishing)                                      fibres
+Peeling and shelling         Removal of the outer or         Peeled fruits, vegetables,
+                             epidermal tissues or pods       grains, nuts
+Polishing (of grain and      To make smooth and              Polished rice and cocoa
+beans)                       shiny by rubbing or             beans
+                             chemical action removing
+                             the outer layers from
+                             grains
+Post-harvest handling (of    Operations such as              Graded, sorted, washed,      Usually carried out in
+fruits and vegetables)       grading, sorting, washing       or brushed and/or waxed      packing houses
+                             or brushing, and/or             fruit and vegetables
+                             waxing fruits and
+                             vegetables
+
+
+
+
+International Plant Protection Convention                                                                ISPM 32-11
+ISPM 32                                               Categorization of commodities according to their pest risk - Annex 2
+
+
+Annex 2 contd.
+COMMERCIAL                         DESCRIPTION                      EXAMPLE OF                   ADDITIONAL
+PROCESS                                                             RESULTANT                    INFORMATION
+                                                                    COMMODITY
+Quick freezing                     Cooling quickly, ensuring        Frozen fruits and            Recommended
+                                   that the temperature             vegetables                   international code of
+                                   range of maximum ice                                          practice for the
+                                   crystallization is passed                                     processing and handling
+                                   as quickly as possible to                                     of quick frozen foods,
+                                   preserve the quality of                                       1976 CAC/RCP 8-1976
+                                   fruits and vegetables                                         (Rev 3, 2008), Codex
+                                                                                                 Alimentarius, FAO, Rome,
+                                                                                                 states that “food which
+                                                                                                 has been subjected to a
+                                                                                                 quick freezing process,
+                                                                                                 and maintained at −18 ºC
+                                                                                                 or colder at all points in
+                                                                                                 the cold chain, subject to
+                                                                                                 permitted temperature
+                                                                                                 tolerance.”
+                                                                                                 Quick freezing of fruits
+                                                                                                 and vegetables kills
+                                                                                                 insects in particular.
+                                                                                                 Frozen fruits and
+                                                                                                 vegetables are prepared
+                                                                                                 for direct consumption
+                                                                                                 and will decay quickly
+                                                                                                 after thawing. Therefore
+                                                                                                 the pest risks associated
+                                                                                                 with such products is
+                                                                                                 considered very low1.
+1
+    It is recommended that countries do not regulate frozen fruits and vegetables.
+
+
+
+
+ISPM 32-12                                                                       International Plant Protection Convention
+Categorization of commodities according to their pest risk - Appendix 1                                          ISPM 32
+
+
+                This appendix is for reference purposes only and is not a prescriptive part of the standard.
+
+
+APPENDIX 1: Flow chart illustrating categorization of commodities according to their
+pest risk
+
+
+
+
+International Plant Protection Convention                                                                      ISPM 32-13
+ISPM 32                                       Categorization of commodities according to their pest risk - Annex 2
+
+
+             This appendix is for reference purposes only and is not a prescriptive part of the standard.
+
+
+APPENDIX 2: Examples of commodities within Category 1
+
+
+
+
+ISPM 32-14                                                               International Plant Protection Convention
+This page is intentionally left blank
+IPPC
+The International Plant Protection Convention (IPPC) is an
+international plant health agreement that aims to protect
+cultivated and wild plants by preventing the introduction and
+spread of pests. International travel and trade are greater than
+ever before. As people and commodities move around the
+world, organisms that present risks to plants travel with them.
+
+Organization
+++ There are over 180 contracting parties to the IPPC.
+
+++ Each contracting party has a national plant protection
+
+   organization (NPPO) and an Official IPPC contact point.
+++ Nine regional plant protection organizations (RPPOs) work
+
+   to facilitate the implementation of the IPPC in countries.
+++ IPPC liaises with relevant international organizations to
+
+   help build regional and national capacities.
+++ The Secretariat is provided by the Food and Agriculture
+
+   Organization of the United Nations (FAO).
+
+
+
+
+International Plant Protection Convention (IPPC)
+Viale delle Terme di Caracalla, 00153 Rome, Italy
+Tel: +39 06 5705 4812 - Fax: +39 06 5705 4819
+Email: ippc@fao.org - Web: www.ippc.int
+

@@ -5,7 +5,7 @@ import { PageNames } from '@/consts';
 import { useSelectedTokensRoute } from '@/shared/navigation/useSelectedTokensRoute';
 
 type RouteParams = Record<string, string | undefined>;
-type RouteUpdateTarget = { name?: string; params: RouteParams };
+type RouteUpdateTarget = { name?: string; params: RouteParams; query?: Record<string, string> };
 type RouteUpdateHandler = (
   to: RouteUpdateTarget,
   from: unknown,
@@ -16,6 +16,7 @@ const mocks = vi.hoisted(() => ({
   route: {
     name: 'Swap',
     params: {} as RouteParams,
+    query: {} as Record<string, string>,
   },
   router: {
     replace: vi.fn(),
@@ -56,6 +57,7 @@ describe('useSelectedTokensRoute runtime behavior', () => {
   beforeEach(() => {
     mocks.route.name = PageNames.Swap;
     mocks.route.params = {};
+    mocks.route.query = {};
     mocks.router.replace.mockReset();
     mocks.walletStore.whitelistIdsBySymbol = {};
     mocks.walletStore.assetsDataTable = {};
@@ -87,6 +89,20 @@ describe('useSelectedTokensRoute runtime behavior', () => {
     expect(mocks.router.replace).toHaveBeenCalledWith({
       name: PageNames.Swap,
       params: { first: 'XOR', second: 'DAI' },
+    });
+  });
+
+  it('retains only the campaign flag after the user chooses their funding pair', () => {
+    mocks.route.query = { campaign: 'tonswap', acquire: 'XOR' };
+    const routeSync = useSelectedTokensRoute(vi.fn());
+    routeSync.updateRouteAfterSelectTokens(
+      { address: DAI.address, symbol: DAI.symbol } as any,
+      { address: XOR.address, symbol: XOR.symbol } as any
+    );
+    expect(mocks.router.replace).toHaveBeenCalledWith({
+      name: PageNames.Swap,
+      params: { first: 'DAI', second: 'XOR' },
+      query: { campaign: 'tonswap' },
     });
   });
 
@@ -134,7 +150,7 @@ describe('useSelectedTokensRoute runtime behavior', () => {
 
     await mocks.routeUpdateHandler?.({ name: PageNames.Swap, params: { first: 'AAA', second: 'BBB' } }, {}, next);
 
-    expect(onTokensChange).toHaveBeenCalledWith({ firstAddress, secondAddress });
+    expect(onTokensChange).toHaveBeenCalledWith({ firstAddress, secondAddress }, {});
     expect(next).toHaveBeenCalledOnce();
   });
 
@@ -156,10 +172,13 @@ describe('useSelectedTokensRoute runtime behavior', () => {
       next
     );
 
-    expect(onTokensChange).toHaveBeenCalledWith({
-      firstAddress: mocks.baseAssetAddress,
-      secondAddress: mocks.quoteAssetAddress,
-    });
+    expect(onTokensChange).toHaveBeenCalledWith(
+      {
+        firstAddress: mocks.baseAssetAddress,
+        secondAddress: mocks.quoteAssetAddress,
+      },
+      {}
+    );
     expect(next).toHaveBeenCalledOnce();
   });
 
@@ -181,10 +200,24 @@ describe('useSelectedTokensRoute runtime behavior', () => {
       next
     );
 
-    expect(onTokensChange).toHaveBeenCalledWith({
-      firstAddress: mocks.quoteAssetAddress,
-      secondAddress: mocks.baseAssetAddress,
-    });
+    expect(onTokensChange).toHaveBeenCalledWith(
+      {
+        firstAddress: mocks.quoteAssetAddress,
+        secondAddress: mocks.baseAssetAddress,
+      },
+      {}
+    );
+    expect(next).toHaveBeenCalledOnce();
+  });
+
+  it('passes the incoming campaign query before the route has changed', async () => {
+    const onTokensChange = vi.fn();
+    const next = vi.fn();
+    useSelectedTokensRoute(onTokensChange);
+    const query = { campaign: 'tonswap', acquire: 'XOR' };
+    await mocks.routeUpdateHandler?.({ name: PageNames.Swap, params: {}, query }, {}, next);
+    expect(mocks.route.query).toEqual({});
+    expect(onTokensChange).toHaveBeenCalledWith({ firstAddress: '', secondAddress: '' }, query);
     expect(next).toHaveBeenCalledOnce();
   });
 

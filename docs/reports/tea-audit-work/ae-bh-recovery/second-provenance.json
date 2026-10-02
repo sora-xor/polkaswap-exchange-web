@@ -1,0 +1,36 @@
+[
+  {
+    "url": "https://uaelegislation.gov.ae/en/legislations/3995",
+    "status": "403",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-current-law.html",
+    "retrievedAt": "2026-09-30T07:06:16.134302+00:00",
+    "bytes": 5517,
+    "sha256": "33904574b2f98c9c8ef8e4dfadfea954eb29112060501791091d102ddc67aeb3"
+  },
+  {
+    "url": "https://www.dubaicustoms.gov.ae/en/eServices/ServicesForIndividuals/ViewCustomsInformation/Pages/Prohibited-and-Restricted-Goods.aspx",
+    "status": "404",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-dubai-restricted-page.html",
+    "retrievedAt": "2026-09-30T07:06:16.877875+00:00",
+    "bytes": 780,
+    "sha256": "6798667b44d5a5efc697a91fe72340612a25ecd98ed7d05692c0cac433abac64"
+  },
+  {
+    "url": "http://www.bahraincustoms.gov.bh/ar/tariff-finder",
+    "status": "000",
+    "error": "curl: (28) Failed to connect to www.bahraincustoms.gov.bh port 80 after 10006 ms: Timeout was reached\n",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/bh-tariff-http.html",
+    "retrievedAt": "2026-09-30T07:06:25.593586+00:00"
+  },
+  {
+    "url": "https://www.customs.gov.bh/en/tariff-finder",
+    "status": "403",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/bh-tariff-old.html",
+    "retrievedAt": "2026-09-30T07:06:16.494465+00:00",
+    "bytes": 118,
+    "sha256": "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4"
+  }
+]

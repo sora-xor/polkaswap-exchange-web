@@ -70,9 +70,19 @@ let SelectSubAccount: typeof import('@/features/bridge/components/SelectSubAccou
 
 const factory = () => mount(SelectSubAccount);
 
+const submitAccount = async (wrapper: ReturnType<typeof factory>): Promise<boolean> => {
+  const loginAccount = wrapper.getComponent({ name: 'ConnectionView' }).props('loginAccount') as (
+    account: typeof mockAccount
+  ) => Promise<boolean>;
+
+  return loginAccount(mockAccount);
+};
+
 describe('BridgeSelectSubAccount', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
+    selectSpy.mockReset();
+    selectSpy.mockResolvedValue(true);
     web3StorePiniaMock.subAccount = mockAccount;
     web3StorePiniaMock.subAccountDialogVisibility = true;
     web3StorePiniaMock.resetSubAccount = logoutSpy;
@@ -97,12 +107,23 @@ describe('BridgeSelectSubAccount', () => {
     expect(logoutSpy).toHaveBeenCalled();
   });
 
-  it('selects an account and closes the dialog on login', async () => {
+  it('returns a successful account selection so ConnectionView can close the dialog', async () => {
     const wrapper = factory();
 
-    await wrapper.vm.login(mockAccount);
+    await expect(submitAccount(wrapper)).resolves.toBe(true);
 
     expect(selectSpy).toHaveBeenCalledWith(mockAccount);
-    expect(web3StorePiniaMock.setSubAccountDialogVisibility).toHaveBeenCalledWith(false);
+    expect(web3StorePiniaMock.setSubAccountDialogVisibility).not.toHaveBeenCalled();
+  });
+
+  it('keeps the dialog open when account selection is rejected while the network is not ready', async () => {
+    selectSpy.mockResolvedValueOnce(false);
+    const wrapper = factory();
+
+    await expect(submitAccount(wrapper)).resolves.toBe(false);
+
+    expect(selectSpy).toHaveBeenCalledWith(mockAccount);
+    expect(web3StorePiniaMock.subAccountDialogVisibility).toBe(true);
+    expect(web3StorePiniaMock.setSubAccountDialogVisibility).not.toHaveBeenCalled();
   });
 });

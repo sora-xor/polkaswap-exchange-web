@@ -158,6 +158,10 @@ const STableStub = defineComponent({
       type: Number,
       default: undefined,
     },
+    fit: {
+      type: Boolean,
+      default: true,
+    },
     data: {
       type: Array,
       default: () => [],
@@ -165,7 +169,8 @@ const STableStub = defineComponent({
   },
   setup(props, { slots }) {
     provide(TABLE_INJECTION_KEY, () => props.data as any[]);
-    return () => h('div', { class: 's-table-stub' }, slots.default ? slots.default() : null);
+    return () =>
+      h('div', { class: 's-table-stub' }, [slots.default?.(), props.data.length === 0 ? slots.empty?.() : null]);
   },
 });
 
@@ -272,6 +277,8 @@ describe('SwapTransactionsWidget', () => {
     const tokens = wrapper.findAll('.explore-table-item-token').map((node) => node.text());
     expect(tokens).toContain('XOR');
     expect(tokens).toContain('VAL');
+    expect(wrapper.getComponent(HistoryPaginationStub).props('total')).toBe(1);
+    expect(wrapper.find('.swap-transactions-widget__empty').exists()).toBe(false);
 
     wrapper.unmount();
   });
@@ -286,6 +293,40 @@ describe('SwapTransactionsWidget', () => {
     await advanceFetchQueue();
 
     expect(wrapper.getComponent(STableStub).props('adaptBreakpoint')).toBe(-1);
+    expect(wrapper.getComponent(STableStub).props('fit')).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it('shows the localized empty state without pagination after an empty history response', async () => {
+    mockGetHistory.mockResolvedValue({ nodes: [], totalCount: 0 });
+
+    const wrapper = await mountWidget();
+    await advanceFetchQueue();
+
+    expect(wrapper.get('[role="status"]').text()).toBe('history.emptySearch');
+    expect(wrapper.findComponent(HistoryPaginationStub).exists()).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it('waits for history to load before displaying the empty result message', async () => {
+    let resolveHistory!: (value: { nodes: unknown[]; totalCount: number }) => void;
+    mockGetHistory.mockReturnValue(
+      new Promise((resolve) => {
+        resolveHistory = resolve;
+      })
+    );
+
+    const wrapper = await mountWidget();
+    await advanceFetchQueue();
+
+    expect(wrapper.get('[role="status"]').text()).toBe('');
+
+    resolveHistory({ nodes: [], totalCount: 0 });
+    await flushPromises();
+
+    expect(wrapper.get('[role="status"]').text()).toBe('history.emptySearch');
 
     wrapper.unmount();
   });

@@ -4,6 +4,12 @@
     size="medium"
     ref="floatInput"
     has-locale-string
+    format-on-blur
+    inputmode="decimal"
+    autocomplete="off"
+    :aria-label="amountLabel"
+    :aria-describedby="showExactAmount ? exactAmountId : undefined"
+    :title="formattedExactAmount"
     :disabled="disabled"
     :value="currentValue"
     :max="maxValue"
@@ -12,6 +18,7 @@
     v-bind="$attrs"
     @update:model-value="handleMainInput"
     @focus="handleMainFocus"
+    @blur="measureAmountAfterRender"
   >
     <template #top>
       <div class="input-line">
@@ -63,6 +70,10 @@
     </template>
 
     <template #bottom>
+      <div v-if="showExactAmount" :id="exactAmountId" class="token-input__exact-amount">
+        <span>{{ t('amountInput.exactAmount') }}</span>
+        <span>{{ formattedExactAmount }} {{ token?.symbol }}</span>
+      </div>
       <slot name="bottom">
         <div class="input-line input-line--footer">
           <div v-if="hasFiatValue || hasFiatAmountAppend" class="s-flex">
@@ -72,12 +83,16 @@
               class="token-input--fiat"
               size="mini"
               has-locale-string
-              :decimals="2"
+              format-on-blur
+              inputmode="decimal"
+              autocomplete="off"
+              :aria-label="fiatAmountLabel"
+              :decimals="fiatInputDecimals"
               :delimiters="$attrs.delimiters"
               :disabled="disabled"
               :max="maxFiatValueFormatted"
               :readonly="!isFiatEditable"
-              :value="fiatValue"
+              :value="fiatDisplayValue"
               @update:model-value="setFiatValue"
               @focus="handleFiatFocus"
               @blur="handleFiatBlur"
@@ -120,17 +135,20 @@
 
 <script lang="ts" setup>
 import { FPNumber } from '@sora-substrate/sdk';
-import { computed, ref, useSlots, watch } from 'vue';
+import { useResizeObserver } from '@vueuse/core';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, useSlots, watch } from 'vue';
 
 import TokenSelectButton from '@/components/shared/Input/TokenSelectButton.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { ZeroStringValue } from '@/consts';
 import { useWalletStore } from '@/stores/wallet';
+import { formatDecimalDisplay } from '@/lib/soramitsu-ui/components/Input/amountDisplay';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { Nullable } from '@/types/common';
+import type SFloatInput from '@/lib/soramitsu-ui/components/Input/SFloatInput.vue';
 import WalletFormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount.vue';
 import WalletFormattedAmountWithFiatValue from '@/lib/soraneo-wallet/src/components/FormattedAmountWithFiatValue.vue';
 import WalletTokenAddress from '@/lib/soraneo-wallet/src/components/TokenAddress.vue';
@@ -161,6 +179,7 @@ const props = withDefaults(
     withSlider?: boolean;
     isFiatEditable?: boolean;
     sliderValue?: number;
+    /** Fiat display precision while blurred; editing retains the token's canonical precision. */
     fiatDecimals?: number;
     withAddress?: boolean;
     withoutFiat?: boolean;
@@ -193,7 +212,7 @@ const emit = defineEmits<{
   (event: 'focus'): void;
 }>();
 
-const floatInput = ref<any>(null);
+const floatInput = ref<InstanceType<typeof SFloatInput> | null>(null);
 const fiatEl = ref<any>(null);
 
 const fiatValue = ref('');
@@ -210,6 +229,48 @@ const currencySymbol = computed(() => walletStore.currencySymbol ?? '');
 const exchangeRate = computed(() => walletStore.exchangeRate ?? 1);
 const currency = computed(() => walletStore.currency ?? null);
 const currentValue = computed(() => props.modelValue ?? '');
+const exactAmountId = `token-amount-${useId()}`;
+const amountLabel = computed(() =>
+  t('amountInput.label', { field: props.title || t('amountInput.amount'), token: props.token?.symbol ?? '' })
+);
+const fiatAmountLabel = computed(() =>
+  t('amountInput.fiatLabel', { field: props.title || t('amountInput.amount'), currency: currency.value ?? '' })
+);
+const formattedExactAmount = computed(() =>
+  formatDecimalDisplay(currentValue.value, delimiters.decimal, delimiters.thousand)
+);
+const nativeAmountInput = computed(() => floatInput.value?.inputElementRef ?? null);
+const showExactAmount = ref(false);
+let mounted = false;
+let observedFonts: FontFaceSet | undefined;
+
+/** Repeat the exact value only when the native amount field cannot display all of it. */
+const measureAmountOverflow = (): void => {
+  if (!mounted) return;
+  const input = nativeAmountInput.value;
+  showExactAmount.value = Boolean(input?.value && input.clientWidth > 0 && input.scrollWidth > input.clientWidth);
+};
+
+/** Focus and blur change grouping in SFloatInput on the next render. */
+const measureAmountAfterRender = (): void => {
+  void nextTick(measureAmountOverflow);
+};
+
+watch([currentValue, nativeAmountInput], measureAmountOverflow, { flush: 'post' });
+useResizeObserver(nativeAmountInput, measureAmountOverflow);
+
+onMounted(() => {
+  mounted = true;
+  measureAmountOverflow();
+  observedFonts = document.fonts;
+  void observedFonts?.ready.then(measureAmountOverflow);
+  observedFonts?.addEventListener('loadingdone', measureAmountOverflow);
+});
+
+onBeforeUnmount(() => {
+  mounted = false;
+  observedFonts?.removeEventListener('loadingdone', measureAmountOverflow);
+});
 
 const decimals = computed(() => {
   const token = props.token;
@@ -269,10 +330,17 @@ const maxFiatValueFormatted = computed(() => maxFiatValue.value.toString());
 
 const fiatAmount = computed(() => calcFiatAmount(currentValue.value));
 
+const fiatInputDecimals = computed(() => Math.max(decimals.value, props.fiatDecimals));
+/** Display rounding never replaces the canonical fiat string used for editing or conversion. */
+const fiatDisplayValue = computed(() => {
+  if (fiatFocus.value || !fiatValue.value) return fiatValue.value;
+  return new FPNumber(fiatValue.value).toFixed(props.fiatDecimals);
+});
+
 const slideValue = computed(() => props.sliderValue);
 
 const setFiatValue = (value: string): void => {
-  fiatValue.value = value === maxFiatValueFormatted.value ? maxFiatValue.value.toFixed(props.fiatDecimals) : value;
+  fiatValue.value = value;
 
   recalcValue(value);
 };
@@ -301,10 +369,12 @@ const handleMax = (): void => {
 
 const handleMainInput = (value: string): void => {
   emit('update:modelValue', value);
+  measureAmountAfterRender();
 };
 
 const handleMainFocus = (): void => {
   emit('focus');
+  measureAmountAfterRender();
 };
 
 const handleSelectToken = (): void => {
@@ -323,32 +393,67 @@ const focus = (): void => {
   floatInput.value?.inputComponent?.focus?.();
 };
 
+/** Selects the editable amount after focus removes its display grouping. */
+const focusAndSelect = async (): Promise<void> => {
+  const input = nativeAmountInput.value;
+  if (!input || props.disabled) return;
+  focus();
+  await nextTick();
+  if (nativeAmountInput.value === input && input.ownerDocument.activeElement === input) {
+    input.select();
+  }
+};
+
 defineExpose({
   focus,
+  focusAndSelect,
 });
 
 watch(
   fiatAmount,
   (amount) => {
     if (fiatFocus.value) return;
-    fiatValue.value = amount.isZero() ? '' : amount.toFixed(props.fiatDecimals);
+    fiatValue.value = amount.isZero() ? '' : amount.toString();
   },
   { immediate: true }
 );
 
-watch(
-  currency,
-  () => {
-    setFiatValue(fiatValue.value);
-  },
-  { immediate: true }
-);
+// A display-currency change must not reinterpret or clear a canonical token draft.
+watch(currency, () => {
+  if (fiatFocus.value) setFiatValue(fiatValue.value);
+});
 </script>
 
 <style lang="scss">
 $el-input-class: '.el-input';
 
 .s-input.token-input {
+  // Keep keyboard focus on the recessed panel, including its fiat editor.
+  transition: box-shadow 160ms ease-out;
+
+  &:has(input.el-input__inner:focus-visible) {
+    outline: none;
+    box-shadow:
+      var(--s-shadow-element),
+      inset 0 0 0 2px var(--s-color-focus-ring);
+    box-shadow:
+      var(--s-shadow-element),
+      inset 0 0 0 2px var(--s-color-focus-ring),
+      0 0 0 4px color-mix(in srgb, var(--s-color-focus-ring) 18%, transparent);
+  }
+
+  input.el-input__inner:focus-visible {
+    outline: none !important;
+    outline-offset: 0 !important;
+  }
+
+  @media (forced-colors: active) {
+    &:has(input.el-input__inner:focus-visible) {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+
   // New soramitsu-ui input root became a flex column with `row-gap: 16px`,
   // which inflates token input height (131px vs 99px on polkaswap.io mobile).
   // Keep it gapless so top/content/bottom stack matches live proportions.
@@ -380,7 +485,7 @@ $el-input-class: '.el-input';
   & > .s-input__content {
     padding-left: 0;
     padding-right: 0;
-    gap: 0;
+    gap: 12px;
 
     #{$el-input-class} {
       #{$el-input-class}__inner {
@@ -398,10 +503,38 @@ $el-input-class: '.el-input';
       line-height: var(--s-line-height-small);
       font-weight: 800;
 
-      @include text-ellipsis;
+      text-overflow: clip;
     }
     .s-placeholder {
       display: none;
+    }
+  }
+
+  .token-input__exact-amount {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0;
+    font-size: var(--s-font-size-mini);
+    line-height: 1.5;
+    color: var(--s-color-base-content-secondary);
+
+    span:last-child {
+      color: var(--s-color-base-content-primary);
+      overflow-wrap: anywhere;
+      user-select: text;
+    }
+  }
+
+  @media (max-width: 640px) {
+    & > .s-input__content {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      gap: 8px;
+
+      & > .s-input__right {
+        justify-content: flex-end;
+      }
     }
   }
 
@@ -411,6 +544,7 @@ $el-input-class: '.el-input';
     height: 21px;
     box-shadow: none !important;
     border-radius: 0;
+    border: 0;
     color: var(--s-color-fiat-value);
 
     & > .s-input__content {
@@ -442,11 +576,6 @@ $el-input-class: '.el-input';
       #{$el-input-class}__inner::placeholder {
         color: inherit;
       }
-    }
-
-    &:focus,
-    &:focus-within {
-      outline: none;
     }
   }
 }

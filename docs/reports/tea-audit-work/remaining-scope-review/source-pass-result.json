@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-09-30T03:55:49.701024+00:00",
+  "scope": [
+    "KI",
+    "MV",
+    "PF",
+    "PG",
+    "TO",
+    "VA"
+  ],
+  "decisionsChanged": [],
+  "findings": [
+    {
+      "code": "KI",
+      "finding": "Biosecurity Act 2011 section 107(2)–(4) preserves compatible old subsidiary rules, treating relevant import-treatment provisions as section 26 specifications. The 1976 Plants Ordinance itself was repealed; its sections 6 and 14 depend on notices/permits and its two schedules are forms/export fees, not an applicable tea specification. The missing existing specification therefore may be a saved older instrument, not necessarily a new 2011 publication. No such operative tea notice was recovered.",
+      "gap": "The applicable existing section 26 specification, including any compatible pre-2011 subsidiary notice saved by section 107, remains unavailable. The office-based register prevents treating online absence as proof that no specification exists.",
+      "sources": [
+        "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+        "https://faolex.fao.org/docs/pdf/kir51665.pdf"
+      ],
+      "decision": "unresolved"
+    },
+    {
+      "code": "MV",
+      "finding": "Located the NPPO-filed 2011 Plant Protection Act uploaded to IPPC on 12 June 2025. Web-indexed Dhivehi text was readable; direct PDF download returned 403 and screenshot retrieval failed. A provisional reading of articles 19–22 and the definitions does not establish a finished-tea exemption; it is not an official English translation. The older English Plant Quarantine Regulation distinguishes planting material from dried/packed food, but cannot independently settle the later Act and current notice. WTO 2024 paragraph 3.101 identifies Agriculture Online System as a requirements source; its public URL redirects to a login and exposes no commodity conditions. No sign-in or account creation attempted.",
+      "gap": "A corroborated current manufactured-tea classification or processing exemption under the 2011 Act and December 2025 notice remains missing. The agricultural portal is not publicly readable; MFDA food-side personal-use conditions do not supply that agricultural classification.",
+      "sources": [
+        "https://www.ippc.int/en/countries/maldives/reportingobligation/4",
+        "https://assets.ippc.int/static/media/files/reportingobligation/2025/06/12/Plant_Protection_Act.pdf",
+        "https://faolex.fao.org/docs/pdf/mdv88996.pdf",
+        "https://www.wto.org/english/tratop_e/tpr_e/s461_e.pdf",
+        "https://aos.egov.mv"
+      ],
+      "decision": "unresolved"
+    },
+    {
+      "code": "PF",
+      "finding": "Reviewed the existing precise missing-source trail. The current 324 CM Annex 5 was not recovered in prior direct, browser, Lexpol-host or government-mirror attempts. No fresh generic search or new access success is claimed in this pass.",
+      "gap": "The missing source is current Order 324 CM (16 March 2026), Annex 5, especially any Camellia/tea entry, processing/packaging exemption and personal-postal paperwork. The accessible reform summary is insufficient to determine whether this sencha needs special documents.",
+      "sources": [
+        "https://www.service-public.pf/biosecurite/18-03-2026-nouvelle-reglementation-concernant/",
+        "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+        "https://www.service-public.pf/biosecurite/accueil/professionnels-2/importer-en-polynesie-francaise-2/denrees-alimentaires/denrees-stockees-dorigine-vegetale-refonte/produits-transformes-dorigine-vegetale/",
+        "https://lexpol.pf/LexpolAfficheTexte.php?texte=1037079&idr=0&np=1&lang=fr",
+        "https://www.service-public.pf/biosecurite/accueil/reglementation-dbs/",
+        "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr"
+      ],
+      "decision": "unresolved"
+    },
+    {
+      "code": "PG",
+      "finding": "Retrieved the official National Trade Office PNGBA page and inspected its download links. It names the new authority but links the 1997 NAQIA Act; some displayed Act dates/titles are internally inconsistent. It supplies neither the enacted 2025 law nor a current Japanese tea specification. The 2017 draft was not substituted for enacted law.",
+      "gap": "The missing source is PNG Biosecurity Authority’s current commodity specification/exemption for finished Japanese Camellia sinensis tea in personal postal parcels, including whether a recipient import permit or origin phytosanitary certificate is required.",
+      "sources": [
+        "https://facilitation.nto.gov.pg/pngba/",
+        "https://facilitation.nto.gov.pg/download/national-agriculture-quarantine-and-inspection-authority-act-1997/"
+      ],
+      "decision": "unresolved"
+    },
+    {
+      "code": "TO",
+      "finding": "Reread saved regulations 23–26: preserved fruit/vegetable and dried-flower provisions are specific categories; regulation 26 depends on the Director's assessment of manufactured plant material as a serious exotic-pest carrier. Those concessions do not expressly determine Camellia tea, and no new applicable specification was recovered.",
+      "gap": "The missing determination is whether the Director has classified Japanese steamed/dried retail tea as permit-controlled plant material under regulation 26, or prescribed a permit/certificate-free tea condition; an applicable current commodity schedule is needed.",
+      "sources": [
+        "https://faolex.fao.org/docs/pdf/ton80201.pdf",
+        "https://faolex.fao.org/docs/pdf/ton49222.pdf"
+      ],
+      "decision": "unresolved"
+    },
+    {
+      "code": "VA",
+      "finding": "Recovered official Vatican Law LXXI of 1 October 2008. Article 3 makes Italian law subsidiary and subject to reception by the competent Vatican authority; article 12 lists particular subjects received, including post and public health. Those provisions do not clearly establish which Italian agricultural plant-health law applies to an inbound Japanese tea parcel. Existing postal/customs transit evidence does not fill that gap.",
+      "gap": "The applicable Vatican plant-health rule, or an actual instrument receiving the relevant Italian agricultural rules, remains unestablished. The 2008 sources-of-law statute does not itself establish automatic application of the whole Italian/EU phytosanitary regime.",
+      "sources": [
+        "https://www.ulsa.va/it/pubblicazioni/bollettini/bollettino-n--16---2008/atti-di-sua-santita-benedetto-xvi/leggi-sulle-fonti-del-diritto-1-ottobre-2008-n-lxxi.html"
+      ],
+      "decision": "unresolved"
+    }
+  ],
+  "noAuthorityContacts": true,
+  "liveChangesMade": false,
+  "note": "The bounded source pass is complete; its six destination questions are not complete. All decisions are unchanged."
+}

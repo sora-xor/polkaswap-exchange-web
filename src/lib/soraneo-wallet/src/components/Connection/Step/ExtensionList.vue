@@ -6,6 +6,7 @@
 
     <div v-if="internalWallets.length" class="wallet-connection-list">
       <p class="wallet-connection-title">{{ t('connection.list.integrated') }}</p>
+      <p class="wallet-connection-description">{{ t('connection.list.integratedDescription') }}</p>
       <extension-connection-list
         :wallets="internalWallets"
         :recommended-wallets="recommendedWallets"
@@ -18,6 +19,7 @@
     </div>
     <div v-if="externalWallets.length" class="wallet-connection-list">
       <p class="wallet-connection-title">{{ t('connection.list.extensions') }}</p>
+      <p class="wallet-connection-description">{{ t('connection.list.extensionsDescription') }}</p>
       <extension-connection-list
         show-disclaimer
         :wallets="externalWallets"
@@ -104,6 +106,13 @@ function handleDisconnectWallet(wallet: Wallet): void {
     font-weight: 600;
     line-height: var(--s-line-height-small);
     text-transform: uppercase;
+  }
+
+  &-description {
+    margin: 0;
+    font-size: var(--s-font-size-small);
+    line-height: 1.5;
+    color: var(--s-color-base-content-secondary);
   }
 
   &-list {

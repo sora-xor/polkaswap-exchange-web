@@ -1,0 +1,15 @@
+# Finalized goal receipts
+
+`readGoalFinalizedReceipt` in `src/features/bot-trading/goal-receipt.ts` reads a submitted goal order through the application's connected SDK. It has no signing, broadcast, endpoint fallback or credential surface. Its inputs are the persisted order, a candidate block hash, the captured client, an application identity guard and a clock; an optional abort signal cancels the local wait.
+
+The reader checks the current genesis and connection lifetime, the finalized head, canonical hashes and heights, the target block's header, and unique inclusion of the exact saved transaction hash. It independently hashes the included serialized bytes with Blake2-256 and compares their SHA-256 to the saved signed-envelope digest. The decoded signer must identify the same account, including equivalent SS58 encodings. Block-specific `system.events` provide the actual native fee and the exact DEX 0 swap effects for that extrinsic index. Conflicting success/failure events, duplicate fees/swaps and mismatched asset/input/account fields reject the receipt.
+
+This is verification against the connected RPC node's canonical-finality attestation, not an independent cryptographic finality or storage proof. It does not authenticate qualification or grant wallet authority. The SDK performs block/event decoding; the module validates the public `at(...).query.system.events` boundary because bare SDK declarations omit chain-specific storage augmentations.
+
+The result matches `GoalExecutionFinalReceipt`. Actual output below the prepared minimum and actual fees above the estimate remain in the receipt. A failed extrinsic retains its actual fee and zero output. Admission checks must not discard already-realized debits. Storage first retains the finalized receipt durably, then applies it atomically with a current exact valuation mark; if that mark is unavailable, the receipt remains pending reconciliation and blocks further account execution. Normal settlement preserves the current session; an explicit user pause or a detected accounting problem still stops execution.
+
+`evidenceDigest` binds the immutable order, inclusion, signed-byte digest and normalized effects. It deliberately excludes the later head used to attest finality, so rereading the same included transaction after chain advancement remains idempotent. `goalSignedEnvelopeDigest` hashes the exact serialized bytes and is shared with the future pre-broadcast persistence path.
+
+One 30-second deadline bounds the entire SDK lookup. Disconnect/reconnect, changed client/runtime/metadata/genesis, abort or timeout invalidates pending work. Late results cannot start subsequent reads or return a receipt. Only this read's listeners are removed; the shared connection remains open. Bounded errors omit raw SDK messages.
+
+Synthetic tests exercise finalized inclusion, exact-byte and event binding, unchanged receipts across later heads, actual overruns, fee-only failures, conflicting identities/events, input mutation, connection changes, timeout, abort and late completion. No real wallet, signature, market observation or transaction is used. Live activation is separate work.

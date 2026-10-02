@@ -11,39 +11,71 @@ import type { RegisteredAsset } from '@sora-substrate/sdk/build/assets/types';
 import type { LiberlandAssetId } from '@sora-substrate/sdk/build/bridgeProxy/sub/types';
 
 const INTEGER_PATTERN = /^(0|[1-9]\d*)$/;
+const MAX_LIBERLAND_ASSET_ID = 4_294_967_295;
+
+class InvalidLiberlandAssetIdError extends Error {}
 
 /**
  * Converts bridge registry metadata into the exact Liberland asset enum shape.
+ * Blank metadata is valid only for the native LLD asset.
  */
-const getLiberlandAssetId = (externalAddress: unknown): LiberlandAssetId => {
+const getLiberlandAssetId = (asset: RegisteredAsset, nativeSymbol: string): LiberlandAssetId => {
+  const { externalAddress, symbol } = asset;
   const normalized = typeof externalAddress === 'string' ? externalAddress.trim() : '';
 
   if (!normalized || normalized === LiberlandAssetType.LLD) {
+    if (symbol !== nativeSymbol) {
+      throw new InvalidLiberlandAssetIdError(
+        `[LiberlandAdapter] Missing Liberland asset id for non-native asset "${symbol}"`
+      );
+    }
+
     return LiberlandAssetType.LLD;
   }
 
   if (!INTEGER_PATTERN.test(normalized)) {
-    throw new Error(`[LiberlandAdapter] Invalid Liberland asset id: "${String(externalAddress)}"`);
+    throw new InvalidLiberlandAssetIdError(
+      `[LiberlandAdapter] Invalid Liberland asset id: "${String(externalAddress)}"`
+    );
   }
 
   const assetId = Number(normalized);
 
-  if (!Number.isSafeInteger(assetId)) {
-    throw new Error(`[LiberlandAdapter] Liberland asset id is outside the safe integer range: "${normalized}"`);
+  if (!Number.isSafeInteger(assetId) || assetId > MAX_LIBERLAND_ASSET_ID) {
+    throw new InvalidLiberlandAssetIdError(
+      `[LiberlandAdapter] Liberland asset id is outside the u32 range: "${normalized}"`
+    );
   }
 
   return { [LiberlandAssetType.Asset]: assetId };
 };
 
-const getLiberlandAssetNumber = (asset: RegisteredAsset): Nullable<number> => {
-  const assetId = getLiberlandAssetId(asset.externalAddress);
+/**
+ * Returns null for native LLD and a number for a validated pallet-assets ID.
+ */
+const getLiberlandAssetNumber = (asset: RegisteredAsset, nativeSymbol: string): number | null => {
+  const assetId = getLiberlandAssetId(asset, nativeSymbol);
 
   return assetId === LiberlandAssetType.LLD ? null : assetId[LiberlandAssetType.Asset];
 };
 
+/**
+ * Safely resolves optional balance metadata without querying LLD for an invalid asset.
+ */
+const tryGetLiberlandAssetNumber = (asset: RegisteredAsset, nativeSymbol: string): number | null | undefined => {
+  try {
+    return getLiberlandAssetNumber(asset, nativeSymbol);
+  } catch (error) {
+    if (error instanceof InvalidLiberlandAssetIdError) return undefined;
+    throw error;
+  }
+};
+
 export class LiberlandAdapter extends SubAdapter {
   protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
-    const assetId = getLiberlandAssetNumber(asset);
+    const assetId = tryGetLiberlandAssetNumber(asset, this.chainSymbol);
+
+    if (assetId === undefined) return ZeroStringValue;
 
     if (assetId === null) {
       return asset.symbol === this.chainSymbol ? await this.getExistentialDeposit() : ZeroStringValue;
@@ -56,7 +88,9 @@ export class LiberlandAdapter extends SubAdapter {
     accountAddress: string,
     asset: RegisteredAsset
   ): Promise<CodecString> {
-    const assetId = getLiberlandAssetNumber(asset);
+    const assetId = tryGetLiberlandAssetNumber(asset, this.chainSymbol);
+
+    if (assetId === undefined) return ZeroStringValue;
 
     if (assetId === null) {
       return asset.symbol === this.chainSymbol ? await this.getTokenBalance(accountAddress, asset) : ZeroStringValue;
@@ -66,10 +100,10 @@ export class LiberlandAdapter extends SubAdapter {
   }
 
   public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
-    const { externalAddress: address, externalDecimals: decimals } = asset;
+    const { externalDecimals: decimals } = asset;
     const value = new FPNumber(amount, decimals).toCodecString();
 
-    const assetId = getLiberlandAssetId(address);
+    const assetId = getLiberlandAssetId(asset, this.chainSymbol);
 
     return this.api.tx.soraBridgeApp.burn(
       // networkId
@@ -85,6 +119,9 @@ export class LiberlandAdapter extends SubAdapter {
 
   /* Throws error until Substrate 5 migration */
   public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+    // Invalid metadata must not be hidden by the temporary hardcoded fee fallback.
+    getLiberlandAssetId(asset, this.chainSymbol);
+
     try {
       return await super.getNetworkFee(asset, sender, recipient);
     } catch (error) {

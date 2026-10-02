@@ -14,6 +14,14 @@ const readBridgeTemplate = async (): Promise<string> => {
 };
 
 describe('Bridge.vue template bindings', () => {
+  it('labels wallet panels using their respective direction and selected network', async () => {
+    const template = await readBridgeTemplate();
+    const panels = [...template.matchAll(/<bridge-account-panel[^>]*>/gi)].map(([tag]) => tag);
+    expect(panels).toHaveLength(2);
+    expect(panels[0]).toContain(':network-name="formatSelectedNetwork(isSoraToEvm)"');
+    expect(panels[1]).toContain(':network-name="formatSelectedNetwork(!isSoraToEvm)"');
+  });
+
   it('keeps sub-account dialog visibility decoupled from token selector visibility', async () => {
     const template = await readBridgeTemplate();
     const subAccountTag = template.match(/<bridge-select-sub-account[^>]*>/i)?.[0];

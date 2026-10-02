@@ -1,0 +1,16 @@
+[
+  {
+    "file": "ag-act2012.pdf",
+    "url": "https://laws.gov.ag/wp-content/uploads/2019/02/a2012-18.pdf",
+    "status": 200,
+    "bytes": 13629983,
+    "sha256": "3c2f0756fbfdd2cfc8482905d68601b07f5116eb3eaa758c2c4997d25395aff0"
+  },
+  {
+    "file": "vg-fumigation.pdf",
+    "url": "https://laws.gov.vg/sites/default/files/2025-10/Fumigation%20of%20Plants%20Act.pdf",
+    "status": 200,
+    "bytes": 182607,
+    "sha256": "2445fe89f8acddcbfad51545fea284fde91201771d040b5d5edc507276dfedf5"
+  }
+]

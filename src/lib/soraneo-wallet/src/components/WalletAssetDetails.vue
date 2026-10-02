@@ -25,11 +25,15 @@
           ></nft-details>
           <template v-else>
             <token-logo :token="asset" size="bigger"></token-logo>
+            <span class="asset-details-balance-label p4">{{ t('assets.balance.total') }}</span>
             <div
               v-button
               :style="balanceStyles"
               :class="balanceDetailsClasses"
-              :tabindex="0"
+              tabindex="0"
+              :aria-label="t('assets.balance.breakdown')"
+              :aria-expanded="wasBalanceDetailsClicked"
+              aria-controls="asset-balance-breakdown"
               @click="handleClickDetailedBalance()"
             >
               <formatted-amount
@@ -47,9 +51,29 @@
             v-if="price && !isNft"
             value-can-be-hidden
             is-fiat-value
-            :value="getFiatBalance(asset)"
+            :value="getSafeFiatBalance(BalanceType.Total)"
             :font-size-rate="FontSizeRate.MEDIUM"
           ></formatted-amount>
+          <div
+            v-if="!isNft"
+            :class="['asset-details-availability', { 'asset-details-availability--restricted': hasRestrictedBalance }]"
+            role="group"
+            :aria-label="t('assets.balance.transferable')"
+          >
+            <span class="asset-details-availability__label p4">{{ t('assets.balance.transferable') }}</span>
+            <formatted-amount
+              value-can-be-hidden
+              symbol-as-decimal
+              :value="spendableBalance"
+              :font-size-rate="FontSizeRate.MEDIUM"
+              :font-weight-rate="FontWeightRate.SMALL"
+              :asset-symbol="asset.symbol"
+            ></formatted-amount>
+          </div>
+          <div v-if="isXorFullyRestricted" class="asset-details-restriction-note p4" role="note">
+            <s-icon name="lock-16" size="16px"></s-icon>
+            <span>{{ t('assets.balance.xorFullyRestricted', { symbol: asset.symbol }) }}</span>
+          </div>
           <div class="asset-details-actions">
             <s-button
               v-for="operation in operations"
@@ -81,25 +105,25 @@
             </s-button>
           </div>
           <transition name="fadeHeight">
-            <div v-if="wasBalanceDetailsClicked" class="asset-details-balance-info">
-              <template v-for="(balanceGroup, index) in balanceTypes">
+            <div v-if="wasBalanceDetailsClicked" id="asset-balance-breakdown" class="asset-details-balance-info">
+              <template v-for="balanceGroup in balanceTypes">
                 <div
                   v-for="balanceType in Array.isArray(balanceGroup) ? balanceGroup : [balanceGroup]"
                   :key="balanceType"
                   class="balance s-flex p4"
                 >
-                  <div :class="['balance-label', { 'balance-label--total': index === balanceTypes.length - 1 }]">
+                  <div :class="['balance-label', { 'balance-label--total': balanceType === BalanceType.Total }]">
                     <template v-if="Array.isArray(balanceGroup)"> - </template>
                     {{ t(`assets.balance.${balanceType}`) }}
                   </div>
                   <formatted-amount-with-fiat-value
                     value-can-be-hidden
                     value-class="balance-value"
-                    :value="formatBalance(asset.balance[balanceType])"
+                    :value="formatBalance(balanceType)"
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :font-weight-rate="FontWeightRate.SMALL"
                     :asset-symbol="asset.symbol"
-                    :fiat-value="getFiatBalance(asset, balanceType)"
+                    :fiat-value="getSafeFiatBalance(balanceType)"
                     fiat-format-as-value
                     with-left-shift
                   ></formatted-amount-with-fiat-value>
@@ -135,6 +159,7 @@ import { XOR, BalanceType } from '@sora-substrate/sdk/build/assets/consts';
 import { computed, onMounted, ref } from 'vue';
 
 import { getWalletCurrentParams, type WalletNavigationTarget } from '@/platform/wallet/navigation';
+import { normalizeCodecBalanceValue } from '@/utils/asset-formatting';
 import { useCopyAddress } from '../composables/useCopyAddress';
 import { useFormattedAmount } from '../composables/useFormattedAmount';
 import { useOperations } from '../composables/useOperations';
@@ -182,15 +207,20 @@ export default {
   setup(_props, { emit }) {
     const walletStore = useWalletStore();
     const { t, getTitle } = useOperations();
-    const { getAssetFiatPrice, formatCodecNumber, isCodecZero, getFiatBalance, FontSizeRate, FontWeightRate } =
-      useFormattedAmount();
+    const {
+      getAssetFiatPrice,
+      formatCodecNumber,
+      isCodecZero,
+      getFiatAmountByCodecString,
+      FontSizeRate,
+      FontWeightRate,
+    } = useFormattedAmount();
     const { parseQrCodeValue, receiveByQrCode } = useQrCodeParser();
 
-    const balanceTypes = [
-      BalanceType.Transferable,
-      BalanceType.Locked,
-      [BalanceType.Frozen, BalanceType.Reserved, BalanceType.Bonded],
+    const balanceTypes: Array<BalanceType | BalanceType[]> = [
       BalanceType.Total,
+      BalanceType.Transferable,
+      [BalanceType.Free, BalanceType.Frozen, BalanceType.Reserved, BalanceType.Bonded],
     ];
     const wasBalanceDetailsClicked = ref(false);
     const wasNftLinkCopied = ref(false);
@@ -210,6 +240,11 @@ export default {
         currentRouteParams.value.asset
       );
     });
+    /** Returns a nonnegative codec balance even while a legacy negative snapshot is still in memory. */
+    function getBalanceValue(balanceType: BalanceType): CodecString {
+      return (normalizeCodecBalanceValue(asset.value.balance?.[balanceType]) ?? '0') as CodecString;
+    }
+
     const hasResetFocus = computed(() =>
       selectedTransaction.value && selectedTransaction.value.id
         ? selectedTransaction.value.id.toString()
@@ -225,6 +260,7 @@ export default {
       wasNftLinkCopied.value ? t('copiedText') : t('createToken.nft.link.copyLink')
     );
     const displayedNftContentLink = computed(() => {
+      if (!nftContentLink.value) return '';
       const hostname = IpfsStorage.getStorageHostname(nftContentLink.value);
       const path = IpfsStorage.getIpfsPath(nftContentLink.value);
       return shortenValue(hostname + '/ipfs/' + path, 25);
@@ -249,8 +285,14 @@ export default {
       return list;
     });
     const price = computed<Nullable<CodecString>>(() => getAssetFiatPrice(asset.value));
-    const balance = computed(() => formatCodecNumber(asset.value.balance.transferable, asset.value.decimals));
-    const isEmptyBalance = computed(() => isCodecZero(asset.value.balance.transferable, asset.value.decimals));
+    const balance = computed(() => formatCodecNumber(getBalanceValue(BalanceType.Total), asset.value.decimals));
+    const spendableBalance = computed(() =>
+      formatCodecNumber(getBalanceValue(BalanceType.Transferable), asset.value.decimals)
+    );
+    const isEmptyBalance = computed(() => isCodecZero(getBalanceValue(BalanceType.Transferable), asset.value.decimals));
+    const hasRestrictedBalance = computed(
+      () => !isCodecZero(getBalanceValue(BalanceType.Locked), asset.value.decimals)
+    );
     const balanceStyles = computed(() => {
       const balanceLength = balance.value.length;
       let fontSize = 30;
@@ -264,11 +306,15 @@ export default {
       return { fontSize: `${fontSize}px` };
     });
     const isXor = computed(() => asset.value.address === XOR.address);
+    const isXorFullyRestricted = computed(
+      () =>
+        isXor.value &&
+        !isCodecZero(getBalanceValue(BalanceType.Total), asset.value.decimals) &&
+        isCodecZero(getBalanceValue(BalanceType.Transferable), asset.value.decimals) &&
+        !isCodecZero(getBalanceValue(BalanceType.Frozen), asset.value.decimals)
+    );
     const balanceDetailsClasses = computed<Array<string>>(() => {
-      const cssClasses: Array<string> = ['asset-details-balance', 'd2'];
-      if (isXor.value) {
-        cssClasses.push('asset-details-balance--clickable');
-      }
+      const cssClasses: Array<string> = ['asset-details-balance', 'asset-details-balance--clickable', 'd2'];
       if (wasBalanceDetailsClicked.value) {
         cssClasses.push('asset-details-balance--clicked');
       }
@@ -299,7 +345,13 @@ export default {
       wasNftLinkCopied.value = false;
     };
 
-    const formatBalance = (value: CodecString): string => formatCodecNumber(value, asset.value.decimals);
+    /** Formats one safe balance field for the expanded breakdown. */
+    const formatBalance = (balanceType: BalanceType): string =>
+      formatCodecNumber(getBalanceValue(balanceType), asset.value.decimals);
+
+    /** Values each breakdown row from the same safe codec amount displayed beside it. */
+    const getSafeFiatBalance = (balanceType: BalanceType): Nullable<string> =>
+      getFiatAmountByCodecString(getBalanceValue(balanceType), asset.value);
 
     const handleBack = (): void => {
       if (selectedTransaction.value) {
@@ -340,6 +392,7 @@ export default {
       t,
       FontSizeRate,
       FontWeightRate,
+      BalanceType,
       balanceTypes,
       wasBalanceDetailsClicked,
       wasNftDetailsClicked,
@@ -355,10 +408,14 @@ export default {
       price,
       asset,
       balance,
+      spendableBalance,
+      hasRestrictedBalance,
+      isXorFullyRestricted,
       balanceStyles,
       balanceDetailsClasses,
       handleClickDetailedBalance,
-      getFiatBalance,
+      getBalanceValue,
+      getSafeFiatBalance,
       getOperationTooltip,
       isOperationDisabled,
       handleOperation,
@@ -397,9 +454,16 @@ export default {
   &-nft-container {
     @include fadeHeight(50px, 0.1s);
   }
+  &-balance-label {
+    margin-top: var(--s-basic-spacing);
+    color: var(--s-color-base-content-secondary);
+    font-weight: 600;
+    letter-spacing: var(--s-letter-spacing-small);
+    text-transform: uppercase;
+  }
   &-balance {
     width: 100%;
-    margin-top: var(--s-basic-spacing);
+    margin-top: #{$basic-spacing-mini};
     position: relative;
     text-align: center;
     &--clickable {
@@ -446,6 +510,46 @@ export default {
           }
         }
       }
+    }
+  }
+  &-availability {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: $basic-spacing;
+    margin-top: $basic-spacing;
+    padding: $basic-spacing-mini $basic-spacing;
+    border-radius: var(--s-border-radius-mini);
+    background-color: var(--s-color-utility-body);
+
+    &--restricted {
+      background-color: var(--s-color-status-warning-background);
+      color: var(--s-color-status-warning);
+    }
+
+    &__label {
+      font-weight: 600;
+      letter-spacing: var(--s-letter-spacing-small);
+      text-transform: uppercase;
+    }
+  }
+  &-restriction-note {
+    display: flex;
+    align-items: flex-start;
+    gap: $basic-spacing;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: $basic-spacing;
+    padding: $basic-spacing $basic-spacing-medium;
+    border-radius: var(--s-border-radius-mini);
+    background-color: var(--s-color-status-warning-background);
+    color: var(--s-color-status-warning);
+    line-height: var(--s-line-height-medium);
+
+    .s-icon-lock-16 {
+      flex: 0 0 auto;
+      margin-top: 1px;
+      color: currentColor;
     }
   }
   &-actions {

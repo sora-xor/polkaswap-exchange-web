@@ -146,6 +146,7 @@ import { computed, ref, toRef, watch } from 'vue';
 import { useExploreTable } from '@/composables/useExploreTable';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
+import { createCoalescedAsyncTask } from '@/utils/asyncTask';
 import { useTranslation } from '@/composables/useTranslation';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook/orderBooks';
 import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
@@ -301,15 +302,13 @@ const {
   defaultProperty: 'tvl',
 });
 
-const updateExploreData = async (): Promise<void> => {
-  if (loading.value) return;
-
+const updateExploreData = createCoalescedAsyncTask(async () => {
   await withLoading(async () => {
     await withParentLoading(async () => {
       orderBooks.value = Object.freeze((await fetchOrderBooks(allowedAssets.value)) ?? []);
     });
   });
-};
+});
 
 watch(
   () => whitelistSignature.value,

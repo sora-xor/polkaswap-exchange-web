@@ -8,6 +8,8 @@ const capturedGridValues: Array<Record<string, boolean> | undefined> = [];
 const capturedGridIds: Array<string | undefined> = [];
 const capturedDefaultLayouts: Array<Record<string, Array<Record<string, unknown>>> | undefined> = [];
 const capturedGridAutoResize: Array<boolean> = [];
+const windowWidthRef = ref(1440);
+const resetGridMock = vi.fn();
 const capturedRouteCallbacks: Array<(params: { firstAddress: string; secondAddress: string }) => Promise<void> | void> =
   [];
 
@@ -60,9 +62,14 @@ vi.mock('@/components/shared/Widget/Grid.vue', () => ({
         type: Boolean,
         default: false,
       },
+      draggable: Boolean,
+      resizable: Boolean,
+      persistOnlyUserEdits: Boolean,
+      migrateStoredLayouts: Function,
+      breakpoints: Object,
     },
     emits: ['input', 'update:modelValue'],
-    setup(props) {
+    setup(props, { slots }) {
       watch(
         () => (props.modelValue ?? props.value) as Record<string, boolean> | undefined,
         (value) => capturedGridValues.push(value),
@@ -84,14 +91,23 @@ vi.mock('@/components/shared/Widget/Grid.vue', () => ({
         { immediate: true }
       );
 
-      return () => h('div', { class: 'widgets-grid-stub' });
+      return () =>
+        h('div', { class: 'widgets-grid-stub' }, [
+          slots.swapForm?.({ reset: resetGridMock }),
+          props.modelValue?.swapChart ? slots.swapChart?.({}) : null,
+        ]);
     },
   }),
 }));
 
 vi.mock('@/features/swap/components/widgets/Form.vue', () => ({
   __esModule: true,
-  default: createStub('SwapFormWidgetStub'),
+  default: defineComponent({
+    name: 'SwapFormWidgetStub',
+    setup(_, { slots }) {
+      return () => h('div', { class: 'swap-form-stub' }, slots['header-actions']?.());
+    },
+  }),
 }));
 vi.mock('@/components/shared/Widget/PriceChart.vue', () => ({
   __esModule: true,
@@ -111,7 +127,13 @@ vi.mock('@/features/swap/components/widgets/Transactions.vue', () => ({
 }));
 vi.mock('@/components/shared/Widget/Customise.vue', () => ({
   __esModule: true,
-  default: createStub('CustomiseWidgetStub'),
+  default: defineComponent({
+    name: 'CustomiseWidgetStub',
+    props: { options: Object, compact: Boolean, widgets: Object },
+    setup(_, { slots }) {
+      return () => h('div', { class: 'customise-widget-stub' }, slots.default?.());
+    },
+  }),
 }));
 vi.mock('@/components/shared/Widget/TokenPriceChart.vue', () => ({
   __esModule: true,
@@ -145,6 +167,14 @@ vi.mock('@/composables/usePiniaTelemetry', () => ({
 vi.mock('@/features/swap/stores/useSwapStore', () => ({
   useSwapStore: () => ({
     isAvailable: true,
+  }),
+}));
+
+vi.mock('@/stores/settings', () => ({
+  useSettingsStore: () => ({
+    get windowWidth() {
+      return windowWidthRef.value;
+    },
   }),
 }));
 
@@ -182,7 +212,9 @@ let SwapView: typeof import('@/features/swap/pages/SwapPage.vue').default;
 const mountedWrappers: VueWrapper[] = [];
 
 const mountSwapView = async () => {
-  const wrapper = mount(SwapView);
+  const wrapper = mount(SwapView, {
+    global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' } } },
+  });
   mountedWrappers.push(wrapper);
   await flushPromises();
   return wrapper;
@@ -197,6 +229,8 @@ beforeEach(() => {
   capturedGridIds.length = 0;
   capturedDefaultLayouts.length = 0;
   capturedGridAutoResize.length = 0;
+  windowWidthRef.value = 1440;
+  resetGridMock.mockClear();
   capturedRouteCallbacks.length = 0;
   setTokenFromAddressMock.mockClear();
   setTokenToAddressMock.mockClear();
@@ -217,6 +251,13 @@ afterEach(() => {
 });
 
 describe('Swap view widget model binding', () => {
+  it('keeps the swap controls visible without duplicating the shared Buy XOR entry', async () => {
+    const wrapper = await mountSwapView();
+    expect(wrapper.find('[data-test-name="swapBuyXor"]').exists()).toBe(false);
+    expect(wrapper.get('.swap-form-stub').isVisible()).toBe(true);
+    expect(wrapper.get('.customise-widget-stub').isVisible()).toBe(true);
+  });
+
   it('uses the versioned swap grid storage key', async () => {
     await mountSwapView();
 
@@ -238,7 +279,7 @@ describe('Swap view widget model binding', () => {
     });
   });
 
-  it('keeps default widget order and customise constraints for desktop and tablet breakpoints', async () => {
+  it('keeps equal desktop columns and a form-first mobile layout with no Customize row', async () => {
     await mountSwapView();
 
     const layouts = capturedDefaultLayouts.filter(Boolean).at(-1);
@@ -248,26 +289,108 @@ describe('Swap view widget model binding', () => {
     const lgForm = lg.find((widget) => widget.i === 'swapForm');
     const lgChart = lg.find((widget) => widget.i === 'swapChart');
     const lgCustomise = lg.find((widget) => widget.i === 'customise');
-    expect(lgForm).toMatchObject({ x: 4, w: 7 });
-    expect(lgChart).toMatchObject({ x: 11, w: 9 });
+    expect(lgForm).toMatchObject({ x: 4, w: 8 });
+    expect(lgChart).toMatchObject({ x: 12, w: 8 });
     expect(lgForm?.y).toBe(0);
-    expect(lgCustomise?.y).toBe(20);
-    expect(lgCustomise?.h).toBe(3);
-    expect(lgCustomise?.maxH).toBe(3);
+    expect(lgCustomise).toBeUndefined();
 
     const sm = layouts?.sm ?? [];
     const smForm = sm.find((widget) => widget.i === 'swapForm');
     const smChart = sm.find((widget) => widget.i === 'swapChart');
-    expect(smForm).toMatchObject({ x: 0, w: 5 });
-    expect(smChart).toMatchObject({ x: 5, w: 7 });
+    expect(smForm).toMatchObject({ x: 0, w: 6 });
+    expect(smChart).toMatchObject({ x: 6, w: 6 });
 
     const xs = layouts?.xs ?? [];
     const xsForm = xs.find((widget) => widget.i === 'swapForm');
     const xsCustomise = xs.find((widget) => widget.i === 'customise');
-    expect(xsCustomise?.y).toBe(0);
-    expect(xsCustomise?.h).toBe(3);
-    expect(xsCustomise?.maxH).toBe(3);
-    expect(xsForm?.y).toBe(4);
+    expect(xsCustomise).toBeUndefined();
+    expect(xsForm).toMatchObject({ y: 0, x: 0, w: 8 });
+  });
+
+  it('places compact Customize inside the swap form header', async () => {
+    const wrapper = await mountSwapView();
+    const customize = wrapper.getComponent({ name: 'CustomiseWidgetStub' });
+    expect(customize.props('compact')).toBe(true);
+    expect(wrapper.get('.swap-form-stub').find('.customise-widget-stub').exists()).toBe(true);
+    const grid = wrapper.getComponent({ name: 'WidgetsGridStub' });
+    expect(grid.props('persistOnlyUserEdits')).toBe(true);
+    expect(grid.props('migrateStoredLayouts')).toBeTypeOf('function');
+  });
+
+  it.each([1025, 1200])(
+    'uses a desktop layout at a %ipx viewport even with a narrower grid container',
+    async (width) => {
+      windowWidthRef.value = width;
+      const wrapper = await mountSwapView();
+      const grid = wrapper.getComponent({ name: 'WidgetsGridStub' });
+      expect(grid.props('breakpoints')).toMatchObject({ sm: 1, xs: 0 });
+      expect(wrapper.find('details').exists()).toBe(false);
+      expect(grid.props('autoResize')).toBe(true);
+    }
+  );
+
+  it('collapses chart body at 1024px and expands without changing saved chart visibility', async () => {
+    windowWidthRef.value = 1024;
+    const wrapper = await mountSwapView();
+    const grid = wrapper.getComponent({ name: 'WidgetsGridStub' });
+    const details = wrapper.get('details');
+    expect(details.element.open).toBe(false);
+    expect(wrapper.findComponent({ name: 'PriceChartWidgetStub' }).exists()).toBe(false);
+    expect(grid.props()).toMatchObject({ autoResize: false, draggable: false, resizable: false });
+
+    details.element.open = true;
+    await details.trigger('toggle');
+    await flushPromises();
+    expect(wrapper.findComponent({ name: 'PriceChartWidgetStub' }).exists()).toBe(true);
+    expect(capturedGridValues.at(-1)?.swapChart).toBe(true);
+
+    windowWidthRef.value = 1025;
+    await flushPromises();
+    expect(wrapper.find('details').exists()).toBe(false);
+    expect(wrapper.findComponent({ name: 'PriceChartWidgetStub' }).exists()).toBe(true);
+    expect(grid.props('autoResize')).toBe(true);
+  });
+
+  it('keeps a hidden chart absent on both sides of the viewport breakpoint', async () => {
+    const wrapper = await mountSwapView();
+    const grid = wrapper.getComponent({ name: 'WidgetsGridStub' });
+    grid.vm.$emit('update:modelValue', { ...grid.props('modelValue'), swapChart: false });
+    windowWidthRef.value = 768;
+    await flushPromises();
+    expect(wrapper.find('details').exists()).toBe(false);
+    expect(wrapper.findComponent({ name: 'PriceChartWidgetStub' }).exists()).toBe(false);
+    windowWidthRef.value = 1440;
+    await flushPromises();
+    expect(wrapper.findComponent({ name: 'PriceChartWidgetStub' }).exists()).toBe(false);
+    grid.vm.$emit('update:modelValue', { ...grid.props('modelValue'), swapChart: true });
+  });
+
+  it('resets grid preferences and closes the mobile chart disclosure', async () => {
+    windowWidthRef.value = 768;
+    const wrapper = await mountSwapView();
+    const details = wrapper.get('details');
+    details.element.open = true;
+    await details.trigger('toggle');
+    await wrapper.get('.customise-widget-stub button').trigger('click');
+    await flushPromises();
+    expect(resetGridMock).toHaveBeenCalledOnce();
+    expect(wrapper.get('details').element.open).toBe(false);
+  });
+
+  it('clears transient disclosure and model state after leaving the page', async () => {
+    windowWidthRef.value = 768;
+    const wrapper = await mountSwapView();
+    const details = wrapper.get('details');
+    details.element.open = true;
+    await details.trigger('toggle');
+    const grid = wrapper.getComponent({ name: 'WidgetsGridStub' });
+    grid.vm.$emit('update:modelValue', { ...grid.props('modelValue'), swapChart: false });
+    wrapper.unmount();
+    mountedWrappers.splice(mountedWrappers.indexOf(wrapper), 1);
+
+    const reopened = await mountSwapView();
+    expect(reopened.get('details').element.open).toBe(false);
+    expect(reopened.getComponent({ name: 'WidgetsGridStub' }).props('modelValue').swapChart).toBe(true);
   });
 
   it('defaults the swap route to XOR when no pair is selected', async () => {

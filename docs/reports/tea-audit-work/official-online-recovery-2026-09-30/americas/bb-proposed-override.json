@@ -1,0 +1,45 @@
+[
+  {
+    "code": "BB",
+    "name": "Barbados",
+    "status": "conditional",
+    "rule": "Plant Protection Act 2023–2, assented16 February 2023 and commenced29 May 2024 by SI 2024/23, replaces the previously cited Cap.268 (2007). Section 2 limits manufactured plant products to products whose nature/processing may create pest risk and section 2(2) expressly requires interpretation in accordance with ISPM 5. Sections 14 and18(4) require internationally harmonised, scientific/risk-based measures. The current-linked ISPM 32 Appendix 2 illustrates tea as Category 1; normative Category 1 guidance says processing has made the commodity incapable of carrying quarantine pests and no phytosanitary measures should be required for pests eliminated by that processing. Combining the domestic scope and mandatory standards interpretation with that actual tea example supports treating the stated factory-manufactured steamed/rolled/dried pure sencha as outside the Act’s plant-product/regulated-article document route. This is an explicit legal-scope inference, not a Barbados tea-specific ruling; Appendix 2 itself is reference-only/non-prescriptive. Sections 18–20 permit, certificate and advance-notice duties attach to covered articles. Independent Food Hygiene Regulations 26A allows arrival inspection and discretionary requests for an origin inspection certificate but does not impose a universal advance foreign certificate. A domestic wholesome-food certificate issued following inspection is not a certificate the volunteer exporter must procure.",
+    "personalMailApplicability": "Section 27 expressly covers postal and courier interception of regulated articles. The inference concerns statutory manufactured-product scope and is therefore not limited to travellers or gifts: it covers the stated paid personal postal sencha. Ordinary declaration, inspection, uncontaminated packaging and compliance with any actual pest finding remain necessary.",
+    "quantityLimit": null,
+    "authority": "Barbados Government Printing Department / Plant Protection Organization / Ministry of Health; IPPC current-linked ISPM 32 for commodity interpretation",
+    "evidenceUrls": [
+      "https://governmentprintery.gov.bb/gazette-february-20-2023-part-a-clviii-no-19/",
+      "https://governmentprintery.gov.bb/gazette-may-29-2024-part-a-vol-clix-no-56-with-s-is-nos-1-2/",
+      "https://www.ippc.int/en/publications/587/",
+      "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+      "https://agriculture.gov.bb/attachments/Plant%20Protection%20Act%20CAP268_1.pdf",
+      "https://oag.gov.bb/attachments/Health%20Services%20%28Food%20Hygiene%29%20Regulations%2C%201969%20Cap44%27M.PDF",
+      "https://alpha.gov.bb/business-trade/apply-for-food-business-licence",
+      "https://www.health.gov.bb/Legislation"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Reviewed the government plant-import procedure and personal-consumption/mail form options. Searched operative tea processing exemptions; did not rely on a draft replacement Plant Protection Act.",
+      "2026-09-30: Retrieved the ministry-hosted complete operative Plant Protection Act Cap.268, enacted 2007-53 and commenced 20 December 2007; read definitions and sections 14–21. Manufactured-product definition is expressly pest-risk qualified, section 15 invokes standards/risk analysis, and section 21 explicitly covers postal officers. Targeted current official tea/processing and personal-food searches supplied no tea classification. Replaced the earlier draft-access gap with this precise commodity gap.",
+      "Read enacted Health Services (Food Hygiene) Regulations 1969 as amended by SI 1999/88, current Attorney General consolidated copy: regulation 2 defines food to include processed food/drink, and regulation 26A(1)–(4), printed page M15, covers all food imports. Inspection and requests for origin inspection certificates are discretionary; the destination Wholesome Food Certificate is issued as part of arrival clearance. This does not prove a blanket special-document obligation for each 100 g private tea parcel.",
+      "Distinguished the food-business licensing requirement in regulations 2–4 and current government food-business service (updated August 2026) from private consumption. Did not apply staff medical certificates or business licences to a private recipient.",
+      "Searched current official food-import legislation/guidance and found no published mandatory foreign health/free-sale certificate or food-import approval specifically covering all private processed-tea parcels. The Food Safety and Quality Bill 2021 located remains labelled draft and was not used as enacted law. The plant-product classification gap remains unresolved.",
+      "30 September bounded legal-scope peer review: The manufactured-product limb is pest-risk-qualified. Section 15(2) tells the organisation how to evaluate permit applications; it is not a published commodity exemption. Section 18 releases goods following inspection but does not retroactively waive section 14 entry conditions. The Act has no complete processed-food exclusion schedule. The plant-parts wording does not provide a defensible reason to ignore the more specific manufactured-product definition and automatically classify every finished plant-derived food as permit-controlled.",
+      "2026-09-30 fresh actual online recovery: Government Printery public post search recovered enacted Act 2023–2, full Gazette20 February 2023, and SI 2024/23 commencement Gazette29 May 2024. Verified repealed Cap.268 (2007) is no longer the principal law. Full legal text in bb-post-2649.txt, proclamation in bb-post-3273.txt, source/API provenance in bb-law2023-recovery.json. Current-linked ISPM 32 Russian PDF independently preserves the tea Category 1 illustration; official publication page updated28 July 2025 links an older adopted text rather than a newly enacted 2025 rule. Evaluated ss2(2),14,18–20,27,66 against that actual commodity example; support is explicitly inferential and manufacturing-specific. Existing food-inspection analysis retained, without inventing a personal baggage exemption."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Combined-source scope inference supports no special documents for sealed plain steam-manufactured sencha: the operative 2023 Act expressly aligns interpretation with ISPM 5 and its measures with international standards; the current-linked ISPM 32 example classifies tea in Category 1, consistent with the domestic risk-qualified manufactured-product definition. This resolves the prior missing commodity evidence without requiring a bespoke ruling. It does not rely on IPPC membership alone, treat Appendix 2 as an enacted domestic exemption list, or extend to raw leaves, herbal mixtures, planting material or contaminated goods.",
+    "permitFreeSources": [
+      "https://governmentprintery.gov.bb/gazette-february-20-2023-part-a-clviii-no-19/",
+      "https://governmentprintery.gov.bb/gazette-may-29-2024-part-a-vol-clix-no-56-with-s-is-nos-1-2/",
+      "https://www.ippc.int/en/publications/587/",
+      "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "https://oag.gov.bb/attachments/Health%20Services%20%28Food%20Hygiene%29%20Regulations%2C%201969%20Cap44%27M.PDF"
+    ],
+    "paperworkType": "No routine special documents identified for stated manufactured sencha on combined-source interpretation; ordinary customs declaration and arrival inspection remain.",
+    "requiredDocument": "Ordinary postal/customs declaration. Food Hygiene Regulations26A allows a food inspector to request origin inspection evidence in an individual case; it does not establish a routine advance foreign certificate for every private tea parcel. Any destination Wholesome Food Certificate is issued by the inspecting officer.",
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

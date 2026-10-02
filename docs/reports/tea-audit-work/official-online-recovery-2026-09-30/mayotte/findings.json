@@ -1,0 +1,50 @@
+{
+  "code": "YT",
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "outcomeChanged": false,
+  "scope": "Fresh attempt limited to current 2026 consolidated 2025-DAAF-230 / amendment236 and an applicable processed-food postal rule; no contacts or main-array edits.",
+  "newOfficialEvidence": [
+    {
+      "url": "https://info.agriculture.gouv.fr/boagri/instruction-2026-340",
+      "title": "DGAL/SDPRS/2026-340 of 17 June 2026, published 24 June 2026",
+      "retrieval": "Official indexed record recovered through web search; direct HTML timed out.",
+      "finding": "Record identifies a current instruction setting inspection/audit programming for 2026 in plant/animal health, food and imports. It is marked in force and not amended/repealed."
+    },
+    {
+      "url": "https://info.agriculture.gouv.fr/boagri/instruction-2026-340/telechargement",
+      "retrieval": "Indexed PDF passages recovered; complete PDF unavailable through web open and curl (connection timeout after 25 seconds, zero bytes).",
+      "finding": "Indexed text cites the Mayotte order of 22 May 2025 and rectifications 2025-DAAF-0288 and 2026-DAAF-236. This corroborates current framework, but no annex or processed-tea rule was recovered."
+    },
+    {
+      "url": "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-aout-2025-a733.html",
+      "retrieval": "Official indexed page text, updated 3 June 2026. Already failed DAAF direct routes were not retried.",
+      "finding": "Lists a 522.4 KiB consolidated 2025-DAAF-230 and 5 MiB amendment2026-DAAF-236. The page says the consolidation is a documentation aid. It continues to cite the independent 2019-1092 postal/baggage restriction. The annex itself was not recovered."
+    },
+    {
+      "url": "https://www.mayotte.gouv.fr/Actualites/Communiques-de-presse/Communiques-de-presse-2025/Introduction-de-vegetaux-suite-au-passage-du-cyclone-CHIDO",
+      "retrieval": "Official indexed page text.",
+      "finding": "Says processed food is outside phytosanitary rules, exemplified by frozen/canned produce. Context is temporary commercial-import relaxation through 31 July 2025, before the new order took effect on 1 August. Useful processing evidence, but it does not alone prove the current post-specific relationship."
+    }
+  ],
+  "newAlternativeRetrieval": {
+    "locatorUrl": "https://www.data.gouv.fr/datasets/recueils-des-actes-administratifs-des-prefectures",
+    "downloadUrl": "https://static.data.gouv.fr/resources/recueils-des-actes-administratifs-des-prefectures/20260928-095912/raa-des-prefectures.csv",
+    "publisherCaution": "Community-produced by Sébastien G on the national open-data platform; only used to locate official prefecture PDFs, not as authority for law.",
+    "result": "Complete 4.6 MB CSV downloaded; extracted 161 Mayotte 2026 Gazette URLs. Three specific May issues tested against official prefecture download routes; all returned no PDF. One protocol-specific follow-up also failed.",
+    "testedOfficialPdfUrls": [
+      "https://www.mayotte.gouv.fr/contenu/telechargement/30277/274571/file/recueil-r06-2026-090-recueil-des-actes-administratifs-nominatifs.pdf",
+      "https://www.mayotte.gouv.fr/contenu/telechargement/30299/274782/file/recueil-r06-2026-094-recueil-des-actes-administratifs-nominatifs.pdf",
+      "https://www.mayotte.gouv.fr/contenu/telechargement/30237/274163/file/recueil-r06-2026-080-recueil-des-actes-administratifs-nominatifs.pdf"
+    ],
+    "http2Result": "curl error92, HTTP000, zero bytes for issues080/090/094.",
+    "http1Followup": "Issue090: curl error52 (empty reply), HTTP000, zero bytes.",
+    "files": [
+      "raa-national-index.csv",
+      "raa-mayotte-index.json"
+    ]
+  },
+  "assessment": "The existing dried-tea exception and omission of ordinary tea from the 2025 chapter09 document schedule are favorable evidence. The separate 2019 postal text and current DAAF page remain operative considerations. General official processing guidance can resolve this without a bespoke ruling, but no current 2026 annex or sufficiently explicit postal processing provision was recovered. A prohibition is not established; no-document admission remains unverified.",
+  "preciseRemainingEvidence": "Readable current amendment2026-DAAF-236 or consolidation2025-DAAF-230, and the currently applicable general processed-food exclusion/definition reconciled with the 2019-1092 postal material scope. The current source is published but its text is inaccessible from the tested public routes.",
+  "notDone": "No outcome inferred from an inaccessible PDF, tax/customs freedom, a temporary commercial relaxation, or the mere existence of a Gazette URL."
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "yt-public-reader",
+    "url": "https://r.jina.ai/https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-aout-2025-a733.html",
+    "status": 422,
+    "bytes": 828,
+    "preview": "{\"data\":null,\"cause\":{\"log\":[\"  - navigating to \\\"https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-aout-2025-a733.html\\\", waiting until \\\"networkidle\\\"\"],\"name\":\"T"
+  },
+  {
+    "name": "pf-public-reader",
+    "url": "https://r.jina.ai/https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr",
+    "status": 422,
+    "bytes": 743,
+    "preview": "{\"data\":null,\"cause\":{\"log\":[\"  - navigating to \\\"https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr\\\", waiting until \\\"networkidle\\\"\"],\"name\":\"TimeoutError\"},\"co"
+  },
+  {
+    "name": "pf-media324",
+    "url": "https://www.service-public.pf/biosecurite/wp-json/wp/v2/media?search=324&per_page=100",
+    "status": 503,
+    "bytes": 18423,
+    "preview": "<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>Votre acc&egrave;s &agrave; ce site a &eacute;t&eacute; restreint par le propri&eacute;taire de ce site</title>\n\t<styl"
+  },
+  {
+    "name": "pf-search324",
+    "url": "https://www.service-public.pf/biosecurite/wp-json/wp/v2/search?search=324&per_page=100",
+    "status": 503,
+    "bytes": 18423,
+    "preview": "<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>Votre acc&egrave;s &agrave; ce site a &eacute;t&eacute; restreint par le propri&eacute;taire de ce site</title>\n\t<styl"
+  }
+]

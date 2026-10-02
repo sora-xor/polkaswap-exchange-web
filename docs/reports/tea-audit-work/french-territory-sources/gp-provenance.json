@@ -1,0 +1,30 @@
+[
+  {
+    "file": "gp-order2006-cons2019.pdf",
+    "textFile": "gp-order2006-cons2019.txt",
+    "sourceUrl": "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/fr_2006cons2019-172_anforderungen_fr.pdf",
+    "retrievedAt": "2026-09-30",
+    "sha256": "a22c9cdf70eed8621a5c49b80d9aee12f95540f72faa343231248ad59e5ec4e0",
+    "note": "Official German NPPO-hosted Légifrance consolidated French order of 24 May 2006; 27 July 2019 consolidation. Arts 8,18,25–27 and Annex V relevant."
+  },
+  {
+    "file": "gp-directive2000-29-cons2019.pdf",
+    "textFile": "gp-directive2000-29-cons2019.txt",
+    "sourceUrl": "https://www.legislation.gov.uk/eudr/2000/29/pdfs/eudr_20000029_2019-09-01_en.pdf?view=extent",
+    "retrievedAt": "2026-09-30",
+    "sha256": "f1090b8352e98fe09aa653893d9da5eef2a2b8de30b015a51479a916cb004578",
+    "note": "Official UK legislation consolidated Directive 2000/29 as at 1 September 2019; full Annex V B, printed pages190–200. Used only as incorporated schedule under French 2006 order, not as direct post2019 EU law for Guadeloupe."
+  },
+  {
+    "sourceUrl": "https://daaf.guadeloupe.agriculture.gouv.fr/l-envoi-de-vegetaux-de-la-guadeloupe-vers-la-france-et-les-autres-pays-de-l-a1199.html",
+    "retrievedAt": "2026-09-30",
+    "access": "Official page search-index text read; direct fetch restricted. Page updated25March2026.",
+    "note": "Current DAAF describes incoming local prohibition in passenger channel; does not establish private postal scope."
+  },
+  {
+    "sourceUrl": "https://www.guadeloupe.developpement-durable.gouv.fr/IMG/pdf/Diagnostic_sur_les_invasions_biologiques_aux_antilles_francaises_2011.pdf",
+    "retrievedAt": "2026-09-30",
+    "access": "Official report search-index text read; direct web fetch restricted.",
+    "note": "Table21 printedp70 describes local order96-32316April1996 as restricting plant/product introductions outside commercial channels. Summary is not actual operative order; postal purchase and finished-tea scope not established."
+  }
+]

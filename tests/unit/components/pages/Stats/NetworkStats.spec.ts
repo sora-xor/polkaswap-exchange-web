@@ -1,5 +1,5 @@
 import { FPNumber } from '@sora-substrate/math';
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { defineComponent, nextTick, reactive } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -236,6 +236,59 @@ describe('NetworkStats', () => {
     expect(wrapper.find('[data-value="0"]').exists()).toBe(true);
     expect(consoleError).toHaveBeenCalledTimes(2);
     consoleError.mockRestore();
+  });
+
+  it('keeps data from the latest endpoint refresh when an older request resolves last', async () => {
+    const snapshot = (accounts: number) => [
+      {
+        timestamp: 1_700_000_000,
+        accounts: new FPNumber(accounts),
+        activeAccounts: FPNumber.ZERO,
+        transactions: FPNumber.ZERO,
+        bridgeIncomingTransactions: FPNumber.ZERO,
+        bridgeOutgoingTransactions: FPNumber.ZERO,
+      },
+    ];
+    let resolveOldRequest!: (value: ReturnType<typeof snapshot>) => void;
+    let resolveNewRequest!: (value: ReturnType<typeof snapshot>) => void;
+    const oldRequest = new Promise<ReturnType<typeof snapshot>>((resolve) => {
+      resolveOldRequest = resolve;
+    });
+    const newRequest = new Promise<ReturnType<typeof snapshot>>((resolve) => {
+      resolveNewRequest = resolve;
+    });
+    fetchDataMock
+      .mockImplementationOnce(() => oldRequest)
+      .mockResolvedValueOnce([])
+      .mockImplementationOnce(() => newRequest)
+      .mockResolvedValueOnce([]);
+
+    const wrapper = mount(NetworkStats, {
+      global: {
+        stubs: {
+          's-card': {
+            template: '<section><slot name="header"></slot><slot /></section>',
+          },
+          's-tooltip': {
+            template: '<span><slot /></span>',
+          },
+          's-icon': true,
+        },
+      },
+    });
+    await nextTick();
+
+    settingsStoreMock.state.indexerEndpoint = 'https://indexer.example/graphql';
+    await nextTick();
+    expect(fetchDataMock).toHaveBeenCalledTimes(4);
+
+    resolveNewRequest(snapshot(22));
+    await flushPromises();
+    resolveOldRequest(snapshot(11));
+    await flushPromises();
+
+    expect(wrapper.find('[data-value="22"]').exists()).toBe(true);
+    expect(wrapper.find('[data-value="11"]').exists()).toBe(false);
   });
 
   it('binds integer-only rendering for whole-number counters', () => {

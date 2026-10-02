@@ -1,0 +1,52 @@
+[
+  {
+    "name": "mv-guidance2026",
+    "url": "https://agriculture.gov.mv/dv/publications/dhivehiraaajeah-gasgahaagehsaai-gahugebaithakaai-dhireythakethi-etherekurumugai-samaalukandheynvee-kanthahthah",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/mv-guidance2026.html",
+    "retrievedAt": "2026-09-30T06:36:01.077240+00:00",
+    "bytes": 64026,
+    "sha256": "d85b4b004795350d60b2ae916579c8726230a65ba74590b6caa37e72bb145bb4"
+  },
+  {
+    "name": "om-tariff2022",
+    "url": "https://www.customs.gov.om/media/ig0bc1j2/omans-customs-tariff-for-2022.pdf",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/om-tariff2022.pdf",
+    "retrievedAt": "2026-09-30T06:36:33.779099+00:00",
+    "bytes": 10697617,
+    "sha256": "5fc495a4031e76e48f5135e0dcc0a536c1a730477cfa89228a9b5d328b49fe57"
+  },
+  {
+    "name": "om-reg2010-pdf-http",
+    "url": "http://data.qanoon.om/ar/md/mrmwr/2010-0002.pdf",
+    "status": "403",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/om-reg2010-pdf-http.pdf",
+    "retrievedAt": "2026-09-30T06:36:01.347063+00:00",
+    "bytes": 5544,
+    "sha256": "45bf2e5e32041fc7975bca6af0b51972c93cdf292fbbb991aaa2308a52acb2f0"
+  },
+  {
+    "name": "om-reg2010-pdf-https",
+    "url": "https://data.qanoon.om/ar/md/mrmwr/2010-0002.pdf",
+    "status": "403",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/om-reg2010-pdf-https.pdf",
+    "retrievedAt": "2026-09-30T06:36:01.332193+00:00",
+    "bytes": 5544,
+    "sha256": "b2c8c844963f013c0ab4c792e061d9e271978b469c37951ea99c8169bce8de93"
+  },
+  {
+    "name": "ae-restricted2026",
+    "url": "https://www.adcustoms.gov.ae/en/Policies-and-Regulations/Restricted-Banned-Commodities",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/asia/ae-restricted2026.html",
+    "retrievedAt": "2026-09-30T06:36:03.744445+00:00",
+    "bytes": 56352,
+    "sha256": "b121dd42d2921072a52707daa2b5e877b29247e3aeb393cd45e6a83af2b7a6b6"
+  }
+]

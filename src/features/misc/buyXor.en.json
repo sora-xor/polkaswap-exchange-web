@@ -1,0 +1,63 @@
+{
+  "buyXor": {
+    "measurement": {
+      "consent": "Share aggregate purchase-step counts to help improve Buy XOR. No wallet addresses, amounts or transaction hashes are sent.",
+      "privacy": "Your browser privacy preference keeps these counts off.",
+      "unavailable": "Step counts could not be sent. Your purchase is unaffected."
+    },
+    "title": "Buy XOR",
+    "subtitle": "Get XOR into your SORA wallet using card or crypto.",
+    "stepsLabel": "Buy XOR steps",
+    "mainnetRequired": "Switch Polkaswap to SORA mainnet to buy XOR.",
+    "cardRouteNotice": "Your card buys ETH through MoonPay. You then convert and transfer funds to SORA, and swap to XOR.",
+    "cardDestinationNote": "Use this Ethereum address at checkout. Your SORA receiving wallet is a different address.",
+    "walletsIntroduction": "Connect your payment wallet first, then the SORA wallet that will receive your XOR.",
+    "walletsDescription": "Your XOR will be held in this SORA wallet. Keep access to it and protect your recovery information.",
+    "claimWallet": "SORA receiving wallet",
+    "createClaimWallet": "Create or connect your SORA wallet",
+    "swapDescription": "Your DAI amount is filled in. Review the latest quote and network fee to receive XOR in your SORA wallet.",
+    "initialEstimate": "Initial estimate · refreshed before the swap",
+    "receivingNotice": "XOR is delivered to your SORA wallet. You can hold, send or use it after the swap is confirmed.",
+    "receivedTitle": "XOR received",
+    "receivedDescription": "Your swap is confirmed on SORA. Your wallet now controls the received XOR.",
+    "viewWallet": "View XOR in my wallet",
+    "optionalTs": "Optional: burn XOR for a future TS claim",
+    "optionalTsNotice": "This is a separate action. Burning destroys XOR permanently; TS is claimed later.",
+    "moreUses": "Other ways to use XOR",
+    "swapReceived": "Swap confirmed. XOR was received by your SORA wallet.",
+    "existingXor": "View existing XOR in my wallet",
+    "routes": {
+      "card": "Card → ETH on Ethereum → DAI → transfer to SORA → XOR in your wallet. Requires Ethereum and SORA wallets. MoonPay controls eligibility, identity checks, minimums and final fees.",
+      "ethereum": "ETH or USDT on Ethereum mainnet → DAI → transfer to SORA → XOR in your wallet. Existing Ethereum DAI skips conversion. Keep ETH for network fees.",
+      "ton": "Native TON first needs an external TON-to-USDT swap. USDT on TON → ETH on Ethereum through Symbiosis → DAI → transfer to SORA → XOR in your wallet. The provider handles the TON transfer and its recovery. Keep TON and ETH for network fees.",
+      "sora": "DAI in your SORA wallet → swap to XOR. The estimate accounts for the SORA swap fee."
+    },
+    "bridgePreparationError": "This funding route could not be prepared. Check your network and wallet connection, then return to Buy XOR to try again.",
+    "returnToPurchase": "Return to Buy XOR",
+    "entry": "Buy XOR",
+    "walletEntryDescription": "Add XOR to your SORA wallet with card or crypto.",
+    "preview": {
+      "futureXor": "Estimated spendable XOR",
+      "beforeGasXor": "Indicative XOR before Ethereum gas",
+      "netXor": "After estimated SORA swap fees and a price buffer.",
+      "xorBudget": "XOR already in your SORA wallet",
+      "cardEth": "MoonPay currently estimates {eth} ETH delivered. Keep some ETH for gas; spending it on fees will reduce the eventual XOR amount.",
+      "method": "This is an indicative plan, refreshed every 30 seconds. Estimates include a conservative conversion and slippage buffer. Provider amounts, gas and rates can change before the final review.",
+      "notice": "This route acquires XOR on SORA mainnet. Review every transaction before signing.",
+      "reason": {
+        "fees-insufficient": "This amount would not leave spendable XOR after the swap fee. Try a larger amount.",
+        "fees-unavailable": "The current SORA swap fee is unavailable, so a net XOR estimate would be incomplete."
+      }
+    },
+    "liquidity": {
+      "ready": "About {xor} XOR available after the swap fee",
+      "allowed": "This estimate meets the price-impact limit and leaves spendable XOR after the estimated swap fee. Rates and fees can change.",
+      "feeReserve": "Estimated swap fee: {fees} XOR. Conservative spendable amount: {spendable} XOR.",
+      "feesUnavailable": "Waiting for the current swap fee from SORA mainnet.",
+      "feesInsufficient": "This amount would not leave spendable XOR after the swap fee. Increase the DAI amount and check again; it must also stay within the 5% price-impact limit."
+    },
+    "resumeTitle": "Continue buying XOR",
+    "resumeDescription": "Return to your purchase plan to review the next step. Each transaction needs your approval.",
+    "return": "Return to Buy XOR"
+  }
+}

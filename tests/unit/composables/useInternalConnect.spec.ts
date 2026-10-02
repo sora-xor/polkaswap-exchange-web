@@ -89,4 +89,15 @@ describe('useInternalConnect', () => {
     expect(setDialogVisibilityMock).toHaveBeenNthCalledWith(1, false);
     expect(setDialogVisibilityMock).toHaveBeenNthCalledWith(2, true);
   });
+
+  it('enters Google only on its explicit action and clears the preference for ordinary wallet selection', async () => {
+    const { useInternalConnect, preferredSoraWallet } = await import('@/composables/useInternalConnect');
+    const { connectGoogleWallet, connectSoraWallet } = useInternalConnect();
+    expect(setDialogVisibilityMock).not.toHaveBeenCalled();
+    await connectGoogleWallet();
+    expect(preferredSoraWallet.value).toBe('google-drive');
+    expect(setDialogVisibilityMock).toHaveBeenCalledWith(true);
+    await connectSoraWallet();
+    expect(preferredSoraWallet.value).toBeNull();
+  });
 });

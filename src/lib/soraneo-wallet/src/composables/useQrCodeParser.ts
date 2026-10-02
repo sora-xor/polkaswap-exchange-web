@@ -16,6 +16,8 @@ const reject = (message: string) => {
   throw new Error(`[QR Code]: ${message}`);
 };
 
+const UNSIGNED_DECIMAL_PATTERN = /^\d+(?:\.\d+)?$/;
+
 export function useQrCodeParser() {
   const walletStore = useWalletStore();
   const { showAppNotification, t } = useNotification();
@@ -57,8 +59,11 @@ export function useQrCodeParser() {
     }
   };
 
+  /** Accepts only positive base-10 decimals, without floating-point coercion. */
   const checkAmount = (amount?: string): void => {
-    if (amount && !Number.isFinite(parseInt(amount))) {
+    if (amount === undefined || amount === '') return;
+
+    if (!UNSIGNED_DECIMAL_PATTERN.test(amount) || !/[1-9]/.test(amount)) {
       reject(`Invalid amount: ${amount}`);
     }
   };

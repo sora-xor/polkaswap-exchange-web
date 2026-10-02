@@ -1,18 +1,23 @@
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { DAI, ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
-import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/evm/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { EthAssetKind } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import { createPinia, setActivePinia } from 'pinia';
 import { of } from 'rxjs';
+import { computed, markRaw, shallowRef } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { beforeTransactionSign } from '@/lib/soraneo-wallet/src/util';
 import { api } from '@/lib/soraneo-wallet/src/api';
+import { TONSWAP_MAINNET_GENESIS } from '@/indexer/queries/tonswapBurn';
+import { TONSWAP_BRIDGE_FUNDING_TAG } from '@/features/misc/lib/tonswapBridgeLiquidity';
 
 import { useBridgeStore } from '@/stores/bridge';
 import { useMoonpayStore } from '@/stores/moonpay';
 import { BridgeFocusedField } from '@/stores/bridge/types';
 import { BridgeTransactionSignDialogMode } from '@/utils/bridge/common/types';
+import { SUB_BRIDGE_DISPLAY_ONLY_HISTORY_RECOVERY } from '@/utils/bridge/sub/reconciliation';
 
 const walletStoreMock = vi.hoisted(() => ({
   address: 'sora-address',
@@ -21,6 +26,7 @@ const walletStoreMock = vi.hoisted(() => ({
     etherscan: 'etherscan-key',
   },
   networkFees: {},
+  sorametricsApiEndpoint: 'https://sorametrics.org',
   isSignTxDialogDisabled: true,
   account: {
     name: 'Sora User',
@@ -50,6 +56,7 @@ const walletStoreMock = vi.hoisted(() => ({
     },
   },
   getPassword: vi.fn(() => 'secret'),
+  $subscribe: vi.fn((_callback: (...args: unknown[]) => void) => vi.fn()),
 }));
 
 const resetWalletAssetsMock = () => {
@@ -81,6 +88,7 @@ const resetWalletAssetsMock = () => {
 
 const assetsStoreMock = vi.hoisted(() => ({
   registeredAssets: {},
+  registeredAssetsFetching: false,
   assetDataByAddress: vi.fn(),
 }));
 
@@ -103,6 +111,8 @@ const web3StoreMock = vi.hoisted(() => ({
 }));
 
 const settingsStoreMock = vi.hoisted(() => ({
+  networkFees: {} as Record<string, string>,
+  slippageTolerance: '1',
   featureFlags: {
     wsWorkerDataPlane: false,
     wsSharedWorker: true,
@@ -131,6 +141,7 @@ const subBridgeApiMock = vi.hoisted(() => ({
 }));
 
 const ethBridgeApiMock = vi.hoisted(() => ({
+  saveHistory: vi.fn(),
   history: {} as Record<string, any>,
   getHistory: vi.fn<(id: string) => any>(),
   getLockedAssets: vi.fn(async () => FPNumber.fromNatural(5).toCodecString()),
@@ -164,23 +175,43 @@ const updateSubBridgeHistoryMock = vi.hoisted(() => vi.fn());
 const waitForApprovedRequestMock = vi.hoisted(() =>
   vi.fn(async () => ({
     to: '0xrecipient',
+    hash: '0xapproved-request',
+    amount: '10000000000000000000',
   }))
 );
 
+const outgoingPopulateTransactionMock = vi.hoisted(() => vi.fn());
+const outgoingSignerMock = vi.hoisted(() => ({
+  getAddress: vi.fn(),
+  getNonce: vi.fn(),
+  sendTransaction: vi.fn(),
+}));
 const getOutgoingEvmTransactionDataMock = vi.hoisted(() =>
   vi.fn(async () => ({
     contract: {
-      bridgeTransfer: vi.fn(async () => ({ hash: '0xoutgoing-tx' })),
+      runner: outgoingSignerMock,
+      bridgeTransfer: {
+        populateTransaction: outgoingPopulateTransactionMock,
+      },
     },
     method: 'bridgeTransfer',
     args: ['arg-1', 'arg-2'],
   }))
 );
 
+const incomingPopulateTransactionMock = vi.hoisted(() => vi.fn());
+const incomingSignerMock = vi.hoisted(() => ({
+  getAddress: vi.fn(),
+  getNonce: vi.fn(),
+  sendTransaction: vi.fn(),
+}));
 const getIncomingEvmTransactionDataMock = vi.hoisted(() =>
   vi.fn(async () => ({
     contract: {
-      sendERC20ToSidechain: vi.fn(async () => ({ hash: '0xincoming-tx' })),
+      runner: incomingSignerMock,
+      sendERC20ToSidechain: {
+        populateTransaction: incomingPopulateTransactionMock,
+      },
     },
     method: 'sendERC20ToSidechain',
     args: ['incoming-arg-1', 'incoming-arg-2'],
@@ -198,9 +229,34 @@ const dataPlaneClientMock = vi.hoisted(() => ({
 const normalizeRealtimeProfileMock = vi.hoisted(() => vi.fn((value: unknown) => value || 'balanced'));
 const parseSubstrateHeaderNumberMock = vi.hoisted(() => vi.fn(() => 321));
 
+const webLockTails = new Map<string, Promise<void>>();
+const webLocksMock = {
+  request: vi.fn(
+    async <T>(name: string, _options: LockOptions, callback: (lock: Lock | null) => Promise<T>): Promise<T> => {
+      const previous = webLockTails.get(name) ?? Promise.resolve();
+      let release!: () => void;
+      const current = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      const tail = previous.catch(() => undefined).then(() => current);
+
+      webLockTails.set(name, tail);
+      await previous.catch(() => undefined);
+
+      try {
+        return await callback({ name, mode: 'exclusive' } as Lock);
+      } finally {
+        release();
+        if (webLockTails.get(name) === tail) webLockTails.delete(name);
+      }
+    }
+  ),
+};
+
 const ethersUtilMock = vi.hoisted(() => ({
   addressesAreEqual: vi.fn((left?: string, right?: string) => left?.toLowerCase() === right?.toLowerCase()),
   checkAccountIsConnected: vi.fn(async () => true),
+  getEvmNetworkId: vi.fn<() => Promise<number>>(),
   getAccountAssetBalance: vi.fn(async () => '7'),
   getBlockNumber: vi.fn(async () => 777),
   getAllowance: vi.fn(async () => '0'),
@@ -321,8 +377,8 @@ vi.mock('@/services/realtime', () => ({
   parseSubstrateHeaderNumber: parseSubstrateHeaderNumberMock,
 }));
 
-const createConnectorMock = () => ({
-  network: {
+const createConnectorMock = () => {
+  const network = {
     connection: {
       api: {
         registry: {
@@ -343,10 +399,22 @@ const createConnectorMock = () => ({
     getAssetMinDeposit: vi.fn(async () => '13'),
     getNetworkFee: vi.fn(async () => '7'),
     getTokenBalance: vi.fn(async () => '0'),
-    getTokenBalancesBatch: vi.fn(async () => ['11', '22', '7']),
+    getTokenBalancesBatch: vi.fn(async () => ['11', '7']),
     formatAddress: vi.fn((address: string) => `formatted-${address}`),
-  },
-});
+  };
+
+  return {
+    network,
+    get connectionState() {
+      return {
+        network: SubNetworkId.Liberland,
+        connection: network.subNetworkConnection,
+        connecting: Boolean((network.subNetworkConnection as any).nodeAddressConnecting),
+        ready: Boolean(network.subNetworkConnection.nodeIsConnected && network.connection.api.registry),
+      };
+    },
+  };
+};
 
 const createSeededBridgeState = () => {
   const connector = createConnectorMock();
@@ -408,11 +476,26 @@ const createSeededBridgeState = () => {
 describe('useBridgeStore', () => {
   let store: ReturnType<typeof useBridgeStore>;
   let seededConnector: ReturnType<typeof createConnectorMock>;
+  let walletStoreSubscription!: (...args: unknown[]) => void;
 
   beforeEach(() => {
     setActivePinia(createPinia());
+    webLockTails.clear();
+    webLocksMock.request.mockClear();
+    Object.defineProperty(navigator, 'locks', {
+      configurable: true,
+      value: webLocksMock,
+    });
 
     resetWalletAssetsMock();
+    walletStoreMock.address = 'sora-address';
+    walletStoreMock.soraAddress = 'sora-address';
+    walletStoreMock.sorametricsApiEndpoint = 'https://sorametrics.org';
+    walletStoreMock.$subscribe.mockReset();
+    walletStoreMock.$subscribe.mockImplementation((callback: (...args: unknown[]) => void) => {
+      walletStoreSubscription = callback;
+      return vi.fn();
+    });
     assetsStoreMock.registeredAssets = {
       '0x01': {
         address: '0xexternal-asset',
@@ -425,6 +508,7 @@ describe('useBridgeStore', () => {
         kind: EthAssetKind.Sidechain,
       },
     };
+    assetsStoreMock.registeredAssetsFetching = false;
     assetsStoreMock.assetDataByAddress.mockReset();
     assetsStoreMock.assetDataByAddress.mockImplementation((address?: string | null) => {
       if (!address) return null;
@@ -474,6 +558,10 @@ describe('useBridgeStore', () => {
         externalNetwork: EvmNetworkId.EthereumSepolia,
       },
     };
+    ethBridgeApiMock.saveHistory.mockReset();
+    ethBridgeApiMock.saveHistory.mockImplementation((tx) => {
+      ethBridgeApiMock.history[tx.id] = tx;
+    });
     ethBridgeApiMock.getHistory.mockReset();
     ethBridgeApiMock.getHistory.mockImplementation((id: string) => ethBridgeApiMock.history[id] ?? null);
     ethBridgeApiMock.getLockedAssets.mockReset();
@@ -522,6 +610,29 @@ describe('useBridgeStore', () => {
     waitForApprovedRequestMock.mockClear();
     getOutgoingEvmTransactionDataMock.mockClear();
     getIncomingEvmTransactionDataMock.mockClear();
+    outgoingPopulateTransactionMock.mockReset();
+    outgoingPopulateTransactionMock.mockResolvedValue({
+      to: '0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+      data: '0xAABB',
+      value: 42n,
+    });
+    outgoingSignerMock.getAddress.mockReset();
+    outgoingSignerMock.getAddress.mockResolvedValue('0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    outgoingSignerMock.getNonce.mockReset();
+    outgoingSignerMock.getNonce.mockResolvedValue(7);
+    outgoingSignerMock.sendTransaction.mockReset();
+    outgoingSignerMock.sendTransaction.mockResolvedValue({ hash: '0xoutgoing-tx' });
+    incomingPopulateTransactionMock.mockReset();
+    incomingPopulateTransactionMock.mockResolvedValue({
+      to: '0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+      data: '0xCCDD',
+    });
+    incomingSignerMock.getAddress.mockReset();
+    incomingSignerMock.getAddress.mockResolvedValue('0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    incomingSignerMock.getNonce.mockReset();
+    incomingSignerMock.getNonce.mockResolvedValue(8);
+    incomingSignerMock.sendTransaction.mockReset();
+    incomingSignerMock.sendTransaction.mockResolvedValue({ hash: '0xincoming-tx' });
     getEthNetworkFeeMock.mockClear();
     waitForEvmTransactionMinedMock.mockClear();
     getSoraAssetBalanceMock.mockReset();
@@ -533,6 +644,8 @@ describe('useBridgeStore', () => {
     parseSubstrateHeaderNumberMock.mockClear();
     ethersUtilMock.addressesAreEqual.mockClear();
     ethersUtilMock.checkAccountIsConnected.mockClear();
+    ethersUtilMock.getEvmNetworkId.mockReset();
+    ethersUtilMock.getEvmNetworkId.mockResolvedValue(EvmNetworkId.EthereumSepolia);
     ethersUtilMock.getAccountAssetBalance.mockClear();
     ethersUtilMock.getBlockNumber.mockClear();
     ethersUtilMock.getAllowance.mockClear();
@@ -541,6 +654,8 @@ describe('useBridgeStore', () => {
     ethersUtilMock.getTokenContract.mockClear();
 
     walletStoreMock.networkFees = {};
+    settingsStoreMock.networkFees = {};
+    settingsStoreMock.slippageTolerance = '1';
     settingsStoreMock.featureFlags.wsWorkerDataPlane = false;
     settingsStoreMock.featureFlags.wsSharedWorker = true;
     settingsStoreMock.featureFlags.wsProfile = 'ultra';
@@ -605,6 +720,49 @@ describe('useBridgeStore', () => {
       type: Operation.EthBridgeOutgoing,
     });
     expect(store.subBridgeConnector).toStrictEqual(seededConnector);
+  });
+
+  it('exposes revision-backed Sub network state from the raw connector', () => {
+    const revision = shallowRef(0);
+    const connection = markRaw({ status: { connected: false } });
+    let ready = false;
+    const connector = markRaw({
+      get connectionState() {
+        void revision.value;
+
+        return Object.freeze({
+          network: SubNetworkId.Liberland,
+          connection,
+          connecting: !ready,
+          ready,
+        });
+      },
+    });
+
+    store.$patch((state) => {
+      state.connector = connector as never;
+    });
+
+    const observedState = computed(() => store.subNetworkConnectionState);
+    const connectingState = observedState.value;
+
+    expect(connectingState).toEqual({
+      network: SubNetworkId.Liberland,
+      connection,
+      connecting: true,
+      ready: false,
+    });
+
+    ready = true;
+    revision.value += 1;
+
+    expect(observedState.value).not.toBe(connectingState);
+    expect(observedState.value).toEqual({
+      network: SubNetworkId.Liberland,
+      connection,
+      connecting: false,
+      ready: true,
+    });
   });
 
   it('keeps DAI registered when wallet metadata lacks bridge external fields', () => {
@@ -831,14 +989,32 @@ describe('useBridgeStore', () => {
     await expect(store.updateExternalBalance()).resolves.toBeUndefined();
 
     expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledWith([
-      { accountAddress: 'sora-address', asset: expect.objectContaining({ address: '0x01' }) },
       { accountAddress: 'sub-address', asset: expect.objectContaining({ address: '0x01' }) },
-      { accountAddress: 'sora-address', asset: expect.objectContaining({ address: '0x02' }) },
+      { accountAddress: 'sub-address', asset: expect.objectContaining({ address: '0x02' }) },
     ]);
-    expect(store.balances.assetSenderBalance).toBe('11');
-    expect(store.balances.assetRecipientBalance).toBe('22');
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(store.balances.assetSenderBalance).toBe('33');
+    expect(store.balances.assetRecipientBalance).toBe('11');
     expect(store.fees.externalNativeBalance).toBe('7');
     expect(store.flags.balancesFetching).toBe(false);
+  });
+
+  it('reads incoming Sub balances from the selected Sub chain and the recipient balance from SORA', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'Liberland' as any;
+    getSoraAssetBalanceMock.mockResolvedValueOnce({ transferable: '44' });
+    store.updateForm({ isSoraToEvm: false, assetAddress: '0x01' });
+
+    await store.updateExternalBalance();
+
+    expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledWith([
+      { accountAddress: 'formatted-sub-address', asset: expect.objectContaining({ address: '0x01' }) },
+      { accountAddress: 'formatted-sub-address', asset: expect.objectContaining({ address: '0x02' }) },
+    ]);
+    expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
+    expect(store.balances.assetSenderBalance).toBe('11');
+    expect(store.balances.assetRecipientBalance).toBe('44');
+    expect(store.fees.externalNativeBalance).toBe('7');
   });
 
   it('rejects malformed Sub bridge formatter output and keeps raw account text', () => {
@@ -927,6 +1103,33 @@ describe('useBridgeStore', () => {
     expect(store.history.internal['tx-local']).toMatchObject(tx);
   });
 
+  it('refreshes a pinned Sub transaction from persisted history while the Eth form is selected', async () => {
+    const stale = {
+      id: 'tx-sub-recovery',
+      type: Operation.SubstrateIncoming,
+      externalNetwork: SubNetworkId.Liberland,
+      transactionState: BridgeTxStatus.Failed,
+    } as any;
+    const recovered = {
+      ...stale,
+      transactionState: BridgeTxStatus.Done,
+      hash: '0xsora-request',
+    } as any;
+
+    web3StoreMock.networkType = BridgeNetworkType.Eth;
+    web3StoreMock.networkSelected = EvmNetworkId.EthereumSepolia;
+    store.history.internal = { 'stale-storage-key': stale };
+    store.setHistoryId(stale.id);
+    subBridgeApiMock.history = { 'sub-storage-key': recovered };
+
+    await store.updateInternalHistory();
+
+    expect(store.activeTransaction).toBe(recovered);
+    expect(store.history.internal['sub-storage-key']).toBe(recovered);
+    expect(store.history.internal['stale-storage-key']).toBeUndefined();
+    expect(web3StoreMock.networkType).toBe(BridgeNetworkType.Eth);
+  });
+
   it('drops stale bridge transactions on refresh when none are selected or in progress', async () => {
     store.history.internal = {
       'tx-stale': {
@@ -1006,6 +1209,7 @@ describe('useBridgeStore', () => {
               apiKeys: expect.objectContaining({
                 etherscan: 'etherscan-key',
               }),
+              sorametricsApiEndpoint: 'https://sorametrics.org',
             }),
           }),
           web3: expect.objectContaining({
@@ -1094,6 +1298,214 @@ describe('useBridgeStore', () => {
     resolveHistoryUpdate();
     await firstUpdate;
 
+    expect(store.history.loading[EvmNetworkId.EthereumSepolia]).toBeUndefined();
+  });
+
+  it('lets completed Sub asset discovery supersede an active boot history request', async () => {
+    let resolveBootHistory!: () => void;
+    const bootHistoryGate = new Promise<void>((resolve) => {
+      resolveBootHistory = resolve;
+    });
+
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = SubNetworkId.Liberland;
+    subBridgeApiMock.isStandalone.mockReturnValue(true);
+    assetsStoreMock.registeredAssets = {};
+    assetsStoreMock.registeredAssetsFetching = true;
+    updateSubBridgeHistoryMock
+      .mockImplementationOnce(() => async () => {
+        await bootHistoryGate;
+      })
+      .mockImplementationOnce(() => async (_clearHistory = false, updateCallback?: VoidFunction) => {
+        subBridgeApiMock.history = {
+          '0xliberland-request': {
+            id: '0xliberland-request',
+            type: Operation.SubstrateIncoming,
+            externalNetwork: SubNetworkId.Liberland,
+          },
+        };
+        await updateCallback?.();
+      });
+
+    const bootUpdate = store.updateExternalHistory();
+    await Promise.resolve();
+
+    assetsStoreMock.registeredAssets = {
+      '0xlld': {
+        address: '',
+        decimals: 12,
+        kind: 'Sidechain',
+      },
+    };
+    assetsStoreMock.registeredAssetsFetching = false;
+    await store.updateExternalHistory();
+
+    expect(updateSubBridgeHistoryMock).toHaveBeenCalledTimes(2);
+    expect(store.historyRecord['0xliberland-request']).toEqual(
+      expect.objectContaining({
+        id: '0xliberland-request',
+        externalNetwork: SubNetworkId.Liberland,
+      })
+    );
+
+    resolveBootHistory();
+    await bootUpdate;
+
+    expect(store.historyRecord['0xliberland-request']).toBeDefined();
+  });
+
+  it('aborts in-flight Sub history discovery when the connected account changes', async () => {
+    let firstSignal!: AbortSignal;
+
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = SubNetworkId.Liberland;
+    subBridgeApiMock.isStandalone.mockReturnValue(true);
+    updateSubBridgeHistoryMock
+      .mockImplementationOnce(
+        () =>
+          async (
+            _clearHistory = false,
+            _updateCallback?: VoidFunction,
+            _isCurrent?: () => boolean,
+            signal?: AbortSignal
+          ) => {
+            firstSignal = signal as AbortSignal;
+            await new Promise<void>((resolve) =>
+              firstSignal.addEventListener('abort', () => resolve(), { once: true })
+            );
+          }
+      )
+      .mockImplementationOnce(() => async () => undefined);
+
+    const previousAccountUpdate = store.updateExternalHistory();
+    await vi.waitFor(() => expect(firstSignal).toBeInstanceOf(AbortSignal));
+
+    walletStoreMock.address = 'next-sora-account';
+    await store.updateExternalHistory();
+    await previousAccountUpdate;
+
+    expect(firstSignal.aborted).toBe(true);
+    expect(updateSubBridgeHistoryMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps the latest network history when external requests resolve in reverse order', async () => {
+    let resolvePreviousHistory!: () => void;
+    let resolveCurrentHistory!: () => void;
+    const previousHistoryGate = new Promise<void>((resolve) => {
+      resolvePreviousHistory = resolve;
+    });
+    const currentHistoryGate = new Promise<void>((resolve) => {
+      resolveCurrentHistory = resolve;
+    });
+    const currentNetwork = EvmNetworkId.BinanceSmartChainMainnet;
+
+    web3StoreMock.networkType = BridgeNetworkType.Evm;
+    web3StoreMock.networkSelected = EvmNetworkId.EthereumSepolia;
+    store.setHistoryId();
+    updateEvmBridgeHistoryMock
+      .mockImplementationOnce(() => async (_clearHistory = false, updateCallback?: VoidFunction) => {
+        await previousHistoryGate;
+        evmBridgeApiMock.history = {
+          'tx-previous-network': {
+            id: 'tx-previous-network',
+            type: Operation.EvmOutgoing,
+            externalNetwork: EvmNetworkId.EthereumSepolia,
+          },
+        };
+        await updateCallback?.();
+      })
+      .mockImplementationOnce(() => async (_clearHistory = false, updateCallback?: VoidFunction) => {
+        await currentHistoryGate;
+        evmBridgeApiMock.history = {
+          'tx-current-network': {
+            id: 'tx-current-network',
+            type: Operation.EvmOutgoing,
+            externalNetwork: currentNetwork,
+          },
+        };
+        await updateCallback?.();
+      });
+
+    const previousUpdate = store.updateExternalHistory(true);
+    await Promise.resolve();
+
+    web3StoreMock.networkSelected = currentNetwork;
+    const currentUpdate = store.updateExternalHistory(true);
+    await Promise.resolve();
+
+    expect(updateEvmBridgeHistoryMock).toHaveBeenCalledTimes(2);
+
+    resolveCurrentHistory();
+    await currentUpdate;
+
+    expect(store.historyRecord).toEqual({
+      'tx-current-network': expect.objectContaining({ id: 'tx-current-network', externalNetwork: currentNetwork }),
+    });
+
+    resolvePreviousHistory();
+    await previousUpdate;
+
+    expect(store.historyRecord).toEqual({
+      'tx-current-network': expect.objectContaining({ id: 'tx-current-network', externalNetwork: currentNetwork }),
+    });
+  });
+
+  it('allows a new account to supersede an active history request on the same network', async () => {
+    let resolvePreviousHistory!: () => void;
+    let resolveCurrentHistory!: () => void;
+    const previousHistoryGate = new Promise<void>((resolve) => {
+      resolvePreviousHistory = resolve;
+    });
+    const currentHistoryGate = new Promise<void>((resolve) => {
+      resolveCurrentHistory = resolve;
+    });
+
+    web3StoreMock.networkType = BridgeNetworkType.Evm;
+    web3StoreMock.networkSelected = EvmNetworkId.EthereumSepolia;
+    walletStoreMock.address = 'sora-account-1';
+    store.setHistoryId();
+    updateEvmBridgeHistoryMock
+      .mockImplementationOnce(() => async (_clearHistory = false, updateCallback?: VoidFunction) => {
+        await previousHistoryGate;
+        evmBridgeApiMock.history = {
+          'tx-previous-account': {
+            id: 'tx-previous-account',
+            type: Operation.EvmOutgoing,
+            externalNetwork: EvmNetworkId.EthereumSepolia,
+          },
+        };
+        await updateCallback?.();
+      })
+      .mockImplementationOnce(() => async (_clearHistory = false, updateCallback?: VoidFunction) => {
+        await currentHistoryGate;
+        evmBridgeApiMock.history = {
+          'tx-current-account': {
+            id: 'tx-current-account',
+            type: Operation.EvmOutgoing,
+            externalNetwork: EvmNetworkId.EthereumSepolia,
+          },
+        };
+        await updateCallback?.();
+      });
+
+    const previousUpdate = store.updateExternalHistory(true);
+    await Promise.resolve();
+
+    walletStoreMock.address = 'sora-account-2';
+    const currentUpdate = store.updateExternalHistory(true);
+    await Promise.resolve();
+
+    expect(updateEvmBridgeHistoryMock).toHaveBeenCalledTimes(2);
+
+    resolveCurrentHistory();
+    await currentUpdate;
+
+    resolvePreviousHistory();
+    await previousUpdate;
+
+    expect(store.historyRecord).toEqual({
+      'tx-current-account': expect.objectContaining({ id: 'tx-current-account' }),
+    });
     expect(store.history.loading[EvmNetworkId.EthereumSepolia]).toBeUndefined();
   });
 
@@ -1224,12 +1636,8 @@ describe('useBridgeStore', () => {
     };
 
     const historyInstance = await store.getEthBridgeHistoryInstance();
-    const transaction = await store.signEthBridgeOutgoingEvm('tx-sign');
+    const transaction = await store.signEthBridgeOutgoingEvm('tx-sign', vi.fn());
 
-    await store.handleBridgeTransaction('tx-sign');
-    web3StoreMock.networkType = BridgeNetworkType.Evm;
-    await store.handleBridgeTransaction('tx-sign');
-    web3StoreMock.networkType = BridgeNetworkType.Sub;
     await store.handleBridgeTransaction('tx-sign');
 
     expect(getEthBridgeHistoryInstanceMock).toHaveBeenCalledWith(
@@ -1261,13 +1669,380 @@ describe('useBridgeStore', () => {
     );
     expect(transaction).toEqual({ hash: '0xoutgoing-tx' });
     expect(historyInstance).toEqual({ id: 'eth-history-instance' });
-    expect(ethBridgeMock.handleTransaction).toHaveBeenCalledWith('tx-sign');
-    expect(evmBridgeMock.handleTransaction).toHaveBeenCalledWith('tx-sign');
-    expect(subBridgeMock.handleTransaction).toHaveBeenCalledWith('tx-sign');
+    expect(ethBridgeMock.handleTransaction).toHaveBeenCalledWith('tx-sign', expect.any(AbortSignal));
+    expect(evmBridgeMock.handleTransaction).not.toHaveBeenCalled();
+    expect(subBridgeMock.handleTransaction).not.toHaveBeenCalled();
+  });
+
+  it('records the exact nonce-pinned outgoing EVM request before wallet broadcast', async () => {
+    const now = vi.spyOn(Date, 'now').mockReturnValue(1_777_777_777_000);
+    const recordSubmission = vi.fn();
+
+    ethBridgeApiMock.history['tx-prepared-outgoing'] = {
+      id: 'tx-prepared-outgoing',
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    outgoingPopulateTransactionMock.mockResolvedValueOnce({
+      to: '0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+      data: '0xAABB',
+      value: '0x00002a',
+    });
+
+    try {
+      await expect(store.signEthBridgeOutgoingEvm('tx-prepared-outgoing', recordSubmission)).resolves.toEqual({
+        hash: '0xoutgoing-tx',
+      });
+    } finally {
+      now.mockRestore();
+    }
+
+    expect(outgoingPopulateTransactionMock).toHaveBeenCalledWith('arg-1', 'arg-2');
+    expect(outgoingSignerMock.getNonce).toHaveBeenCalledWith('pending');
+    expect(recordSubmission).toHaveBeenCalledWith({
+      from: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      to: '0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+      nonce: 7,
+      data: '0xAABB',
+      value: '42',
+      startTimestamp: 1_777_777_777_000,
+    });
+    expect(outgoingSignerMock.sendTransaction).toHaveBeenCalledWith({
+      to: '0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+      data: '0xAABB',
+      value: '0x00002a',
+      from: '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      nonce: 7,
+    });
+    expect(recordSubmission.mock.invocationCallOrder[0]).toBeLessThan(
+      outgoingSignerMock.sendTransaction.mock.invocationCallOrder[0]
+    );
+  });
+
+  it('serializes independent store instances and refuses a duplicate EVM broadcast after evidence is persisted', async () => {
+    let finishFirstBroadcast!: (transaction: { hash: string }) => void;
+    const firstBroadcast = new Promise<{ hash: string }>((resolve) => {
+      finishFirstBroadcast = resolve;
+    });
+    const transaction = {
+      id: 'tx-cross-tab-outgoing',
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+      payload: {},
+    };
+    const recordFirstSubmission = vi.fn((evidence: Record<string, unknown>) => {
+      const current = ethBridgeApiMock.history[transaction.id];
+      ethBridgeApiMock.saveHistory({ ...current, payload: { ...current.payload, evmSubmission: evidence } });
+    });
+    const recordSecondSubmission = vi.fn();
+    const secondStore = useBridgeStore(createPinia());
+
+    ethBridgeApiMock.history[transaction.id] = transaction;
+    outgoingSignerMock.sendTransaction.mockReturnValueOnce(firstBroadcast as never);
+
+    const first = store.signEthBridgeOutgoingEvm(transaction.id, recordFirstSubmission as never);
+    await vi.waitFor(() => expect(recordFirstSubmission).toHaveBeenCalledOnce());
+
+    const duplicate = secondStore.signEthBridgeOutgoingEvm(transaction.id, recordSecondSubmission);
+    const duplicateExpectation = expect(duplicate).rejects.toMatchObject({
+      code: 'BRIDGE_EVM_SUBMISSION_ALREADY_RECORDED',
+    });
+
+    await Promise.resolve();
+    expect(outgoingSignerMock.getNonce).toHaveBeenCalledTimes(1);
+    expect(outgoingSignerMock.sendTransaction).toHaveBeenCalledTimes(1);
+
+    finishFirstBroadcast({ hash: '0xfirst-cross-tab-broadcast' });
+
+    await expect(first).resolves.toEqual({ hash: '0xfirst-cross-tab-broadcast' });
+    await duplicateExpectation;
+    expect(recordSecondSubmission).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.getNonce).toHaveBeenCalledTimes(1);
+    expect(outgoingSignerMock.sendTransaction).toHaveBeenCalledTimes(1);
+    expect(webLocksMock.request).toHaveBeenCalledTimes(2);
+  });
+
+  it('rejects an unsafe pending EVM nonce before recording evidence or broadcasting', async () => {
+    const recordSubmission = vi.fn();
+
+    ethBridgeApiMock.history['tx-unsafe-nonce'] = {
+      id: 'tx-unsafe-nonce',
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    outgoingSignerMock.getNonce.mockResolvedValueOnce(Number.MAX_SAFE_INTEGER + 1);
+
+    await expect(store.signEthBridgeOutgoingEvm('tx-unsafe-nonce', recordSubmission)).rejects.toThrow(
+      '[Bridge]: EVM pending nonce is invalid'
+    );
+
+    expect(recordSubmission).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+  });
+
+  it('routes persisted transactions by their operation instead of the selected UI network', async () => {
+    subBridgeApiMock.history['tx-sub'] = {
+      id: 'tx-sub',
+      type: Operation.SubstrateIncoming,
+      externalNetwork: SubNetworkId.Liberland,
+    };
+    evmBridgeApiMock.history['tx-evm'] = {
+      id: 'tx-evm',
+      type: Operation.EvmOutgoing,
+      externalNetwork: EvmNetworkId.BinanceSmartChainMainnet,
+    };
+    ethBridgeApiMock.history['tx-eth'] = {
+      id: 'tx-eth',
+      type: Operation.EthBridgeIncoming,
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+
+    web3StoreMock.networkType = BridgeNetworkType.Eth;
+    await store.handleBridgeTransaction('tx-sub');
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    await store.handleBridgeTransaction('tx-evm');
+    web3StoreMock.networkType = BridgeNetworkType.Evm;
+    await store.handleBridgeTransaction('tx-eth');
+
+    expect(subBridgeMock.handleTransaction).toHaveBeenCalledTimes(1);
+    expect(subBridgeMock.handleTransaction).toHaveBeenCalledWith('tx-sub', expect.any(AbortSignal));
+    expect(evmBridgeMock.handleTransaction).toHaveBeenCalledTimes(1);
+    expect(evmBridgeMock.handleTransaction).toHaveBeenCalledWith('tx-evm', expect.any(AbortSignal));
+    expect(ethBridgeMock.handleTransaction).toHaveBeenCalledTimes(1);
+    expect(ethBridgeMock.handleTransaction).toHaveBeenCalledWith('tx-eth', expect.any(AbortSignal));
+  });
+
+  it('does not route display-only recovered Liberland history into a bridge reducer', async () => {
+    subBridgeApiMock.history.settlement = {
+      id: 'settlement',
+      txId: 'settlement',
+      type: Operation.SubstrateIncoming,
+      transactionState: BridgeTxStatus.Failed,
+      externalNetwork: SubNetworkId.Liberland,
+      externalNetworkType: BridgeNetworkType.Sub,
+      payload: {
+        startBlock: 1,
+        submissionState: 'broadcast',
+        subBridgeHistoryRecovery: SUB_BRIDGE_DISPLAY_ONLY_HISTORY_RECOVERY,
+      },
+    };
+
+    await expect(store.handleBridgeTransaction('settlement')).resolves.toBeUndefined();
+
+    expect(subBridgeMock.handleTransaction).not.toHaveBeenCalled();
+    expect(store.history.inProgressIds.settlement).toBeUndefined();
+  });
+
+  it('coalesces rapid handling requests that identify the same transaction by different aliases', async () => {
+    let finishProcessing!: () => void;
+    const processing = new Promise<void>((resolve) => {
+      finishProcessing = resolve;
+    });
+    const transaction = {
+      id: 'tx-sub-alias',
+      hash: '0xrequest',
+      type: Operation.SubstrateIncoming,
+      externalNetwork: SubNetworkId.Liberland,
+    };
+
+    store.setHistoryTransaction('local-storage-key', transaction as any);
+    subBridgeMock.handleTransaction.mockReturnValueOnce(processing);
+
+    const firstRequest = store.handleBridgeTransaction(transaction.id);
+    const duplicateRequest = store.handleBridgeTransaction(transaction.hash);
+
+    await Promise.resolve();
+
+    expect(subBridgeMock.handleTransaction).toHaveBeenCalledTimes(1);
+    expect(subBridgeMock.handleTransaction).toHaveBeenCalledWith(transaction.id, expect.any(AbortSignal));
+
+    finishProcessing();
+    await Promise.all([firstRequest, duplicateRequest]);
+
+    await store.handleBridgeTransaction(transaction.hash);
+
+    expect(subBridgeMock.handleTransaction).toHaveBeenCalledTimes(2);
+  });
+
+  it('allows a later retry after a coalesced transaction handler rejects', async () => {
+    const transaction = {
+      id: 'tx-sub-retry',
+      type: Operation.SubstrateIncoming,
+      externalNetwork: SubNetworkId.Liberland,
+    };
+
+    store.setHistoryTransaction(transaction.id, transaction as any);
+    subBridgeMock.handleTransaction.mockRejectedValueOnce(new Error('temporary tracker failure'));
+
+    await expect(store.handleBridgeTransaction(transaction.id)).rejects.toThrow('temporary tracker failure');
+    await expect(store.handleBridgeTransaction(transaction.id)).resolves.toBeUndefined();
+
+    expect(subBridgeMock.handleTransaction).toHaveBeenCalledTimes(2);
+  });
+
+  it('cancels a managed bridge tracker before forced history removal', async () => {
+    const transaction = {
+      id: 'tx-cancel-on-remove',
+      type: Operation.EthBridgeIncoming,
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    let capturedSignal: AbortSignal | undefined;
+
+    ethBridgeApiMock.history[transaction.id] = transaction;
+    await store.updateInternalHistory();
+    ethBridgeMock.handleTransaction.mockImplementationOnce(
+      (_id: string, signal?: AbortSignal) =>
+        new Promise<void>((_resolve, reject) => {
+          capturedSignal = signal;
+          signal?.addEventListener(
+            'abort',
+            () => {
+              const error = new Error('canceled');
+              error.name = 'AbortError';
+              reject(error);
+            },
+            { once: true }
+          );
+        })
+    );
+
+    const tracking = store.handleBridgeTransaction(transaction.id);
+    await Promise.resolve();
+
+    await store.removeHistory({ tx: transaction, force: true });
+    await expect(tracking).resolves.toBeUndefined();
+
+    expect(capturedSignal?.aborted).toBe(true);
+    expect(ethBridgeApiMock.removeHistory).toHaveBeenCalledWith(transaction.id);
+  });
+
+  it('cancels managed bridge trackers during a store reset', async () => {
+    const transaction = {
+      id: 'tx-cancel-on-reset',
+      type: Operation.EthBridgeIncoming,
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    let capturedSignal: AbortSignal | undefined;
+
+    ethBridgeApiMock.history[transaction.id] = transaction;
+    await store.updateInternalHistory();
+    ethBridgeMock.handleTransaction.mockImplementationOnce(
+      (_id: string, signal?: AbortSignal) =>
+        new Promise<void>((_resolve, reject) => {
+          capturedSignal = signal;
+          signal?.addEventListener(
+            'abort',
+            () => {
+              const error = new Error('canceled');
+              error.name = 'AbortError';
+              reject(error);
+            },
+            { once: true }
+          );
+        })
+    );
+
+    const tracking = store.handleBridgeTransaction(transaction.id);
+    await Promise.resolve();
+
+    store.reset();
+    await expect(tracking).resolves.toBeUndefined();
+
+    expect(capturedSignal?.aborted).toBe(true);
+  });
+
+  it('cancels a managed bridge tracker when the SORA account identity changes', async () => {
+    const transaction = {
+      id: 'tx-cancel-on-account-change',
+      type: Operation.EthBridgeIncoming,
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    let capturedSignal: AbortSignal | undefined;
+
+    ethBridgeApiMock.history[transaction.id] = transaction;
+    await store.updateInternalHistory();
+    ethBridgeMock.handleTransaction.mockImplementationOnce(
+      (_id: string, signal?: AbortSignal) =>
+        new Promise<void>((_resolve, reject) => {
+          capturedSignal = signal;
+          signal?.addEventListener(
+            'abort',
+            () => {
+              const error = new Error('canceled');
+              error.name = 'AbortError';
+              reject(error);
+            },
+            { once: true }
+          );
+        })
+    );
+
+    const tracking = store.handleBridgeTransaction(transaction.id);
+    await Promise.resolve();
+
+    walletStoreMock.address = 'next-sora-address';
+    walletStoreSubscription();
+
+    await expect(tracking).resolves.toBeUndefined();
+    expect(capturedSignal?.aborted).toBe(true);
+  });
+
+  it('clears account-owned bridge state without replacing network subscriptions or connector', async () => {
+    const connector = store.connector;
+    const outgoingMaxLimit = { unsubscribe: vi.fn() } as any;
+    const blockUpdates = { unsubscribe: vi.fn() } as any;
+
+    store.subscriptions.outgoingMaxLimit = outgoingMaxLimit;
+    store.subscriptions.blockUpdates = blockUpdates;
+    const storedOutgoingMaxLimit = store.subscriptions.outgoingMaxLimit;
+    const storedBlockUpdates = store.subscriptions.blockUpdates;
+    store.history.id = 'tx-old-account';
+    store.history.internal = { 'tx-old-account': { id: 'tx-old-account' } } as any;
+    store.history.loading = { [EvmNetworkId.EthereumSepolia]: true };
+    store.history.waitingForApprove = { 'tx-old-account': true };
+    store.history.inProgressIds = { 'tx-old-account': true };
+    store.history.notificationData = { id: 'tx-old-account' } as any;
+    store.flags.isSignTxDialogVisible = true;
+    store.flags.balancesFetching = true;
+    store.flags.feesAndLockedFundsFetching = true;
+    store.balances.assetSenderBalance = '99';
+    store.fees.externalBlockNumber = 999;
+
+    await store.cancelAccountBoundTasks();
+
+    expect(store.connector).toBe(connector);
+    expect(store.subscriptions.outgoingMaxLimit).toBe(storedOutgoingMaxLimit);
+    expect(store.subscriptions.blockUpdates).toBe(storedBlockUpdates);
+    expect(store.history).toMatchObject({
+      id: '',
+      internal: {},
+      loading: {},
+      waitingForApprove: {},
+      inProgressIds: {},
+      notificationData: null,
+    });
+    expect(store.flags.isSignTxDialogVisible).toBe(false);
+    expect(store.flags.balancesFetching).toBe(false);
+    expect(store.flags.feesAndLockedFundsFetching).toBe(false);
+    expect(store.balances.assetSenderBalance).toBeNull();
+    expect(store.fees.externalBlockNumber).toBe(0);
+    expect(outgoingMaxLimit.unsubscribe).not.toHaveBeenCalled();
+    expect(blockUpdates.unsubscribe).not.toHaveBeenCalled();
   });
 
   it('signs incoming eth bridge transfers directly while syncing approval state', async () => {
     const approvalTx = { hash: '0xapprove-tx' };
+    web3StoreMock.evmAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+    const recordSubmission = vi.fn();
     const approveMock = vi.fn(async () => {
       expect(store.history.waitingForApprove['tx-sign-incoming']).toBe(true);
       return approvalTx;
@@ -1278,7 +2053,8 @@ describe('useBridgeStore', () => {
       type: Operation.EthBridgeIncoming,
       amount: '10',
       assetAddress: '0x01',
-      to: '0xrecipient',
+      to: '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      from: 'sora-address',
       externalNetwork: EvmNetworkId.EthereumSepolia,
     };
     ethersUtilMock.getAllowance.mockResolvedValueOnce('1');
@@ -1286,11 +2062,19 @@ describe('useBridgeStore', () => {
       approve: approveMock,
     });
 
-    const transaction = await store.signEthBridgeIncomingEvm('tx-sign-incoming');
+    const transaction = await store.signEthBridgeIncomingEvm('tx-sign-incoming', recordSubmission);
 
-    expect(ethersUtilMock.checkAccountIsConnected).toHaveBeenCalledWith('0xrecipient');
-    expect(ethersUtilMock.getAllowance).toHaveBeenCalledWith('0xrecipient', '0xcontract-other', '0xexternal-asset');
+    expect(ethersUtilMock.checkAccountIsConnected).toHaveBeenCalledWith('0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    expect(ethersUtilMock.getAllowance).toHaveBeenCalledWith(
+      '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      '0xcontract-other',
+      '0xexternal-asset'
+    );
     expect(waitForEvmTransactionMinedMock).toHaveBeenCalledWith(approvalTx);
+    expect(approveMock).toHaveBeenCalledWith('0xcontract-other', expect.anything(), {
+      from: '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      chainId: EvmNetworkId.EthereumSepolia,
+    });
     expect(getIncomingEvmTransactionDataMock).toHaveBeenCalledWith(
       expect.objectContaining({
         asset: expect.objectContaining({
@@ -1300,8 +2084,47 @@ describe('useBridgeStore', () => {
         recipient: 'sora-address',
       })
     );
+    expect(incomingPopulateTransactionMock).toHaveBeenCalledWith('incoming-arg-1', 'incoming-arg-2');
+    expect(incomingSignerMock.getNonce).toHaveBeenCalledWith('pending');
+    expect(recordSubmission).toHaveBeenCalledWith({
+      from: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      to: '0xcccccccccccccccccccccccccccccccccccccccc',
+      nonce: 8,
+      data: '0xCCDD',
+      value: '0',
+      startTimestamp: expect.any(Number),
+    });
+    expect(incomingSignerMock.sendTransaction).toHaveBeenCalledWith({
+      to: '0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',
+      data: '0xCCDD',
+      from: '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      nonce: 8,
+      chainId: EvmNetworkId.EthereumSepolia,
+    });
+    expect(waitForEvmTransactionMinedMock.mock.invocationCallOrder[0]).toBeLessThan(
+      recordSubmission.mock.invocationCallOrder[0]
+    );
+    expect(recordSubmission.mock.invocationCallOrder[0]).toBeLessThan(
+      incomingSignerMock.sendTransaction.mock.invocationCallOrder[0]
+    );
     expect(transaction).toEqual({ hash: '0xincoming-tx' });
     expect(store.history.waitingForApprove['tx-sign-incoming']).toBeUndefined();
+  });
+
+  it('signs an incoming transfer using direction-independent generated history addresses', async () => {
+    web3StoreMock.evmAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+    const generated = (await store.generateHistoryItem({
+      type: Operation.EthBridgeIncoming,
+      amount: '10',
+      assetAddress: '0x01',
+    })) as { id: string; from: string; to: string };
+    expect(generated.from).toBe('sora-address');
+    expect(generated.to).toBe(web3StoreMock.evmAddress);
+    await store.signEthBridgeIncomingEvm(generated.id, vi.fn());
+    expect(getIncomingEvmTransactionDataMock).toHaveBeenCalledWith(
+      expect.objectContaining({ recipient: 'sora-address' })
+    );
+    expect(incomingSignerMock.sendTransaction).toHaveBeenCalledOnce();
   });
 
   it('rejects outgoing signing when the approved request belongs to a different EVM account', async () => {
@@ -1321,6 +2144,74 @@ describe('useBridgeStore', () => {
     expect(getOutgoingEvmTransactionDataMock).not.toHaveBeenCalled();
   });
 
+  it.each(['unchanged', 'xor-unchanged', 'approval-impact', 'disconnect', 'genesis', 'fees', 'slippage'] as const)(
+    'keeps a guided incoming history bound to fresh funding evidence: %s',
+    async (change) => {
+      web3StoreMock.evmAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+      web3StoreMock.networkSelected = 1 as never;
+      web3StoreMock.ethBridgeEvmNetwork = 1;
+      ethersUtilMock.getEvmNetworkId.mockResolvedValue(1);
+      settingsStoreMock.networkFees = {
+        [Operation.Swap]: '200000000000000',
+        [Operation.BurnWithRemark]: change === 'xor-unchanged' ? '0' : '100000000000000',
+      };
+      assetsStoreMock.registeredAssets = {
+        [DAI.address]: { address: '0xdai', decimals: 18, kind: EthAssetKind.Sidechain },
+      };
+      assetsStoreMock.assetDataByAddress.mockReturnValue({ ...DAI, externalAddress: '0xdai', externalDecimals: 18 });
+      const quote = vi.fn(async () => ({
+        unwrap: () => ({ amount: '1800000000000000000', amountWithoutImpact: '1810000000000000000' }),
+      }));
+      const chain = { isConnected: true, genesisHash: TONSWAP_MAINNET_GENESIS, rpc: { liquidityProxy: { quote } } };
+      const previousConnection = Object.getOwnPropertyDescriptor(api, 'connection');
+      Object.defineProperty(api, 'connection', { configurable: true, value: { api: chain } });
+      const fundingPayload =
+        change === 'xor-unchanged'
+          ? { buyXorFunding: 'ethereum-dai-v1', other: 'kept' }
+          : { tonswapFunding: TONSWAP_BRIDGE_FUNDING_TAG, other: 'kept' };
+      try {
+        const generated = (await store.generateHistoryItem({
+          type: Operation.EthBridgeIncoming,
+          amount: '10',
+          assetAddress: DAI.address,
+          payload: fundingPayload,
+        })) as { id: string };
+        ethersUtilMock.getAllowance.mockResolvedValueOnce('1');
+        if (change === 'approval-impact') {
+          waitForEvmTransactionMinedMock.mockImplementationOnce(async () => {
+            quote.mockResolvedValue({
+              unwrap: () => ({ amount: '1000000000000000000', amountWithoutImpact: '2000000000000000000' }),
+            });
+          });
+        } else if (change !== 'unchanged' && change !== 'xor-unchanged') {
+          ethersUtilMock.checkAccountIsConnected.mockImplementationOnce(async () => {
+            await Promise.resolve();
+            if (change === 'disconnect') chain.isConnected = false;
+            if (change === 'genesis') chain.genesisHash = 'other';
+            if (change === 'fees') settingsStoreMock.networkFees[Operation.Swap] = '300000000000000';
+            if (change === 'slippage') settingsStoreMock.slippageTolerance = '5';
+            return true;
+          });
+        }
+        const recordSubmission = vi.fn();
+        const execution = store.signEthBridgeIncomingEvm(generated.id, recordSubmission);
+        if (change === 'unchanged' || change === 'xor-unchanged') {
+          await expect(execution).resolves.toEqual({ hash: '0xincoming-tx' });
+          expect(quote).toHaveBeenCalledTimes(4);
+          expect(recordSubmission).toHaveBeenCalledOnce();
+        } else {
+          await expect(execution).rejects.toThrow('GET_TS_BRIDGE_');
+          expect(recordSubmission).not.toHaveBeenCalled();
+          expect(incomingSignerMock.sendTransaction).not.toHaveBeenCalled();
+        }
+        expect(ethBridgeApiMock.history[generated.id].payload).toEqual(fundingPayload);
+      } finally {
+        if (previousConnection) Object.defineProperty(api, 'connection', previousConnection);
+        else Reflect.deleteProperty(api, 'connection');
+      }
+    }
+  );
+
   it('rejects incoming signing before allowance checks when the EVM wallet is disconnected', async () => {
     ethBridgeApiMock.history['tx-disconnected-incoming'] = {
       id: 'tx-disconnected-incoming',
@@ -1328,6 +2219,7 @@ describe('useBridgeStore', () => {
       amount: '10',
       assetAddress: '0x01',
       to: '0xrecipient',
+      from: 'sora-address',
       externalNetwork: EvmNetworkId.EthereumSepolia,
     };
     ethersUtilMock.checkAccountIsConnected.mockResolvedValueOnce(false);
@@ -1346,6 +2238,7 @@ describe('useBridgeStore', () => {
       amount: '10',
       assetAddress: '0x01',
       to: '0xrecipient',
+      from: 'sora-address',
       externalNetwork: EvmNetworkId.EthereumSepolia,
     };
     web3StoreMock.isValidNetwork = false;
@@ -1373,6 +2266,7 @@ describe('useBridgeStore', () => {
       amount: '10',
       assetAddress: '0x01',
       to: '0xrecipient',
+      from: 'sora-address',
       externalNetwork: EvmNetworkId.EthereumSepolia,
     };
     ethersUtilMock.getAllowance.mockResolvedValueOnce('1');
@@ -1396,6 +2290,7 @@ describe('useBridgeStore', () => {
       amount: '10',
       assetAddress: '0x01',
       to: '0xrecipient',
+      from: 'sora-address',
       externalNetwork: EvmNetworkId.EthereumSepolia,
     };
     ethersUtilMock.getAllowance.mockResolvedValueOnce('1');
@@ -1408,6 +2303,78 @@ describe('useBridgeStore', () => {
     expect(waitForEvmTransactionMinedMock).not.toHaveBeenCalled();
     expect(getIncomingEvmTransactionDataMock).not.toHaveBeenCalled();
     expect(store.history.waitingForApprove['tx-token-contract-failure']).toBeUndefined();
+  });
+
+  it.each(['recipient', 'sender', 'provider-chain', 'app-chain'] as const)(
+    'stops an incoming transfer when %s changes while ERC20 approval is mining',
+    async (change) => {
+      ethBridgeApiMock.history['tx-context-change'] = {
+        id: 'tx-context-change',
+        type: Operation.EthBridgeIncoming,
+        amount: '10',
+        assetAddress: '0x01',
+        to: '0xrecipient',
+        from: 'sora-address',
+        externalNetwork: EvmNetworkId.EthereumSepolia,
+      };
+      ethersUtilMock.getAllowance.mockResolvedValueOnce('1');
+      waitForEvmTransactionMinedMock.mockImplementationOnce(async () => {
+        if (change === 'recipient') walletStoreMock.address = 'another-sora-account';
+        if (change === 'sender') web3StoreMock.evmAddress = '0xanother-account';
+        if (change === 'provider-chain') ethersUtilMock.getEvmNetworkId.mockResolvedValue(1);
+        if (change === 'app-chain') web3StoreMock.networkSelected = 1 as never;
+      });
+      const recordSubmission = vi.fn();
+      await expect(store.signEthBridgeIncomingEvm('tx-context-change', recordSubmission)).rejects.toThrow();
+      expect(getIncomingEvmTransactionDataMock).not.toHaveBeenCalled();
+      expect(incomingSignerMock.sendTransaction).not.toHaveBeenCalled();
+      expect(recordSubmission).not.toHaveBeenCalled();
+      expect(store.history.waitingForApprove['tx-context-change']).toBeUndefined();
+    }
+  );
+
+  it('rechecks the captured recipient and signer after async transaction preparation', async () => {
+    ethBridgeApiMock.history['tx-late-recipient-change'] = {
+      id: 'tx-late-recipient-change',
+      type: Operation.EthBridgeIncoming,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      from: 'sora-address',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    incomingSignerMock.getAddress.mockResolvedValue('0xrecipient');
+    incomingSignerMock.getNonce.mockImplementationOnce(async () => {
+      walletStoreMock.address = 'another-sora-account';
+      return 8;
+    });
+    const recordSubmission = vi.fn();
+    await expect(store.signEthBridgeIncomingEvm('tx-late-recipient-change', recordSubmission)).rejects.toThrow(
+      'SORA recipient changed'
+    );
+    expect(getIncomingEvmTransactionDataMock).toHaveBeenCalledWith(
+      expect.objectContaining({ recipient: 'sora-address' })
+    );
+    expect(recordSubmission).not.toHaveBeenCalled();
+    expect(incomingSignerMock.sendTransaction).not.toHaveBeenCalled();
+  });
+
+  it('rejects a different bridge signer even when the displayed wallet account is unchanged', async () => {
+    ethBridgeApiMock.history['tx-wrong-incoming-signer'] = {
+      id: 'tx-wrong-incoming-signer',
+      type: Operation.EthBridgeIncoming,
+      amount: '10',
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      from: 'sora-address',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+    const recordSubmission = vi.fn();
+    await expect(store.signEthBridgeIncomingEvm('tx-wrong-incoming-signer', recordSubmission)).rejects.toThrow(
+      'Ethereum account changed'
+    );
+    expect(recordSubmission).not.toHaveBeenCalled();
+    expect(incomingSignerMock.sendTransaction).not.toHaveBeenCalled();
   });
 
   it('rejects outgoing signing on an invalid EVM network before transaction data is built', async () => {
@@ -1461,7 +2428,7 @@ describe('useBridgeStore', () => {
       expect(parseSubstrateHeaderNumberMock).toHaveBeenCalled();
       expect(store.fees.externalBlockNumber).toBe(321);
       expect(store.balances.assetSenderBalance).toBe('11');
-      expect(store.balances.assetRecipientBalance).toBe('22');
+      expect(store.balances.assetRecipientBalance).toBe('33');
       expect(store.fees.externalNativeBalance).toBe('7');
       expect(store.balances.assetExternalMinBalance).toBe('13');
 
@@ -1508,7 +2475,7 @@ describe('useBridgeStore', () => {
 
       expect(store.fees.externalBlockNumber).toBe(777);
       expect(store.balances.assetSenderBalance).toBe('11');
-      expect(store.balances.assetRecipientBalance).toBe('22');
+      expect(store.balances.assetRecipientBalance).toBe('33');
       expect(store.fees.externalNativeBalance).toBe('7');
     } finally {
       vi.useRealTimers();
@@ -1633,6 +2600,33 @@ describe('useBridgeStore', () => {
     expect(store.subscriptions.outgoingMaxLimit).not.toBeNull();
   });
 
+  it('keeps balances for the latest asset when the previous asset provider resolves last', async () => {
+    let resolvePreviousBalance!: (value: { transferable: string }) => void;
+    let resolveCurrentBalance!: (value: { transferable: string }) => void;
+    const previousBalance = new Promise<{ transferable: string }>((resolve) => {
+      resolvePreviousBalance = resolve;
+    });
+    const currentBalance = new Promise<{ transferable: string }>((resolve) => {
+      resolveCurrentBalance = resolve;
+    });
+    getSoraAssetBalanceMock.mockReturnValueOnce(previousBalance).mockReturnValueOnce(currentBalance);
+
+    const previousRefresh = store.updateExternalBalance();
+    store.updateForm({ assetAddress: '0x02' });
+    const currentRefresh = store.updateExternalBalance();
+
+    resolveCurrentBalance({ transferable: '202' });
+    await currentRefresh;
+    expect(store.balances.assetSenderBalance).toBe('202');
+
+    resolvePreviousBalance({ transferable: '101' });
+    await previousRefresh;
+
+    expect(store.form.assetAddress).toBe('0x02');
+    expect(store.balances.assetSenderBalance).toBe('202');
+    expect(store.flags.balancesFetching).toBe(false);
+  });
+
   it('maps the SORA balance to the recipient when bridging into SORA', async () => {
     web3StoreMock.evmAddress = '0xsender';
     getSoraAssetBalanceMock.mockResolvedValueOnce({ transferable: '44' });
@@ -1662,6 +2656,41 @@ describe('useBridgeStore', () => {
     expect(api.swap.getSwapQuoteObservable).not.toHaveBeenCalled();
     expect(store.balances.outgoingMaxLimit).toBeNull();
     expect(store.subscriptions.outgoingMaxLimit).toBeNull();
+  });
+
+  it('does not subscribe to limits for a previous asset whose provider resolves last', async () => {
+    let resolvePreviousLimit!: (value: boolean) => void;
+    let resolveCurrentLimit!: (value: boolean) => void;
+    const previousLimit = new Promise<boolean>((resolve) => {
+      resolvePreviousLimit = resolve;
+    });
+    const currentLimit = new Promise<boolean>((resolve) => {
+      resolveCurrentLimit = resolve;
+    });
+    (api.bridgeProxy as any).isAssetTransferLimited = vi
+      .fn()
+      .mockReturnValueOnce(previousLimit)
+      .mockReturnValueOnce(currentLimit);
+
+    const previousRefresh = store.updateOutgoingMaxLimit();
+    store.updateForm({ assetAddress: '0x02' });
+    const currentRefresh = store.updateOutgoingMaxLimit();
+
+    resolveCurrentLimit(true);
+    await currentRefresh;
+    const latestMaxLimit = store.balances.outgoingMaxLimit?.toString();
+
+    resolvePreviousLimit(true);
+    await previousRefresh;
+
+    expect(api.swap.getSwapQuoteObservable).toHaveBeenCalledTimes(1);
+    expect(api.swap.getSwapQuoteObservable).toHaveBeenCalledWith(
+      DAI.address,
+      '0x02',
+      expect.any(Array),
+      expect.anything()
+    );
+    expect(store.balances.outgoingMaxLimit?.toString()).toBe(latestMaxLimit);
   });
 
   it('clears stale outgoing max limit when the quote stream is unavailable', async () => {
@@ -1871,7 +2900,7 @@ describe('useBridgeStore', () => {
     );
     expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
       2,
-      'sora-address',
+      'formatted-sub-address',
       expect.objectContaining({ address: '0x02' })
     );
     expect(store.balances.assetSenderBalance).toBe('33');
@@ -1906,9 +2935,8 @@ describe('useBridgeStore', () => {
     await store.updateExternalBalance();
 
     expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledWith([
-      { accountAddress: 'sora-address', asset: expect.objectContaining({ address: '0x01' }) },
       { accountAddress: 'formatted-sub-address', asset: expect.objectContaining({ address: '0x01' }) },
-      { accountAddress: 'sora-address', asset: expect.objectContaining({ address: '0x02' }) },
+      { accountAddress: 'formatted-sub-address', asset: expect.objectContaining({ address: '0x02' }) },
     ]);
     expect(getSoraAssetBalanceMock).toHaveBeenCalledWith(api.api, 'sora-address', '0x01', 18);
     expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
@@ -1918,7 +2946,7 @@ describe('useBridgeStore', () => {
     );
     expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
       2,
-      'sora-address',
+      'formatted-sub-address',
       expect.objectContaining({ address: '0x02' })
     );
     expect(store.balances.assetSenderBalance).toBe('33');
@@ -1945,7 +2973,7 @@ describe('useBridgeStore', () => {
     );
     expect(seededConnector.network.getTokenBalance).toHaveBeenNthCalledWith(
       2,
-      'sora-address',
+      'formatted-sub-address',
       expect.objectContaining({ address: '0x02' })
     );
     expect(store.balances.assetSenderBalance).toBe('33');
@@ -1954,7 +2982,7 @@ describe('useBridgeStore', () => {
     expect(store.flags.balancesFetching).toBe(false);
   });
 
-  it('clears stale Sub bridge balances when batch lookup omits response slots', async () => {
+  it('keeps the SORA balance and clears omitted Sub batch response slots', async () => {
     web3StoreMock.networkType = BridgeNetworkType.Sub;
     web3StoreMock.networkSelected = 'kusama' as any;
     store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
@@ -1967,49 +2995,45 @@ describe('useBridgeStore', () => {
 
     expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
     expect(seededConnector.network.getTokenBalance).not.toHaveBeenCalled();
-    expect(store.balances.assetSenderBalance).toBe('444');
-    expect(store.balances.assetRecipientBalance).toBe('0');
+    expect(store.balances.assetSenderBalance).toBe('33');
+    expect(store.balances.assetRecipientBalance).toBe('444');
     expect(store.fees.externalNativeBalance).toBe('0');
     expect(store.flags.balancesFetching).toBe(false);
   });
 
-  it('clears stale Sub bridge balances when batch lookup returns non-codec balance slots', async () => {
+  it('keeps the SORA balance and clears non-codec Sub batch response slots', async () => {
     web3StoreMock.networkType = BridgeNetworkType.Sub;
     web3StoreMock.networkSelected = 'kusama' as any;
     store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
     store.balances.assetSenderBalance = '999';
     store.balances.assetRecipientBalance = '888';
     store.fees.externalNativeBalance = '777';
-    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce([
-      { toString: () => '444' },
-      'NaN',
-      '-1',
-    ] as any);
+    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce([{ toString: () => '444' }, 'NaN'] as any);
 
     await store.updateExternalBalance();
 
     expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
     expect(seededConnector.network.getTokenBalance).not.toHaveBeenCalled();
-    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetSenderBalance).toBe('33');
     expect(store.balances.assetRecipientBalance).toBe('0');
     expect(store.fees.externalNativeBalance).toBe('0');
     expect(store.flags.balancesFetching).toBe(false);
   });
 
-  it('clears stale Sub bridge balances when batch lookup returns numeric-looking hostile strings', async () => {
+  it('keeps the SORA balance and clears hostile Sub batch response strings', async () => {
     web3StoreMock.networkType = BridgeNetworkType.Sub;
     web3StoreMock.networkSelected = 'kusama' as any;
     store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
     store.balances.assetSenderBalance = '999';
     store.balances.assetRecipientBalance = '888';
     store.fees.externalNativeBalance = '777';
-    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce(['.5', '1.', '+1']);
+    seededConnector.network.getTokenBalancesBatch.mockResolvedValueOnce(['.5', '1.']);
 
     await store.updateExternalBalance();
 
     expect(seededConnector.network.getTokenBalancesBatch).toHaveBeenCalledTimes(1);
     expect(seededConnector.network.getTokenBalance).not.toHaveBeenCalled();
-    expect(store.balances.assetSenderBalance).toBe('0');
+    expect(store.balances.assetSenderBalance).toBe('33');
     expect(store.balances.assetRecipientBalance).toBe('0');
     expect(store.fees.externalNativeBalance).toBe('0');
     expect(store.flags.balancesFetching).toBe(false);
@@ -2084,6 +3108,35 @@ describe('useBridgeStore', () => {
     await store.updateExternalMinBalance();
 
     expect(store.balances.assetExternalMinBalance).toBe('0');
+  });
+
+  it('keeps the latest asset minimum when the previous minimum provider resolves last', async () => {
+    let resolvePreviousMinimum!: (value: string) => void;
+    let resolveCurrentMinimum!: (value: string) => void;
+    const previousMinimum = new Promise<string>((resolve) => {
+      resolvePreviousMinimum = resolve;
+    });
+    const currentMinimum = new Promise<string>((resolve) => {
+      resolveCurrentMinimum = resolve;
+    });
+
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: false, assetAddress: '0x01' });
+    seededConnector.network.getAssetMinDeposit.mockReturnValueOnce(previousMinimum).mockReturnValueOnce(currentMinimum);
+
+    const previousRefresh = store.updateExternalMinBalance();
+    store.updateForm({ assetAddress: '0x02' });
+    const currentRefresh = store.updateExternalMinBalance();
+
+    resolveCurrentMinimum('202');
+    await currentRefresh;
+    expect(store.balances.assetExternalMinBalance).toBe('202');
+
+    resolvePreviousMinimum('101');
+    await previousRefresh;
+
+    expect(store.balances.assetExternalMinBalance).toBe('202');
   });
 
   it('clears stale incoming min limit when the SORA parachain minimum provider fails', async () => {
@@ -2171,6 +3224,22 @@ describe('useBridgeStore', () => {
     expect(store.fees.soraNetworkFee).toBe('11');
   });
 
+  it('supplies the contract resolver required by incoming Ethereum fee estimation', async () => {
+    store.updateForm({ isSoraToEvm: false, assetAddress: '0x02', amountSend: '3' });
+    store.balances.assetSenderBalance = FPNumber.fromNatural(10).toCodecString();
+    getEthNetworkFeeMock.mockImplementationOnce(async (...args: unknown[]) => {
+      const resolveContract = args[2] as (symbol: string) => string;
+      expect(typeof resolveContract).toBe('function');
+      expect(resolveContract('OTHER')).toBe('0xcontract-other');
+      return '42';
+    });
+
+    await store.updateExternalNetworkFee();
+
+    expect(getEthNetworkFeeMock).toHaveBeenCalledOnce();
+    expect(store.fees.externalNetworkFee).toBe('42');
+  });
+
   it('clears stale EVM fee and locked-balance state when providers fail', async () => {
     store.form.assetAddress = '0x02';
     store.form.amountSend = '3';
@@ -2236,6 +3305,59 @@ describe('useBridgeStore', () => {
 
     expect(getEthNetworkFeeMock).not.toHaveBeenCalled();
     expect(store.fees.externalNetworkFee).toBe('0');
+  });
+
+  it('does not query or charge a Sub network fee for an outgoing SORA transfer', async () => {
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'Liberland' as any;
+    store.updateForm({ isSoraToEvm: true, assetAddress: '0x01' });
+    store.fees.externalNetworkFee = '123';
+
+    await store.updateExternalNetworkFee();
+
+    expect(seededConnector.network.getNetworkFee).not.toHaveBeenCalled();
+    expect(store.fees.externalNetworkFee).toBe('0');
+  });
+
+  it('keeps the latest asset network fee when the previous fee provider resolves last', async () => {
+    let resolvePreviousFee!: (value: string) => void;
+    let resolveCurrentFee!: (value: string) => void;
+    const previousFee = new Promise<string>((resolve) => {
+      resolvePreviousFee = resolve;
+    });
+    const currentFee = new Promise<string>((resolve) => {
+      resolveCurrentFee = resolve;
+    });
+
+    web3StoreMock.networkType = BridgeNetworkType.Sub;
+    web3StoreMock.networkSelected = 'kusama' as any;
+    store.updateForm({ isSoraToEvm: false, assetAddress: '0x01' });
+    seededConnector.network.getNetworkFee.mockReturnValueOnce(previousFee).mockReturnValueOnce(currentFee);
+
+    const previousRefresh = store.updateExternalNetworkFee();
+    store.updateForm({ assetAddress: '0x02' });
+    const currentRefresh = store.updateExternalNetworkFee();
+
+    resolveCurrentFee('202');
+    await currentRefresh;
+    expect(seededConnector.network.getNetworkFee).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ address: '0x01' }),
+      'formatted-sub-address',
+      'sora-address'
+    );
+    expect(seededConnector.network.getNetworkFee).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ address: '0x02' }),
+      'formatted-sub-address',
+      'sora-address'
+    );
+    expect(store.fees.externalNetworkFee).toBe('202');
+
+    resolvePreviousFee('101');
+    await previousRefresh;
+
+    expect(store.fees.externalNetworkFee).toBe('202');
   });
 
   it('clears stale EVM fee state without estimating for invalid form amounts', async () => {
@@ -2353,41 +3475,92 @@ describe('useBridgeStore', () => {
     expect(getOutgoingEvmTransactionDataMock).not.toHaveBeenCalled();
   });
 
-  it('rejects invalid redenominated outgoing amount before approval polling', async () => {
-    ethBridgeApiMock.history['tx-invalid-amount2'] = {
-      id: 'tx-invalid-amount2',
+  it.each(['-1', `5${'0'.repeat(38)}`])(
+    'repairs stale destination amount %s from the approved proof before wallet review',
+    async (staleAmount) => {
+      ethBridgeApiMock.history['tx-invalid-amount2'] = {
+        id: 'tx-invalid-amount2',
+        type: Operation.EthBridgeOutgoing,
+        amount: '10',
+        amount2: staleAmount,
+        assetAddress: XOR.address,
+        to: '0xrecipient',
+        externalNetwork: EvmNetworkId.EthereumSepolia,
+      };
+      assetsStoreMock.registeredAssets = {
+        [XOR.address]: {
+          address: '0xxor-external',
+          decimals: XOR.decimals,
+          kind: EthAssetKind.Sidechain,
+        },
+      };
+      assetsStoreMock.assetDataByAddress.mockImplementation((address?: string | null) => {
+        if (address === XOR.address) {
+          return {
+            ...XOR,
+            externalAddress: '0xxor-external',
+            externalDecimals: XOR.decimals,
+            externalBalance: '0',
+          };
+        }
+
+        return null;
+      });
+
+      waitForApprovedRequestMock.mockResolvedValueOnce({
+        to: '0xrecipient',
+        hash: '0xapproved-request',
+        amount: '5000000000000000000',
+      });
+      outgoingSignerMock.sendTransaction.mockImplementationOnce(async () => {
+        expect(ethBridgeApiMock.history['tx-invalid-amount2'].amount2).toBe('5');
+        expect(store.historyRecord['tx-invalid-amount2'].amount2).toBe('5');
+        return { hash: '0xoutgoing-tx' };
+      });
+
+      await expect(store.signEthBridgeOutgoingEvm('tx-invalid-amount2', vi.fn())).resolves.toEqual({
+        hash: '0xoutgoing-tx',
+      });
+      expect(getOutgoingEvmTransactionDataMock).toHaveBeenCalledWith(expect.objectContaining({ value: '5' }));
+      expect(ethBridgeApiMock.saveHistory).toHaveBeenCalledWith(
+        expect.objectContaining({ amount: '10', amount2: '5' })
+      );
+    }
+  );
+
+  it('rejects an approval for a different request before preparing the wallet or replacing history', async () => {
+    ethBridgeApiMock.history['tx-wrong-proof'] = {
+      id: 'tx-wrong-proof',
       type: Operation.EthBridgeOutgoing,
       amount: '10',
-      amount2: '-1',
-      assetAddress: XOR.address,
+      assetAddress: '0x01',
+      to: '0xrecipient',
+      hash: '0xexpected-request',
+      externalNetwork: EvmNetworkId.EthereumSepolia,
+    };
+
+    await expect(store.signEthBridgeOutgoingEvm('tx-wrong-proof')).rejects.toThrow('request does not match');
+    expect(getOutgoingEvmTransactionDataMock).not.toHaveBeenCalled();
+    expect(ethBridgeApiMock.saveHistory).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
+  });
+
+  it('does not replace history or send when signed-payload validation fails', async () => {
+    ethBridgeApiMock.history['tx-invalid-proof'] = {
+      id: 'tx-invalid-proof',
+      type: Operation.EthBridgeOutgoing,
+      amount: '10',
+      amount2: 'old-estimate',
+      assetAddress: '0x01',
       to: '0xrecipient',
       externalNetwork: EvmNetworkId.EthereumSepolia,
     };
-    assetsStoreMock.registeredAssets = {
-      [XOR.address]: {
-        address: '0xxor-external',
-        decimals: XOR.decimals,
-        kind: EthAssetKind.Sidechain,
-      },
-    };
-    assetsStoreMock.assetDataByAddress.mockImplementation((address?: string | null) => {
-      if (address === XOR.address) {
-        return {
-          ...XOR,
-          externalAddress: '0xxor-external',
-          externalDecimals: XOR.decimals,
-          externalBalance: '0',
-        };
-      }
+    getOutgoingEvmTransactionDataMock.mockRejectedValueOnce(new Error('Approved currency does not match'));
 
-      return null;
-    });
-
-    await expect(store.signEthBridgeOutgoingEvm('tx-invalid-amount2')).rejects.toThrow(
-      'TX amount must be greater than zero!'
-    );
-    expect(waitForApprovedRequestMock).not.toHaveBeenCalled();
-    expect(getOutgoingEvmTransactionDataMock).not.toHaveBeenCalled();
+    await expect(store.signEthBridgeOutgoingEvm('tx-invalid-proof')).rejects.toThrow('currency does not match');
+    expect(ethBridgeApiMock.history['tx-invalid-proof'].amount2).toBe('old-estimate');
+    expect(ethBridgeApiMock.saveHistory).not.toHaveBeenCalled();
+    expect(outgoingSignerMock.sendTransaction).not.toHaveBeenCalled();
   });
 
   it('rejects outgoing signing before approval polling when the recipient is missing', async () => {

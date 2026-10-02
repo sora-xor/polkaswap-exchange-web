@@ -206,6 +206,193 @@ class SequenceBalanceEmissionAssetsModule extends BalanceEmissionAssetsModule {
   }
 }
 
+/** Lets ownership changes run while an SDK chain read is still pending. */
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
+  return { promise, resolve };
+}
+
+function accountAsset(address: string, balance = positiveBalance) {
+  return { address, symbol: address, name: address, decimals: 18, balance: { ...balance } } as never;
+}
+
+describe('AssetsModule asynchronous account ownership', () => {
+  it.each(['clear', 'logout', 'switch'] as const)('discards a pending asset read after %s', async (action) => {
+    const root = { account: { pair: { address: 'account-a' } } as { pair: { address: string } } | null };
+    const assets = new SequenceBalanceEmissionAssetsModule(root as never);
+    const result = deferred<never>();
+    vi.spyOn(assets, 'getAccountAsset').mockReturnValueOnce(result.promise);
+
+    const pending = assets.addAccountAsset('pending-asset');
+    if (action === 'clear') assets.clearAccountAssets();
+    if (action === 'logout') root.account = null;
+    if (action === 'switch') root.account = { pair: { address: 'account-b' } };
+    result.resolve(accountAsset('pending-asset'));
+    await pending;
+
+    expect(assets.accountAssets).toEqual([]);
+    expect(assets.subscribeCount).toBe(0);
+  });
+
+  it('does not restore a removed pending asset while a replacement read is still loading', async () => {
+    const assets = new SequenceBalanceEmissionAssetsModule({
+      account: { pair: { address: 'account-a' } },
+    } as never);
+    const first = deferred<never>();
+    const replacement = deferred<never>();
+    vi.spyOn(assets, 'getAccountAsset').mockReturnValueOnce(first.promise).mockReturnValueOnce(replacement.promise);
+
+    const initialAdd = assets.addAccountAsset('pending-asset');
+    assets.removeAccountAsset('pending-asset');
+    const replacementAdd = assets.addAccountAsset('pending-asset');
+    first.resolve(accountAsset('pending-asset'));
+    await initialAdd;
+
+    expect(assets.accountAssets).toEqual([]);
+    expect(assets.subscribeCount).toBe(0);
+
+    replacement.resolve(accountAsset('pending-asset', hugeBalance));
+    await replacementAdd;
+    expect(assets.accountAssets[0].balance).toEqual(hugeBalance);
+    expect(assets.subscribeCount).toBe(1);
+  });
+
+  it.each(['clear', 'switch'] as const)('does not persist token discovery after %s', async (action) => {
+    const persist = vi.fn();
+    const root = {
+      account: { pair: { address: 'account-a' } },
+      accountStorage: { get: () => '', set: persist },
+    };
+    const assets = new SequenceBalanceEmissionAssetsModule(root as never);
+    const result = deferred<string[]>();
+    vi.spyOn(assets, 'getAccountTokensAddressesList').mockReturnValueOnce(result.promise);
+
+    const pending = assets.updateAccountAssets();
+    if (action === 'clear') assets.clearAccountAssets();
+    if (action === 'switch') root.account = { pair: { address: 'account-b' } };
+    result.resolve(['old-account-token']);
+    await pending;
+
+    expect(persist).not.toHaveBeenCalled();
+    expect(assets.requestedAddresses).toEqual([]);
+    expect(assets.accountAssets).toEqual([]);
+  });
+
+  it('does not sort the new account with an old account request that finishes late', async () => {
+    const root = { account: { pair: { address: 'account-a' } } };
+    const assets = new SequenceBalanceEmissionAssetsModule(root as never);
+    assets.accountDefaultAssetsAddresses = [];
+    assets.accountAssetsAddresses = ['asset-a', 'asset-b'];
+    const first = deferred<never>();
+    const second = deferred<never>();
+    vi.spyOn(assets, 'getAccountAsset').mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
+
+    const pending = assets.updateAccountAssets();
+    assets.clearAccountAssets();
+    root.account = { pair: { address: 'account-b' } };
+    const newAccountAssets = [accountAsset('asset-b', hugeBalance), accountAsset('asset-a', hugeBalance)];
+    assets.accountAssets = [...newAccountAssets];
+    first.resolve(accountAsset('asset-a'));
+    second.resolve(accountAsset('asset-b'));
+    await pending;
+
+    expect(assets.accountAssets).toEqual(newAccountAssets);
+    expect(assets.subscribeCount).toBe(0);
+  });
+
+  it('applies a changed nonzero chain confirmation instead of retaining an older balance', async () => {
+    const assets = new SequenceBalanceEmissionAssetsModule({ account: { pair: { address: 'account-a' } } } as never);
+    await assets.updateAccountAssets();
+    const result = deferred<never>();
+    vi.spyOn(assets, 'getAccountAsset').mockReturnValueOnce(result.promise);
+    const changed = vi.fn();
+    const subscription = assets.balanceUpdated.subscribe(changed);
+
+    assets.emitBalanceUpdate?.({ ...zeroBalance });
+    result.resolve(accountAsset('custom-asset', hugeBalance));
+    await vi.waitFor(() => expect(assets.accountAssets[0].balance).toEqual(hugeBalance));
+
+    expect(changed).toHaveBeenCalledTimes(1);
+    subscription.unsubscribe();
+  });
+
+  it('never lets a pending confirmation overwrite a newer live balance', async () => {
+    const assets = new SequenceBalanceEmissionAssetsModule({ account: { pair: { address: 'account-a' } } } as never);
+    await assets.updateAccountAssets();
+    const result = deferred<never>();
+    vi.spyOn(assets, 'getAccountAsset').mockReturnValueOnce(result.promise);
+
+    assets.emitBalanceUpdate?.({ ...zeroBalance });
+    assets.emitBalanceUpdate?.({ ...hugeBalance });
+    result.resolve(accountAsset('custom-asset', lockedOnlyBalance));
+    await result.promise;
+
+    expect(assets.accountAssets[0].balance).toEqual(hugeBalance);
+  });
+
+  it('discards a pending confirmation when its account is no longer active', async () => {
+    const root = { account: { pair: { address: 'account-a' } } };
+    const assets = new SequenceBalanceEmissionAssetsModule(root as never);
+    await assets.updateAccountAssets();
+    const result = deferred<never>();
+    vi.spyOn(assets, 'getAccountAsset').mockReturnValueOnce(result.promise);
+
+    assets.emitBalanceUpdate?.({ ...zeroBalance });
+    root.account = { pair: { address: 'account-b' } };
+    result.resolve(accountAsset('custom-asset', zeroBalance));
+    await result.promise;
+
+    expect(assets.accountAssets[0].balance).toEqual(positiveBalance);
+  });
+
+  it('keeps the known balance when a confirmation returns malformed fields', async () => {
+    const assets = new SequenceBalanceEmissionAssetsModule({ account: { pair: { address: 'account-a' } } } as never);
+    await assets.updateAccountAssets();
+    const result = deferred<never>();
+    vi.spyOn(assets, 'getAccountAsset').mockReturnValueOnce(result.promise);
+
+    assets.emitBalanceUpdate?.({ ...zeroBalance });
+    result.resolve(accountAsset('custom-asset', malformedBalance));
+    await result.promise;
+
+    expect(assets.accountAssets[0].balance).toEqual(positiveBalance);
+  });
+
+  it.each(['clear', 'switch'] as const)('ignores a late live balance emission after %s', async (action) => {
+    const root = { account: { pair: { address: 'account-a' } } };
+    const assets = new SequenceBalanceEmissionAssetsModule(root as never);
+    await assets.updateAccountAssets();
+    const previousAsset = assets.accountAssets[0];
+    const changed = vi.fn();
+    const subscription = assets.balanceUpdated.subscribe(changed);
+
+    if (action === 'clear') assets.clearAccountAssets();
+    if (action === 'switch') root.account = { pair: { address: 'account-b' } };
+    assets.emitBalanceUpdate?.({ ...hugeBalance });
+
+    expect(previousAsset.balance).toEqual(positiveBalance);
+    expect(changed).not.toHaveBeenCalled();
+    subscription.unsubscribe();
+  });
+
+  it('unsubscribes a stream cleared synchronously by its first balance event', async () => {
+    const assets = new SequenceBalanceEmissionAssetsModule({ account: { pair: { address: 'account-a' } } } as never);
+    assets.bootstrapEmissions = [{ ...hugeBalance }];
+    const subscription = assets.balanceUpdated.subscribe(() => assets.clearAccountAssets());
+
+    await assets.updateAccountAssets();
+
+    expect(assets.accountAssets).toEqual([]);
+    expect(assets.unsubscribeCount).toBe(1);
+    assets.clearAccountAssets();
+    expect(assets.unsubscribeCount).toBe(1);
+    subscription.unsubscribe();
+  });
+});
+
 describe('AssetsModule connection guards', () => {
   it('returns empty asset lists when substrate api is unavailable', async () => {
     const assetsModule = new AssetsModule({
@@ -876,5 +1063,38 @@ describe('AssetsModule connection guards', () => {
 
     expect(assetsModule.accountAssets).toHaveLength(1);
     expect(assetsModule.accountAssets[0].balance).toEqual(invalidZeroSnapshot);
+  });
+});
+
+describe('AssetsModule execution history', () => {
+  it('uses a caller-provided history id for direct transaction tracking', async () => {
+    const pair = { address: 'signer-address' };
+    const submitExtrinsic = vi.fn().mockResolvedValue(undefined);
+    const transferExtrinsic = { kind: 'transfer' };
+    const assetsModule = new AssetsModule({
+      account: { pair },
+      api: {
+        tx: {
+          assets: {
+            transfer: vi.fn(() => transferExtrinsic),
+          },
+        },
+      },
+      formatAddress: (address: string) => address,
+      submitExtrinsic,
+    } as never);
+
+    await assetsModule.simpleTransfer(
+      { address: 'asset-a', symbol: 'A', decimals: 18 } as never,
+      'recipient-address',
+      '1',
+      'intent-1'
+    );
+
+    expect(submitExtrinsic).toHaveBeenCalledWith(
+      transferExtrinsic,
+      pair,
+      expect.objectContaining({ id: 'intent-1', type: expect.anything() })
+    );
   });
 });

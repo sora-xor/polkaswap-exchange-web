@@ -16,7 +16,10 @@ const openWarningFeeDialogMock = vi.fn(() => (showWarningFeeDialogRef!.value = t
 const closeWarningFeeDialogMock = vi.fn(() => (showWarningFeeDialogRef!.value = false));
 const waitOnFeeWarningConfirmationMock = vi.fn(() => Promise.resolve());
 
-const withNotificationsMock = vi.fn(async (handler: () => Promise<void> | void) => await handler());
+const withNotificationsMock = vi.fn(async (handler: () => Promise<void> | void) => {
+  await handler();
+  return { submitted: true };
+});
 
 var setRemovePartMock: ReturnType<typeof vi.fn> | undefined;
 var setFirstTokenAmountMock: ReturnType<typeof vi.fn> | undefined;
@@ -248,11 +251,14 @@ const RemoveLiquidityForm = defineComponent({
     const isXorSufficientForNextOperation = () => isXorSufficientForNextTxMock({ type: Operation.RemoveLiquidity });
 
     const withdrawLiquidity = async () => {
-      await withNotificationsMock(async () => {
+      const result = await withNotificationsMock(async () => {
         await store.dispatch.removeLiquidity.removeLiquidity();
         emit('back');
       });
-      confirmDialogVisible.value = false;
+
+      if (result.submitted) {
+        confirmDialogVisible.value = false;
+      }
     };
 
     const confirmOrExecute = async (handler: () => Promise<void> | void) => {
@@ -281,6 +287,7 @@ const RemoveLiquidityForm = defineComponent({
     return {
       confirmDialogVisible,
       handleRemoveLiquidity,
+      withdrawLiquidity,
     };
   },
   render() {
@@ -356,6 +363,18 @@ describe('RemoveLiquidityForm.vue', () => {
 
     const wrapper = mountComponent();
     await (wrapper.vm as any).handleRemoveLiquidity();
+
+    expect(removeLiquidityMock).not.toHaveBeenCalled();
+    expect((wrapper.vm as any).confirmDialogVisible).toBe(true);
+  });
+
+  it('keeps the confirmation dialog open when withdrawal submission is rejected', async () => {
+    storeState.wallet.transactions.isConfirmTxDialogDisabled = false;
+    withNotificationsMock.mockResolvedValueOnce({ submitted: false });
+    const wrapper = mountComponent();
+    await (wrapper.vm as any).handleRemoveLiquidity();
+
+    await (wrapper.vm as any).withdrawLiquidity();
 
     expect(removeLiquidityMock).not.toHaveBeenCalled();
     expect((wrapper.vm as any).confirmDialogVisible).toBe(true);

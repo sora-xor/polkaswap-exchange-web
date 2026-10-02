@@ -1,5 +1,5 @@
 import { defaultIfEmpty, firstValueFrom } from 'rxjs';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { SystemModule } from '@/lib/substrate/sdk/system';
 
@@ -18,5 +18,29 @@ describe('SystemModule connection guards', () => {
     await expect(firstValueFrom(system.getNetworkFeeMultiplierObservable().pipe(defaultIfEmpty(0)))).resolves.toBe(0);
     await expect(firstValueFrom(system.getEventsObservable().pipe(defaultIfEmpty([] as any)))).resolves.toEqual([]);
     await expect(system.getRuntimeVersion()).resolves.toBeNull();
+  });
+
+  it('returns the denomination coefficient as a precision-safe FPNumber', async () => {
+    const toNumber = vi.fn(() => {
+      throw new Error('native number conversion must not be used');
+    });
+    const system = new SystemModule({
+      api: {
+        query: {
+          denomination: {
+            denominator: vi.fn(async () => ({
+              toNumber,
+              toString: () => '100000000000000000001',
+            })),
+          },
+        },
+      },
+    } as any);
+
+    const denominator = await system.getDenominator();
+
+    expect(denominator.isFinity()).toBe(true);
+    expect(denominator.toString()).toBe('100000000000000000001');
+    expect(toNumber).not.toHaveBeenCalled();
   });
 });

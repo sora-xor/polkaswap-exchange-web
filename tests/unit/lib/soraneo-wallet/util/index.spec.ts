@@ -221,7 +221,7 @@ describe('wallet util helpers', () => {
     expect(errorSpy).toHaveBeenCalledWith(error);
   });
 
-  it('copies text to the clipboard and logs synchronous failures', async () => {
+  it('copies text to the clipboard and logs synchronous or asynchronous failures', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,
@@ -243,6 +243,15 @@ describe('wallet util helpers', () => {
 
     await expect(copyToClipboard('xor')).resolves.toBeUndefined();
     expect(errorSpy).toHaveBeenCalledWith('Could not copy text: ', expect.any(Error));
+
+    const rejectedError = new Error('clipboard permission rejected');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: vi.fn().mockRejectedValue(rejectedError) },
+    });
+
+    await expect(copyToClipboard('xor')).resolves.toBeUndefined();
+    expect(errorSpy).toHaveBeenCalledWith('Could not copy text: ', rejectedError);
   });
 
   it('returns currencies, shortens long addresses, and maps status helpers', () => {

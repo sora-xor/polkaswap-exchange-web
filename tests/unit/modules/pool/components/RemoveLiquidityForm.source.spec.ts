@@ -24,4 +24,9 @@ describe('RemoveLiquidity Form source', () => {
     );
     expect(removeLiquidityFormSource).toContain("import TokenInput from '@/components/shared/Input/TokenInput.vue';");
   });
+
+  it('guards confirmation dismissal with the transaction submission result', () => {
+    expect(removeLiquidityFormSource).toContain('const result = await withNotifications(async () => {');
+    expect(removeLiquidityFormSource).toContain('if (result.submitted) {\n    confirmDialogVisible.value = false;');
+  });
 });

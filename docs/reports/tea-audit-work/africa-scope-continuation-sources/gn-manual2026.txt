@@ -1,0 +1,1935 @@
+DEMANDES D'INSPECTION ET DE
+QUARANTAINE DES ENTREES ET
+    SORTIES DE GUINEE
+            V1.0
+             BNIQ
+           Avril 2026
+                                                                         Table des matières
+1   Accéder à l'interface de la plateforme de d éclaration d'inspection et de quarantaine ........................................................1
+
+2   Remplir les informations d'inscription .................................................................................................................................3
+
+
+    2.1        Accéder à la page d'inscription .......................................................................................................................3
+
+    2.2        Lire l'avis d'information sur l'inscription du client .........................................................................................4
+
+    2.3        Remplir les informations de l'entreprise .........................................................................................................4
+
+    2.4        Saisie des informations du responsable de l'entreprise .................................................................................. 6
+
+    2.5        Téléversement des pièces jointes ....................................................................................................................7
+
+    2.6        Vérification autonome des informations d'inscription ................................................................................... 9
+
+    2.7        Validation de l'inscription .............................................................................................................................. 9
+
+    2.8        Accusé de réception de l'inscription .............................................................................错误！未定义书签。
+
+3   Vérification du résultat de l'inscription ..............................................................................................................................12
+
+
+    3.1        Approbation de l'inscription ......................................................................................................................... 12
+
+    3.2        Refus de l'inscription .................................................................................................................................... 12
+
+4   Mot de passe oublié ............................................................................................................................................................14
+
+
+    4.1        Cliquer sur « Mot de passe oublié » sur la page de connexion .................................................................... 14
+
+    4.2        Saisir votre identifiant d'utilisateur ...............................................................................................................14
+
+    4.3        Saisir le code de vérification ........................................................................................................................ 15
+
+    4.4        Vérification d'identité ................................................................................................................................... 15
+
+    4.5        Réinitialiser le mot de passe de connexion ...................................................................................................16
+
+    4.6        Réinitialisation réussie ................................................................................................................................. 16
+
+5   Présentation des fonctions de la plate-forme ..................................................................................................................... 17
+
+
+    5.1        Page d'accueil ............................................................................................................................................... 17
+
+    5.2        Tâches traitées .............................................................................................................................................. 18
+5.3   Tâches en attente .......................................................................................................................................... 19
+
+5.4   Recherche des codes HS ...............................................................................................................................20
+
+5.5   Inspection des marchandises à l'exportation ................................................................................................ 21
+
+5.6   Déclaration d'inspection pour les marchandises à l'importation .................................................................. 42
+
+5.7   Consultation de formulaire de déclaration d'inspection ............................................................................... 61
+
+5.8   Consultation des formulaires ........................................................................................................................65
+
+5.9   Consultation des certificats justificatifs ........................................................................................................66
+                                                                      Plateforme d'inspection et de quarantaine de la Guinée
+
+
+
+
+1 Accéder à l'interface de la plateforme de d éclaration d'inspection et de quarantaine
+
+L'adresse d'accès à la plateforme de déclaration d'inspection et de quarantaine est :
+https://www.bniq.gov.gn. Ouvrez un navigateur, saisissez cette adresse dans la barre d'adresse, puis
+appuyez sur la touche Entrée pour accéder au site officiel du BNIQ, à partir duquel vous pourrez être
+redirigé vers l'interface de connexion de la plateforme de déclaration.
+
+
+
+
+                                                       1
+                                DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+Repérez la section « Accès aux Plateformes », puis cliquez sur le bouton « Accéder à la Plateforme » pour
+accéder à la plateforme de déclaration.
+
+
+
+
+                                                     2
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+2 Remplir les informations d'inscription
+
+2.1 Accéder à la page d'inscription
+
+Sur l'interface principale de la plateforme, cliquez sur le bouton « Inscription » pour accéder à la page d'inscription.
+
+
+
+
+                                                             3
+                                DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+2.2 Lire l'avis d'information sur l'inscription du client
+
+
+Après avoir lu attentivement la « Communiqué relatif à l'inscription des utilisateurs », cliquez sur le bouton
+« Accepter » pour accéder à la page de saisie des informations d'inscription de l'utilisateur.
+
+
+
+
+2.3 Remplir les informations de l'entreprise
+
+
+Saisie des informations d'enregistrement de l'entreprise à laquelle le compte est rattaché.
+Veuillez remplir, dans la section « Informations d'enregistrement de l'entreprise », les données
+correspondantes conformément aux exigences du système, en veillant à ce que toutes les informations
+fournies soient authentiques, exactes et valides.
+
+
+Après avoir renseigné les informations de l'entreprise, cliquez sur le bouton « Suivant » afin d'accéder à la
+page de saisie des informations concernant le responsable de l'entreprise.
+
+
+
+
+                                                        4
+                              DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+① Remplir la dénomination sociale complète de l'entreprise à enregistrer.
+
+
+② Sélectionnez le type d'entreprise. S'il s'agit d'un importateur ou d'un exportateur, les documents
+suivants devront être fournis par la suite : la pièce d'identité du gérant, le RCCM de l'entreprise et le NIF
+de l'entreprise. S'il s'agit d'une société de dédouanement, l'agrément devra également être fourni.
+
+
+③ Remplir le numéro d'identification fiscale (NIF) de l'entreprise enregistrée en Guinée.
+
+
+④ Remplir la ville d'enregistrement de l'entreprise en Guinée.
+
+
+⑤ Remplir la ville d'implantation de l'entreprise en Guinée.
+
+
+⑥ Remplir l'adresse e-mail officielle de l'entreprise ; l'e-mail de l'entreprise sert d'identifiant de connexion
+à la plateforme.
+
+
+⑦ Remplir le numéro de téléphone officiel détaillé de l'entreprise.
+
+
+⑧ Remplir le site web officiel de l'entreprise ; si l'entreprise n'a pas de site web, ce champ peut être laissé
+vide.
+
+
+⑨ Remplir le numéro de fax de l'entreprise ; si l'entreprise n'utilise pas de fax, ce champ peut être laissé
+vide.
+
+                                                      5
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+2.4 Saisie des informations du responsable de l'entreprise
+
+Veuillez remplir les informations du responsable de l'entreprise conformément aux exigences, en veillant à ce qu'elles
+
+soient authentiques et valides.
+
+
+
+
+① Remplir le prénom du responsable de l'entreprise enregistrée.
+
+
+② Remplir le nom de famille du responsable de l'entreprise enregistrée.
+
+
+③ Remplir le numéro de téléphone détaillé du responsable de l'entreprise enregistrée.
+
+
+④ Remplir l'adresse e-mail du responsable de l'entreprise enregistrée.
+
+
+⑤ Remplir la profession du responsable de l'entreprise enregistrée.
+
+
+⑥ Remplir le numéro d'un document d'identité valide du responsable de l'entreprise (numéro de carte
+d'identité valide ou numéro de passeport).
+
+
+⑦ Téléverser / joindre une photo personnelle du responsable de l'entreprise enregistrée.
+
+
+Après avoir rempli les informations du responsable, cliquez sur le bouton « Suivant » pour accéder à la page
+de téléversement des pièces jointes.
+
+
+                                                           6
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+2.5 Téléversement des pièces jointes
+
+Cliquez sur « Ajouter » pour téléverser les pièces jointes. Vous devez fournir des documents authentiques et valides
+
+permettant de prouver l'identité de l'entreprise et du responsable. Nous vérifierons l'exactitude des informations
+
+d'inscription sur la base des pièces que vous aurez téléversées.
+
+
+
+
+                                                            7
+                                 DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+Après avoir sélectionné le type de pièce jointe, cliquez sur le bouton « Téléchar ger » pour téléverser le
+fichier correspondant. Seul le format PDF est pris en charge. Une fois le téléchargement terminé, cliquez sur
+« Confir mer » pour finaliser le téléversement des pièces jointes.Lors de l'inscription, toutes les catégories
+de pièces jointes listées doivent être téléchargées. Si le téléchargement n'est pas complet, il sera impossible
+de passer à l'étape suivante.
+
+
+
+
+Les cinq types de fichiers électroniques au format PDF suivants doivent être téléversés.
+
+     N°                                                   Description
+     1           Téléverser la version PDF de la pièce d'identité du gérant.
+     2           Téléverser la version PDF du RCCM de l'entreprise.
+     3           Téléverser la version PDF du NIF de l'entreprise.
+     4           Téléverser la version PDF de l’agrément.
+
+Pendant l'opération, vous pouvez prévisualiser le contenu des pièces jointes téléchargées.Si vous constatez
+une erreur, cliquez sur « Suppr imer » pour retéléverser la pièce jointe.Si le contenu des pièces jointes est
+correct, cliquez sur « Suivant » pour passer à l'étape de vérification autonome des informations
+d'inscription.
+
+
+
+
+                                                        8
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+2.6 Vérification autonome des informations d'inscription
+
+Vérifiez si les informations d'inscription sont correctes. En cas d'erreur, cliquez sur « précédent » pour corriger les
+
+informations incorrectes.Lors de la vérification autonome, portez une attention particulière à l'exactitude de l'adresse
+
+e-mail de l'entreprise.Si toutes les informations sont correctes, cliquez sur « Envoyer le code » pour passer à l'étape de
+
+validation de l'inscription.
+
+
+
+
+2.7 Validation de l'inscription
+
+                                                             9
+                                DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+Le système enverra un code de vérification à l'adresse e-mail de l'entreprise que vous avez fournie.
+Veuillez saisir ce code dans les 5 minutes suivant sa réception, puis cliquer sur « Soumettr e » pour finaliser
+l'inscription sur la plateforme de déclaration d'inspection et de quarantaine.
+
+
+
+
+                                                       10
+DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+                    11
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+3 Vérification du résultat de l'inscription
+
+3.1 Approbation de l'inscription
+
+Après l'approbation de l'inscription, l'adresse e-mail de l'entreprise recevra un e-mail de confirmation indiquant que
+
+l'inscription a été validée avec succès.
+
+La pièce jointe de cet e-mail contiendra votre identifiant de connexion et votre mot de passe initial.
+
+Lors de la première connexion, l'identifiant par défaut est l'adresse e-mail de l'entreprise. Vous pourrez modifier le
+
+mot de passe après vous être connecté à la plateforme.
+
+
+
+
+3.2 Refus de l'inscription
+
+                                                            12
+                                DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+Si votre inscription n'est pas approuvée, l'adresse e-mail de l'entreprise recevra un e-mail de notification
+indiquant les raisons précises du refus.
+
+
+
+
+                                                       13
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+4 Mot de passe oublié
+
+4.1 Cliquer sur « Mot de passe oublié » sur la page de connexion
+
+
+
+
+4.2 Saisir votre identifiant d'utilisateur
+
+
+
+
+Obtenir le code de vérification
+
+     Cliquez sur « Obtenir le code de vér ification » et le système enverra automatiquement un e-mail de vérification
+
+
+                                                         14
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+à l'adresse de messagerie de l'entreprise fournie lors de l'enregistrement de ce compte.
+
+
+
+
+4.3 Saisir le code de vér ification
+
+     Veuillez saisir le code de vérification reçu par e-mail dans un délai de 5 minutes afin de compléter le processus
+
+de validation.
+
+
+
+
+4.4 Vér ification d'identité
+
+Cliquez sur « Étape suivante » pour procéder à la vérification de l'identité.
+
+
+
+
+                                                           15
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+4.5 Réinitialiser le mot de passe de connexion
+
+
+1. Saisir le nouveau mot de passe;
+
+2. Confirmer à nouveau le mot de passe;
+
+3. Cliquer sur « Étape suivante » pour terminer la réinitialisation du mot de passe.
+
+
+
+
+4.6 Réinitialisation r éussie
+
+     Le nouveau mot de passe a été réinitialisé avec succès. Cliquez sur
+
+« Aller à la connexion » pour accéder à la plate-forme de déclaration pour l'inspection et la quarantaine.
+
+
+
+                                                           16
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5 Pr ésentation des fonctions de la plate-for me
+
+L'interface principale de la plate-forme de déclaration est divisée en 9 sections selon leurs fonctionnalités.
+
+5.1 Page d' accueil
+
+Sur la page d'accueil de la plate-forme de déclaration, vous trouverez trois sections principales : « Opérations rapides
+
+», « Affaires en attente » et « Notifications et annonces », conçues pour vous permettre d'effectuer vos opérations
+
+rapidement.
+
+5.1.1     Raccourci des opérations
+
+Cinq fonctions courantes de la plate-forme de déclaration sont listées : « Consultation des formulaires de déclaration »,
+
+« Consultation des documents », « Consultation des certificats », « Déclaration des marchandises à l'exportation » et «
+
+Déclaration des marchandises à l'importation », afin de faciliter l'utilisation par les clients.
+
+5.1.2     Rappel des opérations en attente
+
+Les opérations ultérieures liées à votre compte apparaîtront dans la section « Affaires en attente » de la page d'accueil,
+
+afin de vous rappeler de les traiter en temps voulu.
+
+5.1.3     Avis et annonces
+
+Toutes les annonces importantes publiées sur la plate-forme seront affichées dans la section « Notifications et
+
+annonces » de la page d'accueil, afin de permettre aux utilisateurs de les consulter rapidement.
+
+
+
+
+                                                              17
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.2 Tâches tr aitées
+
+Cette section est principalement destinée à consulter les tâches déjà effectuées par le compte utilisateur sur la
+
+plate-forme de déclaration pour l'inspection et la quarantaine.
+
+5.2.1    Fonction de r echer che
+
+Vous pouvez rechercher les informations des tâches déjà traitées en utilisant les champs de recherche « For mulair e
+
+d'inspection» et « Type de tâche ».
+
+
+
+
+                                                           18
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+5.2.2     Consultation des tâches traitées
+
+Lors de l'utilisation, cliquez sur le bouton « Tr aitement » pour visualiser les tâches déjà traitées.
+
+
+
+
+5.3 Tâches en attente
+
+5.3.1     Fonction de r echer che
+
+Vous pouvez rechercher les informations des tâches en attente en utilisant les champs de recherche « For mulair e
+
+d'inspection » et « Type d'affair e ».
+
+
+
+
+                                                             19
+                                      DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+5.3.2     Tr aitement des tâches en attente
+
+Après avoir rempli le formulaire de déclaration sur la plate-forme de contrôle, le client doit effectuer les opérations
+
+suivantes dans la section des tâches en attente. Celles-ci comprennent principalement : joindre le justificatif de
+
+paiement après règlement du formulaire de déclaration et la saisie du formulaire de déclaration en cas de rejet. Pour
+
+effectuer ces actions, il convient de cliquer sur le bouton « Consulter ». Par ailleurs, la plate-forme enverra un
+
+courriel de notification à l'adresse électronique de l'entreprise de l'utilisateur pour rappeler l'achèvement de ces
+
+démarches.
+
+
+
+
+5.4 Recher che des codes HS
+
+L'utilisateur peut, dans la section « Recher che de code SH », retrouver le code SH correspondant à une marchandise
+
+en utilisant la barre de recherche.
+
+
+
+
+                                                             20
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.5 Inspection des mar chandises à l'expor tation
+
+
+Cliquez sur le bouton « Inspection des mar chandises à l'expor tation » ou sur le bouton correspondant dans la barre
+
+de raccourcis de la page d'accueil pour procéder à la saisie des marchandises à exporter.
+
+
+
+
+                                                           21
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.5.1        Saisie des infor mations du client
+
+Lors de la saisie des informations client, le client doit remplir les sections « Informations sur le client », «
+
+Informations de l'exportateur » et « Informations de l'importateur ». Les champs marqués d'un « * » sont obligatoires.
+
+Une fois les informations complétées, cliquez sur « Tr anspor t » pour accéder à la page de saisie des informations de
+
+transport.
+
+
+
+
+                                                         22
+             DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°                 Libellé                                     Commentaire
+                                                 Sélectionner la catégorie
+
+1      Type de déclaration d'inspection          d'inspection/quarantaine requise lors de
+
+                                                 la sortie.
+
+                                                 Nom de l'entreprise renseigné lors de
+
+2         Nom de l'unité d'inspection            l'inscription ; récupéré automatiquement
+
+                                                 par la plateforme.
+
+
+                                                 Numéro généré automatiquement après
+
+3          Numéro d'enregistrement               l'inscription ; récupéré automatiquement
+
+                                                 par la plateforme.
+
+                                                 NIF renseigné lors de l'inscription ;
+
+4    Numéro d'Identification Fiscale (NIF)       récupéré automatiquement par la
+
+                                                 plateforme.
+
+                                                 Numéro de licence attribué par le BNIQ
+
+5             Numéro de licence                  après l'ouverture du compte ; récupéré
+
+                                                 automatiquement par la plateforme.
+
+                                        23
+      DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+                                          Bureau des douanes auprès duquel la
+
+6    Bureau Dédouanement                  déclaration en douane est effectuée lors
+
+                                          de la sortie des marchandises.
+
+
+                                          Bureau du BNIQ correspondant au
+7       Bureau BNIQ
+                                          poste/port de sortie des marchandises.
+
+
+                                          Adresse détaillée renseignée lors de
+
+8          Adresse                        l'inscription ; récupérée automatiquement
+
+                                          par la plateforme.
+
+
+                                          Numéro de téléphone de l'entreprise
+
+9         Téléphone                       renseigné lors de l'inscription ; récupéré
+
+                                          automatiquement par la plateforme.
+
+                                          Fax de l'entreprise. Si l'entreprise
+
+10           Fax                          n'utilise pas de fax, ce champ peut être
+
+                                          laissé vide.
+
+11   Personne à Contacter                 Nom réel du contact de l'entreprise.
+
+
+12        Téléphone                       Numéro de téléphone réel du contact.
+
+
+13          Email                         Adresse e-mail réelle du contact.
+
+
+
+
+                            24
+                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°                 Libellé                                              Commentaire
+
+14   Numéro d'Identification Fiscale (NIF)        NIF de l'entreprise exportatrice en Guinée.
+
+
+15                   Nom                          Dénomination sociale de l'exportateur.
+
+
+16                 Adresse                        Adresse de l'exportateur en Guinée.
+
+
+17                   Ville                        Ville où se situe l'exportateur en Guinée.
+
+
+18                   Pays                         Pays de l'exportateur (par défaut : Guinée).
+
+
+19                Téléphone                       Numéro de téléphone de l'exportateur.
+
+
+                                                  Fax de l'exportateur. Si l'exportateur n'utilise pas de fax,
+20                   Fax
+                                                  ce champ peut être laissé vide.
+
+
+21                  Email                         Adresse e-mail de l'exportateur.
+
+                                                  Numéro d'immatriculation RCCM de l'exportateur en
+22             Numéro RCCM
+                                                  Guinée.
+
+23                Nationalité                     Nationalité de l'exportateur.
+                                             25
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+        24                     Secteur d'activité                 Secteur d'activité exercé par l'exportateur.
+
+
+
+
+    N°                          Libellé                                            Commentaire
+
+     25                          Nom                    Dénomination sociale de l'importateur.
+
+     26                         Adresse                 Adresse détaillée de l'importateur.
+
+     27                          Ville                  Ville où se situe l'importateur.
+
+     28                          Pays                   Pays de l'importateur.
+
+     29                        Téléphone                Numéro de téléphone de l'importateur.
+
+                                                        Fax de l'importateur. Si l'importateur n'utilise pas de fax, ce
+     30                           Fax
+                                                        champ peut être laissé vide.
+
+     31                          Email                  Adresse e-mail de l'importateur.
+
+
+
+
+5.5.2        Saisie des infor mations r elatives au tr anspor t
+
+Dans la section « Informations sur le transport », le client doit renseigner les informations relatives aux marchandises
+                                                           26
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+et à leur moyen de transport. Une fois la saisie terminée, cliquez sur « Finance » pour accéder à la page de saisie des
+
+informations financières.
+
+
+
+
+   N°                         Libellé                                           Commentaire
+                                                        Situation/方式 de transport des marchandises déclarées pour
+    1                 Type Envoi Cargaison
+                                                        cette opération.
+
+
+                                                          27
+                       DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+2            Pays de Provenance             Pays d'exportation des marchandises (par défaut : Guinée).
+
+
+3            Pays de Destination            Pays de destination des marchandises exportées.
+
+
+4               Transporteur                Société de transport en charge de cette expédition.
+
+5            Mode de Transport              Mode de transport des marchandises.
+
+                                            Identifiant du moyen de transport ou numéro du moyen de
+6    Identification du moyen de transport
+                                            transport.
+
+          N° Lettre de Transport            Numéro du document de transport (lettre de transport /
+7
+        Aérien/Connaissement/CMR            connaissement / CMR).
+
+                                            Numéro du sous-document de transport ; s'il n'existe pas, ce
+8      Numéro de sous-connaissement
+                                            champ peut être laissé vide.
+
+9    N° Vol/Voyage/Transport Routier        Numéro de l'itinéraire / de la ligne de transport.
+
+          Date Lettre de Transport
+10                                          Date du document de transport.
+        Aérien/Connaissement/CMR
+
+11           Mode de commerce               Mode de transaction commerciale des marchandises.
+
+                                            Type de chargement. Si marchandise en vrac, pas besoin de
+
+12          Type de Chargement              renseigner les conteneurs ; si en conteneur, renseigner les
+
+                                            informations conteneur (27 à 32).
+
+13   Lieu de stockage des marchandises      Description du lieu où les marchandises sont entreposées.
+
+
+
+
+                                             28
+                         DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°                  Libellé                                             Commentaire
+
+14             Lieu d'expédition               Port/poste de départ des marchandises.
+
+
+
+15          Lieu de Déchargement               Port/poste de destination finale des marchandises.
+
+
+                                               Port/poste de transbordement pendant le transport (le cas
+16         Lieu de Transbordement
+                                               échéant).
+
+
+17               Port de transit               Port/poste d'escale où le moyen de transport fait une halte.
+
+
+
+18             Date d'expédition               Date de départ du port (date de sortie/embarquement).
+
+
+                                               Indiquer si les marchandises à l'export ont une
+19   Identification des opérations spéciales
+                                               opération/mention spéciale ; si oui, la préciser.
+
+                                               Indiquer s'il existe des exigences spéciales
+20    Exigences de quarantaine spéciales
+                                               d'inspection/quarantaine ; si oui, les préciser.
+
+
+
+
+                                                29
+                      DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+                                         Indiquer s'il existe un justificatif/une procédure de
+
+21   Mode de passage en douane spécial   dédouanement spéciale ; si oui, préciser le mode
+
+                                         correspondant.
+
+                                         Nombre total de conteneurs FCL déclarés pour cette
+22           Nombre de FCL
+                                         opération.
+
+                                         Nombre total de conteneurs LCL déclarés pour cette
+23           Nombre de LCL
+                                         opération.
+
+                                         Récupérée automatiquement à partir des informations sur les
+24        Masse Nette Totale (kg)
+                                         marchandises déclarées.
+
+                                         Récupérée automatiquement à partir des informations sur les
+25        Masse Brute Totale (kg)
+                                         marchandises déclarées.
+
+                                         Informations apposées sur l'emballage extérieur
+26               Marques
+                                         (marques/marquage). S'il n'y en a pas, laisser vide.
+
+
+
+
+                                          30
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+    N°                         Libellé                                        Commentaire
+                                                     Cliquer pour ajouter une nouvelle ligne d'informations de
+        27                     Ajouter
+                                                     conteneur.
+
+        28               Numéro Conteneur            Numéro du conteneur.
+
+        29                 Type Conteneur            Type de conteneur.
+
+        30                     Taille                Dimensions/format du conteneur.
+
+        31                   N° Scellé               Numéro de scellé du conteneur.
+
+        32                   Supprimer               Permet de supprimer une ligne d'informations de conteneur.
+
+
+
+
+5.5.3        Saisie des infor mations financièr es
+
+
+Dans la section « Finance », le client doit renseigner les informations relatives à la facture et à la valorisation
+
+conformément au contenu commercial entre l'exportateur et l'importateur. Pour la partie « Paiement », le client doit
+
+fournir les informations bancaires utilisées pour régler les frais d'inspection et de quarantaine auprès du BNIQ. Une
+
+fois les informations financières complétées, cliquez sur « Informations sur les marchandises » pour accéder à la page
+
+de saisie des informations sur les marchandises.
+
+
+
+
+                                                           31
+                DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°          Libellé                                       Commentaire
+                                 Numéro du contrat commercial entre l'importateur et
+1     Numéro de contrat
+                                 l'exportateur.
+
+                                 Référence (numéro) de la facture commerciale de
+2      Référence Facture
+                                 l'importateur/exportateur.
+
+
+3        Date Facture            Date d'émission de la facture commerciale.
+
+
+4       Devise Facture           Devise utilisée par les deux parties sur la facture.
+
+
+                                 Taux de change entre la devise utilisée sur la facture et la
+
+                                 monnaie guinéenne ; le back-office met à jour
+5      Taux de Change
+                                 quotidiennement le taux en temps réel et récupère
+
+                                 automatiquement le taux.
+
+                                 Valeur totale (somme) des prix de toutes les marchandises ;
+
+6    Valeur Totale Articles      calculée et récupérée automatiquement à partir des
+
+                                 informations sur les marchandises.
+
+
+
+
+                                    32
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+                                                       Somme totale de la valeur des marchandises jusqu'à leur mise
+        7               Valeur Totale FOB
+                                                       à bord au port d'embarquement (FOB).
+
+                                                       Somme totale des coûts générés par le service de transport
+        8                Valeur Totale Frêt
+                                                       (fret).
+
+                                                       Montant total assuré des marchandises convenu dans le contrat
+        9             Valeur Totale Assurance
+                                                       d'assurance.
+
+
+                                                       Somme de tous les frais autres que la valeur des marchandises,
+    10            Valeur Totale des Autres Charges
+                                                       le fret et l'assurance.
+
+                                                       Somme de la valeur FOB, du fret, de l'assurance et des autres
+    11                     Valeur Totale
+                                                       charges ; calculée automatiquement par le système.
+
+                                                       Banque utilisée pour payer les frais d'inspection et de
+    12                    Banque payante
+                                                       quarantaine.
+
+                                                       Numéro de compte bancaire utilisé pour payer les frais
+    13              Numéro de compte bancaire
+                                                       d'inspection et de quarantaine.
+
+
+
+
+5.5.4       Infor mations sur les mar chandises
+
+1. Cliquez sur « Ajouter » pour fournir les informations sur les marchandises.
+
+
+
+
+                                                          33
+                             DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°                 Libellé                                             Commentaire
+1    Description Commerciale Marchandise       Nom commercial du produit (marchandise).
+
+2                 Code SH                      Code SH (HS) de la marchandise.
+
+                                               Description réelle correspondant au code SH (HS) de la
+3            La description du SH
+                                               marchandise.
+
+4                  Purpose                     Usage réel de la marchandise.
+
+5                 Quantité                     Quantité de marchandises exportées.
+
+6               Pays d'Origine                 Pays d'origine de la marchandise exportée.
+
+7           Fournisseur/Fabricant              Fabricant ou fournisseur de la marchandise.
+
+8                   Usagé                      Indiquer si la marchandise est d'occasion / déjà utilisée.
+
+9         Numéro de bon de livraison           Numéro du bon de livraison (document de retrait/levée).
+
+10            Masse Nette (kg)                 Masse nette totale de la marchandise.
+
+11            Masse Brute (kg)                 Masse brute totale de la marchandise.
+
+12           Valeur de l'Incoterm              Valeur totale de la marchandise pour cette ligne.
+
+                                               Valeur FOB totale de la marchandise ; récupérée
+13               Valeur FOB
+                                               automatiquement depuis les données financières.
+
+14                 Devise                      Devise utilisée dans le commerce import/export ; récupérée
+
+                                                 34
+                                DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+                                                  automatiquement depuis les données financières.
+
+
+15              Date de fabrication               Date de fabrication de la marchandise.
+
+16         Numéro de lot de production            Numéro de lot de production de la marchandise.
+
+
+
+
+N°                    Libellé                                               Commentaire
+                                                  Indiquer si le produit a une durée de conservation : si aucune,
+
+17   Validité à long terme (champ à normaliser)   sélectionner « Oui » ; sinon sélectionner « Non » et
+
+                                                  renseigner les champs 18 et 19.
+
+                                                  Durée pendant laquelle, dans des conditions de stockage et
+
+18        Durée de conservation（Mois）             d'utilisation prescrites, la qualité, la sécurité et les fonctions
+
+                                                  du produit restent conformes aux exigences.
+
+                                                  Durée/limite d'utilisation sûre du produit dans des conditions
+19              Date de péremption
+                                                  normales de stockage.
+
+20                     Colis                      Nombre de colis correspondant au type d'emballage utilisé.
+
+                                                  Principaux matériaux / type de matériau utilisé pour
+21        Types de matériaux d'emballage
+                                                  l'emballage.
+                                                    35
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+ 22             Est-ce l'emballage principal             Indiquer si le matériau d'emballage est le matériau principal.
+
+                                                         Type/catégorie de matériau d'emballage auxiliaire utilisé pour
+
+ 23      Types de matériaux d'emballage auxiliaires      fixer, protéger, isoler ou identifier la marchandise ; s'il n'y en
+
+                                                         a pas, ne pas renseigner 24–26.
+
+ 24        Longueur de l'emballage auxiliaire(m)         Longueur du matériau d'emballage auxiliaire.
+
+ 25         Hauteur de l'emballage auxiliaire(m)         Hauteur du matériau d'emballage auxiliaire.
+
+ 26         Largeur de l'emballage auxiliaire(m)         Largeur du matériau d'emballage auxiliaire.
+
+                                                         Matériau utilisé pour protéger la marchandise, amortir les
+ 27                Matériau de protection
+                                                         chocs, isoler ou combler les vides.
+
+
+
+
+2. La section « Informations sur les marchandises », il convient de renseigner en détail les informations sur les
+
+marchandises et les informations sur l'emballage. Une fois la saisie terminée, cliquez sur le bouton « Ajouter » pour
+
+enregistrer les informations de cette marchandise (veuillez vous assurer que tous les champs obligatoires marqués d'un
+
+« * » sont correctement remplis avant de cliquer sur « Ajouter »). Pour supprimer cette ligne d'information, cliquez sur
+
+le bouton « Annuler ».
+
+
+
+
+3. Si vous souhaitez supprimer ou modifier les informations d'une marchandise déjà ajoutée, vous pouvez cliquer sur
+
+les boutons « Suppr imer » ou « Modifier » situés dans la barre d'actions pour effectuer l'opération correspondante.
+
+                                                          36
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+4. Une fois les informations sur les marchandises complétées, cliquez sur le bouton « Pièces jointes » pour accéder à
+
+la page de saisie des informations relatives aux pièces jointes.
+
+
+
+
+5.5.5    Infor mations sur les pièces jointes
+
+Cliquez sur le bouton « Ajouter » et sélectionner le type de pièce jointe.
+                                                            37
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+2. Dans les informations de déclaration des marchandises, cochez les documents justificatifs correspondants aux
+
+informations saisies dans la déclaration des marchandises, puis cliquez sur « Confir mer » pour valider le choix du
+
+type de pièce jointe.
+
+
+
+
+3. Cliquez sur le bouton « Téléchar ger un fichier » pour joindre les pièces jointes électroniques requises. Pour
+
+                                                          38
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+supprimer une pièce jointe déjà jointes, cliquez simplement sur le bouton
+
+« Suppr imer ».
+
+
+
+
+5.5.6     Soumission du for mulair e de déclar ation d'inspection
+
+1. Une fois la saisie des informations terminée, cliquez sur le bouton « Vér ifier ». Le système contrôlera alors si les
+
+informations de déclaration sont complètes. En cas d'omission, une fenêtre d'alerte indiquera les éléments non
+
+renseignés ; si le formulaire de déclaration est complet, une fenêtre de confirmation « Vérification réussie »
+
+s'affichera.
+
+
+
+
+                                                          39
+DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+                    40
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+2. Si le formulaire de déclaration n'est pas entièrement rempli, cliquez sur le bouton
+
+« Sauvegar der » pour le sauvegarder temporairement. Vous pourrez ensuite le consulter et le modifier dans la section
+
+« Recherche de formulaire d'inspection ».
+
+
+
+
+3. Après avoir vérifié les informations de déclaration, cliquez sur le bouton « Soumettr e ». Dans la fenêtre de
+
+confirmation qui s'affiche, cliquez sur « Confir mer » pour soumettre le formulaire de déclaration et ainsi finaliser le
+
+processus de saisie du formulaire de déclaration pour l'exportation.
+                                                            41
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.6 Déclar ation d'inspection pour les mar chandises à l'impor tation
+
+Dans le module de gestion des opérations, cliquez sur « Déclaration des marchandises à l'importation » ou
+
+sélectionnez « Déclaration des marchandises à l'importation » dans la barre de raccourcis de la page d'accueil pour
+
+effectuer la déclaration des marchandises à l'importation.
+
+
+
+                                                             42
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.6.1        Saisie des infor mations du client
+
+Dans la section « Informations client », le client doit renseigner les informations de l'unité de déclaration, les
+
+informations de l'exportateur et les informations de l'importateur. Les champs marqués d'un « * » sont obligatoires.
+
+Une fois la saisie terminée, cliquez sur le bouton « Tr anspor t » pour accéder à la page de saisie des informations de
+
+transport.
+
+
+
+
+                                                          43
+                        DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°                  Libellé                                          Commentaire
+
+                                             Sélectionner la catégorie d'inspection/quarantaine requise
+1      Type de déclaration d'inspection
+                                             lors de la sortie.
+
+                                             Nom de l'entreprise renseigné lors de l'inscription ;
+2         Nom de l'unité d'inspection
+                                             récupéré automatiquement par la plateforme.
+
+                                             Numéro généré automatiquement après l'inscription ;
+3          Numéro d'enregistrement
+                                             récupéré automatiquement par la plateforme.
+
+                                             NIF renseigné lors de l'inscription ; récupéré
+4    Numéro d'Identification Fiscale (NIF)
+                                             automatiquement par la plateforme.
+
+                                             Numéro de licence attribué par le BNIQ après l'ouverture
+5             Numéro de licence
+                                             du compte ; récupéré automatiquement par la plateforme.
+
+                                             Bureau des douanes auprès duquel la déclaration en douane
+6           Bureau Dédouanement
+                                             est effectuée lors de la sortie des marchandises.
+
+                                             Bureau du BNIQ correspondant au poste/port de sortie des
+7               Bureau BNIQ
+                                             marchandises.
+
+                                             Adresse détaillée renseignée lors de l'inscription ; récupérée
+8                  Adresse
+                                             automatiquement par la plateforme.
+                                             44
+                        DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+                                             Téléphone de l'entreprise renseigné lors de l'inscription ;
+9                 Téléphone
+                                             récupéré automatiquement par la plateforme.
+
+                                             Fax de l'entreprise. Si l'entreprise n'utilise pas de fax, ce
+10                   Fax
+                                             champ peut être laissé vide.
+
+11           Personne à Contacter            Nom réel du contact de l'entreprise.
+
+12                Téléphone                  Numéro de téléphone réel du contact.
+
+13                  Email                    Adresse e-mail réelle du contact.
+
+14   Numéro d'Identification Fiscale (NIF)   NIF de l'entreprise importatrice en Guinée.
+
+15                   Nom                     Dénomination sociale de l'importateur.
+
+
+
+
+N°                  Libellé                                           Commentaire
+
+16                 Adresse                   Adresse de l'importateur en Guinée.
+
+17                   Ville                   Ville où se situe l'importateur en Guinée.
+
+18                   Pays                    Pays de l'importateur (par défaut : Guinée).
+
+19                Téléphone                  Numéro de téléphone de l'importateur.
+
+
+                                             45
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+                                                          Fax de l'importateur. Si l'importateur n'utilise pas de fax, ce
+  20                           Fax
+                                                          champ peut être laissé vide.
+
+  21                          Email                       Adresse e-mail de l'importateur.
+
+  22                          Nom                         Dénomination sociale de l'exportateur.
+
+  23                         Adresse                      Adresse détaillée de l'exportateur.
+
+  24                          Ville                       Ville où se situe l'exportateur.
+
+  25                           Pays                       Pays de l'exportateur.
+
+  26                        Téléphone                     Numéro de téléphone de l'exportateur.
+
+                                                          Fax de l'exportateur. Si l'exportateur n'utilise pas de fax, ce
+  27                           Fax
+                                                          champ peut être laissé vide.
+
+                                                          Numéro RCCM (immatriculation) de l'exportateur en
+  28                     Numéro RCCM
+                                                          Guinée.
+
+5.6.2    Saisie des infor mations r elatives au tr anspor t
+
+Dans la section « Informations client », il est nécessaire de renseigner les informations de transport, les champs
+
+marqués d'un « * » étant obligatoires. Une fois la saisie terminée, cliquez sur le bouton « Finance » pour accéder à la
+
+page de saisie des informations financières.
+
+
+
+
+                                                          46
+                       DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°                 Libellé                                          Commentaire
+
+                                            Situation de transport des marchandises déclarées pour cette
+1          Type Envoi Cargaison
+                                            opération.
+
+
+2            Pays de Provenance             Pays d'expédition (pays de départ) des marchandises.
+
+
+3            Pays de Destination            Pays de destination (par défaut : Guinée).
+
+
+4               Transporteur                Société de transport en charge de cette expédition.
+
+5            Mode de Transport              Mode de transport des marchandises.
+
+                                            Identifiant du moyen de transport ou numéro du moyen de
+6    Identification du moyen de transport
+                                            transport.
+
+          N° Lettre de Transport            Numéro du document de transport (LTA / connaissement /
+7
+        Aérien/Connaissement/CMR            CMR).
+
+                                            Numéro du sous-document de transport ; s'il n'existe pas, ce
+8      Numéro de sous-connaissement
+                                            champ peut être laissé vide.
+
+
+
+
+                                              47
+                     DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+9    N° Vol/Voyage/Transport Routier   Numéro de l'itinéraire / de la ligne de transport.
+
+
+
+         Date Lettre de Transport
+10                                     Date du document de transport.
+        Aérien/Connaissement/CMR
+
+
+11          Mode de commerce           Mode de transaction commerciale des marchandises.
+
+
+                                       Type de chargement : si marchandise en vrac, pas besoin de
+
+12         Type de Chargement          renseigner les conteneurs ; si en conteneur, renseigner les
+
+                                       informations conteneur (28–33).
+
+
+13           Lieu d'expédition         Port/poste de départ des marchandises.
+
+
+14        Lieu de Déchargement         Port/poste de destination finale des marchandises.
+
+                                       Port/poste de transbordement pendant le transport (le cas
+15        Lieu de Transbordement
+                                       échéant).
+
+16            Port de transit          Port/poste d'escale où le moyen de transport fait une halte.
+
+
+
+
+                                         48
+                        DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+N°                  Libellé                                               Commentaire
+
+           Lieu de déchargement des            Lieu de déchargement des marchandises après l'arrivée au
+17
+                 marchandises                  port/poste.
+
+                                               Lieu où les marchandises sont entreposées après l'entrée sur le
+18    Lieu de stockage des marchandises
+                                               territoire.
+
+
+19             Date d'expédition               Date de départ du port (date d'embarquement/sortie).
+
+
+                                               Indiquer si les marchandises à l'export ont une
+20   Identification des opérations spéciales
+                                               mention/opération spéciale ; si oui, la préciser.
+
+                                               Indiquer s'il existe des exigences spéciales
+21    Exigences de quarantaine spéciales
+                                               d'inspection/quarantaine ; si oui, les préciser.
+
+
+                                               Indiquer s'il existe un mode/procédure spéciale de
+22    Mode de passage en douane spécial
+                                               dédouanement ; si oui, préciser le mode correspondant.
+
+
+                                               Nombre total de conteneurs FCL déclarés pour cette
+23              Nombre de FCL
+                                               opération.
+
+                                               Nombre total de conteneurs LCL déclarés pour cette
+24              Nombre de LCL
+                                               opération.
+
+                                               Récupérée automatiquement à partir des informations sur les
+25          Masse Nette Totale (kg)
+                                               marchandises déclarées.
+
+                                               Récupérée automatiquement à partir des informations sur les
+26          Masse Brute Totale (kg)
+                                               marchandises déclarées.
+
+                                               Marques/marquage du propriétaire apposés sur l'emballage
+27                  Marques
+                                               extérieur ; s'il n'y en a pas, laisser vide.
+
+                                               Cliquer pour ajouter une nouvelle ligne d'informations de
+28                  Ajouter
+                                               conteneur.
+
+29            Numéro Conteneur                 Numéro du conteneur.
+
+30              Type Conteneur                 Type de conteneur.
+
+31                   Taille                    Dimensions/format du conteneur.
+
+                                                 49
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+     32                      N° Scellé                     Numéro de scellé du conteneur.
+
+     33                       Supprimer                    Permet de supprimer une ligne d'informations de conteneur.
+
+
+5.6.3     Saisie des Infor mations financièr es
+
+Sur la page « Finance », le client doit renseigner les informations relatives à la facture et à la valorisation
+
+conformément aux transactions commerciales entre l'exportateur et l'importateur, et fournir, dans la section « Paiement
+
+», les informations bancaires utilisées pour régler les frais d'inspection et de quarantaine auprès du BNIQ. Une fois les
+
+informations financières complétées, cliquez sur le bouton « Mar chandises » pour accéder à la page de saisie des
+
+informations sur les marchandises.
+
+
+
+
+                                                             50
+                              DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°        Libellé                                                Commentaire
+
+1    Numéro de contrat    Numéro du contrat commercial entre l'importateur et l'exportateur.
+
+
+2    Référence Facture    Référence (numéro) de la facture commerciale de l'importateur/exportateur.
+
+3      Date Facture       Date d'émission de la facture commerciale.
+
+4     Devise Facture      Devise utilisée par les deux parties sur la facture.
+
+
+                          Taux de change entre la devise utilisée sur la facture et le franc guinéen (GNF) ; le
+
+5     Taux de Change      back-office met à jour quotidiennement les taux en temps réel et récupère
+
+                          automatiquement le taux.
+
+
+
+       Valeur Totale      Valeur totale (somme) des prix de toutes les marchandises ; calculée/vérifiée et
+6
+          Articles        récupérée automatiquement à partir des données des marchandises.
+
+
+                          Somme des valeurs des marchandises jusqu'à leur chargement à bord au port
+7    Valeur Totale FOB
+                          d'embarquement (FOB).
+
+
+8    Valeur Totale Frêt   Somme totale des frais générés par le service de transport (fret).
+
+
+
+                                                        51
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+          Valeur Totale
+  9                           Montant total assuré des marchandises convenu dans le contrat d'assurance.
+            Assurance
+
+        Valeur Totale des
+ 10                           Somme de tous les frais autres que la valeur des marchandises, le fret et l'assurance.
+         Autres Charges
+
+                              Somme de la valeur FOB, du fret, de l'assurance et des autres charges ; calculée
+ 11       Valeur Totale
+                              automatiquement par le système.
+
+
+ 12      Banque payante       Banque utilisée pour payer les frais d'inspection et de quarantaine.
+
+        Numéro de compte
+ 13                           Numéro de compte bancaire utilisé pour payer les frais d'inspection et de quarantaine.
+             bancaire
+
+
+
+
+5.6.4    Infor mations sur les mar chandises
+
+1. Cliquez sur le bouton « Ajouter » sur la page pour accéder à la page de saisie des informations sur les marchandises
+
+et renseignez les informations correspondantes.
+
+
+
+
+                                                           52
+                        DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+N°            Libellé                                            Commentaire
+
+     Description Commerciale
+1                                   Nom commercial de la marchandise (produit).
+           Marchandise
+
+2            Code SH                Code SH (HS) de la marchandise.
+
+3       La description du SH        Description réelle correspondant au code SH (HS) de la marchandise.
+
+4             Purpose               Usage réel de la marchandise.
+
+5            Quantité               Quantité de marchandises exportées.
+
+6          Pays d'Origine           Pays d'origine de la marchandise exportée.
+
+7      Fournisseur/Fabricant        Fabricant ou fournisseur de la marchandise.
+
+8              Usagé                Indiquer si la marchandise est d'occasion / déjà utilisée.
+
+
+9    Numéro de bon de livraison     Numéro du bon de livraison de la marchandise.
+
+10       Masse Nette (kg)           Masse nette totale de la marchandise.
+
+11       Masse Brute (kg)           Masse brute totale de la marchandise.
+
+12      Valeur de l'Incoterm        Valeur totale de la marchandise pour cette ligne.
+
+
+
+
+                                             53
+                          DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+                                      Valeur FOB totale de la marchandise ; récupérée automatiquement
+13           Valeur FOB
+                                      depuis les données financières.
+
+                                      Devise utilisée dans le commerce import/export ; récupérée
+14              Devise
+                                      automatiquement depuis les données financières.
+
+15        Date de fabrication         Date de fabrication de la marchandise.
+
+16    Numéro de lot de production     Numéro de lot de production de la marchandise.
+
+
+
+
+N°              Libellé                                              Commentaire
+
+                                      Indiquer si la marchandise a une durée de conservation : si aucune
+
+                                      durée de conservation, sélectionner « Oui » ; si une durée de
+17       Validité à long terme
+                                      conservation existe, sélectionner « Non » et renseigner les champs 18
+
+                                      et 19.
+
+                                      Durée pendant laquelle, dans des conditions de stockage et
+
+18   Durée de conservation（Mois）      d'utilisation prescrites, la qualité, la sécurité et les fonctions restent
+
+                                      conformes aux exigences.
+
+                                                54
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+                                                 Période pendant laquelle le produit peut être utilisé en toute sécurité
+   19              Date de péremption
+                                                 dans des conditions normales de stockage.
+
+
+   20                      Colis                 Nombre de colis correspondant au type d'emballage utilisé.
+
+
+   21        Types de matériaux d'emballage      Principaux matériaux / type de matériau utilisé pour l'emballage.
+
+
+   22          Est-ce l'emballage principal      Indiquer si le matériau d'emballage est le matériau principal.
+
+                                                 Type/catégorie de matériau d'emballage auxiliaire utilisé pour fixer,
+             Types de matériaux d'emballage
+   23                                            protéger, isoler ou identifier la marchandise ; s'il n'y en a pas, ne pas
+                        auxiliaires
+                                                 renseigner 24–26.
+
+                 Longueur de l'emballage
+   24                                            Longueur du matériau d'emballage auxiliaire.
+                       auxiliaire(m)
+
+                  Hauteur de l'emballage
+   25                                            Hauteur du matériau d'emballage auxiliaire.
+                       auxiliaire(m)
+
+                  Largeur de l'emballage
+   26                                            Largeur du matériau d'emballage auxiliaire.
+                       auxiliaire(m)
+
+                                                 Matériau utilisé pour protéger la marchandise, amortir les chocs,
+   27             Matériau de protection
+                                                 isoler ou combler les vides.
+
+2. Sur la page de saisie des informations sur les marchandises, vous devez fournir des détails sur les informations sur
+
+les marchandises et les informations sur l'emballage. Une fois la saisie terminée, cliquez sur le bouton « Ajouter »
+
+pour enregistrer ces informations (veuillez vous assurer que tous les champs obligatoires marqués d'un « * » sont
+
+correctement remplis). Pour supprimer ces informations, cliquez sur le bouton « Annuler ».
+
+
+
+
+                                                          55
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+3. Si vous souhaitez modifier ou supprimer les informations d'une marchandise déjà ajoutée, cliquez sur les boutons «
+
+Supprimer » ou « Modifier » dans la barre d'actions pour effectuer l'opération correspondante.
+
+
+
+
+4. Une fois les informations sur les marchandises saisies, cliquez sur le bouton « Pièces jointes » pour accéder à la
+
+page de saisie des informations relatives aux pièces jointes.
+
+
+
+                                                            56
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.6.5    Infor mations sur les pièces jointes
+
+1. Après avoir cliqué sur le bouton « Ajouter », sélectionnez le type de pièce jointe correspondant pour joindre.
+
+
+
+
+2. Cochez les documents justificatifs correspondant aux informations de déclaration des marchandises. Une fois la
+
+sélection effectuée, cliquez sur le bouton « Confir mer » pour valider le type de pièce jointe.
+
+
+
+
+                                                            57
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+3. Cliquez sur « Téléchar ger un fichier » dans la colonne des opérations pour importer la version électronique de la
+
+pièce jointe. Cliquez sur « Suppr imer » pour effacer un fichier.
+
+
+
+
+5.6.6    Soumission du for mulair e de déclar ation d'inspection
+
+1. Une fois toutes les informations saisies, cliquez sur le bouton « Vér ifier ». Le système contrôlera la complétude des
+
+informations de déclaration. En cas d'omission, une fenêtre d'alerte indiquera les éléments non renseignés ; si le
+
+formulaire de déclaration est complet, une fenêtre de confirmation « Vérification réussie » s'affichera.
+                                                           58
+DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+                    59
+                                  DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+2. Cliquez sur le bouton « Enregistrer » pour sauvegarder temporairement le formulaire de déclaration incomplet.
+
+Vous pouvez consulter et modifier le formulaire enregistré via la fonction « Recherche des formulaires de déclaration
+
+».
+
+
+
+
+3. Après avoir vérifié toutes les informations de déclaration, cliquez sur le bouton « Soumettr e ». Le système
+
+affichera une fenêtre de confirmation ; cliquez sur le bouton « Confirmer » pour soumettre le formulaire de déclaration
+
+                                                          60
+                                   DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+et finaliser le processus de saisie du formulaire de déclaration pour l'importation.
+
+
+
+
+5.7 Consultation de for mulair e de déclar ation d'inspection
+
+
+Sur cette interface, l'utilisateur peut consulter les informations des formulaires de déclaration complétés, suivre
+
+l'avancement du traitement et effectuer des opérations telles que l'enregistrement temporaire des documents. Le statut
+
+de la déclar ation est mis à jour en temps réel afin de refléter l'avancement :
+
+
+                                                            61
+                                        DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+             Si le formulaire de déclaration a été soumis mais n'a pas encore été traité, le statut affichera « Non tr aité » ;
+
+             Une fois le formulaire de déclaration pris en charge, le statut affichera « Appr ouvé » ;
+
+             Pour un formulaire de déclaration rejeté, le statut affichera « Rejeté » ;
+
+             Lorsque le BNIQ a terminé l'inspection et la quarantaine et a délivré les documents justificatifs, le statut du
+
+              formulaire de déclaration sera « Ter miné », et les documents correspondants pourront être consultés dans la
+
+              section « Recher che des documents justificatifs ».
+
+
+    5.7.1     Fonction de r echer che
+
+    En saisissant le numéro de formulaire de déclaration et la date de déclaration dans la barre de recherche, l'utilisateur
+
+    peut rechercher tous les formulaires de déclaration soumis par les comptes utilisateurs de l'entreprise. Une fois le
+
+    formulaire ciblé trouvé, cliquez sur le bouton « Détails » pour consulter les informations détaillées du formulaire de
+
+    déclaration.
+
+
+
+
+5.7.2    Impr ession du for mulair e de déclar ation
+
+    Après la soumission du formulaire de déclaration par l'utilisateur, le BNIQ prendra en charge le traitement du
+
+    formulaire et de ses pièces jointes. Si le formulaire de déclaration est accepté, le statut de la déclaration affichera «
+
+    Appr ouvé ». À ce moment, l'utilisateur peut cliquer sur le bouton « Imprimer le formulaire de déclaration » dans la
+
+    barre d'actions pour procéder à l'impression du formulaire.
+
+
+
+
+                                                                 62
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.7.3   Modification des for mulair es r ejetés
+
+    Lorsque le formulaire de déclaration n'est pas approuvé, le système du BNIQ le rejettera et l'affichera dans
+    la section « Recherche des formulaires de déclaration ». Dans ce cas, le statut de la déclaration sera « Rejeté
+    ». Cliquez sur le bouton « Modifier » dans la barre d'actions pour consulter les raisons du rejet, apporter les
+    corrections nécessaires au formulaire de déclaration, puis le soumettre à nouveau.
+
+
+
+
+                                                          63
+                                       DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+5.7.4   Modification des for mulair es tempor air ement sauvegar dés
+
+    Si, dans la colonne Statut de la déclaration, un formulaire de déclaration est en « Enregistrement temporaire »,
+
+    l'utilisateur peut cliquer sur le bouton « Modifier » dans la barre d'actions pour le corriger ou compléter les
+
+    informations. Pour supprimer un formulaire
+
+
+
+
+    temporairement enregistré, cliquez sur le bouton « Supprimer ».
+
+
+
+
+                                                                64
+                                        DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+5.8 Consultation des for mulair es
+
+    Cette section est destinée à la réception des documents délivrés par le BNIQ. L'utilisateur peut y consulter et imprimer
+
+    les documents. Par ailleurs, lors de l'émission des documents, le BNIQ enverra un courriel de notification à l'adresse
+
+    électronique enregistrée de l'utilisateur.
+
+5.8.1    Consultation des for mulair es
+
+    L'utilisateur peut rechercher tous les documents soumis par les comptes utilisateurs de l'entreprise en saisissant le
+
+    numéro de déclaration, le numéro du document ou en sélectionnant le type de document.Recherche de documents.
+
+
+
+
+5.8.2    Impr ession des documents
+
+    Cette section est destinée à la réception des avis de traitement de quarantaine et autres documents délivrés par le BNIQ
+
+    sur la base des résultats d'inspection et de quarantaine des marchandises importées et exportées. L'utilisateur peut
+
+    cliquer sur le bouton « Impr imer le document » dans la barre d'actions pour imprimer les certificats correspondants
+
+    et les utiliser dans les opérations ultérieures avec le BNIQ et les douanes.
+
+
+
+
+                                                                65
+                                       DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.9 Consultation des cer tificats justificatifs
+
+    Cette section permet de consulter et d'imprimer les certificats d'inspection et de quarantaine, les avis de traitement de
+
+    quarantaine et les avis de non-conformité des marchandises émis par le BNIQ, afin de faciliter les opérations de
+
+    dédouanement sur site. Dès l'émission des documents correspondants par le BNIQ, le système mettra
+
+    automatiquement cette section à jour et enverra un courriel de notification à l'adresse électronique enregistrée de
+
+    l'utilisateur.
+
+5.9.1    Consultation des documents justificatifs
+
+    Vous pouvez rechercher les documents correspondants en utilisant le numéro de déclaration et la date de création. Une
+
+    fois le document souhaité trouvé, cliquez sur le bouton « Détails » dans la barre d'actions pour consulter les
+
+    informations détaillées du formulaire de déclaration associé.
+
+
+
+
+                                                                66
+                                    DEMANDES D'INSPECTION ET DE QUARANTAINE DES ENTREES ET SORTIES DE GUINEE
+
+
+
+
+5.9.2   Impr ession des documents justificatifs
+
+    Cliquez sur « Voir le document » dans la colonne des opérations. Une fenêtre s'ouvrira avec le certificat
+
+    correspondant, que vous pourrez imprimer pour les démarches de dédouanement.
+
+
+
+
+                                                          67
+

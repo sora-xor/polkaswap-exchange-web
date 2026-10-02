@@ -2,13 +2,16 @@ import { FPNumber } from '@sora-substrate/math';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { createPinia, setActivePinia } from 'pinia';
+import { Subject } from 'rxjs';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { MarketAlgorithms } from '@/consts';
 import { useSettingsStore } from '@/stores/settings';
 import { useSwapStore } from '@/stores/swap';
 import { useWalletStore } from '@/stores/wallet';
+import { hasInsufficientBalance } from '@/utils';
 import { settingsStorage } from '@/utils/storage';
+import type { AccountBalance } from '@sora-substrate/sdk/build/assets/types';
 
 type SwapMathDeps = {
   store: ReturnType<typeof useSwapStore>;
@@ -83,8 +86,10 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
 describe('swap store', () => {
   beforeEach(async () => {
     setActivePinia(createPinia());
+    vi.stubGlobal('__ASSETS_STORE_OVERRIDE', undefined);
     vi.clearAllMocks();
-    localStorageMock.getItem.mockClear();
+    localStorageMock.getItem.mockReset();
+    localStorageMock.getItem.mockReturnValue(null);
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     localStorageMock.clear.mockClear();
@@ -162,6 +167,14 @@ describe('swap store', () => {
     expect(store.fromValue).toBe('');
     expect(store.toValue).toBe('');
     expect(store.isExchangeB).toBe(false);
+    expect(store.allowLossPopup).toBe(true);
+  });
+
+  it('keeps the loss warning enabled when its persisted flag is corrupt', () => {
+    localStorageMock.getItem.mockReturnValueOnce('{');
+
+    const store = useSwapStore();
+
     expect(store.allowLossPopup).toBe(true);
   });
 
@@ -393,4 +406,69 @@ describe('swap store', () => {
     walletStore.accountState.address = '';
     walletStore.accountState.source = '';
   });
+
+  it('keeps balance subscriptions bound to each swap store and its wallet', () => {
+    const firstBalances = new Subject<AccountBalance>();
+    const secondBalances = new Subject<AccountBalance>();
+    walletApiMock.assets.getAssetBalanceObservable
+      .mockReturnValueOnce(firstBalances)
+      .mockReturnValueOnce(secondBalances);
+
+    const firstWallet = useWalletStore();
+    firstWallet.accountState.address = 'first-account';
+    firstWallet.accountState.source = 'polkadot-js' as never;
+    const firstStore = useSwapStore();
+    firstStore.updateTokenSubscription('from');
+
+    setActivePinia(createPinia());
+    const secondWallet = useWalletStore();
+    secondWallet.accountState.address = 'second-account';
+    secondWallet.accountState.source = 'polkadot-js' as never;
+    const secondStore = useSwapStore();
+    secondStore.updateTokenSubscription('from');
+
+    firstBalances.next({ transferable: '1000000000000000000' } as AccountBalance);
+    secondBalances.next({ transferable: '2000000000000000000' } as AccountBalance);
+
+    expect(firstStore.tokenFromBalance?.transferable).toBe('1000000000000000000');
+    expect(secondStore.tokenFromBalance?.transferable).toBe('2000000000000000000');
+
+    secondStore.resetSubscriptions();
+    firstBalances.next({ transferable: '3000000000000000000' } as AccountBalance);
+    expect(firstStore.tokenFromBalance?.transferable).toBe('3000000000000000000');
+
+    firstStore.resetSubscriptions();
+  });
+
+  it.each(['from', 'to'] as const)(
+    'clears an invalidated %s balance without restoring the wallet cache',
+    (direction) => {
+      const wallet = useWalletStore();
+      wallet.accountState.address = 'balance-account';
+      wallet.accountState.source = 'polkadot-js' as never;
+      const staleBalance = { transferable: '9000000000000000000' } as AccountBalance;
+      wallet.setAccountAssets([{ ...XOR, balance: staleBalance }]);
+      vi.stubGlobal('__ASSETS_STORE_OVERRIDE', {
+        assetDataByAddress: (address: string) => ({
+          ...XOR,
+          address,
+          balance: wallet.accountAssetsAddressTable[address]?.balance,
+        }),
+      });
+      const store = useSwapStore();
+      if (direction === 'from') store.setTokenFromAddress(XOR.address);
+      else store.setTokenToAddress(XOR.address);
+      const setBalance = direction === 'from' ? store.setTokenFromBalance : store.setTokenToBalance;
+      setBalance({ transferable: '8000000000000000000' } as AccountBalance);
+
+      setBalance(null);
+
+      const token = direction === 'from' ? store.tokenFrom : store.tokenTo;
+      expect(token?.address).toBe(XOR.address);
+      expect(token?.balance).toBeUndefined();
+      expect(hasInsufficientBalance(token!, '1', '0')).toBe(true);
+      expect(wallet.accountAssetsAddressTable[XOR.address]?.balance?.transferable).toBe(staleBalance.transferable);
+      store.resetSubscriptions();
+    }
+  );
 });

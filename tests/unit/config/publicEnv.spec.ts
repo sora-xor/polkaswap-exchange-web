@@ -52,7 +52,7 @@ describe('public env config', () => {
     expect(html).toContain('src="/src/assets/img/pswap-loader.svg"');
   });
 
-  it('exposes only the healthy MOF SORA websocket endpoints in production envs', async () => {
+  it('pins ws.mof as the sole production live default and preserves the explicit Taira defaults', async () => {
     const envPaths = ['public/env.json', 'public/env.taira.json', 'env.json'];
     const expectedNodes = [
       {
@@ -74,7 +74,9 @@ describe('public env config', () => {
         DEFAULT_NETWORKS: Array<{ name: string; address: string; location?: string; chain: string }>;
       };
 
-      expect(parsed.DEFAULT_NETWORKS).toEqual(expectedNodes);
+      expect(parsed.DEFAULT_NETWORKS).toEqual(
+        envPath === 'public/env.taira.json' ? expectedNodes : expectedNodes.slice(0, 1)
+      );
       expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain('wss://mof3.sora.org');
       expect(parsed.DEFAULT_NETWORKS.map((node) => node.address)).not.toContain(
         'wss://sora.api.onfinality.io/public-ws'
@@ -88,15 +90,21 @@ describe('public env config', () => {
       readFile(path.resolve(process.cwd(), 'env.json'), 'utf8'),
     ]);
 
-    expect(JSON.parse(rootRaw)).toEqual(JSON.parse(publicRaw));
+    // Compare parsed config without putting public provider keys in assertion output.
+    expect(JSON.stringify(JSON.parse(rootRaw)) === JSON.stringify(JSON.parse(publicRaw))).toBe(true);
   });
 
-  it('keeps the production env pointed at the hosted Polkaswap indexer', async () => {
-    const raw = await readFile(path.resolve(process.cwd(), 'public/env.json'), 'utf8');
-    const parsed = JSON.parse(raw) as { POLKASWAP_INDEXER_ENDPOINT?: string; SORAMETRICS_API_ENDPOINT?: string };
+  it.each(['env.json', 'public/env.json'])('pins the maintained production indexer and RPC in %s', async (envPath) => {
+    const raw = await readFile(path.resolve(process.cwd(), envPath), 'utf8');
+    const parsed = JSON.parse(raw) as {
+      POLKASWAP_INDEXER_ENDPOINT?: string;
+      SORAMETRICS_API_ENDPOINT?: string;
+      DEFAULT_NETWORKS?: Array<{ address?: string }>;
+    };
 
-    expect(parsed.POLKASWAP_INDEXER_ENDPOINT).toBe('https://pi.soramitsu.io/graphql');
+    expect(parsed.POLKASWAP_INDEXER_ENDPOINT).toBe('https://mof.sora.org/graphql');
     expect(parsed.SORAMETRICS_API_ENDPOINT).toBe('https://sorametrics.org');
+    expect(parsed.DEFAULT_NETWORKS?.map((node) => node.address)).toEqual(['wss://ws.mof.sora.org']);
   });
 
   it('keeps the task-based point system enabled in production envs', async () => {

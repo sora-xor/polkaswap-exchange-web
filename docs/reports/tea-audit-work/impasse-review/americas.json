@@ -1,0 +1,271 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Impasse audit of 12 Americas/Caribbean destinations and SH; paid private postal purchase from Japan of sealed 100 g manufactured steamed/rolled/dried Camellia sinensis sencha. No permits, certificates, special registration, advance agency notice or authority contact; ordinary customs declarations and arrival inspection allowed.",
+  "inputsReviewed": [
+    "americas.json",
+    "africa.json",
+    "caribbean-definition-peer-review/source-pass-result.json",
+    "territories-legal-scope-peer-review.json",
+    "sources/kn-2024.txt",
+    "caribbean-definition-peer-review/sr-plant2020.txt"
+  ],
+  "decisionChanges": 0,
+  "unresolvedCount": 13,
+  "mainArraysEdited": false,
+  "newLeadPursued": {
+    "code": "KN",
+    "lead": "Follow the broken 2020 IPPC schedule report’s actual language alternatives and Go Back link; recover older national requirements from the official reporting index.",
+    "result": "French and Spanish pages repeat the filename-less attachment. The site’s obsolete breadcrumb index is 404, but its Go Back URL redirects to the working English index. Recovered two actual Word files; metadata identifies requirements published/updated 28 November 2005 and restrictions published 28 November 2005, updated 9 June 2006. No processing definition or general finished-food exemption is present.",
+    "localEvidence": [
+      "kn-link-recovery.json",
+      "kn-backlink-recovery.json",
+      "kn-legacy-report-metadata.json",
+      "kn-legacy-requirements-fetch.json",
+      "kn-requirements2012.doc",
+      "kn-restrictions2012.doc"
+    ],
+    "currentLawAnalysis": "Act 10/2024 sections 1, 2, 16–17 and 67 reviewed. Section 67(1) repeals Cap.14.09; 67(2) permits modification/revocation of old permits, certificates and authorisations. It supplies no independent general commodity classification. No categorical claim is made that the old notice is invalid: even assuming continuing relevance, its undefined agricultural-produce statement does not resolve the manufactured-product risk threshold. No personal/import exemption or exclusion follows from the medicinal-herbs drying line."
+  },
+  "conclusion": "No decision-changing valid general rule or remaining concrete untried official lead identified in this bounded review. Further repetition of the same searches cannot supply the missing operative text or scope evidence. General applicable processing standards or exemptions would suffice; these impasses must not be misdescribed as proof that every parcel requires a bespoke ruling or special paperwork.",
+  "countries": [
+    {
+      "code": "AG",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved processing/category threshold",
+      "whyExistingRulesDoNotSettle": "The complete PPU commodity table governs Categories 2–4 and includes some processed foods; it does not establish that every manufactured food is exempt. Independent food Acts supply no unqualified private-food certificate duty.",
+      "requiredExternalEvidence": "An operative general Category 1 processing criterion, exempt-product list or commodity condition applicable to steamed/rolled/dried sencha. It need not name tea if the criterion clearly covers its manufacture.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://agriculture.gov.ag/index.php/plant-protection/",
+        "https://agriculture.gov.ag/wp-content/uploads/2022/06/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-ver.-27082020.pdf",
+        "https://laws.gov.ag/wp-content/uploads/2018/08/cap-353.pdf",
+        "https://laws.gov.ag/wp-content/uploads/2018/08/cap-211.pdf",
+        "https://health.gov.ag/guidelines/"
+      ]
+    },
+    {
+      "code": "BB",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved manufactured-product pest-risk threshold",
+      "whyExistingRulesDoNotSettle": "Plant Protection Act section 2 is expressly risk-qualified. Sections 14–18 do not convert all manufactured plant foods into regulated products or waive entry conditions upon inspection. Food regulation 26A makes origin-certificate requests discretionary; arrival inspection certificates are ordinary clearance.",
+      "requiredExternalEvidence": "A published processing/risk standard or operative import condition that places this finished food inside or outside the regulated category, including any separate document conditions. A food-business licence is not evidence against a private consignee.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+        "https://agriculture.gov.bb/attachments/Plant%20Protection%20Act%20CAP268_1.pdf",
+        "https://oag.gov.bb/attachments/Health%20Services%20%28Food%20Hygiene%29%20Regulations%2C%201969%20Cap44%27M.PDF",
+        "https://alpha.gov.bb/business-trade/apply-for-food-business-licence",
+        "https://www.health.gov.bb/Legislation"
+      ]
+    },
+    {
+      "code": "BQ",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Missing applicable delegated rules across three jurisdictions",
+      "whyExistingRulesDoNotSettle": "BES plant law permits implementing conditions and defines unprocessed/simply processed products. The household food exception concerns manufacture, not bought imports. Bonaire’s Venezuela-only dried-herb notice cannot establish Japan-origin imports to Bonaire, Saba and Sint Eustatius.",
+      "requiredExternalEvidence": "Applicable plant-import implementing conditions and processing scope for each island, or a shared general personal manufactured-food exemption that actually covers all three. A Bonaire-only answer cannot close the shared destination code.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://bonairegov.com/en/nieuwsoverzicht/artikel/import-uit-venezuela-versoepeld",
+        "https://wetten.overheid.nl/BWBR0028063/2024-01-01/",
+        "https://wetten.overheid.nl/BWBR0028619/",
+        "https://faolex.fao.org/docs/pdf/net214082.pdf"
+      ]
+    },
+    {
+      "code": "BS",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved food-law personal scope and operative status",
+      "whyExistingRulesDoNotSettle": "The plant-permit HS list omits 0902, but the separate food conditions require documents. Act section 35 cannot be read without section 4 food-business scope; section 35(2) is discretion rather than an automatic waiver. Normal retail sealing does not establish aseptic sealing.",
+      "requiredExternalEvidence": "Operative personal-import scope of the food conditions and Act sections 4/35, including commencement, or an applicable general processed-food/private-post exemption. No tea-specific ruling is necessary if that general rule settles both food documents and plant controls.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://bahfsabahamas.com/sectors/plants/faqs",
+        "https://bahfsabahamas.com/sectors/international/guidelines-for-the-importation-of-plants-and-plant-products",
+        "https://bahfsabahamas.com/downloads/documents/legislation/Food-Import-Conditions-Appendix.pdf",
+        "https://bahfsabahamas.com/uploads/General-Import-Stepsv2_2024-10-04-140708_iqzg.pdf",
+        "https://faolex.fao.org/docs/pdf/bha158350.pdf",
+        "https://bahfsabahamas.com/sectors/international/food-import-conditions"
+      ]
+    },
+    {
+      "code": "CW",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Missing operative plant-product import scope",
+      "whyExistingRulesDoNotSettle": "Customs plants/flowers controls do not classify finished food. Warenlandsverordening private-household manufacture exclusion does not exempt bought food; regulation-making powers alone create no blanket certificate obligation.",
+      "requiredExternalEvidence": "Current LVV rules defining regulated plants/plant products and applicable manufactured-food or personal-food exemptions, with conditions covering private postal imports. No concrete untried official instrument was identified in the reviewed trail.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://douane.cw/particulier/reizigersbagage/verboden-in-en-uit-te-voeren/",
+        "https://douane.cw/zakelijk/inklaring-en-invoer/",
+        "https://lokaleregelgeving.overheid.nl/CVDR143880/1",
+        "https://lokaleregelgeving.overheid.nl/CVDR143880/1?show-wti=true"
+      ]
+    },
+    {
+      "code": "DM",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved risk threshold plus incomplete new food-law text",
+      "whyExistingRulesDoNotSettle": "Regulation 8(g) exempts processed pest-free articles from regulation 4 only; it does not expressly displace the parent Act’s permit/certificate duties. Actual pest freedom and categorical inability to harbour pests are different tests. The 2026 Food Safety Act is assented, but accessible enacted preview lacks full scope and commencement.",
+      "requiredExternalEvidence": "An applicable general processing standard excluding this finished product from the Act, or a permit/certificate exemption; additionally, the full enacted Food Safety Act 5/2026 and its commencement status. The bill’s private-use exception cannot be substituted for the enacted text.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://establishment.gov.dm/services/application-import-permit",
+        "https://divisionofagriculture.gov.dm/images/documents/forms/sample_import_permit_and_submission_form.pdf",
+        "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+        "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+        "https://faolex.fao.org/docs/pdf/dmi111807.pdf",
+        "https://customs.gov.dm/trade/prohibited-and-restricted-items",
+        "https://agriculture.gov.dm/images/documents/forms/application_for_import_permit.pdf",
+        "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7908",
+        "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7913",
+        "https://www.dominica.gov.dm/images/docs/bills/food_safety_bill_2026.pdf",
+        "https://dominica.gov.dm/laws/1997/act08-1997.pdf"
+      ]
+    },
+    {
+      "code": "KN",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved current manufactured-product risk threshold; missing 2020 commodity file",
+      "whyExistingRulesDoNotSettle": "Newly recovered official 2005/2006 reports require certification for agricultural produce and prohibit specified mango origins. They neither define that broad category to include finished manufactured food nor provide a processed-food exemption. Act 10/2024 section 2 retains a risk threshold, sections 16–17 attach duties to covered articles, and section 67 does not independently turn the old summary into a comprehensive commodity rule.",
+      "requiredExternalEvidence": "The usable 2020 commodity attachment, a current general processing/risk condition, or another operative import rule settling manufactured sencha. Even assuming the old summary remains relevant, its undefined agricultural-produce language does not resolve the current manufactured-product threshold.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://www.sknis.gov.kn/2020/06/26/plant-and-plant-product-import-requirements/",
+        "https://lawcommission.gov.kn/wp-content/documents/Annual-Laws/2024/ACTs/Act-10-2024-Plant-Protection-Act.pdf",
+        "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2020/08/commodities-and-their-import-requirements/",
+        "https://lawcommission.gov.kn/wp-content/documents/Act02and09TOC/Ch-09_26-Sale-of-Food-Drugs-Act.pdf",
+        "https://lawcommission.gov.kn/wp-content/documents/Revised-Acts-of-St-Kitts-and-Nevis/Revised-Acts-of-St-Kitts-and-Nevis-2020/Ch-09_21-Public-Health-Act.pdf",
+        "https://www.miticca.gov.kn/wp-content/uploads/2021/07/Import-Export-Procedures-Manual.pdf"
+      ]
+    },
+    {
+      "code": "SR",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved manufactured-product pest-risk threshold",
+      "whyExistingRulesDoNotSettle": "The complete 2020 Act, article 1(1)(bb), covers risk-bearing processed products. Article 1(2) gives international term meanings priority but is not itself a blanket processed-food permission. Article 6(3) is a frozen fruit/vegetable certificate exception that retains permission. The old trade Negative List does not supersede later plant-health law.",
+      "requiredExternalEvidence": "An applicable domestic processing/category rule or commodity condition placing this product inside or outside article 1(1)(bb), or a relevant general exemption. A product-name-specific or per-parcel ruling is not inherently required.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://www.dna.sr/media/dc5fihzb/sb_2020___78.pdf",
+        "https://gov.sr/wp-content/uploads/2026/08/Procedure-voor-de-invoer-van-planten-en-plantaardige-producten.jpg",
+        "https://gov.sr/wp-content/uploads/2023/08/LVV-IDB-Nieuwsbrief-uitgave-02.pdf",
+        "https://www.dna.sr/wetgeving/ontwerpwetten-bij-dna/in-behandeling/ontwerpwet-levensmiddelenwet-2026/",
+        "https://gov.sr/ministeries/ministerie-van-economische-zaken-ondernemerschap-technologische-innovatie/invoer-uitvoer-en-deviezen-controle-iud/",
+        "https://faolex.fao.org/docs/pdf/sur129510.pdf",
+        "https://gov.sr/wp-content/uploads/2022/05/staatsbesluit-van-2-februari-2006-no-20-houdende-wijziging-van-het-besluit-negatieve-lijst-2003-sb-2003-no-74.pdf"
+      ]
+    },
+    {
+      "code": "SX",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Only the independent agricultural scope remains unresolved",
+      "whyExistingRulesDoNotSettle": "Current Public Health Decree article 4 confines notification to commercial use and health certificates to listed commercial animal foods/baby food. Its personal-use scope is not passenger-only. Those favourable food provisions do not settle independent LVV plant controls.",
+      "requiredExternalEvidence": "Operative LVV processing/product scope or general manufactured-food exemption applicable to 100 g private postal tea. Dutch/EU and French-island rules cannot substitute for Sint Maarten’s own conditions.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+        "https://www.newgmc.com/index.php?download=466%3Aproduce-and-plant-produce-import-form&id=35%3Asops-a-ssops&option=com_phocadownload&view=category",
+        "https://lokaleregelgeving.overheid.nl/CVDR475613",
+        "https://www.sintmaartengov.org/Documents/Official%20Publications/AB%202017%2C%20no.%2033%20Landsbesluit%20publieke%20gezondheid.pdf"
+      ]
+    },
+    {
+      "code": "TC",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved regulated-product risk threshold",
+      "whyExistingRulesDoNotSettle": "The Plant Health Ordinance is risk-qualified and its 2024 regulations expressly apply postal controls to regulated articles. Section 36 authorizes conditions; regulation 34(4) recognizes waivers made elsewhere but creates none itself. The enacted Food and Drugs private-consumption exclusion does not waive plant controls.",
+      "requiredExternalEvidence": "A published section 36 condition, general processing exemption or current classification resolving this product. The Food and Drugs Ordinance commencement remains independently unverified, though its enacted private-use exclusion prevents treating section 5 alone as an unconditional private certificate duty.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://gov.tc/trade/portal/imports",
+        "https://www.agriculture.gov.tc/residents",
+        "https://agc.gov.tc/agc/component/edocman/25-of-2024-plant-health-regulations-2024/fdocument?Itemid=9999",
+        "https://gov.tc/agc/2016-ordinances",
+        "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/viewdocument/725?Itemid=",
+        "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/fdocument?Itemid=9999",
+        "https://www.gov.tc/environmentalhealth/services/food-hygiene"
+      ]
+    },
+    {
+      "code": "VC",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unresolved risk-qualified manufactured-product scope",
+      "whyExistingRulesDoNotSettle": "Act 16/2005 section 10 provides designated-article controls, and current ministry guidance includes personal plant products, but neither settles processed finished food. The 2019 examples expressly are not exhaustive. Postal reporting and arrival release are not advance-document waivers.",
+      "requiredExternalEvidence": "Applicable section 10 import conditions, a general processing rule or other published exemption that resolves this manufacture; any controlling food-import subsidiary rule if it imposes separate special paperwork. The food-inspection guide alone establishes no origin certificate.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://faolex.fao.org/docs/pdf/stv160536.pdf",
+        "https://importlicensing.wto.org/content/plant-and-plant-products-2",
+        "https://agriculture.gov.vc/agriculture/images/stories/AgricInfo/Agrinfo_September_2019.pdf",
+        "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/612-licenses-permits",
+        "https://nationalparks.gov.vc/nationalparks/images/documents/EnvironmentalHealthServicesAct1991.pdf"
+      ]
+    },
+    {
+      "code": "VG",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Unavailable operative subsidiary commodity texts",
+      "whyExistingRulesDoNotSettle": "The January 2026 official index identifies Cap.93 regulations and amendments; the Food Security and Sustainability Act 2022 is expressly not in force. Nursery-oriented guidance cannot define finished-food scope.",
+      "requiredExternalEvidence": "The operative Plant Protection Regulations (1991 revision, amended SI35/2002) and Prohibition of Importation of Plants Regulations SI13/1996 with amendments, or an authoritative current equivalent publishing their applicable scope. An individual ruling is one possible alternative, not a legal prerequisite established by this review.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://bvi.gov.vg/sites/default/files/CONDITIONS%20FOR%20PLANT%20IMPORTATION.pdf",
+        "https://www.bvi.gov.vg/tags/agriculture?page=17",
+        "https://laws.gov.vg/inf-alpha/v",
+        "https://www.gov.vg/sites/default/files/2026-02/final_consolidated_index_with_user_guide_as_at_january_1%2C_2026.pdf",
+        "https://laws.gov.vg/revised-laws"
+      ]
+    },
+    {
+      "code": "SH",
+      "currentDecision": "unresolved",
+      "decisionChanged": false,
+      "impasse": "Missing operative Tristan scope within shared country code",
+      "whyExistingRulesDoNotSettle": "St Helena and Ascension have separate favourable conclusions. For Tristan the 2021 ordinance is marked not yet in force; Island Council section 15/Schedule 3(f) enables by-laws rather than imposing a blanket dead-plant ban. By-laws may commence by local notice-board posting, so online absence is inconclusive.",
+      "requiredExternalEvidence": "Operative Tristan plant/biosecurity rules or a published interpretation covering manufactured preserved food, including relevant by-laws and any 2021 ordinance commencement. Existing evidence can support island-specific handling for St Helena/Ascension, but cannot approve all SH addresses without distinguishing Tristan.",
+      "individualAuthorityRulingIntrinsicallyRequired": false,
+      "concreteUntriedOfficialLeadRemaining": null,
+      "sourceUrls": [
+        "https://sthelenapublicservicejobs.sh/wp-content/uploads/2023/06/General-guidelines-for-food-importations-Updated-Oct-2021.pdf",
+        "https://www.ascension.gov.ac/travel-and-shipping/biosecurity",
+        "https://www.sainthelena.gov.sh/app/uploads/gazette/Ordinance-2-Biosecurity-Ordinance-2021-TDC.pdf",
+        "https://www.tristandc.com/visitsships.php",
+        "https://www.tristandc.com/wildlife/biosecurityrules-2025-10-02.php",
+        "https://www.sainthelena.gov.sh/wp-content/uploads/2022/01/Biosecurity-Ordinance.pdf",
+        "https://www.sainthelena.gov.sh/st-helena/government/legislation/laws-of-tristan-da-cunha/alphabetical-list-tristan-da-cunha/",
+        "https://www.sainthelena.gov.sh/gazette/",
+        "https://www.sainthelena.gov.sh/documents/Export-Import-Control-TdC-Ordinance",
+        "https://www.sainthelena.gov.sh/documents/Conservation-etc.-TdaC-Ordinance",
+        "https://www.sainthelena.gov.sh/documents/Island-Council-TdaC-Ordinance",
+        "https://www.sainthelena.gov.sh/documents/Tristan-da-Cunha-Applied-SH-Laws-List-Updated-010418",
+        "https://www.sainthelena.gov.sh/documents/app-of-sh-law-to-tdc-ord-updated-180620/",
+        "https://www.sainthelena.gov.sh/documents/food-safety-ordinance-corrected-2.pdf"
+      ]
+    }
+  ]
+}

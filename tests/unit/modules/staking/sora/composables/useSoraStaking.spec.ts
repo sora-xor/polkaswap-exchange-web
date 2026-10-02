@@ -11,7 +11,7 @@ const shared = vi.hoisted(() => {
       myValidators: ['validator-1'],
     } as any,
     newStakeValidatorsMode: 'recommended' as any,
-    minNominatorBond: 1,
+    minNominatorBond: '1',
     unbondPeriod: 2,
     stakeAmount: '10',
     validatorsInfo: [
@@ -143,6 +143,7 @@ import { useSoraStaking } from '@/modules/staking/sora/composables/useSoraStakin
 describe('useSoraStaking', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    shared.stakingStore.minNominatorBond = '1';
     Object.values(shared.stakingStore).forEach((value) => {
       if (typeof value === 'function' && 'mockClear' in value) {
         value.mockClear();
@@ -164,11 +165,21 @@ describe('useSoraStaking', () => {
   });
 
   it('keeps the minimum nominator bond display aligned with the live staking overview when the bond is zero', () => {
-    shared.stakingStore.minNominatorBond = 0;
+    shared.stakingStore.minNominatorBond = '0';
 
     const staking = useSoraStaking();
 
     expect(staking.minNominatorBondFormatted.value).toBe('0');
+  });
+
+  it('formats a minimum nominator bond without converting its codec value to a number', () => {
+    const minNominatorBond = '1000000000000000000000000000000';
+    shared.stakingStore.minNominatorBond = minNominatorBond;
+
+    const staking = useSoraStaking();
+
+    expect(staking.minNominatorBond.value).toBe(minNominatorBond);
+    expect(staking.minNominatorBondFormatted.value).toBe(minNominatorBond);
   });
 
   it('proxies mutations and actions to the staking store facade', async () => {
@@ -187,6 +198,7 @@ describe('useSoraStaking', () => {
     staking.selectValidators(validators);
     staking.setStakingInfo({ totalStake: '20' } as any);
     staking.setTotalNominators(111);
+    await staking.withdraw('9007199254740993');
     await staking.getBondAndNominateNetworkFee();
     await staking.getNominateNetworkFee();
     await staking.nominate();
@@ -200,6 +212,7 @@ describe('useSoraStaking', () => {
     expect(shared.stakingStore.selectValidators).toHaveBeenCalledWith(validators);
     expect(shared.stakingStore.setStakingInfo).toHaveBeenCalled();
     expect(shared.stakingStore.setTotalNominators).toHaveBeenCalledWith(111);
+    expect(shared.stakingStore.withdraw).toHaveBeenCalledWith('9007199254740993');
     expect(shared.stakingStore.getBondAndNominateNetworkFee).toHaveBeenCalledTimes(1);
     expect(shared.stakingStore.getNominateNetworkFee).toHaveBeenCalledTimes(1);
     expect(shared.stakingStore.nominate).toHaveBeenCalledTimes(1);

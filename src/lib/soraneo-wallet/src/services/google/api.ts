@@ -13,9 +13,16 @@ type GoogleApiOptions = {
 export class GoogleApi {
   private options!: GoogleApiOptions;
   private _ready = false;
+  private _prepared = false;
+  private preparation: Promise<void> | null = null;
 
   get ready(): boolean {
     return this._ready;
+  }
+
+  /** The generic client can receive an OAuth token without loading any Drive discovery document. */
+  get prepared(): boolean {
+    return this._prepared;
   }
 
   get hasKey(): boolean {
@@ -36,8 +43,22 @@ export class GoogleApi {
     if (!this.options) throw new Error(`[${this.constructor.name}]: Options should be set before inintialization`);
     if (!this.options.apiKey) throw new Error(`[${this.constructor.name}]: Api key is required`);
 
-    await this.load();
+    await this.prepare();
     await this.initClient(this.options);
+  }
+
+  /** Preload the generic client for a click-safe OAuth prompt, without an API key or discovery request. */
+  public async prepare(): Promise<void> {
+    if (this.prepared) return;
+    if (this.preparation) return this.preparation;
+    this.preparation = (async () => {
+      await this.load();
+      await new Promise<void>((resolve) => gapi.load('client', resolve));
+      this._prepared = true;
+    })().finally(() => {
+      this.preparation = null;
+    });
+    return this.preparation;
   }
 
   /** Loads the Google API script in parallel with DOM readiness checks. */
@@ -47,17 +68,8 @@ export class GoogleApi {
 
   /** Bootstraps the Drive client and marks the wrapper as ready. */
   private async initClient({ apiKey, discoveryDocs }: GoogleApiOptions): Promise<void> {
-    return new Promise((resolve, reject) => {
-      gapi.load('client', () => {
-        gapi.client
-          .init({ apiKey, discoveryDocs })
-          .then(() => {
-            this._ready = true;
-            resolve();
-          })
-          .catch(reject);
-      });
-    });
+    await gapi.client.init({ apiKey, discoveryDocs });
+    this._ready = true;
   }
 }
 
@@ -87,11 +99,12 @@ ${content}
   }
 
   /** Wraps file content in the multipart format expected by Drive uploads. */
-  prepareBody(content: string, { name, description, mimeType = this.mimeType.json }: gapi.client.drive.File) {
+  prepareBody(content: string, { name, description, parents, mimeType = this.mimeType.json }: gapi.client.drive.File) {
     const metadata: gapi.client.drive.File = {
       name,
       description,
       mimeType,
+      ...(parents ? { parents } : {}),
     };
 
     return this.prepareContent(content, metadata);
@@ -164,26 +177,50 @@ ${content}
     });
   }
 
-  /** Replaces the file contents using a multipart upload. */
-  public async updateFile(fileId: string, body: string): Promise<void> {
-    const request = gapi.client.request({
-      path: `/upload/drive/v3/files/${fileId}`,
-      method: 'PATCH',
-      params: { uploadType: 'multipart' },
-      headers: {
-        'Content-Type': `multipart/related; boundary=${this.boundary}`,
-        'Content-Length': body.length.toString(),
-      },
-      body,
-    });
+  /** Creates metadata and encrypted content together, without exposing an empty backup file. */
+  public async createBackupFile(content: string, metadata: gapi.client.drive.File): Promise<string> {
+    return this.uploadBackup('/upload/drive/v3/files', 'POST', this.prepareBody(content, metadata));
+  }
 
-    await new Promise((resolve, reject) => {
-      try {
-        request.execute(resolve);
-      } catch (error) {
-        console.error(error);
-        reject(error);
+  /** Replaces encrypted content only after Drive acknowledges the expected file. */
+  public async updateFile(fileId: string, body: string): Promise<void> {
+    await this.uploadBackup(`/upload/drive/v3/files/${encodeURIComponent(fileId)}`, 'PATCH', body, fileId);
+  }
+
+  /** Uses the documented request thenable; execute callbacks also contain errors and are not success signals. */
+  private async uploadBackup(
+    path: string,
+    method: 'POST' | 'PATCH',
+    body: string,
+    expectedId?: string
+  ): Promise<string> {
+    try {
+      const request = gapi.client.request<{ id?: string; error?: unknown }>({
+        path,
+        method,
+        params: { uploadType: 'multipart', fields: 'id' },
+        headers: {
+          'Content-Type': `multipart/related; boundary=${this.boundary}`,
+        },
+        body,
+      });
+      const response = await request;
+      const id = response.result?.id;
+      if (
+        response.status < 200 ||
+        response.status >= 300 ||
+        !Number.isInteger(response.status) ||
+        response.result?.error ||
+        typeof id !== 'string' ||
+        !id.trim() ||
+        (expectedId !== undefined && id !== expectedId)
+      ) {
+        throw new Error('Unconfirmed Google Drive backup');
       }
-    });
+      return id;
+    } catch {
+      // Do not log a provider rejection object: it can contain the submitted encrypted body.
+      throw new Error('Google Drive backup upload failed');
+    }
   }
 }

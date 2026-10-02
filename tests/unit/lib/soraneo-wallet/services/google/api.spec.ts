@@ -38,6 +38,21 @@ describe('GoogleApi', () => {
     await expect(api.init()).rejects.toThrow('[GoogleApi]: Api key is required');
   });
 
+  it('prepares a shared generic client without API discovery or credentials', async () => {
+    const init = vi.fn();
+    const load = vi.fn((_name, ready: () => void) => ready());
+    vi.stubGlobal('gapi', { load, client: { init } });
+    const api = new GoogleApi();
+    await Promise.all([api.prepare(), api.prepare()]);
+    expect(scriptLoadMock).toHaveBeenCalledOnce();
+    expect(load).toHaveBeenCalledOnce();
+    expect(init).not.toHaveBeenCalled();
+    expect(api.prepared).toBe(true);
+    expect(api.ready).toBe(false);
+    await api.prepare();
+    expect(load).toHaveBeenCalledOnce();
+  });
+
   it('loads the Google API script and initializes the client once', async () => {
     const loadMock = vi.fn((_, callback: () => void) => callback());
     const initMock = vi.fn().mockResolvedValue(undefined);
@@ -192,8 +207,7 @@ describe('GoogleDriveApi', () => {
   });
 
   it('sends multipart updates through gapi.client.request', async () => {
-    const executeMock = vi.fn((resolve: () => void) => resolve());
-    const requestMock = vi.fn().mockReturnValue({ execute: executeMock });
+    const requestMock = vi.fn().mockResolvedValue({ status: 200, result: { id: 'file-id' } });
 
     vi.stubGlobal('gapi', {
       client: {
@@ -209,34 +223,90 @@ describe('GoogleDriveApi', () => {
     expect(requestMock).toHaveBeenCalledWith({
       path: '/upload/drive/v3/files/file-id',
       method: 'PATCH',
-      params: { uploadType: 'multipart' },
+      params: { uploadType: 'multipart', fields: 'id' },
       headers: {
         'Content-Type': 'multipart/related; boundary=foo_bar_baz',
-        'Content-Length': String(body.length),
       },
       body,
     });
-    expect(executeMock).toHaveBeenCalledTimes(1);
   });
 
-  it('logs and rejects when request execution throws', async () => {
-    const error = new Error('request failed');
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-    const requestMock = vi.fn().mockReturnValue({
-      execute: vi.fn(() => {
-        throw error;
-      }),
+  it('uploads metadata and encrypted backup content together when creating a file', async () => {
+    const request = vi.fn().mockResolvedValue({ status: 200, result: { id: 'new-file' } });
+    const create = vi.fn();
+    vi.stubGlobal('gapi', { client: { request, drive: { files: { create } } } });
+    const api = new GoogleDriveApi();
+    await expect(
+      api.createBackupFile('{"encrypted":"synthetic"}', {
+        name: 'backup.json',
+        description: 'Wallet',
+        parents: ['folder-id'],
+      })
+    ).resolves.toBe('new-file');
+    expect(create).not.toHaveBeenCalled();
+    expect(request).toHaveBeenCalledWith({
+      path: '/upload/drive/v3/files',
+      method: 'POST',
+      params: { uploadType: 'multipart', fields: 'id' },
+      headers: { 'Content-Type': 'multipart/related; boundary=foo_bar_baz' },
+      body: expect.stringContaining('"parents":["folder-id"]'),
     });
+    expect(request.mock.calls[0][0].body).toContain('{"encrypted":"synthetic"}');
+  });
 
+  it('rejects an asynchronous API error and permits an explicit successful retry without executing callbacks', async () => {
+    const execute = vi.fn((callback) => callback({ error: { code: 403 } }));
+    const failed = {
+      execute,
+      then: (_resolve: unknown, reject: (error: unknown) => void) =>
+        queueMicrotask(() => reject({ status: 403, result: { error: { message: 'Private provider response' } } })),
+    };
+    const request = vi
+      .fn()
+      .mockReturnValueOnce(failed)
+      .mockResolvedValueOnce({ status: 200, result: { id: 'file-id' } });
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    vi.stubGlobal('gapi', { client: { request } });
+    const api = new GoogleDriveApi();
+    await expect(api.updateFile('file-id', 'body')).rejects.toThrow('Google Drive backup upload failed');
+    expect(execute).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+    await expect(api.updateFile('file-id', 'body')).resolves.toBeUndefined();
+    expect(request).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    { status: 403, result: { id: 'file-id', error: { code: 403 } } },
+    { status: 200, result: { error: { code: 500 } } },
+    { status: 200, result: {} },
+    { status: 204, result: null },
+    { result: { id: 'file-id' } },
+    { status: 200, result: { id: 'different-file' } },
+  ])('rejects unconfirmed update responses: %j', async (response) => {
+    vi.stubGlobal('gapi', { client: { request: vi.fn().mockResolvedValue(response) } });
+    const api = new GoogleDriveApi();
+    await expect(api.updateFile('file-id', 'body')).rejects.toThrow('Google Drive backup upload failed');
+  });
+
+  it('does not accept a successful creation without an acknowledged file id', async () => {
+    vi.stubGlobal('gapi', { client: { request: vi.fn().mockResolvedValue({ status: 200, result: { id: '' } }) } });
+    await expect(new GoogleDriveApi().createBackupFile('body', { name: 'backup.json' })).rejects.toThrow(
+      'Google Drive backup upload failed'
+    );
+  });
+
+  it('sanitizes synchronous request failures without logging the encrypted payload', async () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     vi.stubGlobal('gapi', {
       client: {
-        request: requestMock,
+        request: () => {
+          throw new Error('synthetic private payload');
+        },
       },
     });
-
-    const api = new GoogleDriveApi();
-
-    await expect(api.updateFile('file-id', 'body')).rejects.toBe(error);
-    expect(errorSpy).toHaveBeenCalledWith(error);
+    await expect(new GoogleDriveApi().updateFile('file-id', 'encrypted-body')).rejects.toThrow(
+      'Google Drive backup upload failed'
+    );
+    expect(error).not.toHaveBeenCalled();
   });
 });

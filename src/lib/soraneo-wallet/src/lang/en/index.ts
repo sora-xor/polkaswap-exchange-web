@@ -2,6 +2,7 @@ import { Operation, TransactionStatus } from '@sora-substrate/sdk';
 import { BalanceType } from '@sora-substrate/sdk/build/assets/consts';
 
 const BalanceKeys = BalanceType ?? {
+  Free: 'Free',
   Transferable: 'Transferable',
   Total: 'Total',
   Locked: 'Locked',
@@ -210,14 +211,20 @@ export default {
     selectAccount: 'Select account to work with',
     disclaimer: 'Please note that certain wallets may not be fully supported.',
     list: {
-      integrated: 'Integrated',
-      extensions: 'Extensions',
+      integrated: 'Built-in wallets',
+      extensions: 'Browser and mobile wallets',
+      integratedDescription: "Create or import a SORA account directly in Polkaswap.",
+      extensionsDescription: "Connect an account from a wallet you already use.",
     },
     action: {
       learnMore: 'Learn more about wallet connection',
       refresh: 'Refresh',
     },
     wallet: {
+      googleDescription: "Create or import a SORA account with encrypted wallet data stored in your Google Drive.",
+      localDescription: "Create or import a SORA account stored in this browser.",
+      extensionDescription: "Choose an account from your browser wallet and approve the connection there.",
+      walletConnectDescription: "Pair a supported mobile or desktop wallet using a QR code or app link.",
       connected: 'Connected',
       install: 'Install',
       recommended: 'Recommended',
@@ -291,7 +298,7 @@ export default {
   },
   assets: {
     empty: 'There are no assets',
-    totalAssetsValue: 'Total assets value:',
+    totalAssetsValue: 'Total owned value:',
     swap: '@:swapText',
     send: '@:sendText',
     details: 'Details',
@@ -302,12 +309,16 @@ export default {
     copy: 'Copy Asset ID',
     copied: 'Copied!',
     balance: {
-      [BalanceKeys.Transferable]: 'Transferable',
-      [BalanceKeys.Total]: 'Total',
+      breakdown: 'Balance breakdown',
+      [BalanceKeys.Free]: 'Free balance',
+      [BalanceKeys.Transferable]: 'Spendable',
+      [BalanceKeys.Total]: 'Total owned',
       [BalanceKeys.Locked]: 'Locked',
-      [BalanceKeys.Frozen]: 'Frozen',
+      [BalanceKeys.Frozen]: 'Frozen threshold',
       [BalanceKeys.Reserved]: 'Reserved',
       [BalanceKeys.Bonded]: 'Bonded',
+      xorFullyRestricted:
+        'Your {symbol} is included in Total owned, but none is spendable. The frozen threshold may come from governance or staking locks.',
     },
   },
   asset: {

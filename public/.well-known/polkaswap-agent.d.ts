@@ -9,11 +9,6 @@ export interface PolkaswapAgentAssetRef {
   symbol?: string;
 }
 
-export interface PolkaswapAgentIntentRequest {
-  intentId?: string;
-  clientOrderId?: string;
-}
-
 export interface PolkaswapAgentReadyOptions {
   requireNode?: boolean;
   requireWallet?: boolean;
@@ -39,21 +34,134 @@ export interface PolkaswapAgentResolveAssetRequest {
   includeBalance?: boolean;
 }
 
-export interface PolkaswapAgentSwapRequest extends PolkaswapAgentIntentRequest {
+export interface PolkaswapAgentSwapRequestBase {
   assetIn: PolkaswapAgentAssetRef;
   assetOut: PolkaswapAgentAssetRef;
-  amount: string | number;
-  side?: PolkaswapAgentSwapSide;
-  slippageTolerance?: string | number;
-  liquiditySource?: string;
-  dexId?: PolkaswapAgentDexId | string;
+  amount: string;
   quoteTimeoutMs?: number;
 }
 
-export interface PolkaswapAgentTransferRequest extends PolkaswapAgentIntentRequest {
+/** Omit execution to retain the existing quote/preparation behavior. */
+export interface PolkaswapAgentLegacySwapRequest extends PolkaswapAgentSwapRequestBase {
+  execution?: undefined;
+  side?: PolkaswapAgentSwapSide;
+  slippageTolerance?: string;
+  liquiditySource?: string;
+  dexId?: PolkaswapAgentDexId | string;
+}
+
+/** Exactly these two own data fields; expectedDenominator is a positive canonical u128 string. */
+export interface PolkaswapAgentGoalSwapExecutionRequest {
+  protocol: 'finalized-xyk-native-fee-v1';
+  expectedDenominator: string;
+}
+
+/** KUSD/XOR only, in either direction. These selectors must be supplied explicitly. */
+export interface PolkaswapAgentFinalizedSwapRequest extends PolkaswapAgentSwapRequestBase {
+  execution: PolkaswapAgentGoalSwapExecutionRequest;
+  side: 'input';
+  dexId: 0;
+  liquiditySource: 'XYKPool';
+  slippageTolerance: '0.5';
+}
+
+export type PolkaswapAgentSwapRequest = PolkaswapAgentLegacySwapRequest | PolkaswapAgentFinalizedSwapRequest;
+
+/** Detached evidence, not a provider-owned context or permission to trade. */
+export interface PolkaswapAgentFinalizedCodecBinding {
+  readonly genesisHash: string;
+  readonly blockHash: string;
+  readonly runtimeVersion: Readonly<{ specVersion: number; transactionVersion: number }>;
+  readonly metadataSha256: string;
+  readonly metadataVersion: number;
+  readonly signedExtensions: readonly string[];
+}
+
+/** SCALE envelope used only to estimate a bounded native fee; it contains a placeholder signature. */
+export interface PolkaswapAgentFinalizedFeeEnvelope extends PolkaswapAgentFinalizedCodecBinding {
+  readonly policy: Readonly<Record<string, unknown>>;
+  readonly policySha256: string;
+  readonly policyHashEncoding: 'sha256-json-utf8';
+  readonly assetIn: string;
+  readonly assetOut: string;
+  readonly amountInCodec: string;
+  readonly minimumCodec: string;
+  readonly feeAssetAddress: string;
+  readonly callHex: string;
+  readonly envelopeHex: string;
+  readonly encodedLength: number;
+  readonly envelopeSha256: string;
+  readonly feeQueryDataHex: string;
+  readonly estimation: Readonly<Record<string, unknown>>;
+  readonly signatureVerified: false;
+  readonly feeAdequacyVerified: false;
+  readonly transactionSubmitted: false;
+}
+
+/** Core public fields are typed; nested codec/pool details retain their full immutable JSON evidence. */
+export interface PolkaswapAgentFinalizedExecutionEstimate {
+  readonly status: 'available';
+  readonly context: {
+    readonly kind: 'finalized-browser-execution-context';
+    readonly policy: Readonly<Record<string, unknown>>;
+    readonly genesisHash: string;
+    readonly block: Readonly<{ hash: string; height: number; parentHash: string; timestampMs: number }>;
+    readonly checkedAtMs: number;
+    readonly receivedAtMs: number;
+    readonly expectedDenominator: string;
+    readonly codecBinding: PolkaswapAgentFinalizedCodecBinding;
+    readonly codeHash: string;
+    readonly pool: Readonly<Record<string, unknown>>;
+    readonly finalityAttestation: 'rpc-canonical-finalized';
+    readonly rpcCalls: number;
+    readonly observedFill: false;
+    readonly transactionSubmitted: false;
+  };
+  readonly request: Readonly<{ assetIn: string; assetOut: string; amountInCodec: string }>;
+  readonly checkedAtMs: number;
+  readonly receivedAtMs: number;
+  readonly rpcCalls: number;
+  readonly quote: {
+    readonly amountOutCodec: string;
+    readonly amountWithoutImpactCodec: string;
+    readonly minimumAmountOutCodec: string;
+    readonly poolFeeCodec: string;
+    readonly feeAssetAddress: string;
+    readonly route: readonly string[];
+    readonly dexId: 0;
+    readonly liquiditySource: 'XYKPool';
+    readonly slippageBps: 50;
+  };
+  readonly fee: {
+    readonly assetId: string;
+    readonly amountCodec: string;
+    readonly policy: Readonly<Record<string, unknown>>;
+    readonly policySha256: string;
+    readonly envelope: PolkaswapAgentFinalizedFeeEnvelope;
+    readonly info: Readonly<{ partialFeeCodec: string; rawQueryInfo: unknown }>;
+    readonly details: Readonly<{
+      inclusionFee: Readonly<{ baseFee: string; lenFee: string; adjustedWeightFee: string }> | null;
+      tip: string;
+      inclusionFeeTotal: string;
+      finalFee: string;
+      encodedHex: string;
+    }>;
+  };
+  readonly raw: Readonly<{ quote: unknown; info: unknown; details: unknown }>;
+  readonly feeAdequacyVerified: false;
+  readonly observedFill: false;
+  readonly transactionSubmitted: false;
+}
+
+export interface PolkaswapAgentGoalSwapExecutionEvidence {
+  readonly protocol: 'finalized-xyk-native-fee-v1';
+  readonly estimate: PolkaswapAgentFinalizedExecutionEstimate;
+}
+
+export interface PolkaswapAgentTransferRequest {
   asset: PolkaswapAgentAssetRef;
   to: string;
-  amount: string | number;
+  amount: string;
 }
 
 export interface PolkaswapAgentPoolInfoRequest {
@@ -67,23 +175,34 @@ export interface PolkaswapAgentLiquidityPositionsRequest {
   timeoutMs?: number;
 }
 
-export interface PolkaswapAgentAddLiquidityRequest extends PolkaswapAgentIntentRequest {
+export interface PolkaswapAgentAddLiquidityRequest {
   assetA: PolkaswapAgentAssetRef;
   assetB: PolkaswapAgentAssetRef;
-  amountA?: string | number;
-  amountB?: string | number;
-  slippageTolerance?: string | number;
+  amountA?: string;
+  amountB?: string;
+  slippageTolerance?: string;
   allowPoolCreation?: boolean;
 }
 
-export interface PolkaswapAgentRemoveLiquidityRequest extends PolkaswapAgentIntentRequest {
+export interface PolkaswapAgentRemoveLiquidityRequest {
   assetA: PolkaswapAgentAssetRef;
   assetB: PolkaswapAgentAssetRef;
-  liquidityAmount?: string | number;
-  percent?: string | number;
-  slippageTolerance?: string | number;
+  liquidityAmount?: string;
+  percent?: string;
+  slippageTolerance?: string;
   timeoutMs?: number;
 }
+
+/** The complete and only input accepted by every state-changing execute method. */
+export interface PolkaswapAgentExecutePreparedRequest {
+  intentId: string;
+  clientOrderId: string;
+}
+
+export interface PolkaswapAgentExecuteSwapRequest extends PolkaswapAgentExecutePreparedRequest {}
+export interface PolkaswapAgentExecuteTransferRequest extends PolkaswapAgentExecutePreparedRequest {}
+export interface PolkaswapAgentExecuteAddLiquidityRequest extends PolkaswapAgentExecutePreparedRequest {}
+export interface PolkaswapAgentExecuteRemoveLiquidityRequest extends PolkaswapAgentExecutePreparedRequest {}
 
 export interface PolkaswapAgentMaxAmountRequest {
   asset: PolkaswapAgentAssetRef;
@@ -182,6 +301,8 @@ export interface PolkaswapAgentStatus {
     connected: boolean;
     endpoint: string;
     blockNumber: number;
+    genesisHash: string;
+    runtimeSpecVersion: number;
   };
   wallet: PolkaswapAgentWalletStatus;
   settings: {
@@ -226,13 +347,14 @@ export interface PolkaswapAgentFeeEstimate {
   asset: PolkaswapAgentAsset;
   amount: string;
   amountCodec: string;
-  source: 'static' | 'unavailable';
+  source: 'static' | 'payment-info' | 'finalized-runtime' | 'unavailable';
 }
 
 export type PolkaswapAgentWarningSeverity = 'info' | 'warning' | 'critical';
 
 export interface PolkaswapAgentWarning {
   code:
+    | 'FEE_UNAVAILABLE'
     | 'HIGH_PRICE_IMPACT'
     | 'INSUFFICIENT_BALANCE'
     | 'LOW_LIQUIDITY'
@@ -277,7 +399,10 @@ export interface PolkaswapAgentCapabilities {
 }
 
 export interface PolkaswapAgentSwapQuote {
-  intentId: string;
+  /** Included in quoteDigest and the prepared envelope; not live execution authority. */
+  execution?: PolkaswapAgentGoalSwapExecutionEvidence;
+  /** Non-executable digest of the quote. Only prepare* can return an intentId. */
+  quoteDigest: string;
   request: {
     amount: string;
     side: PolkaswapAgentSwapSide;
@@ -320,8 +445,10 @@ export interface PolkaswapAgentTransactionRef {
 }
 
 export interface PolkaswapAgentSwapExecution {
+  intentId: string;
   quote: PolkaswapAgentSwapQuote;
   transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
@@ -333,6 +460,7 @@ export interface PolkaswapAgentTransferExecution {
   amount: string;
   amountMeta: PolkaswapAgentAssetAmount;
   transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
@@ -368,7 +496,7 @@ export interface PolkaswapAgentLiquidityPosition {
 }
 
 export interface PolkaswapAgentAddLiquidityQuote {
-  intentId: string;
+  quoteDigest: string;
   pool: PolkaswapAgentPoolInfo;
   createsPool: boolean;
   amountA: string;
@@ -392,14 +520,16 @@ export interface PolkaswapAgentAddLiquidityQuote {
 }
 
 export interface PolkaswapAgentAddLiquidityExecution {
+  intentId: string;
   quote: PolkaswapAgentAddLiquidityQuote;
   transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
 
 export interface PolkaswapAgentRemoveLiquidityQuote {
-  intentId: string;
+  quoteDigest: string;
   pool: PolkaswapAgentPoolInfo;
   liquidityAmount: string;
   liquidityAmountCodec: string;
@@ -423,8 +553,10 @@ export interface PolkaswapAgentRemoveLiquidityQuote {
 }
 
 export interface PolkaswapAgentRemoveLiquidityExecution {
+  intentId: string;
   quote: PolkaswapAgentRemoveLiquidityQuote;
   transaction: PolkaswapAgentTransactionRef | null;
+  revalidation: PolkaswapAgentIntentRevalidation;
   clientOrderId?: string;
   reusedClientOrder?: boolean;
 }
@@ -440,6 +572,67 @@ export interface PolkaswapAgentCallPreview {
   };
   args: Record<string, unknown>;
   summary: string;
+}
+
+export type PolkaswapAgentIntentAction = 'swap' | 'transfer' | 'add-liquidity' | 'remove-liquidity';
+
+export interface PolkaswapAgentPreparedNetwork {
+  genesisHash: string;
+  runtimeSpecVersion: number;
+}
+
+export interface PolkaswapAgentPreparedSigner {
+  address: string;
+  source: string;
+}
+
+export interface PolkaswapAgentPreparedCall {
+  operation: string;
+  sdkCall: string;
+  encoding: 'polkaswap-sdk-call-v1';
+  /** Hex-encoded canonical SDK invocation, not a SCALE extrinsic. */
+  encodedCall: string;
+  args: Record<string, unknown>;
+}
+
+export interface PolkaswapAgentFeeCeiling {
+  assetAddress: string;
+  amountCodec: string;
+}
+
+/** Immutable, versioned authorization material issued only by prepare*. */
+export interface PolkaswapAgentPreparedEnvelope {
+  schemaVersion: 1;
+  action: PolkaswapAgentIntentAction;
+  nonce: string;
+  network: PolkaswapAgentPreparedNetwork;
+  signer: PolkaswapAgentPreparedSigner;
+  preparedAt: number;
+  expiresAt: number;
+  preparedAtBlock: number;
+  expiresAtBlock: number;
+  request: Record<string, unknown>;
+  quote: Record<string, unknown>;
+  quoteDigest: string;
+  call: PolkaswapAgentPreparedCall;
+  callDigest: string;
+  feeCeilings: PolkaswapAgentFeeCeiling[];
+  intentId: string;
+}
+
+export interface PolkaswapAgentIntentRevalidation {
+  valid: boolean;
+  requiresReapproval: boolean;
+  reasons: string[];
+  checkedAt: number;
+  currentBlock: number;
+  currentNetwork: PolkaswapAgentPreparedNetwork;
+}
+
+export interface PolkaswapAgentPreparedBase {
+  intentId: string;
+  envelope: PolkaswapAgentPreparedEnvelope;
+  revalidation: PolkaswapAgentIntentRevalidation;
 }
 
 export interface PolkaswapAgentIdempotencyRecord {
@@ -482,8 +675,21 @@ export interface PolkaswapAgentStateImportResult {
   records: PolkaswapAgentExportedIdempotencyRecord[];
 }
 
-export interface PolkaswapAgentPreparedSwap {
-  intentId: string;
+/** Account-independent SDK-call metadata; not a signing authorization or SCALE extrinsic. */
+export interface PolkaswapAgentSwapPlan {
+  mode: 'unsigned';
+  canExecute: false;
+  requiresWallet: false;
+  quote: PolkaswapAgentSwapQuote;
+  preview: Omit<PolkaswapAgentCallPreview, 'signer'>;
+  fees: PolkaswapAgentFeeEstimate[];
+  warnings: PolkaswapAgentWarning[];
+  plannedAt: number;
+  expiresAt: number;
+  network: PolkaswapAgentPreparedNetwork & { blockNumber: number };
+}
+
+export interface PolkaswapAgentPreparedSwap extends PolkaswapAgentPreparedBase {
   canExecute: boolean;
   quote: PolkaswapAgentSwapQuote;
   preview: PolkaswapAgentCallPreview;
@@ -492,8 +698,7 @@ export interface PolkaswapAgentPreparedSwap {
   warnings: PolkaswapAgentWarning[];
 }
 
-export interface PolkaswapAgentPreparedTransfer {
-  intentId: string;
+export interface PolkaswapAgentPreparedTransfer extends PolkaswapAgentPreparedBase {
   canExecute: boolean;
   asset: PolkaswapAgentAsset;
   to: string;
@@ -505,8 +710,7 @@ export interface PolkaswapAgentPreparedTransfer {
   warnings: PolkaswapAgentWarning[];
 }
 
-export interface PolkaswapAgentPreparedAddLiquidity {
-  intentId: string;
+export interface PolkaswapAgentPreparedAddLiquidity extends PolkaswapAgentPreparedBase {
   canExecute: boolean;
   quote: PolkaswapAgentAddLiquidityQuote;
   preview: PolkaswapAgentCallPreview;
@@ -515,8 +719,7 @@ export interface PolkaswapAgentPreparedAddLiquidity {
   warnings: PolkaswapAgentWarning[];
 }
 
-export interface PolkaswapAgentPreparedRemoveLiquidity {
-  intentId: string;
+export interface PolkaswapAgentPreparedRemoveLiquidity extends PolkaswapAgentPreparedBase {
   canExecute: boolean;
   quote: PolkaswapAgentRemoveLiquidityQuote;
   preview: PolkaswapAgentCallPreview;
@@ -554,17 +757,17 @@ export interface PolkaswapAgentMaxRemoveLiquidity {
 }
 
 export interface PolkaswapAgentRiskPolicy {
-  maxPriceImpact?: string | number;
+  maxPriceImpact?: string;
   requireCanExecute?: boolean;
   allowWarnings?: PolkaswapAgentWarning['code'][];
 }
 
-export interface PolkaswapAgentSwapAssessmentRequest extends PolkaswapAgentSwapRequest {
+export type PolkaswapAgentSwapAssessmentRequest = PolkaswapAgentSwapRequest & {
   policy?: PolkaswapAgentRiskPolicy;
-  maxPriceImpact?: string | number;
+  maxPriceImpact?: string;
   requireCanExecute?: boolean;
   allowWarnings?: PolkaswapAgentWarning['code'][];
-}
+};
 
 export interface PolkaswapAgentPolicyAssessment {
   approved: boolean;
@@ -591,11 +794,16 @@ export interface PolkaswapAgentErrorShape {
     | 'ASSET_AMBIGUOUS'
     | 'ASSET_NOT_FOUND'
     | 'INVALID_AMOUNT'
-    | 'INVALID_AGENT_STATE'
     | 'INVALID_ASSET_REF'
+    | 'INVALID_AGENT_STATE'
     | 'INVALID_CLIENT_ORDER_ID'
     | 'INVALID_DEX_ID'
     | 'IDEMPOTENCY_CONFLICT'
+    | 'INTENT_ALREADY_USED'
+    | 'INTENT_EXPIRED'
+    | 'INTENT_INTEGRITY_FAILED'
+    | 'INTENT_NOT_FOUND'
+    | 'INTENT_REQUIRED'
     | 'INTENT_MISMATCH'
     | 'INVALID_LIQUIDITY_SOURCE'
     | 'INVALID_PERCENT'
@@ -607,6 +815,7 @@ export interface PolkaswapAgentErrorShape {
     | 'INVALID_TRANSACTION_ID'
     | 'INVALID_WALLET_SOURCE'
     | 'NODE_NOT_READY'
+    | 'NETWORK_CONTEXT_UNAVAILABLE'
     | 'PATH_UNAVAILABLE'
     | 'POOL_UNAVAILABLE'
     | 'QUOTE_TIMEOUT'
@@ -631,19 +840,23 @@ export interface PolkaswapAgentApi {
   resolveAsset(request: PolkaswapAgentResolveAssetRequest): Promise<PolkaswapAgentResolvedAsset>;
   commonAssets(request?: PolkaswapAgentAssetsRequest): Promise<PolkaswapAgentResolvedAsset[]>;
   quoteSwap(request: PolkaswapAgentSwapRequest): Promise<PolkaswapAgentSwapQuote>;
+  planSwap(request: PolkaswapAgentSwapRequest): Promise<PolkaswapAgentSwapPlan>;
   prepareSwap(request: PolkaswapAgentSwapRequest): Promise<PolkaswapAgentPreparedSwap>;
   assessSwap(request: PolkaswapAgentSwapAssessmentRequest): Promise<PolkaswapAgentPolicyAssessment>;
-  executeSwap(request: PolkaswapAgentSwapRequest): Promise<PolkaswapAgentSwapExecution>;
+  /** Rejects finalized-xyk-native-fee-v1 intents with INTENT_MISMATCH pending guarded bot execution. */
+  executeSwap(request: PolkaswapAgentExecuteSwapRequest): Promise<PolkaswapAgentSwapExecution>;
   prepareTransfer(request: PolkaswapAgentTransferRequest): Promise<PolkaswapAgentPreparedTransfer>;
-  executeTransfer(request: PolkaswapAgentTransferRequest): Promise<PolkaswapAgentTransferExecution>;
+  executeTransfer(request: PolkaswapAgentExecuteTransferRequest): Promise<PolkaswapAgentTransferExecution>;
   poolInfo(request: PolkaswapAgentPoolInfoRequest): Promise<PolkaswapAgentPoolInfo>;
   liquidityPositions(request?: PolkaswapAgentLiquidityPositionsRequest): Promise<PolkaswapAgentLiquidityPosition[]>;
   quoteAddLiquidity(request: PolkaswapAgentAddLiquidityRequest): Promise<PolkaswapAgentAddLiquidityQuote>;
   prepareAddLiquidity(request: PolkaswapAgentAddLiquidityRequest): Promise<PolkaswapAgentPreparedAddLiquidity>;
-  executeAddLiquidity(request: PolkaswapAgentAddLiquidityRequest): Promise<PolkaswapAgentAddLiquidityExecution>;
+  executeAddLiquidity(request: PolkaswapAgentExecuteAddLiquidityRequest): Promise<PolkaswapAgentAddLiquidityExecution>;
   quoteRemoveLiquidity(request: PolkaswapAgentRemoveLiquidityRequest): Promise<PolkaswapAgentRemoveLiquidityQuote>;
   prepareRemoveLiquidity(request: PolkaswapAgentRemoveLiquidityRequest): Promise<PolkaswapAgentPreparedRemoveLiquidity>;
-  executeRemoveLiquidity(request: PolkaswapAgentRemoveLiquidityRequest): Promise<PolkaswapAgentRemoveLiquidityExecution>;
+  executeRemoveLiquidity(
+    request: PolkaswapAgentExecuteRemoveLiquidityRequest
+  ): Promise<PolkaswapAgentRemoveLiquidityExecution>;
   maxTransferAmount(request: PolkaswapAgentMaxAmountRequest): Promise<PolkaswapAgentMaxAmount>;
   maxSwapInput(request: PolkaswapAgentMaxSwapInputRequest): Promise<PolkaswapAgentMaxAmount>;
   maxAddLiquidity(request: PolkaswapAgentMaxAddLiquidityRequest): Promise<PolkaswapAgentMaxAddLiquidity>;
@@ -672,19 +885,19 @@ export interface PolkaswapAgentClientApi {
   ready(options?: PolkaswapAgentReadyOptions): Promise<PolkaswapAgentStatus>;
   prepareAndExecuteSwap(
     request: PolkaswapAgentSwapRequest,
-    options?: { clientOrderId?: string }
+    options: { clientOrderId: string }
   ): Promise<PolkaswapAgentSwapExecution>;
   prepareAndExecuteTransfer(
     request: PolkaswapAgentTransferRequest,
-    options?: { clientOrderId?: string }
+    options: { clientOrderId: string }
   ): Promise<PolkaswapAgentTransferExecution>;
   prepareAndExecuteAddLiquidity(
     request: PolkaswapAgentAddLiquidityRequest,
-    options?: { clientOrderId?: string }
+    options: { clientOrderId: string }
   ): Promise<PolkaswapAgentAddLiquidityExecution>;
   prepareAndExecuteRemoveLiquidity(
     request: PolkaswapAgentRemoveLiquidityRequest,
-    options?: { clientOrderId?: string }
+    options: { clientOrderId: string }
   ): Promise<PolkaswapAgentRemoveLiquidityExecution>;
   waitForTransaction(request: PolkaswapAgentWaitForTransactionRequest): Promise<PolkaswapAgentTransactionStatus>;
 }

@@ -190,6 +190,14 @@ describe('ExploreContainer', () => {
     expect(storageMock.wallet.set).toHaveBeenCalledWith('exploreAccountItems', true);
   });
 
+  it('uses the safe default when the persisted account filter is corrupt', async () => {
+    storageMock.wallet.get.mockImplementation((key: string) => (key === 'exploreAccountItems' ? '{' : null));
+
+    const wrapper = await mountComponent(PageNames.ExploreTokens);
+
+    expect((wrapper.vm as any).isAccountItemsOnly).toBe(false);
+  });
+
   it('navigates to selected tab', async () => {
     const wrapper = await mountComponent(PageNames.ExploreTokens);
     await flushPromises();

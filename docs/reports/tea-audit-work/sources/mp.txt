@@ -1,0 +1,1573 @@
+     TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+
+                                SUBCHAPTER 85-60.2
+                      PLANT QUARANTINE REGULATIONS
+
+Part 001      General Provisions            § 85-60.2-130     Department
+§ 85-60.2-001       Authority               Permit
+§ 85-60.2-005       Purpose                 § 85-60.2-132     Inspection    and
+§ 85-60.2-010       Definitions             Treatment for Conveyances Arriving
+§ 85-60.2-015       Gender, Plurals,        into CNMI
+Etc.                                        § 85-60.2-134     Official
+§ 85-60.2-020       Precedence   of         Introduction
+Federal Regulations over CNMI’s             § 85-60.2-136     Quarantine     for
+Regulations                                 Live Plants
+                                            § 85-60.2-138     In         Transit
+Part 100        General Requirements        Material
+§ 85-60.2-101          Port of Entry        § 85-60.2-140     Contraband
+§ 85-60.2-102          Inspection      of   Material
+Plants or Parts Thereof, Regulated          § 85-60.2-142     Disinsection
+Materials and Conveyances, Charges for      § 85-60.2-144     Exclusion       of
+Overtime Pay of Quarantine Agents           Liability
+§ 85-60.2-104          Required
+Declaration and General Prohibition         Part 200       Regulations Concerning
+§ 85-60.2-106          Availability    of   Entry of Plants, Plant Materials,
+Manifests and Movement Information          Regulated Materials, Goods, Pests into
+§ 85-60.2-108          Plant Quarantine     the Commonwealth of the Northern
+Permits                                     Mariana Islands
+§ 85-60.2-110          Quarantine      of   § 85-60.2-201          Import Permit
+Infested or Infected Articles               § 85-60.2-202          Certificates
+§ 85-60.2-112          Quarantine Seal      § 85-60.2-204          General Shipping
+§ 85-60.2-114          Treatment            Requirements
+§ 85-60.2-116          Release/Clearance    § 85-60.2-206          Plant     Materials
+of Plants, Plant Materials or Goods         Subject to Inspection and Disposal
+§ 85-60.2-118          Approved Places      § 85-60.2-208          Living Insects and
+for Quarantine to Take Place                Plant Diseases
+§ 85-60.2-120          Transport,           § 85-60.2-210          European     Corn
+Storage, Unpacking, and Treatment at        Borer (Ostrinia nubilalis)
+Importer’s Expense                          § 85-60.2-212          Citrus       Virus
+§ 85-60.2-122          Seizure       and    Diseases
+Destruction                                 § 85-60.2-214          Oriental Fruit Fly
+§ 85-60.2-124          Disposal of Plant    (Dacus dorsalis)
+Material Carrying or Believed to be         § 85-60.2-216          Mediterranean
+Carrying a Plant Pest                       Fruit Fly (Ceratitis capitata)
+§ 85-60.2-126          Any Plants, Plant    § 85-60.2-218          Mexican Fruit Fly
+Materials, or Goods Returned Back into      (Anastrepha ludens)
+Quarantine                                  § 85-60.2-220          Diseases       and
+§ 85-60.2-128          Quarantine Forms     Insects of Onions
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+§ 85-60.2-222         Coconut Diseases                  § 85-60.2-246             Seeds
+and Insects                                             § 85-60.2-248             Flowers
+§ 85-60.2-224         Banana Diseases                   § 85-60.2-250             Entry of       Non-
+and Insects                                             plant Articles
+§ 85-60.2-226         Sweet       Potato                § 85-60.2-252             Entry of Cultures
+Insects and Diseases                                    or Organisms
+§ 85-60.2-228         Taro for Planting                 § 85-60.2-254             Garbage
+and Propagation
+§ 85-60.2-230         Queensland Fruit                  Part 300      Interim Rules
+Fly (Dacus tryoni)                                      § 85-60.2-301        Interim Rules
+§ 85-60.2-232         Melon     Fly    -
+(Dacus cucurbitae)                                      Part 400      Export Requirement
+§ 85-60.2-234         Packing Materials                 § 85-60.2-401       Plants
+§ 85-60.2-236         Construction                      § 85-60.2-405       Nursery   Stock
+Materials                                               Export Shipments
+§ 85-60.2-238         Stored       Dried
+Products                                                Part 500      Miscellaneous
+§ 85-60.2-240         Enterable Fresh                   Provisions
+Fruits and Vegetables                                   § 85-60.2-501        Entry Via the Post
+§ 85-60.2-242         Entry           of                Office
+Handicrafts Made from Plant Material
+§ 85-60.2-244         Live Plants other                 Part 600      Penalties
+than Seeds or Tissue Culture                            § 85-60.2-601        Penalties
+
+Subchapter Authority: PL 1-8 (formerly codified at 1 CMC §§ 2651, et seq.); 1 CMC § 2654; 2 CMC §
+5302.
+
+Subchapter History: Amdts Adopted 15 Com. Reg. 11058 (Oct. 15, 1993); Amdts Proposed 15 Com. Reg.
+10750 (July 15, 1993); Amdts Certified 15 Com. Reg. 10508 (Apr. 15, 1993); Amdts Adopted 15 Com.
+Reg. 10504 (Mar. 15, 1993); Amdts Proposed 15 Com. Reg. 10439 (Jan. 15, 1993); Amdts Emergency 14
+Com. Reg. 9783 (Oct. 15, 1992) (effective for 120 days from Oct. 7, 1992); Adopted 11 Com. Reg. 6496
+(Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: PL 1-8, tit. 1, ch. 13 (effective Aug. 10, 1978), formerly codified at 1 CMC §§
+2651, et seq., originally created a Department of Natural Resources within the Commonwealth government.
+
+Executive Order 94-3 (effective August 23, 1994) reorganized the Commonwealth government executive
+branch, changed agency names and official titles and effected numerous other revisions. According to
+Executive Order 94-3 § 104:
+
+        Section 104. Department of Lands and Natural Resources.
+
+        The Department of Natural Resources is re-designated the Department of Lands and
+        Natural Resources.
+
+The full text of Executive Order 94-3 is set forth in the commission comment to 1 CMC § 2001.
+
+In 1997, the Legislature passed the “Public Lands and Natural Resources Administration Act of 1997,” PL
+10-57 (effective Apr. 18, 1997), codified as amended at 1 CMC §§ 2651-2691. PL 10-57 repealed and
+reenacted chapter 13, division 2 of title 1 of the Commonwealth Code, 1 CMC §§ 2651, et seq., and
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+statutorily established the Department of Lands and Natural Resources (DLNR) with the structure, duties
+and responsibilities set forth in the act. See 1 CMC § 2651 and the commission comment thereto.
+
+1 CMC § 2653(j) authorizes DLNR to “promote, develop, and administer agricultural programs, including
+but not limited to, plant industry, agricultural extension services, and animal industry and health.” 1 CMC §
+2654 authorizes the Department of Lands and Natural Resources to adopt rules and regulations in
+furtherance of its duties and responsibilities.
+
+Title 2, division 5, chapter 3 of the Commonwealth Code specifically addresses quarantine regulations. See
+2 CMC §§ 5301-5310. 2 CMC §§ 5302 and 5303 direct the Director of Natural Resources (now the
+Secretary of Lands and Natural Resources) to issue plant and animal quarantines and regulations and
+administer their provisions.
+
+The Division of Agriculture within the Department of Natural Resources originally promulgated, pursuant
+to PL 1-8, Plant & Animal Quarantine Inspection and Inspection Procedures Rules and Regulations. The
+history of these regulations is as follows: Amdts Adopted 2 Com. Reg. 896 (Nov. 17, 1980) (suspending
+the prohibition on importing Psittacine birds and mynahs into the Commonwealth);* Amdts Adopted 3
+Com. Reg. 1042 (Feb. 23, 1981); Amdts Emergency and Proposed 2 Com. Reg. 890, 894 (Nov. 17, 1980)
+(effective for 120 days from Oct. 1, 1980); Public Notice 2 Com. Reg. 834 (Mar. 16, 1980) (regarding
+animal quarantine procedures); Amdts Proposed 2 Com. Reg. 445 (Jan. 16, 1980); Adopted 1 Com. Reg.
+277 (June 16, 1979); Proposed 1 Com. Reg. 80 (Dec. 16, 1978).
+
+*A notice of proposed amendment was never published.
+
+The January 1980 notice of proposed amendments stated: “If no comments are received after 30 days from
+the date of this publication, these amendments will be adopted without further publication and have the
+force of law.” See 2 Com. Reg. at 445 (Jan. 16, 1980).
+
+The 1989 Plant Quarantine Regulations codified as amended in this subchapter were promulgated by the
+Department of Natural Resources, Division of Plant Industry under the authority of 2 CMC §§ 5301-5310.
+
+On April 6, 2004, the Department of Lands and Natural Resources promulgated an emergency provision
+amending this subchapter to prohibit the importation of betel nut from the island of Guam. See 26 Com.
+Reg. 22227 (Apr. 23, 2004) (effective for 120 days from Apr. 6, 2004). As of December 2004, the
+prohibition had not been permanently adopted.
+
+Part 001 -        General Provisions
+
+§ 85-60.2-001              Authority
+
+Under the authority granted in 2 CMC, div. 5, chapter 3, article 1, § 5302 of the
+Commonwealth Code for the Northern Mariana Islands, the Director of Natural
+Resources hereby promulgates regulations concerning control and prevention of plant
+diseases in the Commonwealth of the Northern Mariana Islands. All previously issued
+Trust Territory plant quarantines are hereby cancelled, and superseded by the regulations
+codified in this subchapter.
+
+Modified, 1 CMC § 3806(d), (f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-005              Purpose
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)             Page 3 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+The rules and regulations in this subchapter are designed to protect the agriculture and
+general well-being of the Northern Marianas citizens. Plant quarantine measures are
+promulgated as a means to prevent the introduction of, and the further spread of plant
+pest and diseases into and within the Northern Marianas. The procedures and controls are
+designed to spell out the procedures and controls in promulgation, enforcement of Plant
+Quarantine Rules and Regulations, codified in this subchapter, and other measures
+deemed necessary to protect the agricultural industry in the Northern Mariana Islands.
+
+Modified, 1 CMC § 3806(d), (f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-010            Definitions
+
+For the purposes of the rules and regulations in this subchapter, unless context otherwise
+requires, the following words, phrases, names, and terms shall be construed, respectively,
+to mean:
+
+(a)     “Agricultural Quarantine Facility” - Government facilities equipped and
+specifically set aside for holding growing imported plant materials suspected of
+harbouring pests and diseases.
+
+(b)    “Approved Place for Performance of Quarantine” - Means a place other than a
+quarantine station where the quarantine of goods may take place.
+
+(c)    “As Prescribed” - Any procedure on treatment as detailed by the Chief of Plant
+Industry or contained in a manual or official treatment schedule.
+
+(d)    “Authorizing Official” - The Director for the Department of Natural Resources
+and the Chief for the Division of Plant Industry or designees.
+
+(e)     “Baggage” - Any goods brought into the country by a passenger arriving by air or
+by sea from overseas.
+
+(f)    “Chief” - The Chief for the Division of Plant Industry, Department of Natural
+Resources, or any employee from the Division of Plant Industry to whom authority has
+heretofore been delegated, or to whom authority may hereafter be delegated, to act in his
+stead.
+
+(g)    “CNMI” - The Commonwealth of the Northern Mariana Islands, including the
+government thereof, which lies within the area north of 14 degrees north latitude, south of
+21 degrees north latitude, west of 150 degrees east longitude and east of 144 degrees east
+longitude, as extended by the Marine Sovereignty Act.
+
+(h)    “Contaminate” - Means infestation or infection by plant pest or disease of having
+an association with unauthorized plant material or soil adhering to or with the articles.
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 4 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+(i)  “Contraband Material” - Any material imported into or transported within the
+CNMI by any person in contravention of Plant Quarantine Regulations in this subchapter.
+
+(j)    “Conveyance” - Means any carrier such as a vessel, aircraft, small boat, or
+shipping container.
+
+(k)     “Culture” - Plant tissue on nutritive media or parts thereof.
+
+(l)   “Cut Flowers” - The fresh cut portion of a plant that is imported for decoration or
+ornamentation, including leis and bouquets.
+
+(m)    “Declaration” - Refers to a written statement certifying as to plants, plant
+materials, or other prohibited or restricted articles under the regulations in this subchapter
+which accompany a person on their arrival from overseas.
+
+(n)     “Delegation” - The Director may, in writing, delegate specific powers designated
+in the regulations in this subchapter to the Chief of Plant Industry, and these delegated
+powers will remain effective until revoked. The Chief of Plant Industry may in writing,
+also delegate specific powers designated in this subchapter, to a nominated position
+within the Department of Natural Resources, and these delegated powers will remain
+effective until revoked.
+
+(o)    “Department” - The Department of Natural Resources for the Commonwealth of
+the Northern Marianas.
+
+(p)   “Director” - The Director for the Department of Natural Resources, or any
+employee for the Department to whom authority has heretofore been delegated, or to
+whom authority may hereafter be delegated, to act in his stead.
+
+(q)   “Division” - The Division of Plant Industry for the Department of Natural
+Resources.
+
+(r)     “Disease” - A condition caused by a pathogenic organism.
+
+(s)    “Dunnage” - Any timber used in stowage of goods in conveyances such as vessel
+or cargo containers.
+
+(t)     “Export” - Means to take a thing or cause it to be sent out from the CNMI.
+
+(u)   “First Port of Entry” - The seaport or airport in the Commonwealth in which the
+conveyance or article first enters.
+
+(v)     “Fresh Fruit and Vegetable” - Means the edible product of any plant whether
+attached to the plants or not and includes any peel, skin, shell or seeds, whether edible or
+not, as well as vegetables.
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)    Page 5 of 30
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+(w)     “Filler and Greenery” - Fresh foliage used for decoration, such as fern and palm
+fronds, asparagus fern plumes, pine sprays, willow branches, etc.
+
+(x)      “Garbage” - All refuse waste materials derived in whole or in part from plants,
+fruits, vegetables, or other plants or refuses of any character whatsoever that has been
+associated with any such material on board any mean of conveyance, and including food
+scraps, table refuses, galley refuses, food wrappers or packaging materials, and other
+waste materials from stores, food preparation areas, passenger or crew quarters, dining
+rooms or any other areas on vessels, aircraft, or other means of conveyance.
+
+(y)     “Goods” - Mean any movable property.
+
+(z)   “Graded Timber” - A commercial grading of timber strength based on absence of
+sapwood; absence of bark; degree of sound and unsound knots.
+
+(aa) “Import” - Means to bring a thing or cause it to be brought into the CNMI from
+any place outside the country by any means of conveyance.
+
+(bb) “Importer” - Any person who imports goods, and includes passengers on a
+conveyance.
+
+(cc) “Import Permit” - Written or oral authorization issued by authorized officer for
+the movement into or transfer within the CNMI of any item requiring a permit under this
+subchapter.
+
+(dd) “Inspector” - An authorized employee from the Division of Plant Industry, the
+Division of Animal Health Industry, U.S. Department of Agriculture to perform the
+quarantine inspection services.
+
+(ee)    “Infected” - Means any condition caused by a plant disease pathogen.
+
+(ff)    “Infested” - Means presence of plant pests other than disease pathogen.
+
+(gg) “Inspection” - The examination of regulated materials, conveyances containers or
+other articles for the purpose of detecting infestation or contamination with plant pests or
+diseases. Inspection may involve removal of regulated article or plant materials, goods,
+soil, or a sample of them to a quarantine station or laboratory where special facilities are
+available.
+
+(hh) “Inspector” - An authorized employee from the Division of Plant Industry’s
+agricultural quarantine inspection service or the Division of Animal and Health Industry.
+
+(ii)    “Intermediate Quarantine” - The growing of plants intended for consignment to
+CNMI by an approved overseas authority in an insect proof plant house where the plants
+are thoroughly screened for plant pests including disease and certified by the responsible
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)   Page 6 of 30
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+authority to the effect that the plants have been grown under insect proof conditions and
+as far as can be determined are free of plant pests.
+
+(jj)   “In Transit” - Regulated articles that arrive in the Commonwealth of the Northern
+Mariana Islands from outside and that are consigned to a destination outside the
+Commonwealth, but that are transferred from one conveyance to another, irrespective of
+the duration of the temporary stay in the Commonwealth.
+
+(kk)    “Land” - Includes any surface area, building, wharf, or port facility.
+
+(ll)    “Northern Marianas” - The Commonwealth of the Northern Mariana Islands, or
+any island in this group.
+
+(mm) “Noxious Weed” - Means any plant which either directly or indirectly causes
+injury to the health of human beings, animals, or plants, which declared by notice of the
+Director to be harmful and subject to quarantine control or plants listed noxious in 7 CFR
+60.
+
+(nn) “Owner” - The person, corporate body, or organization responsible for
+importation and exportation of regulated articles.
+
+(oo) “Person” - Shall be construed to mean both singular and plural, and shall include
+individuals, corporations, companies, associations, and societies.
+
+(pp) “Phytosanitary Certificate” - An official or document substantially in the form of
+the model certificate of the International Plant Protection Convention of 1952 stating
+facts about a plant or plant product and attesting to that article’s freedom from pests. The
+document or certificate must be issued and attested by an authorized plant protection
+official.
+
+(qq) “Plant” - Means all species, varieties, and types of plants or parts thereof
+including stems, branches, tubers, bulbs, corns, stocks, budwood, cuttings, layers, slips,
+suckers, roots, leaves, flowers, fruits, seeds, and botanical specimen.
+
+(rr)    “Plant Quarantine Permits” - Means a written authorization issued by the Chief of
+Plant Industry for the movement into or transfer within the CNMI of any plants, plant
+parts for propagative purposes, cultures, or items designated in the regulation as requiring
+a permit.
+
+(ss)    “Plant Material” - Means all material of plant origin, and includes timber and
+other items manufactured wholly or in part from plants.
+
+(tt)    “Plant Pest” - Means an organism of animal or plant origin which can directly or
+indirectly cause injury or damage to plants including any living stage of insect, mite,
+nematode, snail, slug or other invertebrate animal, bacteria, fungi, virus or similar
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)   Page 7 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+organism, and includes noxious weeds known, or suspected or liable to be harmful to
+plants.
+
+(uu) “Quarantine” - Means a restriction imposed by duly constituted authorities,
+whereby the production, movement or existence of plants, plant material, or whereby any
+other article or material or the normal activity of persons is brought under regulations; in
+order that the introduction or spread be controlled or eradicated, thereby reducing or
+avoiding losses that would otherwise occur through damage done by the pest or disease
+or through a continuing of control measures.
+
+(vv) “Quarantine Area” - Any land where a specified quarantine pest or disease is
+found together with specified adjoining land declared by the Director of Natural
+Resources to be a quarantine area for a prescribed period of time.
+
+(ww) “Quarantine Pest” - Means a pest of potential economic importance to the CNMI
+endangered thereby and not yet present there or present, but not widely distributed, and
+being actively controlled.
+
+(xx) “Quarantine Station” - Includes a temporary quarantine station, a quarantine
+check point, a post entry quarantine station, and all facilities and services related to a
+quarantine station or check point.
+
+(yy) “Regulated Material” - Means garbage, soil, plant pest, substances or articles (not
+being plant or plant material) and other materials for the importation or movement of
+which is prohibited or regulated under the provisions of the law or any regulations made
+thereunder.
+
+(zz) “Re-ship” or “Re-export” - In relation to any imported plant, plant material, or
+regulated material, means to remove, or send it out from the CNMI by vessel or aircraft
+as a means of removing the pest risk.
+
+(aaa) “Seed” - The ripened ovule of plant, enclosing a rudimentary plant and food
+necessary for its termination.
+
+(bbb) “Soil” - Means the loose surface materials of the earth in which plants grow and
+which may serve to harbor plant pests, in most cases consisting of disintegrated rock with
+an admixture of organic material, and soluble salt.
+
+(ccc) “Timber” - Includes logs, branchwoods, firewoods, barks, and all-woods which
+have been split, hewn, sawn, or dressed, but not otherwise manufactured, including pre-
+fabricated building units, poles wooden cases or boxes, and the like.
+
+(ddd) “Treatment” - Means the employment of remedial measures to ensure removal of
+injurious or objectionable materials or the elimination, sterilization, or killing of any plant
+pest for the avoidance of contamination including among other measures such as
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)   Page 8 of 30
+        TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+cleaning, incineration disinfection, disinfestation of plants, plant materials, and/or
+regulated materials or re-shipment thereof.
+
+(eee)    “USDA” - The United States Department of Agriculture.
+
+Modified, 1 CMC § 3806(d), (f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: In subsections (d), (k), (o), (q), (dd), (ll) and (eee), the Commission inserted the
+final period. In subsection (n), the Commission changed “power” to “powers.” In subsection (s), the
+Commission changed “good” to “goods.” In subsection (x), the Commission changed “an” to “and.”
+Finally, in subsection (ii), the Commission changed “oversea” to “overseas.” All of the foregoing were to
+correct manifest errors. The Commission inserted quotation marks around terms defined.
+
+With respect to the references to the Department of Natural Resources, see Executive Order 94-3 (effective
+August 23, 1994) reorganizing the Commonwealth government executive branch, changing agency names
+and official titles and effecting numerous other revisions. See also PL 10-57 and the general commission
+comment to this subchapter.
+
+§ 85-60.2-015             Gender, Plurals, Etc.
+
+Unless, it shall clearly appear from the context to the contrary, the use of any gender shall
+include all genders. The plural shall include the singular, and the singular shall include
+the plural.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-020             Precedence of Federal Regulations over CNMI’s Regulations
+
+The CNMI’s regulations shall not conflict with or compromise any federal regulations.
+The importation of domestic plants into the CNMI from foreign countries and the U.S.
+are subject to the regulations of the U.S. Department of Agriculture, and the CNMI’s
+regulations. In case of conflict between federal regulations and CNMI’s regulations, the
+Director of Natural Resources shall make a determination as to which regulations shall
+apply.
+
+Modified, 1 CMC § 3806(g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission changed “applied” to “apply” to correct a manifest error.
+
+Part 100 -       General Requirements
+
+§ 85-60.2-101             Port of Entry
+
+No plants, plant materials, or regulated materials may be imported into the CNMI except
+through:
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)           Page 9 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+(a)     Airport at:
+Saipan:        Saipan International Airport
+Rota:          Rota International Airport
+Tinian:        Tinian Airport
+
+(b)     Seaport at:
+Saipan:        Saipan Harbor
+Rota :         Rota Harbor
+Tinian:        Tinian Harbor
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) and (b).
+
+§ 85-60.2-102      Inspection of Plants or Parts Thereof, Regulated Materials and
+Conveyances, Charges for Overtime Pay of Quarantine Agents
+
+(a)     All plants or parts thereof entering the CNMI are subject to inspection by the
+quarantine inspectors. These plants or parts may be refused entry into or movement
+within, the CNMI if they are known to be, or are suspected of being infected or infested
+with diseases or pests of quarantine significance. In addition, all aircrafts and vessels
+entering the CNMI or moving within the CNMI, and their cargoes including baggage,
+ships stores, and ballasts are subject to inspection by the quarantine inspectors for the
+purpose of enforcing the quarantines, procedures, and controls. It shall be unlawful for
+any one to interfere with, or to refuse the submission of the above-mentioned inspections.
+
+(b)     All air and sea carriers and other persons whose operations require the service of a
+quarantine agent of the Commonwealth government of the Northern Mariana Islands
+after normal working hours shall be charged with the overtime pay of the quarantine
+agent(s) rendering the service.
+(1)     “After normal working hours” is work performed any time in excess of eight
+hours on a weekday and the 24 hour period of a Saturday or Sunday. On legal holidays
+falling on Mondays through Fridays, the charge shall be the holiday pay of the quarantine
+agents rendering the service during the first eight hours of work performed. Any time in
+excess of eight hours shall be charged at overtime pay. Overtime pay shall include
+overtime compensation, and applicable employer contributions for retirement and
+Medicare.
+(2)     Service of less than two hours for each arrival shall be charged with the minimum
+of two hours overtime. Any fraction of an hour in excess of the two hours minimum is
+charged a full hour. The charge shall commence thirty minutes prior to the scheduled
+arrival time of a carrier or from the time the quarantine agent leaves his home and shall
+terminate thirty minutes after the agent leaves the post of duty.
+(3)     Sea carriers, individuals, non-scheduled aircraft, and others for which overtime
+services can be specifically assigned, shall be charged for the actual overtime incurred by
+the quarantine agent(s) providing such services.
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 10 of 30
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+(4)    Said overtime charges and holiday charges shall be waived when services are
+rendered to a carrier operating under emergency conditions or for emergency purposes.
+(5)    For scheduled and extra section flights to Saipan, Tinian, or Rota, quarantine
+services provided during overtime hours shall be assessed pursuant to Customs Service
+Regulation section 1302.22(e)(1), codified at NMIAC § 70-10.1-720.
+(6)    For purposes of application, overtime charges of the Division of Plant Industry
+Quarantine Service will be included and billed using a standard rate that also includes the
+overtime charges of the Customs and Immigration and Naturalization Division and
+assessed pursuant to Customs Service Regulation section 1302.33(e)(1), codified at
+NMIAC § 70-10.1-720.
+(7)    At the end of the fiscal year, the Director of Finance will compute actual costs in
+accordance with the percentage allocation formula set forth in Customs Service
+Regulation section 1302.22(e)(1), codified at NMIAC § 70-10.1-720.
+
+(c)     When a quarantine officer is assigned to any vessel or aircraft for the purpose of
+conducting an inspection and clearance during the journey, the master of the carrier,
+owner, or agent must furnish such officer the accommodations usually supplied to
+passengers. In addition, the master, owner, or agent shall furnish all air or sea
+transportation required in order for the quarantine officer to board such aircraft or vessel.
+The quarantine service charge to be imposed shall be in accordance with subsection (a) of
+this section.
+
+(d)     Non-performance of Requested Service. If employees have reported to work in
+order to provide requested overtime services, but services are not performed by reason of
+circumstances beyond the control of the employees concerned, compensation shall be in
+accordance with subsection (a) of this section.
+
+(e)     Notice of Rate Change. The Director of the Department of Finance pursuant to the
+authority granted the Director under 4 CMC § 2553, may change the rate and basis for
+allocation used for billing overtime services upon 90 days public notice.
+
+(f)     Interest Charge. Interest charge of fifteen percent per annum shall be imposed on
+all unpaid charges required by this section.
+
+Modified, 1 CMC § 3806(c), (e), (f), (g).
+
+History: Certified 15 Com. Reg. 10508 (Apr. 15, 1993); Adopted 15 Com. Reg. 10504 (Mar. 15, 1993);
+Proposed 15 Com. Reg. 10439 (Jan. 15, 1993); Emergency 14 Com. Reg. 9783 (Oct. 15, 1992) (effective
+for 120 days from Oct. 7, 1992); Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg.
+6332 (July 15, 1989).
+
+Commission Comment: The 1993 amendments deleted and replaced this section in its entirety.
+
+In subsection (a), the Commission changed “baggages” to “baggage” to correct a manifest error. The
+Commission corrected the capitalization of “Medicare” in subsection (b)(1) pursuant to 1 CMC § 3806(f).
+The Commission inserted commas after the words “Tinian” in subsection (b)(5) and “owner” in subsection
+(c) pursuant to 1 CMC § 3806(g).
+
+§ 85-60.2-104              Required Declaration and General Prohibition
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)         Page 11 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+
+
+(a)     Every person entering the Commonwealth shall be required to make a written
+declaration in respect of plants, plant materials, soil, cultures, or other things subject of
+this subchapter.
+
+(b)     No person may introduce into the CNMI any plant, plant material, or any other
+things subject to the regulations in this subchapter, unless, the provisions of this
+subchapter have been duly complied with in respect of plants, plant materials, or other
+regulated materials.
+
+Modified, 1 CMC § 3806(d), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) and (b).
+
+In subsection (a), the Commission inserted the final period. In subsection (b), the Commission changed “of
+the regulations” to “to the regulations” to correct a manifest error.
+
+§ 85-60.2-106             Availability of Manifests and Movement Information
+
+Cargo manifests and other similar documents concerning aircrafts and vessels traveling
+into or within the CNMI will be made available to the quarantine inspectors upon request.
+Those authorities having information as to the movement of aircrafts and vessels will
+furnish such information to the inspectors upon request.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission corrected the spelling of “traveling.”
+
+§ 85-60.2-108             Plant Quarantine Permits
+
+(a)     Plant quarantine permits are required as a condition of entry into the CNMI. Both
+oral and written permits are required for shipments of more than 12 plants; plants
+requiring treatment as a condition of entry; and plants requiring post-entry growing.
+Application forms for plant quarantine permits can be secured from the Plant Industry at
+Kagman or other Plant Industry facilities on other islands. Application of permit for the
+international importation of plants or plant products (PPQ form 587) can be obtained
+from the listed address above, or from PPQ APHIS USDA, Box 87679, Tamuning Guam
+96911. On the application form, the imported plants must write the names (common
+English name, if any, and preferable the scientific name) and quantities of each item to be
+imported or moved within the CNMI. The place of origin and destination of plants. must
+also be specified on the application form.
+
+(b)    Plant quarantine permits are required for those plants and cultures which are
+allowed entry into the CNMI. The conditions of the granted entry for plants will be
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)           Page 12 of 30
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+specified on the permit, and must be complied with, otherwise, the permit becomes
+invalid. Permit may be issued for a single entry or multiple entries as necessary to
+facilitate commerce.
+
+(c)     In general, permits will be issued only for each separate importation. However, in
+special approved cases by the Chief of Plant Industry, the continuing permits for a stated
+period may be issued. Permits are required for the import of raw timber.
+
+Modified, 1 CMC § 3806(d), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) through (c).
+
+In subsection (b), the Commission changed “compile” to “complied.”
+
+§ 85-60.2-110            Quarantine of Infested or Infected Articles
+
+If the inspector is not satisfied with the imported plants from pests free,* he shall advise
+Customs that plants, plant materials, and/or goods are to be held under quarantine control.
+The inspector shall not release the plants, plant materials, and/or goods, until any
+quarantine pest has been eliminated.
+
+*So in original.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-112            Quarantine Seal
+
+Upon arrival in the Commonwealth a quarantine inspector may place a quarantine seal on
+any container or package of imported goods for subsequent quarantine inspection. Any
+person interfering with these seals without authority of an agriculture quarantine
+inspector is guilty of an offense.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission changed “a” to “an” to correct a manifest error.
+
+§ 85-60.2-114            Treatment
+
+If the inspector detained the imported plants, plant materials, and/or goods of the
+evidence of infection, infestation, suspected infection, or suspected infestation he/she
+may order a treatment as prescribed at the importer’s expense.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 13 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+
+
+§ 85-60.2-116            Release/Clearance of Plants, Plant Materials or Goods
+
+With the compliance of all other requirements in this subchapter for imported plants and
+the subsequent satisfactory conclusion of the prescribed treatment, the inspector shall
+advise the importer or owner for the release of quarantined items with the amount of fee
+to be paid for the services.
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-118            Approved Places for Quarantine to Take Place
+
+When goods have been ordered into or placed in quarantine, the Chief of Plant Industry
+may, in writing, approve the place other than a quarantine station as a place where
+quarantine of plants, plant materials, or goods may take place. Any quarantine action may
+be undertaken at such an approved place as an inspector may direct.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-120            Transport, Storage, Unpacking, and Treatment at Importer’s
+Expense
+
+Prior to the release of any imported plants, plant materials and/or goods, the importer or
+owner may be required by the Chief of Plant Industry to provide for or to meet the cost of
+transport, unpacking, security, storage, and treatment as prescribed including cleaning
+and sorting.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-122            Seizure and Destruction
+
+Any non-enterable plants, plant products, or regulated materials without a permit may be
+seized by an inspector, and treated by order of the Chief of Plant Industry, or re-shipped
+in accordance with directions of the Chief for Plant Industry.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission changed “seizured” to “seized” to correct a manifest error.
+
+§ 85-60.2-124            Disposal of Plant Material Carrying or Believed to be Carrying
+a Plant Pest
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 14 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+The Chief of Plant Industry shall order the destruction of the consignment of imported
+plants, plant materials, or goods, if the quarantine inspector believes, the following:
+
+(a)      Any plant or regulations, but on examination or re-examination to be carrying or
+liable to be carrying a plant pest or disease;
+
+(b)    If the quarantine inspector believes in his opinion that the plant pest or disease
+cannot be effectively treated to eradicate the plant pest or disease; and
+
+(c)    If within a specified period of notification designated by the Chief of Plant
+Industry importer has not re-exported or re-shipped the plants, plant materials, or goods.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: In subsection (b), the Commission changed “plants” to “plant” to correct a
+manifest error.
+
+§ 85-60.2-126             Any Plants, Plant Materials, or Goods Returned Back into
+Quarantine
+
+An inspector may examine plants, plant materials, or goods that have been released from
+quarantine. If the inspector in his/her opinion after re-examination feels that there is a
+danger of spreading a plant pest, the Chief of Plant Industry may order the plants, plant
+materials, or goods back into the quarantine. The owner shall immediately fulfill the
+instructions issued by the inspector, and the owner shall meet all costs.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-128             Quarantine Forms
+
+The Chief of Plant Industry may devise forms with the approval by the Director of
+Natural Resources which are to be used by importers desiring to import plants and plant
+materials including agricultural and forestry seeds, fruit, vegetables and tissue cultures.
+
+Modified, 1 CMC § 3806(d), (f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: With respect to the reference to the Department of Natural Resources, see
+Executive Order 94-3 (effective August 23, 1994) reorganizing the Commonwealth government executive
+branch, changing agency names and official titles and effecting numerous other revisions. See also PL 10-
+57 and the general commission comment to this subchapter.
+
+§ 85-60.2-130             Department Permit
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)          Page 15 of 30
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+Plants, plant products, and goods specifically prohibited by the regulations in this
+subchapter may be imported under a permit issued by the Director. This permit will
+specify measures to prevent the entry or dissemination of plant pests.
+
+Modified, 1 CMC § 3806(d).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-132             Inspection and Treatment for Conveyances Arriving into
+CNMI
+
+(a)    Immediately, upon arrival of any conveyance from overseas, the quarantine
+inspector shall board the conveyance. He/she may undertake an inspection of its cargoes,
+baggage, and provisions, and he/she may order treatment where necessary.
+
+(b)    No person shall enter the conveyance, or remove any baggage or cargo from the
+conveyance without the authority of the inspector, or until the inspection examination, or
+treatment is completed.
+
+(c)     Inspection and treatment may include:
+(1)     Inspection of conveyance, its cargoes and stores as well as treatment, if necessary
+at the expense of the owner of the conveyance; and
+(2)     Spreading of every compartment of any conveyance as prescribed.
+
+(d)    In the case of a conveyance entering an undeclared port, all costs, associated with
+the quarantine inspection are to be met by the owner.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) through (d).
+
+In subsection (a), the Commission changed “baggages” to “baggage” to correct a manifest error.
+
+§ 85-60.2-134             Official Introduction
+
+Official importations by the Chief of Plant Industry under the approval of the Director for
+the Department of Natural Resources are exempt from the prohibitions and restrictions
+hereafter in this subchapter. Such importation are* subject to a measure prescribed by the
+Chief of Plant Industry to ensure absolute prevention of entry, and dissemination of plant
+pests.
+
+* So in original.
+
+Modified, 1 CMC § 3806(d).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)           Page 16 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+
+Commission Comment: With respect to the reference to the Department of Natural Resources, see
+Executive Order 94-3 (effective August 23, 1994) reorganizing the Commonwealth government executive
+branch, changing agency names and official titles and effecting numerous other revisions. See also PL 10-
+57 and the general commission comment to this subchapter.
+
+§ 85-60.2-136             Quarantine for Live Plants
+
+In lieu of post-entry quarantine for live plants, the Chief of Plant Industry may prescribe a
+period of intermediate quarantine at an approved location overseas, where the plant
+material is to be established and screened, as if undergoing post-entry quarantine.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission changed “oversea” to “overseas” to correct a manifest error.
+
+§ 85-60.2-138             In Transit Material
+
+Any plant or other quarantine material in transit through the Commonwealth of Northern
+Mariana Islands on aircrafts or vessels, will be kept aboard such aircraft or vessel under
+secured conditions while in port or on any island of the CNMI, unless such material is
+otherwise enterable. If it is necessary to transfer such quarantine material from one vessel
+or aircraft to another, such transfer will be made under the direction of the quarantine
+inspector with safeguards as deemed necessary.
+
+Modified, 1 CMC § 3806(g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission changed “CMI” to “CNMI” to correct a manifest error.
+
+§ 85-60.2-140             Contraband Material
+
+Anything attempted to be entered into or transported within the CNMI in contravention
+of the quarantine, procedures, and controls will be seized by the quarantine inspector, and
+destroyed by fire or other appropriate means, or returned to its place of origin, or re-
+shipped out from the CNMI at importer’s expense.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-142             Disinsection
+
+Any aircraft or vessel that is known to be harboring or suspected to be harboring insects
+or other agricultural pests at a reasonable ground will be subject to spraying with
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)          Page 17 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+insecticides and other treatment as deemed necessary by the quarantine inspector after
+passengers, and cargoes are released.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-144            Exclusion of Liability
+
+Neither the Director of Natural Resources nor the Chief of Plant Industry nor any
+inspector shall be liable for any loss or damage resulting from exercise of powers under
+the regulations in this subchapter.
+
+Modified, 1 CMC § 3806(d), (f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Part 200 -   Regulations Concerning Entry of Plants, Plant Materials, Regulated
+Materials, Goods, Pests into the Commonwealth of the Northern Mariana Islands
+
+§ 85-60.2-201            Import Permit
+
+Import permit is required for the importation of regulated articles. Importation permit is
+not required for all non-regulated articles. However, these non-regulated articles are
+subject to inspection upon arrival. Persons interested in importation of plants and plant
+products into the CNMI should contact: the Chief of Plant Industry, Department of
+Natural Resources, Kagman Agriculture Station, Saipan, MP 96950.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-202            Certificates
+
+(a)     Phytosanitary certificates are required for the importation of:
+(1)     Rooted plants and seedlings.
+(2)     Cuttings and grafts of woody plants, ornamental plants, and other horticultural
+plants.
+(3)     Cut flowers.
+(4)     Flower bulbs, corns, tubers, rhizomes, and other vegetative plant propagating
+materials.
+(5)     Fresh fruits of regulated plants.
+(6)     Seeds meant for propagation purposes.
+(7)     Soil.
+
+(b)    Phytosanitary certificates must be issued by the Plant Protection Service from
+country origin of the plants.
+
+(c)    The certificate issued is not more than 60 days before the dispatch of the
+consignment, and must be made up in English language.
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 18 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+
+
+(d)     If the consignment imported into the CNMI is not the country of origin, the
+consignment shall be accompanied by a phytosanitary certificate for the country of
+origin, or an authorized copy therefore, together with a declaration or re-export, issued by
+the country from where it was dispatched.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: In subsection (a)(7), the Commission inserted the final period.
+
+§ 85-60.2-204            General Shipping Requirements
+
+(a)     Each shipment of plants into the CNMI shall be marked to show name and
+address, of the shipper or owner, name of consignee, contents and place of origin for the
+grown contents. Any person transporting, receiving, or importing into the CNMI of any
+plant, product, or soil must have an import permit.
+
+(b)     At the port of entry, all shipments of plants and plant product regulated by this
+subchapter will be examined, if the shipments are found infested with any pest liable to
+be detrimental to agriculture. These shipments shall be destroyed, treated, or processed at
+the owner’s expense. All shipped plants into the CNMI must be free of soil.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) and (b).
+
+§ 85-60.2-206            Plant Materials Subject to Inspection and Disposal
+
+All florist’s stocks, trees, shrubs, vines, cuttings, grafts, scions, buds, fruits and seeds of
+fruit, forest and ornamental trees or shrubs, and other plants and plant products in the raw
+or unmanufactured state, are subject to inspection upon arrival in the CNMI.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-208            Living Insects and Plant Diseases
+
+It is prohibited to ship or transport any live insects, plant pathogens and all other plant
+pests into the CNMI. Such shipment shall be authorized prior to transport under written
+permit and regulations of the [Division of] Plant Industry. Any unauthorized shipment
+shall be destroyed immediately, unless it is determined by the inspecting officer of its
+harmless nature on its contents to the agriculture in the CNMI.
+
+Modified, 1 CMC § 3806(g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)         Page 19 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+Commission Comment: The Commission corrected the spelling of “pathogens.”
+
+§ 85-60.2-210            European Corn Borer (Ostrinia nubilalis)
+
+(a)     Regulated Products - Corn, broomcorn, sorghums, and sudangrass plants and all
+parts therefore, including seed and shelled grain, stalks, ears, cobs, fragments and debris;
+beans in the pod, beets; celery, peppers (fruit); endive; swiss chand rhubarb (cut or plants
+with roots); cut flowers and entire plants of aster, chrysanthemum, calendula, cosmos,
+hollyhock, marigold, zinnis, japanese hop, dallia (except tubers without stem), and
+gladiolus (except corns without stems).
+
+(b)     Shipping Requirements - Regulated product must be certified as meeting the
+following requirements:
+(1)     Shelled grain and seeds or corn, broomcorn, sorghums and sudangrass grown in
+or shipped from the infested area must be fumigated in a manner approved by the U.S.
+Department of Agriculture. Fumigation certificates must include the date, dosage
+schedule and kind of fumigant used; otherwise the grain will be subject to inspection and
+possible rejection upon arrival.
+(2)     Shelled grain or seed grown in and shipped from countries under quarantine, but
+not in the infested area shall be accompanied by country of origin certificate affirming
+that it was produced in a country where European corn borer is not known to exist and
+that its identity has been maintained to eliminate risk of contamination with regulated
+products from infested area. The certificate shall show the kind and quantity of
+commodity, and the name and address of shipper or consignee.
+(3)     Stalks, ears, cobs, or other parts of corn, broomcorn, sorghums, and sudangrass,
+as such, or as packing or otherwise, from the infested area shall be sterilized or
+disinfected in a manner approved by Chief of Plant Industry or the U.S. Department of
+Agriculture. Certification shall show the date and full particulars of the treatment given.
+(4)     Stalks, ears, cobs, or other parts of corn, broomcorn, sorghums, and sudangrass
+grown in and shipped from countries under quarantine, but not in the infested area shall
+be accompanied, by country of origin certificate affirming that they were produced in a
+country where European corn borer is not known to exist, and that their identity has been
+maintained to eliminate risk of contamination during handling or storage with regulated
+products from the infested area.
+(5)(i) Vegetable and ornamental plants and plant products, beans in the pod; beets;
+celery; peppers (fruit); endive; swiss chand; rhubard (cut or plants with roots); cut
+flowers and entire plants of aster, chrysanthemum, calendula, cosmos., holly-hock,
+marigold zinnia, Japanese hop, dehlia (except tubers without stems), and gladiolus
+(except corns without stems) produced in or shipped from the infested area shall be
+accompanied with the U.S. Department of Agriculture certificate affirming that they were
+inspected, or that the greenhouse or growing grounds where they were produced were
+inspected and found free of European corn borer; or that they were fumigated in a manner
+approved by the Chief of Plant Industry, and U.S. Department of Agriculture. Fumigated
+certificate shall show the date and method of treatment. These special restrictions on the
+movement into the CNMI of the above regulated plants, plant products cut flowers donor
+apply when produced in and shipped from any country not in the infested area.
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 20 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+(ii)     Manufactured or processed products - Regulated products are exempted from the
+restrictions of the quarantine, when so processed or manufactured as to eliminate
+infestation by the borer.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: In subsection (a), the Commission inserted a closing parenthesis after “stems.” In
+subsection (b)(4), the Commission changed “identify” to “identity” and in subsection (b)(5), the
+Commission changed “found free and” to “found free of” to correct manifest errors.
+
+§ 85-60.2-212            Citrus Virus Diseases
+
+Shipment into CNMI of any and all kinds of citrus trees and parts thereof including
+budwoods and scions (but not seed) is prohibited. The citrus nursery stock accompanied
+by an inspection certificate may be admitted, when shipped from Washington, D.C. by
+the Agricultural Research Services, U.S. Department of Agriculture, and certified virus
+free sources in U.S. or the orient. This regulation does not apply to citrus fruits.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-214            Oriental Fruit Fly (Dacus dorsalis)
+
+(a)     Infestation Area - See the current listing from the Division of Plant Industry.
+
+(b)    Hosts -Tomatoes, mangoesteen, guava, Averrhoa carambola, Cananga adorata,
+Eugenia sp., mangoes, pineapple, bell pepper, citrus fruits, bananas, green peppers,
+grapes, ponalog, avocado, papaya, figs, persimmons, loguats, bananas, Solenum sp.,
+Carcicnia sp. All fruits listed above and other fruits reported as host of oriental fruit fly
+are prohibited entry into the CNMI from the infested countries.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-216            Mediterranean Fruit Fly (Ceratitis capitata)
+
+(a)     Infested Area - See the current listing from the Division of Plant Industry.
+
+(b)   All fruits and vegetables except non-cooking type bananas, pine apples, taro, and
+coconuts are prohibited entry into the CNMI from the infested areas of countries.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-218 Mexican Fruit Fly (Anastrepha ludens)
+
+(a)     Infested Area - See the current listing from the Division of Plant Industry.
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 21 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+
+
+(b)     All citrus fruits except lemons and sour limes, yellow chapote, sapodilla,
+cherimoya, custard apple, white sapote, rose apple (Eugenia), jinicuil, plum, maney,
+mango, peach, guava, pomegranate, pear, apple, quince, and avocado are prohibited entry
+into the CNMI from the infested areas of countries.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-220            Diseases and Insects of Onions
+
+(a)     Infested Area - See the current listing from the Division of Plant Industry.
+
+(b)     Green onions and Allium spp. from the countries infested with tip die back
+disease, Mycosphaerella schoenoprasi and the leaf miner of onions, are prohibited entry
+into the CNMI with tops.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332
+(July 15, 1989).
+
+§ 85-60.2-222            Coconut Diseases and Insects
+
+(a)     Infested Area - See the current listing from the Division of Plant Industry.
+
+(b)     The importation of red ring, lethal yellowing (kaincope), Cadang-cadang, kerals
+wilt, leaf sorch, little leaf, and Malaysian wilt for planting materials are prohibited
+importation into the CNMI. (See up-date listing.)
+
+(c)      The importation for all parts of the coconut trees except without husk are also
+prohibited into the CNMI for the occurrence of coconut lispid, Brontispa sp. (See up-date
+listing.)
+
+Modified, 1 CMC § 3806(g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: In subsection (c), the Commission corrected the spelling of “occurrence.”
+
+§ 85-60.2-224            Banana Diseases and Insects
+
+(a)     Infected Area - See the current listing of infested countries, bunchy top, bacterial
+wilt, burrowing nematode, and banana scab moth from the Division of Plant Industry.
+
+(b)     Shipment into the CNMI of any and all kinds of Musa spp. (bananas and
+plantains) and Heliconia spp. plants or parts thereof, including rhizomes (but not fruit) is
+prohibited into CNMI from any country except nursery stock from the U.S. with the
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 22 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+certification by State Department of Agriculture or USDA as being free of banana scab
+moth (Nacoleia octasema), Panama disease (Fusaninm oxysporum F. Cubense), bacterial
+wilt (Pseudomonas solanacearum), burrowing nematode (Radoplolus Similis), and
+bunchy top virus disease, or as otherwise permitted by the Chief of Plant Industry.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission corrected the capitalization of scientific names pursuant to 1
+CMC § 3806(f).
+
+§ 85-60.2-226            Sweet Potato Insects and Diseases
+
+(a)     Infected Area - See the current listing of infested countries from the Division of
+Plant Industry.
+
+(b)    The sweet potato borer, Omphisa anastomosalis is a serious pest of sweet
+potatoes. The larvae damage both roots and vines, and may kill the plants.
+
+(c)    In order to prevent the spread of sweet potato virus diseases and southern blight
+caused by Pellicularia rolfsii (sym. Sclerotium rolfsii) importation of sweet potato roots
+and vines for planting and propagation is prohibited except from the mainland, United
+States with accompanied phytosanitary certification issued by the state or USDA. The
+phytosanitary certificate shall state that sweet potato material is free from southern blight
+and virus diseases.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission corrected the capitalization of scientific names pursuant to 1
+CMC § 3806(f).
+
+§ 85-60.2-228            Taro for Planting and Propagation
+
+It is forbidden to import the root or stem portions of taro (Colocasia, Alocasia, and
+Cyrtosperma spp.) from planting or propagation except from Hawaii and the mainland,
+United States with accompanied phytosanitary certificate issued by a state, or USDA. The
+phytosanitary certificate shall state that taro is free from the southern blight caused by
+Pellicularia Rolfsii (sym. Sclerootium Rolfsii).
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-230            Queensland Fruit Fly (Dacus tryoni)
+
+(a)     Infested Area - See the current listing from the Division of Plant Industry.
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 23 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+(b)    Hosts - Papaya, sour orange, lemon, grape fruit, mandarin orange, sweet orange,
+guava, cashew, cucumber, quince, persimmon, banana, loguat, fig, tomato, apple, mango,
+mulberry, apricot, peach, sour cherry, garden plum, nectarine, pear, grape, and Rubus sp.
+
+(c)   All the fruits listed as hosts for the Queensland fruit fly are prohibited entry into
+the CNMI from the current listing.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-232            Melon Fly - (Dacus cucurbitae)
+
+(a)     Infested Area - See current listing from the Division of Plant Industry.
+
+(b)    Hosts - Memordiza charantia, Luffa cylindrica and other plant materials
+belonging to the family Cucurbitaceae, Citrullus vulgaris, Artocarpus heterophyllus,
+Baccaurea angulata, Psidium guajava, mango, Lageraria leucantha, Eugenia javaniza,
+egg plant, beans, pepper, passion fruit, and tomatoes.
+
+(c)    Since, the melon fly eradication and surveillance programs are operated in the
+CNMI, the hosts plant materials of the melon fly from the infested list of countries are
+prohibited entry into the CNMI.
+
+Modified, 1 CMC § 3806(d), (f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-234            Packing Materials
+
+It is prohibited to import into the CNMI all packing materials except wood, wood
+shavings, sawdust, processed fibers and materials not originating from plants and
+animals. The clean sphagnum moss may be used as living plant packing material for
+import into the CNMI. No second, used bags, or any such packing shall be used for the
+import of any type of goods.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-236            Construction Materials
+
+Unpeeled logs are prohibited entry into the CNMI. Peeled saw logs, lumbers, saw and
+wallboards are enterable into the CNMI, only, if examination by an inspector reveals no
+termites or boring insects in the log or lumber. Green and dry bamboo poles are
+prohibited entry into the CNMI. Dry bamboo poles and other bamboo products may be
+permitted entry into the CNMI, if chemically treated by shellack, varnish, lacquer, or
+paint. Any manufactured article partly or wholly from timber is liable for inspection by
+quarantine.
+
+Modified, 1 CMC § 3806(f).
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 24 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-238            Stored Dried Products
+
+Stored dried products of human food products and animal feeds are the enterable into the
+CNMI, but are subject to inspection as conditions of entry. They may be refused entry, if
+found infested with storage pests and diseases.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-240            Enterable Fresh Fruits and Vegetables
+
+See the current listing of different countries for all enterable fruits and vegetables from
+the Division of Plant Industry, or CFR 318.13, or CFR 319.56, as appropriate.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original regulation did not list which title of the Code of Federal Regulations
+was referenced.
+
+§ 85-60.2-242            Entry of Handicrafts Made from Plant Material
+
+Provided handicrafts do not contain any material prohibited under these regulations,
+handicrafts shall also be subject to inspection and treatment as required.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-244            Live Plants other than Seeds or Tissue Culture
+
+(a)     Living plants including cuttings, scions, clones, tubers, roots, or any other portion
+of a plant included for propagation, except seeds, shall be permitted entry into the CNMI
+or movement from one island into another, provided, a plant permit has been issued. The
+permit shall state specific requirements of the certification and/or treatment prior to
+dispatch from overseas.
+
+(b)    The entry of planting material (cuttings, budwoods, stocks, tubers, corns, bulbs,
+suckers) other than seed should be limited to the smallest quantity of propagating
+material consistent with good horticultural practices and satisfactory establishment of the
+introduced cultivar.
+
+(c)     No live plants shall be introduced unless an import permit has been obtained from
+the Chief of Plant Industry in advance of arranging the import. The permit shall state
+specific requirements of certification and/or treatment prior to dispatch from overseas.
+
+(d)      If permit has not been obtained for the living plants, they shall be destroyed on
+arrival, or re-shipped at the owner’s expense.
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)         Page 25 of 30
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+(e)     Importation of plants, including rooted cuttings, and any plant division or seedling
+is limited to soil free plants and plant parts. An approved packing material may be used
+around the roots of the plant after the soil have been removed. Plants including seeds and
+seedlings established in a growing medium (except in sterile flasks) are not admitted.
+
+(f)    The prescribed treatment in the country of origin may be arranged by the
+importer. Endorsement on the phytosanitary certificate of treatment undertaken is
+required.
+
+(g)    Upon arrival the plants shall be carefully examined. If the plants are treated
+overseas, the treatment as prescribed shall be applied prior to the release of the plants to
+the importer.
+
+(h)    If insect infestation, nematode attack, or infection with disease is detected, the,
+whole consignment of the particular cultivar is to be destroyed by burning.
+
+(i)     The Chief of Plant Industry reserves the right to prescribe intermediate quarantine
+at an approved overseas location. Such details are to be set out when permit is issued.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) through (i).
+
+§ 85-60.2-246            Seeds
+
+(a)     Seeds, refers to all seeds other than flower and vegetable seeds in hermetically
+sealed commercial packets. Seeds include field crop seeds, pasture seeds, forage crop
+seeds, green manune* (cover) crop seeds, and forest tree seeds. All such seeds require a
+permit. They shall be accompanied by phytosanitary certificate. Other specific
+documentation may include a seed analysis report from the country of origin specifying
+foreign seeds and materials. Shipments contained with soil, insects or disease of
+quarantine significance, or seeds of plants defined in definition of noxious weed shall be
+refused entry into the CNMI.
+
+(b)    Upon arrival, samples of seed shall be drawn for examination. If necessary, in the
+opinion of the Chief, treatment shall be applied as prescribed.
+
+(c)     All seeds shall be free from injurious extraneous matter including soil, noxious
+weeds, insects, and diseases such as ergot. They shall also be subject to such conditions
+as the Chief of Plant Industry considers appropriate to require.
+
+* So in original.
+
+Modified, 1 CMC § 3806(f).
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)        Page 26 of 30
+       TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) through (c).
+
+§ 85-60.2-248             Flowers
+
+(a)     Cut flowers, flower leis, corsages, Christmas trees and floral wreaths are enterable
+into the CNMI, only, if items are surrendered to the quarantine inspector. They shall be
+free of evidence from pests or plant disease symptoms upon examination.
+
+(b)    Dry plant materials that have been dried and bleached, dyed or chemically treated,
+or simply thoroughly dried are subject to inspection as a condition of entry.
+
+(c)     Tissue cultures of plants in sterile flasks may be imported on the basis of a permit
+from the Chief of Plant Industry specifying conditions certification of virus status. They
+are also subject to inspection on arrival and treatment as prescribed.
+
+Modified, 1 CMC § 3806(f), (g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) through (c).
+
+In subsection (a), the Commission corrected the spelling of “surrendered.”
+
+§ 85-60.2-250             Entry of Non-plant Articles
+
+Non-plant articles contaminated with soil or infested with pests are subject to such
+treatment, including cleaning as directed by Chief of Plant Industry or as prescribed.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+§ 85-60.2-252             Entry of Cultures or Organisms
+
+No person shall import any living culture or organism, including parasites, predators,
+aracinds*, molluscs, nematodes, fungi, bacteria, viruses, mycoplasma, parasitic plant
+organism, plant pests, or other invertebrate animal, unless a specific written permit has
+been issued by the Chief of Plant Industry in advance of importation and only in
+compliance with conditions imposed by such permit.
+
+Modified, 1 CMC § 3806(g).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The Commission corrected the spelling of “invertebrate.”
+
+§ 85-60.2-254             Garbage
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)         Page 27 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+It is prohibited to import garbage into the CNMI. All garbage on board ships and aircraft
+entering the CNMI shall be incinerated at the port of entry.
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: On April 6, 2004, the Department of Lands and Natural Resources promulgated an
+emergency provision amending this part to add a section prohibiting the importation of betel nut from the
+island of Guam. See 26 Com. Reg. 22227 (Apr. 23, 2004) (effective for 120 days from Apr. 6, 2004). As of
+December 2004, the prohibition had not been permanently adopted.
+
+Part 300 -       Interim Rules
+
+§ 85-60.2-301             Interim Rules
+
+The Department shall have the power to establish, implement, and enforce interim rules
+governing the transportation of flora and fauna into the CNMI. Any interim rule shall be
+adopted in the absence of effective rules to protect the health and safety of the public as
+well as the ecological health of flora or fauna present in the CNMI. No interim rules shall
+be adopted without such finding by the Director of Natural Resources.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: With respect to the reference to the Department of Natural Resources, see
+Executive Order 94-3 (effective August 23, 1994) reorganizing the Commonwealth government executive
+branch, changing agency names and official titles and effecting numerous other revisions. See also PL 10-
+57 and the general commission comment to this subchapter.
+
+Part 400 -       Export Requirement
+
+§ 85-60.2-401             Plants
+
+(a)      The Chief of Plant Industry may issue phytosanitary certificates based on the
+staff’s findings on the plants or plant materials performed at the request of the exporters
+to aid them in meeting the entry requirements of the importing country.
+
+(b)   This certificate shall only be issued for plants or plant materials produced in the
+CNMI.
+
+(c)    The issuances of a phytosanitary certificate in no way releases the importer from
+compliance with any imported regulations of the consigned country.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) through (c).
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)          Page 28 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+
+§ 85-60.2-405             Nursery Stock Export Shipments
+
+(a)   The Division may certify as to the pest condition or post treatment of shipments
+when officially required. Fee shall be charged for the certificates.
+
+(b)     Any treatment of nursery stock required under the provisions of law shall be at the
+risk and at the expense of the owner. Fees shall be determined at time of inspection.
+
+(c)     The Division may also issue and authorize the use of nursery stock certificates by
+any shipper complying with its regulation for nursery inspection. Fees shall be charged
+for nursery certification. Nursery stock certificate shall not be altered or misused.
+
+(d)    The Department of Natural Resources may revoke or suspend the right to use any
+nursery stock certificate for failure to comply with requirement for their use.
+
+Modified, 1 CMC § 3806(f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) through (d).
+
+With respect to the reference to the Department of Natural Resources, see Executive Order 94-3 (effective
+August 23, 1994) reorganizing the Commonwealth government executive branch, changing agency names
+and official titles and effecting numerous other revisions. See also PL 10-57 and the general commission
+comment to this subchapter.
+
+Part 500 -       Miscellaneous Provisions
+
+§ 85-60.2-501             Entry Via the Post Office
+
+(a)     Any plant, plant material, and regulated material entering CNMI by means of the
+postal service is liable to quarantine inspection and treatment, if necessary in accordance
+with the regulations in this subchapter.
+
+(b)    Fees for quarantine permits or any quarantine services and related activity can be
+determined by the Chief of Plant Industry, and will be duly published.
+
+Modified, 1 CMC § 3806(d), (f).
+
+History: Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+Commission Comment: The original paragraphs were not designated. The Commission designated
+subsections (a) and (b).
+
+Part 600 -       Penalties
+
+§ 85-60.2-601             Penalties
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)          Page 29 of 30
+      TITLE 85: DEPARTMENT OF LANDS AND NATURAL RESOURCES
+
+Pursuant to 2 CMC § 5310, any person who violates any part of the regulations in this
+subchapter shall be guilty of a misdemeanor.
+
+Modified, 1 CMC § 3806(d).
+
+History: Amdts Adopted 15 Com. Reg. 11058 (Oct. 15, 1993); Amdts Proposed 15 Com. Reg. 10750 (July
+15, 1993); Adopted 11 Com. Reg. 6496 (Sept. 15, 1989); Proposed 11 Com. Reg. 6332 (July 15, 1989).
+
+
+
+
+© 2016 by The Commonwealth Law Revision Commission (August 30, 2016)     Page 30 of 30
+

@@ -1,4 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { computed, markRaw, reactive } from 'vue';
+
+import productionEnv from '../../../../public/env.json';
 
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/sub/consts', () => ({ SubNetworkId: { Mainnet: 'Mainnet' } }));
 vi.mock('@/utils/rpc', () => ({
@@ -10,6 +13,7 @@ import type { Connection } from '@sora-substrate/connection';
 import type { Storage } from '@sora-substrate/sdk';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { NodesConnection } from '@/utils/connection';
+import { AppHandledError } from '@/utils/error';
 import { fetchRpc } from '@/utils/rpc';
 
 type MockedStorage = {
@@ -72,6 +76,12 @@ class RetryNodesConnection extends NodesConnection {
 
     this.nodeAddressConnecting = '';
     this.unlockConnection();
+  }
+}
+
+class InspectableNodesConnection extends NodesConnection {
+  public get persistedNodeLatencies(): Record<string, number> {
+    return this.nodeLatencies;
   }
 }
 
@@ -140,6 +150,46 @@ class CapTrackingNodesConnection extends NodesConnection {
 
   public assertCapAllowed(): void {
     this.guardConnectionCap();
+  }
+}
+
+class StatusTrackingNodesConnection extends NodesConnection {
+  public get connectionLockedForTest(): boolean {
+    return this.connectionLocked;
+  }
+
+  public get reconnectScheduledForTest(): boolean {
+    return this.reconnectTimer !== null;
+  }
+
+  public lockForTest(): void {
+    this.lockConnection();
+  }
+
+  public unlockForTest(): void {
+    this.unlockConnection();
+  }
+
+  public setConnectingNodeForTest(address: string): void {
+    this.nodeAddressConnecting = address;
+    this.touchStatus();
+  }
+}
+
+class LifecycleFailNodesConnection extends NodesConnection {
+  public connectNodeCalls = 0;
+
+  public get connectionLockedForTest(): boolean {
+    return this.connectionLocked;
+  }
+
+  public get reconnectScheduledForTest(): boolean {
+    return this.reconnectTimer !== null;
+  }
+
+  protected async connectNode(_options: ConnectToNodeOptions = {}): Promise<void> {
+    this.connectNodeCalls += 1;
+    throw new Error('connect fail');
   }
 }
 
@@ -221,6 +271,152 @@ describe('NodesConnection reconnect behavior', () => {
     expect(nodesConnection.connectNodeCalls).toBe(1);
   });
 
+  it('lets a manual node selection supersede an unresolved automatic connection', async () => {
+    NodesConnection.enableLatencyProbe = false;
+    vi.useFakeTimers();
+
+    let resolveAutomaticConnection!: () => void;
+    const automaticConnection = new Promise<void>((resolve) => {
+      resolveAutomaticConnection = resolve;
+    });
+    const connectionMock = createConnection();
+    const connection = toConnection(connectionMock);
+    const automaticOnConnect = vi.fn();
+    const manualOnConnect = vi.fn();
+
+    connectionMock.open.mockImplementation(async (endpoint: string) => {
+      Object.assign(connection, {
+        endpoint,
+        api: {
+          genesisHash: {
+            toHex: () => '0x1',
+          },
+        } as Connection['api'],
+      });
+
+      if (endpoint === nodeA.address) {
+        await automaticConnection;
+      }
+    });
+    connectionMock.close.mockImplementation(async () => {
+      Object.assign(connection, { endpoint: '', api: undefined });
+      resolveAutomaticConnection();
+    });
+
+    const storage = createStorage();
+    const nodesConnection = markRaw(new NodesConnection(toStorage(storage), connection));
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    const automaticPromise = nodesConnection.connect({ node: nodeA, onConnect: automaticOnConnect });
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(connectionMock.open).toHaveBeenCalledWith(nodeA.address, expect.any(Object));
+
+    const manualPromise = nodesConnection.connect({
+      node: nodeB,
+      manualSelection: true,
+      onConnect: manualOnConnect,
+    });
+
+    expect(nodesConnection.status.nodeAddressConnecting).toBe(nodeB.address);
+
+    await expect(Promise.all([automaticPromise, manualPromise])).resolves.toEqual([undefined, undefined]);
+
+    expect(connectionMock.open.mock.calls.map(([endpoint]) => endpoint)).toEqual([nodeA.address, nodeB.address]);
+    expect(connectionMock.close).toHaveBeenCalledTimes(1);
+    expect(automaticOnConnect).not.toHaveBeenCalled();
+    expect(manualOnConnect).toHaveBeenCalledWith(nodeB);
+    expect(nodesConnection.status.node).toEqual(nodeB);
+    expect(nodesConnection.status.connected).toBe(true);
+    expect(storage.get('nodeSelectionMode')).toBe('manual');
+
+    await nodesConnection.closeConnection();
+  });
+
+  it('stops a pending connection without falling back to a detached node', async () => {
+    NodesConnection.enableBackoff = false;
+    NodesConnection.enableLatencyProbe = false;
+
+    let rejectPendingOpen!: (reason: Error) => void;
+    let notifyOpenStarted!: () => void;
+    const openStarted = new Promise<void>((resolve) => {
+      notifyOpenStarted = resolve;
+    });
+    const connectionMock = createConnection();
+    const connection = toConnection(connectionMock);
+
+    connectionMock.open.mockImplementation((endpoint: string) => {
+      Object.assign(connection, {
+        endpoint,
+        api: {
+          genesisHash: {
+            toHex: () => '0x1',
+          },
+        } as Connection['api'],
+      });
+
+      const pendingOpen = new Promise<void>((_resolve, reject) => {
+        rejectPendingOpen = reject;
+      });
+      notifyOpenStarted();
+
+      return pendingOpen;
+    });
+    connectionMock.close.mockImplementation(async () => {
+      Object.assign(connection, { endpoint: '', api: undefined });
+      rejectPendingOpen(new Error('connection cancelled'));
+    });
+
+    const nodesConnection = markRaw(new StatusTrackingNodesConnection(toStorage(createStorage()), connection));
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    const connectPromise = nodesConnection.connect();
+    await openStarted;
+
+    expect(nodesConnection.status.nodeAddressConnecting).toBe(nodeA.address);
+    expect(nodesConnection.connectionLockedForTest).toBe(true);
+
+    await expect(nodesConnection.stopConnection()).resolves.toBeUndefined();
+    await expect(connectPromise).resolves.toBeUndefined();
+
+    expect(connectionMock.open.mock.calls.map(([endpoint]) => endpoint)).toEqual([nodeA.address]);
+    expect(connectionMock.close).toHaveBeenCalledTimes(1);
+    expect(nodesConnection.status.nodeAddressConnecting).toBe('');
+    expect(nodesConnection.status.connected).toBe(false);
+    expect(nodesConnection.status.connectionAllowance).toBe(true);
+    expect(nodesConnection.connectionLockedForTest).toBe(false);
+    expect(nodesConnection.reconnectScheduledForTest).toBe(false);
+  });
+
+  it('cancels a scheduled reconnect and resets its lifecycle state', async () => {
+    NodesConnection.enableBackoff = true;
+    NodesConnection.enableLatencyProbe = false;
+    vi.useFakeTimers();
+
+    const nodesConnection = new LifecycleFailNodesConnection(
+      toStorage(createStorage()),
+      toConnection(createConnection())
+    );
+    nodesConnection.setDefaultNodes([nodeA, nodeB]);
+
+    await expect(nodesConnection.connect()).resolves.toBeUndefined();
+
+    expect(nodesConnection.connectNodeCalls).toBe(2);
+    expect(nodesConnection.reconnectScheduledForTest).toBe(true);
+    expect(nodesConnection.lastReconnectDelayMs).toBe(3_400);
+    expect(nodesConnection.reconnectAttempt).toBe(1);
+
+    await expect(nodesConnection.stopConnection()).resolves.toBeUndefined();
+    await vi.advanceTimersByTimeAsync(3_400);
+
+    expect(nodesConnection.connectNodeCalls).toBe(2);
+    expect(nodesConnection.reconnectScheduledForTest).toBe(false);
+    expect(nodesConnection.lastReconnectDelayMs).toBe(0);
+    expect(nodesConnection.reconnectAttempt).toBe(0);
+    expect(nodesConnection.connectionLockedForTest).toBe(false);
+  });
+
   it('resolves after fallback node connects when backoff is disabled', async () => {
     NodesConnection.enableBackoff = false;
 
@@ -244,24 +440,29 @@ describe('NodesConnection reconnect behavior', () => {
       }
     });
     connectionMock.open.mockImplementation(
-      async (_endpoint: string, options?: { eventListeners?: Array<[string, () => void]> }) => {
+      async (endpoint: string, options?: { eventListeners?: Array<[string, () => void]> }) => {
+        Object.assign(connection, {
+          endpoint,
+          api: {
+            genesisHash: {
+              toHex: () => '0x1',
+            },
+          } as Connection['api'],
+        });
         const listeners = options?.eventListeners ?? [];
         const readyListener = listeners.find(([event]) => event === 'ready')?.[1];
         readyListener?.();
       }
     );
 
-    const connection = toConnection(connectionMock, {
-      endpoint: nodeA.address,
-      api: {
-        genesisHash: {
-          toHex: () => '0x1',
-        },
-      } as Connection['api'],
+    const connection = toConnection(connectionMock);
+    connectionMock.close.mockImplementation(async () => {
+      Object.assign(connection, { api: undefined });
     });
 
-    const nodesConnection = new DisconnectReconnectNodesConnection(toStorage(createStorage()), connection);
+    const nodesConnection = markRaw(new DisconnectReconnectNodesConnection(toStorage(createStorage()), connection));
     nodesConnection.setDefaultNodes([nodeA]);
+    const status = computed(() => nodesConnection.status);
 
     const unhandled: unknown[] = [];
     const listener = (reason: unknown) => {
@@ -274,6 +475,7 @@ describe('NodesConnection reconnect behavior', () => {
 
     try {
       await nodesConnection.runConnectNode({ node: nodeA });
+      expect(status.value.connected).toBe(true);
       await disconnectedHandler?.();
       await Promise.resolve();
     } finally {
@@ -281,6 +483,7 @@ describe('NodesConnection reconnect behavior', () => {
     }
 
     expect(nodesConnection.reconnectCalls).toBe(1);
+    expect(status.value.connected).toBe(false);
     expect(warnSpy).toHaveBeenCalled();
     expect(unhandled).toHaveLength(0);
   });
@@ -290,6 +493,19 @@ describe('NodesConnection reconnect behavior', () => {
 
     expect(() => nodesConnection.setDefaultNodes(undefined as never)).not.toThrow();
     expect(nodesConnection.defaultNodes).toEqual([]);
+  });
+
+  it('falls back safely when persisted node JSON is malformed or has the wrong shape', () => {
+    const storage = createStorage();
+    storage.set('node', '{');
+    storage.set('customNodes', '{}');
+    storage.set('nodeLatencies', '[1]');
+
+    const nodesConnection = new InspectableNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+    expect(nodesConnection.status.node).toBeNull();
+    expect(nodesConnection.status.customNodes).toEqual([]);
+    expect(nodesConnection.persistedNodeLatencies).toEqual({});
   });
 
   it('throttles default-node latency probes within the TTL window', async () => {
@@ -501,4 +717,240 @@ describe('NodesConnection reconnect behavior', () => {
     nodesConnection.nodeAddressConnecting = nodeA.address;
     expect(nodesConnection.nodeIsConnected).toBe(false);
   });
+
+  it('reactively exposes immutable node and connection status while the runtime stays raw', async () => {
+    NodesConnection.enableLatencyProbe = false;
+
+    const connectionMock = createConnection();
+    const connection = toConnection(connectionMock);
+    connectionMock.close.mockImplementation(async () => {
+      Object.assign(connection, { api: undefined });
+    });
+    connectionMock.open.mockImplementation(async (endpoint: string) => {
+      Object.assign(connection, {
+        endpoint,
+        api: {
+          genesisHash: {
+            toHex: () => '0x1',
+          },
+        } as Connection['api'],
+      });
+    });
+    const nodesConnection = markRaw(new StatusTrackingNodesConnection(toStorage(createStorage()), connection));
+    const status = computed(() => nodesConnection.status);
+    const initialStatus = status.value;
+
+    expect(initialStatus).toEqual({
+      node: null,
+      nodeList: [],
+      customNodes: [],
+      defaultNodes: [],
+      nodeAddressConnecting: '',
+      connectionAllowance: true,
+      connected: false,
+    });
+    expect(Object.isFrozen(initialStatus)).toBe(true);
+    expect(Object.isFrozen(initialStatus.nodeList)).toBe(true);
+
+    nodesConnection.setDefaultNodes([nodeA]);
+    nodesConnection.setCustomNodes([nodeB]);
+
+    expect(status.value).not.toBe(initialStatus);
+    expect(status.value.defaultNodes).toEqual([nodeA]);
+    expect(status.value.customNodes).toEqual([nodeB]);
+    expect(status.value.nodeList).toEqual([nodeA, nodeB]);
+
+    const connectPromise = nodesConnection.connect({ node: nodeA, manualSelection: true });
+
+    expect(status.value.nodeAddressConnecting).toBe(nodeA.address);
+    expect(status.value.connectionAllowance).toBe(false);
+    expect(status.value.connected).toBe(false);
+
+    await expect(connectPromise).resolves.toBeUndefined();
+
+    expect(status.value.node).toEqual(nodeA);
+    expect(status.value.nodeAddressConnecting).toBe('');
+    expect(status.value.connectionAllowance).toBe(true);
+    expect(status.value.connected).toBe(true);
+
+    const switchPromise = nodesConnection.connect({ node: nodeB, manualSelection: true });
+
+    expect(status.value.nodeAddressConnecting).toBe(nodeB.address);
+    expect(status.value.connected).toBe(false);
+
+    await expect(switchPromise).resolves.toBeUndefined();
+
+    expect(status.value.node).toEqual(nodeB);
+    expect(status.value.nodeAddressConnecting).toBe('');
+    expect(status.value.connected).toBe(true);
+  });
+
+  it('keeps the revision ref usable when Vue proxies a NodesConnection instance', () => {
+    NodesConnection.enableLatencyProbe = false;
+
+    const rawConnection = new StatusTrackingNodesConnection(
+      toStorage(createStorage()),
+      toConnection(createConnection())
+    );
+    const nodesConnection = reactive(rawConnection);
+    const status = computed(() => nodesConnection.status);
+    const initialStatus = status.value;
+
+    expect(() => nodesConnection.setDefaultNodes([nodeA])).not.toThrow();
+    expect(status.value).not.toBe(initialStatus);
+    expect(status.value.defaultNodes).toEqual([nodeA]);
+
+    nodesConnection.setConnectingNodeForTest(nodeA.address);
+
+    expect(status.value.nodeAddressConnecting).toBe(nodeA.address);
+  });
+
+  it('reactively reports lock, unlock, close, and failed connection transitions', async () => {
+    NodesConnection.enableLatencyProbe = false;
+
+    const connectionMock = createConnection();
+    const mutableConnection = toConnection(connectionMock, {
+      endpoint: nodeA.address,
+      api: {
+        genesisHash: {
+          toHex: () => '0x1',
+        },
+      } as Connection['api'],
+    });
+    connectionMock.close.mockImplementation(async () => {
+      Object.assign(mutableConnection, { api: undefined });
+    });
+
+    const nodesConnection = markRaw(new StatusTrackingNodesConnection(toStorage(createStorage()), mutableConnection));
+    nodesConnection.setConnectingNodeForTest(nodeA.address);
+    const status = computed(() => nodesConnection.status);
+
+    nodesConnection.lockForTest();
+    expect(status.value.connectionAllowance).toBe(false);
+
+    nodesConnection.unlockForTest();
+    expect(status.value.connectionAllowance).toBe(true);
+
+    await nodesConnection.closeConnection();
+    expect(status.value.connected).toBe(false);
+
+    const failingConnectionMock = createConnection();
+    failingConnectionMock.open.mockRejectedValueOnce(new Error('offline'));
+    const failingConnection = markRaw(
+      new StatusTrackingNodesConnection(toStorage(createStorage()), toConnection(failingConnectionMock))
+    );
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const failingStatus = computed(() => failingConnection.status);
+    const connectPromise = failingConnection.connect({ node: nodeB, manualSelection: true });
+
+    expect(failingStatus.value.nodeAddressConnecting).toBe(nodeB.address);
+    await expect(connectPromise).rejects.toBeInstanceOf(AppHandledError);
+    expect(failingStatus.value.nodeAddressConnecting).toBe('');
+    expect(failingStatus.value.connectionAllowance).toBe(true);
+    expect(failingStatus.value.connected).toBe(false);
+    failingConnection.unlockForTest();
+  });
+
+  it('uses only the production live default even when cached latency favors the former archive default', async () => {
+    NodesConnection.enableLatencyProbe = true;
+    NodesConnection.enableParallelDial = true;
+    vi.mocked(fetchRpc).mockClear();
+
+    const storage = createStorage();
+    storage.set(
+      'nodeLatencies',
+      JSON.stringify({
+        'wss://ws.mof.sora.org': 100,
+        'wss://mof2.sora.org': 1,
+      })
+    );
+    const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
+    nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
+
+    await nodesConnection.connect();
+
+    expect(nodesConnection.status.defaultNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
+    expect(nodesConnection.connectedNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
+    expect(JSON.parse(storage.get('node') as string).address).toBe('wss://ws.mof.sora.org');
+    expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+  });
+
+  it.each(['auto', undefined] as const)(
+    'clears a removed production default with persisted selection mode %s before reconnecting',
+    async (mode) => {
+      NodesConnection.enableLatencyProbe = true;
+      vi.mocked(fetchRpc).mockClear();
+      const storage = createStorage();
+      storage.set(
+        'node',
+        JSON.stringify({
+          chain: 'SORA',
+          name: 'SORA Parliament Ministry of Finance #2',
+          address: 'wss://mof2.sora.org',
+          location: 'SG',
+        })
+      );
+      if (mode) storage.set('nodeSelectionMode', mode);
+      storage.set('nodeLatencies', JSON.stringify({ 'wss://mof2.sora.org': 1 }));
+      const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
+      expect(nodesConnection.status.node?.address).toBe('wss://mof2.sora.org');
+
+      nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
+
+      expect(nodesConnection.status.node).toBeNull();
+      expect(storage.get('node')).toBeNull();
+      expect(storage.get('nodeSelectionMode')).toBe('auto');
+      await nodesConnection.connect();
+      expect(nodesConnection.connectedNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
+      expect(JSON.parse(storage.get('node') as string).address).toBe('wss://ws.mof.sora.org');
+      expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+    }
+  );
+
+  it('keeps a failed production primary connection fatal without opening an archive fallback', async () => {
+    NodesConnection.enableBackoff = false;
+    NodesConnection.enableLatencyProbe = true;
+    NodesConnection.enableParallelDial = true;
+    vi.mocked(fetchRpc).mockClear();
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const connectionMock = createConnection();
+    connectionMock.open.mockRejectedValue(new Error('primary unavailable'));
+    const nodesConnection = new NodesConnection(toStorage(createStorage()), toConnection(connectionMock));
+    nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
+
+    try {
+      await expect(nodesConnection.connect()).rejects.toBeInstanceOf(AppHandledError);
+      expect(connectionMock.open).toHaveBeenCalledTimes(1);
+      expect(connectionMock.open).toHaveBeenCalledWith('wss://ws.mof.sora.org', expect.any(Object));
+      expect(nodesConnection.status.node).toBeNull();
+      expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+    } finally {
+      await nodesConnection.stopConnection();
+    }
+  });
+
+  it.each(['wss://mof2.sora.org', 'wss://custom.example'])(
+    'preserves an explicit user custom node %s when production defaults change',
+    async (address) => {
+      NodesConnection.enableLatencyProbe = true;
+      vi.mocked(fetchRpc).mockClear();
+      const customNode: Node = { chain: 'SORA', name: 'Explicit user custom node', address };
+      const storage = createStorage();
+      storage.set('node', JSON.stringify(customNode));
+      storage.set('customNodes', JSON.stringify([customNode]));
+      storage.set('nodeSelectionMode', 'manual');
+      const nodesConnection = new SuccessfulNodesConnection(toStorage(storage), toConnection(createConnection()));
+
+      nodesConnection.setDefaultNodes(productionEnv.DEFAULT_NETWORKS);
+
+      expect(nodesConnection.status.node).toEqual(customNode);
+      expect(nodesConnection.status.customNodes).toEqual([customNode]);
+      expect(nodesConnection.status.defaultNodes).toEqual(productionEnv.DEFAULT_NETWORKS);
+      expect(storage.get('nodeSelectionMode')).toBe('manual');
+      await nodesConnection.connect();
+      expect(nodesConnection.connectedNodes).toEqual([customNode]);
+      expect(JSON.parse(storage.get('node') as string)).toEqual(customNode);
+      expect(vi.mocked(fetchRpc)).not.toHaveBeenCalled();
+    }
+  );
 });

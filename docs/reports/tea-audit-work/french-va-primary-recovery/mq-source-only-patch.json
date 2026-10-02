@@ -1,0 +1,10 @@
+{
+  "code": "MQ",
+  "decisionChange": false,
+  "permitFreeDecision": "unresolved",
+  "evidenceUrl": "https://daaf.martinique.agriculture.gouv.fr/IMG/pdf/PHYTOVOTRE2014-11-20141_cle85efe1.pdf",
+  "sourceDate": "November 2014 (not the search engine crawl/upload date)",
+  "sourceType": "Historical official DAAF newsletter; indexed full relevant paragraph, original PDF timed out",
+  "finding": "The official newsletter describes the 2004 private-import restriction as prohibiting covered plants/products without an official origin sanitary certificate, including mainland France/EU. The current DAAF page describes a personal-import prohibition using the 1990 definitions. Neither gives an express finished manufactured tea exception. This adds historical administrative interpretation, not the unrecovered full 2004 order, and does not establish tea coverage or an unconditional prohibition.",
+  "storage": "web-source-results.json -> finalTargeted"
+}

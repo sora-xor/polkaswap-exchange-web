@@ -627,7 +627,7 @@ button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary) {
 
 [design-system-theme='light'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):hover,
 [design-system-theme='light'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):focus {
-  color: #d5cdd0;
+  color: var(--s-color-base-content-secondary);
 }
 
 [design-system-theme='dark'] button.el-button.neumorphic.s-action.el-button--settings:not(.s-primary):hover,
@@ -915,4 +915,69 @@ i.marketing-suffix.s-icon-arrows-arrow-top-right-24 {
 .s-card.neumorphic.s-primary.s-status-default.is-hover-shadow:focus,
 .s-card.neumorphic.s-primary.s-status-default.is-hover-shadow:hover {
   box-shadow: var(--s-shadow-dialog);
+}
+
+/* Focus remains visible on native controls and keyboard-enabled icon actions. */
+:where(button, a, input, select, textarea, summary, [role='button'], [tabindex]):focus-visible {
+  outline: 2px solid var(--s-color-focus-ring) !important;
+  outline-offset: 2px !important;
+}
+
+button.el-button.neumorphic.s-action:not(.s-primary):not(:disabled):not(.is-disabled) {
+  color: var(--s-color-base-content-secondary);
+}
+
+/* Action tokens keep small labels legible while retaining the brand palette. */
+button.el-button.neumorphic.s-primary:not(:disabled):not(.is-disabled) {
+  background-color: var(--s-color-action-fill);
+  color: var(--s-color-on-action);
+
+  &:hover,
+  &:focus-visible,
+  &:active {
+    background-color: var(--s-color-action-fill-hover);
+  }
+}
+
+button.el-button.neumorphic.s-primary:is(:disabled, .is-disabled, .s-button_disabled) {
+  background-color: var(--s-color-action-disabled-fill) !important;
+  color: var(--s-color-on-action-disabled) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+
+a.link,
+.disclaimer a.link,
+.disclaimer .disclaimer__prefix,
+a.external-link,
+.s-link:not(:disabled):not(.is-disabled) {
+  color: var(--s-color-action-text);
+
+  &:hover,
+  &:focus-visible,
+  &:active {
+    color: var(--s-color-action-text);
+  }
+}
+
+.s-tabs.neumorphic.s-rounded .el-tabs__nav-wrap .el-tabs__item:is(.is-active, :hover, :focus) {
+  color: var(--s-color-action-text);
+}
+
+:where(button, a, input, select, textarea, summary, [role='button'], [role='switch']),
+.el-collapse-item__wrap,
+.transaction-details {
+  transition-duration: 125ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

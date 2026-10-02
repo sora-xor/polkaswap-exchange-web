@@ -210,7 +210,7 @@ import FormattedAmount from '@/lib/soraneo-wallet/src/components/FormattedAmount
 import InfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { LimitOrderType, PageNames } from '@/consts';
+import { LimitOrderType, PageNames, ZeroStringValue } from '@/consts';
 import { useConfirmDialog } from '@/composables/useConfirmDialog';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
@@ -296,7 +296,9 @@ const reading = ref('');
 const prevSwapFromAddress = ref('');
 const prevSwapToAddress = ref('');
 
-const networkFee = computed<CodecString>(() => networkFees.value[Operation.OrderBookPlaceLimitOrder]);
+const isMarketType = computed(() => limitOrderType.value === LimitOrderType.market);
+const networkFeeOperation = computed(() => (isMarketType.value ? Operation.Swap : Operation.OrderBookPlaceLimitOrder));
+const networkFee = computed<CodecString>(() => networkFees.value[networkFeeOperation.value] ?? ZeroStringValue);
 
 const isSliderAvailable = computed(() => {
   const asset = baseAsset.value;
@@ -304,8 +306,6 @@ const isSliderAvailable = computed(() => {
   const availableBalance = getMaxValue(asset, networkFee.value);
   return new FPNumber(availableBalance).gt(FPNumber.ZERO);
 });
-
-const isMarketType = computed(() => limitOrderType.value === LimitOrderType.market);
 
 const isBalanceLessThanStepSize = computed(() => {
   const orderBook = currentOrderBook.value;
@@ -668,13 +668,13 @@ const placeLimitOrder = () =>
   api.orderBook.placeLimitOrder(baseAsset.value, quoteAsset.value, quoteValue.value, baseValue.value, side.value);
 
 const placeOrder = async () => {
-  await withNotifications(async () => {
-    const isLimitReached = await singlePriceReachedLimit();
-    if (isLimitReached) {
-      vm?.proxy?.$alert(t('orderBook.error.singlePriceLimit.reading'), { title: t('errorText') });
-      return;
-    }
+  const isLimitReached = await singlePriceReachedLimit();
+  if (isLimitReached) {
+    vm?.proxy?.$alert(t('orderBook.error.singlePriceLimit.reading'), { title: t('errorText') });
+    return;
+  }
 
+  await withNotifications(async () => {
     const orderExtrinsic = isMarketType.value ? placeMarketOrder : placeLimitOrder;
     await orderExtrinsic();
     resetValues(true);

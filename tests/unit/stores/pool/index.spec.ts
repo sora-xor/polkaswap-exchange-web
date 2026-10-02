@@ -427,6 +427,27 @@ describe('pool store', () => {
     );
   });
 
+  it('calculates counter amounts with each asset precision', () => {
+    shared.assetsStore.assetDataByAddress.mockImplementation((address?: string) => {
+      if (address === 'base') return { address: 'base', symbol: 'BASE', decimals: 12 };
+      if (address === 'quote') return { address: 'quote', symbol: 'QUOTE', decimals: 18 };
+      return null;
+    });
+    const store = usePoolStore();
+
+    store.addLiquidity.firstTokenAddress = 'base';
+    store.addLiquidity.secondTokenAddress = 'quote';
+    store.addLiquidity.reserve = ['1000000000000', '1000000000000000000'];
+    store.addLiquidity.secondTokenValue = '1';
+
+    store.updateAddLiquidityFirstTokenValue();
+    expect(store.addLiquidity.firstTokenValue).toBe('1');
+
+    store.addLiquidity.firstTokenValue = '0.5';
+    store.updateAddLiquiditySecondTokenValue();
+    expect(store.addLiquidity.secondTokenValue).toBe('0.5');
+  });
+
   it('subscribes native pool state and strategic apy without the legacy bridge', async () => {
     const store = usePoolStore();
 

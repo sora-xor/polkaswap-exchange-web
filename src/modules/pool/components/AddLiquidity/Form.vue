@@ -100,7 +100,7 @@
 
     <network-fee-warning-dialog
       v-model:visible="showWarningFeeDialog"
-      :fee="removeLiquidityFormattedFee"
+      :fee="nextOperationFormattedFee"
       @confirm="confirmNetworkFeeWariningDialog"
     ></network-fee-warning-dialog>
   </div>
@@ -182,7 +182,6 @@ const secondTokenValue = poolTokenPair.secondTokenValue;
 const formattedPrice = poolTokenPair.formattedPrice;
 const formattedPriceReversed = poolTokenPair.formattedPriceReversed;
 const networkFee = poolTokenPair.networkFee;
-const networkFees = poolTokenPair.networkFees;
 const emptyAssets = poolTokenPair.emptyAssets;
 const isAvailable = poolTokenPair.isAvailable;
 const price = poolTokenPair.price;
@@ -190,9 +189,7 @@ const priceReversed = poolTokenPair.priceReversed;
 
 const areTokensSelected = computed(() => Boolean(firstToken.value && secondToken.value));
 
-const removeLiquidityFormattedFee = computed(() =>
-  formatCodecNumber(networkFees.value?.[Operation.RemoveLiquidity] ?? '0')
-);
+const nextOperationFormattedFee = computed(() => formatCodecNumber(networkFee.value));
 
 const isXorSufficientForNextOperation = () => {
   const params: NetworkFeeWarningOptions = {
@@ -329,11 +326,14 @@ const handleSelectToken = async (token: AccountAsset) => {
 };
 
 const depositLiquidity = async () => {
-  await withNotifications(async () => {
+  const result = await withNotifications(async () => {
     await addLiquidity();
     emit('back');
   });
-  confirmDialogVisible.value = false;
+
+  if (result.submitted) {
+    confirmDialogVisible.value = false;
+  }
 };
 
 defineExpose({

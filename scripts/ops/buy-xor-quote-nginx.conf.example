@@ -1,0 +1,37 @@
+# Include inside the existing mof.sora.org HTTPS server. Do not modify the SORA RPC server.
+# The app controls CORS. Suppress persistent client IP, address-bearing error context and referrer logs.
+location = /api/buy-xor/quote {
+    access_log off;
+    error_log /dev/null crit;
+    client_max_body_size 4k;
+    client_body_buffer_size 8k;
+    client_body_timeout 5s;
+    proxy_request_buffering on;
+    proxy_buffering off;
+    proxy_cache off;
+    proxy_connect_timeout 2s;
+    proxy_read_timeout 14s;
+    proxy_send_timeout 5s;
+    proxy_pass_request_headers off;
+    proxy_set_header Host 127.0.0.1;
+    proxy_set_header Origin $http_origin;
+    proxy_set_header Content-Type $http_content_type;
+    proxy_set_header Content-Encoding $http_content_encoding;
+    # Forward only to reject authenticated/cookie-bearing requests; neither is forwarded to the provider.
+    proxy_set_header Cookie $http_cookie;
+    proxy_set_header Authorization $http_authorization;
+    proxy_set_header Access-Control-Request-Method $http_access_control_request_method;
+    proxy_set_header Access-Control-Request-Headers $http_access_control_request_headers;
+    proxy_pass http://127.0.0.1:5189;
+}
+
+location = /api/buy-xor/quote-health {
+    access_log off;
+    error_log /dev/null crit;
+    proxy_pass_request_headers off;
+    proxy_set_header Host 127.0.0.1;
+    proxy_connect_timeout 2s;
+    proxy_read_timeout 2s;
+    proxy_cache off;
+    proxy_pass http://127.0.0.1:5189;
+}

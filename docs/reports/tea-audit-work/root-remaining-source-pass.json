@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-09-30T03:24:13.885353+00:00",
+  "scope": "Targeted additional source pass for BS, VG, VA and French-territory GF/MQ/PM/YT. No authority contacts or live settings changes.",
+  "statusChanges": [],
+  "findings": {
+    "BS": {
+      "result": "The current official alphabetical/category law indexes again list Food Safety and Quality Act2016, but no newly retrieved commencement or private-post implementation. Existing sections4/35 business-scope question persists; same Act copy is not new evidence of private applicability.",
+      "urls": [
+        "https://laws.bahamas.gov.bs/cms/legislation/index/by-category.html",
+        "https://laws.bahamas.gov.bs/cms/legislation/index/by-alphabetical.html",
+        "https://www.bahfsabahamas.com/downloads/documents/legislation/FSQAct.pdf"
+      ]
+    },
+    "VG": {
+      "result": "The saved January2026 index places Public Health(Food Hygiene) Regulations in1991 revised edition. Current2026 Throne speech describes food-hygiene amendment and Biosecurity Bill as future measures. Neither a proposal nor the existing food-establishment guidance supplies a manufactured-tea postal decision. No current complete subsidiary food/plant schedule newly recovered.",
+      "urls": [
+        "https://www.gov.vg/news/2026-speech-throne-legislative-pillars-success-building-sustainable-nation",
+        "https://www.bvi.gov.vg/sites/default/files/temporary_food_establishment_guide_new_revised.pdf"
+      ]
+    },
+    "VA": {
+      "result": "Targeted Italian-language food-import/certification searches on Vatican government/HolySee domains produced no new applicable personal-post legislation. Preserve previously documented customs-versus-agricultural gap.",
+      "urls": []
+    },
+    "GF_MQ_PM": {
+      "result": "Targeted manufactured-tea, transformed-food and personal-import searches returned no new local classification. Current SaintPierre Code rural result matches already reviewed professional-registration and territorial controls; do not treat registration-business scope as a private permit waiver.",
+      "urls": [
+        "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000032693993"
+      ]
+    },
+    "YT": {
+      "result": "Current DAAF index still identifies2026-DAAF-236 without exposing its operative annex in retrieved text. A newly located June2026 ministry instruction2026-340 references the Mayotte order; direct page/PDF retrieval timed out in web and curl. A reference to an order does not establish its tea conditions or supersede the earlier audited rule.",
+      "urls": [
+        "https://daaf.mayotte.agriculture.gouv.fr/importation-des-vegetaux-2026-a775.html",
+        "https://info.agriculture.gouv.fr/boagri/instruction-2026-340/telechargement"
+      ]
+    }
+  },
+  "conclusion": "No new source-backed decision for these destinations. Their exact existing questions remain open; repeated generic searches are not country completion."
+}

@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils';
-import { ref } from 'vue';
+import { flushPromises, mount } from '@vue/test-utils';
+import { nextTick, reactive, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mountSetup } from '@stubs/mountSetup';
@@ -18,6 +18,8 @@ const walletStore = vi.hoisted(() => ({
   externalHistoryTotal: 32,
   shouldBalanceBeHidden: false,
   account: { address: 'account-address' },
+  indexerType: 'polkaswap',
+  indexers: {} as Record<string, { endpoint: string }>,
   resetExternalHistory: vi.fn(),
   saveExternalHistoryUpdates: vi.fn(),
   getHistory,
@@ -25,6 +27,12 @@ const walletStore = vi.hoisted(() => ({
   getExternalHistory,
   navigate,
 }));
+const indexerState = reactive({
+  polkaswap: {
+    endpoint: 'https://indexer.example/graphql',
+  },
+});
+walletStore.indexers = indexerState;
 
 vi.mock('@/lib/soraneo-wallet/src/composables/usePaginationSearch', () => ({
   usePaginationSearch: () => ({
@@ -88,6 +96,8 @@ describe('Wallet WalletHistory', () => {
     walletStore.externalHistoryTotal = 32;
     walletStore.shouldBalanceBeHidden = false;
     walletStore.account = { address: 'account-address' };
+    walletStore.indexerType = 'polkaswap';
+    indexerState.polkaswap.endpoint = 'https://indexer.example/graphql';
     walletStore.resetExternalHistory.mockClear();
     walletStore.saveExternalHistoryUpdates.mockClear();
     walletStore.setTxDetailsId.mockClear();
@@ -95,6 +105,69 @@ describe('Wallet WalletHistory', () => {
     getHistory.mockClear();
     getOperationMessage.mockClear();
     navigate.mockClear();
+  });
+
+  it('requests the first account activity page from the indexer immediately on mount', async () => {
+    walletStore.externalHistoryTotal = 0;
+
+    const wrapper = mount(WalletHistory as any, {
+      global: {
+        stubs: {
+          SearchInput: true,
+          HistoryPagination: true,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    expect(walletStore.saveExternalHistoryUpdates).toHaveBeenCalledWith(true);
+    expect(getExternalHistory).toHaveBeenCalledOnce();
+    expect(getExternalHistory).toHaveBeenCalledWith({
+      page: 1,
+      address: 'account-address',
+      assetAddress: '',
+      pageAmount: 8,
+      query: {},
+    });
+    expect(getHistory).toHaveBeenCalledOnce();
+
+    wrapper.unmount();
+  });
+
+  it('loads account activity when the runtime indexer endpoint becomes available after mount', async () => {
+    walletStore.externalHistoryTotal = 0;
+    indexerState.polkaswap.endpoint = '';
+
+    const wrapper = mount(WalletHistory as any, {
+      global: {
+        stubs: {
+          SearchInput: true,
+          HistoryPagination: true,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    expect(getExternalHistory).not.toHaveBeenCalled();
+    expect(getHistory).toHaveBeenCalledOnce();
+
+    indexerState.polkaswap.endpoint = 'https://indexer.example/graphql';
+    await nextTick();
+    await flushPromises();
+
+    expect(getExternalHistory).toHaveBeenCalledOnce();
+    expect(getExternalHistory).toHaveBeenCalledWith({
+      page: 1,
+      address: 'account-address',
+      assetAddress: '',
+      pageAmount: 8,
+      query: {},
+    });
+    expect(getHistory).toHaveBeenCalledTimes(2);
+
+    wrapper.unmount();
   });
 
   it('switches to reverse pagination when jumping to the last page', async () => {

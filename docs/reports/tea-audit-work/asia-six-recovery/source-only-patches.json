@@ -1,0 +1,71 @@
+[
+  {
+    "code": "AE",
+    "decisionChanged": false,
+    "permitFreeDecision": "unresolved",
+    "addEvidenceUrls": [
+      "https://www.dubaicustoms.gov.ae/en/eServices/Pages/HScodesearch.aspx",
+      "https://mirsal2new.dubaitrade.ae/eMirsal/hsCodeSetup.do",
+      "https://www.adcustoms.gov.ae/en/Policies-and-Regulations/Restricted-Banned-Commodities",
+      "https://www.tamm.abudhabi/wb/adc/smart-classification-system?lang=en",
+      "https://www.dubaicustoms.gov.ae/en/PoliciesAndNotices/Documents/IntegratedCustomsTariffv4.pdf"
+    ],
+    "appendResearchAttempts": [
+      "30 September fresh official route recovery: Dubai Customs current HS page links both Al Munasiq and legacy public eMirsal search. Submitted the observed public read-only eMirsal form for section2/chapter9/heading902 and recovered exact09021000/090210000000 green-tea rows. Columns are code/short/long description only, with no regulatory agency or import-condition field; no permission is inferred from this result.",
+      "Followed the actual Abu Dhabi Customs Smart HS Tool link into TAMM. Recovered full page and referenced public configuration identifying search/tree and restriction-agency fields. One anonymous090210 search using its published public endpoint returned an HTML page-cannot-be-displayed response (HTTP200), not classification data. Al Munasiq points to login; no account or authentication attempt was made. Browser-control tool had no available browser. Downloaded the complete current Dubai integrated-tariff guide, which explains the unified structure but is not a commodity control schedule."
+    ],
+    "customsCommodityReview": "Exact090210 classification recovered again from a second official Customs system, but neither public result supplies the needed agency controls. The actual TAMM tool capable of showing restrictions returned an access/error page. Current2025 law separately includes dead plant parts, so the manufactured-product risk interpretation used for Bahrain/Maldives cannot be transferred without resolving that broader limb.",
+    "evidenceFiles": [
+      "ae-dc-hscode.html",
+      "ae-mirsal-hscode.html",
+      "ae-mirsal-tea-results.html",
+      "ae-mirsal-query-provenance.json",
+      "ae-tamm.html",
+      "ae-tamm-classification-config.js",
+      "ae-tamm-tea-response.txt",
+      "ae-integrated-guide.pdf",
+      "ae-integrated-guide.pdf.txt"
+    ]
+  },
+  {
+    "code": "IQ",
+    "decisionChanged": false,
+    "permitFreeDecision": "unresolved",
+    "addEvidenceUrls": [
+      "https://www.moj.gov.iq/upload/pdf/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%A7%D8%BA%D8%AF%D9%8A%D8%A9%20-%20Copy.pdf",
+      "https://www.eia.krd/english/about-eia/health-department"
+    ],
+    "appendResearchAttempts": [
+      "30 September fresh official online recovery: downloaded the complete14-page Ministry of Justice English Food RegulationNo29/1982 with amendments. Article1(17) uses an intention-to-sell qualification in its sale definition; Article11 ties admission/health clearance to matching producer packaging and label; Article12(4) treats a laboratory/inspector examination certificate as evidence and12(5) describes border inspection and local health-certificate issue. These provisions do not establish that the Japanese sender must procure an origin certificate for a100g personal parcel. Kept local routine inspection/clearance separate from a special origin-document obligation.",
+      "Located current official Erbil Airport Health Department personal-food guidance for1–20kg. It expressly concerns passenger-carried food and a regional airport; it cannot establish a nationwide postal concession. No traveller exemption applied to post."
+    ],
+    "foodImportReview": "New full Ministry of Justice Food RegulationNo29/1982 translation adds actual operative inspection/label provisions, including locally issued health clearance, but does not demonstrate a sender-origin-certificate or advance-private-registration requirement for this personal parcel. The independent COSQC programme remains unverified for small private postal food and is not treated as a blocker without its applicable scope. Agricultural Law76/2012 biological-nature classification and its separate licence still determine the unresolved route.",
+    "evidenceFiles": [
+      "iq-foodlaw-official-en.pdf",
+      "iq-foodlaw-official-en.pdf.txt",
+      "iq-jo-provenance.json"
+    ]
+  },
+  {
+    "code": "JO",
+    "decisionChanged": false,
+    "permitFreeDecision": "unresolved",
+    "addEvidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/jor149617.pdf",
+      "https://www.pm.gov.jo/Ar/Pages/NewsPaperDetails/5762",
+      "https://www.moa.gov.jo/AR/List/%D8%A7%D9%84%D9%82%D9%88%D8%A7%D9%86%D9%8A%D9%86"
+    ],
+    "appendResearchAttempts": [
+      "30 September fresh official publication route: current Prime Ministry Gazette5762 index explicitly links2021InstructionsG/12PlantQuarantine through public DocuWare document57362. The web retriever reached a client-only viewer without the document text; direct retrieval returnedHTTP451. The Ministry current laws index lists amended AgricultureLaw13/2015 but exposes no extractable download in the parsed page, and direct catalogue request also returned451. This is a specific inaccessible operative source route, not an absent-law inference.",
+      "Recovered complete AgricultureLaw13/2015 Arabic text from FAOLEX. Article2 defines plants broadly including leaves/other parts and products as plant-origin material retaining its botanical nature until consumption; Article6 ties measures to scientific/international standards with risk-analysis alternatives; Article25(b) requires quarantine formalities and permits ministerial exemptions. Unlike Bahrain/Maldives, this source does not provide a clear living-plants/risk-qualified manufactured-product boundary. No automatic ISPM32 exemption is inferred from the measure-setting duties. The FAO copy is not claimed to be the freshly recovered ministry consolidated/amended text."
+    ],
+    "remainingQuestion": "Current operative commodity designation under2021InstructionsG/12, or a generally applicable processing interpretation/exemption that addresses the broader botanical-nature/leaf definition. The newly recovered2015 text does not establish that processed sencha is outside scope; actual current amended-law/instructions publication remains partly inaccessible. The ordinary-food review found no separate proven special-document duty; a hypothetical unpublished food requirement is not the reason for the hold.",
+    "evidenceFiles": [
+      "jo-agriculture2015-faolex.pdf",
+      "jo-agriculture2015-faolex.pdf.txt",
+      "jo-docuware-viewer.html",
+      "iq-jo-provenance.json",
+      "ae-jo-source-route-provenance.json"
+    ]
+  }
+]

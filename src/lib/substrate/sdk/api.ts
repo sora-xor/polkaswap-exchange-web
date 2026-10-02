@@ -5,6 +5,8 @@ import { Connection } from '@sora-substrate/connection';
 import type { CreateResult } from '@polkadot/ui-keyring/types';
 import type { Signer } from '@polkadot/types/types';
 
+import { parseStoredBoolean } from '@/utils/storageParsing';
+
 import { BaseApi } from './BaseApi';
 import { BridgeProxyModule } from './bridgeProxy';
 import { SwapModule } from './swap';
@@ -96,7 +98,7 @@ export class Api<T = void> extends BaseApi<T> {
       const name = this.storage?.get('name');
       const source = this.storage?.get('source');
       const isExternalFlag = this.storage?.get('isExternal');
-      const isExternal = isExternalFlag ? JSON.parse(isExternalFlag) : null;
+      const isExternal = parseStoredBoolean(isExternalFlag, null);
       const isExternalAccount = isExternal || (isExternal === null && !!source);
 
       await this.loginAccount(defaultAddress, name, source, isExternalAccount);

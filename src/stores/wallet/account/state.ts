@@ -4,32 +4,47 @@ import type { Book } from '@/types/common';
 
 import { DefaultPassphraseTimeout } from '@/lib/soraneo-wallet/src/consts';
 import { storage, settingsStorage } from '@/lib/soraneo-wallet/src/util/storage';
+import { parseStoredBoolean, parseStoredFiniteNumber, parseStoredJson } from '@/utils/storageParsing';
 
 import type { AccountState } from './types';
 import type { AppWallet } from '@/lib/soraneo-wallet/src/consts';
 
+const isBook = (value: unknown): value is Book =>
+  typeof value === 'object' &&
+  value !== null &&
+  !Array.isArray(value) &&
+  Object.values(value).every((name) => typeof name === 'string');
+
+const isPinnedAssets = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((address) => typeof address === 'string');
+
 export function initialState(): AccountState {
   const addressBook = settingsStorage.get('book');
-  const book = addressBook && JSON.parse(addressBook);
+  const book = parseStoredJson(addressBook, {} as Book, isBook);
   const isExternal = storage.get('isExternal');
   const pinnedAssetsString = settingsStorage.get('pinnedAssets');
-  const pinnedAssets = pinnedAssetsString ? JSON.parse(pinnedAssetsString) : [];
+  const pinnedAssets = parseStoredJson(pinnedAssetsString, [] as string[], isPinnedAssets);
   const accountPasswordTimeout = settingsStorage.get('accountPasswordTimeout');
+  const parsedAccountPasswordTimeout = parseStoredFiniteNumber(
+    accountPasswordTimeout,
+    DefaultPassphraseTimeout,
+    (value) => value > 0
+  );
 
   return {
     address: storage.get('address') || '',
     name: storage.get('name') || '',
     source: (storage.get('source') as AppWallet) || '',
-    isExternal: isExternal ? JSON.parse(isExternal) : false,
+    isExternal: parseStoredBoolean(isExternal, false),
     assets: [],
     assetsToNotifyQueue: [],
     assetsSubscription: null,
-    book: (book || {}) as Book,
+    book,
     alertSubject: null,
     accountAssets: [],
     accountAssetsLoading: false,
     accountAssetsLoaded: false,
-    pinnedAssets: pinnedAssets || [],
+    pinnedAssets,
     accountAssetsSubscription: null,
     whitelistArray: [],
     blacklistArray: [],
@@ -41,7 +56,7 @@ export function initialState(): AccountState {
     addressPassphraseMapping: {},
     accountPasswordTimer: {},
     accountPasswordTimestamp: {},
-    accountPasswordTimeout: accountPasswordTimeout ? JSON.parse(accountPasswordTimeout) : DefaultPassphraseTimeout,
+    accountPasswordTimeout: parsedAccountPasswordTimeout,
     isMstAddressExist: false,
     isMST: false,
   };

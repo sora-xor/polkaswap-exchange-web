@@ -59,6 +59,7 @@ import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useTranslation } from '@/composables/useTranslation';
 import { useSwapStore } from '@/features/swap/stores/useSwapStore';
 import { createAsyncComponent } from '@/shared/ui/async';
+import type { SwapReview } from '../types/review';
 import { useAssetsStore } from '@/stores/assets';
 import { useSettingsStore } from '@/stores/settings';
 
@@ -76,12 +77,15 @@ const props = withDefaults(
   defineProps<{
     /** Opens details inline so compact swap widgets expand instead of overlaying adjacent content. */
     inline?: boolean;
+    /** Frozen details shown while reviewing or submitting a particular quote. */
+    review?: SwapReview | null;
     full?: boolean;
     expanded?: boolean;
     disabled?: boolean;
   }>(),
   {
     inline: false,
+    review: null,
     full: false,
     expanded: false,
     disabled: false,
@@ -96,18 +100,20 @@ const { formatCodecNumber, formatStringValue, getFiatAmountByString, getFiatAmou
   useFormattedAmount();
 
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject);
-const networkFee = computed(() => networkFees.value[Operation.Swap]);
+const networkFee = computed(() => props.review?.networkFee ?? networkFees.value[Operation.Swap]);
 
-const liquidityProviderFee = computed(() => swapStore.liquidityProviderFee as CodecString);
-const rewards = computed(() => swapStore.rewards as ReadonlyArray<LPRewardsInfo>);
-const route = computed(() => swapStore.route as ReadonlyArray<string>);
-const isExchangeB = computed(() => swapStore.isExchangeB);
-const tokenFrom = computed(() => swapStore.tokenFrom as AccountAsset | null);
-const tokenTo = computed(() => swapStore.tokenTo as AccountAsset | null);
-const minMaxReceived = computed(() => swapStore.minMaxReceived as CodecString);
-const priceImpact = computed(() => swapStore.priceImpact);
-const price = computed(() => swapStore.price);
-const priceReversed = computed(() => swapStore.priceReversed);
+const liquidityProviderFee = computed(
+  () => props.review?.liquidityProviderFee ?? (swapStore.liquidityProviderFee as CodecString)
+);
+const rewards = computed(() => props.review?.rewards ?? (swapStore.rewards as ReadonlyArray<LPRewardsInfo>));
+const route = computed(() => props.review?.route ?? (swapStore.route as ReadonlyArray<string>));
+const isExchangeB = computed(() => props.review?.isExchangeB ?? swapStore.isExchangeB);
+const tokenFrom = computed(() => props.review?.tokenFrom ?? (swapStore.tokenFrom as AccountAsset | null));
+const tokenTo = computed(() => props.review?.tokenTo ?? (swapStore.tokenTo as AccountAsset | null));
+const minMaxReceived = computed(() => props.review?.minMaxReceived ?? (swapStore.minMaxReceived as CodecString));
+const priceImpact = computed(() => props.review?.priceImpact ?? swapStore.priceImpact);
+const price = computed(() => props.review?.price ?? swapStore.price);
+const priceReversed = computed(() => props.review?.priceReversed ?? swapStore.priceReversed);
 
 const getAsset = (addr?: string) => assetsStore.assetDataByAddress(addr) as Nullable<AccountAsset>;
 

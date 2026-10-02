@@ -158,34 +158,53 @@ export class WcEthereumProvider extends EthereumProvider {
   }
 
   public override async connect(opts?: ConnectOps): Promise<void> {
-    // eslint-disable-next-line
-    await new Promise<void>(async (resolve, reject) => {
-      const unsub = safeSubscribeModal(this.modal, (state: ModalState) => {
+    await new Promise<void>((resolve, reject) => {
+      let settled = false;
+      let unsubscribe = () => undefined;
+
+      const finish = (callback: () => void): void => {
+        if (settled) return;
+
+        settled = true;
+        unsubscribe();
+        callback();
+      };
+
+      const registeredUnsubscribe = safeSubscribeModal(this.modal, (state: ModalState) => {
         // This is the fix of modal close handler to check only ethereum session
         if (
           !state.open &&
           (!this.signer.session || !Object.keys(this.signer.session.namespaces).includes(this.namespace))
         ) {
-          unsub();
           this.signer.abortPairingAttempt();
-          reject(new Error('Connection request reset. Please try again.'));
+          finish(() => reject(new Error('Connection request reset. Please try again.')));
         }
       });
 
-      try {
-        await this.restoreAppSession();
+      unsubscribe = registeredUnsubscribe;
 
-        if (!this.session) {
-          await super.connect(opts);
-
-          this.setAppSession(this.signer.session);
-        }
-
-        resolve();
-      } catch (error) {
-        await safeDisconnectSigner(this.signer);
-        reject(error);
+      // Some modal implementations publish their current state synchronously.
+      if (settled) {
+        unsubscribe();
+        return;
       }
+
+      void (async () => {
+        try {
+          await this.restoreAppSession();
+
+          if (!this.session) {
+            await super.connect(opts);
+
+            await this.setAppSession(this.signer.session);
+          }
+
+          finish(resolve);
+        } catch (error) {
+          await safeDisconnectSigner(this.signer);
+          finish(() => reject(error));
+        }
+      })();
     });
   }
 }

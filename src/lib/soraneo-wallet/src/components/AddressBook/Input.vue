@@ -152,8 +152,10 @@ export default {
     const showAddressBookDialog = ref(false);
     const showSetContactDialog = ref(false);
     const isEditMode = ref(false);
-    const accountsSubscription = ref<Nullable<(() => void) | null>>(null);
+    const accountsSubscription = ref<Nullable<VoidFunction>>(null);
     const accountsRecords = ref<PolkadotJsAccount[]>([]);
+    let accountsSubscriptionGeneration = 0;
+    let isUnmounted = false;
 
     const connected = computed(() => walletStore.address);
     const source = computed(() => walletStore.source);
@@ -242,6 +244,35 @@ export default {
       props.onRemove?.();
     };
 
+    const resetWalletAccountsSubscription = (): void => {
+      accountsSubscriptionGeneration += 1;
+      accountsSubscription.value?.();
+      accountsSubscription.value = null;
+    };
+
+    /**
+     * Subscribes to the current wallet without allowing an older source or an
+     * unmounted component to retain the asynchronously returned subscription.
+     */
+    const updateWalletAccountsSubscription = async (wallet: AppWallet): Promise<void> => {
+      resetWalletAccountsSubscription();
+      accountsRecords.value = [];
+
+      const generation = accountsSubscriptionGeneration;
+      const unsubscribe = await subscribeToWalletAccounts(api, wallet, (accounts) => {
+        if (isUnmounted || generation !== accountsSubscriptionGeneration || source.value !== wallet) return;
+
+        accountsRecords.value = accounts;
+      });
+
+      if (isUnmounted || generation !== accountsSubscriptionGeneration || source.value !== wallet) {
+        unsubscribe?.();
+        return;
+      }
+
+      accountsSubscription.value = unsubscribe;
+    };
+
     watch(books, () => {
       updateContactName();
     });
@@ -253,19 +284,19 @@ export default {
       }
     );
 
+    watch(source, (wallet, previousWallet) => {
+      if (wallet === previousWallet) return;
+
+      void updateWalletAccountsSubscription(wallet);
+    });
+
     onMounted(() => {
-      void (async () => {
-        accountsSubscription.value = await subscribeToWalletAccounts(api, source.value, (accounts) => {
-          accountsRecords.value = accounts;
-        });
-      })();
+      void updateWalletAccountsSubscription(source.value);
     });
 
     onBeforeUnmount(() => {
-      if (accountsSubscription.value) {
-        accountsSubscription.value();
-        accountsSubscription.value = null;
-      }
+      isUnmounted = true;
+      resetWalletAccountsSubscription();
     });
 
     return {

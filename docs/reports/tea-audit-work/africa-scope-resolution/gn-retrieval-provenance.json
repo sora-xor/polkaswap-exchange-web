@@ -1,0 +1,18 @@
+[
+  {
+    "file": "gn-tariff2025.pdf",
+    "url": "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-conjoint-AC20251274MCMBMEFSGG-%E2%80%94-Tarifs-des-prestations-des-activites-dinspection-et-de-mise-en-quarantaine-.pdf",
+    "status": 200,
+    "bytes": 5981870,
+    "isPdf": true,
+    "provenance": "Observed download link in current official BNIQ documents page, Chrome accessibility state."
+  },
+  {
+    "file": "gn-organization2024.pdf",
+    "url": "https://www.bniq.gov.gn/wp-content/uploads/2026/03/Arrete-A20241102PMCABSGG-%E2%80%94-Creation-et-organisation-du-BNIQ.pdf",
+    "status": 200,
+    "bytes": 2595052,
+    "isPdf": true,
+    "provenance": "Observed download link in current official BNIQ documents page, Chrome accessibility state."
+  }
+]

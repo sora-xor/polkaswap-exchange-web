@@ -79,6 +79,7 @@ import { GDriveWallet } from '../../../services/google/wallet';
 import { delay } from '../../../util';
 import { verifyAccountJson, exportAccountJson } from '../../../util/account';
 import { settingsStorage } from '../../../util/storage';
+import { parseStoredBoolean } from '@/utils/storageParsing';
 import AccountCard from '../../Account/AccountCard.vue';
 import AccountActionsMenu from '../../Account/ActionsMenu.vue';
 import AccountExportDialog from '../../Account/ConfirmDialog.vue';
@@ -161,7 +162,7 @@ function handleAccountAction(actionType: string, account: PolkadotJsAccount): vo
     }
     case AccountActionTypes.Delete: {
       const storageValue = settingsStorage.get('allowAccountDeletePopup');
-      const popupVisibility = storageValue ? Boolean(JSON.parse(storageValue)) : true;
+      const popupVisibility = parseStoredBoolean(storageValue, true);
 
       if (popupVisibility) {
         accountDeleteVisibility.value = true;

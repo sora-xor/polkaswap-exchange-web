@@ -26,8 +26,16 @@
     @layout-ready="onLayoutReady"
   >
     <div v-if="lines" class="grid-lines" :style="gridLinesStyle"></div>
-    <transition-group name="list" tag="div">
-      <grid-item v-for="widget in layout" :key="widget.i" :is-resizable="isResizable(widget)" v-bind="widget">
+    <transition-group name="list" tag="div" class="widgets-grid-content">
+      <grid-item
+        v-for="widget in layout"
+        :key="widget.i"
+        :data-widget-id="widget.i"
+        :is-resizable="isResizable(widget)"
+        v-bind="widget"
+        @moved="onUserLayoutEdit"
+        @resized="onUserLayoutEdit"
+      >
         <slot
           :name="widget.i"
           v-bind="{
@@ -128,6 +136,10 @@ const props = withDefaults(
   defineProps<{
     gridId?: string;
     defaultLayouts?: ResponsiveLayouts;
+    /** Optional page-specific migration applied before generic layout normalization. */
+    migrateStoredLayouts?: (layouts: ResponsiveLayouts) => ResponsiveLayouts;
+    /** Prevents responsive/content layout events from saving presentation-only geometry. */
+    persistOnlyUserEdits?: boolean;
     rowHeight?: number;
     margin?: number;
     autoResize?: boolean;
@@ -148,6 +160,7 @@ const props = withDefaults(
     rowHeight: 10,
     margin: 16,
     autoResize: false,
+    persistOnlyUserEdits: false,
     draggable: false,
     resizable: false,
     compact: true,
@@ -182,6 +195,7 @@ const breakpoint = ref<BreakpointKey>(BreakpointKey.lg);
 const layouts = ref<ResponsiveLayouts>(cloneDeep(toRaw(props.defaultLayouts)));
 const layout = ref<Layout>((cloneDeep(layouts.value[breakpoint.value]) as Layout) ?? []);
 const layoutMotionReady = ref(!props.autoResize);
+let hasUserLayoutEdit = false;
 const widgetsModel = computed<WidgetsVisibilityModel>(() => props.modelValue ?? props.value);
 const defaultValue = ref<WidgetsVisibilityModel>(cloneDeep(widgetsModel.value));
 const storageKey = computed(() => getGridStorageKey(props.gridId));
@@ -281,7 +295,10 @@ const updateLayoutWidgetsByModel = (curr: WidgetsVisibilityModel, prev: WidgetsV
   const diff = shallowDiff(curr, prev);
   if (isEmpty(diff)) return;
 
-  updateLayoutsByWidgetsModel(layouts.value, diff, true);
+  // Visibility is a user edit. Preserve the active geometry, including measured
+  // content heights that deliberately have not been persisted by auto-resize.
+  const currentLayouts = { ...layouts.value, [breakpoint.value]: layout.value };
+  updateLayoutsByWidgetsModel(currentLayouts, diff, true);
 };
 
 const init = async () => {
@@ -291,7 +308,8 @@ const init = async () => {
     const parsedLayouts = parseLayoutsValue(storedLayouts);
 
     if (parsedLayouts) {
-      const normalizedLayouts = normalizeLayoutsWithDefaults(parsedLayouts, props.defaultLayouts, props.cols);
+      const migratedLayouts = props.migrateStoredLayouts?.(parsedLayouts) ?? parsedLayouts;
+      const normalizedLayouts = normalizeLayoutsWithDefaults(migratedLayouts, props.defaultLayouts, props.cols);
       const layoutsChanged = !isEqual(normalizedLayouts)(parsedLayouts);
 
       saveLayouts(normalizedLayouts, layoutsChanged);
@@ -312,6 +330,7 @@ const reset = () => {
 };
 
 const onBreakpointChanged = (newBreakpoint: BreakpointKey) => {
+  hasUserLayoutEdit = false;
   breakpoint.value = newBreakpoint;
   updateLayout();
 };
@@ -322,7 +341,14 @@ const onLayoutReady = () => {
   layoutMotionReady.value = true;
 };
 
+/** Marks the next settled layout as the result of a widget drag or resize gesture. */
+const onUserLayoutEdit = (): void => {
+  hasUserLayoutEdit = props.draggable || props.resizable;
+};
+
 const onLayoutUpdate = (updated: Layout) => {
+  const shouldPersist = !props.persistOnlyUserEdits || hasUserLayoutEdit;
+  hasUserLayoutEdit = false;
   const prepared = updated.map((widget) => omit('moved')(widget)) as Layout;
 
   // GridLayout emits `layout-updated` during mount while it is still settling responsive breakpoints.
@@ -344,7 +370,7 @@ const onLayoutUpdate = (updated: Layout) => {
   // Keep the layout reference emitted by GridLayout to avoid triggering extra prop-change cycles.
   layout.value = updated;
 
-  if (!props.draggable && !props.resizable) return;
+  if ((!props.draggable && !props.resizable) || !shouldPersist) return;
 
   if (isEqual(prepared)(responsiveLayout.value)) return;
 

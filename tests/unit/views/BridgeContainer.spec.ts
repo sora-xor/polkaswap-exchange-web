@@ -1,35 +1,84 @@
 import { flushPromises, mount } from '@vue/test-utils';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent, h, nextTick, onBeforeUpdate, ref, type Ref } from 'vue';
+import { defineComponent, h, nextTick, onBeforeUpdate, reactive, ref, type Ref } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
 
 import type { Nullable } from '@/types/common';
 import type { NetworkData } from '@/types/bridge';
+import { useGetTsPlan } from '@/features/misc/composables/useGetTsPlan';
 
 const selectedNetworkRef = ref<Nullable<NetworkData>>(null);
+const selectedNetworkTypeRef = ref<Nullable<BridgeNetworkType>>(null);
 const externalAccountRef = ref<string>('');
 const subAccountRef = ref<any>(null);
 const subBridgeConnectorRef = ref<{ accountApi: unknown } | null>({ accountApi: {} });
 const isSignTxDialogVisibleRef = ref(false);
+const subNetworkConnectionStateRef = ref({
+  network: null as Nullable<string>,
+  connection: null,
+  connecting: false,
+  ready: false,
+});
 const soraApiMock = vi.hoisted(() => ({
   connected: true,
 }));
+const guidedRoute = reactive({ path: '/bridge', query: {} as Record<string, string> });
+const prepareEthereumFundingSpy = vi.fn();
+const cancelPreparationSpy = vi.fn();
+const fundingPreparing = ref(false);
+const fundingError = ref<string | null>(null);
+const fundingStatus = ref('idle');
+vi.mock('vue-router', async () => ({
+  ...(await vi.importActual('vue-router')),
+  useRoute: () => guidedRoute,
+}));
+vi.mock('@/features/misc/composables/useTonswapBridgeFunding', async () => ({
+  ...(await vi.importActual('@/features/misc/composables/useTonswapBridgeFunding')),
+  useTonswapBridgeFunding: () => ({
+    prepareEthereumFunding: prepareEthereumFundingSpy,
+    cancelPreparation: cancelPreparationSpy,
+    isPreparing: fundingPreparing,
+    error: fundingError,
+    status: fundingStatus,
+  }),
+}));
+
+const createNetworkData = (id: string): NetworkData => ({
+  id: id as NetworkData['id'],
+  name: id,
+  nativeCurrency: null,
+  blockExplorerUrls: [],
+  shortName: id,
+});
 
 const getSupportedAppsSpy = vi.fn();
 const restoreSelectedNetworkSpy = vi.fn();
+const getRegisteredAssetsSpy = vi.fn();
 const bridgeStoreMock = {
   resetBlockUpdatesSubscription: vi.fn(),
   resetOutgoingMaxLimitSubscription: vi.fn(),
   setSignTxDialogVisibility: vi.fn(),
   updateExternalBalance: vi.fn(),
+  updateFeesAndLockedFunds: vi.fn(),
+  setAssetAddress: vi.fn(),
   subscribeOnBlockUpdates: vi.fn(),
   updateOutgoingMaxLimit: vi.fn(),
   resetBridgeForm: vi.fn(),
+  form: {
+    assetAddress: '',
+  },
   get externalAccount() {
     return externalAccountRef.value;
   },
+  get subNetworkConnectionState() {
+    return subNetworkConnectionStateRef.value;
+  },
 };
 const updateExternalBalanceSpy = bridgeStoreMock.updateExternalBalance;
+const updateFeesAndLockedFundsSpy = bridgeStoreMock.updateFeesAndLockedFunds;
+const setAssetAddressSpy = bridgeStoreMock.setAssetAddress;
 const subscribeOnBlockUpdatesSpy = bridgeStoreMock.subscribeOnBlockUpdates;
 const updateOutgoingMaxLimitSpy = bridgeStoreMock.updateOutgoingMaxLimit;
 const resetBridgeFormSpy = bridgeStoreMock.resetBridgeForm;
@@ -73,6 +122,12 @@ vi.mock('@/stores/bridge', () => ({
   useBridgeStore: () => bridgeStoreMock,
 }));
 
+vi.mock('@/stores/assets', () => ({
+  useAssetsStore: () => ({
+    getRegisteredAssets: (...args: unknown[]) => getRegisteredAssetsSpy(...args),
+  }),
+}));
+
 vi.mock('@/stores/web3', () => ({
   useWeb3Store: () => ({
     get selectedNetworkData() {
@@ -85,7 +140,7 @@ vi.mock('@/stores/web3', () => ({
       return selectedNetworkRef.value?.id ?? null;
     },
     get networkType() {
-      return selectedNetworkRef.value?.type ?? null;
+      return selectedNetworkTypeRef.value;
     },
     get selectSubNodeDialogVisibility() {
       return false;
@@ -96,8 +151,7 @@ vi.mock('@/stores/web3', () => ({
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/api', async () => {
-  const actual =
-    await vi.importActual<typeof import('@/lib/soraneo-wallet/src/api')>('@/lib/soraneo-wallet/src/api');
+  const actual = await vi.importActual<typeof import('@/lib/soraneo-wallet/src/api')>('@/lib/soraneo-wallet/src/api');
   const bridgeProxy = (actual.api as any).bridgeProxy ?? { eth: {}, evm: {}, sub: {} };
 
   return {
@@ -184,17 +238,37 @@ describe('BridgeContainer.vue', () => {
   });
 
   beforeEach(() => {
+    useGetTsPlan().clearPlan();
+    useGetTsPlan('xor').clearPlan();
     setActivePinia(createPinia());
+    guidedRoute.path = '/bridge';
+    guidedRoute.query = {};
+    prepareEthereumFundingSpy.mockReset().mockResolvedValue({ symbol: 'DAI' });
+    cancelPreparationSpy.mockReset();
+    fundingPreparing.value = false;
+    fundingError.value = null;
+    fundingStatus.value = 'idle';
     selectedNetworkRef.value = null;
+    selectedNetworkTypeRef.value = null;
     externalAccountRef.value = '';
     subAccountRef.value = null;
     subBridgeConnectorRef.value = { accountApi: {} };
     isSignTxDialogVisibleRef.value = false;
+    subNetworkConnectionStateRef.value = {
+      network: null,
+      connection: null,
+      connecting: false,
+      ready: false,
+    };
     soraApiMock.connected = true;
+    bridgeStoreMock.form.assetAddress = '';
 
     getSupportedAppsSpy.mockReset().mockResolvedValue(undefined);
     restoreSelectedNetworkSpy.mockReset().mockResolvedValue(undefined);
+    getRegisteredAssetsSpy.mockReset().mockResolvedValue(undefined);
     updateExternalBalanceSpy.mockReset().mockResolvedValue(undefined);
+    updateFeesAndLockedFundsSpy.mockReset().mockResolvedValue(undefined);
+    setAssetAddressSpy.mockReset().mockResolvedValue(undefined);
     subscribeOnBlockUpdatesSpy.mockReset().mockResolvedValue(undefined);
     updateOutgoingMaxLimitSpy.mockReset().mockResolvedValue(undefined);
     resetBridgeFormSpy.mockReset().mockResolvedValue(undefined);
@@ -202,6 +276,8 @@ describe('BridgeContainer.vue', () => {
     bridgeStoreMock.resetOutgoingMaxLimitSubscription.mockReset();
     bridgeStoreMock.setSignTxDialogVisibility.mockReset();
     bridgeStoreMock.updateExternalBalance.mockReset();
+    bridgeStoreMock.updateFeesAndLockedFunds.mockReset();
+    bridgeStoreMock.setAssetAddress.mockReset();
     bridgeStoreMock.subscribeOnBlockUpdates.mockReset();
     bridgeStoreMock.updateOutgoingMaxLimit.mockReset();
     bridgeStoreMock.resetBridgeForm.mockReset();
@@ -364,12 +440,12 @@ describe('BridgeContainer.vue', () => {
   });
 
   it('resets the bridge form when the selected network changes', async () => {
-    selectedNetworkRef.value = { id: 'initial-network' } as NetworkData;
+    selectedNetworkRef.value = createNetworkData('initial-network');
 
     const wrapper = await mountBridgeContainer();
     resetBridgeFormSpy.mockClear();
 
-    selectedNetworkRef.value = { id: 'another-network' } as NetworkData;
+    selectedNetworkRef.value = createNetworkData('another-network');
     await nextTick();
 
     expect(resetBridgeFormSpy).toHaveBeenCalledTimes(1);
@@ -378,12 +454,13 @@ describe('BridgeContainer.vue', () => {
   });
 
   it('does not reset the bridge form when the selected network is unchanged', async () => {
-    selectedNetworkRef.value = { id: 'stable-network', type: 'sub' } as unknown as NetworkData;
+    selectedNetworkRef.value = createNetworkData('stable-network');
+    selectedNetworkTypeRef.value = BridgeNetworkType.Sub;
 
     const wrapper = await mountBridgeContainer();
     resetBridgeFormSpy.mockClear();
 
-    selectedNetworkRef.value = { id: 'stable-network', type: 'sub' } as unknown as NetworkData;
+    selectedNetworkRef.value = createNetworkData('stable-network');
     await nextTick();
 
     expect(resetBridgeFormSpy).not.toHaveBeenCalled();
@@ -398,10 +475,65 @@ describe('BridgeContainer.vue', () => {
     externalAccountRef.value = 'external-1';
     await nextTick();
     expect(updateExternalBalanceSpy).toHaveBeenCalledTimes(1);
+    expect(updateFeesAndLockedFundsSpy).toHaveBeenCalledTimes(1);
 
     soraAddressRef.value = 'sora-1';
     await nextTick();
     expect(updateExternalBalanceSpy).toHaveBeenCalledTimes(2);
+    expect(updateFeesAndLockedFundsSpy).toHaveBeenCalledTimes(2);
+
+    wrapper.unmount();
+  });
+
+  it('refreshes registered assets and financial state after the selected Sub network recovers', async () => {
+    selectedNetworkRef.value = createNetworkData(SubNetworkId.Liberland);
+    selectedNetworkTypeRef.value = BridgeNetworkType.Sub;
+    bridgeStoreMock.form.assetAddress = '0xLiberlandAsset';
+    subNetworkConnectionStateRef.value = {
+      network: SubNetworkId.Liberland,
+      connection: null,
+      connecting: true,
+      ready: false,
+    };
+    const wrapper = await mountBridgeContainer();
+
+    subNetworkConnectionStateRef.value = {
+      network: SubNetworkId.Liberland,
+      connection: null,
+      connecting: false,
+      ready: true,
+    };
+    await nextTick();
+    await flushPromises();
+
+    expect(getRegisteredAssetsSpy).toHaveBeenCalledTimes(1);
+    expect(setAssetAddressSpy).toHaveBeenCalledWith('0xLiberlandAsset');
+
+    wrapper.unmount();
+  });
+
+  it('ignores readiness from a Sub network that is no longer selected', async () => {
+    selectedNetworkRef.value = createNetworkData(SubNetworkId.Liberland);
+    selectedNetworkTypeRef.value = BridgeNetworkType.Sub;
+    subNetworkConnectionStateRef.value = {
+      network: 'another-network',
+      connection: null,
+      connecting: false,
+      ready: false,
+    };
+    const wrapper = await mountBridgeContainer();
+
+    subNetworkConnectionStateRef.value = {
+      network: 'another-network',
+      connection: null,
+      connecting: false,
+      ready: true,
+    };
+    await nextTick();
+    await flushPromises();
+
+    expect(getRegisteredAssetsSpy).not.toHaveBeenCalled();
+    expect(setAssetAddressSpy).not.toHaveBeenCalled();
 
     wrapper.unmount();
   });
@@ -414,6 +546,81 @@ describe('BridgeContainer.vue', () => {
     wrapper.unmount();
 
     expect(disconnectExternalNetworkSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('prepares an explicit guided asset after bridge apps initialize instead of restoring unrelated funding', async () => {
+    guidedRoute.query = { campaign: 'tonswap', getTs: '1', asset: 'DAI' };
+    const wrapper = await mountBridgeContainer();
+    await subscriptionsArgs.startSubscriptions[2]!();
+    expect(getSupportedAppsSpy).toHaveBeenCalledOnce();
+    expect(prepareEthereumFundingSpy).toHaveBeenCalledWith('DAI', '');
+    expect(restoreSelectedNetworkSpy).not.toHaveBeenCalled();
+    wrapper.unmount();
+    expect(cancelPreparationSpy).toHaveBeenCalled();
+  });
+
+  it('prefills the campaign DAI amount once and does not apply the draft to ordinary bridge visits', async () => {
+    useGetTsPlan().updatePlan({ daiAmount: '12.000000000000000001' });
+    const ordinary = await mountBridgeContainer();
+    await subscriptionsArgs.startSubscriptions[2]!();
+    expect(prepareEthereumFundingSpy).not.toHaveBeenCalled();
+    ordinary.unmount();
+    guidedRoute.query = { campaign: 'tonswap', getTs: '1', asset: 'DAI' };
+    const guided = await mountBridgeContainer();
+    await subscriptionsArgs.startSubscriptions[2]!();
+    expect(prepareEthereumFundingSpy).toHaveBeenLastCalledWith('DAI', '12.000000000000000001');
+    externalAccountRef.value = 'another-wallet';
+    subscriptionsDataLoadingRef.value = false;
+    await nextTick();
+    await flushPromises();
+    expect(prepareEthereumFundingSpy).toHaveBeenLastCalledWith('DAI', '');
+    guided.unmount();
+  });
+
+  it('prefills only the selected purchase purpose and changes drafts when its explicit route changes', async () => {
+    useGetTsPlan().updatePlan({ daiAmount: '12.000000000000000001' });
+    useGetTsPlan('xor').updatePlan({ daiAmount: '3.000000000000000002' });
+    guidedRoute.query = { buyXor: '1', asset: 'DAI' };
+    const wrapper = await mountBridgeContainer();
+    await subscriptionsArgs.startSubscriptions[2]!();
+    expect(prepareEthereumFundingSpy).toHaveBeenLastCalledWith('DAI', '3.000000000000000002');
+    subscriptionsDataLoadingRef.value = false;
+    guidedRoute.query = { campaign: 'tonswap', getTs: '1', asset: 'DAI' };
+    await nextTick();
+    await flushPromises();
+    expect(prepareEthereumFundingSpy).toHaveBeenLastCalledWith('DAI', '12.000000000000000001');
+    wrapper.unmount();
+  });
+
+  it('never applies a guided asset query on an existing transaction route', async () => {
+    guidedRoute.path = '/bridge/transaction';
+    guidedRoute.query = { campaign: 'tonswap', getTs: '1', asset: 'DAI' };
+    const wrapper = await mountBridgeContainer();
+    await subscriptionsArgs.startSubscriptions[2]!();
+    expect(prepareEthereumFundingSpy).not.toHaveBeenCalled();
+    expect(restoreSelectedNetworkSpy).toHaveBeenCalledOnce();
+    wrapper.unmount();
+  });
+
+  it('keeps a failed guided preparation from exposing an actionable stale bridge form', async () => {
+    guidedRoute.query = { campaign: 'tonswap', getTs: '1', asset: 'DAI' };
+    fundingError.value = 'asset-unavailable';
+    subscriptionsDataLoadingRef.value = false;
+    const wrapper = await mountBridgeContainer();
+    expect(routerViewProps.at(-1)?.fundingPreparationBlocked).toBe(true);
+    expect(wrapper.find('[role="alert"]').exists()).toBe(true);
+    wrapper.unmount();
+  });
+
+  it('blocks guided confirmation before metadata initialization has begun', async () => {
+    guidedRoute.query = { campaign: 'tonswap', getTs: '1', asset: 'DAI' };
+    const wrapper = await mountBridgeContainer();
+    expect(prepareEthereumFundingSpy).not.toHaveBeenCalled();
+    expect(routerViewProps.at(-1)?.fundingPreparationBlocked).toBe(true);
+    fundingStatus.value = 'ready';
+    await nextTick();
+    expect(routerViewProps.at(-1)?.fundingPreparationBlocked).toBe(false);
+    wrapper.unmount();
   });
 
   it('forwards subscription loading state to the router view', async () => {

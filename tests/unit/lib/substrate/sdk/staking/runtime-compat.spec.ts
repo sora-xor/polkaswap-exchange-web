@@ -49,6 +49,30 @@ const createRoot = (options: { bondArgs?: number; stakingConsts?: Record<string,
 };
 
 describe('StakingModule runtime compatibility', () => {
+  it('preserves the full minimum nominator bond balance as a codec string', async () => {
+    const minNominatorBond = '1000000000000000000000000000000';
+    const toNumber = vi.fn(() => {
+      throw new Error('Number can only safely store up to 53 bits');
+    });
+    const { root } = createRoot();
+
+    Object.assign(root.api, {
+      query: {
+        staking: {
+          minNominatorBond: vi.fn(async () => ({
+            toNumber,
+            toString: () => minNominatorBond,
+          })),
+        },
+      },
+    });
+
+    const staking = new StakingModule(root as any);
+
+    await expect(staking.getMinNominatorBond()).resolves.toBe(minNominatorBond);
+    expect(toNumber).not.toHaveBeenCalled();
+  });
+
   it('reads optional staking nomination constants defensively', () => {
     const withLegacyConstants = new StakingModule(
       createRoot({

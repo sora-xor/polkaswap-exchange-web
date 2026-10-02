@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 
 const subBridgeApiMock = vi.hoisted(() => ({
   getHistory: vi.fn(),
+  history: {} as Record<string, any>,
   isEvmAccount: vi.fn(),
   isRelayChain: vi.fn(),
   isSoraParachain: vi.fn(),
@@ -44,6 +47,7 @@ vi.mock('@/utils/bridge/sub/api', () => ({
 }));
 
 import { SubTransferType } from '@/utils/bridge/sub/types';
+import { SUB_BRIDGE_DISPLAY_ONLY_HISTORY_RECOVERY } from '@/utils/bridge/sub/reconciliation';
 import {
   determineTransferType,
   getBridgeProxyHash,
@@ -52,7 +56,11 @@ import {
   getMessageDispatchedNonces,
   getParachainSystemMessageHash,
   getReceivedAmount,
+  getSoraBridgeProviderHash,
   getTransaction,
+  findTransaction,
+  hasSubBridgeIncomingSubmissionEvidence,
+  hasSubBridgeIncomingTrackingEvidence,
   isAssetAddedToChannel,
   isBridgeProxyHash,
   isBridgeProxyUpdate,
@@ -62,6 +70,7 @@ import {
   isParaInclusion,
   isQueueMessage,
   isSoraBridgeAppBurned,
+  isSoraBridgeProviderUpdate,
   isTransactionFeePaid,
   isUnsignedTx,
   isXcmPalletAttempted,
@@ -87,12 +96,35 @@ const chainApi = {
 
 describe('Substrate bridge utils', () => {
   beforeEach(() => {
-    Object.values(subBridgeApiMock).forEach((mock) => mock.mockReset());
+    Object.values(subBridgeApiMock).forEach((mock) => {
+      if (typeof (mock as any).mockReset === 'function') (mock as any).mockReset();
+    });
+    subBridgeApiMock.history = {};
   });
 
   it('detects outgoing substrate bridge transactions', () => {
     expect(isOutgoingTx({ type: 'SubstrateOutgoing' } as any)).toBe(true);
     expect(isOutgoingTx({ type: 'SubstrateIncoming' } as any)).toBe(false);
+  });
+
+  it('never treats display-only recovered history as submission, tracking, or signing evidence', () => {
+    const history = {
+      id: 'settlement',
+      txId: 'settlement',
+      blockId: 'sora-block',
+      type: 'SubstrateIncoming',
+      externalNetwork: SubNetworkId.Liberland,
+      externalNetworkType: BridgeNetworkType.Sub,
+      payload: {
+        startBlock: 1,
+        submissionState: 'broadcast',
+        subBridgeHistoryRecovery: SUB_BRIDGE_DISPLAY_ONLY_HISTORY_RECOVERY,
+      },
+    } as any;
+
+    expect(hasSubBridgeIncomingSubmissionEvidence(history)).toBe(false);
+    expect(hasSubBridgeIncomingTrackingEvidence(history)).toBe(false);
+    expect(isUnsignedTx(history)).toBe(false);
   });
 
   it('detects unsigned transactions using txId or externalHash depending on account type', () => {
@@ -106,6 +138,51 @@ describe('Substrate bridge utils', () => {
 
     expect(isUnsignedTx({ type: 'SubstrateIncoming', externalNetwork: 'evm' } as any)).toBe(true);
     expect(isUnsignedTx({ type: 'SubstrateIncoming', externalHash: '0xexternal', externalNetwork: 'evm' } as any)).toBe(
+      false
+    );
+  });
+
+  it('detects prior incoming submission-attempt evidence without classifying outgoing tracking data', () => {
+    const incoming = { type: 'SubstrateIncoming', externalNetwork: 'para' } as any;
+
+    for (const evidence of [
+      { txId: '0xtx' },
+      { externalHash: '0xexternal' },
+      { blockId: '0xsource-block' },
+      { externalBlockId: '0xexternal-block' },
+      { hash: '0xsora-request' },
+      { payload: { submissionState: 'unknown' } },
+      { payload: { startBlock: 0 } },
+      { payload: { batchNonce: 0 } },
+      { payload: { messageNonce: 0 } },
+    ]) {
+      expect(hasSubBridgeIncomingSubmissionEvidence({ ...incoming, ...evidence })).toBe(true);
+      expect(isUnsignedTx({ ...incoming, ...evidence })).toBe(false);
+    }
+
+    expect(hasSubBridgeIncomingSubmissionEvidence(incoming)).toBe(false);
+    expect(hasSubBridgeIncomingSubmissionEvidence({ ...incoming, type: 'SubstrateOutgoing', hash: '0xrequest' })).toBe(
+      false
+    );
+  });
+
+  it('requires actionable identifiers before offering a read-only incoming status check', () => {
+    const incoming = { type: 'SubstrateIncoming', externalNetwork: 'Liberland' } as any;
+
+    expect(hasSubBridgeIncomingTrackingEvidence({ ...incoming, hash: '0xrequest' })).toBe(true);
+    expect(hasSubBridgeIncomingTrackingEvidence({ ...incoming, txId: '0xsource', payload: { startBlock: 100 } })).toBe(
+      true
+    );
+    expect(
+      hasSubBridgeIncomingTrackingEvidence({
+        ...incoming,
+        externalHash: '0xsource',
+        externalBlockId: '0xblock',
+      })
+    ).toBe(true);
+    expect(hasSubBridgeIncomingTrackingEvidence({ ...incoming, txId: '0xsource' })).toBe(false);
+    expect(hasSubBridgeIncomingTrackingEvidence({ ...incoming, payload: { startBlock: 100 } })).toBe(false);
+    expect(hasSubBridgeIncomingTrackingEvidence({ ...incoming, type: 'SubstrateOutgoing', hash: '0xrequest' })).toBe(
       false
     );
   });
@@ -124,6 +201,38 @@ describe('Substrate bridge utils', () => {
       txId: '0xtx',
       blockId: '0xblock',
     });
+  });
+
+  it('prefers persisted retry state over a stale pinned UI transaction', () => {
+    const persisted = { id: 'sub-1', type: 'SubstrateIncoming', transactionState: 'Pending' };
+    const staleCached = { ...persisted, transactionState: 'Failed' };
+    subBridgeApiMock.getHistory.mockReturnValue(persisted);
+
+    expect(getTransaction('sub-1', staleCached as any)).toBe(persisted);
+  });
+
+  it('uses a pinned UI transaction only when persisted Sub history is unavailable', () => {
+    const cached = { id: 'sub-1', type: 'SubstrateIncoming', transactionState: 'Failed' };
+    subBridgeApiMock.getHistory.mockReturnValue(null);
+
+    expect(getTransaction('sub-1', cached as any)).toBe(cached);
+  });
+
+  it('finds persisted Sub transactions by chain-level aliases', () => {
+    const transaction = {
+      id: 'sub-1',
+      type: 'SubstrateIncoming',
+      hash: '0xrequest',
+      txId: '0xsource',
+      externalHash: '0xexternal',
+    };
+    subBridgeApiMock.getHistory.mockReturnValue(null);
+    subBridgeApiMock.history = { 'storage-key': transaction };
+
+    expect(findTransaction('sub-1')).toBe(transaction);
+    expect(findTransaction('0xrequest')).toBe(transaction);
+    expect(findTransaction('0xsource')).toBe(transaction);
+    expect(findTransaction('0xexternal')).toBe(transaction);
   });
 
   it('throws when persisted substrate bridge history cannot be found', () => {
@@ -169,6 +278,17 @@ describe('Substrate bridge utils', () => {
     expect(isBridgeProxyHash(bridgeEvent, '0xother')).toBe(false);
     expect(isBridgeProxyHash(event('system', 'ExtrinsicSuccess'), '0xhash')).toBe(false);
     expect(() => getBridgeProxyHash([])).toThrow('Unable to find "bridgeProxy.RequestStatusUpdate" event');
+  });
+
+  it('extracts the standalone Liberland bridge request hash', () => {
+    const bridgeProviderEvent = event('soraBridgeProvider', 'RequestStatusUpdate', [codec('0xrequest')]);
+
+    expect(isSoraBridgeProviderUpdate(bridgeProviderEvent)).toBe(true);
+    expect(isSoraBridgeProviderUpdate(event('bridgeProxy', 'RequestStatusUpdate'))).toBe(false);
+    expect(getSoraBridgeProviderHash([event('system', 'ExtrinsicSuccess'), bridgeProviderEvent])).toBe('0xrequest');
+    expect(() => getSoraBridgeProviderHash([])).toThrow(
+      'Unable to find "soraBridgeProvider.RequestStatusUpdate" event'
+    );
   });
 
   it('finds deposited balances from native and assets pallet event shapes', () => {

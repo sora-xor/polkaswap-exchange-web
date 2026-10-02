@@ -29,56 +29,39 @@ describe('network volume query', () => {
     indexerMocks.currentIndexer = undefined;
   });
 
-  it('fetches successful swap history and aggregates USD volume by chart bucket', async () => {
-    const hour = 60 * 60;
+  it('fetches precomputed Polkaswap volume snapshots and parses volumeUSD values', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
-      parse(createSwapHistoryElement({ timestamp: String(hour * 2 - 10), baseUSD: '4', targetUSD: '5' })),
-      parse(createSwapHistoryElement({ timestamp: String(hour * 2 - 20), baseUSD: '6.5', targetUSD: '6' })),
-      parse(createSwapHistoryElement({ timestamp: '100', method: 'swapTransfer', baseUSD: '2', targetUSD: '3' })),
-      parse(createSwapTransferBatchHistoryElement({ timestamp: '120', receiverAmountsUSD: ['1.25', '2.75'] })),
-      parse(createSwapHistoryElement({ timestamp: '140', success: false, baseUSD: '1000', targetUSD: '2000' })),
-      parse(
-        createSwapHistoryElement({ timestamp: '160', method: 'xorlessTransfer', baseUSD: '999', targetUSD: '999' })
-      ),
+      parse(createNetworkSnapshotEntity('1700', '88.5', '0')),
     ]);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
-    const result = await fetchData(false, hour * 2, 0, SnapshotTypes.HOUR);
+    const result = await fetchData(false, 2_000, 1_000, SnapshotTypes.DAY);
 
-    expect(retryOnEmptyResult).not.toHaveBeenCalled();
+    expect(retryOnEmptyResult).toHaveBeenCalledTimes(1);
     expect(indexerMocks.fetchAllEntities).toHaveBeenCalledWith(
       expect.any(Object),
       {
-        from: hour * 2,
-        to: 0,
+        from: 2_000,
+        to: 1_000,
+        type: SnapshotTypes.DAY,
       },
       expect.any(Function)
     );
-    expect(result.map((item) => ({ timestamp: item.timestamp, value: item.value.toString() }))).toEqual([
-      {
-        timestamp: hour * 1000,
-        value: '11.5',
-      },
-      {
-        timestamp: 0,
-        value: '7',
-      },
-    ]);
+    expect(result).toHaveLength(1);
+    expect(result[0]?.timestamp).toBe(1_700_000);
+    expect(result[0]?.value.toString()).toBe('88.5');
   });
 
-  it('drops invalid swap history amounts instead of propagating non-finite chart values', async () => {
+  it('normalizes invalid and negative snapshot volume instead of propagating unsafe values', async () => {
     indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
-      parse(
-        createSwapHistoryElement({
-          timestamp: '100',
-          baseUSD: 'not-a-number',
-          targetUSD: Number.POSITIVE_INFINITY,
-        })
-      ),
+      parse(createNetworkSnapshotEntity('1900', 'not-a-number', '0')),
+      parse(createNetworkSnapshotEntity('1800', '-1', '0')),
     ]);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
-    await expect(fetchData(false, 2_000, 1_000, SnapshotTypes.HOUR)).resolves.toEqual([]);
+    const result = await fetchData(false, 3_000, 2_000, SnapshotTypes.MONTH);
+
+    expect(result.map((item) => item.value.toString())).toEqual(['0', '0']);
   });
 
   it('fetches Polkaswap fee snapshots and parses codec fee values', async () => {
@@ -119,6 +102,63 @@ describe('network volume query', () => {
       },
       expect.any(Function)
     );
+  });
+
+  it('requests daily volume snapshots when monthly network volume history is requested', async () => {
+    indexerMocks.fetchAllEntities.mockResolvedValue([]);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
+
+    await fetchData(false, 2_000, 1_000, SnapshotTypes.MONTH);
+
+    expect(indexerMocks.fetchAllEntities).toHaveBeenCalledWith(
+      expect.any(Object),
+      {
+        from: 2_000,
+        to: 1_000,
+        type: SnapshotTypes.DAY,
+      },
+      expect.any(Function)
+    );
+  });
+
+  it('backfills missing daily volume buckets from non-zero BLOCK snapshots', async () => {
+    const day = 24 * 60 * 60;
+    const from = day * 3;
+    const to = 0;
+
+    indexerMocks.fetchAllEntities.mockImplementation(async (_query, variables, parse) => {
+      if (variables.type === SnapshotTypes.DAY) {
+        return [parse(createNetworkSnapshotEntity(String(from - 100), '5', '0'))];
+      }
+
+      if (variables.type === SnapshotTypes.BLOCK) {
+        return [
+          parse(createNetworkSnapshotEntity(String(day + 10), '1.25', '0')),
+          parse(createNetworkSnapshotEntity(String(day + 20), '2.75', '0')),
+          parse(createNetworkSnapshotEntity(String(from - 50), '7', '0')),
+        ];
+      }
+
+      return [];
+    });
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
+
+    const result = await fetchData(false, from, to, SnapshotTypes.DAY);
+
+    expect(indexerMocks.fetchAllEntities).toHaveBeenCalledTimes(2);
+    expect(indexerMocks.fetchAllEntities).toHaveBeenNthCalledWith(
+      2,
+      expect.any(Object),
+      {
+        from,
+        to,
+        type: SnapshotTypes.BLOCK,
+      },
+      expect.any(Function)
+    );
+    expect(result.find((item) => item.timestamp === day * 1000)?.value.toString()).toBe('4');
+    expect(result.find((item) => item.timestamp === (from - 100) * 1000)?.value.toString()).toBe('5');
+    expect(result.find((item) => item.value.toString() === '7')).toBeUndefined();
   });
 
   it('backfills missing daily fee buckets from non-zero block snapshots', async () => {
@@ -178,7 +218,7 @@ describe('network volume query', () => {
     expect(result.map((item) => item.value.toString())).toEqual(['11', '22']);
   });
 
-  it('returns an empty array when the active indexer returns null swap history', async () => {
+  it('returns an empty array when the active indexer returns null snapshot data', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
 
@@ -199,47 +239,4 @@ const createNetworkSnapshotEntity = (timestamp: string, volumeUSD: string, fees:
   timestamp,
   volumeUSD,
   fees,
-});
-
-const createSwapHistoryElement = ({
-  timestamp,
-  method = 'swap',
-  success = true,
-  baseUSD,
-  targetUSD,
-}: {
-  timestamp: string;
-  method?: string;
-  success?: boolean;
-  baseUSD: string | number;
-  targetUSD: string | number;
-}) => ({
-  timestamp,
-  module: 'liquidityProxy',
-  method,
-  execution: {
-    success,
-  },
-  data: {
-    baseAssetAmountUSD: baseUSD,
-    targetAssetAmountUSD: targetUSD,
-  },
-});
-
-const createSwapTransferBatchHistoryElement = ({
-  timestamp,
-  receiverAmountsUSD,
-}: {
-  timestamp: string;
-  receiverAmountsUSD: Array<string | number>;
-}) => ({
-  timestamp,
-  module: 'liquidityProxy',
-  method: 'swapTransferBatch',
-  execution: {
-    success: true,
-  },
-  data: {
-    receivers: receiverAmountsUSD.map((amountUSD) => ({ amountUSD })),
-  },
 });

@@ -27,8 +27,11 @@ const prepareAccountFile = (account: EncryptedBackupAccount) => {
  */
 export default class Accounts implements InjectedAccounts {
   private _list: IAccountMetadata[] = [];
-  private accountsCallback: Nullable<(accounts: InjectedAccount[]) => unknown> = null;
-  private accountsUpdateInterval: Nullable<NodeJS.Timeout> = null;
+  private accountsCallbacks = new Map<number, (accounts: InjectedAccount[]) => unknown>();
+  private accountsUpdateInterval: Nullable<ReturnType<typeof setInterval>> = null;
+  private accountsRequestId = 0;
+  private nextSubscriptionId = 0;
+  private pollingGeneration = 0;
 
   private get accountsList(): IAccountMetadata[] {
     return this._list;
@@ -37,9 +40,54 @@ export default class Accounts implements InjectedAccounts {
   private set accountsList(accounts: IAccountMetadata[]) {
     this._list = accounts;
 
-    if (typeof this.accountsCallback === 'function') {
-      this.accountsCallback(this._list);
+    for (const callback of this.accountsCallbacks.values()) {
+      callback(this._list);
     }
+  }
+
+  /** Starts one shared Drive poll loop for all active subscribers. */
+  private startPolling(): void {
+    if (this.accountsUpdateInterval !== null) return;
+
+    const generation = ++this.pollingGeneration;
+    this.accountsUpdateInterval = setInterval(() => {
+      void this.refresh(generation).catch(() => undefined);
+    }, ACCOUNTS_UPDATE_INTERVAL);
+  }
+
+  /** Stops polling and invalidates any Drive request started by the old loop. */
+  private stopPolling(): void {
+    this.pollingGeneration += 1;
+
+    if (this.accountsUpdateInterval !== null) {
+      clearInterval(this.accountsUpdateInterval);
+      this.accountsUpdateInterval = null;
+    }
+  }
+
+  /**
+   * Fetches Drive metadata while allowing only the latest request to update the
+   * shared cache. Poll requests must also belong to the active poll generation.
+   */
+  private async refresh(pollingGeneration?: number): Promise<IAccountMetadata[]> {
+    const requestId = ++this.accountsRequestId;
+    const files = await GDriveStorage.getAll();
+    const accounts = files
+      ? files.map(({ id, name = '', description = '' }) => ({
+          address: formatAccountAddress(name.replace(/\.json$/, ''), false), // formatted account address (extension like)
+          name: description, // account name
+          id: id as string,
+        }))
+      : [];
+    const isCurrentPoll =
+      pollingGeneration === undefined ||
+      (pollingGeneration === this.pollingGeneration && this.accountsCallbacks.size > 0);
+
+    if (requestId === this.accountsRequestId && isCurrentPoll) {
+      this.accountsList = accounts;
+    }
+
+    return accounts;
   }
 
   /** Looks up the cached account metadata by a formatted address. */
@@ -51,9 +99,9 @@ export default class Accounts implements InjectedAccounts {
 
   /** Retrieves the Drive file id for the given account address. */
   private async getAccountIdByAddress(address: string): Promise<string> {
-    await this.get();
-
-    const account = this.findAccountByAddress(address);
+    const accounts = (await this.get()) as IAccountMetadata[];
+    const defaultAddress = formatAccountAddress(address, false);
+    const account = accounts.find((item) => item.address === defaultAddress);
 
     if (!account) throw new Error(`Account not found: ${address}`);
 
@@ -80,6 +128,7 @@ export default class Accounts implements InjectedAccounts {
 
     await GDriveStorage.update(id, fileData);
     // if account name updated in storage, we don't need to do request, just update it locally
+    this.accountsRequestId += 1;
     this.accountsList = this.accountsList.map((account) => ({
       ...account,
       name: account.id === id ? name : account.name,
@@ -92,22 +141,13 @@ export default class Accounts implements InjectedAccounts {
 
     await GDriveStorage.delete(id);
     // if account deleted in storage, we don't need to do request, just remove it locally
+    this.accountsRequestId += 1;
     this.accountsList = this.accountsList.filter((account) => account.id !== id);
   }
 
   /** Refreshes the local cache with the latest list of Drive backups. */
   public async get(): Promise<InjectedAccount[]> {
-    const files = await GDriveStorage.getAll();
-
-    this.accountsList = files
-      ? files.map(({ id, name = '', description = '' }) => ({
-          address: formatAccountAddress(name.replace(/\.json$/, ''), false), // formatted account address (extension like)
-          name: description, // account name
-          id: id as string,
-        }))
-      : [];
-
-    return this.accountsList;
+    return this.refresh();
   }
 
   /** Decrypts a specific backup file and returns a keyring JSON blob. */
@@ -121,18 +161,27 @@ export default class Accounts implements InjectedAccounts {
 
   /** Implements the extension subscription mechanism with a simple polling loop. */
   public subscribe(accountsCallback: (accounts: InjectedAccount[]) => unknown): Unsubcall {
-    this.accountsCallback = accountsCallback;
+    const subscriptionId = ++this.nextSubscriptionId;
+    let active = true;
 
-    this.accountsUpdateInterval = setInterval(this.get.bind(this), ACCOUNTS_UPDATE_INTERVAL);
+    this.accountsCallbacks.set(subscriptionId, accountsCallback);
+    this.startPolling();
 
-    return this.unsubscribe.bind(this);
+    return () => {
+      if (!active) return;
+
+      active = false;
+      this.accountsCallbacks.delete(subscriptionId);
+
+      if (!this.accountsCallbacks.size) {
+        this.stopPolling();
+      }
+    };
   }
 
   /** Stops the polling loop and clears the subscription callback. */
   public unsubscribe(): void {
-    if (this.accountsUpdateInterval) {
-      clearInterval(this.accountsUpdateInterval);
-    }
-    this.accountsCallback = null;
+    this.accountsCallbacks.clear();
+    this.stopPolling();
   }
 }

@@ -235,6 +235,8 @@ export const dedupeBurnEntries = (items: BurnForStats[]): BurnForStats[] => {
 
     if (existing) {
       existing.nexusRecipient ??= item.nexusRecipient;
+      existing.campaign ??= item.campaign;
+      existing.extrinsicIndex ??= item.extrinsicIndex;
       continue;
     }
 
@@ -303,6 +305,8 @@ export const getReservationAmountsForBurn = (
 ): Nullable<BurnReservationAmounts> => {
   const { amount, blockHeight } = burn;
 
+  // TS burns belong solely to TONSWAP and must not reserve SS or Nexus XOR.
+  if (burn.campaign === 'tonswap') return null;
   if (!amount.gte(getMinimumBurnedForBlock(campaign, blockHeight))) return null;
 
   return {

@@ -53,13 +53,18 @@ export function useWalletConnect() {
 
   const isSubBridge = computed(() => bridgeStore.isSubBridge);
   const isSubAccountType = computed(() => bridgeStore.isSubAccountType);
-  const isSubBridgeConnectorReady = computed(() =>
-    Boolean(bridgeStore.connector?.network?.subNetworkConnection?.nodeIsConnected)
-  );
+  const isSubBridgeConnectorReady = computed(() => {
+    const connectionState = bridgeStore.subNetworkConnectionState;
+
+    return connectionState.network === networkSelected.value && connectionState.ready;
+  });
 
   const connectSubWallet = () => {
     if (isSubBridge.value && !isSubBridgeConnectorReady.value) {
       web3Store.setSelectSubNodeDialogVisibility(true);
+      void web3Store.connectSelectedSubNetwork().catch((error) => {
+        console.warn('[Bridge] Failed to recover the selected Substrate network', error);
+      });
       return;
     }
 

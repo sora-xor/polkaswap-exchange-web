@@ -111,10 +111,13 @@ const handleCreate = async () => {
   if (disabled.value || !currentForm.value?.registerAsset) return;
 
   try {
-    await withNotifications(async () => {
+    const result = await withNotifications(async () => {
       await currentForm.value?.registerAsset?.();
     });
-    isVisible.value = false;
+
+    if (result.submitted) {
+      isVisible.value = false;
+    }
   } catch (error) {
     console.error(error);
   }

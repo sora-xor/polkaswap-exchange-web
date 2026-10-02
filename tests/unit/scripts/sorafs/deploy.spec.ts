@@ -148,7 +148,7 @@ describe('validateRuntimeEnvConfig', () => {
 });
 
 describe('env.taira.json', () => {
-  it('keeps node selection aligned with the main Polkaswap runtime config', () => {
+  it('preserves explicit Taira defaults while production has only its live primary', () => {
     const prodConfig = JSON.parse(readFileSync(join(process.cwd(), 'public/env.json'), 'utf8')) as {
       DEFAULT_NETWORKS: unknown;
       NETWORK_TYPE: unknown;
@@ -160,7 +160,21 @@ describe('env.taira.json', () => {
       CHAIN_GENESIS_HASH: unknown;
     };
 
-    expect(tairaConfig.DEFAULT_NETWORKS).toEqual(prodConfig.DEFAULT_NETWORKS);
+    const primaryNode = {
+      chain: 'SORA',
+      name: 'SORA Parliament Ministry of Finance #1',
+      address: 'wss://ws.mof.sora.org',
+    };
+    expect(prodConfig.DEFAULT_NETWORKS).toEqual([primaryNode]);
+    expect(tairaConfig.DEFAULT_NETWORKS).toEqual([
+      primaryNode,
+      {
+        chain: 'SORA',
+        name: 'SORA Parliament Ministry of Finance #2',
+        address: 'wss://mof2.sora.org',
+        location: 'SG',
+      },
+    ]);
     expect(tairaConfig.NETWORK_TYPE).toBe(prodConfig.NETWORK_TYPE);
     expect(tairaConfig.CHAIN_GENESIS_HASH).toBe(prodConfig.CHAIN_GENESIS_HASH);
   });

@@ -1,0 +1,2127 @@
+Required Report: Required - Public Distribution                      Date: December 10, 2025
+
+                                                              Report Number:      ET2025-0021
+
+
+
+
+Report Name: FAIRS Country Report Annual
+Country: Ethiopia
+
+Post: Addis Ababa
+
+Report Category: FAIRS Country Report
+
+
+
+
+Prepared By:
+
+Approved By: Sarah Gilleski
+
+Report Highlights:
+
+This report presents regulatory requirements and standards that must be fulfilled to export food and
+agricultural products to Ethiopia. The report contains pertinent information on applicable laws,
+regulations, directives, guidelines, procedures, and key regulatory contact details. It is recommended
+that this report be read with the FAIRS Export Certificate Report for a comprehensive understanding of
+the import regulatory requirements and standards.
+
+
+
+
+THIS REPORT CONTAINS ASSESSMENTS OF COMMODITY AND TRADE ISSUES MADE BY USDA STAFF AND NOT NECESSARILY
+STATEMENTS OF OFFICIAL U.S. GOVERNMENT POLICY
+Table of Contents
+Executive Summary ................................................................................................................................................. 3
+Section I: Food Laws ............................................................................................................................................... 4
+Section II: Labeling Requirements ....................................................................................................................... 10
+       Differences in Nutrient Reference Values .................................................................................................... 12
+       Ethiopia utilizes Recommended Dietary Allowance (RDA), which are tailored to the local population's
+       dietary patterns and health needs. These values may differ from the Reference Daily Intakes (RDIs) used in
+       the United States. For instance, a U.S. label indicating that a product provides "25 percent Daily Value of
+       Vitamin C" might not align with Ethiopia's RDA for Vitamin C, potentially leading to misinterpretation of
+       the product's nutritional adequacy.................................................................................................................... 12
+       Implications for Exporters ............................................................................................................................... 12
+       Exporters of U.S. food products should be aware that using U.S.-based RDIs and health claims without
+       adaptation to Ethiopian standards can lead to regulatory issues. To ensure compliance, it's advisable to: ..... 12
+   Shelf-life / Date Marking Requirements .......................................................................................................... 18
+   All pre-packaged foods must display a date mark, either as: ............................................................................... 18
+   Country of Origin Labeling Requirements ..................................................................................................... 18
+   How is an Exception Granted? ......................................................................................................................... 20
+      Importers must apply to EFDA’s Food Registration and Licensing Directorate (part of EFDA’s Market
+   Authorization Department). ................................................................................................................................. 20
+       Importer Verification Checklist for Labeling: ............................................................................................ 20
+Section III: Packaging and Container Regulations............................................................................................. 20
+Section IV: Food Additive Regulations ................................................................................................................ 23
+Section V: Pesticide and Contaminants ............................................................................................................... 25
+Section VI: Other Requirements, Regulations, and Registration Measures .................................................... 27
+Section VII: Other Specific Standards/Laws....................................................................................................... 35
+Section VIII: Geographical Indicators, Trademarks, Brand Names, and Intellectual Property Rights ....... 38
+Section IX: Import Procedures ............................................................................................................................. 41
+Section X: Trade Facilitation ................................................................................................................................ 43
+APPENDIX I: Government Regulatory Key Agency Contacts ......................................................................... 44
+APENDIX II: Other Import Specialist Technical Contacts ............................................................................... 46
+
+
+
+
+Disclaimer:
+
+
+
+                                                                                                                                                                    2
+This report was prepared by the USDA/Foreign Agricultural Service, Office of Agricultural Affairs
+Addis Ababa, for U.S. exporters of food and agricultural commodities. While every possible care has
+been taken in the preparation of this report, the information provided may not be completely accurate
+either because policies/regulations/directives have changed since its preparation, or because clear and
+consistent information was not available. It is highly recommended that U.S. exporters verify the full set
+of import requirements with their foreign customers, who are normally best equipped to research such
+matters with local authorities, prior to shipment of goods. FINAL IMPORT APPROVAL OF ANY
+PRODUCTS IS SUBJECT TO THE IMPORTING COUNTRY’S RULES AND REGULATIONS AS
+INTERPRETED BY BORDER OFFICIALS AT THE TIME OF PRODUCT ENTRY.
+
+
+
+
+Executive Summary
+
+Ethiopian food legislation is designed to ensure food safety, quality, and transparency across the
+agricultural supply chain. These laws enforce strict regulations on hygiene, labeling, packaging, and
+contamination control for food products. Businesses involved in food production, import, or distribution
+must register and comply with the food safety standards, with regular inspections conducted to ensure
+compliance. The regulations are aimed at protecting consumers from harmful practices.
+Several key institutions are involved with regulating food safety, conducting inspections, and setting
+food standards to protect public health. The Ministry of Health (MoH), Ethiopian Food and Drug
+Authority (EFDA), Ministry of Agriculture (MoA), Ethiopian Agricultural Authority (EAA), and
+Ministry of Trade and Regional Integration (MoTRI) are the primary regulatory bodies. EFDA,
+reporting to MoH, enforces regulations on processed and semi-processed foods, including hygiene,
+packaging, labeling, and contamination control. The EAA regulates plant, livestock, and related product
+import and export. While MoTRI oversees mandatory Ethiopian standards for the import and export of
+agricultural goods. The Institute of Ethiopian Standards (IES) sets national standards and hosts the
+Ethiopian Codex Contact Point and WTO Inquiry Point. In recent years, these regulatory bodies have
+undergone restructuring to improve their mandates, capacity, and interagency coordination.
+The Government of Ethiopian (GOE) is implementing macro-economic reforms aimed at addressing
+persistent challenges such as foreign currency shortages, trade deficits, and high inflation. These reforms
+include ongoing efforts to liberalize trade, reduce import barriers, modernize customs procedures, and
+attract foreign investment. Ethiopia has adopted a market-based foreign exchange system and removed a
+two-year import ban on select food and agricultural products. The GOE also has liberalized the export,
+import, wholesale, and retail trade sectors, which were previously restricted to domestic businesses. The
+GOE expects these reforms to attract foreign direct investment, enhance trade competitiveness, promote
+fair trade practices, and support Ethiopia’s work towards accession to the WTO.
+
+
+
+
+                                                                                                          3
+In August 2024, the Government of Ethiopia introduced the National Food Fortification Program,
+mandating the fortification of wheat flour, edible oils, and salt, with the requirement applying equally to
+imported products. To enhance regulatory compliance and trade facilitation, the EAA launched the
+Integrated Export–Import Certification System (IEICS/e-Phyto), replacing paper-based phytosanitary
+certificates for agricultural imports. Further strengthening oversight, the Authority’s Animal Products
+and Inputs Quality Testing Center obtained ISO/IEC 17025:2017 accreditation in April 2025, expanding
+Ethiopia’s capacity to test imported animal-source foods, feed, and veterinary drugs. In August 2025,
+Ethiopia also gazetted its tariff concession schedule under the African Continental Free Trade Area
+(AfCFTA), providing preferential import tariffs on eligible agricultural products. Overall, the reforms
+signal Ethiopia’s parallel pursuit of trade liberalization and enhanced regulatory controls on food quality,
+safety, and nutrition.
+Notable regulatory updates in the 2025 FAIRS Country Report cover Section II (labeling requirements),
+Section II (packaging and container regulations), Section IV (food additive regulations), Section V
+(pesticides and contaminants), and Section VIII (geographical indicators, trademarks, brand names, and
+other intellectual property rights). The report also provides updated information on import procedures
+and required documentation.
+Section I: Food Laws
+
+The GOE has been making reforms to modernize the country’s food safety and animal and plant health
+regulatory systems. This modernization process is in part attributed to sustaining Ethiopia’s economic
+growth, which has spurred a rising number of retail and wholesale food outlets, restaurants, and agro-
+food manufacturers, especially in and around the capital city, Addis Ababa. The GOE has subsequently
+taken steps to regulate these establishments to ensure the food they produce, import, distribute, or sell
+complies with food safety and quality requirements. A growing middle class is also driving demand for
+imported products.
+Another key driver underpinning this modernization effort is the GOE’s interest in boosting agricultural
+exports, like coffee, oilseeds, horticulture, and livestock products, to grow the economy, ensure food
+security, and generate much-needed foreign currency. The GOE recognizes that to export these products
+Ethiopia needs a reliable food safety system in place to meet the demands of foreign buyers mainly in
+Europe, Asia, and North America.
+
+Despite this modernization, there are still major capacity-related gaps, including a shortage of qualified
+technical staff and insufficient laboratory capacity, which limits Ethiopia’s ability to enforce food safety
+regulations. The GOE is trying to raise awareness, both inside and outside the government, on the
+importance of food safety.
+
+Food, Medicine, Healthcare and Control Authority
+
+Ethiopia’s food safety regulatory system was authorized and mandated in 2009 in the Parliamentary
+Proclamation of the Ethiopian Food, Medicine and Healthcare Administration and Control Authority –
+Proclamation No. 661/2009. This legislation provides the legal authorities for the GOE to consolidate
+the pre-existing food regulatory system with the aim of better “protecting the public from health risks
+emerging from unsafe and poor-quality food.” The proclamation authorizes the setting of standards and
+
+
+
+                                                                                                            4
+regulations for locally produced and imported foods, in areas such as production, promotion, storage,
+packaging and labeling, distribution, and laboratory testing.
+
+In 2010, in a subsequent Parliamentary Proclamation – the Ethiopian Food, Medicine and Healthcare
+Administration and Control Authority Regulation No. 189/2010 – the Food, Medicine, Healthcare and
+Control Authority (FMHACA) was established, under the purview of the Ministry of Health, as the
+competent authority responsible for setting and enforcing food safety standards and regulations. Under
+this proclamation, food is defined as “any raw, semi-processed or processed substance for commercial
+purpose or to be served for the public in any way intended for human consumption that includes water
+and other drinks, chewing gum, supplementary food and any substance, which has been used in the
+manufacture, preparation or treatment of food.”
+
+FMHACA was given further statutory authority to enforce and implement food safety and quality
+regulations as defined in the Food, Medicine and Healthcare Administration and Control Councils of
+Ministers Regulation No. 299/2013. This legislation states that food must be wholesome and produced
+in accordance with the relevant safety and quality requirements. Imported products failing to meet these
+standards will be returned to the country of origin or destroyed at the point of entry. For example,
+products that are expired or have deteriorated in quality may be seized and returned or destroyed. In a
+case where the offending product was detected in post-market surveillance, FMHACA has the authority
+to pull it from stores’ shelves and destroy it. This regulation also provides broadly defined requirements
+dealing with food storage, handling, and transportation, and prohibits counterfeiting and adulteration.
+
+In 2019, FMHACA carried out organizational restructuring with a new institutional name and a revised
+mandate. In February 2019, the GOE Council of Ministries issued Proclamation No.1112/2019
+authorizing a revised mandate of FMHACA. With the amended structure, FMHACA is renamed as the
+Ethiopian Food and Drug Authority (EFDA). The EFDA is mandated to regulate only products related
+to food, medicine, tobacco, cosmetics, and medical devices. Regulation No. 531/2023 also provides the
+powers and duties of EFDA. The legislative mandate of EFDA has similarities to the U.S. Food and
+Drug Administration.
+
+Ethiopian Agricultural Authority
+
+In 2022, the GOE established the Ethiopian Agricultural Authority (EAA) as an autonomous federal
+government authority by Article 45 Sub-Clause 1 of Proclamation No. 1263/2021 and Council of
+Ministers Regulation No. 509/2022. EAA is mandated to strengthen the regulatory system by bringing
+together scattered regulatory bodies and incorporating new regulatory procedures to ensure the
+efficiency, quality, and safety of agricultural technology, inputs, products, and services. The main
+mandates of the EAA are to improve the utilization of domestic products by enhancing food safety, to
+make agricultural products and inputs available for foreign trade in a transparent manner that complies
+with international standards, to expand market access, and to enhance the country’s ability to generate
+foreign currency from exports. EAA is mandated to lead both Animal and Plant Health Regulatory
+Directorates and to establish new standards in collaboration with IES. EAA ensures quarantine safety
+standards are met through field and laboratory testing, and issues an acceptable plant or animal health
+certificate, pre-entry permits, and post-entry exit permits, prepares a national list of quarantine pests and
+diseases by studying the distribution of plant and animal pests and diseases.
+
+
+
+
+                                                                                                            5
+The Plant Health Regulatory Directorate of EAA regulates the safety of imported plant and plant
+products, as authorized in the Plant Quarantine Regulation No. 4/1992. The definition of plants includes
+living plants, plant products, and seeds. Plants and other related articles must be accompanied by an
+import permit and a phytosanitary certificate from the competent authority of the exporting country and
+are subject to quarantine inspection. Shipping containers carrying plants or plant articles must be marked
+with the following information:
+     Contents
+     Origin
+     Address of shipper, supplier, or freight forwarder
+     Name of consignee
+     Entry point in Ethiopia
+
+In cases where quarantine pests are detected in an incoming shipment, MoA may allow the cargo to
+undergo treatment to destroy or inactivate the pest.
+
+The Animal Health Regulatory Directorate of the EAA is responsible for animal quarantine and
+livestock disease issues. Imports of livestock, meat, by-products, and genetics require an import permit
+along with a health certificate from the exporting country. When applying for an import permit, the
+importer must identify the type of product, country of origin, means of transport, date of arrival,
+countries transited, and port of entry. Upon arrival, livestock, meat, and by-products, as well as livestock
+genetics materials will be subject to inspection. The Guidelines for Import and Export of Animal
+Genetic Materials spell out the recommended procedures and requirements in detail. For further
+reference, please see the guidelines attached in Appendix II of this report.
+
+Institute of Ethiopian Standards (IES)
+
+IES is responsible for setting national standards. As part of its standards development process, IES
+consults with industry and public stakeholders to take their comments and concerns into account. IES
+publishes the draft national standards online along with an open solicitation for public comments.
+
+MoTRI is responsible for the establishment and enforcement of the legal metrological system. In
+coordination with EFDA and EAA, MoTRI has the authority to control the quality of imports and to
+restrict entry of products that do not comply with compulsory Ethiopian standards. MoTRI regulates
+import and export of goods, including certain food items that must comply, where applicable, with IES
+Mandatory Standards.
+
+The Ethiopian Radiation Protection Authority (ERPA), under the Radiation and Nuclear Protection
+Proclamation No. 1025/2017, establishes controls of radioactive materials in food stuffs and non-food
+items. Through issuance of pre-import permit and import release permit controls, ERPA also establishes
+regulations regarding the import, use, and authorization of radioactive materials. Though it does not
+directly address food radiation levels, ERPA underscores Ethiopia’s overarching regulatory framework
+for radiation safety.
+
+Third-party inspection bodies, which have been approved by MoTRI, can certify that subjected products
+meet the national standard. Pre-certified products will clear arrival inspection without delay, though
+
+
+
+                                                                                                           6
+MoTRI reserves the right to conduct random sampling and testing. Uncertified products will be subject
+to normal inspection procedures at the point of entry.
+
+ Table 1: Summary of Key Regulatory Agencies and Responsibilities
+Government      Regulatory
+Ministry        Authority/Directorate      Key Responsibilities
+                                           EFDA is responsible for ensuring:
+                                            Food safety and quality; regulates processed and semi-
+Ministry of     Ethiopian Food and Drug      processed food products
+Health (MoH)    Authority (EFDA)            Safety, efficacy, quality, and proper use of medicines
+                                            Safety, quality, and performance of medical devices.
+                                            Issues pre-import permit and/or special import permit
+                                            Issues import release permit
+                                            Issues Free Sale Certificate
+                                            Issues health certificate
+                                            Inspection of consignments of plants/other regulated
+                                             articles including import and export of plants and plant
+                                             products and provide import and export permits
+                Ethiopian Agricultural      Inspection of required phytosanitary documents and
+                Authority (EAA)              issuance of phytosanitary certificates
+                                            Fumigation of consignments to meet phytosanitary
+                Plant Health Regulatory      requirements
+                Directorate                 Supervision of quarantine treatments including
+                                             fumigation and weed cleaning processes
+                                            Advise and supervise disposal of plant and plant
+                                             products
+                                            Crop surveillance for pests mainly cereals, fruits, and
+                                             vegetables
+                                            Protection of endangered areas – maintenance and
+Ministry of
+                                             surveillance of pest-free area(s) with low pest
+Agriculture
+                                             prevalence
+(MoA)
+                                            Inspection, approval, and registration of pesticides
+                                            Food safety risk assessment in different crops including
+                                             pests and pesticide application
+                                            Issues pre-import permit and import release permit for
+                                             plant and plant products
+                                            Establish a system that ensures access to quality
+                                             veterinary services to improve the prevention and timely
+                Ethiopian Agricultural       control of animal diseases
+                Authority (EAA)             Quarantine on import and export of livestock, fish, and
+                                             their byproducts; prevent communicable livestock
+                Animal Health Regulatory     diseases and the outbreak of migratory parasites
+                Directorate                 Ensure the proper administration and quality control of
+                                             veterinary drugs and feeds as well as veterinary services.
+                                            Issues Veterinary Health Certificate
+
+
+                                                                                                        7
+                  Ethiopian Agricultural         Responsible for registration and certification of feed and
+                  Authority (EAA)                 veterinary drugs that are produced, imported and in use
+                                                  in the country
+                  Veterinary Drug and            Setting standards for quality control activities
+                  Animal Feed                    Market surveillance, banning, revoking and suspension
+                  Administration and Control      of registrations, packaging and labeling, trade, and
+                  Directorates                    licensing of veterinary drugs and animal feed
+                                                 Issues pre-import permits and import release permits
+                  Import and Export Goods        Quality control of exports and imports
+                  Quality Control Directorate    Regulatory oversight on the importation and exportation
+Ministry of                                       of goods that do not comply with the Ethiopian
+Trade and                                         mandatory standards
+Regional                                         Work with third party conformity assessment agencies
+Integration                                       and facilitate pre-shipment inspections
+(MoTRI)           Institute of Ethiopian
+                  Standards (IES)                Sets national standards
+
+                  Ethiopian Conformity
+                  Assessment Enterprise          Provides certification, inspection, and laboratory testing
+                  (ECAE)                          services
+
+                  Ethiopian National             Provide accreditation services, by formal third-party
+                  Accreditation Office            recognition, the competence of Conformity Assessment
+                  (ENAO)                          Bodies (CABs) to perform specific activities, such as
+                                                  tests, calibrations, certifications, or inspections
+                                                 Oversees radiation safety and controls radioactive
+                  Ethiopian Radiation             materials in food and other goods
+                  Protection Authority           Establishes radiation limits and may mandate testing or
+                  (ERPA)                          certification for imported food potentially exposed to
+                                                  radiation
+Ministry of       Bio and Emerging
+Innovation and                                   Conducts biotechnology research and development in
+                  Technology Institute            agriculture, environment, manufacturing, and other
+Technology        (BETin)                         sectors
+Ministry of                                      Prevention and control of environmental contamination
+                  Ethiopian Environmental
+Planning and                                     Approves import permits for GE seeds and unprocessed
+                  Protection Authority (EPA)
+Development                                       GE crops. Note: Reference links for biosafety policy,
+                  Biosafety Regulatory
+(MoPD)                                            regulations, and directives are in the summary table
+                  Directorate
+                                                  below
+
+Table 2: Summary of Key Proclamations, Regulations, Directives, and Guidelines
+Food Control Proclamations and Regulations                                                       Link
+Food and Nutrition Policy                                                                      Download
+Food, Medicine, and Healthcare Administration and Control Authority, Proclamation No.          Download
+1112/2019
+Definition of Organization, Powers, and Duties of EFDA                                         Download
+
+
+                                                                                                        8
+Food, Medicine, and Healthcare Administration and Control Authority, Regulation No.         Download
+299/2013 of Council of Ministers
+Food, Medicine, and Health care Administration and Control Authority establishment          Download
+Council of Ministers Regulation No. 189/2010
+Food, Medicine, and Healthcare Administration and Control Authority, Proclamation No.       Download
+661/2009
+Pre-Shipment Inspection Scheme Establishment Proclamation No. 173/1999                      Download
+Quality and Standard Authority of Ethiopia Establishment Proclamation (No. 102/1998)        Download
+Quality and Standard Authority of Ethiopia Establishment (Amendment) Proclamation (No.      Download
+413/2004)
+Trademark Registration and Protection Proclamation No. 501/2006                             Download
+
+Trademark Registration and Protection Regulation No.273/2012                                Download
+
+Food Control Directives and Guidelines
+Baby Food Control Directive No. 840/2021                                                    Download
+Infant and Follow up Formula Importers, Wholesalers and Exporters Directive No. 335/2020    Download
+                                                                                            Download
+Food Supplement Directive No. 333/2016
+                                                                                            Download
+Permitted List of Food Additives, November 2021
+                                                                                            Download
+Fortified Foods and Fortificants Control Directive - Draft 2023
+Administrative Measures and Compliant Handling Directive No. 345/2013                       Download
+EFDA Service Fees and Charges Regulation No. 370/2015                                       Download
+Animal Health and Import-Export Related Proclamations/Regulations/Directives/
+Guidelines
+IGAD Regional Animal Health Certification Guidelines (ICPALD)                               Download
+Veterinary Drug and Feed Administration and Control Proclamation No. 728/2011               Download
+Veterinary Drug and Animal Feed Administration and Control Authority Establishment          Download
+Council of Ministers Regulation No. 272/2012
+Animal Diseases Prevention and Control, Proclamation No. 267/2002                           Download
+Directive on Risk Assessment Parameters for Modified Organisms No. 05/ 2018                 Download
+Directive Issued to Establish Procedures for the Management of Risks from any Transaction   Download
+Involving Modified Organisms No. 06/2018
+Live Animals Marketing, Proclamation No. 819/ 2014                                          Download
+Live Animals Marketing Council of Ministers Regulation No. 341/2015                         Download
+Directive for the Registration of Feed Products (No. 995/2024)                              Download
+Plant Health and Related Proclamations/Regulations
+Seed Proclamation No. 1288/2023                                                             Download
+The Plant Quarantine Regulation No. 04/1992                                                 Download
+
+
+
+                                                                                                  9
+Plant Breeder's Right Proclamation No. 1068/2017                                                    Download
+Pesticide Registration and Control, Proclamation No. 674/2010                                       Download
+Biotechnology Policy, Regulations, and Directives
+Biosafety Proclamation (Amendment) No. 896/2015                                                     Download
+National Biosafety Advisory Committee Establishment Regulation, No. 411/2017                        Download
+Directive for Application of Special Permit to Engage in Transaction of GMOs for Research           Download
+or Teaching, No.04/2018
+Directive to Provide Risk Assessment Parameters for Modified Organisms, No. 05/2018                 Download
+Directive to Establish Procedures for Management of Risks from Any Transaction Involving            Download
+Modified Organisms, No. 06/2018
+Directive to Determine the Requirements for Transport and Storage of Modified Organisms,            Download
+No. 07 /2018
+Directive to Determine the Content of an Application for Undertaking Deliberate Release of          Download
+Modified Organisms, No. 08/2018
+
+
+Section II: Labeling Requirements
+
+IES has Compulsory Ethiopian Standards (CES 73 and CES 197) applicable to labeling of prepackaged
+food products. These are general standards for all prepackaged foods intended for human consumption.
+CES 73 is the most actively used and referenced general standard for labeling prepackaged food
+products. While CES 197 is applicable to labeling foods for special dietary uses. The following sub-
+section describes these general standards for labeling prepackaged foods.
+IES has a goal to make national standards available online. Presently, if you want a copy of a particular
+standard, you must go to the ESA library, submit a request, and pay a nominal fee to obtain hard copies.
+Alternatively, importers should be able to provide U.S. suppliers with a copy of both the voluntary and
+compulsory standards. Post can assist U.S. companies in obtaining copies of standards on a case-by-case
+basis.
+
+CES 73:2013 - General Standard for Pre-Packaged Foods Labeling
+This compulsory Ethiopian standard stipulates general principles of good labeling practice, mandatory
+components of a label, and exempted products. CES 73 defines prepackaged food as “packaged or made
+up in advance ready for retail sale in a container.” The required elements of a label include names of
+product and ingredients, ingredient statements including quantitative ingredient declarations where
+applicable, weight declarations, suppliers contact details, country of origin, storage instructions, date and
+batch coding, prohibitions on misleading information, allergen declarations, and instructions for use.
+
+CES 197:2018 - General Standard for Labeling and Claims for Pre-Packaged Foods for Special
+Dietary Uses
+This compulsory Ethiopian standard defines foods for special dietary uses, mandatory components of a
+label for foods for special dietary uses, and specific prohibition on claims relating to special dietary use
+if the product concerned does not meet the criteria for these products. The standard has provisions on
+special requirements relating to appropriate storage conditions and exempted products.
+
+
+
+                                                                                                           10
+Mandatory vs Voluntary Labeling
+ Mandatory Labeling
+   Governed primarily by CES 73:2013 – Pre-packaged Foods Labelling and enforced by EFDA
+     under Proclamation No. 1112/2019.
+   Required information includes: Product name, ingredient list, net content, batch/lot number,
+     shelf-life/date mark, storage instructions, manufacturer/importer name and address, and country
+     of origin.
+   Some nutrition information may be mandatory for specific products (e.g., foods for special
+     dietary uses under CES 197:2018, or products that are fortified with vitamins/minerals).
+ Voluntary Labeling
+   Includes additional information not strictly required, such as nutrition claims, health claims, or
+     marketing statements about nutrient content.
+   These are permitted only if they are truthful, not misleading, and consistent with Ethiopian
+     standards. EFDA evaluates such claims on a case-by-case basis.
+
+
+
+Mandatory Labeling for Pre-Packaged Foods:
+In accordance with the Compulsory Ethiopian Standard (CES 73), the following information must be
+clearly and indelibly marked on the labels of prepackaged foods in either English or Amharic. Exporters
+should note that packaged foods with a surface area less than 10 cm2 may be exempt from having to
+display some of these labeling elements. Labels found on U.S. food products are commonly accepted.
+
+    Trade name of the product
+    Common name of the product
+    Nutritional content
+    List of ingredients (except for single ingredient foods) in descending order of weight
+    Description of micronutrients used to enrich foods produced with fortification
+    Labeling, description, or ads of any food supplement must not represent to be used in disease
+     prevention, treatment, or cure, or in any way characterize as a medicine
+   If the product contains any of the following food products or ingredients that may cause allergies,
+     labeling must clearly describe its content:
+     Breakfast cereals containing grain gluten such as wheat, rye, oats, barley, etc.
+     Crustaceans and their products
+     Eggs and by-products
+     Fish and fishery products
+     Peanuts, soybeans, and their products
+     Milk and dairy products, including lactose
+     Nuts and derived products
+     Sulphites are in concentration of 10 milligrams per Kg or higher
+   Net weight or volume of contents
+   Name and address of the manufacturer, packer, distributor, importer, exporter, or vendor.
+   Country of origin
+   Production and expiration dates. (Note: Food products must have at least 50 percent of their shelf
+     life remaining when they arrive at customs. Expired food cannot enter the country, nor can it be
+
+
+                                                                                                     11
+      sold in the marketplace. Certain foods are exempt from carrying expiry dates, including fresh
+      fruits and vegetables, wines, beverages with 10 percent alcoholic content by volume, vinegar,
+      sugar, and candies and chewing gums having sugar contents above 35 percent)
+     Product identification number/code identifying producing factory and lot
+     Instructions for use (if needed)
+
+Food Labeling Regulations on Health Claims
+In Ethiopia, health claims on food products are statements suggesting a relationship between a food or
+nutrient and health benefits or disease risk reduction. These claims are considered voluntary but are
+strictly regulated. They are governed by CES 73:2013 on pre-packaged food labeling and enforced by
+EFDA under the Food and Medicine Administration Proclamation No. 1112/2019. Any health claim
+must be truthful, verifiable, and not misleading to consumers.
+
+Health claims must be supported by credible scientific evidence before they can appear on a label.
+EFDA reviews such claims on a case-by-case basis, especially for imported foods. Unlike some
+countries, Ethiopia does not have a list of pre-approved health claims. Only claims that are accurately
+substantiated and supported by documentation are allowed. Claims that exaggerate benefits, imply
+disease treatment, or are misleading are prohibited.
+
+Importers must include any health claim in their EFDA registration dossier along with supporting
+evidence. Labels with unapproved or unsubstantiated claims can be rejected, removed, or lead to product
+withdrawal. While claims similar to those approved in the United States, such as calcium and bone
+health or fruits and vegetables and cancer risk, may be allowed, they require EFDA approval based on
+scientific substantiation for each product.
+
+Differences in Nutrient Reference Values
+Ethiopia utilizes Recommended Dietary Allowance (RDA), which are tailored to the local population's
+dietary patterns and health needs. These values may differ from the Reference Daily Intakes (RDIs) used
+in the United States. For instance, a U.S. label indicating that a product provides "25 percent Daily
+Value of Vitamin C" might not align with Ethiopia's RDA for Vitamin C, potentially leading to
+misinterpretation of the product's nutritional adequacy.
+
+Implications for Exporters
+Exporters of U.S. food products should be aware that using U.S.-based RDIs and health claims without
+adaptation to Ethiopian standards can lead to regulatory issues. To ensure compliance, it's advisable to:
+         Recalculate nutrient values based on Ethiopian RNIs.
+         Obtain EFDA approval for any health claims.
+         Ensure all labeling meets the requirements of CES 73:2013.
+Failure to adhere to these standards may result in labels being deemed misleading, potentially leading to
+product recalls or importation issues.
+
+Nutrient Content Claims: Ethiopia distinguishes between absolute descriptors and relative descriptors.
+ Absolute Descriptors: Refer to specific quantities or amounts of nutrients present in a food product.
+   Examples:
+       “High fiber” → product contains a significant amount of dietary fiber.
+       “Low-fat” → product meets defined thresholds for fat content.
+
+
+                                                                                                          12
+    Requirements:
+        Must meet CES/EFDA thresholds (the product must truly qualify as “low-fat” or “high-
+           fiber”).
+        Must be supported by nutrient analysis or credible documentation.
+   Relative Descriptors: Compares the nutrient content of a food product to a reference value, often
+    expressed as a percentage. Common words include “less,” “fewer,” “reduced,” “light,” “more”.
+    Examples:
+        “Reduced sugar” → product contains at least 25 percent less sugar than the standard product.
+        “Light sodium” → product has a meaningful reduction in sodium relative to the reference
+           product.
+     Requirements:
+        EFDA requires that relative claims are quantified and verifiable; vague or misleading
+           comparisons are prohibited.
+
+   Implied or Suggestive Claims: Implied claims suggest benefits or qualities without stating them
+    directly, often in marketing language. Any implied claim that could mislead consumers is not
+    permitted.
+
+Other Specific Labeling Requirements:
+
+Labeling Requirements for Alcoholic Beverages
+ For beverages containing more than 1.2 percent alcohol, the alcohol proof is required on the label.
+ Alcoholic beverages having less than 10 percent alcoholic content shall state product expiry date on
+  its label.
+ Alcoholic beverages are required to contain labels showing alcoholic volume and warning that
+  alcohol consumption may cause health problems.
+ The label should also contain a warning that women should not drink alcoholic beverages during
+  pregnancy because of the risks of birth defects.
+
+Labeling Requirements for Genetically Engineered (GE) Foods
+Ethiopia requires mandatory GE labeling (“contains GMO”) for GE foods. Imports of GE food are
+permitted upon authorization under the Biosafety Framework (2009 Proclamation, amended 2015).
+ GE foods must be labelled with the following statement: “genetically modified”, “genetically
+   modified organism” or other comparable description.
+
+Labeling Requirements for Foods Treated with Ionizing Radiation
+ Irradiated foods must contain the phrase “irradiated” or the internationally accepted food irradiation
+  symbol indicating a food product has been irradiated with ionizing radiation may be placed besides
+  the label.
+
+Labeling Requirements for Baby Food Products
+ Labeling requirements for baby food should be in accordance with the national compulsory General
+   Standards for Pre-Packaged Foods Labeling (CES 73).
+ Labels should not discourage breastfeeding in any manner and should be designed to provide the
+   necessary information about the appropriate use of the product.
+
+
+
+                                                                                                           13
+   Any product shall not be described or presented on any label or in any labeling in a manner that is
+    false, misleading, or discouraging breastfeeding or is likely to create an erroneous impression
+    regarding its character in any respect.
+   Neither the container nor the label shall have pictures of the infants or other pictures or texts, which
+    may idealize the use of the product.
+   The terms “humanized”, “materialized” or other comparable terms may not be used.
+   The immediate container of the product should be affixed or written on with a label bearing the
+    following particulars in a clearly legible, conspicuous, and indelible manner at least in Amharic or
+    English.
+       Name of the product and its identification as “infant formula,” “complementary food,” or
+         “follow-up formula” or its equivalent.
+       The words “IMPORTANT NOTICE” in capital letters and indicated there under, the statement
+         “breastfeeding is the normal and optimal way to feed infants and young children. Breast milk is
+         important for the healthy growth and development of infants and young children. It protects
+         against diarrhea and other illnesses” in characters no less than one-third the size of the
+         characters in the product name, and in no case less than 2 mm in height.
+       A statement of the superiority of breast milk using letters with more than 12 font size.
+       A statement that the product should be used only on the advice of a health professional as to the
+         need for its use and the proper method of use.
+       Precautions and warnings, where necessary.
+       Appropriate instruction for use or preparation.
+       Name and full address of the manufacturer, including country of origin.
+       List of ingredients.
+       Nutritional information declaring in numerical form the amount of nutrients present in the
+         product per portion of the product as recommended for daily consumption or amount per unit
+         for single use.
+       Net content by weight for powdered products or volume for liquid.
+       Date of manufacture and expiry, which shall be indented and indicate at least the month and
+         year in which the product is to be consumed, considering climatic and storage conditions.
+       The storage conditions, and where appropriate, shelf life of the product before and after opening
+         and its reconstitution.
+       Batch or lot number.
+       Required professional advice, if necessary.
+   A statement “breast milk is the best food for your baby,” or a comparable statement regarding the
+    superiority of breastfeeding or breast milk shall be provided.
+   All ingredients on the label of the product need to be listed in accordance with the following sub-
+    articles:
+       Source of protein in the product is identified and clearly shown on the label.
+       Except for single ingredient products, a list of ingredients is declared on the label.
+       If the ingredient is from animal or plant, scientific name of the plant and part of animal or plant
+         used is declared.
+       Additives such as fillers, artificial colors, sweeteners, flavors, or binders are listed by their
+         specific names/ “E numbers” and qualified by words.
+       “Natural” or “artificial” in descending order in weight or volume.
+
+Labeling Requirements for Baby Food for Infants and Young Children
+
+
+                                                                                                          14
+   A manufacturer or distributor cannot offer to sell or sell baby food for infants and young
+    children if the labeling includes a photograph, drawing or other graphic representation other
+    than for illustrating methods of preparation.
+   A manufacturer or distributor cannot offer for sale or sell baby food for infants and young
+    children, unless the labeling indicates in a clear, conspicuous, and easily readable manner, in
+    Amharic or English, the following particulars:
+       Instructions for appropriate preparation and use in words and easily understood graphics.
+       The age in numeric figures after which the product is recommended.
+       A warning about the health risks of improper use, preparation, or storage and of introducing the
+         product prior to the recommended age; ‟a minimum font of 3 mm tall letters based on the
+         lower-case letter in bold red color on a white background for packages with less than 200 cm2
+         of available label space and large font in proportion to the size of larger packages.”
+              o No less than one-third the size of the characters in the product name, and in no case less
+                  than 3 mm in height in bold red letters on a white background.
+       The list of ingredients and the declaration of nutritional value in accordance with relevant
+         national standards or, in the absence of such standard, with the relevant Codex Standard.
+       The required storage conditions both before and after opening, considering climatic conditions.
+       The product category (whether infant, follow-up, growing up, complimentary food with age
+         group, etc.).
+       Contains the word, “WARNING” and indicated there under, the statement, “before deciding to
+         supplement or replace breastfeeding with this product, seek the advice of a health professional.
+         It is important for your baby’s health that you follow all the preparation instructions carefully. If
+         you use a feeding bottle, your baby may refuse to feed from the breast. It is more hygienic to
+         feed from a cup” in characters no less than one-third the size of the characters in the product
+         name, and in no case less than 3 mm in height and in bold red on a white background.
+       Preparation instructions for infant or follow-up formula in powdered form stating that:
+        o Powdered formula is not sterile and may be contaminated with pathogenic microorganisms
+             during the manufacturing process or may become contaminated during preparation.
+        o It is necessary for formulas to be prepared one feeding at a time using water that has been
+             boiled (to 212°F or 100°C) and then added to the powdered infant formula immediately or
+             when the water is at least 158°F or 70°C, before feeding the baby, cooled to body
+             temperature.
+        o Any unused milk must be discarded immediately after every feeding.
+       Includes a feeding chart in the preparation instructions.
+       In the case of follow-up formula, states that the product shall not be used for infants less than
+         six months old or used as the sole source of nutrition for infants in characters “no less than one-
+         third the size of the characters in the product name, and in no case less than 3mm in height.”
+       A manufacturer or distributor shall not offer for sale or sell young children formula unless the
+         container or label affixed thereto states that the product shall not be used to feed infants below
+         12 months or used as the sole source of nutrition for young children” in characters no less than
+         one-third the size of the characters in the product name, and in no case less than 3mm in height.
+   A manufacturer or distributor cannot offer to sell or sell baby food for infants and young
+    children:
+     If the labeling contains any health or nutrition claim or any representation that states or suggests
+        that a relationship exists between the product or constitute thereof and health, including the
+        physiological role of a nutrient in growth, development, and normal functions of the body.
+
+
+                                                                                                           15
+Labeling Requirements for Ready-to-Use Therapeutic and Complementary Foods
+ Labeling requirements for ready-to-use therapeutic food and complimentary food products should
+   be in accordance with the national compulsory standard CES 73 - General Standards for Pre-
+   packaged Foods Labeling.
+ A manufacturer or distributor cannot offer to sell or sell ready-to-feed therapeutic food or a
+   complementary food product if the container or label affixed contains:
+    Any text, image or other representation that suggests the suitability of the product for infants
+       under six months including but not limited to references to development milestones clearly
+       reached before six months, the use of pictures of infants appearing to be younger than six
+       months.
+    Any text, image or other representation of the product or is likely to undermine or discourage
+       breast-feeding or create a belief that the product is equivalent or superior to breast milk.
+       o Any text, image or representation that undermines or discourages appropriate
+           complementary feeding or that may suggest that the product is inherently superior to home
+           prepared complementary foods.
+       o Any recommendation to feed the product in a bottle or otherwise promote the use of bottle
+           feeding.
+       o Any endorsement, or anything that may be conveyed or construed as an endorsement by a
+           health professional, an association of health professional or other body; and
+       o Any element that allows for cross-promotion of any other baby foods for infants and young
+           children.
+ In addition to the above requirements, the label of ready-to-feed therapeutic food or a
+   complementary food product must include:
+    A statement in characters at least one-third the size of the product name, and in no case
+       smaller than 3 mm in height.
+    The importance of exclusive breastfeeding for the first six months and of continued
+       breastfeeding up to two years or beyond.
+    The recommended age of introduction is not less than six months (180 days) and a
+       statement that early introduction of complementary foods negatively affects
+       breastfeeding.
+    Instructions for preparation, storage, handling, and use.
+    A feeding chart showing the appropriate ration/serving size consistent with guiding
+       principles issued by the World Health Organization (WHO).
+
+Prohibitions Related to Labeling of Skimmed or Condensed Milk
+ Labeling requirements for skimmed or condensed milk should be in accordance with the national
+  compulsory standard CES.
+ A manufacturer or distributor cannot offer to sell or sell skimmed or condensed milk in powder or
+  liquid form, unless:
+    The container or affixed label contains the words, “this product should not be used to feed
+       infants” in characters no less than one-third the size of the characters in the product name, and in
+       no case less than 3 mm in height.
+
+Labeling Requirements for Low-Fat and Standard Milk
+ Labeling requirements of law-fat and standard milk should be in accordance with the national
+
+
+                                                                                                         16
+  compulsory standard CES 73 - General Standards for Pre-packaged Foods Labeling.
+ A manufacturer or distributor cannot offer to sell or sell low-fat or standard milk in powder or liquid
+  form, unless:
+    The container or affixed label contains the words, “this product should not be used as an infant’s
+      sole source of nourishment” in characters no less than one-third the size of the characters in the
+      product name, and in no case less than 3 mm in height.
+
+Labeling Requirements for Plant-Based Meat/Dairy Alternatives
+The Ethiopian standard for plant-based meat or dairy alternatives has the same labeling requirements as
+any prepackaged foods. In addition to the general labeling requirements for prepackaged foods, the
+following specific labeling elements are required:
+ For plant-based meat products such as texturized soy proteins (TSP) a clear statement “food for
+   human” on the label.
+ For dairy alternatives such as soymilk, the label should have clear instructions on disposal of used
+   packages.
+
+Required Labeling Elements for Raw Materials for Food Products:
+ Name of the raw material
+ Ingredient list
+ Net content
+ Name and address of the producer and/or importer
+ Country of origin
+ Lot identification
+ Expiry date or minimum useful life
+ Conditions for product storage
+
+Labeling Requirements for Fortified Food and Micro-Nutrients:
+ Presentation and description of fortified foods on any label or in any labeling shall not be false,
+   misleading, or deceptive or is likely to create an erroneous impression regarding its character in any
+   respect.
+ The label should clearly indicate the pack size within the unit package The label needs to be affixed
+   on all primary packaging of any fortified food and/or micro-nutrient supplement bearing the
+   following information in clearly legible and indelible letters at least in Amharic and/or English:
+    Name of the product
+    Name and full address of the manufacturer, including country of origin
+    List of ingredients
+    The name and amount of micro-nutrients available
+    Net content by weight for solid products or volume for liquids
+    Date of manufacture and shelf-life, which indicates at least the month and year
+    The storage conditions and, where appropriate, the shelf-life of the product before and after
+       opening and reconstitution
+    Batch or lot number
+    Standard mark and logo and registration number
+ Appropriate instructions for use or preparation of fortified foods and micro-nutrient products.
+
+
+
+
+                                                                                                        17
+Labeling Requirements for Animal Feed Products
+The labeling requirements for feed products are specified in the Directive for the Registration of Feed
+Products No. 995/2024. Feed products must have a clearly written, legible, and irremovable label either
+in Amharic or English. The label must be written directly on the product’s packaging or attached via a
+non-perishable material sewn to the packaging. Pasted, tied-on, erased, or illegible labels are not
+acceptable. Labels must avoid misleading words or images.
+
+Label Contents:
+    Name and complete address of the manufacturer
+    Trade name of the product
+    Brand name
+    Date and year of manufacture
+    Batch number
+    Shelf life of the product
+    Nutritional composition of the product
+    List of raw materials used, in descending order of quantity
+    Net weight of the product
+    A clear description of the target animal type, including age group, production type, and grade
+    Information on transportation and storage conditions
+    Cautionary notices or warnings related to the product's use, if necessary
+
+Labeling Requirements for Animal Genetic Materials:
+Ethiopia’s labeling requirement for importation of animal genetic materials such as semen, ova and
+embryo must contain the information:
+    Breed name
+    Donor number
+    Date of production and batch number
+    Transit package and/or letter must include country of origin, species, producer company, volume
+       per package, storage temperature and means of transportation
+
+Shelf-life / Date Marking Requirements
+All pre-packaged foods must display a date mark, either as:
+     Best before: for products that can retain their quality beyond a certain date.
+     Use by / expiry date: for highly perishable foods where safety cannot be guaranteed beyond the
+        date.
+ Format: Dates should be clearly legible and preferably in DD/MM/YYYY or MM YYYY format.
+ Placement: On the primary package (the part that directly contacts the food), easily visible to the
+    consumer.
+ Special cases: Small packages (≤10 cm²) may have exemptions if space is limited, but the importer
+    may need to provide this info separately (e.g., over-label or leaflet).
+
+Country of Origin Labeling Requirements
+ Imported foods must clearly indicate the country of origin on the label.
+ Format: Plain, unambiguous text (e.g., “Product of USA” or “Made in the USA”).
+ Placement: Should be on the main display panel or otherwise clearly visible to the consumer.
+ Language: Amharic or English is accepted. Many importers provide both languages for compliance.
+
+
+
+                                                                                                      18
+Table 3: Summary of Required Labelling Formats
+      Labeling
+                     Requirement                 Format                        Placement        Language
+   Information
+                                       Best before or Use by;
+Shelf-life / Date                                                                              Amharic or
+                   Mandatory           DD/MM/YYYY or                       Primary package
+mark                                                                                           English
+                                       MM YYYY
+                       Mandatory for         Product of [Country]/ Made    Main display        Amharic or
+Country of Origin
+                       imports               in [Country]                  panel               English
+
+
+
+
+Circumstances Under Which Labeling Exceptions May Be Granted
+EFDA is the designated competent authority, empowered by the Food and Medicine Administration
+Proclamation No. 1112/2019 and its subsequent instruments, Proclamation No. 1263/2021 and
+Regulation No. 531/2023 to issue case-by-case determinations on labeling exemptions. Such exemptions
+are rarely granted and lie solely within EFDA’s discretion. They typically apply only to small packaging
+formats (under 10 cm²), research or trade samples, emergency or humanitarian imports, transitional
+grace periods for new requirements, or for language over-labeling. By contrast, all retail products
+intended for sale to Ethiopian consumers must fully comply with CES 73:2013 – General Standard for
+the Labelling of Pre-Packaged Foods and other applicable Ethiopian standards.
+
+Ethiopian sources (Proclamation 1112/2019, EFDA directives, and CES 73:2013) point to a few
+exception situations:
+    Small packages (≤10 cm² surface area): CES 73 allows omission of certain details (e.g., full
+       nutrition panel) if the pack is too small to carry them, provided information is available through
+       other means.
+    Import for research, samples, or emergencies: EFDA may allow food items to be imported
+       without full retail labeling if they are not intended for commercial sale (e.g., clinical trials,
+       laboratory analysis, trade samples, emergency aid shipments). In these cases, EFDA typically
+       requires the importer to submit documentation and may issue a special permit.
+    Grace periods: When new standards are introduced or labeling rules are updated, EFDA has
+       discretion to give a grace period (sometimes 6–12 months) so existing stock or shipments already
+       in transit can be cleared.
+    Language flexibility: By law, labels must be in Amharic or English. In practice, EFDA often
+       accepts English-only labels on imports at entry, provided the importer adds an Amharic sticker
+       or over-label before retail distribution.
+    Foods for Special Dietary Use (FSDU)/Medical Foods: If EFDA determines that labeling
+       requirements in CES 197 (for FSDU) cannot reasonably be applied (e.g., because of space
+       constraints or international format), it can approve a modified label format, but only through
+       prior authorization.
+
+
+
+
+                                                                                                      19
+How is an Exception Granted?
+   Importers must apply to EFDA’s Food Registration and Licensing Directorate (part of EFDA’s
+      Market Authorization Department).
+   EFDA may issue a written authorization or conditional approval stating which labeling elements
+      are exempted and under what conditions (e.g., for research only or not for retail sale).
+   EFDA can revoke exemptions if products are found on the retail market without compliant
+      labels.
+
+Importer Verification Checklist for Labeling:
+    Product/trade name matches CES/commodity standard
+    Ingredients listed in correct order
+    Allergens declared
+    Net quantity in International System of Units (SI units)
+    Manufacturer’s name and address present
+    Ethiopian importer’s name and address included
+    Country of Origin stated
+    Lot/batch number included
+    Expiry/Best-before date clearly printed
+    Storage/use instructions (if needed)
+    Any special-category marks (dietary, GE, irradiated, alcohol, etc.) applied
+
+
+Section III: Packaging and Container Regulations
+
+In accordance with the EFDA Proclamation No. 1112/2019, it is generally required that packaging
+material should be made out of substances, which are safe and suitable for their intended use, and the
+product shall be packed in a container which will safeguard its hygiene, safety, quality, and food grade.
+The Proclamation states “no packaging material shall be put into use unless it complies with the
+international and national safety and quality standards.”
+
+Any food product regulated under Proclamation No. 1112/2019 needs to be appropriately packed and its
+packaging material cannot contaminate the product and must comply with national standards. The
+EFDA proclamation defines primary packaging as “the covering, wrapper, or container that has direct
+contact with the product intended for retail sale.”
+
+Individual product standards may also contain additional guidance and/or requirements for packaging
+and container requirements. As an example, the standard for canned peaches indicates packing
+requirements, including lacquer usage inside the can as well as can thickness. The packaging of infant
+and follow up formula must be made from non-plastic material. To obtain approval for packaging
+materials, a certificate of analysis and specifications are required.
+
+Special Packaging, Container Size Requirements, or Preferences
+Ethiopia does not impose a single universal law on container sizes for imported pre-packed foods.
+Instead, packaging is governed through product-specific Ethiopian standards and conformity assessment
+requirements. All imported foods must use safe, food-grade containers that do not contaminate the
+
+
+
+                                                                                                         20
+product, and those subject to compulsory standards are checked for packaging compliance during pre-
+shipment verification by approved bodies. Beyond this, rules focus mainly on technical specifications
+for particular categories rather than across-the-board restrictions.
+
+For beverages in PET bottles, ES 6792:2021 sets “normal” nominal capacities of 500 ml, 1,000 ml,
+3,000 ml, and 5,000 ml, with a mandatory 10 percent extra capacity tolerance, while still allowing other
+sizes by supplier-buyer agreement. A standard for honey, caps glass jar sizes at 2 kg but permits
+flexibility for plastic and metal containers. In the case of fresh fruits and vegetables, ES 6689:2021
+requires sturdy, clean containers sized and shaped to fit pallet surfaces without overhang, reflecting a
+focus on logistic efficiency rather than retail pack volumes.
+
+For many other foods, such as edible oils or grocery staples, no strict size regulations exist, but market
+practice and national quality schemes influence importer choices. Edible oils, for example, are most
+commonly sold in 0.5 L, 1 L, 3 L, and 5 L packs, with larger containers mainly reserved for institutional
+buyers. Thus, while Ethiopia’s regulations mandate food-safe packaging and set specific size rules in
+some categories, most container choices for imported pre-packed foods are guided by a mix of product
+standards, conformity assessments, and prevailing consumer and industry preferences.
+
+Packaging Sustainability Measures
+IES embraces international standards related to packaging sustainability measures identical with the
+International Organization for Standardization (ISO). IES has two optional standards applied to
+packaging and the environment. These are:
+   ES ISO 18606:2015 - Packaging and the Environment (Organic Recycling)
+   ES ISO 18604:2014 - Packaging and the Environment (Material Recycling)
+
+ES ISO 18606:2015: This standard is applicable to organic recycling of used packaging but does not
+address regulations that exist regarding the recoverability of any residual packaged goods. The standard
+established the requirements for packaging suitable for organic recycling. The above standard defines
+organic recycling as the process “through microbial activity, the controlled biological treatment of the
+bio-degradable components of used packaging, which produces compost, in the case of anaerobic
+digestion, also methane.” In addition, the standard does not consider landfilling and littering as organic
+recycling.
+A package is considered suitable for organic recycling if all the components are suitable for organic
+recycling. However, individual components of the packaging can be considered recoverable by organic
+recycling if they meet the requirements of this international standard. The suitability of packing
+components and packaging material is verified by test methods described in this standard. The standard
+provides normative descriptions of the maximum concentrations of regulated metals and other
+substances hazardous to the environment and determination of eco-toxic effects. The standard also
+contains a recommended assessment checklist for meeting the requirements and provides examples of
+packaging suitable for organic recycling.
+ES ISO 18604:2014: This standard specifies the requirements for packaging to be classified as
+recoverable in the form of material recycling while accommodating the continuing development of both
+packaging and recovery technologies. The standard also sets out procedures for assessment of meeting
+
+
+
+                                                                                                         21
+the requirements. The standard defines material recycling as “reprocessing, by means of a
+manufacturing process, of a used packaging material into products, a component incorporated into a
+product, or a secondary (recycled) raw material, excluding energy recovery and the use of the product as
+a fuel. The standard has established procedures and criteria for recyclable packaging in the product life
+cycle steps such as design, production, utilization, sorting by the end-user, and collection. For instance,
+if plastic or PET bottle packaging complies with the standards or specifications, then the packaging is
+considered 100 percent recyclable.
+
+Recycled Content or Design Requirements
+At present, Ethiopia does not mandate specific recycled content percentages in food packaging
+standards. For instance, ES 6792:2021 for PET bottles defines performance and dimensional
+requirements but does not include recycled content obligations. However, the National Plastic Waste
+Management Strategy and Roadmap sets out a pathway to introduce measures such as recycled content
+targets, deposit-return systems, and circular design standards in the future. The regulatory framework
+emphasizes recyclability and circularity, even if binding recycled content percentages have not yet been
+widely applied.
+
+Bans, Restrictions or Limitations on Packaging Materials
+Ethiopia has introduced restrictions on certain single-use plastics through its National Plastic Waste
+Management Strategy and Roadmap (2024-2034) and subsequent legislation. The long-standing Solid
+Waste Management Proclamation No. 513/2007 established the framework for municipal waste control.
+
+Single Use Plastic Restrictions
+On June 2, 2025, the Ethiopian Parliament passed a new law (Solid Waste Management Proclamation
+No. 1383/2025) to phase out the production and import of designated single-use plastics. The law bans
+the import, domestic production, and use of single-use plastics, particularly plastic bags thinner than
+0.03 millimeters. The law also requires recycling or reuse of disposable items such as bags, bottles,
+straws, and wrappers, linked to environmental and public health risks. The Environmental Protection
+Authority (EPA) is granted the power to create implementing regulations and monitor the
+implementation of these restrictions.
+
+Municipal Waste Disposal Laws and Recycling Regulations
+The principal legal basis remains the Solid Waste Management Proclamation which regulates municipal
+solid waste practices. Building on this, the Solid Waste Management Proclamation No. 1383/2025 and
+the EPA’s plastic waste management strategy have advanced Extended Producer Responsibility (EPR)
+as a policy tool. The legislation promotes a circular economy by turning waste into new resources and
+holding producers responsible for their products. Enacted measures introduce obligations for producers
+to participate in or fund collection and recycling systems, particularly in high-volume sectors such as
+bottled water and beverages. The policy direction is toward binding producer or importer responsibility
+for post-consumer packaging waste.
+
+National Strategies, Goals, or Proposals for Packaging Waste Reduction
+Ethiopia has articulated clear national objectives for packaging sustainability through the National
+Plastic Waste Management Strategy and Roadmap and complementary laws. These strategies call for
+reductions in single-use plastics, restrictions on difficult-to-recycle materials, expansion of recycling
+infrastructure, and encouragement of biodegradable or compostable alternatives. The 2025
+
+
+                                                                                                            22
+parliamentary legislation reflects this policy by embedding bans, producer obligations, and waste-
+reduction targets into enforceable law. Together, these measures form a coordinated national approach
+to transition away from problematic packaging toward recyclable and sustainable options.
+
+Section IV: Food Additive Regulations
+
+EFDA regulates the use of food additives, which must comply with both international and national food
+safety standards. Ethiopia has based its national standards on Codex standards. Any food additive to be
+imported into Ethiopia must follow Codex or Ethiopia’s standard concerning its use as an input for food
+processing.
+
+The revised EFDA Proclamation No.1112/2019 defines food additives as any substance prepared in
+accordance with applicable requirements and added to food to give flavor, impart color, preserve, or
+enhance its appearance or other related functional purposes. Article 11 of the proclamation states that the
+maximum level of food additive use is in accordance with the Ethiopian standard issued by the
+appropriate body.
+
+According to the revised proclamation, EFDA determines the list of allowable food additives and
+prohibits the use of some food additives in certain categories. EFDA evaluates the safety of food
+additives before authorizing the use or new uses for already permitted food additives. Before a new
+additive can be used or before an additive can be used in a new way from the permitted list, the
+manufacturer must show that the food additive is safe and get EFDA approval. EFDA created a national
+list of permitted food additives in November 2021.
+
+Individual food and beverage standards, where applicable, reference both permitted and prohibited
+additives. Generally, food and beverage products covered under the Ethiopian Standards may contain
+only permitted additives in accordance with Codex Stan 192, General Standard for Food Additives. For
+example, in the case of natural wines, the Ethiopian Standard ES 351: 2001, which is adopted from the
+Codex standard, specifies the list of permitted additives that may be added to fresh grapes, musts, and
+dry grapes during vinification. The standard also provides a list of additives and treatments permitted
+during vinification and conservation of wines and sweat filtrates. This includes lists of permitted
+substances and forbidden additives. For instance, tannins can be used for clarification purposes, but
+coloring substances are prohibited except for oenocyanin or caramel.
+
+Ethiopia uses a positive list system. Only additives included in the EFDA National List (or those
+permitted in commodity standards) may be used. Certain product standards also explicitly ban additives
+in specific foods. Permitted additives have defined functional classes, conditions of use, and maximum
+levels. Some commodities (e.g., flours) prohibit any additives, while EFDA directives require
+registration and monitoring of additive use.
+
+The National List of Food Additives and related directive are published by EFDA (in English and
+Amharic) and are accessible on the EFDA website. Commodity-specific rules can be obtained through
+the Institute of Ethiopian Standards.
+
+EFDA references Codex standards as a scientific basis but requires additives to appear on its national list
+or relevant ES before use. To add a new additive, industry must submit a technical dossier to EFDA,
+
+
+
+                                                                                                        23
+which reviews safety data, consults stakeholders, and then publishes an updated list or amended
+standard.
+
+Step-By-Step Process for Industry to Seek Additive Approval
+ Preliminary check: Verify whether the additive and the intended use/level are already allowed under
+   the EFDA National List or the relevant ES commodity standard.
+ Prepare dossier: Compile a technical dossier with identity (INS number), manufacturing
+   specifications, purity criteria, intended food categories and maximum use levels, toxicological/safety
+   data, and any risk-management proposals (e.g., maximum level).
+ Submit to EFDA: If the applicant is an importer, a local agent/representative is normally required.
+   EFDA will conduct a technical evaluation; this may include requests for additional data, lab testing,
+   or review by technical committees.
+ Public consultation / stakeholder review: For additions to the national list, EFDA typically issues
+   draft directives and invites stakeholder comments.
+ Decision and Publication: If EFDA’s assessment supports safety and suitability, the additive/use is
+   incorporated in the National List, or the relevant ES is updated; EFDA then publishes the revised
+   list/directive, and the additive becomes authorized with stated conditions.
+ Post-Authorization Controls: Authorized additives are subject to monitoring and enforcement
+   (EFDA may require certificates, testing of imported consignments, or labeling/traceability data as
+   part of market surveillance).
+
+Food Additives Control Directive No. 1020/2024
+This EFDA directive, issued in August 2024, establishes strict regulations governing the use, import,
+export, and sale of food additives within Ethiopia. The directive aims to regulate the use of food
+additives in alignment with Codex Alimentarius standards, ensuring food additives are safe and do not
+endanger public health.
+
+This directive is applicable to any person who engages in the production, import, export and distribution
+of an allowable list of food additives permitted by Codex Alimentarius Commission and determined by
+EFDA that the food additives are not prohibited to be used in food. This guideline does not refer to food
+additives except when they are used for food preservation or to improve the nutritional content of the
+food.
+
+   Permitted Food Additives: Only food additives listed by the Codex Alimentarius Commission or
+    recognized by Ethiopian standards are permitted for use. The directive specifies the acceptable
+    quantities of additives in various foods. It also prohibits additives that conceal food spoilage or lower
+    the nutritional value of the food. Additives should be safe, transparent in their usage, and follow
+    internationally recognized guidelines.
+   Prohibited Substances: The directive bans the use of any substances that are not explicitly included
+    in the Codex Alimentarius or EFDA-approved list of food additives. This provision ensures that no
+    unapproved or unsafe substances are introduced into the Ethiopian food market.
+   Labeling Requirements: Additives must be clearly labeled, and misleading or deceptive
+    descriptions are prohibited. Labeling of any food additives must meet the Compulsory Ethiopian
+    Standard (CES 73) labeling requirements for pre-packaged foods. The labeling must clearly indicate
+    the additive’s name, functional class, and identification number. Misleading or deceptive
+
+
+
+                                                                                                          24
+    descriptions are strictly prohibited. Labels must also contain information about the additive’s origin
+    and any necessary usage or storage instructions.
+   Safety Regulations: Additives must not reduce food quality or nutritional value, nor should they
+    hide any defects in the food. The use of additives is intended to improve the safety and quality of
+    food products, not to cover up poor manufacturing practices. Any additive used must comply with
+    established purity standards.
+   Manufacturing, Import, and Export: A pre-licensing requirement is necessary for manufacturers,
+    importers, or wholesalers dealing in food additives. Only additives on the approved list are allowed
+    for manufacturing, importing, or exporting. The directive includes a detailed application process to
+    ensure compliance with these requirements.
+   Notification Requirements: Any person responsible for placing food additives on the market,
+    whether through manufacturing, import, export, or distribution, must notify EFDA. The notification
+    process requires detailed documentation. The notification application process includes several key
+    requirements:
+         The name, identification number, and functional class of the food additive.
+         The name and address of the manufacturer, including valid contact information (phone
+             number and email).
+         The name and address of the importer, along with a valid contact number and email.
+         Full food additive ingredient list.
+         Labels of the food additive.
+         Original Certificate of Free Sale from the competent authority of the exporting country.
+   All submissions for notification must be in Amharic or English.
+   The notification must be renewed every two years. The process must start no later than six months
+    before the expiration of the current notification.
+   Any changes to the data in the initial application (such as changes in the manufacturer, contact
+    details, or product composition) must be promptly communicated to EFDA.
+
+Hard copies of the Ethiopian standards for food additives are available at IES with payment of nominal
+administrative fees. Post can assist U.S. companies in obtaining copies of the standards on a case-by-
+case basis.
+
+Section V: Pesticide and Contaminants
+
+Ethiopia accepts the Codex General Standard for Pesticides and Contaminants. Food and feed products
+regulated by Ethiopian standards must comply with the Codex General Standards for Contaminants and
+Toxins in Food and Feed (Codex Stan 193). The revised EFDA Proclamation No.1112/2019, Article 5
+stipulates that any food product cannot have chemical residues including pesticides, fertilizers,
+veterinary drugs food additives, cleaning chemicals, radioactive substances, and other contaminants
+above the maximum residue level (MRL) issued or adopted by the appropriate organ.
+
+In 2010, the GOE enacted the Pesticide Registration and Control Proclamation No. 674/2010. The
+legislation establishes a mandatory registration system for pesticides, tailored to national needs. The
+registration process involves a risk-based evaluation of comprehensive scientific data demonstrating that
+the product is effective for its intended purposes and does not pose an unacceptable risk to human or
+animal health or the environment. The proclamation states, “no person shall import, manufacture or sell
+a pesticide, which has not been registered under this Act.”
+
+
+                                                                                                         25
+Ethiopia's pesticide regulations are governed by the EAA, which oversees the registration, importation,
+distribution, and use of pesticides. The EAA ensures that pesticides are effective for their intended
+purposes and do not pose unacceptable risks to human health, animal health, or the environment under
+the conditions of use in Ethiopia. Ethiopia does not maintain a national MRL list and there is no
+formalized MRL deferral path, instead it defers to international standards, particularly those established
+by Codex, when setting MRLs. The EAA references Codex MRLs as guidance, especially where local
+data is insufficient, aligning domestic requirements with globally recognized standards to ensure food
+safety and facilitate trade.
+
+The EAA Plant Health Regulatory Directorate is mandated to:
+ Regulate pesticide management, relating to importation, distribution, transportation, storage,
+   retailing, and use.
+ Adopt regulations.
+ Promote the correct use of pesticides and search for alternatives to chemical pesticides.
+ Raise awareness and provide technical support when the need arises, etc.
+
+EAA regulates and requires all pesticides to be registered prior to use. The registration process requires
+the applicant to provide efficacy, safety, and quality data. Once registered, the pesticide can be used for
+up to five years at which time the registration may be renewed.
+
+In addition to registration, EAA also is responsible for establishing MRLs and conducting pesticide
+residue analysis on primary agricultural products. Applicable MRLs, as well as limits for other
+contaminants, are listed in the individual product standards. For example, in the case of apples, there are
+41 different MRLs, as well as limits for heavy metals (e.g., lead) and microbiological contaminants (e.g.,
+coliform). Imported apples, as well as domestically produced apples, are expected to comply with these
+requirements. In an event where a national standard does not exist, the GOE will likely defer to the
+Codex standard.
+
+The EAA regulates pesticides and pesticide residues in foodstuffs by controlling registration,
+importation, distribution, and authorized use of pesticides. The EAA conducts scientific risk assessments
+to ensure pesticides are safe for human health, the environment, and agricultural use, and monitors
+residues in imported and locally produced foods through inspections and testing.
+
+Import tolerance applications are accepted when new pesticides are introduced or when adjustments to
+existing MRLs are required. Importers must submit supporting scientific data and risk assessments,
+which the EAA evaluates to determine whether the proposed MRLs are safe and acceptable under
+national standards.
+
+Imported food products are subject to port inspections, where samples are collected and analyzed for
+pesticide residues to ensure compliance with established MRLs, often referencing Codex standards
+when national limits are not available. If residues exceed permissible levels, regulatory authorities can
+impose sanctions including rejection of the shipment, detention or destruction of the product, fines, and
+temporary or permanent import restrictions for the responsible importer.
+
+
+
+
+                                                                                                          26
+According the recent organizational restructuring and change of mandate as per Proclamation No.
+1263/2021, the rights and obligations of Veterinary Drug and Feed Administration and Control
+Authority are transferred to the EAA. The EAA’s Veterinary Drug and Animal Feed Directorate is
+responsible for setting standards related to animal feed and veterinary drugs, including MRLs for
+veterinary drugs and other related compounds. Like pesticides, veterinary drugs must be tested for
+safety, efficacy, and quality and registered prior to use. The registration lasts for five years, after which
+time the registration may be renewed. At present, Ethiopia is using Codex as its basis for veterinary drug
+MRLs.
+
+Contaminants
+Ethiopia's regulations on food contaminants are governed by the EFDA, which sets standards for
+maximum levels (MLs) of contaminants in foodstuffs. These standards aim to protect public health by
+limiting the presence of harmful substances such as heavy metals, mycotoxins, and other contaminants
+in food products. EFDA’s regulations are informed by international standards, including those
+established by Codex, to ensure food safety and facilitate international trade.
+
+IES has a general standard for contaminants and toxins in food and feed. This standard, which draws
+upon the corresponding Codex Standard (193-1995) lays out the principles and procedures to manage
+and set acceptable tolerances for contaminants and toxins in food and feed. This standard, however, does
+not identify or list contaminants and toxins of concern and their corresponding MLs. Instead, these are
+found in standards for individual commodities, where they exist. For instance, soymilk must comply
+with the maximum metal contaminants (lead and cadmium) and pesticide residue limits specified in
+Codex Stan 193.
+
+Local authorities in Ethiopia establish national MLs for contaminants by referencing international
+standards, particularly those set by the Codex. In cases where Codex standards are not available, the IES
+may develop national MLs based on scientific risk assessments and available data. This approach
+ensures that Ethiopia's food safety standards align with global best practices while considering local
+conditions and risks.
+
+Exporters wishing to export food products to Ethiopia must comply with the EFDA's regulations, which
+may include providing documentation such as health certificates and certificates of analysis. These
+documents should verify that the products meet the required safety standards and do not exceed the
+established MLs for contaminants. Additionally, exporters may need to submit samples for laboratory
+testing to confirm compliance with Ethiopian food safety standards.
+
+Port inspection practices in Ethiopia involve the examination of imported food products to ensure they
+comply with national food safety standards. If contaminants are detected at levels exceeding the
+established MLs, the EFDA may impose sanctions, including the rejection of the shipment, destruction
+of the non-compliant products, or penalties to the importer.
+
+Section VI: Other Requirements, Regulations, and Registration Measures
+
+Food Product Registration
+EFDA has a mandatory list of food products that must be registered and approved prior to importation
+for the first time. Infant formula (milk) and food supplements are strictly prohibited from entering the
+
+
+                                                                                                           27
+market without prior registration and approval. Details are available in the Infant and Follow-up
+Formula Exporters Importers and Wholesalers Directive No./335/2020 and Food Supplement Directive
+No. 333/2020. In addition to infant formula and food supplements, EFDA requires registration for milk
+and milk products, meat and meat products, poultry products, seafood, processed vegetables, sliced
+fruits, nuts and their products, therapeutic foods, cereal based complementary foods, confectioneries,
+fats and oils, processed fruits, packed water, soft drinks, beer, iodized salt, and noodles.
+
+The required documentation for new registration of imported food products includes:
+ Application form for registration.
+ Agency agreement between manufacturer/exporter and local importer.
+ Certificate of Free Sale (or FDA’s Certificate to a Foreign Government for FDA-regulated products).
+ Food manufacturing or products registration certificate or approval.
+ Authenticated copy of Good Manufacturing Practice (GMP), Hazard Analysis Critical Control Point
+   (HACCP), or ISO 22000.2005 certificates. In appropriate circumstances, internationally accepted
+   certification or certificate of quality management system may be accepted in lieu of GMP and
+   HACCP.
+ Certificate of lab analysis of sample product for registration from accredited lab.
+ Documents showing the quality and safety of raw materials and food additives used in
+   manufacturing.
+ Study evidence for determining shelf life of the product.
+ Veterinary certificate attesting it is free of diseases that can be transmitted from animals to human.
+ Product sample.
+ Technical documents such as:
+     Formulation and manufacturing and packaging procedure.
+     Data on method of analysis and specification of the finished product.
+     Stability study reports and shelf-life assignment.
+     Packaging and labeling requirements for finished products.
+     Quality analysis result.
+ Other details of the product:
+     Trade name of the food product.
+     Common name of the food.
+     Nutrition content.
+     List of ingredients (except for single ingredient foods) in descending order of weight.
+     Country of Origin, name, and address of the manufacturer or importer.
+     Production and expiration dates.
+     Product identification number.
+     Net weight or volume of contents.
+     Description of micronutrients used to enrich foods produced with fortification.
+     If the food product contains milk and milk products, fish and shellfish, wheat, barley, peanuts,
+        soybeans, and other food allergens, the label must clearly describe its content.
+     If the food is made with GE ingredients, supporting information must be provided.
+     Irradiated foods must contain clear information showing that the food is irradiated.
+     Instructions for use (if needed).
+
+Food Products Registration Process
+
+
+
+                                                                                                     28
+ EFDA uses an Electronic Regulatory Information System (eRIS) to oversee the market authorization
+and import permit approval for food and medical products. Both importers and EFDA use this online
+system to manage the licensing, registration, and import application process. Figure 1 provides a
+summary outlining the typical steps for food product registration with EFDA.
+
+
+
+
+Figure 1: Food Product Registration Process Flow
+
+
+
+
+                                                                                                    29
+                                                1. Prepare Application Documents
+  Business License: Ensure your      Product Information: Prepare      Labeling: Make sure labels meet    Certificate of Free Sale: Provide
+  company is licensed in the food     details such as product name,      EFDA standards (language,          evidence that the product is
+              sector.                 ingredients, and composition.     nutrition, and health claims).    approved in its country of origin
+
+
+
+
+                                                         2. Online Submission
+     Register on EFDA Portal: Create an           Upload Documents: Submit the required       Application Fee: Pay the applicable fee for
+      account on EFDA’s online system.               product and company documents.                         processing.
+
+
+
+
+                                                   3. Document Review by EFDA
+
+  Preliminary Review: EFDA will check if all required documents are     Detailed Review: EFDA will assess the product’s safety, labeling,
+                           provided.                                             and compliance with Ethiopian food standards.
+
+
+
+
+                                                 4. Product Testing (If necessary)
+                                                                       Third-Party Testing: External laboratories may be used for testing
+   EFDA Labs: Products may need to be tested for quality and safety.
+                                                                                             specific parameters.
+
+
+
+
+                                              5. Issuance of Registration Certificate
+    Approval or Rejection: Based on compliance, EFDA will either          Certificate Issuance: If approved, you will receive a product
+                   approve or reject the product.                                            registration certificate.
+
+
+
+
+                                                    6. Post-Market Surveillance
+
+   Compliance Monitoring: EFDA will conduct ongoing checks on registered products in the market to ensure they meet safety and quality
+                                                           standards.
+
+
+
+Facility Registration: EFDA requires pre-licensing formalities to issue a competency certificate to
+Ethiopian food manufacturers. According to the revised Food Manufacturing Factories Pre-Licensing
+Directive, the facility registration requirement applies to local food manufacturers to ensure food safety
+
+
+
+                                                                                                                                   30
+and quality. EFDA classifies local food manufacturers into three different entities. This classification is
+based on the perishability of the product, the manufacturing process of the product, and end users of the
+product. This does not apply to U.S. facilities exporting to Ethiopia.
+
+   Special Nutritional Purpose Foods:
+     Food supplement/dietary supplement/infant formula
+     Follow up formula
+     Complimentary foods for infants and young children
+     Ready to use supplementary foods (such as Plumpy Nut, Plumpy Sup, F-100 and F-75) for acute
+       and moderate malnourished people
+     Special nutritional purpose foods
+     Other manufacturers producing foods of similar nature to the above
+
+   High-Risk Food Products for General Purpose: Per EFDA’s Food Manufacturers Establishment
+    Pre-licensing Directive No. 358/ 2013 (Amharic), the following items are considered high-risk.
+     Processed animal products
+     Processed seafood
+     Processed fruits and vegetables
+     Processed nuts
+     Therapeutic foods
+     Complementary foods (for children three years and older)
+     Fortified foods (iodized salt, edible oil, flour, etc.)
+
+    Low-Risk Food Products:
+     Crackers, snack food, and confectionery products
+     Edible oils and fats
+     Packed water
+     Soft drinks
+     Beers
+     Extruded products and noodles
+
+   Notified Food Products: EFDA categorizes the following food products as Notified food products:
+    which require mandatory conformity assessments before being imported, exported, or sold.
+     Hot sauce
+     Legume products
+     Packed rice products
+     Processed seed (corn, wheat, sorghum, barley, oat, etc.) products
+     Packed sugar
+     Bakery raw materials
+     Processed coffee and tea
+     Processed spices
+     Alcohol (more than 10 percent) and liquor products
+     Vinegars
+     Other related food products not mentioned above
+     Imported food aid products donated by governmental or non-governmental organizations
+     Raw materials used for food production
+
+
+                                                                                                         31
+Mandatory Feed Product Registration
+The EEA’s Directive for the Registration of Feed Products (No. 995/2024) created a regulatory
+framework that requires registration for all feed products, including processed fodder, feed ingredients,
+and raw materials. It applies to both locally produced and imported feed products, mandating that any
+feed product intended for commercial use must be registered with the EAA. Additionally, the directive
+includes a focus on quality control and feed product safety, with requirements for market licenses based
+on these factors.
+
+Definitions: The Directive provides specific definitions for various terms used throughout, including
+"processed feed," which refers to feed made by blending multiple ingredients, and "feed supplement,"
+which includes nutrient preparations for animals. It also defines "feed raw materials" as products or by-
+products used in formulating animal feed. The document clarifies the roles of regulatory entities, product
+registrants, and the concept of product quality assurance systems. It also includes terms related to feed
+safety and standards, such as "Genetically Modified" (GM) ingredients, certificates of analysis, and
+product variations (major and minor).
+
+Registration: Before any feed product can be imported, marketed or used commercially, it must be
+registered with the EEA. The product must meet national or international safety and quality standards.
+The registration process involves submitting various documents, including certificates of competence,
+product details, and safety reports.
+
+Application and Re-Registration Process: The process involves submitting required documents to
+EAA, such as legal agreements, product safety reports, and product labels. Registrants must comply with
+requests for additional information within three attempts, or a new application must be submitted.
+Registered feed products must be re-registering every four years, with any major or minor variations
+requiring notification and additional documentation.
+
+Quality and Safety Requirements: Feed products must adhere to strict quality and safety standards.
+This involves testing multiple batches of the product and submitting certificates of analysis. Stability
+studies are required to determine the shelf life of the product in the Ethiopian climate. The packaging
+must also meet specific standards to ensure it protects the product from contamination and withstands
+varying weather conditions. U.S. exporters are encouraged to refer the detailed regulations outlined in
+Veterinary Drug and Feed Administration and Control Proclamation No. 728/2011 and Feed
+Registration Directive No. 995/2024.
+
+Restrictions on Genetically Modified Feed Materials and Growth Hormones
+According to Page 5 (Article 3) of the Feed Registration Directive, genetically modified or feed
+materials containing growth-stimulating hormones, drugs, or medicinal products cannot be registered for
+domestic production or importation. Exceptions exist for scientific research and emergency relief feed
+products, as well as pet food accompanying travelers or diplomatic missions.
+
+
+Required Documents for Feed Product Registration:
+
+Legal Documents:
+
+
+                                                                                                           32
+   Agency Agreement: For imported products, a legal agency agreement with the foreign
+    manufacturer.
+   Manufacturing Agreement: If produced by a third party, an agreement between the producer and
+    manufacturer, as well as between the producer and local importer.
+   Manufacturer’s Commitment: An agreement stating that the manufacturer and importer are
+    responsible for recovering defective products if necessary.
+   Product Recall Procedures: Document showing the manufacturer's procedure for collecting
+    defective products from the market.
+   Manufacturing License: Issued by the appropriate authority in the country of origin.
+   Good Manufacturing Practice (GMP) Certificate: Or an equivalent certificate of competency issued
+    to the manufacturing company.
+   Non-GMO Certification: Evidence that the product is free from genetically modified ingredients.
+   Animal Product Health Certification: If using animal by-products, proof that the product is free
+    from diseases like Bovine Spongiform Encephalopathy (BSE).
+   Marketing Authorization: A certificate showing that the product is marketed in the exporting
+    country, similar to a Certificate of Free Sale.
+   Quality/Safety Management Certificate: As necessary, evidence of the product's compliance with
+    recognized food safety or quality management systems.
+   Manufacturer Profile: A general description of the manufacturer.
+   Label and Sample: The product's label and a physical sample.
+
+Product Description:
+  General Information: Document detailing the product's physical and chemical properties,
+    composition, intended use, usage instructions, precautions, and storage/transportation conditions.
+
+Production Process Documents:
+  Raw Materials List: Detailed list of raw materials and their safety documentation.
+  Product Formula: Complete formula of the feed product.
+  Manufacturing Flowchart: A flowchart showing the production process.
+  Step-by-step Process Description: Detailed explanation of each step in the production process.
+  In-process Quality Control: Documentation of quality and safety control activities at each stage of
+    production.
+  Batch Record: A batch record of at least one production batch.
+
+Quality Control Documents:
+ Product Specifications: Documents outlining the quality and safety specifications of the feed
+   product.
+ Certificates of Analysis: Laboratory test certificates from at least three different batches of the
+   product.
+ Testing Method Validation: Proof that the product testing methods are valid.
+ Stability Study: Stability study report determining the product’s shelf life, considering Ethiopian
+   climate conditions.
+
+Packaging Documents:
+
+
+                                                                                                         33
+   Packaging Material Description: Detailed description of the packaging material and its compliance
+    with standards.
+   Quality Control of Packaging: Criteria and testing methods for the packaging material to ensure it
+    meets safety standards.
+
+Labeling Documents:
+  Label Sample: A sample of the product label, which must include details like manufacturer name,
+   product name, batch number, shelf life, net weight, ingredients, intended use, and any necessary
+   warnings.
+
+Product Safety Documents:
+  Safety Assurance: Evidence that the product is free from physical, biological, and chemical hazards.
+  Safety Study: A safety study report conducted by the manufacturer or published in a recognized
+    scientific journal.
+
+
+
+
+Figure 2: Flowchart for Feed Product Registration
+
+
+
+
+                                                                                                      34
+                                                     1. Application Submission:
+   The registrant submits application form along with all required     These include legal documents, product descriptions, manufacturing
+                            documents.                                 process details, safety assurances, and packaging/label information.
+
+
+
+
+                                                     2. Document Verification:
+ EAA reviews the submitted documents to verify their completeness
+                                                                       Missing or incomplete documents are requested from the applicant.
+     and compliance with national or international standards.
+
+
+
+
+                                                  3. Product Sample Submission:
+  The applicant is required to submit a physical sample of the feed      The sample should be representative of the product intended for
+                         product for testing.                                                  commercial use.
+
+
+
+
+                                                        4. Laboratory Testing:
+ The product sample undergoes lab testing to ensure it meets quality   Tests assess the product’s physical, chemical, and biological safety,
+                      and safety standards.                               ensuring it is free from contaminants or hazardous materials.
+
+
+
+
+                                                     5. Review and Evaluation:
+  EAA conducts a comprehensive review of both the lab test results          The review ensures that the feed product complies with all
+                and the submitted documentation.                                            regulatory requirements.
+
+
+
+
+                                                       6. Certificate Issuance:
+     If the product passes the review and testing, EAA issues a            This certificate authorizes the product for commercial use or
+                       registration certificate.                                           importation into the country.
+
+
+
+
+                                                 7. Post-Registration Monitoring:
+ After registration, the product is subject to ongoing monitoring to   Any variations in the product must be reported, and re-registration is
+ ensure its continued compliance with safety and quality standards.                          required every four years.
+
+
+
+
+Section VII: Other Specific Standards/Laws
+
+Seed Law
+
+
+                                                                                                                                       35
+In May 2023, Ethiopian parliament enacted a new seed law, marking the third revision in the history of
+the country’s seed regulatory system. The first seed related regulation was in 1997, which was replaced
+by the seed law 206/2000. That was again revised and replaced by the seed law 782/2013. The new seed
+law provides a legal framework much-needed to boost seed sector development in Ethiopia. One of the
+major challenges faced by the Ethiopian seed regulatory system has been the very limited
+implementation of the laws and regulations. The new Seed Proclamation No. 1288/2023 repealed the
+previous Seed Proclamation No. 782/2013 and outlines three different systems for registering new crop
+varieties in the country. One of these systems involves a performance trial conducted by EAA,
+performance evaluation by a committee of experts, and an approval by a National Variety Release
+Committee. The second system is designed for varieties that have undergone evaluation in other
+countries with similar agro-ecological conditions. It allows for a streamlined registration process,
+recognizing international testing data. The third system permits local farmers and pastoralists to register
+and use varieties that have been traditionally adapted to their specific environments, facilitating the
+inclusion of indigenous knowledge and practices.
+
+The new proclamation also outlines seed marketing (including import and export), seed quality
+standards, testing and certification. The importation of seeds is regulated to ensure the introduction of
+quality seeds that meet national standards. The proclamation outlines specific requirements and
+procedures for seed importation:
+     Obtain an import permit from EAA prior to bringing seeds into the country.
+     Ensure the seed variety is officially registered and approved by the EAA.
+     Comply with national seed standards regarding quality, purity, and germination rates, as specified
+        by the EAA.
+     Provide a valid phytosanitary certificate from the country of origin confirming the seeds are free
+        from pests and diseases.
+     Adhere to labeling requirements, including variety, origin, and germination information.
+     Submit seeds for inspection and quarantine by the EAA upon arrival.
+
+Food Fortification
+Ethiopia's Fortified Foods and Fortificants Control Directive is aimed at improving public health by
+addressing widespread micronutrient deficiencies, particularly in vulnerable groups. The regulation
+mandates the addition of essential vitamins and minerals, such as iron, iodine, and vitamin A and D, to
+staple foods like wheat flour, corn flour, salt, and edible oils. The regulatory framework for food
+fortification outlines specific standards and guidelines for local producers and importers to ensure
+compliance. For example, salt must be iodized to combat iodine deficiency disorders, which have
+historically been prevalent in Ethiopia. Wheat and corn flour are required to be fortified with iron and
+folic acid, addressing issues such as anemia and neural tube defects. Similarly, edible oils must be
+fortified with vitamin A and D. EFDA oversees the enforcement of these regulations, ensuring that
+fortified products meet the established standards. EFDA also conducts regular inspections, monitors
+compliance, and collaborates with stakeholders in the food industry to facilitate the fortification process.
+
+In June 2022, the Ethiopian Standard Council endorsed mandatory fortification of edible oil and wheat
+flour to address the problem of micronutrient deficiencies in the country. Prior to this decision, IES had
+a voluntary standard for wheat flour and edible oils. The Compulsory Ethiopian Standards (CES) for
+fortified edible oils and wheat flour are as follows:
+
+
+                                                                                                          36
+   CES 310: 2022: Fortified Edible Oils: Edible oils must be fortified with Vitamin A and D to address
+    public health concerns related to nutritional deficiencies. The standard specifies the minimum
+    amount of vitamins and nutrients that must be present after fortification to improve the dietary intake
+    of essential nutrients among consumers.
+   CES 309: 2022: Fortified Wheat Flour: Wheat flour shall be fortified with Vitamins B1, B2, B6,
+    B12, niacin, folate, and zinc. These micronutrients must conform to the limits set in the national
+    standard.
+
+In October 2023, EFDA drafted a regulation on food fortification as detailed in the "Fortified Foods and
+Fortificants Control Directive." This draft directive outlines several key regulatory and standards
+requirements. The directive defines “fortificants” as compounds containing specific micronutrients
+(vitamins and minerals) intended to be added to a food product. The directive shall be applicable on all
+fortified foods and fortificants produced locally and imported to the country. Below are the key
+regulatory requirements and standards based on the directive:
+
+   Mandatory Registration: All fortified foods and fortificants, whether locally produced or imported,
+    must be registered with the EFDA. It is prohibited to manufacture, import, distribute, or sell any
+    fortified products without prior registration.
+ Compliance with Standards: Fortified products must meet the national Ethiopian standards or
+    internationally recognized standards in the absence of local standards. The EFDA may require
+    additional information or samples during the product evaluation process.
+ Certificates for Market Authorization: Applicants must submit various certificates, including a
+    certificate of competency for local manufacturers or importers, a certificate of Good Manufacturing
+    Practice (GMP), a certificate of analysis, and food-grade packaging certification. For imported
+    products, a certificate of free sale from the country of origin is also required.
+ Packaging and Labeling: Fortified products must use food-grade, non-transparent packaging to
+    protect the product’s integrity. Labels must clearly list ingredients, net content, production and
+    expiration dates, fortification details, and storage instructions in Amharic or English. Labels must
+    not be misleading or deceptive.
+ Inspection and Testing: After registration dossier evaluation, the EFDA may conduct onsite
+    inspections to verify compliance with GMP and may test product samples in a laboratory to confirm
+    adherence to standards.
+ Stability and Shelf-Life: Products must undergo stability testing under conditions that simulate
+    Ethiopia's climate. Applicants are required to submit reports on both accelerated and real-time
+    stability studies, ensuring that products maintain quality throughout their shelf life.
+ Major and Minor Variations: Any changes to the product, such as changes in ingredients,
+    packaging, or shelf life, must be reported to EFDA. Major variations that affect the safety or quality
+    of the product require EFDA approval before marketing, while minor variations must still be
+    reported but are subject to less stringent requirements.
+ Re-registration: Fortified products must be re-registered within 120 days of their registration
+    expiration. Applicants must provide updated certificates, confirm that the manufacturing process
+    remains unchanged, and submit fresh samples for analysis if required.
+Halal Food Regulations
+Ethiopia has been developing its standards for halal food imports in response to the growing demand,
+but there are not fully detailed, publicized national halal standards as strict as those found in countries
+like Saudi Arabia or Malaysia. However, the country follows certain guidelines for halal food imports,
+
+
+                                                                                                         37
+focusing on international standards and religious requirements. Ethiopia also issues halal certifications,
+particularly for meat exports to the Middle East. The Ethiopian Islamic Affairs Supreme Council
+(EIASC), Department of Accreditation and Certification, plays a key role in overseeing halal
+certification and compliance in Ethiopia. The EIASC is responsible for establishing, enforcing, and
+monitoring guidelines to promote the development of halal services in Ethiopia, as well as issuing
+certifications for halal products. Prior to granting a halal certificate, EIASC verifies the halal status of
+raw materials and products through an official site inspection. Also, it may collaborate with foreign halal
+certifying bodies to ensure imported products meet Islamic dietary laws.
+
+Ethiopia also accepts international halal certifications issued by competent authorities. Ethiopia often
+relies on international halal standards, such as those set by the World Halal Food Council (WHFC) or
+International Halal Integrity Alliance (IHI Alliance), to guide its halal food regulations. These
+international guidelines are commonly adopted by Ethiopian importers and exporters to meet market
+demands. Importers need to submit halal certification documents issued by these authorities, which
+prove that the products meet halal standards from slaughter to packaging. With a substantial Muslim
+population, there is a growing demand for halal food products in Ethiopia. Thus, U.S. exporters catering
+to this market segment are advised to ensure proper halal certification.
+
+Other Standards: IES’ Compulsory Standards Catalogue 2023 contains a list of mandatory standards,
+ranging from food microbiology to food labeling and from beans to bananas. It is important to note that
+health and safety aspects, such as MRLs for pesticides or other contaminants that are found in voluntary
+standards, are, in fact, mandatory, and shipments must comply with these requirements. The voluntary
+aspect of these standards only refers to quality-related issues, such as the grade of the product. IES’
+mandatory standards “have the force of law” and are enforced by laws and administrative regulations.
+Food products subject to specific compulsory requirements are fresh and canned fruits and vegetables,
+coffee (export), alcoholic and non-alcoholic beverages, edible oil, oilseeds, food additives, as well as
+pre-packaged foods, including baby foods.
+
+
+Section VIII: Geographical Indicators, Trademarks, Brand Names, and Intellectual Property
+Rights
+
+Despite being a member of the convention establishing the World Intellectual Property Organization
+(WIPO), Ethiopia has not yet ratified most international conventions on the protection of Intellectual
+Property Rights (IPR). Ethiopia is not yet a signatory to the Paris Convention for the Protection of
+Industrial Property, the WIPO Copyright Treaty, and the Madrid System for the International
+Registration of Marks, or the Patent Cooperation Treaty.
+
+The Ethiopian Intellectual Property Authority (EIPA) oversees IPR issues including trademarks, brand
+names, and other intellectual property rights. EIPA facilitates and promotes the legal protection and use
+of IPR guaranteed by various laws. The authority also administers functions related to trademark
+registration, invalidation, or cancellation. In addition to its administrative duties, the EIPA is involved in
+the drafting of intellectual property laws and regulations. In particular, the office has a mandate to study,
+analyze and advise the government on IPR policies and legislative initiatives. Overall, the IPR system in
+Ethiopia remains underdeveloped. IPR laws are designed to protect creators, inventors, and businesses
+
+
+
+
+                                                                                                            38
+by offering them exclusive rights to their innovations and creations, as well as providing remedies for
+infringement and unauthorized use.
+
+Geographical Indicators (GIs)
+Ethiopia currently lacks explicit legal protection for geographical indications (GIs), though they may
+receive indirect coverage under the Trademark Registration and Protection Proclamation No. 501/2006
+and revised Proclamation No. 273/2012. Legal analysts describe that the existing trademark law does
+offer limited provisions for the protection of GIs as collective trademarks. In the absence of a distinct
+legal framework for GIs, both trademarks and GIs are typically protected under the same legal
+framework. The EIPA has drafted a law on the registration and protection of GIs and conducted industry
+consultation. The drafted law safeguards the names of products linked to specific geographical areas,
+ensuring that only products originating from these regions can use the designated GI labels. Local
+examples include Ethiopian coffee varieties like “Yirgacheffe”, “Sidamo”, and “Harar”, which are
+protected to preserve their unique qualities tied to geographic origin.
+
+Trademarks
+EIPA oversees trademark protection under the Trademark Registration and Protection Proclamation No.
+501/2006, complemented by the Trademark Registration and Protection Regulation No. 273/2012. The
+law defines a trademark as any visible sign capable of distinguishing goods or services of one person
+from those of others, encompassing elements such as words, designs, letters, numerals, colors, or the
+shape of goods or their packaging. This law allows individuals and businesses to register trademarks for
+goods and services to distinguish their products in the market. The law protects registered trademarks
+from unauthorized use and provides remedies for infringement. Notably, Ethiopia follows a first-to-file
+system, meaning trademark rights are granted to the first applicant who registers.
+
+Trademark Registration and Application:
+Any individual, association, or legal entity involved in the production and distribution of goods and
+services can apply for trademark registration if they meet the requirements set forth in the Trademark
+Registration and Protection Regulation No.273/2012. The registration of a trademark will be valid for
+seven years from the date of the application. The registration can be renewed for an additional seven-
+year period. The renewal must be made within three months of the registration expiry, or within six
+months after by paying a penalty in addition to the regular renewal fee. Failure to renew the trademark
+within the specified time will result in the trademark being considered waived or canceled.
+
+Key Aspects of Trademark Registration and Protection in Ethiopia:
+ Eligibility for Registration: Natural persons, companies, or other entities can apply to register a
+   trademark. Foreign applicants must appoint a professional representative in Ethiopia.
+ Registration Duration and Renewal: Trademark registration is valid for seven years from the filing
+   date and can be renewed indefinitely for consecutive seven-year periods.
+ International Filing and Priority: Ethiopia recognizes the right of priority for trademark applications
+   filed abroad, allowing applicants to claim the filing date of an earlier application in a foreign country
+   if filed within six months.
+ Distinctiveness Requirement: A trademark must be capable of distinguishing the goods or services
+   of one person from those of others. Marks that are descriptive, generic, or contrary to public order or
+   morality are not eligible for registration.
+
+
+
+
+                                                                                                          39
+   Trademark vs. Trade Name: Registering a trade name does not automatically protect the associated
+    trademark. Separate registration is required for trademark protection.
+   Nice Classification System: Ethiopia utilizes the Nice Classification (NCL) system for categorizing
+    goods and services into 45 classes, aligning with international standards.
+   Use Requirement: If a trademark is not used for three consecutive years after registration, it may be
+    subject to cancellation.
+
+Requirements for Foreign Trademark Application:
+ Renewed Business License or Certificate of Registration of a foreign trademark or Certificate of
+   Incorporation.
+ Authenticated Power of Attorney, if the application for the registration of a trademark is filed
+   through an agent.
+ Sample of trademark: One full-size copy on A-4 paper and eight reduced-size copies on A-4 paper.
+ Completed application form in two copies.
+ Please refer to this link for information on trademark application fees.
+       o Application fee: Application fee of 1,750 birr for one class. If the trademark is subject to a
+          service covering more than one class of goods or services, the fee shall include additional
+          payment of 50% of 1,750 birr).
+       o Certificate Registration fee: 3,000 birr for one class.
+
+Other Intellectual Property Rights (IPR) Laws
+ Patent Law (Proclamation No. 123/1995): This law governs the protection of inventions, minor
+   inventions, and industrial designs. To be patentable, an invention must be novel, involve an
+   inventive step, and be capable of industrial application. Patent protection lasts for 15 years, with a
+   possible five-year extension if the invention is being properly used in Ethiopia.
+ Copyright Law (Proclamation No. 410/2004, amended by Proclamation No. 872/2014): Copyright
+   protection is automatic upon the creation of a work, and registration is optional. The protection lasts
+   for the life of the author plus 50 years.
+ Industrial Design Regulation: Aesthetic aspects of products, such as shape, color, texture, or
+   ornamentation. Industrial designs are protected for five years, renewable up to 15 years, provided
+   proof of use in Ethiopia is furnished.
+
+Table 4: Summary of Key Intellectual Property Rights Protection in Ethiopia
+                                                                                                Registration
+     Type of IPR               Protection Method               Duration of Protection
+                                                                                                 Authority
+                                                           Seven years, renewable
+Trademark                 Registration required                                                    EIPA
+                                                           indefinitely
+Geographical
+                          Registration required            Indefinite (if valid criteria met)      EIPA
+Indications
+                          Automatic (registration
+Copyright                                                  Life of author plus 50 years            EIPA
+                          optional)
+Patent                    Registration required            20 years                                EIPA
+                                                           Five years, renewable up to 15
+Industrial Design         Registration required                                                    EIPA
+                                                           years
+Source: EIPA Proclamations and Regulations
+
+
+
+                                                                                                          40
+Plant Breeders’ Right Protection
+Ethiopia’s Plant Breeders’ Right Proclamation No. 1068/2017 establishes legal protection for breeders
+of new plant varieties across all genera and species in Ethiopia. Some species may be exempted through
+the Ministry of Agriculture directives. To qualify for protection, a variety must satisfy: novelty,
+distinctness, uniformity, and stability. The protection lasts for 20 years for annual crops and 25 years for
+trees, vines, and other perennial plants. The breeder has exclusive rights to produce, sell, condition for
+propagation, import, export, or otherwise commercialize the protected variety. This also covers
+“essentially derived varieties” and those not clearly distinguishable from the protected variety. The
+Ministry may impose restrictions (e.g. compulsory licensing) on cases such as inadequate supply, public
+health, or other public interest concerns. Also, exceptions exist for private use, experimental use,
+research, or using a variety as an input for further breeding. The application process includes filing with
+the Ministry of Agriculture, preliminary determinations, sample deposit, use of clear variety
+denominations, and publication for opposition comments. Determination of protection also requires that
+genetic resources used in breeding comply with laws on access and benefit sharing when applicable.
+Infringement provisions cover unauthorized commercial use of protected varieties. Remedies include
+injunctions, damages, and potentially criminal liability.
+
+Please refer to the 2025 Ethiopia Investment Climate Statement on protection of property rights for a
+complete understanding of IPR situation in Ethiopia. In addition, Ethiopia’s property rights laws, rules,
+regulations, and treaties are available at WIPO.
+
+Section IX: Import Procedures
+
+The following are the general steps for importing a product into the country.
+ An importer must apply for an import permit and obtain a letter of credit from an Ethiopian bank for
+  the total value of the imports before an order can be placed.
+ Bank approves letter of credit and authorizes release of foreign exchange.
+ Importer pays foreign suppliers for goods.
+ Customs clearance and inspection by relevant government authority at Port of Djibouti or dry ports in
+  Ethiopia. (Note: Customs clearance and inspection can take several weeks.)
+
+Certificates and documents generally required for importing food and beverage products to
+Ethiopia:
+ Registration certificate
+ Agency agreement- legally binding contract in which a company (the principal) authorizes another
+  party (the agent) to act on its behalf in a foreign market
+ Original and copy of health certificates for food items excluding alcoholic drinks:
+   Phytosanitary Certificate if the food item is unprocessed fruit, vegetable, or cereal.
+   Veterinary Certificate if the food is unprocessed animal and animal product.
+ Certificate of conformity, including laboratory analysis, for products with compulsory standards
+ Certificate of Origin
+ Free sale certificate (or FDA’s Certificate to a Foreign Government for FDA-regulated products)
+ Packing list
+ Customs declaration
+ Bill of loading, airway bill or track bill
+
+
+                                                                                                          41
+ Commercial invoice
+ Certificate of irradiation, evidencing the amount of remaining in it is not harmful to human
+  consumption if the food is irradiated.
+
+Shipment of grains, oilseeds, fresh fruits, and vegetables require a phytosanitary certificate issued by a
+competent government authority. Livestock and livestock products require a veterinary certificate.
+
+As noted in Section I, imported products must comply with national compulsory standards. Third-party
+certifiers can provide a written attestation that the shipment in question complies with the relevant
+Ethiopian standard(s), which will allow the cargo to enter the country without inspection at the point of
+entry. A list of third-party certifiers is available in Appendix II. Uncertified cargo will be subject to
+normal inspection procedures.
+
+Import of Compound Feed, Feed Ingredients, and Additives
+EAA’s Veterinary Drug and Animal Feed Administration and Control directorate has a directive to
+control the import of animal feed and related products. The Feed Processor, Importer, Distributor and
+Exporter Registration and Certification Directive No. 03/2015 is not available online. The directive
+requires the following documents to import compound feed, feed ingredients and additives:
+  Registration Certificate
+  Import Permit
+  Sanitary or phytosanitary certificate
+  Ingredient composition in order of largest to smallest
+  Certificate of Batch Analysis (nutrient profile, contaminants such as mycotoxins, heavy metals,
+   foreign matter, microbiological safety, compliance with declared ingredient composition, etc.)
+  Certificate of Good Manufacturing Practice (GMP)
+  Certificate indicating that it is free from GMOs
+  Certificate of freedom from Protein of Ruminant origin
+
+Import of Animal and Animal Genetics Materials (AAGM)
+Importation of AAGM is allowed for specific purposes such as for commercial breeding and production,
+research, and extension. The following conditions must be met to import AAGM:
+  Imports must fulfill the needs of the importer within the national interest.
+  Must be certified free of GMOs or living modified organisms (LMOs).
+  Labeling and contents of transit package/letters.
+
+For importation of AAGMs, GOE regulatory authority requires that the World Organization for Animal
+Health (WOAH) guidelines to be strictly adhered. This includes from labeling, production and
+processing, health, manpower, transportation, and facility requirements. The guidelines for import and
+export of animal and genetic material are enclosed as an attachment.
+
+
+
+Figure 3: Flowchart for Import Procedures
+
+
+
+
+                                                                                                             42
+                                                    1. Obtain an Import License
+  Acquire an import license from MoTRI. This requires a valid business registration certificate, a Tax Identification Number (TIN), and
+                                                     other relevant documents.
+
+
+
+
+                              2. Obtain a Pre-import Permit (for certain restricted goods only)
+  Certain restricted goods need a pre-import permit, issued by regulatory agencies. For example, veterinary drug and animal feed require
+                                                           approval from EAA.
+
+
+
+
+                                                     3. Arrange Payment Issues
+                                                                         Obtain bank permit and arrange mode of payment or Franco valuta
+          Obtain foreign currency approval through bank
+                                                                                             permit currency approval
+
+
+
+
+                               4. Collect Commercial Documents for Customs Declaration
+  Upon arrival of the goods, the importer prepares commercial documents that include bill of lading/airway bill, invoice, bank document,
+                                          packing list, certificate of origin, pre-import permit, etc.
+
+
+
+
+                                                 5. Prepare Customs Declaration
+  Importer or agent fills out customs declaration form with information about the goods, their tariff classification, and customs valuation,
+                                                    which will determine duties and taxes.
+
+
+
+
+                                               6. Submit the Customs Declaration
+                    The declaration and all necessary documents are submitted to the Ethiopian Customs for clearance.
+
+
+
+
+                             7. Obtain Import Customs Clearance and Goods Release Note
+
+
+
+
+       8. Pay Service Charges, Exit Goods from Customs Warehouse, & Receive Final Import Customs
+                                                Declaration
+
+
+
+                             9. Submit Clearance Declaration to National Bank of Ethiopia
+   Importers who obtained foreign currency for the transaction must submit the final customs declaration to the NBE for future imports.
+
+
+Section X: Trade Facilitation
+
+
+
+                                                                                                                                          43
+The GOE has an Electronic Single Window (eSW) platform that helps facilitate trade and enhance local
+capacity. This initiative, launched in January 2020, is part of the government’s commitment to improve
+international trade and ease of doing business in the country. The eSW system automates trade
+procedures and replaces the need for physical, manual, and duplicative processes. It also plays a key role
+in enhancing transparency for trade. The single window system connects 16 major cross-border
+regulatory agencies. It enables traders to submit documentation and receive electronic permits relating to
+import and export through a single window submission, significantly reducing the time and cost to trade.
+The automated platform creates a paperless environment and eliminates multiple physical inspections
+and repetitive document submissions; it has reduced clearance time from 44 days to 13 days with the
+goal of clearance times eventually reaching only three days.
+
+Before launching the electronic single window service, Ethiopia had been using manual procedures that
+required frequent face-to-face interaction with regulatory agencies. This resulted in high trading costs
+and delays due to extensive documentary requirements, high levels of physical inspection of imports,
+and lack of coordination among border agencies. The electronic single window platform has two major
+portals:
+   Trader Portal: The trader submits the trade documents required for customs and border clearance
+      electronically, views the processing procedures and various statistical information, and provides
+      the function to pay the taxes and fees electronically.
+   CBRA Portal: It provides the function that the person in charge of the authorities to process
+      electronically the verification, inspection and approval of the documents received through the
+      trader portal.
+
+Please visit the Ethiopian Customs Trade Portal for detailed information on taxes, tariffs, and other
+documentations related to trade facilitation.
+
+Required Third Party Inspection
+The Ministry of Trade and Regional Integration (MoTRI) and the Ethiopian Food and Drug Authority
+(EFDA) require a Certificate of Conformity (COC) for food and agricultural products subject to
+Compulsory Ethiopian Standards (CES). The COC ensures product quality, food safety, and facilitates
+faster customs clearance at entry ports. Products falling under CES must be accompanied by a pre-
+export certificate of conformity.
+
+Mandatory standards cover a range of agro-food products, including fresh and canned fruits and
+vegetables, alcoholic and non-alcoholic beverages, edible oils, oilseeds, food additives, and prepackaged
+foods. Certificates of conformity can be issued by authorized third-party inspection companies
+accredited to ISO/IEC 17025. International companies authorized to conduct pre-shipment Verification
+of Conformity (VoC) programs for Ethiopia include Cotecna and Bureau Veritas. U.S. exporters are
+advised to contact the North America branch offices of these third-party inspection companies to submit
+inquiries and arrange certification.
+
+
+
+APPENDIX I: Government Regulatory Key Agency Contacts
+
+ Ethiopian Food and Drug Authority (EFDA)                Ethiopian Conformity Assessment Enterprise
+ Email: contactefda@efda.gov.et                          (ECAE)
+ Tel: +251 115 524 118                                   Email: info-cp@eca-e.com
+ Addis Ababa, Ethiopia                                   Tel: +251 118 695 041                      44
+                                                         Addis Ababa, Ethiopia
+ Ethiopian Agricultural Authority (EAA)
+ Email: info@eaa.gov.et
+45
+APENDIX II: Other Import Specialist Technical Contacts
+
+Third-party inspection companies that provide Pre-Export Verification of Conformity for food and
+agricultural products:
+
+ Cotecna Ethiopia VoC Program Office
+ Email: info@cotecnakenya.com (coverage from Kenya office)
+ Tel: +251 116 670 477
+ Addis Ababa, Ethiopia
+
+ Bureau Veritas Services PLC
+ Email: contact.ethiopia@bureauveritas.com
+ Tel: +251 118 685 120 or +251 966 685 898
+ Addis Ababa, Ethiopia
+
+ Control Union Certifications Ethiopia
+ Email: ethiopia@controlunion.com
+ Tel: +251 116 298 330
+ Addis Ababa, Ethiopia
+
+ SGS - Ethiopia
+ Tel: +251 116 670 778
+ Addis Ababa, Ethiopia
+
+ Intertek Ethiopia
+ Tel: +251 929 296 883
+ Addis Ababa, Ethiopia
+
+
+
+
+Attachments: Guidelines for Import & Export of Animal and Genetic Material (3).pdf
+
+
+
+
+                                                                                                   46
+

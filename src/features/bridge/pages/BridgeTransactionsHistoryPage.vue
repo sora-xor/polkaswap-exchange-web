@@ -147,13 +147,19 @@ usePiniaTelemetry('bridge-history', [{ store: bridgeStore, storeId: 'bridge' }])
 const bridgeCore = useBridgeCore();
 const assetsStore = useAssetsStore();
 
-const { history, networkHistoryLoading, updateExternalHistory, showHistory, setHistoryPage } = bridgeHistory;
+const { history, historySourceKey, networkHistoryLoading, updateExternalHistory, showHistory, setHistoryPage } =
+  bridgeHistory;
 
 const { navigateToBridge } = bridgeCore;
 
 const registeredAssets = computed(() => assetsStore.registeredAssets as Record<string, BridgeRegisteredAsset>);
+const registeredAssetsSourceKey = computed(() =>
+  JSON.stringify([
+    assetsStore.registeredAssetsFetching,
+    Object.keys(registeredAssets.value).sort(),
+  ])
+);
 const historyPage = computed(() => bridgeStore.historyPage);
-const networkHistoryId = computed(() => bridgeStore.networkHistoryId);
 
 const query = ref('');
 const currentPage = ref(historyPage.value || 1);
@@ -260,10 +266,17 @@ const handleResetSearch = () => {
 
 const updateBridgeHistoryAction = () => bridgeStore.updateBridgeHistory();
 
+let historyRequestId = 0;
+
 const fetchNetworkHistory = async () => {
+  const requestId = ++historyRequestId;
+  const sourceKey = historySourceKey.value;
+
   await withLoading(async () => {
     await updateBridgeHistoryAction();
     await nextTick();
+
+    if (requestId !== historyRequestId || sourceKey !== historySourceKey.value) return;
 
     if (historyPage.value !== 1) {
       currentPage.value = historyPage.value;
@@ -276,7 +289,18 @@ const fetchNetworkHistory = async () => {
   });
 };
 
-watch(networkHistoryId, fetchNetworkHistory, { immediate: true });
+watch(
+  [historySourceKey, registeredAssetsSourceKey],
+  () => {
+    // The registry is committed before the fetching flag is cleared. Waiting
+    // here avoids discarding on-chain rows during startup and refreshes once
+    // asset metadata is ready for amount/symbol formatting.
+    if (!assetsStore.registeredAssetsFetching) {
+      void fetchNetworkHistory();
+    }
+  },
+  { immediate: true }
+);
 
 const formatAmount = (item: IBridgeTransaction, received = false): string => {
   const amount = received ? (item.amount2 ?? item.amount) : item.amount;

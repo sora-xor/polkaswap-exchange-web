@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wallet-provider-list">
     <connection-items :size="wallets.length">
       <account-card
         v-for="wallet in wallets"
@@ -20,6 +20,9 @@
               <s-icon name="star-16" size="14" class="extension-label__icon"></s-icon>
             </div>
           </div>
+        </template>
+        <template #description>
+          <span class="extension-description">{{ t(walletDescriptionKey(wallet.extensionName)) }}</span>
         </template>
         <template #default>
           <a
@@ -64,6 +67,7 @@
 import { useWalletTranslation } from '../../../composables/useWalletTranslation';
 import AccountCard from '../../Account/AccountCard.vue';
 import { isProviderConnected } from '../utils';
+import { walletDescriptionKey } from '../walletDescription';
 
 import ConnectionItems from './ConnectionItems.vue';
 
@@ -123,6 +127,28 @@ function handleDisconnect(wallet: Wallet): void {
 </script>
 
 <style lang="scss" scoped>
+.wallet-provider-list {
+  :deep(.connection-items-list > .account-card) {
+    height: auto;
+    min-height: 88px;
+  }
+
+  :deep(.account-credentials_description) {
+    width: auto;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+}
+
+.extension-description {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--s-font-size-extra-small);
+  line-height: 1.5;
+  color: var(--s-color-base-content-secondary);
+}
+
 .connection-loading {
   display: flex;
   align-items: center;

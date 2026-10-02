@@ -1,0 +1,22 @@
+# First prospective admission probe
+
+`prepareAccumulationFirstAdmission` composes an acquired v2 opening, one internally collected decision packet, the durable journal, the fixed admission worker and original-clock completion checks. It stops after retaining the genuine model decision. It exposes no order, commitment, settlement, wallet or signing operation. This is one operational shadow decision, not a complete validation episode or evidence of profitability.
+
+The operator must independently retain the complete `accumulation-first-shadow-registration-v2` before opening acquisition. It binds the episode and original UTC opening/deadline, both acquisition registration hashes, exactly 10 KUSD capital and the separate 1 XOR reserve, the existing fixed model hash, and independently pinned interpreter/journal/admission source closures. This module verifies those byte bindings and ownership; it does not prove the operator's preregistration chronology. The existing model/policy preserve the 10% combined-portfolio drawdown, 1% impact, 5% target and 0.5% minimum-output allowance.
+
+Prepare after the opening has been genuinely acquired and before the first decision window opens. Pass its same-process collector-owned result, the independently retained registration bytes and digest, a fresh journal path, and ordinary decision-capture options. Serialized opening results are rejected. The opening is consumed once, even if later preparation fails. Capture options, bytes and pins are detached before asynchronous work. `runOnce()` runs in that first window, no later than 60 seconds after H; an early call does not consume it. There is no retry, recovery, replacement target or alternate strategy.
+
+The private owner does the following:
+
+1. Rechecks the opening's sealed inventory and appends its exact mark and funding through the existing replay worker.
+2. Internally collects the original completed close, native context and all nine partial quote/fee outcomes. Large original files stay in the capture directory; the journal retains small manifests referring to verified seals. A failed capture is recorded as a failed decision, not as a wait.
+3. Appends the full current mark and first decision outcome, replays the accounting prefix **B**, and checks every currently due observation. Only that reproduced eligible episode becomes the admission input **X**.
+4. Retains X and appends durable admission-start **S**, exactly B plus one lifecycle record with unchanged reducer revision. The input still references B. Pending S cannot supply a new eligible projection.
+5. Runs the pinned admission subprocess once, retains the complete bounded original receipt, requires the current journal head to remain S, and validates the result against X, B and the original packet. Appends the actual result without changing buy into wait when it arrives late.
+6. Rechecks real wall and monotonic clocks after durable writes. The original capture's pre-context-dispatch monotonic anchor spans capture, journal operations and computation; the worker's clocks do not restart its five-second lifetime. The returned assessment is made after the final persistence/head check and grants no later order capability.
+
+An already stale observation skips the model. If S has already been saved, an expired-before-invocation failure is appended. Child protocol failures, uncertain termination, altered inventory/head, clock inconsistency or uncertain persistence quarantine the private journal; retained records are not silently reconciled or reopened. A clean but invalid child result is also quarantined, conservatively leaving its start pending with the complete transport retained for inspection. The full receipt uses the store's 2 MiB artifact budget, rather than the smaller canonical journal-record encoder.
+
+The first-slot coverage report does not prove the remaining 23 controls/decisions or original terminal observation. Even a fresh model buy remains an unqualified research output. Complete prospective validation, execution assumptions and personal wallet approval remain separate requirements.
+
+Tests use invented native/indexer data, the real capture files and journal subprocess, and explicitly synthetic admission receipts. They do not open the fitted training model. They cover original B/X/S bindings, one-use ownership, option mutation across asynchronous work, expiry during durable start, preservation of a late buy, bounded large child failures and failed capture records.

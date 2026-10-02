@@ -553,7 +553,9 @@ const normalizeFilterStrings = (values: unknown): string[] =>
 
 /** Accepts only operation arrays; explicit malformed operation filters should not fall back to broader defaults. */
 const normalizeOperations = (operations: unknown): Array<Operation> =>
-  Array.isArray(operations) ? operations.filter((operation): operation is Operation => typeof operation === 'string') : [];
+  Array.isArray(operations)
+    ? operations.filter((operation): operation is Operation => typeof operation === 'string')
+    : [];
 
 /** Treats malformed query containers as empty search criteria. */
 const normalizeQuery = (query: unknown): Partial<HistoryQuery> =>
@@ -596,6 +598,13 @@ type PolkaswapHistoryElementsFilterOptions = {
   query?: HistoryQuery;
 };
 
+/**
+ * Builds a bounded history filter for the Polkaswap indexer.
+ *
+ * The public timestamp-ordered wallet-history plan requires an exact indexed
+ * `address` owner anchor. `dataFrom` and `dataTo` remain available for searches
+ * inside an already bounded account result set.
+ */
 export const historyElementsFilter = (options: PolkaswapHistoryElementsFilterOptions = {}): any => {
   const { address = '', assetAddress = '', timestamp = 0, operations = [], ids = [], query = {} } = options ?? {};
   const { operationNames, assetsAddresses = [], accountAddress = '', hexAddress = '' } = normalizeQuery(query);
@@ -614,7 +623,9 @@ export const historyElementsFilter = (options: PolkaswapHistoryElementsFilterOpt
   // history owner
   if (preparedAddress) {
     filter.and.push({
-      or: createAddressCriterias(preparedAddress),
+      address: {
+        equalTo: preparedAddress,
+      },
     });
   }
 

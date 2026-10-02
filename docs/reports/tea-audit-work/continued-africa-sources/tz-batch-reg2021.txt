@@ -1,0 +1,1941 @@
+             Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+GOVERNMENT NOTICE No. 681 Published On. 24/9/2021
+
+                            THE STANDARDS ACT,
+
+                                   (CAP. 130)
+                                  ___________
+
+                               REGULATIONS
+                                  ___________
+
+                       (Made under section 36(1) and (3)(f))
+                                   _________
+
+     THE STANDARDS (IMPORTS REGISTRATION AND BATCH CERTIFICATION)
+                          REGULATIONS, 2021
+
+                   ARRANGEMENT OF REGULATIONS
+
+Regulation      Title
+
+                                 PART I
+                         PRELIMINARY PROVISIONS
+    1. Citation.
+    2. Interpretation.
+                          PART II
+      REGISTRATION OF IMPORTED PRE-PACKED FOODAND
+                        COSMETICS
+
+                                (a) Pre-Packed Food
+
+    3.  Registration of importation of food.
+    4.  Application for registration.
+    5.  Evaluation of application.
+    6.  Certificate of registration.
+                                   (b) Cosmetics
+    7. Registration of imported cosmetics.
+    8. Application for registration.
+    9. Evaluation of application.
+    10. Certificate of registration.
+
+
+
+                                         1
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+
+
+
+                               PART III
+                         BATCH CERTIFICATION
+
+    11. Batch certification.
+    12. Evaluation of application.
+    13. Inspection.
+    14. Low risk commodities and products.
+    15. Motor vehicle certification.
+    16. Pre-shipment verification approval.
+    17. Conditions for pre-shipment verification.
+    18. Import clearance permit.
+    19. Import standard mark.
+
+                              PART IV
+                         GENERAL PROVISIONS
+
+    20. Register.
+    21. Notification of change.
+    22. Suspension or cancelation.
+    23. Procedure for suspension or cancelation.
+    24. Removal from register.
+    25. Reinstatement.
+    26. Disposal of samples.
+    27. Sub-standard commodities or products.
+    28. Time frame for handling of application
+    29. Appeal.
+    30. Offences and penalty.
+    31. Revocation and savings.
+
+                                      __________
+
+
+                                      SCHEDULES
+                                      __________
+
+
+
+
+                                       2
+                 Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+
+                              THE STANDARDS ACT,
+                                    (CAP. 130)
+                                   __________
+
+                                  REGULATIONS
+                                      __________
+
+                        (Made under section 36(1) and (3)(f))
+                                    ________
+
+      THE STANDARDS (IMPORTS REGISTRATION AND BATCH CERTIFICATION)
+                           REGULATIONS, 2021
+
+                                   PART I
+                           PRELIMINARY PROVISIONS
+
+Citation                   1. These Regulations may be cited as the Standards
+                      (Imports Registration and Batch Certification)
+                      Regulations, 2021.
+
+Interpretation                2. In these Regulations, unless the context requires
+  Cap. 130
+                     otherwise-
+                     “Act” means the Standards Act;
+                     “advertisement” means and includes every form of
+                     presentation, whether in         publication, or by the display
+                     of any notice or by means of any        catalogue, price list,
+                     letter, whether circular or addressed to a particular person
+                     or by the exhibition of a photograph or a cinematograph
+                     film, or         by way of sound recording, sound
+                     broadcasting, or television or any      means                of
+                     communication;
+                     “batch certification” means collection of samples of the
+                     imported commodity or            product from a consignment
+                     either at the port of entry into the Tanzania Mainland or at
+                     agreed premises by the Bureau's inspectors or some other
+                              Bureau's authorised, followed by subsequent testing
+                     and issuance of a test certificate testifying the clearance of
+                     the import for entry and sale into      Tanzania Mainland;
+                     “Bureau” means the Tanzania Bureau of Standards
+                     established by section 3 of the Act;
+                                             3
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                “certificate of conformity (CoC)” means a certificate issued
+                by a competent           contractor appointed by the Bureau
+                certifying or attesting that a particular      export
+                consignment or shipment of the commodity destined to
+                Tanzania        Mainland as sampled and tested conforms to
+                the specified Tanzania          Standard or International or
+                Foreign Standard recognised by the Bureau;
+                “cosmetic” means any article intended to be used by means
+                of rubbing, pouring, steaming, sprinkling, spraying on or
+                otherwise applied to the human body            or any part
+                thereof for cleansing, beautifying, promoting attractiveness
+                or      altering the appearance and includes any article
+                intended for use as a component of a cosmetic, but
+                excludes articles intended for use in the      diagnosis,
+                treatment or prevention of diseases and those intended to
+                affect the structure or any function of the body;
+                “conditional release” means a clearance issued by the
+                Bureau to the importer          allowing release of the
+                imported goods from the customs custody after
+                        compliance with the requirements prescribed by the
+                Bureau while awaiting issuance of the batch certificate or
+                directives from the Bureau;
+                “clearance permit” means a clearance issued by the Bureau
+                to the importer          allowing release of the imported
+                goods from the customs custody after           compliance
+                with the requirements prescribed by the Bureau;
+                “commodity” means all article or thing which is the subject
+                of industry, trade or business;
+                “Director General” means Director General appointed
+                under section 7 of the Act;
+                “emergency food” means food required in times of shortage
+                as a results of drought, flood which lead to famine, war,
+                economic disaster or population displacement;
+                “food” means any substance whether processed, semi-
+                processed or raw which is       intended      for      human
+                consumption, and includes drinks, chewing gum and
+                        any substance which has been used in the
+                manufacture, preparation or treatment of food but does
+
+                                       4
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                not include cosmetics, tobacco or substance used only as
+                drugs;
+                “inspector” means an inspector appointed under section 23
+                of the Act;
+                “importation” means to bring goods from another country
+                into Tanzania Mainland and subjecting into use, sell or
+                distribution after compliance with the proper clearance
+                procedures;
+                “infant” means a person of not more than twelve months of
+                age;
+                “Import Standards Mark” means a mark issued by a Bureau
+                to be instituted to a product       or    commodity       after
+                compliance with the applicable standard for the purpose of
+                identification during market surveillance;
+                "label " means any tag, brand, mark, pictorial or other
+                descriptive matter, written, printed, stenciled, marked,
+                embossed or impressed on or attached to a container of
+                any product;
+                “non pre-packaged foods” means all farm food produce
+                such as cereals, pulses, roots and tubers, fruits, vegetables,
+                nuts and oil seeds, spices, raw meat and fish, eggs, raw
+                milk which are used as raw materials or for direct human
+                consumption;
+                “occasional food or cosmetics” means product or
+                commodity occasionally imported for special purpose;
+                “premises” includes land, buildings, structures, basements
+                and vessels and-
+                    (a) in relation to any building includes a part of a
+                        building and any cartilage, forecourt, yard or place
+                        of storage used in connection with building or part
+                        of that building;
+                    (b) in relation to ''vessel'', means ship, boat, air craft,
+                        vehicle and includes a carriage or receptacle of any
+                        kind, whether open or closed;
+
+
+
+
+                                       5
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                “Pre-shipment Verification of Conformity to standards ”
+                means a conformity assessment process used to verify
+                that products to be imported into       Tanzania Mainland
+                are in conformity with the applicable Tanzania
+                        standards or foreign or international standards
+                recognized by the Bureau        before shipment;
+                “pre-packaged food” means food that is processed to
+                extend its shelf life, packaged, labeled, and complying
+                with specified standards ready for offer to the consumer
+                and includes food supplements;
+                “product” means goods and services designed to be
+                released or launched in a       market;
+                "standard" means set of rules or conditions prescribing,
+                recommending or         relating to the state of being of a
+                matter or thing as universally recognised      for common
+                and repeated use, rules, guidelines or characteristics for
+                        activities or their results, aimed at achieving an
+                optimum degree of order         in a given context including
+                other recommendations made by the Bureau,
+                        relating to or governing the specification, code of
+                practice, safety, trade description, sampling method, testing
+                method or any other aspect, quality, nature       or  matter
+                relating to or connected with-
+                    (a) the production or marketing of any commodity or
+                        services; or
+                    (b) any component, raw material, machinery,
+                        instrument, apparatus or other thing used directly or
+                        indirectly, in the production or marketing of any
+                        commodity or service, and includes, in relation to
+                        metrology, provisions approved or prescribed by the
+                        Bureau relating to the fundamental unit or physical
+                        constant and the testing of instruments and
+                        apparatus used for the determination of weights and
+                        measures; and
+                “young child” means a person from the age of more than
+                twelve months up to the         age of three years.
+
+                                   PART II
+
+                                       6
+                Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+      REGISTRATION OF IMPORTED PRE-PACKED FOOD AND
+                         COSMETICS
+                       (a) pre- packed food
+
+Registration of             3.-(1) A person shall not carry on the business of
+importation of
+food
+                    importation of pre-packed food unless is registered by the
+                    Bureau.
+                            (2) Subject to subregulation (1), the registration of
+                    food shall not apply to emergency food, food donation,
+                    occasional food and any category of food as the Bureau
+                    may determine.
+                            (3) The proposed food intended to be imported
+                    under subregulation (1) shall comply with the following:
+                        (a) the composition of the food proposed to be
+                            imported is not of a quality below the specification;
+                        (b) importation and consumption of the food proposed
+                            would enhance or contribute in any other way to
+                            the national effort to improve the nutritional status
+                            of the people of Tanzania; or
+                        (c) the food or its product and practices related thereto
+                            does not in any way contravene the provisions of
+                            these Regulations.
+                            (4) Registration of food shall be categorised into
+                    three groups as follows:
+                            (a) high risk foods for special nutritional purposes;
+                            (b) high risk foods for general purpose; and
+                            (c) low risk foods.
+                            (5) The description of groups of food under
+                    subregulation (4) shall be as set out in the First Schedule to
+                    these Regulations.
+
+ Application for            4.-(1) A person who intends to carry on a business
+ registration       of importation of food shall apply to the Bureau for
+                    registration by submitting an application in Form No. 1 set
+                    out in the Second Schedule to these Regulations.
+                            (2) The application form under subregulation (1)
+                    shall be addressed to the Director General accompanied
+                                           7
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                 and complied with the following documents in Kiswahili
+                 or English:
+                     (a) in case of high risk food for special nutritional
+                         purposes:
+                            (i) sample of the food;
+                            (ii) business license;
+                            (iii) brief description of the product (typical
+                                 ingredients, additives and their proportions);
+                            (iv) authoritative health certificate or certificate
+                                 of free sale;
+                            (v) copy of certificate of good manufacturing
+                                 practice or hazard analysis critical control
+                                 point compliance certificate;
+                            (vi) certificate of analysis;
+                            (vii) material safety data sheet;
+                            (viii) manufacturing site master file;
+                            (ix) manufacturing plants shall be subjected to
+                                 good manufacturing practice inspection prior
+                                 to grant of registration and effect payment
+                                 of fees as will be prescribed during the
+                                 submission of the application;
+                            (x) for infant formula, follow-up formula and
+                                 formula for special medical purposes
+                                 intended for infants and young children,
+                                 labeling shall be in Kiswahili and English;
+                                 and
+                            (xi) any other requirement as the Bureau may
+                                 determine.
+                     (b) for high risk foods for general purpose-
+                            (i) sample of the product
+                            (ii) certificate of analysis;
+                            (iii) material safety datasheet;
+                            (iv) business license;
+                            (v) statement        of authorization from the
+                                 manufacturer if any;
+                            (vi) in addition to fulfill the general requirement
+                                 submit any of the following:
+                                  (A) health certificate or certificate of free
+                                      sale;
+                                  (B) copy      of    certificate    of    good
+                                       8
+                Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                         manufacturing practice or hazard
+                                         analysis      critical   control  point
+                                         compliance certificate; or
+                                     (C) permit from the Vice President’s Office
+                                         - Environment for genetically modified
+                                         foods or foods containing genetically
+                                         modified ingredients; and
+                               (vii) any other requirement as the Bureau may
+                                    determine;
+                        (c) for low risk foods:
+                               (i) sample of the food;
+                               (ii) business license;
+                               (iii) certificate of analysis;
+                               (iv) statement of authorisation from the
+                                    manufacturer if any; and
+                    any other requirement as the Bureau may determine.
+                            (3) Upon receipt of an application for registration,
+                    the Director General shall as soon as practicable proceed to
+                    consider the application and grant registration if he is
+                    satisfied that-
+                             (a) the food importer has registered his food
+                                  premises in accordance to the requirements
+                                  prescribed in the Standards (Registration of
+                                  Premises and Certification of Products)
+                                  Regulations, 2021;
+                             (b) the intended food to be imported has been
+                                  registered; and
+                             (c) any other requirement as the Bureau may
+                                  determine.
+                            (4) The Director General upon receipt of the
+                    application and being satisfied that, the requirement under
+                    subregulations (2) and (3) have been complied with, shall
+                    instruct the applicant to pay a non-refundable fees as may
+                    be prescribed by the Minister before evaluation process is
+                    carried out.
+
+Evaluation of              5.-(1) The Director General upon receipt of the
+application         application shall evaluate the same to determine whether
+                                           9
+                 Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                     the food comply with safety and quality requirement.
+                              (2) Subject to subregulation (1), evaluation process
+                     shall include:
+                             (a) relevance of submitted documents;
+                             (b) laboratory analysis;
+                             (c) ingredients and food additives;
+                             (d) labeling information; and
+                             (e) packaging material.
+                              (3) The Director General, after evaluation of the
+                     application and being satisfied may-
+                             (a) approve and issue a certificate of registration to
+                                  the applicant; or
+                             (b) reject the application and inform the applicant
+                                  within fourteen days stating the reason for such
+                                  decision.
+
+Certificate of               6.-(1) The certificate of registration shall be in
+registration
+                     Form No. 2 set out in the Second Schedule to these
+                     Regulations and contains such conditions as the Director
+                     General may impose.
+                             (2) The certificate of registration shall be valid for
+                     a period of five years from the date it was issued and
+                     subject to renewal.
+                             (3) The application for renewal shall be made at
+                     least sixty days before expiry of the existing registration
+                     and during evaluation of application the Director General
+                     may require the applicant to rectify the observed
+                     shortcomings as deemed necessary.
+
+                                     Cosmetics
+Registration of             7.-(1) A person shall not carry on the business of
+imported             importation of cosmetics unless is registered by the
+cosmetics            Bureau.
+                            (2) Subject to subregulation (1), the registration of
+                     cosmetics shall not apply to donated cosmetics, occasional
+                     cosmetics and any category of cosmetics as the Bureau
+                     may determine.
+
+                                           10
+              Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                         (3) The proposed cosmetics intended to be
+                  imported under subregulation (1) shall not-
+                     (a) contain poisonous or harmful substance that might
+                         injure users under normal conditions;
+                     (b) be counterfeit cosmetics; and
+                     (c) be contrary to the required standards and
+                         provisions of these Regulations.
+Application for            8.-(1) A person who intends to carry on a business
+registration
+                  of importation of cosmetics shall apply to the Director
+                  General for registration by submitting an application in
+                  Form No. 3 set out in the Second Schedule to these
+                  Regulations.
+                           (2) The application form under subregulation (1)
+                  shall be addressed to the Director General and
+                  accompanied by the following documents in Kiswahili or
+                  English:
+                          (a) sample of the cosmetics;
+                          (b) business license;
+                          (c) certificate of analysis;
+                          (d) material safety data sheet;
+                          (e) product information leaflet where applicable;
+                          (f) statement        of authorisation from the
+                               manufacturer, if any; and
+                          (g) any other requirement as the Bureau may
+                               determine.
+                           (3) Upon receipt of an application for registration,
+                  the Director General shall as soon as practicable proceed
+                  to consider the application and grant registration if he is
+                  satisfied that-
+                      (a) the importer of cosmetics has registered his
+                           cosmetics premises in accordance to the
+                           requirements prescribed in the Standards
+                           (Registration of Premises and Certification of
+                           Products) Regulations, 2021;
+                      (b) the intended cosmetics to be imported has been
+                           registered; and
+                      (c) any other requirement as the Bureau may
+                           determine.
+                           (4) The Director General shall, upon receipt of the
+                  application and being satisfied that the requirement under
+                                         11
+                 Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                     subregulations (2) and (3) have been complied with,
+                     instruct the applicant to pay a non-refundable fees as may
+                     be prescribed by the Minister before evaluation process is
+                     carried out.
+Evaluation of                 9.-(1) The Director General shall, upon receipt of
+application
+                      the application, evaluate the same to determine whether
+                      the cosmetics comply with safety and quality requirement.
+                              (2) Subject to subregulation (1), evaluation process
+                      shall include:
+                               (a) relevance of submitted documents;
+                               (b) laboratory analysis;
+                               (c) ingredients;
+                               (d) labeling information; and
+                               (e) packaging material.
+                              (3) The Director General may, after evaluation of
+                      the application-
+                          (a) approve and issue a certificate of registration to the
+                              applicant; or
+                          (b) reject the application and inform the applicant
+                              within fourteen days stating the reason for such
+                              decision.
+
+Certificate of               10.-(1) The certificate of registration shall be in
+Registration
+                     Form No. 4 set out in the Second Schedule to these
+                     Regulations and contains such conditions as the Director
+                     General may impose.
+                             (2) The certificate of registration shall be valid for
+                     a period of five years from the date it was issued and
+                     subject to renewal.
+                             (3) The application for renewal shall be made at
+                     least sixty days before expiry of the existing registration
+                     and during evaluation of application the Director General
+                     may require the applicant to rectify the observed
+                     shortcomings as may be necessary.
+
+
+                                       PART III
+                              BATCH CERTIFICATION
+                                      12
+                Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+
+Batch                           11.-(1) A person shall not sell, grant, donate,
+Certification
+                    distribute, expose for sale, provide as gift, offer for sale or
+                    in any way release or launch in a market any imported
+                    commodity or product, unless it is approved and certified
+                    by the Bureau.
+                                (2) Subject to subregulation (1), an importer
+                    shall at least within seven days before the arrival of the
+                    imported consignment, apply to the Bureau for the Batch
+                    Certification.
+                             (3) An application made under subregulation (2)
+                    shall be in Form No. 5 set out in the Second Schedule to
+                    these Regulations and accompanied by the followings:
+                            (a) bill of lading or airway bill, or road
+                                 consignment note;
+                            (b) commercial invoice;
+                            (c) packing list;
+                            (d) tax assessment document;
+                            (e) test certificate or certificate of analysis from the
+                                 country of origin or export as issued by the
+                                 National Standards Body thereof; or its
+                                 recognised testing authority in that country
+                                 establishing conformity of the imported
+                                 consignment, if any;
+                            (f) proof of premise registration for food and
+                                 cosmetics except for occasional food and
+                                 cosmetics; and
+                            (g) any other requirement as may be prescribed by
+                                 the Bureau.
+
+Evaluation of              12.-(1) The Director General shall, upon receipt of
+application
+                    the application, evaluate the same based on the submitted
+                    documents and harmonised standards code to determine
+                    whether the consignment is within the Bureau’s mandate.
+                           (2) Subject to subregulation (1), the harmonised
+                    standards code shall be as prescribed by a Director General
+                    and reviewed from time to time.
+                           (3) The Director General shall, upon evaluation of
+                                         13
+             Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                 the application and being satisfied that the requirement
+                 under subregulation (1) have been complied with, instruct
+                 the applicant to pay a non-refundable fee as may be
+                 prescribed by the Minister prior to inspection of the
+                 consignment.
+
+Inspection                13.-(1) The Bureau shall conduct the inspection of
+                 the consignment after its arrival upon being notified by the
+                 importer.
+                          (2) Subject to subregulation (1), the Bureau, after
+                 being notified, shall assign an inspector to conduct
+                 inspection of the consignment by examining physical
+                 condition of the consignment and may draw samples
+                 where applicable depending on the nature of the
+                 consignment as per declared standard.
+                          (3) The inspector after conducting inspection shall
+                 fill in the inspection form set out as Form No. 6 in the
+                 Second Schedule to these Regulations and the form shall
+                 contain the details and findings of the inspected
+                 consignment and be signed by both inspector and importer.
+                          (4) The form filled under subregulation (3), shall
+                 be submitted to the Director General together with sample
+                 collected if any for evaluation to determine whether they
+                 have complied with the requirements as prescribed under
+                 these Regulations.
+                          (5) The Director General, after evaluation made
+                 under subregulation (4) and upon being satisfied that-
+                             (a) the requirements have been complied with,
+                                 may approve and issue a batch certificate; or
+                             (b) the requirements have not been complied
+                                 with, may reject the consignment and inform
+                                 the importer within seven days stating the
+                                 reason for such decision.
+                          (6) The Batch Certificate shall be in Form No. 7 set
+                 out in the Second Schedule to these Regulations and
+                 specific to the respective consignment as revealed on the
+                 bill of lading, airway bill or road consignment note.
+
+                                       14
+                Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+Low risk                    14. Where the commodities and products rated as
+commodities and
+products
+                    low risk are imported accompanied by test report or
+                    certificate of analysis issued by accredited Laboratory
+                    recognised by the Bureau from the country of origin or
+                    export, the Director General may inspect and issue a Batch
+                    Certificate Type B in Form No. 8 set out in the Second
+                    Schedule to these Regulations upon satisfaction that the
+                    same conforms to the standards requirements.
+
+Motor vehicle                15.-(1) Certification of imported motor vehicle,
+certification
+                    shall be carried out after the Bureau has conducted the
+                    inspection as per the standard requirements recognised by
+                    the Bureau.
+                             (2) The Director General, after being satisfied that-
+                            (a) the requirements have been complied with may
+                                 approve and issue           a   certificate of
+                                 roadworthiness in Form No. 9 set out in Second
+                                 Schedule of these Regulations; or
+                            (b) the requirements have not been complied with,
+                                 the motor vehicle may be released with
+                                 condition to rectify the observed defect within
+                                 twenty-one days.
+                             (3) The motor vehicle released after rectification of
+                    the observed defect, shall be retested for conformity to the
+                    respective standard and if complied shall be issued with
+                    certificate of roadworthiness.
+
+Pre-shipment               16.-(1) The Bureau shall have a system of
+verification
+                    conformity assessment before shipment to verify that, the
+approval
+                    commodities and products imported in Tanzania are in
+                    conformity with the applicable national standards or
+                    foreign or international standards recognised by the
+                    Bureau.
+                           (2) Subject to subregulation (1), the Director
+                    General shall prepare and submit to the Board a list of
+                    commodities and products that may require mandatory
+                    pre-shipment verification of conformity to Standards for
+                    recommendations.
+                                        15
+                 Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                             (3) The Board shall, after scrutinizing the
+                     submission made under subregulation (2), submit a list of
+                     commodities and products together with their
+                     recommendations to the Minister for approval.
+                             (4) Subject to subregulation (3), the Minister shall,
+                     after approval, direct the Bureau to publish the approved
+                     list of commodities and products in the widely circulated
+                     newspaper and in the Bureau’s website.
+
+Conditions for               17.-(1) An importer shall, before shipment of
+pre-shipment
+                     commodities and products, ensure the commodities and
+verification
+                     products are in the list approved by the Minister under
+                     regulation 16.
+                             (2) Subject to subregulation (1), the importer shall
+                     inspect and test commodities and products from
+                     government accredited laboratory of the country of export
+                     recognised by the Bureau.
+                             (3) The importer shall, in two weeks before the
+                     arrival of the consignment, submit to the Bureau the
+                     following documents:
+                            (a) test report or certificate of analysis issued by
+                                government accredited laboratory;
+                            (b) custom documents including bill of lading or
+                                airway bill or road consignment note;
+                            (c) invoice;
+                            (d) tax assessment document;
+                            (e) packing list; and
+                            (f) any other documents as the Bureau may require.
+                             (4) The Bureau shall review the submitted
+                     documents to verify the authenticity and inspect the
+                     consignment.
+                             (5) Subject to subregulation (4), the Bureau shall,
+                     after being satisfied that the documents and consignment
+                     complied with requirements as prescribed and upon
+                     payment of prescribed fee, issue a batch certificate in Form
+                     No. 7 set out in the Second Schedule to these Regulations.
+
+
+
+                                           16
+             Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+Import clearance            18.-(1) Import clearance permit may be issued by
+permit
+                   the Bureau in Form No. 10 set out in the Second Schedule
+                   to these Regulations to the importer of the consignment
+                   where in the opinion of the Bureau-
+                           (a) the importer has complied with customs
+                                requirements and there are pending clearance
+                                procedures that will take more than seven days
+                                to be addressed;
+                           (b) the consignment is in small quantity and has
+                                undergone physical verification;
+                           (c) the manufacturing facility of the imported
+                                commodities or products have undergone Good
+                                Manufacturing Practice Inspection; and
+                           (d) the products or commodities have been
+                                manufactured by foreign companies licenced to
+                                use Bureau’s standards mark.
+                            (2) Subject to subregulation (1), the permit may be
+                   issued with or without conditions as the Bureau may deem
+                   fit depending on circumstances pertaining to the clearance
+                   of the consignment.
+                            (3) The consignment may be released with
+                   conditions upon the written request to the Director General
+                   made by the importer as a commitment to abide with the
+                   conditions therein.
+                            (4) Subject to subregulation (3), the Director
+                   General may, after receiving and being satisfied with the
+                   written request from the importer, issue a conditional
+                   release declaration form set out as Form No. 11 in the
+                   Second Schedule to these Regulations.
+                            (5) The Director General shall, upon evaluation of
+                   the conditional release declaration form and being
+                   satisfied that, the conditions set out in the form have been
+                   complied with, issue import clearance permit.
+                            (6) Where the permit has been issued with
+                   conditions, the importer shall not unload, distribute, sell,
+                   use or transfer the consignment either in part or whole to
+                   any person or any place other than to the address specified
+                   in the conditional release declaration form pending the
+
+                                       17
+              Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                  issuance of the batch certificate or any other directives as
+                  may be provided by the Bureau.
+
+Use of imports             19.-(1) The batch certificates issued under these
+standards mark
+                  Regulations shall form the basis for the importer to use
+                  import standard mark in respect of commodities and
+                  products detailed on the particular bill of lading or airway
+                  bill, or road consignment note.
+                           (2) The import standard mark shall be in a manner
+                  as may be prescribed by the Bureau and shall be used for
+                  verification of authenticity of commodity and products
+                  during market surveillance inspections.
+                           (3) Subject to subregulation (1), the Bureau shall
+                  issue an authorisation letter together with the import
+                  standard mark stickers to the importer to be used for
+                  labeling the products or commodities as detailed on the
+                  bill of lading or airway bill, or road consignment
+                  note.
+
+                                PART IV
+                           GENERAL PROVISIONS
+
+Register
+                         20. The Bureau shall cause to be kept and
+                  maintained a register of imported commodities and
+                  products which shall contain the following information:
+                        (a) the name of registered importer;
+                        (b) quantity of imported consignment;
+                        (c) the kind of commodities or products in respect
+                            of which is registered;
+                        (d) country of export;
+                        (e) the date of registration;
+                        (f) the date of importation; and
+                        (g) such other particulars as the Bureau may
+                            prescribe.
+
+Notification of           21. A person registered under these Regulations
+change of
+                                        18
+                 Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+information          who intends to alter any matter related to a registered food
+                     or cosmetics shall before marketing the changed product,
+                     notify the alteration and obtain approval from the Bureau
+                     by giving reasons and the extent of such alteration thereon
+                     submit samples of the registered and changed product.
+
+Suspension or                 22.-(1) The Director General may suspend or
+cancelation of
+certificate
+                     cancel the certificate issued under these regulations when
+                     satisfied that the terms and conditions have been violated.
+                              (2) The certificate may be suspended when the
+                     holder-
+                             (a) fails to observe the imposed terms and
+                                  conditions; or
+                             (b) contravenes any provisions of the Act or these
+                                  Regulations.
+                              (3) The Director General may cancel any certificate
+                     issued where-
+                             (a) it is discovered that, was obtained based on
+                                  false information; or
+                             (b) it is reasonably suspected that, the item
+                                  specified therein is likely to cause health, safety
+                                  and environment hazards to consumers.
+
+Procedure for                23.-(1) The Director General after being satisfied
+suspension or
+cancelation of
+                     that, the holder of certificate has violated the terms and
+certificate.         conditions, shall notify the holder in writing specifying the
+                     nature of default.
+                             (2) Upon receipt of the notice under subregulation
+                     (1), the holder of certificate as the case may be, shall make
+                     representation in writing to the Director General on the
+                     rectification of the default within a period of fourteen days
+                     after receiving notification.
+                             (3) Where the holder of certificate fails to rectify
+                     the default within the time specified in the notice or fails to
+                     make representation satisfactorily, the Director General
+                     shall cancel or suspend the certificate.
+                                           19
+                Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                            (4) Subject to subregulation (3) the Director
+                    General shall notify in writing the person whose certificate
+                    has been cancelled or suspended and remove the name of
+                    the person from the register.
+
+Removal from                24.-(1) A person whose name has been removed
+register
+                    from the register shall, within fourteen days of the
+                    notification of such removal, surrender to the Director
+                    General any certificate issued.
+                            (2) A person who fails to surrender the certificate
+                    within the period prescribed under subregulation (1)
+                    commits an offence.
+
+Reinstatement               25. A person whose name has been removed from
+                    the register and intends to be reinstated shall be required to
+                    start the process of obtaining a certificate afresh as
+                    prescribed in these Regulations.
+
+Disposal of                 26.-(1) The Bureau shall, for a period of fourteen
+samples
+                    days after the issuance of test report, retain remaining
+                    samples drawn from a consignment.
+                            (2) Save for samples that have undergone
+                    destructive test or non-conforming samples, the importer
+                    shall be required to collect the samples from the Bureau
+                    within fourteen days from the date of issuance of test
+                    report.
+                            (3) Subject to subregulation (2), the samples that
+                    have not been collected within the specified time shall be
+                    disposed off as per procedures prescribed by the Bureau.
+
+Sub-standard                27.- (1) A person shall not in any manner import,
+commodities or
+products
+                    unload, sell, distribute or supply         commodities or
+                    products not in conformity with the standards recognised
+                    by the Bureau.
+                          (2) Subject to subregulation (1), the commodities or
+                    products which do not conform to the standards recognised
+                    by the Bureau, shall be-
+                                         20
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                         (a) re-exported to its country of origin or export; or
+                         (b) disposed off within the Tanzania Mainland.
+                          (3) The importer of the commodities or products
+                 who has been ordered to re-export to the country of export
+                 or dispose pursuant to the provision of subregulation (2)
+                 shall adhere to the following requirements-
+                         (a) keep separately unfit products and commodities;
+                         (b) demarcate an area for keeping unfit products
+                             which shall be labeled conspicuously in red ink
+                             with words in English “Unfit for intended use”
+                             or in Kiswahili “Hazifai kwa matumizi
+                             yaliyokusudiwa”; and
+                         (c) maintain safe custody of unfit products in
+                             premises mutually agreed until they are
+                             disposed off or re-exported.
+                          (4) The disposal of the commodities and product
+                 shall be carried out as prescribed by the Bureau.
+                          (5) The importer whose commodities or products
+                 are subject to re-exportation or disposal shall bear the costs
+                 for the same as the case may be.
+
+Time frame for           28. Handling of any application whose time frame
+handling of
+                 is not specifically provided for under these Regulations
+application
+                 shall be set out in the Bureau’s client’s services charter.
+
+Appeal                   29.-(1) A person who is aggrieved by the decision
+                 of Director General may appeal to the Minister within
+                 fourteen days after receiving the decision.
+                         (2) An appeal under subregulation (1) shall be in
+                 writing stating the grounds for such appeal supported by
+                 sufficient evidence if any and signed by the appellant.
+                         (3) The Minister after receiving the appeal shall
+                 within ninety days from the date of receipt of appeal make
+                 decision.
+                         (4) The appellant may, at any time prior the
+                 Minister’s decision, lodge a notice with intention to
+                 withdraw an appeal and upon receipt of the notice, the
+                 Minister shall mark the appeal officially withdrawn.
+
+
+
+                                      21
+               Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+Offences and               30.-(1) A person who contravenes the provisions of
+penalty
+                   these Regulations commits an offence and on conviction,
+                   shall be liable to imprisonment for a term of not less than
+                   two years or to a fine of not less than fifty million shillings
+                   and not exceeding one hundred million shillings or to both.
+                           (2) On a second or subsequent conviction of any
+                   person for an offence committed under these regulations,
+                   that person shall be liable to imprisonment for a term not
+                   less than three years or to a fine not less than fifty million
+                   shillings and not exceeding one hundred million shillings.
+                           (3) In convicting a person for an offence under
+                   these Regulations, the court may, in addition to any other
+                   penalty which may be imposed, order the confiscation of
+                   all or any part of any goods in respect of which the offence
+                   was committed, and all goods so confiscated shall be
+                   disposed off in the manner as the court may direct.
+
+Revocation and             31.-(1) The Standards (Compulsory Batch
+savings
+GN. No.            Certification of Imports) Regulations, 2009 are hereby
+ 405 of 2009       revoked.
+                           (2) Notwithstanding      the provisions of
+                   subregulation (1), any decision made, permit, licence,
+                   order or any documents issued by the Bureau pursuant to
+                   the revoked Regulations shall be deemed to be made or
+                   issued under these Regulations.
+
+
+
+
+                                         22
+             Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                       ________
+                                   FIRST SCHEDULE
+                                     _____________
+
+                              (Made under regulation 3(5))
+
+                                  GROUPS OF FOOD
+
+    (a) High risk foods for special nutritional purposes
+
+Food products under this group shall include food for special nutritional purpose whose
+intrinsic properties have the potential of being contaminated with pathogens and or
+chemical toxins causing high health risks to vulnerable groups who due to their
+physiological conditions are targets for these products. Such food products include:
+                        (a)          Infant formulae and Follow-up formulae;
+                        (b)          Complementary foods for infants and young children;
+                        (c)          Foods intended for special medical purposes;
+                        (d)          Formula foods for use in weight control diets;
+                        (e)          Food supplements which include:
+                                     (i) Vitamins and Minerals;
+                                     (ii) Amino acids;
+                                     (iii) Essential Fatty acids;
+                                     (iv) Plant, Plant extracts, and other herbal based
+                                           supplement;
+                                     (v) Enzymes and other metabolites;
+                                     (vi) Prebiotics;
+                                     (vii) Probiotics;
+                                     (viii)    Animal products and animal extracts;
+                                     (ix) Protein Concentrates.
+
+    (b) High risk foods for general purpose
+
+Foods in this group are classified as such because of their high possibility of being
+contaminated or have intrinsic properties which can support growth of pathogenic micro-
+organisms or chemical toxins. Such food products include:
+                  (a) milk and milk products;
+                  (b) meat and meat products, including poultry and game;
+                  (c) fish and fish products, including molluscs, crustaceans and
+                       echinoderms;
+                  (d) eggs and egg products;
+                  (e) spices, soups, sauces, salads and protein products;
+                  (f) processed vegetables and vegetable products (including
+                       mushrooms and fungi, roots and tubers, pulses and legumes, and
+                       aloe vera), seaweeds, and nuts and seeds, dried vegetables
+                       (including in grounded form), vegetables in vinegar, oil, brine, or
+
+
+                                            23
+             Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                      soy sauce; fermented vegetable products and cooked, blanched or
+                      fried vegetables;
+                  (g) ready-to-eat savories (processed nuts and nuts products, including
+                      coated nuts and nut mixtures;
+                  (h) composite foods - foods that could not be categorised in other
+                      groups;
+                  (i) potable water; and
+                  (j) herbal tea/ infusions excluding sliming tea.
+    (c)       Low risk foods
+
+This group shall include pre-packaged foods, the risk of which is relatively lower than
+food products categorized in group one and two above. These foods include-
+             (a) fats and oils, and fat emulsions;
+             (b) edible ices, including sherbet and sorbet;
+             (c) processed fruits and fruits products;
+             (d) confectionaries e.g. hard and soft candy;
+             (e) coffee, tea, cocoa and their products;
+             (f) cereals and cereal products, including products derived from cereal
+                  grains, from roots and tubers, pulses and legumes;
+             (g) bakery wares;
+             (h) sweeteners, including honey;
+             (i) non alcoholic beverages, excluding dairy products;
+             (j) alcoholic beverages, including alcohol-free and low-alcoholic
+                  counterparts;
+             (k) salt and salt substitutes; and
+             (l) vinegars.
+
+
+
+
+                                            24
+                  Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                              _____________
+
+                                                        SECOND SCHEDULE
+                                                          _____________
+
+                                                                      FORMS
+                                                                                                                                      FORM NO. 1
+                                                   (Made under regulation 4(1))
+
+
+            APPLICATION FOR REGISTRATION OF FOOD AND FOOD IMPORTER
+
+ A. Particulars of Importer/Applicant:
+
+   1.1 Name of applicant ...................................................................................................................................... ……………………
+   1.2 Address applicant.................................................................................................................
+   1.3 Telephone Number................................................................................................................
+   1.4 Street or Village.................................................................................... .................................
+
+    B. Particulars of product:
+
+     1.1 Brand                                                                                                                                     Name:
+              ..............................................................................................
+
+     1.2 Common name: .............................................................................
+              .....................................................
+
+     1.3 Brief description of the physical characteristics of the food (form, colour etc)
+     .......................................................................................................... ............................................
+     ......................................................................................................... .............................................
+     .......................................................................................................... ............................................
+     ......................................................
+
+     1.4 Brief description of the use of the food (for direct human consumption/food raw
+     material);
+     .......................................................................................................... ............................................
+     ......................................................................................................................................................
+     ..........
+     1.5 Intended end user (infants, young, children, pregnant women, immune compromised,
+     old age, diabetic, general population. State any other conditions or contraindications if any)
+
+
+     1.6 Type
+           of materials                                 for       the       packaging             container           and        liner        if      any
+     …………………………….
+
+     1.7 Type
+           of materials                                       for          cap/crown/closure                    and          liner          if        any
+     …………………………………
+
+
+                                                                        25
+                  Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+     1.8 Type of seal (limper proof/non temper proof) ....................................................................
+     1.9 Retail                     packaging                    unit               in              weight                   or       volume:
+             ........................................................................
+     1.10 Shelf                         life                  after                     opening                     of               container:
+             ................................................................................
+     1.11 Instruction                                                                                                                       for
+     use:.................................................................................................................
+     1.12 Recommended                           storage            conditions                   before        and            after     opening
+     ..............................................
+
+     1.13 Attach a scientific description on how the shelf life was established.
+
+
+     2.0 Particulars of applicant
+     2.1 Name (company/person): ... .... .............................................. ..........
+      2.2 Name                     of            the            country                 where            the             company           was
+      incorporated.......................................................................................
+      2.3 Physical address
+      (plot/blockNo./street/village/district/region):............................................
+
+      2.4 Postal                  Address:                   Physical                    address              (country,              town/city,
+      street)...............................................
+
+      2.5 Telephone: ......................................... ..... ........................
+      2.6 Fax: ...................................................................................
+      2.7 E-Mail:..............................................................................
+      2.8 Name of local food manufacturer, or importer: ................
+
+
+      3.0 Particulars of manufacturer
+      3.1 Name (company/person): ................... ...............................
+      3.2 Name of the country where the company was incorporated......................................
+      3.3 Postal Address: ... .........................................................................................................
+
+      3.4 Physical address (country, town/city, street):
+      3.4 Phone: ………………………………………..……….. ................
+      3.5 Fax: ..........................
+      3.6 E-mail: .....................
+
+                                                                        26
+                    Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+
+
+        4.0 In case of imported food provide the following:
+        4.1 Product health certificate from competent Bureau.
+        4.2 Document from relevant recognised organization indicating that the manufacturing
+                  facility complies with GMP, HACCP or other quality assurance systems.
+
+        4.3 Documentary evidence indicating that the product has been approved in the country of
+                  origin or country of dispatch.
+        5.0      Ingredients used
+
+                List ingredient in descending order of proportion quantities per unit of
+                measurement of the product and reason of inclusion.
+
+        5.1      Main ingredients
+
+  S/N          Name                                                       Proportion (e-g. %, ml/1., ml/kg units)
+
+
+
+
+                  5.2 Food additives
+                                 Name (Specific,                                  Levels (eg. %,
+                  S                                                                                                                  Purpose of
+                  /                 common,                                       ml/L or mg/kg,
+                  N                 chemical,                                                                                           Use
+                                                                                       units
+                                 technical) or E-
+                                     number
+
+
+
+
+6.0 Verification by the applicant
+
+
+   The ...................................... ... ... ................................ (position in the company) and a dully
+   authorized representative of ... ... ................................ do hereby certify that all the information
+   filled in this form and all the accompanying documents are true and correct to the best of my
+   knowledge and confirm that the information referred to in this application is available for proof.
+   Signature: ............................................. .......................................................... ............................
+
+   Date......................... ........ ...........................................................................................................
+
+   Official Stamp/Seal:,... .................................................................................................................
+
+   N.B. The Applicant shall be accountable to all information supplied in support of his
+
+                                                                        27
+                 Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+   application and any false declaration constitutes an offence.
+
+
+        C: For official use only
+
+             1. Name of receiving officer:.............................................Date...........................................
+
+
+
+             2.Registration of .............................................................is hereby granted as food
+
+             importer for the year........................................................to import the following food
+
+             products (attached list products).
+
+
+             ...................................                 ................................                 ............. ...................
+             ............................
+           Quality Assurance officer                  Designation                                                                  Signature
+    Date
+
+   ..........................          ...................... ..............................        ..................................
+       Director General                Designation                     Signature                            Date
+
+
+
+
+                                                                   28
+               Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+
+                                                                                       FORM NO. 2
+
+                                   (Made under regulation 6 (1))
+
+                           PRODUCT REGISTRATION CERTIFICATE
+
+                              Certification No. ……………………….
+
+
+
+This is to certify that the Food Product described below has been registered in Tanzania subject to
+conditions indicated.
+Product/Common Name …………………………………….
+Brand/Trade Name ………………………………………….
+Name and Address of registrant ………………………………
+Name and Address of Manufacturer………………………….
+
+VALID FROM: ……………………………………
+
+TO:………………………………………………..
+
+
+……………………………..                                                    …………………………….
+Date                                                    Signature of Director General and Stamp
+
+
+
+                               CONDITIONS OF REGISTRATION
+
+1.This certificate can be revoked, suspended, cancelled or cease to operate immediately after the
+expiry time.
+
+2.Registered products cannot be advertised without written approval of advertisement from Bureau.
+
+3.The product shall comply with all relevant provisions of these Regulations.
+
+4.The certificate holder shall comply with all Tanzanian labeling requirements at all times.
+
+5.The certificate holder shall ensure that the manufacturing facilities where a registered product is
+produced comply at all times with Good Manufacturing Practice (GMP) requirements.
+
+6.The certificate holder shall ensure that application for renewal of registration is made sixty days
+before expiry of registration.
+
+7. The Bureau shall be notified prior to any alteration made on the products.
+
+8. The Bureau reserves the right to withdrawal this certificate when conditions 1 to 7 are
+contravened and when the risks of the product outweighs the benefits or it is in public interest to do
+so.
+
+
+
+
+                                                 29
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+
+                                                                                    FORM NO. 3
+                                 (Made under regulation 8(1))
+
+                 APPLICATION FOR REGISTRATION OF COSMETICS
+
+
+             ATTACHMENTS
+
+             Please attach/enclose-
+                  (a) CD containing a dully fill in application form in soft form in text format
+                        on excel;
+                  (b) a copy of certificate of incorporation for companies or registration of the
+                        other forms of ownership of the Business in Tanzania;
+                  (c) a copy of free sale certificate and or certificate of observance to good
+                        manufacturing practice for imported cosmetics;
+                  (d) art work of immediate package, outer package and product information
+                        leaflet; and
+                  (e) authorisation letter permitting an importer to apply on behalf of his
+                        principal.
+             1.0 Product Particulars:
+             1.1 Name of
+             cosmetic:_____________________________________________________
+             1.2 Form of cosmetic: (see explanatory
+             note_______________________________________
+             1.3 Physical description of a
+             cosmetic_____________________________________________
+             1.4 Intended use: (see explanatory notes) -
+             _________________________________________
+             1.5 Method of
+             use____________________________________________________________
+             1.6 Pack size(s): ________________________________________
+             1.7 Formula of a cosmetic:_______________________________
+
+
+    S/N     INCI name           Chemical name         % proportion            Reason for
+                                                                             inclusion
+
+
+
+
+             Note:
+             If the formula is considered to be confidential seal in an envelope and mark
+             confidential and then attach.
+
+
+
+                                              30
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+             1.8 Brief description of the type and properties of packaging material and the seal
+             and its liner if any and provide justification for the suitability of the packaging
+             material          and          the        seal         and          its        liner
+             used___________________________________________
+
+             1.9 Brief description of the method used for the determination of shelf
+             ___________________
+             1.10 Recommended storage conditions (where applicable) including any relevant
+             information after the product is opened for use or reconstituted:
+             ________________________________
+             1.11                          Recommended                               shelf-
+             life:_________________________________________________
+             2.0 Particulars of Registrant
+             (a) Name: __________________________________________________________
+
+             Physical Address: _______________________________________________
+             _________________________________________________________________
+             Postal Address: _________________________________________________
+             Country: _______________________________________________________
+             Phone: _____________ Fax: _______________Email: _________________
+             (b) Status of applicant (tick where appropriate)
+
+             Manufacturer _____________ Importer _____________
+
+
+             3.0 Particulars of manufacturer:
+             Name: _________________________________________________________
+             Physical address: ______________________________________________
+             Postal address: _________________________________________________
+             Country: _______________________________________________________
+
+             4.0 Particulars of local agent or importer:
+             Name: _________________________________________________________
+             Physical address: ______________________________________________
+             Postal address: _________________________________________________
+             Country: _______________________________________________________
+             Phone: ________________Fax: ________________E-mail: ____________
+             Phone: ________________Fax: ________________E-mail: ____________
+
+             5.0 Declaration by the registrant:
+             I, the undersigned certify that all the information in this form and accompanying
+             documentation is correct and true to the best of my knowledge. I also declare that
+             the product does not contain substances from the prohibited list and/ or substances
+             that exceeds the level permitted.
+             Name:
+             _________________________________________________________________
+
+
+                                             31
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+             Position:
+             ______________________________________________________________
+             Signature: ____________________
+             Official stamp:
+             Date: ________________________
+             N.B. The Applicant shall be accountable to all information supplied in support of
+             his application and any false declaration constitutes an offence.
+
+             6.0 Fees/charges payment (For official use only)
+             Fee to be paid…………………………………………………………..
+             Name and signature of authorised officer……………………………………..
+             Name and signature of cashier……………………..………………………….…
+             Receipt number……………………………………………………………………
+             Date and stamp………………………………………………………………………
+
+             NB: Cashier should attach copy of receipt
+
+             EXPLANATORY NOTES
+             1. FORMS OF COSMETICS
+             Aerosol - All types, already pressurized e.g., some hair sprays, perfumes
+             Capsule/Tablet - e.g., bath oil capsules
+             Clear Non-oily Liquid - e.g., solutions, some lotions
+             Clear Oil - e.g., mineral oil
+             Cream - Viscous liquid or semi-solid emulsion (e.g., some hair grooming products,
+             makeup.
+             Gel - Viscous, usually clear, jelly-like semi-solids (e.g., some hair grooming
+             products, dentifrices.
+             Granules - e.g., bath pellets, crystals, pearls, etc
+             Kit - If the product consists of two or more components of different forms which are
+             mixed before use, then insert “Kit” and write in brackets the forms of the various
+             components.
+             Liquid Suspension - Solid in liquid (e.g., some moisturizers. Lotion - Liquid
+             emulsion e.g., some moisturizers, makeup.
+             Ointment - A semisolid preparation based on a fatty material (e.g., lanolin)
+             Paste - Concentrate of absorptive powders usually dispersed in semisolid base (e.g.,
+             dentifrice.)
+             Pencil - e.g., eyebrow pencil
+             Powder – Loose: e.g., dusting powder, makeup, talcum
+             Powder – Pressed: e.g., blush, eye makeup Pressed
+             Cake - e.g., soap, bath bar
+             Pump Spray - e.g., atomizers, some hair sprays
+             Stick - e.g., lipsticks, some deodorants
+             Other (Please Specify) - Product which does not fall into one of the general
+             categories above. Please provide the rationale as to why the form is unique.
+
+             2. INTENDED USE
+             Ant wrinkle Preparation:
+
+                                             32
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+             Product applied as a makeup or moisturizer generally to the face to mask or reduce
+             the appearance of fine lines or wrinkles. (See also, Eye Lotion and Eye Makeup).
+             Baby Product:
+             Product labeled for use on infants 2 years old or less.
+             Barrier Cream:
+             Product which protects the hands from dirt, grease, solvents, etc.
+             Bath Preparation:
+             Product added to the bath water. Includes bath oils, tablets, salts, bubble baths, etc.
+             Body Makeup:
+             Product applied as makeup to the body excluding the hair, eyes or face. Includes leg
+             and body paints. (See also, Eye Makeup and Face makeup.)
+             Dentifrice:
+             Product which cleans and/or polishes the teeth.
+             Deodorant:
+             Product which modifies, reduces, or prevents the development of body odors.
+             Excludes genital deodorants and products which claim to reduce perspiration.
+             Douche:
+             Product used for personal feminine hygiene. (See also, Genital Deodorant.)
+             Eye Lotion:
+             Non-makeup product specifically indicated for use in the area of the eye. Includes
+             lotions and moisturizers.
+             Eye Makeup:
+             Product specifically indicated for use in the area of the eye. Includes eyebrow
+             pencils, eyeliners, eye shadows, eye makeup removers, mascara, etc.
+             Face Makeup:
+             Product for use in the area of the face. Includes blushes, face powders, foundations,
+             rouges, makeup fixatives, etc. (See also, Antiwrinkle Preparation, Eye Lotion, Eye
+             Makeup, Lipstick and Skin Moisturizer.)
+             Fragrance:
+             Includes perfumes, colognes, toilet water, dusting and talcum powders.
+             Genital Deodorant:
+             Deodorant/Cleanser intended for use in the genital area. (Includes nondouche
+             feminine hygiene products.)
+             Genital Lubricant:
+             Product for use as a lubricant in the genital area.
+             Hair Bleach:
+             Product which bleaches the hair. Excludes hair lighteners with colours.
+             Hair Conditioner:
+             Non-shampoo product which increases the suppleness or body of the hair, facilitates
+             combing, adds gloss or texture to the hair, etc. (See also, Hair Shampoo.)
+             Hair Dye:
+             Product which changes the colour of the hair.
+             Hair Grooming:
+             Product which improves the appearance or is used to shape/style the hair. Includes
+             mousses, gels, pomades, sprays etc. (See also, Hair Straightener and Hair Waving
+             Preparation).)
+             Hair Removal:
+                                              33
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+             Depilatory/epilatory product which facilitates the removal of hair by chemical or
+             mechanical means. Includes wax treatments. (See also, Shaving Preparation.)
+             Hair Shampoo:
+             Product which cleanses and conditions the hair. Product is washed off after use.
+             Hair Straightener:
+             Product which contain agents which chemically soften the hair to facilitate
+             straightening of the hair.
+             Nail lacquer (Nail polish)
+             Products which changes the colour of the nail.
+             Nail polish remover
+             Products which removes the colour from the nail.
+
+
+
+
+                                            34
+              Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                                                      FORM NO. 4
+
+                                  (Made under regulation 10 (1))
+
+                          PRODUCT REGISTRATION CERTIFICATE
+
+                           Certification No…………………………….
+
+
+
+This is to certify that the Cosmetic Product described below has been registered in Tanzania subject
+to conditions indicated.
+Product/Common Name …………………………………….
+Brand/Trade Name ………………………………………….
+Name and Address of registrant ………………………………
+Name and Address of Manufacturer………………………….
+
+VALID FROM: ……………………………………
+
+TO:………………………………………………..
+
+
+……………………………….                                                 ……………………………………
+    Date                                                        Signature of Director General and
+Stamp
+
+
+
+
+                                                35
+               Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                               CONDITIONS OF REGISTRATION
+
+1.This certificate can be revoked, suspended, cancelled or cease to operate immediately after the
+expiry time.
+
+2.Registered products cannot be advertised without prior approval of advertisement from Bureau.
+
+3.The product shall comply with all relevant provisions of these Regulations.
+
+4.The certificate holder shall comply with all Tanzanian labeling requirements at all times.
+
+5.The certificate holder shall ensure that the manufacturing facilities where a registered product is
+produced comply at all times Good Manufacturing Practice (GMP) requirements.
+
+6.The certificate holder shall ensure that application for renewal of registration is made 60 days
+before expiry of registration.
+
+7.The Bureau reserves the right to withdrawal this certificate when conditions 1 to 6 are
+contravened and when the risks of the product outweighs the benefits or it is in public interest to do
+so.
+
+
+
+
+                                                 36
+              Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                                                       FORM NO. 5
+
+                                  (Made under regulation 11(3))
+
+
+                    APPLICATION FORM FOR IMPORT BATCH CERTIFICATE
+                               (Please print or write in capital letters)
+
+       1.Point of entry
+       (code):……………………………………………………………………………
+ 2. Name and address of importer: ……………………………………………………………...
+     …………………………………………………………………………………………......
+     Physical location: ....…………………............……………………………………………….
+     Importer Reg. No…………………………....……………………………………………………..
+ 3. Name and address of supplier:……………………………………………………………….
+     ……………………………………………………………………………………………………
+   4.Name and address of clearing agent: ………………………………………………………….
+       Physical location: …………………………………………….…………….
+       Clearing agent Reg. No……………………………………………………...
+         5. Total No. of containers: …………………………………………………..
+      Shipping marks and numbers: …………………………………………..……
+      Location
+      …….........…………………………………………………………………………………….
+      6.        Description        of   goods/products (include   brand name)
+     …………………………………....................….
+     …………………………………………………………………………………………………….
+     Country       of     origin:……………………………………………              Product  code:
+     ……………………
+     7. Reference
+     standard:……………………………………………………………………………
+           Title:
+     ……………………………………………………………………………………………...
+  8. Quantity: ………………………………………………………………………………..............
+  9. Value (C+F):……………………………………………………………………………………
+  10. Remarks: ….....…………………………………………………………………………………….
+      …………………………………………………………………………………………………..
+
+ 11.Attach copies of the following documents:
+           (a)     Packing list;
+             (b) Invoice;
+           (c)     Bill of lading or airway bill;
+            (d)    Tanzania Revenue Authority single bill of entry;
+           (e)     Cleanreportoffindingsfromcompetentauthorityoftheexpor
+           tingcountry,ifavailable;
+          (f)      Test certificate from the country of origin or export as issued by the
+          national standards body thereof or an accredited testing authority in that country
+          establishing conformity of the import shipment to the requirements of the
+          Tanzania Standards, or relevant International Standard; and
+           (g)     A conformity certificate (incase of food or food products) indicating that
+           such foods are consumable in the country of origin.
+
+                                                  37
+               Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+        N.B. The Applicant shall be accountable to all information supplied in support of his
+        application and any false declaration constitutes an offence.
+
+                                                                                FORM NO. 6
+                                                      (Made under regulation 13(3))
+
+
+
+                              BATCH CERTIFICATION INSPECTION FORM
+
+         1.     Name of Importer:……………...................…………………….............................…
+         2.     Address of Importer:....................................................................................................
+         3.     Product (s):....................................................................................................................
+         4.     Inspection Point:...........................................................................................................
+         5.     Quantity (Metric tones):................................................................................................
+         6.     Identification Marks......................................................................................................
+         7.     Pre-Shipment Inspection Certificate? (Yes or No):...................................................
+         8.     Parking List (Yes or No):.............................................................................................
+         9.     Has Client Paid for the Service (Yes or No):........................................................
+         10. Physical Condition of the Product:................................................................................
+                .......................................................................................................................................
+                .......................................................................................................................................
+         11. Sample size: ..................................................................................................................
+         12. Sampling method: .......................................................................................
+         13. Reason for sampling: ................................................................................
+         14. Conditional release (Yes or No): ..........................................................................
+         15. Remarks:........................................................................................................................
+                .......................................................................................................................................
+                ....................................................
+         16. .....................................                 ......................          .......................       .....................
+                 Importer/Agent                                                 Designation                       Signature                  Date
+
+          17. .............................................................................................. ..........................
+              TBS Inspector/ Authorized person                                       Designation Signature                              Date
+
+
+
+
+                                                                       38
+                       Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                                                                                                      FORM NO. 7
+                                             (Made under regulation 13(6) and 17 (5))
+
+                                                          BATCH CERTIFICATE
+
+
+                                                                       TYPE A
+
+Name:........................................................................................................... ..........................................
+Registered Address:...............................................................................................................................
+Product:........................................................................................................ ...........................................
+Bill of lading/Identification mark:..........................................................................................................
+
+This is to certify that the above product has been sampled and tested by Tanzania Bureau of
+Standards
+           and found to conform to .....................................................................................
+
+               QUANTITY: ...............................................................................................................
+
+               Date: ...........................                                                                ...........................................
+                                                                                                                DIRECTOR GENERAL
+
+THIS CERTIFICATE REMAINS THE PROPERTY OF TANZANIA BUREAU OF
+STANDARDS AND SHALL BE VALID FOR THE CONSIGNMENT DECLARED
+ABOVE.THIS CERTIFICATE SHALL BE SURRENDERED ON DEMAND
+
+
+
+
+                                                                           39
+                       Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                                                                                                      FORM NO. 8
+                                                        (Made under regulation 14)
+                                                               No............
+
+                                                          BATCH CERTIFICATE
+
+
+                                                                    TYPE B
+Name:.....................................................................................................................................
+Registered Address:...............................................................................................................................
+Product:...................................................................................................................................................
+Bill of lading/Identification mark:........................................................................................................
+
+This is to certify that the above product has been physically inspected and approved by Tanzania
+Bureau of Standards based on…………issued by…………
+
+               QUANTITY: .....................................................................................
+
+               Date:...........................                                                      ............................................
+                                                                                                         DIRECTOR GENERAL
+
+THIS CERTIFICATE REMAINS THE PROPERTY OF TANZANIA BUREAU OF
+STANDARDS AND SHALL BE VALID FOR THE CONSIGNMENT DECLARED
+ABOVE.THIS CERTIFICATE SHALL BE SURRENDERED ON DEMAND
+
+
+
+
+                                                                           40
+                     Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                                                                                               FORM NO. 9
+                                               (Made under regulation 15 (2) (a))
+
+
+                                                                 No............
+
+                                         CERTIFICATE OF ROADWORTHINESS
+
+             Make:................................................... Model: .....................................................................
+             Type of
+vehicle:.......................................................................................................................
+             Engine Capacity:...................................................................................................................
+             Year of Registration:.............................................................................................................
+             Chassis Number:....................................................................................................................
+             Engine No/ Model:...............................................................................................................
+             Inspected millage (Odometer
+Reading):......................................................................................
+             Bill of lading/Identification mark:..........................................................................................
+             Inspected date:.......................................................................................................................
+             Inspected date:.......................................................................................................................
+             Radiation
+level:.......................................................................................................... ..................
+Remarks: This is to certify that the above vehicle has been inspected by Tanzania Bureau of
+Standards and found to conform to TZS 698:2012
+             Date: ……………….                                                                   …………………………………….
+                                                                                                      DIRECTOR GENERAL
+
+THIS CERTIFICATE REMAINS THE PROPERTY OF TANZANIA BUREAU OF
+STANDARDS AND SHALL BE VALID FOR THE INSPECTED VEHICLE WITH
+PARTICULAR ABOVE.THIS CERTIFICATE SHALL BE SURRENDERED ON DEMAND
+
+
+
+
+                                                                       41
+                      Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                                                                                                      FORM NO. 10
+
+                                                     (Made under regulation 18(2))
+                                                                                                                                 Permit No.............
+                                                  IMPORT CLEARANCE PERMIT
+
+Name of Importer:…………….......….....................………………….................................
+Address of Importer:........................................................................................................
+Name of Clearing Agent:................................................................................................
+Product(s):......................................................................................................................
+Country of Export/Origin:................................................................................................
+Quantity (Metric tones):..................................................................................................
+Invoice and Value:......................................................................................... .................
+Bill of Lading/Airway Bill/ Road Consignment note/ Certificate of origin:..................................
+Container numbers:....................................................................................................................
+Chassis number:.........................................................................................................................
+Pre-Shipment Inspection Certificate? (Yes or No):.....................................................................
+                              Basis for release
+                              Physical Verification
+
+                                     Conditional release
+
+                                      Personal effects
+                              Diplomatic goods
+                              Non-regulated items
+                              Small quantity
+                              Donated goods
+                              Exempted goods (from PVoC)/Capital goods/Government Projects
+                              Promotional materials
+                              Batch Certificate
+                              TBS certified products (product certification scheme)
+
+
+                       Remarks
+                       .......................................................................................................................................
+                       .......................................................................................................................................
+                       .......................................................................................................................................
+                       ..............................................................................
+  Prepared by:................................... Signature :.....................                           Date:.........................
+
+
+                                                                           42
+            Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+             Name of Authorized Officer.......................Signature & Stamp................
+                 Date:.....................
+
+
+             NOTE: THIS PERMIT IS ONLY VALID IF IT BEARS AN AUTHORISED
+             SIGNATURE AND STAMP. THIS CERTIFICATE REMAINS THE PROPERTY
+             OF TBS AND IS VALID ONLY FOR THE CONSIGNMENT DECLARED
+             ABOVE AT THE TIME OF ISSUANCE
+
+
+
+
+                                                  43
+                    Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                                                                                                                     FORM NO. 11
+
+                                               (Made under regulation 18 (4))
+
+                               CONDITIONAL RELEASE DECLARATION FORM
+
+
+                      1. Point of
+                         Entry:......................…………...………………………………………….………
+                         ……
+                      2. Product (s) Name:
+                         ............………………………………………………………….……………
+                      3.
+                         Quantity:…..……...………….…………................................................................
+                         ..............
+                      4. Invoice
+                         No:.......................................................................................…………………………...
+                  5. Bill of lading/ RCN/ Airway bill:
+..............…...……………………………………..……………..
+                  6. Name and Address of Importer: .....................……
+……………………………………………..
+                      District/Town:……......................…....................................................................
+                             ..............
+                      Plot
+                             No:……………...................…..…….…………………………..........................
+                             ..........
+                      Street:…………………................…………………………………….………
+                             …………….
+                      Name                                                                           of                         Main
+                             road:……................………..………………………………………………...
+                      Famous
+                             neighborhoods:…..................…..………………………………………………
+                             …...
+
+                                                           Importer’s ID type..…................…………………ID
+                                                                                No:………………………...…………
+                          Telephone No...…..........….….….Mobile
+             No……..…...............................................…….
+                  E-mail
+                   address:……………………………………………………………...…………...
+
+                       7. Specific location/Warehouse where goods under conditional release are kept
+      ........................................................................
+                                                             Famous
+                            neighborhoods:……………………………………………………................……
+                                                             Sketch map of the location.
+
+
+
+
+                                                                  44
+              Standards (Imports Registration and Batch Certification)
+GN. NO. 681 (Contd.)
+
+                8. Name    and       Address of         Clearing                                        agent:
+           ……………………………………………………...
+                       Telephone No: ……………….......... ID No:
+              …………………………………...
+                       Mobile No:
+              ……………………….........……………………………………….
+                       E-mail address:
+              ……………………..……………………………………………
+
+              IMPORTERS DECLARATION:
+              I declare that the consignment /goods above shall not be distributed, sold, used
+       or transferred until the test results is out and in case of failure of the product to meet
+       requirements of the standards consignment will be returned to the originating
+       country/destructed at owner’s cost.
+
+               NOTE:
+             Any person who contravenes any of these regulations commits an offence and on
+      conviction, shall be liable to imprisonment for a term not less than two years or to a fine
+      not less than fifty million shillings and not exceeding one hundred million shillings or to
+      both.
+
+
+
+
+      ………………………..                    .........……....…                     .................................
+
+             Importername                   Signature                              Date
+
+      ………………………..                                                                 .……………….
+      ...................………....
+                 Agentname                     Signature                             Date
+
+            FOR OFFICIAL USE ONLY:
+
+             Remarks………………………………………………………………………………
+              ………………………………………………………………………………………
+              ……………………………………
+
+             ……………                          ………………………                                    ………………
+             TBS Inspector                  Signature                                    Date.
+
+
+
+
+Dodoma,                                                               KITILA A. MKUMBO
+  1st September, 2021                                   Minister for Industries and Trade
+
+
+
+                                               45
+

@@ -12,6 +12,8 @@ import type {
 } from '@polkadot/types/lookup';
 import type { Option, u128 } from '@polkadot/types-codec';
 
+import { parseStoredJson } from '@/utils/storageParsing';
+
 import { DAY_IN_BLOCKS, KnownAssets, NativeAssets, XOR } from './consts';
 import { DexId } from '../dex/consts';
 import { PoolTokens } from '../poolXyk/consts';
@@ -41,6 +43,9 @@ const ACCOUNT_BALANCE_KEYS: Array<keyof AccountBalance> = [
   'total',
   'transferable',
 ];
+
+const isAssetAddressList = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((address) => typeof address === 'string');
 
 /** Parses codec balances without passing token amounts through native floating-point coercion. */
 function parseCodecBalanceValue(value: CodecString, decimals?: number): FPNumber | null {
@@ -102,11 +107,14 @@ export function toAssetId(asset: CommonPrimitivesAssetId32) {
  * @param data Account Data for ORML tokens or for PalletBalances
  * @param assetDecimals Asset decimals, 18 is used by default
  * @param bondedData Required only for XOR tokens in SORA network
+ * @param balanceKind Native modern Balances freezes cover free + reserved;
+ * ORML tokens and legacy native miscFrozen/feeFrozen freeze free funds only.
  */
 export function formatBalance(
   data: PalletBalancesAccountData | OrmlTokensAccountData,
   assetDecimals?: number,
-  bondedData?: Option<u128>
+  bondedData?: Option<u128>,
+  balanceKind: 'native' | 'token' = 'token'
 ): AccountBalance {
   const free = new FPNumber(data.free || 0, assetDecimals);
   const reserved = new FPNumber(data.reserved || 0, assetDecimals);
@@ -116,13 +124,24 @@ export function formatBalance(
   const feeFrozen = new FPNumber((data as PalletBalancesAccountData).feeFrozen || 0, assetDecimals);
   const frozenDeprecated = miscFrozen.max(feeFrozen);
   // [Substrate 5: PalletBalancesAccountData] & OrmlTokensAccountData
-  const frozenCurrent = new FPNumber((data as OrmlTokensAccountData).frozen || 0, assetDecimals);
+  const frozenCurrentData = (data as OrmlTokensAccountData).frozen;
+  const frozenCurrent = new FPNumber(frozenCurrentData || 0, assetDecimals);
   const frozen = frozenCurrent.max(frozenDeprecated);
-  const transferable = free.sub(frozen);
+  // Modern Balances discounts reserved funds from its total-balance freeze;
+  // legacy freezes still apply to free funds when both field shapes are present.
+  const frozenFree =
+    balanceKind === 'native' && frozenCurrentData !== undefined
+      ? frozenCurrent.sub(reserved).max(FPNumber.ZERO).max(frozenDeprecated)
+      : frozen;
+  const transferable = free.sub(frozenFree).max(FPNumber.ZERO);
   // [SORA] bondedData can be NaN, it can be checked by isEmpty===true
   const bonded = new FPNumber(!bondedData || bondedData.isEmpty ? 0 : bondedData, assetDecimals);
-  // [SORA]
-  const locked = reserved.add(frozen).add(bonded);
+  // Only the owned portion of free funds can be unavailable. Counting the
+  // whole freeze threshold would inflate locked and total when frozen > free.
+  const nonTransferableFree = free.sub(transferable);
+  // [SORA] Reserved and referral-bonded funds are owned but unavailable.
+  const locked = nonTransferableFree.add(reserved).add(bonded);
+  const total = free.add(reserved).add(bonded);
 
   return {
     free: free.toCodecString(),
@@ -130,7 +149,7 @@ export function formatBalance(
     frozen: frozen.toCodecString(),
     bonded: bonded.toCodecString(),
     locked: locked.toCodecString(),
-    total: transferable.add(locked).toCodecString(),
+    total: total.toCodecString(),
     transferable: transferable.toCodecString(),
   };
 }
@@ -175,7 +194,7 @@ export async function getAssetBalance(
       api.query.system.account(accountAddress),
       api.query.referrals.referrerBalances(accountAddress),
     ]);
-    return formatBalance(accountInfo.data, assetDecimals, bondedBalance);
+    return formatBalance(accountInfo.data, assetDecimals, bondedBalance, 'native');
   }
   const accountData = await api.query.tokens.accounts(accountAddress, assetAddress);
   return formatBalance(accountData, assetDecimals);
@@ -357,6 +376,8 @@ export class AssetsModule<T> {
   public accountDefaultAssetsAddresses: Array<string> = NativeAssets.map((asset) => asset.address);
 
   private _accountAssetsAddresses: Array<string> = [];
+  private accountAssetsGeneration = 0;
+  private pendingAssetLoads = new Map<string, symbol>();
   private balanceSubscriptions: Map<string, Subscription> = new Map();
   private zeroBalanceConfirmations: Map<string, number> = new Map();
   private zeroBalanceConfirmationId = 0;
@@ -365,6 +386,15 @@ export class AssetsModule<T> {
   public accountAssets: Array<AccountAsset> = [];
 
   // # Account assets methods
+
+  /** Rejects reads and emissions belonging to a cleared list or a different account. */
+  private isAccountAssetsContextCurrent(accountAddress: string | undefined, generation: number): boolean {
+    return Boolean(
+      accountAddress &&
+      this.root.account?.pair.address === accountAddress &&
+      this.accountAssetsGeneration === generation
+    );
+  }
 
   private applyAssetBalanceUpdate(asset: AccountAsset, accountBalance: AccountBalance): void {
     this.zeroBalanceConfirmations.delete(asset.address);
@@ -382,6 +412,8 @@ export class AssetsModule<T> {
     }
 
     const confirmationId = ++this.zeroBalanceConfirmationId;
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
     this.zeroBalanceConfirmations.set(asset.address, confirmationId);
 
     void this.getAccountAsset(asset.address)
@@ -392,11 +424,16 @@ export class AssetsModule<T> {
 
         this.zeroBalanceConfirmations.delete(asset.address);
 
-        if (this.getAsset(asset.address) !== asset) {
+        if (!this.isAccountAssetsContextCurrent(accountAddress, generation) || this.getAsset(asset.address) !== asset) {
           return;
         }
 
-        if (isAccountBalanceZero(confirmedAsset.balance, asset.decimals)) {
+        // A fresh direct read may also correct a stale nonzero balance. A newer
+        // live emission invalidates confirmationId before this result can apply.
+        if (
+          parseAccountBalance(confirmedAsset.balance, asset.decimals) &&
+          ACCOUNT_BALANCE_KEYS.some((key) => confirmedAsset.balance[key] !== asset.balance[key])
+        ) {
           this.applyAssetBalanceUpdate(asset, confirmedAsset.balance);
         }
       })
@@ -409,8 +446,14 @@ export class AssetsModule<T> {
 
   private subscribeToAssetBalance(asset: AccountAsset): void {
     let isSubscriptionBootstrap = true;
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
 
     const subscription = this.getAssetBalanceObservable(asset).subscribe((accountBalance: AccountBalance) => {
+      if (!this.isAccountAssetsContextCurrent(accountAddress, generation) || this.getAsset(asset.address) !== asset) {
+        return;
+      }
+
       if (asset.balance && isTransientZeroBalanceUpdate(asset.balance, accountBalance, asset.decimals)) {
         if (!isSubscriptionBootstrap) {
           this.confirmZeroBalanceUpdate(asset);
@@ -422,6 +465,10 @@ export class AssetsModule<T> {
       this.applyAssetBalanceUpdate(asset, accountBalance);
     });
     isSubscriptionBootstrap = false;
+    if (!this.isAccountAssetsContextCurrent(accountAddress, generation) || this.getAsset(asset.address) !== asset) {
+      subscription.unsubscribe();
+      return;
+    }
     this.balanceSubscriptions.set(asset.address, subscription);
   }
 
@@ -433,13 +480,27 @@ export class AssetsModule<T> {
 
   private async addToAccountAssetsList(address: string): Promise<void> {
     if (this.getAsset(address)) return;
-    // Get asset data and balance info
-    const asset = await this.getAccountAsset(address);
-    // During async execution of the method above, asset may have already been added
-    // Check again, that asset is not in account assets list
-    if (!this.getAsset(address)) {
-      this.accountAssets.push(asset);
-      this.subscribeToAssetBalance(asset);
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
+    const loadId = Symbol();
+    this.pendingAssetLoads.set(address, loadId);
+
+    try {
+      const asset = await this.getAccountAsset(address);
+      if (
+        this.pendingAssetLoads.get(address) !== loadId ||
+        !this.isAccountAssetsContextCurrent(accountAddress, generation)
+      ) {
+        return;
+      }
+      if (!this.getAsset(address)) {
+        this.accountAssets.push(asset);
+        this.subscribeToAssetBalance(asset);
+      }
+    } finally {
+      if (this.pendingAssetLoads.get(address) === loadId) {
+        this.pendingAssetLoads.delete(address);
+      }
     }
   }
 
@@ -448,6 +509,7 @@ export class AssetsModule<T> {
   }
 
   private removeFromAccountAssetsList(address: string): void {
+    this.pendingAssetLoads.delete(address);
     this.unsubscribeFromAssetBalance(address);
     this.removeFromAccountAssets(address);
     this.balanceSubject.next();
@@ -475,6 +537,8 @@ export class AssetsModule<T> {
    * Clear account assets & their balance subscriptions
    */
   public clearAccountAssets() {
+    this.accountAssetsGeneration += 1;
+    this.pendingAssetLoads.clear();
     for (const address of this.balanceSubscriptions.keys()) {
       this.unsubscribeFromAssetBalance(address);
     }
@@ -498,7 +562,7 @@ export class AssetsModule<T> {
       const bondedBalance = this.root.apiRx.query.referrals.referrerBalances(accountAddress);
 
       return combineLatest([accountInfo, bondedBalance]).pipe(
-        map((result) => formatBalance(result[0].data, asset.decimals, result[1]))
+        map((result) => formatBalance(result[0].data, asset.decimals, result[1], 'native'))
       );
     }
     return this.root.apiRx.query.tokens
@@ -545,11 +609,14 @@ export class AssetsModule<T> {
    */
   public async updateAccountAssets(): Promise<void> {
     assert(this.root.account, Messages.connectWallet);
+    const accountAddress = this.root.account?.pair.address;
+    const generation = this.accountAssetsGeneration;
 
     let currentAddresses = this.accountAssetsAddresses;
     if (!currentAddresses.length) {
       const defaultList = this.accountDefaultAssetsAddresses;
       const accountList = await this.getAccountTokensAddressesList();
+      if (!this.isAccountAssetsContextCurrent(accountAddress, generation)) return;
       currentAddresses = [...new Set([...defaultList, ...accountList])];
       this.accountAssetsAddresses = currentAddresses;
     } else {
@@ -578,6 +645,7 @@ export class AssetsModule<T> {
 
     const addToAccountAssetsListPromises = currentAddresses.map((assetId) => this.addToAccountAssetsList(assetId));
     await Promise.allSettled(addToAccountAssetsListPromises);
+    if (!this.isAccountAssetsContextCurrent(accountAddress, generation)) return;
     // sort assets by currentAddresses list
     this.accountAssets.sort((a, b) => {
       return currentAddresses.indexOf(a.address) - currentAddresses.indexOf(b.address);
@@ -660,7 +728,7 @@ export class AssetsModule<T> {
   public get accountAssetsAddresses(): Array<string> {
     if (this.root.accountStorage) {
       const addresses = this.root.accountStorage.get('assetsAddresses');
-      this._accountAssetsAddresses = addresses ? (JSON.parse(addresses) as Array<string>) : [];
+      this._accountAssetsAddresses = parseStoredJson(addresses, [] as string[], isAssetAddressList);
     }
     return this._accountAssetsAddresses;
   }
@@ -739,7 +807,9 @@ export class AssetsModule<T> {
   public subscribeOnAssetTransferableBalance(assetId: string, accountId: string): Observable<string> {
     const observable =
       assetId === XOR.address
-        ? this.root.apiRx.query.system.account(accountId).pipe(map((info) => formatBalance(info.data)))
+        ? this.root.apiRx.query.system
+            .account(accountId)
+            .pipe(map((info) => formatBalance(info.data, undefined, undefined, 'native')))
         : this.root.apiRx.query.tokens.accounts(accountId, assetId).pipe(map((info) => formatBalance(info)));
 
     return observable.pipe(map((accountBalance) => accountBalance.transferable));
@@ -833,14 +903,21 @@ export class AssetsModule<T> {
    * @param asset Asset object
    * @param toAddress Account address
    * @param amount Amount value
+   * @param historyId optional deterministic local history id for direct hash tracking
    * @deprecated
    */
-  public simpleTransfer(asset: Asset | AccountAsset, toAddress: string, amount: NumberLike): Promise<T> {
+  public simpleTransfer(
+    asset: Asset | AccountAsset,
+    toAddress: string,
+    amount: NumberLike,
+    historyId?: string
+  ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
     const assetAddress = asset.address;
     const formattedToAddress = toAddress.startsWith('cn') ? toAddress : this.root.formatAddress(toAddress);
 
     const historyItem: History = {
+      ...(historyId ? { id: historyId } : {}),
       type: Operation.Transfer,
       symbol: asset.symbol,
       to: formattedToAddress,

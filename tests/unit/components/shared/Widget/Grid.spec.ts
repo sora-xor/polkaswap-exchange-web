@@ -242,6 +242,28 @@ describe('WidgetsGrid', () => {
     expect(wrapper.vm.layout[0].h).toBeGreaterThan(10);
   });
 
+  it('preserves measured content height when optional widgets are shown or hidden', async () => {
+    const wrapper = await mountGrid({ persistOnlyUserEdits: true, autoResize: true });
+    layoutsStorageMock.set.mockClear();
+
+    wrapper.vm.onResize('widget-1', { width: 400, height: 813 });
+    wrapper.vm.onLayoutUpdate([...wrapper.vm.layout]);
+    const measuredHeight = wrapper.vm.layout[0].h;
+    expect(measuredHeight).toBeGreaterThan(defaultLayouts.lg![0].h);
+    expect(layoutsStorageMock.set).not.toHaveBeenCalled();
+
+    await wrapper.setProps({ modelValue: { ...baseModel, 'widget-2': true } });
+    await flushPromises();
+    expect(wrapper.vm.layout.map(({ i }) => i)).toEqual(['widget-1', 'widget-2']);
+    expect(wrapper.vm.layout[0].h).toBe(measuredHeight);
+
+    await wrapper.setProps({ modelValue: { ...baseModel } });
+    await flushPromises();
+    expect(wrapper.vm.layout.map(({ i }) => i)).toEqual(['widget-1']);
+    expect(wrapper.vm.layout[0].h).toBe(measuredHeight);
+    expect(defaultLayouts.lg![0].h).toBe(4);
+  });
+
   it('stores layouts under CID-scoped key on IPFS paths', async () => {
     window.history.replaceState({}, '', '/ipfs/QmUnitTestCid/index.html');
     const wrapper = await mountGrid({ resizable: true });
@@ -326,6 +348,41 @@ describe('WidgetsGrid', () => {
       },
     ]);
     expect(layoutsStorageMock.set).toHaveBeenCalledWith('test-grid', expect.stringContaining('"customise"'));
+  });
+
+  it('applies a page migration before normalization and persists the migrated result once', async () => {
+    const stored = { lg: [...defaultLayouts.lg!, { i: 'legacy', x: 0, y: 0, w: 1, h: 1 }] };
+    layoutsStorageMock.get.mockReturnValueOnce(JSON.stringify(stored));
+    const migrateStoredLayouts = vi.fn((value: ResponsiveLayouts) => ({
+      lg: value.lg?.filter(({ i }) => i !== 'legacy').map((widget) => ({ ...widget, x: 2 })),
+    }));
+
+    const wrapper = await mountGrid({ migrateStoredLayouts });
+
+    expect(migrateStoredLayouts).toHaveBeenCalledWith(stored);
+    expect(wrapper.vm.layouts.lg?.every(({ x }) => x === 2)).toBe(true);
+    expect(layoutsStorageMock.set).toHaveBeenCalledTimes(1);
+    expect(layoutsStorageMock.set).toHaveBeenCalledWith('test-grid', expect.not.stringContaining('legacy'));
+  });
+
+  it('can reserve persistence for user gestures instead of content and breakpoint resizing', async () => {
+    const wrapper = await mountGrid({ persistOnlyUserEdits: true, resizable: true, autoResize: true });
+    layoutsStorageMock.set.mockClear();
+
+    wrapper.vm.onResize('widget-1', { width: 400, height: 500 });
+    wrapper.vm.onLayoutUpdate([...wrapper.vm.layout]);
+    expect(layoutsStorageMock.set).not.toHaveBeenCalled();
+
+    wrapper.vm.onUserLayoutEdit();
+    wrapper.vm.onLayoutUpdate([{ ...wrapper.vm.layout[0], x: 2 }]);
+    expect(layoutsStorageMock.set).toHaveBeenCalledTimes(1);
+
+    layoutsStorageMock.set.mockClear();
+    wrapper.vm.onLayoutUpdate([{ ...wrapper.vm.layout[0], h: 30 }]);
+    wrapper.vm.onUserLayoutEdit();
+    wrapper.vm.onBreakpointChanged('lg');
+    wrapper.vm.onLayoutUpdate([{ ...wrapper.vm.layout[0], h: 31 }]);
+    expect(layoutsStorageMock.set).not.toHaveBeenCalled();
   });
 
   it('toggles editing class only while widget editing is enabled', async () => {

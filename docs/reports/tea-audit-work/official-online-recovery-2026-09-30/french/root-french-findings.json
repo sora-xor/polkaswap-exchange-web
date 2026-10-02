@@ -1,0 +1,33 @@
+{
+  "reviewedAt": "2026-09-30",
+  "PF": {
+    "outcome": "supported",
+    "processingInference": true,
+    "currentAuthorityPageUpdated": "2026-08-05",
+    "exactPostalSource": "https://www.service-public.pf/biosecurite/accueil/particuliers/apporter-ou-faire-venir-en-pf-particulier/jarrive-en-polynesie-francaise/",
+    "fullAnnex5Read": false,
+    "peerReview": "../americas/pf-peer-review.json",
+    "sourceProvenance": "pf-current-public-page-recovery.json"
+  },
+  "FrenchOverseasDefinition": {
+    "officialFullWebRead": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039329636",
+    "finding": "Current ArticleL271-7 expressly imports a risk-qualified manufactured-product definition through EU2016/2031Art2(2) firstsentence; delegated regulatory specification and current administrative transition remain under independent review. No general EU mainland schedule was extended overseas. Direct local files fr-overseas-definitions.html/.txt hold access-error content, not recovered legal text."
+  },
+  "YT": {
+    "outcome": "unresolved",
+    "note": "The current2026consolidation remains inaccessible; new Gazette-route evidence saved by regional agent. No expired Chido exception was treated as a current postal waiver."
+  },
+  "WF": {
+    "outcome": "unresolved",
+    "note": "Current2026AIP repeats underlying2014rules, with1995order unresolved. Loose-tea permit waiver does not alone waivecertificate."
+  },
+  "VA": {
+    "outcome": "unresolved",
+    "note": "Fresh targeted government-only searches for import plant, food licence and Customs rules returned no results. This is not positive permission."
+  },
+  "GU_MP": {
+    "outcome": "unresolved",
+    "officialFoodScopeSource": "https://www.fda.gov/media/161541/download",
+    "finding": "Direct territory foods exempt from FDApriornotice; local plant definition remains unresolved."
+  }
+}

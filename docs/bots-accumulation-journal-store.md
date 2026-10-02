@@ -1,0 +1,17 @@
+# Accumulation research journal storage
+
+`scripts/bots/accumulation-journal-store.ts` retains one cooperative writer's exact research records and raw evidence. It is a storage component; it neither recomputes reducer results nor authenticates prices, external sources, schedule coverage or trading eligibility. No wallet, signing or transaction interface exists.
+
+Create with `openAccumulationJournalStore(directory, registration, null)` only for a new directory. Reopen with the independently retained expected head. The registration supplies an episode ID, exact original bytes and their independently expected SHA-256. Never learn an expected head or registration hash from the journal being checked. The root must be canonical, and owned paths must be ordinary files/directories without symlinks.
+
+An exclusive `LOCK` stays held until `close()`. There is no stale-lock stealing or automatic recovery. Store evidence with `retainEvidence`, then pass its immutable reference in each record. `append(expectedHead, recordJsonl)` accepts exact canonical ASCII JSON followed by one newline. It checks episode/registration identity, contiguous sequence, previous-record digest, the sole opening, and all referenced byte digests. It does **not** establish that the record's claimed result is correct. The parent must first obtain and bind a proposal from the full-transition replay worker and verify its source evidence.
+
+Each record is exclusively created under `records/`, synced, and followed by a synced pending head, atomic head replacement and directory sync. The head binds the record count, last complete record bytes and whole concatenated JSONL prefix. A failed or uncertain write poisons that owner and retains its lock. Orphan records, pending heads, truncated/missing records and unexpected head changes require explicit recovery; they are never silently trimmed, adopted, retried or turned into fresh funding. This protects cooperative writers and crashes, not a hostile filesystem or rollback without an independently retained head.
+
+New-root creation also syncs its parent directory before returning success. Expected heads are detached before asynchronous I/O. A parent coordinator can call `quarantine` for an unresolved subprocess/protocol failure: it retains a bounded `RECOVERY.json` marker and keeps the lock. Reconstructing a new session does not clear the failure. There is no automatic recovery or reset API.
+
+Evidence is retained under bounded ASCII identifiers. Unreferenced evidence can remain for later failure records; its presence proves no schedule completeness. Limits are 512 records, 1 MiB of journal bytes, 384 KiB per record, 2 MiB per evidence artifact and 64 MiB of retained evidence. The later acquisition protocol must fit these bounds before collecting data.
+
+Snapshots return detached values and explicitly report `evidenceAuthentication: registered-bytes-only`, `financialActions:false`, and `qualificationAuthority:false`. Admission requires the actual evidence bridge's ownership marker, full journal replay, complete native mark/receipt equality and registered coverage checks. A storage-consistent prefix alone is insufficient.
+
+`openAccumulationJournalStoreForTesting` accepts only an explicitly supplied local I/O dependency object for deterministic crash tests. It is never selected by serialized input. Run the focused Vitest spec at `tests/unit/scripts/bots/accumulation-journal-store.spec.ts`.

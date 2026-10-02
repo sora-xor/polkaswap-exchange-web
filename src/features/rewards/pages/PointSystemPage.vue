@@ -157,6 +157,7 @@ import { useWalletStore } from '@/stores/wallet';
 import type { Nullable } from '@/types/common';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix } from '@/utils';
+import { resolveStaticAssetUrl } from '@/utils/staticAssets';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
@@ -209,11 +210,11 @@ const totalSwapTxs = ref(0);
 const xorSymbol = XOR.symbol;
 
 const referralsCardStyles = computed(() => ({
-  backgroundImage: `url('/points/${libraryTheme.value}/referrals.png')`,
+  backgroundImage: `url('${resolveStaticAssetUrl(`points/${libraryTheme.value}/referrals.png`)}')`,
 }));
 
 const bridgeCardStyles = computed(() => ({
-  backgroundImage: `url('/points/${libraryTheme.value}/bridge.png')`,
+  backgroundImage: `url('${resolveStaticAssetUrl(`points/${libraryTheme.value}/bridge.png`)}')`,
 }));
 
 const totalReferrals = computed(() =>

@@ -1,0 +1,823 @@
+31 octobre 2019           JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                       Texte 88 sur 215
+
+
+
+
+             Décrets, arrêtés, circulaires
+
+                                       TEXTES GÉNÉRAUX
+
+                  MINISTÈRE DE L’AGRICULTURE ET DE L’ALIMENTATION
+
+             Ordonnance no 2019-1110 du 30 octobre 2019 portant adaptation du livre II
+               du code rural et de la pêche maritime au droit de l’Union européenne
+                                                   NOR : AGRG1922672R
+
+   Le Président de la République,
+   Sur le rapport du Premier ministre et du ministre de l’agriculture et de l’alimentation,
+   Vu la Constitution, notamment son article 38 ;
+   Vu le règlement (CE) no 178/2002 du Parlement européen et du Conseil du 28 janvier 2002 établissant les
+principes généraux et les prescriptions générales de la législation alimentaire, instituant l’Autorité européenne de
+sécurité des aliments et fixant des procédures relatives à la sécurité des denrées alimentaires ;
+   Vu le règlement (CE) no 1107/2009 du Parlement européen et du Conseil du 21 octobre 2009 concernant la mise
+sur le marché des produits phytopharmaceutiques et abrogeant les directives 79/117/CEE et 91/414/CEE du
+Conseil ;
+   Vu le règlement (UE) no 576/2013 du Parlement européen et du Conseil du 12 juin 2013 relatif aux mouvements
+non commerciaux d’animaux de compagnie et abrogeant le règlement (CE) no 998/2003 ;
+   Vu le règlement (UE) no 952/2013 du Parlement européen et du Conseil du 9 octobre 2013 établissant le code
+des douanes de l’Union ;
+   Vu le règlement (UE) 2016/2031 du Parlement européen et du Conseil du 26 octobre 2016 relatif aux mesures de
+protection contre les organismes nuisibles aux végétaux, modifiant les règlements du Parlement européen et du
+Conseil (UE) no 228/2013, (UE) no 652/2014 et (UE) no 1143/2014 et abrogeant les directives du Conseil
+69/464/CEE, 74/647/CEE, 93/85/CEE, 98/57/CE, 2000/29/CE, 2006/91/CE et 2007/33/CE ;
+   Vu le règlement (UE) 2017/625 du Parlement européen et du Conseil du 15 mars 2017 concernant les contrôles
+officiels et les autres activités officielles servant à assurer le respect de la législation alimentaire et de la législation
+relative aux aliments pour animaux ainsi que des règles relatives à la santé et au bien-être des animaux, à la santé
+des végétaux et aux produits phytopharmaceutiques, modifiant les règlements du Parlement européen et du Conseil
+(CE) no 999/2001, (CE) no 396/2005, (CE) no 1069/2009, (CE) no 1107/2009, (UE) no 1151/2012, (UE) no 652/2014,
+(UE) 2016/429 et (UE) 2016/2031, les règlements du Conseil (CE) no 1/2005 et (CE) no 1099/2009 ainsi que les
+directives du Conseil 98/58/CE, 1999/74/CE, 2007/43/CE, 2008/119/CE et 2008/120/CE, et abrogeant les
+règlements du Parlement européen et du Conseil (CE) no 854/2004 et (CE) no 882/2004, les directives du Conseil
+89/608/CEE, 89/662/CEE, 90/425/CEE, 91/496/CEE, 96/23/CE, 96/93/CE et 97/78/CE ainsi que la décision
+92/438/CEE du Conseil ;
+   Vu le règlement délégué (UE) 2019/624 de la Commission du 8 février 2019 concernant des règles spécifiques
+pour la réalisation des contrôles officiels en rapport avec la production de viande et les zones de production et de
+reparcage des mollusques bivalves vivants conformément au règlement (UE) 2017/625 du Parlement européen et
+du Conseil ;
+   Vu le code de l’environnement, notamment le titre III de son livre V ;
+   Vu le code de justice administrative, notamment son article R. 123-20 ;
+   Vu le code rural et de la pêche maritime, notamment son livre II ;
+   Vu le code de la sécurité intérieure, notamment ses articles L. 741-1 et suivants ;
+   Vu la loi no 2018-938 du 30 octobre 2018 pour l’équilibre des relations commerciales dans le secteur agricole et
+alimentaire et une alimentation saine, durable et accessible à tous, notamment son article 88 ;
+   Vu la saisine du conseil territorial de Saint-Martin en date du 23 août 2019 ;
+   Vu la saisine du conseil départemental de Guadeloupe en date du 23 août 2019 ;
+   Vu la saisine du conseil régional de Guadeloupe en date du 23 août 2019 ;
+   Vu la saisine de l’assemblée de Martinique en date du 23 août 2019 ;
+   Vu la saisine du conseil départemental de Mayotte en date du 23 août 2019 ;
+   Vu la saisine du conseil départemental de La Réunion en date du 23 août 2019 ;
+   Vu la saisine du conseil régional de La Réunion en date du 26 août 2019 ;
+   Vu la saisine de l’assemblée de la collectivité territoriale de Guyane en date du 27 août 2019 ;
+31 octobre 2019          JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                   Texte 88 sur 215
+
+
+
+  Vu la saisine du conseil territorial de Saint-Barthélemy en date du 27 août 2019 ;
+  Vu la saisine du conseil territorial de Saint-Pierre-et-Miquelon en date du 8 octobre 2019 ;
+  Le Conseil d’Etat (section des travaux publics) entendu ;
+  Le conseil des ministres entendu,
+             Ordonne :
+                                                     Article 1er
+  Le livre II du code rural et de la pêche maritime est modifié conformément aux articles 2 à 5.
+                                                        Article 2
+  Le titre préliminaire est ainsi modifié :
+  1o L’article L. 201-1 est ainsi modifié :
+  a) Le premier alinéa est remplacé par les dispositions suivantes :
+   « I. – Pour l’application du présent livre, sous réserve de dispositions particulières, on entend par dangers
+sanitaires :
+   « 1o Les dangers qui sont de nature à porter atteinte à la santé des animaux ou à la sécurité sanitaire des aliments
+et les maladies d’origine animale qui sont transmissibles à l’homme ;
+   « 2o Les dangers de nature à porter atteinte à la santé des végétaux, dits “dangers phytosanitaires”. » ;
+   b) Au deuxième alinéa, qui devient le quatrième, les mots : « Les dangers sanitaires », sont remplacés par les
+mots : « II. – Les dangers sanitaires mentionnés au 1o du I » ;
+   c) Au troisième alinéa, qui devient le cinquième, les mots : « des végétaux et » et les mots : « ou végétale » sont
+supprimés ;
+  d) L’article est complété par un III ainsi rédigé :
+   « III. – Les dangers phytosanitaires comprennent :
+   « 1o Les organismes nuisibles réglementés mentionnés à l’article L. 251-3 ;
+   « 2o Les organismes nuisibles faisant l’objet d’un programme collectif volontaire mentionné à l’article L. 201-12 ;
+   « 3o Les autres organismes nuisibles, pour lesquels les mesures de prévention, de surveillance ou de lutte
+relèvent de l’initiative privée. » ;
+   2o L’article L. 201-2 est ainsi modifié :
+   a) Au troisième alinéa, les mots : « des plantes vivantes, des parties vivantes de plantes ou des produits de
+végétaux, ces derniers étant définis comme des produits d’origine végétale non transformés ou n’ayant fait l’objet
+que d’une préparation simple » sont remplacés par les mots : « des végétaux, produits végétaux ou autres objets au
+sens de l’article 2 du règlement (UE) 2016/2031 du Parlement européen et du Conseil du 26 octobre 2016 relatif
+aux mesures de protection contre les organismes nuisibles aux végétaux ou, pour l’application des chapitres III
+à VIII du titre V du livre II, tout autre produit d’origine végétale non transformé ou n’ayant subi qu’une préparation
+simple » ;
+   b) Le quatrième alinéa est supprimé ;
+   3o A l’article L. 201-3, après les mots : « de première catégorie », sont insérés les mots : « et les organismes
+nuisibles mentionnés aux 1o, 2o, 4o et 5o de l’article L. 251-3 » et après les mots : « de deuxième catégorie », sont
+insérés les mots : « et les organismes nuisibles mentionnés aux 3o et 6o du même article » ;
+  4o L’article L. 201-4 est ainsi modifié :
+  a) Au début du premier alinéa, il est inséré un « I. – » ;
+   b) Il est inséré, avant le dernier alinéa, un alinéa ainsi rédigé :
+   « II. – L’autorité administrative met en œuvre les mesures de prévention, de surveillance et de lutte contre les
+dangers phytosanitaires énumérés à l’article L. 251-3 décidées par l’Union européenne en application du règlement
+(UE) 2016/2031 du 26 octobre 2016. En l’absence ou en complément de telles dispositions, et quel que soit
+l’organisme réglementé en cause, elle peut prendre, lorsque l’objectif de protection phytosanitaire le justifie, toute
+mesure mentionnée à la section 1 de l’annexe II de ce règlement, sous réserve du respect des principes énumérés à
+la section 2 de cette annexe. Les conditions dans lesquelles sont mises en œuvre ces mesures sont précisées par
+décret en Conseil d’Etat. » ;
+   c) Au début du dernier alinéa, il est inséré un « III. – » ;
+   5o L’article L. 201-5 est ainsi modifié :
+   a) Au premier alinéa, après les mots : « première catégorie », sont insérés les mots : « figurant sur une liste
+établie par décret et les organismes de quarantaine prioritaires au sens de l’article 6 du règlement (UE)
+2016/2031 du 26 octobre 2016 » et la référence à l’article L. 251-8 est remplacée par une référence à
+l’article L. 201-4 ;
+31 octobre 2019          JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                  Texte 88 sur 215
+
+
+
+   b) Le deuxième alinéa est remplacé par les dispositions suivantes :
+   « Sous réserve, pour les dangers phytosanitaires, des dispositions de l’article 25 du règlement (UE)
+2016/2031 du 26 octobre 2016, un décret détermine les conditions d’élaboration et d’adoption du plan ainsi que
+les conditions selon lesquelles il est mis en œuvre et adapté dans chaque département dans le cadre du plan ORSEC
+prévu aux articles L. 741-1 à L. 741-5 du code de la sécurité intérieure. » ;
+   c) Au cinquième alinéa, avant les mots : « l’organisme nuisible », sont insérés les mots : « la maladie ou de » et
+le mot : « sanitaires » est supprimé ;
+  6o L’article L. 201-7 est ainsi modifié :
+  a) Au premier alinéa, les mots : « ou de végétaux » et : « ou végétaux » sont supprimés ;
+   b) Il est inséré, après le premier alinéa, un alinéa ainsi rédigé :
+   « L’autorité administrative est informée de la présence d’un danger phytosanitaire mentionné aux 1o, 2o, 4o ou 5o
+de l’article L. 251-3 dans les conditions prévues aux articles 9, 14 et 15 du règlement (UE) 2016/2031 du
+26 octobre 2016. En outre, pour l’application de l’article 29 du même règlement, tout propriétaire ou détenteur de
+végétaux, ou tout professionnel exerçant ses activités en relation avec des végétaux qui détecte ou suspecte la
+première apparition sur le territoire national d’un danger phytosanitaire en informe immédiatement l’autorité
+administrative. » ;
+   7o A l’article L. 201-10, les mots : « et au I de l’article L. 251-12 » sont supprimés ;
+   8o Au troisième alinéa de l’article L. 201-12, les mots : « L. 221-1 et L. 251-8 » sont remplacés par les mots :
+« et L. 221-1 » ;
+   9o L’article L. 201-13 est ainsi modifié :
+   a) Au premier alinéa, les mots : « des tâches particulières liées aux contrôles prévus aux titres Ier, II et V du
+présent livre » sont remplacés par les mots : « certaines tâches de contrôle officiel ou liées aux autres activités
+officielles conformément aux articles 28, 29 et 31 du règlement (UE) 2017/625 du Parlement européen et du
+Conseil du 15 mars 2017 concernant les contrôles officiels et les autres activités officielles servant à assurer le
+respect de la législation alimentaire et de la législation relative aux aliments pour animaux, ainsi que des règles
+relatives à la santé et au bien-être des animaux, à la santé des végétaux et aux produits phytopharmaceutiques » ;
+   b) Au deuxième alinéa, le mot : « ainsi » est remplacé par le mot : « notamment », après les mots : « des
+animaux », sont insérés les mots : « , des végétaux, des produits végétaux et autres objets » et après les mots :
+« danger sanitaire », sont insérés les mots : « ou de ne pas être conformes aux normes en vigueur, » ;
+  c) Après le deuxième alinéa sont insérés deux alinéas ainsi rédigés :
+  « Les employés des délégataires légalement désignés ont accès aux locaux, parcelles, terrains et jardins, clos ou
+non, à leurs alentours, aux installations, lieux, véhicules de transport à usage professionnel dans les mêmes
+conditions que les agents de l’Etat habilités à réaliser les contrôles et autres activités ainsi déléguées. Ils ont
+également accès aux données nécessaires à l’accomplissement de la mission qui leur a été déléguée, sans que
+puisse leur être opposé le secret professionnel. Ces données ne peuvent être utilisées que dans le cadre de la
+mission déléguée et ne peuvent être transmises qu’à l’autorité délégante.
+  « L’acte de délégation indique si le délégataire peut facturer aux personnes soumises aux contrôles et autres
+activités déléguées le montant des prestations effectuées à leur bénéfice. » ;
+  10o Au deuxième alinéa de l’article L. 201-14, après les mots : « ou L. 201-4, » sont insérés les mots : « aux
+organismes nuisibles réglementés au sens de l’article L. 251-3, » ;
+  11o Le deuxième alinéa de l’article L. 202-1 est complété par les mots : « et ont la qualité de laboratoire officiel
+au sens de l’article 37 du règlement (UE) 2017/625 du 15 mars 2017 » ;
+  12o A l’article L. 203-1, les mots : « en vertu » sont remplacés par les mots : « en application du droit de l’Union
+européenne ou » ;
+  13o L’article L. 203-7 est ainsi modifié :
+  a) Au début du premier alinéa, il est inséré un « I. – » ;
+   b) L’article est complété par deux alinéas ainsi rédigés :
+   « II. – Le vétérinaire sanitaire peut réaliser l’inspection ante mortem en dehors de l’abattoir en cas d’abattage
+d’urgence, conformément aux dispositions de l’article 4 du règlement délégué (UE) 2019/624 de la Commission du
+8 février 2019 concernant des règles spécifiques pour la réalisation des contrôles officiels en rapport avec la
+production de viande et les zones de production et de reparcage des mollusques bivalves vivants conformément au
+règlement (UE) 2017/625 du 15 mars 2017. Dans ce cas, les dispositions des II et III de l’article L. 203-8 et des
+articles L. 203-10 et L. 203-11 lui sont applicables.
+   « Dans des conditions fixées par décret en Conseil d’Etat, l’autorité administrative peut retirer à un vétérinaire
+sanitaire la possibilité de réaliser l’inspection mentionnée au précédent alinéa. » ;
+  14o L’article L. 203-8 est ainsi modifié :
+  a) Au quatrième alinéa, les mots : « protection animale » sont remplacés par les mots : « bien-être des
+animaux » ;
+31 octobre 2019           JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                   Texte 88 sur 215
+
+
+
+   b) Il est complété par un III ainsi rédigé :
+   « III. – Les vétérinaires mandatés ont la qualité de vétérinaire officiel au sens du point 32 de l’article 3 du
+règlement (UE) 2017/625 du 15 mars 2017. » ;
+   15o Au II de l’article L. 205-1, la référence à l’article L. 215-2 est remplacée par une référence à
+l’article L. 511-12 ;
+  16o L’article L. 205-5 est ainsi modifié :
+  a) Au troisième alinéa, après les mots : « sous-produits animaux », sont insérés les mots : « ou produits
+dérivés » ;
+  b) Au sixième alinéa, après les mots : « des produits d’origine végétale », sont insérés les mots : « , des produits
+végétaux ou autres objets mentionnés à l’article L. 201-2, ainsi que » et les mots : « L. 251-12, » sont supprimés ;
+  17o L’article L. 205-11 est ainsi modifié :
+  a) Le I est remplacé par les dispositions suivantes :
+   « I. – Est puni de six mois d’emprisonnement et de 15 000 € d’amende le fait de faire obstacle aux fonctions ou
+d’entraver l’exercice des fonctions :
+   « 1o Des agents habilités à rechercher et constater les infractions ou manquements aux dispositions du présent
+livre, aux dispositions du droit de l’Union européenne ayant le même objet et aux textes réglementaires pris pour
+leur application ;
+   « 2o Du personnel désigné par l’autorité compétente d’un autre Etat membre de l’Union européenne dans le
+cadre de l’assistance prévue à l’article 104 du règlement (UE) 2017/625 du 15 mars 2017 ;
+   « 3o D’un expert de la Commission européenne ou d’un autre Etat membre de l’Union agissant dans le cadre des
+contrôles prévus à l’article 116 du même règlement.
+   « II. – Est puni de la même peine le fait de refuser aux personnes mentionnées au I l’assistance ou la coopération
+prévues au paragraphe 2 de l’article 15 du même règlement. » ;
+   b) Le II devient un III ;
+  18o Le chapitre VI est complété par une section 3 ainsi rédigée :
+                                                     « Section 3
+                                                   « Habilitations
+   « Art. L. 206-3. – Les agents habilités à réaliser les contrôles dans les domaines mentionnés aux points a, en ce
+qui concerne les denrées alimentaires animales ou d’origine animale, c, d, e et f du paragraphe 2 de l’article 1er du
+règlement (UE) 2017/625 du 15 mars 2017, qui détiennent un diplôme mentionné à l’article L. 241-2, ont la qualité
+de vétérinaires officiels au sens du point 32 de l’article 3 du même règlement.
+   « Les agents autres que ceux mentionnés à l’alinéa précédent habilités à réaliser les contrôles officiels
+mentionnés au paragraphe 1 de l’article 18 du même règlement ont la qualité d’auxiliaires officiels au sens du
+point 49 de l’article 3 du même règlement.
+   « Les agents habilités à réaliser les contrôles dans le domaine mentionné au point g du paragraphe 2 de
+l’article 1er du règlement (UE) 2017/625 du 15 mars 2017 ont la qualité d’inspecteurs de service phytosanitaire
+officiels au sens du point 33 de l’article 3 du même règlement. »
+                                                      Article 3
+  Le titre III est ainsi modifié :
+   1o L’article L. 231-1 est ainsi modifié :
+   a) Au 5o du II, les mots : « en application de l’article 10 du règlement (CE) no 882/2004 du Parlement européen
+et du Conseil du 29 avril 2004 » sont supprimés ;
+   b) Au 6o du II, le mot : « officiel » est supprimé ;
+   c) Au dernier alinéa, après les mots : « plan national de contrôles officiels pluriannuel », sont insérés les mots :
+« prévu à l’article 109 du règlement (UE) 2017/625 du 15 mars 2017 » ;
+   2o Le V de l’article L. 231-2 est abrogé ;
+   3o Au premier alinéa de l’article L. 231-2-1, après le mot : « fonctions », sont insérés les mots : « et sans
+préjudice des obligations pesant sur les opérateurs en application de l’article 15 du règlement (UE) 2017/625 du
+15 mars 2017, » ;
+  4o Le premier alinéa du I de l’article L. 231-2-2 est remplacé par les dispositions suivantes :
+  « I. – Les vétérinaires officiels exercent les compétences qui leur sont conférées par le droit de l’Union
+européenne. Ils sont notamment qualifiés, dans l’exercice de leurs fonctions : » ;
+  5o L’article L. 231-3 est remplacé par les dispositions suivantes :
+  « Art. L. 231-3. – Des vétérinaires peuvent être mandatés, en application de l’article L. 203-8, pour effectuer,
+sous le contrôle de l’autorité administrative, des missions d’inspection sanitaire et qualitative et de contrôle entrant
+dans le champ du présent chapitre. » ;
+31 octobre 2019           JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                    Texte 88 sur 215
+
+
+
+   6o L’article L. 231-4 est remplacé par les dispositions suivantes :
+   « Art. L. 231-4. – Le personnel des abattoirs peut être autorisé à participer aux contrôles officiels
+conformément au paragraphe 3 de l’article 18 du règlement (UE) 2017/625 du 15 mars 2017, selon des modalités
+définies par décret. » ;
+   7o L’article L. 232-2 est abrogé ;
+   8o Au deuxième alinéa du IV de l’article L. 234-1, les mots : « Les agents ayant la qualité de vétérinaires officiels
+en vertu du V de l’article L. 231-2 procèdent » sont remplacés par les mots : « Le vétérinaire officiel procède » ;
+   9o Au premier alinéa des articles L. 234-3 et L. 234-4, les mots : « agents ayant la qualité de vétérinaires officiels
+en vertu du V de l’article L. 231-2 » sont remplacés par les mots : « vétérinaires officiels » ;
+   10o Au premier alinéa de l’article L. 236-1, après les mots : « les produits d’origine animale », sont insérés les
+mots : « , les produits germinaux » et après les mots : « aux conditions sanitaires », est inséré le mot :
+« , qualitatives » ;
+   11o L’article L. 236-2-1 est remplacé par les dispositions suivantes :
+   « Art. L. 236-2-1. – L’exercice des missions de certification officielle et l’établissement et la délivrance des
+certificats et documents mentionnés au deuxième alinéa de l’article L. 236-2 sont assurés par des vétérinaires
+officiels ainsi que par d’autres agents habilités à cet effet par l’autorité administrative lorsque le droit de l’Union
+européenne l’autorise. » ;
+   12o L’article L. 236-4 est ainsi modifié :
+   a) Le premier alinéa est remplacé par les dispositions suivantes :
+   « Lorsqu’ils sont originaires ou en provenance de pays non membres de l’Union européenne, les envois
+d’animaux, de produits d’origine animale, de produits germinaux, de sous-produits animaux et de produits dérivés
+de ces derniers, d’aliments pour animaux, de micro-organismes pathogènes pour les animaux et de produits
+susceptibles de les véhiculer, appartenant à l’une des catégories mentionnées à l’article 47 du règlement
+(UE) 2017/625 du 15 mars 2017, sont soumis, aux frais des importateurs et au moment de leur entrée sur le
+territoire métropolitain ou en Guadeloupe, en Guyane, en Martinique, à La Réunion, à Mayotte ou à Saint-Martin, à
+un contrôle officiel en poste de contrôle frontalier au sens du point 38 de l’article 3 du même règlement. La liste des
+postes de contrôle frontalier est fixée par arrêté conjoint du ministre chargé de l’agriculture et du ministre chargé
+des douanes. » ;
+   b) Au deuxième alinéa, les mots : « poste d’inspection frontalier » sont remplacés par les mots : « poste de
+contrôle frontalier » ;
+   c) Au troisième alinéa, les mots : « poste d’inspection frontalier » sont remplacés par les mots : « poste de
+contrôle frontalier » et les mots : « la Communauté européenne » sont remplacés par les mots : « l’Union
+européenne » ;
+   d) Au dernier alinéa, les mots : « l’article 12 du règlement (CE) no 998/2003 du Parlement européen et du
+Conseil du 26 mai 2003 » sont remplacés par les mots : « l’article 34 du règlement (UE) no 576/2013 du
+12 juin 2013 » ;
+   13o Au troisième alinéa de l’article L. 236-6, les mots : « mentionnés à l’article L. 205-1 » sont remplacés par les
+mots : « habilités à réaliser les contrôles prévus au présent chapitre » ;
+   14o L’article L. 236-9 est ainsi modifié :
+   a) Au premier alinéa, après les mots : « des produits d’origine animale, » sont insérés les mots : « des produits
+germinaux, » ;
+   b) Au troisième alinéa, après les mots : « destruction des denrées alimentaires », sont insérés les mots : « , des
+produits germinaux » ;
+   15o Au cinquième alinéa du I de l’article L. 237-2, les mots : « délivrée par un agent ayant la qualité de
+vétérinaire officiel en vertu du V de l’article L. 231-2 » sont remplacés par les mots : « délivrée par un vétérinaire
+officiel » ;
+   16o Aux 1o, 2o et 3o du I de l’article L. 237-3, après les mots : « des produits d’origine animale, » sont insérés les
+mots : « des produits germinaux, » et au 4o du même I, après les mots : « de produits d’origine animale », sont
+insérés les mots : « , de produits germinaux ».
+                                                       Article 4
+   Le titre V est ainsi modifié :
+   1o L’article L. 250-1 est remplacé par les dispositions suivantes :
+   « Art. L. 250-1. – I. – Les dispositions du présent chapitre s’appliquent, sans préjudice des dispositions
+spécifiques prévues par les chapitres Ier à VIII du présent titre, à la recherche et à la constatation des manquements
+aux dispositions prévues par le droit de l’Union européenne, le présent titre, le titre III du livre V du code de
+l’environnement et les textes réglementaires pris pour leur application, dans les domaines :
+   « 1o De la dissémination dans l’environnement d’organismes végétaux génétiquement modifiés ;
+   « 2o Des mesures de protection contre les organismes nuisibles aux végétaux ;
+   « 3o Des exigences relatives à l’expérimentation, à la mise sur le marché et à l’utilisation des produits
+phytopharmaceutiques et de leurs adjuvants, des matières fertilisantes et de leurs adjuvants et supports de culture,
+31 octobre 2019           JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                    Texte 88 sur 215
+
+
+
+et à l’utilisation des pesticides compatible avec le développement durable, y compris en ce qui concerne le matériel
+d’application des pesticides ;
+   « 4o Des exigences relatives à l’entrée sur le territoire et à l’introduction dans l’environnement des macro-
+organismes non indigènes utiles aux végétaux ;
+   « 5o Des denrées alimentaires végétales et de leur sécurité, leur intégrité et leur salubrité, au stade de la
+production primaire, ainsi que de la transformation et de la distribution par le producteur primaire ;
+   « 6o Des aliments pour animaux d’origine végétale et de leur sécurité, au stade de la production primaire, ainsi
+que de la transformation et de la distribution par le producteur primaire.
+   « II. – Les dispositions du présent chapitre s’appliquent également aux autres activités officielles au sens du
+règlement (UE) 2017/625 du 15 décembre 2017, notamment celles réalisées dans le cadre de la surveillance
+biologique du territoire définie à l’article L. 251-1. » ;
+   2o Le I de l’article L. 250-5 est remplacé par les dispositions suivantes :
+   « I. – Pour l’exercice de leur mission, et sans préjudice des obligations pesant sur les opérateurs en application
+de l’article 15 du règlement (UE) 2017/625 du 15 mars 2017, les agents habilités à procéder à la recherche et à la
+constatation des manquements aux dispositions mentionnées au I de l’article L. 250-1 et, dans les limites de leurs
+attributions, les agents habilités à réaliser d’autres activités officielles mentionnées au II du même article, ont accès
+à tous locaux, parcelles, installations, lieux, véhicules de transport à usage professionnel, à l’exclusion des
+domiciles et de la partie des locaux à usage d’habitation. » ;
+   3o L’article L. 250-6 est remplacé par les dispositions suivantes :
+   « Art. L. 250-6. – I. – Dans le cadre des inspections et contrôles que nécessite l’application du présent titre, les
+agents mentionnés au I de l’article L. 250-5 peuvent prélever tout végétal, produit végétal ou autre objet au sens de
+l’article L. 201-2 ainsi que tout produit parmi ceux mentionnés aux articles L. 253-1 et L. 255-1, toute denrée
+alimentaire ou aliment pour animaux d’origine végétale, transformés ou non, et tout échantillon de sol ou d’eau
+dans des conditions définies par décret en Conseil d’Etat.
+   « II. – Dans l’attente des résultats d’analyse, ces agents peuvent consigner les produits mentionnés au I.
+   « III. – Toutes précautions sont prises afin d’assurer la confidentialité des secrets industriels. » ;
+  4o L’article L. 250-7 est ainsi modifié :
+  a) Le I est remplacé par les dispositions suivantes :
+  « I. – Si des végétaux, des produits végétaux ou d’autres objets au sens de l’article L. 201-2 ou des produits
+mentionnés aux 5o et 6o de l’article L. 250-1 et aux articles L. 251-1, L. 253-1 et L. 255-1, présentent ou sont
+susceptibles de présenter un danger pour la santé publique, la sécurité des consommateurs ou l’environnement, les
+agents mentionnés au I de l’article L. 250-5 peuvent, dans des conditions fixées par décret en Conseil d’Etat,
+ordonner la destruction, la consignation, le retrait ou le rappel, en un ou plusieurs lieux, du ou des lots de produits
+précédemment cités, ainsi que des végétaux et des animaux présentant des anomalies ou des effets indésirables
+susceptibles d’être liés à la dissémination d’organismes génétiquement modifiés. Ils peuvent prendre toute autre
+mesure qu’ils jugent nécessaire. » ;
+  b) Au II, les mots : « ou cédé » sont supprimés ;
+  5o L’article L. 251-2 est abrogé ;
+  6o La section 2 du chapitre Ier est ainsi modifiée :
+  a) L’intitulé est complété par les mots : « aux végétaux » ;
+  b) L’article L. 251-3 est remplacé par les dispositions suivantes :
+  « Art. L. 251-3. – Pour l’application des dispositions du présent livre, les organismes nuisibles réglementés
+comprennent :
+  « 1o Les organismes de quarantaine de l’Union figurant sur la liste établie par la Commission européenne en
+application de l’article 5 du règlement (UE) 2016/2031 du 26 octobre 2016 ;
+  « 2o Les organismes de quarantaine de zone protégée figurant sur la liste établie par la Commission européenne
+en application de l’article 32 du même règlement ;
+  « 3o Les organismes réglementés non de quarantaine figurant sur la liste établie par la Commission européenne
+en application de l’article 37 du même règlement ;
+  « 4o Les organismes nuisibles provisoirement considérés comme des organismes de quarantaine de l’Union en
+application de l’article 30 du même règlement ;
+  « 5o Les organismes nuisibles provisoirement considérés comme des organismes de quarantaine en application
+de l’article 29 du même règlement figurant sur une liste établie par l’autorité administrative ;
+  « 6o Les autres organismes nuisibles figurant sur une liste établie par l’autorité administrative, pour lesquels il
+peut être nécessaire, dans un but d’intérêt collectif, de mettre en œuvre des mesures de prévention, de surveillance
+ou de lutte. » ;
+  c) L’article L. 251-4 est abrogé ;
+  d) Il est créé après l’article L. 251-3-1, une sous-section 1 intitulée : « Obligations des propriétaires et détenteurs
+de végétaux, produits végétaux et autres objets » qui comprend les articles L. 251-6 à L. 251-11 ;
+31 octobre 2019           JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                     Texte 88 sur 215
+
+
+
+   e) Il est rétabli un article L. 251-6 ainsi rédigé :
+   « Art. L. 251-6. – L’autorité administrative peut, dans des conditions définies par décret en Conseil d’Etat,
+imposer une téléprocédure pour les inscriptions, demandes d’autorisation et déclarations d’activité requises en
+application des articles 8 et 65 du règlement (UE) 2016/2031 du 26 octobre 2016 ou de dispositions du présent
+titre ou du titre préliminaire. » ;
+   f) L’article L. 251-7 est remplacé par les dispositions suivantes :
+   « Art. L. 251-7. – Conformément à l’article 15 du règlement (UE) 2017/625 du 15 mars 2017, les propriétaires
+ou détenteurs de végétaux, produits végétaux ou autres objets mentionnés à l’article L. 201-2 sont tenus d’ouvrir
+leurs terrains et jardins, clos ou non, ainsi que leurs dépôts ou magasins, aux agents habilités mentionnés à
+l’article L. 250-5. » ;
+   g) L’article L. 251-8 est abrogé ;
+   h) L’article L. 251-9 est ainsi modifié :
+   – au troisième alinéa, le mot : « premier » est remplacé par le mot : « deuxième » ;
+   – au cinquième alinéa, les mots : « d’un organisme nuisible inscrit sur la liste des dangers sanitaires de première
+      catégorie » sont remplacés par les mots : « d’un des organismes nuisibles mentionnés aux 1o, 2o, 4o et 5o de
+      l’article L. 251-3 » ;
+   – au sixième alinéa, les mots : « figurant sur la liste mentionnée » sont remplacés par le mot : « mentionnés » ;
+   7o Les sections 3 et 4 du chapitre Ier deviennent la sous-section 2 de la section 2, intitulée « Certifications
+officielles, contrôles officiels et autres activités officielles » qui comprend les articles L. 251-12 à L. 251-18-1, et la
+section 5 devient la section 3 ;
+   8o Les articles L. 251-12 et L. 251-13 sont abrogés ;
+   9o L’article L. 251-14 est remplacé par les dispositions suivantes :
+   « Art. L. 251-14. – En application du règlement (UE) 2016/2031 du 26 octobre 2016, dans le cadre des
+contrôles officiels sur les végétaux, produits végétaux et autres objets introduits ou mis en circulation sur le
+territoire de l’Union, lorsqu’est constatée ou suspectée la présence d’un organisme nuisible réglementé
+conformément aux 1o, 2o, 3o, 4o ou 5o de l’article L. 251-3 du présent code, ou susceptible de l’être conformément à
+l’article 29 de ce règlement, ou lorsque des végétaux, produits végétaux ou autres objets ne respectent pas les
+exigences fixées par le même règlement ou les actes délégués, actes d’exécution ou dispositions nationales pris
+pour son application, les agents habilités par l’autorité administrative peuvent ordonner la destruction, la
+consignation, le retrait ou le rappel de tout ou partie du lot ou toutes autres mesures qu’ils jugent appropriées pour
+s’assurer du respect de ces exigences dans un délai qu’ils déterminent. Le cas échéant, ils peuvent annuler et retirer
+le passeport phytosanitaire de l’unité commerciale concernée.
+   « En cas d’inexécution des mesures dans les délais prescrits, les agents habilités font procéder à la destruction
+d’office du lot aux frais du propriétaire ou du détenteur. » ;
+   10o Les articles L. 251-15 et L. 251-16 sont abrogés ;
+   11o L’article L. 251-17 est ainsi modifié :
+   a) Le deuxième alinéa est remplacé par les dispositions suivantes :
+   « Cette redevance est établie dans les conditions définies au chapitre VI du titre II du règlement (UE) 2017/625
+du 15 mars 2017 sur la base du calcul des frais réels de chaque contrôle officiel, conformément au point b du
+paragraphe 1 de l’article 82 de ce règlement » ;
+   b) Le huitième alinéa est remplacé par les dispositions suivantes :
+   « Le montant de la redevance ainsi que celui des frais supplémentaires sont fixés par arrêté conjoint des ministres
+chargés de l’agriculture et du budget. » ;
+   c) Au neuvième alinéa, les mots : « 11 du code des douanes communautaire » sont remplacés par les mots : « 18
+du code des douanes de l’Union européenne » ;
+   12o L’article L. 251-17-1 est ainsi modifié :
+   a) Au I, le mot : « intracommunautaire » est remplacé par les mots : « sur le territoire de l’Union européenne » et
+les mots : « ou par les groupements de défense contre les organismes nuisibles mentionnés au chapitre II du présent
+titre » sont remplacés par les mots : « ou par les organismes mentionnés à l’article L. 201-13 » ;
+   b) Au II, le mot : « document » est remplacé par les mots : « certificat officiel » ;
+   c) Le III est remplacé par les dispositions suivantes :
+   « III. – Tout contrôle administratif conduisant à la délivrance d’une attestation officielle à un opérateur ou à
+l’autorisation de délivrer des attestations officielles pour un opérateur établi en France aux fins de la mise en
+circulation de ces végétaux, produits végétaux et autres objets sur le territoire de l’Union européenne donne lieu au
+paiement d’une redevance de 15 €. » ;
+   d) Au V, le mot : « intracommunautaire » est remplacé par les mots : « sur le territoire de l’Union européenne » ;
+   e) Au VI, les mots : « le laboratoire national de référence ou par un laboratoire agréé, conformément à
+l’article L. 202-1, dans le domaine de la santé des végétaux » sont remplacés par les mots : « un laboratoire
+officiel » ;
+31 octobre 2019           JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                     Texte 88 sur 215
+
+
+
+  13o Le I de l’article L. 251-17-2 est remplacé par les dispositions suivantes :
+  « I. – Lorsqu’une téléprocédure a été mise en place pour le produit et la destination concernés, la demande de
+certificat prévue au II de l’article L. 251-17-1 est effectuée par les opérateurs à l’aide de la plateforme
+dématérialisée dédiée à cet effet et gérée par l’Etablissement national des produits de l’agriculture et de la mer
+mentionné à l’article L. 621-1. » ;
+  14o A l’article L. 251-18, les mots : « mentionnés au I de l’article L. 251-12, » sont remplacés par les mots : « au
+sens du règlement (UE) 2016/2031 du 26 octobre 2016 » ;
+  15o Les I et II de l’article L. 251-20 sont remplacés par les dispositions suivantes :
+   « I. – Est puni de deux ans d’emprisonnement et de 300 000 € d’amende, sauf lorsqu’il est réalisé dans le cadre
+d’une dérogation prévue par le règlement (UE) 2016/2031 du 26 octobre 2016 :
+   « 1o Le fait d’introduire sur le territoire métropolitain, de détenir ou de transporter un organisme mentionné au 1o
+de l’article L. 251-3, quel que soit le stade de son évolution ;
+   « 2o Le fait d’introduire dans une zone protégée nationale figurant sur une liste établie par décision de la
+Commission en application du paragraphe 3 de l’article 32 du règlement (UE) 2016/2031 du 26 octobre 2016, de
+détenir ou de transporter dans cette zone un organisme mentionné au 2o de l’article L. 251-3, quel que soit le stade
+de son évolution ;
+   « 3o Le fait d’introduire sur le territoire métropolitain, de détenir ou de transporter un organisme mentionné aux
+4o ou 5o de l’article L. 251-3, quel que soit le stade de son évolution ;
+   « 4o Le fait d’importer sur le territoire métropolitain des végétaux, produits végétaux ou autres objets mentionnés
+au point c du paragraphe 1 de l’article 47 du règlement (UE) 2017/625 du 15 mars 2017 originaires de pays tiers à
+l’Union européenne, ayant fait l’objet d’une mesure d’interdiction en application des articles 40 ou 42 du règlement
+(UE) 2016/2031 du 26 octobre 2016, ou n’ayant pas été présentés au contrôle officiel en poste de contrôle frontalier
+prévu à l’article 49 du même règlement.
+   « II. – Est puni de six mois d’emprisonnement et de 150 000 € d’amende :
+   « 1o Le fait de ne pas respecter les prescriptions édictées en application du II de l’article L. 201-4 ou des
+articles L. 250-7 ou L. 251-14 ;
+   « 2o Le fait de ne pas respecter les obligations d’inscription et de déclaration prévues aux chapitres V et VI du
+règlement (UE) 2016/2031 du 26 octobre 2016. » ;
+   16o Au 2o du II de l’article L. 251-21, les mots : « ou ordonnées en application de l’article L. 251-2 » sont
+supprimés ;
+   17o L’article L. 253-7 est ainsi modifié :
+   a) Au II, les mots : « organismes nuisibles mentionnés à l’article L. 251-3, en application de l’article L. 251-8 »
+sont remplacés par les mots : « organismes nuisibles réglementés au sens de l’article L. 251-3, ordonnés en
+application du II de l’article L. 201-4 » ;
+   b) Au III, les mots : « propagation des organismes nuisibles mentionnés à l’article L. 251-3, en application de
+l’article L. 251-8 » sont remplacés par les mots : « propagation des organismes nuisibles réglementés mentionnés à
+l’article L. 251-3 et à la lutte contre ces organismes en application du II de l’article L. 201-4 » ;
+   18o Au I de l’article L. 253-13, les mots : « les agents habilités mentionnés à l’article L. 250-3 » sont remplacés
+par les mots : « les agents habilités à procéder à la recherche et à la constatation des manquements aux dispositions
+mentionnées au I de l’article L. 250-1 » ;
+   19o L’article L. 253-17 est ainsi modifié :
+   a) Au 3o, après les mots : « un produit visé à l’article L. 253-1 », sont insérés les mots : « ou des semences
+traitées par ces produits » ;
+   b) Au 4o, les mots : « les agents habilités mentionnés à l’article L. 250-3 » sont remplacés par les mots : « les
+agents habilités à procéder à la recherche et à la constatation des manquements aux dispositions mentionnées au I
+de l’article L. 250-1 » ;
+   20o Au 2o du II de l’article L. 254-1, dans sa rédaction entrant en vigueur le 1er janvier 2021, les mots : « ou si ces
+produits sont uniquement composés de substances à faible risque ou de substances de base au sens des articles 22 et
+23 du règlement (CE) no 1107/2009 du Parlement européen et du Conseil du 21 octobre 2009 concernant la mise
+sur le marché des produits phytopharmaceutiques et abrogeant les directives 79/117/CEE et 91/414/CEE du
+Conseil » sont remplacés par les mots : « ou si ces produits sont des produits à faible risque au sens de l’article 47
+du règlement (CE) no 1107/2009 du 21 octobre 2009 ou s’ils sont uniquement composés de substances de base au
+sens de l’article 23 du même règlement » ;
+   21o Au 1o du III de l’article L. 254-6-2, dans sa rédaction entrant en vigueur le 1er janvier 2021, les mots : « de
+substances à faible risque » sont remplacés par les mots : « des produits à faible risque » ;
+   22o Au 2o de l’article L. 254-6-4, dans sa rédaction entrant en vigueur le 1er janvier 2021, les mots : « des produits
+composés uniquement de substances de base ou de substances à faible risque au sens du règlement (CE)
+no 1107/2009 du Parlement européen et du Conseil du 21 octobre 2009 » sont remplacés par les mots : « de produits
+composés uniquement de substances de base au sens de l’article 23 du règlement (CE) no 1107/2009 du
+21 octobre 2009 ou de produits à faible risque au sens de l’article 47 du même règlement » ;
+31 octobre 2019          JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                    Texte 88 sur 215
+
+
+
+  23o Au dernier alinéa de l’article L. 254-7, dans sa rédaction entrant en vigueur le 1er janvier 2021, les mots : « ou
+de substances à faible risque, au sens du règlement (CE) no 1107/2009 du Parlement européen et du Conseil du
+21 octobre 2009, concernant la mise sur le marché des produits phytopharmaceutiques et abrogeant les directives
+79/117/CE et 91/414/CE du Conseil » sont remplacés par les mots : « au sens de l’article 23 du règlement
+(CE) no 1107/2009 du 21 octobre 2009 ou de produits à faible risque au sens de l’article 47 du même règlement » ;
+  24o Au 4o de l’article L. 255-5, les mots : « prévue à la dernière phrase du » sont remplacés par les mots :
+« prévue au » ;
+  25o Les articles L. 257-3, L. 257-5, L. 257-6 et L. 257-10 sont abrogés ;
+  26o Aux articles L. 257-8 et L. 257-9, les mots : « mentionnés à l’article L. 250-2 » sont remplacés par les mots :
+« mentionnés au I de l’article L. 250-5 » ;
+  27o A l’article L. 257-9, les mots : « en application de l’article 10 du règlement (CE) no 882/2004 du Parlement
+européen et du Conseil du 29 avril 2004 » sont remplacés par les mots : « en application de l’article 14 du
+règlement (UE) 2017/625 du 15 mars 2017 » ;
+  28o Au I de l’article L. 257-12, les mots : « mesures que les agents mentionnés à l’article L. 250-2 peuvent
+ordonner en application des articles L. 257-6 et L. 257-8 » sont remplacés par les mots : « mesures ordonnées en
+application des articles L. 250-7 et L. 257-8 ».
+
+                                                      Article 5
+   I. – Les sections 2 et 3 du chapitre Ier du titre VII deviennent les sections 3 et 4.
+   II. – La section 3 du même chapitre est intitulée : « Autres dispositions communes » ; elle comprend
+l’article L. 271-5, qui devient l’article L. 271-9 et l’article L. 271-5-1, qui devient l’article L. 271-10.
+   III. – La section 4 du même chapitre est intitulée : « Dispositions particulières à Mayotte » ; elle comprend
+l’article L. 271-6, qui devient l’article L. 271-11.
+  IV. – Il est inséré, après l’article L. 271-4, une nouvelle section 2 ainsi rédigée :
+                                                     « Section 2
+                            « Dispositions communes relatives à la protection des végétaux
+   « Art. L. 271-5. – Pour l’application en Guadeloupe, en Guyane, en Martinique, à La Réunion et à Mayotte des
+dispositions du titre préliminaire du présent livre :
+   « 1o Au troisième alinéa de l’article L. 201-2, les mots : “des végétaux, produits végétaux ou autres objets au
+sens de l’article 2 du règlement (UE) 2016/2031 du Parlement européen et du Conseil du 26 octobre 2016 relatif
+aux mesures de protection contre les organismes nuisibles aux végétaux,” sont remplacés par les mots : “, des
+végétaux, produits végétaux ou autres objets mentionnés à l’article L. 251-2,” ;
+   « 2o A l’article L. 201-3, avant les mots : “de l’article L. 251-3”, sont insérés les mots : “du I” ;
+  « 3o L’article L. 201-4 est ainsi modifié :
+   « a) Le premier alinéa est remplacé par les dispositions suivantes :
+   « “I. – L’autorité administrative prend toutes mesures de prévention, de surveillance ou de lutte relatives aux
+dangers sanitaires de première catégorie et aux dangers phytosanitaires mentionnés aux 1o, 2o et 5o du I de
+l’article L. 251-3. Elle peut prendre de telles mesures pour les dangers de deuxième catégorie et les dangers
+phytosanitaires mentionnés aux 3o et 6o du même I.” ;
+  « b) Le II est remplacé par les dispositions suivantes :
+  « “II. – Les conditions dans lesquelles sont mises en œuvre les mesures relatives aux dangers phytosanitaires
+sont précisées par décret en Conseil d’Etat.” ;
+  « 4o L’article L. 201-5 est ainsi modifié :
+  « a) Au premier alinéa, les mots : “et les organismes de quarantaine prioritaires au sens de l’article 6 du
+règlement (UE) 2016/2031 du 26 octobre 2016,” sont supprimés ;
+   « b) Il est inséré, avant le deuxième alinéa, un alinéa ainsi rédigé :
+   « “L’autorité administrative peut établir la liste des organismes de quarantaine prioritaires d’un espace
+phytosanitaire d’outre-mer. Ceux-ci font l’objet d’un plan d’intervention sanitaire d’urgence.” ;
+   « c) Au deuxième alinéa, devenu le troisième, les mots : “Sous réserve, pour les dangers phytosanitaires, des
+dispositions de l’article 25 du règlement du 26 octobre 2016 mentionné au précédent alinéa,” sont supprimés ;
+   « 5o Le deuxième alinéa de l’article L. 201-7 est remplacé par les dispositions suivantes :
+   « “Tout propriétaire ou détenteur de végétaux, ou tout professionnel exerçant ses activités en relation avec des
+végétaux qui détecte ou suspecte la présence d’un danger phytosanitaire mentionné aux 1o, 2o, 4o ou 5o du I de
+l’article L. 251-3 ou la première apparition sur le territoire national d’un danger phytosanitaire en informe
+immédiatement l’autorité administrative. Un décret en Conseil d’Etat peut prévoir les mesures que les opérateurs
+professionnels sont tenus de prendre dans ce cas, sans attendre les instructions de l’autorité administrative.”
+31 octobre 2019          JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                    Texte 88 sur 215
+
+
+
+   « Art. L. 271-6. – Pour l’application en Guadeloupe, en Guyane, en Martinique, à La Réunion et à Mayotte des
+dispositions de l’article L. 250-5, les mots : “et sans préjudice des obligations pesant sur les opérateurs en
+application de l’article 15 du règlement (UE) 2017/625 du 17 mars 2017” sont supprimés.
+   « Art. L. 271-7. – Pour l’application en Guadeloupe, en Guyane, en Martinique, à La Réunion et à Mayotte des
+dispositions du chapitre Ier du titre V du présent livre :
+   « 1o Il est rétabli, au début de la section 2, avant l’article L. 251-3, un article L. 251-2 ainsi rédigé :
+   « “Art. L. 251-2. – Sont applicables aux collectivités mentionnées à l’article L. 271-1 :
+   « “1o La définition des organismes nuisibles applicable en métropole en vertu des deux premiers paragraphes de
+l’article 1er du règlement (UE) 2016/2031 du 26 octobre 2016, sous réserve du remplacement de la référence au
+territoire de l’Union par une référence à l’espace phytosanitaire d’outre-mer ;
+   « “2o La définition des végétaux, de la plantation, des végétaux destinés à la plantation et des autres objets
+applicable en métropole en vertu des points 1, 3, 4 et 5 de l’article 2 du même règlement ;
+   « “3o La définition des produits végétaux applicable en métropole en vertu de la première phrase du point 2 du
+même article, précisée par voie réglementaire ;
+   « “4o La définition des opérateurs professionnels applicable en métropole en vertu du point 9 du même article,
+sous réserve du remplacement de la référence au territoire de l’Union par une référence à l’espace phytosanitaire
+d’outre-mer.” ;
+   « 2o L’article L. 251-3 est ainsi modifié :
+   « a) Au début du premier alinéa, il est inséré un “I. –” ;
+   « b) Les 1o à 3o sont remplacés par les dispositions suivantes :
+   « “1o Les organismes de quarantaine mentionnés au III ;
+   « “2o Les organismes de quarantaine de zone protégée mentionnés au IV ;
+   « “3o Les organismes réglementés non de quarantaine mentionnés au V” ;
+   « c) Le 4o ainsi que les références faites à ce point dans les titres préliminaire et V sont supprimés ;
+   « d) Le 5o est remplacé par les dispositions suivantes :
+   « “5o Les organismes provisoirement reconnus en tant qu’organismes de quarantaine mentionnés au dernier
+alinéa du III ;”
+   « e) L’article est complété par les dispositions suivantes :
+   « “II. – L’autorité administrative établit, pour les différents espaces phytosanitaires d’outre-mer, des listes des
+organismes nuisibles mentionnés au I. Elle établit également la liste des végétaux destinés à la plantation propices à
+la dissémination des organismes mentionnés au 3o du I.
+   « “La liste des espaces phytosanitaires d’outre-mer est fixée par décret. Un espace phytosanitaire d’outre-mer
+regroupe un ou plusieurs des territoires mentionnés à l’article L. 271-1.
+   « “Pour l’application des dispositions du présent livre, est dénommé « espace phytosanitaire extérieur », tout
+territoire extérieur à un espace phytosanitaire d’outre-mer.
+   « “III. – Un organisme de quarantaine d’un espace phytosanitaire d’outre-mer répond aux conditions suivantes :
+   « “1o Son identité est établie ;
+   « “2o Il n’est pas présent dans l’espace phytosanitaire d’outre-mer, ou, s’il est présent, n’est pas largement
+disséminé dans cet espace ;
+   « “3o Il est susceptible d’entrer, de s’établir et de se disséminer dans l’espace phytosanitaire d’outre-mer ou, s’il
+y est présent mais pas largement disséminé, est capable d’entrer, de s’établir et de se disséminer dans les parties de
+cet espace dont il est absent ;
+   « “4o Son entrée, son établissement et sa dissémination auraient une incidence économique, environnementale ou
+sociale inacceptable pour cet espace phytosanitaire d’outre-mer ou pour les parties de cet espace dont il est absent ;
+   « “5o Il existe des mesures réalisables et efficaces pour prévenir l’entrée, l’établissement ou la dissémination de
+cet organisme nuisible dans cet espace phytosanitaire d’outre-mer et en atténuer les risques et les effets.
+   « “Un organisme nuisible est provisoirement reconnu comme organisme de quarantaine lorsque sa présence est
+confirmée officiellement pour la première fois dans un espace phytosanitaire d’outre-mer et que l’autorité
+administrative estime que cet organisme pourrait satisfaire aux conditions d’inscription sur la liste mentionnée au
+1o du I, dans l’attente d’une évaluation pour déterminer le risque phytosanitaire qu’il constitue. Pendant cette
+période, les dispositions prévues pour les organismes de quarantaine s’appliquent à cet organisme.
+   « “IV. – Lorsqu’un organisme nuisible qui n’est pas un organisme de quarantaine pour un espace phytosanitaire
+d’outre-mer remplit, pour une zone de cet espace, les conditions mentionnées au III, l’autorité administrative peut
+reconnaître cette zone comme zone protégée pour cet organisme nuisible. Sauf dispositions contraires, les règles
+applicables aux organismes de quarantaine dans l’espace phytosanitaire en cause s’appliquent aux organismes de
+quarantaine de zone protégée pour la zone reconnue pour chacun d’eux.
+   « “V. – Un organisme réglementé non de quarantaine d’un espace phytosanitaire d’outre-mer répond aux
+conditions suivantes :
+   « “1o Son identité est établie ;
+   « “2o Il est présent dans l’espace phytosanitaire d’outre-mer ;
+31 octobre 2019          JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                  Texte 88 sur 215
+
+
+
+   « “3o Ce n’est pas un organisme de quarantaine pour l’espace phytosanitaire d’outre-mer considéré, ni un
+organisme nuisible provisoirement reconnu comme tel pour cet espace ;
+   « “4o Il est transmis principalement par des végétaux spécifiques destinés à la plantation ;
+   « “5o Sa présence sur les végétaux destinés à la plantation a une incidence économique inacceptable sur l’usage
+prévu pour ceux-ci ;
+   « “6o Il existe des mesures réalisables et efficaces pour prévenir cette présence sur les végétaux destinés à la
+plantation concernés.
+   « “VI. – Les conditions d’inscription provisoire d’un organisme nuisible en tant qu’organisme de quarantaine et
+les conditions dans lesquelles sont reconnues les zones protégées, sont fixées par décret en Conseil d’Etat.” ;
+   « 3o Il est rétabli un article L. 251-4 ainsi rédigé :
+   « “Art. L. 251-4. – Les organismes de quarantaine et les organismes provisoirement reconnus comme
+organismes de quarantaine d’un espace phytosanitaire d’outre-mer ne sont pas introduits, déplacés, ni détenus,
+multipliés ou libérés dans cet espace. Il en va de même des organismes de quarantaine de zone protégée dans la
+zone protégée associée.
+   « “Les opérateurs professionnels n’introduisent pas, ni ne déplacent, dans un espace phytosanitaire d’outre-mer,
+un organisme réglementé non de quarantaine de cet espace présent sur les végétaux destinés à la plantation
+propices à sa dissémination figurant sur la liste mentionnée au premier alinéa du II de l’article L. 251-3.
+   « “Un décret en Conseil d’Etat détermine les conditions dans lesquelles il peut être dérogé aux interdictions
+prévues aux deux précédents alinéas, à des fins d’analyses officielles, dans un but scientifique ou pédagogique, à
+des fins d’essai, de sélection variétale, d’amélioration génétique ou dans le cadre d’un transit ou transbordement
+dans un espace phytosanitaire d’outre-mer, en provenance et à destination d’un espace phytosanitaire extérieur.” ;
+   « 4o A l’article L. 251-6, les mots : “des articles 8 et 65 du règlement (UE) 2016/2031 du 26 octobre 2016 ou de
+dispositions du présent titre” sont remplacés par les mots : “du présent titre” ;
+   « 5o A l’article L. 251-7, les mots : “Conformément à l’article 15 du règlement (UE) 2017/625 du Parlement
+européen et du Conseil du 15 mars 2017,” sont supprimés ;
+   « 6o A l’article L. 251-9, les mots : “4o et 5o de l’article L. 251-3” sont remplacés par les mots : “5o du I de
+l’article L. 251-3” ;
+   « 7o Il est rétabli un article L. 251-12 ainsi rédigé :
+   « “Art. L. 251-12. – I. – Lorsqu’un végétal, produit végétal ou autre objet originaire ou expédié depuis un
+espace phytosanitaire extérieur présente un risque phytosanitaire inacceptable parce qu’il est susceptible de porter
+un organisme de quarantaine de l’espace phytosanitaire d’outre-mer considéré et que ce risque ne peut être ramené
+à un niveau acceptable par l’application de mesures de gestion du risque, son introduction est interdite dans cet
+espace phytosanitaire d’outre-mer.
+   « “L’autorité administrative établit la liste des végétaux, produits végétaux et autres objets dont l’introduction
+dans l’espace phytosanitaire d’outre-mer considéré est interdite, ainsi que les espaces phytosanitaires extérieurs de
+provenance ou d’expédition auxquels s’applique cette interdiction.
+   « “Elle peut également établir une liste des végétaux, produits végétaux et autres objets dont l’introduction dans
+l’espace phytosanitaire d’outre-mer considéré est provisoirement interdite dans l’attente d’une évaluation du risque
+associé, ainsi que des espaces phytosanitaires extérieurs de provenance ou d’expédition auxquels s’applique cette
+interdiction.
+   « “Un décret en Conseil d’Etat détermine les conditions dans lesquelles il peut être dérogé aux interdictions
+prévues aux précédents alinéas, à des fins d’analyses officielles, dans un but scientifique ou pédagogique, à des fins
+d’essai, de sélection variétale, d’amélioration génétique ou dans le cadre d’un transit ou transbordement dans un
+espace phytosanitaire d’outre-mer, en provenance et à destination d’un espace phytosanitaire extérieur.
+   « “II. – L’autorité administrative peut, dans des conditions fixées par décret en Conseil d’Etat :
+   « “1o Subordonner l’introduction ou le déplacement dans un espace phytosanitaire d’outre-mer de certains
+végétaux, produits végétaux ou autres objets à des exigences particulières de nature à ramener le risque
+phytosanitaire associé à un niveau acceptable ; ces végétaux, produits végétaux ou autres objets peuvent provenir
+d’espaces phytosanitaires extérieurs ou de l’espace phytosanitaire d’outre-mer considéré ;
+   « “2o Adopter des mesures provisoires concernant l’introduction et la circulation dans un espace phytosanitaire
+d’outre-mer de végétaux, produits végétaux et autres objets, en provenance d’espaces phytosanitaires extérieurs,
+qui sont susceptibles de présenter un risque phytosanitaire nouvellement identifié ou d’autres risques
+phytosanitaires soupçonnés ;
+   « “3o Encadrer ou interdire l’introduction et la circulation des végétaux destinés à la plantation en vue de
+prévenir ou de limiter la présence d’organismes réglementés non de quarantaine dans l’espace phytosanitaire
+d’outre-mer concerné.
+   « “III. – Les dispositions des I et II s’appliquent également pour les zones protégées au regard du risque
+présenté par les organismes de quarantaine correspondants.” ;
+  « 8o Il est inséré, après l’article L. 251-12, deux articles L. 251-12-1 et L. 251-12-2 ainsi rédigés :
+  « “Art. L. 251-12-1. – L’autorité administrative peut désigner, dans les espaces phytosanitaires d’outre-mer ou,
+avec l’accord de l’autorité compétente, dans un espace phytosanitaire extérieur, des installations servant à la
+31 octobre 2019          JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                   Texte 88 sur 215
+
+
+
+détention d’organismes nuisibles, de végétaux, de produits végétaux ou d’autres objets soumis à la quarantaine,
+dénommées stations de quarantaine.
+   « “Les exigences applicables aux stations de quarantaine, les modalités de leur désignation et les conditions dans
+lesquelles leurs activités sont autorisées sont précisées par voie réglementaire.
+   « “Art. L. 251-12-2. – I. – Un certificat phytosanitaire pour l’introduction de végétaux, produits végétaux et
+autres objets dans un espace phytosanitaire d’outre-mer ou dans une zone protégée est un document délivré par
+l’autorité compétente d’un espace phytosanitaire extérieur, d’origine ou d’expédition, qui atteste que les végétaux,
+produits végétaux et autres objets concernés satisfont aux exigences fixées en application du présent titre.
+   « “II. – L’autorité administrative établit la liste des végétaux, produits végétaux et autres objets qui doivent,
+compte tenu de leur risque de contamination par des organismes nuisibles, apprécié en fonction de leurs espaces
+phytosanitaires extérieurs d’origine ou d’expédition, être accompagnés d’un certificat phytosanitaire, ou le cas
+échéant, d’autres documents ou marques définis et autorisés, lors de leur introduction dans l’espace phytosanitaire
+d’outre-mer, et présentés au contrôle officiel phytosanitaire au poste de contrôle frontalier.
+   « “III. – Lorsque l’autorité administrative constate qu’un certificat phytosanitaire a été délivré pour des
+végétaux, produits végétaux ou autres objets qui ne répondent pas aux conditions mentionnées au I, elle annule ce
+certificat. Sans préjudice des mesures pouvant être prises en application de l’article L. 251-14, elle décide le
+refoulement ou la destruction des végétaux, produits végétaux ou autres objets concernés.” ;
+   « 9o Il est rétabli un article L. 251-13 ainsi rédigé :
+   « “Art. L. 251-13. – Le passeport phytosanitaire est une étiquette officielle exigée pour la circulation de certains
+végétaux, produits végétaux et autres objets dans un espace phytosanitaire d’outre-mer et, le cas échéant, pour leur
+introduction et circulation dans des zones protégées, qui atteste que le produit concerné satisfait à la réglementation
+en vigueur.
+   « “Les conditions dans lesquelles est établie la liste des végétaux, produits végétaux et autres objets mentionnés
+au précédent alinéa, les cas dans lesquels ce passeport n’est pas exigé et les conditions dans lesquelles les
+passeports sont délivrés sont fixés par décret en Conseil d’Etat.
+   « “Le passeport phytosanitaire peut être délivré par l’autorité administrative ou, si le décret mentionné au
+précédent alinéa le prévoit et dans les conditions qu’il fixe, par des opérateurs professionnels autorisés, sous la
+surveillance de l’autorité administrative.” ;
+   « 10o Il est inséré un article L. 251-13-1 ainsi rédigé :
+   « “Art. L. 251-13-1. – Les opérateurs professionnels relevant de catégories définies par décret en Conseil d’Etat
+doivent s’enregistrer auprès de l’autorité administrative dans les conditions prévues par ce décret.
+   « “L’autorité administrative tient et met à jour le registre des opérateurs professionnels enregistrés qui opèrent
+dans chaque espace phytosanitaire d’outre-mer.
+   « “Les opérateurs enregistrés sont tenus, dans des conditions fixées par voie réglementaire, d’assurer
+l’enregistrement de certaines opérations ou de garantir leur traçabilité.” ;
+   « 11o Le premier alinéa de l’article L. 251-14 est remplacé par les dispositions suivantes :
+   « “Dans le cadre des contrôles officiels sur les végétaux, produits végétaux et autres objets introduits ou mis en
+circulation dans un espace phytosanitaire d’outre-mer, lorsqu’est suspectée ou constatée la présence d’un
+organisme nuisible réglementé mentionné aux 1o, 2o, 3o ou 5o du I de l’article L. 251-3, ou lorsque les végétaux,
+produits végétaux ou autres objets ne respectent pas les exigences fixées en application du présent titre ou du titre
+préliminaire, les agents habilités peuvent ordonner la destruction, la consignation, le retrait ou le rappel de tout ou
+partie du lot ou toutes autres mesures qu’ils jugent appropriées pour s’assurer du respect de ces exigences dans un
+délai qu’ils déterminent. Le cas échéant, ils peuvent annuler et retirer le passeport phytosanitaire de l’unité
+commerciale concernée, ou le certificat phytosanitaire.” ;
+   « 12o Sont rétablis deux articles L. 251-15 et L. 251-16 ainsi rédigés :
+   « “Art. L. 251-15. – Lorsque la réglementation applicable dans l’espace phytosanitaire extérieur de destination
+l’exige, les végétaux, produits végétaux ou autres objets destinés à l’exportation doivent être accompagnés d’un
+certificat phytosanitaire ou, le cas échéant, d’autres documents ou marques définis et autorisés dans des conditions
+fixées par décret.
+   « “Ce certificat phytosanitaire, ou, le cas échéant, d’autres documents ou marques, ou l’autorisation d’apposer
+ces marques sont délivrés, à la demande des opérateurs, par les agents habilités qui attestent de leur conformité.
+   « “Art. L. 251-16. – Un décret en Conseil d’Etat peut imposer aux gestionnaires des ports maritimes et des
+aéroports, aux transporteurs internationaux, aux opérateurs professionnels effectuant des ventes à distance et aux
+services de transport de colis de mettre à la disposition de leurs clients ou usagers des informations sur les
+interdictions mentionnées à l’article L. 251-12, ainsi que sur les exigences particulières mentionnées au même
+article relatives à l’introduction de végétaux, produits végétaux et autres objets dans l’espace phytosanitaire
+d’outre-mer.” ;
+   « 13o Aux I, III et V de l’article L. 251-17-1, les mots : “sur le territoire de l’Union européenne” sont remplacés
+par les mots : “au sein d’un espace phytosanitaire d’outre-mer” ;
+   « 14o A l’article L. 251-18, les mots : “du règlement (UE) 2016/2031 du Parlement européen et du Conseil du
+26 octobre 2016” sont remplacés par les mots : “de l’article L. 251-2” ;
+31 octobre 2019           JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE                                      Texte 88 sur 215
+
+
+
+   « 15o Les I et II de l’article L. 251-20 sont remplacés par les dispositions suivantes :
+   « “I. – Est puni de deux ans d’emprisonnement et de 300 000 € d’amende :
+   « “1o Le fait de contrevenir à une interdiction édictée en application du dernier alinéa de l’article L. 251-4
+lorsqu’elle concerne un organisme mentionné aux 1o, 2o ou 5o du I de l’article L. 251-3 ;
+   « “2o Le fait d’importer sur le territoire d’un espace phytosanitaire d’outre-mer des végétaux, produits végétaux
+ou autres objets faisant l’objet d’une mesure d’interdiction en application du I de l’article L. 251-12 ou n’ayant pas
+été présentés au contrôle officiel dans un poste de contrôle frontalier en méconnaissance des dispositions de
+l’article L. 251-12-2.
+   « “II. – Est puni de six mois d’emprisonnement et de 150 000 € d’amende :
+   « “1o Le fait de ne pas respecter les prescriptions édictées en application du II de l’article L. 201-4 ou des
+articles L. 250-7, L. 251-4 et L. 251-14 ;
+   « “2o Le fait de ne pas respecter les obligations d’enregistrement et de traçabilité imposées en application de
+l’article L. 251-13-1.”
+   « Art. L. 271-8. – Les dispositions applicables en métropole en vertu du règlement (UE) 2017/625 du
+15 mars 2017, en ce qui concerne les contrôles officiels et autres activités officielles dans le domaine de la
+protection contre les organismes nuisibles aux végétaux, s’appliquent en Guadeloupe, Guyane et Martinique, à
+La Réunion et à Mayotte, sous les réserves suivantes :
+   « 1o Les références aux “végétaux”, “organismes nuisibles aux végétaux”, “produits végétaux” et “autres objets”
+mentionnés à l’article 2 de ce règlement s’entendent des végétaux, organismes nuisibles aux végétaux et autres
+objets au sens de l’article L. 251-2 ;
+   « 2o Au point 2 de l’article 1er du même règlement, les mots : “aux fins de l’application de la législation de
+l’Union” sont supprimés ;
+   « 3o Les références au territoire de l’Union s’entendent comme des références à un espace phytosanitaire d’outre-
+mer ;
+   « 4o Les références aux pays tiers s’entendent comme des références aux espaces phytosanitaires extérieurs ;
+   « 5o Les références aux autorités compétentes s’entendent comme des références aux autorités administratives
+désignées par voie réglementaire ;
+   « 6o Pour l’application des dispositions applicables en métropole en vertu de l’article 47 du règlement mentionné
+au premier alinéa, les références aux articles 72, paragraphe 1, et 74, paragraphe 1, du règlement (UE) 2016/2031
+du 26 octobre 2016 s’entendent comme des références à l’article L. 251-12-2. »
+   V. – Il est inséré, après l’article L. 272-11, un article L. 272-11-1 ainsi rédigé :
+   « Art. L. 272-11-1. – Les dispositions du titre préliminaire et du chapitre Ier du titre V s’appliquent à Saint-
+Barthélemy dans les mêmes conditions que celles prévues par les articles L. 271-5 à L. 271-7. Les contrôles
+officiels et autres activités officielles sont régis par les mêmes dispositions que celles prévues à l’article L. 271-8. »
+  VI. – Il est inséré, après l’article L. 273-6-1, un article L. 273-6-2 ainsi rédigé :
+  « Art. L. 273-6-2. – Les dispositions du titre préliminaire et du chapitre Ier du titre V s’appliquent à Saint-
+Martin dans les mêmes conditions que celles prévues par les articles L. 271-5 à L. 271-7. Les contrôles officiels et
+autres activités officielles sont régis par les mêmes dispositions que celles prévues à l’article L. 271-8. »
+  VII. – Le chapitre IV du titre VII est ainsi modifié :
+   1o L’article L. 274-12 est remplacé par les dispositions suivantes :
+   « Art. L. 274-12. – Les dispositions du titre préliminaire et du chapitre Ier du titre V s’appliquent à Saint-Pierre-
+et-Miquelon dans les mêmes conditions que celles prévues par les articles L. 271-5 à L. 271-7. Les contrôles
+officiels et autres activités officielles sont régis par les mêmes dispositions que celles prévues à l’article L. 271-8. » ;
+   2o L’article L. 274-13 est abrogé.
+                                                        Article 6
+   I. – La présente ordonnance entre en vigueur le 14 décembre 2019.
+   II. – Par dérogation au I, en Guadeloupe, en Guyane, en Martinique, à La Réunion, à Mayotte, à Saint-
+Barthélemy, à Saint-Martin et à Saint-Pierre-et-Miquelon, le chapitre Ier du titre préliminaire, les chapitres
+préliminaire, Ier et III du titre V et le titre VII du livre II du code rural et de la pêche maritime dans leur rédaction
+antérieure à la présente ordonnance restent en vigueur jusqu’à l’entrée en vigueur du décret mentionné au II de
+l’article L. 251-3 dans sa rédaction issue du IV de l’article 5 de la présente ordonnance et, au plus tard, le
+14 avril 2020.
+                                                        Article 7
+   Le Premier ministre, la ministre des outre-mer et le ministre de l’agriculture et de l’alimentation sont
+responsables, chacun en ce qui le concerne, de l’application de la présente ordonnance, qui sera publiée au Journal
+officiel de la République française.
+   Fait le 30 octobre 2019.
+                                                                                          EMMANUEL MACRON
+31 octobre 2019            JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE            Texte 88 sur 215
+
+
+
+      Par le Président de la République :
+Le Premier ministre,
+ EDOUARD PHILIPPE
+                                                                     Le ministre de l’agriculture
+                                                                        et de l’alimentation,
+                                                                         DIDIER GUILLAUME
+La ministre des outre-mer,
+    ANNICK GIRARDIN
+

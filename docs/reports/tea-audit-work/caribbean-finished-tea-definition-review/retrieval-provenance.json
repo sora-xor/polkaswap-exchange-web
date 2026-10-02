@@ -1,0 +1,50 @@
+[
+  {
+    "file": "vc-commodity-guidance-undated.pdf",
+    "url": "https://agriculture.gov.vc/agriculture/images/stories/Agriculture/pdf_documents/1678-importation%20of%20plants%20and%20plants%20products.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 159856,
+    "sha256": "a28196e6da7a3ef7d0421a73963e7572c5104089dd446a2bbc90974e5ba1d9a3",
+    "contentType": "application/pdf",
+    "textFile": "vc-commodity-guidance-undated.pdf.txt"
+  },
+  {
+    "file": "tc-fruit-conditions2014.pdf",
+    "url": "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/tc3-fruits2014.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 567228,
+    "sha256": "313c689426837c0a52d8f5078d7054463c3e1c650fcb8ea5135e62725e7f7125",
+    "contentType": "application/pdf",
+    "textFile": "tc-fruit-conditions2014.pdf.txt"
+  },
+  {
+    "file": "kn-government-import-notice2020.html",
+    "url": "https://www.sknis.gov.kn/2020/06/26/plant-and-plant-product-import-requirements/",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 156986,
+    "sha256": "0f3d93a2ac894baea069ae48127bea7c7de5f201120705995f160b316992d2eb",
+    "contentType": "text/html; charset=UTF-8"
+  },
+  {
+    "file": "cw-usda-fairs2013.pdf",
+    "url": "https://apps.fas.usda.gov/newgainapi/api/report/downloadreportbyfilename?filename=Curacao+-+FAIRS+Country+Report_Miami+ATO_Netherlands+Antilles_12-23-2013.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 454873,
+    "sha256": "b9f6f4aea61dbaa0971d83b69748e1273db5af5485da622f1794d26145355065",
+    "contentType": "application/pdf",
+    "textFile": "cw-usda-fairs2013.pdf.txt"
+  },
+  {
+    "file": "bq-invoeringswet-current.html",
+    "url": "https://wetten.overheid.nl/BWBR0028063/2025-01-01",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 1025253,
+    "sha256": "a97c9c195d84047b3c5c636d0859e771532c3073831c50c5a07cfc53601b8f87",
+    "sourceStatus": "Official page explicitly identifies consultation 30-09-2026 and effective 01-01-2025 to present."
+  }
+]

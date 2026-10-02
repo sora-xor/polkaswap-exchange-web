@@ -60,6 +60,7 @@ export function useLoading(options: LoadingOptions = {}) {
   const settingsStore = useSettingsStore(pinia);
   const isWalletLoaded = computed(() => settingsStore.isWalletLoaded);
   const parentLoading = options.parentLoading;
+  let activeLoadingOperations = 0;
 
   const resolveParentLoading = (): boolean => {
     if (!parentLoading) return false;
@@ -67,6 +68,7 @@ export function useLoading(options: LoadingOptions = {}) {
   };
 
   const withLoading = async <T>(handler: MaybePromiseFn<T>): Promise<T> => {
+    activeLoadingOperations += 1;
     loading.value = true;
     try {
       return await handler();
@@ -74,55 +76,54 @@ export function useLoading(options: LoadingOptions = {}) {
       console.error(error);
       throw error;
     } finally {
-      loading.value = false;
+      activeLoadingOperations = Math.max(0, activeLoadingOperations - 1);
+      loading.value = activeLoadingOperations > 0;
     }
   };
 
-  const withApi = async <T>(handler: MaybePromiseFn<T>): Promise<T> => {
-    loading.value = true;
+  const withApi = async <T>(handler: MaybePromiseFn<T>): Promise<T> =>
+    withLoading(async () => {
+      const walletReady = isWalletLoaded.value;
+      const shouldBypassWalletWaitInTests = isTestEnvironment && !options.forceWalletReadinessWaitInTests;
+      if (!shouldBypassWalletWaitInTests && !walletReady) {
+        const timeoutMs = resolveWalletLoadTimeoutMs(options);
+        const pollMs = resolveWalletLoadPollMs(options);
+        const timeoutAt = Date.now() + timeoutMs;
 
-    const walletReady = isWalletLoaded.value;
-    const shouldBypassWalletWaitInTests = isTestEnvironment && !options.forceWalletReadinessWaitInTests;
-    if (!shouldBypassWalletWaitInTests && !walletReady) {
-      const timeoutMs = resolveWalletLoadTimeoutMs(options);
-      const pollMs = resolveWalletLoadPollMs(options);
-      const timeoutAt = Date.now() + timeoutMs;
-
-      while (!isWalletLoaded.value) {
-        if (Date.now() >= timeoutAt) {
-          if (!walletTimeoutWarningShown) {
-            walletTimeoutWarningShown = true;
-            console.warn(
-              `[useLoading] wallet readiness wait timed out after ${timeoutMs}ms; continuing without wallet-ready flag.`
-            );
+        while (!isWalletLoaded.value) {
+          if (Date.now() >= timeoutAt) {
+            if (!walletTimeoutWarningShown) {
+              walletTimeoutWarningShown = true;
+              console.warn(
+                `[useLoading] wallet readiness wait timed out after ${timeoutMs}ms; continuing without wallet-ready flag.`
+              );
+            }
+            break;
           }
-          break;
+
+          await delay(pollMs);
         }
 
-        await delay(pollMs);
+        if (isWalletLoaded.value) {
+          walletTimeoutWarningShown = false;
+        }
       }
 
-      if (isWalletLoaded.value) {
-        walletTimeoutWarningShown = false;
+      return await handler();
+    });
+
+  const withChainApi = async <T>(apiRef: WithConnectionApi, handler: MaybePromiseFn<T>): Promise<T> =>
+    withLoading(async () => {
+      let api = resolveChainApi(apiRef);
+
+      while (!api) {
+        await delay();
+        api = resolveChainApi(apiRef);
       }
-    }
 
-    return await withLoading(handler);
-  };
-
-  const withChainApi = async <T>(apiRef: WithConnectionApi, handler: MaybePromiseFn<T>): Promise<T> => {
-    loading.value = true;
-
-    const api = resolveChainApi(apiRef);
-
-    if (!api) {
-      await delay();
-      return await withChainApi(apiRef, handler);
-    }
-
-    await api.isReady;
-    return await withLoading(handler);
-  };
+      await api.isReady;
+      return await handler();
+    });
 
   const withParentLoading = async <T>(handler: MaybePromiseFn<T>): Promise<T> => {
     if (resolveParentLoading()) {

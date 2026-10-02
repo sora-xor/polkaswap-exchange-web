@@ -1,0 +1,36 @@
+[
+  {
+    "url": "https://icp.gov.ae/en/central-customs-tariff-system/",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-icp-tariff.html",
+    "retrievedAt": "2026-09-30T07:03:35.776933+00:00",
+    "bytes": 586941,
+    "sha256": "594c790109f4bfac69669ba930a1516a622bb97782d2f5ffe61528452ce3f34c"
+  },
+  {
+    "url": "https://www.dubaicustoms.gov.ae/ar/OpenData/Publications/Prohibited_Restricted_Guide_Ar.pdf",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/ae-dubai-restricted.pdf",
+    "retrievedAt": "2026-09-30T07:03:35.424981+00:00",
+    "bytes": 379627,
+    "sha256": "6ff6d032f685b8d0f50a70c5e7462a20fcb3a6ec26281e6577b24449093be03a"
+  },
+  {
+    "url": "https://www.bahraincustoms.gov.bh/ar/tariff-finder",
+    "status": "000",
+    "error": "curl: (28) Failed to connect to www.bahraincustoms.gov.bh port 443 after 10006 ms: Timeout was reached\n",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/bh-tariff-finder.html",
+    "retrievedAt": "2026-09-30T07:03:42.440299+00:00"
+  },
+  {
+    "url": "https://lloc.gov.bh/OG/3800A.pdf",
+    "status": "200",
+    "error": "",
+    "file": "docs/reports/tea-audit-work/ae-bh-recovery/bh-gazette3800A.pdf",
+    "retrievedAt": "2026-09-30T07:03:37.365444+00:00",
+    "bytes": 8164988,
+    "sha256": "7fc2c652d4b25e9f96b530270bda45bf4fb5ca59aae1a1a5ea82e1d8ee9f6915"
+  }
+]

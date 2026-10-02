@@ -107,9 +107,6 @@ try {
         }
 
         execution = await agent.executeSwap({
-          ...request,
-          amount: side === 'output' ? prepared.quote.request.amount : prepared.quote.amountIn,
-          slippageTolerance: prepared.quote.request.slippageTolerance,
           intentId: prepared.intentId,
           clientOrderId: `example-agent-runner-${Date.now()}`,
         });

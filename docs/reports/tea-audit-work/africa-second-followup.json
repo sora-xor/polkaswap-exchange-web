@@ -1,0 +1,155 @@
+[
+  {
+    "code": "BJ",
+    "status": "conditional",
+    "rule": "Order 95-128 of 7 March 1995, Annex II, expressly excludes processed Camellia sinensis products from the plant-import prohibition. Annex III section 2.5 authorizes manufactured dried, roasted, candied and dehydrated plant products without a phytosanitary certificate when prepared so they present no quarantine-pest contamination risk and are not otherwise prohibited. They must be declared on entry. Section 2.1 imposes a permit on fresh/refrigerated fruit and vegetables, while section 2.5 imposes no permit on the manufactured category. Applying that category to clean, sealed, steamed/dried sencha supports the scoped shipment; this is a reasoned application of an express processing exemption.",
+    "personalMailApplicability": "Article 8 of Order 95-128 applies its requirements to private postal imports. The manufactured-product exemption in Annex III section 2.5 is commodity-based and is not restricted to passenger baggage.",
+    "quantityLimit": null,
+    "authority": "Benin plant-protection authority, law filed with IPPC",
+    "evidenceUrls": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/08/13/Arrêté_Inter_Année_1995-N128_Ctrl_phyto.pdf",
+      "https://sgg.gouv.bj/doc/loi-91-004/download",
+      "https://faolex.fao.org/docs/pdf/ben2350.pdf",
+      "https://douanes.gouv.bj/storage/2024/11/Mesures-de-la-protection-phytosanitaire-au-Benin.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read Law 91-004 articles 3,27,29 and located implementing Order 1995-128; checked personal postal scope and the distinction between simple drying and manufactured steamed tea.",
+      "Rechecked Customs current 2024-filed phytosanitary measures. It confirms prior import permits and origin certificates for regulated plant products, including dried categories, but does not settle manufactured sencha classification.",
+      "Downloaded all 20 pages of Order 95-128 from the NPPO filing with IPPC, OCRed the annexes and visually verified PDF pages 10 and 18 (Annex II tea exception and Annex III section 2.5). Read Article 8 private-postal scope. This more specific exemption supersedes the earlier unresolved inference from the broad law alone."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The operative annex expressly admits suitably processed dried plant products without a phytosanitary certificate and exempts processed tea from the tea-plant prohibition. No permit is prescribed for that category. Use only sealed, properly processed, pest-free pure sencha and make the ordinary arrival/postal declaration; fresh tea, propagative material and contaminated goods are outside this conclusion.",
+    "permitFreeSources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/08/13/Arrêté_Inter_Année_1995-N128_Ctrl_phyto.pdf",
+      "https://sgg.gouv.bj/doc/loi-91-004/download",
+      "https://faolex.fao.org/docs/pdf/ben2350.pdf",
+      "https://douanes.gouv.bj/storage/2024/11/Mesures-de-la-protection-phytosanitaire-au-Benin.pdf"
+    ]
+  },
+  {
+    "code": "ET",
+    "status": "not_verified",
+    "rule": "Plant Protection and Quarantine Proclamation 1400/2026 is the current starting point, replacing reliance on the 1992 law. Processed products are covered where pest risk remains, and article 4 provides import controls; a current list resolving finished tea was not located.",
+    "personalMailApplicability": "No personal postal tea exemption established under the new law.",
+    "quantityLimit": null,
+    "authority": "Ethiopia Ministry of Justice",
+    "evidenceUrls": [
+      "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf"
+    ],
+    "remainingQuestion": "What implementing commodity classification and personal postal exception apply to steamed tea under the 2026 proclamation?",
+    "researchAttempts": [
+      "Located and read the new 2026 proclamation rather than carrying forward the superseded law; searched commodity schedules and personal-use exceptions.",
+      "Reconfirmed on 30 September 2026 that the Ministry of Justice lists Proclamation 1400/2026 as in force from 7 May 2026. Re-attempted the official PDF and searched current commodity schedules and exact-title mirrors; official PDF retrieval returned 403 in this follow-up. No new tea-specific implementing classification or private-post exception was established, so the earlier unresolved finding is preserved rather than falling back to the repealed 1992 law."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "A no-permit/no-certificate route has not been established for the scoped personal postal tea shipment. What implementing commodity classification and personal postal exception apply to steamed tea under the 2026 proclamation?",
+    "permitFreeSources": [
+      "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf"
+    ]
+  },
+  {
+    "code": "ML",
+    "status": "permit_required",
+    "rule": "Law 02-013 article 2 covers plant products prepared by drying, grinding, shelling or pressing. Decree 02-305 article 6 requires every importer of plants/plant products to present an import permit; an origin phytosanitary certificate is additionally required where applicable. Article 8 expressly applies this pathway to postal consignments. Treat the scoped identifiable steamed/dried tea leaves as a dried plant product under that definition. This application is an inference from the explicit dried-product wording, not a published sencha-specific determination; steaming and retail packing do not by themselves establish an exemption.",
+    "personalMailApplicability": "Decree 02-305 article 8 expressly covers post, and article 6 applies to every person importing covered products. No personal-use or small-parcel exception was established.",
+    "quantityLimit": null,
+    "authority": "Mali plant-protection legislation, FAOLEX and German NPPO copies",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/mli153268.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/ml3-2002-305pqreg_fr-de.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read law article 2 and decree articles 6,8; checked postal scope and searched later exemptions.",
+      "Independently reread the primary law and operative decree. The decisive requirement is the unconditional import-permit clause in article 6, not the conditional phytosanitary-certificate clause. Article 8 expressly includes post. No commodity exemption for the scoped manufactured dried leaves was found."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "An import permit is required for dried plant products, including postal imports. Applying that explicit category to the dried sencha leaves is a stated inference. Because the store will not obtain permits, exclude this destination under the available rule; this is a documentary requirement, not an absolute tea ban.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/mli153268.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/ml3-2002-305pqreg_fr-de.pdf"
+    ]
+  },
+  {
+    "code": "TD",
+    "status": "permit_required",
+    "rule": "Law 14/PR/95 article 2(b) defines plant material broadly to include plant parts and objects manufactured from plants; this is separate from article 2(c), which also covers products simply prepared by drying. Article 16 subjects all plant material to import control, and article 18 requires an origin phytosanitary certificate for all articles covered by article 16. Applying the broad plant-material wording to identifiable steamed/dried sencha leaves is a reasoned inference. The separate approval for regular professional importers in article 17 is not automatically imposed on private consumers.",
+    "personalMailApplicability": "The consignment-certificate requirement is not limited to professional importers. No small private postal exception was found in the reviewed law.",
+    "quantityLimit": null,
+    "authority": "Chad plant-protection legislation, FAOLEX copy",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/cha4040.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read articles 2 and 16–18; distinguished professional-activity approval from consignment certification and searched implementing exceptions.",
+      "Independently reread articles 2(b), 2(c) and 16–18. The broader plant-material definition, including manufactured plant objects, resolves the earlier unnecessary dependence solely on whether steaming is simple preparation. Kept professional importer approval separate from consumer-consignment certification."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The broad plant-material definition includes plant parts and objects manufactured from plants; articles 16 and 18 require an origin phytosanitary certificate for that material. Applying this to the scoped dried leaves is an explicit inference. The store cannot satisfy the certificate requirement; tea is not thereby described as absolutely prohibited.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/cha4040.pdf"
+    ]
+  },
+  {
+    "code": "TG",
+    "status": "not_verified",
+    "rule": "Law 96-007 includes dried plant products, but articles 28–29 leave permits and accompanying documents subject to implementing prescriptions. Decree 98-099 articles 27–28 likewise defer the commodity conditions to ministerial orders. The operative Ministry-hosted fee order of 2 August 2011 expressly lists imported tea among foodstuffs subject to inspection, so processed tea cannot be assumed outside plant-health controls. That fee list does not itself establish which special document a 100 g private postal parcel needs. The official permit application accommodates postal entry, but a form alone does not prove that every inspected food needs a permit.",
+    "personalMailApplicability": "The official permit form expressly accommodates postal imports; no general postal exemption is established. Whether that permit is required for the scoped tea has not been resolved by the published fee schedule or general law.",
+    "quantityLimit": null,
+    "authority": "Togo official trade portal; phytosanitary law",
+    "evidenceUrls": [
+      "https://togotrade.gouv.tg/media/LOI%20N%C2%B0%2096%20-%20007-%20PR%20relative%20%C3%A0%20la%20protection%20des%20v%C3%A9g%C3%A9taux.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/tg3-1998-099pqreg_fr.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/ARRETE-INTERMINISTERIEL-PORTANT-TARIFICATION-DES-PRESTATIONS-PAYANTES-A-LA-DIRECTION-DE-LA-PROTECTION-DES-VEGETAUX.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/FICHE-DE-DEMANDE-DU-PERMIS-DIMPORTATION-DES-VEGETAUX-ET-PRODUITS-VEGETAUX.pdf",
+      "https://faolex.fao.org/docs/pdf/tog238369.pdf"
+    ],
+    "remainingQuestion": "Which currently operative commodity prescription requires or waives an import permit, certificate or advance inspection request for manufactured tea in a private postal parcel?",
+    "researchAttempts": [
+      "Read articles 2,28,29 and searched tea/coffee import procedures and personal-use exemptions.",
+      "Downloaded and read Decree 98-099, OCRed the 2011 fee order naming tea and the official postal-capable permit form. Read the 9 February 2024 pest-list order: it updates regulated organisms and interception measures, not a tea-document exemption or requirement. Generic ECOWAS inspection guidance and industrial-port procedures do not settle the private-post scope."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Tea is expressly covered by the imported-food inspection fee schedule, but the operative law conditions special documents on implementing prescriptions. The tea-specific document requirement for private post remains unverified; inspection fees and the existence of a postal permit form are insufficient to claim that a permit is mandatory.",
+    "permitFreeSources": [
+      "https://togotrade.gouv.tg/media/LOI%20N%C2%B0%2096%20-%20007-%20PR%20relative%20%C3%A0%20la%20protection%20des%20v%C3%A9g%C3%A9taux.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/tg3-1998-099pqreg_fr.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/ARRETE-INTERMINISTERIEL-PORTANT-TARIFICATION-DES-PRESTATIONS-PAYANTES-A-LA-DIRECTION-DE-LA-PROTECTION-DES-VEGETAUX.pdf",
+      "https://agriculture.gouv.tg/wp-content/uploads/2020/08/FICHE-DE-DEMANDE-DU-PERMIS-DIMPORTATION-DES-VEGETAUX-ET-PRODUITS-VEGETAUX.pdf",
+      "https://faolex.fao.org/docs/pdf/tog238369.pdf"
+    ]
+  },
+  {
+    "code": "GW",
+    "status": "not_verified",
+    "rule": "Decree-Law 4/99 article 2(b) covers unprocessed plant products or products subjected to simple preparation. Articles 7–8 establish inspection and a prior import licence for covered goods. Unlike the explicit drying examples in several neighbouring laws, this definition does not specify the processing category that covers steamed/dried manufactured tea; no national commodity annex resolving it was located.",
+    "personalMailApplicability": "No private-post exemption was found, but the commodity scope of the licensing rule for manufactured tea remains unverified.",
+    "quantityLimit": null,
+    "authority": "Guinea-Bissau legislation, FAOLEX copy",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+      "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=GNB"
+    ],
+    "remainingQuestion": "Does the national simple-preparation category include manufactured steamed/dried tea, and what current import-licence or personal-post treatment applies?",
+    "researchAttempts": [
+      "Read articles 2,7,8 and searched processed-tea and postal exceptions.",
+      "Independently reread article 2(b) and articles 7–8; checked the current FAO country-profile listing and searched tea-specific rules in Portuguese and English. No operative tea classification or postal waiver was located; did not treat commercial export documentation or other countries' quarantine rules as Guinea-Bissau import rules."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The general law requires a prior licence for covered plant products, but no operative national classification resolving manufactured steamed tea or specific private-post exception was located. Keep unverified rather than infer an absolute prohibition from the absence of an exemption.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/gbs23411.pdf",
+      "https://www.fao.org/faolex/country-profiles/general-profile/en/?iso3=GNB"
+    ]
+  }
+]

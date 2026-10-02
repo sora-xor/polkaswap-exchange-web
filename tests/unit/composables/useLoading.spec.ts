@@ -104,6 +104,34 @@ describe('useLoading', () => {
     errorSpy.mockRestore();
   });
 
+  it('keeps loading active until every overlapping operation settles', async () => {
+    let resolveFirst!: () => void;
+    let resolveSecond!: () => void;
+    const { loading, withLoading } = useLoading();
+    const first = withLoading(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveFirst = resolve;
+        })
+    );
+    const second = withLoading(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSecond = resolve;
+        })
+    );
+
+    expect(loading.value).toBe(true);
+
+    resolveFirst();
+    await first;
+    expect(loading.value).toBe(true);
+
+    resolveSecond();
+    await second;
+    expect(loading.value).toBe(false);
+  });
+
   it('retries withChainApi when api getter throws before connection is attached', async () => {
     let calls = 0;
     const chainApi = {

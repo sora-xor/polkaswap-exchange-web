@@ -1,0 +1,162 @@
+<html lang="en" class="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap Lib -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Roboto  -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        @import url(https://fonts.googleapis.com/earlyaccess/notokufiarabic.css);
+
+        body{
+            font-family: 'Roboto';
+        }
+        
+        .maintanence-page{
+
+        }   
+        .maintanence-page .logo{
+            margin-top:190px;
+            margin-bottom: 155px;
+        }
+        .maintanence-page .content{
+            font-size: 16px;
+        }
+
+        .maintanence-page .button{
+            display: inline-block;
+            border-radius: 3px;
+            color : #161038;
+            border: 2px solid #161038;
+        }
+        .maintanence-page .button:hover{
+            background-color: #161038;
+            color : #fff;
+        }
+        .maintanence-page .button:before{
+            pointer-events: none;
+            border: solid #161038;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            margin: 0 2px;
+            content: "";
+            -ms-transform: rotate(135deg);
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+        }
+        .maintanence-page .button:hover:before{
+            border-color: #fff;
+        }
+        .maintanence-page .copyrights{
+            margin-top:145px;
+        }
+
+
+        /* Utilitis */
+        .small-text{
+            font-size: 14px;
+        }
+        .font-weight-boldest{
+            font-weight: 900 !important;
+        }
+        a , a:hover , a:focus {
+            text-decoration: none;
+        }
+        .arabic {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+        }
+        .rtl *{
+            direction: rtl;
+        }
+        
+    </style>
+
+
+   
+</head>
+
+<body>
+    <div class="container maintanence-page">
+        <div class="row">
+            <div class="col-12">
+                <div class="logo d-flex justify-content-center align-items-center">
+                    <img width="210" height="65" src="https://www.tamm.abudhabi/-/media/Project/TAMM/TAMM-Shared-Site/New-TAMM-Logo/logo.svg" alt="TAMM LOGO" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="content">
+                    <p>Dear Visitor,</p>
+                    <h5>
+                        The page you have chosen cannot be displayed
+                    </h5>
+                    <div>
+                        <span class="text-black-50 small-text">
+                            Your Support ID is: 
+                        </span>
+                        <strong class="small-text">475265439989352416</strong>
+                    </div>
+                    <p class="mt-4 mb-2">
+                        For further inquiries or concerns, please contact the 
+                    </p>
+                    <h6 class="text-transform-uppercase font-weight-boldest">
+                        Abu Dhabi Contact Center <span class="font-weight-normal small-text">at</span> 800 555
+                    </h6>
+                    <div class="mt-5">
+                        <a href="https://www.tamm.abudhabi/en" class="button px-3 py-1">
+                            Back To TAMM
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="content text-right arabic rtl">
+                    <p>عزيزي الزائر،</p>
+                    <h5>
+                        الموقع المطلوب لا يمكن الوصول إليه.
+                    </h5>
+                    <div>
+                        <span class="text-black-50 small-text">
+                            :معرف دعمكم هو
+                        </span>
+                        <strong class="small-text">475265439989352416</strong>
+                    </div>
+                    <p class="mt-4 mb-2">
+                        للاستفسار أو طلب المساعدة، لا تترددوا في الاتصال
+                    </p>
+                    <h6 class="text-transform-uppercase font-weight-boldest">
+                        بمركز اتصال حكومة أبوظبي   <span class="font-weight-normal small-text">على</span> 800 555
+                    </h6>
+                    <div class="mt-5">
+                        <a href="https://www.tamm.abudhabi/ar-ae" class="button px-3 py-1">
+                            العودة إلى تم
+                        </a>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+        <div class="row  copyrights">
+            <div class="col-12">
+                <hr />
+            </div>
+            <div class="col-lg-6 col-sm-12">
+                2020 Abu Dhabi Government. All rights reserved
+            </div>
+            <div class="col-lg-6 col-sm-12 text-right">
+                ٢٠٢٠ حكومة أبوظبي جميع الحقوق محفوظة.
+            </div>
+        </div>
+     </div>
+
+
+</body>
+
+</html>

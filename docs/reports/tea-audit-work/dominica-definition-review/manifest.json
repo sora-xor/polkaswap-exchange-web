@@ -1,0 +1,42 @@
+[
+  {
+    "file": "dm-food-passage2026.html",
+    "bytes": 106107,
+    "sha256": "c247b96410a8ad15325deb5c28ad1ae6571f95cdedc5e08fbffd2b19b709a33e"
+  },
+  {
+    "file": "dm-sro51-1997.pdf",
+    "bytes": 72180,
+    "sha256": "c870b7f2cc8fc92ebe20a5a4a3d40777dd8bc90947bc469fc1b865bacba458a5"
+  },
+  {
+    "file": "dm-sro51-1997.txt",
+    "bytes": 8796,
+    "sha256": "2c75c17bbb5b160f94fa641c8029b96344bd08b3b2992dfa3866b764208aadf7"
+  },
+  {
+    "file": "ispm32-publication.html",
+    "bytes": 78876,
+    "sha256": "26fcea3452802fb0ad52861029c00870c0a517262d3d1d8d97efa5ed19e65b11"
+  },
+  {
+    "file": "new-source-provenance.json",
+    "bytes": 1133,
+    "sha256": "032954ecd8b05eb337622a99f6bb8d86552d8512f8522682e3fe646db4eec200"
+  },
+  {
+    "file": "review.json",
+    "bytes": 7493,
+    "sha256": "001168342bb4889b2fe459da54e641ff42857d9da447b0510505f4a741d6f0fb"
+  },
+  {
+    "file": "source-only-full-row-proposal.json",
+    "bytes": 8451,
+    "sha256": "0289c93000e958f958b3a3f6162a0b21b1fe67cb15eb8b2d835832ba4b9a0ad8"
+  },
+  {
+    "file": "source-pass-result.json",
+    "bytes": 398,
+    "sha256": "155c023d40b8206392fc2101cb474c04b70dae50199411ebeb818536f707285a"
+  }
+]

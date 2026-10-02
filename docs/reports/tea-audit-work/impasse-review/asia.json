@@ -1,0 +1,200 @@
+{
+  "checkedAt": "2026-09-30T04:00:36.896609+00:00",
+  "purpose": "Bounded impasse check, not another generic research pass",
+  "product": "100 g sealed Japanese steamed/rolled/dried plain Camellia sinensis sencha, paid personal post; ordinary customs/arrival declarations allowed, no special permits/certificates/agency registration or advance approval",
+  "currentReport": {
+    "path": "docs/reports/tea-shipping-audit-2026-09-29.json",
+    "sha256": "336c06d73f6296c47961ceb82157af24d2fc18b0a7e4dd963a609b0adfb0cb33",
+    "documentFreeCounts": {
+      "not_supported": 59,
+      "unresolved": 48,
+      "supported": 96
+    }
+  },
+  "lastSourcePass": {
+    "path": "docs/reports/tea-audit-work/last-source-pass.json",
+    "sha256": "68cd1ca923ba647f9d0968d3ea5cf74ac8f355b4e5af2957938c2ff2bb383b60",
+    "checkedAt": "2026-09-30T03:56:48.972423+00:00",
+    "documentFreeCounts": {
+      "not_supported": 59,
+      "unresolved": 48,
+      "supported": 96
+    }
+  },
+  "coverage": 16,
+  "reportVsLastPassMismatches": [],
+  "concreteNewLeadsFound": [],
+  "newResearchPursued": false,
+  "outcomeChanges": [],
+  "mainArraysEdited": false,
+  "authorityContactsMade": false,
+  "finding": "No concrete safe untried public-source lead or overlooked general operative rule was identified. The same operative-text, specification-access or genuine scope-conflict barriers remain. This does not prove no qualifying exemption exists. Further identical generic searches or access retries would not supply a new basis for decision.",
+  "interpretationGuardrails": [
+    "An applicable general processing rule or complete commodity list can resolve a route without naming tea and without a bespoke authority ruling.",
+    "Admissibility, inspection, registration relief, fee relief and certificate relief were kept distinct from any separate permit duty.",
+    "No missing online record was treated as absence of an operative specification, permission, or prohibition.",
+    "No status was changed because research was exhausted."
+  ],
+  "countries": [
+    {
+      "code": "AE",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "An applicable current processing/risk exemption under Law 7/2025 Article 5(5)(c), or published criteria placing this sencha outside the manufactured-product risk definition; receiving-emirate personal-food category if not already covered by a general allowance.",
+      "whyPriorSourcesDoNotSettle": "The law provides a certificate default and a power to make exceptions. JETRO specifically identifies a possible dried-tea exemption but does not confirm it under the January 2026 law. Personal-food registration relief is separate. Broad dead-plant language cannot erase the specific processing issue.",
+      "impasseCheck": "Current-law direct retrieval returned 403; exact JETRO route and current MOCCAE service already reviewed. No new operative list or untried public link identified.",
+      "priorReviewFile": "middle-east-definition-peer-review/source-pass-result.json"
+    },
+    {
+      "code": "AF",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "The published allowed/prohibited commodity or processing lists required by 2019 regulation 5(1)(6)–(7), sufficient to apply 2017 Act 3(7) to manufactured sencha; full Gazette 1472 food-law text would resolve the separate private-food scope question.",
+      "whyPriorSourcesDoNotSettle": "The primary definition is risk-qualified. Act 11 is discretionary relief, while regulation 22(2) enumerates decorative plants/flowers and fruit. Neither is an automatic all-personal-food waiver. The processed-wood exception cannot extend to tea.",
+      "impasseCheck": "MAIL directory, actual 2017 Act, 2019 regulation, 2026 Dutch NPPO sheet and exact 2025 Gazette lead have been checked. No accessible operative list or new Gazette link identified.",
+      "priorReviewFile": "middle-east-definition-peer-review/source-pass-result.json"
+    },
+    {
+      "code": "BH",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "A published Article 15(3) processing/category waiver or local criteria that establish whether this finished tea is a regulated manufactured plant product.",
+      "whyPriorSourcesDoNotSettle": "The complete NPPO-submitted law defines manufactured products by risk and authorises waivers; it does not grant a general processing waiver. Its annex lists pests, not an exhaustive commodity list. Article 24 concerns travellers. The personal-food undertaking remains routine, not a certificate blocker.",
+      "impasseCheck": "Complete 23-page law/annex and current services read. The MAFF processing footnote is conditional. No untried operative source link identified.",
+      "priorReviewFile": "middle-east-definition-peer-review/source-pass-result.json"
+    },
+    {
+      "code": "CK",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "The meaning of PP 29 dried herbs as applied to Camellia sencha, or another general specification resolving its overlap with PP 23 dried plant material.",
+      "whyPriorSourcesDoNotSettle": "The current-linked January 2021 table has a real affirmative no-permit/no-certificate herb category. That narrower exemption must prevail if applicable. The table does not define herbs; applying PP 23 automatically is equally unsupported. Food regulation 18 may cover personal post and is not held open merely because it omits the word post.",
+      "impasseCheck": "Complete 2020 and 2021 tables, current ministry pages, ports guidance and 2014 food regulations reviewed. No further classification rule or concrete untried link identified.",
+      "priorReviewFile": "pacific-legal-scope-peer-review.json"
+    },
+    {
+      "code": "GU",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "A published criterion or supported local interpretation of the minor-processing boundary in 8 GAR 10100(g), sufficient to classify steamed/rolled/dried sencha.",
+      "whyPriorSourcesDoNotSettle": "Section 10120 allows dried human food, and 10102 does not list manufactured dried tea for a certificate. Section 10103 separately controls permits for plant products. The minor-processing definition may exclude finished tea, but the admissibility clause does not itself settle that boundary or waive permits.",
+      "impasseCheck": "Full official chapter, 2026 noncommercial-post permit form and current species guide reviewed; the corn-borer processing exception is commodity-specific. No new general processing source identified.",
+      "priorReviewFile": "pacific-legal-scope-peer-review.json"
+    },
+    {
+      "code": "IQ",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "An applicable legal interpretation/general processing rule for the biological-nature definition, or an existing import-licence exemption covering this product.",
+      "whyPriorSourcesDoNotSettle": "Article 9(1) expressly supplies a postal certificate concession for certain non-agricultural-purpose materials. It does not waive the separate Article 7 licence; Article 9(2) expressly waives licences for seed samples only. Treating drink preparation as non-agricultural use does not close the licence issue.",
+      "impasseCheck": "Complete consolidated 2012/2020 law already read. COSQC source links returned 404 and do not establish private-post scope. No concrete untried operative exemption/list identified.",
+      "priorReviewFile": "middle-east-definition-peer-review/source-pass-result.json"
+    },
+    {
+      "code": "JO",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "The current ministerial covered/exempt commodity decision under 2021 Instructions 3/8, including a complete list or general processing category applicable to sencha; ordinary personal-food clearance conditions if independently necessary.",
+      "whyPriorSourcesDoNotSettle": "The instructions depend on designations outside their text. A complete list could resolve tea by inclusion or omission, but the tariff code and zero duty are not that list. The 2026 medicinal-parcel consultation cannot cover ordinary sencha.",
+      "impasseCheck": "MOA/JFDA/Customs and the actual tariff/trade-portal paths checked. Ministry and official law-index retrieval returned 451. No new operative designation link identified.",
+      "priorReviewFile": "middle-east-definition-peer-review/source-pass-result.json"
+    },
+    {
+      "code": "KI",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "The existing Biosecurity Act 26 import specification, including any compatible pre 2011 notice saved by 107, from the statutory public register or an authentic published copy.",
+      "whyPriorSourcesDoNotSettle": "Manufactured plant products are unconditionally within scope, but 25–26 make permit/certificate duties specification-dependent. A written application under 27 is mandatory only if no specification exists. An office-based register means online absence cannot establish that trigger. Food-law 10 kg relief does not waive biosecurity.",
+      "impasseCheck": "2011 Act, 1976 predecessor, saved-rule clause, food regulations, newer ministry site and national FAO submission reviewed. No untried specification source identified.",
+      "priorReviewFile": "remaining-scope-review/source-pass-result.json"
+    },
+    {
+      "code": "MP",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "An operative general classification or permit exception differentiating finished manufactured food from the plant/product class in 85-60.2-204.",
+      "whyPriorSourcesDoNotSettle": "Section 238 admits dried foods and 202 does not itself impose a tea certificate. Section 204 can separately require permits;108 shows admission can coexist with permits. Section 010 defines manufactured plant material, but 204 uses a different term. The traveller FAQ does not settle a postal permit classification.",
+      "impasseCheck": "Full code including 010, 108, 201–204, 238 and 501 plus current Finance guidance reviewed. No overlooked complete commodity list or concrete untried source identified.",
+      "priorReviewFile": "pacific-legal-scope-peer-review.json"
+    },
+    {
+      "code": "MV",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "A corroborated applicable processing/category rule under the 2011 Act and December 2025 notice, potentially the Agriculture Online System commodity conditions, or authenticated current text showing the older dried/packed-food distinction remains operative.",
+      "whyPriorSourcesDoNotSettle": "The current MFDA personal processed-food standard is favourable and is not held open for a tea-specific food form. It does not waive agriculture. The older English quarantine regulation cannot alone establish the effect of the later Act/current notice; provisional Dhivehi Act reading did not resolve that relationship.",
+      "impasseCheck": "2011 Act IPPC upload, older English regulation, WTO identified portal and current MFDA standard reviewed. Act direct PDF 403; screenshots failed; agriculture portal redirects to login. No new public route identified.",
+      "priorReviewFile": "remaining-scope-review/source-pass-result.json"
+    },
+    {
+      "code": "OM",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "The applicable current plant-product commodity/processing condition for Japan-origin sencha; a readable Food Safety Regulation 2/2010 Article 30/private-parcel scope if a separate food licence is relied on.",
+      "whyPriorSourcesDoNotSettle": "The plant-product definition is risk-qualified. Decision 32/2006 Article 34 postal concession waives fees only; Article 12 certificate relief concerns accompanied travellers. Decision 69/2024 waives personal-food registration but not every agricultural requirement. Old Australian tea conditions do not establish the Japan route.",
+      "impasseCheck": "Complete 2006 text and known alternatives checked; commodity lookup requiresCAPTCHA;2010 original food PDF repeatedly 403. No bypass or new operative source identified.",
+      "priorReviewFile": "middle-east-definition-peer-review/source-pass-result.json"
+    },
+    {
+      "code": "PF",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "Current Order 324 CM of 16 March 2026 Annex 5, including its general processed-food categories and any tea conditions.",
+      "whyPriorSourcesDoNotSettle": "The current authority says this order replaced 740 CM. The reform summary does not provide the operative conditions; the old processed-food page cites the repealed order. The missing source is specific, and a general Annex 5 exemption could suffice without tea naming.",
+      "impasseCheck": "Both Lexpol hosts, short/exact queries, browser and direct retrieval, DBS index/media and government publication routes tried. Repeated timeouts, DNS/503 failures; no new public route identified.",
+      "priorReviewFile": "pacific-final-source-review/review-result.json"
+    },
+    {
+      "code": "PG",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "Current enacted biosecurity framework and the operative processed-food/tea import condition or general exemption applying to personal postal consignments.",
+      "whyPriorSourcesDoNotSettle": "Government confirms 2025 bill passage and now namesPNGBA, but the current trade-office page links 1997 material and has inconsistent summaries. The 2017 draft is not enacted proof. Food Sanitation Act 30 notification concerns sale/business and cannot independently exclude the private recipient.",
+      "impasseCheck": "NPPO, Customs, MAFF, MICOR, Prime Minister and current trade-office/download links reviewed. No actual current commodity schedule or new enacted-law link identified.",
+      "priorReviewFile": "remaining-scope-review/source-pass-result.json"
+    },
+    {
+      "code": "QA",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "An applicable published risk-based exception under Law 24/2005 Article 2, or processing/category criteria sufficient to decide sencha under Decision 61/2007 Article 1(8).",
+      "whyPriorSourcesDoNotSettle": "The complete implementing text covers post and requires permission/certificates for covered goods. Article 11 is traveller-only; Article 12 is diplomatic/research/public-body relief. The separate general personal-food document waiver does not decide plant-quarantine scope.",
+      "impasseCheck": "All 19 implementing articles recovered and read; current Act and personal-food guide checked. No further operative exemption/list lead identified.",
+      "priorReviewFile": "middle-east-definition-peer-review/source-pass-result.json"
+    },
+    {
+      "code": "TO",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "The existing Director assessment or published general commodity condition under regulation 26 for manufactured plant material, including a sufficient processing exemption/category.",
+      "whyPriorSourcesDoNotSettle": "Regulation 26 expressly makes the permit duty depend on assessed serious exotic-pest risk. Regulations 23–25 concern fruit/vegetables and dried flowers and cannot automatically include tea. The separate food Act commercial scope is not a private-import permit duty.",
+      "impasseCheck": "Full Act/regulations and current origin-limited MPI/MICOR conditions reviewed. No current Japan-applicable assessment/list or concrete untried public link identified.",
+      "priorReviewFile": "remaining-scope-review/source-pass-result.json"
+    },
+    {
+      "code": "WF",
+      "decision": "unresolved",
+      "sameAsCurrentReportAndLastPass": true,
+      "concreteSafeUntriedLead": null,
+      "externalEvidenceRequired": "An operative interpretation/definition reconciling manufactured plant products with the specific bulk/loose-tea category, or the underlying 1993 rule/amendments with sufficient processing criteria.",
+      "whyPriorSourcesDoNotSettle": "The mail rule both limits product scope to non-manufactured goods and expressly waives only the permit for tea in bulk. Retail sealing alone does not resolve whether loose-leaf sencha is in that category. Neither ignoring the specific tea clause nor converting its permit waiver into a certificate waiver is defensible.",
+      "impasseCheck": "Current AIP reproduction, passenger materials and exact 1993/1996/1997 rule leads reviewed. The AIP page amendment is 2014. No new underlying text or general postal processing exemption identified.",
+      "priorReviewFile": "pacific-legal-scope-peer-review.json"
+    }
+  ]
+}

@@ -22,6 +22,8 @@ import type { KeyringPair, KeyringPair$Json, KeyringPair$Meta } from '@polkadot/
 import type { Signer, ISubmittableResult } from '@polkadot/types/types';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 
+import { parseStoredJson } from '@/utils/storageParsing';
+
 import { decrypt, deriveAddressNamespaces, encrypt } from './crypto';
 import { Messages } from './logger';
 import { AccountStorage, Storage } from './storage';
@@ -47,6 +49,12 @@ export const KeyringType = 'sr25519';
 
 export const SoraPrefix = 69;
 
+const isAccountHistory = (value: unknown): value is AccountHistory<HistoryItem> =>
+  typeof value === 'object' &&
+  value !== null &&
+  !Array.isArray(value) &&
+  Object.values(value).every((item) => typeof item === 'object' && item !== null && !Array.isArray(item));
+
 let keyring!: Keyring;
 
 export const isLiquidityPoolOperation = (operation: Operation) =>
@@ -60,6 +68,27 @@ export const isEvmOperation = (operation: Operation) =>
 
 export const isSubstrateOperation = (operation: Operation) =>
   [Operation.SubstrateIncoming, Operation.SubstrateOutgoing].includes(operation);
+
+/**
+ * Captures the source-chain height immediately after signing a Liberland-to-SORA
+ * transfer. A signed hash plus this height lets recovery search for the exact
+ * extrinsic after an ambiguous RPC send error without constructing a new burn.
+ */
+const getSubstrateIncomingSubmissionStartBlock = async (
+  api: ApiPromise,
+  operation: Operation
+): Promise<number | undefined> => {
+  if (operation !== Operation.SubstrateIncoming) return undefined;
+
+  try {
+    const header = await api.rpc.chain.getHeader();
+    const blockHeight = header.number.toNumber();
+
+    return Number.isSafeInteger(blockHeight) && blockHeight >= 0 ? blockHeight : undefined;
+  } catch {
+    return undefined;
+  }
+};
 
 export class WithConnectionApi {
   /** Connection class that provides Api */
@@ -576,7 +605,7 @@ export class WithAccountHistory extends WithAccountStorage {
   public get history(): AccountHistory<HistoryItem> {
     if (this.accountStorage) {
       const history = this.accountStorage.get(this.historyNamespace);
-      this._history = history ? (JSON.parse(history) as AccountHistory<HistoryItem>) : {};
+      this._history = parseStoredJson(history, {} as AccountHistory<HistoryItem>, isAccountHistory);
     }
     return this._history;
   }
@@ -632,7 +661,7 @@ export class WithAccountHistory extends WithAccountStorage {
       const { current, legacy } = deriveAddressNamespaces(historyItemFromAddress);
       addressStorage = new AccountStorage(current, legacy);
       const history = addressStorage.get(this.historyNamespace);
-      historyCopy = history ? JSON.parse(history) : {};
+      historyCopy = parseStoredJson(history, {} as AccountHistory<HistoryItem>, isAccountHistory);
     } else {
       historyCopy = { ...this.history };
     }
@@ -710,11 +739,21 @@ export class ApiAccount<T = void> extends WithAccountHistory implements ISubmitE
     const id = historyData?.id ?? txId;
     const type = historyData?.type as Operation;
     const startTime = historyData?.startTime ?? Date.now();
+    const submissionStartBlock = await getSubstrateIncomingSubmissionStartBlock(api, type);
     // history required params for each update
     const requiredParams: RequiredHistoryParams = { id, from ,type };
 
     if (historyData !== undefined) {
-      this.saveHistory({ ...historyData, ...requiredParams, txId, startTime });
+      const payload =
+        type === Operation.SubstrateIncoming
+          ? {
+              ...historyData.payload,
+              submissionState: 'signed',
+              ...(submissionStartBlock === undefined ? {} : { startBlock: submissionStartBlock }),
+            }
+          : historyData.payload;
+
+      this.saveHistory({ ...historyData, ...requiredParams, txId, startTime, payload });
     }
 
     if (this.shouldObservableBeUsed) {
@@ -775,6 +814,7 @@ export class ApiAccount<T = void> extends WithAccountHistory implements ISubmitE
         if (result.status.isInBlock) {
           updated.blockId = result.status.asInBlock.toString();
         } else if (result.status.isFinalized) {
+          updated.blockId = result.status.asFinalized.toString();
           updated.endTime = Date.now();
 
           const txIndex = result.txIndex;
@@ -846,11 +886,30 @@ export class ApiAccount<T = void> extends WithAccountHistory implements ISubmitE
         updated.endTime = Date.now();
         updated.errorMessage = errorInfo;
 
-        // save history and then delete 'txId'
+        const preserveSubstrateIncomingEvidence = type === Operation.SubstrateIncoming;
+        const preservePurchaseSwapEvidence =
+          type === Operation.Swap &&
+          typeof id === 'string' &&
+          /^purchase-swap:(?:ts|xor):[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id);
+        const preserveAmbiguousSubmissionEvidence =
+          preserveSubstrateIncomingEvidence || type === Operation.EthBridgeOutgoing || preservePurchaseSwapEvidence;
+
+        if (preserveSubstrateIncomingEvidence) {
+          const history = this.getHistory(id as string);
+          updated.payload = {
+            ...history?.payload,
+            submissionState: 'unknown',
+          };
+        }
+
+        // A send error can be an RPC response-loss after the node accepted the
+        // signed extrinsic. Preserve bridge and reviewed purchase-swap hashes
+        // for receipt verification, never as proof of success. Ordinary swaps
+        // retain their existing retry behavior.
         this.saveHistory(
           { ...requiredParams, ...updated },
           {
-            wasNotGenerated: true,
+            wasNotGenerated: !preserveAmbiguousSubmissionEvidence,
           }
         );
         // HistoryItem should appear here

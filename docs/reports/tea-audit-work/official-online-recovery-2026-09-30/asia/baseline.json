@@ -1,0 +1,175 @@
+[
+  {
+    "code": "AF",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "MAIL’s determination of whether steamed/dried, sealed sencha satisfies Article 3(7)’s pest-risk condition for manufactured plant products is missing. If covered, permit/certificate defaults apply; Article 11 permits a discretionary personal-use exemption but does not grant one automatically. The 2019 section 22(2) listed up-to-2-kg exemption does not name tea. Separately, the 2025 anti-smuggling food law is now confirmed enacted, but its full Gazette 1472 text and personal-postal document-processing scope were not recovered; its official publication summary describes licences for imports for trade, not an automatic private-parcel requirement.",
+    "researchAttempts": [
+      "Checked the MAFF Afghanistan NPPO directory and followed the agriculture authority.",
+      "Read the MAIL law directory; plant quarantine law and regulation entries have no usable linked texts.",
+      "Searched official sources for tea, postal/personal use and plant quarantine in English and Dari; no current tea-specific rule established.",
+      "Obtained the enacted 21 January 2017 Gazette 1243 law from FAOLEX; visually checked Article 3(7), PDF page 10, because embedded-text encoding is damaged. Its manufactured-product definition depends on pest risk.",
+      "Read the German NPPO-hosted translation of the 2019 regulation, Articles 6, 9 and 22. The named up-to-2-kg personal permit exemption does not include tea.",
+      "Checked the Dutch NPPO miscellaneous-product sheet revised February 2026; it has no tea classification and expressly does not establish unspecified products’ certification status. Did not convert a general regulated-product rule into a tea-specific prohibition.",
+      "30 September independent primary-law check: visually read 2017 Act Article 11 on PDF p.32 (printed p.30). It permits the authority to exempt certain importers for pest-risk analysis/personal use; it does not itself exempt every personal import. The 2019 regulation expressly covers trade or other purposes and consumption, but incorporates the Act’s pest-risk-qualified manufactured-product definition. Retained unresolved because that risk classification remains genuinely undecided.",
+      "30 September bounded independent-food follow-up: Read the Justice Ministry official indexed publication notice for the 2025 anti-smuggling law, Gazette 1472 (34 articles), and AFDA January 2026 implementation news. The notice expressly qualifies trade/import licences by importing for trade; it does not settle the scope of its separate document-processing clause for a private food parcel. Direct official article retrieval timed out and the public Gazette PDF was not recovered from the available links/search results. Retained unresolved instead of assuming either a commercial licence for every personal parcel or an unverified personal exemption."
+    ]
+  },
+  {
+    "code": "CK",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "Determine whether Japan-origin manufactured steamed/dried Camellia sinensis tea belongs to PP29 dried herbs or PP23 dried plant material under the current January 2021 specification. The schedule does not define the herb category or otherwise classify tea. This biosecurity category conflict is sufficient to retain unresolved. Food regulation 18 has no express baggage-only restriction and its subsection (6) turns on consumption by the importer/family; lack of the word post alone is not treated as a separate proven document barrier.",
+    "researchAttempts": [
+      "Read the official full import specification and compared PP23 with PP29.",
+      "Searched official agriculture guidance for tea/processed-food or personal-mail exemption; no tea-specific answer found.",
+      "Reviewed current MPI guidance dated 25 July 2025 and its section 1.2 New Zealand-origin scope; did not extend it to a Japan shipment.",
+      "Searched the agriculture authority and government trade portal for Camellia, manufactured tea and personal-post specifications; the PP23/PP29 classification remains missing. The trade-portal Food Regulations download returned HTTP 403 and is not relied on for a food exemption.",
+      "30 September independent scope reread: checked the complete 2020 biosecurity schedule, including PP23, PP26–29, PP31, PP33 and PP47–49. Specific dried fruit/herb/mushroom/vegetable concessions preclude inferring that every dried plant food automatically needs PP23 permission, but none names tea. Current ministry importing and electronic-register pages supply no additional tea or general processed-food waiver.",
+      "Retrieved the previously inaccessible Food Regulations 2014 from the official Ministry of Health host and read regulation 18, PDF pp.10–11. Other personal/family foods are limited to 5 kg, and larger quantities need Director approval. This is a food-control concession under the Ministry of Health framework; it is not a plant-biosecurity specification and does not expressly mention post. Source PDF/text saved as asia-sources/ck-food2014.*.",
+      "30 September independent food-document review: reread Food Regulations 2014 regulations 16, 18–19 and 23–25. Regulation 16 advance notification concerns listed high-risk/regulatory-interest food imported for sale; regulation 18 provides the personal/family concession, and regulation 19 expressly makes general requirements subject to it. Regulations 23–25 allow product-identity checks and assessment of accompanying health/analysis certificates, but do not independently mandate a foreign certificate for every small private tea parcel. A reprocessing permit under regulation 19(4) was not applied to a finished ready-for-retail pouch. These provisions do not remove the unresolved postal scope/plant-category questions.",
+      "30 September final Pacific commodity pass: retrieved the ministry Biosecurity landing page and its January 2021 import specification, a newer current-linked document than the previously reviewed April 2020 PDF. Read the complete table and visually checked PDF page 4: PP23 dried plant material from any origin requires an import permit, no phytosanitary certificate, inspection, and pre-export fumigation/heat treatment; PP29 dried herbs from any origin requires neither permit nor phytosanitary certificate, but inspection and the prohibited-species condition apply. The document does not name tea or Camellia and has no blanket manufactured/dried-food waiver. Its processed-food entries therefore preserve the same unresolved tea-category question. PDF, extracted text and table image saved in pacific-final-source-review/ck-import-specification2021.*. The separate Ports Authority page contains only general cargo/quarantine guidance, not a tea waiver.",
+      "30 September independent legal-scope peer review: reread saved current-linked January 2021 specification PP23/PP29 and Food Regulations 2014 regulations 5, 18 and 19. PP29 is an affirmative permit-and-certificate exemption, which must not be overridden merely by calling tea dried plant material. The schedule supplies no definition placing Camellia tea within dried herbs. Regulation 18 uses personal imports and consumption by importer/family, without an express baggage-only restriction; narrowed the remaining question to the separate biosecurity category rather than demanding that the food concession explicitly mention post. No decision change."
+    ]
+  },
+  {
+    "code": "KI",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The applicable existing section 26 specification, including any compatible pre-2011 subsidiary notice saved by section 107, remains unavailable. The office-based register prevents treating online absence as proof that no specification exists.",
+    "researchAttempts": [
+      "Read MELAD incoming-mail and import-permit services.",
+      "Downloaded Biosecurity Act 2011 and read the plant-product definition, sections 24–28 and the written-exemption mechanism in section 31.",
+      "Searched the authority for tea and processed-food import specifications; no tea-specific determination found.",
+      "Read Food Regulations and Standards 2014 sections 56–57: personal-consumption exemption up to 10 kg per person and ordinary food identification/inspection provisions. Kept this separate from plant biosecurity.",
+      "Checked the agriculture ministry’s newer website and Kiribati’s FAO country submission, which allocates prepacked processed-food inspection to Health; neither publishes a legal tea-specific biosecurity waiver.",
+      "Continued exact tea/Camellia/import-specification searches; no published applicable specification or written exemption found.",
+      "30 September independent scope reread: Act PDF pp.17–18 confirms unqualified manufactured-product and regulated-article definitions; pp.41–46 confirms conditional permit/certificate provisions and the no-existing-specification trigger for advance application. Section 80, p.91, provides for an office-based public register, so unsuccessful online searches cannot prove absence of a specification. Rechecked MELAD service text and the national FAO submission allocating processed/prepackaged food to Health; neither supplies the missing tea specification or a biosecurity waiver.",
+      "30 September independent food-document review: reread Food Regulations and Standards 2014 sections 53–64 in the FAO-hosted enacted text. Section 56 expressly exempts personal-consumption imports up to 10 kg from food-legislation requirements; section 57 permits identity-document checks for personal food. Sections 58–59 assess accompanying sanitary/analysis certificates and section 64 provides an inspector-issued arrival release permit. These provisions do not establish an advance foreign certificate or special registration obligation for every 100 g personal parcel; ordinary identity/arrival clearance is distinct from special advance paperwork. The existing biosecurity-specification gap remains unresolved. Saved text as pacific-food-sources/ki-food2014.*.",
+      "30 September bounded remaining-scope review: Biosecurity Act 2011 section 107(2)–(4) preserves compatible old subsidiary rules, treating relevant import-treatment provisions as section 26 specifications. The 1976 Plants Ordinance itself was repealed; its sections 6 and 14 depend on notices/permits and its two schedules are forms/export fees, not an applicable tea specification. The missing existing specification therefore may be a saved older instrument, not necessarily a new 2011 publication. No such operative tea notice was recovered."
+    ]
+  },
+  {
+    "code": "MV",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "A corroborated current manufactured-tea classification or processing exemption under the 2011 Act and December 2025 notice remains missing. The agricultural portal is not publicly readable; MFDA food-side personal-use conditions do not supply that agricultural classification.",
+    "researchAttempts": [
+      "Read the current December 2025 phytosanitary importer notice.",
+      "Checked the agriculture ministry downloads and searched for tea/processed-food classifications.",
+      "Located the personal-food import standard but did not treat food quantities as a phytosanitary waiver.",
+      "Located the current revised noncommercial-food standard, published 7 January 2026, but official PDF requests returned HTTP 403; did not rely on the older personal-food download as current.",
+      "Checked the ministry mandate (Plant Protection Act 2011/12), current notices and commodity searches. Coconut-palm/nursery permit instructions are not evidence for manufactured tea. No applicable tea exemption located.",
+      "Retried the revised MFDA PDF through web research: all 8 pages became readable despite direct HTTP still returning 403. Read sections 1, 4, 6.2 and 9: processed-food limit 5 kg/5 litres, packaging/identity and personal-use evidence; the advance postal clearance in 6.2 is specific to breast-milk substitutes and was not misapplied to tea.",
+      "30 September independent food-rule closure check: the existing review already read current MFDA-FCD STAN6-2021 Rev.1 November 2025 (published January 2026), including its processed-food 5 kg/5 litre personal allowance and the breast-milk-substitute-specific postal form. New attempts to reopen the current Ministry publication/PDF returned inaccessible tool responses and supplied no contrary rule. Did not apply commercial food licensing or the breast-milk-substitute clearance form to ordinary tea. Retained the prior current-standard findings and the separate unresolved agricultural classification.",
+      "30 September bounded remaining-scope review: Located the NPPO-filed 2011 Plant Protection Act uploaded to IPPC on 12 June 2025. Web-indexed Dhivehi text was readable; direct PDF download returned 403 and screenshot retrieval failed. A provisional reading of articles 19–22 and the definitions does not establish a finished-tea exemption; it is not an official English translation. The older English Plant Quarantine Regulation distinguishes planting material from dried/packed food, but cannot independently settle the later Act and current notice. WTO 2024 paragraph 3.101 identifies Agriculture Online System as a requirements source; its public URL redirects to a login and exposes no commodity conditions. No sign-in or account creation attempted."
+    ]
+  },
+  {
+    "code": "PG",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The missing source is PNG Biosecurity Authority’s current commodity specification/exemption for finished Japanese Camellia sinensis tea in personal postal parcels, including whether a recipient import permit or origin phytosanitary certificate is required.",
+    "researchAttempts": [
+      "Checked the Japan MAFF NPPO directory and the linked PNG quarantine authority.",
+      "Searched the authority, Customs and MICOR for Camellia sinensis, tea, processed foods and personal imports.",
+      "Rejected tea-tree mulch guidance (Melaleuca alternifolia) as an unrelated product and did not use Customs tariff treatment as agricultural clearance.",
+      "Checked the Prime Minister’s official June 2025 Biosecurity Bill passage announcement and current NPPO references; did not treat the 2017-uploaded draft as enacted law.",
+      "Checked the postal prohibited/restricted list and PNG Customs references; food labelling provisions do not settle tea’s agricultural status.",
+      "Rejected MPI guidance about small personal food quantities presented on an arrival card because it concerns passenger/animal-food imports rather than a mailed tea parcel. Repeated official tea/Camellia/processed-food searches did not locate current commodity conditions.",
+      "30 September independent food-law review: obtained the ICCC-hosted enacted Food Sanitation Act 1991. Section 30, printed p.17, limits advance import notification to food imported for sale or business purposes; section 31 provides examination of imported food. Sections 33–35 license prescribed businesses, not every private consumer. The current Customs food entry identifies labelling compliance under the 2007 Regulation, not a blanket private-parcel health/free-sale certificate. No independent mandatory special food document for this private sencha parcel was established, so the agricultural commodity gap remains unresolved. Saved primary Act as pacific-food-sources/pg-food1991.*.",
+      "30 September bounded remaining-scope review: Retrieved the official National Trade Office PNGBA page and inspected its download links. It names the new authority but links the 1997 NAQIA Act; some displayed Act dates/titles are internally inconsistent. It supplies neither the enacted 2025 law nor a current Japanese tea specification. The 2017 draft was not substituted for enacted law."
+    ]
+  },
+  {
+    "code": "TO",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The missing determination is whether the Director has classified Japanese steamed/dried retail tea as permit-controlled plant material under regulation 26, or prescribed a permit/certificate-free tea condition; an applicable current commodity schedule is needed.",
+    "researchAttempts": [
+      "Read Tonga MAFF Quarantine Division guidance and legislation links.",
+      "Compared MPI Tonga import conditions with current Australian MICOR dried-herb conditions; origin and product coverage differ.",
+      "Searched for tea-specific conditions and personal-postal exemption; not verified.",
+      "Obtained the NPPO-submitted 1995 regulations via FAOLEX and read regulations 16, 17, 21, 23, 25 and 26. Manufactured plant material is governed by a risk determination, not a blanket exemption or automatic blanket permit rule.",
+      "Read the Plant Quarantine Act definition: plant excludes manufactured items, but plant material includes all materials of plant origin. This makes the specific regulation 26 determination essential.",
+      "Rechecked MPI’s February 2024 Tonga conditions and section 1.2 origin scope. Its removed herbal-teabag entries and Australia’s named dried-herb conditions do not establish Japanese Camellia tea conditions.",
+      "30 September independent food-law review: retrieved the current Attorney General-hosted Food Act 2020 (Act 3 of 2020). Section 2, printed p.9, defines both import and importer by commercial purposes. Section 51, printed p.30, requires prescribed documents and presentation for inspection, but must be read with those definitions. Section 19 concerns information the Authority obtains from Customs, not an independent requirement that every private consumer procure each named certificate. The WTO 2021 review paragraph 3.65 broadly describes food-import permits/certificates, but does not establish private-post scope and was not used to override the enacted definitions. The current MAFF Food Division still cites the 2020 Act. No independent private-consumption certificate obligation established; saved official Act in pacific-food-sources/to-food2020-government.*.",
+      "30 September bounded remaining-scope review: Reread saved regulations 23–26: preserved fruit/vegetable and dried-flower provisions are specific categories; regulation 26 depends on the Director's assessment of manufactured plant material as a serious exotic-pest carrier. Those concessions do not expressly determine Camellia tea, and no new applicable specification was recovered."
+    ]
+  },
+  {
+    "code": "AE",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The unresolved fact is MOCCAE’s classification of this finished steamed/dried sencha and any applicable risk-based certificate exception under current Law 7/2025. The receiving emirate must also identify the personal-food quantity category. The broad dead-plant definition alone does not settle the manufactured-tea exception identified by JETRO; no certificate-free route for the actual shipment is yet verified.",
+    "researchAttempts": [
+      "Read current UAE agricultural-quarantine law definitions/scope and 2016 Cabinet personal-food announcement.",
+      "Cross-checked Japan MAFF postal manufactured-green-tea column, dated 21 April 2026.",
+      "Reviewed MOCCAE agricultural release service; its fresh-produce examples do not establish a processed-tea exemption.",
+      "30 September final review: read current official Law 7/2025 Article 1 definitions and Article 5(2), 5(5)(c); verified January 2026 commencement and preservation of compatible older implementing rules. Did not treat the old 1979 law as current.",
+      "Read official JETRO Japan-green-tea export guide: dried tea and matcha may be exempt from plant inspection due to processing, but UAE confirmation is required. Its August 2025 review predates the new law, so it is evidence of a classification issue, not a current exemption determination. Current MOCCAE fresh-produce release guidance and targeted official searches did not resolve manufactured sencha.",
+      "30 September bounded independent-food follow-up: Located a new official UAE legislation-portal provision excluding food imported for personal use from food registration. Read its indexed PDF p.7 provision in context with the following Article 4 registration procedure. Direct complete-PDF retrieval returned 403. This adds a registration-specific exemption; it does not expand the 2016 noncommercial-food route into a phytosanitary waiver, settle the receiving-emirate quantity category, or establish that every separate food document is waived."
+    ]
+  },
+  {
+    "code": "BH",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The missing determination is whether Plant Protection and Quarantine treats this steamed/dried sencha as a pest-risk-bearing manufactured plant product, or applies the MAFF footnote-11 processing exception. The personal-food guide supplies a routine undertaking/label route but not an agricultural waiver or numeric mailed-tea limit.",
+    "researchAttempts": [
+      "Read Bahrain NPPO phytosanitary notice and 2026 ministry service including traveller-only exemption.",
+      "Read GCC plant-product definition: manufactured products are covered when they present pest risk.",
+      "Current MAFF postal matrix supplies exact commodity/channel evidence. Bahrain food-guide PDF could not be freshly retrieved because of host certificate/connection failures; it is not used as agricultural clearance.",
+      "30 September: The Ministry of Health food-import guide has a separate personal-use route: a written personal-use undertaking, suitable quantities and Arabic/English labelling (or approved translation) are required. A routine recipient undertaking is not itself an official certificate. The unresolved agricultural classification under the MAFF PQ*11 processing exception still prevents clearance.",
+      "30 September final review: rechecked ministry agricultural-quarantine service as indexed with its September 2026 update: prior permit, original phytosanitary certificate, shipping list, customs declaration and waybill; the small-quantity permit concession is expressly for plants accompanying travellers. It cannot be applied to post.",
+      "Searched the current ministry rules directory (2003 quarantine law, 2004 import law, 2007 amendment) and official finished-tea/processing exemptions. Ministry direct pages returned access errors; indexed service text was readable. No tea-specific exemption or personal-postal agricultural designation was found; retained exact classification gap rather than applying commercial requirements automatically.",
+      "30 September bounded independent processing/list peer review: downloaded the complete 23-page English Plant Quarantine Law submitted by Bahrain NPPO to IPPC, OCRed the image PDF, and visually checked PDF pages 7 and 9. Article 2 defines manufactured products by pest risk. Article 15(1) supplies permit/certificate defaults; 15(3) authorises commodity risk-based waivers but grants no enumerated automatic processing waiver. Article 24 addresses goods in travellers’ possession and cannot be extended to post. The annex on PDF pp.12–23 is Bahrain’s regulated-pest lists, not an exhaustive list of controlled/exempt food commodities; absence of tea there therefore proves nothing about its category. No outcome change. Source PDF/OCR saved in middle-east-definition-peer-review/."
+    ]
+  },
+  {
+    "code": "OM",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "MAFWR must determine whether steamed/dried sencha is a regulated pest-risk-bearing manufactured plant product and, if it is, the Japan-origin permit/certificate conditions. The official commodity lookup requires a CAPTCHA. Australian MICOR’s old tea condition (certificate yes, permit no) is not a Japan-postal exemption; the personal-import customs service preserves agency restrictions. Personal-food product registration is now expressly waived by Decision 69/2024 Article 3(1); this does not settle any separate food-import licensing provision. The underlying Food Safety Regulation 2/2010 Article 30 and its private-parcel scope remain unverified because the available original PDF could not be read reliably.",
+    "researchAttempts": [
+      "Read Oman Customs permit and personal import services.",
+      "Cross-checked current Japan postal matrix against Australian MICOR exact processed-tea entry; retained the origin/date conflict.",
+      "Rechecked exact Australian MICOR processed-tea consumption entry: phytosanitary certificate yes, import permit no, NPPO conditions verified 2013 and page reviewed September 2024. Japan MAFF retains PQ footnote 11. Oman public commodity requirements lookup is CAPTCHA-protected; no automated bypass attempted. Destination-specific manufactured-tea exemption remains unverified.",
+      "30 September final review: located Royal Decree 47/2004 agricultural-quarantine law and implementing Decision 32/2006. Older 1983/2000 rules were not treated as current. The current GCC-style definition retains a pest-risk qualification for manufactured products; searches did not locate a tea exemption.",
+      "Checked Oman Customs current tariff: HS090210000000 is green tea in immediate retail packaging, with 0% duty. Its blank procedural fields do not establish a phytosanitary exemption. The official commodity-condition lookup remains CAPTCHA-protected; no bypass attempted. Rechecked Australian MICOR’s 2013 NPPO verification/2024 page review and preserved its origin/date limitation.",
+      "30 September bounded independent-food follow-up: Read the reproduced enacted text of Decision 69/2024 Articles 2-3 and commencement; retrieved the linked Gazette scan (text encoding is damaged). Personal-use food is explicitly exempt from registration. Read Law 84/2008 Articles 1, 10-14 and the 170/2025 amendment adding Article 30 bis. Do not turn routine authority release in Law Article 12 into a requirement to obtain an origin certificate. The original 2/2010 regulation is a nine-page image PDF: direct download returned 403, web extraction had no text, and the public document viewer could not preview it. The 2025 provision is discretionary pre-licence establishment verification, not proof that this personal parcel requires that licence. Retain the separate agricultural commodity-classification gap.",
+      "30 September bounded independent processing/list peer review: reread complete reproduced Decision 32/2006 on Qanoon. Article 1 inherits the parent-law definitions; articles 10–11 require prior permit and certificate for covered consignments. Article 12 certificate concession expressly concerns accompanied traveller goods (10 kg or 20 units, whichever is less). Article 34 expressly covers post up to 20 kg and no more than two parcels per person per year, but waives fees only; it does not waive permits, certificates or classification. The annex concerns honeybee-product pests, not a complete commodity exemption list. No tea-processing rule was found in the text. The separate original food regulation 2/2010 PDF again returned 403 and remains unreadable in this pass. Retained unresolved; saved the reproduced text/HTML and access results in middle-east-definition-peer-review/."
+    ]
+  },
+  {
+    "code": "QA",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The missing fact is the Plant Protection Department’s classification or published risk-based exception for finished steamed/dried Japanese sencha under Law 24/2005 Article 2 and its implementing rules. The personal-food document waiver does not itself answer this separate agricultural question. No numeric personal postal tea allowance was verified.",
+    "researchAttempts": [
+      "Read Qatar legal portal definitions and express postal scope.",
+      "Downloaded and read MOPH food importer guide, including separate processed-food/plant certificate templates and tea classification.",
+      "Cross-checked current MAFF postal manufactured-tea column.",
+      "30 September: Qatar Customs publishes the GCC guide with footnote 3 expressly excluding personal-use food from its general food-document requirements, provided packaging and identifying information are adequate. This does not establish whether the separate agricultural PQ*11 processed-product exemption applies to this tea.",
+      "30 September final review: checked official Al Meezan current-in-force Law 24/2005 and exact Article 2. It applies permit/certificate requirements to covered imports from outside the GCC and authorizes commodity risk-based exceptions. Read alongside implementing regulation’s postal scope; did not infer that the personal-food document exception waives plant quarantine.",
+      "Targeted official searches for tea, manufactured plant products and personal postal exceptions did not identify the authority’s commodity determination for Japanese steamed/dried tea.",
+      "30 September bounded independent processing/list peer review: recovered the full Al Meezan text of Ministerial Decision 61/2007, articles 1–19, using normal curl after Python requests failed certificate-chain validation. Article 1(8) retains the manufactured-product pest-risk condition; article 3 includes postal parcels; articles 7–8 require advance permission/certificate for covered consignments. Article 11 expressly waives permit and certificate for accompanied traveller goods up to 100 kg under its conditions, not postal purchases. Article 12 permit exceptions cover diplomatic/consular/international bodies, scientific research and government/public bodies. Neither is a general private-postal or finished-tea exemption. No outcome change; saved full portal HTML/text in middle-east-definition-peer-review/qa-reg2007.*."
+    ]
+  },
+  {
+    "code": "JO",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The missing evidence is the Ministry of Agriculture’s current commodity decision including or exempting finished steamed/dried tea under the 2021 quarantine instructions, and an ordinary-food personal postal clearance rule from JFDA. The medicinal-parcel consultation is outside ordinary sencha’s scope; its enactment status is not the relevant missing fact.",
+    "researchAttempts": [
+      "Read ministry’s 2021 instructions, Articles 3 and 8, including public/private post.",
+      "Searched ministry tea certificate/exemption decisions in Arabic and English and JFDA personal-parcel guidance; no enacted finished-tea postal exemption identified.",
+      "30 September final review: downloaded and read Tawasal consultation draft and response report. Draft scope under Medicine Import Instructions 2026 Article 16 is medicines, vitamins/minerals, natural pharmaceutical products and specified infant foods; Article 14 requires final pharmaceutical form. Removed its enactment status as an ordinary-tea research question.",
+      "Navigated official Jordan Customs integrated tariff through section 02/chapter 09 and retrieved HS09021000000: green tea in immediate packaging not exceeding 3 kg, duty 0%. Available detail links cover statistics, taxes, agreements and tariff tree; no plant-quarantine classification was published there. The 3 kg is a tariff packaging descriptor, not a personal import allowance.",
+      "Checked the official trade portal’s tea procedures; the listed tea route is export of locally purchased tea, not personal imports. Further Arabic searches of MOA, Customs and JFDA did not locate the current tea quarantine designation or ordinary-food personal postal exception.",
+      "30 September bounded independent-food follow-up: Checked the official JFDA and Integrity Commission law indexes. Both list the 2015 Food Law, but direct requests returned HTTP 451 and the web index did not expose a usable official PDF link. Reviewed the published legal-text reproduction Articles 2-4, 11-16 and 29-33: inspection/fitness and special-food approval are distinct; the latter cannot automatically be applied to ordinary sencha. Article 12 delegates inspection/health procedures and Article 29 preserves older implementing rules. No origin certificate or private-postal waiver was inferred from those enabling provisions."
+    ]
+  },
+  {
+    "code": "IQ",
+    "permitFreeDecision": "unresolved",
+    "remainingQuestion": "The missing determination is whether steamed/dried sencha remains a plant product under the statutory biological-nature test. If covered, determine whether any rule waives its import licence: Article 9(1)’s non-agricultural-use postal concession removes only the certificate, and the explicit Article 9(2) licence exception concerns seed samples. The 10 kg material-weight basis is also unspecified and is not a full postal allowance. The independent COSQC conformity programme cannot close this question: its published guide/list links currently return 404, and the applicable personal-postal scope/exemptions were not established.",
+    "researchAttempts": [
+      "Read Iraqi Justice Ministry English consolidated law Articles 1, 7 and 9 and 2020 amendment references.",
+      "Cross-checked independent German NPPO consolidated translation of Article 9.",
+      "Searched for tea-specific agricultural import designation; postal tea composition rules alone do not answer it.",
+      "30 September final review: downloaded and reread the German NPPO-hosted consolidated 2012/2020 English law, including definitions and complete Articles 7 and 9. Unlike the GCC laws, it uses a biological-nature processing test, not an explicit manufactured-product pest-risk test. The Article 9(1) postal concession is certificate-only; the separate licence waiver in Article 9(2) is limited to seed samples.",
+      "Targeted official searches did not locate a tea-specific classification, non-agricultural-use interpretation or licence exemption. Retained unresolved instead of assuming that ordinary drinking use establishes a complete no-document route.",
+      "30 September bounded independent-food follow-up: Pursued the independent COSQC conformity route through official guides 9/10 and the 13 December 2023 food commodity list. Indexed official text confirms a pre-shipment programme; direct published guide/list URLs returned 404, and personal-use search results only addressed vehicles. Without the complete applicable scope/exemptions and current green-tea entry, did not infer a blanket personal food CoC requirement. The separate agricultural biological-nature classification/licence question remains unchanged."
+    ]
+  }
+]

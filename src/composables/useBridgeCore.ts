@@ -2,6 +2,7 @@ import { FPNumber, type CodecString } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { getTsFundingQuery, parseGetTsFundingPurpose } from '@/features/misc/lib/getTsFlow';
 
 import { PageNames } from '@/consts';
 import { useAssetsStore } from '@/stores/assets';
@@ -96,11 +97,19 @@ export function useBridgeCore() {
   };
 
   const handleViewTransactionsHistory = () => {
-    router.push({ name: PageNames.BridgeTransactionsHistory });
+    const purpose = parseGetTsFundingPurpose(router.currentRoute?.value?.query ?? {});
+    router.push({
+      name: PageNames.BridgeTransactionsHistory,
+      ...(purpose ? { query: getTsFundingQuery(purpose) } : {}),
+    });
   };
 
   const navigateToBridge = () => {
-    router.push({ path: '/bridge/' });
+    const purpose = parseGetTsFundingPurpose(router.currentRoute?.value?.query ?? {});
+    router.push({
+      path: purpose ? '/bridge' : '/bridge/',
+      ...(purpose ? { query: { ...getTsFundingQuery(purpose), asset: 'DAI' } } : {}),
+    });
   };
 
   return {

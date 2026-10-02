@@ -1,0 +1,2374 @@
+                                                   THE REPUBLIC OF KIRIBATI
+
+                                    FOOD REGULATIONS AND STANDARDS, 2014
+
+PART 1-PRELIMINARY ......................................................................................................................4
+1.       Short title and commencement .......................................................................................................4
+2.       Purpose and scope ..........................................................................................................................4
+3.       Definitions ......................................................................................................................................4
+PART 2 – FOOD SAFETY AND HYGIENE OBLIGATIONS .........................................................7
+4.       General obligation ..........................................................................................................................7
+5.       General requirements for premises and facilities of food businesses.............................................7
+6.       Location of premises ......................................................................................................................8
+7.       Design and layout of premises........................................................................................................8
+8.       Internal structures and fittings ........................................................................................................8
+9.       Equipment and containers ..............................................................................................................9
+10.      Cooking equipment and associated exhaust systems .....................................................................9
+11.      Water, ice and steam supplies.........................................................................................................9
+12.      Drainage and waste disposal...........................................................................................................9
+13.      Cleaning facilities .........................................................................................................................10
+14.      Personnel hygiene facilities and toilets ........................................................................................10
+15.      Lighting ........................................................................................................................................10
+16.      Storage ..........................................................................................................................................10
+17.      General maintenance of establishments and equipment...............................................................11
+18.      Cleaning and disinfection .............................................................................................................11
+19.      Pest control ...................................................................................................................................12
+20.      Vehicles, vessels, conveyances and bulk containers ....................................................................12
+21.      Time and temperature control.......................................................................................................13
+22.      Microbiological cross-contamination ...........................................................................................13
+23       Physical contamination................................................................................................................14
+24.      Re-service of food prohibited .....................................................................................................134
+25.      Interference with food packages...................................................................................................14
+26.      Restrictions as to exposure of food...............................................................................................14
+27.      Incoming raw materials, ingredients and food .............................................................................14
+28.      Packaging......................................................................................................................................14
+29.      Health status ...............................................................................................................................145
+30.      Personal Hygiene of Food handlers..............................................................................................15
+31.      Personal behaviour .......................................................................................................................15
+32.      Food handler training....................................................................................................................15
+33.      Recall procedures .......................................................................................................................156
+PART 3 – HEALTH CERTIFICATE FOR PREMISES ENGAGED IN FOOD BUSINESS
+OPERATIONS ......................................................................................................................................16
+34.      Application for license..................................................................................................................16
+35.      Issue of Health Certificate ............................................................................................................16
+36.      Duration of health certificate ........................................................................................................16
+37.      Additional conditions of health certificate .................................................................................167
+38.      Suspension or cancellation of health certificate .........................................................................167
+39.      Health certificate not transferable.................................................................................................17
+40.      Renewal of health certificate ........................................................................................................17
+
+
+                                                                                                                                                           1
+41..................................................................................................................Display of health certificate
+.................................................................................................................................................................17
+PART 4 – PREPARATION AND/OR SALE OF FOOD IN, ON OR FROM UNLICENSED
+PREMISES ............................................................................................................................................18
+42. Licensed businesses selling food prepared off the premises in an unlicensed premises...........18
+43. Persons preparing food for sale on unlicensed premises ..................................................................18
+44. Hawkers and charity and community food business operations.......................................................18
+PART 5 – GENERAL FOOD STANDARDS.....................................................................................19
+45. Application of Codex Standards .......................................................................................................19
+PART 6 – LABELLING AND CLAIMS ............................................................................................19
+46. General requirements on labelling ....................................................................................................19
+47. Requirements on nutrient content labelling ......................................................................................22
+48. Product specific labelling requirements..........................................................................................223
+49. Presentation of mandatory labelling .................................................................................................23
+50. Prohibited claims ............................................................................................................................234
+51. Use of nutrient content claims, nutrient comparative claims, nutrition claims and health claims ...24
+PART 7 - COMMODITY STANDARDS ...........................................................................................25
+52. Requirements for different commodities ..........................................................................................25
+PART 8 – IMPORTED FOOD ..........................................................................................................256
+53. General import requirements ..........................................................................................................256
+54. High risk food ...................................................................................................................................26
+55. Food of regulatory interest................................................................................................................26
+56. Personal import of food ..................................................................................................................267
+57. Product identity...............................................................................................................................267
+58. Health or sanitary certificates ...........................................................................................................27
+59. Analytical certificates .......................................................................................................................27
+60. Holding for physical checks..............................................................................................................28
+61. Permitting foods to be moved ...........................................................................................................28
+62. Physical checks .................................................................................................................................28
+63. Sampling food...................................................................................................................................28
+64. Satisfactory checks..........................................................................................................................289
+65. Re-labelling.......................................................................................................................................29
+66. Rejection and destruction..................................................................................................................29
+PART 9 – MARKETING OF FOOD AND NON-ALCOHOLIC BEVERAGES TO CHILDREN
+.................................................................................................................................................................30
+67. Determining whether a food should be subject to marketing and sales restrictions.........................30
+68. Balanced diet.....................................................................................................................................30
+69. Prohibition on the marketing and promotion of designated products to children...........................301
+70. Control of broadcasting times and advertisement of food products ...............................................312
+71. Restriction on the use of premiums when supplying designated products to children.....................32
+72. Labelling and packaging restrictions ................................................................................................32
+73. Signage and display restrictions........................................................................................................32
+PART 10 – MISCELLANEOUS .........................................................................................................32
+74. Inspection report ...............................................................................................................................32
+
+                                                                                                                                                                 2
+75. Breastfeeding material ....................................................................................................................323
+76. Promotion of breast-milk substitutes and baby feeding accessories.................................................33
+77. Food quality and safety offences ......................................................................................................34
+78. Penalties ............................................................................................................................................34
+79. Record keeping .................................................................................................................................34
+SCHEDULE 1 - MAXIMUM PERMITTED LEVELS OF CHEMICAL CONTAMINANTS ..345
+SCHEDULE 2 - MAXIMUM LIMITS ON MICROBIOLOGICAL CONTAMINANTS IN
+FOODS...................................................................................................................................................37
+SCHEDULE 3 - TABLE OF CONDITIONS FOR NUTRIENT CONTENT CLAIMS ................39
+SCHEDULE 4 - STANDARDS ON MEAT AND MEAT PRODUCTS ..........................................40
+SCHEDULE 5 - STANDARDS ON EGGS.........................................................................................42
+SCHEDULE 6 - STANDARDS ON FISH AND FISHERIES PRODUCTS ...................................42
+SCHEDULE 7 - STANDARDS ON CEREAL AND CEREAL PRODUCTS.................................46
+SCHEDULE 8 - STANDARD ON SALT ...........................................................................................48
+
+
+
+
+                                                                                                                                                          3
+PART 1-PRELIMINARY
+
+    1. Short title and commencement
+
+(1) These Regulations may be cited as the Food Regulations and Standards 2014.
+
+(2) These Regulations shall come into force on the expiry of the period of two years after the date of
+their notification in the Gazette. In these Regulations, this period of two years is referred to as the
+transitional period.
+
+    2. Purpose and scope
+
+(3) These Regulations shall apply to all stages of production, processing and distribution of food and to
+the import and export of foods,
+
+(4) The purpose of these regulations is to protect the health of the public from unsafe food, and to
+protect consumers from deception and food of unacceptable and poor quality based on the following
+principles:
+
+   (a) primary responsibility for food safety rests with the food business operator;
+   (b) it is necessary to ensure food safety throughout the food chain, starting with primary
+       production;
+   (c) all foods whether imported or produced domestically shall comply with equivalent
+       requirements.
+
+(5) These Regulations shall not apply to:
+
+   (a) primary production for private domestic use; or
+   (b) the domestic preparation, handling, storage, holding or possession of food for private domestic
+       consumption
+
+    3. Definitions
+
+(1) In these Regulations:
+
+“animals” refers to a living organism that feeds on organic matter, typically having specialized sense
+organs and nervous system and able to respond rapidly to stimuli
+
+“best before date” means the date after which a food may not be of the quality expected by a
+consumer and after which the product will retain any specific qualities for which tacit or express
+claims have been made. “Breast-milk Substitute” means any food being marketed or otherwise
+represented as a partial or total replacement for breast-milk, whether or not suitable for that purpose.
+
+
+
+“charity and community food business operations” refers to charitable, community based or other
+socially beneficial organisations that sell food to raise funds for charitable or community purposes
+
+
+                                                                                                           4
+and not for personal financial gain, and shall include, but not necessarily be limited to community
+markets, bazaars, raffles, school fundraising activities, church fundraising activities and district stalls;
+
+“children’s activity” means any cultural, educational, sporting or recreational activity which a
+significant number or proportion of children attend or participate in.
+
+“claim” means any representation which states, suggests or implies that a food has particular qualities
+relating to its origin, nutritional properties, nature, processing, composition or any other quality;
+
+“cleaning materials” means cleaning chemicals and equipment including but not limited to, detergent,
+bleach, mops, brooms and buckets.
+
+“Codex Alimentarius” means standards, codes of practice, guidelines and other texts developed and
+maintained by the Codex Alimentarius Commission, a body established in 1963 by the Food and
+Agriculture Organization of the United Nations (FAO), and the World Health Organization (WHO);
+
+“container” means any packaging of food for delivery as a single item, whether by completely or
+partially enclosing the food and includes wrappers. A container may enclose several units or types of
+packages when such is offered to the consumer;
+
+“date of manufacture” means the date on which the food becomes the product as described;
+
+“date of packaging” means the date on which the food is placed in the immediate container in which
+it will be ultimately sold;
+
+"disinfection" means the reduction, without adversely affecting the food, by means of hygienically
+satisfactory chemical agents or physical methods, of the number of microorganisms to a level that will
+not lead to harmful contamination of food;
+“Distributor” means a person, corporation, or any other entity engaged in a food business, whether
+wholesale or retail, of distributing, selling, advertising, or promoting food products.
+
+“domestic purposes” means an activity including but not limited to production, display and
+consumption of food which performed or devoted to home life or household affairs
+
+ “expiration date” means the date after which a food may be unsafe to eat. For the purposes of these
+regulations the phrases “use by”, “expiry date” and “expiration date” shall have the same meaning.
+After this date, the food should not be regarded as marketable.
+
+“food” means any substance, whether processed, semi-processed or raw, which is intended for human
+consumption, and includes drinks, chewing gum and any substance which has been used in the
+manufacture, preparation or treatment of “food” but does not include cosmetics or tobacco or
+substances used only as drugs.
+
+“food business” means any undertaking, whether for profit or not and whether public or private,
+carrying out any of the activities related to any stage of production, processing and distribution of food
+and beverages for sale.
+
+“food handler” means any person who directly handles packaged or unpackaged food, food equipment
+and utensils, or food contact surfaces and is therefore expected to comply with food hygiene
+requirements.
+
+                                                                                                          5
+“food hygiene” means all conditions and measures necessary to ensure the safety and suitability of food
+at all stages of the food chain;
+
+“Food inspector” means a person who has been designated by the Director of Public Health to perform
+food inspection and enforcement activities. This includes but is not limited to Health Inspectors,
+Medical Assistants and Doctors;
+
+“food safety” means assurance that food will not cause harm to the consumer when it is prepared or
+eaten according to its intended use;
+
+“foreign bodies” refers to organic and inorganic components which is not part of the product of
+concern and which is not expected to be in the product. This may include, but is not limited to, hair,
+insects and other physical hazards such as glass, metal, etc;
+
+“hawker” means a person who displays for sale or sells food in or from either a public or private place,
+but neither displays or sells food from a licensed food business’ premises nor is displaying or selling
+food for a charitable, community based or other socially beneficial organization;
+
+“incidental constituent” means any extraneous substance, toxic substance, pesticide, or animal
+remedy that is contained or present in or on any food; but does not include any preservative,
+antioxidant, colouring substance, artificial sweetener, flavouring, food conditioner, anticaking agent,
+gaseous packing agent, propellant, or vitamin, or any mineral other than copper, zinc, selenium, and
+fluorine;
+
+“Label” means any tag, brand, mark, pictorial or other descriptive matter, written, printed, stencilled,
+marked, embossed or impressed on, or attached to, a container of food.
+
+“lot” means a quantity of food manufactured, processed, prepared and packed under the same
+conditions during a particular time not exceeding the 24 hours;
+
+“marketing” means product promotion, distribution, selling, advertising, product public
+relations, and information services;
+
+“non-toxic materials” means material for food contact surfaces which are free of substances which
+may render the food unsafe or which may adversely affect the flavour, colour, odour or bacteriological
+quality of the food;
+
+“nutrient content claim” means a claim that describes the level of a nutrient contained in a food such
+as, but not limited to, "source of calcium"; "high in fibre and low in fat";
+
+“nutrient comparative claim” means a claim that compares the nutrient levels or energy value of two
+or more foods such as, but not limited to, "reduced"; "less than"; "fewer"; "increased"; "more than";
+
+“nutrient function claim” means a health claim that describes the physiological role of the nutrient in
+growth, development and normal functions of the body;
+
+“nutrient supplement” means any mineral, vitamin, essential, amino acid or essential fatty acid
+which, when added either singly or in combination of food, improves or enriches the nutrient content
+of the food;
+
+
+                                                                                                      6
+“packaged” means packed in a container;
+
+“potable water” means fresh water fit for human consumption. Standards of potability should not be
+lower than those contained in the latest edition of the "International Standards on Drinking Water" of
+the World Health Organization (WHO);
+
+“premises” means:
+
+   (a) any building or tent or other structure, permanent or temporary, the land on which it is situated,
+       and any adjoining land used in connection with it;
+
+   (b) any vehicle or vessel; and
+
+   (c) any place, including a street, open space, or place of public resort, used in the preparation,
+       preservation, packaging, storage or selling of any article
+
+“premium” means goods, services, prize, voucher, competition entry, product giveaway or product
+sample offered or supplied without charge
+
+“operator” means any person who is in charge of, responsible for the operations of, directs or controls
+the production, processing, handling or sale of food for a food business premises.
+
+“sanitation” means the hygienic disposal or recycling of waste;
+
+ “sell” means to offer, advertise, keep, deliver, or prepare for sale or exchange, to dispose of for
+consideration, or to deliver in pursuance of a sale or exchange.
+
+
+
+PART 2 – FOOD SAFETY AND HYGIENE OBLIGATIONS
+
+    4. General obligation
+
+(1) Food business operators shall ensure that all stages of production, processing, storage and
+distribution of food under their control satisfy the relevant requirements prescribed in these
+Regulations.
+
+(2) Prior to opening a food business, including but not limited to restaurants, catering venues and food
+manufacturing sites, the health authorities must carry out an inspection of the premises to comply with
+these Regulations.
+
+    5. General requirements for premises and facilities of food businesses
+
+(1) Premises shall be constructed in a manner that is not likely to contaminate food and include
+preventing pest and animal access and harbourage.
+
+ (2) Premises shall be in good repair and condition(3) Premises, utensils and equipment shall be kept
+clean.
+
+
+
+                                                                                                       7
+(4) Adequate facilities shall be available to maintain personal hygiene.
+
+(5) An adequate supply of safe water shall be available wherever water or ice is required for food
+business operations(6) Adequate facilities shall be available to hygienically store and dispose of waste.
+
+(7) Facilities shall be adequate to ensure proper temperature control of food where required.
+
+    6. Location of premises
+
+(1) The premises of food businesses shall be located away from:
+
+   (a) environmentally polluted areas and industrial activities which may lead to contamination of
+       food;
+   (b) areas subject to flooding unless sufficient safeguards are provided;
+   (c) areas prone to infestations of pests; and
+   (d) areas where wastes, either solid or liquid, cannot be removed effectively.
+
+(2) Outside dining areas shall only be permitted where owners of a food business can in the opinion of
+a Food Inspector properly protect the diner and food from excessive dust, other sources of potential
+contamination and odours.
+
+    7. Design and layout of premises
+
+(1) The internal design and layout of food establishments shall permit good hygienic practices,
+including protection against cross-contamination from raw or semi-processed food to ready-to-eat
+food.
+
+(2) While not limiting the generality of sub-regulation (1), the internal design and layout of food
+establishments shall provide adequate working space to allow for the hygienic performance of all
+operations.
+
+(3) No room used in food processing, preparation of food, food handling, storage of food, or display of
+food, shall be used for domestic purposes or located such that it directly opens into a room used for
+domestic purposes.
+
+    8. Internal structures and fittings
+
+(1) Structures within food establishments shall be soundly built of durable materials and be easy to
+maintain, clean and where appropriate, able to be disinfected.
+
+(2) While not limiting the generality of sub-regulation (1), the following specific conditions shall be
+satisfied where necessary to protect the safety of food:
+
+   (a) the surfaces of walls, partitions and floors shall be made of impervious and non-toxic
+       materials;
+   (b) floors shall be constructed to allow adequate drainage and cleaning;
+   (c) ceilings and overhead fixtures shall be constructed and finished to minimise the build up of dirt
+       and condensation, and the shedding of particles;
+   (d) windows shall be easy to clean, be constructed to minimise the build up of dirt and where
+       necessary, be fitted with removable and cleanable insect-proof screens.
+
+                                                                                                       8
+   (e) doors shall have smooth, non-absorbent surfaces, and be easy to clean;
+   (f) working surfaces that come into direct contact with food shall be in sound condition, durable
+       and easy to clean, maintain and disinfect. They shall be made of smooth, non-absorbent
+       materials, and inert to the food, to detergents and disinfectants under normal operating
+       conditions;
+   (g) Food businesses handling raw meat, poultry, fish and seafood must have separate cutting
+       boards only used for these products
+   (h) despite the generality of (2)(g), cutting boards may be made of wood where necessary for
+       operational reasons provided the wood surface is maintained, and properly cleaned and
+       disinfected after each use.
+
+    9. Equipment and containers
+
+(1) Food premises’ equipment and containers shall be designed and constructed of non-toxic materials
+and shall be in sound condition, durable and easy to clean, maintain and disinfect.
+
+    10. Cooking equipment and associated exhaust systems
+
+(1) Cooking equipment and associated exhaust systems should be designed and operated in such a
+manner as to:
+
+   (a) prevent a build up of grease and soot in the kitchen; and
+   (b) prevent any contamination of food that might arise from the burning of any fuel used for
+       cooking.
+
+(2) While not limiting the generality of sub-regulation (1) cooking equipment using a fuel, including
+but not limited to kerosene, shall be designed with a flue that directs the burnt fuel materials to the
+outside of the premises in such a manner as to prevent contamination of the food handling environment
+and the food.
+
+    11. Water, ice and steam supplies
+
+(1) An adequate supply of potable water with appropriate facilities for its storage, distribution and
+where appropriate temperature control shall be available whenever necessary to ensure the safety and
+suitability of food.
+
+(2) Ice shall be made from potable water and shall be protected so that it is not contaminated in a
+manner that could lead to it being unsafe.
+
+(3) Non-potable water, for uses that will not contaminate food, including but not limited to flushing of
+toilets, shall have a separate system.
+
+(4) Water used to clean fish, marine animals and whole fishery products should meet the minimum
+standard of water quality.
+
+    12. Drainage and waste disposal
+
+(1) Adequate drainage and waste disposal systems and facilities shall be provided. They:
+
+
+
+                                                                                                      9
+   (a) shall be designed and constructed so that the risk of contaminating food or the potable water
+       supply is avoided; and
+   (b) shall be designed so that they do not pollute the environment.
+
+    13. Cleaning facilities
+
+(1) Adequate facilities shall be provided for cleaning food, utensils and equipment. Such facilities shall
+have an adequate supply of potable water, including hot water.
+
+(2) Where running water is not available, to use a three compartment washing system or its equivalent
+for cleaning of utensils. In such a system the first compartment shall, following the removal of food
+scraps, be used for an initial wash with scrubbing to remove organic matters and other dirt; the second
+compartment shall be used for a wash with detergent and scrubbing to lift and remove the remaining
+organic matter; and the third compartment shall be used with a disinfectant (chemical or hot water) to
+reduce the microbial contamination on the utensils. Cleaning water should meet the minimum water
+standard.
+
+(3) Facilities for cleaning of raw meat, fish, poultry or other potentially high risk food shall be separate
+from facilities for washing salad vegetables or other ready-to-eat food, and separate from facilities for
+washing utensils and equipment. If separate facilities are not available, thorough cleaning and
+sanitation of facilities must be carried out after cleaning of raw meat, fish, poultry and other potentially
+high risk food.
+
+    14. Personnel hygiene facilities and toilets
+
+(1) Where appropriate, including but not limited to restaurants, bakeries, and food processing
+premises, suitably located facilities shall include:
+
+   (a) adequate means of hygienically washing and drying hands, including wash basins and an
+       appropriate supply of water; and
+   (b) toilets of appropriate hygienic design.
+
+(2) In those premises where toilets are required, they shall:
+
+   (a)   be available in sufficient number to ensure good hygiene is maintained;
+   (b)   have adequate hand washing and drying facilities;
+   (c)   be maintained in a hygienic manner;
+   (d)   not open directly into rooms in which food is being processed, prepared or handled; and
+   (e)   be connected to an effective drainage system.
+
+    15. Lighting
+
+(1) Adequate natural or artificial lighting shall be provided to enable the business to operate in a
+hygienic manner.
+
+    16. Storage
+
+(1) Where necessary, adequate facilities for the storage of food, ingredients and non-food items (e.g.
+cleaning materials, lubricants, fuels) shall be provided.
+
+
+                                                                                                         10
+(2) Food storage facilities shall be designed and constructed to:
+
+   (a)   permit adequate maintenance and cleaning;
+   (b)   avoid pest access and harbourage;
+   (c)   enable food to be effectively protected from contamination during storage; and
+   (d)   where necessary, food is to be kept below 5 degrees Celsius or above 60 degrees Celsius to
+         provide an environment that minimises the deterioration of food (e.g. by temperature and
+         humidity control).
+
+(3) While not limiting the generality of sub-regulation (2), storage facilities in premises of food
+businesses shall be organised such that:
+
+   (a) food is not stored in the same room as kerosene or other chemicals, or in any manner that
+       might enable the fumes from chemicals to contaminate food;
+   (b) food is stored in an organised manner such that both a food handler and a Food Inspector can
+       identify which food is closer to its expiry date (use-by date) or which food has been produced
+       or processed most recently;
+   (c) non-food items are present only as necessary and storage facilities are not also used for storage
+       of personal clothing, personal hygiene items, or other items unless these are stored separately
+       from food and in a manner that doesn’t increase the likelihood of food contamination or
+       provide pest harbourage; and
+   (d) tools and cleaning materials are present only as necessary and are stored separately from food
+       and food handling areas.
+
+(4) Where non-food items are stored or displayed for sale in a retail or wholesale food business those
+non-food items should be stored or displayed in a manner that ensures the food is effectively protected
+from contamination during storage. Where necessary, this may be taken to mean on separate shelves
+and in separate locations in the premises.
+
+    17. General maintenance of establishments and equipment
+
+(1) Food premises and equipment shall be kept in an appropriate state of repair and condition to
+    facilitate all sanitation procedures, to function as intended, and to prevent contamination of food.
+(2) Non-functioning equipment should either be repaired or removed from food preparation areas.
+
+    18. Cleaning and disinfection
+
+(1) Food business operators shall implement cleaning and disinfection programs that shall be adequate
+to ensure that all parts of the establishment, its equipment and facilities are appropriately clean.
+
+(2) While not limiting the generality of sub-regulation (1), cleaning shall be adequate to remove food
+residues and dirt which may be a source of contamination to food.
+
+(3) While not limiting the generality of sub-regulation (1), no wall, floor, ceiling, fan, fixture, window,
+door, surface/bench wiping cloths, equipment, or utensil in a restaurant or other food premises shall be
+permitted to be contaminated with dirt, dust, grease, or other material indicative of inadequate
+cleaning.
+
+(4) When an operator has completed cleaning, including disinfection where necessary, any testing of
+cleaned surfaces shall meet any microbiological criteria established by health authorities.
+
+                                                                                                        11
+ (5) Cleaning chemicals shall be handled and used carefully and in accordance with manufacturers’
+instructions and stored, where necessary, separated from food, in clearly identified containers in such a
+manner as to avoid the risk of contaminating food, and as may be requested by a Food Inspector for
+such purposes.
+
+    19. Pest control
+
+. (1) Buildings shall be kept in good repair and condition to prevent animal and pest access and to
+eliminate potential breeding sites.
+
+(2) Animals shall not be permitted in areas where food is cooked or where ready-to-eat food is
+handled, stored, displayed or sold.
+
+(3) Potential food sources for pests, including but not limited to rice and flour, shall be stored in pest-
+proof containers and stacked above the ground.
+
+(4) Areas both inside and outside food premises shall be kept clean.
+
+(5) Establishments and surrounding areas shall be regularly examined for evidence of infestation
+
+(6) Pest infestations shall be dealt with immediately and without adversely affecting food safety.
+
+(7) While not limiting the generality of sub-regulation (7), pesticides shall not be applied to food
+packaging, food contact surfaces or food in any food business’ operations.
+
+(8) Waste shall be stored in covered, pest-proof containers.
+
+(9) Waste shall not be allowed to accumulate in food handling, food storage, and other working areas
+and the adjoining environment.
+
+    20. Vehicles, vessels, conveyances and bulk containers
+
+(1) Vehicles, vessels, conveyances and bulk containers for transporting food shall be designed and
+constructed so that they:
+
+   (a) do not contaminate foods or packaging;
+   (b) can be effectively cleaned and, where necessary, disinfected;
+   (c) permit effective separation of different foods or foods from non-food items where necessary
+       during transport;
+   (d) provide effective protection from contamination, including dust and fumes;
+   (e) can effectively maintain the temperature, humidity, atmosphere and other conditions necessary
+       to protect food from harmful or undesirable microbial growth and deterioration likely to render
+       it unsuitable for consumption; and
+   (f) allow any necessary temperature, humidity and other conditions to be checked.
+
+
+
+
+                                                                                                        12
+    21. Time and temperature control
+
+(1) Food businesses shall ensure that temperature of food is controlled effectively where it is critical to
+the safety of food.
+
+(2) While not limiting the generality of sub-regulation (1), no food containing meat, seafood, poultry,
+eggs, milk, pork, gravies or soups shall be held in the danger zone between 50C and 600C for more than
+4 hours, prior to sale.
+
+(3) While not limiting the generality of sub-regulation (1), no cooked rice shall be held in the danger
+zone between 50C and 600C for more than 4 hours, prior to consumption.
+
+(4) While not limiting the generality of sub-regulation (1), a person shall not, unless otherwise
+permitted by health authorities, display fresh fish, for sale unless it is held in a cooling unit capable of
+holding the food at less than 5ºC or unless it is placed in ice such that the food is less than 5ºC.
+
+(5) While not limiting the generality of sub-regulation (1) and (6), the thawing of frozen food shall be
+carried out under refrigeration, or through the use of microwaves or any other method that health
+authorities recognise would not result in a risk to health or which would minimise the risk of growth of
+pathogenic microorganisms or the formation of toxins in the foods.
+
+(6) When power shortages are experienced because of supply problems, a food business shall ensure
+food is stored in a freezer or another method to protect the safety of the food.
+
+(7) No freezer shall have excessive build-up of ice which may limit the efficiency of the freezer.
+
+    22. Microbiological cross-contamination
+
+(1) Raw, unprocessed food shall be separated from ready-to-eat foods.
+
+(2) No surface, including, but not limited to, food handlers’ hands, utensils, equipment, cloth, or tables,
+shall be used in a manner that could transmit microorganisms between raw meat, poultry or fish and
+ready-to-eat food.
+
+(3) While not limiting the generality of sub-regulation (1), raw meat, raw fish, raw seafood, and raw
+poultry shall be stored in covered containers, in a manner that provides an organised storage method to
+separate raw food from ready to eat food, including but not limited to ice-cream, milk-based drinks and
+drinking water so as to protect microbiological cross-contamination from one food to another
+
+    23. Physical contamination
+
+(1) Food businesses shall ensure their operations have in place systems to prevent contamination of
+foods by foreign bodies such as glass or metal pieces from machinery.
+
+    24. Re-service of food prohibited
+
+(1) A person or business shall not serve, or permit to be served to a person, food that has been served
+to another person. This regulation does not apply to:
+
+
+
+                                                                                                         13
+(a) sugar, salt and condiments that has been put upon a table or counter provided that they are
+contained and continue to be contained in a protective receptacle; or
+
+(b) food that has been completely wrapped or packaged when served and that has remained completely
+wrapped or packaged without damage to a seal.
+
+    25. Interference with food packages
+
+(1) A person shall not in, at, or on a premises selling to the consumer, open or otherwise interfere with
+a package of food intended for sale or the contents.
+
+    26. Restrictions as to exposure of food
+
+(1) A person shall not display or expose for sale food and appliances used or intended for use in the
+conveyance of bread, cakes, pastry, pies or other food that is ordinarily consumed in the same state that
+in which it is sold in, at or on any doorway, street, lane, footpath, yard or other open place in a manner
+that doesn’t protect it from contamination.
+
+(2) While not limiting the generality of sub-regulation (1), a person shall not display or expose for sale
+at a lower level than 750 millimetres above ground level, unless otherwise permitted by the appropriate
+enforcement agency.
+
+    27. Incoming raw materials, ingredients and food
+
+(1) A food business operator shall inspect incoming raw materials, ingredients and food and reject
+such:
+
+   (a)   if they are known to be, or might reasonably be expected to be, contaminated with hazards;
+   (b)   if they are known to contain decomposed materials or foreign matter;
+   (c)   where they are after their “best before” or expiration date;
+   (d)   where packaging is found to be damaged; or
+   (e)   if it contravenes any other requirement of these Regulations.
+
+    28. Packaging
+
+(1) Wrapping and packaging shall be used and stored in such a manner that they are not exposed to a
+risk of contamination.
+
+    29. Health status
+
+ (1) People known, or suspected, to be suffering from, or to be a carrier of a disease or illness likely to
+be transmitted through food, shall not be allowed to enter any food handling area if there is a
+likelihood of their contaminating food.
+
+(3) While not limiting the generality of sub-regulation (2), conditions which shall be included under
+sub-regulation (2) shall include jaundice; diarrhoea; vomiting; fever; sore throat with fever; visibly
+infected skin lesions (boils, cuts, etc.); or discharges from the ear, eye or nose.
+
+
+
+
+                                                                                                        14
+(4) Any person specified in sub-regulation (2) shall immediately report illness or symptoms of illness
+to the management of the food business employing them.
+
+    30. Personal Hygiene of Food handlers
+
+(1) Food handlers shall maintain a high degree of personal cleanliness and, where appropriate, wear
+suitable protective clothing, head covering, and footwear.
+
+(2) Cuts and wounds, where personnel are permitted to continue working, shall be covered by suitable,
+dry and clean waterproof dressings.
+
+(3) Food handlers shall wash their hands thoroughly with soap:
+
+   (a) at the start of food handling activities;
+   (b) immediately after using the toilet; and
+   (c) after handling raw food or any contaminated material, where this could result in contamination
+       of other food items.
+
+    31. Personal behaviour
+
+(1) Food handlers, while present on food business premises, shall refrain from:
+
+   (a)   smoking;
+   (b)   spitting;
+   (c)   chewing or eating;
+   (d)   having long nails; and
+   (e)   sneezing or coughing over unprotected food.
+
+(2) Personal effects such as jewellery, rings, watches, pins or other items shall not be worn or brought
+into food handling areas if they pose a threat to the safety of food.
+
+    32. Food handler training
+
+(1) At least one employed food handler from each food establishment is, required to have undergone
+training offered by the health authorities or by a training organization accredited by the health
+authorities for such training.
+
+(2) Where food handlers are already employed in a food business prior to the adoption of these
+regulations, they shall undergo training as specified in sub-regulation (1) within two years of these
+regulations being adopted.
+
+    33. Recall procedures
+
+(1) Food business operators shall ensure effective procedures are in place to enable the complete and
+rapid recall of any implicated lot of food from the market.
+
+(2) Recalled products shall be held under supervision until they are destroyed, determined to be safe
+for human consumption, or reprocessed in a manner to ensure their safety.
+
+
+
+                                                                                                     15
+PART 3 – HEALTH CERTIFICATE FOR PREMISES ENGAGED IN FOOD BUSINESS
+OPERATIONS
+
+    34. Application of license
+
+(1) A person must not carry on a food business unless the premise has been issued a health certificate.
+
+
+    35. Issue of Health Certificate
+
+(1) The Director of Public Health may, after considering an application for a health certificate:
+
+    (a) grant the application, with or without conditions, or
+    (b) refuse the application.
+
+(2) If the Director of Public Health grants an application for a health certificate, the certificate must be
+    issued to the applicant in a form that sets out the following:
+
+    (a) the activities authorised by the health certificate,
+    (b) the premises or vehicles on or in which such activities may be conducted,
+    (c) the conditions to which the health certificate is subject.
+
+(3) If the Director of Public Health refuses an application for a health certificate, it must give notice of
+    the refusal in writing to the applicant.
+
+
+    36. Duration of health certificate
+
+(1) A health certificate has effect for a period of one year after the date on which the health certificate
+    was issued or last renewed, except during any period of suspension or unless sooner cancelled.
+
+(2) Despite sub-regulation 1 if an application for renewal of a health certificate is made in accordance
+    with this Regulation but the application is not finally determined before the expiry of the health
+    certificate, the certificate continues in force if not suspended or sooner cancelled until the
+    application is finally determined.
+
+    37. Additional conditions of health certificate
+
+(1) In addition to any conditions of a health certificate imposed by the Director of Public Health, it is a
+    condition of a health certificate that the holder of the certificate ensures that the provisions of the
+    Act and these regulations are complied with in relation to the carrying on of any activity authorised
+    by the licence and any premises or vehicle to which the health certificate relates.
+
+    38. Suspension or cancellation of health certificate
+
+(1) The Director of Public Health may suspend or cancel a health certificate:
+
+
+
+
+                                                                                                         16
+    (a) if the Director of Public Health is satisfied that the suspension or cancellation is necessary to
+         avert a potential threat to food safety, or
+    (b) if the Director of Public Health is satisfied that there has been a contravention of any provision
+         of the Act or these Regulation in relation to the carrying on of the food business authorised by
+         the health certificate
+
+(2) The Director of Public Health may suspend or cancel a health certificate only after having given
+    the holder of the health certificate written notice of its intention to suspend or cancel the health
+    certificate setting out its reasons for doing so.
+
+(3) The notice must include a statement that the holder of the health certificate concerned may make
+    submissions to the Director of Public Health in relation to the proposed suspension or cancellation
+    within 14 days after the date of the notice.
+
+(4) Sub-regulation (2) and (3) do not apply to the suspension or cancellation of a health certificate at
+    the request of the holder of the licence.
+
+(5) The suspension or cancellation of a health certificate:
+
+    (a) must be made by notice in writing, and
+    (b) must be served on the holder of the health certificate, and
+    (c) takes effect on the day on which the notice is served or on a later day specified in the notice.
+
+
+    39. Health certificate not transferable
+
+(1) A health certificate is not transferable.
+
+    40. Renewal of health certificate
+
+(1) The holder of a health certificate is taken to apply for renewal of the certificate by paying the fee
+(2) The Director of Public Health may:
+
+    (a) renew a health certificate with or without conditions, or
+    (b) refuse to renew the health certificate.
+
+(3) If the Director of Public Health refuses to renew a health certificate, the Director of Public Health
+    must give notice of the refusal in writing to the applicant setting out the reasons for the refusal.
+
+    41. Display of health certificate
+
+(1) The holder of a health certificate must ensure that, on every premises to which the licence relates,
+    a copy of the health certificate must be displayed on the premises.
+
+
+
+
+                                                                                                            17
+PART 4 – PREPARATION AND/OR SALE OF FOOD IN, ON OR FROM UNLICENSED
+PREMISES42. Licensed businesses selling food prepared off the premises in an unlicensed
+premises
+
+(1) Where permitted by the licensing authority to sell food that is prepared off their premises, licensed
+food businesses:
+
+   (a) shall be permitted to do so only as also approved by health authorities;
+   (b) shall be responsible for ensuring the food is safe and has been prepared under hygienic
+       conditions; and
+
+    (c) shall be able to provide a Food Inspector, upon request, the name of the
+    person(s) preparing the food, the address of the premises in which the food was
+    prepared and the contact details of the person(s).43. Persons preparing food for sale on
+    unlicensed premises
+
+(1) Where persons are permitted by the licensing authority to prepare food for sale without a premises
+license, such persons:
+
+   (a) shall be permitted to process, prepare, handle, store or display food for sale or sell food only as
+       also approved by health authorities;
+
+    (b) shall be responsible for ensuring the food provided for sale is safe and has
+    been processed, prepared, handled, stored and displayed under hygienic
+    conditions; and(c) shall permit a Food Inspector, upon request, to inspect the
+    premises in which the food is processed, prepared, handled, or stored to enable
+    the Food Inspector to ascertain the hygienic state of the unlicensed premises,
+    including domestic premises.44. Hawkers and charity and community food business
+    operations
+
+(1) Hawkers and charity and community food business operations preparing, handling, storing or
+displaying food for sale or selling food:
+
+   (a) shall be responsible for ensuring the food provided for sale is safe and has been prepared under
+       hygienic conditions; and
+   (b) shall be permitted to do so only as approved by health authorities, but can be exempted, in
+       writing, by the Director of Public Health from having to comply with any of the food safety
+       requirements in Part 2 of these Regulations;
+   (c) shall permit a Food Inspector, upon request, to inspect the premises in which the food was
+       prepared to enable the Food Inspector to ascertain the hygienic state of the unlicensed
+       premises, including domestic premises.
+   (d) Hawkers selling food in and around schools must comply with the School Food Policy issued
+       by the Ministry of Health for the Ministry of Education and future amendments to it
+
+
+
+
+                                                                                                       18
+PART 5 – GENERAL FOOD STANDARDS
+
+    45. Application of Codex Standards
+
+(1) For all Food standards, the Codex Alimentarius is adopted and forms part of these Regulations
+together with any future amendments to the Codex Alimentarius made by the Commission.
+
+(2) If there is a conflict between the regulations and the Codex Alimentarius, these regulations prevail.
+
+
+PART 6 – LABELLING AND CLAIMS
+
+    46. General requirements on labelling
+
+(1) Not withstanding Part II of the Act and the General Labelling Standard specified in Section 12 of
+the Consumer Protection Act, 2001, pre-packaged food shall not be described or presented on any label
+or in any labelling in a manner that is false, misleading or deceptive or is likely to create an erroneous
+impression regarding its character in any respect.
+
+ (2) Pre-packaged food shall not be described or presented on any label or in any labeling by words,
+pictorial or other devices which refer to or are suggestive either directly or indirectly, of any other
+product with which such food might be confused, or in such a manner as to lead the purchaser or
+consumer to suppose that the food is connected with such other product.(3) The name of the food:
+
+   (a) shall indicate the true nature of the food; and
+   (b) where a name or names have been established for a food in a Codex Alimentarius Standard, at
+       least one of these names shall be used.
+
+(4) There shall appear on the label, close to the name of the food, all additional words or phrases
+necessary to avoid misleading or confusing the consumer in regard to the true nature and physical
+condition of the food including but not limited to the type of packing medium, style, and the condition
+or type of treatment it has undergone; for example: dried, concentrated, reconstituted, smoked etc.
+
+(5) In relation to the ingredients in a food:
+
+   (a) except for single ingredient foods, a list of ingredients shall be declared on the label;
+   (b) the list of ingredients shall be headed or preceded by an appropriate title which consists of or
+       includes the term ‘ingredient’;
+   (c) all ingredients shall be listed in descending order of ingoing weight (m/m) at the time of the
+       manufacture of the food;
+   (d) The following foods and ingredients are known to cause hypersensitivity and shall always be
+       declared:
+                 • Cereals containing gluten; i.e., wheat, rye, barley, oats, spelt or their hybridized
+                     strains and products of these;
+                 • Crustacea and products of these;
+                 • Eggs and egg products;
+                 • Fish and fish products;
+                 • Peanuts, soybeans and products of these;
+                 • Milk and milk products (lactose included);
+
+
+                                                                                                       19
+                  • Tree nuts and nut products; and
+                  • Sulphite in concentrations of 10 mg/kg or more.
+    (e) added water shall be declared in the list of ingredients except when the water forms part of an
+        ingredient such as brine, syrup or broth used in a compound food and declared as such in the
+        list of ingredients;
+   (f) water or other volatile ingredients evaporated in the course of manufacture need not be
+        declared;
+   (g) dehydrated or condensed foods which are intended to be reconstituted by the addition of water
+        only, the ingredients may be listed in order of proportion (m/m) in the reconstituted product
+        provided that a statement such as “ingredients of the product when prepared in accordance
+        with the directions on the label” is included.
+   (h) a specific name shall be used for ingredients in the list of ingredients unless a general class
+        name as permitted in the Codex General Standard on the labelling of Pre-packaged Food
+        would be more informative. In such circumstances, the permitted class names as laid out by
+        the Codex General Standard on the labelling of Pre-packaged Food, may be used;
+   (i) derived from beef and pork including but not limited to pork fat, lard, and beef fat shall
+        always be declared by their specific names.
+   (j) the identification of food additives, excluding those specified under (d) and (i), it shall be
+        sufficient to list them under their respective classes as specified in the Codex General Standard
+        on the labelling of Pre-packaged Food together with the specific name or ISN numerical
+        identification.
+   (k) the presence of brain, heart, kidney, liver, tongue or tripe in a food, shall be declared either by
+        class name of the offal or by the specific type of offal.
+   (l) when a product is labelled as being in “natural oil”, the addition of water, whether declared or
+        not, shall not be permitted such that the consumer is misled by the label as to the packing
+        medium.
+   (m) in case of mixed or blended food, words which indicate that the contents are mixed or blended,
+        as the case may be, and such word shall be conjoined with the appropriate designation of the
+        food “mixed ………” or “blended………”; and
+   (n) where, the food or its ingredients have been purposefully exposed to ionizing radiation, the
+        statement or declaration indicating that the food or its ingredients has or have been treated with
+        ionizing radiation.
+
+(6) In relation to the declaration of the net contents:
+
+   (a) the net contents or drained weight shall be declared in metric system (‘System International’
+       unit ) or both in metric and imperial system; and
+   (b) for solid foods by weight, for liquid foods by volume; and
+   (c) for semi-solid or viscous foods, either by weight or volume.
+
+(8) In relation to the name and address of the manufacturer or packer or distributor:
+
+   (a) the name and physical address of the manufacturer, or packer or distributor or owner of rights
+       of manufacture or brand owner in the case of food of local origin; or
+   (b) imported food, the name and address of local importer and/or distributor and the country of
+       origin; or
+   (c) when a food undergoes processing in a second country which changes its nature, the country in
+       which the processing is performed shall be considered to be the country of origin for the
+       purposes of labelling.
+
+
+
+                                                                                                       20
+(9) With respect to lot identification, each container shall be permanently marked to identify the
+producing factory and the lot.
+
+(10) In relation to date marking and storage conditions:
+
+   (a) the expiration date shall be declared on all food where the food shall be consumed before a
+       certain date because of health and safety reasons;
+   (b) the expiration date shall be declared by the words “use-by ...” or “expiry date …” or
+       “expiration date…” or “exp …” and these words shall be accompanied by the date, month and
+       year in un-coded numerical sequence that can be understood by an ordinary customer.
+   (c) the best before date shall be declared on all food where an expiration date is not required
+       unless otherwise exempted by these and subsequent regulations;
+   (d) the best before date shall be declared by the words “best before ...” or “ best befo…” and these
+       words shall be accompanied by the date, month and year in un-coded numerical sequence that
+       can be understood by an ordinary customer.
+   (c) the best before date shall be declared on all food where an expiration date is not required
+   (e) the expiration date or the best before date shall consist at least of the day and the month for
+       products with a best before date of not more than three months or the month and the year for
+       products with best before date of more than three months;
+   (g) in addition to the best before date or expiration date, any special conditions for the storage of
+       the food shall be declared on the label if the validity of the date depends thereon;
+   (h) an indication of the best before date or expiration date shall not be required for:
+
+        •   fresh fruits and vegetables, including potatoes which have not been peeled, cut or similarly
+            treated;
+        •   wines, liqueur wines, sparkling wines, aromatized wines, fruit wines and sparkling fruit
+            wines;
+        •   all beverages
+        •   bakers’ or pastry-cooks’ wares which, given the nature of their content, are normally
+            consumed within 24 hours of their manufacture;
+        •   vinegar;
+        •   food grade salt;
+        •   solid sugars;
+        •   confectionery products consisting of flavoured and/or coloured sugars;
+        •   chewing gum
+
+    (i) an indication of the best before date or expiration date shall not be required for packed fresh
+        meat, fish or poultry with a shelf life of less than 7 days. Such food shall bear a label with the
+        words “packed-on …” and these words shall be accompanied by the date itself in uncoded
+        numerical sequence; and
+    (j) shelf stable food, including but not limited to certain canned food, with a minimum durability
+        of 3 years shall be deemed to have met date marking requirements of these Regulations if it
+        bears the date of manufacture and a statement as to the best before date.
+
+(11) Removal of foods that have passed the date marking.
+
+    (a) Food must not be sold or used in hotels, restaurants, food stalls or venues providing catering
+        service past its use-by or expiration date and/or best before date marking
+
+
+
+
+                                                                                                       21
+(12) Instructions for use, including reconstitution, where applicable, shall be included on the label, as
+necessary, to ensure correct utilization of the food.
+
+(13) For non-retail containers not destined to final consumers, the name of the product, lot
+identification, net contents and the name and address of the manufacturer, packer, distributor or
+importer, as well as storage instructions, shall appear on the container, except that for tankers the
+information may appear exclusively in the accompanying documents.
+
+(14) Not withstanding sub-regulation (14), lot identification, and the name and address of the
+manufacturer, packer, distributor or importer on non-retail containers may be replaced by an
+identification mark, provided that such a mark is clearly identifiable with the accompanying
+documents.
+
+    47. Requirements on nutrient content labelling
+
+(1) The following is prescribed for nutrient content labelling on all pre-packaged food produced,
+    processed, packed, distributed, or imported:
+
+        the declaration of energy, protein, total fat, saturated fat, sodium and carbohydrate, shall be
+            made in accordance with composition;
+
+        information on energy value shall be expressed in kcal per 100g or per 100ml or per package if
+            the package contains only a single portion or per serving as quantified on the label or per
+            portion provided that the number of portions contained in the package is stated;
+
+        information on the amounts of protein, carbohydrate and fat in the food shall be expressed in g
+            per 100g or per 100ml or per package if the package contains only a single portion or per
+            serving as quantified on the label or per portion provided that the number of portions
+            contained in the package is stated;
+
+        numerical information on vitamin and mineral shall be expressed in metric units and /or as a
+           percentage of the Nutrient Reference Value per 100g or per 100ml or per package if the
+           package contains only a single portion or per serving as quantified on the label or per
+           portion provided that the number of portions contained in the package is stated;
+
+        the declaration of nutrient content shall be numerical; and
+
+        nutrient declaration shall be mandatory for foods for which nutrition claims are made and the
+            amount of that nutrient per 100g or per 100ml expressed in metric unit, and/or per serving
+            shall be declared;
+
+(0) Small scale and home-based food businesses producing pre-packaged food products for sale at
+    markets, road side stalls etc. can be exempted, in writing, by the Director of Public Health from
+    having to comply with the nutrient content labelling requirements
+
+    48. Product specific labelling requirements
+
+(1) Milk which has been manufactured by recombination or reconstitution shall be labelled as
+“Recombined milk” or “Reconstituted milk” or another truthful qualifying term if the consumer would
+be misled by the absence of such labelling;
+
+                                                                                                      22
+(2) It shall be an offence to label a food in such a manner that the consumer could be reasonably
+misled that the food is “fresh milk” when the product has been prepared by reconstitution,
+recombination or any other similar process or when it does not comply with the other requirements of
+the Regulations.
+
+(3) A label of an infant formula or a follow-up formula shall conform to the following:
+    (a) shall contain the words “important notice” or their equivalent followed by a statement of the
+        superiority of breastfeeding;
+    (b) shall contain a statement that the product should be used only on the advice of a health worker
+        as to the need for its use and the proper method of use;
+    (c) shall not use the terms “maternalized”, “humanized” or terms similar thereto and
+    (d) shall not use text that may idealize the use of infant or follow up formula.
+
+(4) Labels of full cream or low-fat milk, in powder or liquid form shall carry a warning that the
+    product, if not modified, should not be used for infant feeding.
+
+(5) Labels of condensed milk should carry a warning that the product is not suitable for infant feeding.
+
+
+        49. Presentation of mandatory labelling
+
+(1) The following requirements must be met in relation to the labeling of pre-packaged foods:
+
+   (a) labels in pre-packaged foods shall be applied in such a manner that they will not become
+       separated from the container;
+   (b) statements required to appear on the label by virtue of this regulation shall be clear, prominent,
+       indelible and readily legible by the consumer under normal conditions of purchase and use;
+   (c) where the container is covered by a wrapper, the wrapper shall carry the necessary information
+       or the label on the container shall be readily legible through the outer wrapper or not obscured
+       by it;
+   (d) the name and net contents of the food shall appear in a prominent position and in the same
+       field of vision;
+   (e) the information on a label shall at least be in the English or Kiribati language;
+
+        (f)    Products that can be re-labeled shall be those products certified by the
+        Health Office of the cupplying country50. Prohibited claims
+
+(1) The following claims are prohibited:
+
+   (a) claims stating that any given food will provide an adequate source of all essential nutrients,
+       except in the case of well defined products for which a Codex Standard permits such claims as
+       admissible claims;
+   (b) claims implying that a balanced diet or ordinary foods cannot supply adequate amounts of all
+       nutrients;
+   (c) a claim that encourages or condones excessive consumption of any food or contradicts good
+       dietary practice;
+   (d) claims which cannot be substantiated;
+
+
+
+                                                                                                      23
+   (e) nutrition claims and health claims for foods for infants and young children except where
+       specifically provided for in relevant regulations;
+   (f) claims as to the suitability of a food for use in the prevention, alleviation, treatment or cure of
+       a disease, disorder, or particular physiological condition, unless they are in accordance with
+       the provisions of Codex Standards or guidelines and follow the principles set forth in these
+       guidelines;
+   (g) claims which could give rise to doubt about the safety of similar food or which could arouse or
+       exploit fear in the consumer;
+   (h) a claim that a food has obtained an increased or special nutritive value by means of the
+       addition of nutrients, such as vitamins, minerals and amino acids shall be permitted only if
+       such an addition has been made on the basis of nutritional considerations according to the
+       Codex General Principles for the Addition of Essential Nutrients to Foods.
+
+    51. Use of nutrient content claims, nutrient comparative claims, nutrition claims and health
+    claims
+
+(1) The only nutrition claims permitted shall be those relating to energy, protein, carbohydrate, and fat
+and components thereof, fibre, and sodium, and vitamins and minerals for which Nutrient Reference
+Values have been laid down in the Codex Alimentarius unless otherwise permitted by these
+Regulations.
+
+(2) When a nutrient content claim that is listed in the Schedule 3 is made, the claim shall be consistent
+with the Schedule.
+
+(3) Nutrient comparative claims shall be permitted only where:
+
+   (a) the comparison is to the same or similar food; and
+   (b) a statement of the amount of difference in the energy value or nutrient content is given.
+
+(4) Health claims shall be permitted provided that all of the following conditions are met:
+
+   (a) Proof shall be sufficient to substantiate the type of claimed effect as recognised by appropriate
+       scientific review of the data;
+   (b) Claims consist of both information on the physiological role of the nutrient or on an accepted
+       diet-health relationship and associated composition information;
+   (c) The claimed benefit shall arise from the consumption of a reasonable quantity of the food or
+       food constituent in the context of a healthy diet;
+   (d) A validated method to quantify the food constituent that forms the basis of the claim is
+       available; and
+   (e) The following information appears on the label or labelling of a food bearing health claims:
+
+        (i)     a nutrient declaration at least complying with the nutrition labelling requirements
+                specified by the Codex Alimentarius;
+        (ii)    a statement of the quantity of any nutrient or other constituent of the food that is the
+                subject of the claim.
+        (iii)   the target group, if appropriate.
+        (iv)    how to use the food to obtain the claimed benefit and other lifestyle factors or other
+                dietary sources, where appropriate.
+        (v)     if appropriate, advice to vulnerable groups on how to use or to avoid using the food.
+        (vi)    maximum safe intake of the food or constituent where necessary.
+
+
+                                                                                                       24
+        (vii) how the food or food constituent fits within the context of the total diet.
+        (viii) a statement on the importance of maintaining a healthy diet.
+        (ix) claims that relate to dietary guidelines or “healthy diets” shall only be permitted
+               where they are consistent with any national dietary guidelines;
+        (x) where the claim is not based on selective consideration of one or more aspects of the
+               food; and
+        (xi) where the food is not described as “healthy” or represented in a manner that implies that
+               a food in and of itself will impart health.
+
+(5) A claim to the effect that a food is a good source of a vitamin or mineral may be made if the food
+contains no less than 25% of the recommended daily intake for that vitamin or mineral.
+
+(6) A claim regarding the food being fortified shall only be permitted where the food has been
+approved by the health authorities as being suitable for such and shall not include food considered by
+the health authorities to be high in sugars, fat or salt, with the exception of fortified salt itself.
+
+
+PART 7 - COMMODITY STANDARDS
+
+    52. Requirements for different commodities
+
+(1) Meat and meat products produced, processed, handled, kept, distributed, displayed for sale or sold
+in or imported into or exported from the Republic of Kiribati shall comply with the requirements
+prescribed in Schedule 4, unless otherwise exempted by the Director of Public Health.
+
+(2) Poultry, poultry products and eggs produced, processed, handled, kept, distributed, displayed for
+sale or sold in or imported into or exported from the Republic of Kiribati shall comply with the
+requirements prescribed in Schedule 5, unless otherwise exempted by the Director of Public Health.
+
+(3) Notwithstanding the Fisheries Act 2010, fish and fisheries products produced, processed, handled,
+kept, distributed, displayed for sale or sold in or imported into or exported from the Republic of
+Kiribati shall comply with the requirements prescribed in Schedule 6, unless otherwise exempted by
+the Director of Public Health.
+
+(4) Cereal and cereal products produced, processed, handled, kept, distributed, displayed for sale or
+sold in or imported into or exported from the Republic of Kiribati shall comply with the requirements
+prescribed in Schedule 7, unless otherwise exempted by the Director of Public Health.
+
+(5) Salt produced, processed, handled, kept, distributed, displayed for sale or sold in or imported into
+or exported from the Republic of Kiribati shall comply with the requirements prescribed in Schedule 8,
+unless otherwise exempted by the Director of Public Health.
+
+
+PART 8 – IMPORTED FOOD
+
+    53. General import requirements
+
+(1) Subject to sub-regulations (3), no person may import any food or food ingredient that does not
+    comply with the requirements of the Food Safety Act, 2006 or these regulations made under the
+    Act.
+
+                                                                                                     25
+(2) The onus of demonstrating compliance with the Food Safety Act 2006 or regulations made under
+    the Act is on the importer.
+
+(3) The guidance and direction of the Director of Public Health Services should be sought by anyone
+    who intends to import food that:
+
+     (a) is raw or semi-processed and requires further processing; and
+     (b) the original packaging is required to be removed for processing before the food is sold in the
+         Republic of Kiribati(c)         may be repacked, reprocessed or reconditioned after
+         importation to ensure compliance with the Act and these regulations.
+
+    54. High risk food
+
+(1) Health authorities shall determine if a food belongs to a High Risk Food List which can be
+published from time to time.
+
+    55. Food of regulatory interest
+
+(1) Health authorities shall establish a list of food of regulatory interest so designated because of being
+food:
+
+   (a) with a non-compliance history;
+   (b) food that is required to be fortified; and
+   (c) food that is being targeted to reduce the population's exposure to fat, sugar or sodium in
+       priority foods.
+
+    56. Personal import of food
+
+(1) Foods imported into the Republic of Kiribati for personal consumption are exempt from food
+legislation requirements but should not exceed 10 kg per person.
+
+    57. Product identity
+
+(1) If the food is for personal consumption, food inspectors may inspect the documents accompanying
+the food to confirm the specific product identity.
+
+(2) Product identity checks require the inspector to check:
+
+   (a) the name,
+   (b) quantity (weight),
+   (c) serial number of the container, and
+   (d) the name or registration number of the processing factory.
+
+(3) A food inspector may also check to verify that the product, health marks, stamps and other
+necessary product and or package information conforms to the declaration on the health certificates for
+the products as well as any accompanying documentation.
+
+
+
+
+                                                                                                        26
+    58. Health or sanitary certificates
+
+(1) Food inspectors may subsequently inspect any accompanying health or sanitary certificate to
+determine that:
+
+   (a) It is from a recognised competent authority and is signed.
+   (b) It is relevant to the specific product for which it is associated.
+   (c) Certification is in English or Kiribati language and in an agreed format.
+   (d) Certification contains a statement of the controls in place at the food business e.g. good hygienic
+         practice; good manufacturing practice; and a HACCP programme is implemented and audited
+         (or equivalent).
+   (e) Certification confirms that an audit or inspection has been undertaken in a reasonable timeframe
+         prior to product being distributed from the premises.
+
+(2) If the certificate is unsatisfactory a food inspector shall ensure the food is detained until the
+importer can provide such a certificate. Detention can be at the premises of the importer provided that
+the consignment remains in a properly closed and sealed container.
+
+(3) If no certificate can be provided by the importer in a timely manner as determined by the health
+authority, the product shall be re-exported or seized and disposed. The cost of re-exportation, seizure
+and disposal must be borne by the importer.
+
+(4) If the product is likely to deteriorate while being detained, it shall be rejected and destroyed.
+
+    59. Analytical certificates
+
+(1) Not withstanding Section 11, 12 and 13 of the Act, food inspectors may inspect the food analysis
+certificates to determine that:
+
+Certification shall cover the microbiological, chemical or physical parameters required by these
+regulations.
+
+(2) Certification must be in English or Kiribati language and in an agreed format.
+
+(3) Testing must be conducted by an accredited or approved laboratory.
+
+(4) The test methodology is to be defined on the certificate and approved.
+
+(5) If the certificate is unsatisfactory a food inspector shall ensure the food is detained until the
+importer can provide such a certificate or until the food is analysed.
+
+(6) If no certificate can be provided by the importer in a timely manner the articles shall be kept or
+destroyed.
+
+(7) If the product is likely to deteriorate while being detained, it shall be rejected and destroyed.
+
+
+
+
+                                                                                                        27
+    60. Holding for physical checks
+
+(1) If, after documentary and identity checks there is a need to hold the products for physical checks,
+the food inspector shall notify the importer and Customs in writing of the intent to physically examine
+the product.
+
+(2) When physical checks are carried out they can include any physical observation or test appropriate
+to assess compliance with the regulations
+
+    61. Permitting foods to be moved
+
+(1) Where it is necessary to conduct a physical check and it is not possible to do so in a timely manner
+while in the Customs controlled area, the food inspector can establish an agreement with the importer
+for the product to be moved to another location within the Republic of Kiribati and to be held without
+further distribution until clearance is issued by the health authority.
+
+(2) The food inspector shall apply a lock/seal/tape to the container or product of interest to ensure it is
+not further distributed before examination.
+
+(3) Health authorities need to inspect and make a decision to release, hold or reject the imported
+articles within a two week period upon arrival in Kiribati.
+
+    62. Physical checks
+
+    (1) When physical checks are carried out they can include any physical
+    observation or test appropriate to assess compliance with the regulations.63.
+    Sampling food
+
+(1) Not withstanding Section 10 of the Act, if the specific product is not accompanied by adequate
+documentation showing the safety of the food, the inspector shall take samples in a manner and
+quantity as prescribed from time to time in the High Risk Food List and in the Food of Regulatory
+Interest List.
+
+(2) The inspector shall advise the importer that samples of the food have been collected for further
+testing. As a consequence, the inspector shall complete a collection report and provide copies as
+directed in the collection report.
+
+(3) The inspector shall also discuss with the importer the need to detain the product until the analyses
+have been completed. Detention of the product can take place in an agreed location pending the
+receiving of the analytical results.
+
+    64. Satisfactory checks
+
+(1) The inspector shall permit the importer to place the food in free circulation by issuing a release
+permit.
+
+
+
+
+                                                                                                        28
+    65. Re-labelling
+
+(1) Where the food is rejected but the inspector considers it suitable for re-labelling the importer may
+re-label the food in accordance with the requirements of the Regulations.
+
+(2) A Food Inspector shall discuss with the importer the need to detain the product until the re-
+labelling has been completed and provide the importer a copy of the detention report.
+
+(3) Detention of the product can take place in an agreed location pending the receiving of proof that
+the product has been re-labelled appropriately. Local authorities and the food inspector who has
+permitted relocation shall cooperate to monitor compliance with the detention report.
+
+(4) Where the food is not re-labelled within a given period, the food shall be re-exported by the
+importer. Such a period shall be within a period of three months or such other period as the health
+authorities may determine.
+
+(5) Where a food is to be re-exported, the importer or other person in charge of the food needs to
+inform the Competent Authority of the proposed importing country of the reason for re-export and be
+in receipt of an agreement for such action to be taken. The cost of re-exportation must be borne by the
+importer.
+
+(6) The Food Inspector who has requested the re-labelling shall cooperate with other relevant
+authorities and the importer to ensure the product is not exported without evidence that the Competent
+Authority of the proposed importing country is in receipt of this information and there is an agreement
+for such action to be taken.
+
+(7) As a result of not re-labelling or re-exporting as agreed between inspector and importer the food
+shall be sent for destruction by crushing and burial; or by incineration; or other suitable means. The
+cost of destruction must be borne by the importer.
+
+(8) The Food Inspector shall cooperate with the appropriate other authorities to have the product
+destroyed by crushing and burial; or by incineration; or other suitable means.
+
+    66. Rejection and destruction
+
+(1) Not withstanding Section 14 and 15 of the Act, if a food inspector is of the opinion that an article
+for import does not meet the requirements of the Act or this Regulation, he/she (a) may reject any or
+all the lots in that article found deficient.
+
+(2) The relevant invoice and manifest in respect of that article shall be marked “REJECTED” and a
+Food Inspector shall issue a notice of rejection of article for import.
+
+(3) The rejection notice shall be delivered to the appropriate Customs officer (where rejected at the
+port of entry), with a copy to the Competent Authority of Agricultural Quarantine and the importer in
+the form set out in the legislation. Alternatively, the form shall be delivered to the local authority
+(where rejected after entry), with a copy to the appropriate Customs officer and the importer.
+
+(4) Once rejected, the Food Inspector shall cooperate with the appropriate other authorities to have the
+product destroyed by crushing and burial; or by incineration; or other suitable means. All costs for
+destruction are to be met by the importer. If the importer refuses to sign the rejection notice and agree
+
+                                                                                                      29
+to the destruction, the food inspector shall seize and hold the product until the issue is resolved or until
+the further holding of the product could lead to a public health concern.
+
+(5) In the situation of import rejections caused due to failure of a food item to comply with
+requirements, it is necessary for a Food Inspector to provide information on the rejection to all relevant
+parties including:
+
+   (a) the importer,
+   (b) the exporter and
+   (c) the exporting government.
+
+
+PART 9 – MARKETING OF FOOD AND NON-ALCOHOLIC BEVERAGES TO CHILDREN
+
+    67. Determining whether a food should be subject to marketing and sales restrictions
+
+(1) A food or non-alcoholic beverage is a “designated product”, and subject to the restrictions imposed
+    by these regulations, where its nutritional content (including the presence of saturated fat, trans-
+    fatty acids, free sugar and salt) means that the consumption of that food or beverage is detrimental
+    to the health of children as part of a healthy diet and is only suitable for occasional consumption.
+
+(2) The Director of Public Health shall publish criteria for deciding whether the content of a
+    designated product is detrimental to the health of children.
+
+(3) The matters which the Director shall take into account in deciding the criteria under sub-regulation
+    (2) shall include -
+
+            a.   the nutritional content of food and drink; and
+            b.   the presence of food additives in any foods and drinks; and
+            c.   food and drink production techniques; and
+            d.   any other matters that the Ministry of Health considers appropriate.
+
+(4) The Director may adopt criteria developed by national or international organizations for the
+    purpose of sub-regulation (2).
+
+(5) The Director may, in the light of new evidence, publish from time to time the revised criteria.
+
+
+    68. Balanced diet
+
+(1) No person may publish, permit, authorize or arrange for the publication of any advertisement which
+undermines the education of children in the importance of a balanced and healthy diet or which is
+contrary to any food and nutrition policy prepared by the Ministry of Health.
+
+    69. Prohibition on the marketing and promotion of designated products to children
+
+(1) No person shall publish an advertisement for a designated product or a designated product trade
+    mark to children.
+(2) An advertisement shall be considered to be for children for the purpose of these regulations if it is:
+
+                                                                                                         30
+        (a) likely to appeal to children; or
+        (b) published in any time, place, situation or in a medium where in the opinion of the Ministry
+            of Health, the audience for of the recipients of the advertisement may include a significant
+            number or proportion of children.
+
+(3) In considering whether an advertisement is likely to appeal to children, factors that may be taken
+    into account include:
+        (a) the product advertised;
+        (b) the themes, content, presentation and design of the advertisement;
+        (c) the age of any people in the advertisement; and
+        (d) any images, graphics, language, sounds, music, objects, animals, personalities, characters,
+            activities, games or sport in the advertisement.
+
+
+(4) No person may use, arrange for, permit or authorise any child to appear or be used in any
+    advertisement for any designated product or in association with a designated product trade mark.
+
+(5) No person may use, arrange for, permit or authorise the use of a cartoon or other broadcast or
+    publication intended to appeal to children for the purpose of advertising a designated product or a
+    designated product trademark.
+
+(6) No person may use, arrange for, permit or authorise the use of any person or character well known
+    or likely to appeal to children for the purpose of advertising a designated product or designated
+    product trademark.
+
+(7) No person may use, arrange for, permit or authorise the use of any game or any internet or other
+    electronic or communication medium intended to appeal to children for the purpose of advertising
+    a designated product or designated product trade mark.
+
+     70. Control of broadcasting times and advertisement of food products
+
+(1) No person may broadcast any advertisement for a designated product between the hours of 6 am
+    and 9 pm on any day.
+
+2.     No person may use, arrange for, permit or authorise the advertising of any designated product or
+       of any designated product trademark, on any school premises, at any child care facility or at any
+       health care facility.
+
+3.     No person shall use a designated product trademark
+
+        (a) on any article or thing intended for sale to or supply or use by children, other than on the
+            package or container of a designated product; or
+
+        (b) for the purpose of advertising—
+
+             (i) any article that is not a designated product; or
+             (ii) any service, activity, or event; or
+             (iii) any scholarship, fellowship, or other educational benefit.
+
+
+                                                                                                     31
+4.No person may publish, display or communicate, or arrange, permit or authorise the publication,
+display or communication of, at or in association with a children’s activity:
+
+             (i). an advertisement for a designated product; or
+
+            (ii).designated product trademark or a trade mark closely associated with a designated
+                   product.
+
+    71. Restriction on the use of premiums when supplying designated products to children
+
+(1) No person may supply or offer to supply a premium for the purpose or with the effect of promoting
+a designated product to children.
+
+    72. Labelling and packaging restrictions
+
+(1) No person may package a designated product, or cause, permit or authorise the packaging of a
+designated product, in a manner directed to children.
+
+(2) In considering whether a product is packaged in a manner directed to children, factors that may be
+considered include the use of colours, graphics, images, cartoons, characters, personalities,
+competitions, activities or references to films, television programs, books, games or sports, that are
+intended or likely to appeal to children.
+
+    73. Signage and display restrictions
+
+(1) No person may display permit, authorise or arrange for the display of any advertisement for a
+designated product within 200 metres of the entrance to a school or child care facility or other place
+where children are likely to congregate.
+
+
+PART 10 – MISCELLANEOUS
+
+    74. Inspection report
+
+(1) Upon completion of an inspection, an inspection report shall be provided as required by section 9
+of the Act. Where such inspection includes an assessment of the microbiological quality of the water
+available on the premises or a microbiological assessment of the cleanliness of surfaces or food
+handlers’ hands, the inspection will be considered complete only once the results of these assessments
+are available. This means an inspection report may not be made available to the owner or person in
+charge of the premises at the time of the initial inspection until up to 48 hours after the inspection.
+
+    75. Breastfeeding material
+
+(1) A person who produces or distributes any material, whether written, audio or visual, which refers to
+breastfeeding or any other aspect of infant and young child nutrition shall first submit a copy to the
+Director of Public Health for approval.
+
+
+
+                                                                                                     32
+(2) Within 30 days after receiving a material submitted under subsection (1) the Director shall examine
+the material concerned and may:
+    (a)    Approve it, either absolutely or subject to conditions; or
+    (b)    Refuse to approve it;
+
+   and shall notify the applicant in writing of his/her decision. 76. Promotion of breast-
+milk substitutes and baby feeding accessories
+
+(1) A person who promotes any breast-milk substitute or baby feeding accessories by advertisement,
+    by offering or giving any gift, prize, discount coupon or any other free item or by any other
+    similar means, commits an offence.
+
+(2) Any person who distributed or sells a breast-milk substitute shall post a notice, written in
+    i-Kiribati and English, on the shelf or where the product is displayed for sale, which states
+    the following: “Breastfeeding is the best and healthiest way to feed an infant. Before
+    deciding to use a breast-milk substitute, seek the advice of a health professional”.
+
+(3) No person shall advertise or otherwise promote any milk product in a way that
+
+            (a) Gives an impression or creates a belief that feeding with a designated product
+                or other milk product is equivalent or superior to breastfeeding or;
+            (b) Discourages breastfeeding.
+
+(4) No importer or distributor shall donate or distribute information or educational material
+    referring to infant or young child feeding or perform educational functions related to
+    infant and young child feeding.
+(5) A manufacturer or distributor shall not donate any quantity of a breast-milk substitute to a
+    health worker or to a health care facility.
+
+(6) A manufacturer or distributor shall not donate to or distribute within a health care facility
+    any equipment, service or material that refers to or may promote the use of a breast-milk
+    substitute.
+
+(7) A manufacturer or distributor of a breast-milk substitute shall not offer to give any gift,
+    contribution or benefit to a health worker or an association of health workers engaged in
+    maternal and/or child health.
+
+(8) A manufacturer or distributor of breast-milk substitutes shall not pay wholly or in part the
+    salary, wages or other income of a person employed in a health care facility if that
+    person’s duties bring that person into contact with mothers, infants, young children or
+    pregnant women.
+
+
+
+
+                                                                                                     33
+(9) A manufacturer or distributor of breast-milk substitutes shall not sponsor an event,
+    contest, telephone counselling line or campaign aimed at pregnant or lactating women,
+    parents of infants or young children or members of their families.
+
+(10) A manufacturer or distributor shall not include the volume of sales of breast-milk
+     substitutes when calculating employee remuneration or bonuses, nor set quotas for sales
+     of breast-milk substitutes.
+
+(11) A label of a breast-milk substitute shall not include a photograph, drawing, or other
+     graphic representation of an infant or other image that may idealise the use of a
+     designated product.
+
+
+    77. Food quality and safety offences
+
+(1) A person who contravenes these regulations is guilty of an offence and is liable to a penalty.
+
+(2) If a consumer buys a product that does meet the expected quality parameters he/she is entitled to
+return the product to where it has been purchased and to receive compensation in terms of a new
+product of the same type.
+
+    78. Penalties
+
+(1) Not withstanding Part V of the Act, every person or business who violates these regulations shall,
+upon conviction, be liable to:
+
+   (a) in the case of an individual, a fine not exceeding not exceeding five thousand dollars or up to
+       two years imprisonment; and
+   (b) in the case of a body corporate, a fine not exceeding not exceeding ten thousand dollars.
+
+    79. Record keeping
+
+(1) Every food business operator in the Republic of Kiribati, including food importers, manufacturers
+or producers, and sellers) shall keep, and supply on demand to a Food Inspector, information which
+demonstrates that food imported, manufactured or sold by that person complies with this Act,
+Regulations made under this Act and all relevant standards that are under their reasonable control.
+
+
+
+
+SCHEDULE 1 - MAXIMUM PERMITTED LEVELS OF CHEMICAL CONTAMINANTS
+
+
+(1) Maximum permitted levels of arsenic in edible fats and oils, named animal fats, named vegetable
+oils, olive oils and olive pumice oils, and fats spreads and blended spreads shall be 0.1 mg/Kg.
+
+(2) Maximum permitted levels of arsenic in salt shall be 0.5 mg/Kg.
+
+
+                                                                                                     34
+(3) Maximum permitted levels of cadmium in salt shall be 0.5 mg/Kg.
+
+(4) Maximum permitted levels of cadmium in fish and fisheries products shall be as prescribed below:
+
+                                                                          Max            level
+ Product
+                                                                          (mg/Kg)
+ Muscle meat of fish, excluding those listed below                        0.05
+ Muscle meat of: bonito (Sarda sarda), horse mackerel or scad
+ (Trachurus, trachurus), sardine (Sardina pilcardus), sardinops
+                                                                          0.1
+ (Sardinops species), spotted seabass (Dicentrarchus punctatus), tuna
+ (Thunnus species and Euthynnys species)
+ Crustaceans, excluding brown meat of crab and excluding head and
+ thorax meat of lobster and similar large crustaceans (Nephropidae and    0.5
+ Palinuridae)
+ Cephalopods (without viscera)                                            1.0
+
+(5) Maximum permitted levels of copper in anhydrous milkfat, milkfat, anhydrous butteroil and
+butteroil and ghee shall be 0.05 mg/Kg.
+
+(6) Maximum permitted levels of copper in edible animal fats not elsewhere specified shall be 0.4
+mg/Kg.
+
+(7) Maximum permitted levels of copper in salt shall be 2.0 mg/Kg.
+
+(8) Maximum permitted levels of iron in anhydrous milkfat, milkfat, anhydrous butteroil and butteroil
+and ghee shall be 0.2 mg/Kg
+
+(9) Maximum permitted levels of lead in edible fats and oils shall be 0.2 mg/Kg unless otherwise
+stated as with the named animal fats and vegetable oils and olive oils and olive pumice oils.
+
+(10) Maximum permitted levels of lead in named animal fats, named vegetable oils, olive oils and
+olive pumice oils, and fats spreads and blended spreads shall be 0.1 mg/Kg.
+
+(11) Maximum permitted levels of lead in canned corned beef, canned luncheon meat and sugars shall
+be 0.5 mg/Kg;
+
+(12) Maximum permitted levels of lead in salt shall be 2 mg/Kg.
+(13) Maximum permitted levels of lead in infant formula shall be 0.02mg/Kg.
+
+(14) Maximum permitted levels of lead in fish and fisheries products shall be as prescribed below:
+
+ Product                                                                  Max Level (mg/Kg)
+ Muscle meat of fish, excluding those listed below.                       0.2
+ Muscle meat of: bonito (Sarda sarda), horse mackerel or scad (Trachurus, 0.4
+
+
+                                                                                                     35
+ trachurus), sardine (Sardina pilcardus), sardinops (Sardinops species),
+ spotted seabass (Dicentrarchus punctatus), tuna (Thunnus species and
+ Euthynnys species)
+ Crustaceans, excluding brown meat of crab                               0.5
+ Cephalopods (without viscera)                                           1.0
+
+(15) Maximum permitted levels of total mercury in Sharks (all species), Tuna (Thunnus spp,), Little
+tuna (Euthynnus spp,), Bonito (Sarda spp,), Plain bonito (Orcynopsis unicolor), Swordfish (Xiphias
+gladius), Sailfish (Istiophorus platypterus), Marlin (Makaira spp,), Bass (Dicentrarchus labrax),
+Portuguese dogfish (Centroscymnes coelolepis), Rays, (Raja spp,), Anglerfish (Lophius spp,),
+Emperor or Orange roughy           (Hoplostethus atlanticus), Bonito     (Sarda sarda), Grenadier
+(Coryphaenoides rupestris), Plain bonito (Orcynopsis unicolor), Snake mackerel or Butterfish
+(Lepidocybium flavobrunneum, Ruvettus pretiosus, Gempylus serpens) shall be 1.0 mg/Kg.
+
+(16) Maximum permitted levels of total mercury in all other species of fish other than those described
+in sub-regulation (16) above shall be 0.5 mg/Kg
+
+(17) Maximum permitted levels of mercury in salt shall be 0.1 mg/Kg.
+
+(18) Maximum permitted levels of tin in canned corned beef and canned luncheon meat shall be 50
+mg/Kg unless it is in tinplate containers when the maximum permitted shall be 200 mg/Kg.
+
+(19) Maximum permitted levels of 3-chloro-1,2-propanediol in acid hydrolyzed foods such as, but not
+limited to, soy sauce and fish sauce shall be 0.2mg/Kg.
+
+(20) Maximum permitted levels of 1,3-dichloro-2-propanol in acid hydrolyzed foods such as, but not
+limited to, soy sauce and fish sauce shall be 5µg/Kg.
+
+(21) Smoked fish may contain formaldehyde incidentally absorbed in the processing in a proportion
+not exceeding 5 mg/Kg.
+
+(22) While not being permitted to be purposefully added to food, in recognition that some foods may
+become contaminated accidentally, the maximum permitted levels for melamine in food are 1mg/Kg in
+food for infants up to 3 years and 2.5mg/Kg for all other food.
+
+(23) While not being permitted to be purposefully added to animal feed, in recognition that some feed
+may become contaminated accidentally, the maximum permitted levels for melamine in feed for food
+animals is 2.5mg/Kg.
+
+(24) Mycotoxins shall not be at levels above those permitted by the Codex Alimentarius
+
+(25) Smoked meat may contain formaldehyde incidentally absorbed in the processing in a proportion
+not exceeding 5 mg/Kg.
+
+
+
+
+                                                                                                   36
+SCHEDULE 2 - MAXIMUM LIMITS ON MICROBIOLOGICAL CONTAMINANTS IN
+FOODS
+
+Food                                  Where criterionMicroorganism or             n c M       M
+                                      applies        microbial
+                                                     toxin/sample unit size
+Milk powder, cream powder, and Products prior to Salmonella/25 g                  5 0 0
+whey powder                      import, at point of
+Powdered infant formula products import, and at the Bacillus cereus/25g           5 0 102/g
+                                 point of sale       Coagulase-positive           5 1 0/g   10/g
+                                                     staphylococci/25g
+
+                                                        Salmonella/25 g           5 0 0
+Egg products                                            Salmonella/25 g           5   0   0
+Packaged natural mineral water                          Escherichia coli/250 ml   2   0   0
+                                                        Total coliforms/100mL     2   0   0
+Packaged water and packaged                             Escherichia coli/250 ml   2   0   0
+waters defined by origin other than                     Total coliforms/100mL     2   0   0
+natural mineral water
+Packaged      ice     for   human                       Escherichia coli/100 ml 2 0 0
+consumption
+Ice cream                                               Escherichia coli/100g     2 0 0
+                                                        Salmonella/25g            5 0 0
+Meat products intended to be eaten                      Salmonella/10 g           5 0 0
+cooked sampled prior to cooking,
+including minced meat and meat
+preparations made from poultry
+meat and other species
+Turkey tails and other poultry tail                     Salmonella/10 g           5 0 0
+products , intended to be eaten
+cooked, sampled prior to cooking
+
+
+
+
+                                                                                              37
+Ready-to-eat meat not elsewhere                  Salmonella/25 g               5   0 0
+addressed                                        Escherichia coli/100g         2   0 0
+Ready-to-eat    cooked     crustaceans           Staphylococcal                5   0 0
+including crabs, lobster, shrimp and             enterotoxins/25g
+prawns                                           Salmonella/25 g               5 0 0
+Bivalve molluscs intended to be eaten            Escherichia coli/100g         11 0 230
+raw                                                                                 MPN/
+                                                                                    100g
+                                                 Salmonella/25 g               5 0 0
+Pre-cut fruit and vegetables (ready-to-          Escherichia coli/25g          2 1 0           10
+eat)                                             Salmonella/25 g               5 0 0
+Ready-to-eat spices                              Salmonella/25 g               5 0 0
+Battered and otherwise heavily handled           Staphylococcal                5 0 0
+food prior to or after cooking                   enterotoxins/25g
+
+                                                 Coagulase-positive            5   1 0/g       10/g
+                                                 staphylococci/25g
+
+Marine fish (other than               bivalve    Vibrio parahaemolyticus       5 0 0
+molluscs) to be eaten raw                        Escherichia coli/100g         12 0 230
+                                                                                    MPN/
+                                                                                    100g
+
+Where – n means the minimum number of sample units which shall be examined from a lot of food; c
+means the maximum allowable number of sample units with microbiological levels above m; M means
+the level that if exceeded in any one sample would cause the lot to be rejected as not meeting these
+Regulations.
+
+
+
+
+1
+    Pooled from a minimum of 10 animals.
+2
+    Pooled from a minimum of 10 samples.
+
+
+                                                                                                 38
+SCHEDULE 3 - TABLE OF CONDITIONS FOR NUTRIENT CONTENT CLAIMS
+
+
+
+
+                                                               39
+SCHEDULE 4 - STANDARDS ON MEAT AND MEAT PRODUCTS
+
+1. Standard on canned corned beef
+
+(1) Without limitation to the generality of these Standards and the Codex Standard on canned corned
+beef, the following specific product requirements for product labeled as canned “corned beef” apply:
+    (a) the total protein content in the final product shall not be less than 21% of the total mass;
+    (b) the total fat content shall not exceed 21% of the total mass;
+    (c) the total sodium content of the product shall not exceed 540 mg/100g
+    (d) the best before date shall be indicated by the year; and
+    (e) all meat used in the manufacture of corned beef shall have been subjected to the inspection
+         processes and it shall have been passed by an inspector as fit for human consumption.
+
+(2) Wherever canned corned beef with a fat content exceeding 20% of the total mass is stored for
+display for sale to the consumer there shall be an associated shelf notice visible to consumers
+informing consumers that “This brand of canned corned beef is high in fat. For a healthy diet eat less”.
+Such a shelf notice shall be in a form prescribed by the health authorities in a brochure available to
+food businesses.
+
+2. Standard on canned luncheon meat
+
+(1) Without limitation to the generality of these Standards and the Codex Standard on luncheon meat,
+the following specific product requirements for product labeled as canned “luncheon meat” shall
+apply:
+    (a) the maximum percentage of fat content permitted in a product shall be 30% of the total mass;
+    (b) in the final product, the meat and poultry shall be uniformly and thoroughly cured and the
+        product shall be capable of being sliced;
+    (c) the total sodium content of the product shall not exceed 540 mg/100g
+    (d) all meat and poultry meat used in the manufacture of luncheon meat shall have been subjected
+        to the inspection processes and it shall have been passed by an inspector as fit for human
+        consumption; and
+    (e) raw or semi-processed meat and poultry meat, and luncheon meat shall be handled, stored or
+        transported in an establishment in a manner that will protect the meat, poultry meat and the
+        luncheon meat from contamination and deterioration.
+
+(2) For shelf-stable products the best before date shall be declared by the year.
+
+(3) For products which are not shelf-stable i.e. which may be expected not to keep for at least 18
+months in normal conditions of storage and sale, the best before date shall be declared by day, month
+and year.
+
+(4) Wherever canned luncheon meat with a fat content exceeding 20% of the total mass is stored for
+display for sale to the consumer there shall be an associated shelf notice visible to consumers
+informing consumers that “This brand of canned luncheon meat is high in fat. For a healthy diet eat
+less”. Such a shelf notice shall be in a form prescribed by the health Authority in a brochure available
+to food businesses.
+
+3. Standard on sausages
+
+
+
+
+                                                                                                     40
+(1) Sausage(s) means meat that is minced, or comminuted meat or a combination thereof, which may
+be combined with other foods, encased or formed into discrete units, but does not include meat formed
+or joined into the semblance of cuts of meat.
+
+(2) Sausages shall contain no less than 500g/Kg of fat free meat flesh; and the proportion of fat in
+sausage shall be no more than 400g/Kg of the fat free meat flesh content.
+
+(3) Sausages should contain no more than 600mg sodium per 100g of product.
+
+4. Standard on minced meat or sausages labeled or advertised in such a way as to reference the
+fat content of the meat or sausage
+
+(1) Where express or implied reference is made in relation to the fat content of minced meat or
+sausage, the maximum proportion of fat in the minced meat or sausage, expressed in g/100g, shall be:
+    (a) declared on the label on package of the food; or
+    (b) where the food is not packaged, and is stored for display for sale to consumers, declared on an
+        associated shelf notice visible to consumers.
+
+5. Standard on canned meat with other food
+
+(1) Canned meat with other food shall be the meat product prepared from meat, manufactured meat or
+smoked meat with other food, packed in clean containers that are hermetically sealed and processed by
+heat to ensure preservation. Where the meat is named first in the description or name on the container,
+the product shall contain not less than 45 per cent of meat of the kind so named.
+
+(2) There shall be written in the label on a package containing canned meat with other food the words
+"meat with (state the name of the other food)" or any other word or words having the same or a similar
+effect
+.
+(3) For shelf-stable products the best before date shall be declared by the year.
+
+(4) For products which are not shelf-stable i.e. which may be expected not to keep for at least 18
+months in normal conditions of storage and sale, the date best before date shall be declared by day,
+month and year.
+
+(5) Wherever food in this category, with a fat content exceeding 20% of the total mass, is stored for
+display for sale to the consumer there shall be an associated shelf notice visible to consumers
+informing consumers that “This brand of canned "meat with (state the name of the other food)" is high
+in fat. For a healthy diet eat less”. Such a shelf notice shall be in a form prescribed by the health
+authorities in a brochure available to food businesses.
+
+
+
+
+                                                                                                    41
+SCHEDULE 5 - STANDARDS ON EGGS
+
+1. Standard on eggs
+
+(1) Eggs shall only be displayed for sale and sold if:
+
+    (a) there is no putrefaction;
+    (b) the eggs are stored under refrigeration;
+    (c) the package has not been used previously;
+    (d) the package carries an appropriate date marking;
+    (e) no development of the embryo has begun; and
+    (f) the shell is free from extraneous matter and unbroken.
+
+
+SCHEDULE 6 - STANDARDS ON FISH AND FISHERIES PRODUCTS
+
+1. Standard on fresh fish and fish products
+
+(1) The term “fresh” shall only be used to refer to fish and fish products that are untreated except for
+refrigeration, storage on ice, or freezing upon catching at sea or in lakes or other bodies of water in
+order to prevent decomposition and spoilage.
+
+(2) No sample of fish or fish product derived from the families Scombridae, Clupeidae,
+Coryphaenidae, Engraulidae and Pomatomidae, shall have any sample unit containing histamine that
+exceeds 20 mg per 100 g.
+
+(3) For fish or fish products derived from the families Scombridae, Scombresocidae, Clupeidae,
+Coryphaenidae and Pomatomidae, the maximum level of histamine permitted to be detected shall be
+10 mg/100 g based on the average of the sample units tested, provided more than one sample unit is
+tested.
+
+2. Standard on canned tuna and bonito
+
+(1) Without limitation to the generality of the Codex Standard on canned tuna and bonito, the
+following specific product requirements for canned tuna and bonito shall apply:
+    (a) canned tuna and bonito are products consisting of the flesh of any of the species identified as
+        tuna and bonito in Codex Standard 70 of 1981 and its revisions and are packed in hermetically
+        sealed containers.
+    (b) the name of the product as declared on the label shall be "tuna" or "bonito", and may be
+        preceded or followed by the common or usual name of the species in a manner not to mislead
+        the consumer.
+    (c) the name of the product may be qualified or accompanied by a term descriptive of the colour
+        of the product, provided that the term "white" shall be used only for Thunnus alalunga
+        (Albacore).
+    (d) when the term “white” is used in accordance with section c, the flesh shall be predominantly
+        white.
+    (e) the form of presentation shall be declared in close proximity to the common name and shall be
+        presented as “solid”, “chunk”, “flake”, “flakes”, “grated” or “shredded” as specified in Codex
+        Standard 70 of 1981 and its revisions.
+    (f) where the form of presentation is declared as prescribed in section e it shall not be used in a
+        misleading manner.
+
+
+                                                                                                     42
+    (g) the name of the packing medium (water, oil or other) shall form part of the name of the food
+        and shall not be misleading.
+    (h) it shall be free of organisms capable of growth under normal storage conditions.
+    (i) the product shall be free from container integrity defects which may compromise the hermetic
+        seal.
+    (j) the sodium content of the product may not exceed 430 mg/100g
+
+(2) In addition to the requirements specified in sub-regulation (1), canned tuna and bonito with the
+following characteristics will be considered to be non-compliant with this Standard when more than
+one sample unit in a lot or consignment has any of the following characteristics. The samples:
+    (a) are affected by persistent and distinct objectionable odours or flavours indicative of
+        decomposition or rancidity;
+    (b) contain excessively mushy or tough ingredients uncharacteristic of the product;
+    (c) are affected by discolouration indicative of decomposition or rancidity or by sulfide staining of
+        more than 5% of the fish by weight; or
+    (d) are affected by struvite crystals greater than 5 mm in length.
+
+(3) Canned tuna and bonito shall comply with the maximum limits on histamine specified in Standard
+1.
+
+3. Standard on canned sardine and sardine-type products
+
+(1) Without limitation to the generality of the Codex Standard on canned sardine and sardine-type
+products, the following specific product requirements for canned sardine and sardine-type products
+shall apply:
+    (a) canned sardines and sardine type products are products consisting of the flesh of any of the
+        species identified in Codex standard 94 of 1981 and its revisions and are packed in
+        hermetically sealed containers.
+    (b) the name of the packing medium (water, oil or other) shall form part of the name of the food
+        and shall not be misleading.
+    (c) if the fish has been smoked or smoke flavoured, this information shall appear on the label.
+    (d) the product shall be free of organisms capable of growth under normal storage conditions.
+    (e) the product shall be free from container integrity defects which may compromise the hermetic
+        seal.
+    (f) the sodium content of the product may not exceed 430 mg/100g
+
+(2) In addition to the requirements specified in sub-regulation (1), canned sardines and sardine-type
+products with the following characteristics will be considered to be non-compliant with this Standard
+when more than one sample unit in a lot or consignment has any of the following characteristics. The
+samples:
+    (a) are affected by persistent and distinct objectionable odours or flavours indicative of
+        decomposition or rancidity;
+    (b) contain excessively mushy or tough ingredients uncharacteristic of the product;
+    (c) are affected by discolouration indicative of decomposition or rancidity or by sulfide staining of
+        more than 5% of the fish by weight; or
+    (d) are affected by struvite crystals greater than 5 mm in length.
+
+(3) Canned sardines and sardine-type products shall comply with the maximum limits on histamine
+specified in Standard 1.
+
+4. Standard on canned mackerel
+
+
+                                                                                                      43
+(1) Without limitation to the generality of the Codex Standard on canned finfish, the following specific
+product requirements for canned mackerel shall apply:
+    (a) canned mackerel are products consisting of the flesh of any one of the fish genera commonly
+        identified as mackerel including, but not limited to, members of the genera Scomber and
+        Scomberomorus and species Pneumatophorus diego and Auxis thazard and are packed in
+        hermetically sealed containers and have received a processing treatment sufficient to ensure
+        commercial sterility.
+    (b) the product shall be prepared from sound mackerel from which the heads, tails and viscera
+        have been removed.
+    (c) the name of the packing medium (water, oil or other) shall form part of the name of the food
+        and shall not be misleading.
+    (d) if the fish has been smoked or smoke flavoured, this information shall appear on the label.
+    (e) the product shall be free of organisms capable of growth under normal storage conditions.
+    (f) the product shall be free from container integrity defects which may compromise the hermetic
+        seal.
+    (g) the sodium content of the product may not exceed 430 mg/100g
+
+(2) In addition to the requirements specified in sub-regulation (1), canned mackerel with the following
+characteristics will be considered to be non-compliant with this Standard when more than one sample
+unit in a lot or consignment has any of the following characteristics. The samples:
+     (a) are affected by persistent and distinct objectionable odours or flavours indicative of
+         decomposition or rancidity;
+     (b) contain excessively mushy or tough ingredients uncharacteristic of the product;
+     (c) are affected by discolouration indicative of decomposition or rancidity or by sulfide staining of
+         more than 5% of the fish by weight; or
+     (d) are affected by struvite crystals greater than 5 mm in length.
+
+(3) Canned mackerel shall comply with the maximum limits on histamine specified in Standard 1.
+
+5. Standard on canned finfish
+
+(1) Without limitation to the generality of the Codex Standard 119 for canned finfish and its revisions,
+the following specific product requirements for canned finfish products (other than canned finfish
+covered by other product Standards) shall apply:
+    (a) canned finfish products are products consisting of the flesh of finfish which is suitable for
+        human consumption and may contain a mixture of species, with similar sensory properties,
+        from within the same genus, and are packed in hermetically sealed containers and have
+        received a processing treatment sufficient to ensure commercial sterility.
+    (b) the product shall be prepared from sound finfish from which the heads, tails and viscera have
+        been removed.
+    (c) where a mixture of species of the same genus is used, the species used shall be indicated on the
+        label.
+    (d) the name of the product declared on the label shall be the common or usual name applied to
+        the fish in the country and shall be presented in a manner not to mislead the consumer.
+    (e) the name of the packing medium (water, oil or other) shall form part of the name of the food
+        and shall not be misleading.
+    (f) if the fish has been smoked or smoke flavoured, this information shall appear on the label.
+    (g) the product shall be free from container integrity defects which may compromise the hermetic
+        seal.
+    (h) the sodium content of the product may not exceed 430 mg/100g
+
+
+                                                                                                       44
+(2) In addition to the requirements specified in sub-regulation (1), canned finfish products with the
+following characteristics will be considered to be non-compliant with this Standard when more than
+one sample unit in a lot or consignment has any of the following characteristics. The samples:
+    (a) are affected by persistent and distinct objectionable odours or flavours indicative of
+        decomposition or rancidity;
+    (b) contain excessively mushy or tough ingredients uncharacteristic of the product;
+    (c) are affected by discolouration indicative of decomposition or rancidity or by sulfide staining of
+        more than 5% of the fish by weight; or
+    (d) are affected by struvite crystals greater than 5 mm in length.
+
+(3) Canned finned fish of the relevant families shall comply with the maximum limits on histamine
+specified in Standard 1.
+
+6. Standard on frozen fish and fisheries products
+
+(1) This Standard applies to all quick frozen fish; quick frozen lobster; quick frozen blocks of fish
+fillet, minced fish flesh and mixtures of fillets and minced fish; eviscerated and un-eviscerated quick
+frozen finfish; and quick frozen fish sticks (fish fingers), fish portions and fish fillets - breaded or
+battered.
+
+(2) The following specific product requirements shall apply for all fish and fish products under the
+scope of this Standard:
+    (a) If glazed, the water used for glazing or preparing glazing solutions shall be of potable quality
+        or shall be clean sea-water.
+    (b) In addition to the general requirements on labeling, the following provisions shall apply:
+    (c) If the product has been glazed with sea-water, a statement to this effect shall be made.
+    (d) Where the food has been glazed, the declaration of net contents of the food shall be exclusive
+        of the glaze.
+    (e) The label shall include terms to indicate that the product shall be stored at a temperature of
+        minus 18°C or colder.
+
+(3) In addition to the requirements specified in sub-regulation (2), product referred to in sub-regulation
+(1) shall be considered to be non-compliant with this Standard when more than one sample unit has
+any of the following characteristics:
+     (a) Greater than 10% of the surface area of the sample unit exhibits excessive loss of moisture
+         clearly shown as white or yellow abnormality on the surface.
+     (b) The presence of two or more parasites per kg of the sample unit with a capsular diameter
+         greater than 3 mm or a parasite not encapsulated and greater than 10 mm in length.
+     (c) A bone or bones is/are present in product labeled boneless.
+     (d) Affected with pasty texture resulting from parasitic infestation affecting more than 5% of the
+         sample unit by weight
+     (e) The presence of ruptured bellies in un-eviscerated fish, indicative of decomposition.
+     (f) Specifically for quick frozen lobster, distinct blackening of more than 10% of the surface area
+         of the shell of individual whole or half lobster, or in the case of tail meat, distinct black,
+         brown, green or yellow discolourations singly or in combination, of the meat affecting more
+         than 10% of the weight.
+
+(4) Frozen fish of the relevant families shall comply with the maximum limits on histamine specified
+in Standard 1.
+
+
+
+                                                                                                       45
+SCHEDULE 7 - STANDARDS ON CEREAL AND CEREAL PRODUCTS
+
+1. Standard on instant noodles
+
+(1) The following specific product requirements shall apply to instant noodles imported into,
+processed, displayed for sale or sold in Kiribati.
+
+(2) The Standard shall apply to various kinds of noodles. The instant noodle may be packed with
+noodle seasonings, or in the form of seasoned noodle and with or without noodle garnish(s) in separate
+pouches, or sprayed on the noodle and ready for consumption after a dehydration process. This
+Standard does not apply to pasta.
+
+(3) Instant noodle is a product prepared from wheat flour and/or rice flour and/or other flours and/or
+starches as the main ingredient, with or without the addition of other ingredients. It may be treated by
+alkaline agents. It is characterized by the use of pre-gelatinization process and dehydration either by
+frying or by other methods.
+
+
+(4) In addition to the general requirements on labeling, the following provisions shall apply:
+a. the name of the food shall be present on the label as “Instant Noodle(s)”, or optionally as “Fried
+Noodle(s)” or “Non-fried Noodle(s)” in accordance with whether the product has been fried or not;
+b. fortified instant noodles shall be labeled as “Fortified” or “Enriched” and shall identify the
+ingredient added for fortification purposes and shall specify the concentration in which it is present in
+the final product.
+
+(5) Boric acid (a forbidden food additive) shall not be detected in any samples collected for analysis.
+
+(6) The sodium content in instant noodles may not exceed 1600mg/100g
+
+
+2. Standard on rice
+
+(1) This Standard applies to husked rice, milled rice, and parboiled rice, all for direct human
+consumption; i.e., ready for its intended use as human food, presented in packaged form or sold loose
+from the package directly to the consumer. It does not apply to other products derived from rice or to
+glutinous rice.
+
+(2) Milled rice shall not be contaminated with more than 0.1% m/m extraneous inorganic matter (such
+as sand, stones, dust etc).
+
+(3) Milled rice shall not be contaminated with more than 1.5% m/m organic extraneous matter (such as
+seeds, straw, bran, husk etc).
+
+(4) In addition to the general requirements on labeling, the following provisions shall apply:
+     (a) Fortified rice shall be labeled as “Fortified” or “Enriched” and shall identify the ingredient
+         added for fortification purposes and shall specify the concentration in which it is present in the
+         final product.
+     (b) If rice is classified as long grain, medium grain or short grain, the classification used on the
+         label on the product shall be in accordance with the specifications for such in Codex Standard
+         198.
+
+
+
+                                                                                                          46
+3. Standard on wheat flour
+
+(1) This standard applies to:
+    (a) wheat flour for direct human consumption prepared from common wheat, Triticum aestivum
+        L., or club wheat, Triticum compactum Host., or mixtures thereof, by grinding or milling
+        processes in which the bran and germ are partly removed and the remainder is comminuted to
+        a suitable degree of fineness, and which is pre-packaged ready for sale to the consumer or
+        destined for use in other food products; and
+    (b) whole meal, whole-wheat flour or semolina, milled from common wheat, Triticum aestivum
+        L., or club wheat, Triticum compactum Host., or mixtures thereof, and which is prepackaged
+        ready for sale to the consumer or destined for use in other food products.
+
+(2) It does not apply to:
+     (a) Any product prepared from durum wheat, Triticum durum Desf., singly or in combination with
+         other wheat;
+     (b) Wheat flour destined for use as a brewing adjunct or for the manufacture of starch and/or
+         gluten; or
+     (c) Wheat flour for non-food industrial use.
+
+(3) The following specific product requirements shall apply:
+    (a) Wheat flour shall have a maximum moisture content of 15.5% m/m.
+    (b) Wheat flour and any added ingredients shall be safe and suitable for human consumption.
+    (c) Wheat flour shall be free from abnormal flavours, odours, and living insects.
+    (d) Wheat flour shall be free from filth (impurities of animal origin, including dead insects) in
+        amounts not consistent with good manufacturing practice.
+    (e) Wheat flour shall be packaged in containers which will safeguard the hygienic, nutritional,
+        technological, and organoleptic qualities of the product.
+    (f) The containers, including packaging material, shall be made of substances which are safe and
+        suitable for their intended use. They shall not impart any toxic substance or undesirable odour
+        or flavour to the product.
+    (g) When the product is packaged in sacks, these shall be clean, sturdy and strongly sewn or
+        sealed.
+    (h) In addition to general requirements on labeling, the following provisions shall apply:
+    (i) The name of the product to be shown on the label shall be "wheat flour."
+    (j) Fortified wheat flour shall be labeled as “Fortified” or “Enriched” and shall identify the
+        ingredients added for fortification purposes and shall specify the concentration in which it is
+        present in the final product.
+
+(4) The following specific product requirements shall apply only to wheat flour for direct human
+consumption prepared from common wheat, Triticum aestivum L., or club wheat, Triticum compactum
+Host., or mixtures thereof, by grinding or milling processes in which the bran and germ are partly
+removed and the remainder is comminuted to a suitable degree of fineness, and which is pre-packaged
+ready for sale to the consumer or destined for use in other food products:
+
+        a. All such wheat flour processed, displayed and/or sold in the Republic of Kiribati shall be
+           prepared so as to provide the following minimum levels of micronutrients, including all
+           nutrients naturally present, in the wheat flour at the point of sale:
+
+                 i. 6.0 mg/Kg of Thiamin from a source of thiamin mononitrate;
+                ii. 2.0 mg/Kg of Riboflavin;
+               iii. 55 mg/Kg of Niacin;
+
+                                                                                                    47
+                iv. 2.0 mg/Kg of Folic acid;
+                 v. Iron from a source of elemental iron powder of 45 microns average diameter or
+                    similar made by an electrolytic reduction process at levels of 60mg/Kg or from
+                    ferrous fumarate at levels of 45mg/Kg or from other subsequently approved
+                    sources; and
+                vi. 30 mg/Kg of zinc from a source of zinc oxide.
+
+        b. Not withstanding section 4(a), where such flour is to be exported and the requirements of
+           the importing country are in conflict with this Standard, the wheat flour shall comply with
+           the requirements of the importing country.
+
+(5) Where whole meal, whole-wheat flour or semolina, milled from common wheat, Triticum aestivum
+L., or club wheat, Triticum compactum Host., or mixtures thereof, for sale or use in the country is
+enriched or fortified, it shall be prepared so as to provide the same minimum levels of micronutrients
+as specified in sub-regulation (4) a., including all nutrients naturally present, in the wheat flour at the
+point of sale.
+
+4. Standard on bread
+
+(1) Bread means the product made by baking a yeast-leavened dough prepared from one or more cereal
+flours or meals and water.
+
+(2) Wheat flour for making bread must follow the standard on wheat flour as described in Schedule 7
+of these Regulations.
+
+(3) Where salt is added to bread it must be iodized salt as per standard on salt included in Schedule 8
+of these regulations.
+
+(4) The sodium content in bread must not exceed 400mg/100g of product.
+
+
+SCHEDULE 8 - STANDARD ON SALT
+
+1. Standard on salt and reduced sodium salt mixtures
+
+(1) All salt for import into, and for use and sale in the country for processing of food and for direct
+human consumption shall:
+    (a) be salt to which has been added potassium iodide or iodate, or sodium iodide or iodate;
+    (b) contain potassium iodide or iodate, or sodium iodide or iodate equivalent to not less than 20
+        mg/Kg and not more than 30 mg/Kg of iodine;
+    (c) contain no less than 97% sodium chloride on a dry matter basis, exclusive of permitted food
+        additives
+
+(2) Reduced sodium salt mixtures shall contain no more than 200g/Kg sodium and 400g/Kg potassium.
+
+(3) The addition of iodine-containing compounds to reduced sodium salt mixtures shall be in
+conformity with the aim of ensuring salt is iodized.
+
+(4) In addition to general requirements on labeling, the following provisions shall apply:
+
+
+
+
+                                                                                                        48
+    (a) Salt shall be labeled as “Fortified” or “Enriched” or “Iodized” and shall identify the
+        ingredients added for fortification purposes and shall specify the concentration in which it is
+        present in the final product.
+    (b) Reduced sodium salt mixtures shall declare the sodium and potassium content, expressed per
+        100 g. This shall not constitute a nutrition claim.
+
+(5) If necessary in order to avoid the loss of iodine, iodized salt shall be packed in air tight bags of
+either high density polyethylene (HDPE) or polypropylene (PP) (laminated or non-laminated) or
+LDPE-lined jute bags (Grade 1803 DW jute bags lined with 150 gauge polyethylene sheet) unless the
+food business is able to demonstrate consistently that it is able to meet the iodine concentrations
+specified in these Regulations with alternative packing approved by the Board.
+
+(6) Bags that have already been used for packing other articles such as fertilizers, cement, or chemicals
+shall not be reused for packing iodized salt.
+
+(7) Iodized salt shall not be exposed to rain, excessive humidity or direct sunlight at any stage of
+storage, transportation or sale.
+
+(8) Bags of iodized salt shall be stored only in covered rooms that have adequate ventilation.
+
+
+
+
+                                                                                                      49
+

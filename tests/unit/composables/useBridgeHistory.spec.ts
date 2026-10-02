@@ -3,6 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import { PageNames } from '@/consts';
 
 const routerPushMock = vi.hoisted(() => vi.fn());
+const routerQuery = vi.hoisted(() => ({ value: { query: {} as Record<string, unknown> } }));
 const bridgeStoreMock = vi.hoisted(() => ({
   updateForm: vi.fn(),
   setHistoryId: vi.fn(),
@@ -22,12 +23,14 @@ const bridgeStoreMock = vi.hoisted(() => ({
     loading: {},
   },
   networkHistoryId: 'kusama',
+  historySourceKey: '["kusama","Sub","kusama","sora-account","","sub-account",true]',
   setHistoryPage: vi.fn(),
 }));
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: routerPushMock,
+    currentRoute: routerQuery,
   }),
 }));
 
@@ -55,6 +58,7 @@ import useBridgeHistorySource from '@/composables/useBridgeHistory.ts?raw';
 
 describe('useBridgeHistory', () => {
   beforeEach(() => {
+    routerQuery.value.query = {};
     setActivePinia(createPinia());
     window.history.replaceState({}, '', '/bridge/history');
     routerPushMock.mockClear();
@@ -74,9 +78,10 @@ describe('useBridgeHistory', () => {
     bridgeStoreMock.history.record = { 'tx-1': tx };
     bridgeStoreMock.history.loading = { kusama: true };
 
-    const { history, networkHistoryLoading } = useBridgeHistory();
+    const { history, historySourceKey, networkHistoryLoading } = useBridgeHistory();
 
     expect(history.value['tx-1']).toStrictEqual(tx);
+    expect(historySourceKey.value).toBe(bridgeStoreMock.historySourceKey);
     expect(networkHistoryLoading.value).toBe(true);
   });
 
@@ -119,5 +124,18 @@ describe('useBridgeHistory', () => {
     expect(useBridgeHistorySource).toContain("from '@/features/bridge/services/navigationHistory'");
     expect(useBridgeHistorySource).not.toContain("from '@/router'");
     expect(useBridgeHistorySource).not.toContain("from '@/stores/router'");
+  });
+  it('recovers the tagged row purpose and preserves it when returning to bridge review', async () => {
+    const tx = { id: 'generic-row', assetAddress: 'asset-1', payload: { buyXorFunding: 'ethereum-dai-v1' } };
+    bridgeStoreMock.history.record = { [tx.id]: tx };
+    const view = useBridgeHistory();
+    await view.showHistory(tx.id);
+    expect(routerPushMock).toHaveBeenLastCalledWith({ name: PageNames.BridgeTransaction, query: { buyXor: '1' } });
+    routerQuery.value.query = { buyXor: '1' };
+    view.handleBack();
+    expect(routerPushMock).toHaveBeenLastCalledWith({ name: PageNames.Bridge, query: { buyXor: '1', asset: 'DAI' } });
+    bridgeStoreMock.history.record = { ordinary: { id: 'ordinary', assetAddress: 'asset-1' } };
+    await useBridgeHistory().showHistory('ordinary');
+    expect(routerPushMock).toHaveBeenLastCalledWith({ name: PageNames.BridgeTransaction });
   });
 });

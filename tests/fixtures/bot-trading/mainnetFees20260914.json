@@ -1,0 +1,33 @@
+{
+  "notice": "Actual public SORA finalized-block fee observation captured 2026-09-14. Rates are current quote fee deductions applied to historical prices, not historic fee observations. This is a frozen test fixture and is never a production fee fallback.",
+  "endpoint": "wss://ws.mof.sora.org",
+  "genesisHash": "0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5",
+  "blockNumber": 27642604,
+  "blockHash": "0x4e88532acc5dd7775b1d1ff2d935f18d50799cbd05d6efabedb45d461286f418",
+  "queriedAt": "2026-09-14T01:37:34.255Z",
+  "denominator": "100000000000000000000000000000000000000",
+  "amountIn": "10",
+  "amountOut": "4069.358432194696951102",
+  "sellAmountIn": "4069.358432194696951102",
+  "sellAmountOut": "6.538577788922418883",
+  "networkFeeCodec": "100020612589707326",
+  "networkFeeXor": "0.100020612589707326",
+  "sellNetworkFeeCodec": "100020612589707326",
+  "sellNetworkFeeXor": "0.100020612589707326",
+  "swapFeePercent": "0.600000000000000000",
+  "sellSwapFeePercent": "0.600000000000000012",
+  "routeFees": [
+    {
+      "assetAddress": "0x0200000000000000000000000000000000000000000000000000000000000000",
+      "amountCodec": "60000000000000000",
+      "amount": "0.06"
+    }
+  ],
+  "sellRouteFees": [
+    {
+      "assetAddress": "0x0200000000000000000000000000000000000000000000000000000000000000",
+      "amountCodec": "39468276391885829",
+      "amount": "0.039468276391885829"
+    }
+  ]
+}

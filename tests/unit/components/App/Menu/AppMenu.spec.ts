@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineComponent, h, nextTick } from 'vue';
 
-import { PageNames, PolkamarktLogo } from '@/consts';
+import { BotsIcon, PageNames, PolkamarktLogo, StoreBagIcon } from '@/consts';
 
 const {
   routeMock,
@@ -186,21 +186,50 @@ describe('AppMenu', () => {
 
     const expectedRouteItems = [
       { href: '#/swap', icon: 'arrows-swap-90-24' },
+      { href: '#/buy-xor', icon: 'finance-wallet-24' },
       { href: '#/trade', icon: 'music-CD-24' },
+      { href: '#/bots', icon: 'software-terminal-24', iconSrc: BotsIcon },
       { href: '#/polkamarkt', icon: 'various-lightbulb-24', iconSrc: PolkamarktLogo },
-      { href: '#/points', icon: 'basic-circle-star-24' },
-      { href: '#/pool', icon: 'basic-drop-24' },
-      { href: '#/staking', icon: 'basic-layers-24' },
       { href: '#/bridge', icon: 'grid-block-distribute-vertically-24' },
+      { href: '#/store', icon: 'shopping-bag-24', iconSrc: StoreBagIcon },
       { href: '#/wallet', icon: 'finance-wallet-24' },
       { href: '#/burn', icon: 'basic-flame-24' },
+      { href: '#/dashboard/owner', icon: 'various-rocket-24' },
+      { href: '#/pool', icon: 'basic-drop-24' },
+      { href: '#/staking', icon: 'basic-layers-24' },
+      { href: '#/points', icon: 'basic-circle-star-24' },
       { href: '#/kensetsu', icon: 'call-phone-16' },
       { href: '#/explore', icon: 'various-items-24' },
       { href: '#/stats', icon: 'various-planet-24' },
-      { href: '#/dashboard/owner', icon: 'various-rocket-24' },
     ];
 
     expect(renderedRouteItems).toEqual(expectedRouteItems);
+  });
+
+  it('groups all destinations in visible sections and leaves Swap first when features are disabled', () => {
+    settingsStore.orderBookEnabled = false;
+    settingsStore.kensetsuEnabled = false;
+    settingsStore.assetOwnerEnabled = false;
+    const wrapper = mountComponent();
+    expect(wrapper.findAll('.menu-section-title').map((title) => title.text())).toEqual([
+      'ux.navigation.account',
+      'ux.navigation.earn',
+      'ux.navigation.explore',
+    ]);
+    const links = wrapper.findAll('.sidebar-item-content-stub').map((item) => item.attributes('data-href'));
+    expect(links[0]).toBe('#/swap');
+    expect(links).not.toContain('#/trade');
+    expect(links).not.toContain('#/kensetsu');
+    expect(links).not.toContain('#/dashboard/owner');
+    expect(links).toContain('https://about.polkaswap.io');
+  });
+
+  it('renders the general Buy XOR link in the primary section without campaign tags', () => {
+    const wrapper = mountComponent();
+    const link = wrapper.get('[data-section="primary"] [data-href="#/buy-xor"]');
+    expect(link.attributes('data-title')).toBe('mainMenu.BuyXor');
+    expect(link.attributes('data-tag')).toBe('a');
+    expect(link.attributes('data-href')).not.toContain('campaign');
   });
 
   it('keeps the Burn item visible outside the Burn route', () => {

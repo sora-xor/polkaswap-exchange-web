@@ -6,6 +6,10 @@ import { api } from '@/lib/soraneo-wallet/src/api';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 import { parseSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
+import { parseTonswapXorBurnRemark } from '@/features/misc/lib/tonswapBurn';
+import { isExcludedXorBurnAddress } from '@/features/misc/lib/burnEligibility';
+
+export { isExcludedXorBurnAddress } from '@/features/misc/lib/burnEligibility';
 
 import type {
   CallArgs,
@@ -20,6 +24,8 @@ export type XorBurn = {
   amount: FPNumber;
   blockHeight: number;
   nexusRecipient?: string;
+  campaign?: 'tonswap';
+  extrinsicIndex?: number;
   txHash?: string;
 };
 
@@ -30,6 +36,8 @@ type XorBurnEntity = {
   assetId?: string;
   blockHeight?: number | string;
   nexusRecipient?: string;
+  campaign?: 'tonswap';
+  extrinsicIndex?: number;
   txHash?: string;
 };
 
@@ -121,7 +129,6 @@ const ON_CHAIN_SCAN_CHUNK_SIZE = 250;
 const ON_CHAIN_SCAN_SYNC_BLOCK_LIMIT = ON_CHAIN_SCAN_CHUNK_SIZE;
 const ACCOUNT_ON_CHAIN_SCAN_SYNC_BLOCK_LIMIT = 1_000;
 const MIN_NORMALIZABLE_ADDRESS_LENGTH = 32;
-const EXCLUDED_XOR_BURN_ADDRESSES = ['cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo'];
 
 const onChainBurnCache = {
   start: 0,
@@ -236,8 +243,8 @@ const dataBeforePolkaswapIndexing: XorBurn[] = [
 const graphqlString = (value: string): string => JSON.stringify(value);
 
 const getPolkaswapCompactXorBurnQuery = () => gql<ConnectionQueryResponse<XorBurnEntity>>`
-  query XorBurnsQuery($after: Cursor = "", $first: Int = 1000) {
-    data: xorBurns(first: $first, after: $after, orderBy: [BLOCK_HEIGHT_ASC]) {
+  query XorBurnsQuery($after: Cursor = "", $first: Int = 100) {
+    data: xorBurns(first: $first, after: $after, orderBy: [ID_ASC]) {
       pageInfo {
         hasNextPage
         endCursor
@@ -250,6 +257,8 @@ const getPolkaswapCompactXorBurnQuery = () => gql<ConnectionQueryResponse<XorBur
           assetId
           blockHeight
           nexusRecipient
+          campaign
+          extrinsicIndex
           txHash
         }
       }
@@ -422,6 +431,23 @@ const getBatchAllNexusRecipient = (item: HistoryElement): string | undefined => 
   return remark?.recipient;
 };
 
+/** Recognizes the separate TS campaign only in the exact atomic two-call burn shape. */
+const getBatchAllCampaign = (item: HistoryElement): 'tonswap' | undefined => {
+  if (item.module !== 'utility' || item.method !== 'batchAll') return undefined;
+  const calls = getCalls(item);
+  const [burnCall, remarkCall] = calls;
+  if (
+    calls.length !== 2 ||
+    !isXorBurnCall(burnCall) ||
+    remarkCall?.module !== 'system' ||
+    remarkCall.method !== 'remark'
+  ) {
+    return undefined;
+  }
+  const text = decodeRemarkText(getCallArgString(getCallDataArgs(remarkCall.data), 'remark'));
+  return parseTonswapXorBurnRemark(text) ? 'tonswap' : undefined;
+};
+
 const parse = (item: HistoryElement): Nullable<XorBurn> => {
   const burn = getBurnData(item);
   const data = burn?.data;
@@ -434,6 +460,7 @@ const parse = (item: HistoryElement): Nullable<XorBurn> => {
     amount: burn.isCodecAmount ? FPNumber.fromCodecValue(data.amount, XOR.decimals) : new FPNumber(data.amount),
     blockHeight: +item.blockHeight,
     nexusRecipient: getBatchAllNexusRecipient(item),
+    campaign: getBatchAllCampaign(item),
     txHash: item.id,
   };
 };
@@ -449,6 +476,8 @@ const parseCompactXorBurn = (item: XorBurnEntity): Nullable<XorBurn> => {
     amount: new FPNumber(item.amount),
     blockHeight,
     nexusRecipient: item.nexusRecipient,
+    campaign: item.campaign === 'tonswap' ? 'tonswap' : undefined,
+    extrinsicIndex: item.extrinsicIndex,
     txHash: item.txHash || item.id,
   };
 };
@@ -496,10 +525,6 @@ const normalizeAddress = (address: string): string => {
 const isSameAddress = (left: string, right: string): boolean => {
   return left === right || normalizeAddress(left) === normalizeAddress(right);
 };
-
-export function isExcludedXorBurnAddress(address: string): boolean {
-  return EXCLUDED_XOR_BURN_ADDRESSES.some((excludedAddress) => isSameAddress(address, excludedAddress));
-}
 
 const filterEligibleBurns = (items: XorBurn[]): XorBurn[] => {
   return items.filter((item) => !isExcludedXorBurnAddress(item.address));
@@ -573,6 +598,26 @@ const getSignedExtrinsicNexusRecipient = (method: Nullable<SignedExtrinsicMethod
   return remark?.recipient;
 };
 
+/** Reads campaign identity from signed extrinsic contents, never from recipient absence. */
+const getBlockExtrinsicCampaigns = (signedBlock: SignedBlock): Array<'tonswap' | undefined> => {
+  return (
+    signedBlock.block?.extrinsics?.map(({ method }) => {
+      if (method?.section !== 'utility' || method.method !== 'batchAll') return undefined;
+      const calls = getIterableCalls(method.args?.[0]);
+      const [burn, remark] = calls;
+      if (
+        calls.length !== 2 ||
+        !isSignedXorBurnCall(burn) ||
+        remark?.section !== 'system' ||
+        remark.method !== 'remark'
+      ) {
+        return undefined;
+      }
+      return parseTonswapXorBurnRemark(decodeRemarkText(remark.args?.[0])) ? 'tonswap' : undefined;
+    }) ?? []
+  );
+};
+
 const getBlockExtrinsicNexusRecipients = (signedBlock: SignedBlock): Array<string | undefined> => {
   return signedBlock.block?.extrinsics?.map((extrinsic) => getSignedExtrinsicNexusRecipient(extrinsic.method)) ?? [];
 };
@@ -598,7 +643,8 @@ const parseOnChainBurnEvents = (
   blockHeight: number,
   events: ApiEventRecord[],
   txHashes: string[],
-  nexusRecipients: Array<string | undefined>
+  nexusRecipients: Array<string | undefined>,
+  campaigns: Array<'tonswap' | undefined>
 ): XorBurn[] => {
   return events.flatMap((eventRecord) => {
     const burn = getXorBurnEventData(eventRecord);
@@ -611,6 +657,8 @@ const parseOnChainBurnEvents = (
         amount: FPNumber.fromCodecValue(burn.amount, XOR.decimals),
         blockHeight,
         nexusRecipient: extrinsicIndex === null ? undefined : nexusRecipients[extrinsicIndex],
+        campaign: extrinsicIndex === null ? undefined : campaigns[extrinsicIndex],
+        extrinsicIndex: extrinsicIndex ?? undefined,
         txHash: extrinsicIndex === null ? undefined : txHashes[extrinsicIndex],
       },
     ];
@@ -627,6 +675,8 @@ const dedupeBurns = (items: XorBurn[]): XorBurn[] => {
 
     if (existing) {
       existing.nexusRecipient ??= item.nexusRecipient;
+      existing.campaign ??= item.campaign;
+      existing.extrinsicIndex ??= item.extrinsicIndex;
       continue;
     }
 
@@ -689,7 +739,8 @@ async function scanOnChainRanges(
           chunk[eventIndex] ?? 0,
           events as unknown as ApiEventRecord[],
           txHashesByBlock[eventIndex] ?? [],
-          nexusRecipientsByBlock[eventIndex] ?? []
+          nexusRecipientsByBlock[eventIndex] ?? [],
+          getBlockExtrinsicCampaigns((signedBlocks as SignedBlock[])[eventIndex] ?? {})
         )
       );
 
@@ -799,6 +850,8 @@ async function fetchLegacyHintAccountXorBurns(
             amount: FPNumber.fromCodecValue(burn.amount, XOR.decimals),
             blockHeight,
             nexusRecipient,
+            campaign: getBlockExtrinsicCampaigns(signedBlock as SignedBlock)[extrinsicIndex],
+            extrinsicIndex,
             txHash: candidate.hash,
           });
         }
@@ -874,6 +927,8 @@ async function fetchLegacyHintGlobalXorBurns(
               amount: FPNumber.fromCodecValue(burn.amount, XOR.decimals),
               blockHeight,
               nexusRecipient: nexusRecipients[extrinsicIndex],
+              campaign: getBlockExtrinsicCampaigns(signedBlock as SignedBlock)[extrinsicIndex],
+              extrinsicIndex,
               txHash: extrinsicCandidates.get(extrinsicIndex),
             });
           }
@@ -928,6 +983,8 @@ async function scanAccountOnChainRange(
         amount: FPNumber.fromCodecValue(burn.amount, XOR.decimals),
         blockHeight,
         nexusRecipient: extrinsicIndex === null ? undefined : nexusRecipients[extrinsicIndex],
+        campaign: extrinsicIndex === null ? undefined : getBlockExtrinsicCampaigns(signedBlock)[extrinsicIndex],
+        extrinsicIndex: extrinsicIndex ?? undefined,
         txHash: extrinsicIndex === null ? undefined : txHashes[extrinsicIndex],
       });
     }

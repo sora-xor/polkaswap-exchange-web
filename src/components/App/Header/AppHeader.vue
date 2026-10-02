@@ -1,6 +1,7 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header--checkout': checkout }">
     <s-button
+      v-if="!checkout"
       class="app-menu-button"
       type="action"
       primary
@@ -9,31 +10,44 @@
       @click="toggleMenu"
     ></s-button>
     <app-logo-button
+      v-if="!checkout"
       class="app-logo--header"
       responsive
       :theme="libraryTheme"
       @click="goTo(PageNames.Swap)"
     ></app-logo-button>
-    <div class="app-controls app-controls--middle s-flex">
+    <router-link
+      v-if="checkout"
+      class="checkout-brand"
+      :to="isBuyXorCheckout ? '/buy-xor' : '/get-ts'"
+      :aria-label="isBuyXorCheckout ? 'Polkaswap' : 'TONSWAP'"
+    >
+      <polkaswap-logo v-if="isBuyXorCheckout" :theme="libraryTheme" class="checkout-brand__polkaswap" />
+      <template v-else><img :src="tonswapMark" alt="" /> TONSWAP</template>
+    </router-link>
+    <div v-if="!checkout" class="app-controls app-controls--middle s-flex">
       <app-marketing v-show="showMarketing"></app-marketing>
       <s-button
         :class="fiatBtnClass"
-        :type="fiatBtnType"
+        type="primary"
         size="medium"
-        :aria-label="t('moonpay.buttons.buy')"
-        @click="goTo(PageNames.DepositOptions)"
+        :aria-label="t('buyXor.entry')"
+        data-test-name="headerBuyXor"
+        @click="goTo(PageNames.BuyXor)"
       >
         <pair-token-logo
+          v-if="!isAnyMobile"
           class="payment-icon"
           :first-token="xor"
           :second-token="eth"
-          :size="fiatBtnSize"
+          size="small"
         ></pair-token-logo>
-        <span v-if="!isAnyMobile">{{ t('moonpay.buttons.buy') }}</span>
+        <span>{{ t('buyXor.entry') }}</span>
       </s-button>
     </div>
     <div class="app-controls s-flex">
-      <app-account-button @click="navigateToWallet"></app-account-button>
+      <router-link v-if="checkout" class="checkout-exit" to="/swap">{{ t('getTs.exitCheckout') }}</router-link>
+      <app-account-button v-else @click="navigateToWallet"></app-account-button>
       <app-header-menu></app-header-menu>
     </div>
     <rotate-phone-dialog v-if="showRotatePhoneDialog"></rotate-phone-dialog>
@@ -67,10 +81,13 @@ import { ETH, XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
+import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
+import { parseGetTsFundingPurpose } from '@/features/misc/lib/getTsFlow';
+import tonswapMark from '@/assets/img/tonswap-mark.svg?url';
 
 defineOptions({ name: 'AppHeader' });
 
-defineProps<{ loading?: boolean }>();
+defineProps<{ loading?: boolean; checkout?: boolean }>();
 
 const emit = defineEmits<{
   (e: 'toggle-menu'): void;
@@ -86,8 +103,12 @@ const eth = ETH;
 
 const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass as BreakpointClass);
 const libraryTheme = computed(() => (settingsStore.libraryTheme as Theme | null) ?? Theme.LIGHT);
+const isBuyXorCheckout = computed(
+  () =>
+    route.path === '/buy-xor' ||
+    (/^\/bridge(?:\/|$)/.test(route.path) && parseGetTsFundingPurpose(route.query) === 'xor')
+);
 
-const isMobile = computed(() => screenBreakpointClass.value === BreakpointClass.Mobile);
 const isAnyMobile = computed(
   () =>
     screenBreakpointClass.value === BreakpointClass.Mobile ||
@@ -117,14 +138,11 @@ const showAccelerationAccessDialog = computed(
 
 const fiatBtnClass = computed(() => {
   const classes = ['app-controls-fiat-btn', 'active'];
-  if ([PageNames.DepositOptions, PageNames.CedeStore].includes(route.name as PageNames)) {
+  if (route.name === PageNames.BuyXor) {
     classes.push('app-controls-fiat-btn--active', 's-pressed');
   }
   return classes;
 });
-
-const fiatBtnType = computed(() => (isAnyMobile.value ? 'action' : 'tertiary'));
-const fiatBtnSize = computed(() => (isAnyMobile.value ? 'mini' : 'small'));
 
 function toggleMenu(): void {
   emit('toggle-menu');
@@ -132,33 +150,116 @@ function toggleMenu(): void {
 </script>
 
 <style lang="scss">
-.app-controls-fiat-btn.app-controls-fiat-btn--active.neumorphic.active {
-  box-shadow: var(--s-shadow-element);
-  span {
-    color: var(--s-color-theme-accent);
-  }
-}
+.header--checkout {
+  justify-content: space-between;
+  padding-inline: clamp(16px, 4vw, 48px);
 
-.app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active) {
-  background-color: var(--s-color-utility-body) !important;
-  border-color: transparent !important;
-  color: var(--s-color-base-content-tertiary) !important;
+  .checkout-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--s-color-base-content-primary);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+
+    img {
+      width: 28px;
+      height: 28px;
+    }
+    .checkout-brand__polkaswap {
+      width: 146px;
+      height: 40px;
+    }
+  }
+
+  .checkout-exit {
+    color: var(--s-color-base-content-secondary);
+    font-size: 12px;
+    text-decoration: none;
+    padding: 12px;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--s-color-theme-accent);
+    outline-offset: 3px;
+  }
 }
 
 .app-controls .settings-control {
   background-color: var(--s-color-utility-body) !important;
   border-color: transparent !important;
-  color: var(--s-color-base-content-tertiary) !important;
+  color: var(--s-color-base-content-secondary) !important;
   font-weight: 500 !important;
 }
 
 .app-controls .app-controls-fiat-btn {
   display: block !important;
-  height: 42px !important;
-  min-height: 42px !important;
+  position: relative;
+  isolation: isolate;
+  height: 44px !important;
+  min-height: 44px !important;
   padding: 5px 13px !important;
   line-height: 14px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
+  background-color: var(--s-color-action-fill) !important;
+  border-color: transparent !important;
+  color: var(--s-color-on-action) !important;
+  box-shadow: 0 3px 12px color-mix(in srgb, var(--s-color-action-fill) 20%, transparent) !important;
+
+  &:hover {
+    background-color: var(--s-color-action-fill-hover) !important;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--s-color-focus-ring) !important;
+    outline-offset: 4px;
+  }
+
+  // Two gentle halo pulses introduce the shared purchase action without moving its hit target.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    z-index: -1;
+    border: 1px solid var(--s-color-action-fill);
+    border-radius: inherit;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--s-color-action-fill) 25%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-controls .app-controls-fiat-btn::before {
+    animation: buy-xor-halo 2.4s ease-out 0.6s 2;
+  }
+}
+
+@keyframes buy-xor-halo {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0.45;
+  }
+  80% {
+    opacity: 0;
+    transform: scale(1.08, 1.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-controls .app-controls-fiat-btn {
+    transition: none !important;
+
+    &::before {
+      animation: none !important;
+    }
+  }
 }
 
 .app-controls .account-control.el-button,
@@ -176,7 +277,7 @@ function toggleMenu(): void {
 
 .app-controls .app-controls-fiat-btn .s-button__text {
   font-size: 14px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   line-height: 14px !important;
   text-transform: uppercase !important;
 }
@@ -184,16 +285,15 @@ function toggleMenu(): void {
 .app-controls .account-control:not(.s-pressed) {
   background-color: var(--s-color-utility-body) !important;
   border-color: transparent !important;
-  color: var(--s-color-base-content-tertiary) !important;
+  color: var(--s-color-base-content-secondary) !important;
 }
 
 .app-controls .account-control.s-pressed {
   background-color: var(--s-color-utility-surface) !important;
   border-color: var(--s-color-base-border-primary) !important;
-  color: var(--s-color-base-content-tertiary) !important;
+  color: var(--s-color-base-content-secondary) !important;
 }
 
-.app-controls .app-controls-fiat-btn,
 .app-controls .account-control {
   box-shadow:
     -5px -5px 10px #fff,
@@ -211,7 +311,7 @@ function toggleMenu(): void {
 .app-controls .account-control i,
 .app-controls .settings-control i,
 .app-controls .settings-control .header-menu__button i {
-  color: var(--s-color-base-content-tertiary) !important;
+  color: var(--s-color-base-content-secondary) !important;
 }
 
 .app-controls .settings-control.settings-control--open,
@@ -230,9 +330,9 @@ function toggleMenu(): void {
 }
 
 .app-menu-button.el-button.neumorphic.s-action.s-primary {
-  background-color: var(--s-color-theme-accent) !important;
+  background-color: var(--s-color-action-fill) !important;
   border-color: var(--s-color-base-border-secondary) !important;
-  color: #fff !important;
+  color: var(--s-color-on-action) !important;
   font-weight: 500 !important;
   line-height: 14px !important;
   position: static !important;
@@ -243,7 +343,7 @@ function toggleMenu(): void {
 
 .app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):hover,
 .app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):focus {
-  background-color: var(--s-color-theme-accent-hover) !important;
+  background-color: var(--s-color-action-fill-hover) !important;
   box-shadow:
     1px 1px 5px rgba(255, 255, 255, 0.7),
     -1px -1px 5px #fff,
@@ -251,25 +351,19 @@ function toggleMenu(): void {
 }
 
 .app-menu-button.el-button.neumorphic.s-action.s-primary i {
-  color: #fff !important;
-}
-
-[design-system-theme='dark'] .app-controls .app-controls-fiat-btn:not(.app-controls-fiat-btn--active) {
-  background-color: var(--s-color-utility-body) !important;
-  border-color: transparent !important;
-  color: var(--s-color-base-content-tertiary) !important;
+  color: var(--s-color-on-action) !important;
 }
 
 [design-system-theme='dark'] .app-controls .account-control {
   background-color: var(--s-color-utility-body) !important;
   border-color: transparent !important;
-  color: var(--s-color-base-content-tertiary) !important;
+  color: var(--s-color-base-content-secondary) !important;
 }
 
 [design-system-theme='dark'] .app-controls .settings-control {
   background-color: var(--s-color-utility-body) !important;
   border-color: transparent !important;
-  color: var(--s-color-base-content-tertiary) !important;
+  color: var(--s-color-base-content-secondary) !important;
 }
 
 [design-system-theme='dark'] .app-controls .settings-control.settings-control--open,
@@ -278,7 +372,6 @@ function toggleMenu(): void {
   color: var(--s-color-base-content-secondary) !important;
 }
 
-[design-system-theme='dark'] .app-controls .app-controls-fiat-btn,
 [design-system-theme='dark'] .app-controls .account-control {
   box-shadow:
     -5px -5px 10px rgba(155, 111, 165, 0.25),
@@ -302,7 +395,7 @@ function toggleMenu(): void {
 
 [design-system-theme='dark'] .app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):hover,
 [design-system-theme='dark'] .app-menu-button.el-button.neumorphic.s-action.s-primary:not(.is-disabled):focus {
-  background-color: var(--s-color-theme-accent-hover) !important;
+  background-color: var(--s-color-action-fill-hover) !important;
   box-shadow:
     1px 1px 5px #391057,
     -1px -1px 5px #9b6fa5 !important;
@@ -420,7 +513,6 @@ html[dir='rtl'] {
   }
 
   @include large-mobile(true) {
-    .app-controls-fiat-btn.el-button,
     .account-control.el-button,
     .settings-control.el-button {
       display: block !important;
@@ -429,10 +521,23 @@ html[dir='rtl'] {
       line-height: 14px !important;
     }
 
-    .app-controls-fiat-btn.el-button,
     .settings-control.el-button {
       padding-left: 0 !important;
       padding-right: 0 !important;
+    }
+
+    .app-controls-fiat-btn.el-button {
+      width: auto !important;
+      min-width: 88px;
+      min-height: 44px !important;
+      height: auto !important;
+      padding: 10px 12px !important;
+      .s-button__text {
+        white-space: normal;
+        text-transform: none !important;
+        font-size: 13px !important;
+        line-height: 16px !important;
+      }
     }
 
     .account-control.el-button {

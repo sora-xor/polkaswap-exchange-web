@@ -132,7 +132,7 @@ const prevLtv = computed(() => props.prevLtv as Nullable<FPNumber>);
 const maxSafeDebt = computed(() => props.maxSafeDebt ?? Zero);
 const maxLtv = computed(() => props.maxLtv ?? HundredNumber);
 
-const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.CreateVault] ?? ZeroStringValue);
+const networkFee = computed<CodecString>(() => networkFees.value?.[Operation.RepayVaultDebt] ?? ZeroStringValue);
 const fpNetworkFee = computed(() => getFPNumberFromCodec(networkFee.value));
 const xorBalance = computed(() => getFPNumberFromCodec(accountXor.value?.balance?.transferable ?? ZeroStringValue));
 const networkFeeFormatted = computed(() => formatCodecNumber(networkFee.value));
@@ -237,21 +237,24 @@ const handleRepayDebt = async () => {
     if (errorMessage.value) {
       showAppAlert(errorMessage.value, t('errorText'));
     }
-  } else {
-    try {
-      await withNotifications(async () => {
-        if (!(vault.value && debtAsset.value)) {
-          throw new Error('[api.kensetsu.repayVaultDebt]: vault or asset is null');
-        }
-        await api.kensetsu.repayVaultDebt(vault.value, repayDebtValue.value, debtAsset.value);
-      });
-      emit('confirm');
-    } catch (error) {
-      console.error(error);
-    }
+    return;
   }
 
-  isVisible.value = false;
+  try {
+    const result = await withNotifications(async () => {
+      if (!(vault.value && debtAsset.value)) {
+        throw new Error('[api.kensetsu.repayVaultDebt]: vault or asset is null');
+      }
+      await api.kensetsu.repayVaultDebt(vault.value, repayDebtValue.value, debtAsset.value);
+    });
+
+    if (!result.submitted) return;
+
+    isVisible.value = false;
+    emit('confirm');
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 watch(

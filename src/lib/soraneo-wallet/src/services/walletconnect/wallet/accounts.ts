@@ -7,8 +7,10 @@ export default class WcAccounts implements InjectedAccounts {
   private wcProvider!: WcProvider;
 
   private _list: InjectedAccount[] = [];
-  private accountsCallback: Nullable<(accounts: InjectedAccount[]) => unknown> = null;
-  private accountsUpdateInterval: Nullable<NodeJS.Timeout> = null;
+  private accountsCallbacks = new Map<number, (accounts: InjectedAccount[]) => unknown>();
+  private accountsUpdateInterval: Nullable<ReturnType<typeof setInterval>> = null;
+  private nextSubscriptionId = 0;
+  private pollingGeneration = 0;
 
   constructor(wcProvider: WcProvider) {
     this.wcProvider = wcProvider;
@@ -21,8 +23,30 @@ export default class WcAccounts implements InjectedAccounts {
   private set accountsList(accounts: InjectedAccount[]) {
     this._list = accounts;
 
-    if (typeof this.accountsCallback === 'function') {
-      this.accountsCallback(this._list);
+    for (const callback of this.accountsCallbacks.values()) {
+      callback(this._list);
+    }
+  }
+
+  /** Starts one shared poll loop for all active account subscribers. */
+  private startPolling(): void {
+    if (this.accountsUpdateInterval !== null) return;
+
+    const generation = ++this.pollingGeneration;
+    this.accountsUpdateInterval = setInterval(() => {
+      if (generation !== this.pollingGeneration) return;
+
+      void this.get().catch(() => undefined);
+    }, ACCOUNTS_UPDATE_INTERVAL);
+  }
+
+  /** Stops the shared poll loop and invalidates a callback already queued by it. */
+  private stopPolling(): void {
+    this.pollingGeneration += 1;
+
+    if (this.accountsUpdateInterval !== null) {
+      clearInterval(this.accountsUpdateInterval);
+      this.accountsUpdateInterval = null;
     }
   }
 
@@ -35,17 +59,26 @@ export default class WcAccounts implements InjectedAccounts {
   }
 
   public subscribe(accountsCallback: (accounts: InjectedAccount[]) => unknown): Unsubcall {
-    this.accountsCallback = accountsCallback;
+    const subscriptionId = ++this.nextSubscriptionId;
+    let active = true;
 
-    this.accountsUpdateInterval = setInterval(this.get.bind(this), ACCOUNTS_UPDATE_INTERVAL);
+    this.accountsCallbacks.set(subscriptionId, accountsCallback);
+    this.startPolling();
 
-    return this.unsubscribe.bind(this);
+    return () => {
+      if (!active) return;
+
+      active = false;
+      this.accountsCallbacks.delete(subscriptionId);
+
+      if (!this.accountsCallbacks.size) {
+        this.stopPolling();
+      }
+    };
   }
 
   public unsubscribe(): void {
-    if (this.accountsUpdateInterval) {
-      clearInterval(this.accountsUpdateInterval);
-    }
-    this.accountsCallback = null;
+    this.accountsCallbacks.clear();
+    this.stopPolling();
   }
 }

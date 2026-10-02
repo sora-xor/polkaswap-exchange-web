@@ -15,4 +15,9 @@ describe('PriceChart source', () => {
     expect(priceChartSource).toContain("import StatsFilter from '@/components/shared/Stats/StatsFilter.vue';");
     expect(priceChartSource).toContain("import ChartSkeleton from '@/components/shared/Chart/ChartSkeleton.vue';");
   });
+
+  it('uses the ECharts line-height option spelling', () => {
+    expect(priceChartSource).toContain('lineHeight: 1.5');
+    expect(priceChartSource).not.toContain('lineHeigth');
+  });
 });

@@ -1,0 +1,182 @@
+[
+  {
+    "file": "ae-source-only-proposal.json",
+    "bytes": 2361,
+    "sha256": "2aa66f6993f8302c67cbf5ae399a7c8f188a5d2d65d29286c04243a82626f48c"
+  },
+  {
+    "file": "ck-act2008-ministry.pdf",
+    "bytes": 448326,
+    "sha256": "83cb0c7f8100c0be7254e3ceda2af1a2b78863641dae33d20b69039688e7d641"
+  },
+  {
+    "file": "ck-media-import-403.html",
+    "bytes": 1084,
+    "sha256": "b5be5ff0092df10fd775928ecf227186f954265fcc32a7aa0056f59a3e533790"
+  },
+  {
+    "file": "ck-media-tea-403.html",
+    "bytes": 1084,
+    "sha256": "32763d61918213fd3b9c45820b275b128f032cf18fab606a458d08b2de1bb454"
+  },
+  {
+    "file": "ck-source-only-proposal.json",
+    "bytes": 2918,
+    "sha256": "2f19ef7f1de1ed28706f9670d9aa829238868cf1b75ab39ec3112f5d46c9a188"
+  },
+  {
+    "file": "initial-provenance.json",
+    "bytes": 1432,
+    "sha256": "11a840a12f3b6d95292c9ab2033a8bdac5cc8565af384bb28ad23ccb415d53ec"
+  },
+  {
+    "file": "iq-gazette-provenance.json",
+    "bytes": 173,
+    "sha256": "6fc7b2eb9aaee48467a7281e23d673ef518797eff5cbf5214607ce366bc36cfb"
+  },
+  {
+    "file": "iq-gazette4273-definition.png",
+    "bytes": 204122,
+    "sha256": "14c4c1a7ced1bf9485f79d345efe88756f8c1e8a3938eb4c4a27d16f58aae598"
+  },
+  {
+    "file": "iq-gazette4273-original.pdf",
+    "bytes": 648857,
+    "sha256": "0f3771b354ed7796eb1ca93e787bad6d0308626783aca58ec9bf66e8e4cd9a04"
+  },
+  {
+    "file": "iq-moj-law.pdf",
+    "bytes": 1488712,
+    "sha256": "9bb7b5cce851fc9de8103162cac5dce372d55115e966ee2f2fc67228f901aea5"
+  },
+  {
+    "file": "iq-moj-law.txt",
+    "bytes": 40963,
+    "sha256": "3ee2bbc61042cf54c9ef84149132e4e80e9b39c7b60af1b652659008ca133014"
+  },
+  {
+    "file": "iq-moj-provenance.json",
+    "bytes": 162,
+    "sha256": "9bb79e5638ca47b3e3d9ed44f20073a6745d4536a82eb0a29350fff8b67dcaea"
+  },
+  {
+    "file": "iq-proposed-excluded-full-row.json",
+    "bytes": 10505,
+    "sha256": "2d1eb3a7f2938c3a85d3fd5cb2a0fc3c8ae77ec2ca2d68d7d49aca9f9e885712"
+  },
+  {
+    "file": "jo-gazette-news-mirror.html",
+    "bytes": 120156,
+    "sha256": "c00f45ede74677062d5654c231c2ce9de400a1c88868042b155484ca0b9f2181"
+  },
+  {
+    "file": "jo-instructions2021-01.jpg",
+    "bytes": 122897,
+    "sha256": "1f07ef5fd9136075e89aae6a75762c93d9ac56185b8c7beaa1f4b029b07809a6"
+  },
+  {
+    "file": "jo-instructions2021-02.jpg",
+    "bytes": 125079,
+    "sha256": "80d894f63f1d27f1aac2ced31861c50fd554d89aafd0f6a6bcd2c564dd9803d9"
+  },
+  {
+    "file": "jo-instructions2021-03.jpg",
+    "bytes": 93087,
+    "sha256": "3ab0926b8a69859d1aa09d74193718f293af61994636b49cf5c82bde9bf6e69c"
+  },
+  {
+    "file": "jo-instructions2021-04.jpg",
+    "bytes": 133439,
+    "sha256": "c62a8645c633c4c1f9aab13f5221ef4b6d80f35fc1276a6b1cb9746438a1df1f"
+  },
+  {
+    "file": "jo-instructions2021-05.jpg",
+    "bytes": 123563,
+    "sha256": "6c3fe0173d207d8dbb571bf7c65808b915b4c77c5526ecc6af26f9d5577c031e"
+  },
+  {
+    "file": "jo-instructions2021-06.jpg",
+    "bytes": 107430,
+    "sha256": "1e23c2939bff93d304cd01f9007e2ebdcb3e5e6cb93d6449413a9f15c2bd93ad"
+  },
+  {
+    "file": "jo-instructions2021-07.jpg",
+    "bytes": 143947,
+    "sha256": "0a6c90daaf57ba754984e02fdb61f289cf070207f0b67231a17cdaf91010ca20"
+  },
+  {
+    "file": "jo-instructions2021-08.jpg",
+    "bytes": 166775,
+    "sha256": "521321f4b309ce3bbfae5f3361963dd93b46201645979274478b72314c30cf6a"
+  },
+  {
+    "file": "jo-instructions2021-09.jpg",
+    "bytes": 135250,
+    "sha256": "7fe1bb68b4cfd362c39b2249a4226cce49f6d073a1cc965dee424391eeb3e13c"
+  },
+  {
+    "file": "jo-instructions2021-10.jpg",
+    "bytes": 105582,
+    "sha256": "8d511f76f609c5a3c8a69a3287bfccb7ce9494abd0f78aecbc223def3c9dc909"
+  },
+  {
+    "file": "jo-instructions2021-11.jpg",
+    "bytes": 118982,
+    "sha256": "645c0fb67f6e6c04950685546e4afd90d5b3687b4f7375d593f600c91f230204"
+  },
+  {
+    "file": "jo-instructions2021-12.jpg",
+    "bytes": 96061,
+    "sha256": "8652b562b3d99916bf93efe2662396685b7afed83266cd5f8c0c04ab8f9437fe"
+  },
+  {
+    "file": "jo-instructions2021-13.jpg",
+    "bytes": 89856,
+    "sha256": "de0ebff75544e8b655c263d97ba12d9fb4802cd8464970d60e00389c2c2599a1"
+  },
+  {
+    "file": "jo-mirror-provenance.json",
+    "bytes": 2482,
+    "sha256": "b9e1c73beb87444e423a22c8ab7a88b441946317c444053be13f084cf1291938"
+  },
+  {
+    "file": "jo-source-only-proposal.json",
+    "bytes": 5107,
+    "sha256": "9d6766ac29b250d653d93015fde81edfedc026121ed25ed6920060d571e322f5"
+  },
+  {
+    "file": "ki-source-only-proposal.json",
+    "bytes": 2476,
+    "sha256": "c709ba4ca131cee2119993cf7fda34eaf69787cf2e20979f9b747329a18e3b11"
+  },
+  {
+    "file": "pg-aiib-provenance.json",
+    "bytes": 300,
+    "sha256": "049c11c03d3d7ccc18bcbc55daecebd67df62e27c0e1a6840aa838f63c00b2c3"
+  },
+  {
+    "file": "pg-aiib2026-transition.pdf",
+    "bytes": 172777,
+    "sha256": "689c3ca119ae97e9442426d5986a6e1121fbad2798b595851b185d6159c5cae0"
+  },
+  {
+    "file": "pg-aiib2026-transition.txt",
+    "bytes": 35365,
+    "sha256": "92df4acfc46273ff3cf92ffe4ea43194a1e2cc5e338f6442057f25d4e148341b"
+  },
+  {
+    "file": "pg-gazette-home.html",
+    "bytes": 226,
+    "sha256": "80a265bed528211aa708dcd58f7a95db36eeb7f873c6fe4ddab0b3a1dc0973a4"
+  },
+  {
+    "file": "pg-source-only-proposal.json",
+    "bytes": 2111,
+    "sha256": "a5bcfc35b2aa7eb6ec3707cd6a01c3190e51ff7826ca20b48bb0fdd46e729dbe"
+  },
+  {
+    "file": "source-pass-result.json",
+    "bytes": 1576,
+    "sha256": "04dc7f2747700cd84dd7b3e600e85c28266478fa249d6de7dac466390e46f2e5"
+  }
+]

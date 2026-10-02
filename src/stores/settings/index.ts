@@ -29,6 +29,7 @@ import { NodesConnection } from '@/utils/connection';
 import { toSafeExternalLink } from '@/utils/externalLinks';
 import { resolveStaticAssetUrl, resolveVersionedStaticAssetUrl } from '@/utils/staticAssets';
 import storage, { settingsStorage } from '@/utils/storage';
+import { parseStoredBoolean } from '@/utils/storageParsing';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -54,7 +55,7 @@ const defaultWalletFilters: WalletAssetFilters = {
 
 const buildInitialState = (): SettingsState => {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-  const storedDisclaimerApprove = disclaimerApprove ? JSON.parse(disclaimerApprove) : false;
+  const storedDisclaimerApprove = parseStoredBoolean(disclaimerApprove, false);
   const userDisclaimerApprove = Boolean(storedDisclaimerApprove || isAgentAutomationSession());
   const isRotatePhoneHideBalanceFeatureEnabled =
     settingsStorage.get('isRotatePhoneHideBalanceFeatureEnabled') === 'true';

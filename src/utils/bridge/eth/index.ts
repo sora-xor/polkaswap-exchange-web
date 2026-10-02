@@ -46,7 +46,7 @@ const ethBridge: EthBridge = new Bridge({
   getAssetByAddress: (address: string) => useAssetsStore().assetDataByAddress(address),
   // transaction
   getTransaction: (id: string) =>
-    (resolveBridgeStore().getHistoryTransaction(id) || getEthBridgeTransaction(id)) as EthHistory,
+    getEthBridgeTransaction(id, resolveBridgeStore().getHistoryTransaction(id) as EthHistory | null),
   updateTransaction,
   // ui integration
   showNotification: (tx: EthHistory) => resolveBridgeStore().setNotificationData(tx as any),
@@ -59,8 +59,10 @@ const ethBridge: EthBridge = new Bridge({
   beforeTransactionSign: (...args: any[]) => resolveBridgeStore().beforeTransactionSign(ethBridgeApi, ...args),
   // custom
   getBridgeHistoryInstance: () => resolveBridgeStore().getEthBridgeHistoryInstance() as Promise<EthBridgeHistory>,
-  signExternalOutgoing: (id: string) => resolveBridgeStore().signEthBridgeOutgoingEvm(id) as Promise<unknown>,
-  signExternalIncoming: (id: string) => resolveBridgeStore().signEthBridgeIncomingEvm(id) as Promise<unknown>,
+  signExternalOutgoing: (id, recordSubmission) =>
+    resolveBridgeStore().signEthBridgeOutgoingEvm(id, recordSubmission) as Promise<unknown>,
+  signExternalIncoming: (id, recordSubmission) =>
+    resolveBridgeStore().signEthBridgeIncomingEvm(id, recordSubmission) as Promise<unknown>,
 });
 
 export default ethBridge;

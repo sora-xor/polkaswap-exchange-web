@@ -16,18 +16,21 @@ describe('useSwapPageStore', () => {
     expect(store.widgets).toEqual(buildDefaultSwapWidgetsVisibility());
     expect(store.options).toEqual({ edit: false });
     expect(store.customizePopper).toBe(false);
+    expect(store.chartExpanded).toBe(false);
   });
 
   it('resets the local widget-editing state', () => {
     const store = useSwapPageStore();
 
     store.customizePopper = true;
+    store.chartExpanded = true;
     store.options = { edit: true };
     store.widgets.swapTransactions = true;
 
     store.resetWidgetPreferences();
 
     expect(store.customizePopper).toBe(false);
+    expect(store.chartExpanded).toBe(false);
     expect(store.options).toEqual({ edit: false });
     expect(store.widgets).toEqual(buildDefaultSwapWidgetsVisibility());
   });

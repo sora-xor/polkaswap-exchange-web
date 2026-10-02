@@ -26,6 +26,8 @@ export function createAppShellBrowserEffects({
   showErrorLocalStorageExceed,
   closeMenu,
 }: BrowserEffectsOptions) {
+  let orientationListenerActive = false;
+
   const handleLocalStorageChange = (): void => {
     const usagePercentage = calculateStorageUsagePercentage();
     if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
@@ -36,12 +38,15 @@ export function createAppShellBrowserEffects({
   const setResponsiveClass = (): void => {
     closeMenu();
     settingsStore.setScreenBreakpointClass(window.innerWidth);
+    syncOrientationSubscription();
   };
 
+  /** Layout orientation follows the viewport, which can differ from the physical display. */
   const handleOrientationChange = (): void => {
-    const isLandscape = screen.orientation
-      ? screen.orientation.type.startsWith('landscape')
-      : window.innerHeight < window.innerWidth;
+    const isLandscape =
+      typeof window.matchMedia === 'function'
+        ? window.matchMedia('(orientation: landscape)').matches
+        : window.innerHeight < window.innerWidth;
     if (isLandscape) {
       settingsStore.showOrientationWarning();
     } else {
@@ -71,22 +76,33 @@ export function createAppShellBrowserEffects({
     window.removeEventListener('resize', setResponsiveClass);
   };
 
-  const subscribeOnScreenOrientation = (): void => {
-    if (window.innerWidth <= Breakpoint.LargeMobile) {
-      if (screen.orientation) {
-        screen.orientation.addEventListener('change', handleOrientationChange);
-      } else {
-        window.addEventListener('resize', handleOrientationChange);
-      }
+  const detachOrientationListener = (): void => {
+    if (orientationListenerActive) {
+      window.removeEventListener('resize', handleOrientationChange);
     }
+    orientationListenerActive = false;
+  };
+
+  function syncOrientationSubscription(): void {
+    if (window.innerWidth > Breakpoint.LargeMobile) {
+      detachOrientationListener();
+      settingsStore.hideOrientationWarning();
+      return;
+    }
+
+    if (!orientationListenerActive) {
+      window.addEventListener('resize', handleOrientationChange);
+      orientationListenerActive = true;
+    }
+    handleOrientationChange();
+  }
+
+  const subscribeOnScreenOrientation = (): void => {
+    syncOrientationSubscription();
   };
 
   const unsubscribeFromScreenOrientation = (): void => {
-    if (screen.orientation) {
-      screen.orientation.removeEventListener('change', handleOrientationChange);
-    } else {
-      window.removeEventListener('resize', handleOrientationChange);
-    }
+    detachOrientationListener();
   };
 
   const subscribeOnKeyboard = (): void => {

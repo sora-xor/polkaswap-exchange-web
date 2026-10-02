@@ -1,4 +1,5 @@
 import { createPinia, setActivePinia } from 'pinia';
+import { throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const shared = vi.hoisted(() => {
@@ -213,6 +214,32 @@ describe('rewards store', () => {
     expect(store.internalRewards).toBeNull();
     expect(store.vestedRewards).toBeNull();
     expect(store.crowdloanRewards).toEqual({});
+  });
+
+  it('cleans up partially initialized rewards subscriptions when a source errors', async () => {
+    const store = useRewardsStore();
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    shared.getLiquidityProvisionRewardsSubscription.mockReturnValueOnce(
+      throwError(() => new Error('rewards source failed')) as unknown as ReturnType<
+        typeof shared.getLiquidityProvisionRewardsSubscription
+      >
+    );
+
+    try {
+      await store.subscribeOnRewards();
+
+      expect(store.liquidityProvisionRewardsSubscription).toBeNull();
+      expect(store.vestedRewardsSubscription).toBeNull();
+      expect(store.crowdloanRewardsSubscription).toBeNull();
+      expect(shared.vestedRewardsUnsubscribe).toHaveBeenCalledTimes(1);
+      expect(shared.crowdloanRewardsUnsubscribe).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledWith(
+        '[rewards] Failed to initialize rewards subscriptions',
+        expect.objectContaining({ message: 'rewards source failed' })
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
   });
 
   it('claims rewards with the external-signature flow', async () => {

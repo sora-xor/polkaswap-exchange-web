@@ -1,0 +1,45 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": [
+    "AE",
+    "BH",
+    "IQ",
+    "JO",
+    "MV",
+    "PG"
+  ],
+  "product": "Single 100 g sealed Japanese Camellia sinensis sencha, industrially steamed/rolled/dried, paid personal post. Ordinary Customs/recipient arrival declarations allowed; no permits, origin certificates, special registration or advance applications.",
+  "outcomeChanges": [
+    {
+      "code": "BH",
+      "proposal": "bh-outcome-full-row-proposal.json",
+      "outcome": "conditional/supported",
+      "basis": "Domestic risk-qualified manufactured-product scope + actual ISPM32 Tea Category1 + current personal-food guide."
+    },
+    {
+      "code": "MV",
+      "proposal": "mv-pg/mv-proposed-supported-full-row.json",
+      "outcome": "conditional/supported",
+      "basis": "New current full Act section36 defines living plants/risk-qualified manufactured products; sections19/22 govern covered goods; current MFDA personal processed-food route. Independently peer-reviewed."
+    }
+  ],
+  "sourceOnly": [
+    "AE",
+    "IQ",
+    "JO",
+    "PG"
+  ],
+  "patches": [
+    "source-only-patches.json",
+    "mv-pg/pg-source-only-patch.json"
+  ],
+  "mainArraysEdited": false,
+  "contactsOrApplications": false,
+  "interpretationGuardrails": [
+    "Scope inferences are explicit and limited to the finished factory-made product.",
+    "ISPM32 is commodity/manufacturing evidence, not an automatic national waiver based on membership.",
+    "Blank tax/procedure cells and absent search results are not permissions.",
+    "Routine local border-inspection certificates are not sender-origin procurement duties.",
+    "Traveller-only allowances are not postal permissions."
+  ]
+}

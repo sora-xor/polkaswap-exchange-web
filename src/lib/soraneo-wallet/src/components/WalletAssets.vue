@@ -29,12 +29,12 @@
                   :font-size-rate="FontSizeRate.SMALL"
                   :asset-symbol="slotAsset.symbol"
                   symbol-as-decimal
-                  :fiat-value="getFiatBalance(slotAsset)"
+                  :fiat-value="getTotalFiatBalance(slotAsset)"
                   :fiat-font-size-rate="FontSizeRate.SMALL"
                   :fiat-font-weight-rate="FontWeightRate.SMALL"
                 >
                   <s-tooltip
-                    v-if="hasLockedBalance(slotAsset)"
+                    v-if="hasRestrictedBalance(slotAsset)"
                     popper-class="wallet-assets-locked-tooltip"
                     wrapper-tag="span"
                     placement="top"
@@ -42,7 +42,7 @@
                   >
                     <span class="asset-value-locked p4" :aria-label="getLockedBalanceTooltipLabel(slotAsset)">
                       <s-icon name="lock-16" size="12px"></s-icon>
-                      <span>{{ formatFrozenBalance(slotAsset) }}</span>
+                      <span> {{ formatSpendableBalance(slotAsset) }} {{ t('assets.balance.transferable') }} </span>
                     </span>
                     <template #content>
                       <div class="asset-value-locked-tooltip" role="tooltip">
@@ -122,7 +122,7 @@
 
 <script lang="ts">
 import { api, FPNumber } from '@sora-substrate/sdk';
-import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { BalanceType, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import isEmpty from 'lodash/fp/isEmpty';
 import { computed } from 'vue';
 import draggable from 'vuedraggable';
@@ -146,7 +146,7 @@ import type { AccountAsset, AccountBalance, Whitelist } from '@sora-substrate/sd
 
 type AccountBalanceKey = keyof Pick<
   AccountBalance,
-  'bonded' | 'frozen' | 'locked' | 'reserved' | 'total' | 'transferable'
+  'bonded' | 'free' | 'frozen' | 'locked' | 'reserved' | 'total' | 'transferable'
 >;
 type LockedBalanceTooltipRow = {
   key: AccountBalanceKey;
@@ -180,9 +180,10 @@ export default {
       FontWeightRate,
     } = useFormattedAmount();
     const fiatPriceObject = computed(() => walletStore.fiatPriceObject);
-    const { t, shouldBalanceBeHidden } = useWalletTranslation();
+    const { t } = useWalletTranslation();
 
     const accountAssets = computed(() => walletStore.accountAssets);
+    const shouldBalanceBeHidden = computed(() => Boolean(walletStore.shouldBalanceBeHidden));
     const permissions = computed(() => walletStore.permissions);
     const filters = computed(() => walletStore.filters);
     const whitelist = computed(() => walletStore.whitelist);
@@ -224,9 +225,13 @@ export default {
     const assetsAreHidden = computed(() => visibleAssetList.value.length === 0);
     const showEmptyAssets = computed(() => assetsAreHidden.value && !assetsLoading.value);
     const formattedAccountAssets = computed(() =>
-      accountAssets.value.filter((asset) => asset.balance && hasCodecBalanceValue(asset.balance.transferable))
+      accountAssets.value.filter((asset) => asset.balance && hasCodecBalanceValue(asset.balance.total))
     );
     const assetsFiatAmount = computed<Nullable<string>>(() => {
+      // An empty account is only worth zero after its first balance fetch settles.
+      if (assetsLoading.value && !formattedAccountAssets.value.length) {
+        return null;
+      }
       if (isEmpty(fiatPriceObject.value)) {
         return null;
       }
@@ -235,9 +240,9 @@ export default {
       }
       const fiatAmount = formattedAccountAssets.value.reduce((sum: FPNumber, asset: AccountAsset) => {
         const price = getAssetFiatPrice(asset);
-        const transferableBalance = getCodecBalanceValue(asset, 'transferable');
+        const totalBalance = getCodecBalanceValue(asset, 'total');
         return price
-          ? sum.add(getFPNumberFromCodec(transferableBalance, asset.decimals).mul(FPNumber.fromCodecValue(price)))
+          ? sum.add(getFPNumberFromCodec(totalBalance, asset.decimals).mul(FPNumber.fromCodecValue(price)))
           : sum;
       }, new FPNumber(0));
       return fiatAmount ? fiatAmount.toLocaleString() : null;
@@ -308,23 +313,32 @@ export default {
       return (normalizeCodecBalanceValue(value) ?? '0') as AccountBalance[AccountBalanceKey];
     }
 
+    /** Formats the total amount owned so incoming funds remain visible even while restricted. */
     function getBalance(asset: AccountAsset): string {
-      return formatCodecNumber(getCodecBalanceValue(asset, 'transferable'), asset.decimals);
+      return formatCodecNumber(getCodecBalanceValue(asset, 'total'), asset.decimals);
     }
 
+    /** Keeps transfer actions tied to the safe, spendable portion of the balance. */
     function isZeroBalance(asset: AccountAsset): boolean {
       return isCodecZero(getCodecBalanceValue(asset, 'transferable'), asset.decimals);
     }
 
-    function hasLockedBalance(asset: AccountAsset): boolean {
+    /** Returns whether the asset has any owned funds that are currently unavailable. */
+    function hasRestrictedBalance(asset: AccountAsset): boolean {
       return !isCodecZero(getCodecBalanceValue(asset, 'locked'), asset.decimals);
     }
 
-    function formatFrozenBalance(asset: AccountAsset): string {
+    /** Formats spendable funds for the lock chip while respecting privacy mode. */
+    function formatSpendableBalance(asset: AccountAsset): string {
       if (shouldBalanceBeHidden.value) {
         return HiddenValue;
       }
-      return formatCodecNumber(getCodecBalanceValue(asset, 'locked'), asset.decimals);
+      return formatCodecNumber(getCodecBalanceValue(asset, 'transferable'), asset.decimals);
+    }
+
+    /** Returns fiat value for the same total-owned amount shown as the row's primary balance. */
+    function getTotalFiatBalance(asset: AccountAsset): Nullable<string> {
+      return getFiatBalance(asset, BalanceType.Total);
     }
 
     /** Formats a tooltip balance while respecting hidden-balance privacy mode. */
@@ -348,7 +362,7 @@ export default {
 
     /** Omits zero component rows while keeping summary rows stable. */
     function shouldShowTooltipBalance(asset: AccountAsset, balanceKey: AccountBalanceKey): boolean {
-      if (['transferable', 'locked', 'total'].includes(balanceKey)) {
+      if (['total', 'transferable', 'free'].includes(balanceKey)) {
         return true;
       }
       return !isCodecZero(getCodecBalanceValue(asset, balanceKey), asset.decimals);
@@ -356,7 +370,7 @@ export default {
 
     /** Builds the hover/focus breakdown for locked balances in the asset row. */
     function getLockedBalanceTooltipRows(asset: AccountAsset): LockedBalanceTooltipRow[] {
-      const balanceKeys: AccountBalanceKey[] = ['transferable', 'locked', 'frozen', 'reserved', 'bonded', 'total'];
+      const balanceKeys: AccountBalanceKey[] = ['total', 'transferable', 'free', 'frozen', 'reserved', 'bonded'];
 
       return balanceKeys.reduce<LockedBalanceTooltipRow[]>((rows, balanceKey) => {
         if (!shouldShowTooltipBalance(asset, balanceKey)) {
@@ -450,8 +464,9 @@ export default {
       assetsFiatAmount,
       getBalance,
       isZeroBalance,
-      hasLockedBalance,
-      formatFrozenBalance,
+      hasRestrictedBalance,
+      formatSpendableBalance,
+      getTotalFiatBalance,
       getLockedBalanceTooltipRows,
       getLockedBalanceTooltipLabel,
       handleAssetSwap,
@@ -461,7 +476,6 @@ export default {
       handlePin,
       showAsset,
       onMove,
-      getFiatBalance,
     };
   },
 };

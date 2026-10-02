@@ -46,7 +46,50 @@ describe('wallet lib CurrencyExchangeRateService', () => {
     settingsStorageGetMock.mockReturnValue(null);
   });
 
-  it('uses stale cached rates to update the Pinia wallet store lock when refreshing', async () => {
+  it('does not serve cached rates older than three days after a failed refresh', async () => {
+    settingsStorageGetMock.mockReturnValue(JSON.stringify({ usd: 0.99, timestamp: Date.now() - 4 * 86_400_000 }));
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network failed')));
+    const { CurrencyExchangeRateService } = await import('@/lib/soraneo-wallet/src/services/currency');
+    await expect((CurrencyExchangeRateService as any).getRates()).rejects.toThrow('network failed');
+  });
+
+  it('expires an old source snapshot even when it was fetched recently', async () => {
+    const sourceTimestamp = Math.floor(Date.now() / 86_400_000) * 86_400_000 - 4 * 86_400_000;
+    settingsStorageGetMock.mockReturnValue(
+      JSON.stringify({ usd: 0.99, sourceTimestamp, timestamp: Date.now() - 60_000 })
+    );
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network failed')));
+    const { CurrencyExchangeRateService } = await import('@/lib/soraneo-wallet/src/services/currency');
+    await expect((CurrencyExchangeRateService as any).getRates()).rejects.toThrow('network failed');
+  });
+
+  it('does not accept source metadata without rates as a valid cache', async () => {
+    const sourceTimestamp = Math.floor(Date.now() / 86_400_000) * 86_400_000;
+    settingsStorageGetMock.mockReturnValue(JSON.stringify({ sourceTimestamp, timestamp: Date.now() - 60_000 }));
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network failed')));
+    const { CurrencyExchangeRateService } = await import('@/lib/soraneo-wallet/src/services/currency');
+    await expect((CurrencyExchangeRateService as any).getRates()).rejects.toThrow('network failed');
+  });
+
+  it.each([
+    ['future', Date.now() + 60 * 60_000],
+    ['non-finite', 'Infinity'],
+  ])('refreshes cached rates with a %s timestamp', async (_case, timestamp) => {
+    settingsStorageGetMock.mockReturnValue(JSON.stringify({ usd: 0.99, timestamp }));
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue({ date: new Date().toISOString().slice(0, 10), dai: { dai: 1, usd: 1.01 } }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const { CurrencyExchangeRateService } = await import('@/lib/soraneo-wallet/src/services/currency');
+    const rates = await (CurrencyExchangeRateService as any).getRates();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(rates).toEqual(expect.objectContaining({ usd: 1.01, timestamp: expect.any(Number) }));
+  });
+
+  it('preserves the age of cached rates when refreshing fails', async () => {
     const updateFiatExchangeRates = vi.fn();
 
     settingsStorageGetMock.mockReturnValue(
@@ -67,12 +110,8 @@ describe('wallet lib CurrencyExchangeRateService', () => {
         eur: 0.92,
       })
     );
-    expect(updateFiatExchangeRates).toHaveBeenCalledWith(
-      expect.objectContaining({
-        usd: 1.23,
-        eur: 0.92,
-      })
-    );
+    expect(updateFiatExchangeRates).not.toHaveBeenCalled();
+    expect(rates.timestamp).toBe(JSON.parse(settingsStorageGetMock()).timestamp);
   });
 
   it('resets fiat data through the Pinia wallet store when available', async () => {

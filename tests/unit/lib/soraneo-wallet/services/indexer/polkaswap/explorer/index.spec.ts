@@ -43,6 +43,20 @@ const setup = () => {
   };
 };
 
+/** Exercise the real request and pagination path with controlled GraphQL responses. */
+const setupQueryExplorer = () => {
+  const queryToPromise = vi.fn();
+  const query = vi.fn(() => ({ toPromise: queryToPromise }));
+  const explorer = new PolkaswapExplorer({
+    type: IndexerType.POLKASWAP,
+    createExplorerClient: vi.fn(() => ({ query })) as never,
+    getStatus: () => ConnectionStatus.Available,
+    setStatus: vi.fn(async () => undefined),
+    getEndpoint: () => 'https://indexer.test/graphql',
+  });
+  return { explorer, query, queryToPromise };
+};
+
 describe('PolkaswapExplorer', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -92,5 +106,57 @@ describe('PolkaswapExplorer', () => {
     expect(errorHandler).toHaveBeenNthCalledWith(1, subscriptionError);
     expect(errorHandler).toHaveBeenNthCalledWith(2, parserError);
     expect(handler).not.toHaveBeenCalled();
+  });
+
+  it('discards accumulated observations when a later page contains data and GraphQL errors', async () => {
+    const { explorer, query, queryToPromise } = setupQueryExplorer();
+    queryToPromise
+      .mockResolvedValueOnce({
+        data: {
+          data: {
+            edges: [{ node: { id: 'hour-1' } }],
+            pageInfo: { endCursor: 'cursor-1', hasNextPage: true },
+          },
+        },
+      })
+      .mockResolvedValueOnce({
+        data: {
+          data: {
+            edges: [{ node: { id: 'hour-2' } }],
+            pageInfo: { endCursor: 'cursor-2', hasNextPage: false },
+          },
+        },
+        error: { graphQLErrors: [{ message: 'A closing observation could not be resolved' }] },
+      });
+
+    await expect(explorer.fetchAllEntities({} as never, { first: 100 })).resolves.toBeNull();
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(query).toHaveBeenLastCalledWith({}, { first: 100, after: 'cursor-1' });
+  });
+
+  it('returns every observation when all pages are error-free', async () => {
+    const { explorer, queryToPromise } = setupQueryExplorer();
+    queryToPromise
+      .mockResolvedValueOnce({
+        data: {
+          data: {
+            edges: [{ node: { id: 'hour-1' } }],
+            pageInfo: { endCursor: 'cursor-1', hasNextPage: true },
+          },
+        },
+      })
+      .mockResolvedValueOnce({
+        data: {
+          data: {
+            edges: [{ node: { id: 'hour-2' } }],
+            pageInfo: { endCursor: 'cursor-2', hasNextPage: false },
+          },
+        },
+      });
+
+    await expect(explorer.fetchAllEntities({} as never, { first: 100 })).resolves.toEqual([
+      { id: 'hour-1' },
+      { id: 'hour-2' },
+    ]);
   });
 });

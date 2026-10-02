@@ -96,7 +96,7 @@ class BaseSubAdapter extends WithConnectionApi {
   }
 
   public async stop(): Promise<void> {
-    await this.subNetworkConnection.closeConnection();
+    await this.subNetworkConnection.stopConnection();
   }
 
   public getParachainId(): number | undefined {

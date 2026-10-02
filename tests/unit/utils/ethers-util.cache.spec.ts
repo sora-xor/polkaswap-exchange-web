@@ -83,6 +83,7 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
 });
 
 import ethersUtil from '@/utils/ethers-util';
+import { IPFS_GATEWAY_BASE_URL } from '@/utils/ipfs';
 
 const testProvider = {
   send: vi.fn(),
@@ -111,6 +112,25 @@ describe('ethers-util memoization and TTL', () => {
     (ethersUtil as any).__resetTestEthersProvider?.();
     (ethersUtil as any).__resetContractFactory?.();
     vi.restoreAllMocks();
+  });
+
+  it.each([
+    ['ipfs://QmToken/logo.png', `${IPFS_GATEWAY_BASE_URL}/ipfs/QmToken/logo.png`],
+    ['https://dweb.link/ipfs/QmToken/logo.png', `${IPFS_GATEWAY_BASE_URL}/ipfs/QmToken/logo.png`],
+    ['https://dedicated.example/ipfs/QmToken/logo.png', 'https://dedicated.example/ipfs/QmToken/logo.png'],
+  ])('addToken passes the migrated or maintained logo URL to the wallet: %s', async (image, expected) => {
+    const request = vi.fn().mockResolvedValue(true);
+    ethersUtil.__setTestEthersProvider(testProvider, { request });
+
+    await ethersUtil.addToken('0xToken', 'TOKEN', 18, image);
+
+    expect(request).toHaveBeenCalledWith({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: { address: '0xToken', symbol: 'TOKEN', decimals: 18, image: expected },
+      },
+    });
   });
 
   it('getEvmGasPrice caches result within TTL', async () => {
@@ -152,6 +172,19 @@ describe('ethers-util memoization and TTL', () => {
     expect(factoryMock).toHaveBeenCalledTimes(1);
     expect(throwingFactory).not.toHaveBeenCalled();
     expect(a2).toBe(a1);
+  });
+
+  it('falls back safely when the selected network cache is corrupt', () => {
+    localStorage.setItem('dexSettings.evmNetwork', '{');
+    expect((ethersUtil as any).getSelectedNetwork()).toBeNull();
+
+    localStorage.setItem('dexSettings.evmNetwork', '[]');
+    expect((ethersUtil as any).getSelectedNetwork()).toBeNull();
+
+    localStorage.setItem('dexSettings.evmNetwork', '8453');
+    expect((ethersUtil as any).getSelectedNetwork()).toBe(8453);
+
+    localStorage.removeItem('dexSettings.evmNetwork');
   });
 
   it('getTokenDecimals is memoized and avoids extra RPCs', async () => {

@@ -2,6 +2,7 @@ import { FPNumber, type HistoryItem, Operation } from '@sora-substrate/sdk';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
 
 import { parseSoraNexusXorBurnRemark } from '@/utils/soraNexusAccount';
+import { parseTonswapXorBurnRemark } from '@/features/misc/lib/tonswapBurn';
 
 import type { Nullable } from '@/types/common';
 import type { BurnForStats } from '@/features/misc/lib/burnCampaigns';
@@ -146,6 +147,7 @@ export async function createLocalXorBurns({
         blockHeight,
         displayBlockHeight: exactBlockHeight,
         nexusRecipient: nexusRemark?.recipient,
+        campaign: item.comment && parseTonswapXorBurnRemark(item.comment) ? 'tonswap' : undefined,
         txHash: getLocalTxHash(item),
       };
     })

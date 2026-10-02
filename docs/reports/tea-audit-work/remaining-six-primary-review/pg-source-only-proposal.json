@@ -1,0 +1,23 @@
+{
+  "code": "PG",
+  "outcome": "unresolved",
+  "decisionChanged": false,
+  "reviewedAt": "2026-09-30",
+  "finding": "New 2026 AIIB official project matrix confirms the Biosecurity Act2025 and reports implementing regulations and related instruments still under preparation, with completion targeted for end2026. It refers to disposal/destruction authority under the new Act and, transitionally, older animal/plant laws. This is institutional transition evidence, not the enacted import definition/tea requirement.",
+  "newSourceResult": "Saved full AIIB matrix and text. Current NPPO-linked NAQIA HTTPS request fails because the certificate is expired; the government printer public home request returned406. The previously recovered live Parliament search remains negative for biosecurity despite returning other certified2025 acts; it was not re-queried. Targeted commencement/act-number search supplied no operative instrument.",
+  "urls": [
+    "https://www.aiib.org/en/projects/details/2026/_download/papua-new-guinea/draft_P001062_PNG-Environmental-and-Social-Matrix.pdf",
+    "https://www.naqia.gov.pg/",
+    "https://www.gpo.gov.pg/"
+  ],
+  "preciseRemainingEvidence": "Enacted Biosecurity Act2025 definitions, entry-duty and transition provisions plus any preserved/current commodity specification or exemption for finished manufactured tea; no need for a tea-specific administrative letter if the general operative scope settles it.",
+  "contraryInterpretation": "Older broad import-permit guidance might continue, but the AIIB transition reference is about disposal/destruction and cannot prove all old import controls remain unchanged. The 2017 draft is not enacted text.",
+  "confidence": "High that the new material does not establish clearance; no inferred prohibition.",
+  "sourceFiles": [
+    "remaining-six-primary-review/pg-aiib2026-transition.pdf",
+    "remaining-six-primary-review/pg-aiib2026-transition.txt",
+    "remaining-six-primary-review/pg-aiib-provenance.json",
+    "remaining-six-primary-review/pg-gazette-home.html",
+    "asia-six-recovery/mv-pg/pg-source-only-patch.json"
+  ]
+}

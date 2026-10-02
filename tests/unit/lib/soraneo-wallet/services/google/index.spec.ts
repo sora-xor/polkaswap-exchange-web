@@ -7,6 +7,8 @@ const GoogleDriveApiMock = vi.hoisted(() =>
   vi.fn(function GoogleDriveApiMock() {
     const instance = {
       ready: false,
+      prepared: false,
+      prepare: vi.fn().mockResolvedValue(undefined),
       hasKey: false,
       setOptions: vi.fn(),
       init: vi.fn().mockResolvedValue(undefined),
@@ -15,6 +17,7 @@ const GoogleDriveApiMock = vi.hoisted(() =>
       readFile: vi.fn().mockResolvedValue(undefined),
       getFiles: vi.fn().mockResolvedValue(undefined),
       createFile: vi.fn().mockResolvedValue(undefined),
+      createBackupFile: vi.fn().mockResolvedValue('file-id'),
       prepareBody: vi.fn().mockReturnValue('multipart-body'),
       updateFile: vi.fn().mockResolvedValue(undefined),
       deleteFile: vi.fn().mockResolvedValue(undefined),
@@ -94,8 +97,27 @@ describe('GDriveStorage', () => {
     expect(api.init).toHaveBeenCalledTimes(2);
     expect(oauth.init).toHaveBeenCalledTimes(2);
     expect(oauth.checkToken).toHaveBeenCalledTimes(1);
-    expect(api.init.mock.invocationCallOrder[1]).toBeLessThan(oauth.checkToken.mock.invocationCallOrder[0]);
+    expect(oauth.checkToken.mock.invocationCallOrder[0]).toBeLessThan(api.init.mock.invocationCallOrder[1]);
     expect(oauth.init.mock.invocationCallOrder[1]).toBeLessThan(oauth.checkToken.mock.invocationCallOrder[0]);
+  });
+
+  it('prepares OAuth without Drive discovery and defers API access until Google consent', async () => {
+    const { storage, api, oauth } = await loadStorage();
+    await storage.prepare();
+    expect(api.prepare).toHaveBeenCalledOnce();
+    expect(oauth.init).toHaveBeenCalledOnce();
+    expect(api.init).not.toHaveBeenCalled();
+    expect(oauth.checkToken).not.toHaveBeenCalled();
+    api.prepared = true;
+    oauth.ready = true;
+    expect(storage.authReady).toBe(true);
+    expect(storage.ready).toBe(false);
+    oauth.checkToken.mockRejectedValueOnce(new Error('cancelled'));
+    await expect(storage.auth()).rejects.toThrow('cancelled');
+    expect(api.init).not.toHaveBeenCalled();
+    await storage.auth();
+    expect(api.init).toHaveBeenCalledOnce();
+    expect(oauth.checkToken.mock.invocationCallOrder[1]).toBeLessThan(api.init.mock.invocationCallOrder[0]);
   });
 
   it('reports Google client readiness before click-safe prompts', async () => {
@@ -163,22 +185,33 @@ describe('GDriveStorage', () => {
     });
     await storage.delete('file-id');
 
-    expect(api.createFile).toHaveBeenCalledWith({
+    expect(api.createFile).not.toHaveBeenCalled();
+    expect(api.createBackupFile).toHaveBeenCalledWith('{"a":1}', {
       name: 'backup.json',
       description: 'Encrypted backup',
       parents: ['folder-id'],
     });
-    expect(api.prepareBody).toHaveBeenNthCalledWith(1, '{"a":1}', {
-      name: 'backup.json',
-      description: 'Encrypted backup',
-    });
-    expect(api.prepareBody).toHaveBeenNthCalledWith(2, '{"b":2}', {
+    expect(api.prepareBody).toHaveBeenCalledWith('{"b":2}', {
       name: 'backup.json',
       description: 'Updated backup',
     });
     expect(api.updateFile).toHaveBeenNthCalledWith(1, 'file-id', 'multipart-body');
-    expect(api.updateFile).toHaveBeenNthCalledWith(2, 'file-id', 'multipart-body');
     expect(api.deleteFile).toHaveBeenCalledWith('file-id');
-    expect(oauth.checkToken).toHaveBeenCalledTimes(4);
+    expect(oauth.checkToken).toHaveBeenCalledTimes(3);
+  });
+
+  it('propagates a failed complete-backup upload and retries without deleting or overwriting an existing file', async () => {
+    const { storage, api } = await loadStorage();
+    api.getFolderId.mockResolvedValueOnce('existing-folder');
+    api.createBackupFile.mockRejectedValueOnce(new Error('upload rejected')).mockResolvedValueOnce('new-file');
+    const backup = { json: '{"encrypted":"synthetic"}', name: 'backup.json', description: 'Wallet' };
+    await expect(storage.create(backup)).rejects.toThrow('upload rejected');
+    expect(api.createFile).not.toHaveBeenCalled();
+    expect(api.updateFile).not.toHaveBeenCalled();
+    expect(api.deleteFile).not.toHaveBeenCalled();
+    await expect(storage.create(backup)).resolves.toBeUndefined();
+    expect(api.createBackupFile).toHaveBeenCalledTimes(2);
+    expect(api.createBackupFile.mock.calls[0]).toEqual(api.createBackupFile.mock.calls[1]);
+    expect(api.createFolder).not.toHaveBeenCalled();
   });
 });

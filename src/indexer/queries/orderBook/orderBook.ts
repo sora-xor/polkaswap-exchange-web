@@ -3,14 +3,12 @@ import { FPNumber } from '@sora-substrate/sdk';
 import { getCurrentIndexer, type PolkaswapIndexer } from '@/lib/soraneo-wallet/src/services/indexer';
 import { gql } from '@urql/core';
 
+import { isJsonRecord, parseIndexerJson } from '@/utils/indexerParsing';
+
 import type { OrderBookDealData, OrderBookUpdateData } from '@/types/orderBook';
 
 import type { PolkaswapSubscriptionPayload } from '@/lib/soraneo-wallet/src/services/indexer/polkaswap/types';
-import type {
-  OrderBookEntity,
-  OrderBookDealEntity,
-  QueryData,
-} from '@/lib/soraneo-wallet/src/services/indexer/types';
+import type { OrderBookEntity, QueryData } from '@/lib/soraneo-wallet/src/services/indexer/types';
 
 type OrderBookEntityMutation = {
   price: string;
@@ -23,18 +21,51 @@ type OrderBookEntityMutation = {
 const parseSide = (isBuy: boolean): PriceVariant => {
   return isBuy ? PriceVariant.Buy : PriceVariant.Sell;
 };
-const parseTimestamp = (unixTimestamp: number) => {
-  return unixTimestamp * 1000;
-};
-const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
-  const deals = (lastDeals ? JSON.parse(lastDeals) : []) as OrderBookDealEntity[];
 
-  return deals.map((deal) => ({
-    price: new FPNumber(deal.price ?? 0),
-    amount: new FPNumber(deal.amount ?? 0),
-    side: parseSide(deal.isBuy),
-    timestamp: parseTimestamp(deal.timestamp),
-  }));
+const MAX_SAFE_UNIX_TIMESTAMP = Math.floor(Number.MAX_SAFE_INTEGER / 1000);
+
+/** Converts indexer seconds to safe milliseconds or rejects invalid timestamps. */
+const parseTimestamp = (unixTimestamp: unknown): Nullable<number> =>
+  typeof unixTimestamp === 'number' &&
+  Number.isSafeInteger(unixTimestamp) &&
+  unixTimestamp >= 0 &&
+  unixTimestamp <= MAX_SAFE_UNIX_TIMESTAMP
+    ? unixTimestamp * 1000
+    : null;
+
+/** Normalizes indexer financial values to finite FP numbers, defaulting invalid values to zero. */
+const parseFinancialValue = (value: unknown, allowNegative = false): FPNumber => {
+  if (
+    (typeof value !== 'string' && typeof value !== 'number') ||
+    (typeof value === 'string' && !value.trim()) ||
+    (typeof value === 'number' && !Number.isFinite(value))
+  ) {
+    return FPNumber.ZERO;
+  }
+
+  const parsed = new FPNumber(value);
+  return parsed.isFinity() && (allowNegative || !parsed.isLtZero()) ? parsed : FPNumber.ZERO;
+};
+
+const isJsonArray = (value: unknown): value is unknown[] => Array.isArray(value);
+
+/** Invalid or wrong-shape deal payloads are treated as an empty recent-trades list. */
+const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
+  const deals = parseIndexerJson(lastDeals, [] as unknown[], isJsonArray);
+
+  return deals.filter(isJsonRecord).flatMap((deal) => {
+    const timestamp = parseTimestamp(deal.timestamp);
+    if (timestamp === null) return [];
+
+    return [
+      {
+        price: parseFinancialValue(deal.price),
+        amount: parseFinancialValue(deal.amount),
+        side: parseSide(deal.isBuy === true),
+        timestamp,
+      },
+    ];
+  });
 };
 
 const PolkaswapOrderBookDataQuery = gql<QueryData<OrderBookEntity>>`
@@ -61,9 +92,9 @@ const parseOrderBookResponse =
         quote,
       },
       stats: {
-        price: new FPNumber(price ?? 0),
-        priceChange: new FPNumber(priceChangeDay ?? 0),
-        volume: new FPNumber(volumeDayUSD ?? 0),
+        price: parseFinancialValue(price),
+        priceChange: parseFinancialValue(priceChangeDay, true),
+        volume: parseFinancialValue(volumeDayUSD),
         status,
       },
       deals: parseDeals(lastDeals),
@@ -92,9 +123,9 @@ const parseOrderBookMutation =
         quote,
       },
       stats: {
-        price: new FPNumber(price ?? 0),
-        priceChange: new FPNumber(price_change_day ?? 0),
-        volume: new FPNumber(volume_day_u_s_d ?? 0),
+        price: parseFinancialValue(price),
+        priceChange: parseFinancialValue(price_change_day, true),
+        volume: parseFinancialValue(volume_day_u_s_d),
         status,
       },
       deals: parseDeals(last_deals),

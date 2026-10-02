@@ -40,7 +40,7 @@ describe('AppMenu source', () => {
   });
 
   it('uses the live active menu color in both light and noir themes', () => {
-    expect(appMenuSource).toContain("const mainMenuActiveColor = computed(() => 'var(--s-color-theme-accent)');");
+    expect(appMenuSource).toContain("const mainMenuActiveColor = computed(() => 'var(--s-color-action-text)');");
     expect(appMenuSource).not.toContain(
       "libraryTheme.value === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)'"
     );

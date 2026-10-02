@@ -1,0 +1,39 @@
+{
+  "code": "VG",
+  "name": "British Virgin Islands",
+  "status": "not_verified",
+  "rule": "Current plant-import guidance describes nursery plants and growing material rather than manufactured tea. The official index as at 1 January 2026 confirms the operative Plant Protection Ordinance Cap. 93 (1941), 1991 regulations and amendments through 2002. The Food Security and Sustainability Act 2022 is expressly not in force, so its broader food licensing cannot be applied.",
+  "personalMailApplicability": "No personal postal processed-tea exception or explicit classification found.",
+  "quantityLimit": null,
+  "authority": "British Virgin Islands Department of Agriculture",
+  "evidenceUrls": [
+    "https://bvi.gov.vg/sites/default/files/CONDITIONS%20FOR%20PLANT%20IMPORTATION.pdf",
+    "https://www.bvi.gov.vg/tags/agriculture?page=17",
+    "https://laws.gov.vg/inf-alpha/v",
+    "https://www.gov.vg/sites/default/files/2026-02/final_consolidated_index_with_user_guide_as_at_january_1%2C_2026.pdf",
+    "https://laws.gov.vg/revised-laws",
+    "https://laws.gov.vg/laws/fumigation-plants-act",
+    "https://laws.gov.vg/sites/default/files/2025-10/Fumigation%20of%20Plants%20Act.pdf",
+    "https://laws.gov.vg/search/node?keys=Plant%20Protection"
+  ],
+  "remainingQuestion": "Actual current Cap.93 definition and operative subsidiary schedules remain missing; the January 2026 official index identifies the legislation but is not its substantive rules. A general published definition/schedule would suffice; no individualized tea letter is inherently necessary.",
+  "researchAttempts": [
+    "Read official plant-import conditions and agriculture notices; searched for tea/personal-mail scope. Excluded the draft Food Security and Sustainability Act from operative-law evidence.",
+    "2026-09-30: Read and saved the official 2026 consolidated legislative index, pages 120 and 184; checked all five revised-law collection pages and targeted Cap. 93/1996-regulation searches. Confirmed the 2022 Act remains uncommenced, rather than treating assent as commencement. The exact older operative schedules are indexed but not supplied by the current online revised-law collection; no publicly verified tea classification found.",
+    "2026-09-30: Final targeted searches for Cap.93 Plant Protection Ordinance, the 1991 subsidiary regulations and 2002 amendments found no new public operative commodity schedule beyond the already saved January 2026 official index. The missing evidence is the actual current schedule text or a finished-tea NPPO classification; current nursery guidance cannot resolve it. No authority contact made.",
+    "2026-09-30 fresh official online recovery: Recovered the current official Fumigation of Plants Act, revised 1 January 2023. Section 2 expressly includes parcel post in import, but plant scope concerns living material and fruit/vegetables intended for propagation rather than food; section 4 allows fumigation. This instrument supplies no general private finished-tea certificate duty and cannot replace the still-missing operative Cap.93 commodity schedules. Saved vg-fumigation.pdf and extracted full text.",
+    "30 September renewed official-source/general-definition review: A bounded exact-title search for the operative Plant Protection Ordinance and 1991/1996/2002 subsidiary instruments produced the already-known legislative index and the uncommenced 2022 Food Security legislation, rather than the missing operative schedules. No further requests to the previously exhausted revised-law pages were made. The published Fumigation of Plants Act concerns living/propagating material and cannot supply a general exemption from independent Cap.93 instruments whose substantive text remains unavailable.",
+    "30 September operative-source recovery: Used actual public Drupal search form(parameters verified from officialHTML), searched PlantProtection, saved completeHTTP200result explicitly yielding no results. Current portal states digitization is a work in progress. Also checked exact1941Cap93/1991subsidiary leads through official national/UKarchive search; recovered only official policy summaries, not operative text. This confirms access gap, not absence of legislation. January2026index remains affirmative evidence the Act/regulations exist; no new commodity conclusion."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "Actual current Cap.93 definition and operative subsidiary schedules remain missing; the January 2026 official index identifies the legislation but is not its substantive rules. A general published definition/schedule would suffice; no individualized tea letter is inherently necessary.",
+  "permitFreeSources": [
+    "https://bvi.gov.vg/sites/default/files/CONDITIONS%20FOR%20PLANT%20IMPORTATION.pdf",
+    "https://www.bvi.gov.vg/tags/agriculture?page=17",
+    "https://laws.gov.vg/inf-alpha/v",
+    "https://www.gov.vg/sites/default/files/2026-02/final_consolidated_index_with_user_guide_as_at_january_1%2C_2026.pdf",
+    "https://laws.gov.vg/revised-laws"
+  ],
+  "permitFreeReviewedAt": "2026-09-30"
+}

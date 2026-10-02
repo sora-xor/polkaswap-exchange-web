@@ -2,6 +2,8 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { compileTemplate, parse } from '@vue/compiler-sfc';
+import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
 const repoRoot = path.resolve(__dirname, '../../..');
@@ -48,13 +50,111 @@ const deletedSwapLegacyFiles = [
 
 const readSource = async (filePath: string): Promise<string> => readFile(filePath, 'utf8');
 
+/** Inspect executable syntax so quoted Store assets and comments cannot masquerade as Vuex access. */
+function rootStoreReferences(source: string, filename: string): string[] {
+  const scripts: string[] = [];
+  if (filename.endsWith('.vue')) {
+    const { descriptor, errors } = parse(source, { filename });
+    expect(errors).toEqual([]);
+    for (const block of [descriptor.script, descriptor.scriptSetup]) {
+      if (block) scripts.push(block.content);
+    }
+    if (descriptor.template) {
+      const template = compileTemplate({
+        source: descriptor.template.content,
+        filename,
+        id: 'store-migration-guard',
+        transformAssetUrls: false,
+      });
+      expect(template.errors).toEqual([]);
+      scripts.push(template.code);
+    }
+  } else scripts.push(source);
+
+  const isRootModule = (node: ts.Expression | undefined): boolean =>
+    Boolean(node && ts.isStringLiteralLike(node) && (node.text === '@/store' || node.text.startsWith('@/store/')));
+  const isStoreTarget = (node: ts.Expression): boolean => {
+    while (ts.isParenthesizedExpression(node) || ts.isNonNullExpression(node) || ts.isAsExpression(node)) {
+      node = node.expression;
+    }
+    return (
+      (ts.isIdentifier(node) && ['store', '$store'].includes(node.text)) ||
+      (ts.isPropertyAccessExpression(node) &&
+        (node.name.text === '$store' ||
+          (node.name.text === 'store' && ts.isIdentifier(node.expression) && node.expression.text === '_ctx'))) ||
+      (ts.isElementAccessExpression(node) &&
+        ts.isStringLiteralLike(node.argumentExpression) &&
+        (node.argumentExpression.text === '$store' ||
+          (node.argumentExpression.text === 'store' &&
+            ts.isIdentifier(node.expression) &&
+            node.expression.text === '_ctx')))
+    );
+  };
+  const references: string[] = [];
+  for (const script of scripts) {
+    const parsed = ts.createSourceFile(filename, script, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    const visit = (node: ts.Node): void => {
+      const rootImport =
+        ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && isRootModule(node.moduleSpecifier)) ||
+        (ts.isCallExpression(node) &&
+          (node.expression.kind === ts.SyntaxKind.ImportKeyword ||
+            (ts.isIdentifier(node.expression) && node.expression.text === 'require')) &&
+          isRootModule(node.arguments[0]));
+      const storeAccess =
+        (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) &&
+        (isStoreTarget(node.expression) || isStoreTarget(node));
+      if (rootImport || storeAccess) references.push(node.getText(parsed));
+      ts.forEachChild(node, visit);
+    };
+    visit(parsed);
+  }
+  return references;
+}
+
 describe('Swap component store migration', () => {
   it('keeps the remaining swap-related components off the root @/store import', async () => {
-    const sources = await Promise.all(Object.values(files).map(readSource));
+    const entries = Object.values(files);
+    const sources = await Promise.all(entries.map(readSource));
 
-    for (const source of sources) {
-      expect(source).not.toContain("from '@/store'");
-      expect(source).not.toContain('store.');
+    for (const [index, source] of sources.entries()) {
+      expect(rootStoreReferences(source, entries[index]), entries[index]).toEqual([]);
+    }
+  });
+
+  it.each([
+    "import icon from '@/assets/img/navigation/store.svg?url&no-inline';",
+    'const label = "store.state"; const url = "https://store.example/store.svg";',
+    '// store.dispatch("swap");\n/* import store from "@/store"; */',
+    "import { useSettingsStore } from '@/stores/settings'; settingsStore.state;",
+  ])('accepts assets, quoted text, comments and migrated facades: %s', (source) => {
+    expect(rootStoreReferences(source, 'example.ts')).toEqual([]);
+  });
+
+  it.each([
+    "import store from '@/store';",
+    'import { state as legacyState } from "@/store";',
+    "export { default as legacyStore } from '@/store/index';",
+    "import('@/store');",
+    "require('@/store');",
+    'store . state;',
+    'store["dispatch"]("swap");',
+    'store?.getters.asset;',
+    '(store as RootStore).commit("swap");',
+    'this.$store.state;',
+    'this["$store"]?.state;',
+    'store!.state;',
+  ])('rejects actual root-store imports or member access: %s', (source) => {
+    expect(rootStoreReferences(source, 'example.ts').length).toBeGreaterThan(0);
+  });
+
+  it('checks Vue scripts and template expressions without rejecting a Store icon URL', () => {
+    expect(rootStoreReferences('<template><img src="store.svg" /></template>', 'example.vue')).toEqual([]);
+    for (const source of [
+      '<script setup lang="ts">store["state"];</script><template><div /></template>',
+      '<template>{{ store?.state }}</template>',
+      '<template>{{ $store.getters.asset }}</template>',
+    ]) {
+      expect(rootStoreReferences(source, 'example.vue').length).toBeGreaterThan(0);
     }
   });
 
@@ -134,8 +234,15 @@ describe('Swap component store migration', () => {
       expect(source).not.toContain("from '@/composables/useSwapAmounts'");
     }
 
-    expect(sources[0]).toContain("from '@/features/swap/stores/useSwapStore'");
-    expect(sources[0]).toContain("from '@/features/swap/composables/useSwapAmounts'");
+    // The form owns live amounts and execution; confirmation only reviews captured terms.
+    expect(sources[5]).toContain("from '@/features/swap/stores/useSwapStore'");
+    expect(sources[5]).toContain("from '@/features/swap/composables/useSwapAmounts'");
+    expect(sources[0]).toContain("import type { SwapReview } from '../types/review'");
+    expect(sources[0]).toContain("import type { SwapReadiness } from '../services/readiness'");
+    expect(sources[0]).toContain('review?: SwapReview | null');
+    expect(sources[0]).toContain('readiness?: SwapReadiness');
+    expect(sources[0]).not.toContain('useSwapStore');
+    expect(sources[0]).not.toContain('useSwapAmounts');
   });
 
   it('keeps swap route sync off the legacy mirrored router store', async () => {

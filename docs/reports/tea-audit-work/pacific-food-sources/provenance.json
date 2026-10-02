@@ -1,0 +1,31 @@
+{
+  "reviewedAt": "2026-09-30",
+  "sources": [
+    {
+      "file": "pg-food1991.pdf",
+      "url": "https://iccc.gov.pg/wp-content/uploads/2023/07/Food-Sanitation-Act-1991.pdf",
+      "sections": "30–31 (printed p.17), 33–35; import notification is for sale/business, inspection does not establish advance certificate obligation"
+    },
+    {
+      "file": "to-food2020-government.pdf",
+      "url": "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/2020/2020-0073/FoodAct2020_1.pdf",
+      "sections": "2 (printed p.9), 19, 51 (printed p.30); commercial-purpose definitions qualify general import provision"
+    },
+    {
+      "file": "to-food2020.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/ton213089.pdf",
+      "note": "Same enacted 2020 Act via FAO; official government copy also saved"
+    },
+    {
+      "file": "ki-food2014.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/kir233800.pdf",
+      "sections": "53–64; personal exemption §56, identity checks §57, accompanying certificate assessment §§58–59, local release permit §64"
+    },
+    {
+      "file": "../asia-sources/ck-food2014.pdf",
+      "url": "https://www.health.gov.ck/wp-content/uploads/2017/05/Food-Regulations-2014.pdf",
+      "sections": "16, 18–19, 23–25"
+    }
+  ],
+  "result": "PG, TO, KI, CK and MV remain unresolved. No new status change is justified by the independent food-document review."
+}

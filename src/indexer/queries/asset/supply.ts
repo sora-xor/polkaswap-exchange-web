@@ -54,8 +54,11 @@ const PolkaswapAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntit
   }
 `;
 
-const toAmountValue = (value: string): FPNumber =>
-  value.includes('.') ? new FPNumber(value) : FPNumber.fromCodecValue(value);
+/** Preserve known zero flows but reject unavailable values instead of coercing them to zero. */
+const toAmountValue = (value: unknown): FPNumber | null => {
+  if (typeof value !== 'string' || value.length > 160 || !/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(value)) return null;
+  return value.includes('.') ? new FPNumber(value) : FPNumber.fromCodecValue(value);
+};
 
 /** Detects whether indexer snapshots contain a supply value worth rendering. */
 const hasUsableSupplyData = (items: readonly ChartData[]): boolean =>
@@ -64,17 +67,37 @@ const hasUsableSupplyData = (items: readonly ChartData[]): boolean =>
 const applyCirculatingDiff = (items: readonly ChartData[], diff: number): ChartData[] =>
   hasUsableSupplyData(items) ? items.map((item) => ({ ...item, value: item.value - diff })) : [...items];
 
-const parse = (node: AssetSnapshotEntity): ChartData => {
+/** Supply charts require the observed supply, mint and burn together; archive close-only rows are skipped. */
+const parse = (node: AssetSnapshotEntity): ChartData | null => {
+  if (
+    !node ||
+    typeof node !== 'object' ||
+    typeof node.supply !== 'string' ||
+    node.supply.length > 160 ||
+    !/^(?:0|[1-9]\d*)$/.test(node.supply)
+  )
+    return null;
+  if (
+    (typeof node.timestamp !== 'string' && typeof node.timestamp !== 'number') ||
+    !/^\d+$/.test(String(node.timestamp))
+  )
+    return null;
+  const timestamp = Number(node.timestamp) * 1000;
   const supplyValue = FPNumber.fromCodecValue(node.supply);
   const mint = toAmountValue(node.mint);
   const burn = toAmountValue(node.burn);
-
-  return {
-    timestamp: +node.timestamp * 1000,
-    value: supplyValue.isFinity() ? supplyValue.toNumber() : 0,
-    mint: mint.isFinity() ? mint.toNumber() : 0,
-    burn: burn.isFinity() ? burn.toNumber() : 0,
-  };
+  if (
+    !mint ||
+    !burn ||
+    !supplyValue.isFinity() ||
+    !mint.isFinity() ||
+    !burn.isFinity() ||
+    !Number.isSafeInteger(timestamp)
+  )
+    return null;
+  const values = [supplyValue.toNumber(), mint.toNumber(), burn.toNumber()];
+  if (values.some((value) => !Number.isFinite(value) || value < 0)) return null;
+  return { timestamp, value: values[0], mint: values[1], burn: values[2] };
 };
 
 const resolveSoraNetwork = async (): Promise<string> => {
@@ -98,7 +121,7 @@ export async function fetchAssetSupplyData(
     parse
   );
 
-  const indexedData = data ?? [];
+  const indexedData = (data ?? []).filter((item): item is ChartData => item !== null);
 
   if (![VAL.address, PSWAP.address].includes(id)) {
     return indexedData;

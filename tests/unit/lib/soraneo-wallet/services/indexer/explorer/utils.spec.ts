@@ -50,9 +50,29 @@ describe('indexer explorer utils', () => {
     });
   });
 
+  it.each(['not-json', '[]', 'null'])(
+    'treats malformed or wrong-shape price stream payload %j as an empty update',
+    (data) => {
+      expect(parsePriceStreamUpdate({ data } as never)).toEqual({});
+      expect(formatStringNumberMock).not.toHaveBeenCalled();
+    }
+  );
+
   it('parses asset registration updates and normalizes decimals before filtering', () => {
-    const assetA = JSON.stringify({ address: '0x01', symbol: 'AAA', decimals: '18' });
-    const assetB = JSON.stringify({ address: '0x02', symbol: 'BBB', decimals: '8' });
+    const assetA = JSON.stringify({
+      address: '0x01',
+      symbol: 'AAA',
+      name: 'Asset A',
+      decimals: '18',
+      isMintable: true,
+    });
+    const assetB = JSON.stringify({
+      address: '0x02',
+      symbol: 'BBB',
+      name: 'Asset B',
+      decimals: '8',
+      isMintable: false,
+    });
 
     const result = parseAssetRegistrationStreamUpdate({
       data: JSON.stringify({
@@ -62,14 +82,37 @@ describe('indexer explorer utils', () => {
     } as never);
 
     expect(excludePoolXYKAssetsMock).toHaveBeenCalledWith([
-      { address: '0x01', symbol: 'AAA', decimals: 18 },
-      { address: '0x02', symbol: 'BBB', decimals: 8 },
+      { address: '0x01', symbol: 'AAA', name: 'Asset A', decimals: 18, isMintable: true },
+      { address: '0x02', symbol: 'BBB', name: 'Asset B', decimals: 8, isMintable: false },
     ]);
-    expect(result).toEqual([{ address: '0x01', symbol: 'AAA', decimals: 18 }]);
+    expect(result).toEqual([{ address: '0x01', symbol: 'AAA', name: 'Asset A', decimals: 18, isMintable: true }]);
   });
 
   it('handles empty asset registration payloads', () => {
     expect(parseAssetRegistrationStreamUpdate({ data: '' } as never)).toEqual([]);
     expect(excludePoolXYKAssetsMock).toHaveBeenCalledWith([]);
   });
+
+  it('drops malformed and incomplete asset registration entries without rejecting the update', () => {
+    const validAsset = JSON.stringify({
+      address: '0x01',
+      symbol: 'AAA',
+      name: 'Asset A',
+      decimals: '18',
+      isMintable: true,
+    });
+
+    expect(
+      parseAssetRegistrationStreamUpdate({
+        data: JSON.stringify({ malformed: 'not-json', wrongShape: '[]', incomplete: '{}', validAsset }),
+      } as never)
+    ).toEqual([{ address: '0x01', symbol: 'AAA', name: 'Asset A', decimals: 18, isMintable: true }]);
+  });
+
+  it.each(['not-json', '[]', 'null'])(
+    'treats malformed or wrong-shape asset stream payload %j as an empty update',
+    (data) => {
+      expect(parseAssetRegistrationStreamUpdate({ data } as never)).toEqual([]);
+    }
+  );
 });

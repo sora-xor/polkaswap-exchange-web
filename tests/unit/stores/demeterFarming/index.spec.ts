@@ -1,6 +1,7 @@
 import { FPNumber } from '@sora-substrate/math';
 import { createPinia, setActivePinia } from 'pinia';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { EMPTY, Subject, throwError } from 'rxjs';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const shared = vi.hoisted(() => {
   const walletStore = {
@@ -114,6 +115,10 @@ describe('demeter farming store', () => {
     shared.waitForAccountPair.mockResolvedValue(undefined);
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('subscribes demeter state through local pinia state', async () => {
     const store = useDemeterFarmingStore();
 
@@ -144,6 +149,84 @@ describe('demeter farming store', () => {
     expect(store.pools).toEqual([]);
     expect(store.tokens).toEqual([]);
     expect(store.accountPools).toEqual([]);
+  });
+
+  it('settles source errors and empty completion without waiting for the timeout', async () => {
+    const store = useDemeterFarmingStore();
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    shared.getPoolsObservable.mockResolvedValueOnce(
+      throwError(() => new Error('pools failed')) as unknown as Awaited<ReturnType<typeof shared.getPoolsObservable>>
+    );
+    shared.getTokenInfosObservable.mockResolvedValueOnce(
+      EMPTY as unknown as Awaited<ReturnType<typeof shared.getTokenInfosObservable>>
+    );
+
+    try {
+      await Promise.all([store.subscribeOnPools(), store.subscribeOnTokens()]);
+
+      expect(store.poolsUpdates).toBeNull();
+      expect(store.tokensUpdates).toBeNull();
+      expect(store.pools).toEqual([]);
+      expect(store.tokens).toEqual([]);
+      expect(warning).toHaveBeenCalledTimes(2);
+    } finally {
+      warning.mockRestore();
+    }
+  });
+
+  it('times out and tears down a source that never emits', async () => {
+    vi.useFakeTimers();
+    const store = useDemeterFarmingStore();
+    const silentUpdates = new Subject<unknown[]>();
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    shared.getPoolsObservable.mockResolvedValueOnce(
+      silentUpdates as unknown as Awaited<ReturnType<typeof shared.getPoolsObservable>>
+    );
+
+    try {
+      const pending = store.subscribeOnPools();
+      await Promise.resolve();
+      await Promise.resolve();
+
+      expect(silentUpdates.observed).toBe(true);
+
+      await vi.advanceTimersByTimeAsync(8_000);
+      await pending;
+
+      expect(silentUpdates.observed).toBe(false);
+      expect(store.poolsUpdates).toBeNull();
+      expect(store.pools).toEqual([]);
+      expect(warning).toHaveBeenCalledOnce();
+    } finally {
+      warning.mockRestore();
+    }
+  });
+
+  it('does not install or apply a late pool subscription from an older request', async () => {
+    const store = useDemeterFarmingStore();
+    const firstUpdates = new Subject<unknown[]>();
+    const secondUpdates = new Subject<unknown[]>();
+    shared.getPoolsObservable
+      .mockResolvedValueOnce(firstUpdates as unknown as Awaited<ReturnType<typeof shared.getPoolsObservable>>)
+      .mockResolvedValueOnce(secondUpdates as unknown as Awaited<ReturnType<typeof shared.getPoolsObservable>>);
+
+    const firstRequest = store.subscribeOnPools();
+    await vi.waitFor(() => expect(firstUpdates.observed).toBe(true));
+
+    const secondRequest = store.subscribeOnPools();
+    await vi.waitFor(() => expect(secondUpdates.observed).toBe(true));
+    secondUpdates.next([{ id: 'current' }]);
+    await secondRequest;
+    const currentSubscription = store.poolsUpdates;
+
+    firstUpdates.next([{ id: 'stale' }]);
+    await firstRequest;
+
+    expect(store.pools).toEqual([{ id: 'current' }]);
+    expect(store.poolsUpdates).toBe(currentSubscription);
+    expect(firstUpdates.observed).toBe(false);
+
+    await store.unsubscribeUpdates();
   });
 
   it('routes deposit/withdraw/claimRewards through wallet api', async () => {

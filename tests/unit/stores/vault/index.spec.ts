@@ -123,13 +123,18 @@ vi.mock('@/indexer/queries/vault/vaults', () => ({
   fetchClosedVaults: shared.fetchClosedVaults,
 }));
 
-vi.mock('@/utils/subscriptions', () => ({
-  TokenBalanceSubscriptions: class {
-    add = shared.balanceAdd;
-    remove = shared.balanceRemove;
-    resetSubscriptions = shared.balanceReset;
-  },
-}));
+vi.mock('@/utils/subscriptions', async () => {
+  const actual = await vi.importActual<typeof import('@/utils/subscriptions')>('@/utils/subscriptions');
+
+  return {
+    ...actual,
+    TokenBalanceSubscriptions: class {
+      add = shared.balanceAdd;
+      remove = shared.balanceRemove;
+      resetSubscriptions = shared.balanceReset;
+    },
+  };
+});
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
   const { createWalletMock } = await import('@tests/stubs/createWalletMock');

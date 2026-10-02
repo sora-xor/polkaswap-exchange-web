@@ -1,0 +1,75 @@
+{
+  "retrievedAt": "2026-09-30",
+  "accessResults": [
+    {
+      "key": "om-reg2006",
+      "url": "https://qanoon.om/p/2006/moaf20060032/",
+      "status": 200,
+      "bytes": 138484,
+      "file": "/tmp/mideast-peer-om-reg2006.html"
+    },
+    {
+      "key": "qa-reg2011",
+      "url": "https://www.almeezan.qa/PrintArticle_section.aspx?LawTreeSectionID=12350&language=ar&lawId=3818",
+      "error": "HTTPSConnectionPool(host='www.almeezan.qa', port=443): Max retries exceeded with url: /PrintArticle_section.aspx?LawTreeSectionID=12350&language=ar&lawId=3818 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1082)')))"
+    },
+    {
+      "key": "ae-law2025",
+      "url": "https://uaelegislation.gov.ae/en/legislations/3995",
+      "status": 403,
+      "bytes": 5517,
+      "file": "/tmp/mideast-peer-ae-law2025.html"
+    },
+    {
+      "key": "bh-law",
+      "url": "https://assets.ippc.int/static/media/files/eventreporting/2017/10/23/plant_quarantine_law_-_English.pdf",
+      "status": 200,
+      "bytes": 644684,
+      "file": "/tmp/mideast-peer-bh-law.pdf"
+    },
+    {
+      "key": "jo-reg2021",
+      "url": "https://moa.gov.jo/ebv4.0/root_storage/ar/eb_list_page/تعليمات_الحجر_النباتي_لسنة_2021.pdf",
+      "status": 451,
+      "bytes": 15363,
+      "file": "/tmp/mideast-peer-jo-reg2021.html"
+    },
+    {
+      "key": "om-foodreg2010",
+      "url": "https://data.qanoon.om/ar/md/mrmwr/2010-0002.pdf",
+      "status": 403,
+      "bytes": 5608,
+      "file": "/tmp/mideast-peer-om-foodreg2010.html"
+    },
+    {
+      "key": "qa-reg2007-curl-recovery",
+      "url": "https://www.almeezan.qa/PrintArticle_section.aspx?LawTreeSectionID=12350&language=ar&lawId=3818",
+      "status": 200,
+      "bytes": 78996,
+      "note": "Normal curl with certificate verification succeeded after Python requests certificate-chain error; no verification bypass. Actual title is Decision 61/2007."
+    }
+  ],
+  "sourceLabels": {
+    "om-reg2006": "Qanoon reproduction of enacted Decision32/2006; legal-text repository, not the government portal.",
+    "qa-reg2007": "Qatar government Al Meezan legal portal current displayed text, titled Decision61/2007. The portal asks readers not to treat displayed text as the official Gazette copy.",
+    "bh-law": "English GCC text and Bahrain-specific pest annex submitted by Bahrain NPPO to IPPC; 23-page scanned PDF OCRed and key exception pages visually checked.",
+    "ae-law2025-403.html": "Access-denied response, not legal text.",
+    "jo-reg2021-451.html": "Access-denied response, not legal text.",
+    "om-foodreg2010-403.html": "Access-denied response, not regulation PDF."
+  },
+  "sha256": {
+    "bh-law-page07.png": "64f2be8d6f8e793b36d1027a16495572c5048dfc75568beb745d79cb1524f2a7",
+    "om-reg2006.txt": "fa8e3ed2eb572a7776e38af509dfdf2f31cb3e3e6cd191fead7e5c82d8fbbe64",
+    "qa-reg2007.txt": "01c4922c84c2192de8eabcb903677e6c25e79f24b15a1aad1a50bf6012cc154d",
+    "bh-nppo-law2003-ocr.txt": "e9406f1b567855b172c5bdfef7a56ff6844cf250b61db5070408b78484033cce",
+    "om-foodreg2010-403.html": "a01a99b0a157f008725276d27e36ad4b0c3b4d5f96303fb578f3b5adbc14f642",
+    "qa-reg2007.html": "c8ff66d24251870e0abaf58f310f7ff3e8173defaaa8975d69d61b3b2df2e843",
+    "ae-law2025-403.html": "7b7e70b1a98f4614cf445716c7319a532ec4317f3aa956e93e6138931475083f",
+    "bh-nppo-law2003.pdf": "1cab2c4d06b79a74d6520864ae19aa398a59ab8014035174c3cf56d807b72e82",
+    "source-pass-result.json": "4b1a115ac3a92d5399bdce6ee2e8fc5304ba8709b3366f8ad3675165993ea22e",
+    "om-reg2006.html": "14ab53c015701025ac39cc6892874c3abbbc52caa3a60199a5ab5b1c04b5574d",
+    "source-only-overrides.json": "751fa5d75bd8fc6323f34e9b149c37da871dcbccd1b9f3bf0a35d80443248e8d",
+    "jo-reg2021-451.html": "5883619696b099506e3d496afd12ed70cea50c03a73a003f79eafb4e47d1a121",
+    "bh-law-page09.png": "f63d488aa77d5fcdbc8dcd2d572b9d2052d0e1357b670a9efb081eb91da17a7e"
+  }
+}

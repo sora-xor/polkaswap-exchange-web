@@ -1,0 +1,136 @@
+--- a/src/tonswap-burn.ts
++++ b/src/tonswap-burn.ts
+@@ -1,3 +1,5 @@
++import { decodeAddress } from '@polkadot/util-crypto';
++
+ export const TONSWAP_MAINNET_GENESIS = '0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5';
+ 
+ /** Campaign checkpoints require a canonical, nonzero substrate block hash. */
+@@ -8,6 +10,22 @@
+ 
+ export const TONSWAP_START_BLOCK = 27_720_478;
+ export const TONSWAP_COVERAGE_ID = 'tonswapBurnCoverage-v1';
++
++/** SORA Trust burns remain indexed for audit but never consume TONSWAP reward allocation. */
++export const SORA_TRUST_BURN_ADDRESS = 'cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo';
++const SORA_TRUST_ACCOUNT_ID = '12bed8da37e42af92986e9c0988b588da0e23422c287aa81a4bec9bb1e82db02';
++
++/** Matches the Trust AccountId32 independently of its SS58 prefix or hexadecimal display encoding. */
++export const isExcludedTonswapBurnAccount = (value: unknown): boolean => {
++  if (typeof value !== 'string' || value.length > 128) return false;
++  try {
++    const accountId = decodeAddress(value.trim());
++    return accountId.length === 32 && Buffer.from(accountId).toString('hex') === SORA_TRUST_ACCOUNT_ID;
++  } catch {
++    return false;
++  }
++};
++
+ 
+ export type TonswapBurnCoverage = {
+   version: 1;
+--- a/src/graphql/resolvers.ts
++++ b/src/graphql/resolvers.ts
+@@ -6,7 +6,7 @@
+ import { normalizeIndexedAccountId } from '../account-activity.js';
+ import { estimateRetainedValueBytes } from '../cache-weight.js';
+ import { metrics } from '../metrics.js';
+-import { TONSWAP_START_BLOCK, TONSWAP_COVERAGE_ID, parseTonswapBurnCoverage } from '../tonswap-burn.js';
++import { TONSWAP_START_BLOCK, TONSWAP_COVERAGE_ID, parseTonswapBurnCoverage, isExcludedTonswapBurnAccount } from '../tonswap-burn.js';
+ import { evaluateServiceReadiness, type WorkerReadinessThresholds } from '../readiness.js';
+ import {
+   createRepositoryCursorScope,
+@@ -1765,7 +1765,7 @@
+       (args.after && args.atBlock === undefined)) throw badUserInput('A valid frozen campaign snapshot block is required');
+     // The compact ID index is bounded and stable. Page through it without a
+     // scan filter; only finalized TS rows within the frozen horizon are exposed.
+-    // An empty TS page can still advance over non-campaign burns.
++    // An empty TS page still advances over unrelated or ineligible Trust burns.
+     const page = await connectionResolver('xorBurns')(parent, {
+       first: args.first ?? 100, after: args.after, orderBy: ['ID_ASC'],
+     }, context);
+@@ -1775,7 +1775,7 @@
+       indexedThroughBlock: atBlock,
+       checkpointBlock: coverage.indexedThroughBlock,
+       checkpointTimestamp: coverage.blockTimestamp,
+-      nodes: page.nodes.filter((row) => row.campaign === 'tonswap' &&
++      nodes: page.nodes.filter((row) => row.campaign === 'tonswap' && !isExcludedTonswapBurnAccount(row.address) &&
+         Number(row.blockHeight) >= TONSWAP_START_BLOCK && Number(row.blockHeight) <= atBlock),
+       pageInfo: page.pageInfo,
+     };
+--- a/tests/tonswap-burn.spec.ts
++++ b/tests/tonswap-burn.spec.ts
+@@ -1,5 +1,7 @@
+ import { describe, expect, it } from 'vitest';
+ import { graphql } from 'graphql';
++import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
++import { isExcludedTonswapBurnAccount, SORA_TRUST_BURN_ADDRESS } from '../src/tonswap-burn.js';
+ 
+ import { createSchema } from '../src/graphql/resolvers.js';
+ import { MemoryRepository } from '../src/repository/memory.js';
+@@ -94,4 +96,53 @@
+     expect(result.data?.tonswapBurnSnapshot).toMatchObject({ startBlock: TONSWAP_START_BLOCK, nodes: [] });
+   });
+ 
++  it('excludes SORA Trust by decoded AccountId32 across SS58 and hex encodings', () => {
++    const trustKey = decodeAddress(SORA_TRUST_BURN_ADDRESS);
++    const trustHex = `0x${Buffer.from(trustKey).toString('hex')}`;
++    expect(trustHex).toBe('0x12bed8da37e42af92986e9c0988b588da0e23422c287aa81a4bec9bb1e82db02');
++    for (const address of [SORA_TRUST_BURN_ADDRESS, encodeAddress(trustKey, 0), encodeAddress(trustKey, 42),
++      trustHex, `0x${trustHex.slice(2).toUpperCase()}`, ` ${SORA_TRUST_BURN_ADDRESS} `]) {
++      expect(isExcludedTonswapBurnAccount(address)).toBe(true);
++    }
++    expect(isExcludedTonswapBurnAccount(encodeAddress(new Uint8Array(32).fill(1), 69))).toBe(false);
++    for (const invalid of [undefined, null, '', 'alice', '0x12', 'x'.repeat(129)]) {
++      expect(isExcludedTonswapBurnAccount(invalid)).toBe(false);
++    }
++  });
++
++  it('advances over Trust-only pages without deleting raw burns or changing finalized coverage', async () => {
++    const context = await contextFixture();
++    const trustKey = decodeAddress(SORA_TRUST_BURN_ADDRESS);
++    const trustForms = [SORA_TRUST_BURN_ADDRESS, encodeAddress(trustKey, 42), `0x${Buffer.from(trustKey).toString('hex')}`];
++    const records = [...trustForms, encodeAddress(new Uint8Array(32).fill(1), 69)].map((address, index) => ({
++      collection: 'xorBurns' as const, id: `trust-filter-${index}`, blockHeight: TONSWAP_START_BLOCK + 1,
++      data: { id: `trust-filter-${index}`, address, amount: index < 3 ? '1753357' : '1',
++        blockHeight: TONSWAP_START_BLOCK + 1, campaign: 'tonswap', extrinsicIndex: index, txHash: `0x${String(index + 1).repeat(64)}` },
++    }));
++    await context.repository.upsertMany(records);
++    const coverageBefore = await context.repository.get('updatesStreams', 'tonswapBurnCoverage-v1');
++    const schema = createSchema();
++    const resolver = schema.getQueryType()!.getFields().tonswapBurnSnapshot.resolve!;
++    let after: string | null = null;
++    let through: number | undefined;
++    const seen = new Set<string>();
++    for (let index = 0; index < records.length; index += 1) {
++      const result = await resolver({}, { first: 1, after, atBlock: through }, context, undefined as never) as SnapshotResult;
++      through ??= result.indexedThroughBlock;
++      expect(result.indexedThroughBlock).toBe(through);
++      expect(result.nodes).toEqual(index < 3 ? [] : [expect.objectContaining({ id: 'trust-filter-3', amount: '1' })]);
++      expect(result.pageInfo.hasNextPage).toBe(index < records.length - 1);
++      expect(result.pageInfo.endCursor).toBeTruthy();
++      expect(seen.has(result.pageInfo.endCursor!)).toBe(false);
++      seen.add(result.pageInfo.endCursor!);
++      after = result.pageInfo.endCursor;
++    }
++    const raw = await graphql({ schema, contextValue: context,
++      source: '{ xorBurns(first: 100, orderBy: [ID_ASC]) { nodes { id address amount campaign } } }' });
++    expect(raw.errors).toBeUndefined();
++    expect((raw.data?.xorBurns as { nodes: unknown[] }).nodes).toHaveLength(4);
++    expect(await context.repository.list('xorBurns')).toEqual(records);
++    expect(await context.repository.get('updatesStreams', 'tonswapBurnCoverage-v1')).toEqual(coverageBefore);
++  });
++
+ });
+--- a/docs/tonswap-burn.md
++++ b/docs/tonswap-burn.md
+@@ -22,3 +22,9 @@
+ The frontend/claim implementation consumes the complete global finalized stream. It integrates the marginal rate `50 - 45 * eligibleXor / 1753357` TS per XOR. Only the first 1,753,357 XOR in execution order earns TS; the final crossing burn receives the reward on its remaining eligible portion. Extra XOR is irreversibly burned without TS. Maximum integrated TS entitlement is 48,217,317.5. Use exact fixed-point arithmetic and cumulative entitlement differences, including fractional XOR.
+ 
+ The ordinary burn extrinsic does not impose a chain-level campaign cap or reward reservation. A displayed quote is an estimate until finalized execution order is known. Optimistic wallet entries may be displayed as pending, but cannot establish the current price, global cap or final entitlement. Future TS distribution and source-wallet claim proof belong to tonswap.org at full launch.
++
++## SORA Trust exclusion
++
++Burns by SORA Trust (`cnRus2m2Rn776v88H5RUtyiaXtr3daN6ePn6yenLKepx1SqYo`, AccountId32 `0x12bed8da37e42af92986e9c0988b588da0e23422c287aa81a4bec9bb1e82db02`) are excluded from TS rewards, cumulative eligible XOR, the rewarded cap, and the marginal rate. Snapshot filtering compares the decoded 32-byte account identity, so alternate SS58 prefixes and hexadecimal encodings cannot bypass this rule.
++
++The underlying `xorBurns` documents are retained unchanged for audit. Pagination continues through excluded rows using the original compact-index cursor; an empty snapshot page can therefore still have `hasNextPage: true`. Finalized coverage includes all scanned blocks and is unaffected by account eligibility.

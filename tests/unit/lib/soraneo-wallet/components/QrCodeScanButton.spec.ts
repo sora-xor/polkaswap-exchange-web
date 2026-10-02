@@ -91,6 +91,11 @@ describe('QrCodeScanButton', () => {
     expect(qrCodeScanButtonSource).toContain(':aria-label="t(\'code.upload\')"');
   });
 
+  it('settles failed or aborted QR file reads', () => {
+    expect(qrCodeScanButtonSource).toContain("fileReader.addEventListener('error', () => resolve(null))");
+    expect(qrCodeScanButtonSource).toContain("fileReader.addEventListener('abort', () => resolve(null))");
+  });
+
   it('opens the QR source menu from a single scanner icon click', async () => {
     const wrapper = mount(QrCodeScanButton, {
       attachTo: document.body,

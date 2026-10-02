@@ -1,6 +1,8 @@
 import base64 from 'base-64';
 import { saveAs } from 'file-saver';
 
+import { toIpfsGatewayUrl } from '@/utils/ipfs';
+
 import type { Nullable } from '@/types/common';
 
 export enum IMAGE_EXTENSIONS {
@@ -46,8 +48,6 @@ export const createImageBlobByUrl = (url: string, mimeType: string): Promise<Blo
   return new Promise((resolve, reject) => {
     const image = new Image();
 
-    image.src = url;
-
     image.onload = () => {
       const { width, height } = image;
       const canvas = Object.assign(document.createElement('canvas'), { width, height });
@@ -68,6 +68,7 @@ export const createImageBlobByUrl = (url: string, mimeType: string): Promise<Blo
     };
 
     image.onerror = (error) => reject(error);
+    image.src = url;
   });
 };
 
@@ -222,8 +223,8 @@ const sanitizeDataUri = (dataUri: string): string => {
 };
 
 /**
- * Ensures the provided icon URL or data URI is safe to embed. Returns an empty
- * string when the input is considered unsafe.
+ * Resolves IPFS icon sources through the maintained gateway and ensures URLs or
+ * data URIs are safe to embed. Returns an empty string for unsafe input.
  */
 export const sanitizeIconSource = (icon: Nullable<string>): string => {
   if (!icon) return '';
@@ -235,7 +236,7 @@ export const sanitizeIconSource = (icon: Nullable<string>): string => {
   }
 
   try {
-    const url = new URL(trimmed);
+    const url = new URL(toIpfsGatewayUrl(trimmed) || '');
     if (url.protocol !== 'https:') return '';
     if (/["'()\s]/.test(trimmed)) return '';
 
@@ -263,7 +264,11 @@ export async function getBase64Icon(icon: string): Promise<string> {
   if (!safeIcon) return '';
   if (safeIcon.startsWith('data:image/png;base64')) return safeIcon;
   if (safeIcon.startsWith('data:image/svg+xml;base64')) {
-    return base64SvgToBase64Png(safeIcon);
+    try {
+      return await base64SvgToBase64Png(safeIcon);
+    } catch {
+      return '';
+    }
   }
 
   if (safeIcon.startsWith('https://')) {
@@ -284,18 +289,19 @@ function base64SvgToBase64Png(imgsrc: string): Promise<string> {
     const context = canvas.getContext('2d');
 
     const image = new Image();
-    image.src = imgsrc;
 
     image.onload = function () {
       try {
-        if (context) {
-          context.drawImage(image, 0, 0);
-          const base64PNG = canvas.toDataURL('image/png');
-          resolve(base64PNG);
-        }
+        if (!context) throw new Error('Canvas 2D context is unavailable');
+
+        context.drawImage(image, 0, 0);
+        const base64PNG = canvas.toDataURL('image/png');
+        resolve(base64PNG);
       } catch (e) {
         reject(e);
       }
     };
+    image.onerror = (error) => reject(error);
+    image.src = imgsrc;
   });
 }

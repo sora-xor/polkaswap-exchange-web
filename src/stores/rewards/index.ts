@@ -12,6 +12,7 @@ import { useWeb3Store } from '@/stores/web3';
 import { initialState } from '@/stores/rewards/state';
 import type { ClaimRewardsParams, RewardsState } from '@/stores/rewards/types';
 import ethersUtil from '@/utils/ethers-util';
+import { subscribeAndWaitForFirst } from '@/utils/subscriptions';
 
 import type { CodecString } from '@sora-substrate/sdk';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/sdk/build/rewards/types';
@@ -22,6 +23,18 @@ type RewardsStoreLike = RewardsState & {
   internalRewardsAvailable: boolean;
   vestedRewardsAvailable: boolean;
   setSelectedRewards: (value: SelectedRewards) => Promise<void>;
+};
+
+const rewardsSubscriptionGeneration = new WeakMap<object, number>();
+
+const invalidateRewardsSubscription = (store: object): number => {
+  const generation = (rewardsSubscriptionGeneration.get(store) ?? 0) + 1;
+  rewardsSubscriptionGeneration.set(store, generation);
+  return generation;
+};
+
+const isCurrentRewardsSubscription = (store: object, generation: number): boolean => {
+  return rewardsSubscriptionGeneration.get(store) === generation;
 };
 
 const createRewardsStoreShape = () => ({
@@ -45,72 +58,60 @@ const pruneSelectedCrowdloanRewards = (store: RewardsStoreLike): Record<string, 
   }, {});
 };
 
-const resolveLiquidityProvisionRewardsSubscription = async (store: RewardsStoreLike): Promise<Subscription> => {
-  let subscription!: Subscription;
+const resolveLiquidityProvisionRewardsSubscription = (
+  store: RewardsStoreLike,
+  isCurrent: () => boolean
+): Promise<Subscription> => {
+  return subscribeAndWaitForFirst(api.rewards.getLiquidityProvisionRewardsSubscription(), (internalRewards) => {
+    if (!isCurrent()) return;
 
-  await new Promise<void>((resolve) => {
-    subscription = api.rewards.getLiquidityProvisionRewardsSubscription().subscribe((internalRewards) => {
-      store.internalRewards = internalRewards;
+    store.internalRewards = internalRewards;
 
-      if (!store.liquidityProvisionRewardsSubscription && store.internalRewardsAvailable) {
-        void store.setSelectedRewards({ selectedInternal: internalRewards });
-      }
+    if (!store.liquidityProvisionRewardsSubscription && store.internalRewardsAvailable) {
+      void store.setSelectedRewards({ selectedInternal: internalRewards });
+    }
 
-      if (store.selectedInternal && !store.internalRewardsAvailable) {
-        void store.setSelectedRewards({ selectedInternal: null });
-      }
-
-      resolve();
-    });
+    if (store.selectedInternal && !store.internalRewardsAvailable) {
+      void store.setSelectedRewards({ selectedInternal: null });
+    }
   });
-
-  return subscription;
 };
 
-const resolveVestedRewardsSubscription = async (store: RewardsStoreLike): Promise<Subscription> => {
-  let subscription!: Subscription;
+const resolveVestedRewardsSubscription = (store: RewardsStoreLike, isCurrent: () => boolean): Promise<Subscription> => {
+  return subscribeAndWaitForFirst(api.rewards.getVestedRewardsSubscription(), (vestedRewards) => {
+    if (!isCurrent()) return;
 
-  await new Promise<void>((resolve) => {
-    subscription = api.rewards.getVestedRewardsSubscription().subscribe((vestedRewards) => {
-      store.vestedRewards = vestedRewards;
+    store.vestedRewards = vestedRewards;
 
-      if (!store.vestedRewardsSubscription && store.vestedRewardsAvailable) {
-        void store.setSelectedRewards({ selectedVested: vestedRewards });
-      }
+    if (!store.vestedRewardsSubscription && store.vestedRewardsAvailable) {
+      void store.setSelectedRewards({ selectedVested: vestedRewards });
+    }
 
-      if (store.selectedVested && !store.vestedRewardsAvailable) {
-        void store.setSelectedRewards({ selectedVested: null });
-      }
-
-      resolve();
-    });
+    if (store.selectedVested && !store.vestedRewardsAvailable) {
+      void store.setSelectedRewards({ selectedVested: null });
+    }
   });
-
-  return subscription;
 };
 
-const resolveCrowdloanRewardsSubscription = async (store: RewardsStoreLike): Promise<Subscription> => {
+const resolveCrowdloanRewardsSubscription = async (
+  store: RewardsStoreLike,
+  isCurrent: () => boolean
+): Promise<Subscription> => {
   const observable = await api.rewards.getCrowdloanRewardsSubscription();
 
-  let subscription!: Subscription;
+  return subscribeAndWaitForFirst(observable, (crowdloanRewards) => {
+    if (!isCurrent()) return;
 
-  await new Promise<void>((resolve) => {
-    subscription = observable.subscribe((crowdloanRewards) => {
-      store.crowdloanRewards = crowdloanRewards;
+    store.crowdloanRewards = crowdloanRewards;
 
-      if (!store.crowdloanRewardsSubscription && store.crowdloanRewardsAvailable.length) {
-        void store.setSelectedRewards({ selectedCrowdloan: getInitialSelection(store) });
-      }
+    if (!store.crowdloanRewardsSubscription && store.crowdloanRewardsAvailable.length) {
+      void store.setSelectedRewards({ selectedCrowdloan: getInitialSelection(store) });
+    }
 
-      if (Object.keys(store.selectedCrowdloan).length) {
-        void store.setSelectedRewards({ selectedCrowdloan: pruneSelectedCrowdloanRewards(store) });
-      }
-
-      resolve();
-    });
+    if (Object.keys(store.selectedCrowdloan).length) {
+      void store.setSelectedRewards({ selectedCrowdloan: pruneSelectedCrowdloanRewards(store) });
+    }
   });
-
-  return subscription;
 };
 
 export const useRewardsStore = defineStore('rewards', {
@@ -183,23 +184,52 @@ export const useRewardsStore = defineStore('rewards', {
       const walletStore = useWalletStore();
 
       this.unsubscribeFromRewards();
+      const generation = rewardsSubscriptionGeneration.get(this) ?? 0;
+      const isCurrent = (): boolean => isCurrentRewardsSubscription(this, generation);
 
       if (!walletStore.isLoggedIn) return;
 
       await waitForAccountPair(async () => {
-        const [liquidityProvisionRewardsSubscription, vestedRewardsSubscription, crowdloanRewardsSubscription] =
-          await Promise.all([
-            resolveLiquidityProvisionRewardsSubscription(this),
-            resolveVestedRewardsSubscription(this),
-            resolveCrowdloanRewardsSubscription(this),
-          ]);
+        if (!isCurrent()) return;
 
-        this.liquidityProvisionRewardsSubscription = liquidityProvisionRewardsSubscription;
-        this.vestedRewardsSubscription = vestedRewardsSubscription;
-        this.crowdloanRewardsSubscription = crowdloanRewardsSubscription;
+        const results = await Promise.allSettled([
+          resolveLiquidityProvisionRewardsSubscription(this, isCurrent),
+          resolveVestedRewardsSubscription(this, isCurrent),
+          resolveCrowdloanRewardsSubscription(this, isCurrent),
+        ]);
+        const subscriptions = results.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []));
+
+        if (!isCurrent()) {
+          subscriptions.forEach((subscription) => subscription.unsubscribe());
+          return;
+        }
+
+        const failed = results.find((result) => result.status === 'rejected');
+
+        if (failed?.status === 'rejected') {
+          subscriptions.forEach((subscription) => subscription.unsubscribe());
+          this.unsubscribeFromRewards();
+          console.error('[rewards] Failed to initialize rewards subscriptions', failed.reason);
+          return;
+        }
+
+        const [liquidityResult, vestedResult, crowdloanResult] = results;
+
+        if (
+          liquidityResult.status !== 'fulfilled' ||
+          vestedResult.status !== 'fulfilled' ||
+          crowdloanResult.status !== 'fulfilled'
+        ) {
+          return;
+        }
+
+        this.liquidityProvisionRewardsSubscription = liquidityResult.value;
+        this.vestedRewardsSubscription = vestedResult.value;
+        this.crowdloanRewardsSubscription = crowdloanResult.value;
       });
     },
     unsubscribeFromRewards(): void {
+      invalidateRewardsSubscription(this);
       this.liquidityProvisionRewardsSubscription?.unsubscribe();
       this.vestedRewardsSubscription?.unsubscribe();
       this.crowdloanRewardsSubscription?.unsubscribe();

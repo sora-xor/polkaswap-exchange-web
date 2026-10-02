@@ -1,0 +1,105 @@
+[
+  {
+    "code": "GU",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "No decision change. Current DOAG resources again provide the March 2026 noncommercial plant-products application, which covers Post Office imports, and the 2024 species list. No new manufactured-tea commodity determination or express postal permit waiver was recovered.",
+    "sourceUrls": [
+      "https://doag.guam.gov/resource/"
+    ],
+    "retrievalResult": "200; saved gu-resource.html",
+    "remainingQuestion": "Need Guam DOAG interpretation of sections 10101/10103 versus 10120 for finished tea. The March 2026 application explicitly covers noncommercial post and the current species guide omits manufactured tea; dried-human-food admissibility subject to inspection is not an express permit waiver."
+  },
+  {
+    "code": "MP",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "No decision change. Narrow processed-food/postal searches returned the existing Finance traveler FAQ and personal tax allowance, neither an express postal plant-permit exemption. No new commodity list was recovered.",
+    "sourceUrls": [
+      "https://www.finance.gov.mp/faq.php",
+      "https://www.finance.gov.mp/cus-import-requirements.php"
+    ],
+    "retrievalResult": "Existing official guidance reappeared in search; no new controlling source",
+    "remainingQuestion": "Need CNMI DLNR classification of finished tea under sections 85-60.2-201/204/238. Dried foods may enter after inspection, but no explicit permit waiver is provided; current processed-food traveler guidance and Finance personal tax allowances do not settle postal permits."
+  },
+  {
+    "code": "WF",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "No decision change. Current 2026 AIP publication carries the existing postal/unaccompanied-goods rule: the nonmanufactured plant-product certificate provision and permit-only tea-in-bulk exception do not settle manufactured sealed sencha classification. Searches for the underlying 1993 rule and 1996/1997 amendments did not recover a current tea classification. The 2022 passenger sheet and 2026 passenger arrival form were not applied to post.",
+    "sourceUrls": [
+      "https://www.wallis-et-futuna.gouv.fr/Demarches/Formalites-SIVAP-Service-de-l-Inspection-Veterinaire-Alimentaire-et-Phytosanitaire",
+      "https://www.sia.aviation-civile.gouv.fr/media/dvd/eAIP_19_MAR_2026/PAC-N/AIRAC-2026-01-22/pdf/FR-GEN-1.4-fr-FR.pdf"
+    ],
+    "retrievalResult": "SIVAP official page connection closed remotely; indexed 2026 AIP copies retain the already-reviewed text",
+    "remainingQuestion": "SIVAP’s interpretation is needed: does sealed 100 g manufactured sencha fall outside unmanufactured plant products, or count as the tea-in-bulk category that is exempt only from a permit and still needs an origin phytosanitary certificate? The postal rule does not distinguish these cases clearly."
+  },
+  {
+    "code": "PF",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "No decision change. Current Order 324 CM of 16 March 2026 Annex 5 was not recovered. Lack of access is not evidence that tea is forbidden or permit-free, and obsolete Order 740 CM guidance was not substituted.",
+    "sourceUrls": [
+      "https://www.service-public.pf/biosecurite/18-03-2026-nouvelle-reglementation-concernant/",
+      "https://lexpol.cloud.pf/LexpolAfficheTexte.php?texte=1037079&lang=fr"
+    ],
+    "retrievalResult": "Announcement HTTP 503 (18,423 bytes; error page saved); Lexpol connection timeout at 20 seconds. No Annex 5 text in either result",
+    "remainingQuestion": "The missing source is current Order 324 CM (16 March 2026), Annex 5, especially any Camellia/tea entry, processing/packaging exemption and personal-postal paperwork. The accessible reform summary is insufficient to determine whether this sencha needs special documents."
+  },
+  {
+    "code": "CK",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "Material source update only; no decision change. Official ministry page links January 2021 specification. PP23 versus PP29 remains the exact unresolved question. Ready full-row override saved as ck-source-override.json.",
+    "sourceUrls": [
+      "https://agriculture.gov.ck/biosecurity/",
+      "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+      "https://www.ports.gov.ck/biosecurity"
+    ],
+    "retrievalResult": "PDF HTTP 200, 58,458 bytes; PDF page 4 visually checked. Ports page HTTP 200, no tea waiver",
+    "remainingQuestion": "Determine whether Japan-origin steamed/dried Camellia sinensis tea is PP29 dried herbs, PP23 dried plant material or another existing specification. The newly retrieved personal-food concession in regulation 18 is distinct from biosecurity; its reference to the person bringing food into the country does not expressly settle postal scope. No blanket dried-food biosecurity waiver was found."
+  },
+  {
+    "code": "KI",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "No decision change. Current Ministry agriculture site was retrieved but supplied no tea/processed-food specification or statutory register entry. The attempted IPPC reporting-obligation route was a 404, not proof that a commodity specification does not exist.",
+    "sourceUrls": [
+      "https://agriculture.melad.gov.ki/",
+      "https://www.ippc.int/en/countries/kiribati/reportingobligation/"
+    ],
+    "retrievalResult": "Agriculture HTTP 200 (98,682 bytes); attempted IPPC route HTTP 404 (3,984 bytes)",
+    "remainingQuestion": "Obtain the existing section 26 import specification covering Japanese finished tea or processed plant foods from the statutory biosecurity register. Its existence and conditions are unverified. If none exists, section 27 makes an advance written application necessary and the route would be incompatible with the store constraint. If an existing specification requires only inspection/declaration, the route could qualify. The remaining gap is the applicable specification, not whether manufactured tea is within the Act."
+  },
+  {
+    "code": "TO",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "No decision change. No current Japan-origin tea commodity condition or regulation 26 risk determination was recovered. Existing New Zealand-origin MPI guidance was not extended to Japan and independent food rules were not repeated.",
+    "sourceUrls": [
+      "https://maff.gov.to/qqmd/"
+    ],
+    "retrievalResult": "Ministry quarantine page HTTP 403 (115 bytes; saved)",
+    "remainingQuestion": "The missing determination is whether the Director has classified Japanese steamed/dried retail tea as permit-controlled plant material under regulation 26, or prescribed a permit/certificate-free tea condition; an applicable current commodity schedule is needed."
+  },
+  {
+    "code": "PG",
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "decisionChanged": false,
+    "finding": "No decision change. National Trade Office PNGBA page was retrieved but is a generic institutional summary, not a commodity specification. Its act-name summaries were not used as enacted-text evidence. A fresh official 2022 tariff retrieval also failed; an indexed tariff reference alone would not establish postal permit requirements.",
+    "sourceUrls": [
+      "https://facilitation.nto.gov.pg/pngba/",
+      "https://www.customs.gov.pg/pdf/legislation/HS%202022%20Import%20%26%20Export%20Tariff%20Act.pdf"
+    ],
+    "retrievalResult": "NTO HTTP 200 (132,872 bytes; saved). Customs PDF web retrieval timed out; direct connection timeout at 15 seconds",
+    "remainingQuestion": "The missing source is PNG Biosecurity Authority’s current commodity specification/exemption for finished Japanese Camellia sinensis tea in personal postal parcels, including whether a recipient import permit or origin phytosanitary certificate is required."
+  }
+]

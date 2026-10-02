@@ -100,6 +100,7 @@
               :placeholder="t('walletSend.vestingPercentage')"
               :decimals="2"
               :delimiters="delimiters"
+              :min="0.01"
               :max="100"
               @update:model-value="fetchNetworkFeeDebounced"
             >
@@ -332,7 +333,14 @@ export default {
       const fpAmount = getFPNumber(amount.value, asset.value.decimals);
       const balance = getFPNumberFromCodec(transferableBalance.value, asset.value.decimals);
 
-      return fpAmount.isFinity() && !fpAmount.isZero() && FPNumber.lte(fpAmount, balance);
+      return fpAmount.isFinity() && FPNumber.gt(fpAmount, FPNumber.ZERO) && FPNumber.lte(fpAmount, balance);
+    });
+    const parsedVestingPercentage = computed<number | null>(() => {
+      const normalized = vestingPercentage.value.trim();
+      if (!/^\d+(?:\.\d+)?$/.test(normalized)) return null;
+
+      const percent = Number(normalized);
+      return Number.isFinite(percent) && percent > 0 && percent <= 100 ? percent : null;
     });
     const isXorAccountAsset = computed(() => asset.value.address === XOR.address);
     const maxAmount = computed(() =>
@@ -356,7 +364,7 @@ export default {
         !validAddress.value ||
         !validAmount.value ||
         !hasEnoughXor.value ||
-        (withVesting.value && !+vestingPercentage.value)
+        (withVesting.value && parsedVestingPercentage.value === null)
     );
     const sendButtonDisabledText = computed(() => {
       if (!validAddress.value) {
@@ -373,8 +381,7 @@ export default {
         return t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
       }
 
-      const percent = +vestingPercentage.value;
-      if (withVesting.value && (!percent || percent > 100)) {
+      if (withVesting.value && parsedVestingPercentage.value === null) {
         return t('walletSend.enterVestingPercentage');
       }
 
@@ -437,9 +444,9 @@ export default {
     };
 
     const fetchNetworkFee = async (): Promise<void> => {
-      const percent = +vestingPercentage.value;
+      const percent = parsedVestingPercentage.value;
 
-      if (withVesting.value && percent > 0 && percent <= 100 && !emptyAmount.value) {
+      if (withVesting.value && percent !== null && !emptyAmount.value) {
         loading.value = true;
         await delay(250);
         const nextFee = await getVestedTransferFee({
@@ -502,13 +509,16 @@ export default {
     };
 
     const handleConfirm = async (): Promise<void> => {
+      const shouldVest = withVesting.value;
+      const percent = parsedVestingPercentage.value;
+      if (shouldVest && percent === null) return;
+
       await withNotifications(async () => {
         if (!hasEnoughXor.value) {
           throw new Error('walletSend.insufficientBalanceText');
         }
 
-        const percent = +vestingPercentage.value;
-        if (withVesting.value && percent > 0 && percent <= 100) {
+        if (shouldVest) {
           const currentDate = new Date();
           const hours = currentDate.getHours();
           const minutes = currentDate.getMinutes();
@@ -521,7 +531,7 @@ export default {
             asset: asset.value,
             to: address.value,
             unlockPeriodInDays: selectedVestingPeriod.value,
-            vestingPercent: percent,
+            vestingPercent: percent as number,
             start,
             current: currentDate.getTime(),
           } as VestedTransferParams);
@@ -622,6 +632,34 @@ export default {
   &-amount-balance {
     .formatted-amount--fiat-value {
       text-align: right;
+    }
+  }
+  &-input,
+  &-address.address-input__field.s-input,
+  &__vesting-input {
+    // Keep focus on the rounded recessed surface instead of the square native input.
+    transition: box-shadow 160ms ease-out;
+
+    &:has(input.el-input__inner:focus-visible) {
+      outline: none;
+      box-shadow:
+        var(--s-shadow-element),
+        inset 0 0 0 2px var(--s-color-focus-ring),
+        0 0 0 4px color-mix(in srgb, var(--s-color-focus-ring) 18%, transparent);
+    }
+
+    input.el-input__inner {
+      &:focus-visible {
+        outline: none !important;
+        outline-offset: 0 !important;
+      }
+    }
+
+    @media (forced-colors: active) {
+      &:has(input.el-input__inner:focus-visible) {
+        outline: 2px solid Highlight;
+        outline-offset: 2px;
+      }
     }
   }
   &-input .el-input__inner {

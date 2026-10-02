@@ -220,6 +220,40 @@ describe('fetchAssetSupplyData', () => {
     expect(data[2]?.burn).toBeCloseTo(100_000.1976598377, 6);
   });
 
+  it('skips close-only archive rows and unknown flows while preserving observed zeros', async () => {
+    fetchAllEntitiesMock.mockImplementationOnce(async (_query, _variables, parse) => [
+      parse({ timestamp: '1700000000', priceUSD: { close: '1' }, supply: null, mint: null, burn: null }),
+      parse({ timestamp: '1700000000', supply: codecFromNatural(100n), mint: null, burn: '0' }),
+      parse({ timestamp: '1700000000', supply: codecFromNatural(100n), mint: '0', burn: null }),
+      parse({ timestamp: '1700000000', supply: '0', mint: '0', burn: '0' }),
+    ]);
+    const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
+    const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+    await expect(fetchAssetSupplyData(XOR.address, 1700000000, 1699996400, 'HOUR' as any)).resolves.toEqual([
+      { timestamp: 1700000000000, value: 0, mint: 0, burn: 0 },
+    ]);
+  });
+
+  it.each(['missing', 'invalid', 'negative', 'timestamp'])(
+    'skips %s supply evidence instead of producing artificial zeros',
+    async (fault) => {
+      const raw: Record<string, unknown> = {
+        timestamp: '1700000000',
+        supply: codecFromNatural(100n),
+        mint: '0',
+        burn: '0',
+      };
+      if (fault === 'missing') delete raw.supply;
+      if (fault === 'invalid') raw.mint = 'NaN';
+      if (fault === 'negative') raw.burn = '-1';
+      if (fault === 'timestamp') raw.timestamp = 'Infinity';
+      fetchAllEntitiesMock.mockImplementationOnce(async (_query, _variables, parse) => [parse(raw)]);
+      const { fetchAssetSupplyData } = await import('@/indexer/queries/asset/supply');
+      const { XOR } = await import('@sora-substrate/sdk/build/assets/consts');
+      await expect(fetchAssetSupplyData(XOR.address, 1700000000, 1699996400, 'HOUR' as any)).resolves.toEqual([]);
+    }
+  );
+
   it('returns an empty series when the indexer returns no supply snapshots', async () => {
     fetchAllEntitiesMock.mockResolvedValue([]);
 

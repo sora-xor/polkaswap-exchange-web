@@ -11,6 +11,8 @@ describe('misc feature routes', () => {
         expect.objectContaining({ path: '/stats', name: PageNames.Stats }),
         expect.objectContaining({ path: '/trade/:first?/:second?', name: PageNames.OrderBook }),
         expect.objectContaining({ path: '/burn', name: PageNames.Burn }),
+        expect.objectContaining({ path: '/buy-xor', name: PageNames.BuyXor }),
+        expect.objectContaining({ path: '/get-ts', name: PageNames.GetTs }),
         expect.objectContaining({ path: '/:catchAll(.*)', redirect: '/swap' }),
       ])
     );
@@ -20,6 +22,7 @@ describe('misc feature routes', () => {
     expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/StatsPage.vue'))");
     expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/OrderBookPage.vue'))");
     expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/BurnPage.vue'))");
+    expect(routesSource).toContain("loadAsyncImportWithRetry(() => import('./pages/BuyXorPage.vue'))");
     expect(routesSource).not.toContain('lazyView');
     expect(routesSource).not.toContain('@/router/modules/misc');
   });

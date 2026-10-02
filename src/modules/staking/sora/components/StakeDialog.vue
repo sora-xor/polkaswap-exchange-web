@@ -251,7 +251,7 @@ const handleMaxValue = () => {
 };
 
 /**
- * Dispatches the appropriate staking extrinsic for the current mode and emits completion.
+ * Dispatches the appropriate staking extrinsic and emits completion only after submission.
  */
 const handleConfirm = async () => {
   if (!stakingAsset.value || confirmDisabled.value) return;
@@ -265,11 +265,13 @@ const handleConfirm = async () => {
     extrinsic = bondExtra;
   }
 
-  await withNotifications(async () => {
+  const result = await withNotifications(async () => {
     await extrinsic();
   });
 
-  emit('confirm');
+  if (result.submitted) {
+    emit('confirm');
+  }
 };
 
 onMounted(async () => {

@@ -139,30 +139,51 @@ export class WcProvider {
         await Promise.all([this.modal.openModal({ uri }), waitForModalOpen]);
       }
 
-      // eslint-disable-next-line
-      await new Promise<void>(async (resolve, reject) => {
-        const unsub = this.modal.subscribeModal((state) => {
-          if (!state.open && !this.session) {
-            unsub();
-            this.provider.abortPairingAttempt();
-            reject(new Error('Connection request reset. Please try again.'));
-          }
-        });
-
-        try {
-          // await session approval from the wallet app
-          this.session = await approval();
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      });
+      this.session = await this.waitForApproval(approval);
     } catch (error) {
       this.provider?.logger?.error?.(error);
       throw error;
     } finally {
       if (this.modal) this.modal.closeModal();
     }
+  }
+
+  /** Waits for wallet approval while keeping the modal-close listener scoped to this attempt. */
+  private waitForApproval(approval: () => Promise<SessionTypes.Struct>): Promise<SessionTypes.Struct> {
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      let unsubscribe = () => undefined;
+
+      const finish = (callback: () => void): void => {
+        if (settled) return;
+
+        settled = true;
+        unsubscribe();
+        callback();
+      };
+
+      const registeredUnsubscribe = this.modal.subscribeModal((state) => {
+        if (!state.open && !this.session) {
+          this.provider.abortPairingAttempt();
+          finish(() => reject(new Error('Connection request reset. Please try again.')));
+        }
+      });
+
+      unsubscribe = registeredUnsubscribe;
+
+      // Some modal implementations publish their current state synchronously.
+      if (settled) {
+        unsubscribe();
+        return;
+      }
+
+      void Promise.resolve()
+        .then(approval)
+        .then(
+          (session) => finish(() => resolve(session)),
+          (error) => finish(() => reject(error))
+        );
+    });
   }
 
   private waitForModalOpen(timeoutMs = WC_MODAL_OPEN_TIMEOUT_MS): Promise<void> {

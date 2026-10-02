@@ -1,0 +1,24 @@
+{
+  "mergedAt": "2026-09-30T07:47:14.019228+00:00",
+  "changes": [
+    {
+      "code": "BQ",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "docs/reports/tea-audit-work/caribbean-finished-tea-definition-review/bq-proposed-supported-full-row.json"
+    },
+    {
+      "code": "KN",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "docs/reports/tea-audit-work/caribbean-finished-tea-definition-review/kn-proposed-supported-full-row.json"
+    },
+    {
+      "code": "VC",
+      "before": "unresolved",
+      "after": "supported",
+      "proposal": "docs/reports/tea-audit-work/caribbean-finished-tea-definition-review/vc-proposed-supported-full-row.json"
+    }
+  ],
+  "liveChangesMade": false
+}

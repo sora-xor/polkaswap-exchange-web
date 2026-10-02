@@ -1,0 +1,107 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Direct Japan shipment of 100 g sealed manufactured steamed/dried pure sencha for paid private postal own-consumption purchase. No separate certificates, permits, agency approval, registration or notice; ordinary customs declarations and arrival inspection are acceptable.",
+  "conclusion": "No additional operational exclusion or overall no-document approval established in this bounded eight-country pass. Seven source-enrichment overrides preserve unresolved; GQ remains unchanged with research-gap note only.",
+  "countries": {
+    "CG": {
+      "finding": "The actual ACONOQ-authorized Cotecna Congo exporter guide expressly excludes e-commerce postal parcels from PCEC/CoC certification and separately excludes complete imports below FOB 1,000,000 CFA. This is an affirmative exemption for the shipment route, not an extension of used personal effects or valueless gift exemptions. The guide says Cotecna acts on ACONOQ’s mandate. It does not resolve independent agricultural authorization/certification.",
+      "gap": "Published finished-tea plant-health classification and personal postal conditions remain missing. PCEC cannot independently justify exclusion because it expressly exempts e-commerce post.",
+      "urls": [
+        "https://www.cotecna.com/media/1tii4ifg/voc-congo-exporter-guide-french-translation.pdf",
+        "https://www.cotecna.com/media/pbegdzqc/voc-republic-of-congo-exporter-guide.pdf"
+      ],
+      "files": [
+        "cg-pcec-guide2026.pdf",
+        "cg-pcec-guide2026.txt"
+      ],
+      "access": "Complete French authorized-programme guide downloaded and read, especially PDF pages 2–3. It is programme-operator guidance, not a retrieved national Gazette instrument. Its postal exemption is supporting operational evidence only; no national plant-health waiver is inferred."
+    },
+    "GN": {
+      "finding": "The current ONCQ official food-import page describes documentary checks at commercial port/container and airport entry points including origin, quality and fumigation certificates. Government import-authorization service says natural/legal persons but requires company register, merchant card, tax identifier and ONCQ quality certificate. Neither describes a private postal order. A newly located legal-database text of Law L/2021/033/AN contains broad import scope and article 40 industrial-food control before release authorization, but a complete authenticated Gazette copy and personal implementation were not recovered.",
+      "gap": "Whether ONCQ requires a separate certificate/authorization for a 100 g private tea parcel, or performs routine arrival inspection. The commercial procedure and unverified legal-database locator do not establish the private duty.",
+      "urls": [
+        "https://oncq-guinee.com/service/controle-des-denrees-alimentaires-a-limportation/",
+        "https://service-public.gov.gn/ova_sev/demande-dautorisation-dimportation-de-bien-ou-marchandise/",
+        "https://guineelex.com/lois/loi-l-2021-033-an",
+        "https://guineelex.com/decrets-arretes/decret-d-2021-237-prg-sgg"
+      ],
+      "files": [],
+      "access": "Official ONCQ and government services pages read through their current search index. GuineeLex direct retrieval returned403; indexed provisions were read as a legislative lead, not treated as complete authenticated primary text. Its reported promulgation is Decree D/2021/237/PRG/SGG of 21 July 2021."
+    },
+    "GQ": {
+      "finding": "A 2017 official government publication of the Bioko Chamber of Commerce notice describes cancellation of charges by certain port/airport services, including veterinary food services, for firms and individuals. This concerns fees/administrative presence, not an exemption from food safety certificates. Targeted searches for the cited 2002 veterinary/food law and current imported-food controls produced no accessible operative primary text resolving manufactured tea.",
+      "gap": "The actual current food-import rule and whether it imposes special documents on a private postal retail tea purchase remain unavailable. Fee abolition, a draft 2022 port reform and livestock land-border rules cannot decide this.",
+      "urls": [
+        "https://www.guineaecuatorialpress.com/noticias/comunicado_de_la_camara_de_comercio_de_bioko_sobre_los_servicios_no_recaudatorios_de_puertos_y_aeropuertos",
+        "https://www.guineaecuatorialpress.com/noticias/analisis_del_proyecto_de_ley_de_reactivacion_de_la_actividad_portuaria"
+      ],
+      "files": [],
+      "access": "Official government indexed notice and draft-port-law report read; no enacted general private-food import provision recovered. No ready record override because no material operative finding beyond the existing gap."
+    },
+    "GW": {
+      "finding": "Downloaded Gazette Decree 62-E/1992 of 30 December 1992, Regime do Controlo Sanitário dos Géneros Alimentícios. Article 1 includes food imports; article 2 includes treated/processed foods. Articles 10–11 delegate inspection methods, administrative documents and import conditions to implementing regulation. Article 14 likewise leaves food-quality certification to a specific regulation. These enabling provisions do not themselves prove a mandatory private-import certificate.",
+      "gap": "An operative implementing provision requiring or exempting special documents for this private postal food import remains missing; the independent food law does not close the plant-law simple-preparation classification.",
+      "urls": [
+        "https://faolex.fao.org/docs/pdf/gbs117287.pdf"
+      ],
+      "files": [
+        "gw-foodcontrol.pdf",
+        "gw-foodcontrol.txt"
+      ],
+      "access": "Complete Gazette extract downloaded from FAOLEX and text read. The file also contains tail material from a preceding tourism law, which was kept separate. No newer implementing certificate rule for private tea located."
+    },
+    "KM": {
+      "finding": "The Ministry of Justice publishes adopted Law 21-013/AU of 29 June 2021 on foreign trade, promulgated by Decree 22-004/PR of 18 January 2022. Articles 16–19 require customs/technical controls but delegate product lists, methods and competent administrations to separate regulations. The2024 Ministry-hosted consolidated Customs Code preserves food/plant restrictions in transit provisions; it does not supply the missing private-tea import certificate rule. Previously reviewed 2022 blank-number/date drafts were not promoted to enacted law.",
+      "gap": "An adopted operative control list/method establishing the specific document duty or exemption for manufactured tea in private post remains missing. General technical-control powers do not establish an extra certificate obligation.",
+      "urls": [
+        "https://justice.gouv.km/texte/loi-n21%E2%80%90013-au-du-29-juin-2021-sur-le-commerce-exterieur-promulguee-par-le-decret-n22%E2%80%90004-pr-du-18-janvier-2022/",
+        "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf"
+      ],
+      "files": [],
+      "access": "Official Ministry source-index text read for articles 16–19 and current Customs Code excerpt. Direct full trade-law page retrieval failed; no new full adopted implementing instrument was downloaded."
+    },
+    "TG": {
+      "finding": "Downloaded official Gazette of 24 July 2020, Order 031/MCIDSPPCL/MEF/MAPAH of 17 July 2020. Annex includes foodstuffs of plant origin. Articles 2–7 create a prior declaration/approval process; article 3 asks for annual quantities, three-year imports, a valid company-creation card, economic-operator ID and tax clearance, and article 7 fixes an annual quantity authorization. This is a real special procedure, but its economic-operator context does not establish application to a one-off private postal buyer.",
+      "gap": "Whether the order’s prior declaration applies to personal postal food purchases, with a non-business procedure or exemption, remains unverified. Do not extend annual business-import authorization to private recipients solely because tea is plant food.",
+      "urls": [
+        "https://jo.gouv.tg/sites/default/files/JO/JOS_24_07_2020-65E%20ANNEE%2025TER.pdf",
+        "https://commerce.gouv.tg/wp-content/uploads/2025/02/Rapport_pays_SC_version_validee.pdf"
+      ],
+      "files": [
+        "tg-sensitive2020.pdf",
+        "tg-sensitive2020.txt"
+      ],
+      "access": "Actual Gazette downloaded and articles/annex read, printed pages 9–11. The later government trade-policy report link returned403; it is a current-context locator only, not proof of full text inspected."
+    },
+    "ER": {
+      "finding": "Current Ministry of Information report of 12 July 2026 describes an inception workshop for drafting a National Food Control Policy, intended to guide a future national food law. This is not enacted mandatory certificate legislation. An older official standards-institution interview describes inspecting imports upon arrival and assigning quality certificates, without a separate pre-shipment document/application requirement.",
+      "gap": "A currently operative food/conformity rule imposing or waiving special documents for private postal tea was not found. Ordinary arrival inspection and certificates issued by inspectors are not independently disqualifying; existing plant-risk classification remains open.",
+      "urls": [
+        "https://shabait.com/2026/07/12/workshop-on-developing-national-food-control-policy/",
+        "https://shabait.com/2010/03/26/maintaining-a-standard-of-products-to-secure-national-interests/"
+      ],
+      "files": [],
+      "access": "Official Ministry of Information indexed reports read. The 2026 policy-drafting report is current but not a law; the 2010 interview is historical operational context only."
+    },
+    "ET": {
+      "finding": "Recovered actual Gazette Proclamation 1112/2019 and visually verified article 10(1), PDF page 20: food imports require safety compliance and an executive-organ permit. However article 3, PDF page 13, limits the law’s scope to products intended for market placement or otherwise offered for public use. Article2(1) defines food to include processed human-consumption substances. Regulation 531/2023 defines the agency and its powers, not a new unqualified private import duty. The current eRIS portal describes special import applications but in an importer/vendor/licensing chain; it does not settle private personal food parcels.",
+      "gap": "Whether an own-consumption postal purchase is within article 3 public-market scope and what EFDA private-food workflow applies remains unresolved. The apparent article 10 permit must not be read without the scope limitation, or commercial competence licensing extended to the recipient.",
+      "urls": [
+        "https://faolex.fao.org/docs/pdf/eth208821.pdf",
+        "https://justice.gov.et/en/law/food-and-medicine-administration-proclamation/",
+        "https://faolex.fao.org/docs/pdf/eth216290.pdf",
+        "https://eris.efda.gov.et/"
+      ],
+      "files": [
+        "et-food2019.pdf",
+        "et-food2019.txt",
+        "et-food2019-page-20.png",
+        "et-food2019-page-21.png",
+        "et-foodreg2023.pdf",
+        "et-foodreg2023.txt",
+        "et-food2019-scope-13.png"
+      ],
+      "access": "Complete FAO-hosted Gazette law and 2023 agency regulation downloaded; article 10 visually verified because PDF OCR is poor. Ministry of Justice labels 1112/2019 in force. Personal medical/supplement exceptions and customs tax allowances were not extended to ordinary tea."
+    }
+  }
+}

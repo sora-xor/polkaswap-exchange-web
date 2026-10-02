@@ -182,6 +182,7 @@ import { computed, ref, toRef, watch } from 'vue';
 import { useExploreTable } from '@/composables/useExploreTable';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useLoading } from '@/composables/useLoading';
+import { createCoalescedAsyncTask } from '@/utils/asyncTask';
 import { useTranslation } from '@/composables/useTranslation';
 import { ZeroStringValue } from '@/consts';
 import { FontWeightRate } from '@/lib/soraneo-wallet/src/consts';
@@ -362,15 +363,13 @@ watch(currentAssetsFilter, () => {
   currentPage.value = 1;
 });
 
-const updateExploreData = async (): Promise<void> => {
-  if (loading.value) return;
-
+const updateExploreData = createCoalescedAsyncTask(async () => {
   await withLoading(async () => {
     await withParentLoading(async () => {
       tokensData.value = Object.freeze(await fetchTokensData(allowedAssets.value));
     });
   });
-};
+});
 
 watch(
   () => whitelistSignature.value,

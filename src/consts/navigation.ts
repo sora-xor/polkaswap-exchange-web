@@ -1,5 +1,7 @@
 export enum PageNames {
   Swap = 'Swap',
+  Store = 'Store',
+  Bots = 'Bots',
   Pool = 'Pool',
   Stats = 'Stats',
   Wallet = 'Wallet',
@@ -36,6 +38,8 @@ export enum PageNames {
   VaultsContainer = 'VaultsContainer',
   ForAgents = 'ForAgents',
   Burn = 'Burn',
+  GetTs = 'GetTs',
+  BuyXor = 'BuyXor',
 }
 
 export enum RouteNames {

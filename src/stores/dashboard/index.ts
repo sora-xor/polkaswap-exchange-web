@@ -11,6 +11,7 @@ const INTERVAL = 2 * 60_000;
 const buildInitialState = (): DashboardState => ({
   ownedAssetIds: [],
   ownedAssetIdsInterval: null,
+  ownedAssetIdsSubscriptionGeneration: 0,
 });
 
 const clearOwnedAssetsInterval = (store: DashboardState): void => {
@@ -41,9 +42,14 @@ export const useDashboardStore = defineStore('dashboard', {
     },
   },
   actions: {
+    /**
+     * Refreshes the assets owned by the current account, discarding a response when
+     * its subscription lifecycle has already been reset or replaced.
+     */
     async requestOwnedAssetIds(): Promise<void> {
       const walletStore = useWalletStore();
       const accountId = walletStore.account?.address ?? walletStore.address;
+      const subscriptionGeneration = this.ownedAssetIdsSubscriptionGeneration;
 
       if (!walletStore.isLoggedIn || !accountId) {
         this.ownedAssetIds = [];
@@ -51,21 +57,34 @@ export const useDashboardStore = defineStore('dashboard', {
       }
 
       try {
-        this.ownedAssetIds = await api.assets.getOwnedAssetIds(accountId);
+        const ownedAssetIds = await api.assets.getOwnedAssetIds(accountId);
+
+        if (subscriptionGeneration === this.ownedAssetIdsSubscriptionGeneration) {
+          this.ownedAssetIds = ownedAssetIds;
+        }
       } catch (error) {
         console.error(error);
-        this.ownedAssetIds = [];
+        if (subscriptionGeneration === this.ownedAssetIdsSubscriptionGeneration) {
+          this.ownedAssetIds = [];
+        }
       }
     },
+    /** Starts owned-asset polling unless this subscription is reset while its initial request is pending. */
     async subscribeOnOwnedAssets(): Promise<void> {
       clearOwnedAssetsInterval(this);
+      const subscriptionGeneration = ++this.ownedAssetIdsSubscriptionGeneration;
       await this.requestOwnedAssetIds();
 
+      if (subscriptionGeneration !== this.ownedAssetIdsSubscriptionGeneration) return;
+
       this.ownedAssetIdsInterval = setInterval(() => {
+        if (subscriptionGeneration !== this.ownedAssetIdsSubscriptionGeneration) return;
         void this.requestOwnedAssetIds();
       }, INTERVAL);
     },
+    /** Stops polling and invalidates any owned-asset request still in flight. */
     async reset(): Promise<void> {
+      this.ownedAssetIdsSubscriptionGeneration += 1;
       clearOwnedAssetsInterval(this);
       this.ownedAssetIds = [];
     },

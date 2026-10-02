@@ -73,10 +73,7 @@ const closeView = () => {
   visibility.value = false;
 };
 
-const login = async (account: PolkadotJsAccount): Promise<void> => {
-  await web3Store.selectSubAccount(account);
-  closeView();
-};
+const login = (account: PolkadotJsAccount): Promise<boolean> => web3Store.selectSubAccount(account);
 </script>
 
 <style lang="scss">

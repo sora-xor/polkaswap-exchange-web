@@ -52,6 +52,13 @@
         <p class="nexus-recipient__message p4" :class="{ 'nexus-recipient__message--error': isNexusRecipientInvalid }">
           {{ nexusRecipientMessage }}
         </p>
+        <div class="nexus-recipient__recovery" role="note">
+          <p>{{ t('burnPage.nexusRecipientRecoveryWarning') }}</p>
+          <label class="nexus-recipient__recovery-check">
+            <input v-model="nexusAccessAcknowledged" type="checkbox" data-testid="nexus-access-acknowledgement" />
+            <span>{{ t('burnPage.nexusRecipientRecoveryCheck') }}</span>
+          </label>
+        </div>
       </div>
       <info-line
         v-if="isLoggedIn"
@@ -90,6 +97,9 @@
         </template>
         <template v-else-if="isNexusRecipientInvalid">
           {{ t('burnPage.invalidNexusRecipient') }}
+        </template>
+        <template v-else-if="isNexusAccessUnconfirmed">
+          {{ t('burnPage.confirmNexusRecovery') }}
         </template>
         <template v-else-if="isInsufficientBalance">
           {{ t('insufficientBalanceText', { tokenSymbol: burnedAsset.symbol }) }}
@@ -134,12 +144,14 @@ const props = withDefaults(
     max?: number;
     min?: number;
     requiresNexusRecipient?: boolean;
+    initialNexusRecipient?: string;
   }>(),
   {
     rate: '0.01',
     max: 100_000_000,
     min: 1,
     requiresNexusRecipient: false,
+    initialNexusRecipient: '',
   }
 );
 
@@ -160,13 +172,14 @@ const {
   getFiatAmountByCodecString,
 } = useFormattedAmount();
 
-const { max, min, receivedAsset, burnedAsset, rate, requiresNexusRecipient } = toRefs(props);
+const { max, min, receivedAsset, burnedAsset, rate, requiresNexusRecipient, initialNexusRecipient } = toRefs(props);
 const assetsStore = useAssetsStore();
 const settingsStore = useSettingsStore();
 const walletStore = useWalletStore();
 
 const value = ref('');
 const nexusRecipient = ref('');
+const nexusAccessAcknowledged = ref(false);
 const xor = XOR;
 
 const networkFees = computed(() => settingsStore.networkFees as NetworkFeesObject | undefined);
@@ -216,6 +229,7 @@ const isNexusRecipientMissing = computed(() => requiresNexusRecipient.value && !
 const isNexusRecipientInvalid = computed(
   () => requiresNexusRecipient.value && !!trimmedNexusRecipient.value && !normalizedNexusRecipient.value
 );
+const isNexusAccessUnconfirmed = computed(() => requiresNexusRecipient.value && !nexusAccessAcknowledged.value);
 const nexusRecipientMessage = computed(() =>
   isNexusRecipientInvalid.value ? t('burnPage.invalidNexusRecipient') : t('burnPage.nexusRecipientWarning')
 );
@@ -232,7 +246,8 @@ const isBurnDisabled = computed(
     isAmountLessThanMin.value ||
     isInsufficientBalance.value ||
     isNexusRecipientMissing.value ||
-    isNexusRecipientInvalid.value
+    isNexusRecipientInvalid.value ||
+    isNexusAccessUnconfirmed.value
 );
 
 const instance = getCurrentInstance();
@@ -280,7 +295,7 @@ async function handleConfirmBurn(): Promise<void> {
     return;
   } else {
     try {
-      await withNotifications(async () => {
+      const result = await withNotifications(async () => {
         const remark = requiresNexusRecipient.value
           ? createSoraNexusXorBurnRemark(normalizedNexusRecipient.value ?? '')
           : '';
@@ -291,10 +306,13 @@ async function handleConfirmBurn(): Promise<void> {
           await api.assets.burn(burnedAsset.value, willBeBurned.value.toString());
         }
       });
+
+      if (!result.submitted) return;
+
       emit('confirm', true);
     } catch (error) {
       console.error(error);
-      emit('confirm');
+      return;
     }
   }
 
@@ -305,9 +323,19 @@ watch(isVisible, async (dialogVisible) => {
   await nextTick();
   if (dialogVisible) {
     value.value = '';
-    nexusRecipient.value = '';
+    nexusRecipient.value = normalizeSoraNexusAccountId(initialNexusRecipient.value) ?? '';
+    nexusAccessAcknowledged.value = false;
   }
 });
+
+/** A confirmation applies only to the exact recipient that was shown when checked. */
+watch(
+  nexusRecipient,
+  () => {
+    nexusAccessAcknowledged.value = false;
+  },
+  { flush: 'sync' }
+);
 </script>
 
 <style lang="scss">
@@ -514,6 +542,38 @@ watch(isVisible, async (dialogVisible) => {
 
 .dialog--confirm-burn .nexus-recipient__message--error {
   color: var(--s-color-status-error);
+}
+
+.dialog--confirm-burn .nexus-recipient__recovery {
+  margin-top: $basic-spacing;
+  padding: $basic-spacing;
+  border: 1px solid var(--burn-warning-border);
+  border-radius: var(--s-border-radius-small);
+  background: var(--burn-warning-background);
+  color: var(--s-color-base-content-primary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.dialog--confirm-burn .nexus-recipient__recovery p {
+  margin: 0;
+}
+
+.dialog--confirm-burn .nexus-recipient__recovery-check {
+  display: flex;
+  align-items: flex-start;
+  gap: $basic-spacing-small;
+  margin-top: $basic-spacing;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dialog--confirm-burn .nexus-recipient__recovery-check input {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  accent-color: var(--s-color-theme-accent);
+  flex-shrink: 0;
 }
 
 .dialog--confirm-burn .disclaimer {

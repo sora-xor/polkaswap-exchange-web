@@ -13,7 +13,7 @@ import { onBeforeRouteLeave } from 'vue-router';
 import { useLoading } from '@/composables/useLoading';
 import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
-import type { AsyncFnWithoutArgs, FnWithoutArgs } from '@/types/common';
+import type { AsyncFnWithoutArgs, FnWithoutArgs, Nullable } from '@/types/common';
 
 const NOOP_ASYNC: AsyncFnWithoutArgs = async () => undefined;
 const NOOP: FnWithoutArgs = () => undefined;
@@ -71,6 +71,68 @@ function runHandlers(handlers: SubscriptionHandler<FnWithoutArgs>): Promise<unkn
 }
 
 /**
+ * Serializes subscription teardown/startup and deduplicates starts until an
+ * intervening reset changes the requested lifecycle generation.
+ */
+function createSubscriptionLifecycle(runStart: AsyncFnWithoutArgs, runReset: AsyncFnWithoutArgs) {
+  let tail = Promise.resolve();
+  let generation = 0;
+  let pendingStart: Nullable<{ generation: number; promise: Promise<void> }> = null;
+  let resetRequested = false;
+  let lastReset = Promise.resolve();
+
+  const enqueue = (task: AsyncFnWithoutArgs): Promise<void> => {
+    const result = tail.then(task, task);
+    tail = result.then(NOOP, NOOP);
+    return result;
+  };
+
+  const rememberStart = (requestedGeneration: number, promise: Promise<void>): Promise<void> => {
+    const entry = { generation: requestedGeneration, promise };
+    pendingStart = entry;
+    void promise.then(
+      () => {
+        if (pendingStart === entry) pendingStart = null;
+      },
+      () => {
+        if (pendingStart === entry) pendingStart = null;
+      }
+    );
+    return promise;
+  };
+
+  const update = (): Promise<void> => {
+    if (pendingStart?.generation === generation) return pendingStart.promise;
+
+    resetRequested = false;
+    return rememberStart(generation, enqueue(runStart));
+  };
+
+  const reset = (): Promise<void> => {
+    if (resetRequested) return lastReset;
+
+    resetRequested = true;
+    generation += 1;
+    lastReset = enqueue(runReset);
+    return lastReset;
+  };
+
+  const refresh = (): Promise<void> => {
+    resetRequested = false;
+    const requestedGeneration = ++generation;
+    return rememberStart(
+      requestedGeneration,
+      enqueue(async () => {
+        await runReset();
+        await runStart();
+      })
+    );
+  };
+
+  return { update, reset, refresh };
+}
+
+/**
  * Provides the subscription lifecycle previously handled by the DirectVueX mixin.
  * Components can pass an initial set of async subscription starters and reset callbacks,
  * while the composable manages login/connection watchers and loading state.
@@ -101,8 +163,10 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       await runHandlers(resetHandlers);
     };
 
+    const lifecycle = createSubscriptionLifecycle(runStartHandlers, runResetHandlers);
+
     if (options.autoStart ?? true) {
-      void runStartHandlers();
+      void lifecycle.update();
     }
 
     const passthrough = async <T>(handler?: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>): Promise<T> => {
@@ -115,9 +179,9 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
 
     const restartSubscriptions = async (value: boolean) => {
       if (value) {
-        await runStartHandlers();
+        await lifecycle.update();
       } else {
-        await runResetHandlers();
+        await lifecycle.reset();
       }
     };
 
@@ -138,7 +202,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
     const stopAccountWatcher = watch(accountIdentity, (value, previous) => {
       if (!trackLogin.value || !trackAccount.value) return;
       if (!(value && previous) || value === previous) return;
-      void runResetHandlers().then(runStartHandlers);
+      void lifecycle.refresh();
     });
 
     const stopConnectionWatcher = watch(nodeIsConnected, (value) => {
@@ -150,10 +214,11 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       stopLoginWatcher();
       stopAccountWatcher();
       stopConnectionWatcher();
+      void lifecycle.reset();
     });
 
     onBeforeRouteLeave(async (_to, _from, next) => {
-      await runResetHandlers();
+      await lifecycle.reset();
       next();
     });
 
@@ -166,8 +231,8 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       setResetSubscriptions: (handlers: Array<FnWithoutArgs | undefined>) => {
         resetHandlers.value = [...handlers];
       },
-      updateSubscriptions: runStartHandlers,
-      resetSubscriptions: runResetHandlers,
+      updateSubscriptions: lifecycle.update,
+      resetSubscriptions: lifecycle.reset,
       restartSubscriptions,
       trackLogin,
       trackAccount,
@@ -201,9 +266,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
 
   const subscriptionsDataLoading = computed(() => loading.value || parentLoadingResolver());
 
-  const updateSubscriptions = async (): Promise<void> => {
-    if (loading.value) return;
-
+  const runStartSubscriptions = async (): Promise<void> => {
     await withApi(async () => {
       await withParentLoading(async () => {
         await runAsyncHandlers(startHandlers);
@@ -211,9 +274,13 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
     });
   };
 
-  const resetSubscriptions = async (): Promise<void> => {
+  const runResetSubscriptions = async (): Promise<void> => {
     await runHandlers(resetHandlers);
   };
+
+  const lifecycle = createSubscriptionLifecycle(runStartSubscriptions, runResetSubscriptions);
+  const updateSubscriptions = lifecycle.update;
+  const resetSubscriptions = lifecycle.reset;
 
   const restartSubscriptions = async (value: boolean): Promise<void> => {
     if (value) {
@@ -239,7 +306,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
       stopAccountWatcher = watch(accountIdentity, (value, previous) => {
         if (!trackLogin.value || !trackAccount.value) return;
         if (!(value && previous) || value === previous) return;
-        void resetSubscriptions().then(updateSubscriptions);
+        void lifecycle.refresh();
       });
     }
 
@@ -270,6 +337,7 @@ export function useSubscriptions(options: UseSubscriptionsOptions = {}) {
 
   onBeforeUnmount(() => {
     unregisterWatchers();
+    void resetSubscriptions();
   });
 
   onBeforeRouteLeave(async (_to, _from, next) => {

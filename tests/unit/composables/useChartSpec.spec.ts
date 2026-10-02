@@ -83,11 +83,16 @@ describe('useChartSpec', () => {
     const yAxis = composable.yAxisSpec();
 
     expect(xAxis.axisLabel.color).toBe('#secondary');
+    expect(xAxis.axisLabel.lineHeight).toBe(1.5);
     expect(xAxis.axisPointer.label.backgroundColor).toBe('#success');
+    expect(xAxis.axisPointer.label.lineHeight).toBe(1.5);
+    expect(xAxis.axisLabel).not.toHaveProperty('lineHeigth');
+    expect(xAxis.axisPointer.label).not.toHaveProperty('lineHeigth');
     expect((xAxis.axisLabel.formatter as (value: number) => string)(1700000000000)).toContain(
       'formatted-1700000000000'
     );
     expect(yAxis.axisLine.lineStyle.color).toBe('#secondary');
+    expect(yAxis.axisLabel.lineHeight).toBe(1.5);
     expect(yAxis.splitLine.lineStyle.color).toBe('#tertiary');
   });
 

@@ -1,0 +1,46 @@
+{
+  "code": "GU",
+  "name": "Guam",
+  "status": "conditional",
+  "rule": "Reasoned general-category application: finished steam-manufactured sencha falls outside the unprocessed/minor-processed plant-product definition in 8 GAR 10100(g). Section 10120 admits stored dried human food subject to pest freedom, while the 10102(a) certificate categories do not cover finished tea. Ordinary declaration and inspection remain. This is an inference from the territorial rules plus actual manufacturing evidence, not a Guam-issued tea ruling.",
+  "personalMailApplicability": "The manufacturing definition and 10120 dried-food provision are commodity rules without a baggage-only restriction. The conclusion applies to the stated direct Japanese private postal parcel; no traveller exemption or mainland rule is extended.",
+  "quantityLimit": null,
+  "authority": "Guam Department of Agriculture and Compiler of Laws",
+  "evidenceUrls": [
+    "https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf",
+    "https://doag.guam.gov/biosecurity-division/",
+    "https://doag.guam.gov/resource/",
+    "https://doag.guam.gov/wp-doag-content/uploads/2026/03/Import-Permit-Request-Plant-Products-Revised2026.03.09.pdf",
+    "https://doag.guam.gov/wp-doag-content/uploads/2024/02/DOAG-Species-listing-reference.pdf",
+    "https://www.fda.gov/media/161541/download",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read Guam administrative regulations 10101/10103/10120 and Biosecurity Division guidance. The stored-dried-food allowance leaves the separate permit classification unresolved.",
+    "2026-09-30: Rechecked Guam biosecurity guidance alongside territorial dried-plant-food rules. FDA prior-notice exclusion for Guam does not remove territorial agriculture obligations. No current personal-post processed-sencha exemption located; did not extend CNMI passenger advice to Guam.",
+    "2026-09-30: Retrieved current DOAG plant-products import permit form revised 09-Mar-2026. It explicitly accommodates Air (Post Office) and noncommercial commodities; enumerated goods include fruits/vegetables, cut flowers, betel/piper, kava, feed, wood and other, without resolving manufactured tea under dried-food regulation 10120. The current linked species guide covers living species and fresh/propagative materials, with no Camellia finished-tea classification.",
+    "30 September independent legal-scope peer review: recovered and read the full official 8 GAR Chapter 10 PDF text via the web index after direct-host connection failure. Read 10100(f)-(g)/(k), 10101-10104, 10120 and 10122. Added the previously under-emphasized minor-processing definition; distinguished dried-food admissibility, permit scope and the narrower certificate list. The European corn-borer processing exception in 10106 is commodity-specific and was not generalized to tea. Saved sources/gu-quarantine-peer-web.txt. No decision change.",
+    "30 September root fresh food-scope check: Read the full official43-page FDA Edition4 Q&A online and exact question10.2 on PDFpage12. Kept the direct-territory prior-notice exclusion separate from local agricultural permits. Current eCFR open failed and FDA’s old CFR search page returned no section text; neither was represented as recovered regulatory text.",
+    "30 September finished-tea definition review: applied actual ISPM32 Category 1 tea and MAFF multistage manufacturing evidence to 10100(g), instead of requiring a bespoke commodity ruling. Read 10100(f)/(g), 10101–10104 and 10120 together. Proposed supported general-category interpretation, with explicit counterargument concerning broad plant-parts language; root peer review requested. No main-array change."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "supported",
+  "permitFreeReason": "The stated tea undergoes steaming, repeated rolling/pressing and drying to create a finished food. Actual ISPM32 Category 1 tea and MAFF manufacture evidence support applying Guam’s express minor-processing limit; section 10120 separately supplies affirmative dried-food admissibility. Section 10103 permit duties remain for covered plants/products, and 10100(f) broad plant-parts language is read with (g) rather than making its processing limitation ineffective. No certificate category names or describes this finished tea. This combined-source conclusion is interpretive, not a direct tea-specific agency quotation.",
+  "permitFreeSources": [
+    "https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf",
+    "https://doag.guam.gov/biosecurity-division/",
+    "https://doag.guam.gov/resource/",
+    "https://doag.guam.gov/wp-doag-content/uploads/2026/03/Import-Permit-Request-Plant-Products-Revised2026.03.09.pdf",
+    "https://doag.guam.gov/wp-doag-content/uploads/2024/02/DOAG-Species-listing-reference.pdf",
+    "https://www.fda.gov/media/161541/download",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+  ],
+  "permitFreeReviewedAt": "2026-09-30",
+  "foodImportReview": "FDA Prior Notice Q&A Edition 4 (October 2023), question 10.2, excludes direct food imports into Guam and the Northern Mariana Islands from prior notice under 21 CFR 1.276(b)(15). It separately requires notice when food enters the 50 states, DC or Puerto Rico, including transit. This does not waive the territory’s own plant-quarantine rules. This assessment is limited to direct entry into the territory.",
+  "paperworkType": "ordinary_declaration_and_inspection",
+  "requiredDocument": "Ordinary postal/customs declaration; no special permit or certificate under this general-category interpretation. Food must be pest-free and remain subject to arrival inspection.",
+  "definitionReview": "Proposed for independent root review; see pacific-finished-tea-definition-review/review-notes.json, including 10100(f) counterargument."
+}

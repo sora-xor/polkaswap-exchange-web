@@ -4,6 +4,7 @@ import { api } from '@/lib/soraneo-wallet/src/api';
 import { SoraNetwork } from '@/consts';
 import axios from '@/api';
 import { toQueryString } from '@/utils';
+import { parseStoredJson } from '@/utils/storageParsing';
 
 export const MOONPAY_WIDGET_ORIGINS = ['https://buy.moonpay.com', 'https://buy-staging.moonpay.com'] as const;
 
@@ -90,6 +91,12 @@ export type MoonpayCurrenciesById = {
   [key: string]: MoonpayCurrency;
 };
 
+const isAccountRecords = (value: unknown): value is Record<string, string> =>
+  typeof value === 'object' &&
+  value !== null &&
+  !Array.isArray(value) &&
+  Object.values(value).every((account) => typeof account === 'string');
+
 export class MoonpayApi {
   public static apiUrl = 'https://api.moonpay.com';
   public publicKey = '';
@@ -111,7 +118,7 @@ export class MoonpayApi {
   get accountRecords(): Record<string, string> {
     const records = api.accountStorage?.get('moonpay');
 
-    return records ? JSON.parse(records) : {};
+    return parseStoredJson(records, {} as Record<string, string>, isAccountRecords);
   }
 
   set accountRecords(records: Record<string, string>) {

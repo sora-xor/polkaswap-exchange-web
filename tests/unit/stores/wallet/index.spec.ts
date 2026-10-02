@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { Observable } from 'rxjs';
+import { computed } from 'vue';
 
 import { RouteNames } from '@/consts';
 import { Theme } from '@/consts/theme';
@@ -109,6 +110,7 @@ const fetchMock = vi.hoisted(() => vi.fn());
 const waitForAccountPairMock = vi.hoisted(() =>
   vi.fn(async (handler?: () => unknown | Promise<unknown>) => await handler?.())
 );
+const cancelAccountBoundTasksMock = vi.hoisted(() => vi.fn(async () => undefined));
 
 const walletRuntimeBridge = vi.hoisted(() => {
   const subscribers = new Set<(mutation: { type?: unknown }, state?: unknown) => void>();
@@ -289,6 +291,10 @@ vi.mock('@/lib/soraneo-wallet/src/services/google', () => ({
 vi.mock('@/lib/soraneo-wallet/src/services/wallet', () => ({
   checkWallet: checkWalletMock,
   getAppWallets: getAppWalletsMock,
+}));
+
+vi.mock('@/stores/bridge', () => ({
+  useBridgeStore: () => ({ cancelAccountBoundTasks: cancelAccountBoundTasksMock }),
 }));
 
 vi.mock('@/lib/soraneo-wallet/src/util/account', () => ({
@@ -885,6 +891,7 @@ describe('wallet store actions', () => {
           account: {
             createHistorySubscription: createHistorySubscriptionMock,
             getHistory: getExplorerHistoryMock,
+            getAccountHistory: getExplorerHistoryMock,
           },
           asset: {
             createNewAssetsSubscription: createNewAssetsSubscriptionMock,
@@ -1136,6 +1143,7 @@ describe('wallet store actions', () => {
 
     await walletStore.loginAccount(account);
     expect(loginApiMock).toHaveBeenCalledWith(walletApi, account, false);
+    expect(cancelAccountBoundTasksMock).not.toHaveBeenCalled();
     expect(walletStore.account).toEqual({
       address: 'addr',
       name: 'User',
@@ -1176,11 +1184,36 @@ describe('wallet store actions', () => {
     const externalHistoryUnsubscribeCount = externalHistoryUnsubscribeMock.mock.calls.length;
 
     await walletStore.logout();
+    expect(cancelAccountBoundTasksMock).toHaveBeenCalledTimes(1);
+    expect(cancelAccountBoundTasksMock.mock.invocationCallOrder[0]).toBeLessThan(
+      logoutApiMock.mock.invocationCallOrder[0]
+    );
     expect(logoutApiMock).toHaveBeenCalledTimes(1);
     expect(clearAccountAssetsMock.mock.calls.length).toBe(clearAccountAssetsCount + 1);
     expect(accountAssetsUnsubscribeMock.mock.calls.length).toBe(accountAssetsUnsubscribeCount + 1);
     expect(externalHistoryUnsubscribeMock.mock.calls.length).toBe(externalHistoryUnsubscribeCount + 1);
     expect(walletStore.isLoggedIn).toBe(false);
+  });
+
+  it('cancels bridge tracking before switching an established SORA account', async () => {
+    const walletStore = useWalletStore();
+    const currentAccount = {
+      address: 'addr-one',
+      name: 'One',
+      source: 'polkadot-js',
+    } as WALLET_TYPES.PolkadotJsAccount;
+    const nextAccount = { address: 'addr-two', name: 'Two', source: 'polkadot-js' } as WALLET_TYPES.PolkadotJsAccount;
+
+    await walletStore.loginAccount(currentAccount);
+    cancelAccountBoundTasksMock.mockClear();
+    loginApiMock.mockClear();
+
+    await walletStore.loginAccount(nextAccount);
+
+    expect(cancelAccountBoundTasksMock).toHaveBeenCalledTimes(1);
+    expect(cancelAccountBoundTasksMock.mock.invocationCallOrder[0]).toBeLessThan(
+      loginApiMock.mock.invocationCallOrder[0]
+    );
   });
 
   it('hydrates account assets immediately after login', async () => {
@@ -1234,6 +1267,68 @@ describe('wallet store actions', () => {
     expect(walletStore.accountAssetsLoading).toBe(false);
     expect(walletStore.accountAssetsLoaded).toBe(true);
   });
+
+  it.each([
+    { from: '0', to: '2000000000000000000', mutation: 'replace', feeBefore: false, feeAfter: true },
+    { from: '2000000000000000000', to: '500000000000000000', mutation: 'replace', feeBefore: true, feeAfter: false },
+    { from: '2000000000000000000', to: '0', mutation: 'replace', feeBefore: true, feeAfter: false },
+    { from: '0', to: '2000000000000000000', mutation: 'mutate', feeBefore: false, feeAfter: true },
+  ])(
+    'updates derived XOR balances from $from to $to after an SDK $mutation',
+    async ({ from, to, mutation, feeBefore, feeAfter }) => {
+      const walletStore = useWalletStore();
+      let balanceUpdateHandler: (() => void) | null = null;
+      const sdkAsset = {
+        address: 'xor-address',
+        symbol: 'XOR',
+        decimals: 18,
+        balance: {
+          free: from,
+          transferable: from,
+          total: from,
+          reserved: '0',
+          frozen: '0',
+          bonded: '0',
+          locked: '0',
+        },
+      };
+
+      walletStore.accountState.address = 'addr';
+      walletStore.accountState.source = AppWallet.PolkadotJS;
+      Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+        accountAssets: [sdkAsset],
+      });
+      balanceUpdatedSubscribeMock.mockImplementationOnce((handler: () => void) => {
+        balanceUpdateHandler = handler;
+        return { unsubscribe: accountAssetsUnsubscribeMock };
+      });
+
+      await walletStore.subscribeOnAccountAssets();
+
+      const accountXor = computed(() => walletStore.accountAssetsAddressTable['xor-address']);
+      const transferable = computed(() => accountXor.value?.balance?.transferable ?? '0');
+      const hasNetworkFee = computed(() =>
+        FPNumber.fromCodecValue(transferable.value).gte(FPNumber.fromCodecValue('1000000000000000000'))
+      );
+      const previousSnapshot = accountXor.value;
+
+      expect(transferable.value).toBe(from);
+      expect(hasNetworkFee.value).toBe(feeBefore);
+
+      const nextBalance = { ...sdkAsset.balance, free: to, transferable: to, total: to };
+      if (mutation === 'replace') {
+        sdkAsset.balance = nextBalance;
+      } else {
+        Object.assign(sdkAsset.balance, nextBalance);
+      }
+      balanceUpdateHandler?.();
+
+      expect(transferable.value).toBe(to);
+      expect(hasNetworkFee.value).toBe(feeAfter);
+      expect(accountXor.value).not.toBe(previousSnapshot);
+      expect(previousSnapshot.balance.transferable).toBe(from);
+    }
+  );
 
   it('keeps previous account balances visible while account asset hydration rebuilds the SDK list', async () => {
     const walletStore = useWalletStore();
@@ -1371,6 +1466,170 @@ describe('wallet store actions', () => {
 
     expect(clearAccountAssetsMock.mock.calls.length).toBe(clearAccountAssetsCount);
     expect(walletStore.accountAssets).toEqual(assets);
+  });
+
+  it('preserves the same account snapshot while reconnecting after a network reset', async () => {
+    const walletStore = useWalletStore();
+    let finishHydration!: () => void;
+    const assets = [{ address: 'xor-address', symbol: 'XOR', decimals: 18, balance: { transferable: '1' } }];
+    walletStore.accountState.address = 'addr';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    walletStore.setAccountAssets(assets as never);
+
+    await walletStore.resetNetworkSubscriptions();
+    updateAccountAssetsMock.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          finishHydration = () => {
+            Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+              accountAssets: assets,
+            });
+            resolve();
+          };
+        })
+    );
+
+    const hydrationPromise = walletStore.subscribeOnAccountAssets();
+
+    expect(walletStore.accountAssets).toEqual(assets);
+    expect(walletStore.accountAssetsLoading).toBe(true);
+    finishHydration();
+    await hydrationPromise;
+    expect(walletStore.accountAssets).toEqual(assets);
+    expect(walletStore.accountAssetsLoaded).toBe(true);
+  });
+
+  it.each([false, true])(
+    'clears prior account balances while a new account hydrates after network reset: %s',
+    async (resetNetwork) => {
+      const walletStore = useWalletStore();
+      let oldBalanceUpdateHandler: (() => void) | null = null;
+      let finishHydration!: () => void;
+      const previousAsset = {
+        address: 'xor-address',
+        symbol: 'XOR',
+        decimals: 18,
+        balance: { transferable: '2000000000000000000' },
+      };
+      const nextAsset = {
+        ...previousAsset,
+        balance: { transferable: '500000000000000000' },
+      };
+
+      walletStore.accountState.address = 'previous-account';
+      walletStore.accountState.source = AppWallet.PolkadotJS;
+      Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+        accountAssets: [previousAsset],
+      });
+      balanceUpdatedSubscribeMock.mockImplementationOnce((handler: () => void) => {
+        oldBalanceUpdateHandler = handler;
+        return { unsubscribe: accountAssetsUnsubscribeMock };
+      });
+
+      await walletStore.subscribeOnAccountAssets();
+      expect(walletStore.accountAssets).toEqual([previousAsset]);
+
+      if (resetNetwork) {
+        await walletStore.resetNetworkSubscriptions();
+      }
+
+      updateAccountAssetsMock.mockImplementationOnce(
+        () =>
+          new Promise<void>((resolve) => {
+            finishHydration = () => {
+              Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+                accountAssets: [nextAsset],
+              });
+              resolve();
+            };
+          })
+      );
+      walletStore.accountState.address = 'next-account';
+
+      const hydrationPromise = walletStore.subscribeOnAccountAssets();
+
+      expect(walletStore.accountAssets).toEqual([]);
+      expect(walletStore.accountAssetsLoading).toBe(true);
+      expect(walletStore.accountAssetsLoaded).toBe(false);
+      oldBalanceUpdateHandler?.();
+      expect(walletStore.accountAssets).toEqual([]);
+
+      finishHydration();
+      await hydrationPromise;
+
+      expect(walletStore.accountAssets).toEqual([nextAsset]);
+      expect(walletStore.accountAssetsLoaded).toBe(true);
+      Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+        accountAssets: [previousAsset],
+      });
+      oldBalanceUpdateHandler?.();
+      expect(walletStore.accountAssets).toEqual([nextAsset]);
+    }
+  );
+
+  it.each(['resetAccountAssetsSubscription', 'resetNetworkSubscriptions', 'logout'] as const)(
+    'discards pending account hydration after %s',
+    async (resetAction) => {
+      const walletStore = useWalletStore();
+      let finishHydration!: () => void;
+      walletStore.accountState.address = 'addr';
+      walletStore.accountState.source = AppWallet.PolkadotJS;
+      updateAccountAssetsMock.mockImplementationOnce(
+        () =>
+          new Promise<void>((resolve) => {
+            finishHydration = resolve;
+          })
+      );
+
+      const hydrationPromise = walletStore.subscribeOnAccountAssets();
+
+      expect(walletStore.accountAssetsLoading).toBe(true);
+      await walletStore[resetAction]();
+      Object.assign(((walletApi as Record<string, unknown>).assets ??= {}) as Record<string, unknown>, {
+        accountAssets: [
+          {
+            address: 'xor-address',
+            symbol: 'XOR',
+            decimals: 18,
+            balance: { transferable: '2000000000000000000' },
+          },
+        ],
+      });
+      finishHydration();
+      await hydrationPromise;
+
+      expect(walletStore.accountAssets).toEqual([]);
+      expect(walletStore.accountState.accountAssetsSubscription).toBeNull();
+      expect(walletStore.accountAssetsLoading).toBe(false);
+      expect(walletStore.accountAssetsLoaded).toBe(false);
+      expect(balanceUpdatedSubscribeMock).not.toHaveBeenCalled();
+    }
+  );
+
+  it('does not start account hydration when account-pair readiness arrives after a reset', async () => {
+    const walletStore = useWalletStore();
+    let resumeAccountPair!: () => void;
+    const pairReady = new Promise<void>((resolve) => {
+      resumeAccountPair = resolve;
+    });
+    walletStore.accountState.address = 'addr';
+    walletStore.accountState.source = AppWallet.PolkadotJS;
+    waitForAccountPairMock.mockImplementationOnce(async (handler) => {
+      await pairReady;
+      return await handler?.();
+    });
+
+    const hydrationPromise = walletStore.subscribeOnAccountAssets();
+
+    expect(updateAccountAssetsMock).not.toHaveBeenCalled();
+    walletStore.resetAccountAssetsSubscription();
+    resumeAccountPair();
+    await hydrationPromise;
+
+    expect(updateAccountAssetsMock).not.toHaveBeenCalled();
+    expect(balanceUpdatedSubscribeMock).not.toHaveBeenCalled();
+    expect(walletStore.accountAssetsLoading).toBe(false);
+    expect(walletStore.accountAssetsLoaded).toBe(false);
   });
 
   it('marks account asset hydration settled after an empty asset update', async () => {
@@ -1561,14 +1820,12 @@ describe('wallet store actions', () => {
     await walletStore.createNftStorageInstance();
 
     expect(historyElementsFilterMock).toHaveBeenCalledWith({
-      address: 'cnUser',
       assetAddress: 'xor',
       operations: [Operation.Swap],
       query: { statuses: ['SUCCESS'] },
     });
-    expect(getExplorerHistoryMock).toHaveBeenCalledWith({
+    expect(getExplorerHistoryMock).toHaveBeenCalledWith('cnUser', {
       filter: {
-        address: 'cnUser',
         assetAddress: 'xor',
         operations: [Operation.Swap],
         query: { statuses: ['SUCCESS'] },

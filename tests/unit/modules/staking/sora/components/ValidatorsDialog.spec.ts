@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
-import { computed, defineComponent, h, ref } from 'vue';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { computed, defineComponent, h, nextTick, ref } from 'vue';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import ValidatorsDialog from '@/modules/staking/sora/components/ValidatorsDialog.vue';
 
@@ -9,6 +9,7 @@ const validatorsRef = ref([{ address: 'validator-1' }, { address: 'validator-2' 
 const selectedValidatorsRef = ref([{ address: 'validator-2' }]);
 const maxNominationsRef = ref(4);
 const xorRef = ref({ symbol: 'XOR', balance: { transferable: '100' } });
+const stashRef = ref('stash-1');
 
 const nominateMock = vi.fn();
 const getNominateNetworkFeeMock = vi.fn();
@@ -25,6 +26,7 @@ vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
     },
     maxNominations: computed(() => maxNominationsRef.value),
     xor: computed(() => xorRef.value),
+    stash: computed(() => stashRef.value),
     formatCodecNumber: (value: string) => value,
     nominate: nominateMock,
     getNominateNetworkFee: getNominateNetworkFeeMock,
@@ -67,7 +69,8 @@ vi.mock('@/utils', async () => {
   return {
     __esModule: true,
     ...actual,
-    hasInsufficientXorForFee: () => false,
+    hasInsufficientXorForFee: (asset: { balance: { transferable: string } }, fee: string) =>
+      BigInt(asset.balance.transferable) < BigInt(fee || '0'),
   };
 });
 
@@ -124,8 +127,10 @@ vi.mock('@/modules/staking/sora/components/SelectValidatorsMode.vue', () => ({
   },
 }));
 
-const mountComponent = () =>
-  mount(ValidatorsDialog, {
+const mountedWrappers: Array<ReturnType<typeof mount>> = [];
+
+const mountComponent = () => {
+  const wrapper = mount(ValidatorsDialog, {
     props: {
       visible: true,
       parentLoading: false,
@@ -144,14 +149,22 @@ const mountComponent = () =>
       },
     },
   });
+  mountedWrappers.push(wrapper);
+  return wrapper;
+};
 
 describe('ValidatorsDialog.vue', () => {
+  afterEach(() => {
+    mountedWrappers.splice(0).forEach((wrapper) => wrapper.unmount());
+  });
+
   beforeEach(() => {
     stakingInfoRef.value = { myValidators: ['validator-1'] };
     validatorsRef.value = [{ address: 'validator-1' }, { address: 'validator-2' }];
     selectedValidatorsRef.value = [{ address: 'validator-2' }];
     maxNominationsRef.value = 4;
     xorRef.value = { symbol: 'XOR', balance: { transferable: '100' } };
+    stashRef.value = 'stash-1';
     nominateMock.mockReset();
     getNominateNetworkFeeMock.mockReset();
     setStakingInfoMock.mockReset();
@@ -177,5 +190,65 @@ describe('ValidatorsDialog.vue', () => {
       myValidators: ['validator-2'],
     });
     expect(wrapper.emitted('confirm')).toBeTruthy();
+  });
+
+  it('keeps the latest validator-set fee when requests resolve in reverse order', async () => {
+    let resolveFirst!: (fee: string) => void;
+    let resolveSecond!: (fee: string) => void;
+    const firstFee = new Promise<string>((resolve) => {
+      resolveFirst = resolve;
+    });
+    const secondFee = new Promise<string>((resolve) => {
+      resolveSecond = resolve;
+    });
+    const wrapper = mountComponent();
+    await flushPromises();
+    (wrapper.vm as any).handleSelectedMode();
+    getNominateNetworkFeeMock.mockImplementationOnce(() => firstFee).mockImplementationOnce(() => secondFee);
+
+    selectedValidatorsRef.value = [{ address: 'validator-1' }, { address: 'validator-2' }];
+    await nextTick();
+    selectedValidatorsRef.value = [{ address: 'validator-2' }];
+    await nextTick();
+
+    expect(wrapper.find('.confirm').attributes('disabled')).toBeDefined();
+
+    resolveSecond('200');
+    await flushPromises();
+    expect((wrapper.vm as any).nominateNetworkFee).toBe('200');
+    expect(wrapper.find('.confirm').attributes('disabled')).toBeDefined();
+
+    resolveFirst('10');
+    await flushPromises();
+    expect((wrapper.vm as any).nominateNetworkFee).toBe('200');
+    expect(wrapper.find('.confirm').attributes('disabled')).toBeDefined();
+  });
+
+  it('keeps the current account fee when account requests resolve in reverse order', async () => {
+    let resolveFirst!: (fee: string) => void;
+    let resolveSecond!: (fee: string) => void;
+    const firstFee = new Promise<string>((resolve) => {
+      resolveFirst = resolve;
+    });
+    const secondFee = new Promise<string>((resolve) => {
+      resolveSecond = resolve;
+    });
+    const wrapper = mountComponent();
+    await flushPromises();
+    (wrapper.vm as any).handleSelectedMode();
+    getNominateNetworkFeeMock.mockImplementationOnce(() => firstFee).mockImplementationOnce(() => secondFee);
+
+    stashRef.value = 'stash-2';
+    await nextTick();
+    stashRef.value = 'stash-3';
+    await nextTick();
+
+    resolveSecond('200');
+    await flushPromises();
+    resolveFirst('10');
+    await flushPromises();
+
+    expect((wrapper.vm as any).nominateNetworkFee).toBe('200');
+    expect(wrapper.find('.confirm').attributes('disabled')).toBeDefined();
   });
 });

@@ -1,0 +1,267 @@
+[
+  {
+    "code": "BQ",
+    "name": "Bonaire, Saba and Sint Eustatius",
+    "status": "not_verified",
+    "rule": "Bonaire permits dried herbs under a specific Venezuela reopening measure; that is not a Japan-wide tea rule and does not establish Saba or Sint Eustatius conditions.",
+    "personalMailApplicability": "Country code covers three islands with unresolved personal-mail plant-health application.",
+    "quantityLimit": null,
+    "authority": "Public Entity Bonaire",
+    "evidenceUrls": [
+      "https://bonairegov.com/en/nieuwsoverzicht/artikel/import-uit-venezuela-versoepeld",
+      "https://wetten.overheid.nl/BWBR0028063/2024-01-01/",
+      "https://wetten.overheid.nl/BWBR0028619/",
+      "https://faolex.fao.org/docs/pdf/net214082.pdf",
+      "https://zoek.officielebekendmakingen.nl/kst-31957-7.html"
+    ],
+    "remainingQuestion": "Need current implementing conditions and manufactured-tea classification under BES Invoeringswet 18.2.4a–b for Bonaire, Saba and Sint Eustatius. Published Venezuela-only Bonaire allowance cannot establish Japanese tea for the three-island shipping code.",
+    "researchAttempts": [
+      "Read Bonaire’s dried-herb import notice; it specifically concerns Venezuela. Searched Japanese tea rules and Saba/Sint Eustatius coverage without finding a shared personal-post exemption.",
+      "2026-09-30: Reviewed BES Invoeringswet articles 18.2.4a–b: plant products are unprocessed or simply processed and the Minister/director may impose import conditions. Native Dutch searches did not produce a current sencha classification or implementing Japan-tea conditions across all three islands. Neither the Venezuela-only Bonaire reopening nor tax treatment resolves this shared shipping code.",
+      "2026-09-30: Warenwet BES article 2(1) excludes manufacture within the same private household, not purchased-food import generally. Article3(1)(j)–(k) empowers implementing import/export and registration rules; it does not itself impose a universal imported-food origin certificate. Article3(4) allows rules for particular BES islands. Read current official indexed 2023 text and FAOLEX 2023 full-text copy. No material new common three-island personal postal food exemption or mandatory certificate found. Existing manufactured-tea/island-specific implementing-rule gap remains.",
+      "2026-09-30 fresh official online recovery: Recovered the official legislative explanatory memorandum for BES Invoeringswet. It explicitly declines to extend the European Netherlands plant-health system to the islands, instead using the limited BES powers under articles 18.2.4a–e. This independently confirms why European/Dutch tea exemptions cannot be transferred to BQ. It does not establish the current Japanese-tea conditions common to Bonaire, Saba and Sint Eustatius. Local copy: official-online-recovery-2026-09-30/americas/bq-law-explanation.html."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need current implementing conditions and manufactured-tea classification under BES Invoeringswet 18.2.4a–b for Bonaire, Saba and Sint Eustatius. Published Venezuela-only Bonaire allowance cannot establish Japanese tea for the three-island shipping code.",
+    "permitFreeSources": [
+      "https://bonairegov.com/en/nieuwsoverzicht/artikel/import-uit-venezuela-versoepeld",
+      "https://wetten.overheid.nl/BWBR0028063/2024-01-01/",
+      "https://wetten.overheid.nl/BWBR0028619/",
+      "https://faolex.fao.org/docs/pdf/net214082.pdf"
+    ]
+  },
+  {
+    "code": "CW",
+    "name": "Curacao",
+    "status": "not_verified",
+    "rule": "Curaçao customs requires permits for plants and flowers but does not classify manufactured dried tea. Personal goods customs clearance alone is insufficient agricultural evidence.",
+    "personalMailApplicability": "Traveler page and general import procedure reviewed; no tea-specific postal provision found.",
+    "quantityLimit": null,
+    "authority": "Douane Curaçao",
+    "evidenceUrls": [
+      "https://douane.cw/particulier/reizigersbagage/verboden-in-en-uit-te-voeren/",
+      "https://douane.cw/zakelijk/inklaring-en-invoer/",
+      "https://lokaleregelgeving.overheid.nl/CVDR143880/1",
+      "https://lokaleregelgeving.overheid.nl/CVDR143880/1?show-wti=true",
+      "https://www.nvwa.nl/documenten/fytosanitair/landeneisen/diverse-producten/cura-ao-diverse-producten-exporteisen",
+      "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/cura-ao-diverse-producten-exporteisen/Curacao_Diverse_producten_exporteisen_1.1.pdf",
+      "https://ftac.cw/wp-content/uploads/2024/11/Rapport-levensmiddelen-FTAC.pdf"
+    ],
+    "remainingQuestion": "Need Curaçao LVV’s current finished-tea commodity conditions or nonperishable personal-food exemption. Customs guidance covers plants/flowers generally and personal customs clearance, but neither establishes phytosanitary treatment of manufactured Japanese tea.",
+    "researchAttempts": [
+      "Reviewed Curaçao customs forbidden-goods and general clearance procedures. Plant/flower permit entries do not classify tea, and personal customs treatment does not establish a plant-health exemption.",
+      "2026-09-30: Current Warenlandsverordening article 2(1) likewise excludes manufacture within a private household, not import of purchased retail food. Article3(1)(j)–(k) authorizes import/export and registration rules, not a self-executing universal origin certificate; regulation-making powers alone do not exclude personal tea. The publicly indexed permit-list decree concerns specific bakery/meat/produce categories, not a new tea ruling. No material personal-postal exemption/barrier established; LVV finished-tea conditions remain missing.",
+      "2026-09-30 fresh official online recovery: Recovered the current-linked Dutch NPPO diverse-product Curaçao sheet, effective 22 May 2013, and the Curaçao Fair Trade Authority 2024 food-market report. The NPPO sheet has no populated certificate commodity list and states no specific requirements are known; it says a requested certificate for an unnamed product requires official destination information and assessment. Its missing-information statement is not a positive Curaçao permit/certificate exemption for Japanese tea. The local authority report maps food import laws but supplies no all-private-food certificate duty or manufactured-tea waiver. Saved full PDFs/texts cw-nvwa-diverse2013 and cw-ftac2024."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need Curaçao LVV’s current finished-tea commodity conditions or nonperishable personal-food exemption. Customs guidance covers plants/flowers generally and personal customs clearance, but neither establishes phytosanitary treatment of manufactured Japanese tea.",
+    "permitFreeSources": [
+      "https://douane.cw/particulier/reizigersbagage/verboden-in-en-uit-te-voeren/",
+      "https://douane.cw/zakelijk/inklaring-en-invoer/",
+      "https://lokaleregelgeving.overheid.nl/CVDR143880/1",
+      "https://lokaleregelgeving.overheid.nl/CVDR143880/1?show-wti=true"
+    ]
+  },
+  {
+    "code": "SX",
+    "name": "Saint Maarten",
+    "status": "not_verified",
+    "rule": "Sint Maarten LVV plant controls still do not classify manufactured sencha. Separately, current Landsbesluit publieke gezondheid (AB 2017 no.33), article 4(2), confines food import notification to commercial use. Article 4(3) confines origin health certificates to commercial imports of dairy, fish, poultry/meat and baby food; plain tea is not listed. Its official explanatory note distinguishes personal from commercial use by presentation, packaging and quantity, without a passenger-only limitation. This narrows the unresolved issue to the separate plant-health classification rather than imposing commercial food paperwork on a 100g private parcel.",
+    "personalMailApplicability": "The public-health notification/certificate duties are limited by intended commercial use, not by whether a seller was paid or by a traveler-only allowance. Treating a single 100g parcel intended for the recipient’s own consumption as personal follows the enacted scope and explanatory note. Independent LVV plant-product scope remains unverified.",
+    "quantityLimit": null,
+    "authority": "Sint Maarten LVV; Ministry of Public Health, Social Development and Labor; official local legislation register",
+    "evidenceUrls": [
+      "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+      "https://www.newgmc.com/index.php?download=466%3Aproduce-and-plant-produce-import-form&id=35%3Asops-a-ssops&option=com_phocadownload&view=category",
+      "https://lokaleregelgeving.overheid.nl/CVDR475613",
+      "https://www.sintmaartengov.org/Documents/Official%20Publications/AB%202017%2C%20no.%2033%20Landsbesluit%20publieke%20gezondheid.pdf"
+    ],
+    "remainingQuestion": "Need Sint Maarten LVV’s current classification of manufactured steamed/dried Camellia tea and any applicable plant import permit/phytosanitary conditions. The food-import notification and certificate duties in current Public Health Decree article 4 are not a separate barrier for this personal plain-tea parcel; Dutch/EU or French-island plant rules still cannot substitute for Sint Maarten’s own conditions.",
+    "researchAttempts": [
+      "Reviewed Sint Maarten LVV plant-import guidance and application material. No manufactured-tea or personal-mail entry identified.",
+      "2026-09-30: Retrieved the government’s complete AB 2017 no.33 Public Health Decree PDF and checked its current official register, which marks it effective 27 July 2018 to present. Read article 4(1)–(3), the import-notice form, and official explanatory note on PDF pages 39–41. Notification is limited to commercial consumption goods; health certification is additionally limited to listed animal foods/baby food. The note expressly distinguishes personal use based on presentation/quantity and repeats the commercial limit. A 2020 Inspectorate release reproduced by news outlets describes personal food up to 10 kg, but that secondary numerical threshold was not promoted into a primary-source quantity limit. Kept overall unresolved solely because independent LVV manufactured-tea classification remains missing.",
+      "2026-09-30 fresh official online recovery: Recovered the current official LVV page HTML and checked its links/media. The Import Export Conditions item is an image without linked commodity conditions; the available forms concern small animals. This yields no processed-tea import rule. The independently verified Public Health Decree personal-food scope remains intact; unresolved issue is the separate LVV plant-product classification. Saved sx-lvv.html."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Need Sint Maarten LVV’s current classification of manufactured steamed/dried Camellia tea and any applicable plant import permit/phytosanitary conditions. The food-import notification and certificate duties in current Public Health Decree article 4 are not a separate barrier for this personal plain-tea parcel; Dutch/EU or French-island plant rules still cannot substitute for Sint Maarten’s own conditions.",
+    "permitFreeSources": [
+      "https://www.sintmaartengov.org/Ministries/Departments/Pages/Agriculture-Livestock-and-Fisheries.aspx",
+      "https://www.newgmc.com/index.php?download=466%3Aproduce-and-plant-produce-import-form&id=35%3Asops-a-ssops&option=com_phocadownload&view=category",
+      "https://lokaleregelgeving.overheid.nl/CVDR475613",
+      "https://www.sintmaartengov.org/Documents/Official%20Publications/AB%202017%2C%20no.%2033%20Landsbesluit%20publieke%20gezondheid.pdf"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "paperworkType": "No personal plain-tea notice or origin-health certificate under Public Health Decree article 4; separate plant-health paperwork not determined.",
+    "requiredDocument": "No special food-import document established for this private tea parcel under article 4. Whether LVV requires a plant permit/phytosanitary certificate for manufactured sencha remains unresolved."
+  },
+  {
+    "code": "VG",
+    "name": "British Virgin Islands",
+    "status": "not_verified",
+    "rule": "Current plant-import guidance describes nursery plants and growing material rather than manufactured tea. The official index as at 1 January 2026 confirms the operative Plant Protection Ordinance Cap. 93 (1941), 1991 regulations and amendments through 2002. The Food Security and Sustainability Act 2022 is expressly not in force, so its broader food licensing cannot be applied.",
+    "personalMailApplicability": "No personal postal processed-tea exception or explicit classification found.",
+    "quantityLimit": null,
+    "authority": "British Virgin Islands Department of Agriculture",
+    "evidenceUrls": [
+      "https://bvi.gov.vg/sites/default/files/CONDITIONS%20FOR%20PLANT%20IMPORTATION.pdf",
+      "https://www.bvi.gov.vg/tags/agriculture?page=17",
+      "https://laws.gov.vg/inf-alpha/v",
+      "https://www.gov.vg/sites/default/files/2026-02/final_consolidated_index_with_user_guide_as_at_january_1%2C_2026.pdf",
+      "https://laws.gov.vg/revised-laws",
+      "https://laws.gov.vg/laws/fumigation-plants-act",
+      "https://laws.gov.vg/sites/default/files/2025-10/Fumigation%20of%20Plants%20Act.pdf"
+    ],
+    "remainingQuestion": "The current operative Cap. 93 subsidiary commodity schedules (1991 regulations, as amended by SI 35/2002, and SI 13/1996 with amendments) are listed in the 2026 official index but were not available in the searchable revised-law collection. Need those schedules or an NPPO determination for finished Japanese tea; nursery-plant guidance cannot settle it.",
+    "researchAttempts": [
+      "Read official plant-import conditions and agriculture notices; searched for tea/personal-mail scope. Excluded the draft Food Security and Sustainability Act from operative-law evidence.",
+      "2026-09-30: Read and saved the official 2026 consolidated legislative index, pages 120 and 184; checked all five revised-law collection pages and targeted Cap. 93/1996-regulation searches. Confirmed the 2022 Act remains uncommenced, rather than treating assent as commencement. The exact older operative schedules are indexed but not supplied by the current online revised-law collection; no publicly verified tea classification found.",
+      "2026-09-30: Final targeted searches for Cap.93 Plant Protection Ordinance, the 1991 subsidiary regulations and 2002 amendments found no new public operative commodity schedule beyond the already saved January 2026 official index. The missing evidence is the actual current schedule text or a finished-tea NPPO classification; current nursery guidance cannot resolve it. No authority contact made.",
+      "2026-09-30 fresh official online recovery: Recovered the current official Fumigation of Plants Act, revised 1 January 2023. Section 2 expressly includes parcel post in import, but plant scope concerns living material and fruit/vegetables intended for propagation rather than food; section 4 allows fumigation. This instrument supplies no general private finished-tea certificate duty and cannot replace the still-missing operative Cap.93 commodity schedules. Saved vg-fumigation.pdf and extracted full text."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The current operative Cap. 93 subsidiary commodity schedules (1991 regulations, as amended by SI 35/2002, and SI 13/1996 with amendments) are listed in the 2026 official index but were not available in the searchable revised-law collection. Need those schedules or an NPPO determination for finished Japanese tea; nursery-plant guidance cannot settle it.",
+    "permitFreeSources": [
+      "https://bvi.gov.vg/sites/default/files/CONDITIONS%20FOR%20PLANT%20IMPORTATION.pdf",
+      "https://www.bvi.gov.vg/tags/agriculture?page=17",
+      "https://laws.gov.vg/inf-alpha/v",
+      "https://www.gov.vg/sites/default/files/2026-02/final_consolidated_index_with_user_guide_as_at_january_1%2C_2026.pdf",
+      "https://laws.gov.vg/revised-laws"
+    ]
+  },
+  {
+    "code": "KN",
+    "name": "Saint Christopher and Nevis",
+    "status": "not_verified",
+    "rule": "Government guidance requires prior permits for unprocessed plant products and certificates/inspection for permitted small quantities. Its explicit dried-tea example is for exports, so it cannot establish an import requirement or exemption for sencha. Separate enacted food-law review found sale/adulteration controls and food-handler permits, not an unqualified origin certificate for private sealed food parcels.",
+    "personalMailApplicability": "General public included, but postal finished-tea classification unresolved.",
+    "quantityLimit": null,
+    "authority": "St Kitts and Nevis Department of Agriculture",
+    "evidenceUrls": [
+      "https://www.sknis.gov.kn/2020/06/26/plant-and-plant-product-import-requirements/",
+      "https://lawcommission.gov.kn/wp-content/documents/Annual-Laws/2024/ACTs/Act-10-2024-Plant-Protection-Act.pdf",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2020/08/commodities-and-their-import-requirements/",
+      "https://lawcommission.gov.kn/wp-content/documents/Act02and09TOC/Ch-09_26-Sale-of-Food-Drugs-Act.pdf",
+      "https://lawcommission.gov.kn/wp-content/documents/Revised-Acts-of-St-Kitts-and-Nevis/Revised-Acts-of-St-Kitts-and-Nevis-2020/Ch-09_21-Public-Health-Act.pdf",
+      "https://www.miticca.gov.kn/wp-content/uploads/2021/07/Import-Export-Procedures-Manual.pdf",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/4",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-requirements/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187921307_PHYTOSANITARY_REQUIREMENTS_2013042321-18En.doc",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-restrictions/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187600333_PHYTOSANITARY_RESTRICTIONS_AND_PROHIBITIONS_2013042321-18En.doc",
+      "https://www.sknis.gov.kn/wp-content/uploads/2024/03/PLANT-IMPORT-REQUIREMENTS-POSTER-1024x731-1.jpeg",
+      "https://www.ippc.int/en/publications/587/"
+    ],
+    "remainingQuestion": "Recover the applicable commodity requirements or a published processing/category rule; neither the legislation nor export guidance settles this Japanese postal sencha.",
+    "researchAttempts": [
+      "Read SKNIS plant import guidance and its permit/small-quantity passage. Distinguished its tea-export example from import permission; no manufactured-tea personal-post exemption established.",
+      "Read enacted Act 10 of 2024 (published 20 June 2024), not the 2023 draft: sections 16–17 require a permit and phytosanitary certificate for regulated articles; definition of plant product includes manufactured material only when its processing/nature creates pest risk. Section 67 repeals Cap.14.09 and schedules contain forms rather than a processed-food commodity exemption. Finished sencha classification is still not publicly established.",
+      "2026-09-30: Opened the exact IPPC 14-Aug-2020 Commodities and their Import requirements national report in a browser. Its attachment hyperlink is malformed: it points only to https://assets.ippc.int/static/media/ with no filename. The specific announced commodity schedule cannot be recovered from this official page; the report has no substantive text. This is a concrete source blocker in addition to the 2024 Act leaving finished-tea pest-risk classification unstated.",
+      "2026-09-30: Read Law Commission Sale of Food and Drugs Act Cap.9.26 (2002 revision) and Public Health Act Cap.9.21 (2020 revision), including complete Seventh Schedule Food Regulations. The latter defines food handling around selling/distributing unsealed food and preparing/storing food for sale; its permits cannot be applied to personal sealed tea. The Act’s import clause empowers regulations rather than itself prescribing a universal origin certificate. The import/export manual supplies plant controls but no definitive manufactured-tea classification. No separate food-law duty closed the current Act 10/2024 pest-risk classification gap; preserved the malformed IPPC commodity-schedule attachment as the concrete source blocker.",
+      "30 September bounded legal-scope peer review: The manufactured-product definition remains risk-qualified; the direct permit and certificate duties operate on covered articles. International-standard/science principles in sections 15–17 guide NPPO measures and application decisions, but are not themselves a self-executing tea exemption. Schedules provide forms rather than a comprehensive commodity table. The earlier government tea example concerns exports, and the announced IPPC commodity attachment is broken as already recorded.",
+      "2026-09-30 impasse audit: French/Spanish versions of the 2020 IPPC report repeat its filename-less attachment. Followed the actual Go Back link to the functioning official reporting index and recovered the older national Word notices. Report metadata dates requirements to 28 November 2005 and restrictions to 28 November 2005/updated 9 June 2006 (the 2012 page URL and 2015 asset directory are not the rule dates). The requirement concerns agricultural produce generally and says medicinal plants/herbs must be dried; the restriction concerns mangoes from named origins. Neither defines the agricultural-produce category to settle finished manufactured tea or grants a general processed-food exemption. Re-read current Act 10/2024 sections 1, 2, 16–17 and 67: 67 repeals the old Act and allows modification/revocation of earlier authorisations but supplies no commodity classification. Even assuming the old summary remains relevant, it does not resolve the current risk-qualified manufactured-product definition. Saved source files, metadata and provenance under impasse-review/.",
+      "2026-09-30 fresh official online recovery: Recovered the government media index and original March 2024 Plant Importation Requirements poster. Visual inspection shows only a request to call the Plant Quarantine Unit, with no commodity conditions or exemption; no contact was made. Revisited current Act 2024 sections2,15–17 against current-linked ISPM 32 Appendix 2 Category 1 tea example. The statute requires standards/PRA-based measures but does not expressly incorporate the international glossary or Category 1 exemption as a local commodity rule. The older notice mentions dried tea only for exports. This new illustration narrows the scientific issue but does not independently resolve published local treatment. Saved poster and provenance, and current ISPM 32 source in sibling french/ directory."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Recover the applicable commodity requirements or a published processing/category rule; neither the legislation nor export guidance settles this Japanese postal sencha.",
+    "permitFreeSources": [
+      "https://www.sknis.gov.kn/2020/06/26/plant-and-plant-product-import-requirements/",
+      "https://lawcommission.gov.kn/wp-content/documents/Annual-Laws/2024/ACTs/Act-10-2024-Plant-Protection-Act.pdf",
+      "https://lawcommission.gov.kn/wp-content/documents/Act02and09TOC/Ch-09_26-Sale-of-Food-Drugs-Act.pdf",
+      "https://lawcommission.gov.kn/wp-content/documents/Revised-Acts-of-St-Kitts-and-Nevis/Revised-Acts-of-St-Kitts-and-Nevis-2020/Ch-09_21-Public-Health-Act.pdf",
+      "https://www.miticca.gov.kn/wp-content/uploads/2021/07/Import-Export-Procedures-Manual.pdf",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/4",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-requirements/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187921307_PHYTOSANITARY_REQUIREMENTS_2013042321-18En.doc",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-restrictions/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187600333_PHYTOSANITARY_RESTRICTIONS_AND_PROHIBITIONS_2013042321-18En.doc"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "VC",
+    "name": "Saint Vincent",
+    "status": "not_verified",
+    "rule": "The linked Plant Protection Act is Act No. 16 of 2005 (assented 25 October 2005), not 2015. Section 2 includes manufactured products only where their nature or processing may create a pest-introduction/spread risk. Sections 10–11 provide import-permit and phytosanitary-document controls for designated articles; section 15 expressly covers postal interception. Ministry guidance includes personal-use plant material but does not classify finished sencha. The official general-food health guidance describes import inspection; it does not establish an origin health/free-sale certificate requirement for plain private tea. The Environmental Health Services Act 14/1991 provides handling, inspection and regulation-making powers without itself prescribing that certificate.",
+    "personalMailApplicability": "Section 15 expressly covers the Postal Corporation and private postal operators. The ministry’s September 2019 guidance includes personal-use plant parts in permit controls. Neither establishes whether sealed steamed/dried sencha is a regulated manufactured product, nor a small personal-post waiver.",
+    "quantityLimit": null,
+    "authority": "St Vincent and the Grenadines Plant Protection and Quarantine",
+    "evidenceUrls": [
+      "https://faolex.fao.org/docs/pdf/stv160536.pdf",
+      "https://importlicensing.wto.org/content/plant-and-plant-products-2",
+      "https://agriculture.gov.vc/agriculture/images/stories/AgricInfo/Agrinfo_September_2019.pdf",
+      "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/612-licenses-permits",
+      "https://nationalparks.gov.vc/nationalparks/images/documents/EnvironmentalHealthServicesAct1991.pdf",
+      "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/618-agencies-involved-in-import-procedures",
+      "https://www.ippc.int/en/publications/587/"
+    ],
+    "remainingQuestion": "Applicable section 10 condition and published manufactured-tea risk classification or general processing exemption; the ordinary postal reporting duty is not a permit requirement by itself.",
+    "researchAttempts": [
+      "Read the original Act PDF, including cover and section 1 confirming Act No. 16 of 2005, assented 25 October 2005. Corrected the previous 2015 citation. Section 2 defines plants as living plants, and manufactured plant products by potential pest risk; sections 10(2), 11 and 15 supply designation, permit and postal provisions.",
+      "Read the ministry’s AgriC Info September 2019, PDF page 14 (General Plant Quarantine Import Requirements), using OCR of the official PDF image. It requires permits for personal-use plant parts and plant products for processing/other purposes, with phytosanitary certification for the regulated consignment. It supplies no manufactured-tea or small personal-mail exception.",
+      "Rechecked the government-notified WTO import-licensing guidance and targeted official processed-food, tea and personal-import searches. No public commodity specification resolved whether finished sencha meets the Act’s manufactured-product risk threshold; kept unresolved rather than extending general plant guidance automatically.",
+      "2026-09-30: Read the official Licenses/Permits import guide, distinguishing its health-inspection requirement for imported food from origin veterinary certificates in the meat section. Retrieved the full text and reviewed the food, inspection, cargo-health and regulation-making provisions of the 1991 Environmental Health Services Act (Act 14/1991) from the National Parks government site; its food-handling and cargo-health powers do not establish a universal origin-law/free-sale certificate duty. Current consolidated Public Health Act 1977 food-import rules were not publicly recovered. Retained the exact Act 16/2005 agricultural classification gap rather than converting an inspection heading into a certificate obligation.",
+      "30 September bounded legal-scope peer review: Section 10(2) authorises controls for specified covered articles rather than itself listing all foods. Current ministry guidance includes personal-use plants/plant parts and plant products for processing or other purposes, but still does not define the risk status of finished manufactured tea. The 2019 list explicitly says it is not exhaustive. Section 13 release after inspection is not an advance permit/certificate waiver. No complete commodity exemption schedule is present in the Act.",
+      "2026-09-30 fresh official online recovery: Recovered the official import-agencies guide: plant conditions concern plant material; the origin health-certificate statement concerns meat, while general food undergoes inspection. No unqualified origin certificate for private tea established. Revisited Act 2005 sections5(a),10–11 with the actual current-linked ISPM 32 tea Category 1 illustration. NPPO duty to implement international standards and use standards in permit evaluation does not itself publish a local processed-tea commodity condition; retained unresolved. Saved vc-import-agencies.html."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Applicable section 10 condition and published manufactured-tea risk classification or general processing exemption; the ordinary postal reporting duty is not a permit requirement by itself.",
+    "permitFreeSources": [
+      "https://faolex.fao.org/docs/pdf/stv160536.pdf",
+      "https://importlicensing.wto.org/content/plant-and-plant-products-2",
+      "https://agriculture.gov.vc/agriculture/images/stories/AgricInfo/Agrinfo_September_2019.pdf",
+      "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/612-licenses-permits",
+      "https://nationalparks.gov.vc/nationalparks/images/documents/EnvironmentalHealthServicesAct1991.pdf"
+    ],
+    "paperworkType": "Import permit and phytosanitary certificate if classified as regulated manufactured plant product.",
+    "requiredDocument": "Not determined for manufactured sencha; general controls require NPPO import permit and origin phytosanitary certificate. Postal reporting by carriers is separate ordinary clearance machinery.",
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "TC",
+    "name": "Turks and Caicos",
+    "status": "not_verified",
+    "rule": "The Plant Health Ordinance defines manufactured products as regulated when processing/nature creates pest risk. The current 2024 Regulations cover postal regulated articles, home-consumption permits and documentation, but supply no explicit tea classification or processed-tea waiver. As enacted, Food and Drugs Ordinance 7/2016 section 3(2)(a) expressly excludes food imported for private consumption, so section 5 cannot be used as an unqualified private-import certificate duty. Section 1 requires a Gazette commencement notice, which was not independently recovered; the current Environmental Health website cites the 2016 Ordinance. Section 3(2)(d) also separates activities governed by Plant Health legislation.",
+    "personalMailApplicability": "The enacted 2016 Food and Drugs Ordinance excludes private-consumption imports without a passenger-only qualifier, but its commencement notice remains unverified. Independent Plant Health rules expressly cover postal regulated articles; no manufactured-tea risk classification or agricultural waiver established.",
+    "quantityLimit": null,
+    "authority": "Turks and Caicos Department of Agriculture",
+    "evidenceUrls": [
+      "https://gov.tc/trade/portal/imports",
+      "https://www.agriculture.gov.tc/residents",
+      "https://agc.gov.tc/agc/component/edocman/25-of-2024-plant-health-regulations-2024/fdocument?Itemid=9999",
+      "https://gov.tc/agc/2016-ordinances",
+      "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/viewdocument/725?Itemid=",
+      "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/fdocument?Itemid=9999",
+      "https://www.gov.tc/environmentalhealth/services/food-hygiene",
+      "https://www.ippc.int/en/publications/587/"
+    ],
+    "remainingQuestion": "A published section 36 tea/processing condition or other applicable exemption resolving the category; statutory powers to grant or recognise waivers do not establish that a waiver exists for this product.",
+    "researchAttempts": [
+      "Compared government import portal with Agriculture resident import guidance; checked the published 25 lb produce threshold. Its scope does not establish a tea or personal postal allowance.",
+      "Retrieved/read full enacted Plant Health Regulations 2024, effective 15 July 2024: regulation 25 explicitly applies to postal regulated articles; 27 includes mail/courier permit applications and phytosanitary certificate; schedule distinguishes home-consumption permit ($10). No tea or general finished-food exemption in the regulation. Whether sencha is a regulated article remains unresolved; the tourist fruit/vegetable allowance is passenger-specific.",
+      "2026-09-30: Read the saved Plant Health Ordinance definition of plant product and regulated article alongside the full 2024 Regulations. Manufactured products require a pest-risk classification; no assumption that all dried foods are regulated or all processed foods exempt was made.",
+      "2026-09-30: Recovered the actual 25-page Food and Drugs Ordinance 7/2016 through the Attorney General’s official index and public Google document viewer after direct downloads returned HTTP403. Read definitions and sections 3 and 5 (PDF pages 5–8). Section 3(2)(a) expressly excludes food produced, imported or exported for private consumption; section 3(2)(d) excludes activities regulated under Plant Health or other Department of Agriculture enactments. Rejected a false exclusion based on section 5’s otherwise broad origin-law/free-sale certificate duty. Saved a browser-source extract with exact sections and official URLs; did not claim an agricultural permission from the food-law exemption.",
+      "2026-09-30: Read section 1 on PDF page 4: commencement requires a Governor’s Gazette notice. The current Environmental Health food-hygiene page cites the 2016 Ordinance, but no commencement notice was independently recovered. The private-food exclusion is therefore described as enacted text, without claiming its current commencement is verified.",
+      "30 September bounded legal-scope peer review: Manufactured tea must still be assessed against the pest-risk-qualified product definition. Section 36 delegates publication of import conditions; the reviewed regulations do not contain a complete exempt-commodity list. Regulation 34(4) recognises waivers granted elsewhere but does not create a general waiver. Mail provisions expressly apply only to regulated articles. Neither the home-consumption fee nor the separate private-food exception classifies tea for plant health.",
+      "2026-09-30 fresh official online recovery: Retried the actual agriculture residents page on both official host variants; the site has TLS/host certificate access failures. Revisited Plant Health Ordinance section 2 and section 36(4) and 2024 Regulations 25–27 against the actual current-linked ISPM 32 Category 1 tea illustration. Section36 requires standards/PRA-based published local conditions; the recovered rules still regulate postal articles and do not adopt a general Category 1 waiver. The broad regulated-article definition also expressly includes packaging. No new agricultural no-document route was established; private-food law finding is unchanged. Failed requests retained in recovery metadata."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "A published section 36 tea/processing condition or other applicable exemption resolving the category; statutory powers to grant or recognise waivers do not establish that a waiver exists for this product.",
+    "permitFreeSources": [
+      "https://gov.tc/trade/portal/imports",
+      "https://www.agriculture.gov.tc/residents",
+      "https://agc.gov.tc/agc/component/edocman/25-of-2024-plant-health-regulations-2024/fdocument?Itemid=9999",
+      "https://gov.tc/agc/2016-ordinances",
+      "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/viewdocument/725?Itemid=",
+      "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/fdocument?Itemid=9999",
+      "https://www.gov.tc/environmentalhealth/services/food-hygiene"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

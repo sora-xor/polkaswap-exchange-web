@@ -126,4 +126,16 @@ describe('burn local history helpers', () => {
     ).resolves.toEqual([]);
     expect(resolveBlockHeightByBlockId).not.toHaveBeenCalled();
   });
+  it('marks local TONSWAP burns so they cannot be mistaken for SOLSWAP burns', async () => {
+    const rows = await createLocalXorBurns({
+      address: 'alice',
+      fallbackBlockHeight: 27_720_478,
+      localHistory: [
+        localBurn({ comment: JSON.stringify({ app: 'polkaswap', kind: 'tonswap-xor-burn', version: 1 }) }),
+      ],
+      resolveBlockHeightByBlockId: async () => null,
+    });
+    expect(rows[0].campaign).toBe('tonswap');
+    expect(rows[0].nexusRecipient).toBeUndefined();
+  });
 });

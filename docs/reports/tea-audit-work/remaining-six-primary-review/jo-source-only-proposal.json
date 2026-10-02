@@ -1,0 +1,76 @@
+{
+  "reviewedAt": "2026-09-30",
+  "code": "JO",
+  "outcome": "unresolved",
+  "decisionChanged": false,
+  "newFinding": "Recovered and visually read all 13 pages of the actual 2021 Plant Quarantine Instructions, Gazette pp.5637–5649, in a contemporaneous newspaper facsimile. This is the primary legal instrument reproduced by a secondary host, not reliance on the journalist’s summary. It corresponds to the official Gazette 5762 listing and is cited in the current ministry operations manual.",
+  "authorityCorroboration": [
+    "https://www.pm.gov.jo/Ar/Pages/NewsPaperDetails/5762",
+    "https://www.moa.gov.jo/ebv4.0/root_storage/ar/eb_list_page/دليل_العمليات_الزراعية_للعام_2024.pdf"
+  ],
+  "facsimileHost": "https://www.ammonnews.net/article/653206",
+  "instrument": "Instructions ز/12 of 2021 (also typeset 12/ز); prior G/12 transliteration should be replaced with the actual Arabic identifier.",
+  "exactProvisions": [
+    {
+      "section": "Article 1",
+      "page": 5637,
+      "finding": "Effective upon publication in the official gazette."
+    },
+    {
+      "section": "Article 2",
+      "page": 5637,
+      "finding": "Incorporates definitions in Article 2 of Agriculture Law 13/2015 and amendments; defines consignment to include plants/plant products and alternative plant-protection materials. No new finished-food manufacturing exemption."
+    },
+    {
+      "section": "Article 3(a)",
+      "page": 5638,
+      "arabic": "تطبق إجراءات الحجر النباتي المنصوص عليها في هذه التعليمات على أنواع النباتات والمنتجات النباتية التي تحددها القرارات الصادرة بهذا الشأن",
+      "unofficialTranslation": "The plant-quarantine procedures in these instructions apply to the types of plants and plant products determined by decisions issued in this regard.",
+      "finding": "The article refers to designated types, so the instructions alone are not a complete commodity schedule."
+    },
+    {
+      "section": "Article 3(b)",
+      "page": 5638,
+      "finding": "Customs, expressly including governmental and private postal centres, cannot release imported or exported covered consignments before competent-officer clearance."
+    },
+    {
+      "section": "Article 8(a)–(c)",
+      "page": 5641,
+      "finding": "Original phytosanitary certificate for imported consignments; re-export requirements; exception for plant products for which origin/re-export authorities do not issue certificates, but products must be designated by ministerial decision on Directorate recommendation. This is not a self-executing exemption whenever an exporter elects not to obtain a certificate."
+    },
+    {
+      "section": "Article 11",
+      "page": 5642,
+      "finding": "Arrival notification/documents include PC, origin certificate, invoice, and import licence if the consignment consists of materials that require an import licence. A blanket licence obligation cannot be inferred from this text."
+    },
+    {
+      "section": "Article 24",
+      "page": 5646,
+      "finding": "Emergency phytosanitary restrictions with publication/notification mechanisms; not an ordinary processing exemption."
+    },
+    {
+      "section": "Article 37",
+      "page": 5649,
+      "finding": "Repeals Plant Quarantine Instructions ز/19 of 2016 and amendments and conflicting instructions."
+    }
+  ],
+  "remainingGap": "The operative Article 3 commodity-designation decisions and Article 8(c) ministerial exception decisions, or another current general processing rule, sufficient to place finished sencha inside or outside the controlled class. The full 2021 instructions themselves no longer need recovery. No complete commodity/exemption list appears on any of the 13 pages.",
+  "confidence": "High for recovered instrument wording; no outcome claim for finished tea.",
+  "sourceFiles": [
+    "remaining-six-primary-review/jo-instructions2021-01.jpg",
+    "remaining-six-primary-review/jo-instructions2021-02.jpg",
+    "remaining-six-primary-review/jo-instructions2021-03.jpg",
+    "remaining-six-primary-review/jo-instructions2021-04.jpg",
+    "remaining-six-primary-review/jo-instructions2021-05.jpg",
+    "remaining-six-primary-review/jo-instructions2021-06.jpg",
+    "remaining-six-primary-review/jo-instructions2021-07.jpg",
+    "remaining-six-primary-review/jo-instructions2021-08.jpg",
+    "remaining-six-primary-review/jo-instructions2021-09.jpg",
+    "remaining-six-primary-review/jo-instructions2021-10.jpg",
+    "remaining-six-primary-review/jo-instructions2021-11.jpg",
+    "remaining-six-primary-review/jo-instructions2021-12.jpg",
+    "remaining-six-primary-review/jo-instructions2021-13.jpg",
+    "remaining-six-primary-review/jo-mirror-provenance.json"
+  ],
+  "researchAttempt": "Used an exact Arabic title/date search to locate a contemporaneous gazette facsimile at Ammon, downloaded all linked instruction-page images, and visually checked every page including Articles 3, 8, 11 and 37. Did not retry the official 451 file or DocuWare denial."
+}

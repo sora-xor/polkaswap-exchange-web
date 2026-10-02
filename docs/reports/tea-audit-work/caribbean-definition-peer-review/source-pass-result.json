@@ -1,0 +1,137 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": [
+    "AG",
+    "BB",
+    "DM",
+    "KN",
+    "VC",
+    "SR",
+    "TC"
+  ],
+  "product": "Japan-posted sealed 100 g steamed/dried plain Camellia sinensis sencha for personal consumption; no special permits/certificates/advance approvals, routine arrival declarations allowed",
+  "conclusion": "No outcome change. Published general processing exemptions or complete operative commodity lists could suffice; these laws do not establish that a bespoke authority ruling is always required. Here the cited material does not map the finished product to the statutory category. No international standard was treated as automatically adopted domestic commodity permission.",
+  "decisionChanges": [],
+  "readySourceOverrides": [
+    "sr-source-override.json"
+  ],
+  "countries": [
+    {
+      "code": "AG",
+      "permitFreeDecision": "unresolved",
+      "decisionChanged": false,
+      "sections": "Current PPU Importation Guidelines, commodity examples 1–4; complete 27 August 2020 commodity-status table, all-country row and country rows",
+      "analysis": "The operative public guidance consistently limits permits and certificates to regulated commodities. The complete table addresses Categories 2–4; it is not a complete list of exempt Category 1 goods. Its examples include crushed herbs, dehydrated fruit/vegetables, and even a steam/pressure-treated tamarind commodity. These demonstrate that either being processed or having a heat treatment in the name does not automatically prove exemption. No table entry or local processing definition settles steamed/dried Camellia tea. Japan omission cannot itself be treated as a ban outside the regulated scope.",
+      "gap": "Applicable published Category 1 versus Category 2 classification or processing criterion for finished tea, rather than an unnecessary assumption that each tea parcel needs a fresh ruling.",
+      "sourceUrls": [
+        "https://agriculture.gov.ag/index.php/plant-protection/",
+        "https://agriculture.gov.ag/wp-content/uploads/2022/06/Import-Status-of-Plant-Commodities-and-Regulated-Items-PLANT-PROTECTION-ANTIGUA-AND-BARBUDA-ver.-27082020.pdf",
+        "https://laws.gov.ag/wp-content/uploads/2018/08/cap-353.pdf",
+        "https://laws.gov.ag/wp-content/uploads/2018/08/cap-211.pdf",
+        "https://health.gov.ag/guidelines/"
+      ]
+    },
+    {
+      "code": "BB",
+      "permitFreeDecision": "unresolved",
+      "decisionChanged": false,
+      "sections": "Plant Protection Act 2007-53 (Cap.268), section 2; sections 14–18, 21",
+      "analysis": "The manufactured-product limb is pest-risk-qualified. Section 15(2) tells the organisation how to evaluate permit applications; it is not a published commodity exemption. Section 18 releases goods following inspection but does not retroactively waive section 14 entry conditions. The Act has no complete processed-food exclusion schedule. The plant-parts wording does not provide a defensible reason to ignore the more specific manufactured-product definition and automatically classify every finished plant-derived food as permit-controlled.",
+      "gap": "Evidence applying the statutory manufactured-product risk threshold or a published no-document condition to this tea; mere manufacture or retail packaging is insufficient under the cited text.",
+      "sourceUrls": [
+        "https://agriculture.gov.bb/Apply/ImportationOfPlants",
+        "https://agriculture.gov.bb/attachments/Plant%20Protection%20Act%20CAP268_1.pdf",
+        "https://oag.gov.bb/attachments/Health%20Services%20%28Food%20Hygiene%29%20Regulations%2C%201969%20Cap44%27M.PDF",
+        "https://alpha.gov.bb/business-trade/apply-for-food-business-licence",
+        "https://www.health.gov.bb/Legislation"
+      ]
+    },
+    {
+      "code": "DM",
+      "permitFreeDecision": "unresolved",
+      "decisionChanged": false,
+      "sections": "Plant Protection and Quarantine Act (Chap.58:40), sections 2–4 and 10; Plant Protection (Importations) Regulations 4 and 8(g)",
+      "analysis": "The parent Act defines processed and unprocessed plant products by capability of harbouring or transporting pests and directly requires prior permits with certificates for restricted articles. Regulation 8 expressly exempts listed articles only from regulation 4. Even if sencha qualified as cooked/processed and free of organisms under 8(g), that does not expressly waive Act sections 3–4. Being free of organisms in a given consignment is also a different proposition from being incapable of carrying pests as a product category. The complete subsidiary table names other crop controls but supplies no broader permit waiver for tea.",
+      "gap": "Published determination or process standard sufficient to establish that this finished tea is outside the Act’s pest-capable plant-product definition, or an express Act-level permit/certificate exemption. Additional 2026 food-law text/commencement gap remains as recorded.",
+      "sourceUrls": [
+        "https://establishment.gov.dm/services/application-import-permit",
+        "https://divisionofagriculture.gov.dm/images/documents/forms/sample_import_permit_and_submission_form.pdf",
+        "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+        "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+        "https://faolex.fao.org/docs/pdf/dmi111807.pdf",
+        "https://customs.gov.dm/trade/prohibited-and-restricted-items",
+        "https://agriculture.gov.dm/images/documents/forms/application_for_import_permit.pdf",
+        "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7908",
+        "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7913",
+        "https://www.dominica.gov.dm/images/docs/bills/food_safety_bill_2026.pdf",
+        "https://dominica.gov.dm/laws/1997/act08-1997.pdf"
+      ]
+    },
+    {
+      "code": "KN",
+      "permitFreeDecision": "unresolved",
+      "decisionChanged": false,
+      "sections": "Plant Protection Act 10/2024, section 2, sections 15–17 and schedules",
+      "analysis": "The manufactured-product definition remains risk-qualified; the direct permit and certificate duties operate on covered articles. International-standard/science principles in sections 15–17 guide NPPO measures and application decisions, but are not themselves a self-executing tea exemption. Schedules provide forms rather than a comprehensive commodity table. The earlier government tea example concerns exports, and the announced IPPC commodity attachment is broken as already recorded.",
+      "gap": "Recover the applicable commodity requirements or a published processing/category rule; neither the legislation nor export guidance settles this Japanese postal sencha.",
+      "sourceUrls": [
+        "https://www.sknis.gov.kn/2020/06/26/plant-and-plant-product-import-requirements/",
+        "https://lawcommission.gov.kn/wp-content/documents/Annual-Laws/2024/ACTs/Act-10-2024-Plant-Protection-Act.pdf",
+        "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2020/08/commodities-and-their-import-requirements/",
+        "https://lawcommission.gov.kn/wp-content/documents/Act02and09TOC/Ch-09_26-Sale-of-Food-Drugs-Act.pdf",
+        "https://lawcommission.gov.kn/wp-content/documents/Revised-Acts-of-St-Kitts-and-Nevis/Revised-Acts-of-St-Kitts-and-Nevis-2020/Ch-09_21-Public-Health-Act.pdf",
+        "https://www.miticca.gov.kn/wp-content/uploads/2021/07/Import-Export-Procedures-Manual.pdf"
+      ]
+    },
+    {
+      "code": "VC",
+      "permitFreeDecision": "unresolved",
+      "decisionChanged": false,
+      "sections": "Plant Protection Act 16/2005, section 2, sections 10–15; September 2019 AgriC Info PDF p.14",
+      "analysis": "Section 10(2) authorises controls for specified covered articles rather than itself listing all foods. Current ministry guidance includes personal-use plants/plant parts and plant products for processing or other purposes, but still does not define the risk status of finished manufactured tea. The 2019 list explicitly says it is not exhaustive. Section 13 release after inspection is not an advance permit/certificate waiver. No complete commodity exemption schedule is present in the Act.",
+      "gap": "Applicable section 10 condition and published manufactured-tea risk classification or general processing exemption; the ordinary postal reporting duty is not a permit requirement by itself.",
+      "sourceUrls": [
+        "https://faolex.fao.org/docs/pdf/stv160536.pdf",
+        "https://importlicensing.wto.org/content/plant-and-plant-products-2",
+        "https://agriculture.gov.vc/agriculture/images/stories/AgricInfo/Agrinfo_September_2019.pdf",
+        "https://foreign.gov.vc/foreign/index.php/import-export-guide-content/612-licenses-permits",
+        "https://nationalparks.gov.vc/nationalparks/images/documents/EnvironmentalHealthServicesAct1991.pdf"
+      ]
+    },
+    {
+      "code": "SR",
+      "permitFreeDecision": "unresolved",
+      "decisionChanged": false,
+      "sections": "Plantenbeschermingswet 2020, article 1(1)(bb), 1(2), 2(5)–(6), 5–8, 14; official 2023 LVV newsletter pp.3–4; 2003 trade Negative List",
+      "analysis": "Newly retrieved enacted primary text confirms processed risk-bearing material remains covered, correcting the incomplete newsletter-based description. Article 1(2) gives international term meanings priority, but provides no tea-specific process classification. Article 6(3) singles out processed frozen fruit/vegetables for a certificate exception while retaining permission. Omission from the earlier trade annex does not displace these independent later statutory controls.",
+      "gap": "Need a published commodity or processing determination, or applicable exemption, establishing whether finished Japanese steamed/dried Camellia tea meets the pest-risk threshold in Plant Protection Act 2020 article 1(1)(bb). A per-parcel authority ruling is not shown to be mandatory merely to answer that question; an applicable published general rule could suffice. Article 6(3) covers frozen processed fruit/vegetables, not tea; neither the old trade Negative List nor the simplified newsletter supplies the missing plant-health determination.",
+      "sourceUrls": [
+        "https://www.dna.sr/media/dc5fihzb/sb_2020___78.pdf",
+        "https://www.dna.sr/media/dc5fihzb/sb_2020___78.pdf",
+        "https://gov.sr/wp-content/uploads/2026/08/Procedure-voor-de-invoer-van-planten-en-plantaardige-producten.jpg",
+        "https://gov.sr/wp-content/uploads/2023/08/LVV-IDB-Nieuwsbrief-uitgave-02.pdf",
+        "https://www.dna.sr/wetgeving/ontwerpwetten-bij-dna/in-behandeling/ontwerpwet-levensmiddelenwet-2026/",
+        "https://gov.sr/ministeries/ministerie-van-economische-zaken-ondernemerschap-technologische-innovatie/invoer-uitvoer-en-deviezen-controle-iud/",
+        "https://faolex.fao.org/docs/pdf/sur129510.pdf",
+        "https://gov.sr/wp-content/uploads/2022/05/staatsbesluit-van-2-februari-2006-no-20-houdende-wijziging-van-het-besluit-negatieve-lijst-2003-sb-2003-no-74.pdf"
+      ]
+    },
+    {
+      "code": "TC",
+      "permitFreeDecision": "unresolved",
+      "decisionChanged": false,
+      "sections": "Plant Health Ordinance 39/2012, section 2 and sections 34–37; Plant Health Regulations 2024 regulations 25–28, 34(4)",
+      "analysis": "Manufactured tea must still be assessed against the pest-risk-qualified product definition. Section 36 delegates publication of import conditions; the reviewed regulations do not contain a complete exempt-commodity list. Regulation 34(4) recognises waivers granted elsewhere but does not create a general waiver. Mail provisions expressly apply only to regulated articles. Neither the home-consumption fee nor the separate private-food exception classifies tea for plant health.",
+      "gap": "A published section 36 tea/processing condition or other applicable exemption resolving the category; statutory powers to grant or recognise waivers do not establish that a waiver exists for this product.",
+      "sourceUrls": [
+        "https://gov.tc/trade/portal/imports",
+        "https://www.agriculture.gov.tc/residents",
+        "https://agc.gov.tc/agc/component/edocman/25-of-2024-plant-health-regulations-2024/fdocument?Itemid=9999",
+        "https://gov.tc/agc/2016-ordinances",
+        "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/viewdocument/725?Itemid=",
+        "https://gov.tc/agc/component/edocman/07-of-2016-food-and-drugs-ordinance-2016/fdocument?Itemid=9999",
+        "https://www.gov.tc/environmentalhealth/services/food-hygiene"
+      ]
+    }
+  ]
+}

@@ -42,7 +42,12 @@ const errorIcon = computed(() => status.value === DifferenceStatus.Error && prop
 <style lang="scss" scoped>
 @mixin text-status($status: 'success', $property: 'color') {
   &.#{$status} {
-    #{$property}: var(--s-color-status-#{$status});
+    @if $property == 'color' {
+      color: var(--s-color-status-#{$status}-text);
+    } @else {
+      #{$property}: var(--s-color-status-#{$status});
+      color: var(--s-color-on-status-fill);
+    }
   }
 }
 
@@ -59,8 +64,8 @@ const errorIcon = computed(() => status.value === DifferenceStatus.Error && prop
   }
 
   &.badge {
-    color: white;
-    background-color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-background);
+    background-color: var(--s-color-base-content-primary);
     padding: 0 $inner-spacing-mini;
     border-radius: 100px;
 
@@ -70,7 +75,7 @@ const errorIcon = computed(() => status.value === DifferenceStatus.Error && prop
   }
 
   &-icon {
-    color: white;
+    color: inherit;
   }
 }
 </style>

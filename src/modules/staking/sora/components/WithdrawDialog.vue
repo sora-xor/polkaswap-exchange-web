@@ -124,16 +124,18 @@ const closeDialog = (): void => {
 };
 
 /**
- * Submits the withdraw extrinsic and closes the dialog once finalized.
+ * Submits the withdraw extrinsic and closes the dialog only after submission.
  */
 const handleConfirm = async () => {
   if (confirmDisabled.value) return;
 
-  await withNotifications(async () => {
-    await withdraw(withdrawableFunds.value.toNumber());
+  const result = await withNotifications(async () => {
+    await withdraw(withdrawableFunds.value.toString());
   });
 
-  closeDialog();
+  if (result.submitted) {
+    closeDialog();
+  }
 };
 
 defineExpose({

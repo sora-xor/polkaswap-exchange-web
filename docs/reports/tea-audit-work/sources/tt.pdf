@@ -1,0 +1,5432 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+		
+			<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="ltr" dir="ltr" lang="en-US">
+
+<head>
+    <title>Home - Trinidad &amp; Tobago Trade and Business Portal</title>
+
+    <meta content="initial-scale=1.0, width=device-width" name="viewport"/>
+    <meta content="#D43545" name="theme-color"/>
+    <meta name="google-site-verification" content="PD2KejctBhm7rE_oJGWy6hH0LNgKF0NtkYC6vNyIILU"/>
+    <meta name="google-site-verification" content="8xyNb4BGGlQwp8bGZc8RMvWkCAFhyp8fcE_cbUByOJk"/>
+
+
+    <link rel="manifest" href="https://info.ttbizlink.gov.tt/o/TBIP/templates/manifest.json">
+    <link rel="apple-touch-icon" href="https://info.ttbizlink.gov.tt/o/TBIP/images/logo.png">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+
+
+
+
+
+
+
+
+
+<meta content="trinidad trade portal, business, investment, portal, trinidad and tobago, TTBizLink name reservation, ministry of trade, trade licence, ministry of trade and industry, ttbizlink, import licence, importing in trinidad and tobago, import trinidad, export trinidad, business registration, register a business trinidad, register a business tobago, importing goods into trinidad and tobago, exporting goods trinidad, trade licence unit, import trinidad, export trinidad, import tobago, export tobago, how to start a business in trinidad and tobago" lang="en-US" name="keywords" />
+
+
+<link data-senna-track="permanent" href="/o/frontend-theme-font-awesome-web/css/main.css" rel="stylesheet" type="text/css" />
+<script data-senna-track="permanent" src="/combo?browserId=other&minifierType=js&languageId=en_US&b=7310&t=1783622496667&/o/frontend-js-jquery-web/jquery/jquery.min.js&/o/frontend-js-jquery-web/jquery/init.js&/o/frontend-js-jquery-web/jquery/ajax.js&/o/frontend-js-jquery-web/jquery/bootstrap.bundle.min.js&/o/frontend-js-jquery-web/jquery/collapsible_search.js&/o/frontend-js-jquery-web/jquery/fm.js&/o/frontend-js-jquery-web/jquery/form.js&/o/frontend-js-jquery-web/jquery/popper.min.js&/o/frontend-js-jquery-web/jquery/side_navigation.js" type="text/javascript"></script>
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt" rel="canonical" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/zh/" hreflang="zh-CN" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/es/" hreflang="es-ES" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/sv/" hreflang="sv-SE" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/ja/" hreflang="ja-JP" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/nl/" hreflang="nl-NL" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/hu/" hreflang="hu-HU" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/ar/" hreflang="ar-SA" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/pt/" hreflang="pt-BR" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/de/" hreflang="de-DE" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/ca/" hreflang="ca-ES" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/fi/" hreflang="fi-FI" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/fr/" hreflang="fr-FR" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt" hreflang="en-US" rel="alternate" />
+<link data-senna-track="temporary" href="https://info.ttbizlink.gov.tt" hreflang="x-default" rel="alternate" />
+<meta property="google-site-verification" content="PD2KejctBhm7rE_oJGWy6hH0LNgKF0NtkYC6vNyIILU">
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="ar_SA">
+<meta property="og:locale:alternate" content="ca_ES">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="nl_NL">
+<meta property="og:locale:alternate" content="fi_FI">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:locale:alternate" content="hu_HU">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="sv_SE">
+<meta property="og:site_name" content="Trinidad &amp; Tobago Trade and Business Portal">
+<meta property="og:title" content="Home - Trinidad &amp; Tobago Trade and Business Portal">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://info.ttbizlink.gov.tt">
+
+
+<link href="https://info.ttbizlink.gov.tt/o/TBIP/images/favicon.ico" rel="icon" />
+
+
+
+<link class="lfr-css-file" data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/o/TBIP/css/clay.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1783622526000" id="liferayAUICSS" rel="stylesheet" type="text/css" />
+
+
+
+<link data-senna-track="temporary" href="/o/frontend-css-web/main.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1640045986211" id="liferayPortalCSS" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+
+
+
+
+	
+
+
+
+	
+
+		<link data-senna-track="temporary" href="/combo?browserId=other&amp;minifierType=&amp;themeId=tbip_WAR_TBIP&amp;languageId=en_US&amp;b=7310&amp;com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_templateSearch:%2Fcss%2Fmain.css&amp;com_liferay_product_navigation_product_menu_web_portlet_ProductMenuPortlet:%2Fcss%2Fmain.css&amp;com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet:%2Fcss%2Fmain.css&amp;com_liferay_segments_experiment_web_internal_portlet_SegmentsExperimentPortlet:%2Fcss%2Fmain.css&amp;com_liferay_site_navigation_menu_web_portlet_SiteNavigationMenuPortlet:%2Fcss%2Fmain.css&amp;t=1783622526000" id="e7f8aab0" rel="stylesheet" type="text/css" />
+
+	
+
+
+
+
+
+
+
+<script data-senna-track="temporary" type="text/javascript">
+	// <![CDATA[
+		var Liferay = Liferay || {};
+
+		Liferay.Browser = {
+			acceptsGzip: function() {
+				return true;
+			},
+
+			
+
+			getMajorVersion: function() {
+				return 0;
+			},
+
+			getRevision: function() {
+				return '';
+			},
+			getVersion: function() {
+				return '';
+			},
+
+			
+
+			isAir: function() {
+				return false;
+			},
+			isChrome: function() {
+				return false;
+			},
+			isEdge: function() {
+				return false;
+			},
+			isFirefox: function() {
+				return false;
+			},
+			isGecko: function() {
+				return false;
+			},
+			isIe: function() {
+				return false;
+			},
+			isIphone: function() {
+				return false;
+			},
+			isLinux: function() {
+				return false;
+			},
+			isMac: function() {
+				return false;
+			},
+			isMobile: function() {
+				return false;
+			},
+			isMozilla: function() {
+				return false;
+			},
+			isOpera: function() {
+				return false;
+			},
+			isRtf: function() {
+				return false;
+			},
+			isSafari: function() {
+				return false;
+			},
+			isSun: function() {
+				return false;
+			},
+			isWebKit: function() {
+				return false;
+			},
+			isWindows: function() {
+				return false;
+			}
+		};
+
+		Liferay.Data = Liferay.Data || {};
+
+		Liferay.Data.ICONS_INLINE_SVG = true;
+
+		Liferay.Data.NAV_SELECTOR = '#navigation';
+
+		Liferay.Data.NAV_SELECTOR_MOBILE = '#navigationCollapse';
+
+		Liferay.Data.isCustomizationView = function() {
+			return false;
+		};
+
+		Liferay.Data.notices = [
+			
+
+			
+		];
+
+		Liferay.PortletKeys = {
+			DOCUMENT_LIBRARY: 'com_liferay_document_library_web_portlet_DLPortlet',
+			DYNAMIC_DATA_MAPPING: 'com_liferay_dynamic_data_mapping_web_portlet_DDMPortlet',
+			ITEM_SELECTOR: 'com_liferay_item_selector_web_portlet_ItemSelectorPortlet'
+		};
+
+		Liferay.PropsValues = {
+			JAVASCRIPT_SINGLE_PAGE_APPLICATION_TIMEOUT: 0,
+			NTLM_AUTH_ENABLED: false,
+			UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE: 104857600
+		};
+
+		Liferay.ThemeDisplay = {
+
+			
+
+			
+				getLayoutId: function() {
+					return '9';
+				},
+
+				
+
+				getLayoutRelativeControlPanelURL: function() {
+					return '/group/guest/~/control_panel/manage';
+				},
+
+				getLayoutRelativeURL: function() {
+					return '/home';
+				},
+				getLayoutURL: function() {
+					return 'https://info.ttbizlink.gov.tt/home';
+				},
+				getParentLayoutId: function() {
+					return '0';
+				},
+				isControlPanel: function() {
+					return false;
+				},
+				isPrivateLayout: function() {
+					return 'false';
+				},
+				isVirtualLayout: function() {
+					return false;
+				},
+			
+
+			getBCP47LanguageId: function() {
+				return 'en-US';
+			},
+			getCanonicalURL: function() {
+
+				
+
+				return 'https\x3a\x2f\x2finfo\x2ettbizlink\x2egov\x2ett';
+			},
+			getCDNBaseURL: function() {
+				return 'https://info.ttbizlink.gov.tt';
+			},
+			getCDNDynamicResourcesHost: function() {
+				return '';
+			},
+			getCDNHost: function() {
+				return '';
+			},
+			getCompanyGroupId: function() {
+				return '37143';
+			},
+			getCompanyId: function() {
+				return '37101';
+			},
+			getDefaultLanguageId: function() {
+				return 'en_US';
+			},
+			getDoAsUserIdEncoded: function() {
+				return '';
+			},
+			getLanguageId: function() {
+				return 'en_US';
+			},
+			getParentGroupId: function() {
+				return '37141';
+			},
+			getPathContext: function() {
+				return '';
+			},
+			getPathImage: function() {
+				return '/image';
+			},
+			getPathJavaScript: function() {
+				return '/o/frontend-js-web';
+			},
+			getPathMain: function() {
+				return '/c';
+			},
+			getPathThemeImages: function() {
+				return 'https://info.ttbizlink.gov.tt/o/TBIP/images';
+			},
+			getPathThemeRoot: function() {
+				return '/o/TBIP';
+			},
+			getPlid: function() {
+				return '28';
+			},
+			getPortalURL: function() {
+				return 'https://info.ttbizlink.gov.tt';
+			},
+			getScopeGroupId: function() {
+				return '37141';
+			},
+			getScopeGroupIdOrLiveGroupId: function() {
+				return '37141';
+			},
+			getSessionId: function() {
+				return '';
+			},
+			getSiteAdminURL: function() {
+				return 'https://info.ttbizlink.gov.tt/group/guest/~/control_panel/manage?p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view';
+			},
+			getSiteGroupId: function() {
+				return '37141';
+			},
+			getURLControlPanel: function() {
+				return '/group/control_panel?refererPlid=28';
+			},
+			getURLHome: function() {
+				return 'https\x3a\x2f\x2finfo\x2ettbizlink\x2egov\x2ett\x2fweb\x2fguest';
+			},
+			getUserEmailAddress: function() {
+				return '';
+			},
+			getUserId: function() {
+				return '37107';
+			},
+			getUserName: function() {
+				return '';
+			},
+			isAddSessionIdToURL: function() {
+				return false;
+			},
+			isImpersonated: function() {
+				return false;
+			},
+			isSignedIn: function() {
+				return false;
+			},
+			isStateExclusive: function() {
+				return false;
+			},
+			isStateMaximized: function() {
+				return false;
+			},
+			isStatePopUp: function() {
+				return false;
+			}
+		};
+
+		var themeDisplay = Liferay.ThemeDisplay;
+
+		Liferay.AUI = {
+
+			
+
+			getAvailableLangPath: function() {
+				return 'available_languages.jsp?browserId=other&themeId=tbip_WAR_TBIP&colorSchemeId=01&minifierType=js&languageId=en_US&b=7310&t=1783622482381';
+			},
+			getCombine: function() {
+				return true;
+			},
+			getComboPath: function() {
+				return '/combo/?browserId=other&minifierType=&languageId=en_US&b=7310&t=1783622519316&';
+			},
+			getDateFormat: function() {
+				return '%m/%d/%Y';
+			},
+			getEditorCKEditorPath: function() {
+				return '/o/frontend-editor-ckeditor-web';
+			},
+			getFilter: function() {
+				var filter = 'raw';
+
+				
+					
+						filter = 'min';
+					
+					
+				
+
+				return filter;
+			},
+			getFilterConfig: function() {
+				var instance = this;
+
+				var filterConfig = null;
+
+				if (!instance.getCombine()) {
+					filterConfig = {
+						replaceStr: '.js' + instance.getStaticResourceURLParams(),
+						searchExp: '\\.js$'
+					};
+				}
+
+				return filterConfig;
+			},
+			getJavaScriptRootPath: function() {
+				return '/o/frontend-js-web';
+			},
+			getLangPath: function() {
+				return 'aui_lang.jsp?browserId=other&themeId=tbip_WAR_TBIP&colorSchemeId=01&minifierType=js&languageId=en_US&b=7310&t=1783622519316';
+			},
+			getPortletRootPath: function() {
+				return '/html/portlet';
+			},
+			getStaticResourceURLParams: function() {
+				return '?browserId=other&minifierType=&languageId=en_US&b=7310&t=1783622519316';
+			}
+		};
+
+		Liferay.authToken = '1LNszLfs';
+
+		
+
+		Liferay.currentURL = '\x2f';
+		Liferay.currentURLEncoded = '\x252F';
+	// ]]>
+</script>
+
+<script src="/o/js_loader_config?t=1783622496660" type="text/javascript"></script>
+<script data-senna-track="permanent" src="/combo?browserId=other&minifierType=js&languageId=en_US&b=7310&t=1783622519316&/o/frontend-js-aui-web/aui/aui/aui.js&/o/frontend-js-aui-web/liferay/modules.js&/o/frontend-js-aui-web/liferay/aui_sandbox.js&/o/frontend-js-aui-web/aui/attribute-base/attribute-base.js&/o/frontend-js-aui-web/aui/attribute-complex/attribute-complex.js&/o/frontend-js-aui-web/aui/attribute-core/attribute-core.js&/o/frontend-js-aui-web/aui/attribute-observable/attribute-observable.js&/o/frontend-js-aui-web/aui/attribute-extras/attribute-extras.js&/o/frontend-js-aui-web/aui/event-custom-base/event-custom-base.js&/o/frontend-js-aui-web/aui/event-custom-complex/event-custom-complex.js&/o/frontend-js-aui-web/aui/oop/oop.js&/o/frontend-js-aui-web/aui/aui-base-lang/aui-base-lang.js&/o/frontend-js-aui-web/liferay/dependency.js&/o/frontend-js-aui-web/liferay/util.js&/o/frontend-js-web/loader/config.js&/o/frontend-js-web/loader/loader.js&/o/frontend-js-web/liferay/dom_task_runner.js&/o/frontend-js-web/liferay/events.js&/o/frontend-js-web/liferay/lazy_load.js&/o/frontend-js-web/liferay/liferay.js&/o/frontend-js-web/liferay/global.bundle.js&/o/frontend-js-web/liferay/portlet.js&/o/frontend-js-web/liferay/workflow.js" type="text/javascript"></script>
+
+
+
+
+	
+
+	<script data-senna-track="temporary" src="/o/js_bundle_config?t=1783622504428" type="text/javascript"></script>
+
+
+<script data-senna-track="temporary" type="text/javascript">
+	// <![CDATA[
+		
+			
+				
+				
+			
+		
+
+		
+
+		
+	// ]]>
+</script>
+
+
+
+
+
+	
+		
+
+			
+
+			
+		
+		
+	
+
+
+
+	
+		
+		
+
+			
+
+			
+				<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://infottbizlinkgovtt.matomo.cloud/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='//cdn.matomo.cloud/infottbizlinkgovtt.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+			
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+<link class="lfr-css-file" data-senna-track="temporary" href="https://info.ttbizlink.gov.tt/o/TBIP/css/main.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1783622526000" id="liferayThemeCSS" rel="stylesheet" type="text/css" />
+
+
+
+
+	<style data-senna-track="temporary" type="text/css">
+		.cl-table-align {
+    vertical-align: top;
+}
+
+.table tbody td, .table tbody th, .table tfoot td, .table tfoot th {
+    vertical-align: top;
+}
+
+div#js-portlet-_newshomepage_INSTANCE_obvs_{
+}
+
+div#js-portlet-_announcementshomepage_INSTANCE_cwip_ .wrapper {
+    min-height: unset !important;
+}
+
+#wrapper {
+    margin: 0 !important;
+    width: 100vw;
+    padding:0 !important;
+    position:relative;
+}
+
+div#wrapper.container {
+    margin: 0 !important;
+    width: 100vw;
+    padding:0 !important;
+    position:relative;
+    max-width: 100% !important;
+}
+
+.wrapper.sticky .main-content {
+    margin: 3rem auto 0;
+}
+
+#news {
+    padding-bottom: 0px !important;
+}
+
+div.container-fluid.p-0 {
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
+    margin: 0;
+    max-width: 100% !important;
+}
+
+section#portlet_com_liferay_login_web_portlet_LoginPortlet {
+    padding-left: 4.5rem;
+    padding-right: 4.5rem;
+}
+
+/* News */
+div#news, js-portlet-_newshomepage_INSTANCE_obvs_, portlet-boundary_newshomepage_, div#tab\ services{
+    background: aliceblue !important;
+    padding: 2rem;
+}
+
+h3.pb-3.txt-red.text-start {
+    text-align: center !important;
+}
+
+.bx-empty.text-left.cl-button-news {
+    background: aliceblue;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+div#fragment-1105-bfqu {
+    margin-top: -1rem;
+}
+
+div#tab\ services {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+div#p_p_id_announcementshomepage_INSTANCE_cwip_ {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+@media screen and (max-width: 1399.98px) and (min-width: 1201px) {
+    .btn.btn-secondary,
+    button.btn.btn-primary {
+        padding: 10px 15px;
+    }
+    .select-language {
+        margin-right: 10px;
+        padding-right: 10px;
+    }
+    .navbar-brand {
+        margin-right: 10px;
+    }
+    .navbar-expand-md .navbar-nav .nav-link,
+    .navbar-expand-md .navbar-nav .nav-underline .tab a,
+    .nav-underline .tab .navbar-expand-md .navbar-nav a {
+        font-size: 12px;
+    }
+    .navbar-expand-md .navbar-nav .nav-link,
+    .navbar-expand-md .navbar-nav .nav-underline .tab a,
+    .nav-underline .tab .navbar-expand-md .navbar-nav a {
+        padding: 1rem 0.3rem !important;
+    }
+}
+
+.SearchBar_TradeEnquirySearchContainer__1HqN3, .ProcedureSearchBarLayout_ProcedureEnquirySearchContainer__3W0x_, ProcedureSearchBarLayout_ProcedureEnquirySearchContainer__dQ5MV {
+margin: 2em 0em !important;
+}
+
+.card.h-100 img {
+object-fit: contain;
+}
+
+.col-md-3.px-0 .card.h-100 img {
+object-fit: cover;
+}
+
+.highlited-step {
+margin: 4px;
+ padding: 3px !important;
+}
+
+.right-fixed {
+    display: none;
+}
+
+div#js-portlet-_tbipannouncementshomepriority_INSTANCE_opyk_ {
+    margin-top: -3%;
+}
+
+table#preferential-rate-info-table {
+    display: none;
+}
+
+.cl-link-remove p:nth-child(3){
+    display: none;
+}
+
+#hs-info-table tbody tr:nth-child(6) {
+    display: none;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+
+  let node;
+  while (node = walker.nextNode()) {
+    if (node.nodeValue.includes('-->')) {
+      node.nodeValue = node.nodeValue.replace(/-->/g, '');
+    }
+  }
+});
+	</style>
+
+
+
+
+
+	<style data-senna-track="temporary" type="text/css">
+
+		
+
+			
+
+		
+
+			
+
+		
+
+			
+
+		
+
+			
+
+		
+
+			
+
+		
+
+			
+
+		
+
+			
+
+		
+
+	</style>
+
+
+<style data-senna-track="temporary" type="text/css">
+</style>
+<script type="text/javascript">
+// <![CDATA[
+Liferay.SPA = Liferay.SPA || {};
+Liferay.SPA.cacheExpirationTime = -1;
+Liferay.SPA.clearScreensCache = false;
+Liferay.SPA.debugEnabled = false;
+Liferay.SPA.excludedPaths = ["/c/document_library","/documents","/image"];
+Liferay.SPA.loginRedirect = '';
+Liferay.SPA.navigationExceptionSelectors = ':not([target="_blank"]):not([data-senna-off]):not([data-resource-href]):not([data-cke-saved-href]):not([data-cke-saved-href])';
+Liferay.SPA.requestTimeout = 0;
+Liferay.SPA.userNotification = {
+	message: 'It looks like this is taking longer than expected.',
+	timeout: 30000,
+	title: 'Oops'
+};
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+Liferay.Loader.require('frontend-js-spa-web@4.0.36/liferay/init.es', function(frontendJsSpaWeb4036LiferayInitEs) {
+try {
+(function() {
+var frontendJsSpaWebLiferayInitEs = frontendJsSpaWeb4036LiferayInitEs;
+frontendJsSpaWebLiferayInitEs.default.init(
+	function(app) {
+		app.setPortletsBlacklist({"com_liferay_nested_portlets_web_portlet_NestedPortletsPortlet":true,"com_liferay_site_navigation_directory_web_portlet_SitesDirectoryPortlet":true,"com_liferay_login_web_portlet_LoginPortlet":true,"com_liferay_login_web_portlet_FastLoginPortlet":true});
+		app.setValidStatusCodes([221,490,494,499,491,492,493,495,220]);
+	}
+);
+})();
+} catch (err) {
+	console.error(err);
+}
+});
+// ]]>
+</script><script data-senna-track="permanent" src="https://info.ttbizlink.gov.tt/combo?browserId=other&minifierType=js&languageId=en_US&b=7310&t=1783622480865&/o/product-experience-manager-theme-contributor/js/liferay-usage-events.js" type = "text/javascript"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+// <![CDATA[
+Liferay.on(
+	'ddmFieldBlur', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'fieldBlurred',
+				'Form',
+				{
+					fieldName: event.fieldName,
+					focusDuration: event.focusDuration,
+					formId: event.formId,
+					page: event.page
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFieldFocus', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'fieldFocused',
+				'Form',
+				{
+					fieldName: event.fieldName,
+					formId: event.formId,
+					page: event.page
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFormPageShow', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'pageViewed',
+				'Form',
+				{
+					formId: event.formId,
+					page: event.page,
+					title: event.title
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFormSubmit', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'formSubmitted',
+				'Form',
+				{
+					formId: event.formId
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFormView', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'formViewed',
+				'Form',
+				{
+					formId: event.formId,
+					title: event.title
+				}
+			);
+		}
+	}
+);
+// ]]>
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-senna-track="temporary" type="text/javascript">
+	if (window.Analytics) {
+		window._com_liferay_document_library_analytics_isViewFileEntry = false;
+	}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link href="https://info.ttbizlink.gov.tt/o/TBIP/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="other controls-visible  yui3-skin-sam guest-site signed-out public-page site">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<nav aria-label="Quick Links" class="quick-access-nav" id="wmck_quickAccessNav">
+		<h1 class="hide-accessible">Navigation</h1>
+
+		<ul>
+			
+				<li><a href="#main-content">Skip to Content</a></li>
+			
+
+			
+		</ul>
+	</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="navbar-top">
+    <div class="container">
+        <div class="left"><img src="https://info.ttbizlink.gov.tt/o/TBIP/images/CoatofArms.png"
+                               style="height: 34px; margin-right: 6px;margin-top: -6px;" alt="">Government of the
+            Republic of Trinidad and Tobago
+        </div>
+
+        <div class="right"><img src="https://info.ttbizlink.gov.tt/o/TBIP/images/govtt 1.png" alt=""></div>
+    </div>
+</div>
+
+<div class="container" id="wrapper">
+    <div class="wrapper sticky" id="page">
+
+        <header id="banner" role="banner">
+<div class="navbar-container">
+
+    
+    <nav class="navbar navbar-expand-md">
+
+        <div class="container">
+
+            <!-- Menu Logo -->
+            <a class="navbar-brand" href="/" aria-label="TTBizLink logo">
+                <p class="big-txt red"><img src="https://info.ttbizlink.gov.tt/o/TBIP/images/TTBizLiink.jpg" alt=""/></p>
+            </a>
+            <div class="navbar-toggler" onclick="menuMove(this)" data-bs-toggle="collapse"
+                 data-bs-target="#navbar-items" aria-controls="navbar-items" aria-expanded="false"
+                 aria-label="Toggle navigation">
+                <div class="menu-icon">
+                    <div class="menu-bar1"></div>
+                    <div class="menu-bar2"></div>
+                    <div class="menu-bar3"></div>
+                </div>
+            </div>
+
+
+<div class="mx-1 mx-sm-3 order-md-1 lunar-user">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet_  portlet-static portlet-static-end decorate portlet-user-personal-bar " id="p_p_id_com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet_">
+		<span id="p_com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet"></span>
+
+
+
+
+	
+
+	
+		
+		
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		<span class="sign-in text-default" role="presentation">
+			<a href="https://info.ttbizlink.gov.tt/c/portal/login?p_l_id=28" class="sign-in text-default" id="_com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet_qfkd____" data-redirect="true" ><svg aria-hidden="true" class="lexicon-icon lexicon-icon-user" focusable="false" ><use href="https://info.ttbizlink.gov.tt/o/TBIP/images/clay/icons.svg#user"></use></svg><span class="taglib-icon-label">Sign In</span></a>
+		</span>
+
+		<script type="text/javascript">
+// <![CDATA[
+(function() {var $ = AUI.$;var _ = AUI._;
+			var signInLink = document.querySelector('.sign-in > a');
+
+			if (signInLink && signInLink.dataset.redirect === 'false') {
+				var signInURL = 'https://info.ttbizlink.gov.tt/c/portal/login?p_l_id=28';
+
+				var modalSignInURL = Liferay.Util.addParams(
+					'windowState=exclusive',
+					signInURL
+				);
+
+				var setModalContent = function (html) {
+					var modalBody = document.querySelector('.liferay-modal-body');
+
+					if (modalBody) {
+						var fragment = document
+							.createRange()
+							.createContextualFragment(html);
+
+						modalBody.innerHTML = '';
+
+						modalBody.appendChild(fragment);
+					}
+				};
+
+				var loading = false;
+				var redirect = false;
+				var html = '';
+				var modalOpen = false;
+
+				var fetchModalSignIn = function () {
+					if (loading || html) {
+						return;
+					}
+
+					loading = true;
+
+					Liferay.Util.fetch(modalSignInURL)
+						.then(function (response) {
+							return response.text();
+						})
+						.then(function (response) {
+							if (!loading) {
+								return;
+							}
+
+							loading = false;
+
+							if (!response) {
+								redirect = true;
+
+								return;
+							}
+
+							html = response;
+
+							if (modalOpen) {
+								setModalContent(response);
+							}
+						})
+						.catch(function () {
+							redirect = true;
+						});
+				};
+
+				signInLink.addEventListener('mouseover', fetchModalSignIn);
+				signInLink.addEventListener('focus', fetchModalSignIn);
+
+				signInLink.addEventListener('click', function (event) {
+					event.preventDefault();
+
+					if (redirect) {
+						Liferay.Util.navigate(signInURL);
+
+						return;
+					}
+
+					Liferay.Util.openModal({
+						bodyHTML: html ? html : '<span class="loading-animation">',
+						height: '400px',
+						onClose: function () {
+							loading = false;
+							redirect = false;
+							html = '';
+							modalOpen = false;
+						},
+						onOpen: function () {
+							modalOpen = true;
+
+							if (html && document.querySelector('.loading-animation')) {
+								setModalContent(html);
+							}
+						},
+						size: 'md',
+						title: '\u0053\u0069\u0067\u006e\u0020\u0049\u006e',
+					});
+				});
+			}
+		})();
+// ]]>
+</script>
+	
+
+		
+	
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+</div>
+<script src="https://info.ttbizlink.gov.tt/o/TBIP/js/bootstrap.bundle.min.js"></script>
+<script src="https://info.ttbizlink.gov.tt/o/TBIP/js/popper.min.js"></script>
+
+ <div class="collapse navbar-collapse" id="navbar-items">  
+<div class="navbar-collapse">
+
+	<nav class="sort-pages modify-pages" id="navigation" role="navigation">
+
+		<ul role="menubar" class="navbar-nav" role="menubar">
+
+			<li class="nav-item nav-dropdown">
+				<a href="javascript:void(0);" class="nav-link dropdown-toggle" type="button"
+					data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+					Resources
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="defaultDropdown">
+
+					<div class="container">
+						<div class="py-5">
+							<div class="row">
+
+								<div class="col-lg-3">
+									<h4>Procedures</h4>
+									<a href="/trade-procedures-landing-page" class="dropdown-item">Trade</a>
+									<a href="/business-procedures-landing-page" class="dropdown-item">Business</a>
+									<a href="/investment-procedures-landing-page" class="dropdown-item">Investment</a>
+								</div>
+								<div class="col-lg-3">
+									<a href="/business-directories" class="dropdown-item">Business Directories</a>
+									<a href="/contact-us" class="dropdown-item">Contact Us</a>
+									<a href="/enquiry-points" class="dropdown-item">Enquiry Points</a>
+									<a href="/forms" class="dropdown-item">Forms</a>
+									<a href="/news" class="dropdown-item">News</a>
+								</div>
+								<div class="col-lg-3">
+									<a href="/faqs" class="dropdown-item">Frequently Asked Questions</a>
+									<a href="/incentives-listing" class="dropdown-item">Incentives Listing</a>
+									<a href="/market-analysis-tools" class="dropdown-item">Market Analysis Tools</a>
+									<a href="/penalties-and-offences" class="dropdown-item">Penalties and Offences</a>
+									<a href="/prohibitions-and-restrictions" class="dropdown-item">Prohibitions and Restrictions</a>
+								</div>
+								<div class="col-lg-3">
+									<a href="/active-registered-dealers" class="dropdown-item">Active Registered Imported Used Car Dealers</a>
+									<a href="https://app.ttbizlink.gov.tt/visitable/mvvmc/eservices/portalEService.public.smarths" target="_blank" class="dropdown-item">HS Code & Tariff Finder</a>
+									<a href="/legal-reference-documents-and-trade-agreements" class="dropdown-item">Legal Reference Documents & Trade Agreements</a>
+									<a href="/pqs-import-conditions" class="dropdown-item">Plant Import Conditions Search</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</ul>
+				
+				<li>
+					<a class="nav-link" href="https://app.ttbizlink.gov.tt/visitable/mvvmc/eservices/portalEService.public.applyScreen" target="_blank" role="menuitem">E-Services</a>
+				</li>		
+
+
+
+
+				<li class="nav-item" id="layout_145" role="presentation">
+					<a aria-labelledby="layout_145" class="nav-link"  href="https://info.ttbizlink.gov.tt/about-us"  role="menuitem"><span> About Us</span> </a>
+
+					
+				</li>
+		</ul>
+	</nav>
+
+</div>
+
+            <!-- Right Aligned Search -->
+            <div class="header-right">
+
+                <div class="login-btn">
+
+                    <div class="select-language">
+                        <div id="google_translate_element"></div>
+                    </div>
+                    <a href="https://login.ttbizlink.gov.tt/" target="_blank">
+                        <button class="btn btn-primary" type="button">Login to E-Services</button>
+                    </a>
+
+                    <a href="https://app.ttbizlink.gov.tt/ptl/mvvmc/eservices/portalEService.public.userRegistration" target="_blank">
+                        <button class="btn btn-secondary" type="button">Sign up</button>
+                    </a>
+
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</div>        </header>
+
+        <section id="content" class="cl-content">
+            <h1 class="hide-accessible">Home</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		<div class="layout-content portlet-layout" id="main-content" role="main">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-0-opyk" >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_tbipannouncementshomepriority_  portlet-static portlet-static-end decorate  " id="p_p_id_tbipannouncementshomepriority_INSTANCE_opyk_">
+		<span id="p_tbipannouncementshomepriority_INSTANCE_opyk"></span>
+
+
+
+
+	
+
+	
+		
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		
+<section class="portlet" id="portlet_tbipannouncementshomepriority_INSTANCE_opyk">
+
+	<div class="portlet-content">
+
+
+		
+			<div class=" portlet-content-container">
+				
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+
+		<div id="js-portlet-_tbipannouncementshomepriority_INSTANCE_opyk_"></div><script type="text/javascript">
+	Liferay.Loader.require(
+		"tbip-announcements-home-priority@0.1.0",
+		function(module) {
+			var initializer;
+
+			if (typeof module.default === 'function') {
+				initializer = module.default;
+			}
+			else if (typeof module === 'function') {
+				initializer = module;
+			}
+
+			if (initializer) {
+				initializer(
+					{
+						configuration: {
+							portletInstance: JSON.parse('{}'),
+							system: JSON.parse('{}')
+						},
+						contextPath: '/o/tbip-announcements-home-priority-0.1.0',
+						portletElementId: 'js-portlet-_tbipannouncementshomepriority_INSTANCE_opyk_',
+						portletNamespace: '_tbipannouncementshomepriority_INSTANCE_opyk_'
+					});
+			}
+			else {
+				console.error(
+					'Module', 'tbip-announcements-home-priority@0.1.0',
+					'is not exporting a function: cannot initialize it.');
+			}
+
+		});
+</script>
+
+	
+	
+
+					
+				
+			
+		
+	
+	
+
+
+
+	</div>
+
+			</div>
+		
+	</div>
+</section>
+	
+
+		
+		
+	
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+</div>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-9502-wfak" > <div class="section-slider" id="cl-home-banner">
+	<div class="carousel">
+		<ol class="carousel-navigation">
+			<li>
+				<button aria-controls="wfak-carouselInner" class="active" type="button">
+					<span class="sr-only">Focus first slide</span>
+				</button>
+			</li>
+			<li>
+				<button aria-controls="wfak-carouselInner" type="button">
+					<span class="sr-only">Focus second slide</span>
+				</button>
+			</li>
+			<li>
+				<button aria-controls="wfak-carouselInner" type="button">
+					<span class="sr-only">Focus third slide</span>
+				</button>
+			</li>
+		</ol>
+
+		<div class="carousel-inner text-break" id="wfak-carouselInner" role="group">
+			<div class="carousel-item active">
+				<img alt="First Responsive Image" class="w-100 cl-banner-image" data-lfr-editable-id="01-01-image" data-lfr-editable-type="image" src="/documents/37141/0/Home+Banner+POS+Sky.png/d2f5f667-b42a-2fe6-e6b0-b34c15727f81?t=1653406964786&amp;download=true">
+
+				<div class="carousel-caption">
+					<div class="container">
+						<div class="row">
+							<div class="col-12 col-md-8 col-xl-7">
+								<h1 class="cl-h1-banner" data-lfr-editable-id="01-02-title" data-lfr-editable-type="rich-text"></h1><h1 data-lfr-editable-id="02-02-title" data-lfr-editable-type="rich-text">Welcome to Trinidad and Tobago's</h1>
+
+
+								<div class="lead mb-4" data-lfr-editable-id="01-03-subtitle" data-lfr-editable-type="rich-text"><h2>Trade and Business Information Portal</h2>
+</div>
+
+								<div class="cl-banner-buttons">
+									<a class="btn btn-primary" data-lfr-editable-id="01-04-link" data-lfr-editable-type="link" href="https://login.ttbizlink.gov.tt/" id="fragment-wfak-01-04-link" target="_blank">Login to E-Services</a>
+
+									<a class="btn btn-secondary" href="" id="fragment-wfak-01-05-link" onclick="scrollToContent(event)">
+										Explore Information Portal
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="carousel-item">
+				<img alt="Second Responsive Image" class="w-100 cl-banner-image" data-lfr-editable-id="02-01-image" data-lfr-editable-type="image" src="/documents/37141/146083/banner10.jpg/88981de8-9218-2045-b751-b85fdeeac14e?t=1650654544233&amp;download=true">
+
+				<div class="carousel-caption">
+					<div class="container">
+						<div class="row">
+							<div class="col-12 col-md-8 col-xl-7">
+								<h1 class="cl-h1-banner" data-lfr-editable-id="02-02-title" data-lfr-editable-type="rich-text">
+									Welcome to Trinidad and Tobago's
+								</h1>
+
+								<div class="lead mb-4" data-lfr-editable-id="02-03-subtitle" data-lfr-editable-type="rich-text"><h2>Trade and Business Information Portal</h2>
+</div>
+
+								<div class="cl-banner-buttons">
+									<a class="btn btn-primary" data-lfr-editable-id="02-04-link" data-lfr-editable-type="link" href="https://login.ttbizlink.gov.tt/" id="fragment-wfak-02-04-link" target="_blank">
+										Login to E-Services
+									</a>
+
+									<a class="btn btn-secondary" href="" id="fragment-wfak-02-05-link" onclick="scrollToContent(event)">
+										Explore Information Portal
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="carousel-item">
+				<img alt="Third Responsive Image" class="w-100 cl-banner-image" data-lfr-editable-id="03-01-image" data-lfr-editable-type="image" src="/documents/37141/146083/UNECE-Trade-Facilitation-and-electronic-business.png/6eafae60-2b33-9cbb-8a89-6d7b3147aad4?t=1653062305368&amp;download=true">
+
+				<div class="carousel-caption">
+					<div class="container">
+						<div class="row">
+							<div class="col-12 col-md-8 col-xl-7">
+								<h1 class="cl-h1-banner" data-lfr-editable-id="03-02-title" data-lfr-editable-type="rich-text">Welcome to Trinidad and Tobago's</h1>
+
+								<div class="lead mb-4" data-lfr-editable-id="03-03-subtitle" data-lfr-editable-type="rich-text"><h2>Trade and Business Information Portal</h2>
+</div>
+
+								<div class="cl-banner-buttons">
+									<a class="btn btn-primary" data-lfr-editable-id="03-04-link" data-lfr-editable-type="link" href="https://login.ttbizlink.gov.tt/" id="fragment-wfak-03-04-link" target="_blank">Login to E-Services</a>
+
+									<a class="btn btn-secondary" href="" id="fragment-wfak-03-05-link" onclick="scrollToContent(event)">
+										Explore Information Portal
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div><style>#cl-home-banner {
+	width: 100vw;
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	overflow: hidden;
+	background: #000;
+}
+
+#cl-home-banner,
+#cl-home-banner .carousel,
+#cl-home-banner .carousel-inner {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.section-slider {
+	position: relative;
+	width: 100%;
+	background: #000;
+}
+
+.section-slider .carousel {
+	position: relative;
+}
+
+.section-slider .carousel-inner {
+	position: relative;
+	height: 60vh;
+	min-height: 400px;
+	background: #000;
+	transform: translateZ(0);
+	overflow: hidden;
+}
+
+.section-slider .carousel-item {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	backface-visibility: hidden;
+}
+
+.section-slider .carousel-item.active,
+.section-slider .carousel-item.move-left,
+.section-slider .carousel-item.move-right {
+	opacity: 1;
+	display: block;
+}
+
+.section-slider .carousel-item.active {
+	z-index: 2;
+}
+
+.section-slider .carousel-item.move-left,
+.section-slider .carousel-item.move-right {
+	z-index: 3;
+	animation-duration: 0.6s;
+	animation-iteration-count: 1;
+	animation-fill-mode: both;
+}
+
+.section-slider .cl-banner-image,
+.section-slider .carousel-item img,
+.section-slider .carousel-item .w-100 {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: brightness(50%);
+	backface-visibility: hidden;
+}
+
+.section-slider .carousel-caption {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	bottom: auto;
+	transform: translateY(-50%);
+	text-align: left;
+	z-index: 10;
+	display: block;
+}
+
+.section-slider .carousel-caption .container {
+	width: 100%;
+}
+
+.section-slider .carousel-caption .row {
+	justify-content: flex-start;
+}
+
+.section-slider .carousel-caption .col-12 {
+	margin-left: 0;
+	margin-right: 0;
+	text-align: left;
+	max-width: 700px;
+}
+
+.section-slider .carousel-caption h1,
+.section-slider .carousel-caption .lead,
+.section-slider .carousel-caption .lead p,
+.section-slider .carousel-caption .lead h1,
+.section-slider .carousel-caption .lead h2,
+.section-slider .carousel-caption .lead h3,
+.section-slider .carousel-caption .lead h4,
+.section-slider .carousel-caption .lead h5,
+.section-slider .carousel-caption .lead h6 {
+	color: #fff;
+}
+
+.section-slider .carousel-caption h1 {
+	margin-bottom: 12px;
+	font-weight: 600;
+}
+
+.section-slider .carousel-caption .lead {
+	margin-bottom: 20px;
+	max-width: 700px;
+}
+
+.section-slider .carousel-caption .lead p,
+.section-slider .carousel-caption .lead h1,
+.section-slider .carousel-caption .lead h2,
+.section-slider .carousel-caption .lead h3,
+.section-slider .carousel-caption .lead h4,
+.section-slider .carousel-caption .lead h5,
+.section-slider .carousel-caption .lead h6 {
+	margin-bottom: 0;
+	font-family: inherit;
+	line-height: 1.4;
+}
+
+.section-slider .carousel-caption .lead h1,
+.section-slider .carousel-caption .lead h2,
+.section-slider .carousel-caption .lead h3,
+.section-slider .carousel-caption .lead h4,
+.section-slider .carousel-caption .lead h5,
+.section-slider .carousel-caption .lead h6 {
+	font-size: 1.5rem;
+	font-weight: 400;
+}
+
+.section-slider .carousel-caption .lead h2 {
+	font-size: 1.75rem;
+	font-weight: 400;
+}
+
+.cl-h1-banner {
+	font-weight: 600;
+}
+
+.cl-banner-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.section-slider .carousel-navigation {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 15px;
+	z-index: 15;
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	padding-left: 0;
+	margin-bottom: 0;
+}
+
+.section-slider .carousel-navigation li {
+	margin: 0;
+}
+
+.section-slider .carousel-navigation button {
+	background-color: rgba(255, 255, 255, 0.5);
+	border: 0;
+	width: 30px;
+	height: 3px;
+	margin-left: 3px;
+	margin-right: 3px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.section-slider .carousel-navigation button:focus {
+	outline: 0;
+}
+
+.section-slider .carousel-navigation button.active {
+	background-color: rgba(255, 255, 255, 1);
+}
+
+@keyframes moveLeftActive {
+	from { transform: translateX(0); }
+	to { transform: translateX(100%); }
+}
+
+@keyframes moveLeft {
+	from { transform: translateX(-100%); }
+	to { transform: translateX(0); }
+}
+
+@keyframes moveRightActive {
+	from { transform: translateX(0); }
+	to { transform: translateX(-100%); }
+}
+
+@keyframes moveRight {
+	from { transform: translateX(100%); }
+	to { transform: translateX(0); }
+}
+
+.section-slider .carousel-item.active.move-left {
+	animation-name: moveLeftActive;
+}
+
+.section-slider .carousel-item.move-left {
+	animation-name: moveLeft;
+}
+
+.section-slider .carousel-item.active.move-right {
+	animation-name: moveRightActive;
+}
+
+.section-slider .carousel-item.move-right {
+	animation-name: moveRight;
+}
+
+@media (max-width: 767.98px) {
+	.section-slider .carousel-inner {
+		height: 70vh;
+		min-height: 420px;
+	}
+
+	.section-slider .carousel-caption {
+		top: auto;
+		bottom: 60px;
+		left: 0;
+		right: 0;
+		transform: none;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	.section-slider .carousel-caption .col-12 {
+		max-width: 100%;
+	}
+
+	.section-slider .carousel-caption h1 {
+		font-size: 1.75rem;
+		margin-bottom: 10px;
+	}
+
+	.section-slider .carousel-caption .lead {
+		margin-bottom: 16px;
+		font-size: 1rem;
+	}
+
+	.cl-banner-buttons {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 10px;
+		width: 100%;
+	}
+
+	.cl-banner-buttons .btn,
+	.section-slider .carousel-caption > .btn,
+	.section-slider .carousel-caption a.btn {
+		width: 100%;
+		max-width: 100%;
+	}
+}</style><script>(function() {var configuration = {}; var fragmentElement = document.querySelector('#fragment-9502-wfak'); var fragmentNamespace = 'wfak';const MOVE_LEFT = 'move-left';
+const MOVE_RIGHT = 'move-right';
+const INTERVAL = 5000;
+const ANIMATION_DURATION = 600;
+
+const editMode = document.body.classList.contains('has-edit-mode-menu');
+const indicators = Array.from(
+	fragmentElement.querySelectorAll('.carousel-navigation button')
+);
+const items = Array.from(
+	fragmentElement.querySelectorAll('.carousel-item')
+);
+
+let moving = false;
+
+function scrollToContent(event) {
+	if (event) {
+		event.preventDefault();
+	}
+
+	const element = document.getElementById('discover');
+
+	if (element) {
+		element.scrollIntoView({
+			block: 'start',
+			behavior: 'smooth'
+		});
+	}
+}
+
+function getActiveIndicator() {
+	return fragmentElement.querySelector('.carousel-navigation button.active');
+}
+
+function getActiveItem() {
+	return fragmentElement.querySelector('.carousel-item.active');
+}
+
+function getNextIndex(currentIndex) {
+	return currentIndex >= items.length - 1 ? 0 : currentIndex + 1;
+}
+
+function move(movement, index = null) {
+	if (moving || !items.length) {
+		return;
+	}
+
+	const activeItem = getActiveItem();
+	const activeIndicator = getActiveIndicator();
+
+	if (!activeItem || !activeIndicator) {
+		return;
+	}
+
+	const activeIndex = items.indexOf(activeItem);
+	let nextIndex = index;
+
+	if (nextIndex === null) {
+		nextIndex = getNextIndex(activeIndex);
+	}
+
+	if (
+		nextIndex === activeIndex ||
+		nextIndex < 0 ||
+		nextIndex >= items.length
+	) {
+		return;
+	}
+
+	const nextItem = items[nextIndex];
+
+	moving = true;
+
+	activeItem.classList.add(movement);
+	nextItem.classList.add(movement);
+
+	activeIndicator.classList.remove('active');
+	indicators[nextIndex].classList.add('active');
+
+	setTimeout(function () {
+		activeItem.classList.remove('active', MOVE_LEFT, MOVE_RIGHT);
+		nextItem.classList.remove(MOVE_LEFT, MOVE_RIGHT);
+		nextItem.classList.add('active');
+
+		moving = false;
+	}, ANIMATION_DURATION);
+}
+
+function createInterval() {
+	let intervalId = null;
+
+	if (!editMode) {
+		intervalId = setInterval(function () {
+			if (document.contains(fragmentElement) && items.length && document.contains(items[0])) {
+				move(MOVE_RIGHT);
+			}
+			else {
+				clearInterval(intervalId);
+			}
+		}, INTERVAL);
+	}
+
+	return intervalId;
+}
+
+(function main() {
+	let intervalId = createInterval();
+
+	indicators.forEach(function (indicator, index) {
+		indicator.addEventListener('click', function () {
+			const activeIndicator = getActiveIndicator();
+			const activeIndex = indicators.indexOf(activeIndicator);
+
+			if (index !== activeIndex) {
+				if (index < activeIndex) {
+					move(MOVE_LEFT, index);
+				}
+				else {
+					move(MOVE_RIGHT, index);
+				}
+			}
+
+			clearInterval(intervalId);
+			intervalId = createInterval();
+		});
+	});
+})();
+
+window.scrollToContent = scrollToContent;;}());</script>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-4515-ehoc" > <div class="bg-white py-3" id="discover">
+				<div>
+					<div class="px-5">
+						<h2 class="txt-red mb-4 text-center cl-h2">We Are Here To Help You</h2>
+						<div class="text-center">
+							<p data-lfr-editable-id="editable-p1" data-lfr-editable-type="text">Discover a world of Trade, Business and Investment opportunities in one place.</p>
+						</div>
+					</div>
+
+				</div>
+			</div></div><style>.cl-h2{
+	font-weight: bold;
+}</style>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-4202-ujdl" > <div class="py-1" id="tab services">
+    <div class="px-5">
+        <h1 class="pb-3 txt-red how-text-start h4">Select your Area of Interest</h1>
+        <div class="row text-center">
+            <div class="d-flex justify-center">
+                <div>
+                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                        <li class="nav-item cl-card-nav px-2 py-1 mb-2" role="presentation">
+                            <div aria-controls="pills-home" aria-selected="false" class="col cl-card-item-how cl-flex py-3 px-0 active" data-bs-target="#pills-home" data-bs-toggle="pill" id="pills-ab" role="tab" type="button">
+                                <div class="cl-flex">
+                                    <div class="col-md-4">
+                                        <div>
+                                            <img alt="" class="cl-back-img cl-back-img" src="/documents/37141/187731/uil_ship.png/f47e7d61-656d-b0ce-048e-d5e4ffd6669c?t=1650474024878">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="px-4">
+                                            <h1 class="font-weight-bold h4">Trade</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item cl-card-nav px-2 py-1 mb-2" role="presentation">
+                            <div aria-controls="pills-profile" aria-selected="false" class="col cl-card-item-how cl-flex py-3 px-0" data-bs-target="#pills-profile" data-bs-toggle="pill" id="pills-profile-tab" role="tab" type="button">
+
+                                <div class="cl-flex">
+                                    <div class="col-md-4">
+                                        <div>
+                                            <img alt="" class="cl-back-img cl-back-img" src="/documents/37141/187731/fa6-regular_handshake-black.png/eba73732-4887-28e3-6c97-1b1759ee2b9b?t=1650587153779">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="px-4">
+                                            <h1 class="font-weight-bold h4">Business</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item cl-card-nav px-2 py-1 mb-2" role="presentation">
+                            <div aria-controls="pills-contact" aria-selected="false" class="col cl-card-item-how cl-flex py-3 px-0" data-bs-target="#pills-contact" data-bs-toggle="pill" id="pills-contact-tab" role="tab" type="button">
+
+                                <div class="cl-flex">
+                                    <div class="col-md-4">
+                                        <div>
+                                            <img alt="" class="cl-back-img cl-back-img" src="/documents/37141/187731/bx_money-withdraw.png/2242e173-4451-89ac-c02b-1b8db71da94d?t=1650474038352">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div>
+                                            <h1 class="font-weight-bold h4">Investment</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mx-auto">
+            <div class="flex-grow-1">
+                <div class="tab-content" id="pills-tabContent">
+                    <div aria-labelledby="nav-home-tab" class="tab-pane fade show active" id="pills-home" role="tabpanel">
+                        <h1 class="txt-red h4">Trade Features</h1>
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-4 px-0">
+
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="01-img" data-lfr-editable-type="image" src="/documents/37141/187731/1564994832835+%281%29.png/445762da-f48b-11ba-7d48-75e3bd24c8d7?t=1653397735444&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/trade-procedures-landing-page">
+                                            <h1 class="card-title cl-title-style h4">Trade Procedures Overview</h1>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 px-0">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="02-img" data-lfr-editable-type="image" src="/documents/37141/146083/analysis.png/f16c4c73-4eb6-7749-d61d-f004b8591a00?t=1648479151339&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="https://app.ttbizlink.gov.tt/visitable/mvvmc/eservices/portalEService.public.smarths" target="_blank">
+                                            <h1 class="card-title cl-title-style h4">HS Code &amp; Tariff Finder </h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="03-img" data-lfr-editable-type="image" src="/documents/37141/187731/1.png/0bd529ce-b827-2cac-35c8-a6882f145752?t=1650342557296&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/legal-reference-documents-and-trade-agreements">
+                                            <h1 class="card-title cl-title-style h4">Legal Reference Documents &amp; Trade
+                                                Agreements</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="04-img" data-lfr-editable-type="image" src="/documents/37141/187731/5.png/93595fa0-73af-f404-a4ca-2c02b48ab5b7?t=1650342556867&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/market-analysis-tools">
+                                            <h1 class="card-title cl-title-style h4">Market Analysis Tools</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="5-img" data-lfr-editable-type="image" src="/documents/37141/187731/dtl-ttl_TransportInfrastructure_471x265.jpg/4b7a15d0-079c-6466-d896-ec5d082c43c9?t=1652127118297&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="https://gottbs.com/shop/page/2/#.YmKiv9rMJPZ" target="_blank">
+                                            <h1 class="card-title cl-title-style h4">Trinidad and Tobago Standards</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+													    <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="1-6-img" data-lfr-editable-type="image" src="/documents/37141/146083/surveys.png/47140222-3dc3-36cf-2203-9d6b36604bbe?t=1648479154023&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/forms">
+                                            <h1 class="card-title cl-title-style h4">Forms</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div aria-labelledby="nav-profile-tab" class="tab-pane fade" id="pills-profile" role="tabpanel">
+                        <h1 class="txt-red h4">Business Features</h1>
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="06-img" data-lfr-editable-type="image" src="/documents/37141/146083/banner6+-+Copy.jpg/443f2d4e-b1a4-0ff4-a4b9-809da05743a9?t=1650648479038&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/business-procedures-landing-page">
+                                            <h1 class="card-title cl-title-style h4">Business Procedures Overview</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="07-img" data-lfr-editable-type="image" src="/documents/37141/187731/6.png/0d1492c0-7e31-4631-1126-0ec78fb2e0d9?t=1650342557086&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/business-directories">
+                                            <h1 class="card-title cl-title-style h4">Business
+                                                Directories</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="8-img" data-lfr-editable-type="image" src="/documents/37141/187731/1.png/0bd529ce-b827-2cac-35c8-a6882f145752?t=1650342557296&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/legal-reference-documents-and-trade-agreements">
+                                            <h1 class="card-title cl-title-style h4">Legal Reference Documents &amp; Trade
+                                                Agreements</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+														<div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="2-4-img" data-lfr-editable-type="image" src="/documents/37141/187731/2.png/075754cf-549e-6b13-d7d0-57ab8ad6350a?t=1650342556181&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/forms">
+                                            <h1 class="card-title cl-title-style h4">Forms</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+														<div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="2-5-img" data-lfr-editable-type="image" src="/documents/37141/187731/3.png/2102d64f-e0d8-be63-e1b5-e0e44b83dcaa?t=1650342556472&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/market-analysis-tools">
+                                            <h1 class="card-title cl-title-style h4">Market Analysis Tools</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+													
+                        </div>
+                    </div>
+
+                    <div aria-labelledby="nav-contact-tab" class="tab-pane fade" id="pills-contact" role="tabpanel">
+                        <h1 class="txt-red h4">Investment Features</h1>
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="09-img" data-lfr-editable-type="image" src="/documents/37141/146083/banner8.jpg/d66ef284-535b-3552-2c11-74285441ddc2?t=1650649549928&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/investment-procedures-landing-page">
+                                            <h1 class="card-title cl-title-style h4">
+                                                Investment Procedures Overview</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="10-img" data-lfr-editable-type="image" src="/documents/37141/187731/4.png/7d2990e1-6325-1321-ed3a-4a32494901c4?t=1650342556667&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="http://www.investt.co.tt/industries-and-opportunities/" target="_blank">
+                                            <h1 class="card-title cl-title-style h4">
+                                                Investment Opportunities</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="11-img" data-lfr-editable-type="image" src="/documents/37141/187731/Port+of+Spain.jpg/879c643c-910e-9d92-bbae-50c4252642e2?t=1650345404362&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="https://agriculture.gov.tt/divisions-units/divisions/regional-administration-north/state-land-services/" target="_blank">
+                                            <h1 class="card-title cl-title-style h4">
+                                                State Land Services</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-0 ">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="12-img" data-lfr-editable-type="image" src="/documents/37141/146083/banner9+-+Copy.jpg/3784463f-73a4-cce2-5ec2-7dc8c68d1496?t=1650648476228&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="https://eteck.co.tt/index.php/available-properties/" target="_blank">
+                                            <h1 class="card-title cl-title-style h4">
+                                                Economic Spaces</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+													  <div class="col-md-4 px-0">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="36-img" data-lfr-editable-type="image" src="/documents/37141/146083/home3.jpg/55f3f52d-1ea2-35f4-ef19-cdeb2355504d?t=1650648477221&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/incentives-listing">
+                                            <h1 class="card-title cl-title-style h4">
+                                                Incentives Listing </h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>											
+                            <div class="col-md-4 px-0">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="13-img" data-lfr-editable-type="image" src="/documents/37141/187731/1.png/0bd529ce-b827-2cac-35c8-a6882f145752?t=1650342557296&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/legal-reference-documents-and-trade-agreements">
+                                            <h1 class="card-title cl-title-style h4">Legal Reference Documents &amp; Trade
+                                                Agreements</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+														<div class="col-md-4 px-0">
+                                <div class="card text-white text-light h-75">
+                                    <img alt="Card image" class="card-img cl-img-fit-card" data-lfr-editable-id="14-img" data-lfr-editable-type="image" src="/documents/37141/187731/Port+of+Spain.jpg/879c643c-910e-9d92-bbae-50c4252642e2?t=1650345404362&amp;download=true">
+                                    <div class="card-img-overlay">
+                                        <a class="stretched-link" href="/special-economic-zones">
+                                            <h1 class="card-title cl-title-style h4">Special Economic Zones</h1>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></div><style>div#fragment-4202-kvfv {
+    background: aliceblue;
+	padding-top: 30px;
+}
+
+#pills-tabContent .card {
+    border: 2px solid transparent;
+}
+
+.card.text-white.text-light.h-100:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0, 0.5);
+    background-blend-mode: darken;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.cl-flex {
+	  display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+div#tab services {
+    margin-left: 50px;
+}
+
+.col .card-body a {
+  text-decoration: none; /* no underline */
+}
+
+#pills-tabContent, .tab-content {
+	padding: 0px 20px 0px 20p !important;
+}
+
+#pills-tabContent {
+	background: none !important;
+}
+
+.cl-img-fit-card {
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+}
+
+h4.pb-3.txt-red.how-text-start {
+    margin-left: 3%;
+}
+
+.card a {
+	text-decoration: none;
+}
+
+.cl-row .col {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.cl-card {
+    margin-bottom: 0 !important;
+    margin: 10px 5px 0px 0px;
+		width: 290px;
+	  height: 290px;
+}
+
+.how-cl-card img {
+    height: 15wv;
+    width: 100%;
+    object-fit: contain;
+}
+
+.cl-title-style {
+	color: white;
+	text-align: center;
+}
+
+div#pills-ab {
+    background-color: #CD1127;
+	color: white !important;
+}
+
+div#pills-profile-tab {
+    background-color: #FFFFFF;
+		color: black !important;
+}
+
+div#pills-contact-tab {
+    background-color: #000000;
+		color: white !important;
+}
+/*
+div#pills-ab:hover, div#pills-contact-tab:hover, div#pills-profile-tab:hover , .cl-title-style:hover {
+    background-color: darkred !important;
+		color: white !important
+}
+*/
+
+/*
+.cl-card-item-how {
+		width: 383px !important; 
+		height: 150px !important;
+}
+*/
+.cl-card-nav {
+    /*width: 400px !important;*/
+}
+
+.cl-card-item-how:hover, .cl-card-item-how:active, .cl-card-nav .active {
+    /* border: 3px solid #F1E78D !important; */
+	  border: 4px solid darkred !important;
+}
+
+.cl-card-item-how, .cl-card-item-how  {
+	  border: 4px solid transparent;
+}
+
+.nav-item{
+	margin-left: 5px;
+}
+
+h4.card-title.cl-title-style {
+    text-align: center;
+}
+
+h5.card-title.cl-title-style {
+    text-align: center;
+}
+
+.card-img-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+a{
+	text-decoration: none !important;
+}
+
+.cl-box .front {
+    display: block;
+    z-index: 5;
+    position: relative;
+}
+
+.cl-box .cl-behind_container {
+    position: relative;
+    top: -100px;
+		left: 10px;
+}
+.cl-box .cl-behind {
+    display: block;
+    z-index: 3;
+}
+
+.cl-back-img{
+	height: 100px;
+	width: 100px;
+	opacity: 0.8;
+}
+
+img.cl-back-img {
+    margin-top: -9px;
+}
+
+h4.text-center.d-xl-flex.my-auto.justify-content-xl-center.card-title {
+    font-size: 20px;
+}
+
+.nav-pills .nav-link, .nav-pills .nav-underline .tab a, .nav-underline .tab .nav-pills a, .nav-pills .nav-link, .nav-pills .nav-underline .tab a, .nav-underline .tab .nav-pills a:active {
+    color: black !important;
+}
+
+.nav-pills .nav-item .nav-link.active, .nav-pills .nav-underline .tab .nav-link.active, .nav-underline .nav-pills .tab .nav-link.active, .nav-underline .tab .nav-pills .nav-item a.active, .nav-pills .nav-underline .tab a.active, .nav-underline .nav-pills .tab a.active, .nav-underline .tab.active .nav-pills .nav-item a, .nav-pills .nav-underline .tab.active a, .nav-underline .nav-pills .tab.active a, .nav-pills .show > .nav-link, .nav-pills .nav-underline .tab .show > a, .nav-underline .tab .nav-pills .show > a {
+    border: 4px solid darkred ;
+}
+
+.cl-card-nav {
+	/*width: 380px !important;*/
+}
+
+.cl-card img {
+  max-width: 300px;
+	
+}
+
+h4.pb-3.txt-red.how-text-start {
+    margin-left: 30px !important;
+}</style>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-1 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0 mt-sm-1 mt-1 mt-md-1" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-318-ecbw" > <div class="bg-white py-3" id="discover">
+				<div class="px-5">
+					<div class="row">
+						<h3 class="text-start-discover txt-red mb-4">Discover &amp; Search Procedures</h3>
+						<div class="text-start-discover">
+							<p data-lfr-editable-id="editable-p1" data-lfr-editable-type="text">Discover a world of Trade, Business and Investment opportunities in one place. Gain a thorough understanding of processes involved in importing or exporting as well as business and investment operations by having access to data such as fees, required documents, average timeframes, and more.</p>
+						</div>
+					</div>
+
+				</div>
+			</div></div><style>.text-start-discover {
+    margin-left: 40px;
+}
+
+div#fragment-318-ecbw {
+    padding: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}</style>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-4102-bvsq" > <!-- Start of tabs services -->
+<div class="py-1 bg-white">
+	<div class="px-5">
+		<div class="row">
+			<div class="d-flex">
+				<div class="p-2">
+					<ul class="nav nav-pills mb-3 flex-column" id="pills-tab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="pills-trade-tab" data-bs-toggle="pill" data-bs-target="#pills-trade" type="button" role="tab" aria-controls="pills-trade" aria-selected="true">
+								<i class="fa-solid fa-circle-arrow-right"></i>Trade</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-business-tab" data-bs-toggle="pill" data-bs-target="#pills-business" type="button" role="tab" aria-controls="pills-business" aria-selected="false">
+								<i class="fa-solid fa-circle-arrow-right"></i>Business</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="pills-investment-tab" data-bs-toggle="pill" data-bs-target="#pills-investment" type="button" role="tab" aria-controls="pills-investment" aria-selected="false">
+								<i class="fa-solid fa-circle-arrow-right"></i>Investment</button>
+						</li>
+					</ul>
+				</div>
+				<div class="flex-grow-1">
+					<div class="tab-content" id="pills-tabContent">
+						<div class="tab-pane fade show active" id="pills-trade" role="tabpanel" aria-labelledby="nav-trade-tab">
+							<h4 class="txt-red">Find a Trade Procedure</h4>
+							<div class="portlet">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_tradeenquiryhome_  portlet-static portlet-static-end decorate  " id="p_p_id_tradeenquiryhome_INSTANCE_bvsq_">
+		<span id="p_tradeenquiryhome_INSTANCE_bvsq"></span>
+
+
+
+
+	
+
+	
+		
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		
+<section class="portlet" id="portlet_tradeenquiryhome_INSTANCE_bvsq">
+
+	<div class="portlet-content">
+
+
+		
+			<div class=" portlet-content-container">
+				
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+<div id="_tradeenquiryhome_INSTANCE_bvsq_-root"></div>
+
+
+
+	
+	
+
+					
+				
+			
+		
+	
+	
+
+
+
+	</div>
+
+			</div>
+		
+	</div>
+</section>
+	
+
+		
+		
+	
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+</div>
+						</div>
+						<div class="tab-pane fade" id="pills-business" role="tabpanel" aria-labelledby="nav-business-tab">
+							<h4 class="txt-red">Find a Business Procedure</h4>
+							<div class="portlet">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_businessenquiryhome_  portlet-static portlet-static-end decorate  " id="p_p_id_businessenquiryhome_INSTANCE_bvsq_">
+		<span id="p_businessenquiryhome_INSTANCE_bvsq"></span>
+
+
+
+
+	
+
+	
+		
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		
+<section class="portlet" id="portlet_businessenquiryhome_INSTANCE_bvsq">
+
+	<div class="portlet-content">
+
+
+		
+			<div class=" portlet-content-container">
+				
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+<div id="_businessenquiryhome_INSTANCE_bvsq_-root"></div>
+
+
+
+	
+	
+
+					
+				
+			
+		
+	
+	
+
+
+
+	</div>
+
+			</div>
+		
+	</div>
+</section>
+	
+
+		
+		
+	
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+</div>
+						</div>
+						<div class="tab-pane fade" id="pills-investment" role="tabpanel" aria-labelledby="nav-investment-tab">
+							<h4 class="txt-red">Find an Investment Procedure</h4>
+							<div class="portlet">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_investmentenquiryhome_  portlet-static portlet-static-end decorate  " id="p_p_id_investmentenquiryhome_INSTANCE_bvsq_">
+		<span id="p_investmentenquiryhome_INSTANCE_bvsq"></span>
+
+
+
+
+	
+
+	
+		
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		
+<section class="portlet" id="portlet_investmentenquiryhome_INSTANCE_bvsq">
+
+	<div class="portlet-content">
+
+
+		
+			<div class=" portlet-content-container">
+				
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+<div id="_investmentenquiryhome_INSTANCE_bvsq_-root"></div>
+
+
+
+	
+	
+
+					
+				
+			
+		
+	
+	
+
+
+
+	</div>
+
+			</div>
+		
+	</div>
+</section>
+	
+
+		
+		
+	
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div></div></div></div><style>.col .card-body a {
+  color: black; /* blue colors for links too */
+  text-decoration: none; /* no underline */
+}
+
+div#fragment-4102-bvsq {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}</style>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-4204-vqjo" > <div class="fragment_4203">
+	<h3 class="text-start-other txt-red mb-4 text-center">Quick Links</h3>
+    <div class="container">			
+        <div class="row">
+            <div class="col">
+                <a class="cl-link-2" href="/tutorials-and-video-guides">
+                    <div class="card rounded-circle bg-white cl-circle">
+                        <div class="card-body text-center ">
+                            <h5 class="cl-card-title">How Does it Work</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a class="cl-link-2" href="/faqs">
+                    <div class="card rounded-circle bg-white cl-circle">
+                        <div class="card-body text-center ">
+                            <h5 class="cl-card-title">FAQs</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a class="cl-link-2" href="/contact-us">
+                    <div class="card rounded-circle bg-white cl-circle">
+                        <div class="card-body text-center ">
+                            <h5 class="cl-card-title">Contact Us</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a class="cl-link-2" href="/social-media-feeds">
+                    <div class="card rounded-circle bg-white cl-circle">
+                        <div class="card-body text-center ">
+                            <h5 class="cl-card-title">Social Media Feeds</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div></div><style>.fragment_4203 {
+	margin-top: 30px;
+	padding: 30px 0px 30px 0px;
+	background: #d5e4ff;
+}
+
+    .cl-circle {
+        border: 2px solid darkred;
+        height: 170px;
+        width: 170px;
+        margin-left: 30px;
+    }
+
+    .cl-circle:hover {
+        border: 3px solid darkred;
+				background: darkred !important;
+				color: white !important;
+    }
+
+    .cl-card-2 {
+        width: 250px;
+        height: 200px;
+        margin-top: 20px;
+    }
+
+    .cl-card-link {
+        color: #9A0000 !important;
+        text-decoration: #9A0000 !important;
+    }
+
+    .cl-card-link:hover{
+        color: #820202 !important;
+        text-decoration: #820202 !important;
+    }
+
+    .cl-card-title{
+        margin-top: 35%;
+        font-weight: bold;
+    }
+
+    .cl-card-body-other{
+        padding: 7%;
+        font-family: Inter,sans-serif;
+        font-size: 15px;
+    }
+
+    .cl-link-2, .cl-link-2:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+.card.rounded-circle.bg-white.cl-circle {
+    box-shadow: 5px 5px #c7c7c7;
+	    background-image: url("/documents/37141/187731/quick_links.png/029f40d9-1969-1efd-e9ac-6089bc65c0b0");
+	color: white;
+}</style>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-0-cwip" >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_announcementshomepage_  portlet-static portlet-static-end decorate  " id="p_p_id_announcementshomepage_INSTANCE_cwip_">
+		<span id="p_announcementshomepage_INSTANCE_cwip"></span>
+
+
+
+
+	
+
+	
+		
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		
+<section class="portlet" id="portlet_announcementshomepage_INSTANCE_cwip">
+
+	<div class="portlet-content">
+
+
+		
+			<div class=" portlet-content-container">
+				
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+
+		<div id="js-portlet-_announcementshomepage_INSTANCE_cwip_"></div><script type="text/javascript">
+	Liferay.Loader.require(
+		"announcements-homepage@0.1.0",
+		function(module) {
+			var initializer;
+
+			if (typeof module.default === 'function') {
+				initializer = module.default;
+			}
+			else if (typeof module === 'function') {
+				initializer = module;
+			}
+
+			if (initializer) {
+				initializer(
+					{
+						configuration: {
+							portletInstance: JSON.parse('{}'),
+							system: JSON.parse('{}')
+						},
+						contextPath: '/o/announcements-homepage-0.1.0',
+						portletElementId: 'js-portlet-_announcementshomepage_INSTANCE_cwip_',
+						portletNamespace: '_announcementshomepage_INSTANCE_cwip_'
+					});
+			}
+			else {
+				console.error(
+					'Module', 'announcements-homepage@0.1.0',
+					'is not exporting a function: cannot initialize it.');
+			}
+
+		});
+</script>
+
+	
+	
+
+					
+				
+			
+		
+	
+	
+
+
+
+	</div>
+
+			</div>
+		
+	</div>
+</section>
+	
+
+		
+		
+	
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+</div>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-1103-ooyq" > <div class="bx-empty text-left cl-button-announcements">
+   <a class="btn btn-primary" data-lfr-editable-id="link" data-lfr-editable-type="link" href="/announcements">
+		 	See all announcements
+	</a>
+</div></div><style>.cl-button-announcements{
+	 display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+}</style>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-0-obvs" >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_newshomepage_  portlet-static portlet-static-end decorate  " id="p_p_id_newshomepage_INSTANCE_obvs_">
+		<span id="p_newshomepage_INSTANCE_obvs"></span>
+
+
+
+
+	
+
+	
+		
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		
+<section class="portlet" id="portlet_newshomepage_INSTANCE_obvs">
+
+	<div class="portlet-content">
+
+
+		
+			<div class=" portlet-content-container">
+				
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+
+		<div id="js-portlet-_newshomepage_INSTANCE_obvs_"></div><script type="text/javascript">
+	Liferay.Loader.require(
+		"news-homepage@0.1.0",
+		function(module) {
+			var initializer;
+
+			if (typeof module.default === 'function') {
+				initializer = module.default;
+			}
+			else if (typeof module === 'function') {
+				initializer = module;
+			}
+
+			if (initializer) {
+				initializer(
+					{
+						configuration: {
+							portletInstance: JSON.parse('{}'),
+							system: JSON.parse('{}')
+						},
+						contextPath: '/o/news-homepage-0.1.0',
+						portletElementId: 'js-portlet-_newshomepage_INSTANCE_obvs_',
+						portletNamespace: '_newshomepage_INSTANCE_obvs_'
+					});
+			}
+			else {
+				console.error(
+					'Module', 'news-homepage@0.1.0',
+					'is not exporting a function: cannot initialize it.');
+			}
+
+		});
+</script>
+
+	
+	
+
+					
+				
+			
+		
+	
+	
+
+
+
+	</div>
+
+			</div>
+		
+	</div>
+</section>
+	
+
+		
+		
+	
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+</div>
+						</div>
+					
+				
+			</div>
+		
+		
+		
+	
+
+
+
+	
+		
+		
+		
+		
+		
+			<div class="">
+
+				
+
+				
+
+					
+
+					
+
+						
+
+						<div class=" mb-lg-0 ml-lg-0 mr-lg-0 mt-lg-0 pb-lg-0 pl-lg-0 pr-lg-0 pt-lg-0" style="box-sizing: border-box;border-style: solid; border-width: 0px;opacity: 1.0;">
+							<div id="fragment-1105-bfqu" > <div class="bx-empty text-left cl-button-news">
+   <a class="btn btn-primary" data-lfr-editable-id="link" data-lfr-editable-type="link" href="/news">
+		 	See all news
+	</a>
+</div></div><style>.cl-button-news {
+	 display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+}</style>
+						</div>
+					
+				
+			</div>
+
+
+		</div>
+	
+
+
+<form action="#" aria-hidden="true" class="hide" id="hrefFm" method="post" name="hrefFm"><span></span><input hidden type="submit"/></form>
+
+
+
+	
+            
+        </section>
+    </div>
+</div>
+
+<footer>
+<!-- Start of Sitemap -->
+<div class="sitemap" id="sitemap">
+  <div class="container py-5">
+    <div class="row">
+
+      <div class="col-lg-3 md-6">
+        <h1 class="h5">MAIN MENU</h1>
+        <ul class="list-unstyled">
+          <li><a href="/home">Home</a></li>
+          <li><a href="/trade-procedures-landing-page">Trade</a></li>
+          <li><a href="/business-procedures-landing-page">Business</a></li>
+          <li><a href="/investment-procedures-landing-page">Investment</a></li>
+          <li><a href="/hs-code-tariff-finder">HS Code & Tariff Finder</a></li>
+          <li><a href="/market-analysis-tools">Market Analysis Tools</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 md-6">
+        <h1 class="h5">CUSTOMER SUPPORT LINKS</h1>
+        <ul class="list-unstyled">
+          <li><a href="/contact-us">Contact Us</a></li>
+          <li><a href="/faqs">Frequently Asked Questions</a></li>
+          <li><a href="/feedback">Give Feedback</a></li>
+         </ul>
+      </div>
+      
+      <div class="col-lg-3 md-6">  
+        <h1 class="h5">HELPFUL LINKS</h1>
+        <ul class="list-unstyled">
+          <li><a href="http://www.ttconnect.gov.tt/" target="_blank">ttconnect</a></li>
+          <li><a href="/legal-reference-documents-and-trade-agreements">Legal Reference Documents & Trade Agreements</a></li>
+          <li><a href="/tutorials-and-video-guides">Tutorials and Video Guides</a></li>
+          <li><a href="https://app.ttbizlink.gov.tt/visitable/mvvmc/eservices/portalEService.public.applyScreen" target="_blank">E-Services</a></li>
+                     <li><a href="/disclaimer">Disclaimer</a></li>
+        </ul>
+      </div>
+
+
+      <div class="col-lg-3 md-6">
+        <div class="copyright">
+          <h1 class="h5">COPYRIGHT</h1>
+          <p>Copyright © 2025 Government of the Republic of Trinidad and Tobago</p>
+
+          <ul class="social">
+            <li><a href="https://www.facebook.com/bizlinktt/" target="_blank" aria-label="TTBizLink Facebook"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href="https://twitter.com/TTBizLink" target="_blank" aria-label="TTBizLink Twitter"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="https://www.youtube.com/channel/UCNiShuzD7VXdYeupGhKDi3Q" target="_blank" aria-label="TTBizLink Youtube"><i class="fab fa-youtube"></i></a></li>
+            <li><a href="https://www.instagram.com/ttbizlink/" target="_blank"><i class="fab fa-instagram" aria-label="TTBizLink Instagram"></i></a></li>
+            <li><a href="https://tt.linkedin.com/in/ttbizlink-trinidad-and-tobago-99225639" target="_blank" aria-label="TTBizLink LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- End of Sitemap --> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+// <![CDATA[
+
+	
+		
+		
+
+			
+
+			
+		
+	
+
+// ]]>
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	// <![CDATA[
+
+		
+
+		Liferay.currentURL = '\x2f';
+		Liferay.currentURLEncoded = '\x252F';
+
+	// ]]>
+</script>
+
+
+
+	
+
+	
+
+	<script type="text/javascript">
+		// <![CDATA[
+			
+				/** Scroll to Element **/
+	function scrollToContent() {
+		console.log("scrollToContent");
+    event.preventDefault();
+    var element = document.getElementById('discover');
+    element.scrollIntoView({
+    block: 'start',
+    behavior: 'smooth'
+  });
+}
+
+(function fixDropdownCleanly() {
+  const toggleSelector = 'a.nav-link.dropdown-toggle';
+  const originalToggle = document.querySelector(toggleSelector);
+
+  if (!originalToggle) {
+    return;
+  }
+
+  if (originalToggle.dataset.fixedDropdown === "true") {
+    return;
+  }
+
+  const menu = originalToggle.nextElementSibling;
+  const isMenuVisible = menu.classList.contains("show");
+
+  // Clone toggle to remove all listeners
+  const cleanToggle = originalToggle.cloneNode(true);
+  cleanToggle.dataset.fixedDropdown = "true";
+
+  // Sync initial aria-expanded state
+  cleanToggle.setAttribute("aria-expanded", isMenuVisible ? "true" : "false");
+
+  // Replace in DOM
+  originalToggle.replaceWith(cleanToggle);
+
+  // Ensure menu and toggle state are consistent
+  if (isMenuVisible) {
+    menu.classList.add("show");
+  } else {
+    menu.classList.remove("show");
+  }
+
+  cleanToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();  // VERY IMPORTANT to prevent other handlers
+
+    const isExpanded = cleanToggle.getAttribute("aria-expanded") === "true";
+    cleanToggle.setAttribute("aria-expanded", !isExpanded);
+    menu.classList.toggle("show");
+  });
+
+  if (!window._customDropdownListenerAdded) {
+    document.addEventListener("click", (e) => {
+      const openToggle = document.querySelector('a.nav-link.dropdown-toggle[data-fixed-dropdown="true"]');
+      const openMenu = openToggle?.nextElementSibling;
+
+      if (
+        openToggle &&
+        openMenu &&
+        !openToggle.contains(e.target) &&
+        !openMenu.contains(e.target)
+      ) {
+        openMenu.classList.remove("show");
+        openToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+    window._customDropdownListenerAdded = true;
+  }
+})();
+
+document.addEventListener("DOMContentLoaded", function () {
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+
+  let node;
+  while (node = walker.nextNode()) {
+    if (node.nodeValue.includes('-->')) {
+      node.nodeValue = node.nodeValue.replace(/-->/g, '');
+    }
+  }
+});
+
+				
+
+				
+			
+		// ]]>
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+		
+
+		
+	
+
+
+<script type="text/javascript">
+// <![CDATA[
+(function() {var $ = AUI.$;var _ = AUI._;
+	var onVote = function (event) {
+		if (window.Analytics) {
+			Analytics.send('VOTE', 'Ratings', {
+				className: event.className,
+				classPK: event.classPK,
+				ratingType: event.ratingType,
+				score: event.score,
+			});
+		}
+	};
+
+	var onDestroyPortlet = function () {
+		Liferay.detach('ratings:vote', onVote);
+		Liferay.detach('destroyPortlet', onDestroyPortlet);
+	};
+
+	Liferay.on('ratings:vote', onVote);
+	Liferay.on('destroyPortlet', onDestroyPortlet);
+})();(function() {var $ = AUI.$;var _ = AUI._;
+	var onShare = function (data) {
+		if (window.Analytics) {
+			Analytics.send('shared', 'SocialBookmarks', {
+				className: data.className,
+				classPK: data.classPK,
+				type: data.type,
+				url: data.url,
+			});
+		}
+	};
+
+	var onDestroyPortlet = function () {
+		Liferay.detach('socialBookmarks:share', onShare);
+		Liferay.detach('destroyPortlet', onDestroyPortlet);
+	};
+
+	Liferay.on('socialBookmarks:share', onShare);
+	Liferay.on('destroyPortlet', onDestroyPortlet);
+})();(function() {var $ = AUI.$;var _ = AUI._;
+	var pathnameRegexp = /\/documents\/(\d+)\/(\d+)\/(.+?)\/([^&]+)/;
+
+	function handleDownloadClick(event) {
+		if (event.target.nodeName.toLowerCase() === 'a' && window.Analytics) {
+			var anchor = event.target;
+			var match = pathnameRegexp.exec(anchor.pathname);
+
+			var fileEntryId =
+				anchor.dataset.analyticsFileEntryId ||
+				(anchor.parentElement &&
+					anchor.parentElement.dataset.analyticsFileEntryId);
+
+			if (fileEntryId && match) {
+				var getParameterValue = function (parameterName) {
+					var result = null;
+
+					anchor.search
+						.substr(1)
+						.split('&')
+						.forEach(function (item) {
+							var tmp = item.split('=');
+
+							if (tmp[0] === parameterName) {
+								result = decodeURIComponent(tmp[1]);
+							}
+						});
+
+					return result;
+				};
+
+				Analytics.send('documentDownloaded', 'Document', {
+					groupId: match[1],
+					fileEntryId: fileEntryId,
+					preview: !!window._com_liferay_document_library_analytics_isViewFileEntry,
+					title: decodeURIComponent(match[3].replace(/\+/gi, ' ')),
+					version: getParameterValue('version'),
+				});
+			}
+		}
+	}
+
+	Liferay.once('destroyPortlet', function () {
+		document.body.removeEventListener('click', handleDownloadClick);
+	});
+
+	Liferay.once('portletReady', function () {
+		document.body.addEventListener('click', handleDownloadClick);
+	});
+})();(function() {var $ = AUI.$;var _ = AUI._;
+	var onDestroyPortlet = function () {
+		Liferay.detach('messagePosted', onMessagePosted);
+		Liferay.detach('destroyPortlet', onDestroyPortlet);
+	};
+
+	Liferay.on('destroyPortlet', onDestroyPortlet);
+
+	var onMessagePosted = function (event) {
+		if (window.Analytics) {
+			Analytics.send('posted', 'Comment', {
+				className: event.className,
+				classPK: event.classPK,
+				commentId: event.commentId,
+				text: event.text,
+			});
+		}
+	};
+
+	Liferay.on('messagePosted', onMessagePosted);
+})();
+	if (window.svg4everybody && Liferay.Data.ICONS_INLINE_SVG) {
+		svg4everybody(
+			{
+				polyfill: true,
+				validate: function (src, svg, use) {
+					return !src || !src.startsWith('#');
+				}
+			}
+		);
+	}
+
+	
+		Liferay.Portlet.register('newshomepage_INSTANCE_obvs');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_newshomepage_INSTANCE_obvs_',
+			portletId: 'newshomepage_INSTANCE_obvs',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d28\x26p_p_id\x3dnewshomepage_INSTANCE_obvs\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet_',
+			portletId: 'com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d28\x26p_p_id\x3dcom_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('tbipannouncementshomepriority_INSTANCE_opyk');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_tbipannouncementshomepriority_INSTANCE_opyk_',
+			portletId: 'tbipannouncementshomepriority_INSTANCE_opyk',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d28\x26p_p_id\x3dtbipannouncementshomepriority_INSTANCE_opyk\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('investmentenquiryhome_INSTANCE_bvsq');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_investmentenquiryhome_INSTANCE_bvsq_',
+			portletId: 'investmentenquiryhome_INSTANCE_bvsq',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d28\x26p_p_id\x3dinvestmentenquiryhome_INSTANCE_bvsq\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('businessenquiryhome_INSTANCE_bvsq');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_businessenquiryhome_INSTANCE_bvsq_',
+			portletId: 'businessenquiryhome_INSTANCE_bvsq',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d28\x26p_p_id\x3dbusinessenquiryhome_INSTANCE_bvsq\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('tradeenquiryhome_INSTANCE_bvsq');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_tradeenquiryhome_INSTANCE_bvsq_',
+			portletId: 'tradeenquiryhome_INSTANCE_bvsq',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d28\x26p_p_id\x3dtradeenquiryhome_INSTANCE_bvsq\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('announcementshomepage_INSTANCE_cwip');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_announcementshomepage_INSTANCE_cwip_',
+			portletId: 'announcementshomepage_INSTANCE_cwip',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d28\x26p_p_id\x3dannouncementshomepage_INSTANCE_cwip\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+Liferay.Loader.require('metal-dom/src/all/dom', 'frontend-js-web/liferay/toast/commands/OpenToast.es', 'investment-enquiry-home@1.0.0', 'business-enquiry-home@1.0.0', 'trade-enquiry-home@1.0.0', function(metalDomSrcAllDom, frontendJsWebLiferayToastCommandsOpenToastEs, investmentEnquiryHome100, businessEnquiryHome100, tradeEnquiryHome100) {
+try {
+(function() {
+var dom = metalDomSrcAllDom;
+var $ = AUI.$;var _ = AUI._;
+	var focusInPortletHandler = dom.delegate(
+		document,
+		'focusin',
+		'.portlet',
+		function(event) {
+			dom.addClasses(dom.closest(event.delegateTarget, '.portlet'), 'open');
+		}
+	);
+
+	var focusOutPortletHandler = dom.delegate(
+		document,
+		'focusout',
+		'.portlet',
+		function(event) {
+			dom.removeClasses(dom.closest(event.delegateTarget, '.portlet'), 'open');
+		}
+	);
+
+})();
+(function() {
+var toastCommands = frontendJsWebLiferayToastCommandsOpenToastEs;
+var $ = AUI.$;var _ = AUI._;
+			AUI().use(
+				'liferay-session',
+				function() {
+					Liferay.Session = new Liferay.SessionBase(
+						{
+							autoExtend: true,
+							redirectOnExpire: false,
+							redirectUrl: 'https\x3a\x2f\x2finfo\x2ettbizlink\x2egov\x2ett\x2fweb\x2fguest',
+							sessionLength: 900,
+							sessionTimeoutOffset: 70,
+							warningLength: 0
+						}
+					);
+
+					
+				}
+			);
+		
+})();
+(function() {
+var main = investmentEnquiryHome100;
+var $ = AUI.$;var _ = AUI._;
+	main.default('_investmentenquiryhome_INSTANCE_bvsq_-root');
+
+})();
+(function() {
+var main = businessEnquiryHome100;
+var $ = AUI.$;var _ = AUI._;
+	main.default('_businessenquiryhome_INSTANCE_bvsq_-root');
+
+})();
+(function() {
+var main = tradeEnquiryHome100;
+var $ = AUI.$;var _ = AUI._;
+	main.default('_tradeenquiryhome_INSTANCE_bvsq_-root');
+
+})();
+} catch (err) {
+	console.error(err);
+}
+});AUI().use('liferay-menu', 'aui-base', function(A) {(function() {var $ = AUI.$;var _ = AUI._;
+	if (A.UA.mobile) {
+		Liferay.Util.addInputCancel();
+	}
+})();(function() {var $ = AUI.$;var _ = AUI._;
+	new Liferay.Menu();
+
+	var liferayNotices = Liferay.Data.notices;
+
+	for (var i = 0; i < liferayNotices.length; i++) {
+		Liferay.Util.openToast(liferayNotices[i]);
+	}
+
+})();});
+// ]]>
+</script>
+
+
+
+
+
+
+
+	
+	<link data-senna-track="temporary" href="/o/portal-search-web/css/main.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1639692308000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/com.liferay.product.navigation.user.personal.bar.web/css/main.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1639694530000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/site-navigation-menu-web/css/main.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1639696544000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/product-navigation-product-menu-web/css/main.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1639694364000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/segments-experiment-web/css/main.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1639636390000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/tbip-announcements-home-priority-0.1.0/static/css/main.chunk.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1645563216000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/announcements-homepage-0.1.0/static/css/main.chunk.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1652304858000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/news-homepage-0.1.0/static/css/main.chunk.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1653148486000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/trade-enquiry-home/css/index.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1658552602000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/business-enquiry-home/css/index.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1661789516000" rel="stylesheet" type="text/css" />
+<link data-senna-track="temporary" href="/o/investment-enquiry-home/css/index.css?browserId=other&amp;themeId=tbip_WAR_TBIP&amp;minifierType=css&amp;languageId=en_US&amp;b=7310&amp;t=1658950328000" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<script src="https://info.ttbizlink.gov.tt/o/TBIP/js/main.js?browserId=other&amp;minifierType=js&amp;languageId=en_US&amp;b=7310&amp;t=1783622526000" type="text/javascript"></script>
+
+
+
+
+<script type="text/javascript">
+	// <![CDATA[
+		AUI().use(
+			'aui-base',
+			function(A) {
+				var frameElement = window.frameElement;
+
+				if (frameElement && frameElement.getAttribute('id') === 'simulationDeviceIframe') {
+					A.getBody().addClass('lfr-has-simulation-panel');
+				}
+			}
+		);
+	// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+Liferay.Loader.require('frontend-js-tooltip-support-web@3.0.5/index', function(frontendJsTooltipSupportWeb305Index) {
+try {
+(function() {
+var TooltipSupport = frontendJsTooltipSupportWeb305Index;
+TooltipSupport.default()
+})();
+} catch (err) {
+	console.error(err);
+}
+});
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+Liferay.Loader.require('frontend-js-dropdown-support-web@1.0.9/index', function(frontendJsDropdownSupportWeb109Index) {
+try {
+(function() {
+var DropdownProvider = frontendJsDropdownSupportWeb109Index;
+DropdownProvider.default()
+})();
+} catch (err) {
+	console.error(err);
+}
+});
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+Liferay.Loader.require('frontend-js-tabs-support-web@1.0.9/index', function(frontendJsTabsSupportWeb109Index) {
+try {
+(function() {
+var TabsProvider = frontendJsTabsSupportWeb109Index;
+TabsProvider.default()
+})();
+} catch (err) {
+	console.error(err);
+}
+});
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+Liferay.Loader.require('frontend-js-collapse-support-web@1.0.11/index', function(frontendJsCollapseSupportWeb1011Index) {
+try {
+(function() {
+var CollapseProvider = frontendJsCollapseSupportWeb1011Index;
+CollapseProvider.default()
+})();
+} catch (err) {
+	console.error(err);
+}
+});
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+Liferay.Loader.require('frontend-js-alert-support-web@1.0.8/index', function(frontendJsAlertSupportWeb108Index) {
+try {
+(function() {
+var AlertProvider = frontendJsAlertSupportWeb108Index;
+AlertProvider.default()
+})();
+} catch (err) {
+	console.error(err);
+}
+});
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+Liferay.Loader.require('remote-app-support-web@1.0.6/index', function(remoteAppSupportWeb106Index) {
+try {
+(function() {
+var RemoteAppSupport = remoteAppSupportWeb106Index;
+RemoteAppSupport.default()
+})();
+} catch (err) {
+	console.error(err);
+}
+});
+// ]]>
+</script></footer>
+</body>
+
+<script src="https://info.ttbizlink.gov.tt/o/TBIP/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://info.ttbizlink.gov.tt/o/TBIP/js/bootstrap.bundle.min.js"></script>
+<script defer src="https://info.ttbizlink.gov.tt/o/TBIP/js/cluxp.min.js"></script>
+<script defer src="https://info.ttbizlink.gov.tt/o/TBIP/js/aos.min.js"></script>
+<script defer src="https://info.ttbizlink.gov.tt/o/TBIP/js/faqs.min.js"></script>
+<script defer src="https://info.ttbizlink.gov.tt/o/TBIP/js/custom.min.js"></script>
+<script defer src="https://info.ttbizlink.gov.tt/o/TBIP/js/service-worker.js"></script>
+<script src="https://info.ttbizlink.gov.tt/o/TBIP/js/popper.min.js"></script>
+
+<script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('https://info.ttbizlink.gov.tt/o/TBIP/js/service-worker.js', {scope: '/'})
+                .then((registration) => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    console.log(registration)
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                })
+        });
+    }
+</script>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+
+    }
+</script>
+</html>
+		
+	
+

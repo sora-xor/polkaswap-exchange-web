@@ -1,0 +1,94 @@
+{
+  "code": "ET",
+  "status": "not_verified",
+  "rule": "Plant Protection and Quarantine Proclamation 1400/2026 is the current starting point, replacing reliance on the 1992 law. Processed products are covered where pest risk remains, and article 4 provides import controls; a current list resolving finished tea was not located.",
+  "personalMailApplicability": "No personal postal tea exemption established under the new law.",
+  "quantityLimit": null,
+  "authority": "Ethiopia Ministry of Justice",
+  "evidenceUrls": [
+    "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+    "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf",
+    "https://faolex.fao.org/docs/pdf/eth208821.pdf",
+    "https://justice.gov.et/en/law/food-and-medicine-administration-proclamation/",
+    "https://faolex.fao.org/docs/pdf/eth216290.pdf",
+    "https://eris.efda.gov.et/",
+    "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Ethiopia%27s+Food+Importers-Exporters+and+Wholesalers+Directive_Addis+Ababa_Ethiopia_12-1-2015.pdf",
+    "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=FAIRS+Country+Report+Annual_Addis+Ababa_Ethiopia_ET2025-0021.pdf",
+    "https://justice.gov.et/en/entity/ethiopian-coffee-and-tea-authority/"
+  ],
+  "remainingQuestion": "The complete enacted current Proclamation 1400/2026, particularly definitions, import scope, standards-incorporation and processing provisions. Separately, current private-food scope under Proclamation 1112/2019 and implementing EFDA rules remains as in the existing row.",
+  "researchAttempts": [
+    "Located and read the new 2026 proclamation rather than carrying forward the superseded law; searched commodity schedules and personal-use exceptions.",
+    "Reconfirmed on 30 September 2026 that the Ministry of Justice lists Proclamation 1400/2026 as in force from 7 May 2026. Re-attempted the official PDF and searched current commodity schedules and exact-title mirrors; official PDF retrieval returned 403 in this follow-up. No new tea-specific implementing classification or private-post exception was established, so the earlier unresolved finding is preserved rather than falling back to the repealed 1992 law.",
+    "30 September independent food/conformity pass: Recovered actual Gazette Proclamation 1112/2019 and visually verified article 10(1), PDF page 20: food imports require safety compliance and an executive-organ permit. However article 3, PDF page 13, limits the law’s scope to products intended for market placement or otherwise offered for public use. Article2(1) defines food to include processed human-consumption substances. Regulation 531/2023 defines the agency and its powers, not a new unqualified private import duty. The current eRIS portal describes special import applications but in an importer/vendor/licensing chain; it does not settle private personal food parcels. Complete FAO-hosted Gazette law and 2023 agency regulation downloaded; article 10 visually verified because PDF OCR is poor. Ministry of Justice labels 1112/2019 in force. Personal medical/supplement exceptions and customs tax allowances were not extended to ordinary tea.",
+    "30 September legal-scope peer review: recovered the complete official English translation of Food Exporters, Importers and Wholesalers Control Directive 22/2014, hosted by USDA. Article 4 limits it to food-trade companies; article 8(1) expressly exempts personal-consumption food from the certificate of competence. Article 20(4) separately lists shipment health and origin certificates, and article 8 does not expressly waive those. This is an older directive and its present interaction with Proclamation 1112/2019 was not established. The 2025 USDA FAIRS report describes processed tea notification and commercial import documents but supplies no private-postal scope rule; its reliance on the 1992 plant regulation cannot override the new 2026 proclamation. These sources narrow the licensing issue without clearing tea or proving an unavoidable private-parcel certificate.",
+    "30 September fresh official-online recovery: Read current Ministry of Justice Coffee and Tea Authority registered-directive index, including 2026 entries. The available directive titles concern coffee marketing/quality control or spices, not an operative private tea import rule. An EFDA 2023–2026 implementation plan describes future regulatory work rather than an enacted private-food exception.",
+    "30 September common-definition review: The official current index confirms Proclamation 1400/2026, in force from 7 May 2026. Full operative plant-law text is not available in the reviewed local corpus; the known Ministry PDF previously returned access failure. This pass checked the current official index and precise indexed provision searches without repeating the same failed full-text fetch. It cannot establish or disprove an operative international-definition clause. The old 1992 law must not be substituted.",
+    "30 September 2026 focused operative-scope recovery: Attempted to recover the current Ministry of Justice Proclamation 1400/2026 page in a real browser after the known direct PDF failure; navigation timed out at 45 seconds and the browser kernel reset. No current full law was retrieved, and the prior 1992 law was not substituted. This bounded attempt adds an access result only, not evidence that the current law contains or lacks a processing exemption. The official index and exact current PDF URL remain the concrete missing source."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "The finished-tea pest-risk classification under Plant Protection and Quarantine Proclamation 1400/2026 remains missing. Separately, establish how Proclamation 1112/2019 article 3 and any current EFDA food directive apply to an own-consumption postal purchase. The recovered 2014 directive expressly exempts personal food from competence licensing, but does not establish a current waiver from shipment certificates; its company-trade scope also prevents treating article 20 as an unqualified private import duty.",
+  "permitFreeSources": [
+    "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+    "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf",
+    "https://faolex.fao.org/docs/pdf/eth208821.pdf",
+    "https://justice.gov.et/en/law/food-and-medicine-administration-proclamation/",
+    "https://faolex.fao.org/docs/pdf/eth216290.pdf",
+    "https://eris.efda.gov.et/",
+    "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Ethiopia%27s+Food+Importers-Exporters+and+Wholesalers+Directive_Addis+Ababa_Ethiopia_12-1-2015.pdf",
+    "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=FAIRS+Country+Report+Annual_Addis+Ababa_Ethiopia_ET2025-0021.pdf",
+    "https://justice.gov.et/en/entity/ethiopian-coffee-and-tea-authority/"
+  ],
+  "independentFoodConformityRule": "Recovered actual Gazette Proclamation 1112/2019 and visually verified article 10(1), PDF page 20: food imports require safety compliance and an executive-organ permit. However article 3, PDF page 13, limits the law’s scope to products intended for market placement or otherwise offered for public use. Article2(1) defines food to include processed human-consumption substances. Regulation 531/2023 defines the agency and its powers, not a new unqualified private import duty. The current eRIS portal describes special import applications but in an importer/vendor/licensing chain; it does not settle private personal food parcels. 30 September legal-scope peer review: recovered the complete official English translation of Food Exporters, Importers and Wholesalers Control Directive 22/2014, hosted by USDA. Article 4 limits it to food-trade companies; article 8(1) expressly exempts personal-consumption food from the certificate of competence. Article 20(4) separately lists shipment health and origin certificates, and article 8 does not expressly waive those. This is an older directive and its present interaction with Proclamation 1112/2019 was not established. The 2025 USDA FAIRS report describes processed tea notification and commercial import documents but supplies no private-postal scope rule; its reliance on the 1992 plant regulation cannot override the new 2026 proclamation. These sources narrow the licensing issue without clearing tea or proving an unavoidable private-parcel certificate.",
+  "foodConformitySourceFiles": [
+    "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019.pdf",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019.txt",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019-page-20.png",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019-page-21.png",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/et-foodreg2023.pdf",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/et-foodreg2023.txt",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/eight-country-food-scope-review.json",
+    "docs/reports/tea-audit-work/food-conformity-second-sources/et-food2019-scope-13.png",
+    "docs/reports/tea-audit-work/legal-scope-peer-review/et-directive2014-usda.pdf",
+    "docs/reports/tea-audit-work/legal-scope-peer-review/et-directive2014-usda.txt",
+    "docs/reports/tea-audit-work/legal-scope-peer-review/et-fairs2025.pdf",
+    "docs/reports/tea-audit-work/legal-scope-peer-review/et-fairs2025.txt",
+    "docs/reports/tea-audit-work/legal-scope-peer-review/et-source-provenance.json"
+  ],
+  "foodConformityAccessNotes": "Complete FAO-hosted Gazette law and 2023 agency regulation downloaded; article 10 visually verified because PDF OCR is poor. Ministry of Justice labels 1112/2019 in force. Personal medical/supplement exceptions and customs tax allowances were not extended to ordinary tea.",
+  "officialOnlineRecovery": {
+    "code": "ET",
+    "outcome": "unresolved",
+    "outcomeChanged": false,
+    "finding": "Read current Ministry of Justice Coffee and Tea Authority registered-directive index, including 2026 entries. The available directive titles concern coffee marketing/quality control or spices, not an operative private tea import rule. An EFDA 2023–2026 implementation plan describes future regulatory work rather than an enacted private-food exception.",
+    "remainingEvidence": "Current implementing risk category or sufficient-processing rule under Plant Protection Proclamation 1400/2026; no automatic private postal exemption established.",
+    "sources": [
+      "et-teaauthority-directives.html"
+    ]
+  },
+  "officialOnlineRecoveryFiles": [
+    "docs/reports/tea-audit-work/official-online-recovery-2026-09-30/africa/et-teaauthority-directives.html"
+  ],
+  "definitionReview": {
+    "code": "ET",
+    "outcome": "unresolved",
+    "finding": "The official current index confirms Proclamation 1400/2026, in force from 7 May 2026. Full operative plant-law text is not available in the reviewed local corpus; the known Ministry PDF previously returned access failure. This pass checked the current official index and precise indexed provision searches without repeating the same failed full-text fetch. It cannot establish or disprove an operative international-definition clause. The old 1992 law must not be substituted.",
+    "remainingEvidence": "The complete enacted current Proclamation 1400/2026, particularly definitions, import scope, standards-incorporation and processing provisions. Separately, current private-food scope under Proclamation 1112/2019 and implementing EFDA rules remains as in the existing row.",
+    "sourceFiles": [],
+    "sources": [
+      "https://justice.gov.et/en/law/plant-protection-and-quarantine-proclamation-no-1400-2026/",
+      "https://justice.gov.et/wp-content/uploads/2026/08/አዋጅ-ቁጥር-1400-2018.pdf"
+    ],
+    "reviewedAt": "2026-09-30"
+  },
+  "focusedScopeReview": {
+    "reviewedAt": "2026-09-30",
+    "finding": "Attempted to recover the current Ministry of Justice Proclamation 1400/2026 page in a real browser after the known direct PDF failure; navigation timed out at 45 seconds and the browser kernel reset. No current full law was retrieved, and the prior 1992 law was not substituted. This bounded attempt adds an access result only, not evidence that the current law contains or lacks a processing exemption. The official index and exact current PDF URL remain the concrete missing source.",
+    "sources": [],
+    "sourceFiles": [],
+    "overallDecisionChanged": false
+  },
+  "supersededBy": "docs/reports/tea-audit-work/ethiopia-wordpress-recovery/et-agricultural-proposed-row.json",
+  "supersessionReason": "Root recovered currentlaw after this browserfailure record wascreated."
+}

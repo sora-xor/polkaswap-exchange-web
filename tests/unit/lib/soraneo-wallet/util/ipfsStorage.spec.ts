@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { IpfsStorage } from '@/lib/soraneo-wallet/src/util/ipfsStorage';
+import { IPFS_GATEWAY_BASE_URL } from '@/utils/ipfs';
 
 describe('IpfsStorage', () => {
   beforeEach(() => {
@@ -12,10 +13,41 @@ describe('IpfsStorage', () => {
   });
 
   it('constructs gateway URLs and extracts host/path helpers', () => {
-    expect(IpfsStorage.constructFullIpfsUrl('QmHash/metadata.json')).toBe('https://ipfs.io/ipfs/QmHash/metadata.json');
+    expect(IpfsStorage.constructFullIpfsUrl('QmHash/metadata.json')).toBe(
+      `${IPFS_GATEWAY_BASE_URL}/ipfs/QmHash/metadata.json`
+    );
     expect(IpfsStorage.getStorageHostname('https://ipfs.io/ipfs/QmHash')).toBe('ipfs.io');
     expect(IpfsStorage.getStorageHostname('')).toBe('');
     expect(IpfsStorage.getIpfsPath('https://ipfs.io/ipfs/QmHash/metadata.json')).toBe('QmHash/metadata.json');
+  });
+
+  it('preserves configured gateway overrides for valid bare content paths', () => {
+    const previousGateway = IpfsStorage.IPFS_GATEWAY;
+    try {
+      IpfsStorage.IPFS_GATEWAY = 'https://dedicated.example/gateway/ipfs/';
+      expect(IpfsStorage.constructFullIpfsUrl('QmHash/dir/a%20b.png?download=1#preview')).toBe(
+        'https://dedicated.example/gateway/ipfs/QmHash/dir/a%20b.png?download=1#preview'
+      );
+    } finally {
+      IpfsStorage.IPFS_GATEWAY = previousGateway;
+    }
+  });
+
+  it.each([
+    '',
+    '../api/v0/version',
+    '%2e%2e/api/v0/version',
+    'QmHash/../../api/v0/version',
+    'QmHash/%2e%2e/%2e%2e/api/v0/version',
+    'QmHash/%252e%252e/api/v0/version',
+    'QmHash/%2f..%2f../api/v0/version',
+    'QmHash/..\\..\\api/v0/version',
+    '/api/v0/version',
+    '//example.com/logo.png',
+    'https://example.com/logo.png',
+    'ipfs://QmHash/logo.png',
+  ])('returns an empty image URL for non-bare or unsafe content paths: %s', (path) => {
+    expect(IpfsStorage.constructFullIpfsUrl(path)).toBe('');
   });
 
   it('extracts IPFS paths from supported URL formats', () => {
@@ -105,6 +137,33 @@ describe('IpfsStorage', () => {
     vi.stubGlobal('FileReader', MockFileReader as never);
 
     await expect(IpfsStorage.fileToBase64(new File(['hello'], 'hello.txt'))).rejects.toBe(error);
+  });
+
+  it('rejects invalid and aborted base64 reads instead of leaving them pending', async () => {
+    class InvalidResultReader {
+      result: string | ArrayBuffer | null = null;
+      onload: Nullable<() => void> = null;
+      onerror: Nullable<(error: unknown) => void> = null;
+      onabort: Nullable<() => void> = null;
+
+      readAsDataURL() {
+        queueMicrotask(() => this.onload?.());
+      }
+    }
+
+    vi.stubGlobal('FileReader', InvalidResultReader as never);
+    await expect(IpfsStorage.fileToBase64(new File(['hello'], 'hello.txt'))).rejects.toThrow(
+      'FileReader returned an invalid data URL'
+    );
+
+    class AbortedReader extends InvalidResultReader {
+      readAsDataURL() {
+        queueMicrotask(() => this.onabort?.());
+      }
+    }
+
+    vi.stubGlobal('FileReader', AbortedReader as never);
+    await expect(IpfsStorage.fileToBase64(new File(['hello'], 'hello.txt'))).rejects.toThrow('File read aborted');
   });
 
   it('reads files into array buffers', async () => {

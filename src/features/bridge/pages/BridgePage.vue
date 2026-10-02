@@ -62,6 +62,7 @@
             data-test-name="connectPolkadot"
             :address="sender"
             :name="senderName"
+            :network-name="formatSelectedNetwork(isSoraToEvm)"
             :tooltip="getCopyTooltip(isSoraToEvm)"
             :icon="getProviderIcon(isSoraToEvm)"
             @connect="connectWallet(isSoraToEvm)"
@@ -75,7 +76,7 @@
           type="action"
           icon="arrows-swap-90-24"
           :disabled="isConfirmTxLoading"
-          :aria-label="t('exchange.Swap')"
+          :aria-label="t('ux.swap.reverseTokens')"
           @click="switchDirection"
         ></s-button>
 
@@ -110,12 +111,32 @@
             data-test-name="useMetamaskProvider"
             :address="recipient"
             :name="recipientName"
+            :network-name="formatSelectedNetwork(!isSoraToEvm)"
             :tooltip="getCopyTooltip(!isSoraToEvm)"
             :icon="getProviderIcon(!isSoraToEvm)"
             @connect="connectWallet(!isSoraToEvm)"
             @disconnect="disconnectWallet(!isSoraToEvm)"
           ></bridge-account-panel>
         </token-input>
+
+        <template v-if="guidedLiquidity.guided.value">
+          <tonswap-liquidity-check
+            v-if="guidedLiquidity.selectionValid.value"
+            :key="guidedLiquidity.contextKey.value"
+            :amount="amountSend"
+            :purpose="guidedLiquidity.purpose.value"
+            @checked="guidedLiquidity.accept"
+          />
+          <p v-else-if="!isZeroAmountSend" role="status">
+            {{
+              t(
+                guidedLiquidity.purpose.value === 'xor'
+                  ? 'buyXor.bridgePreparationError'
+                  : 'getTs.bridgePreparationError'
+              )
+            }}
+          </p>
+        </template>
 
         <s-button
           v-if="areAccountsConnected"
@@ -237,10 +258,11 @@
 <script setup lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/sdk';
 import { KnownSymbols as KnownSymbolsEnum } from '@sora-substrate/sdk/build/assets/consts';
+import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { PageNames } from '@/consts';
+import { PageNames, SoraNetwork } from '@/consts';
 import { BridgeFocusedField as FocusedFieldEnum } from '@/stores/bridge/types';
 import { useTranslation } from '@/composables/useTranslation';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
@@ -257,6 +279,14 @@ import { useAssetsStore } from '@/stores/assets';
 import { useBridgeStore } from '@/stores/bridge';
 import { useWeb3Store } from '@/stores/web3';
 import { useWalletStore } from '@/stores/wallet';
+import { useSettingsStore } from '@/stores/settings';
+import { parseTonswapBridgeFundingQuery } from '@/features/misc/composables/useTonswapBridgeFunding';
+import { useTonswapBridgeLiquidity } from '@/features/misc/composables/useTonswapBridgeLiquidity';
+import TonswapLiquidityCheck from '@/features/misc/components/burn/TonswapLiquidityCheck.vue';
+import type { EthHistory } from '@sora-substrate/sdk/build/bridgeProxy/eth/types';
+import { getTonswapBridgeFundingPayload } from '@/features/misc/lib/tonswapBridgeLiquidity';
+import { getTsFundingQuery, parseGetTsFundingPurpose } from '@/features/misc/lib/getTsFlow';
+import { useGetTsPlan } from '@/features/misc/composables/useGetTsPlan';
 import {
   asZeroValue,
   delay,
@@ -269,7 +299,6 @@ import {
 } from '@/utils';
 import { isDenominatedAsset as isDenominatedAssetUtil } from '@/utils/bridge/common/utils';
 import type { RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
-import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
 import type { Nullable } from '@/types/common';
 import AppBrowserMstBridgeWarning from '@/components/App/BrowserNotification/MstBridgeWarning.vue';
@@ -295,6 +324,7 @@ defineOptions({
   name: 'BridgePage',
   inheritAttrs: false,
 });
+const props = defineProps<{ fundingPreparationBlocked?: boolean }>();
 
 const KnownSymbols = KnownSymbolsEnum;
 const FocusedField = FocusedFieldEnum;
@@ -379,7 +409,6 @@ const showMSTWarning = ref(false);
 const showWarningExternalFeeDialog = ref(false);
 const isWarningExternalFeeDialogConfirmed = ref(false);
 
-const subBridgeConnector = computed(() => bridgeStore.connector as SubNetworksConnector);
 const isSubBridge = computed(() => bridgeStore.isSubBridge);
 const isSubAccountType = computed(() => bridgeStore.isSubAccountType);
 const networkSelected = computed(() => web3Store.networkSelected);
@@ -400,19 +429,46 @@ const isMST = computed(() => walletStore.isMstAccount);
 const operation = computed(() => bridgeStore.operation);
 const selectedNetworkName = computed(() => selectedNetworkNameComputed.value);
 const accountAssetsAddressTableMap = computed(() => accountAssetsAddressTable.value ?? ({} as Record<string, unknown>));
+const subNetworkConnectionState = computed(() => bridgeStore.subNetworkConnectionState);
 
 const subConnection = computed<Nullable<NodesConnection>>(() => {
   if (!isSubBridge.value) return null;
-  if (networkSelected.value !== subBridgeConnector.value.network?.subNetwork) return null;
+  if (networkSelected.value !== subNetworkConnectionState.value.network) return null;
 
-  return subBridgeConnector.value.network?.subNetworkConnection ?? null;
+  return subNetworkConnectionState.value.connection;
 });
 
-const isExternalNetworkLoading = computed(() =>
-  isSubBridge.value ? !subConnection.value?.nodeIsConnected : Boolean(evmProviderLoading.value)
+const isExternalNetworkLoading = computed(() => {
+  if (!isSubBridge.value) return Boolean(evmProviderLoading.value);
+
+  return (
+    networkSelected.value === subNetworkConnectionState.value.network && subNetworkConnectionState.value.connecting
+  );
+});
+
+const isSubBridgeReady = computed(
+  () =>
+    !isSubBridge.value ||
+    (networkSelected.value === subNetworkConnectionState.value.network && subNetworkConnectionState.value.ready)
 );
 
 const areAccountsConnected = computed(() => Boolean(sender.value && recipient.value));
+const settingsStore = useSettingsStore();
+const guidedLiquidity = useTonswapBridgeLiquidity(() => ({
+  guided: route.path === '/bridge' && parseTonswapBridgeFundingQuery(route.query) === 'DAI',
+  purpose: parseGetTsFundingPurpose(route.query) ?? undefined,
+  amount: amountSend.value,
+  assetAddress: asset.value?.address ?? '',
+  incoming: !isSoraToEvm.value,
+  ethereum: networkType.value === BridgeNetworkType.Eth,
+  network: networkSelected.value,
+  networkValid: isValidNetwork.value,
+  connected: settingsStore.nodeIsConnected && areAccountsConnected.value,
+  mainnet: settingsStore.soraNetwork === SoraNetwork.Prod,
+  soraAddress: walletStore.address,
+  evmAddress: web3Store.evmAddress,
+}));
+const fundingBlocked = computed(() => props.fundingPreparationBlocked || guidedLiquidity.blocked.value);
 
 const isDenominatedAsset = computed(() => isDenominatedAssetUtil(asset.value?.address ?? ''));
 
@@ -568,14 +624,17 @@ const isConfirmTxLoading = computed(
     registeredAssetsFetching.value
 );
 
-const nextButtonDisabled = computed(() =>
-  isBridgeNextButtonDisabled({
-    areAccountsConnected: areAccountsConnected.value,
-    isValidNetwork: isValidNetwork.value,
-    isAssetSelected: isAssetSelected.value,
-    isAssetSelectionAvailable: isAssetSelectionAvailable.value,
-    isTxConfirmDisabled: isTxConfirmDisabled.value,
-  })
+const nextButtonDisabled = computed(
+  () =>
+    !isSubBridgeReady.value ||
+    isBridgeNextButtonDisabled({
+      areAccountsConnected: areAccountsConnected.value,
+      isValidNetwork: isValidNetwork.value,
+      isAssetSelected: isAssetSelected.value,
+      isAssetSelectionAvailable: isAssetSelectionAvailable.value,
+      isTxConfirmDisabled: isTxConfirmDisabled.value,
+      fundingPreparationBlocked: fundingBlocked.value,
+    })
 );
 
 const setFocusedField = (field: FocusedFieldEnum) => {
@@ -620,6 +679,9 @@ const handleMaxValue = async () => {
 
 const handleChangeSubNode = () => {
   setSelectSubNodeDialogVisibility(true);
+  void web3Store.connectSelectedSubNetwork().catch((error) => {
+    console.warn('[Bridge] Failed to recover the selected Substrate network', error);
+  });
 };
 
 const openSelectAssetDialog = () => {
@@ -681,6 +743,10 @@ const waitOnExternalFeeWarningConfirmation = async (): Promise<void> => {
 };
 
 const confirmTransaction = async () => {
+  if (props.fundingPreparationBlocked || !guidedLiquidity.isAllowed()) return;
+  const fundingPurpose = guidedLiquidity.guided.value ? guidedLiquidity.purpose.value : null;
+  const fundingContext = guidedLiquidity.contextKey.value;
+  const fundingAmount = amountSend.value;
   try {
     bridgeStore.trackTransferSubmitted({
       direction: isSoraToEvm.value ? 'soraToExternal' : 'externalToSora',
@@ -689,19 +755,30 @@ const confirmTransaction = async () => {
       network: networkName.value,
     });
 
-    const tx = (await generateHistoryItemAction()) as { assetAddress?: string; id?: string };
+    const tx = (await generateHistoryItemAction(
+      fundingPurpose ? { payload: getTonswapBridgeFundingPayload(fundingPurpose) } : undefined
+    )) as EthHistory;
     const { assetAddress, id } = tx;
 
     if (assetAddress && !accountAssetsAddressTableMap.value[assetAddress]) {
       await addAssetToAccountAssets(assetAddress);
     }
 
+    if (fundingPurpose && (fundingContext !== guidedLiquidity.contextKey.value || !guidedLiquidity.isAllowed())) return;
     if (id) {
       setHistoryId(id);
+      if (fundingPurpose) {
+        const purchase = useGetTsPlan(fundingPurpose);
+        purchase.updatePlan({ daiAmount: fundingAmount });
+        if (!purchase.rememberBridgeDraft(tx)) return;
+      }
     }
 
     confirmDialogVisible.value = false;
-    await router.push({ name: PageNames.BridgeTransaction });
+    await router.push({
+      name: PageNames.BridgeTransaction,
+      ...(fundingPurpose ? { query: getTsFundingQuery(fundingPurpose) } : {}),
+    });
   } catch (error) {
     console.error(error);
   }
@@ -737,6 +814,7 @@ const handleNextButtonClick = () => {
     isAssetSelected: isAssetSelected.value,
     isAssetSelectionAvailable: isAssetSelectionAvailable.value,
     isTxConfirmDisabled: isTxConfirmDisabled.value,
+    fundingPreparationBlocked: fundingBlocked.value,
   });
 
   switch (action) {
@@ -784,6 +862,10 @@ const autoupdateRouteParams = async () => {
     }
   });
 };
+
+watch(fundingBlocked, (blocked) => {
+  if (blocked) confirmDialogVisible.value = false;
+});
 
 watch(
   () => [route.params.address, route.params.amount, route.params.isIncoming],

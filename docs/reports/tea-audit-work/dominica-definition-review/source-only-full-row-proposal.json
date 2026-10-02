@@ -1,0 +1,60 @@
+[
+  {
+    "code": "DM",
+    "name": "Dominica",
+    "status": "not_verified",
+    "rule": "The Act requires permits and phytosanitary certification for restricted plant products, defined as processed or unprocessed material capable of carrying pests. Regulation 8(g) exempts cooked/parboiled/otherwise processed pest-free products from regulation 4 entry/declaration/inspection only; it does not expressly waive the Act’s permit/certificate provisions. SRO 8/2003 adds a fruit/vegetable/planting-material permit form, without classifying manufactured tea. ISPM32 Appendix2 expressly lists tea in Category1, but that standard excludes later contamination/storage pests and the inspected domestic1986 Act has no general mandatory ISPM-interpretation clause. No independent enacted private-parcel food certificate or special-approval duty was established; the2026 enacted-text/commencement retrieval gap is recorded separately rather than treated as a blocker.",
+    "personalMailApplicability": "Individual import procedure exists; no personal postal tea exemption established.",
+    "quantityLimit": null,
+    "authority": "Dominica Ministry of Agriculture",
+    "evidenceUrls": [
+      "https://establishment.gov.dm/services/application-import-permit",
+      "https://divisionofagriculture.gov.dm/images/documents/forms/sample_import_permit_and_submission_form.pdf",
+      "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+      "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+      "https://faolex.fao.org/docs/pdf/dmi111807.pdf",
+      "https://customs.gov.dm/trade/prohibited-and-restricted-items",
+      "https://agriculture.gov.dm/images/documents/forms/application_for_import_permit.pdf",
+      "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7908",
+      "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7913",
+      "https://www.dominica.gov.dm/images/docs/bills/food_safety_bill_2026.pdf",
+      "https://dominica.gov.dm/laws/1997/act08-1997.pdf",
+      "https://faolex.fao.org/docs/pdf/dmi87508.pdf",
+      "https://www.ippc.int/en/publications/587/",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "https://pressroomopm.gov.dm/parliament-passes-food-safety-bill-to-strengthen-public-health-and-protect-consumers/"
+    ],
+    "remainingQuestion": "How the domestic pest-capability definition applies to manufactured Category1 tea: Act2 covers material capable of harbouring or transporting plant pests, while ISPM32 excludes later contamination/storage pests from its scope. A general operative processing rule or published technical interpretation could settle this without a bespoke national tea ruling. No independent enacted food-document duty was established for the stated private parcel.",
+    "researchAttempts": [
+      "Read the ministry import permit procedure, sample permit and Plant Protection Act. Preserved-fruit exceptions do not clearly cover manufactured Camellia tea; no personal postal waiver found.",
+      "2026-09-30: Read the full saved subsidiary regulations, including regulation 8(g), all commodity restrictions and SRO 8/2003; checked the Act’s processed/unprocessed pest-capability definition against current official customs and application guidance. Corrected the earlier narrow preserved-fruit description. No tea-specific classification found, and did not promote an inspection exemption into a permit/certificate waiver.",
+      "2026-09-30: Read official Gazette of 5 March 2026 confirming assent to Food Safety Act 5/2026, and checked the printery Act preview: one page of contents only. Read the complete government-published 2026 bill, including section 3(2) personal-consumption exclusion and commencement-by-order clause, while keeping it distinct from enacted law. Retrieved and OCR-extracted the 38-page Environmental Health Services Act 8/1997 and reviewed its food/import and certificate provisions; its food-import clause is a regulation-making power, not a self-executing universal certificate duty. The identified 2003 hygiene regulations concern food businesses. No independent enacted private tea food-certificate duty established; plant classification remains the decisive open issue, with new Act text/commencement an additional source gap.",
+      "30 September bounded legal-scope peer review: The parent Act defines processed and unprocessed plant products by capability of harbouring or transporting pests and directly requires prior permits with certificates for restricted articles. Regulation 8 expressly exempts listed articles only from regulation 4. Even if sencha qualified as cooked/processed and free of organisms under 8(g), that does not expressly waive Act sections 3–4. Being free of organisms in a given consignment is also a different proposition from being incapable of carrying pests as a product category. The complete subsidiary table names other crop controls but supplies no broader permit waiver for tea.",
+      "30 September narrow manufactured-tea definition review: identified principal Act10/1986 (not2009); reviewed Act2–4,10,12,25–28 and Reg8(g). Visually checked actual Tea entry in ISPM32 Appendix2 and read §1 footnote1/current IPPC scope statement excluding later contamination/storage pests. Found1997SRO51 ISPM survey clause, limited to pink/hibiscus mealybug pest-free areas; it is not general adoption of ISPM32. Retained agricultural uncertainty because statutory harbouring/transporting-pests scope is broader than the standard, not because a national tea name is missing. Independent food review found no enacted blanket private-parcel special-document requirement; unavailable2026text is not used as a standalone blocker."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "How the domestic pest-capability definition applies to manufactured Category1 tea: Act2 covers material capable of harbouring or transporting plant pests, while ISPM32 excludes later contamination/storage pests from its scope. A general operative processing rule or published technical interpretation could settle this without a bespoke national tea ruling. No independent enacted food-document duty was established for the stated private parcel.",
+    "permitFreeSources": [
+      "https://establishment.gov.dm/services/application-import-permit",
+      "https://divisionofagriculture.gov.dm/images/documents/forms/sample_import_permit_and_submission_form.pdf",
+      "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+      "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+      "https://faolex.fao.org/docs/pdf/dmi111807.pdf",
+      "https://customs.gov.dm/trade/prohibited-and-restricted-items",
+      "https://agriculture.gov.dm/images/documents/forms/application_for_import_permit.pdf",
+      "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7908",
+      "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7913",
+      "https://www.dominica.gov.dm/images/docs/bills/food_safety_bill_2026.pdf",
+      "https://dominica.gov.dm/laws/1997/act08-1997.pdf",
+      "https://faolex.fao.org/docs/pdf/dmi87508.pdf",
+      "https://www.ippc.int/en/publications/587/",
+      "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+      "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+      "https://pressroomopm.gov.dm/parliament-passes-food-safety-bill-to-strengthen-public-health-and-protect-consumers/"
+    ],
+    "permitFreeReviewedAt": "2026-09-30",
+    "foodImportReview": "No independently established enacted mandatory origin/health certificate, registration or advance approval for this private tea parcel. The1997 Act enables regulations; food-business rules do not automatically bind a private recipient. Full enacted Food Safety Act5/2026 and commencement remain unavailable beyond the official preview, but this source gap is not an independent shipping blocker; the published bill excludes personal consumption and cannot be used as enacted contrary evidence."
+  }
+]

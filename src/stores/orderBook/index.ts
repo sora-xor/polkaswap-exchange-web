@@ -15,7 +15,7 @@ import { useWalletStore } from '@/stores/wallet';
 import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
 import type { Nullable } from '@/types/common';
 import { getBookDecimals } from '@/utils/orderBook';
-import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+import { subscribeAndWaitForFirst, TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { OrderBook, OrderBookId, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
 import type { AccountBalance, RegisteredAccountAsset } from '@sora-substrate/sdk/build/assets/types';
@@ -28,6 +28,13 @@ const ORDER_BOOK_API_READY_TIMEOUT_MS = 12_000;
 const ORDER_BOOK_API_READY_POLL_MS = 100;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
+const pagedLimitOrdersSubscriptionGeneration = new WeakMap<object, number>();
+
+const invalidatePagedLimitOrdersSubscription = (store: object): number => {
+  const generation = (pagedLimitOrdersSubscriptionGeneration.get(store) ?? 0) + 1;
+  pagedLimitOrdersSubscriptionGeneration.set(store, generation);
+  return generation;
+};
 
 const buildInitialState = (): OrderBookState => ({
   orderBooks: {},
@@ -336,6 +343,7 @@ export const useOrderBookStore = defineStore('orderBook', {
       this.pagedUserLimitOrdersSubscription = subscription;
     },
     resetPagedUserLimitOrdersSubscription(): void {
+      invalidatePagedLimitOrdersSubscription(this);
       this.pagedUserLimitOrdersSubscription = clearSubscription(this.pagedUserLimitOrdersSubscription);
     },
     setOrdersToBeCancelled(orders: LimitOrder[]): void {
@@ -560,21 +568,24 @@ export const useOrderBookStore = defineStore('orderBook', {
       const selectedDexId = Number.isFinite(this.dexId) ? this.dexId : undefined;
       const accountAddress = walletStore.address || walletStore.account?.address;
 
-      if (!(accountAddress && baseAssetAddress && quoteAssetAddress)) return;
-
       this.resetPagedUserLimitOrdersSubscription();
+      const generation = pagedLimitOrdersSubscriptionGeneration.get(this) ?? 0;
+      const isCurrent = (): boolean => pagedLimitOrdersSubscriptionGeneration.get(this) === generation;
+
+      if (!(accountAddress && baseAssetAddress && quoteAssetAddress)) return;
 
       const limitOrderIds = ids.map((id) => Number(id)).filter((id) => Number.isFinite(id));
 
       if (!limitOrderIds.length) return;
 
-      let subscription!: Subscription;
       const observables = limitOrderIds.map((id) =>
         api.orderBook.subscribeOnLimitOrder(baseAssetAddress, quoteAssetAddress, id, selectedDexId)
       );
 
-      await new Promise<void>((resolve) => {
-        subscription = combineLatest(observables).subscribe((updated) => {
+      try {
+        const subscription = await subscribeAndWaitForFirst(combineLatest(observables), (updated) => {
+          if (!isCurrent()) return;
+
           const updatedOrders = updated.filter((item) => !!item) as LimitOrder[];
 
           if (updatedOrders.length) {
@@ -585,12 +596,19 @@ export const useOrderBookStore = defineStore('orderBook', {
 
             this.setUserLimitOrders(userLimitOrders as LimitOrder[]);
           }
-
-          resolve();
         });
-      });
 
-      this.setPagedUserLimitOrdersSubscription(subscription);
+        if (!isCurrent()) {
+          subscription.unsubscribe();
+          return;
+        }
+
+        this.setPagedUserLimitOrdersSubscription(subscription);
+      } catch (error) {
+        if (isCurrent()) {
+          console.error('[orderBook] Failed to initialize paged limit order subscriptions', error);
+        }
+      }
     },
     unsubscribeFromUserLimitOrders(): void {
       this.resetUserLimitOrderUpdates();

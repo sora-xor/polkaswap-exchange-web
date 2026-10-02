@@ -7,6 +7,21 @@ import {
 } from '@/features/bridge/pages/bridgePage.actions';
 
 describe('bridge page primary CTA actions', () => {
+  it('blocks a stale guided form while still allowing the wallet to change to the required network', () => {
+    const state = {
+      areAccountsConnected: true,
+      isValidNetwork: true,
+      isAssetSelected: true,
+      isAssetSelectionAvailable: true,
+      isTxConfirmDisabled: false,
+      fundingPreparationBlocked: true,
+    };
+    expect(resolveBridgeNextAction(state)).toBe(BridgeNextAction.Ignore);
+    expect(isBridgeNextButtonDisabled(state)).toBe(true);
+    expect(resolveBridgeNextAction({ ...state, isValidNetwork: false })).toBe(BridgeNextAction.ChangeNetwork);
+    expect(isBridgeNextButtonDisabled({ ...state, isValidNetwork: false })).toBe(false);
+  });
+
   it('enables choose-token state and resolves it to token selection when selector is available', () => {
     const state = {
       areAccountsConnected: true,

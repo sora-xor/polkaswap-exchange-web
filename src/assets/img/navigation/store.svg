@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 8.5h10c2 0 3.1 1.6 3.5 3.6l1.2 6.8a2 2 0 0 1-2 2.35H4.3a2 2 0 0 1-2-2.35l1.2-6.8C3.9 10.1 5 8.5 7 8.5Z" />
+    <path d="M8 9.5V6a4 4 0 0 1 8 0v3.5" />
+  </g>
+  <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m5.5 12-1 6.2q-.15 1.05 1 1.05M18.5 12l1 6.2q.15 1.05-1 1.05" />
+    <path d="M19.5 9.75v2.5" />
+  </g>
+  <!-- Original SORA mark from ../networks/sora.svg, scaled without altering its geometry. -->
+  <g transform="translate(7.25 10.25) scale(0.042)" fill="currentColor">
+    <path d="m43.9 112.9v-18.6h59.8v-19.1h-59.8v-18.5h138.2v18.6h-59.8v19.1h59.8v18.6h-59.8l60.1 89.4c26.6-20.7 43.7-53 43.7-89.3 0-62.5-50.6-113.1-113-113.1-62.5 0-113.1 50.6-113.1 113.1 0 36.3 17.1 68.6 43.7 89.3l60.1-89.4c0-0.1-59.9-0.1-59.9-0.1z" />
+    <path d="m59.2 212.5c16 8.7 34.3 13.6 53.8 13.6s37.8-4.9 53.8-13.6l-53.8-80.2-53.8 80.2z" />
+  </g>
+</svg>

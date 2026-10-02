@@ -1,355 +1,169 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { defineComponent, h, nextTick, watch } from 'vue';
+import { defineComponent, h } from 'vue';
 
 import appDisclaimerSource from '@/components/App/Header/AppDisclaimer.vue?raw';
 
-const {
-  settingsStoreMock,
-  setUserDisclaimerApproveMock,
-  setDisclaimerDialogVisibilityMock,
-  disconnectMock,
-  observeMock,
-  modalPropsSnapshots,
-  routeNameRef,
-} = vi.hoisted(() => {
-  const setUserDisclaimerApproveMock = vi.fn();
-  const setDisclaimerDialogVisibilityMock = vi.fn();
-  const observeMock = vi.fn();
-  const disconnectMock = vi.fn();
-  const modalPropsSnapshots: Array<Record<string, unknown>> = [];
-  const routeNameRef = { value: 'Swap' };
-
-  const settingsStoreMock = {
+const { settingsStoreMock, route } = vi.hoisted(() => ({
+  settingsStoreMock: {
     disclaimerVisibility: true,
     userDisclaimerApprove: false,
-    setUserDisclaimerApprove: setUserDisclaimerApproveMock,
-    setDisclaimerDialogVisibility: setDisclaimerDialogVisibilityMock,
-  };
-
-  return {
-    settingsStoreMock,
-    setUserDisclaimerApproveMock,
-    setDisclaimerDialogVisibilityMock,
-    disconnectMock,
-    observeMock,
-    modalPropsSnapshots,
-    routeNameRef,
-  };
-});
-
-vi.mock('@/stores/settings', () => ({
-  useSettingsStore: () => settingsStoreMock,
+    setUserDisclaimerApprove: vi.fn(),
+    setDisclaimerDialogVisibility: vi.fn(),
+  },
+  route: { name: 'Swap' },
 }));
 
+vi.mock('@/stores/settings', () => ({ useSettingsStore: () => settingsStoreMock }));
+vi.mock('vue-router', () => ({ useRoute: () => route }));
 vi.mock('@/composables/useTranslation', () => ({
   useTranslation: () => ({
     t: (key: string, args?: Record<string, string>) => {
       if (key === 'disclaimer') {
-        return `${args?.disclaimerPrefix} ${args?.polkaswapFaqLink} ${args?.memorandumLink} ${args?.privacyLink}`;
+        return `<p>${args?.disclaimerPrefix} Full legal notice ${args?.polkaswapFaqLink} ${args?.memorandumLink} ${args?.privacyLink}</p><script>unsafe()</script>`;
       }
-      if (key === 'disclaimerTitle') return 'Disclaimer';
-      if (key === 'acceptText') return 'Accept & Hide';
-      if (key === 'acceptOnScrollText') return 'Scroll to accept';
-      if (key === 'fiatDisclaimer') return 'Fiat disclaimer';
-      if (key === 'memorandum') return 'Memorandum';
-      if (key === 'helpDialog.privacyPolicy') return 'Privacy Policy';
-      if (key === 'FAQ') return 'FAQ';
-      return key;
+      return (
+        {
+          disclaimerTitle: 'Disclaimer',
+          acceptText: 'Accept & Hide',
+          fiatDisclaimer: 'Fiat values are approximate.',
+          memorandum: 'Memorandum',
+          'helpDialog.privacyPolicy': 'Privacy Policy',
+          FAQ: 'FAQ',
+          closeText: 'Close',
+          'disclaimerSummary.title': 'Before you continue',
+          'disclaimerSummary.fullTerms': 'Full terms',
+          'disclaimerSummary.acknowledgement': 'I have read and understand the risks and terms.',
+        }[key] ?? key
+      );
     },
   }),
-}));
-
-vi.mock('vue-router', () => ({
-  useRoute: () => ({
-    name: routeNameRef.value,
-  }),
-}));
-
-vi.mock('@/utils/timing', () => ({
-  delay: vi.fn(() => Promise.resolve()),
 }));
 
 vi.mock('@/lib/soramitsu-ui/components/Modal', () => ({
   SModal: defineComponent({
     name: 'SModal',
-    props: {
-      show: {
-        type: Boolean,
-        default: false,
-      },
-      teleportTo: {
-        type: [String, null],
-        default: 'body',
-      },
-      absolute: {
-        type: Boolean,
-        default: false,
-      },
-      lockScroll: {
-        type: Boolean,
-        default: true,
-      },
-      focusTrap: {
-        type: [Boolean, Object],
-        default: true,
-      },
-      rootClass: {
-        type: [String, Array, Object],
-        default: '',
-      },
-      modalClass: {
-        type: [String, Array, Object],
-        default: '',
-      },
-      closeOnOverlayClick: {
-        type: Boolean,
-        default: true,
-      },
-      closeOnEsc: {
-        type: Boolean,
-        default: true,
-      },
-      showOverlay: {
-        type: Boolean,
-        default: true,
-      },
-    },
+    props: [
+      'show',
+      'teleportTo',
+      'absolute',
+      'lockScroll',
+      'focusTrap',
+      'rootClass',
+      'modalClass',
+      'closeOnOverlayClick',
+      'closeOnEsc',
+      'showOverlay',
+      'labelledBy',
+    ],
     emits: ['update:show'],
     setup(props, { slots, emit }) {
-      watch(
-        () => ({
-          teleportTo: props.teleportTo,
-          absolute: props.absolute,
-          lockScroll: props.lockScroll,
-          focusTrap: props.focusTrap,
-          rootClass: props.rootClass,
-          modalClass: props.modalClass,
-          closeOnOverlayClick: props.closeOnOverlayClick,
-          closeOnEsc: props.closeOnEsc,
-          showOverlay: props.showOverlay,
-        }),
-        (value) => {
-          modalPropsSnapshots.push(value);
-        },
-        { immediate: true, deep: true }
-      );
-
       return () =>
         h('div', { class: 's-modal-stub', 'data-show': String(Boolean(props.show)) }, [
           h('div', {
             'data-testid': 'overlay',
             onClick: () => {
-              if (props.closeOnOverlayClick) {
-                emit('update:show', false);
-              }
+              if (props.closeOnOverlayClick) emit('update:show', false);
             },
           }),
-          h('div', { 'data-testid': 'modal' }, slots.default?.()),
+          slots.default?.(),
         ]);
     },
   }),
 }));
 
+import AppDisclaimer from '@/components/App/Header/AppDisclaimer.vue';
+
+const createWrapper = () => mount(AppDisclaimer);
+
 describe('AppDisclaimer', () => {
   beforeEach(() => {
-    modalPropsSnapshots.length = 0;
-    routeNameRef.value = 'Swap';
+    route.name = 'Swap';
     settingsStoreMock.disclaimerVisibility = true;
     settingsStoreMock.userDisclaimerApprove = false;
-    setUserDisclaimerApproveMock.mockReset();
-    setDisclaimerDialogVisibilityMock.mockReset();
-    observeMock.mockReset();
-    disconnectMock.mockReset();
+    vi.clearAllMocks();
+  });
 
-    class IntersectionObserverMock {
-      private readonly callback: IntersectionObserverCallback;
-      constructor(callback: IntersectionObserverCallback) {
-        this.callback = callback;
-      }
+  it('uses a named viewport modal with first-launch dismissal protection', () => {
+    const wrapper = createWrapper();
+    const modal = wrapper.getComponent({ name: 'SModal' });
+    expect(modal.props()).toMatchObject({
+      teleportTo: 'body',
+      absolute: false,
+      lockScroll: false,
+      focusTrap: true,
+      showOverlay: true,
+      closeOnOverlayClick: false,
+      closeOnEsc: false,
+      modalClass: 'disclaimer-modal__dialog',
+    });
+    expect(modal.props('labelledBy')).toBe(wrapper.get('h2').attributes('id'));
+    expect(wrapper.find('.disclaimer__header-close-btn').exists()).toBe(false);
+  });
 
-      observe(target: Element): void {
-        observeMock(target);
-        this.callback([{ isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver);
-      }
+  it('requires explicit acknowledgement without scroll or timer gating', async () => {
+    const wrapper = createWrapper();
+    const accept = wrapper.get('.disclaimer__accept-btn');
+    expect((accept.element as HTMLButtonElement).disabled).toBe(true);
+    await accept.trigger('click');
+    expect(settingsStoreMock.setUserDisclaimerApprove).not.toHaveBeenCalled();
+    await wrapper.get('input[type="checkbox"]').setValue(true);
+    expect((accept.element as HTMLButtonElement).disabled).toBe(false);
+    await wrapper.get('input[type="checkbox"]').setValue(false);
+    expect((accept.element as HTMLButtonElement).disabled).toBe(true);
+    await wrapper.get('input[type="checkbox"]').setValue(true);
+    await accept.trigger('click');
+    expect(settingsStoreMock.setUserDisclaimerApprove).toHaveBeenCalledTimes(1);
+    expect(settingsStoreMock.setDisclaimerDialogVisibility).toHaveBeenCalledWith(false);
+    expect(appDisclaimerSource).not.toContain('IntersectionObserver');
+  });
 
-      disconnect(): void {
-        disconnectMock();
-      }
+  it('retains full sanitized terms and document links below the risk summary', () => {
+    const wrapper = createWrapper();
+    expect(wrapper.findAll('.disclaimer__summary li')).toHaveLength(3);
+    expect(wrapper.text()).toContain('Full legal notice');
+    expect(wrapper.text()).toContain('Fiat values are approximate.');
+    expect(wrapper.get('[role="region"]').attributes('tabindex')).toBe('0');
+    expect(wrapper.get('.disclaimer__acknowledgement').text()).toContain('I have read');
+    expect(wrapper.findAll('a')).toHaveLength(3);
+    expect(wrapper.find('script').exists()).toBe(false);
+    for (const link of wrapper.findAll('a')) {
+      expect(link.attributes('rel')).toContain('noopener');
+      expect(link.attributes('target')).toBe('_blank');
     }
-
-    vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
   });
 
-  it('renders a viewport-level modal while first-launch acceptance is pending', async () => {
-    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
-    const wrapper = mount(component, {
-      global: {
-        stubs: {
-          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
-        },
-      },
-    });
-
-    await vi.dynamicImportSettled();
-    await Promise.resolve();
-    await nextTick();
-
-    const modalProps = modalPropsSnapshots.at(-1);
-
-    expect(wrapper.find('.s-modal-stub').exists()).toBe(true);
-    expect(modalProps?.teleportTo).toBe('body');
-    expect(modalProps?.absolute).toBe(false);
-    expect(modalProps?.lockScroll).toBe(false);
-    expect(modalProps?.focusTrap).toBe(true);
-    expect(modalProps?.showOverlay).toBe(true);
-    expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': false }]);
-    expect(modalProps?.modalClass).toBe('disclaimer-modal__dialog');
-    expect(modalProps?.closeOnOverlayClick).toBe(false);
-    expect(modalProps?.closeOnEsc).toBe(false);
-  });
-
-  it('keeps a manually opened disclaimer non-blocking off the swap route after approval', async () => {
-    routeNameRef.value = 'VaultsContainer';
+  it('keeps a manually opened disclaimer nonblocking off Swap after approval', () => {
+    route.name = 'VaultsContainer';
     settingsStoreMock.userDisclaimerApprove = true;
-
-    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
-    const wrapper = mount(component, {
-      global: {
-        stubs: {
-          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
-        },
-      },
-    });
-
-    await vi.dynamicImportSettled();
-    await Promise.resolve();
-    await nextTick();
-
-    const modalProps = modalPropsSnapshots.at(-1);
-
-    expect(wrapper.find('.s-modal-stub').attributes('data-show')).toBe('true');
-    expect(modalProps?.showOverlay).toBe(false);
-    expect(modalProps?.focusTrap).toBe(false);
-    expect(modalProps?.rootClass).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': true }]);
-    expect(modalProps?.closeOnOverlayClick).toBe(false);
+    const wrapper = createWrapper();
+    const modal = wrapper.getComponent({ name: 'SModal' });
+    expect(modal.props('showOverlay')).toBe(false);
+    expect(modal.props('focusTrap')).toBe(false);
+    expect(modal.props('rootClass')).toEqual(['disclaimer-modal', { 'disclaimer-modal--nonblocking': true }]);
+    expect(wrapper.find('input[type="checkbox"]').exists()).toBe(false);
   });
 
-  it('keeps nonblocking disclaimer hit testing global for modal roots outside the component scope', () => {
+  it('allows close and overlay dismissal after approval', async () => {
+    settingsStoreMock.userDisclaimerApprove = true;
+    const wrapper = createWrapper();
+    const modal = wrapper.getComponent({ name: 'SModal' });
+    expect(modal.props('closeOnOverlayClick')).toBe(true);
+    expect(modal.props('closeOnEsc')).toBe(true);
+    expect(wrapper.get('.disclaimer__header-close-btn').attributes('aria-label')).toBe('Close');
+    await wrapper.get('.disclaimer__header-close-btn').trigger('click');
+    expect(settingsStoreMock.setDisclaimerDialogVisibility).toHaveBeenCalledWith(false);
+    settingsStoreMock.setDisclaimerDialogVisibility.mockClear();
+    await wrapper.get('[data-testid="overlay"]').trigger('click');
+    expect(settingsStoreMock.setDisclaimerDialogVisibility).toHaveBeenCalledWith(false);
+  });
+
+  it('fits readable text and a fixed acknowledgement footer within the viewport', () => {
+    expect(appDisclaimerSource).toContain('max-width: 640px;');
+    expect(appDisclaimerSource).toContain('max-height: calc(100dvh - 32px);');
+    expect(appDisclaimerSource).toContain('font-size: 16px;');
+    expect(appDisclaimerSource).toContain('overflow-y: auto;');
     expect(appDisclaimerSource).toContain(':global(.s-modal__root.disclaimer-modal--nonblocking)');
     expect(appDisclaimerSource).toContain(':global(.s-modal__root.disclaimer-modal--nonblocking .s-modal__modal)');
-    expect(appDisclaimerSource).toContain(':global(.s-modal__root.disclaimer-modal--nonblocking .disclaimer)');
-  });
-
-  it('centers the disclaimer modal through global modal root styles', () => {
-    expect(appDisclaimerSource).toMatch(
-      /:global\(\.disclaimer-modal\)\s*\{[\s\S]*?justify-content: center;[\s\S]*?align-items: center;/
-    );
-    expect(appDisclaimerSource).toMatch(/:global\(\.disclaimer-modal__dialog\)\s*\{[\s\S]*?justify-content: center;/);
-  });
-
-  it('docks the non-blocking disclaimer to the right side', () => {
-    expect(appDisclaimerSource).toMatch(
-      /:global\(\.s-modal__root\.disclaimer-modal--nonblocking\)\s*\{[\s\S]*?justify-content: flex-end !important;[\s\S]*?align-items: flex-start !important;/
-    );
-    expect(appDisclaimerSource).toMatch(
-      /:global\(\.s-modal__root\.disclaimer-modal--nonblocking \.disclaimer\)\s*\{[\s\S]*?width: 280px;/
-    );
-  });
-
-  it('activates accept state and handles accept action', async () => {
-    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
-    const wrapper = mount(component, {
-      global: {
-        stubs: {
-          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
-        },
-      },
-    });
-
-    await vi.dynamicImportSettled();
-    await Promise.resolve();
-    await nextTick();
-
-    expect(observeMock).toHaveBeenCalled();
-    expect(wrapper.text()).toContain('Accept & Hide');
-
-    const acceptButton = wrapper.find('.s-button-stub');
-    expect(acceptButton.attributes('data-loading')).toBe('false');
-
-    await acceptButton.trigger('click');
-    expect(wrapper.find('.s-button-stub').attributes('data-loading')).toBe('false');
-
-    expect(setUserDisclaimerApproveMock).toHaveBeenCalledTimes(1);
-    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
-    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledWith(false);
-  });
-
-  it('falls back to timed activation when IntersectionObserver is unavailable', async () => {
-    vi.stubGlobal('IntersectionObserver', undefined);
-
-    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
-    const wrapper = mount(component, {
-      global: {
-        stubs: {
-          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
-        },
-      },
-    });
-
-    await vi.dynamicImportSettled();
-    await Promise.resolve();
-    await nextTick();
-
-    expect(observeMock).not.toHaveBeenCalled();
-    expect(wrapper.text()).toContain('Accept & Hide');
-  });
-
-  it('shows close button when disclaimer already approved', async () => {
-    settingsStoreMock.userDisclaimerApprove = true;
-
-    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
-    const wrapper = mount(component, {
-      global: {
-        stubs: {
-          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
-        },
-      },
-    });
-
-    await wrapper.find('.s-icon-stub').trigger('click');
-
-    expect(wrapper.find('.s-button-stub').exists()).toBe(false);
-    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
-    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledWith(false);
-  });
-
-  it('allows overlay dismissal only after the disclaimer was already approved', async () => {
-    settingsStoreMock.userDisclaimerApprove = true;
-
-    const component = (await import('@/components/App/Header/AppDisclaimer.vue')).default;
-    const wrapper = mount(component, {
-      global: {
-        stubs: {
-          's-scrollbar': { template: '<div class="s-scrollbar-stub"><slot /></div>' },
-        },
-      },
-    });
-
-    await vi.dynamicImportSettled();
-    await Promise.resolve();
-    await nextTick();
-
-    const modalProps = modalPropsSnapshots.at(-1);
-
-    expect(modalProps?.showOverlay).toBe(true);
-    expect(modalProps?.teleportTo).toBe(null);
-    expect(modalProps?.absolute).toBe(true);
-    expect(modalProps?.closeOnOverlayClick).toBe(true);
-    expect(modalProps?.closeOnEsc).toBe(true);
-
-    await wrapper.get('[data-testid="overlay"]').trigger('click');
-    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledTimes(1);
-    expect(setDisclaimerDialogVisibilityMock).toHaveBeenCalledWith(false);
   });
 });

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	<title>
+		Non-Tariff Barriers :: 
+		Documents	</title>
+	<link href="/favicon.ico" type="image/x-icon" rel="icon" /><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+	<link rel="stylesheet" type="text/css" href="/css/reset.css?1446928723" />
+	<link rel="stylesheet" type="text/css" href="/css/960.css?1446928723" />
+	<link rel="stylesheet" type="text/css" href="/css/menu.generic.css?1446928723" />
+	<link rel="stylesheet" type="text/css" href="/css/menu.eng.css?1446928723" />
+	<link rel="stylesheet" type="text/css" href="/jquery_plugins/css/superfish.css?1566202190" />
+	<link rel="stylesheet" type="text/css" href="/css/superfish-theme.css?1446928723" />
+	<link rel="stylesheet" type="text/css" href="/jquery/css/smoothness/jquery-ui.css?1566202190" />
+	<link rel="stylesheet" type="text/css" href="/octo_jquery/css/jquery.dropdown.css?1784134639" />
+	<link rel="stylesheet" type="text/css" href="/css/select2.min.css?1709842040" />
+	<link rel="stylesheet" type="text/css" href="/css/ntb.css?1777543649" />
+
+	<script type="text/javascript" src="/js/online/jquery.min.js?1488275434"></script>
+	<script type="text/javascript" src="/jquery_plugins/js/superfish.js?1566202190"></script>
+	<script type="text/javascript" src="/jquery_plugins/js/supersubs.js?1566202190"></script>
+	<script type="text/javascript" src="/js/online/jquery-ui.min.js?1488275434"></script>
+	<script type="text/javascript" src="/jquery_plugins/js/jquery.hover_intent.js?1566202190"></script>
+	<script type="text/javascript" src="/jquery_plugins/js/jquery.scrollTo.js?1566202190"></script>
+	<script type="text/javascript" src="/jquery_plugins/js/jquery.placeholder.js?1566202190"></script>
+	<script type="text/javascript" src="/octo_jquery/js/popup_button.js?1784134639"></script>
+	<script type="text/javascript" src="/octo_jquery/js/jquery.dropdown.js?1784134639"></script>
+	<script type="text/javascript" src="/js/sevenup.0.3.js?1446928723"></script>
+	<script type="text/javascript" src="/js/sevenup_black.0.3.min.js?1446928723"></script>
+	<script type="text/javascript" src="/js/select2.min.js?1709842040"></script>
+	<script type="text/javascript" src="/js/translations.js?1709842040"></script>
+	<script type="text/javascript">
+		$(function() {
+			sevenUp.plugin.black.test({overlayColor: "#888", enableQuitBuggingMe: false}, false);
+			
+			$('[placeholder]').placeholder();
+			
+			$('#main-menu')
+				.supersubs({
+					minWidth: 10,
+					maxWidth: 30,
+					extraWidth: 2
+				})
+				.superfish({
+					autoArrows: false
+				});
+
+				var $dock = $('.dock');
+
+				$dock.hoverIntent(
+					function() {
+						var $this = $(this);
+						var $panel = $this.find('.panel');
+
+						$this.find('a.trigger')
+							.addClass('open', 'fast');
+						$panel
+							.stop(true, true)
+							.slideDown(200);
+					},
+					function() {
+						var $this = $(this);
+						var $panel = $this.find('.panel');
+
+						$this.find('a.trigger')
+							.removeClass('open', 'fast');
+						$panel.stop(true, true).slideUp(150);
+					}
+				);
+
+				$('.panel').each(function() {
+					var $this = $(this);
+					var $uls = $this.find('ul');
+
+					$this.width(($uls.width()+10)*$uls.length);
+				});
+				
+				//$('div > div.actions, button').buttonset();
+				//$('.submit input[type=submit], .bulkButtons').buttonset();
+				$('.bulkButtons').buttonset();
+		});
+	</script>
+</head>
+<body>
+		
+	<div id="container" >
+		<div id="header" class="container_12">
+			<div class="banner-bottom grid_12">
+	<div class="grid_5 banner-logos">
+		<div class="logos">
+		  <a href="http://www.comesa.int"><img src="/img/banner/comesa.png?1446928723" width="117" height="117" alt="COMESA" /></a><a href="http://www.eac.int"><img src="/img/banner/eac.png?1446928723" width="136" height="120" alt="EAC" /></a><a href="http://www.sadc.int"><img src="/img/banner/sadc.png?1446928723" width="117" height="117" alt="SADC" /></a>		</div>
+	</div>
+
+	<div dir="ltr" class="grid_7 banner">
+		<div id="loginBanner">
+	<a href="/ntm/users/login" id="loginLink"><span class="ui-icon ui-icon-triangle-1-s"></span>Login</a>		<div id="loginBox">
+			<fieldset>
+ 		<legend>Login</legend>
+	<form action="/login" id="bannerUserAddForm" method="post" accept-charset="utf-8"><div style="display:none;"><input type="hidden" name="_method" value="POST" /></div>	<div class="input text required"><label for="bannerUserEmail">Email address</label><input name="data[User][email]" type="text" id="bannerUserEmail" maxlength="255" /></div><div class="input password"><label for="bannerUserPasswd">Password</label><input type="password" name="data[User][passwd]" id="bannerUserPasswd" /></div>	
+	<div class="submit"><input type="submit" value="Login" />&nbsp;<a href="/users/reset_password" class="button">Reset your password</a><br><a href="/register_account">Create an account</a></div></form></fieldset>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				var $loginLink = $('#loginLink');
+				var $loginBanner = $('#loginBanner');
+				var $loginBox = $('#loginBox');
+
+				$loginLink.click(function(e) {
+					e.preventDefault();
+					$loginBox.hover();
+				})
+				
+				function openLogin(e) {
+					e.preventDefault();
+					
+					if($loginBox.is(':visible')) {
+						$loginLink
+							.removeClass('open', 'fast')
+							.find('span')
+							.addClass('ui-icon-triangle-1-s')
+							.removeClass('ui-icon-triangle-1-n');
+						$loginBox.fadeOut('fast');					
+					}
+					else {
+						$loginLink
+							.addClass('open', 'fast')
+							.find('span')
+							.removeClass('ui-icon-triangle-1-s')
+							.addClass('ui-icon-triangle-1-n');
+						$loginBox.fadeIn('fast');
+					}
+				}
+				
+				function closeLogin(e) {
+					if($(e.target).closest('#loginBanner').length == 0) {
+						$loginLink
+							.removeClass('open', 'fast')
+							.find('span')
+							.addClass('ui-icon-triangle-1-s')
+							.removeClass('ui-icon-triangle-1-n');
+						$loginBox.fadeOut('fast');
+					}
+				}
+
+				$('#loginLink')
+					.click(openLogin);
+				$('body').click(closeLogin);
+			});
+		</script>
+	</div>		<a href="/help" id="helpLink">Help</a>
+        <div dir="ltr" style="padding-top: 30px;">
+		<a href="/lang/en" class="languages"><img src="/img/menu/lang_on.png?1446928723" alt="" />English</a>
+&nbsp;|&nbsp;
+<a href="/lang/fr" class="languages"><img src="/img/menu/lang_off.png?1446928723" alt="" />Français</a>
+&nbsp;|&nbsp;
+<a href="/lang/pt" class="languages"><img src="/img/menu/lang_off.png?1446928723" alt="" />Português</a>
+&nbsp;|&nbsp;
+<a href="/lang/ar" class="languages"><img src="/img/menu/lang_off.png?1446928723" alt="" />عربي</a>		</div>
+		<div class="sitename">
+			<h1>Non-Tariff Barriers</h1>
+			<h2>Reporting, Monitoring and Eliminating Mechanism</h2>
+		</div>
+	</div>
+</div>
+			<div class="grid_12 banner-bottom-background">
+	<ul id="main-menu" class="sf-menu">
+		<li>
+			<a href="/" class="level1 home" title="Home">&nbsp;</a>		</li>
+		<li>
+			<a href="/about" class="level1 about" title="About">&nbsp;</a>			<ul>
+				<li>
+					<a href="/about" title="The online mechanism">The online mechanism</a>				</li>
+				<li>
+					<a href="/sms_details" title="Reporting using a mobile phone">Reporting using a mobile phone</a>				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="/ntb/non_tariff_barriers" class="level1 ntb" title="Non-Tariff Barriers">&nbsp;</a>			<ul>
+				<li>
+					<a href="/ntb/non_tariff_barriers" title="What are Non-Tariff Barriers?">What are Non-Tariff Barriers?</a>				</li>
+				<li>
+					<a href="/ntb/categories" title="Non-Tariff Barrier categories">Non-Tariff Barrier categories</a>				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="/register_complaint" class="level1 complaints" title="Complaints">&nbsp;</a>			<ul>
+				<li>
+					<a href="/register_complaint" title="Register a complaint">Register a complaint</a>				</li>
+				<li>
+					<a href="/active_complaints" title="Active complaints">Active complaints</a>				</li>
+				<li>
+					<a href="/resolved_complaints" title="Resolved complaints">Resolved complaints</a>				</li>
+				<li>
+					<a href="/transferred_complaints" title="Transferred complaints">Transferred complaints</a>				</li>
+				<li>
+									</li>
+			</ul>
+		</li>
+		<li>
+			<a href="/measures" class="level1 notifications" title="Non-tariff Measures">&nbsp;</a>			<ul>
+				<li>
+					<a href="/measures" title="About non-tariff measures">About non-tariff measures</a>				</li>
+				<li>
+					<a href="/ntm/measures" title="List of non-tariff measures">List of non-tariff measures</a>				</li>
+				<li>
+									</li>
+			</ul>
+		</li>
+		<li>
+			<a href="/documents/survey-reports" class="level1 documents" title="Documents">&nbsp;</a>			<ul>
+				<li>
+					<a href="/documents/survey-reports" title="Survey reports">Survey reports</a>				</li>
+				<li>
+					<a href="/documents/meeting-reports" title="Meeting reports">Meeting reports</a>				</li>
+                <li>
+                    <a href="/regulations/index/all" title="Regulations">Regulations</a>                </li>
+			</ul>
+		</li>
+		<li>
+			<a href="/related_sites" class="level1 links" title="Links">&nbsp;</a>		</li>
+		<li>
+			<a href="/contacts" class="level1 contacts" title="Contacts: Country Focal Points">&nbsp;</a>		</li>
+	</ul>
+</div>
+			<div class="clear"></div>
+		</div>
+		<div class="container_16">
+			<div id="content" class="grid_16">
+				
+								
+				<h1>The Malawi Gazette Suppliment, dated 26th August 2016 containing Regulations, Rules, etc</h1>
+<p>Governs the implementation of Quality Development Cess, Certification Marks and Import Quality Monitoring</p>
+
+<dl>
+			<dt>Source of publication</dt>
+		<dd><a href="/ntm/sources/view/338" class="dialog-view">Malawi Bureau of Standards</a>&nbsp;</dd>
+	
+	<dt>Language</dt>
+	<dd>English&nbsp;</dd>
+
+			<dt>Date of publication</dt>
+		<dd>26 August 2016&nbsp;</dd>
+	
+			<dt>Direct link to publication</dt>
+		<dd><a href="/ntm/documents/ww.mbsmw.org">/ntm/documents/ww.mbsmw.org</a>&nbsp;</dd>
+	
+	
+</dl>				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<div id="footer" class="container_16 footer-text footer">
+	<div class="grid_4 left alpha">
+		<a href="/ntm/pages/display/contacts">Contact us</a>&nbsp;|&nbsp;
+				<a href="/ntm/pages/display/about/terms">Related terms</a>	<br/>
+		<br />
+		<span class="smallfont">Maintained by:</span>
+		<a href="http://www.octoplus.co.za/" target="_blank"><img src="/img/octoplus.png?1446928723" width="100" height="22" alt="Octoplus Information Solutions" title="Octoplus Information Solutions" /></a>	</div>
+	<div class="grid_5 right">
+		<a href="https://www.afdb.org/en/" target="_blank"><img src="/img/footer/AfDB.png?1709842040" width="320" alt="African Development Bank" /></a>		</div>
+		<div class="grid_6 right">
+		<a href="#" target="_blank"><img src="/img/footer/comesa-eac-sadc.png?1566202191" width="250" height="90" alt="COMESA-EAC-SADC" /></a>		<br>
+		<span class="smallfont">COMESA-EAC-SADC</span>
+	</div>
+</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+    <!--googleoff: all-->
+    <div id="jsTranslations" style="display:none">{"transfer_retrieve_error":"Transferred complaint details could not be retrieved.","translate_error":"Text could not be translated"}</div>
+    <div id="flagIcons" style="display:none">https://www.tradebarriers.org/img/flag_icons</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B4Z5SP614N"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-B4Z5SP614N');
+</script>
+</body>
+</html>

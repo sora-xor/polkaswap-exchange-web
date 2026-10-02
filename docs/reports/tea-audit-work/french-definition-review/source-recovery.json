@@ -1,0 +1,21 @@
+[
+  {
+    "file": "instruction2025-102.pdf",
+    "url": "https://info.agriculture.gouv.fr/boagri/instruction-2025-102/telechargement",
+    "error": "HTTPSConnectionPool(host='info.agriculture.gouv.fr', port=443): Max retries exceeded with url: /boagri/instruction-2025-102/telechargement (Caused by ConnectTimeoutError(<HTTPSConnection(host='info.agriculture.gouv.fr', port=443) at 0x10b2a4a50>, 'Connection to info.agriculture.gouv.fr timed out. (connect timeout=45)'))"
+  },
+  {
+    "file": "eu2016-2031-fr.html",
+    "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:02016R2031-20250105",
+    "status": 202,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "file": "l271-7.html",
+    "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039329636",
+    "status": 403,
+    "sha256": "765a91ed0ba540a50da1c5a0f0dafc3ab482c91738f8cd7af80822c355e3d6d8",
+    "bytes": 5673
+  }
+]

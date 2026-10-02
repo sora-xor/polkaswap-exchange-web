@@ -18,6 +18,7 @@ const bondAndNominateMock = vi.fn();
 const bondExtraMock = vi.fn();
 const unbondMock = vi.fn();
 const getBondAndNominateNetworkFeeMock = vi.fn();
+const withNotificationsMock = vi.hoisted(() => vi.fn());
 
 vi.mock('@/modules/staking/sora/composables/useSoraStaking', () => ({
   __esModule: true,
@@ -76,9 +77,7 @@ vi.mock('@/composables/useTransaction', () => ({
   __esModule: true,
   useTransaction: () => ({
     loading: ref(false),
-    withNotifications: async (handler: () => Promise<void> | void) => {
-      await handler();
-    },
+    withNotifications: withNotificationsMock,
     withApi: async (handler: () => Promise<void> | void) => {
       await handler();
     },
@@ -164,6 +163,10 @@ const mountComponent = (mode: StakeDialogMode) =>
 describe('StakeDialog.vue', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    withNotificationsMock.mockImplementation(async (handler: () => Promise<void> | void) => {
+      await handler();
+      return { submitted: true };
+    });
     selectedValidatorsRef.value = [{ address: 'validator-1' }];
     stakeAmountRef.value = '0';
     lockedFundsRef.value = new FPNumber(0);
@@ -198,6 +201,22 @@ describe('StakeDialog.vue', () => {
 
     expect(unbondMock).toHaveBeenCalledTimes(1);
     expect(wrapper.emitted('confirm')).toBeTruthy();
+
+    wrapper.unmount();
+  });
+
+  it('does not emit completion when transaction submission is rejected', async () => {
+    const wrapper = mountComponent(StakeDialogMode.NEW);
+    await flushPromises();
+
+    (wrapper.vm as any).handleValue('1');
+    withNotificationsMock.mockResolvedValueOnce({ submitted: false });
+    await (wrapper.vm as any).handleConfirm();
+
+    expect(bondAndNominateMock).not.toHaveBeenCalled();
+    expect(wrapper.emitted('confirm')).toBeUndefined();
+    expect(wrapper.emitted('update:visible')).toBeUndefined();
+    expect(wrapper.props('visible')).toBe(true);
 
     wrapper.unmount();
   });

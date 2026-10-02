@@ -1,0 +1,22 @@
+{
+  "code": "AE",
+  "outcome": "unresolved",
+  "decisionChanged": false,
+  "reviewedAt": "2026-09-30",
+  "finding": "Current Law7/2025 has both a live-or-dead plants/parts definition and a pest-risk qualification for manufactured plant products. ISPM32 Category1 tea is sound technical processing evidence, but the broader dead-plant-parts limb plus current MAFF postal Q*11 and JETRO’s specific possible-exemption qualification mean it is not safe to transfer the BH/MV living-plant inference unchanged. A specific-over-general manufactured-product reading is plausible but not established by a recovered operative allocation or processing rule.",
+  "newSourceResult": "Reviewed all saved exact Customs routes and full current Act before this pass. New targeted official tea/quarantine queries did not supply a classification or agency-allocation rule. No repeat of Cabinet-annex403, TAMM blocked public endpoint, tax-only Sharjah/eMirsal searches, or login-gated AlMunasiq. No newly retrieved operative source changes the outcome.",
+  "urls": [
+    "https://uaelegislation.gov.ae/en/legislations/3995",
+    "https://www.jetro.go.jp/world/middle_east/ae/foods/exportguide/greentea.html",
+    "https://www.maff.go.jp/pps/j/search/e_hayami_yubin.pdf?d=1702"
+  ],
+  "preciseRemainingEvidence": "An operative general rule treating adequately manufactured plant food outside the live/dead-parts scope, or a current HS090210 control/agency entry specifying agricultural requirements. Existing Cabinet123/2024 secondary annex absence and tax/description-only tariff entries are not proof of a no-certificate route. The personal-food quantity/category issue is secondary and should not be invented as an independent mandatory-certificate barrier.",
+  "contraryInterpretation": "The specific manufactured-product definition could control over the general dead-part wording and make pest-incapable sencha out of scope. That is a stronger general argument than simply demanding tea be named, but competing current official guidance leaves it materially uncertain.",
+  "confidence": "No defensible outcome closure; scope conflict retained.",
+  "sourceFiles": [
+    "ae-bh-recovery/ae-law2025-jki.pdf",
+    "ae-bh-recovery/ae-law2025-dm-ar.pdf",
+    "asia-six-recovery/ae-mirsal-query-provenance.json",
+    "asia-six-recovery/ae-query-bh-enactment-provenance.json"
+  ]
+}

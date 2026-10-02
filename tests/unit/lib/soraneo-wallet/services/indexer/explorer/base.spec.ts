@@ -8,6 +8,7 @@ type MockPayload = {
   data?: unknown;
   error?: {
     networkError?: Error;
+    graphQLErrors?: { message: string }[];
   } | null;
 };
 
@@ -120,6 +121,59 @@ describe('BaseExplorer', () => {
     expect(typeof unsubscribe).toBe('function');
     expect(() => unsubscribe()).not.toThrow();
     expect(subscription).not.toHaveBeenCalled();
+  });
+
+  it('discards partial data with GraphQL errors without retrying or marking the network unavailable', async () => {
+    vi.useFakeTimers();
+    const { explorer, statuses, createExplorerClient } = setupRetryExplorer([
+      { data: { partial: true }, error: { graphQLErrors: [{ message: 'resolver failure' }] } },
+    ]);
+
+    await expect(explorer.request({} as never)).resolves.toBeUndefined();
+
+    expect(createExplorerClient).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
+    expect(statuses).toEqual([ConnectionStatus.Loading, ConnectionStatus.Available]);
+  });
+
+  it('discards partial data when network retries are exhausted', async () => {
+    vi.useFakeTimers();
+    const { explorer, statuses, createExplorerClient } = setupRetryExplorer([
+      { data: { partial: 1 }, error: { networkError: new Error('temporary outage') } },
+      { data: { partial: 2 }, error: { networkError: new Error('still down') } },
+      { data: { partial: 3 }, error: { networkError: new Error('final failure') } },
+    ]);
+
+    const request = explorer.request({} as never);
+    await vi.runAllTimersAsync();
+
+    await expect(request).resolves.toBeUndefined();
+    expect(createExplorerClient).toHaveBeenCalledTimes(3);
+    expect(statuses).toEqual([
+      ConnectionStatus.Loading,
+      ConnectionStatus.Loading,
+      ConnectionStatus.Loading,
+      ConnectionStatus.Unavailable,
+    ]);
+  });
+
+  it('returns only the successful response after a transient network error with partial data', async () => {
+    vi.useFakeTimers();
+    const { explorer, statuses, createExplorerClient } = setupRetryExplorer([
+      { data: { partial: true }, error: { networkError: new Error('temporary outage') } },
+      { data: { complete: true } },
+    ]);
+    const settled = vi.fn();
+
+    const request = explorer.request({} as never).then(settled);
+    await vi.advanceTimersByTimeAsync(399);
+    expect(settled).not.toHaveBeenCalled();
+    await vi.runAllTimersAsync();
+    await request;
+
+    expect(settled).toHaveBeenCalledExactlyOnceWith({ complete: true });
+    expect(createExplorerClient).toHaveBeenCalledTimes(2);
+    expect(statuses).toEqual([ConnectionStatus.Loading, ConnectionStatus.Loading, ConnectionStatus.Available]);
   });
 
   it('retries transient network failures before surfacing unavailable status', async () => {

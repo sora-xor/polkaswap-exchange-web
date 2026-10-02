@@ -130,7 +130,6 @@ const appendToBody = computed(() => props.appendToBody);
     height: 42px;
     min-height: 42px;
     border: 0;
-    outline: none;
     box-shadow: var(--s-shadow-element-pressed);
     background-color: var(--s-color-base-border-secondary);
     color: var(--s-color-base-content-tertiary);
@@ -138,9 +137,9 @@ const appendToBody = computed(() => props.appendToBody);
     line-height: 14px;
   }
 
-  &.dialog-card .dialog-card__close:focus,
   &.dialog-card .dialog-card__close:focus-visible {
-    outline: none !important;
+    outline: 2px solid var(--s-color-outline);
+    outline-offset: 2px;
     box-shadow: var(--s-shadow-element-pressed);
   }
 

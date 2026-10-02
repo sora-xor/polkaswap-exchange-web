@@ -16,7 +16,12 @@ const assetBalanceMock = vi.hoisted(() => ({
   value: '1000000000000000000',
 }));
 
-const withNotificationsMock = vi.hoisted(() => vi.fn(async (handler: () => Promise<void> | void) => await handler()));
+const withNotificationsMock = vi.hoisted(() =>
+  vi.fn(async (handler: () => Promise<void> | void) => {
+    await handler();
+    return { submitted: true };
+  })
+);
 const showAppAlertMock = vi.hoisted(() => vi.fn());
 const closeVaultMock = vi.hoisted(() => vi.fn());
 
@@ -185,5 +190,34 @@ describe('CloseVaultDialog.vue', () => {
     expect(closeVaultMock).toHaveBeenCalledWith(baseVault, baseAsset, baseAsset);
     expect(wrapper.emitted('confirm')).toBeTruthy();
     expect(wrapper.emitted('update:visible')?.pop()?.[0]).toBe(false);
+  });
+
+  it('keeps the dialog open when transaction submission is rejected', async () => {
+    assetBalanceMock.value = '10000000000000000000';
+    withNotificationsMock.mockResolvedValueOnce({ submitted: false });
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    await exposed.handleCloseVault();
+    await flushPromises();
+
+    expect(closeVaultMock).not.toHaveBeenCalled();
+    expect(wrapper.emitted('confirm')).toBeUndefined();
+    expect(wrapper.emitted('update:visible')).toBeUndefined();
+    expect(wrapper.props('visible')).toBe(true);
+  });
+
+  it('keeps the swap link scoped to the current IPFS base path', () => {
+    const focus = vi.fn();
+    const openedWindow = { focus, opener: window } as unknown as Window;
+    const open = vi.spyOn(window, 'open').mockReturnValue(openedWindow);
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+
+    exposed.openSwap();
+
+    expect(open).toHaveBeenCalledWith('#/swap/XOR/KUSD', '_blank', 'noopener,noreferrer');
+    expect(openedWindow.opener).toBeNull();
+    expect(focus).toHaveBeenCalledOnce();
   });
 });

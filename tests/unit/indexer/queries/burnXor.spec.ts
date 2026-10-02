@@ -270,6 +270,26 @@ describe('xor burn query', () => {
 
     await expect(fetchData(25_043_003, 25_043_003)).resolves.toEqual(expect.any(Array));
   });
+  it('preserves compact campaign identity and only classifies exact atomic TS markers', async () => {
+    indexerMocks.fetchAllEntities.mockImplementation(async (_query, _variables, parse) => [
+      parse({ ...createCompactXorBurn('alice', '1', 27_720_478), campaign: 'tonswap', extrinsicIndex: 2 }),
+    ]);
+    indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
+    const compact = await fetchData(27_720_478, 27_720_478);
+    expect(compact.find((item) => item.address === 'alice')).toMatchObject({ campaign: 'tonswap', extrinsicIndex: 2 });
+    const marker = JSON.stringify({ app: 'polkaswap', kind: 'tonswap-xor-burn', version: 1 });
+    indexerMocks.fetchAllEntities
+      .mockResolvedValueOnce([])
+      .mockImplementationOnce(async (_query, _variables, parse) => [
+        parse(
+          createBatchBurnHistoryElement('alice', '1000000000000000000', 27_720_478, XOR.address, 'batchAll', marker)
+        ),
+        parse(createBatchBurnHistoryElement('bob', '1000000000000000000', 27_720_478, XOR.address, 'batch', marker)),
+      ]);
+    const history = await fetchData(27_720_478, 27_720_478);
+    expect(history.find((item) => item.address === 'alice')?.campaign).toBe('tonswap');
+    expect(history.find((item) => item.address === 'bob')?.campaign).toBeUndefined();
+  });
 });
 
 const createIndexer = (type: unknown) => ({

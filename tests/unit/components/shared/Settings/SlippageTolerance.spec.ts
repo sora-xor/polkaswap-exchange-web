@@ -122,6 +122,12 @@ describe('SlippageTolerance', () => {
       },
     });
 
+  it('names the custom slippage input and requests a decimal keyboard', () => {
+    const input = mountComponent().findComponent(FloatInputStub);
+    expect(input.attributes('aria-label')).toContain('dexSettings.slippageTolerance');
+    expect(input.attributes('inputmode')).toBe('decimal');
+  });
+
   it('emits tab selection to update slippage tolerance', async () => {
     const wrapper = mountComponent();
 

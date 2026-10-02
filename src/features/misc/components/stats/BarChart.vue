@@ -127,6 +127,7 @@ const loadingState = computed(() => parentLoading.value || loading.value || !has
 const data = ref<readonly ChartData[]>([]);
 const prevData = ref<readonly ChartData[]>([]);
 const isFetchingError = ref(false);
+let updateRequestId = 0;
 
 const chartKey = computed(() =>
   props.fees ? undefined : `bar-chart-${currencySymbol.value}-rate-${exchangeRate.value}`
@@ -191,6 +192,8 @@ const changeFilter = (next: SnapshotFilter) => {
 };
 
 const updateData = async () => {
+  const requestId = ++updateRequestId;
+
   await withLoading(async () => {
     await withParentLoading(async () => {
       try {
@@ -203,12 +206,16 @@ const updateData = async () => {
           fetchData(props.fees, previousFrom, previousTo, type),
         ]);
 
+        if (requestId !== updateRequestId) return;
+
         data.value = Object.freeze(normalizeData(curr, seconds * 1000, from * 1000, to * 1000));
         prevData.value = Object.freeze(prev);
 
         isFetchingError.value = false;
         hasResolvedData.value = curr.length > 0 || prev.length > 0 || nodeIsConnected.value;
       } catch (error) {
+        if (requestId !== updateRequestId) return;
+
         console.error(error);
         isFetchingError.value = true;
         hasResolvedData.value = nodeIsConnected.value;
@@ -240,6 +247,7 @@ onMounted(() => {
 
 if (getCurrentScope()) {
   onScopeDispose(() => {
+    updateRequestId += 1;
     chart.value = null;
     hasResolvedData.value = false;
   });

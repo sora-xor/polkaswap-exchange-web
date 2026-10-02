@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en-GB" class="h-100 none">
+
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Commodity</title>
+            <!-- Google Tag Manager -->
+        <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', "GTM-TM9GK44");
+        </script>
+        <!-- End Google Tag Manager -->
+        <script src="https://cdn.jsdelivr.net/npm/@cap.js/widget@0.1.32"></script>
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        /* fix main menu + js above */
+        .menudown {
+            display: block !important;
+            position: absolute;
+            inset: 0px 0px auto auto;
+            margin: 0px;
+            transform: translate(0px, 38px);
+        }
+
+        /* Set the position and opacity of the cookie disclaimer */
+        #cookie-disclaimer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background-color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .none {
+            display: none;
+        }
+
+        #goog-gt-tt.skiptranslate {
+            display: none !important;
+        }
+
+
+        /* ADDED MENU FONT BOLD BUT EXCLUDE SUBMENU*/
+        /* Make all <a> tags bold */
+        #navbar>ul>li>a {
+            font-weight: bold;
+        }
+    </style>
+    <meta name="csrf-param" content="_csrf-frontend">
+<meta name="csrf-token" content="yv9lJJ033NOpYdhm55F8a-UaeakCLRLn2WL59yzn19KptgtMyAO6p9FQtArW0z0j3WlJ-WhjSLisKbKSHL6nmw==">
+
+<link type="image/x-icon" href="/upload/favicon_real.ico" rel="icon">
+<link href="/css/jstree/default/style.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="/assets/633723b8/css/select2.min.css" rel="stylesheet">
+<link href="/js/d2/datatables.min.css" rel="stylesheet">
+<link href="/css/datatable_customs.css" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<link href="/css/theme_ui.css" rel="stylesheet">
+<link href="/widget/assets/css/animate.min.css" rel="stylesheet">
+<link href="/widget/assets/css/custom.animate.css" rel="stylesheet">
+<link href="/widget/assets/css/owl.carousel.min.css" rel="stylesheet">
+<link href="/widget/assets/css/owl.theme.default.css" rel="stylesheet">
+<link href="/css/awesome/css/all.min.css" rel="stylesheet">
+<link href="/css/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+<link href="/widget/assets/css/custom_theme_ui.css" rel="stylesheet">    <style>
+    #loading_refresh {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    /* background-color: #fff; /* Background color */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999999999999; /* Ensure it's on top of other elements */
+    }
+</style>
+<div id="loading_refresh">
+    <div class="spinner-border text-primary"
+         style="width: 3rem; height: 3rem; color: #ffffff !important;"
+         role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<script>
+    window.addEventListener('beforeunload', function (event) {
+        document.getElementById('loading_refresh').style.display = 'flex';
+    });
+
+    function startLoading() {
+        document.getElementById('loading_refresh').style.display = 'flex';
+    }
+
+    function stopLoading() {
+        document.getElementById('loading_refresh').style.display = 'none';
+    }
+</script>
+</head>
+
+<body>
+            <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TM9GK44"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+            <style>
+        @font-face {
+        font-family: ;
+        src: url(/upload/font/en-gb_font.ttf);
+    }
+
+        body {
+        font-family:  !important;
+    }
+
+        #font_en-gb {
+        font-family:  !important;
+    }
+
+    /*font for autocomplete in search homepage*/
+    #search_autocp .ui-front {
+        font-family:  !important;
+    }
+
+    
+    /* ============= Set color menu ============*/
+        body {
+        background: #ffffff !important;
+    }
+
+    .global-search-box {
+        z-index: 900 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #ffffff !important;
+        border-radius: 46px;
+        opacity: 0.9 !important;
+    }
+
+    /* Gradient overlay */
+    .gradient-overlay, .bg-top-gradient {
+        position: absolute !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: linear-gradient(to bottom, rgba(0, 40, 104, 0.63) 26%, rgba(255, 255, 255, 0) 53%) !important;
+        z-index: 1 !important;
+    }
+
+    #custom_btn_register_login {
+        background-color: #ffffff !important;
+        color: #002868 !important;
+        border: #ffffff !important;
+    }
+
+    .custom_outline_btn_register_login {
+        border: 1px solid #002868 !important;
+        --bs-btn-bg: #ffffff !important;
+        color: #002868 !important;
+    }
+
+    .custom_outline_btn_register_login:hover {
+        border: 1px solid #cc0000 !important;
+        --bs-btn-hover-bg: #ff4242 !important;
+        color: #ffffff !important;
+    }
+
+    #custom_btn_top_search {
+        background-color: #002868 !important;
+        color:  !important;
+        border: #002868 !important;
+    }
+
+    #custom_btn_top_search:hover {
+        background-color: #ff4242 !important;
+        color:  !important;
+        border: #ff4242 !important;
+    }
+
+    #custom_btn {
+        background-color: #002868 !important;
+        color: #ffffff !important;
+        border: #002868 !important;
+    }
+
+    #custom_btn:hover {
+        background-color: #ff4242 !important;
+        color:  !important;
+        border: #ff4242 !important;
+    }
+
+    #custom_btn.btn-primary {
+        background-color: #002868 !important;
+        color: #ffffff !important;
+        border: #002868 !important;
+    }
+
+    #custom_btn.btn-primary:hover {
+        background-color: #ff4242 !important;
+        color:  !important;
+        border: #ff4242 !important;
+    }
+
+    .custom_outline_btn {
+        --bs-btn-color:  !important;
+        --bs-btn-border-color:  !important;
+        --bs-btn-bg:  !important;
+
+        --bs-btn-hover-color: #ffffff !important;
+        --bs-btn-hover-bg: #ff4242 !important;
+        --bs-btn-hover-border-color: #ff4242 !important;
+
+        --bs-btn-active-color: #ffffff !important;
+        --bs-btn-active-bg: #ff4242 !important;
+        --bs-btn-active-border-color: #ff4242 !important;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #ff4242 !important;
+        --bs-btn-disabled-bg: transparent;
+        --bs-btn-disabled-border-color: #ff4242 !important;
+        --bs-gradient: none;
+    }
+
+    #footer {
+        background: #002868 !important;
+    }
+
+    .custom_bg_title {
+        background: #002868 !important;
+        color: #ffffff !important;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+
+    .custom_border_line {
+        border-color: #ffffff !important;
+    }
+
+    /*BACKGROUND TOP BANNER*/
+    .background_top_banner_for_home_page {
+        background-color:     }
+
+    .background_top_banner_for_other_page {
+        background-color: #002868    }
+
+    /* MENU LV1*/
+    #navbar > ul > li {
+        border-top-left-radius: 7px !important;
+        border-top-right-radius: 7px !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        padding: 5px 4px;
+        margin-top: 2px;
+    }
+
+    /*TEXT COLOR MENU*/
+    #navbar > ul > li > a {
+        color: #ffffff; /* Level 1 background color */
+    }
+
+    #navbar > ul > li ul {
+        --border-radius: 7px;
+        --menu-padding: 10px;
+        border-radius: 0 var(--border-radius) var(--border-radius) var(--border-radius) !important;
+        padding-left: var(--menu-padding);
+        padding-right: var(--menu-padding);
+        box-shadow: 0 5px 12px 4px rgb(155 154 154 / 30%);
+        /*transition: opacity 0.1s ease-in-out, visibility 0.3s ease-in-out;*/
+    }
+
+    #navbar > ul > li ul {
+        --sb-radius: 7px;
+        border-radius: 0 var(--sb-radius) var(--sb-radius) var(--sb-radius) !important;
+    }
+
+    #navbar > ul > li ul li {
+        --sb-li-radius: 7px;
+        border-radius: var(--sb-li-radius);
+    }
+
+    .text_color_menu_for_other_page {
+        color: #002868 !important; /* Level 1 background color */
+    }
+
+    .header-control {
+        background: #ffffff !important;
+    }
+
+    .bg-menu {
+        background: #ffffff !important;
+    }
+
+    .navbar-mobile ul {
+        background-color: #ffffff; /* Level 1 background color */
+    }
+
+    @media (max-width: 991px) {
+        #navbar > ul > li > a{
+            color: #002868 !important;
+        }
+    }
+
+    #navbar > ul > li:hover {
+        background-color: #ff4242; /* Level 1 background color */
+        /*border-radius: 8px;*/
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        /*opacity: 0.7;*/
+    }
+
+    #navbar > ul > li:hover .text_color_menu_for_other_page {
+        color: #ffffff !important; /* Level 1 background color */
+    }
+
+
+    .text_color_scroll {
+        color: #002868 !important;
+    }
+
+    #navbar > ul > li:hover .text_color_scroll {
+        color: #ffffff !important;
+    }
+
+    .color-toggle-menu {
+        color: #ffffff !important;
+    }
+
+    .ccolor {
+        color: #ffffff; /* Level 1 background color */
+    }
+
+    #navbar > ul > li:hover > a {
+        color: #ffffff; /* Level 1 background color */
+    }
+
+    #navbar > ul > li ul {
+        border-radius: 3px;
+    }
+
+    #navbar > ul > li > ul:first-of-type {
+        background-color: #ffffff; /* Level 2 background color */
+    }
+
+    #navbar > ul > li > ul:first-of-type > li:hover {
+        background-color: #ff4242; /* Level 2 background over */
+    }
+
+    #navbar > ul > li > ul > li > a {
+        color: #002868;
+    }
+
+    #navbar > ul > li > ul > li > a:hover {
+        color: #ffffff; /* Level 2 background color */
+    }
+
+    #navbar > ul > li > ul > li ul {
+        background-color: #ffffff; /* Level >=3 background color */
+    }
+
+    #navbar > ul > li > ul > li > ul li:hover {
+        background-color: #ff4242; /* Level >=3 background over */
+    }
+
+    #navbar > ul > li > ul > li > ul li a {
+        color: #002868; /* Level >=3 background over */
+    }
+
+    #navbar > ul > li > ul > li > ul li a:hover {
+        color: #ffffff; /* Level >=3 background over */
+    }
+
+    /*This is size the box of upload file*/
+    .custom-upload-file-input {
+        width: 200px !important;
+    }
+
+    .global_s_color {
+        background-color: #ff4242 !important;
+    }
+
+    #navbar > ul > li ul li {
+        position: relative;
+        padding-bottom: 0; /* Adjust the padding-bottom as needed */
+    }
+
+    #navbar > ul > li ul li::after {
+        content: "";
+        position: absolute;
+        bottom: 0; /* Adjust the bottom position as needed */
+        left: 15px;
+        right: 15px;
+        height: 1px; /* Adjust the height of the line as needed */
+        background-color: rgba(0, 0, 0, 0.03); /* Set the color and opacity of the line */
+    }
+
+    #navbar > ul > li ul li:last-child::after {
+        display: none; /* Remove the line for the last list item */
+    }
+
+        .text-line::after {
+        background-color: transparent !important;
+    }
+
+    .section-title{
+        color: #002868;
+    }
+</style>
+                <div class="spinner"></div>
+
+    <style>
+        .tk3_header_control_menu {
+            transition: background-color 0.6s;
+            box-shadow: 0 4px 14px 0 rgb(0, 0, 0, 0.06);
+        }
+
+        .bg_menu_home {
+            background: linear-gradient(to bottom, rgba(0, 40, 104, 0) 0%, rgba(238, 58, 58, 0) 0%) !important;
+        }
+
+        .pos_absolute {
+            position: absolute;
+            width: 100%;
+            z-index: 1090;
+        }
+
+        .tk3_border_bottom:after {
+            border-bottom: 1px solid #b6b6b6;
+            opacity: 0.3;
+            width: calc(100% - 32px);
+        }
+
+        .goog-te-gadget-simple {
+            background: transparent !important;
+            border: 1px solid #c6c6c6 !important;
+            padding: 3px !important;
+            border-radius: 50px;
+        }
+
+        .VIpgJd-ZVi9od-xl07Ob-lTBxed {
+            color: white !important;
+        }
+
+        .goog-te-gadget-icon {
+            border-radius: 50px;
+        }
+
+
+        .tk3__hidden {
+            display: none;
+        }
+
+        .tk3_btn_search {
+            cursor: pointer;
+        }
+
+        .ui-menu,
+        .ui-widget,
+        .ui-widget-content {
+            width: 300px !important;
+        }
+
+        #ui-id-1 {
+            width: 300px !important;
+        }
+
+        /*#navbar > ul > li > ul:first-of-type > li {*/
+        /*    transition: border-radius 0.1s ease-in-out, box-shadow 0.6s ease-in-out;*/
+        /*}*/
+
+        /*#navbar > ul > li > ul:first-of-type > li:hover {*/
+        /*    border-radius: 18px;*/
+        /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);*/
+        /*}*/
+        .padding-top-120 {
+            padding-top: 120px;
+        }
+    </style>
+
+    <div class="bgtgd bg-top-gradient">
+        <div id="tk3_top_controller" class="tk3_top_controller pos_absolute">
+            <!--  TOP BANNER-->
+            <div class="top_banner_control">
+                <div class="container-flui">
+                    <div id="section_top_banner" class="px-2 pt-2 section_top_banner background_top_banner_for_home_page">
+                        <div class="row">
+                            <div class="col-lg-7 d-flex justify-content-lg-start justify-content-center align-items-center">
+                                <div class="p-1 ps-3">
+                                    <a href="/" class="mb-1">
+                                        <img width="200"
+                                            src=" /upload/banner/gb_banner.jpg"
+                                            alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 px-1 d-flex align-items-center justify-content-end text-end">
+                                <table class="0" align="right">
+                                    <tr>
+                                                                                        <td class="p-1">
+                                                    <div class="circle-language">
+                                                        <a href="/en-gb/site/commodity/0902101000">
+                                                            <img class="img-language"
+                                                                src="/upload/flag/gb_flag_upload.jpg"
+                                                                width="34" alt="">
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                                                        <td class="p-1">
+                                                    <div class="circle-language">
+                                                        <a href="/lo-la/site/commodity/0902101000">
+                                                            <img class="img-language"
+                                                                src="/upload/flag/la_flag_upload.png"
+                                                                width="34" alt="">
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                                                <td style="padding-right:15px;">
+                                                                                            <div id="google_translate_element" class="float-end m-0"></div>
+                                                <script type="text/javascript">
+                                                    function googleTranslateElementInit() {
+                                                        new google.translate.TranslateElement({
+                                                            includedLanguages: '',
+                                                            hoveringDisplay: false, // Disable displaying original language on hover
+                                                            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                                                        }, 'google_translate_element');
+                                                    }
+                                                </script>
+                                                <script async defer src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+                                                                                    </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="padding-right:15px;">
+                                            <table align="right" border="0" style="margin:0" width="200px" class="mt-4">
+                                                <tr>
+                                                                                                            <td class="p-1 text-center">
+                                                            <a class="m-1"
+                                                                href="https://www.facebook.com/sharer/sharer.php?u=http://www.laotradeportal.gov.la/en-gb/site/commodity/0902101000">
+                                                                <i class="fab fa-facebook-f"
+                                                                    style="color:#ffffff"></i>
+                                                            </a>
+                                                        </td>
+                                                                                                            <td class="p-1 text-center">
+                                                            <a class="m-1"
+                                                                href="https://twitter.com/share?url=http://www.laotradeportal.gov.la/en-gb/site/commodity/0902101000">
+                                                                <i class="fa-brands fa-x-twitter"
+                                                                    style="color:#ffffff"></i>
+                                                            </a>
+                                                        </td>
+                                                                                                            <td class="p-1 text-center">
+                                                            <a class="m-1"
+                                                                href="https://www.youtube.com/watch?v=8ZSUdke9WTUhttp://www.laotradeportal.gov.la/en-gb/site/commodity/0902101000">
+                                                                <i class="fab fa-youtube"
+                                                                    style="color:#ffffff"></i>
+                                                            </a>
+                                                        </td>
+                                                                                                            <td class="p-1 text-center">
+                                                            <a class="m-1"
+                                                                href="https://laotradeportal.gov.la/site/send-mail?url=http://www.laotradeportal.gov.la/en-gb/site/commodity/0902101000">
+                                                                <i class="far fa-envelope"
+                                                                    style="color:#ffffff"></i>
+                                                            </a>
+                                                        </td>
+                                                                                                        <td class="p-0 text-center">
+                                                                                                                <span class="tk3_btn_search">
+                                                            <i class="fas fa-fw fa-search"
+                                                                style="color:#ffffff"></i>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" class="p-0" style="height:45px;">
+                                                        <form id="tk3_top_form_search"
+                                                            action="/en-gb/global-search"
+                                                            method="get" class="tk3__hidden">
+                                                            <div class="input-group">
+                                                                <input type="search" name="keyword" required
+                                                                    class="p-1 form-control rounded-1 rounded-end-0 border-0 shadow"
+                                                                    placeholder="Search..."
+                                                                    style="border:1px solid #999">
+                                                                <button class="btn rounded-end global_s_color border-0 shadow"
+                                                                    type="submit"
+                                                                    id="button-addon1" style="border:1px solid #999">
+                                                                    <i class="fas fa-search "
+                                                                        style="color:#ffffff"></i></button>
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  MENU -->
+                <div id="tk3_header_control_menu" class="tk3_header_control_menu bg_menu_home">
+                    <div class="container-fluid">
+                        <div class="tk3_border_bottom_control tk3_border_bottom">
+                            <div class="row">
+                                <div class="col-lg-10 col-md-10 col-sm-6 col-3 d-flex align-items-center justify-content-start">
+                                    <nav id="navbar" class="navbar bg-transparent">
+                                        <a href="/">
+                                            <img width="200" class="tk3__hidden tk3__image mt-2"
+                                                src="/upload/banner/gb_banner.jpg"
+                                                alt="">
+                                        </a>
+                                        
+<ul><li><a href="/site/index"  target="_self">Home</a></li>
+<li><a href="/en-gb/site/commodity/0902101000"  target="_self">About Us</a>
+<ul>
+<li><a href="/site/display/2743"  target="_self">Our Vision and Mission</a></li>
+<li><a href="/site/contact"  target="_self">Contact us</a></li>
+</ul>
+</li>
+<li><a href="#"  target="_self">Search Information</a>
+<ul>
+<li><a href="/site/listcommodity"  target="_self">Commodity & Tariff</a></li>
+<li><a href="/en-gb/search-product/index"  target="_self">Commodity by Brand</a></li>
+<li><a href="/en-gb/legal-document/index"  target="_self">Legal Documents</a></li>
+<li><a href="/en-gb/draft-legal-document/index"  target="_self">Draft Legal Document</a></li>
+<li><a href="/en-gb/search-form/index"  target="_self">Forms</a></li>
+<li><a href="/en-gb/search-procedure/index"  target="_self">Procedures</a></li>
+<li><a href="/en-gb/search-measure/index"  target="_self">Internal Measures</a></li>
+<li><a href="/en-gb/search-measure/index-standard"  target="_self">National Standards</a></li>
+<li><a href="https://laotradeportal.gov.la/lao/raising-business-concern"  target="_blank">Raising Business Concern</a></li>
+</ul>
+</li>
+<li><a href="#"  target="_self">Resources</a>
+<ul>
+<li><a href="/en-gb/site/display/547"  target="_self">FAQ</a></li>
+<li><a href="/en-gb/site/commodity/0902101000"  target="_self">Help</a></li>
+<li><a href="/en-gb/site/most-recent?category=4"  target="_self">Publications</a></li>
+<li><a href="/en-gb/site/display/771"  target="_self">Agreement on Trade and Transport Facilitation</a></li>
+<li><a href="/en-gb/site/display/1540"  target="_self">The Inventory of Business Formalities</a></li>
+<li><a href="/site/display/1714"  target="_self">E-Commerce Laws and Regulations</a></li>
+<li><a href="/en-gb/site/display/698"  target="_self">ASEAN & National Trade Repository (ATR/NTR)</a></li>
+</ul>
+</li>
+<li><a href="#"  target="_self">Market Access</a>
+<ul>
+<li><a href="/en-gb/site/display/595"  target="_self">Trading with ASEAN</a></li>
+<li><a href="/en-gb/site/display/594"  target="_self">Trading with EU</a></li>
+<li><a href="/en-gb/site/display/593"  target="_self">Trading with main patners</a></li>
+<li><a href="/en-gb/site/display/774"  target="_self">Border Trade</a></li>
+<li><a href="/en-gb/site/display/2875"  target="_self">The Regional Comprehensive Economic Partnership (RCEP) Agreement</a></li>
+</ul>
+</li>
+<li><a href="#"  target="_self">Preferences</a>
+<ul>
+<li><a href="/en-gb/site/display/481"  target="_self">Preferences</a></li>
+<li><a href="/en-gb/site/display/482"  target="_self">Non-reciprocal preferences</a>
+<ul>
+<li><a href="/en-gb/site/display/540"  target="_self">European Union</a></li>
+<li><a href="/en-gb/site/display/539"  target="_self">Australia</a></li>
+<li><a href="/en-gb/site/display/541"  target="_self">New Zealand</a></li>
+<li><a href="/en-gb/site/display/536"  target="_self">Switzerland</a></li>
+<li><a href="/en-gb/site/display/535"  target="_self">Canada</a></li>
+<li><a href="/en-gb/site/display/534"  target="_self">Norway</a></li>
+<li><a href="/en-gb/site/display/538"  target="_self">Turkey</a></li>
+<li><a href="/en-gb/site/display/542"  target="_self">Russia, Belarus and Kazakhstan</a></li>
+<li><a href="/en-gb/site/display/532"  target="_self">India</a></li>
+<li><a href="/en-gb/site/display/537"  target="_self">Japan</a></li>
+<li><a href="/en-gb/site/display/533"  target="_self">Korea</a></li>
+<li><a href="/en-gb/site/display/543"  target="_self">Chinese Taipei</a></li>
+<li><a href="/en-gb/site/display/744"  target="_self">Vietnam</a></li>
+<li><a href="/en-gb/site/display/2178"  target="_self">GSP 98% From China</a></li>
+</ul>
+</li>
+<li><a href="/en-gb/site/display/483"  target="_self">Free Trade Areas (FTAs) </a></li>
+<li><a href="/en-gb/site/display/641"  target="_self">Forms for CO</a></li>
+<li><a href="/en-gb/site/display/1507"  target="_self">Self Certification Application</a></li>
+<li><a href="/en-gb/site/display/1522"  target="_self">Statistic of Preferences</a></li>
+</ul>
+</li>
+<li><a href="/en-gb/site/commodity/0902101000"  target="_self">Trade Statistics</a>
+<ul>
+<li><a href="https://laotradestat.moic.gov.la/estat/"  target="_blank">Lao E-stat</a></li>
+<li><a href="/site/display/2526"  target="_self">ITC Trade Map</a></li>
+</ul>
+</li>
+<li><a href="/en-gb/site/commodity/0902101000"  target="_self">Step by Step Guide</a>
+<ul>
+<li><a href="/super-process/detail/1"  target="_self">Export of Agricultural Products</a></li>
+<li><a href="/en-gb/site/commodity?id=2"  target="_self">Export of Live Animals or Animal Products</a></li>
+<li><a href="/super-process/detail/3"  target="_self">Import of Live Animals or Animal Products</a></li>
+<li><a href="/en-gb/site/commodity?id=4"  target="_self">Import of Seeds and Plants</a></li>
+<li><a href="/super-process/detail/5"  target="_self">Import of Rice</a></li>
+<li><a href="/super-process/detail/6"  target="_self">Import of Fertilisers</a></li>
+<li><a href="/super-process/detail/7"  target="_self">Import of Food And Beverage</a></li>
+<li><a href="/super-process/detail/8"  target="_self">Import Fish, Aqua Animals and Aqua Products</a></li>
+</ul>
+</li></ul>                                        <i class="btn btn-sm mobile-nav-toggle bi bi-list color-toggle-menu"
+                                            id="custom_outline_btn_register_login"></i>
+                                    </nav>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-9 d-flex align-items-center justify-content-end text-end">
+                                    <div class="controlloginbtn p-1">
+                                                                                    <a href="/en-gb/site/register#register" class="d-none">
+                                                <button class="btn btn-outline-primary rounded custom_outline_btn_register_login">
+                                                    Register                                                </button>
+                                            </a>
+                                            <a href="/en-gb/site/login#login">
+                                                <button class="btn rounded custom_outline_btn_register_login">
+                                                    Login                                                </button>
+                                            </a>
+                                                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main role="main" class="flex-shrink-0 mt-0 to-bottom mainclass">
+            
+            <div class="mt-3">
+                                <style>
+    .jstree li>a {
+        max-width: 90%;
+    }
+
+    .jstree-anchor {
+        white-space: break-spaces !important;
+        height: auto !important;
+    }
+
+    .hide {
+        display: none;
+    }
+</style>
+
+<div class="container bg-white p-2">
+    <div class="row mt-4">
+                        <div class="row">
+            <div class="col-12">
+                <h4>Commodity Structure</h4>
+            </div>
+            <div id="jstree_div" class="col-11"></div>
+            <div class="col-1">
+                <a id="custom_outline_btn" class="btn btn-outline-secondary btn-md" href="javascript:history.back()"><i class="fa-solid fa-rotate-left"></i></a>            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="container">
+            <h4>Tariff Information</h4>
+            <div class="card mb-4">
+                <div class="card-header">
+                    Tariff                </div>
+                <div class="card-body">
+                    
+                        <table class="table table-bordered" id="datatable_tariff" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tariff/Fee Code</th>
+                                    <th scope="col">Group Description</th>
+                                    <th scope="col">Activity</th>
+                                    <th scope="col">Rate</th>
+                                    <th scope="col">Unit</th>
+                                    <th scope="col">Valid From</th>
+                                    <th scope="col">Valid To</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                                                    <tr>
+                                        <td scope="col">1</td>
+                                        <td scope="col">Normal</td>
+                                        <td scope="col">Normal Tariff rates</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">40</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">2</td>
+                                        <td scope="col">MFN</td>
+                                        <td scope="col">Most Favorable Nations (WTO)</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">40</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">3</td>
+                                        <td scope="col">ATIGA</td>
+                                        <td scope="col">ASEAN Trade in Goods Agreement</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">0</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">4</td>
+                                        <td scope="col">AKFTA</td>
+                                        <td scope="col">ASEAN-Korea Free Trade Agreement</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">32</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">5</td>
+                                        <td scope="col">ACFTA</td>
+                                        <td scope="col">ASEAN-China Free Trade Agreement</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">10</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">6</td>
+                                        <td scope="col">APTA</td>
+                                        <td scope="col">Asia Pacific Trade Area</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">0</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">7</td>
+                                        <td scope="col">AIFTA</td>
+                                        <td scope="col">ASEAN–India Free Trade Area</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">5</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2022-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">8</td>
+                                        <td scope="col">AANZFTA</td>
+                                        <td scope="col">ASEAN-Australia/New Zealand Free Trade Agreement</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">5</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">9</td>
+                                        <td scope="col">LAOVIET</td>
+                                        <td scope="col">LAO-VIET Trade Agreement</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">n.a.</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2025-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">10</td>
+                                        <td scope="col">AHKFTA</td>
+                                        <td scope="col">ASEAN-Hong Kong, China Free Trade Agreement</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">U</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2026-01-01                                        </td>
+                                        <td scope="col">
+                                            2026-12-31                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">11</td>
+                                        <td scope="col">RCEP</td>
+                                        <td scope="col">Regional Comprehensive Economic Partnership</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">U</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2026-01-01                                        </td>
+                                        <td scope="col">
+                                            2026-12-31                                        </td>
+                                    </tr>
+                                                                    <tr>
+                                        <td scope="col">12</td>
+                                        <td scope="col">AJCEP</td>
+                                        <td scope="col">ASEAN-Japan Comprehensive Economic Partnerships</td>
+                                        <td scope="col">Import</td>
+                                        <td scope="col">5</td>
+                                        <td scope="col">KG</td>
+                                        <td scope="col">
+                                            2026-01-01                                        </td>
+                                        <td scope="col">
+                                            9999-01-01                                        </td>
+                                    </tr>
+                                                            </tbody>
+                        </table>
+
+
+                                    </div>
+            </div>
+                </div>
+    <div class="row mt-2">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-measure-tab" data-bs-toggle="tab" data-bs-target="#nav-measure"
+                    type="button" role="tab" aria-controls="nav-measure"
+                    aria-selected="true">Measures</button>
+
+                <button class="nav-link" id="nav-standard-tab" data-bs-toggle="tab" data-bs-target="#nav-standard"
+                    type="button" role="tab" aria-controls="nav-standard"
+                    aria-selected="false">Standard</button>
+
+                <button class="nav-link" id="nav-procedure-tab" data-bs-toggle="tab" data-bs-target="#nav-procedure"
+                    type="button" role="tab" aria-controls="nav-procedure"
+                    aria-selected="false">Procedures</button>
+                <button class="nav-link" id="nav-legal-tab" data-bs-toggle="tab" data-bs-target="#nav-legal"
+                    type="button" role="tab" aria-controls="nav-legal"
+                    aria-selected="false">Legal Documents</button>
+                <button class="nav-link" id="nav-form-tab" data-bs-toggle="tab" data-bs-target="#nav-form" type="button"
+                    role="tab" aria-controls="nav-form" aria-selected="false">Forms</button>
+            </div>
+        </nav>
+        <div class="tab-content mt-3" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-measure" role="tabpanel" aria-labelledby="nav-measure-tab"
+                tabindex="0">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Measures                    </div>
+                                            <div class="card-body">
+                            <table class="table table-bordered" id="datatable_measures" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Agency</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Law</th>
+                                        <th scope="col">Procedure</th>
+                                        <th scope="col">Valid To</th>
+                                        <th scope="col">Apply To</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                                                            <tr>
+                                            <td scope="col">1</td>
+                                            <td scope="col">
+                                                <a href="/en-gb/search-measure/view/391">Specified Ports of Customs - Import of Plant, Plant Products and Controlled Items </a>                                            </td>
+                                            <td scope="col">General</td>
+                                            <td scope="col">Ministry of Agriculture and Environment</td>
+                                            <td scope="col">Such products must be imported through ports of customs as specified by the ministry of agriculture and Environment</td>
+                                            <td scope="col">                                                        <ol>
+                                                                                                                                <li class="mb-2">
+                                                                        <a href="/en-gb/site/display/1167">Law on Plant Protection and Quarantine (Amended) No. 13/NA, dated 15 November 2016</a>                                                                    </li>
+                                                                                                                                <li class="mb-2">
+                                                                        <a href="/en-gb/site/display/1761">Decision on the Phytosanitary Measures for Import and Transit of plants, plant product, and control materials No. 2985/MAF, dated 28 June 2019</a>                                                                    </li>
+                                                                                                                    </ol>
+                                                                                            </td>
+                                            <td scope="col"><a href="/en-gb/search-procedure/view/9">Procedure for Import and Export Pesticides</a>&nbsp;
+                                            </td>
+                                            <td scope="col">
+                                                9999-12-31                                            </td>
+                                            <td scope="col">ALL</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td scope="col">2</td>
+                                            <td scope="col">
+                                                <a href="/en-gb/search-measure/view/392">Inspection Requirement - Imports of Plant, Plant Products and Controlled Items </a>                                            </td>
+                                            <td scope="col">Inspection Requirement</td>
+                                            <td scope="col">Ministry of Agriculture and Environment</td>
+                                            <td scope="col">All imports of plants shall be subject to inspection by a Plant Protection Officer at the border checkpoint.</td>
+                                            <td scope="col">                                                        <ol>
+                                                                                                                                <li class="mb-2">
+                                                                        <a href="/en-gb/site/display/1167">Law on Plant Protection and Quarantine (Amended) No. 13/NA, dated 15 November 2016</a>                                                                    </li>
+                                                                                                                                <li class="mb-2">
+                                                                        <a href="/en-gb/site/display/1761">Decision on the Phytosanitary Measures for Import and Transit of plants, plant product, and control materials No. 2985/MAF, dated 28 June 2019</a>                                                                    </li>
+                                                                                                                    </ol>
+                                                                                            </td>
+                                            <td scope="col"><a href="/en-gb/search-procedure/view/9">Procedure for Import and Export Pesticides</a>&nbsp;
+                                            </td>
+                                            <td scope="col">
+                                                9999-12-31                                            </td>
+                                            <td scope="col">ALL</td>
+                                        </tr>
+                                                                    </tbody>
+                            </table>
+                        </div>
+                                    </div>
+            </div>
+
+            <div class="tab-pane fade" id="nav-standard" role="tabpanel" aria-labelledby="nav-standard-tab"
+                tabindex="0">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Standard                    </div>
+                                    </div>
+            </div>
+            <div class="tab-pane fade" id="nav-procedure" role="tabpanel" aria-labelledby="nav-procedure-tab"
+                tabindex="0">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Procedures                    </div>
+                                            <div class="card-body">
+                            <table class="table table-bordered" id="datatable_procedures">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Agency</th>
+                                        <th scope="col">Measure</th>
+                                        <th scope="col">Form</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                                                            <tr>
+                                            <td>1</td>
+                                            <td><a href="/en-gb/search-procedure/view/9">Procedure for Import and Export Pesticides</a>                                            </td>
+                                            <td>Before import/export pesticides that must be registered by the Department of Agriculture, Ministry of Agriculture and Forestry</td>
+                                            <td>Import/Export</td>
+                                            <td>Ministry of Industry and Commerce</td>
+                                            <td>                                                        <ol>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/373">Transport and storage requirement - Pesticide</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/375">Labelling requirement for import and export - Pesticide</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/376">Registration requirement - Cassava Planting Material</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/377">Requirement to obtain Import Permit - Cassava Planting Material</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/378">Inspection requirement - Cassava Planting Material</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/379">Requirement to obtain Import Permit - Rubber young tree and varieties</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/390">Requirement to obtain Phytosanitary Certificate from original country for Import of Plant, Plant Products and Controlled Items</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/391">Specified Ports of Customs - Import of Plant, Plant Products and Controlled Items </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/392">Inspection Requirement - Imports of Plant, Plant Products and Controlled Items </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/398">Requirement to obtain Phytosanitary Certificate from Exporting Country - Cassava Planting Material</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/400">Requirement to obtain Phytosanitary Certificate from Exporting Country - Young Plant and Rubber Seed</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/406">Requirement to obtain import permit - Fertilizer</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/407">Labelling requirement - Fertilizer</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/408">Packaging Requirement - Fertilizer</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/409">Inspection Requirement For Import- Fertilizer</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/410">Import License Requirement - Imports of Plant, Plant Products, and Controlled Items  </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/450">Requirement to obtain export permit - Fertilizer</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/456">Fee - Import License of Fertilizer </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/460">Fee - Export License of Fertilizer </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/461">Fee - Import License for Pesticide </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/462">Fee - Export License of Pesticide </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/463">Import Permit Fee for Plant Seed and Material</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/464">Fee - Export License of Plant Seed </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/481">Requirement to register for import - Fertilizer</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/489">Register Requirement - Import of Plant Seeds </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/519">Import Permit Requirement - Plant Seeds </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/520">Labeling Requirement - Import of Plant Seeds  </a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/521">Inspection requirement for import - Pesticide</a>                                                                </li>
+                                                                                                                            <li class="mb-2">
+                                                                    <a href="/en-gb/search-measure/view/524">Sanitary Certificate Requirement - Import of Plant Seeds </a>                                                                </li>
+                                                                                                                    </ol>
+                                                                                            </td>
+                                            <td><a href="/en-gb/search-form/view/11">Import Permit for agricultural products</a>                                            </td>
+                                        </tr>
+                                                                                                            </tbody>
+                            </table>
+                        </div>
+                                    </div>
+            </div>
+            <div class="tab-pane fade" id="nav-legal" role="tabpanel" aria-labelledby="nav-legal-tab" tabindex="0">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Legal Documents                    </div>
+                                            <div class="card-body">
+                            <table class="table table-bordered" id="datatable_legals">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Issuing Agency</th>
+                                        <th scope="col">Responsible Agency</th>
+                                        <th scope="col">Issue Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                                                            <tr>
+                                            <td scope="col">1</td>
+                                            <td scope="col"><a href="/en-gb/site/display/1167">Law on Plant Protection and Quarantine (Amended) No. 13/NA, dated 15 November 2016</a>                                            </td>
+                                            <td scope="col">
+                                                Law                                            </td>
+                                            <td scope="col">
+                                                Lao National Assembly                                            </td>
+                                            <td scope="col">Ministry of Agriculture and Environment</td>
+                                            <td scope="col">
+                                                2016-11-15                                            </td>
+                                        </tr>
+                                                                            <tr>
+                                            <td scope="col">2</td>
+                                            <td scope="col"><a href="/en-gb/site/display/1761">Decision on the Phytosanitary Measures for Import and Transit of plants, plant product, and control materials No. 2985/MAF, dated 28 June 2019</a>                                            </td>
+                                            <td scope="col">
+                                                Decision                                            </td>
+                                            <td scope="col">
+                                                Ministry of Agriculture and Environment                                            </td>
+                                            <td scope="col">Ministry of Agriculture and Environment</td>
+                                            <td scope="col">
+                                                2019-06-28                                            </td>
+                                        </tr>
+                                                                    </tbody>
+                            </table>
+                        </div>
+                                    </div>
+            </div>
+            <div class="tab-pane fade" id="nav-form" role="tabpanel" aria-labelledby="nav-form-tab" tabindex="0">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Forms                    </div>
+                                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                                            </div>
+        </main>
+        <!--  END MAIN CONTENT -->
+
+        <!-- ======= FOOTER ======= -->
+        <footer id="footer" class="mt-3">
+            <div class="container-fluid">
+                                <div class="row">
+                    <div class="col-md-4">
+                        <p style="text-align: center;">&nbsp;</p>
+
+<p style="text-align: center;">&nbsp;</p>
+
+<p style="text-align: center;"><span style="font-size:28px;"><img alt="" src="/upload/upload/Footer%20Logo.png" style="width: 200px; height: 114px;" /></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p style="text-align: center;">&nbsp;</p>
+
+<p style="text-align: center;"><strong><a href="/index.php/site/display/21"><span style="color:#ffffff;">Site Map</span></a> <span style="color:#ffffff;"> &nbsp;|&nbsp;</span><a href="/index.php/site/display/22"><span style="color:#ffffff;">Commonly Used Terms</span></a> <span style="color:#ffffff;"> &nbsp;|&nbsp;</span><a href="/index.php/site/display/23"><span style="color:#ffffff;">Terms &amp; Conditions</span></a> <span style="color:#ffffff;"> &nbsp;|&nbsp;</span><a href="/index.php/site/display/15"><span style="color:#ffffff;">Help</span></a>&nbsp;<span style="color:#ffffff;">&nbsp;|&nbsp;</span><a href="/index.php/site/feed-back"><span style="color:#ffffff;">Feedback</span></a></strong></p>
+
+<p style="text-align: center;">&nbsp;</p>
+
+<div style="text-align: center;">&nbsp;</div>
+
+<div style="text-align: center;">&nbsp;</div>
+                    </div>
+                    <div class="col-md-4 text-start" id="font_en-gb">
+                        <p>&nbsp;</p>
+
+<p><span style="font-size:12px;">Department of Foreign Trade, Ministry of Industry and Commerce<br />
+Phonexay Road, Ban Phonexay, Saysettha District, PO Box 4107<br />
+Vientiane Capital, Lao PDR</span></p>
+
+<p><span style="font-size:12px;">Tel/Fax: +856 21 454 224 (Trade Facility Division)&nbsp;<br />
+Email: <em><strong><a href="/cdn-cgi/l/email-protection#0f637b7f6a617e7a667d764f6260666c2168607921636e"><span style="color:#FFFFFF;"><span class="__cf_email__" data-cfemail="87ebf3f7e2e9f6f2eef5fec7eae8eee4a9e0e8f1a9ebe6">[email&#160;protected]</span></span></a></strong>&nbsp;and <a href="https://laotradeportal@gmail.com"><span style="color:#FFFFFF;"><span class="__cf_email__" data-cfemail="0f636e607b7d6e6b6a7f607d7b6e634f68626e6663216c6062">[email&#160;protected]</span></span></a>&nbsp;</em>and<strong> <em><a href="/cdn-cgi/l/email-protection#90fce4e0e7f5f2fdf1e3e4f5e2d0fdfff9f3bef7ffe6befcf1"><span style="color:#FFFFFF;">ltpw</span></a></em><a href="/cdn-cgi/l/email-protection#127e66626577707f7361667760527f7d7b713c757d643c7e73"><span style="color:#FFFFFF;"><em><span class="__cf_email__" data-cfemail="6e0b0c030f1d1a0b1c2e0301070d4009011840020f">[email&#160;protected]</span></em></span></a></strong></span></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p style="text-align:center"><span style="font-size:12px">&copy;2023 Department of Foreign Trade, Ministry of Industry and Commerce. All Rights Reserved.</span></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- END FOOTER -->
+        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/assets/a8f864ba/jquery.js"></script>
+<script src="/js/jstree.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/cd807852/yii.js"></script>
+<script src="/assets/633723b8/js/select2.full.min.js"></script>
+<script src="/js/d2/datatables.min.js"></script>
+<script src="/js/top_datatable_responsive.js"></script>
+<script src="/theme/assets/js/main.js"></script>
+<script src="/widget/assets/js/owl.carousel.min.js"></script>
+<script src="/widget/assets/js/custom_jquery.js"></script>
+<script src="/css/awesome/js/all.min.js"></script>
+<script src="/js/googletranslate.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2/dist/sweetalert2.all.min.js"></script>
+<script src="/assets/7c4b6c5f/en-GB.js"></script>
+<script src="/assets/34c53f5b/javascripts/md5.js"></script>
+<script src="/assets/34c53f5b/javascripts/lajax.js"></script>
+<script>
+    $('#jstree_div').jstree({
+        'core': {
+            'themes':{
+                'variant': 'large',
+                'responsive': true,
+            },
+            data: [{"id":"09","parent":"#","text":"09: Coffee, tea, mat\u00e9 and spices","state":{"opened":true},"type":"default"},{"id":"0902","parent":"09","text":"0902: Tea, whether or not flavoured.","state":{"opened":true},"type":"default"},{"id":"090210","parent":"0902","text":"090210: - Green tea (not fermented) in immediate packings of a content not exceeding 3 kg :","state":{"opened":true},"type":"default"},{"id":"0902101000","parent":"090210","text":"0902101000: - - Leaves","state":{"opened":true},"type":"file"}]
+        },
+        'plugins': [
+            'dnd', 'search', 'types',
+        ],
+        'types': {
+            '#':{
+                'valid_children' : ['root']
+            },
+            'default' : {
+                'valid_children' : ['default','file']
+            },
+            'file' : {
+                'icon' : 'far fa-file',
+                'valid_children' : []
+            }
+        }
+})
+</script>
+<script>jQuery(function ($) {
+    // This is the custom script for this specific bundle
+    // console.log('MyAssetBundle script running on document ready!');
+    
+    // Example: Initialize a plugin or call a function defined in my-main-script.js or zzzz
+    // if (typeof myMainScriptFunction === 'function') {
+        // myMainScriptFunction();
+    // }
+    
+    // Note: If you depend on jQuery (as shown above), you can use the jQuery ready function
+    //  jQuery(document).ready(function () {
+    $(document).ready(function () {
+        topResponesive();
+         $('.form-select').select2({
+            minimumResultsForSearch: Infinity,
+            width: 'auto'
+        });
+    });
+    var table_list = ['datatable_tariff','datatable_measures','datatable_standard','datatable_procedures','datatable_legals','datatable_forms'];
+    
+    // Common DataTable language configuration
+    var commonLanguageConfig = {
+        "emptyTable": "No data available in table",
+        "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+        "infoEmpty": "Showing 0 to 0 of 0 entries",
+        "infoFiltered": "(filtered from _MAX_ total entries)",
+        "lengthMenu": "Display _MENU_ records per page",
+        "search": "Search",
+        "zeroRecords": "No matching records found",
+        "paginate": {
+            "first": "First",
+            "last": "Last",
+            "next": "Next",
+            "previous": "Previous"
+        }
+    };
+
+    // Common DataTable configuration
+    var commonConfig = {
+        dom: '<"top"Bif>rt<"bottom"lp><"clear">',
+        buttons: [{
+                extend: 'copy',
+                text: '<i class=\'bi-clipboard-data\' style=\'font-size: 1.2rem;\'></i>',
+                titleAttr: 'Copy'
+            },
+            {
+                extend: 'csv',
+                text: '<i class=\'bi-file-earmark-spreadsheet\' style=\'font-size: 1.2rem;\'></i>',
+                titleAttr: 'CSV'
+            },
+            {
+                extend: 'excel',
+                text: '<i class=\'bi-file-earmark-excel\' style=\'font-size: 1.2rem;\'></i>',
+                titleAttr: 'Excel'
+            },
+            {
+                extend: 'pdf',
+                text: '<i class=\'bi-file-earmark-pdf\' style=\'font-size: 1.2rem;\'></i>',
+                titleAttr: 'PDF'
+            },
+            {
+                extend: 'print',
+                text: '<i class=\'bi-printer\' style=\'font-size: 1.2rem;\'></i>',
+                titleAttr: 'Print'
+            },
+            {
+                extend: 'colvis',
+                text: '<i class=\'bi-columns\' style=\'font-size: 1.2rem;\'></i>',
+                titleAttr: 'Column visibility'
+            }],
+        language: commonLanguageConfig
+    };
+
+    // DataTable configurations for specific tables
+    var tableConfigs = {
+        datatable_measures: {
+            autoWidth: false,
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    width: '40px',
+                    title: '#',
+                    targets: 0
+                },
+                {
+                    visible: false,
+                    targets: [4,7,8]
+                }
+            ]
+        },
+        datatable_tariff: {
+            columnDefs: [
+                {
+                    visible: false,
+                    targets: [7]
+                }
+            ]
+        }
+    };
+
+    // Initialize all tables
+    table_list.forEach(function(tableId) {
+        var config = Object.assign({}, commonConfig);
+        
+        // Merge specific table configuration if it exists
+        if (tableConfigs[tableId]) {
+            config = Object.assign(config, tableConfigs[tableId]);
+        }
+        
+        $('#' + tableId).DataTable(config);
+    });
+    topResponesive();
+
+    $(".bgtgd").removeClass('bg-top-gradient'); // transparent bg
+
+    $("#tk3_top_controller").removeClass('pos_absolute');
+    $("#tk3_header_control_menu").addClass('bg-menu');
+    $('#navbar > ul > li > a').addClass('text_color_menu_for_other_page');
+            
+    //BACKGROUND TOP BANER
+    $("#section_top_banner").removeClass('background_top_banner_for_home_page').addClass('background_top_banner_for_other_page');
+
+    $(window).scroll(function() {
+        var scrollTop = $(this).scrollTop();
+        var header = $('.tk3_header_control_menu');
+        var headerOffset = header.offset().top;
+        
+        const banner = document.querySelector('.tk3__image'); // image on menu
+
+        if (scrollTop > headerOffset) {
+            header.addClass('fixed-top');
+            $('#navbar > ul.navulj > li > a').addClass('text_color_scroll');
+            checkAndSetBannerImage(banner, true);
+            $('.tk3__image').removeClass('tk3__hidden');
+            header.removeClass('bg_menu_home');
+            header.addClass('bg-menu');
+        }
+
+        if ($(this).scrollTop() < 10) {
+            header.removeClass('fixed-top');
+            $('#navbar > ul.navulj > li > a').removeClass('text_color_scroll');
+            $('.tk3__image').addClass('tk3__hidden'); 
+            header.addClass('bg_menu_home');
+            header.removeClass('bg-menu');
+        }    
+    });
+
+
+    function checkAndSetBannerImage(banner, isDarkMode) {
+        const darkImageUrl = `/upload/banner/gb_banner_dark.jpg`;
+        
+        fetch(darkImageUrl, { method: 'HEAD' })
+            .then(response => {
+                setBannerImage(banner, isDarkMode && response.ok);
+            })
+            .catch(() => {
+                setBannerImage(banner, false);
+            });
+    }
+
+    function setBannerImage(banner, useDarkImage) {
+        banner.src = useDarkImage 
+            ? `/upload/banner/gb_banner_dark.jpg`
+            : `/upload/banner/gb_banner.jpg`;
+    }         
+   $(document).ready(function() {
+       $('#accept-btn').click(function () {
+           $.ajax({
+               url: "/en-gb/site/set-cookie",
+               type: 'POST',
+               success: function (data) {
+                   if (data.success) {
+                       // hide the modal here
+                       $('#disclaimer-modal').modal('hide');
+                   }
+               }
+           });
+       });
+       $('#disclaimer-modal').modal('show');
+       makeTranslateMenuResponsive();
+   });
+   
+   // window.onload = function() {
+     setTimeout(function() {
+       $('.none').removeClass('none');
+     },100);
+     // }
+    
+   
+   // section border control
+   window.addEventListener('scroll', function() {
+       const header = document.querySelector('.tk3_border_bottom_control');
+       if (window.scrollY > 0) {
+            header.classList.remove('tk3_border_bottom');
+       } else {
+           header.classList.add('tk3_border_bottom');
+       }
+   });
+       
+	$(".custom_outline_btn_register_login").click(function(e) {
+        e.stopPropagation(); // Prevents the click event from propagating to document
+        $('#subbtnprofile').toggleClass('menudown');
+    });
+
+    $(document).click(function(e) {
+        if (!$(e.target).closest(".custom_outline_btn_register_login").length && !$(e.target).closest("#subbtnprofile").length) {
+            $('#subbtnprofile').removeClass('menudown');
+        }
+    });
+$(document).ready(function() {
+  // Function to be executed when AJAX request starts
+  $(document).ajaxStart(function() {
+    startLoading();
+  });
+  // Function to be executed when AJAX request completes (regardless of success or failure)
+  $(document).ajaxComplete(function() {
+    stopLoading();
+  });
+  // Function to be executed when AJAX request succeeds
+  $(document).ajaxSuccess(function(event, xhr, settings) {
+    stopLoading()
+  });
+  // Function to be executed when AJAX request fails
+  $(document).ajaxError(function(event, xhr, settings, thrownError) {
+    stopLoading();
+  });
+});
+    window.showSuccessModal = function(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: message,
+            timer: 8000,
+            showConfirmButton: true
+        });
+    };
+    
+    window.showErrorModal = function(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+            confirmButtonText: 'OK'
+        });
+    };
+// Utility functions
+const handleDeleteClick = (e) => {
+    const id = $(e.currentTarget).val();
+    const pjaxContainer = $(e.currentTarget).attr('data-pjax-container');
+    const url = '/en-gb/site/delete?id=' + id;
+    
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            if (pjaxContainer) {
+                $(pjaxContainer).removeClass('kv-grid-loading');
+                $(pjaxContainer).find('.kv-loader-overlay').hide();
+            }
+            return $.post(url)
+                .then(response => {
+                    if (response.success === false) {
+                        throw new Error(response.message || "Error deleting item");
+                    }
+                    return response;
+                })
+                .catch(error => {
+                    if (pjaxContainer) {
+                        $(pjaxContainer).removeClass('kv-grid-loading');
+                        // $(pjaxContainer).parent().find('.custom-pjax-loader').hide();
+                    }
+                    Swal.showValidationMessage(
+                        `Request failed: ${error}`
+                    );
+                });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (pjaxContainer) {
+                $.pjax.reload({container: pjaxContainer, async: false});
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Item deleted successfully!",
+                    icon: 'success',
+                    timer: 4000,
+                    showConfirmButton: true
+                });
+            } else {
+                 location.reload();
+            }
+        }
+    });
+};
+
+// Initial setup
+$(function() {
+    $(document).on('click', 'button.btn__tk3__del', handleDeleteClick);
+});
+
+// Re-attach handlers after PJAX updates (clean and re-bind)
+$(document).on('pjax:complete', function() {
+    $(document).off('click', 'button.btn__tk3__del').on('click', 'button.btn__tk3__del', handleDeleteClick);
+});
+$(document).ready(function() {
+    $(".tk3_btn_search").click(function (e) {
+        e.preventDefault();
+        
+        // Toggle the search form visibility
+        $("#tk3_top_form_search").toggleClass('tk3__hidden');
+
+        // Find the icon and toggle its class
+        var icon = $(this).find('i');
+        if (icon.hasClass('fa-search')) {
+            icon.removeClass('fa-search').addClass('fa-times');
+        } else {
+            icon.removeClass('fa-times').addClass('fa-search');
+        }
+    });
+});
+
+$(document).ready(function() {
+  // Find all li elements that have submenus
+  $('li:has(> ul)').each(function() {
+    // Add the nav-item and dropdown classes to the parent li element
+    $(this).addClass('dropdown');
+    // Add the dropdown class to the parent link element
+    // $(this).children('a').addClass('dropdown-toggle');
+    // Add the data-bs-toggle attribute to the parent link element
+    // $(this).children('a').attr('data-bs-toggle', 'dropdown');
+  });
+    
+  var navbar = $('.navbar>ul');
+  function addClasses(el, level) {
+    // Add class to current element
+    
+    if(level == '1'){
+        el.addClass('navulj');
+    }
+    // el.addClass('navbar-level-' + level);
+    if(level == '2' ){
+        el.closest('li').children('a').append('<i class="bi bi-chevron-down"></i>');
+    }else if(level !='2'){
+        el.closest('li').children('a').append('<i class="bi bi-chevron-right"></i>');
+    }
+    // Recurse over child elements
+    el.children('li').children('ul').each(function() {
+      addClasses($(this), level + 1);
+    });
+  }
+
+  addClasses(navbar, 1);
+  
+
+  $('.navbar .dropdown > a').on('click', function(e) {
+  if ($('#navbar').hasClass('navbar-mobile')) {
+    e.preventDefault();
+    $(this).next('ul').toggleClass('dropdown-active');
+    // $(this).next('.dropdown-menu').toggleClass('dropdown-active');
+  }});
+  
+  $('.mobile-nav-toggle').on('click', function(e) {
+      $('#navbar').toggleClass('navbar-mobile');
+      
+      $('#navbar').toggleClass("bg-transparent");
+      $('#navbar').toggleClass("bg-dark");
+      
+      $(this).toggleClass('bi-list');
+      $(this).toggleClass('bi-x');
+  });
+  
+});
+});</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a42ba8040dac1022',t:'MTc5MDY5MTkxNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+</html>
+<!-- Button trigger modal -->
+<!-- Button trigger modal -->
+<!-- Button trigger modal -->
+<!-- Button trigger modal -->
+<!-- Button trigger modal -->

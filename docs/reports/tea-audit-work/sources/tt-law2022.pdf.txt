@@ -1,0 +1,1913 @@
+                        LAWS OF TRINIDAD AND TOBAGO                            www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                   www.laws.gov.tt
+
+
+
+
+                          PLANT PROTECTION ACT
+
+                                   CHAPTER 63:56
+
+
+
+                                                                  L
+                                            Act
+                                        13 of 1975
+                                        Amended by
+                                                                 IA
+                                          2 of 2001
+                                        *10 of 2020
+                                                    IC
+                                   (*See Note on page 2)
+
+
+                                             F
+                                  F
+                           O
+                    N          Current Authorised Pages
+                                  Pages             Authorised
+             U                 (inclusive)
+                                    1–2
+                                    3–4
+                                    5–8
+                                               ..
+                                               ..
+                                               ..
+                                                     by L.R.O.
+
+
+
+                                   9–14        ..
+                                  15–18        ..
+                                  19–26        ..
+                                  27–28        ..
+                                  29–32        ..
+
+
+
+
+                                                                      L.R.O.
+
+
+
+                                             UNOFFICIAL VERSION
+
+                                      UPDATED TO MAY 31ST 2022
+                                         LAWS OF TRINIDAD AND TOBAGO                         www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                 www.laws.gov.tt
+
+          2             Chap. 63:56                    Plant Protection
+
+                                      Index of Subsidiary Legislation
+                                                                                          Page
+          Plant Protection Regulations (LN 194/1997)     …         …        …         …     15
+          Plant Protection (Declaration of Notifiable Disease) Order (LN 268/2004) …        26
+          Plant Protection (Control of Black Sigatoka Disease) (Tobago) Order
+              (LN 93/2006)          …       …      …       …       …       …                27
+          Plant Protection (Giant African Snail) (Achatina Fulica) Order (LN 31/2010)       29
+          Plant Protection (Declaration of a Notifiable Pest) Order (LN 23/2016)      …     29
+                                                                             L
+          Plant Protection (Declaration of a Notifiable Pest) Order (LN 155/2017)     …     29
+
+                                                                 IA
+          Plant Protection (Declaration of Notifiable Pests and Diseases) Order
+              (LN 104/2020)         …       …        …        …      …
+          Plant Protection (Exemption from Import Permit) Order (LN 333/2020)
+                                                                             …
+                                                                                      …
+                                                                                            30
+                                                                                            31
+
+                                                    IC
+          Plant Protection (Declaration of a Notifiable Disease) Order (LN 61/2022)   …     32
+
+
+
+
+                                             F
+                                      F   Note on Act No. 10 of 2020
+          The amendments made to this Act by Act No. 10 of 2020 took effect on 11th May 2020 by
+          LN 92/2020.        O
+                     N
+              U
+
+
+
+                                             UNOFFICIAL VERSION
+
+                                         UPDATED TO MAY 31ST 2022
+                         LAWS OF TRINIDAD AND TOBAGO                                               www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                       www.laws.gov.tt
+
+                                       Plant Protection                 Chap. 63:56                 3
+
+                                      CHAPTER 63:56
+
+                            PLANT PROTECTION ACT
+
+                             ARRANGEMENT OF SECTIONS
+
+          SECTION
+               1. Short title.
+               2. Interpretation.
+               3. Permit required for importation of a restricted article.
+                  Penalty for importing without a permit.
+               4. Applications for and restrictions on grant of permits.
+                                                                            L
+             4A. Power to make Order.
+                                                                IA
+             4B. Occupier to give notice of notifiable disease or pest.
+               5. Minister may prohibit or regulate importation of restricted article.
+
+                                                   IC
+               6. Minister may by Order take steps to prevent the spread of plant
+                     disease or plant pests.
+               7. Minister may designate employees.
+               8. Power of Plant Quarantine Officer.
+                                            F
+             8A. Procedure for eradication of diseases and pests.
+             8B. Quarantine of land.
+                                     F
+             8C. Service of notice in the absence of occupier.
+               9. Comptroller of Customs to notify an officer of the Plant Quarantine
+                             O
+                     Service of entry of restricted article.
+             10. In transit restricted article or carrier to be subject to Regulations.
+                     N
+              11. Establishment of Plant Quarantine Service.
+             12. Power of Plant Quarantine Service.
+
+             U
+             13. Establishment, composition, powers and duties of Board.
+                  Tenure of office.
+             14. Meetings and procedure.
+             15. Government not liable for seizure, loss or damage of restricted
+                     article.
+            15A. Defect not to invalidate proceedings.
+             16. Offences and penalties.
+             17. Regulations.
+
+          SCHEDULE.
+
+
+
+                                                                                          L.R.O.
+
+
+
+                                            UNOFFICIAL VERSION
+
+                                        UPDATED TO MAY 31ST 2022
+                                          LAWS OF TRINIDAD AND TOBAGO                         www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                  www.laws.gov.tt
+
+          4                 Chap. 63:56               Plant Protection
+
+                                                     CHAPTER 63:56
+
+                                              PLANT PROTECTION ACT
+
+          13 of 1975.       An Act to make better provision for the control of diseases
+                                and pests injurious to plants.
+
+          Commencement.                          [10TH SEPTEMBER 1997]
+          [189/1997].
+
+          Short title.           1. This Act may be cited as the Plant Protection Act.
+
+          Interpretation.        2. In this Act—
+                                                                          L
+          [2 of 2001].
+
+                                                               IA
+                            “carrier” means vehicles, ships or aircraft or any other means of
+                                 international transport;
+                            “fruit” means any edible part or product derived from a flower
+
+                                                    IC
+                                 but does not include nuts, cereals or pulses;
+                            “land” includes plantation and nursery;
+                            “Minister” means the member of the Cabinet to whom
+                                              F
+                                 responsibility for Agriculture is assigned;
+                            “notifiable disease” or “notifiable pest” means any disease or
+                                       F
+                                 pest which the Minister may, by Order, from time to time,
+                                 declare to be a notifiable disease or notifiable pest within the
+                                Omeaning of this Act;
+                            “nursery” means any land or place where plants are grown or
+                            N    kept for sale, distribution or replanting;
+                            “occupier”, in relation to any land or building, means the person
+               U                 in actual occupation thereof or, if there is no such person,
+                                 the owner or the possessor of such land or building;
+                            “owner” means the person who is for the time being entitled to
+                                 receive the rent of any land or building; or the person who
+                                 is in possession of or who is for the time being in possession
+                                 of any land or building;
+                            “person” includes a body corporate, an unincorporated
+                                 association or a partnership;
+                            “pest” means any parasitical, epiphytal or other animal or plant
+                                 organism inimical to the growth or existence of living plants
+
+
+
+
+                                              UNOFFICIAL VERSION
+
+                                          UPDATED TO MAY 31ST 2022
+                         LAWS OF TRINIDAD AND TOBAGO                                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                  www.laws.gov.tt
+
+                                     Plant Protection                Chap. 63:56               5
+
+               or injurious to plant products and any agent capable of
+               producing a communicable disease of plants, which the
+               Minister may, by Order, from time to time, declare to be a
+               pest within the meaning of the Act;
+          “plant pest” means any organism or stage of an organism or of a
+               biotechnically produced variant of any such organism capable
+               of having a deleterious effect on a plant or plant product;
+          “plant product” means any substance, material or article of
+               vegetable origin (including pollen whether processed or not)
+               capable of harbouring plant pests;                       L
+          “planting material” includes buds, bulbs, cuttings, grafts, roots,
+                                                             IA
+               scions, seeds, shrubs, trees, vines and any other part of a
+               plant capable of propagation;
+          “restricted articles” includes, in addition to the articles referred to
+                                                 IC
+               in section 3, notifiable pest or notifiable disease;
+          “soil” means the loose surface material of the earth in which
+               plants grow and which consists mainly of disintegrated rock
+                                           F
+               with an admixture of organic material and soluble salts; and
+          “vegetable” includes all edible portions of food plants in their
+                                    F
+               raw or unprocessed state.
+
+                            O
+               3. (1) Subject to this Act, no person shall import into Permit required
+                                                                                 for importation
+          Trinidad and Tobago any fruits, planting material, plant pest, of a restricted
+                     N
+          pathogens, plant products, soil, vegetables or any other [2 of 2001].
+          prescribed articles (hereinafter referred to as “restricted articles”)
+                                                                                 article.
+
+
+
+
+             U
+          unless he first obtains a permit in accordance with the provisions
+          of this Act or the Regulations.
+                  (2) A person who contravenes subsection (1) is guilty of Penalty for
+                                                                           importing
+          an offence and is liable—                                        without a
+                                                                           permit.
+                      (a) on a first conviction to a fine of five thousand
+                           dollars or to imprisonment for two years or to
+                           both; and
+                      (b) on a second or subsequent conviction to a fine
+                           of ten thousand dollars or to imprisonment for
+                           two years or to both.
+
+
+                                                                                    L.R.O.
+
+
+
+                                           UNOFFICIAL VERSION
+
+                                       UPDATED TO MAY 31ST 2022
+                                            LAWS OF TRINIDAD AND TOBAGO                           www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                      www.laws.gov.tt
+
+          6                  Chap. 63:56                Plant Protection
+
+          Applications for       4. (1) Applications for permits shall be made to the Chief
+          and restrictions
+          on grant of        Technical Officer through the Plant Quarantine Service in the
+          permits.
+          [2 of 2001].       manner prescribed.
+                                    (2) Where a permit is granted, it shall be done in
+                             accordance with the provisions of this Act and the Regulations
+                             and on such terms and conditions as are considered appropriate
+                             and such permit may be revoked or any conditions varied.
+                                     (3) Without prejudice to any other terms and conditions
+                             subject to which a permit may be granted, it shall be a condition
+                                                                             L
+                             of each permit that—
+
+                                                                  IA
+                                         (a) each importation of a restricted article is
+                                              accompanied by a phytosanitary certificate issued
+                                              by the appropriate government department or
+                                              agency in the country of export;
+                                                      IC
+                                         (b) the certificate referred to in paragraph (a) shall
+                                              be similar to that adopted from time to time by
+                                              the International Plant Protection Convention
+                                                F
+                                              1951; and
+                                         (c) where it is necessary, planting material shall be
+                                         F    grown locally by or under the supervision of the
+                                              Ministry with responsibility for Agriculture and
+                                 O            if found harbouring or likely to harbour a plant
+                                              pest, it shall be the responsibility of the importer
+                                              or his agent to comply with the action
+                        N                     prescribed within the specified time.
+
+              U
+          Power to make
+          Order.
+          [2 of 2001
+          10 of 2020].
+                                4A. The Minister may by Order as he thinks necessary or
+                             expedient for the purposes of this Act, including preventing the
+                             spread of any plant pest or disease in Trinidad and Tobago—
+                                         (a) declare a disease to be a notifiable disease or a
+                                              pest to be a notifiable pest;
+                                         (b) prohibit, control or restrict the transportation of any
+                                              plant, or of any plant appearing to be infested with
+                                              any pest or disease, or of any thing whatever,
+                                              whether of a nature similar to any plant or not, likely
+                                              to infect any plant with any pest or any disease;
+
+
+
+
+                                               UNOFFICIAL VERSION
+
+                                            UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                 www.laws.gov.tt
+
+                                    Plant Protection               Chap. 63:56                7
+
+                       (c) prohibit, control or restrict the cultivation and
+                            harvesting either throughout the country, or any
+                            specified area, of any plant when, in the opinion
+                            of the Minister, such measures are necessary for
+                            the control or eradication of any pest or disease;
+                       (d) direct, authorise or control the quarantine of
+                            infected areas;
+                       (e) direct and specify the precautions to be taken to
+                            prevent the spread of plant disease or pest;
+                        (f) authorise or require the inspection before import
+                                                                      L
+                            or export of any plant or article likely to infect
+                            any plant with any pest or disease, and provide
+                                                           IA
+                            for the grant of a certificate as to the results of
+                            such inspection;
+                       (g) authorise the immediate destruction without
+                            compensation of any plant or article which on
+                                                IC
+                            inspection appears to be infested or infected
+                            with any pest or disease;
+                       (h) direct or authorise the detention of classes of
+                            imported plants in any specified place and
+                                         F
+                            specify the precautions to be observed during
+                            such detention;
+                                   F
+                        (i) require plants, or any class or classes of plants, to
+                            be accompanied on importation by a plant health
+                           Ocertificate issued by a competent authority;
+                        (j) exempt any article from the application of
+                    N       section 3 where the Minister has determined that
+                            the article does not pose a phytosanitary risk; and
+                       (k) prohibit the importation of a particular species
+             U              of organism or of a biotechnically developed
+                            variant of such organism capable of having a
+                            deleterious effect on a plant or plant product.
+
+             4B. (1) The occupier of any land, on which any notifiable Occupier to give
+          disease or notifiable pest occurs, shall as soon as practicable give notice of
+                                                                               notifiable
+          notice thereof to a Plant Quarantine Officer or an officer disease or pest.
+                                                                               [2 of 2001].
+          authorised by the Chief Technical Officer.
+                  (2) Any occupier who fails to give such notice commits
+          an offence and shall be liable on summary conviction to a fine of
+          five thousand dollars.
+
+                                                                                    L.R.O.
+
+
+
+                                         UNOFFICIAL VERSION
+
+                                     UPDATED TO MAY 31ST 2022
+                                              LAWS OF TRINIDAD AND TOBAGO                        www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                     www.laws.gov.tt
+
+          8                     Chap. 63:56               Plant Protection
+
+                                         (3) In any proceedings under this section it shall be no
+                                defence that the occupier was not aware of the occurrence of such
+                                disease or pest unless it shall be shown to the satisfaction of the
+                                Court that he and the persons employed by him on the land took
+                                all reasonable steps to discover such occurrence.
+          Minister may
+          prohibit or
+                                      5. (1) Notwithstanding the provisions of section 3, the
+          regulate              Minister, if it appears to him that the importation of a restricted
+          importation of
+          restricted article.   article into Trinidad and Tobago is likely to result in the entry of
+          [2 of 2001].          a plant pest, may by Order published in the Gazette and in a local
+                                                                             L
+                                daily newspaper prohibit or regulate the importation of such
+                                article into the country.
+                                                                   IA
+                                        (2) An Order made under subsection (1), may—
+                                            (a) where it regulates the importation of a restricted
+                                                article, specify conditions subject to which such
+                                                        IC
+                                                article may be imported;
+                                            (b) direct or authorise the seizure or disposal of the
+                                                restricted article, the importation of which is
+                                                prohibited or does not satisfy the conditions
+                                                 F
+                                                specified in the Order.
+                                           F
+                                        (3) The seizure and disposal of a restricted article under
+                                subsection (2)(b) shall be carried out at the expense of the
+
+
+          Minister may by
+                                    O
+                                importer or his agent.
+
+                                     6. (1) The Minister may make such Orders as he thinks
+          Order take steps
+          to prevent the
+          spread of plant
+          disease or
+                          N     necessary or expedient for preventing the spread of plant disease
+                                or plant pests in Trinidad and Tobago.
+               U
+          plant pests.
+          [2 of 2001].                 (2) Without prejudice to the generality of subsection (1),
+                                the Minister may by such Order—
+                                             (a) direct or authorise the destruction, removal or
+                                                 treatment of a restricted article;
+                                             (b) prohibit the selling, exposing or offering for sale
+                                                 or the distribution of a restricted article; or
+                                             (c) direct or authorise the entering on any land for
+                                                 the purpose of destroying, removing or treating
+                                                 a restricted article in respect of which an Order
+                                                 is made under subsection (1).
+
+
+
+
+                                                 UNOFFICIAL VERSION
+
+                                              UPDATED TO MAY 31ST 2022
+                         LAWS OF TRINIDAD AND TOBAGO                                            www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                    www.laws.gov.tt
+
+                                     Plant Protection               Chap. 63:56                  9
+
+                7. The Minister on the recommendation of the Chief Ministerdesignate
+                                                                                    may
+
+          Technical Officer may in writing designate suitable employees of employees.
+                                                                           [2 of 2001].
+          the Ministry of Agriculture or any other competent individuals
+          for the purpose of enforcing the provisions of this Act.
+
+               8. A Plant Quarantine Officer who has reasonable cause to Power      of
+                                                                             Plant Quarantine
+          believe that any person, receptacle or carrier has, possesses, Officer.
+                                                                             [2 of 2001].
+          contains or carries a restricted article, the importation of which
+          into Trinidad and Tobago is prohibited or does not satisfy the
+          conditions subject to which it was imported may—
+                                                                       L
+                       (a) board any ship or aircraft or enter on any land;
+
+                                                            IA
+                       (b) without warrant, search, inspect or examine any
+                           such person, carrier or receptacle for the
+                           purpose of seizing, destroying or otherwise
+                           disposing of a restricted article.
+                                                 IC
+              8A. A Plant Quarantine Officer or an officer authorised by Procedure
+                                                                               eradication
+          the Chief Technical Officer may, by notice in writing in the form of diseases
+                                                                                          for
+
+
+                                                                               and pests.
+                                          F
+          set out in the Schedule to this Act, served upon the occupier of [2 of 2001].
+          any land, require him to take within a time specified in the notice, Schedule.
+          all such measures as may be necessary for the eradication or the
+                                    F
+          prevention of the spread of any diseases or pests.
+
+                            O
+             8B. (1) Where a Plant Quarantine Officer or an officer Quarantine
+                                                                           of land.
+          authorised by the Chief Technical Officer finds any land or any [2 of 2001].
+                     N
+          part thereof to be affected by any disease or pest he may, by
+          notice in writing served upon the occupier, declare such land or
+             U
+          part thereof to be under quarantine.
+                   (2) The notice shall remain in force until a Plant
+          Quarantine Officer or an officer authorised by the Chief
+          Technical Officer gives the owner or occupier of the land affected
+          a certificate in writing that the land is free from diseases or pests.
+                  (3) The occupier of land or any part thereof thus placed
+          under quarantine may, upon application to a Plant Quarantine
+          Officer or an officer authorised by the Chief Technical Officer,
+          have his land examined free of charge to determine whether or
+          not the disease or pest has been eradicated.
+
+
+                                                                                   L.R.O.
+
+
+
+                                          UNOFFICIAL VERSION
+
+                                      UPDATED TO MAY 31ST 2022
+                                             LAWS OF TRINIDAD AND TOBAGO                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                      www.laws.gov.tt
+
+          10                   Chap. 63:56               Plant Protection
+
+          Service of              8C. Where there is no person in actual occupation of any
+          notice in the
+          absence of           land, or where the occupier cannot be found, service of any notice
+          occupier.
+          [2 of 2001].         under this Act may be made by affixing the same in a
+                               conspicuous place on the land and such affixing shall be deemed
+                               to be sufficient and valid service.
+
+          Comptroller of             9. The Comptroller of Customs and Excise or an officer
+          Customs to
+          notify an officer    authorised by him for the purpose in writing shall, where a
+          of the Plant
+          Quarantine
+                               restricted article enters Trinidad and Tobago on a carrier,
+          Service of entry     forthwith notify an officer of the Plant Quarantine Service of
+          of restricted
+          article.
+          [2 of 2001].
+                                                                             L
+                               such entry and shall not release or dispose of the article unless
+                               authorised so to do by an officer of the Plant Quarantine Service.
+
+          In transit
+          restricted article
+          or carrier to be
+                                                                   IA
+                                   10. A restricted article or a carrier (including the furnishings
+                               and stores of an aircraft or a ship) in transit in Trinidad and Tobago
+          subject to           shall be subject to such Regulations as the Minister may prescribe.
+          Regulations.
+
+          Establishment of
+          Plant Quarantine
+                                                       IC
+                                   11. There is hereby established for the purposes of this Act
+                               a Plant Quarantine Service which shall comprise Plant
+          Service.
+          [2 of 2001].         Quarantine Officers. The purpose of the Plant Quarantine Service
+                                                 F
+                               is to prevent the entry into Trinidad and Tobago of plant pests
+                               which are likely to affect adversely any sector of the agricultural
+                                           F
+                               industry of the country.
+
+          Power of Plant
+          Quarantine
+          Service.
+                                   O
+                                   12. The Plant Quarantine Service shall have power to do all
+                               that is necessary or incidental to the effective carrying out of the
+
+
+          Establishment,
+                           N   provisions of this Act and any Regulations made thereunder.
+
+                                   13. (1) A Board of Management (hereinafter referred to as
+               U
+          composition,
+          powers and
+          duties of Board.
+          [2 of 2001].
+                               “the Board”) is hereby established for the purposes of this Act.
+                                       (2) The Board shall manage the affairs of the Plant
+                               Quarantine Service, and do such other things as may be
+                               designated by the Minister or necessary or expedient in order to
+                               enable the Plant Quarantine Service to achieve its purpose. The
+                               Board shall consist of the following members:
+                                            (a) the Director in charge of Plant Quarantine Service;
+                                           (b) a Senior Entomologist and a Senior Pathologist
+                                                attached to the Research Division of the
+                                                Ministry of Agriculture;
+
+
+
+
+                                                 UNOFFICIAL VERSION
+
+                                             UPDATED TO MAY 31ST 2022
+                         LAWS OF TRINIDAD AND TOBAGO                                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                  www.laws.gov.tt
+
+                                     Plant Protection               Chap. 63:56               11
+
+                        (c) the officer in charge of the Plant Quarantine
+                             Service;
+                        (d) a plant protection specialist nominated by the
+                             Principal of the University of the West Indies,
+                             St. Augustine Campus;
+                        (e) a legal representative of the Ministry responsible
+                             for Agriculture or a representative of the Ministry
+                             of the Attorney General and Legal Affairs; and
+                         (f) a representative of private enterprise engaged in
+                             agriculture appointed by the Agricultural Society
+                             of Trinidad and Tobago.                    L
+                                                            IA
+                  (3) In respect of each member of the Board, the Minister
+          shall appoint an alternate member who may act in the stead of the
+          respective member at any meeting of the Board.
+                   (4) A member of the Board appointed under paragraph Tenure of office.
+          (d) or (f) or under subsection (3)—    IC
+                        (a) shall hold office for the period specified in his
+                            instrument of appointment but is eligible for
+                                          F
+                            reappointment; or
+                        (b) may at any time resign his office by instrument
+                                    F
+                            in writing addressed to the Secretary;
+                            resignation takes effect on the date of receipt of
+                            O
+                            the instrument.
+                    (5) The Director in charge of Plant Quarantine Service or
+          his alternate shall be the Chairman of the Board; the officer in charge
+                     N
+          of the Plant Quarantine Service or his alternate shall be the Secretary.
+
+             U
+             14. (1) The Board shall meet at such times as may be Meetings and
+          necessary or expedient for the efficient performance of its
+          functions and at such places and times and on such days as the
+                                                                         procedure.
+
+
+
+          Board may decide.
+                   (2) The Chairman or in his absence his alternate shall preside
+          over the meetings of the Board but where both the Chairman and his
+          alternate are unable to preside, the members present and forming a
+          quorum may appoint a member to preside over that meeting.
+                 (3) The Chairman or, in his absence, his alternate, or
+          where both the Chairman and his alternate are absent, the member
+
+
+                                                                                     L.R.O.
+
+
+
+                                          UNOFFICIAL VERSION
+
+                                      UPDATED TO MAY 31ST 2022
+                                              LAWS OF TRINIDAD AND TOBAGO                        www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                     www.laws.gov.tt
+
+          12                    Chap. 63:56               Plant Protection
+
+                                appointed pursuant to subsection (2) to preside over the meeting,
+                                and three other members shall constitute a quorum.
+                                         (4) The decisions of the Board shall be by a majority of
+                                votes of the members present, and in the event that there is an
+                                equality of votes, the Chairman, his alternate or the member
+                                appointed to preside over the meeting, as the case may require,
+                                shall in addition to an original vote, exercise a casting vote.
+                                        (5) The Board may co-opt any one or more persons to
+                                attend any particular meeting of the Board for the purpose of
+                                                                             L
+                                assisting or advising the Board; no person who has been so
+
+
+          Government not
+          liable for
+                                                                   IA
+                                co-opted shall have the right to vote.
+
+                                   15. The Government of Trinidad and Tobago or its authorised
+          seizure, loss or      agents shall not be liable to pay compensation in respect of—
+          damage of
+          restricted article.
+          [2 of 2001].
+                                                        IC
+                                             (a) the seizure, destruction or other means of
+                                                  disposal of a restricted article imported into the
+                                                  country contrary to the provisions of this Act or
+                                                 Fthe Regulations;
+                                             (b) any damage or loss incurred as a result of any
+                                           F      treatment or quarantine action which was
+                                                  deemed necessary in the opinion of the officers
+                                    O             of the Plant Quarantine Service; or
+                                             (c) the detention of any carrier.
+
+          Defect not to
+          invalidate
+          proceedings.
+                          N       15A. Proceedings commenced under this Act shall not be
+                                rendered invalid by reason of any defect of any order or notice
+               U
+          [2 of 2001].
+                                made or given except as against any person prejudiced by such
+                                defect of any order made or notice given.
+
+          Offences and             16. Every person who—
+          penalties.
+          [2 of 2001].                     (a) in any manner obstructs or impedes any person
+                                               in the execution of any of the duties or powers
+                                               conferred by this Act or by Regulations made
+                                               thereunder;
+                                           (b) violates any of the provisions of this Act or the
+                                               Regulations or any Order made thereunder;
+
+
+
+
+                                                 UNOFFICIAL VERSION
+
+                                              UPDATED TO MAY 31ST 2022
+                         LAWS OF TRINIDAD AND TOBAGO                                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                  www.laws.gov.tt
+
+                                     Plant Protection              Chap. 63:56                13
+
+                        (c) alters, forges, defaces or destroys any certificate
+                            or other document required by this Act; or
+                        (d) knowingly introduces any disease or pest onto
+                            any cultivated land or to any plant whether
+                            cultivated or not,
+          commits an offence and on summary conviction shall be liable to
+          a fine of five thousand dollars and imprisonment for two years.
+
+             17. The Minister may make such Regulations as he considers Regulations.
+                                                                               [2 of 2001].
+                                                                      L
+          necessary or expedient for carrying out the provisions of this Act
+          and in particular may make Regulations—
+                                                           IA
+                       (a) prescribing anything which is required by this
+                            Act to be prescribed;
+                       (b) governing the procedure relating to the issue of
+                            permits;
+                                                IC
+                       (c) authorising the keeping of a restricted article in
+                            a specified place;
+                       (d) prescribing the measures to be taken where a
+                                          F
+                            restricted article is kept in a specified place;
+                       (e) providing for the revocation of permits;
+                                   F
+                        (f) providing for the inspection and treatment of
+                            O
+                            plants grown or offered for sale;
+                       (g) providing for the treatment of buildings,
+                            vehicles, ships or aircraft in which a restricted
+                    N       article is or was conveyed or stored;
+                       (h) regulating the importation, sale, distribution,
+             U              movement and cultivation of restricted articles;
+                        (i) providing for the inspection and certification of
+                            restricted articles for exportation;
+                        (j) prescribing what fees are to be paid where
+                            treatment or quarantine action was given or taken.
+
+
+
+
+                                                                                  L.R.O.
+
+
+
+                                          UNOFFICIAL VERSION
+
+                                      UPDATED TO MAY 31ST 2022
+                                           LAWS OF TRINIDAD AND TOBAGO                                                                 www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                                                           www.laws.gov.tt
+
+          14             Chap. 63:56                            Plant Protection
+
+          Section 8A.                                             SCHEDULE
+          [2 of 2001].
+                                                   Plant Protection Act, Ch. 63:56
+
+
+                         To:
+
+                                     Name ..............................................................................................
+
+                                     Land ................................................................................................
+
+                                                                                                  L
+                                     Situated at .......................................................................................
+
+
+                                                                                IA
+                             In pursuance of the powers vested in me by section 8A of the Plant
+                         Protection Act, Ch. 63:56, I hereby direct you within ............ days of the
+                         service upon you of this notice to do the following work on the land:
+
+                         Viz—                               IC
+                                                 F                                      ....................................................
+                                       F                                                     (Plant Quarantine Officer)
+
+
+                               O
+                         N
+               U
+
+
+
+                                                 UNOFFICIAL VERSION
+
+                                           UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                        www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                               www.laws.gov.tt
+
+                                   Plant Protection               Chap. 63:56              15
+
+                           SUBSIDIARY LEGISLATION
+
+
+
+                       PLANT PROTECTION REGULATIONS
+
+                         ARRANGEMENT OF REGULATIONS
+
+          REGULATION
+              1. Citation.
+              2.
+              3.
+                 Interpretation.
+                 Examination of restricted articles.
+                                                                     L
+              4.
+              5.
+              6.
+                                                          IA
+                 Importation by or for the Ministry of Agriculture.
+                 Ports of entry and export.
+                 Overtime fees.
+              7.
+              8.
+              9.
+                 Planting materials.
+                 Fruit and vegetables.
+                 Plant pests.
+                                               IC
+             10. Beneficial organisms.
+             11. Soil.
+                                        F
+             12.
+             13.
+                                  F
+                 Importation by mail.
+                 Rules on packaging materials.
+             14.
+             15.
+             16.
+                           O
+                 Safeguard requirements.
+                 Export regulations.
+                 Applications to import.
+             17.
+             18.
+                    N
+                 Issue of import permit.
+                 Control of movement of fruit, vegetables and plant material in
+             U      Trinidad and Tobago.
+             19. No compensation payable.
+
+          FIRST SCHEDULE.
+          SECOND SCHEDULE.
+
+
+
+
+                                                                                  L.R.O.
+
+
+
+                                        UNOFFICIAL VERSION
+
+                                     UPDATED TO MAY 31ST 2022
+                                          LAWS OF TRINIDAD AND TOBAGO                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                   www.laws.gov.tt
+
+          16                Chap. 63:56               Plant Protection
+          [Subsidiary]
+
+          194/1997.                     PLANT PROTECTION REGULATIONS
+          [4/2004].
+                                                   made under section 17
+
+          Citation.             1. These Regulations may be cited as the Plant Protection
+                            Regulations.
+
+          Interpretation.        2. In these Regulations—
+                            “beneficial organism” means any stage of an insect, nematode,
+                                 mite, protozoan or other invertebrate or vertebrate animal,
+                                                                           L
+                                 bacterium, virus, fungus, or a reproductive part thereof, and
+
+                                                                IA
+                                 includes any agent or genetically engineered variant of the
+                                 foregoing, intended to be used for promoting agricultural,
+                                 industrial or other useful activity;
+                            “designated employee” means a person appointed under
+                                                    IC
+                                 section 7 of the Act;
+                            “fruit and vegetables” includes all edible portions of food plants
+                                 in the raw or unprocessed state;
+                                              F
+                            “Ministry” means the agency of Government to which
+                                 responsibility for the subject matter of agriculture is assigned;
+                                        F
+                            “non-plant articles” means items that are not of plant origin but
+                                 represent a plant quarantine risk;
+                                O
+                            “pest” means any parasitical, epiphytal or other animal or
+                                 vegetable organism inimical to the growth or existence of
+                            N    living plants or injurious to plant products and any agent
+                                 capable of producing a communicable disease of plants,
+               U                 which the Minister may, by Order, from time to time declare
+                                 to be a pest within the meaning of the Act;
+                            “plant pest” means any stage of an insect, nematode, mite,
+                                 protozoan or other invertebrate or vertebrate animal,
+                                 bacterium, fungus, parasitic plant or a reproductive part
+                                 thereof, virus or any other agent or genetically engineered
+                                 variant of the foregoing, capable of having a deleterious
+                                 effect on a plant or plant product;
+                            “Plant Quarantine Officer” means any person or persons assigned
+                                 to the Plant Quarantine Service;
+
+
+
+
+                                              UNOFFICIAL VERSION
+
+                                          UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                        www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                               www.laws.gov.tt
+
+                                    Plant Protection             Chap. 63:56               17
+                                Plant Protection Regulations                      [Subsidiary]
+
+          “Plant Quarantine Service” means the Service established by
+               section 11 of the Act;
+          “planting material” include trees, shrubs, vines, cuttings, grafts,
+               scions, buds, bulbs, roots, seeds and any other plant part
+               capable of propagation;
+          “Plants Import Schedule” refers to a list of economic crops held
+               by the Plant Quarantine Service indicating which crops
+               might be imported and the conditions and restrictions
+               applicable to the importations;
+          “restricted article” means—
+                                                                    L
+                        (a) any plant pest or other organism;
+                                                               IA
+                        (b) fruit and vegetables, planting materials, plant
+                             products or soil;
+
+                                                 IC
+                        (c) non-plant articles prescribed by the Minister in
+                             accordance with section 17(a);
+          “soil” means the loose surface material of the earth in which
+               plants grow, in most cases consisting of disintegrated rock
+                                          F
+               with an admixture of organic material and soluble salts.
+                                  F
+                3. (1) The entry in Trinidad and Tobago of all restricted Examination of
+                                                                           restricted
+          articles, which may present a pest risk to the agriculture of articles.
+                           O
+          Trinidad and Tobago, shall be subject to examination upon
+          arrival by a Plant Quarantine Officer or a designated employee,
+                    N
+          and if necessary, to treatment, destruction or re-export, as the
+          case may warrant.
+
+             U    (2) All treatment, destruction or re-export shall be the
+          responsibility of a Plant Quarantine Officer or a designated
+          employee and shall be performed at the sole risk and expense of
+          the importer or his agent to the satisfaction of a Plant Quarantine
+          Officer or designated employee.
+                   (3) For the purpose of examination, a Plant Quarantine
+          Officer or a designated employee may detain any consignment or
+          part of a consignment of restricted articles being offered for entry
+          or export, and take samples of such articles for such testing as
+          may be considered necessary.
+
+
+                                                                                 L.R.O.
+
+
+
+                                          UNOFFICIAL VERSION
+
+                                     UPDATED TO MAY 31ST 2022
+                                          LAWS OF TRINIDAD AND TOBAGO                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                   www.laws.gov.tt
+
+          18                Chap. 63:56                Plant Protection
+          [Subsidiary]                             Plant Protection Regulations
+
+
+                                    (4) A shipment of restricted articles arriving at the
+                            designated ports of entry without an import permit, shall not be
+                            off-loaded without the permission of a Plant Quarantine Officer
+                            or a designated employee.
+
+          Importation by         4. Notwithstanding anything in these Regulations,
+          or for the
+          Ministry of       importation by or for the Ministry or of specific material for
+          Agriculture.
+                            bona fide purposes may be allowed subject to such measures as
+                            are prescribed by the Plant Quarantine Service, to prevent pest
+                                                                                  L
+                            entry and dissemination, including routine compliance with
+                            documentary requirements.
+
+          Ports of entry
+          and export.
+                                                                  IA
+                                 5. The following ports are designated ports of entry and
+                            export for plant quarantine purposes and plant inspection services
+
+                                                    IC
+                            shall be provided at these ports during normal working hours:
+                                 Port-of-Spain Wharves
+                                 Piarco International Airport
+                                                                       The Port of Pt. Lisas
+                                                                       Scarborough Wharves
+                                 Crown Point International Airport
+
+          Overtime fees.
+                                              F
+                                 6. (1) Agricultural Assistants engaged in plant quarantine
+
+          First Schedule.
+                                        F
+                            duties at ports of entry and Plant Quarantine Guards shall be paid
+                            overtime duty at the rates set out in the First Schedule.
+                                O   (2) There shall be paid to the Comptroller of Customs and
+                            Excise for overtime duties performed at ports of entry by
+
+          Second
+          Schedule.
+                           NAgricultural Assistants engaged in plant quarantine duties and Plant
+                            Quarantine Guards, fees at the rates set out in the Second Schedule.
+               U
+          Planting
+          materials.
+                                 7. (1) All planting material is subject to such inspection
+                            and treatment as may be necessary, as a condition of entry into
+                            Trinidad and Tobago.
+                                    (2) The entry of plants, cuttings, scions, stocks, tubers,
+                            roots, seeds, etc., for planting purposes shall be limited to the
+                            smallest possible propagative unit consistent with good
+                            horticultural practices.
+                                    (3) The importation of planting material namely, plants,
+                            rooted-cuttings, or any other plant part shall be limited to soil-free
+
+
+
+
+                                              UNOFFICIAL VERSION
+
+                                          UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                         www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                www.laws.gov.tt
+
+                                    Plant Protection              Chap. 63:56               19
+                                Plant Protection Regulations                       [Subsidiary]
+
+          plants and plant parts and an approved packaging material may be
+          used around the roots of plants after the soil has been removed.
+                   (4) Plants, rooted-cuttings, seedlings and any other
+          propagative units or plant parts are not admissible if established
+          in a growing medium other than agar-based media, without
+          specific approval.
+                  (5) In the case of forest trees, entry shall be restricted to
+          seed or plantlets in agar.
+                                                                     L
+               8. (1) A permit to import fruit and vegetables may be Fruit and
+                                                               IA
+          issued by the Plant Quarantine Service upon submission of a
+          completed application for an import permit.
+                                                                      vegetables.
+
+
+
+
+                 (2) The entry status of the fruit or vegetables shall be
+                                                 IC
+          determined according to the pests present in the exporting country.
+                  (3) The importation of soft, fleshy fruit and vegetables
+          shall be prohibited from all countries where the Hawaiian,
+                                          F
+          Mexican, Mediterranean and other dangerous fruit flies are known
+          to occur, unless approved treatments can be effectively performed.
+                                   F
+                  (4) Fruit and vegetables arriving in passenger baggage
+                           O
+          or personal effects without the necessary permit shall be
+          confiscated and destroyed.
+                    N
+                   (5) Dried, frozen, preserved or candied fruit and
+          vegetables that have been prepared in such a manner as to make
+             U
+          them innocuous as pest carriers and are not otherwise prohibited
+          in the Plant Import Schedule are enterable, subject to verification
+          of their condition and freedom from pests.
+
+                9. (1) The entry of plant pests shall not be authorised Plant pests.
+          unless a permit has been issued to a recognised scientific and
+          research institution, where the plant pests are destined for use by
+          that institution.
+                  (2) The importations of plant pests shall be subject to
+          safeguard measures as specified on the permit.
+
+
+                                                                                  L.R.O.
+
+
+
+                                          UNOFFICIAL VERSION
+
+                                     UPDATED TO MAY 31ST 2022
+                                       LAWS OF TRINIDAD AND TOBAGO                         www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                               www.laws.gov.tt
+
+          20             Chap. 63:56               Plant Protection
+          [Subsidiary]                         Plant Protection Regulations
+
+          Beneficial
+          organisms.
+                             10. The entry of beneficial organisms shall not be authorised
+                         unless a permit is issued to the person importing such organisms.
+
+          Soil.              11. (1) A person shall not import soil into Trinidad and Tobago
+                         unless such importation is done by or on behalf of a recognised
+                         scientific and research laboratory to which a permit has been issued.
+                                 (2) The importation of soil shall be subject to specific
+                         safeguard measures as enumerated on the permit.
+                                                                              L
+                                 (3) In general, the following rules shall apply:
+
+                                                              IA
+                                     (a) only small quantities may be imported at any
+                                         one time;
+                                     (b) the soil shall be shipped in sturdy tightly-sealed
+                                         containers;
+                                                 IC
+                                     (c) the soil may be used only in the laboratory of the
+                                         permit holder; and
+                                     (d) the soil shall be incinerated or otherwise
+                                           F
+                                         sterilised in the manner approved by the Plant
+                                         Quarantine Service at the conclusion of the test.
+                                    F
+                                 (4) The entry of any plant or plant products, machinery,
+                             O
+                         equipment or conveyance of any kind carrying or contaminated
+                         with soil is prohibited and entry shall be permitted only where
+                         they are free from soil to the extent approved by the Plant
+                         N
+                         Quarantine Service.
+
+                  U
+          Importation
+          by mail.
+                             12. Restricted articles imported by mail, shall be subject to
+                         the requirements of these Regulations which shall be enforced
+                         through co-operative arrangements of the Postal and Plant
+                         Quarantine Services and the Customs and Excise Department.
+
+          Rules on
+          packaging
+                            13. Packaging material shall be subject to the following
+          materials.     Regulations:
+                                      (a) any plant or plant part prohibited entry in
+                                          accordance with the Plant Import Schedule shall
+                                          not be entered as packing material;
+
+
+
+
+                                           UNOFFICIAL VERSION
+
+                                       UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                 www.laws.gov.tt
+
+                                    Plant Protection              Chap. 63:56             21
+                                Plant Protection Regulations                     [Subsidiary]
+
+                       (b) the following shall also be specifically
+                            prohibited entry as packing material:
+                               (i) banana plants and plant parts;
+                              (ii) citrus plants and plant parts;
+                             (iii) coconut or other palm material;
+                             (iv) coffee plants and plant parts;
+                              (v) cotton plants, plant parts and unprocessed
+                                   cotton products;
+                             (vi) forest litter;
+                                                                     L
+                            (vii) grass plants and plant parts;
+                                                               IA
+                           (viii) leaves and stems of plants in general;
+                             (ix) rice straw and hulls;
+                              (x) sugar cane plants and plant parts; and
+                             (xi) soil;          IC
+                       (c) the following may be entered as packaging
+                            material:
+                                          F
+                               (i) sterilised peat or sphagnum moss;
+                              (ii) excelsior or wood’s wool;
+                                   F
+                             (iii) vermiculite;
+
+                           O (iv) ground cork;
+                              (v) shredded paper; and
+                             (vi) perlite.
+                    N
+              14. (1) Articles subject to permit requirements shall also be Safeguard
+             U
+          subject to the safeguards directed by the Plant Quarantine Service
+          and may also be subject to safeguards in accordance with the
+                                                                             requirements.
+
+
+
+          following provisions:
+                        (a) the procedures employed shall be those that
+                            impose a minimum of inconvenience to the
+                            shipper or carrier but shall be consistent with
+                            proper precautions against pest entry or
+                            dissemination and articles which are not in
+                            compliance with the requirements may be
+                            seized, destroyed or otherwise disposed of;
+
+                                                                                L.R.O.
+
+
+
+                                          UNOFFICIAL VERSION
+
+                                     UPDATED TO MAY 31ST 2022
+                                        LAWS OF TRINIDAD AND TOBAGO                         www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                www.laws.gov.tt
+
+          22             Chap. 63:56                Plant Protection
+          [Subsidiary]                          Plant Protection Regulations
+
+
+                                       (b) inspections of articles subject to these
+                                            Regulations shall be performed within twenty-
+                                            four (24) hours or as soon after arrival as
+                                            practical and the conditions necessary to prevent
+                                            pest dissemination will be specified at that time
+                                            if prior arrangements have not already been
+                                            made and the Comptroller of Customs and
+                                            Excise shall not release any article in custody
+                                            until such requirements have been met and
+                                                                               L
+                                            approved by a Plant Quarantine Officer or a
+                                            designated employee;
+                                                               IA
+                                       (c) any treatment, destruction or safeguard
+                                            requirements deemed necessary under this
+                                            regulation shall be made at the owner’s or other
+                                                  IC
+                                            responsible person’s risk and expense;
+                                       (d) plant material refused entry shall be subject to
+                                            these safeguards until re-exported or destroyed;
+                                           F
+                                       (e) restricted articles that are in transit shall not be
+                                            opened, landed or re-packaged without the
+                                   F        permission of the Plant Quarantine Service and
+                                            transhipment of restricted articles shall require
+                            O               prior written permission;
+                                        (f) restricted articles referred to in paragraph (e),
+                                            shall not be removed from a port without written
+                         N                  permission from the Plant Quarantine Service;
+                                       (g) where permission is given to remove a
+               U                            restricted article from the port to a specified
+                                            place pending inspection, a plant quarantine seal
+                                            may be placed on the article and any
+                                            unauthorised person who breaks a seal referred
+                                            to in subregulation (1)(g) commits an offence
+                                            and any person found guilty of such an offence
+                                            shall on summary conviction be liable to a fine
+                                            of two thousand dollars; such articles shall not
+                                            be opened unless a Plant Quarantine Officer or a
+                                            designated employee is present;
+
+
+
+
+                                           UNOFFICIAL VERSION
+
+                                       UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                         www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                www.laws.gov.tt
+
+                                    Plant Protection              Chap. 63:56               23
+                                Plant Protection Regulations                     [Subsidiary]
+
+                       (h) garbage or refuse entering the territorial waters
+                            or temporarily in the ports of Trinidad and
+                            Tobago shall be subject to such safeguards as
+                            specified by the Plant Quarantine Service, in
+                            co-operation with other governmental agencies
+                            including the departments responsible for
+                            public health and animal health;
+                        (i) the landing of garbage is prohibited except in
+                            unusual circumstances and in these       L
+                            instances, prior approval shall be obtained
+                                                               IA
+                            from the appropriate agency and the Plant
+                            Quarantine Service;
+                        (j) garbage retained onboard in transit vessels and
+
+                                                 IC
+                            aircraft shall be enclosed in tightly sealed,
+                            insect-proof containers to prevent insect escape
+                            and in the case of ships in port, shall be inside
+                            the ship’s rail.
+                                          F
+             15. (1) The Plant Quarantine Service shall issue Export
+                                   F
+          phytosanitary certificates based on inspections performed at the
+          request of exporters to aid them in meeting the entry
+                                                                           regulations.
+
+
+
+                           O
+          requirements for Trinidad and Tobago.
+                   (2) A certificate shall be issued only for products grown
+                    N
+          or produced in Trinidad and Tobago, otherwise, a re-export
+          certificate may be issued.
+             U     (3) The issuance of a Phytosanitary Certificate shall not
+          release the exporter from compliance with any export regulations
+          of the Government of Trinidad and Tobago.
+                   (4) In this regulation a Phytosanitary Certificate is the
+          certificate that is based on the model of that adopted by the
+          International Plant Protection Convention of 1951.
+
+              16. The application for a permit to import any item authorised Applications
+                                                                             to import.
+          by these Regulations, should be made in writing four weeks in
+
+                                                                                L.R.O.
+
+
+
+                                          UNOFFICIAL VERSION
+
+                                     UPDATED TO MAY 31ST 2022
+                                            LAWS OF TRINIDAD AND TOBAGO                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                     www.laws.gov.tt
+
+          24                  Chap. 63:56                Plant Protection
+          [Subsidiary]                               Plant Protection Regulations
+
+
+                              advance on the prescribed form, addressed to the Plant Quarantine
+                              Service and should include the following information:
+                                           (a) full name, residence and postal address of
+                                                the applicant;
+                                           (b) name and address of the exporter or person from
+                                                whom the material will be obtained;
+                                           (c) the quantity and botanical names of all material
+                                                it is proposed to import;
+                                           (d) the country of origin (including specific locality
+                                                                                    L
+                                                within the country) of material to be imported;
+
+                                                                    IA
+                                           (e) the exact location in Trinidad and Tobago where
+                                                material will be grown or utilised;
+                                            (f) the port/point of entry and approximate date of
+                                                arrival of the shipment;
+
+
+          Issue of
+                                                      IC
+                                           (g) any other relevant information.
+
+                                  17. An import permit shall be issued only to residents of
+          import permit.
+                              Trinidad and Tobago.
+
+          Control of
+                                                F
+                                  18. (1) No fruit, vegetable or plant material which is the subject
+          movement of
+          fruit, vegetables
+          and plant
+                                          F
+                              of an Order made by the Minister, shall be carried to Tobago from
+                              Trinidad, or to Trinidad from Tobago, unless the fruit, vegetable or
+          material in
+          Trinidad and
+          Tobago.
+                                  O
+                              plant material is accompanied by a Phytosanitary Certificate.
+                                      (2) A Plant Quarantine Officer or a designated employee
+                           N  may seize, treat and destroy or direct or authorise the treatment
+                              or destruction of any fruit, vegetable or plant material referred to
+               U              in subregulation (1) which is found to be infested with any pest.
+                                       (3) For the purposes of this regulation, a Plant
+                              Quarantine Officer or designated employee may, with or without
+                              the assistantce of a police officer, stop and search any vehicle on
+                              a public road which is being used to transport any plant material.
+          No
+          compensation
+                                  19. No compensation shall be payable in respect of the
+          payable.            seizure, destruction of or damage to any fruit, vegetable or plant
+                              material or thing, including packaging as a result of the exercise
+                              of the powers conferred by these Regulations.
+
+
+
+
+                                                UNOFFICIAL VERSION
+
+                                            UPDATED TO MAY 31ST 2022
+                             LAWS OF TRINIDAD AND TOBAGO                                                                 www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                                             www.laws.gov.tt
+
+                                               Plant Protection                         Chap. 63:56                      25
+                                           Plant Protection Regulations                                      [Subsidiary]
+                                                                                                            Regulation 6(1).
+                                           FIRST SCHEDULE                                                   [4/2004].
+
+
+                                OVERTIME RATES PAYABLE
+
+                                            1992–    1996     1997    1998      1999     2000      2001
+                                             1995
+
+          (a) For each hour or any part
+              thereof for the first
+              8 hours on weekdays,
+              Saturdays, Sundays and
+              Public Holidays:
+                                                                                           L
+                Plant Quarantine Guards $17.52
+
+                 Agricultural Assistants
+                 engaged in plant
+                                                    $20.31   $20.71   $21.34
+
+                                                                               IA
+                                                                               $22.20   $22.63     $24.00
+
+
+
+
+                 quarantine duties at
+                 ports of entry      …
+
+          (b) For each hour or any part
+              thereof after 8 hours:
+                                                             IC
+                                            $33.34 $36.13 $36.85      $37.95 $39.15 $39.93         $42.33
+
+
+
+
+                 Plant Quarantine Guards $23.36     $27.08   $27.62   $28.45   $29.60   $30.18     $32.00
+                 Agricultural Assistants
+                 engaged in plant
+                                                     F
+                 quarantine duties at
+                 ports of entry      …       F
+                                            $44.45 $48.17 $49.31      $50.60 $52.20 $53.24         $56.44
+
+
+                                 O
+                       N                   SECOND SCHEDULE
+
+             OVERTIME FEES PAYABLE BY MEMBERS OF THE
+                                                                                                            Regulation 6(2).
+                                                                                                            [4/2004].
+
+
+
+
+           (a)
+              UPUBLIC FOR PLANT QUARANTINE SERVICES
+                 For each hour or any part thereof for the first 8 hours on weekdays,
+                 Saturdays, Sundays and Public Holidays:
+                   Plant Quarantine Guards …           …      …      …      …      …   $26.40
+                   Agricultural Assistants engaged in plant quarantine duties at ports
+                    of entry      …      …     …       …      …      …      …      …   $46.56
+
+           (b)   For each hour or any part thereof after 8 hours:
+                   Plant Quarantine Guards …           …      …      …      …      …             $35.20
+                   Agricultural Assistants engaged in plant quarantine duties at ports
+                    of entry      … …          …       …      …      …      …      …             $62.08
+
+
+
+                                                                                                            L.R.O.
+
+
+
+                                                     UNOFFICIAL VERSION
+
+                                                UPDATED TO MAY 31ST 2022
+                                           LAWS OF TRINIDAD AND TOBAGO                                 www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                           www.laws.gov.tt
+
+          26               Chap. 63:56                   Plant Protection
+          [Subsidiary]
+
+          268/2004.        PLANT PROTECTION (DECLARATION OF NOTIFIABLE
+                                          DISEASE) ORDER
+                                               made under section 4A(a) and (d)
+
+          Citation.            1. This Order may be cited as the Plant Protection
+                           (Declaration of Notifiable Disease) Order.
+
+          Declaration of        2. The Mycosphaerella fijiensis (Black Sigatoka) disease is
+          disease.
+                           hereby declared a notifiable disease.
+
+          Boundaries of
+                                                                               L
+                                3. The boundaries of the area infected with the Black
+          infected area.
+                                                                   IA
+                           Sigatoka disease are described in the Schedule hereunder.
+
+
+
+                                                      IC
+                                               F          SCHEDULE
+                                        F
+                               That area of land in the Ward of Cedros in the County of St. Patrick in the
+                               O
+                           island of Trinidad and bounded on the North by the Gulf of Paria, on the South
+                           by the Columbus Channel, on the East by Chatham Road and on the West by
+                           the Serpent’s Mouth (sea).
+                           N
+               U
+
+
+
+                                               UNOFFICIAL VERSION
+
+                                           UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                      www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                             www.laws.gov.tt
+
+                                   Plant Protection             Chap. 63:56              27
+                                                                               [Subsidiary]
+
+
+                PLANT PROTECTION (CONTROL OF BLACK                            93/2006.
+                  SIGATOKA DISEASE) (TOBAGO) ORDER
+                                made under section 4A
+
+          WHEREAS by the Plant Protection (Declaration of Notifiable 268/2004.
+          Disease) Order, Mycosphaerella fijiensis (Black Sigatoka)
+          disease was declared a notifiable disease:
+
+            And whereas it is necessary to take certain precautions to
+          prevent the spread of that disease to Tobago:            L
+                                                         IA
+            Now, therefore, the Minister in exercise of the powers
+          conferred on him by section 4A(b), (e) and (g) of the Act, hereby
+          orders as follows:
+
+                                              IC
+               1. This Order may be cited as the Plant Protection (Control Citation.
+          of Black Sigatoka Disease) (Tobago) Order.
+
+               2. For the purpose of controlling the spread of the Black Prohibitions and
+                                        F
+          Sigatoka Disease to Tobago, the Minister hereby—
+                      (a) prohibits, controls or restricts the transportation
+                                                                              precautions.
+
+
+                                  F
+                          of any part of the Musa plant, with the
+                          exception of treated fruits and planting material,
+                           O
+                          outside of the boundaries as defined in the
+                          Schedule (hereinafter called the “declared Schedule.
+                    N     boundaries”); and
+                      (b) directs that the following precautions be taken
+             U            in cases where fruits and planting material are
+                          to be transported to Tobago:
+                             (i) the leaves of bananas and plantain plants
+                                 shall not be used as packing material;
+                            (ii) leaves and leaf material shall not be
+                                 transported outside the declared
+                                 boundaries;
+                           (iii) all planting material of banana and
+                                 plantain plants, which is being moved
+                                 between Trinidad and Tobago, shall be
+                                 free of leaves;
+
+                                                                              L.R.O.
+
+
+
+                                        UNOFFICIAL VERSION
+
+                                    UPDATED TO MAY 31ST 2022
+                                           LAWS OF TRINIDAD AND TOBAGO                                  www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                            www.laws.gov.tt
+
+          28               Chap. 63:56                   Plant Protection
+          [Subsidiary]            Plant Protection (Control of Black Sigatoka Disease) (Tobago) Order
+
+
+                                                (iv) all planting material, which is being
+                                                     moved between Trinidad and Tobago,
+                                                     shall be treated in the manner advised by
+                                                     the Plant Pathologist; and
+                                                 (v) fruits which are to be transported outside
+                                                     of the declared boundaries shall be dipped
+                                                     in a 0.5 sodium hypochlorite solution for
+                                                     three minutes.
+
+          Application of
+          Order.
+                                                                                 L
+                                3. (1) This Order applies only to plants of the banana and
+                           plantain family (Musa species) and includes the “moko” variety.
+                                                                    IA
+                                  (2) This Order does not apply to ornamental types of the
+                           banana and plantain family.
+
+                                                       IC
+                                               F
+                                        F
+                               O                           SCHEDULE
+
+                               That area of land in the Ward of Cedros in the County of St. Patrick in the
+
+                           N
+                           island of Trinidad and bounded on the North by the Gulf of Paria, on the South
+                           by the Columbus Channel, on the East by Chatham Road and on the West by
+                           the Serpent’s Mouth (sea).
+               U
+
+
+
+                                               UNOFFICIAL VERSION
+
+                                           UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                 www.laws.gov.tt
+
+                                    Plant Protection             Chap. 63:56                 29
+                                                                                 [Subsidiary]
+
+               PLANT PROTECTION (GIANT AFRICAN SNAIL)                          31/2010.
+
+                      (ACHATINA FULICA) ORDER
+                                made under section 4A
+
+               1. This Order may be cited as the Plant Protection (Giant Citation.
+          African Snail) (Achatina Fulica) Order.
+
+               2. In this Order “the Act” means the Plant Protection Act.      Interpretation.
+
+
+                                                                    L
+               3. The Giant African Snail (Achatina Fulica) is declared a Declaration
+          notifiable pest for the purposes of the Act.
+                                                                                       of
+                                                                          notifiable pest.
+
+
+                                                          IA
+                                               IC
+                 PLANT PROTECTION (DECLARATION OF A
+                       NOTIFIABLE PEST) ORDER
+                                made under section 4A
+                                                                               23/2016.
+
+
+
+
+                                         F
+              1. This Order may be cited as the Plant Protection Citation.
+          (Declaration of a Notifiable Pest) Order.
+                                  F
+               2. The Cylas formicarius pest (sweet potato weevil) is Declaration of
+
+                           O
+          hereby declared a notifiable pest.
+                                                                      pest.
+
+
+
+
+                    N
+             U   PLANT PROTECTION (DECLARATION OF A
+                       NOTIFIABLE PEST) ORDER
+                                                                               155/2017.
+
+
+
+                                made under section 4A
+
+              1. This Order may be cited as the Plant Protection Citation.
+          (Declaration of a Notifiable Pest) Order.
+
+               2. The Huanglongbing Disease/Citrus Greening Disease is Declaration of a
+                                                                       pest.
+          hereby declared a notifiable pest.
+
+
+
+                                                                               L.R.O.
+
+
+
+                                        UNOFFICIAL VERSION
+
+                                     UPDATED TO MAY 31ST 2022
+                                         LAWS OF TRINIDAD AND TOBAGO                     www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                             www.laws.gov.tt
+
+          30               Chap. 63:56             Plant Protection
+          [Subsidiary]
+
+
+          104/2020.          PLANT PROTECTION (DECLARATION OF NOTIFIABLE
+                                      PESTS AND DISEASES) ORDER
+                                               made under section 4A(a)
+
+          Citation.            1. This Order may be cited as the Plant Protection
+                           (Declaration of Notifiable Pests and Diseases) Order.
+
+          Declaration of        2. The following are hereby declared to be notifiable pests
+          Pests and
+          Diseases.        and diseases for the purposes of the Act:  L
+                                        (a) Ceratitis capitata (Mediterranean Fruit Fly);
+
+                                                            IA
+                                        (b) Tuta absoluta (Tomato Leaf Miner);
+                                        (c) Mononychellus tanajoa (Cassava Green Mite);
+                                        (d) Rhynchophorus ferrugineus (Red Palm
+
+                                                  IC
+                                             Weevil);
+                                        (e) Bactrocera carambolae (Carambola Fruit Fly);
+                                         (f) Bactrocera dorsalis (Oriental Fruit Fly);
+                                            F
+                                        (g) Bactrocera cucurbitae (Melon Fly);
+                                        (h) Ceratitis rosa (Natal Fruit Fly);
+                                     F   (i) Burkholderia glumae (Bacterial Panicle
+                                             Blight);
+                              O          (j) Burkholderia gladioli (Corn Scab);
+                                        (k) Fiji disease virus (Fiji Disease in Sugarcane);
+                           N             (l) Fusarium oxysporum f. sp. cubense (Fusarium
+                                             Wilt Tropical Race 4);
+               U                       (m) Ralstonia solanacearum Races 2 and 3
+                                             (Southern Bacterial Wilt);
+                                        (n) Candidatus Phytoplasma palmae (Lethal
+                                             Yellowing Disease);
+                                        (o) Citrus Leprosis (Virus C); and
+                                        (p) Xanthamonas axonopodis pv. citri (Citrus
+                                             Canker).
+
+
+
+
+                                            UNOFFICIAL VERSION
+
+                                         UPDATED TO MAY 31ST 2022
+                        LAWS OF TRINIDAD AND TOBAGO                                           www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                  www.laws.gov.tt
+
+                                    Plant Protection               Chap. 63:56                31
+                                                                                   [Subsidiary]
+
+
+              PLANT PROTECTION (EXEMPTION FROM IMPORT                             333/2020.
+                           PERMIT) ORDER
+                                made under section 4A(j)
+
+              1. This Order may be cited as the Plant Protection Citation.
+          (Exemption from Import Permit) Order.
+
+              2. The importation of any of the following articles is exempt Exemption
+                                                                                from import
+          from the requirement for a permit under section 3 of the Act:
+                       (a) Herbs and Spices produced from multi method
+                            processing/sterilisation/cooking;
+                                                                      L         permit.
+
+
+
+
+                       (b) Oats      produced
+                            processing/cooking;
+                                                   from    IAmulti     method
+
+                       (c) Flour and Industrial products made of cereal,
+                                                IC
+                            (vegetable, wheat, legume, maize, peas, beans,
+                            oil seeds and oleaginuos fruits);
+                       (d) Maize produced from multi method
+                                          F
+                            processing/sterilisation;
+                       (e) Nuts/Ground nuts (roasted, blanched or sterilised
+                                   F
+                            whether chopped, shelled, dried or peeled);
+                        (f) Rice (Parboiled) whether polished, white,
+                           Obrown, semi-milled, wholly-milled, broken;
+                       (g) Bran and other by-products derived from
+                    N       milling and multi method processing;
+                       (h) Malted barley and malt;
+             U          (i) Animal feed produced from multi method
+                            processing;
+                        (j) Fruits produced from multi method processing or
+                            preserved in liquid, sugar infused or tenderised;
+                       (k) Tapioca;
+                        (l) Medium/High Density Fibre (MDF/HDF)
+                            Board and Particle board;
+                      (m) Plywood;
+                       (n) Wooden casks, barrels, vats, tubs, corks, wood chips
+                            (BBQ) produced from multi method processing;
+
+
+                                                                                 L.R.O.
+
+
+
+                                         UNOFFICIAL VERSION
+
+                                      UPDATED TO MAY 31ST 2022
+                                          LAWS OF TRINIDAD AND TOBAGO                          www.agla.gov.tt
+OFFICE OF THE ATTORNEY GENERAL AND MINISTRY OF LEGAL AFFAIRS                                   www.laws.gov.tt
+
+          32                Chap. 63:56                 Plant Protection
+          [Subsidiary]                 Plant Protection (Exemption from Import Permit) Order
+
+
+                                          (o) Peat moss produced from sterilisation/multi
+                                              method processing, whether black peat, white
+                                              peat, cocopeat, white and brown sphagnum peat;
+                                          (p) Roasted coffee beans, whether whole or ground;
+                                          (q) Granulated Onion and granulated garlic
+                                              produced from multi method processing; and
+                                          (r) Flowers (preserved in liquid and dried).
+
+          Ch. 11:25.
+          First Schedule.
+                                                                               L
+                                  3. Notwithstanding clause 2(a), this Order shall not apply to
+                            the items listed in the First Schedule of the Dangerous Drugs Act.
+
+                                                                  IA
+                                                     IC
+          61/2022.                            F
+                             PLANT PROTECTION (DECLARATION OF A NOTIFIABLE
+                                            DISEASE) ORDER
+                                       F          made under section 4A(a)
+
+          Citation.             O
+                                1. This Order may be cited as the Plant Protection
+                            (Declaration of a Notifiable Disease) Order.
+
+          Declaration of
+          disease.
+                           N     2. The Moniliophthora roreri (Cocoa Frosty Pod Rot) is
+                            hereby declared a notifiable disease.
+               U
+
+
+
+                                              UNOFFICIAL VERSION
+
+                                          UPDATED TO MAY 31ST 2022
+

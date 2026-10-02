@@ -289,7 +289,8 @@ export class SwapModule<T> {
 
     const resultDecimals = token.decimals;
     const result = new FPNumber(value, resultDecimals);
-    const resultMulSlippage = result.mul(new FPNumber(Number(slippageTolerance) / 100, resultDecimals));
+    // Keep percentage precision independent of the token's decimals; quote and call share this bound.
+    const resultMulSlippage = result.mul(new FPNumber(slippageTolerance, 36).div(new FPNumber('100', 36)));
 
     return (!isExchangeB ? result.sub(resultMulSlippage) : result.add(resultMulSlippage)).toCodecString();
   }
@@ -770,21 +771,19 @@ export class SwapModule<T> {
   ) {
     assert(this.root.account, Messages.connectWallet);
     const desiredDecimals = (!isExchangeB ? assetA : assetB).decimals;
-    const resultDecimals = (!isExchangeB ? assetB : assetA).decimals;
     const desiredCodecString = new FPNumber(!isExchangeB ? amountA : amountB, desiredDecimals).toCodecString();
-    const result = new FPNumber(!isExchangeB ? amountB : amountA, resultDecimals);
-    const resultMulSlippage = result.mul(new FPNumber(Number(slippageTolerance) / 100));
+    const minMaxCodec = this.getMinMaxValue(assetA, assetB, `${amountA}`, `${amountB}`, isExchangeB, slippageTolerance);
     const liquiditySources = this.prepareSourcesForSwapParams(liquiditySource);
     const params = {} as any;
     if (!isExchangeB) {
       params.WithDesiredInput = {
         desiredAmountIn: desiredCodecString,
-        minAmountOut: result.sub(resultMulSlippage).toCodecString(),
+        minAmountOut: minMaxCodec,
       };
     } else {
       params.WithDesiredOutput = {
         desiredAmountOut: desiredCodecString,
-        maxAmountIn: result.add(resultMulSlippage).toCodecString(),
+        maxAmountIn: minMaxCodec,
       };
     }
     return {
@@ -808,6 +807,7 @@ export class SwapModule<T> {
    * @param slippageTolerance Slippage tolerance coefficient (in %)
    * @param isExchangeB Exchange A if `isExchangeB=false` else Exchange B. `false` by default
    * @param dexId dex id to detect base asset (XOR or XSTUSD)
+   * @param historyId optional deterministic local history id for direct hash tracking
    */
   // prettier-ignore
   public execute( // NOSONAR
@@ -818,7 +818,8 @@ export class SwapModule<T> {
     slippageTolerance: NumberLike = this.root.defaultSlippageTolerancePercent,
     isExchangeB = false,
     liquiditySource = LiquiditySourceTypes.Default,
-    dexId = DexId.XOR
+    dexId = DexId.XOR,
+    historyId?: string
   ): Promise<T> {
     assert(this.root.account, Messages.connectWallet);
 
@@ -839,6 +840,7 @@ export class SwapModule<T> {
       (this.root.api.tx.liquidityProxy as any).swap(...params.args),
       this.root.account.pair,
       {
+        ...(historyId ? { id: historyId } : {}),
         symbol: assetA.symbol,
         assetAddress: assetA.address,
         amount: `${amountA}`,

@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-09-30T03:54:37.594416+00:00",
+  "sources": [
+    {
+      "file": "ki-plants-ordinance1976.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/kir51665.pdf",
+      "sha256": "26eebc30bc3ce40afc0602274e6c6387e088cfd386aa8579ac4549ce93c0f470"
+    },
+    {
+      "file": "va-source-law2008.html",
+      "url": "https://www.ulsa.va/it/pubblicazioni/bollettini/bollettino-n--16---2008/atti-di-sua-santita-benedetto-xvi/leggi-sulle-fonti-del-diritto-1-ottobre-2008-n-lxxi.html",
+      "sha256": "519de6cf34408fe9f732b3ae17f824c4e8eca03b148679f5cd865db3c39f1829"
+    },
+    {
+      "file": "pg-nto-biosecurity.html",
+      "url": "https://facilitation.nto.gov.pg/pngba/",
+      "sha256": "8403759eac89bfae484d2f037d2eacf7c503080faeb2c2585d95f42de6be04c5"
+    },
+    {
+      "file": "mv-aos.html",
+      "url": "https://aos.egov.mv",
+      "sha256": "9901eecc3b99956bb349de7bc38129cd55ccad9d768d9126fca04730ee35c2e4"
+    }
+  ],
+  "notes": [
+    "MV AOS redirects to Identity/Account/Login; no commodity requirements publicly readable. No sign-in attempted.",
+    "MV 2011 Act read through web indexed text only; direct PDF HTTP 403 and screenshot failed. No local PDF is claimed.",
+    "PG NTO page links the 1997 NAQIA Act, despite new PNGBA page name; it supplies no 2025 enacted Act or tea specification."
+  ]
+}

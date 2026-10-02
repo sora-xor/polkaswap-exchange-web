@@ -1,0 +1,19 @@
+[
+  {
+    "url": "https://www.moa.gov.jo/AR/List/%D8%A7%D9%84%D9%82%D9%88%D8%A7%D9%86%D9%8A%D9%86",
+    "file": "jo-law-index.html",
+    "error": "HTTP Error 451: Unavailable For Legal Reasons"
+  },
+  {
+    "url": "https://www.pm.gov.jo/Ar/Pages/NewsPaperDetails/5762",
+    "file": "jo-gazette5762.html",
+    "error": "HTTP Error 451: Unavailable For Legal Reasons"
+  },
+  {
+    "url": "https://www.moj.gov.iq/upload/pdf/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%A7%D8%BA%D8%AF%D9%8A%D8%A9%20-%20Copy.pdf",
+    "file": "iq-foodlaw-official-en.pdf",
+    "status": 200,
+    "bytes": 588322,
+    "isPdf": true
+  }
+]

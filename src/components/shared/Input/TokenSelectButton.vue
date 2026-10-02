@@ -100,12 +100,12 @@ button.el-button.neumorphic#{$baseClass} {
   font-weight: 500;
   text-transform: uppercase;
   box-shadow: var(--s-shadow-element-pressed);
-  background-color: var(--s-color-base-content-tertiary);
+  background-color: var(--s-color-utility-surface);
   border-color: transparent;
-  color: var(--s-color-base-on-accent);
+  color: var(--s-color-base-content-primary);
 
   #{$baseClass}__text {
-    color: var(--s-color-base-on-accent);
+    color: var(--s-color-base-content-primary);
     text-transform: uppercase;
   }
 
@@ -183,18 +183,13 @@ $baseClass: '.token-select-button';
     flex: 0 0 auto;
     vertical-align: baseline;
     margin-left: $inner-spacing-tiny;
-    background-color: var(--s-color-base-on-accent);
-    color: var(--s-color-base-content-tertiary) !important;
+    background-color: transparent;
+    color: var(--s-color-base-content-secondary) !important;
     border-radius: var(--s-border-radius-medium);
     line-height: 1;
   }
 
   &--token {
-    #{$baseClass}__icon {
-      background-color: var(--s-color-base-content-tertiary);
-      color: var(--s-color-utility-surface) !important;
-    }
-
     #{$baseClass}__text {
       font-size: var(--s-icon-font-size-small);
       color: var(--s-color-base-content-primary);

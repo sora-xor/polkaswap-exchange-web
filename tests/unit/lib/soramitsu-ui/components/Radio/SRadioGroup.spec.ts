@@ -83,6 +83,18 @@ describe('SRadioGroup', () => {
     expect(radios[1].attributes('tabindex')).toBe('0');
   });
 
+  it('ignores clicks on disabled radios', async () => {
+    const wrapper = mountRadioHarness();
+    const radios = wrapper.findAll('[role="radio"]');
+
+    await radios[2].trigger('click');
+    await nextTick();
+
+    expect((wrapper.vm as unknown as { value: string }).value).toBe('one');
+    expect(radios[0].attributes('aria-checked')).toBe('true');
+    expect(radios[2].attributes('aria-checked')).toBe('false');
+  });
+
   it('moves focus with arrow keys and skips disabled radios', async () => {
     const wrapper = mountRadioHarness();
     const group = wrapper.find('[role="radiogroup"]');

@@ -1,0 +1,75 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Private paid direct postal purchase of 100 g sealed pure Japanese steam-manufactured sencha; no special permits, certificates, registrations, approvals or notice. Ordinary declaration, inspection and fees accepted. Main arrays untouched.",
+  "sharedManufacturingEvidence": "The actual product is pure Camellia sinensis sencha manufactured by steaming to arrest enzyme activity, repeated rolling/pressing with hot air, and drying, then supplied sealed for infusion. MAFF describes this manufacture. ISPM32 section 2 and Appendix 2 identify manufactured tea as Category 1, supporting the factual conclusion that this differs from merely dried raw botanical material. The international standard is used as technical evidence when applying the local definition, not as an automatically binding local exemption. Ordinary inspection, food safety and pest freedom remain conditions; this is not a route for raw/sun-dried leaves, seeds, blends or contaminated goods.",
+  "technicalSources": [
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastlin/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+  ],
+  "countries": {
+    "KN": {
+      "proposedDecision": "supported",
+      "proposalOnly": true,
+      "primarySource": "https://lawcommission.gov.kn/wp-content/documents/Annual-Laws/2024/ACTs/Act-10-2024-Plant-Protection-Act.pdf",
+      "provisions": "Act 10/2024 sections 1–2, 15–18; 2020 import guidance",
+      "reason": "Act 10 of 2024 section 2 limits plants to living plants/parts and includes manufactured plant products only if their nature or processing may introduce or spread pests. Sections 16–17 impose permit/certificate duties within those covered categories. Applying the actual sencha manufacturing evidence and ISPM32 tea example to that risk-qualified definition supports treating this finished tea as outside the plant-product permit/certificate class. A local tea-named waiver is not logically necessary when the statutory definition already excludes the factual product. The regulated-article definition also contains the capability/deemed-necessary qualification, and packaging is defined by use with covered articles; clean new retail/postal packaging does not independently establish a permit duty for an otherwise uncovered food. Section 15 and 17(4) science/standards principles reinforce this reading but are not an independent exemption. The Department of Agriculture’s 2020 import notice expressly covers other unprocessed plant products, consistent with this distinction. Its separate dried-tea statement concerns exports and is not used as an import waiver.",
+      "counterargument": "No local tea-specific agency ruling or numeric processing threshold was found. The proposal instead applies the general statutory category to independently evidenced manufacture. International-standard membership alone is insufficient; technical classification is evidence within the domestic definition. Any actual contrary commodity condition would need assessment, but the mere power to make conditions is not such a condition.",
+      "sourceLimit": "The VC two-page commodity guide is undated and not treated as a complete current code; the KN broken 2020 IPPC attachment was not retried; BQ uses a successfully recovered current official statute, not the 2009 draft explanation.",
+      "file": "kn-proposed-supported-full-row.json"
+    },
+    "VC": {
+      "proposedDecision": "supported",
+      "proposalOnly": true,
+      "primarySource": "https://faolex.fao.org/docs/pdf/stv160536.pdf",
+      "provisions": "Act 16/2005 sections 2, 5, 10–15; September 2019 NPPO guidance",
+      "reason": "Plant Protection Act 16 of 2005 section 2 limits plants to living material and manufactured plant products to products whose nature or processing may create pest-introduction/spread risk. Sections 10(2) and 11 attach permits/certificates to specified covered articles rather than all plant-derived food. The manufactured-tea facts and ISPM32 Category 1 example supply a reasoned factual basis for applying the statutory boundary without a bespoke tea ruling. The regulated-article definition concerns material capable of carrying/spreading pests and deemed to require measures; clean new retail/postal packaging alone is not evidence of such a designation. The 2019 ministry notice applies to covered plant parts/products and is not read to erase section 2. The newly recovered official two-page commodity guidance names planting materials and specific fruits, roots, flowers and vegetables, not tea; it is undated and not treated as an exhaustive current waiver. Section 15 postal reporting and section 12 inspection remain ordinary controls and do not expand the defined commodity class.",
+      "counterargument": "No local tea-specific agency ruling or numeric processing threshold was found. The proposal instead applies the general statutory category to independently evidenced manufacture. International-standard membership alone is insufficient; technical classification is evidence within the domestic definition. Any actual contrary commodity condition would need assessment, but the mere power to make conditions is not such a condition.",
+      "sourceLimit": "The VC two-page commodity guide is undated and not treated as a complete current code; the KN broken 2020 IPPC attachment was not retried; BQ uses a successfully recovered current official statute, not the 2009 draft explanation.",
+      "file": "vc-proposed-supported-full-row.json"
+    },
+    "BQ": {
+      "proposedDecision": "supported",
+      "proposalOnly": true,
+      "primarySource": "https://wetten.overheid.nl/BWBR0028063/2025-01-01",
+      "provisions": "Articles 18.2.4a–b; current official consolidation states effective 01-01-2025 to present, consulted 30-09-2026",
+      "reason": "The official current BES Invoeringswet, article 18.2.4a(c)–(d), limits plants to living plants/parts and plant products to unprocessed products or products subjected only to simple processing. Article 18.2.4b authorises import conditions within that scope; it does not itself impose a certificate on every plant-derived food. The described steamed, repeatedly rolled/pressed, hot-air dried sencha is a finished manufactured food, with ISPM32 Category 1 tea providing technical corroboration. The better general-category inference places it beyond simple processing and therefore outside that plant-product control class. This applies the BES statute itself, which covers Bonaire, Sint Eustatius and Saba, rather than importing European Netherlands rules or extending Bonaire’s Venezuela-only notice. The statutory used-packaging category does not create a duty for clean new factory and postal packaging. No contrary applicable tea or broad manufactured-food condition was recovered in the bounded island/national rule check.",
+      "counterargument": "No local tea-specific agency ruling or numeric processing threshold was found. The proposal instead applies the general statutory category to independently evidenced manufacture. International-standard membership alone is insufficient; technical classification is evidence within the domestic definition. Any actual contrary commodity condition would need assessment, but the mere power to make conditions is not such a condition.",
+      "sourceLimit": "The VC two-page commodity guide is undated and not treated as a complete current code; the KN broken 2020 IPPC attachment was not retried; BQ uses a successfully recovered current official statute, not the 2009 draft explanation.",
+      "file": "bq-proposed-supported-full-row.json"
+    },
+    "CW": {
+      "decision": "unresolved",
+      "decisionChanged": false,
+      "finding": "Recovered USDA’s official 23 December 2013 Curaçao FAIRS report (CB1317). It distinguishes processed products monitored at retail from plant products controlled at entry; it also says most processed products require a free-sale certificate and product samples sent by parcel post are subject only to customs duty. Neither statement settles the current private paid 100 g order: the report is old, written for US commercial exporters, supplies no exact enacted certificate provision or personal-use scope, and a purchase is not a trade sample. Native-language official legal searches returned pesticide/CITES/tariff provisions rather than a new operative manufactured-tea plant rule. No conclusion was drawn from unrelated EU plant rules.",
+      "urls": [
+        "https://apps.fas.usda.gov/newgainapi/api/report/downloadreportbyfilename?filename=Curacao+-+FAIRS+Country+Report_Miami+ATO_Netherlands+Antilles_12-23-2013.pdf"
+      ],
+      "gap": "Current Curaçao operative plant/plant-product import definition or conditions for processed food; if the older free-sale certificate claim remains applicable, its enacted current private-post scope is also missing."
+    },
+    "SX": {
+      "decision": "unresolved",
+      "decisionChanged": false,
+      "finding": "Targeted official government/legal searches for plant imports, processed products and phytosanitary tea returned no new operative plant-product definition. The existing government plant-produce form remains an application instrument, not an exhaustive definition/list; examples of seeds, cuttings, fruits and plants neither affirmatively include nor exclude manufactured sencha. The independently recovered 2017 Public Health Decree commercial-use limitation remains favorable for this private order and is not displaced by older commercial exporter summaries. No fresh exemption or permit duty is inferred.",
+      "urls": [],
+      "gap": "The operative local plant/plant-product category or import condition is unavailable. Existing public-health private-use scope is resolved, but no botanical processing definition sufficient to decide the separate LVV rule was recovered."
+    },
+    "VG": {
+      "decision": "unresolved",
+      "decisionChanged": false,
+      "finding": "A bounded exact-title search for the operative Plant Protection Ordinance and 1991/1996/2002 subsidiary instruments produced the already-known legislative index and the uncommenced 2022 Food Security legislation, rather than the missing operative schedules. No further requests to the previously exhausted revised-law pages were made. The published Fumigation of Plants Act concerns living/propagating material and cannot supply a general exemption from independent Cap.93 instruments whose substantive text remains unavailable.",
+      "urls": [],
+      "gap": "Actual current Cap.93 definition and operative subsidiary schedules remain missing; the January 2026 official index identifies the legislation but is not its substantive rules. A general published definition/schedule would suffice; no individualized tea letter is inherently necessary."
+    },
+    "TC": {
+      "decision": "unresolved",
+      "decisionChanged": false,
+      "finding": "Recovered the official TCI Plant Health Services Division fruit-and-vegetable conditions PHSD 4001/1, revised 14 January 2014, through the German federal plant-health authority. Its personal/domestic exception waives only the import permit and still requires a phytosanitary certificate; it is not textually baggage-only but concerns fruit/vegetables, not manufactured tea. It supplies neither a tea waiver nor a valid reason to impose fruit certification on sencha. Re-reading the Ordinance revealed a material difference from KN/VC: plant includes a part without an express living qualifier, and regulated article paragraph (a) separately names packaging/containers without the trailing capability/deemed wording. Sections 34–35 require written prior permits for covered articles; 2024 regulation 27 expressly includes mail/courier and certificate attachments. Applying the manufacturing-risk exclusion alone therefore does not resolve every local coverage route. Treating every clean package as automatically permit-required would also overread context; the unresolved issue is this operative scope/section 36 conditions, not merely lack of a tea-named letter.",
+      "urls": [
+        "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/tc3-fruits2014.pdf",
+        "https://assets.ippc.int/static/media/files/reportingobligation/2016/11/30/Plant_Health_Ordinance_2012l_2.pdf"
+      ],
+      "gap": "Current section 36 processing/import conditions or legally grounded scope of nonliving plant parts and clean packaging. The actual manufactured-tea evidence resolves the scientific category but does not unambiguously settle the additional statutory classes. The separate 2016 food-law private-consumption exception remains favorable with its previously recorded commencement limitation."
+    }
+  },
+  "mainArraysEdited": false
+}

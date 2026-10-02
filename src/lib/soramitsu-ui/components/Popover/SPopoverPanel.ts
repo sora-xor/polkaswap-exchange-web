@@ -179,6 +179,7 @@ export default defineComponent({
     let headerMenuSlideTimer: ReturnType<typeof setTimeout> | null = null;
     let activeReferenceEl: HTMLElement | null = null;
     let popperResizeObserver: ResizeObserver | null = null;
+    let popperResizeFrame: { ownerWindow: Window; id: number } | null = null;
     let eventTargetWindow: Window | null = null;
     let eventTargetSupportsPointerEvents = false;
 
@@ -312,6 +313,10 @@ export default defineComponent({
     const disconnectPopperObserver = (): void => {
       popperResizeObserver?.disconnect();
       popperResizeObserver = null;
+      if (popperResizeFrame) {
+        popperResizeFrame.ownerWindow.cancelAnimationFrame(popperResizeFrame.id);
+        popperResizeFrame = null;
+      }
     };
 
     const setVisible = (next: boolean): void => {
@@ -376,11 +381,15 @@ export default defineComponent({
         Math.max(VIEWPORT_PADDING, viewportHeight - popperRect.height - VIEWPORT_PADDING)
       );
 
+      const nextTop = `${Math.round(top)}px`;
+      const nextLeft = `${Math.round(left)}px`;
+      if (popperStyle.value.top === nextTop && popperStyle.value.left === nextLeft) return;
+
       popperStyle.value = {
         ...popperStyle.value,
         ...VIEWPORT_BOUNDS_STYLE,
-        top: `${Math.round(top)}px`,
-        left: `${Math.round(left)}px`,
+        top: nextTop,
+        left: nextLeft,
       };
     };
 
@@ -525,8 +534,13 @@ export default defineComponent({
       if (typeof ownerWindow.ResizeObserver === 'undefined') return;
 
       popperResizeObserver = new ownerWindow.ResizeObserver(() => {
-        if (!isVisible.value) return;
-        updatePosition();
+        if (!isVisible.value || popperResizeFrame) return;
+        // Position writes run after observer delivery so WebKit can finish the current layout batch.
+        const id = ownerWindow.requestAnimationFrame(() => {
+          popperResizeFrame = null;
+          if (isVisible.value && popperEl.value === element) updatePosition();
+        });
+        popperResizeFrame = { ownerWindow, id };
       });
       popperResizeObserver.observe(element);
     };
@@ -600,6 +614,8 @@ export default defineComponent({
 
     const setPopper = (instance: unknown): void => {
       const resolved = resolveElement(instance);
+      // Vue calls function refs again on updates; retain the observer for the same mounted element.
+      if (popperEl.value === resolved) return;
       popperEl.value = resolved;
       observePopper(resolved);
     };

@@ -1,0 +1,511 @@
+IMPORTACION PRODUCTOS DE CONSUMO PERSONAL a
+
+. PROCEDIMIENTO
+IMPORTACION PRODUCTOS DE CONSUMO PERSONAL
+
+\
+Ord, Mandy
+REALIZADO POR t APROBADO POR
+GERENCIA DE SISTEMA DE VENTANILLA DIRECCION GENERAL
+UNICA DE COMERCIO EXTERIOR MEDICAMENTOS, ALIME
+
+iCopIGo: 1cP-PD-01
+REVISION: 4
+VIGENCIA: 07- 2025
+PAGINA: 01-13
+
+RNC: 401039249
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+Santo Domingo, Rep. Dom.
+
+Tel: 809.547.7070
+www.aduanas.gob.do
+
+CA
+
+ADUANAS
+
+IMPORTACION PRODUCTOS DE CONSUMO PERSONAL ace.
+
+0. Control de Cambios del Documento.
+
+N° de revisién Fecha Descripcion del cambio. |
+(e) 15-03-2018 Emision originai del documento.
+1 19-04-2021 ¢ Division del procedimiento Importacién
+Medicamentos, cosméticos y Productos de
+Higiene:
+
+Importacién Medicamentos.
+Importacién cosméticos y Productos de Higiene.
+
+e Se elimina el procedimiento de autorizacion
+importaci6n muestras, cosméticos
+medicamentos e higiene.
+
+* Se modifica requisitos de Productos
+Sanitarios.
+
+2 ‘Se aplico la reducci6n de la bandeja de aprobacion dell
+‘supervisor de importacién y exportacién de los
+formularios:
+e Importacién De Medicamentos
+e Importacién De Cosméticos Y Productos
+De Higiene
+e Autorizacién Importacién Donaciones De
+Productos Farmacéuticos Y Productos
+
+Sanitarios
+e Autorizacién Importacién Para Ensayos
+Clinicos
+3 04-06-2021 Se incluye en el titulo del proceso la importacién de
+roductos sanitarios y equipos médicos
+4 18-07-2025 {Se establece procedimiento documentall
+
+independiente para el proceso de importacién del
+productos de consumo personal, bajo el cédigo ICP.
+PD-01. Este procedimiento se encontraba
+anteriormente registrado bajo el cédigo PMI-PD-01.
+
+‘Se adecuan las definiciones del procedimiento en el
+
+unto 4.
+{ RNC: 401039249
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+Santo Domingo, Rep. Dom.
+
+Tel: 809.547.7070
+www.aduanas.gob.do
+
+
+neronitaenibiann IMPORTACION PRODUCTOS DE CONSUMO PERSONAL ce.
+
+DIGEMAPS
+
+1. Objetivo: Establecer los lineamientos para controlar las actividades, los responsables y los
+tiempos de respuestas establecidos para el proceso de importacién de productos de consumo
+personal otorgado por la Direccién General de Medicamentos, Alimentos y Productos Sanitarios
+(DIGEMAPS) del Ministerio de Salud Publica y Asistencia Social de la Republica Dominicana.
+
+2. Alcance: Este procedimiento aplica a todos los permisos importacién de productos de consumo
+personal, abarcando desde la presentacion de la solicitud hasta la aprobacién final que autoriza la
+entrada de la mercancia al territorio de la Republica Dominicana.
+
+3. Responsabilidades.
+
+¢ Técnico de Medicamentos de la Direccién General de Medicamentos y Alimentos y
+Productos Sanitarios: Es el responsable de recibir, revisar y evaluar técnicamente las solicitudes
+de importacién de productos de consumo personal (Medicamentos, Cosméticos, Productos de
+Higiene). Realiza la verificacién documental conforme a los requisitos establecidos por la
+normativa vigente.
+
+* Técnico de Alimentos de la Direccién General de Medicamentos y Alimentos y Productos
+Sanitarios: Es el responsable de recibir, revisar y evaluar técnicamente las solicitudes de
+importacién de productos de consumo personal (Suplementos Alimenticios y Bebidas Alcohdlicas).
+Realiza la verificacisn documental conforme a los requisitos establecidos por la normativa vigente.
+
+¢ Encargado/Coordinador Medicamentos de la Direccion General de Medicamentos y
+Alimentos y Productos Sanitarios: Es el responsable de supervisar y validar las evaluaciones
+realizadas por el técnico de medicamento. Verifica que la solicitud cumpla con los procedimientos
+internos y criterios tecnicos establecidos por DIGEMAPS.
+
+e Encargado/Coordinador Alimentos de la Direccién General de Medicamentos y Alimentos y
+Productos Sanitarios: Es el responsable de supervisar y validar las evaluaciones realizadas por
+el técnico de alimentos. Verifica que la solicitud cumpla con los procedimientos internos y criterios
+técnicos establecidos por DIGEMAPS.
+
+4 RNC: 401039249
+Av. Abraham Lincoln No.1101
+
+Edif. Miguel Cocco, Ens. Serrallés
+
+Santo Domingo, Rep. Dom.
+
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+
+IMPORTACION PRODUCTOS DE CONSUMO PERSONAL can.
+
+Inspector en Puerto/Aeropuerto de la Direccién General de Medicamentos y Alimentos y
+Productos Sanitarios: Es el responsable de llevar a cabo la inspecci6n fisica de los productos
+importados en el punto de entrada (puerto 0 aeropuerto). Verifica la concordancia entre la
+documentacién aprobada y la mercancia recibida, asegurando el cumplimiento de las condiciones
+sanitarias.
+
+Soli
+consumo personal a través del sistema de Ventanilla Unica de Comercio Exterior (VUCERD).
+
+itante: Es el responsable de realizar la solicitud para el permiso importacién de productos de
+
+Defi
+Importacién: Es la entrada de bienes y servicios procedentes de otro pais al territorio econémico
+
+jones.
+
+de un Estado, para su consumo, transformacién 0 comercializacion.
+
+Productos de consumo personal: Son bienes destinados al uso individual, directo y exclusivo de
+una persona, para su higiene, cuidado, salud, alimentacién, vestimenta, o bienestar general, sin
+fines comerciales ni de reventa.
+
+Inspeccién: Es un método de exploracién fisica, con el fin de constatar su estado sanitario.
+
+Puerto de entrada: Puerto aéreo o maritimo a donde llega la mercancia o envio.
+
+Puerto de origen: Puerto aéreo o maritimo de donde parte la mercancia o envio.
+
+VUCE: Ventanilla Unica de Comercio Exterior.
+
++ RNC: 491039249
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+Santo Domingo, Rep. Dom.
+
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+sCA
+
+ADUANAS
+yy
+
+-REPOBLICA
+
+vssus” _ IMPORTACION PRODUCTOS DE CONSUMO PERSONAL aaa
+
+5. Actividades.
+
+5.1 Solicitud de permiso para la Importacién Productos de Consumo Personal (Medicamentos,
+Cosméticos, Productos de Higiene).
+
+Responsable Actividad
+
+1. Realiza solicitud electrénica en Sistema de Ventanilla Unica de Comercio
+Exterior (VUCERD), a través del formulario:
+
+- Importacién Productos de Consumo Personal (Medicamentos,
+Cosméticos, Productos de Higiene).
+
+Requisitos:
+- Factura comercial o factura proforma.
+- Copia de la Cédula de Identidad del Paciente o pasaporte si es
+extranjero.
+- Indicacién médica debidamente firmada por el prescriptor,
+
+Solicitante especificando dosis, uso y duracién del tratamiento (en el caso de los
+medicamentos).
+
+- Comunicacién de uso y destino.
+
+- Guia aérea (si es por via aérea) 0 conocimiento de embarque (si es
+Por via maritima), la misma debe ser presentada al momento de la
+inspeccién de carga in situ para proceso de liberacién de mercancia
+por los inspectores de puntos de entradas.
+
+2. Realiza pago del servicio.
+
+RNC: 401039249
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+Santo Domingo, Rep. Dom.
+
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+
+SEA
+
+ADUANAS
+
+IMPORTACION PRODUCTOS DE CONSUMO PERSONAL Cee
+
+5.1.1 Validacién técnica documental de la solicitud.
+
+Responsable Actividad
+
+1. Recibe la solicitud en sistema VUCERD.
+
+Técnico de
+
+Medicamento 2. Realiza la validacion con el No. de registro Sanitario del producto, verifica
+eee los documentos adjuntos y valida las informaciones declaradas por el
+General de importador.
+
+Medicamento . z a Fi
+
+sy Alimentos 3. Si todo esta correcto, aprueba la solicitud en sistema VUCERD. De lo
+
+y Productos contrario, rechaza la solicitud, indicando la justificacién técnica.
+Sanitarios
+
+5.1.2 Evaluacion del Encargado/Coordinador la Direccion General de Medicamentos Alimentos y
+Productos Sanitarios.
+
+Responsable Actividad
+
+Encargado/Coordin 1
+
+lador Medicamentos Recibe la solicitud en sistema VUCERD.
+
+de la Direccién 2. Verifica que la solicitud cumpla con los procedimientos internos y
+General de devine if -
+
+Medicamentos y criterios técnicos establecidos por DIGEMAPS.
+Alimentos y 3. Si todo esta correcto, aprueba la solicitud en sistema VUCERD. De lo
+Productos contrario, rechaza la solicitud, indicando la justificacién técnica.
+Sanitarios
+
+RNC: 401039249
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+Santo Domingo, Rep. Dom.
+
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+
+4CA
+
+ADUANAS
+
+neponii
+
+osm: I MPORTACION PRODUCTOS DE CONSUMO PERSONAL = “can”
+
+5.1.3 Inspeccién en Puerto/Aeropuerto de entrada.
+
+Responsable Actividad |
+
+1. Recibe la solicitud a través del sistema VUCERD.
+2. Valida la documentacion de manera electronica y realiza la verificacién
+
+fisica, conciliando los sellos del contenedor, su contenido y las fechas
+Inspector en
+[Puerto/Aeropuert
+° 3. Si todo esta correcto, aprueba la solicitud en sistema VUCERD. De lo
+contrario, rechaza la solicitud, indicando la justificacién técnica.
+
+de vencimiento de la mercancia, seglin su protocolo interno.
+
+Nota: Se exige la inspeccién obligatoria en mercancias de uso particular
+
+y donaciones.
+
++ RNC: 401039249
+Av. Abraham Lincoln No.1101
+
+Edif. Miguel Cocco, Ens. Serrallés
+
+Santo Domingo, Rep. Dom.
+
+Tel: 809.547.7070
+
+www.aduanas.gob.do
+
+
+IGA
+
+ADUANAS
+
+DiGEMADs IMPORTACION PRODUCTOS DE CONSUMO PERSONAL ae
+
+5.2 Importacién Productos de Consumo Personal (Suplementos Alimenticios y Bebidas AlcohGlicas).
+
+Responsable Actividad
+
+1. Realiza solicitud electrénica en Sistema de Ventanilla Unica de Comercio
+Exterior (VUCERD), a través del formulario:
+
+- Importaci6n Productos de Consumo Personal (Suplementos
+Alimenticios y Bebidas Alcohélicas).
+
+Requisitos:
+- Factura comercial o factura proforma.
+- Copia de la Cédula de Identidad del Ppaciente o pasaporte si es
+
+extranjero.
+
+- Comunicacién de uso y destino.
+
+Solicitante - Guia aérea (si es por via aérea) 0 conocimiento de embarque (si es
+por via maritima), la misma debe ser presentada al momento de Ia
+inspeccién de carga in situ para proceso de liberacion de mercancia
+
+por los inspectores de puntos de entradas.
+
+2. Realiza pago del servicio.
+
+RNC: 401039249
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+
+Santo Domingo, Rep. Dom.
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+
+CA
+
+ADUANAS
+
+sss” IMPORTACION PRODUCTOS DE CONSUMO PERSONAL ea
+
+5.2.1 Validaci6n técnica documental de Ia solicitud.
+
+Responsable Actividad
+Técnico de Recibe la solicitud en sistema VUCERD.
+Alimentos de 2. Realiza la validacién con el No. de registro Sanitario del producto,
+la Direccién ee 7 " 5 .
+General da verifica los documentos adjuntos y valida las informaciones declaradas
+Medicamento por el importador.
+s y Alimentos . . F .
+y Productos 3. Si todo esta correcto, aprueba la solicitud en sistema VUCERD. De lo
+Sanitarios contrario, rechaza la solicitud, indicando la justificacién técnica.
+
+5.2.2 Evaluacion del Encargado/Coordinador la Direccién General de Medicamentos Alimentos y
+Productos Sanitarios.
+
+Responsable Actividad
+
+Encargado/Coordin 1. Recibe la solicitud en sistema VUCERD.
+adoy Alimentos de 2. Verifica que la solicitud cumpla con los procedimientos internos y
+
+la Direccion
+General de criterios técnicos establecidos por DIGEMAPS.
+Medicamentos y 3. Si todo esta correcto, aprueba la solicitud en sistema VUCERD. De lo
+Alimentos y
+Productos contrario, rechaza la solicitud, indicando la justificacion técnica.
+Sanitarios
+
+4 RNC: 401039249
+Av. Abraham Lincoln No.1101
+
+Edif. Miguel Cocco, Ens. Serrallés
+
+Santo Domingo, Rep. Dom.
+
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+
+ICA
+
+ADUANAS
+iy
+
+eaux IMPORTACION PRODUCTOS DE CONSUMO PERSONAL — (“‘cii.”
+
+5.2.3 Inspeccién en Puerto/Aeropuerto de entrada.
+
+Responsable Actividad |
+1. Recibe la solicitud a través del sistema VUCERD.
+2. Valida la documentacién de manera electronica y realiza la verificacién
+
+fisica, conciliando los sellos del contenedor, su contenido y las fechas de
+
+Inspector en a ” Fr «
+|Puerto/Aeropuert vencimiento de la mercancia, seguin su protocolo interno.
+° 3. Si todo esta correcto, aprueba la solicitud en sistema VUCERD. De Io
+
+contrario, rechaza la solicitud, indicando la justificaci6n técnica,
+
+Nota: Se exige la inspeccion obligatoria en mercancias de uso particular
+y donaciones.
+
+—!
+
++ RNC: 401039249
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+Santo Domingo, Rep. Dom.
+
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+
+6.
+
+7.
+
+DIGEMAPS IMPORTACION PRODUCTOS DE CONSUMO PERSONAL VaKERD-
+
+Registros.
+
+Factura Comercial/ Factura Proforma.
+
+Copia de la Cédula de Identidad del paciente o pasaporte si es extranjero.
+
+Indicacién médica debidamente firmada por el prescriptor, especificando dosis, uso y duracién del
+tratamiento (en el caso de los medicamentos).
+
+Comunicacién de uso y destino.
+
+Guia aérea (si es por via aérea) 0 conocimiento de embarque (si es por via maritima), la misma
+debe ser presentada al momento de la inspeccién de carga in situ para Proceso de liberacién de
+
+mercancia por los inspectores de puntos de entradas.
+
+Documentos de referencia.
+
+Decreto 246-06. Reglamento para el Control Sanitario de los Medicamentos y Productos Afines.
+Ley General de Salud 42-01.
+
+RNC: 491039249
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+Santo Domingo, Rep. Dom.
+
+Tel.: 809.547.7070
+www.aduanas.gob.do
+
+
+“RNC: 401039249
+
+Av. Abraham Lincoln No.1101
+
+Edif. Miguel Cocco, Ens. Serrallés
+Tel.: 809.547.7070
+
+www.aduanas.gob.do
+
+Santo Domingo, Rep. Dom.
+
+“eatin
+‘saan
+
+“"soxouy 8
+
+coo “IWNOSYAd OWNNSNOD Ad SOLONGOUd NOIOVLYOdINI sayreaora
+
+pare
+
+
+RNC: 401039249
+Tel.: 809.547.7070
+
+www.aduanas.gob.do
+
+Av. Abraham Lincoln No.1101
+Edif. Miguel Cocco, Ens. Serrallés
+
+Santo Domingo, Rep. Dom.
+
+sce |
+
+“eonoay
+
+servsondns) ong
+
+[- “ISVONQHOOTW SvaIaaa A SOIDILNAWITY SOLNANTaNs) TNOSUSa ONNNSNOD Za SOLONGONd NOIOVLYOdWI
+
+ou ‘IWNOSYAd OINNSNOD 5d SOLONdowd NOIDVLYOdI
+

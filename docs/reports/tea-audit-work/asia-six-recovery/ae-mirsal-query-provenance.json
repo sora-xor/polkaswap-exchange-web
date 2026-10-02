@@ -1,0 +1,12 @@
+{
+  "url": "https://mirsal2new.dubaitrade.ae/eMirsal/hsCodeSearch.do",
+  "method": "POST public commodity search",
+  "fields": {
+    "sectionCode": "2",
+    "chapterCode": "9",
+    "headingCode": "902",
+    "longName": ""
+  },
+  "status": 200,
+  "bytes": 436362
+}

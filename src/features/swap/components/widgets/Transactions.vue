@@ -21,12 +21,13 @@
       ref="tableRef"
       v-loading="loading"
       :data="tableItems"
+      :fit="false"
       :highlight-current-row="false"
       :adapt-breakpoint="TRANSACTIONS_TABLE_ADAPT_BREAKPOINT"
       size="small"
       class="explore-table"
     >
-      <s-table-column width="74">
+      <s-table-column width="88">
         <template #header>
           <span>{{ t('transaction.startTime') }}</span>
         </template>
@@ -37,7 +38,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column header-align="right" align="right">
+      <s-table-column width="112" header-align="right" align="right">
         <template #header>
           <span>{{ t('removeLiquidity.input') }}</span>
         </template>
@@ -50,7 +51,7 @@
           ></formatted-amount-with-fiat-value>
         </template>
       </s-table-column>
-      <s-table-column header-align="left" align="left">
+      <s-table-column width="112" header-align="right" align="right">
         <template #header>
           <span>{{ t('removeLiquidity.output') }}</span>
         </template>
@@ -63,7 +64,7 @@
           ></formatted-amount-with-fiat-value>
         </template>
       </s-table-column>
-      <s-table-column header-align="left" align="left">
+      <s-table-column width="90" header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.from') }}</span>
         </template>
@@ -79,7 +80,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column header-align="left" align="left">
+      <s-table-column width="90" header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.to') }}</span>
         </template>
@@ -95,7 +96,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="94">
+      <s-table-column width="116">
         <template #header>
           <span>{{ tc('accountText', 1) }}</span>
         </template>
@@ -103,7 +104,7 @@
           <formatted-address :value="row.address" :symbols="8"></formatted-address>
         </template>
       </s-table-column>
-      <s-table-column width="48" header-align="center">
+      <s-table-column width="44" header-align="center" align="center">
         <template #header>
           <s-icon name="basic-eye-no-24" size="16px"></s-icon>
         </template>
@@ -111,9 +112,15 @@
           <links-dropdown v-if="row.links.length" :links="row.links"></links-dropdown>
         </template>
       </s-table-column>
+      <template #empty>
+        <div class="swap-transactions-widget__empty" role="status">
+          <span v-if="!loading">{{ t('history.emptySearch') }}</span>
+        </div>
+      </template>
     </s-table>
 
     <history-pagination
+      v-if="total > 0"
       class="explore-table-pagination"
       :current-page="currentPage"
       :page-amount="pageAmount"
@@ -272,9 +279,6 @@ const { loading, pageAmount, currentPage, total, lastPage, visibleItems, handleP
       first: fetchAmount,
       offset: fetchAmount * (fetchPage - 1),
     }),
-    buildUpdateVariables: ({ intervalTimestamp }) => ({
-      filter: createFilter(intervalTimestamp),
-    }),
   });
 
 indexerLoadingRef = loading;
@@ -343,8 +347,100 @@ watch(
 
 <style lang="scss" scoped>
 .swap-transactions-widget {
+  :deep(.base-widget-header) {
+    gap: 8px;
+    padding: 16px 20px 8px;
+  }
+
+  :deep(.base-widget-title) {
+    min-width: 0;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  :deep(button.el-button.neumorphic.token-select-button) {
+    height: 32px;
+    border: 1px solid var(--s-color-base-border-secondary);
+    box-shadow: none;
+    background: transparent;
+
+    .token-select-button__text {
+      font-size: 14px;
+      font-weight: 600 !important;
+      line-height: 20px;
+    }
+
+    .token-select-button__logo,
+    .asset-logo {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  :deep(.explore-table.s-table) {
+    min-width: 0;
+    width: 100%;
+    scrollbar-width: thin;
+
+    // Preserve readable columns in narrow widgets and use any extra desktop width.
+    .s-table__header,
+    .s-table__body {
+      min-width: 100%;
+    }
+
+    .s-table__th {
+      height: 40px;
+      background: transparent;
+    }
+
+    .s-table__header-cell {
+      font-size: 11px;
+      line-height: 16px;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+
+    .s-table__td {
+      height: 64px;
+      background: transparent;
+    }
+
+    .s-table-cell-default {
+      font-size: 13px;
+      line-height: 20px;
+    }
+
+    .s-table__th:last-child .s-table__header-cell,
+    .s-table__td:last-child .s-table-cell-default {
+      padding-inline: 8px;
+    }
+  }
+
+  .explore-table-item-date {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+
+    > :last-child {
+      color: var(--s-color-base-content-secondary);
+    }
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    padding: 24px;
+    color: var(--s-color-base-content-secondary);
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+  }
+
   .explore-table-pagination {
-    padding: 0 $inner-spacing-mini $inner-spacing-medium;
+    padding: 0 20px 16px;
   }
 }
 </style>

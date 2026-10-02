@@ -1,0 +1,1856 @@
+2015                           Food Safety                         Act 19   455
+
+                         ARRANGEMENT OF CLAUSES
+                                        Part I
+                                   PRELIMINARY
+
+1.    Short title and commencement
+2.    Interpretation
+3.    Extended meaning of sale
+4.    Application
+5.    Presumption that food is intended for human consumption
+6.    Food safety risk
+
+                                       Part II
+                                ADMINISTRATION
+
+7.    Establishment of Food Safety Authority
+8.    Functions of the Authority
+9.    Establishment of the National Food Safety Advisory Body
+
+                                       Part III
+                    LICENCE, PERMIT AND REGISTRATION
+
+10.   Licence to operate food business
+11.   Permit to engage in street food vending
+12.   Food handler’s certificate
+13.   Renewal of licence, permit or certificate
+14.   Suspension or revocation of licence, permit or certificate
+15.   Appeal
+16.   Registration of premises
+17.   Inspection of food premises
+18.   Authority to keep register
+
+                                       Part IV
+       POWERS AND DUTIES OF THE AUTHORITY AND INSPECTORS
+
+20. Appointment of inspectors
+21. Power to inspect
+22. Duties of inspectors
+456 Act 19                              Food Safety                            2015
+
+23    Power of entry
+24.   Power to suspend licence
+25.   Food Analysts
+26.   Analysis of food
+27.   Responsibilities of medical practitioners
+28.   Accredited inspection and analysis bodies
+
+                                       Part V
+                                 ENFORCEMENT
+
+29.   Other duties and powers of the Authority
+30.   Other powers of inspectors
+31.   Emergency measures
+32.   Preventative measures
+33.   Disclosure of information
+34.   Notices
+
+                                      Part VI
+                   DUTIES OF FOOD BUSINESS OPERATORS
+
+35.   General duties of food business operators and street food vendors
+36.   Duties of food business operators and street food vendors during an inspection
+37.   Food business operator or street food vendor suspects certain medical conditions
+38.   Traceability of food
+39.   Exemption
+40.   Terms of exemption
+41.   Revocation of exemption
+42.   Duration of exemption
+43.   Surrender of exemption
+44.   Minister to maintain register of exemption
+45.   Recalling of hazardous food
+
+                                      Part VII
+                        IMPORT AND EXPORT OF FOOD
+
+46. Requirements for importation and exportation
+47. Review of notice to import or export
+2015                          Food Safety                Act 19   457
+
+48.   Obtaining sample of food
+49.   Compliance, non-compliance
+50.   Offence of import or export
+51.   Food to be inspected
+52.   Time for inspection
+53.   Imported food may be held pending inspection
+54.   Re-labeling and re-conditioning
+
+                                     Part VIII
+                          OFFENCES AND PENALTIES
+
+55.   Offences generally
+56.   Selling food that is unfit for human consumption
+57.   Improperly influencing an inspector
+58.   Impersonating an inspector
+59.   Failure to grant access, provide samples
+60.   Offences by inspectors
+61.   Continuing offences
+62.   Offences by a body corporate
+63.   Obstruction and interference
+64.   General defences
+
+                                     Part IX
+                        MISCELLANEOUS PROVISIONS
+
+65. Food safety training and accreditation
+66. Regulations
+67. Transitional provisions
+
+
+      SCHEDULE – National Food Safety Advisory Body
+458 Act 19   Food Safety   2015
+2015                     Food Safety                           Act 19 459
+
+
+
+
+                       GRENADA
+
+                  ACT NO. 19 OF 2015
+     I assent,                      L.S.
+     					
+     			           CÉCILE E. F. LA GRENADE
+  24th June, 2015.            Governor-General.
+
+AN ACT to provide for the establishment of a Food Safety
+   Authority to regulate food safety and quality of food
+   produced, sold, stored, distributed, imported into
+   and exported from Grenada and to provide for the
+   registration and licensing of food business.
+
+                                             [By Notice].
+
+
+   BE IT ENACTED by the Queen’s Most Excellent Majes-
+ty, by and with the advice and consent of the Senate and the
+House of Representatives of Grenada, and by the Authority
+of the same as follows–
+                           Part I
+                      PRELIMINARY
+
+  1. This Act may be cited as the
+                                                               Short title and
+                FOOD SAFETY ACT, 2015                          commencement.
+460 Act 19                               Food Safety                      2015
+
+                  and shall come into operation on such date to be appointed
+                  by the Minister by Notice in the Gazette.
+Interpretation.     2.    In this Act–
+                         “Advisory Body” means the National Food Safety
+                              Advisory Body established under section 9;
+                         “analysis report” means a report provided by a food
+                               analyst upon conducting analysis of food;
+                         “Authority” means the Food Safety Authority estab-
+                              lished under section 7;
+                         “certificate” means a food handler’s certificate issued
+                                pursuant to section 12;
+                         “equipment” includes plants, utensils, machinery,
+                               whether movable or immovable, whether man-
+                               ual or automated;
+                         “exporter” means a person who, whether as owner,
+                              consignor, agent or broker, is in possession of
+                              or entitled to the custody or control of food ex-
+                              ported from Grenada;
+                         “food” means any substance whether processed, semi-
+                               processed or raw, which is intended for human
+                               consumption or otherwise taken into the body
+                               to sustain life and to provide energy, in liquid
+                               or solid form and includes any other substances
+                               used as ingredients in the preparation of food
+                               for any purpose but does not include cosmetics,
+                               tobacco or substances used only as drugs;
+2015                      Food Safety                            Act 19 461
+
+       “food analyst” means a person certified as a food ana-
+             lyst for the purposes of this Act by the Minister
+             pursuant to section 25;
+       “food-borne disease” means any illness resulting from
+             the consumption of contaminated food;
+       “food business” means any activity involving or relat-
+             ing to the production of food intended for hu-
+             man consumption whether or not the activity is
+             carried on for profit, but excludes street food
+             vending;
+       “food business operator” means a person who owns or
+             is in charge of a food business;
+       “food handler” means a person who–
+          (a) directly handles, or assists in the handling
+              of, packaged or unpackaged food, food
+              equipment or food utensils, in the preparation,
+              wrapping, packing, storage, transportation,
+              exposure for sale, sale or delivery of food; or
+          (b) in the performance of his or her duties,
+              comes into direct contact with food-contact
+              surfaces;
+       “food premises” means any premises at which a food
+             business is conducted;
+       “governmental entity” includes government minis-
+            tries or departments;
+       “HACCP” means Hazard Analysis and Critical Con-
+           trol Point Principles used as a systematic pre-
+           ventive approach to food safety;
+462 Act 19                  Food Safety                        2015
+
+             “importer” means a person who, whether as owner,
+                  consignee, agent or broker, is in possession of
+                  or entitled to the custody or control of food im-
+                  ported into Grenada;
+             “inspection certificate” means a certificate issued by
+                   the Authority pursuant to section 24;
+             “inspector” means a food safety inspector appointed
+                   under section 20;
+             “licence” means a licence to operate a food business
+                   issued pursuant to section 10;
+             “Minister” means the minister having responsibility
+                  for Health;
+             “permit” means a permit to engage in street food
+                  vending issued pursuant to section 11;
+             “premises” means any place, vehicle, stall, land, build-
+                  ings, parts of buildings and structures, tents,
+                  aircraft, watercraft, any structures, whether
+                  temporary or permanent, whether movable or
+                  immovable, and includes a private dwelling;
+             “production” means manufacturing, preparation,
+                  treatment, packing, packaging, transportation,
+                  importation, exportation, handling, serving,
+                  storage, sale or distribution, and “produce”
+                  shall be construed accordingly;
+             “registration certificate” means a registration certifi-
+                   cate issued by the Authority upon registration
+                   of food premises pursuant to section 16;
+2015                      Food Safety                             Act 19 463
+
+       “street food” means ready-to-eat food produced in the
+              street or any other public place;
+       “street food premises” means any premises at which
+              street food is produced;
+       “street food vending” means producing street food in
+              a temporary structure, vehicle, watercraft, cart,
+              tray or other similar device;
+       “street food vendor” means a person who engages in
+              street food vending; and
+       “WTO” means World Trade Organization.
+  3.—(1) Reference in this Act to the sale of food shall be Extended
+                                                            meaning of sale.
+construed to include any activity where food is—
+        (a) offered as a prize or reward or given away in
+            connection with any entertainment to which
+            the public is admitted, whether on payment of
+            money or not, as if the food were, or had been,
+            exposed for sale by each person concerned in
+            the organization of the entertainment;
+        (b) offered for the purpose of advertisement or in
+            furtherance of any trade or business is offered
+            as a prize or reward or given away, as if the
+            food were, or had been exposed for sale by
+            the person offering or giving away the food;
+            and
+        (c) exposed or deposited in any premises for the
+            purpose of being so offered or given away as
+            mentioned in paragraph (a) and (b) as if the
+464 Act 19                         Food Safety                        2015
+
+                           food were or had been exposed for sale by the
+                           occupier of the premises.
+                       (2) For the purposes of this section “entertainment”
+               includes any social gathering, amusement, exhibition, game,
+               sport or trial of skill.
+Application.     4.—(1) This Act shall apply to–
+                      (a) the production, processing, manufacturing or
+                          other preparation of food;
+                      (b) the handling or sale of food;
+                      (c) the import or export of food;
+                      (d) any other activity related to the activities men-
+                          tioned in paragraphs (a) to (c).
+                        (2) Notwithstanding the generality of sub-section
+               (1), this Act shall not apply to–
+                      (a) food produced, imported or exported for private
+                          consumption;
+                      (b) food that is brought into Grenada in a water-
+                          craft or aircraft stored and used for crew or pas-
+                          sengers on board the watercraft or aircraft;
+                      (c) food that is transported through Grenada but not
+                          intended for sale or consumption in Grenada;
+                      (d) the raising, slaughter, ante mortem inspection
+                          or postmortem inspection of animals;
+                      (e) the import or export of animals, meat and meat
+                          products, live or frozen fish and dairy products;
+2015                       Food Safety                           Act 19 465
+
+        (f)   activities related to the raising, slaughter or
+              other preparation of animals regulated under
+              the Animals (Diseases and Importation) Act
+              Cap. 15;
+        (g) the growing of plants or the import or export of
+            fresh produce; and
+        (h) the importing or exporting of veterinary bio-
+            logical products.
+  5.­­­­—(1) For the purposes of this Act, it is presumed that Presumption
+                                                               that food
+food is intended for human consumption if–                     is intended
+                                                                 for human
+        (a) the food was sold, offered for sale or kept for consumption.
+            sale on the food premises or street food prem-
+            ises; or
+        (b) any ingredient of or article or substance relating
+            to the food is found on food premises, or street
+            food premises, used for production of the food.
+        (2) Unless the contrary is proved, any article or sub-
+stance found on food premises or street food premises which
+is capable of use in the production of any food produced on
+the food premises or street food premises shall be presumed
+to be intended for such use.
+  6. For the purposes of this Act, a food safety risk exists Food safety risk.
+where–
+        (a) a practice, process or treatment used in the op-
+            eration of a food business or street food vend-
+            ing;
+        (b) the condition of food premises or equipment
+            used on food premises or street food premises;
+466 Act 19                               Food Safety                      2015
+
+                          (c) the outbreak of a food-borne disease,
+                   is likely to adversely affect public health.
+
+                                               Part II
+                                         ADMINISTRATION
+Establishment        7.­—(1) There is hereby established a body to be called the
+of Food Safety
+Authority.         Food Safety Authority which shall be responsible for imple-
+                   menting and enforcing the provisions of this Act.
+                          (2) The Authority shall consist of a Director and four
+                   other members, all of which shall be appointed by the Min-
+                   ister.
+                           (3) The Authority shall appoint such other staff as
+                   shall be necessary for the efficient operation of the Author-
+                   ity.
+Functions of the     8.—(1) The Authority shall–
+Authority.
+                          (a) in collaboration with other governmental
+                              entities, regional and international bodies–
+                                  (i)    establish a coordinated and integrated
+                                         system to protect, enhance and safe-
+                                         guard food safety;
+                                  (ii)   cooperate in and facilitate the im-
+                                         plementation of aspects of the WTO
+                                         Agreement on Sanitary and Phytosani-
+                                         tary Measures Agreement relating to
+                                         food safety;
+                          (b) establish a coordinated and integrated risk-
+                              based food safety and quality system to protect,
+                              enhance and ensure food safety;
+2015                     Food Safety                            Act 19 467
+
+       (c) formulate policies and strategies related to
+           food safety and quality in consultation with
+           the Advisory Body and to monitor their
+           implementation;
+       (d) strengthen policy, planning and service
+           capacity of the public sector, private sector and
+           community organizations in food safety;
+       (e) register food premises and to ensure that every
+           food business implements quality control
+           systems;
+       (f)   approve risk-based sanitary measures and to
+             take action in case of an emergency related to a
+             food safety risk;
+       (g) issue licences, permits and certificates, pursuant
+           to this Act;
+       (h) strengthen the national capacity for surveillance
+           and response programmes to prevent, manage,
+           reduce and eliminate food-borne diseases;
+       (i)   develop training and certification programmes
+             for food handlers;
+       (j)   increase awareness on food-borne diseases and
+             effective intervention strategies;
+       (k) provide advice, information and assistance to
+           any public authority in relation to food control,
+           food safety and food trade;
+       (l)   develop training programmes for inspectors in
+             modern food safety systems;
+468 Act 19                             Food Safety                        2015
+
+                         (m) establish databases for imported and domestic
+                             foods including inspections; and
+                         (n) do all reasonable acts to promote compliance
+                             with this Act and to carry out any other function
+                             under this section.
+                          (2) The Authority, in discharging the technical as-
+                  pects of its functions under this Act, may negotiate and enter
+                  into arrangements with any other entity.
+Establishment        9.—(1) There is hereby established a body to be called the
+of the National
+Food Safety
+                  National Food Safety Advisory Body which shall function
+Advisory Body.    as an advisory body to the Authority on matters relating to
+                  food safety.
+                        (2) The Schedule applies to the procedures of the
+                  Advisory Body.
+                                            Part III
+                         LICENCE, PERMIT AND REGISTRATION
+Licence to           10.—(1) No person shall operate a food business unless
+operate food
+business.         that person has a valid licence issued by the Authority which
+                  shall be affixed in a conspicuous place in the food premises
+                  or is readily available for inspection under this Act.
+                          (2) A person who operates, or intends to operate, a
+                  food business shall make an application for a licence to the
+                  Authority in the prescribed form and accompanied by the
+                  prescribed fees.
+                          (3) Upon application and payment of the prescribed
+                  fees, the Authority may, subject to any reasonable condition,
+                  issue a licence to a food business operator in the prescribed
+                  form.
+2015                      Food Safety                            Act 19 469
+
+        (4) A licence issued under this section shall be valid
+for three years.
+        (5) A person who contravenes subsection (1) com-
+mits an offence and is liable to arrest and on summary con-
+viction to a fine of five thousand dollars.
+   11.—(1) No person shall engage in street food vending, Permit to
+whether permanently or temporarily, unless the person has a engage in street
+                                                            food vending.
+valid permit issued by the Authority which shall be kept in
+the possession of that person when engaging in street food
+vending.
+        (2) A person who engages, or intends to engage, in
+street food vending shall make an application for a permit
+to the Authority in the prescribed form and accompanied by
+the prescribed fees.
+         (3) Upon application and payment of the prescribed
+fees, the Authority may, subject to any reasonable condi-
+tion, issue a permit to a person to be engaged in street food
+vending.
+        (4) A permit issued under this section shall be valid
+for one year.
+        (5) The Minister shall make regulations prescribing
+the locations in which street food vending may be conducted.
+        (6) A person who contravenes subsection (1) com-
+mits an offence and is liable to arrest and on summary con-
+viction to a fine of five thousand dollars.
+  12.—(1) No person shall act as a food handler, whether Food handler’s
+                                                          certificate.
+permanently or temporarily, unless the person has a valid
+food handler’s certificate issued by the Authority.
+470 Act 19                             Food Safety                       2015
+
+                          (2) A person who is or intends to be a food handler,
+                  whether permanently or temporarily, shall make an applica-
+                  tion for a food handler’s certificate to the Authority in the
+                  prescribed form and accompanied by the prescribed fees.
+                          (3) Upon application and payment of the prescribed
+                  fees, the Authority may, subject to any reasonable condition,
+                  issue a food handler’s certificate in the prescribed form.
+                          (4) A certificate issued under this section shall be
+                  valid for one year.
+                          (5) A person who contravenes subsection (1)
+                  commits an offence and is liable on summary conviction to
+                  a fine of five thousand dollars.
+                          (6) A food business operator or a street food
+                  vendor who employs a person as a food handler, whether
+                  permanently or temporarily, who does not have a valid food
+                  handler’s certificate issued by the Authority commits an
+                  offence and is liable to arrest and on summary conviction to
+                  a fine of five thousand dollars.
+                         (7) Without prejudice to section 12, the Authority
+                  may suspend or revoke a food handler’s certificate if the
+                  food handler is found to have a communicable disease or for
+                  any other just cause.
+Renewal of          13.—(1) An application for renewal of a licence shall–
+licence, permit
+or certificate.
+                         (a) be made in the prescribed form at least three
+                             months before the expiration of the licence; and
+                         (b) be accompanied by the prescribed fee.
+                           (2) An application for renewal of a permit or
+                  certificate shall–
+2015                        Food Safety                           Act 19 471
+
+             (a) be made in the prescribed form at least one
+                 month before the expiration of the permit
+                 or certificate; and
+             (b) be accompanied by the prescribed fee.
+   14.—(1) Where a food business operator, street food ven- Suspension or
+dor or food handler, contravenes any provision under this revocation        of
+                                                                licence, permit
+Act, any regulation made under this Act or any condition or certificate.
+attached to a licence, permit or certificate issued to the food
+business operator, street food vendor or food handler, as the
+case may be, the Authority may by notice suspend or revoke
+the licence, permit or certificate.
+        (2) The Authority may by notice suspend or revoke a
+licence, permit or certificate, where–
+             (a) the food business operator, street food
+                 vendor or food handler has contravened
+                 any provision under this Act or any
+                 regulations made under this Act;
+             (b) the food business operator, street food
+                 vendor or food handler has contravened
+                 any condition attached to the licence,
+                 permit or certificate; or
+             (c) the food business operator, street food
+                 vendor or food handler provided false
+                 information in the application under
+                 section 10, 11 or 12.
+        (3) Where the Authority seeks to suspend or revoke
+a licence, permit or certificate, the Authority shall–
+             (a) give, in the prescribed form, notice of at
+                 least fourteen days before the suspension
+472 Act 19                        Food Safety                        2015
+
+                               or revocation of the licence, permit or
+                               certificate; and
+                          (b) inform the food business operator, street
+                              food vendor or food handler of the right of
+                              appeal under section 15.
+                     (4) A food business operator, street food vendor
+             or food handler may make a request in writing to cancel
+             a licence, permit or certificate issued to the food business
+             operator, street food vendor or food handler and the licence,
+             permit or certificate shall be cancelled with effect from
+             seven days after the request is made.
+Appeal.        15.—(1) A food business operator, street food vendor or
+             food handler, as the case may be, may appeal to the Minister
+             against a decision of the Authority–
+                    (a) to refuse to issue a licence under section 10;
+                    (b) to suspend or revoke a licence under section 14;
+                    (c) to refuse to issue a permit under section 11;
+                    (d) to suspend or revoke a permit under section 14;
+                    (e) to refuse to issue a certificate under section 12;
+                        or
+                    (f)   to suspend or revoke a certificate under section
+                          14.
+                     (2) An appeal shall be made in writing to the Minister
+             within seven days of receiving a notice of refusal, suspension
+             or revocation under section 14.
+2015                      Food Safety                            Act 19 473
+
+       (3) Upon receiving an appeal, the Minister may
+determine the appeal or may establish a tribunal to determine
+the appeal which shall consist of–
+            (a) the Minister as the chairperson; and
+            (b) two other members appointed by the
+                Minister, at least one of whom shall have
+                wide knowledge and experience in food
+                safety.
+        (4) The Minister, or a tribunal established pursuant
+to subsection (3), may carry out any inspection, or undertake
+any investigation or engage in any other course of action
+that the Minister or the tribunal deems necessary to assist in
+the determination of the appeal.
+        (5) Upon hearing an appeal, the Minister or the
+tribunal, as the case may be, may–
+            (a) dismiss the appeal;
+            (b) direct the Authority to issue a licence,
+                permit or certificate;
+            (c) quash the suspension or revocation of the
+                licence, permit or certificate;
+            (d) substitute suspension of the licence, permit
+                or certificate for revocation of the licence,
+                permit or certificate; or
+            (e) substitute the period for suspension of the
+                licence, permit or certificate for a different
+                period.
+474 Act 19                            Food Safety                      2015
+
+                         (6) No later than seven days after the decision is
+                  made by the Minister or a tribunal established pursuant
+                  to subsection (3), the Minister shall notify the Authority
+                  and the food business operator, street food vendor or food
+                  handler, as the case may be, of the decision.
+                         (7) A person who is aggrieved by a decision of the
+                  Minister may at any time within twenty-eight days appeal to
+                  the High Court.
+Registration of     16.­—(1) No person shall use premises to operate a food
+food premises.
+                  business unless the food premises is registered with the
+                  Authority in the prescribed manner.
+                         (2) Every food business operator shall ensure that
+                  the food premises is registered with the Authority.
+                          (3) On receipt of an application, the Authority may
+                  issue a registration certificate in the prescribed form.
+                         (4) Any person who contravenes subsection (1)
+                  commits an offence and is liable to arrest and summary
+                  conviction to a fine of five thousand dollars.
+Inspection of       17.­—(1) All food premises and street food premises shall
+premises.
+                  be subject to routine inspections by the Authority.
+                    (2) An inspection may be with respect to–
+                              (a) the observance of sanitary conditions and
+                                  practices;
+                              (b) the maintenance of all equipment;
+                              (c) the supervision, control, preparation and
+                                  packing of food;
+2015                        Food Safety                           Act 19 475
+
+             (d) the prevention of contamination of food
+                 through contact with any substance that
+                 may have a deleterious effect on the
+                 quality thereof;
+             (e) the adequacy, design, construction and
+                 manufacture of equipment, and the
+                 materials used in the construction or
+                 manufacture of the equipment;
+             (f)   the designation of the persons who are
+                   responsible for maintaining the sanitary
+                   requirement therein; or
+             (g) any other matter related to the carrying out
+                 of its functions under this Act.
+   18.­—(1) The Authority shall maintain a current register Authority to
+of every licence, permit, and certificate issued under this Act keep register.
+and all food premises registered under this Act.
+        (2) Where there is any change in any information
+supplied in an application under this Act, the applicant shall
+notify the Authority within seven days of the change.
+        (3) Any person who contravenes subsection (2)
+commits an offence and is liable on summary conviction to
+a fine of five thousand dollars.
+   19.—(1) The Authority shall develop and maintain in Report on
+                                                            activities.
+electronic format and in hard copy generated from the elec-
+tronic format, data on–
+        (a) the types and quantities of food imported or
+            exported;
+        (b) the shipment of food;
+476 Act 19                            Food Safety                        2015
+
+                        (c) food found by the importing country not to be
+                            in compliance with the statutory requirements
+                            of the importing country;
+                        (d) a summary of every incident regarding any food
+                            determined to be unsafe for export or import
+                            and every action taken in response; and
+                        (e) any other relevant matter.
+                         (2) The report prepared under sub-section (1) shall
+                 be available for inspection by the public.
+                         (3) The Authority may require any person who
+                 imports or exports food to submit a report relating to its
+                 activities containing information mentioned in sub-section
+                 1(a)-(e).
+                         (4) A person who fails to comply with the
+                 requirements of subsection (3) commits an offence and is
+                 liable on summary conviction to a fine of five thousand
+                 dollars or to imprisonment for a term of six months.
+                                           Part IV
+                  POWERS AND DUTIES OF THE AUTHORITY AND
+                               INSPECTORS
+Appointment of      20.—(1) The Minister may in his sole discretion, by regu-
+inspectors.
+                 lations, declare and appoint any public officer or category of
+                 public officers to be inspectors for the purposes of this Act.
+                        (2) The Authority shall issue an identification badge
+                 or any other form of identification to all inspectors that are
+                 so appointed.
+2015                      Food Safety                           Act 19 477
+
+   21.—(1) Where the Authority, based on relevant informa- Power to
+                                                           inspect.
+tion, reasonably believes that–
+       (a) a food business operator or street food vendor
+           may be contravening any provision of this Act,
+           any regulation made under this Act or any
+           condition attached to the licence or permit; or
+       (b) a food safety risk exists on food premises or
+           street food premises,
+the Authority may direct an inspector to conduct an
+inspection of the food premises or street food premises.
+        (2) The Authority may cause routine inspections of
+food premises and street food premises for the purpose of
+monitoring compliance with any provision of this Act, any
+regulation made under this Act or any condition attached to
+a licence or permit.
+   22.—(1) Upon the direction of the Authority, or reasona- Duties of
+ble grounds therefor, an inspector may inspect food premises inspectors.
+or street food premises to evaluate whether a food business
+operator or street food vendor is contravening any provision
+of this Act, any regulation made under this Act or any condi-
+tion attached to the licence or permit.
+        (2) Where an inspector has reasonable grounds to
+believe that a food business operator or street food vendor
+is contravening, or has contravened, any provision of this
+Act, any regulation made under this Act or any condition
+attached to the licence or permit, the inspector may serve on
+the food business operator or street food vendor, a notice in
+the prescribed form setting out–
+478 Act 19                         Food Safety                         2015
+
+                          (a) the conduct constituting contravention
+                              of this Act, any regulation made under
+                              this Act or any condition attached to the
+                              licence or permit;
+                          (b) the measures that the food business opera-
+                              tor or street food vendor shall implement
+                              to remedy the contravention;
+                          (c) the time period within which the measures
+                              must be implemented.
+                     (3) Without limiting the generality of subsection (2),
+             the notice may direct a person to–
+                          (a) clean and disinfect premises or equip-
+                              ment;
+                          (b) modify equipment;
+                          (c) alter production or processing practices
+                              for any food;
+                          (d) discontinue the use of pesticides or other
+                              chemicals specified in the notice during
+                              the time period specified in the notice;
+                          (e) modify or stop the operations of the food
+                              business until the person has taken the
+                              remedial action specified in the notice.
+                     (4) A person who is served with a notice under
+             subsection (2) shall comply with the notice within the period
+             of time specified in such notice.
+                     (5) An inspector shall forthwith file with the Authority
+             a true copy of the notice served on the food business operator
+             or street food vendor pursuant to subsection (2).
+2015                       Food Safety                          Act 19 479
+
+  23.—(1) An inspector who is properly identified may, at Power of entry.
+any reasonable time, enter and inspect any food premises.
+        (2) An inspector may, whether or not in the presence
+of a member of the police force, pass through or over
+any land, where it is necessary or impractical to use any
+other means to gain access to food premises subject to an
+inspection pursuant to sections 21 and 22.
+   24.—(1) Where the Authority determines that continued Power to
+operation of a food business or engagement in street food suspend     licence
+                                                              or permit.
+vending creates a food safety risk, the Authority may, by no-
+tice in the prescribed form, immediately suspend the licence
+or permit of a food business operator or a street food vendor
+as the case may be for a period not exceeding seven days.
+        (2) Where the Authority issues a notice under this
+section, the Authority shall serve on the food business
+operator or street food vendor, as the case may be, a copy of
+the notice within twenty-four hours.
+        (3) Within seven days of service of a notice, the
+Authority shall re-inspect the food premises or street food
+premises to determine whether the food premises or street
+food premises may be certified for continuation of operation
+of a food business or engagement in street food vending.
+        (4) Where a notice is served, no food business
+operator or street food vendor shall operate a food business
+or engage in street food vending, as the case may be, until
+an inspector re-inspects the food premises or street food
+premises and the Authority issues an inspection certificate
+in the prescribed form.
+        (5) Where, after re-inspection of food premises or
+street food premises, the Authority determines that a food
+480 Act 19                               Food Safety                         2015
+
+                    safety risk continues to exist on the food premises or street
+                    food premises, the Authority may, by notice in the prescribed
+                    form, suspend the licence to operate a food business or
+                    permit to engage in street food vending, as the case may be,
+                    for a period not exceeding thirty days.
+                           (6) After the expiration of the period specified in
+                    subsection (5), if a food business operator or street food
+                    vendor fails to satisfy the Authority that the food safety risk
+                    has been eliminated, the Authority may revoke the licence
+                    or permit.
+                            (7) A food business operator or street food vendor
+                    who conducts a food business or engages in street food
+                    vending on premises on which there is a food safety risk
+                    commits an offence and is liable on summary conviction to
+                    a fine of ten thousand dollars or to a term of imprisonment
+                    for two years.
+Food analysts.         25. The Minister may, in consultation with the Advisory
+                    Body, certify a person as a food analyst for the purposes of
+                    this Act on the basis of requisite qualifications as may be
+                    prescribed by the Minister.
+Analysis of food.      26.­—(1) The Authority may direct a food analyst to ana-
+                    lyse any food in the course of an inspection or investigation
+                    under this Act.
+                           (2) A food analyst who analyses any food pursuant
+                    to subsection (1) shall issue an analysis report duly signed
+                    and setting out the results of the analysis in the prescribed
+                    form.
+                           (3) In any proceedings under this Act, an analysis
+                    report generated by a food analyst shall be sufficient
+2015                      Food Safety                             Act 19 481
+
+evidence of the facts stated in the analysis report, unless the
+contrary is proved.
+        (4) No analysis report shall be admitted into evidence
+unless the party relying on it gives notice of his or her
+intention to the other party.
+        (5) The Minister may, by regulations, provide the
+procedure for retrieving and analysing samples in the course
+of an inspection or investigation under this Act.
+  27. Every medical practitioner and food analyst shall re- Responsibilities
+port to the Authority every incidence of any disease that of   medical
+                                                            practitioners.
+may be shown to be related to food.
+   28. The Authority may publish a list of bodies that are Accredited
+accredited to conduct inspections and analyzes in relation inspection and
+                                                           analysis bodies.
+to food.
+                           Part V
+                     ENFORCEMENT
+   29.—(1) The Authority may request that a food business Other duties and
+                                                            powers of the
+operator or street food vendor provide any information, Authority.
+books, records or other documents for the purpose of moni-
+toring compliance with any provision of this Act, any regu-
+lation made under this Act or any condition attached to the
+licence or permit.
+       (2) Where the Authority reasonably believes that–
+             (a) a food business operator or street food
+                 vendor may be contravening any provision
+                 of this Act, any regulation made under
+                 this Act or any condition attached to the
+                 licence or permit; or
+482 Act 19                             Food Safety                        2015
+
+                              (b) a food safety risk exists on food premises
+                                  or street food premises,
+                  the Authority may cause to be seized, sealed or detained,
+                  at the expense of the food business operator or street food
+                  vendor, any food, ingredient or equipment likely to be
+                  involved in or contributing towards the food safety risk.
+                         (3) Where the Authority receives a copy of a notice
+                  issued pursuant to section 22, the Authority shall notify
+                  every relevant–
+                              (a) statutory body;
+                              (b) department of the Ministry; and
+                              (c) private entity,
+                  necessary to ensure that reasonable measures to protect
+                  consumers are carried out.
+                          (4) Where the Authority determines that a food
+                  safety risk exists, it shall–
+                              (a) cause to be destroyed every food or
+                                  ingredient;
+                              (b) cause to be sterilized or destroyed all
+                                  equipment on the food premises or street
+                                  food premises; and
+                              (c) cause to be fumigated the food premises or
+                                  street food premises, or part thereof,
+                  likely to be contaminated as a result of the food safety risk,
+                  at the expense of the food business operator or street food
+                  vendor, as the case may be.
+Other powers of
+inspectors.
+                    30.—(1) In the course of an inspection an inspector may–
+2015                     Food Safety                            Act 19 483
+
+       (a) request the presentation of any food, ingredient
+           or equipment that creates or may create a food
+           safety risk, or may be relevant to the existence
+           of a food safety risk;
+
+       (b) in the prescribed manner, analyse or retrieve
+           samples of or from any food, ingredient or
+           equipment that creates or may create a food
+           safety risk, or may be relevant to the existence
+           of a food safety risk;
+
+       (c) in order to complete an inspection, stop, search
+           and delay any vehicle transporting of any food,
+           ingredient or equipment that creates or may
+           create a food safety risk, or may be relevant to
+           the existence of a food safety risk;
+
+       (d) seize, seal and detain on reasonable grounds
+           any food, ingredient or equipment that creates
+           or may create a food safety risk, or may be
+           relevant to the existence of a food safety risk;
+
+       (e) seal off access to the food premises or street
+           food premises or part thereof;
+
+       (f)   request, examine and generate copies of any
+             information, records and other matters that are
+             relevant to the source, use or condition of any
+             food, ingredient or equipment that creates or
+             may create a food safety risk or may be relevant
+             to the existence of a food safety risk;
+
+       (g) request the delivery for inspection of anything
+           described in paragraph (f);
+484 Act 19                        Food Safety                       2015
+
+                    (h) take photographs of any food, ingredient,
+                        equipment or food premises or street food
+                        premises;
+                    (i)   read any measuring instruments installed on the
+                          premises or use any other means necessary to
+                          record data generated on that food premises or
+                          street food premises;
+                     (j) observe any practice or process conducted in the
+                         operation of the food business or engagement
+                         of street food vending;
+                    (k) use any data storage, processing or retrieval
+                        device or system in order to generate a record in
+                        readable form of the information, records and
+                        other matters described in paragraph (f);
+                    (l)   request any assistance from the food business
+                          operator or street food vendor, or an agent
+                          thereof, as is necessary to enable an inspector
+                          to exercise any power conferred on him or her
+                          under this Act; and
+                    (m) exercise any other power necessary to assess
+                        compliance of the food business operator or
+                        street food vendor with the provisions of this
+                        Act, the regulations made pursuant to this Act
+                        or the conditions attached to the licence or
+                        permit.
+                     (2) An inspector shall carry out any reviewing
+             or copying of things with reasonable dispatch, and shall
+             forthwith after the reviewing or copying return the things to
+             the person who produced them.
+2015                       Food Safety                             Act 19 485
+
+        (3) A copy certified by an inspector as a copy made
+under subsection (2) is admissible in evidence to the same
+extent, and has the same evidentiary value, as the thing
+copied.
+        (3) An inspector may request the assistance of a
+police officer in the execution of his or her duties under this
+Act.
+       (4) An inspector exercising his or her duties under
+this section shall not be liable in any civil or criminal
+proceedings for anything done in good faith.
+         (5) Except with the authority of an inspector or police
+officer, no person shall remove, alter or interfere in any way
+with anything seized under this Part.
+   31.—(1) Where the Authority reasonably believes that a Emergency
+                                                             measures.
+food safety risk exists, it may, after consultation with the
+Advisory Body, implement measures to manage, reduce and
+eliminate the food safety risk to public health, including–
+        (a) notifying the public of the existence of a food
+            safety risk by advertising a notice in two
+            newspapers of national circulation;
+        (b) prohibiting the production of all food likely to
+            be affected;
+        (c) seizing all food likely to be affected;
+        (d) recalling all food likely to be affected that has
+            been distributed for sale or consumption;
+        (e) ordering and monitoring the disposal of all
+            food likely to be affected and the treatment
+486 Act 19                          Food Safety                        2015
+
+                            or disposal of equipment employed in the
+                            production of any food likely to be affected;
+                      (f)   establishing protocol for the proper disposal
+                            of food likely to be affected and for the proper
+                            treatment or disposal of equipment employed in
+                            the production of any food likely to be affected.
+                      (2) Every food business operator and street food
+               vendor shall be liable for any cost associated with compliance
+               with any measure implemented pursuant to subsection
+               (1) with respect to the operation of the food business or
+               engagement in the street food vending.
+                       (3) The Minister, after consultation with the
+               Authority, may declare, by notice, a food safety emergency
+               where he or she determines that the effect of a food safety
+               risk is more probable than not to adversely affect the health
+               of a person who consumes any food affected by the food
+               safety risk.
+                       (4) Where the Minister has declared a food safety
+               emergency, a person who produces food to which a notice
+               under subsection (3) applies commits an offence and is liable
+               on summary conviction to a fine of twenty thousand dollars
+               or to imprisonment for two years or to both.
+                      (5) A person who contravenes a measure employed
+               by the Authority pursuant to subsection (1) commits an
+               offence and is liable on summary conviction to a fine of five
+               thousand dollars or to imprisonment for one year or to both.
+Preventative     32. For the purpose of preventing outbreaks of food-
+measures.
+               borne diseases and other food safety risks, the Authority
+               shall–
+2015                      Food Safety                           Act 19 487
+
+       (a) conduct surveys on food;
+       (b) maintain statistics relating to food;
+       (c) conduct routine inspection and analysis of food;
+       (d) conduct any other activities recommended by
+           the Advisory Body;
+       (e) do any other act that is reasonably necessary in
+           the circumstances.
+   33.—(1)  Where an inspector, a police officer or a person Disclosure of
+authorized in writing by the Authority receives information information.
+in the course of his or her duties under this Act, he or she
+shall not disclose the information to a third party except in
+accordance with this section or unless otherwise directed by
+the Court.
+        (2) Where in any circumstances an inspector, a police
+officer or a person authorized in writing by the Authority
+acquires information that relates to a food safety risk, the
+inspector shall immediately disclose the information to the
+Authority.
+        (3) Subject to subsection (4), where the Authority
+acquires any information that relates to a food safety risk
+and it is reasonably necessary for the protection of public
+health, the Authority may disclose the information to–
+             (a) the Minister;
+             (b) the Chief Medical Officer or the Medical
+                 Officer in the locality in which the food
+                 safety risk occurs; or
+488 Act 19                        Food Safety                        2015
+
+                     (c) any person or institution that may contribute to
+             the prevention, management, reduction or elimination of the
+             food safety risk.
+                     (4) Where a person asserts that any information
+             obtained by an inspector in the course of his or her duties
+             or by the Authority is a trade secret or confidential business
+             information, the Authority and every person to which
+             the information is disclosed shall treat the information as
+             confidential.
+Notices.       34.—(1) Every notice serviced under this Act shall be
+             completed by an inspector in triplicate and the inspector
+             shall–
+                    (a) serve one copy of the notice on the food business
+                        operator or street food vendor, as the case may
+                        be;
+                    (b) file one copy of the notice with the Authority
+                        within twenty-four hours of service under
+                        paragraph (a); and
+                    (c) retain one copy of the notice.
+                     (2) Service of a notice under this Act shall be good,
+             if an inspector–
+                         (a) serves a copy of the notice on the food
+                             business operator or street food vendor, as
+                             the case may be;
+                         (b) is unable to locate the food business
+                             operator or street food vendor, as the case
+                             may be, affixes the notice in a conspicuous
+2015                       Food Safety                          Act 19 489
+
+                  place on the food premises or street food
+                  premises.
+       (3) The Minister may by Order prohibit street food
+vending in a specified area.
+       (4) An inspector may erect “No Vending” signs in
+any area prescribed by the Minister.
+        (5) A person who removes or tampers with a notice
+served pursuant to subsection (2)(b) commits an offence and
+is liable on summary conviction to a fine of five thousand
+dollars or to a term of imprisonment for one year or to both.
+                          Part VI
+   DUTIES OF FOOD BUSINESS OPERATORS AND
+            STREET FOOD VENDORS
+   35.—(1) Every food business operator and street food General duties
+                                                             of food business
+vendor shall ensure that all production of food conducted on operators and
+the food premises is conducted in accordance with this Act. street food
+                                                                 vendors.
+
+       (2) Every food business operator or street food
+vendor as the case may be shall–
+             (a) prominently display in a conspicuous
+                 place the licence or permit, as the case
+                 may be, and registration certificate for the
+                 food premises or street food premises, as
+                 the case may be;
+             (b) ensure that the food premises is constructed
+                 in accordance with the Physical Planning
+                 and Development Control Act, Chapter
+                 241A and any regulations made thereunder;
+490 Act 19               Food Safety                      2015
+
+             (c) keep detailed and accurate records of
+                 the operations of the food business or
+                 engagement of street food vending, as the
+                 case may be;
+             (d) ensure that appropriate food safety proce-
+                 dures and practices are identified, imple-
+                 mented, maintained and reviewed;
+             (e) establish and maintain quality control sys-
+                 tems and make the systems available for
+                 audit by the Authority when required to do
+                 so;
+             (f)   ensure that appropriate food safety proce-
+                   dures are identified, implemented, main-
+                   tained and reviewed by–
+                   (i)    analysing the potential food hazards
+                          in the operations of the food business
+                          and the street food vending;
+                   (ii) identifying the points in those opera-
+                        tions where a food safety risk may
+                        occur;
+                   (iii) determining the points which are crit-
+                         ical to ensuring food safety; and
+                   (iv) analysing the potential food safety
+                        risks in the operations of the estab-
+                        lishment.
+             (g) ensure that every food handler employed
+                 at the food business receives training in
+                 food safety and hygienic practices within
+                 six months of commencement of employ-
+2015                       Food Safety                            Act 19 491
+
+                   ment and are monitored to ensure imple-
+                   mentation of the practices;
+             (h) notify the Authority and consumers of
+                 any food safety risk relating to the food
+                 business or street food premises in the
+                 prescribed manner; and
+              (i) ensure that he or she has in his or her
+                  possession a valid permit when engaged in
+                  street food vending.
+   36. During the course of an inspection conducted by an Duties of
+inspector pursuant to this Act, a food business operator or food  business
+                                                            operators and
+street food vendor, or an agent thereof–                    street food
+                                                                   vendors during
+        (a) may accompany the inspector at all times;              an inspection.
+
+
+        (b) shall assist, or execute instructions, as may be
+            reasonably necessary to facilitate the exercise
+            of the inspector’s functions or to comply with
+            any provision of this Act; and
+        (c) shall provide any information as may be
+            reasonably necessary for compliance with any
+            provision of this Act.
+   37.—(1) Where a food business operator or street food Food business
+vendor reasonably believes that an employee has a disease operator        or
+                                                                street food
+likely to create a food safety risk, the food business operator vendor suspects
+                                                                certain medical
+shall immediately notify the Authority.                         conditions.
+
+       (2) On receipt of a notification under subsection (1),
+the Authority shall direct the employee of the food business
+operator or street food vendor to submit himself or herself
+to a medical examination and to submit to the Authority a
+492 Act 19                              Food Safety                         2015
+
+                  medical certificate duly executed by a registered medical
+                  practitioner.
+                          (3) Where a medical practitioner certifies that an
+                  employee of a food business operator or a street food vendor
+                  has a disease likely to create a food safety risk, the Authority
+                  may, suspend or revoke the food handler’s certificate held
+                  by the employee.
+                          (4) A person who after suspension or revocation of
+                  his or her food handler’s certificate works as a food handler
+                  commits an offence and is liable on summary conviction to
+                  a fine of two thousand dollars or to a term of imprisonment
+                  for six months.
+                          (5) A food business operator or a street food vendor
+                  who employs as a food handler, a person in relation to whom
+                  a revocation or suspension under subsection (4) is in force,
+                  commits an offence and is liable on summary conviction to
+                  a fine of five thousand dollars or to a term of imprisonment
+                  for one year.
+Traceability of      38.—(1) Every food business operator or street food ven-
+food.
+                  dor shall maintain adequate records and other relevant doc-
+                  umentation for the purpose of supplying reliable informa-
+                  tion regarding the origin of food if requested to do so by the
+                  Authority.
+                         (2) For the purposes of sub-section (1), the require-
+                  ment to maintain adequate records and other relevant docu-
+                  mentation, may relate to the food business operator or street
+                  food vendor having information on–
+                               (a) the quantity of food produced on the prem-
+                                   ises with respect to every business day;
+2015                      Food Safety                            Act 19 493
+
+            (b) the name and address of every supplier
+                from which, or wholesaler or retailer by
+                which, all food, and every ingredient,
+                food-producing animal, or substance in-
+                tended to be, or expected to be incorpo-
+                rated into food, are purchased;
+            (c) the name and address of every employee
+                and such other particulars as may be re-
+                quired by the Authority;
+            (d) the type, make and licence number of eve-
+                ry vehicle used to transport food to, from
+                or on behalf of the food business;
+            (e) every ingredient used in production of
+                food; and
+            (f)   the type and quantity of packaging mate-
+                  rial used in the packaging of food.
+         (3) Every food business operator and street food
+vendor shall adequately label every batch of food to facili-
+tate its traceability.
+        (4) For the purposes of this section, the Minister may
+make regulations prescribing forms, and specifying proce-
+dures to be adopted under this section.
+   39.—(1) The Minister, in consultation with the Author- Exemption.
+ity, may by Order exempt any person or category of persons
+from the requirements of section 38.
+        (2) The Minister must, prior to making the Order, be
+satisfied–
+            (a) that the person or category of persons–
+494 Act 19                             Food Safety                    2015
+
+                                 (i)    have adopted and implemented an
+                                        appropriate food safety programmme;
+                                 (ii) have taken all reasonable steps to
+                                      comply with all relevant provisions
+                                      of this Act and Regulations made
+                                      thereunder and with all applicable
+                                      food safety; and 		
+                            (b) that the granting of an exemption under
+                                this section is appropriate having regard to
+                                all the relevant circumstances.
+Terms of          40.—(1) Every exemption granted under section 39 shall
+exemption.
+                specify the terms thereof.
+                       (2) The Minister, in consultation with the Authority,
+                may from time to time issue written variations to the terms
+                of an exemption, by endorsement on the exemption or
+                otherwise.
+                       (3) An exemption may be unconditional or subject to
+                such conditions as the Minister thinks fit.
+Revocation of     41.—(1) The Minister in consultation with the Authority
+exemption.
+                may at anytime, by notice in writing revoke the exemption
+                granted to a person or any category of persons under section
+                39.
+                         (2) Without limiting the generality of subsection
+                (1), the Minister may revoke an exemption if the Minister is
+                satisfied that the person or category of persons has–
+                            (a) failed to comply with any condition of the
+                                exemption; or
+2015                      Food Safety                            Act 19 495
+
+             (b) contravened, or failed to comply with, any
+                 provision of–
+                  (i)   this Act; or
+                  (ii) any regulations made under this Act;
+                       or
+                  (iii) any applicable food standards set by
+                        the Authority.
+       (3) The Minister shall not revoke an exemption unless
+the Minister has first given the holder of the exemption a
+reasonable opportunity to be heard.
+  42.—(1) The Minister may specify in any exemption Duration of
+granted under section 39 that the exemption is to have effect exemption.
+indefinitely or for a stated period.
+       (2) Every exemption granted under section 39–
+             (a) shall come into force on the date of its
+                 issue; and
+             (b) shall continue in force until–
+                  (i)   it is revoked pursuant to section 41;
+                        or
+                  (ii) in the case of an exemption granted
+                       for a stated period, the expiry of that
+                       period; or
+                  (iii) it is surrendered pursuant to section
+                        43.
+  43.—(1) Subject to this section, any person or category Surrender of
+of persons exempted under section 39 may at any time exemption.
+496 Act 19                               Food Safety                        2015
+
+                    surrender that exemption by notice in writing to that effect
+                    to the Minister.
+                            (2) The surrender shall take effect on the date of
+                    expiry indicated in the notice.
+                           (3) On or before the surrender takes effect, the
+                    holder of the exemption shall return the exemption to the
+                    Minister.
+Minister to            44.—(1) The Minister shall cause to be kept and maintained
+maintain register
+of exemptions.
+                    a register in which is recorded, in respect of every exemption
+                    granted under section 39 the following particulars–
+                           (a) the name of the person or category of persons to
+                               whom the exemption was granted;
+                           (b) the date on which the exemption was granted;
+                           (c) the terms of the exemption;
+                           (d) the premises or vehicle to which the exemption
+                               relates;
+                           (e) any conditions imposed in respect of the ex-
+                               emption;
+                           (f)   the details of any variation of the terms or con-
+                                 ditions of the exemption;
+                           (g) the date on which the exemption was revoked,
+                               where applicable; and
+                           (h) such other particulars as may be required by
+                               this Act or any regulations made under this Act
+                               to be recorded in the register.
+2015                      Food Safety                           Act 19 497
+
+       (2) The Minister shall cause the Register–
+             (a) to be open for public inspection, during
+                 ordinary office hours; and
+             (b) shall supply to any person copies of all or
+                 part of the register on request and payment
+                 of a reasonable charge for the production
+                 of the copy.
+   45.—(1) A food business operator shall take all reasonable Recalling of
+measures to recall all food likely to be affected by a food hazardous food.
+safety risk, including consulting with the competent authority
+of the state from which any food was imported or to which
+the food has been exported.
+        (2) Where food that is imported or intended to be
+exported creates a food safety risk, the Authority may seize
+or recall the food for analysis or destruction.
+        (3) Where food exported creates a food safety risk,
+the Authority may consult with the competent authority in
+the State that received the food from Grenada to ensure that
+the food–
+             (a) if not yet released for distribution, is
+                 seized; or
+             (b) if already released for distribution, is re-
+                 called,
+for analysis or destruction by the competent authority of the
+State.
+       (4) Any action taken by the Authority pursuant to
+subsections (2) and (3) shall be taken at the expense of the
+food business operator.
+498 Act 19                              Food Safety                       2015
+
+                           (5) Where a food business operator contravenes
+                   subsection (1), the Authority may, at the expense of the food
+                   business operator, take all reasonable measures to recall all
+                   food likely to be affected by the food safety risk.
+                                            Part VII
+                              IMPORT AND EXPORT OF FOOD
+Requirements          46.—(1) A person who proposes to import or export food
+for importation
+and exportation.
+                   shall submit a notice of intention to import or export in the
+                   prescribed form, as the case may be, with the Authority prior
+                   to such importation or exportation.
+                         (2) A notice mentioned in sub-section (1) shall be
+                   accompanied by–
+                               (a) written confirmation from the relevant
+                                   authority of the importing country that it
+                                   consents, in accordance with the laws of
+                                   that country with respect to the giving of
+                                   consent, to the proposed import into that
+                                   country of such food;
+                               (b) a certificate of compliance from the
+                                   exporting country which indicates that the
+                                   standards and requirements established
+                                   by this Act and Regulations are met in
+                                   respect of the food to be exported.
+                           (3) The Authority may, dispense with, or modify any
+                   of the requirements of the notice mentioned in sub-section
+                   (1) where it considers it appropriate to do so on the grounds
+                   that the information to which the requirement relates is
+                   already available from another governmental entity and is
+                   submitted by the importer or exporter to it.
+2015                      Food Safety                             Act 19 499
+
+       (4) The requirements of this section shall be in
+addition to the requirements of the–
+             (a) Customs Act No. 9 of 2015;
+             (b) Plant Protection Act Cap. 242;
+             (c) Animals (Diseases and Importation) Act
+                 Cap. 15;
+             (d) Standards Act Cap. 310;
+             (e) Fisheries Act Cap. 108;
+             (f)   any other relevant enactment,
+and nothing in this section relieves a person from the
+requirements of those enactments.
+       (5) Any food which is imported into Grenada and
+found to present a food safety risk shall be re-exported to the
+exporter or to such place as the Authority may direct.
+  47. The Authority shall review the contents of the notice Review of
+                                                            notice to import
+mentioned in section 46 to determine whether–               or export.
+
+       (a) a physical examination or a sample examination
+           shall be made in respect of the food to be
+           imported or exported;
+       (b) the food may be released without examination
+           to the exporter or importer as the case may be;
+       (c) an inspection of the facilities from which the
+           food was produced shall be made; or
+       (d) the conduct of an audit of the food control
+           system of the competent authority in the
+           exporting country is required.
+500 Act 19                              Food Safety                        2015
+
+Obtaining sample      48.—(1) Where the Authority determines that an exami-
+of food.
+                   nation of the food is not required it shall notify the Comp-
+                   troller of Customs that such goods may be released to the
+                   importer or exporter on record upon payment of a prescribed
+                   fee.
+                            (2) A decision to collect a sample or to inspect food
+                   that is to be imported or exported shall be based upon the
+                   following considerations–
+                               (a) the need to conduct a risk analysis;
+                               (b) nature of the food;
+                               (c) priorities of the Authority; and
+                               (d) the history of the food.
+                           (3) Where the Authority determines that an
+                   examination of the food is required, it shall notify the
+                   Comptroller of Customs and the importer or exporter on
+                   record as the case may be and the shipment of food shall be
+                   held intact pending further notice.
+                           (4) Any sample collected by the Authority shall be
+                   sent to a food analyst for analysis or examination.
+Compliance,           49.—(1) Where after taking a sample of food under sec-
+non-compliance.
+                   tion 48, the Authority finds that the sample–
+                          (a) complies with the requirements of this Act,
+                              the Authority shall authorize the release of the
+                              shipment of food and submit a notice in the
+                              prescribed form to the Comptroller of Customs
+                              and the importer or exporter on record in respect
+                              of which the sample was taken;
+2015                     Food Safety                           Act 19 501
+
+       (b) does not comply with the requirements of the
+           Act, it shall submit a Notice of Detention in the
+           prescribed form to the Comptroller of Customs
+           and the importer or exporter on record.
+       (2) The Notice of Detention shall–
+            (a) specify the nature of the non-compliance;
+            (b) advise the importer or exporter of his or
+                her right to present detailed particulars to
+                the Authority as to how the shipment of
+                food may be–
+                 (i)   made eligible for import or export;
+                 (ii) made suitable as food for human con-
+                      sumption; or
+                 (iii) converted into a non-food use.
+       (3) Where a shipment of food is detained pursuant
+to subsection (2) an importer or exporter may submit to the
+Authority–
+            (a) evidence that the shipment of food is in
+                compliance with the requirements of this
+                Act; and
+            (b) certified analytical results of samples of
+                the food conducted by an analyst.
+       (4) Where the shipment of food is non-perishable,
+no later than five days after the submission of a Notice
+of Detention or within two days in the case of perishable
+food the Authority shall consider the information provided
+502 Act 19                               Food Safety                        2015
+
+                    pursuant to sub-section (3) and make a determination
+                    accordingly.
+                           (5) Where the Authority determines that the importer
+                    or exporter has not established that the shipment of food can
+                    be–		
+                                (a) made eligible for importation or exporta-
+                                    tion;
+                                (b) made suitable as food for human consump-
+                                    tion; or
+                                (c) converted into a non-food use,
+                    the shipment of food shall be seized and disposed of in the
+                    prescribed manner by the Authority.
+                            (6) Where the Authority determines that the importer
+                    or exporter has established that the shipment of food can be
+                    made eligible for importation or exportation, it shall notify
+                    the importer or exporter as the case may be, of the steps that
+                    are required to be taken and the time-frame within which
+                    the shipment of food may be presented for re-inspection and
+                    subsequent release for import or export accordingly.
+                             (7) Where upon re-inspection the shipment of food
+                    fails to meet the requirements of sub-section (5) the shipment
+                    of food shall be seized and disposed of in the prescribed
+                    manner by the Authority.
+Offence of             50. A person who imports or exports food in contraven-
+import or export.
+                    tion of this Act commits an offence and is liable upon sum-
+                    mary conviction to a fine of fifty thousand dollars or to a
+                    term of imprisonment for two years.
+2015                       Food Safety                            Act 19 503
+
+  51.—(1) The Minister may publish a list of foods that re- Food to be
+                                                               inspected.
+quire inspection by an inspector at a port of entry before ex-
+portation from Grenada or upon importation into Grenada.
+        (2) An importer or exporter of any food listed in
+accordance with sub-section (1) shall ensure that the required
+inspection is conducted prior to the completion of import or
+export procedures as the case may be.
+       (3) Where there are reasonable grounds for believing
+that food which is not included on the list mentioned in
+sub-section (1) is not safe or does not comply with the
+requirements of this Act such food may be inspected by an
+inspector.
+       (4) Where a governmental entity determines that
+imported food or food produced locally for consumption or
+exportation does not meet the standards established under
+this Act or any other enactment, such entity shall notify the
+Authority accordingly.
+  52. Inspections shall be carried out during normal busi- Time for
+ness hours of the Authority or at any other time deemed nec- inspection.
+essary by the Authority.
+   53. The Authority may, at any time, order that any food Imported
+                                                            food may be
+that is imported into Grenada be held at a particular place held pending
+until an inspection or re-inspection is conducted.          inspection.
+
+
+   54.—(1) Nothing in this Act shall be construed as prohib- Re-labeling and
+iting an importer from importing food pursuant to a permit re-conditioning.
+issued under subsection (2).
+        (2) Where the Authority is satisfied that an importer
+intends to re-label or re-condition food to bring the food into
+504 Act 19                           Food Safety                        2015
+
+                compliance with the provisions of this Act, the Authority may
+                issue a permit for importation of the food, notwithstanding
+                any apparent contravention of any other provision of this
+                Act, on the condition that the re-labeling or re-conditioning,
+                as the case may be, shall be conducted within a prescribed
+                time.
+                        (3) Where the importer fails to re-label or re-
+                condition, as the case may be, the food within the prescribed
+                time, the importer shall re-export or destroy the food at the
+                expense of the importer.
+                        (4) An importer who contravenes this section
+                commits an offence and is liable to a fine of twenty thousand
+                dollars and to pay compensation to the Authority for the cost
+                of destroying the food.
+                                         Part VIII
+                              OFFENCES AND PENALTIES
+Offences          55.—(1) A person commits an offence where that person
+generally.
+                contravenes this Act or the Regulations or fails to comply
+                with a notice issued under this Act.
+                       (2) A person who commits an offence under this
+                Act shall, where no other penalty is provided, be liable on
+                summary conviction to a fine of ten thousand dollars or to a
+                term of imprisonment for three years.
+Selling food      56.—(1) A food business operator or street food vendor
+that is unfit
+for human       who sells food that–
+consumption.
+                       (a) consists of or contains a biological, chemical or
+                           physical agent or attribute;
+2015                      Food Safety                           Act 19 505
+
+       (b) was produced on food premises or uses equip-
+           ment that is in a condition,
+which is likely to have an adverse effect on the health of
+a person who consumes the food commits an offence and
+is liable on summary conviction to a fine of one hundred
+thousand dollars.
+       (2) In determining whether food is likely to have an
+adverse effect on the health of a person who consumes it, the
+Court shall have regard to–
+             (a) the probable effect of the food on the
+                 health of a person consuming it; and
+             (b) the probable cumulative effect of food of
+                 substantially similar composition on the
+                 health of a person consuming such food in
+                 ordinary quantities.
+       (3) A food business operator or street food vendor
+who contravenes subsection (1) is liable to suspension
+or revocation of the licence or permit issued to the food
+business operator or street food vendor.
+   57. A person who attempts to improperly influence an in- Improperly
+spector in the exercise of his or her duties under this Act influencing
+                                                             inspector.
+                                                                        an
+
+commits an offence and is liable on summary conviction to a
+fine of twenty thousand dollars or to a term of imprisonment
+for one year or to both.
+   58. A person who impersonates an inspector commits an Impersonating
+offence and is liable on summary conviction to a fine of ten an inspector.
+thousand dollars or to a term of imprisonment for one year
+or to both.
+506 Act 19                               Food Safety                         2015
+
+Failure to grant
+access, provide
+                      59. A person who fails to grant access, provide samples
+samples.           or provide information to an inspector or authorized officer
+                   upon request gives false information to an authorized offic-
+                   er, commits an offence and is liable on summary conviction
+                   to a fine of five thousand dollars or to a term of imprison-
+                   ment for one year or to both.
+Offences by
+inspectors.          60.—(1) An inspector who–
+                           (a) directly or indirectly demands or accepts from
+                               a person any fee, bribe, or reward, whether
+                               pecuniary or otherwise, on account of anything
+                               done, to be done, omitted or to be omitted by the
+                               inspector in any way relating to the discharge of
+                               his or her duties; or
+                           (b) discloses to a third party any information
+                               acquired in the performance of his or her duties
+                               and relating to any person, except when required
+                               to disclose information as a witness in a court
+                               of law or under the authority of this Act,
+                   commits an offence and is liable on summary conviction to
+                   a fine of ten thousand dollars or to a term of imprisonment
+                   for one year or to both.
+                           (2) The conviction of an inspector under subsection
+                   (1), may constitute sufficient grounds for the dismissal of
+                   the inspector.
+Continuing            61. Where a person is convicted of an offence under this
+offences.
+                   Act and the contravening conduct for the offence of which
+                   the person was convicted is continued or is repeated after the
+                   conviction, the person shall, on conviction, be liable to a fur-
+                   ther fine of one-fourth of the maximum penalty prescribed
+2015                      Food Safety                            Act 19 507
+
+for the offence for each day of the period within which the
+offence continues.
+   62. Where a body corporate commits an offence under Offences by a
+this Act, every director, manager and other similar officer body corporate.
+of the body corporate, and every person purporting to act
+in any such capacity, at the time of the commission of the
+offence–
+       (a) may be charged severally, or jointly in the same
+           proceedings with the body corporate; and
+       (b) where the body corporate is convicted of the
+           offence, shall be liable for that offence unless,
+           having regard to the nature of his or her functions
+           in that capacity and to all circumstances, he or
+           she proves that–
+             (i)   the offence was committed without his or
+                   her knowledge, consent or connivance;
+                   and
+             (ii) he or she took all reasonable precautions,
+                  and exercised due diligence, to prevent the
+                  commission of the offence.
+  63.—(1) A person who–                                          Obstruction and
+                                                                 interference.
+       (a) obstructs, assaults, threatens or delays an
+           inspector in the exercise of his or her duties
+           under this Act;
+       (b) upon reasonable request for the purposes of
+           this Act and without reasonable cause, refuses
+           to provide assistance or information to an
+           inspector or police officer acting pursuant to
+           this Act; or 			
+508 Act 19                            Food Safety                         2015
+
+                        (c) without reasonable cause, refuses to comply
+                            with any request of an inspector,
+                 commits an offence and is liable on summary conviction to
+                 a fine of two thousand dollars or to imprisonment for a term
+                 of one year or to both.
+                        (2) A person who–
+                              (a) furnishes information which he or she
+                                  knows to be false or misleading in a mate-
+                                  rial particular; or
+                              (b) recklessly furnishes information which is
+                                  false and misleading in a material particu-
+                                  lar,
+                 commits an offence and is liable on summary conviction to
+                 a fine of ten thousand dollars or to a term of imprisonment
+                 for one year.
+General             64. In any proceedings for an offence under this Act, it
+defences.
+                 shall be a defence to establish that the person could not, with
+                 reasonable diligence, have ascertained that the production of
+                 the food would contravene this Act.
+
+                                           Part IX
+                             MISCELLANEOUS PROVISIONS
+Food safety
+training and
+                    65.­
+                       —(1) The Authority may provide training pro-
+accreditation.   grammes, materials and certification in food safety for any
+                 person who engages or intends to engage in a food business
+                 or street food vending, whether as an operator, employee or
+                 otherwise.
+2015                      Food Safety                             Act 19 509
+
+        (2) Any training programme conducted, and materi-
+als distributed, on the subject of or relating to food safety
+shall be first approved by the Authority in consultation with
+relevant governmental entities and relevant accredited enti-
+ties.
+        (3) A person or institution that intends to conduct
+a training programme on the subject of or related to food
+safety shall apply, in the prescribed manner, to the Authority
+for approval of the training programme and the materials to
+be used therein.
+        (4) Upon application under subsection (3) the
+Authority may issue an accreditation certificate in the
+prescribed form if the Authority is satisfied that the training
+programme and its materials are consistent with HACCP
+and the provisions of this Act.
+  66.—(1) The Minister may make regulations for the pur- Regulations.
+pose of giving effect to the provisions of this Act.
+        (2) Without prejudice to the generality of subsection
+(1), the Minister may make regulations–
+             (a) in respect of the issuance, renewal,
+                 suspension, revocation or cancellation of
+                 licences and permits under this Act;
+             (b) in respect of protocols and procedures for
+                 the importation and exportation of food;
+             (c) in respect of analysis of any food;
+             (d) in respect of production of food;
+510 Act 19               Food Safety                      2015
+
+             (e) prescribing fees for the purposes of this
+                 Act;
+             (f)   in respect of procedures for monitoring
+                   and surveillance of food-borne diseases
+                   and other food safety risks;
+             (g) in respect of protocols and procedures for
+                 inspection of food;
+             (h) in respect of the qualifications, education,
+                 training and certification that an inspector
+                 is required to have in order to exercise
+                 powers or carry out duties under this Act;
+             (i)   in respect of the establishing of systems to
+                   ascertain the origin or destination of food
+                   or anything used in or related to a licensed
+                   activity including requiring persons who
+                   come into contact with the food to identify
+                   and track them in the prescribed manner
+                   and at the prescribed times and maintain
+                   records and other documents with respect
+                   to them in the prescribed manner and at
+                   the prescribed times;
+             (j)   in consultation with the Bureau of Stand-
+                   ards make regulations establishing appli-
+                   cable standards based on–
+                   (a) codex Alimentarius;
+                   (b)     good agricultural practices;
+                   (c) good manufacturing practices;
+2015                        Food Safety                             Act 19 511
+
+                    (d) HACCP; and
+                    (e) any other relevant international stand-
+                        ard pertaining to food safety; and
+              (k) for the purpose of the better administration
+                  and implementation of this Act.
+       (3) In making the regulations the Minister may
+consult with and solicit the recommendations of the
+Authority.
+   67. A food business operator, street food vendor or food Transitional
+handler conducting a food business, street food vending or provisions.
+food handling for a continuous period of six months prior to
+the commencement of this Act shall—
+        (a) be deemed to have a valid licence, permit or
+            certificate under this Act for a period of six
+            months from the date of commencement of this
+            Act;
+        (b) within one month from the date of commence-
+            ment of this Act, make an application for a
+            licence, permit or certification in accordance
+            with this Act.
+
+                                   SCHEDULE
+
+                                                                        (Section 9)
+
+   1. National Food Safety Advisory Body. (1) The Minister shall appoint a National
+Food Safety Advisory Body of no less than eleven members or no more than fifteen
+members to hold office for a term not exceeding three years under such terms and
+conditions of service as the Minister may fix in the instrument of appointment.
+512 Act 19                             Food Safety                                2015
+
+                   (2) The Advisory Body shall advise the Minister on any matter
+             pertaining to food safety.
+
+                   (3) The Minister may appoint any person or agency with relevant
+             knowledge or experience to the Advisory Body including persons
+             from health, testing laboratories, agriculture, fisheries, nutrition, trade,
+             customs, bureau of standards, food processing, food distribution, public
+             health sectors, consumer groups or local government.
+
+                  (4) The Minister shall, on the recommendation of the Advisory
+             Body, appoint one of the members of the Advisory Body to be the
+             Chairman.
+
+                  (5) The Advisory Body shall select from among its members a
+             Deputy Chairman and a Secretary.
+
+                    (6) The Advisory Body shall meet at least once in each month
+             and at such other times as the Chairman determines is necessary for the
+             efficient discharge of its functions.
+
+                  (7) The Advisory Body shall determine its own procedure and
+             may make rules governing such procedure as are considered necessary.
+
+                  (8) The Minister may, on the recommendation of the Advisory
+             Body, remove a member of the body if the member–
+
+                        (a) becomes incapable, by reason of mental or physical
+                            capacity, of carrying out his or her duties;
+
+                        (b) is convicted of an offence under this Act or under the
+                            Criminal Code;
+
+                        (c) is guilty of misconduct;
+
+                        (d) is absent, except on providing reasons to the Advisory
+                            Body, from all meetings of the body held during two
+                            consecutive months or during any three months in any
+                            period of twelve months;
+
+                        (e) fails to comply with sub-regulation (9).
+
+                   (9) Any member of the Advisory Body who has any interest,
+             directly or indirectly, in any matter before the body–
+2015                          Food Safety                                  Act 19 513
+
+           (a) shall disclose the nature of the interest to the Advisory
+               Body; and
+
+           (b) shall not take part in any deliberations or decisions of
+               the Advisory Body with respect to that matter.
+
+     (10) A disclosure under this section shall be recorded in the
+minutes.
+
+      (11) The Chairman may resign from office by an instrument in
+writing addressed to the Minister, and any other member may resign
+from office by an instrument in writing addressed to the Chairman.
+
+   2. Appointment of sub-committees, working groups. (1) Notwith-
+standing anything contained in regulation 1, the Advisory Body may
+appoint sub-committees for the purpose of advising it on any specialized
+area of food safety.
+
+       (2) Persons may be appointed to such sub-committee mentioned in
+sub-regulation (1) for a period of two years but any person so appointed
+shall be eligible for reappointment.
+
+  3. Functions of the Advisory Body. The functions of the Advisory
+Body shall be to–
+
+         (a)   facilitate the development of food safety policies;
+
+         (b)   propose food safety laws;
+
+         (c)   review work-plans and programmes;
+
+         (d)   provide guidance on matters related to risk analysis and
+               applicable international standards;
+
+         (e)   develop a plan of action in relation to prevention,
+               reduction, management and elimination of outbreaks of
+               food-borne diseases and other food safety risks;
+
+         (f)   perform such other functions as are relevant to the
+               effective implementation of this Act.
+514 Act 19                      Food Safety                      2015
+
+  Passed by the House of Representatives this 17th day of April, 2015.
+
+						WILLAN THOMPSON
+     Clerk to the House of Representatives.
+                             ____________
+  Passed by the Senate this 29th day of April, 2015.
+
+						WILLAN THOMPSON
+           Clerk to the Senate.
+
+
+
+
+                                  GRENADA
+          PRINTED BY THE GOVERNMENT PRINTER, AT THE GOVERNMENT
+                        PRINTING OFFICE, ST. GEORGE’S
+                                   3/7/2015.
+

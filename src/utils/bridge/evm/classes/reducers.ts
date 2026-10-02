@@ -13,6 +13,12 @@ type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & 
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
 };
 
+const createBridgeTrackingAbortError = (): Error => {
+  const error = new Error('Bridge transaction tracking canceled');
+  error.name = 'AbortError';
+  return error;
+};
+
 export class EvmBridgeReducer extends BridgeReducer<EvmHistory> {
   protected readonly removeTransactionByHash!: RemoveTransactionByHash<EvmHistory>;
 
@@ -24,7 +30,7 @@ export class EvmBridgeReducer extends BridgeReducer<EvmHistory> {
 }
 
 export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
-  async changeState(transaction: EvmHistory): Promise<void> {
+  async changeState(transaction: EvmHistory, _signal?: AbortSignal): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
     switch (transaction.transactionState) {
@@ -49,7 +55,7 @@ export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
 }
 
 export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
-  async changeState(transaction: EvmHistory): Promise<void> {
+  async changeState(transaction: EvmHistory, signal?: AbortSignal): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
     switch (transaction.transactionState) {
@@ -65,7 +71,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
             await this.waitForTransactionBlockId(currentId);
 
             await this.checkTxSoraHash(currentId);
-            await this.subscribeOnTxBySoraHash(currentId);
+            await this.subscribeOnTxBySoraHash(currentId, signal);
             await this.onComplete(currentId);
           },
         });
@@ -110,7 +116,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
     return hash;
   }
 
-  private async subscribeOnTxBySoraHash(id: string): Promise<void> {
+  private async subscribeOnTxBySoraHash(id: string, signal?: AbortSignal): Promise<void> {
     const { hash, externalNetwork, from } = this.getTransaction(id);
 
     if (!from) {
@@ -129,10 +135,19 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
       throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork": "${externalNetwork}" is not correct`);
     }
 
-    let subscription!: Subscription;
+    let subscription: Subscription | undefined;
+    let abortHandler: (() => void) | undefined;
 
     try {
       await new Promise<BridgeTxStatus>((resolve, reject) => {
+        abortHandler = () => reject(createBridgeTrackingAbortError());
+        signal?.addEventListener('abort', abortHandler, { once: true });
+
+        if (signal?.aborted) {
+          abortHandler();
+          return;
+        }
+
         const observable = evmBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash);
 
         if (!observable) throw new Error(`[${this.constructor.name}]: Unable to subscribe on transacton data`);
@@ -156,7 +171,8 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
         });
       });
     } finally {
-      subscription.unsubscribe();
+      if (abortHandler) signal?.removeEventListener('abort', abortHandler);
+      subscription?.unsubscribe();
     }
   }
 }

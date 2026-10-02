@@ -1,0 +1,19 @@
+{
+  "sourceUrl": "http://laws.moj.gov.af/uploadedfiles/OG_01472.pdf",
+  "databaseUrl": "http://laws.moj.gov.af/ShowLawPersian.aspx",
+  "title": "Law Preventing Smuggling of Foodstuffs, Medicines and Health Products",
+  "gazette": "Official Gazette 1472, publication 16 August 2025 (25 Asad 1404 /22 Safar 1447); official database record 18596 marked نافذ (in force).",
+  "method": "Recovered official database on HTTP; public text search غذایي/غذایی, then public download; direct PDF subsequently verified identical SHA 256. Read extracted Dari/Pashto text and visually checked key pages. Gazette extraction corrupts some numerals and letters; page numbers below are the printed page numbers, verified with render.",
+  "article2_10": "Food includes all food and drink used by people/animals as nourishment.",
+  "article2_13": "Permission is a registered proforma or product-registration certificate issued by Health/Agriculture ministries and used as the basis for imports.",
+  "article4": "Scope includes agencies/persons involved in food/medicine/health-product smuggling; subsection 2 also expressly includes unlicensed importers (printed 14–15 /PDF 16–17).",
+  "article21_caveat": "Article 21(1) requires formal trade licence plus Health import permission for imports FOR COMMERCIAL PURPOSES (printed 53–54 /PDF 55–56). This clause is not represented as universal. The following traveller concession covers prescription medicines, not personal food parcels.",
+  "article22_1_Dari": "تورید مواد غذایی، ادویه و محصوالت صحی بدون از جواز یا اجازه‌نامۀ رسمی، منع است.",
+  "article22_1_translation": "Importation of foodstuffs, medicines and health products without a licence or official permission is prohibited.",
+  "article22_2": "Expressly applies violation procedure to companies and persons. Printed 56 /PDF 58.",
+  "article23_1": "Companies or persons importing food/medicine/health products without licence or official permission through official or unofficial routes are subject to the stated sanctions. No commercial-purpose qualifier appears here. Printed 57 /PDF 59.",
+  "article8_2_3": "Finance Ministry must not take customs duties from food lacking Health/Agriculture import permission and must return it to country of production; printed 24 /PDF 26.",
+  "article18_1": "Transport companies cannot carry/import food/medicine/health products/raw materials of companies/persons lacking official trade licence and Health import permission; printed 46–47 /PDF 48–49. This is corroborating transport scope, not a separate inference that the volunteer store must obtain an Afghan trading licence.",
+  "article34": "Effective from endorsement. Purports to repeal other laws not endorsed by the current authority or inconsistent with this law. Official database marks the 2016 Food Safety Law as repealed. No reliance is placed on that old law.",
+  "assessment": "Propose not_supported for the no-special-document route on explicit conservative personal-scope inference from independently unqualified Articles 22–23 and the separate official permission defined in 2(13). Article 21 commercial-purpose limit is preserved as a caveat; it does not expressly exempt personal food from 22–23. No personal-food/mail/low-quantity waiver was identified in the full text. Agriculture’s processed-tea classification remains unresolved. This is not a blanket tea prohibition."
+}

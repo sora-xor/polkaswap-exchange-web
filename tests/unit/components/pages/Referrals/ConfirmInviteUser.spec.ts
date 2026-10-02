@@ -6,7 +6,12 @@ const setInvitedUser = vi.fn();
 const approveReferrer = vi.fn();
 const resetStorageReferrer = vi.fn();
 const withNotifications = vi.fn(async (handler: () => Promise<void>) => {
-  await handler();
+  try {
+    await handler();
+    return { submitted: true };
+  } catch (error) {
+    return { submitted: false, error };
+  }
 });
 
 vi.mock('@tests/stubs/walletRuntime', async () => {
@@ -89,6 +94,9 @@ describe('ReferralsConfirmInviteUser.vue', () => {
 
     expect(approveReferrer).toHaveBeenNthCalledWith(1, true);
     expect(approveReferrer).toHaveBeenNthCalledWith(2, false);
+    expect((wrapper.vm as any).isVisible).toBe(true);
+    expect(resetStorageReferrer).not.toHaveBeenCalled();
+    expect(wrapper.emitted('confirm')).toBeUndefined();
   });
 
   it('skips invitation request when referrer already exists', async () => {

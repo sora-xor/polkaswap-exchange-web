@@ -1,0 +1,23 @@
+[
+  {
+    "url": "https://www.ofoq.gov.bh/pdf/FoodImportersGuide_2024_EN.pdf",
+    "file": "bh-food-guide2024.pdf",
+    "status": 200,
+    "bytes": 1645019,
+    "isPdf": true
+  },
+  {
+    "url": "https://www.ofoq.gov.bh/pdf/Ministry_of_Municipalities_Affair_and_Agriculture.pdf",
+    "file": "bh-agri-requirements.pdf",
+    "status": 200,
+    "bytes": 780354,
+    "isPdf": true
+  },
+  {
+    "url": "https://www.ofoq.gov.bh/pdf/PROD_REG_TES_METRO.pdf",
+    "file": "bh-metrology-list.pdf",
+    "status": 200,
+    "bytes": 187144,
+    "isPdf": true
+  }
+]

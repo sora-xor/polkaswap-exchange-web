@@ -54,12 +54,12 @@ describe('vault events query', () => {
       },
     });
     expect(result.totalCount).toBe(2);
+    expect(result.items[0]?.id).toBe('1');
     expect(result.items[0]?.amount?.toString()).toBe('12.5');
     expect(result.items[0]?.timestamp).toBe(1_700_000_001_000);
     expect(result.items[0]?.type).toBe('Deposit');
     expect(result.items[1]?.amount).toBeNull();
   });
-
 
   it('returns an empty response when the indexer returns no vault event data', async () => {
     indexerMocks.fetchEntities.mockResolvedValue(null);
@@ -70,9 +70,7 @@ describe('vault events query', () => {
       items: [],
     });
   });
-
-
-  });
+});
 
 const createIndexer = (type: unknown) => ({
   type,

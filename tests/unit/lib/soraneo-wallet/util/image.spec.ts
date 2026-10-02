@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { IPFS_GATEWAY_BASE_URL } from '@/utils/ipfs';
+
 const imageUtilMocks = vi.hoisted(() => ({
   saveAsMock: vi.fn(),
 }));
@@ -28,6 +30,25 @@ describe('wallet util/image', () => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
     imageUtilMocks.saveAsMock.mockReset();
+  });
+
+  it.each([
+    ['ipfs://QmToken/logo.png', `${IPFS_GATEWAY_BASE_URL}/ipfs/QmToken/logo.png`],
+    ['ipns://example.com/logo.png', `${IPFS_GATEWAY_BASE_URL}/ipns/example.com/logo.png`],
+    ['https://ipfs.io/ipfs/QmToken/logo.png', `${IPFS_GATEWAY_BASE_URL}/ipfs/QmToken/logo.png`],
+    ['https://bafytoken.ipfs.dweb.link/logo.png', `${IPFS_GATEWAY_BASE_URL}/ipfs/bafytoken/logo.png`],
+    ['https://dedicated.example/ipfs/QmToken/logo.png', 'https://dedicated.example/ipfs/QmToken/logo.png'],
+  ])('resolves CSS icon sources through maintained gateways: %s', (source, expected) => {
+    expect(sanitizeIconSource(source)).toBe(expected);
+  });
+
+  it.each([
+    'ipfs://QmToken/logo\".png',
+    'ipfs://QmToken/logo(1).png',
+    'ipfs://QmToken/bad icon.png',
+    'ipfs://QmToken/../../api/v0/version',
+  ])('preserves safety checks for native IPFS icon sources: %s', (source) => {
+    expect(sanitizeIconSource(source)).toBe('');
   });
 
   it('converts base64 data URIs into blobs', async () => {
@@ -166,5 +187,24 @@ describe('wallet util/image', () => {
     await expect(getBase64Icon('https://cdn.polkaswap.io/icon.png')).resolves.toBe('https://cdn.polkaswap.io/icon.png');
     await expect(getBase64Icon(svgIcon)).resolves.toBe('data:image/png;base64,UE5H');
     await expect(getBase64Icon('javascript:alert(1)')).resolves.toBe('');
+  });
+
+  it('falls back to an empty icon when SVG rasterization fails', async () => {
+    const svgIcon = `data:image/svg+xml;base64,${Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"></svg>').toString(
+      'base64'
+    )}`;
+
+    class ImageStub {
+      public onload: null | (() => void) = null;
+      public onerror: null | ((error: Error) => void) = null;
+
+      set src(_value: string) {
+        queueMicrotask(() => this.onerror?.(new Error('invalid image')));
+      }
+    }
+
+    vi.stubGlobal('Image', ImageStub);
+
+    await expect(getBase64Icon(svgIcon)).resolves.toBe('');
   });
 });

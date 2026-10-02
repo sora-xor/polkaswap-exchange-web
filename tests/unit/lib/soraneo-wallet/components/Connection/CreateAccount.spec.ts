@@ -53,4 +53,26 @@ describe('Wallet CreateAccountStep', () => {
 
     expect(state.seedPhraseToCompareIdx.value).toEqual([]);
   });
+
+  it('retains the same seed and credentials when backup creation fails so the user can retry', async () => {
+    const seed = 'one two three four five six seven eight nine ten eleven twelve';
+    const createSeed = vi.fn(() => ({ seed }));
+    const createAccount = vi.fn().mockRejectedValueOnce(new Error('upload failed')).mockResolvedValueOnce(undefined);
+    const props = reactive({ chainApi: { createSeed }, step: LoginStep.CreateCredentials, createAccount });
+    const emit = vi.fn();
+    const state = (CreateAccountStep as any).setup(props, { attrs: {}, emit, expose: vi.fn(), slots: {} });
+    state.accountName.value = 'Wallet';
+    state.accountPassword.value = 'synthetic password';
+    state.accountPasswordConfirm.value = 'synthetic password';
+    await expect(state.handleAccountCreate()).rejects.toThrow('upload failed');
+    expect(state.accountName.value).toBe('Wallet');
+    expect(state.accountPassword.value).toBe('synthetic password');
+    expect(state.accountPasswordConfirm.value).toBe('synthetic password');
+    expect(state.seedPhrase.value).toBe(seed);
+    expect(emit).not.toHaveBeenCalled();
+
+    await state.handleAccountCreate();
+    expect(createAccount.mock.calls[0]).toEqual(createAccount.mock.calls[1]);
+    expect(createSeed).toHaveBeenCalledOnce();
+  });
 });

@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { onBeforeUnmount, ref, shallowRef } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { copyToClipboard, delay } from '@/utils';
@@ -11,23 +11,32 @@ type CopyEvent = PointerEvent | MouseEvent;
  */
 export function useCopyAddress() {
   const { t } = useTranslation();
-  const targetElement = ref<EventTarget | null>(null);
+  const targetElement = shallowRef<EventTarget | null>(null);
   const wasAddressCopied = ref(false);
+  let active = true;
 
-  const handleMouseleaveListener = async () => {
-    await delay(500);
-    wasAddressCopied.value = false;
+  const removeMouseleaveListener = (target = targetElement.value): void => {
+    const element = target as Nullable<HTMLElement>;
+    element?.removeEventListener?.('mouseleave', handleMouseleaveListener);
 
-    const element = targetElement.value as HTMLElement | null;
-
-    if (element) {
-      element.removeEventListener('mouseleave', handleMouseleaveListener);
+    if (targetElement.value === target) {
+      targetElement.value = null;
     }
+  };
 
-    targetElement.value = null;
+  const handleMouseleaveListener = async (event?: Event) => {
+    const element = event?.currentTarget ?? targetElement.value;
+    await delay(500);
+    removeMouseleaveListener(element);
+
+    if (!active || targetElement.value) return;
+
+    wasAddressCopied.value = false;
   };
 
   const handleCopyAddress = async (address: string, event?: CopyEvent): Promise<void> => {
+    removeMouseleaveListener();
+
     if (event) {
       event.stopImmediatePropagation?.();
       const element = event.target as HTMLElement | null;
@@ -50,6 +59,11 @@ export function useCopyAddress() {
 
     return tooltipCopyValue ? t('copiedWithValue', { value: tooltipCopyValue }) : t('assets.copied');
   };
+
+  onBeforeUnmount(() => {
+    active = false;
+    removeMouseleaveListener();
+  });
 
   return {
     handleCopyAddress,

@@ -34,7 +34,17 @@ The IPFS bundle reads runtime configuration from `public/env.json`. Two keys are
 
 For IPFS publish guidance (pre-flight checklist, `yarn ipfs:publish`, verification scripts) see `docs/ipfs.md`. For SoraFS/Torii packaging and publish commands see `docs/sorafs.md`.
 
+The [Tonswap burn campaign](docs/tonswap-burn.md) at `/#/burn` reserves TS for XOR burned from block 27,720,478, separately from the SS / SORA Nexus campaign. It uses a globally ordered reward curve, caps rewarded burns at 1,753,357 XOR, and records future claims against the burning SORA wallet for Tonswap's launch.
+
 For same-page automation from AI agents, see `docs/agent-trading.md` and `docs/agent-trading-cookbook.md`. The API is exposed as `window.PolkaswapAgent` from the static IPFS app and ships `.well-known` manifest, types, schema, examples, and optional browser client without middleware.
+
+The [Bots workspace](docs/bot-trading.md) at `/#/bots` adds historical testing, unsigned paper trading, and consent-based live swaps using the existing wallet. The [simple start flow](docs/bots-simple-start.md) puts token selection first, previews one strategy by default, explains recorded decisions, and connects the result directly to a funded wallet review. It includes scoped session signing, reusable per-bot allocations, and optional direct OpenAI, Claude, or custom HTTPS proposal providers. Live sessions require IndexedDB and Web Locks; they pause when the browser tab is hidden or suspended.
+
+The [public execution-evidence collector](docs/bots-execution-evidence.md) records scheduled, finalized KUSD/XOR quotes and estimated fees for research, with immutable manifests and explicit failures. It uses public RPC only and never submits trades.
+
+The [indexer history API](docs/indexer-history-api.md) serves historical and newly completed hourly data for XOR, VAL, PSWAP, DAI, KUSD, LLD and LLM, with pagination, freshness checks and explicit missing or absent-pool statuses.
+
+[Historical execution research](docs/bots-historical-execution.md) separates completed-hour signals from later archived quote states, with explicit timing assumptions and historical runtime fee decoding. These development tools do not change GO qualification or authorize trading.
 
 Generic agent discovery breadcrumbs are also published as `llms.txt`, `agents.txt`, `AGENTS.md`, `robots.txt`, and HTML head tags that point at `.well-known/polkaswap-agent.json`.
 
@@ -91,6 +101,8 @@ yarn install
 
 ## Testing
 
+The XOR-only Community Store at `/#/store` uses the versioned Sora Pay package and a separate private merchant relay. See [Community Store](docs/community-store.md) for pricing, product assets, recovery, fulfillment and launch requirements. The IPFS bundle keeps browsing available while its relay is unconfigured.
+
 Vitest is configured via `vitest.config.mjs` with projects for unit suites and i18n checks. Add or update unit tests under `tests/unit/**` whenever you introduce a new function, composable, or store action. Useful commands:
 
 - `yarn test:unit` — runs every unit suite. Target a single file via `vitest run --config vitest.config.mjs --project unit path/to/spec`.
@@ -123,6 +135,8 @@ The app is mid-migration from Vuex facades to Pinia. The old `direct-vuex` packa
 - `useSettingsStore`, `useNotificationsStore`, `useRouterStore`, `useBridgeStore`, and the staking/pools stores under `src/stores/**`.
 
 Legacy Vuex modules remain in `src/store/**` simply as facades while Options API components are migrated. Avoid adding new decorator usage; instead, expose the needed Pinia action/getter through the facade until the component is converted. Progress and owners are tracked in `docs/plans/state-layer-migration.md`.
+
+See [account balances](docs/account-balances.md) for native XOR freeze rules, total versus spendable amounts, and the snapshot/subscription lifecycle shared by the wallet, Swap, and Polkamarkt.
 
 ## Developing with Pinia
 
@@ -165,3 +179,13 @@ Locale catalogs live under `src/lang/*.json` (SPA) and `src/lang/card/*.json` (e
 5. Run `yarn test:translation` to ensure catalogs stay in sync and special locales (for example Akkadian via `tsx scripts/lang/enforce-cuneiform.ts --locales=akk`) respect their requirements.
 
 All translation changes must land with regenerated locale files and passing `yarn test:translation`.
+
+UI/UX behavior and validation: [UI refinements](docs/ui-ux-improvements.md) and [Swap quote, review and layout behavior](docs/swap-interaction.md).
+
+The static Buy XOR flow uses an isolated MOF service for read-only conversion quotes. See [quote relay operations](docs/buy-xor-quote-relay.md) for its fixed request schema, production-origin policy, limits, deployment and verification; wallet signing stays in the frontend.
+
+The [before-card cost review](docs/buy-xor-card-cost-review.md) checks the budget and route before opening payment. [Purchase recovery](docs/buy-xor-funding-state.md) preserves tracked funding, and [opt-in measurement](docs/buy-xor-measurement.md) counts aggregate purchase-step observations. See the [release evidence](docs/buy-xor-cost-release-2026-09-25.md) and the separate [native liquidity funding proposal](docs/native-xor-liquidity-funding-proposal.md).
+
+[Card continuation and wallet backup fixes](docs/buy-xor-followthrough-2026-09-25.md) cover edited checkout budgets, account-safe history responses, neutral recovery after reload and confirmed encrypted Google backup writes.
+
+[Buy XOR usability improvements](docs/buy-xor-usability-2026-09-26.md): wallet setup, cost summaries and receipt-based purchase progress.

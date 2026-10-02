@@ -447,27 +447,30 @@ const handleCreate = async () => {
     if (errorMessage.value) {
       showAppAlert(errorMessage.value, t('errorText'));
     }
-  } else {
-    try {
-      const lockedToken = collateralToken.value;
-      const debt = debtToken.value;
-      if (!(lockedToken && debt)) return;
-
-      await withNotifications(async () => {
-        await api.kensetsu.createVault(
-          lockedToken,
-          debt,
-          collateralValue.value,
-          borrowValue.value,
-          slippageToleranceValue.value
-        );
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    return;
   }
 
-  isVisible.value = false;
+  try {
+    const lockedToken = collateralToken.value;
+    const debt = debtToken.value;
+    if (!(lockedToken && debt)) return;
+
+    const result = await withNotifications(async () => {
+      await api.kensetsu.createVault(
+        lockedToken,
+        debt,
+        collateralValue.value,
+        borrowValue.value,
+        slippageToleranceValue.value
+      );
+    });
+
+    if (result.submitted) {
+      isVisible.value = false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 watch(

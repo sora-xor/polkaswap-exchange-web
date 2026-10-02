@@ -63,13 +63,19 @@ const handleConfirmInviteUser = async () => {
   if (!hasReferrer.value) {
     referralsStore.approveReferrer(true);
     try {
-      await withNotifications(async () => {
+      const result = await withNotifications(async () => {
         await api.referralSystem.setInvitedUser(storageReferrer.value);
       });
+
+      if (!result.submitted) {
+        referralsStore.approveReferrer(false);
+        return;
+      }
+
       emit('confirm', true);
     } catch (error) {
       referralsStore.approveReferrer(false);
-      emit('confirm');
+      return;
     }
   } else {
     emit('confirm');

@@ -1,6 +1,9 @@
 <template>
   <div class="burn-container s-flex-column">
     <s-row class="burn-row" :gutter="16" justify="center">
+      <s-col class="burn-column s-flex" :xs="12" :sm="12" :md="12" :lg="6" :xl="6">
+        <tonswap-burn-campaign />
+      </s-col>
       <s-col
         v-for="{ id, title, description, rewardTiers, link, receivedAsset, rate, disabledText } in campaigns"
         :key="id"
@@ -17,7 +20,7 @@
           :class="{ disabled: ended[id] }"
           :show-message="false"
         >
-          <img v-if="id === 'solswap'" class="campaign-logo" :src="solswapMarkUrl" alt="SOLSWAP logo" />
+          <burn-logo-fire v-if="id === 'solswap'" class="campaign-fire" variant="sora" />
           <generic-page-header class="page-header--burn" :title="title"></generic-page-header>
           <p class="description centered p4">
             {{ description }}
@@ -110,6 +113,11 @@
               </span>
             </div>
           </div>
+          <sora-nexus-account-generator
+            v-if="id === 'solswap'"
+            :burn-available="!ended.solswap"
+            @use-address="handleUseGeneratedNexusAddress"
+          />
           <s-button
             v-if="!isLoggedIn"
             type="primary"
@@ -154,6 +162,7 @@
       :max="selectedMax"
       :min="selectedMin"
       :requires-nexus-recipient="selectedRequiresNexusRecipient"
+      :initial-nexus-recipient="selectedNexusRecipient"
       @confirm="handleBurnConfirm"
     ></burn-dialog>
   </div>
@@ -166,7 +175,8 @@ import dayjs from 'dayjs/esm';
 import durationPlugin from 'dayjs/plugin/duration';
 import { computed, onBeforeUnmount, onMounted, reactive, ref, toRef, watch } from 'vue';
 
-import solswapMarkUrl from '@/assets/img/solswap-mark.svg?url';
+import BurnLogoFire from '@/features/misc/components/burn/BurnLogoFire.vue';
+import SoraNexusAccountGenerator from '@/features/misc/components/burn/SoraNexusAccountGenerator.vue';
 import { useFormattedAmount } from '@/composables/useFormattedAmount';
 import { useInternalConnect } from '@/composables/useInternalConnect';
 import { useLoading } from '@/composables/useLoading';
@@ -177,6 +187,7 @@ import { fetchData as fetchBurnData, isExcludedXorBurnAddress } from '@/indexer/
 import { api as walletApi } from '@/lib/soraneo-wallet/src/api';
 import { useSettingsStore } from '@/stores/settings';
 import { waitForSoraNetworkFromEnv } from '@/utils';
+import { normalizeSoraNexusAccountId } from '@/utils/soraNexusAccount';
 import {
   calculateBurnCampaignStatistics,
   calculateBurnCountdowns,
@@ -203,6 +214,7 @@ import type { Asset } from '@sora-substrate/sdk/build/assets/types';
 import WalletComponentInfoLine from '@/lib/soraneo-wallet/src/components/InfoLine.vue';
 import WalletComponentExternalLink from '@/lib/soraneo-wallet/src/components/shared/ExternalLink.vue';
 import BurnDialog from '@/features/misc/components/burn/BurnDialog.vue';
+import TonswapBurnCampaign from '@/features/misc/components/burn/TonswapBurnCampaign.vue';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 
 dayjs.extend(durationPlugin);
@@ -232,7 +244,7 @@ const { loading, withLoading, withApi } = useLoading({ parentLoading: parentLoad
 const { t } = useTranslation();
 const { getFPNumber, getFiatAmountByString } = useFormattedAmount();
 const { handleCopyAddress, copyTooltip } = useCopyAddress();
-const { isLoggedIn, connectSoraWallet, soraAddress } = useInternalConnect();
+const { isLoggedIn, isSoraAccountDialogVisible, connectSoraWallet, soraAddress } = useInternalConnect();
 const settingsStore = useSettingsStore();
 
 const xor = XOR;
@@ -271,9 +283,13 @@ const selectedRate = ref<string>(campaignsObj.solswap.rate);
 const selectedMax = ref<number>(campaignsObj.solswap.max);
 const selectedMin = ref<number>(campaignsObj.solswap.min);
 const selectedRequiresNexusRecipient = ref<boolean>(campaignsObj.solswap.requiresNexusRecipient);
+const selectedNexusRecipient = ref('');
+const pendingGeneratedNexusRecipient = ref('');
 
 const intervalId = ref<Nullable<number>>(null);
 const refreshTimeoutIds = ref<number[]>([]);
+let statisticsRequestId = 0;
+let isUnmounted = false;
 
 const minBlock = computed(() => Math.min(...campaignOrder.map((key) => campaignsObj[key].from)));
 const maxBlock = computed(() => Math.max(...campaignOrder.map((key) => campaignsObj[key].to)));
@@ -323,10 +339,14 @@ function calcCountdown(): void {
   }
 }
 
+/**
+ * Refreshes burn totals for the account active at request start, accepting
+ * results only from the latest request while this page remains mounted.
+ */
 async function fetchStatistics(): Promise<void> {
-  const currentEndBlock = await getCurrentEndBlock();
-
+  const requestId = ++statisticsRequestId;
   const address = soraAddress.value;
+  const currentEndBlock = await getCurrentEndBlock();
   const [indexedBurnsResult, accountIndexedBurnsResult] = await Promise.allSettled([
     fetchBurnData(minBlock.value, currentEndBlock),
     address ? fetchBurnData(minBlock.value, currentEndBlock, address) : Promise.resolve([]),
@@ -343,6 +363,8 @@ async function fetchStatistics(): Promise<void> {
     globalBurns,
     accountBurns,
   });
+
+  if (isUnmounted || requestId !== statisticsRequestId || address !== soraAddress.value) return;
 
   for (const key of campaignOrder) {
     accountXorBurned[key] = statistics.accountTotals[key];
@@ -418,25 +440,49 @@ async function getLocalXorBurns(address: Nullable<string>, fallbackBlockHeight: 
 }
 
 async function fetchDataAndCalcCountdown(): Promise<void> {
+  if (isUnmounted) return;
+
   await withLoading(async () => {
+    if (isUnmounted) return;
+
     calcCountdown();
     await fetchStatistics();
   });
 }
 
-function handleBurnClick(id: CampaignKey): void {
+/** Opens a campaign burn; the normal button starts with an empty Nexus recipient. */
+function handleBurnClick(id: CampaignKey, nexusRecipient = ''): void {
   const campaign = campaignsObj[id];
 
+  pendingGeneratedNexusRecipient.value = '';
   selectedReceivedAsset.value = campaign.receivedAsset;
   selectedRate.value = campaign.rate;
   selectedMax.value = campaign.max;
   selectedMin.value = campaign.min;
   selectedRequiresNexusRecipient.value = campaign.requiresNexusRecipient;
+  selectedNexusRecipient.value = nexusRecipient;
   burnDialogVisible.value = true;
 }
 
+/** Opens the SOLSWAP burn with an address whose recovery words were checked manually. */
+function handleUseGeneratedNexusAddress(address: string): void {
+  if (ended.solswap) return;
+  const recipient = normalizeSoraNexusAccountId(address);
+  if (!recipient) return;
+  if (!isLoggedIn.value) {
+    pendingGeneratedNexusRecipient.value = recipient;
+    if (!isSoraAccountDialogVisible.value) {
+      void connectSoraWallet().catch(() => {
+        pendingGeneratedNexusRecipient.value = '';
+      });
+    }
+    return;
+  }
+  handleBurnClick('solswap', recipient);
+}
+
 function handleBurnConfirm(done?: boolean): void {
-  if (done) {
+  if (done && !isUnmounted) {
     loading.value = true;
     void fetchDataAndCalcCountdown();
 
@@ -456,6 +502,14 @@ watch([blockNumber, soraAddress], ([nextBlockNumber, nextAddress], [previousBloc
   if (blockNumberBecameReady || accountChanged) {
     void fetchDataAndCalcCountdown();
   }
+});
+
+/** Resumes a generated-address burn after wallet connection, or forgets it if connection is cancelled. */
+watch([isLoggedIn, isSoraAccountDialogVisible], ([loggedIn, connectionDialogVisible]) => {
+  const recipient = pendingGeneratedNexusRecipient.value;
+  if (!recipient || connectionDialogVisible) return;
+  pendingGeneratedNexusRecipient.value = '';
+  if (loggedIn && !ended.solswap && !isUnmounted) handleBurnClick('solswap', recipient);
 });
 
 defineExpose({
@@ -485,12 +539,16 @@ onMounted(async () => {
   await withApi(async () => {
     const network = soraNetwork.value ?? (await waitForSoraNetworkFromEnv());
 
+    if (isUnmounted) return;
+
     if (network !== SoraNetwork.Prod) {
       campaignsObj.solswap.from = 0;
       campaignsObj.solswap.to = 10_000;
     }
 
     await fetchDataAndCalcCountdown();
+
+    if (isUnmounted) return;
 
     intervalId.value = window.setInterval(() => {
       void fetchDataAndCalcCountdown();
@@ -499,13 +557,19 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  isUnmounted = true;
+  statisticsRequestId += 1;
+  pendingGeneratedNexusRecipient.value = '';
+
   if (intervalId.value) {
     clearInterval(intervalId.value);
+    intervalId.value = null;
   }
 
   for (const timeoutId of refreshTimeoutIds.value) {
     clearTimeout(timeoutId);
   }
+  refreshTimeoutIds.value = [];
 });
 </script>
 
@@ -519,6 +583,9 @@ onBeforeUnmount(() => {
   &--burn {
     margin-bottom: $basic-spacing;
     box-shadow: var(--s-shadow-element-pressed);
+    :deep(.info-line) {
+      padding: 8px 4px;
+    }
     &.disabled {
       box-shadow: var(--s-shadow-element);
     }
@@ -535,10 +602,10 @@ onBeforeUnmount(() => {
   justify-content: center;
 }
 
-.campaign-logo {
+.campaign-fire {
   display: block;
-  width: 64px;
-  height: 64px;
+  width: 112px;
+  height: 112px;
   margin: 0 auto $inner-spacing-mini;
 }
 
@@ -592,7 +659,7 @@ onBeforeUnmount(() => {
 }
 .claim-row {
   gap: $inner-spacing-tiny;
-  padding: $inner-spacing-mini;
+  padding: 16px;
   border-radius: calc(var(--s-border-radius-mini) / 2);
   background: var(--s-color-base-background);
   box-shadow: var(--s-shadow-element);
@@ -619,13 +686,14 @@ onBeforeUnmount(() => {
 
   &__amounts {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    // Keep native CSS minmax separate from the Sass breakpoint helper.
+    grid-template-columns: #{'repeat(2, minmax(0, 1fr))'};
     gap: $inner-spacing-tiny;
   }
 
   &__amount {
     min-width: 0;
-    padding: $inner-spacing-tiny;
+    padding: 12px;
     border-radius: calc(var(--s-border-radius-mini) / 2);
     background: var(--s-color-base-border-primary);
 

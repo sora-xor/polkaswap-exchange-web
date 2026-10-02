@@ -20,7 +20,7 @@ export const resolveYarnEntry = (root = repoRoot) => {
   return null;
 };
 
-export const buildVitestArgs = (forwardedArgs) => {
+export const buildVitestArgs = (forwardedArgs, defaultProject = 'unit') => {
   const hasProjectArg = forwardedArgs.some((arg) => arg === '--project' || arg.startsWith('--project='));
   const hasConfigArg = forwardedArgs.some((arg) => arg === '--config' || arg.startsWith('--config='));
   const hasRunSubcommand = forwardedArgs.includes('run');
@@ -36,7 +36,7 @@ export const buildVitestArgs = (forwardedArgs) => {
   }
 
   if (!hasProjectArg) {
-    vitestArgs.push('--project', 'unit');
+    vitestArgs.push('--project', defaultProject);
   }
 
   if (!hasReporterArg) {
@@ -48,8 +48,24 @@ export const buildVitestArgs = (forwardedArgs) => {
   return vitestArgs;
 };
 
-export const spawnVitest = (forwardedArgs = process.argv.slice(2)) => {
-  const vitestArgs = buildVitestArgs(forwardedArgs);
+/**
+ * Builds isolated Vitest runs so browser aliases from the app project cannot leak
+ * into the Node-only script project. An explicit project remains a single run.
+ */
+export const buildVitestRuns = (forwardedArgs) => {
+  const hasProjectArg = forwardedArgs.some((arg) => arg === '--project' || arg.startsWith('--project='));
+  if (hasProjectArg) return [buildVitestArgs(forwardedArgs)];
+
+  const hasPassWithNoTestsArg = forwardedArgs.some(
+    (arg) => arg === '--passWithNoTests' || arg === '--pass-with-no-tests'
+  );
+  const isolatedArgs =
+    forwardedArgs.length && !hasPassWithNoTestsArg ? [...forwardedArgs, '--pass-with-no-tests'] : forwardedArgs;
+
+  return [buildVitestArgs(isolatedArgs, 'unit'), buildVitestArgs(isolatedArgs, 'unit-scripts')];
+};
+
+const spawnVitestArgs = (vitestArgs) => {
   const yarnEntry = resolveYarnEntry();
 
   if (yarnEntry) {
@@ -59,12 +75,34 @@ export const spawnVitest = (forwardedArgs = process.argv.slice(2)) => {
   return spawn('yarn', vitestArgs, { stdio: 'inherit', env: process.env });
 };
 
+export const spawnVitest = (forwardedArgs = process.argv.slice(2), defaultProject = 'unit') =>
+  spawnVitestArgs(buildVitestArgs(forwardedArgs, defaultProject));
+
+/** Runs the default unit projects sequentially and stops at the first failed process. */
+export const runVitestProjects = (forwardedArgs = process.argv.slice(2)) =>
+  new Promise((resolve) => {
+    const runs = buildVitestRuns(forwardedArgs);
+
+    const runNext = (index) => {
+      const child = spawnVitestArgs(runs[index]);
+
+      child.on('exit', (code, signal) => {
+        if (signal || code !== 0 || index === runs.length - 1) {
+          resolve({ code, signal });
+          return;
+        }
+
+        runNext(index + 1);
+      });
+    };
+
+    runNext(0);
+  });
+
 const isCliEntry = process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;
 
 if (isCliEntry) {
-  const child = spawnVitest();
-
-  child.on('exit', (code, signal) => {
+  runVitestProjects().then(({ code, signal }) => {
     if (typeof code === 'number') {
       process.exit(code);
     }

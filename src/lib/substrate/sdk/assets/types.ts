@@ -40,15 +40,18 @@ export interface AccountBalance {
   free: CodecString;
   /** [Substrate] "reserved" balance */
   reserved: CodecString;
-  /** [Substrate] "frozen" balance */
+  /** [Substrate] freeze threshold: total native funds on modern Balances, free funds on ORML/legacy Balances. */
   frozen: CodecString;
   /** [SORA] "bonded" balance in referral system */
   bonded: CodecString;
-  /** [SORA] "locked" balance ("reserved" + "frozen" + "bonded") */
+  /** [SORA] unavailable owned balance ("free" - "transferable" + "reserved" + "bonded") */
   locked: CodecString;
-  /** [SORA] total balance ("free" + "locked") */
+  /** [SORA] total owned balance ("free" + "reserved" + "bonded") */
   total: CodecString;
-  /** [SORA] usable balance ("free" - "frozen") */
+  /**
+   * [SORA] usable balance: modern native max(free - max(frozen - reserved, 0), 0);
+   * ORML tokens and legacy native balances use max(free - frozen, 0).
+   */
   transferable: CodecString;
 }
 

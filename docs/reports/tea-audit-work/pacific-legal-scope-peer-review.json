@@ -1,0 +1,85 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "Independent legal-scope review of Japan-posted sealed 100 g manufactured steamed/dried sencha; no permits, certificates or advance agency action; ordinary customs and arrival inspection allowed.",
+  "decisionChanges": 0,
+  "findings": [
+    {
+      "code": "GU",
+      "recommendedDecision": "unresolved",
+      "exactProvisions": [
+        "8 GAR 10100(f)-(g), (k)",
+        "8 GAR 10101",
+        "8 GAR 10102(a) (printed as 10100.2 in PDF)",
+        "8 GAR 10103",
+        "8 GAR 10120"
+      ],
+      "reasoning": "Section 10120 affirmatively admits stored dried human food, subject to pest freedom. It does not say that a permit is waived. Section 10103 separately requires permits for plants and plant products. Crucially, 10100(g) restricts plant products to unprocessed or only minor-processed products; this limitation should be explicit in the audit. Finished tea is not among the certificate classes in 10102(a). The specific dried-food clause therefore supports admissibility and helps distinguish certificate duties, but does not settle the processing threshold for the separate permit. A published processing interpretation could resolve this; an individual authority ruling is not intrinsically required.",
+      "remainingConflict": "Whether steaming/rolling/drying sencha exceeds the expressly limited minor-processing plant-product scope; if it does, 10103 does not supply a plant-product permit duty. If it does not, 10120 admission can coexist with that permit.",
+      "sourceUrls": [
+        "https://www.guamcourts.org/compileroflaws/GAR/08GAR/08GAR002-10.pdf",
+        "https://doag.guam.gov/wp-doag-content/uploads/2026/03/Import-Permit-Request-Plant-Products-Revised2026.03.09.pdf"
+      ],
+      "localEvidence": [
+        "sources/gu-quarantine-peer-web.txt",
+        "sources/gu-products2026.pdf.txt"
+      ]
+    },
+    {
+      "code": "MP",
+      "recommendedDecision": "unresolved",
+      "exactProvisions": [
+        "85-60.2-010(qq), (rr), (ss), (yy)",
+        "85-60.2-108(a)-(c)",
+        "85-60.2-201",
+        "85-60.2-202(a)",
+        "85-60.2-204(a)",
+        "85-60.2-238",
+        "85-60.2-501"
+      ],
+      "reasoning": "Section 238 admits stored dried foods subject to inspection; 202(a) lists certificate categories without dried tea. Section 204(a) nevertheless states a permit duty for any plant/product/soil importer. Section 108(b) separately says permitted-entry plants can still require permits, showing that admissibility alone does not negate paperwork. Section 010(ss) expressly includes manufactured goods in plant material, but 204 does not use that defined term: it says plant, product, or soil. Equating every manufactured plant material with a permit-required product would be an additional scope inference. The non-regulated-article exception in 201 supplies no finished-food classification. Section 501 establishes postal scope, with inspection/treatment subject to the same regulations.",
+      "remainingConflict": "No express dried-food permit waiver; no clear differentiation between broadly defined manufactured plant material and the plant/product class covered by 204. The certificate list is narrower and does not itself require a tea phytosanitary certificate. This is not a finding that dried tea is prohibited.",
+      "sourceUrls": [
+        "https://cnmilaw.gov/docs/admincode/T85/T85-60.2.pdf"
+      ],
+      "localEvidence": [
+        "sources/mp.txt",
+        "sources/mp.pdf"
+      ]
+    },
+    {
+      "code": "CK",
+      "recommendedDecision": "unresolved",
+      "exactProvisions": [
+        "Current-linked January 2021 import specification PP23, PP29",
+        "Food Regulations 2014 regulations 5(1)(a), 18(1), 18(5)-(6), 19(1)"
+      ],
+      "reasoning": "PP29 expressly removes both permits and phytosanitary certificates for dried herbs from any origin; PP23 instead requires a permit plus fumigation/heat treatment for dried plant material. Both impose inspection. The narrow herb entry would prevail if sencha is included, so it is wrong to require permission merely because tea is plant material. The schedule supplies no definition linking ordinary Camellia tea to dried herbs. Food regulation 18 is broadly framed as personal imports, with 5 kg for other foods, and 18(6) turns on consumption by the importer/family. Postal scope is less clearly a separate obstacle than the existing row implies: the text does not expressly restrict the concession to baggage. Even a favourable personal-post reading does not displace the biosecurity schedule.",
+      "remainingConflict": "The affirmative dried-herb no-document category versus dried-material permit category; no interpretive criterion resolving Camellia sencha. This alone is sufficient to retain unresolved, without demanding that the food regulation separately name post.",
+      "sourceUrls": [
+        "https://agriculture.gov.ck/wp-content/uploads/2021/01/Update-Import-Specification-6-January-2021..pdf",
+        "https://www.health.gov.ck/wp-content/uploads/2017/05/Food-Regulations-2014.pdf"
+      ],
+      "localEvidence": [
+        "pacific-final-source-review/ck-import-specification2021.txt",
+        "asia-sources/ck-food2014.txt"
+      ]
+    },
+    {
+      "code": "WF",
+      "recommendedDecision": "unresolved",
+      "exactProvisions": [
+        "AIP PAC N GEN 1.4-4, section 1.4.2(a)-(b), carried in 2026 issue; page amendment date 1 November 2014"
+      ],
+      "reasoning": "The current accessible AIP section includes mail. Its French wording covers living plants/parts and non-manufactured plant products, then expressly exempts tea in bulk from the import permit alone. It does not waive the phytosanitary certificate for that category. A sealed retail pouch does not by itself prove that loose tea is outside the tea-in-bulk expression; conversely, the specific tea exception makes it unsafe to infer that every manufactured tea is entirely outside scope. The retail/manufactured distinction remains unresolved in this text. Traveller sheets use an arrival declaration and cannot independently supply a postal waiver.",
+      "remainingConflict": "How the specific tea-in-bulk entry relates to the non-manufactured plant-product scope for steamed/dried loose-leaf sencha. The permit-only waiver is clear; a certificate waiver is not. AIP section is reproduced in 2026 but the underlying page amendment is 2014, not a newly enacted 2026 rule.",
+      "sourceUrls": [
+        "https://www.sia.aviation-civile.gouv.fr/documents/download/f/d/15026343/",
+        "https://www.sia.aviation-civile.gouv.fr/media/dvd/eAIP_19_MAR_2026/PAC-N/AIRAC-2026-01-22/pdf/FR-GEN-1.4-fr-FR.pdf"
+      ],
+      "localEvidence": [
+        "sources/wf-aip-peer-indexed.txt"
+      ]
+    }
+  ],
+  "method": "Read existing full CNMI law, current Cook Islands commodity table and Food Regulations first. Saved Guam full official indexed PDF text because direct host connection failed. Existing Wallis local downloads were empty/error pages, so used the newly located official AIP download/indexed text. No main-array changes; no contacts."
+}

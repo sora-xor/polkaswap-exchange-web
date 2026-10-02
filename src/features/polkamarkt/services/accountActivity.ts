@@ -107,13 +107,23 @@ const readSide = (value: unknown): AccountTrade['side'] => {
   return normalized === 'buy' || normalized === 'sell' || normalized === 'claim' ? normalized : undefined;
 };
 
+const toIsoTimestamp = (timestamp: number): string | undefined => {
+  const date = new Date(timestamp);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : undefined;
+};
+
 const readTimestamp = (value: unknown): string | undefined => {
   const text = readString(value);
-  if (text && !/^\d+(\.\d+)?$/.test(text)) return text;
+  if (text && !/^\d+(\.\d+)?$/.test(text)) {
+    const timestamp = Date.parse(text);
+    return Number.isFinite(timestamp) ? toIsoTimestamp(timestamp) : undefined;
+  }
 
   const numeric = readNumber(value);
-  if (numeric === undefined) return text;
-  return new Date(numeric > 1_000_000_000_000 ? numeric : numeric * 1000).toISOString();
+  if (numeric === undefined || numeric < 0) return undefined;
+
+  const timestamp = numeric > 1_000_000_000_000 ? numeric : numeric * 1000;
+  return toIsoTimestamp(timestamp);
 };
 
 const extractNodes = (value: unknown): Record<string, unknown>[] => {

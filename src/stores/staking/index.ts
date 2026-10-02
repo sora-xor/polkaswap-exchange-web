@@ -9,6 +9,7 @@ import type { StakingState } from '@/stores/staking/types';
 import { useWalletStore } from '@/stores/wallet';
 
 import type { Nullable } from '@/types/common';
+import type { NumberLike } from '@sora-substrate/math';
 import type { CodecString } from '@sora-substrate/sdk';
 import type {
   AccountStakingLedger,
@@ -60,6 +61,7 @@ const unsubscribe = (subscription: Nullable<Subscription>): null => {
 };
 
 const StakingApiNotReadyError = 'Staking API is not ready';
+const INITIAL_SUBSCRIPTION_TIMEOUT_MS = 8_000;
 
 const getConnectedChainApi = (): { isReady?: unknown } | null => {
   const connectionApi = (api as { connection?: { api?: { isReady?: unknown } | null } }).connection?.api;
@@ -86,16 +88,37 @@ const waitForStakingApiReady = async (): Promise<boolean> => {
 };
 
 const subscribeWithInitialValue = async <T>(
-  observable: Nullable<{ subscribe: (handler: (value: T) => void) => Subscription }>
+  observable: Nullable<{
+    subscribe: (handler: (value: T) => void, error?: (reason: unknown) => void, complete?: () => void) => Subscription;
+  }>
 ): Promise<{ subscription: Subscription; firstValue: T } | null> => {
   if (!observable) return null;
 
   let subscription!: Subscription;
+  let timeout: Nullable<ReturnType<typeof setTimeout>> = null;
+  let settled = false;
 
   return await new Promise((resolve) => {
-    subscription = observable.subscribe((value: T) => {
-      resolve({ subscription, firstValue: value });
-    });
+    const finish = (hasValue: boolean, firstValue?: T) => {
+      if (settled) return;
+
+      settled = true;
+      if (timeout) clearTimeout(timeout);
+
+      if (!hasValue) {
+        subscription?.unsubscribe();
+        resolve(null);
+      } else {
+        resolve({ subscription, firstValue: firstValue as T });
+      }
+    };
+
+    subscription = observable.subscribe(
+      (value: T) => queueMicrotask(() => finish(true, value)),
+      () => queueMicrotask(() => finish(false)),
+      () => queueMicrotask(() => finish(false))
+    );
+    timeout = setTimeout(() => finish(false), INITIAL_SUBSCRIPTION_TIMEOUT_MS);
   });
 };
 
@@ -136,7 +159,7 @@ export const useStakingStore = defineStore('staking-legacy', {
     setPendingRewards(rewards: NominatorReward): void {
       this.pendingRewards = rewards;
     },
-    setMinNominatorBond(value: number): void {
+    setMinNominatorBond(value: CodecString): void {
       this.minNominatorBond = value;
     },
     setUnbondPeriod(value: number): void {
@@ -269,7 +292,7 @@ export const useStakingStore = defineStore('staking-legacy', {
       }
       await api.staking.unbond({ value: this.stakeAmount });
     },
-    async withdraw(value: number): Promise<void> {
+    async withdraw(value: NumberLike): Promise<void> {
       if (!(await waitForStakingApiReady())) {
         throw new Error(StakingApiNotReadyError);
       }

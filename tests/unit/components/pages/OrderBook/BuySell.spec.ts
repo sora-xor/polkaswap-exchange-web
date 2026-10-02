@@ -12,7 +12,22 @@ import { computed, defineComponent, h, reactive, ref } from 'vue';
 import { LimitOrderType } from '@/consts';
 
 const storeRef = vi.hoisted(() => ({ value: null as any }));
-let walletRestore: (() => void) | null = null;
+
+const walletApiMocks = vi.hoisted(() => {
+  const unsubscribe = vi.fn();
+  return {
+    unsubscribe,
+    placeLimitOrder: vi.fn(async () => undefined),
+    isOrderPlaceable: vi.fn(async () => true),
+    execute: vi.fn(async () => undefined),
+    getSwapQuoteObservable: vi.fn(() => ({
+      subscribe: (callback: (...args: unknown[]) => void) => {
+        callback({ quote: () => ({ result: { amount: '1' } }) });
+        return { unsubscribe };
+      },
+    })),
+  };
+});
 
 const swapStore = vi.hoisted(() => ({
   setLiquiditySource: vi.fn(),
@@ -42,7 +57,8 @@ vi.mock('@/stores/assets', () => ({
 
 const settingsStoreStub = vi.hoisted(() => ({
   networkFees: {
-    OrderBookPlaceLimitOrder: '1',
+    OrderBookPlaceLimitOrder: '11',
+    Swap: '22',
   } as Record<string, string>,
   slippageTolerance: '0.01',
 }));
@@ -118,7 +134,18 @@ vi.mock('@tests/stubs/walletRuntime', async () => {
   return createWalletMock();
 });
 
-const walletRuntimePromise = import('@tests/stubs/walletRuntime');
+vi.mock('@/lib/soraneo-wallet/src/api', () => ({
+  api: {
+    orderBook: {
+      placeLimitOrder: walletApiMocks.placeLimitOrder,
+      isOrderPlaceable: walletApiMocks.isOrderPlaceable,
+    },
+    swap: {
+      execute: walletApiMocks.execute,
+      getSwapQuoteObservable: walletApiMocks.getSwapQuoteObservable,
+    },
+  },
+}));
 
 const resetConfirmDialog = () => {
   confirmDialog.state = { handler: undefined as undefined | (() => Promise<void> | void) };
@@ -494,61 +521,8 @@ const createStoreMock = (overrides: StoreOverrides = {}) => {
   return { store, orderBookState };
 };
 
-const patchWalletRuntime = async () => {
-  const walletRuntime = await walletRuntimePromise;
-
-  const original = {
-    placeLimitOrder: walletRuntime.api?.orderBook?.placeLimitOrder,
-    isOrderPlaceable: walletRuntime.api?.orderBook?.isOrderPlaceable,
-    execute: walletRuntime.api?.swap?.execute,
-    getSwapQuoteObservable: walletRuntime.api?.swap?.getSwapQuoteObservable,
-  };
-
-  if (!walletRuntime.api.orderBook) {
-    walletRuntime.api.orderBook = {} as any;
-  }
-
-  const unsubscribe = vi.fn();
-  const walletMocks = {
-    placeLimitOrder: vi.fn(async () => undefined),
-    isOrderPlaceable: vi.fn(async () => true),
-    execute: vi.fn(async () => undefined),
-    getSwapQuoteObservable: vi.fn(() => ({
-      subscribe: (callback: (...args: unknown[]) => void) => {
-        callback({
-          quote: () => ({
-            result: { amount: '1' },
-          }),
-        });
-        return { unsubscribe };
-      },
-    })),
-  };
-
-  walletRuntime.api.orderBook.placeLimitOrder = walletMocks.placeLimitOrder;
-  walletRuntime.api.orderBook.isOrderPlaceable = walletMocks.isOrderPlaceable;
-  walletRuntime.api.swap.execute = walletMocks.execute;
-  walletRuntime.api.swap.getSwapQuoteObservable = walletMocks.getSwapQuoteObservable;
-
-  const restore = () => {
-    if (original.placeLimitOrder) {
-      walletRuntime.api.orderBook.placeLimitOrder = original.placeLimitOrder;
-    }
-    if (original.isOrderPlaceable) {
-      walletRuntime.api.orderBook.isOrderPlaceable = original.isOrderPlaceable;
-    }
-    if (original.execute) {
-      walletRuntime.api.swap.execute = original.execute;
-    }
-    if (original.getSwapQuoteObservable) {
-      walletRuntime.api.swap.getSwapQuoteObservable = original.getSwapQuoteObservable;
-    }
-  };
-
-  return { walletMocks, restore };
-};
-
 let buySellModulePromise: Promise<typeof import('@/features/misc/components/order-book/BuySell.vue')> | null = null;
+const mountedWrappers: Array<ReturnType<typeof mount>> = [];
 
 const loadBuySellModule = async () => {
   if (!buySellModulePromise) {
@@ -560,16 +534,15 @@ const loadBuySellModule = async () => {
 const mountComponent = async (overrides: StoreOverrides = {}) => {
   const { store, orderBookState } = createStoreMock(overrides);
   storeRef.value = store;
-  const { walletMocks, restore } = await patchWalletRuntime();
   const module = await loadBuySellModule();
-  walletRestore = restore;
   const wrapper = mount(module.default, {
     global: {
       stubs: globalStubs,
     },
   });
+  mountedWrappers.push(wrapper);
   await flushPromises();
-  return { wrapper, walletMocks, orderBookState };
+  return { wrapper, walletMocks: walletApiMocks, orderBookState };
 };
 
 beforeEach(() => {
@@ -579,17 +552,49 @@ beforeEach(() => {
   resetConfirmDialog();
   resetTransaction();
   resetUtils();
+  settingsStoreStub.networkFees = {
+    [Operation.OrderBookPlaceLimitOrder]: '11',
+    [Operation.Swap]: '22',
+  };
+  walletApiMocks.unsubscribe.mockClear();
+  walletApiMocks.placeLimitOrder.mockReset().mockResolvedValue(undefined);
+  walletApiMocks.isOrderPlaceable.mockReset().mockResolvedValue(true);
+  walletApiMocks.execute.mockReset().mockResolvedValue(undefined);
+  walletApiMocks.getSwapQuoteObservable.mockReset().mockImplementation(() => ({
+    subscribe: (callback: (...args: unknown[]) => void) => {
+      callback({ quote: () => ({ result: { amount: '1' } }) });
+      return { unsubscribe: walletApiMocks.unsubscribe };
+    },
+  }));
   swapStore.setLiquiditySource.mockClear();
   swapStore.selectDexId.mockClear();
 });
 
 afterEach(() => {
-  walletRestore?.();
-  walletRestore = null;
+  mountedWrappers.splice(0).forEach((wrapper) => wrapper.unmount());
   storeRef.value = null;
 });
 
 describe('BuySell.vue', () => {
+  it('selects the swap fee for market orders and the limit-order fee for limit orders', async () => {
+    const { wrapper, orderBookState } = await mountComponent({
+      orderBook: { limitOrderType: LimitOrderType.market },
+    });
+
+    expect((wrapper.vm as any).networkFee).toBe('22');
+    expect((wrapper.vm as any).isInsufficientXorForFee).toBe(false);
+    expect((wrapper.vm as any).isSliderAvailable).toBe(true);
+    expect(utils.hasInsufficientXorForFee).toHaveBeenCalledWith(assetsStoreStub.xor, '22');
+    expect(utils.getMaxValue).toHaveBeenCalledWith(expect.anything(), '22');
+
+    orderBookState.limitOrderType = LimitOrderType.limit;
+    await flushPromises();
+
+    expect((wrapper.vm as any).networkFee).toBe('11');
+    expect((wrapper.vm as any).isInsufficientXorForFee).toBe(false);
+    expect(utils.hasInsufficientXorForFee).toHaveBeenCalledWith(assetsStoreStub.xor, '11');
+  });
+
   it('renders pair chooser and action button inside popover reference slots', async () => {
     const { wrapper } = await mountComponent();
 
@@ -610,8 +615,7 @@ describe('BuySell.vue', () => {
     expect(disabledButton.exists()).toBe(true);
     expect(disabledButton.text()).toBe('orderBook.setPrice');
     expect(confirmDialog.confirmOrExecute).not.toHaveBeenCalled();
-    const walletRuntimeDisabled = await import('@tests/stubs/walletRuntime');
-    expect((walletRuntimeDisabled.api.orderBook.placeLimitOrder as any).mock.calls).toHaveLength(0);
+    expect(walletApiMocks.placeLimitOrder).not.toHaveBeenCalled();
   });
 
   it('renders a disabled stopped-book button when trading is unavailable', async () => {
@@ -643,9 +647,8 @@ describe('BuySell.vue', () => {
     expect(orderBookState.baseValue).toBe('1');
     expect(orderBookState.quoteValue).toBe('1');
 
-    const walletRuntime = await import('@tests/stubs/walletRuntime');
-    expect(typeof walletRuntime.api.orderBook.placeLimitOrder).toBe('function');
-    expect(typeof walletRuntime.api.orderBook.isOrderPlaceable).toBe('function');
+    expect(typeof walletApiMocks.placeLimitOrder).toBe('function');
+    expect(typeof walletApiMocks.isOrderPlaceable).toBe('function');
 
     expect(orderBookState.limitOrderType).toBe(LimitOrderType.limit);
 
@@ -657,6 +660,26 @@ describe('BuySell.vue', () => {
     await confirmDialog.state.handler?.();
 
     expect(transaction.withNotifications).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not start transaction notifications when the single-price limit blocks placement', async () => {
+    internalConnect.isLoggedIn.value = true;
+    const { wrapper, walletMocks } = await mountComponent();
+    const alertMock = vi.fn();
+    const appContext = (wrapper.vm as any).$?.appContext;
+    appContext.config.globalProperties.$alert = alertMock;
+    storeRef.value.commit.orderBook.setBaseValue('1');
+    storeRef.value.commit.orderBook.setQuoteValue('1');
+    await flushPromises();
+    walletMocks.isOrderPlaceable.mockClear().mockResolvedValue(false);
+
+    await (wrapper.vm as unknown as { handleOrderPlacement: () => Promise<void> }).handleOrderPlacement();
+    await confirmDialog.state.handler?.();
+
+    expect(walletMocks.isOrderPlaceable).toHaveBeenCalledTimes(1);
+    expect(alertMock).toHaveBeenCalledWith('orderBook.error.singlePriceLimit.reading', { title: 'errorText' });
+    expect(transaction.withNotifications).not.toHaveBeenCalled();
+    expect(walletMocks.placeLimitOrder).not.toHaveBeenCalled();
   });
 
   it('does not throw on unmount when XOR asset is unavailable', async () => {

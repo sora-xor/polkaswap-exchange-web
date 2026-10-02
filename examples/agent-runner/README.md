@@ -4,6 +4,8 @@ This is a minimal Playwright runner for the static browser-native Polkaswap Agen
 
 It opens the app, discovers `.well-known/polkaswap-agent.json`, waits for `window.PolkaswapAgent`, verifies v1, resolves assets, quotes a swap, prepares the swap, and prints the signer preview. It does not submit a transaction unless `POLKASWAP_AGENT_EXECUTE_SWAP=1` is set.
 
+When execution is explicitly enabled, the runner passes exactly `{ intentId, clientOrderId }`. The stored prepared envelope supplies the amounts, route, and slippage; the runner never repeats or overrides those economic fields in an execute request.
+
 ## Run
 
 ```sh

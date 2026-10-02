@@ -4,21 +4,41 @@ import { defineStore } from 'pinia';
 import { api } from '@/lib/soraneo-wallet/src/api';
 import type { DemeterFarmingState, DemeterLiquidityParams } from '@/stores/demeterFarming/types';
 import { useWalletStore } from '@/stores/wallet';
-import type { FnWithoutArgs } from '@/types/common';
 import { waitForAccountPair } from '@/utils';
+import { subscribeAndWaitForFirst } from '@/utils/subscriptions';
 
 import type {
   DemeterAccountPool,
   DemeterPool,
   DemeterRewardToken,
 } from '@sora-substrate/sdk/build/demeterFarming/types';
-import type { Observable, Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
 
 const INITIAL_EMISSION_TIMEOUT_MS = 8_000;
 
 const EMPTY_POOLS: readonly DemeterPool[] = [];
 const EMPTY_TOKENS: readonly DemeterRewardToken[] = [];
 const EMPTY_ACCOUNT_POOLS: readonly DemeterAccountPool[] = [];
+
+type DemeterSubscriptionKind = 'pools' | 'tokens' | 'accountPools';
+
+const subscriptionGenerations: Record<DemeterSubscriptionKind, WeakMap<object, number>> = {
+  pools: new WeakMap(),
+  tokens: new WeakMap(),
+  accountPools: new WeakMap(),
+};
+
+/** Invalidates an in-flight subscription initializer and returns its replacement generation. */
+const invalidateSubscription = (store: object, kind: DemeterSubscriptionKind): number => {
+  const generations = subscriptionGenerations[kind];
+  const generation = (generations.get(store) ?? 0) + 1;
+  generations.set(store, generation);
+  return generation;
+};
+
+const isCurrentSubscription = (store: object, kind: DemeterSubscriptionKind, generation: number): boolean => {
+  return subscriptionGenerations[kind].get(store) === generation;
+};
 
 const initialState = (): DemeterFarmingState => ({
   pools: [],
@@ -28,46 +48,6 @@ const initialState = (): DemeterFarmingState => ({
   accountPools: [],
   accountPoolsUpdates: null,
 });
-
-const wait = (ms: number): Promise<void> =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-
-const subscribeWithInitialEmissionGuard = async <T>({
-  observable,
-  onValue,
-  onTimeout,
-  timeoutMs = INITIAL_EMISSION_TIMEOUT_MS,
-}: {
-  observable: Observable<T>;
-  onValue: (value: T) => void;
-  onTimeout?: FnWithoutArgs;
-  timeoutMs?: number;
-}): Promise<Subscription> => {
-  let didReceiveFirstValue = false;
-  let resolveFirstValue!: FnWithoutArgs;
-
-  const firstValuePromise = new Promise<void>((resolve) => {
-    resolveFirstValue = resolve;
-  });
-
-  const subscription = observable.subscribe((value) => {
-    onValue(value);
-    if (!didReceiveFirstValue) {
-      didReceiveFirstValue = true;
-      resolveFirstValue();
-    }
-  });
-
-  await Promise.race([firstValuePromise, wait(timeoutMs)]);
-
-  if (!didReceiveFirstValue) {
-    onTimeout?.();
-  }
-
-  return subscription;
-};
 
 const resetSubscription = (subscription: Nullable<Subscription>): null => {
   subscription?.unsubscribe();
@@ -95,63 +75,79 @@ export const useDemeterFarmingStore = defineStore('demeter-farming', {
   },
   actions: {
     async subscribeOnPools(): Promise<void> {
+      const generation = invalidateSubscription(this, 'pools');
+      const isCurrent = (): boolean => isCurrentSubscription(this, 'pools', generation);
       this.poolsUpdates = resetSubscription(this.poolsUpdates);
 
       try {
         const observable = await api.demeterFarming.getPoolsObservable();
+
+        if (!isCurrent()) return;
 
         if (!observable) {
           this.pools = EMPTY_POOLS;
           return;
         }
 
-        this.poolsUpdates = await subscribeWithInitialEmissionGuard({
+        const subscription = await subscribeAndWaitForFirst(
           observable,
-          onValue: (pools) => {
-            this.pools = Object.freeze([...pools]);
+          (pools) => {
+            if (isCurrent()) this.pools = Object.freeze([...pools]);
           },
-          onTimeout: () => {
-            console.warn(
-              `[demeterFarming] subscribeOnPools initial emission timed out after ${INITIAL_EMISSION_TIMEOUT_MS}ms`
-            );
-            this.pools = EMPTY_POOLS;
-          },
-        });
+          INITIAL_EMISSION_TIMEOUT_MS
+        );
+
+        if (!isCurrent()) {
+          subscription.unsubscribe();
+          return;
+        }
+
+        this.poolsUpdates = subscription;
       } catch (error) {
+        if (!isCurrent()) return;
         console.warn('[demeterFarming] subscribeOnPools skipped', error);
         this.pools = EMPTY_POOLS;
       }
     },
     async subscribeOnTokens(): Promise<void> {
+      const generation = invalidateSubscription(this, 'tokens');
+      const isCurrent = (): boolean => isCurrentSubscription(this, 'tokens', generation);
       this.tokensUpdates = resetSubscription(this.tokensUpdates);
 
       try {
         const observable = await api.demeterFarming.getTokenInfosObservable();
+
+        if (!isCurrent()) return;
 
         if (!observable) {
           this.tokens = EMPTY_TOKENS;
           return;
         }
 
-        this.tokensUpdates = await subscribeWithInitialEmissionGuard({
+        const subscription = await subscribeAndWaitForFirst(
           observable,
-          onValue: (tokens) => {
-            this.tokens = Object.freeze([...tokens]);
+          (tokens) => {
+            if (isCurrent()) this.tokens = Object.freeze([...tokens]);
           },
-          onTimeout: () => {
-            console.warn(
-              `[demeterFarming] subscribeOnTokens initial emission timed out after ${INITIAL_EMISSION_TIMEOUT_MS}ms`
-            );
-            this.tokens = EMPTY_TOKENS;
-          },
-        });
+          INITIAL_EMISSION_TIMEOUT_MS
+        );
+
+        if (!isCurrent()) {
+          subscription.unsubscribe();
+          return;
+        }
+
+        this.tokensUpdates = subscription;
       } catch (error) {
+        if (!isCurrent()) return;
         console.warn('[demeterFarming] subscribeOnTokens skipped', error);
         this.tokens = EMPTY_TOKENS;
       }
     },
     async subscribeOnAccountPools(): Promise<void> {
       const walletStore = useWalletStore();
+      const generation = invalidateSubscription(this, 'accountPools');
+      const isCurrent = (): boolean => isCurrentSubscription(this, 'accountPools', generation);
 
       this.accountPoolsUpdates = resetSubscription(this.accountPoolsUpdates);
 
@@ -163,26 +159,34 @@ export const useDemeterFarmingStore = defineStore('demeter-farming', {
       try {
         await waitForAccountPair();
 
+        if (!isCurrent()) return;
+
         const observable = api.demeterFarming.getAccountPoolsObservable();
 
-        this.accountPoolsUpdates = await subscribeWithInitialEmissionGuard({
+        const subscription = await subscribeAndWaitForFirst(
           observable,
-          onValue: (accountPools) => {
-            this.accountPools = Object.freeze([...accountPools]);
+          (accountPools) => {
+            if (isCurrent()) this.accountPools = Object.freeze([...accountPools]);
           },
-          onTimeout: () => {
-            console.warn(
-              `[demeterFarming] subscribeOnAccountPools initial emission timed out after ${INITIAL_EMISSION_TIMEOUT_MS}ms`
-            );
-            this.accountPools = EMPTY_ACCOUNT_POOLS;
-          },
-        });
+          INITIAL_EMISSION_TIMEOUT_MS
+        );
+
+        if (!isCurrent()) {
+          subscription.unsubscribe();
+          return;
+        }
+
+        this.accountPoolsUpdates = subscription;
       } catch (error) {
+        if (!isCurrent()) return;
         console.warn('[demeterFarming] subscribeOnAccountPools skipped', error);
         this.accountPools = EMPTY_ACCOUNT_POOLS;
       }
     },
     async unsubscribeUpdates(): Promise<void> {
+      invalidateSubscription(this, 'pools');
+      invalidateSubscription(this, 'tokens');
+      invalidateSubscription(this, 'accountPools');
       this.poolsUpdates = resetSubscription(this.poolsUpdates);
       this.tokensUpdates = resetSubscription(this.tokensUpdates);
       this.accountPoolsUpdates = resetSubscription(this.accountPoolsUpdates);

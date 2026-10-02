@@ -321,11 +321,14 @@ const isXorSufficientForNextOperation = () => {
 };
 
 const withdrawLiquidity = async () => {
-  await withNotifications(async () => {
+  const result = await withNotifications(async () => {
     await removeLiquidityAction();
     emit('back');
   });
-  confirmDialogVisible.value = false;
+
+  if (result.submitted) {
+    confirmDialogVisible.value = false;
+  }
 };
 
 const handleRemoveLiquidity = async () => {

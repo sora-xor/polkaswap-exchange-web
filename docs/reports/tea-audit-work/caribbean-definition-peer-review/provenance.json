@@ -1,0 +1,27 @@
+{
+  "retrievedAt": "2026-09-30",
+  "files": {
+    "ag-ppu.html": "https://agriculture.gov.ag/index.php/plant-protection/",
+    "sr-newsletter2023.pdf": "https://gov.sr/wp-content/uploads/2023/08/LVV-IDB-Nieuwsbrief-uitgave-02.pdf",
+    "sr-plant2020.pdf": "https://www.dna.sr/media/dc5fihzb/sb_2020___78.pdf",
+    "dm-fullact.pdf": "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf"
+  },
+  "notes": [
+    "All four direct HTTP downloads succeeded with 200. Web fetch restrictions did not prevent direct public retrieval.",
+    "Dominica primary Act PDF is image-only; first 13 PDF pages were OCRed and read. Existing subsidiary regulations already saved in sources/dm-regs.pdf.txt.",
+    "Existing sources/sr-foodscoping2023.pdf is a separate mining scoping report, not the cited LVV newsletter. This review saved the correct ministry newsletter under an unambiguous filename.",
+    "Existing enacted BB, KN, VC and TC texts and AG complete table were read in their previously saved locations; no regional array edited."
+  ],
+  "sha256": {
+    "sr-plant2020.txt": "804df299d3d42dbaff3ea041790ed4cef80f7042b325d4894c454d7682fdda97",
+    "sr-newsletter2023.txt": "8fdb3a5baf91df0ec9f3b514ba8fab25d3bb9fb77a040694e6165d9679c6a52e",
+    "sr-source-override.json": "a08cf1941ea8db2362a5cc3d211193d35245bc595249726963c12a99e5de2110",
+    "sr-plant2020.pdf": "231e3c6ba8cb281527a32b1dd37e523ca5c1344ef94ff7f58a3484580c641294",
+    "dm-fullact-ocr.txt": "144e530430a34a148819b33d047af48cf622fc4689780babb2abbef305ef4dfa",
+    "sr-newsletter2023.pdf": "5ba1cef8cbbac9b5e1aba4f7296067beaee5ab5dfb9464f58c14a9282f501772",
+    "ag-ppu.html": "c47c010c6b81a92f2f1a1fe4cf410181faf1e0252149fab8b51e7b3c3831f391",
+    "source-pass-result.json": "aa627ac8ef0b15dbeb2718bdce13d8d2e174c867edadf707434843406e9e8c20",
+    "dm-fullact.pdf": "aef8c3f45f7fbf6ed0d8870a139d8d20ce04f3e1a459c7626c8583b37c9ea003",
+    "ag-ppu.txt": "c9bd940955d13da0cfb5effc9358db2e8c3d774ae696a854c9a530d311d164bd"
+  }
+}

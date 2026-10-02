@@ -1,0 +1,9 @@
+{
+  "url": "http://laws.moj.gov.af/ShowLawPersian.aspx",
+  "method": "POST public search form",
+  "query": "غذایی",
+  "status": 200,
+  "bytes": 16168,
+  "sha256": "e9fd07ef53d86ca12f7b1fdcbf86193e94005e3304c2bd5bf5ac1ecb0b9844cc",
+  "retrievedAt": "2026-09-30T06:51:48.773109+00:00"
+}

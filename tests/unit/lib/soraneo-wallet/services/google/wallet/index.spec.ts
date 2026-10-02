@@ -18,11 +18,11 @@ vi.mock('@/lib/soraneo-wallet/src/services/google/index', () => ({
     get hasKey() {
       return (globalThis as any).__gdriveHasKey ?? false;
     },
-    get ready() {
+    get authReady() {
       return (globalThis as any).__gdriveReady ?? false;
     },
     auth: authMock,
-    init: initMock,
+    prepare: initMock,
   },
 }));
 

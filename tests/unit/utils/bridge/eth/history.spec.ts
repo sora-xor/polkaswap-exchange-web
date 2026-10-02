@@ -2,11 +2,18 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Operation } from '@sora-substrate/sdk';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { XOR } from '@sora-substrate/sdk/build/assets/consts';
+import { Interface } from 'ethers';
 
 const historyElementsFilterMock = vi.hoisted(() => vi.fn((value) => value));
 const getHistoryPagedMock = vi.hoisted(() => vi.fn());
 const createTypeMock = vi.hoisted(() => vi.fn());
 const getEvmTransactionReceiptByHashMock = vi.hoisted(() => vi.fn());
+const getOutgoingClaimStatusMock = vi.hoisted(() => vi.fn());
+
+vi.mock('@/utils/bridge/eth/claimStatus', () => ({
+  getOutgoingClaimStatus: getOutgoingClaimStatusMock,
+}));
+vi.mock('@/utils/ethers-util', () => ({ default: { getEthersInstance: vi.fn(() => ({})) } }));
 
 const ethBridgeApiMock = vi.hoisted(() => {
   const state = {
@@ -93,7 +100,9 @@ vi.mock('@/consts/evm', () => ({
   },
   SmartContracts: {
     EthBridge: {
-      Other: [],
+      Other: [
+        'function receiveBySidechainAssetId(bytes32 sidechainAssetId,uint256 amount,address to,address from,bytes32 txHash,uint8[] v,bytes32[] r,bytes32[] s)',
+      ],
       XOR: [],
     },
   },
@@ -144,6 +153,33 @@ const createOutgoingHistoryElementWithoutRequestHash = (id: string, timestamp: n
   },
 });
 
+const EVM_FROM = '0x1111111111111111111111111111111111111111';
+const EVM_BRIDGE = '0x2222222222222222222222222222222222222222';
+const EVM_CALLDATA = '0xabcdef12';
+const EVM_HASH = `0x${'a'.repeat(64)}`;
+const EVM_START_TIMESTAMP = 1_700_000_000_750;
+
+const createEtherscanTransaction = (overrides: Record<string, unknown> = {}) => ({
+  hash: EVM_HASH,
+  from: EVM_FROM,
+  to: EVM_BRIDGE,
+  nonce: '7',
+  input: EVM_CALLDATA,
+  value: '42',
+  timeStamp: '1700000001',
+  ...overrides,
+});
+
+const createSubmissionFingerprint = (overrides: Record<string, unknown> = {}) => ({
+  from: EVM_FROM,
+  to: EVM_BRIDGE,
+  nonce: 7,
+  data: EVM_CALLDATA,
+  value: 42n,
+  startTimestamp: EVM_START_TIMESTAMP,
+  ...overrides,
+});
+
 const mockIncomingCall = (recipient = 'sora-address') => ({
   section: 'ethBridge',
   method: 'importIncomingRequest',
@@ -184,6 +220,8 @@ const setPagedHistory = (incoming: any[] = [], outgoing: any[] = []) => {
 describe('EthBridgeHistory', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    ethBridgeApiMock.getRequestStatus.mockReset();
+    getOutgoingClaimStatusMock.mockResolvedValue('inconclusive');
     ethBridgeApiMock.history = {};
     ethBridgeApiMock.state.storage = {};
     createTypeMock.mockImplementation(() => mockIncomingCall());
@@ -214,6 +252,249 @@ describe('EthBridgeHistory', () => {
     expect(history.map((item) => item.id)).toEqual(['incoming', 'outgoing']);
   });
 
+  it('bypasses an unavailable explorer only when Ethereum confirms the request is unclaimed and the account is idle', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    await history.init({ OTHER: EVM_BRIDGE } as never, 1);
+    const fetchHistory = vi
+      .spyOn(history as any, 'fetchEthAccountTransactions')
+      .mockRejectedValue(new Error('offline'));
+    getOutgoingClaimStatusMock.mockResolvedValue('unclaimed');
+
+    expect(await history.findEthTxBySoraHash(EVM_FROM, EVM_HASH)).toBeNull();
+    expect(getOutgoingClaimStatusMock).toHaveBeenCalledWith({}, 1, [EVM_BRIDGE], EVM_FROM, EVM_HASH);
+    expect(fetchHistory).not.toHaveBeenCalled();
+  });
+
+  it('does not treat an inconclusive Ethereum check and explorer outage as permission to sign again', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    await history.init({ OTHER: EVM_BRIDGE } as never, 1);
+    vi.spyOn(history as any, 'fetchEthAccountTransactions').mockRejectedValue(new Error('offline'));
+    getOutgoingClaimStatusMock.mockRejectedValue(new Error('wallet unavailable'));
+
+    await expect(history.findEthTxBySoraHash(EVM_FROM, EVM_HASH)).rejects.toThrow('offline');
+  });
+
+  it.each(['consumed', 'pending'])(
+    'does not let an empty explorer override a %s Ethereum claim status',
+    async (status) => {
+      const history = new EthBridgeHistory('etherscan-key');
+      await history.init({ OTHER: EVM_BRIDGE } as never, 1);
+      vi.spyOn(history as any, 'fetchEthAccountTransactions').mockResolvedValue({});
+      getOutgoingClaimStatusMock.mockResolvedValue(status);
+
+      await expect(history.findEthTxBySoraHash(EVM_FROM, EVM_HASH)).rejects.toThrow('awaiting transaction history');
+    }
+  );
+
+  it('refreshes cached history and prefers a successful claim over later failed retries', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    await history.init({ OTHER: EVM_BRIDGE } as never, 1);
+    const claim = new Interface([
+      'function receiveBySidechainAssetId(bytes32 sidechainAssetId,uint256 amount,address to,address from,bytes32 txHash,uint8[] v,bytes32[] r,bytes32[] s)',
+    ]);
+    const input = claim.encodeFunctionData('receiveBySidechainAssetId', [
+      '0x0200000000000000000000000000000000000000000000000000000000000000',
+      '5000000000000000000',
+      EVM_FROM,
+      EVM_BRIDGE,
+      EVM_HASH,
+      [],
+      [],
+      [],
+    ]);
+    const success = createEtherscanTransaction({ hash: '0xsuccess', input, isError: '0' });
+    const failed = createEtherscanTransaction({ hash: '0xfailed', input, isError: '1' });
+    (history as any).ethAccountTransactionsMap[EVM_FROM] = {};
+    const fetchHistory = vi.spyOn(history as any, 'fetchEthAccountTransactions').mockResolvedValue({ success, failed });
+
+    expect(await history.findEthTxBySoraHash(EVM_FROM, EVM_HASH)).toEqual(success);
+    expect(fetchHistory).toHaveBeenCalledOnce();
+  });
+
+  it('restores a SORA-approved outgoing row even when Ethereum history is unavailable', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    (history as any).externalNetwork = 1;
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue('ApprovalsReady');
+    vi.spyOn(history, 'findEthTxBySoraHash').mockRejectedValue(new Error('explorer offline'));
+    setPagedHistory([], [createOutgoingHistoryElement('approved', 22)]);
+
+    await history.updateAccountHistory('sora-address', {} as any, {}, () => ({ ...XOR, decimals: 18 }) as any);
+
+    expect(ethBridgeApiMock.generateHistoryItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        txId: 'approved',
+        hash: 'request-approved',
+        transactionState: ETH_BRIDGE_STATES.EVM_REJECTED,
+      })
+    );
+  });
+
+  it.each(['failure', 'empty', 'older failure'])(
+    'preserves a local Ethereum broadcast hash when explorer restoration is %s',
+    async (result) => {
+      const history = new EthBridgeHistory('etherscan-key');
+      const row = {
+        id: 'local',
+        txId: 'approved',
+        hash: 'request-approved',
+        externalHash: EVM_HASH,
+        type: Operation.EthBridgeOutgoing,
+        transactionState: ETH_BRIDGE_STATES.EVM_PENDING,
+      };
+      ethBridgeApiMock.history = { local: row };
+      ethBridgeApiMock.getRequestStatus.mockResolvedValue('ApprovalsReady');
+      const find = vi.spyOn(history, 'findEthTxBySoraHash');
+      if (result === 'failure') find.mockRejectedValue(new Error('explorer offline'));
+      else if (result === 'older failure') find.mockResolvedValue({ hash: '0xolder-failed', isError: '1' } as never);
+      else find.mockResolvedValue(null);
+      setPagedHistory([], [createOutgoingHistoryElement('approved', 22)]);
+
+      await history.updateAccountHistory('sora-address', {} as any, {}, () => ({ ...XOR, decimals: 18 }) as any);
+
+      expect(ethBridgeApiMock.history.local).toEqual(row);
+      expect(ethBridgeApiMock.saveHistory).not.toHaveBeenCalled();
+    }
+  );
+
+  it('force-refreshes an empty Etherscan cache when finding a submission fingerprint', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const transaction = createEtherscanTransaction();
+    const etherscan = {
+      fetch: vi.fn().mockResolvedValue('100'),
+      getHistory: vi.fn().mockResolvedValueOnce([]).mockResolvedValueOnce([transaction]),
+      getBlock: vi.fn(),
+    };
+
+    (history as any).etherscanInstance = etherscan;
+
+    await expect(history.findEthTxBySubmissionFingerprint(createSubmissionFingerprint() as any)).resolves.toBeNull();
+    await expect(history.findEthTxBySubmissionFingerprint(createSubmissionFingerprint() as any)).resolves.toBe(
+      transaction
+    );
+
+    expect(etherscan.getHistory).toHaveBeenCalledTimes(2);
+    expect(etherscan.getHistory).toHaveBeenNthCalledWith(2, EVM_FROM, 100);
+    expect(etherscan.fetch).toHaveBeenCalledWith('block', {
+      action: 'getblocknobytime',
+      closest: 'before',
+      timestamp: 1_699_999_700,
+    });
+  });
+
+  it('normalizes ethers transaction fields and resolves its timestamp from the block', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const transaction = {
+      ...createEtherscanTransaction(),
+      nonce: 7,
+      input: undefined,
+      data: '0xABCDEF12',
+      value: 42n,
+      timeStamp: undefined,
+      blockNumber: 101,
+    };
+    const etherscan = {
+      fetch: vi.fn().mockResolvedValue('100'),
+      getHistory: vi.fn().mockResolvedValue([transaction]),
+      getBlock: vi.fn().mockResolvedValue({ timestamp: 1_700_000_001 }),
+    };
+
+    (history as any).etherscanInstance = etherscan;
+
+    await expect(
+      history.findEthTxBySubmissionFingerprint(
+        createSubmissionFingerprint({ nonce: '0x07', data: EVM_CALLDATA.toUpperCase(), value: '0x2a' }) as any
+      )
+    ).resolves.toBe(transaction);
+    expect(etherscan.getBlock).toHaveBeenCalledWith(101);
+  });
+
+  it('allows bounded negative provider clock skew when matching a unique submission', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const transaction = createEtherscanTransaction({ timeStamp: '1699999761' });
+    const etherscan = {
+      fetch: vi.fn().mockResolvedValue('90'),
+      getHistory: vi.fn().mockResolvedValue([transaction]),
+      getBlock: vi.fn(),
+    };
+
+    (history as any).etherscanInstance = etherscan;
+
+    await expect(history.findEthTxBySubmissionFingerprint(createSubmissionFingerprint() as any)).resolves.toBe(
+      transaction
+    );
+  });
+
+  it('requires every fingerprint field and a transaction at or after the persisted start time', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const etherscan = {
+      fetch: vi.fn().mockResolvedValue('100'),
+      getHistory: vi
+        .fn()
+        .mockResolvedValue([
+          null,
+          createEtherscanTransaction({ hash: `0x${'b'.repeat(64)}`, nonce: '8' }),
+          createEtherscanTransaction({ hash: `0x${'c'.repeat(64)}`, input: '0xabcdef13' }),
+          createEtherscanTransaction({ hash: `0x${'d'.repeat(64)}`, value: '43' }),
+          createEtherscanTransaction({ hash: `0x${'e'.repeat(64)}`, timeStamp: '1699999600' }),
+        ]),
+      getBlock: vi.fn(),
+    };
+
+    (history as any).etherscanInstance = etherscan;
+
+    await expect(history.findEthTxBySubmissionFingerprint(createSubmissionFingerprint() as any)).resolves.toBeNull();
+    await expect(
+      history.findEthTxBySubmissionFingerprint(createSubmissionFingerprint({ data: 'not-calldata' }) as any)
+    ).resolves.toBeNull();
+    expect(etherscan.getHistory).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(['not-a-number', 'Infinity', '-1', String(Date.now()), String(Number.MAX_SAFE_INTEGER)])(
+    'recovers from a malformed persisted sync timestamp: %s',
+    async (value) => {
+      const history = new EthBridgeHistory('etherscan-key');
+      const outgoing = createOutgoingHistoryElementWithoutRequestHash('restored-after-invalid-cursor', 22);
+
+      ethBridgeApiMock.state.storage.ethBridgeHistorySyncTimestamp = value;
+      ethBridgeApiMock.state.storage.ethBridgeHistoryFullSyncTimestamp = value;
+      (history as any).externalNetwork = 1;
+      vi.spyOn(history, 'findEthTxBySoraHash').mockResolvedValue(null);
+      setPagedHistory([], [outgoing]);
+
+      expect(history.historySyncTimestamp).toBe(0);
+      expect(history.fullHistorySyncTimestamp).toBe(0);
+
+      await history.updateAccountHistory(
+        'sora-address',
+        { [Operation.EthBridgeOutgoing]: '0' } as any,
+        {},
+        () => ({ ...XOR, decimals: 18 }) as any
+      );
+
+      expect(historyElementsFilterMock).toHaveBeenCalledWith(expect.objectContaining({ timestamp: 0 }));
+      expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 22);
+      expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistoryFullSyncTimestamp', 22);
+    }
+  );
+
+  it('skips an indexer row with an implausible future timestamp', async () => {
+    const history = new EthBridgeHistory('etherscan-key');
+    const outgoing = createOutgoingHistoryElementWithoutRequestHash('future-row', Number.MAX_SAFE_INTEGER);
+
+    (history as any).externalNetwork = 1;
+    setPagedHistory([], [outgoing]);
+
+    await history.updateAccountHistory(
+      'sora-address',
+      { [Operation.EthBridgeOutgoing]: '0' } as any,
+      {},
+      () => ({ ...XOR, decimals: 18 }) as any
+    );
+
+    expect(ethBridgeApiMock.generateHistoryItem).not.toHaveBeenCalled();
+    expect(ethBridgeApiMock.accountStorage.set).toHaveBeenCalledWith('ethBridgeHistorySyncTimestamp', 0);
+  });
+
   it('restores raw incoming ETH multisig history for the selected SORA recipient only', async () => {
     const updateCallback = vi.fn();
     const history = new EthBridgeHistory('etherscan-key');
@@ -235,7 +516,7 @@ describe('EthBridgeHistory', () => {
       'sora-address',
       { [Operation.EthBridgeOutgoing]: '0' } as any,
       {},
-      () => ({ ...XOR, decimals: 18 } as any),
+      () => ({ ...XOR, decimals: 18 }) as any,
       updateCallback
     );
 
@@ -274,7 +555,7 @@ describe('EthBridgeHistory', () => {
       'sora-address',
       { [Operation.EthBridgeOutgoing]: '0' } as any,
       {},
-      () => ({ ...XOR, decimals: 18 } as any)
+      () => ({ ...XOR, decimals: 18 }) as any
     );
 
     expect(ethBridgeApiMock.generateHistoryItem).not.toHaveBeenCalled();
@@ -319,7 +600,7 @@ describe('EthBridgeHistory', () => {
       'sora-address',
       { [Operation.EthBridgeOutgoing]: '0' } as any,
       {},
-      () => ({ ...XOR, decimals: 18 } as any)
+      () => ({ ...XOR, decimals: 18 }) as any
     );
 
     expect(ethBridgeApiMock.generateHistoryItem).toHaveBeenCalledWith(
@@ -358,7 +639,7 @@ describe('EthBridgeHistory', () => {
       'sora-address',
       { [Operation.EthBridgeOutgoing]: '0' } as any,
       {},
-      () => ({ ...XOR, decimals: 18 } as any)
+      () => ({ ...XOR, decimals: 18 }) as any
     );
 
     expect(getHistoryPagedMock).toHaveBeenCalledWith(
@@ -389,7 +670,7 @@ describe('EthBridgeHistory', () => {
       'sora-address',
       { [Operation.EthBridgeOutgoing]: '0' } as any,
       {},
-      () => ({ ...XOR, decimals: 18 } as any)
+      () => ({ ...XOR, decimals: 18 }) as any
     );
 
     expect(ethBridgeApiMock.generateHistoryItem).toHaveBeenCalledWith(

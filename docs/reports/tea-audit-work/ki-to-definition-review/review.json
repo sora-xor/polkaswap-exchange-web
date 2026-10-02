@@ -1,0 +1,98 @@
+{
+  "reviewedAt": "2026-09-30",
+  "scope": "KI and TO; finished factory-sealed 100 g Japanese Camellia sinensis sencha, steamed/rolled/dried, bought for private consumption and posted from Japan. No special permits/certificates/registrations/advance notice; ordinary Customs/arrival declarations allowed.",
+  "mainArraysEdited": false,
+  "internationalEvidence": {
+    "url": "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "locator": "ISPM 32 section 2 and Appendix 2, printed p.32-14 / PDF p.16",
+    "finding": "Tea is expressly illustrated as Category 1. Appendix is reference material; the standard does not cover contaminating/storage pests acquired after processing, and does not itself issue a national import specification or repeal a national permit provision."
+  },
+  "KI": {
+    "proposedDecision": "unresolved",
+    "outcomeChanged": false,
+    "primaryUrl": "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+    "operativeText": [
+      {
+        "section": "2, pp.17–18",
+        "finding": "Manufactured plant products included unconditionally, with all such products regulated articles."
+      },
+      {
+        "section": "25–26, pp.41–43",
+        "finding": "Permit/certificate only if required by specifications; Director must assess risk, use reasonably necessary measures, have regard to SPS/international standards and may apply precaution."
+      },
+      {
+        "section": "27, pp.43–44",
+        "finding": "Written pre-import application required only when no specification already exists."
+      },
+      {
+        "section": "31, p.46",
+        "finding": "Individual written exemption requires advance request; not automatic."
+      },
+      {
+        "section": "80 and 107",
+        "finding": "Office/register publication and preserved compatible legacy specifications preclude inferring no specification merely from no online result."
+      }
+    ],
+    "whyISPMDoesNotClose": "Mandatory regard is not mandatory automatic incorporation. The statutory process expressly requires a specification for regulated manufactured articles, regardless of their risk category. A general published specification could suffice; tea-specific naming or bespoke authority ruling is not demanded.",
+    "foodLayer": "Food Regulations2014 section56 personal-food exemption <=10 kg retained. No independent special-food-paperwork obstacle inferred.",
+    "genuineGap": "The existing section 26 specification or compatible saved legacy instrument applicable to factory-sealed manufactured Camellia tea: does it permit ordinary postal arrival clearance alone, or impose special permits/certificates? The Act’s mandatory consideration of international standards does not itself answer that question; if no specification exists, section 27 requires advance written application."
+  },
+  "TO": {
+    "proposedDecision": "not_supported",
+    "proposedStatus": "permit_required",
+    "outcomeChanged": true,
+    "primaryUrl": "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/1981/1981-0024/PlantQuarantineAct_3.pdf",
+    "currentIndexUrl": "https://ago.gov.to/cms/legislation/current-revised-edition/by-title.html?view=acts_alpha",
+    "officialVersion": "AGO live index identified version3 as CURRENT FILE, 2020 Revised Edition commenced4Dec2020; principal Act originally commenced31Aug1982.",
+    "operativeText": [
+      {
+        "section": "2, p.6",
+        "finding": "Plant excludes manufactured items, but separate plant material category includes all materials of plant origin; import covers any conveyance and person includes individuals."
+      },
+      {
+        "section": "17, p.9",
+        "finding": "Repealed by Act10/1995, correcting earlier source age."
+      },
+      {
+        "section": "25(1), p.10",
+        "finding": "Affirmative written-permit duty for any plant, plant material or other regulated article."
+      },
+      {
+        "section": "11–12 and29, pp.8,11",
+        "finding": "Mail expressly within inspection/opening and Customs/Post Office hold/notification provisions."
+      },
+      {
+        "section": "Regulations1995 23–26, Gazette pp.84–85",
+        "finding": "Specified no-permit preserved fruit/vegetable concessions exist; Reg26 requires permits for manufactured material assessed by Director as serious exotic-pest carrier but contains no express exemption for other manufactured material."
+      }
+    ],
+    "inferenceLevel": "Conservative legal-scope inference, not explicit national tea ruling.",
+    "counterargumentConsidered": "One might infer Reg26 intends to limit manufactured-material permits to Director-assessed risks. The current parent Act25(1), however, separately states a broad duty; Reg26 lacks only/except language or an express general waiver. The proposal retains this interpretive caveat and does not present the Act as an unqualified tea-specific authority determination.",
+    "whyISPMDoesNotClose": "No general mandatory incorporation of ISPM32 was found in this Act or these Regulations; certificate-format references are narrower. Category1 technical treatment therefore cannot nullify the current positive statutory permit duty.",
+    "certificateCaution": "Do not rely on Act25(2) living-plants-and-plant-material wording to assert a foreign phytosanitary certificate is required for finished tea; permit alone is the proposed blocker.",
+    "foodLayer": "Existing private/commercial distinction under FoodAct2020 retained; no independent private-food certificate blocker added."
+  },
+  "newRetrievals": [
+    {
+      "url": "https://ago.gov.to/cms/legislation/current-revised-edition/by-title.html?view=acts_alpha",
+      "method": "POST public title search submit4=P, pointintime=2026-09-30 00:00:00",
+      "result": "Full current title index and exact official Act link recovered."
+    },
+    {
+      "url": "https://ago.gov.to/cms/images/LEGISLATION/PRINCIPAL/1981/1981-0024/PlantQuarantineAct_3.pdf",
+      "result": "web.open reported internal error; ordinary direct HTTP download succeeded and produced16page PDF with extractable text."
+    },
+    {
+      "url": "https://ago.gov.to/cms/images/LEGISLATION/SUBORDINATE/1965/1965-0002/DiseasesofPlantsRegulations_3.pdf",
+      "result": "Full current text recovered; footnote confirms 1995 PlantQuarantineRegulations commencement20Dec1995 and repeal of old PartI. It is not a replacement tea admission rule."
+    },
+    {
+      "url": "https://faolex.fao.org/docs/pdf/kir147512.pdf",
+      "result": "Fresh web read timed out; used prior fully recovered primary PDF instead, without retrying known unavailable routes."
+    }
+  ],
+  "proposals": [
+    "ki-source-only-full-row-proposal.json",
+    "to-outcome-full-row-proposal.json"
+  ]
+}

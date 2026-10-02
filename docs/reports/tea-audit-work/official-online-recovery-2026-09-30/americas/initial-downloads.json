@@ -1,0 +1,30 @@
+[
+  {
+    "file": "bs-importcontrol1972.pdf",
+    "url": "https://laws.bahamas.gov.bs/cms/images/LEGISLATION/SUBORDINATE/1972/1972-0050/1972-0050.pdf",
+    "status": 503,
+    "bytes": 79,
+    "sha256": "f0e17b87c0d02b3e9119e52384479a45f4028fd147777e93c70d5f21163842f9"
+  },
+  {
+    "file": "bs-lawindex.html",
+    "url": "https://laws.bahamas.gov.bs/cms/legislation/index/by-category.html",
+    "status": 200,
+    "bytes": 816959,
+    "sha256": "791b320b8558f62221b07d9ad542c64358bb85b42b6d04b74bdee5719f5dd7d3"
+  },
+  {
+    "file": "bs-foodconditions.html",
+    "url": "https://bahfsabahamas.com/sectors/international/food-import-conditions",
+    "status": 403,
+    "bytes": 5647,
+    "sha256": "6715b968b9568182281c389ac8e459ec547dc52c356ed7d51185ce078a3cab32"
+  },
+  {
+    "file": "bq-law-explanation.html",
+    "url": "https://zoek.officielebekendmakingen.nl/kst-31957-7.html",
+    "status": 200,
+    "bytes": 206405,
+    "sha256": "aae03f0163a87919b9450a6b76e136eeefff59981699d01d4a4ed84766ee76e0"
+  }
+]

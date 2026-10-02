@@ -106,6 +106,14 @@ export default {
     const shouldBalanceBeHidden = computed(() => walletStore.shouldBalanceBeHidden);
     const account = computed(() => walletStore.account);
     const assetAddress = computed(() => props.asset?.address || '');
+    /** Tracks the endpoint that runtime environment loading installs asynchronously. */
+    const indexerEndpoint = computed(() => {
+      const indexerType = walletStore.indexerType;
+      const endpoint = indexerType ? walletStore.indexers?.[indexerType]?.endpoint : '';
+
+      return typeof endpoint === 'string' ? endpoint.trim() : '';
+    });
+    let isMounted = false;
 
     const getPrefilteredHistory = (historyMap: AccountHistory<HistoryItem>): HistoryItem[] => {
       const historyList = Object.values(historyMap);
@@ -308,14 +316,26 @@ export default {
       void updateHistoryBySearchQuery();
     });
 
+    watch(indexerEndpoint, (endpoint, previousEndpoint) => {
+      if (!isMounted || !endpoint || endpoint === previousEndpoint) return;
+
+      void updateHistory(1, true);
+    });
+
     onMounted(() => {
+      isMounted = true;
       void (async () => {
         saveExternalHistoryUpdates(true);
-        await updateHistory(1, true);
+        if (indexerEndpoint.value) {
+          await updateHistory(1, true);
+        } else {
+          getHistory();
+        }
       })();
     });
 
     onBeforeUnmount(() => {
+      isMounted = false;
       saveExternalHistoryUpdates(false);
       reset();
     });

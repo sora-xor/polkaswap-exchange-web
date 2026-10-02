@@ -1,0 +1,17 @@
+[
+  {
+    "file": "mz-consolidated2019-en.pdf",
+    "url": "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/mz_2009-5cons2019_pqreg_en.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 200,
+    "bytes": 744632,
+    "textExtracted": true
+  },
+  {
+    "file": "gn-procedure2023-old.pdf",
+    "url": "https://agriculture.gov.gn/wp-content/uploads/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf",
+    "retrievedAt": "2026-09-30",
+    "status": 429,
+    "bytes": 593
+  }
+]

@@ -1,7 +1,15 @@
 <template>
-  <div class="customise-widget-wrapper" @click.stop="toggleVisibility">
-    <base-widget v-bind="$attrs" :title="t('customisePageText')" class="customise-widget">
-      <template #filters>
+  <div
+    :class="['customise-widget-wrapper', { 'customise-widget-wrapper--compact': compact }]"
+    @click.stop="toggleVisibility"
+  >
+    <component
+      :is="compact ? 'div' : BaseWidget"
+      v-bind="$attrs"
+      :title="compact ? undefined : t('customisePageText')"
+      class="customise-widget"
+    >
+      <template v-slot:[contentSlot]>
         <s-popover-panel
           popper-class="customise-widget-popper"
           placement="bottom-end"
@@ -11,13 +19,16 @@
         >
           <template #reference>
             <s-button
-              id="customise-button"
+              class="customise-button"
               type="action"
               alternative
               size="small"
-              icon="basic-settings-24"
+              :icon="compact ? 'basic-more-vertical-24' : 'basic-settings-24'"
               :aria-label="t('customisePageText')"
-            ></s-button>
+              :aria-expanded="visible"
+              :title="t('customisePageText')"
+              :tooltip="t('customisePageText')"
+            />
           </template>
 
           <div class="customise">
@@ -41,7 +52,7 @@
           </div>
         </s-popover-panel>
       </template>
-    </base-widget>
+    </component>
   </div>
 </template>
 
@@ -68,13 +79,17 @@ const optionsModel = defineModel<WidgetsVisibilityModel>('options', {
 const props = withDefaults(
   defineProps<{
     labels?: Record<string, string>;
+    /** Renders an accessible icon action that fits even a narrow desktop widget header. */
+    compact?: boolean;
   }>(),
   {
     labels: () => (ObjectInit() ?? {}) as Record<string, string>,
+    compact: false,
   }
 );
 
 const { t } = useTranslation();
+const contentSlot = computed(() => (props.compact ? 'default' : 'filters'));
 
 const modelEntries = computed(() => {
   const entries: Array<{ name: ModelKey; model: WidgetsVisibilityModel }> = [];
@@ -93,6 +108,7 @@ const modelEntries = computed(() => {
   return entries;
 });
 
+/** Updates one widget or editing preference without duplicating switch events. */
 function toggle(name: ModelKey, key: string, value: boolean): void {
   const target = name === 'widgets' ? widgetsModel : optionsModel;
   if (Boolean(target.value?.[key]) === Boolean(value)) return;
@@ -104,18 +120,22 @@ function toggle(name: ModelKey, key: string, value: boolean): void {
   target.value = nextValue;
 }
 
+/** Makes the visible option text toggle the same preference as its switch. */
 function toggleLabel(name: ModelKey, key: string, value: boolean): void {
   toggle(name, key, !value);
 }
 
+/** Resolves a localized label for a preference. */
 function getLabel(key: string): string {
   const label = props.labels?.[key] ?? '';
   return capitalize(label);
 }
 
+/** Supports the legacy card trigger while compact buttons use the popover trigger. */
 function toggleVisibility(event: PointerEvent): void {
+  if (props.compact) return;
   const target = event.target as HTMLElement | null;
-  if (target?.closest('#customise-button')) return;
+  if (target?.closest('.customise-button')) return;
 
   visible.value = !visible.value;
 }
@@ -130,6 +150,20 @@ function toggleVisibility(event: PointerEvent): void {
 <style lang="scss" scoped>
 .customise-widget-wrapper {
   cursor: pointer;
+
+  &--compact {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 44px;
+
+    :deep(.customise-widget .customise-button) {
+      width: 44px;
+      min-width: 44px;
+      height: 44px;
+      min-height: 44px;
+      padding: 0;
+    }
+  }
 }
 
 .customise-widget {
@@ -139,7 +173,7 @@ function toggleVisibility(event: PointerEvent): void {
     @include icon-styles(true);
   }
 
-  :deep(#customise-button) {
+  :deep(.customise-button) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -152,16 +186,16 @@ function toggleVisibility(event: PointerEvent): void {
     border-radius: 50%;
     background: transparent;
     box-shadow: none;
-    color: var(--s-color-base-content-tertiary);
+    color: var(--s-color-base-content-primary);
   }
 
-  :deep(#customise-button .s-button__icon),
-  :deep(#customise-button i[class*='s-icon-']) {
+  :deep(.customise-button .s-button__icon),
+  :deep(.customise-button i[class*='s-icon-']) {
     display: inline-block;
     font-size: 18px;
     line-height: 18px;
     color: inherit;
-    opacity: 0.7;
+    opacity: 1;
   }
 }
 

@@ -9,10 +9,16 @@ import dynamicImport from 'vite-plugin-dynamic-import';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import svgLoader from 'vite-svg-loader';
 import { compatAutoImportPlugin } from './scripts/build/compatAutoImportPlugin.mjs';
+import { storeRehearsalPlugin } from './scripts/build/storeRehearsalPlugin.mjs';
 
 const isTest = !!process.env.VITEST;
-const projectArgIndex = process.argv.findIndex((arg) => arg === '--project');
-const vitestProject = projectArgIndex >= 0 ? process.argv[projectArgIndex + 1] : undefined;
+const projectArgIndex = process.argv.findIndex((arg) => arg === '--project' || arg.startsWith('--project='));
+const vitestProject =
+  projectArgIndex < 0
+    ? undefined
+    : process.argv[projectArgIndex] === '--project'
+      ? process.argv[projectArgIndex + 1]
+      : process.argv[projectArgIndex].slice('--project='.length);
 const disableNodePolyfills = vitestProject === 'unit-scripts' || process.env.DISABLE_VITE_NODE_POLYFILLS === '1';
 const packageJson = JSON.parse(readFileSync(fileURLToPath(new URL('./package.json', import.meta.url)), 'utf8'));
 
@@ -225,6 +231,7 @@ if (isTest) {
 export default defineConfig({
   base: './',
   plugins: [
+    storeRehearsalPlugin(),
     vue(),
     dynamicImport(),
     svgLoader(),

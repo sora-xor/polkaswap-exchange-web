@@ -1,0 +1,53 @@
+{
+  "localProbe": {
+    "checkedAt": "2026-09-25T08:38:47.189Z",
+    "primary": "wss://ws.mof.sora.org",
+    "archive": "wss://mof2.sora.org",
+    "genesisHash": "0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5",
+    "primaryFinalizedHeight": 27772118,
+    "historicalHeight": 27771094,
+    "historicalHash": "0xbc1ee4ef987c5828b8dba93a5ae62609b97ab8077969875f20e5de075c671284",
+    "historicalTimestamp": "1790318928005",
+    "gapBlocks": 1024,
+    "primaryHistoricalStateUnavailable": true,
+    "archiveCanonicalHashMatches": true,
+    "actualRelayReaderSucceeded": true,
+    "eventCount": 1,
+    "matchedPublicReferences": 0,
+    "savedCursor": 27771095,
+    "restoredCursor": 27771095,
+    "resumedCursor": 27771096,
+    "durableRestartRecoveryVerified": true,
+    "syntheticDatabaseRemoved": true,
+    "readOnly": true,
+    "submittedTransactions": 0
+  },
+  "mofHostProbe": {
+    "checkedAt": "2026-09-25T08:43:36.823Z",
+    "primary": "wss://ws.mof.sora.org",
+    "archive": "wss://mof2.sora.org",
+    "genesisHash": "0x7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5",
+    "primaryFinalizedHeight": 27772165,
+    "historicalHeight": 27771141,
+    "historicalHash": "0x58607bb575fc08de977378aebc46260cba09e6ed3bebe2e8ba0c6487d40a13d4",
+    "historicalTimestamp": "1790319228000",
+    "gapBlocks": 1024,
+    "primaryHistoricalStateUnavailable": true,
+    "archiveCanonicalHashMatches": true,
+    "actualRelayReaderSucceeded": true,
+    "eventCount": 1,
+    "matchedPublicReferences": 0,
+    "savedCursor": 27771142,
+    "restoredCursor": 27771142,
+    "resumedCursor": 27771143,
+    "durableRestartRecoveryVerified": true,
+    "syntheticDatabaseRemoved": true,
+    "readOnly": true,
+    "submittedTransactions": 0
+  },
+  "approvedSourceEvidence": [
+    "docs/mof2-recovery.md",
+    "public/bot-history/README.md",
+    "docs/bots-target-runtime-transport.md"
+  ]
+}

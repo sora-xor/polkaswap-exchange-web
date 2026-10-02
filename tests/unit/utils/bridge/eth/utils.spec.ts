@@ -1,6 +1,9 @@
+import { Interface } from 'ethers';
+import bridgeAbi from '@/abi/ethereum/other/BRIDGE.json';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const ethBridgeApiMock = vi.hoisted(() => ({
+  history: {} as Record<string, any>,
   getHistory: vi.fn(),
   saveHistory: vi.fn(),
   subscribeOnRequestStatus: vi.fn(),
@@ -20,21 +23,12 @@ const ethersUtilMock = vi.hoisted(() => ({
   isNativeEvmTokenAddress: vi.fn(),
 }));
 
-vi.mock('@sora-substrate/sdk', () => ({
+vi.mock('@sora-substrate/sdk', async () => ({
   Operation: {
     EthBridgeIncoming: 'EthBridgeIncoming',
     EthBridgeOutgoing: 'EthBridgeOutgoing',
   },
-  FPNumber: class {
-    constructor(
-      private value: string,
-      private decimals: number
-    ) {}
-
-    toCodecString() {
-      return `${this.value}:codec:${this.decimals}`;
-    }
-  },
+  FPNumber: (await import('@/lib/substrate/math')).FPNumber,
 }));
 
 vi.mock('@sora-substrate/sdk/build/bridgeProxy/consts', () => ({
@@ -93,6 +87,7 @@ import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/constants';
 import { BridgeTxStatus } from '@sora-substrate/sdk/build/bridgeProxy/consts';
 import { EthCurrencyType } from '@sora-substrate/sdk/build/bridgeProxy/eth/consts';
 import {
+  findTransaction,
   getIncomingEvmTransactionData,
   getOutgoingEvmTransactionData,
   getTransaction,
@@ -109,7 +104,10 @@ import {
 describe('ETH bridge utils', () => {
   beforeEach(() => {
     vi.useRealTimers();
-    Object.values(ethBridgeApiMock).forEach((mock) => mock.mockReset());
+    Object.values(ethBridgeApiMock).forEach((mock) => {
+      if (vi.isMockFunction(mock)) mock.mockReset();
+    });
+    ethBridgeApiMock.history = {};
     Object.values(ethersUtilMock).forEach((mock) => mock.mockReset());
     ethersUtilMock.accountAddressToHex.mockImplementation((address: string) => `hex:${address}`);
     ethersUtilMock.getContract.mockResolvedValue({ contract: 'mock' });
@@ -122,6 +120,9 @@ describe('ETH bridge utils', () => {
   const createApprovedRequest = (overrides: Record<string, unknown> = {}) =>
     ({
       currencyType: EthCurrencyType.AssetId,
+      currencyId: 'sidechain-asset-id',
+      amount: '5000000000000000000',
+      to: '0xbeneficiary',
       from: '0xfrom',
       hash: '0xhash',
       r: ['0xr'],
@@ -203,6 +204,48 @@ describe('ETH bridge utils', () => {
     });
   });
 
+  it('prefers authoritative persisted history over a stale UI cache row', () => {
+    const persisted = {
+      id: 'tx-1',
+      type: 'EthBridgeOutgoing',
+      txId: '0xsora-tx',
+      blockId: '0xsora-block',
+      hash: '0xrequest',
+    };
+    const cached = { id: 'tx-1', type: 'EthBridgeOutgoing' };
+
+    ethBridgeApiMock.history = { 'tx-1': persisted };
+    ethBridgeApiMock.getHistory.mockReturnValue(persisted);
+
+    expect(getTransaction('tx-1', cached as any)).toBe(persisted);
+  });
+
+  it.each(['local-id', '0xrequest', '0xsora-tx', '0xexternal'])(
+    'finds persisted Ethereum history by the %s transaction alias',
+    (lookupId) => {
+      const persisted = {
+        id: 'local-id',
+        type: 'EthBridgeIncoming',
+        hash: '0xrequest',
+        txId: '0xsora-tx',
+        externalHash: '0xexternal',
+      };
+
+      ethBridgeApiMock.history = { 'storage-key': persisted };
+      ethBridgeApiMock.getHistory.mockReturnValue(null);
+
+      expect(findTransaction(lookupId)).toBe(persisted);
+    }
+  );
+
+  it('uses a UI cache row only when persisted Ethereum history is unavailable', () => {
+    const cached = { id: 'cached', type: 'EthBridgeOutgoing' };
+
+    ethBridgeApiMock.getHistory.mockReturnValue(null);
+
+    expect(getTransaction('cached', cached as any)).toBe(cached);
+  });
+
   it('throws when persisted Ethereum bridge history cannot be found', () => {
     ethBridgeApiMock.getHistory.mockReturnValue(null);
 
@@ -237,12 +280,17 @@ describe('ETH bridge utils', () => {
 
   it('uses available outgoing approval data without waiting for another status emission', async () => {
     const request = { hash: '0xhash', from: '0xfrom' };
+    const unsubscribe = vi.fn();
 
     ethBridgeApiMock.getApprovedRequest.mockResolvedValue(request);
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
 
     await expect(waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any)).resolves.toBe(request);
     expect(ethBridgeApiMock.getRequestStatus).not.toHaveBeenCalled();
-    expect(ethBridgeApiMock.subscribeOnRequestStatus).not.toHaveBeenCalled();
+    expect(ethBridgeApiMock.subscribeOnRequestStatus).toHaveBeenCalledWith('0xhash');
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 
   it('polls approval data when the subscription does not emit approval updates', async () => {
@@ -266,22 +314,46 @@ describe('ETH bridge utils', () => {
     expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 
-  it('rejects approved request waiting instead of staying pending forever', async () => {
+  it('keeps non-terminal approval tracking automatic and cancels it without leaking timers', async () => {
     vi.useFakeTimers();
     const unsubscribe = vi.fn();
+    const controller = new AbortController();
 
     ethBridgeApiMock.getRequestStatus.mockResolvedValue(null);
     ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
       subscribe: () => ({ unsubscribe }),
     });
 
-    const promise = waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any);
-    const expectation = expect(promise).rejects.toThrow('[Bridge]: Transaction approval timed out, hash="0xhash"');
+    const promise = waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any, controller.signal);
+    const expectation = expect(promise).rejects.toMatchObject({ name: 'AbortError' });
 
     await vi.advanceTimersByTimeAsync(10 * 60_000);
+    controller.abort();
 
     await expectation;
     expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('cancels approval tracking immediately while the first RPC read is still pending', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const controller = new AbortController();
+
+    ethBridgeApiMock.getApprovedRequest.mockReturnValue(new Promise(() => undefined));
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
+
+    const promise = waitForApprovedRequest({ hash: '0xhash', externalNetwork: 0 } as any, controller.signal);
+    const expectation = expect(promise).rejects.toMatchObject({ name: 'AbortError' });
+
+    await Promise.resolve();
+    controller.abort();
+
+    await expectation;
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it('rejects approved request waiting when bridge status becomes failed', async () => {
@@ -307,22 +379,159 @@ describe('ETH bridge utils', () => {
     ).rejects.toThrow('[Bridge]: Tx externalNetwork should be a number, NaN received');
   });
 
-  it('returns SORA transaction data after incoming request completion', async () => {
+  it('returns already completed SORA transaction data without waiting for a new subscription event', async () => {
     const unsubscribe = vi.fn();
 
-    ethBridgeApiMock.subscribeOnRequest.mockReturnValue({
-      subscribe: (handler: (request: { status: string }) => void) => {
-        handler({ status: 'Done' });
-        return { unsubscribe };
-      },
-    });
+    ethBridgeApiMock.getRequestStatus.mockImplementation(async (hash: string) =>
+      ['0xexternal', '0xsoraHash'].includes(hash) ? BridgeTxStatus.Done : null
+    );
     ethBridgeApiMock.getSoraHashByEthereumHash.mockResolvedValue('0xsoraHash');
     ethBridgeApiMock.getSoraBlockHashByRequestHash.mockResolvedValue('0xsoraBlock');
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
 
     await expect(waitForIncomingRequest({ externalHash: '0xexternal', externalNetwork: 0 } as any)).resolves.toEqual({
       hash: '0xsoraHash',
       blockId: '0xsoraBlock',
     });
+    expect(ethBridgeApiMock.subscribeOnRequestStatus).toHaveBeenCalledTimes(1);
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(ethBridgeApiMock.getSoraBlockHashByRequestHash).toHaveBeenCalledWith('0xexternal');
+  });
+
+  it('polls until a silent subscription can be resolved to the finalized SORA transaction', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const zeroHash = `0x${'0'.repeat(64)}`;
+
+    ethBridgeApiMock.getRequestStatus.mockImplementation(async (hash: string) => {
+      if (hash === '0xsoraHash') return BridgeTxStatus.Done;
+      return BridgeTxStatus.Ready;
+    });
+    ethBridgeApiMock.getSoraHashByEthereumHash
+      .mockResolvedValueOnce(zeroHash)
+      .mockRejectedValueOnce(new Error('temporary rpc disconnect'))
+      .mockResolvedValue('0xsoraHash');
+    ethBridgeApiMock.getSoraBlockHashByRequestHash.mockResolvedValue('0xsoraBlock');
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
+
+    const promise = waitForIncomingRequest({ externalHash: '0xexternal', externalNetwork: 0 } as any);
+
+    await vi.advanceTimersByTimeAsync(6_000);
+
+    await expect(promise).resolves.toEqual({ hash: '0xsoraHash', blockId: '0xsoraBlock' });
+    expect(ethBridgeApiMock.getSoraHashByEthereumHash).toHaveBeenCalledTimes(3);
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps tracking with capped backoff instead of requiring Retry when SORA discovery remains slow', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const zeroHash = `0x${'0'.repeat(64)}`;
+    let mappingAvailable = false;
+
+    ethBridgeApiMock.getRequestStatus.mockImplementation(async (hash: string) => {
+      return hash === '0xsoraHash' ? BridgeTxStatus.Done : BridgeTxStatus.Ready;
+    });
+    ethBridgeApiMock.getSoraHashByEthereumHash.mockImplementation(async () =>
+      mappingAvailable ? '0xsoraHash' : zeroHash
+    );
+    ethBridgeApiMock.getSoraBlockHashByRequestHash.mockResolvedValue('0xsoraBlock');
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
+
+    const promise = waitForIncomingRequest({ externalHash: '0xexternal', externalNetwork: 0 } as any);
+
+    await vi.advanceTimersByTimeAsync(10 * 60_000);
+    mappingAvailable = true;
+    await vi.advanceTimersByTimeAsync(30_000);
+
+    await expect(promise).resolves.toEqual({ hash: '0xsoraHash', blockId: '0xsoraBlock' });
+    expect(ethBridgeApiMock.subscribeOnRequestStatus).toHaveBeenCalledTimes(1);
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('cancels incoming tracking without leaving timers or subscriptions behind', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const controller = new AbortController();
+    const zeroHash = `0x${'0'.repeat(64)}`;
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(BridgeTxStatus.Ready);
+    ethBridgeApiMock.getSoraHashByEthereumHash.mockResolvedValue(zeroHash);
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
+
+    const promise = waitForIncomingRequest(
+      { externalHash: '0xexternal', externalNetwork: 0 } as any,
+      controller.signal
+    );
+
+    await vi.advanceTimersByTimeAsync(0);
+    controller.abort();
+
+    await expect(promise).rejects.toMatchObject({ name: 'AbortError' });
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('cancels incoming tracking while its first RPC read is still pending', async () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const controller = new AbortController();
+
+    ethBridgeApiMock.getRequestStatus.mockReturnValue(new Promise(() => undefined));
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: () => ({ unsubscribe }),
+    });
+
+    const promise = waitForIncomingRequest(
+      { externalHash: '0xexternal', externalNetwork: 0 } as any,
+      controller.signal
+    );
+    const expectation = expect(promise).rejects.toMatchObject({ name: 'AbortError' });
+
+    await Promise.resolve();
+    controller.abort();
+
+    await expectation;
+    expect(unsubscribe).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it.each([BridgeTxStatus.Failed, BridgeTxStatus.Frozen, BridgeTxStatus.Broken])(
+    'rejects terminal incoming bridge status %s',
+    async (status) => {
+      ethBridgeApiMock.getRequestStatus.mockResolvedValue(status);
+
+      await expect(waitForIncomingRequest({ externalHash: '0xexternal', externalNetwork: 0 } as any)).rejects.toThrow(
+        '[Bridge]: Transaction was failed or canceled'
+      );
+      expect(ethBridgeApiMock.subscribeOnRequestStatus).toHaveBeenCalledTimes(1);
+    }
+  );
+
+  it('rejects and cleans up when a terminal status arrives through the subscription', async () => {
+    const unsubscribe = vi.fn();
+    const zeroHash = `0x${'0'.repeat(64)}`;
+
+    ethBridgeApiMock.getRequestStatus.mockResolvedValue(BridgeTxStatus.Ready);
+    ethBridgeApiMock.getSoraHashByEthereumHash.mockResolvedValue(zeroHash);
+    ethBridgeApiMock.subscribeOnRequestStatus.mockReturnValue({
+      subscribe: (observer: { next: (status: string) => void }) => {
+        observer.next(BridgeTxStatus.Failed);
+        return { unsubscribe };
+      },
+    });
+
+    await expect(waitForIncomingRequest({ externalHash: '0xexternal', externalNetwork: 0 } as any)).rejects.toThrow(
+      '[Bridge]: Transaction was failed or canceled'
+    );
     expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 
@@ -339,7 +548,7 @@ describe('ETH bridge utils', () => {
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'sendEthToSidechain',
-      args: ['hex:sora-recipient', { value: '1:codec:18' }],
+      args: ['hex:sora-recipient', { value: '1000000000000000000' }],
     });
 
     expect(ethersUtilMock.getContract).toHaveBeenCalledWith('contract:Other', []);
@@ -358,7 +567,7 @@ describe('ETH bridge utils', () => {
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'sendERC20ToSidechain',
-      args: ['hex:sora-recipient', '2:codec:6', '0xtoken', {}],
+      args: ['hex:sora-recipient', '2000000', '0xtoken', {}],
     });
   });
 
@@ -384,6 +593,9 @@ describe('ETH bridge utils', () => {
         getContractAddress,
         request: {
           currencyType: EthCurrencyType.TokenAddress,
+          currencyId: '0xVAL',
+          amount: '3000000000000000000',
+          to: '0xbeneficiary',
           from: '0xfrom',
           hash: '0xhash',
           r: ['0xr'],
@@ -394,7 +606,7 @@ describe('ETH bridge utils', () => {
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'mintTokensByPeers',
-      args: ['0xVAL', '3:codec:18', '0xbeneficiary', '0xhash', [27], ['0xr'], ['0xs'], '0xfrom'],
+      args: ['0xVAL', '3000000000000000000', '0xbeneficiary', '0xhash', [27], ['0xr'], ['0xs'], '0xfrom'],
     });
 
     expect(getContractAddress).toHaveBeenCalledWith('VAL');
@@ -411,6 +623,9 @@ describe('ETH bridge utils', () => {
         getContractAddress,
         request: {
           currencyType: EthCurrencyType.AssetId,
+          currencyId: 'xor-asset-id',
+          amount: '3000000000000000000',
+          to: '0xbeneficiary',
           from: '0xfrom',
           hash: '0xhash',
           r: ['0xr'],
@@ -421,7 +636,7 @@ describe('ETH bridge utils', () => {
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'receiveBySidechainAssetId',
-      args: ['xor-asset-id', '3:codec:18', '0xbeneficiary', '0xfrom', '0xhash', [27], ['0xr'], ['0xs']],
+      args: ['xor-asset-id', '3000000000000000000', '0xbeneficiary', '0xfrom', '0xhash', [27], ['0xr'], ['0xs']],
     });
 
     expect(getContractAddress).toHaveBeenCalledWith('Other');
@@ -436,12 +651,16 @@ describe('ETH bridge utils', () => {
         value: '3',
         recipient: '0xbeneficiary',
         getContractAddress,
-        request: createApprovedRequest({ currencyType: EthCurrencyType.TokenAddress }),
+        request: createApprovedRequest({
+          currencyType: EthCurrencyType.TokenAddress,
+          currencyId: '0xXOR',
+          amount: '3000000000000000000',
+        }),
       })
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'mintTokensByPeers',
-      args: ['0xXOR', '3:codec:18', '0xbeneficiary', '0xhash', [27], ['0xr'], ['0xs'], '0xfrom'],
+      args: ['0xXOR', '3000000000000000000', '0xbeneficiary', '0xhash', [27], ['0xr'], ['0xs'], '0xfrom'],
     });
 
     expect(getContractAddress).toHaveBeenCalledWith('XOR');
@@ -456,12 +675,19 @@ describe('ETH bridge utils', () => {
         value: '7',
         recipient: '0xbeneficiary',
         getContractAddress,
-        request: createApprovedRequest({ currencyType: EthCurrencyType.AssetId, v: [28], r: ['0xr2'], s: ['0xs2'] }),
+        request: createApprovedRequest({
+          currencyType: EthCurrencyType.AssetId,
+          currencyId: 'val-asset-id',
+          amount: '7000000000000000000',
+          v: [28],
+          r: ['0xr2'],
+          s: ['0xs2'],
+        }),
       })
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'receiveBySidechainAssetId',
-      args: ['val-asset-id', '7:codec:18', '0xbeneficiary', '0xfrom', '0xhash', [28], ['0xr2'], ['0xs2']],
+      args: ['val-asset-id', '7000000000000000000', '0xbeneficiary', '0xfrom', '0xhash', [28], ['0xr2'], ['0xs2']],
     });
 
     expect(getContractAddress).toHaveBeenCalledWith('Other');
@@ -476,6 +702,9 @@ describe('ETH bridge utils', () => {
         getContractAddress: (symbol) => `contract:${symbol}`,
         request: {
           currencyType: EthCurrencyType.TokenAddress,
+          currencyId: '0xABC',
+          amount: '4000000000000000000',
+          to: '0xbeneficiary',
           from: '0xfrom',
           hash: '0xhash',
           r: ['0xr'],
@@ -486,7 +715,7 @@ describe('ETH bridge utils', () => {
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'receiveByEthereumAssetAddress',
-      args: ['0xABC', '4:codec:18', '0xbeneficiary', '0xfrom', '0xhash', [28], ['0xr'], ['0xs']],
+      args: ['0xABC', '4000000000000000000', '0xbeneficiary', '0xfrom', '0xhash', [28], ['0xr'], ['0xs']],
     });
   });
 
@@ -499,6 +728,9 @@ describe('ETH bridge utils', () => {
         getContractAddress: (symbol) => `contract:${symbol}`,
         request: {
           currencyType: EthCurrencyType.AssetId,
+          currencyId: 'sidechain-asset-id',
+          amount: '5000000000000000000',
+          to: '0xbeneficiary',
           from: '0xfrom',
           hash: '0xhash',
           r: ['0xr'],
@@ -509,7 +741,7 @@ describe('ETH bridge utils', () => {
     ).resolves.toEqual({
       contract: { contract: 'mock' },
       method: 'receiveBySidechainAssetId',
-      args: ['sidechain-asset-id', '5:codec:18', '0xbeneficiary', '0xfrom', '0xhash', [29], ['0xr'], ['0xs']],
+      args: ['sidechain-asset-id', '5000000000000000000', '0xbeneficiary', '0xfrom', '0xhash', [29], ['0xr'], ['0xs']],
     });
   });
 
@@ -575,6 +807,8 @@ describe('ETH bridge utils', () => {
   it.each([
     ['missing from', { from: '' }],
     ['missing hash', { hash: '' }],
+    ['missing recipient', { to: '' }],
+    ['missing currency', { currencyId: '' }],
   ])('rejects outgoing transaction data with %s in the approved request', async (_, overrides) => {
     await expect(
       getOutgoingEvmTransactionData({
@@ -618,6 +852,8 @@ describe('ETH bridge utils', () => {
         getContractAddress: (symbol) => `contract:${symbol}`,
         request: createApprovedRequest({
           currencyType: EthCurrencyType.AssetId,
+          currencyId: 'xor-asset-id',
+          amount: '11000000000000000000',
           v: [27, 28, 29],
           r: ['0xr1', '0xr2', '0xr3'],
           s: ['0xs1', '0xs2', '0xs3'],
@@ -628,7 +864,7 @@ describe('ETH bridge utils', () => {
       method: 'receiveBySidechainAssetId',
       args: [
         'xor-asset-id',
-        '11:codec:18',
+        '11000000000000000000',
         '0xbeneficiary',
         '0xfrom',
         '0xhash',
@@ -637,5 +873,125 @@ describe('ETH bridge utils', () => {
         ['0xs1', '0xs2', '0xs3'],
       ],
     });
+  });
+
+  it.each(['5', '240'])('encodes the approved %s XOR amount unchanged for the canonical bridge', async (value) => {
+    const currencyId = '0x0200000000000000000000000000000000000000000000000000000000000000';
+    const recipient = `0x${'11'.repeat(20)}`;
+    const request = createApprovedRequest({
+      currencyId,
+      amount: `${value}000000000000000000`,
+      to: recipient,
+      from: `0x${'22'.repeat(20)}`,
+      hash: `0x${'33'.repeat(32)}`,
+      r: [`0x${'44'.repeat(32)}`, `0x${'55'.repeat(32)}`, `0x${'66'.repeat(32)}`],
+      s: [`0x${'77'.repeat(32)}`, `0x${'88'.repeat(32)}`, `0x${'99'.repeat(32)}`],
+      v: [27, 28, 28],
+    });
+    const bridgeAddress = '0x313416870a4da6f12505a550b67bb73c8e21d5d3';
+    const getContractAddress = vi.fn((symbol) => (symbol === 'Other' ? bridgeAddress : 'legacy-xor-contract'));
+
+    const result = await getOutgoingEvmTransactionData({
+      asset: createBridgeAsset({ address: currencyId, symbol: 'XOR' }),
+      value,
+      recipient,
+      getContractAddress,
+      request,
+    });
+
+    expect(result.method).toBe('receiveBySidechainAssetId');
+    expect(result.args).toEqual([
+      request.currencyId,
+      request.amount,
+      request.to,
+      request.from,
+      request.hash,
+      request.v,
+      request.r,
+      request.s,
+    ]);
+    expect(getContractAddress).toHaveBeenCalledExactlyOnceWith('Other');
+    expect(ethersUtilMock.getContract).toHaveBeenCalledWith(bridgeAddress, []);
+    const contractInterface = new Interface(bridgeAbi);
+    const calldata = contractInterface.encodeFunctionData(result.method, result.args);
+    const decoded = contractInterface.decodeFunctionData('receiveBySidechainAssetId', calldata);
+    expect(calldata.slice(0, 10)).toBe('0x75273ece');
+    expect(decoded[1]).toBe(BigInt(request.amount));
+    expect(decoded[0]).toBe(currencyId);
+    expect(decoded[2].toLowerCase()).toBe(recipient);
+  });
+
+  it.each([
+    ['asset id', { currencyId: 'different-asset-id' }, 'currency does not match'],
+    ['beneficiary', { to: '0xdifferent' }, 'recipient does not match'],
+  ])('rejects a proof for a different %s before preparing a wallet transaction', async (_, overrides, message) => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset(),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: vi.fn(),
+        request: createApprovedRequest(overrides),
+      })
+    ).rejects.toThrow(message);
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it('rejects a token-address proof for another registered Ethereum token', async () => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset(),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: vi.fn(),
+        request: createApprovedRequest({ currencyType: EthCurrencyType.TokenAddress, currencyId: '0xother-token' }),
+      })
+    ).rejects.toThrow('currency does not match');
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+  });
+
+  it.each(['240', `5${'0'.repeat(38)}`, '5.0000000000000000001', 'NaN', '5e0'])(
+    'rejects an unreconciled destination amount %s rather than alter the signed amount',
+    async (value) => {
+      await expect(
+        getOutgoingEvmTransactionData({
+          asset: createBridgeAsset(),
+          value,
+          recipient: '0xbeneficiary',
+          getContractAddress: vi.fn(),
+          request: createApprovedRequest(),
+        })
+      ).rejects.toThrow('amount does not match the displayed destination amount');
+      expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each(['0', '-1', '1.5', '1e18', 'NaN', '', (1n << 256n).toString()])(
+    'rejects an invalid signed uint256 amount %s',
+    async (amount) => {
+      await expect(
+        getOutgoingEvmTransactionData({
+          asset: createBridgeAsset(),
+          value: '5',
+          recipient: '0xbeneficiary',
+          getContractAddress: vi.fn(),
+          request: createApprovedRequest({ amount }),
+        })
+      ).rejects.toThrow('invalid amount');
+      expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
+    }
+  );
+
+  it('rejects a missing bridge contract before opening the wallet', async () => {
+    await expect(
+      getOutgoingEvmTransactionData({
+        asset: createBridgeAsset(),
+        value: '5',
+        recipient: '0xbeneficiary',
+        getContractAddress: () => null,
+        request: createApprovedRequest(),
+      })
+    ).rejects.toThrow('contract address is unavailable');
+    expect(ethersUtilMock.getContract).not.toHaveBeenCalled();
   });
 });

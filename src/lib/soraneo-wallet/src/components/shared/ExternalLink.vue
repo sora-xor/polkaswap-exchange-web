@@ -23,7 +23,7 @@ withDefaults(
 .external-link {
   display: inline-block;
   text-decoration: none;
-  color: var(--s-color-theme-accent);
+  color: var(--s-color-action-text);
 
   @include focus-outline;
 }

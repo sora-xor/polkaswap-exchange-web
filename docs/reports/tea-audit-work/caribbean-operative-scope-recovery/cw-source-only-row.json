@@ -1,0 +1,44 @@
+{
+  "code": "CW",
+  "name": "Curacao",
+  "status": "not_verified",
+  "rule": "Curaçao customs requires permits for plants and flowers but does not classify manufactured dried tea. Personal goods customs clearance alone is insufficient agricultural evidence.",
+  "personalMailApplicability": "Traveler page and general import procedure reviewed; no tea-specific postal provision found.",
+  "quantityLimit": null,
+  "authority": "Douane Curaçao",
+  "evidenceUrls": [
+    "https://douane.cw/particulier/reizigersbagage/verboden-in-en-uit-te-voeren/",
+    "https://douane.cw/zakelijk/inklaring-en-invoer/",
+    "https://lokaleregelgeving.overheid.nl/CVDR143880/1",
+    "https://lokaleregelgeving.overheid.nl/CVDR143880/1?show-wti=true",
+    "https://www.nvwa.nl/documenten/fytosanitair/landeneisen/diverse-producten/cura-ao-diverse-producten-exporteisen",
+    "https://www.nvwa.nl/site/binaries/site-content/collections/documents/fytosanitair/landeneisen/diverse-producten/cura-ao-diverse-producten-exporteisen/Curacao_Diverse_producten_exporteisen_1.1.pdf",
+    "https://ftac.cw/wp-content/uploads/2024/11/Rapport-levensmiddelen-FTAC.pdf",
+    "https://apps.fas.usda.gov/newgainapi/api/report/downloadreportbyfilename?filename=Curacao+-+FAIRS+Country+Report_Miami+ATO_Netherlands+Antilles_12-23-2013.pdf",
+    "https://gobiernu.cw/wp-content/uploads/2025/10/Klapper-A.B.-Hoofdstuk-X-Economische-Aangelegenheden-Update-tot-en-met-P.B.-2025-no.-143.pdf",
+    "https://gobiernu.cw/wp-content/uploads/2025/10/Klapper-P.B.-Hoofdstuk.-X-ECONOMISCHE-AANGELEGENHEDEN-Updated-tot-en-met-P.B.-2025-no.-149GT.pdf",
+    "https://gobiernu.cw/wp-content/uploads/2025/09/Klapper-P.B.-Gebruiksaanwijzingen.-Alfabetische-Trefwoorden-Updated-tm-2025-no.-128.pdf"
+  ],
+  "remainingQuestion": "Current Curaçao operative plant/plant-product import definition or conditions for processed food; if the older free-sale certificate claim remains applicable, its enacted current private-post scope is also missing.",
+  "researchAttempts": [
+    "Reviewed Curaçao customs forbidden-goods and general clearance procedures. Plant/flower permit entries do not classify tea, and personal customs treatment does not establish a plant-health exemption.",
+    "2026-09-30: Current Warenlandsverordening article 2(1) likewise excludes manufacture within a private household, not import of purchased retail food. Article3(1)(j)–(k) authorizes import/export and registration rules, not a self-executing universal origin certificate; regulation-making powers alone do not exclude personal tea. The publicly indexed permit-list decree concerns specific bakery/meat/produce categories, not a new tea ruling. No material personal-postal exemption/barrier established; LVV finished-tea conditions remain missing.",
+    "2026-09-30 fresh official online recovery: Recovered the current-linked Dutch NPPO diverse-product Curaçao sheet, effective 22 May 2013, and the Curaçao Fair Trade Authority 2024 food-market report. The NPPO sheet has no populated certificate commodity list and states no specific requirements are known; it says a requested certificate for an unnamed product requires official destination information and assessment. Its missing-information statement is not a positive Curaçao permit/certificate exemption for Japanese tea. The local authority report maps food import laws but supplies no all-private-food certificate duty or manufactured-tea waiver. Saved full PDFs/texts cw-nvwa-diverse2013 and cw-ftac2024.",
+    "30 September renewed official-source/general-definition review: Recovered USDA’s official 23 December 2013 Curaçao FAIRS report (CB1317). It distinguishes processed products monitored at retail from plant products controlled at entry; it also says most processed products require a free-sale certificate and product samples sent by parcel post are subject only to customs duty. Neither statement settles the current private paid 100 g order: the report is old, written for US commercial exporters, supplies no exact enacted certificate provision or personal-use scope, and a purchase is not a trade sample. Native-language official legal searches returned pesticide/CITES/tariff provisions rather than a new operative manufactured-tea plant rule. No conclusion was drawn from unrelated EU plant rules.",
+    "30 September operative-source recovery: Queried official public WordPress media index and retrieved latest returned country(P.B.)and island(A.B.)economic-law indexes, uploaded26November2025. Read countryX.16land/tuinbouw and complete21pageislandindex: no recovered operative general plant-import definition. Countryindex positively marks1987no133tea-bag import regulation expired25December1992; this is not a current tea exemption.2010Dutchtransition parliamentary text says BESthenhad no phytosanitary rules, but does not establish CW/SXscope and was not transferred. CurrentCustoms repeats plants/flowers permit category. Index omissions/expired economic controls cannot negate any independent phytosanitary condition; old2013commercialfree-salescertificate assertion remains unverified for private post."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "Current Curaçao operative plant/plant-product import definition or conditions for processed food; if the older free-sale certificate claim remains applicable, its enacted current private-post scope is also missing.",
+  "permitFreeSources": [
+    "https://douane.cw/particulier/reizigersbagage/verboden-in-en-uit-te-voeren/",
+    "https://douane.cw/zakelijk/inklaring-en-invoer/",
+    "https://lokaleregelgeving.overheid.nl/CVDR143880/1",
+    "https://lokaleregelgeving.overheid.nl/CVDR143880/1?show-wti=true",
+    "https://apps.fas.usda.gov/newgainapi/api/report/downloadreportbyfilename?filename=Curacao+-+FAIRS+Country+Report_Miami+ATO_Netherlands+Antilles_12-23-2013.pdf",
+    "https://gobiernu.cw/wp-content/uploads/2025/10/Klapper-A.B.-Hoofdstuk-X-Economische-Aangelegenheden-Update-tot-en-met-P.B.-2025-no.-143.pdf",
+    "https://gobiernu.cw/wp-content/uploads/2025/10/Klapper-P.B.-Hoofdstuk.-X-ECONOMISCHE-AANGELEGENHEDEN-Updated-tot-en-met-P.B.-2025-no.-149GT.pdf",
+    "https://gobiernu.cw/wp-content/uploads/2025/09/Klapper-P.B.-Gebruiksaanwijzingen.-Alfabetische-Trefwoorden-Updated-tm-2025-no.-128.pdf"
+  ],
+  "permitFreeReviewedAt": "2026-09-30"
+}

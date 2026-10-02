@@ -4,21 +4,9 @@
       <div>
         <h1>{{ t('pageTitle.Polkamarkt') }}</h1>
         <p>{{ t('polkamarkt.pageSubtitle') }}</p>
-        <a
-          class="polkamarkt__external-link"
-          href="https://polkamarkt.com"
-          target="_blank"
-          rel="nofollow noopener noreferrer"
-        >
-          {{ t('polkamarkt.officialSite') }}
-        </a>
-        <p class="polkamarkt__disclaimer">{{ t('polkamarkt.disclaimer') }}</p>
       </div>
       <div class="polkamarkt__actions">
-        <s-button v-if="!isConnected" type="secondary" @click="connectSoraWallet">
-          {{ t('connectWalletText') }}
-        </s-button>
-        <s-button type="primary" @click="createDialogVisible = true">
+        <s-button type="secondary" size="small" @click="createDialogVisible = true">
           {{ t('polkamarkt.actions.createMarket') }}
         </s-button>
       </div>
@@ -35,8 +23,6 @@
         :account="accountAddress"
         :current-block="currentBlock"
         :loading="marketsLoading"
-        :histories-by-market-id="cardHistoriesByMarketId"
-        :histories-loading="cardHistoriesLoading"
         @select="selectMarket"
         @refresh="refreshMarkets"
       />
@@ -95,6 +81,18 @@
     <p v-if="marketsError" class="polkamarkt__error">{{ marketsError }}</p>
     <p v-if="activityError" class="polkamarkt__error">{{ activityError }}</p>
 
+    <footer class="polkamarkt__footer">
+      <a
+        class="polkamarkt__external-link"
+        href="https://polkamarkt.com"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+      >
+        {{ t('polkamarkt.officialSite') }}
+      </a>
+      <p class="polkamarkt__disclaimer">{{ t('polkamarkt.disclaimer') }}</p>
+    </footer>
+
     <create-market-dialog v-model:visible="createDialogVisible" @created="handleMarketCreated" />
   </main>
 </template>
@@ -112,7 +110,6 @@ import MarketDetail from '../components/MarketDetail.vue';
 import MarketList from '../components/MarketList.vue';
 import MyPositionsPanel from '../components/MyPositionsPanel.vue';
 import TradeTicket from '../components/TradeTicket.vue';
-import { filterMarkets, selectCardHistoryMarkets } from '../lib/markets';
 import { fetchPolkamarktAccountActivity } from '../services/accountActivity';
 import { fetchPolkamarktMarketHistory } from '../services/marketHistory';
 import { fetchPolkamarktMarkets } from '../services/markets';
@@ -141,8 +138,6 @@ const positions = ref<AccountPosition[]>([]);
 const trades = ref<AccountTrade[]>([]);
 const marketHistory = ref<MarketHistoryPoint[]>([]);
 const marketHistoryLoading = ref(false);
-const cardHistoriesByMarketId = ref<Record<string, MarketHistoryPoint[]>>({});
-const cardHistoriesLoading = ref(false);
 const selectedMarketId = ref('');
 const search = ref('');
 const category = ref<MarketCategory | 'all'>('all');
@@ -173,16 +168,6 @@ const runtimeEndpoint = computed(() =>
 const polkaswapIndexerEndpoint = computed(() =>
   String(settingsStore.indexers?.[IndexerType.POLKASWAP]?.endpoint ?? '')
 );
-const filteredMarkets = computed(() =>
-  filterMarkets(markets.value, {
-    search: search.value,
-    category: category.value,
-    status: status.value,
-    account: accountAddress.value,
-    mineOnly: mineOnly.value,
-    currentBlock: currentBlock.value,
-  })
-);
 const selectedMarket = computed(() => {
   if (!markets.value.length) return undefined;
 
@@ -197,8 +182,6 @@ const selectedMarket = computed(() => {
 const shouldShowMarketBoard = computed(() => !selectedMarketId.value);
 const shouldShowMarketWorkspace = computed(() => Boolean(selectedMarket.value));
 const shouldShowAccountActivity = computed(() => shouldShowMarketWorkspace.value || status.value !== 'active');
-const cardHistoryMarkets = computed(() => selectCardHistoryMarkets(markets.value, currentBlock.value));
-const cardHistoryMarketIds = computed(() => cardHistoryMarkets.value.map(marketHistoryKey).join('|'));
 
 const selectedPosition = computed(() => {
   const marketId = selectedMarket.value?.chainId;
@@ -207,47 +190,79 @@ const selectedPosition = computed(() => {
 });
 
 let marketHistoryRequestId = 0;
-let cardHistoryRequestId = 0;
+let activityRequestId = 0;
+let marketsRequestId = 0;
 let refreshedRuntimeMarkets = false;
 
 async function refreshMarkets(): Promise<void> {
+  const requestId = ++marketsRequestId;
+  const requestedApi = runtimeApi.value;
+  const requestedRuntimeEndpoint = runtimeEndpoint.value;
+  const requestedIndexerEndpoint = polkaswapIndexerEndpoint.value;
+  const isCurrentSource = () =>
+    requestedApi === runtimeApi.value &&
+    requestedRuntimeEndpoint === runtimeEndpoint.value &&
+    requestedIndexerEndpoint === polkaswapIndexerEndpoint.value;
+
   marketsLoading.value = true;
   marketsError.value = '';
   try {
-    markets.value = await fetchPolkamarktMarkets({ api: runtimeApi.value, endpoint: runtimeEndpoint.value });
-    if (runtimeApi.value || runtimeEndpoint.value) {
-      refreshedRuntimeMarkets = true;
-    }
-    if (!selectedMarketId.value && route.params.marketId) {
-      selectedMarketId.value = String(route.params.marketId);
+    const nextMarkets = await fetchPolkamarktMarkets({ api: requestedApi, endpoint: requestedRuntimeEndpoint });
+
+    if (requestId === marketsRequestId && isCurrentSource()) {
+      markets.value = nextMarkets;
+      if (requestedApi || requestedRuntimeEndpoint) {
+        refreshedRuntimeMarkets = true;
+      }
+      if (!selectedMarketId.value && route.params.marketId) {
+        selectedMarketId.value = String(route.params.marketId);
+      }
     }
   } catch (err) {
-    marketsError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadMarkets');
+    if (requestId === marketsRequestId && isCurrentSource()) {
+      marketsError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadMarkets');
+    }
   } finally {
-    marketsLoading.value = false;
+    if (requestId === marketsRequestId) {
+      marketsLoading.value = false;
+    }
   }
 }
 
 async function refreshActivity(): Promise<void> {
-  if (!isConnected.value || !accountAddress.value) {
+  const requestId = ++activityRequestId;
+  const requestedAccount = accountAddress.value;
+
+  if (!isConnected.value || !requestedAccount) {
     positions.value = [];
     trades.value = [];
     activityError.value = '';
+    activityLoading.value = false;
     return;
   }
 
   activityLoading.value = true;
   activityError.value = '';
   try {
-    const activity = await fetchPolkamarktAccountActivity(accountAddress.value);
-    positions.value = activity.positions;
-    trades.value = activity.trades;
+    const activity = await fetchPolkamarktAccountActivity(requestedAccount);
+    const isCurrentAccount = isConnected.value && accountAddress.value === requestedAccount;
+
+    if (requestId === activityRequestId && isCurrentAccount) {
+      positions.value = activity.positions;
+      trades.value = activity.trades;
+    }
   } catch (err) {
-    positions.value = [];
-    trades.value = [];
-    activityError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadActivity');
+    const isCurrentAccount = isConnected.value && accountAddress.value === requestedAccount;
+
+    if (requestId === activityRequestId && isCurrentAccount) {
+      positions.value = [];
+      trades.value = [];
+      activityError.value = err instanceof Error ? err.message : t('polkamarkt.errors.loadActivity');
+    }
   } finally {
-    activityLoading.value = false;
+    if (requestId === activityRequestId) {
+      activityLoading.value = false;
+    }
   }
 }
 
@@ -271,46 +286,6 @@ async function refreshMarketHistory(market = selectedMarket.value): Promise<void
       marketHistoryLoading.value = false;
     }
   }
-}
-
-async function refreshCardHistories(): Promise<void> {
-  const requestId = ++cardHistoryRequestId;
-  const candidates = cardHistoryMarkets.value;
-
-  if (!candidates.length) {
-    cardHistoriesLoading.value = false;
-    return;
-  }
-
-  const missingCandidates = candidates.filter((market) => !cardHistoriesByMarketId.value[marketHistoryKey(market)]);
-  if (!missingCandidates.length) {
-    cardHistoriesLoading.value = false;
-    return;
-  }
-
-  cardHistoriesLoading.value = true;
-  try {
-    const entries = await Promise.all(
-      missingCandidates.map(
-        async (market) => [marketHistoryKey(market), await fetchPolkamarktMarketHistory(market, 24)] as const
-      )
-    );
-
-    if (requestId === cardHistoryRequestId) {
-      cardHistoriesByMarketId.value = {
-        ...cardHistoriesByMarketId.value,
-        ...Object.fromEntries(entries),
-      };
-    }
-  } finally {
-    if (requestId === cardHistoryRequestId) {
-      cardHistoriesLoading.value = false;
-    }
-  }
-}
-
-function marketHistoryKey(market: PolkamarktMarket): string {
-  return String(market.chainId ?? market.id);
 }
 
 function selectMarket(market: PolkamarktMarket): void {
@@ -355,12 +330,9 @@ watch([isConnected, accountAddress], () => void refreshActivity(), { immediate: 
 
 watch(selectedMarket, (market) => void refreshMarketHistory(market), { immediate: true });
 
-watch(cardHistoryMarketIds, () => void refreshCardHistories(), { immediate: true });
-
 watch(polkaswapIndexerEndpoint, (endpoint, previousEndpoint) => {
   if (!endpoint || endpoint === previousEndpoint) return;
 
-  cardHistoriesByMarketId.value = {};
   void refreshMarkets();
 });
 
@@ -379,13 +351,11 @@ defineExpose({
   selectedMarket,
   shouldShowMarketBoard,
   marketHistory,
-  cardHistoriesByMarketId,
   positions,
   trades,
   refreshMarkets,
   refreshActivity,
   refreshMarketHistory,
-  refreshCardHistories,
 });
 </script>
 
@@ -404,11 +374,8 @@ defineExpose({
     display: flex;
     justify-content: space-between;
     gap: $inner-spacing-medium;
-    align-items: flex-start;
-
-    @include tablet(true) {
-      flex-direction: column;
-    }
+    align-items: center;
+    flex-wrap: wrap;
 
     h1 {
       margin: 0;
@@ -439,8 +406,21 @@ defineExpose({
     }
   }
 
-  &__disclaimer {
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 20px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--s-color-base-border-secondary);
     font-size: var(--s-font-size-mini);
+  }
+
+  &__disclaimer {
+    margin: 0;
+    color: var(--s-color-base-content-secondary);
+    line-height: 1.6;
   }
 
   &__actions {
@@ -458,10 +438,6 @@ defineExpose({
     display: grid;
     gap: $inner-spacing-medium;
     min-width: 0;
-
-    @include tablet(true) {
-      padding-top: $header-height;
-    }
   }
 
   &__back {
@@ -486,7 +462,7 @@ defineExpose({
     gap: $inner-spacing-big;
     align-items: flex-start;
 
-    @include huge-desktop(true) {
+    @media (max-width: 1100px) {
       grid-template-columns: 1fr;
     }
   }

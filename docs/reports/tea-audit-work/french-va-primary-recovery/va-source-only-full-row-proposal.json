@@ -1,0 +1,53 @@
+{
+  "code": "VA",
+  "name": "Vatican",
+  "status": "not_verified",
+  "rule": "Vatican Law LXXI of 1 October 2008 article 3 makes Italian law subsidiary and subject to reception by the competent Vatican authority. Article 12 receives particular subjects, including post and public health, but does not clearly establish the applicable agricultural plant-health rule for inbound Japanese tea. Postal service, duty relief and transit sources therefore do not establish a finished-tea exemption. Actual 2007 and 2025 customs protocols were subsequently recovered: neither establishes an Italian/EU plant-health reception rule; the 2025 protocol expressly preserves the separate legislation and disclaims legally binding international duties.",
+  "personalMailApplicability": "Postal documentation confirms the service, but the material found did not address inbound personal tea consignments or identify the agricultural clearance rule.",
+  "quantityLimit": null,
+  "authority": "Vatican postal service; Vatican postal country return supplied to the UPU",
+  "evidenceUrls": [
+    "https://www.postevaticane.va/script-php/poste/PHPposte-invioPacchi/index.php",
+    "https://guypost.gy/wp-content/uploads/2024/09/ListOfProhibitedArticles-updated.pdf",
+    "https://www.vaticanstate.va/phocadownload/laws-decrees/Supplementoleggiedisposizioni.pdf",
+    "https://www.vatican.va/roman_curia/secretariat_state/archivio/documents/rc_seg-st_19290211_patti-lateranensi_it.html",
+    "https://www.postevaticane.va/it/posta-raccomandata",
+    "https://www.vaticanstate.va/it/novita/1540-firmato-il-protocollo-di-collaborazione-doganale-tra-governatorato-e-agenzia-delle-dogane-e-dei-monopoli-della-repubblica-italiana.html",
+    "https://def.giustiziatributaria.gov.it/DocTribFrontend/getAttoNormativoDetail.do?ACTION=getArticolo&articolo=Articolo+1&codiceOrdinamento=200000100000000&id=%7B442FDF84-CF15-4F73-9BA4-4CA474515FCD%7D",
+    "https://www.ulsa.va/it/pubblicazioni/bollettini/bollettino-n--16---2008/atti-di-sua-santita-benedetto-xvi/leggi-sulle-fonti-del-diritto-1-ottobre-2008-n-lxxi.html",
+    "https://www.vaticanstate.va/en/state-and-government/legislation-and-regulations/general-regulations.html?download=271:n-dclix",
+    "https://www.adm.gov.it/portale/documents/20182/6907210/Accordo+Italia+Vaticano.pdf/7809007b-38be-4201-85fb-43852a3e9664",
+    "https://www.adm.gov.it/portale/documents/20182/219876727/27022025++Protocollo+collaborazione+tecnico+amministrativa+ADM+e+il+Governatorato+SCV.pdf/4230441b-bbe0-f5f2-131b-cf90e5b1fdc7?t=1747911929091",
+    "https://www.adm.gov.it/portale/normativa-internazionale",
+    "https://www.adm.gov.it/portale/accordi-internazionali"
+  ],
+  "remainingQuestion": "The applicable Vatican plant-health rule, or an actual instrument receiving the relevant Italian agricultural rules, remains unestablished. The 2008 sources-of-law statute does not itself establish automatic application of the whole Italian/EU phytosanitary regime.",
+  "researchAttempts": [
+    "Checked Vatican postal customs guidance and the destination’s UPU country return.",
+    "Searched for applicable Vatican plant-health legislation or an agreement applying Italy’s dried-tea exemption; no authoritative link was established.",
+    "Rechecked current Vatican postal service terms, the state’s foundational personal-import/customs provisions and Lateran Treaty article20 on foreign-goods transit. These address service, taxation and transit rather than a tea agricultural exemption; no equivalent SPS agreement or inbound retail-tea rule was located.",
+    "30 September final source review: read the official 2025 Vatican–Italy customs cooperation announcement and the 1930 customs convention, including Articles 1, 2, 4 and 8. Duty relief and customs transit including post do not establish an agricultural exemption or application of Italy/EU plant-health rules to direct Vatican personal imports. No applicable public tea classification was found.",
+    "30 September bounded remaining-scope review: Recovered official Vatican Law LXXI of 1 October 2008. Article 3 makes Italian law subsidiary and subject to reception by the competent Vatican authority; article 12 lists particular subjects received, including post and public health. Those provisions do not clearly establish which Italian agricultural plant-health law applies to an inbound Japanese tea parcel. Existing postal/customs transit evidence does not fill that gap.",
+    "30 September fresh current-regulations recovery: Read complete official Decree DCLIX of8May2024 via the current Governorate portal. Its three articles reorganize customs-service control, budget and staff; it contains no substantive import or Italian plant-law reception provision. This does not close the independent agricultural scope.",
+    "30 September additional official primary recovery: downloaded the signed 15 February 2007 Italy–Vatican protocol and attached service instructions from ADM, and the full signed 27 February 2025 protocol with annexes. Visually read the scanned operative pages. The 2007 protocol concerns customs routing, controls, data and implementing instructions; service-instruction Art.1 places advance notices on the Governorate, for shipments above EUR1,000 or sensitive goods of any value, rather than an identified tea-exporter phytosanitary duty. The 2025 protocol Art.7(1) expressly denies international legally binding effect, Art.7(2) preserves the separate national laws and Italy's EU duties, and its Art.6 annexes concern customs training and cross-border cash declarations. No provision receives the Italian/EU plant-health regime or determines personal tea requirements. Complete sources preserved in french-va-primary-recovery/."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "unresolved",
+  "permitFreeReason": "The applicable Vatican plant-health rule, or an actual instrument receiving the relevant Italian agricultural rules, remains unestablished. The 2008 sources-of-law statute does not itself establish automatic application of the whole Italian/EU phytosanitary regime. No specific tea prohibition is established; the route remains unverified.",
+  "permitFreeSources": [
+    "https://www.postevaticane.va/script-php/poste/PHPposte-invioPacchi/index.php",
+    "https://guypost.gy/wp-content/uploads/2024/09/ListOfProhibitedArticles-updated.pdf",
+    "https://www.vaticanstate.va/phocadownload/laws-decrees/Supplementoleggiedisposizioni.pdf",
+    "https://www.vatican.va/roman_curia/secretariat_state/archivio/documents/rc_seg-st_19290211_patti-lateranensi_it.html",
+    "https://www.postevaticane.va/it/posta-raccomandata",
+    "https://www.vaticanstate.va/it/novita/1540-firmato-il-protocollo-di-collaborazione-doganale-tra-governatorato-e-agenzia-delle-dogane-e-dei-monopoli-della-repubblica-italiana.html",
+    "https://def.giustiziatributaria.gov.it/DocTribFrontend/getAttoNormativoDetail.do?ACTION=getArticolo&articolo=Articolo+1&codiceOrdinamento=200000100000000&id=%7B442FDF84-CF15-4F73-9BA4-4CA474515FCD%7D",
+    "https://www.ulsa.va/it/pubblicazioni/bollettini/bollettino-n--16---2008/atti-di-sua-santita-benedetto-xvi/leggi-sulle-fonti-del-diritto-1-ottobre-2008-n-lxxi.html",
+    "https://www.vaticanstate.va/en/state-and-government/legislation-and-regulations/general-regulations.html?download=271:n-dclix",
+    "https://www.adm.gov.it/portale/documents/20182/6907210/Accordo+Italia+Vaticano.pdf/7809007b-38be-4201-85fb-43852a3e9664",
+    "https://www.adm.gov.it/portale/documents/20182/219876727/27022025++Protocollo+collaborazione+tecnico+amministrativa+ADM+e+il+Governatorato+SCV.pdf/4230441b-bbe0-f5f2-131b-cf90e5b1fdc7?t=1747911929091",
+    "https://www.adm.gov.it/portale/normativa-internazionale",
+    "https://www.adm.gov.it/portale/accordi-internazionali"
+  ],
+  "permitFreeReviewedAt": "2026-09-30"
+}

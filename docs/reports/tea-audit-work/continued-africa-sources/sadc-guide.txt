@@ -1,0 +1,1373 @@
+Regional guide for
+PHYTOSANITARY
+IMPORT/EXPORT
+INSPECTION and
+DECISION-MAKING
+
+
+
+
+Southern African Development Community
+SOUTHERN AFRICAN DEVELOPMENT COMMUNITY
+   REGIONAL GUIDE FOR PHYTOSANITARY
+     IMPORT/EXPORT INSPECTION AND
+           DECISION-MAKING
+
+
+
+
+                                         1
+         REGIONAL GUIDE FOR PHYTOSANITARY
+              IMPORT/EXPORT INSPECTION AND
+                            DECISION-MAKING
+
+
+
+
+Published by the Southern African Development Community with technical support from the
+  Food and Agriculture Organization of the United Nations and financial support from the
+                                    European Union.
+
+                                         2022
+
+                                                                                       2
+Copyright © SADC, 2022. All rights reserved.
+
+
+ISBN: 978-99968-958-8-3
+
+
+The information contained in this publication may be freely used and copied for non-commercial purposes, provided
+that any information reproduced elsewhere be accompanied by an acknowledgement of the SADC Secretariat as the
+source.
+
+The SADC name and emblem are the exclusive property of the Southern African Development Community. They are
+protected under international law. Unauthorized use is prohibited. They may not be copied or reproduced in any way
+without the prior written permission of SADC. Requests for permission should be sent to the Executive Secretary of
+the SADC Secretariat.
+
+Further details for use of this publication may be sourced from the SADC Secretariat:
+
+
+Plot 54385 New CBD
+Private/Bag 0095
+Gaborone, Botswana
+Tel: +267 395 1863
+Email: registry@sadc.int
+Website: www.sadc.int
+
+
+Twitter: @sadc_news
+Facebook: @sadc.int
+YouTube: youtube.com/sadc.int
+
+
+
+
+                                                                                                                 3
+CONTENTS
+
+  Acronyms...............................................................................................................................................................6
+
+  Acknowledgements ...............................................................................................................................................7
+
+  I. Purpose .............................................................................................................................................................8
+
+  II. Regulatory frameworks within which the guide has been developed ................................................................9
+
+  III. Scope .............................................................................................................................................................10
+
+  IV. Regulatory authority .......................................................................................................................................11
+
+  V. Plant import and export regulatory systems ....................................................................................................12
+
+  VI. Role of implementing selected ISPMs in preventing the introduction and spread of regulated plant pests in
+  SADC region........................................................................................................................................................14
+
+  VII. Prerequisite requirements for effective implementation of phytosanitary procedures ...................................16
+
+  VIII. Phytosanitary inspection procedures ...........................................................................................................18
+
+  Step 1: Examination of documents associated with a consignment ....................................................................19
+
+  Step 2: Verification of consignment identity, integrity and relevant marks in the associated materials such as
+  pallets ..................................................................................................................................................................19
+
+  Step 3: Consignment sampling and phytosanitary inspection .............................................................................20
+
+  Step 4: Physical examination of samples ............................................................................................................23
+
+  Step 5: Progress with specific focus on inspection of export consignments ........................................................23
+
+  Step 5(a): Inspection results and outcomes for exports ......................................................................................25
+
+  Step 6: Progress with specific focus on inspection of imported consignments ....................................................26
+
+  Step 6(a): Inspection results and outcomes for imports.......................................................................................27
+
+  Step 7: Progress with specific focus on inspection of regulated articles……………………………………… …..28
+
+  Step 7(a): Inspection results and outcomes for imports of regulated articles ......................................................29
+
+  IX. Notification for non-compliance and emergency action ..................................................................................32
+
+  Step 1: Cases of significant non-compliance .......................................................................................................32
+
+                                                                                                                                                                            4
+Step 2: Phytosanitary and emergency actions for non-compliant consignments .................................................33
+
+Step 3: Pest identification ....................................................................................................................................33
+
+Step 4: Notifications.............................................................................................................................................33
+
+Step 5: Documentation and communication ........................................................................................................34
+
+X. Collaboration with other border regulatory agencies .......................................................................................36
+
+XI. Glossary .........................................................................................................................................................38
+
+XII. Easy access resources .................................................................................................................................40
+
+
+
+Tables
+
+Table 1: Tools and supplies for inspection …………………………………………………………… ………………18
+
+Table 2: Plant commodities categorized according to their pest risk ………………………………… ……………22
+
+Table 3: Sample size for visual inspection of fruits, vegetables and cut flowers ………….………………………22
+
+Table 4: Sample size for inspection of plants for planting in a homogenous lot (excluding seed) ………………23
+
+Table 5: Inspection results and outcomes for export consignments………………………………………………. 25
+
+Table 6: Inspection results and outcomes for imported consignments ………………………………………….….27
+
+Table 7: Inspection results and outcomes for imports of regulated articles …………………………………….... 29
+
+Table 8. Information to be included in notifications ………………………………………………………...…………34
+
+
+
+
+                                                                                                                                                                      5
+ACRONYMS
+
+
+FAO        Food and Agriculture Organization of the United Nations
+
+IPPC       International Plant Protection Convention
+
+ISPM       International Standards for Phytosanitary Measures
+
+MS         Member States
+
+NPPO       National Plant Protection Organization
+
+RNQP       regulated non-quarantine pests
+
+SADC       Southern African Development Community
+
+SPS        Sanitary and Phytosanitary
+
+STOSAR     Support towards Operationalization of the SADC Regional Agricultural Policy
+
+UN         United Nations
+
+WTO        World Trade Organization
+
+
+
+
+                                                                                         6
+ACKNOWLEDGEMENTS
+
+
+Dr Rose W. Njeru would like to acknowledge the support provided by Dr Elma Zanamwe, Regional Coordinator of the
+project “Support towards Operationalization of the SADC Regional Agricultural Policy (STOSAR)”, and Dr Zibusiso
+Sibanda, Plant Health Specialist for the STOSAR project. Thank you for being available, and for providing guidance
+and timely feedback. In addition, the support given by Dr Mathew Abang, Plant Production and Protection Officer in
+the FAO Subregional Office for Southern Africa, is appreciated. Further, the support of the SADC Secretariat during
+the execution of this consultancy is gratefully acknowledged.
+
+This guideline is an output of the STOSAR project with the financial support of the European Union.
+
+
+
+
+                                                                                                                 7
+ I.      Purpose
+
+
+This guide describes procedures to carry out phytosanitary inspection of plants, plant products and other regulated
+articles at ports of entry/exit and to make decisions on the same. It also provides directives on the handling of cases
+of imported consignments with significant non-compliance to phytosanitary import/export requirements. Further, the
+guide contains directives on notifications due to the non-compliance as well as the emergency action to be taken by
+the importing country and, in some instances, the transit countries. In addition, the guide highlights the importance of
+plant export certification and the phytosanitary import regulatory systems whose focus is to prevent the introduction
+of quarantine pests or limit the entry of regulated non-quarantine pests with traded plant commodities and other
+regulated articles. It also highlights the important role of selected International Standards for Phytosanitary Measures
+(ISPM) in preventing the introduction and spread of regulated pests.
+
+The National Plant Protection Organizations (NPPOs) or agents under the Authority are responsible for inspecting
+consignments of plants, plant products and other regulated articles in international traffic to prevent the introduction
+and spread of pests. Further, the NPPOs, in collaboration with relevant regulatory agencies, take appropriate
+phytosanitary emergency action on the detection in an imported consignment of a regulated pest not listed as being
+associated with the commodity from the exporting country or an organism posing a potential phytosanitary threat.
+The official International Plant Protection Convention (IPPC) contact point of an importing country is responsible for
+sending notifications to their counterpart in the exporting or re-exporting country and where a contact point has not
+been identified, to the NPPO or as specified in bilateral arrangements. Notification is undertaken for the purpose of
+international cooperation to prevent the introduction and/or spread of regulated pests.
+
+The objective of the phytosanitary procedures is to verify consignment compliance with import and export regulations,
+in order to prevent the introduction and spread of harmful organisms in plants, plant products and regulated articles.
+The export certification system issues consignments with phytosanitary certificates, thus affirming compliance with
+the current phytosanitary requirements of the importing country. The compliance of imported consignments is also
+ascertained at ports of entry to prevent the introduction of quarantine pests or limit the entry of regulated non-
+quarantine pests (RNQP) with imported commodities and other regulated articles. In the case of non-compliance, the
+notification is intended to help the exporting country to investigate the possible cause of the non-compliance with a
+view to avoid recurrence.
+
+Phytosanitary inspectors employ various approaches to detect regulated pests for which the phytosanitary risk has
+been determined to verify compliance with import and export regulations, and hence prevent the introduction and
+spread of regulated pests in plants, plant products and regulated articles.
+
+The objective of this guide is to present measures to be implemented by phytosanitary inspectors in the Southern
+African Development Community (SADC) region. This includes handling non-compliant consignments and
+communicating notifications. It also emphasizes the benefits of implementing selected International Standards for
+Phytosanitary Measures (ISPMs) in preventing the introduction and spread of key quarantine pests in the SADC
+region.
+
+
+
+
+                                                                                                                      8
+ II.     Regulatory frameworks within which the guide has been developed
+
+
+Trade within the SADC region is guided by the SADC Protocol on Trade, which aims to increase intraregional trade,
+enhance economic development in Member States, and strengthen resource productivity and the creation of a free
+trade area. It is also pegged on the Sanitary and Phytosanitary (SPS) Annex to the SADC Protocol on Trade whose
+objectives are to: a) facilitate the protection of human, animal or plant life or health in the territory of the Member
+States, b) enhance the Member States’ implementation of the World Trade Organization (WTO) Agreement on the
+Application of Sanitary and Phytosanitary Measures, c) enhance technical capacity to implement and monitor SPS
+measures including promoting greater use of international standards and other matters concerning SPS, and d)
+provide a regional forum for addressing SPS matters and for resolving trade-related SPS issues.
+
+
+This regional guide complements the inspection procedures outlined in Article 11 and Annex B of the SPS Annex to
+the SADC Protocol on Trade. Further, the guide is developed within the SADC Regional Agricultural Policy
+Framework whose specific objectives are to: a) enhance sustainable agricultural production, productivity and
+competitiveness; b) improve regional and international trade and access to markets of agricultural products, c)
+improve private and public sector engagement and investment in the agricultural value-chains, and d) reduce social
+and economic vulnerability of the region’s population in the context of food and nutrition security, climate change and
+the changing economic environment.
+
+
+
+
+                                                                                                                     9
+ III.    Scope
+
+
+1. This guide covers phytosanitary procedures for consignments of plants, plant products and other regulated
+    articles for implementation at ports of entry/exit of SADC Member States. It also provides directives on how to
+    determine compliance to specified import phytosanitary requirements and ensure appropriate outcomes are
+    realized.
+2. Further, the guide contains directives on handling non-compliant consignments and notifying the exporting or re-
+    exporting countries about the significant non-compliance of imported consignments to import phytosanitary
+    requirements.
+3. The guide only covers activities at ports of entry/exit.
+         o      For exports, it does not cover inspection in the growing season or at storage, testing, packaging,
+                processing and phytosanitary treatment facilities.
+         o      It is also limited to reporting of pests detected only in imported consignments (ISPM 13) but not in
+                general surveillance or specific surveys.
+         o      It does not cover requirements related to human or animal health, pesticide residues, radioactivity or
+                quality.
+4. The guide highlights the important role of implementing selected ISPMs in preventing the introduction and
+    spread of pests in the SADC region.
+5. The guide also points out the importance of establishing plant export certification and phytosanitary import
+    regulatory systems.
+
+
+The users of this guideline are plant health inspectors of NPPOs or authorized agents (acting on behalf of the NPPO)
+in the SADC region and operating at ports of entry/exit. It specifically targets inspectors and NPPO staff charged with
+issuing phytosanitary certificates.
+
+
+
+
+                                                                                                                    10
+IV. Regulatory authority
+
+
+The responsibilities of the NPPO include but are not limited to:
+   Construction, implementation and review of the export certification system (Export Regulatory System – ISPM
+    7);
+   Implementation of the phytosanitary import regulatory system (Phytosanitary Import Regulatory System – ISPM
+    20);
+   Implementation and revision of phytosanitary inspection procedures (Guidelines for Inspection – ISPM 23) as
+    well as communicating notifications on non-compliance and emergency action (ISPM 13).
+
+
+Phytosanitary procedures to determine compliance for import and export consignments presented at the points of
+entry and exit include documentation checks for the verification of consignment identity and integrity, visual
+inspection, technical testing and record keeping. In addition, measures need to be put in place at ports of entry and
+exit to ensure that consignments in transit are not imported; these may include verification of the integrity of the
+consignment, conditions for transportation and time spans permitted within transit.
+
+
+
+
+                                                                                                                  11
+V. Plant import and export regulatory systems
+
+Phytosanitary export certification system
+The IPPC requires its contracting parties to put in place an export certification system to produce valid and credible
+phytosanitary certificates. The NPPO is responsible for the construction, implementation and review of the export
+certification system. The basic elements of the phytosanitary certification process include:
+        Ascertaining the relevant phytosanitary requirements of the importing country;
+        Verifying that the consignment conforms to those requirements at the time of certification; and
+        Issuing of a phytosanitary certificate characterized by the following:
+              o    contains sufficient information to clearly identify the consignment to which it relates;
+              o    does not carry other information of a non-phytosanitary nature; and
+              o    its validity is limited in duration (prior to export) as NPPO deems appropriate.
+
+
+The purpose of an export certification system is to ascertain the relevant phytosanitary requirements of the importing
+country, verify that exported consignments conform to those requirements at the time of certification and produce
+valid and credible phytosanitary certificates. Certification by the system affirms compliance with the current
+phytosanitary requirements of the importing country. Except for the issuance of phytosanitary certificates, the
+NPPO may accredit private agent (non-governmental) personnel who have no financial interest in the outcome to
+carry out specified certification functions.
+
+
+An effective certification system requires sufficient resources including personnel with appropriate expertise,
+information on the phytosanitary requirements of the importing country, adequate technical information concerning
+quarantine pests and (to the extent possible) non-quarantine pests for the importing countries, for documentation,
+record keeping, consignment tracking and good communication.
+
+
+Phytosanitary import regulatory system
+
+The issuing of phytosanitary regulations is the responsibility of a contracting party (Article IV.3[c] of the IPPC) but
+contracting parties may delegate the development or revision of phytosanitary regulations. The regulations (which
+should be in line with phytosanitary principles in ISPM 1) are implemented by NPPO officers or other accredited
+agents (acting on behalf of the NPPO and under its control) in close collaboration with other relevant national
+regulatory bodies. The objective of a phytosanitary import regulatory system is to prevent the introduction of
+quarantine pests or limit the entry of regulated non-quarantine pests with imported commodities and other regulated
+
+                                                                                                                    12
+articles. The phytosanitary import regulatory system should include provisions for import authorization as well as
+phytosanitary action to be taken in the case of non-compliance or for emergency action. The import regulatory
+system must verify that specified import phytosanitary measures have been implemented. These measures are
+implemented in:
+        the exporting country, for example treatment, inspection or testing in the growing season, produced from
+         plants of specified phytosanitary status;
+        during shipment, for example fumigation; and
+        at ports of entry and after entry.
+
+
+Compliance procedures at ports consist of three basic elements:
+    o    documentary checks;
+    o    verification of consignment integrity; and
+    o    phytosanitary inspection.
+
+
+Verification of compliance for imported consignments and other regulated articles may be required to:
+                 determine their compliance with phytosanitary regulations;
+                 check that phytosanitary measures are effective in preventing the introduction of quarantine pests
+                  and limiting the entry of RNQPs; and
+                 detect potential quarantine pests or quarantine pests whose entry with that commodity was not
+                  predicted.
+
+
+
+
+                                                                                                                 13
+   VI. Role of implementing selected ISPMs in preventing the introduction and spread
+   of regulated plant pests in the SADC region
+
+
+The NPPOs are responsible for implementing ISPMs in collaboration with key actors. The prime benefits of
+implementing selected ISPMs at ports of entry and exit in preventing the introduction and spread of regulated plant
+pests in the SADC region include the following:
+
+The implementation of ISPM 7 (Export Regulatory System) ensures that NPPOs have a clear understanding of the
+relevant phytosanitary requirements of the importing country. These requirements guide the construction,
+implementation and review of the export certification system. Further, inspectors verify that a consignment conforms
+to import requirements at the time of certification and then issue a credible phytosanitary certificate. Certification by
+the system affirms compliance with the current phytosanitary requirements of the importing country and prevents the
+spread and introduction of pests with traded commodities. The inspection process is guided by the implementation
+of ISPM 23 (Guidelines for inspection).
+
+
+The implementation of ISPM 20 (Phytosanitary Import Regulatory System) is critical to prevent the introduction of
+quarantine pests or limit the entry of regulated non-quarantine pests with imported commodities and other regulated
+articles. The key benefits of implementing ISPM 20 include the following:
+        Determining the compliance of imported consignments with phytosanitary regulations (by verifying that the
+         specified import phytosanitary measures have been implemented in the exporting country, during shipment,
+         at ports of entry and after entry.
+        It is a safety net to determine if the stipulated phytosanitary measures are effective in preventing the
+         introduction of quarantine pests and limiting the entry of RNQPs, or if the measures need to be revised.
+        Aids early detection of potential quarantine pests or quarantine pests whose entry with the imported
+         commodity was not predicted.
+        Because the phytosanitary import regulatory system spells out import authorization as well as phytosanitary
+         action to be taken in the case of non-compliance or emergency action, it guides their implementation.
+
+
+The implementation of ISPM 41 (International movement of used vehicles, machinery and equipment) minimizes
+the risk of introducing quarantine pests to agricultural, forested, wilderness or other areas through international
+movement of used vehicles, machinery and equipment, which are contaminated with soil, pests, plant debris or
+seeds. In general, there are risks associated with the international movement of used vehicles, machinery and
+equipment utilized in agriculture, forestry, horticulture, earth moving, surface mining, waste management and by the
+                                                                                                                  14
+military. Depending on their use, storage or transportation before export, used vehicles, machinery and equipment
+may have become contaminated with quarantine pests or regulated articles and when moved internationally as either
+a traded commodity or an operational relocation, they may carry soil, pests, plant debris or seeds.
+
+
+The implementation of ISPM 15, whose focus is on the regulations of wood packaging materials for international
+trade, significantly reduces the risk of introduction and spread of most quarantine pests that may be associated with
+wood packaging material and may be a threat to orchards, forests, parks and biodiversity in general. Wood
+packaging material is often made from raw wood that may be infested with pests. Further, the packaging material is
+often reused, repaired or remanufactured, thus the true origin of any piece of wood packaging material is difficult to
+determine and its phytosanitary status cannot easily be ascertained. It is a potential pathway for the introduction and
+spread of quarantine pests. Wood packaging materials such as crates, boxes, packing cases, pallets, cable drums
+and spools/reels must be treated.
+
+
+
+
+                                                                                                                    15
+VII. Prerequisite requirements for effective implementation of phytosanitary
+procedures
+
+For the effective implementation of phytosanitary procedures, the following are critical:
+   NPPOs with sufficient human resources or access to personnel with expertise for the tasks to be executed.
+   Adequate technical information on quarantine pests, and where possible, non-quarantine pests for the importing
+    countries provided to inspectors and other staff involved in phytosanitary certification.
+   Official current information on importing country phytosanitary requirements and import requirements of its
+    trading partners maintained by NPPOs.
+   Official current information on the phytosanitary import regulations/requirements of own country.
+   Sufficient support for documentation including desks, filing chests, computers and software, printers, stationery
+    and other supplies to aid the issuing of phytosanitary certificates; as well as storage and retrieval of records of all
+    actions, results and decisions concerning import/export regulations.
+   Information on the country’s regulated pests including biology, host range, pathways, global distribution,
+    detection and identification methods, as well as treatment methods for importing country inspectors.
+   Equipment and supplies to support efficient communication within the exporting country including computers and
+    software, printers, stationery, reliable internet services and telephone.
+   Standard operating procedures for relevant aspects of the operation of the export certification and phytosanitary
+    import regulatory system.
+       Neat and spacious inspection area to allow the inspectors to perform their duties optimally.
+       Inspectors to observe maximum care and avoid accidents especially when:
+         -   accessing port terminals and warehouses as heavy handling equipment are in use.
+         -   inspecting at inappropriate places in the absence of unloading bays.
+         -   there may be falling loads while inspecting containers or trucks.
+         -   there is a possibility of falling from trucks when climbing to inspect loosely packaged consignments.
+         -   there is a danger of inhaling toxic gas from containers containing fumigated articles.
+         -   using sharp tools for sampling and inspection.
+         -   opening containers, boxes and parcels, including courier parcels.
+   Inspectors to clean and disinfect tools, material and hands after contact with the infected or infested plants,
+    planting materials and plant products with a view to avoid the risk of contaminating other consignments after
+    sampling and inspection.
+
+
+                                                                                                                        16
+   Inspectors to separate the items or articles already inspected and certified from the uninspected commodities to
+    prevent cross-contamination.
+   Designate a quarantine holding area (container, covering consignment with tarpaulin) for infested, contaminated
+    or prohibited commodities to reduce the risk of harmful organisms spreading when sampling, handling,
+    packaging or transporting samples.
+
+
+
+
+                                                                                                                 17
+VIII. Phytosanitary inspection procedures
+
+Table 1: Tools and supplies for inspection
+Table with a white, clean and smooth Scissors                                     Pointed knives
+surface
+Inspection kit, camel hair brush          Hand lens                               Pencil and sharpener
+A good lighting system                    Marker pens (red and black colours)     Cellotape
+Forceps, visors and microscopes           Stapler with pins                       Sieves with differentiated mesh
+Ruler torchlight with cells               Nose mask and eye cover                 White paper; black paper sheet
+Specimen vials                            Inspectors’ clothing and adapted Needle
+                                          shoes
+Droppers                                  Notepads                                Calculator
+Pens                                      Poly bags/sample bags                   Sweep nets
+Alcohol (70 percent)                      Tissue paper (box)                      Plastic bags
+Dustbins                                  Swab                                    Form of inspection report
+White enamelled tray                      Ice/ fridge/ freezer                    Camera probes
+Chest                                     Packets of hand gloves                  Aprons; sampling probes; sample
+                                                                                  stickers; petri dishes; cover slips;
+                                                                                  slides; copy of Plant Pests Act and
+                                                                                  other relevant pieces of national
+                                                                                  legislation; identity card; national list
+                                                                                  of pests; commodity-specific
+                                                                                  phytosanitary import requirements;
+                                                                                  inspection report; interception forms
+
+
+The inspection procedure is based on ISPM 23 and entails the following:
+          Examination of documents associated with the consignment
+          Verification of consignment identity and integrity and relevant marks in the associated packaging materials
+          Visual examination for pests and other phytosanitary requirements (such as free from soil and debarking)
+          Laboratory testing when the need arises
+
+
+
+
+                                                                                                                         18
+Initiation of the inspection
+The consignment could arrive at ports of entry/exit through the passenger terminal or commercial/cargo terminal. To
+facilitate the smooth flow of commodities across ports of entry and through commercial terminals, the client (trader)
+should give the NPPO officer (officer in charge of import/export certification) or authorized inspector at least 48 hours’
+notice prior to the arrival of the consignment at the specified port of entry/exit. The NPPO officer in charge then
+assigns the request to a competent inspector for action. For consignments passing through passenger terminals, the
+traveller/client should visit the NPPO office (inland office) to have the consignment inspected and issued with a
+phytosanitary certificate prior to arriving at the port of entry/exit.
+
+Step 1: Examination of documents associated with a consignment
+     The phytosanitary inspector at the approved port of entry/exit examines the documents associated with the
+         consignment to ensure they meet the technical requirements of the consignment.
+     The documents are examined to ensure that they are: a) complete, b) consistent, c) accurate, d) valid and
+         not fraudulent.
+     Key documents that an inspector must review to verify the identity and integrity of the commodity include:
+              o    phytosanitary certificate or phytosanitary certificate for re-export,
+              o    import permit, treatment documents or certificates/report/fumigation report,
+              o    certificate of origin,
+              o    field inspection certificates or reports,
+              o    producer or packing list with traceability codes,
+              o    certification programme documents,
+              o    laboratory reports,
+              o    cargo manifest (including waybills and invoice).
+     Details to be considered include:
+              o    matching the consignment identity and brand,
+              o    origin of the product and point of entry,
+              o    importer/exporter clearly indicated and included in the NPPO database,
+              o    mode of transport,
+              o    number of containers/boxes and total quantity of the commodity.
+
+Step 2: Verification of consignment identity, integrity and relevant marks in the associated
+materials such as pallets
+The verification of consignment identity and integrity is to determine whether the consignment is accurately described
+in the accompanying documents, and it requires physical examination. Where the consignment is light (mainly at land
+
+                                                                                                                       19
+borders and airport passenger terminals), the client presents it to the inspector at the inspection desk for verification.
+In other cases, the inspector visits the approved storage facilities, inspection bay or yard or boards the vessel
+(ship/boat/plane/truck) for the following:
+    a. Verify the identity and integrity of the commodity to ensure it is accurately described by accompanying
+         documents.
+    b. Do a physical check of the consignment to verify the identity of the type of plant or plant product or species
+         is in accordance with the phytosanitary certificate presented or to be issued.
+    c. Conduct an integrity check to verify if the consignment, quantity and status are as declared in the
+         phytosanitary certificate presented or to be issued.
+    d. Conduct a check to verify if seals, safety conditions, marks in wooden pallets (as described in ISPM 15) and
+         other aspects of the shipment that may be of phytosanitary concern are in place.
+After all the documentary checks, the officer proceeds to do a visual examination of the consignment or lot. After the
+inspector has carried out the identity check, the results dictate the next action.
+
+Step 3: Consignment sampling and phytosanitary inspection
+Phytosanitary inspection
+
+The objective of the phytosanitary inspection is to confirm compliance of the consignment with import or export
+requirements pertaining to quarantine pests or regulated non-quarantine pests and to verify the effectiveness of
+phytosanitary measures applied to the commodity at a previous time.
+        For exports: the inspector is to ensure the commodity meets the phytosanitary requirements of the importing
+         country before issuing a phytosanitary certificate or a release note if the phytosanitary certificate was issued
+         from the inland office.
+        For imports: the inspector is to ensure the consignment meets the phytosanitary requirement of your/own
+         country.
+Because the inspection of an entire consignment is often not feasible, the phytosanitary inspection is carried out on a
+representative sample of lots or consignments covered by the same phytosanitary certificate.
+
+
+Phytosanitary control shall determine whether, on the basis of a complete examination of one or more representative
+samples, including packaging and, where applicable, transport vehicles, the consignment, and/or associated wooden
+packaging material meet the requirements. Its focus is to:
+    o    conduct a visual inspection of plants, plant products or regulated articles in order to investigate the possible
+         presence of harmful organisms;
+
+
+
+                                                                                                                       20
+    o     verify the compliance of plants, plant products and regulated articles with the requirements of the
+          phytosanitary regulation controllable by simple visual examination (such as dormancy and the absence of
+          flowers, fruits and leaves);
+    o     Do visual inspection to verify compliance with regulations or permit requirements such as treatment, degree
+          of processing, freedom from contaminants and absence of unauthorized pests or plant products.
+
+
+Sampling and sampling methods
+The sampling method should be consistent with ISPM 31 (Requirements for sampling and sampling methods) and
+entails the following:
+a) Identification of the lot and sample unit
+A lot is a number of units of a single commodity and shipment identified by its homogeneity of composition such as:
+        o grower
+        o origin
+        o packaging facility
+        o species
+        o variety
+        o degree of maturity
+        o exporter
+        o area of production
+        o regulated pests
+        o type of treatment
+        o origin
+Determination of sample unit: Sampling first involves the identification of the appropriate unit for sampling, for
+example:
+          o   a fruit
+          o   stem
+          o   bunch
+          o   unit of weight
+          o   bag or carton
+Where a consignment consists of several lots, the inspection to determine compliance may consist of several
+separate visual examinations and sampling each lot separately.
+
+
+b) Sampling plan
+
+                                                                                                                     21
+         Sampling of a consignment is the random selection of a representative of the whole consignment or lot in a
+          particular bill of lading.
+         Samples to inspect should be sufficiently representative of the overall lot.
+         Where the consignment consists of more than one lot, the inspection will consist of several visual
+          examinations.
+         Where multiple commodities are covered in a single consignment, each commodity is considered
+          separately.
+         In the case where a lot is contaminated, it is rejected, and the remaining lots are vigorously inspected.
+         If there is no information about the part of the consignment that has a higher probability to harbour pests,
+          statistical methodology is used.
+
+
+Sampling is influenced by the perceived risk level associated with a commodity. The general risk categories of
+commodities are summarized in Table 2 and are based on guidelines in ISPM 31. The inspector should identify the
+risk category of the commodity to be inspected.
+
+Table 2. Plant commodities categorized according to their pest risk*
+
+Category                               Description of commodity
+Category 1: No risk                    Fully processed plant materials that, in most situations, should not be
+                                       regulated
+Category 2: Low risk                   Plant materials that have undergone some processing, but remain capable of
+                                       being infested by pests
+Category 3: Moderate risk              Unprocessed plant materials that may be consumed or processed further
+                                       (fruits, vegetables, cut flowers)
+Category 4: High risk                  Unprocessed plant materials intended for planting (plants, seeds)
+*Source: Methodologies for sampling of consignments (ISPM 31)
+
+
+
+c) Size of sample to inspect
+The sample size is the number of units selected from the lot or consignment that will be inspected or tested.
+Guidance for determining the sample size is provided in ISPM 31 and for the visual inspection of fruits, vegetables
+and cut flowers this is presented in Table 3.
+
+
+Table 3: Sample size for visual inspection of fruits, vegetables and cut flowers (at 1% contamination
+detectable level and 95% confidence level)*
+
+Number of        Equal to or     Equal        Equal to or       Equal to or   Equal      Equal to or    Equal to or
+units in lot     less than       to or        less than         less than     to or      less than      less than
+                 200             less         1 000             5 000         less       10 000         20 000
+                                                                                                                         22
+                                 than                                         than
+                                 500                                          7 000
+Sample           All             225          258               290           292      294                296
+size
+*Source: Methodologies for sampling of consignments (ISPM 31)
+
+The calculation of the sample size for the visual inspection of plants for planting, excluding seed, using guidelines in
+ISPM 31 is presented in table 4. Calculations are based on 0.5% contamination detectable level with 99% confidence
+level and figures indicate the minimum sample size.
+
+Table 4: Sample size for inspection of plants for planting in a homogenous lot (excluding seed) (at 0.5%
+contamination detectable level and 99% confidence level)*
+
+Number of        Equal to or     Equal        Equal to or       Equal to or   Equal    Equal to or        Equal to or
+units in lot     less than       to or        less than         less than     to or    less than          less than
+                 200             less         1 000             5 000         less     10 000             14 000
+                                 than                                         than
+                                 500                                          7 000
+Sample           All             483          745               1 200         1 250    1 290              1 310
+size
+
+*Source: Methodologies for sampling of consignments (ISPM 31)
+
+    When a lot is contained in multiple containers (such as bags, parcels and boxes), the inspection must be carried
+     out on a sample taken from a minimum of 5 "containers".
+    Similarly, for large batches (transported in several containers), the inspection will be carried out on one third of
+     the containers.
+    The inspector will randomly select the containers to be inspected. The sample to be inspected will then be
+     extracted from two containers taken from each selected container, insofar as the accumulation of containers
+     taken and inspected remains greater than or equal to 5.
+
+Step 4: Physical examination of samples
+Random sampling of the consignment is done for examination purposes. Samples are examined using appropriate
+inspection tools such as a hand lens, knife, torchlight and probes in the case of grains for detection of any presence
+of insect pests and/or diseases. The inspector will look for signs or symptoms such as insect damage.
+
+
+Sample collection
+Testing is not always a component of inspection. The collection of samples for further laboratory testing may be
+required for the following: identification of a visually detected pest, confirmation of a visually identified pest, checking
+
+                                                                                                                         23
+for latent infections, audit or monitoring, as well as for reference purposes, particularly in cases of non-compliance
+and verification of the declared product. Laboratory-based inspection should follow technically approved procedures.
+
+Step 5: Progress with specific focus on inspection of export consignments
+    1. The inspector is to verify that the commodity meets the phytosanitary requirements of the importing country.
+    2. The inspector is required to produce an inspection report, with the statement of conformity or non-conformity
+         signed by the inspector, the date of inspection specified and should state if a sample was taken.
+    3. If the inspector’s report confirms non-conformity, then:
+             o    the commodities are rejected, and a phytosanitary certificate is not issued.
+             o    the verdict of the inspection is communicated to other inspectors to avoid the consignment being
+                  presented to another inspector for inspection.
+    4. If the inspector’s report confirms conformity, then the inspector proceeds to complete and issue a
+         phytosanitary certificate (dated with appropriate validity and signed) to the exporter. When issuing a
+         phytosanitary certificate, the officer should ensure:
+             o    it contains sufficient information to clearly identify the consignment to which it relates.
+             o    it does not carry other information of a non-phytosanitary nature.
+             o    its validity is limited in duration (prior to export) as the NPPO deems appropriate.
+    5. The inspector is to ensure that other specified phytosanitary measures are fulfilled, such as the following:
+             o    When required by the country of destination, that a report confirming inspection or testing in the
+                  growing season prior to export is attached.
+             o    When required by the country of destination, that a report confirming plants are produced from
+                  plants of specified phytosanitary status, such as grown from virus-tested plants or under specified
+                  conditions, is attached.
+             o    When a treatment is required by the country of destination, that a certificate of treatment or
+                  fumigation is attached.
+
+
+
+Documentation and records
+
+The inspection and certification files will consist of documents needed to ensure the traceability of all steps performed
+during the inspection process. These documents include:
+        application for a phytosanitary certificate
+        inspection report with the statement of compliance or non-compliance
+        copy of sampling sheets
+
+                                                                                                                      24
+        copy of the import permit
+        laboratory analysis reports
+        certificates of treatment
+        Other relevant documentation
+
+
+
+
+The NPPO should store and maintain:
+              o    documents, samples and specimens
+              o    records of all laboratory reports
+              o    copies of phytosanitary certificates issued
+
+
+Inspection records for consignments for which phytosanitary certificates are not issued, should also be kept. The
+NPPO should be able to retrieve all records when required. The use of secure electronic storage and retrieval is
+recommended. The records are kept for the following reasons:
+              o    reference purposes
+              o    traceability
+              o    aid in inspection review when needed
+
+Step 5a: Inspection results and outcomes for exports
+Possible scenarios of inspection results and outcomes for export consignments are summarized in Table 5.
+
+
+Table 5: Inspection results and outcomes for export consignments
+Commodity          Inspection results for consignments              Inspection outcome for consignments
+presented at       destined for export                              destined for export
+port of exit for
+export
+
+Scenario 1         Exporter registered with NPPO.
+
+                   All importing country requirements met.
+
+                   Import permit, treatment and/or testing          Issue client with phytosanitary certificate valid
+                   certificates, field inspection certificate and   for a specified period, which is signed and
+                   invoices all provided, additional declaration    dated.
+                   confirming; verified as produced from plants
+                   of specified phytosanitary status, verified as
+                   produced under specified conditions, etc.
+
+                                                                                                                        25
+                  Inspection done and no pest detected in the
+                  consignment.
+
+Scenario 2        Some of the importing country’s requirements      Reject the consignment and do not issue
+                  not met.                                          phytosanitary certificate.
+
+Scenario 3        A pest is detected during inspection.             Reject the consignment, OR where possible,
+                                                                    treat at the exporter’s cost and then issue client
+                                                                    with phytosanitary certificate.
+
+Scenario 4        Contradiction of content and declaration of       If possible, hold consignment until exporter
+                  the consignment.                                  provides correct documents; OR if not possible,
+                                                                    penalize exporter based on country law/exporter
+                                                                    to review documents.
+
+Scenario 5        Missing documents: declaration form,
+                  treatment certificate, waybill and traceability
+                  codes, among others, are absent.                  Reject consignment.
+
+
+
+Step 6: Progress with specific focus on inspection of imported consignments
+For imports: the inspector is to ensure the consignment meets the phytosanitary requirement of the importing
+country. Decisions taken after inspection should be based on ISPM 20, and depending on the results of the
+inspection, an inspection report is issued; with the statement of conformity or nonconformity signed by the inspector,
+date of inspection specified and stating if sample was taken. The report should include one or more of the following:
+    1. Authorize the immediate release of the consignment to the importer for compliant commodities, OR
+    2. For-non-compliant consignments it may include the following actions:
+         o   Hold, treat and release the consignment, or
+         o   Reject the consignment, or
+         o   Reship to the country of origin at the expense of the importer or destroy the consignment at the
+             expense of the importer, or
+         o   Quarantine the consignment.
+     Action for non-compliant consignments is covered in step 8.
+
+
+    The documents in the inspection file are similar to those used for export consignments. The NPPO should
+    properly store and maintain documents, samples and specimens as outlined for exports. Records must be stored
+    for the following reasons:
+        Tracing back to the consignment/lot when the need arises,
+
+                                                                                                                         26
+       To facilitate the review of inspection results when needed,
+       For decision-making to intensify and increase the frequency of inspections in cases of repeated non-
+        compliance of consignments or lots from the non-compliance source.
+
+Step 6a: Inspection results and outcomes for imports
+Possible scenarios of inspection results and outcomes for imported consignments are summarized in Table 6.
+
+
+
+
+Table 6: Inspection results and outcomes for imported consignments
+
+Commodity Inspection results for imported            Inspection outcomes for imported consignments
+presented   consignments
+at port of
+entry for
+importation
+
+Scenario 1    Documents are complete,                Release imported consignment.
+              consistent, accurate and valid and
+              no quarantine and/or regulated
+              pests detected.
+
+Scenario 2    Documents are complete,                    a. Reject imported consignment and
+              consistent, accurate and valid but
+              quarantine pests detected.                 b. Reship consignment to exporting country at the
+                                                            exporter’s expense, or
+
+                                                         c. If reshipping is not possible, destroy the consignment
+                                                            at the expense of the importer.
+
+                                                         d. Notify the NPPO of the exporting country of the non-
+                                                            compliance.
+
+Scenario 3    Documents are unclear or have          a. Deny entry, OR
+              questionable alterations or appear
+              fraudulent.                            b. Hold the consignment and confirm the authenticity of the
+                                                        documents with the exporting country NPPO, and
+
+                                                        If valid documents are availed, inspect consignment and if
+                                                         no quarantine pests are detected, release the
+                                                         consignment.
+
+                                                        If valid documents are NOT availed, take action in
+
+
+                                                                                                                   27
+                                                        accordance with the national law.
+
+Scenario 4   Absence of:                            Deny entry and take action in accordance with the national
+                                                    law.
+             - Import permit,
+
+             - Phytosanitary certificate, and
+
+             - Treatment certificate.
+
+Scenario 5   All other documents valid but              a. Deny entry, OR
+             phytosanitary certificate not signed
+             by NPPO.                                   b. Hold the consignment and verify with exporting
+                                                           country NPPO, and
+
+                                                       if valid documents are availed, inspect consignment and if
+                                                        no quarantine pests are detected, release the
+                                                        consignment AND
+
+                                                        c. Notify the NPPO of the exporting country of the non-
+                                                           compliance.
+
+Scenario 6   Conflicting statistics such as         a. Deny entry, OR
+             number of boxes, quantities and
+             statements on a consignment.           b. Hold the consignment and verify statistics with exporting
+                                                       country NPPO, and
+
+                                                                 if accurate statistics are availed, inspect
+                                                                  consignment and if no quarantine pests are
+                                                                  detected, release the consignment AND
+
+                                                        c. Notify the NPPO of the exporting country of the non-
+                                                           compliance.
+
+Scenario 7   All documents are correct BUT          a. Hold consignment, treat at the expense of the importer
+             non-quarantine regulated pests are        and release the consignment, OR
+             found.
+                                                    b. If treatment is not available, reship to the country of origin
+                                                       or destroy at the cost of the importer.
+
+                                                    c. Notify the NPPO of the exporting country of the non-
+                                                       compliance.
+
+
+
+Step 7: Progress with specific focus on inspection of regulated articles
+
+
+
+                                                                                                                   28
+For imports: the inspector is to ensure the consignment meets the phytosanitary requirements of their own country,
+which are guided by relevant ISPM (such as ISPM 15, which outlines regulations of wood packaging material for
+international trade and ISPM 41 for guidelines on international movement of used vehicles, machinery and
+equipment). Decisions taken after inspection should be based on relevant ISPM 20 and based on the results of the
+inspection, an inspection report is issued, with the statement of conformity or nonconformity signed by the inspector,
+date of inspection specified and stating if any specimens were taken for identification. The report should include one
+or more of the following:
+    1. Authorize the immediate release of the consignment to the importer for compliant commodities, OR
+    2. For-non-compliant consignments it may include the following actions:
+         o    Hold, clean and/or treat and release the consignment, or
+         o    Reject the consignment, or
+         o    Reship to the country of origin at the expense of the importer, or
+         o    Destroy the consignment at the expense of the importer.
+Action for non-compliant consignments is covered in section IX, beginning on page 32.
+
+
+The inspection and certification files will consist of documents needed to ensure the traceability of all steps performed
+during the inspection process. These documents include:
+        Application for a phytosanitary certificate
+        Inspection report with the statement of compliance or non-compliance
+        Copy of import permit
+        Cleaning declaration
+        Certificates of treatment
+        Authorization and audit report
+        Copy of specimen sampling sheet (if applicable)
+        Other relevant documentation
+
+
+The NPPO should store and maintain documents, samples, specimens and records of all laboratory reports and
+should be able to retrieve all records when required. The use of secure electronic storage and retrieval is
+recommended.
+
+Step 7a: Inspection results and outcomes for imports of regulated articles
+Possible scenarios of inspection results and outcomes for imported consignments are summarized in Table 7.
+
+Table 7: Inspection results and outcomes for imports of regulated articles
+                                                                                                                      29
+Commodity presented       Inspection results for imported               Inspection outcomes for imported
+at port of entry for      consignments                                  consignments
+importation
+
+Scenario 1a: Used       a. Documents are complete, consistent,          Release imported consignment.
+vehicles, machinery and accurate and valid, AND
+equipment such as:
+                        b. The articles are clean, treated and
+Agricultural, forestry  there is no evidence of contamination
+and horticultural used  with soil, pests, plant debris or seeds.
+vehicles, machinery and
+equipment.
+
+Waste management
+used vehicles,
+machinery and
+equipment.
+
+Used military machinery
+and equipment.
+
+Scenario 1b:              a. Documents are complete, consistent,        Release imported consignment.
+                          accurate and valid, AND
+Wooden products such
+as crates containing      b. The articles are treated, the mark is
+wooden carvings.          clearly visible on the crates and in line
+                          with ISPM 15 guidelines.
+
+Scenario 2a:              Documents are complete, consistent,           a) Hold consignment, clean and treat at the
+                          accurate and valid, but the articles are      expense of the importer and release the
+Used vehicles,            contaminated with soil, pests, plant          consignment, OR
+machinery and             debris and seeds.
+equipment.                                                              b) If treatment is not available, reship to
+                                                                        country of origin or destroy at the cost of
+                                                                        the importer.
+
+                                                                            Notify the NPPO of the exporting
+                                                                            country of the non-compliance.
+
+Scenario 2b:              Documents are complete, consistent,           a) Hold consignment, treat at the expense
+                          accurate and valid, but not treated in line   of the importer and release the
+Wooden products such      with ISPM 15.                                 consignment, OR
+as crates containing
+wooden carvings.                                                        b) If treatment is not available, reship to
+                                                                        country of origin or destroy at the cost of
+                                                                        the importer.
+
+                                                                                                                      30
+                                                           Notify the NPPO of the exporting
+                                                           country of the non-compliance.
+
+Scenario 3   Documents are unclear or have             a) Deny entry, OR
+             questionable alterations or appear
+             fraudulent.                               b) Hold the consignment and confirm the
+                                                       authenticity of the documents with the
+                                                       NPPO of the exporting country, and
+
+                                                          if valid documents are availed, inspect
+                                                           consignment and if no contaminants
+                                                           are detected, release the
+                                                           consignment.
+
+                                                          If valid documents are NOT availed,
+                                                           take action in accordance with the
+                                                           national law.
+
+Scenario 4   Absence of:                               Deny entry and take action in accordance
+                                                       with the national law.
+             - Import permit,
+
+             - Phytosanitary certificate, and
+
+             - Treatment certificate.
+
+Scenario 5   All other documents valid but             a) Deny entry, OR
+             phytosanitary certificate not signed by
+             NPPO.                                     b) Hold the consignment and verify with
+                                                          exporting country NPPO and
+
+                                                             if valid documents are availed,
+                                                              inspect consignment and
+
+                                                             if no contaminants are detected,
+                                                              release the consignment AND
+
+                                                       c. Notify the NPPO of the exporting country
+                                                           of the non-compliance.
+
+Scenario 6   Conflicting statistics such as            a) Deny entry, OR
+             quantities/units and statements on a
+             consignment.                              b) Hold the consignment and verify
+                                                       statistics with exporting country NPPO and
+
+                                                                   if accurate statistics are
+                                                                    availed, inspect consignment
+
+                                                                                                     31
+             and
+
+            if no contaminants are
+             detected, release the
+             consignment AND
+
+c) Notify the NPPO of the exporting country
+of the non-compliance.
+
+
+
+
+                                              32
+IX: Notification for non-compliance and emergency action
+
+Provisions of the IPPC Article VII.2(f) state, “Importing contracting parties shall, as soon as possible, inform the
+exporting contracting party concerned or, where appropriate, the re-exporting contracting party concerned, of
+significant instances of non-compliance with phytosanitary certification.--------” Article VII.6 states that contracting
+parties may take “appropriate emergency action on the detection of a pest posing a potential threat to its territories or
+the report of such a detection. ------ The action taken shall be immediately reported to contracting parties concerned,
+the secretary, and any regional plant protection organization of which the contracting party is a member.”
+
+Step 1. Cases of significant non-compliance
+Countries may agree bilaterally on what instances of non-compliance to phytosanitary import regulations are
+considered significant for notification purposes. In the absence of such agreements, the inspectors in the importing
+country shall specify the nature of non-compliance and may include the following to be significant:
+1. Failure to comply with documentary requirements including:
+    o    absence of phytosanitary certificates,
+    o    uncertified alterations or erasures to phytosanitary certificates,
+    o    serious deficiencies in information on phytosanitary certificates,
+    o    fraudulent phytosanitary certificates.
+2. Failure to comply with specified phytosanitary import requirements including:
+    o    detection of regulated pests,
+    o    prohibited consignments,
+    o    prohibited articles (such as soil) in consignments,
+    o    evidence of failure of specified treatments,
+    o    repeated instances of prohibited articles in small, non-commercial quantities carried by passengers or sent
+         by mail.
+3. The detection in an imported consignment of:
+    o    a regulated pest not listed as being associated with the commodity from the exporting country,
+    o    an organism that poses a potential phytosanitary threat.
+
+
+In case of scenario 3, emergency action is taken.
+
+
+
+
+                                                                                                                      33
+Step 2. Phytosanitary and emergency actions for non-compliant consignments
+Phytosanitary actions
+
+The NPPO may take phytosanitary and emergency actions in accordance with provisions of IPPC Article VII.6, which
+states that contracting parties may take “appropriate emergency action on the detection of a pest posing a potential
+threat to its territories or the report of such a detection”.
+
+
+The NPPO of the importing country may take appropriate phytosanitary actions on an imported consignment or other
+regulated article that does not comply with phytosanitary regulations and is initially refused entry. The actions are in
+accordance with national regulations. Depending on the commodity or regulated article, the measures may include:
+                  treatment and/or cleaning,
+                  sorting or reconditioning,
+                  disinfection of regulated articles (including equipment, premises, means of transportation),
+                  direction to a particular end use such as processing,
+                  reshipment or destruction (such as incineration).
+
+
+Emergency actions
+Emergency actions are taken on the detection in an imported consignment of:
+    o    a regulated pest not listed as being associated with the commodity from the exporting country,
+    o    an organism posing a potential phytosanitary threat.
+
+Step 3. Pest identification
+When harmful organisms are detected, they shall be collected and sent to the plant health laboratory for further
+examination and identification. The identification process should follow technically approved procedures including
+published peer reviewed methodologies for the specific organisms (viruses, bacteria, fungi, nematodes and weeds,
+among others). For microorganisms, it could entail serology or molecular-based techniques which generate results
+within a short period. This information is essential for notifications.
+
+Step 4: Notifications
+The IPPC contact point of the importing country should notify significant instances of non-compliance of a
+consignment with phytosanitary import requirements and emergency action taken due to non-compliance. Notification
+
+
+                                                                                                                     34
+should be sent to the IPPC contact point of the exporting country or, where necessary, to the re-export country. The
+following should be notified:
+              o     Exporting country in case of imported consignments and consignments in transit,
+              o     Re-exporting country in case of re-export consignment.
+
+
+The purpose of the notifications is for the NPPO of the exporting country to investigate the cause of non-
+compliance to phytosanitary import regulations with a view to avoid recurrence.
+
+Step 5: Documentation and communication
+    o    Notifications should be provided promptly once non-compliance or the need for emergency action has been
+         confirmed and phytosanitary actions taken. Where there is a significant delay in confirming the reason for
+         the notification (e.g. identification of an organism), a preliminary notification may be provided.
+    o    The language(s) used for notification and supporting information will be the language(s) preferred by the
+         notifying country except where bilaterally agreed otherwise. Where information is requested through contact
+         points, information should be supplied in one of the FAO languages.
+    o    Electronic mode of notification is recommended.
+    o    The importing country should keep notification documents, supporting information and associated records
+         for at least one year after the date of notification. Information to include in the notification is provided in
+         Table 8.
+
+
+Table 8. Information to be included in notifications
+Reference number (could be number of phytosanitary certificates associated
+with consignment)
+
+Date notification is sent
+
+Identity of NPPO of importing country
+
+Identity of NPPO of exporting country
+
+Identity of consignment by the phytosanitary certificate number or references
+to other documentation
+
+Name of commodity and scientific name (at least plant genus) for plants or
+plant products
+
+Identity of consignee
+
+
+
+                                                                                                                     35
+Identity of consignor
+
+Specific information on the nature of the non-compliance (phytosanitary
+import requirements to which non-compliance applies):
+
+         -    In the case of a pest, give identity
+
+         -    If the entire consignment is affected or only part of it
+
+         -    In the case of documentation, specify
+
+Specify phytosanitary actions taken and identify the parts of the consignment
+affected by the actions
+
+Authentication marks showing notifications are valid through stamp, seal, a
+letterhead or authorized signature
+
+Date of first action on the consignment
+
+
+
+
+                                                                                36
+X. Collaboration with other border regulatory agencies
+
+
+The inspection of plants, plant products and regulated articles requires collaboration between plant health inspectors
+and other relevant border regulatory agencies. The key regulatory agencies involved in the handling of agricultural
+commodities at the SADC regional ports of entry/exit include those collecting revenue and those involved in the
+enforcement of technical standards, SPS measures, import and export restrictions and prohibitions. Additional
+regulatory agencies also handle the commodities either at ports of entry or post entry. They include the pesticide
+regulatory bodies, wildlife and parks/conservation authorities, national seed certification authorities, local authorities,
+and trade and marketing departments. For efficient service delivery the agencies should:
+
+              o   Harmonize working days, hours and procedures in the case of the key national regulatory
+                  agencies. In addition, for one-stop border posts, harmonization should be done by agencies of the
+                  two Member States sharing the post.
+
+              o   Ensure timely sharing of information and data to facilitate fast decision making, enhance fast
+                  release and clearance of consignments and minimize congestion at the ports of entry/exit.
+
+              o   Actively participate in the multi-agency national border management forums.
+
+              o   Conduct joint operations such as inspections where the key relevant agencies are involved.
+
+              o   Facilitate phytosanitary action in cases of non-compliance such as holding, treatment, destruction
+                  or reshipment of consignments which do not comply to import requirements.
+
+
+
+
+                                                                                                                        37
+XI. Glossary
+The glossary is based on ISPM 5.
+
+Consignment: A quantity of plants, plant products and/or other articles being moved from one country to another
+and covered, when required, by a single phytosanitary certificate.
+
+Compliance: Official procedure used to verify that a consignment complies with stated phytosanitary requirements.
+
+Import requirements: Specific phytosanitary measures established by an importing country concerning
+consignments moving into that country.
+
+Integrity checks: Composition of a consignment as described by its phytosanitary certificate or other officially
+acceptable document, maintained without loss, addition or substitution.
+
+Inspector: Person authorized by a National Plant Protection Organization to discharge its functions.
+
+Lot: A number of units of a single commodity, identifiable by its homogeneity of composition, origin, etc. and forming
+part of a consignment.
+
+Mark: An official stamp or brand, internationally recognized, applied to a regulated article to attest its phytosanitary
+status (ISPM No. 15).
+
+Phytosanitary certificate: Certificate patterned after the model certificates of the IPPC.
+
+Phytosanitary certificate of re-export: A document that is used to certify foreign-origin plants or plant products for
+re-export to a third country.
+
+Phytosanitary import requirements: Specific phytosanitary measures established by an importing country
+concerning consignments moving into that country.
+
+Phytosanitary procedure: Any official method for implementing phytosanitary measures including the performance
+of inspections, tests, surveillance or treatments in connection with regulated pests.
+
+Regulated article: Any plant, plant product, storage place, packaging, conveyance, container, soil and any other
+organism, object or material capable of harbouring or spreading pests, deemed to require phytosanitary measures,
+particularly where international transportation is involved.
+
+Regulated pest: A quarantine pest or a regulated non-quarantine pest.
+
+
+                                                                                                                     38
+Regulated non-quarantine pests: A non-quarantine pest whose presence in plants for planting affects the intended
+use of those plants with an economically unacceptable impact and which is therefore regulated within the territory of
+the importing contracting party.
+
+Quarantine pest treatment: Official procedure for the killing, inactivation or removal of pests, or for rendering pests
+infertile or for devitalization.
+
+Visual examination: The physical examination of plants, plant products or other regulated articles using the unaided
+eye, lens, stereoscope or microscope to detect pests or contaminants without testing or processing.
+
+Plants: Seeds in the botanical sense of the term, other than seeds not intended for planting; fruits in the botanical
+sense of the term; vegetables – tubers, corms, bulbs, rhizomes, roots, rootstocks (shoots, stems, stolons); branches
+with or without foliage; cut trees with foliage; leaves; foliage – plant tissue cultures including cell cultures, germplasm,
+meristems, chimeric clones, micro propagative material, live pollen and spores, the buds, the cuttings, the woods of
+graft, the grafts, the scions.
+
+Plant products: Non-manufactured products of plant origin as well as manufactured products which, given their
+nature or that of their processing, may constitute a risk of dissemination of quarantine pests.
+
+(Other) Regulated articles: All objects or materials, other than plants or plant products, that can carry or spread
+pests, including soil or growing media, machinery and vehicles utilized for agriculture or forestry, imported from third
+countries.
+
+
+
+
+                                                                                                                         39
+XII. Easy access resources
+
+
+1. http://www.sadc.int/files/4613/5292/8370/Protocol_on_Trade1996.pdf
+2. http://www.sadc.int/files/2114/1520/0828/SPS_Annex_to_the_SADC_Protocol_on_Trade
+3. International Standards for Phytosanitary Measures can be accessed at http://www.ippc.int
+        a. Export Regulatory System (ISPM 7)
+        b. Guidelines for the notification of non-compliance and emergency action (ISPM 13)
+        c. Regulation of wood packaging material for international trade (ISPM 15)
+        d. Phytosanitary Import Regulatory System (ISPM 20)
+        e. Guidelines for Inspection (ISPM 23)
+        f.   Methodologies for sampling of consignments (ISPM 31)
+        g. International movement of used vehicles, machinery and equipment (ISPM 41)
+4. Southern African Development Community draft guidelines for coordinated border management, August 2011.
+5. Southern African Development Community Regional Agricultural Policy, 7 June 2013.
+6. WTO, 1994. WTO Agreement on the Application of Sanitary and Phytosanitary Measures. World Trade
+    Organization, Geneva, Switzerland.
+
+
+
+
+                                                                                                         40
+FAO EDF 11 Project GCP/SFS/004/EC
+
+
+
+Agricultural information & market access for all
+
+
+
+
+Project Objective
+The overall objective of this action is to accelerate progress towards implementation of SADC
+regional integration, which focuses on: i. enhancing information on agricultural production,
+sustainability and competitiveness for evidence-based decision-making; and, ii. improving access
+to markets through implementation of plant and animal pest and disease control strategies at the
+regional level.
+
+Beneficiaries
+Member States of the Southern African Development Community (SADC), namely: Angola,
+Botswana, Comoros, Democratic Republic of Congo, Eswatini, Lesotho, Madagascar, Malawi,
+Mauritius, Mozambique, Namibia, Seychelles, South Africa, United Republic of Tanzania, Zambia,
+Zimbabwe.
+
+
+
+
+                                                               ISBN 978-99968-958-8-3
+
+
+                    Funded by the                              sfs-stosar@fao.org
+                    European Union                             www.fao.org/in-action/stosar
+

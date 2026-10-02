@@ -20,6 +20,8 @@
           <div class="slippage-tolerance-custom">
             <s-float-input
               class="slippage-tolerance-custom_input"
+              inputmode="decimal"
+              :aria-label="t('dexSettings.slippageTolerance')"
               size="small"
               :decimals="2"
               has-locale-string
@@ -211,7 +213,7 @@ defineExpose({
 
     &.s-focused {
       .el-input__inner {
-        color: var(--s-color-theme-accent);
+        color: var(--s-color-action-text);
       }
     }
 
@@ -233,7 +235,7 @@ defineExpose({
   &--error &-custom_input.s-input .el-input > input {
     &,
     &:focus {
-      border-color: var(--s-color-status-error);
+      border-color: var(--s-color-status-error-text);
     }
   }
 
@@ -284,7 +286,8 @@ defineExpose({
   }
 
   .el-collapse-item__header {
-    height: 36px;
+    min-height: 36px;
+    height: auto;
   }
 
   .el-collapse-item__content {
@@ -302,7 +305,9 @@ defineExpose({
     border: none !important;
 
     &-value {
-      color: var(--s-color-theme-accent);
+      white-space: nowrap;
+      flex-shrink: 0;
+      color: var(--s-color-action-text);
     }
 
     .el-tooltip {
@@ -335,10 +340,10 @@ defineExpose({
     line-height: var(--s-line-height-big);
   }
   &--warning {
-    color: var(--s-color-status-warning);
+    color: var(--s-color-status-warning-text);
   }
   &--error {
-    color: var(--s-color-status-error);
+    color: var(--s-color-status-error-text);
   }
 
   .value {

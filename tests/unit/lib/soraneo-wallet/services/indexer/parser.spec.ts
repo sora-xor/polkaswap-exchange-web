@@ -446,6 +446,43 @@ describe('IndexerDataParser', () => {
     });
   });
 
+  it.each(['not-json', '[]', 'null'])(
+    'keeps batch-transfer history when the indexed comment has malformed shape %j',
+    async (comment) => {
+      const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
+
+      const parsed = await new IndexerDataParser().parseTransactionAsHistoryItem({
+        id: 'batch-transfer-id',
+        module: 'liquidityProxy',
+        method: 'swapTransferBatch',
+        address: walletAddress,
+        blockHash: '0xblock',
+        blockHeight: '100',
+        timestamp: 10,
+        networkFee: '0',
+        execution: { success: true, error: null },
+        data: {
+          assetId: XOR.address,
+          selectedMarket: 'PoolXYK',
+          maxInputAmount: '1',
+          inputAmount: '1',
+          receivers: [],
+          comment,
+        },
+        calls: [],
+      } as any);
+
+      expect(parsed).toMatchObject({
+        id: 'batch-transfer-id',
+        type: Operation.SwapTransferBatch,
+        payload: {
+          comment: null,
+          receivers: [],
+        },
+      });
+    }
+  );
+
   it('parses Polkaswap indexer bridgeProxy burn history as EVM bridge outgoing history', async () => {
     const { default: IndexerDataParser } = await import('@/lib/soraneo-wallet/src/services/indexer/parser');
 

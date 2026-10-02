@@ -107,7 +107,7 @@ const run = async () => {
       }
     }
 
-    const customizeSettingsButton = page.locator('.customise-widget button').first();
+    const customizeSettingsButton = page.locator('.customise-button').first();
     if (!(await customizeSettingsButton.isVisible().catch(() => false))) {
       issues.push('Customize-widget settings button is not visible');
     } else {

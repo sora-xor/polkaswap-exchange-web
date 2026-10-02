@@ -170,9 +170,9 @@ export class SystemModule<T> {
   }
 
   /** Get the current denomination coefficient */
-  public async getDenominator(): Promise<number> {
+  public async getDenominator(): Promise<FPNumber> {
     const api = this.root.api;
     const denominator = await api.query.denomination.denominator();
-    return denominator.toNumber();
+    return new FPNumber(denominator.toString());
   }
 }

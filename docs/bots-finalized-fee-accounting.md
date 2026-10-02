@@ -1,0 +1,15 @@
+# Bot fee reserve and finalized accounting
+
+The simple GO flow treats its input amount as an opening allocation, not a single swap order. A 10 KUSD → XOR goal allocates at most 10 KUSD and a separate 1 XOR network-fee reserve. Its selected order size is smaller than the capital allocation. Acquired XOR is sellable only above the unpaid part of the reserve. Subsequent sales may replenish KUSD, so cumulative turnover can exceed the opening 10 KUSD while each order remains bounded by the frozen strategy size and current allocated holdings.
+
+The live executor checks a fresh prepared swap, its unsigned fee ceiling, the remaining reserve, and the current allocation before signing. After a wallet signs, it persists the exact signed transaction hash, re-estimates the signed envelope's fee, and rejects a zero, unavailable, or over-ceiling result before broadcast. It rechecks session and quote validity after awaited wallet and RPC work. A later on-chain fee change can still make the *finalized* fee larger than an estimate; the site cannot cap SORA network fees.
+
+A canonical finalized `xorFee.FeeWithdrawn` event is the fee actually paid, including for failed swaps. Settlement records that amount once. If the paid fee exceeds the bot's allocated XOR, holdings stop at zero and `portfolio.xorDeficitCodec` records the remainder exactly. The order still becomes confirmed or failed according to its actual receipt; the bot enters attention, cannot trade or be reauthorized, and its marked portfolio value subtracts the deficit. Charts and unsigned goal progress floor a negative net value at zero while the exact shortfall remains in the portfolio. A repeated receipt after a reload is idempotent. Stopping or saving the bot cannot erase the shortfall, and deletion stays blocked until there is an explicit accounting resolution. The deficit represents a bot-attributed shortfall, not a claim that the chain account has negative XOR or that another wallet allocation funded it.
+
+Each canonical receipt lookup has a 30-second deadline. A timeout leaves the order pending and revokes that lookup's continuation: a late RPC reply cannot trigger another block read or supply accounting evidence. An RPC already in flight is not forcibly aborted. A later reconciliation starts a fresh lookup and must independently verify finalized inclusion, the signed envelope, and the matching extrinsic events.
+
+Any settled live order also preserves its actual portfolio, paid-fee totals, and activity record across stale UI saves, even without a deficit. Such a save cannot restart a stopped bot. A new Start uses the explicit allocation path to begin a new epoch; a stale save cannot restore the pre-trade reserve or holdings.
+
+A terminal goal outcome, including a loss, is immutable to ordinary delayed UI saves. Only the explicit Reset Goal action on an idle or stopped bot may clear that outcome for a new epoch.
+
+These checks do not promise a profitable strategy or a successful trade. A trade requires the user's wallet approval, and only a canonical finalized receipt can establish its outcome.

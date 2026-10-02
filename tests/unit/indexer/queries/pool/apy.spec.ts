@@ -40,7 +40,6 @@ describe('pool apy query', () => {
     expect(indexerMocks.fetchAllEntities).toHaveBeenCalledWith(expect.any(Object), {}, expect.any(Function));
   });
 
-
   it('returns null when no APY entities are available', async () => {
     indexerMocks.fetchAllEntities.mockResolvedValue(null);
     indexerMocks.currentIndexer = createIndexer(IndexerType.POLKASWAP);
@@ -74,9 +73,13 @@ describe('pool apy query', () => {
       'pool-b': toCodecString('0'),
     });
     expect(parse({ data: '' })).toEqual({});
+    expect(parse({ data: 'not-json' })).toEqual({});
+    expect(parse({ data: '[]' })).toEqual({});
+    expect(parse({ data: JSON.stringify({ valid: '0.5', invalid: { value: '1' } }) })).toEqual({
+      valid: toCodecString('0.5'),
+    });
   });
-
-  });
+});
 
 const createIndexer = (type: unknown) => ({
   type,

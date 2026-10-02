@@ -1,0 +1,63 @@
+{
+  "reviewedAt": "2026-09-30",
+  "countryCode": "DM",
+  "country": "Dominica",
+  "product": "100 g factory-sealed pure Japanese Camellia sinensis sencha, steamed/rolled/dried before dispatch, purchased for personal consumption and sent by post.",
+  "constraint": "No import permits, origin/official certificates, agency registration, or advance applications/notice. Ordinary customs/arrival declarations permitted.",
+  "outcome": "unresolved",
+  "decisionChanged": false,
+  "mainArraysEdited": false,
+  "lawIdentity": {
+    "finding": "Saved complete principal text is Plant Protection and Quarantine Act10/1986, Chapter58:40, commenced27 March1986, revised1991. No2009replacement was established. The government law-directory heading1991–2009 is catalogue coverage, not enactment year.",
+    "file": "../caribbean-definition-peer-review/dm-fullact.pdf",
+    "pages": "PDF pp1,4–5",
+    "urls": [
+      "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+      "https://dominica.gov.dm/laws-of-dominica"
+    ]
+  },
+  "domesticScope": {
+    "sections": "Act2,3,4(3)(a)–(b),10,12,25–26,28; Importations Regulations4,8(g).",
+    "finding": "Section2 includes processed or unprocessed vegetable-origin material only when capable of harbouring or transporting plant pests; its pest definition includes organisms capable of damaging plants or plant products. Sections3–4 impose permit/certificate conditions on restricted articles. Section10 expressly handles mail. IPPC references in4(3)(b) and12 concern certificate models. The inspected Act has no general rule requiring its terms to be interpreted according to ISPM5 or applying ISPM32 categories.",
+    "processingProvision": "Reg8(g) expressly exempts cooked, parboiled or otherwise processed pest-free plant products from reg4 only. Its text does not amend or waive Act3–4; the exemption is relevant evidence about processed articles but cannot be promoted into a separate permit waiver.",
+    "newStandardsClause": "SRO51/1997, operative text dated9 October1997, amended the Pink/Hibiscus Mealy Bug control order. Replacement4(2)(a)(i) requires exporting-country pest-free-area surveys under international phytosanitary standards. This is a specific survey requirement; it does not generally incorporate ISPM32 or classify manufactured food. No inference that tea is automatically covered by that pest-specific order is made."
+  },
+  "ispmAssessment": {
+    "actualCommodityEvidence": "ISPM32 Appendix2 printed32-14/PDFp16 expressly lists Tea among Category1 examples; visually verified in saved official Slovenian English mirror. Current IPPC publication page links the adopted standard; its currently linked Russian text preserves the same example. Appendix2 is reference-only, not prescriptive.",
+    "strongestPositiveArgument": "The domestic definition is itself risk-qualified; a published tea-specific international processing example is relevant technical evidence when deciding whether manufactured sencha falls outside that definition. A separate national tea naming or individual authority ruling is not inherently necessary if general operative scope plus evidence suffices.",
+    "whyNotClosed": "ISPM32 Category1 speaks to inability to remain infested with quarantine pests after processing; §1 footnote1 and current official publication description expressly exclude contaminating/storage pests acquired after processing. The domestic definition is broader: capable of harbouring OR transporting any plant pests. The standard therefore does not itself establish the entire domestic scope fact, and no national general incorporation clause or equivalent processing scope rule bridges that difference. This is a substantive textual mismatch, not an objection based solely on foreign origin or lack of exact national tea wording.",
+    "notClaimed": "This does not prove tea requires a permit; factory sealing and proper processing support low risk. It also does not demand impossible universal sterility, deem every hypothetical contaminant a legal prohibition, or treat IPPC membership as a domestic exemption."
+  },
+  "foodLayer": {
+    "finding": "No independently established enacted mandatory special-document duty for the stated private tea parcel. Environmental Health Services Act8/1997 food-import conditions provision is a regulation-making power. Food-business licensing/handler certificates cannot be applied automatically to a private recipient.",
+    "foodAct2026": "Official Gazette5March2026 establishes assent/publication of Act5/2026; enacted preview remains one contents page. OPM24February2026 passage report confirms adoption but supplies neither full operative text nor commencement. Complete government bill3(2) excludes personal-consumption imports; it is not substituted for enacted text. The draft certificate sections are not used as a present private-parcel obligation.",
+    "decisionTreatment": "Keep full enacted2026text/commencement as a source-retrieval note. Do not use that unknown text as an independent reason to deny or leave the shipment unresolved; the retained unresolved issue is agricultural scope.",
+    "sections": "Environmental Health Services Act8/1997 section30(1)(z)(xi): power to make regulations on food-import conditions; bill2026section3(2): personal-consumption exclusion (not confirmed enacted text)."
+  },
+  "preciseRemainingEvidence": "An operative general processing-scope rule or published competent technical interpretation showing how Dominica applies its broader harbouring/transporting-pests test to Category1 manufactured foods. An explicit national tea list could suffice but is not the only acceptable evidence. No bespoke application or new per-parcel ruling has been shown mandatory simply to research this question.",
+  "sourceUrls": {
+    "act": "https://bwcimplementation.org/sites/default/files/resource/chap58-40.pdf",
+    "regulations": "https://faolex.fao.org/docs/pdf/dmi4119.pdf",
+    "sro1997": "https://faolex.fao.org/docs/pdf/dmi87508.pdf",
+    "ispmPublication": "https://www.ippc.int/en/publications/587/",
+    "ispmEnglish": "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "ispmCurrentLinked": "https://assets.ippc.int/static/media/files/publications/ru/1366800159_ISPM_32_2009_Ru_2012-12-10.pdf",
+    "lawDirectory": "https://dominica.gov.dm/laws-of-dominica",
+    "food1997": "https://dominica.gov.dm/laws/1997/act08-1997.pdf",
+    "foodBill2026": "https://www.dominica.gov.dm/images/docs/bills/food_safety_bill_2026.pdf",
+    "foodActPreview": "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7913",
+    "gazette2026": "https://printery.dominica.gov.dm/ProductDocuments/DownloadPreview/7908",
+    "foodPassage": "https://pressroomopm.gov.dm/parliament-passes-food-safety-bill-to-strengthen-public-health-and-protect-consumers/"
+  },
+  "existingFilesRead": [
+    "../caribbean-definition-peer-review/dm-fullact.pdf",
+    "../caribbean-definition-peer-review/dm-fullact-ocr.txt",
+    "../sources/dm-regs.pdf.txt",
+    "../sources/dm-environment1997.ocr.txt",
+    "../sources/dm-foodbill2026.pdf.txt",
+    "../sources/dm-foodact2026.pdf.txt",
+    "../sources/dm-gazette2026-03-05.pdf.txt",
+    "../official-online-recovery-2026-09-30/americas/ispm32-slovenia-en2015.pdf.txt",
+    "../official-online-recovery-2026-09-30/americas/ispm32-en2015-appendix2.png"
+  ]
+}

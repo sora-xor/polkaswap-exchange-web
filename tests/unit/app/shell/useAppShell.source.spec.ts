@@ -25,4 +25,10 @@ describe('useAppShell source', () => {
     expect(useAppShellSource).not.toContain("from '@/services/realtime';");
     expect(useAppShellSource).not.toContain("from '@/composables/useTransaction';");
   });
+
+  it('cancels account-bound bridge tracking lazily on SORA identity changes', () => {
+    expect(useAppShellSource).toContain("import('@/stores/bridge')");
+    expect(useAppShellSource).toContain('useBridgeStore().cancelAccountBoundTasks()');
+    expect(useAppShellSource).not.toContain("import { useBridgeStore } from '@/stores/bridge'");
+  });
 });

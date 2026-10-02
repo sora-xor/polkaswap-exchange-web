@@ -12,6 +12,9 @@ import {
   type VNode,
 } from 'vue';
 
+import { formatDecimalDisplay } from './amountDisplay';
+import { clampDecimalInput } from './amountBounds';
+
 type Delimiters = {
   decimal?: string;
   decimalSeparator?: string;
@@ -43,6 +46,8 @@ const props = withDefaults(
     tabindex?: number | string;
     autocomplete?: string;
     hasLocaleString?: boolean;
+    /** Group the unfocused display while preserving the canonical decimal model. */
+    formatOnBlur?: boolean;
     delimiters?: Delimiters | null;
   }>(),
   {
@@ -61,6 +66,7 @@ const props = withDefaults(
     tabindex: undefined,
     autocomplete: undefined,
     hasLocaleString: false,
+    formatOnBlur: false,
     delimiters: null,
   }
 );
@@ -189,12 +195,6 @@ const usesNumericModel = computed(
 );
 const effectivePlaceholder = computed(() => props.placeholder || (usesNumericModel.value ? '0.0' : ''));
 
-const toFinite = (value: string | number | undefined): number | null => {
-  if (value === undefined || value === null || value === '') return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : null;
-};
-
 const resolveSeparators = () => {
   const delimiters = props.delimiters ?? {};
 
@@ -204,6 +204,12 @@ const resolveSeparators = () => {
       delimiters.groupSeparator ?? delimiters.thousandSeparator ?? delimiters.thousand ?? delimiters.thousands ?? ',',
   };
 };
+
+const displayValue = computed(() => {
+  if (!props.formatOnBlur) return internalValue.value;
+  const { decimal, thousand } = resolveSeparators();
+  return formatDecimalDisplay(internalValue.value, decimal, focused.value ? '' : thousand);
+});
 
 const sanitizeNumeric = (value: string): string => {
   const { decimal, thousand } = resolveSeparators();
@@ -244,16 +250,7 @@ const sanitizeNumeric = (value: string): string => {
 
   if (next === '-' || next === '') return next;
 
-  const numeric = toFinite(next);
-  if (numeric === null) return next;
-
-  const min = toFinite(props.min);
-  const max = toFinite(props.max);
-
-  if (min !== null && numeric < min) return String(min);
-  if (max !== null && numeric > max) return String(max);
-
-  return next;
+  return clampDecimalInput(next, props.min, props.max);
 };
 
 const normalizeValue = (value: string): string => (usesNumericModel.value ? sanitizeNumeric(value) : value);
@@ -280,9 +277,13 @@ const handleFocus = (event: FocusEvent): void => {
 
 const handleBlur = (event: FocusEvent): void => {
   focused.value = false;
-  const normalized = normalizeValue(internalValue.value);
-  if (normalized !== internalValue.value) {
-    emitValue(normalized);
+  // A formatted input already stores a canonical decimal; parsing it as locale
+  // text again could mistake its decimal point for a thousands separator.
+  if (!props.formatOnBlur) {
+    const normalized = normalizeValue(internalValue.value);
+    if (normalized !== internalValue.value) {
+      emitValue(normalized);
+    }
   }
   emit('blur', event);
 };
@@ -324,7 +325,7 @@ defineExpose({
           ref="inputElementRef"
           class="el-input__inner"
           :type="type"
-          :value="internalValue"
+          :value="displayValue"
           :placeholder="effectivePlaceholder"
           :disabled="disabled"
           :readonly="props.readonly"

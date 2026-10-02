@@ -84,6 +84,7 @@ const {
   nominate,
   getNominateNetworkFee,
   setStakingInfo,
+  stash,
 } = useSoraStaking();
 
 const { loading, withNotifications, withApi } = useTransaction({
@@ -96,6 +97,7 @@ const InfoLine = WalletComponentInfoLine;
 const mode = ref<ValidatorsListMode>(ValidatorsListMode.USER);
 const isSelectingEditingMode = ref(false);
 const nominateNetworkFee = ref<string | null>(null);
+let nominateFeeRequestId = 0;
 
 const tabs = [ValidatorsListMode.USER, ValidatorsListMode.ALL];
 
@@ -155,6 +157,7 @@ const confirmText = computed(() => {
 const showConfirmButton = computed(() => mode.value !== ValidatorsListMode.ALL && !isSelectingEditingMode.value);
 
 const confirmDisabled = computed(() => {
+  if (isEditMode.value && nominateNetworkFee.value === null) return true;
   if (insufficientXorForFee.value && mode.value !== ValidatorsListMode.USER) return true;
   if (mode.value === ValidatorsListMode.RECOMMENDED) return !hasChanges.value;
   if (mode.value === ValidatorsListMode.SELECT) {
@@ -171,20 +174,42 @@ const setMode = (nextMode: ValidatorsListMode) => {
 };
 
 /**
- * Retrieves the nomination fee whenever the candidate set changes.
+ * Identifies every input that can change the fee returned for a nomination.
+ */
+const getNominateFeeRequestKey = () =>
+  JSON.stringify({
+    visible: isVisible.value,
+    stash: stash.value ?? '',
+    validators: selectedValidators.value.map((validator) => validator.address),
+  });
+
+/**
+ * Retrieves the nomination fee and ignores responses for superseded inputs.
  */
 const updateNominateFee = async () => {
+  const requestId = ++nominateFeeRequestId;
+  const requestKey = getNominateFeeRequestKey();
+  nominateNetworkFee.value = null;
+
+  if (!isVisible.value) return;
+
   try {
     await withApi(async () => {
-      nominateNetworkFee.value = await getNominateNetworkFee();
+      const fee = await getNominateNetworkFee();
+
+      if (requestId === nominateFeeRequestId && requestKey === getNominateFeeRequestKey()) {
+        nominateNetworkFee.value = fee;
+      }
     });
   } catch (error) {
-    console.error('Failed to fetch nominate network fee', error);
-    nominateNetworkFee.value = null;
+    if (requestId === nominateFeeRequestId && requestKey === getNominateFeeRequestKey()) {
+      console.error('Failed to fetch nominate network fee', error);
+      nominateNetworkFee.value = null;
+    }
   }
 };
 
-watch(selectedValidators, updateNominateFee, { immediate: true });
+watch([selectedValidators, stash, isVisible], updateNominateFee, { immediate: true });
 
 watch(isVisible, (visible) => {
   if (visible) {
@@ -213,6 +238,8 @@ const handleSelectedMode = () => {
  * Applies the chosen validator set, performing an on-chain nomination when required.
  */
 const handleConfirm = async () => {
+  if (confirmDisabled.value) return;
+
   if (mode.value === ValidatorsListMode.USER) {
     isSelectingEditingMode.value = true;
     return;

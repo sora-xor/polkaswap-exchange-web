@@ -19,6 +19,7 @@ const transactionMocks = vi.hoisted(() => ({
   loading: { value: false },
   withNotifications: vi.fn(async (handler: () => unknown | Promise<unknown>) => {
     await handler();
+    return { submitted: true };
   }),
 }));
 
@@ -225,6 +226,22 @@ describe('BurnDialog.vue', () => {
     expect(burnMock).toHaveBeenCalledWith(expect.objectContaining({ address: '0x01' }), '5');
     expect(exposed.isVisible.value).toBe(false);
     expect(wrapper.emitted()['update:visible']).toBeTruthy();
+  });
+
+  it('keeps the burn dialog open when submission is rejected', async () => {
+    wrapperTransactionState.withNotifications.mockImplementationOnce(async (handler) => {
+      await handler();
+      return { submitted: false };
+    });
+    const wrapper = mountComponent();
+    const exposed = (wrapper.vm as any).$?.exposed!;
+    exposed.value.value = '5';
+
+    await exposed.handleBurn();
+
+    expect(burnMock).toHaveBeenCalledTimes(1);
+    expect(exposed.isVisible.value).toBe(true);
+    expect(wrapper.emitted()['update:visible']).toBeUndefined();
   });
 
   it('shows alert when balance is insufficient', async () => {

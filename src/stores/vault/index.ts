@@ -8,7 +8,7 @@ import { useWalletStore } from '@/stores/wallet';
 import { fetchClosedVaults } from '@/indexer/queries/vault/vaults';
 import type { VaultState } from '@/stores/vault/types';
 import { delay, areEqual } from '@/utils';
-import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+import { subscribeAndWaitForFirst, TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import type { ClosedVault } from '@/modules/vault/types';
 
 import type {
@@ -24,6 +24,13 @@ const DEBT_INTERVAL_MS = 6_000;
 const INDEXER_DELAY_MS = 4 * DEBT_INTERVAL_MS;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
+const stablecoinInfosSubscriptionGeneration = new WeakMap<object, number>();
+
+const invalidateStablecoinInfosSubscription = (store: object): number => {
+  const generation = (stablecoinInfosSubscriptionGeneration.get(store) ?? 0) + 1;
+  stablecoinInfosSubscriptionGeneration.set(store, generation);
+  return generation;
+};
 
 const defaultAverageCollateralPrices: Record<string, Nullable<FPNumber>> = {
   [`${DAI.address},${KUSD.address}`]: FPNumber.ONE,
@@ -304,18 +311,23 @@ export const useVaultStore = defineStore('vault-legacy', {
       }
     },
     async subscribeOnStablecoinInfos(): Promise<void> {
+      const generation = invalidateStablecoinInfosSubscription(this);
+      const isCurrent = (): boolean => stablecoinInfosSubscriptionGeneration.get(this) === generation;
       this.stablecoinInfosSubscription = unsubscribe(this.stablecoinInfosSubscription);
 
       try {
         const stablecoinInfosObservable = await api.kensetsu.subscribeOnStablecoinInfos();
-        let subscription!: Subscription;
 
-        await new Promise<void>((resolve) => {
-          subscription = stablecoinInfosObservable.subscribe((infos) => {
-            this.stablecoinInfos = { ...infos };
-            resolve();
-          });
+        if (!isCurrent()) return;
+
+        const subscription = await subscribeAndWaitForFirst(stablecoinInfosObservable, (infos) => {
+          if (isCurrent()) this.stablecoinInfos = { ...infos };
         });
+
+        if (!isCurrent()) {
+          subscription.unsubscribe();
+          return;
+        }
 
         this.stablecoinInfosSubscription = subscription;
       } catch {
@@ -347,6 +359,7 @@ export const useVaultStore = defineStore('vault-legacy', {
       this.closedAccountVaults = [];
       this.closedAccountVaultsLoaded = false;
       this.averageCollateralPrices = { ...defaultAverageCollateralPrices };
+      invalidateStablecoinInfosSubscription(this);
       this.stablecoinInfosSubscription = unsubscribe(this.stablecoinInfosSubscription);
     },
   },

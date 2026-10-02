@@ -1,0 +1,988 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="ctl00_Head1"><title>
+	SFE - Cuarentena Vegetal
+</title><link href="../../resources/css/stilositio.css" rel="stylesheet" type="text/css" media="all" /><link href="../../resources/css/aspnetmenu.css" rel="stylesheet" type="text/css" media="all" /><link href="../../resources/css/formulario.css" rel="stylesheet" type="text/css" media="all" /><link href="../../resources/css/tooltip.css" rel="stylesheet" type="text/css" media="all" />
+
+    <script type="text/javascript" language="javascript" src="../../resources/js/tooltip.js"></script>
+
+</head>
+<body>
+    <!--[if IE]>
+<div id="rootIE">
+<![endif]-->
+    <form name="aspnetForm" method="post" action="ConsultarRequisitosImportacion.aspx" id="aspnetForm">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+
+
+<script src="/SFECuarentena/WebResource.axd?d=03XZkc57oc7KPeYMqha48bnc-Uzi6KjRF3p-TRLH5XaFdOHoqGwx1C8hGNnT7Dn9C6bMNjW6_1j52kp3_4DlHIH1tdQ1&amp;t=638313929260000000" type="text/javascript"></script>
+<script src="/SFECuarentena/ScriptResource.axd?d=USHLz-1G4LOW3y8jD_UCmzduYq0gkAhnkcTLNJCBRcDPh3Um4USQh0PySuyA0RLrwxBzgJmRPZnQIdCNwa46ew0-krNNKcSVKUURLOOmNpsBe_bOn3pjNh9_eBW6ASzNDfCjq1nmhFeYFtn0trfwVUjEa4s1&amp;t=637235828501435112" type="text/javascript"></script>
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="F9DC1E18" />
+<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="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" />
+        <div>
+            
+        </div>
+        <div>
+            <table id="container" class="centrado">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div id="header">
+                                <object data="../../resources/flash/logo-flash.swf" type="application/x-shockwave-flash"
+                                    width="150" height="157" id="logo">
+                                    <param name="movie" value="../../resources/flash/logo-flash.swf" />
+                                    <param name="quality" value="high" />
+                                    <param name="wmode" value="transparent" />
+                                </object>
+                                <object data="../../resources/flash/header-title.swf" type="application/x-shockwave-flash"
+                                    width="219" height="82" id="headertitle">
+                                    <param name="movie" value="../../resources/flash/header-title.swf" />
+                                    <param name="quality" value="high" />
+                                    <param name="wmode" value="transparent" />
+                                </object>
+                                <div style="position: relative; float: right; margin-top: 80px;">
+                                    <center>
+                                        <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <span style="font-family: Tahoma; color: #FFFFFF; font-size: 14px; font-weight: bold;
+                                                        margin-right: 25px;">Cuarentena Vegetal</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <input type="image" name="ctl00$imgBtnLogIn" id="ctl00_imgBtnLogIn" title="Ingresar" src="../../resources/images/login.png" alt="Ingresar" border="0" />
+                                                    <input type="image" name="ctl00$imgBtnHome" id="ctl00_imgBtnHome" title="Home" src="../../resources/images/home.png" alt="Home" border="0" />
+                                                    
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </center>
+                                </div>
+                                <div id="header-right">
+                                </div>
+                                <!--MENU-->
+                                <div id="menu-header">
+                                    <a href="#ctl00_mnu_Principal_SkipLink"><img alt="Skip Navigation Links" src="/SFECuarentena/WebResource.axd?d=jP_0RIaqKdEqts9nDGU1Lzh4y6gDzNNa8cjBbkgou3UX4EYnGm5l_tF4YwQhZAiBwOL127Zpm7FdaCSO6A9_qWrQ4341&amp;t=638313929260000000" width="0" height="0" border="0" /></a><table id="ctl00_mnu_Principal" cellpadding="0" cellspacing="0" border="0" height="15" style="position: relative; z-index: 2000;">
+	<tr>
+		<td onmouseover="Menu_HoverStatic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln0"><table class="staticMenuItem" cellpadding="0" cellspacing="0" border="0" width="100%" width="100">
+			<tr>
+				<td nowrap="nowrap"><a class="staticMenuItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Importadores')">Importadores</a></td><td width="0"><img src="../../resources/images/dot.png" alt="Expand Importadores" valign="middle" /></td>
+			</tr>
+		</table></td><td onmouseover="Menu_HoverStatic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln1"><table class="staticMenuItem" cellpadding="0" cellspacing="0" border="0" width="100%" width="100">
+			<tr>
+				<td nowrap="nowrap"><a class="staticMenuItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Requisitos')">Requisitos</a></td><td width="0"><img src="../../resources/images/dot.png" alt="Expand Requisitos" valign="middle" /></td>
+			</tr>
+		</table></td>
+	</tr>
+</table><div id="ctl00_mnu_Principaln0Items" style="display:none;">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln2">
+			<td><table class="menuSubItem" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td nowrap="nowrap" width="100%"><a class="menuSubItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Importadores\\Solicitud de Importador')">Solicitud de Importador</a></td><td width="0"><img src="../../resources/images/dot.png" alt="Expand Solicitud de Importador" valign="middle" /></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln3">
+			<td><table class="menuSubItem" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td nowrap="nowrap" width="100%"><a class="menuSubItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Importadores\\Importador')">Importador</a></td><td width="0"><img src="../../resources/images/dot.png" alt="Expand Importador" valign="middle" /></td>
+				</tr>
+			</table></td>
+		</tr>
+	</table><div class="menuSubItem" id="ctl00_mnu_Principaln0ItemsUp" onmouseover="PopOut_Up(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=Wj9m9cPRfgKTH_svzBG_GTGg5LKzFaiSdG29sjmA7cPRzicis8T3tLYefmCzDCyMD1HpLtEG_uqeat64qBsGOJfQpug1&amp;t=638313929260000000" alt="Scroll up" />
+	</div><div class="menuSubItem" id="ctl00_mnu_Principaln0ItemsDn" onmouseover="PopOut_Down(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=GqWjNNbM68p-3n__epN8eOC_d4Uc9boahP2wyRAE9KI2mh1lkheyKLEsAWNSF9Cx1N8UsK-_NgGC3e56xKeYAB8Zlbk1&amp;t=638313929260000000" alt="Scroll down" />
+	</div>
+</div><div id="ctl00_mnu_Principaln2Items" style="display:none;">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln4">
+			<td><table class="menuSubItem" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td nowrap="nowrap" width="100%"><a class="menuSubItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Importadores\\Solicitud de Importador\\51101')">Registrar</a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln5">
+			<td><table class="menuSubItem" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td nowrap="nowrap" width="100%"><a class="menuSubItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Importadores\\Solicitud de Importador\\51102')">Modificar</a></td>
+				</tr>
+			</table></td>
+		</tr>
+	</table><div class="menuSubItem" id="ctl00_mnu_Principaln2ItemsUp" onmouseover="PopOut_Up(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=Wj9m9cPRfgKTH_svzBG_GTGg5LKzFaiSdG29sjmA7cPRzicis8T3tLYefmCzDCyMD1HpLtEG_uqeat64qBsGOJfQpug1&amp;t=638313929260000000" alt="Scroll up" />
+	</div><div class="menuSubItem" id="ctl00_mnu_Principaln2ItemsDn" onmouseover="PopOut_Down(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=GqWjNNbM68p-3n__epN8eOC_d4Uc9boahP2wyRAE9KI2mh1lkheyKLEsAWNSF9Cx1N8UsK-_NgGC3e56xKeYAB8Zlbk1&amp;t=638313929260000000" alt="Scroll down" />
+	</div>
+</div><div id="ctl00_mnu_Principaln3Items" style="display:none;">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln6">
+			<td><table class="menuSubItem" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td nowrap="nowrap" width="100%"><a class="menuSubItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Importadores\\Importador\\51211')">Modificar</a></td>
+				</tr>
+			</table></td>
+		</tr>
+	</table><div class="menuSubItem" id="ctl00_mnu_Principaln3ItemsUp" onmouseover="PopOut_Up(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=Wj9m9cPRfgKTH_svzBG_GTGg5LKzFaiSdG29sjmA7cPRzicis8T3tLYefmCzDCyMD1HpLtEG_uqeat64qBsGOJfQpug1&amp;t=638313929260000000" alt="Scroll up" />
+	</div><div class="menuSubItem" id="ctl00_mnu_Principaln3ItemsDn" onmouseover="PopOut_Down(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=GqWjNNbM68p-3n__epN8eOC_d4Uc9boahP2wyRAE9KI2mh1lkheyKLEsAWNSF9Cx1N8UsK-_NgGC3e56xKeYAB8Zlbk1&amp;t=638313929260000000" alt="Scroll down" />
+	</div>
+</div><div id="ctl00_mnu_Principaln1Items" style="display:none;">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" id="ctl00_mnu_Principaln7">
+			<td><table class="menuSubItem" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td nowrap="nowrap" width="100%"><a class="menuSubItem" href="javascript:__doPostBack('ctl00$mnu_Principal','Requisitos\\51702')">Consultar Requisitos Fitosanitarios</a></td>
+				</tr>
+			</table></td>
+		</tr>
+	</table><div class="menuSubItem" id="ctl00_mnu_Principaln1ItemsUp" onmouseover="PopOut_Up(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=Wj9m9cPRfgKTH_svzBG_GTGg5LKzFaiSdG29sjmA7cPRzicis8T3tLYefmCzDCyMD1HpLtEG_uqeat64qBsGOJfQpug1&amp;t=638313929260000000" alt="Scroll up" />
+	</div><div class="menuSubItem" id="ctl00_mnu_Principaln1ItemsDn" onmouseover="PopOut_Down(this)" onmouseout="PopOut_Stop(this)" align="center" style="display:none;">
+		<img src="/SFECuarentena/WebResource.axd?d=GqWjNNbM68p-3n__epN8eOC_d4Uc9boahP2wyRAE9KI2mh1lkheyKLEsAWNSF9Cx1N8UsK-_NgGC3e56xKeYAB8Zlbk1&amp;t=638313929260000000" alt="Scroll down" />
+	</div>
+</div><a id="ctl00_mnu_Principal_SkipLink"></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="background-color: #FFFFFF;">
+                        <td>
+                            <div id="contenido">
+                                <!--FORMULARIO Y CONTENIDO DEL ASPX-->
+                                
+
+    <div id="ctl00_ContentPlaceHolder1_pnl_Contenido">
+	
+    
+    <div id="ctl00_ContentPlaceHolder1_pnl_Principal">
+		
+       <table class="formTable" cellspacing="2" cellpadding="3">
+            <tr>
+                <td colspan="4" class="tituloForm">
+                    <span id="ctl00_ContentPlaceHolder1_lbl_Titulo">Consultar Requisitos de Importación</span>
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="4">
+                    <p class="label" style="width:800px; white-space:normal;">
+                        Estimado Usuario, mediante este servicio podrá conocer los Requisitos Fitosanitarios de un determinado producto de importación.
+                    </p>
+                    
+                    <p class="label" style="width:800px; white-space:normal;">
+                        Para poder realizar la consulta, primero debe escoger algunos de los filtros que se muestran. Después, debe dar click en el botón Consultar.
+                    </p>
+                    <p class="label" style="width:800px; white-space:normal;">
+                        En la lista de productos que concuerdan con las caracteristicas especificadas, deberá dar click en el link de Requisitos, para ver el listado de Requisitos asociados al Producto. 
+                    </p>
+                    <p class="label" style="width:800px; white-space:normal;">
+                        Esta consulta de requisitos fitosanitarios es oficial, sin embargo, no sustituye las indicaciones estipuladas en el formulario de requisitos fitosanitarios, y el que el usuario deba estar inscrito en el Registro de Importadores. 
+                    </p>
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="4" class="seccionForm">
+                    <span id="ctl00_ContentPlaceHolder1_lbl_DatosProducto">Datos del Producto</span>
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="1"  class="columnAspLabel">
+                    <span id="ctl00_ContentPlaceHolder1_lblNombreComun" class="label">Nombre Común:</span>
+                </td>                
+                <td colspan="3" class="columnAspControl">
+                    <input type="hidden" name="ctl00$ContentPlaceHolder1$txtIdProductoNombreComun" id="ctl00_ContentPlaceHolder1_txtIdProductoNombreComun" />
+                    <input name="ctl00$ContentPlaceHolder1$txtNombreComunProducto" type="text" id="ctl00_ContentPlaceHolder1_txtNombreComunProducto" disabled="disabled" class="txtBoxReadOnly" />
+                    <input type="hidden" name="ctl00$ContentPlaceHolder1$txtIdVariedad" id="ctl00_ContentPlaceHolder1_txtIdVariedad" />
+                    <input type="hidden" name="ctl00$ContentPlaceHolder1$txtDescripcionVariedad" id="ctl00_ContentPlaceHolder1_txtDescripcionVariedad" />
+
+                    <input type="image" name="ctl00$ContentPlaceHolder1$btnpbProducto" id="ctl00_ContentPlaceHolder1_btnpbProducto" tabindex="3" src="../../resources/images/Pantallas/filter.png" border="0" />
+                </td>
+            </tr>
+            
+             <tr>
+                <td class="columnAspLabel" >
+                    <span id="ctl00_ContentPlaceHolder1_lblNombreCientifico" class="label">Nombre Científico:</span>
+                </td>
+                <td class="columnAspControl" colspan="3">
+                     <input name="ctl00$ContentPlaceHolder1$txtNombreCientifico" type="text" id="ctl00_ContentPlaceHolder1_txtNombreCientifico" disabled="disabled" class="txtBoxReadOnly" />
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="columnAspLabel" >
+                    <span id="ctl00_ContentPlaceHolder1_lblClase" class="label">Clase:</span>
+                </td>
+                <td class="columnAspControl" colspan="3">
+                
+                    <select name="ctl00$ContentPlaceHolder1$ddl_Clase" id="ctl00_ContentPlaceHolder1_ddl_Clase" class="ddlBox">
+			<option selected="selected" value=""></option>
+			<option value="7">Alimento -aves u otros-</option>
+			<option value="18">Alimento para consumo animal</option>
+			<option value="19">Congelado</option>
+			<option value="1">Consumo Fresco</option>
+			<option value="6">Control Biol&#243;gico</option>
+			<option value="8">Elaborado</option>
+			<option value="9">Especias y medicinales</option>
+			<option value="2">Granos</option>
+			<option value="11">Industria</option>
+			<option value="12">Miscel&#225;neos</option>
+			<option value="13">Muestras an&#225;lisis laboratorio</option>
+			<option value="4">Procesado</option>
+			<option value="5">Propagaci&#243;n</option>
+			<option value="20">Pruebas de calidad</option>
+			<option value="16">Semilla</option>
+			<option value="17">Textiles</option>
+
+		</select>
+
+                </td>
+            </tr>
+            
+            
+            
+             <tr>
+                <td class="columnAspLabel" >
+                    <span id="ctl00_ContentPlaceHolder1_lblPais" class="label">País:</span>
+                </td>
+                <td class="columnAspControl" colspan="3">
+                    <select name="ctl00$ContentPlaceHolder1$ddl_Pais" id="ctl00_ContentPlaceHolder1_ddl_Pais" class="ddlBox">
+			<option selected="selected" value=""></option>
+			<option value="1">Afganist&#225;n</option>
+			<option value="2">Albania</option>
+			<option value="3">Alemania</option>
+			<option value="4">Andorra</option>
+			<option value="5">Angola</option>
+			<option value="6">Anguila</option>
+			<option value="7">Ant&#225;rtida</option>
+			<option value="8">Antigua y Barbuda</option>
+			<option value="9">Antillas Neerlandesas</option>
+			<option value="10">Arabia Saudita</option>
+			<option value="11">Argelia</option>
+			<option value="12">Argentina</option>
+			<option value="13">Armenia</option>
+			<option value="14">Aruba</option>
+			<option value="15">Australia</option>
+			<option value="16">Austria</option>
+			<option value="17">Azerbaiy&#225;n</option>
+			<option value="18">Bahamas</option>
+			<option value="19">Bahr&#233;in</option>
+			<option value="20">Bangladesh</option>
+			<option value="21">Barbados</option>
+			<option value="22">Belar&#250;s (conocido como RSS de Bielorrusia)</option>
+			<option value="23">B&#233;lgica</option>
+			<option value="24">Belice</option>
+			<option value="25">Benin</option>
+			<option value="26">Bermudas</option>
+			<option value="27">Bhut&#225;n</option>
+			<option value="28">Bolivia</option>
+			<option value="29">Bosnia y Herzegovina</option>
+			<option value="30">Botsuana</option>
+			<option value="31">Brasil</option>
+			<option value="32">Brun&#233;i</option>
+			<option value="33">Bulgaria</option>
+			<option value="34">Burkina Faso</option>
+			<option value="35">Burundi</option>
+			<option value="36">Cabo Verde</option>
+			<option value="37">Camboya</option>
+			<option value="38">Camer&#250;n</option>
+			<option value="39">Canad&#225;</option>
+			<option value="40">Chad</option>
+			<option value="41">Chile</option>
+			<option value="42">China</option>
+			<option value="43">Chipre</option>
+			<option value="44">Ciudad del Vaticano</option>
+			<option value="45">Colombia</option>
+			<option value="46">Comoros</option>
+			<option value="48">Corea del Norte</option>
+			<option value="49">Corea del Sur</option>
+			<option value="50">Costa de Marfil</option>
+			<option value="51">Costa Rica</option>
+			<option value="52">Croacia</option>
+			<option value="53">Cuba</option>
+			<option value="251">Curazao</option>
+			<option value="54">Dinamarca</option>
+			<option value="55">Dom&#237;nica</option>
+			<option value="56">Ecuador</option>
+			<option value="57">Egipto</option>
+			<option value="58">El Salvador</option>
+			<option value="59">Emiratos &#193;rabes Unidos</option>
+			<option value="60">Eritrea</option>
+			<option value="61">Eslovaquia</option>
+			<option value="62">Eslovenia</option>
+			<option value="63">Espa&#241;a</option>
+			<option value="250">Espa&#241;a (Canarias,Islas)</option>
+			<option value="64">Estados Unidos</option>
+			<option value="65">Estonia</option>
+			<option value="66">Etiop&#237;a</option>
+			<option value="67">Fiji</option>
+			<option value="68">Filipinas</option>
+			<option value="69">Finlandia</option>
+			<option value="70">Francia</option>
+			<option value="71">Gab&#243;n</option>
+			<option value="72">Gambia</option>
+			<option value="73">Georgia</option>
+			<option value="74">Georgia del Sur e Islas Sandwich del Sur</option>
+			<option value="75">Ghana</option>
+			<option value="76">Gibraltar</option>
+			<option value="77">Granada</option>
+			<option value="78">Grecia</option>
+			<option value="79">Groenlandia</option>
+			<option value="80">Guadalupe</option>
+			<option value="81">Guam</option>
+			<option value="82">Guatemala</option>
+			<option value="84">Guayana Francesa</option>
+			<option value="85">Guernsey</option>
+			<option value="86">Guinea</option>
+			<option value="87">Guinea Ecuatorial</option>
+			<option value="88">Guinea-Bissau</option>
+			<option value="83">Guyana</option>
+			<option value="89">Hait&#237;</option>
+			<option value="171">HOLANDA (PAISES BAJOS)</option>
+			<option value="90">Honduras</option>
+			<option value="91">Hong Kong</option>
+			<option value="92">Hungr&#237;a</option>
+			<option value="93">India</option>
+			<option value="94">Indonesia</option>
+			<option value="95">Irak</option>
+			<option value="96">Ir&#225;n</option>
+			<option value="97">Irlanda</option>
+			<option value="98">Isla Bouvet</option>
+			<option value="99">Isla de Man</option>
+			<option value="100">Islandia</option>
+			<option value="101">Islas &#193;land</option>
+			<option value="102">Islas Caim&#225;n</option>
+			<option value="103">Islas Christmas</option>
+			<option value="104">Islas Cocos</option>
+			<option value="105">Islas Cook</option>
+			<option value="106">Islas Faroe</option>
+			<option value="107">Islas Heard y McDonald</option>
+			<option value="108">Islas Malvinas</option>
+			<option value="109">Islas Marshall</option>
+			<option value="110">Islas Norkfolk</option>
+			<option value="111">Islas Palaos</option>
+			<option value="112">Islas Pitcairn</option>
+			<option value="113">Islas Solom&#243;n</option>
+			<option value="114">Islas Svalbard y Jan Mayen</option>
+			<option value="115">Islas Turcas y Caicos</option>
+			<option value="116">Islas V&#237;rgenes Brit&#225;nicas</option>
+			<option value="117">Islas V&#237;rgenes de EEUU</option>
+			<option value="118">Israel</option>
+			<option value="119">Italia</option>
+			<option value="120">Jamaica</option>
+			<option value="121">Jap&#243;n</option>
+			<option value="122">Jersey</option>
+			<option value="123">Jordania</option>
+			<option value="124">Kazajst&#225;n</option>
+			<option value="125">Kenia</option>
+			<option value="241">Kirguist&#225;n (Kyrgyz, Kirguisia)</option>
+			<option value="127">Kiribati</option>
+			<option value="128">Kuwait</option>
+			<option value="129">Laos</option>
+			<option value="130">Lesotho</option>
+			<option value="131">Letonia (Latvia)</option>
+			<option value="132">L&#237;bano</option>
+			<option value="133">Liberia</option>
+			<option value="134">Libia</option>
+			<option value="135">Liechtenstein</option>
+			<option value="136">Lituania</option>
+			<option value="137">Luxemburgo</option>
+			<option value="138">Macao</option>
+			<option value="139">Macedonia del Norte</option>
+			<option value="140">Madagascar</option>
+			<option value="141">Malasia</option>
+			<option value="142">Malawi</option>
+			<option value="143">Maldivas</option>
+			<option value="144">Mali</option>
+			<option value="145">Malta</option>
+			<option value="146">Marruecos</option>
+			<option value="147">Martinica</option>
+			<option value="148">Mauricio</option>
+			<option value="149">Mauritania</option>
+			<option value="150">Mayotte</option>
+			<option value="151">Mexico</option>
+			<option value="152">Micronesia</option>
+			<option value="153">Moldova</option>
+			<option value="154">M&#243;naco</option>
+			<option value="155">Mongolia</option>
+			<option value="156">Montenegro</option>
+			<option value="157">Montserrat</option>
+			<option value="158">Mozambique</option>
+			<option value="159">Myanmar</option>
+			<option value="160">Namibia</option>
+			<option value="161">Nauru</option>
+			<option value="162">Nepal</option>
+			<option value="163">Nicaragua</option>
+			<option value="164">N&#237;ger</option>
+			<option value="165">Nigeria</option>
+			<option value="166">Niue</option>
+			<option value="167">Noruega</option>
+			<option value="168">Nueva Caledonia</option>
+			<option value="169">Nueva Zelanda</option>
+			<option value="170">Om&#225;n</option>
+			<option value="172">Pakist&#225;n</option>
+			<option value="173">Palestina</option>
+			<option value="174">Panam&#225;</option>
+			<option value="175">Pap&#250;a Nueva Guinea</option>
+			<option value="176">Paraguay</option>
+			<option value="177">Per&#250;</option>
+			<option value="178">Polinesia Francesa</option>
+			<option value="179">Polonia</option>
+			<option value="180">Portugal</option>
+			<option value="181">Puerto Rico</option>
+			<option value="182">Qatar</option>
+			<option value="183">Reino Unido</option>
+			<option value="243">Reino Unido (Escocia)</option>
+			<option value="244">Reino Unido (Gales)</option>
+			<option value="242">Reino Unido (Inglaterra)</option>
+			<option value="245">Reino Unido (Irlanda del Norte)</option>
+			<option value="184">Rep&#250;blica Centro-Africana</option>
+			<option value="185">Rep&#250;blica Checa</option>
+			<option value="47">Rep&#250;blica del Congo</option>
+			<option value="186">Rep&#250;blica Dominicana</option>
+			<option value="187">Reuni&#243;n</option>
+			<option value="188">Ruanda</option>
+			<option value="189">Ruman&#237;a</option>
+			<option value="190">Rusia</option>
+			<option value="191">Sahara Occidental</option>
+			<option value="192">Samoa</option>
+			<option value="193">Samoa Americana</option>
+			<option value="194">San Bartolom&#233;</option>
+			<option value="195">San Crist&#243;bal y Nieves</option>
+			<option value="196">San Marino</option>
+			<option value="197">San Pedro y Miquel&#243;n</option>
+			<option value="198">San Vicente y las Granadinas</option>
+			<option value="199">Santa Elena</option>
+			<option value="200">Santa Luc&#237;a</option>
+			<option value="201">Santo Tom&#233; y Pr&#237;ncipe</option>
+			<option value="202">Senegal</option>
+			<option value="252">Serbia</option>
+			<option value="203">Serbia y Montenegro (hasta el 12/06/2007)</option>
+			<option value="204">Seychelles</option>
+			<option value="205">Sierra Leona</option>
+			<option value="206">Singapur</option>
+			<option value="207">Siria</option>
+			<option value="208">Somalia</option>
+			<option value="209">Sri Lanka</option>
+			<option value="210">Suazilandia</option>
+			<option value="211">Sud&#225;frica</option>
+			<option value="212">Sud&#225;n</option>
+			<option value="213">Suecia</option>
+			<option value="214">Suiza</option>
+			<option value="215">Surinam</option>
+			<option value="216">Tailandia</option>
+			<option value="217">Taiw&#225;n</option>
+			<option value="218">Tanzania</option>
+			<option value="219">Tayikist&#225;n</option>
+			<option value="220">Territorio Brit&#225;nico del Oc&#233;ano &#205;ndico</option>
+			<option value="221">Territorios Australes Franceses</option>
+			<option value="222">Timor-Leste</option>
+			<option value="223">Togo</option>
+			<option value="224">Tokelau</option>
+			<option value="225">Tonga</option>
+			<option value="226">Trinidad y Tobago</option>
+			<option value="227">T&#250;nez</option>
+			<option value="228">Turkmenist&#225;n</option>
+			<option value="229">Turqu&#237;a</option>
+			<option value="230">Tuvalu</option>
+			<option value="231">Ucrania</option>
+			<option value="232">Uganda</option>
+			<option value="257">Uni&#243;n Europea</option>
+			<option value="233">Uruguay</option>
+			<option value="234">Uzbekist&#225;n</option>
+			<option value="235">Vanuatu</option>
+			<option value="236">Venezuela</option>
+			<option value="237">Vietnam</option>
+			<option value="238">Wallis y Futuna</option>
+			<option value="239">Yemen</option>
+			<option value="240">Yibuti (Djibouti)</option>
+			<option value="247">Zambia</option>
+			<option value="248">Zimbabue</option>
+
+		</select>
+           
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td class="columnAspLabel" >
+                    <span id="ctl00_ContentPlaceHolder1_lblZona" class="label">Zona:</span>
+                </td>
+                <td class="columnAspControl" colspan="3">
+                  
+                    <select name="ctl00$ContentPlaceHolder1$ddl_Zona" id="ctl00_ContentPlaceHolder1_ddl_Zona" class="ddlBox">
+
+		</select>
+                </td>
+            </tr>            
+                            
+            <tr>
+                <td class="columnAspLabel" >
+                    <span id="ctl00_ContentPlaceHolder1_lblPresentacion" class="label">Presentación:</span>
+                </td>
+                <td class="columnAspControl" colspan="3">
+                
+                    <select name="ctl00$ContentPlaceHolder1$ddl_Presentacion" id="ctl00_ContentPlaceHolder1_ddl_Presentacion" class="ddlBox">
+			<option value=""></option>
+			<option value="7">a granel</option>
+			<option value="549">a granel/sacos</option>
+			<option value="653">absorbente de hidrocarburos</option>
+			<option value="626">acemite</option>
+			<option value="81">acodos</option>
+			<option value="550">ADN de plantas</option>
+			<option value="551">adorno en vidrio</option>
+			<option value="629">adorno fresco</option>
+			<option value="177">adorno seco</option>
+			<option value="143">afrecho/salvado/a granel/sacos/o empacado</option>
+			<option value="24">aislamientos</option>
+			<option value="650">aislante para construcci&#243;n</option>
+			<option value="76">almendra a granel</option>
+			<option value="164">aplastado/hojuelas a granel</option>
+			<option value="103">&#225;rbol de navidad</option>
+			<option value="673">&#225;rboles tratados con glicerina</option>
+			<option value="60">Astilla -a granel/sacos-</option>
+			<option value="27">bamb&#250;</option>
+			<option value="665">bandejas de madera con borde de hierro</option>
+			<option value="641">bayas secas</option>
+			<option value="585">Bellota seca</option>
+			<option value="613">block</option>
+			<option value="28">bolsas nuevas</option>
+			<option value="116">bonsai</option>
+			<option value="552">borucha de madera</option>
+			<option value="664">brotes</option>
+			<option value="619">bulbo pelado</option>
+			<option value="8">bulbos</option>
+			<option value="590">bulbos con ra&#237;z</option>
+			<option value="663">bulbos con ra&#237;z y medio de crecimiento, en macetas</option>
+			<option value="628">bulbos florales</option>
+			<option value="202">cafe cereza</option>
+			<option value="553">cafe cereza (no usar)</option>
+			<option value="618">cajas</option>
+			<option value="599">Callos in vitro</option>
+			<option value="193">ca&#241;as</option>
+			<option value="107">c&#225;psulas con semillas</option>
+			<option value="156">cardado peinado</option>
+			<option value="647">cascado, consumo /agranel - sacos</option>
+			<option value="204">c&#225;scara molida</option>
+			<option value="205">c&#225;scara seca - a granel, sacos</option>
+			<option value="189">cascarilla</option>
+			<option value="162">cascarilla peletizada</option>
+			<option value="30">cester&#237;a</option>
+			<option value="601">chapas de madera</option>
+			<option value="215">chusquines o rebrotes</option>
+			<option value="180">con c&#225;scara -a granel, sacos-</option>
+			<option value="31">concentrado</option>
+			<option value="32">conservado</option>
+			<option value="135">consumo /a granel - sacos/</option>
+			<option value="413">consumo /a granel - sacos/ (No Usar)</option>
+			<option value="595">corona con ra&#237;z</option>
+			<option value="161">corona sin ra&#237;z</option>
+			<option value="120">corteza de madera procesada</option>
+			<option value="118">corteza seca</option>
+			<option value="33">cualquier presentaci&#243;n</option>
+			<option value="666">cubos o briquetas</option>
+			<option value="209">culmos-tallos</option>
+			<option value="119">descafeinado grano oro</option>
+			<option value="195">descafeinado grano oro (caf&#233; verde)</option>
+			<option value="608">descascarado</option>
+			<option value="621">desgerminado</option>
+			<option value="206">deshidratado/a granel/sacos/muestras/empacado</option>
+			<option value="151">desperdicios</option>
+			<option value="3">empacado</option>
+			<option value="136">empacado al vacio</option>
+			<option value="10">ensalada preparada</option>
+			<option value="129">ensalada preparada2</option>
+			<option value="36">envasados</option>
+			<option value="292">escamas secas</option>
+			<option value="245">escapo floral sin flor</option>
+			<option value="173">escapos florales</option>
+			<option value="126">esporas/in&#243;culo</option>
+			<option value="123">esquejes enraizados</option>
+			<option value="367">esquejes enraizados (no usar)</option>
+			<option value="682">esquejes foliares</option>
+			<option value="11">esquejes sin enraizar</option>
+			<option value="86">estacas con ra&#237;z</option>
+			<option value="667">Estacas de madera</option>
+			<option value="219">estacas sin ra&#237;z</option>
+			<option value="670">esterilla</option>
+			<option value="101">estolones</option>
+			<option value="600">extracto vegetal</option>
+			<option value="555">f&#233;cula</option>
+			<option value="607">fibra</option>
+			<option value="630">flores cortadas tratadas con glicerina</option>
+			<option value="78">flores frescas cortadas</option>
+			<option value="112">flores masculinas</option>
+			<option value="62">flores secas -a granel, sacos- empacado</option>
+			<option value="142">follaje fresco</option>
+			<option value="669">follaje seco</option>
+			<option value="210">fresco</option>
+			<option value="604">fruta congelada</option>
+			<option value="13">frutas</option>
+			<option value="63">fruto seco</option>
+			<option value="639">fundas para maceta</option>
+			<option value="168">germen de cereal</option>
+			<option value="117">gluten</option>
+			<option value="592">gluten empacado</option>
+			<option value="557">Grano con cascara y aplastado</option>
+			<option value="662">grano molido</option>
+			<option value="72">grano oro</option>
+			<option value="181">grano oro (caf&#233; verde)</option>
+			<option value="344">grano oro (no Usar)</option>
+			<option value="4">grano seco -a granel, sacos-</option>
+			<option value="208">grano seco empacado</option>
+			<option value="632">granos</option>
+			<option value="612">granulado</option>
+			<option value="596">granulado envasado</option>
+			<option value="155">grits o gra&#241;ones muestra</option>
+			<option value="141">gritz o gra&#241;ones</option>
+			<option value="207">gritz o gra&#241;ones a granel</option>
+			<option value="153">harina empacada</option>
+			<option value="558">harina hidrolizada</option>
+			<option value="94">harina muestras</option>
+			<option value="199">harina o en polvo, a granel/sacos</option>
+			<option value="198">heno</option>
+			<option value="658">hierba seca</option>
+			<option value="65">hierba seca -a granel, sacos-</option>
+			<option value="253">hierba seca muestras</option>
+			<option value="92">hijos con ra&#237;z</option>
+			<option value="144">hijos sin ra&#237;z</option>
+			<option value="66">hojas frescas</option>
+			<option value="254">hojas procesadas</option>
+			<option value="674">hojas quebradas</option>
+			<option value="67">hojas secas</option>
+			<option value="221">hojas secas analisis de sigatoka</option>
+			<option value="230">hojas secas analisis sigatoka</option>
+			<option value="643">Hojas secas molidas</option>
+			<option value="40">hojuelas</option>
+			<option value="41">hojuelas empacadas</option>
+			<option value="645">hojuelas muestras</option>
+			<option value="15">hortalizas</option>
+			<option value="14">hortalizas empacadas</option>
+			<option value="610">humus</option>
+			<option value="85">investigaci&#243;n</option>
+			<option value="166">l&#225;mina descortezada</option>
+			<option value="637">l&#225;minas weathertex</option>
+			<option value="671">lata</option>
+			<option value="561">Lecho de madera para animales</option>
+			<option value="620">liofilizada</option>
+			<option value="42">madera</option>
+			<option value="605">madera aglomerada</option>
+			<option value="104">madera aserrada (incluso unida por los extremos)</option>
+			<option value="346">madera aserrada (No Usar)</option>
+			<option value="588">madera contrachapada</option>
+			<option value="638">madera contrachapada cubierta con resina de epoxi</option>
+			<option value="368">Madera en trocitos o astillas </option>
+			<option value="106">madera en troza</option>
+			<option value="184">madera escuadrada</option>
+			<option value="562">maicena</option>
+			<option value="188">malta -a granel, sacos-</option>
+			<option value="218">malta muestras</option>
+			<option value="216">malta tostada</option>
+			<option value="44">manufactura</option>
+			<option value="649">marcos de madera</option>
+			<option value="79">materias trenzables</option>
+			<option value="293">mazorca</option>
+			<option value="661">mazorca sin granos, molido</option>
+			<option value="609">medio cultivado</option>
+			<option value="648">medio de crecimiento esterilizado</option>
+			<option value="291">medio de crecimiento org&#225;nico</option>
+			<option value="185">medio de crecimiento org&#225;nico -a granel-</option>
+			<option value="182">medio de crecimiento org&#225;nico comprimido</option>
+			<option value="179">medio de crecimiento org&#225;nico empacado</option>
+			<option value="213">medio de crecimiento org&#225;nico empacado procesado</option>
+			<option value="132">meristemos</option>
+			<option value="597">mezcla para t&#233; frio</option>
+			<option value="228">micelio en medio de cultivo</option>
+			<option value="16">micelio en semillas</option>
+			<option value="46">mimbre</option>
+			<option value="652">mini vegetales</option>
+			<option value="158">minitub&#233;rculos</option>
+			<option value="47">molido</option>
+			<option value="88">mondado/pelado</option>
+			<option value="74">muestra (pilado)</option>
+			<option value="603">muestra de abono</option>
+			<option value="278">muestra heno </option>
+			<option value="563">muestra herbario</option>
+			<option value="197">muestra madera</option>
+			<option value="75">muestra para tostar</option>
+			<option value="623">muestra Pulido extra largo</option>
+			<option value="5">muestras</option>
+			<option value="589">Muestras de harina</option>
+			<option value="668">muestras de medio de crecimiento</option>
+			<option value="259">muestras de semilla</option>
+			<option value="593">muestras de semilla descascarada</option>
+			<option value="220">muestras de suelo</option>
+			<option value="651">muestras en polvo</option>
+			<option value="598">Muestras foliares</option>
+			<option value="635">muestras granos</option>
+			<option value="634">muestras granulado</option>
+			<option value="224">muestras herbario</option>
+			<option value="91">muestras material elite</option>
+			<option value="631">muestras molido</option>
+			<option value="646">Muestras perlado</option>
+			<option value="217">muestras sacos nuevos</option>
+			<option value="122">muestras semillas elite</option>
+			<option value="140">nuez empacada</option>
+			<option value="432">nuez empacada (No Usar)</option>
+			<option value="200">nuez pelada -a granel, sacos-</option>
+			<option value="68">nuez seca -a granel, sacos-</option>
+			<option value="17">nuez sin pelar -a granel, sacos-</option>
+			<option value="564">nuez tostada</option>
+			<option value="49">otras materias</option>
+			<option value="672">paca</option>
+			<option value="50">paja seca u otro</option>
+			<option value="565">paja seca u otro (No Usar)</option>
+			<option value="606">pajillas</option>
+			<option value="18">palmito</option>
+			<option value="134">para artesan&#237;a</option>
+			<option value="19">pelada</option>
+			<option value="627">pelado (descortezado), a granel/sacos</option>
+			<option value="131">pelado cortado empacado</option>
+			<option value="124">pelado empacado</option>
+			<option value="684">pelado- empacado/o a granel/o sacos</option>
+			<option value="617">pelado, a granel/sacos</option>
+			<option value="566">pellets</option>
+			<option value="681">pellets empacados</option>
+			<option value="183">pergamino</option>
+			<option value="211">perlado</option>
+			<option value="178">petalos secos</option>
+			<option value="660">plantas con flores en macetas</option>
+			<option value="80">plantas con ra&#237;z</option>
+			<option value="377">plantas con ra&#237;z (No Usar)</option>
+			<option value="99">plantas con ra&#237;z transg&#233;nicas</option>
+			<option value="96">plantas in vitro</option>
+			<option value="642">plantas in vitro enraizadas en un medio est&#233;ril</option>
+			<option value="678">Plantas in vitro gen&#233;ticamente modificada</option>
+			<option value="115">plantas o partes secas</option>
+			<option value="186">plantas secas</option>
+			<option value="196">plantas sin ra&#237;z</option>
+			<option value="148">pl&#225;ntulas</option>
+			<option value="52">Polenta empacada</option>
+			<option value="683">postes</option>
+			<option value="675">postes impregnados</option>
+			<option value="229">preservados</option>
+			<option value="602">Pulido en grano extra largo</option>
+			<option value="175">quebrado o partido -a granel, sacos-</option>
+			<option value="20">ra&#237;ces frescas</option>
+			<option value="21">ra&#237;z seca -a granel, sacos-</option>
+			<option value="680">rama seca</option>
+			<option value="125">ramas con bellotas</option>
+			<option value="644">Raquis seco molido</option>
+			<option value="54">rat&#225;n</option>
+			<option value="137">reingreso de cualquier pa&#237;s</option>
+			<option value="160">residuos -molienda,destiler&#237;a,etc-</option>
+			<option value="657">rizoma seco -a granel, sacos-</option>
+			<option value="22">rizomas frescos</option>
+			<option value="159">rollos procesado</option>
+			<option value="102">sacos nuevos</option>
+			<option value="622">sacos usados</option>
+			<option value="55">seco</option>
+			<option value="56">seco empacado</option>
+			<option value="614">semi block</option>
+			<option value="171">semilla consumo germinada</option>
+			<option value="133">semilla consumo para germinar</option>
+			<option value="146">semilla para siembra</option>
+			<option value="436">semilla para siembra (NO USAR)</option>
+			<option value="659">semilla para siembra sin desmotar</option>
+			<option value="6">semilla seca -a granel, sacos-</option>
+			<option value="397">semilla seca -a granel, sacos- (No Usar)</option>
+			<option value="234">semilla siembra pre germinada</option>
+			<option value="594">semillas</option>
+			<option value="448">s&#233;mola a granel (No Usar)</option>
+			<option value="147">s&#233;mola a granel/ o en sacos/o empacada/o muestras</option>
+			<option value="149">semola muestras</option>
+			<option value="110">sin cardar ni peinar</option>
+			<option value="98">sin c&#225;scara -a granel, sacos-</option>
+			<option value="625">tablas y listones</option>
+			<option value="655">tallos</option>
+			<option value="640">tallos cortados tratados con glicerina</option>
+			<option value="587">tallos frescos</option>
+			<option value="679">tallos frescos con flores o frutos</option>
+			<option value="285">tallos secos</option>
+			<option value="567">te-infusi&#243;n</option>
+			<option value="265">tostado-a</option>
+			<option value="288">trang&#233;nica Round Up Ready</option>
+			<option value="89">transg&#233;nica</option>
+			<option value="568">transg&#233;nica  BOLLGARD II ROUNDUP READY FLEX DICAMBA (MON15985 x MON88913 x MON88701-3) </option>
+			<option value="150">transg&#233;nica BG</option>
+			<option value="163">transg&#233;nica BG RR</option>
+			<option value="174">transg&#233;nica BGII</option>
+			<option value="97">transg&#233;nica BGII-RR</option>
+			<option value="222">transg&#233;nica BGII-RR FLEX</option>
+			<option value="169">transg&#233;nica BG-RR FLEX</option>
+			<option value="570">transg&#233;nica BOLLGARD II + ROUNDUP FLEX</option>
+			<option value="569">transgenica BOLLGARD II + ROUNDUP FLEX.</option>
+			<option value="279">transg&#233;nica BOLLGARD II + ROUNDUP READY FLEX</option>
+			<option value="281">transg&#233;nica BOLLGARD II ROUNDUP READY FLEX DICAMBA (MON15985 x MON88913 x MON88701-3)</option>
+			<option value="571">transg&#233;nica BOLLGARD II ROUNDUP READY FLEX DICAMBA (MON15985-7 x MON88701-3 x MON88913-8</option>
+			<option value="296">transg&#233;nica BOLLGARD II ROUNDUP READY FLEX DICAMBA (MON15985-7 x MON88701-3 x MON88913-8)</option>
+			<option value="298">Transg&#233;nica BOLLGARD II ROUNDUP READY FLEX DICAMBA (MON88913-8xMON15985-7XMON88701-3XCOT102)</option>
+			<option value="572">transg&#233;nica BOLLGARD II X LIBERTY LINK X GLYTOL</option>
+			<option value="152">transg&#233;nica BX</option>
+			<option value="191">transg&#233;nica BX/RR FLEX</option>
+			<option value="127">transg&#233;nica COT 102</option>
+			<option value="90">transg&#233;nica COT 67B</option>
+			<option value="114">transg&#233;nica CRY 1F</option>
+			<option value="190">transg&#233;nica CRY1Ab</option>
+			<option value="231">transg&#233;nica DGT</option>
+			<option value="172">transg&#233;nica DMO-PAT</option>
+			<option value="176">transg&#233;nica DR</option>
+			<option value="154">transg&#233;nica GAT</option>
+			<option value="138">transg&#233;nica GATSOY</option>
+			<option value="145">transg&#233;nica GEM 2</option>
+			<option value="93">transg&#233;nica GLYTOL</option>
+			<option value="573">transg&#233;nica GLYTOL LL x BGII</option>
+			<option value="284">transg&#233;nica GLYTOL x LIBERTY LINK </option>
+			<option value="235">transg&#233;nica Glytol x Liberty Link x Bollard II</option>
+			<option value="236">transg&#233;nica GLYTOL X LIBERTY LINK X TWIN LINK </option>
+			<option value="289">transg&#233;nica GLYTOL X TWIN LINK</option>
+			<option value="574">transg&#233;nica GT GLYTOL X LL LIBERTY LINK</option>
+			<option value="575">transg&#233;nica GT/GLYTOL</option>
+			<option value="214">transg&#233;nica GT-Glytol BCSX 1031518 GT</option>
+			<option value="576">transg&#233;nica LIBERTY LINK</option>
+			<option value="237">transg&#233;nica LIBERTY LINK LL55</option>
+			<option value="577">transg&#233;nica LIBERTY LINK x GLYTOL</option>
+			<option value="100">transg&#233;nica LL</option>
+			<option value="95">transg&#233;nica LL/BGII</option>
+			<option value="578">transg&#233;nica LL/LIBERTY LINK</option>
+			<option value="579">transg&#233;nica LL/LIBERTY LINK/BG2</option>
+			<option value="586">transg&#233;nica MON15985-7xMON88913-8xMON88701-3 </option>
+			<option value="580">transg&#233;nica Round Up Ready</option>
+			<option value="290">transg&#233;nica ROUNDUP READY - MON 40-3-2</option>
+			<option value="232">transg&#233;nica ROUNDUP READY FLEX</option>
+			<option value="282">transg&#233;nica ROUNDUP READY FLEX (MON-88913-8)</option>
+			<option value="84">transg&#233;nica RR</option>
+			<option value="121">transg&#233;nica RR FLEX</option>
+			<option value="286">transg&#233;nica RR Flex / BII  </option>
+			<option value="105">transg&#233;nica RR FLEX/BGII</option>
+			<option value="194">transg&#233;nica RR FLEX/LL</option>
+			<option value="192">transg&#233;nica RR/BGII</option>
+			<option value="581">transg&#233;nica RR1</option>
+			<option value="109">transg&#233;nica RR2Y</option>
+			<option value="582">transg&#233;nica TWIN LINK </option>
+			<option value="583">transg&#233;nica TWIN LINK x LIBERTY LINK x GLYTOL</option>
+			<option value="128">transg&#233;nica VIP3A</option>
+			<option value="139">transg&#233;nica VIP3AII</option>
+			<option value="165">transg&#233;nica VipCot</option>
+			<option value="170">transg&#233;nica VipCot/RRFlex</option>
+			<option value="130">transg&#233;nica WIDESTRIKE - RR FLEX</option>
+			<option value="69">Triturado seco</option>
+			<option value="633">triturado seco-a granel, sacos-</option>
+			<option value="70">Troceado seco</option>
+			<option value="584">tub&#233;rculo muestra</option>
+			<option value="1">tub&#233;rculos</option>
+			<option value="71">vainas</option>
+			<option value="212">vainas - a granel, sacos</option>
+			<option value="87">varetas con yemas</option>
+			<option value="12">verde</option>
+			<option value="616">viruta</option>
+
+		</select>
+	
+                </td>
+            </tr>  
+            
+           <tr>
+                <td class="columnAspLabel" colspan="1">
+                </td>
+                <td class="columnAspControl" colspan="3">
+                    <input type="submit" name="ctl00$ContentPlaceHolder1$btnAceptar" value="Consultar" id="ctl00_ContentPlaceHolder1_btnAceptar" class="aspBoton" />
+                    
+                </td>
+            </tr>       
+                      
+            
+            <tr>
+                <td colspan="4" class="seccionForm">
+                    <span id="ctl00_ContentPlaceHolder1_lbl_Productos">Productos</span>
+                </td>
+            </tr> 
+            
+            <tr>
+                <td colspan="4" style="height:15px;">
+                </td>
+            </tr>   
+            
+            <tr>
+                <td colspan="4">
+                    <table>
+                        <tr>
+                            <td colspan="1"  class="columnAspLabel" style="vertical-align:text-top;">
+                                <span id="ctl00_ContentPlaceHolder1_lbl_ListaProductos" class="label">Productos:</span>
+                            </td> 
+                            <td class="columnAspControl">
+                                <div>
+			<table class="aspTableWrap" cellspacing="0" cellpadding="4" border="0" id="ctl00_ContentPlaceHolder1_gdv_ProductosImportacion">
+				<tr>
+					<td colspan="8"><font color="#333333">No hay Productos que cumplan con la consulta</font></td>
+				</tr>
+			</table>
+		</div>
+                            </td>
+                        </tr>
+                    </table>                
+                </td>
+            </tr> 
+            
+            <tr>
+                <td colspan="4" style="height:15px;">
+                </td>
+            </tr>  
+            
+             
+       </table>
+       
+	</div> <!-- /PANEL PRINCIPAL -->
+       
+       
+       
+       
+    
+</div><!-- /CONTENIDO-->
+   
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="footer">
+                                <div id="footer-left">
+                                </div>
+                                <div id="copy">
+                                    Servicio Fitosanitario del Estado &#8226; M.A.G Costa Rica &#8226; 2009
+                                </div>
+                                <div id="footer-right">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_mnu_Principal_Data = new Object();
+ctl00_mnu_Principal_Data.disappearAfter = 500;
+ctl00_mnu_Principal_Data.horizontalOffset = 0;
+ctl00_mnu_Principal_Data.verticalOffset = 0;
+ctl00_mnu_Principal_Data.hoverClass = 'menuItemHover';
+ctl00_mnu_Principal_Data.iframeUrl = '/SFECuarentena/WebResource.axd?d=4b8Aqi5f-4M2aSLD4x61tIn3u68hdLB78J6A_NnvWlGtroiRLssRGZ0X6mOCX-8hp5KnVFFE0SGW_ap11uI9taFJuBA1&t=638313929260000000';
+Sys.Application.initialize();
+//]]>
+</script>
+</form>
+    <!--[if IE]>
+</div>
+<![endif]-->
+</body>
+</html>

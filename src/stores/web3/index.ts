@@ -41,7 +41,18 @@ type EvmProviderDiscoverySubscription = {
   unsubscribe: VoidFunction;
 };
 
+type SubNetworkConnectionStore = Web3State & {
+  $pinia: Pinia;
+  selectedNetworkData: Nullable<NetworkData>;
+};
+
+type SubNetworkConnectionTask = {
+  network: SubNetwork;
+  promise: Promise<void>;
+};
+
 const evmProviderDiscoverySubscriptions = new WeakMap<object, EvmProviderDiscoverySubscription>();
+const subNetworkConnectionTasks = new WeakMap<object, SubNetworkConnectionTask>();
 
 const releaseEvmProviderDiscoverySubscription = (
   store: object,
@@ -226,35 +237,151 @@ const resolveAutoselectedBridgeAssetAddress = async (pinia: Pinia): Promise<Null
   return bridgeStore.autoselectedAssetAddress ?? null;
 };
 
-const isSubBridgeConnectorReady = (connector?: Nullable<SubNetworksConnector>): boolean => {
-  if (!connector) {
-    return false;
+const isSubBridgeConnectorReady = (
+  connector?: Nullable<SubNetworksConnector>,
+  expectedNetwork?: Nullable<SubNetwork>
+): connector is SubNetworksConnector => {
+  const state = connector?.connectionState;
+
+  return Boolean(expectedNetwork && state?.network === expectedNetwork && state?.ready);
+};
+
+const resolveSelectedSubNetwork = (
+  store: SubNetworkConnectionStore
+): Nullable<{ network: SubNetwork; data: NetworkData }> => {
+  if (store.networkType !== BridgeNetworkType.Sub || store.networkSelected == null) {
+    return null;
   }
 
-  const accountApi = connector.accountApi?.connection?.api;
-  const network = connector.network;
-  const networkApi = network?.connection?.api;
-  const hasRegistry = (apiInstance: unknown): boolean =>
-    Boolean(apiInstance && typeof apiInstance === 'object' && (apiInstance as { registry?: unknown }).registry);
+  const network = store.networkSelected as SubNetwork;
+  const data = store.selectedNetworkData ?? SUB_NETWORKS[network];
+
+  if (!data || data.id !== network) {
+    return null;
+  }
+
+  return { network, data };
+};
+
+/**
+ * Installs a usable node list before constructing a raw Polkadot API adapter.
+ *
+ * Bridge app metadata normally fills the shared catalog, but a user can select
+ * a Substrate network first. The selected runtime data is authoritative when
+ * available and the bundled production list provides the startup fallback.
+ */
+const ensureSubNetworkNodes = async (
+  store: SubNetworkConnectionStore,
+  connector: SubNetworksConnector,
+  network: SubNetwork,
+  data: NetworkData
+): Promise<void> => {
+  const { SubNetworksConnector } = await loadSubNetworksConnector();
+  const requiredNetworks = connector.getRequiredNetworks?.(network) ?? [network];
+  const nextNodes = { ...SubNetworksConnector.nodes };
+
+  for (const requiredNetwork of requiredNetworks) {
+    if (nextNodes[requiredNetwork]?.length) {
+      continue;
+    }
+
+    const configuredNodes = store.subNetworkApps[requiredNetwork];
+    const selectedNodes = requiredNetwork === network ? data.nodes : undefined;
+    const nodes =
+      (Array.isArray(configuredNodes) && configuredNodes.length ? configuredNodes : undefined) ??
+      (selectedNodes?.length ? selectedNodes : undefined) ??
+      SUB_NETWORKS[requiredNetwork]?.nodes;
+
+    if (!nodes?.length) {
+      throw new Error(`[Web3Store] Nodes for "${requiredNetwork}" network are not defined`);
+    }
+
+    nextNodes[requiredNetwork] = [...nodes];
+  }
+
+  SubNetworksConnector.nodes = nextNodes;
+};
+
+const hasActiveSelectedSubNetworkConnection = (
+  connector: SubNetworksConnector,
+  expectedNetwork: SubNetwork
+): boolean => {
+  const adapter = connector.network;
+  const connectionState = connector.connectionState;
 
   return Boolean(
-    accountApi &&
-    networkApi &&
-    hasRegistry(accountApi) &&
-    hasRegistry(networkApi) &&
-    network?.subNetworkConnection?.nodeIsConnected
+    adapter?.subNetwork === expectedNetwork &&
+    connectionState?.network === expectedNetwork &&
+    connectionState.connection === adapter.subNetworkConnection &&
+    (connectionState.ready || connectionState.connecting)
   );
 };
 
-const connectSubNetwork = async (store: Web3State & { $pinia: Pinia; selectedNetworkData: Nullable<NetworkData> }) => {
-  const subNetwork = store.selectedNetworkData;
-  const connector = await resolveBridgeConnector(store.$pinia);
+/**
+ * Opens at most one selected Substrate adapter at a time for a Pinia store.
+ * Later network choices wait for an earlier open and re-check the live choice,
+ * preventing an asynchronous stale selection from replacing the current one.
+ */
+const connectSubNetwork = async (store: SubNetworkConnectionStore): Promise<void> => {
+  const selection = resolveSelectedSubNetwork(store);
 
-  if (!subNetwork || !connector?.open) {
+  if (!selection) {
     return;
   }
 
-  await connector.open(subNetwork.id as SubNetwork);
+  const { network, data } = selection;
+  const currentTask = subNetworkConnectionTasks.get(store);
+
+  if (currentTask && currentTask.network === network) {
+    await currentTask.promise;
+    return;
+  }
+
+  const promise = (async () => {
+    if (currentTask) {
+      try {
+        await currentTask.promise;
+      } catch {
+        // A later explicit selection must still be allowed after an earlier failure.
+      }
+    }
+
+    if (resolveSelectedSubNetwork(store)?.network !== network) {
+      return;
+    }
+
+    const connector = await resolveBridgeConnector(store.$pinia);
+
+    if (!connector?.open) {
+      return;
+    }
+
+    await ensureSubNetworkNodes(store, connector, network, data);
+
+    if (resolveSelectedSubNetwork(store)?.network !== network) {
+      return;
+    }
+
+    // A failed or explicitly stopped adapter remains attached to the raw
+    // connector. Only skip `open` while that exact adapter is ready or still
+    // connecting; an attached-but-idle adapter must be retried when clicked.
+    if (hasActiveSelectedSubNetworkConnection(connector, network)) {
+      return;
+    }
+
+    await connector.open(network);
+  })();
+  const task = { network, promise };
+
+  subNetworkConnectionTasks.set(store, task);
+
+  try {
+    await promise;
+  } finally {
+    if (subNetworkConnectionTasks.get(store) === task) {
+      subNetworkConnectionTasks.delete(store);
+    }
+  }
 };
 
 const updateProvidedEvmNetwork = async (store: Web3State & { $pinia: Pinia }, evmNetworkId?: number): Promise<void> => {
@@ -436,10 +563,18 @@ export const useWeb3Store = defineStore('web3-legacy', {
       await Promise.allSettled([
         this.fetchDenominatorCoefficient(),
         getAssetsStore(this.$pinia).then((assetsStore) => assetsStore.getRegisteredAssets()),
-        payload.type === BridgeNetworkType.Sub ? connectSubNetwork(this as typeof this & { $pinia: Pinia }) : undefined,
+        payload.type === BridgeNetworkType.Sub ? this.connectSelectedSubNetwork() : undefined,
       ]);
 
       await autoselectBridgeAsset(this.$pinia);
+    },
+    /**
+     * Ensures the currently selected Substrate bridge has an attached adapter.
+     * Safe to call from wallet recovery paths because concurrent calls are
+     * serialized and an already-attached adapter is retained.
+     */
+    async connectSelectedSubNetwork(): Promise<void> {
+      await connectSubNetwork(this as typeof this & SubNetworkConnectionStore);
     },
     async disconnectExternalNetwork(): Promise<void> {
       const connector = await resolveBridgeConnector(this.$pinia);
@@ -583,6 +718,10 @@ export const useWeb3Store = defineStore('web3-legacy', {
 
       const { SubNetworksConnector } = await loadSubNetworksConnector();
       SubNetworksConnector.nodes = nodes;
+
+      if (this.networkType === BridgeNetworkType.Sub) {
+        await Promise.allSettled([this.connectSelectedSubNetwork()]);
+      }
     },
     async restoreSelectedNetwork(): Promise<void> {
       const { default: ethersUtil } = await loadEthersUtil();
@@ -638,13 +777,13 @@ export const useWeb3Store = defineStore('web3-legacy', {
         return '';
       }
     },
-    async selectSubAccount(account: PolkadotJsAccount): Promise<void> {
+    async selectSubAccount(account: PolkadotJsAccount): Promise<boolean> {
       const connector = await resolveBridgeConnector(this.$pinia);
 
-      if (!isSubBridgeConnectorReady(connector)) {
+      if (!isSubBridgeConnectorReady(connector, this.networkSelected as Nullable<SubNetwork>)) {
         web3Mutations.setSubAccountDialogVisibility(this, false);
         web3Mutations.setSelectSubNodeDialogVisibility(this, true);
-        return;
+        return false;
       }
 
       const { accountApi } = connector;
@@ -656,6 +795,7 @@ export const useWeb3Store = defineStore('web3-legacy', {
         name: account.name,
         source: account.source,
       });
+      return true;
     },
     async changeSubAccountName(payload: { address: string; name: string }): Promise<void> {
       const connector = await resolveBridgeConnector(this.$pinia);

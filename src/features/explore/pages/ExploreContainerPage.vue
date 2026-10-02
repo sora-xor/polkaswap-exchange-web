@@ -46,6 +46,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useWalletStore } from '@/stores/wallet';
 import type { ResponsiveTab } from '@/types/tabs';
 import storage from '@/utils/storage';
+import { parseStoredBoolean } from '@/utils/storageParsing';
 import WalletComponentSearchInput from '@/lib/soraneo-wallet/src/components/Input/SearchInput.vue';
 import ResponsiveTabs from '@/components/shared/ResponsiveTabs.vue';
 
@@ -80,12 +81,7 @@ const screenBreakpointClass = computed(() => settingsStore.screenBreakpointClass
 const isLoggedIn = computed(() => walletStore.isLoggedIn);
 
 const exploreQuery = ref('');
-const accountItems = ref<boolean>(
-  (() => {
-    const stored = storage.get(storageKey);
-    return stored ? JSON.parse(stored) : false;
-  })()
-);
+const accountItems = ref<boolean>(parseStoredBoolean(storage.get(storageKey), false));
 
 const showDropdown = computed(() => {
   return ![BreakpointClass.LargeDesktop, BreakpointClass.HugeDesktop].includes(screenBreakpointClass.value);

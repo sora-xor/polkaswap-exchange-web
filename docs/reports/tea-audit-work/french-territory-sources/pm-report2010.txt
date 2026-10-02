@@ -1,0 +1,2024 @@
+                                SPM Frag’île association agrée au titre de l’environnement
+                              BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+                   Claireaux Marion
+                      Hacala Axel
+                   Quedinet Pierrick
+                   Urtizberea Tristan
+
+            Coordinateur : Lemallier Emmanuel
+
+
+
+
+août 2010                 1
+                                                                                                          SPM Frag’île association agrée au titre de l’environnement
+                                                                                                        BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+1 –ÉTAT DES LIEUX..................................................................................................................................................... 5
+   - RENOUEES INVASIVES PRESENTES SUR L’ARCHIPEL..............................................................................................................5
+      - Présentation .................................................................................................................................................................................5
+   OBSERVATIONS ..............................................................................................................................................................................7
+      Cartographie....................................................................................................................................................................................7
+      Zones Prioritaires ..........................................................................................................................................................................9
+      Observations..................................................................................................................................................................................11
+   AUTRES EEE VEGETALES ..........................................................................................................................................................13
+      Séneçon de Jacob.........................................................................................................................................................................13
+      Les autres........................................................................................................................................................................................14
+   LE CADRE REGLEMENTAIRE ......................................................................................................................................................17
+      Evolution de la prise en compte juridique du phénomène.......................................................................................17
+      Engagements internationaux acceptés par la France...............................................................................................17
+      Protection phytosanitaire et zoosanitaire dans le contexte du commerce international ........................18
+      Gestion de risques associés aux transports internationaux....................................................................................19
+      Dispositif au niveau de l’Union Européenne...................................................................................................................19
+      La réglementation phytosanitaire à SPM........................................................................................................................27
+PREVENTION ..............................................................................................................................................................28
+  INFORMATION ET COMMUNICATION .......................................................................................................................................28
+  PREVENTION CONTRE L’IMPORTATION ET LA MIGRATION DES EEE VEGETALES. ...........................................................29
+LUTTE............................................................................................................................................................................30
+  RENOUEES ....................................................................................................................................................................................30
+    Introduction ..................................................................................................................................................................................30
+  CHANTIER « MANUEL ».............................................................................................................................................................32
+  CHANTIER « MECANIQUE »....................................................................................................................................................... 33
+    Choix du protocole......................................................................................................................................................................34
+    Étude comparative.....................................................................................................................................................................36
+    Précautions particulières pour éviter la dispersion des Renouées ......................................................................36
+    Suivi annuel ...................................................................................................................................................................................37
+    Prévision du Budget « chantiers » 2011...........................................................................................................................37
+  SENEÇON DE JACOB.....................................................................................................................................................................38
+  SALICAIRE POURPRE ..................................................................................................................................................................38
+  LES AUTRES ..................................................................................................................................................................................38
+ANNEXES ......................................................................................................................................................................41
+ORGANISATION DU CHANTIER ............................................................................................................................43
+
+
+
+
+août 2010                                                                                          2
+                                                          SPM Frag’île association agrée au titre de l’environnement
+                                                        BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Introduction :
+
+
+       On appelle Espèce Exotique Envahissante (EEE) végétale une espèce étrangère,
+généralement introduite par l’homme, se propageant au détriment de l’écosystème local et
+ayant des conséquences négatives d’un point de vue écologique, économique et sanitaire. Les
+EEE représentent la deuxième cause de perte de biodiversité mondiale. La flore de l’archipel
+de St Pierre et Miquelon est d’autant plus vulnérable qu’il s’agit d’un milieu boréal très
+sensible aux perturbations et qu’un bon nombre de ces plantes envahissantes y sont
+présentes.
+       L’objectif premier de notre travail est bien évidemment l’éradication des EEE végétales
+et particulièrement des Renouées. Cependant ce travail ne peut se faire sans une recherche
+préalable de données aboutissant à la création d’une base de données spécifique à l’archipel.
+Une fois cette collecte de données réalisée, trois points restent à développer :
+   • Informer et sensibiliser le public aux risques que représentent les EEE végétales pour
+       l’environnement.
+   • Prévenir l’implantation de nouvelles EEE végétales et la dissémination des EEE
+       végétales présentes sur l’archipel (listes blanches et noires des EEE végétales).
+   • Proposer, expérimenter et mettre en place des méthodes de lutte contre la Renouée
+       notamment à travers des chantiers de fauchage et d’arrachage.
+
+
+       Notre mission répond à des obligations, d’envergures régionale, nationale et
+internationale, de protection des écosystèmes. De nombreux traités y font référence, en
+particulier :
+   • La convention sur la diversité biologique de Rio de Janeiro ratifié par la France en 1992
+       et qui demande que chaque pays signataire:
+                « dans la mesure du possible et selon qu'il conviendra, empêche d'introduire, contrôle ou
+       éradique les espèces exotiques qui menacent des écosystèmes, des habitats ou des espèces ».
+
+
+   •   Au niveau national, l’article L.411-3 du code de l’environnement stipule que :
+       « Afin de ne porter préjudice ni aux milieux naturels ni aux usages qui leur sont associés ni à la
+       faune et à la flore sauvages, est interdite l'introduction dans le milieu naturel, volontaire, par
+       négligence ou par imprudence:
+
+
+
+
+août 2010                                           3
+                                                                SPM Frag’île association agrée au titre de l’environnement
+                                                              BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+       −    1° De tout spécimen d'une espèce animale à la fois non indigène au territoire d'introduction et
+            non domestique dont la liste est fixée par arrêté conjoint du ministre chargé de la protection de
+            la nature et, soit du ministre chargé de l'agriculture soit, lorsqu'il s'agit d'espèces marines, du
+            ministre chargé des pêches maritimes;
+       −    2° De tout spécimen d'une espèce végétale à la fois non indigène au territoire d'introduction et
+            non cultivée, dont la liste est fixée par arrêté [...]
+       −    3° De tout spécimen de l'une des espèces animales ou végétales désignées par l'autorité
+            administrative [...] ».
+
+
+   •   Notre travail s’inscrit aussi dans la stratégie Nationale pour la biodiversité adoptée par la
+       France en 2004 qui propose :
+       −    l'établissement de critères de sélection et la constitution de listes d'EEE menaçant les
+            écosystèmes, les habitats et les espèces indigènes;
+       −    la mise en place de plans de lutte correspondants;
+       −    la maîtrise des voies de passages des principales espèces invasives par la mise en place de
+            mesures de détection et d'intervention rapides;
+       −    l'achèvement de la réglementation;
+       −    la mise en place d'un observatoire au rôle d'alerte et de veille scientifique (par exemple,
+            activation du réseau des Conservatoires Botaniques, dans le cas des plantes).
+
+
+
+
+août 2010                                                 4
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+1 –État des lieux
+- Renouées Invasives présentes sur l’archipel
+- Présentation
+
+
+
+                                    Renouée du Japon*
+                                    FallopiaJaponica
+
+
+
+
+Renouée de l’Himalaya ou Renouée à épis nombreux
+Polygonumpolystachyum
+
+
+
+
+* Espèce figurant dans la liste de l’UICN des 100 espèces les plus envahissantes dans le monde
+
+
+   ⇒ Caractéristiques
+
+Fallopiajaponica et Polygonumpolystachyumsont des herbacées pérennes originaires d’Asie.
+Elles ont été introduites en Europe et en Amérique du Nord comme plantes ornementales.
+Elles exigent le plein soleil et se rencontrent principalement dans les habitats humides, mais
+poussent également dans les terrains vagues, aux bords des routes et d'autres zones
+perturbées. Leur reproduction est essentiellement végétative, c’est à dire rhizomateuse. La
+renouée est aussi capable d’un bouturage parfait : un morceau de 5g de rhizome a 70% de
+chance de redonner un individu.
+
+
+
+août 2010                                       5
+                                                     SPM Frag’île association agrée au titre de l’environnement
+                                                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+   ⇒ Impacts
+
+Les renouées menacent les écosystèmes en se propageant rapidement et en formant un
+réseau étendu de rhizomes. Une fois établies, ces espèces forment des peuplements denses
+qui ombragent et remplacent tous les autres types de végétation éliminant la flore et la faune
+indigène. Une étude montre que la présence de Renouée réduit de manière considérable la
+diversité d’espèces de la zone. De plus ses tiges et ses feuilles se décomposent très lentement,
+formant un épais plancher organique empêchant les graines des plantes indigènes de germer.
+Une autre propriété de la Renouée faisant d’elle une menace pour les autres plantes est qu’elle
+émet, via ses racines, des substances toxiques repoussant les autres plantes.
+Pour finir, la prolifération des rhizomes peut endommager les constructions, fondations,
+murs, bitumes...
+
+   ⇒ Sur l’archipel
+
+Introduite sur l’Archipel dans les années 1940, la renouée colonise progressivement toutes les
+zones et s’accroît sur les surfaces colonisées. Les observations récentes (non systématiques)
+démontrent que la Renouée du Japon poursuit désormais sa progression et sa colonisation
+dans de nouvelles zones notamment à la suite d’activités humaines sur sites péri-urbains et
+naturels. Cet envahissement a déjà contribué à la dégradation des milieux naturels
+(diminution locale de la diversité végétale et animale)-la nature humide et peu ombragée de
+nos sols étant un facteur de colonisation de la Renouée-et à la banalisation du paysage avec
+des secteurs localisés qui ne présentent plus que des haies monotones de renouées.
+
+
+
+
+août 2010                                      6
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Observations
+Cartographie
+Afin de caractériser l’implantation de la Renouée du Japon et de la Renouée de l’Himalaya sur
+l’archipel, nous avons établi une base de données et une carte de la répartition des différents
+massifs. Ce travail a été effectué sur les terrains publics de St Pierre, Miquelon-Langlade ainsi
+que l’île aux Marins. Dans tous les cas, nous avons parcouru le terrain muni d’un GPS, d’un
+ruban métreur ainsi que d’un pH-mètre afin d’être à même de donner la situation du massif,
+sa superficie ainsi que le pH du sol.
+Les Villes de Miquelon et St Pierre n’ont pas étés répertoriés puisque il s’agit majoritairement
+de terrains privés mais on peut tout de même noter que bon nombre des terrains qui se
+trouvent en ville sont contaminés par la renouée.
+Les données ainsi recueillies ont été collectées dans un tableur. Y apparaît le n° du point, le
+lieu, les coordonnées GPS, la date du relevé, la présence ou non de renouée de l’Himalaya
+et/ou du Japon ainsi que de Séneçon, le pH du sol et la surface du massif (annexe 3). Figure
+aussi le fait que le massif soit une zone prioritaire ou non (voir paragraphe suivant).
+
+Il en découle les résultats suivants :
+
+
+
+
+août 2010                                       7
+                                                         SPM Frag’île association agrée au titre de l’environnement
+                                                       BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+                                                         Nombre de massifs
+                  Localisation                                                                 Surface (m2)
+                                                            répertoriés
+ St Pierre                                                     435                                 22315
+ Miquelon                                                           28                               575
+ Langlade                                                            5                               428
+ Ile aux Marins                                                     29                              1918
+                                        Totaux                     497                            25231
+
+Grâce aux coordonnées GPS, nous avons pu établir une carte de la répartition des massifs sur
+les différentes îles. Toutes les cartes réalisées, mis à part celle de st pierre (en bas de page),
+utilisent un code de couleurs permettant de déterminer la surface de chaque massif
+(Miquelon : annexe 5, 6 et 7, Langlade : annexe 8). La carte de St Pierre fait exception car
+l’abondance des massifs de renouée sur cette île rend la réalisation d’une telle carte très
+longue, celle-ci carte devra donc être établie l’année prochaine, dans la mesure du possible.
+
+
+
+
+Répartition de la Renouée sur l’île de St Pierre
+
+
+
+
+août 2010                                          8
+                                                        SPM Frag’île association agrée au titre de l’environnement
+                                                      BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Zones Prioritaires
+
+Parallèlement au travail de cartographie, nous avons défini pour chaque zone où la Renouée
+est présente, le degré de priorité d’intervention. Le critère prioritaire, ou non, d’une zone a été
+attribué selon deux données principales :
+La proximité du massif avec le milieu naturel (ex : massif en bord d’étang, proche d’un cours
+d’eau, en lisière de forêt, dans un sous bois etc.)
+La taille du massif (un petit massif où l’intervention se révèle généralement moins couteuse et
+plus efficace est prioritaire sur un grand massif).
+
+De plus, la présence de renouée sur Miquelon-Langlade étant encore limitée
+comparativement à St Pierre, toutes les zones de Miquelon-Langlade ont été définies
+prioritaires.
+
+Au total, sur les 2,5 hectares (25 000 m2) de Renouée du Japon et de l’Himalaya répertoriés
+sur l’archipel, près de 3800 m2 ont été reconnus par l’équipe comme prioritaires. Ces zones
+sont celles qui représentent le plus de risques pour les milieux naturels, c’est donc là qu’ont
+débuté les travaux de lutte contre la renouée. De même que précédemment, ces données ont
+été regroupées dans un tableur (annexe n° 4) spécifiant, de plus, sur quelle carte de référence
+se trouve le massif prioritaire.
+
+
+
+                                                            Nombre de
+                     Localisation                                                   Surface (m2)
+                                                             massifs
+    St Pierre                                                 117                       2787
+    Miquelon                                                   28                        570
+    Langlade                                                    5                        428
+    Ile aux Marins                                              1                         1
+                                     Surface totale           151                       3786
+
+
+
+
+août 2010                                       9
+                                                                  SPM Frag’île association agrée au titre de l’environnement
+                                                                BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Massifs de Renouée Prioritaire sur St Pierre
+(Des cartes plus précises se trouvent en annexes 5 à 15)
+
+
+
+
+août 2010                                                  10
+                                                     SPM Frag’île association agrée au titre de l’environnement
+                                                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Observations
+
+Croissance et expansion de la Renouée de l’Himalaya
+Afin de mieux connaître la renouée, nous avons effectué un suivi temporel sur une parcelle de
+renouée de l’Himalaya (massif n°1, entre l’anse à Pierre et la vigie, cf. annexes 3 et 4). Cela
+nous a permis d’étudier le temps de croissance et d’expansion d’un massif.
+
+
+
+                                                21/06/2010
+                                                Maximum 40 cm
+                                                Zone Clairsemée
+
+
+
+
+01/07/2010
+Maximum 70cm
+Zone clairsemée
+
+08/07/2010
+Maximum 90 cm
+Zone envahie et expansion vers les zones naturelles
+
+
+
+
+                                             16/07/2010
+                                             Maximum 1m20
+                                             Zone envahie et expansion vers les zones
+                                             naturelle
+
+
+                                             02/08/2010
+                                             Maximum 1m30
+                                             Expansion prononcée vers milieu tourbeux
+                                             avoisinant
+
+
+
+
+août 2010                                     11
+                                                     SPM Frag’île association agrée au titre de l’environnement
+                                                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+        Ces relevés nous ont permis d’élaborer un graphique représentant la croissance des
+plants de renouée (de l’Himalaya) jusqu’à leur taille maximum. Les premiers plants sont ceux
+présents sur la zone le premier jour du suivi, les autres sont ceux apparus 8 jours après. La
+plante à atteint ça hauteur maximale en 47 jours pour les premiers plants et 39 jours pour les
+autres.
+
+
+
+
+      De plus, on observe que, durant les 47 jours de suivi, la renouée a gagnée beaucoup de
+terrain sur le milieu naturel avoisinant. Cela se manifeste sous la forme de jeunes pousses de
+renouées apparaissant sous en lisière des arbustes qui entourent le massifs.
+
+
+
+
+pH-métrie
+Pour chaque massif, des relevés pH-métriques ont été effectués. Le but étant d’être capable
+d’effectuer une corrélation entre le pH du sol et la présence ou non de Renouée. Les pH
+relevés sont faiblement à moyennement acide (Minimum : 4,5. Maximum : 7. Moyenne : 6,4).
+On peut donc dire que les renouées affectionnent les sols faiblement acides. Les sols de
+l’archipel étant particulièrement acides, cela favorise fortement l’invasion des renouées.
+
+
+
+
+août 2010                                     12
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Autres EEE végétales
+Séneçon de Jacob
+
+Présentation
+
+
+
+
+                                Séneçon de Jacob (Senecio Jacobae)
+
+
+
+
+   ⇒ Caractéristiques
+
+Senecio Jacobae est une plante vivace originaire d’Europe et d’Asie de l’Ouest. On la rencontre
+généralement dans les milieux perturbés, et les milieux agricoles. La plante se reproduit de
+manière sexuée (par ses graines) qui arrivent généralement à maturation à l’automne.
+
+   ⇒ Impacts
+
+Dans la plupart des régions où le Séneçon de Jacob a été introduit, il est considéré comme un
+fléau pour l’agriculture. En effet la plante contient des alcaloïdes pyrrolizidiniques très
+toxiques pour le bétail, particulièrement pour les équins et les bovins. De plus, le Séneçon de
+Jacob envahit très vite les milieux avoisinant les milieux perturbés où il est déjà implanté,
+menaçant ainsi les forêts, bois et autres milieux naturels.
+
+
+
+Observations
+               Nous avons tenté de mettre en place plusieurs protocoles permettant un
+recensement précis du Séneçon de Jacob, afin d’évaluer les zones de présence de la plante,
+ainsi que la densité de présence sur ces zones. Malheureusement le degré de présence de la
+plante très élevé ainsi que la nature même de la plante ont rendu ces protocoles laborieux et
+inefficaces. Nous avons finalement opté pour une évaluation de densité approximative,
+s’échelonnant sur 3 niveaux de présence, et définies par les observateurs :
+     Densité faible
+     Densité moyenne
+     Densité forte
+
+
+
+août 2010                                      13
+                                                     SPM Frag’île association agrée au titre de l’environnement
+                                                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Ce travail n’a pour l’instant été effectué que sur les îles de Miquelon et Langlade, mais
+demande à être poursuivi sur le reste de l’archipel.
+       Comme pour les Renouées, ces observations ont abouties à la réalisation de cartes
+mettant en valeurs les différentes zones.
+
+
+
+
+Les autres
+Les autres plantes envahissantes sur l’archipel feront l’objet d’une simple présentation
+puisque les travaux de cette année se sont axés sur les Renouées et le Séneçon de Jacob. Un
+travail de cartographie a tout de même été réalisé pour la salicaire puisque sa présence est
+encore très localisée.
+
+
+
+Épervière (Hieracium Floribundum)
+
+
+
+                      L’Épervière est une plante herbacée pérenne originaire d'Europe. Son
+                      potentiel invasif est lié au fait qu'elle se reproduise de manière
+                      végétative (par rhizomes) et sexuée (par graines). Elle colonise ainsi
+                      aisément les milieux perturbés par l’activité humaine.
+
+
+
+
+août 2010                                     14
+                                                    SPM Frag’île association agrée au titre de l’environnement
+                                                  BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Tussilage (Tussilago Farfara)
+
+                        Le Tussilage est une herbacée pérenne se reproduisant
+                        principalement de manière végétative. On la trouve dans les milieux
+                        perturbés mais aussi sur les bords de cours d’eau, dans les forêts ou
+                        en milieu urbain.
+
+
+
+
+Centaurée (CentaureaNigra)
+
+                       La centaurée est une plante envahissante originaire d’Europe. Elle
+                       colonise généralement les bords de routes et de sentiers. Sur
+                       l’archipel, elle est en expansion et devient préoccupante depuis
+                       plusieurs années.
+
+
+
+
+Salicaire pourpre (Lythrum Salicaria)
+
+
+                         Cette plante est originaire d’Europe et pose de nombreux
+                         problèmes en Amérique du nord, notamment au Canada. Cette une
+                         plante vivace aux racines profonde. Elle se reproduit grâce à ses
+                         graines qui arrivent généralement à maturation au milieu de l’été,
+                         mais un petit bout de tige ou de racine peut redonner naissance à
+                         une nouvelle plante.
+
+
+
+
+août 2010                                    15
+                                                   SPM Frag’île association agrée au titre de l’environnement
+                                                 BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Comme on le voit sur cette carte, la présence de salicaire sur l’archipel est pour l’instant
+limitée au marais Ravenel ainsi qu’à une petite partie de la vallée du milieu. Ces zones,
+particulièrement humides, sont exactement le type de milieu propice à la salicaire. On peut
+donc redouter une expansion rapide de la zone de présence de la plante dans les années à
+venir.
+
+
+
+
+août 2010                                   16
+                                                    SPM Frag’île association agrée au titre de l’environnement
+                                                  BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+Le cadre réglementaire
+1 Cadre réglementaire international portant sur les espèces
+
+Evolution de la prise en compte juridique du phénomène
+
+L’introduction de nouvelles espèces est aussi vieille que l’histoire de l’homme. De nombreuses
+espèces introduites sont d’une importance incalculable pour l’agriculture et la foresterie,
+d’autres hautement prisées pour les activités de loisirs et récréatives.
+La prise de conscience des risques encourus s’est longtemps limitée aux pestes et aux autres
+organismes nuisibles touchant les secteurs productifs économiques.
+En fait, le terme “envahissant” n’a pas de définition universelle »
+
+Depuis 10 ans, de vrais changements se produisent dans le paysage juridique et institutionnel
+au niveau mondial. Cette prise de conscience résulte de plusieurs facteurs :
+· la reconnaissance des EEE comme 2ème cause au niveau mondial de la perte de la
+biodiversité, après la destruction directe des habitats naturels;
+· les constats scientifiques et économiques sur l’envergure des impacts générés par les
+invasions biologiques : activités économiques; santé publique (allergies, poison, vecteurs de
+parasites ou de maladies) ; maintien des infrastructures ; fonctionnement des écosystèmes
+(régimes incendie, inondations, gestion des ressources en eau) ; caractère des paysages.
+Le coût des dommages causés par les espèces envahissantes est actuellement estimé à près de
+$1 500 milliards par an dans le monde ou près de 5% du Produit Intérieur Brut (PIB).
+Le programme mondial sur les espèces envahissantes (GISP), créé en 1998, promeut une
+approche plus transversale avec le soutien des organes de la Convention sur la Diversité
+Biologique.
+Après avoir consulté les institutions et les acteurs concernés par le phénomène, le GISP a
+publié la Stratégie mondiale de lutte contre les espèces exotiques envahissantes, une
+Panoplie d'outils de gestion et plusieurs publications plus spécialisées. La stratégie
+préconise que toute espèce exotique doit être gérée comme si elle était potentiellement
+envahissante dans l’attente de preuves convaincantes permettant de conclure à l’absence de
+menace. En raison de l’incertitude qui entoure le caractère envahissant ou la capacité à le
+devenir, les méthodes d’évaluation des risques doivent être systématiquement utilisées pour
+éclairer les autorités dans leur prise de décision. Les rapports coûts/bénéfices devront
+également être pris en compte.
+L’incertitude scientifique et l’absence de « portrait robot » d’une EEE5 complique évidemment
+la mise en place de systèmes réglementaires. Le soutien de la communauté internationale
+pour l’échange d’information et l’établissement de bases de données inter-opérables est donc
+indispensable pour renforcer l’efficacité des cadres juridiques en cours de développement.
+
+
+Engagements internationaux acceptés par la France
+
+Les instruments contraignants ou facultatifs constituent le fondement à partir duquel chaque
+pays et les organisations régionales d'intégration économique telles que la Communauté
+européenne élaborent des cadres juridiques pour assurer la prévention et le contrôle des EEE.
+Les sections suivantes résument les instruments internationaux les plus pertinents pour la
+France.
+
+
+
+août 2010                                    17
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Conservation et gestion de la biodiversité
+Le seul traité international à prévoir une approche globale aux EEE est la Convention sur la
+diversité biologique (Rio de Janeiro, 1992) qui demande que chaque Partie contractante, «
+dans la mesure du possible et selon qu'il conviendra, empêche d'introduire, contrôle ou
+éradique les espèces exotiques qui menacent des écosystèmes, des habitats ou des espèces. »
+(Article 8(h)).
+Cette obligation s’applique aussi bien aux milieux marins et aquatiques qu’aux milieux
+terrestres et à toutes les espèces animales ou végétales, y compris les ressources génétiques.
+
+La Conférence des Parties à la CDB a inscrit le problème des EEE au nombre de ses grandes
+«questions multisectorielles » , a identifié la protection des écosystèmes insulaires comme
+prioritaire en raison de leur vulnérabilité accrue aux invasions biologiques et donne la
+priorité à l'élaboration de stratégies et de plans d'actions au niveau national et régional.
+Les Principe directeur proposent les analyses de risque et une approche hiérarchique à
+trois phases (la prévention, les actions ciblées pour accroître l’efficacité des interventions, la
+coopération régionale)
+
+La France, en tant que Partie à la Convention sur la conservation des espèces migratrices
+appartenant à la faune et à la flore sauvage (Bonn, 1979) (CMS), est tenue de prévenir,
+réduire ou de contrôler les facteurs qui mettent en danger les espèces migratrices protégées
+par la Convention, notamment en contrôlant strictement l’introduction d’espèces exotiques et
+en surveillant ou éliminant celles qui ont déjà été introduites (Article III.4).
+
+la Stratégie européenne relative aux espèces exotiques envahissantes
+Au niveau régional, un des cadres réglementaires les plus complets existe à l’échelle
+paneuropéenne. Elle encourage l’élaboration et la mise en œuvre de mesures coordonnées et
+de coopération dans la région afin de prévenir et de minimiser les effets nocifs des espèces
+exotiques envahissantes sur la biodiversité ainsi que sur l’économie, la santé et le bien être.
+Plusieurs tableaux proposent des actions pratiques dans les secteurs concernés pour mieux
+prévenir et maîtriser les EEE.
+La cinquième Conférence ministérielle « Un environnement pour l'Europe » (Résolution de
+Kyiv sur la biodiversité, 2003) a déclaré : “D'ici 2008, la Stratégie européenne relative aux
+espèces exotiques envahissantes, élaborée dans le cadre de la Convention de Berne et pleinement
+compatible avec les principes directeurs de la Convention sur la diversité biologique, sera mise
+en oeuvre par la moitié au moins des pays de la région paneuropéenne, à travers des stratégies
+et des plans d'action nationaux en faveur de la biodiversité”.
+La Convention sur la conservation de la vie sauvage et du milieu naturel de
+l’Europe (Berne, 1979) demande aux Parties de contrôler strictement l'introduction des
+espèces non indigènes (Article 11(2)(b)).
+
+
+Protection phytosanitaire et zoosanitaire dans le contexte du commerce
+international
+La réglementation internationale pour la protection des végétaux et de la santé animale existe
+depuis de longue date et prévoient des normes phytosanitaires et zoosanitaires ainsi que des
+systèmes nationaux de quarantaine, de surveillance et de contrôle des organismes nuisibles et
+des maladies.
+La Convention Internationale pour la Protection des Végétaux (Rome, 1951, révisée en
+1997) (CIPV) définit un cadre de coopération afin d’empêcher la propagation et l’introduction
+
+
+août 2010                                      18
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+d’organismes nuisibles aux végétaux et aux produits végétaux et de promouvoir des mesures
+adaptées de contrôle (Article 1). Chaque Partie met en place une organisation nationale de
+protection phytosanitaire qui prend en charge, entre autres, la lutte contre les nuisibles et les
+analyses du risque phytosanitaire.
+L’accord de l’OMC qui concerne plus précisément les EEE est l’Accord sur l’application des
+mesures sanitaires et phytosanitaires (Marrakech, 1995).
+
+Gestion de risques associés aux transports internationaux
+Concernant le transport maritime, les eaux de ballast des navires sont un des principaux
+facteurs d’invasions biologiques en milieu marin. L’Organisation Maritime Internationale
+(OMI) a adopté la Convention internationale pour le contrôle et la gestion des eaux et
+sédiments de ballast le 13 février 2004 en vue de réduire au minimum le transfert
+d'organismes aquatiques nuisibles et d'agents pathogènes.
+
+La reconnaissance des risques associés à l’aviation est plus récente et moins réglementée, en
+dépit des études de cas démontrant des impacts des EEE dans les îles isolées reliées
+principalement par avion. L’Organisation de l'Aviation Civile Internationale (OACI) élabore
+actuellement, avec l’aide du GISP, des lignes directrices pour réduire le risque d’introduction,
+par le transport aérien civil, d’espèces étrangères potentiellement envahissantes dans des
+zones situées en dehors de leur aire naturelle.
+
+
+Dispositif au niveau de l’Union Européenne
+L’application des textes juridiques de l’UE aux CFOM dépend du statut en droit européen de
+ces dernières. L’UE distingue deux catégories de territoires outre-mer :
+
+- Les Régions ultrapériphériques (RUP)
+elles sont en effet considérées comme des prolongements outre-mer du territoire
+métropolitain et font partie du territoire douanier de l’UE. Les sept RUP ainsi intégrés à
+l’Europe (article 299.2 du traité CE14) sont les quatre départements et régions d’outre-mer
+français (Guadeloupe, Martinique, Guyane et Réunion), la Communauté autonome espagnole
+des Iles Canaries et les Régions autonomes portugaises des Açores et de Madère.
+Toutes les dispositions des traités communautaires et du droit dérivé s’appliquent aux RUP
+sous réserve de mesures d’adaptation nécessitées par leur situation particulière (voir ci-
+dessous). Les RUP ont accès aux fonds structurels de l'Union (e.g. Fonds Européen de
+Développement Régional, inscrit dans le programme Interreg IIIC).
+
+- Les Pays et Territoire d’Outre-Mer (PTOM)
+Chaque PTOM jouit d’une relation spéciale avec un des États membres de la Communauté
+européenne dont leurs ressortissants ont la pleine nationalité. Pour la France, les PTOM
+comprennent la Nouvelle-Calédonie, la Polynésie française, Wallis et Futuna, les TAAF,
+Mayotte, Saint-Pierre et Miquelon, Saint-Martin et Saint-Barthélemy.
+Les PTOM ne font pas partie intégrante du territoire de l’UE et le droit dérivé communautaire
+ne s'y applique pas directement: le Conseil doit donc arrêter spécifiquement les règles
+applicables. Le régime UE-PTOM est régi par des « décisions d’association », se concentrant
+sur la réduction de la pauvreté, le développement durable et leur intégration dans l'économie
+régionale et mondiale.
+La décision d’association 2001-2007 (décision 2001/822/CE relative à l'association des
+PTOM à la CE) prévoit une coopération CE-PTOM en matière de conservation, d'exploitation
+
+
+août 2010                                      19
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+et de gestion durables de la diversité biologique des PTOM. Celle-ci comprend la mise en place
+de mécanismes territoriaux, régionaux et sous-régionaux d'échange d'informations et
+d'évaluation des progrès de la mise en oeuvre de la CDB et le développement de bases de
+données sur la biodiversité (Article 15).
+Elle prévoit également la prise en considération des exigences et besoins particuliers des
+PTOM dans la conception et la mise en oeuvre de mesures environnementales lors du
+développement du commerce international (Article 51: Commerce et environnement).
+
+Les PTOM peuvent bénéficier des Fonds européen de développement et de l'aide de la Banque
+européenne d'investissement.
+
+- Traitement juridique des EEE dans la législation communautaire
+La protection phytosanitaire et zoosanitaire relève de la compétence communautaire et
+nécessite des mesures harmonisées au niveau des Etats membres. Ils appliquent des mesures
+et normes conformes aux directives et règlements techniques de la CE.
+La Directive 2000/29/CE concernant les mesures de protection contre l'introduction dans la
+Communauté d'organismes nuisibles aux végétaux ou aux produits végétaux et contre leur
+propagation à l'intérieur de la Communauté, vise à améliorer la transparence des procédures
+d'importation des végétaux et des produits végétaux. Elle établit des procédures
+standardisées en matière d’inspections aux frontières et à l'intérieur des pays
+
+Deux dispositions relatives aux EEE sont intégrées à la réglementation communautaire
+pour l’application de la CITES (Règlement 338/97/CE modifié relatif à la protection des
+espèces de faune et de flore sauvages par le contrôle de leur commerce). Le Règlement permet
+d'imposer :
+- des restrictions à l'introduction dans la Communauté (…) de spécimens vivants d'espèces
+pour lesquelles il est établi que leur introduction dans le milieu naturel de la Communauté
+constitue une menace écologique pour des espèces de faune et de flore sauvages indigènes
+(art. 4(6)(d)) ;
+- des restrictions à la détention ou au déplacement de spécimens vivants d'espèces dont
+l'introduction dans la Communauté est soumise à certaines restrictions au titre de l'article
+4(6)(Article 9(6)).
+
+Pour ce qui concerne la protection de la biodiversité, les deux instruments pertinents sont :
+
+- la Directive Oiseaux (Directive 79/409/CEE) qui prévoit la prévention d’introductions
+d’espèces d’oiseaux susceptibles de porter préjudice à la flore et à la faune locales. Cependant,
+il ne concerne que des espèces ne vivant pas naturellement à l’état sauvage sur le territoire
+européen des Etats membres (Article 11) ;
+
+- La Directive Habitats (Directive 92/43/CEE du Conseil concernant la conservation des
+habitats naturels ainsi que de la faune et de la flore sauvages). Les Etats membres veillent à ce
+que l’introduction intentionnelle dans la nature d’une espèce non indigène à leur territoire
+soit réglementée de manière à ne porter aucun préjudice aux habitats naturels dans leur aire
+de répartition naturelle ni à la faune et, s’ils le jugent nécessaire, interdisent une telle
+introduction (art22).
+
+Pour les milieux aquatiques, la Directive Cadre Eau (Directive 2000/60/EC du 23 octobre
+2000) définit un cadre pour la gestion et la protection des eaux par grand bassin
+
+
+août 2010                                      20
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+hydrographique dans l’objectif d’atteindre le bon état écologique et chimique des eaux avant
+2015. Pour la France, les comités de bassin de métropole et des DOM sont respectivement
+chargés de définir des objectifs environnementaux dans le cadre de la mise à jour des
+Schémas directeurs d’aménagement et de gestion des eaux. La Directive identifie les EEE
+parmi les critères biologiques à prendre en compte lors de la réalisation d’un état des lieux et
+la mise en place d’un programme de surveillance et de mesures correctives.
+
+
+
+
+août 2010                                      21
+                                                         SPM Frag’île association agrée au titre de l’environnement
+                                                       BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+Dispositifs régionaux applicables aux collectivités d’outre-mer
+La coopération régionale est primordiale pour empêcher le transfert d’une EEE vers d’autres
+territoires ayant des conditions écologiques semblables et pour prévenir l’arrivée dans la
+région d’espèces connues comme problématique ailleurs. Cette coopération vise la gestion des
+échanges commerciaux entre les territoires et d’autres voies et vecteurs d’introduction.
+La plupart des CFOM sont couvertes par des conventions pour la protection de
+l’environnement des mers régionales, élaborées en conformité avec la Convention des Nations
+Unies sur le Droit de la Mer qui établit une obligation générale de prévention des EEE.
+2 Réponse juridique à l’échelle des collectivités françaises
+La réglementation dans les CFOM
+
+
+Le chapitre précédent fait état des obligations internationales acceptées par la France pour
+protéger sa biodiversité contre les invasions biologiques. L’objectif de ce chapitre est d’évaluer
+comment ces obligations sont mises en œuvre à SPM.
+
+Compétence pour la gestion des EEE à SPM
+
+Une minorité des CFOM ont territorialement la compétence dans le domaine environnemental.
+Pour les autres, en fonction de leur statut constitutionnel et administratif, la législation nationale
+portant sur les EEE demeure applicable.
+
+Les six COM officialisées depuis la loi organique du 21 février 2007 comprennent deux anciens
+TOM (Polynésie française, Wallis et Futuna), deux anciennes collectivités à statut particulier (Saint-
+Pierre et Miquelon, Mayotte) et deux communes anciennement rattachées à la Guadeloupe
+(Saint-Barthélemy, Saint-Martin).
+Malgré leur label commun, le statut particulier de chaque COM varie pour tenir compte de ses
+intérêts propres au sein de la République. La Constitution distingue désormais plusieurs statuts
+distincts
+Ce statut permet à certains territoires d’adapter leur législation en fonction de leurs spécificités
+comme le droit du travail, le code général des impôts, le code de la route, le droit de la pêche ou
+le droit concernant les établissements recevant du public.
+Cependant, le droit relatif à l’ordre public reste le même que celui applicable sur le territoire
+métropolitain.
+Pour chaque COM, une loi organique définit son statut et précise, le cas échéant, l’applicabilité de
+lois nationales au territoire concerné. L’identité et la spécialité législatives sont désormais
+associées dans certaines COM (ex : Mayotte, Saint-Pierre et Miquelon). La réglementation
+nationale s’y applique, selon les domaines concernés, automatiquement ou seulement sur
+mention expresse.
+L’Etat demeure le principal garant de la conservation de la nature dans les quatre DOM, les COM
+de Saint-Pierre et Miquelon et de Mayotte, Saint-Martin et de Saint-Barthélemy et dans les
+Terres Australes et Antarctiques Françaises. La législation nationale en matière de prévention et
+de gestion des EEE joue donc un rôle déterminant dans les cadres réglementaires de ces CFOM.
+
+Cadre stratégique
+
+
+
+
+août 2010                                         22
+                                                       SPM Frag’île association agrée au titre de l’environnement
+                                                     BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Conformément à son engagement de freiner l’érosion de la biodiversité d’ici 2010, la France a
+adopté une Stratégie Nationale pour la Biodiversité (SNB) en 2004 qui fournit un cadre de
+cohérence pour l’ensemble des politiques sectorielles touchant les espaces et les espèces. La SNB
+souligne l’urgence de renforcer la lutte contre les invasions biologiques et propose :
+       • l’établissement de critères de sélection et la constitution de listes d’EEE menaçant les
+            écosystèmes, les habitats et les espèces indigènes ;
+       • la mise en place de plans de lutte correspondants ;
+       • la maîtrise des voies de passage des principales espèces invasives par la mise en place
+            de mesures de détection et d’intervention rapide;
+       • l’achèvement de la réglementation ;
+       • la mise en place d’un observatoire au rôle d’alerte et de veille scientifique.
+
+La SNB prévoit l’élaboration de plans d’action locaux pour chaque CFOM. (St Pierre et Miquelon en
+2007). Chaque plan aborde la problématique des EEE à des degrés variables.
+La SNB elle-même ne prévoit pas de traitement transversal de la problématique des EEE
+impliquant tous les acteurs concernés.
+Les recommandations issues du Grenelle de l’Environnement proposaient:
+       • que la France lance, lors de sa présidence de l’Europe et en association avec les futures
+           présidences de la Suède et de la République Tchèque, un volet biodiversité portant sur
+           les dossiers importants qui nécessitent un traitement au niveau européen, notamment
+           sur la mer, la conservation de la biodiversité dans l’outre-mer européen et les espèces
+           invasives (Rapport du Groupe de Travail 2 : http://www.legrenelle-
+           environnement.fr/grenelle-environnement/.)
+       • dans le cadre d’un plan d’action national contre les EEE, la complétion du dispositif
+           réglementaire de prévention des invasions biologiques, la mise en place d’un fond
+           d’action pour la lutte précoce contre les EEE et la ratification de la convention
+           internationale sur les eaux de ballast;
+       • la mise en place d’un suivi généralisé des invasions biologiques en France;
+       • l’application de pénalités dissuasives;
+       • le développement d’un programme ambitieux de lutte contre les EEE pour l’outre-mer.
+
+
+Prévention
+
+Du point de vue juridique, la prévention concerne l’ensemble de mesures destinées à minimiser
+l’introduction d’espèces exotiques potentiellement envahissantes dans un milieu favorable à leur
+établissement ainsi que leur prolifération ou leur transfert vers d’autres territoires non infestés.
+Les mesures réglementaires doivent cibler toute la série d’activités humaines pouvant entraîner
+une introduction volontaire ou non-intentionnelle :
+            o importations aux frontières externes du territoire et gestion des voies de transport;
+            o commercialisation et transport domestiques (y compris entre les îles d’un archipel);
+            o introduction dans le milieu naturel ;
+            o détention de spécimens d’animaux exotiques, y compris par les particuliers.
+
+Réglementation d’importations (frontières externes)
+
+Dispositif phytosanitaire et zoosanitaire
+
+
+août 2010                                       23
+                                                        SPM Frag’île association agrée au titre de l’environnement
+                                                      BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+L’outil quasi-exclusif pour gérer les importations est la réglementation phytosanitaire et
+zoosanitaire, élaborée par le Ministère de l’Agriculture en conformité avec la législation
+européenne (cf réglementation phytosanitaire locale).
+Les mesures nationales reflètent un long processus préalable au niveau international et régional
+d’analyse scientifique et de négociation.
+Le dispositif zoosanitaire international porte principalement sur la prévention des épizooties et
+n’aborde pas la problématique des animaux envahissants en tant que tels.
+Les principaux textes phytosanitaires sont:
+- l’arrêté ministériel modifié du 3 septembre 1990 relatif au contrôle sanitaire des végétaux ;
+- l’arrêté ministériel modifié du 31 juillet 2000 établissant la liste des organismes nuisibles aux
+végétaux, produits végétaux et autres objets soumis à des mesures de lutte obligatoire. Des
+dispositions relatives aux départements d’outre-mer sont prises dans les annexes qui fixent la liste
+de ces organismes (dernière modification par l’arrêté ministériel du 11 juillet 2002) ;
+- L’arrêté modifié du 24 mai 2006 relatif aux exigences sanitaires des végétaux, produits végétaux
+et autres objets (JORF 30 mai 2006, p. 8081).
+- Cette réglementation a pour objectif de prévenir la dissémination et l'introduction d'organismes
+nuisibles aux végétaux et produits végétaux et porte essentiellement sur l’état phytosanitaire du
+matériel importé. Ses dispositions se rattachent à une série de listes négatives : seules les espèces
+figurant sur la liste des organismes de quarantaine ou classés nuisibles aux végétaux font l’objet
+des interdictions ou restrictions correspondantes. Il n’est pas légalement possible d’interdire
+l’introduction d’autres espèces en bon état sanitaire, quels que soient les risques posés à la
+biodiversité indigène.
+
+Ce dispositif correspond mal aux besoins des DOM car les règles alignées au marché unique
+européen ne tiennent pas compte des spécificités des territoires insulaires éloignés. Ces
+spécificités étant très marquées, il importe d'en tenir compte dans le contexte de la libre
+circulation des biens et des marchandises en Europe.
+
+Depuis 2005, des analyses de risque phytosanitaire sont menées pour apporter les bases
+nécessaires à la révision de la législation applicable aux DOM. La première série d’analyses
+concerne des ravageurs et maladies des plantes, la deuxième des analyses d’une cinquantaine de
+plantes potentiellement envahissantes des DOM qui pourraient être classées « organismes de
+quarantaine ».
+L’usage de ce classement pour les adventices des cultures ou les plantes envahissantes des zones
+non cultivées est jugé utile car (a) il existe déjà dans les DOM. Le statut d’organisme de
+quarantaine est considéré comme un outil pour attirer l'attention du public et des décideurs sur la
+nécessité d'être attentif à la multiplicité et au devenir des végétaux importés.
+Les analyses de risques portant sur des plantes potentiellement envahissantes sont en cours
+d'examen par un panel d’experts auprès de l’Agence Européenne de Sécurité Alimentaire. A la
+lumière de ses conclusions, l'intégration du contexte ultrapériphérique au cadre de la
+réglementation européenne pourra être examinée par le Comité Phytosanitaire Permanent de
+l'Union.
+
+Autres dispositions législatives
+
+
+
+
+août 2010                                        24
+                                                         SPM Frag’île association agrée au titre de l’environnement
+                                                       BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Les autres outils juridiques permettant de réglementer l’importation d’espèces exotiques sont
+extrêmement limités.
+L’article L.412-1 du Code de l’Environnement (CE) fournit la base juridique pour réglementer
+l’importation et la commercialisation des espèces menacées et protégées conformément aux
+obligations de la CITES et autres instruments pertinents.
+Il soumet à autorisation préfectorale l'importation, l'exportation, la réexportation ainsi que la
+détention, la cession à titre gratuit ou onéreux, l'utilisation, le transport et l'introduction, quelle
+qu'en soit l'origine, de tout ou partie d'animaux d'espèces non domestiques et de leurs produits et
+des végétaux d'espèces non cultivées et de leurs semences ou parties de plantes. L’article utilise
+un système de listes négatives : seules les espèces figurant sur la liste fixée par arrêtés conjoints
+du ministre chargé de l'environnement et les autres ministres compétents peuvent faire l’objet de
+restrictions.
+Cette disposition a été utilisée dans la lutte en métropole contre l'algue envahissante Caulerpa
+taxifolia. L’arrêté du 4 mars 1993 en interdit la commercialisation, l’utilisation et le rejet en mer et
+soumet son ramassage et transport à autorisation préfectorale.
+
+Commercialisation et introduction dans le milieu naturel
+
+Régime général (article L.411-3 du Code de l’Environnement)
+
+L’article phare du Code de l’Environnement, le L.411-3, n’est pas exclusivement consacré aux EEE.
+Il concerne les introductions d'espèces au sens large, allant de l’introduction d’une espèce
+exotique au relâcher d’une espèce indigène.
+En 2005, la Loi sur le Développement des territoires ruraux a élargi le champ d’application de cet
+article pour permettre l’interdiction du commerce et du transport des espèces non-indigènes mais
+l’a également rétréci en instaurant un système de listes négatives comme base de toute
+interdiction.
+Il permet d’interdire, afin de ne porter préjudice ni aux milieux naturels ni aux usages qui leur sont
+associés ni à la faune et à la flore sauvages :
+             o l’introduction dans le milieu naturel de tout spécimen d’une espèce animale ou
+                 végétale non indigène au territoire d'introduction et non domestique/non cultivée,
+                 dont la liste est fixée par arrêté conjoint des Ministres chargés de la protection de
+                 la nature et de l’agriculture ou, lorsqu'il s'agit d'espèces marines, du ministre
+                 chargé des pêches maritimes
+             o le transport, le colportage, l'utilisation, la mise en vente, la vente ou l'achat des
+                 espèces animales ou végétales dont la liste est fixée par arrêté conjoint des
+                 Ministres chargés de la protection de la nature et de l’agriculture/ministre chargé
+                 des pêches maritimes, lorsque les nécessités de la préservation du patrimoine
+                 biologique, des milieux naturels et des usages qui leur sont associés justifient
+                 d'éviter leur diffusion.
+Des dérogations peuvent être accordées à des fins agricoles, piscicoles ou forestières ou pour des
+motifs d'intérêt général par l'autorité administrative après évaluation des conséquences de cette
+introduction.
+Le décret d’application du 4 janvier 2007 prévoit la préparation d’arrêtés interministériels fixant
+les listes des espèces dont l’introduction dans le milieu naturel et la commercialisation sont
+interdites. Il définit des procédures concernant l’octroi de dérogations (dossier avec étude
+d’impact, enquête publique avec mise à disposition publique du dossier).
+
+
+août 2010                                         25
+                                                         SPM Frag’île association agrée au titre de l’environnement
+                                                       BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Pour l’instant, les listes en cours d’élaboration ne concernent que la métropole. Une liste
+d’espèces végétales dont la commercialisation sera interdite sur l’ensemble du territoire
+métropolitain sera finalisée en 2008 après une concertation avec les professionnels : il est prévu
+de la compléter par des listes d’application régionale (toujours en métropole) correspondant à la
+notion biogéographique de « territoire ». Aucun progrès n’est signalé concernant les listes
+d’espèces animales exotiques pour la métropole.
+Le MEEDDM n’a pas fait de l’outre-mer une priorité alors que l’essentiel de la biodiversité
+française y est concentré.
+En l’absence de listes propres, les CFOM sous compétence nationale environnementale n’ont
+aucune base juridique pour interdire l’importation, la commercialisation, le transport ou
+l’introduction dans le milieu naturel d’espèces exotiques.
+
+
+Contrôle
+La légalité des mesures de contrôle est conditionnée par le statut juridique de l’espèce concernée.
+Les mesures réglementaires pour contrôler les espèces invasives sont éparpillées entre plusieurs
+textes et ne bénéficient pas d’une grande lisibilité. En outre, l’articulation entre les différents
+services compétents, les gestionnaires et les autres acteurs peut poser des problèmes, sauf
+éventuellement dans les aires protégées.
+Des lacunes, conflits ou zones de flou juridiques concernent en particulier :
+- des plantes exotiques n’ayant pas le statut d’organisme de quarantaine/nuisible aux végétaux ;
+- des espèces animales n'ayant pas le statut d’animaux nuisibles ;
+- des espèces protégées automatiquement en raison de la protection d’un groupe entier
+d’espèces ;
+- la protection d’une espèce introduite qui devient envahissante ultérieurement ;
+- les poissons/crustacés introduits qui sont classés comme déjà représentées dans les eaux douces
+d’un territoire ;
+- le classement d’une espèce exotique potentiellement envahissante comme espèce chassable.
+
+Contrôle des espèces non domestiques/non cultivées
+
+L’art. L. 411-3-III du CE est le seul outil juridique à prévoir le contrôle des EEE qui perturbent
+l’équilibre du milieu naturel ou de la biodiversité indigène. Il permet à une autorité administrative
+de procéder ou faire procéder à la capture, au prélèvement, à la garde ou à la destruction des
+spécimens de l'espèce introduite, dès que sa présence dans le milieu naturel est constatée.
+L’article concerne toutes les catégories d’espèces, quel que soit leur statut juridique. Cependant,
+son champ d’application est limité aux espèces inscrites aux listes fixées par arrêté ministériel (art.
+L.411-3-I.1°-2°). L’autorité administrative compétente demeure le ministre (art. R. 411-1). Il est
+donc impossible pour les services déconcentrés d’un DOM de faire adopter un arrêté préfectoral
+pour procéder aux mesures (même intérimaires) de contrôle.
+
+
+
+
+août 2010                                         26
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+La réglementation phytosanitaire à SPM
+Le nouveau règlement proposé s'appuie sur les principes suivants :
+
+1) Un régime prohibitif général d'importation de produits végétaux dans l'archipel serait
+instauré. L'importation demeure toutefois possible, sur autorisation préalable d'importation
+phytosanitaire délivrée par l'administration (Direction de l'Agriculture et de la Forêt),
+laquelle s'appuierait sur une liste de critères pré-définis pour instruire la demande, à savoir
+(art. 2) :
+   - le végétal n'appartient pas à la liste des espèces exotiques dites « envahissantes » placées
+   en annexe de l'arrêté ;
+   - le commerce de ce végétal n'est pas prohibé par la Convention du 3 mars 1973 sur le
+   commerce international des espèces de faune et de flore sauvages menacées d'extinction
+   (« CITES », selon le sigle anglo-saxon, ou « Convention de Washington ») ;
+   - le végétal n'est pas susceptible de servir de vecteur à des organismes nuisibles et ne
+   représente pas une menace pour la flore locale.
+
+2) Ce régime est encore assoupli dans les cas suivants (absence de demande d'autorisation
+d'importation et de certificat sanitaire) :
+
+  - en premier lieu, les végétaux et produits végétaux introduits depuis Terre-Neuve par des
+  particuliers en faible quantité ;
+  - en second lieu, le bois importé de cette même province ;
+  - en troisième lieu, les fleurs, fruits et légumes et feuillages coupés importés (certificat
+  phytosanitaire toutefois nécessaire).
+
+3) Des contrôles phytosanitaires sont toujours possibles en cas de régime dérogatoire et
+divers moyens d'action permettent à l'administration d'agir en cas de non respect des
+mesures réglementaires adoptées.
+
+
+
+
+août 2010                                      27
+                                                       SPM Frag’île association agrée au titre de l’environnement
+                                                     BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Prévention
+Information et Communication
+L’information du particulier et des entreprises quant aux risques des EEE végétales pour
+l’écosystème local est essentielle. Les particuliers sont en général conscients de l’existence des
+EEE végétales et de leurs méfaits, mais ne savent pas comment lutter. Nous avons doncréalisé
+une plaquette de communication destinée au grand public.
+
+
+
+
+                                      Cette plaquette se présente sous la forme d’un petit
+                                      livret. Une page est dédiée à chaque plante invasive :
+                                      Renouée du Japon, Séneçon de Jacob, … Elle présente
+                                      rapidement les impacts de chaque plante que ce soit pour
+                                      la biodiversité, l’économie ou le paysage, ainsi que les
+                                      caractéristiques de la plante. On y expose ensuite les
+                                      méthodes de lutte que chacun peut mettre en œuvre afin
+                                      de s’en débarrasser.
+
+
+
+
+La communication quant aux travaux d’arrachage et de fauchage effectué par l’association est
+aussi essentielle. Cela s’est traduit par la réalisation de panneaux destinés à être placés sur les
+lieux de chantiers.
+
+
+
+
+août 2010                                       28
+                                                       SPM Frag’île association agrée au titre de l’environnement
+                                                     BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Ce Panneau présente en bref les caractéristiques et impacts de la renouée. Il précise ensuite le
+protocole utilisé par l’équipe d’arrachage, ainsi que les étapes suivant l’arrachage (plantation
+à l’automne).
+
+D’autres projets de communication ont été évoqué mais non réalisé par manque de temps et
+de moyens :
+Réalisation d’un spot télévision qui serait diffusé sur RFO
+Elaboration d’une exposition sur les plantes exotiques envahissantes
+Rédaction d’un article pour la presse papier locale (L’Echo des Caps et L’Horizon)
+
+
+
+Prévention contre l’importation et la migration des EEE végétales.
+
+La méthode la moins coûteuse et la plus efficace contre la prolifération de ces plantes est
+encore de prévenir leur expansion. Cela veut dire qu’il faut empêcher la plante de parvenir sur
+le territoire de St Pierre et Miquelon mais aussi de s’y propager. Pour cela il est nécessaire
+d’établir la liste des espèces envahissantes ou potentiellement envahissantes dont l’entrée
+doit être interdite sur l’Archipel. La liste noire correspond aux plantes déjà présentes sur
+l’archipel et considérés comme invasives, et la liste blanche aux plantes potentiellement
+invasives. Ces liste ont été élaborées avec l’aide de Mr R.Echeberry et D.Abraham, tous deux
+botanistes spécialistes de la flore et de la faune locale.
+
+
+
+
+            Liste Noire                          Liste Blanche
+
+            Centaureanigra                       Coronopusdidymus
+            Hieraciumfloribundum                 Lythrum salicaria
+            Fallopiajaponica
+            Polygonumpolystachyum
+            Tussilagofarfara
+            SenecioJacobae
+
+
+       Ces plantes étant déjà installées sur l’archipel, il convient de limiter leur expansion et
+leur dissémination. Pour cela il conviendrait, à terme, de faire mention de mesures de
+précaution dans les cahiers des charges des entreprises de travaux locales :
+Aucun apport de matériaux depuis une zone contaminée ou uniquement après un contrôle
+minutieux de ces matériaux.
+Nettoyage des camions et engins de chantier avant toute arrivée sur une zone naturelle.
+Obligation de revégétalisation par des espèces locales, des zones mises à nu.
+Notons qu’une vigilance toute particulière doit être apportée aux travaux effectués sur
+Miquelon et Langlade qui peuvent être considérées comme des zones sensibles puisque elles
+sont peu contaminées.
+
+
+août 2010                                       29
+                                                       SPM Frag’île association agrée au titre de l’environnement
+                                                     BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Lutte
+Outils réglementaires
+Le texte concernant les contrôles phyto sanitaires n’est pas conforme aux recommandations des
+différentes textes cadre.
+De notre point de vue ce texte est même illégal puisque posant en principe l’interdiction
+d’importation suivi d’un système dérogatoire.
+Une réglementation plus précise et mettant en avant des listes d’espèces recensées comme
+relevant d’une liste noire serait plus opérante et permettrait de porter l’effort sur les espèces
+ayant un réel potentiel invasif.
+Parallèlement à cela, des listes blanches d’espèces pouvant devenir potentiellement envahissantes
+(se calant sur els listes canadiennes) préciseraient encore les contrôles.
+Enfin des listes vertes de plantes de substitution aurait un effet informatif sur les importateurs.
+
+
+
+Physique contre les Renouées
+Introduction
+Il existe plusieurs méthodes de lutte possible contre les Renouées. Après recherche et analyse
+des expérimentations et travaux mené en France, Suisse et Angleterre, nous avons retenu
+comme méthode d’action les actions physiques consistant à faucher et arracher les plantes et
+leurs rhizomes. En effet il semble que ces moyens d’action soient les plus efficaces et les
+moins polluantes. Plusieurs chantiers et protocoles ont été expérimentés sur St Pierre
+(Secteur de l’Anse à Pierre) ainsi que Miquelon.
+                                                              Placettes 04 et 05 :
+                                                              fauchage
+
+
+
+                                                                    Placette 03 : protocole mécanique
+
+
+
+
+                                                                    Placette 02 :
+                                                                    fauchage
+
+
+
+
+                                                                    Placette 01 : protocole Manuel
+
+
+
+                                                                    Massifs de Renouée prioritaires sur le
+août 2010                                       30                  secteur de l’Anse à Pierre
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+Sur Miquelon, seul le protocole manuel (cf. 2.3.2) a été utilisé pour des questions de temps et
+de moyens techniques.
+
+
+
+
+août 2010                                      31
+                                                        SPM Frag’île association agrée au titre de l’environnement
+                                                      BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Chantier « Manuel »
+
+Le premier chantier a eu lieu sur la zone n°01 qui se situe entre la route de l’Anse à Pierre et
+l’étang de la vigie. Pour réaliser la récolte et le transport des sacs de déchets nous avons fait
+appel à Impermembrane, une entreprise de BTP locale. Le protocole appliqué, que l’on
+nommera protocole « manuel », est le suivant (voir aussi annexe 1) :
+        • Fauchage
+
+
+
+
+       •    Ramassage du produit de fauche
+
+
+
+
+       •    Ratissage et collecte des résidus de plante
+
+
+       •    Arrachage et collecte des rhizomes
+
+
+
+
+       •    Exportation des déchets (avec l’aide
+            d’Impermembrane)
+
+
+août 2010                                        32
+                                                               SPM Frag’île association agrée au titre de l’environnement
+                                                             BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+       •    Remise en état de la zone
+
+       •    Plantation d’espèces autochtones à l’automne (Aulnes, sapins ...)
+
+Ce protocole s’applique bien aux zones difficiles d’accès et/ou sensibles puisqu’il permet un
+travail plus précis et moins lourd que le protocole mécanique.
+
+
+
+Chantier « Mécanique »
+
+Le chantier suivant a permis d’essayer de se débarrasser de la renouée en utilisant une pelle
+mécanique, louée à une entreprise locale. Le déroulement du chantier est le suivant (voir
+aussi annexe 2) :
+La partie fauchage, ratissage et ramassage des déchets se déroule de la même manière que
+dans le protocole précédent
+
+       •    La mini pelle arrache la partie superficielle du
+            terrain (étrépagesur 40cm de profondeur) et
+            laisse tomber la terre ainsi ramassée sur un
+            tamis. Le Tamis utilisé cette année avait un
+            maillage 5cm x 5cm, qui s’est révélé être une
+            bonne taille : il permet facilement à la terre de
+            passer mais retient la plupart des rhizomes
+            qu’elle contient.
+
+       •    Une équipe est chargée de ramasser les
+            rhizomes qui tombent au pied du tamis.
+       •    Une autre s’emploie à ratisser ou retamiser
+            manuellement la terre afin de ramasser les
+            bouts de rhizomes assez petits pour traverser le
+            tamis
+       •    Les abords de la zone, souvent au contact avec le
+            milieu naturel, doivent être débarrassés de la
+            renouée manuellement
+       •    Exportation des déchets
+       •    Répartition de la terre et remise en état de la
+            zone
+       •    Plantation d’espèces autochtones à l’automne
+
+
+
+
+août 2010                                               33
+                                                              SPM Frag’île association agrée au titre de l’environnement
+                                                            BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+        Choix du protocole
+
+Sensibilités environnementales                Accessibilité de la Zone                              Choix du Protocole
+
+
+
+                                               Zone facile d’accès
+                                                pour un engin de                                    Protocole Mécanique
+     Massif facilement                             chantier :
+    isolable des milieux                        généralement en
+         naturels qui                            bord de route
+      l’entourent. Zone
+        spécifique à la
+          Renouée.
+
+                                                 Zone difficile
+                                               d’accès pour un
+                                              engin de chantier :
+   Présence d’habitats                            éloignée, en
+    naturels sensibles,                         contrebas d’un
+       de plantes ou                             escarpement,                                       Protocole Manuel
+   d’animaux à valeurs
+       patrimoniale
+   susceptibles d’être
+    perturbés par des
+      travaux lourds.
+    Proximité avec les
+    berges d’un cours
+      d’eau ou étang.
+   Massif dans un sous
+     bois ou parsemé
+        d’arbustes
+       autochtones.
+
+        Afin de coordonner les travaux qui vont être effectué cette fin d’année et l’année prochaine, il
+        est important de définir pour chaque zone prioritaire, quel protocole pourra être mis en
+        œuvre. Les résultats ont été regroupés de la manière suivante :
+
+
+                   Carte      Taille du
+         Massif                                   Milieu         Protocole à utiliser            Remarques
+                    réf      massif (m2)
+                                                 Naturel,                                            Terrain
+                                                entouré de                                         accidenté et
+                                                végétation        Mécanique + Manuel             très rocailleux.
+            1        6            196
+                                               locale, hors          pour contours                Accès difficile
+                                                des zones                                         pour évacuer
+                                                urbanisées                                         les déchets
+
+
+
+        août 2010                                      34
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+L’utilisation du protocole manuel ou mécanique à été défini selon les critères développés plus
+haut, toutefois, il se peut qu’une fois l’intervention commencé l’équipe de travail choisisse de
+passer d’un protocole à l’autre si les conditions ont été mal évaluées.
+
+
+
+
+août 2010                                      35
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+Étude comparative
+
+
+                              Protocole Manuel                            Protocole Mécanique
+     Pollution                       Nulle                               Atmosphérique + Sonore
+                     Difficile pour une grande surface ou
+  Remise en état                                                                    Facile
+                                un sol rocailleux
+                                                                   A voir, mais semble très efficace
+    Efficacité        A voir, mais semble moins efficace          pour se débarrasser d’un maximum
+                                                                             de rhizomes
+  Main d’œuvre                    Importante                                       Limitée
+
+                         Plus long que le protocole
+      Temps
+                      mécanique pour une même surface
+
+                                                                          Travail moins exigeant
+     Difficulté          Travail difficile et laborieux
+                                                                               physiquement
+   Accessibilité           Peut être utilisé partout                      Difficilement utilisable
+                                                                       Entreprise qui s’occupe du
+                          Entreprise qui s’occupe du              ramassage des déchets. Entreprise
+« Sous-traitance »
+                           ramassage des déchets                 qui s’occupe de la location de la mini
+                                                                                  pelle.
+
+                                                                  Sur chaque chantier où se protocole
+      Autres                                                      est utilisé, le protocole « manuel »
+                                                                    doit être utilisé en complément.
+
+
+
+
+Précautions particulières pour éviter la dispersion des Renouées
+
+Les renouées disposent d’une capacité incroyable de bouturage à partir d’infimes fragments
+de tiges ou de rhizomes. Il faut donc mettre en place un grand nombre de précautions pendant
+et après les chantiers de lutte :
+    ⇒ Tous les restes de Renouée récupérés lors des chantiers doivent être stockés de
+       manière isolée, et si possible brulés une fois secs.
+    ⇒ Veiller à ce qu’aucun résidu ne puisse tomber à l’eau ou ne puisse être emporté par un
+       promeneur.
+    ⇒ Limiter les déplacements d’engins et de matériels du site contaminé à d’autres zones
+       de travail durant le chantier.
+    ⇒ Imposer un nettoyage rigoureux des engins avant leur départ du site (nettoyage des
+       chenillettes, godets, ou toute autre partie mécanique susceptible de retenir des
+       fragments de plantes)
+
+
+
+
+août 2010                                      36
+                                                    SPM Frag’île association agrée au titre de l’environnement
+                                                  BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+Suivi annuel
+Les chantiers d’arrachage ou de fauchage ont pour vocation d’épuiser la plante en la privant
+d’une partie de l’énergie qu’elle emmagasine dans ses rhizomes. En effet, éradiquer la renouée
+d’une zone en un seul chantier est improbable étant donné sa capacité à se régénérer à partir
+d’un fragment de rhizome. Il doit donc y avoir un suivi scrupuleux des zones de chantiers et
+un arrachage instantané des nouvelles repousses. Pour ce qui est des chantiers de fauchage,
+ceux-ci devront être répétés de nombreuses fois, sur un minimum de 2 ans, et dès lors que la
+plante atteint une quarantaine de centimètres.
+Pour que ce suivi soit le plus précis possible, chaque chantier doit être répertorié dans le
+tableau chronologique suivant :
+
+
+
+
+Prévision du Budget « chantiers » 2011
+
+
+
+
+août 2010                                    37
+                                                        SPM Frag’île association agrée au titre de l’environnement
+                                                      BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+Séneçon de Jacob
+        Certains chantiers d’arrachage ont été réalisés cet été. Cependant, le Séneçon a
+tellement envahi l’archipel que le travail à effectuer reviendrait à nettoyer chaque cm2 de
+terre pendant plusieurs années. L’équipe s’est donc pour l’instant attardée sur des zones clés,
+tel l’Anse aux Soldats à Langlade où l’île aux Marins. Le premier chantier s’attaque à un foyer
+isolé de contamination de Langlade, et le second a pour objectif de nettoyer l’île aux Marins du
+Séneçon, ce qui est possible avec une petite équipe. Par la suite, les chantiers qui devront être
+effectué en priorité sont ceux qui ont lieu sur Miquelon et Langlade où, comme pour les
+Renouées, la contamination est moins importante que sur St Pierre.
+Pour le gros du travail, c’est à dire l’éradication du Séneçon de l’île de St Pierre, un projet à été
+soulevé au sein de l’équipe : il s’agit d’organiser des chantiers ouvert au public sur des zones
+bien définies. Chaque volontaire se verra confié un sac (gros sac jaune utilisé pour la renouée)
+et pourrait être payé (15€ par exemple) une fois le sac remplit de Séneçon. Cela permettrait
+d’avoir accès à une main d’œuvre beaucoup plus importante mais aussi et surtout, de faire de
+la communication autour de notre mission.
+
+
+
+Salicaire Pourpre
+La salicaire étant encore à un stade d’expansion très faible et localisé, il conviendrait
+d’entamer le plus rapidement possible des travaux d’arrachage sur la zone contaminée.
+L’éradication totale de cette plante devrait être possible à court terme et éviterai de se placer
+dans des situations de contaminations graves demandant de gros moyens financiers comme
+c’est le cas au Canada.
+
+
+
+Les autres
+Pour les autres plantes aucun schéma de lutte n’a été établi au cours de cette saison.
+Cependant il est clair que la prolifération des EEE végétales est directement liées à l’activité
+humaine qui perturbe et artificialise les zones naturelles. L’arrêt des perturbations et la
+renaturation des milieux peuvent donc constituer des méthodes efficaces de lutte contre ces
+EEE. En effet, celles-ci auront plus de difficultés à se développer dans des milieux naturels où
+la biodiversité est conservée. Il conviendrait donc avant tout de réhabiliter un maximum
+d’espaces où l’activité humaine a perturbée les écosystèmes (ex : la vallée du milieu).
+
+
+
+
+août 2010                                        38
+                                                        SPM Frag’île association agrée au titre de l’environnement
+                                                      BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+    Conclusion
+       En conclusion, avec au moins cinq espèces envahissantes déjà répertoriées sur l’île, et
+deux espèces potentiellement envahissantes, il faut absolument agir au plus vite pour
+protéger l’incroyable biodiversité de notre archipel. La petite taille du territoire et les
+multiples échanges de marchandises réalisés avec le Canada ou la France, rendent l’archipel
+de St Pierre et Miquelon particulièrement vulnérables aux introductions d’espèces invasives.
+Par l’avenir, les entrées d’espèces sur l’archipel devront être scrupuleusement surveillées,
+ainsi que les transport de plantes d’une île à l’autre.
+       Les chantiers concernant la lutte contre la Renouée ainsi que le Séneçon ont bien
+démarré cet année, mais pour que cette lutte puisse être efficace un véritable suivi dans le
+temps, ainsi qu’une répétition des travaux sur les zones déjà décontaminée, devront être
+effectué. Ce combat peut se révéler décourageant puisque très contraignant et laborieux,
+cependant il est nécessaire qu’il soit fait dans la durée. De plus, il est primordial que les règles
+de précautions concernant la renouée soient respectées tout au long du chantier et même
+après afin de ne pas devenir nous même des agents de propagation de la plante.
+       Finalement, concernant les autres plantes, une action d’éradication doit être effectué
+dans les plus bref délais contre la salicaire pourpre. Un travail de veille et d’observation doit
+finalement être accompli au sujet des plantes invasives qui n’ont pas été étudiées cette année.
+
+
+
+
+août 2010                                        39
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+                                       BIBLIOGRAPHIE
+
+
+ Sites
+   • The IUCN and ISSG global invasive speciesdatabase : http://www.issg.org/database
+   • Site dédié aux Renouées du Japon, plante invasives:
+      http://fallopia.japonica.pagesperso-orange.fr
+   • Les espèces invasives en bretagne:http://www.bretagne-environnement.org/especes-
+      invasives/
+   • Qu’est ce que la Renouée du Japon ? : http://www.cabi.org/japaneseknotweedalliance/
+
+
+ Livres et rapports
+   • FRAPNA, 2008, Guide technique « Renouées géantes »
+   • Y. Soubeyran, 2008, Espèces exotiques envahissantes dans les collectivités d’outre-
+      mer. UICN.
+   • D.Richardson, P.Pysek, 2006, Progress in PhysicalGeography, Plant invasion : merging
+      the concepts of speciesinvasiveness ans communityinvasibility : pp 409-431.
+   • B.D Bauer, 2006, The population dynamics of TansyRagwort (SenecioJacobaea) in
+      Northwestern Montana. Montana State University.
+   • S. Muller, 2006, Atelier de travail : Introduction sur les invasions biologiques.
+      Université de Metz.
+   • I. Mandon-Dalger, 2010, Espèces Invasives. CBNMED.
+   • I. Mandon-Dalger, 2010, Gestion des invasions et coordination multo-acteurs.
+      CBNMED.
+   • I. Mandon-Dalger, 2010, Evaluation des risques et hiérarchisation des espèces.
+      CBNMED.
+   • M. Boyer, 2009, Ingénieries n°57-58, Une nouvelle technique d’éradication mécanique
+      des renouées du japon testée avec succès au bord de l’Ain et de l’Isère : pp 16-31.
+   • UICN, 2010, Gagner la bataille contre les espèces exotiques envahissantes.
+   • Comité des Pays de la Loire, 2004, Gestion des plantes exotiques envahissantes en
+      cours d’eau et zones humides.
+
+
+
+août 2010                                      40
+                     SPM Frag’île association agrée au titre de l’environnement
+                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+            ANNEXES
+
+
+
+
+août 2010     41
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+                               Annexe 1 : Protocole Manuel
+
+
+Moyens humains : 4 ouvriers.
+Moyens matériels : râteaux (2), pioches (4), pelles (1), barre à mine (1) + EPI
+
+1 – Fauche
+
+2 – Ratissage des déchets végétaux (surface de la litière)
+
+3 – Arrachage à la pioche
+
+4 – Finition arrachage manuel des bordures
+
+5– Plantation
+
+
+
+
+août 2010                                      42
+                                                         SPM Frag’île association agrée au titre de l’environnement
+                                                       BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+                               Annexe 2 : Protocole Mini pelle
+
+
+
+Moyens humains : 4 ouvriers + 1 conducteur d’engin
+Moyens matériels : Mini-pelle, râteaux (2), pelles (2), grande grille, pioches (2), brouettes (2),
+sacs grande contenance + EPI.
+
+Organisation du chantier
+
+1 – Fauche
+
+2 – Arrachage de la couche superficielle du sol à la mini-pelle et tamisage. Pendant que le
+conducteur d’engin travaille, un ouvrier la guide et récupère les rhizomes restant. Deux
+ouvriers récupèrent les déchets et les cailloux retenus par la grille pendant qu’un autre ratisse
+la terre pour récupérer les petits morceaux de rhizomes restants.
+Le travail de la mini-pelle est limité. Dans le cas ou le massif s’élargie dans un bois ou proche
+d’arbres, l’arrache des bordures se fait manuellement.
+
+3 – Une fois toute la surface passée au crible, les cailloux récupérés plus tôt sont « étalés » sur
+le terrain pour boucher les trous et niveler le sol.
+
+4 – La terre est ensuite étalée de façon égale.
+
+5 – Finition : Arrachage manuel des bordures.
+
+6 – Plantation
+
+
+
+
+août 2010                                         43
+                                                     SPM Frag’île association agrée au titre de l’environnement
+                                                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+            Annexe 3 : Tableau compilant toutes les données récoltées sur le terrain
+
+
+
+
+août 2010                                     44
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+            Annexe 4 : Tableau compilant les données concernant les zones prioritaires
+
+
+
+
+août 2010                                      45
+                   SPM Frag’île association agrée au titre de l’environnement
+                 BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+
+
+août 2010   46
+                                                   SPM Frag’île association agrée au titre de l’environnement
+                                                 BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+            Annexe 5: Carte n°10 : répartition des foyers de Renouée à Miquelon
+
+
+
+
+août 2010                                   47
+                                                    SPM Frag’île association agrée au titre de l’environnement
+                                                  BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+        Annexe 6 : carte n°7 : Foyers de Renouée aux alentours du village de Miquelon
+
+
+
+
+août 2010                                    48
+                                                  SPM Frag’île association agrée au titre de l’environnement
+                                                BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+            Annexe 7: carte n°8 : Foyers de Renouée dans le secteur du Goulet
+
+
+
+
+août 2010                                  49
+                                          SPM Frag’île association agrée au titre de l’environnement
+                                        BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+            Annexe 8: carte n°9 : Foyers de Renouée à Langlade
+
+
+
+
+août 2010                          50
+                                                    SPM Frag’île association agrée au titre de l’environnement
+                                                  BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+      Annexe 9: carte n° 1 : Foyers prioritaires de Renouée dans le secteur de Savoyard
+
+
+
+
+août 2010                                    51
+                                                    SPM Frag’île association agrée au titre de l’environnement
+                                                  BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+   Annexe 10: carte n°2 : Foyers prioritaires de Renouée dans le secteur du Cap aux Basques
+
+
+
+
+août 2010                                    52
+                                                     SPM Frag’île association agrée au titre de l’environnement
+                                                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+   Annexe 11: carte n°3 : Foyers prioritaires de Renouée dans le secteur de la Pointe Blanche
+
+
+
+
+août 2010                                     53
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+   Annexe 12: carte n°4 : foyers prioritaires de Renouée aux alentours de la ville de St Pierre
+
+
+
+
+août 2010                                      54
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+    Annexe 13: carte n°5 : foyers prioritaires de Renouée dans le secteur de l’île aux Marins
+
+
+
+
+août 2010                                      55
+                                                     SPM Frag’île association agrée au titre de l’environnement
+                                                   BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+    Annexe 14: carte n°6 : Foyers prioritaires de Renouée dans le secteur de l’Anse à Pierre
+            Annexe 15: Tableau Récapitulatif concernant les Cartes Précédentes
+
+
+
+
+août 2010                                     56
+                                                       SPM Frag’île association agrée au titre de l’environnement
+                                                     BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+ Annexe 15: Arrêté préfectoral portant réglementation phytosanitaire à Saint-Pierre et Miquelon
+
+                             TITRE 1- DISPOSITIONS GENERALES
+
+ART 1- OBJECTIFS
+
+Les dispositions des articles de la réglementation phytosanitaire ont pour objet de définir les
+mesures applicables dans le territoire de Saint-Pierre et Miquelon en matière de contrôle
+sanitaire des végétaux, produits végétaux et autres objets, lors des opérations liées à
+l’importation ou à l’exportation de ces produits.
+
+Ces dispositions garantissent la protection des milieux naturels et de la diversité biologique
+de l'archipel de Saint-Pierre et Miquelon.
+
+Ces mesures de contrôles phytosanitaires s’appliquent aux importations effectuées par les
+opérateurs commerciaux, par les particuliers et voyageurs arrivant dans l’archipel par voie
+aérienne ou maritime, ainsi qu'aux importations faites sous le régime des colis postaux et
+messageries rapides présentant ou non un caractère commercial.
+
+ART 2- DEFINITIONS
+
+Pour l’application des articles du présent arrêté, les termes suivants sont définis ainsi qu’il
+suit :
+
+- « Végétaux » : il s'agit des plantes vivantes et parties vivantes de plantes, y compris les
+semences (au sens botanique du terme) destinées à être plantées. Cela concerne notamment :
+
+   •   les fruits, au sens botanique du terme, qui n’ont pas fait l'objet d'un traitement
+       thermique (surgélation, lyophilisation) ;
+   •   les légumes n’ayant pas fait l'objet d'un traitement thermique (surgélation,
+       lyophilisation) ;
+   •   les tubercules, bulbes, rhizomes ;
+   •   les fleurs et feuillages coupés ;
+   •   les branches avec ou sans feuillages ;
+   •   les arbres et arbustes en racine nue, en motte ou coupés, avec ou sans feuillages ;
+   •   les greffons ou boutures racinées ou non ;
+   •   les cultures de tissus végétaux ;
+   •   les bandes et plaques de gazon végétal ;
+   •   les fourrages et foins destinés à l'alimentation des animaux ;
+   •   le bois brut non traité.
+
+
+
+- « Produits végétaux » : il s’agit des produits d'origine végétale, non transformés ou ayant fait
+l'objet d'une préparation simple, pour autant qu'il ne s’agisse pas de végétaux définis dans la
+rubrique précédente, y compris les graines destinées à la consommation.
+
+
+
+
+août 2010                                       57
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+- « Autres objets » : cela recouvre notamment les supports de culture (terres, graviers, sables,
+terreaux, engrais organiques,…), moyens de transports (palettes de transport, etc), matériels
+d'emballages accompagnant les plantes ou autres objets.
+
+- « Organismes nuisibles » : Toutes les espèces, souches ou biotypes végétaux ou animaux, ainsi
+que d'agents pathogènes, nuisibles aux végétaux ou aux produits végétaux.
+
+- « Espèces exotiques » : désigne les espèces, sous-espèces ou taxons inférieurs, introduits
+hors de leur aire de répartition normale actuelle ou passée; comprend toute partie, gamète,
+semences, œufs ou propagules de ces espèces capables de survivre et de se reproduire
+ensuite.
+
+- « Espèces exotiques envahissantes » : désigne les espèce exotiques dont l'introduction par
+l'homme (volontaire ou accidentelle), l'implantation et la propagation menacent les
+écosystèmes, les habitats ou les espèces indigènes avec des conséquences écologiques et/ou
+économique et/ou sanitaires négatives.
+
+                   TITRE 2- INTRODUCTION DANS LE MILIEU NATUREL
+
+ART 1- Au titre de l'article L411-3 du Code de l'environnement et afin de préserver les
+équilibres biologiques des écosystèmes et la biodiversité, l'introduction dans le milieu naturel
+de spécimens vivants d'espèce animale,végétale ou aquatique non indigènes dont la liste est
+en annexe est interdite qu'il s'agisse d'une introduction intentionnelle ou accidentelle.
+
+ART 2- A titre dérogatoire, à des fins agricoles, piscicoles ou forestières ou pour des motifs
+d'intérêt général l'introduction dans le milieu naturel de spécimens d'espèces non indigènes
+ou indigènes peut être autorisée dans les conditions précisées à l'article R411-31 et suivants
+du Code de l'environnement.
+
+ART 3- l'introduction dans le milieu naturel de grand gibier et de lapins, et le prélèvement
+dans le milieu naturel d'animaux vivants d'espèces dont la chasse est autorisée sont soumis à
+autorisation préfectorale, dans des conditions et selon des modalités fixées par un arrêté
+conjoint du ministre chargé de la chasse et du ministre chargé de l'agriculture dans les
+conditions prévues à l'article L424-11 du Code de l'environnement.
+
+ART 4- Au terme de l'article L432-10 du Code de l'environnement l'introduction d'espèces
+animales et végétales dans les milieux aquatiques d'eau douce est strictement encadrée.
+
+                                  TITRE 3- IMPORTATIONS
+
+ART 1- IMPORTATIONS
+
+L'importation dans l'archipel de tous les végétaux, produits végétaux et autres objets, tels que
+définis à la sous-section 1 est interdite.
+
+ART 2- REGIME DEROGATOIRE
+
+1°- A titre dérogatoire, les importations, de végétaux et de produits végétaux doivent faire
+l'objet d'une demande d'autorisation à l'importation auprès de l'administration.
+
+
+août 2010                                      58
+                                                       SPM Frag’île association agrée au titre de l’environnement
+                                                     BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+La demande, qui comporte les mentions figurant sur le modèle consultable auprès de la
+direction des services de l'agriculture, est instruite par l'administration qui délivre ou ne
+délivre pas une autorisation d'importation phytosanitaire selon des critères prédéfinis.
+
+2°- Les critères sur lesquels l'administration fonde son approbation concernant l'importation
+sont les suivants:
+
+   •   Le spécimen végétal n'est pas susceptible de menacer les écosystèmes naturels locaux
+       au titre de son caractère envahissant et n'est pas inscrit sur les listes des espèces
+       exotiques envahissantes dont dispose l'administration.
+   •   Le spécimen végétal n'est pas susceptible de servir de vecteur à des organismes
+       nuisibles et ne représente donc pas une menace pour la flore locale.
+   •   Le spécimen végétal est répertorié dans une des annexes de la CITES et son
+       importation respecte les conditions de permis ou de certificats qui sont prévues par
+       cette même Convention.
+
+3°- L'administration dispose de toute latitude pour décider des mesures à prendre dans le cas
+de non respect des dispositions du présent article.
+
+ART 3- AUTORISATION D'IMPORTATION PHYTOSANITAIRE
+
+1°- La demande d'autorisation à l'importation doit être rédigée par l'importateur et est
+disponible auprès de la direction des services de l'agriculture. Elle doit être déposée au moins
+un mois avant la date prévue de l'importation à cette même direction des services de
+l'agriculture.
+
+2°- l'autorisation d'importation phytosanitaire est signifiée à l'importateur par la mention
+« autorisée » inscrite sur la demande. Inversement, le refus d'autorisation sera signifié par la
+mention « refusé » inscrite sur la demande.
+
+3°- l'autorisation d'importation phytosanitaire délivrée une fois vaut pour toutes les
+demandes ultérieures qui ne se sont pas à réitérer s'il s'agit de la même espèce végétale et de
+la même origine. Cette disposition est révocable à tout moment sur décision de
+l'administration.
+
+ART 4- L'importation des végétaux, produits végétaux et autres objets dans l'archipel est
+subordonnée à un contrôle exercé par les agents compétents du service de l'agriculture et à la
+présentation d'un certificat phytosanitaire.
+
+ART 5- CERTIFICAT PHYTOSANITAIRE
+
+En cas d'importation consécutive à une autorisation d'importation phytosanitaire un certificat
+phytosanitaire doit accompagner le végétal ou produit végétal. Un certificat est exigible à
+chaque importation et doit porter les mentions figurant sur le modèle consultable auprès de
+la direction des services de l'agriculture.
+
+ART 6- LES CONTRÔLES PHYTOSANITAIRES
+
+
+
+
+août 2010                                       59
+                                                       SPM Frag’île association agrée au titre de l’environnement
+                                                     BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+1°- Les contrôles phytosanitaires sont nécessaires pour vérifier l'identité des végétaux,
+produits et autres objets, le respect des exigences sanitaires générales ainsi que pour
+s'assurer que les végétaux, produits végétaux et autres objets sont exempts d'organismes
+nuisibles aux végétaux.
+
+2°- Les importateurs ou leurs représentants sont tenus de fournir aux agents chargés des
+contrôles l'aide nécessaire à la réalisation des inspections. Ils doivent procéder au
+déchargement des marchandises et prendre en charge toutes les mesures conservatrices pour
+assurer le stockage des celles-ci, le cas échéant sous température dirigée.
+
+ART 7- 1°-Les contrôles phytosanitaires sont opérés dans les bureaux de douane.
+
+2°- A leur entrée dans l'archipel, le certificat phytosanitaire et l'autorisation d'importation
+phytosanitaire sont contrôlés par un agent de l'État compétent pour les contrôles
+phytosanitaires qui valide ces documents par mention sur le certificat phytosanitaire. Lors
+des opérations de dédouanement cette validation est vérifiée par les agents des douanes
+préalablement à la décision d'autorisation ou de refus de délivrance de la marchandise.
+
+ART 8- EXCEPTIONS
+
+1°- En dérogation à l'article 2, 4 et 5, les importations de petites quantités de végétaux et
+produits végétaux de Terre-Neuve effectuées par des particuliers ne sont ni soumises à
+l'obligation d'une demande d'autorisation à l'importation, ni à l'obligation d'un certificat
+phytosanitaire sous réserve de faire l'objet d'une déclaration en douane.
+
+Néanmoins des contrôles phytosanitaires pourront être effectués selon les termes des articles
+6 et 7.
+
+2°- En dérogation à l'article 2, 4 et 5, les importations de bois de Terre-Neuve ne sont ni
+soumises à l'obligation d'une demande d'autorisation à l'importation, ni à l'obligation d'un
+certificat phytosanitaire.
+
+Néanmoins des contrôles phytosanitaires pourront être effectués selon les termes des articles
+6 et 7.
+
+3°- En dérogation à l'article 2, fleurs et feuillages coupées ne sont pas concernés par la
+demande d'autorisation à l'importation.
+
+Néanmoins, fleurs et feuillages coupés sont soumis à l'obligation du certificat phytosanitaire
+selon les modalités prévues à l'article 5 et sont susceptibles de faire l'objet d'un contrôle
+phytosanitaire selon les modalités prévues à l'article 6 et 7.
+
+ART 9- MESURES COMPLEMENTAIRES
+
+1°- Lorsque les conditions d'importation, fixées par les dispositions des articles 2 à 8 qui
+précèdent, ne sont pas respectées, l'agent chargé des contrôles phytosanitaires ou
+l'administration peut prendre toute décision jugée nécessaire et appropriée à la situation
+particulière en prévoyant d'ordonner, notamment, des mesures de refoulement, de
+destruction, de congélation, de mise en quarantaine, de mise en consigne, de désinfection, de
+
+
+août 2010                                       60
+                                                      SPM Frag’île association agrée au titre de l’environnement
+                                                    BP 4421, 97 500 St Pierre et Miquelon, spm.fragile@yahoo.fr
+
+
+désinsectisation, de tri ou d'utilisation industrielle des produits concernés aux frais de
+l'importateur.
+
+
+  2°- Les services de l'agriculture informent dans les meilleurs délais le service concerné du
+    pays expéditeur des mesures d'interception des produits du fait d'interdictions ou de
+                                  restrictions phytosanitaires.
+
+
+
+
+août 2010                                      61
+

@@ -1,0 +1,43 @@
+{
+  "code": "MP",
+  "name": "Northern Mariana Islands",
+  "status": "permit_required",
+  "rule": "CNMI Administrative Code 85-60.2-204(a) requires an import permit for plant products; the broad definitions in 010(qq)/(ss) include leaves and manufactured plant material. Applying those provisions to finished sencha is a reasoned general-category interpretation. Section 238 makes dried food admissible subject to pest freedom but does not waive the permit. The phytosanitary-certificate list in section 202(a) does not describe finished tea.",
+  "personalMailApplicability": "The permit provision applies to any person importing the covered goods, and section 501 expressly applies the same regulations to postal entry. No resale or commercial-importer condition is used. A traveler food FAQ is not treated as a postal permit exemption.",
+  "quantityLimit": null,
+  "authority": "CNMI Law Revision Commission; Customs and Quarantine",
+  "evidenceUrls": [
+    "https://cnmilaw.gov/docs/admincode/T85/T85-60.2.pdf",
+    "https://www.finance.gov.mp/customs-quarantine.php",
+    "https://www.finance.gov.mp/cus-import-requirements.php",
+    "https://www.fda.gov/media/161541/download",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+  ],
+  "remainingQuestion": null,
+  "researchAttempts": [
+    "Read current CNMI administrative code 85-60.2, especially sections 201/202/204/238, and Customs USPS guidance. Dried food is admitted subject to inspection, but permit classification remains unclear.",
+    "2026-09-30: Re-read full saved CNMI plant quarantine regulations, sections 010, 201–204, 206 and 238. Dried foods are admissible subject to inspection, but general plant-material permit scope includes manufactured plant origin; section 238 does not expressly waive permits. Current CNMI Customs processed/prepackaged-food FAQ is explicitly traveler-only and therefore does not resolve a mailed purchase.",
+    "2026-09-30: Read current CNMI Department of Finance import-requirements page in full. It lists plants as permit-required and separately discusses excise-tax personal allowances. Neither the plant summary nor the tax allowance determines manufactured dried-tea status; no postal food-permit waiver published there.",
+    "30 September bounded legal-scope peer review: Section 238 admits stored dried foods subject to inspection; 202(a) lists certificate categories without dried tea. Section 204(a) nevertheless states a permit duty for any plant/product/soil importer. Section 108(b) separately says permitted-entry plants can still require permits, showing that admissibility alone does not negate paperwork. Section 010(ss) expressly includes manufactured goods in plant material, but 204 does not use that defined term: it says plant, product, or soil. Equating every manufactured plant material with a permit-required product would be an additional scope inference. The non-regulated-article exception in 201 supplies no finished-food classification. Section 501 establishes postal scope, with inspection/treatment subject to the same regulations.",
+    "30 September root fresh food-scope check: Read the full official43-page FDA Edition4 Q&A online and exact question10.2 on PDFpage12. Kept the direct-territory prior-notice exclusion separate from local agricultural permits. Current eCFR open failed and FDA’s old CFR search page returned no section text; neither was represented as recovered regulatory text.",
+    "30 September finished-tea definition review, superseding the earlier unresolved scope inference: The better reading excludes a completely permit-free route. Section 204(a) expressly requires an import permit for a plant or product. In its plant-quarantine context, product reasonably includes manufactured tea without needing a separate bespoke commodity ruling or exact equivalence to the defined term plant material. Section 010(qq) includes leaves without a living/raw limit and 010(ss) expressly includes manufactured plant-origin items. Unlike Guam, these definitions supply no general processing exclusion. Section 238 permits dried food entry subject to pest freedom; it does not waive the independently imposed permit. Section 201 exempts non-regulated articles, not every admissible food. The ISPM32 tea example supports a low-risk factual classification but is not incorporated as an exemption from this affirmative local permit duty. Section 010(cc) allows an import permit to be written or oral. Section 108(a) requires both oral and written permits for its specified higher-control plant shipments and describes an application route; it does not prove that this 100 g pouch necessarily requires a written permit or an advance application. Nonetheless an oral permit remains an authorization under the separate permit duty, not an automatic synonym for customs declaration or inspection. Sections 104/116/204/501 distinguish declaration, permit compliance, inspection and release. No retrieved provision makes ordinary postal inspection automatically satisfy the permit. The proposed exclusion rests on the user refusing permits at all, not on inventing a mandatory foreign certificate or claiming every permit must be written. Full analysis and source excerpts saved in pacific-finished-tea-definition-review/."
+  ],
+  "reviewedAt": "2026-09-30",
+  "permitFreeDecision": "not_supported",
+  "permitFreeReason": "The better reading excludes a completely permit-free route. Section 204(a) expressly requires an import permit for a plant or product. In its plant-quarantine context, product reasonably includes manufactured tea without needing a separate bespoke commodity ruling or exact equivalence to the defined term plant material. Section 010(qq) includes leaves without a living/raw limit and 010(ss) expressly includes manufactured plant-origin items. Unlike Guam, these definitions supply no general processing exclusion. Section 238 permits dried food entry subject to pest freedom; it does not waive the independently imposed permit. Section 201 exempts non-regulated articles, not every admissible food. The ISPM32 tea example supports a low-risk factual classification but is not incorporated as an exemption from this affirmative local permit duty. Section 010(cc) allows an import permit to be written or oral. Section 108(a) requires both oral and written permits for its specified higher-control plant shipments and describes an application route; it does not prove that this 100 g pouch necessarily requires a written permit or an advance application. Nonetheless an oral permit remains an authorization under the separate permit duty, not an automatic synonym for customs declaration or inspection. Sections 104/116/204/501 distinguish declaration, permit compliance, inspection and release. No retrieved provision makes ordinary postal inspection automatically satisfy the permit. The proposed exclusion rests on the user refusing permits at all, not on inventing a mandatory foreign certificate or claiming every permit must be written.",
+  "permitFreeSources": [
+    "https://cnmilaw.gov/docs/admincode/T85/T85-60.2.pdf",
+    "https://www.finance.gov.mp/customs-quarantine.php",
+    "https://www.finance.gov.mp/faq.php",
+    "https://www.finance.gov.mp/cus-import-requirements.php",
+    "https://www.fda.gov/media/161541/download",
+    "https://www.gov.si/assets/organi-v-sestavi/UVHVVR/Zdravje-rastlin/IZVOZ-rastline/mednarodni-standardi-ISPM/ISPM_32_2009_En_2015-12-22_PostCPM10_InkAmReformatted.pdf",
+    "https://www.maff.go.jp/j/pr/aff/2204/spe1_02.html"
+  ],
+  "foodImportReview": "FDA Prior Notice Q&A Edition 4 (October 2023), question 10.2, excludes direct food imports into Guam and the Northern Mariana Islands from prior notice under 21 CFR 1.276(b)(15). It separately requires notice when food enters the 50 states, DC or Puerto Rico, including transit. This does not waive the territory’s own plant-quarantine rules. This assessment is limited to direct entry into the territory.",
+  "permitFreeReviewedAt": "2026-09-30",
+  "paperworkType": "import_permit",
+  "requiredDocument": "Import permit or agency authorization under section 204(a). Section 010(cc) permits oral or written authorization, so a written or advance permit is not asserted for every small tea parcel. No phytosanitary certificate is inferred for tea from section 202(a).",
+  "definitionReview": "Proposed for independent root review; see pacific-finished-tea-definition-review/review-notes.json. The outcome follows the no-permits constraint, with oral-permit qualification retained."
+}

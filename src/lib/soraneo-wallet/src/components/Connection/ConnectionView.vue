@@ -132,6 +132,11 @@ export default {
     ImportAccountStep,
   },
   props: {
+    /** Explicit entry from the Google wallet button; absent for normal account selection. */
+    initialWallet: {
+      default: null,
+      type: String as PropType<AppWallet.GoogleDrive | null>,
+    },
     chainApi: {
       required: true,
       type: Object as PropType<WithKeyring>,
@@ -146,7 +151,7 @@ export default {
     },
     loginAccount: {
       default: () => {},
-      type: Function as PropType<(account: PolkadotJsAccount) => Promise<void>>,
+      type: Function as PropType<(account: PolkadotJsAccount) => Promise<void | boolean>>,
     },
     logoutAccount: {
       default: () => {},
@@ -173,6 +178,8 @@ export default {
     const selectedWalletLoading = ref(false);
     const accounts = ref<PolkadotJsAccount[]>([]);
     const accountsSubscription = ref<Nullable<VoidFunction>>(null);
+    let accountsSubscriptionGeneration = 0;
+    let disposed = false;
     const wcName = ref('');
     const recommendedWallets = RecommendedWallets;
 
@@ -282,8 +289,13 @@ export default {
     };
 
     const resetWalletAccountsSubscription = (): void => {
+      accountsSubscriptionGeneration += 1;
       accountsSubscription.value?.();
       accountsSubscription.value = null;
+    };
+
+    const isCurrentWalletSelection = (wallet: AppWallet, generation: number): boolean => {
+      return generation === accountsSubscriptionGeneration && selectedWallet.value === wallet;
     };
 
     const updateWcWallet = async (): Promise<void> => {
@@ -399,7 +411,14 @@ export default {
         await withLoading(async () => {
           await withAppAlert(async () => {
             await checkExternalAccount(account);
-            await props.loginAccount(account);
+            const selected = await props.loginAccount(account);
+
+            // A consumer can reject the selection after the account row was
+            // clicked (for example, while its chain connection is not ready).
+            // Keep that consumer's recovery dialog/state intact instead of
+            // unconditionally closing the connection flow.
+            if (selected === false) return;
+
             initMultisigAddress();
             resetStep();
             props.closeView();
@@ -408,12 +427,22 @@ export default {
       }
     };
 
-    const subscribeToWalletAccountsFn = async (): Promise<void> => {
-      if (!selectedWallet.value) return;
-
-      accountsSubscription.value = await subscribeToWalletAccounts(props.chainApi, selectedWallet.value, (items) => {
-        accounts.value = items;
+    const subscribeToWalletAccountsFn = async (wallet: AppWallet, generation: number): Promise<boolean> => {
+      const unsubscribe = await subscribeToWalletAccounts(props.chainApi, wallet, (items) => {
+        if (isCurrentWalletSelection(wallet, generation)) {
+          accounts.value = items;
+        }
       });
+
+      if (!isCurrentWalletSelection(wallet, generation)) {
+        unsubscribe?.();
+        return false;
+      }
+
+      accountsSubscription.value?.();
+      accountsSubscription.value = unsubscribe;
+
+      return true;
     };
 
     const setSelectedWallet = (wallet: Nullable<AppWallet> = null): void => {
@@ -424,20 +453,29 @@ export default {
       selectedWalletLoading.value = flag;
     };
 
-    const selectWallet = async (wallet: AppWallet): Promise<void> => {
+    const selectWallet = async (wallet: AppWallet): Promise<boolean> => {
+      resetWalletAccountsSubscription();
+      const generation = accountsSubscriptionGeneration;
+
       try {
-        resetWalletAccountsSubscription();
         setSelectedWallet(wallet);
         setSelectedWalletLoading(true);
 
         await getWallet(wallet);
-        await subscribeToWalletAccountsFn();
+
+        if (!isCurrentWalletSelection(wallet, generation)) return false;
+
+        return subscribeToWalletAccountsFn(wallet, generation);
       } catch (error) {
+        if (!isCurrentWalletSelection(wallet, generation)) return false;
+
         console.error(error);
         resetSelectedWallet();
         throw error;
       } finally {
-        setSelectedWalletLoading(false);
+        if (isCurrentWalletSelection(wallet, generation)) {
+          setSelectedWalletLoading(false);
+        }
       }
     };
 
@@ -445,8 +483,11 @@ export default {
       if (!wallet.installed) return;
 
       await withAppAlert(async () => {
-        await selectWallet(wallet.extensionName as AppWallet);
-        navigateToAccountList();
+        const selected = await selectWallet(wallet.extensionName as AppWallet);
+
+        if (selected) {
+          navigateToAccountList();
+        }
       });
     };
 
@@ -535,12 +576,17 @@ export default {
       }
     });
 
-    onMounted(() => {
+    onMounted(async () => {
       resetStep();
-      void updateWallets();
+      await updateWallets();
+      if (!disposed && props.initialWallet === AppWallet.GoogleDrive) {
+        const google = availableWallets.value.find((wallet: Wallet) => wallet.extensionName === AppWallet.GoogleDrive);
+        if (google?.installed) await handleWalletSelect(google);
+      }
     });
 
     onBeforeUnmount(() => {
+      disposed = true;
       resetSelectedWallet();
     });
 

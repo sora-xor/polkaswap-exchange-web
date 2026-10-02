@@ -84,9 +84,8 @@ const { baseValue, quoteValue, side, baseAsset, quoteAsset } = useOrderBook();
 const networkFees = computed(() => (walletStore.networkFees as NetworkFeesObject) ?? ({} as NetworkFeesObject));
 
 const xorSymbol = XOR.symbol;
-const networkFee = computed<CodecString>(
-  () => networkFees.value[Operation.OrderBookPlaceLimitOrder] ?? ZeroStringValue
-);
+const networkFeeOperation = computed(() => (props.isMarketType ? Operation.Swap : Operation.OrderBookPlaceLimitOrder));
+const networkFee = computed<CodecString>(() => networkFees.value[networkFeeOperation.value] ?? ZeroStringValue);
 
 const baseSymbol = computed(() => baseAsset.value.symbol);
 const quoteSymbol = computed(() => quoteAsset.value.symbol);

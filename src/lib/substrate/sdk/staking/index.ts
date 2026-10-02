@@ -168,10 +168,10 @@ export class StakingModule<T> {
 
   /**
    * The minimum active bond to become and maintain the role of a nominator.
-   * @returns min bond
+   * @returns minimum bond as a codec string, preserving the full runtime balance precision
    */
-  public async getMinNominatorBond(): Promise<number> {
-    return (await this.root.api.query.staking.minNominatorBond()).toNumber();
+  public async getMinNominatorBond(): Promise<CodecString> {
+    return (await this.root.api.query.staking.minNominatorBond()).toString();
   }
 
   /**

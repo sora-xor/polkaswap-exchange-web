@@ -1,6 +1,6 @@
 import { KnownAssets, XOR } from '@sora-substrate/sdk/build/assets/consts';
 import { BridgeNetworkType } from '@sora-substrate/sdk/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
+import { LiberlandAssetType, SubNetworkId } from '@sora-substrate/sdk/build/bridgeProxy/sub/consts';
 import { defineStore } from 'pinia';
 
 import { ZeroStringValue } from '@/consts';
@@ -22,16 +22,82 @@ const buildInitialState = (): AssetsState => ({
   registeredAssetsFetching: false,
 });
 
+type RegisteredAssetsRequest = Readonly<{
+  id: number;
+  networkType: Nullable<BridgeNetworkType>;
+  networkSelected: unknown;
+}>;
+
+const registeredAssetsRequests = new WeakMap<object, RegisteredAssetsRequest>();
+let registeredAssetsRequestId = 0;
+
+/** Captures the network selection that owns a registry refresh. */
+const beginRegisteredAssetsRequest = (store: object): RegisteredAssetsRequest => {
+  const web3Store = useWeb3Store();
+  const request = Object.freeze({
+    id: ++registeredAssetsRequestId,
+    networkType: web3Store.networkType,
+    networkSelected: web3Store.networkSelected,
+  });
+
+  registeredAssetsRequests.set(store, request);
+  return request;
+};
+
+/** Prevents an older network response from replacing the active registry. */
+const isLatestRegisteredAssetsRequest = (store: object, request: RegisteredAssetsRequest): boolean =>
+  registeredAssetsRequests.get(store) === request;
+
+/** Prevents a response for an abandoned network selection from being committed. */
+const isCurrentRegisteredAssetsRequest = (store: object, request: RegisteredAssetsRequest): boolean => {
+  const web3Store = useWeb3Store();
+
+  return (
+    isLatestRegisteredAssetsRequest(store, request) &&
+    web3Store.networkType === request.networkType &&
+    web3Store.networkSelected === request.networkSelected
+  );
+};
+
 const convertRegisteredAssets = (
   entries: Record<string, BridgeRegisteredAsset>[]
 ): Record<string, BridgeRegisteredAsset> =>
   entries.reduce<Record<string, BridgeRegisteredAsset>>((buffer, asset) => ({ ...buffer, ...asset }), {});
 
-const getSubAssetIdAddress = (address: SubAssetId, network: SubNetwork): string => {
-  if (network === SubNetworkId.Liberland) {
-    const id = typeof address === 'object' ? address?.Asset?.toString() : '';
+const INTEGER_PATTERN = /^(0|[1-9]\d*)$/;
+const MAX_LIBERLAND_ASSET_ID = 4_294_967_295;
 
-    return id ?? '';
+/**
+ * Normalizes a Liberland pallet-assets ID without coercing missing metadata to native LLD.
+ */
+const getLiberlandAssetIdAddress = (address: SubAssetId): string | null => {
+  if (address === LiberlandAssetType.LLD) return '';
+  if (!address || typeof address !== 'object' || Array.isArray(address)) return null;
+  if (!Object.prototype.hasOwnProperty.call(address, LiberlandAssetType.Asset)) return null;
+
+  const rawAssetId = (address as { [LiberlandAssetType.Asset]?: unknown })[LiberlandAssetType.Asset];
+  let normalized = '';
+
+  try {
+    normalized = typeof rawAssetId === 'string' ? rawAssetId.trim() : String(rawAssetId);
+  } catch {
+    return null;
+  }
+
+  if (!INTEGER_PATTERN.test(normalized)) return null;
+
+  const assetId = Number(normalized);
+  if (!Number.isSafeInteger(assetId) || assetId > MAX_LIBERLAND_ASSET_ID) return null;
+
+  return String(assetId);
+};
+
+/**
+ * Converts a registered Substrate asset ID into the frontend address representation.
+ */
+const getSubAssetIdAddress = (address: SubAssetId, network: SubNetwork): string | null => {
+  if (network === SubNetworkId.Liberland) {
+    return getLiberlandAssetIdAddress(address);
   }
 
   return '';
@@ -76,13 +142,22 @@ const fetchSubRegisteredAssets = async (
 
   const networkAssets = await subBridgeApi.getRegisteredAssets(network);
 
-  return Object.entries(networkAssets).map(([soraAddress, assetData]) => ({
-    [soraAddress]: {
-      address: getSubAssetIdAddress(assetData.address, network),
-      decimals: assetData.decimals,
-      kind: assetData.assetKind,
-    },
-  }));
+  return Object.entries(networkAssets).flatMap(([soraAddress, assetData]) => {
+    const address = getSubAssetIdAddress(assetData.address, network);
+
+    // A missing Liberland ID is not native LLD; omit the unsafe registry entry.
+    if (address === null) return [];
+
+    return [
+      {
+        [soraAddress]: {
+          address,
+          decimals: assetData.decimals,
+          kind: assetData.assetKind,
+        },
+      },
+    ];
+  });
 };
 
 const updateEthAssetsData = async (
@@ -150,6 +225,18 @@ const updateSubAssetsData = async (
   return Object.fromEntries(updatedEntries);
 };
 
+/** Enriches a registry using only the network selection captured by its request. */
+const updateAssetsData = async (
+  assets: Record<string, BridgeRegisteredAsset>,
+  request: RegisteredAssetsRequest
+): Promise<Record<string, BridgeRegisteredAsset>> => {
+  if (request.networkType === BridgeNetworkType.Sub) {
+    return await updateSubAssetsData(assets, request.networkSelected as Nullable<SubNetwork>);
+  }
+
+  return await updateEthAssetsData(assets);
+};
+
 export const useAssetsStore = defineStore('assets', {
   state: (): AssetsState => buildInitialState(),
   getters: {
@@ -208,21 +295,33 @@ export const useAssetsStore = defineStore('assets', {
       this.registeredAssets = Object.freeze({ ...assets });
     },
     reset(): void {
+      registeredAssetsRequests.delete(this);
       this.$patch(buildInitialState());
     },
     async getRegisteredAssets(): Promise<void> {
+      const request = beginRegisteredAssetsRequest(this);
       this.setRegisteredAssetsFetching(true);
 
       try {
         const registeredAssets = await this.fetchRegisteredAssetsFromNetwork();
-        this.setRegisteredAssets(convertRegisteredAssets(registeredAssets));
-        await this.updateRegisteredAssets();
+        if (!isCurrentRegisteredAssetsRequest(this, request)) return;
+
+        const assets = convertRegisteredAssets(registeredAssets);
+        const updated = await updateAssetsData(assets, request);
+
+        if (isCurrentRegisteredAssetsRequest(this, request)) {
+          this.setRegisteredAssets(updated);
+        }
       } catch (error) {
         // Network APIs may be unavailable during boot (or in E2E stubs).
         // Fall back silently to an empty registry so the UI can still render.
-        this.setRegisteredAssets();
+        if (isCurrentRegisteredAssetsRequest(this, request)) {
+          this.setRegisteredAssets();
+        }
       } finally {
-        this.setRegisteredAssetsFetching(false);
+        if (isLatestRegisteredAssetsRequest(this, request)) {
+          this.setRegisteredAssetsFetching(false);
+        }
       }
     },
     async fetchRegisteredAssetsFromNetwork(): Promise<Record<string, BridgeRegisteredAsset>[]> {
@@ -239,22 +338,20 @@ export const useAssetsStore = defineStore('assets', {
       }
     },
     async updateRegisteredAssets(): Promise<void> {
+      const request = beginRegisteredAssetsRequest(this);
       this.setRegisteredAssetsFetching(true);
 
       try {
-        const web3Store = useWeb3Store();
         const assets = this.registeredAssets;
-        let updated = assets;
+        const updated = await updateAssetsData(assets, request);
 
-        if (web3Store.networkType === BridgeNetworkType.Sub) {
-          updated = await updateSubAssetsData(assets, web3Store.networkSelected as Nullable<SubNetwork>);
-        } else {
-          updated = await updateEthAssetsData(assets);
+        if (isCurrentRegisteredAssetsRequest(this, request)) {
+          this.setRegisteredAssets(updated);
         }
-
-        this.setRegisteredAssets(updated);
       } finally {
-        this.setRegisteredAssetsFetching(false);
+        if (isLatestRegisteredAssetsRequest(this, request)) {
+          this.setRegisteredAssetsFetching(false);
+        }
       }
     },
   },

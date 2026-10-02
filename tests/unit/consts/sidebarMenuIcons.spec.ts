@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { PageNames, PolkamarktLogo, SidebarMenuGroups } from '@/consts';
+import { BotsIcon, PageNames, PolkamarktLogo, SidebarMenuGroups, StoreBagIcon } from '@/consts';
 import { PoolPageNames } from '@/modules/pool/consts';
 import { VaultPageNames } from '@/modules/vault/consts';
 
@@ -14,8 +14,11 @@ describe('SidebarMenuGroups icons', () => {
     }));
 
     expect(menuEntries).toEqual([
+      { href: '#/store', icon: 'shopping-bag-24', iconSrc: StoreBagIcon, title: PageNames.Store },
       { href: '#/swap', icon: 'arrows-swap-90-24', title: PageNames.Swap },
+      { href: '#/buy-xor', icon: 'finance-wallet-24', title: PageNames.BuyXor },
       { href: '#/trade', icon: 'music-CD-24', title: PageNames.OrderBook },
+      { href: '#/bots', icon: 'software-terminal-24', iconSrc: BotsIcon, title: PageNames.Bots },
       {
         href: '#/polkamarkt',
         icon: 'various-lightbulb-24',

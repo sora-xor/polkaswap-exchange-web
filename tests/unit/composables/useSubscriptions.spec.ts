@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { computed, defineComponent, h, nextTick, ref } from 'vue';
@@ -129,7 +129,7 @@ describe('useSubscriptions', () => {
 
     login.value = false;
     await nextTick();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(resetSpy).toHaveBeenCalledTimes(1);
 
@@ -145,7 +145,7 @@ describe('useSubscriptions', () => {
 
     connection.value = false;
     await nextTick();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(resetSpy).toHaveBeenCalledTimes(1);
 
@@ -169,13 +169,72 @@ describe('useSubscriptions', () => {
 
     address.value = 'addr-2';
     await nextTick();
-    await Promise.resolve();
-    await Promise.resolve();
+    await flushPromises();
 
     expect(resetSpy).toHaveBeenCalledTimes(1);
     expect(startSpy).toHaveBeenCalledTimes(2);
 
     wrapper.unmount();
+  });
+
+  it('queues an account refresh behind a slow startup instead of dropping it', async () => {
+    let resolveInitialStart!: () => void;
+    const initialStart = new Promise<void>((resolve) => {
+      resolveInitialStart = resolve;
+    });
+    const startedAddresses: string[] = [];
+    const startSpy = vi.fn(async () => {
+      startedAddresses.push(address.value);
+      if (startSpy.mock.calls.length === 1) await initialStart;
+    });
+    const resetSpy = vi.fn().mockResolvedValue(undefined);
+
+    const { wrapper } = await createHarness({
+      startSubscriptions: [startSpy],
+      resetSubscriptions: [resetSpy],
+    });
+
+    await nextTick();
+    expect(startSpy).toHaveBeenCalledTimes(1);
+
+    address.value = 'addr-2';
+    await nextTick();
+    expect(resetSpy).not.toHaveBeenCalled();
+
+    resolveInitialStart();
+    await flushPromises();
+
+    expect(resetSpy).toHaveBeenCalledTimes(1);
+    expect(startSpy).toHaveBeenCalledTimes(2);
+    expect(startedAddresses).toEqual(['addr-1', 'addr-2']);
+
+    wrapper.unmount();
+  });
+
+  it('queues teardown after a pending startup when the component unmounts', async () => {
+    let resolveStart!: () => void;
+    const startSpy = vi.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveStart = resolve;
+        })
+    );
+    const resetSpy = vi.fn().mockResolvedValue(undefined);
+    const { wrapper } = await createHarness({
+      startSubscriptions: [startSpy],
+      resetSubscriptions: [resetSpy],
+    });
+
+    await nextTick();
+    expect(startSpy).toHaveBeenCalledTimes(1);
+
+    wrapper.unmount();
+    expect(resetSpy).not.toHaveBeenCalled();
+
+    resolveStart();
+    await flushPromises();
+
+    expect(resetSpy).toHaveBeenCalledTimes(1);
   });
 
   it('skips account refresh watcher when account tracking is disabled', async () => {

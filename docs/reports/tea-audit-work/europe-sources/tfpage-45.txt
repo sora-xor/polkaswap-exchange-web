@@ -1,0 +1,47 @@
+Numéros d’appel des BCR
+
+Pour obtenir le BCR situé dans les iles Australes, vous devez composer les numéros suivants
+
+Districts Téléphone
+
+Pour Crozet 02 62 00 50 23
+
+Pour Amsterdam 02 62 00 30 23
+Pour Kerguelen 02 62 00 40 23
+
+Horaires d’ouverture (heure métropolitaine - GMT+2) des BCR
+
+Le BCR est ouvert sur chaque district aux heures suivantes :
+
+Districts
+
+BCR Crozet En semaine : En semaine :
+06h30-10h01 05h30-09h00 /
+11h30-15h30 10h30-14h30
+
+Le week-end: Le week-end :
+
+06h30-10h30 / 05h30-09h30 /
+12h00-15h30 11h00-14h30
+
+BCR Amsterdam 04h30-14h00 03h30-13h00
+
+BCR Kerguelen Ensemaine: En semaine:
+04h30-15h30 03h30-14h30
+
+Le week-end : Le week-end :
+04h30-09h30 / 03h30-08h30 /
+11h00-15h30 10h00-14h30
+
+Fuseaux horaires
+
+Pour les districts de KERGUELEN et d‘AMSTERDAM (GMT+5), I’heure locale correspond a
++ 'heure métropolitaine + 3 heures (en été)
++ 'heure métropolitaine + 4 heures (en hiver)
+
+Pour le district de CROZET (GMT+4), I’heure locale correspond a
+
++ 'heure métropolitaine + 2 heures (en été)
++ 'heure métropolitaine + 3 heures (en hiver)
+
+45

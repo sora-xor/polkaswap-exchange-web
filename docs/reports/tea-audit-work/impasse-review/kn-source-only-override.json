@@ -1,0 +1,49 @@
+[
+  {
+    "code": "KN",
+    "name": "Saint Christopher and Nevis",
+    "status": "not_verified",
+    "rule": "Government guidance requires prior permits for unprocessed plant products and certificates/inspection for permitted small quantities. Its explicit dried-tea example is for exports, so it cannot establish an import requirement or exemption for sencha. Separate enacted food-law review found sale/adulteration controls and food-handler permits, not an unqualified origin certificate for private sealed food parcels.",
+    "personalMailApplicability": "General public included, but postal finished-tea classification unresolved.",
+    "quantityLimit": null,
+    "authority": "St Kitts and Nevis Department of Agriculture",
+    "evidenceUrls": [
+      "https://www.sknis.gov.kn/2020/06/26/plant-and-plant-product-import-requirements/",
+      "https://lawcommission.gov.kn/wp-content/documents/Annual-Laws/2024/ACTs/Act-10-2024-Plant-Protection-Act.pdf",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2020/08/commodities-and-their-import-requirements/",
+      "https://lawcommission.gov.kn/wp-content/documents/Act02and09TOC/Ch-09_26-Sale-of-Food-Drugs-Act.pdf",
+      "https://lawcommission.gov.kn/wp-content/documents/Revised-Acts-of-St-Kitts-and-Nevis/Revised-Acts-of-St-Kitts-and-Nevis-2020/Ch-09_21-Public-Health-Act.pdf",
+      "https://www.miticca.gov.kn/wp-content/uploads/2021/07/Import-Export-Procedures-Manual.pdf",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/4",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-requirements/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187921307_PHYTOSANITARY_REQUIREMENTS_2013042321-18En.doc",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-restrictions/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187600333_PHYTOSANITARY_RESTRICTIONS_AND_PROHIBITIONS_2013042321-18En.doc"
+    ],
+    "remainingQuestion": "Recover the applicable commodity requirements or a published processing/category rule; neither the legislation nor export guidance settles this Japanese postal sencha.",
+    "researchAttempts": [
+      "Read SKNIS plant import guidance and its permit/small-quantity passage. Distinguished its tea-export example from import permission; no manufactured-tea personal-post exemption established.",
+      "Read enacted Act 10 of 2024 (published 20 June 2024), not the 2023 draft: sections 16–17 require a permit and phytosanitary certificate for regulated articles; definition of plant product includes manufactured material only when its processing/nature creates pest risk. Section 67 repeals Cap.14.09 and schedules contain forms rather than a processed-food commodity exemption. Finished sencha classification is still not publicly established.",
+      "2026-09-30: Opened the exact IPPC 14-Aug-2020 Commodities and their Import requirements national report in a browser. Its attachment hyperlink is malformed: it points only to https://assets.ippc.int/static/media/ with no filename. The specific announced commodity schedule cannot be recovered from this official page; the report has no substantive text. This is a concrete source blocker in addition to the 2024 Act leaving finished-tea pest-risk classification unstated.",
+      "2026-09-30: Read Law Commission Sale of Food and Drugs Act Cap.9.26 (2002 revision) and Public Health Act Cap.9.21 (2020 revision), including complete Seventh Schedule Food Regulations. The latter defines food handling around selling/distributing unsealed food and preparing/storing food for sale; its permits cannot be applied to personal sealed tea. The Act’s import clause empowers regulations rather than itself prescribing a universal origin certificate. The import/export manual supplies plant controls but no definitive manufactured-tea classification. No separate food-law duty closed the current Act 10/2024 pest-risk classification gap; preserved the malformed IPPC commodity-schedule attachment as the concrete source blocker.",
+      "30 September bounded legal-scope peer review: The manufactured-product definition remains risk-qualified; the direct permit and certificate duties operate on covered articles. International-standard/science principles in sections 15–17 guide NPPO measures and application decisions, but are not themselves a self-executing tea exemption. Schedules provide forms rather than a comprehensive commodity table. The earlier government tea example concerns exports, and the announced IPPC commodity attachment is broken as already recorded.",
+      "2026-09-30 impasse audit: French/Spanish versions of the 2020 IPPC report repeat its filename-less attachment. Followed the actual Go Back link to the functioning official reporting index and recovered the older national Word notices. Report metadata dates requirements to 28 November 2005 and restrictions to 28 November 2005/updated 9 June 2006 (the 2012 page URL and 2015 asset directory are not the rule dates). The requirement concerns agricultural produce generally and says medicinal plants/herbs must be dried; the restriction concerns mangoes from named origins. Neither defines the agricultural-produce category to settle finished manufactured tea or grants a general processed-food exemption. Re-read current Act 10/2024 sections 1, 2, 16–17 and 67: 67 repeals the old Act and allows modification/revocation of earlier authorisations but supplies no commodity classification. Even assuming the old summary remains relevant, it does not resolve the current risk-qualified manufactured-product definition. Saved source files, metadata and provenance under impasse-review/."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "Recover the applicable commodity requirements or a published processing/category rule; neither the legislation nor export guidance settles this Japanese postal sencha.",
+    "permitFreeSources": [
+      "https://www.sknis.gov.kn/2020/06/26/plant-and-plant-product-import-requirements/",
+      "https://lawcommission.gov.kn/wp-content/documents/Annual-Laws/2024/ACTs/Act-10-2024-Plant-Protection-Act.pdf",
+      "https://lawcommission.gov.kn/wp-content/documents/Act02and09TOC/Ch-09_26-Sale-of-Food-Drugs-Act.pdf",
+      "https://lawcommission.gov.kn/wp-content/documents/Revised-Acts-of-St-Kitts-and-Nevis/Revised-Acts-of-St-Kitts-and-Nevis-2020/Ch-09_21-Public-Health-Act.pdf",
+      "https://www.miticca.gov.kn/wp-content/uploads/2021/07/Import-Export-Procedures-Manual.pdf",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/4",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-requirements/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187921307_PHYTOSANITARY_REQUIREMENTS_2013042321-18En.doc",
+      "https://www.ippc.int/en/countries/saint-kitts-and-nevis/reportingobligation/2012/12/phytosanitary-restrictions/",
+      "https://assets.ippc.int/static/media/files/reportingobligation/2015/04/10/1133187600333_PHYTOSANITARY_RESTRICTIONS_AND_PROHIBITIONS_2013042321-18En.doc"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  }
+]

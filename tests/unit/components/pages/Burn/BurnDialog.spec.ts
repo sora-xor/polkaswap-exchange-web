@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Operation } from '@sora-substrate/sdk';
@@ -20,6 +20,7 @@ const transactionMocks = vi.hoisted(() => ({
   loading: { value: false },
   withNotifications: vi.fn(async (handler: () => Promise<unknown> | unknown) => {
     await handler();
+    return { submitted: true };
   }),
 }));
 
@@ -297,6 +298,24 @@ describe('BurnDialog (pages)', () => {
     expect(visibilityEvents).toContainEqual([false]);
   });
 
+  it('keeps burn inputs open and emits no success when submission is rejected', async () => {
+    storeMocks.networkFees[Operation.Burn] = '1';
+    storeMocks.accountXor = { balance: { transferable: '100' } };
+    transactionMocks.withNotifications.mockImplementationOnce(async (handler) => {
+      await handler();
+      return { submitted: false };
+    });
+    const wrapper = mountComponent();
+    (wrapper.vm as unknown as { handleInputField: (value: string) => void }).handleInputField('2');
+    await wrapper.vm.$nextTick();
+
+    await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
+
+    expect(walletMocks.burn).toHaveBeenCalledTimes(1);
+    expect(wrapper.emitted('confirm')).toBeUndefined();
+    expect(wrapper.emitted('update:visible')).toBeUndefined();
+  });
+
   it('burns with a SORA Nexus recipient remark when required', async () => {
     storeMocks.networkFees[Operation.BurnWithRemark] = '2';
     storeMocks.accountXor = { balance: { transferable: '100' } };
@@ -306,6 +325,7 @@ describe('BurnDialog (pages)', () => {
     (wrapper.vm as unknown as { handleInputField: (value: string) => void }).handleInputField('2');
     (wrapper.vm as unknown as { nexusRecipient: string }).nexusRecipient = validNexusRecipient;
     await wrapper.vm.$nextTick();
+    await wrapper.find('[data-testid="nexus-access-acknowledgement"]').setValue(true);
 
     await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
     await wrapper.vm.$nextTick();
@@ -323,6 +343,66 @@ describe('BurnDialog (pages)', () => {
       type: 'soraNexusXorClaim',
       version: 1,
       recipient: validNexusRecipient,
+    });
+  });
+
+  it('prefills a validated generator address when opened and clears it for an ordinary reopen', async () => {
+    const wrapper = mountComponent({
+      visible: false,
+      requiresNexusRecipient: true,
+      initialNexusRecipient: validNexusRecipient,
+    });
+    await wrapper.setProps({ visible: true });
+    await flushPromises();
+
+    expect((wrapper.find('.nexus-input').element as HTMLInputElement).value).toBe(validNexusRecipient);
+    expect((wrapper.find('[data-testid="nexus-access-acknowledgement"]').element as HTMLInputElement).checked).toBe(
+      false
+    );
+    await wrapper.find('[data-testid="nexus-access-acknowledgement"]').setValue(true);
+
+    await wrapper.setProps({ visible: false, initialNexusRecipient: '' });
+    await wrapper.setProps({ visible: true });
+    await flushPromises();
+    expect((wrapper.find('.nexus-input').element as HTMLInputElement).value).toBe('');
+    expect((wrapper.find('[data-testid="nexus-access-acknowledgement"]').element as HTMLInputElement).checked).toBe(
+      false
+    );
+  });
+
+  it('requires recovery access confirmation for any Nexus recipient and resets it when the recipient changes', async () => {
+    const otherRecipient = 'sorauﾛ1PaQｽGh1ｴ6pAﾜnqｸfJuｿMﾑVqﾏvQﾐﾚｼｾﾋaﾈｳﾊc1ｺﾊ1GGM2D';
+    storeMocks.accountXor = { balance: { transferable: '100' } };
+
+    const wrapper = mountComponent({ requiresNexusRecipient: true });
+    (wrapper.vm as unknown as { handleInputField: (value: string) => void }).handleInputField('2');
+    (wrapper.vm as unknown as { nexusRecipient: string }).nexusRecipient = validNexusRecipient;
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.find('.confirm-button').text()).toBe('burnPage.confirmNexusRecovery');
+    expect(wrapper.find('.confirm-button').attributes('disabled')).toBeDefined();
+    await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
+    expect(walletMocks.burnWithRemark).not.toHaveBeenCalled();
+
+    await wrapper.find('[data-testid="nexus-access-acknowledgement"]').setValue(true);
+    expect(wrapper.find('.confirm-button').attributes('disabled')).toBeUndefined();
+
+    (wrapper.vm as unknown as { nexusRecipient: string }).nexusRecipient = otherRecipient;
+    await wrapper.vm.$nextTick();
+    expect((wrapper.find('[data-testid="nexus-access-acknowledgement"]').element as HTMLInputElement).checked).toBe(
+      false
+    );
+    expect(wrapper.find('.confirm-button').attributes('disabled')).toBeDefined();
+    await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
+    expect(walletMocks.burnWithRemark).not.toHaveBeenCalled();
+
+    await wrapper.find('[data-testid="nexus-access-acknowledgement"]').setValue(true);
+    await (wrapper.vm as unknown as { handleConfirmBurn: () => Promise<void> }).handleConfirmBurn();
+    expect(walletMocks.burnWithRemark).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(walletMocks.burnWithRemark.mock.calls[0][2])).toEqual({
+      type: 'soraNexusXorClaim',
+      version: 1,
+      recipient: otherRecipient,
     });
   });
 

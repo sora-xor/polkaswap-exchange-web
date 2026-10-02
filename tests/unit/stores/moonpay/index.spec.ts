@@ -1,5 +1,6 @@
 import { createPinia, setActivePinia } from 'pinia';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { reactive } from 'vue';
 
 const shared = vi.hoisted(() => {
   const moonpayApi = {
@@ -22,9 +23,11 @@ const shared = vi.hoisted(() => {
   };
 });
 
-vi.mock('@/stores/wallet', () => ({
-  useWalletStore: () => shared.walletStore,
-}));
+vi.mock('@/stores/wallet', async () => {
+  const { reactive } = await import('vue');
+  shared.walletStore = reactive(shared.walletStore);
+  return { useWalletStore: () => shared.walletStore };
+});
 
 vi.mock('@/utils/ethers-util', () => ({
   __esModule: true,
@@ -126,6 +129,84 @@ describe('moonpay store', () => {
 
     expect(shared.moonpayApi.getTransactionsByExtId).not.toHaveBeenCalled();
   });
+
+  it('ignores an old account response and lets the new account fetch without waiting for it', async () => {
+    const store = useMoonpayStore();
+    store.api = shared.moonpayApi as never;
+    store.api.publicKey = 'moonpay-key';
+    let resolveOld!: (value: unknown) => void;
+    let resolveCurrent!: (value: unknown) => void;
+    shared.moonpayApi.getTransactionsByExtId
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            resolveOld = resolve;
+          })
+      )
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            resolveCurrent = resolve;
+          })
+      );
+    const old = store.getTransactions();
+    shared.walletStore.address = '5NEWACCOUNT';
+    expect(store.transactionsFetching).toBe(false);
+    const current = store.getTransactions();
+    resolveOld([{ id: 'wrong-account-completed', status: 'completed' }]);
+    await old;
+    expect(store.transactions).toEqual([]);
+    expect(store.transactionsFetching).toBe(true);
+    resolveCurrent([{ id: 'current-account' }]);
+    await current;
+    expect(store.transactions).toEqual([{ id: 'current-account' }]);
+    expect(store.transactionsFetching).toBe(false);
+    expect(shared.moonpayApi.getTransactionsByExtId).toHaveBeenNthCalledWith(2, '5NEWACCOUNT');
+  });
+
+  it('revokes a request even when the same account reconnects before its result arrives', async () => {
+    const store = useMoonpayStore();
+    store.api = shared.moonpayApi as never;
+    store.api.publicKey = 'moonpay-key';
+    let resolve!: (value: unknown) => void;
+    shared.moonpayApi.getTransactionsByExtId.mockImplementationOnce(
+      () =>
+        new Promise((done) => {
+          resolve = done;
+        })
+    );
+    const pending = store.getTransactions();
+    shared.walletStore.isLoggedIn = false;
+    shared.walletStore.isLoggedIn = true;
+    resolve([{ id: 'old-session' }]);
+    await pending;
+    expect(store.transactions).toEqual([]);
+    expect(store.transactionsFetching).toBe(false);
+  });
+
+  it.each(['publicKey', 'soraNetwork', 'instance', 'reset'])(
+    'ignores a stale provider response after %s changes',
+    async (change) => {
+      const store = useMoonpayStore();
+      store.api = reactive({ ...shared.moonpayApi, publicKey: 'old-key', soraNetwork: 'prod' }) as never;
+      let rejectOld!: (error: unknown) => void;
+      shared.moonpayApi.getTransactionsByExtId.mockImplementationOnce(
+        () =>
+          new Promise((_resolve, reject) => {
+            rejectOld = reject;
+          })
+      );
+      const pending = store.getTransactions();
+      if (change === 'reset') store.reset();
+      else if (change === 'instance') store.api = { ...shared.moonpayApi, publicKey: 'new-key' } as never;
+      else store.api[change as 'publicKey' | 'soraNetwork'] = 'changed';
+      store.transactions = [{ id: 'new-context-data' }] as never;
+      rejectOld(new Error('old request failed'));
+      await pending;
+      expect(store.transactions).toEqual([{ id: 'new-context-data' }]);
+      expect(store.transactionsFetching).toBe(false);
+    }
+  );
 
   it('loads currencies directly from the moonpay api', async () => {
     const store = useMoonpayStore();

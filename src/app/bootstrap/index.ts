@@ -1,11 +1,7 @@
 import { createApp, type App as VueApp } from 'vue';
 
 import { installRuntimePlugins, installStartupPlugins } from '@/plugins';
-import {
-  createAsyncComponent,
-  installViteCssPreloadErrorHandler,
-  loadAsyncImportWithRetry,
-} from '@/shared/ui/async';
+import { createAsyncComponent, installViteCssPreloadErrorHandler, loadAsyncImportWithRetry } from '@/shared/ui/async';
 import { shouldRenderOfflineShell } from '@/utils/env';
 import { renderOfflineShell } from '@/utils/offlineShell';
 import { registerW3mMessageGuard } from '@/security/w3mMessageGuard';
@@ -24,6 +20,8 @@ type SupportedLocale = Parameters<LangModule['setI18nLocale']>[0];
 type PreparedRuntime = {
   router: RouterModule['default'];
 };
+
+type AgentInstallStage = 'agent-api' | 'webmcp';
 
 let appShellModulePromise: Promise<AppShellModule> | null = null;
 let agentTradingModulePromise: Promise<AgentTradingModule> | null = null;
@@ -59,6 +57,23 @@ const loadRouter = (): Promise<RouterModule> => {
 const AppShell = createAsyncComponent(loadAppShell);
 
 /**
+ * Publishes a stable, non-sensitive bootstrap failure for same-origin agent
+ * diagnostics without exposing the caught error or runtime configuration.
+ */
+function emitAgentInstallFailure(stage: AgentInstallStage): void {
+  if (typeof window === 'undefined') return;
+
+  window.dispatchEvent(
+    new CustomEvent('polkaswap-agent-install-failed', {
+      detail: {
+        stage,
+        code: stage === 'webmcp' ? 'WEBMCP_INSTALL_FAILED' : 'AGENT_API_INSTALL_FAILED',
+      },
+    })
+  );
+}
+
+/**
  * Creates the app instance with the app-owned shell and global providers.
  */
 export function bootstrapApp(): VueApp {
@@ -90,11 +105,17 @@ export async function prepareAppRuntime(app: VueApp): Promise<PreparedRuntime> {
     loadAppShell(),
     setI18nLocale(getLocale() as SupportedLocale),
   ]);
-  await loadAgentTrading()
-    .then(({ installPolkaswapAgentApi }) => installPolkaswapAgentApi({ pinia }))
-    .catch((error) => {
-      console.warn('[bootstrap] Polkaswap agent API install skipped', error);
+  try {
+    const { installPolkaswapAgentApi, registerPolkaswapWebMcpTools } = await loadAgentTrading();
+    const agent = installPolkaswapAgentApi({ pinia });
+    void registerPolkaswapWebMcpTools(agent).catch((error) => {
+      emitAgentInstallFailure('webmcp');
+      console.warn('[bootstrap] Polkaswap WebMCP install skipped', error);
     });
+  } catch (error) {
+    emitAgentInstallFailure('agent-api');
+    console.warn('[bootstrap] Polkaswap agent API install skipped', error);
+  }
   await updateDocumentTitle();
 
   return { router };
@@ -141,9 +162,12 @@ export async function mountApp(): Promise<void> {
     const app = bootstrapApp();
     const { router } = await prepareAppRuntime(app);
     app.mount('#app');
-    void router.isReady().catch((error) => {
-      console.error('[bootstrap] Failed during router readiness', error);
-    });
+    void router
+      .isReady()
+      .then(() => updateDocumentTitle())
+      .catch((error) => {
+        console.error('[bootstrap] Failed during router readiness', error);
+      });
   } catch (error) {
     console.error('[bootstrap] Failed to mount application', error);
   }

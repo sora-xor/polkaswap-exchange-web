@@ -1,10 +1,12 @@
 # Polkaswap Agent API
 
-Polkaswap exposes a same-page browser automation API at `window.PolkaswapAgent`.
+Polkaswap exposes a same-page browser automation API at `window.PolkaswapAgent` and registers nine account-redacted, read-only WebMCP tools on the top-level page.
 
 Use `.well-known/polkaswap-agent.json` as the canonical discovery manifest. It links the v1 quick reference, TypeScript definitions, JSON schema, error catalog, examples, and optional browser helper client.
 
-Agents must run inside the page context. There is no server API, middleware process, MCP server, URL command mode, `postMessage` command bridge, or delegated custody layer.
+Browser API agents run inside the page context. There is no hosted server API, centralized middleware, URL command mode, `postMessage` command bridge, or delegated custody layer. Generic MCP clients can launch the source repository's local Node 26 stdio bridge with `yarn agent:mcp --profile-dir /absolute/path/to/a/dedicated/profile`.
+
+The WebMCP and local MCP surfaces expose only public capabilities/node readiness, asset discovery/resolution, swap quotes, unsigned swap plans, and pool reads. Call `polkaswap_plan_swap` (same-page `planSwap`) to resolve, quote, and obtain public SDK-call metadata without a wallet or prior manual quote. Plans always return `canExecute: false` and `requiresWallet: false`; they are not SCALE transactions and persist no executable intent. These surfaces cannot inspect wallet identity, balances, positions, or history; create an executable intent; connect a wallet; sign; submit; transfer assets; mutate liquidity; or alter portable state. Autonomous MCP execution remains disabled until the local policy-limit and kill-switch gates are complete.
 
 The safe execution loop is:
 

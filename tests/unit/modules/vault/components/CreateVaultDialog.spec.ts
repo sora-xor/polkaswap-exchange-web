@@ -3,8 +3,15 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { computed, defineComponent, h, ref } from 'vue';
 
+import CreateVaultDialog from '@/modules/vault/components/CreateVaultDialog.vue';
+
 const createVaultMock = vi.hoisted(() => vi.fn());
-const withNotificationsMock = vi.hoisted(() => vi.fn(async (handler: () => Promise<void> | void) => await handler()));
+const withNotificationsMock = vi.hoisted(() =>
+  vi.fn(async (handler: () => Promise<void> | void) => {
+    await handler();
+    return { submitted: true };
+  })
+);
 const showAppAlertMock = vi.hoisted(() => vi.fn());
 const setCollateralAddressMock = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 const setDebtAddressMock = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
@@ -450,5 +457,28 @@ describe('CreateVaultDialog.vue', () => {
       storeState.slippageTolerance
     );
     expect(wrapper.emitted('update:visible')?.pop()?.[0]).toBe(false);
+  });
+
+  it('keeps the real create-vault dialog open when submission is rejected', async () => {
+    withNotificationsMock.mockImplementationOnce(async (handler: () => Promise<void> | void) => {
+      await handler();
+      return { submitted: false };
+    });
+    const wrapper = mount(CreateVaultDialog, {
+      props: { visible: true },
+      shallow: true,
+    });
+    const exposed = (wrapper.vm as any).$?.exposed!;
+    await flushPromises();
+    exposed.collateralValue.value = '20';
+    exposed.borrowValue.value = '5';
+    await wrapper.vm.$nextTick();
+
+    expect(exposed.disabled.value, String(exposed.errorMessage.value)).toBe(false);
+    await exposed.handleCreate();
+
+    expect(createVaultMock).toHaveBeenCalledTimes(1);
+    expect(exposed.isVisible.value).toBe(true);
+    expect(wrapper.emitted('update:visible')).toBeUndefined();
   });
 });

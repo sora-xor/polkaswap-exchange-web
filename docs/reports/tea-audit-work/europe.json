@@ -1,0 +1,1426 @@
+[
+  {
+    "code": "AD",
+    "name": "Andorra",
+    "status": "not_verified",
+    "rule": "Andorra food-activities regulation Article 29 requires an origin health certificate for non-animal foods arriving from outside the EU. Articles 2 and 5 include imported and processed foods. This documentary requirement applies to the Japanese finished-tea product independently of the unresolved plant-health classification.",
+    "personalMailApplicability": "The food import provision is general and contains no personal, small-quantity or postal exception; commercial sale to a consumer is not exempted.",
+    "quantityLimit": null,
+    "authority": "Andorra official legal portal, 2013 phytosanitary regulation and 2021 annex amendment",
+    "evidenceUrls": [
+      "https://www.portaljuridicandorra.ad/R20130612A_1",
+      "https://www.portaljuridicandorra.ad/R20210203A",
+      "https://www.portaljuridicandorra.ad/R20000712E"
+    ],
+    "remainingQuestion": "No certificate-free personal-post exception was established; do not use this destination under the store’s no-special-documents policy.",
+    "researchAttempts": [
+      "Read the plant-product definitions and certificate annex in the official phytosanitary regulation.",
+      "Searched Andorran agriculture and customs guidance for tea and private postal imports; did not establish a finished-tea exception.",
+      "Read the full consolidated food-activities regulation, including scope, processed-food definition, Article 29 health-certificate requirement and the complete text for personal-use exemptions."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "Article 29 of the consolidated food-activities regulation requires an origin health certificate for non-animal foods imported from a non-EU country. Its definitions include manufactured foods and its scope covers imported foods generally; no small personal-post exemption is stated. This requirement alone conflicts with the store’s no-certificates policy.",
+    "permitFreeSources": [
+      "https://www.portaljuridicandorra.ad/R20000712E"
+    ]
+  },
+  {
+    "code": "AL",
+    "name": "Albania",
+    "status": "allowed",
+    "rule": "Legal classification inference: Order 461 of 12 May 2025 replaced the certificate commodity annex under Order 113/2022. Annex IX Part B lists ex 090210/ex 090220 only as fresh, whole, uncut, unfermented green tea. Manufactured steamed/dried retail sencha is outside that description.",
+    "personalMailApplicability": "The commodity-based certificate schedule governs imports generally, so this conclusion applies to personal postal tea and does not rely on a baggage allowance.",
+    "quantityLimit": null,
+    "authority": "Albanian Ministry of Agriculture; Official Gazette 97 of 4 June 2025, Order 461/2025, amending Order 113/2022",
+    "evidenceUrls": [
+      "https://aku.gov.al/wp-content/uploads/2025/06/FZ-2025-97.pdf",
+      "https://www.maff.go.jp/pps/j/search/ekuni/eu/albania/index.html",
+      "https://www.dogana.gov.al/c/226/blerjet-online"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked Law 105/2016 and the trade portal’s import-control description.",
+      "Checked the 2025 EU report: new Law 40/2025 does not apply until June 2027, so its future EU alignment cannot establish today’s exemption.",
+      "Searched for a tea-specific current rule and postal personal-use exemption without finding an authoritative determination.",
+      "Read Order 461/2025 effective 30 days after gazette publication; checked fresh-tea-only entry on printed page 14345 and the complete commodity certificate annex. This is current implementing law under Law 105/2016, not reliance on the future 2027 law."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The current implementing certificate schedule controls fresh tea leaves only; sealed steamed/dried sencha does not fit that regulated commodity. This rule applies to import consignments generally, including private postal orders. Ordinary customs declarations remain required.",
+    "permitFreeSources": [
+      "https://aku.gov.al/wp-content/uploads/2025/06/FZ-2025-97.pdf",
+      "https://www.maff.go.jp/pps/j/search/ekuni/eu/albania/index.html",
+      "https://www.dogana.gov.al/c/226/blerjet-online"
+    ]
+  },
+  {
+    "code": "AT",
+    "name": "Austria",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "AX",
+    "name": "Åland",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "BA",
+    "name": "Bosnia and Herzegovina",
+    "status": "allowed",
+    "rule": "Legal classification inference: the complete List V Part B in Rulebook 48/2013 does not list finished tea; Camellia entries elsewhere concern plants for planting. Rulebook 59/2011 ties mandatory plant import documentation to that list. The country’s postal return explicitly exempts personal home-use tea quantities from sanitary and market-inspection certificates.",
+    "personalMailApplicability": "The UPU return specifically covers international postal tea consignments. Rulebook 59/2011 Articles 5(3) and 6(2) separately exclude postal consignments from importer pre-notification/application, assigning any required referral to Customs.",
+    "quantityLimit": null,
+    "authority": "Bosnia and Herzegovina Plant Health Protection Administration; Rulebooks 48/2013 and 59/2011; country UPU return",
+    "evidenceUrls": [
+      "https://www.gov.pl/attachment/dc8d188a-6c8b-4ede-8a9b-a1cff6092869",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=3370&reporeid=290",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=1271&reporeid=290",
+      "https://slpost.gov.lk/documents/ListOfProhibitedArticles2025-09-25.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read UPU country return tea row on PDFp 21; checked Bosnia customs guidance and separated its traveller-only fresh-plant allowances.",
+      "Read the complete current published certificate commodity annex rather than inferring from generic plant-import warnings; checked separate postal/food-control provisions."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeReason": "Finished food tea is outside the complete certificate-controlled commodity list; the personal-post tea entry also expressly waives sanitary/market certificates. Postal consignments have no importer phytosanitary pre-notification/application under Articles 5(3)/6(2). Keep quantities credibly for one recipient’s home consumption; no numerical tea cap is specified.",
+    "permitFreeDecision": "supported",
+    "permitFreeSources": [
+      "https://www.gov.pl/attachment/dc8d188a-6c8b-4ede-8a9b-a1cff6092869",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=3370&reporeid=290",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?menuid=28&downloadid=1271&reporeid=290",
+      "https://slpost.gov.lk/documents/ListOfProhibitedArticles2025-09-25.pdf"
+    ]
+  },
+  {
+    "code": "BE",
+    "name": "Belgium",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "BG",
+    "name": "Bulgaria",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "BY",
+    "name": "Belarus",
+    "status": "allowed",
+    "rule": "The EAEU regulated-product list expressly excludes consumer-packaged green and black tea from the corresponding phytosanitary-control entries. Sealed 100 g retail packs of plain sencha meet that commodity/packaging description.",
+    "personalMailApplicability": "The exclusion is commodity-based and applies to imports by post as well as other transport; no passenger allowance is being used.",
+    "quantityLimit": null,
+    "authority": "Eurasian Economic Commission common quarantine list applicable in Belarus",
+    "evidenceUrls": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the official EEC list entries 090210/090220 and their consumer-packaging exclusion; checked the shared source downloaded by Asia audit."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The EAEU regulated-product list expressly excludes consumer-packaged green and black tea from the corresponding phytosanitary-control entries. Sealed 100 g retail packs of plain sencha meet that commodity/packaging description. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://eec.eaeunion.org/upload/medialibrary/60f/x9vhmm3gi76102uwhqlv7iffol64r6lo/Perechen-produktsii.pdf"
+    ]
+  },
+  {
+    "code": "CH",
+    "name": "Switzerland",
+    "status": "allowed",
+    "rule": "Processed plant products, explicitly including dried tea, need no phytosanitary certificate or phytosanitary inspection. Switzerland and Liechtenstein share the plant-health import system.",
+    "personalMailApplicability": "FOAG gives a general processed-products exemption on its import page, which separately addresses postal/courier consignments; it is not only a passenger allowance.",
+    "quantityLimit": null,
+    "authority": "Swiss Federal Office for Agriculture",
+    "evidenceUrls": [
+      "https://www.blw.admin.ch/en/importing-plants"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked the processed-product exemption and CH–LI common plant-health regime."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Processed plant products, explicitly including dried tea, need no phytosanitary certificate or phytosanitary inspection. Switzerland and Liechtenstein share the plant-health import system. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.blw.admin.ch/en/importing-plants"
+    ]
+  },
+  {
+    "code": "CY",
+    "name": "Cyprus",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "CZ",
+    "name": "Czech Republic",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "DE",
+    "name": "Germany",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "DK",
+    "name": "Denmark",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "EE",
+    "name": "Estonia",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "EG",
+    "name": "Egypt",
+    "status": "conditional",
+    "rule": "Plant Quarantine Regulation 562/2019 Annex 10 item 11 exempts personal-use consignments of admissible items weighing no more than 50 kg from both import permits and phytosanitary certificates, excluding propagation material. CAPQ’s current commodity/origin database lists Japan (83), Tea Tree/Green Tea (955) with entry requirements, confirming this product/origin is admitted.",
+    "personalMailApplicability": "Regulation 562 explicitly covers imported postal parcels, and Annex 10 item 11 covers personal-use consignments rather than only passenger baggage. The general database’s certificate/permit requirements are displaced by this specific personal-use exemption. Pests must still be absent and arrival inspection remains possible.",
+    "quantityLimit": {
+      "netGrams": 50000,
+      "inclusive": true,
+      "scope": "Personal-use consignment exemption from permit and phytosanitary certificate; applies only to items already allowed to be imported."
+    },
+    "authority": "Egypt Central Administration of Plant Quarantine: NPPO-published Regulation 562/2019 and current import-conditions database",
+    "evidenceUrls": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/09/24/eg3-2019-562pqreg_en.pdf",
+      "https://site.capq.gov.eg/ImportingProcedure/Index",
+      "https://site.capq.gov.eg/ImportingProcedure/GetItemsByInitiator?ImInitiatorID=83",
+      "https://site.capq.gov.eg/ImportingProcedure/GetConstraints?ImInitiatorID=83&ItemID=955"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read NPPO-published regulation’s postal scope and Annex 10 item 11; searched the regulation for tea-specific restrictions and did not find a product entry.",
+      "Queried the live official CAPQ public import database after resolving its certificate-chain retrieval problem: Japan id 83 returns Tea Tree/Green Tea id 955; the corresponding conditions describe pest-free green tea and standard certificate/permit fields. Combined affirmative origin/commodity admission with the specific Annex 10(11) personal-use waiver, rather than imposing standard commercial requirements on the private recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The personal-consignment exemption waives both permit and phytosanitary certificate up to 50 kg for admitted non-propagating products. The current CAPQ database now supplies the missing admissibility evidence for Japanese green tea. A sealed 100 g sencha packet for private consumption fits the scope; normal postal/customs declarations and possible official inspection remain.",
+    "permitFreeSources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2021/09/24/eg3-2019-562pqreg_en.pdf",
+      "https://site.capq.gov.eg/ImportingProcedure/Index",
+      "https://site.capq.gov.eg/ImportingProcedure/GetItemsByInitiator?ImInitiatorID=83",
+      "https://site.capq.gov.eg/ImportingProcedure/GetConstraints?ImInitiatorID=83&ItemID=955"
+    ]
+  },
+  {
+    "code": "ES",
+    "name": "Spain",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "FI",
+    "name": "Finland",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "FO",
+    "name": "Faroe Islands",
+    "status": "allowed",
+    "rule": "TAKS expressly permits food ordered online by private individuals; doubtful consignments go to the Faroese Food and Veterinary Authority. No tea-specific agricultural permit or quantity restriction is stated.",
+    "personalMailApplicability": "Official guidance specifically addresses foreign online purchases delivered as parcels.",
+    "quantityLimit": null,
+    "authority": "TAKS / Faroese Food and Veterinary Authority",
+    "evidenceUrls": [
+      "https://www.taks.fo/en/individuals/customs/online-shopping"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the authority’s product and personal-use guidance and separated postal applicability from passenger-only allowances."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "TAKS expressly permits food ordered online by private individuals; doubtful consignments go to the Faroese Food and Veterinary Authority. No tea-specific agricultural permit or quantity restriction is stated. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.taks.fo/en/individuals/customs/online-shopping"
+    ]
+  },
+  {
+    "code": "FR",
+    "name": "France",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "GB",
+    "name": "United Kingdom of Great Britain and Northern Ireland",
+    "status": "allowed",
+    "rule": "Processed packaged plant products may enter Great Britain without a phytosanitary certificate; plain steamed/dried sencha meets that description. Northern Ireland applies the EU dried-tea exemption.",
+    "personalMailApplicability": "The UK plant-import overview explicitly covers personal goods ordered by post. The processed-product exemption is commodity-based, not a weight allowance for baggage.",
+    "quantityLimit": null,
+    "authority": "Defra; DAERA Northern Ireland",
+    "evidenceUrls": [
+      "https://www.gov.uk/bringing-plants-and-wood-into-great-britain",
+      "https://www.gov.uk/bringing-food-into-great-britain/fruit-vegetables-nuts-seeds",
+      "https://www.daera-ni.gov.uk/articles/summary-personal-food-import-restrictions"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the authority’s product and personal-use guidance and separated postal applicability from passenger-only allowances."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Processed packaged plant products may enter Great Britain without a phytosanitary certificate; plain steamed/dried sencha meets that description. Northern Ireland applies the EU dried-tea exemption. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.gov.uk/bringing-plants-and-wood-into-great-britain",
+      "https://www.gov.uk/bringing-food-into-great-britain/fruit-vegetables-nuts-seeds",
+      "https://www.daera-ni.gov.uk/articles/summary-personal-food-import-restrictions"
+    ]
+  },
+  {
+    "code": "GG",
+    "name": "Guernsey",
+    "status": "allowed",
+    "rule": "Legal classification inference: the preserved plant-health import schedule regulates only fresh, whole, uncut, unfermented tea leaves under ex 090210/ex 090220. Steamed and dried retail sencha is outside that described commodity; no phytosanitary certificate requirement was identified for the finished tea.",
+    "personalMailApplicability": "The preserved legislation governs imports generally; this conclusion does not rely on a passenger allowance.",
+    "quantityLimit": null,
+    "authority": "States of Guernsey preserved plant-health legislation; German NPPO consolidated copies",
+    "evidenceUrls": [
+      "https://pflanzengesundheit.julius-kuehn.de/regelungen-guernsey-jersey-insel-man.html",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/gg_eu2019-2072cons2024-73_PhytoCond.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/gg_eu2016-2031cons2023-41_PHO-jki.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read retained regulation Annex 11 PartB, p 359/363: fresh tea only; checked JKI current Guernsey legislation index."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Legal classification inference: the preserved plant-health import schedule regulates only fresh, whole, uncut, unfermented tea leaves under ex 090210/ex 090220. Steamed and dried retail sencha is outside that described commodity; no phytosanitary certificate requirement was identified for the finished tea. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://pflanzengesundheit.julius-kuehn.de/regelungen-guernsey-jersey-insel-man.html",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/gg_eu2019-2072cons2024-73_PhytoCond.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/gg_eu2016-2031cons2023-41_PHO-jki.pdf"
+    ]
+  },
+  {
+    "code": "GI",
+    "name": "Gibraltar",
+    "status": "allowed",
+    "rule": "Current-law classification: Gibraltar implemented its EU customs-union arrangements on 15 July 2026. Sections 81 and 90 of the Treaty Act apply Union sanitary/phytosanitary entry formalities to third-country goods. Under the corresponding EU commodity rule, manufactured dried tea requires no phytosanitary certificate; the Swedish authority expressly confirms this for private orders.",
+    "personalMailApplicability": "This applies to third-country goods generally, including postal purchases; it is not the passenger-baggage exception. Gibraltar Post requires the ordinary postal customs declaration. The personal-use organic-import exception also avoids an organic certificate of inspection for a recipient consuming the tea privately.",
+    "quantityLimit": null,
+    "authority": "Gibraltar Laws and Government; Royal Gibraltar Post Office; Swedish Board of Agriculture; Austrian Customs",
+    "evidenceUrls": [
+      "https://gibraltarlaws.gov.gi/uploads/legislations/treaty-on-gibraltar/2026-11/2026-11(15-07-26).pdf",
+      "https://www.gibraltarlaws.gov.gi/legislations/notice-of-commencement-treaty-on-gibraltar-and-the-european-union-act-2026-8492",
+      "https://www.gibraltar.gov.gi/press-releases/another-historic-day-for-gibraltar-as-checks-removed-from-frontier-5612026-12204",
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://post.gi/customs-requirements/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Located the July 2026 consolidation of the Imports and Exports (Control) Regulations 1987 and the Gibraltar postal country return.",
+      "Searched Gibraltar government guidance for tea, plant products and personal postal imports; no affirmative tea determination found.",
+      "Verified the remaining Treaty Act provisions commenced on 15 July 2026, the official implementation announcement, and the current 15 July consolidation: sections 81, 89, 90, 95 and 116. The previous draft-treaty uncertainty is therefore resolved.",
+      "Read Gibraltar’s current general import-licence and imported-food provisions; no tea-specific certificate requirement found. Applied EU commodity and private postal exemptions rather than commercial or baggage exemptions."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "EU plant-health clearance now applies under Gibraltar’s enacted customs-union legislation. Manufactured dried tea ordered by a private individual is outside the EU phytosanitary-certificate requirement. Private postal organic imports for consumption are also exempt from the commercial organic-import certificate. Ordinary customs/postal declarations and taxes remain.",
+    "permitFreeSources": [
+      "https://gibraltarlaws.gov.gi/uploads/legislations/treaty-on-gibraltar/2026-11/2026-11(15-07-26).pdf",
+      "https://www.gibraltarlaws.gov.gi/legislations/notice-of-commencement-treaty-on-gibraltar-and-the-european-union-act-2026-8492",
+      "https://www.gibraltar.gov.gi/press-releases/another-historic-day-for-gibraltar-as-checks-removed-from-frontier-5612026-12204",
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://post.gi/customs-requirements/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "GR",
+    "name": "Greece",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "HR",
+    "name": "Croatia",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "HU",
+    "name": "Hungary",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "IE",
+    "name": "Ireland",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "IM",
+    "name": "Isle of Man",
+    "status": "allowed",
+    "rule": "The Isle of Man applies UK import guidance and retained EU plant-health regulations; processed packaged tea falls outside fresh living plant controls.",
+    "personalMailApplicability": "Manx Customs expressly applies UK guidance to direct imports; plant-health requirements apply by product, including mail.",
+    "quantityLimit": null,
+    "authority": "Isle of Man Customs and DEFA",
+    "evidenceUrls": [
+      "https://www.gov.im/categories/tax-vat-and-your-money/customs-and-excise/imports-and-exports/",
+      "https://www.legislation.gov.im/cms/images/LEGISLATION/SUBORDINATE/2023/2023-0152/2023-0152.pdf",
+      "https://www.gov.uk/bringing-food-into-great-britain/fruit-vegetables-nuts-seeds"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the authority’s product and personal-use guidance and separated postal applicability from passenger-only allowances."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "The Isle of Man applies UK import guidance and retained EU plant-health regulations; processed packaged tea falls outside fresh living plant controls. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.gov.im/categories/tax-vat-and-your-money/customs-and-excise/imports-and-exports/",
+      "https://www.legislation.gov.im/cms/images/LEGISLATION/SUBORDINATE/2023/2023-0152/2023-0152.pdf",
+      "https://www.gov.uk/bringing-food-into-great-britain/fruit-vegetables-nuts-seeds"
+    ]
+  },
+  {
+    "code": "IS",
+    "name": "Iceland",
+    "status": "conditional",
+    "rule": "Vegan foods for personal consumption are permitted. Use unopened labelled consumer packaging with an ingredients list. MAST states a less-than-30 kg small personal quantity for non-animal foods from third countries.",
+    "personalMailApplicability": "The page expressly covers online purchases, gifts by post and luggage; the 30 kg paragraph begins with passengers but the following small-personal-consumption exception is general. Keep postal consignments below 30 kg.",
+    "quantityLimit": {
+      "netGrams": 30000,
+      "inclusive": false,
+      "basis": "MAST small personal non-animal food allowance; stay below 30 kg",
+      "scope": "personal consignment"
+    },
+    "authority": "Icelandic Food and Veterinary Authority (MAST)",
+    "evidenceUrls": [
+      "https://www.mast.is/en/import-export/what-can-i-bring-with-me-to-iceland",
+      "https://www.mast.is/en/import-export/import-of-plants"
+    ],
+    "remainingQuestion": "The 30 kg guidance is phrased in the passenger subsection as well as the general personal-use exception; no larger postal allowance is asserted.",
+    "researchAttempts": [
+      "Read the authority’s product and personal-use guidance and separated postal applicability from passenger-only allowances."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Vegan foods for personal consumption are permitted. Use unopened labelled consumer packaging with an ingredients list. MAST states a less-than-30 kg small personal quantity for non-animal foods from third countries. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.mast.is/en/import-export/what-can-i-bring-with-me-to-iceland",
+      "https://www.mast.is/en/import-export/import-of-plants"
+    ]
+  },
+  {
+    "code": "IT",
+    "name": "Italy",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "JE",
+    "name": "Jersey",
+    "status": "allowed",
+    "rule": "Jersey’s current legislation incorporates Regulations 2016/2031 and 2019/2072, whose fresh/living tea-leaf controls do not cover finished dried tea. No separate dried-tea quarantine requirement was found in the Jersey modifications.",
+    "personalMailApplicability": "Jersey’s legislation governs imports generally. Its postal plant-passport warnings concern regulated plants, not finished dried tea.",
+    "quantityLimit": null,
+    "authority": "Jersey Plant Health Inspectorate; Jersey Law",
+    "evidenceUrls": [
+      "https://www.jerseylaw.je/laws/current/ro_20_2020",
+      "https://www.gov.je/Industry/FarmingFishing/PlantsProduce/Pages/ImportExport.aspx"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the authority’s product and personal-use guidance and separated postal applicability from passenger-only allowances."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Jersey’s current legislation incorporates Regulations 2016/2031 and 2019/2072, whose fresh/living tea-leaf controls do not cover finished dried tea. No separate dried-tea quarantine requirement was found in the Jersey modifications. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.jerseylaw.je/laws/current/ro_20_2020",
+      "https://www.gov.je/Industry/FarmingFishing/PlantsProduce/Pages/ImportExport.aspx"
+    ]
+  },
+  {
+    "code": "LI",
+    "name": "Liechtenstein",
+    "status": "allowed",
+    "rule": "Processed plant products, explicitly including dried tea, need no phytosanitary certificate or phytosanitary inspection. Switzerland and Liechtenstein share the plant-health import system.",
+    "personalMailApplicability": "FOAG gives a general processed-products exemption on its import page, which separately addresses postal/courier consignments; it is not only a passenger allowance.",
+    "quantityLimit": null,
+    "authority": "Swiss Federal Office for Agriculture",
+    "evidenceUrls": [
+      "https://www.blw.admin.ch/en/importing-plants"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked the processed-product exemption and CH–LI common plant-health regime."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Processed plant products, explicitly including dried tea, need no phytosanitary certificate or phytosanitary inspection. Switzerland and Liechtenstein share the plant-health import system. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.blw.admin.ch/en/importing-plants"
+    ]
+  },
+  {
+    "code": "LT",
+    "name": "Lithuania",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "LU",
+    "name": "Luxembourg",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "LV",
+    "name": "Latvia",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "MC",
+    "name": "Monaco",
+    "status": "allowed",
+    "rule": "Legal inference: the France–Monaco Customs Convention Articles 1 and 3 apply French customs and sanitary rules in Monaco. Under the French/EU regime, manufactured dried tea does not need phytosanitary certification; fresh tea-leaf controls do not describe steamed/dried sencha.",
+    "personalMailApplicability": "The convention applies to import legislation generally. EU private-order guidance confirms the finished-tea exemption also covers postal purchases.",
+    "quantityLimit": null,
+    "authority": "Monaco official legislation service; France–Monaco Customs Convention; EU NPPO guidance",
+    "evidenceUrls": [
+      "https://legimonaco.mc/tai/convention/1963/05-18-tai1l000236/",
+      "https://www.douane.gouv.fr/demarche/importer-des-vegetaux-et-produits-vegetaux",
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Downloaded current Legimonaco treaty PDF; read Articles 1 and 3, then applied the verified EU dried-tea exemption."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Legal inference: the France–Monaco Customs Convention Articles 1 and 3 apply French customs and sanitary rules in Monaco. Under the French/EU regime, manufactured dried tea does not need phytosanitary certification; fresh tea-leaf controls do not describe steamed/dried sencha. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://legimonaco.mc/tai/convention/1963/05-18-tai1l000236/",
+      "https://www.douane.gouv.fr/demarche/importer-des-vegetaux-et-produits-vegetaux",
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual"
+    ]
+  },
+  {
+    "code": "MD",
+    "name": "Moldova",
+    "status": "conditional",
+    "rule": "Decision 938/2018 Annex 5 permits personal, non-commercial plant-product consignments up to 5 kg without a phytosanitary certificate, excluding seeds and planting material. Plain dried sencha fits the non-propagating plant-product scope; quarantine inspection can still occur.",
+    "personalMailApplicability": "Annex 5 expressly includes small consignments ordered at a distance and delivered to consumers through postal services.",
+    "quantityLimit": {
+      "netGrams": 5000,
+      "inclusive": true,
+      "scope": "Personal plant-product consignment; phytosanitary certificate exemption, not a carrier or tax allowance."
+    },
+    "authority": "Moldova Government Decision 938/2018 Annex 5; Moldovan Post",
+    "evidenceUrls": [
+      "https://bwcimplementation.org/sites/default/files/resource/MD_Decision%20No.%20938%20of%202018_ANNEX%205_RO.pdf",
+      "https://bwcimplementation.org/sites/default/files/resource/MD_Decision%20No.%20938%20of%202018_ANNEX%205_EN.pdf",
+      "https://static-api.posta.md/api/v1/storage/26/01/2023/Republica_Moldova_OI_rBt0fsI.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Compared Romanian law text and English translation, Annex 5 paragraphs 1 and 5; checked Moldovan Post reference to Decision 938."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Decision 938/2018 Annex 5 permits personal, non-commercial plant-product consignments up to 5 kg without a phytosanitary certificate, excluding seeds and planting material. Plain dried sencha fits the non-propagating plant-product scope; quarantine inspection can still occur. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://bwcimplementation.org/sites/default/files/resource/MD_Decision%20No.%20938%20of%202018_ANNEX%205_RO.pdf",
+      "https://bwcimplementation.org/sites/default/files/resource/MD_Decision%20No.%20938%20of%202018_ANNEX%205_EN.pdf",
+      "https://static-api.posta.md/api/v1/storage/26/01/2023/Republica_Moldova_OI_rBt0fsI.pdf"
+    ]
+  },
+  {
+    "code": "ME",
+    "name": "Montenegro",
+    "status": "allowed",
+    "rule": "Legal classification inference from the March 2026 plant-health schedule: certificate-controlled tea is fresh, whole, uncut and unfermented tea leaves, not manufactured steamed/dried sencha. The English and German official translations make the fresh limitation explicit.",
+    "personalMailApplicability": "The import schedule applies generally, rather than creating a baggage-only exemption.",
+    "quantityLimit": null,
+    "authority": "Montenegro Ministry of Agriculture/UBHVFP; German NPPO translation",
+    "evidenceUrls": [
+      "https://www.gov.me/clanak/propisi-iz-oblasti-zdravstvene-zastite-bilja",
+      "https://wapi.gov.me/download/d8cf5c3b-65cc-446f-a3a3-a2052b4c95cc?version=1.0",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/me_2026-41_qso-anf_de.pdf",
+      "https://wapi.gov.me/download/9179cb31-2b87-4864-82ed-c4dec5131471?version=1.0"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Downloaded the March 24,2026 current schedule, checked ex 090210/ex 090220 and JKI German translation p 236, and compared official English schedule."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Legal classification inference from the March 2026 plant-health schedule: certificate-controlled tea is fresh, whole, uncut and unfermented tea leaves, not manufactured steamed/dried sencha. The English and German official translations make the fresh limitation explicit. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://www.gov.me/clanak/propisi-iz-oblasti-zdravstvene-zastite-bilja",
+      "https://wapi.gov.me/download/d8cf5c3b-65cc-446f-a3a3-a2052b4c95cc?version=1.0",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/me_2026-41_qso-anf_de.pdf",
+      "https://wapi.gov.me/download/9179cb31-2b87-4864-82ed-c4dec5131471?version=1.0"
+    ]
+  },
+  {
+    "code": "MK",
+    "name": "North Macedonia",
+    "status": "allowed",
+    "rule": "Legal classification inference: ListV PartB specifies fresh, whole, uncut and unfermented tea leaves under ex 090210/ex 090220. Manufactured steamed/dried sencha falls outside that regulated description and no phytosanitary certificate requirement was found for it.",
+    "personalMailApplicability": "The NPPO list governs all imported consignments, including post; no passenger exemption is used.",
+    "quantityLimit": null,
+    "authority": "North Macedonia NPPO legislation filed with the IPPC",
+    "evidenceUrls": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2022/04/13/Lists__eng.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read ListV PartB subsectionB 3 and tea entry on printed p 153; distinguished fresh tea leaves from processed sencha."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Legal classification inference: ListV PartB specifies fresh, whole, uncut and unfermented tea leaves under ex 090210/ex 090220. Manufactured steamed/dried sencha falls outside that regulated description and no phytosanitary certificate requirement was found for it. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://assets.ippc.int/static/media/files/reportingobligation/2022/04/13/Lists__eng.pdf"
+    ]
+  },
+  {
+    "code": "MT",
+    "name": "Malta",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "NL",
+    "name": "Netherlands",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "NO",
+    "name": "Norway",
+    "status": "allowed",
+    "rule": "Plain tea is expressly included among non-animal foods allowed from outside the EU/EEA for the recipient’s own consumption. No agricultural tea-weight limit is stated.",
+    "personalMailApplicability": "The same page explicitly permits receiving these goods as parcels; resale is excluded.",
+    "quantityLimit": null,
+    "authority": "Norwegian Food Safety Authority",
+    "evidenceUrls": [
+      "https://mattilsynet.no/import/import-av-mat/ta-med-mat-og-drikke/privat-import-av-mat-utenfor-eu-eos"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the authority’s product and personal-use guidance and separated postal applicability from passenger-only allowances."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Plain tea is expressly included among non-animal foods allowed from outside the EU/EEA for the recipient’s own consumption. No agricultural tea-weight limit is stated. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://mattilsynet.no/import/import-av-mat/ta-med-mat-og-drikke/privat-import-av-mat-utenfor-eu-eos"
+    ]
+  },
+  {
+    "code": "PL",
+    "name": "Poland",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "PT",
+    "name": "Portugal",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "RO",
+    "name": "Romania",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "RS",
+    "name": "Serbia",
+    "status": "not_verified",
+    "rule": "Serbian Customs’ plant-health control list effective 1 January 2026 expressly includes HS 090210 and other green/black tea codes, including retail packs. The published small-quantity plant exemption is for natural persons entering Serbia with specified European-origin material; it does not establish an exemption for Japanese tea sent by post.",
+    "personalMailApplicability": "The current customs list establishes phytosanitary control, but does not by itself resolve whether this personal postal pouch needs a Japanese phytosanitary certificate or only arrival inspection.",
+    "quantityLimit": null,
+    "authority": "Serbian Customs; Plant Health Law; 2011 small-quantity plant rule",
+    "evidenceUrls": [
+      "https://www.carina.rs/upload/media/2025/12/31/66788/%D0%A4%D0%B8%D1%82%D0%BE-%D0%B1%D0%B8%D1%99%D0%B5_01_01_2026.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=1052&menuid=28&reporeid=126",
+      "https://faolex.fao.org/docs/pdf/srb161040.pdf"
+    ],
+    "remainingQuestion": "The exact Japanese phytosanitary certificate requirement remains unresolved, but a separate inspection application and phytosanitary release are mandatory, so the route does not fit the store’s no-special-paperwork policy.",
+    "researchAttempts": [
+      "Read the current Customs plant-health commodity list and confirmed ordinary tea HS 0902 is included.",
+      "Read Plant Health Law Articles 70–71 and the complete small-quantity implementing rule: it concerns entry by natural persons, European-origin products and specified quantities, without a finished-tea postal exception.",
+      "Searched for the current certificate schedule applicable to manufactured tea; did not verify whether the certificate or inspection-only route applies.",
+      "Read Plant Health Law Article 72 in the consolidation amended through 2019: obligatory notification, application for inspection and phytosanitary release for Article 67 consignments. This resolves operating-policy exclusion independently of the unanswered certificate-versus-inspection classification."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The January 2026 customs plant-health control list expressly includes retail green tea HS 090210. Plant Health Law Article 72 obliges importers/customs agents to notify the phytosanitary inspector and submit an inspection request before customs release. Even if this product can be inspected without a Japanese phytosanitary certificate under Article 67(4), the mandatory separate plant-health application conflicts with the store’s ordinary-customs-only constraint. The 2011 small-quantity exception does not cover this Japanese postal product.",
+    "permitFreeSources": [
+      "https://www.carina.rs/upload/media/2025/12/31/66788/%D0%A4%D0%B8%D1%82%D0%BE-%D0%B1%D0%B8%D1%99%D0%B5_01_01_2026.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=1052&menuid=28&reporeid=126",
+      "https://faolex.fao.org/docs/pdf/srb161040.pdf"
+    ]
+  },
+  {
+    "code": "SE",
+    "name": "Sweden",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "SI",
+    "name": "Slovenia",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "SK",
+    "name": "Slovakia",
+    "status": "allowed",
+    "rule": "EU processed-tea rule: dried tea is outside the phytosanitary-certificate and routine plant-health inspection requirements. Applies to sealed dried sencha, not fresh leaves or planting material.",
+    "personalMailApplicability": "The Swedish authority expressly covers tea ordered by private individuals; Finnish guidance covers imports and online/postal purchases. Common EU plant-health rules apply in this destination.",
+    "quantityLimit": null,
+    "authority": "EU Regulation 2016/2031 and Implementing Regulation 2019/2072; Swedish Board of Agriculture; Finnish Food Authority",
+    "evidenceUrls": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Checked common EU plant-health scope and explicit dried-tea personal-order exemption; excluded the separate organic-trade question from this agricultural finding.",
+      "Read current Austrian Customs VB-0240 dated 1 December 2024, section 2.4(b), expressly excluding personal/private organic imports by post; did not impose commercial organic-operator certification on the consuming recipient."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Manufactured dried tea is outside the EU phytosanitary certificate/inspection requirement, including private online orders. Austrian Customs guidance VB-0240 section 2.4 also expressly excludes personal/private imports by post from the organic-import restrictions: a private recipient consuming the product is not importing it for onward marketing. Ordinary postal/customs declarations remain necessary.",
+    "permitFreeSources": [
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual",
+      "https://www.ruokavirasto.fi/en/themes/import-and-export/import/plants-and-plant-products/",
+      "https://findok.bmf.gv.at/findok/iwg/80/80664/80664.3.pdf"
+    ]
+  },
+  {
+    "code": "SM",
+    "name": "San Marino",
+    "status": "allowed",
+    "rule": "Legal inference: San Marino applies Union phytosanitary legislation under its customs/cooperation agreement and Decision 1/2010. Under that regime, manufactured dried tea is exempt from phytosanitary certification; the EU fresh-leaf control does not apply to steamed/dried sencha.",
+    "personalMailApplicability": "Decision 1/2010 concerns import legislation generally. The EU private-order guidance expressly covers goods ordered from abroad, rather than only carried in luggage.",
+    "quantityLimit": null,
+    "authority": "EU-San Marino Cooperation Committee; European Commission; Swedish NPPO",
+    "evidenceUrls": [
+      "https://eur-lex.europa.eu/eli/dec/2010/1%284%29/oj/eng",
+      "https://food.ec.europa.eu/horizontal-topics/international-affairs/eu-entry-conditions/sanitary-and-phytosanitary-agreements_en",
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read Decision 1/2010 recitals 6 and Articles 4–5 applying Union phytosanitary legislation; applied the verified dried-tea commodity exemption."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Legal inference: San Marino applies Union phytosanitary legislation under its customs/cooperation agreement and Decision 1/2010. Under that regime, manufactured dried tea is exempt from phytosanitary certification; the EU fresh-leaf control does not apply to steamed/dried sencha. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://eur-lex.europa.eu/eli/dec/2010/1%284%29/oj/eng",
+      "https://food.ec.europa.eu/horizontal-topics/international-affairs/eu-entry-conditions/sanitary-and-phytosanitary-agreements_en",
+      "https://jordbruksverket.se/languages/english/swedish-board-of-agriculture/plants/bringing-in-or-ordering-plants-and-plant-products-to-sweden-as-a-private-individual"
+    ]
+  },
+  {
+    "code": "UA",
+    "name": "Ukraine",
+    "status": "conditional",
+    "rule": "Legal classification inference: the import phytosanitary list approved by Resolution 1177/2019 omits ordinary tea (HS 0902), while expressly listing other plant foods including raw coffee and mate. Ukraine Customs separately allows food in international personal post up to 10 kg in the manufacturer’s packaging.",
+    "personalMailApplicability": "The Customs guidance expressly identifies international postal and express consignments to citizens. Its 10 kg allowance is distinct from passenger food limits.",
+    "quantityLimit": {
+      "netGrams": 10000,
+      "inclusive": true,
+      "scope": "Food in a personal international postal or express consignment, in manufacturer packaging; this is a postal food allowance, not a phytosanitary tea threshold."
+    },
+    "authority": "Ukraine Customs; Cabinet of Ministers Resolution 1177/2019",
+    "evidenceUrls": [
+      "https://customs.gov.ua/news/zagalne-20/post/korisna-informatsiia-pravila-vvezennia-produktiv-kharchuvannia-v-ukrayinu-1846",
+      "https://zakon.rada.gov.ua/laws/show/1177-2019-%D0%BF",
+      "https://faolex.fao.org/docs/pdf/ukr194178.pdf"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the full import phytosanitary list under Resolution 1177/2019, which replaced Resolution 705/2007; ordinary tea HS 0902 is absent, while coffee 0901 and mate 0903 appear.",
+      "Read Customs’ explicit postal food exception under Customs Code Article 378; excluded the separate passenger 2 kg/product allowance."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "supported",
+    "permitFreeReason": "Legal classification inference: the import phytosanitary list approved by Resolution 1177/2019 omits ordinary tea (HS 0902), while expressly listing other plant foods including raw coffee and mate. Ukraine Customs separately allows food in international personal post up to 10 kg in the manufacturer’s packaging. This is a personal-consumption route; comply with the stated packaging and quantity conditions and ordinary postal/customs declarations.",
+    "permitFreeSources": [
+      "https://customs.gov.ua/news/zagalne-20/post/korisna-informatsiia-pravila-vvezennia-produktiv-kharchuvannia-v-ukrayinu-1846",
+      "https://zakon.rada.gov.ua/laws/show/1177-2019-%D0%BF",
+      "https://faolex.fao.org/docs/pdf/ukr194178.pdf"
+    ]
+  },
+  {
+    "code": "VA",
+    "name": "Vatican",
+    "status": "not_verified",
+    "rule": "Vatican Law LXXI of 1 October 2008 article 3 makes Italian law subsidiary and subject to reception by the competent Vatican authority. Article 12 receives particular subjects, including post and public health, but does not clearly establish the applicable agricultural plant-health rule for inbound Japanese tea. Postal service, duty relief and transit sources therefore do not establish a finished-tea exemption. Actual 2007 and 2025 customs protocols were subsequently recovered: neither establishes an Italian/EU plant-health reception rule; the 2025 protocol expressly preserves the separate legislation and disclaims legally binding international duties.",
+    "personalMailApplicability": "Postal documentation confirms the service, but the material found did not address inbound personal tea consignments or identify the agricultural clearance rule.",
+    "quantityLimit": null,
+    "authority": "Vatican postal service; Vatican postal country return supplied to the UPU",
+    "evidenceUrls": [
+      "https://www.postevaticane.va/script-php/poste/PHPposte-invioPacchi/index.php",
+      "https://guypost.gy/wp-content/uploads/2024/09/ListOfProhibitedArticles-updated.pdf",
+      "https://www.vaticanstate.va/phocadownload/laws-decrees/Supplementoleggiedisposizioni.pdf",
+      "https://www.vatican.va/roman_curia/secretariat_state/archivio/documents/rc_seg-st_19290211_patti-lateranensi_it.html",
+      "https://www.postevaticane.va/it/posta-raccomandata",
+      "https://www.vaticanstate.va/it/novita/1540-firmato-il-protocollo-di-collaborazione-doganale-tra-governatorato-e-agenzia-delle-dogane-e-dei-monopoli-della-repubblica-italiana.html",
+      "https://def.giustiziatributaria.gov.it/DocTribFrontend/getAttoNormativoDetail.do?ACTION=getArticolo&articolo=Articolo+1&codiceOrdinamento=200000100000000&id=%7B442FDF84-CF15-4F73-9BA4-4CA474515FCD%7D",
+      "https://www.ulsa.va/it/pubblicazioni/bollettini/bollettino-n--16---2008/atti-di-sua-santita-benedetto-xvi/leggi-sulle-fonti-del-diritto-1-ottobre-2008-n-lxxi.html",
+      "https://www.vaticanstate.va/en/state-and-government/legislation-and-regulations/general-regulations.html?download=271:n-dclix",
+      "https://www.adm.gov.it/portale/documents/20182/6907210/Accordo+Italia+Vaticano.pdf/7809007b-38be-4201-85fb-43852a3e9664",
+      "https://www.adm.gov.it/portale/documents/20182/219876727/27022025++Protocollo+collaborazione+tecnico+amministrativa+ADM+e+il+Governatorato+SCV.pdf/4230441b-bbe0-f5f2-131b-cf90e5b1fdc7?t=1747911929091",
+      "https://www.adm.gov.it/portale/normativa-internazionale",
+      "https://www.adm.gov.it/portale/accordi-internazionali"
+    ],
+    "remainingQuestion": "The applicable Vatican plant-health rule, or an actual instrument receiving the relevant Italian agricultural rules, remains unestablished. The 2008 sources-of-law statute does not itself establish automatic application of the whole Italian/EU phytosanitary regime.",
+    "researchAttempts": [
+      "Checked Vatican postal customs guidance and the destination’s UPU country return.",
+      "Searched for applicable Vatican plant-health legislation or an agreement applying Italy’s dried-tea exemption; no authoritative link was established.",
+      "Rechecked current Vatican postal service terms, the state’s foundational personal-import/customs provisions and Lateran Treaty article20 on foreign-goods transit. These address service, taxation and transit rather than a tea agricultural exemption; no equivalent SPS agreement or inbound retail-tea rule was located.",
+      "30 September final source review: read the official 2025 Vatican–Italy customs cooperation announcement and the 1930 customs convention, including Articles 1, 2, 4 and 8. Duty relief and customs transit including post do not establish an agricultural exemption or application of Italy/EU plant-health rules to direct Vatican personal imports. No applicable public tea classification was found.",
+      "30 September bounded remaining-scope review: Recovered official Vatican Law LXXI of 1 October 2008. Article 3 makes Italian law subsidiary and subject to reception by the competent Vatican authority; article 12 lists particular subjects received, including post and public health. Those provisions do not clearly establish which Italian agricultural plant-health law applies to an inbound Japanese tea parcel. Existing postal/customs transit evidence does not fill that gap.",
+      "30 September fresh current-regulations recovery: Read complete official Decree DCLIX of8May2024 via the current Governorate portal. Its three articles reorganize customs-service control, budget and staff; it contains no substantive import or Italian plant-law reception provision. This does not close the independent agricultural scope.",
+      "30 September additional official primary recovery: downloaded the signed 15 February 2007 Italy–Vatican protocol and attached service instructions from ADM, and the full signed 27 February 2025 protocol with annexes. Visually read the scanned operative pages. The 2007 protocol concerns customs routing, controls, data and implementing instructions; service-instruction Art.1 places advance notices on the Governorate, for shipments above EUR1,000 or sensitive goods of any value, rather than an identified tea-exporter phytosanitary duty. The 2025 protocol Art.7(1) expressly denies international legally binding effect, Art.7(2) preserves the separate national laws and Italy's EU duties, and its Art.6 annexes concern customs training and cross-border cash declarations. No provision receives the Italian/EU plant-health regime or determines personal tea requirements. Complete sources preserved in french-va-primary-recovery/."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "unresolved",
+    "permitFreeReason": "The applicable Vatican plant-health rule, or an actual instrument receiving the relevant Italian agricultural rules, remains unestablished. The 2008 sources-of-law statute does not itself establish automatic application of the whole Italian/EU phytosanitary regime. No specific tea prohibition is established; the route remains unverified.",
+    "permitFreeSources": [
+      "https://www.postevaticane.va/script-php/poste/PHPposte-invioPacchi/index.php",
+      "https://guypost.gy/wp-content/uploads/2024/09/ListOfProhibitedArticles-updated.pdf",
+      "https://www.vaticanstate.va/phocadownload/laws-decrees/Supplementoleggiedisposizioni.pdf",
+      "https://www.vatican.va/roman_curia/secretariat_state/archivio/documents/rc_seg-st_19290211_patti-lateranensi_it.html",
+      "https://www.postevaticane.va/it/posta-raccomandata",
+      "https://www.vaticanstate.va/it/novita/1540-firmato-il-protocollo-di-collaborazione-doganale-tra-governatorato-e-agenzia-delle-dogane-e-dei-monopoli-della-repubblica-italiana.html",
+      "https://def.giustiziatributaria.gov.it/DocTribFrontend/getAttoNormativoDetail.do?ACTION=getArticolo&articolo=Articolo+1&codiceOrdinamento=200000100000000&id=%7B442FDF84-CF15-4F73-9BA4-4CA474515FCD%7D",
+      "https://www.ulsa.va/it/pubblicazioni/bollettini/bollettino-n--16---2008/atti-di-sua-santita-benedetto-xvi/leggi-sulle-fonti-del-diritto-1-ottobre-2008-n-lxxi.html",
+      "https://www.vaticanstate.va/en/state-and-government/legislation-and-regulations/general-regulations.html?download=271:n-dclix",
+      "https://www.adm.gov.it/portale/documents/20182/6907210/Accordo+Italia+Vaticano.pdf/7809007b-38be-4201-85fb-43852a3e9664",
+      "https://www.adm.gov.it/portale/documents/20182/219876727/27022025++Protocollo+collaborazione+tecnico+amministrativa+ADM+e+il+Governatorato+SCV.pdf/4230441b-bbe0-f5f2-131b-cf90e5b1fdc7?t=1747911929091",
+      "https://www.adm.gov.it/portale/normativa-internazionale",
+      "https://www.adm.gov.it/portale/accordi-internazionali"
+    ],
+    "permitFreeReviewedAt": "2026-09-30"
+  },
+  {
+    "code": "XK",
+    "name": "Kosovo",
+    "status": "allowed",
+    "rule": "Legal classification inference: Law 04/L-120 Annex V Part B, as amended by Administrative Instruction 05/2025, regulates ex 090210/ex 090220 only as fresh, whole, uncut, unfermented tea leaves. Manufactured steamed/dried retail sencha does not meet that description and therefore is outside the certificate-controlled tea entry.",
+    "personalMailApplicability": "This is a commodity-based import rule, applying to postal consignments as well as cargo. No veterinary or traveller allowance is relied on.",
+    "quantityLimit": null,
+    "authority": "Kosovo Ministry of Agriculture; Administrative Instruction 05/2025; German NPPO consolidated translation of Law 04/L-120 annexes",
+    "evidenceUrls": [
+      "https://gzk.rks-gov.net/ActDetail.aspx?ActID=106863",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=1961&menuid=100&reporeid=396",
+      "https://gzk.rks-gov.net/ActDocumentDetail.aspx?ActID=10544"
+    ],
+    "remainingQuestion": null,
+    "researchAttempts": [
+      "Read the AIP cargo phytosanitary and veterinary provisions and distinguished their different exemptions.",
+      "Checked Customs personal-import guidance and searched the FVA site; no finished-tea postal exception or current commodity clearance determination was verified.",
+      "Read the complete current published certificate commodity annex rather than inferring from generic plant-import warnings; checked separate postal/food-control provisions."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeReason": "The current complete certificate annex expressly limits tea controls to fresh leaves, excluding steamed/dried sencha. The general non-animal-food control regulation provides risk-based checks and document checks, not a blanket certificate for every processed food. No tea-specific special approval requirement was identified for this personal-use parcel; ordinary postal/customs declaration remains required.",
+    "permitFreeDecision": "supported",
+    "permitFreeSources": [
+      "https://gzk.rks-gov.net/ActDetail.aspx?ActID=106863",
+      "https://pflanzengesundheit.julius-kuehn.de/index.php?downloadid=1961&menuid=100&reporeid=396",
+      "https://gzk.rks-gov.net/ActDocumentDetail.aspx?ActID=10544"
+    ]
+  },
+  {
+    "code": "ZA",
+    "name": "South Africa",
+    "status": "permit_required",
+    "rule": "Legal inference from the current Agricultural Pests Act: its definition of plant includes dead parts and derivatives, and section 3 requires an import permit unless an exemption applies. The complete R 1013 exemption table, consolidated through 2022, lists food herbs by genus but contains no Camellia/Thea exemption. Treat manufactured sencha as requiring a plant import permit; obtain the consignment’s certificate and inspection conditions through that permit.",
+    "personalMailApplicability": "The Act applies to imports by any person and does not create a general small personal-post exemption. A permit route is not evidence that the recipient already holds a permit or that a particular application will be approved.",
+    "quantityLimit": null,
+    "authority": "South African Department of Agriculture; Agricultural Pests Act 36/1983 and Regulations R 1013/1989; current consolidation hosted by Germany’s NPPO",
+    "evidenceUrls": [
+      "https://www.nda.gov.za/images/Services/Agricultural%20Pests%20Act.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/za_1989-1013cons2022-2855_einfuhr_de.pdf",
+      "https://www.nda.gov.za/component/content/article/299-import-authorisation?Itemid=437&catid=19",
+      "https://www.gov.za/documents/acts/plant-health-phytosanitary-act-35-2024-20-dec-2024"
+    ],
+    "remainingQuestion": "Confirm with the permit office whether it has a separate processing-specific dispensation for commercially steamed/dried retail Camellia sinensis tea; none was found in the published statutory exemption table. The issued permit must establish the required Japanese phytosanitary documentation.",
+    "researchAttempts": [
+      "Read the Act’s plant definition and section 3 default import-permit rule.",
+      "Checked every genus in the complete R 1013 food-herb exemption table, including C and T; no Camellia or Thea entry occurs.",
+      "Verified that the replacement Plant Health Act 35/2024 is still listed by government as awaiting commencement; did not treat the 2025 draft import regulations as enacted.",
+      "Rechecked for a finished retail-tea processing exemption and found Kenya’s official trade portal tea-to-South-Africa guidance expressly listing the import permit; no automatic personal-post dispensation found."
+    ],
+    "reviewedAt": "2026-09-30",
+    "permitFreeDecision": "not_supported",
+    "permitFreeReason": "The published Agricultural Pests Act section 3 permit requirement covers dead plant parts and derivatives. The complete R1013 statutory exemptions contain no Camellia/Thea food-tea exemption. Kenya’s official tea export market guidance independently lists a South African import permit for tea. A separately issued dispensation would itself be special approval, which the store excludes.",
+    "permitFreeSources": [
+      "https://www.nda.gov.za/images/Services/Agricultural%20Pests%20Act.pdf",
+      "https://pflanzengesundheit.julius-kuehn.de/dokumente/upload/za_1989-1013cons2022-2855_einfuhr_de.pdf",
+      "https://infotradekenya.go.ke/menu/899"
+    ]
+  }
+]

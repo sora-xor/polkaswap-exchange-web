@@ -91,6 +91,26 @@ describe('LiberlandAdapter', () => {
     );
   });
 
+  it('accepts the maximum u32 Liberland asset id', () => {
+    const burn = vi.fn(() => ({ hash: '0xburn' }));
+    const adapter = createAdapterHarness({
+      tx: {
+        soraBridgeApp: {
+          burn,
+        },
+      },
+    });
+
+    adapter.getTransferExtrinsic(createAsset({ externalAddress: '4294967295' }), 'sora-recipient', '1');
+
+    expect(burn).toHaveBeenCalledWith(
+      SubNetworkId.Mainnet,
+      { [LiberlandAssetType.Asset]: 4_294_967_295 },
+      { [BridgeAccountType.Sora]: 'sora-recipient' },
+      '1000000000000'
+    );
+  });
+
   it('rejects malformed Liberland asset ids before creating burn extrinsics', () => {
     const burn = vi.fn();
     const adapter = createAdapterHarness({
@@ -105,6 +125,75 @@ describe('LiberlandAdapter', () => {
       adapter.getTransferExtrinsic(createAsset({ externalAddress: 'not-a-number' }), 'recipient', '1')
     ).toThrow('Invalid Liberland asset id');
     expect(burn).not.toHaveBeenCalled();
+  });
+
+  it('rejects Liberland asset ids above the runtime u32 range', () => {
+    const burn = vi.fn();
+    const adapter = createAdapterHarness({
+      tx: {
+        soraBridgeApp: {
+          burn,
+        },
+      },
+    });
+
+    expect(() =>
+      adapter.getTransferExtrinsic(createAsset({ externalAddress: '4294967296' }), 'recipient', '1')
+    ).toThrow('outside the u32 range');
+    expect(burn).not.toHaveBeenCalled();
+  });
+
+  it('rejects missing non-native Liberland asset ids before creating burn extrinsics', () => {
+    const burn = vi.fn();
+    const adapter = createAdapterHarness({
+      tx: {
+        soraBridgeApp: {
+          burn,
+        },
+      },
+    });
+
+    for (const externalAddress of [undefined, null, '', '   ', LiberlandAssetType.LLD]) {
+      expect(() =>
+        adapter.getTransferExtrinsic(createAsset({ externalAddress: externalAddress as string }), 'recipient', '1')
+      ).toThrow('Missing Liberland asset id for non-native asset');
+    }
+
+    expect(burn).not.toHaveBeenCalled();
+  });
+
+  it('validates Liberland asset ids before using the hardcoded network fee fallback', async () => {
+    const burn = vi.fn();
+    const adapter = createAdapterHarness({
+      tx: {
+        soraBridgeApp: {
+          burn,
+        },
+      },
+    });
+
+    await expect(
+      adapter.getNetworkFee(createAsset({ externalAddress: undefined as unknown as string }), 'sender', 'recipient')
+    ).rejects.toThrow('Missing Liberland asset id for non-native asset');
+    expect(burn).not.toHaveBeenCalled();
+  });
+
+  it('uses the hardcoded network fee fallback after a valid Liberland asset id is checked', async () => {
+    const paymentInfo = vi.fn().mockRejectedValue(new Error('runtime fee API unavailable'));
+    const burn = vi.fn(() => ({ paymentInfo }));
+    const adapter = createAdapterHarness({
+      tx: {
+        soraBridgeApp: {
+          burn,
+        },
+      },
+    });
+
+    await expect(adapter.getNetworkFee(createAsset({ externalAddress: '42' }), 'sender', 'recipient')).resolves.toBe(
+      '10600000000'
+    );
+    expect(burn).toHaveBeenCalledOnce();
+    expect(paymentInfo).toHaveBeenCalledWith('sender');
   });
 
   it('uses existential deposit for native LLD minimums', async () => {

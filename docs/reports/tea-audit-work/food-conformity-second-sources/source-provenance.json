@@ -1,0 +1,31 @@
+{
+  "reviewedAt": "2026-09-30",
+  "files": [
+    {
+      "file": "gw-foodcontrol.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/gbs117287.pdf",
+      "sha256": "46cc4a013e27255d923bd95effda522222977a9357fb0330679726d8d163877d"
+    },
+    {
+      "file": "et-food2019.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/eth208821.pdf",
+      "sha256": "c5aaa4e161d9bda5c3c5fb6b924932a857b1c226e3c3421943bfdf40b46f0388"
+    },
+    {
+      "file": "et-foodreg2023.pdf",
+      "url": "https://faolex.fao.org/docs/pdf/eth216290.pdf",
+      "sha256": "f415e3773d310045f0a0a9bd28c907c252e08573055243e0a3d213cf9d8f1d6c"
+    },
+    {
+      "file": "cg-pcec-guide2026.pdf",
+      "url": "https://www.cotecna.com/media/1tii4ifg/voc-congo-exporter-guide-french-translation.pdf",
+      "sha256": "ac846e83947cc5fd9ea6db31ccd66ffbb0533b253deaa11bcce3bcaa8e49b7cb"
+    },
+    {
+      "file": "tg-sensitive2020.pdf",
+      "url": "https://jo.gouv.tg/sites/default/files/JO/JOS_24_07_2020-65E%20ANNEE%2025TER.pdf",
+      "sha256": "a3ffc467ddd652bc0ae1477149afece10212650043af189dce92f9de7f695ce1"
+    }
+  ],
+  "indexedSources": "Other findings and access limits recorded in eight-country-food-scope-review.json. No claimed full download where source index alone was available."
+}

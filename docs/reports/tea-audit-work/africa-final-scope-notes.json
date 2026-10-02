@@ -1,0 +1,27 @@
+[
+  {
+    "code": "UG",
+    "decision": "unresolved",
+    "finding": "SI 4/2020 regulation 3(4) places the pest-risk analysis after receipt of the permit application for an in-scope plant product; it is not a published automatic no-document processing exemption. Neither that procedure nor the separate trade licence list identifies manufactured sencha as outside scope. No new national ISPM32 commodity adoption/list was located in this targeted review.",
+    "sources": [
+      "https://faolex.fao.org/docs/pdf/uga238074.pdf"
+    ]
+  },
+  {
+    "code": "GN",
+    "decision": "unresolved",
+    "finding": "National procedure PR01-23 section 4 lists NIMP 5 and NIMP 32 as reference documents. It contains no operative clause adopting a particular low-risk category as a permit/certificate exemption. Section 3.2 compares origin pests with the national quarantine list after the application; section 3.3 still specifies origin phytosanitary or disinsection documentation. No new national classification settling steamed sencha was located.",
+    "sources": [
+      "https://magel.gov.gn/file/2023/01/PROCEDURE-DELIVRANCE-PERMIS-D-IMPORTATION.pdf"
+    ]
+  },
+  {
+    "code": "GW",
+    "decision": "unresolved",
+    "finding": "The 2017 WTO review Table 3.5 expressly associates the general plants/plant-products category with prior agricultural authorization and origin phytosanitary certification. Its stated exceptions concern active substances in phytopharmaceutical products, not processed food. Section 3.38 likewise gives a general SPS-certificate account. These corroborate the controlled pathway but do not classify sencha under the national simple-preparation definition or supply a personal-post exemption. No new current national commodity list was found.",
+    "sources": [
+      "https://www.wto.org/french/tratop_f/tpr_f/s362-04_f.pdf",
+      "https://faolex.fao.org/docs/pdf/gbs23411.pdf"
+    ]
+  }
+]

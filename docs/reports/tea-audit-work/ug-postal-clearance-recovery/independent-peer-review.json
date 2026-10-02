@@ -1,0 +1,78 @@
+{
+  "code": "UG",
+  "reviewedAt": "2026-09-30",
+  "reviewer": "tea_americas_finish",
+  "decision": "supported",
+  "status": "conditional",
+  "mainArraysEdited": false,
+  "scope": "Paid 100 g factory-sealed Japanese plain industrially steamed, rolled and dried Camellia tea for personal drinking. No separately obtained permits, certificates, agency registration or advance notice; ordinary customs and arrival inspection/fees allowed.",
+  "conclusion": "A defensible lawful route exists through destination inspection under regulation7, applied for by ordinary accurate customs declaration under regulation8(1) upon arrival. No independent preobtained CoC, exemption letter or digital conformity mark is established for tea on that route. Mandatory standards compliance, possible testing/fees and the authority-issued import clearance certificate remain. This is a combined-provision legal interpretation, not an assurance of immediate or cost-free postal release.",
+  "routeAnalysis": [
+    {
+      "issue": "Applicability to private food",
+      "finding": "Schedule 1 Part 1 Group X includes food and food products. Regulation 6 expressly applies assessment whether goods are for trade or personal use. No invented personal-food exemption is needed."
+    },
+    {
+      "issue": "Low-value exemption versus alternative inspection",
+      "finding": "Regulations 5(2), 5(5)(a) and Schedule 1 Part 2 item 1 exempt consignments with FOB value at most USD 2,000 (except used vehicles) from pre-export verification. Regulation 8(2)(i) can require an exemption letter where applicable to a regulation 5(5) route. However, regulation 7(1) expressly operates notwithstanding regulation 5 and directs destination inspection for Part 1 goods lacking a CoC. It does not restrict that alternative to higher-value goods or exclude goods also satisfying Part 2. Food remains Group X even when low-value. Regulation 10(1)(a) repeats the no-CoC destination route. Entry need not rest on a letter-dependent exemption."
+    },
+    {
+      "issue": "Does automatic low-value status compel a letter regardless of route?",
+      "finding": "Strongest contrary reading: regulation 5(5)(a) says the goods shall be exempt, and 8(2)(i) points to 5(5), so low-value goods might routinely be channelled into exemption-letter verification. Preferred reading: the automatic exemption removes origin verification; it neither prohibits destination inspection nor imposes an unconditional letter duty. Regulation 7 expressly overrides regulation 5, while 8 requires a letter only where applicable. A universal letter prerequisite would obstruct regulation 7 despite its unqualified no-CoC trigger. This does not mean every low-value exemption procedure is letter-free, or guarantee whether a surcharge will be imposed."
+    },
+    {
+      "issue": "Clearance application and certificate",
+      "finding": "Regulation 8(1) defines the application as an accurate customs declaration through the electronic single window, before or upon arrival. Regulation 8(2)(a–e) lists normal transport, packing, invoice, customs and transit records; the foreign CoC in (f) and exemption letter in (i) are conditional. Japanese plain tea does not fall within the EAC product-permit, vehicle export-certificate, returning-resident passport or diplomatic-note categories. Regulations 7(3) and 10(6) direct the inspector to issue the ICC after conformity is established; regulation 12 requires it before release. This ICC is the output of arrival inspection, not a special document the Japan store must obtain beforehand."
+    },
+    {
+      "issue": "Digital mark scope",
+      "finding": "SI 112/2022 regulation 13(3) requires pre-clearance evidence of digital marks only for Certification Regulations 2021 Schedule 3 Part II categories. The complete schedule lists cosmetics, electricals and construction materials, not tea or food. Full SI 108/2022 section 13 only changes the fee from 18 to 21 shillings per unit. Section 2 retains the Part II cross-reference; section 11 inserts regulation 23A(1), a conformity duty, and 23A(2), a marking duty for locally manufactured Part II goods. The amendment does not extend digital marks to tea. Manufacturing certification under 2021 regulation 4 is not a general private-import permit."
+    },
+    {
+      "issue": "E-portal registration",
+      "finding": "The official 8 September 2026 UNBS news says importers can create an account with a TIN and email, describes Customs integration and automatic ICC generation, and confirms destination inspection without PVoC, with a 15% CIF surcharge. It does not say every private postal recipient must independently register. Statutory regulation 8(1) affirmatively accepts a customs declaration upon arrival. An account interface does not displace that route without a universal registration duty. Do not claim a paper CN22 alone necessarily supplies every required customs data field."
+    },
+    {
+      "issue": "Costs and conditions",
+      "finding": "Schedule 1 Part 3 item 1 excludes food from the low-value destination-inspection exemption, so tea remains inspectable and testable. Regulation 7(2) provides a 15% CIF surcharge and applicable inspection or other fees. Schedule 2 paragraph 2 sets a destination fee of 0.5% CIF (minimum USD 235, maximum USD 3,000), but expressly disapplies that fee below USD 1,300 CIF. Laboratory charges under paragraph 3, incidental storage and ordinary customs costs can remain. No exact fee total is promised."
+    }
+  ],
+  "conditions": [
+    "Preserve the accepted agricultural conditions: finished plain manufactured tea, clean new appropriate packaging, no raw plant material or pests.",
+    "Provide an accurate normal postal/customs declaration and invoice, packing and transport details; transmit the declaration through the single window as prescribed.",
+    "Allow arrival conformity inspection/testing, meet food standards, shelf-life and label rules, and pay applicable charges.",
+    "Do not rely on a pre-export CoC, special exemption letter or digital mark. Do not advertise inspection-free entry."
+  ],
+  "sourceGapsClosed": [
+    "Complete SI 112/2022 Gazette read, replacing the prior full-text access gap.",
+    "Complete 2021 certification regulations and 2022 amendment read: tea is outside digital-mark categories.",
+    "No unsupported universal separate-account duty inferred from permissive current news."
+  ],
+  "remainingQuestion": null,
+  "sources": [
+    {
+      "title": "Actual Gazette: SI112/2022, regulations4–13 andSchedules1–2",
+      "url": "https://media.ulii.org/media/legislation/107267/source_file/0360de7f6a9a8b96/uganda-national-bureau-of-standards-inspection-and-clearance-of-import-regulations-2022.pdf",
+      "file": "reg2022-ulii.pdf",
+      "sha256": "8f9ffc545986d3c6a48ff5afe2272a0ad1fda7571f0d98f58d6122f2e65b880f"
+    },
+    {
+      "title": "Actual Gazette: CertificationSI68/2021, regulation4 andSchedule3",
+      "url": "https://media.ulii.org/media/legislation/107109/source_file/d505729b34f2d023/uganda-national-bureau-of-standards-certification-regulations-2021.pdf",
+      "file": "certification2021-ulii.pdf",
+      "sha256": "4c8d84ccb57b2fc7ea70320b25e21b12c7ae667a8b20fe09cd9e46f777bd8587"
+    },
+    {
+      "title": "Actual Gazette: Certification AmendmentSI108/2022, Ministry of Trade portal copy",
+      "url": "https://ugandatrades.go.ug/media/UNBS%20Certification%20Regulations,%202022%20-%20SI%20No%20108%20of%202022.pdf",
+      "file": "certification-amendment2022-tradeportal.pdf",
+      "sha256": "f1552b707451edf9e4c84efd8e4ff2bafb2b3585cbe26e40a54b24ffad601d83"
+    },
+    {
+      "title": "UNBS portal implementation news8September2026",
+      "url": "https://unbs.go.ug/news-highlights.php?news=339&read=",
+      "retrieval": "Official indexed complete article read through web search; directHTML403 not treated as article."
+    }
+  ],
+  "suggestedPermitFreeReason": "Supported conditionally through SI 112/2022 regulations 7–8: destination inspection following an ordinary customs declaration, without relying on a special low-value exemption letter or pre-export CoC. Tea remains outside digital-mark categories after SI 108/2022. Arrival inspection, possible fees and an agency-issued ICC remain. Current news does not establish mandatory separate registration for every private recipient."
+}
