@@ -92,7 +92,7 @@ The page is built to stay open for a multi-day session:
 - **Calm mode.** Ambient motion (the iridescent rim, light sweep and drift, glass float, pulses) runs on arrival. After 60 seconds without pointer, keyboard, wheel, touch or scroll input, the page sets `--quant-motion: paused`. Every infinite animation reads that variable through `animation-play-state`, and the mesh stops scheduling animation frames. Any interaction wakes it.
 - **Live signals.** They refresh a few minutes after each completed hour and never overlap. A tab that was throttled in the background catches up when it becomes visible again.
 - **Cleanup.** Timers, observers and listeners are released on unmount.
-- **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries.
+- **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries. `controller.spec.ts` (*long-running session memory bounds*) runs a paper session through 1,050 one-minute evaluations and checks every cap.
 
 Every bot is **capacity-limited** to the researched shape:
 
@@ -100,7 +100,7 @@ Every bot is **capacity-limited** to the researched shape:
 - the researched order size;
 - a price-impact ceiling set to the largest researched fill impact, rounded up, plus one point, capped at 20% (`quantImpactCeiling`).
 
-A larger budget would let the bot keep buying into a pool of a few dozen XOR, which the research never tested. The live session lasts up to 24 hours, and the tab must stay open, as for every browser-run bot.
+A larger budget would let the bot keep buying into a pool of a few dozen XOR, which the research never tested. The session length is the one chosen on the card (see *Session length and expectations*), and the tab must stay open for all of it.
 
 ## Interface
 
@@ -148,3 +148,4 @@ The research covers the bundled archive. To extend it, rerun the read-only extra
 - `useQuantLoop.spec.ts`: state machine, fee retry, cache, archive fallback, cancellation.
 - `QuantCommandCenter.spec.ts`: rendering, signals, emitted payloads and the error and retry paths.
 - `BotsPage.spec.ts`, *Quant Loop command center*: page wiring, the one-glance consent, the funding-short link, paper save and Swap navigation.
+- `controller.spec.ts`, *long-running session memory bounds*: activity, equity and chart observations stay capped over a 17.5-hour paper session.

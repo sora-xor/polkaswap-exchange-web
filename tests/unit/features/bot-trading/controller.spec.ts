@@ -2837,3 +2837,31 @@ describe('public eligibility accepted no-pair recovery', () => {
     }
   );
 });
+
+describe('long-running session memory bounds', () => {
+  it('keeps activity, equity and chart observations bounded however long a session runs', async () => {
+    const bot = botFixture();
+    // The price (2) never reaches the buy trigger, so every one-minute evaluation records a hold and an equity point.
+    bot.strategy = { ...bot.strategy, kind: 'threshold', threshold: '1', direction: 'below' };
+    bot.policy.sessionDurationMs = 86_400_000;
+    const h = make(bot);
+    await h.controller.initialize();
+    await h.controller.selectBot('bot-1');
+    await h.controller.startBot('bot-1');
+    for (let minute = 0; minute < 1050; minute++) {
+      h.advance(60_000);
+      await h.controller.tick();
+    }
+    const saved = h.saved()[0];
+    expect(saved.status).toBe('running');
+    expect(saved.portfolio.trades).toBe(0);
+    expect(saved.activity).toHaveLength(200);
+    expect(saved.activity[0]).toMatchObject({ kind: 'hold', timestamp: h.deps.now() });
+    expect(saved.equity).toHaveLength(1000);
+    expect(saved.equity.at(-1)?.timestamp).toBe(h.deps.now());
+    // 120 live observations plus at most the one loaded history candle that precedes them.
+    expect(h.controller.chartCandles.value.length).toBeGreaterThanOrEqual(120);
+    expect(h.controller.chartCandles.value.length).toBeLessThanOrEqual(121);
+    expect(h.controller.chartCandles.value.at(-1)?.timestamp).toBe(h.deps.now());
+  });
+});
