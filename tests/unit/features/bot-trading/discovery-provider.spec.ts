@@ -148,7 +148,10 @@ describe('discovery provider boundary', () => {
       const delayedFetch = vi.fn((_url: string, init: RequestInit) => {
         successfulSignal = init.signal as AbortSignal;
         return new Promise<Response>((resolve) => {
-          setTimeout(() => resolve(new Response(JSON.stringify({ version: 2, requestId: REQUEST_ID, strategy }))), 31_000);
+          setTimeout(
+            () => resolve(new Response(JSON.stringify({ version: 2, requestId: REQUEST_ID, strategy }))),
+            31_000
+          );
         });
       });
       const delayedProvider = createDiscoveryProvider(
@@ -186,7 +189,7 @@ describe('discovery provider boundary', () => {
     }
   });
 
-  it('uses structured output for OpenAI and a single forced schema tool for Claude', async () => {
+  it('uses structured output for OpenAI and one requested schema tool for Claude', async () => {
     const openaiFetch = vi.fn(
       async () =>
         new Response(
@@ -226,8 +229,126 @@ describe('discovery provider boundary', () => {
     );
     expect(await claude.suggest(context())).toEqual({ requestId: REQUEST_ID, strategy });
     const claudeBody = JSON.parse((claudeFetch.mock.calls[0] as unknown as [string, RequestInit])[1].body as string);
-    expect(claudeBody.tool_choice).toEqual({ type: 'tool', name: 'discovery_draft' });
+    // Current Claude models reject forced tool_choice; the single call is requested and validated locally.
+    expect(claudeBody.tool_choice).toEqual({ type: 'auto', disable_parallel_tool_use: true });
+    expect(claudeBody.system).toContain('Respond only by calling the discovery_draft tool exactly once.');
+    expect(claudeBody.max_tokens).toBe(16_000);
     expect(claudeBody.tools).toHaveLength(1);
+    expect(openaiBody.max_output_tokens).toBe(16_000);
+    expect(JSON.stringify(openaiBody.text.format.schema)).not.toContain('maxLength');
+  });
+
+  it('reports a missing, rejected or unfunded key with specific app-owned messages', async () => {
+    expect(() => createDiscoveryProvider('claude', { apiKey: '  ' })).toThrow(/^bots\.errors\.aiKeyMissing$/);
+    expect(() => createDiscoveryProvider('openai', {})).toThrow(/^bots\.errors\.aiKeyMissing$/);
+
+    const rejected = createDiscoveryProvider(
+      'claude',
+      { apiKey: 'sk-ant-wrong' },
+      {
+        request: vi.fn(async () => new Response('{"error":{"message":"invalid x-api-key"}}', { status: 401 })),
+        now: () => NOW,
+      }
+    );
+    await expect(rejected.listModels()).rejects.toThrow(/^bots\.errors\.aiKey$/);
+
+    let now = NOW;
+    const responses = [
+      new Response(
+        JSON.stringify({
+          type: 'error',
+          error: { type: 'invalid_request_error', message: 'Your credit balance is too low to access the API.' },
+        }),
+        { status: 400 }
+      ),
+      new Response('{}', { status: 529 }),
+      new Response('{}', { status: 429 }),
+    ];
+    const funded = createDiscoveryProvider(
+      'claude',
+      { apiKey: 'sk-ant-test', model: 'claude-opus-5-5' },
+      { request: vi.fn(async () => responses.shift()!), now: () => now }
+    );
+    await expect(funded.suggest(context())).rejects.toThrow(/^bots\.errors\.aiQuota$/);
+    now += 60_000;
+    await expect(funded.suggest(context())).rejects.toThrow(/^bots\.errors\.aiBusy$/);
+    now += 60_000;
+    await expect(funded.suggest(context())).rejects.toThrow(/^bots\.errors\.aiQuota$/);
+
+    const offline = createDiscoveryProvider(
+      'openai',
+      { apiKey: 'sk-test', model: 'gpt-6' },
+      {
+        request: vi.fn(async () => {
+          throw new TypeError('Failed to fetch');
+        }),
+        now: () => NOW,
+      }
+    );
+    await expect(offline.suggest(context())).rejects.toThrow(/^bots\.errors\.aiNetwork$/);
+  });
+
+  it('bounds the Claude output budget by the selected model and times out API drafts after two minutes', async () => {
+    const catalog = {
+      data: [
+        {
+          id: 'claude-opus-5-5',
+          display_name: 'Claude Opus 5.5',
+          created_at: '2026-09-01T00:00:00Z',
+          max_tokens: 128_000,
+        },
+        { id: 'claude-small', display_name: 'Small', created_at: '2026-01-01T00:00:00Z', max_tokens: 8_192 },
+      ],
+    };
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify(catalog)))
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            content: [
+              { type: 'thinking', thinking: '' },
+              { type: 'text', text: 'Drafting.' },
+              { type: 'tool_use', name: 'discovery_draft', input: { requestId: REQUEST_ID, strategy } },
+            ],
+          })
+        )
+      );
+    const claude = createDiscoveryProvider(
+      'claude',
+      { apiKey: 'sk-ant-test' },
+      { request: fetch as typeof globalThis.fetch, now: () => NOW }
+    );
+    expect((await claude.listModels()).map((entry) => entry.maxOutputTokens)).toEqual([128_000, 8_192]);
+    claude.selectModel('claude-small');
+    expect(await claude.suggest(context())).toEqual({ requestId: REQUEST_ID, strategy });
+    expect(JSON.parse((fetch.mock.calls[1] as [string, RequestInit])[1].body as string).max_tokens).toBe(8_192);
+
+    vi.useFakeTimers({ now: NOW });
+    try {
+      let signal: AbortSignal | undefined;
+      const pending = createDiscoveryProvider(
+        'claude',
+        { apiKey: 'sk-ant-test', model: 'claude-opus-5-5' },
+        {
+          request: vi.fn((_url: string, init: RequestInit) => {
+            signal = init.signal as AbortSignal;
+            return new Promise<Response>((_resolve, reject) => {
+              signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+            });
+          }) as unknown as typeof globalThis.fetch,
+          now: () => NOW,
+        }
+      );
+      const draft = pending.suggest(context());
+      const rejection = expect(draft).rejects.toThrow(/^bots\.errors\.aiTimeout$/);
+      await vi.advanceTimersByTimeAsync(119_999);
+      expect(signal?.aborted).toBe(false);
+      await vi.advanceTimersByTimeAsync(1);
+      await rejection;
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('selects a discovered model before generation and enforces the per-provider cooldown after dispatch', async () => {

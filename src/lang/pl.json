@@ -200,6 +200,7 @@
     "bots": {
         "above": "Sprzedaj powyżej progu",
         "activity": "Aktywność",
+        "advanced": "Zaawansowane",
         "aiBacktestNote": "Przed testem historycznym wygeneruj i sprawdź strategię deterministyczną.",
         "aiConnection": "Połączenie AI",
         "allocation": "Przydział",
@@ -214,7 +215,6 @@
         "authorizeStart": "Zatwierdź i uruchom",
         "autopilot": {
             "addressCopied": "Adres skopiowany",
-            "advanced": "Zaawansowane",
             "begin": "Start AI trading",
             "budget": "Przydział ({symbol})",
             "budgetUnselected": "Przydział",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "Dodatkowo {amount} {symbol} na opłaty sieciowe.",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "START",
+            "go": "Znajdź strategię",
             "goal": "Powiększ mój kapitał",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "Wybierz budżet i token, którego chcesz mieć więcej. Twoja AI (aplikacja Codex lub klucz API) proponuje strategie, Polkaswap testuje je na danych historycznych, a najlepszą sprawdzasz, zanim zacznie handlować.",
             "maximizeGoal": "Pomnóż {symbol}",
             "maximizeToken": "Token do pomnożenia",
             "refreshFunding": "Odśwież salda",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "Połącz sztuczną inteligencję",
             "connected": "Połączono",
+            "connectFirst": "Najpierw połącz AI, aby rozpocząć badanie.",
             "consent": "Sprawdziłem dokładnie boty, budżety i 14-dniowy grant na podpisywanie.",
             "continueExploratory": "Kontynuuj wyszukiwanie eksploracyjne",
             "continueWithProvider": "Wznów z tą AI",
@@ -553,6 +554,7 @@
             "feeReserve": "Rezerwa na opłaty XOR",
             "finalizedBlock": "Zweryfikowano w sfinalizowanym bloku",
             "finalizedSwaps": "sfinalizowane swapy",
+            "getKey": "Uzyskaj klucz API {provider}",
             "goal": "Każdy bot: 14 aktywnych dni, 10 sfinalizowanych swapów, dodatnia wartość netto powyżej stanu posiadania, w ramach wypłaty.",
             "historyChanged": "Zweryfikowana historia została zmieniona w trakcie badań",
             "holdout": "Nietknięte zatrzymanie",
@@ -564,7 +566,11 @@
             "holdoutReused": "Następny okres testowy pokrywa się z datami już sprawdzonymi w tej przeglądarce. Wyniki będą wyłącznie eksploracyjne i nie pozwolą zatwierdzić botów do handlu na żywo.",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "Pomysł na strategię (opcjonalnie)",
+            "ideaDips": "Kupuj spadki w trendzie wzrostowym",
+            "ideaExamples": "Potrzebujesz pomysłu? Wypróbuj:",
+            "ideaMomentum": "Podążaj za silnym momentum",
             "ideaPlaceholder": "Na przykład: kupuj krótkie wycofania w trendzie wzrostowym",
+            "ideaSteady": "Regularne codzienne zakupy",
             "jev": "API Jeva",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "Alokacja, pułapy zamówień i rezerwa opłat są ustalane na podstawie zweryfikowanych badań. Rozpocznij nowe wyszukiwanie, aby je zmienić.",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "API OpenAI",
             "orderLimit": "Maksymalne zamówienie",
+            "otherConnection": "Inne",
             "outcome": {
                 "active": "Praca w kierunku celu",
                 "loss": "Osiągnięto limit wypłat",
@@ -660,6 +667,7 @@
             "start": "Rozpocznij badania",
             "subtitle": "Przeszukaj zweryfikowane rynki pod kątem strategii i przejrzyj dokładne zasady przed rozpoczęciem handlu na żywo.",
             "tabNote": "Badanie i handel na żywo działają, dopóki ta karta i komputer są aktywne. Wstrzymana kampania wymaga ponownego przeglądu i odblokowania.",
+            "tagline": "Pozwól AI znaleźć i przetestować strategie za Ciebie",
             "title": "Odkryj",
             "trades": "Zamiana",
             "training": "Szkolenie",
@@ -676,6 +684,13 @@
         "equityChartNote": "Uruchom strategię, aby rejestrować jej wyniki.",
         "errors": {
             "action": "Nie udało się wykonać działania. Spróbuj ponownie.",
+            "aiAccess": "Ten klucz API nie może używać wybranego modelu. Wybierz inny model lub sprawdź uprawnienia klucza.",
+            "aiBusy": "Dostawca AI jest przeciążony lub chwilowo niedostępny. Spróbuj ponownie za kilka minut.",
+            "aiKey": "Dostawca AI odrzucił ten klucz API. Skopiuj ponownie cały klucz lub utwórz nowy.",
+            "aiKeyMissing": "Najpierw wklej swój klucz API.",
+            "aiNetwork": "Nie udało się połączyć z dostawcą AI. Sprawdź połączenie z internetem, VPN lub bloker treści i spróbuj ponownie.",
+            "aiQuota": "Na koncie AI brakuje środków lub osiągnięto limit zapytań. Doładuj konto u dostawcy albo odczekaj minutę i spróbuj ponownie.",
+            "aiTimeout": "AI zbyt długo odpowiadała. Spróbuj ponownie lub wybierz szybszy model.",
             "amount": "Podaj prawidłową kwotę zgodną z precyzją tokena.",
             "backtestAi": "Przed testem historycznym strategii AI wygeneruj i sprawdź reguły deterministyczne.",
             "balance": "Przydzielone tokeny lub saldo portfela nie wystarczają na tę transakcję.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "Cena odbiega o {value} od średniej {window}-godzinnej i przekroczyła próg wyzwalający {threshold}. Właśnie wtedy bot kupuje.",
+                "detail": "Cena odbiega o {value} od średniej {window}-godzinnej i przekroczyła próg kupna {threshold}, więc uruchomiony bot kupiłby teraz.",
                 "title": "{symbol} jest w strefie kupna"
             },
-            "botName": "Zbieracz płynności {symbol}",
+            "botName": "Bot {symbol}",
+            "budget": "Budżet {total} XOR: {amount} XOR na zakup, {reserve} XOR na opłaty",
             "cadence": {
-                "every": "Okazje średnio w {days}-dniowych odstępach",
-                "holdDays": "pozycje zamykane w ciągu {min}–{max} dni",
-                "holdHours": "pozycje zamykane w ciągu {min}–{max} godz.",
-                "last": "ostatnio {date}"
+                "every": "Handluje średnio raz na {days} dni",
+                "holdDays": "trzyma pozycję {min}–{max} dni",
+                "holdHours": "trzyma pozycję {min}–{max} godz.",
+                "last": "ostatni zakup {date}"
             },
-            "capacity": "Skala celowo ograniczona: budżet 10 XOR, rezerwa na opłaty 2 XOR i {amount} XOR na zlecenie, ponieważ te pule mają niską płynność.",
             "consent": {
                 "budget": "Budżet {amount} XOR",
-                "cadenceDays": "Transakcje są rzadkie: w ślepych testach okazje pojawiały się średnio w {days}-dniowych odstępach, a zamknięcie pozycji może potrwać do {hold} dni. Pozostaw tę kartę otwartą przez całą sesję.",
-                "cadenceHours": "Transakcje są rzadkie: w ślepych testach okazje pojawiały się średnio w {days}-dniowych odstępach, a zamknięcie pozycji może potrwać do {hold} godz. Pozostaw tę kartę otwartą przez całą sesję.",
-                "evidence": "Wynik walidacji kroczącej {return}% · maks. obsunięcie {drawdown}% · transakcje: {trades}. Wynik hipotetyczny, po wszystkich opłatach; to nie jest obietnica zysku.",
-                "eyebrow": "Szybki przegląd",
+                "cadenceDays": "Bot handluje rzadko: w testach średnio raz na {days} dni, a pozycję może trzymać do {hold} dni. Pozostaw tę kartę otwartą przez całą sesję.",
+                "cadenceHours": "Bot handluje rzadko: w testach średnio raz na {days} dni, a pozycję może trzymać do {hold} godz. Pozostaw tę kartę otwartą przez całą sesję.",
+                "evidence": "Wynik testu po opłatach {return}% · największy spadek {drawdown}% · transakcje: {trades}. To symulacja na danych historycznych, a nie obietnica zysku.",
                 "getXor": "Zdobądź XOR",
                 "impact": "Maks. wpływ na cenę {value}%",
-                "order": "{amount} XOR na zlecenie",
-                "reserve": "Rezerwa na opłaty {amount} XOR",
+                "order": "{amount} XOR na zakup",
+                "reserve": "{amount} XOR na opłaty",
                 "session": "Sesja {hours} godz.",
                 "sessionDays": "{count}-dniowa sesja",
-                "stepConfirm": "Zaznacz pole i rozpocznij. Bot może podpisywać wymiany tylko w tych limitach.",
+                "stepConfirm": "Zaznacz pole i uruchom. Bot może wymieniać tokeny tylko w ramach tych limitów.",
                 "stepPassword": "Wpisz hasło do portfela",
                 "stepWallet": "Zatwierdzaj każdą wymianę w portfelu",
-                "title": "Handel rzeczywisty: zbieracz płynności {symbol}"
+                "title": "Rozpocznij handel botem {symbol}"
             },
-            "disclaimer": "Hipotetyczne badanie archiwalnych stanów pul SORA od {start} do {end}, wycenione według dzisiejszych opłat ({fee} XOR opłaty sieciowej, {swap}% opłaty puli) i poślizgu 0,5%. Wyniki historyczne nie gwarantują przyszłych zwrotów.",
-            "drawdown": "Maksymalne obsunięcie",
+            "disclaimer": "Wyniki pochodzą z symulacji na danych pul SORA od {start} do {end}, przy dzisiejszych opłatach (opłata sieciowa {fee} XOR, opłata puli {swap}%) i poślizgu 0,5%. Przeszłe wyniki nie gwarantują przyszłych zysków.",
+            "drawdown": "Największy spadek",
             "equity": {
-                "caption": "Ślepa walidacja krocząca: w każdym podziale handlowano według reguł wybranych wyłącznie na podstawie wcześniejszych godzin, a potem pętla uczyła się od nowa.",
-                "fold": "Podział {index}",
+                "caption": "Wartość bota w porównaniu z trzymaniem {symbol}. W każdym okresie obowiązywały reguły wybrane tylko na podstawie wcześniejszych danych.",
                 "idle": "Pozostało w XOR",
-                "strategy": "Strategia",
-                "title": "Porównaj, zanim się zaangażujesz",
+                "strategy": "Bot",
+                "title": "Wyniki w czasie",
                 "trades": "Transakcje: {count}"
             },
-            "eyebrow": "Laboratorium strategii",
             "families": {
                 "breakout": "Wybicie",
-                "guarded": "Odbicie z filtrem",
-                "reversion": "Odbicie od odchylenia",
-                "shock": "Odbicie po szoku",
+                "guarded": "Zakup po spadku z filtrem",
+                "reversion": "Zakup po spadku",
+                "shock": "Zakup po krachu",
                 "trend": "Podążanie za trendem"
             },
-            "fromMean": "wzgl. średniej {window}-godzinnej",
+            "fromMean": "wobec średniej {window}-godzinnej",
             "gaugeAria": "Cena odbiega o {value} od średniej {window}-godzinnej; bot kupuje poniżej {threshold}.",
             "goLive": "Rozpocznij handel",
-            "kpi": {
-                "backtests": "Testy historyczne",
-                "best": "{symbol} w walidacji kroczącej",
-                "deployable": "Rynki gotowe do handlu",
-                "killed": "Odsetek odrzuconych",
-                "robust": "Odporne",
-                "tested": "Strategie"
-            },
+            "intro": "Każdy bot wymienia XOR na jeden token i z powrotem według stałych reguł kupna i sprzedaży. Reguły wybrano na podstawie testów na danych historycznych pul SORA, z uwzględnieniem opłat.",
             "lattice": {
-                "caption": "Każda kulka to jedna sprzedaż poza próbą, umieszczona według zrealizowanego wyniku po wszystkich opłatach.",
+                "caption": "Każda kulka to jedna sprzedaż z testów. Jej położenie zależy od wyniku po opłatach.",
                 "summary": "Zyskowne: {wins} · stratne: {losses}",
-                "title": "Każda transakcja to jedna kulka"
+                "title": "Wyniki transakcji"
             },
-            "liveStrip": "Na żywo · sieć główna SORA · {time} UTC",
             "marketStatus": {
-                "deploy": "Gotowy do handlu",
-                "thin": "Niska płynność",
-                "watch": "Obserwacja"
+                "deploy": "Gotowy",
+                "thin": "Za mała pula",
+                "watch": "Brak bota"
             },
             "mesh": {
-                "caption": "Jeden węzeł na strategię. Świecące węzły przeszły wszystkie testy; pulsujący został wdrożony.",
-                "summary": "Odporne: {robust} · odrzucone: {killed}",
-                "title": "Sieć strategii"
+                "caption": "Każda kropka to jedna przetestowana strategia. Jasne kropki spełniły wszystkie warunki; pulsujące to te, których używają boty.",
+                "summary": "Przyjęte: {robust} · odrzucone: {killed}",
+                "title": "Przetestowane strategie"
             },
+            "otherMarkets": "Inne rynki",
             "paper": "Rozpocznij symulację",
             "pipeline": "Proces badawczy",
             "preparing": "Przygotowywanie przeglądu…",
-            "priceChange": "Cena {symbol}",
+            "priceChange": "Trzymanie {symbol}",
+            "progress": "Postęp testów",
             "radar": {
-                "caption": "Reguły oceniane na podstawie ostatniej zakończonej godziny, dokładnie tak, jak widzi je bot w handlu rzeczywistym.",
-                "title": "Radar okazji"
+                "title": "Dostępne boty"
             },
+            "result": "Wynik testu",
             "retry": "Spróbuj ponownie",
             "rule": {
-                "breakoutAbove": "Nowe {window}-godzinne maksimum",
-                "breakoutBelow": "Nowe {window}-godzinne minimum",
-                "buy": "Kup {amount} XOR, gdy",
-                "deviationAbove": "Cena wzgl. średniej {window}-godzinnej powyżej {value}%",
-                "deviationBelow": "Cena wzgl. średniej {window}-godzinnej poniżej {value}%",
-                "label": "Reguły strategii",
-                "momentumAbove": "Zmiana {window}-godzinna powyżej {value}%",
-                "momentumBelow": "Zmiana {window}-godzinna poniżej {value}%",
+                "breakoutAbove": "Cena osiąga nowe {window}-godzinne maksimum",
+                "breakoutBelow": "Cena spada do nowego {window}-godzinnego minimum",
+                "buy": "Kup za {amount} XOR, gdy",
+                "deviationAbove": "Cena wobec średniej {window}-godzinnej powyżej {value}%",
+                "deviationBelow": "Cena wobec średniej {window}-godzinnej poniżej {value}%",
+                "label": "Reguły handlu",
+                "momentumAbove": "{window}-godzinna zmiana ceny powyżej {value}%",
+                "momentumBelow": "{window}-godzinna zmiana ceny poniżej {value}%",
                 "sell": "Sprzedaj, gdy"
             },
             "session": {
-                "label": "Sesja",
+                "label": "Czas działania",
                 "option": "{count} d"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "Strefa sprzedaży",
                 "neutral": "Oczekiwanie",
                 "unavailable": "Brak danych",
-                "warmup": "Rozgrzewka"
+                "warmup": "Jeszcze za mało danych"
             },
-            "signalArchive": "Archiwalne zamknięcie · {time}",
-            "signalLive": "Bieżące zamknięcie · {time}",
-            "stages": {
-                "backtest": "Test historyczny",
-                "data": "Dane pul",
-                "deploy": "Wdrożenie",
-                "fees": "Bieżące opłaty",
-                "folds": "Podziały: {count}",
-                "hours": "{count} godz.",
-                "robustness": "Odporność",
-                "walkforward": "Walidacja krocząca"
-            },
+            "signalArchive": "Na podstawie zapisanych cen · {time}",
+            "signalLive": "Sprawdzono {time}",
             "status": {
-                "done": "Badanie zakończone · {date}",
-                "error": "Badanie jest teraz niedostępne.",
-                "fees": "Odczytywanie bieżących opłat ze sfinalizowanego bloku SORA…",
-                "generating": "Generowanie strategii…",
-                "idle": "Gotowe do badania",
-                "loading": "Wczytywanie archiwalnych stanów pul…",
-                "running": "Testowanie {market} · podział {fold} z {folds}"
+                "error": "Nie udało się wczytać wyników testów.",
+                "fees": "Sprawdzanie bieżących opłat sieciowych…",
+                "loading": "Wczytywanie historycznych danych pul…",
+                "running": "Testowanie strategii na danych historycznych…"
             },
-            "subtitle": "Dla każdego rynku SORA pętla tworzy strategie oparte na regułach (łącznie {candidates}), odtwarza je na {hours} godz. danych z rzeczywistych rezerw pul z dokładnymi opłatami i wpływem na cenę, odrzuca wszystko, co kruche, i wdraża tylko to, co zarabiało w ślepych testach walidacji kroczącej.",
+            "steps": {
+                "choose": {
+                    "text": "Porównaj poniżej reguły i wyniki testów.",
+                    "title": "Wybierz bota"
+                },
+                "live": {
+                    "text": "Sprawdź limity i potwierdź w portfelu. Nie zamykaj tej karty, dopóki bot działa.",
+                    "title": "Rozpocznij handel"
+                },
+                "paper": {
+                    "text": "Przycisk „Rozpocznij symulację” dodaje bota z wirtualnymi środkami do sekcji Moje boty. Uruchom go tam; portfel nie jest potrzebny.",
+                    "title": "Wypróbuj w symulacji"
+                }
+            },
             "swap": "Wymień XOR → {symbol}",
-            "thinNote": "Mediana głębokości puli wynosi {depth} XOR, czyli za mało na zlecenie 2 XOR, więc pętla pomija ten rynek.",
-            "title": "Boty, które testują tysiące strategii,",
-            "titleAccent": "zanim zaryzykują choćby jeden XOR.",
+            "thinNote": "W puli jest około {depth} XOR, za mało na transakcję o wartości 2 XOR.",
+            "title": "Gotowe boty",
             "trades": "Transakcje",
-            "walkForward": "Walidacja krocząca",
-            "watchNote": "Żadna strategia nie przeszła tu wszystkich testów, więc pętla zostawia Twoje XOR nietknięte i dalej obserwuje rynek."
+            "watchNote": "W testach żadna reguła nie przyniosła zysku, więc dla tego rynku nie ma jeszcze bota."
         },
         "receiveToken": "Token handlowy",
         "research": {

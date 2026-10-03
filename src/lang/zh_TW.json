@@ -200,6 +200,7 @@
     "bots": {
         "above": "高於閾值時賣出",
         "activity": "動態",
+        "advanced": "進階",
         "aiBacktestNote": "歷史測試前，請使用“生成策略”創建並檢查規則明確的策略。",
         "aiConnection": "AI 連接",
         "allocation": "分配資金",
@@ -214,7 +215,6 @@
         "authorizeStart": "授權並啓動",
         "autopilot": {
             "addressCopied": "地址已複製",
-            "advanced": "進階",
             "begin": "Start AI trading",
             "budget": "分配資金 ({symbol})",
             "budgetUnselected": "分配資金",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "另需 {amount} {symbol} 網路手續費。",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "開始",
+            "go": "尋找策略",
             "goal": "增加我的資本",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "選擇預算和想增持的代幣。您的 AI（Codex 應用程式或 API 金鑰）擬定策略，Polkaswap 以歷史資料測試，交易前由您審核最佳策略。",
             "maximizeGoal": "增持 {symbol}",
             "maximizeToken": "想增持的代幣",
             "refreshFunding": "重新整理餘額",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "連接人工智慧",
             "connected": "已連接",
+            "connectFirst": "請先連接 AI 再開始研究。",
             "consent": "我審查了確切的機器人、預算和 14 天的簽約補助金。",
             "continueExploratory": "繼續探索性搜尋",
             "continueWithProvider": "使用此 AI 繼續",
@@ -553,6 +554,7 @@
             "feeReserve": "異或費用儲備",
             "finalizedBlock": "在最終區塊進行驗證",
             "finalizedSwaps": "最終確定的互換",
+            "getKey": "取得 {provider} API 金鑰",
             "goal": "每個機器人：14 個活躍天，10 個最終掉期，正淨值高於持有量，在回檔範圍內。",
             "historyChanged": "已驗證的歷史記錄在研究過程中發生了變化",
             "holdout": "未受影響的堅持者",
@@ -564,7 +566,11 @@
             "holdoutReused": "下一次保留測試期間與此瀏覽器中已查看的日期重疊。結果僅供探索，無法用於核准實際交易機器人。",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "戰略構想（可選）",
+            "ideaDips": "在上升趨勢中逢低買進",
+            "ideaExamples": "需要靈感？試試這些：",
+            "ideaMomentum": "跟隨強勁動能",
             "ideaPlaceholder": "例如：在上漲趨勢中回調買空",
+            "ideaSteady": "每日穩定定期買入",
             "jev": "傑夫API",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "分配、訂單上限和費用準備金由經過驗證的研究確定。 請重新搜尋以變更內容。",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "開放人工智慧API",
             "orderLimit": "最大訂單量",
+            "otherConnection": "其他",
             "outcome": {
                 "active": "朝著目標努力",
                 "loss": "達到回檔限額",
@@ -660,6 +667,7 @@
             "start": "開始研究",
             "subtitle": "在經過驗證的市場中搜尋策略並在即時交易前查看確切的規則。",
             "tabNote": "研究和實際交易只會在此分頁及電腦保持運作時進行。暫停的活動需要重新審核並解鎖。",
+            "tagline": "讓 AI 為你尋找並測試策略",
             "title": "發現",
             "trades": "掉期",
             "training": "訓練",
@@ -676,6 +684,13 @@
         "equityChartNote": "運行此策略後即可開始記錄表現。",
         "errors": {
             "action": "無法完成操作，請重試。",
+            "aiAccess": "此 API 金鑰無法使用所選模型。請選擇其他模型，或檢查金鑰的權限。",
+            "aiBusy": "AI 服務供應商忙碌中或暫時無法使用。請幾分鐘後再試。",
+            "aiKey": "AI 服務供應商拒絕了此 API 金鑰。請重新複製完整金鑰，或建立新的金鑰。",
+            "aiKeyMissing": "請先貼上你的 API 金鑰。",
+            "aiNetwork": "無法連線到 AI 服務供應商。請檢查網路連線、VPN 或內容封鎖器，然後再試。",
+            "aiQuota": "你的 AI 帳戶餘額不足或已達速率限制。請向服務供應商儲值，或等待一分鐘後再試。",
+            "aiTimeout": "AI 回應時間過長。請再試一次，或選擇更快的模型。",
             "amount": "請輸入符合代幣小數精度的有效數量。",
             "backtestAi": "對 AI 策略回測前，請生成並檢查確定性規則。",
             "balance": "分配的代幣或錢包餘額不足以完成此交易。",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "價格相對 {window} 小時均值偏離 {value}，已越過 {threshold} 的觸發線。機器人正是在這時買入。",
+                "detail": "價格相對 {window} 小時均價為 {value}，已越過 {threshold} 的買入線，因此執行中的機器人現在會買入。",
                 "title": "{symbol} 已進入買入區間"
             },
-            "botName": "{symbol} 流動性捕獲機器人",
+            "botName": "{symbol} 機器人",
+            "budget": "預算 {total} XOR：每次買入 {amount} XOR，{reserve} XOR 留作手續費",
             "cadence": {
-                "every": "約每 {days} 天出現一次機會",
-                "holdDays": "部位於 {min}–{max} 天內平倉",
-                "holdHours": "部位於 {min}–{max} 小時內平倉",
-                "last": "最近一次：{date}"
+                "every": "約每 {days} 天交易一次",
+                "holdDays": "持有 {min}–{max} 天",
+                "holdHours": "持有 {min}–{max} 小時",
+                "last": "上次買入 {date}"
             },
-            "capacity": "規模刻意設限：預算 10 XOR、手續費儲備 2 XOR、每筆訂單 {amount} XOR，因為這些資金池深度較淺。",
             "consent": {
                 "budget": "預算 {amount} XOR",
-                "cadenceDays": "交易並不頻繁：盲測中約每 {days} 天出現一次機會，單一部位最長可能需要 {hold} 天才能平倉。請在整個工作階段期間保持此分頁開啟。",
-                "cadenceHours": "交易並不頻繁：盲測中約每 {days} 天出現一次機會，單一部位最長可能需要 {hold} 小時才能平倉。請在整個工作階段期間保持此分頁開啟。",
-                "evidence": "滾動驗證結果 {return}% · 最大回撤 {drawdown}% · {trades} 筆交易。皆為假設結果，已扣除全部費用；不構成獲利承諾。",
-                "eyebrow": "一覽核對",
+                "cadenceDays": "交易並不頻繁：測試中約每 {days} 天交易一次，單一部位最長可持有 {hold} 天。請在整個工作階段期間保持此分頁開啟。",
+                "cadenceHours": "交易並不頻繁：測試中約每 {days} 天交易一次，單一部位最長可持有 {hold} 小時。請在整個工作階段期間保持此分頁開啟。",
+                "evidence": "測試結果 {return}% · 最大跌幅 {drawdown}% · {trades} 筆交易，已扣除費用。以歷史資料模擬，不保證獲利。",
                 "getXor": "取得 XOR",
                 "impact": "最大價格影響 {value}%",
-                "order": "每筆訂單 {amount} XOR",
-                "reserve": "手續費儲備 {amount} XOR",
+                "order": "每次買入 {amount} XOR",
+                "reserve": "{amount} XOR 留作手續費",
                 "session": "{hours} 小時工作階段",
                 "sessionDays": "{count} 天工作階段",
-                "stepConfirm": "勾選同意後即可啟動。機器人只能在這些限額內簽署兌換。",
+                "stepConfirm": "勾選核取方塊後即可啟動。機器人只能在這些限額內兌換。",
                 "stepPassword": "輸入錢包密碼",
                 "stepWallet": "在錢包中核准每筆兌換",
-                "title": "啟動實盤：{symbol} 流動性捕獲機器人"
+                "title": "啟動實盤：{symbol} 機器人"
             },
-            "disclaimer": "根據 {start} 至 {end} 封存的 SORA 資金池狀態所做的假設性研究，以目前費用（{fee} XOR 網路手續費、{swap}% 資金池手續費）及 0.5% 滑價計價。過往績效不代表未來報酬。",
-            "drawdown": "最大回撤",
+            "disclaimer": "結果以 {start} 至 {end} 的 SORA 資金池資料模擬，並採用目前費用（{fee} XOR 網路手續費、{swap}% 資金池手續費）及 0.5% 滑價計算。過往績效不保證未來報酬。",
+            "drawdown": "最大跌幅",
             "equity": {
-                "caption": "盲測滾動驗證：每一折只使用依據更早時段選出的規則交易，之後循環重新學習。",
-                "fold": "第 {index} 折",
+                "caption": "機器人價值與持有 {symbol} 的比較。每個時段只使用根據更早資料選出的規則。",
                 "idle": "保持持有 XOR",
-                "strategy": "策略",
-                "title": "先比較，再投入",
+                "strategy": "機器人",
+                "title": "績效走勢",
                 "trades": "{count} 筆交易"
             },
-            "eyebrow": "策略實驗室",
             "families": {
                 "breakout": "突破",
-                "guarded": "防護型逆勢",
-                "reversion": "偏離逆勢",
-                "shock": "衝擊逆勢",
-                "trend": "趨勢"
+                "guarded": "過濾式逢低買入",
+                "reversion": "逢低買入",
+                "shock": "急跌買入",
+                "trend": "趨勢追蹤"
             },
-            "fromMean": "相對 {window} 小時均值",
-            "gaugeAria": "價格相對 {window} 小時均值偏離 {value}；低於 {threshold} 時機器人買入。",
+            "fromMean": "相對 {window} 小時均價",
+            "gaugeAria": "價格相對 {window} 小時均價為 {value}；低於 {threshold} 時機器人會買入。",
             "goLive": "啟動實盤",
-            "kpi": {
-                "backtests": "回測次數",
-                "best": "{symbol} 滾動驗證",
-                "deployable": "可實盤市場",
-                "killed": "淘汰率",
-                "robust": "存活策略",
-                "tested": "已測策略"
-            },
+            "intro": "每個機器人依固定的買賣規則，在 XOR 與一種代幣之間兌換。這些規則是以 SORA 資金池的歷史資料（含費用）測試後選出的。",
             "lattice": {
-                "caption": "每顆球代表一筆樣本外賣出，落點為扣除全部費用後的實際結果。",
+                "caption": "每顆球代表測試中的一筆賣出，位置取決於扣除費用後的結果。",
                 "summary": "獲利 {wins} 筆 · 虧損 {losses} 筆",
-                "title": "一筆交易，一顆球"
+                "title": "交易結果"
             },
-            "liveStrip": "即時 · SORA 主網 · {time} UTC",
             "marketStatus": {
-                "deploy": "可實盤",
-                "thin": "深度不足",
-                "watch": "暫不參與"
+                "deploy": "可用",
+                "thin": "資金池過小",
+                "watch": "暫無機器人"
             },
             "mesh": {
-                "caption": "每個節點代表一個策略。發光節點通過了全部檢驗；脈動的節點即已部署的策略。",
-                "summary": "{robust} 個存活 · {killed} 個淘汰",
-                "title": "策略網路"
+                "caption": "每個點代表一個已測試的策略。較亮的點通過了所有檢查；閃爍的點是機器人正在使用的策略。",
+                "summary": "通過 {robust} 個 · 淘汰 {killed} 個",
+                "title": "已測試的策略"
             },
+            "otherMarkets": "其他市場",
             "paper": "模擬交易",
             "pipeline": "研究流程",
             "preparing": "正在準備核對…",
-            "priceChange": "{symbol} 價格",
+            "priceChange": "持有 {symbol}",
+            "progress": "測試進度",
             "radar": {
-                "caption": "規則依最近一個已完成的小時評估，與實盤機器人看到的完全一致。",
-                "title": "機會雷達"
+                "title": "可用的機器人"
             },
+            "result": "測試結果",
             "retry": "重試",
             "rule": {
-                "breakoutAbove": "創 {window} 小時新高",
-                "breakoutBelow": "創 {window} 小時新低",
+                "breakoutAbove": "價格創 {window} 小時新高",
+                "breakoutBelow": "價格創 {window} 小時新低",
                 "buy": "符合以下條件時，以 {amount} XOR 買入",
-                "deviationAbove": "價格相對 {window} 小時均值高於 {value}%",
-                "deviationBelow": "價格相對 {window} 小時均值低於 {value}%",
-                "label": "策略規則",
+                "deviationAbove": "價格相對 {window} 小時均價高於 {value}%",
+                "deviationBelow": "價格相對 {window} 小時均價低於 {value}%",
+                "label": "交易規則",
                 "momentumAbove": "{window} 小時漲跌幅高於 {value}%",
                 "momentumBelow": "{window} 小時漲跌幅低於 {value}%",
                 "sell": "符合以下條件時賣出"
             },
             "session": {
-                "label": "工作階段長度",
+                "label": "執行期間",
                 "option": "{count}天"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "賣出區間",
                 "neutral": "觀望中",
                 "unavailable": "暫無資料",
-                "warmup": "預熱中"
+                "warmup": "資料尚不足"
             },
-            "signalArchive": "封存收盤價 · {time}",
-            "signalLive": "即時收盤價 · {time}",
-            "stages": {
-                "backtest": "回測",
-                "data": "資金池資料",
-                "deploy": "部署",
-                "fees": "即時費用",
-                "folds": "{count} 折",
-                "hours": "{count} 小時",
-                "robustness": "穩健性",
-                "walkforward": "滾動驗證"
-            },
+            "signalArchive": "依據已儲存的價格 · {time}",
+            "signalLive": "檢查於 {time}",
             "status": {
-                "done": "研究完成 · {date}",
-                "error": "研究暫時無法使用。",
-                "fees": "正在從已最終確認的 SORA 區塊讀取目前費用…",
-                "generating": "正在產生策略…",
-                "idle": "準備開始研究",
-                "loading": "正在載入封存的資金池狀態…",
-                "running": "正在測試 {market} · 第 {fold}/{folds} 折"
+                "error": "無法載入測試結果。",
+                "fees": "正在查詢目前的網路手續費…",
+                "loading": "正在載入歷史資金池資料…",
+                "running": "正在以歷史資料測試策略…"
             },
-            "subtitle": "研究循環為每個 SORA 市場撰寫 {candidates} 個規則策略，在 {hours} 小時的真實資金池儲備資料上以精確的費用和價格影響進行回放，淘汰一切脆弱的策略，只部署在盲測滾動驗證中獲利的策略。",
+            "steps": {
+                "choose": {
+                    "text": "比較下方的規則與測試結果。",
+                    "title": "選擇機器人"
+                },
+                "live": {
+                    "text": "檢查限額並在錢包中確認。機器人執行期間請保持此分頁開啟。",
+                    "title": "啟動實盤"
+                },
+                "paper": {
+                    "text": "「模擬交易」會用虛擬資金將機器人加入「我的機器人」。在那裡按「啓動」即可，不需要錢包。",
+                    "title": "模擬試用"
+                }
+            },
             "swap": "兌換 XOR → {symbol}",
-            "thinNote": "資金池深度中位數為 {depth} XOR，對 2 XOR 的訂單而言過淺，因此循環略過此市場。",
-            "title": "機器人先測試數千種策略，",
-            "titleAccent": "之後才動用第一個 XOR。",
+            "thinNote": "此資金池約有 {depth} XOR，不足以進行 2 XOR 的交易。",
+            "title": "現成機器人",
             "trades": "交易次數",
-            "walkForward": "滾動驗證",
-            "watchNote": "此市場沒有策略通過全部檢驗，因此循環讓您的 XOR 保持閒置，並持續觀察。"
+            "watchNote": "測試中沒有任何規則獲利，因此這個市場暫時沒有機器人。"
         },
         "receiveToken": "交易代幣",
         "research": {

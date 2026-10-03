@@ -178,7 +178,7 @@ function render(props: Partial<InstanceType<typeof QuantCommandCenter>['$props']
 beforeEach(() => {
   mocks.translate.mockClear();
   setLoop();
-  // Reduced motion shows exact values immediately instead of counting up.
+  // Reduced motion shows the gauge's exact value immediately instead of sweeping the needle.
   vi.stubGlobal('matchMedia', (query: string) => ({
     matches: query.includes('reduce'),
     media: query,
@@ -189,20 +189,52 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('QuantCommandCenter', () => {
-  it('summarises the research and orders deployable markets first', () => {
+  it('explains how to use the page in three steps that match the card actions', () => {
     const wrapper = render();
-    expect(wrapper.get('[data-testid="quant-kpi-best"]').text()).toBe('+43.5%');
-    expect(wrapper.get('[data-testid="quant-kpi-killed"]').text()).toBe('96.9%');
+    const steps = wrapper.findAll('[data-testid="quant-steps"] li');
+    expect(steps.map((step) => step.get('strong').text())).toEqual([
+      'bots.quant.steps.choose.title',
+      'bots.quant.steps.paper.title',
+      'bots.quant.steps.live.title',
+    ]);
+    expect(steps[1].text()).toContain('bots.quant.steps.paper.text');
+    const actions = wrapper.findAll('[data-testid="quant-market-PSWAP"] .quant-actions button');
+    expect(actions.map((button) => button.attributes('data-testid'))).toEqual([
+      'quant-paper-PSWAP',
+      'quant-live-PSWAP',
+      'quant-swap-PSWAP',
+    ]);
+  });
+
+  it('orders ready markets first and lists the others with a plain reason', () => {
+    const wrapper = render();
     const cards = wrapper.findAll('.quant-market').map((card) => card.attributes('data-testid'));
     expect(cards).toEqual(['quant-market-PSWAP', 'quant-market-DAI']);
     const idle = wrapper.findAll('.quant-idle-item').map((item) => item.attributes('data-testid'));
     expect(idle).toEqual(['quant-market-VAL', 'quant-market-XST']);
+    expect(wrapper.get('.quant-other h4').text()).toBe('bots.quant.otherMarkets');
     expect(wrapper.find('[data-testid="quant-swap-XST"]').exists()).toBe(false);
     expect(wrapper.get('[data-testid="quant-market-XST"]').text()).toContain('bots.quant.thinNote');
     expect(wrapper.get('[data-testid="quant-market-VAL"]').text()).toContain('bots.quant.watchNote');
+    expect(wrapper.get('[data-testid="quant-market-VAL"]').text()).not.toContain('bots.quant.priceChange');
     expect(wrapper.find('[data-testid="quant-live-VAL"]').exists()).toBe(false);
     expect(wrapper.get('[data-testid="quant-return-PSWAP"]').text()).toBe('+43.5%');
     expect(wrapper.get('[data-testid="quant-disclaimer"]').text()).toContain('bots.quant.disclaimer');
+  });
+
+  it('states each rule, the budget and the fee reserve in plain terms', () => {
+    const card = render().get('[data-testid="quant-market-PSWAP"]');
+    const rule = card.get('.quant-rule');
+    expect(rule.attributes('aria-label')).toBe('bots.quant.rule.label');
+    expect(rule.findAll('dt').map((term) => term.text())).toEqual([
+      'bots.quant.rule.buy {"amount":"3"}',
+      'bots.quant.rule.sell',
+    ]);
+    expect(rule.findAll('dd').map((item) => item.text())).toEqual([
+      'bots.quant.rule.deviationBelow {"window":48,"value":"-15"}',
+      'bots.quant.rule.deviationAbove {"window":48,"value":"+10"}',
+    ]);
+    expect(card.text()).toContain('bots.quant.budget {"total":"10","amount":"3","reserve":"2"}');
   });
 
   it('shows the live rule signal and the exact distance from the trigger', () => {
@@ -213,6 +245,35 @@ describe('QuantCommandCenter', () => {
     expect(wrapper.find('[data-testid="quant-market-DAI"] .gauge').exists()).toBe(false);
   });
 
+  it('shows research progress until results are ready, then hides the status line', () => {
+    setLoop({
+      status: ref('running'),
+      result: shallowRef(null),
+      progress: shallowRef({
+        phase: 'backtest',
+        market: 'PSWAP',
+        fold: 1,
+        folds: 4,
+        backtests: 10,
+        killed: 2,
+        robust: 1,
+        candidates: 672,
+        completed: 5,
+        total: 20,
+      }),
+    });
+    const running = render();
+    expect(running.get('[data-testid="quant-status"]').text()).toBe('bots.quant.status.running');
+    expect(running.get('[role="progressbar"]').attributes('aria-valuenow')).toBe('25');
+    expect(running.findAll('.quant-skeleton')).toHaveLength(2);
+    expect(running.attributes('aria-busy')).toBe('true');
+    setLoop();
+    const done = render();
+    expect(done.find('[data-testid="quant-status"]').exists()).toBe(false);
+    expect(done.find('[role="progressbar"]').exists()).toBe(false);
+    expect(done.find('.quant-skeleton').exists()).toBe(false);
+  });
+
   it('observes fresh fees and emits a reviewed live template', async () => {
     const loadFees = vi.fn(async () => FEES);
     const wrapper = render({ loadFees });
@@ -221,6 +282,7 @@ describe('QuantCommandCenter', () => {
     expect(loadFees).toHaveBeenCalledTimes(1);
     expect(loadFees.mock.calls[0][0]).toMatchObject({ strategy: { kind: 'rules', amount: '3' }, assetOut: PSWAP });
     const [payload] = wrapper.emitted('live')![0] as [QuantDeployPayload];
+    expect(payload.bot.name).toBe('bots.quant.botName {"symbol":"PSWAP"}');
     expect(payload.bot.strategy.rules).toEqual(pick('reversion:48/15/10:3').rules);
     expect(payload.bot.policy.maxPriceImpactPercent).toBe('16');
     expect(payload.research).toMatchObject({ validation: 'walk-forward', returnPercent: '43.49', trades: 37 });
@@ -254,6 +316,7 @@ describe('QuantCommandCenter', () => {
     setLoop({ status: ref('error'), result: shallowRef(null), start });
     const failed = render();
     expect(failed.get('[data-testid="quant-status"]').text()).toContain('bots.quant.status.error');
+    expect(failed.find('.quant-skeleton').exists()).toBe(false);
     await failed.get('[data-testid="quant-retry"]').trigger('click');
     expect(start).toHaveBeenCalledTimes(1);
     const idleStart = vi.fn();
@@ -262,43 +325,33 @@ describe('QuantCommandCenter', () => {
     expect(idleStart).toHaveBeenCalledTimes(1);
   });
 
-  it('labels the mesh with exact per-family totals', () => {
+  it('labels the strategies-tested map with plain family names and exact totals', () => {
     const wrapper = render();
-    const families = wrapper.getComponent({ name: 'QuantMesh' }).props('families') as {
-      key: string;
-      robust: number;
-      tested: number;
-    }[];
-    expect(families.find((family) => family.key === 'guarded')).toMatchObject({ robust: 50, tested: 480 });
+    const mesh = wrapper.getComponent({ name: 'QuantMesh' });
+    const families = mesh.props('families') as { key: string; label: string; robust: number; tested: number }[];
+    expect(families.find((family) => family.key === 'guarded')).toMatchObject({
+      label: 'bots.quant.families.guarded',
+      robust: 50,
+      tested: 480,
+    });
     expect(families.find((family) => family.key === 'trend')).toMatchObject({ robust: 0, tested: 96 });
+    expect(mesh.props('caption')).toBe('bots.quant.mesh.caption');
+    expect(wrapper.text()).toContain('bots.quant.mesh.summary {"robust":"125","killed":"3,907"}');
   });
 
-  it('switches the walk-forward comparison between markets', async () => {
+  it('switches the results chart between markets and labels each test period', async () => {
     const wrapper = render();
     expect(wrapper.find('[data-testid="quant-equity"]').exists()).toBe(true);
     await wrapper.get('[data-testid="quant-tab-PSWAP"]').trigger('click');
     expect(wrapper.get('[data-testid="quant-tab-PSWAP"]').attributes('aria-selected')).toBe('true');
-    expect(wrapper.findAll('.quant-folds li')).toHaveLength(4);
-  });
-
-  it('counts real values up from zero when motion is allowed', async () => {
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    }));
-    const frames: FrameRequestCallback[] = [];
-    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => frames.push(callback));
-    vi.stubGlobal('cancelAnimationFrame', vi.fn());
-    const wrapper = render();
-    expect(wrapper.get('[data-testid="quant-kpi-best"]').text()).toBe('0.0%');
-    // Advance well past the tween duration: the display settles on the exact result.
-    const later = performance.now() + 5_000;
-    while (frames.length) frames.shift()!(later);
-    await wrapper.vm.$nextTick();
-    expect(wrapper.get('[data-testid="quant-kpi-best"]').text()).toBe('+43.5%');
-    expect(wrapper.get('[data-testid="quant-kpi-killed"]').text()).toBe('96.9%');
+    const periods = wrapper.findAll('.quant-folds li');
+    expect(periods).toHaveLength(4);
+    expect(periods[0].get('strong').text()).toBe('+9.6%');
+    expect(periods[0].text()).toContain('bots.quant.equity.trades {"count":10}');
+    expect(periods[2].get('strong').text()).toBe('bots.quant.equity.idle');
+    expect(periods[2].text()).not.toContain('bots.quant.equity.trades');
+    const captions = wrapper.findAll('.quant-caption').map((caption) => caption.text());
+    expect(captions).toContain('bots.quant.equity.caption {"symbol":"PSWAP"}');
   });
 
   it('never adds forms or the autopilot primary action to the page', () => {
@@ -352,6 +405,7 @@ describe('QuantCommandCenter long sessions', () => {
       expect(root.classes()).toContain('quant--calm');
       expect(root.attributes('style')).toContain('--quant-motion: paused');
       expect(wrapper.getComponent({ name: 'QuantMesh' }).props('paused')).toBe(true);
+      expect(wrapper.getComponent({ name: 'QuantGlassArt' }).props('paused')).toBe(true);
       document.dispatchEvent(new Event('pointerdown'));
       await wrapper.vm.$nextTick();
       expect(root.classes()).not.toContain('quant--calm');

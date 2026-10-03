@@ -1,6 +1,22 @@
 # Quant Loop: self-improving liquidity-shock bots
 
-`/#/bots` opens with the **Strategy Lab** command center. In the browser, it researches rule strategies for every SORA market in the bundled archive. It shows the search as it runs and offers only the markets whose strategies made money in blind walk-forward tests. Going live uses the existing funding review and consent dialog; nothing in the loop signs, saves or starts a bot by itself.
+`/#/bots` opens with **Ready-made bots**. In the browser, it researches rule strategies for every SORA market in the bundled archive. It then offers a bot only for the markets whose strategies made money in blind walk-forward tests. Going live uses the existing funding review and consent dialog; nothing in the loop signs, saves or starts a bot by itself.
+
+The page explains itself in three steps, which match the card actions from left to right:
+
+1. **Choose a bot**: compare the rules and test results.
+2. **Try it on paper**: _Paper trade_ adds the bot to _My Bots_ with virtual funds. The user starts it there; no wallet is needed.
+3. **Go live**: review the limits, confirm with the wallet, and keep the tab open while the bot runs.
+
+The page header links to _My Bots_ (with the number of saved bots) and to _Advanced_ (the Strategy Lab, Discover and Backtesting workspaces). The **AI trading** card below the ready-made bots is the separate AI-built flow; see [autopilot.md](autopilot.md).
+
+### Copy guidelines
+
+The page copy is plain and short. Write for someone who has never seen a backtest:
+
+- Say what the user sees or does, not how the research works. Prefer "Test result", "Holding PSWAP", "Biggest drop" and "Trades about once every 20 days" to "walk-forward", "drawdown", "kill rate", "survivors" or "folds".
+- Explain the method once, in the disclaimer and the chart caption, without jargon.
+- Avoid slogans, live-terminal styling ("LIVE · MAINNET · 01:17 UTC") and vanity counters.
 
 ## Why this strategy family
 
@@ -14,7 +30,7 @@ Every swap pays a 0.6% pool fee and a fixed network fee of about 0.10002 XOR. Ea
 
 1. **Data.** `parseQuantArchive` validates the bundled archive: hourly, contiguous rows that share one denominator, with u128 reserves. It rebuilds each XOR-paired market with its exact reserves. Closes are the same 36-decimal floors that the history loader produces.
 2. **Costs.** The page observes the current network fee and pool fee from a finalized quote (`createResearchFeeLoader`). It retries while the node connects. Slippage of 0.5% is charged as a full cost on every fill, matching the rest of the bots workspace.
-3. **Liquidity gate.** Markets with a median XOR depth below 20 XOR are marked *too thin* and are not simulated.
+3. **Liquidity gate.** Markets with a median XOR depth below 20 XOR are marked _too thin_ and are not simulated.
 4. **Candidates.** 672 rule strategies are generated per market. All of them use the live rule language (`strategy-rules.ts`), so any candidate can run unchanged in a bot.
    - Families: dislocation fade, guarded fade (with a 168-hour momentum guard), shock fade, trend and breakout.
    - Each family comes in two order sizes, 2 and 3 XOR.
@@ -25,12 +41,12 @@ Every swap pays a 0.6% pool fee and a fixed network fee of about 0.10002 XOR. Ea
 6. **Valuation.** Inventory is valued at its **liquidation value**: what the pool would actually pay for all of it after fees. In a pool of tens of XOR, a spot mark overstates a large position.
 7. **Selection.** Each candidate is screened on its training hours. It must make at least 8 trades, a positive return, and a profit in at least 3 of 4 training quarters. Survivors are ranked by `return − 0.5 × drawdown + worst quarter`. Drawdown is penalised rather than capped. A hard 35% cap was tried and removed the configurations that carried the out-of-sample edge, so the drawdown is disclosed instead.
 8. **Walk-forward.** The first 50% of hours are the initial training span. The remaining hours are split into 4 expanding folds. Each fold selects only from earlier hours, then trades its own hours blind. Fold results are chained into one equity curve.
-9. **Deployment gate.** A market is *live-ready* when three conditions hold:
+9. **Deployment gate.** A market is _live-ready_ when three conditions hold:
    - the selection over all hours passes the gates;
    - the chained walk-forward return is positive;
    - the folds made at least 6 trades.
 
-   Otherwise the loop *sits out* and keeps the XOR idle.
+   Otherwise the loop _sits out_ and keeps the XOR idle.
 
 ### Two arithmetic tiers
 
@@ -42,25 +58,25 @@ Ranking thousands of candidates needs speed, so **Tier 1** screens with Float64 
 
 This was run on the bundled archive with the frozen finalized fee observation in `tests/fixtures/bot-trading/mainnetFees20260914.json`. Live runs use the current fee observation, so their numbers can differ slightly.
 
-| Market | Status | Walk-forward (Jun 10 – Sep 19) | Max drawdown | Trades | Token price over the same hours |
-| --- | --- | --- | --- | --- | --- |
-| PSWAP | live-ready | +43.49% | 33.72% | 37 | +60.04% |
-| DAI | live-ready | +11.20% | 9.59% | 8 | −8.26% |
-| VAL | sitting out | 0.00% | — | 0 | −8.29% |
-| XST, ETH, XSTUSD | too thin | — | — | — | — |
+| Market           | Status      | Walk-forward (Jun 10 – Sep 19) | Max drawdown | Trades | Token price over the same hours |
+| ---------------- | ----------- | ------------------------------ | ------------ | ------ | ------------------------------- |
+| PSWAP            | live-ready  | +43.49%                        | 33.72%       | 37     | +60.04%                         |
+| DAI              | live-ready  | +11.20%                        | 9.59%        | 8      | −8.26%                          |
+| VAL              | sitting out | 0.00%                          | —            | 0      | −8.29%                          |
+| XST, ETH, XSTUSD | too thin    | —                              | —            | —      | —                               |
 
 The loop ran 19,372 backtests. At the final selection, 125 candidates passed every gate and 3,907 were rejected. These are hypothetical results on historical pool states with today's costs. They are not a promise of future returns.
 
 ## Live signals
 
-For each selected rule, `evaluateQuantSignal` runs the exact rule engine on the latest completed hourly closes. The closes come from `createPlaygroundHistoryLoader`, which merges indexer, archive and repair sources. This is the same evaluation a running bot performs. When live history is unavailable, the card evaluates the last archived closes and labels the result *Archived close* with its date.
+For each selected rule, `evaluateQuantSignal` runs the exact rule engine on the latest completed hourly closes. The closes come from `createPlaygroundHistoryLoader`, which merges indexer, archive and repair sources. This is the same evaluation a running bot performs. When live history is unavailable, the card evaluates the last archived closes and labels the result _Archived close_ with its date.
 
 The gauge shows the current distance from the rule's mean against the buy and sell triggers. It is display-only; the bot uses the exact evidence.
 
 ## Going live, paper trading and Swap
 
 - **Go live** first observes a fresh fee quote for that pair. It then builds the bot with `createQuantBot` and attaches a walk-forward research snapshot (`quantResearchSnapshot`). The template goes through `startFromResearch`: wallet connection, `prepareLiveBot` (network, denomination and genesis checks), the funding preview, and the consent dialog.
-  - For Quant Loop bots, the dialog opens with a one-glance summary: budget, order size, fee reserve, price-impact ceiling, session length, the walk-forward evidence including drawdown, and the two remaining steps.
+  - For Quant Loop bots, the dialog opens with a short summary: budget, order size, fee reserve, price-impact ceiling, session length, the test result including the biggest drop, and the two remaining steps.
   - Starting still requires the wallet password (or external-wallet approvals) and the explicit consent checkbox. Nothing is pre-ticked.
   - If the wallet is short of funds, the summary links to **Get XOR**.
 - **Paper trade** saves an idle paper bot through the existing research save path, keeping the same rules and provenance.
@@ -73,9 +89,9 @@ The strategies trade rarely and hold positions for days. In the reference run:
 - PSWAP had 5 trading episodes in 101 blind days, about one every 20 days. Positions stayed open 26–164 hours.
 - DAI had 2 episodes, with positions open 9–21 hours.
 
-Each live-ready card shows this cadence ("about one opportunity every N days · positions unwind in X–Y days · last on DATE"), and the consent summary repeats it.
+Each live-ready card shows this cadence ("Trades about once every N days · holds X–Y days · last buy DATE"), and the consent summary repeats it.
 
-The card lets the user choose a live session of 1, 3, 7 or 14 days; the default is 7. Sessions longer than a day are reserved for reviewed walk-forward rule studies:
+Under **Run for**, the card lets the user choose a live session of 1, 3, 7 or 14 days; the default is 7. Sessions longer than a day are reserved for reviewed walk-forward rule studies:
 
 - `prepareLiveBot(template, research, denomination, { sessionDurationMs })` rejects anything outside one hour to 14 days. It also rejects more than a day unless the strategy is `rules` and the research validation is `walk-forward`.
 - When an extended session is granted, the bot is marked with `extendedSession: true`.
@@ -83,16 +99,16 @@ The card lets the user choose a live session of 1, 3, 7 or 14 days; the default 
 
 The tab must stay open for the whole session, as for every browser-run bot.
 
-When a live-ready market's exact rule is in its buy zone, a banner at the top of the command center offers **Go live** and **Swap** for that moment.
+When a live-ready market's exact rule is in its buy zone, a banner above the bot cards offers **Go live** and **Swap** for that moment.
 
 ### Long-running pages
 
 The page is built to stay open for a multi-day session:
 
-- **Calm mode.** Ambient motion (the iridescent rim, light sweep and drift, glass float, pulses) runs on arrival. After 60 seconds without pointer, keyboard, wheel, touch or scroll input, the page sets `--quant-motion: paused`. Every infinite animation reads that variable through `animation-play-state`, and the mesh stops scheduling animation frames. Any interaction wakes it.
+- **Calm mode.** Ambient motion (the iridescent rim, light sweep and drift, water bubbles, pulses) runs on arrival. After 60 seconds without pointer, keyboard, wheel, touch or scroll input, the page sets `--quant-motion: paused`. Every infinite animation reads that variable through `animation-play-state`, and the mesh stops scheduling animation frames. Any interaction wakes it.
 - **Live signals.** They refresh a few minutes after each completed hour and never overlap. A tab that was throttled in the background catches up when it becomes visible again.
 - **Cleanup.** Timers, observers and listeners are released on unmount.
-- **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries. `controller.spec.ts` (*long-running session memory bounds*) checks every cap.
+- **Bounded live engine.** The engine keeps per-bot, size-capped state: activity is capped at 200 entries, equity at 1,000 points and observations at 120. One history entry per bot refreshes hourly, and the research history cache holds at most 3 entries. `controller.spec.ts` (_long-running session memory bounds_) checks every cap.
 - **Hourly cadence.** Quant bots are checked on every finalized block, but their rules act only on a new completed hourly close.
   - Between closes, the engine skips the block and quotes and revalues the bot at most once a minute. Previously it quoted every six seconds, about 600 quotes an hour.
   - The first block that brings a new close is evaluated immediately.
@@ -106,22 +122,34 @@ Every bot is **capacity-limited** to the researched shape:
 - the researched order size;
 - a price-impact ceiling set to the largest researched fill impact, rounded up, plus one point, capped at 20% (`quantImpactCeiling`).
 
-A larger budget would let the bot keep buying into a pool of a few dozen XOR, which the research never tested. The session length is the one chosen on the card (see *Session length and expectations*), and the tab must stay open for all of it.
+A larger budget would let the bot keep buying into a pool of a few dozen XOR, which the research never tested. The session length is the one chosen on the card (see _Session length and expectations_), and the tab must stay open for all of it.
 
 ## Interface
 
 `components/quant/QuantCommandCenter.vue` composes:
 
-- `QuantGlassArt`: decorative glass objects in the Polkaswap Strategy Lab style.
-- A six-stage pipeline: pool data, live fees, backtest, robustness, walk-forward, deploy. Each stage shows real counters.
-- `QuantMesh`: a canvas map of the tested strategies, clustered by family. Robust candidates glow, and the selected one pulses.
-- The opportunity radar: market cards with `QuantGauge`, walk-forward metrics, rule chips and actions.
-- `QuantEquity`: chained walk-forward equity against the token's own price, with fold bands and fills.
-- `QuantLattice`: a Galton board in which each out-of-sample sell drops into its realized after-fee result bin.
+- `QuantGlassArt`: ray-traced WebGL water bubbles carrying the PSWAP, XOR and ETH coin logos printed around them in 3D (see _Water art_). The Discover hero uses it too.
+- The hero: the **Ready-made bots** heading, one plain paragraph and the three how-to steps. While the research runs, a one-line status and a progress bar replace the earlier six-stage pipeline and counters.
+- **Available bots**: one card per live-ready market with `QuantGauge`, the test result against holding the token, the biggest drop and the number of trades. It also shows the buy and sell rules in plain words, the trading cadence, the budget, the **Run for** session choice, and the actions **Paper trade**, **Go live** and **Swap**. Markets without a bot follow under **Other markets**, each with its reason.
+- **Results over time** (`QuantEquity`): chained walk-forward equity against the token's own price, with fold bands and fills. Each test period is listed with its result and trades.
+- **Strategies tested** (`QuantMesh`): a canvas map of the tested strategies, clustered by plain family names (dip buying, filtered dip buying, crash buying, trend following, breakout). Robust candidates glow, and the selected one pulses.
+- **Trade results** (`QuantLattice`): a Galton board in which each out-of-sample sell drops into its realized after-fee result bin.
 
 All colours derive from native theme tokens through `color-mix`, so light and dark (Noir) themes need no separate palette. Glass uses `backdrop-filter` with the `-webkit-` prefix. Canvases read colours through hidden probe elements and pause when off-screen or hidden. With `prefers-reduced-motion`, they draw static frames.
 
 `useQuantLoop.ts` runs the search in a module worker (`quant-loop.worker.ts`), with an identical in-thread fallback, and caches the result for the session.
+
+### Water art
+
+`QuantGlassArt` renders three water bubbles and four beads in one full-screen WebGL1 fragment pass. It is presentation only and receives no market data.
+
+- **Optics** (`quant-water-renderer.ts`). Each pixel traces wobbling water surfaces and shades them with exact Fresnel terms, refraction at index 1.334, one internal reflection and Beer–Lambert absorption. A studio key light plus the theme's pink and violet lights are reflected as softboxes.
+- **Global illumination.** The backdrop receives soft shadows, sphere ambient occlusion and caustics from all three lights. Caustics come from a table that `quant-water.ts` builds once per page by tracing light through a water ball lens. That takes a few tens of milliseconds and is deferred until after first paint. It covers red, green and blue indices, so caustic edges show dispersion.
+- **Coins** (`quant-water-coins.ts`). The PSWAP, XOR and ETH logos are rasterised from the bundled SVGs into one texture atlas. Each logo is printed around its bubble by an azimuthal projection. A turned-away print shows mirrored through the water, and light through the ink tints that bubble's caustic.
+- **Motion.** Bubbles drift and oscillate in the two lowest Rayleigh modes, and each coin sways about a near-vertical axis. A pointer swipe across a bubble pushes it and spins its coin, which then settles facing forward.
+- **Compositing.** The canvas is composited relative to the card behind it: open backdrop stays transparent, shadows scale the card, and highlights and caustics brighten it. Bubbles therefore take on the card's real tint and gradients. A host whose backdrop differs from the theme surface can set `--glass-art-backdrop`.
+- **Budget.** The canvas uses at most two device pixels per CSS pixel and about 0.6 megapixels, and draws at most 30 frames a second. The frame loop stops while the art is off-screen or the tab is hidden, after 60 s without input, and while the optional `paused` prop is set (pass `calm`). Reduced motion, Save-Data and devices with two or fewer cores or 2 GB or less of memory get one still frame.
+- **Fallback.** Without WebGL, high-precision shaders or a surviving context, the art shows static CSS drops with the same logos.
 
 ## Structure-break research (negative)
 
@@ -152,6 +180,6 @@ The research covers the bundled archive. To extend it, rerun the read-only extra
   - a real-archive regression.
 - `quant-deploy.spec.ts`: templates, impact ceilings, research snapshot contract, signals.
 - `useQuantLoop.spec.ts`: state machine, fee retry, cache, archive fallback, cancellation.
-- `QuantCommandCenter.spec.ts`: rendering, signals, emitted payloads and the error and retry paths.
-- `BotsPage.spec.ts`, *Quant Loop command center*: page wiring, the one-glance consent, the funding-short link, paper save and Swap navigation.
-- `controller.spec.ts`, *long-running session memory bounds*: activity, equity and chart observations stay capped over a 17.5-hour paper session.
+- `QuantCommandCenter.spec.ts`: the three how-to steps and the matching card action order, plain rule and budget text, research progress, signals, emitted payloads, and the error and retry paths.
+- `BotsPage.spec.ts`, _Quant Loop command center_: page wiring, the consent summary, the funding-short link, paper save and Swap navigation. The _My Bots_ and _Advanced_ header links are covered there too.
+- `controller.spec.ts`, _long-running session memory bounds_: activity, equity and chart observations stay capped over a 17.5-hour paper session.

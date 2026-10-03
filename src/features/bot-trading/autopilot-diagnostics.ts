@@ -3,6 +3,13 @@ import { toCodec } from './amounts';
 
 const BOT_ERROR_NAMES = new Set([
   'action',
+  'aiAccess',
+  'aiBusy',
+  'aiKey',
+  'aiKeyMissing',
+  'aiNetwork',
+  'aiQuota',
+  'aiTimeout',
   'amount',
   'backtestAi',
   'balance',

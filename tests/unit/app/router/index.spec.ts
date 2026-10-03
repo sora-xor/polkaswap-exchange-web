@@ -4,6 +4,7 @@ const PAGE_NAMES = {
   Wallet: 'wallet',
   Swap: 'swap',
   Bridge: 'bridge',
+  Bots: 'Bots',
 } as const;
 
 const routeMocks = vi.hoisted(() => ({
@@ -11,7 +12,13 @@ const routeMocks = vi.hoisted(() => ({
 }));
 
 const routerMocks = vi.hoisted(() => {
-  const currentRoute = { value: { name: 'swap' as string | undefined } };
+  const currentRoute = {
+    value: { name: 'swap' as string | undefined } as {
+      name?: string;
+      params?: Record<string, unknown>;
+      query?: Record<string, unknown>;
+    },
+  };
   const push = vi.fn();
   const beforeEach = vi.fn();
   const router = { currentRoute, push, beforeEach };
@@ -228,6 +235,27 @@ describe('app router singleton', () => {
     expect(adapterMocks.setRouterLoading).toHaveBeenNthCalledWith(1, true);
     expect(routerMocks.push).toHaveBeenCalledWith({ name: PAGE_NAMES.Wallet });
     expect(adapterMocks.setRouterLoading).toHaveBeenNthCalledWith(2, false);
+  });
+
+  it('returns from a Bots section to the Bots home when the menu item is selected again', async () => {
+    routerMocks.push.mockResolvedValue(undefined);
+    routerMocks.currentRoute.value = { name: PAGE_NAMES.Bots, params: { section: 'discover' }, query: {} };
+    const { goTo } = await loadRouterModule();
+
+    await goTo(PAGE_NAMES.Bots);
+
+    expect(routerMocks.push).toHaveBeenCalledWith({ name: PAGE_NAMES.Bots });
+  });
+
+  it('keeps the Bots home and other same-name pages in place', async () => {
+    routerMocks.currentRoute.value = { name: PAGE_NAMES.Bots, params: { section: '' }, query: {} };
+    const { goTo } = await loadRouterModule();
+
+    await goTo(PAGE_NAMES.Bots);
+    routerMocks.currentRoute.value = { name: PAGE_NAMES.Swap, params: { first: 'XOR' }, query: {} };
+    await goTo(PAGE_NAMES.Swap);
+
+    expect(routerMocks.push).not.toHaveBeenCalled();
   });
 
   it('clears the loading flag even when navigation fails', async () => {

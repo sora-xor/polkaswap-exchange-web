@@ -505,7 +505,7 @@ for (const browserName of ['chromium', 'webkit'] as const) {
       });
       await page.goto(`${ipfsEntryUrl}#/bots`);
       await ensureAppLoaded(page);
-      await page.getByTestId('autopilot-advanced').click();
+      await page.getByTestId('bots-advanced').click();
       await expect(page.getByTestId('strategy-lab-tab')).toHaveAttribute('aria-current', 'page');
       await expect(page.getByTestId('strategy-lab')).toBeVisible();
       await expect(page.getByTestId('lab-run-batch')).toContainText('Run results again');

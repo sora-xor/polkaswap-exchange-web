@@ -1,16 +1,59 @@
 <template>
   <section class="discovery" data-testid="bot-discovery">
-    <header class="discovery-heading">
-      <div>
-        <p class="discovery-kicker">Polkaswap / {{ t('bots.discovery.title') }}</p>
-        <h2>{{ t('bots.discovery.title') }}</h2>
-        <p>{{ t('bots.discovery.subtitle') }}</p>
+    <div class="discovery-light" aria-hidden="true" />
+    <header class="discovery-hero discovery-glass">
+      <div class="discovery-hero-copy">
+        <div class="discovery-hero-top">
+          <p class="discovery-kicker">Polkaswap / {{ t('bots.discovery.title') }}</p>
+          <div class="discovery-state" :class="{ 'is-ready': connected }" role="status" aria-live="polite">
+            <i :class="{ active: running }" aria-hidden="true" />
+            <span>{{ statusLabel }}</span>
+          </div>
+        </div>
+        <h2>
+          {{ t('bots.discovery.title') }}
+          <span class="discovery-tagline">{{ t('bots.discovery.tagline') }}</span>
+        </h2>
+        <p class="discovery-subtitle">{{ t('bots.discovery.subtitle') }}</p>
+        <dl class="discovery-kpis">
+          <div>
+            <dt>{{ t('bots.discovery.markets') }}</dt>
+            <dd data-testid="discovery-kpi-markets">{{ pairCounts.total }}</dd>
+          </div>
+          <div>
+            <dt>{{ t('bots.discovery.training') }}</dt>
+            <dd>{{ t('bots.playground.days', { days: windowDays.training }) }}</dd>
+          </div>
+          <div>
+            <dt>{{ t('bots.discovery.holdout') }}</dt>
+            <dd>{{ t('bots.playground.days', { days: windowDays.holdout }) }}</dd>
+          </div>
+          <div class="highlight">
+            <dt>{{ t('bots.discovery.requests') }}</dt>
+            <dd>{{ session?.callCap ?? callCap }}</dd>
+          </div>
+        </dl>
       </div>
-      <div class="discovery-state" role="status" aria-live="polite">
-        <i :class="{ active: running }" aria-hidden="true" />
-        <span>{{ statusLabel }}</span>
-      </div>
+      <QuantGlassArt class="discovery-art" :active="running" />
     </header>
+
+    <ol class="discovery-steps" :aria-label="t('bots.quant.pipeline')">
+      <li
+        v-for="(step, index) in steps"
+        :key="step.key"
+        class="discovery-step"
+        :class="{ done: index < activeStep, active: index === activeStep }"
+        :aria-current="index === activeStep ? 'step' : undefined"
+        :data-testid="`discovery-step-${step.key}`"
+      >
+        <span class="discovery-step-index"
+          >{{ String(index + 1).padStart(2, '0') }}<i v-if="index < activeStep" aria-hidden="true">✓</i></span
+        >
+        <strong>{{ step.label }}</strong>
+        <span class="discovery-step-value">{{ step.value }}</span>
+      </li>
+    </ol>
+
     <p v-if="localError" ref="errorAlert" class="discovery-error" role="alert" tabindex="-1">{{ localError }}</p>
     <p v-if="campaignMessage" class="discovery-success" role="status">{{ campaignMessage }}</p>
 
@@ -20,32 +63,55 @@
         class="discovery-controls"
         :aria-label="t('bots.discovery.provider')"
       >
-        <section class="discovery-control-group">
+        <section
+          class="discovery-control-group discovery-card"
+          :class="{ 'is-connected': connected }"
+          data-testid="discovery-connect-card"
+        >
           <div class="discovery-group-heading">
             <span>01</span>
-            <h3>{{ t('bots.discovery.provider') }}</h3>
+            <h3>{{ t('bots.aiConnection') }}</h3>
+            <span v-if="connected" class="discovery-connected"
+              ><i aria-hidden="true" />{{ t('bots.discovery.connected') }}</span
+            >
           </div>
           <p v-if="session?.provider" class="discovery-saved-provider-inline">
             {{ t('bots.discovery.savedProvider') }} · <strong>{{ savedProviderLabel }}</strong>
           </p>
-          <label class="discovery-field discovery-provider-field">
+          <div class="discovery-provider-choice" role="group" :aria-label="t('bots.discovery.provider')">
+            <button
+              v-for="choice in providerChoices"
+              :key="choice"
+              type="button"
+              :class="{ 'is-selected': providerChoice === choice }"
+              :aria-pressed="providerChoice === choice"
+              :data-testid="`discovery-provider-${choice}`"
+              :disabled="running || busy"
+              @click="chooseProvider(choice)"
+            >
+              {{ choiceLabel(choice) }}
+            </button>
+          </div>
+          <label v-show="providerChoice === 'other'" class="discovery-field discovery-provider-field">
             <span>{{ t('bots.discovery.provider') }}</span>
             <select
               v-model="providerKind"
               data-testid="discovery-provider"
               :disabled="running || busy"
-              @change="disconnectAi"
+              @change="selectOtherProvider"
             >
-              <option v-for="kind in providerKinds" :key="kind" :value="kind">{{ t(providerLabel(kind)) }}</option>
+              <option v-for="kind in selectableKinds" :key="kind" :value="kind">{{ t(providerLabel(kind)) }}</option>
             </select>
           </label>
           <template v-if="isLocalProvider">
-            <p class="discovery-help">{{ t('bots.discovery.localHelp') }}</p>
-            <a class="discovery-download" href="./.well-known/polkaswap-codex-companion.mjs" download>
-              {{ t('bots.discovery.downloadCompanion') }} ↗
-            </a>
-            <p class="discovery-help">{{ t('bots.discovery.localSteps') }}</p>
-            <label class="discovery-field">
+            <div v-show="!connected" class="discovery-local-steps">
+              <p class="discovery-help">{{ t('bots.discovery.localHelp') }}</p>
+              <a class="discovery-download" href="./.well-known/polkaswap-codex-companion.mjs" download>
+                {{ t('bots.discovery.downloadCompanion') }} ↗
+              </a>
+              <p class="discovery-help">{{ t('bots.discovery.localSteps') }}</p>
+            </div>
+            <label v-show="!connected" class="discovery-field">
               <span>{{ t('bots.discovery.pairingCode') }}</span>
               <input
                 ref="pairInput"
@@ -69,38 +135,62 @@
                 @input="disconnectAi"
               />
             </label>
-            <label class="discovery-field">
-              <span>{{ t('bots.discovery.apiKey') }}</span>
+            <div v-show="!connected" class="discovery-field discovery-key-field">
+              <div class="discovery-key-label">
+                <label :for="keyFieldId">{{ t('bots.discovery.apiKey') }}</label>
+                <a
+                  v-if="keyLink"
+                  class="discovery-key-link"
+                  data-testid="discovery-get-key"
+                  :href="keyLink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >{{ t('bots.discovery.getKey', { provider: choiceLabel(providerChoice) }) }}
+                  <span aria-hidden="true">↗</span></a
+                >
+              </div>
               <input
+                :id="keyFieldId"
                 ref="keyInput"
                 data-testid="discovery-api-key"
                 type="password"
                 autocomplete="off"
+                spellcheck="false"
                 maxlength="1024"
+                :placeholder="keyPlaceholder"
+                @input="detectKeyProvider"
+                @keydown.enter.prevent="connectAi"
               />
-            </label>
+            </div>
           </template>
-          <p class="discovery-help">{{ t('bots.discovery.providerCharges') }}</p>
           <label v-if="connected && models.length" class="discovery-field">
             <span>{{ t('bots.discovery.model') }}</span>
             <select v-model="model" data-testid="discovery-model" :disabled="running" @change="selectModel">
               <option v-for="entry in models" :key="entry.id" :value="entry.id">{{ entry.name }}</option>
             </select>
           </label>
+          <p v-if="connectError" class="discovery-inline-error" data-testid="discovery-connect-error" role="alert">
+            {{ connectError }}
+          </p>
           <div class="discovery-connection-actions">
-            <button v-if="!connected" type="button" data-testid="discovery-connect" :disabled="busy" @click="connectAi">
-              {{ t('bots.discovery.connect') }}
+            <button
+              v-if="!connected"
+              type="button"
+              class="discovery-primary"
+              data-testid="discovery-connect"
+              :disabled="busy"
+              @click="connectAi"
+            >
+              {{ t('bots.discovery.connect') }} <span aria-hidden="true">→</span>
             </button>
             <button v-else type="button" data-testid="discovery-disconnect" :disabled="running" @click="disconnectAi">
               {{ t('bots.discovery.disconnect') }}
             </button>
-            <span v-if="connected" class="discovery-connected"
-              ><i aria-hidden="true" />{{ t('bots.discovery.connected') }}</span
-            >
           </div>
+          <p v-if="!connected" class="discovery-help">{{ t('bots.keyMemoryNote') }}</p>
         </section>
 
-        <section class="discovery-control-group">
+        <section class="discovery-control-group discovery-card">
           <div class="discovery-group-heading">
             <span>02</span>
             <h3>{{ t('bots.discovery.idea') }}</h3>
@@ -116,6 +206,25 @@
               :disabled="hasSession"
             />
           </label>
+          <div
+            v-if="!hasSession"
+            class="discovery-idea-chips"
+            role="group"
+            :aria-label="t('bots.discovery.ideaExamples')"
+          >
+            <span aria-hidden="true">{{ t('bots.discovery.ideaExamples') }}</span>
+            <button
+              v-for="example in ideaExamples"
+              :key="example"
+              type="button"
+              class="discovery-chip"
+              data-testid="discovery-idea-example"
+              :aria-pressed="idea === t(example)"
+              @click="idea = t(example)"
+            >
+              {{ t(example) }}
+            </button>
+          </div>
           <details class="discovery-advanced" :open="hasSession || undefined">
             <summary>
               {{ t('bots.discovery.researchSettings') }}
@@ -176,6 +285,7 @@
             </div>
             <p class="discovery-help">{{ t('bots.discovery.capitalNote') }}</p>
             <p class="discovery-help">{{ t('bots.discovery.callCapNote') }}</p>
+            <p class="discovery-help">{{ t('bots.discovery.providerCharges') }}</p>
           </details>
           <div v-if="feedbackOptions.length" class="discovery-feedback">
             <label class="discovery-consent">
@@ -209,6 +319,9 @@
             >
               {{ t('bots.discovery.start') }} <span aria-hidden="true">↗</span>
             </button>
+            <p v-if="!hasSession && !connected" class="discovery-help discovery-start-hint">
+              {{ t('bots.discovery.connectFirst') }}
+            </p>
             <button v-else-if="running" type="button" data-testid="discovery-pause" @click="pauseResearch">
               {{ t('bots.discovery.pause') }}
             </button>
@@ -921,7 +1034,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, reactive, ref, toRaw, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, toRaw, useId, watch } from 'vue';
 
 import { useTranslation } from '@/composables/useTranslation';
 import { XOR } from '@/lib/substrate/sdk/assets/consts';
@@ -932,8 +1045,10 @@ import DiscoveryFinalistCompare from './DiscoveryFinalistCompare.vue';
 import DiscoveryNoQualified from './DiscoveryNoQualified.vue';
 import DiscoveryReviewExpiry from './DiscoveryReviewExpiry.vue';
 import DiscoveryVisuals from './DiscoveryVisuals.vue';
+import QuantGlassArt from './quant/QuantGlassArt.vue';
 import { codec, fromCodec } from '../amounts';
 import { validateBotEndpoint } from '../ai';
+import { defaultAiModel, detectApiKeyProvider } from '../ai-provider-http';
 import type { DiscoveryCampaign } from '../campaign';
 import { summarizeDiscoveryLiveFeedback } from '../discovery-live-feedback';
 import {
@@ -982,8 +1097,20 @@ const emit = defineEmits<{ wallet: [] }>();
 const { t } = useTranslation();
 
 const providerKinds: DiscoveryProviderKind[] = ['claude', 'openai', 'codex', 'claude-code', 'jev', 'custom'];
+/** Paired local companions, Jev and custom HTTPS stay one step away from the two API-key providers. */
+const otherProviderKinds: DiscoveryProviderKind[] = ['codex', 'claude-code', 'jev', 'custom'];
+type ProviderChoice = 'claude' | 'openai' | 'other';
+const providerChoices: ProviderChoice[] = ['claude', 'openai', 'other'];
+/** Public key pages only; the pasted key itself never leaves the provider closure. */
+const keyPages: Partial<Record<ProviderChoice, string>> = {
+  claude: 'https://platform.claude.com/settings/keys',
+  openai: 'https://platform.openai.com/api-keys',
+};
+const ideaExamples = ['bots.discovery.ideaDips', 'bots.discovery.ideaMomentum', 'bots.discovery.ideaSteady'];
+const DAY = 86_400_000;
 const providerKind = ref<DiscoveryProviderKind>('claude');
 const keyInput = ref<HTMLInputElement | null>(null);
+const keyFieldId = `discovery-key-${useId()}`;
 const pairInput = ref<HTMLInputElement | null>(null);
 const passwordInput = ref<HTMLInputElement | null>(null);
 const endpoint = ref('');
@@ -994,6 +1121,7 @@ const connected = ref(false);
 const busy = ref(false);
 const running = ref(false);
 const localError = ref('');
+const connectError = ref('');
 const campaignMessage = ref('');
 const idea = ref('');
 const capital = ref('100');
@@ -1030,8 +1158,25 @@ let mounted = false;
 let preparedFingerprint: string | null = null;
 let resumeIdentity: string | null = null;
 let reviewClock: ReturnType<typeof setInterval> | undefined;
+let lastOtherKind: DiscoveryProviderKind = 'codex';
 
 const isLocalProvider = computed(() => providerKind.value === 'codex' || providerKind.value === 'claude-code');
+const providerChoice = computed<ProviderChoice>(() =>
+  providerKind.value === 'claude' || providerKind.value === 'openai' ? providerKind.value : 'other'
+);
+const selectableKinds = computed(() => (providerChoice.value === 'other' ? otherProviderKinds : providerKinds));
+const keyLink = computed(() => keyPages[providerChoice.value] ?? '');
+const keyPlaceholder = computed(() =>
+  providerKind.value === 'claude' ? 'sk-ant-…' : providerKind.value === 'openai' ? 'sk-…' : ''
+);
+/** Display-only window lengths, derived from the same completed-hour window the engine uses. */
+const windowDays = computed(() => {
+  const window = createDiscoveryWindow(reviewNow.value);
+  return {
+    training: Math.round((window.trainingEndAt - window.startAt) / DAY),
+    holdout: Math.round((window.endAt - window.trainingEndAt) / DAY),
+  };
+});
 const hasSession = computed(() => session.value !== null);
 const pairCounts = computed(() => ({
   total: session.value?.pairs.length ?? props.assets.length * Math.max(0, props.assets.length - 1),
@@ -1089,7 +1234,7 @@ const nextRequestSeconds = computed(() =>
   nextRequestAt.value === null ? 0 : Math.max(0, Math.ceil((nextRequestAt.value - reviewNow.value) / 1000))
 );
 const statusLabel = computed(() => {
-  if (!session.value) return t(connected.value ? 'bots.discovery.ready' : 'bots.discovery.connect');
+  if (!session.value) return t(connected.value ? 'bots.discovery.ready' : 'bots.disconnected');
   if (!connected.value && session.value.phase !== 'complete') return t('bots.discovery.paused');
   switch (session.value.status) {
     case 'scanning':
@@ -1107,6 +1252,57 @@ const statusLabel = computed(() => {
       return t('bots.discovery.ready');
   }
 });
+
+/** The step rail: connect, describe, search, then review. Earlier steps show as done. */
+const activeStep = computed(() => {
+  if (session.value?.phase === 'complete') return 3;
+  if (!connected.value) return 0;
+  return session.value ? 2 : 1;
+});
+const steps = computed(() => [
+  {
+    key: 'connect',
+    label: t('bots.discovery.connect'),
+    value: connected.value ? connectedProviderLabel.value : t('bots.disconnected'),
+  },
+  { key: 'idea', label: t('bots.discovery.idea'), value: idea.value.trim() || '—' },
+  {
+    key: 'search',
+    label: t('bots.discovery.screened'),
+    value: `${pairCounts.value.ready + pairCounts.value.skipped} / ${pairCounts.value.total}`,
+  },
+  {
+    key: 'review',
+    label: t('bots.discovery.review'),
+    value: t('bots.discovery.selectedCount', { count: selectedIds.value.length }),
+  },
+]);
+
+function choiceLabel(choice: ProviderChoice): string {
+  return t(choice === 'other' ? 'bots.discovery.otherConnection' : `bots.providers.${choice}`);
+}
+
+/** Switching provider revokes any current connection; the key field is cleared with it. */
+function chooseProvider(choice: ProviderChoice): void {
+  if (running.value || busy.value) return;
+  const next = choice === 'other' ? lastOtherKind : choice;
+  if (next === providerKind.value) return;
+  providerKind.value = next;
+  disconnectAi();
+}
+
+function selectOtherProvider(): void {
+  if (otherProviderKinds.includes(providerKind.value)) lastOtherKind = providerKind.value;
+  disconnectAi();
+}
+
+/** Follow a pasted key's public prefix between Claude and OpenAI; only the detected kind is kept. */
+function detectKeyProvider(event: Event): void {
+  connectError.value = '';
+  if (connected.value || running.value || busy.value || providerChoice.value === 'other') return;
+  const detected = detectApiKeyProvider((event.target as HTMLInputElement).value);
+  if (detected) providerKind.value = detected;
+}
 
 function campaignStatus(status: DiscoveryCampaign['status']): string {
   return t(`bots.discovery.campaignStatus.${status}`);
@@ -1168,10 +1364,14 @@ async function connectAi(): Promise<void> {
   if (busy.value || running.value) return;
   busy.value = true;
   localError.value = '';
+  connectError.value = '';
   const secret = keyInput.value?.value ?? '';
   const code = pairInput.value?.value ?? '';
   if (keyInput.value) keyInput.value.value = '';
   if (pairInput.value) pairInput.value.value = '';
+  // A pasted Claude or OpenAI key decides its own provider, so a mismatched choice cannot fail the connection.
+  const detected = providerChoice.value === 'other' ? null : detectApiKeyProvider(secret);
+  if (detected) providerKind.value = detected;
   try {
     client?.disconnect();
     client = createDiscoveryProvider(providerKind.value, { apiKey: secret, endpoint: endpoint.value.trim() });
@@ -1180,7 +1380,8 @@ async function connectAi(): Promise<void> {
       models.value = await client.listModels(AbortSignal.timeout(15_000));
       const savedModel =
         session.value?.provider?.kind === providerKind.value ? session.value.provider.model : undefined;
-      model.value = models.value.find((entry) => entry.id === savedModel)?.id ?? models.value[0]?.id ?? '';
+      model.value =
+        models.value.find((entry) => entry.id === savedModel)?.id ?? defaultAiModel(models.value, providerKind.value);
       if (!model.value) throw new Error('bots.errors.provider');
       client.selectModel(model.value);
     } else {
@@ -1195,7 +1396,7 @@ async function connectAi(): Promise<void> {
     client = null;
     connected.value = false;
     connectedEndpointHost.value = '';
-    localError.value = errorText(failure);
+    connectError.value = errorText(failure);
   } finally {
     busy.value = false;
   }
@@ -1214,6 +1415,7 @@ function selectModel(): void {
 function disconnectAi(): void {
   if (running.value) void pauseResearch();
   providerSwitchPending.value = false;
+  connectError.value = '';
   client?.disconnect();
   client = null;
   connected.value = false;
@@ -1837,6 +2039,7 @@ onMounted(async () => {
     callCap.value = checkpoint.callCap;
     maxDrawdownPercent.value = checkpoint.maxDrawdownPercent;
     if (checkpoint.provider) providerKind.value = checkpoint.provider.kind;
+    if (otherProviderKinds.includes(providerKind.value)) lastOtherKind = providerKind.value;
   } catch (failure) {
     if (mounted) localError.value = errorText(failure);
   }
@@ -1870,6 +2073,13 @@ onUnmounted(() => {
   --discovery-good: var(--s-color-status-success-text);
   --discovery-raised: var(--bot-shadow-raised);
   --discovery-inset: var(--bot-shadow-inset);
+  --discovery-pink: var(--s-color-theme-accent, #f8087b);
+  --discovery-violet: color-mix(in srgb, var(--s-color-status-info, #479aef) 45%, var(--s-color-theme-accent, #f8087b));
+  --discovery-mint: var(--s-color-theme-secondary, #44e5b2);
+  --discovery-light: var(--s-shadow-color-light-dark, rgba(255, 255, 255, 0.8));
+  --discovery-dark: var(--s-shadow-color-dark, rgba(0, 0, 0, 0.1));
+  position: relative;
+  isolation: isolate;
   color: var(--discovery-text);
   min-width: 0;
   padding: 9px 0 32px;
@@ -1878,25 +2088,165 @@ onUnmounted(() => {
 .discovery * {
   box-sizing: border-box;
 }
-.discovery-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+
+/* Hero: the same glass, light and iridescent rim as the AI trading command center. */
+.discovery-light {
+  position: absolute;
+  inset: -18px -10px auto;
+  height: 560px;
+  z-index: -1;
+  border-radius: 40px;
+  background:
+    radial-gradient(46% 38% at 10% 8%, var(--discovery-light), transparent 72%),
+    radial-gradient(40% 34% at 86% 12%, color-mix(in srgb, var(--discovery-pink) 20%, transparent), transparent 70%),
+    radial-gradient(44% 40% at 70% 66%, color-mix(in srgb, var(--discovery-violet) 16%, transparent), transparent 72%),
+    radial-gradient(40% 30% at 18% 92%, color-mix(in srgb, var(--discovery-mint) 10%, transparent), transparent 70%);
+  pointer-events: none;
+}
+.discovery-glass {
+  position: relative;
+  border-radius: 28px;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--discovery-surface) 84%, transparent),
+    color-mix(in srgb, var(--discovery-surface) 52%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--discovery-light) 90%, transparent);
+  box-shadow:
+    10px 10px 28px var(--discovery-dark),
+    -8px -8px 22px var(--discovery-light),
+    inset 0 1px 0 var(--discovery-light);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+@property --discovery-angle {
+  syntax: '<angle>';
+  initial-value: 210deg;
+  inherits: false;
+}
+.discovery-hero {
+  display: grid;
+  grid-template-columns: #{'minmax(0, 1.3fr) minmax(0, 0.7fr)'};
+  align-items: center;
   gap: 24px;
-  padding: 4px 0 18px;
+  padding: 24px 30px 22px;
+  overflow: hidden;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -30% -20%;
+    z-index: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      color-mix(in srgb, var(--discovery-light) 75%, transparent) 48%,
+      color-mix(in srgb, var(--discovery-pink) 10%, transparent) 52%,
+      transparent 62%
+    );
+    transform: translateX(-75%);
+    pointer-events: none;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--discovery-angle),
+      color-mix(in srgb, var(--discovery-pink) 65%, transparent),
+      color-mix(in srgb, var(--discovery-violet) 65%, transparent),
+      color-mix(in srgb, var(--discovery-mint) 45%, transparent),
+      color-mix(in srgb, var(--discovery-light) 90%, transparent),
+      color-mix(in srgb, var(--discovery-pink) 65%, transparent)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
   h2 {
-    font-size: clamp(32px, 3.1vw, 44px);
-    line-height: 1.04;
-    letter-spacing: -0.055em;
-    font-weight: 680;
-    margin: 5px 0 8px;
-  }
-  p:last-child {
-    color: var(--discovery-muted);
-    line-height: 1.5;
-    max-width: 54ch;
     margin: 0;
+    font-size: clamp(30px, 3.6vw, 48px);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
   }
+}
+.discovery-hero-copy,
+.discovery-art {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+.discovery-tagline {
+  display: block;
+  margin-top: 6px;
+  font-size: clamp(20px, 2.3vw, 30px);
+  letter-spacing: -0.025em;
+  background: linear-gradient(
+    95deg,
+    var(--s-color-action-text, #ab0555),
+    var(--discovery-pink) 45%,
+    var(--discovery-violet)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.discovery-subtitle {
+  max-width: 60ch;
+  margin: 12px 0 16px;
+  color: var(--discovery-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.discovery-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, #{'minmax(0, 1fr)'});
+  gap: 10px;
+  margin: 0;
+  > div {
+    min-width: 0;
+    padding: 10px 13px 9px;
+    border-radius: 18px;
+    background: var(--discovery-recess);
+    box-shadow: var(--discovery-inset);
+  }
+  dt {
+    color: var(--discovery-muted);
+    font-size: 10px;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  dd {
+    margin: 6px 0 0;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+  > .highlight {
+    background: linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--discovery-pink) 16%, var(--discovery-surface)),
+      var(--discovery-surface)
+    );
+    box-shadow:
+      var(--discovery-raised),
+      0 0 0 1px color-mix(in srgb, var(--discovery-pink) 30%, transparent);
+    dd {
+      color: var(--discovery-accent);
+    }
+  }
+}
+.discovery-art {
+  justify-self: center;
+  width: 100%;
+  max-width: 340px;
 }
 .discovery-kicker,
 .discovery-overline {
@@ -1908,13 +2258,24 @@ onUnmounted(() => {
 }
 .discovery-kicker {
   margin: 0;
+  color: var(--discovery-accent);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+}
+.discovery-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 12px;
 }
 .discovery-state {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 39px;
-  padding: 8px 14px;
+  min-height: 36px;
+  padding: 7px 14px;
   border-radius: 99px;
   background: var(--discovery-surface);
   box-shadow: var(--discovery-raised);
@@ -1926,18 +2287,93 @@ onUnmounted(() => {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--discovery-accent);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--discovery-accent) 13%, transparent);
+    background: var(--discovery-muted);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--discovery-muted) 13%, transparent);
+  }
+  &.is-ready {
+    color: var(--discovery-text);
+    i {
+      background: var(--discovery-good);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--discovery-good) 16%, transparent);
+    }
   }
   i.active {
+    background: var(--discovery-accent);
     animation: discovery-pulse 1.9s ease-in-out infinite;
   }
 }
+
+/* Step rail: where the user is in connect → idea → search → review. */
+.discovery-steps {
+  display: grid;
+  grid-template-columns: repeat(4, #{'minmax(0, 1fr)'});
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.discovery-step {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 15px;
+  border-radius: 18px;
+  background: var(--discovery-surface);
+  box-shadow: var(--discovery-raised);
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease;
+  strong {
+    overflow: hidden;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &.done {
+    background: var(--discovery-recess);
+    box-shadow: var(--discovery-inset);
+  }
+  &.active {
+    background: linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--discovery-pink) 20%, var(--discovery-surface)),
+      var(--discovery-surface)
+    );
+    box-shadow:
+      var(--discovery-raised),
+      0 0 24px color-mix(in srgb, var(--discovery-pink) 26%, transparent);
+    transform: translateY(-2px);
+    .discovery-step-index {
+      color: var(--discovery-accent);
+    }
+  }
+}
+.discovery-step-index {
+  display: flex;
+  justify-content: space-between;
+  color: var(--discovery-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  i {
+    color: var(--discovery-good);
+    font-style: normal;
+    letter-spacing: 0;
+  }
+}
+.discovery-step-value {
+  overflow: hidden;
+  color: var(--discovery-muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .discovery-layout {
   display: grid;
-  grid-template-columns: #{'minmax' }(264px, 306px) #{'minmax' }(0, 1fr);
-  gap: clamp(30px, 4vw, 64px);
+  grid-template-columns: #{'minmax' }(280px, 340px) #{'minmax' }(0, 1fr);
+  gap: clamp(24px, 3vw, 44px);
   align-items: start;
+  margin-top: 20px;
 }
 .discovery-layout.is-complete {
   grid-template-columns: 1fr;
@@ -1946,20 +2382,31 @@ onUnmounted(() => {
   display: grid;
   gap: 18px;
   min-width: 0;
-  padding: 0 24px 20px 2px;
-  border-inline-end: 1px solid var(--discovery-line);
 }
 .discovery-control-group {
   display: grid;
   gap: 10px;
   min-width: 0;
 }
+.discovery-card {
+  gap: 12px;
+  padding: 18px 18px 20px;
+  border-radius: 22px;
+  background: var(--discovery-surface);
+  box-shadow: var(--discovery-raised);
+  transition: box-shadow 240ms ease;
+  &.is-connected {
+    box-shadow:
+      var(--discovery-raised),
+      0 0 0 1px color-mix(in srgb, var(--discovery-good) 36%, transparent);
+  }
+}
 .discovery-group-heading {
   display: flex;
   gap: 12px;
   align-items: baseline;
-  padding-bottom: 6px;
-  span {
+  padding-bottom: 2px;
+  > span:first-child {
     color: var(--discovery-accent);
     font:
       12px ui-monospace,
@@ -1970,6 +2417,140 @@ onUnmounted(() => {
     letter-spacing: -0.02em;
     margin: 0;
   }
+  .discovery-connected {
+    margin-inline-start: auto;
+  }
+}
+
+/* Connection: two one-tap providers, with paired and custom adapters under Other. */
+.discovery-provider-choice {
+  display: grid;
+  grid-template-columns: repeat(3, #{'minmax(0, 1fr)'});
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--discovery-recess);
+  box-shadow: var(--discovery-inset);
+  button {
+    min-height: 40px;
+    padding: 8px 6px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--discovery-muted);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      background 180ms ease,
+      color 180ms ease,
+      box-shadow 180ms ease;
+    &:hover:not(:disabled, .is-selected) {
+      color: var(--discovery-text);
+    }
+    &.is-selected {
+      color: var(--discovery-accent);
+      background: var(--discovery-surface);
+      box-shadow: var(--discovery-raised);
+    }
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    &:focus-visible {
+      outline: 2px solid var(--discovery-accent);
+      outline-offset: 2px;
+    }
+  }
+}
+.discovery-key-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  label {
+    color: var(--discovery-muted);
+    font-size: 11px;
+    font-weight: 650;
+  }
+}
+.discovery-key-link {
+  justify-self: start;
+  color: var(--discovery-accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--discovery-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+.discovery-local-steps {
+  display: grid;
+  gap: 8px;
+}
+.discovery-inline-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border-inline-start: 3px solid var(--s-color-status-error, #f754a3);
+  background: var(--discovery-recess);
+  box-shadow: var(--discovery-inset);
+  color: var(--s-color-status-error-text, var(--discovery-accent));
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Example ideas fill the optional idea field in one tap. */
+.discovery-idea-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  > span {
+    width: 100%;
+    color: var(--discovery-muted);
+    font-size: 11px;
+    font-weight: 650;
+  }
+}
+.discovery-chip {
+  min-height: 32px;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--discovery-accent) 22%, transparent);
+  border-radius: 99px;
+  background: var(--discovery-surface);
+  color: var(--discovery-text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+  &:hover {
+    color: var(--discovery-accent);
+    transform: translateY(-1px);
+  }
+  &[aria-pressed='true'] {
+    color: var(--discovery-accent);
+    border-color: var(--discovery-accent);
+    background: color-mix(in srgb, var(--discovery-pink) 10%, var(--discovery-surface));
+  }
+  &:focus-visible {
+    outline: 2px solid var(--discovery-accent);
+    outline-offset: 2px;
+  }
+}
+.discovery-start-hint {
+  width: 100%;
+  text-align: center;
 }
 .discovery-saved-provider-inline {
   margin: -2px 0 0;
@@ -2176,6 +2757,7 @@ onUnmounted(() => {
   border-radius: 50%;
   background: currentColor;
 }
+.discovery-connection-actions .discovery-primary,
 .discovery-run-actions .discovery-primary,
 .discovery-review .discovery-primary,
 .discovery-review-entry .discovery-primary {
@@ -2195,14 +2777,22 @@ onUnmounted(() => {
     opacity: 1;
   }
 }
+.discovery-connection-actions .discovery-primary,
 .discovery-run-actions .discovery-primary {
   width: 100%;
   justify-content: space-between;
   display: inline-flex;
 }
+.discovery-run-actions .discovery-primary:not(:disabled) {
+  background-color: var(--s-color-action-fill);
+  background-image: linear-gradient(
+    100deg,
+    var(--s-color-action-fill),
+    color-mix(in srgb, var(--discovery-violet) 70%, var(--s-color-action-fill))
+  );
+}
 .discovery-runtime-note {
-  border-top: 1px solid var(--discovery-line);
-  padding-top: 16px;
+  padding: 0 6px;
 }
 .discovery-workspace {
   min-width: 0;
@@ -3127,6 +3717,65 @@ onUnmounted(() => {
     box-shadow: 0 0 0 8px color-mix(in srgb, var(--discovery-accent) 8%, transparent);
   }
 }
+@media (prefers-reduced-motion: no-preference) {
+  .discovery-hero::after {
+    animation: discovery-rim 14s linear infinite;
+  }
+  .discovery-hero::before {
+    animation: discovery-sweep 7.5s cubic-bezier(0.45, 0, 0.2, 1) 0.6s infinite;
+  }
+  .discovery-light {
+    animation: discovery-drift 22s ease-in-out infinite alternate;
+  }
+  .discovery-hero,
+  .discovery-steps,
+  .discovery-card {
+    animation: discovery-reveal 760ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .discovery-steps {
+    animation-delay: 120ms;
+  }
+  .discovery-card {
+    animation-delay: 220ms;
+  }
+}
+@keyframes discovery-rim {
+  to {
+    --discovery-angle: 570deg;
+  }
+}
+@keyframes discovery-sweep {
+  0% {
+    transform: translateX(-75%);
+  }
+  55%,
+  100% {
+    transform: translateX(75%);
+  }
+}
+@keyframes discovery-drift {
+  from {
+    transform: translate3d(-1.5%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(1.5%, 1.5%, 0) scale(1.05);
+  }
+}
+@keyframes discovery-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 1100px) {
+  .discovery-kpis {
+    grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
+  }
+}
 @media (max-width: 980px) {
   .discovery-layout {
     grid-template-columns: 1fr;
@@ -3135,29 +3784,55 @@ onUnmounted(() => {
   .discovery-controls {
     grid-template-columns: repeat(2, #{'minmax' }(0, 1fr));
     align-items: start;
-    padding: 0 0 25px;
-    border-inline-end: 0;
-    border-bottom: 1px solid var(--discovery-line);
   }
   .discovery-runtime-note {
     grid-column: 1 / -1;
   }
 }
-@media (max-width: 650px) {
-  .discovery-heading {
-    flex-direction: column;
-    gap: 10px;
-    padding: 7px 0 17px;
+@media (max-width: 760px) {
+  .discovery-hero {
+    grid-template-columns: #{'minmax(0, 1fr)'};
+    padding: 22px 18px;
   }
+  .discovery-art {
+    order: -1;
+    max-width: 220px;
+    margin-bottom: -6px;
+  }
+  .discovery-steps {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+    .discovery-step {
+      flex: 0 0 150px;
+      scroll-snap-align: start;
+    }
+  }
+}
+@media (max-width: 650px) {
   .discovery-kicker {
     display: none;
   }
-  .discovery-heading h2 {
+  .discovery-hero h2 {
     font-size: 34px;
-    margin: 0 0 5px;
   }
-  .discovery-heading p:last-child {
-    font-size: 12px;
+  /* Phones lead with the task: decorative art and the long subtitle give way to the connect step. */
+  .discovery-art,
+  .discovery-subtitle {
+    display: none;
+  }
+  .discovery-tagline {
+    margin-bottom: 14px;
+  }
+  .discovery-kpis {
+    gap: 8px;
+    > div {
+      padding: 8px 10px 7px;
+    }
+    dd {
+      font-size: 17px;
+    }
   }
   .discovery-state {
     min-height: 29px;
@@ -3167,7 +3842,6 @@ onUnmounted(() => {
   .discovery-controls {
     grid-template-columns: 1fr;
     gap: 18px;
-    padding: 0 0 17px;
   }
   .discovery-control-group {
     gap: 10px;

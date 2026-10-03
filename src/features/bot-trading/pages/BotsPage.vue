@@ -2,13 +2,25 @@
   <main class="bots-page" :aria-busy="loading">
     <header class="bots-top">
       <div class="bots-heading">
+        <RouterLink
+          v-if="workspaceView !== 'simple'"
+          class="bots-home-link"
+          data-testid="bots-home-link"
+          :to="botWorkspaceLocation('simple')"
+        >
+          <span aria-hidden="true">←</span> {{ t('bots.autopilot.title') }}
+        </RouterLink>
         <h1>{{ t('bots.title') }}</h1>
       </div>
-      <RouterLink v-if="workspaceView === 'simple'" class="bots-discover-entry" :to="botWorkspaceLocation('discover')">
-        {{ t('bots.discovery.title') }} <span aria-hidden="true">↗</span>
-      </RouterLink>
+      <nav v-if="workspaceView === 'simple'" class="bots-top-links" :aria-label="t('bots.workspace')">
+        <RouterLink class="bots-top-link" data-testid="bots-my-bots" :to="botWorkspaceLocation('bots')">
+          {{ t('bots.yourBots') }}<span v-if="bots.length" class="bots-top-count">{{ bots.length }}</span>
+        </RouterLink>
+        <RouterLink class="bots-top-link" data-testid="bots-advanced" :to="botWorkspaceLocation('lab')">
+          {{ t('bots.advanced') }}
+        </RouterLink>
+      </nav>
       <div v-if="workspaceView !== 'simple'" class="bots-top-actions">
-        <RouterLink :to="botWorkspaceLocation('simple')">{{ t('bots.autopilot.title') }}</RouterLink>
         <button
           v-if="workspaceView !== 'discover'"
           class="primary"
@@ -104,28 +116,9 @@
       @read-setup-funding="readSetupFunding"
       @start="autopilot.start"
       @cancel="autopilot.cancel"
-      @advanced="workspaceView = 'lab'"
       @pause="(id) => run(() => pauseBot(id))"
       @stop="(id) => run(() => stopBot(id))"
       @resume="autopilot.resume"
-    />
-    <BotDiscovery
-      v-if="workspaceView === 'discover'"
-      :assets="assets"
-      :load-history="playgroundHistory.load"
-      :load-fees="researchFees.load"
-      :wallet-connected="walletConnected"
-      :external-wallet="externalWallet"
-      :wallet-identity="connectionIdentity"
-      :campaigns="discoveryCampaigns"
-      :campaign-bots="bots"
-      :prepare="trading.prepareDiscoveryCampaign"
-      :authorize="trading.startDiscoveryCampaign"
-      :prepare-resume="trading.prepareDiscoveryCampaignResume"
-      :pause-campaign="trading.pauseDiscoveryCampaign"
-      :close-campaign="trading.closeDiscoveryCampaign"
-      :read-campaign-orders="trading.readDiscoveryCampaignOrders"
-      @wallet="connectSoraWallet"
     />
     <div
       v-show="workspaceView === 'lab'"
@@ -182,6 +175,24 @@
         <button @click="run(() => stopBot(bot.id))">{{ t('bots.stop') }}</button>
       </div>
     </div>
+    <BotDiscovery
+      v-if="workspaceView === 'discover'"
+      :assets="assets"
+      :load-history="playgroundHistory.load"
+      :load-fees="researchFees.load"
+      :wallet-connected="walletConnected"
+      :external-wallet="externalWallet"
+      :wallet-identity="connectionIdentity"
+      :campaigns="discoveryCampaigns"
+      :campaign-bots="bots"
+      :prepare="trading.prepareDiscoveryCampaign"
+      :authorize="trading.startDiscoveryCampaign"
+      :prepare-resume="trading.prepareDiscoveryCampaignResume"
+      :pause-campaign="trading.pauseDiscoveryCampaign"
+      :close-campaign="trading.closeDiscoveryCampaign"
+      :read-campaign-orders="trading.readDiscoveryCampaignOrders"
+      @wallet="connectSoraWallet"
+    />
     <StrategyLab
       v-if="workspaceView !== 'simple'"
       v-show="workspaceView === 'lab'"
@@ -846,7 +857,6 @@
           </form>
           <form v-else-if="modal === 'consent' && reviewBot" data-testid="consent-form" @submit.prevent="submitConsent">
             <section v-if="startIntent?.quant && reviewBot" class="quant-consent" data-testid="quant-consent">
-              <p class="quant-consent-eyebrow">{{ t('bots.quant.consent.eyebrow') }}</p>
               <strong class="quant-consent-title">{{
                 t('bots.quant.consent.title', { symbol: startIntent.quant.symbol })
               }}</strong>
@@ -2367,13 +2377,6 @@ onUnmounted(() => {
     inset 0 1px 0 var(--s-shadow-color-light-dark, rgba(255, 255, 255, 0.8)),
     0 0 0 1px color-mix(in srgb, var(--s-color-theme-accent, #f8087b) 22%, transparent);
 }
-.bot-modal .quant-consent-eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--s-color-action-text, #ab0555);
-}
 .bot-modal .quant-consent-title {
   font-size: 18px;
   font-weight: 800;
@@ -2698,6 +2701,46 @@ onUnmounted(() => {
   background: var(--bot-accent);
   box-shadow: 0 0 16px color-mix(in srgb, var(--bot-accent) 25%, transparent);
 }
+.bots-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+/* Sections share one route; this is the visible way back to the AI trading home. */
+.bots-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 15px 8px 12px;
+  border-radius: 12px;
+  color: var(--bot-accent);
+  background: var(--bot-surface);
+  box-shadow: var(--bot-shadow-raised);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+  span {
+    transition: transform 160ms ease;
+  }
+  &:hover {
+    transform: translateY(-1px);
+    span {
+      transform: translateX(-3px);
+    }
+  }
+  &:active {
+    box-shadow: var(--bot-shadow-inset);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--bot-accent);
+    outline-offset: 3px;
+  }
+}
 .bots-eyebrow {
   font-size: 12px;
   letter-spacing: 0.12em;
@@ -2711,11 +2754,22 @@ onUnmounted(() => {
   gap: 22px;
   flex-wrap: wrap;
 }
-.bots-discover-entry {
+.bots-top-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.bots-top-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
   color: var(--bot-accent);
+  font-size: 13px;
   font-weight: 650;
   text-decoration: none;
-  padding: 9px 14px;
+  padding: 8px 14px;
   border-radius: 12px;
   background: var(--bot-surface);
   box-shadow: var(--bot-shadow-raised);
@@ -2732,6 +2786,15 @@ onUnmounted(() => {
     outline: 2px solid var(--bot-accent);
     outline-offset: 3px;
   }
+}
+.bots-top-count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  color: var(--s-color-on-action, #fff);
+  background: var(--bot-accent);
+  font-size: 11px;
+  text-align: center;
 }
 .goal-next-action {
   display: flex;

@@ -200,6 +200,7 @@
     "bots": {
         "above": "Bán trên ngưỡng",
         "activity": "Hoạt động",
+        "advanced": "Nâng cao",
         "aiBacktestNote": "Tạo và xem lại chiến lược xác định trước khi kiểm thử lịch sử.",
         "aiConnection": "Kết nối AI",
         "allocation": "Phân bổ",
@@ -214,7 +215,6 @@
         "authorizeStart": "Cho phép và bắt đầu",
         "autopilot": {
             "addressCopied": "Đã sao chép địa chỉ",
-            "advanced": "Nâng cao",
             "begin": "Start AI trading",
             "budget": "Phân bổ ({symbol})",
             "budgetUnselected": "Phân bổ",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "Cộng thêm {amount} {symbol} cho phí mạng.",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "BẮT ĐẦU",
+            "go": "Tìm chiến lược",
             "goal": "Tăng vốn của tôi",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "Chọn ngân sách và token bạn muốn tích lũy thêm. AI của bạn (ứng dụng Codex hoặc khóa API) soạn chiến lược, Polkaswap thử nghiệm chúng trên dữ liệu quá khứ, rồi bạn xem lại chiến lược tốt nhất trước khi nó giao dịch.",
             "maximizeGoal": "Tăng {symbol}",
             "maximizeToken": "Token muốn tăng",
             "refreshFunding": "Làm mới số dư",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "Kết nối AI",
             "connected": "Đã kết nối",
+            "connectFirst": "Hãy kết nối AI trước để bắt đầu nghiên cứu.",
             "consent": "Tôi đã xem xét chính xác các bot, ngân sách và khoản trợ cấp ký kết trong 14 ngày.",
             "continueExploratory": "Tiếp tục tìm kiếm để tham khảo",
             "continueWithProvider": "Tiếp tục với AI này",
@@ -553,6 +554,7 @@
             "feeReserve": "Dự trữ phí XOR",
             "finalizedBlock": "Đã xác minh tại khối hoàn thiện",
             "finalizedSwaps": "giao dịch hoán đổi đã hoàn tất",
+            "getKey": "Lấy khóa API {provider}",
             "goal": "Mỗi bot: 14 ngày hoạt động, 10 giao dịch hoán đổi cuối cùng, giá trị ròng dương ở mức nắm giữ, trong mức rút vốn.",
             "historyChanged": "Lịch sử được xác minh đã thay đổi trong quá trình nghiên cứu",
             "holdout": "Khoản giữ lại chưa được chạm tới",
@@ -564,7 +566,11 @@
             "holdoutReused": "Giai đoạn kiểm thử dành riêng sắp tới trùng với các ngày đã xem trong trình duyệt này. Kết quả chỉ để tham khảo và không thể dùng để phê duyệt bot giao dịch thật.",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "Ý tưởng chiến lược (tùy chọn)",
+            "ideaDips": "Mua khi giá điều chỉnh trong xu hướng tăng",
+            "ideaExamples": "Cần ý tưởng? Thử một gợi ý:",
+            "ideaMomentum": "Đi theo đà tăng mạnh",
             "ideaPlaceholder": "Ví dụ: mua pullback ngắn trong xu hướng tăng",
+            "ideaSteady": "Mua đều đặn mỗi ngày",
             "jev": "API Jev",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "Phân bổ, trần đơn hàng và dự trữ phí được cố định bởi nghiên cứu đã được xác minh. Bắt đầu tìm kiếm mới để thay đổi.",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "API OpenAI",
             "orderLimit": "Lệnh tối đa",
+            "otherConnection": "Khác",
             "outcome": {
                 "active": "Làm việc hướng tới mục tiêu",
                 "loss": "Đã đạt đến giới hạn rút tiền",
@@ -660,6 +667,7 @@
             "start": "Bắt đầu nghiên cứu",
             "subtitle": "Tìm kiếm chiến lược trên các thị trường đã được xác minh và xem xét các quy tắc chính xác trước khi giao dịch trực tiếp.",
             "tabNote": "Nghiên cứu và giao dịch thật chỉ chạy khi thẻ này và máy tính vẫn hoạt động. Chiến dịch đã tạm dừng cần được xem xét và mở khóa lại.",
+            "tagline": "Để AI tìm và kiểm thử chiến lược cho bạn",
             "title": "Khám phá",
             "trades": "Hoán đổi",
             "training": "đào tạo",
@@ -676,6 +684,13 @@
         "equityChartNote": "Chạy chiến lược để bắt đầu ghi nhận hiệu suất.",
         "errors": {
             "action": "Không thể hoàn tất thao tác. Vui lòng thử lại.",
+            "aiAccess": "Khóa API này không thể dùng mô hình đã chọn. Hãy chọn mô hình khác hoặc kiểm tra quyền của khóa.",
+            "aiBusy": "Nhà cung cấp AI đang bận hoặc tạm thời không khả dụng. Hãy thử lại sau vài phút.",
+            "aiKey": "Nhà cung cấp AI đã từ chối khóa API này. Hãy sao chép lại toàn bộ khóa hoặc tạo khóa mới.",
+            "aiKeyMissing": "Hãy dán khóa API của bạn trước.",
+            "aiNetwork": "Không thể kết nối tới nhà cung cấp AI. Hãy kiểm tra kết nối internet, VPN hoặc trình chặn nội dung, rồi thử lại.",
+            "aiQuota": "Tài khoản AI của bạn đã hết tín dụng hoặc chạm giới hạn tốc độ. Hãy nạp thêm tín dụng tại nhà cung cấp, hoặc đợi một phút rồi thử lại.",
+            "aiTimeout": "AI phản hồi quá lâu. Hãy thử lại hoặc chọn mô hình nhanh hơn.",
             "amount": "Nhập số lượng hợp lệ theo độ chính xác thập phân của token.",
             "backtestAi": "Tạo và xem lại quy tắc xác định trước khi kiểm thử lịch sử chiến lược AI.",
             "balance": "Token được phân bổ hoặc số dư ví không đủ cho giao dịch này.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "Giá đang lệch {value} so với trung bình {window} giờ, đã vượt ngưỡng kích hoạt {threshold}. Đây là lúc bot mua vào.",
+                "detail": "Giá đang ở mức {value} so với trung bình {window} giờ, đã vượt ngưỡng mua {threshold}, nên bot đang chạy sẽ mua ngay lúc này.",
                 "title": "{symbol} đang ở vùng mua"
             },
-            "botName": "Bot thu hoạch thanh khoản {symbol}",
+            "botName": "Bot {symbol}",
+            "budget": "Ngân sách {total} XOR: {amount} XOR mỗi lần mua, giữ {reserve} XOR để trả phí",
             "cadence": {
-                "every": "Khoảng {days} ngày có một cơ hội",
-                "holdDays": "vị thế được đóng trong {min}–{max} ngày",
-                "holdHours": "vị thế được đóng trong {min}–{max} giờ",
-                "last": "gần nhất vào {date}"
+                "every": "Giao dịch khoảng {days} ngày một lần",
+                "holdDays": "giữ vị thế {min}–{max} ngày",
+                "holdHours": "giữ vị thế {min}–{max} giờ",
+                "last": "lần mua gần nhất {date}"
             },
-            "capacity": "Giới hạn quy mô có chủ đích: ngân sách 10 XOR, dự phòng phí 2 XOR và {amount} XOR mỗi lệnh, vì các pool này có thanh khoản mỏng.",
             "consent": {
                 "budget": "Ngân sách {amount} XOR",
-                "cadenceDays": "Giao dịch diễn ra thưa thớt: trong các kiểm định mù, khoảng {days} ngày mới có một cơ hội, và việc đóng một vị thế có thể mất tới {hold} ngày. Hãy giữ thẻ này mở trong suốt phiên.",
-                "cadenceHours": "Giao dịch diễn ra thưa thớt: trong các kiểm định mù, khoảng {days} ngày mới có một cơ hội, và việc đóng một vị thế có thể mất tới {hold} giờ. Hãy giữ thẻ này mở trong suốt phiên.",
-                "evidence": "Kết quả kiểm định cuốn chiếu {return}% · sụt giảm tối đa {drawdown}% · {trades} giao dịch. Kết quả giả định, đã trừ mọi khoản phí; không phải cam kết lợi nhuận.",
-                "eyebrow": "Xem nhanh để xác nhận",
+                "cadenceDays": "Giao dịch diễn ra thưa thớt: khi thử nghiệm, khoảng {days} ngày mới có một giao dịch, và một vị thế có thể mở tới {hold} ngày. Hãy giữ thẻ này mở trong suốt phiên.",
+                "cadenceHours": "Giao dịch diễn ra thưa thớt: khi thử nghiệm, khoảng {days} ngày mới có một giao dịch, và một vị thế có thể mở tới {hold} giờ. Hãy giữ thẻ này mở trong suốt phiên.",
+                "evidence": "Kết quả thử nghiệm {return}% · mức giảm lớn nhất {drawdown}% · {trades} giao dịch, đã trừ phí. Mô phỏng trên dữ liệu quá khứ; không phải cam kết lợi nhuận.",
                 "getXor": "Mua XOR",
                 "impact": "Tác động giá tối đa {value}%",
-                "order": "{amount} XOR mỗi lệnh",
-                "reserve": "Dự phòng phí {amount} XOR",
+                "order": "{amount} XOR mỗi lần mua",
+                "reserve": "Giữ {amount} XOR để trả phí",
                 "session": "Phiên {hours} giờ",
                 "sessionDays": "Phiên {count} ngày",
-                "stepConfirm": "Đánh dấu vào ô rồi bắt đầu. Bot chỉ có thể ký giao dịch hoán đổi trong các giới hạn này.",
+                "stepConfirm": "Đánh dấu vào ô rồi bắt đầu. Bot chỉ có thể hoán đổi trong các giới hạn này.",
                 "stepPassword": "Nhập mật khẩu ví",
                 "stepWallet": "Phê duyệt từng giao dịch hoán đổi trong ví",
-                "title": "Giao dịch thật: bot thu hoạch thanh khoản {symbol}"
+                "title": "Giao dịch thật với bot {symbol}"
             },
-            "disclaimer": "Nghiên cứu giả định trên trạng thái pool SORA đã lưu trữ từ {start} đến {end}, định giá theo mức phí hiện tại (phí mạng {fee} XOR, phí pool {swap}%) và trượt giá 0.5%. Kết quả trong quá khứ không dự báo lợi nhuận tương lai.",
-            "drawdown": "Sụt giảm tối đa",
+            "disclaimer": "Kết quả được mô phỏng trên dữ liệu pool SORA từ {start} đến {end}, theo mức phí hiện tại (phí mạng {fee} XOR, phí pool {swap}%) và trượt giá 0.5%. Kết quả trong quá khứ không đảm bảo lợi nhuận trong tương lai.",
+            "drawdown": "Mức giảm lớn nhất",
             "equity": {
-                "caption": "Kiểm định cuốn chiếu mù: mỗi lượt chỉ giao dịch theo quy tắc được chọn từ các giờ trước đó, sau đó vòng lặp học lại.",
-                "fold": "Lượt {index}",
+                "caption": "Giá trị của bot so với việc nắm giữ {symbol}. Mỗi giai đoạn chỉ dùng quy tắc được chọn từ dữ liệu trước đó.",
                 "idle": "Giữ nguyên XOR",
-                "strategy": "Chiến lược",
-                "title": "So sánh trước khi xuống tiền",
+                "strategy": "Bot",
+                "title": "Kết quả theo thời gian",
                 "trades": "{count} giao dịch"
             },
-            "eyebrow": "Phòng thí nghiệm chiến lược",
             "families": {
                 "breakout": "Phá vỡ",
-                "guarded": "Đánh ngược có phòng vệ",
-                "reversion": "Đánh ngược độ lệch",
-                "shock": "Đánh ngược cú sốc",
+                "guarded": "Mua khi giá giảm có lọc",
+                "reversion": "Mua khi giá giảm",
+                "shock": "Mua khi giá sập",
                 "trend": "Theo xu hướng"
             },
             "fromMean": "so với trung bình {window} giờ",
-            "gaugeAria": "Giá đang lệch {value} so với trung bình {window} giờ; bot mua khi xuống dưới {threshold}.",
+            "gaugeAria": "Giá đang ở mức {value} so với trung bình {window} giờ; bot mua khi giá xuống dưới {threshold}.",
             "goLive": "Giao dịch thật",
-            "kpi": {
-                "backtests": "Lần kiểm thử lịch sử",
-                "best": "Kiểm định cuốn chiếu {symbol}",
-                "deployable": "Thị trường sẵn sàng giao dịch thật",
-                "killed": "Tỷ lệ loại bỏ",
-                "robust": "Chiến lược trụ lại",
-                "tested": "Chiến lược đã thử"
-            },
+            "intro": "Mỗi bot hoán đổi giữa XOR và một token theo quy tắc mua bán cố định. Các quy tắc này được chọn bằng cách thử nghiệm trên dữ liệu pool SORA trong quá khứ, có tính cả phí.",
             "lattice": {
-                "caption": "Mỗi viên bi là một lệnh bán ngoài mẫu, rơi vào đúng kết quả thực tế sau mọi khoản phí.",
+                "caption": "Mỗi viên bi là một lệnh bán trong thử nghiệm, được đặt theo kết quả sau phí.",
                 "summary": "{wins} lãi · {losses} lỗ",
-                "title": "Mỗi giao dịch, một viên bi"
+                "title": "Kết quả giao dịch"
             },
-            "liveStrip": "Trực tiếp · mạng chính SORA · {time} UTC",
             "marketStatus": {
-                "deploy": "Sẵn sàng giao dịch thật",
-                "thin": "Thanh khoản quá mỏng",
-                "watch": "Tạm đứng ngoài"
+                "deploy": "Sẵn sàng",
+                "thin": "Pool quá nhỏ",
+                "watch": "Chưa có bot"
             },
             "mesh": {
-                "caption": "Mỗi nút là một chiến lược. Nút phát sáng đã vượt qua mọi vòng kiểm tra; nút nhấp nháy là chiến lược đã được triển khai.",
-                "summary": "{robust} trụ lại · {killed} bị loại",
-                "title": "Mạng lưới chiến lược"
+                "caption": "Mỗi chấm là một chiến lược đã thử nghiệm. Chấm sáng đã qua mọi bước kiểm tra; chấm nhấp nháy là chiến lược các bot đang dùng.",
+                "summary": "{robust} đạt · {killed} bị loại",
+                "title": "Chiến lược đã thử nghiệm"
             },
+            "otherMarkets": "Thị trường khác",
             "paper": "Giao dịch mô phỏng",
             "pipeline": "Quy trình nghiên cứu",
             "preparing": "Đang chuẩn bị bản xem xét…",
-            "priceChange": "Giá {symbol}",
+            "priceChange": "Nắm giữ {symbol}",
+            "progress": "Tiến độ thử nghiệm",
             "radar": {
-                "caption": "Quy tắc được đánh giá trên giờ đã hoàn tất gần nhất, đúng như bot giao dịch thật nhìn thấy.",
-                "title": "Radar cơ hội"
+                "title": "Bot hiện có"
             },
+            "result": "Kết quả thử nghiệm",
             "retry": "Thử lại",
             "rule": {
-                "breakoutAbove": "Đỉnh mới trong {window} giờ",
-                "breakoutBelow": "Đáy mới trong {window} giờ",
+                "breakoutAbove": "Giá lập đỉnh mới trong {window} giờ",
+                "breakoutBelow": "Giá lập đáy mới trong {window} giờ",
                 "buy": "Mua bằng {amount} XOR khi",
                 "deviationAbove": "Giá so với trung bình {window} giờ cao hơn {value}%",
                 "deviationBelow": "Giá so với trung bình {window} giờ thấp hơn {value}%",
-                "label": "Quy tắc chiến lược",
-                "momentumAbove": "Biến động {window} giờ cao hơn {value}%",
-                "momentumBelow": "Biến động {window} giờ thấp hơn {value}%",
+                "label": "Quy tắc giao dịch",
+                "momentumAbove": "Thay đổi giá {window} giờ cao hơn {value}%",
+                "momentumBelow": "Thay đổi giá {window} giờ thấp hơn {value}%",
                 "sell": "Bán khi"
             },
             "session": {
-                "label": "Thời lượng phiên",
+                "label": "Chạy trong",
                 "option": "{count} ngày"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "Vùng bán",
                 "neutral": "Đang chờ",
                 "unavailable": "Không có dữ liệu",
-                "warmup": "Đang khởi động"
+                "warmup": "Chưa đủ dữ liệu"
             },
-            "signalArchive": "Giá đóng cửa lưu trữ · {time}",
-            "signalLive": "Giá đóng cửa trực tiếp · {time}",
-            "stages": {
-                "backtest": "Kiểm thử lịch sử",
-                "data": "Dữ liệu pool",
-                "deploy": "Triển khai",
-                "fees": "Phí hiện tại",
-                "folds": "{count} lượt",
-                "hours": "{count} giờ",
-                "robustness": "Độ bền vững",
-                "walkforward": "Kiểm định cuốn chiếu"
-            },
+            "signalArchive": "Theo giá đã lưu · {time}",
+            "signalLive": "Kiểm tra lúc {time}",
             "status": {
-                "done": "Nghiên cứu hoàn tất · {date}",
-                "error": "Hiện chưa thể chạy nghiên cứu.",
-                "fees": "Đang đọc mức phí hiện tại từ một khối SORA đã hoàn tất…",
-                "generating": "Đang tạo chiến lược…",
-                "idle": "Sẵn sàng nghiên cứu",
-                "loading": "Đang tải trạng thái pool đã lưu trữ…",
-                "running": "Đang kiểm thử {market} · lượt {fold}/{folds}"
+                "error": "Không tải được kết quả thử nghiệm.",
+                "fees": "Đang kiểm tra phí mạng hiện tại…",
+                "loading": "Đang tải dữ liệu pool trong quá khứ…",
+                "running": "Đang thử nghiệm chiến lược trên dữ liệu quá khứ…"
             },
-            "subtitle": "Với mỗi thị trường SORA, vòng lặp viết {candidates} chiến lược dựa trên quy tắc, chạy lại chúng trên {hours} giờ dữ liệu dự trữ pool thực với phí và tác động giá chính xác, loại bỏ mọi chiến lược thiếu bền vững và chỉ triển khai những chiến lược đã có lãi trong kiểm định cuốn chiếu mù.",
+            "steps": {
+                "choose": {
+                    "text": "So sánh quy tắc và kết quả thử nghiệm bên dưới.",
+                    "title": "Chọn bot"
+                },
+                "live": {
+                    "text": "Xem lại các giới hạn và xác nhận bằng ví. Giữ thẻ này mở trong khi bot chạy.",
+                    "title": "Giao dịch thật"
+                },
+                "paper": {
+                    "text": "Nút “Giao dịch mô phỏng” thêm bot vào “Bot của tôi” với vốn ảo. Nhấn “Bắt đầu” ở đó; không cần ví.",
+                    "title": "Thử bằng vốn ảo"
+                }
+            },
             "swap": "Hoán đổi XOR → {symbol}",
-            "thinNote": "Độ sâu trung vị của pool là {depth} XOR, quá nông cho lệnh 2 XOR, nên vòng lặp bỏ qua thị trường này.",
-            "title": "Bot kiểm thử hàng nghìn chiến lược",
-            "titleAccent": "trước khi mạo hiểm dù chỉ một XOR.",
+            "thinNote": "Pool có khoảng {depth} XOR, quá ít cho một giao dịch 2 XOR.",
+            "title": "Bot dựng sẵn",
             "trades": "Số giao dịch",
-            "walkForward": "Kiểm định cuốn chiếu",
-            "watchNote": "Không có chiến lược nào vượt qua mọi vòng kiểm tra ở đây, nên vòng lặp giữ nguyên XOR của bạn và tiếp tục theo dõi."
+            "watchNote": "Không quy tắc nào có lãi khi thử nghiệm, nên thị trường này chưa có bot."
         },
         "receiveToken": "Token giao dịch",
         "research": {

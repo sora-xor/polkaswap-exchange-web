@@ -200,6 +200,7 @@
     "bots": {
         "above": "Prodat nad prahem",
         "activity": "Aktivita",
+        "advanced": "Pokročilé",
         "aiBacktestNote": "Před historickým testem použijte Generovat strategii a zkontrolujte deterministická pravidla.",
         "aiConnection": "Připojení AI",
         "allocation": "Vyhrazené prostředky",
@@ -214,7 +215,6 @@
         "authorizeStart": "Schválit a spustit",
         "autopilot": {
             "addressCopied": "Adresa zkopírována",
-            "advanced": "Pokročilé",
             "begin": "Start AI trading",
             "budget": "Vyhrazené prostředky ({symbol})",
             "budgetUnselected": "Vyhrazené prostředky",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "Navíc {amount} {symbol} na síťové poplatky.",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "SPUSTIT",
+            "go": "Najít strategii",
             "goal": "Rozšiřte můj kapitál",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "Zvolte rozpočet a token, kterého chcete mít víc. Vaše AI (aplikace Codex nebo klíč API) navrhne strategie, Polkaswap je otestuje na historických datech a tu nejlepší si před obchodováním zkontrolujete.",
             "maximizeGoal": "Navýšit {symbol}",
             "maximizeToken": "Token k navýšení",
             "refreshFunding": "Obnovit zůstatky",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "Připojte AI",
             "connected": "Připojeno",
+            "connectFirst": "Nejprve připojte AI, abyste mohli zahájit výzkum.",
             "consent": "Zkontroloval jsem přesné roboty, rozpočty a 14denní podpisový grant.",
             "continueExploratory": "Pokračovat v průzkumném vyhledávání",
             "continueWithProvider": "Pokračovat s touto umělou inteligencí",
@@ -553,6 +554,7 @@
             "feeReserve": "Rezerva na poplatek XOR",
             "finalizedBlock": "Ověřeno na dokončeném bloku",
             "finalizedSwaps": "dokončené swapy",
+            "getKey": "Získat API klíč {provider}",
             "goal": "Každý bot: 14 aktivních dnů, 10 dokončených swapů, kladná čistá hodnota nad držením, v rámci čerpání.",
             "historyChanged": "Ověřená historie se během výzkumu změnila",
             "holdout": "Nedotčená výdrž",
@@ -564,7 +566,11 @@
             "holdoutReused": "Následující vyhrazené testovací období se překrývá s daty již zobrazenými v tomto prohlížeči. Výsledky budou pouze průzkumné a nelze jimi schválit živé boty.",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "Strategický nápad (volitelné)",
+            "ideaDips": "Nakupovat poklesy ve vzestupném trendu",
+            "ideaExamples": "Potřebujete nápad? Zkuste:",
+            "ideaMomentum": "Sledovat silné momentum",
             "ideaPlaceholder": "Například: kupte si krátké stahování v rostoucím trendu",
+            "ideaSteady": "Pravidelné denní nákupy",
             "jev": "Jev API",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "Alokace, stropy objednávek a rezerva na poplatky jsou stanoveny ověřeným výzkumem. Chcete-li je změnit, spusťte nové vyhledávání.",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "OpenAI API",
             "orderLimit": "Maximální objednávka",
+            "otherConnection": "Jiné",
             "outcome": {
                 "active": "Práce k cíli",
                 "loss": "Bylo dosaženo limitu čerpání",
@@ -660,6 +667,7 @@
             "start": "Začněte s výzkumem",
             "subtitle": "Před živým obchodováním vyhledejte na ověřených trzích strategie a projděte si přesná pravidla.",
             "tabNote": "Průzkum a živé obchodování probíhají, zatímco tato karta a počítač zůstávají aktivní. Pozastavená kampaň potřebuje novou kontrolu a odemknutí.",
+            "tagline": "Nechte AI najít a otestovat strategie za vás",
             "title": "Objevte",
             "trades": "Swapy",
             "training": "Školení",
@@ -676,6 +684,13 @@
         "equityChartNote": "Spusťte strategii pro zaznamenávání výsledků.",
         "errors": {
             "action": "Akci se nepodařilo dokončit. Zkuste to znovu.",
+            "aiAccess": "Tento API klíč nemůže používat vybraný model. Zvolte jiný model nebo zkontrolujte oprávnění klíče.",
+            "aiBusy": "Poskytovatel AI je přetížený nebo dočasně nedostupný. Zkuste to znovu za pár minut.",
+            "aiKey": "Poskytovatel AI tento API klíč odmítl. Zkopírujte znovu celý klíč nebo vytvořte nový.",
+            "aiKeyMissing": "Nejprve vložte svůj API klíč.",
+            "aiNetwork": "Poskytovatele AI se nepodařilo zastihnout. Zkontrolujte připojení k internetu, VPN nebo blokátor obsahu a zkuste to znovu.",
+            "aiQuota": "Váš účet AI nemá kredit nebo dosáhl limitu požadavků. Dobijte kredit u poskytovatele, nebo minutu počkejte a zkuste to znovu.",
+            "aiTimeout": "AI odpovídala příliš dlouho. Zkuste to znovu nebo zvolte rychlejší model.",
             "amount": "Zadejte platnou částku v rámci přesnosti tokenu.",
             "backtestAi": "Před historickým testem AI strategie vygenerujte a zkontrolujte deterministická pravidla.",
             "balance": "Vyhrazené tokeny nebo zůstatek peněženky nestačí na tento obchod.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "Cena se od {window}hodinového průměru odchyluje o {value} a překročila spouštěcí práh {threshold}. Právě tehdy bot nakupuje.",
+                "detail": "Cena se od {window}hodinového průměru odchyluje o {value} a překročila nákupní práh {threshold}, takže spuštěný bot by teď nakoupil.",
                 "title": "{symbol} je v nákupní zóně"
             },
-            "botName": "Sběrač likvidity {symbol}",
+            "botName": "Bot {symbol}",
+            "budget": "Rozpočet {total} XOR: {amount} XOR na nákup, {reserve} XOR na poplatky",
             "cadence": {
-                "every": "Příležitosti zhruba v {days}denních odstupech",
-                "holdDays": "pozice se uzavírají během {min}–{max} dní",
-                "holdHours": "pozice se uzavírají během {min}–{max} h",
-                "last": "naposledy {date}"
+                "every": "Obchoduje zhruba jednou za {days} dní",
+                "holdDays": "drží pozici {min}–{max} dní",
+                "holdHours": "drží pozici {min}–{max} h",
+                "last": "poslední nákup {date}"
             },
-            "capacity": "Kapacita je záměrně omezená: rozpočet 10 XOR, rezerva na poplatky 2 XOR a {amount} XOR na příkaz, protože tyto pooly mají nízkou likviditu.",
             "consent": {
                 "budget": "Rozpočet {amount} XOR",
-                "cadenceDays": "Obchody jsou vzácné: při testování naslepo se příležitosti objevovaly zhruba v {days}denních odstupech a uzavření pozice může trvat až do {hold} dní. Nechte tuto kartu otevřenou po celou dobu relace.",
-                "cadenceHours": "Obchody jsou vzácné: při testování naslepo se příležitosti objevovaly zhruba v {days}denních odstupech a uzavření pozice může trvat až {hold} h. Nechte tuto kartu otevřenou po celou dobu relace.",
-                "evidence": "Výsledek postupného testování {return}% · max. propad {drawdown}% · obchody: {trades}. Hypotetický výsledek po všech poplatcích; nejde o příslib zisku.",
-                "eyebrow": "Přehled na první pohled",
+                "cadenceDays": "Bot obchoduje zřídka: v testech zhruba jednou za {days} dní a pozici může držet až {hold} dní. Nechte tuto kartu otevřenou po celou dobu relace.",
+                "cadenceHours": "Bot obchoduje zřídka: v testech zhruba jednou za {days} dní a pozici může držet až {hold} h. Nechte tuto kartu otevřenou po celou dobu relace.",
+                "evidence": "Výsledek testu po poplatcích {return}% · největší propad {drawdown}% · obchody: {trades}. Jde o simulaci na historických datech, ne o příslib zisku.",
                 "getXor": "Získat XOR",
                 "impact": "Max. cenový dopad {value}%",
-                "order": "{amount} XOR na příkaz",
-                "reserve": "Rezerva na poplatky {amount} XOR",
+                "order": "{amount} XOR na nákup",
+                "reserve": "{amount} XOR na poplatky",
                 "session": "Relace na {hours} h",
                 "sessionDays": "{count}denní relace",
-                "stepConfirm": "Zaškrtněte políčko a spusťte. Bot může podepisovat směny jen v rámci těchto limitů.",
+                "stepConfirm": "Zaškrtněte políčko a spusťte. Bot může směňovat jen v rámci těchto limitů.",
                 "stepPassword": "Zadejte heslo peněženky",
                 "stepWallet": "Schvalujte každou směnu ve své peněžence",
-                "title": "Obchodování naostro: sběrač likvidity {symbol}"
+                "title": "Spustit bota {symbol} naostro"
             },
-            "disclaimer": "Hypotetický výzkum archivovaných stavů poolů SORA od {start} do {end}, oceněný dnešními poplatky ({fee} XOR síťový poplatek, {swap}% poplatek poolu) a skluzem 0,5%. Minulé výsledky nejsou zárukou budoucích výnosů.",
-            "drawdown": "Maximální propad",
+            "disclaimer": "Výsledky pocházejí ze simulace na datech poolů SORA od {start} do {end} s dnešními poplatky (síťový poplatek {fee} XOR, poplatek poolu {swap}%) a skluzem 0,5%. Minulé výsledky nezaručují budoucí výnosy.",
+            "drawdown": "Největší propad",
             "equity": {
-                "caption": "Postupné testování naslepo: každý běh obchodoval podle pravidel vybraných jen z dřívějších hodin, poté se smyčka znovu učila.",
-                "fold": "Běh {index}",
+                "caption": "Hodnota bota ve srovnání s držením {symbol}. V každém období platila pravidla vybraná jen podle dřívějších dat.",
                 "idle": "Zůstalo v XOR",
-                "strategy": "Strategie",
-                "title": "Nejdřív porovnejte, pak se rozhodněte",
+                "strategy": "Bot",
+                "title": "Výsledky v čase",
                 "trades": "Obchody: {count}"
             },
-            "eyebrow": "Laboratoř strategií",
             "families": {
                 "breakout": "Průraz",
-                "guarded": "Odraz s filtrem",
-                "reversion": "Odraz od odchylky",
-                "shock": "Odraz po šoku",
+                "guarded": "Nákup při poklesu s filtrem",
+                "reversion": "Nákup při poklesu",
+                "shock": "Nákup po krachu",
                 "trend": "Sledování trendu"
             },
             "fromMean": "vůči {window}hodinovému průměru",
             "gaugeAria": "Cena se od {window}hodinového průměru odchyluje o {value}; bot nakupuje pod {threshold}.",
             "goLive": "Spustit naostro",
-            "kpi": {
-                "backtests": "Historické testy",
-                "best": "{symbol} v postupném testování",
-                "deployable": "Trhy připravené k obchodování",
-                "killed": "Míra vyřazení",
-                "robust": "Přeživší",
-                "tested": "Strategie"
-            },
+            "intro": "Každý bot směňuje XOR za jeden token a zpět podle pevných pravidel pro nákup a prodej. Pravidla byla vybrána testováním na historických datech poolů SORA včetně poplatků.",
             "lattice": {
-                "caption": "Každá kulička je jeden prodej mimo vzorek a dopadá na svůj realizovaný výsledek po všech poplatcích.",
+                "caption": "Každá kulička je jeden prodej z testů. Její poloha závisí na výsledku po poplatcích.",
                 "summary": "Ziskové: {wins} · ztrátové: {losses}",
-                "title": "Každý obchod, jedna kulička"
+                "title": "Výsledky obchodů"
             },
-            "liveStrip": "Živě · hlavní síť SORA · {time} UTC",
             "marketStatus": {
-                "deploy": "Připraven k obchodování",
-                "thin": "Málo likvidní",
-                "watch": "Sledování"
+                "deploy": "Připraven",
+                "thin": "Příliš malý pool",
+                "watch": "Bez bota"
             },
             "mesh": {
-                "caption": "Jeden uzel na strategii. Zářící uzly prošly všemi filtry; pulzující je nasazený.",
-                "summary": "Přeživší: {robust} · vyřazené: {killed}",
-                "title": "Síť strategií"
+                "caption": "Každá tečka je jedna otestovaná strategie. Jasné tečky prošly všemi kontrolami; pulzující jsou ty, které boti používají.",
+                "summary": "Prošlo: {robust} · vyřazeno: {killed}",
+                "title": "Otestované strategie"
             },
+            "otherMarkets": "Ostatní trhy",
             "paper": "Spustit simulaci",
             "pipeline": "Výzkumný proces",
             "preparing": "Příprava přehledu…",
-            "priceChange": "Cena {symbol}",
+            "priceChange": "Držení {symbol}",
+            "progress": "Průběh testování",
             "radar": {
-                "caption": "Pravidla vyhodnocená podle poslední dokončené hodiny, přesně tak, jak je vidí bot při skutečném obchodování.",
-                "title": "Radar příležitostí"
+                "title": "Dostupní boti"
             },
+            "result": "Výsledek testu",
             "retry": "Zkusit znovu",
             "rule": {
-                "breakoutAbove": "Nové {window}hodinové maximum",
-                "breakoutBelow": "Nové {window}hodinové minimum",
-                "buy": "Koupit {amount} XOR, když",
+                "breakoutAbove": "Cena dosáhne nového {window}hodinového maxima",
+                "breakoutBelow": "Cena klesne na nové {window}hodinové minimum",
+                "buy": "Koupit za {amount} XOR, když",
                 "deviationAbove": "Cena vůči {window}hodinovému průměru nad {value}%",
                 "deviationBelow": "Cena vůči {window}hodinovému průměru pod {value}%",
-                "label": "Pravidla strategie",
-                "momentumAbove": "{window}hodinová změna nad {value}%",
-                "momentumBelow": "{window}hodinová změna pod {value}%",
+                "label": "Pravidla obchodování",
+                "momentumAbove": "{window}hodinová změna ceny nad {value}%",
+                "momentumBelow": "{window}hodinová změna ceny pod {value}%",
                 "sell": "Prodat, když"
             },
             "session": {
-                "label": "Relace",
+                "label": "Doba běhu",
                 "option": "{count} d"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "Prodejní zóna",
                 "neutral": "Čekání",
                 "unavailable": "Žádná data",
-                "warmup": "Zahřívání"
+                "warmup": "Zatím málo dat"
             },
-            "signalArchive": "Archivní závěrečný kurz · {time}",
-            "signalLive": "Aktuální závěrečný kurz · {time}",
-            "stages": {
-                "backtest": "Historický test",
-                "data": "Data poolů",
-                "deploy": "Nasazení",
-                "fees": "Aktuální poplatky",
-                "folds": "Běhy: {count}",
-                "hours": "{count} h",
-                "robustness": "Robustnost",
-                "walkforward": "Postupné testování"
-            },
+            "signalArchive": "Podle uložených cen · {time}",
+            "signalLive": "Zkontrolováno {time}",
             "status": {
-                "done": "Výzkum dokončen · {date}",
-                "error": "Výzkum momentálně není k dispozici.",
-                "fees": "Načítání aktuálních poplatků z finalizovaného bloku SORA…",
-                "generating": "Generování strategií…",
-                "idle": "Připraveno k výzkumu",
-                "loading": "Načítání archivovaných stavů poolů…",
-                "running": "Testování {market} · běh {fold} z {folds}"
+                "error": "Výsledky testů se nepodařilo načíst.",
+                "fees": "Zjišťování aktuálních síťových poplatků…",
+                "loading": "Načítání historických dat poolů…",
+                "running": "Testování strategií na historických datech…"
             },
-            "subtitle": "Pro každý trh SORA smyčka vytvoří strategie založené na pravidlech (celkem {candidates}), přehraje je na {hours} h skutečných rezerv poolů s přesnými poplatky a cenovým dopadem, vyřadí vše křehké a nasadí jen to, co vydělávalo při postupném testování naslepo.",
+            "steps": {
+                "choose": {
+                    "text": "Níže porovnejte pravidla a výsledky testů.",
+                    "title": "Vybrat bota"
+                },
+                "live": {
+                    "text": "Zkontrolujte limity a potvrďte v peněžence. Nezavírejte tuto kartu, dokud bot běží.",
+                    "title": "Spustit naostro"
+                },
+                "paper": {
+                    "text": "Tlačítko „Spustit simulaci“ přidá bota s virtuálními prostředky do sekce Moji boti. Tam ho spusťte; peněženka není potřeba.",
+                    "title": "Vyzkoušet v simulaci"
+                }
+            },
             "swap": "Směnit XOR → {symbol}",
-            "thinNote": "Medián hloubky poolu je {depth} XOR, což je na příkaz 2 XOR příliš málo, proto smyčka tento trh vynechává.",
-            "title": "Boti, kteří testují tisíce strategií,",
-            "titleAccent": "dříve než riskují jediný XOR.",
+            "thinNote": "V poolu je asi {depth} XOR, na obchod za 2 XOR je to příliš málo.",
+            "title": "Hotoví boti",
             "trades": "Obchody",
-            "walkForward": "Postupné testování",
-            "watchNote": "Žádná strategie zde neprošla všemi filtry, proto smyčka nechává vaše XOR nevyužité a dál trh sleduje."
+            "watchNote": "V testech žádné pravidlo nevydělalo, proto pro tento trh zatím bot není."
         },
         "receiveToken": "Obchodovaný token",
         "research": {

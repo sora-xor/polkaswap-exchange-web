@@ -12,13 +12,14 @@ export default defineConfig({
     alias: [
       { find: /^@\/composables\/useTranslation$/, replacement: stub },
       { find: /^@\/lib\/substrate\/sdk\/assets\/consts$/, replacement: stub },
-      { find: /^@\/lib\/substrate\/math$/, replacement: stub },
       { find: /^\.\.\/amounts$/, replacement: stub },
       { find: /^\.\.\/campaign$/, replacement: stub },
       { find: /^\.\.\/discovery-live-feedback$/, replacement: stub },
       { find: /^\.\.\/discovery-storage$/, replacement: stub },
       { find: /^\.\.\/discovery-provider$/, replacement: stub },
       { find: /^\.\.\/discovery$/, replacement: stub },
+      // Every other app import, including exact FPNumber math and the hero art, uses the real module.
+      { find: /^@\//, replacement: fileURLToPath(new URL('../../../src/', import.meta.url)) },
     ],
   },
   server: {

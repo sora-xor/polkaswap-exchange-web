@@ -59,6 +59,15 @@ router.beforeEach(beforeEachGuard);
 /**
  * Shared navigation helper that keeps the router loading state in sync.
  */
+/** Menu pages whose sections share one route name; selecting the menu item again returns to the page home. */
+const SECTION_HOME_PAGES: ReadonlySet<string> = new Set([PageNames.Bots]);
+
+/** A route is at its home when it carries no section params or view query. */
+const isPageHome = (route?: { params?: Record<string, unknown>; query?: Record<string, unknown> }): boolean =>
+  [...Object.values(route?.params ?? {}), ...Object.values(route?.query ?? {})].every(
+    (value) => value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length)
+  );
+
 const goTo = async (name: PageNames): Promise<void> => {
   const current = router.currentRoute.value?.name as PageNames | undefined;
 
@@ -67,7 +76,7 @@ const goTo = async (name: PageNames): Promise<void> => {
     walletStore.prepareWalletEntryNavigation();
   }
 
-  if (current === name) {
+  if (current === name && (!SECTION_HOME_PAGES.has(name) || isPageHome(router.currentRoute.value))) {
     return;
   }
 

@@ -200,6 +200,7 @@
     "bots": {
         "above": "Vendi sopra la soglia",
         "activity": "Attività",
+        "advanced": "Avanzate",
         "aiBacktestNote": "Genera e verifica una strategia deterministica prima del test storico.",
         "aiConnection": "Connessione IA",
         "allocation": "Allocazione",
@@ -214,7 +215,6 @@
         "authorizeStart": "Autorizza e avvia",
         "autopilot": {
             "addressCopied": "Indirizzo copiato",
-            "advanced": "Avanzate",
             "begin": "Start AI trading",
             "budget": "Allocazione ({symbol})",
             "budgetUnselected": "Allocazione",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "Più {amount} {symbol} per le commissioni di rete.",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "VAI",
+            "go": "Trova una strategia",
             "goal": "Fai crescere il mio capitale",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "Scegli un budget e il token che vuoi aumentare. La tua IA (app Codex o chiave API) propone strategie, Polkaswap le testa sui dati storici e tu controlli la migliore prima che inizi a operare.",
             "maximizeGoal": "Aumenta {symbol}",
             "maximizeToken": "Token da aumentare",
             "refreshFunding": "Aggiorna i saldi",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "Connetti l'intelligenza artificiale",
             "connected": "Connesso",
+            "connectFirst": "Connetti prima un’IA per avviare la ricerca.",
             "consent": "Ho esaminato i bot esatti, i budget e la concessione per la firma di 14 giorni.",
             "continueExploratory": "Continua la ricerca esplorativa",
             "continueWithProvider": "Riprendi con questa IA",
@@ -553,6 +554,7 @@
             "feeReserve": "Riserva tariffaria XOR",
             "finalizedBlock": "Verificato al blocco finalizzato",
             "finalizedSwaps": "permute finalizzate",
+            "getKey": "Ottieni una chiave API {provider}",
             "goal": "Ogni bot: 14 giorni attivi, 10 swap finalizzati, valore netto positivo sopra la detenzione, entro prelievo.",
             "historyChanged": "La cronologia verificata è cambiata durante la ricerca",
             "holdout": "Resistenza intatta",
@@ -564,7 +566,11 @@
             "holdoutReused": "Il prossimo periodo riservato si sovrappone a date già consultate in questo browser. I risultati saranno esplorativi e non potranno approvare bot live.",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "Idea strategica (facoltativa)",
+            "ideaDips": "Comprare i ribassi in un trend rialzista",
+            "ideaExamples": "Ti serve un’idea? Provane una:",
+            "ideaMomentum": "Seguire un momentum forte",
             "ideaPlaceholder": "Ad esempio: acquista brevi pullback in un trend rialzista",
+            "ideaSteady": "Acquisti giornalieri costanti",
             "jev": "API Jev",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "L'allocazione, i massimali degli ordini e la riserva tariffaria sono fissati dalla ricerca verificata. Avvia una nuova ricerca per modificarli.",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "API OpenAI",
             "orderLimit": "Ordine massimo",
+            "otherConnection": "Altro",
             "outcome": {
                 "active": "Lavorare verso l'obiettivo",
                 "loss": "Limite di prelievo raggiunto",
@@ -660,6 +667,7 @@
             "start": "Inizia la ricerca",
             "subtitle": "Cerca strategie nei mercati verificati e rivedi le regole esatte prima di fare trading dal vivo.",
             "tabNote": "La ricerca e il trading live funzionano finché questa scheda e il computer restano attivi. Una campagna in pausa richiede una nuova revisione e lo sblocco.",
+            "tagline": "Lascia che l’IA trovi e testi strategie per te",
             "title": "Scopri",
             "trades": "Scambi",
             "training": "Formazione",
@@ -676,6 +684,13 @@
         "equityChartNote": "Avvia la strategia per registrarne i risultati.",
         "errors": {
             "action": "Impossibile completare l’azione. Riprova.",
+            "aiAccess": "Questa chiave API non può usare il modello selezionato. Scegli un altro modello o controlla i permessi della chiave.",
+            "aiBusy": "Il fornitore di IA è occupato o temporaneamente non disponibile. Riprova tra qualche minuto.",
+            "aiKey": "Il fornitore di IA ha rifiutato questa chiave API. Copia di nuovo la chiave completa o creane una nuova.",
+            "aiKeyMissing": "Incolla prima la tua chiave API.",
+            "aiNetwork": "Impossibile raggiungere il fornitore di IA. Controlla la connessione Internet, la VPN o il blocco contenuti, poi riprova.",
+            "aiQuota": "Il tuo account IA ha esaurito il credito o ha raggiunto un limite di frequenza. Aggiungi credito presso il fornitore oppure attendi un minuto e riprova.",
+            "aiTimeout": "L’IA ha impiegato troppo tempo a rispondere. Riprova o scegli un modello più veloce.",
             "amount": "Inserisci un importo valido entro la precisione del token.",
             "backtestAi": "Genera e verifica regole deterministiche prima del test storico di una strategia IA.",
             "balance": "I token allocati o il saldo del portafoglio non coprono questa operazione.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "Il prezzo è a {value} dalla media a {window} ore, oltre la soglia di attivazione di {threshold}. È questo il momento in cui il bot compra.",
+                "detail": "Il prezzo è a {value} rispetto alla media a {window} ore, oltre la soglia di acquisto di {threshold}: un bot attivo comprerebbe ora.",
                 "title": "{symbol} è nella zona di acquisto"
             },
-            "botName": "Raccoglitore di liquidità {symbol}",
+            "botName": "Bot {symbol}",
+            "budget": "Budget di {total} XOR: {amount} XOR per acquisto, {reserve} XOR riservati alle commissioni",
             "cadence": {
-                "every": "Circa un’opportunità ogni {days} giorni",
-                "holdDays": "le posizioni si chiudono in {min}–{max} giorni",
-                "holdHours": "le posizioni si chiudono in {min}–{max} ore",
-                "last": "la più recente il {date}"
+                "every": "Circa un’operazione ogni {days} giorni",
+                "holdDays": "posizione aperta {min}–{max} giorni",
+                "holdHours": "posizione aperta {min}–{max} ore",
+                "last": "ultimo acquisto {date}"
             },
-            "capacity": "Capacità limitata di proposito: budget di 10 XOR, riserva commissioni di 2 XOR e {amount} XOR per ordine, perché questi pool hanno poca liquidità.",
             "consent": {
                 "budget": "Budget di {amount} XOR",
-                "cadenceDays": "Le operazioni sono rare: nei test alla cieca si è presentata circa un’opportunità ogni {days} giorni e chiudere una posizione può richiedere fino a {hold} giorni. Lascia aperta questa scheda per tutta la sessione.",
-                "cadenceHours": "Le operazioni sono rare: nei test alla cieca si è presentata circa un’opportunità ogni {days} giorni e chiudere una posizione può richiedere fino a {hold} ore. Lascia aperta questa scheda per tutta la sessione.",
-                "evidence": "Risultato in validazione progressiva {return}% · calo massimo {drawdown}% · {trades} operazioni. Ipotetico e al netto di tutte le commissioni; non è una promessa di profitto.",
-                "eyebrow": "Riepilogo a colpo d’occhio",
+                "cadenceDays": "Le operazioni sono rare: circa una ogni {days} giorni nei test e una posizione può restare aperta fino a {hold} giorni. Lascia aperta questa scheda per tutta la sessione.",
+                "cadenceHours": "Le operazioni sono rare: circa una ogni {days} giorni nei test e una posizione può restare aperta fino a {hold} ore. Lascia aperta questa scheda per tutta la sessione.",
+                "evidence": "Risultato nei test {return}% · calo massimo {drawdown}% · {trades} operazioni, al netto delle commissioni. Simulato su dati storici; non è una promessa di profitto.",
                 "getXor": "Ottieni XOR",
                 "impact": "Impatto massimo sul prezzo {value}%",
-                "order": "{amount} XOR per ordine",
-                "reserve": "Riserva commissioni di {amount} XOR",
+                "order": "{amount} XOR per acquisto",
+                "reserve": "{amount} XOR riservati alle commissioni",
                 "session": "Sessione di {hours} h",
                 "sessionDays": "Sessione di {count} g",
-                "stepConfirm": "Spunta la casella e avvia. Il bot può firmare scambi solo entro questi limiti.",
+                "stepConfirm": "Spunta la casella e avvia. Il bot può fare scambi solo entro questi limiti.",
                 "stepPassword": "Inserisci la password del portafoglio",
                 "stepWallet": "Approva ogni scambio nel tuo portafoglio",
-                "title": "Trading reale: raccoglitore di liquidità {symbol}"
+                "title": "Avvia in reale il bot {symbol}"
             },
-            "disclaimer": "Ricerca ipotetica sugli stati archiviati dei pool SORA dal {start} al {end}, valutata con le commissioni attuali ({fee} XOR di commissione di rete, {swap}% di commissione del pool) e uno slippage dello 0,5%. I risultati passati non predicono i rendimenti futuri.",
+            "disclaimer": "Risultati simulati sui dati dei pool SORA nel periodo {start} – {end}, con le commissioni attuali ({fee} XOR di commissione di rete, {swap}% di commissione del pool) e uno slittamento di prezzo dello 0,5%. I risultati passati non garantiscono rendimenti futuri.",
             "drawdown": "Calo massimo",
             "equity": {
-                "caption": "Validazione progressiva alla cieca: ogni iterazione ha operato con regole scelte solo sulle ore precedenti, poi il ciclo si è riaddestrato.",
-                "fold": "Iterazione {index}",
+                "caption": "Valore del bot rispetto a tenere {symbol}. Ogni periodo ha usato regole scelte solo in base a dati precedenti.",
                 "idle": "Rimasto in XOR",
-                "strategy": "Strategia",
-                "title": "Confronta prima di impegnarti",
+                "strategy": "Bot",
+                "title": "Risultati nel tempo",
                 "trades": "Operazioni: {count}"
             },
-            "eyebrow": "Laboratorio di strategie",
             "families": {
                 "breakout": "Rottura",
-                "guarded": "Rimbalzo filtrato",
-                "reversion": "Rimbalzo da scostamento",
-                "shock": "Rimbalzo dopo shock",
-                "trend": "Tendenza"
+                "guarded": "Acquisto sui ribassi con filtro",
+                "reversion": "Acquisto sui ribassi",
+                "shock": "Acquisto dopo un crollo",
+                "trend": "Seguire il trend"
             },
             "fromMean": "vs media {window} h",
-            "gaugeAria": "Il prezzo è a {value} dalla media a {window} ore; il bot compra sotto {threshold}.",
+            "gaugeAria": "Il prezzo è a {value} rispetto alla media a {window} ore; il bot compra sotto {threshold}.",
             "goLive": "Avvia in reale",
-            "kpi": {
-                "backtests": "Test storici",
-                "best": "{symbol} in validazione progressiva",
-                "deployable": "Mercati pronti per il reale",
-                "killed": "Tasso di scarto",
-                "robust": "Promosse",
-                "tested": "Strategie"
-            },
+            "intro": "Ogni bot scambia tra XOR e un token con regole fisse di acquisto e vendita. Le regole sono state scelte testandole sui dati storici dei pool SORA, commissioni incluse.",
             "lattice": {
-                "caption": "Ogni pallina è una vendita fuori campione e si posa sul suo risultato realizzato al netto di tutte le commissioni.",
+                "caption": "Ogni pallina è una vendita dei test, posizionata in base al risultato al netto delle commissioni.",
                 "summary": "In utile: {wins} · in perdita: {losses}",
-                "title": "Ogni operazione, una pallina"
+                "title": "Risultati delle operazioni"
             },
-            "liveStrip": "In tempo reale · rete principale SORA · {time} UTC",
             "marketStatus": {
-                "deploy": "Pronto per il reale",
-                "thin": "Poco liquido",
-                "watch": "In disparte"
+                "deploy": "Pronto",
+                "thin": "Pool troppo piccolo",
+                "watch": "Nessun bot"
             },
             "mesh": {
-                "caption": "Un nodo per strategia. I nodi luminosi hanno superato ogni filtro; quello pulsante è attivo.",
+                "caption": "Ogni punto è una strategia testata. I punti luminosi hanno superato tutti i controlli; quelli pulsanti sono le strategie usate dai bot.",
                 "summary": "Promosse: {robust} · scartate: {killed}",
-                "title": "Rete di strategie"
+                "title": "Strategie testate"
             },
+            "otherMarkets": "Altri mercati",
             "paper": "Avvia in simulazione",
             "pipeline": "Pipeline di ricerca",
             "preparing": "Preparazione del riepilogo…",
-            "priceChange": "Prezzo di {symbol}",
+            "priceChange": "Tenere {symbol}",
+            "progress": "Avanzamento dei test",
             "radar": {
-                "caption": "Regole valutate sull’ultima ora completata, esattamente come le vede un bot in modalità reale.",
-                "title": "Radar delle opportunità"
+                "title": "Bot disponibili"
             },
+            "result": "Risultato nei test",
             "retry": "Riprova",
             "rule": {
-                "breakoutAbove": "Nuovo massimo su {window} h",
-                "breakoutBelow": "Nuovo minimo su {window} h",
-                "buy": "Compra {amount} XOR quando",
+                "breakoutAbove": "Il prezzo segna un nuovo massimo su {window} h",
+                "breakoutBelow": "Il prezzo segna un nuovo minimo su {window} h",
+                "buy": "Compra con {amount} XOR quando",
                 "deviationAbove": "Prezzo vs media {window} h superiore a {value}%",
                 "deviationBelow": "Prezzo vs media {window} h inferiore a {value}%",
-                "label": "Regole della strategia",
-                "momentumAbove": "Variazione su {window} h superiore a {value}%",
-                "momentumBelow": "Variazione su {window} h inferiore a {value}%",
+                "label": "Regole di trading",
+                "momentumAbove": "Variazione del prezzo su {window} h superiore a {value}%",
+                "momentumBelow": "Variazione del prezzo su {window} h inferiore a {value}%",
                 "sell": "Vendi quando"
             },
             "session": {
-                "label": "Sessione",
+                "label": "Durata",
                 "option": "{count} g"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "Zona di vendita",
                 "neutral": "In attesa",
                 "unavailable": "Nessun dato",
-                "warmup": "Riscaldamento"
+                "warmup": "Dati ancora insufficienti"
             },
-            "signalArchive": "Chiusura archiviata · {time}",
-            "signalLive": "Chiusura in tempo reale · {time}",
-            "stages": {
-                "backtest": "Test storico",
-                "data": "Dati dei pool",
-                "deploy": "Attivazione",
-                "fees": "Commissioni attuali",
-                "folds": "{count} iterazioni",
-                "hours": "{count} ore",
-                "robustness": "Robustezza",
-                "walkforward": "Validazione progressiva"
-            },
+            "signalArchive": "In base ai prezzi salvati · {time}",
+            "signalLive": "Verificato: {time}",
             "status": {
-                "done": "Ricerca completata · {date}",
-                "error": "La ricerca non è disponibile al momento.",
-                "fees": "Lettura delle commissioni attuali da un blocco SORA finalizzato…",
-                "generating": "Generazione delle strategie…",
-                "idle": "Pronto per la ricerca",
-                "loading": "Caricamento degli stati archiviati dei pool…",
-                "running": "Test di {market} · iterazione {fold} di {folds}"
+                "error": "Impossibile caricare i risultati dei test.",
+                "fees": "Verifica delle commissioni di rete attuali…",
+                "loading": "Caricamento dei dati storici dei pool…",
+                "running": "Test delle strategie sui dati storici…"
             },
-            "subtitle": "Per ogni mercato SORA il ciclo genera {candidates} strategie basate su regole, le riproduce su {hours} ore di riserve reali dei pool con commissioni e impatto sul prezzo esatti, scarta tutto ciò che è fragile e attiva solo ciò che ha guadagnato nei test di validazione progressiva alla cieca.",
+            "steps": {
+                "choose": {
+                    "text": "Confronta qui sotto le regole e i risultati dei test.",
+                    "title": "Scegli un bot"
+                },
+                "live": {
+                    "text": "Controlla i limiti e conferma con il tuo portafoglio. Lascia aperta questa scheda mentre il bot è attivo.",
+                    "title": "Avvia in reale"
+                },
+                "paper": {
+                    "text": "«Avvia in simulazione» aggiunge il bot alla sezione «I miei bot» con fondi virtuali. Avvialo da lì; non serve il portafoglio.",
+                    "title": "Prova in simulazione"
+                }
+            },
             "swap": "Scambia XOR → {symbol}",
-            "thinNote": "La profondità mediana del pool è di {depth} XOR, troppo bassa per un ordine da 2 XOR, quindi il ciclo salta questo mercato.",
-            "title": "Bot che testano migliaia di strategie",
-            "titleAccent": "prima di rischiare un solo XOR.",
+            "thinNote": "Il pool contiene circa {depth} XOR, troppo pochi per un’operazione da 2 XOR.",
+            "title": "Bot pronti all’uso",
             "trades": "Operazioni",
-            "walkForward": "Validazione progressiva",
-            "watchNote": "Qui nessuna strategia ha superato ogni filtro, quindi il ciclo tiene fermi i tuoi XOR e continua a osservare."
+            "watchNote": "Nessuna regola è stata redditizia nei test, quindi per questo mercato non c’è ancora un bot."
         },
         "receiveToken": "Token negoziato",
         "research": {

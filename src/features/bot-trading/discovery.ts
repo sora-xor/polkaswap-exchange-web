@@ -2,6 +2,7 @@ import { FPNumber } from '@/lib/substrate/math';
 import { XOR } from '@/lib/substrate/sdk/assets/consts';
 import { toCodec } from './amounts';
 import { parseDeterministicStrategy } from './ai';
+import { isAiProviderFailure, providerErrorMessage, type AiProviderFailure } from './ai-provider-http';
 import { copyStrategyConfig } from './engine';
 import { makeExperimentSnapshot } from './experiments';
 import {
@@ -136,7 +137,13 @@ export interface DiscoverySession {
   /** A prior session already exposed an overlapping holdout interval. */
   holdoutReuse: boolean;
   liveFeedback?: DiscoveryLiveFeedback;
-  error?: 'bots.errors.stale' | 'bots.errors.provider' | 'bots.errors.history' | 'bots.errors.storage';
+  /** A stopped run keeps a specific AI connection failure (for example a rejected key) when one is known. */
+  error?:
+    | 'bots.errors.stale'
+    | 'bots.errors.provider'
+    | 'bots.errors.history'
+    | 'bots.errors.storage'
+    | AiProviderFailure;
 }
 
 /** Training-only request. The provider never receives holdout candles, wallet data, or live transactions. */
@@ -750,7 +757,7 @@ export function createDiscoveryEngine(deps: DiscoveryDependencies) {
       if (providerPending) {
         delete session.researchProgress;
         await update();
-        throw new Error('bots.errors.provider');
+        throw new Error(providerErrorMessage(error));
       }
       if (error instanceof Error && error.message === 'duplicate') {
         // A duplicate has consumed a real provider call but adds no misleading study.
@@ -1070,8 +1077,9 @@ export function createDiscoveryEngine(deps: DiscoveryDependencies) {
                 ? 'bots.errors.storage'
                 : error instanceof Error && error.message === 'bots.errors.stale'
                   ? 'bots.errors.stale'
-                  : error instanceof Error && error.message === 'bots.errors.provider'
-                    ? 'bots.errors.provider'
+                  : error instanceof Error &&
+                      (error.message === 'bots.errors.provider' || isAiProviderFailure(error.message))
+                    ? (error.message as DiscoverySession['error'])
                     : 'bots.errors.history';
             if (!checkpointFenced) await update();
             else publish();

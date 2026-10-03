@@ -51,7 +51,7 @@ vi.mock('@/composables/useTranslation', async () => {
             .replace('{share}', String(values?.share))
             .replace('{limit}', String(values?.limit));
         }
-        if (key === 'bots.autopilot.go') return 'GO';
+        if (key === 'bots.autopilot.go') return messages.bots.autopilot.go;
         if (key === 'bots.autopilot.setupFunding.missing') return `Add ${values?.amount} ${values?.symbol}`;
         if (key === 'bots.autopilot.watch.desktopNote') return messages.bots.autopilot.watch.desktopNote;
         if (key === 'bots.autopilot.feeReserveIncluded' || key === 'bots.autopilot.feeReserveSeparate') {
@@ -1355,10 +1355,10 @@ describe('BotAutopilot', () => {
     expect(wrapper.emitted('start')).toBeUndefined();
   });
 
-  it('opens directly with a trading budget, both tokens, and one research-only GO action', async () => {
+  it('opens directly with a plain explanation, a trading budget, both tokens, and one research-only action', async () => {
     const wrapper = render({ walletConnected: false });
     expect(wrapper.findAll('.autopilot-primary')).toHaveLength(1);
-    expect(wrapper.get('[data-testid="autopilot-go"]').text()).toBe('GO');
+    expect(wrapper.get('[data-testid="autopilot-go"]').text()).toBe('Find a strategy');
     expect(wrapper.get('[data-testid="autopilot-go"]').attributes('disabled')).toBeDefined();
     expect(wrapper.get('[data-testid="autopilot-capital"]').exists()).toBe(true);
     expect(wrapper.get('[data-testid="autopilot-capital"]').element.closest('label')?.textContent).toContain(
@@ -1370,14 +1370,12 @@ describe('BotAutopilot', () => {
     expect(wrapper.get('[data-testid="autopilot-asset-out"]').element.closest('details')).toBeNull();
     expect(wrapper.find('[data-testid="autopilot-begin"]').exists()).toBe(false);
     expect(wrapper.find('[data-testid="autopilot-connect-desktop"]').exists()).toBe(false);
-    expect(wrapper.text()).not.toContain('bots.autopilot.intro');
+    expect(wrapper.get('[data-testid="autopilot-intro"]').text()).toBe('bots.autopilot.intro');
     expect(wrapper.text()).not.toContain('bots.backtest');
     await wrapper.get('[data-testid="autopilot-capital"]').setValue('10');
     expect(wrapper.get('[data-testid="autopilot-go"]').attributes('disabled')).toBeUndefined();
     await wrapper.get('form').trigger('submit');
     expect(wrapper.emitted('go')?.[0]?.[0]).toMatchObject({ capital: '10', assetOutAddress: VAL.address });
-    await wrapper.get('[data-testid="autopilot-advanced"]').trigger('click');
-    expect(wrapper.emitted('advanced')).toEqual([[]]);
     expect(wrapper.emitted('start')).toBeUndefined();
   });
 
@@ -1876,7 +1874,7 @@ describe('BotAutopilot', () => {
       expect(go.element.previousElementSibling).toBe(alert.element);
       expect(go.attributes('aria-describedby')).toBe(alert.attributes('id'));
       expect(go.attributes('disabled')).toBeUndefined();
-      expect(go.text()).toBe('GO');
+      expect(go.text()).toBe('Find a strategy');
       expect(wrapper.findAll('.autopilot-primary')).toHaveLength(1);
       expect(wrapper.get('[data-testid="autopilot-capital"]').element).toHaveProperty('value', '10.000000000000000001');
       expect(wrapper.get('[data-testid="autopilot-asset-in"]').element).toHaveProperty('value', KUSD.address);
@@ -1991,6 +1989,7 @@ describe('BotAutopilot', () => {
   it('requires sufficient funds and explicit consent before emitting a single signing session', async () => {
     const wrapper = render({ stage: 'review', reviewBot: bot, funding });
     expect(wrapper.get('h2').text()).toBe('Grow my balance');
+    expect(wrapper.find('[data-testid="autopilot-intro"]').exists()).toBe(false);
     expect(wrapper.text()).toContain('bots.autopilot.session');
     expect(wrapper.text()).toContain('bots.autopilot.risk');
     expect(wrapper.text()).toContain('bots.autopilot.unlockNote');

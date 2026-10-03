@@ -264,10 +264,30 @@ describe('BotsPage', () => {
     expect(wrapper.get('[data-testid="autopilot-asset-out"]').isVisible()).toBe(true);
     expect(wrapper.find('[data-testid="create-goal"]').exists()).toBe(false);
     expect(wrapper.findComponent({ name: 'StrategyLab' }).exists()).toBe(false);
-    await wrapper.get('[data-testid="autopilot-advanced"]').trigger('click');
+    await wrapper.get('[data-testid="bots-advanced"]').trigger('click');
     await flushPromises();
     expect(router.currentRoute.value.params.section).toBe('lab');
     expect(wrapper.get('[data-testid="create-goal"]').isVisible()).toBe(true);
+    expect(state.startBot).not.toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
+  it('links the main view to My Bots with a saved-bot count and to the advanced tools', async () => {
+    await router.push('/bots');
+    const empty = render();
+    expect(empty.get('[data-testid="bots-my-bots"]').text()).toBe('bots.yourBots');
+    expect(empty.find('.bots-top-count').exists()).toBe(false);
+    expect(empty.get('[data-testid="bots-advanced"]').text()).toBe('bots.advanced');
+    empty.unmount();
+
+    state = controller([bot()]);
+    mocks.controller = state;
+    const wrapper = render();
+    expect(wrapper.get('[data-testid="bots-my-bots"] .bots-top-count').text()).toBe('1');
+    await wrapper.get('[data-testid="bots-my-bots"]').trigger('click');
+    await flushPromises();
+    expect(router.currentRoute.value.params.section).toBe('my-bots');
+    expect(wrapper.find('[data-testid="bots-my-bots"]').exists()).toBe(false);
     expect(state.startBot).not.toHaveBeenCalled();
     wrapper.unmount();
   });
@@ -1449,7 +1469,7 @@ describe('BotsPage', () => {
       try {
         await flushPromises();
         expect(wrapper.find('[data-testid="autopilot-watch-resume"]').exists()).toBe(true);
-        if (section === 'lab') await wrapper.get('[data-testid="autopilot-advanced"]').trigger('click');
+        if (section === 'lab') await wrapper.get('[data-testid="bots-advanced"]').trigger('click');
         else await router.push(`/bots/${section}`);
         await flushPromises();
         expect(router.currentRoute.value.params.section).toBe(section);
@@ -1558,7 +1578,7 @@ describe('BotsPage', () => {
     const wrapper = render();
     try {
       await flushPromises();
-      await wrapper.get('[data-testid="autopilot-advanced"]').trigger('click');
+      await wrapper.get('[data-testid="bots-advanced"]').trigger('click');
       await flushPromises();
       await router.push('/bots');
       await flushPromises();

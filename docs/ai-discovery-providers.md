@@ -6,13 +6,34 @@ Discovery evaluates deterministic strategies in the browser. A run freezes 90 co
 
 The Discover page supports OpenAI and Claude APIs, TypeSafe Jev, a custom HTTPS endpoint, and the optional local Codex and Claude Code companion. OpenAI and Claude model IDs come from their current model catalogs. Jev selects one of the app's fixed DCA or SMA recipes. OpenAI, Claude and Jev keys are sent directly to their selected APIs; a custom key, if supplied, is sent only to that HTTPS endpoint as a bearer header. Credentials stay in a revocable browser closure and are cleared on disconnect or page disposal; the site does not write them into experiments or IndexedDB. The local companion uses CLI sign-in and receives no website API key. Each dispatched provider call counts against the user's research cap (12 by default, at most 36), including failures; API providers may also charge for calls. The client imposes at least 60 seconds between rounds. Research progress shows the current directed pair and stage, used and failed calls, remaining call allowance, and when another request is eligible. The checkpoint retains non-secret provider type and model ID when available. For a custom HTTPS provider it retains only the canonical hostname and optional port, never the endpoint path. Editing a connected endpoint disconnects it; reconnecting to another host requires confirmation before resuming. After a reload, reconnect the provider or explicitly switch it before resuming. No API key or local pairing token is recovered from the checkpoint.
 
+### Connecting Claude or OpenAI
+
+The **AI connection** card offers **Claude**, **OpenAI** and **Other** (local companions, Jev and custom HTTPS). Pasting a key selects its provider from the public prefix (`sk-ant-` for Claude, other `sk-` keys for OpenAI), so a key cannot be sent to the wrong API. Only the detected provider kind is kept, never the key. **Get a Claude API key** and **Get an OpenAI API key** open the providers' own key pages in a new tab. Press Enter or **Connect AI** to load the account's model catalog. Discover defaults to Claude Opus 5.5 (`claude-opus-5-5`) when the account lists it, otherwise to the newest general OpenAI model (it skips `pro`, `codex`, `mini`, dated snapshots and similar specialized IDs); the user can pick any listed model. Start stays disabled with a short hint until a provider is connected, and the step rail above the cards shows connect → idea → screened markets → review. Example ideas fill the optional idea field in one tap.
+
+Claude drafts use one `discovery_draft` tool with `tool_choice: { "type": "auto", "disable_parallel_tool_use": true }` and an instruction to call it exactly once; current models such as Claude Opus 5.5, Sonnet 5.5 and Fable 5.1 reject a forced `tool_choice`, and the strict local parser still validates every draft. The output budget is 16,000 tokens, lowered to the model's catalog `max_tokens` when that is smaller, because current models reason before answering. OpenAI drafts use a strict JSON schema without `minLength`/`maxLength` keywords (the local parser enforces lengths) and the same output budget. Claude and OpenAI requests time out after 120 seconds; local and custom drafts keep 245 seconds.
+
+Failures map to app-owned messages. Response bodies are never shown or stored; only a 400 body is matched once for a low-credit phrase and then discarded.
+
+| Cause                                                | Message key                |
+| ---------------------------------------------------- | -------------------------- |
+| Connect pressed with no key                          | `bots.errors.aiKeyMissing` |
+| HTTP 401                                             | `bots.errors.aiKey`        |
+| HTTP 403 or 404                                      | `bots.errors.aiAccess`     |
+| HTTP 402 or 429, or a 400 credit-balance/quota error | `bots.errors.aiQuota`      |
+| HTTP 408 or 5xx (including 529 overloaded)           | `bots.errors.aiBusy`       |
+| Network, CORS or blocker failure                     | `bots.errors.aiNetwork`    |
+| No answer within the timeout                         | `bots.errors.aiTimeout`    |
+| Unusable or invalid response                         | `bots.errors.provider`     |
+
+Connection failures appear inside the AI connection card. A failure during research stops the run with the same specific message, saved with the checkpoint so the user knows what to fix before resuming.
+
 The **Research capital** entry is hypothetical input-token capital applied to each directed pair independently. The **XOR fee reserve** is also a study setting, not a wallet transfer. A new live campaign has its own separate funding check against the selected finalists' actual wallet balances and shared XOR-equivalent cap. Keep the browser tab and computer active while research or live trading runs; interruption pauses execution and live trading requires a new review and unlock.
 
 API requests contain at most the latest 202 completed training candles for one directed pair. The pair is identified by exact `assetIn.address` and `assetOut.address`; symbols are display metadata, and the reverse direction is a separate pair. Requests include public token metadata, the exact input-token trade ceiling and interval bounds, the user's optional idea, and at most eight aggregate prior **training** results. The `feeSampleAmount` is an exact natural amount of the input token. Network fees, swap fees, and price impact are a dated current-state scenario observed for that sample size; they are neither historical fee observations nor a quote for a different trade size. The app verifies the observation's finalized state and expiry, then re-quotes each draft at its actual notional before evaluation. No wallet address, actual balances, provider credentials, holdout candles, or signing material is part of this contract. The idea and market text are treated as data. `liveFeedback` is absent by default. After separate consent, the app may send an aggregate with active hours, successful swaps, net and excess returns, drawdown, and paid XOR fees. It contains no wallet address, transaction hash, or balance. This starts a new **exploratory** research session; that session cannot claim an untouched holdout or qualify a finalist for live approval.
 
 ## Custom HTTPS version 2
 
-Version 2 is separate from the existing version 1 trade and strategy-composer contract. Configure an HTTPS endpoint without embedded credentials, a query, or a fragment. The browser sends a POST with JSON, `credentials: omit`, no redirects, and an optional bearer header when the user supplies a key. The endpoint must allow the Polkaswap origin through CORS. The response must be JSON no larger than 32 KiB. Provider errors are reduced to a fixed UI error rather than displayed verbatim.
+Version 2 is separate from the existing version 1 trade and strategy-composer contract. Configure an HTTPS endpoint without embedded credentials, a query, or a fragment. The browser sends a POST with JSON, `credentials: omit`, no redirects, and an optional bearer header when the user supplies a key. The endpoint must allow the Polkaswap origin through CORS. The response must be JSON no larger than 32 KiB. Provider errors are reduced to the fixed app messages above rather than displayed verbatim.
 
 ```json
 {
@@ -97,7 +118,7 @@ Only `dca`, `threshold`, `sma`, and flat `rules` configurations are accepted. Th
 To use a local companion:
 
 1. Install and sign in to the [Codex CLI](https://learn.chatgpt.com/docs/developer-commands?surface=cli) or [Claude Code CLI](https://code.claude.com/docs/en/cli-reference) on the same computer as the browser.
-2. In Discover, choose **Codex** or **Claude Code**, download `./.well-known/polkaswap-codex-companion.mjs`, and run `node polkaswap-codex-companion.mjs` in a local terminal.
+2. In Discover, choose **Other**, then **Codex** or **Claude Code**, download `./.well-known/polkaswap-codex-companion.mjs`, and run `node polkaswap-codex-companion.mjs` in a local terminal.
 3. Enter the code printed by the companion in Discover, connect, and start or resume research. Keep the terminal, browser tab, and computer running for the session.
 
 Chrome may ask Polkaswap for local network access before it can contact the loopback companion. Allow that browser prompt for the optional local connection; if it was denied, restore the permission in the site's browser settings before reconnecting. The companion still checks the exact Polkaswap origin and its one-use pairing code.

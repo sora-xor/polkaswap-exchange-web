@@ -30,6 +30,20 @@ describe('current provider model discovery', () => {
         'claude'
       )[0].name
     ).toBe('Claude New');
+    expect(
+      parseBotAiModels(
+        {
+          data: [
+            { id: 'claude-capped', created_at: '2026-09-14', max_tokens: 8192 },
+            { id: 'claude-unknown', created_at: '2026-09-13', max_tokens: '8192' },
+          ],
+        },
+        'claude'
+      ).map((model) => model.maxOutputTokens)
+    ).toEqual([8192, undefined]);
+    expect(parseBotAiModels({ data: [{ id: 'gpt-6', created: 1, max_tokens: 10 }] }, 'openai')[0]).not.toHaveProperty(
+      'maxOutputTokens'
+    );
   });
 
   it('loads the account catalog and uses the selected model for generation without exposing the key', async () => {
@@ -99,7 +113,8 @@ describe('current provider model discovery', () => {
   it('sanitizes catalog errors and permits retry while disconnect aborts pending discovery', async () => {
     const request = vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('secret-provider-error', { status: 401 }));
     const client = createBotAiClient('openai', { apiKey: 'secret', model: '', endpoint: '' }, request);
-    await expect(client.listModels()).rejects.toThrow('bots.labAi.modelsUnavailable');
+    // A rejected key gets its own app-owned message; the provider body never becomes the error text.
+    await expect(client.listModels()).rejects.toThrow(/^bots\.errors\.aiKey$/);
     request.mockImplementationOnce(async (_url, options) => {
       client.disconnect();
       expect(options?.signal?.aborted).toBe(true);

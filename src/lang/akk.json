@@ -200,6 +200,7 @@
     "bots": {
         "above": "𒊓𒂊𒇷𒇷 𒀀𒁀𒌋𒉿𒂊 𒋫𒄩𒊏𒂊𒊓𒄩𒌋𒇷𒁕",
         "activity": "𒊹𒌷",
+        "advanced": "𒌷𒊭",
         "aiBacktestNote": "𒌋𒊓𒂊 𒂵𒂊𒈾𒂊𒊏𒀀𒋫𒂊 𒊓𒋫𒊏𒀀𒋫𒂊𒂵𒅀 𒋫𒌋 𒅗𒊏𒂊𒀀𒋫𒂊 𒀀𒈾𒁕 𒊏𒂊𒉿𒄿𒂊𒉿 𒀀 𒁕𒂊𒋫𒂊𒊏𒈠𒄿𒈾𒄿𒊓𒋫𒄿𒅗 𒊓𒋫𒊏𒀀𒋫𒂊𒂵𒅀 𒁀𒂊𒉺𒌋𒊏𒂊 𒄩𒄿𒊓𒋫𒌋𒊏𒄿𒅗𒀀𒇷 𒋫𒂊𒊓𒋫𒄿𒈾𒂵.",
         "aiConnection": "𒀀𒄿 𒅗𒌋𒈾𒈾𒂊𒅗𒋫𒄿𒌋𒈾",
         "allocation": "𒀀𒇷𒇷𒌋𒅗𒀀𒋫𒄿𒌋𒈾",
@@ -214,7 +215,6 @@
         "authorizeStart": "𒀀𒌋𒋫𒄩𒌋𒊏𒄿𒍝𒂊 𒀀𒈾𒁕 𒊓𒋫𒀀𒊏𒋫",
         "autopilot": {
             "addressCopied": "𒄑𒀭",
-            "advanced": "𒌷𒊭",
             "begin": "𒊓𒋫𒀀𒊏𒋫",
             "budget": "𒀀𒇷𒇷𒌋𒅗𒀀𒋫𒄿𒌋𒈾 ({symbol})",
             "budgetUnselected": "𒀀𒇷𒇷𒌋𒅗𒀀𒋫𒄿𒌋𒈾",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "𒈾𒂊𒋫𒉿𒌋𒊏𒅗 𒉺𒂊𒂊 𒁀𒌋𒁕𒂵𒂊𒋫: +{amount} {symbol}.",
             "funding": "𒉌𒁺 𒁕𒀭 𒌷𒊭 𒉌𒁺: {available} {symbol}",
             "fundTitle": "𒀀𒇷𒇷𒌋𒅗𒀀𒋫𒄿𒌋𒈾",
-            "go": "𒊓𒋫𒀀𒊏𒋫",
+            "go": "𒈪𒅋𒅗𒄠 𒊺𒄿",
             "goal": "𒉌𒁺 𒌷𒊭 𒀭𒆠",
             "internalWalletRequired": "𒋼 𒅆𒀀 𒁕𒀭 𒃻𒋃 𒁕𒀭 𒁕𒀭 𒉌𒁺 𒌷𒊭 𒉌𒁺 𒁹 𒌷𒊭 𒊹𒌷 𒉌𒁺 𒀭𒆠 𒁕𒀭 𒌷𒊭 𒀭𒆠.",
-            "intro": "𒁀𒌋𒄿𒇷𒁕 𒀀 𒊓𒋫𒊏𒀀𒋫𒂊𒂵𒅀, 𒋫𒂊𒊓𒋫 𒄿𒋫 𒀀𒂵𒀀𒄿𒈾𒊓𒋫 𒋫𒄩𒂊 𒈠𒀀𒊏𒅗𒂊𒋫, 𒀀𒈾𒁕 𒀀𒌋𒋫𒌋𒈠𒀀𒋫𒂊 𒊓𒉿𒀀𒉺𒊓 𒉿𒄿𒋫𒄩𒄿𒈾 𒋫𒄩𒂊 𒀀𒇷𒇷𒌋𒅗𒀀𒋫𒄿𒌋𒈾 𒅀𒌋𒌋 𒅗𒄩𒌋𒌋𒊓𒂊.",
+            "intro": "𒄑𒋡 𒌋 𒉌 𒊭 𒊒𒌓𒁕𒀀𒋗 𒋫𒊏𒄠𒈬 𒉌𒋛𒅅. 𒀀𒄿𒅗 (𒆪𒁲𒅅𒋢 𒌑𒇻 𒈾𒄠𒍝𒀝 𒀀𒉺𒄿) 𒈪𒅋𒆠 𒄿𒊭𒀜𒁕𒅈, 𒁍𒌌𒅗𒋢𒉿𒀊 𒄿𒈾 𒅆𒀉𒊑 𒆷𒁉𒊒𒋾 𒄿𒁇𒊑𒋗𒉡𒋾, 𒌋 𒆷𒀀𒈠 𒁮𒃲 𒋗𒌑𒌅𒊏𒄠 𒋫𒄠𒈠𒅈.",
             "maximizeGoal": "𒉌𒁺 𒌷𒊭 𒀭𒆠 {symbol}",
             "maximizeToken": "𒊺 𒊹𒌷 𒉌",
             "refreshFunding": "𒁕𒀭 𒊹𒌷",
@@ -532,6 +532,7 @@
             "confirmClose": "𒅗𒇷𒌋𒊓𒂊 𒀀𒈾𒁕 𒊏𒂊𒇷𒂊𒀀𒊓𒂊 𒀀𒇷𒇷𒌋𒅗𒀀𒋫𒄿𒌋𒈾",
             "connect": "𒄑𒀭 𒀭𒆠",
             "connected": "𒄑𒀭",
+            "connectFirst": "𒄑𒀭 𒉌𒁺 𒀭𒆠 𒅆𒀀 𒁕𒀭 𒅆𒀀 𒊹𒌷.",
             "consent": "𒁕𒀭 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒌷𒊭, 𒌷𒊭, 𒊹𒌷 14-𒌷𒊭 𒉌𒁺 𒅆𒀀.",
             "continueExploratory": "𒊹𒌷 𒉌𒁺 𒀭𒆠",
             "continueWithProvider": "𒊹𒌷 𒀭𒆠 𒁕𒀭",
@@ -553,6 +554,7 @@
             "feeReserve": "𒁕𒀭 𒈠𒄦 𒀭𒆠",
             "finalizedBlock": "𒅆𒀀 𒉌𒁺 𒌷𒊭 𒉌𒁺",
             "finalizedSwaps": "𒌷𒊭 𒌷𒊭",
+            "getKey": "𒅆𒀀 𒊹𒌷 {provider} 𒀭𒆠 𒊹𒌷",
             "goal": "𒉌𒁺 𒉌𒁺: 14 𒅆𒀀 𒊹𒌷, 10 𒌷𒊭 𒌷𒊭, 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒉌𒁺, 𒊹𒌷 𒌷𒊭.",
             "historyChanged": "𒅆𒀀 𒈬 𒌷𒊭 𒊹𒌷 𒊹𒌷",
             "holdout": "𒁕𒀭 𒁕𒀭",
@@ -564,7 +566,11 @@
             "holdoutReused": "𒌷𒊭 𒁕𒀭 𒌷𒊭 𒊹𒌷 𒌷𒊭 𒀭𒆠 𒁕𒀭. 𒅆𒀀 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒉌𒁺 𒉌𒁺 𒅆𒀀 𒌷𒊭.",
             "holdoutUntouchedOutcome": "𒁕𒀭 𒉌𒁺 𒀭𒆠 𒀭𒆠, 𒀭𒆠 𒉌𒁺 𒁕𒀭 𒊹𒌷 𒉌𒁺 𒉌𒁺.",
             "idea": "𒁕𒀭 𒊹𒌷 (𒌷𒊭)",
+            "ideaDips": "𒌷𒊭 𒌷𒊭 𒉌𒁺 𒉌𒁺 𒌷𒊭",
+            "ideaExamples": "𒌷𒊭 𒉌𒁺 𒊹𒌷? 𒊹𒌷 𒅆𒀀:",
+            "ideaMomentum": "𒉌𒁺 𒁕𒀭 𒅆𒀀",
             "ideaPlaceholder": "𒁕𒀭 𒌷𒊭: 𒌷𒊭 𒅆𒀀 𒊹𒌷 𒉌𒁺 𒊹𒌷 𒀭𒆠 𒊹𒌷",
+            "ideaSteady": "𒀭𒆠 𒊹𒌷 𒊹𒌷",
             "jev": "𒊹𒌷 𒀭𒆠",
             "lessLossThanHolding": "𒅆𒀀 𒊹𒌷 𒉌𒁺 𒉌𒁺, 𒉌𒁺 𒀭𒆠 𒅆𒀀 𒀭𒆠 𒀭𒆠 𒌷𒊭.",
             "limitsFrozen": "𒌷𒊭, 𒀭𒆠 𒅆𒀀, 𒊹𒌷 𒈠𒄦 𒀭𒆠 𒅆𒀀 𒌷𒊭 𒊹𒌷 𒉌𒁺 𒅆𒀀 𒊹𒌷. 𒅆𒀀 𒊹𒌷 𒅆𒀀 𒆠 𒁕𒀭 𒅆𒀀 𒌷𒊭.",
@@ -584,6 +590,7 @@
             "noQualified": "𒁕𒀭 𒁕𒀭 𒌷𒊭",
             "openai": "𒅆𒀀 𒀭𒆠",
             "orderLimit": "𒌷𒊭 𒀭𒆠",
+            "otherConnection": "𒀭𒆠",
             "outcome": {
                 "active": "𒊹𒌷 𒁕𒀭 𒁕𒀭",
                 "loss": "𒌷𒊭 𒉌𒁺 𒅆𒀀",
@@ -660,6 +667,7 @@
             "start": "𒅆𒀀 𒊹𒌷",
             "subtitle": "𒆠 𒅆𒀀 𒊹𒌷 𒁕𒀭 𒁕𒀭 𒊹𒌷 𒌷𒊭 𒉌𒁺 𒉌𒁺 𒊹𒌷 𒉌𒁺 𒅆𒀀 𒉌𒁺.",
             "tabNote": "𒊹𒌷 𒌷𒊭 𒉌𒁺 𒌷𒊭 𒉌𒁺. 𒀭𒆠 𒁕𒀭 𒌷𒊭 𒅆𒀀.",
+            "tagline": "𒉌𒁺 𒀭𒆠 𒊹𒌷 𒊹𒌷 𒅆𒀀 𒁕𒀭 𒁕𒀭 𒁕𒀭",
             "title": "𒉌𒁺",
             "trades": "𒌷𒊭",
             "training": "𒀭𒆠",
@@ -676,6 +684,13 @@
         "equityChartNote": "𒊏𒌋𒈾 𒋫𒄩𒄿𒊓 𒊓𒋫𒊏𒀀𒋫𒂊𒂵𒅀 𒋫𒌋 𒁀𒂊𒂵𒄿𒈾 𒊏𒂊𒅗𒌋𒊏𒁕𒄿𒈾𒂵 𒄿𒋫𒊓 𒉺𒂊𒊏𒉺𒌋𒊏𒈠𒀀𒈾𒅗𒂊.",
         "errors": {
             "action": "𒋫𒄩𒂊 𒀀𒅗𒋫𒄿𒌋𒈾 𒅗𒌋𒌋𒇷𒁕 𒈾𒌋𒋫 𒁀𒂊 𒅗𒌋𒈠𒉺𒇷𒂊𒋫𒂊𒁕. 𒉺𒇷𒂊𒀀𒊓𒂊 𒋫𒊏𒅀 𒀀𒂵𒀀𒄿𒈾.",
+            "aiAccess": "𒌷𒊭 𒀭𒆠 𒊹𒌷 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒁕𒀭. 𒉌𒁺 𒁕𒀭 𒁕𒀭 𒁕𒀭 𒅆𒀀 𒉌𒁺 𒅆𒀀 𒁕𒀭 𒌷𒊭 𒊹𒌷.",
+            "aiBusy": "𒉌𒁺 𒀭𒆠 𒁕𒀭 𒌷𒊭 𒊹𒌷 𒁕𒀭 𒌷𒊭 𒀭𒆠. 𒊹𒌷 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒊹𒌷.",
+            "aiKey": "𒉌𒁺 𒀭𒆠 𒁕𒀭 𒀭𒆠 𒌷𒊭 𒀭𒆠 𒊹𒌷. 𒍑𒁲 𒉌𒁺 𒁕𒀭 𒊹𒌷 𒅆𒀀, 𒁕𒀭 𒄷 𒊹𒌷 𒅆𒀀 𒅆𒀀.",
+            "aiKeyMissing": "𒉌𒁺 𒁕𒀭 𒀭𒆠 𒊹𒌷 𒅆𒀀.",
+            "aiNetwork": "𒊹𒌷 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒀭𒆠 𒁕𒀭. 𒅆𒀀 𒁕𒀭 𒀭𒆠 𒄑𒀭, 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒀭𒆠, 𒉌𒁺 𒊹𒌷 𒅆𒀀.",
+            "aiQuota": "𒁕𒀭 𒀭𒆠 𒃻𒋃 𒌷𒊭 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒉌𒁺. 𒄷 𒉌𒁺 𒅆𒀀 𒁕𒀭 𒁕𒀭, 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒌷𒊭 𒊹𒌷 𒊹𒌷 𒅆𒀀.",
+            "aiTimeout": "𒉌𒁺 𒀭𒆠 𒉌𒁺 𒀭𒆠 𒌷𒊭 𒁕𒀭 𒀭𒆠. 𒊹𒌷 𒅆𒀀, 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒁕𒀭 𒁕𒀭.",
             "amount": "𒂊𒈾𒋫𒂊𒊏 𒀀 𒉿𒀀𒇷𒄿𒁕 𒋫𒌋𒅗𒂊𒈾 𒀀𒈠𒌋𒌋𒈾𒋫 𒉿𒄿𒋫𒄩𒄿𒈾 𒄿𒋫𒊓 𒁕𒂊𒅗𒄿𒈠𒀀𒇷 𒉺𒊏𒂊𒅗𒄿𒊓𒄿𒌋𒈾.",
             "backtestAi": "𒂵𒂊𒈾𒂊𒊏𒀀𒋫𒂊 𒀀𒈾𒁕 𒊏𒂊𒉿𒄿𒂊𒉿 𒁕𒂊𒋫𒂊𒊏𒈠𒄿𒈾𒄿𒊓𒋫𒄿𒅗 𒊏𒌋𒇷𒂊𒊓 𒁀𒂊𒉺𒌋𒊏𒂊 𒁀𒀀𒅗𒅗𒋫𒂊𒊓𒋫𒄿𒈾𒂵 𒀀𒈾 𒀀𒄿 𒊓𒋫𒊏𒀀𒋫𒂊𒂵𒅀.",
             "balance": "𒋫𒄩𒂊 𒀀𒇷𒇷𒌋𒅗𒀀𒋫𒂊𒁕 𒋫𒌋𒅗𒂊𒈾𒊓 𒌋𒊏 𒉿𒀀𒇷𒇷𒂊𒋫 𒁀𒀀𒇷𒀀𒈾𒅗𒂊 𒅗𒀀𒈾𒈾𒌋𒋫 𒅗𒌋𒉿𒂊𒊏 𒋫𒄩𒄿𒊓 𒋫𒊏𒀀𒁕𒂊.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "𒃲 𒌷𒊭 {value} 𒌷𒊭 𒌷𒊭 {window}-𒀭𒆠 𒉌𒁺, 𒅆𒀀 𒉌𒁺 {threshold} 𒌷𒊭. 𒌷𒊭 𒌷𒊭 𒅆𒀀 𒉌𒁺 𒉌𒁺 𒊹𒌷.",
+                "detail": "𒅆𒈬 {value} 𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑; 𒈪𒍣𒅕 𒊭𒀀𒈪 {threshold} 𒄿𒋾𒅅, 𒀸𒋳 𒀭𒉌𒅎 𒁀𒌋𒋫 𒊭 𒅋𒆷𒆪 𒄿𒈾𒀭𒈾 𒄿𒊭𒄠.",
                 "title": "{symbol} 𒌷𒊭 𒉌𒁺 𒉌𒁺 𒌷𒊭 𒅆𒀀"
             },
-            "botName": "{symbol} 𒀀 𒅎 𒅆𒀀",
+            "botName": "𒁀𒌋𒋫 𒊭 {symbol}",
+            "budget": "𒄑𒆪 {total} 𒁕𒀭: {amount} 𒁕𒀭 𒀀𒈾 𒊭𒀀𒈪 𒅖𒋼𒂗, {reserve} 𒁕𒀭 𒀀𒈾 𒈠𒄦 𒂊𒍣𒅁",
             "cadence": {
-                "every": "𒉌𒁺 𒅆𒀀 𒉌𒁺 𒊹𒌷 {days} 𒊹𒌷",
-                "holdDays": "𒅆𒀀 𒁕𒀭 𒉌𒁺 {min}–{max} 𒊹𒌷",
-                "holdHours": "𒅆𒀀 𒁕𒀭 𒉌𒁺 {min}–{max} 𒊹𒌷",
-                "last": "𒅆𒀀 𒉌𒁺 {date}"
+                "every": "𒁮𒃲 𒆠𒈠 𒅖𒋼𒂗𒋗 𒄿𒈾 {days} 𒌓𒈨𒌍",
+                "holdDays": "𒆪𒌌𒇻 {min}–{max} 𒌓𒈨𒌍",
+                "holdHours": "𒆪𒌌𒇻 {min}–{max} 𒈪𒅆𒅋 𒁁𒊑",
+                "last": "𒊭𒀀𒈬 𒅈𒆪𒌑 {date}"
             },
-            "capacity": "𒊹𒌷 𒊹𒌷 𒅆𒀀: 10 𒁕𒀭 𒉌𒁺, 2 𒁕𒀭 𒈠𒄦 𒀭𒆠 𒊹𒌷 {amount} 𒁕𒀭 𒁕𒀭 𒀭𒆠, 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒅆𒀀 𒉌𒁺.",
             "consent": {
                 "budget": "𒉌𒁺 {amount} 𒁕𒀭",
-                "cadenceDays": "𒁕𒀭 𒅆𒀀 𒅆𒀀: 𒉌𒁺 𒅆𒀀 𒉌𒁺 𒊹𒌷 {days} 𒊹𒌷 𒉌𒁺 𒊹𒌷 𒊹𒌷, 𒊹𒌷 𒊹𒌷 𒆳 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒁕𒀭 {hold} 𒊹𒌷 𒁕𒀭 𒁕𒀭. 𒊹𒌷 𒌷𒊭 𒉌𒁺 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒀭𒆠.",
-                "cadenceHours": "𒁕𒀭 𒅆𒀀 𒅆𒀀: 𒉌𒁺 𒅆𒀀 𒉌𒁺 𒊹𒌷 {days} 𒊹𒌷 𒉌𒁺 𒊹𒌷 𒊹𒌷, 𒊹𒌷 𒊹𒌷 𒆳 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒁕𒀭 {hold} 𒊹𒌷 𒁕𒀭 𒁕𒀭. 𒊹𒌷 𒌷𒊭 𒉌𒁺 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒉌𒁺 𒀭𒆠.",
-                "evidence": "𒉌𒁺 𒊹𒌷 {return}% · 𒃲 𒌷𒊭 {drawdown}% · {trades} 𒁕𒀭. 𒌷𒊭 𒊹𒌷 𒀭𒆠 𒀀𒇉 𒊹𒌷; 𒉌𒁺 𒊹𒌷 𒊹𒌷 𒁕𒀭 𒌷𒊭.",
-                "eyebrow": "𒉌𒁺 𒌷𒊭",
+                "cadenceDays": "𒁮𒃲 𒉿𒀝𒊏: 𒄿𒈾 𒅆𒁇 𒆠𒈠 𒅖𒋼𒂗𒋗 𒄿𒈾 {days} 𒌓𒈨𒌍, 𒌋 𒈪𒅎𒈠 𒊭 𒁀𒌋𒋫 𒄿𒊭𒈬 𒀀𒁲 {hold} 𒌓𒈨𒌍 𒌋𒅗𒀠. 𒁾 𒀭𒈾𒄠 𒀀𒈾 𒅗𒆷 𒀀𒆗𒉌 𒉿𒋫𒄠 𒆪𒌌𒇷.",
+                "cadenceHours": "𒁮𒃲 𒉿𒀝𒊏: 𒄿𒈾 𒅆𒁇 𒆠𒈠 𒅖𒋼𒂗𒋗 𒄿𒈾 {days} 𒌓𒈨𒌍, 𒌋 𒈪𒅎𒈠 𒊭 𒁀𒌋𒋫 𒄿𒊭𒈬 𒀀𒁲 {hold} 𒈪𒅆𒅋 𒁁𒊑 𒌋𒅗𒀠. 𒁾 𒀭𒈾𒄠 𒀀𒈾 𒅗𒆷 𒀀𒆗𒉌 𒉿𒋫𒄠 𒆪𒌌𒇷.",
+                "evidence": "𒋼𒅎 𒅆𒁇 {return}% · 𒈪𒆠𒀉𒌅 𒊏𒁉𒌅 {drawdown}% · {trades} 𒁮𒃲, 𒉿𒅈𒆠 𒈠𒄦. 𒄿𒈾 𒅆𒀉𒊑 𒆷𒁉𒊒𒋾 𒅁𒋗; 𒉈𒈨𒇻 𒌌 𒆠𒅔.",
                 "getXor": "𒅆𒀀 𒁕𒀭",
-                "impact": "𒃲 𒅆𒀀 {value}%",
-                "order": "{amount} 𒁕𒀭 𒁕𒀭 𒀭𒆠",
-                "reserve": "𒈠𒄦 𒀭𒆠 {amount} 𒁕𒀭",
+                "impact": "𒅆𒉌𒀉 𒅆𒈪 𒀀𒁲 {value}%",
+                "order": "{amount} 𒁕𒀭 𒀀𒈾 𒊭𒀀𒈪 𒅖𒋼𒂗",
+                "reserve": "{amount} 𒁕𒀭 𒀀𒈾 𒈠𒄦 𒂊𒍣𒅁",
                 "session": "{hours} 𒅆𒀀 𒀭𒆠",
                 "sessionDays": "{count}-𒌷𒊭 𒀭𒆠",
-                "stepConfirm": "𒉌𒁺 𒉌𒁺 𒁕𒀭 𒊹𒌷 𒅆𒀀. 𒉌𒁺 𒉌𒁺 𒅆𒀀 𒌷𒊭 𒁹 𒌷𒊭 𒅆𒀀 𒉌𒁺 𒀭𒆠.",
+                "stepConfirm": "𒄿𒈾 𒆪𒌒𒉿𒅎 𒋛𒅎𒋫𒄠 𒋗𒆪𒌦 𒌋 𒋗𒌨𒊑. 𒁀𒌋𒋫 𒈪𒄑𒊒 𒀭𒉡𒋾 𒌌 𒀉𒋾𒅅.",
                 "stepPassword": "𒀭𒆠 𒁕𒀭 𒃻𒋃 𒁕𒀭",
                 "stepWallet": "𒉌𒁺 𒉌𒁺 𒁮𒃲 𒉌𒁺 𒁕𒀭 𒃻𒋃",
-                "title": "𒀭𒆠 𒅆𒀀: {symbol} 𒀀 𒅎 𒅆𒀀"
+                "title": "𒀭𒆠 𒅆𒀀 𒀉𒋾 𒁀𒌋𒋫 𒊭 {symbol}"
             },
-            "disclaimer": "𒌷𒊭 𒊹𒌷 𒉌𒁺 𒀭𒆠 𒊹𒌷 𒀀 𒀭𒆠 𒌷𒊭 {start} 𒁕𒀭 {end}, 𒁕𒀭 𒅆𒀀 𒉌𒁺 𒊹𒌷 ({fee} 𒁕𒀭 𒆠 𒈠𒄦, {swap}% 𒀀 𒈠𒄦) 𒊹𒌷 0.5% 𒀀 𒋼. 𒅆𒀀 𒅆𒀀 𒁕𒀭 𒉌𒁺 𒊹𒌷 𒉌𒁺 𒉌𒁺.",
-            "drawdown": "𒃲 𒌷𒊭",
+            "disclaimer": "𒋼𒈬𒌑 𒄿𒈾 𒅆𒀉𒊑 𒊭 𒀀 𒊭 𒋢𒊏 𒅖𒌅 {start} 𒀀𒁲 {end} 𒅁𒋗, 𒀉𒋾 𒈠𒄦 𒊭 𒌑𒈪 𒀭𒉌𒅎 ({fee} 𒁕𒀭 𒆠 𒈠𒄦, {swap}% 𒀀 𒈠𒄦) 𒌋 0.5% 𒅎𒁲 𒅆𒈪. 𒋼𒈬𒌑 𒆷𒁉𒊒𒌅 𒉈𒈨𒆷 𒊭 𒅈𒅗𒋾 𒌌 𒌋𒅗𒀭𒉡.",
+            "drawdown": "𒈪𒆠𒀉𒌅 𒊏𒁉𒌅",
             "equity": {
-                "caption": "𒊹𒌷 𒉌𒁺: 𒉌𒁺 𒊹𒌷 𒀭𒆠 𒊹𒌷 𒅆𒀀 𒌷𒊭 𒌷𒊭 𒅆𒀀 𒊹𒌷, 𒉌𒁺 𒉌𒁺 𒌷𒊭 𒉌𒁺.",
-                "fold": "𒊹𒌷 {index}",
+                "caption": "𒅆𒅎 𒁀𒌋𒋫 𒀀𒈾 𒆪𒌌𒇷 {symbol}. 𒄿𒈾 𒅗𒆷 𒀀𒆗𒉌 𒊑𒅅𒊓𒌅 𒅖𒌅 𒅆𒀉𒊑 𒊭 𒉺𒉌𒋗𒉡 𒈾𒊍𒋡.",
                 "idle": "𒀭𒆠 𒉌𒁺 𒁕𒀭",
-                "strategy": "𒁕𒀭",
-                "title": "𒉌𒁺 𒉌𒁺 𒁕𒀭 𒉌𒁺",
+                "strategy": "𒁀𒌋𒋫",
+                "title": "𒋼𒈬𒌑 𒄿𒈾 𒀀𒆷𒀝𒋾 𒌓𒈨𒌍",
                 "trades": "{count} 𒁕𒀭"
             },
-            "eyebrow": "𒁕𒀭 𒉌𒁺",
             "families": {
                 "breakout": "𒁕𒀭",
-                "guarded": "𒅆𒀀 𒅆𒀀",
-                "reversion": "𒉌𒁺 𒅆𒀀",
-                "shock": "𒅆𒀀 𒅆𒀀",
-                "trend": "𒊹𒌷"
+                "guarded": "𒊭𒀀𒈬 𒈾𒊍𒆪 𒄿𒈾 𒈪𒆠𒀉𒋾",
+                "reversion": "𒊭𒀀𒈬 𒄿𒈾 𒈪𒆠𒀉𒋾",
+                "shock": "𒊭𒀀𒈬 𒄿𒈾 𒈪𒆠𒀉𒋾 𒊏𒁉𒋾",
+                "trend": "𒊑𒁺𒌑 𒀀𒆷𒀝𒋾 𒅆𒈪"
             },
-            "fromMean": "𒊹𒌷 {window}𒅆𒀀 𒉌𒁺",
-            "gaugeAria": "𒃲 𒌷𒊭 {value} 𒌷𒊭 𒌷𒊭 {window}-𒀭𒆠 𒉌𒁺; 𒉌𒁺 𒉌𒁺 𒊹𒌷 𒉌𒁺 {threshold}.",
+            "fromMean": "𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑",
+            "gaugeAria": "𒅆𒈬 {value} 𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑; 𒁀𒌋𒋫 𒊭𒁄 {threshold} 𒄿𒊭𒄠.",
             "goLive": "𒀭𒆠 𒅆𒀀",
-            "kpi": {
-                "backtests": "𒅆𒀀",
-                "best": "{symbol} 𒉌𒁺",
-                "deployable": "𒌷𒊭 𒊹𒌷",
-                "killed": "𒀭𒆠 𒅆𒀀",
-                "robust": "𒊹𒌷",
-                "tested": "𒁕𒀭"
-            },
+            "intro": "𒅗𒆷 𒁀𒌋𒋫𒊓 𒄿𒈾 𒁉𒊑𒀉 𒁕𒀭 𒌋 𒉌 𒅖𒋼𒂗 𒁮𒃲 𒅁𒁍𒋗 𒄿𒈾 𒊑𒅅𒊓𒀜 𒊭𒀀𒈪 𒌋 𒈾𒁕𒉌 𒆠𒈾𒋾. 𒊑𒅅𒊓𒌅 𒄿𒈾 𒅆𒁇 𒄿𒈾 𒅆𒀉𒊑 𒆷𒁉𒊒𒋾 𒊭 𒀀 𒊭 𒋢𒊏 𒀉𒋾 𒈠𒄦 𒈾𒊍𒋡.",
             "lattice": {
-                "caption": "𒉌𒁺 𒁕𒀭 𒌷𒊭 𒅆𒀀 𒅆𒀀-𒌷𒊭 𒀭𒆠, 𒊹𒌷 𒉌𒁺 𒌷𒊭 𒀭𒆠 𒊹𒌷 𒀭𒆠 𒊹𒌷 𒈠𒄦.",
+                "caption": "𒁍𒊌𒆪 𒈾𒁕𒉡 𒅖𒋼𒂗 𒊭 𒅆𒁇; 𒀀𒈾 𒉿𒄿 𒋼𒈪𒋗 𒉿𒅈𒆠 𒈠𒄦 𒊭𒆠𒅔.",
                 "summary": "{wins} 𒊹𒌷 · {losses} 𒁕𒀭",
-                "title": "𒊹𒌷 𒅆𒀀, 𒅆𒀀 𒁕𒀭"
+                "title": "𒋼𒈬𒌑 𒊭 𒁮𒃲"
             },
-            "liveStrip": "𒅆𒀀 · 𒊹𒌷 𒅆𒀀 · {time} 𒀭𒆠",
             "marketStatus": {
-                "deploy": "𒌷𒊭",
-                "thin": "𒀭𒆠 𒉌𒁺",
-                "watch": "𒅆𒀀 𒅆𒀀"
+                "deploy": "𒋗𒌑𒋗𒌨",
+                "thin": "𒀀 𒈠𒁲",
+                "watch": "𒁀𒌋𒋫 𒌌 𒄿𒁀𒀸𒅆"
             },
             "mesh": {
-                "caption": "𒅆𒀀 𒄿𒌨 𒁕𒀭 𒁕𒀭. 𒁕𒀭 𒊹𒌷 𒀭𒆠 𒊹𒌷 𒉌𒁺; 𒉌𒁺 𒀭𒆠 𒅆𒀀 𒌷𒊭 𒌷𒊭.",
-                "summary": "{robust} 𒊹𒌷 · {killed} 𒀭𒆠",
-                "title": "𒁕𒀭 𒉌𒁺"
+                "caption": "𒉿𒅔𒁺𒌑 𒅖𒋼𒂗 𒈪𒅋𒆪 𒅖𒋼𒂗 𒊭 𒅆𒁇. 𒉿𒅔𒁺𒌑 𒈾𒄠𒊒𒌅 𒅗𒆷 𒅆𒁇 𒄿𒋾𒆪; 𒊭 𒄿𒍝𒅈𒊒𒊒 𒁀𒌋𒋫𒊓 𒄿𒇷𒅅𒆪𒌑.",
+                "summary": "{robust} 𒄿𒋾𒆪 · {killed} 𒈾𒊍𒄷",
+                "title": "𒈪𒅋𒆪𒌑 𒊭 𒅆𒁇"
             },
+            "otherMarkets": "𒈠𒄭𒊒 𒊭𒉡𒌅",
             "paper": "𒀭𒆠 𒅆𒀀",
             "pipeline": "𒊹𒌷 𒅆𒀀",
             "preparing": "𒀭𒆠 𒌷𒊭…",
-            "priceChange": "{symbol} 𒃲",
+            "priceChange": "𒆪𒌌𒇻 {symbol}",
+            "progress": "𒀀𒆷𒀝𒋾 𒅆𒁇",
             "radar": {
-                "caption": "𒊹𒌷 𒉌𒁺 𒉌𒁺 𒉌𒁺 𒊹𒌷 𒁕𒀭 𒀭𒆠, 𒀭𒆠 𒌷𒊭 𒊹𒌷 𒅆𒀀 𒉌𒁺 𒌷𒊭 𒌷𒊭.",
-                "title": "𒉌𒁺 𒀭𒆠"
+                "title": "𒁀𒌋𒋫𒊓 𒊭 𒄿𒁀𒀸𒋗𒌑"
             },
+            "result": "𒋼𒅎 𒅆𒁇",
             "retry": "𒄷",
             "rule": {
-                "breakoutAbove": "𒅆𒀀 {window}𒅆𒀀 𒅆𒀀",
-                "breakoutBelow": "𒅆𒀀 {window}𒅆𒀀 𒅆𒀀",
-                "buy": "𒌷𒊭 {amount} 𒁕𒀭 𒅆𒀀",
-                "deviationAbove": "𒃲 𒊹𒌷 {window}𒅆𒀀 𒉌𒁺 𒉌𒁺 {value}%",
-                "deviationBelow": "𒃲 𒊹𒌷 {window}𒅆𒀀 𒉌𒁺 𒉌𒁺 {value}%",
-                "label": "𒁕𒀭 𒊹𒌷",
-                "momentumAbove": "{window}𒅆𒀀 𒅆𒀀 𒉌𒁺 {value}%",
-                "momentumBelow": "{window}𒅆𒀀 𒅆𒀀 𒉌𒁺 {value}%",
+                "breakoutAbove": "𒅆𒈬 𒂊𒇷 𒅗𒆷 𒅆𒈪 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒄿𒇷",
+                "breakoutBelow": "𒅆𒈬 𒊭𒁄 𒅗𒆷 𒅆𒈪 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒅎𒆪𒌓",
+                "buy": "𒄿𒈾 {amount} 𒁕𒀭 𒄿𒊭𒄠 𒄿𒉡𒈠",
+                "deviationAbove": "𒅆𒈬 𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒂊𒇷 {value}%",
+                "deviationBelow": "𒅆𒈬 𒀀𒈾 𒋡𒀊𒇷 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒊭𒁄 {value}%",
+                "label": "𒊑𒅅𒊓𒀜 𒁮𒃲",
+                "momentumAbove": "𒅆𒉌𒀉 𒅆𒈪 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒂊𒇷 {value}%",
+                "momentumBelow": "𒅆𒉌𒀉 𒅆𒈪 𒊭 {window} 𒈪𒅆𒅋 𒁁𒊑 𒊭𒁄 {value}%",
                 "sell": "𒀭𒆠 𒅆𒀀"
             },
             "session": {
-                "label": "𒀭𒆠",
+                "label": "𒀀𒆗𒉡",
                 "option": "{count}𒌷𒊭"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "𒀭𒆠 𒅆𒀀",
                 "neutral": "𒊹𒌷",
                 "unavailable": "𒁕𒀭 𒌷𒊭",
-                "warmup": "𒊹𒌷 𒊹𒌷"
+                "warmup": "𒅆𒀉𒊒𒌑 𒀀𒁲 𒄿𒈾𒀭𒈾 𒈠𒁺𒌑"
             },
-            "signalArchive": "𒀭𒆠 𒌑 · {time}",
-            "signalLive": "𒅆𒀀 𒌑 · {time}",
-            "stages": {
-                "backtest": "𒉌𒁺",
-                "data": "𒀀 𒌷𒊭",
-                "deploy": "𒊹𒌷",
-                "fees": "𒅆𒀀 𒊹𒌷",
-                "folds": "{count} 𒌷𒊭",
-                "hours": "{count} 𒊹𒌷",
-                "robustness": "𒅆𒀀",
-                "walkforward": "𒉌𒁺"
-            },
+            "signalArchive": "𒄿𒈾 𒅆𒈪 𒊭𒀜𒊒𒋾 · {time}",
+            "signalLive": "𒅆𒁇 {time}",
             "status": {
-                "done": "𒊹𒌷 𒁕𒀭 · {date}",
-                "error": "𒊹𒌷 𒌷𒊭 𒀭𒆠 𒅆𒀀 𒅆𒀀.",
-                "fees": "𒅆𒀀 𒉌𒁺 𒊹𒌷 𒌷𒊭 𒊹𒌷 𒌷𒊭 𒊹𒌷 𒉌𒁺…",
-                "generating": "𒌷𒊭 𒁕𒀭…",
-                "idle": "𒊹𒌷 𒁕𒀭 𒊹𒌷",
-                "loading": "𒄷𒄷 𒀭𒆠 𒀀 𒀭𒆠…",
-                "running": "𒅆𒀀 {market} · 𒊹𒌷 {fold} 𒁕𒀭 {folds}"
+                "error": "𒋼𒈬𒌑 𒅆𒁇 𒌌 𒅅𒋗𒁺.",
+                "fees": "𒅆𒁇 𒆠 𒈠𒄦 𒊭 𒄿𒈾𒀭𒈾…",
+                "loading": "𒇷𒆪𒌑 𒅆𒀉𒊑 𒆷𒁉𒊒𒋾 𒊭 𒀀…",
+                "running": "𒅆𒁇 𒈪𒅋𒆠 𒄿𒈾 𒅆𒀉𒊑 𒆷𒁉𒊒𒋾…"
             },
-            "subtitle": "𒁕𒀭 𒊹𒌷 𒊹𒌷 𒈠𒄿 𒉌𒁺 𒌷𒊭 𒀭𒆠 {candidates} 𒅆𒀀 𒁕𒀭, 𒅆𒀀 𒌷𒊭 𒉌𒁺 {hours} 𒊹𒌷 𒁕𒀭 𒀭𒆠 𒀀 𒁕𒀭 𒅆𒀀 𒉌𒁺 𒊹𒌷 𒊹𒌷 𒃲 𒅆𒀀, 𒅆𒀀 𒌷𒊭 𒌷𒊭, 𒊹𒌷 𒀭𒆠 𒌷𒊭 𒅆𒀀 𒉌𒁺 𒌷𒊭 𒉌𒁺 𒊹𒌷 𒉌𒁺 𒊹𒌷.",
+            "steps": {
+                "choose": {
+                    "text": "𒊑𒅅𒊓𒋾 𒌋 𒋼𒈪 𒅆𒁇 𒊭 𒊭𒀊𒆷 𒀉𒋾 𒀀𒄩𒈪𒅖 𒀀𒈬𒌨.",
+                    "title": "𒁀𒌋𒋫 𒉌𒋛𒅅"
+                },
+                "live": {
+                    "text": "𒈪𒄑𒊒 𒀀𒈬𒌨 𒌋 𒄿𒈾 𒃻𒋃 𒆪𒉡𒊌. 𒀀𒁲 𒁀𒌋𒋫 𒅋𒆷𒆪 𒁾 𒀭𒈾𒄠 𒉿𒋫𒄠 𒆪𒌌𒇷.",
+                    "title": "𒀭𒆠 𒅆𒀀"
+                },
+                "paper": {
+                    "text": "“𒀭𒆠 𒅆𒀀” 𒁀𒌋𒋫 𒀉𒋾 𒆬𒌓 𒊭 𒁾 𒀀𒈾 “𒌷𒊭 𒌷𒊭” 𒄿𒊭𒀝𒅗𒀭. 𒀸𒊏𒉡 “𒊓𒋫𒀀𒊏𒋫” 𒇻𒌒𒁍𒌓; 𒃻𒋃 𒌌 𒄩𒊺𒄴.",
+                    "title": "𒄿𒈾 𒁾 𒅆𒁇"
+                }
+            },
             "swap": "𒁮𒃲 𒁕𒀭 → {symbol}",
-            "thinNote": "𒌷𒊭 𒀀 𒉌𒁺 𒌷𒊭 {depth} 𒁕𒀭, 𒀭𒆠 𒀭𒆠 𒁕𒀭 𒊹𒌷 2 𒁕𒀭 𒀭𒆠, 𒀭𒆠 𒉌𒁺 𒌷𒊭 𒌷𒊭 𒌷𒊭 𒈠𒄿.",
-            "title": "𒌷𒊭 𒉌𒁺 𒅆𒀀 𒊹𒌷 𒁕𒀭 𒁕𒀭",
-            "titleAccent": "𒉌𒁺 𒉌𒁺 𒊹𒌷 𒌷𒊭 𒁕𒀭.",
+            "thinNote": "𒄿𒈾 𒀀 𒆠𒈠 {depth} 𒁕𒀭 𒄿𒁀𒀸𒅆; 𒀀𒈾 𒁮𒃲 𒊭 2 𒁕𒀭 𒈠𒁲.",
+            "title": "𒁀𒌋𒋫𒊓 𒋗𒌑𒋗𒊒𒌅",
             "trades": "𒁕𒀭",
-            "walkForward": "𒉌𒁺",
-            "watchNote": "𒁕𒀭 𒁕𒀭 𒀭𒆠 𒊹𒌷 𒉌𒁺 𒅆𒀀, 𒀭𒆠 𒉌𒁺 𒌷𒊭 𒌷𒊭 𒁕𒀭 𒁕𒀭 𒅆𒀀 𒊹𒌷 𒌷𒊭 𒉌𒁺."
+            "watchNote": "𒄿𒈾 𒅆𒁇 𒊑𒅅𒊓𒌅 𒉈𒈨𒆷 𒌌 𒄿𒁍𒊭; 𒀸𒋳 𒀭𒉌𒅎 𒀀𒈾 𒈠𒄭𒊑 𒀭𒉌𒅎 𒁀𒌋𒋫 𒀀𒁲 𒄿𒈾𒀭𒈾 𒌌 𒄿𒁀𒀸𒅆."
         },
         "receiveToken": "𒋫𒊏𒀀𒁕𒄿𒈾𒂵 𒋫𒌋𒅗𒂊𒈾",
         "research": {

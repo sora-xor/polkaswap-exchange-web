@@ -1,6 +1,8 @@
 # Automatic AI trading
 
-`/#/bots` opens a beginner workflow. **Advanced** retains the existing lab, strategy composer, manual bot editor, and backtesting inspector.
+`/#/bots` opens a beginner workflow: the ready-made bots ([bots-quant-loop.md](bots-quant-loop.md)) followed by the **AI trading** card described here. The **Advanced** link in the page header retains the existing lab, strategy composer, manual bot editor, and backtesting inspector; **My Bots** sits beside it.
+
+The card opens with one plain sentence: choose a budget and the token to grow; the assistant (the Codex app or an API key) drafts strategies, Polkaswap tests them on past data, and the user reviews the best one before it trades. The sentence is shown only on the setup form. The primary button reads **Find a strategy**; this document calls that action GO, its original label and code name (`go`, `autopilot-go`).
 
 Initial token discovery shows “Loading tokens…” until finalized public pool data arrives. A failed read shows “Token data unavailable. Retrying…” and uses the existing 30-second retry; the failure stays visible while that retry is pending. An accepted catalog with fewer than two tokens shows “No liquid trading pairs are available.” Recovery changes only the available token list, preserving the budget, goal limits and wallet permissions. Existing watch and qualification messages take priority over this setup status.
 

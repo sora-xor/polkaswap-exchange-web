@@ -604,6 +604,26 @@ describe('AI discovery evidence boundaries', () => {
     await second.engine.dispose();
   });
 
+  it('stops on a provider failure with its specific key and never stores provider text', async () => {
+    const quota = qualifyingEngine(store(), now);
+    quota.provider.suggest.mockRejectedValueOnce(new Error('bots.errors.aiQuota'));
+    await quota.engine.start({ callCap: 2 });
+    const stopped = await quota.engine.run();
+    expect(stopped.status).toBe('error');
+    expect(stopped.error).toBe('bots.errors.aiQuota');
+    expect(stopped.callsUsed).toBe(1);
+    expect(stopped.failedCalls).toBe(1);
+    await quota.engine.dispose();
+
+    const leaked = qualifyingEngine(store(), now);
+    leaked.provider.suggest.mockRejectedValueOnce(new Error('sk-ant-secret upstream text'));
+    await leaked.engine.start({ callCap: 2 });
+    const generic = await leaked.engine.run();
+    expect(generic.error).toBe('bots.errors.provider');
+    expect(JSON.stringify(generic)).not.toContain('sk-ant-secret');
+    await leaked.engine.dispose();
+  });
+
   it('rejects secret-bearing or live-signer state in checkpoints', async () => {
     const saved = store();
     const engine = createDiscoveryEngine({

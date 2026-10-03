@@ -8,6 +8,7 @@ import {
   DETERMINISTIC_STRATEGY_SCHEMA,
   type BotAiResearchConstraints,
 } from '@/features/bot-trading/ai';
+import { openAiStrictSchema } from '@/features/bot-trading/ai-provider-http';
 import { botFixture, researchConstraintsFixture } from './fixtures';
 import { ruleRecipe, RULE_RECIPE_IDS } from '@/features/bot-trading/rule-recipes';
 
@@ -283,7 +284,7 @@ describe('bot AI boundary', () => {
     const request = vi.fn(async () => new Response('sensitive-secret-error', { status: 401 }));
     const client = createBotAiClient('openai', { apiKey: 'key', model: 'model', endpoint: '' }, request, () => 1000);
     await expect(client.propose(botFixture(), [{ timestamp: 1000, close: '2' }])).rejects.toThrow(
-      'bots.errors.provider'
+      /^bots\.errors\.aiKey$/
     );
     const large = createBotAiClient(
       'custom',
@@ -294,6 +295,61 @@ describe('bot AI boundary', () => {
     await expect(large.propose(botFixture(), [{ timestamp: 1000, close: '2' }])).rejects.toThrow(
       'bots.errors.provider'
     );
+  });
+  it('asks Claude for one tool call without forced tool choice and names missing keys', async () => {
+    const request = vi.fn(
+      async () =>
+        new Response(
+          JSON.stringify({
+            content: [
+              { type: 'text', text: 'Checking the limits.' },
+              { type: 'tool_use', name: 'bot_decision', input: { action: 'hold', amount: '0', reason: 'flat' } },
+            ],
+          })
+        )
+    );
+    const client = createBotAiClient(
+      'claude',
+      { apiKey: 'sk-ant-test', model: 'claude-opus-5-5', endpoint: '' },
+      request,
+      () => 1000
+    );
+    expect((await client.propose(botFixture(), [{ timestamp: 1000, close: '2' }])).proposal.action).toBe('hold');
+    const body = JSON.parse(String((request.mock.calls[0] as unknown as [string, RequestInit])[1].body));
+    expect(body.tool_choice).toEqual({ type: 'auto', disable_parallel_tool_use: true });
+    expect(body.max_tokens).toBe(16_000);
+    expect(body.system).toContain('Respond only by calling the bot_decision tool exactly once.');
+    expect(() => createBotAiClient('claude', { apiKey: ' ', model: '', endpoint: '' })).toThrow(
+      /^bots\.errors\.aiKeyMissing$/
+    );
+    expect(() => createBotAiClient('openai', { apiKey: '', model: '', endpoint: '' })).toThrow(
+      /^bots\.errors\.aiKeyMissing$/
+    );
+  });
+  it('allows a slow reasoning model two minutes before reporting a timeout', async () => {
+    vi.useFakeTimers({ now: 1000 });
+    try {
+      let signal: AbortSignal | undefined;
+      const client = createBotAiClient(
+        'openai',
+        { apiKey: 'sk-test', model: 'gpt-6', endpoint: '' },
+        (_url, options) => {
+          signal = options?.signal ?? undefined;
+          return new Promise<Response>((_resolve, reject) => {
+            signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+          });
+        },
+        () => 1000
+      );
+      const proposal = client.propose(botFixture(), [{ timestamp: 1000, close: '2' }]);
+      const rejection = expect(proposal).rejects.toThrow(/^bots\.errors\.aiTimeout$/);
+      await vi.advanceTimersByTimeAsync(119_999);
+      expect(signal?.aborted).toBe(false);
+      await vi.advanceTimersByTimeAsync(1);
+      await rejection;
+    } finally {
+      vi.useRealTimers();
+    }
   });
   it('disconnect revokes credentials and prevents future requests', async () => {
     const request = vi.fn();
@@ -665,7 +721,9 @@ describe('bot AI boundary', () => {
     expect(instructions).toContain('rules combines 1..4 flat conditions');
     expect(instructions).toContain('rules interval must be at least 3600000');
     expect(instructions).toContain('assetIn-equivalent sizing for sells');
-    expect(JSON.parse(String(options.body)).text.format.schema).toEqual(DETERMINISTIC_STRATEGY_SCHEMA);
+    expect(JSON.parse(String(options.body)).text.format.schema).toEqual(
+      openAiStrictSchema(DETERMINISTIC_STRATEGY_SCHEMA)
+    );
   });
 
   it('accepts provider rule compositions and supplies enough observations for the longest supported lookback', async () => {

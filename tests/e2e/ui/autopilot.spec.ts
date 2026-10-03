@@ -326,7 +326,7 @@ async function executeDesktopTool(page: Page, name: string, input: unknown = {})
 /** Submit the first-screen budget once; the wallet and AI steps must preserve it. */
 async function submitGoal(page: Page, reverseMarket = false): Promise<{ assetIn: string; assetOut: string }> {
   await expect(page.locator('.autopilot-primary:visible')).toHaveCount(1);
-  await expect(page.getByTestId('autopilot-go')).toHaveText(/GO/);
+  await expect(page.getByTestId('autopilot-go')).toHaveText('Find a strategy');
   await expect(page.getByTestId('autopilot-asset-in')).toBeVisible();
   await expect(page.getByTestId('autopilot-asset-out')).toBeVisible();
   await expect(page.getByTestId('autopilot-key')).toHaveCount(0);

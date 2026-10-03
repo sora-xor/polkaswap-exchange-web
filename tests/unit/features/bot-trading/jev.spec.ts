@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createBotAiClient } from '@/features/bot-trading/ai';
+import { AI_REQUEST_TIMEOUT_MS } from '@/features/bot-trading/ai-provider-http';
 import type { BotAiResearchConstraints } from '@/features/bot-trading/ai-research';
 import {
   createJevRequest,
@@ -202,7 +203,8 @@ describe('Jev bounded decision integration', () => {
       async () => new Response('secret failure', { status: 401 }),
       () => 1000
     );
-    await expect(bad.propose(botFixture(), candles)).rejects.toThrow('bots.errors.provider');
+    // A rejected key gets its own app-owned message; the response body is never the error text.
+    await expect(bad.propose(botFixture(), candles)).rejects.toThrow(/^bots\.errors\.aiKey$/);
     const malformed = createBotAiClient(
       'jev',
       { apiKey: 'key', model: '', endpoint: '' },
@@ -232,8 +234,8 @@ describe('Jev bounded decision integration', () => {
       });
       const client = createBotAiClient('jev', { apiKey: 'key', model: '', endpoint: '' }, request, () => 1000);
       const pending = client.propose(botFixture(), candles);
-      const failure = expect(pending).rejects.toThrow('bots.errors.provider');
-      await vi.advanceTimersByTimeAsync(30000);
+      const failure = expect(pending).rejects.toThrow(/^bots\.errors\.aiTimeout$/);
+      await vi.advanceTimersByTimeAsync(AI_REQUEST_TIMEOUT_MS);
       await failure;
       expect(signal?.aborted).toBe(true);
       client.disconnect();

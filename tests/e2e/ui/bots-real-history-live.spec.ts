@@ -10,7 +10,7 @@ test.skip(process.env.PS_E2E_LIVE_NETWORK !== '1', 'Explicit opt-in required: th
 
 /** Open the advanced workspace before selecting its Backtesting tab. */
 async function openBacktesting(page: Page): Promise<void> {
-  const advanced = page.getByTestId('autopilot-advanced');
+  const advanced = page.getByTestId('bots-advanced');
   if (await advanced.isVisible()) await advanced.click();
   await page.getByTestId('backtesting-tab').click();
 }

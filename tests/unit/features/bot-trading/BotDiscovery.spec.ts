@@ -220,6 +220,109 @@ describe('BotDiscovery UI', () => {
     expect(wrapper.get('[data-testid="discovery-start"]').exists()).toBe(true);
   });
 
+  it('starts on the connect step with a one-tap provider choice and the matching key page', async () => {
+    const { wrapper } = await render();
+    expect(wrapper.get('[data-testid="discovery-step-connect"]').attributes('aria-current')).toBe('step');
+    expect(wrapper.get('[role="status"]').text()).toContain('bots.disconnected');
+    expect(wrapper.get('[data-testid="discovery-provider-claude"]').attributes('aria-pressed')).toBe('true');
+    expect(wrapper.get('[data-testid="discovery-get-key"]').attributes('href')).toBe(
+      'https://platform.claude.com/settings/keys'
+    );
+    expect(wrapper.get('[data-testid="discovery-get-key"]').attributes('rel')).toBe('noopener noreferrer');
+    expect(wrapper.get('.discovery-start-hint').text()).toBe('bots.discovery.connectFirst');
+    expect(wrapper.get('[data-testid="discovery-start"]').attributes('disabled')).toBeDefined();
+
+    const key = wrapper.get<HTMLInputElement>('[data-testid="discovery-api-key"]');
+    await key.setValue('sk-proj-memory-only');
+    expect(wrapper.get('[data-testid="discovery-provider-openai"]').attributes('aria-pressed')).toBe('true');
+    expect(wrapper.get('[data-testid="discovery-get-key"]').attributes('href')).toBe(
+      'https://platform.openai.com/api-keys'
+    );
+    expect(key.element.value).toBe('sk-proj-memory-only');
+    mocks.listModels.mockResolvedValueOnce([{ id: 'gpt-6', name: 'GPT-6', createdAt: 1 }]);
+    await key.trigger('keydown', { key: 'Enter' });
+    await flushPromises();
+    expect(mocks.createProvider).toHaveBeenCalledWith('openai', { apiKey: 'sk-proj-memory-only', endpoint: '' });
+    expect(key.element.value).toBe('');
+    expect(wrapper.get('[data-testid="discovery-step-connect"]').classes()).toContain('done');
+    expect(wrapper.get('[data-testid="discovery-step-idea"]').attributes('aria-current')).toBe('step');
+    expect(wrapper.find('.discovery-start-hint').exists()).toBe(false);
+  });
+
+  it('connects a pasted key to its own provider and defaults to Claude Opus 5.5', async () => {
+    const { wrapper } = await render();
+    await wrapper.get('[data-testid="discovery-provider-openai"]').trigger('click');
+    wrapper.get<HTMLInputElement>('[data-testid="discovery-api-key"]').element.value = 'sk-ant-memory-only';
+    mocks.listModels.mockResolvedValueOnce([
+      { id: 'claude-fable-5-1', name: 'Claude Fable 5.1', createdAt: 3 },
+      { id: 'claude-opus-5-5', name: 'Claude Opus 5.5', createdAt: 2 },
+    ]);
+    await wrapper.get('[data-testid="discovery-connect"]').trigger('click');
+    await flushPromises();
+    expect(mocks.createProvider).toHaveBeenCalledWith('claude', { apiKey: 'sk-ant-memory-only', endpoint: '' });
+    expect(mocks.selectModel).toHaveBeenCalledWith('claude-opus-5-5');
+    expect(wrapper.get<HTMLSelectElement>('[data-testid="discovery-model"]').element.value).toBe('claude-opus-5-5');
+    expect(wrapper.get('[data-testid="discovery-step-connect"]').text()).toContain('claude-opus-5-5');
+    expect(wrapper.get('[role="status"]').text()).toContain('bots.discovery.ready');
+  });
+
+  it('shows a specific connection failure beside the connect button', async () => {
+    const { wrapper } = await render();
+    mocks.createProvider.mockImplementationOnce(() => {
+      throw new Error('bots.errors.aiKeyMissing');
+    });
+    await wrapper.get('[data-testid="discovery-connect"]').trigger('click');
+    await flushPromises();
+    expect(wrapper.get('[data-testid="discovery-connect-error"]').text()).toBe('bots.errors.aiKeyMissing');
+    expect(wrapper.find('.discovery-error').exists()).toBe(false);
+
+    mocks.listModels.mockRejectedValueOnce(new Error('bots.errors.aiKey'));
+    await wrapper.get('[data-testid="discovery-api-key"]').setValue('sk-ant-wrong');
+    expect(wrapper.find('[data-testid="discovery-connect-error"]').exists()).toBe(false);
+    await wrapper.get('[data-testid="discovery-connect"]').trigger('click');
+    await flushPromises();
+    expect(wrapper.get('[data-testid="discovery-connect-error"]').text()).toBe('bots.errors.aiKey');
+    expect(mocks.disconnect).toHaveBeenCalled();
+  });
+
+  it('keeps paired, Jev and custom adapters one step away under Other', async () => {
+    const { wrapper } = await render();
+    const field = wrapper.get('.discovery-provider-field');
+    expect(field.attributes('style')).toContain('display: none');
+    await wrapper.get('[data-testid="discovery-provider-other"]').trigger('click');
+    expect(field.attributes('style') ?? '').not.toContain('display: none');
+    const select = wrapper.get<HTMLSelectElement>('[data-testid="discovery-provider"]');
+    expect(select.element.value).toBe('codex');
+    expect(select.findAll('option').map((option) => option.element.value)).toEqual([
+      'codex',
+      'claude-code',
+      'jev',
+      'custom',
+    ]);
+    expect(wrapper.find('[data-testid="discovery-pair-code"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="discovery-get-key"]').exists()).toBe(false);
+    await select.setValue('custom');
+    await wrapper.get('[data-testid="discovery-provider-claude"]').trigger('click');
+    await wrapper.get('[data-testid="discovery-provider-other"]').trigger('click');
+    expect(select.element.value).toBe('custom');
+  });
+
+  it('fills the optional idea from an example before research starts', async () => {
+    const { wrapper } = await render();
+    const examples = wrapper.findAll('[data-testid="discovery-idea-example"]');
+    expect(examples.map((example) => example.text())).toEqual([
+      'bots.discovery.ideaDips',
+      'bots.discovery.ideaMomentum',
+      'bots.discovery.ideaSteady',
+    ]);
+    await examples[1].trigger('click');
+    expect(wrapper.get<HTMLTextAreaElement>('[data-testid="discovery-idea"]').element.value).toBe(
+      'bots.discovery.ideaMomentum'
+    );
+    expect(examples[1].attributes('aria-pressed')).toBe('true');
+    expect(wrapper.get('[data-testid="discovery-step-idea"]').text()).toContain('bots.discovery.ideaMomentum');
+  });
+
   it('warns about previously viewed holdout dates before clearing or dispatching', async () => {
     mocks.load.mockResolvedValue(checkpoint(true));
     mocks.overlaps.mockResolvedValue([{ startAt: 3, endAt: 4 }]);

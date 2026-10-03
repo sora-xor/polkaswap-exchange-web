@@ -7,9 +7,9 @@
   >
     <header class="autopilot-header">
       <span class="autopilot-label">{{ t('bots.autopilot.title') }}</span>
-      <button type="button" class="autopilot-link" data-testid="autopilot-advanced" @click="emit('advanced')">
-        {{ t('bots.autopilot.advanced') }} <span aria-hidden="true">↗</span>
-      </button>
+      <p v-if="stage === 'welcome' || stage === 'fund'" class="autopilot-intro" data-testid="autopilot-intro">
+        {{ t('bots.autopilot.intro') }}
+      </p>
     </header>
 
     <div :key="stage" class="autopilot-stage">
@@ -999,7 +999,6 @@ const emit = defineEmits<{
   readSetupFunding: [assetInAddress: string];
   start: [authorization: { password: string }];
   cancel: [];
-  advanced: [];
   pause: [id: string];
   stop: [id: string];
   resume: [id: string];
@@ -1818,15 +1817,20 @@ function displayAmount(value: string, decimals: number): string {
   -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 .autopilot-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
+  display: grid;
+  gap: 6px;
+  margin-bottom: 24px;
 }
 .autopilot-label {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.autopilot-intro {
+  margin: 0;
   font-size: 13px;
-  font-weight: 600;
+  line-height: 1.55;
+  color: var(--s-color-base-content-secondary);
 }
 .autopilot-stage {
   animation: autopilot-appear 180ms ease-out;

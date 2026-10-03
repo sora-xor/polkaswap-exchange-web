@@ -44,20 +44,6 @@ export function fromCodec(value: string, decimals: number): string {
   return decimals ? `${padded.slice(0, -decimals)}${fraction ? `.${fraction}` : ''}` : value;
 }
 
-/** Minimal exact comparator for candidate gate copy in the inert browser fixture. */
-export class FPNumber {
-  readonly codec: bigint;
-
-  constructor(value: string, decimals: number) {
-    const negative = value.startsWith('-');
-    this.codec = (negative ? -1n : 1n) * BigInt(toCodec(negative ? value.slice(1) : value, decimals));
-  }
-
-  gt(other: FPNumber): boolean {
-    return this.codec > other.codec;
-  }
-}
-
 /** Feedback is outside these browser flows; no live orders are ever supplied. */
 export function summarizeDiscoveryLiveFeedback(): null {
   return null;

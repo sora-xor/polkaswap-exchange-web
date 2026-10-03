@@ -1,6 +1,16 @@
 import { codec, fromCodec, toCodec } from './amounts';
 import { DETERMINISTIC_STRATEGY_INSTRUCTIONS, DETERMINISTIC_STRATEGY_SCHEMA, validateBotEndpoint } from './ai';
 import { parseBotAiModels, type BotAiModel } from './ai-models';
+import {
+  AI_REQUEST_TIMEOUT_MS,
+  aiOutputTokens,
+  classifyProviderFailure,
+  claudeToolRequest,
+  isTimeoutSignal,
+  openAiStrictSchema,
+  providerErrorMessage,
+  providerFetchError,
+} from './ai-provider-http';
 import { parseBotPrice } from './engine';
 import { JEV_ENDPOINT, JEV_MODEL, JEV_STRATEGY_CRITERIA } from './jev';
 import { createLocalCodexCompanion } from './local-codex-companion';
@@ -301,9 +311,10 @@ export function parseDiscoveryDraft(value: unknown, requestId: string): { reques
   return { requestId, strategy: draft.strategy };
 }
 
-/** Bound response bytes before parsing; never expose provider error bodies. */
+/** Bound response bytes before parsing; failures map to app-owned keys and never expose provider error bodies. */
 async function readJson(response: Response, maxBytes = MAX_RESPONSE_BYTES): Promise<Record<string, unknown>> {
-  if (!response.ok || !response.body) throw error();
+  if (!response.ok) throw new Error(await classifyProviderFailure(response));
+  if (!response.body) throw error();
   const reader = response.body.getReader();
   const decoder = new TextDecoder('utf-8', { fatal: true });
   let size = 0;
@@ -433,9 +444,9 @@ export function createDiscoveryProvider(
           : kind === 'custom'
             ? validateBotEndpoint(supplied.endpoint ?? '')
             : '';
+  if (!local && kind !== 'custom' && !key) throw new Error('bots.errors.aiKeyMissing');
   if (
     key.length > 1024 ||
-    (!local && kind !== 'custom' && !key) ||
     (!local && kind !== 'custom' && kind !== 'jev' && model !== '' && !/^[a-zA-Z0-9._:/-]{1,120}$/.test(model)) ||
     (kind === 'jev' && supplied.model && supplied.model !== JEV_MODEL)
   )
@@ -466,9 +477,19 @@ export function createDiscoveryProvider(
       const controller = new AbortController();
       pending = controller;
       lastRequest = now();
-      const abort = () => controller.abort();
+      let timedOut = false;
+      const abort = () => {
+        timedOut ||= isTimeoutSignal(signal);
+        controller.abort();
+      };
       signal?.addEventListener('abort', abort, { once: true });
-      const timeout = setTimeout(abort, local || kind === 'custom' ? 245_000 : 30_000);
+      const timeout = setTimeout(
+        () => {
+          timedOut = true;
+          controller.abort();
+        },
+        local || kind === 'custom' ? 245_000 : AI_REQUEST_TIMEOUT_MS
+      );
       try {
         if (local) {
           const result = await companion!.discoveryDraft(context, kind as 'codex' | 'claude-code', controller.signal);
@@ -486,23 +507,28 @@ export function createDiscoveryProvider(
             store: false,
             instructions: system,
             input: JSON.stringify(context),
-            max_output_tokens: 1500,
+            max_output_tokens: aiOutputTokens(model, catalog),
             text: {
-              format: { type: 'json_schema', name: 'discovery_draft', strict: true, schema: DISCOVERY_DRAFT_SCHEMA },
+              format: {
+                type: 'json_schema',
+                name: 'discovery_draft',
+                strict: true,
+                schema: openAiStrictSchema(DISCOVERY_DRAFT_SCHEMA),
+              },
             },
           };
         } else if (kind === 'claude') {
           headers['x-api-key'] = key;
           headers['anthropic-version'] = '2023-06-01';
           headers['anthropic-dangerous-direct-browser-access'] = 'true';
-          body = {
+          body = claudeToolRequest({
             model,
-            max_tokens: 1500,
+            maxTokens: aiOutputTokens(model, catalog),
             system,
-            messages: [{ role: 'user', content: JSON.stringify(context) }],
-            tools: [{ name: 'discovery_draft', description: system, input_schema: DISCOVERY_DRAFT_SCHEMA }],
-            tool_choice: { type: 'tool', name: 'discovery_draft' },
-          };
+            input: JSON.stringify(context),
+            tool: 'discovery_draft',
+            schema: DISCOVERY_DRAFT_SCHEMA,
+          });
         } else if (kind === 'jev') {
           headers.Authorization = `Bearer ${key}`;
           const jev = jevRequest(context);
@@ -527,6 +553,8 @@ export function createDiscoveryProvider(
             redirect: 'error',
             credentials: 'omit',
             referrerPolicy: 'no-referrer',
+          }).catch((failure: unknown) => {
+            throw new Error(providerFetchError(failure, timedOut));
           })
         );
         if (controller.signal.aborted || disconnected) throw error();
@@ -552,8 +580,8 @@ export function createDiscoveryProvider(
           result = { requestId: data.requestId, strategy: data.strategy };
         }
         return parseDiscoveryDraft(result, context.requestId);
-      } catch {
-        throw error();
+      } catch (failure) {
+        throw new Error(timedOut ? 'bots.errors.aiTimeout' : providerErrorMessage(failure));
       } finally {
         clearTimeout(timeout);
         signal?.removeEventListener('abort', abort);
@@ -564,10 +592,17 @@ export function createDiscoveryProvider(
       if (disconnected || catalogRequest || !['openai', 'claude'].includes(kind)) throw error();
       const controller = new AbortController();
       catalogRequest = controller;
-      const abort = () => controller.abort();
+      let timedOut = false;
+      const abort = () => {
+        timedOut ||= isTimeoutSignal(signal);
+        controller.abort();
+      };
       signal?.addEventListener('abort', abort, { once: true });
       if (signal?.aborted) abort();
-      const timeout = setTimeout(abort, 15_000);
+      const timeout = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+      }, 15_000);
       try {
         const headers: Record<string, string> =
           kind === 'openai'
@@ -592,6 +627,8 @@ export function createDiscoveryProvider(
               redirect: 'error',
               credentials: 'omit',
               referrerPolicy: 'no-referrer',
+            }).catch((failure: unknown) => {
+              throw new Error(providerFetchError(failure, timedOut));
             }),
             1_048_576
           );
@@ -612,8 +649,8 @@ export function createDiscoveryProvider(
         );
         if (!catalog.length) throw error();
         return catalog.map((item) => ({ ...item }));
-      } catch {
-        throw error();
+      } catch (failure) {
+        throw new Error(timedOut ? 'bots.errors.aiTimeout' : providerErrorMessage(failure));
       } finally {
         clearTimeout(timeout);
         signal?.removeEventListener('abort', abort);

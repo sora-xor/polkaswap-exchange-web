@@ -200,6 +200,7 @@
     "bots": {
         "above": "高于阈值时卖出",
         "activity": "动态",
+        "advanced": "高级",
         "aiBacktestNote": "历史测试前，请使用“生成策略”创建并检查规则明确的策略。",
         "aiConnection": "AI 连接",
         "allocation": "分配资金",
@@ -214,7 +215,6 @@
         "authorizeStart": "授权并启动",
         "autopilot": {
             "addressCopied": "地址已复制",
-            "advanced": "高级",
             "begin": "Start AI trading",
             "budget": "分配资金 ({symbol})",
             "budgetUnselected": "分配资金",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "另需 {amount} {symbol} 网络手续费。",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "开始",
+            "go": "寻找策略",
             "goal": "增加我的资本",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "选择预算和想要增持的代币。您的 AI（Codex 应用或 API 密钥）拟定策略，Polkaswap 用历史数据测试，交易前由您审核最佳策略。",
             "maximizeGoal": "增持 {symbol}",
             "maximizeToken": "想增持的代币",
             "refreshFunding": "刷新余额",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "连接人工智能",
             "connected": "已连接",
+            "connectFirst": "请先连接 AI 再开始研究。",
             "consent": "我审查了确切的机器人、预算和 14 天的签约补助金。",
             "continueExploratory": "继续探索性搜索",
             "continueWithProvider": "使用此 AI 继续",
@@ -553,6 +554,7 @@
             "feeReserve": "异或费用储备",
             "finalizedBlock": "在最终区块进行验证",
             "finalizedSwaps": "最终确定的互换",
+            "getKey": "获取 {provider} API 密钥",
             "goal": "每个机器人：14 个活跃天，10 个最终掉期，正净值高于持有量，在回撤范围内。",
             "historyChanged": "已验证的历史记录在研究过程中发生了变化",
             "holdout": "未受影响的坚持者",
@@ -564,7 +566,11 @@
             "holdoutReused": "下一次留出期与此浏览器中已查看的日期重叠。结果将仅供探索，不能用于批准实盘机器人。",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "战略构想（可选）",
+            "ideaDips": "在上升趋势中逢低买入",
+            "ideaExamples": "需要灵感？试试这些：",
+            "ideaMomentum": "跟随强劲动量",
             "ideaPlaceholder": "例如：在上涨趋势中回调买空",
+            "ideaSteady": "每日稳定定投",
             "jev": "杰夫API",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "分配、订单上限和费用储备由经过验证的研究确定。 开始新的搜索以更改它们。",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "开放人工智能API",
             "orderLimit": "最大订单量",
+            "otherConnection": "其他",
             "outcome": {
                 "active": "朝着目标努力",
                 "loss": "达到回撤限额",
@@ -660,6 +667,7 @@
             "start": "开始研究",
             "subtitle": "在经过验证的市场中搜索策略并在实时交易前查看确切的规则。",
             "tabNote": "研究和实盘交易仅在此标签页及电脑保持运行时进行。暂停的活动需要重新审核并解锁。",
+            "tagline": "让 AI 为你寻找并测试策略",
             "title": "发现",
             "trades": "掉期",
             "training": "培训",
@@ -676,6 +684,13 @@
         "equityChartNote": "运行此策略后即可开始记录表现。",
         "errors": {
             "action": "无法完成操作，请重试。",
+            "aiAccess": "此 API 密钥无法使用所选模型。请选择其他模型，或检查密钥的权限。",
+            "aiBusy": "AI 服务商繁忙或暂时不可用。请几分钟后重试。",
+            "aiKey": "AI 服务商拒绝了此 API 密钥。请重新复制完整密钥，或创建一个新密钥。",
+            "aiKeyMissing": "请先粘贴你的 API 密钥。",
+            "aiNetwork": "无法连接到 AI 服务商。请检查网络连接、VPN 或内容拦截器，然后重试。",
+            "aiQuota": "你的 AI 账户余额不足或已达到速率限制。请在服务商处充值，或等待一分钟后重试。",
+            "aiTimeout": "AI 响应时间过长。请重试，或选择更快的模型。",
             "amount": "请输入符合代币小数精度的有效数量。",
             "backtestAi": "对 AI 策略回测前，请生成并检查确定性规则。",
             "balance": "分配的代币或钱包余额不足以完成此交易。",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "价格相对 {window} 小时均值偏离 {value}，已越过 {threshold} 的触发线。机器人正是在这时买入。",
+                "detail": "价格相对 {window} 小时均价为 {value}，已越过 {threshold} 的买入线，因此运行中的机器人现在会买入。",
                 "title": "{symbol} 已进入买入区间"
             },
-            "botName": "{symbol} 流动性捕获机器人",
+            "botName": "{symbol} 机器人",
+            "budget": "预算 {total} XOR：每次买入 {amount} XOR，{reserve} XOR 留作手续费",
             "cadence": {
-                "every": "约每 {days} 天出现一次机会",
-                "holdDays": "持仓 {min}–{max} 天内平仓",
-                "holdHours": "持仓 {min}–{max} 小时内平仓",
-                "last": "最近一次：{date}"
+                "every": "约每 {days} 天交易一次",
+                "holdDays": "持仓 {min}–{max} 天",
+                "holdHours": "持仓 {min}–{max} 小时",
+                "last": "上次买入 {date}"
             },
-            "capacity": "规模有意设限：预算 10 XOR、手续费储备 2 XOR、每笔订单 {amount} XOR，因为这些资金池深度较浅。",
             "consent": {
                 "budget": "预算 {amount} XOR",
-                "cadenceDays": "交易并不频繁：盲测中约每 {days} 天出现一次机会，一笔持仓最长可能需要 {hold} 天才能平仓。请在整个会话期间保持此标签页打开。",
-                "cadenceHours": "交易并不频繁：盲测中约每 {days} 天出现一次机会，一笔持仓最长可能需要 {hold} 小时才能平仓。请在整个会话期间保持此标签页打开。",
-                "evidence": "滚动验证结果 {return}% · 最大回撤 {drawdown}% · {trades} 笔交易。均为假设结果，已扣除全部费用；不构成盈利承诺。",
-                "eyebrow": "一览核对",
+                "cadenceDays": "交易并不频繁：测试中约每 {days} 天交易一次，单笔持仓最长可达 {hold} 天。请在整个会话期间保持此标签页打开。",
+                "cadenceHours": "交易并不频繁：测试中约每 {days} 天交易一次，单笔持仓最长可达 {hold} 小时。请在整个会话期间保持此标签页打开。",
+                "evidence": "测试结果 {return}% · 最大跌幅 {drawdown}% · {trades} 笔交易，已扣除费用。基于历史数据模拟，不保证盈利。",
                 "getXor": "获取 XOR",
                 "impact": "最大价格影响 {value}%",
-                "order": "每笔订单 {amount} XOR",
-                "reserve": "手续费储备 {amount} XOR",
+                "order": "每次买入 {amount} XOR",
+                "reserve": "{amount} XOR 留作手续费",
                 "session": "{hours} 小时会话",
                 "sessionDays": "{count} 天会话",
-                "stepConfirm": "勾选同意后即可启动。机器人只能在这些限额内签署兑换。",
+                "stepConfirm": "勾选复选框后即可启动。机器人只能在这些限额内兑换。",
                 "stepPassword": "输入钱包密码",
                 "stepWallet": "在钱包中批准每笔兑换",
-                "title": "启动实盘：{symbol} 流动性捕获机器人"
+                "title": "启动实盘：{symbol} 机器人"
             },
-            "disclaimer": "基于 {start} 至 {end} 存档 SORA 资金池状态的假设性研究，按当前费用（{fee} XOR 网络手续费、{swap}% 资金池手续费）及 0.5% 滑点计价。过往结果不能预测未来收益。",
-            "drawdown": "最大回撤",
+            "disclaimer": "结果基于 {start} 至 {end} 的 SORA 资金池数据模拟，按当前费用（{fee} XOR 网络手续费、{swap}% 资金池手续费）和 0.5% 滑点计算。过往结果不保证未来收益。",
+            "drawdown": "最大跌幅",
             "equity": {
-                "caption": "盲测滚动验证：每一折只使用依据更早时段选出的规则交易，随后循环重新学习。",
-                "fold": "第 {index} 折",
+                "caption": "机器人价值与持有 {symbol} 的对比。每个时段只使用根据更早数据选出的规则。",
                 "idle": "保持持有 XOR",
-                "strategy": "策略",
-                "title": "先比较，再投入",
+                "strategy": "机器人",
+                "title": "收益走势",
                 "trades": "{count} 笔交易"
             },
-            "eyebrow": "策略实验室",
             "families": {
                 "breakout": "突破",
-                "guarded": "防护型逆势",
-                "reversion": "偏离逆势",
-                "shock": "冲击逆势",
-                "trend": "趋势"
+                "guarded": "过滤式逢低买入",
+                "reversion": "逢低买入",
+                "shock": "急跌买入",
+                "trend": "趋势跟踪"
             },
-            "fromMean": "相对 {window} 小时均值",
-            "gaugeAria": "价格相对 {window} 小时均值偏离 {value}；低于 {threshold} 时机器人买入。",
+            "fromMean": "相对 {window} 小时均价",
+            "gaugeAria": "价格相对 {window} 小时均价为 {value}；低于 {threshold} 时机器人会买入。",
             "goLive": "启动实盘",
-            "kpi": {
-                "backtests": "回测次数",
-                "best": "{symbol} 滚动验证",
-                "deployable": "可实盘市场",
-                "killed": "淘汰率",
-                "robust": "存活策略",
-                "tested": "已测策略"
-            },
+            "intro": "每个机器人按固定的买卖规则，在 XOR 和一种代币之间兑换。这些规则是用 SORA 资金池的历史数据（含费用）测试后选出的。",
             "lattice": {
-                "caption": "每个球代表一笔样本外卖出，落点为扣除全部费用后的实际结果。",
+                "caption": "每个球代表测试中的一笔卖出，位置由扣除费用后的结果决定。",
                 "summary": "盈利 {wins} 笔 · 亏损 {losses} 笔",
-                "title": "一笔交易，一个球"
+                "title": "交易结果"
             },
-            "liveStrip": "实时 · SORA 主网 · {time} UTC",
             "marketStatus": {
-                "deploy": "可实盘",
-                "thin": "深度不足",
-                "watch": "暂不参与"
+                "deploy": "可用",
+                "thin": "资金池过小",
+                "watch": "暂无机器人"
             },
             "mesh": {
-                "caption": "每个节点代表一个策略。发光节点通过了全部检验；脉动的节点即已部署的策略。",
-                "summary": "{robust} 个存活 · {killed} 个淘汰",
-                "title": "策略网络"
+                "caption": "每个点代表一个已测试的策略。较亮的点通过了所有检查；闪烁的点是机器人正在使用的策略。",
+                "summary": "通过 {robust} 个 · 淘汰 {killed} 个",
+                "title": "已测试的策略"
             },
+            "otherMarkets": "其他市场",
             "paper": "模拟交易",
             "pipeline": "研究流水线",
             "preparing": "正在准备核对…",
-            "priceChange": "{symbol} 价格",
+            "priceChange": "持有 {symbol}",
+            "progress": "测试进度",
             "radar": {
-                "caption": "规则按最近一个已完成的小时评估，与实盘机器人看到的完全一致。",
-                "title": "机会雷达"
+                "title": "可用机器人"
             },
+            "result": "测试结果",
             "retry": "重试",
             "rule": {
-                "breakoutAbove": "创 {window} 小时新高",
-                "breakoutBelow": "创 {window} 小时新低",
+                "breakoutAbove": "价格创 {window} 小时新高",
+                "breakoutBelow": "价格创 {window} 小时新低",
                 "buy": "满足以下条件时，用 {amount} XOR 买入",
-                "deviationAbove": "价格相对 {window} 小时均值高于 {value}%",
-                "deviationBelow": "价格相对 {window} 小时均值低于 {value}%",
-                "label": "策略规则",
+                "deviationAbove": "价格相对 {window} 小时均价高于 {value}%",
+                "deviationBelow": "价格相对 {window} 小时均价低于 {value}%",
+                "label": "交易规则",
                 "momentumAbove": "{window} 小时涨跌幅高于 {value}%",
                 "momentumBelow": "{window} 小时涨跌幅低于 {value}%",
                 "sell": "满足以下条件时卖出"
             },
             "session": {
-                "label": "会话时长",
+                "label": "运行时长",
                 "option": "{count}天"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "卖出区间",
                 "neutral": "观望中",
                 "unavailable": "暂无数据",
-                "warmup": "预热中"
+                "warmup": "数据尚不足"
             },
-            "signalArchive": "存档收盘价 · {time}",
-            "signalLive": "实时收盘价 · {time}",
-            "stages": {
-                "backtest": "回测",
-                "data": "资金池数据",
-                "deploy": "部署",
-                "fees": "实时费用",
-                "folds": "{count} 折",
-                "hours": "{count} 小时",
-                "robustness": "稳健性",
-                "walkforward": "滚动验证"
-            },
+            "signalArchive": "基于已保存的价格 · {time}",
+            "signalLive": "检查于 {time}",
             "status": {
-                "done": "研究完成 · {date}",
-                "error": "研究暂时不可用。",
-                "fees": "正在从已最终确认的 SORA 区块读取当前费用…",
-                "generating": "正在生成策略…",
-                "idle": "准备开始研究",
-                "loading": "正在加载存档的资金池状态…",
-                "running": "正在测试 {market} · 第 {fold}/{folds} 折"
+                "error": "无法加载测试结果。",
+                "fees": "正在查询当前网络手续费…",
+                "loading": "正在加载历史资金池数据…",
+                "running": "正在用历史数据测试策略…"
             },
-            "subtitle": "研究循环为每个 SORA 市场编写 {candidates} 个规则策略，在 {hours} 小时的真实资金池储备数据上按精确的费用和价格影响进行回放，淘汰一切脆弱的策略，只部署在盲测滚动验证中盈利的策略。",
+            "steps": {
+                "choose": {
+                    "text": "比较下方的规则和测试结果。",
+                    "title": "选择机器人"
+                },
+                "live": {
+                    "text": "检查限额并在钱包中确认。机器人运行期间请保持此标签页打开。",
+                    "title": "启动实盘"
+                },
+                "paper": {
+                    "text": "“模拟交易”会用虚拟资金把机器人加入“我的机器人”。在那里点击“启动”即可，无需钱包。",
+                    "title": "模拟试用"
+                }
+            },
             "swap": "兑换 XOR → {symbol}",
-            "thinNote": "资金池深度中位数为 {depth} XOR，对 2 XOR 的订单而言过浅，因此循环跳过此市场。",
-            "title": "机器人先测试数千种策略，",
-            "titleAccent": "之后才动用第一个 XOR。",
+            "thinNote": "该资金池约有 {depth} XOR，不足以进行 2 XOR 的交易。",
+            "title": "现成机器人",
             "trades": "交易次数",
-            "walkForward": "滚动验证",
-            "watchNote": "此市场没有策略通过全部检验，因此循环让您的 XOR 保持闲置，并继续观察。"
+            "watchNote": "测试中没有规则实现盈利，因此该市场暂时没有机器人。"
         },
         "receiveToken": "交易代币",
         "research": {

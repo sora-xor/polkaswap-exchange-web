@@ -200,6 +200,7 @@
     "bots": {
         "above": "stakaon gohed wakaot",
         "activity": "wakaot",
+        "advanced": "Moa tul",
         "aiBacktestNote": "gohed gohed luksavve luksavve wakem wakaot raonem wakaot falom luksavve gohed raonem falom.",
         "aiConnection": "stakaon konek",
         "allocation": "raonem",
@@ -214,7 +215,6 @@
         "authorizeStart": "wakaot wakaot falom",
         "autopilot": {
             "addressCopied": "adres raonem",
-            "advanced": "raonem",
             "begin": "falom stakaon gohed",
             "budget": "gohed gohed ({symbol})",
             "budgetUnselected": "gohed gohed",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "raonem {amount} {symbol} luksavve netwok wakaot.",
             "funding": "gohed: {available} {symbol}",
             "fundTitle": "falom luksavve gohed",
-            "go": "stakaon",
+            "go": "Faendem wanfala plan",
             "goal": "gohed raonem balans",
             "internalWalletRequired": "gohed gohed falom walet luksavve wakaot gohed.",
-            "intro": "stakaon luksavve. raonem wakaot. luksavve luksavve gohed.",
+            "intro": "Chusim baget an token wea iu laek garem moa. AI blong iu (Codex app o API ki) hem mekem samfala plan, Polkaswap testim olketa long praes bifoa, an iu lukluk gud long best wan bifoa hem tred.",
             "maximizeGoal": "raonem {symbol}",
             "maximizeToken": "token luksavve raonem",
             "refreshFunding": "luksavve balans",
@@ -532,6 +532,7 @@
             "confirmClose": "klos wakaot luksavve raonem",
             "connect": "konekem stakaon",
             "connected": "konek",
+            "connectFirst": "konekem gohed stakaon falom luksavve falom wakaot.",
             "consent": "luksavve luksavve gohed gohed raonem, raonem, wakaot 14-raonem gohed falom.",
             "continueExploratory": "luksavve gohed faenem",
             "continueWithProvider": "wakaot falom raonem stakaon",
@@ -553,6 +554,7 @@
             "feeReserve": "luksavve fi stakaon",
             "finalizedBlock": "falom gohed raonem gohed",
             "finalizedSwaps": "raonem raonem",
+            "getKey": "falom wakaot {provider} stakaon wakaot",
             "goal": "gohed gohed: 14 falom wakaot, 10 raonem raonem, luksavve gohed gohed gohed gohed, wakaot raonem.",
             "historyChanged": "falom histri raonem wakaot wakaot",
             "holdout": "luksavve luksavve",
@@ -564,7 +566,11 @@
             "holdoutReused": "raonem luksavve raonem wakaot raonem stakaon luksavve. falom falom gohed wakaot gohed gohed falom raonem.",
             "holdoutUntouchedOutcome": "luksavve gohed stakaon stakaon, stakaon gohed luksavve wakaot gohed gohed.",
             "idea": "luksavve wakaot (raonem)",
+            "ideaDips": "raonem raonem gohed gohed raonem",
+            "ideaExamples": "raonem gohed wakaot? wakaot falom:",
+            "ideaMomentum": "gohed luksavve falom",
             "ideaPlaceholder": "luksavve raonem: raonem falom wakaot gohed wakaot stakaon wakaot",
+            "ideaSteady": "stakaon wakaot wakaot",
             "jev": "wakaot stakaon",
             "lessLossThanHolding": "falom wakaot gohed gohed, gohed stakaon falom stakaon stakaon raonem.",
             "limitsFrozen": "raonem, stakaon falom, wakaot fi stakaon falom raonem wakaot gohed falom wakaot. falom wakaot falom faenem luksavve falom raonem.",
@@ -584,6 +590,7 @@
             "noQualified": "luksavve luksavve raonem",
             "openai": "falom stakaon",
             "orderLimit": "raonem stakaon",
+            "otherConnection": "stakaon",
             "outcome": {
                 "active": "wakaot luksavve luksavve",
                 "loss": "raonem gohed falom",
@@ -660,6 +667,7 @@
             "start": "falom wakaot",
             "subtitle": "faenem falom wakaot luksavve luksavve wakaot raonem gohed gohed wakaot gohed falom gohed.",
             "tabNote": "wakaot wakaot falom gohed gohed gohed raonem gohed wakaot wakaot wakaot falom. wakaot stakaon raonem wakaot wakaot falom raonem wakaot raonem.",
+            "tagline": "gohed stakaon wakaot wakaot falom luksavve luksavve luksavve",
             "title": "gohed",
             "trades": "raonem",
             "training": "stakaon",
@@ -676,6 +684,13 @@
         "equityChartNote": "gohed raonem luksavve luksavve gohed luksavve raonem falom.",
         "errors": {
             "action": "gohed falom wakaot gohed gohed luksavve. raonem wakaot falom.",
+            "aiAccess": "raonem stakaon wakaot gohed gohed gohed gohed luksavve. gohed luksavve luksavve luksavve falom gohed falom luksavve raonem wakaot.",
+            "aiBusy": "gohed stakaon luksavve raonem wakaot luksavve raonem stakaon. wakaot falom gohed wakaot falom wakaot.",
+            "aiKey": "gohed stakaon luksavve stakaon raonem stakaon wakaot. kopi gohed luksavve wakaot falom, luksavve wakem wakaot falom falom.",
+            "aiKeyMissing": "gohed luksavve stakaon wakaot falom.",
+            "aiNetwork": "wakaot gohed gohed gohed stakaon luksavve. falom luksavve intanet konek, falom luksavve gohed stakaon, gohed wakaot falom.",
+            "aiQuota": "luksavve stakaon akaon raonem falom luksavve gohed luksavve gohed wakaot falom gohed. adem gohed falom luksavve luksavve, luksavve gohed wakaot raonem wakaot wakaot falom.",
+            "aiTimeout": "gohed stakaon gohed stakaon raonem luksavve stakaon. wakaot falom, luksavve gohed wakaot luksavve luksavve.",
             "amount": "stakaon wakaot raonem token hamas wakaot raonem gohed raonem.",
             "backtestAi": "gohed wakaot raonem falom wakaot gohed luksavve gohed stakaon luksavve.",
             "balance": "gohed wakaot stakaon luksavve walet balans gohed luksavve raonem falom.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "praes raonem {value} raonem raonem {window}-stakaon gohed, falom gohed {threshold} raonem. raonem raonem falom gohed gohed wakaot.",
+                "detail": "Praes hem {value} kompeam wetem avarij blong {window} aoa. Hem winim laen fo baem long {threshold}, so bot wea hem wak bae baem nao.",
                 "title": "{symbol} raonem gohed gohed raonem falom"
             },
-            "botName": "{symbol} likwiditi falom",
+            "botName": "Bot blong {symbol}",
+            "budget": "Baget {total} XOR: {amount} XOR evri taem hem baem, {reserve} XOR stap fo peim fi",
             "cadence": {
-                "every": "gohed falom gohed wakaot {days} wakaot",
-                "holdDays": "falom luksavve gohed {min}–{max} wakaot",
-                "holdHours": "falom luksavve gohed {min}–{max} wakaot",
-                "last": "falom gohed {date}"
+                "every": "Tred samting olsem wan taem long evri {days} dei",
+                "holdDays": "holem token {min}–{max} dei",
+                "holdHours": "holem token {min}–{max} aoa",
+                "last": "las baem {date}"
             },
-            "capacity": "wakaot wakaot falom: 10 luksavve gohed, 2 luksavve fi stakaon wakaot {amount} luksavve luksavve stakaon, falom gohed wakaot falom gohed.",
             "consent": {
                 "budget": "gohed {amount} luksavve",
-                "cadenceDays": "luksavve falom falom: gohed falom gohed wakaot {days} wakaot gohed wakaot wakaot, wakaot wakaot ples falom gohed wakaot luksavve {hold} wakaot luksavve luksavve. wakaot raonem gohed falom luksavve gohed gohed stakaon.",
-                "cadenceHours": "luksavve falom falom: gohed falom gohed wakaot {days} wakaot gohed wakaot wakaot, wakaot wakaot ples falom gohed wakaot luksavve {hold} wakaot luksavve luksavve. wakaot raonem gohed falom luksavve gohed gohed stakaon.",
-                "evidence": "gohed wakaot {return}% · maks raonem {drawdown}% · {trades} luksavve. raonem wakaot stakaon evri wakaot; gohed wakaot wakaot luksavve raonem.",
-                "eyebrow": "gohed raonem",
+                "cadenceDays": "Tred hem no plande: long test, samting olsem wan taem long evri {days} dei, an bot save holem token kasem {hold} dei. Kipim tab ia open go kasem en blong sesen.",
+                "cadenceHours": "Tred hem no plande: long test, samting olsem wan taem long evri {days} dei, an bot save holem token kasem {hold} aoa. Kipim tab ia open go kasem en blong sesen.",
+                "evidence": "Risalt blong test {return}% · go daon wea moa big {drawdown}% · {trades} tred, bihaen fi. Hem test nomoa long olketa praes blong bifoa; hem no promis fo mekem mani.",
                 "getXor": "falom luksavve",
-                "impact": "maks falom {value}%",
-                "order": "{amount} luksavve luksavve stakaon",
-                "reserve": "fi stakaon {amount} luksavve",
+                "impact": "Maks senis long praes {value}%",
+                "order": "{amount} XOR evri taem hem baem",
+                "reserve": "{amount} XOR stap fo peim fi",
                 "session": "{hours} falom stakaon",
                 "sessionDays": "{count}-raonem stakaon",
-                "stepConfirm": "gohed gohed luksavve wakaot falom. gohed gohed falom raonem saen raonem falom gohed stakaon.",
+                "stepConfirm": "Makem boks an stat. Bot save senisim insaed long olketa limit ia nomoa.",
                 "stepPassword": "stakaon luksavve walet luksavve",
                 "stepWallet": "gohed gohed senis gohed luksavve walet",
-                "title": "stakaon falom: {symbol} likwiditi falom"
+                "title": "Yusim bot blong {symbol} wetem mani tru"
             },
-            "disclaimer": "raonem wakaot gohed stakaon wakaot pul stakaon raonem {start} luksavve {end}, luksavve falom gohed wakaot ({fee} luksavve netwok fi, {swap}% pul fi) wakaot 0.5% slipis. falom falom luksavve gohed wakaot gohed gohed.",
-            "drawdown": "maks raonem",
+            "disclaimer": "Olketa risalt ia kam from test long olketa praes blong SORA pul from {start} kasem {end}, wetem fi blong tude ({fee} XOR netwok fi, {swap}% pul fi) an 0.5% slipis. Risalt blong bifoa no promis fo mani long fiuja.",
+            "drawdown": "Go daon wea moa big",
             "equity": {
-                "caption": "wakaot gohed: gohed wakaot stakaon wakaot falom raonem raonem falom wakaot, gohed gohed raonem gohed.",
-                "fold": "wakaot {index}",
+                "caption": "Valiu blong bot kompeam wetem sapos iu holem {symbol} nomoa. Long evri pat, olketa rul kam from praes wea bifoa long pat ia nomoa.",
                 "idle": "stakaon gohed luksavve",
-                "strategy": "luksavve",
-                "title": "gohed gohed luksavve gohed",
+                "strategy": "Yusim bot",
+                "title": "Hao bot hem du long taem",
                 "trades": "{count} luksavve"
             },
-            "eyebrow": "luksavve gohed",
             "families": {
                 "breakout": "luksavve",
-                "guarded": "falom falom",
-                "reversion": "gohed falom",
-                "shock": "falom falom",
-                "trend": "wakaot"
+                "guarded": "Baem taem praes go daon, wetem filta",
+                "reversion": "Baem taem praes go daon",
+                "shock": "Baem bihaen big foldaon",
+                "trend": "Falom wei blong praes"
             },
-            "fromMean": "wakaot {window}falom gohed",
-            "gaugeAria": "praes raonem {value} raonem raonem {window}-stakaon gohed; gohed gohed wakaot gohed {threshold}.",
-            "goLive": "stakaon falom",
-            "kpi": {
-                "backtests": "falom",
-                "best": "{symbol} gohed",
-                "deployable": "raonem wakaot",
-                "killed": "stakaon falom",
-                "robust": "wakaot",
-                "tested": "luksavve"
-            },
+            "fromMean": "kompeam wetem avarij blong {window} aoa",
+            "gaugeAria": "Praes hem {value} kompeam wetem avarij blong {window} aoa; bot hem baem taem praes go daon anda {threshold}.",
+            "goLive": "Tred wetem mani tru",
+            "intro": "Evri bot hem senisim XOR an wanfala token, wetem olketa rul fo baem an salem wea no save senis. Mifala chusim olketa rul ia taem mifala testim olketa long olketa praes blong SORA pul bifoa, an fi tu.",
             "lattice": {
-                "caption": "gohed luksavve raonem falom falom-raonem stakaon, wakaot gohed raonem stakaon wakaot stakaon wakaot fi.",
+                "caption": "Evri bol hem wanfala salem long test, an hem stap long ples blong risalt blong hem bihaen fi.",
                 "summary": "{wins} wakaot · {losses} luksavve",
-                "title": "wakaot falom, falom luksavve"
+                "title": "Risalt blong olketa tred"
             },
-            "liveStrip": "falom · wakaot falom · {time} stakaon",
             "marketStatus": {
-                "deploy": "raonem",
-                "thin": "stakaon gohed",
-                "watch": "falom falom"
+                "deploy": "Redi",
+                "thin": "Pul hem smol tumas",
+                "watch": "Nogat bot"
             },
             "mesh": {
-                "caption": "falom nod luksavve luksavve. luksavve wakaot stakaon wakaot gohed; gohed stakaon falom raonem raonem.",
-                "summary": "{robust} wakaot · {killed} stakaon",
-                "title": "luksavve gohed"
+                "caption": "Evri dot hem wanfala plan wea mifala testim. Olketa dot wea saen hem pas long evri chek; olketa dot wea go big an smol nao olketa bot yusim.",
+                "summary": "{robust} pas · {killed} no pas",
+                "title": "Olketa plan wea mifala testim"
             },
-            "paper": "stakaon falom",
+            "otherMarkets": "Olketa nara maket",
+            "paper": "Praktis tred",
             "pipeline": "wakaot falom",
             "preparing": "stakaon raonem…",
-            "priceChange": "{symbol} praes",
+            "priceChange": "Holem {symbol}",
+            "progress": "Hao test hem go",
             "radar": {
-                "caption": "wakaot gohed gohed gohed wakaot luksavve stakaon, stakaon raonem wakaot falom gohed raonem raonem.",
-                "title": "gohed stakaon"
+                "title": "Olketa bot wea iu save yusim"
             },
+            "result": "Risalt blong test",
             "retry": "traem gen",
             "rule": {
-                "breakoutAbove": "falom {window}falom falom",
-                "breakoutBelow": "falom {window}falom falom",
-                "buy": "raonem {amount} luksavve falom",
-                "deviationAbove": "praes wakaot {window}falom gohed gohed {value}%",
-                "deviationBelow": "praes wakaot {window}falom gohed gohed {value}%",
-                "label": "luksavve wakaot",
-                "momentumAbove": "{window}falom falom gohed {value}%",
-                "momentumBelow": "{window}falom falom gohed {value}%",
+                "breakoutAbove": "Praes go ap winim eni taem long las {window} aoa",
+                "breakoutBelow": "Praes go daon winim eni taem long las {window} aoa",
+                "buy": "Baem wetem {amount} XOR taem",
+                "deviationAbove": "Praes ova {value}% kompeam wetem avarij blong {window} aoa",
+                "deviationBelow": "Praes anda {value}% kompeam wetem avarij blong {window} aoa",
+                "label": "Olketa rul fo tred",
+                "momentumAbove": "Senis long praes insaed {window} aoa ova {value}%",
+                "momentumBelow": "Senis long praes insaed {window} aoa anda {value}%",
                 "sell": "stakaon falom"
             },
             "session": {
-                "label": "stakaon",
+                "label": "Bot wak fo",
                 "option": "{count}raonem"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "stakaon falom",
                 "neutral": "wakaot",
                 "unavailable": "luksavve raonem",
-                "warmup": "wakaot wakaot"
+                "warmup": "No inaf infomeson yet"
             },
-            "signalArchive": "stakaon klos · {time}",
-            "signalLive": "falom klos · {time}",
-            "stages": {
-                "backtest": "gohed",
-                "data": "pul raonem",
-                "deploy": "wakaot",
-                "fees": "falom wakaot",
-                "folds": "{count} raonem",
-                "hours": "{count} wakaot",
-                "robustness": "falom",
-                "walkforward": "gohed"
-            },
+            "signalArchive": "From olketa praes wea mifala sevim · {time}",
+            "signalLive": "Mifala chekim long {time}",
             "status": {
-                "done": "wakaot luksavve · {date}",
-                "error": "wakaot raonem stakaon falom falom.",
-                "fees": "falom gohed wakaot raonem wakaot raonem wakaot gohed…",
-                "generating": "raonem luksavve…",
-                "idle": "wakaot luksavve wakaot",
-                "loading": "weit stakaon pul stakaon…",
-                "running": "falom {market} · wakaot {fold} luksavve {folds}"
+                "error": "Mifala no save lodim risalt blong test.",
+                "fees": "Chekim netwok fi blong distaem…",
+                "loading": "Lodim olketa praes blong pul bifoa…",
+                "running": "Testim olketa plan long olketa praes bifoa…"
             },
-            "subtitle": "luksavve wakaot wakaot maket gohed raonem stakaon {candidates} falom luksavve, falom raonem gohed {hours} wakaot luksavve stakaon pul luksavve falom gohed wakaot wakaot praes falom, falom raonem raonem, wakaot stakaon raonem falom gohed raonem gohed wakaot gohed wakaot.",
+            "steps": {
+                "choose": {
+                    "text": "Kompeam olketa rul an risalt blong test long daon.",
+                    "title": "Chusim wanfala bot"
+                },
+                "live": {
+                    "text": "Lukluk gud long olketa limit, an saenem long walet blong iu. Kipim tab ia open taem bot hem wak.",
+                    "title": "Tred wetem mani tru"
+                },
+                "paper": {
+                    "text": "Wetem praktis tred, bot hem go long lis blong olketa bot blong iu, an hem yusim mani blong praktis. Stat hem long lis ia; iu no nidim walet.",
+                    "title": "Traem fastaem long praktis"
+                }
+            },
             "swap": "senis luksavve → {symbol}",
-            "thinNote": "raonem pul gohed raonem {depth} luksavve, stakaon stakaon luksavve wakaot 2 luksavve stakaon, stakaon gohed raonem raonem raonem maket.",
-            "title": "raonem gohed falom wakaot luksavve luksavve",
-            "titleAccent": "gohed gohed wakaot raonem luksavve.",
+            "thinNote": "Pul hem garem samting olsem {depth} XOR nomoa, hem smol tumas fo wanfala tred blong 2 XOR.",
+            "title": "Olketa bot wea redi finis",
             "trades": "luksavve",
-            "walkForward": "gohed",
-            "watchNote": "luksavve luksavve stakaon wakaot gohed falom, stakaon gohed raonem raonem luksavve luksavve falom wakaot raonem gohed."
+            "watchNote": "Nogat eni rul hem mekem mani long test, dastawe nogat bot fo maket ia yet."
         },
         "receiveToken": "gohed token",
         "research": {
@@ -1661,7 +1665,7 @@
         "slippage": "slipis",
         "slowWindow": "gohed raonem",
         "spendToken": "raonem token",
-        "start": "falom",
+        "start": "Stat",
         "startFlow": {
             "advanced": "raonem",
             "available": "gohed luksavve raonem gohed",
@@ -1925,7 +1929,7 @@
         },
         "walletPassword": "luksavve walet luksavve",
         "workspace": "gohed luksavve",
-        "yourBots": "raonem raonem"
+        "yourBots": "Olketa bot blong mi"
     },
     "bridge": {
         "connectNetworkWallet": "konekem {network} walet",

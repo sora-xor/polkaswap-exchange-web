@@ -27,6 +27,7 @@ test('research pauses to IndexedDB and requires provider reconnection after relo
   await expect(page.getByTestId('bot-discovery')).toBeVisible();
   await expect(page.getByTestId('discovery-start')).toBeDisabled();
 
+  await page.getByTestId('discovery-provider-other').click();
   await page.getByTestId('discovery-provider').selectOption('custom');
   await page.getByTestId('discovery-endpoint').fill('https://offline.invalid/discovery');
   await page.getByTestId('discovery-connect').click();
@@ -45,6 +46,7 @@ test('research pauses to IndexedDB and requires provider reconnection after relo
   await expect(page.getByTestId('discovery-resume')).toBeDisabled();
   await expect(page.getByTestId('discovery-idea')).toHaveValue('Buy only after completed-hour signals');
   await expect(page.getByTestId('discovery-saved-provider')).toContainText('bots.discovery.custom');
+  await page.getByTestId('discovery-provider-other').click();
   await page.getByTestId('discovery-provider').selectOption('custom');
   await page.getByTestId('discovery-endpoint').fill('https://offline.invalid/discovery');
   await page.getByTestId('discovery-connect').click();
@@ -66,6 +68,7 @@ test('research pauses to IndexedDB and requires provider reconnection after relo
 test('overlapping holdout is disclosed before a request or checkpoint clear', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => (window as HarnessWindow).__discoveryHarness.seedHoldoutOverlap());
+  await page.getByTestId('discovery-provider-other').click();
   await page.getByTestId('discovery-provider').selectOption('custom');
   await page.getByTestId('discovery-endpoint').fill('https://offline.invalid/discovery');
   await page.getByTestId('discovery-connect').click();
@@ -98,6 +101,7 @@ test('overlapping holdout is disclosed before a request or checkpoint clear', as
 
 test('reconnecting with a different provider requires an explicit switch', async ({ page }) => {
   await page.goto('/');
+  await page.getByTestId('discovery-provider-other').click();
   await page.getByTestId('discovery-provider').selectOption('custom');
   await page.getByTestId('discovery-endpoint').fill('https://offline.invalid/discovery');
   await page.getByTestId('discovery-connect').click();
@@ -106,7 +110,7 @@ test('reconnecting with a different provider requires an explicit switch', async
   await page.reload();
 
   await expect(page.getByTestId('discovery-saved-provider')).toContainText('bots.discovery.custom');
-  await page.getByTestId('discovery-provider').selectOption('claude');
+  await page.getByTestId('discovery-provider-claude').click();
   await page.getByTestId('discovery-api-key').fill('offline-fixture-only');
   await page.getByTestId('discovery-connect').click();
   await page.getByTestId('discovery-resume').click();

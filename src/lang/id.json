@@ -200,6 +200,7 @@
     "bots": {
         "above": "Jual di atas ambang",
         "activity": "Aktivitas",
+        "advanced": "Lanjutan",
         "aiBacktestNote": "Buat dan tinjau strategi deterministik sebelum pengujian historis.",
         "aiConnection": "Koneksi AI",
         "allocation": "Alokasi",
@@ -214,7 +215,6 @@
         "authorizeStart": "Izinkan dan mulai",
         "autopilot": {
             "addressCopied": "Alamat disalin",
-            "advanced": "Lanjutan",
             "begin": "Start AI trading",
             "budget": "Alokasi ({symbol})",
             "budgetUnselected": "Alokasi",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "Ditambah {amount} {symbol} untuk biaya jaringan.",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "MULAI",
+            "go": "Cari strategi",
             "goal": "Kembangkan modal saya",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "Pilih anggaran dan token yang ingin Anda perbanyak. AI Anda (aplikasi Codex atau kunci API) menyusun strategi, Polkaswap mengujinya dengan data masa lalu, lalu Anda meninjau yang terbaik sebelum dipakai bertransaksi.",
             "maximizeGoal": "Tambah {symbol}",
             "maximizeToken": "Token yang ingin ditambah",
             "refreshFunding": "Perbarui saldo",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "Hubungkan AI",
             "connected": "Terhubung",
+            "connectFirst": "Hubungkan AI terlebih dahulu untuk memulai penelitian.",
             "consent": "Saya meninjau bot, anggaran, dan hibah penandatanganan 14 hari yang sebenarnya.",
             "continueExploratory": "Lanjutkan pencarian eksploratif",
             "continueWithProvider": "Lanjutkan dengan AI ini",
@@ -553,6 +554,7 @@
             "feeReserve": "Cadangan biaya XOR",
             "finalizedBlock": "Diverifikasi pada blok yang diselesaikan",
             "finalizedSwaps": "swap yang diselesaikan",
+            "getKey": "Dapatkan kunci API {provider}",
             "goal": "Setiap bot: 14 hari aktif, 10 swap selesai, nilai bersih positif di atas kepemilikan, dalam penarikan.",
             "historyChanged": "Sejarah terverifikasi berubah selama penelitian",
             "holdout": "Penahanan yang tidak tersentuh",
@@ -564,7 +566,11 @@
             "holdoutReused": "Periode uji tertahan berikutnya tumpang tindih dengan tanggal yang sudah dilihat di browser ini. Hasil hanya bersifat eksploratif dan tidak dapat digunakan untuk menyetujui bot live.",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "Ide strategi (opsional)",
+            "ideaDips": "Beli saat turun dalam tren naik",
+            "ideaExamples": "Butuh ide? Coba salah satu:",
+            "ideaMomentum": "Ikuti momentum yang kuat",
             "ideaPlaceholder": "Misalnya: beli saat pullback pendek dalam tren naik",
+            "ideaSteady": "Pembelian harian yang rutin",
             "jev": "API Jev",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "Alokasi, plafon pesanan, dan cadangan biaya ditetapkan oleh penelitian terverifikasi. Mulai pencarian baru untuk mengubahnya.",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "API OpenAI",
             "orderLimit": "Pesanan maksimal",
+            "otherConnection": "Lainnya",
             "outcome": {
                 "active": "Bekerja menuju tujuan",
                 "loss": "Batas penarikan tercapai",
@@ -660,6 +667,7 @@
             "start": "Mulai penelitian",
             "subtitle": "Cari pasar terverifikasi untuk mengetahui strategi dan tinjau aturan pastinya sebelum melakukan perdagangan langsung.",
             "tabNote": "Riset dan perdagangan live berjalan selama tab dan komputer ini tetap aktif. Kampanye yang dijeda memerlukan peninjauan dan pembukaan kunci lagi.",
+            "tagline": "Biarkan AI menemukan dan menguji strategi untuk Anda",
             "title": "Temukan",
             "trades": "Pertukaran",
             "training": "Pelatihan",
@@ -676,6 +684,13 @@
         "equityChartNote": "Jalankan strategi untuk mulai mencatat kinerjanya.",
         "errors": {
             "action": "Tindakan tidak dapat diselesaikan. Coba lagi.",
+            "aiAccess": "Kunci API ini tidak dapat menggunakan model yang dipilih. Pilih model lain atau periksa izin kunci.",
+            "aiBusy": "Penyedia AI sedang sibuk atau tidak tersedia sementara. Coba lagi dalam beberapa menit.",
+            "aiKey": "Penyedia AI menolak kunci API ini. Salin ulang kunci lengkapnya atau buat yang baru.",
+            "aiKeyMissing": "Tempel kunci API Anda terlebih dahulu.",
+            "aiNetwork": "Tidak dapat menghubungi penyedia AI. Periksa koneksi internet, VPN, atau pemblokir konten Anda, lalu coba lagi.",
+            "aiQuota": "Akun AI Anda kehabisan kredit atau mencapai batas permintaan. Tambahkan kredit di penyedia Anda, atau tunggu satu menit lalu coba lagi.",
+            "aiTimeout": "AI terlalu lama menjawab. Coba lagi atau pilih model yang lebih cepat.",
             "amount": "Masukkan jumlah token yang valid sesuai presisi desimalnya.",
             "backtestAi": "Buat dan tinjau aturan deterministik sebelum uji historis strategi AI.",
             "balance": "Token yang dialokasikan atau saldo dompet tidak cukup untuk transaksi ini.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "Harga berjarak {value} dari rata-rata {window} jam, melewati pemicu {threshold}. Inilah saat bot membeli.",
+                "detail": "Harga {value} dibanding rata-rata {window} jam, melewati batas beli {threshold}, jadi bot yang sedang berjalan akan membeli sekarang.",
                 "title": "{symbol} sedang berada di zona beli"
             },
-            "botName": "Bot pemanen likuiditas {symbol}",
+            "botName": "Bot {symbol}",
+            "budget": "Anggaran {total} XOR: {amount} XOR per pembelian, {reserve} XOR disisihkan untuk biaya",
             "cadence": {
-                "every": "Sekitar satu peluang setiap {days} hari",
-                "holdDays": "posisi ditutup dalam {min}–{max} hari",
-                "holdHours": "posisi ditutup dalam {min}–{max} jam",
-                "last": "terakhir pada {date}"
+                "every": "Bertransaksi sekitar sekali tiap {days} hari",
+                "holdDays": "posisi ditahan {min}–{max} hari",
+                "holdHours": "posisi ditahan {min}–{max} jam",
+                "last": "pembelian terakhir {date}"
             },
-            "capacity": "Kapasitas sengaja dibatasi: anggaran 10 XOR, cadangan biaya 2 XOR, dan {amount} XOR per pesanan, karena likuiditas pool ini tipis.",
             "consent": {
                 "budget": "Anggaran {amount} XOR",
-                "cadenceDays": "Transaksi jarang terjadi: dalam uji buta, ada sekitar satu peluang setiap {days} hari, dan menutup sebuah posisi bisa memakan waktu hingga {hold} hari. Biarkan tab ini terbuka sepanjang sesi.",
-                "cadenceHours": "Transaksi jarang terjadi: dalam uji buta, ada sekitar satu peluang setiap {days} hari, dan menutup sebuah posisi bisa memakan waktu hingga {hold} jam. Biarkan tab ini terbuka sepanjang sesi.",
-                "evidence": "Hasil uji walk-forward {return}% · penurunan maksimum {drawdown}% · {trades} transaksi. Bersifat hipotetis dan sudah dipotong semua biaya; bukan janji keuntungan.",
-                "eyebrow": "Tinjauan sekilas",
+                "cadenceDays": "Transaksi jarang terjadi: dalam pengujian, sekitar sekali tiap {days} hari, dan posisi bisa tetap terbuka hingga {hold} hari. Biarkan tab ini terbuka sepanjang sesi.",
+                "cadenceHours": "Transaksi jarang terjadi: dalam pengujian, sekitar sekali tiap {days} hari, dan posisi bisa tetap terbuka hingga {hold} jam. Biarkan tab ini terbuka sepanjang sesi.",
+                "evidence": "Hasil uji {return}% · penurunan terbesar {drawdown}% · {trades} transaksi, setelah biaya. Disimulasikan dengan data masa lalu; bukan janji keuntungan.",
                 "getXor": "Dapatkan XOR",
                 "impact": "Dampak harga maksimum {value}%",
-                "order": "{amount} XOR per pesanan",
-                "reserve": "Cadangan biaya {amount} XOR",
+                "order": "{amount} XOR per pembelian",
+                "reserve": "{amount} XOR disisihkan untuk biaya",
                 "session": "Sesi {hours} jam",
                 "sessionDays": "Sesi {count} hari",
-                "stepConfirm": "Centang kotak, lalu mulai. Bot hanya dapat menandatangani swap dalam batas ini.",
+                "stepConfirm": "Centang kotak, lalu mulai. Bot hanya dapat melakukan swap dalam batas ini.",
                 "stepPassword": "Masukkan kata sandi dompet",
                 "stepWallet": "Setujui setiap swap di dompet Anda",
-                "title": "Mulai perdagangan nyata: bot pemanen likuiditas {symbol}"
+                "title": "Mulai perdagangan nyata dengan bot {symbol}"
             },
-            "disclaimer": "Riset hipotetis atas status pool SORA yang diarsipkan dari {start} hingga {end}, dihitung dengan biaya saat ini (biaya jaringan {fee} XOR, biaya pool {swap}%) dan slippage 0.5%. Hasil masa lalu tidak memprediksi imbal hasil di masa depan.",
-            "drawdown": "Penurunan maksimum",
+            "disclaimer": "Hasil disimulasikan dengan data pool SORA dari {start} hingga {end}, memakai biaya saat ini (biaya jaringan {fee} XOR, biaya pool {swap}%) dan slippage 0.5%. Hasil masa lalu tidak menjamin imbal hasil di masa depan.",
+            "drawdown": "Penurunan terbesar",
             "equity": {
-                "caption": "Walk-forward buta: setiap lipatan hanya memperdagangkan aturan yang dipilih dari jam-jam sebelumnya, lalu siklus belajar ulang.",
-                "fold": "Lipatan {index}",
+                "caption": "Nilai bot dibandingkan dengan menyimpan {symbol}. Setiap periode memakai aturan yang dipilih hanya dari data sebelumnya.",
                 "idle": "Tetap di XOR",
-                "strategy": "Strategi",
-                "title": "Bandingkan sebelum berkomitmen",
+                "strategy": "Bot",
+                "title": "Hasil dari waktu ke waktu",
                 "trades": "{count} transaksi"
             },
-            "eyebrow": "Lab Strategi",
             "families": {
                 "breakout": "Penembusan",
-                "guarded": "Kontra terlindungi",
-                "reversion": "Kontra dislokasi",
-                "shock": "Kontra guncangan",
-                "trend": "Tren"
+                "guarded": "Beli saat turun dengan filter",
+                "reversion": "Beli saat turun",
+                "shock": "Beli saat anjlok",
+                "trend": "Ikuti tren"
             },
-            "fromMean": "terhadap rata-rata {window} jam",
-            "gaugeAria": "Harga berjarak {value} dari rata-rata {window} jam; bot membeli di bawah {threshold}.",
+            "fromMean": "dibanding rata-rata {window} jam",
+            "gaugeAria": "Harga {value} dibanding rata-rata {window} jam; bot membeli di bawah {threshold}.",
             "goLive": "Perdagangan nyata",
-            "kpi": {
-                "backtests": "Uji historis",
-                "best": "Uji walk-forward {symbol}",
-                "deployable": "Pasar siap perdagangan nyata",
-                "killed": "Tingkat eliminasi",
-                "robust": "Strategi bertahan",
-                "tested": "Strategi diuji"
-            },
+            "intro": "Setiap bot menukar antara XOR dan satu token dengan aturan beli dan jual yang tetap. Aturan ini dipilih dengan mengujinya pada data pool SORA masa lalu, termasuk biaya.",
             "lattice": {
-                "caption": "Setiap bola adalah satu penjualan di luar sampel, yang jatuh pada hasil realisasinya setelah semua biaya.",
+                "caption": "Setiap bola adalah satu penjualan dalam pengujian, ditempatkan menurut hasilnya setelah biaya.",
                 "summary": "{wins} untung · {losses} rugi",
-                "title": "Satu transaksi, satu bola"
+                "title": "Hasil transaksi"
             },
-            "liveStrip": "Langsung · jaringan utama SORA · {time} UTC",
             "marketStatus": {
-                "deploy": "Siap diperdagangkan",
-                "thin": "Terlalu tipis",
-                "watch": "Tidak ikut dulu"
+                "deploy": "Siap",
+                "thin": "Pool terlalu kecil",
+                "watch": "Belum ada bot"
             },
             "mesh": {
-                "caption": "Satu simpul untuk setiap strategi. Simpul yang menyala lolos semua saringan; simpul yang berdenyut sedang diterapkan.",
-                "summary": "{robust} bertahan · {killed} ditolak",
-                "title": "Jaringan strategi"
+                "caption": "Setiap titik adalah satu strategi yang diuji. Titik terang lolos semua pemeriksaan; titik yang berdenyut adalah strategi yang dipakai bot.",
+                "summary": "{robust} lolos · {killed} ditolak",
+                "title": "Strategi yang diuji"
             },
+            "otherMarkets": "Pasar lainnya",
             "paper": "Perdagangan simulasi",
             "pipeline": "Alur riset",
             "preparing": "Menyiapkan tinjauan…",
-            "priceChange": "Harga {symbol}",
+            "priceChange": "Menyimpan {symbol}",
+            "progress": "Kemajuan pengujian",
             "radar": {
-                "caption": "Aturan dievaluasi pada jam terakhir yang sudah selesai, persis seperti yang dilihat bot nyata.",
-                "title": "Radar peluang"
+                "title": "Bot yang tersedia"
             },
+            "result": "Hasil uji",
             "retry": "Coba lagi",
             "rule": {
-                "breakoutAbove": "Tertinggi baru {window} jam",
-                "breakoutBelow": "Terendah baru {window} jam",
+                "breakoutAbove": "Harga mencapai titik tertinggi baru {window} jam",
+                "breakoutBelow": "Harga mencapai titik terendah baru {window} jam",
                 "buy": "Beli dengan {amount} XOR saat",
-                "deviationAbove": "Harga terhadap rata-rata {window} jam di atas {value}%",
-                "deviationBelow": "Harga terhadap rata-rata {window} jam di bawah {value}%",
-                "label": "Aturan strategi",
-                "momentumAbove": "Perubahan {window} jam di atas {value}%",
-                "momentumBelow": "Perubahan {window} jam di bawah {value}%",
+                "deviationAbove": "Harga dibanding rata-rata {window} jam di atas {value}%",
+                "deviationBelow": "Harga dibanding rata-rata {window} jam di bawah {value}%",
+                "label": "Aturan perdagangan",
+                "momentumAbove": "Perubahan harga {window} jam di atas {value}%",
+                "momentumBelow": "Perubahan harga {window} jam di bawah {value}%",
                 "sell": "Jual saat"
             },
             "session": {
-                "label": "Durasi sesi",
+                "label": "Jalankan selama",
                 "option": "{count} hari"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "Zona jual",
                 "neutral": "Menunggu",
                 "unavailable": "Tidak ada data",
-                "warmup": "Pemanasan"
+                "warmup": "Data belum cukup"
             },
-            "signalArchive": "Penutupan arsip · {time}",
-            "signalLive": "Penutupan langsung · {time}",
-            "stages": {
-                "backtest": "Uji historis",
-                "data": "Data pool",
-                "deploy": "Penerapan",
-                "fees": "Biaya terkini",
-                "folds": "{count} lipatan",
-                "hours": "{count} jam",
-                "robustness": "Ketahanan",
-                "walkforward": "Uji walk-forward"
-            },
+            "signalArchive": "Berdasarkan harga tersimpan · {time}",
+            "signalLive": "Diperiksa {time}",
             "status": {
-                "done": "Riset selesai · {date}",
-                "error": "Riset sedang tidak tersedia.",
-                "fees": "Membaca biaya terkini dari blok SORA yang sudah final…",
-                "generating": "Membuat strategi…",
-                "idle": "Siap memulai riset",
-                "loading": "Memuat status pool yang diarsipkan…",
-                "running": "Menguji {market} · lipatan {fold} dari {folds}"
+                "error": "Tidak dapat memuat hasil uji.",
+                "fees": "Memeriksa biaya jaringan saat ini…",
+                "loading": "Memuat data pool masa lalu…",
+                "running": "Menguji strategi pada data masa lalu…"
             },
-            "subtitle": "Untuk setiap pasar SORA, siklus riset menulis {candidates} strategi berbasis aturan, memutarnya ulang pada {hours} jam data cadangan pool nyata dengan biaya dan dampak harga yang tepat, menolak apa pun yang rapuh, dan hanya menerapkan yang menghasilkan untung dalam uji walk-forward buta.",
+            "steps": {
+                "choose": {
+                    "text": "Bandingkan aturan dan hasil uji di bawah.",
+                    "title": "Pilih bot"
+                },
+                "live": {
+                    "text": "Tinjau batasnya dan konfirmasi dengan dompet Anda. Biarkan tab ini terbuka selama bot berjalan.",
+                    "title": "Perdagangan nyata"
+                },
+                "paper": {
+                    "text": "Tombol “Perdagangan simulasi” menambahkan bot ke “Bot Saya” dengan dana virtual. Tekan “Mulai” di sana; tidak perlu dompet.",
+                    "title": "Coba secara simulasi"
+                }
+            },
             "swap": "Tukar XOR → {symbol}",
-            "thinNote": "Median kedalaman pool adalah {depth} XOR, terlalu dangkal untuk pesanan 2 XOR, sehingga siklus melewati pasar ini.",
-            "title": "Bot yang menguji ribuan strategi",
-            "titleAccent": "sebelum mempertaruhkan satu XOR pun.",
+            "thinNote": "Pool ini berisi sekitar {depth} XOR, terlalu sedikit untuk transaksi 2 XOR.",
+            "title": "Bot siap pakai",
             "trades": "Transaksi",
-            "walkForward": "Uji walk-forward",
-            "watchNote": "Tidak ada strategi yang lolos semua saringan di sini, jadi siklus membiarkan XOR Anda menganggur dan terus memantau."
+            "watchNote": "Tidak ada aturan yang menghasilkan untung dalam pengujian, jadi belum ada bot untuk pasar ini."
         },
         "receiveToken": "Token perdagangan",
         "research": {

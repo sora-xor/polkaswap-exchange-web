@@ -3,6 +3,8 @@ export interface BotAiModel {
   id: string;
   name: string;
   createdAt: number;
+  /** Advertised output ceiling (Claude catalog `max_tokens`), used to bound each request. */
+  maxOutputTokens?: number;
 }
 
 /** Keep current text-generation models returned by the provider, excluding unrelated modalities/endpoints. */
@@ -27,7 +29,16 @@ export function parseBotAiModels(data: unknown, provider: 'openai' | 'claude'): 
       typeof record.display_name === 'string' && record.display_name.length <= 160
         ? record.display_name.replace(/[\u0000-\u001f\u007f]/g, '')
         : id;
-    models.set(id, { id, name, createdAt: Number.isFinite(created) ? created : 0 });
+    const maxOutputTokens =
+      provider === 'claude' && Number.isSafeInteger(record.max_tokens) && (record.max_tokens as number) > 0
+        ? (record.max_tokens as number)
+        : undefined;
+    models.set(id, {
+      id,
+      name,
+      createdAt: Number.isFinite(created) ? created : 0,
+      ...(maxOutputTokens ? { maxOutputTokens } : {}),
+    });
   }
   return [...models.values()].sort((a, b) => b.createdAt - a.createdAt || a.id.localeCompare(b.id));
 }

@@ -18,7 +18,9 @@ for (const theme of ['light', 'dark'] as const) {
     await expect(page.getByTestId('discovery-tab')).toHaveAttribute('aria-current', 'page');
     await expect(page.locator('html')).toHaveAttribute('design-system-theme', theme);
     await expect(page.getByTestId('discovery-start')).toBeDisabled();
-    await expect(page.getByTestId('discovery-start')).toBeInViewport();
+    // The first step is the visible action: connect an AI before research can start.
+    await expect(page.getByTestId('discovery-connect')).toBeInViewport();
+    await expect(page.getByTestId('discovery-provider-claude')).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByTestId('discovery-progress')).toHaveCount(0);
     await expect(page.getByTestId('discovery-visuals')).toBeVisible();
     await expect(page.getByTestId('discovery-visuals-empty')).toBeVisible();
@@ -51,6 +53,7 @@ for (const theme of ['light', 'dark'] as const) {
     expect(desktopColumns.columns).not.toBe('none');
     expect(desktopColumns.sideBySide).toBe(true);
     await page.screenshot({ path: testInfo.outputPath(`${theme}-desktop.png`), fullPage: true });
+    await page.getByTestId('discovery-provider-other').click();
     await page.getByTestId('discovery-provider').selectOption('claude-code');
     await expect(page.getByTestId('discovery-pair-code')).toBeVisible();
     await expect(page.getByTestId('discovery-api-key')).toHaveCount(0);
@@ -100,9 +103,9 @@ for (const theme of ['light', 'dark'] as const) {
           })
         )
         .toBe(true);
-      await expect(mobilePage.getByTestId('discovery-provider')).toBeVisible();
+      await expect(mobilePage.getByTestId('discovery-provider-claude')).toBeVisible();
       await expect(mobilePage.getByTestId('discovery-progress')).toHaveCount(0);
-      await expect(mobilePage.getByTestId('discovery-start')).toBeInViewport();
+      await expect(mobilePage.getByTestId('discovery-connect-card')).toBeInViewport();
       await mobilePage.screenshot({ path: testInfo.outputPath(`${theme}-mobile.png`), fullPage: true });
       await mobilePage.screenshot({ path: testInfo.outputPath(`${theme}-mobile-controls.png`) });
       await mobilePage.getByTestId('discovery-visuals').scrollIntoViewIfNeeded();

@@ -11,28 +11,18 @@
 
     <header class="quant-hero quant-glass quant-iridescent quant-reveal" style="--reveal-order: 0">
       <div class="quant-hero-copy">
-        <p class="quant-live" aria-hidden="true">
-          <i class="quant-live-dot" />{{ t('bots.quant.liveStrip', { time: clock }) }}
-        </p>
-        <p class="quant-eyebrow">{{ t('bots.quant.eyebrow') }}</p>
-        <h2 :id="titleId" class="quant-title">
-          {{ t('bots.quant.title') }}
-          <span class="quant-gradient">{{ t('bots.quant.titleAccent') }}</span>
-        </h2>
-        <p class="quant-subtitle">{{ subtitle }}</p>
-        <dl class="quant-kpis">
-          <div
-            v-for="(kpi, index) in kpis"
-            :key="kpi.key"
-            class="quant-kpi quant-reveal"
-            :class="{ highlight: kpi.highlight }"
-            :style="{ '--reveal-order': index + 2 }"
-          >
-            <dt>{{ kpi.label }}</dt>
-            <dd :data-testid="`quant-kpi-${kpi.key}`">{{ kpi.value }}</dd>
-          </div>
-        </dl>
-        <p class="quant-status" data-testid="quant-status" role="status">
+        <h2 :id="titleId" class="quant-title">{{ t('bots.quant.title') }}</h2>
+        <p class="quant-subtitle">{{ t('bots.quant.intro') }}</p>
+        <ol class="quant-steps" data-testid="quant-steps">
+          <li v-for="(step, index) in STEPS" :key="step" class="quant-step">
+            <span class="quant-step-index" aria-hidden="true">{{ index + 1 }}</span>
+            <div>
+              <strong>{{ t(`bots.quant.steps.${step}.title`) }}</strong>
+              <p>{{ t(`bots.quant.steps.${step}.text`) }}</p>
+            </div>
+          </li>
+        </ol>
+        <p v-if="loop.status.value !== 'done'" class="quant-status" data-testid="quant-status" role="status">
           <i :class="['quant-pulse', loop.status.value]" aria-hidden="true" />{{ statusText }}
           <button
             v-if="loop.status.value === 'error'"
@@ -45,35 +35,17 @@
           </button>
         </p>
       </div>
-      <QuantGlassArt class="quant-art" :active="running" />
+      <QuantGlassArt class="quant-art" :active="running" :paused="calm" />
     </header>
 
-    <ol class="quant-pipeline" :class="{ running }" :aria-label="t('bots.quant.pipeline')">
-      <li
-        v-for="(stage, index) in stages"
-        :key="stage.key"
-        class="quant-stage quant-reveal"
-        :class="{ done: index < activeStage, active: index === activeStage }"
-        :style="{ '--reveal-order': index + 3 }"
-        :aria-current="index === activeStage ? 'step' : undefined"
-      >
-        <span class="quant-stage-index"
-          >{{ String(index + 1).padStart(2, '0')
-          }}<i v-if="index < activeStage" class="quant-check" aria-hidden="true">✓</i></span
-        >
-        <strong>{{ stage.label }}</strong>
-        <span class="quant-stage-value">{{ stage.value }}</span>
-      </li>
-    </ol>
-
     <div
-      class="quant-progress quant-reveal"
-      style="--reveal-order: 6"
+      v-if="running"
+      class="quant-progress"
       role="progressbar"
       aria-valuemin="0"
       aria-valuemax="100"
       :aria-valuenow="Math.round(progressFraction * 100)"
-      :aria-label="t('bots.quant.pipeline')"
+      :aria-label="t('bots.quant.progress')"
     >
       <span :style="{ transform: `scaleX(${Math.max(0.02, progressFraction)})` }" />
     </div>
@@ -121,16 +93,15 @@
 
     <section
       class="quant-panel quant-glass quant-radar quant-reveal"
-      style="--reveal-order: 7"
+      style="--reveal-order: 2"
       :aria-labelledby="`${titleId}-radar`"
     >
       <header class="quant-panel-heading">
         <h3 :id="`${titleId}-radar`">{{ t('bots.quant.radar.title') }}</h3>
-        <span>{{ t('bots.quant.radar.caption') }}</span>
       </header>
       <template v-if="!result">
-        <p class="quant-empty">{{ statusText }}</p>
-        <ul class="quant-markets quant-skeletons" aria-hidden="true">
+        <p v-if="loop.status.value === 'error'" class="quant-empty">{{ statusText }}</p>
+        <ul v-else class="quant-markets quant-skeletons" aria-hidden="true">
           <li v-for="index in 2" :key="index" class="quant-market quant-skeleton"><span /><span /><span /></li>
         </ul>
       </template>
@@ -145,7 +116,7 @@
           >
             <header class="quant-market-heading">
               <span class="quant-token" aria-hidden="true">{{ market.asset.symbol.slice(0, 1) }}</span>
-              <strong>{{ market.asset.symbol }}</strong>
+              <h4>{{ market.asset.symbol }}</h4>
               <span class="quant-badge deploy">{{ t('bots.quant.marketStatus.deploy') }}</span>
             </header>
             <div class="quant-market-body">
@@ -162,7 +133,7 @@
               />
               <dl class="quant-stats">
                 <div class="quant-stat quant-stat--main">
-                  <dt>{{ t('bots.quant.walkForward') }}</dt>
+                  <dt>{{ t('bots.quant.result') }}</dt>
                   <dd
                     :class="tone(market.walkForward?.returnPercent)"
                     :data-testid="`quant-return-${market.asset.symbol}`"
@@ -193,28 +164,38 @@
               <strong>{{ t(`bots.quant.signal.${signalFor(market)!.state}`) }}</strong>
               <span>{{ signalSource(market) }}</span>
             </p>
-            <ul v-if="market.final" class="quant-rule" :aria-label="t('bots.quant.rule.label')">
-              <li class="quant-rule-lead">
-                {{ t('bots.quant.rule.buy', { amount: market.final.candidate.amount }) }}
+            <dl v-if="market.final" class="quant-rule" :aria-label="t('bots.quant.rule.label')">
+              <div>
+                <dt>{{ t('bots.quant.rule.buy', { amount: market.final.candidate.amount }) }}</dt>
+                <dd v-for="(leaf, index) in market.final.candidate.rules.entry.conditions" :key="`entry-${index}`">
+                  {{ leafText(leaf) }}
+                </dd>
+              </div>
+              <div v-if="market.final.candidate.rules.exit?.conditions.length">
+                <dt>{{ t('bots.quant.rule.sell') }}</dt>
+                <dd v-for="(leaf, index) in market.final.candidate.rules.exit.conditions" :key="`exit-${index}`">
+                  {{ leafText(leaf) }}
+                </dd>
+              </div>
+            </dl>
+            <ul class="quant-facts">
+              <li
+                v-if="market.walkForward?.cadence?.daysPerEpisode"
+                class="quant-cadence"
+                :data-testid="`quant-cadence-${market.asset.symbol}`"
+              >
+                {{ cadenceText(market) }}
               </li>
-              <li v-for="(leaf, index) in market.final.candidate.rules.entry.conditions" :key="`entry-${index}`">
-                {{ leafText(leaf) }}
-              </li>
-              <li class="quant-rule-lead">{{ t('bots.quant.rule.sell') }}</li>
-              <li v-for="(leaf, index) in market.final.candidate.rules.exit?.conditions ?? []" :key="`exit-${index}`">
-                {{ leafText(leaf) }}
+              <li>
+                {{
+                  t('bots.quant.budget', {
+                    total: capital,
+                    amount: market.final?.candidate.amount ?? QUANT_AMOUNTS[0],
+                    reserve: QUANT_FEE_BUDGET_XOR,
+                  })
+                }}
               </li>
             </ul>
-            <p class="quant-note">
-              {{ t('bots.quant.capacity', { amount: market.final?.candidate.amount ?? '2' }) }}
-            </p>
-            <p
-              v-if="market.walkForward?.cadence?.daysPerEpisode"
-              class="quant-note quant-cadence"
-              :data-testid="`quant-cadence-${market.asset.symbol}`"
-            >
-              {{ cadenceText(market) }}
-            </p>
             <div class="quant-session" role="radiogroup" :aria-label="t('bots.quant.session.label')">
               <span class="quant-session-label">{{ t('bots.quant.session.label') }}</span>
               <button
@@ -235,21 +216,21 @@
             <div class="quant-actions">
               <button
                 type="button"
-                class="quant-primary"
-                :data-testid="`quant-live-${market.asset.symbol}`"
-                :disabled="busy || !!preparing"
-                @click="prepare(market, 'live')"
-              >
-                {{ preparing === `${market.asset.symbol}:live` ? t('bots.quant.preparing') : t('bots.quant.goLive') }}
-              </button>
-              <button
-                type="button"
                 class="quant-secondary"
                 :data-testid="`quant-paper-${market.asset.symbol}`"
                 :disabled="busy || !!preparing"
                 @click="prepare(market, 'paper')"
               >
                 {{ t('bots.quant.paper') }}
+              </button>
+              <button
+                type="button"
+                class="quant-primary"
+                :data-testid="`quant-live-${market.asset.symbol}`"
+                :disabled="busy || !!preparing"
+                @click="prepare(market, 'live')"
+              >
+                {{ preparing === `${market.asset.symbol}:live` ? t('bots.quant.preparing') : t('bots.quant.goLive') }}
               </button>
               <button
                 type="button"
@@ -262,79 +243,47 @@
             </div>
           </li>
         </ul>
-        <ul v-if="idleMarkets.length" class="quant-idle">
-          <li
-            v-for="market in idleMarkets"
-            :key="market.asset.address"
-            class="quant-idle-item"
-            :class="`quant-idle-item--${market.status}`"
-            :data-testid="`quant-market-${market.asset.symbol}`"
-          >
-            <span class="quant-token" aria-hidden="true">{{ market.asset.symbol.slice(0, 1) }}</span>
-            <strong>{{ market.asset.symbol }}</strong>
-            <span class="quant-badge" :class="market.status">{{ t(`bots.quant.marketStatus.${market.status}`) }}</span>
-            <span class="quant-idle-note">
-              {{
-                market.status === 'thin'
-                  ? t('bots.quant.thinNote', { depth: formatNumber(market.medianXorDepth) })
-                  : t('bots.quant.watchNote')
-              }}
-            </span>
-            <span v-if="market.walkForward" class="quant-idle-price">
-              {{ t('bots.quant.priceChange', { symbol: market.asset.symbol }) }}
-              {{ signed(market.walkForward.priceChangePercent) }}
-            </span>
-            <button
-              v-if="market.status === 'watch'"
-              type="button"
-              class="quant-link"
-              :data-testid="`quant-swap-${market.asset.symbol}`"
-              @click="emit('swap', market.asset.address)"
+        <div v-if="idleMarkets.length" class="quant-other">
+          <h4 :id="`${titleId}-other`">{{ t('bots.quant.otherMarkets') }}</h4>
+          <ul class="quant-idle" :aria-labelledby="`${titleId}-other`">
+            <li
+              v-for="market in idleMarkets"
+              :key="market.asset.address"
+              class="quant-idle-item"
+              :class="`quant-idle-item--${market.status}`"
+              :data-testid="`quant-market-${market.asset.symbol}`"
             >
-              {{ t('bots.quant.swap', { symbol: market.asset.symbol }) }} ↗
-            </button>
-          </li>
-        </ul>
+              <span class="quant-token" aria-hidden="true">{{ market.asset.symbol.slice(0, 1) }}</span>
+              <strong>{{ market.asset.symbol }}</strong>
+              <span class="quant-badge" :class="market.status">{{
+                t(`bots.quant.marketStatus.${market.status}`)
+              }}</span>
+              <span class="quant-idle-note">
+                {{
+                  market.status === 'thin'
+                    ? t('bots.quant.thinNote', { depth: formatNumber(market.medianXorDepth) })
+                    : t('bots.quant.watchNote')
+                }}
+              </span>
+              <button
+                v-if="market.status === 'watch'"
+                type="button"
+                class="quant-link"
+                :data-testid="`quant-swap-${market.asset.symbol}`"
+                @click="emit('swap', market.asset.address)"
+              >
+                {{ t('bots.quant.swap', { symbol: market.asset.symbol }) }} ↗
+              </button>
+            </li>
+          </ul>
+        </div>
       </template>
     </section>
-
-    <div class="quant-grid">
-      <section
-        class="quant-panel quant-glass quant-reveal"
-        style="--reveal-order: 8"
-        :aria-labelledby="`${titleId}-mesh`"
-      >
-        <header class="quant-panel-heading">
-          <h3 :id="`${titleId}-mesh`">{{ t('bots.quant.mesh.title') }}</h3>
-          <span>{{ meshSummary }}</span>
-        </header>
-        <QuantMesh
-          :paused="calm"
-          :nodes="result?.mesh ?? []"
-          :families="families"
-          :running="running"
-          :progress="progressFraction"
-          :caption="t('bots.quant.mesh.caption')"
-        />
-      </section>
-      <section
-        class="quant-panel quant-glass quant-reveal"
-        style="--reveal-order: 9"
-        :aria-labelledby="`${titleId}-lattice`"
-      >
-        <header class="quant-panel-heading">
-          <h3 :id="`${titleId}-lattice`">{{ t('bots.quant.lattice.title') }}</h3>
-          <span>{{ selected ? `${selected.asset.symbol} · ${latticeSummary}` : statusText }}</span>
-        </header>
-        <p class="quant-caption">{{ t('bots.quant.lattice.caption') }}</p>
-        <QuantLattice :fills="selected?.walkForward?.fills ?? []" :scanning="running" />
-      </section>
-    </div>
 
     <section
       v-if="selected?.walkForward"
       class="quant-panel quant-glass quant-reveal"
-      style="--reveal-order: 2"
+      style="--reveal-order: 3"
       :aria-labelledby="`${titleId}-equity`"
     >
       <header class="quant-panel-heading">
@@ -353,7 +302,7 @@
           </button>
         </div>
       </header>
-      <p class="quant-caption">{{ t('bots.quant.equity.caption') }}</p>
+      <p class="quant-caption">{{ t('bots.quant.equity.caption', { symbol: selected.asset.symbol }) }}</p>
       <QuantEquity
         :key="selected.asset.address"
         :points="selected.walkForward.equity"
@@ -366,14 +315,46 @@
         :aria-label="t('bots.quant.equity.title')"
       />
       <ol class="quant-folds">
-        <li v-for="(fold, index) in selected.folds" :key="fold.startAt" :class="tone(fold.returnPercent)">
-          <span class="quant-fold-index">{{ t('bots.quant.equity.fold', { index: index + 1 }) }}</span>
+        <li v-for="fold in selected.folds" :key="fold.startAt" :class="tone(fold.returnPercent)">
           <time>{{ formatDate(fold.startAt) }} – {{ formatDate(fold.endAt) }}</time>
-          <strong>{{ fold.family ? t(`bots.quant.families.${fold.family}`) : t('bots.quant.equity.idle') }}</strong>
-          <span>{{ signed(fold.returnPercent) }} · {{ t('bots.quant.equity.trades', { count: fold.trades }) }}</span>
+          <strong>{{ fold.family ? signed(fold.returnPercent) : t('bots.quant.equity.idle') }}</strong>
+          <span v-if="fold.family">{{ t('bots.quant.equity.trades', { count: fold.trades }) }}</span>
         </li>
       </ol>
     </section>
+
+    <div class="quant-grid">
+      <section
+        class="quant-panel quant-glass quant-reveal"
+        style="--reveal-order: 4"
+        :aria-labelledby="`${titleId}-mesh`"
+      >
+        <header class="quant-panel-heading">
+          <h3 :id="`${titleId}-mesh`">{{ t('bots.quant.mesh.title') }}</h3>
+          <span v-if="result">{{ meshSummary }}</span>
+        </header>
+        <QuantMesh
+          :paused="calm"
+          :nodes="result?.mesh ?? []"
+          :families="families"
+          :running="running"
+          :progress="progressFraction"
+          :caption="t('bots.quant.mesh.caption')"
+        />
+      </section>
+      <section
+        class="quant-panel quant-glass quant-reveal"
+        style="--reveal-order: 5"
+        :aria-labelledby="`${titleId}-lattice`"
+      >
+        <header class="quant-panel-heading">
+          <h3 :id="`${titleId}-lattice`">{{ t('bots.quant.lattice.title') }}</h3>
+          <span v-if="selected">{{ `${selected.asset.symbol} · ${latticeSummary}` }}</span>
+        </header>
+        <p class="quant-caption">{{ t('bots.quant.lattice.caption') }}</p>
+        <QuantLattice :fills="selected?.walkForward?.fills ?? []" :scanning="running" />
+      </section>
+    </div>
 
     <p v-if="result" class="quant-disclaimer" data-testid="quant-disclaimer">
       {{
@@ -392,9 +373,10 @@
 import { computed, onBeforeUnmount, onMounted, ref, toRef, useId } from 'vue';
 import { useTranslation } from '@/composables/useTranslation';
 import {
+  QUANT_AMOUNTS,
   QUANT_CAPITAL_XOR,
   QUANT_FAMILIES,
-  generateQuantCandidates,
+  QUANT_FEE_BUDGET_XOR,
   type QuantMarketResult,
 } from '@/features/bot-trading/quant-loop';
 import {
@@ -405,7 +387,6 @@ import {
   QUANT_SESSION_DAYS,
   type QuantDeployPayload,
 } from '@/features/bot-trading/quant-deploy';
-import { useCountUp } from '@/features/bot-trading/useCountUp';
 import { useQuantLoop } from '@/features/bot-trading/useQuantLoop';
 import QuantEquity from './QuantEquity.vue';
 import QuantGauge from './QuantGauge.vue';
@@ -420,9 +401,9 @@ import type { BotAsset, BotDefinition, BotHistory } from '@/features/bot-trading
 defineOptions({ name: 'QuantCommandCenter' });
 
 /**
- * Visual command center for the self-improving research loop. It never signs or saves:
- * Go live and Paper trade emit reviewed templates that the page passes to the existing
- * funding review and consent flow; Swap asks the page to open the Swap form.
+ * Ready-made rule bots from the in-browser research loop, with a three-step guide. It never
+ * signs or saves: Go live and Paper trade emit reviewed templates that the page passes to the
+ * existing funding review and consent flow; Swap asks the page to open the Swap form.
  */
 const props = defineProps<{
   assets: BotAsset[];
@@ -436,16 +417,18 @@ const emit = defineEmits<{
   swap: [assetAddress: string];
 }>();
 
+/** How-to steps, in the same order as each card's Paper trade and Go live actions. */
+const STEPS = ['choose', 'paper', 'live'] as const;
+
 const { t, language } = useTranslation();
 const titleId = useId();
 const loop = useQuantLoop(toRef(props, 'assets'), { loadFees: props.loadFees, loadHistory: props.loadHistory });
 const result = computed(() => loop.result.value);
-const running = computed(() => ['loading', 'fees', 'running'].includes(loop.status.value));
+const running = computed(() => ['idle', 'loading', 'fees', 'running'].includes(loop.status.value));
 const preparing = ref<string | null>(null);
 const prepareError = ref<{ symbol: string; message: string } | null>(null);
 const selectedAddress = ref('');
 const capital = QUANT_CAPITAL_XOR;
-const candidateCount = generateQuantCandidates().length;
 /** Live session length chosen before review; the default covers the typical PSWAP unwind. */
 const sessionDays = ref<(typeof QUANT_SESSION_DAYS)[number]>(7);
 
@@ -468,6 +451,7 @@ function wake(): void {
   idleTimer = setTimeout(() => (calm.value = true), IDLE_MS);
 }
 onMounted(() => {
+  if (loop.status.value === 'idle') void loop.start();
   wake();
   WAKE_EVENTS.forEach((type) => document.addEventListener(type, wake, { passive: true, capture: true }));
 });
@@ -488,16 +472,6 @@ const locale = computed(() => {
 const number = (value: number, digits = 0) =>
   value.toLocaleString(locale.value, { minimumFractionDigits: digits, maximumFractionDigits: digits });
 const formatNumber = (value: number) => number(value, value < 10 ? 2 : 0);
-/** UTC wall clock for the live strip; it only labels the present moment. */
-const formatClock = (timestamp: number) =>
-  new Date(timestamp).toLocaleTimeString(locale.value, { hour12: false, timeZone: 'UTC' });
-const clock = ref(formatClock(Date.now()));
-let clockTimer: ReturnType<typeof setInterval> | undefined;
-onMounted(() => {
-  if (loop.status.value === 'idle') void loop.start();
-  clockTimer = setInterval(() => (clock.value = formatClock(Date.now())), 1_000);
-});
-onBeforeUnmount(() => clearInterval(clockTimer));
 const formatDate = (timestamp: number) =>
   new Date(timestamp).toLocaleDateString(locale.value, { month: 'short', day: 'numeric', timeZone: 'UTC' });
 const signed = (value?: string) => {
@@ -507,126 +481,24 @@ const signed = (value?: string) => {
 };
 const tone = (value?: string) => (!value || Number(value) === 0 ? 'flat' : Number(value) > 0 ? 'up' : 'down');
 
-const subtitle = computed(() =>
-  t('bots.quant.subtitle', {
-    candidates: number(candidateCount),
-    hours: number(result.value?.archive.hours ?? 4851),
-  })
-);
-
 const progressFraction = computed(() => {
   if (loop.status.value === 'done') return 1;
   const progress = loop.progress.value;
   return progress?.total ? Math.min(1, progress.completed / progress.total) : 0;
 });
 
-/** Real counts from the result, or from live progress while the search runs. */
-const targets = computed(() => {
-  const counts = result.value?.counts;
-  const progress = loop.progress.value;
-  const tested = counts ? counts.candidates * counts.markets : (progress?.candidates ?? 0);
-  const killed = counts?.killed ?? progress?.killed ?? 0;
-  const best = result.value?.markets
-    .filter((market) => market.status === 'deploy' && market.walkForward)
-    .sort((a, b) => Number(b.walkForward!.returnPercent) - Number(a.walkForward!.returnPercent))[0];
-  return {
-    tested,
-    backtests: counts?.backtests ?? progress?.backtests ?? 0,
-    killRate: tested ? (killed / tested) * 100 : 0,
-    robust: counts?.robust ?? progress?.robust ?? 0,
-    best: best ? Number(best.walkForward!.returnPercent) : (counts?.deployable ?? 0),
-    bestSymbol: best?.asset.symbol ?? '',
-  };
-});
-const shownTested = useCountUp(computed(() => targets.value.tested));
-const shownBacktests = useCountUp(computed(() => targets.value.backtests));
-const shownKillRate = useCountUp(computed(() => targets.value.killRate));
-const shownRobust = useCountUp(computed(() => targets.value.robust));
-const shownBest = useCountUp(
-  computed(() => targets.value.best),
-  1600
-);
-const kpis = computed(() => {
-  const symbol = targets.value.bestSymbol;
-  return [
-    { key: 'tested', label: t('bots.quant.kpi.tested'), value: number(Math.round(shownTested.value)) },
-    { key: 'backtests', label: t('bots.quant.kpi.backtests'), value: number(Math.round(shownBacktests.value)) },
-    {
-      key: 'killed',
-      label: t('bots.quant.kpi.killed'),
-      value: targets.value.tested ? `${shownKillRate.value.toFixed(1)}%` : '—',
-    },
-    { key: 'robust', label: t('bots.quant.kpi.robust'), value: number(Math.round(shownRobust.value)) },
-    {
-      key: 'best',
-      label: symbol ? t('bots.quant.kpi.best', { symbol }) : t('bots.quant.kpi.deployable'),
-      value: symbol
-        ? `${shownBest.value > 0 ? '+' : ''}${shownBest.value.toFixed(1)}%`
-        : number(Math.round(shownBest.value)),
-      highlight: true,
-    },
-  ];
-});
-
+/** One plain sentence per research phase; the line is hidden once results are ready. */
 const statusText = computed(() => {
-  const progress = loop.progress.value;
   switch (loop.status.value) {
-    case 'loading':
-      return t('bots.quant.status.loading');
     case 'fees':
       return t('bots.quant.status.fees');
     case 'running':
-      return progress?.market
-        ? t('bots.quant.status.running', { market: progress.market, fold: progress.fold, folds: progress.folds })
-        : t('bots.quant.status.generating');
-    case 'done':
-      return t('bots.quant.status.done', { date: formatDate(result.value?.testedAt ?? Date.now()) });
+      return t('bots.quant.status.running');
     case 'error':
       return t('bots.quant.status.error');
     default:
-      return t('bots.quant.status.idle');
+      return t('bots.quant.status.loading');
   }
-});
-
-const activeStage = computed(() => {
-  const status = loop.status.value;
-  if (status === 'idle' || status === 'loading') return 0;
-  if (status === 'fees') return 1;
-  if (status === 'done' || status === 'error') return status === 'done' ? 5 : 0;
-  const phase = loop.progress.value?.phase;
-  return phase === 'robustness' ? 3 : phase === 'walkforward' || phase === 'verify' ? 4 : 2;
-});
-const stages = computed(() => {
-  const counts = result.value?.counts;
-  const fees = loop.fees.value;
-  return [
-    {
-      key: 'data',
-      label: t('bots.quant.stages.data'),
-      value: t('bots.quant.stages.hours', { count: number(result.value?.archive.hours ?? 4851) }),
-    },
-    {
-      key: 'fees',
-      label: t('bots.quant.stages.fees'),
-      value: fees ? `${Number(fees.networkFeeXor).toFixed(2)} XOR · ${Number(fees.swapFeePercent).toFixed(1)}%` : '…',
-    },
-    {
-      key: 'backtest',
-      label: t('bots.quant.stages.backtest'),
-      value: number(counts?.backtests ?? loop.progress.value?.backtests ?? 0),
-    },
-    {
-      key: 'robustness',
-      label: t('bots.quant.stages.robustness'),
-      value: number(counts?.robust ?? loop.progress.value?.robust ?? 0),
-    },
-    {
-      key: 'walkforward',
-      label: t('bots.quant.stages.walkforward'),
-      value: t('bots.quant.stages.folds', { count: 4 }),
-    },
-    { key: 'deploy', label: t('bots.quant.stages.deploy'), value: number(counts?.deployable ?? 0) },
-  ];
 });
 
 const families = computed(() =>
@@ -646,11 +518,11 @@ const meshSummary = computed(() =>
         robust: number(result.value.counts.robust),
         killed: number(result.value.counts.killed),
       })
-    : statusText.value
+    : ''
 );
 
 const order = { deploy: 0, watch: 1, thin: 2 } as const;
-/** Live-ready markets lead with the strongest blind result; the rest follow by pool depth. */
+/** Ready markets lead with the strongest test result; the rest follow by pool depth. */
 const orderedMarkets = computed(() =>
   [...(result.value?.markets ?? [])].sort(
     (a, b) =>
@@ -676,9 +548,9 @@ const latticeSummary = computed(() => {
 });
 
 const signalFor = (market: QuantMarketResult) => loop.signals.value[market.asset.symbol];
-/** The strongest live-ready market whose exact rule is in its buy zone right now. */
+/** The strongest ready market whose exact rule is in its buy zone right now. */
 const hotMarket = computed(() => deployMarkets.value.find((market) => signalFor(market)?.state === 'entry') ?? null);
-/** Frequency and holding time from the blind folds, so users expect rare, multi-day trades. */
+/** Frequency and holding time from the tests, so users expect rare, multi-day trades. */
 function cadenceText(market: QuantMarketResult): string {
   const cadence = market.walkForward?.cadence;
   if (!cadence?.daysPerEpisode || !cadence.holdHours) return '';
@@ -851,71 +723,58 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   padding: 32px 32px 28px;
   overflow: hidden;
 }
-.quant-eyebrow {
-  margin: 0 0 12px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--s-color-action-text, #ab0555);
-}
 .quant-title {
   margin: 0;
-  font-size: clamp(28px, 3.6vw, 46px);
+  font-size: clamp(26px, 3vw, 36px);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.1;
   letter-spacing: -0.03em;
   color: var(--q-ink);
 }
-.quant-gradient {
-  display: block;
-  background: linear-gradient(95deg, var(--s-color-action-text, #ab0555), var(--q-pink) 45%, var(--q-violet));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
 .quant-subtitle {
   max-width: 62ch;
-  margin: 14px 0 20px;
+  margin: 12px 0 18px;
   font-size: 14px;
   line-height: 1.6;
   color: var(--q-muted);
 }
-.quant-kpis {
+.quant-steps {
   display: grid;
-  grid-template-columns: repeat(5, #{'minmax(0, 1fr)'});
   gap: 10px;
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.quant-kpi {
+.quant-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   min-width: 0;
-  padding: 12px 12px 10px;
+  padding: 12px 14px;
   border-radius: 18px;
   background: var(--q-recess);
   box-shadow: var(--q-inset);
-  dt {
-    font-size: 10px;
-    line-height: 1.3;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+  strong {
+    font-size: 14px;
+  }
+  p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
     color: var(--q-muted);
   }
-  dd {
-    margin: 6px 0 0;
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    overflow-wrap: anywhere;
-  }
-  &.highlight {
-    background: linear-gradient(140deg, color-mix(in srgb, var(--q-pink) 16%, var(--q-surface)), var(--q-surface));
-    box-shadow:
-      var(--q-raised),
-      0 0 0 1px color-mix(in srgb, var(--q-pink) 30%, transparent);
-    dd {
-      color: var(--s-color-action-text, #ab0555);
-    }
-  }
+}
+.quant-step-index {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--q-on-action);
+  background: linear-gradient(120deg, var(--q-action), color-mix(in srgb, var(--q-action) 55%, var(--q-pink)));
 }
 .quant-status {
   display: flex;
@@ -931,14 +790,12 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   height: 8px;
   border-radius: 50%;
   background: var(--q-violet);
-  &.done {
-    background: var(--q-mint);
-  }
   &.error {
     background: var(--s-color-status-error, #f754a3);
   }
 }
 @media (prefers-reduced-motion: no-preference) {
+  .quant-pulse.idle,
   .quant-pulse.loading,
   .quant-pulse.fees,
   .quant-pulse.running {
@@ -955,56 +812,6 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
 .quant-art {
   max-width: 420px;
   justify-self: center;
-}
-
-.quant-pipeline {
-  display: grid;
-  grid-template-columns: repeat(6, #{'minmax(0, 1fr)'});
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.quant-stage {
-  position: relative;
-  display: grid;
-  gap: 4px;
-  min-width: 0;
-  padding: 12px 14px;
-  border-radius: 18px;
-  background: var(--q-surface);
-  box-shadow: var(--q-raised);
-  transition:
-    transform 240ms ease,
-    box-shadow 240ms ease;
-  strong {
-    font-size: 13px;
-  }
-  &.done {
-    box-shadow: var(--q-inset);
-    background: var(--q-recess);
-  }
-  &.active {
-    background: linear-gradient(140deg, color-mix(in srgb, var(--q-pink) 22%, var(--q-surface)), var(--q-surface));
-    box-shadow:
-      var(--q-raised),
-      0 0 24px color-mix(in srgb, var(--q-pink) 28%, transparent);
-    transform: translateY(-2px);
-    .quant-stage-index {
-      color: var(--s-color-action-text, #ab0555);
-    }
-  }
-}
-.quant-stage-index {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--q-muted);
-}
-.quant-stage-value {
-  font-size: 12px;
-  color: var(--q-muted);
-  overflow-wrap: anywhere;
 }
 
 .quant-grid {
@@ -1051,6 +858,17 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.quant-other {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  h4 {
+    margin: 6px 0 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--q-muted);
+  }
 }
 .quant-idle {
   display: grid;
@@ -1100,13 +918,9 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   color: var(--q-muted);
   line-height: 1.5;
 }
-.quant-idle-price {
-  font-variant-numeric: tabular-nums;
-  color: var(--q-ink);
-  font-weight: 600;
-}
 .quant-market {
   display: grid;
+  align-content: start;
   gap: 12px;
   min-width: 0;
   padding: 16px;
@@ -1124,7 +938,8 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   display: flex;
   align-items: center;
   gap: 10px;
-  strong {
+  h4 {
+    margin: 0;
     font-size: 16px;
     font-weight: 800;
   }
@@ -1172,6 +987,10 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
   gap: 8px;
   margin: 0;
+  /* Until the live signal arrives there is no gauge; the stats then use the full width. */
+  &:first-child {
+    grid-column: 1 / -1;
+  }
 }
 .quant-stat {
   min-width: 0;
@@ -1180,7 +999,7 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   background: var(--q-recess);
   box-shadow: var(--q-inset);
   dt {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--q-muted);
   }
   dd {
@@ -1231,29 +1050,37 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   }
 }
 .quant-rule {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 6px;
   margin: 0;
-  padding: 0;
-  list-style: none;
-  li {
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  dt {
+    padding-inline: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--q-muted);
+  }
+  dd {
+    margin: 0;
     padding: 4px 9px;
     border-radius: 10px;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.4;
     background: color-mix(in srgb, var(--q-violet) 10%, var(--q-surface));
     color: var(--q-ink);
   }
-  .quant-rule-lead {
-    background: transparent;
-    padding-inline: 2px;
-    font-weight: 700;
-    color: var(--q-muted);
-  }
 }
-.quant-note {
+.quant-facts {
+  display: grid;
+  gap: 2px;
   margin: 0;
+  padding: 0;
+  list-style: none;
   font-size: 12px;
   line-height: 1.55;
   color: var(--q-muted);
@@ -1369,18 +1196,12 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     color: var(--q-muted);
   }
   strong {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--q-ink);
   }
-  .up span:last-child {
+  .up strong {
     color: var(--s-color-action-text, #ab0555);
-    font-weight: 700;
   }
-}
-.quant-fold-index {
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 .quant-disclaimer {
   margin: 0;
@@ -1471,10 +1292,8 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
 }
 .quant-session-label {
   padding-inline: 8px 2px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--q-muted);
 }
 
@@ -1516,35 +1335,6 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
 .quant-art {
   position: relative;
   z-index: 1;
-}
-.quant-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 16px;
-  padding: 5px 12px 5px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
-  color: var(--q-ink);
-  background: var(--q-recess);
-  box-shadow: var(--q-inset);
-}
-.quant-live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--q-pink);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--q-pink) 70%, transparent);
-}
-.quant-check {
-  display: inline-block;
-  margin-inline-start: 6px;
-  font-style: normal;
-  color: var(--s-color-status-success, #34ad87);
 }
 .quant-progress {
   position: relative;
@@ -1614,34 +1404,6 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     animation: quant-drift 22s ease-in-out infinite alternate;
     animation-play-state: var(--quant-motion, running);
   }
-  .quant-live-dot {
-    animation: quant-blink 1.6s ease-in-out infinite;
-    animation-play-state: var(--quant-motion, running);
-  }
-  .quant-gradient {
-    background-size: 220% 100%;
-    animation: quant-shine 6s ease-in-out infinite;
-    animation-play-state: var(--quant-motion, running);
-  }
-  .quant-pipeline.running .quant-stage.active::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-      100deg,
-      transparent 30%,
-      color-mix(in srgb, var(--q-light) 80%, transparent) 50%,
-      transparent 70%
-    );
-    background-size: 220% 100%;
-    animation: quant-scan 1.3s linear infinite;
-    animation-play-state: var(--quant-motion, running);
-    pointer-events: none;
-  }
-  .quant-check {
-    animation: quant-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
   .quant-skeleton span {
     animation: quant-scan 1.6s linear infinite;
     animation-play-state: var(--quant-motion, running);
@@ -1709,23 +1471,10 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     background-position: -120% 0;
   }
 }
-@keyframes quant-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.2);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
 @media (max-width: 1100px) {
   .quant-grid {
     grid-template-columns: #{'minmax(0, 1fr)'};
-  }
-  .quant-kpis {
-    grid-template-columns: repeat(3, #{'minmax(0, 1fr)'});
   }
 }
 @media (max-width: 760px) {
@@ -1738,25 +1487,18 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
     max-width: 230px;
     margin-bottom: -6px;
   }
-  .quant-pipeline {
-    display: flex;
-    overflow-x: auto;
-    padding-bottom: 6px;
-    scroll-snap-type: x mandatory;
-    .quant-stage {
-      flex: 0 0 132px;
-      scroll-snap-align: start;
-    }
-  }
-  .quant-kpis {
-    grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
-  }
   .quant-market-body {
     grid-template-columns: #{'minmax(0, 1fr)'};
     justify-items: center;
   }
   .quant-stats {
     width: 100%;
+  }
+  .quant-session {
+    gap: 4px;
+    button {
+      padding: 0 8px;
+    }
   }
   .quant-folds {
     grid-template-columns: repeat(2, #{'minmax(0, 1fr)'});
@@ -1766,7 +1508,7 @@ async function prepare(market: QuantMarketResult, mode: 'live' | 'paper'): Promi
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .quant-stage {
+  .quant-progress span {
     transition: none;
   }
 }

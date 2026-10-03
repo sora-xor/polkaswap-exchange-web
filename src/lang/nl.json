@@ -200,6 +200,7 @@
     "bots": {
         "above": "Verkopen boven de drempel",
         "activity": "Activiteit",
+        "advanced": "Geavanceerd",
         "aiBacktestNote": "Genereer en controleer een deterministische strategie vóór de historische test.",
         "aiConnection": "AI-verbinding",
         "allocation": "Toegewezen middelen",
@@ -214,7 +215,6 @@
         "authorizeStart": "Goedkeuren en starten",
         "autopilot": {
             "addressCopied": "Adres gekopieerd",
-            "advanced": "Geavanceerd",
             "begin": "Start AI trading",
             "budget": "Toegewezen middelen ({symbol})",
             "budgetUnselected": "Toegewezen middelen",
@@ -297,10 +297,10 @@
             "feeReserveSeparate": "Plus {amount} {symbol} voor netwerkkosten.",
             "funding": "Available: {available} {symbol}",
             "fundTitle": "Set your budget",
-            "go": "START",
+            "go": "Strategie zoeken",
             "goal": "Laat mijn kapitaal groeien",
             "internalWalletRequired": "Use the built-in wallet for automatic signing.",
-            "intro": "AI suggests. Polkaswap tests. You control trading.",
+            "intro": "Kies een budget en de token waarvan je meer wilt. Je AI (Codex-app of API-sleutel) stelt strategieën op, Polkaswap test ze op historische data en jij beoordeelt de beste voordat er gehandeld wordt.",
             "maximizeGoal": "{symbol} vermeerderen",
             "maximizeToken": "Token om te vermeerderen",
             "refreshFunding": "Saldi vernieuwen",
@@ -532,6 +532,7 @@
             "confirmClose": "Close and release allocation",
             "connect": "Verbind AI",
             "connected": "Verbonden",
+            "connectFirst": "Verbind eerst een AI om het onderzoek te starten.",
             "consent": "Ik heb de exacte bots, budgetten en 14-daagse ondertekeningssubsidie beoordeeld.",
             "continueExploratory": "Verkennende zoekopdracht voortzetten",
             "continueWithProvider": "Hervatten met deze AI",
@@ -553,6 +554,7 @@
             "feeReserve": "XOR-vergoedingsreserve",
             "finalizedBlock": "Geverifieerd bij voltooid blok",
             "finalizedSwaps": "afgeronde wissels",
+            "getKey": "Een {provider}-API-sleutel aanvragen",
             "goal": "Elke bot: 14 actieve dagen, 10 afgeronde swaps, positieve nettowaarde boven holding, binnen opname.",
             "historyChanged": "Geverifieerde geschiedenis veranderd tijdens onderzoek",
             "holdout": "Onaangeroerde uithouding",
@@ -564,7 +566,11 @@
             "holdoutReused": "De volgende gereserveerde testperiode overlapt met datums die al in deze browser zijn bekeken. De resultaten zijn verkennend en kunnen geen livebots goedkeuren.",
             "holdoutUntouchedOutcome": "No candidate passed training, so the holdout was not evaluated.",
             "idea": "Strategie-idee (optioneel)",
+            "ideaDips": "Dips kopen in een opwaartse trend",
+            "ideaExamples": "Idee nodig? Probeer er een:",
+            "ideaMomentum": "Sterk momentum volgen",
             "ideaPlaceholder": "Bijvoorbeeld: koop korte pullbacks in een stijgende trend",
+            "ideaSteady": "Gestage dagelijkse aankopen",
             "jev": "Jev-API",
             "lessLossThanHolding": "Lost less than holding, but still lost after estimated costs.",
             "limitsFrozen": "Toewijzing, bestelplafonds en provisiereserve worden vastgesteld door het geverifieerde onderzoek. Start een nieuwe zoekopdracht om ze te wijzigen.",
@@ -584,6 +590,7 @@
             "noQualified": "No strategies qualified",
             "openai": "OpenAI-API",
             "orderLimit": "Maximale bestelling",
+            "otherConnection": "Anders",
             "outcome": {
                 "active": "Werken aan het doel",
                 "loss": "Opnamelimiet bereikt",
@@ -660,6 +667,7 @@
             "start": "Onderzoek starten",
             "subtitle": "Zoek op geverifieerde markten naar strategieën en bekijk de exacte regels voordat u live gaat handelen.",
             "tabNote": "Onderzoek en livehandel lopen zolang dit tabblad en de computer actief blijven. Een gepauzeerde campagne vereist een nieuwe beoordeling en ontgrendeling.",
+            "tagline": "Laat AI strategieën voor je vinden en testen",
             "title": "Ontdek",
             "trades": "Wissels",
             "training": "Opleiding",
@@ -676,6 +684,13 @@
         "equityChartNote": "Start deze strategie om prestaties vast te leggen.",
         "errors": {
             "action": "De actie kon niet worden voltooid. Probeer opnieuw.",
+            "aiAccess": "Deze API-sleutel kan het gekozen model niet gebruiken. Kies een ander model of controleer de rechten van de sleutel.",
+            "aiBusy": "De AI-aanbieder is druk of tijdelijk niet beschikbaar. Probeer het over een paar minuten opnieuw.",
+            "aiKey": "De AI-aanbieder heeft deze API-sleutel geweigerd. Kopieer de volledige sleutel opnieuw of maak een nieuwe aan.",
+            "aiKeyMissing": "Plak eerst je API-sleutel.",
+            "aiNetwork": "Kan de AI-aanbieder niet bereiken. Controleer je internetverbinding, VPN of contentblocker en probeer het opnieuw.",
+            "aiQuota": "Je AI-account heeft geen tegoed meer of heeft een snelheidslimiet bereikt. Voeg tegoed toe bij je aanbieder, of wacht een minuut en probeer het opnieuw.",
+            "aiTimeout": "De AI deed er te lang over om te antwoorden. Probeer het opnieuw of kies een sneller model.",
             "amount": "Voer een geldig bedrag binnen de decimale precisie van het token in.",
             "backtestAi": "Genereer en controleer deterministische regels vóór een historische test van een AI-strategie.",
             "balance": "Toegewezen tokens of walletsaldo zijn onvoldoende voor deze transactie.",
@@ -1178,101 +1193,92 @@
         },
         "quant": {
             "banner": {
-                "detail": "De koers wijkt {value} af van het {window}-uursgemiddelde en ligt voorbij de triggerdrempel van {threshold}. Dit is het moment waarop de bot koopt.",
+                "detail": "De koers staat op {value} ten opzichte van het {window}-uursgemiddelde, voorbij de koopdrempel van {threshold}, dus een actieve bot zou nu kopen.",
                 "title": "{symbol} bevindt zich in de koopzone"
             },
-            "botName": "{symbol}-liquiditeitsoogster",
+            "botName": "{symbol}-bot",
+            "budget": "Budget van {total} XOR: {amount} XOR per aankoop, {reserve} XOR gereserveerd voor kosten",
             "cadence": {
-                "every": "Ongeveer om de {days} dagen een kans",
-                "holdDays": "posities worden in {min}–{max} dagen afgebouwd",
-                "holdHours": "posities worden in {min}–{max} uur afgebouwd",
-                "last": "meest recent op {date}"
+                "every": "Handelt ongeveer eens in de {days} dagen",
+                "holdDays": "houdt {min}–{max} dagen vast",
+                "holdHours": "houdt {min}–{max} uur vast",
+                "last": "laatste aankoop op {date}"
             },
-            "capacity": "Bewust beperkte capaciteit: budget van 10 XOR, kostenreserve van 2 XOR en {amount} XOR per transactie, omdat deze pools weinig liquiditeit hebben.",
             "consent": {
                 "budget": "Budget van {amount} XOR",
-                "cadenceDays": "Transacties zijn zeldzaam: in blinde tests deed zich ongeveer om de {days} dagen een kans voor, en het afbouwen van een positie kan tot {hold} dagen duren. Houd dit tabblad de hele sessie open.",
-                "cadenceHours": "Transacties zijn zeldzaam: in blinde tests deed zich ongeveer om de {days} dagen een kans voor, en het afbouwen van een positie kan tot {hold} uur duren. Houd dit tabblad de hele sessie open.",
-                "evidence": "Resultaat voortschrijdende validatie {return}% · maximale terugval {drawdown}% · {trades} transacties. Hypothetisch en na alle kosten; geen winstbelofte.",
-                "eyebrow": "In één oogopslag",
+                "cadenceDays": "Transacties zijn zeldzaam: in tests ongeveer eens in de {days} dagen, en een positie kan tot {hold} dagen open blijven. Houd dit tabblad de hele sessie open.",
+                "cadenceHours": "Transacties zijn zeldzaam: in tests ongeveer eens in de {days} dagen, en een positie kan tot {hold} uur open blijven. Houd dit tabblad de hele sessie open.",
+                "evidence": "Testresultaat {return}% · grootste daling {drawdown}% · {trades} transacties, na kosten. Gesimuleerd op historische data; geen winstbelofte.",
                 "getXor": "XOR verkrijgen",
                 "impact": "Max. prijsimpact {value}%",
-                "order": "{amount} XOR per transactie",
-                "reserve": "Kostenreserve {amount} XOR",
+                "order": "{amount} XOR per aankoop",
+                "reserve": "{amount} XOR gereserveerd voor kosten",
                 "session": "Sessie van {hours} u",
                 "sessionDays": "{count}-daagse sessie",
-                "stepConfirm": "Vink het vakje aan en start. De bot kan alleen swaps binnen deze limieten ondertekenen.",
+                "stepConfirm": "Vink het vakje aan en start. De bot kan alleen swaps binnen deze limieten uitvoeren.",
                 "stepPassword": "Voer je walletwachtwoord in",
                 "stepWallet": "Keur elke swap goed in je wallet",
-                "title": "Live handelen: {symbol}-liquiditeitsoogster"
+                "title": "Live handelen met de {symbol}-bot"
             },
-            "disclaimer": "Hypothetisch onderzoek op gearchiveerde SORA-poolstanden van {start} tot {end}, berekend met de huidige kosten ({fee} XOR netwerkkosten, {swap}% poolkosten) en 0,5% slippage. Resultaten uit het verleden bieden geen garantie voor de toekomst.",
-            "drawdown": "Maximale terugval",
+            "disclaimer": "Resultaten zijn gesimuleerd op SORA-pooldata van {start} tot {end}, met de huidige kosten ({fee} XOR netwerkkosten, {swap}% poolkosten) en 0,5% koersafwijking. Resultaten uit het verleden bieden geen garantie voor de toekomst.",
+            "drawdown": "Grootste daling",
             "equity": {
-                "caption": "Blinde voortschrijdende validatie: elke ronde handelde met regels die alleen op basis van eerdere uren waren gekozen, waarna de lus opnieuw leerde.",
-                "fold": "Ronde {index}",
+                "caption": "Waarde van de bot vergeleken met het aanhouden van {symbol}. Elke periode gebruikte alleen regels die op basis van eerdere data waren gekozen.",
                 "idle": "In XOR gebleven",
-                "strategy": "Strategie",
-                "title": "Vergelijk voordat je instapt",
+                "strategy": "Bot",
+                "title": "Resultaten in de loop van de tijd",
                 "trades": "Transacties: {count}"
             },
-            "eyebrow": "Strategielab",
             "families": {
                 "breakout": "Uitbraak",
-                "guarded": "Gefilterd herstel",
-                "reversion": "Herstel na afwijking",
-                "shock": "Herstel na schok",
-                "trend": "Trendvolging"
+                "guarded": "Kopen bij daling met filter",
+                "reversion": "Kopen bij daling",
+                "shock": "Kopen na crash",
+                "trend": "Trend volgen"
             },
             "fromMean": "vs. {window}-uursgemiddelde",
-            "gaugeAria": "De koers wijkt {value} af van het {window}-uursgemiddelde; de bot koopt onder {threshold}.",
+            "gaugeAria": "De koers staat op {value} ten opzichte van het {window}-uursgemiddelde; de bot koopt onder {threshold}.",
             "goLive": "Live handelen",
-            "kpi": {
-                "backtests": "Historische tests",
-                "best": "Validatie {symbol}",
-                "deployable": "Handelsklare markten",
-                "killed": "Afgekeurd",
-                "robust": "Geslaagd",
-                "tested": "Strategieën"
-            },
+            "intro": "Elke bot wisselt tussen XOR en één token volgens vaste koop- en verkoopregels. De regels zijn gekozen door ze te testen op historische SORA-pooldata, inclusief kosten.",
             "lattice": {
-                "caption": "Elke bal is één verkoop buiten de steekproef en landt op het gerealiseerde resultaat na alle kosten.",
+                "caption": "Elke bal is één verkoop uit de tests, geplaatst op het resultaat na kosten.",
                 "summary": "Winst: {wins} · verlies: {losses}",
-                "title": "Elke transactie, één bal"
+                "title": "Transactieresultaten"
             },
-            "liveStrip": "Live · SORA-mainnet · {time} UTC",
             "marketStatus": {
-                "deploy": "Handelsklaar",
-                "thin": "Te illiquide",
-                "watch": "Aan de zijlijn"
+                "deploy": "Klaar",
+                "thin": "Pool te klein",
+                "watch": "Geen bot"
             },
             "mesh": {
-                "caption": "Eén knooppunt per strategie. Oplichtende knooppunten doorstonden elke toets; het pulserende knooppunt is actief.",
+                "caption": "Elke stip is één geteste strategie. Heldere stippen slaagden voor alle controles; pulserende stippen zijn de strategieën die de bots gebruiken.",
                 "summary": "{robust} geslaagd · {killed} afgewezen",
-                "title": "Strategienetwerk"
+                "title": "Geteste strategieën"
             },
+            "otherMarkets": "Andere markten",
             "paper": "Simulatie starten",
             "pipeline": "Onderzoekspijplijn",
             "preparing": "Overzicht voorbereiden…",
-            "priceChange": "{symbol}-koers",
+            "priceChange": "{symbol} aanhouden",
+            "progress": "Testvoortgang",
             "radar": {
-                "caption": "Regels beoordeeld op het laatste afgesloten uur, precies zoals een live bot ze ziet.",
-                "title": "Kansenradar"
+                "title": "Beschikbare bots"
             },
+            "result": "Testresultaat",
             "retry": "Opnieuw proberen",
             "rule": {
-                "breakoutAbove": "Nieuw hoogste punt in {window} uur",
-                "breakoutBelow": "Nieuw laagste punt in {window} uur",
-                "buy": "Koop {amount} XOR wanneer",
+                "breakoutAbove": "Koers bereikt nieuw hoogste punt in {window} uur",
+                "breakoutBelow": "Koers bereikt nieuw laagste punt in {window} uur",
+                "buy": "Koop voor {amount} XOR wanneer",
                 "deviationAbove": "Koers vs. {window}-uursgemiddelde boven {value}%",
                 "deviationBelow": "Koers vs. {window}-uursgemiddelde onder {value}%",
-                "label": "Strategieregels",
-                "momentumAbove": "{window}-uursverandering boven {value}%",
-                "momentumBelow": "{window}-uursverandering onder {value}%",
+                "label": "Handelsregels",
+                "momentumAbove": "Koersverandering in {window} uur boven {value}%",
+                "momentumBelow": "Koersverandering in {window} uur onder {value}%",
                 "sell": "Verkoop wanneer"
             },
             "session": {
-                "label": "Sessie",
+                "label": "Looptijd",
                 "option": "{count} d"
             },
             "signal": {
@@ -1280,37 +1286,35 @@
                 "exit": "Verkoopzone",
                 "neutral": "Afwachten",
                 "unavailable": "Geen gegevens",
-                "warmup": "Opwarmen"
+                "warmup": "Nog niet genoeg gegevens"
             },
-            "signalArchive": "Gearchiveerde slotkoers · {time}",
-            "signalLive": "Live slotkoers · {time}",
-            "stages": {
-                "backtest": "Historische test",
-                "data": "Poolgegevens",
-                "deploy": "Inzet",
-                "fees": "Actuele kosten",
-                "folds": "{count} rondes",
-                "hours": "{count} uur",
-                "robustness": "Robuustheid",
-                "walkforward": "Voortschrijdende validatie"
-            },
+            "signalArchive": "Op basis van opgeslagen koersen · {time}",
+            "signalLive": "Gecontroleerd op {time}",
             "status": {
-                "done": "Onderzoek voltooid · {date}",
-                "error": "Onderzoek is momenteel niet beschikbaar.",
-                "fees": "Actuele kosten lezen uit een definitief SORA-blok…",
-                "generating": "Strategieën genereren…",
-                "idle": "Klaar voor onderzoek",
-                "loading": "Gearchiveerde poolstanden laden…",
-                "running": "{market} testen · ronde {fold} van {folds}"
+                "error": "Testresultaten konden niet worden geladen.",
+                "fees": "Huidige netwerkkosten controleren…",
+                "loading": "Historische pooldata laden…",
+                "running": "Strategieën testen op historische data…"
             },
-            "subtitle": "Voor elke SORA-markt schrijft de lus {candidates} regelstrategieën, speelt ze opnieuw af op {hours} uur aan echte poolreserves met exacte kosten en prijsimpact, verwerpt alles wat fragiel is en zet alleen in wat geld opleverde in blinde voortschrijdende tests.",
+            "steps": {
+                "choose": {
+                    "text": "Vergelijk hieronder de regels en testresultaten.",
+                    "title": "Bot kiezen"
+                },
+                "live": {
+                    "text": "Controleer de limieten en bevestig met je wallet. Houd dit tabblad open zolang de bot draait.",
+                    "title": "Live handelen"
+                },
+                "paper": {
+                    "text": "“Simulatie starten” voegt de bot met virtueel geld toe aan “Mijn bots”. Start hem daar; geen wallet nodig.",
+                    "title": "In simulatie uitproberen"
+                }
+            },
             "swap": "XOR → {symbol} wisselen",
-            "thinNote": "De mediane pooldiepte is {depth} XOR, te weinig voor een transactie van 2 XOR, dus de lus slaat deze markt over.",
-            "title": "Bots die duizenden strategieën testen",
-            "titleAccent": "voordat ze ook maar één XOR riskeren.",
+            "thinNote": "De pool bevat ongeveer {depth} XOR, te weinig voor een transactie van 2 XOR.",
+            "title": "Kant-en-klare bots",
             "trades": "Transacties",
-            "walkForward": "Voortschrijdende validatie",
-            "watchNote": "Hier doorstond geen enkele strategie elke toets, dus de lus laat je XOR ongebruikt en blijft de markt volgen."
+            "watchNote": "Geen enkele regel was winstgevend in de tests, dus er is nog geen bot voor deze markt."
         },
         "receiveToken": "Handelstoken",
         "research": {
