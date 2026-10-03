@@ -2322,6 +2322,7 @@ onUnmounted(() => {
   border-block: 1px solid var(--bot-border);
   line-height: 1.6;
   i {
+    position: relative;
     flex: 0 0 8px;
     height: 8px;
     margin-top: 6px;
@@ -2338,7 +2339,17 @@ onUnmounted(() => {
   }
   &.running i {
     background: var(--bot-accent);
+  }
+  // The pulse animates only transform and opacity, so the compositor runs it without per-frame style or paint work
+  // on the main thread; a session can keep this page open for days.
+  &.running i::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--bot-accent) 35%, transparent);
     animation: session-pulse 2s ease-out infinite;
+    will-change: transform, opacity;
   }
 }
 .bot-modal .quant-consent {
@@ -2450,11 +2461,13 @@ onUnmounted(() => {
 }
 @keyframes session-pulse {
   0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--bot-accent) 35%, transparent);
+    opacity: 1;
+    transform: scale(1);
   }
   75%,
   100% {
-    box-shadow: 0 0 0 7px transparent;
+    opacity: 0;
+    transform: scale(2.75);
   }
 }
 .bots-view-tabs {
@@ -3509,7 +3522,7 @@ onUnmounted(() => {
   .bots-top,
   .bots-view-tabs,
   .bot-modal,
-  .runtime-strip.running i {
+  .runtime-strip.running i::after {
     animation: none;
   }
   .bots-page button,
